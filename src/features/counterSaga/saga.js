@@ -25,7 +25,7 @@ function* watchIncrementAsync() {
 
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once
-export default function* rootSaga() {
+export default function* counterSaga() {
   yield all([
     watchIncrementAsync()
   ])

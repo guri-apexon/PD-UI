@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 export const httpCall = async (config) => {
+console.log('config :', config);
     try {
         const response = await axios(config);
         return {
