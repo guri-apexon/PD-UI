@@ -1,21 +1,20 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
 import Button from 'apollo-react/components/Button';
-import Footer from 'apollo-react/components/Footer';
+import { useSelector, useDispatch } from 'react-redux';
+import {dashboard} from '../Dashboard/dashboardSlice'
+
+const Dashboard = () => {
+  const dispatch = useDispatch();
+  const dashboardData = useSelector(dashboard);
+
+    useEffect(()=>{
+        console.log('componentDidMount :',dashboardData.value );
+        dispatch({type:'DASHBOARD_ASYNC_SAGA'})
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
 
-class Dashboard extends Component {
-    constructor(props){
-        super(props);
-    }
 
-
-    componentDidMount(){
-    console.log('componentDidMount :', );
-    this.props.dashboardAsync();
-    }
-
-render(){
     return(
         <div className='dashboard-parent'>
             Dashboard
@@ -41,13 +40,16 @@ render(){
 
 
 
-}
-const mapDispatch = dispatch => {
-    return{
-        dashboardAsync:()=>{
-            dispatch({type:'DASHBOARD_ASYNC_SAGA'})
-        }
-    }
-}
 
-export default  connect(null, mapDispatch)(Dashboard);
+// const mapDispatch = dispatch => {
+//     return{
+//         dashboardAsync:()=>{
+//         }
+//     }
+// }
+// const mapStateToProps = state =>  ({
+//     count: state.dashboard.value
+// })
+// export default  connect(null, mapDispatch)(Dashboard);
+
+export default  Dashboard;
