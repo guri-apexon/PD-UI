@@ -3,6 +3,9 @@ import './App.scss';
 import Routes from './Routes/routes';
 import NavigationBar from 'apollo-react/components/NavigationBar';
 import { useHistory } from "react-router-dom";
+// import SettingsIcon from 'apollo-react-icons/Cog';
+// import HelpIcon from 'apollo-react-icons/Help';
+// import UserIcon from 'apollo-react-icons/User';
 
 function App () {
 
@@ -23,6 +26,35 @@ function App () {
     },
     
   ];
+  const profileMenuProps = {
+    name: 'Laura',
+    title: 'Sales',
+    email: 'laura@iqvia.com',
+    logoutButtonProps: { pathname: '/logout' },
+    menuItems: [
+      {
+        text: 'Profile',
+        pathname: '/profile',
+       // icon: UserIcon,
+      },
+      {
+        text: 'Settings',
+        pathname: '/settings',
+        //icon: SettingsIcon,
+      },
+      {
+        text: 'Help',
+        pathname: '/help',
+       // icon: HelpIcon,
+      },
+    ],
+  };
+  const logoProps = {
+    src: 'logo-img.png',
+    alt: 'IQVIA Protocol Library',
+    onClick: () => history.push('/'),
+  };
+  
   const onClickNavigation = (pathname) => {
     console.log('pathname :', pathname);
     history.push(pathname);
@@ -32,9 +64,9 @@ function App () {
   return (
     <>
      <NavigationBar
-     // logoProps={logoProps}
+      logoProps={logoProps}
       menuItems={menuItems}
-     // profileMenuProps={profileMenuProps}
+     profileMenuProps={profileMenuProps}
       onClick={({ pathname }) => onClickNavigation(pathname)}
       // checkIsActive={(item) =>
       //   item.pathname
