@@ -5,7 +5,7 @@ import Modal from "apollo-react/components/Modal";
 import Grid from "apollo-react/components/Grid";
 // import Paper from "apollo-react/components/Paper";
 // import { shadowLevel1 } from "apollo-react/shadows";
-// import { neutral3 } from "apollo-react/colors";
+import { neutral3 } from "apollo-react/colors";
 import Autocomplete from "apollo-react/components/Autocomplete";
 import AutocompleteV2 from "apollo-react/components/AutocompleteV2";
 
