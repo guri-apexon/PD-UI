@@ -3,9 +3,9 @@ import './App.scss';
 import Routes from './Routes/routes';
 import NavigationBar from 'apollo-react/components/NavigationBar';
 import { useHistory } from "react-router-dom";
-// import SettingsIcon from 'apollo-react-icons/Cog';
-// import HelpIcon from 'apollo-react-icons/Help';
-// import UserIcon from './assets/Icons/user.svg';
+import SettingsIcon from 'apollo-react-icons/Cog';
+import HelpIcon from 'apollo-react-icons/Help';
+import UserIcon from 'apollo-react-icons/User';
 
 function App () {
 
@@ -36,17 +36,17 @@ function App () {
       {
         text: 'Profile',
         pathname: '/profile',
-      // icon: UserIcon,
+        icon: UserIcon,
       },
       {
         text: 'Settings',
         pathname: '/settings',
-        //icon: SettingsIcon,
+        icon: SettingsIcon,
       },
       {
         text: 'Help',
         pathname: '/help',
-       // icon: HelpIcon,
+       icon: HelpIcon,
       },
     ],
   };
