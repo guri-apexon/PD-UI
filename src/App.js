@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.scss';
 import Routes from './Routes/routes';
 import NavigationBar from 'apollo-react/components/NavigationBar';
 import { useHistory } from "react-router-dom";
 // import SettingsIcon from 'apollo-react-icons/Cog';
 // import HelpIcon from 'apollo-react-icons/Help';
-// import UserIcon from 'apollo-react-icons/User';
+// import UserIcon from './assets/Icons/user.svg';
 
 function App () {
 
   let history = useHistory();
+  const [pathname, setPathname]= useState('/dashboard')
 
   const menuItems = [
     {
@@ -35,7 +36,7 @@ function App () {
       {
         text: 'Profile',
         pathname: '/profile',
-       // icon: UserIcon,
+      // icon: UserIcon,
       },
       {
         text: 'Settings',
@@ -58,9 +59,14 @@ function App () {
   const onClickNavigation = (pathname) => {
     console.log('pathname :', pathname);
     history.push(pathname);
+    setPathname(pathname)
 
   }
-  
+  const checknav = (item) => {
+   return item.pathname
+    ? item.pathname === pathname
+    : item.menuItems.some((item) => item.pathname === pathname)
+  }
   return (
     <>
      <NavigationBar
@@ -68,12 +74,9 @@ function App () {
       menuItems={menuItems}
      profileMenuProps={profileMenuProps}
       onClick={({ pathname }) => onClickNavigation(pathname)}
-      // checkIsActive={(item) =>
-      //   item.pathname
-      //     ? item.pathname === pathname
-      //     : item.menuItems.some((item) => item.pathname === pathname)
-      // }
-      // waves
+      checkIsActive={(item) => checknav(item)
+      }
+       waves
     />
     <Routes />
     </>

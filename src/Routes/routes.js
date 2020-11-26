@@ -1,6 +1,7 @@
 import {
     Switch,
     Route,
+    Redirect
   } from "react-router-dom";
 import Dashboard from '../features/Container/Dashboard/Dashboard';
 import Protocols from '../features/Container/Protocols/Protocols';
@@ -9,8 +10,9 @@ import { Counter as Csaga } from '../features/counterSaga/Counter';
 const Routes = () => {
     return(
       <Switch>
-          <Route exact path='/'  component={Dashboard}/>
-          <Route path="/saga"> <Csaga /></Route>
+        <Redirect exact from='/' to='/dashboard' />
+          {/* <Route exact path='/'  component={Dashboard}/> */}
+          {/* <Route path="/saga"> <Csaga /></Route> */}
           <Route path='/dashboard'  component={Dashboard}/>
           <Route path='/protocols'  component={Protocols}/>
           <Route path='/search'  component={Search}/>

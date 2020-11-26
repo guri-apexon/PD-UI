@@ -1,0 +1,20 @@
+.add-protocol{
+    margin-top: 10px;
+}
+
+#add-protocol-modal{
+    [class^="InternalDialogTitle-padding-"],.InternalDialogTitle-padding-220 {
+        padding: 24px 24px 12px 24px;
+        border-bottom: 1px solid #d9d9d9;
+    }
+    .MuiDialog-paperWidthSm {
+        max-width: 700px;
+        min-width: 600px;
+    }
+    .MuiGrid-spacing-xs-2 > .MuiGrid-item {
+        padding: 0;
+    }
+    .a-MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .a-MuiAutocomplete-input:first-child {
+        border: none;
+    }
+}
