@@ -4,18 +4,18 @@ import TextField from "apollo-react/components/TextField";
 import Modal from "apollo-react/components/Modal";
 import Grid from "apollo-react/components/Grid";
 // import Paper from "apollo-react/components/Paper";
-// import { shadowLevel1 } from "apollo-react/shadows";
+import { shadowLevel1 } from "apollo-react/shadows";
 import { neutral3 } from "apollo-react/colors";
 import Autocomplete from "apollo-react/components/Autocomplete";
 import AutocompleteV2 from "apollo-react/components/AutocompleteV2";
 
 const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
-  //   const styles = {
-  //     padding: 16,
-  //     textAlign: "center",
-  //     boxShadow: shadowLevel1,
-  //     border: `1px solid ${neutral3}`,
-  //   };
+    const styles = {
+      padding: 16,
+      textAlign: "center",
+      boxShadow: shadowLevel1,
+      border: `1px solid ${neutral3}`,
+    };
 
   const countries = [
     { label: "Afghanistan", id: 122, value: "AFG" },
