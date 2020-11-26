@@ -10,12 +10,12 @@ import Autocomplete from "apollo-react/components/Autocomplete";
 import AutocompleteV2 from "apollo-react/components/AutocompleteV2";
 
 const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
-  //   const styles = {
-  //     padding: 16,
-  //     textAlign: "center",
-  //     boxShadow: shadowLevel1,
-  //     border: `1px solid ${neutral3}`,
-  //   };
+    const styles = {
+      padding: 16,
+      textAlign: "center",
+      boxShadow: shadowLevel1,
+      border: `1px solid ${neutral3}`,
+    };
 
   const countries = [
     { label: "Afghanistan", id: 122, value: "AFG" },
