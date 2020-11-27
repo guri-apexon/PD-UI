@@ -1,17 +1,20 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from "react";
+import "./protocols.scss";
 
+import { useSelector, useDispatch } from "react-redux";
+import Breadcrumbs from "apollo-react/components/Breadcrumbs";
 
-class Protocols extends Component {
+import BASE_URL from "../../../utils/api";
 
-
-render(){
-    return(
-        <div>
-            Protocols
-        </div>
-    )
-}
-
-}
+const Protocols = () => {
+  console.log("ENV", process.env);
+  return (
+    <div className="protocols">
+      <h1>Protocols</h1>
+      <h1>{BASE_URL}</h1>
+      <h1>{process.env.REACT_APP_ANY_SECRET}</h1>
+    </div>
+  );
+};
 
 export default Protocols;
