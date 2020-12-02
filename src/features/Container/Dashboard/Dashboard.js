@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { dashboard } from "../Dashboard/dashboardSlice";
+import Grid from "apollo-react/components/Grid";
+import Button from "apollo-react/components/Button";
+import { dashboard, protocolCompare } from "../Dashboard/dashboardSlice";
 import AddProtocol from "./AddProtocol";
+import ProtocolTable from "./ProtocolTable";
+import DashboardSearch from "./DashboardSearch";
+
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const dashboardData = useSelector(dashboard);
+  // const dashboardData = useSelector(dashboard);
+  const compare = useSelector(protocolCompare);
   const [state, setState] = useState({
     custom: false,
   });
 
- 
+  console.log('compare', compare)
+
   useEffect(() => {
-    console.log("componentDidMount :", dashboardData.value);
     dispatch({ type: "DASHBOARD_ASYNC_SAGA" });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -29,42 +35,35 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-parent">
-      Dashboard
-      <AddProtocol
-        state={state}
-        handleClose={handleClose}
-        handleOpen={handleOpen}
-        handleSave={handleSave}
-      />
-      {/* <Footer
-  buttonProps={[
-    {
-      label: 'Terms of Use',
-      href: 'https://www.iqvia.com/about-us/terms-of-use',
-      target: '_blank',
-    },
-    {
-      label: 'Privacy Policy',
-      href: 'https://www.iqvia.com/about-us/privacy/privacy-policy',
-      target: '_blank',
-    },
-  ]}
-  maxWidth={1600}
-/>; */}
+    <div className="dashboard-parent"  style={{padding: 20}}>
+      <h1>Good Morning, Laura</h1>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <div style={{ float: "right" }}>
+            <AddProtocol
+              state={state}
+              handleClose={handleClose}
+              handleOpen={handleOpen}
+              handleSave={handleSave}
+            />
+          </div>
+          <div
+            style={{ float: "right", marginTop: "10px", marginRight: "14px" }}
+          >
+            <Button variant="secondary" disabled={!compare}>
+              {"Compare Selected"}
+            </Button>
+          </div>
+        </Grid>
+        <Grid item xs={12}>
+          <ProtocolTable />
+        </Grid>
+        <Grid item xs={12}>
+          <DashboardSearch />
+        </Grid>
+      </Grid>
     </div>
   );
 };
-
-// const mapDispatch = dispatch => {
-//     return{
-//         dashboardAsync:()=>{
-//         }
-//     }
-// }
-// const mapStateToProps = state =>  ({
-//     count: state.dashboard.value
-// })
-// export default  connect(null, mapDispatch)(Dashboard);
 
 export default Dashboard;

@@ -1,0 +1,23 @@
+[
+    {
+      "searchName": "Covid-19",
+      "searchId": 1
+    },
+    {
+      "searchName": "Glioblastoma",
+      "searchId": 2
+    },
+    {
+      "searchName": "Angiocytoma",
+      "searchId": 3
+    },
+    {
+      "searchName": "Angiocytima",
+      "searchId": 4
+    },
+    {
+      "searchName": "Brain Tumor",
+      "searchId": 5
+    }
+  ]
+  
