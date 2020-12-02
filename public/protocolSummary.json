@@ -1,0 +1,14 @@
+{
+  "protocolName": "PROT-12345",
+  "projectId": "Test Sample",
+  "sponser": "Hutchinson",
+  "indication": "Glioblatoma",
+  "molecule": "Sample Drug",
+  "amendment": "No",
+  "version": "1",
+  "documentStatus": "Final Approved",
+  "activity": "Extraction Completed",
+  "protocolTitle": "orem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "confidenceInterval": "74",
+  "completenessDigitization": "43"
+}

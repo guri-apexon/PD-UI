@@ -1,0 +1,271 @@
+.search {
+  padding-left: 20px;
+  max-width: 1140px;
+  margin: 70px auto;
+  .App {
+    text-align: center;
+  }
+
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  .MuiFormControl-marginNormal{
+    margin-top: 10px;
+  }
+  .MuiIconButton-root{
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+  }
+
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+
+  .App-link {
+    color: #61dafb;
+  }
+
+  @keyframes App-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  body {
+    color: #000000;
+    font-size: 16px;
+    font-family: Proxima Nova, Nunito Sans, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .Multiline-block50h {
+    width: 100%;
+    text-align: left !important;
+    height: 50px !important;
+  }
+
+  .width70 {
+    width: 70%;
+    float: left;
+  }
+
+  .width100 {
+    width: 100%;
+    float: left !important;
+  }
+
+  .width25 {
+    display: inline;
+    width: 25% !important;
+    float: left;
+  }
+
+  .width30px {
+    display: inline;
+    width: 30px !important;
+    float: left;
+  }
+
+  .width5 {
+    display: inline;
+    width: 5% !important;
+    float: left;
+  }
+
+  .width10 {
+    display: inline;
+    width: 10% !important;
+    float: left;
+  }
+
+  .width80 {
+    display: inline;
+    width: 80% !important;
+    float: left;
+  }
+
+  .width85 {
+    display: inline;
+    width: 85% !important;
+    float: left;
+  }
+
+  .width90 {
+    display: inline;
+    width: 90% !important;
+    float: left;
+  }
+
+  .width95 {
+    display: inline;
+    width: 95% !important;
+    float: left;
+  }
+
+  .width98 {
+    display: inline;
+    width: 98% !important;
+    float: left;
+  }
+
+  .floatRight {
+    float: right !important;
+  }
+  .textleft {
+    text-align: left !important;
+  }
+
+  [class*="MuiCheckbox-colorPrimary"] {
+    top: 0 !important;
+  }
+
+  [class*="Panel-container"] {
+    float: left !important;
+  }
+
+  .marginTop {
+    margin-top: 20px;
+    float: left;
+  }
+
+  .marginLeft10 {
+    margin-left: 10px !important;
+  }
+
+  .marginRight10 {
+    margin-right: 10px !important;
+  }
+
+  div.width70 span {
+  }
+
+  span.font12 {
+    font-size: 12px;
+  }
+
+  span.blueText {
+    color: #0557d5 !important;
+  }
+
+  .width200px {
+    width: 200px !important;
+    float: left;
+  }
+
+  .width150px {
+    width: 150px !important;
+    float: left;
+  }
+
+  .width300px {
+    width: 300px !important;
+    float: left;
+  }
+
+  .width700px {
+    width: 700px !important;
+    float: left;
+  }
+
+  .swtichButton {
+    margin-top: -8px;
+  }
+
+  .divBlock {
+    float: left;
+    margin-right: 20px;
+  }
+
+  .Collapsible {
+    margin-bottom: 10px;
+    border: 1px solid #e9e9e9;
+    padding: 0 0;
+    overflow: hidden;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.04);
+  }
+
+  .Collapsible__trigger {
+    display: block;
+    font-weight: 400;
+    text-decoration: none;
+    color: black !important;
+    position: relative;
+    border: 1px solid white;
+    padding: 10px;
+    background: white;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .Collapsible__trigger::after {
+    font-family: "FontAwesome";
+    content: "\f107";
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: block;
+    transition: transform 300ms;
+  }
+
+  .Collapsible__trigger.is-open::after {
+    transform: rotateZ(180deg);
+  }
+
+  .Collapsible__trigger.is-disabled {
+    opacity: 0.5;
+    background-color: grey;
+  }
+
+  .CustomTriggerCSS {
+    background-color: lightcoral;
+    transition: background-color 200ms ease;
+  }
+
+  .CustomTriggerCSS--open {
+    background-color: darkslateblue;
+  }
+
+  .Collapsible__custom-sibling {
+    padding: 5px;
+    font-size: 12px;
+    background-color: #cbb700;
+    color: black;
+  }
+
+  div[class^="Panel-container"] span.MuiTypography-root {
+    margin-left: 10px;
+    font-size: 15px;
+  }
+
+  .MuiCardContent-root {
+    padding: 0 16px !important;
+  }
+
+  div[class*="MuiFormGroup-root"]
+    span[class*="MuiIconButton-label"]:first-child {
+    top: 8px;
+    font-family: Proxima Nova, Nunito Sans, sans-serif;
+    font-size: 10px;
+  }
+
+  div[class*="Panel-container"] {
+    border: none !important;
+  }
+}
