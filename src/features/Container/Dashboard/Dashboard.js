@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import _ from "lodash";
 import Grid from "apollo-react/components/Grid";
 import Button from "apollo-react/components/Button";
-import { dashboard, protocolCompare } from "../Dashboard/dashboardSlice";
+import { protocolCompare } from "../Dashboard/dashboardSlice";
 import AddProtocol from "./AddProtocol";
 import ProtocolTable from "./ProtocolTable";
 import DashboardSearch from "./DashboardSearch";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  // const dashboardData = useSelector(dashboard);
   const compare = useSelector(protocolCompare);
   const [state, setState] = useState({
     custom: false,
   });
-
-  console.log('compare', compare)
 
   useEffect(() => {
     dispatch({ type: "DASHBOARD_ASYNC_SAGA" });
@@ -23,19 +21,21 @@ const Dashboard = () => {
   }, []);
 
   const handleOpen = (variant) => {
-    setState({ ...state, [variant]: true });
+    let deeptemp = _.cloneDeep(state);
+    deeptemp[variant] = true;
   };
 
   const handleClose = (variant) => {
-    setState({ ...state, [variant]: false });
+    let deeptemp = _.cloneDeep(state);
+    deeptemp[variant] = false;
   };
   const handleSave = (variant) => {
-    console.log("variant :", variant);
-    setState({ ...state, custom: false });
+    let deeptemp = _.cloneDeep(state);
+    deeptemp[variant] = false;
   };
 
   return (
-    <div className="dashboard-parent"  style={{padding: 20}}>
+    <div className="dashboard-parent" style={{ padding: 20 }}>
       <h1>Good Morning, Laura</h1>
       <Grid container spacing={2}>
         <Grid item xs={12}>

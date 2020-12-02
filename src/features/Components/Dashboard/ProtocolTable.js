@@ -5,7 +5,7 @@ import Upload from "apollo-react-icons/Upload";
 import StatusCheck from "apollo-react-icons/StatusCheck";
 import StatusExclamation from "apollo-react-icons/StatusExclamation";
 import Check from "apollo-react-icons/Check";
-import moment from "moment";
+import _ from "lodash";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Link from "apollo-react/components/Link";
@@ -209,8 +209,8 @@ const ProtocolTable = ({ initialRows }) => {
       selectedRows.indexOf(protocolId) >= 0
         ? selectedRows.filter((id) => id !== protocolId)
         : selectedRows.length < 2
-        ? [...selectedRows, protocolId]
-        : [...selectedRows]
+        ?  _.concat(selectedRows, protocolId)
+        :  _.concat(selectedRows)
     );
   };
 
@@ -226,7 +226,7 @@ const ProtocolTable = ({ initialRows }) => {
     setExpandedRows((expandedRows) =>
       expandedRows.indexOf(protocolId) >= 0
         ? expandedRows.filter((id) => id !== protocolId)
-        : [...expandedRows, protocolId]
+        : _.concat(expandedRows, protocolId)
     );
   };
 
@@ -239,14 +239,17 @@ const ProtocolTable = ({ initialRows }) => {
     <Table
       title="My Protocols"
       columns={columns}
-      rows={initialRows.map((row) => ({
-        ...row,
-        key: row.protocolId,
-        expanded: expandedRows.indexOf(row.protocolId) >= 0,
-        selected: selectedRows.indexOf(row.protocolId) >= 0,
-        handleToggleRow,
-        handleChange,
-      }))}
+      rows={initialRows.map((row) => {
+          let temp = _.cloneDeep(row);
+          let details = {
+            key: row.protocolId,
+            expanded: expandedRows.indexOf(row.protocolId) >= 0,
+            selected: selectedRows.indexOf(row.protocolId) >= 0,
+            handleToggleRow,
+            handleChange,
+          }
+          return _.merge(temp, details)
+      })}
       initialSortedColumn="protocolName"
       initialSortOrder="asc"
       rowsPerPageOptions={[5, 20, 30]}
