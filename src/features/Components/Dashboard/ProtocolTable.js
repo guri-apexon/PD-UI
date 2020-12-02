@@ -7,8 +7,9 @@ import StatusExclamation from "apollo-react-icons/StatusExclamation";
 import Check from "apollo-react-icons/Check";
 import _ from "lodash";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Link from "apollo-react/components/Link";
+// import Link from "apollo-react/components/Link";
 import Checkbox from "apollo-react/components/Checkbox";
 import { neutral7, neutral8 } from "apollo-react/colors";
 import DatePicker from "apollo-react/components/DatePickerV2";
@@ -62,10 +63,7 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
       style={{ marginRight: 192 }}
     >
       <span>
-        <Link
-          onClick={() => console.log("link clicked")}
-          className="protocol-table test"
-        >
+        <Link to={`/protocols?protocolId=${row["protocolId"]}`}>
           {row[key]}
         </Link>
       </span>
@@ -78,7 +76,7 @@ const Cell = ({ row, column }) => (
 );
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => (
-  <Link onClick={() => console.log("link clicked")}>{row[key]}</Link>
+  <Link to={`/protocols?protocolId=${row["protocolId"]}`}>{row[key]}</Link>
 );
 
 const iconStatus = (status) => {
@@ -171,29 +169,72 @@ const columns = [
 
 const ExpandableComponent = ({ row }) => {
   return (
-    <div style={{ display: "flex", padding: "8px 0px 8px 8px", backgroundColor:  'white', marginLeft: '3%'}}>
-      <div style={{ width: '20%' }}>
-        <Typography style={{ fontWeight: 500, color: neutral8, float: 'left', marginRight: '20px' }}>
+    <div
+      style={{
+        display: "flex",
+        padding: "8px 0px 8px 8px",
+        backgroundColor: "white",
+        marginLeft: "3%",
+      }}
+    >
+      <div style={{ width: "10%" }}>
+        <Typography
+          style={{
+            fontWeight: 500,
+            color: neutral8,
+            float: "left",
+            marginRight: "20px",
+          }}
+        >
           {"Phase:"}
         </Typography>
         <Typography style={{ fontWeight: 800 }} variant="body2">
           {row.phase}
         </Typography>
       </div>
-      <div style={{ marginLeft: 32, width: '20%' }}>
-        <Typography style={{ fontWeight: 500, color: neutral8, float: 'left', marginRight: '20px' }}>
+      <div style={{ marginLeft: 32, width: "20%" }}>
+        <Typography
+          style={{
+            fontWeight: 500,
+            color: neutral8,
+            float: "left",
+            marginRight: "20px",
+          }}
+        >
           {"Indication:"}
         </Typography>
         <Typography style={{ fontWeight: 800 }} variant="body2">
           {row.indication}
         </Typography>
       </div>
-      <div style={{ marginLeft: 32, width: '50%' }}>
-        <Typography style={{ fontWeight: 500, color: neutral8, float: 'left', marginRight: '20px' }}>
+      <div style={{ marginLeft: 32, width: "20%" }}>
+        <Typography
+          style={{
+            fontWeight: 500,
+            color: neutral8,
+            float: "left",
+            marginRight: "20px",
+          }}
+        >
           {"Document Status:"}
         </Typography>
         <Typography style={{ fontWeight: 800 }} variant="body2">
           {row.documentStatus}
+        </Typography>
+      </div>
+      <div style={{ marginLeft: 32, width: "20%" }}>
+        <Typography
+          style={{
+            fontWeight: 500,
+            color: neutral8,
+            float: "left",
+            marginRight: "20px",
+          }}
+        >
+          {"Source:"}
+        </Typography>
+        <Typography style={{ fontWeight: 800 }} variant="body2">
+        <a href={row.filePath} target="_blank">{row.fileName}</a>
         </Typography>
       </div>
     </div>
@@ -209,11 +250,10 @@ const ProtocolTable = ({ initialRows }) => {
       selectedRows.indexOf(protocolId) >= 0
         ? selectedRows.filter((id) => id !== protocolId)
         : selectedRows.length < 2
-        ?  _.concat(selectedRows, protocolId)
-        :  _.concat(selectedRows)
+        ? _.concat(selectedRows, protocolId)
+        : _.concat(selectedRows)
     );
   };
-
 
   // const newRows = initialRows.map((row, i) => ({
   //   ...row,
@@ -231,24 +271,24 @@ const ProtocolTable = ({ initialRows }) => {
   };
 
   useEffect(() => {
-   console.log('selectedRows', selectedRows);
-   dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
-}, [selectedRows]);
+    console.log("selectedRows", selectedRows);
+    dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
+  }, [selectedRows]);
 
   return (
     <Table
       title="My Protocols"
       columns={columns}
       rows={initialRows.map((row) => {
-          let temp = _.cloneDeep(row);
-          let details = {
-            key: row.protocolId,
-            expanded: expandedRows.indexOf(row.protocolId) >= 0,
-            selected: selectedRows.indexOf(row.protocolId) >= 0,
-            handleToggleRow,
-            handleChange,
-          }
-          return _.merge(temp, details)
+        let temp = _.cloneDeep(row);
+        let details = {
+          key: row.protocolId,
+          expanded: expandedRows.indexOf(row.protocolId) >= 0,
+          selected: selectedRows.indexOf(row.protocolId) >= 0,
+          handleToggleRow,
+          handleChange,
+        };
+        return _.merge(temp, details);
       })}
       initialSortedColumn="protocolName"
       initialSortOrder="asc"
