@@ -57,7 +57,6 @@ function App () {
   };
   
   const onClickNavigation = (pathname) => {
-    console.log('pathname :', pathname);
     history.push(pathname);
     setPathname(pathname)
 

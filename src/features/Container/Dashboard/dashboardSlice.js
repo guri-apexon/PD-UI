@@ -7,6 +7,9 @@ export const dashboardSlice = createSlice({
     tableError: false,
     compareSelected: false,
     recentSearches: [],
+    addProtocolData:{
+      sponsor:[]
+    }
   },
   reducers: {
     getProtocols: (state, action) => {
@@ -20,11 +23,20 @@ export const dashboardSlice = createSlice({
     },
     getRecentSearches: (state, action) => {
       state.recentSearches = action.payload
+    },
+    getProtocolData: (state, action)=>{
+      state.addProtocolData = action.payload
+    },
+    getSponsor: (state, action) =>{
+      state.addProtocolData.sponsor=action.payload
+    },
+    getIndication: (state, action) =>{
+    state.addProtocolData.indication=action.payload
     }
   },
 });
 
-export const { getProtocols, setError, setCompareSelected, getRecentSearches } = dashboardSlice.actions;
+export const { getProtocols, setError, setCompareSelected, getRecentSearches, getSponsor, getIndication, getProtocolData } = dashboardSlice.actions;
 
 
 // The function below is called a selector and allows us to select a value from

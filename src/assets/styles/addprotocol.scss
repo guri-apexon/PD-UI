@@ -1,20 +1,84 @@
-.add-protocol{
+.add-protocol {
     margin-top: 10px;
-}
-
-#add-protocol-modal{
-    [class^="InternalDialogTitle-padding-"],.InternalDialogTitle-padding-220 {
-        padding: 24px 24px 12px 24px;
-        border-bottom: 1px solid #d9d9d9;
+    .add-protocol-button{
+      .MuiButton-root{
+        padding: 0 16px 0 7px;
+      }
+    }
+  }
+  
+  #add-protocol-modal {
+    [class^="MuiFormLabel-asterisk-"] {
+      font-size: 16px;
+    }
+    .a-MuiInputBase-inputMarginDense {
+      font-size: 16px;
+    }
+    [class^="InternalDialogTitle-padding-"],
+    .InternalDialogTitle-padding-220 {
+      padding: 24px 24px 12px 24px;
+      border-bottom: 1px solid #d9d9d9;
+    }
+    .MuiDialog-container {
+      top: 22px;
     }
     .MuiDialog-paperWidthSm {
-        max-width: 700px;
-        min-width: 600px;
+      max-width: 700px;
+      min-width: 600px;
     }
     .MuiGrid-spacing-xs-2 > .MuiGrid-item {
-        padding: 0;
+      padding: 0;
     }
-    .a-MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .a-MuiAutocomplete-input:first-child {
-        border: none;
+    .a-MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]
+      .a-MuiAutocomplete-input:first-child {
+      border: none;
     }
-}
+    .autocomplete-class {
+      margin-top: 16px;
+      margin-bottom: 8px;
+      .a-MuiInputBase-root.Mui-error input[aria-invalid="true"] {
+        border: none !important;
+      }
+      .MuiInputBase-root.Mui-error input[aria-invalid=true] {
+        border: 2px solid #e20000 !important;
+        border: none !important;
+     }
+    }
+    .hide-auto {
+      display: none;
+    }
+    .sponsor-textbox-container {
+      [class^="MuiFormControl-marginNormal-"] {
+        margin-bottom: 0;
+      }
+      position: relative;
+      .show-list {
+        position: absolute;
+        max-height: 140px;
+        z-index: 1000000;
+        overflow: scroll;
+        width: 100%;
+        background: white;
+      }
+  
+      .add-custom-button-box {
+        display: flex;
+        box-shadow: 0 0.3rem 0.1em 0.2em rgba(0, 0, 0, 0.05);
+        .sponsor-add-button {
+          margin-left: auto;
+        }
+      }
+    }
+    .file-error-message {
+      color: #e20000;
+      font-size: 13px;
+    }
+    .file-required-astrik{
+      left: 3px;
+      color: #e20000;
+      bottom: 2px;    
+      position: relative;
+      font-size: 16px;
+    }
+  }
+  

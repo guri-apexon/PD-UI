@@ -1,6 +1,6 @@
 import { takeEvery, all, call, put } from "redux-saga/effects";
-import { httpCall } from "../../../utils/api";
-import { getProtocols, setError, setCompareSelected, getRecentSearches } from "./dashboardSlice";
+import BASE_URL,{ httpCall, BASE_URL_8000 } from "../../../utils/api";
+import { getProtocols, setError, setCompareSelected, getRecentSearches, getSponsor, getIndication, getProtocolData } from "./dashboardSlice";
 function* protocolAsyn() {
   const url = "./rows.json";
   const config = {
@@ -44,10 +44,75 @@ function* recentSearchAsyn() {
   }
 }
 
+
+
+function* addProtocolSponsor() {
+  const url = "./sponsor.json";
+  const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
+  const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
+  // const protocolData = yield call(httpCall, {url, method:'GET'});
+
+  try {
+    const protocolData = yield call(httpCall, { url, method: "GET" });
+    if (protocolData.success) {
+      yield put(getProtocolData(protocolData.data));
+    }
+    yield put(setError(protocolData.err.statusText))
+  } catch (err) {
+    yield put(setError(err.statusText))
+  }
+
+  try {
+    const sponsorList = yield call(httpCall, { url: sponsorUrl, method: "GET" });
+    const indicationList = yield call(httpCall, {
+      url: indicationUrl,
+      method: "GET",
+    });
+    if (sponsorList.success && indicationList.success) {
+      let actualIndicationList = indicationList.data.map((item) => {
+        let temp = Object.assign({}, item);
+        temp.label = item.indication_description;
+        return temp;
+      });
+      let actualSponsorList = sponsorList.data.map((item) => {
+        let temp = Object.assign({}, item);
+        temp.label = item.sponsor_name;
+        return temp;
+      });
+      console.log("sponsorList :", actualIndicationList, actualSponsorList);
+      yield put(getSponsor(actualSponsorList));
+      yield put(getIndication(actualIndicationList));
+    }
+    yield put(setError(sponsorList.err.statusText))
+
+  } catch(err){
+    yield put(setError(err.statusText))
+  }
+}
+function* postAddProtocol(postData) {
+  const { payload: data } = postData;
+  const postUrl = `${BASE_URL}/pd/api/v1/documents/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}`;
+  var bodyFormData = new FormData();
+  bodyFormData.append("file",data.uploadFile[0]);
+  try {
+    const postResponse = yield call(httpCall, {url:postUrl, method:'POST', data:bodyFormData,  headers: {'Content-Type': 'multipart/form-data' }})
+    
+    if (postResponse.success) {
+      console.log('postResponse :', postResponse);
+    }
+    yield put(setError(postResponse.err.statusText))
+
+  } catch(err) {
+    yield put(setError(err.statusText))
+  }
+}
+
 function* watchDashboard() {
   yield takeEvery("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
   yield takeEvery("CHECK_COMPARE_SAGA", compareSelectedAsyn);
   yield takeEvery("GET_RECENT_SEARCH_DATA", recentSearchAsyn);
+  yield takeEvery("GET_SPONSOR_ADDPROTCOL_SAGA", addProtocolSponsor);
+  yield takeEvery("POST_ADDPROTOCOL_DATA", postAddProtocol);
 }
 
 export default function* dashboardSaga() {

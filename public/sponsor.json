@@ -1,0 +1,83 @@
+{
+  "sponsor": [
+    {
+      "label": "Afghanistan",
+      "id": 122,
+      "value": "AFG"
+    },
+    {
+      "label": "Aland Islands",
+      "id": 123,
+      "value": "AI"
+    }
+  ],
+  "autoComplete": [
+    {
+      "title": "Afghanistan",
+      "id": 122,
+      "value": "AFG"
+    },
+    {
+      "title": "Aland Islands",
+      "id": 123,
+      "value": "AI"
+    }
+  ],
+  "amendmentNumber": [
+    {
+      "label": "Y",
+      "value": "Yes"
+    },
+    {
+      "label": "N",
+      "value": "No"
+    }
+  ],
+  "documentStatus": [
+    {
+      "label": "Draft",
+      "value": "draft"
+    },
+    {
+      "label": "Approved Final",
+      "value": "final"
+    }
+  ],
+  "countries": [
+    { "label": "Afghanistan", "id": 122, "value": "AFG" },
+    { "label": "Aland Islands", "id": 122, "value": "AFG"},
+    { "label": "Albania", "id": 122, "value": "AFG" },
+    { "label": "Algeria", "id": 122, "value": "AFG" },
+    { "label": "American Samoa", "id": 122, "value": "AFG" },
+    { "label": "Andorra", "id": 122, "value": "AFG" },
+    { "label": "Angola", "id": 122, "value": "AFG" },
+    { "label": "Anguilla", "id": 122, "value": "AFG" },
+    { "label": "Antarctica", "id": 122, "value": "AFG" },
+    { "label": "Antigua and Barbuda", "id": 122, "value": "AFG" },
+    { "label": "Argentina", "id": 122, "value": "AFG" },
+    { "label": "Armenia", "id": 122, "value": "AFG" },
+    { "label": "Aruba", "id": 122, "value": "AFG" },
+    { "label": "Australia", "id": 122, "value": "AFG" },
+    { "label": "Austria", "id": 122, "value": "AFG" },
+    { "label": "Azerbaijan", "id": 122, "value": "AFG" },
+    { "label": "Bahamas", "id": 122, "value": "AFG" },
+    { "label": "Bahrain", "id": 122, "value": "AFG" },
+    { "label": "Bangladesh", "id": 122, "value": "AFG" },
+    { "label": "Barbados", "id": 122, "value": "AFG" },
+    { "label": "Belarus", "id": 122, "value": "AFG" },
+    { "label": "Belgium", "id": 122, "value": "AFG" },
+    { "label": "Belize", "id": 122, "value": "AFG" },
+    { "label": "Benin", "id": 122, "value": "AFG" },
+    { "label": "Bermuda", "id": 122, "value": "AFG" },
+    { "label": "Bhutan", "id": 122, "value": "AFG" },
+    { "label": "Bolivia, Plurinational State of", "id": 122, "value": "AFG" },
+    { "label": "Bonaire, Sint Eustatius and Saba", "id": 122, "value": "AFG" },
+    { "label": "Bosnia and Herzegovina", "id": 122, "value": "AFG" },
+    { "label": "Botswana", "id": 122, "value": "AFG" },
+    { "label": "Bouvet Island", "id": 122, "value": "AFG" },
+    { "label": "Brazil", "id": 125, "value": "AFG" },
+    { "label": "British Indian Ocean Territory", "id": 124, "value": "AFG" },
+    { "label": "Brunei Darussalam", "id": 123, "value": "AFG"},
+    { "label": "Zele", "id": 143, "value": "ZE"} 
+  ]
+}

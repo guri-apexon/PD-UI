@@ -4,7 +4,7 @@ import _ from "lodash";
 import Grid from "apollo-react/components/Grid";
 import Button from "apollo-react/components/Button";
 import { protocolCompare } from "../Dashboard/dashboardSlice";
-import AddProtocol from "./AddProtocol";
+import AddProtocol from "./AddProtocol/AddProtocol";
 import ProtocolTable from "./ProtocolTable";
 import DashboardSearch from "./DashboardSearch";
 
@@ -23,15 +23,18 @@ const Dashboard = () => {
   const handleOpen = (variant) => {
     let deeptemp = _.cloneDeep(state);
     deeptemp[variant] = true;
+    setState(deeptemp)
   };
 
   const handleClose = (variant) => {
     let deeptemp = _.cloneDeep(state);
     deeptemp[variant] = false;
+    setState(deeptemp)
   };
   const handleSave = (variant) => {
     let deeptemp = _.cloneDeep(state);
     deeptemp[variant] = false;
+    setState(deeptemp)
   };
 
   return (
