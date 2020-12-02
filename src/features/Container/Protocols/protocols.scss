@@ -1,6 +1,110 @@
-.protocols{
-    margin-top: 56px;
-    h1{
-        color: aquamarine;;
+.protocols {
+  // margin-top: 70px;
+  padding-left: 20px;
+  max-width: 1140px;
+  margin: 70px auto;
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+  h2.header {
+    color: #333;
+    margin-top: 10px;
+    margin-left: 9px;
+  }
+  .tab-column {
+    display: flex;
+    .overview {
+      margin-left: 9px;
+      margin-top: 10px;
+      width: 100%;
+      .Tab-root-232 {
+        font-size: 14px;
+        margin-right: 0;
+        padding: 6px 14px;
+        border: 1px solid #c3c3c3;
+        min-height: 10px;
+        opacity: 0.5;
+      }
+      .MuiTab-textColorInherit.Mui-selected{
+        opacity: 1;
+      }
+      .MuiTabs-indicator {
+        display: none;
+      }
+      .MuiTabs-root::before {
+        border: none;
+      }
+      .tab-container {
+        display: flex;
+        flex-direction: row;
+        margin-top: 0px;
+      }
+      .tab-card {
+        flex: 3;
+        // border: 1px solid #c3c3c3;
+
+        height: max-content;
+        .protocol-title div:first-child {
+          font-size: 14px;
+          margin-top: 10px;
+        }
+        .protocol-title div:last-child {
+          font-size: 12px;
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+        .card-header {
+          font-size: 16px;
+          margin: 0;
+        }
+        .data-container {
+          display: flex;
+          flex-direction: row;
+          margin-top: 15px;
+          .column-6-12 {
+            flex: 1;
+          }
+          .row-item {
+            display: flex;
+            font-size: 12px;
+            margin-bottom: 8px;
+            label {
+              flex: 1;
+            }
+            span {
+              flex: 1;
+            }
+          }
+        }
+      }
+      .chart-column {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        // padding: 10px 20px;
+        // border: 1px solid #c3c3c3;
+        margin-left: 10px;
+        .chart-title{
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .recharts-wrapper {
+          height: 180px !important;
+          width: 180px !important;
+
+          .recharts-surface {
+            height: 180px !important;
+            width: 180px !important;
+          }
+        }
+      }
     }
+  }
 }
