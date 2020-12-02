@@ -11,6 +11,7 @@
     [class^="MuiFormLabel-asterisk-"] {
       font-size: 16px;
     }
+    
     .a-MuiInputBase-inputMarginDense {
       font-size: 16px;
     }
@@ -19,8 +20,13 @@
       padding: 24px 24px 12px 24px;
       border-bottom: 1px solid #d9d9d9;
     }
+    .MuiDialogContent-root {
+        padding: 16px 24px 24px;
+        
+    }
     .MuiDialog-container {
       top: 22px;
+     
     }
     .MuiDialog-paperWidthSm {
       max-width: 700px;
@@ -34,7 +40,7 @@
       border: none;
     }
     .autocomplete-class {
-      margin-top: 16px;
+      margin-top: 0px;
       margin-bottom: 8px;
       .a-MuiInputBase-root.Mui-error input[aria-invalid="true"] {
         border: none !important;
@@ -79,6 +85,9 @@
       bottom: 2px;    
       position: relative;
       font-size: 16px;
+    }
+    [class^="MuiFormControl-root-"] {
+        margin-top:0px;
     }
   }
   
