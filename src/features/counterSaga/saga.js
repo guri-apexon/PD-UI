@@ -7,9 +7,7 @@ const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
 function* incrementAsync(data) {
   yield delay(1000)
-  console.log('after delay saga')
   yield put(incrementByAmount(data.payload))
-  console.log('after increment saga')
 }
 
 function* getUser() {

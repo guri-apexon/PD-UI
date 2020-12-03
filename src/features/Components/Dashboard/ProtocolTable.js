@@ -1,3 +1,5 @@
+import _ from "lodash";
+import React, { useState, useEffect } from "react";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Clock from "apollo-react-icons/Clock";
@@ -5,22 +7,12 @@ import Upload from "apollo-react-icons/Upload";
 import StatusCheck from "apollo-react-icons/StatusCheck";
 import StatusExclamation from "apollo-react-icons/StatusExclamation";
 import Check from "apollo-react-icons/Check";
-import _ from "lodash";
-import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-// import Link from "apollo-react/components/Link";
 import Checkbox from "apollo-react/components/Checkbox";
-import { neutral7, neutral8 } from "apollo-react/colors";
-import DatePicker from "apollo-react/components/DatePickerV2";
+import { neutral8 } from "apollo-react/colors";
 import IconButton from "apollo-react/components/IconButton";
-import MenuItem from "apollo-react/components/MenuItem";
-import Select from "apollo-react/components/Select";
-import Table, {
-  compareNumbers,
-  compareStrings,
-} from "apollo-react/components/Table";
-// import TextField from "apollo-react/components/TextField";
+import Table, { compareStrings } from "apollo-react/components/Table";
 import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
 
@@ -234,7 +226,9 @@ const ExpandableComponent = ({ row }) => {
           {"Source:"}
         </Typography>
         <Typography style={{ fontWeight: 800 }} variant="body2">
-        <a href={row.filePath} target="_blank">{row.fileName}</a>
+          <a href={row.filePath} target="_blank">
+            {row.fileName}
+          </a>
         </Typography>
       </div>
     </div>
@@ -255,13 +249,6 @@ const ProtocolTable = ({ initialRows }) => {
     );
   };
 
-  // const newRows = initialRows.map((row, i) => ({
-  //   ...row,
-  //   description: `${row.name} is an amazing ${row.dept}`,
-  //   birthday: moment(row.hireDate).subtract(23, "years"),
-  //   skillLevel: 3,
-  // }));
-
   const handleToggleRow = (protocolId) => {
     setExpandedRows((expandedRows) =>
       expandedRows.indexOf(protocolId) >= 0
@@ -271,7 +258,6 @@ const ProtocolTable = ({ initialRows }) => {
   };
 
   useEffect(() => {
-    console.log("selectedRows", selectedRows);
     dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
   }, [selectedRows]);
 

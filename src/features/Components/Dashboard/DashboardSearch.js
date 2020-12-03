@@ -1,4 +1,3 @@
-// import Card from 'apollo-react/components/Card';
 import { useHistory } from "react-router-dom";
 import Search from "apollo-react/components/Search";
 import Grid from "apollo-react/components/Grid";

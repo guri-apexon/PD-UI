@@ -10,7 +10,6 @@ function DashboardSearch() {
   }, []);
   return (
     <div style={{ boxShadow: "0 2px 4px 0 rgba(0,0,0,0.2)", padding: "15px" }}>
-      {/* {error} */}
       <DashboardSearchComp recent={recentSearchesData} saved={recentSearchesData}/>
     </div>
   );
