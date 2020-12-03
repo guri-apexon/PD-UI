@@ -103,3 +103,6 @@ export const amendmentNumber=[
     value: "No"
   }
 ];
+export const emptyAutoObj= {
+  label:''
+}

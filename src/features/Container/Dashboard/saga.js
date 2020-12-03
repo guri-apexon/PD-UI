@@ -1,6 +1,17 @@
 import { takeEvery, all, call, put } from "redux-saga/effects";
-import BASE_URL,{ httpCall, BASE_URL_8000 } from "../../../utils/api";
-import { getProtocols, setError, setCompareSelected, getRecentSearches, getSponsor, getIndication, getProtocolData } from "./dashboardSlice";
+import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import {
+  getProtocols,
+  setError,
+  setCompareSelected,
+  getRecentSearches,
+  getSponsor,
+  getIndication,
+  getProtocolData,
+  setAddprotocolError,
+  setAddProtocolModal,
+  setLoading
+} from "./dashboardSlice";
 function* protocolAsyn() {
   const url = "./rows.json";
   const config = {
@@ -44,8 +55,6 @@ function* recentSearchAsyn() {
   }
 }
 
-
-
 function* addProtocolSponsor() {
   const url = "./sponsor.json";
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
@@ -57,13 +66,16 @@ function* addProtocolSponsor() {
     if (protocolData.success) {
       yield put(getProtocolData(protocolData.data));
     }
-    yield put(setError(protocolData.err.statusText))
+    yield put(setError(protocolData.err.statusText));
   } catch (err) {
-    yield put(setError(err.statusText))
+    yield put(setError(err.statusText));
   }
 
   try {
-    const sponsorList = yield call(httpCall, { url: sponsorUrl, method: "GET" });
+    const sponsorList = yield call(httpCall, {
+      url: sponsorUrl,
+      method: "GET",
+    });
     const indicationList = yield call(httpCall, {
       url: indicationUrl,
       method: "GET",
@@ -82,29 +94,43 @@ function* addProtocolSponsor() {
       console.log("sponsorList :", actualIndicationList, actualSponsorList);
       yield put(getSponsor(actualSponsorList));
       yield put(getIndication(actualIndicationList));
+      yield put(setLoading(false))
+    } else {
+      
+      yield put(setError(sponsorList.err.statusText));
     }
-    yield put(setError(sponsorList.err.statusText))
-
-  } catch(err){
-    yield put(setError(err.statusText))
+  } catch (err) {
+    yield put(setError(err.statusText));
   }
 }
 function* postAddProtocol(postData) {
   const { payload: data } = postData;
   const postUrl = `${BASE_URL}/pd/api/v1/documents/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}`;
   var bodyFormData = new FormData();
-  bodyFormData.append("file",data.uploadFile[0]);
+  bodyFormData.append("file", data.uploadFile[0]);
   try {
-    const postResponse = yield call(httpCall, {url:postUrl, method:'POST', data:bodyFormData,  headers: {'Content-Type': 'multipart/form-data' }})
-    
-    if (postResponse.success) {
-      console.log('postResponse :', postResponse);
-    }
-    yield put(setError(postResponse.err.statusText))
+    const postResponse = yield call(httpCall, {
+      url: postUrl,
+      method: "POST",
+      data: bodyFormData,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-  } catch(err) {
-    yield put(setError(err.statusText))
+    console.log("postResponseww :", postResponse);
+    if (postResponse.success) {
+      yield put(setAddProtocolModal(false));
+    } else {
+      yield put(setAddProtocolModal(true));
+      console.log("postResponsefailed :", postResponse.err);
+      yield put(setAddprotocolError(postResponse.err.statusText));
+    }
+  } catch (err) {
+    yield put(setAddprotocolError(err.statusText));
   }
+}
+
+function* toggleAddProtocol(data) {
+  yield put(setAddProtocolModal(data.payload));
 }
 
 function* watchDashboard() {
@@ -113,6 +139,7 @@ function* watchDashboard() {
   yield takeEvery("GET_RECENT_SEARCH_DATA", recentSearchAsyn);
   yield takeEvery("GET_SPONSOR_ADDPROTCOL_SAGA", addProtocolSponsor);
   yield takeEvery("POST_ADDPROTOCOL_DATA", postAddProtocol);
+  yield takeEvery("TOGGLE_ADDPROTOCOL_MODAL", toggleAddProtocol);
 }
 
 export default function* dashboardSaga() {
