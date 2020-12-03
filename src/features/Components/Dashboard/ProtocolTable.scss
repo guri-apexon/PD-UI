@@ -1,9 +1,50 @@
-
+#protocol-table {
   .table-selection {
     width: 50%;
     float: left;
   }
 
-  a {
+  a:-webkit-any-link {
     text-decoration: none;
   }
+  [class^="MuiTableCell-root-"]:last-child {
+    max-width: 60px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .dashboard-search-parent {
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    padding: 15px;
+  }
+
+  .fw-8 {
+    font-weight: 800;
+  }
+
+  .extended-data {
+    margin-left: 32;
+    width: 20%;
+  }
+
+  .expanded-comp {
+    display: flex;
+    padding: 8px 0px 8px 8px;
+    background-color: white;
+    margin-left: 3%;
+  }
+}
+
+.dashboard-search-parent {
+  .search-list-ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .search-list-li {
+    padding-bottom: 10px;
+  }
+  .search-list-li > a {
+    text-decoration: none;
+  }
+}

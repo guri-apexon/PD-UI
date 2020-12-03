@@ -161,14 +161,7 @@ const columns = [
 
 const ExpandableComponent = ({ row }) => {
   return (
-    <div
-      style={{
-        display: "flex",
-        padding: "8px 0px 8px 8px",
-        backgroundColor: "white",
-        marginLeft: "3%",
-      }}
-    >
+    <div className="expanded-comp">
       <div style={{ width: "10%" }}>
         <Typography
           style={{
@@ -180,11 +173,11 @@ const ExpandableComponent = ({ row }) => {
         >
           {"Phase:"}
         </Typography>
-        <Typography style={{ fontWeight: 800 }} variant="body2">
+        <Typography className="fw-8" variant="body2">
           {row.phase}
         </Typography>
       </div>
-      <div style={{ marginLeft: 32, width: "20%" }}>
+      <div className="extended-data">
         <Typography
           style={{
             fontWeight: 500,
@@ -195,11 +188,11 @@ const ExpandableComponent = ({ row }) => {
         >
           {"Indication:"}
         </Typography>
-        <Typography style={{ fontWeight: 800 }} variant="body2">
+        <Typography className="fw-8" variant="body2">
           {row.indication}
         </Typography>
       </div>
-      <div style={{ marginLeft: 32, width: "20%" }}>
+      <div className="extended-data">
         <Typography
           style={{
             fontWeight: 500,
@@ -210,11 +203,11 @@ const ExpandableComponent = ({ row }) => {
         >
           {"Document Status:"}
         </Typography>
-        <Typography style={{ fontWeight: 800 }} variant="body2">
+        <Typography className="fw-8" variant="body2">
           {row.documentStatus}
         </Typography>
       </div>
-      <div style={{ marginLeft: 32, width: "20%" }}>
+      <div className="extended-data">
         <Typography
           style={{
             fontWeight: 500,
@@ -225,7 +218,7 @@ const ExpandableComponent = ({ row }) => {
         >
           {"Source:"}
         </Typography>
-        <Typography style={{ fontWeight: 800 }} variant="body2">
+        <Typography className="fw-8" variant="body2">
           <a href={row.filePath} target="_blank">
             {row.fileName}
           </a>

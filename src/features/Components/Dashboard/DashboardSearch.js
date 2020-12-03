@@ -4,9 +4,9 @@ import Grid from "apollo-react/components/Grid";
 import { Link } from "react-router-dom";
 
 function DashboardSearch({ recent, saved }) {
-    let history = useHistory();
+  let history = useHistory();
   return (
-    <>
+    <div className='dashboard-search-parent'>
       <h3>Search</h3>
       <Grid container spacing={2}>
         <Grid item xs={6} style={{ paddingLeft: "3em", paddingRight: "3em" }}>
@@ -14,17 +14,17 @@ function DashboardSearch({ recent, saved }) {
             placeholder="Protocol Number, Indication, Key word, etc"
             fullWidth
             onKeyPress={(e) => {
-                if(e.key === 'Enter'){
-                    history.push(`/search/key=${e.target.value}`)
-                }
+              if (e.key === "Enter") {
+                history.push(`/search/key=${e.target.value}`);
+              }
             }}
           />
           <div>
             <h3>Recent Searches</h3>
             {recent && recent.length > 0 ? (
-              <ul style={{ listStyleType: "none", padding: 0 }}>
+              <ul className='search-list-ul'>
                 {recent.map((item) => (
-                  <li key={item.searchId} style={{ paddingBottom: 10 }}>
+                  <li key={item.searchId} className='search-list-li'>
                     <Link to={`/search?key=${item.searchName}`}>
                       {item.searchName}
                     </Link>
@@ -49,9 +49,9 @@ function DashboardSearch({ recent, saved }) {
           <div>
             <h3>Saved Searches</h3>
             {saved && saved.length > 0 ? (
-              <ul style={{ listStyleType: "none", padding: 0 }}>
+              <ul className='search-list-ul'>
                 {saved.map((item) => (
-                  <li key={item.searchId} style={{ paddingBottom: 10 }}>
+                  <li key={item.searchId} className='search-list-li'>
                     <Link to={`/search?key=${item.searchName}`}>
                       {item.searchName}
                     </Link>
@@ -64,7 +64,7 @@ function DashboardSearch({ recent, saved }) {
           </div>
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 }
 
