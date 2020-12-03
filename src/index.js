@@ -1,24 +1,23 @@
-import 'react-app-polyfill/ie11';
-import 'react-app-polyfill/stable';
-import React from 'react';
-import ReactDOM from 'react-dom';
+import "react-app-polyfill/ie11";
+import "react-app-polyfill/stable";
+import React from "react";
+import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from 'react-redux';
-import './index.css';
-import App from './App';
-import store from './store/store';
-import * as serviceWorker from './serviceWorker';
-
+import { Provider } from "react-redux";
+import "./index.css";
+import App from "./App";
+import store from "./store/store";
+import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
+    <Provider store={store}>
+      <BrowserRouter>
         <App />
-      </Provider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want your app to work offline and load faster, you can change
