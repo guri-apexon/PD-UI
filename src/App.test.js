@@ -1,23 +1,21 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import { render, fireEvent,waitFor } from '@testing-library/react';
-import { useHistory } from "react-router-dom";
-import NavigationBar from 'apollo-react/components/NavigationBar';
-import { Provider } from 'react-redux';
-import store from './store/store';
-import App from './App';
+import { render, fireEvent, waitFor } from "@testing-library/react";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import App from "./App";
 
-test('renders learn react link', async () => {
+test("renders learn react link", async () => {
   const { getByText, debug } = render(
-    <BrowserRouter>
-      <Provider store={store}>
+    <Provider store={store}>
+      <BrowserRouter>
         <App />
-      </Provider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
   );
-    expect(getByText(/Dashboard/i)).toBeInTheDocument();
-    expect(getByText(/protocol/i)).toBeInTheDocument();
-    expect(getByText(/search/i)).toBeInTheDocument();
-    fireEvent.click(getByText(/Dashboard/i));
-    // await waitFor();
+  expect(getByText(/Dashboard/i)).toBeInTheDocument();
+  expect(getByText(/protocol/i)).toBeInTheDocument();
+  expect(getByText(/search/i)).toBeInTheDocument();
+  fireEvent.click(getByText(/Dashboard/i));
+  // await waitFor();
 });

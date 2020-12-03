@@ -6,12 +6,19 @@ import Grid from "apollo-react/components/Grid";
 import AutocompleteV2 from "apollo-react/components/AutocompleteV2";
 import CustomFileUpload from "./CustomFileUpload";
 import Typography from "apollo-react/components/Typography";
+import Loader from 'apollo-react/components/Loader';
 import { useDispatch, useSelector } from "react-redux";
 import { dashboard } from "../dashboardSlice";
 import _ from "lodash";
-import { initialFormErrorValues, initialFormValues, documentStatusList, amendmentNumber } from "./constants";
+import {
+  initialFormErrorValues,
+  initialFormValues,
+  documentStatusList,
+  amendmentNumber,
+  emptyAutoObj
+} from "./constants";
 import Plus from "apollo-react-icons/Plus";
-const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
+const AddProtocol = ({ handleClose, handleOpen }) => {
   let dropdownFocus = "";
   const dispatch = useDispatch();
   const dashboardData = useSelector(dashboard);
@@ -142,7 +149,9 @@ const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
         case "Textbox":
         case "File":
           if (
-            (tempValues[field] && tempValues[field].length > 0) ||
+            (tempValues[field] &&
+              tempValues[field].length > 0 &&
+              !tempError[field].error) ||
             !tempError[field].isRequired
           ) {
             tempError[field].error = false;
@@ -174,7 +183,6 @@ const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
     }
     setFormErrorValues(tempError);
     if (!errorExist) {
-      handleSave("custom");
       sendPostData();
     }
   };
@@ -197,30 +205,42 @@ const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
       created_on: new Date().toISOString(),
       modified_by: "User",
       modified_on: new Date().toISOString(),
-      sponsor: tempFormValues && tempFormValues.sponsor && tempFormValues.sponsor.sponsor_name?tempFormValues.sponsor_name:'',
-      amendmentNumber: tempFormValues && tempFormValues.amendmentNumber && tempFormValues.amendmentNumber.value,
-      documentStatus: tempFormValues.documentStatus && tempFormValues.documentStatus.value,
+      sponsor:
+        tempFormValues &&
+        tempFormValues.sponsor &&
+        tempFormValues.sponsor.sponsor_name
+          ? tempFormValues.sponsor_name
+          : "",
+      amendmentNumber:
+        tempFormValues &&
+        tempFormValues.amendmentNumber &&
+        tempFormValues.amendmentNumber.value,
+      documentStatus:
+        tempFormValues.documentStatus && tempFormValues.documentStatus.value,
       projectID: tempFormValues.projectID,
       moleculeDevice: tempFormValues.moleculeDevice,
-      uploadFile: tempFormValues.uploadFile ? tempFormValues.uploadFile :[]
+      uploadFile: tempFormValues.uploadFile ? tempFormValues.uploadFile : [],
     };
-    dispatch({type:'POST_ADDPROTOCOL_DATA', payload: postData})
+    dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
+    // if(dashboardData && )
   };
+  console.log("dashboardData :", dashboardData);
   return (
+<>
+    {dashboardData && dashboardData.isLoading ?  <Loader /> : (
     <div className="add-protocol">
-      <div className='add-protocol-button'>
-      <Button
-        variant="primary"
-        onClick={() => onModalOpen("custom")}
-        icon={Plus}
+      <div className="add-protocol-button">
+        <Button
+          variant="primary"
+          onClick={() => onModalOpen("custom")}
+          icon={Plus}
         >
-        {"Add Protocol to Library"}
-      </Button>
+          {"Add Protocol to Library"}
+        </Button>
       </div>
       <Modal
         variant="default"
-        open={state.custom}
-      
+        open={dashboardData && dashboardData.addProtocolModal}
         onClose={() => onModalClose()}
         title="Add Protocol to Library"
         buttonProps={[{}, { label: "Save", onClick: handleSaveForm }]}
@@ -250,7 +270,7 @@ const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
                 placeholder="Optional hint text…"
                 source={amendmentNumber}
                 fullWidth
-                value={formValues.amendmentNumber && formValues.amendmentNumber}
+                value={formValues.amendmentNumber && formValues.amendmentNumber ? formValues.amendmentNumber : emptyAutoObj}
                 helperText={formErrorValues.amendmentNumber.errorMessage}
                 error={formErrorValues.amendmentNumber.error}
                 required={formErrorValues.amendmentNumber.isRequired}
@@ -305,7 +325,7 @@ const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
                   dashboardData.addProtocolData.sponsor
                 }
                 fullWidth
-                value={formValues.sponsor && formValues.sponsor}
+                value={formValues.sponsor && formValues.sponsor ? formValues.sponsor : emptyAutoObj}
                 helperText={formErrorValues.sponsor.errorMessage}
                 error={formErrorValues.sponsor.error}
                 required={formErrorValues.sponsor.isRequired}
@@ -327,7 +347,7 @@ const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
                 placeholder="Optional hint text…"
                 source={documentStatusList}
                 fullWidth
-                value={formValues.documentStatus && formValues.documentStatus}
+                value={formValues.documentStatus && formValues.documentStatus ? formValues.documentStatus : emptyAutoObj}
                 helperText={formErrorValues.documentStatus.errorMessage}
                 error={formErrorValues.documentStatus.error}
                 required={formErrorValues.documentStatus.isRequired}
@@ -352,7 +372,7 @@ const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
                   dashboardData.addProtocolData.indication
                 }
                 fullWidth
-                value={formValues.indication && formValues.indication}
+                value={formValues.indication && formValues.indication ? formValues.indication : emptyAutoObj }
                 helperText={formErrorValues.indication.errorMessage}
                 error={formErrorValues.indication.error}
                 required={formErrorValues.indication.isRequired}
@@ -403,10 +423,16 @@ const AddProtocol = ({ state, handleClose, handleOpen, handleSave }) => {
               formErrorValues.uploadFile.errorMessage === "Required" && (
                 <span className="file-error-message">Required</span>
               )}
+            {dashboardData && dashboardData.addProtocolDataError && (
+              <span className="file-error-message">
+                API Error
+              </span>
+            )}
           </Grid>
         </Grid>
       </Modal>
-    </div>
+    </div>)}
+  </>
   );
 };
 
