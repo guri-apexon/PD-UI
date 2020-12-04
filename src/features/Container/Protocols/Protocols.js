@@ -13,6 +13,7 @@ import ProtocolOverview from './ProtocolOverview'
 import ProtocolView from './ProtocolView'
 import AmendmentCompare from './AmendmentCompare'
 import Documents from './Documents'
+import ProtocolTable from "../Dashboard/ProtocolTable";
 
 //------------------- Third Party -----------
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
@@ -131,7 +132,7 @@ const Protocols = (props) => {
   } else {
     return (
       <div className="protocols">
-        <h1>Table To Come</h1>
+        <ProtocolTable />
       </div>
     );
   }
