@@ -1,0 +1,54 @@
+[
+  {
+    "uploadStatus": "uploadInProgress",
+    "protocolId": 8473
+  },
+  {
+    "uploadStatus": "uploadComplete",
+    "protocolId": 8474
+  },
+  {
+    "uploadStatus": "extractionInProgress",
+    "protocolId": 8475
+  },
+  {
+    "uploadStatus": "digitizationComplete",
+    "protocolId": 8476
+  },
+  {
+    "uploadStatus": "extractionError",
+    "protocolId": 8477
+  },
+  {
+    "uploadStatus": "final",
+    "protocolId": 8478
+  },
+  {
+    "uploadStatus": "final",
+    "protocolId": 8479
+  },
+  {
+    "uploadStatus": "final",
+    "protocolId": 8480
+  },
+  {
+    "uploadStatus": "final",
+    "protocolId": 8481
+  },
+  {
+    "uploadStatus": "final",
+    "protocolId": 8482
+  },
+  {
+    "uploadStatus": "final",
+    "protocolId": 8483
+  },
+  {
+    "uploadStatus": "final",
+    "protocolId": 8484
+  },
+  {
+    "uploadStatus": "final",
+    "protocolId": 8485
+  }
+]

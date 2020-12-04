@@ -18,6 +18,14 @@
     {
       "searchName": "Brain Tumor",
       "searchId": 5
+    },
+    {
+      "searchName": "Angiocytima",
+      "searchId": 4
+    },
+    {
+      "searchName": "Brain Tumor",
+      "searchId": 5
     }
   ]
   

@@ -1,4 +1,5 @@
 import { takeEvery, all, call, put } from "redux-saga/effects";
+import _ from "lodash";
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getProtocols,
@@ -12,18 +13,35 @@ import {
   setAddProtocolModal,
   setLoading
 } from "./dashboardSlice";
+
+function customizer(objValue, srcValue) {
+    if (_.isArray(objValue)) {
+      return objValue.concat(srcValue);
+    }
+  }
+
 function* protocolAsyn() {
-  const url = "./rows.json";
-  const config = {
-    url,
+  const protocolUrl = "./rows.json";
+  const statusUrl = "./status.json";
+  const protocolConfig = {
+    url: protocolUrl,
+    method: "GET",
+  };
+  const statusConfig = {
+    url: statusUrl,
     method: "GET",
   };
   try {
-    const protocolData = yield call(httpCall, config);
-    if (protocolData.success) {
+    const protocolData = yield call(httpCall, protocolConfig);
+    const statusData = yield call(httpCall, statusConfig);
+    if (protocolData.success && statusData.success) {
+      const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
+      yield put(getProtocols(mergedData));
+    } else if (protocolData.success) {
       yield put(getProtocols(protocolData.data));
+    } else {
+      yield put(setError(protocolData.err.statusText));
     }
-    yield put(setError(protocolData.err.statusText));
   } catch (err) {
     yield put(setError(err.statusText));
   }
