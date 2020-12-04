@@ -2,6 +2,7 @@
   padding-left: 20px;
   max-width: 1140px;
   margin: 70px auto;
+
   .App {
     text-align: center;
   }
@@ -10,11 +11,32 @@
     height: 40vmin;
     pointer-events: none;
   }
-  .MuiFormControl-marginNormal{
+  .MuiFormControl-marginNormal {
     margin-top: 10px;
   }
-  .MuiIconButton-root{
+  // .Panel-toggleButton-246{
+  //   display: none;
+  // }
+  button[class*="Panel-toggleButton-"]{
     display: none;
+  }
+  // [class^="Panel-toggleButton"] {
+  //   background: #ffff00;
+  // }
+
+  // [class^="Panel-toggleButton"] {
+  //   display: none;
+  // }
+
+  .refine-search {
+    font-size: 13px;
+    margin-bottom: 5px;
+
+    a {
+      font-size: 13px;
+      color: #0557d5;
+      font-weight: 600;
+    }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -211,21 +233,22 @@
     padding: 10px;
     background: white;
     color: white;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 12px;
+    font-weight: 500;
   }
   .Collapsible__trigger::after {
-    font-family: "FontAwesome";
-    content: "\f107";
+    content: "+";
     position: absolute;
+    font-size: 22px;
     right: 10px;
-    top: 10px;
+    top: 0px;
     display: block;
     transition: transform 300ms;
+    color: #0557d5;
   }
 
   .Collapsible__trigger.is-open::after {
-    transform: rotateZ(180deg);
+    content: "-";
   }
 
   .Collapsible__trigger.is-disabled {
