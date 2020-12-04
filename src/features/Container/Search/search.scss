@@ -14,10 +14,18 @@
   .MuiFormControl-marginNormal {
     margin-top: 10px;
   }
+  .text-filter {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-bottom: 8px;
+    &:hover{
+      background-color: #ecf3ff;
+    }
+  }
   // .Panel-toggleButton-246{
   //   display: none;
   // }
-  button[class*="Panel-toggleButton-"]{
+  button[class*="Panel-toggleButton-"] {
     display: none;
   }
   // [class^="Panel-toggleButton"] {
@@ -27,6 +35,46 @@
   // [class^="Panel-toggleButton"] {
   //   display: none;
   // }
+  .accordion-start {
+    div[class*="MuiExpansionPanelSummary-root"] {
+      margin-left: 24px;
+      min-height: 30px;
+      div[class*="MuiExpansionPanelSummary-content"] {
+        // margin-left: 24px;
+        min-height: 30px;
+        p {
+          padding: 3px 0px;
+        }
+      }
+      div[class*="MuiExpansionPanelSummary-expandIcon"] {
+        height: 30px;
+        width: 30px;
+        top: 15px;
+      }
+    }
+    .search-inner-table {
+      margin-top: 10px;
+      table {
+        table-layout: fixed;
+      }
+      table > thead > tr {
+        height: 30px;
+      }
+      table > thead > tr th {
+        font-size: 13px;
+      }
+      table tbody > tr {
+        height: 30px !important;
+      }
+      table tbody > tr > td {
+        font-size: 13px;
+      }
+      table tbody > tr > td label > span > span > svg {
+        height: 18px;
+        width: 18px;
+      }
+    }
+  }
 
   .refine-search {
     font-size: 13px;
@@ -80,7 +128,9 @@
   .Multiline-block50h {
     width: 100%;
     text-align: left !important;
-    height: 50px !important;
+    // height: 50px !important;
+    height: 25px;
+    font-size: 13px;
   }
 
   .width70 {
@@ -181,9 +231,28 @@
   span.font12 {
     font-size: 12px;
   }
+  span.font13 {
+    font-size: 13px;
+  }
+  .ellipse {
+    text-overflow: ellipsis;
+    width: 60%;
+    overflow: hidden;
+    display: block;
+    white-space: nowrap;
+    font-weight: 600;
+    // width: auto;
+    font-size: 13px;
+  }
 
   span.blueText {
     color: #0557d5 !important;
+    font-size: 16px;
+    font-weight: 600;
+
+    strong {
+      text-transform: uppercase;
+    }
   }
 
   .width200px {
@@ -283,9 +352,20 @@
 
   div[class*="MuiFormGroup-root"]
     span[class*="MuiIconButton-label"]:first-child {
-    top: 8px;
+    top: 6px;
     font-family: Proxima Nova, Nunito Sans, sans-serif;
     font-size: 10px;
+    svg {
+      height: 18px;
+      width: 18px;
+    }
+    
+  }
+  span[class*="MuiRadio-colorPrimary"]{
+    top: 0;
+  }
+  span[class*="MuiFormControlLabel-label-"] {
+    font-size: 13px;
   }
 
   div[class*="Panel-container"] {
