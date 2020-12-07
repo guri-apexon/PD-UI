@@ -209,7 +209,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         tempFormValues &&
         tempFormValues.sponsor &&
         tempFormValues.sponsor.sponsor_name
-          ? tempFormValues.sponsor_name
+          ? tempFormValues.sponsor.sponsor_name
           : "",
       amendmentNumber:
         tempFormValues &&
