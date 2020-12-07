@@ -1,0 +1,10 @@
+.document-tab {
+    width: 100%;
+
+    [class^=Table-root-]{
+        height: 160px;
+    }
+    [class^=InternalTablePagination-toolbar-]{
+        display: none;
+    }
+}

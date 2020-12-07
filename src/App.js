@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.scss';
 import Routes from './Routes/routes';
 import NavigationBar from 'apollo-react/components/NavigationBar';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import SettingsIcon from 'apollo-react-icons/Cog';
 import HelpIcon from 'apollo-react-icons/Help';
 import UserIcon from 'apollo-react-icons/User';
@@ -10,7 +10,14 @@ import UserIcon from 'apollo-react-icons/User';
 function App () {
 
   let history = useHistory();
+  let location = useLocation();
   const [pathname, setPathname]= useState('/dashboard')
+
+  useEffect(()=>{
+    if(location && location.pathname){
+      setPathname(location.pathname)
+    }
+  }, [location]);
 
   const menuItems = [
     {
