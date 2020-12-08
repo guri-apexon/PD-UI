@@ -99,13 +99,13 @@ const Protocols = (props) => {
                     </Tabs>
                   </div>
                   <div style={{ marginTop: -20 }}>
-                    <Switch
+                   {value !== 3 && <Switch
                       label="Follow Protocol"
                       checked={follow}
                       onChange={handleChange}
                       size="small"
                       style={{ marginRight: 0 }}
-                    />
+                    />}
                   </div>
                 </div>
 

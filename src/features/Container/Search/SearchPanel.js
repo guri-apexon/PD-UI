@@ -7,7 +7,7 @@ import data from "./Data/row.data";
 import SearchIcon from "apollo-react-icons/Search";
 import Search from "apollo-react/components/Search";
 import Button from "apollo-react/components/Button";
-import CustomCard from "./CustomCard";
+import CustomCard from "./Customcards";
 import searchData from "./Data/search.metadata";
 import CollapseCard from "./CollapseCard";
 import Link from "apollo-react/components/Link";
@@ -19,13 +19,14 @@ export default class SearchPanel extends React.Component {
   }
 
   render() {
+    const { filterList, resultList } = this.props;
     const clearAllCheckbox = () => {
       console.log(this.state["searchValue"]);
       this.state["searchValue"] = [];
       this.setState({ searchValue: [] });
     };
 
-    let protocols = data.protocols.length;
+    let protocols = resultList.data && resultList.data.length;
     let maxRecordsPerPage = 2;
     let noOfProtocolsPerPages =
       protocols > 0
@@ -34,13 +35,14 @@ export default class SearchPanel extends React.Component {
           : protocols
         : 0;
 
+        console.log(resultList)
     return (
       <div id="searchPanel">
-        <Panel width="18%">
+        <Panel width="20%">
           <Typography variant="body2" gutterBottom>
             {
               <div className="width100 refine-search">
-                <span >Refine your Search</span>
+                <span>Refine your Search</span>
                 <div className="floatRight">
                   <Link onClick={clearAllCheckbox} size="small">
                     {" "}
@@ -51,7 +53,7 @@ export default class SearchPanel extends React.Component {
             }
           </Typography>
           <div>
-            {searchData.sections.map((section, index) => (
+            {filterList.map((section, index) => (
               <CollapseCard
                 state={this.state}
                 key={section.sectionId}
@@ -61,7 +63,7 @@ export default class SearchPanel extends React.Component {
             ))}
           </div>
         </Panel>
-        <Panel width="80%" hideButton>
+        <Panel width="78%" hideButton>
           <Typography variant="body1" gutterBottom>
             <div className="width100">
               <div className="width100 marginTop">
@@ -75,7 +77,7 @@ export default class SearchPanel extends React.Component {
                     <SearchIcon style={{ color: "#0557d5" }} size="small" />
                   </div>
                   <div id="chip"></div>
-                  {data.protocols.map((protocol) => (
+                  {resultList.success && resultList.data.map((protocol) => (
                     <div>
                       <CompositeAccordion data={protocol} />
                     </div>

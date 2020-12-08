@@ -8,6 +8,9 @@ import Typography from "apollo-react/components/Typography";
 import CheckboxGroup from "apollo-react/components/CheckboxGroup";
 import Checkbox from "apollo-react/components/Checkbox";
 
+import Radio from "apollo-react/components/Radio";
+import RadioGroup from "apollo-react/components/RadioGroup";
+
 import React from "react";
 
 const useStyles = makeStyles({
@@ -55,7 +58,7 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomCard = ({ state, section, index }) => {
+export const CheckboxCard = ({ state, section, index }) => {
   const [value, setValue] = React.useState([]);
 
   const handleChange = (e) => {
@@ -66,7 +69,6 @@ const CustomCard = ({ state, section, index }) => {
   const classes = useStyles();
   return (
     <Card
-      color="dark"
       className={classNames(classes.card, index === 0 && classes.cardHighlight)}
     >
       <CardContent>
@@ -90,4 +92,66 @@ const CustomCard = ({ state, section, index }) => {
   );
 };
 
-export default CustomCard;
+export const TextCard = ({ state, section, index }) => {
+  const [value, setValue] = React.useState([]);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    state["searchValue"] = e.target.value;
+  };
+
+  const classes = useStyles();
+  return (
+    <Card
+      color="dark"
+      className={classNames(classes.card, index === 0 && classes.cardHighlight)}
+    >
+      <CardContent>
+        <Typography className={classes.cardSubtitle} variant="caption">
+          <div>
+            {section.sectionContent.map((content, i) => (
+              <p className="text-filter" key={content.id} gutterBottom>
+                {content.title}
+              </p>
+            ))}
+          </div>
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const RadioCard = ({ state, section, index }) => {
+  const [value, setValue] = React.useState([]);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    state["searchValue"] = e.target.value;
+  };
+
+  const classes = useStyles();
+  return (
+    <Card
+      color="dark"
+      className={classNames(classes.card, index === 0 && classes.cardHighlight)}
+    >
+      <CardContent>
+        <Typography className={classes.cardSubtitle} variant="caption">
+          <div>
+            <RadioGroup value={state["searchValue"]} onChange={handleChange}>
+              {section.sectionContent.map((content, i) => (
+                <Radio
+                  id={section.sectionContent[i].id + "_" + i}
+                  key={i}
+                  value={section.sectionContent[i].id + "_" + i}
+                  label={content.title}
+                  size="small"
+                />
+              ))}
+            </RadioGroup>
+          </div>
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
