@@ -1,0 +1,550 @@
+{
+  "columns": "['content', 'type', 'subsection', 'font_info']",
+  "data": [
+    [
+      " 1  PROTOCOL SUMMARY",
+      "text",
+      [],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": "Heading1"
+      }
+    ],
+    [
+      " 1.1  Synopsis",
+      "text",
+      [],
+      {
+        "IsBold": false,
+        "font_size": 28,
+        "font_style": "Heading2"
+      }
+    ],
+    [
+      "Protocol Title:",
+      "text",
+      ["IsTitle"],
+      {
+        "IsBold": true,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "A Phase III Double-Blind, Randomised, Placebo-Controlled Study Assessing the Efficacy and Safety of Capivasertib + Abiraterone Versus Placebo + Abiraterone as",
+      "text",
+      ["IsTitle"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Treatment for Patients with De Novo Metastatic Hormone-Sensitive Prostate Cancer (mHSPC) Characterised by PTEN deficiency (CAPItello-281)",
+      "text",
+      ["IsTitle"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Short Title:",
+      "text",
+      ["IsShortTitle"],
+      {
+        "IsBold": true,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Capivasertib + Abiraterone as Treatment for Patients with Metastatic Hormone-Sensitive Prostate Cancer Characterised by PTEN deficiency.",
+      "text",
+      ["IsShortTitle"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Rationale:",
+      "text",
+      ["IsRationale"],
+      {
+        "IsBold": true,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "There is an important unmet medical need for treatments in the de novo mHSPC setting that are able to delay cancer progression and ultimately, death, particularly in patients whose tumours are characterised by PTEN deficiency.",
+      "text",
+      ["IsRationale"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Available nonclinical and clinical evidence suggests that the combined inhibition of serine/threonine specific protein kinase (AKT) and the androgen receptor (AR) axis may improve treatment outcomes in mHSPC.",
+      "text",
+      ["IsRationale"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "The purpose of this study is to determine the efficacy and safety of the combination of the AKT inhibitor capivasertib and the androgen biosynthesis inhibitor abiraterone combined with a steroid, given on a background of androgen deprivation therapy (ADT) in patients with newly diagnosed, previously untreated mHSPC and PTEN-deficient tumours.",
+      "text",
+      ["IsRationale"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      " Objectives and Endpoints",
+      "text",
+      ["IsObjectiveAndEndpoint"],
+      {
+        "IsBold": false,
+        "font_size": 24,
+        "font_style": "Heading3"
+      }
+    ],
+    [
+      "{\"1.0\":{\"4001.0\":\"Objectives\",\"4002.0\":\"Primary\",\"4003.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone relative to placebo + abiraterone by assessment of radiographic progression-free survival (rPFS) in patients with PTEN-deficient mHSPC.\",\"4004.0\":\"Key Secondary\",\"4005.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone relative to placebo + abiraterone by assessment of overall survival.\",\"4006.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone relative to placebo + abiraterone by assessment of time to start of first subsequent therapy or death (TFST).\",\"4007.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone relative to placebo + abiraterone by assessment of symptomatic skeletal event-free survival (SSE-FS).\"},\"2.0\":{\"4001.0\":\"Endpoints\",\"4002.0\":\"nan\",\"4003.0\":\"\\\\u2022  rPFS is defined as the time from randomisation to: 1) radiographic progression, as assessed by the investigator per RECIST version 1.1 (soft tissue) and\\\\/or PCWG3 criteria (bone), or 2) death due to any cause.\",\"4004.0\":\"nan\",\"4005.0\":\"\\\\u2022  Overall survival is the length of time from randomisation until the date of death due to any cause.\",\"4006.0\":\"\\\\u2022  TFST is defined as time from randomisation to the earlier of: the start date of the first subsequent anticancer therapy after discontinuation of randomised treatment (capivasertib\\\\/placebo), or death due to any cause.\",\"4007.0\":\"\\\\u2022  SSE-FS is defined as time from randomisation until any of the following:\"}}",
+      "table",
+      ["IsPrimaryObjective"],
+      {
+        "IsBold": true,
+        "font_size": 22,
+        "font_style": ""
+      }
+    ],
+    [
+      "{\"1.0\":{\"5001.0\":\"nan\",\"5002.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone relative to placebo + abiraterone by assessment of time to pain progression (TTPP).\",\"5003.0\":\"Other Secondary\",\"5004.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone relative to placebo + abiraterone by assessment of time to PSA progression.\",\"5005.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone relative to placebo + abiraterone by assessment of time to castration resistance (TTCR).\",\"5006.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone versus placebo + abiraterone on fatigue intensity (based on worst fatigue item), fatigue severity domain and fatigue interference domain assessed by the Brief Fatigue Inventory (BFI).\",\"5007.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone relative to placebo + abiraterone by assessment of overall pain severity and pain interference using the BPI-SF questionnaire.\",\"5008.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone versus placebo + abiraterone by assessment of disease related symptoms and HRQoL using the Functional Assessment of Cancer Therapy \\\\u2013 Prostate Cancer (FACT-P) questionnaire.\",\"5009.0\":\"nan\",\"5010.0\":\"\\\\u2022  To compare the effect of capivasertib + abiraterone relative to placebo + abiraterone by assessment of progression-free survival after next-line treatment (PFS2).\",\"5011.0\":\"\\\\u2022 To evaluate the PK of capivasertib in combination with abiraterone .\",\"5012.0\":\"nan\",\"5013.0\":\"S afety\",\"5014.0\":\"\\\\u2022  To assess the safety and tolerability of capivasertib + abiraterone as compared to placebo + abiraterone in patients with PTEN-deficient mHSPC.\",\"5015.0\":\"nan\",\"5016.0\":\"nan\",\"5017.0\":\"nan\",\"5018.0\":\"nan\",\"5019.0\":\"nan\",\"5020.0\":\"nan\",\"5021.0\":\"nan\",\"5022.0\":\"nan\",\"5023.0\":\"nan\",\"5024.0\":\"nan\",\"5025.0\":\"nan\",\"5026.0\":\"nan\",\"5027.0\":\"nan\",\"5028.0\":\"nan\"},\"2.0\":{\"5001.0\":\" Use of radiation therapy to prevent or relieve skeletal symptoms.   Occurrence of new symptomatic pathological bone fractures (vertebral or non-vertebral). Radiologic documentation is required. A pathological fracture, as determined by investigator, is defined as associated with low or no trauma and deemed to have occurred at a site of bone metastasis.  Occurrence of spinal cord compression. Radiologic documentation is required.  Orthopaedic surgical intervention for bone metastasis.   Death due to any cause.\",\"5002.0\":\"\\\\u2022  TTPP is defined as the time from randomisation to clinically meaningful pain progression based on a 2-point increase from baseline in the Brief Pain Inventory-Short Form (BPI-SF) Item 3 \\\\u2018worst pain in 24 hours\\\\u2019 score and\\\\/or initiation of\\\\/increase in opiate analgesic use.\",\"5003.0\":\"nan\",\"5004.0\":\"\\\\u2022  The time from randomisation to PSA progression, as determined by PCWG3 criteria.\",\"5005.0\":\" \\\\u2022  TTCR is defined as the time from randomisation to the first castration-resistant event (radiographic disease progression, PSA progression, or SSE), whichever occurs first, with castrate levels of testosterone (below 50 ng\\\\/dL).\",\"5006.0\":\"BFI endpoints may include: Time to deterioration in fatigue intensity (defined as a change \\\\u2265 2 points from baseline in worst fatigue item [Item 3] score) (TTDF). Time to deterioration in fatigue interference (defined as a change \\\\u2265 1.25 points from baseline in fatigue interference domain score) Change from baseline in fatigue severity and fatigue interference domain scores.\",\"5007.0\":\"\\\\u2022  BPI-SF: Change from baseline in pain severity and pain interference domain scores.\",\"5008.0\":\"FACT-P:  1  Time to deterioration in FACT-P scores (FACT-P total score, FACT-G total score, TOI, functional well-being, physical well-being, prostate cancer subscale, and FAPSI-6, respectively).\",\"5009.0\":\"2\",\"5010.0\":\"\\\\u2022\",\"5011.0\":\"\\\\u2022\",\"5012.0\":\"\\\\u2022\",\"5013.0\":\"nan\",\"5014.0\":\"\\\\u2022\",\"5015.0\":\"\\\\u2022\",\"5016.0\":\"nan\",\"5017.0\":\"nan\",\"5018.0\":\"nan\",\"5019.0\":\"nan\",\"5020.0\":\"nan\",\"5021.0\":\"nan\",\"5022.0\":\"nan\",\"5023.0\":\"nan\",\"5024.0\":\"nan\",\"5025.0\":\"nan\",\"5026.0\":\"nan\",\"5027.0\":\"\\\\u2022\",\"5028.0\":\"\\\\u2022\"},\"3.0\":{\"5001.0\":\" Use of radiation therapy to prevent or relieve skeletal symptoms.   Occurrence of new symptomatic pathological bone fractures (vertebral or non-vertebral). Radiologic documentation is required. A pathological fracture, as determined by investigator, is defined as associated with low or no trauma and deemed to have occurred at a site of bone metastasis.  Occurrence of spinal cord compression. Radiologic documentation is required.  Orthopaedic surgical intervention for bone metastasis.   Death due to any cause.\",\"5002.0\":\"\\\\u2022  TTPP is defined as the time from randomisation to clinically meaningful pain progression based on a 2-point increase from baseline in the Brief Pain Inventory-Short Form (BPI-SF) Item 3 \\\\u2018worst pain in 24 hours\\\\u2019 score and\\\\/or initiation of\\\\/increase in opiate analgesic use.\",\"5003.0\":null,\"5004.0\":\"\\\\u2022  The time from randomisation to PSA progression, as determined by PCWG3 criteria.\",\"5005.0\":\" \\\\u2022  TTCR is defined as the time from randomisation to the first castration-resistant event (radiographic disease progression, PSA progression, or SSE), whichever occurs first, with castrate levels of testosterone (below 50 ng\\\\/dL).\",\"5006.0\":\"BFI endpoints may include: Time to deterioration in fatigue intensity (defined as a change \\\\u2265 2 points from baseline in worst fatigue item [Item 3] score) (TTDF). Time to deterioration in fatigue interference (defined as a change \\\\u2265 1.25 points from baseline in fatigue interference domain score) Change from baseline in fatigue severity and fatigue interference domain scores.\",\"5007.0\":\"\\\\u2022  BPI-SF: Change from baseline in pain severity and pain interference domain scores.\",\"5008.0\":\"FACT-P:  1  Time to deterioration in FACT-P scores (FACT-P total score, FACT-G total score, TOI, functional well-being, physical well-being, prostate cancer subscale, and FAPSI-6, respectively).\",\"5009.0\":\"Change from baseline in FACT-P scores (FACT-P total score, FACT-G total score, TOI, functional well-being, physical well-being, prostate cancer subscale, and FAPSI-6, respectively).\",\"5010.0\":\"PFS2 is defined as time from randomisation until progression on next-line treatment, as clinical progression, PSA progression, or radiographic progression determined by RECIST version 1.1 (soft tissue) and\\\\/or PCWG3 criteria (bone), as assessed by the investigator, or death due to any cause.\",\"5011.0\":\"Plasma concentration of capivasertib pre-dose (C trough ) and post-dose (C 1h and C 4h ).\",\"5012.0\":\"Plasma PK parameters derived from a population PK model, as permitted by the data.\",\"5013.0\":\"nan\",\"5014.0\":\"Safety and tolerability will be evaluated in terms of AEs\\\\/SAEs, vital signs, clinical chemistry\\\\/ haematology\\\\/glucose metabolism parameters, and ECG parameters.\",\"5015.0\":\"Assessments related to AEs cover:  Occurrence\\\\/frequency\",\"5016.0\":\"nan\",\"5017.0\":\"nan\",\"5018.0\":\"nan\",\"5019.0\":\"nan\",\"5020.0\":\"nan\",\"5021.0\":\"nan\",\"5022.0\":\"nan\",\"5023.0\":\"nan\",\"5024.0\":\"nan\",\"5025.0\":\"nan\",\"5026.0\":\"nan\",\"5027.0\":\"Vital signs parameters include systolic and diastolic blood pressure, pulse, body temperature and weight.\",\"5028.0\":\"Assessments cover:  Observed value  Absolute and change from baseline values over time.\"},\"4.0\":{\"5001.0\":\" Use of radiation therapy to prevent or relieve skeletal symptoms.   Occurrence of new symptomatic pathological bone fractures (vertebral or non-vertebral). Radiologic documentation is required. A pathological fracture, as determined by investigator, is defined as associated with low or no trauma and deemed to have occurred at a site of bone metastasis.  Occurrence of spinal cord compression. Radiologic documentation is required.  Orthopaedic surgical intervention for bone metastasis.   Death due to any cause.\",\"5002.0\":\"\\\\u2022  TTPP is defined as the time from randomisation to clinically meaningful pain progression based on a 2-point increase from baseline in the Brief Pain Inventory-Short Form (BPI-SF) Item 3 \\\\u2018worst pain in 24 hours\\\\u2019 score and\\\\/or initiation of\\\\/increase in opiate analgesic use.\",\"5003.0\":null,\"5004.0\":\"\\\\u2022  The time from randomisation to PSA progression, as determined by PCWG3 criteria.\",\"5005.0\":\" \\\\u2022  TTCR is defined as the time from randomisation to the first castration-resistant event (radiographic disease progression, PSA progression, or SSE), whichever occurs first, with castrate levels of testosterone (below 50 ng\\\\/dL).\",\"5006.0\":\"BFI endpoints may include: Time to deterioration in fatigue intensity (defined as a change \\\\u2265 2 points from baseline in worst fatigue item [Item 3] score) (TTDF). Time to deterioration in fatigue interference (defined as a change \\\\u2265 1.25 points from baseline in fatigue interference domain score) Change from baseline in fatigue severity and fatigue interference domain scores.\",\"5007.0\":\"\\\\u2022  BPI-SF: Change from baseline in pain severity and pain interference domain scores.\",\"5008.0\":\"FACT-P:  1  Time to deterioration in FACT-P scores (FACT-P total score, FACT-G total score, TOI, functional well-being, physical well-being, prostate cancer subscale, and FAPSI-6, respectively).\",\"5009.0\":\"Change from baseline in FACT-P scores (FACT-P total score, FACT-G total score, TOI, functional well-being, physical well-being, prostate cancer subscale, and FAPSI-6, respectively).\",\"5010.0\":\"PFS2 is defined as time from randomisation until progression on next-line treatment, as clinical progression, PSA progression, or radiographic progression determined by RECIST version 1.1 (soft tissue) and\\\\/or PCWG3 criteria (bone), as assessed by the investigator, or death due to any cause.\",\"5011.0\":\"Plasma concentration of capivasertib pre-dose (C trough ) and post-dose (C 1h and C 4h ).\",\"5012.0\":\"Plasma PK parameters derived from a population PK model, as permitted by the data.\",\"5013.0\":null,\"5014.0\":\"Safety and tolerability will be evaluated in terms of AEs\\\\/SAEs, vital signs, clinical chemistry\\\\/ haematology\\\\/glucose metabolism parameters, and ECG parameters.\",\"5015.0\":\"Assessments related to AEs cover:  Occurrence\\\\/frequency\",\"5016.0\":\"Relationship to capivasertib and abiraterone as assessed by investigator\",\"5017.0\":\"CTCAE grade\",\"5018.0\":\"Seriousness\",\"5019.0\":\"Death\",\"5020.0\":\"AEs leading to discontinuation of capivasertib\\\\/placebo\",\"5021.0\":\"AEs leading to discontinuation of abiraterone\",\"5022.0\":\"AEs leading to dose interruption of capivasertib\\\\/placebo\",\"5023.0\":\"AEs leading to dose interruption of abiraterone\",\"5024.0\":\"AEs leading to dose reduction of capivasertib\\\\/placebo\",\"5025.0\":\"AEs of special interest\",\"5026.0\":\"Other significant AEs\",\"5027.0\":\"Vital signs parameters include systolic and diastolic blood pressure, pulse, body temperature and weight.\",\"5028.0\":\"Assessments cover:  Observed value  Absolute and change from baseline values over time.\"}}",
+      "table",
+      ["IsPrimaryObjective"],
+      {
+        "IsBold": false,
+        "font_size": 20,
+        "font_style": ""
+      }
+    ],
+    [
+      "AE Adverse event; BFI Brief Fatigue Inventory; BPI-SF Brief Pain Inventory-Short Form; CTCAE Common Terminology",
+      "text",
+      ["IsFootnote", "IsPrimaryObjective"],
+      {
+        "IsBold": false,
+        "font_size": 18,
+        "font_style": ""
+      }
+    ],
+    [
+      "Criteria for Adverse Events; ECG Electrocardiogram; FACT-G Functional Assessment of Cancer Therapy General; FACT-P Functional Assessment of Cancer Therapy - Prostate; FAPSI-6 Functional Assessment of Cancer Therapy Advanced Prostate",
+      "text",
+      ["IsFootnote", "IsPrimaryObjective"],
+      {
+        "IsBold": false,
+        "font_size": 18,
+        "font_style": ""
+      }
+    ],
+    [
+      "Symptom Index-6; mHSPC Metastatic hormone-sensitive prostate cancer; PCWG3 Prostate Cancer Working Group 3; PFS2",
+      "text",
+      ["IsFootnote", "IsPrimaryObjective"],
+      {
+        "IsBold": false,
+        "font_size": 18,
+        "font_style": ""
+      }
+    ],
+    [
+      "PFS after next-line treatment; PK Pharmacokinetics; PSA Prostate-Specific Antigen; PTEN Phosphatase and Tensin Homolog; RECIST Response Evaluation Criteria in Solid Tumors; rPFS Radiographic progression-free survival; SAE Serious adverse event; SSE-FS Symptomatic skeletal event-free survival; TFST Time to start of the first subsequent anticancer therapy or death; TOI Trial Outcome Index; TTCR Time to castration resistance; TTPP Time to pain progression.",
+      "text",
+      ["IsFootnote", "IsPrimaryObjective"],
+      {
+        "IsBold": false,
+        "font_size": 18,
+        "font_style": ""
+      }
+    ],
+    [
+      "For Exploratory objectives and endpoints, see Section 3 of the CSP.",
+      "text",
+      ["IsPrimaryObjective"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      " Overall Design",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": 24,
+        "font_style": "Heading3"
+      }
+    ],
+    [
+      "This is a double-blind, randomised, placebo-controlled, parallel-group, global study, designed to compare the efficacy and safety of capivasertib versus placebo, when added to abiraterone (+ prednisone/prednisolone) on a background of ADT in participants with de novo (newly diagnosed, previously untreated) mHSPC characterised by PTEN deficiency.",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "PTEN status will be confirmed by investigational IHC testing of tumour tissue at central laboratories.",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "A participant cannot be randomised until a valid PTEN IHC result indicates PTEN deficiency.",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Participants will be recruited globally from approximately 30 countries and approximately 350 study sites in Europe, North America, South America, Australia, and Asia (including China and Japan).",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Participants will be randomised (1:1 ratio) to receive either capivasertib or matching placebo, in combination with abiraterone (+ prednisone/prednisolone) on a background of ADT.",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "The randomisation scheme will be stratified on the following factors:",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Combination of volume of disease according to CHAARTED criteria* and presence of visceral metastases** (ie, high volume disease with visceral metastases/high volume disease without visceral metastases/low volume disease)",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "* High volume (defined as the presence of visceral metastases or = 4 bone lesions with = 1 beyond the vertebral bodies and pelvis) versus low volume.",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "** For the purposes of this study, visceral metastases are defined by the list provided within the IWRS.",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Geographic location: North America, Western Europe, and Australia, Latin America and Eastern Europe, and Asia.",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Disclosure Statement:",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": true,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "This is a parallel-group treatment study with 2 arms that is participant, sponsor, and investigator blinded.",
+      "text",
+      ["IsDesign"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Number of Participants:",
+      "text",
+      ["IsNumberOfParticipants"],
+      {
+        "IsBold": true,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Approximately 5500 participants will be enrolled and screened to achieve a total of 1000 randomised in a 1:1 ratio to the 2 treatment arms.",
+      "text",
+      ["IsNumberOfParticipants"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "This is based on the planned number of 331 rPFS events that must be observed for the study to have 90% power to show a statistically significant difference in rPFS at the 2-sided 5% level, assuming a true treatment effect HR of 0.70 (see Section 9.2 for details).",
+      "text",
+      ["IsNumberOfParticipants"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "For regulatory submission purposes in China, the study will include approximately 150 randomised participants from sites in mainland China and those from Taiwan and Hong Kong accredited by the National Medical Product Administration (NMPA).",
+      "text",
+      ["IsNumberOfParticipants"],
+      {
+        "IsBold": false,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ],
+    [
+      "Note",
+      "text",
+      ["IsNumberOfParticipants"],
+      {
+        "IsBold": true,
+        "font_size": -1,
+        "font_style": ""
+      }
+    ]
+  ],
+  "index": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176
+  ]
+}

@@ -107,4 +107,29 @@
       }
     }
   }
+
+  .normal {
+    font-weight: normal;
+  }
+  
+  .thick {
+    font-weight: bold;
+  }
+
+  .heading1, .heading2, .heading3 {
+    margin-bottom: 5px;
+  }
+  
+  .indent {
+    margin-left: 10px;
+  }
+
+  p {
+    margin-bottom: 0;
+    margin-top: 5px;
+  }
+  
+  .thicker {
+    font-weight: 900;
+  }
 }

@@ -1,54 +1,54 @@
 [
   {
-    "uploadStatus": "uploadInProgress",
-    "protocolId": 8473
+    "protocol_document_status": "uploadInProgress",
+    "protocol_id": 8473
   },
   {
-    "uploadStatus": "uploadComplete",
-    "protocolId": 8474
+    "protocol_document_status": "uploadComplete",
+    "protocol_id": 8474
   },
   {
-    "uploadStatus": "extractionInProgress",
-    "protocolId": 8475
+    "protocol_document_status": "extractionInProgress",
+    "protocol_id": 8475
   },
   {
-    "uploadStatus": "digitizationComplete",
-    "protocolId": 8476
+    "protocol_document_status": "digitizationComplete",
+    "protocol_id": 8476
   },
   {
-    "uploadStatus": "extractionError",
-    "protocolId": 8477
+    "protocol_document_status": "extractionError",
+    "protocol_id": 8477
   },
   {
-    "uploadStatus": "final",
-    "protocolId": 8478
+    "protocol_document_status": "final",
+    "protocol_id": 8478
   },
   {
-    "uploadStatus": "final",
-    "protocolId": 8479
+    "protocol_document_status": "final",
+    "protocol_id": 8479
   },
   {
-    "uploadStatus": "final",
-    "protocolId": 8480
+    "protocol_document_status": "final",
+    "protocol_id": 8480
   },
   {
-    "uploadStatus": "final",
-    "protocolId": 8481
+    "protocol_document_status": "final",
+    "protocol_id": 8481
   },
   {
-    "uploadStatus": "final",
-    "protocolId": 8482
+    "protocol_document_status": "final",
+    "protocol_id": 8482
   },
   {
-    "uploadStatus": "final",
-    "protocolId": 8483
+    "protocol_document_status": "final",
+    "protocol_id": 8483
   },
   {
-    "uploadStatus": "final",
-    "protocolId": 8484
+    "protocol_document_status": "final",
+    "protocol_id": 8484
   },
   {
-    "uploadStatus": "final",
-    "protocolId": 8485
+    "protocol_document_status": "final",
+    "protocol_id": 8485
   }
 ]

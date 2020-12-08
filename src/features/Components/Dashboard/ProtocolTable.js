@@ -19,7 +19,7 @@ import Typography from "apollo-react/components/Typography";
 import "./ProtocolTable.scss";
 
 const ActionCell = ({
-  row: { protocolId, handleToggleRow, expanded, selected, handleChange },
+  row: { protocol_id, handleToggleRow, expanded, selected, handleChange },
 }) => {
   return (
     <div>
@@ -27,7 +27,7 @@ const ActionCell = ({
         <Checkbox
           label=""
           checked={selected}
-          onChange={() => handleChange(protocolId)}
+          onChange={() => handleChange(protocol_id)}
         />
       </div>
       <div className="table-selection">
@@ -35,7 +35,7 @@ const ActionCell = ({
           <IconButton
             id="expand"
             size="small"
-            onClick={() => handleToggleRow(protocolId)}
+            onClick={() => handleToggleRow(protocol_id)}
           >
             {expanded ? <ChevronDown /> : <ChevronRight />}
           </IconButton>
@@ -55,7 +55,7 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
       style={{ marginRight: 192 }}
     >
       <span>
-        <Link to={`/protocols?protocolId=${row["protocolId"]}`}>
+        <Link to={`/protocols?protocolId=${row["protocol_id"]}`}>
           {row[key]}
         </Link>
       </span>
@@ -68,7 +68,7 @@ const Cell = ({ row, column }) => (
 );
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => (
-  <Link to={`/protocols?protocolId=${row["protocolId"]}`}>{row[key]}</Link>
+  <Link to={`/protocols?protocolId=${row["protocol_id"]}`}>{row[key]}</Link>
 );
 
 const iconStatus = (status) => {
@@ -109,7 +109,7 @@ const ActivityCell = ({ row, column: { accessor: key } }) => {
     <Tooltip variant="light" title={status.title} placement="top">
       <IconButton
         size="small"
-        data-id={row.protocolId}
+        data-id={row.protocol_id}
         style={{ marginRight: 4 }}
       >
         {status.comp}
@@ -125,35 +125,35 @@ const columns = [
   },
   {
     header: "Protocol",
-    accessor: "protocolName",
+    accessor: "protocol_name",
     sortFunction: compareStrings,
     customCell: ProtocolLink,
     width: "15%",
   },
   {
     header: "Activity",
-    accessor: "uploadStatus",
+    accessor: "protocol_document_status",
     sortFunction: compareStrings,
     customCell: ActivityCell,
     width: "8%",
   },
   {
     header: "Sponsor",
-    accessor: "sponsor",
+    accessor: "protocol_sponsor",
     sortFunction: compareStrings,
     width: "15%",
     customCell: Cell,
   },
   {
     header: "Project ID / CRM #",
-    accessor: "projectId",
+    accessor: "project_id",
     sortFunction: compareStrings,
     width: "10%",
     customCell: Cell,
   },
   {
     header: "Protocol Title",
-    accessor: "protocolTitle",
+    accessor: "protocol_title",
     sortFunction: compareStrings,
     customCell: ProtocolTitle,
   },
@@ -167,11 +167,10 @@ const ExpandableComponent = ({ row }) => {
           style={{
             fontWeight: 500,
             color: neutral8,
-            float: "left",
             marginRight: "20px",
           }}
         >
-          {"Phase:"}
+          {"Phase"}
         </Typography>
         <Typography className="fw-8" variant="body2">
           {row.phase}
@@ -182,11 +181,10 @@ const ExpandableComponent = ({ row }) => {
           style={{
             fontWeight: 500,
             color: neutral8,
-            float: "left",
             marginRight: "20px",
           }}
         >
-          {"Indication:"}
+          {"Indication"}
         </Typography>
         <Typography className="fw-8" variant="body2">
           {row.indication}
@@ -197,14 +195,13 @@ const ExpandableComponent = ({ row }) => {
           style={{
             fontWeight: 500,
             color: neutral8,
-            float: "left",
             marginRight: "20px",
           }}
         >
-          {"Document Status:"}
+          {"Document Status"}
         </Typography>
         <Typography className="fw-8" variant="body2">
-          {row.documentStatus}
+          {row.protocol_document_status}
         </Typography>
       </div>
       <div className="extended-data">
@@ -212,15 +209,14 @@ const ExpandableComponent = ({ row }) => {
           style={{
             fontWeight: 500,
             color: neutral8,
-            float: "left",
             marginRight: "20px",
           }}
         >
-          {"Source:"}
+          {"Source"}
         </Typography>
         <Typography className="fw-8" variant="body2">
           <a href={row.filePath} target="_blank">
-            {row.fileName}
+            {row.protocol_document_name}
           </a>
         </Typography>
       </div>
@@ -232,21 +228,21 @@ const ProtocolTable = ({ initialRows }) => {
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
   const [selectedRows, setSelectedRows] = React.useState([]);
-  const handleChange = (protocolId) => {
+  const handleChange = (protocol_id) => {
     setSelectedRows((selectedRows) =>
-      selectedRows.indexOf(protocolId) >= 0
-        ? selectedRows.filter((id) => id !== protocolId)
+      selectedRows.indexOf(protocol_id) >= 0
+        ? selectedRows.filter((id) => id !== protocol_id)
         : selectedRows.length < 2
-        ? _.concat(selectedRows, protocolId)
+        ? _.concat(selectedRows, protocol_id)
         : _.concat(selectedRows)
     );
   };
 
-  const handleToggleRow = (protocolId) => {
+  const handleToggleRow = (protocol_id) => {
     setExpandedRows((expandedRows) =>
-      expandedRows.indexOf(protocolId) >= 0
-        ? expandedRows.filter((id) => id !== protocolId)
-        : _.concat(expandedRows, protocolId)
+      expandedRows.indexOf(protocol_id) >= 0
+        ? expandedRows.filter((id) => id !== protocol_id)
+        : _.concat(expandedRows, protocol_id)
     );
   };
 
@@ -261,21 +257,22 @@ const ProtocolTable = ({ initialRows }) => {
       rows={initialRows.map((row) => {
         let temp = _.cloneDeep(row);
         let details = {
-          key: row.protocolId,
-          expanded: expandedRows.indexOf(row.protocolId) >= 0,
-          selected: selectedRows.indexOf(row.protocolId) >= 0,
+          key: row.protocol_id,
+          expanded: expandedRows.indexOf(row.protocol_id) >= 0,
+          selected: selectedRows.indexOf(row.protocol_id) >= 0,
           handleToggleRow,
           handleChange,
         };
         return _.merge(temp, details);
       })}
-      initialSortedColumn="protocolName"
+      initialSortedColumn="protocol_name"
       initialSortOrder="asc"
-      rowsPerPageOptions={[5, 20, 30]}
+      rowsPerPageOptions={[5, 20, 30, 'All']}
       rowProps={{ hover: false }}
       tablePaginationProps={{
         labelDisplayedRows: ({ from, to, count }) =>
           `Showing ${from}-${to} of ${count}`,
+          truncate: true,
       }}
       ExpandableComponent={ExpandableComponent}
     />

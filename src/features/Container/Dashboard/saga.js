@@ -11,7 +11,8 @@ import {
   getProtocolData,
   setAddprotocolError,
   setAddProtocolModal,
-  setLoading
+  setLoading,
+  getSavedSearches
 } from "./dashboardSlice";
 
 function customizer(objValue, srcValue) {
@@ -57,7 +58,7 @@ function* compareSelectedAsyn(action) {
 }
 
 function* recentSearchAsyn() {
-  const url = "./recentSearches.json";
+  const url = "http://ca2spdml01q:8000/api/recent_search/?user=user3";
   const config = {
     url,
     method: "GET",
@@ -66,6 +67,23 @@ function* recentSearchAsyn() {
     const searchData = yield call(httpCall, config);
     if (searchData.success) {
       yield put(getRecentSearches(searchData.data));
+    }
+    yield put(setError(searchData.err.statusText));
+  } catch (err) {
+    yield put(setError(err.statusText));
+  }
+}
+
+function* savedSearchAsyn() {
+  const url = "http://ca2spdml01q:8000/api/saved_search/?user=user1";
+  const config = {
+    url,
+    method: "GET",
+  };
+  try {
+    const searchData = yield call(httpCall, config);
+    if (searchData.success) {
+      yield put(getSavedSearches(searchData.data));
     }
     yield put(setError(searchData.err.statusText));
   } catch (err) {
@@ -158,6 +176,7 @@ function* watchDashboard() {
   yield takeEvery("GET_SPONSOR_ADDPROTCOL_SAGA", addProtocolSponsor);
   yield takeEvery("POST_ADDPROTOCOL_DATA", postAddProtocol);
   yield takeEvery("TOGGLE_ADDPROTOCOL_MODAL", toggleAddProtocol);
+  yield takeEvery("GET_SAVED_SEARCH_DATA", savedSearchAsyn);
 }
 
 export default function* dashboardSaga() {
