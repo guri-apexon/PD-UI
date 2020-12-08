@@ -110,7 +110,7 @@ export const TextCard = ({ state, section, index }) => {
         <Typography className={classes.cardSubtitle} variant="caption">
           <div>
             {section.sectionContent.map((content, i) => (
-              <p className="text-filter" key={content.id} gutterBottom>
+              <p className="text-filter" key={content.id}>
                 {content.title}
               </p>
             ))}

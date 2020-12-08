@@ -13,26 +13,25 @@ const data = {
 
             rows: [
                 {
-                    olderVersion: 'Protocol-ABDCD',
+                    version: '1.2',
+                    draft: 'N/A',
+                    sourceDocument: 'Prot-ABCDE-v10.pdf',
+                    uploadDate: '05/05/2020',
+                    documentStatus: 'Draft'
+                },
+                {
+                    version: '1.1',
+                    draft: 'N/A',
+                    sourceDocument: 'Prot-ABCDE-v11.pdf',
+                    uploadDate: '05/05/2020',
+                    documentStatus: 'Draft'
+                },{
+                    version: '1.3',
+                    draft: '1',
                     sourceDocument: 'Prot-ABCDE-v12.pdf',
                     uploadDate: '05/05/2020',
-                    version: '1.2',
-                    documentStatus: 'Draft',
-                },
-                {
-                    olderVersion: 'Protocol-ABDCD',
-                    sourceDocument: 'Prot-ABCDE-v11.pdf',
-                    uploadDate: '01/01/2020',
-                    version: '1.1',
-                    documentStatus: 'Final Approved',
-                },
-                {
-                    olderVersion: 'Protocol-ABDCD',
-                    sourceDocument: 'Prot-ABCDE-v1.pdf',
-                    uploadDate: '01/10/2019',
-                    version: '1.0',
-                    documentStatus: 'Final Approved',
-                },
+                    documentStatus: 'Draft'
+                }
             ]
         },
         {
@@ -48,26 +47,25 @@ const data = {
 
             rows: [
                 {
-                    olderVersion: 'Protocol-ABDCD',
+                    version: '1.2',
+                    draft: 'N/A',
+                    sourceDocument: 'Prot-ABCDE-v10.pdf',
+                    uploadDate: '05/05/2020',
+                    documentStatus: 'Draft'
+                },
+                {
+                    version: '1.1',
+                    draft: 'N/A',
+                    sourceDocument: 'Prot-ABCDE-v11.pdf',
+                    uploadDate: '05/05/2020',
+                    documentStatus: 'Draft'
+                },{
+                    version: '1.3',
+                    draft: '1',
                     sourceDocument: 'Prot-ABCDE-v12.pdf',
                     uploadDate: '05/05/2020',
-                    version: '1.2',
-                    documentStatus: 'Draft',
-                },
-                {
-                    olderVersion: 'Protocol-ABDCD',
-                    sourceDocument: 'Prot-ABCDE-v11.pdf',
-                    uploadDate: '01/01/2020',
-                    version: '1.1',
-                    documentStatus: 'Final Approved',
-                },
-                {
-                    olderVersion: 'Protocol-ABDCD',
-                    sourceDocument: 'Prot-ABCDE-v1.pdf',
-                    uploadDate: '01/10/2019',
-                    version: '1.0',
-                    documentStatus: 'Final Approved',
-                },
+                    documentStatus: 'Draft'
+                }
             ]
         }
 

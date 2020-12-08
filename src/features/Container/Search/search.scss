@@ -3,6 +3,12 @@
   max-width: 1140px;
   margin: 70px auto;
 
+  .searchPanel {
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+  }
+
   .App {
     text-align: center;
   }
@@ -18,7 +24,7 @@
     margin-block-start: 0;
     margin-block-end: 0;
     margin-bottom: 8px;
-    &:hover{
+    &:hover {
       background-color: #ecf3ff;
     }
   }
@@ -36,6 +42,9 @@
   //   display: none;
   // }
   .accordion-start {
+    td a{
+      text-decoration: none;
+    }
     div[class*="MuiExpansionPanelSummary-root"] {
       margin-left: 24px;
       min-height: 30px;
@@ -77,13 +86,63 @@
   }
 
   .refine-search {
-    font-size: 13px;
-    margin-bottom: 5px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    font-weight: bold;
 
     a {
       font-size: 13px;
       color: #0557d5;
       font-weight: 600;
+    }
+  }
+  .page-count {
+    float: left;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    margin-left: 14px;
+  }
+  .search-icon {
+    float: left;
+    svg {
+      color: #292929  !important;
+      height: 15px;
+      margin-left: 3px;
+    }
+  }
+  .chip{
+    float: left;
+    margin-left: 20px;
+    margin-top: -2px;
+  }
+  .expand-all{
+    float: right;
+    font-size: 13px;
+    margin-right: 20px;
+    margin-top: 5px;
+    svg{
+      vertical-align: bottom;
+      height: 14px;
+      
+    }
+    span{
+      // vertical-align: middle;
+      font-size: 12px;
+      color: blue;
+      cursor: pointer;
+    }
+  }
+  .sort-by{
+    float: right;
+    font-size: 12px;
+    font-weight: 500;
+    span{
+      margin-right: 5px;
+    }
+    button{
+      margin-right: 0 !important;
+      padding-right: 0;
     }
   }
 
@@ -359,9 +418,8 @@
       height: 18px;
       width: 18px;
     }
-    
   }
-  span[class*="MuiRadio-colorPrimary"]{
+  span[class*="MuiRadio-colorPrimary"] {
     top: 0;
   }
   span[class*="MuiFormControlLabel-label-"] {
