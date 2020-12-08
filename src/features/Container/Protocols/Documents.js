@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import DocumentsTable from '../../Components/Dashboard/DocumentsTable/DocumentsTable'
+import DocumentsTable from '../../Components/DocumentsTable/DocumentsTable'
 import { useSelector, useDispatch } from "react-redux";
 import { prtocolsList } from "../Dashboard/dashboardSlice";
 import Grid from "apollo-react/components/Grid";
