@@ -1,25 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import {withRouter} from 'react-router-dom'
+
 import Button from "apollo-react/components/Button";
 import Search from "apollo-react/components/Search";
 import Chip from "apollo-react/components/Chip";
 import MenuButton from "apollo-react/components/MenuButton";
 
-export default class ProtocolSearchButton extends React.Component {
+class ProtocolSearchButton extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      renderChip: false,
       input: "",
       search: "",
-      removeChip() {
-        this.setState("");
-      },
+      filters: [],
     };
   }
 
   handleSaveSearchProtocol = (e) => {
+    // let newArr = this.state.filters.concat("input")
     this.setState({ input: e.target.value, search: e.target.value });
   };
 
@@ -28,16 +30,20 @@ export default class ProtocolSearchButton extends React.Component {
   };
 
   handleSearchProtocol = (e) => {
-    ReactDOM.render(
-      <Chip
-        color="secondary"
-        label={this.state["input"]}
-        value={this.state["search"]}
-        onDelete={(e) => this.handleDeleteChip(e)}
-        size={"small"}
-      />,
-      document.getElementById("chip")
-    );
+    e.preventDefault()
+    this.props.getSearchInput(this.state["input"]);
+    this.props.history.push(`/Search?key=${this.state.input}`)
+    this.setState({ input: "" });
+    // ReactDOM.render(
+    // <Chip
+    //   color="white"
+    //   label={this.state["input"]}
+    //   value={this.state["search"]}
+    //   onDelete={(e) => this.handleDeleteChip(e)}
+    //   size={"small"}
+    // />,
+    //   document.getElementById("chip")
+    // );
   };
 
   render() {
@@ -47,11 +53,11 @@ export default class ProtocolSearchButton extends React.Component {
 
     const menuItems = [
       {
-        text: "Option 1",
+        text: "Compare",
         onClick: handleClick("Option 1"),
       },
       {
-        text: "Option 2",
+        text: "Save Search",
         onClick: handleClick("Option 2"),
       },
     ];
@@ -64,16 +70,17 @@ export default class ProtocolSearchButton extends React.Component {
           placeholder="Enter additional Search Terms if Applicable"
           size="small"
           onChange={this.handleSaveSearchProtocol}
+          value={this.state.input}
         />
         <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal">
-          <Button
-            variant="primary"
-            size="small"
-            style={{ marginLeft: 10, top: 5, width: 80 }}
-            onClick={this.handleSearchProtocol}
-          >
-            Search
-          </Button>
+            <Button
+              variant="primary"
+              size="small"
+              style={{ marginLeft: 10, top: 5, width: 80 }}
+              onClick={this.handleSearchProtocol}
+            >
+              Search
+            </Button>
         </div>
         <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal floatRight">
           <MenuButton
@@ -87,3 +94,6 @@ export default class ProtocolSearchButton extends React.Component {
     );
   }
 }
+
+
+export default withRouter(ProtocolSearchButton)

@@ -16,7 +16,7 @@ const ProtocolOverview = ({data}) => {
               </div>
               <div className="row-item">
                 <label>Sponser</label>
-                <span>{data.sponser}</span>
+                <span>{data.sponsor}</span>
               </div>
               <div className="row-item">
                 <label>Indication</label>
@@ -48,7 +48,7 @@ const ProtocolOverview = ({data}) => {
           </div>
           <div className="protocol-title">
             <div>Protocol Title</div>
-            <div>{data.protocolTitle}</div>
+            <div>{data.protocolDescription}</div>
           </div>
         </Card>
       </div>

@@ -1,0 +1,60 @@
+.custom-dropdown-parent {
+    .custom-dropdown-list {
+      display: none;
+      &.adjust-margin{
+          margin-top: -18px;
+      }
+      .float-left{
+          float: left;
+          max-width: 75%;   
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding-left: 8px;
+      }
+      .float-right{
+          float: right;
+          color:#0768fd;
+          padding-right: 8px;
+          cursor: default;
+      }
+      .noresult-para{
+          clear: both;
+          padding: 2px 8px;
+          color: #b5b5b5;
+          text-align: center;
+          font-size: 12px;
+      }
+    }
+    [class^="MuiFormControl-root-"] {
+      margin-bottom: 0;
+    }
+    .is-expanded {
+      .custom-dropdown-list {
+        display: block;
+        position: absolute;
+        height: 100px;
+        width: 100%;
+        overflow: auto;
+        z-index: 100;
+        background: white;
+        box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+          0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+      }
+      .custom-list-item{
+          padding: 10px;
+          margin: 1px;
+      }
+      .custom-list-item:hover{
+          color: #000000;
+          background-color: rgba(35, 114, 253, 0.08);
+      }
+    }
+    position: relative;
+    .custom-dropdown-parent {
+      .custom-dropdown-list {
+        position: absolute;
+      }
+    }
+  }
+  

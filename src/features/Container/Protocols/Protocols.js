@@ -75,13 +75,13 @@ const Protocols = (props) => {
                   onClick: handleClick,
                 },
                 {
-                  title: data.protocolName,
+                  title: data.protocolNumber,
                 },
               ]}
               style={{ paddingInlineStart: 0, marginBottom: 0 }}
             />
 
-            <h2 className="header">{data.protocolName}</h2>
+            <h2 className="header">{data.protocolNumber}</h2>
             <div className="tab-column">
               <div className="overview">
                 <div style={{ display: "flex", flexDirection: "row" }}>

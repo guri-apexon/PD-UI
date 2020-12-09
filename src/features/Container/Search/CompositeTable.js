@@ -50,7 +50,7 @@ export const CompositeTable = ({ data }) => (
       </div>
     </div>
     <div className="width100 search-inner-table">
-      <Table columns={columns} rows={data.rows} size="small" hidePagination />
+      <Table columns={columns} rows={data.rows} hidePagination />
     </div>
   </div>
 );

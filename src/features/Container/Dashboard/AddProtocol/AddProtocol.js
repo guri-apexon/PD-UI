@@ -6,7 +6,8 @@ import Grid from "apollo-react/components/Grid";
 import AutocompleteV2 from "apollo-react/components/AutocompleteV2";
 import CustomFileUpload from "./CustomFileUpload";
 import Typography from "apollo-react/components/Typography";
-import Loader from 'apollo-react/components/Loader';
+import Loader from "apollo-react/components/Loader";
+import CustomDropdown from "../../../Components/CustomDropdown/CustomDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { dashboard } from "../dashboardSlice";
 import _ from "lodash";
@@ -15,7 +16,7 @@ import {
   initialFormValues,
   documentStatusList,
   amendmentNumber,
-  emptyAutoObj
+  emptyAutoObj,
 } from "./constants";
 import Plus from "apollo-react-icons/Plus";
 const AddProtocol = ({ handleClose, handleOpen }) => {
@@ -81,7 +82,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       setFormValues(tempValues);
       setFormErrorValues(tempError);
     }
-    if (fieldType === "Dropdown") {
+    if (fieldType === "Dropdown" || fieldType === "CustomDropdown") {
       if (
         dropdownValue &&
         dropdownValue.label &&
@@ -128,6 +129,17 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       dropdownFocus = "";
       setFormErrorValues(temp);
     }
+    if (fieldType === "CustomDropdown") {
+      if (!e.length > 0 && formErrorValues[fieldName].isRequired) {
+        temp[fieldName].error = true;
+        temp[fieldName].errorMessage = `Select or Add`;
+      } else {
+        temp[fieldName].error = false;
+        temp[fieldName].errorMessage = " ";
+      }
+      dropdownFocus = "";
+      setFormErrorValues(temp);
+    }
   };
   const handleFileUploadError = (msg, err, fieldName) => {
     let tempError = _.cloneDeep(formErrorValues);
@@ -138,6 +150,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const setUploadFile = (file, fieldName) => {
     let tempValue = _.cloneDeep(formValues);
     tempValue[fieldName] = file;
+    debugger;
     setFormValues(tempValue);
   };
   const handleSaveForm = () => {
@@ -163,6 +176,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
           }
           break;
         case "Dropdown":
+        case "CustomDropdown":
           if (
             (tempValues[field] &&
               tempValues[field].label &&
@@ -173,12 +187,15 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
             tempError[field].errorMessage = " ";
           } else {
             tempError[field].error = true;
-            tempError[field].errorMessage = "Required";
+            tempError[field].errorMessage =
+              tempError[field].type === "Dropdown"
+                ? "Required"
+                : "Select or Add";
             errorExist = true;
           }
           break;
         default:
-          return null;
+          break;
       }
     }
     setFormErrorValues(tempError);
@@ -194,8 +211,8 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         ? tempFormValues.protocolNumber
         : "",
       indication:
-        tempFormValues.indication && tempFormValues.indication.indication_name
-          ? tempFormValues.indication.indication_name
+        tempFormValues.indication && tempFormValues.indication.label
+          ? tempFormValues.indication.label
           : "",
       protocol_version: tempFormValues.versionNumber
         ? tempFormValues.versionNumber
@@ -206,10 +223,8 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       modified_by: "User",
       modified_on: new Date().toISOString(),
       sponsor:
-        tempFormValues &&
-        tempFormValues.sponsor &&
-        tempFormValues.sponsor.sponsor_name
-          ? tempFormValues.sponsor.sponsor_name
+        tempFormValues && tempFormValues.sponsor && tempFormValues.sponsor.label
+          ? tempFormValues.sponsor.label
           : "",
       amendmentNumber:
         tempFormValues &&
@@ -220,219 +235,246 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       projectID: tempFormValues.projectID,
       moleculeDevice: tempFormValues.moleculeDevice,
       uploadFile: tempFormValues.uploadFile ? tempFormValues.uploadFile : [],
+      fileName: tempFormValues.uploadFile[0].name,
     };
     dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
     // if(dashboardData && )
   };
   console.log("dashboardData :", dashboardData);
   return (
-<>
-    {dashboardData && dashboardData.isLoading ?  <Loader /> : (
-    <div className="add-protocol">
-      <div className="add-protocol-button">
-        <Button
-          variant="primary"
-          onClick={() => onModalOpen("custom")}
-          icon={Plus}
-        >
-          {"Add Protocol to Library"}
-        </Button>
-      </div>
-      <Modal
-        variant="default"
-        open={dashboardData && dashboardData.addProtocolModal}
-        onClose={() => onModalClose()}
-        title="Add Protocol to Library"
-        buttonProps={[{}, { label: "Save", onClick: handleSaveForm }]}
-        id="add-protocol-modal"
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={5} sm={5}>
-            <TextField
-              label="Protocol Number"
-              placeholder="Optional hint Text"
-              fullWidth
-              value={formValues.protocolNumber}
-              helperText={formErrorValues.protocolNumber.errorMessage}
-              error={formErrorValues.protocolNumber.error}
-              required={formErrorValues.protocolNumber.isRequired}
-              onChange={(e) =>
-                onTextFieldChange("protocolNumber", e, "Textbox")
-              }
-              onBlur={(e) => onFieldBlur("protocolNumber", e, "Textbox")}
-            />
-          </Grid>
-          <Grid item xs={1} sm={1}></Grid>
-          <Grid item xs={5} sm={5}>
-            <div className="autocomplete-class" id="amendmentNumber">
-              <AutocompleteV2
-                label="Amendment"
-                placeholder="Optional hint text…"
-                source={amendmentNumber}
-                fullWidth
-                value={formValues.amendmentNumber && formValues.amendmentNumber ? formValues.amendmentNumber : emptyAutoObj}
-                helperText={formErrorValues.amendmentNumber.errorMessage}
-                error={formErrorValues.amendmentNumber.error}
-                required={formErrorValues.amendmentNumber.isRequired}
-                onBlur={(e, newValue) =>
-                  onFieldBlur("amendmentNumber", e, "Dropdown", newValue)
-                }
-                onChange={(e, newValue) =>
-                  onTextFieldChange("amendmentNumber", e, "Dropdown", newValue)
-                }
-              />
-            </div>
-          </Grid>
-          <Grid item xs={1} sm={1}></Grid>
-          <Grid item xs={5} sm={5}>
-            <TextField
-              label="Project ID or Opportunity Number"
-              placeholder="Optional hint Text"
-              value={formValues.projectID}
-              fullWidth
-              helperText={formErrorValues.projectID.errorMessage}
-              error={formErrorValues.projectID.error}
-              required={formErrorValues.projectID.isRequired}
-              onChange={(e) => onTextFieldChange("projectID", e, "Textbox")}
-              onBlur={(e) => onFieldBlur("projectID", e, "Textbox")}
-            />
-          </Grid>
-          <Grid item xs={1} sm={1}></Grid>
-          <Grid item xs={5} sm={5}>
-            <TextField
-              label="Version Number"
-              placeholder="Optional hint Text"
-              value={formValues.versionNumber}
-              fullWidth
-              helperText={formErrorValues.versionNumber.errorMessage}
-              error={formErrorValues.versionNumber.error}
-              required={formErrorValues.versionNumber.isRequired}
-              onChange={(e) => onTextFieldChange("versionNumber", e, "Textbox")}
-              onBlur={(e) => onFieldBlur("versionNumber", e, "Textbox")}
-              type="number"
-            />
-          </Grid>
-          <Grid item xs={1} sm={1}></Grid>
+    <>
+      {dashboardData && dashboardData.isLoading ? (
+        <Loader />
+      ) : (
+        <div className="add-protocol">
+          <div className="add-protocol-button">
+            <Button
+              variant="primary"
+              onClick={() => onModalOpen("custom")}
+              icon={Plus}
+            >
+              {"Add Protocol to Library"}
+            </Button>
+          </div>
+          <Modal
+            variant="default"
+            open={dashboardData && dashboardData.addProtocolModal}
+            onClose={() => onModalClose()}
+            title="Add Protocol to Library"
+            buttonProps={[{}, { label: "Save", onClick: handleSaveForm }]}
+            id="add-protocol-modal"
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={5} sm={5}>
+                <TextField
+                  label="Protocol Number"
+                  placeholder="Optional hint Text"
+                  fullWidth
+                  value={formValues.protocolNumber}
+                  helperText={formErrorValues.protocolNumber.errorMessage}
+                  error={formErrorValues.protocolNumber.error}
+                  required={formErrorValues.protocolNumber.isRequired}
+                  onChange={(e) =>
+                    onTextFieldChange("protocolNumber", e, "Textbox")
+                  }
+                  onBlur={(e) => onFieldBlur("protocolNumber", e, "Textbox")}
+                />
+              </Grid>
+              <Grid item xs={1} sm={1}></Grid>
+              <Grid item xs={5} sm={5}>
+                <div className="autocomplete-class" id="amendmentNumber">
+                  <AutocompleteV2
+                    label="Amendment"
+                    placeholder="Optional hint text…"
+                    source={amendmentNumber}
+                    fullWidth
+                    value={
+                      formValues.amendmentNumber && formValues.amendmentNumber
+                        ? formValues.amendmentNumber
+                        : emptyAutoObj
+                    }
+                    helperText={formErrorValues.amendmentNumber.errorMessage}
+                    error={formErrorValues.amendmentNumber.error}
+                    required={formErrorValues.amendmentNumber.isRequired}
+                    onBlur={(e, newValue) =>
+                      onFieldBlur("amendmentNumber", e, "Dropdown", newValue)
+                    }
+                    onChange={(e, newValue) =>
+                      onTextFieldChange(
+                        "amendmentNumber",
+                        e,
+                        "Dropdown",
+                        newValue
+                      )
+                    }
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={1} sm={1}></Grid>
+              <Grid item xs={5} sm={5}>
+                <TextField
+                  label="Project ID or Opportunity Number"
+                  placeholder="Optional hint Text"
+                  value={formValues.projectID}
+                  fullWidth
+                  helperText={formErrorValues.projectID.errorMessage}
+                  error={formErrorValues.projectID.error}
+                  required={formErrorValues.projectID.isRequired}
+                  onChange={(e) => onTextFieldChange("projectID", e, "Textbox")}
+                  onBlur={(e) => onFieldBlur("projectID", e, "Textbox")}
+                />
+              </Grid>
+              <Grid item xs={1} sm={1}></Grid>
+              <Grid item xs={5} sm={5}>
+                <TextField
+                  label="Version Number"
+                  placeholder="Optional hint Text"
+                  value={formValues.versionNumber}
+                  fullWidth
+                  helperText={formErrorValues.versionNumber.errorMessage}
+                  error={formErrorValues.versionNumber.error}
+                  required={formErrorValues.versionNumber.isRequired}
+                  onChange={(e) =>
+                    onTextFieldChange("versionNumber", e, "Textbox")
+                  }
+                  onBlur={(e) => onFieldBlur("versionNumber", e, "Textbox")}
+                  type="number"
+                />
+              </Grid>
+              <Grid item xs={1} sm={1}></Grid>
 
-          <Grid item xs={5} sm={5}>
-            <div className="autocomplete-class" id="sponsor">
-              <AutocompleteV2
-                label="Sponsor"
-                placeholder="Optional hint text…"
-                source={
-                  dashboardData &&
-                  dashboardData.addProtocolData &&
-                  dashboardData.addProtocolData.sponsor
-                }
-                fullWidth
-                value={formValues.sponsor && formValues.sponsor ? formValues.sponsor : emptyAutoObj}
-                helperText={formErrorValues.sponsor.errorMessage}
-                error={formErrorValues.sponsor.error}
-                required={formErrorValues.sponsor.isRequired}
-                onBlur={(e, newValue) =>
-                  onFieldBlur("sponsor", e, "Dropdown", newValue)
-                }
-                onChange={(e, newValue) =>
-                  onTextFieldChange("sponsor", e, "Dropdown", newValue)
-                }
-              />
-            </div>
-          </Grid>
+              <Grid item xs={5} sm={5}>
+                <div className="autocomplete-class" id="sponsor">
+                  <CustomDropdown
+                    id="Sponsor"
+                    label="Sponsor"
+                    placeholder="Optional hint text…"
+                    source={
+                      dashboardData &&
+                      dashboardData.addProtocolData &&
+                      dashboardData.addProtocolData.sponsor
+                    }
+                    fullWidth
+                    fieldType="CustomDropdown"
+                    fieldName="sponsor"
+                    formValue={
+                      formValues.sponsor && formValues.sponsor
+                        ? formValues.sponsor
+                        : emptyAutoObj
+                    }
+                    helperText={formErrorValues.sponsor.errorMessage.trim()}
+                    error={formErrorValues.sponsor.error}
+                    required={formErrorValues.sponsor.isRequired}
+                    onBlur={onFieldBlur}
+                    onChange={onTextFieldChange}
+                    insertField="sponsor_name"
+                  />
+                </div>
+              </Grid>
 
-          <Grid item xs={1} sm={1}></Grid>
-          <Grid item xs={5} sm={5}>
-            <div className="autocomplete-class">
-              <AutocompleteV2
-                label="Document Status"
-                placeholder="Optional hint text…"
-                source={documentStatusList}
-                fullWidth
-                value={formValues.documentStatus && formValues.documentStatus ? formValues.documentStatus : emptyAutoObj}
-                helperText={formErrorValues.documentStatus.errorMessage}
-                error={formErrorValues.documentStatus.error}
-                required={formErrorValues.documentStatus.isRequired}
-                onBlur={(e, newValue) =>
-                  onFieldBlur("documentStatus", e, "Dropdown", newValue)
-                }
-                onChange={(e, newValue) =>
-                  onTextFieldChange("documentStatus", e, "Dropdown", newValue)
-                }
-              />
-            </div>
-          </Grid>
-          <Grid item xs={1} sm={1}></Grid>
-          <Grid item xs={5} sm={5}>
-            <div className="autocomplete-class" id="indication-container">
-              <AutocompleteV2
-                label="Indication"
-                placeholder="Optional hint text…"
-                source={
-                  dashboardData &&
-                  dashboardData.addProtocolData &&
-                  dashboardData.addProtocolData.indication
-                }
-                fullWidth
-                value={formValues.indication && formValues.indication ? formValues.indication : emptyAutoObj }
-                helperText={formErrorValues.indication.errorMessage}
-                error={formErrorValues.indication.error}
-                required={formErrorValues.indication.isRequired}
-                onBlur={(e, newValue) =>
-                  onFieldBlur("indication", e, "Dropdown", newValue)
-                }
-                onChange={(e, newValue) =>
-                  onTextFieldChange("indication", e, "Dropdown", newValue)
-                }
-                // onInputChange={(event, newInputValue) =>
-                //   onDropdownInputChange(event, newInputValue, "indication")
-                // }
-              />
-            </div>
-          </Grid>
-          <Grid item xs={1} sm={1}></Grid>
-          <Grid item xs={5} sm={5}>
-            <TextField
-              label="Molecule/Device"
-              placeholder="Optional hint Text"
-              fullWidth
-              value={formValues.moleculeDevice && formValues.moleculeDevice}
-              helperText={formErrorValues.moleculeDevice.errorMessage}
-              error={formErrorValues.moleculeDevice.error}
-              required={formErrorValues.moleculeDevice.isRequired}
-              onChange={(e) =>
-                onTextFieldChange("moleculeDevice", e, "Textbox")
-              }
-              onBlur={(e) => onFieldBlur("moleculeDevice", e, "Textbox")}
-            />
-          </Grid>
-          <Grid item xs={1} sm={1}></Grid>
-          <Typography variant="title2" gutterBottom>
-            Place the protocol document in PDF or Word format below
-            <span className="file-required-astrik"> *</span>
-          </Typography>
-          <Grid item xs={12} sm={12}>
-            <CustomFileUpload
-              selectedFiles={selectedFiles}
-              handleUpload={handleUpload}
-              handleDelete={handleDelete}
-              fullWidth
-              handleFileUploadError={handleFileUploadError}
-              setUploadFile={setUploadFile}
-            />
-            {formErrorValues &&
-              formErrorValues.uploadFile &&
-              formErrorValues.uploadFile.errorMessage === "Required" && (
-                <span className="file-error-message">Required</span>
-              )}
-            {dashboardData && dashboardData.addProtocolDataError && (
-              <span className="file-error-message">
-                API Error
-              </span>
-            )}
-          </Grid>
-        </Grid>
-      </Modal>
-    </div>)}
-  </>
+              <Grid item xs={1} sm={1}></Grid>
+              <Grid item xs={5} sm={5}>
+                <div className="autocomplete-class">
+                  <AutocompleteV2
+                    label="Document Status"
+                    placeholder="Optional hint text…"
+                    source={documentStatusList}
+                    fullWidth
+                    value={
+                      formValues.documentStatus && formValues.documentStatus
+                        ? formValues.documentStatus
+                        : emptyAutoObj
+                    }
+                    helperText={formErrorValues.documentStatus.errorMessage}
+                    error={formErrorValues.documentStatus.error}
+                    required={formErrorValues.documentStatus.isRequired}
+                    onBlur={(e, newValue) =>
+                      onFieldBlur("documentStatus", e, "Dropdown", newValue)
+                    }
+                    onChange={(e, newValue) =>
+                      onTextFieldChange(
+                        "documentStatus",
+                        e,
+                        "Dropdown",
+                        newValue
+                      )
+                    }
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={1} sm={1}></Grid>
+              <Grid item xs={5} sm={5}>
+                <div className="autocomplete-class" id="indication-container">
+                  <CustomDropdown
+                    id="Indication"
+                    label="Indication"
+                    placeholder="Optional hint text…"
+                    source={
+                      dashboardData &&
+                      dashboardData.addProtocolData &&
+                      dashboardData.addProtocolData.indication
+                    }
+                    fullWidth
+                    fieldType="CustomDropdown"
+                    fieldName="indication"
+                    formValue={
+                      formValues.indication && formValues.indication
+                        ? formValues.indication
+                        : emptyAutoObj
+                    }
+                    helperText={formErrorValues.indication.errorMessage.trim()}
+                    error={formErrorValues.indication.error}
+                    required={formErrorValues.indication.isRequired}
+                    onBlur={onFieldBlur}
+                    onChange={onTextFieldChange}
+                    insertField="indication_name"
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={1} sm={1}></Grid>
+              <Grid item xs={5} sm={5}>
+                <TextField
+                  label="Molecule/Device"
+                  placeholder="Optional hint Text"
+                  fullWidth
+                  value={formValues.moleculeDevice && formValues.moleculeDevice}
+                  helperText={formErrorValues.moleculeDevice.errorMessage}
+                  error={formErrorValues.moleculeDevice.error}
+                  required={formErrorValues.moleculeDevice.isRequired}
+                  onChange={(e) =>
+                    onTextFieldChange("moleculeDevice", e, "Textbox")
+                  }
+                  onBlur={(e) => onFieldBlur("moleculeDevice", e, "Textbox")}
+                />
+              </Grid>
+              <Grid item xs={1} sm={1}></Grid>
+              <Typography variant="title2" gutterBottom>
+                Place the protocol document in PDF or Word format below
+                <span className="file-required-astrik"> *</span>
+              </Typography>
+              <Grid item xs={12} sm={12}>
+                <CustomFileUpload
+                  selectedFiles={selectedFiles}
+                  handleUpload={handleUpload}
+                  handleDelete={handleDelete}
+                  fullWidth
+                  handleFileUploadError={handleFileUploadError}
+                  setUploadFile={setUploadFile}
+                />
+                {formErrorValues &&
+                  formErrorValues.uploadFile &&
+                  formErrorValues.uploadFile.errorMessage === "Required" && (
+                    <span className="file-error-message">Required</span>
+                  )}
+                {dashboardData && dashboardData.addProtocolDataError && (
+                  <span className="file-error-message">API Error</span>
+                )}
+              </Grid>
+            </Grid>
+          </Modal>
+        </div>
+      )}
+    </>
   );
 };
 

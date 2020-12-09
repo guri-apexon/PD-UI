@@ -141,7 +141,7 @@ function* addProtocolSponsor() {
 }
 function* postAddProtocol(postData) {
   const { payload: data } = postData;
-  const postUrl = `${BASE_URL}/pd/api/v1/documents/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}`;
+  const postUrl = `${BASE_URL}/pd/api/v1/documents/?fileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}`;
   var bodyFormData = new FormData();
   bodyFormData.append("file", data.uploadFile[0]);
   try {
