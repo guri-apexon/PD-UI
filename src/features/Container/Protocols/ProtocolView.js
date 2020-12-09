@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Grid from "apollo-react/components/Grid";
+import Button from "apollo-react/components/Button";
 import { tocData } from "./protocolSlice.js";
+import dummyTable from "./dummyTable.json";
 
 function getStyle(style) {
   const IsBold = style.IsBold;
@@ -13,27 +15,31 @@ function getStyle(style) {
 }
 
 function getTable(data) {
-  console.log(Object.keys(data));
   const keys = Object.keys(data);
+  const object = data[keys[0]];
+  console.log(Object.keys(object));
 
+  // for (const property in object) {
+  //   console.log(`${property}: ${object[property]}`);
+  // }
   return (
     <Grid container spacing={2}>
-       <Grid item xs={6}>
-        
-       </Grid>
-       <Grid item xs={6}>
-
-       </Grid>
+      <Grid item xs={6}>
+        {Object.keys(object).map((key) => {
+          return <p>{object[key]}</p>;
+        })}
+      </Grid>
+      <Grid item xs={6}></Grid>
     </Grid>
-  )
+  );
 }
 
 function getElement(data) {
   let content = data[0];
   const type = data[1];
-  if (type === 'table') {
+  if (type === "table") {
     content = JSON.parse(content);
-    console.log('inside table', content)
+    console.log("inside table", content);
     return getTable(content);
   }
   const subsectionOf = data[2];
@@ -75,6 +81,7 @@ function getElement(data) {
 }
 const ProtocolView = () => {
   const dispatch = useDispatch();
+  const [showNav, setShowNav] = useState(false);
   const sumData = useSelector(tocData);
   console.log("toc", sumData);
   useEffect(() => {
@@ -95,10 +102,68 @@ const ProtocolView = () => {
   // console.log(ele);
   return (
     <div style={{ overflow: "hidden" }}>
-      {sumData.length &&
-        sumData.map((item) => {
-          return getElement(item);
-        })}
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          <div className="dropdown-wrapper">
+            <button
+              style={{
+                marginRight: 10,
+                width: "100%",
+                textAlign: "left",
+                border: "none",
+              }}
+              onClick={() => {
+                setShowNav(!showNav);
+              }}
+            >
+              <span style={{ backgroundColor: "blue", width: 5 }}></span>
+              Text
+            </button>
+            <div
+              className={`dropdown-menu sample ${showNav ? "show-nav" : ""}`}
+            >
+              <a
+                href="#dad"
+                className="dropdown-item"
+                onClick={() => {
+                  setShowNav(!showNav);
+                }}
+              >
+                Action 1
+              </a>
+              <a href="#2001" className="dropdown-item">
+                Action 2
+              </a>
+              <a href="#" className="dropdown-item">
+                Action 3
+              </a>
+              <a href="#" className="dropdown-item">
+                Action 4
+              </a>
+            </div>
+          </div>
+        </Grid>
+        <Grid item xs={10}>
+          <div>
+            {sumData.length &&
+              sumData.map((item) => {
+                return getElement(item);
+              })}
+            <p id="dad">dadadaadadadad</p>
+            {dummyTable.map((item) => {
+              return (
+                <div key={item.Header[0]}>
+                  <h2>{item.TableName}</h2>
+                  <div
+                    id={item.Header[0]}
+                    dangerouslySetInnerHTML={{ __html: item.Table }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </Grid>
+      </Grid>
       {/* <div dangerouslySetInnerHTML={{ __html: toc }} /> */}
       {/* {toc.map((item, index) => {
         return <div key={index}>
