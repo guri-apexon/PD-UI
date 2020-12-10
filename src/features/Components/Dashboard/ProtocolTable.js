@@ -215,7 +215,7 @@ const ExpandableComponent = ({ row }) => {
           {"Source"}
         </Typography>
         <Typography className="fw-8" variant="body2">
-          <a href={row.filePath} target="_blank">
+          <a href={row.protocol_document_path} target="_blank">
             {row.protocol_document_name}
           </a>
         </Typography>

@@ -40,16 +40,6 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
     setFormErrorValues(initialFormErrorValues);
     handleOpen("custom");
   };
-
-  const handleUpload = (selectedFiles1) => {
-    setSelectedFiles([...selectedFiles, ...selectedFiles1]);
-  };
-  const handleDelete = (file) => {
-    const selectedFiles1 = selectedFiles.filter(
-      (item) => item.name !== file.name
-    );
-    setSelectedFiles(selectedFiles1);
-  };
   const onTextFieldChange = (fieldName, e, fieldType, dropdownValue) => {
     let tempError = _.cloneDeep(formErrorValues);
     let tempValues = _.cloneDeep(formValues);
@@ -94,17 +84,17 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         tempError[fieldName].error = true;
         tempError[fieldName].errorMessage = "Required";
       }
-      tempValues[fieldName] = dropdownValue;
+      tempValues[fieldName] = dropdownValue ? dropdownValue : { label: "" };
       dropdownFocus =
         dropdownValue && dropdownValue.label ? dropdownValue.label : "";
       setFormErrorValues(tempError);
-
       setFormValues(tempValues);
     }
   };
 
   const onFieldBlur = (fieldName, e, fieldType) => {
     let temp = _.cloneDeep(formErrorValues);
+    let tempFormValues = _.cloneDeep(formValues);
     if (fieldType === "Textbox") {
       if (
         !e.target.value.trim().length > 0 &&
@@ -122,6 +112,52 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       if (!dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
         temp[fieldName].error = true;
         temp[fieldName].errorMessage = "Required";
+      } else if (
+        fieldName === "documentStatus" ||
+        fieldName === "amendmentNumber"
+      ) {
+        temp[fieldName].error = false;
+        temp[fieldName].errorMessage = " ";
+        switch (fieldName) {
+          case "documentStatus":
+            {
+              if (
+                dropdownFocus === "Approved Final" &&
+                ["Y"].includes(formValues.amendmentNumber.label)
+              ) {
+                temp.amendmentNumber.error = true;
+                temp.amendmentNumber.errorMessage =
+                  "Amendment Cannot be 'Y' for Final Document";
+              } else {
+                if (tempFormValues.amendmentNumber.label.length > 0) {
+                  temp.amendmentNumber.error = false;
+                  temp.amendmentNumber.errorMessage = " ";
+                }
+              }
+            }
+            break;
+          case "amendmentNumber":
+            {
+              if (
+                dropdownFocus === "Y" &&
+                formValues.documentStatus.label === "Approved Final"
+              ) {
+                temp.amendmentNumber.error = true;
+                temp.amendmentNumber.errorMessage =
+                  "Amendment Cannot be 'Y' for Final Document";
+              } else {
+                if (
+                  tempFormValues.amendmentNumber &&
+                  tempFormValues.amendmentNumber.label &&
+                  tempFormValues.amendmentNumber.label.length > 0
+                ) {
+                  temp.amendmentNumber.error = false;
+                  temp.amendmentNumber.errorMessage = " ";
+                }
+              }
+            }
+            break;
+        }
       } else {
         temp[fieldName].error = false;
         temp[fieldName].errorMessage = " ";
@@ -150,7 +186,6 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const setUploadFile = (file, fieldName) => {
     let tempValue = _.cloneDeep(formValues);
     tempValue[fieldName] = file;
-    debugger;
     setFormValues(tempValue);
   };
   const handleSaveForm = () => {
@@ -180,7 +215,8 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
           if (
             (tempValues[field] &&
               tempValues[field].label &&
-              tempValues[field].label.length > 0) ||
+              tempValues[field].label.length > 0 &&
+              !tempError[field].error) ||
             !tempError[field].isRequired
           ) {
             tempError[field].error = false;
@@ -238,7 +274,6 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       fileName: tempFormValues.uploadFile[0].name,
     };
     dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
-    // if(dashboardData && )
   };
   console.log("dashboardData :", dashboardData);
   return (
@@ -455,8 +490,6 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
               <Grid item xs={12} sm={12}>
                 <CustomFileUpload
                   selectedFiles={selectedFiles}
-                  handleUpload={handleUpload}
-                  handleDelete={handleDelete}
                   fullWidth
                   handleFileUploadError={handleFileUploadError}
                   setUploadFile={setUploadFile}

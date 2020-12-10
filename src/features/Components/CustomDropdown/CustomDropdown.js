@@ -23,10 +23,8 @@ const CustomDropdown = ({
   });
   const buttonRef = useRef(null)
   const [blur, setBlur] = useState(false);
-  const [addItem, setAddItem] = useState(false);
   const [expand, setExpand] = useState(false);
   const [list, setList] = useState(source);
-  let addItems= false
 
 
   useEffect(() => {

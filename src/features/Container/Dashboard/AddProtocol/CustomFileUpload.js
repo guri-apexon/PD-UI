@@ -15,7 +15,6 @@ class CustomFileUpload extends Component {
     handleUpload = (selectedFiles) => {
         const { selectedFiles: existingFiles } = this.state;
         const {handleFileUploadError,setUploadFile}=this.props;
-    
         // set loader and wait for some API to respond
         this.setState(
           {
@@ -69,7 +68,6 @@ class CustomFileUpload extends Component {
       };
 
     render(){
-        const {selectedFiles, handleDelete, handleUpload}=this.props;
         return(
             <FileUpload
             value={this.state.selectedFiles}
