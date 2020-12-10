@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import {withRouter} from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
 import Button from "apollo-react/components/Button";
 import Search from "apollo-react/components/Search";
@@ -30,9 +30,9 @@ class ProtocolSearchButton extends React.Component {
   };
 
   handleSearchProtocol = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     this.props.getSearchInput(this.state["input"]);
-    this.props.history.push(`/Search?key=${this.state.input}`)
+    this.props.history.push(`/Search?key=${this.state.input}`);
     this.setState({ input: "" });
     // ReactDOM.render(
     // <Chip
@@ -64,15 +64,16 @@ class ProtocolSearchButton extends React.Component {
 
     return (
       <div className="width98">
-        <Search
-          id="txtSearchProtocol"
-          style={{ width: "500px" }}
-          placeholder="Enter additional Search Terms if Applicable"
-          size="small"
-          onChange={this.handleSaveSearchProtocol}
-          value={this.state.input}
-        />
-        <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal">
+        <form onSubmit={this.handleSearchProtocol} style={{ float: "left" }}>
+          <Search
+            id="txtSearchProtocol"
+            style={{ width: "500px" }}
+            placeholder="Enter additional Search Terms if Applicable"
+            size="small"
+            onChange={this.handleSaveSearchProtocol}
+            value={this.state.input}
+          />
+          <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal">
             <Button
               variant="primary"
               size="small"
@@ -81,19 +82,21 @@ class ProtocolSearchButton extends React.Component {
             >
               Search
             </Button>
-        </div>
+          </div>
+        </form>
         <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal floatRight">
-          <MenuButton
-            buttonText="Select Action"
-            menuItems={menuItems}
-            size="small"
-            style={{ top: 8 }}
-          />
+          {this.props.idPresent && (
+            <MenuButton
+              buttonText="Select Action"
+              menuItems={menuItems}
+              size="small"
+              style={{ top: 8 }}
+            />
+          )}
         </div>
       </div>
     );
   }
 }
 
-
-export default withRouter(ProtocolSearchButton)
+export default withRouter(ProtocolSearchButton);

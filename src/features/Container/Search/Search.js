@@ -86,7 +86,7 @@ const Search = (props) => {
       />
       <div className="marginLeft10 MuiTableCell-root">
         <div className="width100 floatLeft">
-          <ProtocolSearchButton getSearchInput={getSearchInput} history={props.history}/>
+          <ProtocolSearchButton getSearchInput={getSearchInput} history={props.history} idPresent={idPresent}/>
         </div>
         <div className="width100 floatLeft">
           {idPresent && filterList.success && <SearchPanel filterList={filterList.data} resultList={resultList} searchInput={searchInput} deleteSearchInput={deleteSearchInput}/>}

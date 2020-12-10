@@ -10,6 +10,7 @@ import Checkbox from "apollo-react/components/Checkbox";
 
 import Radio from "apollo-react/components/Radio";
 import RadioGroup from "apollo-react/components/RadioGroup";
+import DateRangePicker from "apollo-react/components/DateRangePicker";
 
 import React from "react";
 
@@ -30,6 +31,9 @@ const useStyles = makeStyles({
   cardHighlight: {
     backgroundColor: "#FFFFFF",
   },
+  // cardContainer:{
+  //   padding:'0 !important'
+  // },
   bold: {
     fontWeight: 600,
   },
@@ -71,9 +75,9 @@ export const CheckboxCard = ({ state, section, index }) => {
     <Card
       className={classNames(classes.card, index === 0 && classes.cardHighlight)}
     >
-      <CardContent>
+      <CardContent className={classes.cardContainer}>
         <Typography className={classes.cardSubtitle} variant="caption">
-          <div>
+          <div style={{ marginTop: 10 }}>
             <CheckboxGroup value={state["searchValue"]} onChange={handleChange}>
               {section.sectionContent.map((content, i) => (
                 <Checkbox
@@ -103,12 +107,11 @@ export const TextCard = ({ state, section, index }) => {
   const classes = useStyles();
   return (
     <Card
-      color="dark"
       className={classNames(classes.card, index === 0 && classes.cardHighlight)}
     >
       <CardContent>
         <Typography className={classes.cardSubtitle} variant="caption">
-          <div>
+          <div style={{ marginTop: 10 }}>
             {section.sectionContent.map((content, i) => (
               <p className="text-filter" key={content.id}>
                 {content.title}
@@ -132,12 +135,11 @@ export const RadioCard = ({ state, section, index }) => {
   const classes = useStyles();
   return (
     <Card
-      color="dark"
       className={classNames(classes.card, index === 0 && classes.cardHighlight)}
     >
       <CardContent>
         <Typography className={classes.cardSubtitle} variant="caption">
-          <div>
+          <div style={{ marginTop: 10 }}>
             <RadioGroup value={state["searchValue"]} onChange={handleChange}>
               {section.sectionContent.map((content, i) => (
                 <Radio
@@ -149,6 +151,48 @@ export const RadioCard = ({ state, section, index }) => {
                 />
               ))}
             </RadioGroup>
+          </div>
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const DateRangeCard = ({ state, section, index }) => {
+  const [value, setValue] = React.useState([]);
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    state["searchValue"] = e.target.value;
+  };
+
+  const classes = useStyles();
+  return (
+    <Card
+      className={classNames(classes.card, index === 0 && classes.cardHighlight)}
+    >
+      <CardContent>
+        <Typography className={classes.cardSubtitle} variant="caption">
+          <div style={{ marginTop: 10 }}>
+            <RadioGroup value={state["searchValue"]} onChange={handleChange}>
+              {section.sectionContent.map((content, i) => (
+                <Radio
+                  id={section.sectionContent[i].id + "_" + i}
+                  key={i}
+                  value={section.sectionContent[i].id + "_" + i}
+                  label={content.title}
+                  size="small"
+                />
+              ))}
+            </RadioGroup>
+            <div style={{ marginTop: 20 }}>
+              <DateRangePicker
+                onChange={(event) => console.log(event.target.value)}
+                fromDateProps={{ label: "Start of Range",placeholder:"MM/DD/YYYY" }}
+                toDateProps={{ label: "End of Range",placeholder:"MM/DD/YYYY" }}
+                fromLabel="hhhhh"
+              />
+            </div>
           </div>
         </Typography>
       </CardContent>

@@ -1,4 +1,5 @@
 import Panel from "apollo-react/components/Panel";
+import _ from "lodash";
 import Typography from "apollo-react/components/Typography";
 import classNames from "classnames";
 import React, { useState } from "react";
@@ -19,20 +20,72 @@ import Chip from "apollo-react/components/Chip";
 export default class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { seachValue: [], defaultExpand: false, accID: "" };
+    this.state = {
+      seachValue: [],
+      defaultExpand: false,
+      accID: "",
+      accordionObj: {},
+    };
   }
-  setExpanded = (id) => {
-    console.log(id);
-    if(id===this.state.accID){
-      this.setState({ accID: "" });
-    }else{
-      this.setState({ accID: id });
+  static getDerivedStateFromProps(props, state) {
+    if (_.isEmpty(state.accordionObj) && props.resultList.success) {
+      console.log("iiiiiii", props.resultList);
+      let result = props.resultList.data;
+      let arr = [];
+      for (let i = 0; i < result.length; i++) {
+        let obj = {
+          expanded: false,
+          id: result[i].protocolNumber,
+          ...result[i],
+        };
+        arr.push(obj);
+      }
+      return {
+        accordionObj: arr,
+      };
     }
-    
+
+    // Return null if the state hasn't changed
+    return null;
+  }
+  componentDidMount() {
+    console.log("iiiiiiiooooooiii", this.state);
+  }
+  setExpanded = (id, obj) => {
+    const { accordionObj } = this.state;
+    let accObj = accordionObj;
+    let foundIndex = accObj.findIndex((obj) => obj.id === id);
+    accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
+    console.log(accObj);
+    // debugger;
+    this.setState({
+      accordionObj: [
+        ...this.state.accordionObj.slice(0, foundIndex),
+        Object.assign({}, this.state.accordionObj[foundIndex], obj),
+        ...this.state.accordionObj.slice(foundIndex + 1),
+      ],
+    });
   };
+
+  componentDidUpdate(prevProps, prevState) {
+    const { accordionObj } = this.state;
+    if (prevState.defaultExpand !== this.state.defaultExpand) {
+      // let arr = accordionObj.map(item => {
+      //   return { ...item, expanded: true };
+      // });
+      // console.log("Click expand", arr);
+
+      this.setState({
+        accordionObj: accordionObj.map(item => {
+          return { ...item, expanded: true };
+        })
+      })
+    }
+  }
 
   render() {
     const { filterList, resultList } = this.props;
+    const { accordionObj } = this.state;
     const clearAllCheckbox = () => {
       console.log(this.state["searchValue"]);
       this.state["searchValue"] = [];
@@ -48,7 +101,7 @@ export default class SearchPanel extends React.Component {
           : protocols
         : 0;
 
-    console.log(this.props, "props");
+    // console.log(this.props, "props");
     return (
       <div id="searchPanel" className="searchPanel">
         <Panel width="20%">
@@ -56,7 +109,7 @@ export default class SearchPanel extends React.Component {
             {
               <div className="width100 refine-search">
                 <span>Refine your Search</span>
-                <div className="floatRight" style={{paddingRight:5}}>
+                <div className="floatRight" style={{ paddingRight: 5 }}>
                   <Link onClick={clearAllCheckbox} size="small">
                     {" "}
                     Clear All
@@ -128,14 +181,12 @@ export default class SearchPanel extends React.Component {
                     )}
                   </div>
                   {resultList.success &&
-                    resultList.data.map((protocol) => (
+                    accordionObj.map((protocol, i) => (
                       <div>
                         <CompositeAccordion
                           setExpanded={this.setExpanded}
-                          defaultExpand={this.state.defaultExpand}
                           data={protocol}
                           key={protocol.protocolNumber}
-                          accID={this.state.accID}
                         />
                       </div>
                     ))}

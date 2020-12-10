@@ -10,13 +10,13 @@ const CheckBoxCell = ({ row }) => {
   );
 };
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
-  console.log("--------------", row);
+  // console.log("--------------", row);
   return <Link to={`/protocols?protocolId=${row["version"]}`}>{row[key]}</Link>;
 };
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
-  console.log("--------------", row);
-  return <Link to={`${row["documentPath"]}`} download target="_blank">{row[key]}</Link>;
+  // console.log("--------------", row);
+  return <Link to={`${row["documentPath"]}`} target="_blank">{row[key]}</Link>;
 };
 const columns = [
   {

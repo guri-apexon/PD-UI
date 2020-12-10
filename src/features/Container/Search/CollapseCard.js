@@ -1,6 +1,11 @@
 import React from "react";
 import Collapsible from "react-collapsible";
-import { CheckboxCard, TextCard, RadioCard } from "./Customcards";
+import {
+  CheckboxCard,
+  TextCard,
+  RadioCard,
+  DateRangeCard,
+} from "./Customcards";
 
 const CollapseCard = ({ state, section, index }) => {
   return (
@@ -13,12 +18,21 @@ const CollapseCard = ({ state, section, index }) => {
           index={index}
         />
       ) : section.fieldType === "radio" ? (
-        <RadioCard
-          state={state}
-          key={section.sectionId}
-          section={section}
-          index={index}
-        />
+        section.sectionName === "Date Range" ? (
+          <DateRangeCard
+            state={state}
+            key={section.sectionId}
+            section={section}
+            index={index}
+          />
+        ) : (
+          <RadioCard
+            state={state}
+            key={section.sectionId}
+            section={section}
+            index={index}
+          />
+        )
       ) : (
         <CheckboxCard
           state={state}

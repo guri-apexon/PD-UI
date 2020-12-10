@@ -17,11 +17,9 @@ import Divider from "apollo-react/components/Divider";
 
 export const CompositeAccordion = ({
   data,
-  defaultExpand,
-  setExpanded,
-  accID,
+  setExpanded
 }) => {
-  console.log("---------", defaultExpand);
+  console.log("--------",data)
   return (
     <Card
       interactive
@@ -49,14 +47,13 @@ export const CompositeAccordion = ({
         </div>
 
         <div className="width90 accordion-start">
-          {/* <Accordion
-            // expanded={
-            //   defaultExpand ? defaultExpand : (accID === data.protocolNumber) && accID
-            // }
-          > */}
-          <Accordion >
+          <Accordion
+            expanded={data.expanded}
+          >
+            {/* <Accordion > */}
             <AccordionSummary
               style={{ maginLeft: 24 }}
+              onClick={() => setExpanded(data.protocolNumber,{id:data.protocolNumber,expanded:!data.expanded})}
             >
               {/* // onClick={() => setExpanded(data.protocolNumber)} */}
               <Typography>Protocol Data</Typography>
