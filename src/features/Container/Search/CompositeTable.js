@@ -2,53 +2,49 @@ import React from "react";
 
 import Table from "apollo-react/components/Table";
 import columns from "./Data/column.data";
+import Grid from "apollo-react/components/Grid";
 
 export const CompositeTable = ({ data }) => (
-  <div>
-    <div className="width85" style={{marginTop:10}}>
-      <div className="Multiline-block50h">
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          Indication:
-        </span>
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          {data.indication}
-        </span>
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          Phase:
-        </span>
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          {data.phase}
-        </span>
-      </div>
-      <div className="Multiline-block50h">
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          Sponsor:
-        </span>
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          {data.sponsor}
-        </span>
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          Source Document:
-        </span>
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          {data.sourceDocument}
-        </span>
-      </div>
-      <div className="Multiline-block50h">
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          Molecule/Device:
-        </span>
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          {data.molecule}
-        </span>
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          Approval Date:
-        </span>
-        <span className="MuiTypography-root-42 Table-subtitle-6 MuiTypography-caption-45 MuiTypography-displayBlock-71 width25">
-          {data.approvalDate}
-        </span>
-      </div>
-    </div>
+  <div style={{ marginTop: 10, marginBottom: 10 }}>
+    <Grid md={10} container>
+      <Grid md={3}>
+        <p className="grid-item">Indication :</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">{data.indication}</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">Phase :</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">{data.phase}</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">Sponsor :</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">{data.sponsor}</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">Source Document:</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">{data.sourceDocument}</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">Molecule/Device :</p>
+      </Grid>
+      <Grid md={3}>
+        <p>{data.molecule}</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">Approval Date:</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">{data.approvalDate}</p>
+      </Grid>
+    </Grid>
+
     <div className="width100 search-inner-table">
       <Table columns={columns} rows={data.rows} hidePagination />
     </div>

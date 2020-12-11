@@ -16,6 +16,7 @@ import MenuItem from "apollo-react/components/MenuItem";
 import SelectButton from "apollo-react/components/SelectButton";
 import AlignJustify from "apollo-react-icons/AlignJustify";
 import Chip from "apollo-react/components/Chip";
+import Grid from "apollo-react/components/Grid";
 
 export default class SearchPanel extends React.Component {
   constructor(props) {
@@ -104,7 +105,8 @@ export default class SearchPanel extends React.Component {
     // console.log(this.props, "props");
     return (
       <div id="searchPanel" className="searchPanel">
-        <Panel width="20%">
+        <Grid container md={12}>
+        <Grid md={3}>
           <div variant="body2">
             {
               <div className="width100 refine-search">
@@ -128,8 +130,8 @@ export default class SearchPanel extends React.Component {
               />
             ))}
           </div>
-        </Panel>
-        <Panel width="78%" hideButton>
+        </Grid>
+        <Grid md={9}>
           <div variant="body1">
             <div className="width100">
               <div className="width100">
@@ -182,7 +184,7 @@ export default class SearchPanel extends React.Component {
                   </div>
                   {resultList.success &&
                     accordionObj.map((protocol, i) => (
-                      <div>
+                      <div key={protocol.protocolNumber}>
                         <CompositeAccordion
                           setExpanded={this.setExpanded}
                           data={protocol}
@@ -194,7 +196,9 @@ export default class SearchPanel extends React.Component {
               </div>
             </div>
           </div>
-        </Panel>
+        </Grid>
+        </Grid>
+        
       </div>
     );
   }

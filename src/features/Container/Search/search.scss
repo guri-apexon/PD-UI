@@ -8,6 +8,9 @@
     width: 100%;
     margin-top: 10px;
   }
+  .searchPanel>div>button{
+    display: none;
+  }
 
   .App {
     text-align: center;
@@ -82,9 +85,10 @@
   // .Panel-toggleButton-246{
   //   display: none;
   // }
-  button[class*="Panel-toggleButton-"] {
-    display: none;
-  }
+
+  // button[class*="Panel-toggleButton-"] {
+  //   display: none;
+  // }
   // [class^="Panel-toggleButton"] {
   //   background: #ffff00;
   // }
@@ -99,6 +103,7 @@
 
     td a {
       text-decoration: none;
+      word-break: break-word;
     }
     div[class*="MuiExpansionPanelSummary-root"] {
       margin-left: 24px;
@@ -170,6 +175,15 @@
     float: left;
     margin-left: 20px;
     margin-top: -2px;
+  }
+  .grid-item{
+    margin-top: 3px;
+    margin-bottom: 3px;
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /* width: 100px; */
+    overflow: hidden;
   }
   .expand-all {
     float: right;
