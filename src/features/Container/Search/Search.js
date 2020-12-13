@@ -4,8 +4,8 @@ import "./search.scss";
 
 //------------------- Components --------------------
 
-import SearchPanel from "./SearchPanel";
-import ProtocolSearchButton from "./ProtocolSearchButton";
+import SearchResultSection from "./SearchResultSection";
+import SearchSection from "./SearchSection";
 
 
 //------------------- Third Party -----------------
@@ -46,7 +46,7 @@ const Search = (props) => {
   }, [dispatch]);
   const handleClick = (e) => {
     e.preventdefault();
-    console.log("Breadcrumb was clicked", e);
+    // console.log("Breadcrumb was clicked", e);
   };
   useEffect(() => {
     if (searchInput.length > 0) {
@@ -55,12 +55,11 @@ const Search = (props) => {
       const parsed = queryString.parse(params);
       dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.searchKey });
       dispatch({ type: "GET_SEARCH_RESULT", payload: parsed.searchKey });
-      console.log("--------777777777");
     }
   }, [searchInput]);
 
   const getSearchInput = (input) => {
-    console.log(input);
+    // console.log(input);
     setIdPresent(true);
     setSearchInput(input);
   };
@@ -85,17 +84,17 @@ const Search = (props) => {
         ]}
         style={{ paddingInlineStart: 0, marginBottom: 0 }}
       />
-      <div className="marginLeft10 MuiTableCell-root">
-        <div className="width100 floatLeft">
-          <ProtocolSearchButton
+      <div className="marginLeft10">
+        <div>
+          <SearchSection
             getSearchInput={getSearchInput}
             history={props.history}
             idPresent={idPresent}
           />
         </div>
-        <div className="width100 floatLeft">
+        <div>
           {idPresent && filterList.success && (
-            <SearchPanel
+            <SearchResultSection
               filterList={filterList.data}
               resultList={resultList}
               searchInput={searchInput}

@@ -3,7 +3,7 @@ import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
 import AccordionSummary from "apollo-react/components/AccordionSummary";
 import Typography from "apollo-react/components/Typography";
-import { CompositeTable } from "./CompositeTable";
+import SearchCard from "./SearchCard";
 import Checkbox from "apollo-react/components/Checkbox";
 import Folder from "apollo-react-icons/Folder";
 import Switch from "apollo-react/components/Switch";
@@ -15,7 +15,7 @@ import Divider from "apollo-react/components/Divider";
 //    setValue(checked);
 //};
 
-export const CompositeAccordion = ({
+const SearchListingSection = ({
   data,
   setExpanded
 }) => {
@@ -60,7 +60,7 @@ export const CompositeAccordion = ({
             </AccordionSummary>
             <AccordionDetails>
               <div className="width100">
-                <CompositeTable data={data} />
+                <SearchCard data={data} />
               </div>
             </AccordionDetails>
           </Accordion>
@@ -69,3 +69,5 @@ export const CompositeAccordion = ({
     </Card>
   );
 };
+
+export default SearchListingSection

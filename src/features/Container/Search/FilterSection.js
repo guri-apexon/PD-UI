@@ -5,7 +5,7 @@ import {
   TextCard,
   RadioCard,
   DateRangeCard,
-} from "./Customcards";
+} from "./CustomFilterCards";
 
 const CollapseCard = ({ state, section, index }) => {
   return (

@@ -1,6 +1,6 @@
 import { put, takeEvery, all, call, takeLatest } from "redux-saga/effects";
 import { getFilters, getSearchResult } from "./searchSlice";
-import { httpCall } from "../../../utils/api";
+import { httpCall, Apis } from "../../../utils/api";
 
 function* getFilterData(action) {
   console.log("search", action.payload);
@@ -15,7 +15,7 @@ function* getSearchData(action) {
   console.log("search", action.payload);
   // const url = "../../../../searchResult.json";
 
-  const url = "http://ca2spdml04q:9200/pd-index/_search";
+  const url = Apis.search;
 
   const bodyData = {
     query: {
@@ -53,6 +53,15 @@ function* getSearchData(action) {
   }
 }
 
+function* watchIncrementAsync() {
+  yield takeEvery("GET_SEARCH_FILTER", getFilterData);
+  yield takeEvery("GET_SEARCH_RESULT", getSearchData);
+}
+
+export default function* protocolSaga() {
+  yield all([watchIncrementAsync()]);
+}
+
 function createJSONFormat(data) {
   let arr = [];
 
@@ -87,16 +96,4 @@ function createJSONFormat(data) {
 
   console.log("arrs", arr);
   return arr;
-}
-
-function* watchIncrementAsync() {
-  //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
-  yield takeEvery("GET_SEARCH_FILTER", getFilterData);
-  yield takeEvery("GET_SEARCH_RESULT", getSearchData);
-}
-
-// notice how we now only export the rootSaga
-// single entry point to start all Sagas at once
-export default function* protocolSaga() {
-  yield all([watchIncrementAsync()]);
 }

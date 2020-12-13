@@ -4,7 +4,7 @@ import Table from "apollo-react/components/Table";
 import columns from "./Data/column.data";
 import Grid from "apollo-react/components/Grid";
 
-export const CompositeTable = ({ data }) => (
+const SearchCard = ({ data }) => (
   <div style={{ marginTop: 10, marginBottom: 10 }}>
     <Grid md={10} container>
       <Grid md={3}>
@@ -50,3 +50,5 @@ export const CompositeTable = ({ data }) => (
     </div>
   </div>
 );
+
+export default SearchCard

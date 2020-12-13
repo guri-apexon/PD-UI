@@ -20,15 +20,16 @@ let BASE_URL_8000 = "";
 
 if (process.env.NODE_ENV === "development") {
   BASE_URL = "http://ca2spdml01q:9001";
-  BASE_URL_8000= "http://ca2spdml01q:8000"
+  BASE_URL_8000 = "http://ca2spdml01q:8000";
 } else {
-  BASE_URL = "http://www.production.com";
-  BASE_URL_8000 = "http://www.production.com";
+  BASE_URL = "http://ca2spdml01q:8000";
+  BASE_URL_8000 = "http://ca2spdml01q:8000";
 }
 
 export default BASE_URL;
-export{BASE_URL_8000};
+export { BASE_URL_8000 };
 
 export const Apis = {
-    protocol:`${BASE_URL}/api/protocol`,
-}
+  protocol: `${BASE_URL}/api/protocol`,
+  search:`http://ca2spdml04q:9200/pd-index/_search`
+};
