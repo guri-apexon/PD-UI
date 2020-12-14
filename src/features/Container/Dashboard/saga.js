@@ -154,6 +154,12 @@ function* postAddProtocol(postData) {
 
     console.log("postResponseww :", postResponse);
     if (postResponse.success) {
+      // if(postResponse && postResponse.data.duplicate && postResponse.data.duplicate !== null && postResponse.data.duplicate.length > 0  ){
+      //   yield put(setAddProtocolModal(true));
+      //   yield put(setAddprotocolError(postResponse.data.duplicate));
+      // } else {
+      //   yield put(setAddProtocolModal(false));
+      // }
       yield put(setAddProtocolModal(false));
     } else {
       yield put(setAddProtocolModal(true));

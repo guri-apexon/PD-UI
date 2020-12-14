@@ -120,8 +120,9 @@ const CustomDropdown = ({
         />
         <div className={`custom-dropdown-list ${error && "adjust-margin"}`}>
           {list && list.length > 0 ? (
-            list.map((item) => (
+            list.map((item,index) => (
               <p
+                key={index}
                 className="custom-list-item"
                 onClick={(e) => onListItemClick(e, item)}
               >

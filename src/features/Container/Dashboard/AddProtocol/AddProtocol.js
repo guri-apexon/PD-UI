@@ -43,6 +43,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const onTextFieldChange = (fieldName, e, fieldType, dropdownValue) => {
     let tempError = _.cloneDeep(formErrorValues);
     let tempValues = _.cloneDeep(formValues);
+  //  console.log("dashboardData1 :", fieldName, e, fieldType, dropdownValue );
     if (fieldType === "Textbox") {
       if (
         formErrorValues[fieldName].isRequired &&
@@ -275,7 +276,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
     };
     dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
   };
-  console.log("dashboardData :", dashboardData);
+  // console.log("dashboardData1 :", dashboardData.addProtocolModal, );
   return (
     <>
       {dashboardData && dashboardData.isLoading ? (
@@ -287,6 +288,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
               variant="primary"
               onClick={() => onModalOpen("custom")}
               icon={Plus}
+              data-testid='add-protocol-button'
             >
               {"Add Protocol to Library"}
             </Button>
@@ -296,8 +298,10 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
             open={dashboardData && dashboardData.addProtocolModal}
             onClose={() => onModalClose()}
             title="Add Protocol to Library"
+            subtitle={dashboardData && dashboardData.addProtocolDataError && <span className="file-error-message">{ dashboardData.addProtocolDataError}</span>}
             buttonProps={[{}, { label: "Save", onClick: handleSaveForm }]}
             id="add-protocol-modal"
+            data-testid='add-protocol-modal'
           >
             <Grid container spacing={2}>
               <Grid item xs={5} sm={5}>
@@ -313,6 +317,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                     onTextFieldChange("protocolNumber", e, "Textbox")
                   }
                   onBlur={(e) => onFieldBlur("protocolNumber", e, "Textbox")}
+                  data-testid="protocol-number-texfield"
                 />
               </Grid>
               <Grid item xs={1} sm={1}></Grid>
@@ -342,6 +347,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                         newValue
                       )
                     }
+                    data-testid="amendment-number-texfield"
                   />
                 </div>
               </Grid>
@@ -374,6 +380,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                   }
                   onBlur={(e) => onFieldBlur("versionNumber", e, "Textbox")}
                   type="number"
+                  data-testid="version-number-texfield"
                 />
               </Grid>
               <Grid item xs={1} sm={1}></Grid>
@@ -499,9 +506,6 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                   formErrorValues.uploadFile.errorMessage === "Required" && (
                     <span className="file-error-message">Required</span>
                   )}
-                {dashboardData && dashboardData.addProtocolDataError && (
-                  <span className="file-error-message">API Error</span>
-                )}
               </Grid>
             </Grid>
           </Modal>
