@@ -13,6 +13,11 @@ function* getFilterData(action) {
 
 function* getSearchData(action) {
   console.log("search", action.payload);
+  const obj = {
+    success: false,
+    data: [],
+  };
+  yield put(getSearchResult(obj));
   // const url = "../../../../searchResult.json";
 
   const url = Apis.search;

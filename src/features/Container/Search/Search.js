@@ -7,10 +7,10 @@ import "./search.scss";
 import SearchResultSection from "./SearchResultSection";
 import SearchSection from "./SearchSection";
 
-
 //------------------- Third Party -----------------
 
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
+import Loader from "apollo-react/components/Loader";
 
 //------------------- Redux -----------------
 import { useSelector, useDispatch } from "react-redux";
@@ -28,6 +28,7 @@ const Search = (props) => {
   const dispatch = useDispatch();
   const [idPresent, setIdPresent] = useState(false);
 
+  const [isLoading, setLoader] = useState(false);
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
@@ -93,13 +94,18 @@ const Search = (props) => {
           />
         </div>
         <div>
-          {idPresent && filterList.success && (
-            <SearchResultSection
-              filterList={filterList.data}
-              resultList={resultList}
-              searchInput={searchInput}
-              deleteSearchInput={deleteSearchInput}
-            />
+          {!resultList.success ? (
+            <Loader isInner />
+          ) : (
+            idPresent &&
+            filterList.success && (
+              <SearchResultSection
+                filterList={filterList.data}
+                resultList={resultList}
+                searchInput={searchInput}
+                deleteSearchInput={deleteSearchInput}
+              />
+            )
           )}
         </div>
       </div>
