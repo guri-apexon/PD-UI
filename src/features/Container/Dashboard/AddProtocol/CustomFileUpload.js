@@ -3,7 +3,7 @@ import FileUpload from "apollo-react/components/FileUpload";
 
 
 const allowedTypes = ['.doc', '.pdf', '.docx','application/pdf','application/msword','wordprocessingml'];
-const maxSize = 1500000;
+// const maxSize = 150000000;
 class CustomFileUpload extends Component {
     constructor(props){
         super(props);
@@ -40,12 +40,13 @@ class CustomFileUpload extends Component {
                 //   } format is not supported`;
                 file.errorMessage='Please upload PDF or Word format only';
                   handleFileUploadError('Please upload PDF or Word format only', true, 'uploadFile');
-                } else if (maxSize && file.size > maxSize) {
-                  file.errorMessage = `File is too large (max is ${maxSize} bytes)`;
-                  handleFileUploadError('`File is too large (max is ${maxSize} bytes', true, 'uploadFile');
                 } else {
                     handleFileUploadError(" ", false, 'uploadFile')
                 }
+                //  else if (maxSize) { // && file.size > maxSize
+                //   file.errorMessage = `File is too large (max is ${maxSize} bytes)`;
+                //   handleFileUploadError(`File is too large (max is ${maxSize} bytes`, true, 'uploadFile');
+                // } 
                 return file;
               });
     

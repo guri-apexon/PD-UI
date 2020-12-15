@@ -43,7 +43,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const onTextFieldChange = (fieldName, e, fieldType, dropdownValue) => {
     let tempError = _.cloneDeep(formErrorValues);
     let tempValues = _.cloneDeep(formValues);
-  //  console.log("dashboardData1 :", fieldName, e, fieldType, dropdownValue );
+  //  console.log("dashboardData1 :", fieldName, 'e, fieldType', dropdownValue );
     if (fieldType === "Textbox") {
       if (
         formErrorValues[fieldName].isRequired &&
@@ -96,6 +96,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const onFieldBlur = (fieldName, e, fieldType) => {
     let temp = _.cloneDeep(formErrorValues);
     let tempFormValues = _.cloneDeep(formValues);
+    // console.log('fieldName, e, fieldType :', fieldName, e.target.value, fieldType, formErrorValues[fieldName]);
     if (fieldType === "Textbox") {
       if (
         !e.target.value.trim().length > 0 &&
@@ -110,7 +111,9 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       setFormErrorValues(temp);
     }
     if (fieldType === "Dropdown") {
-      if (!dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
+      console.log('fieldName, e, fieldType :', fieldName, e.target.value, fieldType, formErrorValues[fieldName], 'dropdownFocus',dropdownFocus,'dropdownFocus');
+      /* istanbul ignore else */
+      if ( !dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
         temp[fieldName].error = true;
         temp[fieldName].errorMessage = "Required";
       } else if (
@@ -121,7 +124,6 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         temp[fieldName].errorMessage = " ";
         switch (fieldName) {
           case "documentStatus":
-            {
               if (
                 dropdownFocus === "Approved Final" &&
                 ["Y"].includes(formValues.amendmentNumber.label)
@@ -135,10 +137,8 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                   temp.amendmentNumber.errorMessage = " ";
                 }
               }
-            }
             break;
           case "amendmentNumber":
-            {
               if (
                 dropdownFocus === "Y" &&
                 formValues.documentStatus.label === "Approved Final"
@@ -156,8 +156,8 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                   temp.amendmentNumber.errorMessage = " ";
                 }
               }
-            }
             break;
+            default: break; 
         }
       } else {
         temp[fieldName].error = false;
@@ -179,12 +179,14 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
     }
   };
   const handleFileUploadError = (msg, err, fieldName) => {
+    console.log('file uplaod called error')
     let tempError = _.cloneDeep(formErrorValues);
     tempError[fieldName].error = err;
     tempError[fieldName].errorMessage = msg;
     setFormErrorValues(tempError);
   };
   const setUploadFile = (file, fieldName) => {
+    console.log('file uplaod called')
     let tempValue = _.cloneDeep(formValues);
     tempValue[fieldName] = file;
     setFormValues(tempValue);
@@ -192,6 +194,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const handleSaveForm = () => {
     const tempValues = _.cloneDeep(formValues);
     const tempError = _.cloneDeep(formErrorValues);
+    console.log('save clicked',formValues )
     let errorExist = false;
     for (let field of Object.keys(tempError)) {
       switch (tempError[field].type) {
@@ -441,6 +444,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                         newValue
                       )
                     }
+                    data-testid="document-status-texfield"
                   />
                 </div>
               </Grid>
@@ -487,6 +491,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                     onTextFieldChange("moleculeDevice", e, "Textbox")
                   }
                   onBlur={(e) => onFieldBlur("moleculeDevice", e, "Textbox")}
+                  data-testid="molecule-texfield"
                 />
               </Grid>
               <Grid item xs={1} sm={1}></Grid>
@@ -495,12 +500,14 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                 <span className="file-required-astrik"> *</span>
               </Typography>
               <Grid item xs={12} sm={12}>
+                <div className='custom-fileupload-add' data-testid='custom-fileupload'>
                 <CustomFileUpload
                   selectedFiles={selectedFiles}
                   fullWidth
                   handleFileUploadError={handleFileUploadError}
                   setUploadFile={setUploadFile}
                 />
+                </div>
                 {formErrorValues &&
                   formErrorValues.uploadFile &&
                   formErrorValues.uploadFile.errorMessage === "Required" && (
