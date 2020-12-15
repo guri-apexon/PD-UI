@@ -13,45 +13,61 @@ function* getFilterData(action) {
 
 function* getSearchData(action) {
   console.log("search", action.payload);
-  const obj = {
-    success: false,
-    data: [],
-  };
-  yield put(getSearchResult(obj));
-  // const url = "../../../../searchResult.json";
 
-  const url = Apis.search;
+  if (action.payload) {
+    
+    
+    const obj = {
+      loader: true,
+      success: false,
+      data: [],
+    };
+    yield put(getSearchResult(obj));
+    // const url = "../../../../searchResult.json";
 
-  const bodyData = {
-    query: {
-      match: {
-        InterventionGroups: action.payload,
+    const url = Apis.search;
+
+    const bodyData = {
+      query: {
+        match: {
+          InterventionGroups: action.payload,
+        },
       },
-    },
-  };
+    };
 
-  try {
-    const resp = yield call(httpCall, { url, method: "GET", data: bodyData });
-    const data = resp.data.hits.hits;
-    console.log("Search Result", data);
-    if (data.length === 0) {
+    try {
+      const resp = yield call(httpCall, { url, method: "GET", data: bodyData });
+      const data = resp.data.hits.hits;
+      console.log("Search Result", data);
+      if (data.length === 0) {
+        const obj = {
+          loader: false,
+          success: true,
+          data: [],
+        };
+        yield put(getSearchResult(obj));
+      } else {
+        const requiredFormat = createJSONFormat(data);
+
+        const obj = {
+          loader: false,
+          success: true,
+          data: requiredFormat,
+        };
+        yield put(getSearchResult(obj));
+      }
+    } catch (e) {
       const obj = {
-        success: true,
+        success: false,
         data: [],
       };
       yield put(getSearchResult(obj));
-    } else {
-      const requiredFormat = createJSONFormat(data);
-
-      const obj = {
-        success: true,
-        data: requiredFormat,
-      };
-      yield put(getSearchResult(obj));
     }
-  } catch (e) {
+  }else{
+    
     const obj = {
-      success: false,
+      loader: false,
+      success: true,
       data: [],
     };
     yield put(getSearchResult(obj));

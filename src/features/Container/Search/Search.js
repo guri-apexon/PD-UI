@@ -40,9 +40,12 @@ const Search = (props) => {
 
     if ("key" in parsed) {
       setIdPresent(true);
-      setSearchInput(parsed.key);
-      dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.searchKey });
-      dispatch({ type: "GET_SEARCH_RESULT", payload: parsed.searchKey });
+      // setSearchInput(parsed.key);
+      dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
+
+      dispatch({ type: "GET_SEARCH_RESULT", payload: parsed.key });
+    } else {
+      dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     }
   }, [dispatch]);
   const handleClick = (e) => {
@@ -51,11 +54,14 @@ const Search = (props) => {
   };
   useEffect(() => {
     if (searchInput.length > 0) {
+      console.log("VVVVVVVV", searchInput);
       setIdPresent(true);
       let params = props.location.search;
       const parsed = queryString.parse(params);
-      dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.searchKey });
-      dispatch({ type: "GET_SEARCH_RESULT", payload: parsed.searchKey });
+
+      debugger;
+      dispatch({ type: "GET_SEARCH_FILTER", payload: searchInput });
+      dispatch({ type: "GET_SEARCH_RESULT", payload: searchInput });
     }
   }, [searchInput]);
 
@@ -69,6 +75,7 @@ const Search = (props) => {
     setIdPresent(false);
     props.history.push(`/Search`);
   };
+
   return (
     <div className="search">
       <Breadcrumbs

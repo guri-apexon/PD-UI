@@ -94,7 +94,7 @@ export default class SearchPanel extends React.Component {
     };
 
     let protocols = resultList.data && resultList.data.length;
-    let maxRecordsPerPage = 2;
+    let maxRecordsPerPage = 10;
     let noOfProtocolsPerPages =
       protocols > 0
         ? protocols > maxRecordsPerPage
