@@ -32,7 +32,7 @@ class ProtocolSearchButton extends React.Component {
   handleSearchProtocol = (e) => {
     e.preventDefault();
     this.props.getSearchInput(this.state["input"]);
-    this.props.history.push(`/Search?key=${this.state.input}`);
+    this.props.history.push(`/search?key=${this.state.input}`);
     this.setState({ input: "" });
     // ReactDOM.render(
     // <Chip

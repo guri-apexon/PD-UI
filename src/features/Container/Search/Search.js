@@ -40,7 +40,7 @@ const Search = (props) => {
 
     if ("key" in parsed) {
       setIdPresent(true);
-      // setSearchInput(parsed.key);
+      setSearchInput(parsed.key);
       dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
 
       dispatch({ type: "GET_SEARCH_RESULT", payload: parsed.key });
