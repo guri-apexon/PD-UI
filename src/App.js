@@ -6,6 +6,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import SettingsIcon from 'apollo-react-icons/Cog';
 import HelpIcon from 'apollo-react-icons/Help';
 import UserIcon from 'apollo-react-icons/User';
+import Typography from 'apollo-react/components/Typography';
 
 function App () {
 
@@ -35,7 +36,7 @@ function App () {
     
   ];
   const profileMenuProps = {
-    name: 'Laura',
+    name: '',
     title: 'Sales',
     email: 'laura@iqvia.com',
     logoutButtonProps: { pathname: '/logout' },
@@ -57,11 +58,11 @@ function App () {
       },
     ],
   };
-  const logoProps = {
-    src: 'logo-img.png',
-    alt: 'IQVIA Protocol Library',
-    onClick: () => history.push('/'),
-  };
+  // const logoProps = {
+  //   src: 'logo-img.png',
+  //   alt: 'IQVIA Protocol Library',
+  //   onClick: () => history.push('/'),
+  // };
   
   const onClickNavigation = (pathname) => {
     history.push(pathname);
@@ -76,7 +77,23 @@ function App () {
   return (
     <>
      <NavigationBar
-      logoProps={logoProps}
+     LogoComponent={() => (
+      <Typography
+        style={{
+          color: 'white',
+          lineHeight: '56px',
+          marginRight: 24,
+          cursor: 'pointer',
+          zIndex: 2,
+          whiteSpace: 'nowrap',
+        }}
+        // onClick={() => console.log('Logo clicked')}
+        onClick={ () => history.push('/')}
+      >
+        IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
+      </Typography>
+    )}
+      // logoProps={logoProps}
       menuItems={menuItems}
      profileMenuProps={profileMenuProps}
       onClick={({ pathname }) => onClickNavigation(pathname)}

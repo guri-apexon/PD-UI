@@ -30,7 +30,7 @@ const Dashboard = () => {
 
   return (
      <div className="dashboard-parent" style={{ padding: 20 }}>
-     <h1>Good Morning, Laura</h1>
+     <h1>Good Morning,</h1>
      <Grid container spacing={2}>
        <Grid item xs={12}>
          <div style={{ float: "right" }}>

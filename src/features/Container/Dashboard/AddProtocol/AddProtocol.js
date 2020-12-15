@@ -27,13 +27,13 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const [formErrorValues, setFormErrorValues] = useState(
     initialFormErrorValues
   );
-  const [selectedFiles, setSelectedFiles] = useState([]);
   useEffect(() => {
     dispatch({ type: "GET_SPONSOR_ADDPROTCOL_SAGA" });
   }, []); // eslint-disable-line
 
   const onModalClose = () => {
     handleClose("custom");
+    dispatch({ type: "RESET_ERROR_ADD_PROTOCOL" });
   };
   const onModalOpen = () => {
     setFormValues(initialFormValues);
@@ -92,10 +92,11 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       setFormValues(tempValues);
     }
   };
-
+  
   const onFieldBlur = (fieldName, e, fieldType) => {
     let temp = _.cloneDeep(formErrorValues);
     let tempFormValues = _.cloneDeep(formValues);
+    // console.log('drValue :', drValue,"dropfocus", dropdownFocus,'ff',tempFormValues);
     // console.log('fieldName, e, fieldType :', fieldName, e.target.value, fieldType, formErrorValues[fieldName]);
     if (fieldType === "Textbox") {
       if (
@@ -280,6 +281,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
     dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
   };
   // console.log("dashboardData1 :", dashboardData.addProtocolModal, );
+  // console.log('11drValue :', drValue,"dropfocus", dropdownFocus,'ff',formValues);
   return (
     <>
       {dashboardData && dashboardData.isLoading ? (
@@ -502,7 +504,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
               <Grid item xs={12} sm={12}>
                 <div className='custom-fileupload-add' data-testid='custom-fileupload'>
                 <CustomFileUpload
-                  selectedFiles={selectedFiles}
+                  formSelectedFiles={formValues.uploadFile && formValues.uploadFile.length >0 ? formValues.uploadFile: [] }
                   fullWidth
                   handleFileUploadError={handleFileUploadError}
                   setUploadFile={setUploadFile}
