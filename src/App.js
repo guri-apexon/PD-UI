@@ -35,9 +35,9 @@ function App () {
     
   ];
   const profileMenuProps = {
-    name: 'Laura',
+    name: 'Asif',
     title: 'Sales',
-    email: 'laura@iqvia.com',
+    email: 'asif@iqvia.com',
     logoutButtonProps: { pathname: '/logout' },
     menuItems: [
       {

@@ -19,7 +19,7 @@ function DashboardSearch({ recent, saved }) {
             fullWidth
             onKeyPress={(e) => {
               if (e.key === "Enter") {
-                history.push(`/search/key=${e.target.value}`);
+                history.push(`/search?key=${e.target.value}`);
               }
             }}
           />

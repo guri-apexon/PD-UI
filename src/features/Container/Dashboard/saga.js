@@ -21,8 +21,10 @@ function customizer(objValue, srcValue) {
     }
   }
 
+
+  
 function* protocolAsyn() {
-  const protocolUrl = "./rows.json";
+  const protocolUrl = "http://ca2spdml01q:8000/api/user_protocol_documents/?userId=10001";
   const statusUrl = "./status.json";
   const protocolConfig = {
     url: protocolUrl,
@@ -34,11 +36,12 @@ function* protocolAsyn() {
   };
   try {
     const protocolData = yield call(httpCall, protocolConfig);
-    const statusData = yield call(httpCall, statusConfig);
-    if (protocolData.success && statusData.success) {
-      const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
-      yield put(getProtocols(mergedData));
-    } else if (protocolData.success) {
+    // const statusData = yield call(httpCall, statusConfig);
+    // if (protocolData.success && statusData.success) {
+      // const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
+      // yield put(getProtocols(mergedData));
+    // } else 
+    if (protocolData.success) {
       yield put(getProtocols(protocolData.data));
     } else {
       yield put(setError(protocolData.err.statusText));

@@ -13,6 +13,13 @@
     white-space: nowrap;
     overflow: hidden;
   }
+  // [class^="MuiTableRow-root-"] {
+  //   background-color: #f6f7fb;
+  // }
+  [class^="InternalTableBody-expandedRowEditMode-"],
+  .InternalTableBody-expandedRowEditMode-962 {
+    background-color: white;
+  }
   .dashboard-search-parent {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
     padding: 15px;

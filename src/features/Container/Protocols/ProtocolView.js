@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Grid from "apollo-react/components/Grid";
-import Button from "apollo-react/components/Button";
+import Card from "apollo-react/components/Card";
 import { tocData } from "./protocolSlice.js";
 import dummyTable from "./dummyTable.json";
 
@@ -37,11 +37,11 @@ function getTable(data) {
 function getElement(data) {
   let content = data[0];
   const type = data[1];
-  if (type === "table") {
-    content = JSON.parse(content);
-    console.log("inside table", content);
-    return getTable(content);
-  }
+  // if (type === "table") {
+  //   content = JSON.parse(content);
+  //   console.log("inside table", content);
+  //   return getTable(content);
+  // }
   const subsectionOf = data[2];
   const style = data[3];
   const isBold = getStyle(style);
@@ -88,6 +88,12 @@ const ProtocolView = () => {
     dispatch({ type: "GET_PROTOCOL_TOC_SAGA" });
   }, []);
 
+  const listData = [
+    "Table of Contents",
+    "Study Design",
+    "Schedule of Assessments",
+  ];
+
   //   const ele = sumData.map(item => {
   //       return getElement(item);
   //   })
@@ -101,69 +107,67 @@ const ProtocolView = () => {
   // }
   // console.log(ele);
   return (
-    <div style={{ overflow: "hidden" }}>
-      <Grid container spacing={2}>
-        <Grid item xs={2}>
-          <div className="dropdown-wrapper">
+    <div className='view-wrapper'>
+      <Card className="index-column">
+        <div className="dropdown-wrapper">
+          {listData.map((item) => (
             <button
-              style={{
-                marginRight: 10,
-                width: "100%",
-                textAlign: "left",
-                border: "none",
-              }}
+              className="btn btn1"
               onClick={() => {
                 setShowNav(!showNav);
               }}
+              // onMouseEnter={() => {
+              //   setShowNav(true);
+              // }}
+              // onMouseLeave={() => {
+              //   setShowNav(false);
+              // }}
             >
-              <span style={{ backgroundColor: "blue", width: 5 }}></span>
-              Text
+              <span style={{ marginLeft: "16px" }}>{item}</span>
             </button>
-            <div
-              className={`dropdown-menu sample ${showNav ? "show-nav" : ""}`}
-            >
-              <a
-                href="#dad"
-                className="dropdown-item"
-                onClick={() => {
-                  setShowNav(!showNav);
-                }}
-              >
-                Action 1
-              </a>
-              <a href="#2001" className="dropdown-item">
-                Action 2
-              </a>
-              <a href="#" className="dropdown-item">
-                Action 3
-              </a>
-              <a href="#" className="dropdown-item">
-                Action 4
-              </a>
-            </div>
-          </div>
-        </Grid>
-        <Grid item xs={10}>
-          <div>
-            {sumData.length &&
-              sumData.map((item) => {
-                return getElement(item);
-              })}
-            <p id="dad">dadadaadadadad</p>
-            {dummyTable.map((item) => {
-              return (
-                <div key={item.Header[0]}>
-                  <h2>{item.TableName}</h2>
-                  <div
-                    id={item.Header[0]}
-                    dangerouslySetInnerHTML={{ __html: item.Table }}
-                  />
-                </div>
-              );
+          ))}
+        </div>
+        <div className={`dropdown-menu sample ${showNav ? "show-nav" : ""}`}>
+          <a
+            href="#dad"
+            className="dropdown-item"
+            onClick={() => {
+              setShowNav(!showNav);
+            }}
+          >
+            Action 1
+          </a>
+          <a href="#2001" className="dropdown-item">
+            Action 2
+          </a>
+          <a href="#" className="dropdown-item">
+            Action 3
+          </a>
+          <a href="#" className="dropdown-item">
+            Action 4
+          </a>
+        </div>
+      </Card>
+      <Card  className="protocol-column">
+        <div className='bar'></div>
+        <div style={{ padding: "10px 16px" }}>
+          {sumData.length &&
+            sumData.map((item) => {
+              return getElement(item);
             })}
-          </div>
-        </Grid>
-      </Grid>
+          {dummyTable.map((item) => {
+            return (
+              <div key={item.Header[0]}>
+                <h2>{item.TableName}</h2>
+                <div
+                  id={item.Header[0]}
+                  dangerouslySetInnerHTML={{ __html: item.Table }}
+                />
+              </div>
+            );
+          })}
+        </div>
+      </Card>
       {/* <div dangerouslySetInnerHTML={{ __html: toc }} /> */}
       {/* {toc.map((item, index) => {
         return <div key={index}>
