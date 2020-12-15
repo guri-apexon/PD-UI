@@ -169,7 +169,7 @@ function* postAddProtocol(postData) {
       yield put(setAddProtocolModal(true));
       console.log("postResponsefailed :", postResponse.err);
       yield put(
-        setAddprotocolError(postResponse.err ? postResponse.err : "API Error")
+        setAddprotocolError(postResponse.err && postResponse.err.data ? postResponse.err.data.message : "API Error")
       );
     }
     yield put(setLoading(false));
