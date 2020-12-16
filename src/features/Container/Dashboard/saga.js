@@ -13,7 +13,7 @@ import {
   setAddProtocolModal,
   setLoading,
   getSavedSearches,
-  setApiError
+  setApiError,
 } from "./dashboardSlice";
 
 function customizer(objValue, srcValue) {
@@ -22,26 +22,25 @@ function customizer(objValue, srcValue) {
   }
 }
 
-
-  
 function* protocolAsyn() {
-  const protocolUrl = "http://ca2spdml01q:8000/api/user_protocol_documents/?userId=10001";
-  const statusUrl = "./status.json";
+  const protocolUrl =
+    "http://ca2spdml01q:8000/api/user_protocol_documents/?userId=1021402";
+  // const statusUrl = "./status.json";
   const protocolConfig = {
     url: protocolUrl,
     method: "GET",
   };
-  const statusConfig = {
-    url: statusUrl,
-    method: "GET",
-  };
+  // const statusConfig = {
+  //   url: statusUrl,
+  //   method: "GET",
+  // };
   try {
     const protocolData = yield call(httpCall, protocolConfig);
     // const statusData = yield call(httpCall, statusConfig);
     // if (protocolData.success && statusData.success) {
-      // const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
-      // yield put(getProtocols(mergedData));
-    // } else 
+    // const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
+    // yield put(getProtocols(mergedData));
+    // } else
     if (protocolData.success) {
       yield put(getProtocols(protocolData.data));
     } else {
@@ -62,7 +61,7 @@ function* compareSelectedAsyn(action) {
 }
 
 function* recentSearchAsyn() {
-  const url = "http://ca2spdml01q:8000/api/recent_search/?user=user3";
+  const url = "http://ca2spdml01q:8000/api/recent_search/?user=1021402";
   const config = {
     url,
     method: "GET",
@@ -79,7 +78,7 @@ function* recentSearchAsyn() {
 }
 
 function* savedSearchAsyn() {
-  const url = "http://ca2spdml01q:8000/api/saved_search/?user=user1";
+  const url = "http://ca2spdml01q:8000/api/saved_search/?user=1021402";
   const config = {
     url,
     method: "GET",
@@ -173,9 +172,14 @@ function* postAddProtocol(postData) {
       yield put(setAddProtocolModal(true));
       console.log("postResponsefailed :", postResponse.err);
       yield put(
-        setAddprotocolError(postResponse.err && postResponse.err.data ? postResponse.err.data.message : "API Error")
+        setAddprotocolError(
+          postResponse.err && postResponse.err.data
+            ? postResponse.err.data.message
+            : "API Error"
+        )
       );
     }
+    yield put({ type: "GET_PROTOCOL_TABLE_SAGA" })
     yield put(setLoading(false));
   } catch (err) {
     console.log("err12333 :", err);
@@ -188,7 +192,7 @@ function* postAddProtocol(postData) {
 function* toggleAddProtocol(data) {
   yield put(setAddProtocolModal(data.payload));
 }
-function* resetErrorAddProtocol(){
+function* resetErrorAddProtocol() {
   yield put(setAddprotocolError(""));
 }
 

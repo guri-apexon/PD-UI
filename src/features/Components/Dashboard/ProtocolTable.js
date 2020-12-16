@@ -71,32 +71,34 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => (
 
 const iconStatus = (status) => {
   switch (status) {
-    case "uploadInProgress":
+    case "Upload In Progress":
       return {
         comp: <Upload htmlColor={"orange"} />,
         title: "Upload In Progress",
       };
-    case "uploadComplete":
+    case "Upload Complete":
       return {
         comp: <StatusCheck htmlColor={"cornflowerblue"} />,
         title: "Upload Complete",
       };
-    case "extractionInProgress":
+    case "Extraction In Progress":
       return {
         comp: <Clock htmlColor={"orange"} />,
         title: "Extraction In Progress",
       };
-    case "digitizationComplete":
+    case "Digitization Complete":
       return {
         comp: <Check htmlColor={"green"} />,
         title: "Digitization Complete",
       };
-    case "extractionError":
+    case "Extraction Error":
       return {
         comp: <StatusExclamation htmlColor={"red"} />,
         title: "Extraction Error",
       };
     case "finished":
+      return { comp: <Check htmlColor={"green"} />, title: "Final" };
+    default:
       return { comp: <Check htmlColor={"green"} />, title: "Final" };
   }
 };
@@ -104,9 +106,9 @@ const iconStatus = (status) => {
 const ActivityCell = ({ row, column: { accessor: key } }) => {
   const status = iconStatus(row[key]);
   return (
-    <Tooltip variant="light" title={status.title} placement="top">
+    <Tooltip variant="light" title={status && status.title} placement="top">
       <IconButton size="small" data-id={row.id} style={{ marginRight: 4 }}>
-        {status.comp}
+        {status && status.comp}
       </IconButton>
     </Tooltip>
   );
@@ -119,7 +121,7 @@ const columns = [
   },
   {
     header: "Protocol",
-    accessor: "ProtocolName",
+    accessor: "Protocol",
     sortFunction: compareStrings,
     customCell: ProtocolLink,
     width: "15%",
@@ -209,9 +211,9 @@ const ExpandableComponent = ({ row }) => {
           {"Source"}
         </Typography>
         <Typography className="fw-8" variant="body2">
-          <a href={row.filePath} target="_blank">
+          <Link to={row.filePath} target="_blank">
             {row.fileName}
-          </a>
+          </Link>
         </Typography>
       </div>
     </div>
@@ -259,7 +261,7 @@ const ProtocolTable = ({ initialRows }) => {
         };
         return _.merge(temp, details);
       })}
-      initialSortedColumn="ProtocolName"
+      initialSortedColumn="Protocol"
       initialSortOrder="asc"
       rowsPerPageOptions={[5, 20, 30, "All"]}
       rowProps={{ hover: false }}
