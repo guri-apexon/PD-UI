@@ -96,20 +96,20 @@ function* savedSearchAsyn() {
 }
 
 function* addProtocolSponsor() {
-  const url = "../../../../sponsor.json";
+  // const url = "../../../../sponsor.json";
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
   const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
   // const protocolData = yield call(httpCall, {url, method:'GET'});
 
-  try {
-    const protocolData = yield call(httpCall, { url, method: "GET" });
-    if (protocolData.success) {
-      yield put(getProtocolData(protocolData.data));
-    }
-    yield put(setError(protocolData.err.statusText));
-  } catch (err) {
-    yield put(setError(err.statusText));
-  }
+  // try {
+  //   const protocolData = yield call(httpCall, { url, method: "GET" });
+  //   if (protocolData.success) {
+  //     yield put(getProtocolData(protocolData.data));
+  //   }
+  //   yield put(setError(protocolData.err.statusText));
+  // } catch (err) {
+  //   yield put(setError(err.statusText));
+  // }
 
   try {
     const sponsorList = yield call(httpCall, {
@@ -123,7 +123,7 @@ function* addProtocolSponsor() {
     if (sponsorList.success && indicationList.success) {
       let actualIndicationList = indicationList.data.map((item) => {
         let temp = Object.assign({}, item);
-        temp.label = item.indication_description;
+        temp.label = item.indication_name;
         return temp;
       });
       let actualSponsorList = sponsorList.data.map((item) => {
@@ -137,9 +137,11 @@ function* addProtocolSponsor() {
       yield put(setLoading(false));
     } else {
       yield put(setError(sponsorList.err.statusText));
+      yield put(setLoading(false));
     }
   } catch (err) {
     yield put(setError(err.statusText));
+    yield put(setLoading(false));
   }
 }
 function* postAddProtocol(postData) {

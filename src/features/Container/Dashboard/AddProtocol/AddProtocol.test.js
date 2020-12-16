@@ -10,7 +10,6 @@ import {
 import "@testing-library/jest-dom/extend-expect";
 import AddProtocol from "./AddProtocol";
 
-import _ from "lodash";
 import * as redux from "react-redux";
 
 const dashboardmockData= {
@@ -27,16 +26,22 @@ const dashboardmockData= {
  }
 
 describe("Add Protocol Test Suite", () => {
-  xtest("Should render AddProtocol Component", async () => {
+ test("Should render AddProtocol Component", async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const container = render(
       <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
-      { initialState: {} }
+      { initialState: {
+        dashboard: {
+            addProtocolModal: false,
+            isLoading: false
+         }
+      } }
     );
-    container.getByText('Add Protocol')
+    // container
+    container.getByText('Add Protocol to Library');
   });
-  xtest("Should render AddProtocol Component without Modal", async () => {
+  test("Should render AddProtocol Component without Modal", async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const { getByTestId } = render(
@@ -59,7 +64,7 @@ describe("Add Protocol Test Suite", () => {
     );
     fireEvent.click(getByTestId('add-protocol-button'));
    })
-  xtest("Should call onModalClose Function", async () => {
+  test("Should call onModalClose Function", async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const { getByTestId } = render(
@@ -84,7 +89,7 @@ describe("Add Protocol Test Suite", () => {
     fireEvent.click(modal);
    })
 
-  xtest("Should render AddProtocol Component with Modal", async () => {
+  test("Should render AddProtocol Component with Modal", async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -125,9 +130,12 @@ describe("Add Protocol Test Suite", () => {
     // fireEvent.focus(protcolNumber);
     // fireEvent.blur(protcolNumber, {target:{value:'aa'}});
   });
-  xtest("Should Save Post Correctly", async () => {
+  test("Should Save Post Correctly", async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
     const container = render(
       <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
       { initialState: {
@@ -142,7 +150,10 @@ describe("Add Protocol Test Suite", () => {
     fireEvent.click(savemodal);
 
   });
-  xtest("Should render AutoComplete Correctly", async () => {
+  test("Should render AutoComplete Correctly", async () => {
+    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const container = render(
@@ -168,6 +179,9 @@ describe("Add Protocol Test Suite", () => {
   test("Should check file upload works Correctly", async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
     const container = render(
       <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
       { initialState: {
