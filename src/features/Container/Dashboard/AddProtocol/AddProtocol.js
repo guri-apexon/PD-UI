@@ -36,6 +36,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
     dispatch({ type: "RESET_ERROR_ADD_PROTOCOL" });
   };
   const onModalOpen = () => {
+    dispatch({ type: "RESET_ERROR_ADD_PROTOCOL" });
     setFormValues(initialFormValues);
     setFormErrorValues(initialFormErrorValues);
     handleOpen("custom");
@@ -498,7 +499,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
               </Grid>
               <Grid item xs={1} sm={1}></Grid>
               <Typography variant="title2" gutterBottom>
-                Place the protocol document in PDF or Word format below
+                Place the protocol document in PDF or Word <span className='emphasize'>(English only)</span> format below.
                 <span className="file-required-astrik"> *</span>
               </Typography>
               <Grid item xs={12} sm={12}>
