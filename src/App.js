@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from "react-redux";
 import './App.scss';
 import Routes from './Routes/routes';
 import NavigationBar from 'apollo-react/components/NavigationBar';
 import { useHistory, useLocation } from "react-router-dom";
+import {  dashboard } from "./features/Container/Dashboard/dashboardSlice";
 import SettingsIcon from 'apollo-react-icons/Cog';
 import HelpIcon from 'apollo-react-icons/Help';
 import UserIcon from 'apollo-react-icons/User';
@@ -12,6 +14,7 @@ function App () {
 
   let history = useHistory();
   let location = useLocation();
+  const dashboardData = useSelector(dashboard);
   const [pathname, setPathname]= useState('/dashboard')
 
   useEffect(()=>{
@@ -101,6 +104,7 @@ function App () {
       }
        waves
     />
+    { dashboardData && dashboardData.apiError && (<span className='main-error-message'> Something Went Wrong, API Failed</span>)}
     <Routes />
     </>
   )

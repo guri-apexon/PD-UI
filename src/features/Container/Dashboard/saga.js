@@ -13,6 +13,7 @@ import {
   setAddProtocolModal,
   setLoading,
   getSavedSearches,
+  setApiError
 } from "./dashboardSlice";
 
 function customizer(objValue, srcValue) {
@@ -138,10 +139,12 @@ function* addProtocolSponsor() {
     } else {
       yield put(setError(sponsorList.err.statusText));
       yield put(setLoading(false));
+      yield put(setApiError(true));
     }
   } catch (err) {
     yield put(setError(err.statusText));
     yield put(setLoading(false));
+    yield put(setApiError(true));
   }
 }
 function* postAddProtocol(postData) {
