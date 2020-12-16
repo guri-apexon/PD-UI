@@ -9,11 +9,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { protocolSummary, getSummary } from "./protocolSlice.js";
 
 //------------------- Components ------------
-import ProtocolOverview from './ProtocolOverview'
-import ProtocolView from './ProtocolView'
-import AmendmentCompare from './AmendmentCompare'
-import Documents from './Documents'
+import ProtocolOverview from "./ProtocolOverview";
+import ProtocolView from "./ProtocolView";
+import AmendmentCompare from "./AmendmentCompare";
+import Documents from "./Documents";
 import ProtocolTable from "../Dashboard/ProtocolTable";
+import NoResultFound from "../../Components/NoResultFound";
 
 //------------------- Third Party -----------
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
@@ -21,6 +22,7 @@ import Tab from "apollo-react/components/Tab";
 import Tabs from "apollo-react/components/Tabs";
 import Typography from "apollo-react/components/Typography";
 import Switch from "apollo-react/components/Switch";
+import Loader from "apollo-react/components/Loader";
 
 //------------------ Constants --------------
 // import BASE_URL from "../../../utils/api";
@@ -64,7 +66,7 @@ const Protocols = (props) => {
     const { data } = summary;
     return (
       <>
-        {summary.success && (
+        {summary.success && summary.data ? (
           <div className="protocols">
             <Breadcrumbs
               items={[
@@ -75,13 +77,13 @@ const Protocols = (props) => {
                   onClick: handleClick,
                 },
                 {
-                  title: data.protocolNumber,
+                  title: data.Protocol,
                 },
               ]}
               style={{ paddingInlineStart: 0, marginBottom: 0 }}
             />
 
-            <h2 className="header">{data.protocolNumber}</h2>
+            <h2 className="header">{data.Protocol}</h2>
             <div className="tab-column">
               <div className="overview">
                 <div style={{ display: "flex", flexDirection: "row" }}>
@@ -99,34 +101,31 @@ const Protocols = (props) => {
                     </Tabs>
                   </div>
                   <div style={{ marginTop: -20 }}>
-                   {value !== 3 && <Switch
-                      label="Follow Protocol"
-                      checked={follow}
-                      onChange={handleChange}
-                      size="small"
-                      style={{ marginRight: 0 }}
-                    />}
+                    {value !== 3 && (
+                      <Switch
+                        label="Follow Protocol"
+                        checked={follow}
+                        onChange={handleChange}
+                        size="small"
+                        style={{ marginRight: 0 }}
+                      />
+                    )}
                   </div>
                 </div>
 
                 <div className="tab-container">
-                  {value === 0 && (
-                    <ProtocolOverview data={data} />
-                  )}
-                  {value === 1 && (
-                    <ProtocolView />
-                  )}
-                  {value === 2 && (
-                   <AmendmentCompare />
-                  )}
-                  {value === 3 && (
-                    <Documents />
-                  )}
+                  {value === 0 && <ProtocolOverview data={data} />}
+                  {value === 1 && <ProtocolView />}
+                  {value === 2 && <AmendmentCompare />}
+                  {value === 3 && <Documents />}
                 </div>
               </div>
             </div>
           </div>
+        ) : (
+          !summary.loading && <NoResultFound />
         )}
+        {summary.loading && <Loader isInner />}
       </>
     );
   } else {

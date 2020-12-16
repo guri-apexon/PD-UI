@@ -18,7 +18,7 @@ import AlignJustify from "apollo-react-icons/AlignJustify";
 import Chip from "apollo-react/components/Chip";
 import Grid from "apollo-react/components/Grid";
 
-import NoResultFound from "./NoResultFound";
+import NoResultFound from "../../Components/NoResultFound";
 
 export default class SearchPanel extends React.Component {
   constructor(props) {
