@@ -1,3 +1,82 @@
-.amendment-compare{
+.amendment-compare {
+  width: 100%;
+
+  .version-dropdown {
+    > div {
+      margin-top: 0px;
+      margin-bottom: 0px;
+
+      label {
+        font-size: 13px;
+      }
+      div {
+        font-size: 13px;
+      }
+    }
+    input {
+      height: 30px;
+      font-size: 14px;
+    }
+  }
+  .summary-button {
     width: 100%;
+    button {
+      float: right;
+      margin-right: 0 !important;
+      margin-top: 25px;
+    }
+  }
+  .sidebar {
+    > div > div {
+      margin-top: 50px !important;
+
+      > div:first-child {
+        padding: 0 16px 0 16px;
+      }
+    }
+    .sidebar-div {
+      margin-left: -15px;
+      .header-section {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      svg {
+        color: blue;
+        margin-top: 0px;
+        vertical-align: bottom;
+      }
+      hr {
+        width: 110%;
+        margin-left: -10px;
+        background-color: #d6d6d6;
+        border: none;
+        height: 1px;
+      }
+      .TOC {
+        ul {
+          list-style-type: none;
+          padding-inline-start: 15px;
+          li{
+            margin-bottom: 10px;
+            font-size: 13px;
+            cursor: pointer;
+          }
+        }
+      }
+      .view-changes{
+          margin-top: 10px;
+          margin-left: 10px;
+          svg{
+            font-size: 14px;
+            margin-right: 5px;
+            vertical-align: middle;
+          }
+          a{
+              color: blue;
+              font-size: 13px;
+              cursor: pointer;
+          }
+      }
+    }
+  }
 }

@@ -12,14 +12,14 @@ import {
   setAddprotocolError,
   setAddProtocolModal,
   setLoading,
-  getSavedSearches
+  getSavedSearches,
 } from "./dashboardSlice";
 
-function customizer(objValue, srcValue) {
-    if (_.isArray(objValue)) {
-      return objValue.concat(srcValue);
-    }
+function customizer(objValue, srcValue) {
+  if (_.isArray(objValue)) {
+    return objValue.concat(srcValue);
   }
+}
 
 
   
@@ -95,7 +95,7 @@ function* savedSearchAsyn() {
 }
 
 function* addProtocolSponsor() {
-  const url = "./sponsor.json";
+  const url = "../../../../sponsor.json";
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
   const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
   // const protocolData = yield call(httpCall, {url, method:'GET'});
@@ -133,9 +133,8 @@ function* addProtocolSponsor() {
       console.log("sponsorList :", actualIndicationList, actualSponsorList);
       yield put(getSponsor(actualSponsorList));
       yield put(getIndication(actualIndicationList));
-      yield put(setLoading(false))
+      yield put(setLoading(false));
     } else {
-      
       yield put(setError(sponsorList.err.statusText));
     }
   } catch (err) {
@@ -144,6 +143,7 @@ function* addProtocolSponsor() {
 }
 function* postAddProtocol(postData) {
   const { payload: data } = postData;
+  yield put(setLoading(true));
   const postUrl = `${BASE_URL}/pd/api/v1/documents/?fileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}`;
   var bodyFormData = new FormData();
   bodyFormData.append("file", data.uploadFile[0]);
@@ -167,15 +167,24 @@ function* postAddProtocol(postData) {
     } else {
       yield put(setAddProtocolModal(true));
       console.log("postResponsefailed :", postResponse.err);
-      yield put(setAddprotocolError(postResponse.err.statusText));
+      yield put(
+        setAddprotocolError(postResponse.err && postResponse.err.data ? postResponse.err.data.message : "API Error")
+      );
     }
+    yield put(setLoading(false));
   } catch (err) {
+    console.log("err12333 :", err);
     yield put(setAddprotocolError(err.statusText));
+    yield put(setAddProtocolModal(false));
+    yield put(setLoading(false));
   }
 }
 
 function* toggleAddProtocol(data) {
   yield put(setAddProtocolModal(data.payload));
+}
+function* resetErrorAddProtocol(){
+  yield put(setAddprotocolError(""));
 }
 
 function* watchDashboard() {
@@ -186,6 +195,7 @@ function* watchDashboard() {
   yield takeEvery("POST_ADDPROTOCOL_DATA", postAddProtocol);
   yield takeEvery("TOGGLE_ADDPROTOCOL_MODAL", toggleAddProtocol);
   yield takeEvery("GET_SAVED_SEARCH_DATA", savedSearchAsyn);
+  yield takeEvery("RESET_ERROR_ADD_PROTOCOL", resetErrorAddProtocol);
 }
 
 export default function* dashboardSaga() {

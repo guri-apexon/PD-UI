@@ -64,7 +64,10 @@ const CustomDropdown = ({
     setValue(tempvalue);
     setList(filteredList);
     if(e.target.value === "") // setting onblur to true when text is cut,so that error should display as field required
-    setBlur(true); 
+      {
+        onChange(fieldName, e, fieldType, tempvalue);
+        setBlur(true); 
+      }     
   };
   const onCustomClick = (id, event) => {
     setExpand(true);
@@ -111,7 +114,7 @@ const CustomDropdown = ({
           label={label}
           placeholder={placeholder}
           fullWidth={fullWidth}
-          value={value.label}
+          value={value.label ? value.label: formValue.label}
           helperText={helperText}
           error={error}
           required={required}

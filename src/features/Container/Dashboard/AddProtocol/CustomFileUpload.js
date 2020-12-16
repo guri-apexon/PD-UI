@@ -69,9 +69,12 @@ class CustomFileUpload extends Component {
       };
 
     render(){
+      const {formSelectedFiles}= this.props;
+      const {selectedFiles}=this.state;
+      // console.log('selectedFiles :', selectedFiles, formSelectedFiles);
         return(
             <FileUpload
-            value={this.state.selectedFiles}
+            value={selectedFiles && selectedFiles.length >0 ? selectedFiles : formSelectedFiles}
             onUpload={this.handleUpload}
             onFileDelete={this.handleDelete}
             // label="Place the protocol document in PDF or Word format below"
