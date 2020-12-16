@@ -3,26 +3,26 @@ import React, { useEffect } from "react";
 import moment from 'moment'
 
 const Cell = ({ row, column }) => (
-  <a href={row.protocol_document_path} target="_blank">
-    {row.protocol_document_name}
+  <a href={row.filePath} target="_blank">
+    {row.fileName}
   </a>
 );
 
 const DataCell = ({row, column}) => (moment(row[column.accessor]).format('DD-MMM-YYYY'));
 const columns = [
   {
-    accessor: "protocol_document_name",
+    accessor: "fileName",
     header: "Document Name",
     customCell: Cell,
   },
   {
     header: "Uploaded Date",
-    accessor: "created_on",
+    accessor: "uploadDate",
     customCell: DataCell,
   },
   {
     header: "Uploaded By",
-    accessor: "created_by",
+    accessor: "userCreated",
   },
 ];
 

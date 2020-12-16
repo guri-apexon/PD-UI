@@ -17,7 +17,7 @@ const Documents = () => {
     if ("protocolId" in parsed) {
       let filterrow =
         protocolData &&
-        protocolData.filter((item) => item.protocol_id == parsed.protocolId);
+        protocolData.filter((item) => item.id == parsed.protocolId);
       setRows(filterrow);
     }
   }, [prtocolsList]);
