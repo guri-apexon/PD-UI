@@ -18,6 +18,8 @@ import AlignJustify from "apollo-react-icons/AlignJustify";
 import Chip from "apollo-react/components/Chip";
 import Grid from "apollo-react/components/Grid";
 
+import NoResultFound from "./NoResultFound";
+
 export default class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -135,7 +137,8 @@ export default class SearchPanel extends React.Component {
             <div className="width100 ">
               <div className="page-count">
                 <span>
-                  Showing 1 - {noOfProtocolsPerPages} of {protocols}{" "}
+                  Showing {accordionObj.length === 0 ? "0" : "1"} -{" "}
+                  {noOfProtocolsPerPages} of {protocols}{" "}
                 </span>
               </div>
 
@@ -179,7 +182,7 @@ export default class SearchPanel extends React.Component {
                   />
                 )}
               </div>
-              {resultList.success &&
+              {resultList.success && accordionObj.length !== 0 ? (
                 accordionObj.map((protocol, i) => (
                   <div key={protocol.protocolNumber}>
                     <SearchListingSection
@@ -188,7 +191,12 @@ export default class SearchPanel extends React.Component {
                       key={protocol.protocolNumber}
                     />
                   </div>
-                ))}
+                ))
+              ) : (
+                <div>
+                  <NoResultFound />
+                </div>
+              )}
             </div>
           </Grid>
         </Grid>
