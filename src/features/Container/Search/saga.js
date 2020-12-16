@@ -15,8 +15,6 @@ function* getSearchData(action) {
   console.log("search", action.payload);
 
   if (action.payload) {
-    
-    
     const obj = {
       loader: true,
       success: false,
@@ -29,14 +27,15 @@ function* getSearchData(action) {
 
     const bodyData = {
       query: {
-        match: {
-          InterventionGroups: action.payload,
+        multi_match: {
+          query: action.payload,
+          fields: ["InterventionGroups", "Objectives"],
         },
       },
     };
 
     try {
-      const resp = yield call(httpCall, { url, method: "GET", data: bodyData });
+      const resp = yield call(httpCall, { url, method: "POST", data: bodyData });
       const data = resp.data.hits.hits;
       console.log("Search Result", data);
       if (data.length === 0) {
@@ -63,8 +62,7 @@ function* getSearchData(action) {
       };
       yield put(getSearchResult(obj));
     }
-  }else{
-    
+  } else {
     const obj = {
       loader: false,
       success: true,

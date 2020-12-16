@@ -8,9 +8,8 @@ import Select from "apollo-react/components/Select";
 import Button from "apollo-react/components/Button";
 import ArrowLeft from "apollo-react-icons/ArrowLeft";
 
-
 import Sidebar from "./Sidebar";
-
+import CompareCard from "./CompareCard";
 
 const countries = [
   { label: "Afghanistan" },
@@ -31,7 +30,7 @@ const AmendmentCompare = () => {
   }, [version1, version2]);
   return (
     <div className="amendment-compare">
-      <Sidebar open={open} setOpen={setOpen}/>
+      <Sidebar open={open} setOpen={setOpen} />
       <Grid md={12} container>
         <Grid md={6} container>
           <Grid md={6}>
@@ -55,7 +54,7 @@ const AmendmentCompare = () => {
           <Grid md={6}>
             <div
               className="version-dropdown"
-              style={{ width: "90%", float: "right" }}
+              style={{ width: "90%", float: "right", marginRight: 10 }}
             >
               <Select
                 label="Select Second Version to Compare"
@@ -74,8 +73,20 @@ const AmendmentCompare = () => {
             </div>
           </Grid>
         </Grid>
-        <Grid md={6} container>
-          <div className="summary-button" >
+        <Grid md={3} container>
+          <div className="compare-button">
+            <Button
+              variant="primary"
+              size="small"
+              style={{ marginRight: 10 }}
+              // onClick={() => setOpen(!open)}
+            >
+              Compare
+            </Button>
+          </div>
+        </Grid>
+        <Grid md={3} container>
+          <div className="summary-button">
             <Button
               variant="secondary"
               icon={<ArrowLeft color="blue" />}
@@ -86,6 +97,14 @@ const AmendmentCompare = () => {
               Summary
             </Button>
           </div>
+        </Grid>
+      </Grid>
+      <Grid container md={12}>
+        <Grid md={6}>
+          <CompareCard float="left" />
+        </Grid>
+        <Grid md={6}>
+          <CompareCard float="right" />
         </Grid>
       </Grid>
     </div>
