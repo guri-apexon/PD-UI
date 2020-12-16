@@ -1,4 +1,5 @@
 import {useState} from 'react';
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Button from "apollo-react/components/Button";
@@ -7,6 +8,7 @@ import Grid from "apollo-react/components/Grid";
 import { Link } from "react-router-dom";
 
 function DashboardSearch({ recent, saved }) {
+  const dispatch = useDispatch();
   let history = useHistory();
   const [viewMore, setViewMore] = useState(false);
   return (
@@ -19,6 +21,7 @@ function DashboardSearch({ recent, saved }) {
             fullWidth
             onKeyPress={(e) => {
               if (e.key === "Enter") {
+                dispatch({ type: "POST_RECENT_SEARCH_DASHBOARD", payload: e.target.value });
                 history.push(`/search?key=${e.target.value}`);
               }
             }}

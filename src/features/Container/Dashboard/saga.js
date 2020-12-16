@@ -196,6 +196,29 @@ function* resetErrorAddProtocol() {
   yield put(setAddprotocolError(""));
 }
 
+function* saveRecentSearch(action) {
+  const url = "http://ca2spdml01q:8000/api/recent_search/";
+  const config = {
+    url,
+    method: "POST",
+    data: {
+      "keyword": action.payload,
+      "user": '1021402',
+      "timeCreated": "2020-12-16T12:34:59.460Z",
+      "lastUpdated": "2020-12-16T12:34:59.460Z"
+    }
+  };
+  try {
+    yield call(httpCall, config);
+    // if (searchData.success) {
+    //   yield put(getSavedSearches(searchData.data));
+    // }
+    // yield put(setError(searchData.err.statusText));
+  } catch (err) {
+    yield put(setError(err.statusText));
+  }
+}
+
 function* watchDashboard() {
   yield takeEvery("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
   yield takeEvery("CHECK_COMPARE_SAGA", compareSelectedAsyn);
@@ -205,6 +228,7 @@ function* watchDashboard() {
   yield takeEvery("TOGGLE_ADDPROTOCOL_MODAL", toggleAddProtocol);
   yield takeEvery("GET_SAVED_SEARCH_DATA", savedSearchAsyn);
   yield takeEvery("RESET_ERROR_ADD_PROTOCOL", resetErrorAddProtocol);
+  yield takeEvery("POST_RECENT_SEARCH_DASHBOARD", saveRecentSearch);
 }
 
 export default function* dashboardSaga() {
