@@ -117,7 +117,7 @@ const Protocols = (props) => {
                   {value === 0 && <ProtocolOverview data={data} />}
                   {value === 1 && <ProtocolView />}
                   {value === 2 && <AmendmentCompare />}
-                  {value === 3 && <Documents />}
+                  {value === 3 && <Documents handleChangeTab={handleChangeTab} />}
                 </div>
               </div>
             </div>

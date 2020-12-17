@@ -1,10 +1,19 @@
 .document-tab {
-    width: 100%;
+  width: 100%;
 
-    [class^=Table-root-]{
-        height: 160px;
+  .source-document-tab {
+    width: 100%;
+    [class^="Table-root-"] {
+      height: 160px;
     }
-    [class^=InternalTablePagination-toolbar-]{
-        display: none;
+    [class^="InternalTablePagination-toolbar-"] {
+      display: none;
     }
+  }
+  .associate-document-tab {
+    width: 100%;
+    [class^="InternalTablePagination-toolbar-"] {
+      display: none;
+    }
+  }
 }

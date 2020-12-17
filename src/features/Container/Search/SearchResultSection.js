@@ -2,7 +2,7 @@ import Panel from "apollo-react/components/Panel";
 import _ from "lodash";
 import Typography from "apollo-react/components/Typography";
 import classNames from "classnames";
-import React, { useState } from "react";
+import React from "react";
 import SearchListingSection from "./SearchListingSection";
 import data from "./Data/row.data";
 import SearchIcon from "apollo-react-icons/Search";
@@ -20,6 +20,7 @@ import Grid from "apollo-react/components/Grid";
 
 import NoResultFound from "../../Components/NoResultFound";
 
+import {SORT_DROPDOWN} from '../../../AppConstant/AppConstant';
 export default class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -86,8 +87,12 @@ export default class SearchPanel extends React.Component {
     }
   }
 
+  sortChange = (value) => {
+  console.log('value', value)
+  }
+
   render() {
-    const { filterList, resultList } = this.props;
+    const { filterList, resultList, onSearchChange } = this.props;
     const { accordionObj } = this.state;
     const clearAllCheckbox = () => {
       // console.log(this.state["searchValue"]);
@@ -154,10 +159,12 @@ export default class SearchPanel extends React.Component {
                   style={{ marginRight: 10 }}
                   value={"1"}
                   defaultValue="1"
+                  onChange={() => this.sortChange()}
                 >
-                  <MenuItem value="1">{"Relevancy"}</MenuItem>
+                  {/* <MenuItem value="1">{"Relevancy"}</MenuItem>
                   <MenuItem value="2">{"Approval Date"}</MenuItem>
-                  <MenuItem value="3">{"Upload Date"}</MenuItem>
+                   <MenuItem value="3">{"Upload Date"}</MenuItem> */}
+                   { SORT_DROPDOWN.map(item => <MenuItem value={item.id}>{item.label}</MenuItem> )}
                 </SelectButton>
               </div>
               <div

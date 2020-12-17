@@ -1,6 +1,8 @@
 import Table from "apollo-react/components/Table";
 import React from "react";
-import moment from 'moment'
+import moment from "moment";
+import { Link, useHistory } from "react-router-dom";
+import _ from "lodash";
 
 const Cell = ({ row, column }) => (
   <a href={row.filePath} target="_blank">
@@ -9,18 +11,28 @@ const Cell = ({ row, column }) => (
 );
 
 const VersionCell = ({ row, column }) => (
-    <a href={row.protocol_document_path} target="_blank">
-      {row.VersionNumber}
-    </a>
-  );
+  <a href='/' target="_blank">
+    {row.VersionNumber}
+  </a>
+);
 
-const DataCell = ({row, column}) => (moment(row[column.accessor]).format('DD-MMM-YYYY'));
+// const VersionCell1 = ({ row, column }) => {
+//   let history = useHistory();
+//   const onHandleChange = (row) => {
+//     row.handleChangeTab("", 0);
+//     history.push(`/protocols?protocolId=${row["id"]}`);
+//   };
+//   return <p onClick={() => onHandleChange(row)}> {row.VersionNumber}</p>;
+// };
+
+const DataCell = ({ row, column }) =>
+  moment(row[column.accessor]).format("DD-MMM-YYYY");
 const columns = [
-    {
-        accessor: "VersionNumber",
-        header: "Associated Versions",
-        customCell: VersionCell,
-      },
+  {
+    accessor: "VersionNumber",
+    header: "Associated Versions",
+    customCell: VersionCell,
+  },
   {
     accessor: "DraftVersion",
     header: "Draft#",
@@ -41,9 +53,24 @@ const columns = [
   },
 ];
 
-const AssociateDocumentsTable = ({ initialsRow }) => {
-    
+const AssociateDocumentsTable = ({ initialsRow, handleChangeTab }) => {
+  console.log("initialsRow :", initialsRow);
+
   return <Table title="Associated Documents" rows={initialsRow} columns={columns}  />;
+  // return (
+  //   <Table
+  //     title="Associated Documents"
+  //     rows={initialsRow.map((row) => {
+  //       let temp = _.cloneDeep(row);
+  //       let details = {
+  //         key: row.id,
+  //         handleChangeTab,
+  //       };
+  //       return _.merge(temp, details);
+  //     })}
+  //     columns={columns}
+  //   />
+  // );
 };
 
 export default AssociateDocumentsTable;
