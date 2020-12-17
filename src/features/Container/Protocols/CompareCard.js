@@ -3,7 +3,7 @@ import Card from "apollo-react/components/Card";
 
 const CompareCard = (props) => {
   return (
-    <div className="compare-card" style={{ height: 400, overflowY: "auto" }}>
+    <div className="compare-card">
       <Card
         style={{
           width: "98%",
@@ -12,7 +12,7 @@ const CompareCard = (props) => {
       >
         <div>
           <div className="header-section">Prot-1234</div>
-          <div className="TOC-title">Investigational Plan</div>
+          <div className="TOC-title">Synopsys</div>
           <div className="content-detail">
             Contrary to popular belief, Lorem Ipsum is not simply random text.
             It has roots in a piece of classical Latin literature from 45 BC,

@@ -1,6 +1,7 @@
 import { put, takeEvery, all, call, takeLatest } from "redux-saga/effects";
 import { getFilters, getSearchResult } from "./searchSlice";
 import { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
+import _ from "lodash";
 
 function* getFilterData(action) {
   // console.log("search", action.payload);
@@ -36,14 +37,18 @@ function* getFilterData(action) {
       });
       let formatFilter = data.data.map((item) => {
         if (item.sectionName === "Sponsors") {
-          return { ...item, sectionContent: formatSponser };
+          let items = _.cloneDeep(item);
+          items.sectionContent = formatSponser;
+          return items;
         } else if (item.sectionName === "Indication") {
-          return { ...item, sectionContent: formatIndication };
+          let items = _.cloneDeep(item);
+          items.sectionContent = formatIndication;
+          return items;
         } else {
           return item;
         }
       });
-      // console.log("format Fi", formatFilter);
+      console.log("format Fi", formatFilter);
       const obj = {
         success: true,
         data: formatFilter,
@@ -56,7 +61,6 @@ function* getFilterData(action) {
   // console.log(",,,,,,,", sponsorList);
   // console.log("1111111", indicationList);
   // getSummaryData(data)
-  
 }
 
 function* getSearchData(action) {
