@@ -9,7 +9,7 @@ import Grid from "apollo-react/components/Grid";
 import queryString from "query-string";
 import "./Documents.scss";
 import { useLocation } from "react-router-dom";
-const Documents = ({handleChangeTab}) => {
+const Documents = ({ handleChangeTab }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const protocolData = useSelector(prtocolsList);
@@ -31,19 +31,20 @@ const Documents = ({handleChangeTab}) => {
   return (
     <div className="document-tab">
       <Grid container spacing={2}>
-      <div className="source-document-tab">
         <Grid item xs={12}>
-          <DocumentsTable initialsRow={summary.success && [summary.data] } />
+          <div className="source-document-tab">
+            <DocumentsTable initialsRow={summary.success && [summary.data]} />
+          </div>
         </Grid>
-      </div>
-      <div className="associate-document-tab">
         <Grid item xs={12}>
-          <AssociateDocumentsTable handleChangeTab={handleChangeTab}
-          //  initialsRow={protocolData && protocolData} 
-            initialsRow={associateDocuments && associateDocuments}
-           />
+          <div className="associate-document-tab">
+            <AssociateDocumentsTable
+              handleChangeTab={handleChangeTab}
+              //  initialsRow={protocolData && protocolData}
+              initialsRow={associateDocuments && associateDocuments}
+            />
+          </div>
         </Grid>
-      </div>
       </Grid>
     </div>
   );
