@@ -48,7 +48,7 @@ class ProtocolSearchButton extends React.Component {
 
   render() {
     const handleClick = (label) => () => {
-      console.log(`You picked ${label}.`);
+      // console.log(`You picked ${label}.`);
     };
 
     const menuItems = [

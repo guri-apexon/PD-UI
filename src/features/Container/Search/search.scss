@@ -423,6 +423,10 @@
     overflow: hidden;
     box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.04);
   }
+  .Collapsible__contentOuter {
+    max-height: 300px;
+    overflow: auto !important;
+  }
 
   .Collapsible__trigger {
     display: block;

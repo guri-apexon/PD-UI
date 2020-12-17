@@ -19,7 +19,7 @@ const SearchListingSection = ({
   data,
   setExpanded
 }) => {
-  console.log("--------",data)
+  // console.log("--------",data)
   return (
     <Card
       interactive

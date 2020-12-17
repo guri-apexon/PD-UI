@@ -96,7 +96,7 @@ const Protocols = (props) => {
                     >
                       <Tab label="Overview" />
                       <Tab label="Protocol View" />
-                      <Tab label="Amendment Compare" />
+                      <Tab label="Version Compare" />
                       <Tab label="Documents" />
                     </Tabs>
                   </div>

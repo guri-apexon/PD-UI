@@ -32,7 +32,7 @@ export default class SearchPanel extends React.Component {
   }
   static getDerivedStateFromProps(props, state) {
     if (_.isEmpty(state.accordionObj) && props.resultList.success) {
-      console.log("iiiiiii", props.resultList);
+      // console.log("iiiiiii", props.resultList);
       let result = props.resultList.data;
       let arr = [];
       for (let i = 0; i < result.length; i++) {
@@ -52,14 +52,14 @@ export default class SearchPanel extends React.Component {
     return null;
   }
   componentDidMount() {
-    console.log("iiiiiiiooooooiii", this.state);
+    // console.log("iiiiiiiooooooiii", this.state);
   }
   setExpanded = (id, obj) => {
     const { accordionObj } = this.state;
     let accObj = accordionObj;
     let foundIndex = accObj.findIndex((obj) => obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
-    console.log(accObj);
+    // console.log(accObj);
     // debugger;
     this.setState({
       accordionObj: [
@@ -90,7 +90,7 @@ export default class SearchPanel extends React.Component {
     const { filterList, resultList } = this.props;
     const { accordionObj } = this.state;
     const clearAllCheckbox = () => {
-      console.log(this.state["searchValue"]);
+      // console.log(this.state["searchValue"]);
       this.state["searchValue"] = [];
       this.setState({ searchValue: [] });
     };

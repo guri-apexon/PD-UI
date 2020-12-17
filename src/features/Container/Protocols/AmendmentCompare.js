@@ -101,10 +101,10 @@ const AmendmentCompare = () => {
       </Grid>
       <Grid container md={12}>
         <Grid md={6}>
-          <CompareCard float="left" />
+          <CompareCard float="left" cardID="first-card"/>
         </Grid>
         <Grid md={6}>
-          <CompareCard float="right" />
+          <CompareCard float="right" cardID="second-card"/>
         </Grid>
       </Grid>
     </div>

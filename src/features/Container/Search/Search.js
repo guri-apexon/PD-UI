@@ -54,11 +54,10 @@ const Search = (props) => {
   };
   useEffect(() => {
     if (searchInput.length > 0) {
-      console.log("VVVVVVVV", searchInput);
       setIdPresent(true);
       let params = props.location.search;
       const parsed = queryString.parse(params);
-      dispatch({ type: "GET_SEARCH_FILTER", payload: searchInput });
+      // dispatch({ type: "GET_SEARCH_FILTER", payload: searchInput });
       dispatch({ type: "GET_SEARCH_RESULT", payload: searchInput });
     }
   }, [searchInput]);

@@ -1,18 +1,66 @@
 import { put, takeEvery, all, call, takeLatest } from "redux-saga/effects";
 import { getFilters, getSearchResult } from "./searchSlice";
-import { httpCall, Apis } from "../../../utils/api";
+import { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
 
 function* getFilterData(action) {
-  console.log("search", action.payload);
+  // console.log("search", action.payload);
+  // debugger
   const url = "../../../../filters.json";
+  const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
+  const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
   const data = yield call(httpCall, { url, method: "GET" });
-  console.log(data);
+
+  try {
+    const sponsorList = yield call(httpCall, {
+      url: sponsorUrl,
+      method: "GET",
+    });
+    const indicationList = yield call(httpCall, {
+      url: indicationUrl,
+      method: "GET",
+    });
+    // console.log("filter", indicationList, sponsorList);
+    if (indicationList.success && sponsorList.success) {
+      // let data = data;
+      let formatSponser = sponsorList.data.map((item) => {
+        return {
+          title: item.sponsor_name,
+          id: item.id,
+        };
+      });
+      let formatIndication = indicationList.data.map((item) => {
+        return {
+          title: item.indication_name,
+          id: item.id,
+        };
+      });
+      let formatFilter = data.data.map((item) => {
+        if (item.sectionName === "Sponsors") {
+          return { ...item, sectionContent: formatSponser };
+        } else if (item.sectionName === "Indication") {
+          return { ...item, sectionContent: formatIndication };
+        } else {
+          return item;
+        }
+      });
+      // console.log("format Fi", formatFilter);
+      const obj = {
+        success: true,
+        data: formatFilter,
+      };
+      yield put(getFilters(obj));
+    }
+  } catch (e) {}
+
+  // console.log(data);
+  // console.log(",,,,,,,", sponsorList);
+  // console.log("1111111", indicationList);
   // getSummaryData(data)
-  yield put(getFilters(data));
+  
 }
 
 function* getSearchData(action) {
-  console.log("search", action.payload);
+  // console.log("search", action.payload);
 
   if (action.payload) {
     const obj = {
@@ -35,9 +83,13 @@ function* getSearchData(action) {
     };
 
     try {
-      const resp = yield call(httpCall, { url, method: "POST", data: bodyData });
+      const resp = yield call(httpCall, {
+        url,
+        method: "POST",
+        data: bodyData,
+      });
       const data = resp.data.hits.hits;
-      console.log("Search Result", data);
+      // console.log("Search Result", data);
       if (data.length === 0) {
         const obj = {
           loader: false,
