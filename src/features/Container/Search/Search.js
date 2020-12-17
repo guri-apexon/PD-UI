@@ -57,15 +57,19 @@ const Search = (props) => {
       setIdPresent(true);
       let params = props.location.search;
       const parsed = queryString.parse(params);
+
       // dispatch({ type: "GET_SEARCH_FILTER", payload: searchInput });
-      dispatch({ type: "GET_SEARCH_RESULT", payload: searchInput });
+      // dispatch({ type: "GET_SEARCH_RESULT", payload: searchInput });
     }
   }, [searchInput]);
 
   const getSearchInput = (input) => {
+    // debugger;
     // console.log(input);
     setIdPresent(true);
     setSearchInput(input);
+    dispatch({ type: "GET_SEARCH_FILTER", payload: input });
+    dispatch({ type: "GET_SEARCH_RESULT", payload: input });
   };
   const deleteSearchInput = () => {
     setSearchInput("");
