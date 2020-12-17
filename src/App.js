@@ -34,7 +34,7 @@ function App () {
     },
     {
       text: 'Search',
-      pathname: '/Search',
+      pathname: '/search',
     },
     
   ];
