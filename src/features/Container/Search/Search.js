@@ -73,6 +73,10 @@ const Search = (props) => {
     props.history.push(`/Search`);
   };
 
+  const onSearchChange = () => {
+  console.log('onSearchChange :', onSearchChange);
+  }
+
   return (
     <div className="search">
       <Breadcrumbs
@@ -108,6 +112,7 @@ const Search = (props) => {
                 resultList={resultList}
                 searchInput={searchInput}
                 deleteSearchInput={deleteSearchInput}
+                onSearchChange={onSearchChange}
               />
             )
           )}

@@ -130,7 +130,7 @@ function* addProtocolSponsor() {
         temp.label = item.sponsor_name;
         return temp;
       });
-      console.log("sponsorList :", actualIndicationList, actualSponsorList);
+      // console.log("sponsorList :", actualIndicationList, actualSponsorList);
       yield put(getSponsor(actualSponsorList));
       yield put(getIndication(actualIndicationList));
       yield put(setLoading(false));
@@ -170,7 +170,7 @@ function* postAddProtocol(postData) {
       yield put(setAddProtocolModal(false));
     } else {
       yield put(setAddProtocolModal(true));
-      console.log("postResponsefailed :", postResponse.err);
+      // console.log("postResponsefailed :", postResponse.err);
       yield put(
         setAddprotocolError(
           postResponse.err && postResponse.err.data

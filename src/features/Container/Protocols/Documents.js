@@ -4,37 +4,46 @@ import AssociateDocumentsTable from "../../Components/DocumentsTable/AssociateDo
 
 import { useSelector, useDispatch } from "react-redux";
 import { prtocolsList } from "../Dashboard/dashboardSlice";
-import { protocolSummary } from "./protocolSlice.js";
+import { protocolSummary, associateDocs } from "./protocolSlice.js";
 import Grid from "apollo-react/components/Grid";
 import queryString from "query-string";
 import "./Documents.scss";
 import { useLocation } from "react-router-dom";
-const Documents = () => {
+const Documents = ({handleChangeTab}) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const protocolData = useSelector(prtocolsList);
   const summary = useSelector(protocolSummary);
+  const associateDocuments = useSelector(associateDocs);
   const [rows, setRows] = useState([]);
   useEffect(() => {
     let params = location && location.search;
     const parsed = queryString.parse(params);
     if ("protocolId" in parsed) {
+      // dispatch({type:'FETCH_ASSOCIATE_PROTOCOLS', payload: parsed.protocolId})
       let filterrow =
         protocolData &&
         protocolData.filter((item) => item.id == parsed.protocolId);
       setRows(filterrow);
     }
   }, [prtocolsList]);
-  console.log("rows :", protocolData, rows, summary);
+  console.log("rows :", protocolData, rows, summary, associateDocuments);
   return (
     <div className="document-tab">
       <Grid container spacing={2}>
+      <div className="source-document-tab">
         <Grid item xs={12}>
           <DocumentsTable initialsRow={summary.success && [summary.data] } />
         </Grid>
-        {/* <Grid item xs={12}>
-          <AssociateDocumentsTable initialsRow={protocolData && protocolData} />
-        </Grid> */}
+      </div>
+      <div className="associate-document-tab">
+        <Grid item xs={12}>
+          <AssociateDocumentsTable handleChangeTab={handleChangeTab}
+          //  initialsRow={protocolData && protocolData} 
+            initialsRow={associateDocuments && associateDocuments}
+           />
+        </Grid>
+      </div>
       </Grid>
     </div>
   );

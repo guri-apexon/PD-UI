@@ -4,7 +4,8 @@ export const protocolSlice = createSlice({
   name: 'protocol',
   initialState: {
       summary:{},
-      toc: []
+      toc: [],
+      associateDocs:[]
   },
   reducers: {
     getSummary: (state, action) => {
@@ -12,11 +13,14 @@ export const protocolSlice = createSlice({
     },
     getProcotoclToc: (state, action) => {
       state.toc = action.payload;
+    },
+    getAssociateDocuments: (state, action) => {
+      state.associateDocs = action.payload;
     }
   },
 });
 
-export const { getSummary, getProcotoclToc } = protocolSlice.actions;
+export const { getSummary, getProcotoclToc, getAssociateDocuments } = protocolSlice.actions;
 
 
 // The function below is called a selector and allows us to select a value from
@@ -24,5 +28,6 @@ export const { getSummary, getProcotoclToc } = protocolSlice.actions;
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
 export const protocolSummary = state => state.protocol.summary;
 export const tocData = state => state.protocol.toc;
+export const associateDocs = state => state.protocol.associateDocs
 
 export default protocolSlice.reducer;

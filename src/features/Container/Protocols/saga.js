@@ -1,5 +1,5 @@
 import { put, takeEvery, all, call, takeLatest } from "redux-saga/effects";
-import { getSummary, getProcotoclToc } from "./protocolSlice.js";
+import { getSummary, getProcotoclToc, getAssociateDocuments } from "./protocolSlice.js";
 import { httpCall } from "../../../utils/api";
 
 function* getSummaryData(action) {
@@ -21,6 +21,7 @@ function* getSummaryData(action) {
       data: resp.data,
     };
     yield put(getSummary(obj));
+    yield put({type:'FETCH_ASSOCIATE_PROTOCOLS', payload: resp.data.Protocol});
   } else {
     let obj = {
       loading: false,
@@ -78,10 +79,28 @@ function* getProtocolSummary() {
   console.log(tocData);
 }
 
+function* fetchAssociateProtocol(action){
+   const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=${action.payload}`;
+  //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
+   const config = {
+    url: URL,
+    method: "GET",
+  };
+   const associateDocs = yield call(httpCall, config);
+  //  console.log('associateDocs :', associateDocs.data);
+   if(associateDocs.success){
+    yield put(getAssociateDocuments(associateDocs.data));
+   } else {
+    yield put(getAssociateDocuments([]));
+   }
+
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery("GET_PROTOCOL_SUMMARY", getSummaryData);
   yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolSummary);
+  yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol)
 }
 
 // notice how we now only export the rootSaga

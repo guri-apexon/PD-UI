@@ -1,11 +1,9 @@
 import React from "react";
-import ReactDOM from "react-dom";
 
 import { withRouter } from "react-router-dom";
 
 import Button from "apollo-react/components/Button";
 import Search from "apollo-react/components/Search";
-import Chip from "apollo-react/components/Chip";
 import MenuButton from "apollo-react/components/MenuButton";
 
 class ProtocolSearchButton extends React.Component {
