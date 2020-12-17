@@ -12,12 +12,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    padding: 0;
   }
   // [class^="MuiTableRow-root-"] {
   //   background-color: #f6f7fb;
   // }
-  [class^="InternalTableBody-expandedRowEditMode-"],
-  .InternalTableBody-expandedRowEditMode-962 {
+  [class^="InternalTableBody-expandedRowEditMode-"] {
     background-color: white;
   }
   .dashboard-search-parent {
@@ -36,9 +36,11 @@
 
   .expanded-comp {
     display: flex;
-    padding: 8px 0px 8px 8px;
+    padding: 8px 0px 8px 22%;
     background-color: white;
-    margin-left: 3%;
+    // margin-left: 3%;
+    
+    text-transform: capitalize;
   }
 }
 

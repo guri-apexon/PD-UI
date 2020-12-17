@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Grid from "apollo-react/components/Grid";
 import Card from "apollo-react/components/Card";
@@ -80,10 +80,11 @@ function getElement(data) {
   }
 }
 const ProtocolView = () => {
+  const ref = useRef(null)
   const dispatch = useDispatch();
   const [showNav, setShowNav] = useState(false);
+  const [node, setNode] = useState(false);
   const sumData = useSelector(tocData);
-  console.log("toc", sumData);
   useEffect(() => {
     dispatch({ type: "GET_PROTOCOL_TOC_SAGA" });
   }, []);
@@ -106,50 +107,79 @@ const ProtocolView = () => {
   //      ele = <div>{getElement(sumData[3], content)}</div>
   // }
   // console.log(ele);
+
+  function handleOutsideClick(e) {
+    // ignore clicks on the component itself
+    if (node.contains(e.target)) {
+      return;
+    }
+    
+    handleClick();
+  }
+  function handleClick() {
+    if (!showNav) {
+      // attach/remove event handler
+      document.addEventListener("click", handleOutsideClick, false);
+    } else {
+      document.removeEventListener("click", handleOutsideClick, false);
+    }
+
+    // this.setState(prevState => ({
+    //    popupVisible: !prevState.popupVisible,
+    // }));
+    setShowNav(prevState => !prevState);
+  }
+
   return (
-    <div className='view-wrapper'>
+    <div className="view-wrapper">
       <Card className="index-column">
-        <div className="dropdown-wrapper">
-          {listData.map((item) => (
-            <button
-              className="btn btn1"
-              onClick={() => {
-                setShowNav(!showNav);
-              }}
-              // onMouseEnter={() => {
-              //   setShowNav(true);
-              // }}
-              // onMouseLeave={() => {
-              //   setShowNav(false);
-              // }}
+        <div
+          ref={node => { setNode(node) }}
+        >
+          <div className="dropdown-wrapper">
+            {listData.map((item) => (
+              <button
+                className="btn btn1"
+                onClick={handleClick}
+                // onMouseEnter={() => {
+                //   setShowNav(true);
+                // }}
+                // onMouseLeave={() => {
+                //   setShowNav(false);
+                // }}
+              >
+                <span style={{ marginLeft: "16px" }}>{item}</span>
+              </button>
+            ))}
+          </div>
+          {showNav && (
+            <div
+              className={`dropdown-menu sample ${showNav ? "show-nav" : ""}`}
             >
-              <span style={{ marginLeft: "16px" }}>{item}</span>
-            </button>
-          ))}
-        </div>
-        <div className={`dropdown-menu sample ${showNav ? "show-nav" : ""}`}>
-          <a
-            href="#dad"
-            className="dropdown-item"
-            onClick={() => {
-              setShowNav(!showNav);
-            }}
-          >
-            Action 1
-          </a>
-          <a href="#2001" className="dropdown-item">
-            Action 2
-          </a>
-          <a href="#" className="dropdown-item">
-            Action 3
-          </a>
-          <a href="#" className="dropdown-item">
-            Action 4
-          </a>
+              <a
+                href="#dad"
+                className="dropdown-item"
+                onClick={() => {
+                  setShowNav(!showNav);
+                }}
+              >
+                Action 1
+              </a>
+              <a href="#2001" className="dropdown-item">
+                Action 2
+              </a>
+              <a href="#" className="dropdown-item">
+                Action 3
+              </a>
+              <a href="#" className="dropdown-item">
+                Action 4
+              </a>
+            </div>
+          )}
         </div>
       </Card>
-      <Card  className="protocol-column">
-        <div className='bar'></div>
+      <Card className="protocol-column">
+        <div className="bar"></div>
         <div style={{ padding: "10px 16px" }}>
           {sumData.length &&
             sumData.map((item) => {

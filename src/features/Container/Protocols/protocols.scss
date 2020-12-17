@@ -203,6 +203,7 @@
     transition-duration: 0.2s;
     cursor: pointer;
     background: none;
+    border-left: 8px solid transparent;
   }
 
   // .btn1 {
@@ -211,9 +212,9 @@
   //   border-left: 8px solid #4CAF50;
   // }
 
-  .btn1:hover, .btn1:active {
-    border-left: 8px solid #4c93af;
-    background-color: rgba(0, 140, 255, 0.2);
+  .btn1:hover, .btn1:active, .btn1:focus  {
+    border-left: 8px solid #0491f3;
+    background-color: #0491f336;
   }
 
   .index-column {

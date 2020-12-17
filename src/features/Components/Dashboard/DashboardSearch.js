@@ -2,6 +2,7 @@ import {useState} from 'react';
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ChevronRight from "apollo-react-icons/ChevronRight";
+import ChevronLeft from "apollo-react-icons/ChevronLeft";
 import Button from "apollo-react/components/Button";
 import Search from "apollo-react/components/Search";
 import Grid from "apollo-react/components/Grid";
@@ -29,7 +30,11 @@ function DashboardSearch({ recent, saved }) {
           <div>
             <h3>Recent Searches</h3>
             {recent && recent.length > 0 ? (
-              <ul className={viewMore ? "search-list-ul-scroll" : "search-list-ul"}>
+              <ul
+                className={
+                  viewMore ? "search-list-ul-scroll" : "search-list-ul"
+                }
+              >
                 {recent.map((item, index) => {
                   if (index <= 5 || viewMore) {
                     return (
@@ -46,11 +51,20 @@ function DashboardSearch({ recent, saved }) {
               "No Search data available"
             )}
           </div>
-          {recent.length > 5 ?
-          <Button variant="secondary" style={{ width: "100%" }} onClick={() => setViewMore(!viewMore)}>
-            <span>{viewMore ? 'View Less' : 'View More'}</span>
-            <ChevronRight className="view-more-icon" />
-          </Button>: null}
+          {recent.length > 5 ? (
+            <Button
+              variant="secondary"
+              style={{ width: "100%" }}
+              onClick={() => setViewMore(!viewMore)}
+            >
+              <span>{viewMore ? "View Less" : "View More"}</span>
+              {viewMore ? (
+                <ChevronLeft className="view-more-icon" />
+              ) : (
+                <ChevronRight className="view-more-icon" />
+              )}
+            </Button>
+          ) : null}
         </Grid>
 
         <Grid

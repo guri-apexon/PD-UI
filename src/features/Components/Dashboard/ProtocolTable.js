@@ -200,6 +200,7 @@ const ExpandableComponent = ({ row }) => {
           {row.DocumentStatus}
         </Typography>
       </div>
+      {row.fileName && 
       <div className="extended-data">
         <Typography
           style={{
@@ -216,11 +217,12 @@ const ExpandableComponent = ({ row }) => {
           </Link>
         </Typography>
       </div>
+      }
     </div>
   );
 };
 
-const ProtocolTable = ({ initialRows }) => {
+const ProtocolTable = ({ initialRows, pageRows }) => {
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
   const [selectedRows, setSelectedRows] = React.useState([]);
@@ -263,7 +265,7 @@ const ProtocolTable = ({ initialRows }) => {
       })}
       initialSortedColumn="Protocol"
       initialSortOrder="asc"
-      rowsPerPageOptions={[5, 20, 30, "All"]}
+      rowsPerPageOptions={pageRows}
       rowProps={{ hover: false }}
       tablePaginationProps={{
         labelDisplayedRows: ({ from, to, count }) =>
