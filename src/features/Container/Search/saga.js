@@ -74,9 +74,6 @@ function* getSearchData(action) {
     };
     yield put(getSearchResult(obj));
     // const url = "../../../../searchResult.json";
-
-    const url = Apis.search;
-
     const bodyData = {
       query: {
         multi_match: {
@@ -86,11 +83,14 @@ function* getSearchData(action) {
       },
     };
 
+    const url = `${Apis.search}/?q=${action.payload}`
+
+    
+
     try {
       const resp = yield call(httpCall, {
         url,
-        method: "POST",
-        data: bodyData,
+        method: "GET",
       });
       const data = resp.data.hits.hits;
       // console.log("Search Result", data);
