@@ -28,9 +28,9 @@ export const dashboardSlice = createSlice({
     getRecentSearches: (state, action) => {
       state.recentSearches = action.payload;
     },
-    getProtocolData: (state, action) => {
-      state.addProtocolData = action.payload;
-    },
+    // getProtocolData: (state, action) => {
+    //   state.addProtocolData = action.payload;
+    // },
     getSponsor: (state, action) => {
       state.addProtocolData.sponsor = action.payload;
     },

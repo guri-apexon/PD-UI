@@ -10,20 +10,20 @@ const Cell = ({ row, column }) => (
   </a>
 );
 
-const VersionCell = ({ row, column }) => (
-  <a href='/' target="_blank">
-    {row.VersionNumber}
-  </a>
-);
+// const VersionCell = ({ row, column }) => (
+//   <a href="/" target="_blank">
+//     {row.VersionNumber}
+//   </a>
+// );
 
-// const VersionCell1 = ({ row, column }) => {
-//   let history = useHistory();
-//   const onHandleChange = (row) => {
-//     row.handleChangeTab("", 0);
-//     history.push(`/protocols?protocolId=${row["id"]}`);
-//   };
-//   return <p onClick={() => onHandleChange(row)}> {row.VersionNumber}</p>;
-// };
+const VersionCell = ({ row, column }) => {
+  let history = useHistory();
+  const onHandleChange = (row) => {
+    row.handleChangeTab("", 0);
+    history.push(`/protocols?protocolId=${row["id"]}`);
+  };
+  return <p className="hyperlink" onClick={() => onHandleChange(row)}> {row.VersionNumber}</p>;
+};
 
 const DataCell = ({ row, column }) =>
   moment(row[column.accessor]).format("DD-MMM-YYYY");
@@ -56,21 +56,29 @@ const columns = [
 const AssociateDocumentsTable = ({ initialsRow, handleChangeTab }) => {
   console.log("initialsRow :", initialsRow);
 
-  return <Table title="Associated Documents" rows={initialsRow} columns={columns}  />;
   // return (
   //   <Table
-  //     title="Associated Documents"
-  //     rows={initialsRow.map((row) => {
-  //       let temp = _.cloneDeep(row);
-  //       let details = {
-  //         key: row.id,
-  //         handleChangeTab,
-  //       };
-  //       return _.merge(temp, details);
-  //     })}
-  //     columns={columns}
+  //   title="Associated Documents"
+  //   rows={initialsRow}
+  //   columns={columns}
+  //   initialSortOrder="asc"
+  //   initialSortedColumn="fileName"
   //   />
   // );
+  return (
+    <Table
+      title="Associated Documents"
+      rows={initialsRow.map((row) => {
+        let temp = _.cloneDeep(row);
+        let details = {
+          key: row.id,
+          handleChangeTab,
+        };
+        return _.merge(temp, details);
+      })}
+      columns={columns}
+    />
+  );
 };
 
 export default AssociateDocumentsTable;
