@@ -73,6 +73,7 @@ class CustomFileUpload extends Component {
       const {selectedFiles}=this.state;
       // console.log('selectedFiles :', selectedFiles, formSelectedFiles);
         return(
+          <div data-testid='custom-file-upload'>
             <FileUpload
             value={selectedFiles && selectedFiles.length >0 ? selectedFiles : formSelectedFiles}
             onUpload={this.handleUpload}
@@ -82,6 +83,7 @@ class CustomFileUpload extends Component {
             // {...props}
             fullWidth
           />
+          </div>
         )
     }
 }

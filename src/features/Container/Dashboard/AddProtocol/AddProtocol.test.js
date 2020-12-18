@@ -190,7 +190,7 @@ describe("Add Protocol Test Suite", () => {
       }
     );
     const file = new File(['(⌐□_□)'], 'chucknorris.doc', { type: 'application/msword' })
-    let fileUpload= container.getByTestId('custom-fileupload').children[0].children[0];
+    let fileUpload= container.getByTestId('custom-fileupload').children[0].children[0].children[0];
     // console.log('fileUpload :', fileUpload);
     // fireEvent.change(fileUpload, {target:{value:'a'}});
     Object.defineProperty(fileUpload, "files", {
