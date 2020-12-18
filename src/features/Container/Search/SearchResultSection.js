@@ -20,7 +20,10 @@ import Grid from "apollo-react/components/Grid";
 
 import NoResultFound from "../../Components/NoResultFound";
 
-import {SORT_DROPDOWN} from '../../../AppConstant/AppConstant';
+import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
+
+import Loader from "../../Components/Loader/Loader";
+
 export default class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -88,11 +91,11 @@ export default class SearchPanel extends React.Component {
   }
 
   sortChange = (value) => {
-  console.log('value', value)
-  }
+    console.log("value", value);
+  };
 
   render() {
-    const { filterList, resultList, onSearchChange } = this.props;
+    const { filterList = [], resultList, onSearchChange } = this.props;
     const { accordionObj } = this.state;
     const clearAllCheckbox = () => {
       // console.log(this.state["searchValue"]);
@@ -128,14 +131,15 @@ export default class SearchPanel extends React.Component {
               }
             </div>
             <div>
-              {filterList.map((section, index) => (
-                <FilterSection
-                  state={this.state}
-                  key={section.sectionId}
-                  section={section}
-                  index={index}
-                />
-              ))}
+              {filterList.length > 0 &&
+                filterList.map((section, index) => (
+                  <FilterSection
+                    state={this.state}
+                    key={section.sectionId}
+                    section={section}
+                    index={index}
+                  />
+                ))}
             </div>
           </Grid>
           <Grid md={9}>
@@ -164,7 +168,9 @@ export default class SearchPanel extends React.Component {
                   {/* <MenuItem value="1">{"Relevancy"}</MenuItem>
                   <MenuItem value="2">{"Approval Date"}</MenuItem>
                    <MenuItem value="3">{"Upload Date"}</MenuItem> */}
-                   { SORT_DROPDOWN.map(item => <MenuItem value={item.id}>{item.label}</MenuItem> )}
+                  {SORT_DROPDOWN.map((item) => (
+                    <MenuItem value={item.id}>{item.label}</MenuItem>
+                  ))}
                 </SelectButton>
               </div>
               <div
@@ -189,7 +195,9 @@ export default class SearchPanel extends React.Component {
                   />
                 )}
               </div>
-              {resultList.success && accordionObj.length !== 0 ? (
+              {!resultList.loader &&
+              resultList.success &&
+              accordionObj.length !== 0 ? (
                 accordionObj.map((protocol, i) => (
                   <div key={protocol.protocolNumber}>
                     <SearchListingSection
@@ -201,9 +209,23 @@ export default class SearchPanel extends React.Component {
                 ))
               ) : (
                 <div>
-                  <NoResultFound />
+                  {!resultList.loader ? (
+                    <NoResultFound />
+                  ) : (
+                    <div
+                      style={{
+                        height: 400,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        display: "flex",
+                      }}
+                    >
+                      <Loader />
+                    </div>
+                  )}
                 </div>
               )}
+              {/* {resultList.loader && <Loader />} */}
             </div>
           </Grid>
         </Grid>

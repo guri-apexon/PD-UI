@@ -2,6 +2,13 @@ import { put, takeEvery, all, call, takeLatest } from "redux-saga/effects";
 import { getFilters, getSearchResult } from "./searchSlice";
 import { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
+import elasticsearch from "elasticsearch";
+
+const client = new elasticsearch.Client({
+  host: "http://10.3.67.228:9200/pd-index",
+  log: "trace",
+  // apiVersion: '7.2', // use the same version of your Elasticsearch instance
+});
 
 function* getFilterData(action) {
   // console.log("search", action.payload);
@@ -9,9 +16,9 @@ function* getFilterData(action) {
   const url = "../../../../filters.json";
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
   const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
-  const data = yield call(httpCall, { url, method: "GET" });
 
   try {
+    const data = yield call(httpCall, { url, method: "GET" });
     const sponsorList = yield call(httpCall, {
       url: sponsorUrl,
       method: "GET",
@@ -74,40 +81,75 @@ function* getSearchData(action) {
     };
     yield put(getSearchResult(obj));
     // const url = "../../../../searchResult.json";
-    const bodyData = {
-      query: {
-        multi_match: {
-          query: action.payload,
-          fields: ["InterventionGroups", "Objectives"],
-        },
-      },
-    };
-
-    const url = `${Apis.search}/?q=${action.payload}`
-
-    
+    // const bodyData = {
+    //   query: {
+    //     multi_match: {
+    //       query: action.payload,
+    //       fields: ["InterventionGroups", "Objectives"],
+    //     },
+    //   },
+    // };
+    // const url = `${Apis.search}/?source_content_type=application/json&source=${JSON.stringify(bodyData)}`;
+    // const url = `${Apis.search}/?q=${action.payload}`
+    // const url=``
 
     try {
+      // const resp = yield client.search({
+      //   body: {
+      //     query: {
+      //       multi_match: {
+      //         query: action.payload,
+      //         fields: [
+      //           "Objectives",
+      //           "Endpoints",
+      //           "AdverseEvents",
+      //           "SeriousAdverseEvents",
+      //           "ObjectiveAndEndpoint",
+      //           "InclusionCriteria",
+      //           "ExclusionCriteria",
+      //           "NumberOfParticipants",
+      //           "Title",
+      //           "ShortTitle",
+      //           "PrimaryObjective",
+      //           "SecondaryObjective",
+      //           "ExploratoryObjective",
+      //           "PrimaryEndpoint",
+      //           "SecondaryEndpoint",
+      //           "Rationale",
+      //           "Design",
+      //           "BriefSummary",
+      //           "InterventionGroups",
+      //           "DataMonitoringCommittee",
+      //           "Schema",
+      //         ],
+      //       },
+      //     },
+      //   },
+      // });
+      // console.log(resp.hits.hits);
+      const url = `http://localhost:4000/elastic/${action.payload}`;
+
       const resp = yield call(httpCall, {
         url,
         method: "GET",
       });
       const data = resp.data.hits.hits;
       // console.log("Search Result", data);
-      if (data.length === 0) {
-        const obj = {
-          loader: false,
-          success: true,
-          data: [],
-        };
-        yield put(getSearchResult(obj));
-      } else {
+      // const data = [];
+      if (resp.data && resp.data.hits && data.length !== 0) {
         const requiredFormat = createJSONFormat(data);
 
         const obj = {
           loader: false,
           success: true,
           data: requiredFormat,
+        };
+        yield put(getSearchResult(obj));
+      } else if (resp.data.hits.hits.length === 0) {
+        const obj = {
+          loader: false,
+          success: true,
+          data: [],
         };
         yield put(getSearchResult(obj));
       }
@@ -170,5 +212,14 @@ function createJSONFormat(data) {
   }
 
   console.log("arrs", arr);
-  return arr;
+  return getUniqObject(arr);
+}
+
+function getUniqObject(obj) {
+  const uniqueObj = Array.from(new Set(obj.map((a) => a.protocolNumber))).map(
+    (protocolNumber) => {
+      return obj.find((a) => a.protocolNumber === protocolNumber);
+    }
+  );
+  return uniqueObj
 }

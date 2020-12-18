@@ -46,6 +46,7 @@ const Search = (props) => {
       dispatch({ type: "GET_SEARCH_RESULT", payload: parsed.key });
     } else {
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
+      dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
     }
   }, [dispatch]);
   const handleClick = (e) => {
@@ -68,7 +69,7 @@ const Search = (props) => {
     // console.log(input);
     setIdPresent(true);
     setSearchInput(input);
-    dispatch({ type: "GET_SEARCH_FILTER", payload: input });
+    // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
     dispatch({ type: "GET_SEARCH_RESULT", payload: input });
   };
   const deleteSearchInput = () => {
@@ -78,8 +79,8 @@ const Search = (props) => {
   };
 
   const onSearchChange = () => {
-  console.log('onSearchChange :', onSearchChange);
-  }
+    console.log("onSearchChange :", onSearchChange);
+  };
 
   return (
     <div className="search">
@@ -106,20 +107,13 @@ const Search = (props) => {
           />
         </div>
         <div>
-          {!resultList.success ? (
-            <Loader isInner />
-          ) : (
-            idPresent &&
-            filterList.success && (
-              <SearchResultSection
-                filterList={filterList.data}
-                resultList={resultList}
-                searchInput={searchInput}
-                deleteSearchInput={deleteSearchInput}
-                onSearchChange={onSearchChange}
-              />
-            )
-          )}
+          <SearchResultSection
+            filterList={filterList.data}
+            resultList={resultList}
+            searchInput={searchInput}
+            deleteSearchInput={deleteSearchInput}
+            onSearchChange={onSearchChange}
+          />
         </div>
       </div>
     </div>
