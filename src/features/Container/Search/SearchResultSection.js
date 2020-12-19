@@ -131,7 +131,11 @@ export default class SearchPanel extends React.Component {
               }
             </div>
             <div>
-              {filterList.length > 0 &&
+              <FilterSection name="TOC" />
+              <FilterSection name="phase" />
+              <FilterSection name="document" />
+              <FilterSection name="date" />
+              {/* {filterList.length > 0 &&
                 filterList.map((section, index) => (
                   <FilterSection
                     state={this.state}
@@ -139,7 +143,19 @@ export default class SearchPanel extends React.Component {
                     section={section}
                     index={index}
                   />
-                ))}
+                ))} */}
+              {/* {filterList.length === 0 && (
+                <div
+                  style={{
+                    height: 400,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    display: "flex",
+                  }}
+                >
+                  <Loader />
+                </div>
+              )} */}
             </div>
           </Grid>
           <Grid md={9}>
@@ -197,34 +213,34 @@ export default class SearchPanel extends React.Component {
               </div>
               {!resultList.loader &&
               resultList.success &&
-              accordionObj.length !== 0 ? (
-                accordionObj.map((protocol, i) => (
-                  <div key={protocol.protocolNumber}>
-                    <SearchListingSection
-                      setExpanded={this.setExpanded}
-                      data={protocol}
-                      key={protocol.protocolNumber}
-                    />
-                  </div>
-                ))
-              ) : (
-                <div>
-                  {!resultList.loader ? (
-                    <NoResultFound />
-                  ) : (
-                    <div
-                      style={{
-                        height: 400,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      <Loader />
+              accordionObj.length !== 0
+                ? accordionObj.map((protocol, i) => (
+                    <div key={protocol.protocolNumber}>
+                      <SearchListingSection
+                        setExpanded={this.setExpanded}
+                        data={protocol}
+                        key={protocol.protocolNumber}
+                      />
+                    </div>
+                  ))
+                : resultList.search && (
+                    <div>
+                      {!resultList.loader ? (
+                        <NoResultFound />
+                      ) : (
+                        <div
+                          style={{
+                            height: 400,
+                            justifyContent: "center",
+                            alignItems: "center",
+                            display: "flex",
+                          }}
+                        >
+                          <Loader />
+                        </div>
+                      )}
                     </div>
                   )}
-                </div>
-              )}
               {/* {resultList.loader && <Loader />} */}
             </div>
           </Grid>

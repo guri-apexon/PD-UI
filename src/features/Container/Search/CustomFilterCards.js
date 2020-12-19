@@ -62,23 +62,38 @@ const useStyles = makeStyles({
   },
 });
 
-export const CheckboxCard = ({ state, section, index }) => {
+export const TableOfContent = ({ section }) => {
+  return (
+    <Card>
+      <CardContent>
+        <div>
+          <div style={{ marginTop: 10 }}>
+            {section.sectionContent.map((content, i) => (
+              <p className="text-filter" key={content.id}>
+                {content.title}
+              </p>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const CheckboxCard = ({ section, index }) => {
   const [value, setValue] = React.useState([]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
-    state["searchValue"] = e.target.value;
   };
 
   const classes = useStyles();
   return (
-    <Card
-      className={classNames(classes.card, index === 0 && classes.cardHighlight)}
-    >
+    <Card>
       <CardContent className={classes.cardContainer}>
         <Typography className={classes.cardSubtitle} variant="caption">
           <div style={{ marginTop: 10 }}>
-            <CheckboxGroup value={state["searchValue"]} onChange={handleChange}>
+            <CheckboxGroup value={value} onChange={handleChange}>
               {section.sectionContent.map((content, i) => (
                 <Checkbox
                   id={section.sectionContent[i].id + "_" + i}
@@ -96,29 +111,30 @@ export const CheckboxCard = ({ state, section, index }) => {
   );
 };
 
-export const TextCard = ({ state, section, index }) => {
+export const TextCard = ({ section }) => {
   const [value, setValue] = React.useState([]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
-    state["searchValue"] = e.target.value;
   };
 
   const classes = useStyles();
   return (
-    <Card
-      className={classNames(classes.card, index === 0 && classes.cardHighlight)}
-    >
+    <Card>
       <CardContent>
-        <Typography className={classes.cardSubtitle} variant="caption">
+        <div className={classes.cardSubtitle}>
           <div style={{ marginTop: 10 }}>
             {section.sectionContent.map((content, i) => (
-              <p className="text-filter" key={content.id}>
+              <p
+                className="text-filter"
+                key={content.id}
+                style={{ fontSize: 13 }}
+              >
                 {content.title}
               </p>
             ))}
           </div>
-        </Typography>
+        </div>
       </CardContent>
     </Card>
   );
@@ -158,23 +174,20 @@ export const RadioCard = ({ state, section, index }) => {
   );
 };
 
-export const DateRangeCard = ({ state, section, index }) => {
+export const DateRangeCard = ({ section }) => {
   const [value, setValue] = React.useState([]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
-    state["searchValue"] = e.target.value;
   };
 
   const classes = useStyles();
   return (
-    <Card
-      className={classNames(classes.card, index === 0 && classes.cardHighlight)}
-    >
+    <Card>
       <CardContent>
         <Typography className={classes.cardSubtitle} variant="caption">
           <div style={{ marginTop: 10 }}>
-            <RadioGroup value={state["searchValue"]} onChange={handleChange}>
+            <RadioGroup value={value} onChange={handleChange}>
               {section.sectionContent.map((content, i) => (
                 <Radio
                   id={section.sectionContent[i].id + "_" + i}
@@ -188,8 +201,14 @@ export const DateRangeCard = ({ state, section, index }) => {
             <div style={{ marginTop: 20 }}>
               <DateRangePicker
                 onChange={(event) => console.log(event.target.value)}
-                fromDateProps={{ label: "Start of Range",placeholder:"MM/DD/YYYY" }}
-                toDateProps={{ label: "End of Range",placeholder:"MM/DD/YYYY" }}
+                fromDateProps={{
+                  label: "Start of Range",
+                  placeholder: "MM/DD/YYYY",
+                }}
+                toDateProps={{
+                  label: "End of Range",
+                  placeholder: "MM/DD/YYYY",
+                }}
                 fromLabel="hhhhh"
               />
             </div>

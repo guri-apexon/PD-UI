@@ -75,6 +75,7 @@ function* getSearchData(action) {
 
   if (action.payload) {
     const obj = {
+      search: true,
       loader: true,
       success: false,
       data: [],
@@ -140,6 +141,7 @@ function* getSearchData(action) {
         const requiredFormat = createJSONFormat(data);
 
         const obj = {
+          search: true,
           loader: false,
           success: true,
           data: requiredFormat,
@@ -147,6 +149,7 @@ function* getSearchData(action) {
         yield put(getSearchResult(obj));
       } else if (resp.data.hits.hits.length === 0) {
         const obj = {
+          search: true,
           loader: false,
           success: true,
           data: [],
@@ -162,6 +165,7 @@ function* getSearchData(action) {
     }
   } else {
     const obj = {
+      search: false,
       loader: false,
       success: true,
       data: [],
@@ -221,5 +225,5 @@ function getUniqObject(obj) {
       return obj.find((a) => a.protocolNumber === protocolNumber);
     }
   );
-  return uniqueObj
+  return uniqueObj;
 }

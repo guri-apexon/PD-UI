@@ -61,13 +61,9 @@ app.get("/elastic/:key", (req, res) => {
     .catch((e) => {
       res.send(e);
     });
-  // console.log(resp.hits.hits);
-
-  // const resp = yield call(httpCall, {
-  //   url,
-  //   method: "GET",
-  // });
-  // const data = resp.hits.hits;
+});
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(PORT);
