@@ -10,30 +10,36 @@ import SearchSection from "./SearchSection";
 //------------------- Third Party -----------------
 
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
-import Loader from "apollo-react/components/Loader";
 
 //------------------- Redux -----------------
 import { useSelector, useDispatch } from "react-redux";
 import {
-  getFilters,
-  getSearchResult,
   searchFilter,
   searchResult,
+  indications,
+  sponsors,
 } from "./searchSlice";
 
 const Search = (props) => {
   const resultList = useSelector(searchResult);
   const filterList = useSelector(searchFilter);
+  const indicationData = useSelector(indications);
+  const sponsorData = useSelector(sponsors);
 
   const dispatch = useDispatch();
   const [idPresent, setIdPresent] = useState(false);
 
-  const [isLoading, setLoader] = useState(false);
   const [searchInput, setSearchInput] = useState("");
 
   useEffect(() => {
     let params = props.location.search;
     const parsed = queryString.parse(params);
+    if (indicationData.sectionContent.length === 0) {
+      dispatch({ type: "GET_INDICATIONS" });
+    }
+    if (sponsorData.sectionContent.length === 0) {
+      dispatch({ type: "GET_SPONSORS" });
+    }
 
     // dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.searchKey });
     // dispatch({ type: "GET_SEARCH_RESULT", payload: parsed.searchKey });
@@ -41,12 +47,12 @@ const Search = (props) => {
     if ("key" in parsed) {
       setIdPresent(true);
       setSearchInput(parsed.key);
-      dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
+      // dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
 
       dispatch({ type: "GET_SEARCH_RESULT", payload: parsed.key });
     } else {
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
-      dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
+      // dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
     }
   }, [dispatch]);
   const handleClick = (e) => {
@@ -110,6 +116,8 @@ const Search = (props) => {
           <SearchResultSection
             filterList={filterList.data}
             resultList={resultList}
+            sponsorData={sponsorData}
+            indicationData={indicationData}
             searchInput={searchInput}
             deleteSearchInput={deleteSearchInput}
             onSearchChange={onSearchChange}

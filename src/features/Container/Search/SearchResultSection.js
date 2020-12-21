@@ -95,7 +95,13 @@ export default class SearchPanel extends React.Component {
   };
 
   render() {
-    const { filterList = [], resultList, onSearchChange } = this.props;
+    const {
+      filterList = [],
+      resultList,
+      onSearchChange,
+      sponsorData,
+      indicationData,
+    } = this.props;
     const { accordionObj } = this.state;
     const clearAllCheckbox = () => {
       // console.log(this.state["searchValue"]);
@@ -132,6 +138,11 @@ export default class SearchPanel extends React.Component {
             </div>
             <div>
               <FilterSection name="TOC" />
+              <FilterSection name="sponsor" sponsorData={sponsorData} />
+              <FilterSection
+                name="indication"
+                indicationData={indicationData}
+              />
               <FilterSection name="phase" />
               <FilterSection name="document" />
               <FilterSection name="date" />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Collapsible from "react-collapsible";
 
 import {
@@ -9,13 +9,36 @@ import {
   TableOfContent,
 } from "./CustomFilterCards";
 
+import { useSelector, useDispatch } from "react-redux";
+import { indications, sponsors } from "./searchSlice";
+
 import { TOC, phases, documentStatus, dateSection } from "./Data/constants";
 
-const CollapseCard = ({ name }) => {
+const CollapseCard = ({ name, indicationData, sponsorData }) => {
   if (name === "TOC") {
     return (
       <Collapsible trigger={TOC.sectionName}>
         <TextCard section={TOC} />
+      </Collapsible>
+    );
+  } else if (name === "indication") {
+    console.log("Indication data", indicationData);
+    return (
+      <Collapsible trigger="Indications">
+        {indicationData.sectionContent &&
+          indicationData.sectionContent.length > 0 && (
+            <CheckboxCard section={indicationData} />
+          )}
+      </Collapsible>
+    );
+  } else if (name === "sponsor") {
+    console.log("sponsor data", sponsorData);
+    return (
+      <Collapsible trigger="Sponsers">
+        {sponsorData.sectionContent &&
+          sponsorData.sectionContent.length > 0 && (
+            <CheckboxCard section={sponsorData} />
+          )}
       </Collapsible>
     );
   } else if (name === "phase") {

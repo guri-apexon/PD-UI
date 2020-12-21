@@ -1,14 +1,59 @@
 import { put, takeEvery, all, call, takeLatest } from "redux-saga/effects";
-import { getFilters, getSearchResult } from "./searchSlice";
+import {
+  getFilters,
+  getSearchResult,
+  getIndications,
+  getSponsors,
+} from "./searchSlice";
 import { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
-import elasticsearch from "elasticsearch";
 
-const client = new elasticsearch.Client({
-  host: "http://10.3.67.228:9200/pd-index",
-  log: "trace",
-  // apiVersion: '7.2', // use the same version of your Elasticsearch instance
-});
+const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
+const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
+
+function* getIndicationData(action) {
+  try {
+    const indicationList = yield call(httpCall, {
+      url: indicationUrl,
+      method: "GET",
+    });
+
+    if (indicationList.success) {
+      let formatIndication = indicationList.data.map((item) => {
+        return {
+          title: item.indication_name,
+          id: item.id,
+        };
+      });
+      const obj = {
+        success: true,
+        sectionContent: formatIndication,
+      };
+      yield put(getIndications(obj));
+    }
+  } catch (e) {}
+}
+function* getSponsorData(action) {
+  try {
+    const sponsorList = yield call(httpCall, {
+      url: sponsorUrl,
+      method: "GET",
+    });
+    if (sponsorList.success) {
+      let formatSponser = sponsorList.data.map((item) => {
+        return {
+          title: item.sponsor_name,
+          id: item.id,
+        };
+      });
+      const obj = {
+        success: true,
+        sectionContent: formatSponser,
+      };
+      yield put(getSponsors(obj));
+    }
+  } catch (e) {}
+}
 
 function* getFilterData(action) {
   // console.log("search", action.payload);
@@ -177,6 +222,8 @@ function* getSearchData(action) {
 function* watchIncrementAsync() {
   yield takeEvery("GET_SEARCH_FILTER", getFilterData);
   yield takeEvery("GET_SEARCH_RESULT", getSearchData);
+  yield takeEvery("GET_INDICATIONS", getIndicationData);
+  yield takeEvery("GET_SPONSORS", getSponsorData);
 }
 
 export default function* protocolSaga() {
