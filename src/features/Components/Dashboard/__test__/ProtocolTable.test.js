@@ -10,10 +10,12 @@ import "@testing-library/jest-dom/extend-expect";
 
 import ProtocolTable from "../ProtocolTable";
 
-describe("Dashboard component", () => {
+describe("Dashboard table component", () => {
   const state = {
     initialState: {
-      protocol: [],
+      dashboard: {
+        protocols: [],
+      },
     },
   };
 
@@ -120,7 +122,7 @@ describe("Dashboard component", () => {
       />,
       state
     );
-      let selectButton1 = container.getByTestId("protocol-table-wrapper")
+    let selectButton1 = container.getByTestId("protocol-table-wrapper")
       .children[0].children[0].children[1].children[0].children[1].children[0]
       .children[0].children[0].children[0].children[0].children[0].children[0];
     fireEvent.click(selectButton1);
