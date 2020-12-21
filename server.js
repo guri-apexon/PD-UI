@@ -25,7 +25,7 @@ app.get("/elastic/:key", (req, res) => {
       body: {
         query: {
           multi_match: {
-            query: "advanced",
+            query: req.params.key,
             fields: [
               "Objectives",
               "Endpoints",

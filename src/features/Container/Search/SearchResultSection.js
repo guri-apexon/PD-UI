@@ -35,9 +35,9 @@ export default class SearchPanel extends React.Component {
     };
   }
   static getDerivedStateFromProps(props, state) {
-    if (_.isEmpty(state.accordionObj) && props.resultList.success) {
+    if (_.isEmpty(state.accordionObj) || props.resultList.success) {
       // console.log("iiiiiii", props.resultList);
-      let result = props.resultList.data;
+      let result = props.resultList && props.resultList.data ? props.resultList.data : [];
       let arr = [];
       for (let i = 0; i < result.length; i++) {
         let obj = {
