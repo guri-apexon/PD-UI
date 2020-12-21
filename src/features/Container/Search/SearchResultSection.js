@@ -32,12 +32,17 @@ export default class SearchPanel extends React.Component {
       defaultExpand: false,
       accID: "",
       accordionObj: {},
+      resultListData: { loader: null },
     };
   }
   static getDerivedStateFromProps(props, state) {
-    if (_.isEmpty(state.accordionObj) || props.resultList.success) {
-      // console.log("iiiiiii", props.resultList);
-      let result = props.resultList && props.resultList.data ? props.resultList.data : [];
+    if (
+      _.isEmpty(state.accordionObj) ||
+      props.resultList.loader !== state.resultListData.loader
+    ) {
+      console.log("Get Static");
+      let result =
+        props.resultList && props.resultList.data ? props.resultList.data : [];
       let arr = [];
       for (let i = 0; i < result.length; i++) {
         let obj = {
@@ -49,6 +54,7 @@ export default class SearchPanel extends React.Component {
       }
       return {
         accordionObj: arr,
+        resultListData: props.resultList,
       };
     }
 
@@ -59,6 +65,7 @@ export default class SearchPanel extends React.Component {
     // console.log("iiiiiiiooooooiii", this.state);
   }
   setExpanded = (id, obj) => {
+    console.log("Expand");
     const { accordionObj } = this.state;
     let accObj = accordionObj;
     let foundIndex = accObj.findIndex((obj) => obj.id === id);
@@ -75,6 +82,7 @@ export default class SearchPanel extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
+    console.log("Did Update");
     const { accordionObj } = this.state;
     if (prevState.defaultExpand !== this.state.defaultExpand) {
       // let arr = accordionObj.map(item => {
@@ -118,7 +126,7 @@ export default class SearchPanel extends React.Component {
           : protocols
         : 0;
 
-    // console.log(this.props, "props");
+    console.log(accordionObj, "props");
     return (
       <div id="searchPanel" className="searchPanel">
         <Grid container md={12}>
