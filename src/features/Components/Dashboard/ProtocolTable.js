@@ -225,7 +225,7 @@ const ExpandableComponent = ({ row }) => {
 const ProtocolTable = ({ initialRows, pageRows }) => {
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
-  const [selectedRows, setSelectedRows] = React.useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
   const handleChange = (id) => {
     setSelectedRows((selectedRows) =>
       selectedRows.indexOf(id) >= 0
@@ -247,8 +247,9 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
   useEffect(() => {
     dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
   }, [selectedRows]);
-
+  // console.log('initial-rows', initialRows, pageRows);
   return (
+    <div data-testid="protocol-table-wrapper" id="test-div">
     <Table
       title="My Protocols"
       columns={columns}
@@ -274,6 +275,7 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
       }}
       ExpandableComponent={ExpandableComponent}
     />
+    </div>
   );
 };
 

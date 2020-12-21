@@ -179,12 +179,18 @@ const ProtocolView = () => {
         </div>
       </Card>
       <Card className="protocol-column">
-        <div className="bar"></div>
+      {/* <div className="bar">{item.section}</div> */}
         <div style={{ padding: "10px 16px" }}>
-          {sumData.length &&
+          {/* {sumData.map((item) => {
+              return (
+                <p>{item.section}</p>
+              )
+          })} */}
+
+          {/* {sumData.length &&
             sumData.map((item) => {
               return getElement(item);
-            })}
+            })} */}
           {dummyTable.map((item) => {
             return (
               <div key={item.Header[0]}>

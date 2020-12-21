@@ -33,16 +33,18 @@ function* getSummaryData(action) {
 }
 
 function* getProtocolToc() {
-  const URL = "/toc.json";
+  const URL = "/toc-doc.json";
   const config = {
     url: URL,
     method: "GET",
   };
   const tocData = yield call(httpCall, config);
   if (tocData.success) {
-    yield put(getProcotoclToc(tocData.data.Toc));
+    const parsedData = JSON.parse(tocData.data);
+    console.log(parsedData.data);
+    yield put(getProcotoclToc(parsedData.data));
   }
-  console.log(tocData);
+  // console.log(tocData);
 }
 
 function getElement(style) {
@@ -99,7 +101,7 @@ function* fetchAssociateProtocol(action){
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery("GET_PROTOCOL_SUMMARY", getSummaryData);
-  yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolSummary);
+  yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolToc);
   yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol)
 }
 
