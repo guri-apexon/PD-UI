@@ -10,11 +10,11 @@ const Cell = ({ row, column }) => (
   //   {row.fileName}
   // </span>
 );
-const downloadDoc = (path) =>{
-  // file://quintiles.net/enterprise/Services/protdigtest/
-  console.log('sssssss')
-  window.open('file:///quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf')
-}
+// const downloadDoc = (path) =>{
+//   // file://quintiles.net/enterprise/Services/protdigtest/
+//   console.log('sssssss')
+//   window.open('file:///quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf')
+// }
 
 const DataCell = ({row, column}) => (moment(row[column.accessor]).format('DD-MMM-YYYY'));
 const columns = [

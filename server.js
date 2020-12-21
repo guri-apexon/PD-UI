@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const elasticsearch = require("elasticsearch");
 
-const PORT = 4000;
+const PORT = 3000;
 
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
@@ -25,7 +25,7 @@ app.get("/elastic/:key", (req, res) => {
       body: {
         query: {
           multi_match: {
-            query: "advanced",
+            query: req.params.key,
             fields: [
               "Objectives",
               "Endpoints",

@@ -66,18 +66,20 @@ const AssociateDocumentsTable = ({ initialsRow, handleChangeTab }) => {
   //   />
   // );
   return (
-    <Table
-      title="Associated Documents"
-      rows={initialsRow.map((row) => {
-        let temp = _.cloneDeep(row);
-        let details = {
-          key: row.id,
-          handleChangeTab,
-        };
-        return _.merge(temp, details);
-      })}
-      columns={columns}
-    />
+    <div className="associate11-document-tab" data-testid='associate-document-tab'>
+      <Table
+        title="Associated Documents"
+        rows={initialsRow.map((row) => {
+          let temp = _.cloneDeep(row);
+          let details = {
+            key: row.id,
+            handleChangeTab,
+          };
+          return _.merge(temp, details);
+        })}
+        columns={columns}
+      />
+    </div>
   );
 };
 
