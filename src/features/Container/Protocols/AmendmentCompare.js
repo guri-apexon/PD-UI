@@ -8,6 +8,9 @@ import Select from "apollo-react/components/Select";
 import Button from "apollo-react/components/Button";
 import ArrowLeft from "apollo-react-icons/ArrowLeft";
 
+import { useSelector, useDispatch } from "react-redux";
+import { associateDocs } from "./protocolSlice.js";
+
 import Sidebar from "./Sidebar";
 import CompareCard from "./CompareCard";
 
@@ -19,15 +22,40 @@ const countries = [
 ];
 
 const AmendmentCompare = () => {
+  const dispatch = useDispatch();
+  const associateData = useSelector(associateDocs);
   const [version1, setVersion1] = useState("");
   const [version2, setVersion2] = useState("");
 
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (version1 && version2 && version1 === version2) {
-      alert("can not comapare same version");
+    if (version1 && version2) {
+      if (version1 === version2) {
+        alert("can not comapare same version");
+      } else {
+        console.log(version1, version2);
+
+        // const postBody = {
+        //   docID: version1,
+        //   docID: version2,
+        // };
+        // console.log()
+      }
+    } else {
+      // alert("Please select both the fields")
     }
   }, [version1, version2]);
+
+  const handleCompare = () => {
+    const postBody = {
+      docID: version1,
+      docID2: version2,
+    };
+
+    dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
+  };
+
+  console.log("....", associateData);
   return (
     <div className="amendment-compare">
       <Sidebar open={open} setOpen={setOpen} />
@@ -45,9 +73,16 @@ const AmendmentCompare = () => {
                 placeholder="Select item..."
                 fullWidth
               >
-                <MenuItem value="1">{"Item 1"}</MenuItem>
-                <MenuItem value="2">{"Item 2"}</MenuItem>
-                <MenuItem value="3">{"Item 3"}</MenuItem>
+                {associateData &&
+                  associateData.length > 0 &&
+                  associateData.map((item, i) => (
+                    <MenuItem value={item.id} key={i}>
+                      {item.Protocol + " " + item.VersionNumber}
+                    </MenuItem>
+                  ))}
+
+                {/* <MenuItem value="2">{"Item 2"}</MenuItem>
+                <MenuItem value="3">{"Item 3"}</MenuItem> */}
               </Select>
             </div>
           </Grid>
@@ -66,9 +101,13 @@ const AmendmentCompare = () => {
                 placeholder="Select item..."
                 fullWidth
               >
-                <MenuItem value="1">{"Item 1"}</MenuItem>
-                <MenuItem value="2">{"Item 2"}</MenuItem>
-                <MenuItem value="3">{"Item 3"}</MenuItem>
+                {associateData &&
+                  associateData.length > 0 &&
+                  associateData.map((item, i) => (
+                    <MenuItem value={item.id} key={i}>
+                      {item.Protocol + " " + item.VersionNumber}
+                    </MenuItem>
+                  ))}
               </Select>
             </div>
           </Grid>
@@ -79,7 +118,7 @@ const AmendmentCompare = () => {
               variant="primary"
               size="small"
               style={{ marginRight: 10 }}
-              // onClick={() => setOpen(!open)}
+              onClick={() => handleCompare()}
             >
               Compare
             </Button>
@@ -101,10 +140,10 @@ const AmendmentCompare = () => {
       </Grid>
       <Grid container md={12}>
         <Grid md={6}>
-          <CompareCard float="left" cardID="first-card"/>
+          <CompareCard float="left" cardID="first-card" />
         </Grid>
         <Grid md={6}>
-          <CompareCard float="right" cardID="second-card"/>
+          <CompareCard float="right" cardID="second-card" />
         </Grid>
       </Grid>
     </div>
