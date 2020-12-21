@@ -82,6 +82,7 @@ const Search = (props) => {
     setSearchInput("");
     setIdPresent(false);
     props.history.push(`/Search`);
+    dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
   };
 
   const onSearchChange = () => {
