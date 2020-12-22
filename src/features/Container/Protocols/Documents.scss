@@ -6,8 +6,12 @@
     [class^="Table-root-"] {
       height: 160px;
     }
-    [class^="InternalTablePagination-toolbar-"] {
+    [class^="InternalTablePagination-toolbar-"],
+    [class^=".MuiTableFooter-root-"] {
       display: none;
+    }
+    .MuiPaper-root:first-child {
+      height: 170px;
     }
   }
   .associate-document-tab {
@@ -15,8 +19,8 @@
     [class^="InternalTablePagination-toolbar-"] {
       display: none;
     }
-    .hyperlink{
-      &:active{
+    .hyperlink {
+      &:active {
         color: -webkit-activelink;
       }
       color: -webkit-link;

@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === "development") {
   BASE_URL = "http://ca2spdml01q:9001";
   BASE_URL_8000 = "http://ca2spdml01q:8000";
 } else {
-  BASE_URL = "http://ca2spdml01q:8000";
+  BASE_URL = "http://ca2spdml01q:9001";
   BASE_URL_8000 = "http://ca2spdml01q:8000";
 }
 
