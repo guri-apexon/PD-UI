@@ -33,7 +33,11 @@ const CustomDropdown = ({
             onChange(fieldName, "", fieldType, { label: "" });
             onBlur(fieldName, "", fieldType);
           } else {
-            onBlur(fieldName, value.label, fieldType);
+            if(formValue && formValue.label !== value.label){
+              onBlur(fieldName, "", fieldType);
+            } else{
+              onBlur(fieldName, value.label, fieldType);
+            }
           }
         // if (!list.length > 0 && formValue.label !== value.label) {
         //   onChange(fieldName, "", fieldType, { label: "" });

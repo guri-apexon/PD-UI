@@ -183,7 +183,7 @@ const ExpandableComponent = ({ row }) => {
           {"Indication"}
         </Typography>
         <Typography className="fw-8" variant="body2">
-          {row.Indication}
+          {row.indication}
         </Typography>
       </div>
       <div className="extended-data">
@@ -197,7 +197,7 @@ const ExpandableComponent = ({ row }) => {
           {"Document Status"}
         </Typography>
         <Typography className="fw-8" variant="body2">
-          {row.DocumentStatus}
+          {row.documentStatus}
         </Typography>
       </div>
       {row.fileName && 
@@ -212,7 +212,7 @@ const ExpandableComponent = ({ row }) => {
           {"Source"}
         </Typography>
         <Typography className="fw-8" variant="body2">
-          <Link to={row.documentFilePath} target="_blank">
+           <Link to={row.documentFilePath} target="_blank">
             {row.fileName}
           </Link>
         </Typography>
