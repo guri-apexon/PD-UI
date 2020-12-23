@@ -21,7 +21,7 @@ function* getSummaryData(action) {
       data: resp.data,
     };
     yield put(getSummary(obj));
-    yield put({type:'FETCH_ASSOCIATE_PROTOCOLS', payload: resp.data.Protocol});
+    yield put({type:'FETCH_ASSOCIATE_PROTOCOLS', payload: resp.data.protocol});
   } else {
     let obj = {
       loading: false,
@@ -82,7 +82,7 @@ function* getProtocolSummary() {
 }
 
 function* fetchAssociateProtocol(action){
-   const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=${action.payload}`;
+   const URL=`http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload}`;
   //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
    const config = {
     url: URL,

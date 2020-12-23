@@ -77,7 +77,7 @@ const Protocols = (props) => {
                   onClick: handleClick,
                 },
                 {
-                  title: data.Protocol,
+                  title: data.protocol,
                 },
               ]}
               style={{ paddingInlineStart: 0, marginBottom: 0 }}

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import moment from 'moment'
 
 const Cell = ({ row, column }) => (
-  <a href={row.filePath} target="_blank">
+  <a href={row.documentFilePath} target="_blank">
     {row.fileName}
   </a>
   // <span onClick={()=>downloadDoc(row.path)}>

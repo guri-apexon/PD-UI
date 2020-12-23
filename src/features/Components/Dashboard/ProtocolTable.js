@@ -121,35 +121,35 @@ const columns = [
   },
   {
     header: "Protocol",
-    accessor: "Protocol",
+    accessor: "protocol",
     sortFunction: compareStrings,
     customCell: ProtocolLink,
     width: "15%",
   },
   {
     header: "Activity",
-    accessor: "Status",
+    accessor: "status",
     sortFunction: compareStrings,
     customCell: ActivityCell,
     width: "8%",
   },
   {
     header: "Sponsor",
-    accessor: "Sponser",
+    accessor: "sponsor",
     sortFunction: compareStrings,
     width: "15%",
     customCell: Cell,
   },
   {
     header: "Project ID / CRM #",
-    accessor: "ProjectId",
+    accessor: "projectId",
     sortFunction: compareStrings,
     width: "10%",
     customCell: Cell,
   },
   {
     header: "Protocol Title",
-    accessor: "protocolTitle",
+    accessor: "shortTitle",
     sortFunction: compareStrings,
     customCell: ProtocolTitle,
   },
@@ -212,7 +212,7 @@ const ExpandableComponent = ({ row }) => {
           {"Source"}
         </Typography>
         <Typography className="fw-8" variant="body2">
-          <Link to={row.filePath} target="_blank">
+          <Link to={row.documentFilePath} target="_blank">
             {row.fileName}
           </Link>
         </Typography>
@@ -253,7 +253,7 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
     <Table
       title="My Protocols"
       columns={columns}
-      rows={initialRows.map((row) => {
+      rows={initialRows && initialRows.map((row) => {
         let temp = _.cloneDeep(row);
         let details = {
           key: row.id,
@@ -264,7 +264,7 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
         };
         return _.merge(temp, details);
       })}
-      initialSortedColumn="Protocol"
+      initialSortedColumn="protocol"
       initialSortOrder="asc"
       rowsPerPageOptions={pageRows}
       rowProps={{ hover: false }}

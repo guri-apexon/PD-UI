@@ -12,7 +12,7 @@ function ProtocolTable() {
   return (
     <div id='protocol-table'>
       {error}
-      <ProtocolTableComp initialRows={protocolData} pageRows={[5, 20, 30, "All"]} />
+      <ProtocolTableComp initialRows={protocolData && protocolData.length>0 ? protocolData:[]} pageRows={[5, 20, 30, "All"]} />
     </div>
   );
 }

@@ -15,43 +15,43 @@ const ProtocolOverview = ({ data }) => {
             <div className="column-6-12">
               <div className="row-item">
                 <label>Project ID or CRM #</label>
-                <span data-testid="project-value">{data.ProjectId}</span>
+                <span data-testid="project-value">{data.projectId}</span>
               </div>
               <div className="row-item">
                 <label>Sponser</label>
-                <span data-testid="sponser-value">{data.Sponser}</span>
+                <span data-testid="sponser-value">{data.sponsor}</span>
               </div>
               <div className="row-item">
                 <label>Indication</label>
-                <span data-testid="indication-value">{data.Indication}</span>
+                <span data-testid="indication-value">{data.indication}</span>
               </div>
               <div className="row-item">
                 <label>Molecule / Device</label>
-                <span data-testid="molecule-value">{data.Molecule}</span>
+                <span data-testid="molecule-value">{data.moleculeDevice}</span>
               </div>
             </div>
             <div className="column-6-12">
               <div className="row-item">
                 <label>Amendment</label>
-                <span data-testid="amendment-value">{data.Amendment}</span>
+                <span data-testid="amendment-value">{data.amendment}</span>
               </div>
               <div className="row-item">
                 <label>Version</label>
-                <span data-testid="version-value">{data.VersionNumber}</span>
+                <span data-testid="version-value">{data.versionNumber}</span>
               </div>
               <div className="row-item">
                 <label>Document Status</label>
-                <span data-testid="status-value">{data.DocumentStatus}</span>
+                <span data-testid="status-value">{data.documentStatus}</span>
               </div>
               <div className="row-item">
                 <label>Activity</label>
-                <span data-testid="activity-value">{data.Status}</span>
+                <span data-testid="activity-value">{data.status}</span>
               </div>
             </div>
           </div>
           <div className="protocol-title">
             <div>Protocol Title</div>
-            <div data-testid="title-value">{data.ProtocolName}</div>
+            <div data-testid="title-value">{data.shortTitle}</div>
           </div>
         </Card>
       </div>

@@ -5,7 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import _ from "lodash";
 
 const Cell = ({ row, column }) => (
-  <a href={row.filePath} target="_blank">
+  <a href={row.documentFilePath} target="_blank">
     {row.fileName}
   </a>
 );
@@ -22,19 +22,19 @@ const VersionCell = ({ row, column }) => {
     row.handleChangeTab("", 0);
     history.push(`/protocols?protocolId=${row["id"]}`);
   };
-  return <p className="hyperlink" onClick={() => onHandleChange(row)}> {row.VersionNumber}</p>;
+  return <p className="hyperlink" onClick={() => onHandleChange(row)}> {row.versionNumber}</p>;
 };
 
 const DataCell = ({ row, column }) =>
   moment(row[column.accessor]).format("DD-MMM-YYYY");
 const columns = [
   {
-    accessor: "VersionNumber",
+    accessor: "versionNumber",
     header: "Associated Versions",
     customCell: VersionCell,
   },
   {
-    accessor: "DraftVersion",
+    accessor: "draftVersion",
     header: "Draft#",
   },
   {
@@ -49,7 +49,7 @@ const columns = [
   },
   {
     header: "Document Status",
-    accessor: "DocumentStatus",
+    accessor: "documentStatus",
   },
 ];
 

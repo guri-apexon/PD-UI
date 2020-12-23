@@ -22,9 +22,10 @@ function customizer(objValue, srcValue) {
   }
 }
 
-function* protocolAsyn() {
+function* protocolAsyn() {  
   const protocolUrl =
-    "http://ca2spdml01q:8000/api/user_protocol_documents/?userId=1021402";
+    // "http://ca2spdml01q:8000/api/user_protocol_documents/?userId=1021402";
+    "http://ca2spdml01q:8000/api/protocol_metadata/?userId=1021402";
   // const statusUrl = "./status.json";
   const protocolConfig = {
     url: protocolUrl,
@@ -36,6 +37,7 @@ function* protocolAsyn() {
   // };
   try {
     const protocolData = yield call(httpCall, protocolConfig);
+    console.log('protocolData :', protocolData);
     // const statusData = yield call(httpCall, statusConfig);
     // if (protocolData.success && statusData.success) {
     // const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
@@ -61,7 +63,7 @@ function* compareSelectedAsyn(action) {
 }
 
 function* recentSearchAsyn() {
-  const url = "http://ca2spdml01q:8000/api/recent_search/?user=1021402";
+  const url = "http://ca2spdml01q:8000/api/recent_search/?userId=1021402";
   const config = {
     url,
     method: "GET",
@@ -78,7 +80,7 @@ function* recentSearchAsyn() {
 }
 
 function* savedSearchAsyn() {
-  const url = "http://ca2spdml01q:8000/api/saved_search/?user=1021402";
+  const url = "http://ca2spdml01q:8000/api/saved_search/?userId=1021402";
   const config = {
     url,
     method: "GET",
@@ -203,7 +205,7 @@ function* saveRecentSearch(action) {
     method: "POST",
     data: {
       "keyword": action.payload,
-      "user": '1021402',
+      "userId": '1021402',
       "timeCreated": "2020-12-16T12:34:59.460Z",
       "lastUpdated": "2020-12-16T12:34:59.460Z"
     }

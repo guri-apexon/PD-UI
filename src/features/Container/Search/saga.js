@@ -249,6 +249,7 @@ function createJSONFormat(data) {
       };
     });
     let obj = {
+      score:data[i]._score,
       protocolNumber: data[i]._source.ProtocolNo,
       protocolDescription: data[i]._source.Title,
       indication: data[i]._source.indication,
@@ -257,6 +258,7 @@ function createJSONFormat(data) {
       sourceDocument: data[i]._source.SourceFileName,
       molecule: "",
       approvalDate: data[i]._source.approval_date,
+      uploadDate: data[i]._source.uploadDate,
       followed: false,
       rows: rows,
     };
