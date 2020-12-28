@@ -91,9 +91,10 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         tempValues[fieldName] = dropdownValue ? dropdownValue : { label: "" };
         dropdownFocus =
         dropdownValue && dropdownValue.label ? dropdownValue.label : "";
-      } else {
-        dropdownFocus =  tempValues[fieldName].label 
-      }
+      } 
+      // else {
+      //   dropdownFocus =  tempValues[fieldName].label 
+      // }
       setFormErrorValues(tempError);
       setFormValues(tempValues);
       
