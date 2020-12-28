@@ -165,7 +165,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                 temp.amendmentNumber.errorMessage =
                   "Amendment Cannot be 'Y' for Final Document";
               } else {
-                if (tempFormValues.amendmentNumber.label.length > 0) {
+                if (tempFormValues.amendmentNumber && tempFormValues.amendmentNumber.label && tempFormValues.amendmentNumber.label.length > 0) {
                   temp.amendmentNumber.error = false;
                   temp.amendmentNumber.errorMessage = " ";
                 }
