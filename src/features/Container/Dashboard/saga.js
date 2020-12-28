@@ -158,7 +158,6 @@ function* postAddProtocol(postData) {
       url: duplicateCheck,
       method: "GET",
     });
-    debugger;
     console.log('duplicateCheckRes :', duplicateCheckRes);
     if (duplicateCheckRes && duplicateCheckRes.data === null) {
       const postResponse = yield call(httpCall, {
