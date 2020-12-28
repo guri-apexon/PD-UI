@@ -23,7 +23,11 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   let dropdownFocus = "";
   const dispatch = useDispatch();
   const dashboardData = useSelector(dashboard);
-  const [formValues, setFormValues] = useState(initialFormValues);
+  let [formValues, setFormValues] = useState(initialFormValues);
+  const [inputValue2, setInputValue2] = React.useState();
+  const [documentValue2, setDocumentValue2] = React.useState();
+  // const [value2, setValue2] = React.useState({amendmentNumber:'', documentStatus:''});
+  const [value2, setValue2] = React.useState();
   const [formErrorValues, setFormErrorValues] = useState(
     initialFormErrorValues
   );
@@ -33,18 +37,20 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
 
   const onModalClose = () => {
     handleClose("custom");
+    setValue2(undefined)
     dispatch({ type: "RESET_ERROR_ADD_PROTOCOL" });
   };
   const onModalOpen = () => {
     dispatch({ type: "RESET_ERROR_ADD_PROTOCOL" });
     setFormValues(initialFormValues);
+    setValue2(undefined)
     setFormErrorValues(initialFormErrorValues);
     handleOpen("custom");
   };
   const onTextFieldChange = (fieldName, e, fieldType, dropdownValue) => {
     let tempError = _.cloneDeep(formErrorValues);
     let tempValues = _.cloneDeep(formValues);
-  //  console.log("dashboardData1 :", fieldName, 'e, fieldType', dropdownValue );
+   //  console.log("dashboardData1 :", fieldName, 'e, fieldType', dropdownValue );
     if (fieldType === "Textbox") {
       if (
         formErrorValues[fieldName].isRequired &&
@@ -74,7 +80,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       setFormValues(tempValues);
       setFormErrorValues(tempError);
     }
-    if (fieldType === "Dropdown" || fieldType === "CustomDropdown") {
+    if ( fieldType === "CustomDropdown") {
       if (
         dropdownValue &&
         dropdownValue.label &&
@@ -82,15 +88,40 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       ) {
         tempError[fieldName].error = false;
         tempError[fieldName].errorMessage = "";
-      } else if (formErrorValues[fieldName].isRequired) {
-        tempError[fieldName].error = true;
-        tempError[fieldName].errorMessage = "Required";
-      }
-      tempValues[fieldName] = dropdownValue ? dropdownValue : { label: "" };
-      dropdownFocus =
+        tempValues[fieldName] = dropdownValue ? dropdownValue : { label: "" };
+        dropdownFocus =
         dropdownValue && dropdownValue.label ? dropdownValue.label : "";
+      } else {
+        dropdownFocus =  tempValues[fieldName].label 
+      }
       setFormErrorValues(tempError);
       setFormValues(tempValues);
+      
+
+  
+    
+    }
+    if ( fieldType === "Dropdown"){
+      if(dropdownValue !=null){
+        dropdownFocus =
+        dropdownValue && dropdownValue.label && dropdownValue.label 
+        // let setValuesTemp= _.cloneDeep(value2)
+        // setValuesTemp[fieldName]= dropdownValue
+        // setValue2(setValuesTemp);
+        setValue2(dropdownValue);
+
+        tempError[fieldName].error = false;
+        tempError[fieldName].errorMessage = "";
+        tempValues[fieldName] = dropdownValue ? dropdownValue : { label: "" };
+        console.log('valuessssss :', tempValues.amendmentNumber, 'temppp');
+        setFormValues(tempValues);
+        // formValues=tempValues;
+        }
+        // else{
+        //   console.log('valuessssss :',formValues, 'form');
+        //   // dropdownFocus =  formValues[fieldName].label 
+        // }
+        setFormErrorValues(tempError);
     }
   };
   
@@ -113,7 +144,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       setFormErrorValues(temp);
     }
     if (fieldType === "Dropdown") {
-      console.log('fieldName, e, fieldType :', fieldName, e.target.value, fieldType, formErrorValues[fieldName], 'dropdownFocus',dropdownFocus,'dropdownFocus');
+      // console.log('fieldName, e, fieldType :', fieldName, e.target.value, fieldType, formErrorValues[fieldName], 'dropdownFocus',dropdownFocus,'dropdownFocus');
       /* istanbul ignore else */
       if ( !dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
         temp[fieldName].error = true;
@@ -150,9 +181,8 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                   "Amendment Cannot be 'Y' for Final Document";
               } else {
                 if (
-                  tempFormValues.amendmentNumber &&
-                  tempFormValues.amendmentNumber.label &&
-                  tempFormValues.amendmentNumber.label.length > 0
+                   dropdownFocus &&
+                    dropdownFocus.length > 0
                 ) {
                   temp.amendmentNumber.error = false;
                   temp.amendmentNumber.errorMessage = " ";
@@ -261,9 +291,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         : "",
       is_active: true,
       created_by: "User",
-      created_on: new Date().toISOString(),
       modified_by: "User",
-      modified_on: new Date().toISOString(),
       sponsor:
         tempFormValues && tempFormValues.sponsor && tempFormValues.sponsor.label
           ? tempFormValues.sponsor.label
@@ -271,7 +299,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       amendmentNumber:
         tempFormValues &&
         tempFormValues.amendmentNumber &&
-        tempFormValues.amendmentNumber.value,
+        tempFormValues.amendmentNumber.label,
       documentStatus:
         tempFormValues.documentStatus && tempFormValues.documentStatus.value,
       projectID: tempFormValues.projectID,
@@ -282,7 +310,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
     dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
   };
   // console.log("dashboardData1 :", dashboardData.addProtocolModal, );
-  // console.log('11drValue :', drValue,"dropfocus", dropdownFocus,'ff',formValues);
+  // console.log('valuessssss amend',formValues.amendmentNumber, value2);
   return (
     <>
       {dashboardData && dashboardData.isLoading ? (
@@ -335,9 +363,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                     source={amendmentNumber}
                     fullWidth
                     value={
-                      formValues.amendmentNumber && formValues.amendmentNumber
-                        ? formValues.amendmentNumber
-                        : emptyAutoObj
+                      value2
                     }
                     helperText={formErrorValues.amendmentNumber.errorMessage}
                     error={formErrorValues.amendmentNumber.error}
@@ -353,8 +379,13 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                         newValue
                       )
                     }
+                    inputValue={inputValue2}
+                    onInputChange={(event, newInputValue) => {
+                      setInputValue2(newInputValue);
+                    }}
                     data-testid="amendment-number-texfield"
                   />
+                  {/* <Auto /> */}
                 </div>
               </Grid>
               <Grid item xs={1} sm={1}></Grid>
@@ -429,9 +460,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                     source={documentStatusList}
                     fullWidth
                     value={
-                      formValues.documentStatus && formValues.documentStatus
-                        ? formValues.documentStatus
-                        : emptyAutoObj
+                      value2
                     }
                     helperText={formErrorValues.documentStatus.errorMessage}
                     error={formErrorValues.documentStatus.error}
@@ -439,7 +468,8 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                     onBlur={(e, newValue) =>
                       onFieldBlur("documentStatus", e, "Dropdown", newValue)
                     }
-                    onChange={(e, newValue) =>
+                    onChange={(e, newValue) =>{
+
                       onTextFieldChange(
                         "documentStatus",
                         e,
@@ -447,6 +477,11 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                         newValue
                       )
                     }
+                    }
+                    inputValue={documentValue2}
+                    onInputChange={(event, newInputValue) => {
+                      setDocumentValue2(newInputValue);
+                    }}
                     data-testid="document-status-texfield"
                   />
                 </div>

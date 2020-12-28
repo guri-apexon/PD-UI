@@ -1,8 +1,6 @@
 export const initialFormValues = {
   protocolNumber: "",
-  amendmentNumber: {
-    label: "",
-  },
+  amendmentNumber: {},
   projectID: "",
   versionNumber: "",
   sponsor: {

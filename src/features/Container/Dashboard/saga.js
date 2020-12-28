@@ -22,7 +22,7 @@ function customizer(objValue, srcValue) {
   }
 }
 
-function* protocolAsyn() {  
+function* protocolAsyn() {
   const protocolUrl =
     // "http://ca2spdml01q:8000/api/user_protocol_documents/?userId=1021402";
     "http://ca2spdml01q:8000/api/protocol_metadata/?userId=1021402";
@@ -37,7 +37,6 @@ function* protocolAsyn() {
   // };
   try {
     const protocolData = yield call(httpCall, protocolConfig);
-    console.log('protocolData :', protocolData);
     // const statusData = yield call(httpCall, statusConfig);
     // if (protocolData.success && statusData.success) {
     // const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
@@ -124,12 +123,12 @@ function* addProtocolSponsor() {
     if (sponsorList.success && indicationList.success) {
       let actualIndicationList = indicationList.data.map((item) => {
         let temp = Object.assign({}, item);
-        temp.label = item.indication_name;
+        temp.label = item.indicationName;
         return temp;
       });
       let actualSponsorList = sponsorList.data.map((item) => {
         let temp = Object.assign({}, item);
-        temp.label = item.sponsor_name;
+        temp.label = item.sponsorName;
         return temp;
       });
       // console.log("sponsorList :", actualIndicationList, actualSponsorList);
@@ -151,37 +150,49 @@ function* postAddProtocol(postData) {
   const { payload: data } = postData;
   yield put(setLoading(true));
   const postUrl = `${BASE_URL}/pd/api/v1/documents/?fileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}&userId=1021402`;
+  const duplicateCheck = `http://ca2spdml01q:8000/api/duplicate_check/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&userId=1021402`;
   var bodyFormData = new FormData();
   bodyFormData.append("file", data.uploadFile[0]);
   try {
-    const postResponse = yield call(httpCall, {
-      url: postUrl,
-      method: "POST",
-      data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
+    const duplicateCheckRes = yield call(httpCall, {
+      url: duplicateCheck,
+      method: "GET",
     });
-
-    console.log("postResponseww :", postResponse);
-    if (postResponse.success) {
-      // if(postResponse && postResponse.data.duplicate && postResponse.data.duplicate !== null && postResponse.data.duplicate.length > 0  ){
-      //   yield put(setAddProtocolModal(true));
-      //   yield put(setAddprotocolError(postResponse.data.duplicate));
-      // } else {
-      //   yield put(setAddProtocolModal(false));
-      // }
-      yield put(setAddProtocolModal(false));
+    debugger;
+    console.log('duplicateCheckRes :', duplicateCheckRes);
+    if (duplicateCheckRes && duplicateCheckRes.data === null) {
+      const postResponse = yield call(httpCall, {
+        url: postUrl,
+        method: "POST",
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log("postResponseww :", postResponse);
+      if (postResponse.success) {
+        yield put(setAddProtocolModal(false));
+      } else {
+        yield put(setAddProtocolModal(true));
+        // console.log("postResponsefailed :", postResponse.err);
+        yield put(
+          setAddprotocolError(
+            postResponse.err && postResponse.err.data
+              ? postResponse.err.data.message
+              : "API Error"
+          )
+        );
+      }
     } else {
       yield put(setAddProtocolModal(true));
-      // console.log("postResponsefailed :", postResponse.err);
       yield put(
         setAddprotocolError(
-          postResponse.err && postResponse.err.data
-            ? postResponse.err.data.message
-            : "API Error"
+          duplicateCheckRes && duplicateCheckRes.data.Duplicate
+            ? duplicateCheckRes.data.Duplicate
+            : "Duplicate Document!!..This document has been already processed!!"
         )
       );
     }
-    yield put({ type: "GET_PROTOCOL_TABLE_SAGA" })
+
+    yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
     yield put(setLoading(false));
   } catch (err) {
     console.log("err12333 :", err);
@@ -204,11 +215,11 @@ function* saveRecentSearch(action) {
     url,
     method: "POST",
     data: {
-      "keyword": action.payload,
-      "userId": '1021402',
-      "timeCreated": "2020-12-16T12:34:59.460Z",
-      "lastUpdated": "2020-12-16T12:34:59.460Z"
-    }
+      keyword: action.payload,
+      userId: "1021402",
+      timeCreated: "2020-12-16T12:34:59.460Z",
+      lastUpdated: "2020-12-16T12:34:59.460Z",
+    },
   };
   try {
     yield call(httpCall, config);
