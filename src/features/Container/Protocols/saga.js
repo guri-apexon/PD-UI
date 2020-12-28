@@ -109,9 +109,10 @@ function* getCompareResult(action) {
   console.log("Payload", action.payload);
   // const URL = `http://ca2spdml01q:8000/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`
   // debugger
+  // const url = "http://ca2spdml01q:8000/api/document_compare/?id1=1e885940-dc48-40a1-9745-b56a75da50dd&id2=82f83274-bfd2-4129-8b25-51d3b81aead5"
   const url = `/compare.json`;
   const resp = yield call(httpCall, { url, method: "GET" });
-  console.log("summary data", resp);
+  // console.log("summary data", JSON.parse(resp.data.iqvdata));
   yield put(getCompare(resp.data));
   
 }

@@ -28,9 +28,31 @@ const CompareCard = (props) => {
               props.compare.iqvdata.data.map((item) => (
                 <div className="content-detail">
                   {props.cardID === "first-card" ? (
-                    <p style={{ height: 30 }}>{item[3]}</p>
+                    <div style={{ minHeight: 30 }}>
+                      {item[2] === 0 && <p >{item[3]}</p>}
+                      {item[2] === 1 && (
+                        <p className="h-red" >
+                          {item[3]}
+                        </p>
+                      )}
+                      {item[2] === 2 && <p >{item[3]}</p>}
+                      {item[2] === 3 && <p >{item[3]}</p>}
+                    </div>
                   ) : (
-                    <p style={{ height: 30 }}>{item[4]}</p>
+                    <div style={{ minHeight: 30 }}>
+                      {item[2] === 0 && <p >{item[4]}</p>}
+                      {item[2] === 1 && <p >{item[4]}</p>}
+                      {item[2] === 2 && (
+                        <p className="h-yellow" >
+                          {item[4]}
+                        </p>
+                      )}
+                      {item[2] === 3 && (
+                        <p className="h-yellow" >
+                          {item[4]}
+                        </p>
+                      )}
+                    </div>
                   )}
                 </div>
               ))}
