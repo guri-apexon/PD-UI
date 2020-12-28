@@ -14,11 +14,11 @@ const ProtocolOverview = ({ data }) => {
           <div className="data-container">
             <div className="column-6-12">
               <div className="row-item">
-                <label>Project ID or CRM #</label>
+                <label>Project ID/CRM#</label>
                 <span data-testid="project-value">{data.projectId}</span>
               </div>
               <div className="row-item">
-                <label>Sponser</label>
+                <label>Sponsor </label>
                 <span data-testid="sponser-value">{data.sponsor}</span>
               </div>
               <div className="row-item">

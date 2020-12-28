@@ -12,7 +12,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { associateDocs } from "./protocolSlice.js";
 
 import Sidebar from "./Sidebar";
-import CompareCard from "./CompareCard";
+// import CompareCard from "./CompareCard";
+import CompareCard from "./CompareCardNew";
+
+import { compareResult } from "./protocolSlice.js";
 
 const countries = [
   { label: "Afghanistan" },
@@ -22,10 +25,13 @@ const countries = [
 ];
 
 const AmendmentCompare = () => {
+  const compare = useSelector(compareResult);
   const dispatch = useDispatch();
   const associateData = useSelector(associateDocs);
   const [version1, setVersion1] = useState("");
+  const [prot1, setProt1] = useState({});
   const [version2, setVersion2] = useState("");
+  const [prot2, setProt2] = useState({});
 
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -34,7 +40,11 @@ const AmendmentCompare = () => {
         alert("can not comapare same version");
       } else {
         console.log(version1, version2);
-
+        // const postBody = {
+        //   docID: version1,
+        //   docID: version2,
+        // };
+        // dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
         // const postBody = {
         //   docID: version1,
         //   docID: version2,
@@ -55,7 +65,19 @@ const AmendmentCompare = () => {
     dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
   };
 
-  console.log("....", associateData);
+  const handleSelect = (select, id) => {
+    if (select === 1) {
+      let obj1 = associateData.find((item) => item.id === id);
+      setProt1(obj1);
+      setVersion1(id);
+    } else {
+      let obj2 = associateData.find((item) => item.id === id);
+      setProt2(obj2);
+      setVersion2(id);
+    }
+  };
+
+  console.log("....", compare);
   return (
     <div className="amendment-compare">
       <Sidebar open={open} setOpen={setOpen} />
@@ -65,10 +87,9 @@ const AmendmentCompare = () => {
             <div className="version-dropdown" style={{ width: "90%" }}>
               <Select
                 label="Select First Version to Compare"
-                // helperText="You can select one option"
                 value={version1}
                 onChange={(e) => {
-                  setVersion1(e.target.value);
+                  handleSelect(1, e.target.value);
                 }}
                 placeholder="Select item..."
                 fullWidth
@@ -77,12 +98,9 @@ const AmendmentCompare = () => {
                   associateData.length > 0 &&
                   associateData.map((item, i) => (
                     <MenuItem value={item.id} key={i}>
-                      {item.Protocol + " " + item.VersionNumber}
+                      {item.protocol + " (" + item.versionNumber + ")"}
                     </MenuItem>
                   ))}
-
-                {/* <MenuItem value="2">{"Item 2"}</MenuItem>
-                <MenuItem value="3">{"Item 3"}</MenuItem> */}
               </Select>
             </div>
           </Grid>
@@ -93,10 +111,9 @@ const AmendmentCompare = () => {
             >
               <Select
                 label="Select Second Version to Compare"
-                // helperText="You can select one option"
                 value={version2}
                 onChange={(e) => {
-                  setVersion2(e.target.value);
+                  handleSelect(2, e.target.value);
                 }}
                 placeholder="Select item..."
                 fullWidth
@@ -105,7 +122,7 @@ const AmendmentCompare = () => {
                   associateData.length > 0 &&
                   associateData.map((item, i) => (
                     <MenuItem value={item.id} key={i}>
-                      {item.Protocol + " " + item.VersionNumber}
+                      {item.protocol + " (" + item.versionNumber + ")"}
                     </MenuItem>
                   ))}
               </Select>
@@ -125,7 +142,7 @@ const AmendmentCompare = () => {
           </div>
         </Grid>
         <Grid md={3} container>
-          <div className="summary-button">
+          {/* <div className="summary-button">
             <Button
               variant="secondary"
               icon={<ArrowLeft color="blue" />}
@@ -135,17 +152,19 @@ const AmendmentCompare = () => {
             >
               Summary
             </Button>
-          </div>
+          </div> */}
         </Grid>
       </Grid>
-      <Grid container md={12}>
-        <Grid md={6}>
-          <CompareCard float="left" cardID="first-card" />
+      {compare.iqvdata.data && compare.iqvdata.data.length > 0 && (
+        <Grid container md={12}>
+          <Grid md={6}>
+            <CompareCard float="left" cardID="first-card" data={prot1} compare={compare}/>
+          </Grid>
+          <Grid md={6}>
+            <CompareCard float="right" cardID="second-card" data={prot2} compare={compare}/>
+          </Grid>
         </Grid>
-        <Grid md={6}>
-          <CompareCard float="right" cardID="second-card" />
-        </Grid>
-      </Grid>
+      )}
     </div>
   );
 };

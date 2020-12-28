@@ -1,5 +1,10 @@
 import { put, takeEvery, all, call, takeLatest } from "redux-saga/effects";
-import { getSummary, getProcotoclToc, getAssociateDocuments } from "./protocolSlice.js";
+import {
+  getSummary,
+  getProcotoclToc,
+  getAssociateDocuments,
+  getCompare,
+} from "./protocolSlice.js";
 import { httpCall } from "../../../utils/api";
 
 function* getSummaryData(action) {
@@ -21,7 +26,10 @@ function* getSummaryData(action) {
       data: resp.data,
     };
     yield put(getSummary(obj));
-    yield put({type:'FETCH_ASSOCIATE_PROTOCOLS', payload: resp.data.protocol});
+    yield put({
+      type: "FETCH_ASSOCIATE_PROTOCOLS",
+      payload: resp.data.protocol,
+    });
   } else {
     let obj = {
       loading: false,
@@ -81,33 +89,39 @@ function* getProtocolSummary() {
   console.log(tocData);
 }
 
-function* fetchAssociateProtocol(action){
-   const URL=`http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload}`;
+function* fetchAssociateProtocol(action) {
+  const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload}`;
   //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
-   const config = {
+  const config = {
     url: URL,
     method: "GET",
   };
-   const associateDocs = yield call(httpCall, config);
+  const associateDocs = yield call(httpCall, config);
   //  console.log('associateDocs :', associateDocs.data);
-   if(associateDocs.success){
+  if (associateDocs.success) {
     yield put(getAssociateDocuments(associateDocs.data));
-   } else {
+  } else {
     yield put(getAssociateDocuments([]));
-   }
-
+  }
 }
 
-function* getCompareResult(action){
-  console.log("Payload",action.payload)
+function* getCompareResult(action) {
+  console.log("Payload", action.payload);
+  // const URL = `http://ca2spdml01q:8000/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`
+  // debugger
+  const url = `/compare.json`;
+  const resp = yield call(httpCall, { url, method: "GET" });
+  console.log("summary data", resp);
+  yield put(getCompare(resp.data));
+  
 }
 
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery("GET_PROTOCOL_SUMMARY", getSummaryData);
   yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolToc);
-  yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol)
-  yield takeEvery('POST_COMPARE_PROTOCOL',getCompareResult)
+  yield takeLatest("FETCH_ASSOCIATE_PROTOCOLS", fetchAssociateProtocol);
+  yield takeEvery("POST_COMPARE_PROTOCOL", getCompareResult);
 }
 
 // notice how we now only export the rootSaga
