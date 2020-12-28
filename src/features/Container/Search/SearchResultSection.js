@@ -99,7 +99,8 @@ export default class SearchPanel extends React.Component {
   }
 
   sortChange = (value) => {
-    console.log("value", value);
+    let filterValue=SORT_DROPDOWN.filter(item => item.id===value)
+    console.log("value", value, filterValue);
   };
 
   render() {
@@ -198,7 +199,7 @@ export default class SearchPanel extends React.Component {
                   style={{ marginRight: 10 }}
                   value={"1"}
                   defaultValue="1"
-                  onChange={() => this.sortChange()}
+                  onChange={(value) => this.sortChange(value)}
                 >
                   {/* <MenuItem value="1">{"Relevancy"}</MenuItem>
                   <MenuItem value="2">{"Approval Date"}</MenuItem>

@@ -149,7 +149,7 @@ function* addProtocolSponsor() {
 function* postAddProtocol(postData) {
   const { payload: data } = postData;
   yield put(setLoading(true));
-  const postUrl = `${BASE_URL}/pd/api/v1/documents/?fileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}&userId=1021402`;
+  const postUrl = `${BASE_URL}/pd/api/v1/documents/?sourceFileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}&userId=1021402`;
   const duplicateCheck = `http://ca2spdml01q:8000/api/duplicate_check/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&userId=1021402`;
   var bodyFormData = new FormData();
   bodyFormData.append("file", data.uploadFile[0]);

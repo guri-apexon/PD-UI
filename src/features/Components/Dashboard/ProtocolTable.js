@@ -200,7 +200,7 @@ const ExpandableComponent = ({ row }) => {
           {row.documentStatus}
         </Typography>
       </div>
-      {row.fileName && 
+      {/* {row.fileName &&  */}
       <div className="extended-data">
         <Typography
           style={{
@@ -212,12 +212,13 @@ const ExpandableComponent = ({ row }) => {
           {"Source"}
         </Typography>
         <Typography className="fw-8" variant="body2">
+        {row.fileName ?
            <Link to={row.documentFilePath} target="_blank">
-            {row.fileName}
-          </Link>
+           {row.fileName}
+          </Link> : '-'}
         </Typography>
       </div>
-      }
+       {/* } */}
     </div>
   );
 };
