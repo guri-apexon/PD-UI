@@ -6,6 +6,7 @@ import {
   getCompare,
 } from "./protocolSlice.js";
 import { httpCall } from "../../../utils/api";
+import _ from "lodash";
 
 function* getSummaryData(action) {
   let obj = {
@@ -41,7 +42,8 @@ function* getSummaryData(action) {
 }
 
 function* getProtocolToc() {
-  const URL = "http://ca2spdml01q:8000/api/document_compare/?id1=3d885940-dc48-40a1-9745-b56a75da50dd&id2=77f83274-bfd2-4129-8b25-51d3b81aead5";
+  const URL =
+    "http://ca2spdml01q:8000/api/document_compare/?id1=3d885940-dc48-40a1-9745-b56a75da50dd&id2=77f83274-bfd2-4129-8b25-51d3b81aead5";
   const config = {
     url: URL,
     method: "GET",
@@ -109,21 +111,28 @@ function* getCompareResult(action) {
     yield put(
       getCompare({
         iqvdata: "",
+        loading: true,
+        called: true,
       })
     );
     console.log("Payload", action.payload);
     // const URL = `http://ca2spdml01q:8000/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`
     // debugger
-    const url =
-      `http://ca2spdml01q:8000/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
+    const url = `http://ca2spdml01q:8000/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
     // const url = `/compare.json`;
     const resp = yield call(httpCall, { url, method: "GET" });
     console.log("summary data", JSON.parse(resp.data.iqvdata));
-    yield put(getCompare(resp.data));
+    let temp = _.cloneDeep(resp.data);
+    temp.loading = false;
+    temp.called = true;
+    console.log("summary data........", temp);
+    yield put(getCompare(temp));
   } else {
     yield put(
       getCompare({
         iqvdata: "",
+        loading: false,
+        called: false,
       })
     );
   }

@@ -7,7 +7,9 @@ export const protocolSlice = createSlice({
     toc: [],
     associateDocs: [],
     compare: {
-      iqvdata:""
+      loading: false,
+      called: false,
+      iqvdata: "",
     },
   },
   reducers: {

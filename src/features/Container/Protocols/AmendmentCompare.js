@@ -16,6 +16,7 @@ import Sidebar from "./Sidebar";
 import CompareCard from "./CompareCardNew";
 
 import { compareResult } from "./protocolSlice.js";
+import Loader from "../../Components/Loader/Loader";
 
 const countries = [
   { label: "Afghanistan" },
@@ -176,6 +177,18 @@ const AmendmentCompare = () => {
             />
           </Grid>
         </Grid>
+      )}
+      {compare.called && compare.loading && (
+        <div
+          style={{
+            height: 250,
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+          }}
+        >
+          <Loader />
+        </div>
       )}
     </div>
   );
