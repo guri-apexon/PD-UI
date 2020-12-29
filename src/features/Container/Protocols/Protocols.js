@@ -10,7 +10,7 @@ import { protocolSummary, getSummary } from "./protocolSlice.js";
 
 //------------------- Components ------------
 import ProtocolOverview from "./ProtocolOverview";
-import ProtocolView from "./ProtocolView";
+import ProtocolViewClass from "./ProtocolViewClass";
 import AmendmentCompare from "./AmendmentCompare";
 import Documents from "./Documents";
 import ProtocolTable from "../Dashboard/ProtocolTable";
@@ -115,7 +115,7 @@ const Protocols = (props) => {
 
                 <div className="tab-container">
                   {value === 0 && <ProtocolOverview data={data} />}
-                  {value === 1 && <ProtocolView />}
+                  {value === 1 && <ProtocolViewClass />}
                   {value === 2 && <AmendmentCompare />}
                   {value === 3 && <Documents handleChangeTab={handleChangeTab} />}
                 </div>

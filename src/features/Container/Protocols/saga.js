@@ -41,18 +41,19 @@ function* getSummaryData(action) {
 }
 
 function* getProtocolToc() {
-  const URL = "/toc-doc.json";
+  const URL = "http://ca2spdml01q:8000/api/read_iqvdata/?id=3e885940-dc48-40a1-9745-b56a75da50cc";
   const config = {
     url: URL,
     method: "GET",
   };
   const tocData = yield call(httpCall, config);
+  console.log(tocData)
   if (tocData.success) {
-    const parsedData = JSON.parse(tocData.data);
+    const parsedData = JSON.parse(tocData.data.iqvdata);
     console.log(parsedData.data);
     yield put(getProcotoclToc(parsedData.data));
   }
-  // console.log(tocData);
+  console.log(tocData);
 }
 
 function getElement(style) {

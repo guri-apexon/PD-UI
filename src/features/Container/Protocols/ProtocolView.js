@@ -127,7 +127,9 @@ const ProtocolView = () => {
     // this.setState(prevState => ({
     //    popupVisible: !prevState.popupVisible,
     // }));
-    setShowNav(prevState => !prevState);
+    console.log('handle -',showNav);
+    setShowNav(prevState => !prevState.showNav);
+    console.log('handle later -',showNav);
   }
 
   return (
@@ -137,10 +139,11 @@ const ProtocolView = () => {
           ref={node => { setNode(node) }}
         >
           <div className="dropdown-wrapper">
-            {listData.map((item) => (
+            {listData.map((item,index) => (
               <button
                 className="btn btn1"
                 onClick={handleClick}
+                key={index}
                 // onMouseEnter={() => {
                 //   setShowNav(true);
                 // }}
@@ -154,9 +157,28 @@ const ProtocolView = () => {
           </div>
           {showNav && (
             <div
-              className={`dropdown-menu sample ${showNav ? "show-nav" : ""}`}
+              className={`dropdown-menu sample ${showNav ? 'show-nav': ''}`}
             >
+              <button
+                className="btn btn1"
+                onClick={() => {
+                  console.log(showNav);
+                  setShowNav(!showNav);
+                }}
+                key='test'
+              >
+                <span style={{ marginLeft: "16px" }}>Action 1</span>
+              </button>
               <a
+                href="#dad"
+                className="dropdown-item"
+                onClick={() => {
+                  setShowNav(!showNav);
+                }}
+              >
+                Action 1
+              </a>
+              {/* <a
                 href="#dad"
                 className="dropdown-item"
                 onClick={() => {
@@ -173,7 +195,7 @@ const ProtocolView = () => {
               </a>
               <a href="#" className="dropdown-item">
                 Action 4
-              </a>
+              </a> */}
             </div>
           )}
         </div>

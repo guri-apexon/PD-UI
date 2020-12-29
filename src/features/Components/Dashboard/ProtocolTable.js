@@ -71,32 +71,35 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => (
 
 const iconStatus = (status) => {
   switch (status) {
-    case "Upload In Progress":
+    case "DIGITIZER1_STARTED":
+    case "DIGITIZER2_STARTED":
       return {
-        comp: <Upload htmlColor={"orange"} />,
-        title: "Upload In Progress",
+        comp: <Clock htmlColor={"orange"} />,
+        title: "Digitization In Progress",
       };
-    case "Upload Complete":
+    case "TRIAGE_STARTED":
       return {
         comp: <StatusCheck htmlColor={"cornflowerblue"} />,
         title: "Upload Complete",
       };
-    case "Extraction In Progress":
+    case "EXTRACTION_STARTED":
       return {
         comp: <Clock htmlColor={"orange"} />,
         title: "Extraction In Progress",
       };
-    case "Digitization Complete":
+    case "DIGITIZER2_OMOPUPDATE_STARTED":
+    case "I2E_OMOP_UPDATE_STARTED":
       return {
         comp: <Check htmlColor={"green"} />,
         title: "Digitization Complete",
       };
-    case "Extraction Error":
+    case "ERROR":
       return {
         comp: <StatusExclamation htmlColor={"red"} />,
         title: "Extraction Error",
       };
-    case "finished":
+    case "FINALIZATION_STARTED":
+    case "PROCESS_COMPLETED":
       return { comp: <Check htmlColor={"green"} />, title: "Final" };
     default:
       return { comp: <Check htmlColor={"green"} />, title: "Final" };
