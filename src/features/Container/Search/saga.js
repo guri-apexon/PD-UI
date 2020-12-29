@@ -220,11 +220,86 @@ function* getSearchData(action) {
   }
 }
 
+// --- Sorting the Protocols When sortby is clicked
+function* updateSearchResult(action) {
+  yield put(getSearchResult(action.payload));
+}
+
+// -----Updating and adding Associate Protocol to a Single protocol when individual expand is clicked
+function* updateSearchAssociated(action) {
+  //ProtocolNo
+  let associateURL = "/searchMockResult.json";
+  const associateDocs = yield call(httpCall, {
+    url: associateURL,
+    method: "GET",
+  });
+  console.log("associateDocs :", associateDocs);
+  const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.protocolNumber}`;
+  //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
+  const config = {
+    url: URL,
+    method: "GET",
+  };
+  //  const associateDocs = yield call(httpCall, config);
+  //  console.log('associateDocs :', associateDocs.data);
+  if (associateDocs.success) {
+    debugger;
+    let result = setAsssociateProtocols(
+      action.payload.data.AiDocId,
+      action.payload.obj,
+      associateDocs.data.AssociateDocs
+    );
+    const obj = {
+      search: true,
+      loader: false,
+      success: true,
+      data: result,
+    };
+    yield put(getSearchResult(obj));
+  } else {
+    yield;
+  }
+  //   yield put(getSearchResult(action.payload));
+}
+
+// -----For updating and Associate Protocol to all Protocol when Expand all is clicked
+function* updateAllSearchAssociated(action) {
+  console.log("action payload:", action.payload);
+  let associateURL = "/searchMockResult.json";
+  const associateDocs = yield call(httpCall, {
+    url: associateURL,
+    method: "GET",
+  });
+  if (associateDocs.success) {
+    debugger;
+    let result = setAsssociateProtocols(
+      action.payload.data.AiDocId,
+      action.payload.obj,
+      associateDocs.data.AssociateDocs
+    );
+    const obj = {
+      search: true,
+      loader: false,
+      success: true,
+      data: result,
+    };
+    yield put(getSearchResult(obj));
+  } else {
+    yield;
+  }
+}
+
 function* watchIncrementAsync() {
   yield takeEvery("GET_SEARCH_FILTER", getFilterData);
   yield takeEvery("GET_SEARCH_RESULT", getSearchData);
+  yield takeEvery("UPDATE_SEARCH_RESULT", updateSearchResult);
   yield takeEvery("GET_INDICATIONS", getIndicationData);
   yield takeEvery("GET_SPONSORS", getSponsorData);
+  yield takeEvery("UPDATE_SEARCH_ASSOCIATED_PROTOCOLS", updateSearchAssociated);
+  yield takeEvery(
+    "UPDATE_ALL_SEARCH_ASSOCIATED_PROTOCOLS",
+    updateAllSearchAssociated
+  );
 }
 
 export default function* protocolSaga() {
@@ -238,29 +313,30 @@ function createJSONFormat(data) {
     let sampleRows = data.filter(
       (item) => item._source.ProtocolNo === data[i]._source.ProtocolNo
     );
-    let rows = sampleRows.map((item) => {
-      return {
-        version: item._source.ProtocolVersion,
-        draft: "",
-        sourceDocument: item._source.SourceFileName,
-        documentPath: item._source.documentPath,
-        uploadDate: item._source.uploadDate,
-        documentStatus: item._source.DocumentStatus,
-      };
-    });
+    // let rows = sampleRows.map((item) => {
+    //   return {
+    //     version: item._source.ProtocolVersion,
+    //     draft: "",
+    //     sourceDocument: item._source.SourceFileName,
+    //     documentPath: item._source.documentPath,
+    //     uploadDate: item._source.uploadDate,
+    //     documentStatus: item._source.DocumentStatus,
+    //   };
+    // });
     let obj = {
-      score:data[i]._score,
+      score: data[i]._score,
       protocolNumber: data[i]._source.ProtocolNo,
+      AiDocId: data[i]._source.AiDocId,
       protocolDescription: data[i]._source.Title,
-      indication: data[i]._source.indication,
+      indication: data[i]._source.Indication,
       phase: data[i]._source.phase,
-      sponsor: data[i]._source.sponsor,
+      sponsor: data[i]._source.SponsorName,
       sourceDocument: data[i]._source.SourceFileName,
-      molecule: "",
+      molecule: data[i]._source.MoleculeDevice,
       approvalDate: data[i]._source.approval_date,
       uploadDate: data[i]._source.uploadDate,
       followed: false,
-      rows: rows,
+      rows: [],
     };
     arr.push(obj);
   }
@@ -276,4 +352,20 @@ function getUniqObject(obj) {
     }
   );
   return uniqueObj;
+}
+function setAsssociateProtocols(id, data, associateDocs) {
+  debugger;
+  let arr =
+    data &&
+    data.map((item) => {
+      if (item.AiDocId === id) {
+        let temp = _.cloneDeep(item);
+        temp.rows = associateDocs;
+        return temp;
+      }
+      return item;
+    });
+
+  console.log("arr :", arr);
+  return arr;
 }

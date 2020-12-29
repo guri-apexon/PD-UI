@@ -11,37 +11,38 @@ const SearchCard = ({ data }) => (
         <p className="grid-item">Indication :</p>
       </Grid>
       <Grid md={3}>
-        <p className="grid-item">{data.indication}</p>
+        <p className="grid-item  bold-class">{data.indication}</p>
       </Grid>
       <Grid md={3}>
         <p className="grid-item">Phase :</p>
       </Grid>
       <Grid md={3}>
-        <p className="grid-item">{data.phase}</p>
+        <p className="grid-item  bold-class">{data.phase}</p>
       </Grid>
       <Grid md={3}>
         <p className="grid-item">Sponsor :</p>
       </Grid>
       <Grid md={3}>
-        <p className="grid-item">{data.sponsor}</p>
+        <p className="grid-item  bold-class">{data.sponsor}</p>
       </Grid>
-      <Grid md={3}>
+      {/* <Grid md={3}>
         <p className="grid-item">Source Document:</p>
       </Grid>
       <Grid md={3}>
         <p className="grid-item">{data.sourceDocument}</p>
+      </Grid> */}
+      {/* \{" "} */}
+      <Grid md={3}>
+        <p className="grid-item">Recent Approval Date:</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item bold-class">{data.approvalDate}</p>
       </Grid>
       <Grid md={3}>
         <p className="grid-item">Molecule/Device :</p>
       </Grid>
       <Grid md={3}>
-        <p>{data.molecule}</p>
-      </Grid>
-      <Grid md={3}>
-        <p className="grid-item">Approval Date:</p>
-      </Grid>
-      <Grid md={3}>
-        <p className="grid-item">{data.approvalDate}</p>
+        <p className='grid-item bold-class'>{data.molecule}</p>
       </Grid>
     </Grid>
 
@@ -51,4 +52,4 @@ const SearchCard = ({ data }) => (
   </div>
 );
 
-export default SearchCard
+export default SearchCard;

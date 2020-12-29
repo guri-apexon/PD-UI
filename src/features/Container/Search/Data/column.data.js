@@ -16,7 +16,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   // console.log("--------------", row);
-  return <Link to={`${row["documentPath"]}`} target="_blank">{row[key]}</Link>;
+  return <Link to={`${row["documentFilePath"]}`} target="_blank">{row[key]}</Link>;
 };
 const columns = [
   {
@@ -26,18 +26,18 @@ const columns = [
   },
   {
     header: "Version #",
-    accessor: "version",
+    accessor: "versionNumber",
     width: 90,
     customCell: ProtocolLink,
   },
   {
     header: "Draft #",
-    accessor: "draft",
+    accessor: "dradraftVersionft",
     width: 75,
   },
   {
     header: "Source Document",
-    accessor: "sourceDocument",
+    accessor: "fileName",
     width: 150,
     customCell: DownloadLink,
   },

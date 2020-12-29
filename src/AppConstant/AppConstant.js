@@ -1,17 +1,17 @@
 const  SORT_DROPDOWN=[
     {
         id:'1',
-        value:'Relevancy',
+        value:'score',
         label:'Relevancy'
     },
     {
         id:'2',
-        value:'Approval Date',
+        value:'approval_date',
         label:'Approval Date'
     },
     {
         id:'3',
-        value:'Upload Date',
+        value:'uploadDate',
         label:'Upload Date'
     }
 ]

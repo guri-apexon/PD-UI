@@ -10,6 +10,7 @@ import SearchSection from "./SearchSection";
 //------------------- Third Party -----------------
 
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
+import _ from "lodash";
 
 //------------------- Redux -----------------
 import { useSelector, useDispatch } from "react-redux";
@@ -88,6 +89,18 @@ const Search = (props) => {
   const onSearchChange = () => {
     console.log("onSearchChange :", onSearchChange);
   };
+  const onSortChange = (data) => {
+    let newList = _.cloneDeep(resultList);
+    newList.data &&
+      newList.data.sort((a, b) => {
+        let first = a[data.value] ? a[data.value] : "";
+        let second = b[data.value] ? b[data.value] : "";
+        return second - first;
+      });
+    // console.log('data :', data, resultList, newList);
+    dispatch({ type: "UPDATE_SEARCH_RESULT", payload: newList });
+  };
+  // console.log('data :' ,resultList);
 
   return (
     <div className="search">
@@ -122,6 +135,7 @@ const Search = (props) => {
             searchInput={searchInput}
             deleteSearchInput={deleteSearchInput}
             onSearchChange={onSearchChange}
+            onSortChange={onSortChange}
           />
         </div>
       </div>
