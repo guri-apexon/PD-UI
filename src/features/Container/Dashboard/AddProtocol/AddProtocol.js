@@ -92,9 +92,9 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         dropdownFocus =
         dropdownValue && dropdownValue.label ? dropdownValue.label : "";
       } 
-      // else {
-      //   dropdownFocus =  tempValues[fieldName].label 
-      // }
+      else {
+        tempValues[fieldName]= { label: ""}
+      }
       setFormErrorValues(tempError);
       setFormValues(tempValues);
       
@@ -139,8 +139,10 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         temp[fieldName].error = true;
         temp[fieldName].errorMessage = "Required";
       } else {
-        temp[fieldName].error = false;
-        temp[fieldName].errorMessage = " ";
+        if(!temp[fieldName].error){
+          temp[fieldName].error = false;
+          temp[fieldName].errorMessage = " ";
+        }
       }
       setFormErrorValues(temp);
     }

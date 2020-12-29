@@ -188,6 +188,9 @@
     text-overflow: ellipsis;
     /* width: 100px; */
     overflow: hidden;
+    &.bold-class{
+      font-weight: bold;
+    }
   }
   .expand-all {
     float: right;

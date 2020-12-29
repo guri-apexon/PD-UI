@@ -9,6 +9,7 @@ import Folder from "apollo-react-icons/Folder";
 import Switch from "apollo-react/components/Switch";
 import Card from "apollo-react/components/Card";
 import Divider from "apollo-react/components/Divider";
+import { useSelector, useDispatch } from "react-redux";
 //const [value, setValue] = React.useState(true);
 
 //const handleChange = (e, checked) => {
@@ -20,6 +21,13 @@ const SearchListingSection = ({
   setExpanded
 }) => {
   // console.log("--------",data)
+ const dispatch = useDispatch();
+const onExpandClick = (data) => {
+  // if(!data.expanded){
+  //   dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
+  // }
+  setExpanded(data.protocolNumber,{id:data.protocolNumber,expanded:!data.expanded}, data)
+}
   return (
     <Card
       interactive
@@ -53,7 +61,7 @@ const SearchListingSection = ({
             {/* <Accordion > */}
             <AccordionSummary
               style={{ maginLeft: 24 }}
-              onClick={() => setExpanded(data.protocolNumber,{id:data.protocolNumber,expanded:!data.expanded})}
+              onClick={() =>onExpandClick(data)}
             >
               {/* // onClick={() => setExpanded(data.protocolNumber)} */}
               <Typography>Protocol Data</Typography>

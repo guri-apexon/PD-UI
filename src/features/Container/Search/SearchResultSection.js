@@ -23,8 +23,9 @@ import NoResultFound from "../../Components/NoResultFound";
 import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
 
 import Loader from "../../Components/Loader/Loader";
+import { connect } from "react-redux";
 
-export default class SearchPanel extends React.Component {
+class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,12 +34,14 @@ export default class SearchPanel extends React.Component {
       accID: "",
       accordionObj: {},
       resultListData: { loader: null },
+      sortValue: "1",
     };
   }
   static getDerivedStateFromProps(props, state) {
     if (
       _.isEmpty(state.accordionObj) ||
-      props.resultList.loader !== state.resultListData.loader
+      props.resultList.loader !== state.resultListData.loader ||
+      props.resultList !== state.resultListData
     ) {
       console.log("Get Static");
       let result =
@@ -64,9 +67,14 @@ export default class SearchPanel extends React.Component {
   componentDidMount() {
     // console.log("iiiiiiiooooooiii", this.state);
   }
-  setExpanded = (id, obj) => {
-    console.log("Expand");
+  setExpanded = (id, obj, data) => {
+    const { updateAssociateProtocol } = this.props;
     const { accordionObj } = this.state;
+    console.log("Expand");
+    if (obj.expanded) {
+      // dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
+      updateAssociateProtocol(data, accordionObj);
+    }
     let accObj = accordionObj;
     let foundIndex = accObj.findIndex((obj) => obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
@@ -84,23 +92,48 @@ export default class SearchPanel extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     console.log("Did Update");
     const { accordionObj } = this.state;
-    if (prevState.defaultExpand !== this.state.defaultExpand) {
-      // let arr = accordionObj.map(item => {
-      //   return { ...item, expanded: true };
-      // });
-      // console.log("Click expand", arr);
+    // if (prevState.defaultExpand !== this.state.defaultExpand) {
+    // let arr = accordionObj.map(item => {
+    //   return { ...item, expanded: true };
+    // });
+    // console.log("Click expand", arr);
 
-      this.setState({
-        accordionObj: accordionObj.map((item) => {
-          return { ...item, expanded: true };
-        }),
-      });
-    }
+    // this.setState({
+    //   accordionObj: accordionObj.map((item) => {
+    //     return { ...item, expanded: true };
+    //   }),
+    // });
+    // }
   }
 
   sortChange = (value) => {
-    let filterValue=SORT_DROPDOWN.filter(item => item.id===value)
-    console.log("value", value, filterValue);
+    const { onSortChange } = this.props;
+    let filterValue = SORT_DROPDOWN.filter((item) => item.id === value);
+    // console.log("value", value, filterValue);
+    onSortChange(filterValue[0]);
+    this.setState({ sortValue: value.id });
+  };
+  onExpandAllClick = () => {
+    const { accordionObj, defaultExpand } = this.state;
+    const { updateAllAssociateProtocol } = this.props;
+    let tempDefault = true;
+    if (!defaultExpand) {
+      tempDefault = true;
+    } else {
+      tempDefault = false;
+    }
+    let arr = accordionObj.map((item) => {
+      let temp = _.cloneDeep(item);
+      temp.expanded = tempDefault;
+      return temp;
+    });
+    if (tempDefault) {
+      updateAllAssociateProtocol(accordionObj);
+    }
+    this.setState({
+      defaultExpand: !this.state.defaultExpand,
+      accordionObj: arr,
+    });
   };
 
   render() {
@@ -111,7 +144,7 @@ export default class SearchPanel extends React.Component {
       sponsorData,
       indicationData,
     } = this.props;
-    const { accordionObj } = this.state;
+    const { accordionObj, sortValue, defaultExpand } = this.state;
     const clearAllCheckbox = () => {
       // console.log(this.state["searchValue"]);
       this.state["searchValue"] = [];
@@ -127,7 +160,8 @@ export default class SearchPanel extends React.Component {
           : protocols
         : 0;
 
-    console.log(accordionObj, "props");
+    console.log(accordionObj, "props1223", resultList, protocols);
+
     return (
       <div id="searchPanel" className="searchPanel">
         <Grid container md={12}>
@@ -197,7 +231,7 @@ export default class SearchPanel extends React.Component {
                   placeholder=""
                   size="small"
                   style={{ marginRight: 10 }}
-                  value={"1"}
+                  value={sortValue}
                   defaultValue="1"
                   onChange={(value) => this.sortChange(value)}
                 >
@@ -211,14 +245,10 @@ export default class SearchPanel extends React.Component {
               </div>
               <div
                 className="expand-all"
-                onClick={() => {
-                  this.setState({
-                    defaultExpand: !this.state.defaultExpand,
-                  });
-                }}
+                onClick={() => this.onExpandAllClick()}
               >
                 <AlignJustify style={{ color: "blue" }} size="small" />
-                <span>Expand All</span>
+                <span>{!defaultExpand ? "Expand All" : "Collapse All"}</span>
               </div>
               <div id="chip" className="chip">
                 {this.props.searchInput && (
@@ -269,3 +299,19 @@ export default class SearchPanel extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    updateAssociateProtocol: (data, obj) =>
+      dispatch({
+        type: "UPDATE_SEARCH_ASSOCIATED_PROTOCOLS",
+        payload: { data, obj },
+      }),
+    updateAllAssociateProtocol: (data) =>
+      dispatch({
+        type: "UPDATE_ALL_SEARCH_ASSOCIATED_PROTOCOLS",
+        payload: data,
+      }),
+  };
+};
+export default connect(null, mapDispatchToProps)(SearchPanel);
