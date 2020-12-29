@@ -35,34 +35,25 @@ const AmendmentCompare = () => {
 
   const [open, setOpen] = useState(false);
   useEffect(() => {
+    dispatch({ type: "POST_COMPARE_PROTOCOL", payload: null });
+  }, []);
+
+  const handleCompare = () => {
     if (version1 && version2) {
       if (version1 === version2) {
         alert("can not comapare same version");
       } else {
         console.log(version1, version2);
-        // const postBody = {
-        //   docID: version1,
-        //   docID: version2,
-        // };
-        // dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
-        // const postBody = {
-        //   docID: version1,
-        //   docID: version2,
-        // };
-        // console.log()
+        const postBody = {
+          docID: version1,
+          docID2: version2,
+        };
+
+        dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
       }
     } else {
-      // alert("Please select both the fields")
+      alert("Please select both the fields");
     }
-  }, [version1, version2]);
-
-  const handleCompare = () => {
-    const postBody = {
-      docID: version1,
-      docID2: version2,
-    };
-
-    dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
   };
 
   const handleSelect = (select, id) => {
@@ -78,71 +69,73 @@ const AmendmentCompare = () => {
   };
 
   console.log("....", compare);
+  const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
   return (
     <div className="amendment-compare">
       <Sidebar open={open} setOpen={setOpen} />
-      <Grid md={12} container>
-        <Grid md={6} container>
-          <Grid md={6}>
-            <div className="version-dropdown" style={{ width: "90%" }}>
-              <Select
-                label="Select First Version to Compare"
-                value={version1}
-                onChange={(e) => {
-                  handleSelect(1, e.target.value);
-                }}
-                placeholder="Select item..."
-                fullWidth
+      {associateData && associateData.length > 1 ? (
+        <Grid md={12} container>
+          <Grid md={6} container>
+            <Grid md={6}>
+              <div className="version-dropdown" style={{ width: "90%" }}>
+                <Select
+                  label="Select First Version to Compare"
+                  value={version1}
+                  onChange={(e) => {
+                    handleSelect(1, e.target.value);
+                  }}
+                  placeholder="Select item..."
+                  fullWidth
+                >
+                  {associateData &&
+                    associateData.length > 0 &&
+                    associateData.map((item, i) => (
+                      <MenuItem value={item.id} key={i}>
+                        {item.protocol + " (" + item.versionNumber + ")"}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </div>
+            </Grid>
+            <Grid md={6}>
+              <div
+                className="version-dropdown"
+                style={{ width: "90%", float: "right", marginRight: 10 }}
               >
-                {associateData &&
-                  associateData.length > 0 &&
-                  associateData.map((item, i) => (
-                    <MenuItem value={item.id} key={i}>
-                      {item.protocol + " (" + item.versionNumber + ")"}
-                    </MenuItem>
-                  ))}
-              </Select>
+                <Select
+                  label="Select Second Version to Compare"
+                  value={version2}
+                  onChange={(e) => {
+                    handleSelect(2, e.target.value);
+                  }}
+                  placeholder="Select item..."
+                  fullWidth
+                >
+                  {associateData &&
+                    associateData.length > 0 &&
+                    associateData.map((item, i) => (
+                      <MenuItem value={item.id} key={i}>
+                        {item.protocol + " (" + item.versionNumber + ")"}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </div>
+            </Grid>
+          </Grid>
+          <Grid md={3} container>
+            <div className="compare-button">
+              <Button
+                variant="primary"
+                size="small"
+                style={{ marginRight: 10 }}
+                onClick={() => handleCompare()}
+              >
+                Compare
+              </Button>
             </div>
           </Grid>
-          <Grid md={6}>
-            <div
-              className="version-dropdown"
-              style={{ width: "90%", float: "right", marginRight: 10 }}
-            >
-              <Select
-                label="Select Second Version to Compare"
-                value={version2}
-                onChange={(e) => {
-                  handleSelect(2, e.target.value);
-                }}
-                placeholder="Select item..."
-                fullWidth
-              >
-                {associateData &&
-                  associateData.length > 0 &&
-                  associateData.map((item, i) => (
-                    <MenuItem value={item.id} key={i}>
-                      {item.protocol + " (" + item.versionNumber + ")"}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </div>
-          </Grid>
-        </Grid>
-        <Grid md={3} container>
-          <div className="compare-button">
-            <Button
-              variant="primary"
-              size="small"
-              style={{ marginRight: 10 }}
-              onClick={() => handleCompare()}
-            >
-              Compare
-            </Button>
-          </div>
-        </Grid>
-        <Grid md={3} container>
-          {/* <div className="summary-button">
+          <Grid md={3} container>
+            {/* <div className="summary-button">
             <Button
               variant="secondary"
               icon={<ArrowLeft color="blue" />}
@@ -153,15 +146,34 @@ const AmendmentCompare = () => {
               Summary
             </Button>
           </div> */}
+          </Grid>
         </Grid>
-      </Grid>
-      {compare.iqvdata.data && compare.iqvdata.data.length > 0 && (
+      ) : (
+        <div className="single-version">
+          <p>
+            This Protocol has only one version.
+            <br /> So compare option is not available for this Protocol.
+          </p>
+        </div>
+      )}
+
+      {iqvdata && iqvdata.data.length > 0 && (
         <Grid container md={12}>
           <Grid md={6}>
-            <CompareCard float="left" cardID="first-card" data={prot1} compare={compare}/>
+            <CompareCard
+              float="left"
+              cardID="first-card"
+              data={prot1}
+              compare={compare}
+            />
           </Grid>
           <Grid md={6}>
-            <CompareCard float="right" cardID="second-card" data={prot2} compare={compare}/>
+            <CompareCard
+              float="right"
+              cardID="second-card"
+              data={prot2}
+              compare={compare}
+            />
           </Grid>
         </Grid>
       )}
