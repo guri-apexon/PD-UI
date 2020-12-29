@@ -63,8 +63,10 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         tempError[fieldName].errorMessage = " ";
       }
       if (formErrorValues[fieldName].regex && e.target.value.length > 0) {
-        let reg = new RegExp(formErrorValues[fieldName].regex);
-        if (reg.test(e.target.value)) {
+        let reg=formErrorValues[fieldName].regex;
+        // let reg = new RegExp(formErrorValues[fieldName].regex);
+        let isNumber= /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
+        if (isNumber && reg.test(parseFloat(e.target.value))) {
           tempValues[fieldName] = e.target.value;
           tempError[fieldName].error = false;
           tempError[fieldName].errorMessage = " ";
@@ -72,7 +74,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
           tempValues[fieldName] = e.target.value;
           tempError[fieldName].error = true;
           tempError[fieldName].errorMessage =
-            "Does not Match, upto 2 Decimals only";
+            "Does not Match, Positive and upto 2 Decimals only";
         }
       } else {
         tempValues[fieldName] = e.target.value;
@@ -229,7 +231,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const handleSaveForm = () => {
     const tempValues = _.cloneDeep(formValues);
     const tempError = _.cloneDeep(formErrorValues);
-    console.log('save clicked',formValues )
+    console.log('save clicked',formValues, formErrorValues )
     let errorExist = false;
     for (let field of Object.keys(tempError)) {
       switch (tempError[field].type) {

@@ -49,7 +49,7 @@ class SearchPanel extends React.Component {
       let arr = [];
       for (let i = 0; i < result.length; i++) {
         let obj = {
-          expanded: false,
+          expanded: result[i].expanded? result[i].expanded: false ,
           id: result[i].protocolNumber,
           ...result[i],
         };

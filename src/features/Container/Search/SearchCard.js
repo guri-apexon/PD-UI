@@ -3,6 +3,7 @@ import React from "react";
 import Table from "apollo-react/components/Table";
 import columns from "./Data/column.data";
 import Grid from "apollo-react/components/Grid";
+import Loader from "../../Components/Loader/Loader";
 
 const SearchCard = ({ data }) => (
   <div style={{ marginTop: 10, marginBottom: 10 }}>
@@ -42,13 +43,26 @@ const SearchCard = ({ data }) => (
         <p className="grid-item">Molecule/Device :</p>
       </Grid>
       <Grid md={3}>
-        <p className='grid-item bold-class'>{data.molecule}</p>
+        <p className="grid-item bold-class">{data.molecule}</p>
       </Grid>
     </Grid>
 
-    <div className="width100 search-inner-table">
-      <Table columns={columns} rows={data.rows} hidePagination />
-    </div>
+    {data && data.rowsLoading ? (
+      <div
+        style={{
+          height: 100,
+          justifyContent: "center",
+          alignItems: "center",
+          display: "flex",
+        }}
+      >
+        <Loader />
+      </div>
+    ) : (
+      <div className="width100 search-inner-table">
+        <Table columns={columns} rows={data.rows} hidePagination />
+      </div>
+    )}
   </div>
 );
 

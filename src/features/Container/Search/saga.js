@@ -227,6 +227,18 @@ function* updateSearchResult(action) {
 
 // -----Updating and adding Associate Protocol to a Single protocol when individual expand is clicked
 function* updateSearchAssociated(action) {
+let tempRes=_.cloneDeep(action.payload.obj);
+let foundIndex =tempRes.findIndex((obj) => obj.id === action.payload.data.id);
+tempRes[foundIndex].rowsLoading = true
+tempRes[foundIndex].expanded = !tempRes[foundIndex].expanded;;
+// tempRes.rowsLoading= true;
+  const initialObj = {
+    search: true,
+    loader: false,
+    success: true,
+    data: tempRes,
+  };
+  yield put(getSearchResult(initialObj));
   //ProtocolNo
   let associateURL = "/searchMockResult.json";
   const associateDocs = yield call(httpCall, {
@@ -243,9 +255,8 @@ function* updateSearchAssociated(action) {
   //  const associateDocs = yield call(httpCall, config);
   //  console.log('associateDocs :', associateDocs.data);
   if (associateDocs.success) {
-    debugger;
     let result = setAsssociateProtocols(
-      action.payload.data.AiDocId,
+      action.payload.data.protocolNumber,
       action.payload.obj,
       associateDocs.data.AssociateDocs
     );
@@ -259,7 +270,7 @@ function* updateSearchAssociated(action) {
   } else {
     yield;
   }
-  //   yield put(getSearchResult(action.payload));
+    // yield put(getSearchResult(action.payload));
 }
 
 // -----For updating and Associate Protocol to all Protocol when Expand all is clicked
@@ -270,23 +281,22 @@ function* updateAllSearchAssociated(action) {
     url: associateURL,
     method: "GET",
   });
-  if (associateDocs.success) {
-    debugger;
-    let result = setAsssociateProtocols(
-      action.payload.data.AiDocId,
-      action.payload.obj,
-      associateDocs.data.AssociateDocs
-    );
-    const obj = {
-      search: true,
-      loader: false,
-      success: true,
-      data: result,
-    };
-    yield put(getSearchResult(obj));
-  } else {
-    yield;
-  }
+  // if (associateDocs.success) {
+  //   let result = setAsssociateProtocols(
+  //     action.payload.data.protocolNumber,
+  //     action.payload.obj,
+  //     associateDocs.data.AssociateDocs
+  //   );
+  //   const obj = {
+  //     search: true,
+  //     loader: false,
+  //     success: true,
+  //     data: result,
+  //   };
+  //   yield put(getSearchResult(obj));
+  // } else {
+  //   yield;
+  // }
 }
 
 function* watchIncrementAsync() {
@@ -310,9 +320,9 @@ function createJSONFormat(data) {
   let arr = [];
 
   for (let i = 0; i < data.length; i++) {
-    let sampleRows = data.filter(
-      (item) => item._source.ProtocolNo === data[i]._source.ProtocolNo
-    );
+    // let sampleRows = data.filter(
+    //   (item) => item._source.ProtocolNo === data[i]._source.ProtocolNo
+    // );
     // let rows = sampleRows.map((item) => {
     //   return {
     //     version: item._source.ProtocolVersion,
@@ -337,6 +347,7 @@ function createJSONFormat(data) {
       uploadDate: data[i]._source.uploadDate,
       followed: false,
       rows: [],
+      rowsLoading: true
     };
     arr.push(obj);
   }
@@ -345,6 +356,7 @@ function createJSONFormat(data) {
   return getUniqObject(arr);
 }
 
+// --To Remove duplicate Protocol numbers from list
 function getUniqObject(obj) {
   const uniqueObj = Array.from(new Set(obj.map((a) => a.protocolNumber))).map(
     (protocolNumber) => {
@@ -354,13 +366,14 @@ function getUniqObject(obj) {
   return uniqueObj;
 }
 function setAsssociateProtocols(id, data, associateDocs) {
-  debugger;
+// console.log('id, data, associateDocs :', id, data, associateDocs);
   let arr =
     data &&
     data.map((item) => {
-      if (item.AiDocId === id) {
+      if (item.protocolNumber === id) {
         let temp = _.cloneDeep(item);
         temp.rows = associateDocs;
+        temp.rowsLoading= false;
         return temp;
       }
       return item;

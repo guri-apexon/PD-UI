@@ -13,7 +13,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.static(path.join(__dirname, "build")));
 
 const client = new elasticsearch.Client({
-  host: "http://10.3.67.228:9200/pd-index",
+  host: "http://ca2spdml04q:9200/pd-index-2",
 //   log: "trace",
   // apiVersion: '7.2', // use the same version of your Elasticsearch instance
 });
