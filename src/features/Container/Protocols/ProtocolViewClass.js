@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useSelector, useDispatch, connect  } from "react-redux";
+import { useSelector, useDispatch, connect } from "react-redux";
 import Grid from "apollo-react/components/Grid";
 import Card from "apollo-react/components/Card";
 import { tocData } from "./protocolSlice.js";
@@ -89,55 +89,53 @@ class ProtocolViewClass extends React.Component {
 
     this.state = {
       popupVisible: false,
-      subSectionData: []
+      subSectionData: [],
     };
   }
 
   componentDidMount() {
-    this.props.increment();
+    this.props.getProtocolIqvdata();
   }
 
   handleClick(id) {
-    if (!this.state.popupVisible) {
-      // attach/remove event handler
+
+    // if (!this.state.popupVisible) {
+    //   // attach/remove event handler
+    //   document.addEventListener("click", this.handleOutsideClick, false);
+    // } else {
+    //   document.removeEventListener("click", this.handleOutsideClick, false);
       document.addEventListener("click", this.handleOutsideClick, false);
-    } else {
-      document.removeEventListener("click", this.handleOutsideClick, false);
-    }
+    // }
 
-    console.log(id)
     let subData = [];
-    switch(id) {
-        case 'Toc': subData = this.data.TOC; break;
+    switch (id) {
+      case "Toc":
+        subData = this.data.TOC;
+        break;
     }
 
-    this.setState((prevState) => ({
-      popupVisible: !prevState.popupVisible,
-    }));
-    this.setState({subSectionData: subData})
+    // this.setState((prevState) => ({
+    //   popupVisible: !prevState.popupVisible,
+    // }));
+    this.setState({popupVisible: true, subSectionData: subData });
   }
 
   handleOutsideClick(e) {
     // ignore clicks on the component itself
-    if (e.target && this.node.contains(e.target)) {
+    if (e.target && this.node && this.node.contains(e.target)) {
       return;
     }
-
-    this.handleClick();
+    if (this.state.popupVisible) {
+        this.hideEle();
+    } else {
+        this.handleClick();
+    }
   }
 
   hideEle() {
-    this.setState({popupVisible: false});
+    document.removeEventListener("click", this.handleOutsideClick, false);
+    this.setState({ popupVisible: false, subSectionData: [] });
   }
-
-  //   const ref = useRef(null)
-  //   const dispatch = useDispatch();
-  //   const [showNav, setShowNav] = useState(false);
-  //   const [node, setNode] = useState(false);
-  //   const sumData = useSelector(tocData);
-  //   useEffect(() => {
-  //     dispatch({ type: "GET_PROTOCOL_TOC_SAGA" });
-  //   }, []);
 
   render() {
     const listData = [
@@ -149,19 +147,19 @@ class ProtocolViewClass extends React.Component {
 
     const subSections = {
       TOC: [
-        { section: "1. Synonpsis", id:"1" },
-        { section: "2. Sponser Investigators", id:"2" },
-        { section: "3. Background Information", id:"3" },
-        { section: "4. Trial Objectives", id:"4" },
-        { section: "5. Investigation Plan", id:"5" },
-        { section: "6. Investigation Medicinal", id:"6" },
-        { section: "7. Trial Procedures and Assesments", id:"7" },
+        { section: "1. Synonpsis", id: "1" },
+        { section: "2. Sponser Investigators", id: "2" },
+        { section: "3. Background Information", id: "3" },
+        { section: "4. Trial Objectives", id: "4" },
+        { section: "5. Investigation Plan", id: "5" },
+        { section: "6. Investigation Medicinal", id: "6" },
+        { section: "7. Trial Procedures and Assesments", id: "7" },
       ],
     };
 
     this.data = subSections;
 
-    console.log('dadad', this.state);
+    console.log("state", this.state);
     return (
       <div className="view-wrapper">
         <Card className="index-column">
@@ -183,15 +181,17 @@ class ProtocolViewClass extends React.Component {
             </div>
             {this.state.popupVisible && (
               <div className={`dropdown-menu sample`}>
-                  {this.state.subSectionData.map((data) => (
-                      <a
+                {this.state.subSectionData.map((data) => (
+                  <span>
+                    <a
                       className="btn btn1"
-                      onClick={() => this.handleClick}
                       key={data.id}
+                      onClick={this.hideEle}
                     >
                       <span style={{ marginLeft: "16px" }}>{data.section}</span>
                     </a>
-                  ))}
+                  </span>
+                ))}
               </div>
             )}
           </div>
@@ -227,10 +227,10 @@ class ProtocolViewClass extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-      increment: () => dispatch({ type: "GET_PROTOCOL_TOC_SAGA" })
-    }
-  }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getProtocolIqvdata: () => dispatch({ type: "GET_PROTOCOL_TOC_SAGA" }),
+  };
+};
 
 export default connect(null, mapDispatchToProps)(ProtocolViewClass);

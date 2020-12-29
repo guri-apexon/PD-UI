@@ -41,19 +41,17 @@ function* getSummaryData(action) {
 }
 
 function* getProtocolToc() {
-  const URL = "http://ca2spdml01q:8000/api/read_iqvdata/?id=3e885940-dc48-40a1-9745-b56a75da50cc";
+  const URL = "http://ca2spdml01q:8000/api/document_compare/?id1=3d885940-dc48-40a1-9745-b56a75da50dd&id2=77f83274-bfd2-4129-8b25-51d3b81aead5";
   const config = {
     url: URL,
     method: "GET",
   };
   const tocData = yield call(httpCall, config);
-  console.log(tocData)
   if (tocData.success) {
     const parsedData = JSON.parse(tocData.data.iqvdata);
-    console.log(parsedData.data);
+    // console.log(parsedData.data);
     yield put(getProcotoclToc(parsedData.data));
   }
-  console.log(tocData);
 }
 
 function getElement(style) {

@@ -173,13 +173,15 @@
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, 0.15);
     border-radius: 0.25rem;
+    width: 30%;
+    overflow: hidden;
   }
 
   .sample {
     position: absolute;
     transform: translate3d(185px, 0px, 0px);
     top: -3px;
-    left: 7%;
+    left: 9%;
     will-change: transform;
   }
 

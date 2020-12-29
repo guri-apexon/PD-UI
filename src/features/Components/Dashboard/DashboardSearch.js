@@ -48,7 +48,7 @@ function DashboardSearch({ recent, saved }) {
                 {recent.map((item, index) => {
                   if (index <= 5 || viewMore) {
                     return (
-                      <li key={item.id} className="search-list-li">
+                      <li key={item.sponsorId} className="search-list-li">
                         <Link to={`/search?key=${item.keyword}`}>
                           {item.keyword}
                         </Link>
@@ -93,7 +93,7 @@ function DashboardSearch({ recent, saved }) {
             {saved && saved.length > 0 ? (
               <ul className="search-list-ul">
                 {saved.map((item) => (
-                  <li key={item.id} className="search-list-li">
+                  <li key={item.sponsorId} className="search-list-li">
                     <Link to={`/search?key=${item.keyword}`}>
                       {item.keyword}
                     </Link>

@@ -73,22 +73,31 @@ const iconStatus = (status) => {
   switch (status) {
     case "DIGITIZER1_STARTED":
     case "DIGITIZER2_STARTED":
+    case "DIGITIZER1_COMPLETED":
+    case "DIGITIZER2_COMPLETED":
+    case "DIGITIZER2_OMOPUPDATE_STARTED":
+    case "DIGITIZER2_OMOPUPDATE_COMPLETED":
+    case "I2E_OMOP_UPDATE_STARTED":
+    case "I2E_OMOP_UPDATE_COMPLETED":
       return {
         comp: <Clock htmlColor={"orange"} />,
         title: "Digitization In Progress",
       };
     case "TRIAGE_STARTED":
+    case "TRIAGE_COMPLETED":
       return {
         comp: <StatusCheck htmlColor={"cornflowerblue"} />,
         title: "Upload Complete",
       };
     case "EXTRACTION_STARTED":
+    case "EXTRACTION_COMPLETED":
+    case "FINALIZATION_STARTED":
+    case "FINALIZATION_COMPLETED":
       return {
         comp: <Clock htmlColor={"orange"} />,
         title: "Extraction In Progress",
       };
-    case "DIGITIZER2_OMOPUPDATE_STARTED":
-    case "I2E_OMOP_UPDATE_STARTED":
+    case "PROCESS_COMPLETED":
       return {
         comp: <Check htmlColor={"green"} />,
         title: "Digitization Complete",
@@ -98,11 +107,14 @@ const iconStatus = (status) => {
         comp: <StatusExclamation htmlColor={"red"} />,
         title: "Extraction Error",
       };
-    case "FINALIZATION_STARTED":
-    case "PROCESS_COMPLETED":
-      return { comp: <Check htmlColor={"green"} />, title: "Final" };
+    case "COMPARISON_STARTED":
+    case "COMPARISON_COMPLETED":
+      return { comp: <Clock htmlColor={"orange"} />, title: "Comparison In Progress" };
     default:
-      return { comp: <Check htmlColor={"green"} />, title: "Final" };
+      return {
+        comp: <StatusExclamation htmlColor={"red"} />,
+        title: "Extraction Error",
+      };
   }
 };
 
