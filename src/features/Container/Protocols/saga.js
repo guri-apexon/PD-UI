@@ -132,7 +132,7 @@ function* getCompareResult(action) {
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery("GET_PROTOCOL_SUMMARY", getSummaryData);
-  yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolToc);
+  yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolSummary);
   yield takeLatest("FETCH_ASSOCIATE_PROTOCOLS", fetchAssociateProtocol);
   yield takeEvery("POST_COMPARE_PROTOCOL", getCompareResult);
 }

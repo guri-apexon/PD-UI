@@ -61,9 +61,11 @@ function getElement(data) {
       );
     case "Heading2":
       return (
-        <h2 id={subsectionOf} className={`heading2 ${isBold}`}>
-          {content}
-        </h2>
+        <div className="bar">
+          <h2 id={subsectionOf} className={`heading2 ${isBold}`}>
+            {content}
+          </h2>
+        </div>
       );
     case "Heading3":
       return (
@@ -98,13 +100,12 @@ class ProtocolViewClass extends React.Component {
   }
 
   handleClick(id) {
-
     // if (!this.state.popupVisible) {
     //   // attach/remove event handler
     //   document.addEventListener("click", this.handleOutsideClick, false);
     // } else {
     //   document.removeEventListener("click", this.handleOutsideClick, false);
-      document.addEventListener("click", this.handleOutsideClick, false);
+    document.addEventListener("click", this.handleOutsideClick, false);
     // }
 
     let subData = [];
@@ -112,12 +113,21 @@ class ProtocolViewClass extends React.Component {
       case "Toc":
         subData = this.data.TOC;
         break;
+      case "TableOfAppendix":
+        subData = this.data.TableOfAppendix;
+        break;
+      case "TableOfTable":
+        subData = this.data.TableOfTable;
+        break;
+      case "TableOfFigure":
+        subData = this.data.TableOfFigure;
+        break;
     }
 
     // this.setState((prevState) => ({
     //   popupVisible: !prevState.popupVisible,
     // }));
-    this.setState({popupVisible: true, subSectionData: subData });
+    this.setState({ popupVisible: true, subSectionData: subData });
   }
 
   handleOutsideClick(e) {
@@ -126,9 +136,9 @@ class ProtocolViewClass extends React.Component {
       return;
     }
     if (this.state.popupVisible) {
-        this.hideEle();
+      this.hideEle();
     } else {
-        this.handleClick();
+      this.handleClick();
     }
   }
 
@@ -154,6 +164,22 @@ class ProtocolViewClass extends React.Component {
         { section: "5. Investigation Plan", id: "5" },
         { section: "6. Investigation Medicinal", id: "6" },
         { section: "7. Trial Procedures and Assesments", id: "7" },
+      ],
+      TableOfAppendix: [
+        { section: "1. Synonpsis", id: "1" },
+        { section: "2. Sponser Investigators", id: "2" },
+        { section: "3. Background Information", id: "3" },
+        { section: "4. Trial Objectives", id: "4" },
+        { section: "5. Investigation Plan", id: "5" },
+      ],
+      TableOfTable: [
+        { section: "1. Synonpsis", id: "1" },
+        { section: "2. Sponser Investigators", id: "2" },
+        { section: "3. Background Information", id: "3" },
+      ],
+      TableOfFigure: [
+        { section: "1. Synonpsis", id: "1" },
+        { section: "2. Sponser Investigators", id: "2" },
       ],
     };
 
@@ -197,7 +223,6 @@ class ProtocolViewClass extends React.Component {
           </div>
         </Card>
         <Card className="protocol-column">
-          {/* <div className="bar">{item.section}</div> */}
           <div style={{ padding: "10px 16px" }}>
             {/* {sumData.map((item) => {
                   return (
@@ -205,13 +230,13 @@ class ProtocolViewClass extends React.Component {
                   )
               })} */}
 
-            {/* {sumData.length &&
-                sumData.map((item) => {
-                  return getElement(item);
-                })} */}
+            {this.props.sumData.length &&
+              this.props.sumData.map((item) => {
+                return getElement(item);
+              })}
             {dummyTable.map((item) => {
               return (
-                <div key={item.Header[0]}>
+                <div key={item.Header[0]} style={{ overflowX: "scroll" }}>
                   <h2>{item.TableName}</h2>
                   <div
                     id={item.Header[0]}
@@ -233,4 +258,11 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(ProtocolViewClass);
+const mapStateToProps = (state) => {
+  const { protocol } = state;
+  return {
+    sumData: protocol.toc,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProtocolViewClass);
