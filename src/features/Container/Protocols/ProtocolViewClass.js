@@ -150,36 +150,27 @@ class ProtocolViewClass extends React.Component {
   render() {
     const listData = [
       { section: "Table of Contents", id: "Toc" },
-      { section: "Table of Appendix", id: "TableOfAppendix" },
-      { section: "Table of Table", id: "TableOfTable" },
-      { section: "Table of Figure", id: "TableOfFigure" },
+      { section: "Table of Tables", id: "TableOfTable" },
     ];
 
     const subSections = {
       TOC: [
         { section: "1. Synonpsis", id: "1" },
-        { section: "2. Sponser Investigators", id: "2" },
+        { section: "2. Sponser Investigators, and Trial Administrative Structure", id: "2" },
         { section: "3. Background Information", id: "3" },
         { section: "4. Trial Objectives", id: "4" },
         { section: "5. Investigation Plan", id: "5" },
-        { section: "6. Investigation Medicinal", id: "6" },
+        { section: "6. Investigation Medicinal Product and other Drugs Used in the Trial", id: "6" },
         { section: "7. Trial Procedures and Assesments", id: "7" },
-      ],
-      TableOfAppendix: [
-        { section: "1. Synonpsis", id: "1" },
-        { section: "2. Sponser Investigators", id: "2" },
-        { section: "3. Background Information", id: "3" },
-        { section: "4. Trial Objectives", id: "4" },
-        { section: "5. Investigation Plan", id: "5" },
+        { section: "8. Statistics", id: "8" },
+        { section: "9. Ethical and Regulatory Aspects", id: "9" },
+        { section: "10. Trial Management", id: "10" },
+        { section: "11. References", id: "11" },
       ],
       TableOfTable: [
-        { section: "1. Synonpsis", id: "1" },
-        { section: "2. Sponser Investigators", id: "2" },
-        { section: "3. Background Information", id: "3" },
-      ],
-      TableOfFigure: [
-        { section: "1. Synonpsis", id: "1" },
-        { section: "2. Sponser Investigators", id: "2" },
+        { section: "Table 1. Hematology Assessments", id: "t1" },
+        { section: "Table 2. Biochemistry Assessments", id: "t2" },
+        { section: "Table 3. Background Information", id: "t3" },
       ],
     };
 

@@ -109,7 +109,10 @@ const iconStatus = (status) => {
       };
     case "COMPARISON_STARTED":
     case "COMPARISON_COMPLETED":
-      return { comp: <Clock htmlColor={"orange"} />, title: "Comparison In Progress" };
+      return {
+        comp: <Clock htmlColor={"orange"} />,
+        title: "Comparison In Progress",
+      };
     default:
       return {
         comp: <StatusExclamation htmlColor={"red"} />,
@@ -227,13 +230,16 @@ const ExpandableComponent = ({ row }) => {
           {"Source"}
         </Typography>
         <Typography className="fw-8" variant="body2">
-        {row.fileName ?
-           <Link to={row.documentFilePath} target="_blank">
-           {row.fileName}
-          </Link> : '-'}
+          {row.fileName ? (
+            <Link to={row.documentFilePath} target="_blank">
+              {row.fileName}
+            </Link>
+          ) : (
+            "-"
+          )}
         </Typography>
       </div>
-       {/* } */}
+      {/* } */}
     </div>
   );
 };
@@ -266,31 +272,34 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
   // console.log('initial-rows', initialRows, pageRows);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
-    <Table
-      title="My Protocols"
-      columns={columns}
-      rows={initialRows && initialRows.map((row) => {
-        let temp = _.cloneDeep(row);
-        let details = {
-          key: row.id,
-          expanded: expandedRows.indexOf(row.id) >= 0,
-          selected: selectedRows.indexOf(row.id) >= 0,
-          handleToggleRow,
-          handleChange,
-        };
-        return _.merge(temp, details);
-      })}
-      initialSortedColumn="protocol"
-      initialSortOrder="asc"
-      rowsPerPageOptions={pageRows}
-      rowProps={{ hover: false }}
-      tablePaginationProps={{
-        labelDisplayedRows: ({ from, to, count }) =>
-          `Showing ${from}-${to} of ${count}`,
-        truncate: true,
-      }}
-      ExpandableComponent={ExpandableComponent}
-    />
+      <Table
+        title="My Protocols"
+        columns={columns}
+        rows={
+          initialRows &&
+          initialRows.map((row) => {
+            let temp = _.cloneDeep(row);
+            let details = {
+              key: row.id,
+              expanded: expandedRows.indexOf(row.id) >= 0,
+              selected: selectedRows.indexOf(row.id) >= 0,
+              handleToggleRow,
+              handleChange,
+            };
+            return _.merge(temp, details);
+          })
+        }
+        // initialSortedColumn="protocol"
+        // initialSortOrder="asc"
+        rowsPerPageOptions={pageRows}
+        rowProps={{ hover: false }}
+        tablePaginationProps={{
+          labelDisplayedRows: ({ from, to, count }) =>
+            `Showing ${from}-${to} of ${count}`,
+          truncate: true,
+        }}
+        ExpandableComponent={ExpandableComponent}
+      />
     </div>
   );
 };
