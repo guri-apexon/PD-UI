@@ -21,8 +21,8 @@ function* getIndicationData(action) {
     if (indicationList.success) {
       let formatIndication = indicationList.data.map((item) => {
         return {
-          title: item.indication_name,
-          id: item.id,
+          title: item.indicationName,
+          id: item.indId,
         };
       });
       const obj = {
@@ -42,8 +42,8 @@ function* getSponsorData(action) {
     if (sponsorList.success) {
       let formatSponser = sponsorList.data.map((item) => {
         return {
-          title: item.sponsor_name,
-          id: item.id,
+          title: item.sponsorName,
+          id: item.sponsorId,
         };
       });
       const obj = {

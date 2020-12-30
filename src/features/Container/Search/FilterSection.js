@@ -14,7 +14,7 @@ import { indications, sponsors } from "./searchSlice";
 
 import { TOC, phases, documentStatus, dateSection } from "./Data/constants";
 
-const CollapseCard = ({ name, indicationData, sponsorData }) => {
+const CollapseCard = ({ name, indicationData, sponsorData, onConstructSearchQuery }) => {
   if (name === "TOC") {
     return (
       <Collapsible trigger={TOC.sectionName}>
@@ -27,7 +27,7 @@ const CollapseCard = ({ name, indicationData, sponsorData }) => {
       <Collapsible trigger="Indications">
         {indicationData.sectionContent &&
           indicationData.sectionContent.length > 0 && (
-            <CheckboxCard section={indicationData} />
+            <CheckboxCard section={indicationData} identifier='indication' onCheckboxClick={onConstructSearchQuery} />
           )}
       </Collapsible>
     );
@@ -37,7 +37,7 @@ const CollapseCard = ({ name, indicationData, sponsorData }) => {
       <Collapsible trigger="Sponsers">
         {sponsorData.sectionContent &&
           sponsorData.sectionContent.length > 0 && (
-            <CheckboxCard section={sponsorData} />
+            <CheckboxCard section={sponsorData} identifier="sponsor" onCheckboxClick={onConstructSearchQuery} />
           )}
       </Collapsible>
     );

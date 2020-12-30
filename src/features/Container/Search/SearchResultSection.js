@@ -136,6 +136,11 @@ class SearchPanel extends React.Component {
     });
   };
 
+  onConstructSearchQuery = (list, identifier) =>{
+  console.log('list, identifier :', list, identifier);
+    // onSearchQuery
+  }
+
   render() {
     const {
       filterList = [],
@@ -181,7 +186,7 @@ class SearchPanel extends React.Component {
             </div>
             <div>
               <FilterSection name="TOC" />
-              <FilterSection name="sponsor" sponsorData={sponsorData} />
+              <FilterSection name="sponsor" sponsorData={sponsorData} onConstructSearchQuery={this.onConstructSearchQuery} />
               <FilterSection
                 name="indication"
                 indicationData={indicationData}

@@ -27,7 +27,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const [inputValue2, setInputValue2] = React.useState();
   const [documentValue2, setDocumentValue2] = React.useState();
   // const [value2, setValue2] = React.useState({amendmentNumber:'', documentStatus:''});
-  const [value2, setValue2] = React.useState();
+  const [value2, setValue2] = React.useState({amendmentNumber:undefined, documentStatus:undefined});
   const [formErrorValues, setFormErrorValues] = useState(
     initialFormErrorValues
   );
@@ -37,13 +37,13 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
 
   const onModalClose = () => {
     handleClose("custom");
-    setValue2(undefined)
+    setValue2({amendmentNumber:undefined, documentStatus:undefined})
     dispatch({ type: "RESET_ERROR_ADD_PROTOCOL" });
   };
   const onModalOpen = () => {
     dispatch({ type: "RESET_ERROR_ADD_PROTOCOL" });
     setFormValues(initialFormValues);
-    setValue2(undefined)
+    setValue2({amendmentNumber:undefined, documentStatus:undefined})
     setFormErrorValues(initialFormErrorValues);
     handleOpen("custom");
   };
@@ -111,7 +111,9 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         // let setValuesTemp= _.cloneDeep(value2)
         // setValuesTemp[fieldName]= dropdownValue
         // setValue2(setValuesTemp);
-        setValue2(dropdownValue);
+        let tempValue2=_.cloneDeep(value2);
+        tempValue2[fieldName]=dropdownValue
+        setValue2(tempValue2);
 
         tempError[fieldName].error = false;
         tempError[fieldName].errorMessage = "";
@@ -368,7 +370,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                     source={amendmentNumber}
                     fullWidth
                     value={
-                      value2
+                      value2.amendmentNumber
                     }
                     helperText={formErrorValues.amendmentNumber.errorMessage}
                     error={formErrorValues.amendmentNumber.error}
@@ -465,7 +467,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                     source={documentStatusList}
                     fullWidth
                     value={
-                      value2
+                      value2.documentStatus
                     }
                     helperText={formErrorValues.documentStatus.errorMessage}
                     error={formErrorValues.documentStatus.error}

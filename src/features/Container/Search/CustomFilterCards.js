@@ -80,11 +80,12 @@ export const TableOfContent = ({ section }) => {
   );
 };
 
-export const CheckboxCard = ({ section, index }) => {
+export const CheckboxCard = ({ section, index, identifier, onCheckboxClick }) => {
   const [value, setValue] = React.useState([]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
+    onCheckboxClick(e.target.value, identifier);
   };
 
   const classes = useStyles();
@@ -98,9 +99,11 @@ export const CheckboxCard = ({ section, index }) => {
                 <Checkbox
                   id={section.sectionContent[i].id + "_" + i}
                   key={i}
-                  value={section.sectionContent[i].id + "_" + i}
+                  value={section.sectionContent[i].id}
                   label={content.title}
                   size="small"
+                  // onChange= {(e)=> onCheckBoxClick(e)}
+                  // checked='true'
                 />
               ))}
             </CheckboxGroup>

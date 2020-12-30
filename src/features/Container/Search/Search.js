@@ -31,6 +31,7 @@ const Search = (props) => {
   const [idPresent, setIdPresent] = useState(false);
 
   const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState({sponsor:[]});
 
   useEffect(() => {
     let params = props.location.search;
@@ -78,11 +79,12 @@ const Search = (props) => {
     setSearchInput(input);
     // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
     dispatch({ type: "GET_SEARCH_RESULT", payload: input });
+    props.history.push(`/search?key=${input}`);
   };
   const deleteSearchInput = () => {
     setSearchInput("");
     setIdPresent(false);
-    props.history.push(`/Search`);
+    props.history.push(`/search`);
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
   };
 
@@ -100,6 +102,10 @@ const Search = (props) => {
     // console.log('data :', data, resultList, newList);
     dispatch({ type: "UPDATE_SEARCH_RESULT", payload: newList });
   };
+
+  const onSearchQuery = () => {
+    console.log("onSearchQuery")
+  }
   // console.log('data :' ,resultList);
 
   return (
@@ -136,6 +142,7 @@ const Search = (props) => {
             deleteSearchInput={deleteSearchInput}
             onSearchChange={onSearchChange}
             onSortChange={onSortChange}
+            onSearchQuery={onSearchQuery}
           />
         </div>
       </div>

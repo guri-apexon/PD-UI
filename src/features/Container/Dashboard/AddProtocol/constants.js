@@ -88,7 +88,7 @@ export const documentStatusList = [
   },
   {
     label: "Approved Final",
-    value: "active",
+    value: "final",
   },
 ];
 
