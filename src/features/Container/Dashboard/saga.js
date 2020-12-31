@@ -186,7 +186,7 @@ function* postAddProtocol(postData) {
         setAddprotocolError(
           duplicateCheckRes && duplicateCheckRes.data.Duplicate
             ? duplicateCheckRes.data.Duplicate
-            : "Duplicate Document!!..This document has been already processed!!"
+            : "This protocol document cannot be added to the library because it already exists."
         )
       );
     }

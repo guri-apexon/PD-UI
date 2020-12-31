@@ -12,7 +12,7 @@ import Radio from "apollo-react/components/Radio";
 import RadioGroup from "apollo-react/components/RadioGroup";
 import DateRangePicker from "apollo-react/components/DateRangePicker";
 
-import React from "react";
+import React, {useEffect} from "react";
 
 const useStyles = makeStyles({
   root: {
@@ -80,11 +80,17 @@ export const TableOfContent = ({ section }) => {
   );
 };
 
-export const CheckboxCard = ({ section, index, identifier, onCheckboxClick }) => {
+export const CheckboxCard = ({ section, index, identifier, onCheckboxClick, listValue }) => {
   const [value, setValue] = React.useState([]);
+
+  useEffect(() => {
+    setValue(listValue)
+    // console.log('listValue :', listValue);
+  }, [listValue])
 
   const handleChange = (e) => {
     setValue(e.target.value);
+    // console.log("aaaa", e.target.value.includes());
     onCheckboxClick(e.target.value, identifier);
   };
 
@@ -104,6 +110,7 @@ export const CheckboxCard = ({ section, index, identifier, onCheckboxClick }) =>
                   size="small"
                   // onChange= {(e)=> onCheckBoxClick(e)}
                   // checked='true'
+                  // checked={value && value.includes(content.id)}
                 />
               ))}
             </CheckboxGroup>
