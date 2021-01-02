@@ -44,13 +44,13 @@ const CollapseCard = ({ name, indicationData, sponsorData, onConstructSearchQuer
   } else if (name === "phase") {
     return (
       <Collapsible trigger={phases.sectionName}>
-        <CheckboxCard section={phases} />
+        <CheckboxCard section={phases}  identifier='phase' onCheckboxClick={onConstructSearchQuery} listValue={searchQuery.phase} />
       </Collapsible>
     );
   } else if (name === "document") {
     return (
       <Collapsible trigger={documentStatus.sectionName}>
-        <CheckboxCard section={documentStatus} />
+        <CheckboxCard section={documentStatus}  identifier='documentStatus' onCheckboxClick={onConstructSearchQuery} listValue={searchQuery.documentStatus} />
       </Collapsible>
     );
   } else if (name === "date") {

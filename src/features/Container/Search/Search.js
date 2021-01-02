@@ -20,6 +20,7 @@ import {
   indications,
   sponsors,
 } from "./searchSlice";
+import {  phases, documentStatus } from "./Data/constants";
 
 const Search = (props) => {
   const resultList = useSelector(searchResult);
@@ -55,6 +56,16 @@ const Search = (props) => {
       if('indication' in parsed && indicationData.sectionContent.length>0 ){
         let tempElasticQuery = indicationData.sectionContent.filter(item => parsed.indication.split('+').includes(item.title)) 
         tempQuery.indication= tempElasticQuery && tempElasticQuery.map(item=> item.id);
+        elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
+      }
+      if('phase' in parsed ){
+        let tempElasticQuery = phases.sectionContent.filter(item => parsed.phase.split('+').includes(item.title)) 
+        tempQuery.phase= tempElasticQuery && tempElasticQuery.map(item=> item.id);
+        elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
+      }
+      if('documentStatus' in parsed ){
+        let tempElasticQuery = documentStatus.sectionContent.filter(item => parsed.documentStatus.split('+').includes(item.title)) 
+        tempQuery.documentStatus= tempElasticQuery && tempElasticQuery.map(item=> item.id);
         elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
       }
       if ("?key" in parsed) {
@@ -118,6 +129,14 @@ const Search = (props) => {
       let tempElasticQuery = indicationData.sectionContent.filter(item => parsed.indication.split('+').includes(item.title)) 
       elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
     }
+    if('phase' in parsed && phases.sectionContent.length>0 ){
+      let tempElasticQuery = phases.sectionContent.filter(item => parsed.phase.split('+').includes(item.title)) 
+      elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
+    }
+    if('documentStatus' in parsed ){
+      let tempElasticQuery = documentStatus.sectionContent.filter(item => parsed.documentStatus.split('+').includes(item.title)) 
+      elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
+    }
     if ("key" in parsed) {
       setSearchInput(parsed[`key`]);
       elasticSearchQuery+=` ${parsed[`key`]}`;
@@ -155,7 +174,33 @@ const Search = (props) => {
           str=trimstr;
         }
         return str;
-    }
+      }
+      case 'phase': {
+        let str='&phase=';
+        let extractValues= phases.sectionContent.filter( item => value.includes(item.id))
+        if(extractValues.length >0){
+          extractValues.map(item =>{
+            str+=`${item.title}+`;
+            return true;
+          })
+          let trimstr= str.slice(0,-1);
+          str=trimstr;
+        }
+        return str;
+      }
+      case 'documentStatus': {
+        let str='&documentStatus=';
+        let extractValues= documentStatus.sectionContent.filter( item => value.includes(item.id))
+        if(extractValues.length >0){
+          extractValues.map(item =>{
+            str+=`${item.title}+`;
+            return true;
+          })
+          let trimstr= str.slice(0,-1);
+          str=trimstr;
+        }
+        return str;
+      }
       default: return "";
     }
   }
@@ -187,8 +232,6 @@ const Search = (props) => {
     // console.log("onSearchQuery",list, identifier, tempQuery);
     setSearchQuery(tempQuery);
   }
-  // console.log('data :' ,resultList);
-
   return (
     <div className="search">
       <Breadcrumbs

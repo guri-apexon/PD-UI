@@ -49,7 +49,7 @@ class SearchPanel extends React.Component {
       let arr = [];
       for (let i = 0; i < result.length; i++) {
         let obj = {
-          expanded: result[i].expanded? result[i].expanded: false ,
+          expanded: result[i].expanded ? result[i].expanded : false,
           id: result[i].protocolNumber,
           ...result[i],
         };
@@ -60,7 +60,7 @@ class SearchPanel extends React.Component {
         resultListData: props.resultList,
       };
     }
-    
+
     // Return null if the state hasn't changed
     return null;
   }
@@ -136,12 +136,11 @@ class SearchPanel extends React.Component {
     });
   };
 
-  onConstructSearchQuery = (list, identifier) =>{
-    const {onSearchQuery}= this.props;
-  // console.log('list, identifier :', list, identifier);
+  onConstructSearchQuery = (list, identifier) => {
+    const { onSearchQuery } = this.props;
+    // console.log('list, identifier :', list, identifier);
     onSearchQuery(list, identifier);
-
-  }
+  };
 
   render() {
     const {
@@ -150,7 +149,7 @@ class SearchPanel extends React.Component {
       onSearchChange,
       sponsorData,
       indicationData,
-      searchQuery
+      searchQuery,
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
     const clearAllCheckbox = () => {
@@ -189,15 +188,28 @@ class SearchPanel extends React.Component {
             </div>
             <div>
               <FilterSection name="TOC" />
-              <FilterSection name="sponsor" sponsorData={sponsorData} onConstructSearchQuery={this.onConstructSearchQuery} searchQuery={searchQuery}/>
+              <FilterSection
+                name="sponsor"
+                sponsorData={sponsorData}
+                onConstructSearchQuery={this.onConstructSearchQuery}
+                searchQuery={searchQuery}
+              />
               <FilterSection
                 name="indication"
                 indicationData={indicationData}
-                onConstructSearchQuery={this.onConstructSearchQuery} 
+                onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
               />
-              <FilterSection name="phase" />
-              <FilterSection name="document" />
+              <FilterSection
+                name="phase"
+                onConstructSearchQuery={this.onConstructSearchQuery}
+                searchQuery={searchQuery}
+              />
+              <FilterSection
+                name="document"
+                onConstructSearchQuery={this.onConstructSearchQuery}
+                searchQuery={searchQuery}
+              />
               <FilterSection name="date" />
               {/* {filterList.length > 0 &&
                 filterList.map((section, index) => (

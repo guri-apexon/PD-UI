@@ -90,7 +90,7 @@ export const CheckboxCard = ({ section, index, identifier, onCheckboxClick, list
 
   const handleChange = (e) => {
     setValue(e.target.value);
-    // console.log("aaaa", e.target.value.includes());
+    // console.log("aaaa", e.target.value);
     onCheckboxClick(e.target.value, identifier);
   };
 
