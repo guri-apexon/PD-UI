@@ -10,6 +10,8 @@ export const protocolSlice = createSlice({
       loading: false,
       called: false,
       iqvdata: "",
+      error: false,
+      message: "",
     },
   },
   reducers: {
