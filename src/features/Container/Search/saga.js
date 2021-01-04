@@ -174,8 +174,8 @@ function* getSearchData(action) {
       //   },
       // });
       // console.log(resp.hits.hits);
-      // const url = `/elastic/${action.payload}`;
-      const url = `http://localhost:4000/elastic/${action.payload}`;
+      const url = `/elastic/${action.payload}`;
+      // const url = `http://localhost:4000/elastic/${action.payload}`;
 
       const resp = yield call(httpCall, {
         url,
@@ -309,9 +309,10 @@ function* getRecentData(action) {
   let momDate = moment(newDate);
   const getDate = momDate.format("YYYYMMDDHHMMSS");
   console.log("getDate", getDate);
-  // const url = `/elastic/filter/${getDate}`;
+  
   try {
-    const url = `http://localhost:4000/filter?from=${getDate}&to=now/d`;
+    // const url = `http://localhost:4000/filter?from=${getDate}&to=now/d`;
+    const url = `/filter?from=${getDate}&to=now/d`;
     const resp = yield call(httpCall, {
       url,
       method: "GET",
@@ -355,10 +356,11 @@ function* getDataByRange(action) {
   const to = momToDate.format("YYYYMMDDHHMMSS");
   console.log("from", from);
   console.log("to", to);
-  // const url = `/elastic/filter/${from}`;
+  
 
   try {
-    const url = `http://localhost:4000/filter/?from=${from}&to=${to}`;
+    // const url = `http://localhost:4000/filter/?from=${from}&to=${to}`;
+    const url = `/filter/?from=${from}&to=${to}`;
     const resp = yield call(httpCall, {
       url,
       method: "GET",
