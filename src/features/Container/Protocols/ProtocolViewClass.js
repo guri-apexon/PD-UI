@@ -122,6 +122,9 @@ class ProtocolViewClass extends React.Component {
       case "TableOfFigure":
         subData = this.data.TableOfFigure;
         break;
+      case "SOA":
+        subData = this.data.SOA;
+        break;
     }
 
     // this.setState((prevState) => ({
@@ -150,6 +153,7 @@ class ProtocolViewClass extends React.Component {
   render() {
     const listData = [
       { section: "Table of Contents", id: "Toc" },
+      { section: "Schedule of Assessments", id: "SOA" },
       { section: "Table of Tables", id: "TableOfTable" },
     ];
 
@@ -172,6 +176,7 @@ class ProtocolViewClass extends React.Component {
         { section: "Table 2. Biochemistry Assessments", id: "t2" },
         { section: "Table 3. Background Information", id: "t3" },
       ],
+      SOA: []
     };
 
     this.data = subSections;
@@ -228,7 +233,7 @@ class ProtocolViewClass extends React.Component {
             {dummyTable.map((item) => {
               return (
                 <div key={item.Header[0]} style={{ overflowX: "scroll" }}>
-                  <h2>{item.TableName}</h2>
+                  <h2>Table {item.TableName}</h2>
                   <div
                     id={item.Header[0]}
                     dangerouslySetInnerHTML={{ __html: item.Table }}

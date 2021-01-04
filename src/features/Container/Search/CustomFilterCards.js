@@ -13,7 +13,7 @@ import RadioGroup from "apollo-react/components/RadioGroup";
 import DateRangePicker from "apollo-react/components/DateRangePicker";
 
 import React, {useEffect} from "react";
-
+import { useSelector, useDispatch } from "react-redux";
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -185,11 +185,42 @@ export const RadioCard = ({ state, section, index }) => {
 };
 
 export const DateRangeCard = ({ section }) => {
-  const [value, setValue] = React.useState([]);
+  const [value, setValue] = React.useState("");
+  const [dateRange, setDateRange] = React.useState({});
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // setValue(listValue)
+    // console.log('listValue :', listValue);
+    if (value) {
+      // props.history.push(`/search?${resultQuery}`);
+      dispatch({ type: "FILTER_BY_RECENT", payload: value });
+    }
+  }, [value])
+
+  useEffect(() => {
+    const range = {
+      from: dateRange.fromDate,
+      to: dateRange.toDate
+    }
+    console.log('before ----',range)
+    if(dateRange.fromDate && dateRange.toDate) {
+      console.log('dispacth ----',range)
+      dispatch({ type: "FILTER_BY_DATE_RANGE", payload: range });
+    }
+   
+  }, [dateRange])
 
   const handleChange = (e) => {
+    console.log(e.target.value);
+    
     setValue(e.target.value);
   };
+
+  const handleRange = (e) => {
+    console.log(e.target.value)
+    setDateRange(e.target.value)
+  }
 
   const classes = useStyles();
   return (
@@ -197,20 +228,20 @@ export const DateRangeCard = ({ section }) => {
       <CardContent>
         <Typography className={classes.cardSubtitle} variant="caption">
           <div style={{ marginTop: 10 }}>
-            <RadioGroup value={value} onChange={handleChange}>
-              {section.sectionContent.map((content, i) => (
+            <RadioGroup value={value} onChange={(e) => handleChange(e)}>
+              {section.sectionContent.map((item, i) => (
                 <Radio
-                  id={section.sectionContent[i].id + "_" + i}
-                  key={i}
-                  value={section.sectionContent[i].id + "_" + i}
-                  label={content.title}
+                  id={item.id}
+                  key={item.id}
+                  value={item.content}
+                  label={item.title}
                   size="small"
                 />
               ))}
             </RadioGroup>
             <div style={{ marginTop: 20 }}>
               <DateRangePicker
-                onChange={(event) => console.log(event.target.value)}
+                onChange={(e) => handleRange(e)}
                 fromDateProps={{
                   label: "Start of Range",
                   placeholder: "MM/DD/YYYY",

@@ -7,6 +7,7 @@ import {
 } from "./searchSlice";
 import { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
+import moment from "moment";
 
 const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
 const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
@@ -173,8 +174,8 @@ function* getSearchData(action) {
       //   },
       // });
       // console.log(resp.hits.hits);
-      const url = `/elastic/${action.payload}`;
-      // const url = `http://localhost:4000/elastic/${action.payload}`;
+      // const url = `/elastic/${action.payload}`;
+      const url = `http://localhost:4000/elastic/${action.payload}`;
 
       const resp = yield call(httpCall, {
         url,
@@ -227,11 +228,13 @@ function* updateSearchResult(action) {
 
 // -----Updating and adding Associate Protocol to a Single protocol when individual expand is clicked
 function* updateSearchAssociated(action) {
-let tempRes=_.cloneDeep(action.payload.obj);
-let foundIndex =tempRes.findIndex((obj) => obj.id === action.payload.data.id);
-tempRes[foundIndex].rowsLoading = true
-tempRes[foundIndex].expanded = !tempRes[foundIndex].expanded;;
-// tempRes.rowsLoading= true;
+  let tempRes = _.cloneDeep(action.payload.obj);
+  let foundIndex = tempRes.findIndex(
+    (obj) => obj.id === action.payload.data.id
+  );
+  tempRes[foundIndex].rowsLoading = true;
+  tempRes[foundIndex].expanded = !tempRes[foundIndex].expanded;
+  // tempRes.rowsLoading= true;
   const initialObj = {
     search: true,
     loader: false,
@@ -270,7 +273,7 @@ tempRes[foundIndex].expanded = !tempRes[foundIndex].expanded;;
   } else {
     yield;
   }
-    // yield put(getSearchResult(action.payload));
+  // yield put(getSearchResult(action.payload));
 }
 
 // -----For updating and Associate Protocol to all Protocol when Expand all is clicked
@@ -299,6 +302,97 @@ function* updateAllSearchAssociated(action) {
   // }
 }
 
+function* getRecentData(action) {
+  let newDate = new Date();
+  newDate.setMonth(newDate.getMonth() - parseInt(action.payload));
+  console.log("date", newDate);
+  let momDate = moment(newDate);
+  const getDate = momDate.format("YYYYMMDDHHMMSS");
+  console.log("getDate", getDate);
+  // const url = `/elastic/filter/${getDate}`;
+  try {
+    const url = `http://localhost:4000/filter?from=${getDate}&to=now/d`;
+    const resp = yield call(httpCall, {
+      url,
+      method: "GET",
+    });
+    const data = resp.data.hits.hits;
+    console.log("Search Result", data);
+    if (resp.data && resp.data.hits && data.length !== 0) {
+      const requiredFormat = createJSONFormat(data);
+
+      const obj = {
+        search: true,
+        loader: false,
+        success: true,
+        data: requiredFormat,
+      };
+      yield put(getSearchResult(obj));
+    } else if (resp.data.hits.hits.length === 0) {
+      const obj = {
+        search: true,
+        loader: false,
+        success: true,
+        data: [],
+      };
+      yield put(getSearchResult(obj));
+    }
+  } catch (e) {
+    const obj = {
+      success: false,
+      data: [],
+    };
+    yield put(getSearchResult(obj));
+  }
+}
+
+function* getDataByRange(action) {
+  let fromDate = new Date(action.payload.from);
+  let toDate = new Date(action.payload.to);
+  let momFromDate = moment(fromDate);
+  let momToDate = moment(toDate);
+  const from = momFromDate.format("YYYYMMDDHHMMSS");
+  const to = momToDate.format("YYYYMMDDHHMMSS");
+  console.log("from", from);
+  console.log("to", to);
+  // const url = `/elastic/filter/${from}`;
+
+  try {
+    const url = `http://localhost:4000/filter/?from=${from}&to=${to}`;
+    const resp = yield call(httpCall, {
+      url,
+      method: "GET",
+    });
+    const data = resp.data.hits.hits;
+    console.log("Search Result", data);
+    if (resp.data && resp.data.hits && data.length !== 0) {
+      const requiredFormat = createJSONFormat(data);
+
+      const obj = {
+        search: true,
+        loader: false,
+        success: true,
+        data: requiredFormat,
+      };
+      yield put(getSearchResult(obj));
+    } else if (resp.data.hits.hits.length === 0) {
+      const obj = {
+        search: true,
+        loader: false,
+        success: true,
+        data: [],
+      };
+      yield put(getSearchResult(obj));
+    }
+  } catch (e) {
+    const obj = {
+      success: false,
+      data: [],
+    };
+    yield put(getSearchResult(obj));
+  }
+}
+
 function* watchIncrementAsync() {
   yield takeEvery("GET_SEARCH_FILTER", getFilterData);
   yield takeEvery("GET_SEARCH_RESULT", getSearchData);
@@ -310,6 +404,8 @@ function* watchIncrementAsync() {
     "UPDATE_ALL_SEARCH_ASSOCIATED_PROTOCOLS",
     updateAllSearchAssociated
   );
+  yield takeEvery("FILTER_BY_RECENT", getRecentData);
+  yield takeEvery("FILTER_BY_DATE_RANGE", getDataByRange);
 }
 
 export default function* protocolSaga() {
@@ -347,7 +443,7 @@ function createJSONFormat(data) {
       uploadDate: data[i]._source.uploadDate,
       followed: false,
       rows: [],
-      rowsLoading: true
+      rowsLoading: true,
     };
     arr.push(obj);
   }
@@ -366,14 +462,14 @@ function getUniqObject(obj) {
   return uniqueObj;
 }
 function setAsssociateProtocols(id, data, associateDocs) {
-// console.log('id, data, associateDocs :', id, data, associateDocs);
+  // console.log('id, data, associateDocs :', id, data, associateDocs);
   let arr =
     data &&
     data.map((item) => {
       if (item.protocolNumber === id) {
         let temp = _.cloneDeep(item);
         temp.rows = associateDocs;
-        temp.rowsLoading= false;
+        temp.rowsLoading = false;
         return temp;
       }
       return item;

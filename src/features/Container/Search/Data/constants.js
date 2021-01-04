@@ -184,19 +184,19 @@ export const dateSection = {
     {
       id: "DATE_1",
       title: "Last 6 Months",
-      content: "",
+      content: "6",
       count: "",
     },
     {
       id: "DATE_2",
       title: "Last 12 Months",
-      content: "",
+      content: "12",
       count: "",
     },
     {
       id: "DATE_3",
       title: "Last 5 Years",
-      content: "",
+      content: "60",
       count: "",
     },
   ],
