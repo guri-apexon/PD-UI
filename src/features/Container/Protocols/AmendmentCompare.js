@@ -69,7 +69,7 @@ const AmendmentCompare = () => {
     }
   };
 
-  console.log("....", associateData);
+  console.log("....", compare);
   const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
   return (
     <div className="amendment-compare">
@@ -78,10 +78,7 @@ const AmendmentCompare = () => {
         <Grid md={12} container>
           <Grid md={6} container>
             <Grid md={6}>
-              <div
-                className="version-dropdown"
-                style={{ width: "90%" }}
-              >
+              <div className="version-dropdown" style={{ width: "90%" }}>
                 <Select
                   label="Select First Version to Compare"
                   value={version1}
@@ -161,8 +158,12 @@ const AmendmentCompare = () => {
           <p>So compare option is not available for this Protocol.</p>
         </div>
       )}
-
-      {iqvdata && iqvdata.data.length > 0 && (
+      {compare.error && (
+        <div className="single-version">
+          <p>{compare.message}</p>
+        </div>
+      )}
+      {iqvdata && !compare.error && iqvdata.data.length > 0 && (
         <Grid container md={12}>
           <Grid md={6}>
             <CompareCard

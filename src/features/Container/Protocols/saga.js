@@ -108,11 +108,14 @@ function* fetchAssociateProtocol(action) {
 
 function* getCompareResult(action) {
   if (action.payload) {
+    // debugger;
     yield put(
       getCompare({
         iqvdata: "",
         loading: true,
         called: true,
+        error: false,
+        message: "",
       })
     );
     console.log("Payload", action.payload);
@@ -121,18 +124,34 @@ function* getCompareResult(action) {
     const url = `http://ca2spdml01q:8000/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
     // const url = `/compare.json`;
     const resp = yield call(httpCall, { url, method: "GET" });
-    console.log("summary data", JSON.parse(resp.data.iqvdata));
-    let temp = _.cloneDeep(resp.data);
-    temp.loading = false;
-    temp.called = true;
-    console.log("summary data........", temp);
-    yield put(getCompare(temp));
+    // console.log("summary data", JSON.parse(resp.data.iqvdata));
+
+    if (resp.data) {
+      // debugger;
+      let temp = _.cloneDeep(resp.data);
+      temp.loading = false;
+      temp.called = true;
+      console.log("summary data........", temp);
+      yield put(getCompare(temp));
+    } else {
+      // debugger;
+      let temp = {
+        iqvdata: "",
+        loading: false,
+        called: false,
+        error: true,
+        message: "Comparion is Under Process.",
+      };
+      yield put(getCompare(temp));
+    }
   } else {
     yield put(
       getCompare({
         iqvdata: "",
         loading: false,
         called: false,
+        error: false,
+        message: "",
       })
     );
   }
