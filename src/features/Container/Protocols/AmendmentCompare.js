@@ -69,7 +69,7 @@ const AmendmentCompare = () => {
     }
   };
 
-  console.log("....", compare);
+  console.log("....", associateData);
   const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
   return (
     <div className="amendment-compare">
@@ -78,7 +78,10 @@ const AmendmentCompare = () => {
         <Grid md={12} container>
           <Grid md={6} container>
             <Grid md={6}>
-              <div className="version-dropdown" style={{ width: "90%" }}>
+              <div
+                className="version-dropdown"
+                style={{ width: "90%" }}
+              >
                 <Select
                   label="Select First Version to Compare"
                   value={version1}
@@ -87,6 +90,7 @@ const AmendmentCompare = () => {
                   }}
                   placeholder="Select item..."
                   fullWidth
+                  data-testid="select-div1"
                 >
                   {associateData &&
                     associateData.length > 0 &&
@@ -111,6 +115,7 @@ const AmendmentCompare = () => {
                   }}
                   placeholder="Select item..."
                   fullWidth
+                  data-testid="select-div2"
                 >
                   {associateData &&
                     associateData.length > 0 &&
@@ -130,6 +135,7 @@ const AmendmentCompare = () => {
                 size="small"
                 style={{ marginRight: 10 }}
                 onClick={() => handleCompare()}
+                data-testid="compare-button"
               >
                 Compare
               </Button>
@@ -151,10 +157,8 @@ const AmendmentCompare = () => {
         </Grid>
       ) : (
         <div className="single-version">
-          <p>
-            This Protocol has only one version.
-            <br /> So compare option is not available for this Protocol.
-          </p>
+          <p>This Protocol has only one version.</p>
+          <p>So compare option is not available for this Protocol.</p>
         </div>
       )}
 

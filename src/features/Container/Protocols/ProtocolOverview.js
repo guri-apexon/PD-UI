@@ -58,10 +58,10 @@ const ProtocolOverview = ({ data }) => {
       <Card style={{ padding: "10px 16px" }} className="chart-column">
         <div className="">
           <p className="chart-title">Digitized Confidence Interval</p>
-          {!isNaN(parseInt(data.DigitizedConfidenceInterval, 10)) ? (
+          {!isNaN(parseInt(data.digitizedConfidenceInterval, 10)) ? (
             <DonutChart
               dropshadow
-              percent={parseInt(data.DigitizedConfidenceInterval, 10)}
+              percent={parseInt(data.digitizedConfidenceInterval, 10)}
               subtitle="Label"
               stroke="#0768fd"
               tooltipTitle=""
@@ -79,10 +79,10 @@ const ProtocolOverview = ({ data }) => {
             </div>
           )}
           <p className="chart-title">Completeness of Digitization</p>
-          {!isNaN(parseInt(data.CompletenessOfDigitization, 10)) ? (
+          {!isNaN(parseInt(data.completenessOfDigitization, 10)) ? (
             <DonutChart
               dropshadow
-              percent={parseInt(data.CompletenessOfDigitization, 10)}
+              percent={parseInt(data.completenessOfDigitization, 10)}
               subtitle="Label"
               // stroke="#0768fd"
               tooltipTitle=""
