@@ -19,6 +19,7 @@ import {
   searchResult,
   indications,
   sponsors,
+  recent,
 } from "./searchSlice";
 import {  phases, documentStatus } from "./Data/constants";
 
@@ -27,6 +28,7 @@ const Search = (props) => {
   const filterList = useSelector(searchFilter);
   const indicationData = useSelector(indications);
   const sponsorData = useSelector(sponsors);
+  const recentDate = useSelector(recent);
 
   const dispatch = useDispatch();
   const [idPresent, setIdPresent] = useState(false);
@@ -113,6 +115,7 @@ const Search = (props) => {
 
   const getSearchInput = (input) => {
     // console.log(input, searchQuery, "Search Query");
+    debugger
     let inp= input? input: searchInput;
     let resultQuery=`key=${inp}`;
     for (let [key, value] of Object.entries(searchQuery)) {
@@ -120,7 +123,12 @@ const Search = (props) => {
      resultQuery+=contructQueryFromArray(key, value)
     }
     let parsed=JSON.parse('{"' + resultQuery.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) });
-    let elasticSearchQuery ='';
+    let elasticSearchQuery ='key=';
+    
+    if ("key" in parsed) {
+      setSearchInput(parsed[`key`]);
+      elasticSearchQuery+=` ${parsed[`key`]}`;
+    }
     if('sponsor' in parsed && sponsorData.sectionContent.length>0 ){
       let tempElasticQuery = sponsorData.sectionContent.filter(item => parsed.sponsor.split('+').includes(item.title));
       elasticSearchQuery+=  tempElasticQuery.map(item=>item.title).join(' ');
@@ -137,12 +145,18 @@ const Search = (props) => {
       let tempElasticQuery = documentStatus.sectionContent.filter(item => parsed.documentStatus.split('+').includes(item.title)) 
       elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
     }
-    if ("key" in parsed) {
-      setSearchInput(parsed[`key`]);
-      elasticSearchQuery+=` ${parsed[`key`]}`;
-    } 
+     
     setIdPresent(true);
     setSearchInput(inp);
+    if (recentDate.from) {
+      // setSearchInput(parsed[`key`]);
+      console.log('recentDate', recentDate);
+      const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`
+      setSearchInput(dateQuery);
+      elasticSearchQuery+=` ${dateQuery}`;
+      resultQuery+=dateQuery;
+      // elasticSearchQuery+=` ${parsed[`key`]}`;
+    }
     // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
     dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
     props.history.push(`/search?${resultQuery}`);

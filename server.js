@@ -18,40 +18,53 @@ const client = new elasticsearch.Client({
   // apiVersion: '7.2', // use the same version of your Elasticsearch instance
 });
 
-app.get("/elastic/:key", (req, res) => {
-  console.log(req.params.key);
+app.get("/elastic", (req, res) => {
+  console.log(req.query);
+  const key = req.query.key;
+  const from = req.query.dateFrom;
+  const to = req.query.dateTo;
+  let baseQuery = {};
+  if (key) {
+    baseQuery = {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "multi_match": {
+                "query": key
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+  if (from && to) {
+    baseQuery = {
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "multi_match": {
+                "query": key
+              }
+            },
+            {
+              "range": {
+              "uploadDate": {
+                "gte": from,
+                "lt": to            
+              }
+            }
+            }
+          ]
+        }
+      }
+    }
+  }
   client
     .search({
-      body: {
-        query: {
-          multi_match: {
-            query: req.params.key,
-            // fields: [
-            //   "Objectives",
-            //   "Endpoints",
-            //   "AdverseEvents",
-            //   "SeriousAdverseEvents",
-            //   "ObjectiveAndEndpoint",
-            //   "InclusionCriteria",
-            //   "ExclusionCriteria",
-            //   "NumberOfParticipants",
-            //   "Title",
-            //   "ShortTitle",
-            //   "PrimaryObjective",
-            //   "SecondaryObjective",
-            //   "ExploratoryObjective",
-            //   "PrimaryEndpoint",
-            //   "SecondaryEndpoint",
-            //   "Rationale",
-            //   "Design",
-            //   "BriefSummary",
-            //   "InterventionGroups",
-            //   "DataMonitoringCommittee",
-            //   "Schema",
-            // ],
-          },
-        },
-      },
+      body: baseQuery
     })
     .then((resp) => {
       console.log(resp.took);

@@ -194,7 +194,7 @@ export const DateRangeCard = ({ section }) => {
     // console.log('listValue :', listValue);
     if (value) {
       // props.history.push(`/search?${resultQuery}`);
-      dispatch({ type: "FILTER_BY_RECENT", payload: value });
+      dispatch({ type: "FILTER_BY_RECENT_SAGA", payload: value });
     }
   }, [value])
 
@@ -206,7 +206,7 @@ export const DateRangeCard = ({ section }) => {
     console.log('before ----',range)
     if(dateRange.fromDate && dateRange.toDate) {
       console.log('dispacth ----',range)
-      dispatch({ type: "FILTER_BY_DATE_RANGE", payload: range });
+      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
     }
    
   }, [dateRange])

@@ -11,6 +11,14 @@ export const searchSlice = createSlice({
     sponsors: {
       sectionContent:[]
     },
+    recent: {
+      from: '',
+      to: ''
+    },
+    range: {
+      from: '',
+      to: ''
+    }
   },
   reducers: {
     getFilters: (state, action) => {
@@ -25,6 +33,12 @@ export const searchSlice = createSlice({
     getSponsors: (state, action) => {
       state.sponsors = action.payload;
     },
+    getRecentDate: (state, action) => {
+      state.recent = action.payload
+    },
+    getRangeDate: (state, action) => {
+      state.range = action.payload
+    }
   },
 });
 
@@ -33,6 +47,8 @@ export const {
   getSearchResult,
   getIndications,
   getSponsors,
+  getRecentDate,
+  getRangeDate,
 } = searchSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -42,5 +58,7 @@ export const searchFilter = (state) => state.search.filters;
 export const searchResult = (state) => state.search.searchResult;
 export const indications = (state) => state.search.indications;
 export const sponsors = (state) => state.search.sponsors;
+export const recent = (state) => state.search.recent;
+export const range = (state) => state.search.range;
 
 export default searchSlice.reducer;

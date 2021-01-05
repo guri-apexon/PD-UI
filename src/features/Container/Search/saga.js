@@ -4,6 +4,8 @@ import {
   getSearchResult,
   getIndications,
   getSponsors,
+  getRecentDate,
+  getRangeDate,
 } from "./searchSlice";
 import { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
@@ -174,8 +176,8 @@ function* getSearchData(action) {
       //   },
       // });
       // console.log(resp.hits.hits);
-      const url = `/elastic/${action.payload}`;
-      // const url = `http://localhost:4000/elastic/${action.payload}`;
+      // const url = `/elastic/${action.payload}`;
+      const url = `http://localhost:4000/elastic?${action.payload}`;
 
       const resp = yield call(httpCall, {
         url,
@@ -308,43 +310,47 @@ function* getRecentData(action) {
   console.log("date", newDate);
   let momDate = moment(newDate);
   const getDate = momDate.format("YYYYMMDDHHMMSS");
-  console.log("getDate", getDate);
-  
-  try {
-    // const url = `http://localhost:4000/filter?from=${getDate}&to=now/d`;
-    const url = `/filter?from=${getDate}&to=now/d`;
-    const resp = yield call(httpCall, {
-      url,
-      method: "GET",
-    });
-    const data = resp.data.hits.hits;
-    console.log("Search Result", data);
-    if (resp.data && resp.data.hits && data.length !== 0) {
-      const requiredFormat = createJSONFormat(data);
-
-      const obj = {
-        search: true,
-        loader: false,
-        success: true,
-        data: requiredFormat,
-      };
-      yield put(getSearchResult(obj));
-    } else if (resp.data.hits.hits.length === 0) {
-      const obj = {
-        search: true,
-        loader: false,
-        success: true,
-        data: [],
-      };
-      yield put(getSearchResult(obj));
-    }
-  } catch (e) {
-    const obj = {
-      success: false,
-      data: [],
-    };
-    yield put(getSearchResult(obj));
+  const recentDate = {
+    from: getDate,
+    to: 'now/d'
   }
+  console.log("recentDate", recentDate);
+  yield put(getRecentDate(recentDate))
+  // try {
+  //   // const url = `http://localhost:4000/filter?from=${getDate}&to=now/d`;
+  //   const url = `/filter?from=${getDate}&to=now/d`;
+  //   const resp = yield call(httpCall, {
+  //     url,
+  //     method: "GET",
+  //   });
+  //   const data = resp.data.hits.hits;
+  //   console.log("Search Result", data);
+  //   if (resp.data && resp.data.hits && data.length !== 0) {
+  //     const requiredFormat = createJSONFormat(data);
+
+  //     const obj = {
+  //       search: true,
+  //       loader: false,
+  //       success: true,
+  //       data: requiredFormat,
+  //     };
+  //     yield put(getSearchResult(obj));
+  //   } else if (resp.data.hits.hits.length === 0) {
+  //     const obj = {
+  //       search: true,
+  //       loader: false,
+  //       success: true,
+  //       data: [],
+  //     };
+  //     yield put(getSearchResult(obj));
+  //   }
+  // } catch (e) {
+  //   const obj = {
+  //     success: false,
+  //     data: [],
+  //   };
+  //   yield put(getSearchResult(obj));
+  // }
 }
 
 function* getDataByRange(action) {
@@ -356,43 +362,47 @@ function* getDataByRange(action) {
   const to = momToDate.format("YYYYMMDDHHMMSS");
   console.log("from", from);
   console.log("to", to);
-  
-
-  try {
-    // const url = `http://localhost:4000/filter/?from=${from}&to=${to}`;
-    const url = `/filter/?from=${from}&to=${to}`;
-    const resp = yield call(httpCall, {
-      url,
-      method: "GET",
-    });
-    const data = resp.data.hits.hits;
-    console.log("Search Result", data);
-    if (resp.data && resp.data.hits && data.length !== 0) {
-      const requiredFormat = createJSONFormat(data);
-
-      const obj = {
-        search: true,
-        loader: false,
-        success: true,
-        data: requiredFormat,
-      };
-      yield put(getSearchResult(obj));
-    } else if (resp.data.hits.hits.length === 0) {
-      const obj = {
-        search: true,
-        loader: false,
-        success: true,
-        data: [],
-      };
-      yield put(getSearchResult(obj));
-    }
-  } catch (e) {
-    const obj = {
-      success: false,
-      data: [],
-    };
-    yield put(getSearchResult(obj));
+  const rangeDate = {
+    from,
+    to
   }
+  yield put(getRangeDate(rangeDate))
+
+  // try {
+  //   // const url = `http://localhost:4000/filter/?from=${from}&to=${to}`;
+  //   const url = `/filter/?from=${from}&to=${to}`;
+  //   const resp = yield call(httpCall, {
+  //     url,
+  //     method: "GET",
+  //   });
+  //   const data = resp.data.hits.hits;
+  //   console.log("Search Result", data);
+  //   if (resp.data && resp.data.hits && data.length !== 0) {
+  //     const requiredFormat = createJSONFormat(data);
+
+  //     const obj = {
+  //       search: true,
+  //       loader: false,
+  //       success: true,
+  //       data: requiredFormat,
+  //     };
+  //     yield put(getSearchResult(obj));
+  //   } else if (resp.data.hits.hits.length === 0) {
+  //     const obj = {
+  //       search: true,
+  //       loader: false,
+  //       success: true,
+  //       data: [],
+  //     };
+  //     yield put(getSearchResult(obj));
+  //   }
+  // } catch (e) {
+  //   const obj = {
+  //     success: false,
+  //     data: [],
+  //   };
+  //   yield put(getSearchResult(obj));
+  // }
 }
 
 function* watchIncrementAsync() {
@@ -406,8 +416,8 @@ function* watchIncrementAsync() {
     "UPDATE_ALL_SEARCH_ASSOCIATED_PROTOCOLS",
     updateAllSearchAssociated
   );
-  yield takeEvery("FILTER_BY_RECENT", getRecentData);
-  yield takeEvery("FILTER_BY_DATE_RANGE", getDataByRange);
+  yield takeEvery("FILTER_BY_RECENT_SAGA", getRecentData);
+  yield takeEvery("FILTER_BY_DATE_RANGE_SAGA", getDataByRange);
 }
 
 export default function* protocolSaga() {
