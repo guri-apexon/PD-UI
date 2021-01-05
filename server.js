@@ -23,44 +23,133 @@ app.get("/elastic", (req, res) => {
   const key = req.query.key;
   const from = req.query.dateFrom;
   const to = req.query.dateTo;
-  let baseQuery = {};
-  if (key) {
-    baseQuery = {
-      "query": {
-        "bool": {
-          "must": [
-            {
-              "multi_match": {
-                "query": key
-              }
-            }
-          ]
-        }
+  const docStatus = req.query.documentStatus;
+  let queryDate;
+  switch(docStatus) {
+    case 'draft': queryDate = 'uploadDate';
+    break;
+    case 'active': queryDate = 'approval_date';
+    break;
+    default: queryDate = 'uploadDate';
+  }
+  let baseQuery = {
+    "query": {
+      "bool": {
+        "must": []
       }
     }
+  };
+  if (key) {
+    let item = {
+      "multi_match": {}
+    }
+    item.multi_match["query"] = key;
+    const obj = baseQuery.query.bool.must
+    obj.push(item);
+    console.log('item',item);
+    console.log('baseQ', baseQuery);
+    var myJSON = JSON.stringify(baseQuery);
+    var myObj = JSON.parse(myJSON);
+    console.log('myJSON',myJSON);
+    console.log('myObj', myObj);
+    // baseQuery = {
+    //   "query": {
+    //     "bool": {
+    //       "must": [
+    //         {
+    //           "multi_match": {
+    //             "query": key
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   }
+    // }
+  }
+  if(docStatus) {
+    console.log('-------------------doc---------------');
+    let item = {
+      "multi_match": {
+        "query": docStatus,
+        "fields": [ "DocumentStatus" ]
+      }
+    }
+    // item.multi_match["query"] = docStatus;
+    // item.multi_match["fields"] = ["DocumentStatus"];
+    const obj = baseQuery.query.bool.must
+    obj.push(item);
+    console.log('item',item);
+    console.log('baseQ', baseQuery);
+    var myJSON = JSON.stringify(baseQuery);
+    var myObj = JSON.parse(myJSON);
+    console.log('myJSON',myJSON);
+    console.log('myObj', myObj);
+    // baseQuery = {
+    //   "query": {
+    //     "bool": {
+    //       "must": [
+    //         {
+    //           "multi_match": {
+    //             "query": key
+    //           }
+    //         },
+    //         {
+    //           "multi_match": {
+    //             "query": docStatus
+    //           }
+    //         },
+    //         {
+    //           "range": {
+    //           [queryDate]: {
+    //             "gte": from,
+    //             "lt": to            
+    //           }
+    //         }
+    //         }
+    //       ]
+    //     }
+    //   }
+    // }
   }
   if (from && to) {
-    baseQuery = {
-      "query": {
-        "bool": {
-          "must": [
-            {
-              "multi_match": {
-                "query": key
-              }
-            },
-            {
-              "range": {
-              "uploadDate": {
-                "gte": from,
-                "lt": to            
-              }
-            }
-            }
-          ]
+    console.log('-------------------date---------------');
+    let item = {
+      "range": {
+        [queryDate]: {
+          "gte": from,
+          "lt": to  
         }
       }
     }
+    const obj = baseQuery.query.bool.must
+    obj.push(item);
+    console.log('item',item);
+    console.log('baseQ', baseQuery);
+    var myJSON = JSON.stringify(baseQuery);
+    var myObj = JSON.parse(myJSON);
+    console.log('myJSON',myJSON);
+    console.log('myObj', myObj);
+    // baseQuery = {
+    //   "query": {
+    //     "bool": {
+    //       "must": [
+    //         {
+    //           "multi_match": {
+    //             "query": key
+    //           }
+    //         },
+    //         {
+    //           "range": {
+    //           [queryDate]: {
+    //             "gte": from,
+    //             "lt": to            
+    //           }
+    //         }
+    //         }
+    //       ]
+    //     }
+    //   }
+    // }
   }
   client
     .search({

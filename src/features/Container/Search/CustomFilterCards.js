@@ -12,7 +12,7 @@ import Radio from "apollo-react/components/Radio";
 import RadioGroup from "apollo-react/components/RadioGroup";
 import DateRangePicker from "apollo-react/components/DateRangePicker";
 
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 const useStyles = makeStyles({
   root: {
@@ -80,13 +80,19 @@ export const TableOfContent = ({ section }) => {
   );
 };
 
-export const CheckboxCard = ({ section, index, identifier, onCheckboxClick, listValue }) => {
+export const CheckboxCard = ({
+  section,
+  index,
+  identifier,
+  onCheckboxClick,
+  listValue,
+}) => {
   const [value, setValue] = React.useState([]);
 
   useEffect(() => {
-    setValue(listValue)
+    setValue(listValue);
     // console.log('listValue :', listValue);
-  }, [listValue])
+  }, [listValue]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -185,7 +191,7 @@ export const RadioCard = ({ state, section, index }) => {
 };
 
 export const DateRangeCard = ({ section }) => {
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState("0");
   const [dateRange, setDateRange] = React.useState({});
   const dispatch = useDispatch();
 
@@ -196,31 +202,30 @@ export const DateRangeCard = ({ section }) => {
       // props.history.push(`/search?${resultQuery}`);
       dispatch({ type: "FILTER_BY_RECENT_SAGA", payload: value });
     }
-  }, [value])
+  }, [value]);
 
   useEffect(() => {
     const range = {
       from: dateRange.fromDate,
-      to: dateRange.toDate
-    }
-    console.log('before ----',range)
-    if(dateRange.fromDate && dateRange.toDate) {
-      console.log('dispacth ----',range)
+      to: dateRange.toDate,
+    };
+    console.log("before ----", range);
+    if (dateRange.fromDate && dateRange.toDate) {
+      console.log("dispacth ----", range);
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
     }
-   
-  }, [dateRange])
+  }, [dateRange]);
 
   const handleChange = (e) => {
     console.log(e.target.value);
-    
+
     setValue(e.target.value);
   };
 
   const handleRange = (e) => {
-    console.log(e.target.value)
-    setDateRange(e.target.value)
-  }
+    console.log(e.target.value);
+    setDateRange(e.target.value);
+  };
 
   const classes = useStyles();
   return (

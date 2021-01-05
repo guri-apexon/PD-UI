@@ -55,9 +55,11 @@ const CollapseCard = ({ name, indicationData, sponsorData, onConstructSearchQuer
     );
   } else if (name === "date") {
     return (
-      <Collapsible trigger={dateSection.sectionName}>
+      <span className='date-filter'>
+      <Collapsible trigger={dateSection.sectionName} classname='testing' style={{ height: "550px", float: "left", width: "100%" }}>
         <DateRangeCard section={dateSection} />
       </Collapsible>
+      </span>
     );
   }
   return null;

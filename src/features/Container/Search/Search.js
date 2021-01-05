@@ -55,7 +55,7 @@ const Search = (props) => {
       if ("?key" in parsed) {
         setIdPresent(true);
         setSearchInput(parsed[`?key`]);
-        elasticSearchQuery+=` ${parsed[`?key`]}`;
+        elasticSearchQuery+=`${parsed[`?key`]}`;
       }
       if('sponsor' in parsed && sponsorData.sectionContent.length>0 ){
         let tempElasticQuery = sponsorData.sectionContent.filter(item => parsed.sponsor.split('+').includes(item.title)) 
@@ -75,13 +75,13 @@ const Search = (props) => {
       if('documentStatus' in parsed ){
         let tempElasticQuery = documentStatus.sectionContent.filter(item => parsed.documentStatus.split('+').includes(item.title)) 
         tempQuery.documentStatus= tempElasticQuery && tempElasticQuery.map(item=> item.id);
-        elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
+        elasticSearchQuery+= `&documentStatus=${tempElasticQuery.map(item=>item.title).join(' ').trim()}`;
       }
       if ('dateFrom' in parsed && 'dateTo' in parsed) {
         console.log('rangeDate', rangeDate);
         const dateQuery = `&dateFrom=${parsed[`dateFrom`]}&dateTo=${parsed[`dateTo`]}`
         // setSearchInput(dateQuery);
-        elasticSearchQuery+=` ${dateQuery}`;
+        elasticSearchQuery+=`${dateQuery}`;
         // resultQuery+=dateQuery;
       }
       setSearchQuery(tempQuery);
@@ -135,7 +135,7 @@ const Search = (props) => {
     
     if ("key" in parsed) {
       setSearchInput(parsed[`key`]);
-      elasticSearchQuery+=` ${parsed[`key`]}`;
+      elasticSearchQuery+=`${parsed[`key`]}`;
     }
     if('sponsor' in parsed && sponsorData.sectionContent.length>0 ){
       let tempElasticQuery = sponsorData.sectionContent.filter(item => parsed.sponsor.split('+').includes(item.title));
@@ -150,8 +150,8 @@ const Search = (props) => {
       elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
     }
     if('documentStatus' in parsed ){
-      let tempElasticQuery = documentStatus.sectionContent.filter(item => parsed.documentStatus.split('+').includes(item.title)) 
-      elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
+      let tempElasticQuery = documentStatus.sectionContent.filter(item => parsed.documentStatus.split('+').includes(item.value)) 
+      elasticSearchQuery+= `&documentStatus=${tempElasticQuery.map(item=>item.value).join(' ').trim()}`;
     }
      
     setIdPresent(true);
@@ -160,19 +160,19 @@ const Search = (props) => {
       console.log('rangeDate', rangeDate);
       const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`
       // setSearchInput(dateQuery);
-      elasticSearchQuery+=` ${dateQuery}`;
+      elasticSearchQuery+=`${dateQuery}`;
       resultQuery+=dateQuery;
     }else if (recentDate.from) {
       // setSearchInput(parsed[`key`]);
       console.log('recentDate', recentDate);
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`
       // setSearchInput(dateQuery);
-      elasticSearchQuery+=` ${dateQuery}`;
+      elasticSearchQuery+=`${dateQuery}`;
       resultQuery+=dateQuery;
       // elasticSearchQuery+=` ${parsed[`key`]}`;
     }
     // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
-    dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+    dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery});
     props.history.replace({pathname: '/search', search: `?${resultQuery}`});
   };
   const contructQueryFromArray =(key, value)=>{
@@ -221,7 +221,7 @@ const Search = (props) => {
         let extractValues= documentStatus.sectionContent.filter( item => value.includes(item.id))
         if(extractValues.length >0){
           extractValues.map(item =>{
-            str+=`${item.title}+`;
+            str+=`${item.value}+`;
             return true;
           })
           let trimstr= str.slice(0,-1);

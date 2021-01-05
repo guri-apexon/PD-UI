@@ -305,17 +305,26 @@ function* updateAllSearchAssociated(action) {
 }
 
 function* getRecentData(action) {
-  let newDate = new Date();
-  newDate.setMonth(newDate.getMonth() - parseInt(action.payload));
-  console.log("date", newDate);
-  let momDate = moment(newDate);
-  const getDate = momDate.format("YYYYMMDDHHMMSS");
-  const recentDate = {
-    from: getDate,
-    to: 'now/d'
+  if(action.payload === '0') {
+    const recentDate = {
+      from: '',
+      to: ''
+    }
+    yield put(getRecentDate(recentDate))
+  } else {
+
+    let newDate = new Date();
+    newDate.setMonth(newDate.getMonth() - parseInt(action.payload));
+    console.log("date", newDate);
+    let momDate = moment(newDate);
+    const getDate = momDate.format("YYYYMMDDHHMMSS");
+    const recentDate = {
+      from: getDate,
+      to: 'now/d'
+    }
+    console.log("recentDate", recentDate);
+    yield put(getRecentDate(recentDate))
   }
-  console.log("recentDate", recentDate);
-  yield put(getRecentDate(recentDate))
   // try {
   //   // const url = `http://localhost:4000/filter?from=${getDate}&to=now/d`;
   //   const url = `/filter?from=${getDate}&to=now/d`;

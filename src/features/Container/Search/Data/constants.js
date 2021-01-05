@@ -161,7 +161,7 @@ export const documentStatus = {
     {
       id: 2,
       title: "Final Approved",
-      value:'final',
+      value:'active',
       content: "",
       count: "",
     },
@@ -183,18 +183,24 @@ export const dateSection = {
   sectionContent: [
     {
       id: "DATE_1",
+      title: "None",
+      content: "0",
+      count: "",
+    },
+    {
+      id: "DATE_2",
       title: "Last 6 Months",
       content: "6",
       count: "",
     },
     {
-      id: "DATE_2",
+      id: "DATE_3",
       title: "Last 12 Months",
       content: "12",
       count: "",
     },
     {
-      id: "DATE_3",
+      id: "DATE_4",
       title: "Last 5 Years",
       content: "60",
       count: "",

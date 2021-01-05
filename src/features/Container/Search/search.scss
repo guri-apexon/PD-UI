@@ -78,6 +78,8 @@
       width: 100%;
       position: inherit;
       border: none;
+      padding-top: 5px;
+      margin-top: 0px;
     }
   }
 
@@ -504,5 +506,15 @@
 
   div[class*="Panel-container"] {
     border: none !important;
+  }
+}
+
+.date-filter {
+  .Collapsible__contentOuter {
+    max-height: 600px;
+    overflow: hidden;
+    height: 550px;
+    float: left;
+    width: 100%;
   }
 }
