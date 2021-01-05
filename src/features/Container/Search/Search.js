@@ -115,7 +115,6 @@ const Search = (props) => {
 
   const getSearchInput = (input) => {
     // console.log(input, searchQuery, "Search Query");
-    debugger
     let inp= input? input: searchInput;
     let resultQuery=`key=${inp}`;
     for (let [key, value] of Object.entries(searchQuery)) {

@@ -176,8 +176,8 @@ function* getSearchData(action) {
       //   },
       // });
       // console.log(resp.hits.hits);
-      // const url = `/elastic/${action.payload}`;
-      const url = `http://localhost:4000/elastic?${action.payload}`;
+      const url = `/elastic?${action.payload}`;
+      // const url = `http://localhost:4000/elastic?${action.payload}`;
 
       const resp = yield call(httpCall, {
         url,
