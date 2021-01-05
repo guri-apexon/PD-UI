@@ -50,8 +50,13 @@ const Search = (props) => {
     }
     if(params && sponsorData.sectionContent.length>0 && indicationData.sectionContent.length>0){
       parsed=JSON.parse('{"' + params.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) });
-      let elasticSearchQuery ='';
+      let elasticSearchQuery ='key=';
       let tempQuery= _.cloneDeep(searchQuery);
+      if ("?key" in parsed) {
+        setIdPresent(true);
+        setSearchInput(parsed[`?key`]);
+        elasticSearchQuery+=` ${parsed[`?key`]}`;
+      }
       if('sponsor' in parsed && sponsorData.sectionContent.length>0 ){
         let tempElasticQuery = sponsorData.sectionContent.filter(item => parsed.sponsor.split('+').includes(item.title)) 
         tempQuery.sponsor= tempElasticQuery && tempElasticQuery.map(item=> item.id);
@@ -72,10 +77,12 @@ const Search = (props) => {
         tempQuery.documentStatus= tempElasticQuery && tempElasticQuery.map(item=> item.id);
         elasticSearchQuery+= ` ${tempElasticQuery.map(item=>item.title).join(' ')}`;
       }
-      if ("?key" in parsed) {
-        setIdPresent(true);
-        setSearchInput(parsed[`?key`]);
-        elasticSearchQuery+=` ${parsed[`?key`]}`;
+      if ('dateFrom' in parsed && 'dateTo' in parsed) {
+        console.log('rangeDate', rangeDate);
+        const dateQuery = `&dateFrom=${parsed[`dateFrom`]}&dateTo=${parsed[`dateTo`]}`
+        // setSearchInput(dateQuery);
+        elasticSearchQuery+=` ${dateQuery}`;
+        // resultQuery+=dateQuery;
       }
       setSearchQuery(tempQuery);
       dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery});
@@ -152,21 +159,21 @@ const Search = (props) => {
     if (rangeDate.from && rangeDate.to) {
       console.log('rangeDate', rangeDate);
       const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`
-      setSearchInput(dateQuery);
+      // setSearchInput(dateQuery);
       elasticSearchQuery+=` ${dateQuery}`;
       resultQuery+=dateQuery;
     }else if (recentDate.from) {
       // setSearchInput(parsed[`key`]);
       console.log('recentDate', recentDate);
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`
-      setSearchInput(dateQuery);
+      // setSearchInput(dateQuery);
       elasticSearchQuery+=` ${dateQuery}`;
       resultQuery+=dateQuery;
       // elasticSearchQuery+=` ${parsed[`key`]}`;
     }
     // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
     dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
-    props.history.push(`/search?${resultQuery}`);
+    props.history.replace({pathname: '/search', search: `?${resultQuery}`});
   };
   const contructQueryFromArray =(key, value)=>{
     switch (key){
