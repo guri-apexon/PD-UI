@@ -20,6 +20,7 @@ import {
   indications,
   sponsors,
   recent,
+  range,
 } from "./searchSlice";
 import {  phases, documentStatus } from "./Data/constants";
 
@@ -29,6 +30,7 @@ const Search = (props) => {
   const indicationData = useSelector(indications);
   const sponsorData = useSelector(sponsors);
   const recentDate = useSelector(recent);
+  const rangeDate = useSelector(range);
 
   const dispatch = useDispatch();
   const [idPresent, setIdPresent] = useState(false);
@@ -147,7 +149,13 @@ const Search = (props) => {
      
     setIdPresent(true);
     setSearchInput(inp);
-    if (recentDate.from) {
+    if (rangeDate.from && rangeDate.to) {
+      console.log('rangeDate', rangeDate);
+      const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`
+      setSearchInput(dateQuery);
+      elasticSearchQuery+=` ${dateQuery}`;
+      resultQuery+=dateQuery;
+    }else if (recentDate.from) {
       // setSearchInput(parsed[`key`]);
       console.log('recentDate', recentDate);
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`
