@@ -113,15 +113,15 @@ class ProtocolViewClass extends React.Component {
       case "Toc":
         subData = this.data.TOC;
         break;
-      case "TableOfAppendix":
-        subData = this.data.TableOfAppendix;
-        break;
+      // case "TableOfAppendix":
+      //   subData = this.data.TableOfAppendix;
+      //   break;
       case "TableOfTable":
         subData = this.data.TableOfTable;
         break;
-      case "TableOfFigure":
-        subData = this.data.TableOfFigure;
-        break;
+      // case "TableOfFigure":
+      //   subData = this.data.TableOfFigure;
+      //   break;
       case "SOA":
         subData = this.data.SOA;
         break;
@@ -190,7 +190,7 @@ class ProtocolViewClass extends React.Component {
               this.node = node;
             }}
           >
-            <div className="dropdown-wrapper">
+            <div className="dropdown-wrapper" data-testid="dropdown-wrapper-test" id="dropdown-wrapper-id">
               {listData.map((item) => (
                 <button
                   className="btn btn1"
@@ -202,7 +202,7 @@ class ProtocolViewClass extends React.Component {
               ))}
             </div>
             {this.state.popupVisible && (
-              <div className={`dropdown-menu sample`}>
+              <div className={`dropdown-menu sample`} data-testid="dropdown-menu-test" id="dropdown-menu-id">
                 {this.state.subSectionData.map((data) => (
                   <span>
                     <a
