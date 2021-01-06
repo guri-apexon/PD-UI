@@ -165,13 +165,13 @@ export const documentStatus = {
       content: "",
       count: "",
     },
-    {
-      id: 3,
-      title: "Rejected",
-      value:'rejected',
-      content: "",
-      count: "",
-    },
+    // {
+    //   id: 3,
+    //   title: "Rejected",
+    //   value:'rejected',
+    //   content: "",
+    //   count: "",
+    // },
   ],
 };
 

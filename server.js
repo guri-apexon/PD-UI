@@ -44,6 +44,7 @@ app.get("/elastic", (req, res) => {
       "multi_match": {}
     }
     item.multi_match["query"] = key;
+    item.multi_match["type"] = "phrase";
     const obj = baseQuery.query.bool.must
     obj.push(item);
     console.log('item',item);
