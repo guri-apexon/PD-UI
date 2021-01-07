@@ -39,13 +39,13 @@ const Dashboard = () => {
              handleOpen={handleOpen}
            />
          </div>
-         <div
+         {/* <div
            style={{ float: "right", marginTop: "10px", marginRight: "14px" }}
          >
            <Button variant="secondary" disabled={!compare}>
              {"Compare Selected"}
            </Button>
-         </div>
+         </div> */}
        </Grid>
        <Grid item xs={12}>
          <ProtocolTable />

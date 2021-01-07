@@ -23,13 +23,13 @@ const ActionCell = ({
 }) => {
   return (
     <div>
-      <div className="table-selection">
+      {/* <div className="table-selection">
         <Checkbox
           label=""
           checked={selected}
           onChange={() => handleChange(id)}
         />
-      </div>
+      </div> */}
       <div className="table-selection">
         <Tooltip title="Expand" disableFocusListener>
           <IconButton
