@@ -141,6 +141,13 @@ class SearchPanel extends React.Component {
     // console.log('list, identifier :', list, identifier);
     onSearchQuery(list, identifier);
   };
+  clearAllCheckbox = () => {
+    // console.log(this.state["searchValue"]);
+    // this.state["searchValue"] = [];
+    // this.setState({ searchValue: [] });
+    this.props.history.push(`/search?key=${this.props.searchInput}`)
+    window.location.reload()
+  };
 
   render() {
     const {
@@ -152,11 +159,7 @@ class SearchPanel extends React.Component {
       searchQuery,
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
-    const clearAllCheckbox = () => {
-      // console.log(this.state["searchValue"]);
-      this.state["searchValue"] = [];
-      this.setState({ searchValue: [] });
-    };
+    
 
     let protocols = resultList.data && resultList.data.length;
     let maxRecordsPerPage = 10;
@@ -178,7 +181,7 @@ class SearchPanel extends React.Component {
                 <div className="width100 refine-search">
                   <span>Refine your Search</span>
                   <div className="floatRight" style={{ paddingRight: 5 }}>
-                    <Link onClick={clearAllCheckbox} size="small">
+                    <Link onClick={this.clearAllCheckbox} size="small">
                       {" "}
                       Clear All
                     </Link>

@@ -73,6 +73,7 @@ const Search = (props) => {
         elasticSearchQuery += `${parsed[`?key`]} `;
       }
       if ("sponsor" in parsed && sponsorData.sectionContent.length > 0) {
+        // debugger;
         let tempElasticQuery = sponsorData.sectionContent.filter((item) =>
           parsed.sponsor.split("+").includes(item.title)
         );
@@ -80,7 +81,8 @@ const Search = (props) => {
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         elasticSearchQuery += `&sponsor=${tempElasticQuery
           .map((item) => item.title)
-          .join(" ")}`;
+          .join("_")}`;
+        // debugger;
       }
       if ("indication" in parsed && indicationData.sectionContent.length > 0) {
         let tempElasticQuery = indicationData.sectionContent.filter((item) =>
@@ -90,7 +92,7 @@ const Search = (props) => {
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         elasticSearchQuery += `&indication=${tempElasticQuery
           .map((item) => item.title)
-          .join(" ")}`;
+          .join("_")}`;
       }
       if ("phase" in parsed) {
         let tempElasticQuery = phases.sectionContent.filter((item) =>
@@ -100,7 +102,7 @@ const Search = (props) => {
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         elasticSearchQuery += `&phase=${tempElasticQuery
           .map((item) => item.title)
-          .join(" ")}`;
+          .join("_")}`;
       }
       if ("documentStatus" in parsed) {
         // debugger;
@@ -112,7 +114,7 @@ const Search = (props) => {
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         elasticSearchQuery += `&documentStatus=${tempElasticQuery
           .map((item) => item.title)
-          .join(" ")
+          .join("_")
           .trim()}`;
         // debugger;
       }
@@ -128,7 +130,7 @@ const Search = (props) => {
       setSearchQuery(tempQuery);
       console.log("::::::::", elasticSearchQuery);
       const parsed1 = queryString.parse(elasticSearchQuery);
-      console.log("___:::___",parsed1)
+      console.log("___:::___", parsed1);
       dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
     } else {
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
@@ -190,7 +192,7 @@ const Search = (props) => {
       );
       elasticSearchQuery += `&sponsor=${tempElasticQuery
         .map((item) => item.title)
-        .join(" ")}`;
+        .join("_")}`;
     }
     if ("indication" in parsed && sponsorData.sectionContent.length > 0) {
       let tempElasticQuery = indicationData.sectionContent.filter((item) =>
@@ -198,7 +200,7 @@ const Search = (props) => {
       );
       elasticSearchQuery += `&indication=${tempElasticQuery
         .map((item) => item.title)
-        .join(" ")}`;
+        .join("_")}`;
     }
     if ("phase" in parsed && phases.sectionContent.length > 0) {
       let tempElasticQuery = phases.sectionContent.filter((item) =>
@@ -206,7 +208,7 @@ const Search = (props) => {
       );
       elasticSearchQuery += `&phase=${tempElasticQuery
         .map((item) => item.title)
-        .join(" ")}`;
+        .join("_")}`;
     }
     if ("documentStatus" in parsed) {
       let tempElasticQuery = documentStatus.sectionContent.filter((item) =>
@@ -214,7 +216,7 @@ const Search = (props) => {
       );
       elasticSearchQuery += `&documentStatus=${tempElasticQuery
         .map((item) => item.title)
-        .join(" ")
+        .join("_")
         .trim()}`;
     }
 
@@ -237,7 +239,7 @@ const Search = (props) => {
     }
     // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
     dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
-    console.log(":::::result",resultQuery)
+    console.log(":::::result", resultQuery);
     props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
   };
   const contructQueryFromArray = (key, value) => {
@@ -311,8 +313,9 @@ const Search = (props) => {
   const deleteSearchInput = () => {
     setSearchInput("");
     setIdPresent(false);
-    // props.history.push(`/search`);
-    // dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
+    props.history.push(`/search`);
+    // window.location.reload()
+    dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
   };
 
   const onSearchChange = () => {
@@ -372,6 +375,7 @@ const Search = (props) => {
             onSortChange={onSortChange}
             onSearchQuery={onSearchQuery}
             searchQuery={searchQuery}
+            history={props.history}
           />
         </div>
       </div>
