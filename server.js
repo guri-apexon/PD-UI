@@ -69,7 +69,7 @@ function constructFilterArray(data) {
 }
 // constructFilterArray();
 
-function constructMustArray(key, from, to) {
+function constructMustArray(docStatus, key, from, to) {
   const query = [
     {
       multi_match: {
@@ -78,7 +78,7 @@ function constructMustArray(key, from, to) {
     },
     {
       range: {
-        uploadDate: {
+        [docStatus]: {
           gte: from,
           lt: to,
         },
@@ -130,7 +130,8 @@ app.get("/elastic", (req, res) => {
   let filterArr = constructFilterArray(filters);
   let mustQuery;
   if (from && to) {
-    mustQuery = constructMustArray(key, from, to);
+    const dateField = docStatus[0] === 'active' ? 'approval_date' : 'uploadDate';
+    mustQuery = constructMustArray(dateField, key, from, to);
   } else {
     mustQuery = [
       {

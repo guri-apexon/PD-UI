@@ -107,13 +107,13 @@ const Search = (props) => {
       if ("documentStatus" in parsed) {
         // debugger;
         let tempElasticQuery = documentStatus.sectionContent.filter((item) =>
-          parsed.documentStatus.split("+").includes(item.title)
+          parsed.documentStatus.split("+").includes(item.value)
         );
         // console.log("DOCUMENT",parsed.documentStatus)
         tempQuery.documentStatus =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         elasticSearchQuery += `&documentStatus=${tempElasticQuery
-          .map((item) => item.title)
+          .map((item) => item.value)
           .join("_")
           .trim()}`;
         // debugger;
@@ -212,10 +212,10 @@ const Search = (props) => {
     }
     if ("documentStatus" in parsed) {
       let tempElasticQuery = documentStatus.sectionContent.filter((item) =>
-        parsed.documentStatus.split("+").includes(item.title)
+        parsed.documentStatus.split("+").includes(item.value)
       );
       elasticSearchQuery += `&documentStatus=${tempElasticQuery
-        .map((item) => item.title)
+        .map((item) => item.value)
         .join("_")
         .trim()}`;
     }
@@ -298,7 +298,7 @@ const Search = (props) => {
         );
         if (extractValues.length > 0) {
           extractValues.map((item) => {
-            str += `${item.title}+`;
+            str += `${item.value}+`;
             return true;
           });
           let trimstr = str.slice(0, -1);
