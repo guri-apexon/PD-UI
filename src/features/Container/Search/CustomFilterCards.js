@@ -232,7 +232,7 @@ export const DateRangeCard = ({ section }) => {
     <Card>
       <CardContent>
         <Typography className={classes.cardSubtitle} variant="caption">
-          <div style={{ marginTop: 10 }}>
+          <div style={{ marginTop: 10 }} data-testid="recent-date-wrapper" id="recent-date-id">
             <RadioGroup value={value} onChange={(e) => handleChange(e)}>
               {section.sectionContent.map((item, i) => (
                 <Radio
@@ -244,7 +244,7 @@ export const DateRangeCard = ({ section }) => {
                 />
               ))}
             </RadioGroup>
-            <div style={{ marginTop: 20 }}>
+            <div style={{ marginTop: 20 }} data-testid="range-date-wrapper" id="range-date-id">
               <DateRangePicker
                 onChange={(e) => handleRange(e)}
                 fromDateProps={{
