@@ -230,6 +230,7 @@ function* updateSearchResult(action) {
 
 // -----Updating and adding Associate Protocol to a Single protocol when individual expand is clicked
 function* updateSearchAssociated(action) {
+  console.log("assoc pay",action.payload.data.AiDocId)
   let tempRes = _.cloneDeep(action.payload.obj);
   let foundIndex = tempRes.findIndex(
     (obj) => obj.id === action.payload.data.id
@@ -245,25 +246,26 @@ function* updateSearchAssociated(action) {
   };
   yield put(getSearchResult(initialObj));
   //ProtocolNo
-  let associateURL = "/searchMockResult.json";
+  let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=Prot-2-01042021`;
   const associateDocs = yield call(httpCall, {
     url: associateURL,
     method: "GET",
   });
   console.log("associateDocs :", associateDocs);
-  const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.protocolNumber}`;
+  // const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.protocolNumber}`;
   //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
-  const config = {
-    url: URL,
-    method: "GET",
-  };
+  // const config = {
+  //   url: URL,
+  //   method: "GET",
+  // };
   //  const associateDocs = yield call(httpCall, config);
   //  console.log('associateDocs :', associateDocs.data);
+  // debugger
   if (associateDocs.success) {
     let result = setAsssociateProtocols(
       action.payload.data.protocolNumber,
       action.payload.obj,
-      associateDocs.data.AssociateDocs
+      associateDocs.data
     );
     const obj = {
       search: true,
@@ -271,6 +273,7 @@ function* updateSearchAssociated(action) {
       success: true,
       data: result,
     };
+    // debugger
     yield put(getSearchResult(obj));
   } else {
     yield;

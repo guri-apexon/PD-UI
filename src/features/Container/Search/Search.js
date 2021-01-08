@@ -316,6 +316,7 @@ const Search = (props) => {
     props.history.push(`/search`);
     // window.location.reload()
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
+    window.location.reload()
   };
 
   const onSearchChange = () => {
