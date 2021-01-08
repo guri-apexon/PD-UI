@@ -11,6 +11,7 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "protocols")));
 
 const client = new elasticsearch.Client({
   host: "http://ca2spdml04q:9200/pd-index-2",

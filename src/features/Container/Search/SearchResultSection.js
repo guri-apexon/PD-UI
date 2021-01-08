@@ -145,7 +145,12 @@ class SearchPanel extends React.Component {
     // console.log(this.state["searchValue"]);
     // this.state["searchValue"] = [];
     // this.setState({ searchValue: [] });
-    this.props.history.push(`/search?key=${this.props.searchInput}`)
+    if(this.props.searchInput){
+      this.props.history.push(`/search?key=${this.props.searchInput}`)
+    }else{
+      this.props.history.push(`/search`)
+    }
+    
     window.location.reload()
   };
 
