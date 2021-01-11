@@ -22,7 +22,7 @@ import {
   recent,
   range,
 } from "./searchSlice";
-import { phases, documentStatus } from "./Data/constants";
+import { phases, documentStatus,TOC } from "./Data/constants";
 
 const Search = (props) => {
   const resultList = useSelector(searchResult);
@@ -71,6 +71,16 @@ const Search = (props) => {
         setIdPresent(true);
         setSearchInput(parsed[`?key`]);
         elasticSearchQuery += `${parsed[`?key`]} `;
+      }
+      if ("toc" in parsed && TOC.sectionContent.length > 0) {
+        let tempElasticQuery = TOC.sectionContent.filter((item) =>
+          parsed.toc.split("+").includes(item.title)
+        );
+        tempQuery.toc =
+          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+        elasticSearchQuery += `&toc=${tempElasticQuery
+          .map((item) => item.title)
+          .join("_")}`;
       }
       if ("sponsor" in parsed && sponsorData.sectionContent.length > 0) {
         // debugger;
@@ -169,6 +179,7 @@ const Search = (props) => {
 
   const getSearchInput = (input) => {
     // console.log(input, searchQuery, "Search Query");
+    // debugger
     let inp = input ? input : searchInput;
     let resultQuery = `key=${inp}`;
     for (let [key, value] of Object.entries(searchQuery)) {
@@ -185,6 +196,14 @@ const Search = (props) => {
     if ("key" in parsed) {
       setSearchInput(parsed[`key`]);
       elasticSearchQuery += `${parsed[`key`]}`;
+    }
+    if ("toc" in parsed && TOC.sectionContent.length > 0) {
+      let tempElasticQuery = TOC.sectionContent.filter((item) =>
+        parsed.toc.split("+").includes(item.title)
+      );
+      elasticSearchQuery += `&toc=${tempElasticQuery
+        .map((item) => item.title)
+        .join("_")}`;
     }
     if ("sponsor" in parsed && sponsorData.sectionContent.length > 0) {
       let tempElasticQuery = sponsorData.sectionContent.filter((item) =>
@@ -241,9 +260,25 @@ const Search = (props) => {
     dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
     console.log(":::::result", resultQuery);
     props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
+    // debugger
   };
   const contructQueryFromArray = (key, value) => {
     switch (key) {
+      case "toc": {
+        let str = "&toc=";
+        let extractValues = TOC.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.title}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
       case "sponsor": {
         let str = "&sponsor=";
         let extractValues =
@@ -337,7 +372,7 @@ const Search = (props) => {
   const onSearchQuery = (list, identifier) => {
     let tempQuery = _.cloneDeep(searchQuery);
     tempQuery[identifier] = list;
-    // console.log("onSearchQuery",list, identifier, tempQuery);
+    console.log("onSearchQuery",list, identifier, tempQuery);
     setSearchQuery(tempQuery);
   };
   return (
