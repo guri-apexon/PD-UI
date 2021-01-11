@@ -454,14 +454,12 @@ function createJSONFormat(data) {
     //   };
     // });
     let obj = {
-      score: data[i]._score,
       protocolNumber: data[i]._source.ProtocolNo,
       AiDocId: data[i]._source.AiDocId,
       protocolDescription: data[i]._source.Title,
       indication: data[i]._source.Indication,
       phase: data[i]._source.phase,
-      sponsor: data[i]._source.sponsor,
-      sourceDocument: data[i]._source.SourceFileName,
+      sponsor: data[i]._source.SponsorName,
       molecule: data[i]._source.MoleculeDevice,
       approvalDate: data[i]._source.approval_date,
       uploadDate: data[i]._source.uploadDate,

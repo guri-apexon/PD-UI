@@ -71,7 +71,6 @@ function constructFilterArray(data) {
 // constructFilterArray();
 
 function constructMustArray(docStatus, key, from, to, toc) {
-  
   const query = [
     {
       multi_match: {
@@ -159,6 +158,19 @@ app.get("/elastic", (req, res) => {
         filter: filterArr,
       },
     },
+    size: 1000,
+    _source: [
+      "AiDocId",
+      "ProtocolNo",
+      "ProtocolTitle",
+      "SponsorName",
+      "Indication",
+      "DocumentStatus",
+      "phase",
+      "approval_date",
+      "uploadDate",
+      "MoleculeDevice",
+    ],
   };
 
   console.log("FInal Query", JSON.stringify(FinalQuery));
