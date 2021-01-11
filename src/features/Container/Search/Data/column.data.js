@@ -1,6 +1,7 @@
 import CheckBox from "apollo-react/components/Checkbox";
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const CheckBoxCell = ({ row }) => {
   return (
@@ -16,7 +17,25 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   // console.log("--------------", row);
-  return <Link to={`${row["documentFilePath"]}`} target="_blank">{row[key]}</Link>;
+  let url;
+  const handleDownload = async (row) => {
+    console.log("Rows", row);
+    const resp = await axios.get(
+      `http://ca2spdml01q:8000/api/download_file/?filePath=${row.documentFilePath}`
+    );
+    
+    url = `http://ca2spdml06d:3000/${resp.data}`;
+    window.open(
+      url,
+      '_blank' // <- This is what makes it open in a new window.
+    );
+    // console.log(url);
+  };
+  return (
+    <a onClick={() => handleDownload(row)}>
+      {row[key]}
+    </a>
+  );
 };
 const columns = [
   {
