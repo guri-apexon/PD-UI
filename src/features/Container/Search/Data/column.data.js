@@ -12,7 +12,8 @@ const CheckBoxCell = ({ row }) => {
 };
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
   // console.log("--------------", row);
-  return <Link to={`/protocols?protocolId=${row["version"]}`}>{row[key]}</Link>;
+  // console.log(row[key])
+  return <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>;
 };
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {

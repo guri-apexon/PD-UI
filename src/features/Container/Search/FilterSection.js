@@ -14,11 +14,26 @@ import { indications, sponsors } from "./searchSlice";
 
 import { TOC, phases, documentStatus, dateSection } from "./Data/constants";
 
-const CollapseCard = ({ name, indicationData, sponsorData, onConstructSearchQuery, searchQuery }) => {
+const CollapseCard = ({
+  name,
+  indicationData,
+  sponsorData,
+  onConstructSearchQuery,
+  searchQuery,
+}) => {
   if (name === "TOC") {
     return (
       <Collapsible trigger={TOC.sectionName}>
-        <TextCard section={TOC} />
+        {/* <TextCard section={TOC} /> */}
+        {TOC.sectionContent &&
+          TOC.sectionContent.length > 0 && (
+            <CheckboxCard
+              section={TOC}
+              identifier="toc"
+              onCheckboxClick={onConstructSearchQuery}
+              listValue={searchQuery.toc}
+            />
+          )}
       </Collapsible>
     );
   } else if (name === "indication") {
@@ -27,38 +42,62 @@ const CollapseCard = ({ name, indicationData, sponsorData, onConstructSearchQuer
       <Collapsible trigger="Indications">
         {indicationData.sectionContent &&
           indicationData.sectionContent.length > 0 && (
-            <CheckboxCard section={indicationData} identifier='indication' onCheckboxClick={onConstructSearchQuery} listValue={searchQuery.indication} />
+            <CheckboxCard
+              section={indicationData}
+              identifier="indication"
+              onCheckboxClick={onConstructSearchQuery}
+              listValue={searchQuery.indication}
+            />
           )}
       </Collapsible>
     );
   } else if (name === "sponsor") {
     console.log("sponsor data", sponsorData);
     return (
-      <Collapsible trigger="Sponsers">
+      <Collapsible trigger="Sponsors">
         {sponsorData.sectionContent &&
           sponsorData.sectionContent.length > 0 && (
-            <CheckboxCard section={sponsorData} identifier="sponsor" onCheckboxClick={onConstructSearchQuery} listValue={searchQuery.sponsor}/>
+            <CheckboxCard
+              section={sponsorData}
+              identifier="sponsor"
+              onCheckboxClick={onConstructSearchQuery}
+              listValue={searchQuery.sponsor}
+            />
           )}
       </Collapsible>
     );
   } else if (name === "phase") {
     return (
       <Collapsible trigger={phases.sectionName}>
-        <CheckboxCard section={phases}  identifier='phase' onCheckboxClick={onConstructSearchQuery} listValue={searchQuery.phase} />
+        <CheckboxCard
+          section={phases}
+          identifier="phase"
+          onCheckboxClick={onConstructSearchQuery}
+          listValue={searchQuery.phase}
+        />
       </Collapsible>
     );
   } else if (name === "document") {
     return (
       <Collapsible trigger={documentStatus.sectionName}>
-        <CheckboxCard section={documentStatus}  identifier='documentStatus' onCheckboxClick={onConstructSearchQuery} listValue={searchQuery.documentStatus} />
+        <CheckboxCard
+          section={documentStatus}
+          identifier="documentStatus"
+          onCheckboxClick={onConstructSearchQuery}
+          listValue={searchQuery.documentStatus}
+        />
       </Collapsible>
     );
   } else if (name === "date") {
     return (
-      <span className='date-filter'>
-      <Collapsible trigger={dateSection.sectionName} classname='testing' style={{ height: "550px", float: "left", width: "100%" }}>
-        <DateRangeCard section={dateSection} />
-      </Collapsible>
+      <span className="date-filter">
+        <Collapsible
+          trigger={dateSection.sectionName}
+          classname="testing"
+          style={{ height: "550px", float: "left", width: "100%" }}
+        >
+          <DateRangeCard section={dateSection} />
+        </Collapsible>
       </span>
     );
   }

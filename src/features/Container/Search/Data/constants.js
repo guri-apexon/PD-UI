@@ -4,52 +4,71 @@ export const TOC = {
   fieldType: "text",
   sectionContent: [
     {
-      id: "111",
-      title: "Synopsis",
+      id: 1,
+      title: "Protocol Summary",
       content: "",
       count: "2",
     },
     {
-      id: "112",
-      title: "Sponsor, Investigator",
+      id: 2,
+      title: "Introduction",
+      content: "",
+      count: "2",
+    },
+    {
+      id: 3,
+      title: "Objectives and [Endpoints and/or Estimands]",
       content: "",
       count: "5",
     },
     {
-      id: "113",
-      title: "Background Information",
+      id: 4,
+      title: "Study Design",
       content: "",
       count: "6",
     },
     {
-      id: "114",
-      title: "Tria Objectives",
-      content: "",
-      count: "2",
-    },
-    {
-      id: "115",
-      title: "Investigational Plan",
+      id: 5,
+      title: "Study Population",
       content: "",
       count: "4",
     },
     {
-      id: "116",
-      title: "Statistics",
+      id: 6,
+      title: "Study Intervention(s) and Concomitant Therapy",
       content: "",
       count: "2",
     },
     {
-      id: "117",
-      title: "Trial Management",
+      id: 7,
+      title:
+        "Discontinuation of Study Intervention and Participant Discontinuation/Withdrawal",
       content: "",
       count: "3",
     },
     {
-      id: "118",
-      title: "Reference",
+      id: 8,
+      title: "Study Assessments and Procedures",
       content: "",
       count: "2",
+    },
+    {
+      id: 9,
+      title: "Statistical Considerations",
+      content: "",
+      count: "2",
+    },
+    {
+      id: 10,
+      title: "Supporting Documentation and Operational Considerations",
+      content: "",
+      count: "5",
+    },
+    {
+      id: 11,
+      title: "References",
+      content: "",
+      count: "6",
     },
   ],
 };
@@ -76,7 +95,7 @@ export const phases = {
     {
       id: 3,
       title: "Phase 1b",
-      value:'Phase 1b',
+      value: "Phase 1b",
       content: "",
       count: "",
     },
@@ -97,7 +116,7 @@ export const phases = {
     {
       id: 6,
       title: "Phase 3a",
-      value:'Phase 3a',
+      value: "Phase 3a",
       content: "",
       count: "",
     },
@@ -118,7 +137,7 @@ export const phases = {
     {
       id: 9,
       title: "Phase 2b/3a",
-      value:'Phase 2b/3a',
+      value: "Phase 2b/3a",
       content: "",
       count: "",
     },
@@ -139,7 +158,7 @@ export const phases = {
     {
       id: 12,
       title: "Phase 3b/4",
-      value:'Phase 3b/4',
+      value: "Phase 3b/4",
       content: "",
       count: "",
     },
@@ -154,14 +173,14 @@ export const documentStatus = {
     {
       id: 1,
       title: "Draft",
-      value: 'draft',
+      value: "draft",
       content: "",
       count: "",
     },
     {
       id: 2,
       title: "Final Approved",
-      value:'active',
+      value: "active",
       content: "",
       count: "",
     },
@@ -174,7 +193,6 @@ export const documentStatus = {
     // },
   ],
 };
-
 
 export const dateSection = {
   sectionId: 7,

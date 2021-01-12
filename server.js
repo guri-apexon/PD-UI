@@ -70,11 +70,12 @@ function constructFilterArray(data) {
 }
 // constructFilterArray();
 
-function constructMustArray(docStatus, key, from, to) {
+function constructMustArray(docStatus, key, from, to, toc) {
   const query = [
     {
       multi_match: {
         query: key,
+        fields: toc,
       },
     },
     {
@@ -86,7 +87,7 @@ function constructMustArray(docStatus, key, from, to) {
       },
     },
   ];
-  return query
+  return query;
 }
 
 app.get("/elastic", (req, res) => {
@@ -96,10 +97,14 @@ app.get("/elastic", (req, res) => {
   const from = req.query.dateFrom;
   const to = req.query.dateTo;
 
+  let toc = [];
   let docStatus = [];
   let sponsorArr = [];
   let indicationArr = [];
   let phaseArr = [];
+  if (req.query.toc) {
+    toc = req.query.toc.split("_");
+  }
   if (req.query.documentStatus) {
     docStatus = req.query.documentStatus.split("_");
   }
@@ -131,14 +136,16 @@ app.get("/elastic", (req, res) => {
   let filterArr = constructFilterArray(filters);
   let mustQuery;
   if (from && to) {
-    const dateField = docStatus[0] === 'active' ? 'approval_date' : 'uploadDate';
-    mustQuery = constructMustArray(dateField, key, from, to);
+    const dateField =
+      docStatus[0] === "active" ? "approval_date" : "uploadDate";
+    mustQuery = constructMustArray(dateField, key, from, to, toc);
   } else {
     mustQuery = [
       {
         multi_match: {
           query: key,
           type: "phrase",
+          fields: toc,
         },
       },
     ];
@@ -151,6 +158,19 @@ app.get("/elastic", (req, res) => {
         filter: filterArr,
       },
     },
+    size: 1000,
+    _source: [
+      "AiDocId",
+      "ProtocolNo",
+      "ProtocolTitle",
+      "SponsorName",
+      "Indication",
+      "DocumentStatus",
+      "phase",
+      "approval_date",
+      "uploadDate",
+      "MoleculeDevice",
+    ],
   };
 
   console.log("FInal Query", JSON.stringify(FinalQuery));
