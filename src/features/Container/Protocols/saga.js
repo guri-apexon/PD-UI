@@ -41,20 +41,52 @@ function* getSummaryData(action) {
   }
 }
 
-function* getProtocolToc() {
+function parsedData(data) {
+  return JSON.parse(JSON.parse(data));
+}
+
+function* getProtocolToc(action) {
+  console.log(action.payload)
   const URL =
-    "http://ca2spdml01q:8000/api/document_compare/?id1=3d885940-dc48-40a1-9745-b56a75da50dd&id2=77f83274-bfd2-4129-8b25-51d3b81aead5";
+    "http://ca2spdml01q:8000/api/protocol_data/?id=e5c6a06d-166f-478f-b5de-73543a46261e";
   const config = {
     url: URL,
     method: "GET",
   };
-  const tocData = yield call(httpCall, config);
-  if (tocData.success) {
-    const parsedData = JSON.parse(tocData.data.iqvdata);
+  const data = yield call(httpCall, config);
+  console.log(data);
+  if (data.success) {
+    // console.log(tocData.data.iqvdataSoa[0]);
+    // let tocParsedData = JSON.parse(tocData.data.iqvdataToc);
+    // let summaryParsedData = JSON.parse(tocData.data.iqvdataSummary);
+    // let soaParsedData = JSON.parse(tocData.data.iqvdataSoa);
+    // console.log('tocParsedData',tocParsedData[0]);
+    // console.log('summaryParsedData',summaryParsedData.index);
+    // console.log('soaParsedData',soaParsedData[0]);
+    // parsedData = JSON.stringify(parsedData);
+    // console.log('string',parsedData);
+    // parsedData = JSON.parse(parsedData);
+    // console.log('parse',parsedData[0]);
     // console.log(parsedData.data);
-    yield put(getProcotoclToc(parsedData.data));
+    // const sum = JSON.parse(summaryParsedData);
+    // console.log(sum);
+    // console.log(sum.data);
+    // const toc = JSON.parse(tocParsedData);
+    // console.log(toc);
+    // console.log(toc[0]);
+    // const soa = JSON.parse(soaParsedData);
+    // console.log(soa[0].TableName);
+    // console.log(soa[0].Table);
+    const viewData = {
+      iqvdataSoa: parsedData(data.data.iqvdataSoa),
+      iqvdataSummary: parsedData(data.data.iqvdataSummary),
+      iqvdataToc: parsedData(data.data.iqvdataToc),
+    }
+    yield put(getProcotoclToc(viewData));
   }
 }
+
+
 
 function getElement(style) {
   switch (style.font_style) {
@@ -88,6 +120,7 @@ function* getProtocolSummary() {
     yield put(getProcotoclToc(sumData));
   }
   console.log(tocData);
+  yield getProtocolToc();
 }
 
 function* fetchAssociateProtocol(action) {
@@ -160,7 +193,7 @@ function* getCompareResult(action) {
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery("GET_PROTOCOL_SUMMARY", getSummaryData);
-  yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolSummary);
+  yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolToc);
   yield takeLatest("FETCH_ASSOCIATE_PROTOCOLS", fetchAssociateProtocol);
   yield takeEvery("POST_COMPARE_PROTOCOL", getCompareResult);
 }

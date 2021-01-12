@@ -4,7 +4,13 @@ export const protocolSlice = createSlice({
   name: "protocol",
   initialState: {
     summary: {},
-    toc: [],
+    view: {
+      iqvdataSoa: [],
+      iqvdataSummary: {},
+      iqvdataToc: {
+        data:[]
+      }
+    },
     associateDocs: [],
     compare: {
       loading: false,
@@ -19,7 +25,7 @@ export const protocolSlice = createSlice({
       state.summary = action.payload;
     },
     getProcotoclToc: (state, action) => {
-      state.toc = action.payload;
+      state.view = action.payload;
     },
     getAssociateDocuments: (state, action) => {
       state.associateDocs = action.payload;
@@ -41,7 +47,7 @@ export const {
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
 export const protocolSummary = (state) => state.protocol.summary;
-export const tocData = (state) => state.protocol.toc;
+export const viewResult = (state) => state.protocol.view;
 export const associateDocs = (state) => state.protocol.associateDocs;
 export const compareResult = (state) => state.protocol.compare;
 

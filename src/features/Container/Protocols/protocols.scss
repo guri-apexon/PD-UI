@@ -1,4 +1,12 @@
 .protocols {
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  thead {
+    display: none;
+  }
+  table tbody tr th:first-child { display: none; }
   // margin-top: 70px;
   padding-left: 20px;
   max-width: 1140px;
