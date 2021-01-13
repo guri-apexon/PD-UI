@@ -46,12 +46,16 @@ function parsedData(data) {
 }
 
 function getTocSections(toc) {
-  const sectionList = []
+  const sectionList = [];
   const list = [];
-  toc.data.map(item => {
+  toc.data.map((item) => {
     let section_level = item[0];
-  let CPT_section = item[1];
-    if(section_level === '1' && CPT_section !== 'Unmapped' && !sectionList.includes(CPT_section)) {
+    let CPT_section = item[1];
+    if (
+      section_level === "1" &&
+      CPT_section !== "Unmapped" &&
+      !sectionList.includes(CPT_section)
+    ) {
       list.push({ section: `${CPT_section}`, id: `TOC-${item[5]}` });
       sectionList.push(CPT_section);
     }
@@ -59,8 +63,20 @@ function getTocSections(toc) {
   return list;
 }
 
+function getSoaSections(soa) {
+  // const sectionList = [];
+  const list = [];
+  soa.map((item) => {
+    let TableIndex = item.TableIndex;
+    let TableName = item.TableName;
+      list.push({ section: `${TableName}`, id: `SOA-${TableIndex}` });
+      // sectionList.push(CPT_section);
+  });
+  return list;
+}
+
 function* getProtocolToc(action) {
-  console.log(action.payload)
+  console.log(action.payload);
   const URL =
     "http://ca2spdml01q:8000/api/protocol_data/?id=e5c6a06d-166f-478f-b5de-73543a46261e";
   const config = {
@@ -70,40 +86,19 @@ function* getProtocolToc(action) {
   const data = yield call(httpCall, config);
   console.log(data);
   if (data.success) {
-    // console.log(tocData.data.iqvdataSoa[0]);
-    // let tocParsedData = JSON.parse(tocData.data.iqvdataToc);
-    // let summaryParsedData = JSON.parse(tocData.data.iqvdataSummary);
-    // let soaParsedData = JSON.parse(tocData.data.iqvdataSoa);
-    // console.log('tocParsedData',tocParsedData[0]);
-    // console.log('summaryParsedData',summaryParsedData.index);
-    // console.log('soaParsedData',soaParsedData[0]);
-    // parsedData = JSON.stringify(parsedData);
-    // console.log('string',parsedData);
-    // parsedData = JSON.parse(parsedData);
-    // console.log('parse',parsedData[0]);
-    // console.log(parsedData.data);
-    // const sum = JSON.parse(summaryParsedData);
-    // console.log(sum);
-    // console.log(sum.data);
-    // const toc = JSON.parse(tocParsedData);
-    // console.log(toc);
-    // console.log(toc[0]);
-    // const soa = JSON.parse(soaParsedData);
-    // console.log(soa[0].TableName);
-    // console.log(soa[0].Table);
     const toc = parsedData(data.data.iqvdataToc);
+    const soa = parsedData(data.data.iqvdataSoa);
     const viewData = {
-      iqvdataSoa: parsedData(data.data.iqvdataSoa),
+      iqvdataSoa: soa,
       iqvdataSummary: parsedData(data.data.iqvdataSummary),
       iqvdataToc: toc,
       loader: false,
-      tocSections: getTocSections(toc)
-    }
+      tocSections: getTocSections(toc),
+      soaSections: getSoaSections(soa),
+    };
     yield put(getProcotoclToc(viewData));
   }
 }
-
-
 
 function getElement(style) {
   switch (style.font_style) {

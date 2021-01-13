@@ -20,8 +20,10 @@ function getTable(item, noHeader = false) {
   //   console.log(`${property}: ${object[property]}`);
   // }
   return (
-    <div key={item.TableIndex} style={{ overflowX: "scroll" }}>
-      {!noHeader ? <h2 style={{ paddingTop: 10 }}>{item.TableName}</h2> : null}
+    <div key={`Table-${item.TableIndex}`} style={{ overflowX: "auto", marginTop: '10px' }}>
+      {!noHeader ? (
+        <h2 style={{ paddingTop: 10, fontSize: "16px", marginBottom: '10px' }}>{item.TableName}</h2>
+      ) : null}
       <div
         id={item.TableIndex}
         dangerouslySetInnerHTML={{ __html: item.Table }}
@@ -100,7 +102,7 @@ class ProtocolViewClass extends React.Component {
     let type = data[2];
     let content = data[3];
     let font_info = data[4];
-    if(!content) {
+    if (!content) {
       return null;
     }
     const isBold = getStyle(font_info);
@@ -120,38 +122,55 @@ class ProtocolViewClass extends React.Component {
             key={`TOC-${data[5]}`}
             ref={this.refs[`TOC-${data[5]}`]}
           >
-            <h1 className={`heading1 ${isBold}`} style={{fontSize: '16px'}}>
+            <h1 className={`heading1 ${isBold}`} style={{ fontSize: "16px" }}>
               {content}
             </h1>
           </div>
         );
       case "Heading2":
         return (
-          <h2
-            id={`CPT_section-${data[5]}`}
-            className={`heading2 ${isBold}`}
-            style={{ fontSize: '14px', paddingTop: 6 }}
+          <div
+            className="bar2"
+            id={`TOC-${data[5]}`}
+            key={`TOC-${data[5]}`}
+            ref={this.refs[`TOC-${data[5]}`]}
           >
-            {content}
-          </h2>
+            <h2
+              id={`CPT_section-${data[5]}`}
+              key={`CPT_section-${data[5]}`}
+              className={`heading2 ${isBold}`}
+              style={{ fontSize: "14px" }}
+            >
+              {content}
+            </h2>
+          </div>
         );
       case "Heading3":
         return (
-          <h3
-            id={`CPT_section-${data[5]}`}
-            className={`heading3 ${isBold}`}
-            style={{ paddingTop: 6, fontSize: '14px' }}
+          <div
+            className="bar2"
+            id={`TOC-${data[5]}`}
+            key={`TOC-${data[5]}`}
+            ref={this.refs[`TOC-${data[5]}`]}
           >
-            {content}
-          </h3>
+            <h3
+              id={`CPT_section-${data[5]}`}
+              key={`CPT_section-${data[5]}`}
+              className={`heading3 ${isBold}`}
+              style={{ fontSize: "14px" }}
+            >
+              {content}
+            </h3>
+          </div>
         );
       default:
         if (CPT_section === "Unmapped") {
           return (
             <p
-            id={`CPT_section-${data[5]}`}
+              id={`CPT_section-${data[5]}`}
+              key={`CPT_section-${data[5]}`}
               className={font_info.IsBold ? "thick" : ""}
-              style={{ fontSize: '12px' }}
+              style={{ fontSize: "12px" }}
             >
               {content}
             </p>
@@ -159,8 +178,17 @@ class ProtocolViewClass extends React.Component {
         }
         return (
           <>
-            {isBold ? <div><br /></div> : null}
-            <span id={`CPT_section-${data[5]}`} className={`indent ${isBold}`} style={{ fontSize: '12px'}}>
+            {isBold ? (
+              <div>
+                <br />
+              </div>
+            ) : null}
+            <span
+              id={`CPT_section-${data[5]}`}
+              key={`CPT_section-${data[5]}`}
+              className={`indent ${isBold}`}
+              style={{ fontSize: "12px" }}
+            >
               {content}
             </span>
           </>
@@ -224,17 +252,11 @@ class ProtocolViewClass extends React.Component {
     const listData = [
       { section: "Table of Contents", id: "Toc" },
       { section: "Schedule of Assessments", id: "SOA" },
-      { section: "Table of Tables", id: "TableOfTable" },
     ];
 
     const subSections = {
       TOC: view.tocSections,
-      TableOfTable: [
-        { section: "Table 1. Hematology Assessments", id: "t1" },
-        { section: "Table 2. Biochemistry Assessments", id: "t2" },
-        { section: "Table 3. Background Information", id: "t3" },
-      ],
-      SOA: [],
+      SOA: view.soaSections,
     };
     const refs = this.state.subSectionData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
@@ -243,11 +265,11 @@ class ProtocolViewClass extends React.Component {
     this.refs = refs;
     this.data = subSections;
     const scrollHide = (id) => {
-
-      refs[id].current && refs[id].current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
+      refs[id].current &&
+        refs[id].current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       this.hideEle();
     };
     if (view.loader) {
@@ -262,6 +284,7 @@ class ProtocolViewClass extends React.Component {
         </div>
       );
     }
+    console.log("view", view);
     return (
       <div className="view-wrapper">
         <Card className="index-column">
@@ -299,9 +322,9 @@ class ProtocolViewClass extends React.Component {
                       key={data.id}
                       onClick={() => scrollHide(data.id)}
                     >
-                      <span style={{ marginLeft: "16px" }}>{`${
-                        data.section
-                      }`}</span>
+                      <span
+                        style={{ marginLeft: "16px" }}
+                      >{`${data.section}`}</span>
                     </a>
                   </span>
                 ))}
