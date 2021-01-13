@@ -47,17 +47,20 @@ class ProtocolSearchButton extends React.Component {
 
   render() {
     const handleClick = (label) => () => {
-      // console.log(`You picked ${label}.`);
+      console.log(`You picked ${label}.`);
+      if (label === "Compare") {
+        this.props.compareProtocol();
+      }
     };
 
     const menuItems = [
       {
         text: "Compare",
-        onClick: handleClick("Option 1"),
+        onClick: handleClick("Compare"),
       },
       {
         text: "Save Search",
-        onClick: handleClick("Option 2"),
+        onClick: handleClick("Save"),
       },
     ];
 

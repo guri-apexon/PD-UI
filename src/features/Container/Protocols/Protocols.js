@@ -34,15 +34,26 @@ const Protocols = (props) => {
   const [value, setValue] = useState(0);
   const [follow, setFollow] = useState(false);
   const [idPresent, setIdPresent] = useState(false);
+  const [prot, setProt] = useState({
+    prot1: "",
+    prot2: "",
+  });
 
   useEffect(() => {
     let params = props.location.search;
     const parsed = queryString.parse(params);
-    console.log(parsed);
+    console.log("Pro", parsed);
     // console.log(params);
     if ("protocolId" in parsed) {
       setIdPresent(true);
       dispatch({ type: "GET_PROTOCOL_SUMMARY", payload: parsed.protocolId });
+    }
+    if ("protocolId2" in parsed && "value" in parsed) {
+      setValue(2);
+      setProt({
+        prot1: parsed.protocolId,
+        prot2: parsed.protocolId2,
+      });
     }
   }, [dispatch, props.location]);
 
@@ -56,6 +67,7 @@ const Protocols = (props) => {
     console.log("Breadcrumb was clicked", e);
   };
   const handleChangeTab = (event, value) => {
+    console.log(value);
     setValue(value);
   };
   const handleChange = (e, checked) => {
@@ -116,8 +128,12 @@ const Protocols = (props) => {
                 <div className="tab-container">
                   {value === 0 && <ProtocolOverview data={data} />}
                   {value === 1 && <ProtocolViewClass />}
-                  {value === 2 && <AmendmentCompare />}
-                  {value === 3 && <Documents handleChangeTab={handleChangeTab} />}
+                  {value === 2 && (
+                    <AmendmentCompare prot11={prot.prot1} prot22={prot.prot2} />
+                  )}
+                  {value === 3 && (
+                    <Documents handleChangeTab={handleChangeTab} />
+                  )}
                 </div>
               </div>
             </div>

@@ -18,7 +18,9 @@ import { useSelector, useDispatch } from "react-redux";
 
 const SearchListingSection = ({
   data,
-  setExpanded
+  setExpanded,
+  compareTwoProtocol,
+  selection
 }) => {
   // console.log("--------",data)
  const dispatch = useDispatch();
@@ -68,7 +70,7 @@ const onExpandClick = (data) => {
             </AccordionSummary>
             <AccordionDetails>
               <div className="width100">
-                <SearchCard data={data} />
+                <SearchCard data={data} compareTwoProtocol={compareTwoProtocol} selection={selection}/>
               </div>
             </AccordionDetails>
           </Accordion>

@@ -25,7 +25,7 @@ const countries = [
   { label: "Algeria" },
 ];
 
-const AmendmentCompare = () => {
+const AmendmentCompare = ({ prot11, prot22 }) => {
   const compare = useSelector(compareResult);
   const dispatch = useDispatch();
   const associateData = useSelector(associateDocs);
@@ -38,6 +38,17 @@ const AmendmentCompare = () => {
   useEffect(() => {
     dispatch({ type: "POST_COMPARE_PROTOCOL", payload: null });
   }, []);
+  useEffect(() => {
+    setVersion1(prot11);
+    setVersion2(prot22);
+    const postBody = {
+      docID: prot11,
+      docID2: prot22,
+    };
+    if (prot11 && prot22) {
+      dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
+    }
+  }, [prot11, prot22]);
 
   const handleCompare = () => {
     if (version1 && version2) {

@@ -22,8 +22,9 @@ import {
   recent,
   range,
 } from "./searchSlice";
-import { phases, documentStatus,TOC } from "./Data/constants";
+import { phases, documentStatus, TOC } from "./Data/constants";
 
+let protArr = [];
 const Search = (props) => {
   const resultList = useSelector(searchResult);
   const filterList = useSelector(searchFilter);
@@ -42,6 +43,9 @@ const Search = (props) => {
     phase: [],
     documentStatus: [],
   });
+  const [protocolSelected, setProtocolSelected] = useState([]);
+  const [selection, setSelection] = useState(true);
+  // let arr = [];
 
   useEffect(() => {
     let params = props.location.search;
@@ -351,7 +355,7 @@ const Search = (props) => {
     props.history.push(`/search`);
     // window.location.reload()
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
-    window.location.reload()
+    window.location.reload();
   };
 
   const onSearchChange = () => {
@@ -372,8 +376,34 @@ const Search = (props) => {
   const onSearchQuery = (list, identifier) => {
     let tempQuery = _.cloneDeep(searchQuery);
     tempQuery[identifier] = list;
-    console.log("onSearchQuery",list, identifier, tempQuery);
+    console.log("onSearchQuery", list, identifier, tempQuery);
     setSearchQuery(tempQuery);
+  };
+
+  const compareTwoProtocol = (data) => {
+    console.log("Two data", data, protArr);
+    if (protArr.length < 2) {
+      // debugger
+      protArr.push(data);
+      console.log(protArr);
+      setProtocolSelected(protArr);
+      // oldArray => [...oldArray, newElement]
+    } else {
+      setSelection(false);
+      alert("comparison is available only for two protocols.");
+    }
+  };
+  const compareProtocol = () => {
+    console.log("compare is clicked", protocolSelected);
+    if (protocolSelected.length === 2) {
+      props.history.push(
+        `/protocols?protocolId=${protocolSelected[0]}&protocolId2=${protocolSelected[1]}&value=2`
+      );
+      protArr = [];
+      setProtocolSelected([]);
+    } else if (protocolSelected.length < 2) {
+      alert("Please select at least two protocol versions to compare");
+    }
   };
   return (
     <div className="search">
@@ -397,6 +427,7 @@ const Search = (props) => {
             getSearchInput={getSearchInput}
             history={props.history}
             idPresent={idPresent}
+            compareProtocol={compareProtocol}
           />
         </div>
         <div>
@@ -412,6 +443,8 @@ const Search = (props) => {
             onSearchQuery={onSearchQuery}
             searchQuery={searchQuery}
             history={props.history}
+            compareTwoProtocol={compareTwoProtocol}
+            selection={selection}
           />
         </div>
       </div>

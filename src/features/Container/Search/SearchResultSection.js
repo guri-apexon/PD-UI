@@ -250,7 +250,7 @@ class SearchPanel extends React.Component {
               <div className="page-count">
                 <span>
                   Showing {accordionObj.length === 0 ? "0" : "1"} -{" "}
-                  {noOfProtocolsPerPages} of {protocols}{" "}
+                  {"1"} of {protocols}{" "}
                 </span>
               </div>
 
@@ -303,6 +303,8 @@ class SearchPanel extends React.Component {
                         setExpanded={this.setExpanded}
                         data={protocol}
                         key={protocol.protocolNumber}
+                        compareTwoProtocol={this.props.compareTwoProtocol}
+                        selection={this.props.selection}
                       />
                     </div>
                   ))

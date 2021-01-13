@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "protocols")));
 
 const client = new elasticsearch.Client({
-  host: "http://ca2spdml04q:9200/pd-index-2",
+  host: "http://ca2spdml04q:9200/pd-index-3",
   //   log: "trace",
   // apiVersion: '7.2', // use the same version of your Elasticsearch instance
 });
@@ -144,7 +144,7 @@ app.get("/elastic", (req, res) => {
       {
         multi_match: {
           query: key,
-          type: "phrase",
+          // type: "phrase",
           fields: toc,
         },
       },

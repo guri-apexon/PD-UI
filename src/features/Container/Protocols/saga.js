@@ -173,7 +173,7 @@ function* getCompareResult(action) {
         loading: false,
         called: false,
         error: true,
-        message: "comparison is Under Process.",
+        message: "Comparison is Under Process.",
       };
       yield put(getCompare(temp));
     }
