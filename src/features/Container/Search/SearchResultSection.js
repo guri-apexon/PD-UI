@@ -48,11 +48,15 @@ class SearchPanel extends React.Component {
         props.resultList && props.resultList.data ? props.resultList.data : [];
       let arr = [];
       for (let i = 0; i < result.length; i++) {
-        let obj = {
-          expanded: result[i].expanded ? result[i].expanded : false,
-          id: result[i].protocolNumber,
-          ...result[i],
-        };
+        let obj = _.cloneDeep(result[i]);
+        obj.expanded = result[i].expanded ? result[i].expanded : false;
+        obj.id = result[i].protocolNumber;
+        // let obj = {
+        //   expanded: result[i].expanded ? result[i].expanded : false,
+        //   id: result[i].protocolNumber,
+        //   ...result[i],
+        // };
+        // debugger
         arr.push(obj);
       }
       return {
@@ -110,8 +114,8 @@ class SearchPanel extends React.Component {
     const { onSortChange } = this.props;
     let filterValue = SORT_DROPDOWN.filter((item) => item.id === value);
     // console.log("value", value, filterValue);
-    onSortChange(filterValue[0]);
-    this.setState({ sortValue: value.id });
+    onSortChange(filterValue[0], value);
+    // this.setState({ sortValue: value.id });
   };
   onExpandAllClick = () => {
     const { accordionObj, defaultExpand } = this.state;
@@ -162,8 +166,10 @@ class SearchPanel extends React.Component {
       sponsorData,
       indicationData,
       searchQuery,
+      sortValueProp,
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
+    console.log("oooooooo",sortValueProp)
 
     let protocols = resultList.data && resultList.data.length;
     let maxRecordsPerPage = 10;
@@ -249,8 +255,8 @@ class SearchPanel extends React.Component {
             <div className="width100 ">
               <div className="page-count">
                 <span>
-                  Showing {accordionObj.length === 0 ? "0" : "1"} -{" "}
-                  {protocols} of {protocols}{" "}
+                  Showing {accordionObj.length === 0 ? "0" : "1"} - {protocols}{" "}
+                  of {protocols}{" "}
                 </span>
               </div>
 
@@ -264,8 +270,8 @@ class SearchPanel extends React.Component {
                   placeholder=""
                   size="small"
                   style={{ marginRight: 10 }}
-                  value={sortValue}
-                  defaultValue="1"
+                  value={sortValueProp}
+                  defaultValue={sortValueProp}
                   onChange={(value) => this.sortChange(value)}
                 >
                   {/* <MenuItem value="1">{"Relevancy"}</MenuItem>

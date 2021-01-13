@@ -32,7 +32,7 @@ const Search = (props) => {
   const sponsorData = useSelector(sponsors);
   const recentDate = useSelector(recent);
   const rangeDate = useSelector(range);
-
+  const [sortValueProp, setSortValue] = useState("1");
   const dispatch = useDispatch();
   const [idPresent, setIdPresent] = useState(false);
 
@@ -184,6 +184,7 @@ const Search = (props) => {
   const getSearchInput = (input) => {
     // console.log(input, searchQuery, "Search Query");
     // debugger
+    setSortValue("1")
     let inp = input ? input : searchInput;
     let resultQuery = `key=${inp}`;
     for (let [key, value] of Object.entries(searchQuery)) {
@@ -361,8 +362,10 @@ const Search = (props) => {
   const onSearchChange = () => {
     console.log("onSearchChange :", onSearchChange);
   };
-  const onSortChange = (data) => {
+  const onSortChange = (data, value) => {
+    console.log("0000000000",value)
     let newList = _.cloneDeep(resultList);
+    setSortValue(value);
     newList.data &&
       newList.data.sort((a, b) => {
         let first = a[data.value] ? a[data.value] : "";
@@ -445,6 +448,7 @@ const Search = (props) => {
             history={props.history}
             compareTwoProtocol={compareTwoProtocol}
             selection={selection}
+            sortValueProp={sortValueProp}
           />
         </div>
       </div>

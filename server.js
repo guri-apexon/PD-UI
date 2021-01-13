@@ -18,6 +18,215 @@ const client = new elasticsearch.Client({
   //   log: "trace",
   // apiVersion: '7.2', // use the same version of your Elasticsearch instance
 });
+const TOC = {
+  sectionId: 1,
+  sectionName: "Table Of Contents",
+  fieldType: "text",
+  sectionContent: [
+    {
+      id: 1,
+      title: "Protocol Summary",
+      content: "",
+      dependancy: [
+        "Protocol Summary",
+        "Synopsis",
+        "Schema",
+        "Schedule of Activities (SoA)]",
+      ],
+      count: "2",
+    },
+    {
+      id: 2,
+      title: "Introduction",
+      content: "",
+      dependancy: [
+        "Introduction",
+        "Study Rationale",
+        "Background",
+        "Benefit/Risk Assessment",
+        "Risk Assessment",
+        "Benefit Assessment",
+        "Overall Benefit: Risk Conclusion",
+      ],
+      count: "2",
+    },
+    {
+      id: 3,
+      title: "Objectives and [Endpoints and/or Estimands]",
+      content: "",
+      dependancy: ["Objectives and [Endpoints and/or Estimands]"],
+      count: "5",
+    },
+    {
+      id: 4,
+      title: "Study Design",
+      content: "",
+      dependancy: [
+        "Study Design",
+        "Overall Design",
+        "Scientific Rationale for Study Design",
+        "Participant Input into Design",
+        "Justification for Dose",
+        "End of Study Definition",
+      ],
+      count: "6",
+    },
+    {
+      id: 5,
+      title: "Study Population",
+      content: "",
+      dependancy: [
+        "Study Population",
+        "Inclusion Criteria",
+        "Exclusion Criteria",
+        "Lifestyle Considerations",
+        "Meals and Dietary Restrictions",
+        "Caffeine, Alcohol, and Tobacco",
+        "Activity",
+        "Screen Failures",
+        "Criteria for Temporarily Delaying [Enrollment/Randomization/Administration of Study Intervention Administration]",
+      ],
+      count: "4",
+    },
+    {
+      id: 6,
+      title: "Study Intervention(s) and Concomitant Therapy",
+      content: "",
+      dependancy: [
+        "Study Intervention(s) and Concomitant Therapy",
+        "Study Intervention(s) Administered",
+        "Medical Devices",
+        "Preparation/Handling/Storage/Accountability",
+        "Measures to Minimize Bias: Randomization and Blinding",
+        "Study Intervention Compliance",
+        "Dose Modification",
+        "Retreatment Criteria",
+        "Continued Access to Study Intervention after the End of the Study",
+        "Treatment of Overdose",
+        "Concomitant Therapy",
+        "Rescue Medicine",
+      ],
+      count: "2",
+    },
+    {
+      id: 7,
+      title:
+        "Discontinuation of Study Intervention and Participant Discontinuation/Withdrawal",
+      content: "",
+      dependancy: [
+        "Discontinuation of Study Intervention and Participant Discontinuation/Withdrawal",
+        "Discontinuation of Study Intervention",
+        "Liver Chemistry Stopping Criteria",
+        "QTc Stopping Criteria",
+        "Temporary Discontinuation",
+        "Rechallenge",
+        "Participant Discontinuation/Withdrawal from the Study",
+        "Lost to Follow up",
+      ],
+      count: "3",
+    },
+    {
+      id: 8,
+      title: "Study Assessments and Procedures",
+      content: "",
+      dependancy: [
+        "Study Assessments and Procedures",
+        "[Efficacy and/or Immunogenicity] Assessments",
+        "Safety Assessments",
+        "Physical Examinations",
+        "Vital Signs",
+        "Electrocardiograms",
+        "Clinical Safety Laboratory Assessments",
+        "Pregnancy Testing",
+        "Suicidal Ideation and Behavior Risk Monitoring",
+        "Adverse Events (AEs), Serious Adverse Events (SAEs), and Other Safety Reporting",
+        "Time Period and Frequency for Collecting AE and SAE Information",
+        "Method of Detecting AEs and SAEs",
+        "Follow-up of AEs and SAEs",
+        "Regulatory Reporting Requirements for SAEs",
+        "Pregnancy",
+        "Cardiovascular and Death Events",
+        "Disease-Related Events and/or Disease-Related Outcomes Not Qualifying as AEs or SAEs",
+        "Adverse Events of Special Interest",
+        "Medical Device Deficiencies",
+        "Pharmacokinetics",
+        "[Genetics and/or Pharmacogenomics]",
+        "Biomarkers",
+        "Immunogenicity Assessments",
+        "[Health Economics OR Medical Resource Utilization and Health Economics]",
+      ],
+      count: "2",
+    },
+    {
+      id: 9,
+      title: "Statistical Considerations",
+      content: "",
+      dependancy: [
+        "Statistical Considerations",
+        "Statistical Hypotheses",
+        "Sample Size Determination",
+        "Analysis Sets",
+        "Statistical Analyses",
+        "General Considerations",
+        "Primary Endpoint(s)",
+        "Secondary Endpoint(s)",
+        "Tertiary/Exploratory Endpoint(s)",
+        "[Other/safety] Analysis",
+        "Other Analysis",
+        "Interim Analysis",
+      ],
+      count: "2",
+    },
+    {
+      id: 10,
+      title: "Supporting Documentation and Operational Considerations",
+      content: "",
+      dependancy: [
+        "Supporting Documentation and Operational Considerations",
+        "Appendix 1: Regulatory, Ethical, and Study Oversight Considerations",
+        "Regulatory and Ethical Considerations",
+        "Financial Disclosure",
+        "Informed Consent Process",
+        "Data Protection",
+        "Committees Structure",
+        "Dissemination of Clinical Study Data",
+        "Data Quality Assurance",
+        "Source Documents",
+        "Study and Site Start and Closure",
+        "Publication Policy",
+        "Appendix 2: Clinical Laboratory Tests",
+        "Appendix 3: AEs and SAEs: Definitions and Procedures for Recording, Evaluating, Follow-up, and Reporting",
+        "Definition of AE",
+        "Definition of SAE",
+        "Recording and Follow-Up of AE and/or SAE",
+        "Reporting of SAEs",
+        "Appendix 4: Contraceptive and Barrier Guidance",
+        "Definitions",
+        "Contraception Guidance",
+        "Appendix 5: Genetics",
+        "Appendix 6: Liver Safety: Suggested Actions and Follow-up Assessments [and Study Intervention Rechallenge Guidelines]",
+        "Appendix 7: AEs, ADEs, SAEs, SADEs, USADEs and Device Deficiencies: Definitions and Procedures for Recording, Evaluating, Follow-up, and Reporting in Medical Device Studies",
+        "Definition of Medical Device AE and ADE",
+        "Definition of Medical Device SAE, SADE and USADE",
+        "Definition of Device Deficiency",
+        "Recording and Follow-Up of AE and/or SAE and Device Deficiencies",
+        "Reporting of SAEs",
+        "Reporting of SADEs",
+        "Appendix 8: Country-specific Requirements",
+        "Appendix 9: Abbreviations [and Definitions]",
+        "Appendix 10: Protocol Amendment History",
+      ],
+      count: "5",
+    },
+    {
+      id: 11,
+      title: "References",
+      content: "",
+      dependancy: ["References"],
+      count: "6",
+    },
+  ],
+};
 
 function constructFilterArray(data) {
   // const data = {
@@ -90,6 +299,23 @@ function constructMustArray(docStatus, key, from, to, toc) {
   return query;
 }
 
+function getTOCArray(toc) {
+  // let toc = ["Protocol Summary", "Introduction"];
+  let tocArr = TOC.sectionContent;
+  let newTOC = [];
+  for (let i = 0; i < toc.length; i++) {
+    for (let j = 0; j < tocArr.length; j++) {
+      if (toc[i] === tocArr[j].title) {
+        // console.log("TOC ARR", tocArr[j].dependancy);
+        newTOC = newTOC.concat(tocArr[j].dependancy);
+      }
+    }
+  }
+  
+  return newTOC;
+}
+// getTOCArray();
+
 app.get("/elastic", (req, res) => {
   console.log(req.url);
   console.log(req.query);
@@ -135,17 +361,19 @@ app.get("/elastic", (req, res) => {
   };
   let filterArr = constructFilterArray(filters);
   let mustQuery;
+  let tocArray = getTOCArray(toc);
+  console.log("TOC ARR Final", tocArray);
   if (from && to) {
     const dateField =
       docStatus[0] === "active" ? "approval_date" : "uploadDate";
-    mustQuery = constructMustArray(dateField, key, from, to, toc);
+    mustQuery = constructMustArray(dateField, key, from, to, tocArray);
   } else {
     mustQuery = [
       {
         multi_match: {
           query: key,
           // type: "phrase",
-          fields: toc,
+          fields: tocArray,
         },
       },
     ];
