@@ -100,6 +100,9 @@ class ProtocolViewClass extends React.Component {
     let type = data[2];
     let content = data[3];
     let font_info = data[4];
+    if(!content) {
+      return null;
+    }
     const isBold = getStyle(font_info);
     if (type === "table") {
       if (CPT_section === "Unmapped") {
@@ -127,7 +130,7 @@ class ProtocolViewClass extends React.Component {
           <h2
             id={`CPT_section-${data[5]}`}
             className={`heading2 ${isBold}`}
-            style={{ fontSize: '14px', paddingTop: 10 }}
+            style={{ fontSize: '14px', paddingTop: 6 }}
           >
             {content}
           </h2>
@@ -137,7 +140,7 @@ class ProtocolViewClass extends React.Component {
           <h3
             id={`CPT_section-${data[5]}`}
             className={`heading3 ${isBold}`}
-            style={{ paddingTop: 10, fontSize: '14px' }}
+            style={{ paddingTop: 6, fontSize: '14px' }}
           >
             {content}
           </h3>
@@ -148,7 +151,7 @@ class ProtocolViewClass extends React.Component {
             <p
             id={`CPT_section-${data[5]}`}
               className={font_info.IsBold ? "thick" : ""}
-              style={{ fontSize: '12px', paddingTop: 10 }}
+              style={{ fontSize: '12px' }}
             >
               {content}
             </p>
