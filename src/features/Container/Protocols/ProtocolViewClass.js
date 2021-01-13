@@ -117,7 +117,7 @@ class ProtocolViewClass extends React.Component {
             key={`TOC-${data[5]}`}
             ref={this.refs[`TOC-${data[5]}`]}
           >
-            <h1 id={CPT_section} className={`heading1 ${isBold}`}>
+            <h1 className={`heading1 ${isBold}`} style={{fontSize: '16px'}}>
               {content}
             </h1>
           </div>
@@ -125,9 +125,9 @@ class ProtocolViewClass extends React.Component {
       case "Heading2":
         return (
           <h2
-            id={CPT_section}
+            id={`CPT_section-${data[5]}`}
             className={`heading2 ${isBold}`}
-            style={{ fontSize: font_info.font_size, paddingTop: 10 }}
+            style={{ fontSize: '14px', paddingTop: 10 }}
           >
             {content}
           </h2>
@@ -135,9 +135,9 @@ class ProtocolViewClass extends React.Component {
       case "Heading3":
         return (
           <h3
-            id={CPT_section}
+            id={`CPT_section-${data[5]}`}
             className={`heading3 ${isBold}`}
-            style={{ paddingTop: 10 }}
+            style={{ paddingTop: 10, fontSize: '14px' }}
           >
             {content}
           </h3>
@@ -146,9 +146,9 @@ class ProtocolViewClass extends React.Component {
         if (CPT_section === "Unmapped") {
           return (
             <p
-              id={CPT_section}
+            id={`CPT_section-${data[5]}`}
               className={font_info.IsBold ? "thick" : ""}
-              style={{ fontSize: font_info.font_size, paddingTop: 10 }}
+              style={{ fontSize: '12px', paddingTop: 10 }}
             >
               {content}
             </p>
@@ -157,7 +157,7 @@ class ProtocolViewClass extends React.Component {
         return (
           <>
             {isBold ? <div><br /></div> : null}
-            <span id={CPT_section} className={`indent ${isBold}`}>
+            <span id={`CPT_section-${data[5]}`} className={`indent ${isBold}`} style={{ fontSize: '12px'}}>
               {content}
             </span>
           </>
