@@ -69,16 +69,15 @@ function getSoaSections(soa) {
   soa.map((item) => {
     let TableIndex = item.TableIndex;
     let TableName = item.TableName;
-      list.push({ section: `${TableName}`, id: `SOA-${TableIndex}` });
+      list.push({ section: `${TableIndex}. ${TableName}`, id: `SOA-${TableIndex}` });
       // sectionList.push(CPT_section);
   });
   return list;
 }
 
 function* getProtocolToc(action) {
-  console.log(action.payload);
   const URL =
-    "http://ca2spdml01q:8000/api/protocol_data/?id=e5c6a06d-166f-478f-b5de-73543a46261e";
+    `http://ca2spdml01q:8000/api/protocol_data/?id=${action.payload}`;
   const config = {
     url: URL,
     method: "GET",

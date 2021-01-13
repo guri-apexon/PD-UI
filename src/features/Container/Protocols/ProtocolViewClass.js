@@ -15,22 +15,7 @@ function getStyle(style) {
   return "";
 }
 
-function getTable(item, noHeader = false) {
-  // for (const property in object) {
-  //   console.log(`${property}: ${object[property]}`);
-  // }
-  return (
-    <div key={`Table-${item.TableIndex}`} style={{ overflowX: "auto", marginTop: '10px' }}>
-      {!noHeader ? (
-        <h2 style={{ paddingTop: 10, fontSize: "16px", marginBottom: '10px' }}>{item.TableName}</h2>
-      ) : null}
-      <div
-        id={item.TableIndex}
-        dangerouslySetInnerHTML={{ __html: item.Table }}
-      />
-    </div>
-  );
-}
+
 
 function getElement(data) {
   let content = data[0];
@@ -96,6 +81,27 @@ class ProtocolViewClass extends React.Component {
     this.props.getProtocolIqvdata();
   }
 
+  getTable(item, unq, noHeader = false) {
+    // for (const property in object) {
+    //   console.log(`${property}: ${object[property]}`);
+    // }
+    return (
+      <div
+        id={`${unq}-${item.TableIndex}`}
+        key={`${unq}-${item.TableIndex}`}
+        style={{ overflowX: "auto", marginTop: "10px" }}
+        ref={this.refs[`${unq}-${item.TableIndex}`]}
+      >
+        {!noHeader ? (
+          <h2 style={{ paddingTop: 10, fontSize: "16px", marginBottom: "10px" }}>
+            {item.TableName}
+          </h2>
+        ) : null}
+        <div dangerouslySetInnerHTML={{ __html: item.Table }} />
+      </div>
+    );
+  }
+
   getTocElement = (data) => {
     let section_level = data[0];
     let CPT_section = data[1];
@@ -108,9 +114,9 @@ class ProtocolViewClass extends React.Component {
     const isBold = getStyle(font_info);
     if (type === "table") {
       if (CPT_section === "Unmapped") {
-        return getTable(content, true);
+        return this.getTable(content, "TOC-TABLE", true);
       }
-      return getTable(content);
+      return this.getTable(content, "TOC-TABLE");
     }
 
     switch (font_info.font_style) {
@@ -272,6 +278,7 @@ class ProtocolViewClass extends React.Component {
         });
       this.hideEle();
     };
+
     if (view.loader) {
       return (
         <div
@@ -284,6 +291,7 @@ class ProtocolViewClass extends React.Component {
         </div>
       );
     }
+    console.log("refs", refs);
     console.log("view", view);
     return (
       <div className="view-wrapper">
@@ -302,7 +310,7 @@ class ProtocolViewClass extends React.Component {
                 <button
                   className="btn btn1"
                   onClick={() => this.handleClick(item.id)}
-                  key={item.id}
+                  key={`section-${item.id}`}
                 >
                   <span style={{ marginLeft: "16px" }}>{item.section}</span>
                 </button>
@@ -317,9 +325,8 @@ class ProtocolViewClass extends React.Component {
                 {this.state.subSectionData.map((data, i) => (
                   <span>
                     <a
-                      // href={`#${data.id}`}
                       className="btn btn1"
-                      key={data.id}
+                      key={`sub-section-${data.id}`}
                       onClick={() => scrollHide(data.id)}
                     >
                       <span
@@ -341,17 +348,11 @@ class ProtocolViewClass extends React.Component {
               height: "400px",
             }}
           >
-            {/* {sumData.map((item) => {
-                  return (
-                    <p>{item.section}</p>
-                  )
-              })} */}
-
             {view.iqvdataToc.data.length &&
               view.iqvdataToc.data.map((item) => {
                 return this.getTocElement(item);
               })}
-            {view.iqvdataSoa.map((item) => getTable(item))}
+            {view.iqvdataSoa.map((item) => this.getTable(item, "SOA"))}
           </div>
         </Card>
       </div>
@@ -361,7 +362,11 @@ class ProtocolViewClass extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getProtocolIqvdata: () => dispatch({ type: "GET_PROTOCOL_TOC_SAGA" }),
+    getProtocolIqvdata: () =>
+      dispatch({
+        type: "GET_PROTOCOL_TOC_SAGA",
+        payload: "e5c6a06d-166f-478f-b5de-73543a46261e",
+      }),
   };
 };
 
