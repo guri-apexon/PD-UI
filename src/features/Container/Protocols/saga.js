@@ -45,6 +45,20 @@ function parsedData(data) {
   return JSON.parse(JSON.parse(data));
 }
 
+function getTocSections(toc) {
+  const sectionList = []
+  const list = [];
+  toc.data.map(item => {
+    let section_level = item[0];
+  let CPT_section = item[1];
+    if(section_level === '1' && CPT_section !== 'Unmapped' && !sectionList.includes(CPT_section)) {
+      list.push({ section: `${CPT_section}`, id: `TOC-${item[5]}` });
+      sectionList.push(CPT_section);
+    }
+  });
+  return list;
+}
+
 function* getProtocolToc(action) {
   console.log(action.payload)
   const URL =
@@ -77,10 +91,13 @@ function* getProtocolToc(action) {
     // const soa = JSON.parse(soaParsedData);
     // console.log(soa[0].TableName);
     // console.log(soa[0].Table);
+    const toc = parsedData(data.data.iqvdataToc);
     const viewData = {
       iqvdataSoa: parsedData(data.data.iqvdataSoa),
       iqvdataSummary: parsedData(data.data.iqvdataSummary),
-      iqvdataToc: parsedData(data.data.iqvdataToc),
+      iqvdataToc: toc,
+      loader: false,
+      tocSections: getTocSections(toc)
     }
     yield put(getProcotoclToc(viewData));
   }

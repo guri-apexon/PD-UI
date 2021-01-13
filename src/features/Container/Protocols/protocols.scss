@@ -1,4 +1,7 @@
 .protocols {
+  html {
+    scroll-behavior: smooth;
+  }
   table {
     border-collapse: collapse;
     width: 100%;
@@ -246,7 +249,7 @@
 
   .bar {
     padding: 5px;
-    margin-top: 2%;
+    margin-top: 50px;
     margin-bottom: 2%;
     width: 100%;
     background-color: lightgrey;

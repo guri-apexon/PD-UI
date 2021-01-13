@@ -4,6 +4,7 @@ import Grid from "apollo-react/components/Grid";
 import Card from "apollo-react/components/Card";
 import { viewResult } from "./protocolSlice.js";
 import dummyTable from "./dummyTable.json";
+import Loader from "../../Components/Loader/Loader";
 
 function getStyle(style) {
   const IsBold = style.IsBold;
@@ -27,75 +28,6 @@ function getTable(item, noHeader = false) {
       />
     </div>
   );
-}
-
-function getTocElement(data) {
-  let section_level = data[0];
-  let CPT_section = data[1];
-  let type = data[2];
-  let content = data[3];
-  let font_info = data[4];
-  const isBold = getStyle(font_info);
-  if (type === "table") {
-    if (CPT_section === "Unmapped") {
-      return getTable(content, true);
-    }
-    return getTable(content);
-  }
-
-  switch (font_info.font_style) {
-    case "Heading1":
-      return (
-        <div className="bar">
-          <h1
-            id={CPT_section}
-            className={`heading1 ${isBold}`}
-          >
-            {content}
-          </h1>
-        </div>
-      );
-    case "Heading2":
-      return (
-        <h2
-          id={CPT_section}
-          className={`heading2 ${isBold}`}
-          style={{ fontSize: font_info.font_size, paddingTop: 10 }}
-        >
-          {content}
-        </h2>
-      );
-    case "Heading3":
-      return (
-        <h3
-          id={CPT_section}
-          className={`heading3 ${isBold}`}
-          style={{ paddingTop: 10 }}
-        >
-          {content}
-        </h3>
-      );
-    default:
-      if (CPT_section === "Unmapped") {
-        return (
-          <p
-            id={CPT_section}
-            className={font_info.IsBold ? "thick" : ""}
-            style={{ fontSize: font_info.font_size, paddingTop: 10 }}
-          >
-            {content}
-          </p>
-        );
-      }
-      return (
-        <>
-          {isBold ? <br /> : null}
-          <div id={CPT_section} className={`indent ${isBold}`}>
-            {content}
-          </div>
-        </>
-      );
-  }
 }
 
 function getElement(data) {
@@ -151,7 +83,6 @@ class ProtocolViewClass extends React.Component {
 
     this.handleClick = this.handleClick.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
-    this.hideEle = this.hideEle.bind(this);
 
     this.state = {
       popupVisible: false,
@@ -162,6 +93,77 @@ class ProtocolViewClass extends React.Component {
   componentDidMount() {
     this.props.getProtocolIqvdata();
   }
+
+  getTocElement = (data) => {
+    let section_level = data[0];
+    let CPT_section = data[1];
+    let type = data[2];
+    let content = data[3];
+    let font_info = data[4];
+    const isBold = getStyle(font_info);
+    if (type === "table") {
+      if (CPT_section === "Unmapped") {
+        return getTable(content, true);
+      }
+      return getTable(content);
+    }
+
+    switch (font_info.font_style) {
+      case "Heading1":
+        return (
+          <div
+            className="bar"
+            id={`TOC-${data[5]}`}
+            key={`TOC-${data[5]}`}
+            ref={this.refs[`TOC-${data[5]}`]}
+          >
+            <h1 id={CPT_section} className={`heading1 ${isBold}`}>
+              {content}
+            </h1>
+          </div>
+        );
+      case "Heading2":
+        return (
+          <h2
+            id={CPT_section}
+            className={`heading2 ${isBold}`}
+            style={{ fontSize: font_info.font_size, paddingTop: 10 }}
+          >
+            {content}
+          </h2>
+        );
+      case "Heading3":
+        return (
+          <h3
+            id={CPT_section}
+            className={`heading3 ${isBold}`}
+            style={{ paddingTop: 10 }}
+          >
+            {content}
+          </h3>
+        );
+      default:
+        if (CPT_section === "Unmapped") {
+          return (
+            <p
+              id={CPT_section}
+              className={font_info.IsBold ? "thick" : ""}
+              style={{ fontSize: font_info.font_size, paddingTop: 10 }}
+            >
+              {content}
+            </p>
+          );
+        }
+        return (
+          <>
+            {isBold ? <div><br /></div> : null}
+            <span id={CPT_section} className={`indent ${isBold}`}>
+              {content}
+            </span>
+          </>
+        );
+    }
+  };
 
   handleClick(id) {
     // if (!this.state.popupVisible) {
@@ -209,10 +211,10 @@ class ProtocolViewClass extends React.Component {
     }
   }
 
-  hideEle() {
+  hideEle = () => {
     document.removeEventListener("click", this.handleOutsideClick, false);
     this.setState({ popupVisible: false, subSectionData: [] });
-  }
+  };
 
   render() {
     const { view } = this.props;
@@ -223,27 +225,7 @@ class ProtocolViewClass extends React.Component {
     ];
 
     const subSections = {
-      TOC: [
-        { section: "1. Synonpsis", id: "1" },
-        {
-          section:
-            "2. Sponser Investigators, and Trial Administrative Structure",
-          id: "2",
-        },
-        { section: "3. Background Information", id: "3" },
-        { section: "4. Trial Objectives", id: "4" },
-        { section: "5. Investigation Plan", id: "5" },
-        {
-          section:
-            "6. Investigation Medicinal Product and other Drugs Used in the Trial",
-          id: "6",
-        },
-        { section: "7. Trial Procedures and Assesments", id: "7" },
-        { section: "8. Statistics", id: "8" },
-        { section: "9. Ethical and Regulatory Aspects", id: "9" },
-        { section: "10. Trial Management", id: "10" },
-        { section: "11. References", id: "11" },
-      ],
+      TOC: view.tocSections,
       TableOfTable: [
         { section: "Table 1. Hematology Assessments", id: "t1" },
         { section: "Table 2. Biochemistry Assessments", id: "t2" },
@@ -251,10 +233,32 @@ class ProtocolViewClass extends React.Component {
       ],
       SOA: [],
     };
-
+    const refs = this.state.subSectionData.reduce((acc, value) => {
+      acc[value.id] = React.createRef();
+      return acc;
+    }, {});
+    this.refs = refs;
     this.data = subSections;
+    const scrollHide = (id) => {
 
-    console.log("this.props.view", view);
+      refs[id].current && refs[id].current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+      this.hideEle();
+    };
+    if (view.loader) {
+      return (
+        <div
+          style={{
+            display: "inline-block",
+            margin: "auto",
+          }}
+        >
+          <Loader />
+        </div>
+      );
+    }
     return (
       <div className="view-wrapper">
         <Card className="index-column">
@@ -284,14 +288,17 @@ class ProtocolViewClass extends React.Component {
                 data-testid="dropdown-menu-test"
                 id="dropdown-menu-id"
               >
-                {this.state.subSectionData.map((data) => (
+                {this.state.subSectionData.map((data, i) => (
                   <span>
                     <a
+                      // href={`#${data.id}`}
                       className="btn btn1"
                       key={data.id}
-                      onClick={this.hideEle}
+                      onClick={() => scrollHide(data.id)}
                     >
-                      <span style={{ marginLeft: "16px" }}>{data.section}</span>
+                      <span style={{ marginLeft: "16px" }}>{`${
+                        data.section
+                      }`}</span>
                     </a>
                   </span>
                 ))}
@@ -300,7 +307,14 @@ class ProtocolViewClass extends React.Component {
           </div>
         </Card>
         <Card className="protocol-column">
-          <div style={{ padding: "10px 16px" }}>
+          <div
+            style={{
+              scrollPadding: "50px 0px 0px 50px",
+              padding: "10px 16px",
+              overflowY: "scroll",
+              height: "400px",
+            }}
+          >
             {/* {sumData.map((item) => {
                   return (
                     <p>{item.section}</p>
@@ -309,7 +323,7 @@ class ProtocolViewClass extends React.Component {
 
             {view.iqvdataToc.data.length &&
               view.iqvdataToc.data.map((item) => {
-                return getTocElement(item);
+                return this.getTocElement(item);
               })}
             {view.iqvdataSoa.map((item) => getTable(item))}
           </div>
