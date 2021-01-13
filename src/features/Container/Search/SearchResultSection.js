@@ -250,7 +250,7 @@ class SearchPanel extends React.Component {
               <div className="page-count">
                 <span>
                   Showing {accordionObj.length === 0 ? "0" : "1"} -{" "}
-                  {"1"} of {protocols}{" "}
+                  {protocols} of {protocols}{" "}
                 </span>
               </div>
 
