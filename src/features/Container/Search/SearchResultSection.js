@@ -150,12 +150,14 @@ class SearchPanel extends React.Component {
     // this.state["searchValue"] = [];
     // this.setState({ searchValue: [] });
     if (this.props.searchInput) {
-      this.props.history.push(`/search?key=${this.props.searchInput}`);
+      this.props.hancleClearAll(true, this.props.searchInput);
+      // this.props.history.push(`/search?key=${this.props.searchInput}`);
     } else {
-      this.props.history.push(`/search`);
+      this.props.hancleClearAll(false);
+      // this.props.history.push(`/search`);
     }
 
-    window.location.reload();
+    // window.location.reload();
   };
 
   render() {
@@ -169,7 +171,7 @@ class SearchPanel extends React.Component {
       sortValueProp,
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
-    console.log("oooooooo",sortValueProp)
+    console.log("oooooooo", sortValueProp);
 
     let protocols = resultList.data && resultList.data.length;
     let maxRecordsPerPage = 10;

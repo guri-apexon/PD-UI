@@ -42,7 +42,9 @@ const Search = (props) => {
     indication: [],
     phase: [],
     documentStatus: [],
+    toc: [],
   });
+  const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [selection, setSelection] = useState(true);
   // let arr = [];
@@ -109,6 +111,7 @@ const Search = (props) => {
           .join("_")}`;
       }
       if ("phase" in parsed) {
+        // debugger;
         let tempElasticQuery = phases.sectionContent.filter((item) =>
           parsed.phase.split("+").includes(item.title)
         );
@@ -142,7 +145,9 @@ const Search = (props) => {
         // resultQuery+=dateQuery;
       }
       setSearchQuery(tempQuery);
+      // debugger;
       console.log("::::::::", elasticSearchQuery);
+      setElasticSearchQuesry(elasticSearchQuery);
       const parsed1 = queryString.parse(elasticSearchQuery);
       console.log("___:::___", parsed1);
       dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
@@ -184,7 +189,7 @@ const Search = (props) => {
   const getSearchInput = (input) => {
     // console.log(input, searchQuery, "Search Query");
     // debugger
-    setSortValue("1")
+    setSortValue("1");
     let inp = input ? input : searchInput;
     let resultQuery = `key=${inp}`;
     for (let [key, value] of Object.entries(searchQuery)) {
@@ -262,10 +267,34 @@ const Search = (props) => {
       // elasticSearchQuery+=` ${parsed[`key`]}`;
     }
     // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
+    setElasticSearchQuesry(elasticSearchQuery);
     dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
     console.log(":::::result", resultQuery);
     props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
     // debugger
+  };
+  const hancleClearAll = (inputPresent, input) => {
+    if (inputPresent) {
+      setSearchQuery({
+        sponsor: [],
+        indication: [],
+        phase: [],
+        documentStatus: [],
+        toc: [],
+      });
+      dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
+      props.history.push(`/search?key=${input}`);
+    } else {
+      setSearchQuery({
+        sponsor: [],
+        indication: [],
+        phase: [],
+        documentStatus: [],
+        toc: [],
+      });
+      dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
+      props.history.push(`/search`);
+    }
   };
   const contructQueryFromArray = (key, value) => {
     switch (key) {
@@ -353,27 +382,37 @@ const Search = (props) => {
   const deleteSearchInput = () => {
     setSearchInput("");
     setIdPresent(false);
-    props.history.push(`/search`);
-    // window.location.reload()
+    setSearchQuery({
+      sponsor: [],
+      indication: [],
+      phase: [],
+      documentStatus: [],
+      toc: [],
+    });
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
-    window.location.reload();
+    props.history.push(`/search`);
   };
 
   const onSearchChange = () => {
     console.log("onSearchChange :", onSearchChange);
   };
   const onSortChange = (data, value) => {
-    console.log("0000000000",value)
-    let newList = _.cloneDeep(resultList);
-    setSortValue(value);
-    newList.data &&
-      newList.data.sort((a, b) => {
-        let first = a[data.value] ? a[data.value] : "";
-        let second = b[data.value] ? b[data.value] : "";
-        return second - first;
-      });
-    // console.log('data :', data, resultList, newList);
-    dispatch({ type: "UPDATE_SEARCH_RESULT", payload: newList });
+    // debugger;
+    console.log("0000000000", value);
+    if (value === "1") {
+      dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+    } else {
+      let newList = _.cloneDeep(resultList);
+      setSortValue(value);
+      newList.data &&
+        newList.data.sort((a, b) => {
+          let first = a[data.value] ? a[data.value] : "";
+          let second = b[data.value] ? b[data.value] : "";
+          return second - first;
+        });
+      // console.log('data :', data, resultList, newList);
+      dispatch({ type: "UPDATE_SEARCH_RESULT", payload: newList });
+    }
   };
 
   const onSearchQuery = (list, identifier) => {
@@ -384,17 +423,25 @@ const Search = (props) => {
   };
 
   const compareTwoProtocol = (data) => {
+    // debugger;
     console.log("Two data", data, protArr);
-    if (protArr.length < 2) {
-      // debugger
-      protArr.push(data);
-      console.log(protArr);
-      setProtocolSelected(protArr);
-      // oldArray => [...oldArray, newElement]
-    } else {
-      setSelection(false);
-      alert("comparison is available only for two protocols.");
-    }
+    // if (protArr.length > 0) {
+      const index = protArr.indexOf(data);
+      if (index > -1) {
+        protArr.splice(index, 1);
+      } else {
+        if (protArr.length < 2) {
+          // debugger
+          protArr.push(data);
+          console.log(protArr);
+          setProtocolSelected(protArr);
+          // oldArray => [...oldArray, newElement]
+        } else {
+          setSelection(false);
+          alert("comparison is available only for two protocols.");
+        }
+      }
+    // }
   };
   const compareProtocol = () => {
     console.log("compare is clicked", protocolSelected);
@@ -445,6 +492,7 @@ const Search = (props) => {
             onSortChange={onSortChange}
             onSearchQuery={onSearchQuery}
             searchQuery={searchQuery}
+            hancleClearAll={hancleClearAll}
             history={props.history}
             compareTwoProtocol={compareTwoProtocol}
             selection={selection}

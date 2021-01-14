@@ -129,53 +129,8 @@ function* getSearchData(action) {
       data: [],
     };
     yield put(getSearchResult(obj));
-    // const url = "../../../../searchResult.json";
-    // const bodyData = {
-    //   query: {
-    //     multi_match: {
-    //       query: action.payload,
-    //       fields: ["InterventionGroups", "Objectives"],
-    //     },
-    //   },
-    // };
-    // const url = `${Apis.search}/?source_content_type=application/json&source=${JSON.stringify(bodyData)}`;
-    // const url = `${Apis.search}/?q=${action.payload}`
-    // const url=``
 
     try {
-      // const resp = yield client.search({
-      //   body: {
-      //     query: {
-      //       multi_match: {
-      //         query: action.payload,
-              // fields: [
-              //   "Objectives",
-              //   "Endpoints",
-              //   "AdverseEvents",
-              //   "SeriousAdverseEvents",
-              //   "ObjectiveAndEndpoint",
-              //   "InclusionCriteria",
-              //   "ExclusionCriteria",
-              //   "NumberOfParticipants",
-              //   "Title",
-              //   "ShortTitle",
-              //   "PrimaryObjective",
-              //   "SecondaryObjective",
-              //   "ExploratoryObjective",
-              //   "PrimaryEndpoint",
-              //   "SecondaryEndpoint",
-              //   "Rationale",
-              //   "Design",
-              //   "BriefSummary",
-              //   "InterventionGroups",
-              //   "DataMonitoringCommittee",
-              //   "Schema",
-              // ],
-      //       },
-      //     },
-      //   },
-      // });
-      // console.log(resp.hits.hits);
       const url = `/elastic?${action.payload}`;
       // const url = `http://localhost:4000/elastic?${action.payload}`;
 
