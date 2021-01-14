@@ -400,6 +400,7 @@ const Search = (props) => {
     // debugger;
     console.log("0000000000", value);
     if (value === "1") {
+      setSortValue(value);
       dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
     } else {
       let newList = _.cloneDeep(resultList);

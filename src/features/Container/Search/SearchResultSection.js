@@ -253,90 +253,92 @@ class SearchPanel extends React.Component {
               )} */}
             </div>
           </Grid>
-          <Grid md={9}>
-            <div className="width100 ">
-              <div className="page-count">
-                <span>
-                  Showing {accordionObj.length === 0 ? "0" : "1"} - {protocols}{" "}
-                  of {protocols}{" "}
-                </span>
-              </div>
+          {accordionObj.length > 0 && (
+            <Grid md={9}>
+              <div className="width100 ">
+                <div className="page-count">
+                  <span>
+                    Showing {accordionObj.length === 0 ? "0" : "1"} -{" "}
+                    {protocols} of {protocols}{" "}
+                  </span>
+                </div>
 
-              <div className="search-icon">
-                <SearchIcon style={{ color: "#0557d5" }} size="small" />
-              </div>
+                <div className="search-icon">
+                  <SearchIcon style={{ color: "#0557d5" }} size="small" />
+                </div>
 
-              <div className="sort-by">
-                <span>Sort by</span>
-                <SelectButton
-                  placeholder=""
-                  size="small"
-                  style={{ marginRight: 10 }}
-                  value={sortValueProp}
-                  defaultValue={sortValueProp}
-                  onChange={(value) => this.sortChange(value)}
-                >
-                  {/* <MenuItem value="1">{"Relevancy"}</MenuItem>
+                <div className="sort-by">
+                  <span>Sort by</span>
+                  <SelectButton
+                    placeholder=""
+                    size="small"
+                    style={{ marginRight: 10 }}
+                    value={sortValueProp}
+                    defaultValue={sortValueProp}
+                    onChange={(value) => this.sortChange(value)}
+                  >
+                    {/* <MenuItem value="1">{"Relevancy"}</MenuItem>
                   <MenuItem value="2">{"Approval Date"}</MenuItem>
                    <MenuItem value="3">{"Upload Date"}</MenuItem> */}
-                  {SORT_DROPDOWN.map((item) => (
-                    <MenuItem value={item.id}>{item.label}</MenuItem>
-                  ))}
-                </SelectButton>
-              </div>
-              <div
-                className="expand-all"
-                onClick={() => this.onExpandAllClick()}
-              >
-                <AlignJustify style={{ color: "blue" }} size="small" />
-                <span>{!defaultExpand ? "Expand All" : "Collapse All"}</span>
-              </div>
-              <div id="chip" className="chip">
-                {this.props.searchInput && (
-                  <Chip
-                    color="white"
-                    label={this.props["searchInput"]}
-                    value={this.props["searchInput"]}
-                    onDelete={(e) => this.props.deleteSearchInput(e)}
-                    size={"small"}
-                  />
-                )}
-              </div>
-              {!resultList.loader &&
-              resultList.success &&
-              accordionObj.length !== 0
-                ? accordionObj.map((protocol, i) => (
-                    <div key={protocol.protocolNumber}>
-                      <SearchListingSection
-                        setExpanded={this.setExpanded}
-                        data={protocol}
-                        key={protocol.protocolNumber}
-                        compareTwoProtocol={this.props.compareTwoProtocol}
-                        selection={this.props.selection}
-                      />
-                    </div>
-                  ))
-                : resultList.search && (
-                    <div>
-                      {!resultList.loader ? (
-                        <NoResultFound />
-                      ) : (
-                        <div
-                          style={{
-                            height: 400,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            display: "flex",
-                          }}
-                        >
-                          <Loader />
-                        </div>
-                      )}
-                    </div>
+                    {SORT_DROPDOWN.map((item) => (
+                      <MenuItem value={item.id}>{item.label}</MenuItem>
+                    ))}
+                  </SelectButton>
+                </div>
+                <div
+                  className="expand-all"
+                  onClick={() => this.onExpandAllClick()}
+                >
+                  <AlignJustify style={{ color: "blue" }} size="small" />
+                  <span>{!defaultExpand ? "Expand All" : "Collapse All"}</span>
+                </div>
+                <div id="chip" className="chip">
+                  {this.props.searchInput && (
+                    <Chip
+                      color="white"
+                      label={this.props["searchInput"]}
+                      value={this.props["searchInput"]}
+                      onDelete={(e) => this.props.deleteSearchInput(e)}
+                      size={"small"}
+                    />
                   )}
-              {/* {resultList.loader && <Loader />} */}
-            </div>
-          </Grid>
+                </div>
+                {!resultList.loader &&
+                resultList.success &&
+                accordionObj.length !== 0
+                  ? accordionObj.map((protocol, i) => (
+                      <div key={protocol.protocolNumber}>
+                        <SearchListingSection
+                          setExpanded={this.setExpanded}
+                          data={protocol}
+                          key={protocol.protocolNumber}
+                          compareTwoProtocol={this.props.compareTwoProtocol}
+                          selection={this.props.selection}
+                        />
+                      </div>
+                    ))
+                  : resultList.search && (
+                      <div>
+                        {!resultList.loader ? (
+                          <NoResultFound />
+                        ) : (
+                          <div
+                            style={{
+                              height: 400,
+                              justifyContent: "center",
+                              alignItems: "center",
+                              display: "flex",
+                            }}
+                          >
+                            <Loader />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                {/* {resultList.loader && <Loader />} */}
+              </div>
+            </Grid>
+          )}
         </Grid>
       </div>
     );
