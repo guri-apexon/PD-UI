@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import Grid from "apollo-react/components/Grid";
 import Card from "apollo-react/components/Card";
+import ChevronRight from "apollo-react-icons/ChevronRight";
 import { viewResult } from "./protocolSlice.js";
 import dummyTable from "./dummyTable.json";
 import Loader from "../../Components/Loader/Loader";
@@ -14,8 +15,6 @@ function getStyle(style) {
   }
   return "";
 }
-
-
 
 function getElement(data) {
   let content = data[0];
@@ -74,6 +73,9 @@ class ProtocolViewClass extends React.Component {
     this.state = {
       popupVisible: false,
       subSectionData: [],
+      section: null,
+      activeSection: null,
+      activeSubSection: null,
     };
   }
 
@@ -93,7 +95,9 @@ class ProtocolViewClass extends React.Component {
         ref={this.refs[`${unq}-${item.TableIndex}`]}
       >
         {!noHeader ? (
-          <h2 style={{ paddingTop: 10, fontSize: "16px", marginBottom: "10px" }}>
+          <h2
+            style={{ paddingTop: 10, fontSize: "16px", marginBottom: "10px" }}
+          >
             {item.TableName}
           </h2>
         ) : null}
@@ -203,6 +207,7 @@ class ProtocolViewClass extends React.Component {
   };
 
   handleClick(id) {
+    this.setState({ section: id });
     // if (!this.state.popupVisible) {
     //   // attach/remove event handler
     //   document.addEventListener("click", this.handleOutsideClick, false);
@@ -237,6 +242,7 @@ class ProtocolViewClass extends React.Component {
   }
 
   handleOutsideClick(e) {
+    
     // ignore clicks on the component itself
     if (e.target && this.node && this.node.contains(e.target)) {
       return;
@@ -276,6 +282,8 @@ class ProtocolViewClass extends React.Component {
           behavior: "smooth",
           block: "start",
         });
+        // this.setState({ activeSection: id });
+      this.setState({ activeSubSection: id, activeSection: this.state.section });
       this.hideEle();
     };
 
@@ -308,11 +316,16 @@ class ProtocolViewClass extends React.Component {
             >
               {listData.map((item) => (
                 <button
-                  className="btn btn1"
+                  className={`btn btn1 ${
+                    this.state.activeSection === item.id ? "active" : ""
+                  }`}
                   onClick={() => this.handleClick(item.id)}
                   key={`section-${item.id}`}
                 >
-                  <span style={{ marginLeft: "16px" }}>{item.section}</span>
+                  <span style={{ marginLeft: "16px" }}>{item.section} </span>
+                  <span style={{ float: "right", fontSize: "1em" }}>
+                    <ChevronRight className="view-more-icon" variant="small" style={{ float: "right", fontSize: "1em" }} />
+                  </span>
                 </button>
               ))}
             </div>
@@ -325,7 +338,9 @@ class ProtocolViewClass extends React.Component {
                 {this.state.subSectionData.map((data, i) => (
                   <span>
                     <a
-                      className="btn btn1"
+                      className={`btn btn1 ${
+                        this.state.activeSubSection === data.id ? "active" : ""
+                      }`}
                       key={`sub-section-${data.id}`}
                       onClick={() => scrollHide(data.id)}
                     >

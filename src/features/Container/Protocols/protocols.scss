@@ -7,6 +7,10 @@
     width: 100%;
     font-size: 12px;
   }
+  table tbody tr td {
+    padding: 5px;
+    width: 1%;
+  }
   thead {
     display: none;
   }
@@ -223,7 +227,7 @@
   //   border-left: 8px solid #4CAF50;
   // }
 
-  .btn1:hover, .btn1:active, .btn1:focus  {
+  .btn1:hover, .btn1:active, .btn1:focus, .active  {
     border-left: 8px solid #0491f3;
     background-color: #0491f336;
   }
