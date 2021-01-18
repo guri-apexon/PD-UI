@@ -15,6 +15,7 @@ import IconButton from "apollo-react/components/IconButton";
 import Table, { compareStrings } from "apollo-react/components/Table";
 import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
+import axios from "axios";
 
 import "./ProtocolTable.scss";
 
@@ -231,9 +232,10 @@ const ExpandableComponent = ({ row }) => {
         </Typography>
         <Typography className="fw-8" variant="body2">
           {row.fileName ? (
-            <Link to={row.documentFilePath} target="_blank">
-              {row.fileName}
-            </Link>
+            // <Link to={row.documentFilePath} target="_blank">
+            //   {row.fileName}
+            // </Link>
+            <a href="javascript:void(0)" onClick={() => handleDownload(row)}>{row.fileName}</a> // eslint-disable-line
           ) : (
             "-"
           )}
@@ -243,6 +245,22 @@ const ExpandableComponent = ({ row }) => {
     </div>
   );
 };
+
+const handleDownload = async (row) => {
+  let url;
+  console.log("Rows", row);
+  const resp = await axios.get(
+    `http://ca2spdml01q:8000/api/download_file/?filePath=${row.documentFilePath}`
+  );
+
+  url = `http://ca2spdml06d:3000/${resp.data}`;
+  window.open(
+    url,
+    "_blank" // <- This is what makes it open in a new window.
+  );
+  // console.log(url);
+};
+
 
 const ProtocolTable = ({ initialRows, pageRows }) => {
   const dispatch = useDispatch();

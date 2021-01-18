@@ -26,7 +26,6 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   let [formValues, setFormValues] = useState(initialFormValues);
   const [inputValue2, setInputValue2] = React.useState();
   const [documentValue2, setDocumentValue2] = React.useState();
-  // const [value2, setValue2] = React.useState({amendmentNumber:'', documentStatus:''});
   const [value2, setValue2] = React.useState({amendmentNumber:undefined, documentStatus:undefined});
   const [formErrorValues, setFormErrorValues] = useState(
     initialFormErrorValues
@@ -79,6 +78,12 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       } else {
         tempValues[fieldName] = e.target.value;
       }
+      if(['protocolNumber', 'projectID'].includes(fieldName) && e.target.value.trim().length > 0 ){
+        tempError.protocolNumber.error= false;
+        tempError.protocolNumber.errorMessage = " ";
+        tempError.projectID.error= false;
+        tempError.projectID.errorMessage = " ";
+      }
       setFormValues(tempValues);
       setFormErrorValues(tempError);
     }
@@ -99,18 +104,11 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       }
       setFormErrorValues(tempError);
       setFormValues(tempValues);
-      
-
-  
-    
     }
     if ( fieldType === "Dropdown"){
       if(dropdownValue !=null){
         dropdownFocus =
         dropdownValue && dropdownValue.label && dropdownValue.label 
-        // let setValuesTemp= _.cloneDeep(value2)
-        // setValuesTemp[fieldName]= dropdownValue
-        // setValue2(setValuesTemp);
         let tempValue2=_.cloneDeep(value2);
         tempValue2[fieldName]=dropdownValue
         setValue2(tempValue2);
@@ -120,21 +118,13 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         tempValues[fieldName] = dropdownValue ? dropdownValue : { label: "" };
         console.log('valuessssss :', tempValues.amendmentNumber, 'temppp');
         setFormValues(tempValues);
-        // formValues=tempValues;
         }
-        // else{
-        //   console.log('valuessssss :',formValues, 'form');
-        //   // dropdownFocus =  formValues[fieldName].label 
-        // }
         setFormErrorValues(tempError);
     }
   };
   
   const onFieldBlur = (fieldName, e, fieldType) => {
     let temp = _.cloneDeep(formErrorValues);
-    let tempFormValues = _.cloneDeep(formValues);
-    // console.log('drValue :', drValue,"dropfocus", dropdownFocus,'ff',tempFormValues);
-    // console.log('fieldName, e, fieldType :', fieldName, e.target.value, fieldType, formErrorValues[fieldName]);
     if (fieldType === "Textbox") {
       if (
         !e.target.value.trim().length > 0 &&
@@ -151,53 +141,14 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       setFormErrorValues(temp);
     }
     if (fieldType === "Dropdown") {
-      // console.log('fieldName, e, fieldType :', fieldName, e.target.value, fieldType, formErrorValues[fieldName], 'dropdownFocus',dropdownFocus,'dropdownFocus');
       /* istanbul ignore else */
       if ( !dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
+        if( fieldName === "amendmentNumber" ) {
+          temp.versionNumber.error=false;
+          temp.versionNumber.errorMessage='';
+        }
         temp[fieldName].error = true;
         temp[fieldName].errorMessage = "Required";
-      } else if (
-        fieldName === "documentStatus" ||
-        fieldName === "amendmentNumber"
-      ) {
-        temp[fieldName].error = false;
-        temp[fieldName].errorMessage = " ";
-        switch (fieldName) {
-          case "documentStatus":
-              if (
-                dropdownFocus === "Approved Final" &&
-                ["Y"].includes(formValues.amendmentNumber.label)
-              ) {
-                temp.amendmentNumber.error = true;
-                temp.amendmentNumber.errorMessage =
-                  "Amendment Cannot be 'Y' for Final Document";
-              } else {
-                if (tempFormValues.amendmentNumber && tempFormValues.amendmentNumber.label && tempFormValues.amendmentNumber.label.length > 0) {
-                  temp.amendmentNumber.error = false;
-                  temp.amendmentNumber.errorMessage = " ";
-                }
-              }
-            break;
-          case "amendmentNumber":
-              if (
-                dropdownFocus === "Y" &&
-                formValues.documentStatus.label === "Approved Final"
-              ) {
-                temp.amendmentNumber.error = true;
-                temp.amendmentNumber.errorMessage =
-                  "Amendment Cannot be 'Y' for Final Document";
-              } else {
-                if (
-                   dropdownFocus &&
-                    dropdownFocus.length > 0
-                ) {
-                  temp.amendmentNumber.error = false;
-                  temp.amendmentNumber.errorMessage = " ";
-                }
-              }
-            break;
-            default: break; 
-        }
       } else {
         temp[fieldName].error = false;
         temp[fieldName].errorMessage = " ";
@@ -245,8 +196,14 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
               !tempError[field].error) ||
             !tempError[field].isRequired
           ) {
-            tempError[field].error = false;
-            tempError[field].errorMessage = " ";
+            if(field === 'versionNumber' && !tempError.amendmentNumber.error && tempValues.amendmentNumber.label=== 'Y' && !tempValues.versionNumber.length) {
+              tempError[field].error = true;
+              tempError[field].errorMessage = "Required When Amendment is Y";
+              errorExist = true;
+            } else {
+              tempError[field].error = false;
+              tempError[field].errorMessage = " ";
+            }
           } else {
             tempError[field].error = true;
             tempError[field].errorMessage = "Required";
@@ -275,6 +232,18 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
           break;
         default:
           break;
+      }
+      if(!tempValues.protocolNumber.length && !tempValues.projectID.length ){
+        tempError.protocolNumber.error= true;
+        tempError.protocolNumber.errorMessage = "Please enter either protocol or project id or both";
+        tempError.projectID.error= true;
+        tempError.projectID.errorMessage = "Please enter either protocol or project id or both";
+        errorExist=true;
+      } else {
+        tempError.protocolNumber.error= false;
+        tempError.protocolNumber.errorMessage = " ";
+        tempError.projectID.error= false;
+        tempError.projectID.errorMessage = " ";
       }
     }
     setFormErrorValues(tempError);

@@ -36,7 +36,7 @@ export const initialFormErrorValues = {
     type: "Textbox",
   },
   versionNumber: {
-    isRequired: true,
+    isRequired: false,
     error: false,
     errorMessage: " ",
     // regex: "^[1-9]*?.[0-9]{0,2}$", // eslint-disable-line
