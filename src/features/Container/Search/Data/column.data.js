@@ -2,6 +2,9 @@ import CheckBox from "apollo-react/components/Checkbox";
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+
+import { covertMMDDYYYY } from "../../../../utils/utilFunction";
+
 const arr = [];
 const CheckBoxCell = ({ row: { handleSelectRow, id, selection } }) => {
   return (
@@ -34,6 +37,13 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
   };
   return <a onClick={() => handleDownload(row)}>{row[key]}</a>;
 };
+const dateFormat = ({ row, column: { accessor: key } }) => {
+  // console.log("--------------", row);
+  // console.log("MMDDYYYY",covertMMDDYYYY(row.uploadDate))
+  
+  return <>{covertMMDDYYYY(row.uploadDate)}</>;
+};
+
 const columns = [
   {
     accessor: "action",
@@ -60,6 +70,7 @@ const columns = [
   {
     header: "Upload Date",
     accessor: "uploadDate",
+    customCell: dateFormat,
   },
 
   {

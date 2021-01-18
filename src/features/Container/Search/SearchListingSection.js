@@ -56,7 +56,7 @@ const onExpandClick = (data) => {
           </div>
         </div>
 
-        <div className="width90 accordion-start">
+        <div className="width100 accordion-start">
           <Accordion
             expanded={data.expanded}
           >

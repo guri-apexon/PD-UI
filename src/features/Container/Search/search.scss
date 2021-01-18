@@ -101,11 +101,14 @@
     border-bottom: none;
   }
   .accordion-start {
+    .grid-key-value{
+      margin-right: 20px;
+    }
     td {
       a {
         text-decoration: none;
         word-break: break-word;
-        color: #333;
+        color: #0138ff;
         cursor: pointer;
         &:hover {
           text-decoration: underline;
