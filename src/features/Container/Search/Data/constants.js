@@ -315,7 +315,7 @@ export const documentStatus = {
     {
       id: 2,
       title: "Final Approved",
-      value: "active",
+      value: "final",
       content: "",
       count: "",
     },
