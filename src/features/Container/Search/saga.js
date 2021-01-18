@@ -203,7 +203,7 @@ function* updateSearchAssociated(action) {
   //ProtocolNo
   // debugger
   // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.data.AiDocId}`;
-  let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=Prot-2-01042021`;
+  let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=AKB-6548-CI-0014`;
   const associateDocs = yield call(httpCall, {
     url: associateURL,
     method: "GET",
