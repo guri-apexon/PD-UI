@@ -1,42 +1,49 @@
-const filter1 = {
+const FilterANDOR = {
   query: {
     bool: {
       must: [
         {
           multi_match: {
             query: "advanced",
-          },
-        },
-        {
-          multi_match: {
-            query: "ABCC6 deficiency MEDI4736 Monotherapy AstraZeneca",
-            fields: ["Indication", "sponsor"],
+            fields: [],
           },
         },
       ],
-    },
-  },
-};
-
-const filter2 = {
-  query: {
-    filtered: {
-      query: {
-        query_string: {
-          query: "*tom*",
-          default_operator: "OR",
-          fields: ["username"],
-        },
-      },
       filter: {
         bool: {
           must: [
-            { term: { isActive: "1" } },
-            { term: { isPrivate: "0" } },
-            { term: { isOwner: "1" } },
+            {
+              terms: {
+                "Indication.keyword": [
+                  "none",
+                  "Numerics word , Countries, Country (..",
+                ],
+              },
+            },
+            {
+              terms: {
+                "SponsorName.keyword": [
+                  "AstraZeneca",
+                  "Numerics word , Countries, Country (..",
+                ],
+              },
+            },
           ],
         },
       },
     },
   },
+  size: 1000,
+  _source: [
+    "AiDocId",
+    "ProtocolNo",
+    "ProtocolTitle",
+    "SponsorName",
+    "Indication",
+    "DocumentStatus",
+    "phase",
+    "approval_date",
+    "uploadDate",
+    "MoleculeDevice",
+  ],
 };

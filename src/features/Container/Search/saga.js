@@ -185,7 +185,7 @@ function* updateSearchResult(action) {
 
 // -----Updating and adding Associate Protocol to a Single protocol when individual expand is clicked
 function* updateSearchAssociated(action) {
-  console.log("assoc pay",action.payload.data.AiDocId)
+  console.log("assoc pay",action.payload.data.protocolNumber)
   let tempRes = _.cloneDeep(action.payload.obj);
   let foundIndex = tempRes.findIndex(
     (obj) => obj.id === action.payload.data.id
@@ -202,8 +202,8 @@ function* updateSearchAssociated(action) {
   yield put(getSearchResult(initialObj));
   //ProtocolNo
   // debugger
-  // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.data.AiDocId}`;
-  let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=SSR_AKB-6548-CI-0014`;
+  let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}`;
+  // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=SSR_AKB-6548-CI-0014`;
   const associateDocs = yield call(httpCall, {
     url: associateURL,
     method: "GET",

@@ -235,43 +235,77 @@ function constructFilterArray(data) {
   //   phases: ["Phase 0", "Phase 1a"],
   //   status: ["Draft", "Final Approved"],
   // };
+
   let queryArr = [];
 
-  for (let i = 0; i < data.sponsors.length; i++) {
+  if (data.indications.length > 0) {
     let query = {
-      term: {
-        "sponsor.keyword": data.sponsors[i],
+      terms: {
+        "Indication.keyword": data.indications,
       },
     };
     queryArr.push(query);
   }
-  for (let i = 0; i < data.indications.length; i++) {
+  if (data.sponsors.length > 0) {
     let query = {
-      term: {
-        "Indication.keyword": data.indications[i],
+      terms: {
+        "SponsorName.keyword": data.sponsors,
       },
     };
     queryArr.push(query);
   }
-  for (let i = 0; i < data.phases.length; i++) {
+  if (data.phases.length > 0) {
     let query = {
-      term: {
-        "phase.keyword": data.phases[i],
+      terms: {
+        "phase.keyword": data.phases,
       },
     };
     queryArr.push(query);
   }
-  for (let i = 0; i < data.status.length; i++) {
+  if (data.status.length > 0) {
     let query = {
-      term: {
-        "DocumentStatus.keyword": data.status[i].toLowerCase(),
+      terms: {
+        "DocumentStatus.keyword": data.status,
       },
     };
     queryArr.push(query);
   }
+
+  // for (let i = 0; i < data.sponsors.length; i++) {
+  //   let query = {
+  //     term: {
+  //       "sponsor.keyword": data.sponsors[i],
+  //     },
+  //   };
+  //   queryArr.push(query);
+  // }
+  // for (let i = 0; i < data.indications.length; i++) {
+  //   let query = {
+  //     term: {
+  //       "Indication.keyword": data.indications[i],
+  //     },
+  //   };
+  //   queryArr.push(query);
+  // }
+  // for (let i = 0; i < data.phases.length; i++) {
+  //   let query = {
+  //     term: {
+  //       "phase.keyword": data.phases[i],
+  //     },
+  //   };
+  //   queryArr.push(query);
+  // }
+  // for (let i = 0; i < data.status.length; i++) {
+  //   let query = {
+  //     term: {
+  //       "DocumentStatus.keyword": data.status[i].toLowerCase(),
+  //     },
+  //   };
+  //   queryArr.push(query);
+  // }
   let final = {
     bool: {
-      should: queryArr,
+      must: queryArr,
     },
   };
   // console.log(JSON.stringify(queryArr));
@@ -311,7 +345,7 @@ function getTOCArray(toc) {
       }
     }
   }
-  
+
   return newTOC;
 }
 // getTOCArray();
