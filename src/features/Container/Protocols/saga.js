@@ -45,19 +45,24 @@ function parsedData(data) {
   return JSON.parse(JSON.parse(data));
 }
 
+function captalize(data) {
+  return data.trim().toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+}
+
 function getTocSections(toc) {
   const sectionList = [];
   const list = [];
   toc.data.map((item) => {
-    let section_level = item[0];
-    let CPT_section = item[1];
+    let file_section_level = item[8];
+    let level_1_CPT_section = captalize(item[6]);
+    let type = item[2];
     if (
-      section_level === "1" &&
-      CPT_section !== "Unmapped" &&
-      !sectionList.includes(CPT_section)
+      file_section_level === "1" &&
+      level_1_CPT_section !== "Unmapped" &&
+      !sectionList.includes(level_1_CPT_section)
     ) {
-      list.push({ section: `${CPT_section}`, id: `TOC-${item[5]}` });
-      sectionList.push(CPT_section);
+      list.push({ section: `${level_1_CPT_section}`, id: `TOC-${item[9]}` });
+      sectionList.push(level_1_CPT_section);
     }
   });
   return list;
@@ -82,7 +87,8 @@ function* getProtocolToc(action) {
     url: URL,
     method: "GET",
   };
-  const data = yield call(httpCall, config);
+  try {
+    const data = yield call(httpCall, config);
   console.log(data);
   if (data.success) {
     const toc = parsedData(data.data.iqvdataToc);
@@ -96,7 +102,31 @@ function* getProtocolToc(action) {
       soaSections: getSoaSections(soa),
     };
     yield put(getProcotoclToc(viewData));
+  } else {
+    const viewData = {
+      iqvdataSoa: null,
+      iqvdataSummary: null,
+      iqvdataToc: null,
+      loader: false,
+      tocSections: null,
+      soaSections: null,
+      err: 'No data found'
+    };
+    yield put(getProcotoclToc(viewData));
   }
+  } catch (err) {
+    const viewData = {
+      iqvdataSoa: null,
+      iqvdataSummary: null,
+      iqvdataToc: null,
+      loader: false,
+      tocSections: null,
+      soaSections: null,
+      err: 'No data found'
+    };
+    yield put(getProcotoclToc(viewData));
+  }
+  
 }
 
 function getElement(style) {

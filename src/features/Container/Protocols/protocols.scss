@@ -1,20 +1,26 @@
 .protocols {
-  html {
-    scroll-behavior: smooth;
+  .view-wrapper {
+    html {
+      scroll-behavior: smooth;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 12px;
+    }
+    table tbody tr td {
+      padding: 5px;
+      width: 1%;
+    }
+    thead {
+      display: none;
+    }
+    table tbody tr th:first-child { display: none; }
   }
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    font-size: 12px;
-  }
-  table tbody tr td {
-    padding: 5px;
-    width: 1%;
-  }
-  thead {
-    display: none;
-  }
-  table tbody tr th:first-child { display: none; }
+  
+
+  // table tbody tr:nth-child(1) { font-weight: bold; background-color: #f2f2f2; }
+  
   // margin-top: 70px;
   padding-left: 20px;
   max-width: 1140px;
@@ -219,6 +225,7 @@
     cursor: pointer;
     background: none;
     border-left: 8px solid transparent;
+    text-transform: capitalize;
   }
 
   // .btn1 {

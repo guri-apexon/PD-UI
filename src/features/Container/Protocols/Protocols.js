@@ -127,7 +127,7 @@ const Protocols = (props) => {
 
                 <div className="tab-container">
                   {value === 0 && <ProtocolOverview data={data} />}
-                  {value === 1 && <ProtocolViewClass />}
+                  {value === 1 && <ProtocolViewClass protId ={data.id} />}
                   {value === 2 && (
                     <AmendmentCompare prot11={prot.prot1} prot22={prot.prot2} />
                   )}

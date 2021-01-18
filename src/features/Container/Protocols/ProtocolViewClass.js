@@ -80,7 +80,7 @@ class ProtocolViewClass extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getProtocolIqvdata();
+    this.props.getProtocolIqvdata(this.props.protId);
   }
 
   getTable(item, unq, noHeader = false) {
@@ -112,6 +112,11 @@ class ProtocolViewClass extends React.Component {
     let type = data[2];
     let content = data[3];
     let font_info = data[4];
+    let level_1_CPT_section = data[5];
+    let file_section = data[6];
+    let file_section_num = data[7];
+    let file_section_level = data[8];
+    let seq_num = data[9];
     if (!content) {
       return null;
     }
@@ -128,9 +133,9 @@ class ProtocolViewClass extends React.Component {
         return (
           <div
             className="bar"
-            id={`TOC-${data[5]}`}
-            key={`TOC-${data[5]}`}
-            ref={this.refs[`TOC-${data[5]}`]}
+            id={`TOC-${seq_num}`}
+            key={`TOC-${seq_num}`}
+            ref={this.refs[`TOC-${seq_num}`]}
           >
             <h1 className={`heading1 ${isBold}`} style={{ fontSize: "16px" }}>
               {content}
@@ -141,13 +146,13 @@ class ProtocolViewClass extends React.Component {
         return (
           <div
             className="bar2"
-            id={`TOC-${data[5]}`}
-            key={`TOC-${data[5]}`}
-            ref={this.refs[`TOC-${data[5]}`]}
+            id={`TOC-${seq_num}`}
+            key={`TOC-${seq_num}`}
+            ref={this.refs[`TOC-${seq_num}`]}
           >
             <h2
-              id={`CPT_section-${data[5]}`}
-              key={`CPT_section-${data[5]}`}
+              id={`CPT_section-${seq_num}`}
+              key={`CPT_section-${seq_num}`}
               className={`heading2 ${isBold}`}
               style={{ fontSize: "14px" }}
             >
@@ -159,13 +164,13 @@ class ProtocolViewClass extends React.Component {
         return (
           <div
             className="bar2"
-            id={`TOC-${data[5]}`}
-            key={`TOC-${data[5]}`}
-            ref={this.refs[`TOC-${data[5]}`]}
+            id={`TOC-${seq_num}`}
+            key={`TOC-${seq_num}`}
+            ref={this.refs[`TOC-${seq_num}`]}
           >
             <h3
-              id={`CPT_section-${data[5]}`}
-              key={`CPT_section-${data[5]}`}
+              id={`CPT_section-${seq_num}`}
+              key={`CPT_section-${seq_num}`}
               className={`heading3 ${isBold}`}
               style={{ fontSize: "14px" }}
             >
@@ -177,8 +182,8 @@ class ProtocolViewClass extends React.Component {
         if (CPT_section === "Unmapped") {
           return (
             <p
-              id={`CPT_section-${data[5]}`}
-              key={`CPT_section-${data[5]}`}
+              id={`CPT_section-${seq_num}`}
+              key={`CPT_section-${seq_num}`}
               className={font_info.IsBold ? "thick" : ""}
               style={{ fontSize: "12px" }}
             >
@@ -193,14 +198,30 @@ class ProtocolViewClass extends React.Component {
                 <br />
               </div>
             ) : null}
-            <span
-              id={`CPT_section-${data[5]}`}
-              key={`CPT_section-${data[5]}`}
-              className={`indent ${isBold}`}
-              style={{ fontSize: "12px" }}
-            >
-              {content}
-            </span>
+            {type === "header" ? (
+              <div
+                className="bar"
+                id={`TOC-${seq_num}`}
+                key={`TOC-${seq_num}`}
+                ref={this.refs[`TOC-${seq_num}`]}
+              >
+                <h1
+                  className={`heading1 ${isBold}`}
+                  style={{ fontSize: "16px" }}
+                >
+                  {content}
+                </h1>
+              </div>
+            ) : (
+              <span
+                id={`CPT_section-${seq_num}`}
+                key={`CPT_section-${seq_num}`}
+                className={`indent ${isBold}`}
+                style={{ fontSize: "12px" }}
+              >
+                {content}
+              </span>
+            )}
           </>
         );
     }
@@ -242,7 +263,6 @@ class ProtocolViewClass extends React.Component {
   }
 
   handleOutsideClick(e) {
-    
     // ignore clicks on the component itself
     if (e.target && this.node && this.node.contains(e.target)) {
       return;
@@ -282,8 +302,11 @@ class ProtocolViewClass extends React.Component {
           behavior: "smooth",
           block: "start",
         });
-        // this.setState({ activeSection: id });
-      this.setState({ activeSubSection: id, activeSection: this.state.section });
+      // this.setState({ activeSection: id });
+      this.setState({
+        activeSubSection: id,
+        activeSection: this.state.section,
+      });
       this.hideEle();
     };
 
@@ -293,13 +316,38 @@ class ProtocolViewClass extends React.Component {
           style={{
             display: "inline-block",
             margin: "auto",
+            marginTop: "10%",
           }}
         >
           <Loader />
         </div>
       );
     }
-    console.log("refs", refs);
+
+    if (view.err) {
+      return (
+        <div
+          style={{
+            display: "inline-block",
+            margin: "auto",
+            marginTop: "10%",
+          }}
+        >
+          {view.err}
+        </div>
+      );
+    }
+
+    //     const rows = [
+    //       ["name1", "city1", "some other info"],
+    //       ["name2", "city2", "more info"]
+    //   ];
+
+    //   let csvContent = "data:text/csv;charset=utf-8,"
+    //       + rows.map(e => e.join(",")).join("\n");
+    //       let encodedUri = encodeURI(csvContent);
+    // window.open(encodedUri);
+    console.log("props", this.props);
     console.log("view", view);
     return (
       <div className="view-wrapper">
@@ -324,7 +372,11 @@ class ProtocolViewClass extends React.Component {
                 >
                   <span style={{ marginLeft: "16px" }}>{item.section} </span>
                   <span style={{ float: "right", fontSize: "1em" }}>
-                    <ChevronRight className="view-more-icon" variant="small" style={{ float: "right", fontSize: "1em" }} />
+                    <ChevronRight
+                      className="view-more-icon"
+                      variant="small"
+                      style={{ float: "right", fontSize: "1em" }}
+                    />
                   </span>
                 </button>
               ))}
@@ -377,14 +429,15 @@ class ProtocolViewClass extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getProtocolIqvdata: () =>
+    getProtocolIqvdata: (id) =>
       dispatch({
         type: "GET_PROTOCOL_TOC_SAGA",
-        payload: "e5c6a06d-166f-478f-b5de-73543a46261e",
+        payload: id,
       }),
   };
 };
-
+// e5c6a06d-166f-478f-b5de-73543a46261e old
+// 44671f63-8166-4f4b-a957-cba494effc5a new
 const mapStateToProps = (state) => {
   const { protocol } = state;
   return {
