@@ -118,14 +118,14 @@ function App(props) {
   return (
     <>
       <div>
-        {/* <IdleTimer
+        <IdleTimer
           ref={idleTimer}
-          timeout={1000*60*1}
+          timeout={1000*5*60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}
           debounce={250}
-        /> */}
+        />
         {isTimedOut ? (
           <NavigationBar
             LogoComponent={() => (

@@ -320,6 +320,7 @@ class SearchPanel extends React.Component {
                         key={protocol.protocolNumber}
                         compareTwoProtocol={this.props.compareTwoProtocol}
                         selection={this.props.selection}
+                        history={this.props.history}
                       />
                     </div>
                   ))

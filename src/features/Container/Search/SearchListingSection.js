@@ -10,6 +10,7 @@ import Switch from "apollo-react/components/Switch";
 import Card from "apollo-react/components/Card";
 import Divider from "apollo-react/components/Divider";
 import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
 //const [value, setValue] = React.useState(true);
 
 //const handleChange = (e, checked) => {
@@ -20,16 +21,38 @@ const SearchListingSection = ({
   data,
   setExpanded,
   compareTwoProtocol,
-  selection
+  selection,
+  history,
 }) => {
   // console.log("--------",data)
- const dispatch = useDispatch();
-const onExpandClick = (data) => {
-  // if(!data.expanded){
-  //   dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
-  // }
-  setExpanded(data.protocolNumber,{id:data.protocolNumber,expanded:!data.expanded}, data)
-}
+  const dispatch = useDispatch();
+  const onExpandClick = (data) => {
+    // if(!data.expanded){
+    //   dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
+    // }
+    setExpanded(
+      data.protocolNumber,
+      { id: data.protocolNumber, expanded: !data.expanded },
+      data
+    );
+  };
+  const handleTitle = async (title) => {
+    try {
+      const resp = await axios.get(
+        `http://ca2spdml01q:8000/api/latest_approved_document/?protocol=${title}`
+      );
+      const data = resp.data;
+      // debugger
+      if (data) {
+        history.push(`/protocols?protocolId=${data.id}`);
+      } else {
+        alert("There is no Approved Final version for this protocol.");
+      }
+      console.log("Title", data);
+    } catch (e) {
+      alert("Something went wrong.");
+    }
+  };
   return (
     <Card
       interactive
@@ -46,7 +69,10 @@ const onExpandClick = (data) => {
           <div className="width85">
             <div className="divBlock">
               <span className="blueText">
-                Protocol: <strong>{data.protocolNumber}</strong>
+                Protocol:{" "}
+                <strong onClick={() => handleTitle(data.protocolNumber)}>
+                  {data.protocolNumber}
+                </strong>
               </span>
             </div>
             <div className="divBlock ellipse">{data.protocolDescription}</div>
@@ -57,20 +83,22 @@ const onExpandClick = (data) => {
         </div>
 
         <div className="width100 accordion-start">
-          <Accordion
-            expanded={data.expanded}
-          >
+          <Accordion expanded={data.expanded}>
             {/* <Accordion > */}
             <AccordionSummary
               style={{ maginLeft: 24 }}
-              onClick={() =>onExpandClick(data)}
+              onClick={() => onExpandClick(data)}
             >
               {/* // onClick={() => setExpanded(data.protocolNumber)} */}
               <Typography>Protocol Data</Typography>
             </AccordionSummary>
             <AccordionDetails>
               <div className="width100">
-                <SearchCard data={data} compareTwoProtocol={compareTwoProtocol} selection={selection}/>
+                <SearchCard
+                  data={data}
+                  compareTwoProtocol={compareTwoProtocol}
+                  selection={selection}
+                />
               </div>
             </AccordionDetails>
           </Accordion>
@@ -80,4 +108,4 @@ const onExpandClick = (data) => {
   );
 };
 
-export default SearchListingSection
+export default SearchListingSection;
