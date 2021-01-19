@@ -56,7 +56,7 @@ const SearchListingSection = ({
   return (
     <Card
       interactive
-      style={{ width: "99%", margin: "10px", float: "left", marginTop: 2 }}
+      style={{ width: "99%", margin: "10px", marginTop: 2 }}
     >
       <div className="marginTop width100 marginLeft10">
         <div className="width100">
