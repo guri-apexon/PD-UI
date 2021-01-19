@@ -62,13 +62,32 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
   );
 };
 
-const Cell = ({ row, column }) => (
-  <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>
-);
+const Cell = ({ row, column }) => {
+  if (row[column.accessor] && row[column.accessor].length > 20) {
+    return <Tooltip
+      variant="light"
+      title={row[column.accessor]}
+      placement="top"
+    >
+      <div className='long-text' style={{ fontWeight: 800 }}>{row[column.accessor]}</div>
+    </Tooltip>
+  }
 
-const ProtocolLink = ({ row, column: { accessor: key } }) => (
-  <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
-);
+  return <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>
+};
+
+const ProtocolLink = ({ row, column: { accessor: key } }) => {
+  if (row[key] && row[key].length > 20) {
+    return <Tooltip
+      variant="light"
+      title={row[key]}
+      placement="top"
+    >
+      <div className='long-text'><Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link></div>
+    </Tooltip>
+  }
+  return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
+};
 
 const iconStatus = (status) => {
   switch (status) {
@@ -163,12 +182,12 @@ const columns = [
     header: "Project ID / CRM #",
     accessor: "projectId",
     sortFunction: compareStrings,
-    width: "10%",
+    width: "12%",
     customCell: Cell,
   },
   {
     header: "Protocol Title",
-    accessor: "shortTitle",
+    accessor: "protocolTitle",
     sortFunction: compareStrings,
     customCell: ProtocolTitle,
   },

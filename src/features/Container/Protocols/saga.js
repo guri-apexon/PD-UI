@@ -53,15 +53,22 @@ function getTocSections(toc) {
   const sectionList = [];
   const list = [];
   toc.data.map((item) => {
-    let file_section_level = item[8];
+    let file_section_level = item[8].toString();
+    let heading = item[4].font_style;
+    if (!file_section_level && heading === 'Heading1') {
+      file_section_level = "1";
+    }
     let level_1_CPT_section = captalize(item[6]);
+    let section_num = captalize(item[7]);
+    
     let type = item[2];
     if (
+      section_num &&
       file_section_level === "1" &&
       level_1_CPT_section !== "Unmapped" &&
       !sectionList.includes(level_1_CPT_section)
     ) {
-      list.push({ section: `${level_1_CPT_section}`, id: `TOC-${item[9]}` });
+      list.push({ section: `${section_num} ${level_1_CPT_section}`, id: `TOC-${item[9]}` });
       sectionList.push(level_1_CPT_section);
     }
   });
