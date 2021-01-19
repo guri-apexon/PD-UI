@@ -7,5 +7,5 @@ export const convertData = (date) => {
 export const covertMMDDYYYY = (date) => {
   console.log("coming", date);
   const someday = moment(date);
-  return someday.format("MM-DD-YYYY");
+  return someday.format("DD-MMM-YYYY");
 };
