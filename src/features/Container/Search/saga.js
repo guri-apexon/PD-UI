@@ -185,7 +185,7 @@ function* updateSearchResult(action) {
 
 // -----Updating and adding Associate Protocol to a Single protocol when individual expand is clicked
 function* updateSearchAssociated(action) {
-  console.log("assoc pay",action.payload.data.protocolNumber)
+  console.log("assoc pay", action.payload.data.protocolNumber);
   let tempRes = _.cloneDeep(action.payload.obj);
   let foundIndex = tempRes.findIndex(
     (obj) => obj.id === action.payload.data.id
@@ -202,7 +202,7 @@ function* updateSearchAssociated(action) {
   yield put(getSearchResult(initialObj));
   //ProtocolNo
   // debugger
-  let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}`;
+  let associateURL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}`;
   // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=SSR_AKB-6548-CI-0014`;
   const associateDocs = yield call(httpCall, {
     url: associateURL,
@@ -265,14 +265,13 @@ function* updateAllSearchAssociated(action) {
 }
 
 function* getRecentData(action) {
-  if(action.payload === '0') {
+  if (action.payload === "0") {
     const recentDate = {
-      from: '',
-      to: ''
-    }
-    yield put(getRecentDate(recentDate))
+      from: "",
+      to: "",
+    };
+    yield put(getRecentDate(recentDate));
   } else {
-
     let newDate = new Date();
     newDate.setMonth(newDate.getMonth() - parseInt(action.payload));
     console.log("date", newDate);
@@ -280,10 +279,10 @@ function* getRecentData(action) {
     const getDate = momDate.format("YYYYMMDDHHMMSS");
     const recentDate = {
       from: getDate,
-      to: 'now/d'
-    }
+      to: "now/d",
+    };
     console.log("recentDate", recentDate);
-    yield put(getRecentDate(recentDate))
+    yield put(getRecentDate(recentDate));
   }
   // try {
   //   // const url = `http://localhost:4000/filter?from=${getDate}&to=now/d`;
@@ -333,9 +332,9 @@ function* getDataByRange(action) {
   console.log("to", to);
   const rangeDate = {
     from,
-    to
-  }
-  yield put(getRangeDate(rangeDate))
+    to,
+  };
+  yield put(getRangeDate(rangeDate));
 
   // try {
   //   // const url = `http://localhost:4000/filter/?from=${from}&to=${to}`;
@@ -423,6 +422,7 @@ function createJSONFormat(data) {
       followed: false,
       rows: [],
       rowsLoading: true,
+      isActive: data[i]._source.is_active,
     };
     arr.push(obj);
   }
@@ -438,7 +438,13 @@ function getUniqObject(obj) {
       return obj.find((a) => a.protocolNumber === protocolNumber);
     }
   );
-  return uniqueObj;
+  // debugger;
+  return getOnlyActiveItem(uniqueObj);
+}
+function getOnlyActiveItem(obj) {
+  let activeObj = obj.filter((item) => item.isActive !== 0);
+  // debugger
+  return activeObj;
 }
 function setAsssociateProtocols(id, data, associateDocs) {
   // console.log('id, data, associateDocs :', id, data, associateDocs);

@@ -432,6 +432,7 @@ app.get("/elastic", (req, res) => {
       "approval_date",
       "uploadDate",
       "MoleculeDevice",
+      "is_active"
     ],
   };
 

@@ -287,7 +287,7 @@ class SearchPanel extends React.Component {
                       ))}
                     </SelectButton>
                   </div>
-                  <div
+                  {/* <div
                     className="expand-all"
                     onClick={() => this.onExpandAllClick()}
                   >
@@ -295,7 +295,7 @@ class SearchPanel extends React.Component {
                     <span>
                       {!defaultExpand ? "Expand All" : "Collapse All"}
                     </span>
-                  </div>
+                  </div> */}
                   <div id="chip" className="chip">
                     {this.props.searchInput && (
                       <Chip
