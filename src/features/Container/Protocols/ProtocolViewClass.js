@@ -281,15 +281,19 @@ class ProtocolViewClass extends React.Component {
 
   render() {
     const { view } = this.props;
-    const listData = [
-      { section: "Table of Contents", id: "Toc" },
-      { section: "Schedule of Assessments", id: "SOA" },
-    ];
+    const listData = [];
 
     const subSections = {
       TOC: view.tocSections,
       SOA: view.soaSections,
     };
+
+    if (subSections.TOC && subSections.TOC.length) {
+      listData.push( { section: "Table of Contents", id: "Toc" })
+    }
+    if (subSections.SOA && subSections.SOA.length) {
+      listData.push({ section: "Schedule of Assessments", id: "SOA" })
+    }
     const refs = this.state.subSectionData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
@@ -395,6 +399,7 @@ class ProtocolViewClass extends React.Component {
                       }`}
                       key={`sub-section-${data.id}`}
                       onClick={() => scrollHide(data.id)}
+                      style={{width: '95%'}}
                     >
                       <span
                         style={{ marginLeft: "16px" }}
@@ -412,7 +417,7 @@ class ProtocolViewClass extends React.Component {
               scrollPadding: "50px 0px 0px 50px",
               padding: "10px 16px",
               overflowY: "scroll",
-              height: "400px",
+              height: "65vh",
             }}
           >
             {view.iqvdataToc.data.length &&
