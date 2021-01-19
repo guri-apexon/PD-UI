@@ -413,7 +413,7 @@ function createJSONFormat(data) {
     let obj = {
       protocolNumber: data[i]._source.ProtocolNo,
       AiDocId: data[i]._source.AiDocId,
-      protocolDescription: data[i]._source.Title,
+      protocolDescription: data[i]._source.ProtocolTitle,
       indication: data[i]._source.Indication,
       phase: data[i]._source.phase,
       sponsor: data[i]._source.SponsorName,
