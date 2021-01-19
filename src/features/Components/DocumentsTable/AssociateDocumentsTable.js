@@ -2,14 +2,31 @@ import Table from "apollo-react/components/Table";
 import React from "react";
 import moment from "moment";
 import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
 import _ from "lodash";
 
-const Cell = ({ row, column }) => (
-  <a href={row.documentFilePath} target="_blank">
-    {row.fileName}
-  </a>
-);
+// const Cell = ({ row, column }) => (
+//   <a href={row.documentFilePath} target="_blank">
+//     {row.fileName}
+//   </a>
+// );
+const DownloadLink = ({ row, column: { accessor: key } }) => {
+  let url;
+  const handleDownload = async (row) => {
+    console.log("Rows", row);
+    const resp = await axios.get(
+      `http://ca2spdml01q:8000/api/download_file/?filePath=${row.documentFilePath}`
+    );
 
+    url = `http://ca2spdml06d:3000/${resp.data}`;
+    window.open(
+      url,
+      "_blank" // <- This is what makes it open in a new window.
+    );
+    // console.log(url);
+  };
+  return <a href="javascript:void(0)" onClick={() => handleDownload(row)}>{row[key]}</a>; // eslint-disable-line
+};
 // const VersionCell = ({ row, column }) => (
 //   <a href="/" target="_blank">
 //     {row.VersionNumber}
@@ -40,7 +57,7 @@ const columns = [
   {
     accessor: "fileName",
     header: "Source Document",
-    customCell: Cell,
+    customCell: DownloadLink,
   },
   {
     header: "Uploaded Date",
