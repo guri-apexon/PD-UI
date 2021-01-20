@@ -439,13 +439,13 @@ function getUniqObject(obj) {
     }
   );
   // debugger;
-  return getOnlyActiveItem(uniqueObj);
+  return uniqueObj;
 }
-function getOnlyActiveItem(obj) {
-  let activeObj = obj.filter((item) => item.isActive !== 0);
-  // debugger
-  return activeObj;
-}
+// function getOnlyActiveItem(obj) {
+//   let activeObj = obj.filter((item) => item.isActive !== 0);
+//   // debugger
+//   return activeObj;
+// }
 function setAsssociateProtocols(id, data, associateDocs) {
   // console.log('id, data, associateDocs :', id, data, associateDocs);
   let arr =

@@ -13,6 +13,29 @@ import IdleTimer from "react-idle-timer";
 
 import SessionExpired from "./SessionOut";
 
+function createCookie(name, value, days) {
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    var expires = "; expires=" + date.toGMTString();
+  } else var expires = "";
+  document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function readCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == " ") c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+function eraseCookie(name) {
+  createCookie(name, "", -1);
+}
+
 function App(props) {
   const idleTimer = useRef(null);
   let history = useHistory();
@@ -100,7 +123,12 @@ function App(props) {
   const handleOnIdle = (event) => {
     console.log("user is idle", event);
     setIsTimeOut(true);
-    window.location.href = "http://www.google.com";
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      eraseCookie(cookies[i].split("=")[0]);
+    }
+    localStorage.setItem("isLoggedIn", false);
+    window.location.href = "https://ca2utmsa04q.quintiles.net:8080/v1/login";
     // console.log("p", props);
     // console.log("last active", idleTimer.getLastActiveTime());
     // const isTimedOut = isTimedOut;
@@ -120,7 +148,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000*5*60}
+          timeout={1000 * 5 * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}

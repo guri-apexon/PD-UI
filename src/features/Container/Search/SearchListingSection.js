@@ -54,10 +54,7 @@ const SearchListingSection = ({
     }
   };
   return (
-    <Card
-      interactive
-      style={{ width: "99%", margin: "10px", marginTop: 2 }}
-    >
+    <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
       <div className="marginTop width100 marginLeft10">
         <div className="width100">
           <div className="width30px">
@@ -70,12 +67,17 @@ const SearchListingSection = ({
             <div className="divBlock">
               <span className="blueText">
                 Protocol:{" "}
-                <strong onClick={() => handleTitle(data.protocolNumber)}>
+                <strong
+                  onClick={() => handleTitle(data.protocolNumber)}
+                  data-testid="name-value"
+                >
                   {data.protocolNumber}
                 </strong>
               </span>
             </div>
-            <div className="divBlock ellipse">{data.protocolDescription}</div>
+            <div className="divBlock ellipse" data-testid="title-value">
+              {data.protocolDescription}
+            </div>
           </div>
           <div className="width5 swtichButton">
             <Switch label="follow" size="small" checked={data.followed} />

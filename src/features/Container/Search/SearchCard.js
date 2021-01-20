@@ -25,19 +25,19 @@ const SearchCard = ({ data, compareTwoProtocol, selection }) => {
           <p className="grid-item">Indication :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value">{data.indication}</p>
+          <p className="grid-item grid-key-value" data-testid="indication-value">{data.indication}</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item">Phase :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value">{data.phase}</p>
+          <p className="grid-item grid-key-value" data-testid="phase-value">{data.phase}</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item">Sponsor :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value">{data.sponsor}</p>
+          <p className="grid-item grid-key-value" data-testid="sponsor-value">{data.sponsor}</p>
         </Grid>
         {/* <Grid md={3}>
         <p className="grid-item">Source Document:</p>
@@ -50,13 +50,13 @@ const SearchCard = ({ data, compareTwoProtocol, selection }) => {
           <p className="grid-item">Recent Approval Date:</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value">{data.approvalDate ? covertMMDDYYYY(data.approvalDate) : '-'}</p>
+          <p className="grid-item grid-key-value" data-testid="date-value">{data.approvalDate ? covertMMDDYYYY(data.approvalDate) : '-'}</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item">Molecule/Device :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value">{data.molecule}</p>
+          <p className="grid-item grid-key-value" data-testid="molecule-value">{data.molecule}</p>
         </Grid>
       </Grid>
 

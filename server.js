@@ -1,12 +1,12 @@
 const express = require("express");
-const cookieParser = require('cookie-parser'); 
+const cookieParser = require("cookie-parser");
 const path = require("path");
 const app = express();
 const cors = require("cors");
 const elasticsearch = require("elasticsearch");
 
 const PORT = 3000;
-app.use(cookieParser()); 
+app.use(cookieParser());
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
@@ -419,6 +419,11 @@ app.get("/elastic", (req, res) => {
       bool: {
         must: mustQuery,
         filter: filterArr,
+        must_not: {
+          term: {
+            is_active: 0,
+          },
+        },
       },
     },
     size: 1000,
@@ -433,7 +438,7 @@ app.get("/elastic", (req, res) => {
       "approval_date",
       "uploadDate",
       "MoleculeDevice",
-      "is_active"
+      "is_active",
     ],
   };
 
@@ -625,10 +630,9 @@ app.get("/filter", (req, res) => {
 //   res.redirect('/')
 // });
 
-
 app.get("/*", function (req, res) {
   console.log("Body", req.body);
-  console.log("Cookies",req.cookies); 
+  console.log("Cookies", req.cookies);
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
