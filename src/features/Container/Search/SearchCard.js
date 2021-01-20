@@ -5,6 +5,7 @@ import columns from "./Data/column.data";
 import Grid from "apollo-react/components/Grid";
 import Loader from "../../Components/Loader/Loader";
 import _ from "lodash";
+import { covertMMDDYYYY } from "../../../utils/utilFunction";
 
 const SearchCard = ({ data, compareTwoProtocol, selection }) => {
   // let rowContent = "";
@@ -49,7 +50,7 @@ const SearchCard = ({ data, compareTwoProtocol, selection }) => {
           <p className="grid-item">Recent Approval Date:</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value">{data.approvalDate}</p>
+          <p className="grid-item grid-key-value">{data.approvalDate ? covertMMDDYYYY(data.approvalDate) : '-'}</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item">Molecule/Device :</p>
