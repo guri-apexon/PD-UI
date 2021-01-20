@@ -43,7 +43,7 @@ class SearchPanel extends React.Component {
       props.resultList.loader !== state.resultListData.loader ||
       props.resultList !== state.resultListData
     ) {
-      console.log("Get Static");
+      // console.log("Get Static");
       let result =
         props.resultList && props.resultList.data ? props.resultList.data : [];
       let arr = [];
@@ -74,7 +74,7 @@ class SearchPanel extends React.Component {
   setExpanded = (id, obj, data) => {
     const { updateAssociateProtocol } = this.props;
     const { accordionObj } = this.state;
-    console.log("Expand");
+    // console.log("Expand");
     if (obj.expanded) {
       // dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
       updateAssociateProtocol(data, accordionObj);
@@ -94,7 +94,7 @@ class SearchPanel extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("Did Update");
+    // console.log("Did Update");
     const { accordionObj } = this.state;
     // if (prevState.defaultExpand !== this.state.defaultExpand) {
     // let arr = accordionObj.map(item => {
@@ -112,6 +112,7 @@ class SearchPanel extends React.Component {
 
   sortChange = (value) => {
     const { onSortChange } = this.props;
+    // console.log("sortChange Clicked",value)
     let filterValue = SORT_DROPDOWN.filter((item) => item.id === value);
     // console.log("value", value, filterValue);
     onSortChange(filterValue[0], value);
@@ -171,7 +172,7 @@ class SearchPanel extends React.Component {
       sortValueProp,
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
-    console.log("oooooooo", sortValueProp);
+    // console.log("oooooooo", sortValueProp);
 
     let protocols = resultList.data && resultList.data.length;
     let maxRecordsPerPage = 10;
@@ -182,7 +183,6 @@ class SearchPanel extends React.Component {
           : protocols
         : 0;
 
-    console.log(accordionObj, "props1223", resultList, protocols);
 
     return (
       <div id="searchPanel" className="searchPanel">
@@ -269,7 +269,7 @@ class SearchPanel extends React.Component {
                     <SearchIcon style={{ color: "#0557d5" }} size="small" />
                   </div>
 
-                  <div className="sort-by">
+                  <div className="sort-by" data-testid="sortby-container">
                     <span>Sort by</span>
                     <SelectButton
                       placeholder=""
@@ -283,7 +283,7 @@ class SearchPanel extends React.Component {
                   <MenuItem value="2">{"Approval Date"}</MenuItem>
                    <MenuItem value="3">{"Upload Date"}</MenuItem> */}
                       {SORT_DROPDOWN.map((item) => (
-                        <MenuItem value={item.id}>{item.label}</MenuItem>
+                        <MenuItem data-testid={`sortby-container${item.id}`} key={item.id} value={item.id}>{item.label}</MenuItem>
                       ))}
                     </SelectButton>
                   </div>
