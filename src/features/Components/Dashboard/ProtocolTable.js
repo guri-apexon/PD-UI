@@ -66,7 +66,7 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
 };
 
 const Cell = ({ row, column }) => {
-  if (row[column.accessor] && row[column.accessor].length > 20) {
+  if (row[column.accessor] && row[column.accessor].length > 25) {
     return (
       <Tooltip variant="light" title={row[column.accessor]} placement="top">
         <div className="long-text" style={{ fontWeight: 800 }}>
@@ -80,7 +80,7 @@ const Cell = ({ row, column }) => {
 };
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
-  if (row[key] && row[key].length > 20) {
+  if (row[key] && row[key].length > 25) {
     return (
       <Tooltip variant="light" title={row[key]} placement="top">
         <div className="long-text">
@@ -302,27 +302,27 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
-  const handleChange = (id) => {
-    setSelectedRows((selectedRows) =>
-      selectedRows.indexOf(id) >= 0
-        ? selectedRows.filter((id) => id !== id)
-        : selectedRows.length < 2
-        ? _.concat(selectedRows, id)
-        : _.concat(selectedRows)
-    );
-  };
+  // const handleChange = (id) => {
+  //   setSelectedRows((selectedRows) =>
+  //     selectedRows.indexOf(id) >= 0
+  //       ? selectedRows.filter((cid) => cid !== id)
+  //       : selectedRows.length < 2
+  //       ? _.concat(selectedRows, id)
+  //       : _.concat(selectedRows)
+  //   );
+  // };
 
   const handleToggleRow = (id) => {
     setExpandedRows((expandedRows) =>
       expandedRows.indexOf(id) >= 0
-        ? expandedRows.filter((id) => id !== id)
+        ? expandedRows.filter((eid) => eid !== id)
         : _.concat(expandedRows, id)
     );
   };
 
-  useEffect(() => {
-    dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
-  }, [selectedRows]);
+  // useEffect(() => {
+  //   dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
+  // }, [selectedRows]);
   // console.log('initial-rows', initialRows, pageRows);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
@@ -338,7 +338,7 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
               expanded: expandedRows.indexOf(row.id) >= 0,
               selected: selectedRows.indexOf(row.id) >= 0,
               handleToggleRow,
-              handleChange,
+              // handleChange,
             };
             return _.merge(temp, details);
           })
