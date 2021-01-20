@@ -12,7 +12,10 @@ import { useDispatch } from "react-redux";
 import Checkbox from "apollo-react/components/Checkbox";
 import { neutral8 } from "apollo-react/colors";
 import IconButton from "apollo-react/components/IconButton";
-import Table, { compareStrings } from "apollo-react/components/Table";
+import Table, {
+  compareStrings,
+  compareDates,
+} from "apollo-react/components/Table";
 import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
 import axios from "axios";
@@ -32,7 +35,7 @@ const ActionCell = ({
         />
       </div> */}
       <div className="table-selection">
-        <Tooltip title="Expand" disableFocusListener>
+        {/* <Tooltip title="Expand" disableFocusListener> */}
           <IconButton
             id="expand"
             size="small"
@@ -40,7 +43,7 @@ const ActionCell = ({
           >
             {expanded ? <ChevronDown /> : <ChevronRight />}
           </IconButton>
-        </Tooltip>
+        {/* </Tooltip> */}
       </div>
     </div>
   );
@@ -64,29 +67,29 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
 
 const Cell = ({ row, column }) => {
   if (row[column.accessor] && row[column.accessor].length > 20) {
-    return <Tooltip
-      variant="light"
-      title={row[column.accessor]}
-      placement="top"
-    >
-      <div className='long-text' style={{ fontWeight: 800 }}>{row[column.accessor]}</div>
-    </Tooltip>
+    return (
+      <Tooltip variant="light" title={row[column.accessor]} placement="top">
+        <div className="long-text" style={{ fontWeight: 800 }}>
+          {row[column.accessor]}
+        </div>
+      </Tooltip>
+    );
   }
 
-  return <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>
+  return <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
 };
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
   if (row[key] && row[key].length > 20) {
-    return <Tooltip
-      variant="light"
-      title={row[key]}
-      placement="top"
-    >
-      <div className='long-text'><Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link></div>
-    </Tooltip>
+    return (
+      <Tooltip variant="light" title={row[key]} placement="top">
+        <div className="long-text">
+          <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
+        </div>
+      </Tooltip>
+    );
   }
-  return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
+  return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>;
 };
 
 const iconStatus = (status) => {
@@ -158,6 +161,11 @@ const columns = [
     width: "3%",
   },
   {
+    accessor: "uploadDate",
+    sortFunction: compareDates,
+    width: "0%",
+  },
+  {
     header: "Protocol",
     accessor: "protocol",
     sortFunction: compareStrings,
@@ -182,7 +190,7 @@ const columns = [
     header: "Project ID / CRM #",
     accessor: "projectId",
     sortFunction: compareStrings,
-    width: "12%",
+    width: "13%",
     customCell: Cell,
   },
   {
@@ -210,7 +218,7 @@ const ExpandableComponent = ({ row }) => {
           {row.phase}
         </Typography>
       </div>
-      <div className="extended-data">
+      <div className="extended-data" style={{width: '30%'}}>
         <Typography
           style={{
             fontWeight: 500,
@@ -220,11 +228,19 @@ const ExpandableComponent = ({ row }) => {
         >
           {"Indication"}
         </Typography>
-        <Typography className="fw-8" variant="body2">
-          {row.indication}
-        </Typography>
+        {row.indication.length > 40 ? (
+          <Tooltip variant="light" title={row.indication} placement="top">
+            <Typography className="fw-8 ex-text" variant="body2">
+              {row.indication}
+            </Typography>
+          </Tooltip>
+        ) : (
+          <Typography className="fw-8" variant="body2">
+            {row.indication}
+          </Typography>
+        )}
       </div>
-      <div className="extended-data">
+      <div className="extended-data" style={{width: '15%'}}>
         <Typography
           style={{
             fontWeight: 500,
@@ -239,7 +255,7 @@ const ExpandableComponent = ({ row }) => {
         </Typography>
       </div>
       {/* {row.fileName &&  */}
-      <div className="extended-data">
+      <div>
         <Typography
           style={{
             fontWeight: 500,
@@ -254,7 +270,9 @@ const ExpandableComponent = ({ row }) => {
             // <Link to={row.documentFilePath} target="_blank">
             //   {row.fileName}
             // </Link>
-            <a href="javascript:void(0)" onClick={() => handleDownload(row)}>{row.fileName}</a> // eslint-disable-line
+            <a href="javascript:void(0)" onClick={() => handleDownload(row)}>
+              {row.fileName}
+            </a> // eslint-disable-line
           ) : (
             "-"
           )}
@@ -279,7 +297,6 @@ const handleDownload = async (row) => {
   );
   // console.log(url);
 };
-
 
 const ProtocolTable = ({ initialRows, pageRows }) => {
   const dispatch = useDispatch();
@@ -326,8 +343,8 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
             return _.merge(temp, details);
           })
         }
-        // initialSortedColumn="protocol"
-        // initialSortOrder="asc"
+        initialSortedColumn="uploadDate"
+        initialSortOrder="desc"
         rowsPerPageOptions={pageRows}
         rowProps={{ hover: false }}
         tablePaginationProps={{

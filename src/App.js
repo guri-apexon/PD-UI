@@ -87,7 +87,7 @@ function App(props) {
   };
 
   const handleOnAction = (event) => {
-    console.log("user did something", event);
+    // console.log("user did something", event);
     // setIsTimeOut(false);
   };
 

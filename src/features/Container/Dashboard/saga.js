@@ -42,8 +42,18 @@ function* protocolAsyn() {
     // const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
     // yield put(getProtocols(mergedData));
     // } else
+    
     if (protocolData.success) {
-      yield put(getProtocols(protocolData.data));
+      let data = protocolData.data.map(item => {
+        
+          item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
+          item.protocol = !item.protocol ? "" : item.protocol;
+          item.projectId = !item.projectId ? "" : item.projectId;
+          item.sponsor = !item.sponsor ? "" : item.sponsor;
+          item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
+        return item;
+      })
+      yield put(getProtocols(data));
     } else {
       yield put(setError(protocolData.err.statusText));
     }
