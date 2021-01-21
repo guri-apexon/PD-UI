@@ -6,7 +6,7 @@ const  SORT_DROPDOWN=[
     },
     {
         id:'2',
-        value:'approval_date',
+        value:'approvalDate',
         label:'Approval Date'
     },
     {

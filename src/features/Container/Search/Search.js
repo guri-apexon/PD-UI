@@ -407,9 +407,15 @@ const Search = (props) => {
       setSortValue(value);
       newList.data &&
         newList.data.sort((a, b) => {
-          let first = a[data.value] ? a[data.value] : "";
-          let second = b[data.value] ? b[data.value] : "";
-          return second - first;
+          if(data && data.label==='Approval Date'){
+            let first = a[data.value] ? new Date(a[data.value]) : "";
+            let second = b[data.value] ? new Date(b[data.value]) : "";
+            return second - first;
+          } else{
+            let first = a[data.value] ? a[data.value] : "";
+            let second = b[data.value] ? b[data.value] : "";
+            return second - first;
+          }
         });
       // console.log('data :', data, resultList, newList);
       dispatch({ type: "UPDATE_SEARCH_RESULT", payload: newList });

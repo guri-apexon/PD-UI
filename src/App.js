@@ -36,6 +36,10 @@ function eraseCookie(name) {
   createCookie(name, "", -1);
 }
 
+// const onLogoutClick = ()=>{
+//   window.location.href = "https://ca2utmsa04q.quintiles.net:8080/v1/login";
+// }
+
 function App(props) {
   const idleTimer = useRef(null);
   let history = useHistory();
@@ -70,11 +74,21 @@ function App(props) {
       pathname: "/login",
     },
   ];
+  const onLogoutClick = ()=>{
+    var cookies = document.cookie.split(";");
+    for (var i = 0; i < cookies.length; i++) {
+      eraseCookie(cookies[i].split("=")[0]);
+    }
+    window.location.href = "https://ca2utmsa04q.quintiles.net:8080/v1/login";
+  }
   const profileMenuProps = {
     name: "",
     title: "Sales",
     email: "asif@iqvia.com",
-    logoutButtonProps: { pathname: "/logout" },
+    logoutButtonProps: { 
+      // pathname: "/logout", 
+      onClick: () => onLogoutClick()
+     },
     menuItems: [
       {
         text: "Profile",
