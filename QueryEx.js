@@ -126,3 +126,64 @@ const isActiveQuery2 = {
     "is_active",
   ],
 };
+
+const rangeQuery = {
+  query: {
+    bool: {
+      must: [
+        {
+          multi_match: {
+            query: "hcc",
+            fields: [],
+          },
+        },
+      ],
+      filter: {
+        bool: {
+          must: [
+            {
+              terms: {
+                "DocumentStatus.keyword": ["draft", "final"],
+              },
+            },
+            {
+              range: {
+                uploadDate: {
+                  gte: "20210114000100",
+                  lt: "20210122000100",
+                },
+              },
+            },
+            {
+              range: {
+                approval_date: {
+                  gte: "20210114000100",
+                  lt: "20210122000100",
+                },
+              },
+            },
+          ],
+        },
+      },
+      must_not: {
+        term: {
+          is_active: 0,
+        },
+      },
+    },
+  },
+  size: 1000,
+  _source: [
+    "AiDocId",
+    "ProtocolNo",
+    "ProtocolTitle",
+    "SponsorName",
+    "Indication",
+    "DocumentStatus",
+    "phase",
+    "approval_date",
+    "uploadDate",
+    "MoleculeDevice",
+    "is_active",
+  ],
+};
