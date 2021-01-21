@@ -639,17 +639,17 @@ app.get("/filter", (req, res) => {
 // });
 
 app.get("/*", function (req, res) {
-  console.log("Body", req.body);
-  console.log("Cookies", req.cookies);
-const getCookies = req.cookies;
-if (!Object.keys(getCookies)) {
-  res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/login')
-} else if(getCookies.access_token && getCookies.refresh_token) {
-  axios.get("https://ca2utmsa04q.quintiles.net:8080/v1/validate_token")
-       .then(data => res.json(data))
-       .then(data => console.log('data',data))
-       .catch(err => res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/logout_session'));
-}
+//   console.log("Body", req.body);
+//   console.log("Cookies", req.cookies);
+// const getCookies = req.cookies;
+// if (!Object.keys(getCookies)) {
+//   res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/login')
+// } else if(getCookies.access_token && getCookies.refresh_token) {
+//   axios.get("https://ca2utmsa04q.quintiles.net:8080/v1/validate_token")
+//        .then(data => res.json(data))
+//        .then(data => console.log('data',data))
+//        .catch(err => res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/logout_session'));
+// }
 
 
 //First time Login
