@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const axios = require("axios");
 const path = require("path");
 const app = express();
 const cors = require("cors");
@@ -633,6 +634,26 @@ app.get("/filter", (req, res) => {
 app.get("/*", function (req, res) {
   console.log("Body", req.body);
   console.log("Cookies", req.cookies);
+const getCookies = req.cookies;
+if (!Object.keys(getCookies)) {
+  res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/login')
+} else if(getCookies.access_token && getCookies.refresh_token) {
+  axios.get("https://ca2utmsa04q.quintiles.net:8080/v1/validate_token")
+       .then(data => res.json(data))
+       .then(data => console.log('data',data))
+       .catch(err => res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/logout_session'));
+}
+
+
+//First time Login
+//Browser refresh
+//Token expire
+
+  // Read cookies
+  // Validate Token from CIMS
+  // if Valid store in browser and send below
+  // if not valid token logout API from CIMS
+  // if no cookies redirect to login page
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
