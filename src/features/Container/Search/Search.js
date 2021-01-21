@@ -54,12 +54,14 @@ const Search = (props) => {
     // const parsed = queryString.parse(params);
     console.log("::::::::", params);
     let parsed = {};
-    if (indicationData.sectionContent.length === 0) {
+    // if (indicationData.sectionContent.length === 0) {
+      // dispatch({ type: "GET_INDICATIONS" });
+    // }
+    if (sponsorData.sectionContent.length === 0 && indicationData.sectionContent.length === 0 ) {
+      dispatch({ type: "GET_SPONSORS" });
       dispatch({ type: "GET_INDICATIONS" });
     }
-    if (sponsorData.sectionContent.length === 0) {
-      dispatch({ type: "GET_SPONSORS" });
-    }
+    // console.log(resultList, "search result111")
     if (
       params &&
       sponsorData.sectionContent.length > 0 &&
@@ -170,7 +172,7 @@ const Search = (props) => {
     //   dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     //   // dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
     // }
-  }, [dispatch, sponsorData]);
+  }, [dispatch,sponsorData, indicationData]);
   const handleClick = (e) => {
     e.preventdefault();
     // console.log("Breadcrumb was clicked", e);
@@ -412,9 +414,9 @@ const Search = (props) => {
             let second = b[data.value] ? new Date(b[data.value]) : "";
             return second - first;
           } else{
-            let first = a[data.value] ? a[data.value] : "";
-            let second = b[data.value] ? b[data.value] : "";
-            return second - first;
+          let first = a[data.value] ? a[data.value] : "";
+          let second = b[data.value] ? b[data.value] : "";
+          return second - first;
           }
         });
       // console.log('data :', data, resultList, newList);
