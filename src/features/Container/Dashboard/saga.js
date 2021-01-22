@@ -1,4 +1,4 @@
-import { takeEvery, all, call, put } from "redux-saga/effects";
+import { takeEvery, all, call, put, select } from "redux-saga/effects";
 import _ from "lodash";
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
@@ -23,8 +23,12 @@ function customizer(objValue, srcValue) {
 }
 
 function* protocolAsyn() {
+  const state = yield select();
+  const id = state.user.userDetail.userId
+  console.log(id);
+  // const protocolUrl =
+  // `http://ca2spdml01q:8000/api/protocol_metadata/?userId=${id}`;
   const protocolUrl =
-    // "http://ca2spdml01q:8000/api/user_protocol_documents/?userId=1021402";
     "http://ca2spdml01q:8000/api/protocol_metadata/?userId=1021402";
   // const statusUrl = "./status.json";
   const protocolConfig = {
@@ -42,17 +46,16 @@ function* protocolAsyn() {
     // const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
     // yield put(getProtocols(mergedData));
     // } else
-    
+
     if (protocolData.success) {
-      let data = protocolData.data.map(item => {
-        
-          item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
-          item.protocol = !item.protocol ? "" : item.protocol;
-          item.projectId = !item.projectId ? "" : item.projectId;
-          item.sponsor = !item.sponsor ? "" : item.sponsor;
-          item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
+      let data = protocolData.data.map((item) => {
+        item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
+        item.protocol = !item.protocol ? "" : item.protocol;
+        item.projectId = !item.projectId ? "" : item.projectId;
+        item.sponsor = !item.sponsor ? "" : item.sponsor;
+        item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
         return item;
-      })
+      });
       yield put(getProtocols(data));
     } else {
       yield put(setError(protocolData.err.statusText));
@@ -168,7 +171,7 @@ function* postAddProtocol(postData) {
       url: duplicateCheck,
       method: "GET",
     });
-    console.log('duplicateCheckRes :', duplicateCheckRes);
+    console.log("duplicateCheckRes :", duplicateCheckRes);
     if (duplicateCheckRes && duplicateCheckRes.data === null) {
       const postResponse = yield call(httpCall, {
         url: postUrl,

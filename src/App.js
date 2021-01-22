@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./App.scss";
 import Routes from "./Routes/routes";
 import NavigationBar from "apollo-react/components/NavigationBar";
@@ -10,11 +10,11 @@ import HelpIcon from "apollo-react-icons/Help";
 import UserIcon from "apollo-react-icons/User";
 import Typography from "apollo-react/components/Typography";
 import IdleTimer from "react-idle-timer";
-import Cookies from 'universal-cookie';
-
+import Cookies from "universal-cookie";
+import { setUserDetails, loggedUser } from "./store/userDetails";
+// import Loader from "./features/Components/Loader/Loader";
 import SessionExpired from "./SessionOut";
-
-
+import Loader from "apollo-react/components/Loader";
 function createCookie(name, value, days) {
   if (days) {
     var date = new Date();
@@ -44,6 +44,8 @@ function eraseCookie(name) {
 
 function App(props) {
   const cookiesServer = new Cookies();
+  const userDetails = useSelector(loggedUser);
+  const dispatch = useDispatch();
   const idleTimer = useRef(null);
   let history = useHistory();
   let location = useLocation();
@@ -52,14 +54,21 @@ function App(props) {
   const [isTimedOut, setIsTimeOut] = useState(false);
 
   useEffect(() => {
-    const userid = cookiesServer.get('username');
-    localStorage.setItem("userid", userid);
-    console.log(userid);
+    // const user = cookiesServer.get('user');
+    const user = "u1072231 Sohan sohan.khatawkar@iqvia.com";
+    const data = user.split(" ");
+    const details = {
+      userId: data[0],
+      username: data[1],
+      email: data[2],
+    };
+    dispatch(setUserDetails(details));
+    console.log(details);
     if (location && location.pathname) {
       setPathname(location.pathname);
     }
   }, [location]);
-
+  console.log(userDetails);
   const menuItems = [
     {
       text: "Dashboard",
@@ -80,21 +89,22 @@ function App(props) {
       pathname: "/login",
     },
   ];
-  const onLogoutClick = ()=>{
+  const onLogoutClick = () => {
     var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
       eraseCookie(cookies[i].split("=")[0]);
     }
-    window.location.href = "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session";
-  }
+    window.location.href =
+      "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session";
+  };
   const profileMenuProps = {
-    name: "",
-    title: "Sales",
-    email: "asif@iqvia.com",
-    logoutButtonProps: { 
-      // pathname: "/logout", 
-      onClick: () => onLogoutClick()
-     },
+    name: userDetails.username,
+    title: "",
+    email: userDetails.email,
+    logoutButtonProps: {
+      // pathname: "/logout",
+      onClick: () => onLogoutClick(),
+    },
     menuItems: [
       {
         text: "Profile",
@@ -163,6 +173,8 @@ function App(props) {
 
     // }
   };
+  const route = userDetails && userDetails.userId ? <Routes /> : <Loader />;
+
   return (
     <>
       <div>
@@ -249,10 +261,9 @@ function App(props) {
             Something Went Wrong, API Failed
           </span>
         )}
-        {isTimedOut ? <SessionExpired /> : <Routes />}
+        {isTimedOut ? <SessionExpired /> : route}
       </div>
     </>
   );
 }
-
 export default App;
