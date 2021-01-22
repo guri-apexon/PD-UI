@@ -4,12 +4,14 @@ import _ from "lodash";
 import Grid from "apollo-react/components/Grid";
 import Button from "apollo-react/components/Button";
 import { protocolCompare, dashboard } from "../Dashboard/dashboardSlice";
+import { loggedUser } from "../../../store/userDetails";
 import AddProtocol from "./AddProtocol/AddProtocol";
 import ProtocolTable from "./ProtocolTable";
 import DashboardSearch from "./DashboardSearch";
 
 
 const Dashboard = () => {
+  const userDetails = useSelector(loggedUser);
   const dispatch = useDispatch();
   const compare = useSelector(protocolCompare);
   const dashboardData = useSelector(dashboard);
@@ -27,10 +29,23 @@ const Dashboard = () => {
     dispatch({ type: "TOGGLE_ADDPROTOCOL_MODAL" , payload: false});
   };
 
+  let today = new Date()
+let curHr = today.getHours()
+let greet;
+if (curHr < 12) {
+  greet = 'Good Morning, '
+  console.log('good morning')
+} else if (curHr < 18) {
+  greet = 'Good Afternoon, '
+  console.log('good afternoon')
+} else {
+  greet = 'Good Evening, '
+  console.log('good evening')
+}
 
   return (
      <div className="dashboard-parent" style={{ padding: 20 }}>
-     <h1>Good Morning,</h1>
+     <h1>{greet} {userDetails && userDetails.username}</h1>
      <Grid container spacing={2}>
        <Grid item xs={12}>
          <div style={{ float: "right" }}>
