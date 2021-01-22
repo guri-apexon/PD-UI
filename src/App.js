@@ -95,11 +95,11 @@ function App(props) {
     for (var i = 0; i < cookies.length; i++) {
       eraseCookie(cookies[i].split("=")[0]);
     }
-    axios.get("https://ca2utmsa04q.quintiles.net:8080/v1/logout_session")
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-    // window.location.href =
-    //   "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session";
+    // axios.get("https://ca2utmsa04q.quintiles.net:8080/logout_session")
+    // .then(res => console.log(res))
+    // .catch(err => console.log(err))
+    window.location.href =
+      "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session";
   };
   const profileMenuProps = {
     name: userDetails.username,
