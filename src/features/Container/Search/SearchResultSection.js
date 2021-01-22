@@ -75,10 +75,10 @@ class SearchPanel extends React.Component {
     const { updateAssociateProtocol } = this.props;
     const { accordionObj } = this.state;
     // console.log("Expand");
-    if (obj.expanded) {
-      // dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
-      updateAssociateProtocol(data, accordionObj);
-    }
+    // if (obj.expanded) {
+    //   // dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
+    //   updateAssociateProtocol(data, accordionObj);
+    // }
     let accObj = accordionObj;
     let foundIndex = accObj.findIndex((obj) => obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
@@ -92,6 +92,12 @@ class SearchPanel extends React.Component {
       ],
     });
   };
+
+  onViewAssociateProtocolClick = (data)=> {
+    const { updateAssociateProtocol } = this.props;
+    const { accordionObj } = this.state;
+    updateAssociateProtocol(data, accordionObj);
+  }
 
   componentDidUpdate(prevProps, prevState) {
     // console.log("Did Update");
@@ -130,11 +136,12 @@ class SearchPanel extends React.Component {
     let arr = accordionObj.map((item) => {
       let temp = _.cloneDeep(item);
       temp.expanded = tempDefault;
+      temp.viewAssociate = tempDefault === false ? false :temp.viewAssociate ;
       return temp;
     });
-    if (tempDefault) {
-      updateAllAssociateProtocol(accordionObj);
-    }
+    // if (tempDefault) {
+    //   updateAllAssociateProtocol(accordionObj);
+    // }
     this.setState({
       defaultExpand: !this.state.defaultExpand,
       accordionObj: arr,
@@ -287,7 +294,7 @@ class SearchPanel extends React.Component {
                       ))}
                     </SelectButton>
                   </div>
-                  {/* <div
+                  <div
                     className="expand-all"
                     onClick={() => this.onExpandAllClick()}
                   >
@@ -295,7 +302,7 @@ class SearchPanel extends React.Component {
                     <span>
                       {!defaultExpand ? "Expand All" : "Collapse All"}
                     </span>
-                  </div> */}
+                  </div>
                   <div id="chip" className="chip">
                     {this.props.searchInput && (
                       <Chip
@@ -321,6 +328,7 @@ class SearchPanel extends React.Component {
                         compareTwoProtocol={this.props.compareTwoProtocol}
                         selection={this.props.selection}
                         history={this.props.history}
+                        onViewAssociateProtocolClick= {this.onViewAssociateProtocolClick}
                       />
                     </div>
                   ))

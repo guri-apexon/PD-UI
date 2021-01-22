@@ -2,12 +2,18 @@ import React from "react";
 
 import Table from "apollo-react/components/Table";
 import columns from "./Data/column.data";
+import Button from "apollo-react/components/Button";
 import Grid from "apollo-react/components/Grid";
 import Loader from "../../Components/Loader/Loader";
 import _ from "lodash";
 import { covertMMDDYYYY } from "../../../utils/utilFunction";
 
-const SearchCard = ({ data, compareTwoProtocol, selection }) => {
+const SearchCard = ({
+  data,
+  compareTwoProtocol,
+  selection,
+  onViewAssociateProtocolClick,
+}) => {
   // let rowContent = "";
   // if (data && !data.rowsLoading) {
   //   rowContent = _.cloneDeep(data.rows);
@@ -25,19 +31,28 @@ const SearchCard = ({ data, compareTwoProtocol, selection }) => {
           <p className="grid-item">Indication :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="indication-value">{data.indication}</p>
+          <p
+            className="grid-item grid-key-value"
+            data-testid="indication-value"
+          >
+            {data.indication}
+          </p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item">Phase :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="phase-value">{data.phase}</p>
+          <p className="grid-item grid-key-value" data-testid="phase-value">
+            {data.phase}
+          </p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item">Sponsor :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="sponsor-value">{data.sponsor}</p>
+          <p className="grid-item grid-key-value" data-testid="sponsor-value">
+            {data.sponsor}
+          </p>
         </Grid>
         {/* <Grid md={3}>
         <p className="grid-item">Source Document:</p>
@@ -50,41 +65,62 @@ const SearchCard = ({ data, compareTwoProtocol, selection }) => {
           <p className="grid-item">Recent Approval Date:</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="date-value">{data.approvalDate ? covertMMDDYYYY(data.approvalDate) : '-'}</p>
+          <p className="grid-item grid-key-value" data-testid="date-value">
+            {data.approvalDate ? covertMMDDYYYY(data.approvalDate) : "-"}
+          </p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item">Molecule/Device :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="molecule-value">{data.molecule}</p>
+          <p className="grid-item grid-key-value" data-testid="molecule-value">
+            {data.molecule}
+          </p>
         </Grid>
       </Grid>
-
-      {data && data.rowsLoading ? (
-        <div
-          style={{
-            height: 100,
-            justifyContent: "center",
-            alignItems: "center",
-            display: "flex",
-          }}
-        >
-          <Loader />
-        </div>
-      ) : (
-        <div className="width100 search-inner-table">
-          <Table
-            columns={columns}
-            rows={data.rows.map((row) => ({
-              ...row,
-              handleSelectRow,
-              key: row.id,
-              selection: selection,
-            }))}
-            hidePagination
-          />
-        </div>
-      )}
+      <Button
+        onClick={() => onViewAssociateProtocolClick(data)}
+        variant="secondary"
+        size="small"
+        style={{ marginRight: 10, marginTop: 5 }}
+      >
+        View Associate Protocols
+      </Button>
+      {/* <span onClick={()=> onViewAssociateProtocolClick(data)}> View </span> */}
+      <div
+        className={`${
+          data.viewAssociate ? "show-associate-prot" : "hide-associate"
+        }`}
+        style={{
+          display: data.viewAssociate ? "block" : "none",
+        }}
+      >
+        {data && data.rowsLoading ? (
+          <div
+            style={{
+              height: 100,
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Loader />
+          </div>
+        ) : (
+          <div className="width100 search-inner-table">
+            <Table
+              columns={columns}
+              rows={data.rows.map((row) => ({
+                ...row,
+                handleSelectRow,
+                key: row.id,
+                selection: selection,
+              }))}
+              hidePagination
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

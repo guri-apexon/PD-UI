@@ -185,13 +185,15 @@ function* updateSearchResult(action) {
 
 // -----Updating and adding Associate Protocol to a Single protocol when individual expand is clicked
 function* updateSearchAssociated(action) {
-  console.log("assoc pay", action.payload.data.protocolNumber);
+  console.log("asso111c pay", action.payload.data.protocolNumber);
   let tempRes = _.cloneDeep(action.payload.obj);
   let foundIndex = tempRes.findIndex(
     (obj) => obj.id === action.payload.data.id
   );
   tempRes[foundIndex].rowsLoading = true;
-  tempRes[foundIndex].expanded = !tempRes[foundIndex].expanded;
+  tempRes[foundIndex].expanded = true;
+  tempRes[foundIndex].viewAssociate = true;
+  // tempRes[foundIndex].expanded = !tempRes[foundIndex].expanded;
   // tempRes.rowsLoading= true;
   const initialObj = {
     search: true,
@@ -423,6 +425,7 @@ function createJSONFormat(data) {
       rows: [],
       rowsLoading: true,
       isActive: data[i]._source.is_active,
+      viewAssociate: false
     };
     arr.push(obj);
   }
@@ -455,6 +458,7 @@ function setAsssociateProtocols(id, data, associateDocs) {
         let temp = _.cloneDeep(item);
         temp.rows = associateDocs;
         temp.rowsLoading = false;
+        temp.viewAssociate = true;
         return temp;
       }
       return item;

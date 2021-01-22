@@ -58,9 +58,9 @@ const CustomDropdown = ({
 
   const onTextFieldChange = (id, e, type) => {
     let customListTemp = _.cloneDeep(source);
-    // let str = getModifyString(e.target.value);
+    let str = getModifyString(e.target.value);
     const filteredList = customListTemp.filter((item) => {
-      let reg = new RegExp(`^${e.target.value}[a-z0-9 ]*$`, "i");
+      let reg = new RegExp(`^${str}[a-z0-9 ]*$`, "i");
       return item.label.toLowerCase().match(reg);
     });
     let tempvalue = {
@@ -74,19 +74,19 @@ const CustomDropdown = ({
         setBlur(true); 
       }     
   };
-  // const getModifyString = (value) => {
-  //   let regConstant = ["(", ")", "+", "[", "]", "*", "?", "|", ".", "$"];
-  //   let tempValue = value
-  //     .split("")
-  //     .map((val) => {
-  //       if (regConstant.includes(val)) {
-  //         return `\\${val}`;
-  //       }
-  //       return val;
-  //     })
-  //     .join("");
-  //   return tempValue;
-  // };
+  const getModifyString = (value) => {
+    let regConstant = ["(", ")", "+", "[", "]", "*", "?", "|", ".", "$"];
+    let tempValue = value
+      .split("")
+      .map((val) => {
+        if (regConstant.includes(val)) {
+          return `\\${val}`;
+        }
+        return val;
+      })
+      .join("");
+    return tempValue;
+  };
   const onCustomClick = (id, event) => {
     setExpand(true);
     event.target
