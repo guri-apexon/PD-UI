@@ -10,8 +10,10 @@ import HelpIcon from "apollo-react-icons/Help";
 import UserIcon from "apollo-react-icons/User";
 import Typography from "apollo-react/components/Typography";
 import IdleTimer from "react-idle-timer";
+import Cookies from 'universal-cookie';
 
 import SessionExpired from "./SessionOut";
+
 
 function createCookie(name, value, days) {
   if (days) {
@@ -41,6 +43,7 @@ function eraseCookie(name) {
 // }
 
 function App(props) {
+  const cookiesServer = new Cookies();
   const idleTimer = useRef(null);
   let history = useHistory();
   let location = useLocation();
@@ -49,6 +52,9 @@ function App(props) {
   const [isTimedOut, setIsTimeOut] = useState(false);
 
   useEffect(() => {
+    const userid = cookiesServer.get('username');
+    localStorage.setItem("userid", userid);
+    console.log(userid);
     if (location && location.pathname) {
       setPathname(location.pathname);
     }
@@ -79,7 +85,7 @@ function App(props) {
     for (var i = 0; i < cookies.length; i++) {
       eraseCookie(cookies[i].split("=")[0]);
     }
-    window.location.href = "https://ca2utmsa04q.quintiles.net:8080/v1/login";
+    window.location.href = "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session";
   }
   const profileMenuProps = {
     name: "",

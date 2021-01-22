@@ -633,35 +633,75 @@ app.get("/filter", (req, res) => {
     });
 });
 
+app.get("/validate_token", (req, res) => {});
+
 // app.post("/*", (req, res) => {
 //   console.log("post", req.body);
 //   res.redirect('/')
 // });
+app.use(function (req, res, next) {
+  console.log("Cookies", req.cookies);
+  const getCookies = req.cookies;
+  if (!Object.keys(getCookies).length) {
+    res.redirect("https://ca2utmsa04q.quintiles.net:8080/v1/login");
+  } else if (getCookies.access_token && getCookies.refresh_token) {
+    // At request level
+    const agent = new https.Agent({
+      rejectUnauthorized: false,
+    });
+    axios
+      .get("https://ca2utmsa04q.quintiles.net:8080/v1/validate_token", {
+        params: {
+          access_token: getCookies.access_token,
+          refresh_token: getCookies.refresh_token,
+        },
+        headers: { Authorization: "Basic cGRfYXBwOnBkX2FwcDE=" },
+        httpsAgent: agent,
+      })
+      .then(({ data }) => {
+        console.log(data);
+        switch (data.code) {
+          case 101:
+            res.redirect(
+              `https://ca2utmsa04q.quintiles.net:8080/v1/${data.redirect_url}`
+            );
+            break;
+          case 100:
+            res.cookie('username', data.user_details.username);
+            next();
+            break;
+          case 102:
+            res.redirect(
+              `https://ca2utmsa04q.quintiles.net:8080/v1/${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
+            );
+            break;
+          default:
+            res.redirect(
+              "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session"
+            );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/logout_session')
+      });
+  }
+});
 
 app.get("/*", function (req, res) {
-//   console.log("Body", req.body);
-//   console.log("Cookies", req.cookies);
-// const getCookies = req.cookies;
-// if (!Object.keys(getCookies)) {
-//   res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/login')
-// } else if(getCookies.access_token && getCookies.refresh_token) {
-//   axios.get("https://ca2utmsa04q.quintiles.net:8080/v1/validate_token")
-//        .then(data => res.json(data))
-//        .then(data => console.log('data',data))
-//        .catch(err => res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/logout_session'));
-// }
+  
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
+app.listen(PORT);
+// data: { code: 101, message: 'expired', redirect_url: '/logout_session' }
 
-//First time Login
-//Browser refresh
-//Token expire
+  //First time Login
+  //Browser refresh
+  //Token expire
 
   // Read cookies
   // Validate Token from CIMS
   // if Valid store in browser and send below
   // if not valid token logout API from CIMS
   // if no cookies redirect to login page
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
-app.listen(PORT);
