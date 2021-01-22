@@ -55,8 +55,8 @@ function App(props) {
   const [isTimedOut, setIsTimeOut] = useState(false);
 
   useEffect(() => {
-    // const user = cookiesServer.get('user');
-    const user = "u1072231 Sohan sohan.khatawkar@iqvia.com";
+    const user = cookiesServer.get('user');
+    // const user = "u1072231 Sohan sohan.khatawkar@iqvia.com";
     const data = user.split(" ");
     const details = {
       userId: data[0],

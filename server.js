@@ -696,8 +696,8 @@ app.use(function (req, res, next) {
             );
             break;
           case 100:
-            const data = `"${data.user_details.username} ${data.user_details.firstName} ${data.user_details.email}"`;
-            res.cookie("user", data);
+            const details = `${data.user_details.username} ${data.user_details.first_name} ${data.user_details.email}`;
+            res.cookie("user", details);
             next();
             break;
           case 102:
