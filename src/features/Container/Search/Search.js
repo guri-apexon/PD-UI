@@ -464,6 +464,13 @@ const Search = (props) => {
       alert("Please select at least two protocol versions to compare");
     }
   };
+  const saveSearch = ()=>{
+    console.log("Save my Search", elasticSearchQuery)
+    const parsed = queryString.parse(elasticSearchQuery);
+    console.log("Save my Search Param", parsed)
+
+    
+  }
   return (
     <div className="search">
       <Breadcrumbs
@@ -487,6 +494,7 @@ const Search = (props) => {
             history={props.history}
             idPresent={idPresent}
             compareProtocol={compareProtocol}
+            saveSearch={saveSearch}
           />
         </div>
         <div>

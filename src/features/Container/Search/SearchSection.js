@@ -50,6 +50,8 @@ class ProtocolSearchButton extends React.Component {
       console.log(`You picked ${label}.`);
       if (label === "Compare") {
         this.props.compareProtocol();
+      }else{
+        this.props.saveSearch()
       }
     };
 
@@ -65,7 +67,7 @@ class ProtocolSearchButton extends React.Component {
     ];
 
     return (
-      <div className="width98">
+      <div className="width100">
         <form onSubmit={this.handleSearchProtocol} style={{ float: "left" }}>
           <Search
             id="txtSearchProtocol"

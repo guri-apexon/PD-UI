@@ -280,46 +280,13 @@ function constructFilterArray(data) {
     };
     queryArr.push(query);
   }
-
-  // for (let i = 0; i < data.sponsors.length; i++) {
-  //   let query = {
-  //     term: {
-  //       "sponsor.keyword": data.sponsors[i],
-  //     },
-  //   };
-  //   queryArr.push(query);
-  // }
-  // for (let i = 0; i < data.indications.length; i++) {
-  //   let query = {
-  //     term: {
-  //       "Indication.keyword": data.indications[i],
-  //     },
-  //   };
-  //   queryArr.push(query);
-  // }
-  // for (let i = 0; i < data.phases.length; i++) {
-  //   let query = {
-  //     term: {
-  //       "phase.keyword": data.phases[i],
-  //     },
-  //   };
-  //   queryArr.push(query);
-  // }
-  // for (let i = 0; i < data.status.length; i++) {
-  //   let query = {
-  //     term: {
-  //       "DocumentStatus.keyword": data.status[i].toLowerCase(),
-  //     },
-  //   };
-  //   queryArr.push(query);
-  // }
   let final = {
     bool: {
       must: queryArr,
     },
   };
   // console.log(JSON.stringify(queryArr));
-  return final;
+  return queryArr;
 }
 // constructFilterArray();
 
@@ -408,9 +375,65 @@ app.get("/elastic", (req, res) => {
   let tocArray = getTOCArray(toc);
   console.log("TOC ARR Final", tocArray);
   if (from && to) {
-    const dateField =
-      docStatus[0] === "active" ? "approval_date" : "uploadDate";
-    mustQuery = constructMustArray(dateField, key, from, to, tocArray);
+    console.log(">>", docStatus);
+    if (docStatus.length === 2 || docStatus.length === 0) {
+      const rangeQuery1 = {
+        range: {
+          approval_date: {
+            gte: from,
+            lt: to,
+          },
+        },
+      };
+
+      filterArr.push(rangeQuery1);
+
+      const rangeQuery2 = {
+        range: {
+          uploadDate: {
+            gte: "20210114000100",
+            lt: "20210122000100",
+          },
+        },
+      };
+
+      filterArr.push(rangeQuery2);
+    } else if (docStatus[0] === "final") {
+      const rangeQuery1 = {
+        range: {
+          approval_date: {
+            gte: from,
+            lt: to,
+          },
+        },
+      };
+
+      filterArr.push(rangeQuery1);
+    } else if (docStatus[0] === "draft") {
+      const rangeQuery1 = {
+        range: {
+          uploadDate: {
+            gte: "20210114000100",
+            lt: "20210122000100",
+          },
+        },
+      };
+
+      filterArr.push(rangeQuery1);
+    }
+
+    mustQuery = [
+      {
+        multi_match: {
+          query: key,
+          // type: "phrase",
+          fields: tocArray,
+        },
+      },
+    ];
+    // const dateField =
+    //   docStatus[0] === "active" ? "approval_date" : "uploadDate";
+    // mustQuery = constructMustArray(dateField, key, from, to, tocArray);
   } else {
     mustQuery = [
       {
@@ -422,12 +445,17 @@ app.get("/elastic", (req, res) => {
       },
     ];
   }
+  let final = {
+    bool: {
+      must: filterArr,
+    },
+  };
 
   const FinalQuery = {
     query: {
       bool: {
         must: mustQuery,
-        filter: filterArr,
+        filter: final,
         must_not: {
           term: {
             is_active: 0,
@@ -668,8 +696,8 @@ app.use(function (req, res, next) {
             );
             break;
           case 100:
-            const data = `${data.user_details.username} ${data.user_details.firstName} ${data.user_details.email}`
-            res.cookie('user', data);
+            const data = `${data.user_details.username} ${data.user_details.firstName} ${data.user_details.email}`;
+            res.cookie("user", data);
             next();
             break;
           case 102:
@@ -685,25 +713,26 @@ app.use(function (req, res, next) {
       })
       .catch((err) => {
         console.log(err);
-        res.redirect('https://ca2utmsa04q.quintiles.net:8080/v1/logout_session')
+        res.redirect(
+          "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session"
+        );
       });
   }
 });
 
 app.get("/*", function (req, res) {
-  
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 app.listen(PORT);
 // data: { code: 101, message: 'expired', redirect_url: '/logout_session' }
 
-  //First time Login
-  //Browser refresh
-  //Token expire
+//First time Login
+//Browser refresh
+//Token expire
 
-  // Read cookies
-  // Validate Token from CIMS
-  // if Valid store in browser and send below
-  // if not valid token logout API from CIMS
-  // if no cookies redirect to login page
+// Read cookies
+// Validate Token from CIMS
+// if Valid store in browser and send below
+// if not valid token logout API from CIMS
+// if no cookies redirect to login page
