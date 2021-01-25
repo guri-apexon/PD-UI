@@ -29,7 +29,7 @@ function* protocolAsyn() {
   // const protocolUrl =
   // `http://ca2spdml01q:8000/api/protocol_metadata/?userId=${id}`;
   const protocolUrl =
-    "http://ca2spdml01q:8000/api/protocol_metadata/?userId=1021402";
+    `${BASE_URL_8000}/api/protocol_metadata/?userId=1021402`;
   // const statusUrl = "./status.json";
   const protocolConfig = {
     url: protocolUrl,

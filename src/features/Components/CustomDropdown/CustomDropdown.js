@@ -25,6 +25,7 @@ const CustomDropdown = ({
   const [blur, setBlur] = useState(false);
   const [expand, setExpand] = useState(false);
   const [list, setList] = useState(source);
+  const [subStringExist, SetSubStringExist]= useState(false);
 
 
   useEffect(() => {
@@ -59,10 +60,19 @@ const CustomDropdown = ({
   const onTextFieldChange = (id, e, type) => {
     let customListTemp = _.cloneDeep(source);
     let str = getModifyString(e.target.value);
+    let subStr = new RegExp(`^${str}$`, "i");
     const filteredList = customListTemp.filter((item) => {
       let reg = new RegExp(`^${str}[a-z0-9 ]*$`, "i");
       return item.label.toLowerCase().match(reg);
     });
+    let substring= customListTemp.filter((item) => {
+      return item.label.toLowerCase().match(subStr);
+    });
+    if(substring.length === 0){
+      SetSubStringExist(true)
+    } else {
+      SetSubStringExist(false)
+    }
     let tempvalue = {
       label: e.target.value,
     };
@@ -140,6 +150,15 @@ const CustomDropdown = ({
           onClick={(e) => onCustomClick(id, e, "fieldType")}
         />
         <div className={`custom-dropdown-list ${error && "adjust-margin"}`}>
+          {/* {list && list.length>0 && subStringExist && value.label && <>
+              <p className="custom-list-item">
+                {value.label}
+                <span className="float-right" onClick={(e) => onClickAdd(e)}>
+                  Add
+                </span>
+              </p>
+            </>
+          } */}
           {list && list.length > 0 ? (
             list.map((item,index) => (
               <p

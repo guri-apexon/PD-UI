@@ -44,6 +44,20 @@ class SearchPanel extends React.Component {
       props.resultList !== state.resultListData
     ) {
       // console.log("Get Static");
+      let defaultValue= false;
+
+      //For resetting ExpandAll button when all are expanded and Search button is click 
+      if(state.defaultExpand===true &&  props.resultList && props.resultList.data && props.resultList.data.length>0){
+       let defaultVal=props.resultList.data.filter(value=>{
+        return (value.expanded && value.expanded===true);
+      }); 
+      if(defaultVal.length >0){
+        defaultValue=true;
+      }else{
+        defaultValue=false;
+      }
+      console.log(defaultValue, "defaultValue")
+      }
       let result =
         props.resultList && props.resultList.data ? props.resultList.data : [];
       let arr = [];
@@ -62,6 +76,7 @@ class SearchPanel extends React.Component {
       return {
         accordionObj: arr,
         resultListData: props.resultList,
+        defaultExpand: defaultValue
       };
     }
 
@@ -82,6 +97,10 @@ class SearchPanel extends React.Component {
     let accObj = accordionObj;
     let foundIndex = accObj.findIndex((obj) => obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
+    if(accObj[foundIndex].expanded=== false){
+
+      accObj[foundIndex].viewAssociate = false;
+    }
     // console.log(accObj);
     // debugger;
     this.setState({

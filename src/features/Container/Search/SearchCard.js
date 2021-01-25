@@ -4,6 +4,7 @@ import Table from "apollo-react/components/Table";
 import columns from "./Data/column.data";
 import Button from "apollo-react/components/Button";
 import Grid from "apollo-react/components/Grid";
+import Link from 'apollo-react/components/Link';
 import Loader from "../../Components/Loader/Loader";
 import _ from "lodash";
 import { covertMMDDYYYY } from "../../../utils/utilFunction";
@@ -78,14 +79,15 @@ const SearchCard = ({
           </p>
         </Grid>
       </Grid>
-      <Button
+      <Link
         onClick={() => onViewAssociateProtocolClick(data)}
         variant="secondary"
         size="small"
-        style={{ marginRight: 10, marginTop: 5 }}
+        style={{ marginRight: 10, marginTop: 5,  fontWeight: 600 }}
+        disabled ={ data && data.viewAssociate &&data.viewAssociate}
       >
         View Associate Protocols
-      </Button>
+      </Link>
       {/* <span onClick={()=> onViewAssociateProtocolClick(data)}> View </span> */}
       <div
         className={`${

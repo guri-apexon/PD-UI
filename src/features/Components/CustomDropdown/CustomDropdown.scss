@@ -4,13 +4,16 @@
       &.adjust-margin{
           margin-top: -18px;
       }
-      .float-left{
+      .float-left, .float-left1{
           float: left;
           max-width: 75%;   
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           padding-left: 8px;
+      }
+      .float-left1{
+        padding-left: 0;
       }
       .float-right{
           float: right;
