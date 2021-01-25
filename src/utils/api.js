@@ -46,11 +46,31 @@ if (process.env.NODE_ENV === "development") {
   //   backendHost = process.env.REACT_APP_BACKEND_HOST || "http://localhost:3000";
   // }
 
-  BASE_URL = `http://ca2spdml01q:9001`;
-  BASE_URL_8000 = `http://ca2spdml01q:8000`;
+  BASE_URL = `http://${backendHost}:9001`;
+  BASE_URL_8000 = `http://${backendHost}:8000`;
 } else {
-  BASE_URL = `http://ca2spdml01q:9001`;
-  BASE_URL_8000 = `http://ca2spdml01q:8000`;
+  const apiVersion = "v1";
+
+  const hostname = window && window.location && window.location.hostname;
+  // debugger;
+  if (hostname.includes("ca2spdml06d")) {
+    //DEV
+    backendHost = "ca2spdml01q";
+  } else if (
+    hostname.includes("ca2spdml06c") ||
+    hostname.includes("ca2spdml07c")
+  ) {
+    //UAT
+    backendHost = "ca2spdml05c";
+  } else if (hostname.includes("ca2spdml16q")) {
+    //SVT
+    backendHost = `ca2spdml15q`;
+  } else if (hostname.includes("localhost")) {
+    //SVT
+    backendHost = `ca2spdml01q`;
+  }
+  BASE_URL = `http://${backendHost}:9001`;
+  BASE_URL_8000 = `http://${backendHost}:8000`;
 }
 
 export default BASE_URL;
