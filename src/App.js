@@ -55,16 +55,17 @@ function App(props) {
   const [isTimedOut, setIsTimeOut] = useState(false);
 
   useEffect(() => {
-    const user = cookiesServer.get('user');
-    // const user = "u1021402 Sohan sohan.khatawkar@iqvia.com";
-    const data = user && user.split(" ");
-    const details = {
-      userId: data[0],
-      username: data[1],
-      email: data[2],
-    };
-    dispatch(setUserDetails(details));
-    console.log(details);
+    axios.get("/session")
+    .then(res => {
+      console.log(res)
+      if (Object.keys(res).length) {
+        dispatch(setUserDetails(res));
+      }
+    })
+    .catch(err => console.log(err))
+  },[])
+
+  useEffect(() => {
     if (location && location.pathname) {
       setPathname(location.pathname);
     }

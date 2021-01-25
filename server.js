@@ -6,6 +6,7 @@ const app = express();
 const cors = require("cors");
 const elasticsearch = require("elasticsearch");
 const https = require("https");
+const session = require('express-session')
 
 const PORT = 3000;
 app.use(cookieParser());
@@ -21,6 +22,7 @@ const client = new elasticsearch.Client({
   //   log: "trace",
   // apiVersion: '7.2', // use the same version of your Elasticsearch instance
 });
+const secretKey = 'PDTESTKEY';
 const TOC = {
   sectionId: 1,
   sectionName: "Table Of Contents",
@@ -662,15 +664,33 @@ app.get("/filter", (req, res) => {
     });
 });
 
-app.get("/validate_token", (req, res) => {});
+app.use(session({ 
+  
+  // It holds the secret key for session 
+  secret: 'Your_Secret_Key', 
 
-// app.post("/*", (req, res) => {
-//   console.log("post", req.body);
-//   res.redirect('/')
-// });
-app.use(function (req, res, next) {
+  // Forces the session to be saved 
+  // back to the session store 
+  resave: true, 
+
+  // Forces a session that is "uninitialized" 
+  // to be saved to the store 
+  saveUninitialized: true
+}))
+
+app.get("/session", function(req,res){
+  console.log('session', req.session.user); 
+  res.send(req.session.user);
+})
+app.use( function (req, res, next) {
   console.log("Cookies", req.cookies);
   const getCookies = req.cookies;
+  const details = {
+    userId: 'u1072231',
+    username: 'Sohan',
+    email: 'test@iqvia.com'
+  }
+  req.session.user = details;
   if (!Object.keys(getCookies).length) {
     res.redirect("https://ca2utmsa04q.quintiles.net:8080/v1/login");
   } else if (getCookies.access_token && getCookies.refresh_token) {
@@ -696,8 +716,14 @@ app.use(function (req, res, next) {
             );
             break;
           case 100:
-            const details = `${data.user_details.username} ${data.user_details.first_name} ${data.user_details.email}`;
-            res.cookie("user", details);
+            // const details = `${data.user_details.username} ${data.user_details.first_name} ${data.user_details.email}`;
+            // const details = {
+            //   userId: data.user_details.username,
+            //   username: data.user_details.first_name,
+            //   email: data.user_details.email
+            // }
+            // req.session.user = details;
+            // res.cookie("user", details);
             next();
             break;
           case 102:
