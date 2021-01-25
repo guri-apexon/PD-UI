@@ -22,14 +22,21 @@ function customizer(objValue, srcValue) {
   }
 }
 
-function* protocolAsyn() {
+function* getState() {
   const state = yield select();
-  const id = state.user.userDetail.userId
-  console.log(id);
+  const id = state.user.userDetail.userId;
+  // userId = id;
+  return id.substring(1);
+}
+
+
+function* protocolAsyn() {
+  let userId = yield getState();
+  console.log('------',userId)
   // const protocolUrl =
   // `http://ca2spdml01q:8000/api/protocol_metadata/?userId=${id}`;
   const protocolUrl =
-    `${BASE_URL_8000}/api/protocol_metadata/?userId=1021402`;
+    `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
   // const statusUrl = "./status.json";
   const protocolConfig = {
     url: protocolUrl,
@@ -75,7 +82,8 @@ function* compareSelectedAsyn(action) {
 }
 
 function* recentSearchAsyn() {
-  const url = `${BASE_URL_8000}/api/recent_search/?userId=1021402`;
+  let userId = yield getState();
+  const url = `${BASE_URL_8000}/api/recent_search/?userId=${userId}`;
   const config = {
     url,
     method: "GET",
@@ -92,7 +100,8 @@ function* recentSearchAsyn() {
 }
 
 function* savedSearchAsyn() {
-  const url = `${BASE_URL_8000}/api/saved_search/?userId=1021402`;
+  let userId = yield getState();
+  const url = `${BASE_URL_8000}/api/saved_search/?userId=${userId}`;
   const config = {
     url,
     method: "GET",
@@ -160,10 +169,11 @@ function* addProtocolSponsor() {
   }
 }
 function* postAddProtocol(postData) {
+  let userId = yield getState();
   const { payload: data } = postData;
   yield put(setLoading(true));
-  const postUrl = `${BASE_URL}/pd/api/v1/documents/?sourceFileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}&userId=1021402`;
-  const duplicateCheck = `http://ca2spdml01q:8000/api/duplicate_check/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&userId=1021402`;
+  const postUrl = `${BASE_URL}/pd/api/v1/documents/?sourceFileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}&userId=${userId}`;
+  const duplicateCheck = `http://ca2spdml01q:8000/api/duplicate_check/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&userId=${userId}`;
   var bodyFormData = new FormData();
   bodyFormData.append("file", data.uploadFile[0]);
   try {
@@ -222,13 +232,14 @@ function* resetErrorAddProtocol() {
 }
 
 function* saveRecentSearch(action) {
+  let userId = yield getState();
   const url = `${BASE_URL_8000}/api/recent_search/`;
   const config = {
     url,
     method: "POST",
     data: {
       keyword: action.payload,
-      userId: "1021402",
+      userId: userId,
       timeCreated: "2020-12-16T12:34:59.460Z",
       lastUpdated: "2020-12-16T12:34:59.460Z",
     },

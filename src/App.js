@@ -55,6 +55,7 @@ function App(props) {
   const [isTimedOut, setIsTimeOut] = useState(false);
 
   useEffect(() => {
+    // comment in local to run
     axios.get("/session")
     .then(res => {
       console.log(res.data)
@@ -63,6 +64,14 @@ function App(props) {
       }
     })
     .catch(err => console.log(err))
+    // Uncomment below code in local to run
+    // const details = {
+    //     userId: 'u1072231',
+    //     username: 'Sohan',
+    //     email: 'test@iqvia.com'
+    //   }
+    //   dispatch(setUserDetails(details));
+
   },[])
 
   useEffect(() => {
