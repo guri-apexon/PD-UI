@@ -11,6 +11,8 @@ import Card from "apollo-react/components/Card";
 import Divider from "apollo-react/components/Divider";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+
+import BASE_URL, { BASE_URL_8000 } from "../../../utils/api";
 //const [value, setValue] = React.useState(true);
 
 //const handleChange = (e, checked) => {
@@ -23,11 +25,11 @@ const SearchListingSection = ({
   compareTwoProtocol,
   selection,
   history,
-  onViewAssociateProtocolClick
+  onViewAssociateProtocolClick,
 }) => {
   // console.log("--------",data)
   const dispatch = useDispatch();
-  const onExpandClick = (data) => {  
+  const onExpandClick = (data) => {
     // if(!data.expanded){
     //   dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
     // }
@@ -40,7 +42,7 @@ const SearchListingSection = ({
   const handleTitle = async (title) => {
     try {
       const resp = await axios.get(
-        `http://ca2spdml01q:8000/api/latest_approved_document/?protocol=${title}`
+        `${BASE_URL_8000}/api/latest_approved_document/?protocol=${title}`
       );
       const data = resp.data;
       // debugger

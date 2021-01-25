@@ -7,7 +7,7 @@ import {
   getRecentDate,
   getRangeDate,
 } from "./searchSlice";
-import { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
+import BASE_URL, { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
 import moment from "moment";
 
@@ -425,7 +425,7 @@ function createJSONFormat(data) {
       rows: [],
       rowsLoading: true,
       isActive: data[i]._source.is_active,
-      viewAssociate: false
+      viewAssociate: false,
     };
     arr.push(obj);
   }
