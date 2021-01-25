@@ -56,8 +56,8 @@ function App(props) {
 
   useEffect(() => {
     const user = cookiesServer.get('user');
-    // const user = "u1072231 Sohan sohan.khatawkar@iqvia.com";
-    const data = user.split(" ");
+    // const user = "u1021402 Sohan sohan.khatawkar@iqvia.com";
+    const data = user && user.split(" ");
     const details = {
       userId: data[0],
       username: data[1],
@@ -110,21 +110,21 @@ function App(props) {
       onClick: () => onLogoutClick(),
     },
     menuItems: [
-      {
-        text: "Profile",
-        pathname: "/profile",
-        icon: UserIcon,
-      },
-      {
-        text: "Settings",
-        pathname: "/settings",
-        icon: SettingsIcon,
-      },
-      {
-        text: "Help",
-        pathname: "/help",
-        icon: HelpIcon,
-      },
+      // {
+      //   text: "Profile",
+      //   pathname: "/profile",
+      //   icon: UserIcon,
+      // },
+      // {
+      //   text: "Settings",
+      //   pathname: "/settings",
+      //   icon: SettingsIcon,
+      // },
+      // {
+      //   text: "Help",
+      //   pathname: "/help",
+      //   icon: HelpIcon,
+      // },
     ],
   };
   // const logoProps = {
