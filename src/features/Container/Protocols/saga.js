@@ -5,7 +5,7 @@ import {
   getAssociateDocuments,
   getCompare,
 } from "./protocolSlice.js";
-import { httpCall } from "../../../utils/api";
+import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
 
 function* getSummaryData(action) {
@@ -46,7 +46,10 @@ function parsedData(data) {
 }
 
 function captalize(data) {
-  return data.trim().toLowerCase().replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+  return data
+    .trim()
+    .toLowerCase()
+    .replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
 }
 
 function getTocSections(toc) {
@@ -55,12 +58,12 @@ function getTocSections(toc) {
   toc.data.map((item) => {
     let file_section_level = item[8].toString();
     let heading = item[4].font_style;
-    if (!file_section_level && heading === 'Heading1') {
+    if (!file_section_level && heading === "Heading1") {
       file_section_level = "1";
     }
     let level_1_CPT_section = captalize(item[6]);
     let section_num = captalize(item[7]);
-    
+
     let type = item[2];
     if (
       section_num &&
@@ -68,7 +71,10 @@ function getTocSections(toc) {
       level_1_CPT_section !== "Unmapped" &&
       !sectionList.includes(level_1_CPT_section)
     ) {
-      list.push({ section: `${section_num} ${level_1_CPT_section}`, id: `TOC-${item[9]}` });
+      list.push({
+        section: `${section_num} ${level_1_CPT_section}`,
+        id: `TOC-${item[9]}`,
+      });
       sectionList.push(level_1_CPT_section);
     }
   });
@@ -81,46 +87,48 @@ function getSoaSections(soa) {
   soa.map((item) => {
     let TableIndex = item.TableIndex;
     let TableName = item.TableName;
-      list.push({ section: `${TableIndex}. ${TableName}`, id: `SOA-${TableIndex}` });
-      // sectionList.push(CPT_section);
+    list.push({
+      section: `${TableIndex}. ${TableName}`,
+      id: `SOA-${TableIndex}`,
+    });
+    // sectionList.push(CPT_section);
   });
   return list;
 }
 
 function* getProtocolToc(action) {
-  const URL =
-    `http://ca2spdml01q:8000/api/protocol_data/?id=${action.payload}`;
+  const URL = `${BASE_URL_8000}/api/protocol_data/?id=${action.payload}`;
   const config = {
     url: URL,
     method: "GET",
   };
   try {
     const data = yield call(httpCall, config);
-  console.log(data);
-  if (data.success) {
-    const toc = parsedData(data.data.iqvdataToc);
-    const soa = parsedData(data.data.iqvdataSoa);
-    const viewData = {
-      iqvdataSoa: soa,
-      iqvdataSummary: parsedData(data.data.iqvdataSummary),
-      iqvdataToc: toc,
-      loader: false,
-      tocSections: getTocSections(toc),
-      soaSections: getSoaSections(soa),
-    };
-    yield put(getProcotoclToc(viewData));
-  } else {
-    const viewData = {
-      iqvdataSoa: null,
-      iqvdataSummary: null,
-      iqvdataToc: null,
-      loader: false,
-      tocSections: null,
-      soaSections: null,
-      err: 'No data found'
-    };
-    yield put(getProcotoclToc(viewData));
-  }
+    console.log(data);
+    if (data.success) {
+      const toc = parsedData(data.data.iqvdataToc);
+      const soa = parsedData(data.data.iqvdataSoa);
+      const viewData = {
+        iqvdataSoa: soa,
+        iqvdataSummary: parsedData(data.data.iqvdataSummary),
+        iqvdataToc: toc,
+        loader: false,
+        tocSections: getTocSections(toc),
+        soaSections: getSoaSections(soa),
+      };
+      yield put(getProcotoclToc(viewData));
+    } else {
+      const viewData = {
+        iqvdataSoa: null,
+        iqvdataSummary: null,
+        iqvdataToc: null,
+        loader: false,
+        tocSections: null,
+        soaSections: null,
+        err: "No data found",
+      };
+      yield put(getProcotoclToc(viewData));
+    }
   } catch (err) {
     const viewData = {
       iqvdataSoa: null,
@@ -129,11 +137,10 @@ function* getProtocolToc(action) {
       loader: false,
       tocSections: null,
       soaSections: null,
-      err: 'No data found'
+      err: "No data found",
     };
     yield put(getProcotoclToc(viewData));
   }
-  
 }
 
 function getElement(style) {
@@ -172,7 +179,7 @@ function* getProtocolSummary() {
 }
 
 function* fetchAssociateProtocol(action) {
-  const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload}`;
+  const URL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload}`;
   //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   const config = {
     url: URL,
@@ -202,7 +209,7 @@ function* getCompareResult(action) {
     console.log("Payload", action.payload);
     // const URL = `http://ca2spdml01q:8000/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`
     // debugger
-    const url = `http://ca2spdml01q:8000/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
+    const url = `${BASE_URL_8000}/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
     // const url = `/compare.json`;
     const resp = yield call(httpCall, { url, method: "GET" });
     // console.log("summary data", JSON.parse(resp.data.iqvdata));

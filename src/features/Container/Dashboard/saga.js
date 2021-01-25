@@ -75,7 +75,7 @@ function* compareSelectedAsyn(action) {
 }
 
 function* recentSearchAsyn() {
-  const url = "http://ca2spdml01q:8000/api/recent_search/?userId=1021402";
+  const url = `${BASE_URL_8000}/api/recent_search/?userId=1021402`;
   const config = {
     url,
     method: "GET",
@@ -92,7 +92,7 @@ function* recentSearchAsyn() {
 }
 
 function* savedSearchAsyn() {
-  const url = "http://ca2spdml01q:8000/api/saved_search/?userId=1021402";
+  const url = `${BASE_URL_8000}/api/saved_search/?userId=1021402`;
   const config = {
     url,
     method: "GET",
@@ -222,7 +222,7 @@ function* resetErrorAddProtocol() {
 }
 
 function* saveRecentSearch(action) {
-  const url = "http://ca2spdml01q:8000/api/recent_search/";
+  const url = `${BASE_URL_8000}/api/recent_search/`;
   const config = {
     url,
     method: "POST",
