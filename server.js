@@ -684,7 +684,7 @@ app.get("/session", function(req,res){
 })
 app.use( function (req, res, next) {
   console.log("Cookies", req.cookies);
-  // const getCookies = req.cookies;
+  const getCookies = req.cookies;
   // const details = {
   //   userId: 'u1072231',
   //   username: 'Sohan',
