@@ -684,13 +684,13 @@ app.get("/session", function(req,res){
 })
 app.use( function (req, res, next) {
   console.log("Cookies", req.cookies);
-  const getCookies = req.cookies;
-  const details = {
-    userId: 'u1072231',
-    username: 'Sohan',
-    email: 'test@iqvia.com'
-  }
-  req.session.user = details;
+  // const getCookies = req.cookies;
+  // const details = {
+  //   userId: 'u1072231',
+  //   username: 'Sohan',
+  //   email: 'test@iqvia.com'
+  // }
+  // req.session.user = details;
   if (!Object.keys(getCookies).length) {
     res.redirect("https://ca2utmsa04q.quintiles.net:8080/v1/login");
   } else if (getCookies.access_token && getCookies.refresh_token) {
@@ -717,12 +717,12 @@ app.use( function (req, res, next) {
             break;
           case 100:
             // const details = `${data.user_details.username} ${data.user_details.first_name} ${data.user_details.email}`;
-            // const details = {
-            //   userId: data.user_details.username,
-            //   username: data.user_details.first_name,
-            //   email: data.user_details.email
-            // }
-            // req.session.user = details;
+            const details = {
+              userId: data.user_details.username,
+              username: data.user_details.first_name,
+              email: data.user_details.email
+            }
+            req.session.user = details;
             // res.cookie("user", details);
             next();
             break;
