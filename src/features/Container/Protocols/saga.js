@@ -16,7 +16,7 @@ function* getSummaryData(action) {
   };
   yield put(getSummary(obj));
   console.log("pay abcd4578", action.payload);
-  const url = `http://ca2spdml01q:8000/api/protocol_attributes/?id=${action.payload}`;
+  const url = `${BASE_URL_8000}/api/protocol_attributes/?id=${action.payload}`;
   const resp = yield call(httpCall, { url, method: "GET" });
   console.log("summary data", resp);
   // getSummaryData(data)

@@ -46,11 +46,11 @@ if (process.env.NODE_ENV === "development") {
   //   backendHost = process.env.REACT_APP_BACKEND_HOST || "http://localhost:3000";
   // }
 
-  BASE_URL = `http://${backendHost}:9001`;
-  BASE_URL_8000 = `http://${backendHost}:8000`;
+  BASE_URL = `http://ca2spdml01q:9001`;
+  BASE_URL_8000 = `http://ca2spdml01q:8000`;
 } else {
-  BASE_URL = `http://${backendHost}:9001`;
-  BASE_URL_8000 = `http://${backendHost}:8000`;
+  BASE_URL = `http://ca2spdml01q:9001`;
+  BASE_URL_8000 = `http://ca2spdml01q:8000`;
 }
 
 export default BASE_URL;
