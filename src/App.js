@@ -57,9 +57,9 @@ function App(props) {
   useEffect(() => {
     axios.get("/session")
     .then(res => {
-      console.log(res)
-      if (Object.keys(res).length) {
-        dispatch(setUserDetails(res));
+      console.log(res.data)
+      if (Object.keys(res.data).length) {
+        dispatch(setUserDetails(res.data));
       }
     })
     .catch(err => console.log(err))
