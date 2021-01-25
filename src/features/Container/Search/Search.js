@@ -78,7 +78,7 @@ const Search = (props) => {
       if ("?key" in parsed) {
         setIdPresent(true);
         setSearchInput(parsed[`?key`]);
-        elasticSearchQuery += `${parsed[`?key`]} `;
+        elasticSearchQuery += `${parsed[`?key`]}`;
       }
       if ("toc" in parsed && TOC.sectionContent.length > 0) {
         let tempElasticQuery = TOC.sectionContent.filter((item) =>
