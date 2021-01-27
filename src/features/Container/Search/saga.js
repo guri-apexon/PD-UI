@@ -204,6 +204,7 @@ function* updateSearchAssociated(action) {
   yield put(getSearchResult(initialObj));
   //ProtocolNo
   // debugger
+  if(action.payload.data.protocolNumber){
   let associateURL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}`;
   // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=SSR_AKB-6548-CI-0014`;
   const associateDocs = yield call(httpCall, {
@@ -222,7 +223,8 @@ function* updateSearchAssociated(action) {
   // debugger
   if (associateDocs.success) {
     let result = setAsssociateProtocols(
-      action.payload.data.protocolNumber,
+      // action.payload.data.protocolNumber,
+      action.payload.data.id,
       action.payload.obj,
       associateDocs.data
     );
@@ -232,11 +234,26 @@ function* updateSearchAssociated(action) {
       success: true,
       data: result,
     };
-    // debugger
+    
     yield put(getSearchResult(obj));
   } else {
     yield;
   }
+} else {
+  let result = setAsssociateProtocols(
+    // action.payload.data.protocolNumber,
+    action.payload.data.id,
+    action.payload.obj,
+    []
+  );
+  const obj = {
+    search: true,
+    loader: false,
+    success: true,
+    data: result,
+  };
+  yield put(getSearchResult(obj));
+}
   // yield put(getSearchResult(action.payload));
 }
 
@@ -455,11 +472,11 @@ function getUniqObject(obj) {
 //   return activeObj;
 // }
 function setAsssociateProtocols(id, data, associateDocs) {
-  // console.log('id, data, associateDocs :', id, data, associateDocs);
+  console.log('id, data, associateDocs :', id, data, associateDocs);
   let arr =
     data &&
     data.map((item) => {
-      if (item.protocolNumber === id) {
+      if (item.id === id) {
         let temp = _.cloneDeep(item);
         temp.rows = associateDocs;
         temp.rowsLoading = false;
