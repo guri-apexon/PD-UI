@@ -24,9 +24,9 @@ console.log("------ENVIRONMENT-------", process.env.REACT_APP_ENV);
 if (process.env.REACT_APP_ENV === "dev") {
   backendHost = "ca2spdml01q";
 } else if (process.env.REACT_APP_ENV === "svt") {
-  backendHost = "ca2spdml15q";
+  backendHost = "ca2spdml13q";
 } else if (process.env.REACT_APP_ENV === "uat") {
-  backendHost = "ca2spdml05c";
+  backendHost = "ca2spdml03c";
 } else if (process.env.REACT_APP_ENV === "prod") {
   backendHost = "ca2spdml01q";
 } else {
