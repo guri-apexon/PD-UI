@@ -410,8 +410,10 @@ const Search = (props) => {
       newList.data &&
         newList.data.sort((a, b) => {
           if(data && data.label==='Approval Date'){
-            let first = a[data.value] ? new Date(a[data.value]) : "";
-            let second = b[data.value] ? new Date(b[data.value]) : "";
+            // let first = a[data.value] ? new Date(a[data.value]) : "";
+            // let second = b[data.value] ? new Date(b[data.value]) : "";
+            let first = a[data.value] ? a[data.value] : "";
+            let second = b[data.value] ? b[data.value] : "";
             return second - first;
           } else{
           let first = a[data.value] ? a[data.value] : "";
