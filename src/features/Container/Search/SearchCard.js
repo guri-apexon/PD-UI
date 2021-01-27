@@ -7,7 +7,7 @@ import Grid from "apollo-react/components/Grid";
 import Link from "apollo-react/components/Link";
 import Loader from "../../Components/Loader/Loader";
 import _ from "lodash";
-import { covertMMDDYYYY } from "../../../utils/utilFunction";
+import { covertMMDDYYYY,formatESDate } from "../../../utils/utilFunction";
 import axios from "axios";
 
 const SearchCard = ({
@@ -107,7 +107,7 @@ const SearchCard = ({
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="date-value">
-            {data.approvalDate ? covertMMDDYYYY(data.approvalDate) : "-"}
+            {data.approvalDate ? formatESDate(data.approvalDate) : "-"}
           </p>
         </Grid>
         <Grid md={3}>
@@ -123,7 +123,7 @@ const SearchCard = ({
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="molecule-value">
-            {data.uploadDate ? covertMMDDYYYY(data.uploadDate) : "-"}
+            {data.uploadDate ? formatESDate(data.uploadDate) : "-"}
           </p>
         </Grid>
         <Grid md={3}>
