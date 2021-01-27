@@ -54,25 +54,26 @@ function App(props) {
   const [pathname, setPathname] = useState("/dashboard");
   const [isTimedOut, setIsTimeOut] = useState(false);
 
-  useEffect(() => {
-    // comment in local to run
-    axios.get("/session")
-    .then(res => {
-      console.log(res.data)
-      if (Object.keys(res.data).length) {
-        dispatch(setUserDetails(res.data));
-      }
-    })
-    .catch(err => console.log(err))
-    // Uncomment below code in local to run
-    // const details = {
-    //     userId: 'u1072231',
-    //     username: 'Sohan',
-    //     email: 'test@iqvia.com'
-    //   }
-    //   dispatch(setUserDetails(details));
+//---------Revert-----------
+  // useEffect(() => {
+  //   // comment in local to run
+  //   // axios.get("/session")
+  //   // .then(res => {
+  //   //   console.log(res.data)
+  //   //   if (Object.keys(res.data).length) {
+  //   //     dispatch(setUserDetails(res.data));
+  //   //   }
+  //   // })
+  //   // .catch(err => console.log(err))
+  //   // Uncomment below code in local to run
+  //   const details = {
+  //       userId: 'u1072231',
+  //       username: 'Sohan',
+  //       email: 'test@iqvia.com'
+  //     }
+  //     dispatch(setUserDetails(details));
 
-  },[])
+  // },[])
 
   useEffect(() => {
     if (location && location.pathname) {
@@ -108,8 +109,9 @@ function App(props) {
     // axios.get("https://ca2utmsa04q.quintiles.net:8080/logout_session")
     // .then(res => console.log(res))
     // .catch(err => console.log(err))
-    window.location.href =
-      "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session";
+    //---------Revert-----------
+    // window.location.href =
+    //   "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session";
   };
   const profileMenuProps = {
     name: userDetails.username,
@@ -172,7 +174,8 @@ function App(props) {
       eraseCookie(cookies[i].split("=")[0]);
     }
     localStorage.setItem("isLoggedIn", false);
-    window.location.href = "https://ca2utmsa04q.quintiles.net:8080/v1/login";
+    //---------Revert-----------
+    // window.location.href = "https://ca2utmsa04q.quintiles.net:8080/v1/login";
     // console.log("p", props);
     // console.log("last active", idleTimer.getLastActiveTime());
     // const isTimedOut = isTimedOut;

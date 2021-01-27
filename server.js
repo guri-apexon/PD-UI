@@ -23,14 +23,10 @@ let baseUrlSSO = '';
 function authenticateUser(user, password)
 {
     var token = user + ":" + password;
-    console.log(token);
-    // Should i be encoding this value????? does it matter???
-    // Base64 Encoding -> btoa
     var hash = Buffer.from(token).toString('base64')
 
     return "Basic " + hash;
 }
-console.log(authenticateUser( process.env.CIMS_USER,  process.env.CIMS_PWD))
 console.log(process.env.NODE_ENV)
 switch(process.env.NODE_ENV) {
   case 'dev':
@@ -724,69 +720,70 @@ app.get("/session", function (req, res) {
   console.log("session", req.session.user);
   res.send(req.session.user);
 });
-app.use(function (req, res, next) {
-  console.log("Cookies", req.cookies);
-  const getCookies = req.cookies;
-  // const details = {
-  //   userId: 'u1072231',
-  //   username: 'Sohan',
-  //   email: 'test@iqvia.com'
-  // }
-  // req.session.user = details;
-  if (!Object.keys(getCookies).length) {
-    res.redirect(`${baseUrlSSO}/login`);
-  } else if (getCookies.access_token && getCookies.refresh_token) {
-    // At request level
-    const agent = new https.Agent({
-      rejectUnauthorized: false,
-    });
-    axios
-      .get(`${baseUrlSSO}/validate_token`, {
-        params: {
-          access_token: getCookies.access_token,
-          refresh_token: getCookies.refresh_token,
-        },
-        headers: { Authorization: authenticateUser( process.env.CIMS_USER,  process.env.CIMS_PWD) },
-        httpsAgent: agent,
-      })
-      .then(({ data }) => {
-        console.log(data);
-        switch (data.code) {
-          case 101:
-            res.redirect(
-              `${baseUrlSSO}/${data.redirect_url}`
-            );
-            break;
-          case 100:
-            // const details = `${data.user_details.username} ${data.user_details.first_name} ${data.user_details.email}`;
-            const details = {
-              userId: data.user_details.username,
-              username: data.user_details.first_name,
-              email: data.user_details.email,
-            };
-            req.session.user = details;
-            // res.cookie("user", details);
-            next();
-            break;
-          case 102:
-            res.redirect(
-              `${baseUrlSSO}/${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
-            );
-            break;
-          default:
-            res.redirect(
-              `${baseUrlSSO}/logout_session`
-            );
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        res.redirect(
-          `${baseUrlSSO}/logout_session`
-        );
-      });
-  }
-});
+//------------Revert---------------
+// app.use(function (req, res, next) {
+//   console.log("Cookies", req.cookies);
+//   const getCookies = req.cookies;
+//   // const details = {
+//   //   userId: 'u1072231',
+//   //   username: 'Sohan',
+//   //   email: 'test@iqvia.com'
+//   // }
+//   // req.session.user = details;
+//   if (!Object.keys(getCookies).length) {
+//     res.redirect(`${baseUrlSSO}/login`);
+//   } else if (getCookies.access_token && getCookies.refresh_token) {
+//     // At request level
+//     const agent = new https.Agent({
+//       rejectUnauthorized: false,
+//     });
+//     axios
+//       .get(`${baseUrlSSO}/validate_token`, {
+//         params: {
+//           access_token: getCookies.access_token,
+//           refresh_token: getCookies.refresh_token,
+//         },
+//         headers: { Authorization: authenticateUser( process.env.CIMS_USER,  process.env.CIMS_PWD) },
+//         httpsAgent: agent,
+//       })
+//       .then(({ data }) => {
+//         console.log(data);
+//         switch (data.code) {
+//           case 101:
+//             res.redirect(
+//               `${baseUrlSSO}/${data.redirect_url}`
+//             );
+//             break;
+//           case 100:
+//             // const details = `${data.user_details.username} ${data.user_details.first_name} ${data.user_details.email}`;
+//             const details = {
+//               userId: data.user_details.username,
+//               username: data.user_details.first_name,
+//               email: data.user_details.email,
+//             };
+//             req.session.user = details;
+//             // res.cookie("user", details);
+//             next();
+//             break;
+//           case 102:
+//             res.redirect(
+//               `${baseUrlSSO}/${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
+//             );
+//             break;
+//           default:
+//             res.redirect(
+//               `${baseUrlSSO}/logout_session`
+//             );
+//         }
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         res.redirect(
+//           `${baseUrlSSO}/logout_session`
+//         );
+//       });
+//   }
+// });
 
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
