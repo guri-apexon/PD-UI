@@ -6,8 +6,8 @@ const app = express();
 const cors = require("cors");
 const elasticsearch = require("elasticsearch");
 const https = require("https");
-const session = require('express-session')
-
+const session = require("express-session");
+require("dotenv").config({ path: __dirname + "/.env" });
 const PORT = 3000;
 app.use(cookieParser());
 app.use(cors());
@@ -17,12 +17,26 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "protocols")));
 
+let searchURL;
+if (process.env.REACT_APP_ENV === "dev") {
+  searchURL = "http://ca2spdml04q:9200/pd-index-3";
+} else if (process.env.REACT_APP_ENV === "svt") {
+  searchURL = "http://ca2spdml04c:9200/pd-index";
+} else if (process.env.REACT_APP_ENV === "uat") {
+  searchURL = "http://ca2spdml14q:9200/pd-index";
+} else if (process.env.REACT_APP_ENV === "prod") {
+  searchURL = "http://ca2spdml04q:9200/pd-index-3";
+} else {
+  searchURL = "http://ca2spdml04q:9200/pd-index-3";
+}
 const client = new elasticsearch.Client({
-  host: "http://ca2spdml04q:9200/pd-index-3",
+  host: searchURL,
   //   log: "trace",
   // apiVersion: '7.2', // use the same version of your Elasticsearch instance
 });
-const secretKey = 'PDTESTKEY';
+const secretKey = "PDTESTKEY";
+// console.log("------ENVIRONMENT-------", process.env);
+console.log("------Search ENVIRONMENT-------", searchURL);
 const TOC = {
   sectionId: 1,
   sectionName: "Table Of Contents",
@@ -481,7 +495,7 @@ app.get("/elastic", (req, res) => {
       "SourceFileName",
       "documentPath",
       "ProjectId",
-      "VersionNumber"
+      "VersionNumber",
     ],
   };
 
@@ -668,25 +682,26 @@ app.get("/filter", (req, res) => {
     });
 });
 
-app.use(session({ 
-  
-  // It holds the secret key for session 
-  secret: 'Your_Secret_Key', 
+app.use(
+  session({
+    // It holds the secret key for session
+    secret: "Your_Secret_Key",
 
-  // Forces the session to be saved 
-  // back to the session store 
-  resave: true, 
+    // Forces the session to be saved
+    // back to the session store
+    resave: true,
 
-  // Forces a session that is "uninitialized" 
-  // to be saved to the store 
-  saveUninitialized: true
-}))
+    // Forces a session that is "uninitialized"
+    // to be saved to the store
+    saveUninitialized: true,
+  })
+);
 
-app.get("/session", function(req,res){
-  console.log('session', req.session.user); 
+app.get("/session", function (req, res) {
+  console.log("session", req.session.user);
   res.send(req.session.user);
-})
-app.use( function (req, res, next) {
+});
+app.use(function (req, res, next) {
   console.log("Cookies", req.cookies);
   const getCookies = req.cookies;
   // const details = {
@@ -724,8 +739,8 @@ app.use( function (req, res, next) {
             const details = {
               userId: data.user_details.username,
               username: data.user_details.first_name,
-              email: data.user_details.email
-            }
+              email: data.user_details.email,
+            };
             req.session.user = details;
             // res.cookie("user", details);
             next();
