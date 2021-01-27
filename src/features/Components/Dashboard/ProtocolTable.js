@@ -36,13 +36,13 @@ const ActionCell = ({
       </div> */}
       <div className="table-selection">
         {/* <Tooltip title="Expand" disableFocusListener> */}
-          <IconButton
-            id="expand"
-            size="small"
-            onClick={() => handleToggleRow(id)}
-          >
-            {expanded ? <ChevronDown /> : <ChevronRight />}
-          </IconButton>
+        <IconButton
+          id="expand"
+          size="small"
+          onClick={() => handleToggleRow(id)}
+        >
+          {expanded ? <ChevronDown /> : <ChevronRight />}
+        </IconButton>
         {/* </Tooltip> */}
       </div>
     </div>
@@ -218,7 +218,7 @@ const ExpandableComponent = ({ row }) => {
           {row.phase}
         </Typography>
       </div>
-      <div className="extended-data" style={{width: '30%'}}>
+      <div className="extended-data" style={{ width: "30%" }}>
         <Typography
           style={{
             fontWeight: 500,
@@ -240,7 +240,7 @@ const ExpandableComponent = ({ row }) => {
           </Typography>
         )}
       </div>
-      <div className="extended-data" style={{width: '15%'}}>
+      <div className="extended-data" style={{ width: "15%" }}>
         <Typography
           style={{
             fontWeight: 500,
@@ -272,8 +272,9 @@ const ExpandableComponent = ({ row }) => {
             // </Link>
             <a href="javascript:void(0)" onClick={() => handleDownload(row)}>
               {row.fileName}
-            </a> // eslint-disable-line
+            </a>
           ) : (
+            // eslint-disable-line
             "-"
           )}
         </Typography>

@@ -55,9 +55,12 @@ const Search = (props) => {
     console.log("::::::::", params);
     let parsed = {};
     // if (indicationData.sectionContent.length === 0) {
-      // dispatch({ type: "GET_INDICATIONS" });
+    // dispatch({ type: "GET_INDICATIONS" });
     // }
-    if (sponsorData.sectionContent.length === 0 && indicationData.sectionContent.length === 0 ) {
+    if (
+      sponsorData.sectionContent.length === 0 &&
+      indicationData.sectionContent.length === 0
+    ) {
       dispatch({ type: "GET_SPONSORS" });
       dispatch({ type: "GET_INDICATIONS" });
     }
@@ -172,7 +175,7 @@ const Search = (props) => {
     //   dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     //   // dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
     // }
-  }, [dispatch,sponsorData, indicationData]);
+  }, [dispatch, sponsorData, indicationData]);
   const handleClick = (e) => {
     e.preventdefault();
     // console.log("Breadcrumb was clicked", e);
@@ -415,10 +418,10 @@ const Search = (props) => {
             let first = a[data.value] ? a[data.value] : "";
             let second = b[data.value] ? b[data.value] : "";
             return second - first;
-          } else{
-          let first = a[data.value] ? a[data.value] : "";
-          let second = b[data.value] ? b[data.value] : "";
-          return second - first;
+          } else {
+            let first = a[data.value] ? a[data.value] : "";
+            let second = b[data.value] ? b[data.value] : "";
+            return second - first;
           }
         });
       // console.log('data :', data, resultList, newList);
@@ -437,21 +440,21 @@ const Search = (props) => {
     // debugger;
     console.log("Two data", data, protArr);
     // if (protArr.length > 0) {
-      const index = protArr.indexOf(data);
-      if (index > -1) {
-        protArr.splice(index, 1);
+    const index = protArr.indexOf(data);
+    if (index > -1) {
+      protArr.splice(index, 1);
+    } else {
+      if (protArr.length < 2) {
+        // debugger
+        protArr.push(data);
+        console.log(protArr);
+        setProtocolSelected(protArr);
+        // oldArray => [...oldArray, newElement]
       } else {
-        if (protArr.length < 2) {
-          // debugger
-          protArr.push(data);
-          console.log(protArr);
-          setProtocolSelected(protArr);
-          // oldArray => [...oldArray, newElement]
-        } else {
-          setSelection(false);
-          alert("comparison is available only for two protocols.");
-        }
+        setSelection(false);
+        alert("comparison is available only for two protocols.");
       }
+    }
     // }
   };
   const compareProtocol = () => {
@@ -466,13 +469,14 @@ const Search = (props) => {
       alert("Please select at least two protocol versions to compare");
     }
   };
-  const saveSearch = ()=>{
-    console.log("Save my Search", elasticSearchQuery)
+  const saveSearch = () => {
+    console.log("Save my Search", elasticSearchQuery);
     const parsed = queryString.parse(elasticSearchQuery);
-    console.log("Save my Search Param", parsed)
-
-    
-  }
+    console.log("Save my Search Param", parsed);
+    if (parsed) {
+      dispatch({ type: "SAVE_SEARCH_SAGA", payload: parsed.key });
+    }
+  };
   return (
     <div className="search">
       <Breadcrumbs

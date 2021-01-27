@@ -1,4 +1,4 @@
-import { put, takeEvery, all, call, takeLatest } from "redux-saga/effects";
+import { put, takeEvery, all, call, takeLatest, select } from "redux-saga/effects";
 import {
   getFilters,
   getSearchResult,
@@ -391,6 +391,36 @@ function* getDataByRange(action) {
   //   yield put(getSearchResult(obj));
   // }
 }
+function* getState() {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  // userId = id;
+  return id.substring(1);
+}
+
+function* saveSearch(action) {
+  let userId = yield getState();
+  const url = `${BASE_URL_8000}/api/saved_search/`;
+  const config = {
+    url,
+    method: "POST",
+    data: {
+      keyword: action.payload,
+      userId: userId,
+      timeCreated: new Date().toISOString(),
+      lastUpdated: new Date().toISOString(),
+    },
+  };
+  try {
+    yield call(httpCall, config);
+    // if (searchData.success) {
+    //   yield put(getSavedSearches(searchData.data));
+    // }
+    // yield put(setError(searchData.err.statusText));
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 function* watchIncrementAsync() {
   yield takeEvery("GET_SEARCH_FILTER", getFilterData);
@@ -405,6 +435,7 @@ function* watchIncrementAsync() {
   );
   yield takeEvery("FILTER_BY_RECENT_SAGA", getRecentData);
   yield takeEvery("FILTER_BY_DATE_RANGE_SAGA", getDataByRange);
+  yield takeEvery("SAVE_SEARCH_SAGA", saveSearch);
 }
 
 export default function* protocolSaga() {

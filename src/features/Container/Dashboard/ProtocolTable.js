@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { prtocolsList, prtocolsError } from "../Dashboard/dashboardSlice";
 import ProtocolTableComp from "../../Components/Dashboard/ProtocolTable";
+import {userId} from "../../../store/userDetails"
 function ProtocolTable() {
   const dispatch = useDispatch();
   const protocolData = useSelector(prtocolsList);
+  const id = useSelector(userId);
   const error = useSelector(prtocolsError);
   useEffect(() => {
     dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });

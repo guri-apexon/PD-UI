@@ -6,9 +6,10 @@ const app = express();
 const cors = require("cors");
 const elasticsearch = require("elasticsearch");
 const https = require("https");
-const session = require("express-session");
-require("dotenv").config({ path: __dirname + "/.env" });
-const PORT = 3000;
+const session = require('express-session')
+const dotenv = require('dotenv');
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
@@ -16,27 +17,49 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "protocols")));
+let baseUrlElastic = '';
+let baseUrlSSO = '';
 
-let searchURL;
-if (process.env.REACT_APP_ENV === "dev") {
-  searchURL = "http://ca2spdml04q:9200/pd-index-3";
-} else if (process.env.REACT_APP_ENV === "svt") {
-  searchURL = "http://ca2spdml04c:9200/pd-index";
-} else if (process.env.REACT_APP_ENV === "uat") {
-  searchURL = "http://ca2spdml14q:9200/pd-index";
-} else if (process.env.REACT_APP_ENV === "prod") {
-  searchURL = "http://ca2spdml04q:9200/pd-index-3";
-} else {
-  searchURL = "http://ca2spdml04q:9200/pd-index-3";
+function authenticateUser(user, password)
+{
+    var token = user + ":" + password;
+    console.log(token);
+    // Should i be encoding this value????? does it matter???
+    // Base64 Encoding -> btoa
+    var hash = Buffer.from(token).toString('base64')
+
+    return "Basic " + hash;
 }
+console.log(authenticateUser( process.env.CIMS_USER,  process.env.CIMS_PWD))
+console.log(process.env.NODE_ENV)
+switch(process.env.NODE_ENV) {
+  case 'dev':
+    baseUrlElastic = process.env.ELASTIC_DEV_URL;
+    baseUrlSSO = process.env.CIMS_DEV_URL;
+    break;
+  case 'svt':
+    baseUrlElastic = process.env.ELASTIC_SVT_URL;
+    baseUrlSSO = process.env.CIMS_SVT_URL;
+    break;
+  case 'uat':
+    baseUrlElastic = process.env.ELASTIC_UAT_URL;
+    baseUrlSSO = process.env.CIMS_UAT_URL;
+    break;
+  case 'prod':
+    baseUrlElastic = process.env.ELASTIC_PROD_URL;
+    baseUrlSSO = process.env.CIMS_PROD_URL;
+    break;
+  default:
+    baseUrlElastic = process.env.ELASTIC_DEV_URL;
+    baseUrlSSO = process.env.CIMS_DEV_URL;
+}
+console.log('baseUrlElastic', baseUrlElastic)
+console.log('baseUrlSSO', baseUrlSSO)
 const client = new elasticsearch.Client({
-  host: searchURL,
+  host: `${baseUrlElastic}`,
   //   log: "trace",
   // apiVersion: '7.2', // use the same version of your Elasticsearch instance
 });
-const secretKey = "PDTESTKEY";
-// console.log("------ENVIRONMENT-------", process.env);
-console.log("------Search ENVIRONMENT-------", searchURL);
 const TOC = {
   sectionId: 1,
   sectionName: "Table Of Contents",
@@ -711,19 +734,19 @@ app.use(function (req, res, next) {
   // }
   // req.session.user = details;
   if (!Object.keys(getCookies).length) {
-    res.redirect("https://ca2utmsa04q.quintiles.net:8080/v1/login");
+    res.redirect(`${baseUrlSSO}/login`);
   } else if (getCookies.access_token && getCookies.refresh_token) {
     // At request level
     const agent = new https.Agent({
       rejectUnauthorized: false,
     });
     axios
-      .get("https://ca2utmsa04q.quintiles.net:8080/v1/validate_token", {
+      .get(`${baseUrlSSO}/validate_token`, {
         params: {
           access_token: getCookies.access_token,
           refresh_token: getCookies.refresh_token,
         },
-        headers: { Authorization: "Basic cGRfYXBwOnBkX2FwcDE=" },
+        headers: { Authorization: authenticateUser( process.env.CIMS_USER,  process.env.CIMS_PWD) },
         httpsAgent: agent,
       })
       .then(({ data }) => {
@@ -731,7 +754,7 @@ app.use(function (req, res, next) {
         switch (data.code) {
           case 101:
             res.redirect(
-              `https://ca2utmsa04q.quintiles.net:8080/v1/${data.redirect_url}`
+              `${baseUrlSSO}/${data.redirect_url}`
             );
             break;
           case 100:
@@ -747,19 +770,19 @@ app.use(function (req, res, next) {
             break;
           case 102:
             res.redirect(
-              `https://ca2utmsa04q.quintiles.net:8080/v1/${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
+              `${baseUrlSSO}/${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
             );
             break;
           default:
             res.redirect(
-              "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session"
+              `${baseUrlSSO}/logout_session`
             );
         }
       })
       .catch((err) => {
         console.log(err);
         res.redirect(
-          "https://ca2utmsa04q.quintiles.net:8080/v1/logout_session"
+          `${baseUrlSSO}/logout_session`
         );
       });
   }
@@ -769,7 +792,7 @@ app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-app.listen(PORT);
+app.listen(PORT)
 // data: { code: 101, message: 'expired', redirect_url: '/logout_session' }
 
 //First time Login

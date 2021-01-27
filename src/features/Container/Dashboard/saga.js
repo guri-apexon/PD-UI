@@ -240,8 +240,8 @@ function* saveRecentSearch(action) {
     data: {
       keyword: action.payload,
       userId: userId,
-      timeCreated: "2020-12-16T12:34:59.460Z",
-      lastUpdated: "2020-12-16T12:34:59.460Z",
+      timeCreated: new Date().toISOString(),
+      lastUpdated: new Date().toISOString(),
     },
   };
   try {
