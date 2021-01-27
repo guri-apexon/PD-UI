@@ -32,20 +32,20 @@ const SearchCard = ({
     const resp = await axios.get(
       `http://ca2spdml01q:8000/api/download_file/?filePath=${row.path}`
     );
-    console.log();
-    if (resp.data.includes("/")) {
-      let url = `http://ca2spdml06d:3000/${resp.data.split("/")[1]}`;
-      window.open(
-        url,
-        "_blank" // <- This is what makes it open in a new window.
-      );
-    } else {
+    // console.log();
+    // if (resp.data.includes("/")) {
+    //   let url = `http://ca2spdml06d:3000/${resp.data.split("/")[1]}`;
+    //   window.open(
+    //     url,
+    //     "_blank" // <- This is what makes it open in a new window.
+    //   );
+    // } else {
       let url = `http://ca2spdml06d:3000/${resp.data}`;
       window.open(
         url,
         "_blank" // <- This is what makes it open in a new window.
       );
-    }
+    // }
 
     // console.log(url);
   };
