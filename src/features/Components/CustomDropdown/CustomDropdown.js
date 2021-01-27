@@ -150,7 +150,7 @@ const CustomDropdown = ({
           onClick={(e) => onCustomClick(id, e, "fieldType")}
         />
         <div className={`custom-dropdown-list ${error && "adjust-margin"}`}>
-          {/* {list && list.length>0 && subStringExist && value.label && <>
+          {list && list.length>0 && subStringExist && value.label && <>
               <p className="custom-list-item">
                 {value.label}
                 <span className="float-right" onClick={(e) => onClickAdd(e)}>
@@ -158,7 +158,7 @@ const CustomDropdown = ({
                 </span>
               </p>
             </>
-          } */}
+          }
           {list && list.length > 0 ? (
             list.map((item,index) => (
               <p

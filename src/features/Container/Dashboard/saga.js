@@ -122,7 +122,7 @@ function* addProtocolSponsor() {
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
   const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
   // const protocolData = yield call(httpCall, {url, method:'GET'});
-
+  yield put(setLoading(true));
   // try {
   //   const protocolData = yield call(httpCall, { url, method: "GET" });
   //   if (protocolData.success) {
