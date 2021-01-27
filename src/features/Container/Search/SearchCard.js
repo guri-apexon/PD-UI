@@ -4,10 +4,11 @@ import Table from "apollo-react/components/Table";
 import columns from "./Data/column.data";
 import Button from "apollo-react/components/Button";
 import Grid from "apollo-react/components/Grid";
-import Link from 'apollo-react/components/Link';
+import Link from "apollo-react/components/Link";
 import Loader from "../../Components/Loader/Loader";
 import _ from "lodash";
 import { covertMMDDYYYY } from "../../../utils/utilFunction";
+import axios from "axios";
 
 const SearchCard = ({
   data,
@@ -24,6 +25,29 @@ const SearchCard = ({
   const handleSelectRow = (data) => {
     compareTwoProtocol(data);
     // console.log("<<<<<", data);
+  };
+
+  const handleDownload = async (row) => {
+    console.log("Rows", row);
+    const resp = await axios.get(
+      `http://ca2spdml01q:8000/api/download_file/?filePath=${row.path}`
+    );
+    console.log();
+    if (resp.data.includes("/")) {
+      let url = `http://ca2spdml06d:3000/${resp.data.split("/")[1]}`;
+      window.open(
+        url,
+        "_blank" // <- This is what makes it open in a new window.
+      );
+    } else {
+      let url = `http://ca2spdml06d:3000/${resp.data}`;
+      window.open(
+        url,
+        "_blank" // <- This is what makes it open in a new window.
+      );
+    }
+
+    // console.log(url);
   };
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>
@@ -114,18 +138,26 @@ const SearchCard = ({
           <p className="grid-item">Source :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="molecule-value">
+          <a
+            onClick={() => handleDownload(data)}
+            className="grid-item grid-key-value"
+            data-testid="molecule-value"
+            style={{
+              color: "#0138ff",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+          >
             {data.source}
-          </p>
+          </a>
         </Grid>
-        
       </Grid>
       <Link
         onClick={() => onViewAssociateProtocolClick(data)}
         variant="secondary"
         size="small"
-        style={{ marginRight: 10, marginTop: 5,  fontWeight: 600 }}
-        disabled ={ data && data.viewAssociate &&data.viewAssociate}
+        style={{ marginRight: 10, marginTop: 5, fontWeight: 600 }}
+        disabled={data && data.viewAssociate && data.viewAssociate}
       >
         View Associate Protocols
       </Link>

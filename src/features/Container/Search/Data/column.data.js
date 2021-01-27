@@ -40,8 +40,14 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
 const dateFormat = ({ row, column: { accessor: key } }) => {
   // console.log("--------------", row);
   // console.log("MMDDYYYY",covertMMDDYYYY(row.uploadDate))
-  
+
   return <>{covertMMDDYYYY(row.uploadDate)}</>;
+};
+const dateFormatApp = ({ row, column: { accessor: key } }) => {
+  // console.log("--------------", row);
+  // console.log("MMDDYYYY",covertMMDDYYYY(row.uploadDate))
+
+  return <>{row.approvalDate ? covertMMDDYYYY(row.approvalDate) : "-"}</>;
 };
 
 const columns = [
@@ -66,6 +72,11 @@ const columns = [
     accessor: "fileName",
     width: 150,
     customCell: DownloadLink,
+  },
+  {
+    header: "Approval Date",
+    accessor: "approvalDate",
+    customCell: dateFormatApp,
   },
   {
     header: "Upload Date",
