@@ -55,21 +55,6 @@ const SearchCard = ({
             {data.sponsor}
           </p>
         </Grid>
-        {/* <Grid md={3}>
-        <p className="grid-item">Source Document:</p>
-      </Grid>
-      <Grid md={3}>
-        <p className="grid-item">{data.sourceDocument}</p>
-      </Grid> */}
-        {/* \{" "} */}
-        <Grid md={3}>
-          <p className="grid-item">Recent Approval Date:</p>
-        </Grid>
-        <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="date-value">
-            {data.approvalDate ? covertMMDDYYYY(data.approvalDate) : "-"}
-          </p>
-        </Grid>
         <Grid md={3}>
           <p className="grid-item">Molecule/Device :</p>
         </Grid>
@@ -78,6 +63,62 @@ const SearchCard = ({
             {data.molecule}
           </p>
         </Grid>
+        {/* <Grid md={3}>
+        <p className="grid-item">Source Document:</p>
+      </Grid>
+      <Grid md={3}>
+        <p className="grid-item">{data.sourceDocument}</p>
+      </Grid> */}
+        {/* \{" "} */}
+        <Grid md={3}>
+          <p className="grid-item">ProjectId / Opportunity :</p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item grid-key-value" data-testid="molecule-value">
+            {data.projectId}
+          </p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item">Approval Date:</p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item grid-key-value" data-testid="date-value">
+            {data.approvalDate ? covertMMDDYYYY(data.approvalDate) : "-"}
+          </p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item">Document Status :</p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item grid-key-value" data-testid="molecule-value">
+            {data.documentStatus}
+          </p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item">Upload Date :</p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item grid-key-value" data-testid="molecule-value">
+            {data.uploadDate ? covertMMDDYYYY(data.uploadDate) : "-"}
+          </p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item">Version #:</p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item grid-key-value" data-testid="molecule-value">
+            {data.version}
+          </p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item">Source :</p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item grid-key-value" data-testid="molecule-value">
+            {data.source}
+          </p>
+        </Grid>
+        
       </Grid>
       <Link
         onClick={() => onViewAssociateProtocolClick(data)}

@@ -478,6 +478,10 @@ app.get("/elastic", (req, res) => {
       "uploadDate",
       "MoleculeDevice",
       "is_active",
+      "SourceFileName",
+      "documentPath",
+      "ProjectId",
+      "VersionNumber"
     ],
   };
 

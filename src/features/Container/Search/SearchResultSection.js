@@ -64,7 +64,7 @@ class SearchPanel extends React.Component {
       for (let i = 0; i < result.length; i++) {
         let obj = _.cloneDeep(result[i]);
         obj.expanded = result[i].expanded ? result[i].expanded : false;
-        obj.id = result[i].protocolNumber;
+        obj.id = result[i].AiDocId;
         // let obj = {
         //   expanded: result[i].expanded ? result[i].expanded : false,
         //   id: result[i].protocolNumber,
@@ -339,11 +339,11 @@ class SearchPanel extends React.Component {
               resultList.success &&
               accordionObj.length !== 0
                 ? accordionObj.map((protocol, i) => (
-                    <div key={protocol.protocolNumber}>
+                    <div key={protocol.AiDocId}>
                       <SearchListingSection
                         setExpanded={this.setExpanded}
                         data={protocol}
-                        key={protocol.protocolNumber}
+                        key={protocol.AiDocId}
                         compareTwoProtocol={this.props.compareTwoProtocol}
                         selection={this.props.selection}
                         history={this.props.history}

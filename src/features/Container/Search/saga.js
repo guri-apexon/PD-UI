@@ -426,12 +426,17 @@ function createJSONFormat(data) {
       rowsLoading: true,
       isActive: data[i]._source.is_active,
       viewAssociate: false,
+      projectId: data[i]._source.ProjectId,
+      source: data[i]._source.SourceFileName,
+      path: data[i]._source.documentPath + "/" + data[i]._source.SourceFileName,
+      documentStatus: data[i]._source.DocumentStatus,
+      version: data[i]._source.VersionNumber,
     };
     arr.push(obj);
   }
 
   console.log("arrs", arr);
-  return getUniqObject(arr);
+  return arr;
 }
 
 // --To Remove duplicate Protocol numbers from list

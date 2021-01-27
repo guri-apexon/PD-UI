@@ -34,8 +34,8 @@ const SearchListingSection = ({
     //   dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
     // }
     setExpanded(
-      data.protocolNumber,
-      { id: data.protocolNumber, expanded: !data.expanded },
+      data.AiDocId,
+      { id: data.AiDocId, expanded: !data.expanded },
       data
     );
   };
