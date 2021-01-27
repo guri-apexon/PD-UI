@@ -16,6 +16,7 @@ import { setUserDetails, loggedUser } from "./store/userDetails";
 import SessionExpired from "./SessionOut";
 import Loader from "apollo-react/components/Loader";
 import axios from "axios";
+import BASE_URL, { httpCall, BASE_URL_8000 } from "./utils/api";
 function createCookie(name, value, days) {
   if (days) {
     var date = new Date();
@@ -174,6 +175,7 @@ function App(props) {
       eraseCookie(cookies[i].split("=")[0]);
     }
     localStorage.setItem("isLoggedIn", false);
+    window.location.href = "/dashboard";
     //---------Revert-----------
     // window.location.href = "https://ca2utmsa04q.quintiles.net:8080/v1/login";
     // console.log("p", props);
