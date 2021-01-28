@@ -11,6 +11,7 @@ import { covertMMDDYYYY,formatESDate } from "../../../utils/utilFunction";
 import axios from "axios";
 import {BASE_URL_8000, UI_URL} from '../../../utils/api';
 
+
 const SearchCard = ({
   data,
   compareTwoProtocol,
@@ -191,6 +192,8 @@ const SearchCard = ({
           <div className="width100 search-inner-table">
             <Table
               columns={columns}
+              initialSortedColumn="uploadDate"
+              initialSortOrder="desc"
               rows={data.rows.map((row) => ({
                 ...row,
                 handleSelectRow,
