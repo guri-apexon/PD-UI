@@ -5,9 +5,6 @@ import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
-import Table, {
-  compareDates,
-} from "apollo-react/components/Table";
 
 const arr = [];
 const CheckBoxCell = ({ row: { handleSelectRow, id, selection } }) => {
@@ -90,8 +87,7 @@ const columns = [
   {
     header: "Upload Date",
     accessor: "uploadDate",
-    customCell: dateFormat,
-    sortFunction: compareDates
+    customCell: dateFormat
   },
 
   {

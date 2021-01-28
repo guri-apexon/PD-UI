@@ -192,8 +192,6 @@ const SearchCard = ({
           <div className="width100 search-inner-table">
             <Table
               columns={columns}
-              initialSortedColumn="uploadDate"
-              initialSortOrder="desc"
               rows={data.rows.map((row) => ({
                 ...row,
                 handleSelectRow,

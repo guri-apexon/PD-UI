@@ -222,11 +222,13 @@ function* updateSearchAssociated(action) {
   //  console.log('associateDocs :', associateDocs.data);
   // debugger
   if (associateDocs.success) {
+    let arr=_.cloneDeep(associateDocs.data);
+    arr.sort((a,b)=>{return moment(b.uploadDate)-moment(a.uploadDate)});
     let result = setAsssociateProtocols(
       // action.payload.data.protocolNumber,
       action.payload.data.id,
       action.payload.obj,
-      associateDocs.data
+      arr
     );
     const obj = {
       search: true,
