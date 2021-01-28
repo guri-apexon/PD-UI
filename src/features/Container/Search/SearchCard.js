@@ -98,7 +98,7 @@ const SearchCard = ({
           <p className="grid-item">ProjectId / Opportunity :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="molecule-value">
+          <p className="grid-item grid-key-value" data-testid="projectid-value">
             {data.projectId}
           </p>
         </Grid>
@@ -114,7 +114,7 @@ const SearchCard = ({
           <p className="grid-item">Document Status :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="molecule-value">
+          <p className="grid-item grid-key-value" data-testid="status-value">
             {data.documentStatus}
           </p>
         </Grid>
@@ -122,7 +122,7 @@ const SearchCard = ({
           <p className="grid-item">Upload Date :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="molecule-value">
+          <p className="grid-item grid-key-value" data-testid="upload-value">
             {data.uploadDate ? formatESDate(data.uploadDate) : "-"}
           </p>
         </Grid>
@@ -130,7 +130,7 @@ const SearchCard = ({
           <p className="grid-item">Version #:</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="molecule-value">
+          <p className="grid-item grid-key-value" data-testid="version-value">
             {data.version}
           </p>
         </Grid>
@@ -141,7 +141,7 @@ const SearchCard = ({
           <a
             onClick={() => handleDownload(data)}
             className="grid-item grid-key-value"
-            data-testid="molecule-value"
+            data-testid="source-value"
             style={{
               color: "#0138ff",
               textDecoration: "underline",
