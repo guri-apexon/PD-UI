@@ -80,7 +80,13 @@ function App(props) {
             callbackUrl: window.location.href
           }
         })
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res)
+        if(res.data) {
+          window.location.href =
+      `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+        }
+      })
       .catch(err => console.log(err))
     }, 60 * 3 * 1000); // 60 * 1000 milsec
   },[])

@@ -741,15 +741,15 @@ app.get("/refresh", function(req, res) {
     .then(({ data }) => {
       console.log(data);
       if (data.code === 102) {
-        res.redirect(
-          `${baseUrlSSO}${data.redirect_url}?callback=${req.query.callbackUrl}`
-        );
-        res.send('refresh')
+        // res.redirect(
+        //   `${baseUrlSSO}${data.redirect_url}?callback=${req.query.callbackUrl}`
+        // );
+        res.send(true)
       }
     })
     .catch((err) => {
       console.log(err);
-      res.send(e);
+      res.send(false);
     });
 
 })
