@@ -31,6 +31,7 @@ class ProtocolSearchButton extends React.Component {
     // debugger
     e.preventDefault();
     this.props.getSearchInput(this.state.input);
+    this.props.saveRecentSearch(this.state.input);
     // this.props.history.push(`/search?key=${this.state.input}`);
     this.setState({ input: "" });
     // ReactDOM.render(

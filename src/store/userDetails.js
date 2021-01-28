@@ -4,7 +4,7 @@ export const userDetails = createSlice({
   name: 'user',
   initialState: {
       userDetail: {
-        userId: 'q1021402',
+        userId: 'qbulk_upload_uat',
         username: 'Test User',
         email: 'test.user@iqvia.com'
       }

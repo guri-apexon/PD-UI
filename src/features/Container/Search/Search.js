@@ -194,6 +194,13 @@ useEffect(()=>{
   //   }
   // }, [searchInput]);
 
+  const saveRecentSearch = (input) => {
+    dispatch({
+      type: "POST_RECENT_SEARCH_DASHBOARD",
+      payload: input,
+    });
+  }
+
   const getSearchInput = (input) => {
     // console.log(input, searchQuery, "Search Query");
     // debugger
@@ -504,6 +511,7 @@ useEffect(()=>{
             idPresent={idPresent}
             compareProtocol={compareProtocol}
             saveSearch={saveSearch}
+            saveRecentSearch={saveRecentSearch}
           />
         </div>
         <div>
