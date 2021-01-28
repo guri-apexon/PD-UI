@@ -267,7 +267,11 @@ class SearchPanel extends React.Component {
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
               />
-              <FilterSection name="date" />
+              <FilterSection
+                name="date"
+                onConstructSearchQuery={this.onConstructSearchQuery}
+                searchQuery={searchQuery}
+              />
               {/* {filterList.length > 0 &&
                 filterList.map((section, index) => (
                   <FilterSection

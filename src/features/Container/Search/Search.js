@@ -22,7 +22,7 @@ import {
   recent,
   range,
 } from "./searchSlice";
-import { phases, documentStatus, TOC } from "./Data/constants";
+import { phases, documentStatus, TOC, dateType } from "./Data/constants";
 
 let protArr = [];
 const Search = (props) => {
@@ -43,15 +43,16 @@ const Search = (props) => {
     phase: [],
     documentStatus: [],
     toc: [],
+    dateType: [],
   });
   const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [selection, setSelection] = useState(true);
   // let arr = [];
-useEffect(()=>{
-  dispatch({ type: "GET_SPONSORS" });
-  dispatch({ type: "GET_INDICATIONS" });
-},[])
+  useEffect(() => {
+    dispatch({ type: "GET_SPONSORS" });
+    dispatch({ type: "GET_INDICATIONS" });
+  }, []);
   useEffect(() => {
     let params = props.location.search;
     // const parsed = queryString.parse(params);
@@ -152,6 +153,21 @@ useEffect(()=>{
         elasticSearchQuery += `${dateQuery}`;
         // resultQuery+=dateQuery;
       }
+      if ("dateType" in parsed) {
+        // debugger;
+        let tempElasticQuery = dateType.sectionContent.filter((item) =>
+          parsed.dateType.split("+").includes(item.value)
+        );
+        // console.log("DOCUMENT",parsed.documentStatus)
+        tempQuery.dateType =
+          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+        elasticSearchQuery += `&dateType=${tempElasticQuery
+          .map((item) => item.value)
+          .join("_")
+          .trim()}`;
+        // debugger;
+      }
+
       setSearchQuery(tempQuery);
       // debugger;
       console.log("::::::::", elasticSearchQuery);
@@ -263,6 +279,15 @@ useEffect(()=>{
         .join("_")
         .trim()}`;
     }
+    if ("dateType" in parsed) {
+      let tempElasticQuery = dateType.sectionContent.filter((item) =>
+        parsed.dateType.split("+").includes(item.value)
+      );
+      elasticSearchQuery += `&dateType=${tempElasticQuery
+        .map((item) => item.value)
+        .join("_")
+        .trim()}`;
+    }
 
     setIdPresent(true);
     setSearchInput(inp);
@@ -296,6 +321,7 @@ useEffect(()=>{
         phase: [],
         documentStatus: [],
         toc: [],
+        dateType: [],
       });
       dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
       props.history.push(`/search?key=${input}`);
@@ -306,6 +332,7 @@ useEffect(()=>{
         phase: [],
         documentStatus: [],
         toc: [],
+        dateType: [],
       });
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
       props.history.push(`/search`);
@@ -390,6 +417,21 @@ useEffect(()=>{
         }
         return str;
       }
+      case "dateType": {
+        let str = "&dateType=";
+        let extractValues = dateType.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.value}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
       default:
         return "";
     }
@@ -403,6 +445,7 @@ useEffect(()=>{
       phase: [],
       documentStatus: [],
       toc: [],
+      dateType: [],
     });
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     props.history.push(`/search`);
@@ -422,7 +465,7 @@ useEffect(()=>{
       setSortValue(value);
       newList.data &&
         newList.data.sort((a, b) => {
-          if(data && data.label==='Approval Date'){
+          if (data && data.label === "Approval Date") {
             // let first = a[data.value] ? new Date(a[data.value]) : "";
             // let second = b[data.value] ? new Date(b[data.value]) : "";
             let first = a[data.value] ? a[data.value] : "";

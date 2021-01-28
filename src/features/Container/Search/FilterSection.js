@@ -12,7 +12,13 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { indications, sponsors } from "./searchSlice";
 
-import { TOC, phases, documentStatus, dateSection } from "./Data/constants";
+import {
+  TOC,
+  phases,
+  documentStatus,
+  dateSection,
+  dateType,
+} from "./Data/constants";
 
 const CollapseCard = ({
   name,
@@ -25,15 +31,14 @@ const CollapseCard = ({
     return (
       <Collapsible trigger={TOC.sectionName}>
         {/* <TextCard section={TOC} /> */}
-        {TOC.sectionContent &&
-          TOC.sectionContent.length > 0 && (
-            <CheckboxCard
-              section={TOC}
-              identifier="toc"
-              onCheckboxClick={onConstructSearchQuery}
-              listValue={searchQuery.toc}
-            />
-          )}
+        {TOC.sectionContent && TOC.sectionContent.length > 0 && (
+          <CheckboxCard
+            section={TOC}
+            identifier="toc"
+            onCheckboxClick={onConstructSearchQuery}
+            listValue={searchQuery.toc}
+          />
+        )}
       </Collapsible>
     );
   } else if (name === "indication") {
@@ -96,7 +101,13 @@ const CollapseCard = ({
           classname="testing"
           style={{ height: "550px", float: "left", width: "100%" }}
         >
-          <DateRangeCard section={dateSection} />
+          <DateRangeCard
+            section={dateSection}
+            dateType={dateType}
+            identifier="dateType"
+            onCheckboxClick={onConstructSearchQuery}
+            listValue={searchQuery.dateType}
+          />
         </Collapsible>
       </span>
     );

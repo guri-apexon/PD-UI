@@ -336,6 +336,35 @@ export const documentStatus = {
   ],
 };
 
+export const dateType = {
+  sectionId: 7,
+  sectionName: "Date",
+  fieldType: "checkbox",
+  sectionContent: [
+    {
+      id: 1,
+      title: "Approval date",
+      value: "approvalDate",
+      content: "",
+      count: "",
+    },
+    {
+      id: 2,
+      title: "Upload date",
+      value: "uploadDate",
+      content: "",
+      count: "",
+    },
+    // {
+    //   id: 3,
+    //   title: "Rejected",
+    //   value:'rejected',
+    //   content: "",
+    //   count: "",
+    // },
+  ],
+};
+
 export const dateSection = {
   sectionId: 7,
   sectionName: "Date Range",

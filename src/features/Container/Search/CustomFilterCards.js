@@ -190,8 +190,15 @@ export const RadioCard = ({ state, section, index }) => {
   );
 };
 
-export const DateRangeCard = ({ section }) => {
+export const DateRangeCard = ({
+  section,
+  dateType,
+  identifier,
+  onCheckboxClick,
+  listValue,
+}) => {
   const [value, setValue] = React.useState("0");
+  const [value1, setValue1] = React.useState([]);
   const [dateRange, setDateRange] = React.useState({});
   const dispatch = useDispatch();
 
@@ -199,12 +206,14 @@ export const DateRangeCard = ({ section }) => {
     // setValue(listValue)
     // console.log('listValue :', listValue);
     if (value) {
+      // debugger
       // props.history.push(`/search?${resultQuery}`);
       dispatch({ type: "FILTER_BY_RECENT_SAGA", payload: value });
     }
   }, [value]);
 
   useEffect(() => {
+    // debugger
     const range = {
       from: dateRange.fromDate,
       to: dateRange.toDate,
@@ -227,12 +236,51 @@ export const DateRangeCard = ({ section }) => {
     setDateRange(e.target.value);
   };
 
+  useEffect(() => {
+    debugger
+    setValue1(listValue);
+    // console.log('listValue :', listValue);
+  }, [listValue]);
+
+  const handleChange1 = (e) => {
+    setValue1(e.target.value);
+    // console.log("aaaa", e.target.value);
+    onCheckboxClick(e.target.value, identifier);
+  };
+
   const classes = useStyles();
   return (
     <Card>
       <CardContent>
         <Typography className={classes.cardSubtitle} variant="caption">
-          <div style={{ marginTop: 10 }} data-testid="recent-date-wrapper" id="recent-date-id">
+          <div
+            style={{ marginTop: 10 }}
+            data-testid="recent-date-wrapper"
+            id="recent-date-id"
+          >
+            <div
+              style={{
+                marginTop: 5,
+                paddingBottom: 5,
+                marginBottom: 5,
+                borderBottom: "1px solid #d0d0d0",
+              }}
+            >
+              <CheckboxGroup value={value1} onChange={handleChange1}>
+                {dateType.sectionContent.map((content, i) => (
+                  <Checkbox
+                    id={content.id}
+                    key={i}
+                    value={content.id}
+                    label={content.title}
+                    size="small"
+                    // onChange= {(e)=> onCheckBoxClick(e)}
+                    // checked='true'
+                    // checked={value && value.includes(content.id)}
+                  />
+                ))}
+              </CheckboxGroup>
+            </div>
             <RadioGroup value={value} onChange={(e) => handleChange(e)}>
               {section.sectionContent.map((item, i) => (
                 <Radio
@@ -244,7 +292,11 @@ export const DateRangeCard = ({ section }) => {
                 />
               ))}
             </RadioGroup>
-            <div style={{ marginTop: 20 }} data-testid="range-date-wrapper" id="range-date-id">
+            <div
+              style={{ marginTop: 20 }}
+              data-testid="range-date-wrapper"
+              id="range-date-id"
+            >
               <DateRangePicker
                 onChange={(e) => handleRange(e)}
                 fromDateProps={{
