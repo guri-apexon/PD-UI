@@ -723,7 +723,7 @@ app.get("/session", function (req, res) {
 });
 
 app.get("/refresh", function(req, res) {
-  console.log('-----callback------',req.params.callbackUrl)
+  console.log('-----callback------',req.query)
   const getCookies = req.session.cookies;
 
   const agent = new https.Agent({
@@ -742,15 +742,14 @@ app.get("/refresh", function(req, res) {
       console.log(data);
       if (data.code === 102) {
         res.redirect(
-          `${baseUrlSSO}/${data.redirect_url}?callback=${req.params.callbackUrl}`
+          `${baseUrlSSO}${data.redirect_url}?callback=${req.query.callbackUrl}`
         );
+        res.send('refresh')
       }
     })
     .catch((err) => {
       console.log(err);
-      res.redirect(
-        `${baseUrlSSO}/logout_session`
-      );
+      res.send(e);
     });
 
 })
@@ -786,7 +785,7 @@ app.use(function (req, res, next) {
         switch (data.code) {
           case 101:
             res.redirect(
-              `${baseUrlSSO}/${data.redirect_url}`
+              `${baseUrlSSO}${data.redirect_url}`
             );
             break;
           case 100:
@@ -807,7 +806,7 @@ app.use(function (req, res, next) {
             break;
           case 102:
             res.redirect(
-              `${baseUrlSSO}/${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
+              `${baseUrlSSO}${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
             );
             break;
           default:
