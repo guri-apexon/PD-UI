@@ -81,7 +81,7 @@ function* compareSelectedAsyn(action) {
   }
 }
 
-function* recentSearchAsyn() {
+export function* recentSearchAsyn() {
   let userId = yield getState();
   const url = `${BASE_URL_8000}/api/recent_search/?userId=${userId}`;
   const config = {
@@ -117,7 +117,7 @@ function* savedSearchAsyn() {
   }
 }
 
-function* addProtocolSponsor() {
+export function* addProtocolSponsor() {
   // const url = "../../../../sponsor.json";
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
   const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
@@ -132,7 +132,7 @@ function* addProtocolSponsor() {
   // } catch (err) {
   //   yield put(setError(err.statusText));
   // }
-
+  
   try {
     const sponsorList = yield call(httpCall, {
       url: sponsorUrl,
@@ -173,7 +173,7 @@ function* postAddProtocol(postData) {
   const { payload: data } = postData;
   yield put(setLoading(true));
   const postUrl = `${BASE_URL}/pd/api/v1/documents/?sourceFileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}&userId=${userId}`;
-  const duplicateCheck = `http://ca2spdml01q:8000/api/duplicate_check/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&userId=${userId}`;
+  const duplicateCheck = `${BASE_URL_8000}/api/duplicate_check/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&userId=${userId}`;
   var bodyFormData = new FormData();
   bodyFormData.append("file", data.uploadFile[0]);
   try {

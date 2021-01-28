@@ -150,10 +150,14 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       if (!dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
         if (fieldName === "amendmentNumber") {
           temp.versionNumber.error = false;
-          temp.versionNumber.errorMessage = "";
+          temp.versionNumber.errorMessage = " ";
         }
         temp[fieldName].error = true;
         temp[fieldName].errorMessage = "Required";
+        // if(formValues[fieldName].label && formValues[fieldName].label.length>0){
+        //   temp[fieldName].error = false;
+        //   temp[fieldName].errorMessage = " ";
+        // }
       } else {
         temp[fieldName].error = false;
         temp[fieldName].errorMessage = " ";

@@ -20,23 +20,29 @@ export const httpCall = async (config) => {
 let BASE_URL = "";
 let BASE_URL_8000 = "";
 let backendHost;
+let backendPostHost;
 let baseUrlSSO;
 
 console.log("------ENVIRONMENT-------", process.env.REACT_APP_ENV);
 if (process.env.REACT_APP_ENV === "dev") {
   backendHost = "ca2spdml01q";
+  backendPostHost="ca2spdml01q";
   baseUrlSSO = "https://ca2utmsa04q.quintiles.net:8080/v1";
 } else if (process.env.REACT_APP_ENV === "svt") {
   backendHost = "ca2spdml13q";
+  backendPostHost="ca2spdml15q";
   baseUrlSSO = "https://ca2utmsa04q.quintiles.net:8080/v1";
 } else if (process.env.REACT_APP_ENV === "uat") {
   backendHost = "ca2spdml03c";
+  backendPostHost="ca2spdml05c";
   baseUrlSSO = "https://ca2utmsa04q.quintiles.net:8080/v1";
 } else if (process.env.REACT_APP_ENV === "prod") {
   backendHost = "ca2spdml01q";
+  backendPostHost="ca2spdml01q";
   baseUrlSSO = "https://ca2utmsa04q.quintiles.net:8080/v1";
 } else {
   backendHost = "ca2spdml01q";
+  backendPostHost="ca2spdml01q";
   baseUrlSSO = "https://ca2utmsa04q.quintiles.net:8080/v1";
 }
 console.log('---------SSO------',baseUrlSSO);
@@ -64,7 +70,7 @@ console.log('---------SSO------',baseUrlSSO);
 //   BASE_URL = `http://${backendHost}:9001`;
 //   BASE_URL_8000 = `http://${backendHost}:8000`;
 // }
-BASE_URL = `http://${backendHost}:9001`;
+BASE_URL = `http://${backendPostHost}:9001`;
 BASE_URL_8000 = `http://${backendHost}:8000`;
 export default BASE_URL;
 export { BASE_URL_8000, baseUrlSSO  };
