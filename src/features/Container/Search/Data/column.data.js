@@ -2,7 +2,7 @@ import CheckBox from "apollo-react/components/Checkbox";
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import {BASE_URL_8000, UI_URL} from '../../../../utils/api';
+import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
 
@@ -28,7 +28,7 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     const resp = await axios.get(
       `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
     );
-  
+
     url = `${UI_URL}/${resp.data}`;
     window.open(
       url,
@@ -51,6 +51,10 @@ const dateFormatApp = ({ row, column: { accessor: key } }) => {
   return <>{row.approvalDate ? covertMMDDYYYY(row.approvalDate) : "-"}</>;
 };
 
+const Cell = ({ row, column: { accessor: key } }) => {
+  return <>{row[key] ? row[key] : "-"}</>;
+};
+
 const columns = [
   {
     accessor: "action",
@@ -65,8 +69,9 @@ const columns = [
   },
   {
     header: "Draft #",
-    accessor: "dradraftVersionft",
+    accessor: "draftVersion",
     width: 75,
+    customCell: Cell,
   },
   {
     header: "Source Document",

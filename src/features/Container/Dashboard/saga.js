@@ -132,7 +132,7 @@ export function* addProtocolSponsor() {
   // } catch (err) {
   //   yield put(setError(err.statusText));
   // }
-  
+
   try {
     const sponsorList = yield call(httpCall, {
       url: sponsorUrl,
@@ -168,7 +168,7 @@ export function* addProtocolSponsor() {
     yield put(setApiError(true));
   }
 }
-function* postAddProtocol(postData) {
+export function* postAddProtocol(postData) {
   let userId = yield getState();
   const { payload: data } = postData;
   yield put(setLoading(true));

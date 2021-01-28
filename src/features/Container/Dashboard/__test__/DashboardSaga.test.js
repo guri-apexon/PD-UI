@@ -1,7 +1,7 @@
 import React from "react";
 import { runSaga } from "redux-saga";
 import { takeEvery } from "redux-saga/effects";
-import { recentSearchAsyn, addProtocolSponsor } from "../saga";
+import { recentSearchAsyn, addProtocolSponsor, postAddProtocol } from "../saga";
 
 import * as api from "../../../../utils/api";
 const userDetail = {
@@ -9,8 +9,24 @@ const userDetail = {
   userId: "u1021402",
   email: "test@iqvia.com",
 };
+const file = new File(["(⌐□_□)"], "chucknorris.doc", {
+  type: "application/msword",
+});
+const addProtocolData = {
+  uploadFile: [file],
+  fileName: "file",
+  protocol_version: "1",
+  protocol_number: "11",
+  sponsor: "Sp",
+  documentStatus: "final",
+  amendmentNumber: "Y",
+  projectID: "11",
+  indication: "ind",
+  moleculeDevice: "Mol",
+  userId: "1222",
+};
 describe("Dashboard Saga Unit Test", () => {
-    // recentSearchAsyn Test Cases Start
+  // recentSearchAsyn Test Cases Start
   test("recentSearchAsyn Saga Success", async () => {
     const dispatchedActions = [];
     const mockOutput = {
@@ -93,16 +109,16 @@ describe("Dashboard Saga Unit Test", () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-   
+
   // AddProtocol Test Cases Start
-   test("addProtocolSponsor Saga Success", async () => {
+  test("addProtocolSponsor Saga Success", async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
       data: [
         {
-          sponsor:"astella",
-          id:1
+          sponsor: "astella",
+          id: 1,
         },
       ],
     };
@@ -124,14 +140,13 @@ describe("Dashboard Saga Unit Test", () => {
     expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
 
-
   test("addProtocolSponsor Saga error", async () => {
     const dispatchedActions = [];
     const mockOutput = {
-        success: false,
-        err: {
-          statusText: "Error",
-        },
+      success: false,
+      err: {
+        statusText: "Error",
+      },
     };
     const mockCallApi = jest
       .spyOn(api, "httpCall")
@@ -154,7 +169,7 @@ describe("Dashboard Saga Unit Test", () => {
   test("addProtocolSponsor Saga fails", async () => {
     const dispatchedActions = [];
     const mockOutput = {
-        message:"API fails"
+      message: "API fails",
     };
     const mockCallApi = jest
       .spyOn(api, "httpCall")
@@ -176,7 +191,132 @@ describe("Dashboard Saga Unit Test", () => {
 
   // AddProtocol Test Cases End
 
-});
+  // Post AddProtocol Test Cases Starts
 
-// http://ca2spdml03c:9001/pd/api/v1/documents/?sourceFileName=P
-// http://ca2spdml01q:9001/pd/api/v1/documents/?sourceFileName=Pr
+  test("addProtocolSponsor Saga Success", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [
+        {
+          sponsor: "astella",
+          id: 1,
+        },
+      ],
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, postAddProtocol, {
+      payload: addProtocolData,
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("addProtocolSponsor Saga success with no duplicate", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: null,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, postAddProtocol, {
+      payload: addProtocolData,
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
+
+  test("addProtocolSponsor Saga fails", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: null,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, postAddProtocol, {
+      payload: addProtocolData,
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
+
+  test("addProtocolSponsor Saga error in catch section", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      message: "Successful",
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, postAddProtocol, {
+      payload: addProtocolData,
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("addProtocolSponsor Saga Duplicate Exist Test", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: {
+        Duplicate: "Duplicate",
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, postAddProtocol, {
+      payload: addProtocolData,
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+});
