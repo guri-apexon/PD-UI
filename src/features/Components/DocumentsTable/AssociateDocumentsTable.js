@@ -4,6 +4,7 @@ import moment from "moment";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import _ from "lodash";
+import {BASE_URL_8000, UI_URL} from '../../../utils/api';
 
 // const Cell = ({ row, column }) => (
 //   <a href={row.documentFilePath} target="_blank">
@@ -14,11 +15,17 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
   let url;
   const handleDownload = async (row) => {
     console.log("Rows", row);
-    const resp = await axios.get(
-      `http://ca2spdml01q:8000/api/download_file/?filePath=${row.documentFilePath}`
-    );
+    // const resp = await axios.get(
+    //   `http://ca2spdml01q:8000/api/download_file/?filePath=${row.documentFilePath}`
+    // );
 
-    url = `http://ca2spdml06d:3000/${resp.data}`;
+    // url = `http://ca2spdml06d:3000/${resp.data}`;
+
+    const resp = await axios.get(
+      `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
+    );
+  
+    url = `${UI_URL}/${resp.data}`;
     window.open(
       url,
       "_blank" // <- This is what makes it open in a new window.

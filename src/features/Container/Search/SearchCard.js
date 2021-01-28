@@ -9,6 +9,7 @@ import Loader from "../../Components/Loader/Loader";
 import _ from "lodash";
 import { covertMMDDYYYY,formatESDate } from "../../../utils/utilFunction";
 import axios from "axios";
+import {BASE_URL_8000, UI_URL} from '../../../utils/api';
 
 const SearchCard = ({
   data,
@@ -29,9 +30,9 @@ const SearchCard = ({
 
   const handleDownload = async (row) => {
     console.log("Rows", row);
-    const resp = await axios.get(
-      `http://ca2spdml01q:8000/api/download_file/?filePath=${row.path}`
-    );
+    // const resp = await axios.get(
+    //   `http://ca2spdml01q:8000/api/download_file/?filePath=${row.path}`
+    // );
     // console.log();
     // if (resp.data.includes("/")) {
     //   let url = `http://ca2spdml06d:3000/${resp.data.split("/")[1]}`;
@@ -40,7 +41,12 @@ const SearchCard = ({
     //     "_blank" // <- This is what makes it open in a new window.
     //   );
     // } else {
-      let url = `http://ca2spdml06d:3000/${resp.data}`;
+      // let url = `http://ca2spdml06d:3000/${resp.data}`;
+      const resp = await axios.get(
+        `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`
+      );
+    
+     let url = `${UI_URL}/${resp.data}`;
       window.open(
         url,
         "_blank" // <- This is what makes it open in a new window.
