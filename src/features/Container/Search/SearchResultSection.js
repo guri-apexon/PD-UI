@@ -44,19 +44,24 @@ class SearchPanel extends React.Component {
       props.resultList !== state.resultListData
     ) {
       // console.log("Get Static");
-      let defaultValue= false;
+      let defaultValue = false;
 
-      //For resetting ExpandAll button when all are expanded and Search button is click 
-      if(state.defaultExpand===true &&  props.resultList && props.resultList.data && props.resultList.data.length>0){
-       let defaultVal=props.resultList.data.filter(value=>{
-        return (value.expanded && value.expanded===true);
-      }); 
-      if(defaultVal.length >0){
-        defaultValue=true;
-      }else{
-        defaultValue=false;
-      }
-      console.log(defaultValue, "defaultValue")
+      //For resetting ExpandAll button when all are expanded and Search button is click
+      if (
+        state.defaultExpand === true &&
+        props.resultList &&
+        props.resultList.data &&
+        props.resultList.data.length > 0
+      ) {
+        let defaultVal = props.resultList.data.filter((value) => {
+          return value.expanded && value.expanded === true;
+        });
+        if (defaultVal.length > 0) {
+          defaultValue = true;
+        } else {
+          defaultValue = false;
+        }
+        console.log(defaultValue, "defaultValue");
       }
       let result =
         props.resultList && props.resultList.data ? props.resultList.data : [];
@@ -76,7 +81,7 @@ class SearchPanel extends React.Component {
       return {
         accordionObj: arr,
         resultListData: props.resultList,
-        defaultExpand: defaultValue
+        defaultExpand: defaultValue,
       };
     }
 
@@ -97,8 +102,7 @@ class SearchPanel extends React.Component {
     let accObj = accordionObj;
     let foundIndex = accObj.findIndex((obj) => obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
-    if(accObj[foundIndex].expanded=== false){
-
+    if (accObj[foundIndex].expanded === false) {
       accObj[foundIndex].viewAssociate = false;
     }
     // console.log(accObj);
@@ -112,11 +116,11 @@ class SearchPanel extends React.Component {
     });
   };
 
-  onViewAssociateProtocolClick = (data)=> {
+  onViewAssociateProtocolClick = (data) => {
     const { updateAssociateProtocol } = this.props;
     const { accordionObj } = this.state;
     updateAssociateProtocol(data, accordionObj);
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     // console.log("Did Update");
@@ -155,7 +159,7 @@ class SearchPanel extends React.Component {
     let arr = accordionObj.map((item) => {
       let temp = _.cloneDeep(item);
       temp.expanded = tempDefault;
-      temp.viewAssociate = tempDefault === false ? false :temp.viewAssociate ;
+      temp.viewAssociate = tempDefault === false ? false : temp.viewAssociate;
       return temp;
     });
     // if (tempDefault) {
@@ -209,21 +213,29 @@ class SearchPanel extends React.Component {
           : protocols
         : 0;
 
-
     return (
       <div id="searchPanel" className="searchPanel">
         <Grid container md={12}>
           <Grid md={3}>
             <div variant="body2">
               {
-                <div className="width100 refine-search">
+                <div className="refine-search">
                   <span>Refine your Search</span>
-                  <div className="floatRight" style={{ paddingRight: 5 }}>
+                  <div style={{ paddingTop: 5 }}>
                     <Link onClick={this.clearAllCheckbox} size="small">
                       {" "}
                       Clear All
                     </Link>
                   </div>
+                  {/* <div className="floatRight">
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      onClick={this.props.handleApplyFilter}
+                    >
+                      Apply Filter
+                    </Button>
+                  </div> */}
                 </div>
               }
             </div>
@@ -309,7 +321,13 @@ class SearchPanel extends React.Component {
                   <MenuItem value="2">{"Approval Date"}</MenuItem>
                    <MenuItem value="3">{"Upload Date"}</MenuItem> */}
                       {SORT_DROPDOWN.map((item) => (
-                        <MenuItem data-testid={`sortby-container${item.id}`} key={item.id} value={item.id}>{item.label}</MenuItem>
+                        <MenuItem
+                          data-testid={`sortby-container${item.id}`}
+                          key={item.id}
+                          value={item.id}
+                        >
+                          {item.label}
+                        </MenuItem>
                       ))}
                     </SelectButton>
                   </div>
@@ -347,7 +365,9 @@ class SearchPanel extends React.Component {
                         compareTwoProtocol={this.props.compareTwoProtocol}
                         selection={this.props.selection}
                         history={this.props.history}
-                        onViewAssociateProtocolClick= {this.onViewAssociateProtocolClick}
+                        onViewAssociateProtocolClick={
+                          this.onViewAssociateProtocolClick
+                        }
                       />
                     </div>
                   ))

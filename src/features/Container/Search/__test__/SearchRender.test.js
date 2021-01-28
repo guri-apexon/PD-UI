@@ -96,13 +96,13 @@ describe("Search test suit", () => {
     const { getByText, getByTestId } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
-    getByText("Recent Approval Date:");
+    getByText("Approval Date:");
   });
   test("Should Render Recent Approval Date Value", () => {
     const { getByText, getByTestId } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
-    expect(getByTestId("date-value")).toHaveTextContent("01-Jan-2013");
+    expect(getByTestId("date-value")).toHaveTextContent("30-Nov-2012");
   });
   test("Should Render Molecule Field", () => {
     const { getByText, getByTestId } = render(
