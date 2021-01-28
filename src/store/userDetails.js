@@ -4,9 +4,9 @@ export const userDetails = createSlice({
   name: 'user',
   initialState: {
       userDetail: {
-        userId: '',
-        username: '',
-        email: ''
+        userId: 'q1021402',
+        username: 'Test User',
+        email: 'test.user@iqvia.com'
       }
   },
   reducers: {
