@@ -73,7 +73,16 @@ function App(props) {
     //     email: 'test@iqvia.com'
     //   }
     //   dispatch(setUserDetails(details));
-
+      setInterval(function() {
+        // your code goes here...
+        axios.get("/refresh", {
+          params: {
+            callbackUrl: window.location.href
+          }
+        })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+    }, 60 * 3 * 1000); // 60 * 1000 milsec
   },[])
 
   useEffect(() => {

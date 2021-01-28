@@ -7,6 +7,7 @@ const cors = require("cors");
 const elasticsearch = require("elasticsearch");
 const https = require("https");
 const session = require('express-session')
+const jwt_decode = require('jwt-decode')
 const dotenv = require('dotenv');
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -720,6 +721,40 @@ app.get("/session", function (req, res) {
   console.log("session", req.session.user);
   res.send(req.session.user);
 });
+
+app.get("/refresh", function(req, res) {
+  console.log('-----callback------',req.params.callbackUrl)
+  const getCookies = req.session.cookies;
+
+  const agent = new https.Agent({
+    rejectUnauthorized: false,
+  });
+  axios
+    .get(`${baseUrlSSO}/validate_token`, {
+      params: {
+        access_token: getCookies.access_token,
+        refresh_token: getCookies.refresh_token,
+      },
+      headers: { Authorization: authenticateUser( process.env.CIMS_USER,  process.env.CIMS_PWD) },
+      httpsAgent: agent,
+    })
+    .then(({ data }) => {
+      console.log(data);
+      if (data.code === 102) {
+        res.redirect(
+          `${baseUrlSSO}/${data.redirect_url}?callback=${req.params.callbackUrl}`
+        );
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.redirect(
+        `${baseUrlSSO}/logout_session`
+      );
+    });
+
+})
+
 //------------Revert---------------
 app.use(function (req, res, next) {
   console.log("Cookies", req.cookies);
@@ -761,8 +796,13 @@ app.use(function (req, res, next) {
               username: data.user_details.first_name,
               email: data.user_details.email,
             };
+            const decoded = jwt_decode(getCookies.refresh_token);
+    
+            console.log(decoded);
             req.session.user = details;
-            // res.cookie("user", details);
+            req.session.expiry = decoded.exp;
+            req.session.cookies = getCookies;
+            res.cookie("exp", decoded.exp);
             next();
             break;
           case 102:
