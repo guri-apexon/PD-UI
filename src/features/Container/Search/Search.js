@@ -48,7 +48,10 @@ const Search = (props) => {
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [selection, setSelection] = useState(true);
   // let arr = [];
-
+useEffect(()=>{
+  dispatch({ type: "GET_SPONSORS" });
+  dispatch({ type: "GET_INDICATIONS" });
+},[])
   useEffect(() => {
     let params = props.location.search;
     // const parsed = queryString.parse(params);
@@ -57,13 +60,13 @@ const Search = (props) => {
     // if (indicationData.sectionContent.length === 0) {
     // dispatch({ type: "GET_INDICATIONS" });
     // }
-    if (
-      sponsorData.sectionContent.length === 0 &&
-      indicationData.sectionContent.length === 0
-    ) {
-      dispatch({ type: "GET_SPONSORS" });
-      dispatch({ type: "GET_INDICATIONS" });
-    }
+    // if (
+    //   sponsorData.sectionContent.length === 0 &&
+    //   indicationData.sectionContent.length === 0
+    // ) {
+    //   dispatch({ type: "GET_SPONSORS" });
+    //   dispatch({ type: "GET_INDICATIONS" });
+    // }
     // console.log(resultList, "search result111")
     if (
       params &&
