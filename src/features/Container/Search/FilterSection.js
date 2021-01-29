@@ -42,7 +42,6 @@ const CollapseCard = ({
       </Collapsible>
     );
   } else if (name === "indication") {
-    console.log("Indication data", indicationData);
     return (
       <Collapsible trigger="Indications">
         {indicationData.sectionContent &&
@@ -57,7 +56,6 @@ const CollapseCard = ({
       </Collapsible>
     );
   } else if (name === "sponsor") {
-    console.log("sponsor data", sponsorData);
     return (
       <Collapsible trigger="Sponsors">
         {sponsorData.sectionContent &&

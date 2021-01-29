@@ -15,16 +15,12 @@ const CheckBoxCell = ({ row: { handleSelectRow, id, selection } }) => {
   );
 };
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
-  // console.log("--------------", row);
-  // console.log(row[key])
   return <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>;
 };
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
-  // console.log("--------------", row);
   let url;
   const handleDownload = async (row) => {
-    console.log("Rows", row);
     const resp = await axios.get(
       `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
     );
@@ -34,20 +30,13 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
       url,
       "_blank" // <- This is what makes it open in a new window.
     );
-    // console.log(url);
   };
   return <a onClick={() => handleDownload(row)}>{row[key]}</a>;
 };
 const dateFormat = ({ row, column: { accessor: key } }) => {
-  // console.log("--------------", row);
-  // console.log("MMDDYYYY",covertMMDDYYYY(row.uploadDate))
-
   return <>{covertMMDDYYYY(row.uploadDate)}</>;
 };
 const dateFormatApp = ({ row, column: { accessor: key } }) => {
-  // console.log("--------------", row);
-  // console.log("MMDDYYYY",covertMMDDYYYY(row.uploadDate))
-
   return <>{row.approvalDate ? covertMMDDYYYY(row.approvalDate) : "-"}</>;
 };
 

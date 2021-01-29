@@ -59,8 +59,6 @@ function* getSponsorData(action) {
 }
 
 function* getFilterData(action) {
-  // console.log("search", action.payload);
-  // debugger
   const url = "../../../../filters.json";
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
   const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
@@ -75,7 +73,6 @@ function* getFilterData(action) {
       url: indicationUrl,
       method: "GET",
     });
-    // console.log("filter", indicationList, sponsorList);
     if (indicationList.success && sponsorList.success) {
       // let data = data;
       let formatSponser = sponsorList.data.map((item) => {
@@ -103,7 +100,6 @@ function* getFilterData(action) {
           return item;
         }
       });
-      console.log("format Fi", formatFilter);
       const obj = {
         success: true,
         data: formatFilter,
@@ -111,16 +107,9 @@ function* getFilterData(action) {
       yield put(getFilters(obj));
     }
   } catch (e) {}
-
-  // console.log(data);
-  // console.log(",,,,,,,", sponsorList);
-  // console.log("1111111", indicationList);
-  // getSummaryData(data)
 }
 
 function* getSearchData(action) {
-  // console.log("search", action.payload);
-
   if (action.payload) {
     const obj = {
       search: true,
@@ -131,16 +120,14 @@ function* getSearchData(action) {
     yield put(getSearchResult(obj));
 
     try {
-      const url = `/elastic?${action.payload}`;
-      // const url = `http://localhost:4000/elastic?${action.payload}`;
+      // const url = `/elastic?${action.payload}`;
+      const url = `http://localhost:4000/elastic?${action.payload}`;
 
       const resp = yield call(httpCall, {
         url,
         method: "GET",
       });
       const data = resp.data.hits.hits;
-      // console.log("Search Result", data);
-      // const data = [];
       if (resp.data && resp.data.hits && data.length !== 0) {
         const requiredFormat = createJSONFormat(data);
 
@@ -185,7 +172,6 @@ function* updateSearchResult(action) {
 
 // -----Updating and adding Associate Protocol to a Single protocol when individual expand is clicked
 function* updateSearchAssociated(action) {
-  console.log("asso111c pay", action.payload.data.protocolNumber);
   let tempRes = _.cloneDeep(action.payload.obj);
   let foundIndex = tempRes.findIndex(
     (obj) => obj.id === action.payload.data.id
@@ -211,7 +197,6 @@ function* updateSearchAssociated(action) {
     url: associateURL,
     method: "GET",
   });
-  console.log("associateDocs :", associateDocs);
   // const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.protocolNumber}`;
   //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   // const config = {
@@ -219,8 +204,6 @@ function* updateSearchAssociated(action) {
   //   method: "GET",
   // };
   //  const associateDocs = yield call(httpCall, config);
-  //  console.log('associateDocs :', associateDocs.data);
-  // debugger
   if (associateDocs.success) {
     let arr=_.cloneDeep(associateDocs.data);
     arr.sort((a,b)=>{return moment(b.uploadDate)-moment(a.uploadDate)});
@@ -261,7 +244,6 @@ function* updateSearchAssociated(action) {
 
 // -----For updating and Associate Protocol to all Protocol when Expand all is clicked
 function* updateAllSearchAssociated(action) {
-  console.log("action payload:", action.payload);
   let associateURL = "/searchMockResult.json";
   const associateDocs = yield call(httpCall, {
     url: associateURL,
@@ -295,14 +277,14 @@ function* getRecentData(action) {
   } else {
     let newDate = new Date();
     newDate.setMonth(newDate.getMonth() - parseInt(action.payload));
-    console.log("date", newDate);
+
     let momDate = moment(newDate);
     const getDate = momDate.format("YYYYMMDDHHMMSS");
     const recentDate = {
       from: getDate,
       to: "now/d",
     };
-    console.log("recentDate", recentDate);
+    
     yield put(getRecentDate(recentDate));
   }
   // try {
@@ -313,7 +295,7 @@ function* getRecentData(action) {
   //     method: "GET",
   //   });
   //   const data = resp.data.hits.hits;
-  //   console.log("Search Result", data);
+  
   //   if (resp.data && resp.data.hits && data.length !== 0) {
   //     const requiredFormat = createJSONFormat(data);
 
@@ -349,8 +331,7 @@ function* getDataByRange(action) {
   let momToDate = moment(toDate);
   const from = momFromDate.format("YYYYMMDDHHMMSS");
   const to = momToDate.format("YYYYMMDDHHMMSS");
-  console.log("from", from);
-  console.log("to", to);
+
   const rangeDate = {
     from,
     to,
@@ -365,7 +346,7 @@ function* getDataByRange(action) {
   //     method: "GET",
   //   });
   //   const data = resp.data.hits.hits;
-  //   console.log("Search Result", data);
+  //  
   //   if (resp.data && resp.data.hits && data.length !== 0) {
   //     const requiredFormat = createJSONFormat(data);
 
@@ -485,7 +466,6 @@ function createJSONFormat(data) {
     arr.push(obj);
   }
 
-  console.log("arrs", arr);
   return arr;
 }
 
@@ -505,7 +485,6 @@ function getUniqObject(obj) {
 //   return activeObj;
 // }
 function setAsssociateProtocols(id, data, associateDocs) {
-  console.log('id, data, associateDocs :', id, data, associateDocs);
   let arr =
     data &&
     data.map((item) => {
@@ -519,6 +498,5 @@ function setAsssociateProtocols(id, data, associateDocs) {
       return item;
     });
 
-  console.log("arr :", arr);
   return arr;
 }

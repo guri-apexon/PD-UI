@@ -26,15 +26,14 @@ const SearchCard = ({
   // const selection1 = selection;
   const handleSelectRow = (data) => {
     compareTwoProtocol(data);
-    // console.log("<<<<<", data);
+    
   };
 
   const handleDownload = async (row) => {
-    console.log("Rows", row);
+  
     // const resp = await axios.get(
     //   `http://ca2spdml01q:8000/api/download_file/?filePath=${row.path}`
     // );
-    // console.log();
     // if (resp.data.includes("/")) {
     //   let url = `http://ca2spdml06d:3000/${resp.data.split("/")[1]}`;
     //   window.open(
@@ -54,7 +53,6 @@ const SearchCard = ({
       );
     // }
 
-    // console.log(url);
   };
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>

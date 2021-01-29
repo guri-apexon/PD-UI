@@ -55,7 +55,7 @@ function App(props) {
   const [pathname, setPathname] = useState("/dashboard");
   const [isTimedOut, setIsTimeOut] = useState(false);
 
-//---------Revert-----------
+  //---------Revert-----------
   useEffect(() => {
     // comment in local to run
     axios.get("/session")
@@ -68,27 +68,27 @@ function App(props) {
     .catch(err => console.log(err))
     // Uncomment below code in local to run
     // const details = {
-    //     userId: 'u1072231',
-    //     username: 'Sohan',
-    //     email: 'test@iqvia.com'
-    //   }
-    //   dispatch(setUserDetails(details));
-      setInterval(function() {
-        axios.get("/refresh", {
+    //   userId: "u1072231",
+    //   username: "Sohan",
+    //   email: "test@iqvia.com",
+    // };
+    // dispatch(setUserDetails(details));
+    setInterval(function () {
+      axios
+        .get("/refresh", {
           params: {
-            callbackUrl: window.location.href
+            callbackUrl: window.location.href,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
           }
         })
-      .then(res => {
-        console.log(res)
-        if(res.data) {
-          window.location.href =
-      `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-        }
-      })
-      .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     }, 60 * 3 * 1000); // 60 * 1000 milsec
-  },[])
+  }, []);
 
   useEffect(() => {
     if (location && location.pathname) {

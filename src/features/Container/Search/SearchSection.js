@@ -48,7 +48,7 @@ class ProtocolSearchButton extends React.Component {
 
   render() {
     const handleClick = (label) => () => {
-      console.log(`You picked ${label}.`);
+      
       if (label === "Compare") {
         this.props.compareProtocol();
       }else{

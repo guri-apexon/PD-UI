@@ -56,7 +56,6 @@ const Search = (props) => {
   useEffect(() => {
     let params = props.location.search;
     // const parsed = queryString.parse(params);
-    console.log("::::::::", params);
     let parsed = {};
     // if (indicationData.sectionContent.length === 0) {
     // dispatch({ type: "GET_INDICATIONS" });
@@ -68,7 +67,6 @@ const Search = (props) => {
     //   dispatch({ type: "GET_SPONSORS" });
     //   dispatch({ type: "GET_INDICATIONS" });
     // }
-    // console.log(resultList, "search result111")
     if (
       params &&
       sponsorData.sectionContent.length > 0 &&
@@ -135,7 +133,6 @@ const Search = (props) => {
         let tempElasticQuery = documentStatus.sectionContent.filter((item) =>
           parsed.documentStatus.split("+").includes(item.value)
         );
-        // console.log("DOCUMENT",parsed.documentStatus)
         tempQuery.documentStatus =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         elasticSearchQuery += `&documentStatus=${tempElasticQuery
@@ -145,7 +142,6 @@ const Search = (props) => {
         // debugger;
       }
       if ("dateFrom" in parsed && "dateTo" in parsed) {
-        console.log("rangeDate", rangeDate);
         const dateQuery = `&dateFrom=${parsed[`dateFrom`]}&dateTo=${
           parsed[`dateTo`]
         }`;
@@ -158,7 +154,6 @@ const Search = (props) => {
         let tempElasticQuery = dateType.sectionContent.filter((item) =>
           parsed.dateType.split("+").includes(item.value)
         );
-        // console.log("DOCUMENT",parsed.documentStatus)
         tempQuery.dateType =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         elasticSearchQuery += `&dateType=${tempElasticQuery
@@ -170,10 +165,8 @@ const Search = (props) => {
 
       setSearchQuery(tempQuery);
       // debugger;
-      console.log("::::::::", elasticSearchQuery);
       setElasticSearchQuesry(elasticSearchQuery);
       const parsed1 = queryString.parse(elasticSearchQuery);
-      console.log("___:::___", parsed1);
       dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
     } else {
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
@@ -197,7 +190,6 @@ const Search = (props) => {
   }, [dispatch, sponsorData, indicationData]);
   const handleClick = (e) => {
     e.preventdefault();
-    // console.log("Breadcrumb was clicked", e);
   };
   // useEffect(() => {
   //   if (searchInput.length > 0) {
@@ -218,7 +210,6 @@ const Search = (props) => {
   }
 
   const getSearchInput = (input) => {
-    // console.log(input, searchQuery, "Search Query");
     // debugger
     setSortValue("1");
     let inp = input ? input : searchInput;
@@ -292,14 +283,12 @@ const Search = (props) => {
     setIdPresent(true);
     setSearchInput(inp);
     if (rangeDate.from && rangeDate.to) {
-      console.log("rangeDate", rangeDate);
       const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`;
       // setSearchInput(dateQuery);
       elasticSearchQuery += `${dateQuery}`;
       resultQuery += dateQuery;
     } else if (recentDate.from) {
       // setSearchInput(parsed[`key`]);
-      console.log("recentDate", recentDate);
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`;
       // setSearchInput(dateQuery);
       elasticSearchQuery += `${dateQuery}`;
@@ -309,7 +298,6 @@ const Search = (props) => {
     // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
     setElasticSearchQuesry(elasticSearchQuery);
     dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
-    console.log(":::::result", resultQuery);
     props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
     // debugger
   };
@@ -452,11 +440,9 @@ const Search = (props) => {
   };
 
   const onSearchChange = () => {
-    console.log("onSearchChange :", onSearchChange);
+    // console.log("onSearchChange :", onSearchChange);
   };
   const onSortChange = (data, value) => {
-    // debugger;
-    console.log("0000000000", value);
     if (value === "1") {
       setSortValue(value);
       dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
@@ -477,7 +463,6 @@ const Search = (props) => {
             return second - first;
           }
         });
-      // console.log('data :', data, resultList, newList);
       dispatch({ type: "UPDATE_SEARCH_RESULT", payload: newList });
     }
   };
@@ -485,13 +470,11 @@ const Search = (props) => {
   const onSearchQuery = (list, identifier) => {
     let tempQuery = _.cloneDeep(searchQuery);
     tempQuery[identifier] = list;
-    console.log("onSearchQuery", list, identifier, tempQuery);
     setSearchQuery(tempQuery);
   };
 
   const compareTwoProtocol = (data) => {
     // debugger;
-    console.log("Two data", data, protArr);
     // if (protArr.length > 0) {
     const index = protArr.indexOf(data);
     if (index > -1) {
@@ -500,7 +483,6 @@ const Search = (props) => {
       if (protArr.length < 2) {
         // debugger
         protArr.push(data);
-        console.log(protArr);
         setProtocolSelected(protArr);
         // oldArray => [...oldArray, newElement]
       } else {
@@ -511,7 +493,6 @@ const Search = (props) => {
     // }
   };
   const compareProtocol = () => {
-    console.log("compare is clicked", protocolSelected);
     if (protocolSelected.length === 2) {
       props.history.push(
         `/protocols?protocolId=${protocolSelected[0]}&protocolId2=${protocolSelected[1]}&value=2`
@@ -523,9 +504,7 @@ const Search = (props) => {
     }
   };
   const saveSearch = () => {
-    console.log("Save my Search", elasticSearchQuery);
     const parsed = queryString.parse(elasticSearchQuery);
-    console.log("Save my Search Param", parsed);
     if (parsed) {
       dispatch({ type: "SAVE_SEARCH_SAGA", payload: parsed.key });
     }

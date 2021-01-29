@@ -27,7 +27,6 @@ const SearchListingSection = ({
   history,
   onViewAssociateProtocolClick,
 }) => {
-  // console.log("--------",data)
   const dispatch = useDispatch();
   const onExpandClick = (data) => {
     // if(!data.expanded){
@@ -51,7 +50,6 @@ const SearchListingSection = ({
       } else {
         alert("There is no Approved Final version for this protocol.");
       }
-      console.log("Title", data);
     } catch (e) {
       alert("Something went wrong.");
     }

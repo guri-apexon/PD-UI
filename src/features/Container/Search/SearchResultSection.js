@@ -43,7 +43,7 @@ class SearchPanel extends React.Component {
       props.resultList.loader !== state.resultListData.loader ||
       props.resultList !== state.resultListData
     ) {
-      // console.log("Get Static");
+     
       let defaultValue = false;
 
       //For resetting ExpandAll button when all are expanded and Search button is click
@@ -61,7 +61,7 @@ class SearchPanel extends React.Component {
         } else {
           defaultValue = false;
         }
-        console.log(defaultValue, "defaultValue");
+        
       }
       let result =
         props.resultList && props.resultList.data ? props.resultList.data : [];
@@ -89,12 +89,12 @@ class SearchPanel extends React.Component {
     return null;
   }
   componentDidMount() {
-    // console.log("iiiiiiiooooooiii", this.state);
+    
   }
   setExpanded = (id, obj, data) => {
     const { updateAssociateProtocol } = this.props;
     const { accordionObj } = this.state;
-    // console.log("Expand");
+    
     // if (obj.expanded) {
     //   // dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
     //   updateAssociateProtocol(data, accordionObj);
@@ -105,8 +105,8 @@ class SearchPanel extends React.Component {
     if (accObj[foundIndex].expanded === false) {
       accObj[foundIndex].viewAssociate = false;
     }
-    // console.log(accObj);
-    // debugger;
+   
+
     this.setState({
       accordionObj: [
         ...this.state.accordionObj.slice(0, foundIndex),
@@ -123,13 +123,13 @@ class SearchPanel extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // console.log("Did Update");
+    
     const { accordionObj } = this.state;
     // if (prevState.defaultExpand !== this.state.defaultExpand) {
     // let arr = accordionObj.map(item => {
     //   return { ...item, expanded: true };
     // });
-    // console.log("Click expand", arr);
+    
 
     // this.setState({
     //   accordionObj: accordionObj.map((item) => {
@@ -141,9 +141,9 @@ class SearchPanel extends React.Component {
 
   sortChange = (value) => {
     const { onSortChange } = this.props;
-    // console.log("sortChange Clicked",value)
+    
     let filterValue = SORT_DROPDOWN.filter((item) => item.id === value);
-    // console.log("value", value, filterValue);
+    
     onSortChange(filterValue[0], value);
     // this.setState({ sortValue: value.id });
   };
@@ -173,11 +173,11 @@ class SearchPanel extends React.Component {
 
   onConstructSearchQuery = (list, identifier) => {
     const { onSearchQuery } = this.props;
-    // console.log('list, identifier :', list, identifier);
+   
     onSearchQuery(list, identifier);
   };
   clearAllCheckbox = () => {
-    // console.log(this.state["searchValue"]);
+    
     // this.state["searchValue"] = [];
     // this.setState({ searchValue: [] });
     if (this.props.searchInput) {
@@ -202,7 +202,7 @@ class SearchPanel extends React.Component {
       sortValueProp,
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
-    // console.log("oooooooo", sortValueProp);
+    
 
     let protocols = resultList.data && resultList.data.length;
     let maxRecordsPerPage = 10;
