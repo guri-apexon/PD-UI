@@ -26,6 +26,10 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   let [formValues, setFormValues] = useState(initialFormValues);
   const [inputValue2, setInputValue2] = React.useState();
   const [documentValue2, setDocumentValue2] = React.useState();
+  let [valueTemp, setValueTemp] = useState({
+    amendmentNumber: { label: "" },
+    documentStatus: { label: "" },
+  });
   const [value2, setValue2] = React.useState({
     amendmentNumber: undefined,
     documentStatus: undefined,
@@ -123,6 +127,16 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         tempValues[fieldName] = dropdownValue ? dropdownValue : { label: "" };
         console.log("valuessssss :", tempValues.amendmentNumber, "temppp");
         setFormValues(tempValues);
+        // DropDown logic changes start
+        valueTemp[fieldName] = dropdownValue;
+      } else {
+        if (
+          !dropdownFocus.length > 0
+          // && formValues[fieldName].label && formValues[fieldName].label.length
+        ) {
+          valueTemp[fieldName] = { label: "" };
+        }
+        // DropDown logic changes Ends
       }
       setFormErrorValues(tempError);
     }
@@ -130,6 +144,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
 
   const onFieldBlur = (fieldName, e, fieldType) => {
     let temp = _.cloneDeep(formErrorValues);
+    let temp2 = _.cloneDeep(valueTemp);
     if (fieldType === "Textbox") {
       if (
         !e.target.value.trim().length > 0 &&
@@ -154,10 +169,12 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         }
         temp[fieldName].error = true;
         temp[fieldName].errorMessage = "Required";
-        // if(formValues[fieldName].label && formValues[fieldName].label.length>0){
-        //   temp[fieldName].error = false;
-        //   temp[fieldName].errorMessage = " ";
-        // }
+        // DropDown logic changes start
+        if (temp2[fieldName].label && temp2[fieldName].label.length > 0) {
+          temp[fieldName].error = false;
+          temp[fieldName].errorMessage = " ";
+        }
+        // DropDown logic changes start
       } else {
         temp[fieldName].error = false;
         temp[fieldName].errorMessage = " ";
@@ -276,7 +293,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         : "",
       indication:
         tempFormValues.indication && tempFormValues.indication.label
-          ?  encodeURIComponent(tempFormValues.indication.label)
+          ? encodeURIComponent(tempFormValues.indication.label)
           : "",
       protocol_version: tempFormValues.versionNumber
         ? tempFormValues.versionNumber
@@ -286,18 +303,25 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
       modified_by: "User",
       sponsor:
         tempFormValues && tempFormValues.sponsor && tempFormValues.sponsor.label
-          ?  encodeURIComponent(tempFormValues.sponsor.label)
+          ? encodeURIComponent(tempFormValues.sponsor.label)
           : "",
       amendmentNumber:
         tempFormValues &&
         tempFormValues.amendmentNumber &&
         tempFormValues.amendmentNumber.label,
       documentStatus:
-        tempFormValues.documentStatus &&  encodeURIComponent(tempFormValues.documentStatus.value),
-      projectID: tempFormValues.projectID && encodeURIComponent(tempFormValues.projectID),
-      moleculeDevice: tempFormValues.moleculeDevice?  encodeURIComponent(tempFormValues.moleculeDevice):'',
+        tempFormValues.documentStatus &&
+        encodeURIComponent(tempFormValues.documentStatus.value),
+      projectID:
+        tempFormValues.projectID &&
+        encodeURIComponent(tempFormValues.projectID),
+      moleculeDevice: tempFormValues.moleculeDevice
+        ? encodeURIComponent(tempFormValues.moleculeDevice)
+        : "",
       uploadFile: tempFormValues.uploadFile ? tempFormValues.uploadFile : [],
-      fileName: tempFormValues.uploadFile[0].name && encodeURIComponent(tempFormValues.uploadFile[0].name),
+      fileName:
+        tempFormValues.uploadFile[0].name &&
+        encodeURIComponent(tempFormValues.uploadFile[0].name),
     };
     dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
   };
