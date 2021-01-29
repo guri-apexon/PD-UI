@@ -3,7 +3,6 @@ import Card from "apollo-react/components/Card";
 
 const CompareCard = (props) => {
   const iqvdata = JSON.parse(props.compare.iqvdata)
-  console.log("qqqqqqq",iqvdata)
   return (
     <div className="compare-card">
       <Card

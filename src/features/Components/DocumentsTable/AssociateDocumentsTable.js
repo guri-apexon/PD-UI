@@ -48,7 +48,9 @@ const VersionCell = ({ row, column }) => {
   };
   return <p className="hyperlink" onClick={() => onHandleChange(row)}> {row.versionNumber}</p>;
 };
-
+const Cell = ({ row, column: { accessor: key } }) => {
+  return <>{row[key] ? row[key] : "-"}</>;
+};
 const DataCell = ({ row, column }) =>
   moment(row[column.accessor]).format("DD-MMM-YYYY");
 const columns = [
@@ -60,6 +62,7 @@ const columns = [
   {
     accessor: "draftVersion",
     header: "Draft#",
+    customCell: Cell,
   },
   {
     accessor: "fileName",

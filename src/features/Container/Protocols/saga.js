@@ -15,10 +15,8 @@ function* getSummaryData(action) {
     data: null,
   };
   yield put(getSummary(obj));
-  console.log("pay abcd4578", action.payload);
   const url = `${BASE_URL_8000}/api/protocol_attributes/?id=${action.payload}`;
   const resp = yield call(httpCall, { url, method: "GET" });
-  console.log("summary data", resp);
   // getSummaryData(data)
   if (resp.data) {
     let obj = {
@@ -104,7 +102,6 @@ function* getProtocolToc(action) {
   };
   try {
     const data = yield call(httpCall, config);
-    console.log(data);
     if (data.success) {
       const toc = parsedData(data.data.iqvdataToc);
       const soa = parsedData(data.data.iqvdataSoa);
@@ -164,17 +161,13 @@ function* getProtocolSummary() {
     // const type = sumData[1];
     // const subsectionOf = sumData[2];
     // const style = sumData[3];
-    // console.log('style', style);
     // if (style.font_style === 'Heading1') {
     // const ele = document.createElement(getElement(sumData[3]));
     // const node = document.createTextNode(content);
     // ele.appendChild(node);
-    // console.log('ele', ele);
     // }
-    console.log("Saga sumData", sumData);
     yield put(getProcotoclToc(sumData));
   }
-  console.log(tocData);
   yield getProtocolToc();
 }
 
@@ -186,7 +179,6 @@ function* fetchAssociateProtocol(action) {
     method: "GET",
   };
   const associateDocs = yield call(httpCall, config);
-  //  console.log('associateDocs :', associateDocs.data);
   if (associateDocs.success) {
     yield put(getAssociateDocuments(associateDocs.data));
   } else {
@@ -206,20 +198,17 @@ function* getCompareResult(action) {
         message: "",
       })
     );
-    console.log("Payload", action.payload);
     // const URL = `http://ca2spdml01q:8000/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`
     // debugger
     const url = `${BASE_URL_8000}/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
     // const url = `/compare.json`;
     const resp = yield call(httpCall, { url, method: "GET" });
-    // console.log("summary data", JSON.parse(resp.data.iqvdata));
 
     if (resp.data) {
       // debugger;
       let temp = _.cloneDeep(resp.data);
       temp.loading = false;
       temp.called = true;
-      console.log("summary data........", temp);
       yield put(getCompare(temp));
     } else {
       // debugger;

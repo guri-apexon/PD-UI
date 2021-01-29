@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./compare.scss";
 
-import Autocomplete from "apollo-react/components/Autocomplete";
 import Grid from "apollo-react/components/Grid";
 import MenuItem from "apollo-react/components/MenuItem";
 import Select from "apollo-react/components/Select";
 import Button from "apollo-react/components/Button";
-import ArrowLeft from "apollo-react-icons/ArrowLeft";
 
 import { useSelector, useDispatch } from "react-redux";
 import { associateDocs } from "./protocolSlice.js";
@@ -18,12 +16,6 @@ import CompareCard from "./CompareCardNew";
 import { compareResult } from "./protocolSlice.js";
 import Loader from "../../Components/Loader/Loader";
 
-const countries = [
-  { label: "Afghanistan" },
-  { label: "Aland Islands" },
-  { label: "Albania" },
-  { label: "Algeria" },
-];
 
 const AmendmentCompare = ({ prot11, prot22 }) => {
   const compare = useSelector(compareResult);
@@ -55,7 +47,6 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       if (version1 === version2) {
         alert("can not comapare same version");
       } else {
-        console.log(version1, version2);
         const postBody = {
           docID: version1,
           docID2: version2,
@@ -80,7 +71,6 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
     }
   };
 
-  console.log("....", compare);
   const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
   return (
     <div className="amendment-compare">

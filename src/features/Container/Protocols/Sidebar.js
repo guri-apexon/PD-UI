@@ -1,11 +1,8 @@
 /* eslint-disable no-console */
-import withStyles from "@material-ui/core/styles/withStyles";
 import React from "react";
 
-import { neutral8 } from "apollo-react/colors";
+
 import Blade from "apollo-react/components/Blade";
-import Button from "apollo-react/components/Button";
-import Typography from "apollo-react/components/Typography";
 import Download from "apollo-react-icons/Download";
 import Plus from "apollo-react-icons/Plus";
 
@@ -32,7 +29,7 @@ class Sidebar extends React.Component {
 
   render() {
     // const { expanded, open } = this.state;
-    const { classes, open, setOpen } = this.props;
+    const { open, setOpen } = this.props;
 
     return (
       <>

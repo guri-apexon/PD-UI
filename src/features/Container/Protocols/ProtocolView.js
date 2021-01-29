@@ -17,10 +17,8 @@ function getStyle(style) {
 function getTable(data) {
   const keys = Object.keys(data);
   const object = data[keys[0]];
-  console.log(Object.keys(object));
 
   // for (const property in object) {
-  //   console.log(`${property}: ${object[property]}`);
   // }
   return (
     <Grid container spacing={2}>
@@ -39,7 +37,6 @@ function getElement(data) {
   const type = data[1];
   // if (type === "table") {
   //   content = JSON.parse(content);
-  //   console.log("inside table", content);
   //   return getTable(content);
   // }
   const subsectionOf = data[2];
@@ -106,7 +103,6 @@ const ProtocolView = () => {
   //     // const style = sumData[3];
   //      ele = <div>{getElement(sumData[3], content)}</div>
   // }
-  // console.log(ele);
 
   function handleOutsideClick(e) {
     // ignore clicks on the component itself
@@ -127,9 +123,7 @@ const ProtocolView = () => {
     // this.setState(prevState => ({
     //    popupVisible: !prevState.popupVisible,
     // }));
-    console.log('handle -',showNav);
     setShowNav(prevState => !prevState.showNav);
-    console.log('handle later -',showNav);
   }
 
   return (
@@ -162,7 +156,6 @@ const ProtocolView = () => {
               <button
                 className="btn btn1"
                 onClick={() => {
-                  console.log(showNav);
                   setShowNav(!showNav);
                 }}
                 key='test'

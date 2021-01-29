@@ -20,7 +20,6 @@ import NoResultFound from "../../Components/NoResultFound";
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
 import Tab from "apollo-react/components/Tab";
 import Tabs from "apollo-react/components/Tabs";
-import Typography from "apollo-react/components/Typography";
 import Switch from "apollo-react/components/Switch";
 import Loader from "apollo-react/components/Loader";
 
@@ -42,8 +41,6 @@ const Protocols = (props) => {
   useEffect(() => {
     let params = props.location.search;
     const parsed = queryString.parse(params);
-    console.log("Pro", parsed);
-    // console.log(params);
     if ("protocolId" in parsed) {
       setIdPresent(true);
       dispatch({ type: "GET_PROTOCOL_SUMMARY", payload: parsed.protocolId });
@@ -57,24 +54,16 @@ const Protocols = (props) => {
     }
   }, [dispatch, props.location]);
 
-  // const getSummary = ()=>{
-  //   dispatch(getSummary())
-  // }
-
-  // console.log("ENV", process.env);
   const handleClick = (e) => {
     e.preventdefault();
-    console.log("Breadcrumb was clicked", e);
   };
   const handleChangeTab = (event, value) => {
-    console.log(value);
     setValue(value);
   };
   const handleChange = (e, checked) => {
     setFollow(checked);
   };
   if (idPresent) {
-    console.log("summary", summary);
     const { data } = summary;
     return (
       <>

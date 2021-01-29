@@ -21,7 +21,6 @@ function getElement(data) {
   const type = data[1];
   // if (type === "table") {
   //   content = JSON.parse(content);
-  //   console.log("inside table", content);
   //   return getTable(content);
   // }
   const subsectionOf = data[2];
@@ -85,7 +84,6 @@ class ProtocolViewClass extends React.Component {
 
   getTable(item, unq, noHeader = false) {
     // for (const property in object) {
-    //   console.log(`${property}: ${object[property]}`);
     // }
     return (
       <div
@@ -351,8 +349,6 @@ class ProtocolViewClass extends React.Component {
     //       + rows.map(e => e.join(",")).join("\n");
     //       let encodedUri = encodeURI(csvContent);
     // window.open(encodedUri);
-    console.log("props", this.props);
-    console.log("view", view);
     return (
       <div className="view-wrapper">
         <Card className="index-column">
