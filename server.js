@@ -6,9 +6,9 @@ const app = express();
 const cors = require("cors");
 const elasticsearch = require("elasticsearch");
 const https = require("https");
-const session = require('express-session')
-const jwt_decode = require('jwt-decode')
-const dotenv = require('dotenv');
+const session = require("express-session");
+const jwt_decode = require("jwt-decode");
+const dotenv = require("dotenv");
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 app.use(cookieParser());
@@ -18,31 +18,30 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "protocols")));
-let baseUrlElastic = '';
-let baseUrlSSO = '';
+let baseUrlElastic = "";
+let baseUrlSSO = "";
 
-function authenticateUser(user, password)
-{
-    var token = user + ":" + password;
-    var hash = Buffer.from(token).toString('base64')
+function authenticateUser(user, password) {
+  var token = user + ":" + password;
+  var hash = Buffer.from(token).toString("base64");
 
-    return "Basic " + hash;
+  return "Basic " + hash;
 }
-console.log(process.env.NODE_ENV)
-switch(process.env.NODE_ENV) {
-  case 'dev':
+console.log(process.env.NODE_ENV);
+switch (process.env.NODE_ENV) {
+  case "dev":
     baseUrlElastic = process.env.ELASTIC_DEV_URL;
     baseUrlSSO = process.env.CIMS_DEV_URL;
     break;
-  case 'svt':
+  case "svt":
     baseUrlElastic = process.env.ELASTIC_SVT_URL;
     baseUrlSSO = process.env.CIMS_SVT_URL;
     break;
-  case 'uat':
+  case "uat":
     baseUrlElastic = process.env.ELASTIC_UAT_URL;
     baseUrlSSO = process.env.CIMS_UAT_URL;
     break;
-  case 'prod':
+  case "prod":
     baseUrlElastic = process.env.ELASTIC_PROD_URL;
     baseUrlSSO = process.env.CIMS_PROD_URL;
     break;
@@ -50,8 +49,8 @@ switch(process.env.NODE_ENV) {
     baseUrlElastic = process.env.ELASTIC_DEV_URL;
     baseUrlSSO = process.env.CIMS_DEV_URL;
 }
-console.log('baseUrlElastic', baseUrlElastic)
-console.log('baseUrlSSO', baseUrlSSO)
+console.log("baseUrlElastic", baseUrlElastic);
+console.log("baseUrlSSO", baseUrlSSO);
 const client = new elasticsearch.Client({
   host: `${baseUrlElastic}`,
   //   log: "trace",
@@ -722,8 +721,8 @@ app.get("/session", function (req, res) {
   res.send(req.session.user);
 });
 
-app.get("/refresh", function(req, res) {
-  console.log('-----callback------',req.query)
+app.get("/refresh", function (req, res) {
+  console.log("-----callback------", req.query);
   const getCookies = req.session.cookies;
 
   const agent = new https.Agent({
@@ -735,108 +734,91 @@ app.get("/refresh", function(req, res) {
         access_token: getCookies.access_token,
         refresh_token: getCookies.refresh_token,
       },
-      headers: { Authorization: authenticateUser( process.env.CIMS_USER,  process.env.CIMS_PWD) },
+      headers: {
+        Authorization: authenticateUser(
+          process.env.CIMS_USER,
+          process.env.CIMS_PWD
+        ),
+      },
       httpsAgent: agent,
     })
     .then(({ data }) => {
       console.log(data);
       if (data.code === 102) {
-        // res.redirect(
-        //   `${baseUrlSSO}${data.redirect_url}?callback=${req.query.callbackUrl}`
-        // );
-        res.send(true)
+        res.send(true);
       }
+      res.send(false);
     })
     .catch((err) => {
       console.log(err);
       res.send(false);
     });
-
-})
+});
 
 //------------Revert---------------
-// app.use(function (req, res, next) {
-//   console.log("Cookies", req.cookies);
-//   const getCookies = req.cookies;
-//   // const details = {
-//   //   userId: 'u1072231',
-//   //   username: 'Sohan',
-//   //   email: 'test@iqvia.com'
-//   // }
-//   // req.session.user = details;
-//   if (!Object.keys(getCookies).length) {
-//     res.redirect(`${baseUrlSSO}/login`);
-//   } else if (getCookies.access_token && getCookies.refresh_token) {
-//     // At request level
-//     const agent = new https.Agent({
-//       rejectUnauthorized: false,
-//     });
-//     axios
-//       .get(`${baseUrlSSO}/validate_token`, {
-//         params: {
-//           access_token: getCookies.access_token,
-//           refresh_token: getCookies.refresh_token,
-//         },
-//         headers: { Authorization: authenticateUser( process.env.CIMS_USER,  process.env.CIMS_PWD) },
-//         httpsAgent: agent,
-//       })
-//       .then(({ data }) => {
-//         console.log(data);
-//         switch (data.code) {
-//           case 101:
-//             res.redirect(
-//               `${baseUrlSSO}${data.redirect_url}`
-//             );
-//             break;
-//           case 100:
-//             // const details = `${data.user_details.username} ${data.user_details.first_name} ${data.user_details.email}`;
-//             const details = {
-//               userId: data.user_details.username,
-//               username: data.user_details.first_name,
-//               email: data.user_details.email,
-//             };
-//             const decoded = jwt_decode(getCookies.refresh_token);
-    
-//             console.log(decoded);
-//             req.session.user = details;
-//             req.session.expiry = decoded.exp;
-//             req.session.cookies = getCookies;
-//             res.cookie("exp", decoded.exp);
-//             next();
-//             break;
-//           case 102:
-//             res.redirect(
-//               `${baseUrlSSO}${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
-//             );
-//             break;
-//           default:
-//             res.redirect(
-//               `${baseUrlSSO}/logout_session`
-//             );
-//         }
-//       })
-//       .catch((err) => {
-//         console.log(err);
-//         res.redirect(
-//           `${baseUrlSSO}/logout_session`
-//         );
-//       });
-//   }
-// });
+app.use(function (req, res, next) {
+  console.log("Cookies", req.cookies);
+  const getCookies = req.cookies;
+  if (!Object.keys(getCookies).length) {
+    res.redirect(`${baseUrlSSO}/login`);
+  } else if (getCookies.access_token && getCookies.refresh_token) {
+    // At request level
+    const agent = new https.Agent({
+      rejectUnauthorized: false,
+    });
+    axios
+      .get(`${baseUrlSSO}/validate_token`, {
+        params: {
+          access_token: getCookies.access_token,
+          refresh_token: getCookies.refresh_token,
+        },
+        headers: {
+          Authorization: authenticateUser(
+            process.env.CIMS_USER,
+            process.env.CIMS_PWD
+          ),
+        },
+        httpsAgent: agent,
+      })
+      .then(({ data }) => {
+        console.log(data);
+        switch (data.code) {
+          case 101:
+            res.redirect(`${baseUrlSSO}${data.redirect_url}`);
+            break;
+          case 100:
+            const details = {
+              userId: data.user_details.username,
+              username: data.user_details.first_name,
+              email: data.user_details.email,
+            };
+            const decoded = jwt_decode(getCookies.refresh_token);
+
+            console.log(decoded);
+            req.session.user = details;
+            req.session.expiry = decoded.exp;
+            req.session.cookies = getCookies;
+            res.cookie("exp", decoded.exp);
+            next();
+            break;
+          case 102:
+            res.redirect(
+              `${baseUrlSSO}${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
+            );
+            break;
+          default:
+            res.redirect(`${baseUrlSSO}/logout_session`);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.redirect(`${baseUrlSSO}/logout_session`);
+      });
+  }
+});
 
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
-app.listen(PORT)
-// data: { code: 101, message: 'expired', redirect_url: '/logout_session' }
-
-//First time Login
-//Browser refresh
-//Token expire
-
-// Read cookies
-// Validate Token from CIMS
-// if Valid store in browser and send below
-// if not valid token logout API from CIMS
-// if no cookies redirect to login page
+app.listen(PORT);

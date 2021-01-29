@@ -13,7 +13,7 @@ export const dashboardSlice = createSlice({
     addProtocolModal: false,
     isLoading: true,
     savedSearches: [],
-    apiError: false
+    apiError: false,
   },
   reducers: {
     getProtocols: (state, action) => {
@@ -28,9 +28,6 @@ export const dashboardSlice = createSlice({
     getRecentSearches: (state, action) => {
       state.recentSearches = action.payload;
     },
-    // getProtocolData: (state, action) => {
-    //   state.addProtocolData = action.payload;
-    // },
     getSponsor: (state, action) => {
       state.addProtocolData.sponsor = action.payload;
     },
@@ -49,9 +46,9 @@ export const dashboardSlice = createSlice({
     getSavedSearches: (state, action) => {
       state.savedSearches = action.payload;
     },
-    setApiError: (state, action) =>{
+    setApiError: (state, action) => {
       state.apiError = action.payload;
-    }
+    },
   },
 });
 
@@ -67,7 +64,7 @@ export const {
   setAddProtocolModal,
   setLoading,
   getSavedSearches,
-  setApiError
+  setApiError,
 } = dashboardSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

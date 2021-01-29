@@ -3,13 +3,12 @@ import React, { useState, useEffect } from "react";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Clock from "apollo-react-icons/Clock";
-import Upload from "apollo-react-icons/Upload";
 import StatusCheck from "apollo-react-icons/StatusCheck";
 import StatusExclamation from "apollo-react-icons/StatusExclamation";
 import Check from "apollo-react-icons/Check";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Checkbox from "apollo-react/components/Checkbox";
+// import Checkbox from "apollo-react/components/Checkbox";
 import { neutral8 } from "apollo-react/colors";
 import IconButton from "apollo-react/components/IconButton";
 import Table, {
@@ -36,7 +35,6 @@ const ActionCell = ({
         />
       </div> */}
       <div className="table-selection">
-        {/* <Tooltip title="Expand" disableFocusListener> */}
         <IconButton
           id="expand"
           size="small"
@@ -44,7 +42,6 @@ const ActionCell = ({
         >
           {expanded ? <ChevronDown /> : <ChevronRight />}
         </IconButton>
-        {/* </Tooltip> */}
       </div>
     </div>
   );
@@ -255,7 +252,6 @@ const ExpandableComponent = ({ row }) => {
           {row.documentStatus}
         </Typography>
       </div>
-      {/* {row.fileName &&  */}
       <div>
         <Typography
           style={{
@@ -268,9 +264,6 @@ const ExpandableComponent = ({ row }) => {
         </Typography>
         <Typography className="fw-8" variant="body2">
           {row.fileName ? (
-            // <Link to={row.documentFilePath} target="_blank">
-            //   {row.fileName}
-            // </Link>
             <a href="javascript:void(0)" onClick={() => handleDownload(row)}>
               {row.fileName}
             </a>
@@ -297,7 +290,6 @@ const handleDownload = async (row) => {
     url,
     "_blank" // <- This is what makes it open in a new window.
   );
-  // console.log(url);
 };
 
 const ProtocolTable = ({ initialRows, pageRows }) => {

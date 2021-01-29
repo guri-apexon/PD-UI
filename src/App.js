@@ -56,39 +56,39 @@ function App(props) {
   const [isTimedOut, setIsTimeOut] = useState(false);
 
 //---------Revert-----------
-  // useEffect(() => {
-  //   // comment in local to run
-  //   axios.get("/session")
-  //   .then(res => {
-  //     console.log(res.data)
-  //     if (Object.keys(res.data).length) {
-  //       dispatch(setUserDetails(res.data));
-  //     }
-  //   })
-  //   .catch(err => console.log(err))
-  //   // Uncomment below code in local to run
-  //   // const details = {
-  //   //     userId: 'u1072231',
-  //   //     username: 'Sohan',
-  //   //     email: 'test@iqvia.com'
-  //   //   }
-  //   //   dispatch(setUserDetails(details));
-  //     setInterval(function() {
-  //       axios.get("/refresh", {
-  //         params: {
-  //           callbackUrl: window.location.href
-  //         }
-  //       })
-  //     .then(res => {
-  //       console.log(res)
-  //       if(res.data) {
-  //         window.location.href =
-  //     `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-  //       }
-  //     })
-  //     .catch(err => console.log(err))
-  //   }, 60 * 3 * 1000); // 60 * 1000 milsec
-  // },[])
+  useEffect(() => {
+    // comment in local to run
+    axios.get("/session")
+    .then(res => {
+      console.log(res.data)
+      if (Object.keys(res.data).length) {
+        dispatch(setUserDetails(res.data));
+      }
+    })
+    .catch(err => console.log(err))
+    // Uncomment below code in local to run
+    // const details = {
+    //     userId: 'u1072231',
+    //     username: 'Sohan',
+    //     email: 'test@iqvia.com'
+    //   }
+    //   dispatch(setUserDetails(details));
+      setInterval(function() {
+        axios.get("/refresh", {
+          params: {
+            callbackUrl: window.location.href
+          }
+        })
+      .then(res => {
+        console.log(res)
+        if(res.data) {
+          window.location.href =
+      `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+        }
+      })
+      .catch(err => console.log(err))
+    }, 60 * 3 * 1000); // 60 * 1000 milsec
+  },[])
 
   useEffect(() => {
     if (location && location.pathname) {
@@ -121,12 +121,9 @@ function App(props) {
     for (var i = 0; i < cookies.length; i++) {
       eraseCookie(cookies[i].split("=")[0]);
     }
-    // axios.get("https://ca2utmsa04q.quintiles.net:8080/logout_session")
-    // .then(res => console.log(res))
-    // .catch(err => console.log(err))
     //---------Revert-----------
-    // window.location.href =
-    //   `${baseUrlSSO}/logout_session`;
+    window.location.href =
+      `${baseUrlSSO}/logout_session`;
   };
   const profileMenuProps = {
     name: userDetails.username,
@@ -189,9 +186,9 @@ function App(props) {
       eraseCookie(cookies[i].split("=")[0]);
     }
     localStorage.setItem("isLoggedIn", false);
-    window.location.href = "/dashboard";
+    // window.location.href = "/dashboard";
     //---------Revert-----------
-    // window.location.href = `${baseUrlSSO}/logout_session`;
+    window.location.href = `${baseUrlSSO}/logout_session`;
     // console.log("p", props);
     // console.log("last active", idleTimer.getLastActiveTime());
     // const isTimedOut = isTimedOut;

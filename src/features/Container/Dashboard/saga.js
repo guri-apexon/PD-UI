@@ -16,43 +16,21 @@ import {
   setApiError,
 } from "./dashboardSlice";
 
-function customizer(objValue, srcValue) {
-  if (_.isArray(objValue)) {
-    return objValue.concat(srcValue);
-  }
-}
-
 function* getState() {
   const state = yield select();
   const id = state.user.userDetail.userId;
-  // userId = id;
   return id.substring(1);
 }
 
-
 function* protocolAsyn() {
   let userId = yield getState();
-  console.log('------',userId)
-  // const protocolUrl =
-  // `http://ca2spdml01q:8000/api/protocol_metadata/?userId=${id}`;
-  const protocolUrl =
-    `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
-  // const statusUrl = "./status.json";
+  const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
   const protocolConfig = {
     url: protocolUrl,
     method: "GET",
   };
-  // const statusConfig = {
-  //   url: statusUrl,
-  //   method: "GET",
-  // };
   try {
     const protocolData = yield call(httpCall, protocolConfig);
-    // const statusData = yield call(httpCall, statusConfig);
-    // if (protocolData.success && statusData.success) {
-    // const mergedData = _.mergeWith(protocolData.data,statusData.data, customizer);
-    // yield put(getProtocols(mergedData));
-    // } else
 
     if (protocolData.success) {
       let data = protocolData.data.map((item) => {
@@ -73,7 +51,6 @@ function* protocolAsyn() {
 }
 
 function* compareSelectedAsyn(action) {
-  console.log(action.payload === 2);
   if (action.payload === 2) {
     yield put(setCompareSelected(true));
   } else {
@@ -118,7 +95,6 @@ function* savedSearchAsyn() {
 }
 
 export function* addProtocolSponsor() {
-  // const url = "../../../../sponsor.json";
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
   const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
   // const protocolData = yield call(httpCall, {url, method:'GET'});
@@ -153,7 +129,6 @@ export function* addProtocolSponsor() {
         temp.label = item.sponsorName;
         return temp;
       });
-      // console.log("sponsorList :", actualIndicationList, actualSponsorList);
       yield put(getSponsor(actualSponsorList));
       yield put(getIndication(actualIndicationList));
       yield put(setLoading(false));
@@ -181,7 +156,6 @@ export function* postAddProtocol(postData) {
       url: duplicateCheck,
       method: "GET",
     });
-    console.log("duplicateCheckRes :", duplicateCheckRes);
     if (duplicateCheckRes && duplicateCheckRes.data === null) {
       const postResponse = yield call(httpCall, {
         url: postUrl,
@@ -189,12 +163,10 @@ export function* postAddProtocol(postData) {
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log("postResponseww :", postResponse);
       if (postResponse.success) {
         yield put(setAddProtocolModal(false));
       } else {
         yield put(setAddProtocolModal(true));
-        // console.log("postResponsefailed :", postResponse.err);
         yield put(
           setAddprotocolError(
             postResponse.err && postResponse.err.data
@@ -217,7 +189,6 @@ export function* postAddProtocol(postData) {
     yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
     yield put(setLoading(false));
   } catch (err) {
-    console.log("err12333 :", err);
     yield put(setAddprotocolError(err.statusText));
     yield put(setAddProtocolModal(false));
     yield put(setLoading(false));
@@ -246,10 +217,6 @@ function* saveRecentSearch(action) {
   };
   try {
     yield call(httpCall, config);
-    // if (searchData.success) {
-    //   yield put(getSavedSearches(searchData.data));
-    // }
-    // yield put(setError(searchData.err.statusText));
   } catch (err) {
     yield put(setError(err.statusText));
   }
