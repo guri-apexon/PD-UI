@@ -328,7 +328,7 @@ function constructFilterArray(data) {
 function constructMustArray(docStatus, key, from, to, toc) {
   const query = [
     {
-      multi_match: {
+      query_string: {
         query: key,
         fields: toc,
       },
@@ -374,6 +374,7 @@ app.get("/elastic", (req, res) => {
   let sponsorArr = [];
   let indicationArr = [];
   let phaseArr = [];
+  let dateTypeArr = [];
   if (req.query.toc) {
     toc = req.query.toc.split("_");
   }
@@ -389,6 +390,9 @@ app.get("/elastic", (req, res) => {
   if (req.query.phase) {
     phaseArr = req.query.phase.split("_");
   }
+  if (req.query.dateType) {
+    dateTypeArr = req.query.dateType.split("_");
+  }
 
   // const sponsorArr = req.query.sponsor.split("_");
   // const indicationArr = req.query.indication.split("_");
@@ -398,6 +402,7 @@ app.get("/elastic", (req, res) => {
   console.log("Indication : ", indicationArr);
   console.log("Phase : ", phaseArr);
   console.log("Document Status : ", docStatus);
+  console.log("dateType : ", dateTypeArr);
 
   const filters = {
     sponsors: sponsorArr,
@@ -409,10 +414,22 @@ app.get("/elastic", (req, res) => {
   let mustQuery;
   let tocArray = getTOCArray(toc);
   console.log("TOC ARR Final", tocArray);
+
   if (from && to) {
     console.log(">>", docStatus);
-    if (docStatus.length === 2 || docStatus.length === 0) {
-      const rangeQuery1 = {
+    if (docStatus.length === 2 && dateTypeArr.length === 2) {
+      const rangeQuery4 = {
+        range: {
+          uploadDate: {
+            gte: from,
+            lt: to,
+          },
+        },
+      };
+
+      filterArr.push(rangeQuery4);
+    } else if (docStatus.length === 2 && dateTypeArr[0] === "approvalDate") {
+      const rangeQuery3 = {
         range: {
           approval_date: {
             gte: from,
@@ -421,41 +438,161 @@ app.get("/elastic", (req, res) => {
         },
       };
 
-      filterArr.push(rangeQuery1);
-
-      const rangeQuery2 = {
+      filterArr.push(rangeQuery3);
+    } else if (docStatus.length === 2 && dateTypeArr[0] === "uploadDate") {
+      const rangeQuery4 = {
         range: {
           uploadDate: {
-            gte: "20210114000100",
-            lt: "20210122000100",
-          },
-        },
-      };
-
-      filterArr.push(rangeQuery2);
-    } else if (docStatus[0] === "final") {
-      const rangeQuery1 = {
-        range: {
-          approval_date: {
             gte: from,
             lt: to,
           },
         },
       };
 
-      filterArr.push(rangeQuery1);
-    } else if (docStatus[0] === "draft") {
-      const rangeQuery1 = {
-        range: {
-          uploadDate: {
-            gte: "20210114000100",
-            lt: "20210122000100",
-          },
-        },
-      };
+      filterArr.push(rangeQuery4);
+    } else {
+      for (let i = 0; i < docStatus.length; i++) {
+        if (docStatus[i] === "final" && dateTypeArr.length === 2) {
+          const rangeQuery1 = {
+            range: {
+              uploadDate: {
+                gte: from,
+                lt: to,
+              },
+            },
+          };
 
-      filterArr.push(rangeQuery1);
+          filterArr.push(rangeQuery1);
+        }
+        if (docStatus[i] === "draft" && dateTypeArr.length === 2) {
+          const rangeQuery2 = {
+            range: {
+              uploadDate: {
+                gte: from,
+                lt: to,
+              },
+            },
+          };
+
+          filterArr.push(rangeQuery2);
+        }
+        if (
+          docStatus[i] === "final" &&
+          dateTypeArr.length < 2 &&
+          dateTypeArr.length !== 0
+        ) {
+          if (dateTypeArr[0] === "approvalDate") {
+            const rangeQuery3 = {
+              range: {
+                approval_date: {
+                  gte: from,
+                  lt: to,
+                },
+              },
+            };
+
+            filterArr.push(rangeQuery3);
+          }
+          if (dateTypeArr[0] === "uploadDate") {
+            const rangeQuery4 = {
+              range: {
+                uploadDate: {
+                  gte: from,
+                  lt: to,
+                },
+              },
+            };
+
+            filterArr.push(rangeQuery4);
+          }
+        }
+        if (
+          docStatus[i] === "draft" &&
+          dateTypeArr.length < 2 &&
+          dateTypeArr.length !== 0
+        ) {
+          if (dateTypeArr[0] === "approvalDate") {
+            // const rangeQuery3 = {
+            //   range: {
+            //     approval_date: {
+            //       gte: from,
+            //       lt: to,
+            //     },
+            //   },
+            // };
+
+            // filterArr.push(rangeQuery3);
+            const respBody = {
+              took: 12,
+              timed_out: false,
+              _shards: {
+                total: 1,
+                successful: 1,
+                skipped: 0,
+                failed: 0,
+              },
+              hits: {
+                total: {
+                  value: 0,
+                  relation: "eq",
+                },
+                max_score: null,
+                hits: [],
+              },
+            };
+            res.send(respBody);
+          }
+          if (dateTypeArr[0] === "uploadDate") {
+            const rangeQuery4 = {
+              range: {
+                uploadDate: {
+                  gte: from,
+                  lt: to,
+                },
+              },
+            };
+
+            filterArr.push(rangeQuery4);
+          }
+        }
+      }
     }
+
+    // if (docStatus.length === 2 || docStatus.length === 0) {
+
+    //   const rangeQuery2 = {
+    //     range: {
+    //       uploadDate: {
+    //         gte: from,
+    //         lt: to,
+    //       },
+    //     },
+    //   };
+
+    //   filterArr.push(rangeQuery2);
+    // } else if (docStatus[0] === "final") {
+    //   const rangeQuery1 = {
+    //     range: {
+    //       approval_date: {
+    //         gte: from,
+    //         lt: to,
+    //       },
+    //     },
+    //   };
+
+    //   filterArr.push(rangeQuery1);
+    // } else if (docStatus[0] === "draft") {
+    //   const rangeQuery1 = {
+    //     range: {
+    //       uploadDate: {
+    //         gte: from,
+    //         lt: to,
+    //       },
+    //     },
+    //   };
+
+    //   filterArr.push(rangeQuery1);
+    // }
 
     mustQuery = [
       {
@@ -472,7 +609,7 @@ app.get("/elastic", (req, res) => {
   } else {
     mustQuery = [
       {
-        multi_match: {
+        query_string: {
           query: key,
           // type: "phrase",
           fields: tocArray,
