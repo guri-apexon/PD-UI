@@ -58,14 +58,14 @@ function App(props) {
   //---------Revert-----------
   useEffect(() => {
     // comment in local to run
-    axios.get("/session")
-    .then(res => {
-      console.log(res.data)
-      if (Object.keys(res.data).length) {
-        dispatch(setUserDetails(res.data));
-      }
-    })
-    .catch(err => console.log(err))
+    axios
+      .get("/session")
+      .then((res) => {
+        if (Object.keys(res.data).length) {
+          dispatch(setUserDetails(res.data));
+        }
+      })
+      .catch((err) => console.log(err));
     // Uncomment below code in local to run
     // const details = {
     //   userId: "u1072231",
@@ -74,15 +74,15 @@ function App(props) {
     // };
     // dispatch(setUserDetails(details));
     const curDate = new Date();
-    const expDate = cookiesServer.get('exp') * 1000;
+    const expDate = cookiesServer.get("exp") * 1000;
     if (curDate >= expDate) {
-      console.log('exp', true);
+      console.log("exp", true);
     }
-    let dif = (curDate - expDate);
-    dif = Math.abs((dif/1000)/60)
-    dif = Math.round(dif/10)
-    
-    console.log('mins - ',dif)
+    let dif = curDate - expDate;
+    dif = Math.abs(dif / 1000 / 60);
+    dif = Math.round(dif * 10) / 10;
+
+    console.log("mins - ", dif);
     setInterval(function () {
       axios
         .get("/refresh", {
@@ -131,8 +131,7 @@ function App(props) {
       eraseCookie(cookies[i].split("=")[0]);
     }
     //---------Revert-----------
-    window.location.href =
-      `${baseUrlSSO}/logout_session`;
+    window.location.href = `${baseUrlSSO}/logout_session`;
   };
   const profileMenuProps = {
     name: userDetails.username,
@@ -219,7 +218,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000 * 5 * 60}
+          timeout={1000 * 4 * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}
