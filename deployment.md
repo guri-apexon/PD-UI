@@ -54,7 +54,7 @@ Possible values
 
 # .env File
 
-#possible envs dev, svt, uat, prod
+# possible envs dev, svt, uat, prod
 REACT_APP_ENV=dev
 NODE_ENV=dev
 PORT=3000
@@ -63,19 +63,19 @@ Set your database/API connection information here
 API_KEY=**************************
 API_URL=**************************
 
-#DEV
+# DEV
 ELASTIC_DEV_URL=http://ca2spdml04q:9200/pd-index-3
 CIMS_DEV_URL=https://ca2utmsa04q.quintiles.net:8080/v1
 
-#SVT
+# SVT
 ELASTIC_SVT_URL=http://ca2spdml04q:9200/pd-index
 CIMS_SVT_URL=https://ca2utmsa04q.quintiles.net:8080/v1
 
-#UAT
+# UAT
 ELASTIC_UAT_URL=http://ca2spdml04q:9200/pd-index
 CIMS_UAT_URL=https://ca2utmsa04q.quintiles.net:8080/v1
 
-#PROD
+# PROD
 ELASTIC_PROD_URL=http://ca2spdml04q:9200/pd-index
 CIMS_PROD_URL=https://ca2utmsa04q.quintiles.net:8080/v1
 
