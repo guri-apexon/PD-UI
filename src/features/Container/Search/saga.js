@@ -1,4 +1,11 @@
-import { put, takeEvery, all, call, takeLatest, select } from "redux-saga/effects";
+import {
+  put,
+  takeEvery,
+  all,
+  call,
+  takeLatest,
+  select,
+} from "redux-saga/effects";
 import {
   getFilters,
   getSearchResult,
@@ -22,7 +29,9 @@ function* getIndicationData(action) {
     });
 
     if (indicationList.success) {
-      let formatIndication = indicationList.data.map((item) => {
+      let respData = indicationList.data.slice(0, 30);
+      // debugger;
+      let formatIndication = respData.map((item) => {
         return {
           title: item.indicationName,
           id: item.indId,
@@ -42,8 +51,9 @@ function* getSponsorData(action) {
       url: sponsorUrl,
       method: "GET",
     });
+    let respData = sponsorList.data.slice(0, 30);
     if (sponsorList.success) {
-      let formatSponser = sponsorList.data.map((item) => {
+      let formatSponser = respData.map((item) => {
         return {
           title: item.sponsorName,
           id: item.sponsorId,
@@ -190,28 +200,48 @@ function* updateSearchAssociated(action) {
   yield put(getSearchResult(initialObj));
   //ProtocolNo
   // debugger
-  if(action.payload.data.protocolNumber){
-  let associateURL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}`;
-  // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=SSR_AKB-6548-CI-0014`;
-  const associateDocs = yield call(httpCall, {
-    url: associateURL,
-    method: "GET",
-  });
-  // const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.protocolNumber}`;
-  //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
-  // const config = {
-  //   url: URL,
-  //   method: "GET",
-  // };
-  //  const associateDocs = yield call(httpCall, config);
-  if (associateDocs.success) {
-    let arr=_.cloneDeep(associateDocs.data);
-    arr.sort((a,b)=>{return moment(b.uploadDate)-moment(a.uploadDate)});
+  if (action.payload.data.protocolNumber) {
+    let associateURL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}`;
+    // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=SSR_AKB-6548-CI-0014`;
+    const associateDocs = yield call(httpCall, {
+      url: associateURL,
+      method: "GET",
+    });
+    // const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.protocolNumber}`;
+    //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
+    // const config = {
+    //   url: URL,
+    //   method: "GET",
+    // };
+    //  const associateDocs = yield call(httpCall, config);
+    if (associateDocs.success) {
+      let arr = _.cloneDeep(associateDocs.data);
+      arr.sort((a, b) => {
+        return moment(b.uploadDate) - moment(a.uploadDate);
+      });
+      let result = setAsssociateProtocols(
+        // action.payload.data.protocolNumber,
+        action.payload.data.id,
+        action.payload.obj,
+        arr
+      );
+      const obj = {
+        search: true,
+        loader: false,
+        success: true,
+        data: result,
+      };
+
+      yield put(getSearchResult(obj));
+    } else {
+      yield;
+    }
+  } else {
     let result = setAsssociateProtocols(
       // action.payload.data.protocolNumber,
       action.payload.data.id,
       action.payload.obj,
-      arr
+      []
     );
     const obj = {
       search: true,
@@ -219,26 +249,8 @@ function* updateSearchAssociated(action) {
       success: true,
       data: result,
     };
-    
     yield put(getSearchResult(obj));
-  } else {
-    yield;
   }
-} else {
-  let result = setAsssociateProtocols(
-    // action.payload.data.protocolNumber,
-    action.payload.data.id,
-    action.payload.obj,
-    []
-  );
-  const obj = {
-    search: true,
-    loader: false,
-    success: true,
-    data: result,
-  };
-  yield put(getSearchResult(obj));
-}
   // yield put(getSearchResult(action.payload));
 }
 
@@ -284,7 +296,7 @@ function* getRecentData(action) {
       from: getDate,
       to: "now/d",
     };
-    
+
     yield put(getRecentDate(recentDate));
   }
   // try {
@@ -295,7 +307,7 @@ function* getRecentData(action) {
   //     method: "GET",
   //   });
   //   const data = resp.data.hits.hits;
-  
+
   //   if (resp.data && resp.data.hits && data.length !== 0) {
   //     const requiredFormat = createJSONFormat(data);
 
@@ -346,7 +358,7 @@ function* getDataByRange(action) {
   //     method: "GET",
   //   });
   //   const data = resp.data.hits.hits;
-  //  
+  //
   //   if (resp.data && resp.data.hits && data.length !== 0) {
   //     const requiredFormat = createJSONFormat(data);
 
@@ -401,7 +413,7 @@ function* saveSearch(action) {
     // }
     // yield put(setError(searchData.err.statusText));
   } catch (err) {
-    console.log(err)
+    console.log(err);
   }
 }
 
