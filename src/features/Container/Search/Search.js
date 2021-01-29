@@ -23,6 +23,7 @@ import {
   range,
 } from "./searchSlice";
 import { phases, documentStatus, TOC, dateType } from "./Data/constants";
+import axios from 'axios'
 
 let protArr = [];
 const Search = (props) => {
@@ -48,8 +49,10 @@ const Search = (props) => {
   const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [selection, setSelection] = useState(true);
+  const [prevProtSelected, setPrevProtSelected] = useState("");
   // let arr = [];
   useEffect(() => {
+    // axios.get('http://ca2spdml01q:8000/api/indications/?skip=0')
     dispatch({ type: "GET_SPONSORS" });
     dispatch({ type: "GET_INDICATIONS" });
   }, []);
@@ -207,7 +210,7 @@ const Search = (props) => {
       type: "POST_RECENT_SEARCH_DASHBOARD",
       payload: input,
     });
-  }
+  };
 
   const getSearchInput = (input) => {
     // debugger
@@ -473,23 +476,46 @@ const Search = (props) => {
     setSearchQuery(tempQuery);
   };
 
-  const compareTwoProtocol = (data) => {
+  const compareTwoProtocol = (data, protocol) => {
     // debugger;
     // if (protArr.length > 0) {
-    const index = protArr.indexOf(data);
-    if (index > -1) {
-      protArr.splice(index, 1);
-    } else {
-      if (protArr.length < 2) {
-        // debugger
-        protArr.push(data);
-        setProtocolSelected(protArr);
-        // oldArray => [...oldArray, newElement]
+    if (prevProtSelected === "") {
+      setPrevProtSelected(protocol);
+      const index = protArr.indexOf(data);
+      if (index > -1) {
+        protArr.splice(index, 1);
       } else {
-        setSelection(false);
-        alert("comparison is available only for two protocols.");
+        if (protArr.length < 2) {
+          // debugger
+          protArr.push(data);
+          setProtocolSelected(protArr);
+          // oldArray => [...oldArray, newElement]
+        } else {
+          setSelection(false);
+          alert("comparison is available only for two protocols.");
+        }
+      }
+    } else {
+      if (prevProtSelected === protocol) {
+        const index = protArr.indexOf(data);
+        if (index > -1) {
+          protArr.splice(index, 1);
+        } else {
+          if (protArr.length < 2) {
+            // debugger
+            protArr.push(data);
+            setProtocolSelected(protArr);
+            // oldArray => [...oldArray, newElement]
+          } else {
+            setSelection(false);
+            alert("comparison is available only for two protocols.");
+          }
+        }
+      }else{
+        alert("Protocol Selected is not from the same study.")
       }
     }
+
     // }
   };
   const compareProtocol = () => {

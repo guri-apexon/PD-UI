@@ -7,15 +7,25 @@ import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
 
 const arr = [];
-const CheckBoxCell = ({ row: { handleSelectRow, id, selection } }) => {
+const CheckBoxCell = ({ row }) => {
+  // debugger
+  console.log(row);
   return (
     <div>
-      <CheckBox onChange={() => handleSelectRow(id)} />
+      <CheckBox onChange={() => row.handleSelectRow(row.id, row.protocol)} />
     </div>
   );
 };
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
-  return <>{row[key] ? (<Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>): "-"}</>;
+  return (
+    <>
+      {row[key] ? (
+        <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>
+      ) : (
+        "-"
+      )}
+    </>
+  );
 };
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
@@ -76,7 +86,7 @@ const columns = [
   {
     header: "Upload Date",
     accessor: "uploadDate",
-    customCell: dateFormat
+    customCell: dateFormat,
   },
 
   {
