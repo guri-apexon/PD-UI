@@ -120,8 +120,8 @@ function* getSearchData(action) {
     yield put(getSearchResult(obj));
 
     try {
-      // const url = `/elastic?${action.payload}`;
-      const url = `http://localhost:4000/elastic?${action.payload}`;
+      const url = `/elastic?${action.payload}`;
+      // const url = `http://localhost:4000/elastic?${action.payload}`;
 
       const resp = yield call(httpCall, {
         url,

@@ -15,7 +15,7 @@ const CheckBoxCell = ({ row: { handleSelectRow, id, selection } }) => {
   );
 };
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
-  return <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>;
+  return <>{row[key] ? (<Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>): "-"}</>;
 };
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {

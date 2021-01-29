@@ -22,7 +22,7 @@ function* getState() {
   return id.substring(1);
 }
 
-function* protocolAsyn() {
+export function* protocolAsyn() {
   let userId = yield getState();
   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
   const protocolConfig = {
@@ -50,7 +50,7 @@ function* protocolAsyn() {
   }
 }
 
-function* compareSelectedAsyn(action) {
+export function* compareSelectedAsyn(action) {
   if (action.payload === 2) {
     yield put(setCompareSelected(true));
   } else {
@@ -76,7 +76,7 @@ export function* recentSearchAsyn() {
   }
 }
 
-function* savedSearchAsyn() {
+export function* savedSearchAsyn() {
   let userId = yield getState();
   const url = `${BASE_URL_8000}/api/saved_search/?userId=${userId}`;
   const config = {
@@ -195,14 +195,15 @@ export function* postAddProtocol(postData) {
   }
 }
 
-function* toggleAddProtocol(data) {
+export function* toggleAddProtocol(data) {
   yield put(setAddProtocolModal(data.payload));
 }
-function* resetErrorAddProtocol() {
+export function* resetErrorAddProtocol() {
   yield put(setAddprotocolError(""));
 }
 
-function* saveRecentSearch(action) {
+export function* saveRecentSearch(action) {
+
   let userId = yield getState();
   const url = `${BASE_URL_8000}/api/recent_search/`;
   const config = {
