@@ -30,7 +30,7 @@ if (process.env.REACT_APP_ENV === "dev") {
   backendHost = "ca2spdml01q";
   backendPostHost="ca2spdml01q";
   UIhost='ca2spdml06d';
-  baseUrlSSO = "https://ca2utmsa04q.quintiles.net:8080/v1";
+  baseUrlSSO = "https://ca2uampd01d.quintiles.net:8080/v1";
 } else if (process.env.REACT_APP_ENV === "svt") {
   backendHost = "ca2spdml13q";
   backendPostHost="ca2spdml15q";
@@ -50,7 +50,7 @@ if (process.env.REACT_APP_ENV === "dev") {
   backendHost = "ca2spdml01q";
   backendPostHost="ca2spdml01q";
   UIhost='ca2spdml06d';
-  baseUrlSSO = "https://ca2utmsa04q.quintiles.net:8080/v1";
+  baseUrlSSO = "https://ca2uampd01d.quintiles.net:8080/v1";
 }
 console.log('---------SSO------',baseUrlSSO);
 //   else {
