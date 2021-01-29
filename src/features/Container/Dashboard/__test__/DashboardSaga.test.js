@@ -10,7 +10,8 @@ import {
   toggleAddProtocol,
   saveRecentSearch,
   compareSelectedAsyn,
-  savedSearchAsyn
+  savedSearchAsyn,
+  watchDashboard
 } from "../saga";
 
 import * as api from "../../../../utils/api";
@@ -30,7 +31,7 @@ const addProtocolData = {
   sponsor: "Sp",
   documentStatus: "final",
   amendmentNumber: "Y",
-  projectID: "11",
+  projectId: "11",
   indication: "ind",
   moleculeDevice: "Mol",
   userId: "1222",
@@ -280,6 +281,34 @@ describe("Dashboard Saga Unit Test", () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
+  test("addProtocolSponsor Saga fails with Error message", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: null,
+      err:{
+        data:{
+          message:'Error'
+        }
+      }
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, postAddProtocol, {
+      payload: addProtocolData,
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
 
   test("addProtocolSponsor Saga error in catch section", async () => {
     const dispatchedActions = [];
@@ -339,7 +368,7 @@ describe("Dashboard Saga Unit Test", () => {
         {
           protocolTitle: "astella",
           protocol: "11",
-          projectID: "Proj1",
+          projectId: "Proj1",
           sponsor: "Astellla",
           uploadDate: "20201202",
           id: 1,
@@ -372,7 +401,7 @@ describe("Dashboard Saga Unit Test", () => {
         {
           protocolTitle: "",
           protocol: "",
-          projectID: "",
+          projectId: "",
           sponsor: "",
           uploadDate: "",
           id: 1,
@@ -404,7 +433,7 @@ describe("Dashboard Saga Unit Test", () => {
         {
           protocolTitle: "astella",
           protocol: "11",
-          projectID: "Proj1",
+          projectId: "Proj1",
           sponsor: "Astellla",
           uploadDate: "20201202",
           id: 1,
@@ -549,6 +578,34 @@ describe("Dashboard Saga Unit Test", () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
+
+  test("saveRecentSearch Saga Error out", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      err: {
+        statusText: "Error",
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.reject(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, saveRecentSearch, {
+      payload: "Keyword",
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
   // Test saveRecentSearch function Ends
 
   // Test savedSearchAsyn function Start
@@ -603,16 +660,11 @@ describe("Dashboard Saga Unit Test", () => {
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  test("saveRecentSearch Saga Error out", async () => {
+  // Test savedSearchAsyn function Ends
+
+  // Test compareSelectedAsyn function Start
+  test("compareSelectedAsyn Success", async () => {
     const dispatchedActions = [];
-    const mockOutput = {
-     err:{
-       statusText:'Errr'
-     }
-    };
-    const mockCallApi = jest
-      .spyOn(api, "httpCall")
-      .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
@@ -621,49 +673,33 @@ describe("Dashboard Saga Unit Test", () => {
         },
       }),
     };
+    await runSaga(fakeStore, compareSelectedAsyn, {
+      payload: 2,
 
-    await runSaga(fakeStore, savedSearchAsyn, {
-      payload: "Keyword",
       type: "",
-    }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(1);
+    });
   });
-    // Test savedSearchAsyn function Ends
+  test("compareSelectedAsyn Success", async () => {
+    const dispatchedActions = [];
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, compareSelectedAsyn, {
+      data: {
+        payload: 1,
+      },
+      type: "",
+    });
+  });
+  // Test compareSelectedAsyn function Ends
 
-      // Test compareSelectedAsyn function Start
-      test("compareSelectedAsyn Success", async () => {
-        const dispatchedActions = [];
-        const fakeStore = {
-          dispatch: (action) => dispatchedActions.push(action),
-          getState: () => ({
-            user: {
-              userDetail: userDetail,
-            },
-          }),
-        };
-        await runSaga(fakeStore, compareSelectedAsyn, {
-          data: {
-            payload: 2,
-          },
-          type: "",
-        });
-      });
-      test("compareSelectedAsyn Success", async () => {
-        const dispatchedActions = [];
-        const fakeStore = {
-          dispatch: (action) => dispatchedActions.push(action),
-          getState: () => ({
-            user: {
-              userDetail: userDetail,
-            },
-          }),
-        };
-        await runSaga(fakeStore, compareSelectedAsyn, {
-          data: {
-            payload: 1,
-          },
-          type: "",
-        });
-      });
-       // Test compareSelectedAsyn function Ends
+  //watch All Sagas
+  test('should watch all Dashboard Sagas', () => {
+    const watchAll = watchDashboard();
+  });
 });

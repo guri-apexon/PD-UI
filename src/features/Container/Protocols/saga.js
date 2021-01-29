@@ -39,7 +39,7 @@ function* getSummaryData(action) {
   }
 }
 
-function parsedData(data) {
+export function parsedData(data) {
   return JSON.parse(JSON.parse(data));
 }
 

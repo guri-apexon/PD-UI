@@ -223,7 +223,7 @@ export function* saveRecentSearch(action) {
   }
 }
 
-function* watchDashboard() {
+export function* watchDashboard() {
   yield takeEvery("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
   yield takeEvery("CHECK_COMPARE_SAGA", compareSelectedAsyn);
   yield takeEvery("GET_RECENT_SEARCH_DATA", recentSearchAsyn);
