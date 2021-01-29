@@ -54,31 +54,32 @@ Possible values
 
 # .env File
 
-# possible envs dev, svt, uat, prod
-REACT_APP_ENV=dev
-NODE_ENV=dev
-PORT=3000
-
-Set your database/API connection information here
-API_KEY=**************************
-API_URL=**************************
+# possible envs dev, svt, uat, prod  
+REACT_APP_ENV=dev  
+NODE_ENV=dev  
+PORT=3000  
+  
+Set your database/API connection information here  
+API_KEY=**************************  
+API_URL=**************************  
 
 # DEV
-ELASTIC_DEV_URL=http://ca2spdml04q:9200/pd-index-3
-CIMS_DEV_URL=https://ca2utmsa04q.quintiles.net:8080/v1
+ELASTIC_DEV_URL=http://ca2spdml04q:9200/pd-index-3  
+CIMS_DEV_URL=https://ca2utmsa04q.quintiles.net:8080/v1  
 
-# SVT
-ELASTIC_SVT_URL=http://ca2spdml04q:9200/pd-index
-CIMS_SVT_URL=https://ca2utmsa04q.quintiles.net:8080/v1
+# SVT  
+ELASTIC_SVT_URL=http://ca2spdml04q:9200/pd-index   
+CIMS_SVT_URL=https://ca2utmsa04q.quintiles.net:8080/v1  
 
 # UAT
-ELASTIC_UAT_URL=http://ca2spdml04q:9200/pd-index
-CIMS_UAT_URL=https://ca2utmsa04q.quintiles.net:8080/v1
+ELASTIC_UAT_URL=http://ca2spdml04q:9200/pd-index  
+CIMS_UAT_URL=https://ca2utmsa04q.quintiles.net:8080/v1  
 
 # PROD
-ELASTIC_PROD_URL=http://ca2spdml04q:9200/pd-index
-CIMS_PROD_URL=https://ca2utmsa04q.quintiles.net:8080/v1
+ELASTIC_PROD_URL=http://ca2spdml04q:9200/pd-index  
+CIMS_PROD_URL=https://ca2utmsa04q.quintiles.net:8080/v1  
 
-CIMS_API_VER=v1
-CIMS_USER=pd_app
-CIMS_PWD=pd_app1
+CIMS_API_VER=v1  
+CIMS_USER=pd_app  
+CIMS_PWD=pd_app1  
+ 
