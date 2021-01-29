@@ -73,6 +73,16 @@ function App(props) {
     //   email: "test@iqvia.com",
     // };
     // dispatch(setUserDetails(details));
+    const curDate = new Date();
+    const expDate = cookiesServer.get('exp') * 1000;
+    if (curDate >= expDate) {
+      console.log('exp', true);
+    }
+    let dif = (curDate - expDate);
+    dif = Math.abs((dif/1000)/60)
+    dif = Math.round(dif/10)
+    
+    console.log('mins - ',dif)
     setInterval(function () {
       axios
         .get("/refresh", {
@@ -87,7 +97,7 @@ function App(props) {
           }
         })
         .catch((err) => console.log(err));
-    }, 60 * 3 * 1000); // 60 * 1000 milsec
+    }, 60 * dif * 1000); // 60 * 1000 milsec
   }, []);
 
   useEffect(() => {
@@ -95,7 +105,6 @@ function App(props) {
       setPathname(location.pathname);
     }
   }, [location]);
-  console.log(userDetails);
   const menuItems = [
     {
       text: "Dashboard",
