@@ -103,8 +103,10 @@ const CollapseCard = ({
             section={dateSection}
             dateType={dateType}
             identifier="dateType"
+            identifier2="dateSection"
             onCheckboxClick={onConstructSearchQuery}
             listValue={searchQuery.dateType}
+            listValue2={searchQuery.dateSection[0]}
           />
         </Collapsible>
       </span>

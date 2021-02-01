@@ -194,6 +194,8 @@ export const DateRangeCard = ({
   identifier,
   onCheckboxClick,
   listValue,
+  listValue2,
+  identifier2,
 }) => {
   const [value, setValue] = React.useState("0");
   const [value1, setValue1] = React.useState([]);
@@ -204,6 +206,7 @@ export const DateRangeCard = ({
     // setValue(listValue)
     if (value) {
       // props.history.push(`/search?${resultQuery}`);
+      // debugger;
       dispatch({ type: "FILTER_BY_RECENT_SAGA", payload: value });
     }
   }, [value]);
@@ -220,6 +223,12 @@ export const DateRangeCard = ({
 
   const handleChange = (e) => {
     setValue(e.target.value);
+    const obj = section.sectionContent.find(
+      (item) => item.value === e.target.value
+    );
+    // debugger
+    onCheckboxClick([obj.id], identifier2);
+    // debugger;
   };
 
   const handleRange = (e) => {
@@ -227,13 +236,25 @@ export const DateRangeCard = ({
   };
 
   useEffect(() => {
-    // debugger
+    // debugger;
     setValue1(listValue);
   }, [listValue]);
+
+  useEffect(() => {
+    // debugger;
+    if (listValue2 !== undefined) {
+      const obj = section.sectionContent.find((item) => item.id === listValue2);
+      // debugger
+      if (obj.value) {
+        setValue(obj.value);
+      }
+    }
+  }, [listValue2]);
 
   const handleChange1 = (e) => {
     setValue1(e.target.value);
     onCheckboxClick(e.target.value, identifier);
+    // debugger;
   };
 
   const classes = useStyles();
@@ -274,7 +295,7 @@ export const DateRangeCard = ({
                 <Radio
                   id={item.id}
                   key={item.id}
-                  value={item.content}
+                  value={item.value}
                   label={item.title}
                   size="small"
                 />

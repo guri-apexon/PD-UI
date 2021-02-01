@@ -22,8 +22,14 @@ import {
   recent,
   range,
 } from "./searchSlice";
-import { phases, documentStatus, TOC, dateType } from "./Data/constants";
-import axios from 'axios'
+import {
+  phases,
+  documentStatus,
+  TOC,
+  dateType,
+  dateSection,
+} from "./Data/constants";
+import axios from "axios";
 
 let protArr = [];
 const Search = (props) => {
@@ -45,6 +51,7 @@ const Search = (props) => {
     documentStatus: [],
     toc: [],
     dateType: [],
+    dateSection: [1],
   });
   const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
   const [protocolSelected, setProtocolSelected] = useState([]);
@@ -165,6 +172,19 @@ const Search = (props) => {
           .trim()}`;
         // debugger;
       }
+      if ("dateSection" in parsed) {
+        // debugger;
+        let tempElasticQuery = dateSection.sectionContent.filter((item) =>
+          parsed.dateSection.split("+").includes(item.value)
+        );
+        tempQuery.dateSection =
+          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+        elasticSearchQuery += `&dateSection=${tempElasticQuery
+          .map((item) => item.value)
+          .join("_")
+          .trim()}`;
+        // debugger;
+      }
 
       setSearchQuery(tempQuery);
       // debugger;
@@ -226,6 +246,7 @@ const Search = (props) => {
         return key === "" ? value : decodeURIComponent(value);
       }
     );
+    // debugger;
     let elasticSearchQuery = "key=";
 
     if ("key" in parsed) {
@@ -282,6 +303,16 @@ const Search = (props) => {
         .join("_")
         .trim()}`;
     }
+    if ("dateSection" in parsed) {
+      // debugger;
+      let tempElasticQuery = dateSection.sectionContent.filter((item) =>
+        parsed.dateSection.split("+").includes(item.value)
+      );
+      elasticSearchQuery += `&dateSection=${tempElasticQuery
+        .map((item) => item.value)
+        .join("_")
+        .trim()}`;
+    }
 
     setIdPresent(true);
     setSearchInput(inp);
@@ -313,6 +344,7 @@ const Search = (props) => {
         documentStatus: [],
         toc: [],
         dateType: [],
+        dateSection: [1],
       });
       dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
       props.history.push(`/search?key=${input}`);
@@ -324,6 +356,7 @@ const Search = (props) => {
         documentStatus: [],
         toc: [],
         dateType: [],
+        dateSection: [1],
       });
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
       props.history.push(`/search`);
@@ -423,6 +456,21 @@ const Search = (props) => {
         }
         return str;
       }
+      case "dateSection": {
+        let str = "&dateSection=";
+        let extractValues = dateSection.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.value}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
       default:
         return "";
     }
@@ -474,6 +522,7 @@ const Search = (props) => {
     let tempQuery = _.cloneDeep(searchQuery);
     tempQuery[identifier] = list;
     setSearchQuery(tempQuery);
+    // debugger;
   };
 
   const compareTwoProtocol = (data, protocol) => {
@@ -511,8 +560,8 @@ const Search = (props) => {
             alert("comparison is available only for two protocols.");
           }
         }
-      }else{
-        alert("Protocol Selected is not from the same study.")
+      } else {
+        alert("Protocol Selected is not from the same study.");
       }
     }
 
