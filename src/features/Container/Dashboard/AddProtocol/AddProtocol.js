@@ -158,6 +158,23 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
           temp[fieldName].errorMessage = " ";
         }
       }
+      if (
+        formErrorValues[fieldName].regex &&
+        e.target.value &&
+        e.target.value.trim().length > 0
+      ) {
+        let reg = formErrorValues[fieldName].regex;
+        // let reg = new RegExp(formErrorValues[fieldName].regex);
+        let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
+        if (isNumber && reg.test(parseFloat(e.target.value))) {
+          temp[fieldName].error = false;
+          temp[fieldName].errorMessage = " ";
+        } else {
+          temp[fieldName].error = true;
+          temp[fieldName].errorMessage =
+            "Does not Match, Positive and upto 2 Decimals only";
+        }
+      }
       setFormErrorValues(temp);
     }
     if (fieldType === "Dropdown") {
@@ -210,7 +227,6 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const handleSaveForm = () => {
     const tempValues = _.cloneDeep(formValues);
     const tempError = _.cloneDeep(formErrorValues);
-    console.log("save clicked", formValues, formErrorValues);
     let errorExist = false;
     for (let field of Object.keys(tempError)) {
       switch (tempError[field].type) {
@@ -232,8 +248,12 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
               tempError[field].errorMessage = "Required When Amendment is Y";
               errorExist = true;
             } else {
-              tempError[field].error = false;
-              tempError[field].errorMessage = " ";
+              if (field === "versionNumber" && tempError[field].error) {
+                errorExist = true;
+              } else {
+                tempError[field].error = false;
+                tempError[field].errorMessage = " ";
+              }
             }
           } else {
             tempError[field].error = true;
@@ -435,7 +455,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                   onTextFieldChange("versionNumber", e, "Textbox")
                 }
                 onBlur={(e) => onFieldBlur("versionNumber", e, "Textbox")}
-                type="number"
+                // type="number"
                 data-testid="version-number-texfield"
               />
             </Grid>

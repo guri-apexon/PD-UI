@@ -21,7 +21,7 @@ import moment from "moment";
 const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
 const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
 
-function* getIndicationData(action) {
+export function* getIndicationData(action) {
   try {
     const indicationList = yield call(httpCall, {
       url: indicationUrl,
@@ -45,7 +45,7 @@ function* getIndicationData(action) {
     }
   } catch (e) {}
 }
-function* getSponsorData(action) {
+export function* getSponsorData(action) {
   try {
     const sponsorList = yield call(httpCall, {
       url: sponsorUrl,
@@ -68,7 +68,7 @@ function* getSponsorData(action) {
   } catch (e) {}
 }
 
-function* getFilterData(action) {
+export function* getFilterData(action) {
   const url = "../../../../filters.json";
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
   const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
@@ -119,7 +119,7 @@ function* getFilterData(action) {
   } catch (e) {}
 }
 
-function* getSearchData(action) {
+export function* getSearchData(action) {
   if (action.payload) {
     const obj = {
       search: true,
@@ -176,7 +176,7 @@ function* getSearchData(action) {
 }
 
 // --- Sorting the Protocols When sortby is clicked
-function* updateSearchResult(action) {
+export function* updateSearchResult(action) {
   yield put(getSearchResult(action.payload));
 }
 
@@ -254,30 +254,7 @@ function* updateSearchAssociated(action) {
   // yield put(getSearchResult(action.payload));
 }
 
-// -----For updating and Associate Protocol to all Protocol when Expand all is clicked
-function* updateAllSearchAssociated(action) {
-  let associateURL = "/searchMockResult.json";
-  const associateDocs = yield call(httpCall, {
-    url: associateURL,
-    method: "GET",
-  });
-  // if (associateDocs.success) {
-  //   let result = setAsssociateProtocols(
-  //     action.payload.data.protocolNumber,
-  //     action.payload.obj,
-  //     associateDocs.data.AssociateDocs
-  //   );
-  //   const obj = {
-  //     search: true,
-  //     loader: false,
-  //     success: true,
-  //     data: result,
-  //   };
-  //   yield put(getSearchResult(obj));
-  // } else {
-  //   yield;
-  // }
-}
+
 
 function* getRecentData(action) {
   if (action.payload === "0") {
@@ -424,10 +401,6 @@ function* watchIncrementAsync() {
   yield takeEvery("GET_INDICATIONS", getIndicationData);
   yield takeEvery("GET_SPONSORS", getSponsorData);
   yield takeEvery("UPDATE_SEARCH_ASSOCIATED_PROTOCOLS", updateSearchAssociated);
-  yield takeEvery(
-    "UPDATE_ALL_SEARCH_ASSOCIATED_PROTOCOLS",
-    updateAllSearchAssociated
-  );
   yield takeEvery("FILTER_BY_RECENT_SAGA", getRecentData);
   yield takeEvery("FILTER_BY_DATE_RANGE_SAGA", getDataByRange);
   yield takeEvery("SAVE_SEARCH_SAGA", saveSearch);
@@ -437,9 +410,9 @@ export default function* protocolSaga() {
   yield all([watchIncrementAsync()]);
 }
 
-function createJSONFormat(data) {
+export function createJSONFormat(data) {
   let arr = [];
-
+console.log('ddddd', data)
   for (let i = 0; i < data.length; i++) {
     // let sampleRows = data.filter(
     //   (item) => item._source.ProtocolNo === data[i]._source.ProtocolNo
@@ -496,7 +469,7 @@ function getUniqObject(obj) {
 //   // debugger
 //   return activeObj;
 // }
-function setAsssociateProtocols(id, data, associateDocs) {
+export function setAsssociateProtocols(id, data, associateDocs) {
   let arr =
     data &&
     data.map((item) => {

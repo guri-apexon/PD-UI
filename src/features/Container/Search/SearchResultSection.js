@@ -149,7 +149,6 @@ class SearchPanel extends React.Component {
   };
   onExpandAllClick = () => {
     const { accordionObj, defaultExpand } = this.state;
-    const { updateAllAssociateProtocol } = this.props;
     let tempDefault = true;
     if (!defaultExpand) {
       tempDefault = true;
@@ -162,9 +161,6 @@ class SearchPanel extends React.Component {
       temp.viewAssociate = tempDefault === false ? false : temp.viewAssociate;
       return temp;
     });
-    // if (tempDefault) {
-    //   updateAllAssociateProtocol(accordionObj);
-    // }
     this.setState({
       defaultExpand: !this.state.defaultExpand,
       accordionObj: arr,
@@ -408,12 +404,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "UPDATE_SEARCH_ASSOCIATED_PROTOCOLS",
         payload: { data, obj },
-      }),
-    updateAllAssociateProtocol: (data) =>
-      dispatch({
-        type: "UPDATE_ALL_SEARCH_ASSOCIATED_PROTOCOLS",
-        payload: data,
-      }),
+      })
   };
 };
 export default connect(null, mapDispatchToProps)(SearchPanel);
