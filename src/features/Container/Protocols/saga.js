@@ -8,7 +8,7 @@ import {
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
 
-function* getSummaryData(action) {
+export function* getSummaryData(action) {
   let obj = {
     loading: true,
     success: false,
@@ -43,14 +43,14 @@ export function parsedData(data) {
   return JSON.parse(JSON.parse(data));
 }
 
-function captalize(data) {
+export function captalize(data) {
   return data
     .trim()
     .toLowerCase()
     .replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
 }
 
-function getTocSections(toc) {
+export function getTocSections(toc) {
   const sectionList = [];
   const list = [];
   toc.data.map((item) => {
@@ -79,7 +79,7 @@ function getTocSections(toc) {
   return list;
 }
 
-function getSoaSections(soa) {
+export function getSoaSections(soa) {
   // const sectionList = [];
   const list = [];
   soa.map((item) => {
@@ -94,7 +94,7 @@ function getSoaSections(soa) {
   return list;
 }
 
-function* getProtocolToc(action) {
+export function* getProtocolToc(action) {
   const URL = `${BASE_URL_8000}/api/protocol_data/?id=${action.payload}`;
   const config = {
     url: URL,
@@ -140,7 +140,7 @@ function* getProtocolToc(action) {
   }
 }
 
-function getElement(style) {
+export function getElement(style) {
   switch (style.font_style) {
     case "Heading1":
       return "h1";
@@ -148,30 +148,30 @@ function getElement(style) {
       return "p";
   }
 }
-function* getProtocolSummary() {
-  const URL = "/summary.json";
-  const config = {
-    url: URL,
-    method: "GET",
-  };
-  const tocData = yield call(httpCall, config);
-  if (tocData.success) {
-    const sumData = tocData.data.data;
-    // const content = sumData[0];
-    // const type = sumData[1];
-    // const subsectionOf = sumData[2];
-    // const style = sumData[3];
-    // if (style.font_style === 'Heading1') {
-    // const ele = document.createElement(getElement(sumData[3]));
-    // const node = document.createTextNode(content);
-    // ele.appendChild(node);
-    // }
-    yield put(getProcotoclToc(sumData));
-  }
-  yield getProtocolToc();
-}
+// function* getProtocolSummary() {
+//   const URL = "/summary.json";
+//   const config = {
+//     url: URL,
+//     method: "GET",
+//   };
+//   const tocData = yield call(httpCall, config);
+//   if (tocData.success) {
+//     const sumData = tocData.data.data;
+//     // const content = sumData[0];
+//     // const type = sumData[1];
+//     // const subsectionOf = sumData[2];
+//     // const style = sumData[3];
+//     // if (style.font_style === 'Heading1') {
+//     // const ele = document.createElement(getElement(sumData[3]));
+//     // const node = document.createTextNode(content);
+//     // ele.appendChild(node);
+//     // }
+//     yield put(getProcotoclToc(sumData));
+//   }
+//   yield getProtocolToc();
+// }
 
-function* fetchAssociateProtocol(action) {
+export function* fetchAssociateProtocol(action) {
   const URL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload}`;
   //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   const config = {
@@ -186,7 +186,7 @@ function* fetchAssociateProtocol(action) {
   }
 }
 
-function* getCompareResult(action) {
+export function* getCompareResult(action) {
   if (action.payload) {
     // debugger;
     yield put(
