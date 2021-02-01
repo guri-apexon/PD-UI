@@ -896,8 +896,9 @@ app.get("/refresh", function (req, res) {
 app.use(function (req, res, next) {
   console.log("Cookies", req.cookies);
   const getCookies = req.cookies;
-  if (!Object.keys(getCookies).length) {
-    res.redirect(`${baseUrlSSO}/login`);
+  if (!getCookies.access_token || !getCookies.refresh_token) {
+    console.log('No Tokens')
+    res.redirect(`${baseUrlSSO}/logout_session`);
   } else if (getCookies.access_token && getCookies.refresh_token) {
     // At request level
     const agent = new https.Agent({
@@ -951,6 +952,9 @@ app.use(function (req, res, next) {
         console.log(err);
         res.redirect(`${baseUrlSSO}/logout_session`);
       });
+  } else {
+    console.log('Else part')
+    res.redirect(`${baseUrlSSO}/logout_session`);
   }
 });
 
