@@ -883,8 +883,9 @@ app.get("/refresh", function (req, res) {
       console.log(data);
       if (data.code === 102) {
         res.send(true);
+      } else {
+        res.send(false);
       }
-      res.send(false);
     })
     .catch((err) => {
       console.log(err);
