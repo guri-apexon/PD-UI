@@ -10,7 +10,7 @@ import Checkbox from "apollo-react/components/Checkbox";
 
 import Radio from "apollo-react/components/Radio";
 import RadioGroup from "apollo-react/components/RadioGroup";
-import DateRangePicker from "apollo-react/components/DateRangePicker";
+import DateRangePicker from "apollo-react/components/DateRangePickerV2";
 
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -206,13 +206,15 @@ export const DateRangeCard = ({
   listValue,
   listValue2,
   identifier2,
+  dateRangeValue,
 }) => {
   const [value, setValue] = React.useState("0");
   const [value1, setValue1] = React.useState([]);
-  const [dateRange, setDateRange] = React.useState({
-    fromDate: "",
-    toDate: "",
-  });
+  // const [dateRange, setDateRange] = React.useState({
+  //   fromDate: "",
+  //   toDate: "",
+  // });
+  const [dateRange, setDateRange] = React.useState(dateRangeValue);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -225,26 +227,23 @@ export const DateRangeCard = ({
   }, [value]);
 
   useEffect(() => {
-    if (dateRange.fromDate && dateRange.toDate) {
-      let date1 = moment(dateRange.fromDate);
-      let date2 = moment(dateRange.toDate);
+    // debugger;
+    if (dateRange.length === 2 && dateRange[0] && dateRange[1]) {
+      let date1 = dateRange[0].format("MM-DD-YYYY");
+      let date2 = dateRange[1].format("MM-DD-YYYY");
 
-      if (date1.isValid() && date2.isValid()) {
-        // setDateRange(e.target.value);
-        const range = {
-          from: dateRange.fromDate,
-          to: dateRange.toDate,
-        };
-        if (dateRange.fromDate && dateRange.toDate) {
-          dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
-          setDateRange({
-            fromDate: "",
-            toDate: "",
-          });
-        }
-      } else {
-        alert("Please select valid date range.");
-      }
+      // if (date1.isValid() && date2.isValid()) {
+      // setDateRange(e.target.value);
+      const range = {
+        from: date1,
+        to: date2,
+      };
+      // if (dateRange.fromDate && dateRange.toDate) {
+      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+      // }
+      // } else {
+      //   alert("Please select valid date range.");
+      // }
     }
   }, [dateRange]);
 
@@ -267,6 +266,10 @@ export const DateRangeCard = ({
     // debugger;
     setValue1(listValue);
   }, [listValue]);
+  useEffect(() => {
+    // debugger;
+    setDateRange(dateRangeValue);
+  }, [dateRangeValue]);
 
   useEffect(() => {
     // debugger;
@@ -333,8 +336,19 @@ export const DateRangeCard = ({
               style={{ marginTop: 20 }}
               data-testid="range-date-wrapper"
               id="range-date-id"
+              className="range-date-wrapper"
             >
               <DateRangePicker
+                value={dateRange}
+                onChange={(value) => setDateRange(value)}
+                placeholder="MM/DD/YYYY"
+                disableFuture={true}
+                style={{ display: "flex", flexDirection: "column" }}
+                startLabel="Start of Range" 
+                endLabel="End of Range"
+                // helperText="Please select event date"
+              />
+              {/* <DateRangePicker
                 disableFuture={true}
                 maxDate={new Date()}
                 onChange={(e) => handleRange(e)}
@@ -348,7 +362,7 @@ export const DateRangeCard = ({
                 }}
                 fromLabel="hhhhh"
                 value={dateRange}
-              />
+              /> */}
             </div>
           </div>
         </Typography>

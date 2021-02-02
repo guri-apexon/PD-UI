@@ -27,6 +27,7 @@ const CollapseCard = ({
   sponsorData,
   onConstructSearchQuery,
   searchQuery,
+  dateRangeValue
 }) => {
   if (name === "TOC") {
     return (
@@ -112,6 +113,7 @@ const CollapseCard = ({
             listValue2={
               searchQuery.dateSection && searchQuery.dateSection.length > 0 && searchQuery.dateSection[0]
             }
+            dateRangeValue={dateRangeValue}
           />
         </Collapsible>
       </span>

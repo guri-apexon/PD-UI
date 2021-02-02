@@ -546,6 +546,26 @@
     padding: 10px;
   }
 }
+.range-date-wrapper > div {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 26px;
+
+  label {
+    padding: 0 !important;
+    margin-top: 15px;
+    background-color: none !important;
+    border: none !important;
+    &:hover {
+      background-color: none !important;
+      border: none !important;
+    }
+  }
+}
+.range-date-wrapper > div > div {
+  width: 100%;
+  margin: 0;
+}
 
 .date-filter {
   .Collapsible__contentOuter {

@@ -196,6 +196,7 @@ class SearchPanel extends React.Component {
       indicationData,
       searchQuery,
       sortValueProp,
+      dateRangeValue
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
     
@@ -267,6 +268,7 @@ class SearchPanel extends React.Component {
                 name="date"
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
+                dateRangeValue={dateRangeValue}
               />
               {/* {filterList.length > 0 &&
                 filterList.map((section, index) => (
