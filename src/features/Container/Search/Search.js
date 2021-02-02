@@ -346,6 +346,8 @@ const Search = (props) => {
         dateType: [],
         dateSection: [1],
       });
+      // let ele = document.getElementById("range-date-id");
+      // clearInputFields("range-date-id");
       dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
       props.history.push(`/search?key=${input}`);
     } else {
@@ -358,8 +360,41 @@ const Search = (props) => {
         dateType: [],
         dateSection: [1],
       });
+      // clearInputFields("range-date-id");
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
       props.history.push(`/search`);
+    }
+  };
+  const clearInputFields = (divElement) => {
+    var ele = document.getElementById(divElement);
+    // debugger
+
+    // IT WILL READ ALL THE ELEMENTS. <p>, <div>, <input> ETC.
+    for (let i = 0; i < ele.childNodes.length; i++) {
+      // SINCE THE <input> FIELDS ARE INSIDE A <p> TAG,
+      // I'LL USE THE "firstChild" PROPERTY TO GET THE <input> TAG.
+      var child = ele.childNodes[i].childNodes[0].childNodes[0].childNodes[1].firstChild;
+      //console.log(child);
+
+      // CHECK IF CHILD NOT NULL.
+      // THIS IS IMPORTANT AS IT WILL RETURN A TEXT FOR EVERY "Whitespace".
+      // 'Whitespace' IS A TEXT OR NODE BETWEEN <div> AND <p> AND AFTER <p>.
+      if (child) {
+        switch (child.type) {
+          case "button":
+          case "text":
+          case "submit":
+          case "password":
+          case "file":
+          case "email":
+          case "date":
+          case "number":
+            child.value = "";
+          case "checkbox":
+          case "radio":
+            child.checked = false;
+        }
+      }
     }
   };
   const contructQueryFromArray = (key, value) => {

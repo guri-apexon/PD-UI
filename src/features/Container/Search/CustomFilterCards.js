@@ -14,6 +14,16 @@ import DateRangePicker from "apollo-react/components/DateRangePicker";
 
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import moment from "moment";
+
+import {
+  List,
+  AutoSizer,
+  CellMeasurer,
+  CellMeasurerCache,
+} from "react-virtualized";
+
+import axios from "axios";
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -199,7 +209,10 @@ export const DateRangeCard = ({
 }) => {
   const [value, setValue] = React.useState("0");
   const [value1, setValue1] = React.useState([]);
-  const [dateRange, setDateRange] = React.useState({});
+  const [dateRange, setDateRange] = React.useState({
+    fromDate: "",
+    toDate: "",
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -212,12 +225,26 @@ export const DateRangeCard = ({
   }, [value]);
 
   useEffect(() => {
-    const range = {
-      from: dateRange.fromDate,
-      to: dateRange.toDate,
-    };
     if (dateRange.fromDate && dateRange.toDate) {
-      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+      let date1 = moment(dateRange.fromDate);
+      let date2 = moment(dateRange.toDate);
+
+      if (date1.isValid() && date2.isValid()) {
+        // setDateRange(e.target.value);
+        const range = {
+          from: dateRange.fromDate,
+          to: dateRange.toDate,
+        };
+        if (dateRange.fromDate && dateRange.toDate) {
+          dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+          setDateRange({
+            fromDate: "",
+            toDate: "",
+          });
+        }
+      } else {
+        alert("Please select valid date range.");
+      }
     }
   }, [dateRange]);
 
@@ -233,6 +260,7 @@ export const DateRangeCard = ({
 
   const handleRange = (e) => {
     setDateRange(e.target.value);
+    // debugger;
   };
 
   useEffect(() => {
@@ -307,6 +335,8 @@ export const DateRangeCard = ({
               id="range-date-id"
             >
               <DateRangePicker
+                disableFuture={true}
+                maxDate={new Date()}
                 onChange={(e) => handleRange(e)}
                 fromDateProps={{
                   label: "Start of Range",
@@ -317,6 +347,7 @@ export const DateRangeCard = ({
                   placeholder: "MM/DD/YYYY",
                 }}
                 fromLabel="hhhhh"
+                value={dateRange}
               />
             </div>
           </div>
@@ -325,3 +356,78 @@ export const DateRangeCard = ({
     </Card>
   );
 };
+
+const rowCount = 1000;
+
+export class CheckboxTest extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      list: [],
+    };
+    this.renderRow = this.renderRow.bind(this);
+
+    this.cache = new CellMeasurerCache({
+      fixedWidth: true,
+      defaultHeight: true,
+    });
+  }
+  componentDidMount() {
+    axios
+      .get("http://ca2spdml01q:8000/api/protocol_sponsor/?skip=0")
+      .then((res) => {
+        const data = res.data;
+        this.setState({
+          list: data,
+        });
+      });
+  }
+
+  renderRow({ index, key, style, parent }) {
+    return (
+      <CellMeasurer
+        key={key}
+        cache={this.cache}
+        parent={parent}
+        columnIndex={0}
+        rowIndex={index}
+      >
+        <div style={style} className="row">
+          <div>
+            <input type="checkbox" id={this.state.list[index].sponsorId} />
+            <label htmlFor={`#${this.state.list[index].sponsorId}`}>
+              {this.state.list[index].sponsorName}
+            </label>
+          </div>
+        </div>
+      </CellMeasurer>
+    );
+  }
+
+  render() {
+    console.log("Loaded", this.state.list);
+    return this.state.list.length > 0 ? (
+      <div className="virtualization-set">
+        <div className="list">
+          <AutoSizer>
+            {({ width, height }) => {
+              return (
+                <List
+                  width={width}
+                  height={height}
+                  deferredMeasurementCache={this.cache}
+                  rowHeight={this.cache.rowHeight}
+                  rowRenderer={this.renderRow}
+                  rowCount={this.state.list.length}
+                  overscanRowCount={3}
+                />
+              );
+            }}
+          </AutoSizer>
+        </div>
+      </div>
+    ) : (
+      <div>Loading...</div>
+    );
+  }
+}

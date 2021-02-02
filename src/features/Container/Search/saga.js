@@ -29,7 +29,8 @@ export function* getIndicationData(action) {
     });
 
     if (indicationList.success) {
-      let respData = indicationList.data.slice(0, 30);
+      let respData = indicationList.data.slice(0, 20);
+      // let respData = indicationList;
       // debugger;
       let formatIndication = respData.map((item) => {
         return {
@@ -51,7 +52,8 @@ export function* getSponsorData(action) {
       url: sponsorUrl,
       method: "GET",
     });
-    let respData = sponsorList.data.slice(0, 30);
+    let respData = sponsorList.data.slice(0, 20);
+    // let respData = sponsorList;
     if (sponsorList.success) {
       let formatSponser = respData.map((item) => {
         return {

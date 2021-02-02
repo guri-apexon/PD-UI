@@ -417,6 +417,7 @@ app.get("/elastic", (req, res) => {
 
   if (from && to) {
     console.log(">>", docStatus);
+    
     if (docStatus.length === 2 && dateTypeArr.length === 2) {
       const rangeQuery4 = {
         range: {
@@ -556,6 +557,18 @@ app.get("/elastic", (req, res) => {
           }
         }
       }
+    }
+    if (docStatus.length === 0 && dateTypeArr.length === 0) {
+      const rangeQuery4 = {
+        range: {
+          uploadDate: {
+            gte: from,
+            lt: to,
+          },
+        },
+      };
+
+      filterArr.push(rangeQuery4);
     }
 
     // if (docStatus.length === 2 || docStatus.length === 0) {
@@ -898,7 +911,7 @@ app.use(function (req, res, next) {
   console.log("Cookies", req.cookies);
   const getCookies = req.cookies;
   if (!getCookies.access_token || !getCookies.refresh_token) {
-    console.log('No Tokens')
+    console.log("No Tokens");
     res.redirect(`${baseUrlSSO}/logout_session`);
   } else if (getCookies.access_token && getCookies.refresh_token) {
     // At request level
@@ -954,7 +967,7 @@ app.use(function (req, res, next) {
         res.redirect(`${baseUrlSSO}/logout_session`);
       });
   } else {
-    console.log('Else part')
+    console.log("Else part");
     res.redirect(`${baseUrlSSO}/logout_session`);
   }
 });

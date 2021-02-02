@@ -7,6 +7,7 @@ import {
   RadioCard,
   DateRangeCard,
   TableOfContent,
+  CheckboxTest,
 } from "./CustomFilterCards";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -57,17 +58,19 @@ const CollapseCard = ({
     );
   } else if (name === "sponsor") {
     return (
-      <Collapsible trigger="Sponsors">
-        {sponsorData.sectionContent &&
-          sponsorData.sectionContent.length > 0 && (
-            <CheckboxCard
-              section={sponsorData}
-              identifier="sponsor"
-              onCheckboxClick={onConstructSearchQuery}
-              listValue={searchQuery.sponsor}
-            />
-          )}
-      </Collapsible>
+      <div className="spon-container">
+        <Collapsible trigger="Sponsors">
+          {sponsorData.sectionContent &&
+            sponsorData.sectionContent.length > 0 && (
+              <CheckboxCard
+                section={sponsorData}
+                identifier="sponsor"
+                onCheckboxClick={onConstructSearchQuery}
+                listValue={searchQuery.sponsor}
+              />
+            )}
+        </Collapsible>
+      </div>
     );
   } else if (name === "phase") {
     return (
@@ -106,7 +109,9 @@ const CollapseCard = ({
             identifier2="dateSection"
             onCheckboxClick={onConstructSearchQuery}
             listValue={searchQuery.dateType}
-            listValue2={searchQuery.dateSection[0]}
+            listValue2={
+              searchQuery.dateSection && searchQuery.dateSection.length > 0 && searchQuery.dateSection[0]
+            }
           />
         </Collapsible>
       </span>

@@ -3,6 +3,9 @@
   max-width: 1140px;
   margin: 70px auto;
 
+  .spon-container .Collapsible__contentOuter {
+    max-height: none;
+  }
   .searchPanel {
     float: left;
     width: 100%;
@@ -520,10 +523,33 @@
     border: none !important;
   }
 }
+.virtualization-set {
+  .list {
+    padding: 10px;
+    height: 400px;
+    width: 271px;
+  }
+
+  .row {
+    border-bottom: 1px solid #ebeced;
+    text-align: left;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .image {
+    margin-right: 10px;
+  }
+
+  .content {
+    padding: 10px;
+  }
+}
 
 .date-filter {
   .Collapsible__contentOuter {
-    max-height: 600px;
+    max-height: 700px;
     overflow: hidden;
     height: 550px;
     float: left;
