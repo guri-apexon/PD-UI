@@ -259,6 +259,9 @@ export const DateRangeCard = ({
       //   alert("Please select valid date range.");
       // }
     }
+    if(dateRange[0]===null && dateRange[1]===null){
+      setErrorMessage("")
+    }
   }, [dateRange]);
 
   const handleChange = (e) => {
@@ -283,6 +286,7 @@ export const DateRangeCard = ({
   useEffect(() => {
     // debugger;
     setDateRange(dateRangeValue);
+    
   }, [dateRangeValue]);
 
   useEffect(() => {
