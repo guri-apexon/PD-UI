@@ -285,7 +285,7 @@ class ProtocolViewClass extends React.Component {
       TOC: view.tocSections,
       SOA: view.soaSections,
     };
-
+console.log('view', view)
     if (subSections.TOC && subSections.TOC.length) {
       listData.push( { section: "Table of Contents", id: "Toc" })
     }

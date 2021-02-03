@@ -891,6 +891,10 @@ app.use(
   })
 );
 
+app.get("/health", function(req, res) {
+  res.send("F5-UP");
+})
+
 app.get("/session", function (req, res) {
   console.log("session", req.session.user);
   res.send(req.session.user);

@@ -74,6 +74,17 @@ export function getTocSections(toc) {
         id: `TOC-${item[9]}`,
       });
       sectionList.push(level_1_CPT_section);
+    } else if (
+      heading === 'Heading1' &&
+      file_section_level === "1" &&
+      level_1_CPT_section !== "Unmapped" &&
+      !sectionList.includes(level_1_CPT_section)
+    ) {
+      list.push({
+        section: `${section_num} ${level_1_CPT_section}`,
+        id: `TOC-${item[9]}`,
+      });
+      sectionList.push(level_1_CPT_section);
     }
   });
   return list;
