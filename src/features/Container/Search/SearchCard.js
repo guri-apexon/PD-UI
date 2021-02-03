@@ -56,10 +56,14 @@ const SearchCard = ({
     );
 
     let url = `${UI_URL}/${resp.data}`;
-    window.open(
-      url,
-      "_blank" // <- This is what makes it open in a new window.
-    );
+    let encodeUrl=encodeURI(url);
+    let myWindow = window.open("about:blank", "_blank");
+    myWindow.document.write(`<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`);
+  
+    // window.open(
+    //   url,
+    //   "_blank" // <- This is what makes it open in a new window.
+    // );
     // }
   };
   return (
