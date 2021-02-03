@@ -61,7 +61,7 @@ function DashboardSearch({ recent, saved }) {
               "No Search data available"
             )}
           </div>
-          {recent.length > 5 ? (
+          {recent && recent.length > 5 ? (
             <span data-testid="view-more" id="view-more-btn">
               <Button
                 variant="secondary"
