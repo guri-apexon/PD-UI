@@ -27,7 +27,7 @@ const CollapseCard = ({
   sponsorData,
   onConstructSearchQuery,
   searchQuery,
-  dateRangeValue
+  dateRangeValue,
 }) => {
   if (name === "TOC") {
     return (
@@ -45,17 +45,19 @@ const CollapseCard = ({
     );
   } else if (name === "indication") {
     return (
-      <Collapsible trigger="Indications">
-        {indicationData.sectionContent &&
-          indicationData.sectionContent.length > 0 && (
-            <CheckboxCard
-              section={indicationData}
-              identifier="indication"
-              onCheckboxClick={onConstructSearchQuery}
-              listValue={searchQuery.indication}
-            />
-          )}
-      </Collapsible>
+      <div className="spon-container">
+        <Collapsible trigger="Indications">
+          {indicationData.sectionContent &&
+            indicationData.sectionContent.length > 0 && (
+              <CheckboxTest
+                section={indicationData}
+                identifier="indication"
+                onCheckboxClick={onConstructSearchQuery}
+                listValue={searchQuery.indication}
+              />
+            )}
+        </Collapsible>
+      </div>
     );
   } else if (name === "sponsor") {
     return (
@@ -63,7 +65,7 @@ const CollapseCard = ({
         <Collapsible trigger="Sponsors">
           {sponsorData.sectionContent &&
             sponsorData.sectionContent.length > 0 && (
-              <CheckboxCard
+              <CheckboxTest
                 section={sponsorData}
                 identifier="sponsor"
                 onCheckboxClick={onConstructSearchQuery}
@@ -111,7 +113,9 @@ const CollapseCard = ({
             onCheckboxClick={onConstructSearchQuery}
             listValue={searchQuery.dateType}
             listValue2={
-              searchQuery.dateSection && searchQuery.dateSection.length > 0 && searchQuery.dateSection[0]
+              searchQuery.dateSection &&
+              searchQuery.dateSection.length > 0 &&
+              searchQuery.dateSection[0]
             }
             dateRangeValue={dateRangeValue}
           />

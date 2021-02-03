@@ -447,6 +447,11 @@
     max-height: 300px;
     overflow: auto !important;
   }
+  .spon-container{
+    .Collapsible__contentOuter{
+      overflow-x: hidden !important;
+    }
+  }
 
   .Collapsible__trigger {
     display: block;
@@ -523,29 +528,7 @@
     border: none !important;
   }
 }
-.virtualization-set {
-  .list {
-    padding: 10px;
-    height: 400px;
-    width: 271px;
-  }
 
-  .row {
-    border-bottom: 1px solid #ebeced;
-    text-align: left;
-    margin: 5px 0;
-    display: flex;
-    align-items: center;
-  }
-
-  .image {
-    margin-right: 10px;
-  }
-
-  .content {
-    padding: 10px;
-  }
-}
 .range-date-wrapper > div {
   display: flex;
   flex-direction: column;
@@ -583,5 +566,49 @@
   p {
     margin-top: 0;
     margin-bottom: 0;
+  }
+}
+.virtualization-set {
+  .list {
+    padding: 10px;
+    height: 350px;
+    width: 271px;
+  }
+  .list > div > div {
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .row {
+    text-align: left;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    min-height: 30px !important;
+  }
+
+  .image {
+    margin-right: 10px;
+  }
+
+  .content {
+    padding: 10px;
+  }
+}
+.new-checkbox-style {
+  padding: 0 16px;
+  margin-right: 0;
+  margin-left: 0;
+  border-left: 5px solid transparent;
+  transition: 0.3s;
+  min-height: 30px;
+  display: flex;
+  flex-direction: row;
+
+  label {
+    font-size: 13px;
+    padding-left: 6px;
+    color: #444444;
   }
 }

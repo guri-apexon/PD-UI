@@ -106,6 +106,7 @@ export const CheckboxCard = ({
   const handleChange = (e) => {
     setValue(e.target.value);
     onCheckboxClick(e.target.value, identifier);
+    debugger;
   };
 
   const classes = useStyles();
@@ -259,8 +260,8 @@ export const DateRangeCard = ({
       //   alert("Please select valid date range.");
       // }
     }
-    if(dateRange[0]===null && dateRange[1]===null){
-      setErrorMessage("")
+    if (dateRange[0] === null && dateRange[1] === null) {
+      setErrorMessage("");
     }
   }, [dateRange]);
 
@@ -286,7 +287,6 @@ export const DateRangeCard = ({
   useEffect(() => {
     // debugger;
     setDateRange(dateRangeValue);
-    
   }, [dateRangeValue]);
 
   useEffect(() => {
@@ -403,6 +403,7 @@ export class CheckboxTest extends React.Component {
     super();
     this.state = {
       list: [],
+      value: [],
     };
     this.renderRow = this.renderRow.bind(this);
 
@@ -411,16 +412,52 @@ export class CheckboxTest extends React.Component {
       defaultHeight: true,
     });
   }
-  componentDidMount() {
-    axios
-      .get("http://ca2spdml01q:8000/api/protocol_sponsor/?skip=0")
-      .then((res) => {
-        const data = res.data;
-        this.setState({
-          list: data,
-        });
-      });
+  static getDerivedStateFromProps(props, state) {
+    // debugger
+    // console.log("Props", props);
+    if (
+      state.list.length === 0 &&
+      props.section &&
+      props.section.sectionContent.length > 0
+    ) {
+      return {
+        list: props.section.sectionContent,
+      };
+    }
+    // if (props.listValue.length !== state.value.length) {
+    //   return {
+    //     value: props.listValue,
+    //   };
+    // }
   }
+  // componentDidMount() {
+  //   axios
+  //     .get("http://ca2spdml01q:8000/api/protocol_sponsor/?skip=0")
+  //     .then((res) => {
+  //       const data = res.data;
+  //       this.setState({
+  //         list: data,
+  //       });
+  //     });
+  // }
+  handleChange = (e) => {
+    // setValue(e.target.value);
+    // let checkedValue = parseInt(e.target.value, 10);
+    this.setState(
+      {
+        value: this.state.value.concat([parseInt(e.target.value, 10)]),
+      },
+      () => {
+        this.props.onCheckboxClick(this.state.value, this.props.identifier);
+      }
+    );
+
+    // debugger;
+  };
+  // componentDidUpdate(prevProps, prevState){
+  //   console.log("Prev",prevProps, prevState)
+  //   console.log("current",this.props, this.state)
+  // }
 
   renderRow({ index, key, style, parent }) {
     return (
@@ -432,10 +469,16 @@ export class CheckboxTest extends React.Component {
         rowIndex={index}
       >
         <div style={style} className="row">
-          <div>
-            <input type="checkbox" id={this.state.list[index].sponsorId} />
-            <label htmlFor={`#${this.state.list[index].sponsorId}`}>
-              {this.state.list[index].sponsorName}
+          <div className="new-checkbox-style">
+            <input
+              type="checkbox"
+              id={this.state.list[index].id}
+              value={this.state.list[index].id}
+              onChange={this.handleChange}
+              checked={this.props.listValue.includes(this.state.list[index].id)}
+            />
+            <label htmlFor={`#${this.state.list[index].id}`}>
+              {this.state.list[index].title}
             </label>
           </div>
         </div>
@@ -444,7 +487,7 @@ export class CheckboxTest extends React.Component {
   }
 
   render() {
-    console.log("Loaded", this.state.list);
+    console.log("Loaded", this.state.value);
     return this.state.list.length > 0 ? (
       <div className="virtualization-set">
         <div className="list">
@@ -459,6 +502,7 @@ export class CheckboxTest extends React.Component {
                   rowRenderer={this.renderRow}
                   rowCount={this.state.list.length}
                   overscanRowCount={3}
+                  data={this.props.listValue}
                 />
               );
             }}
