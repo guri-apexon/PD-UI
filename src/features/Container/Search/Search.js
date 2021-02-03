@@ -635,6 +635,7 @@ const Search = (props) => {
             selection={selection}
             sortValueProp={sortValueProp}
             dateRangeValue={dateRangeValue}
+            protocolSelected={protocolSelected}
           />
         </div>
       </div>

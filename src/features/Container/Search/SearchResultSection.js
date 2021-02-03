@@ -43,7 +43,6 @@ class SearchPanel extends React.Component {
       props.resultList.loader !== state.resultListData.loader ||
       props.resultList !== state.resultListData
     ) {
-     
       let defaultValue = false;
 
       //For resetting ExpandAll button when all are expanded and Search button is click
@@ -61,7 +60,6 @@ class SearchPanel extends React.Component {
         } else {
           defaultValue = false;
         }
-        
       }
       let result =
         props.resultList && props.resultList.data ? props.resultList.data : [];
@@ -88,13 +86,11 @@ class SearchPanel extends React.Component {
     // Return null if the state hasn't changed
     return null;
   }
-  componentDidMount() {
-    
-  }
+  componentDidMount() {}
   setExpanded = (id, obj, data) => {
     const { updateAssociateProtocol } = this.props;
     const { accordionObj } = this.state;
-    
+
     // if (obj.expanded) {
     //   // dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
     //   updateAssociateProtocol(data, accordionObj);
@@ -105,7 +101,6 @@ class SearchPanel extends React.Component {
     if (accObj[foundIndex].expanded === false) {
       accObj[foundIndex].viewAssociate = false;
     }
-   
 
     this.setState({
       accordionObj: [
@@ -123,13 +118,11 @@ class SearchPanel extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    
     const { accordionObj } = this.state;
     // if (prevState.defaultExpand !== this.state.defaultExpand) {
     // let arr = accordionObj.map(item => {
     //   return { ...item, expanded: true };
     // });
-    
 
     // this.setState({
     //   accordionObj: accordionObj.map((item) => {
@@ -141,9 +134,9 @@ class SearchPanel extends React.Component {
 
   sortChange = (value) => {
     const { onSortChange } = this.props;
-    
+
     let filterValue = SORT_DROPDOWN.filter((item) => item.id === value);
-    
+
     onSortChange(filterValue[0], value);
     // this.setState({ sortValue: value.id });
   };
@@ -169,11 +162,10 @@ class SearchPanel extends React.Component {
 
   onConstructSearchQuery = (list, identifier) => {
     const { onSearchQuery } = this.props;
-   
+
     onSearchQuery(list, identifier);
   };
   clearAllCheckbox = () => {
-    
     // this.state["searchValue"] = [];
     // this.setState({ searchValue: [] });
     if (this.props.searchInput) {
@@ -196,10 +188,10 @@ class SearchPanel extends React.Component {
       indicationData,
       searchQuery,
       sortValueProp,
-      dateRangeValue
+      dateRangeValue,
+      protocolSelected,
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
-    
 
     let protocols = resultList.data && resultList.data.length;
     let maxRecordsPerPage = 10;
@@ -370,6 +362,7 @@ class SearchPanel extends React.Component {
                         onViewAssociateProtocolClick={
                           this.onViewAssociateProtocolClick
                         }
+                        protocolSelected={protocolSelected}
                       />
                     </div>
                   ))
@@ -406,7 +399,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: "UPDATE_SEARCH_ASSOCIATED_PROTOCOLS",
         payload: { data, obj },
-      })
+      }),
   };
 };
 export default connect(null, mapDispatchToProps)(SearchPanel);

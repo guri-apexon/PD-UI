@@ -26,6 +26,7 @@ const SearchListingSection = ({
   selection,
   history,
   onViewAssociateProtocolClick,
+  protocolSelected,
 }) => {
   const dispatch = useDispatch();
   const onExpandClick = (data) => {
@@ -102,6 +103,7 @@ const SearchListingSection = ({
                   compareTwoProtocol={compareTwoProtocol}
                   selection={selection}
                   onViewAssociateProtocolClick={onViewAssociateProtocolClick}
+                  protocolSelected={protocolSelected}
                 />
               </div>
             </AccordionDetails>

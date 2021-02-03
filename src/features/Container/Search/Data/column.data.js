@@ -10,11 +10,24 @@ const arr = [];
 const CheckBoxCell = ({ row }) => {
   // debugger
   console.log(row);
+  // if(row.protocolSelected.includes(row.id)){
+  // debugger
   return (
     <div>
-      <CheckBox onChange={() => row.handleSelectRow(row.id, row.protocol)} />
+      <CheckBox
+        onChange={() => row.handleSelectRow(row.id, row.protocol)}
+        // checked={row.protocolSelected.includes(row.id)}
+      />
     </div>
   );
+  // }else{
+  //   // debugger
+  //   return (
+  //     <div>
+  //       <CheckBox onChange={() => row.handleSelectRow(row.id, row.protocol)} checked={false}/>
+  //     </div>
+  //   );
+  // }
 };
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
   return (

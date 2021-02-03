@@ -12,7 +12,7 @@ import Radio from "apollo-react/components/Radio";
 import RadioGroup from "apollo-react/components/RadioGroup";
 import DateRangePicker from "apollo-react/components/DateRangePickerV2";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 
@@ -210,6 +210,7 @@ export const DateRangeCard = ({
 }) => {
   const [value, setValue] = React.useState("0");
   const [value1, setValue1] = React.useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
   // const [dateRange, setDateRange] = React.useState({
   //   fromDate: "",
   //   toDate: "",
@@ -225,21 +226,34 @@ export const DateRangeCard = ({
       dispatch({ type: "FILTER_BY_RECENT_SAGA", payload: value });
     }
   }, [value]);
+  const isFutureDate = (value) => {
+    let d_now = new Date();
+    let d_inp = new Date(value);
+    return d_now.getTime() <= d_inp.getTime();
+  };
 
   useEffect(() => {
     // debugger;
     if (dateRange.length === 2 && dateRange[0] && dateRange[1]) {
       let date1 = dateRange[0].format("MM-DD-YYYY");
       let date2 = dateRange[1].format("MM-DD-YYYY");
-
+      if (isFutureDate(date1) || isFutureDate(date2)) {
+        // alert("Future date is restricted");
+        setErrorMessage(
+          "You are trying to select Future Date. Please use date range picker to select correct date range"
+        );
+      } else {
+        setErrorMessage("");
+        const range = {
+          from: date1,
+          to: date2,
+        };
+        // if (dateRange.fromDate && dateRange.toDate) {
+        dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+      }
       // if (date1.isValid() && date2.isValid()) {
       // setDateRange(e.target.value);
-      const range = {
-        from: date1,
-        to: date2,
-      };
-      // if (dateRange.fromDate && dateRange.toDate) {
-      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+
       // }
       // } else {
       //   alert("Please select valid date range.");
@@ -321,6 +335,7 @@ export const DateRangeCard = ({
                 ))}
               </CheckboxGroup>
             </div>
+
             <RadioGroup value={value} onChange={(e) => handleChange(e)}>
               {section.sectionContent.map((item, i) => (
                 <Radio
@@ -332,6 +347,11 @@ export const DateRangeCard = ({
                 />
               ))}
             </RadioGroup>
+            {errorMessage ? (
+              <div className="errorMessage-dateRange">
+                <p>{errorMessage}</p>
+              </div>
+            ) : null}
             <div
               style={{ marginTop: 20 }}
               data-testid="range-date-wrapper"
@@ -344,8 +364,9 @@ export const DateRangeCard = ({
                 placeholder="MM/DD/YYYY"
                 disableFuture={true}
                 style={{ display: "flex", flexDirection: "column" }}
-                startLabel="Start of Range" 
+                startLabel="Start of Range"
                 endLabel="End of Range"
+                maxDate={new Date()}
                 // helperText="Please select event date"
               />
               {/* <DateRangePicker

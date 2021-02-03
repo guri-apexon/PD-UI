@@ -417,7 +417,7 @@ app.get("/elastic", (req, res) => {
 
   if (from && to) {
     console.log(">>", docStatus);
-    
+
     if (docStatus.length === 2 && dateTypeArr.length === 2) {
       const rangeQuery4 = {
         range: {
@@ -569,6 +569,31 @@ app.get("/elastic", (req, res) => {
       };
 
       filterArr.push(rangeQuery4);
+    }
+    if (docStatus.length === 1 && dateTypeArr.length === 0) {
+      if (docStatus[0] === "final") {
+        const rangeQuery4 = {
+          range: {
+            approval_date: {
+              gte: from,
+              lt: to,
+            },
+          },
+        };
+
+        filterArr.push(rangeQuery4);
+      } else if (docStatus[0] === "draft") {
+        const rangeQuery4 = {
+          range: {
+            uploadDate: {
+              gte: from,
+              lt: to,
+            },
+          },
+        };
+
+        filterArr.push(rangeQuery4);
+      }
     }
 
     // if (docStatus.length === 2 || docStatus.length === 0) {

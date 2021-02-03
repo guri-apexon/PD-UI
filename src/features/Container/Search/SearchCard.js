@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import Table from "apollo-react/components/Table";
 import columns from "./Data/column.data";
@@ -16,13 +16,25 @@ const SearchCard = ({
   compareTwoProtocol,
   selection,
   onViewAssociateProtocolClick,
+  protocolSelected,
 }) => {
+  const [dataRow, setDataRow] = useState([]);
   // let rowContent = "";
   // if (data && !data.rowsLoading) {
   //   rowContent = _.cloneDeep(data.rows);
   //   rowContent.handleSelectRow = compareTwoProtocol();
   // }
   // const selection1 = selection;
+  useEffect(() => {
+    let arrOfObj = _.cloneDeep(data.rows);
+    var result = arrOfObj.map(function (el) {
+      var o = Object.assign({}, el);
+      o.protocolSelected = protocolSelected;
+      return o;
+    });
+    // debugger;
+    setDataRow(result);
+  }, [protocolSelected, data]);
   const handleSelectRow = (data, protocol) => {
     compareTwoProtocol(data, protocol);
   };
@@ -184,16 +196,18 @@ const SearchCard = ({
           </div>
         ) : (
           <div className="width100 search-inner-table">
-            <Table
-              columns={columns}
-              rows={data.rows.map((row) => ({
-                ...row,
-                handleSelectRow,
-                key: row.id,
-                selection: selection,
-              }))}
-              hidePagination
-            />
+            {dataRow.length > 0 && (
+              <Table
+                columns={columns}
+                rows={dataRow.map((row) => ({
+                  ...row,
+                  handleSelectRow,
+                  key: row.id,
+                  selection: selection,
+                }))}
+                hidePagination
+              />
+            )}
           </div>
         )}
       </div>
