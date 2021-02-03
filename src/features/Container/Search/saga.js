@@ -209,6 +209,13 @@ function* updateSearchAssociated(action) {
       url: associateURL,
       method: "GET",
     });
+    // Checking Primary or Secondary User based on Protocol Number
+    // let userId = yield getState();
+    // let userStatusURL =`${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId}&protocol=${action.payload.data.protocolNumber}`
+    // const userStatus = yield call(httpCall, {
+    //   url: userStatusURL,
+    //   method: "GET"
+    // })
     // const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.protocolNumber}`;
     //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
     // const config = {
@@ -221,11 +228,20 @@ function* updateSearchAssociated(action) {
       arr.sort((a, b) => {
         return moment(b.uploadDate) - moment(a.uploadDate);
       });
+      // let primaryUser= userStatus && userStatus.data?true:false
+      // let resultarr= arr.map(item=>{
+      //   return{
+      //     ...item,
+      //     isPrimaryUser:primaryUser
+      //   }
+      // })
       let result = setAsssociateProtocols(
         // action.payload.data.protocolNumber,
         action.payload.data.id,
         action.payload.obj,
         arr
+        // resultarr,
+        // primaryUser
       );
       const obj = {
         search: true,
@@ -471,7 +487,7 @@ function getUniqObject(obj) {
 //   // debugger
 //   return activeObj;
 // }
-export function setAsssociateProtocols(id, data, associateDocs) {
+export function setAsssociateProtocols(id, data, associateDocs, isPrimaryUser) {
   let arr =
     data &&
     data.map((item) => {
@@ -480,6 +496,7 @@ export function setAsssociateProtocols(id, data, associateDocs) {
         temp.rows = associateDocs;
         temp.rowsLoading = false;
         temp.viewAssociate = true;
+        // temp.isPrimaryUser  = isPrimaryUser
         return temp;
       }
       return item;
