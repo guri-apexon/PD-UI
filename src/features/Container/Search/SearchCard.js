@@ -68,7 +68,7 @@ const SearchCard = ({
   };
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>
-      <Grid md={10} container>
+      <Grid md={11} container>
         <Grid md={3}>
           <p className="grid-item">Indication :</p>
         </Grid>
@@ -163,6 +163,7 @@ const SearchCard = ({
               color: "#0138ff",
               textDecoration: "underline",
               cursor: "pointer",
+              whiteSpace: 'normal'
             }}
           >
             {data.source}

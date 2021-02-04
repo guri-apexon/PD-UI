@@ -10,7 +10,7 @@ const session = require("express-session");
 const jwt_decode = require("jwt-decode");
 const dotenv = require("dotenv");
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = 4000;
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
@@ -595,6 +595,31 @@ app.get("/elastic", (req, res) => {
         filterArr.push(rangeQuery4);
       }
     }
+    if (docStatus.length === 0 && dateTypeArr.length === 1) {
+      if (dateTypeArr[0] === "approvalDate") {
+        const rangeQuery4 = {
+          range: {
+            approval_date: {
+              gte: from,
+              lt: to,
+            },
+          },
+        };
+
+        filterArr.push(rangeQuery4);
+      } else if (dateTypeArr[0] === "uploadDate") {
+        const rangeQuery4 = {
+          range: {
+            uploadDate: {
+              gte: from,
+              lt: to,
+            },
+          },
+        };
+
+        filterArr.push(rangeQuery4);
+      }
+    }
 
     // if (docStatus.length === 2 || docStatus.length === 0) {
 
@@ -891,9 +916,9 @@ app.use(
   })
 );
 
-app.get("/health", function(req, res) {
+app.get("/health", function (req, res) {
   res.send("F5-UP");
-})
+});
 
 app.get("/session", function (req, res) {
   console.log("session", req.session.user);

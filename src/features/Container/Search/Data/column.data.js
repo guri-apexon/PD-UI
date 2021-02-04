@@ -16,7 +16,7 @@ const CheckBoxCell = ({ row }) => {
     <div>
       <CheckBox
         onChange={() => row.handleSelectRow(row.id, row.protocol)}
-        // checked={row.protocolSelected.includes(row.id)}
+        checked={row.protocolSelected.includes(row.id)}
       />
     </div>
   );

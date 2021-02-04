@@ -349,7 +349,7 @@ const Search = (props) => {
       });
       // let ele = document.getElementById("range-date-id");
       // clearInputFields("range-date-id");
-      setDateRangeValue([null, null])
+      setDateRangeValue([null, null]);
       dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
       props.history.push(`/search?key=${input}`);
     } else {
@@ -362,7 +362,7 @@ const Search = (props) => {
         dateType: [],
         dateSection: [1],
       });
-      setDateRangeValue([null, null])
+      setDateRangeValue([null, null]);
       // clearInputFields("range-date-id");
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
       props.history.push(`/search`);
@@ -543,7 +543,7 @@ const Search = (props) => {
         if (protArr.length < 2) {
           // debugger
           protArr.push(data);
-          setProtocolSelected(protArr);
+          setProtocolSelected([protocolSelected[0], data]);
           // oldArray => [...oldArray, newElement]
         } else {
           setSelection(false);

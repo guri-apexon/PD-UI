@@ -371,13 +371,6 @@ export const dateSection = {
   fieldType: "radio",
   sectionContent: [
     {
-      id: 1,
-      title: "None",
-      content: "0",
-      count: "",
-      value: "0",
-    },
-    {
       id: 2,
       title: "Last 6 Months",
       value: "6",
@@ -397,6 +390,13 @@ export const dateSection = {
       content: "60",
       value: "60",
       count: "",
+    },
+    {
+      id: 1,
+      title: "All Dates",
+      content: "0",
+      count: "",
+      value: "0",
     },
   ],
 };

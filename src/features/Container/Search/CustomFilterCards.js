@@ -301,8 +301,9 @@ export const DateRangeCard = ({
   }, [listValue2]);
 
   const handleChange1 = (e) => {
-    setValue1(e.target.value);
-    onCheckboxClick(e.target.value, identifier);
+    setValue1(parseInt(e.target.value));
+    let select = parseInt(e.target.value,10);
+    onCheckboxClick([select], identifier);
     // debugger;
   };
 
@@ -324,7 +325,18 @@ export const DateRangeCard = ({
                 borderBottom: "1px solid #d0d0d0",
               }}
             >
-              <CheckboxGroup value={value1} onChange={handleChange1}>
+              <RadioGroup value={value1} onChange={handleChange1}>
+                {dateType.sectionContent.map((item, i) => (
+                  <Radio
+                    id={item.id}
+                    key={item.id}
+                    value={item.id}
+                    label={item.title}
+                    size="small"
+                  />
+                ))}
+              </RadioGroup>
+              {/* <CheckboxGroup value={value1} onChange={handleChange1}>
                 {dateType.sectionContent.map((content, i) => (
                   <Checkbox
                     id={content.id}
@@ -337,7 +349,7 @@ export const DateRangeCard = ({
                     // checked={value && value.includes(content.id)}
                   />
                 ))}
-              </CheckboxGroup>
+              </CheckboxGroup> */}
             </div>
 
             <RadioGroup value={value} onChange={(e) => handleChange(e)}>
@@ -487,7 +499,7 @@ export class CheckboxTest extends React.Component {
   }
 
   render() {
-    console.log("Loaded", this.state.value);
+    // console.log("Loaded", this.state.value);
     return this.state.list.length > 0 ? (
       <div className="virtualization-set">
         <div className="list">

@@ -111,7 +111,11 @@ const CollapseCard = ({
             identifier="dateType"
             identifier2="dateSection"
             onCheckboxClick={onConstructSearchQuery}
-            listValue={searchQuery.dateType}
+            listValue={
+              searchQuery.dateType &&
+              searchQuery.dateType.length > 0 &&
+              searchQuery.dateType[0]
+            }
             listValue2={
               searchQuery.dateSection &&
               searchQuery.dateSection.length > 0 &&
