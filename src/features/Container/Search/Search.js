@@ -534,45 +534,37 @@ const Search = (props) => {
 
   const compareTwoProtocol = (data, protocol) => {
     // debugger;
-    // if (protArr.length > 0) {
     if (prevProtSelected === "") {
       setPrevProtSelected(protocol);
-      const index = protArr.indexOf(data);
-      if (index > -1) {
-        protArr.splice(index, 1);
-      } else {
-        if (protArr.length < 2) {
-          // debugger
-          protArr.push(data);
-          setProtocolSelected([protocolSelected[0], data]);
-          // oldArray => [...oldArray, newElement]
-        } else {
-          setSelection(false);
-          alert("comparison is available only for two protocols.");
-        }
-      }
+      setProtocolSelected([data]);
     } else {
       if (prevProtSelected.toLowerCase() === protocol.toLowerCase()) {
-        const index = protArr.indexOf(data);
-        if (index > -1) {
-          protArr.splice(index, 1);
-        } else {
-          if (protArr.length < 2) {
-            // debugger
-            protArr.push(data);
-            setProtocolSelected(protArr);
-            // oldArray => [...oldArray, newElement]
+        if (protocolSelected.length === 1) {
+          const index = protocolSelected.indexOf(data);
+          if (index > -1) {
+            setProtocolSelected((protocolSelected) =>
+              protocolSelected.filter((item) => item !== data)
+            );
+            console.log(protocolSelected);
+            setPrevProtSelected("");
           } else {
-            setSelection(false);
-            alert("comparison is available only for two protocols.");
+            setProtocolSelected([protocolSelected[0], data]);
+          }
+        }
+        if (protocolSelected.length === 2) {
+          const index = protocolSelected.indexOf(data);
+          if (index > -1) {
+            setProtocolSelected((protocolSelected) =>
+              protocolSelected.filter((item) => item !== data)
+            );
+          } else {
+            alert("Comparison is available only for two protocols.");
           }
         }
       } else {
         alert("Protocol Selected is not from the same study.");
       }
     }
-
-    // }
   };
   const compareProtocol = () => {
     if (protocolSelected.length === 2) {
