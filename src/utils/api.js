@@ -34,7 +34,7 @@ if (process.env.REACT_APP_ENV === "dev") {
 } else if (process.env.REACT_APP_ENV === "svt") {
   backendHost = "ca2spdml13q";
   backendPostHost="ca2spdml15q";
-  UIhost='ca2spdml16q';
+  UIhost='pd-svt';
   baseUrlSSO = "https://ca2uampd01q.quintiles.net:8080/v1";
 } else if (process.env.REACT_APP_ENV === "uat") {
   backendHost = "ca2spdml03c";
