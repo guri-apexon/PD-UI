@@ -51,7 +51,7 @@ const Search = (props) => {
     phase: [],
     documentStatus: [],
     toc: [],
-    dateType: [],
+    dateType: [1],
     dateSection: [1],
   });
   const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
@@ -344,7 +344,7 @@ const Search = (props) => {
         phase: [],
         documentStatus: [],
         toc: [],
-        dateType: [],
+        dateType: [1],
         dateSection: [1],
       });
       // let ele = document.getElementById("range-date-id");
@@ -359,7 +359,7 @@ const Search = (props) => {
         phase: [],
         documentStatus: [],
         toc: [],
-        dateType: [],
+        dateType: [1],
         dateSection: [1],
       });
       setDateRangeValue([null, null]);
@@ -490,7 +490,8 @@ const Search = (props) => {
       phase: [],
       documentStatus: [],
       toc: [],
-      dateType: [],
+      dateType: [1],
+      dateSection: [1],
     });
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     props.history.push(`/search`);
@@ -551,7 +552,7 @@ const Search = (props) => {
         }
       }
     } else {
-      if (prevProtSelected === protocol) {
+      if (prevProtSelected.toLowerCase() === protocol.toLowerCase()) {
         const index = protArr.indexOf(data);
         if (index > -1) {
           protArr.splice(index, 1);

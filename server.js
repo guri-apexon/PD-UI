@@ -513,35 +513,35 @@ app.get("/elastic", (req, res) => {
           dateTypeArr.length !== 0
         ) {
           if (dateTypeArr[0] === "approvalDate") {
-            // const rangeQuery3 = {
-            //   range: {
-            //     approval_date: {
-            //       gte: from,
-            //       lt: to,
-            //     },
-            //   },
-            // };
-
-            // filterArr.push(rangeQuery3);
-            const respBody = {
-              took: 12,
-              timed_out: false,
-              _shards: {
-                total: 1,
-                successful: 1,
-                skipped: 0,
-                failed: 0,
-              },
-              hits: {
-                total: {
-                  value: 0,
-                  relation: "eq",
+            const rangeQuery3 = {
+              range: {
+                approval_date: {
+                  gte: from,
+                  lt: to,
                 },
-                max_score: null,
-                hits: [],
               },
             };
-            res.send(respBody);
+
+            filterArr.push(rangeQuery3);
+            // const respBody = {
+            //   took: 12,
+            //   timed_out: false,
+            //   _shards: {
+            //     total: 1,
+            //     successful: 1,
+            //     skipped: 0,
+            //     failed: 0,
+            //   },
+            //   hits: {
+            //     total: {
+            //       value: 0,
+            //       relation: "eq",
+            //     },
+            //     max_score: null,
+            //     hits: [],
+            //   },
+            // };
+            // res.send(respBody);
           }
           if (dateTypeArr[0] === "uploadDate") {
             const rangeQuery4 = {

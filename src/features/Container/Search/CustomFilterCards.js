@@ -106,7 +106,7 @@ export const CheckboxCard = ({
   const handleChange = (e) => {
     setValue(e.target.value);
     onCheckboxClick(e.target.value, identifier);
-    debugger;
+    // debugger;
   };
 
   const classes = useStyles();
@@ -376,8 +376,9 @@ export const DateRangeCard = ({
             >
               <DateRangePicker
                 value={dateRange}
+                dateFormat={"DD/MMM/YYYY"}
                 onChange={(value) => setDateRange(value)}
-                placeholder="MM/DD/YYYY"
+                placeholder="DD/MMM/YYYY"
                 disableFuture={true}
                 style={{ display: "flex", flexDirection: "column" }}
                 startLabel="Start of Range"
