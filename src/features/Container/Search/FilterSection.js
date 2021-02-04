@@ -10,6 +10,8 @@ import {
   CheckboxTest,
 } from "./CustomFilterCards";
 
+import Loader from "../../Components/Loader/Loader";
+
 import { useSelector, useDispatch } from "react-redux";
 import { indications, sponsors } from "./searchSlice";
 
@@ -48,14 +50,25 @@ const CollapseCard = ({
       <div className="spon-container">
         <Collapsible trigger="Indications">
           {indicationData.sectionContent &&
-            indicationData.sectionContent.length > 0 && (
-              <CheckboxTest
-                section={indicationData}
-                identifier="indication"
-                onCheckboxClick={onConstructSearchQuery}
-                listValue={searchQuery.indication}
-              />
-            )}
+          indicationData.sectionContent.length > 0 ? (
+            <CheckboxTest
+              section={indicationData}
+              identifier="indication"
+              onCheckboxClick={onConstructSearchQuery}
+              listValue={searchQuery.indication}
+            />
+          ) : (
+            <div
+              style={{
+                height: 300,
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <Loader />
+            </div>
+          )}
         </Collapsible>
       </div>
     );
@@ -64,14 +77,25 @@ const CollapseCard = ({
       <div className="spon-container">
         <Collapsible trigger="Sponsors">
           {sponsorData.sectionContent &&
-            sponsorData.sectionContent.length > 0 && (
-              <CheckboxTest
-                section={sponsorData}
-                identifier="sponsor"
-                onCheckboxClick={onConstructSearchQuery}
-                listValue={searchQuery.sponsor}
-              />
-            )}
+          sponsorData.sectionContent.length > 0 ? (
+            <CheckboxTest
+              section={sponsorData}
+              identifier="sponsor"
+              onCheckboxClick={onConstructSearchQuery}
+              listValue={searchQuery.sponsor}
+            />
+          ) : (
+            <div
+              style={{
+                height: 300,
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <Loader />
+            </div>
+          )}
         </Collapsible>
       </div>
     );
