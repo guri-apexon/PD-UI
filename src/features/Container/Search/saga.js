@@ -389,26 +389,28 @@ function* getState() {
 }
 
 function* saveSearch(action) {
-  let userId = yield getState();
-  const url = `${BASE_URL_8000}/api/saved_search/`;
-  const config = {
-    url,
-    method: "POST",
-    data: {
-      keyword: action.payload,
-      userId: userId,
-      timeCreated: new Date().toISOString(),
-      lastUpdated: new Date().toISOString(),
-    },
-  };
-  try {
-    yield call(httpCall, config);
-    // if (searchData.success) {
-    //   yield put(getSavedSearches(searchData.data));
-    // }
-    // yield put(setError(searchData.err.statusText));
-  } catch (err) {
-    console.log(err);
+  if(action.payload) {
+    let userId = yield getState();
+    const url = `${BASE_URL_8000}/api/saved_search/`;
+    const config = {
+      url,
+      method: "POST",
+      data: {
+        keyword: action.payload,
+        userId: userId,
+        timeCreated: new Date().toISOString(),
+        lastUpdated: new Date().toISOString(),
+      },
+    };
+    try {
+      yield call(httpCall, config);
+      // if (searchData.success) {
+      //   yield put(getSavedSearches(searchData.data));
+      // }
+      // yield put(setError(searchData.err.statusText));
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 

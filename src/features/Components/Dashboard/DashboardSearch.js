@@ -46,7 +46,7 @@ function DashboardSearch({ recent, saved }) {
                 }
               >
                 {recent.map((item, index) => {
-                  if (index <= 5 || viewMore) {
+                  if (item.keyword && (index <= 5 || viewMore)) {
                     return (
                       <li key={item.sponsorId} className="search-list-li">
                         <Link to={`/search?key=${item.keyword}`}>
@@ -92,13 +92,17 @@ function DashboardSearch({ recent, saved }) {
             <h3>Saved Searches</h3>
             {saved && saved.length > 0 ? (
               <ul className="search-list-ul">
-                {saved.map((item) => (
-                  <li key={item.sponsorId} className="search-list-li">
-                    <Link to={`/search?key=${item.keyword}`}>
-                      {item.keyword}
-                    </Link>
-                  </li>
-                ))}
+                {saved.map((item) => {
+                  if (item.keyword) {
+                    return (
+                      <li key={item.sponsorId} className="search-list-li">
+                        <Link to={`/search?key=${item.keyword}`}>
+                          {item.keyword}
+                        </Link>
+                      </li>
+                    );
+                  }
+                })}
               </ul>
             ) : (
               "No Search data available"

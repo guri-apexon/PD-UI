@@ -126,7 +126,7 @@ const iconStatus = (status) => {
     case "ERROR":
       return {
         comp: <StatusExclamation htmlColor={"red"} />,
-        title: "Extraction Error",
+        title: "Digitization Error",
       };
     case "COMPARISON_STARTED":
     case "COMPARISON_COMPLETED":
@@ -137,7 +137,7 @@ const iconStatus = (status) => {
     default:
       return {
         comp: <StatusExclamation htmlColor={"red"} />,
-        title: "Extraction Error",
+        title: "Digitization Error",
       };
   }
 };
