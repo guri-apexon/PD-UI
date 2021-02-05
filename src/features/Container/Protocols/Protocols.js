@@ -6,7 +6,7 @@ import "./protocols.scss";
 
 //------------------- Redux -----------------
 import { useSelector, useDispatch } from "react-redux";
-import { protocolSummary, getSummary } from "./protocolSlice.js";
+import { protocolSummary, getProcotoclToc } from "./protocolSlice.js";
 
 //------------------- Components ------------
 import ProtocolOverview from "./ProtocolOverview";
@@ -37,6 +37,19 @@ const Protocols = (props) => {
     prot1: "",
     prot2: "",
   });
+
+
+  useEffect(() => {
+    const viewData = {
+      iqvdataSoa: [],
+      iqvdataSummary: {},
+      iqvdataToc: {
+        data:[]
+      },
+      loader: true,
+    };
+    getProcotoclToc(viewData)
+  }, [])
 
   useEffect(() => {
     let params = props.location.search;

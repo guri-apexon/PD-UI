@@ -18,7 +18,7 @@ build:
   tags:
     - 06d-ui-runner
   script:
-    - $env:CI=$false; npm build
+    - $env:CI=$false; npm run build
   artifacts:
     paths:
       - ./build
