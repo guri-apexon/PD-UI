@@ -39,21 +39,8 @@ const SearchListingSection = ({
       data
     );
   };
-  const handleTitle = async (title) => {
-    try {
-      const resp = await axios.get(
-        `${BASE_URL_8000}/api/latest_approved_document/?protocol=${title}`
-      );
-      const data = resp.data;
-      // debugger
-      if (data) {
-        history.push(`/protocols?protocolId=${data.id}`);
-      } else {
-        alert("There is no Approved Final version for this protocol.");
-      }
-    } catch (e) {
-      alert("Something went wrong.");
-    }
+  const handleTitle = async (data) => {
+    history.push(`/protocols?protocolId=${data.AiDocId}`);
   };
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
@@ -70,7 +57,7 @@ const SearchListingSection = ({
               <span className="blueText">
                 Protocol:{" "}
                 <strong
-                  onClick={() => handleTitle(data.protocolNumber)}
+                  onClick={() => handleTitle(data)}
                   data-testid="name-value"
                 >
                   {data.protocolNumber}
