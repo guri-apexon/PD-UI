@@ -16,6 +16,7 @@ build:
   tags:
     - ca2ugitla006p-D3
   script:
+    - npm install -g yarn
     - yarn config set cache-folder .yarn
     - yarn install --pure-lockfile --cache-folder .yarn
     - rm -rf build
