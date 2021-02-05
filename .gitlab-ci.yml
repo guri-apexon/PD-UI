@@ -6,8 +6,7 @@ stages:
   - deploy
 
 before_script:
-  - npm install --global yarn
-  - yarn install
+  - npm install
 
 cache:
   paths:
@@ -19,10 +18,9 @@ build:
   tags:
     - 06d-ui-runner
   script:
-    - yarn --version
+    - npm --version
     - rm -rf build
-    - CI=false yarn install
-    - CI=false yarn build
+    - CI=false npm build
   artifacts:
     paths:
       - ./build
