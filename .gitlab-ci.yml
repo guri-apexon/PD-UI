@@ -1,4 +1,4 @@
-image: node:12.18.4
+#image: node:12.18.4
 
 stages:
   - build
@@ -11,9 +11,10 @@ cache:
     - .yarn
 
 build:
+  image: node:12.18.4
   stage: build
   tags:
-    - 06d-ui-runner
+    - ca2ugitla006p-D3
   script:
     - yarn config set cache-folder .yarn
     - yarn install --pure-lockfile --cache-folder .yarn
