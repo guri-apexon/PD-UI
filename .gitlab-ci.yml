@@ -14,7 +14,7 @@ build:
   image: node:12.18.4
   stage: build
   tags:
-    - ca2ugitla006p-D3
+    - 06d-ui-runner
   script:
     - npm install -g yarn
     - yarn config set cache-folder .yarn
