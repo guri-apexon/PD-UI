@@ -18,7 +18,7 @@ build:
   tags:
     - 06d-ui-runner
   script:
-    - CI=false npm build
+    - $env:CI=$false; npm build
   artifacts:
     paths:
       - ./build
@@ -28,7 +28,7 @@ build:
 .test:
   stage: test
   script:
-    - CI=true yarn test
+    - $env:CI=$true; yarn test
   only:
     - master
 
