@@ -1,0 +1,44 @@
+image: node:12.18.4
+
+stages:
+  - build
+  - test
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+    - .yarn
+
+build:
+  stage: build
+  tags:
+    - 06d-ui-runner
+  script:
+    - yarn config set cache-folder .yarn
+    - yarn install --pure-lockfile --cache-folder .yarn
+    - rm -rf build
+    - CI=false yarn install
+    - CI=false yarn build
+  artifacts:
+    paths:
+      - ./build
+  only:
+    - master
+
+.test:
+  stage: test
+  script:
+    - CI=true yarn test
+  only:
+    - master
+
+
+
+.deploy_dev:
+  stage: deploy
+  script:
+    - pm2 restart server.js
+
+
+  

@@ -39,7 +39,7 @@ if (process.env.REACT_APP_ENV === "dev") {
 } else if (process.env.REACT_APP_ENV === "uat") {
   backendHost = "ca2spdml03c";
   backendPostHost="ca2spdml05c";
-  UIhost='ca2spdml06c';
+  UIhost='pd-uat';
   baseUrlSSO = "https://ca2uampd01c.quintiles.net:8080/v1";
 } else if (process.env.REACT_APP_ENV === "prod") {
   backendHost = "ca2spdml01q";
