@@ -10,7 +10,7 @@ cache:
     - node_modules/
 
 build:
-  image: node:12.20.1
+  #image: node:12.20.1
   stage: build
   tags:
     - 06d-ui-runner
