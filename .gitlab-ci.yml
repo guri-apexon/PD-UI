@@ -16,7 +16,7 @@ build:
     - 06d-ui-runner
   script:
     - npm install
-    - $env:CI=$false; npm run build
+    - npm run build
   artifacts:
     paths:
       - ./build
@@ -26,11 +26,9 @@ build:
 .test:
   stage: test
   script:
-    - $env:CI=$true; yarn test
+    - npm test
   only:
     - master
-
-
 
 .deploy_dev:
   stage: deploy
