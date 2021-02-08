@@ -97,7 +97,7 @@ export function getSoaSections(soa) {
     let TableIndex = item.TableIndex;
     let TableName = item.TableName;
     list.push({
-      section: `${TableIndex}. ${TableName}`,
+      section: `${TableName}`,
       id: `SOA-${TableIndex}`,
     });
     // sectionList.push(CPT_section);

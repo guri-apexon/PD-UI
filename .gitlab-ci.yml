@@ -5,9 +5,6 @@ stages:
   - test
   - deploy
 
-before_script:
-  - npm install
-
 cache:
   paths:
     - node_modules/
@@ -18,6 +15,7 @@ build:
   tags:
     - 06d-ui-runner
   script:
+    - npm install
     - $env:CI=$false; npm run build
   artifacts:
     paths:
