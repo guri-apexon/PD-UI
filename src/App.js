@@ -11,6 +11,8 @@ import UserIcon from "apollo-react-icons/User";
 import Typography from "apollo-react/components/Typography";
 import IdleTimer from "react-idle-timer";
 import Cookies from "universal-cookie";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { setUserDetails, loggedUser } from "./store/userDetails";
 // import Loader from "./features/Components/Loader/Loader";
 import SessionExpired from "./SessionOut";
@@ -306,6 +308,7 @@ function App(props) {
         )}
         {isTimedOut ? <SessionExpired /> : route}
       </div>
+      <ToastContainer />
     </>
   );
 }

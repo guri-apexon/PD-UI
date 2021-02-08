@@ -9,8 +9,10 @@ import Folder from "apollo-react-icons/Folder";
 import Switch from "apollo-react/components/Switch";
 import Card from "apollo-react/components/Card";
 import Divider from "apollo-react/components/Divider";
-import { useSelector, useDispatch } from "react-redux";
+import {userId} from '../../../store/userDetails'
+import { useSelector } from "react-redux";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import BASE_URL, { BASE_URL_8000 } from "../../../utils/api";
 //const [value, setValue] = React.useState(true);
@@ -28,11 +30,8 @@ const SearchListingSection = ({
   onViewAssociateProtocolClick,
   protocolSelected,
 }) => {
-  const dispatch = useDispatch();
+  const userId1= useSelector(userId);
   const onExpandClick = (data) => {
-    // if(!data.expanded){
-    //   dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
-    // }
     setExpanded(
       data.AiDocId,
       { id: data.AiDocId, expanded: !data.expanded },
@@ -40,7 +39,14 @@ const SearchListingSection = ({
     );
   };
   const handleTitle = async (data) => {
+    const resp = await axios.get(
+      `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(1)}&protocol=${data.protocolNumber}`
+      );
+    if(resp && resp.data){
     history.push(`/protocols?protocolId=${data.AiDocId}`);
+    } else{
+      toast.info("Access Provisioned to Primary Users only");
+    } 
   };
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>

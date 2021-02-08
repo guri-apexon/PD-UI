@@ -13,12 +13,20 @@ const CheckBoxCell = ({ row }) => {
   // if(row.protocolSelected.includes(row.id)){
   // debugger
   return (
-    <div>
-      <CheckBox
-        onChange={() => row.handleSelectRow(row.id, row.protocol)}
-        checked={row.protocolSelected.includes(row.id)}
-      />
-    </div>
+    <>
+      {row.isPrimaryUser ? (
+        <div>
+          <CheckBox
+            onChange={() => row.handleSelectRow(row.id, row.protocol)}
+            checked={row.protocolSelected.includes(row.id)}
+          />
+        </div>
+      ) : (
+        <div>
+          <CheckBox disabled />
+        </div>
+      )}
+    </>
   );
   // }else{
   //   // debugger
@@ -32,10 +40,14 @@ const CheckBoxCell = ({ row }) => {
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
   return (
     <>
-      {row[key] ? (
-        <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>
+      {row.isPrimaryUser ? (
+        row[key] ? (
+          <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>
+        ) : (
+          "-"
+        )
       ) : (
-        "-"
+        <span>{row[key]}</span>
       )}
     </>
   );
@@ -49,16 +61,26 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     );
 
     url = `${UI_URL}/${resp.data}`;
-    let encodeUrl=encodeURI(url);
+    let encodeUrl = encodeURI(url);
     let myWindow = window.open("about:blank", "_blank");
-    myWindow.document.write(`<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`);
-  
+    myWindow.document.write(
+      `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
+    );
+
     // window.open(
     //   url,
     //   "_blank" // <- This is what makes it open in a new window.
     // );
   };
-  return <a onClick={() => handleDownload(row)}>{row[key]}</a>;
+  return (
+    <>
+      {row.isPrimaryUser ? (
+        <a onClick={() => handleDownload(row)}>{row[key]}</a>
+      ) : (
+        <span>{row[key]}</span>
+      )}
+    </>
+  );
 };
 const dateFormat = ({ row, column: { accessor: key } }) => {
   return <>{covertMMDDYYYY(row.uploadDate)}</>;

@@ -6,10 +6,13 @@ import Button from "apollo-react/components/Button";
 import Grid from "apollo-react/components/Grid";
 import Link from "apollo-react/components/Link";
 import Loader from "../../Components/Loader/Loader";
+import {userId} from '../../../store/userDetails';
+import { useSelector } from "react-redux";
 import _ from "lodash";
 import { covertMMDDYYYY, formatESDate } from "../../../utils/utilFunction";
 import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import { toast } from "react-toastify";
 
 const SearchCard = ({
   data,
@@ -19,6 +22,7 @@ const SearchCard = ({
   protocolSelected,
 }) => {
   const [dataRow, setDataRow] = useState([]);
+  const userId1= useSelector(userId);
   // let rowContent = "";
   // if (data && !data.rowsLoading) {
   //   rowContent = _.cloneDeep(data.rows);
@@ -51,15 +55,23 @@ const SearchCard = ({
     //   );
     // } else {
     // let url = `http://ca2spdml06d:3000/${resp.data}`;
-    const resp = await axios.get(
-      `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`
-    );
 
-    let url = `${UI_URL}/${resp.data}`;
-    let encodeUrl=encodeURI(url);
-    let myWindow = window.open("about:blank", "_blank");
-    myWindow.document.write(`<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`);
+    const userresp = await axios.get(
+      `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(1)}&protocol=${data.protocolNumber}`
+      );
+    if(userresp && userresp.data){
+      const resp = await axios.get(
+        `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`
+      );
   
+      let url = `${UI_URL}/${resp.data}`;
+      let encodeUrl=encodeURI(url);
+      let myWindow = window.open("about:blank", "_blank");
+      myWindow.document.write(`<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`);  
+    } else{
+      toast.info("Access Provisioned to Primary Users only");
+    } 
+    
     // window.open(
     //   url,
     //   "_blank" // <- This is what makes it open in a new window.
@@ -201,7 +213,7 @@ const SearchCard = ({
           </div>
         ) : (
           <div className="width100 search-inner-table">
-            {dataRow.length > 0 && (
+            {dataRow.length > 0 ? (
               <Table
                 columns={columns}
                 rows={dataRow.map((row) => ({
@@ -212,7 +224,13 @@ const SearchCard = ({
                 }))}
                 hidePagination
               />
-            )}
+            ):
+            <Table
+                columns={columns}
+                rows={[]}
+                hidePagination
+              />
+            }
           </div>
         )}
       </div>
