@@ -1,4 +1,4 @@
-#image: node:12.18.4
+image: node:12.20.1
 
 stages:
   - build
