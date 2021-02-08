@@ -302,7 +302,7 @@ export const DateRangeCard = ({
 
   const handleChange1 = (e) => {
     setValue1(parseInt(e.target.value));
-    let select = parseInt(e.target.value,10);
+    let select = parseInt(e.target.value, 10);
     onCheckboxClick([select], identifier);
     // debugger;
   };
@@ -426,7 +426,7 @@ export class CheckboxTest extends React.Component {
     });
   }
   static getDerivedStateFromProps(props, state) {
-    // debugger
+    // debugger;
     // console.log("Props", props);
     if (
       state.list.length === 0 &&
@@ -437,11 +437,24 @@ export class CheckboxTest extends React.Component {
         list: props.section.sectionContent,
       };
     }
-    // if (props.listValue.length !== state.value.length) {
+    if (state.value.length === 0) {
+      return {
+        value: props.listValue,
+      };
+    }
+    if (props.clearAll) {
+      return {
+        value: [],
+      };
+    }
+    // if (props.clearAll) {
+    //   props.onCheckboxClick([], props.identifier);
     //   return {
-    //     value: props.listValue,
+    //     value: [],
     //   };
     // }
+
+    return null;
   }
   // componentDidMount() {
   //   axios
@@ -456,20 +469,97 @@ export class CheckboxTest extends React.Component {
   handleChange = (e) => {
     // setValue(e.target.value);
     // let checkedValue = parseInt(e.target.value, 10);
-    this.setState(
-      {
-        value: this.state.value.concat([parseInt(e.target.value, 10)]),
-      },
-      () => {
-        this.props.onCheckboxClick(this.state.value, this.props.identifier);
+    // const { value } = this.state;
+    // debugger;
+    const selectedValue = parseInt(e.target.value, 10);
+    if (this.props.listValue.length > 0) {
+      const index = this.props.listValue.indexOf(selectedValue);
+
+      if (index > -1) {
+        if (this.props.listValue.length === 1) {
+          this.setState(
+            {
+              value: [],
+            },
+            () => {
+              // console.log(this.state.value);
+              this.props.onCheckboxClick([], this.props.identifier);
+            }
+          );
+        } else {
+          this.setState(
+            {
+              value: this.props.listValue.filter(
+                (item) => item !== selectedValue
+              ),
+            },
+            () => {
+              // console.log(this.state.value);
+              this.props.onCheckboxClick(
+                this.state.value,
+                this.props.identifier
+              );
+            }
+          );
+        }
+      } else {
+        this.setState(
+          {
+            value: this.props.listValue.concat([selectedValue]),
+          },
+          () => {
+            this.props.onCheckboxClick(this.state.value, this.props.identifier);
+          }
+        );
       }
-    );
+    } else {
+      this.setState(
+        {
+          value: this.state.value.concat([selectedValue]),
+        },
+        () => {
+          this.props.onCheckboxClick(this.state.value, this.props.identifier);
+        }
+      );
+    }
+
+    // debugger;
+    // if (index > -1) {
+    //   this.setState(
+    //     {
+    //       value: this.state.value.filter((item) => item !== selectedValue),
+    //     },
+    //     () => {
+    //       console.log(this.state.value);
+    //       this.props.onCheckboxClick(this.state.value, this.props.identifier);
+    //     }
+    //   );
+    // } else {
+    //   this.setState(
+    //     {
+    //       value: this.state.value.concat([selectedValue]),
+    //     },
+    //     () => {
+    //       this.props.onCheckboxClick(this.state.value, this.props.identifier);
+    //     }
+    //   );
+    // }
 
     // debugger;
   };
   // componentDidUpdate(prevProps, prevState){
   //   console.log("Prev",prevProps, prevState)
   //   console.log("current",this.props, this.state)
+  // }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.clearAll !== this.props.clearAll) {
+  //     // debugger;
+  //     if (this.props.clearAll) {
+  //       this.setState({
+  //         value: [],
+  //       });
+  //     }
+  //   }
   // }
 
   renderRow({ index, key, style, parent }) {
@@ -500,7 +590,7 @@ export class CheckboxTest extends React.Component {
   }
 
   render() {
-    // console.log("Loaded", this.state.value);
+    console.log("Loaded", this.props.listValue);
     return this.state.list.length > 0 ? (
       <div className="virtualization-set">
         <div className="list">

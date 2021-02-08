@@ -190,6 +190,7 @@ class SearchPanel extends React.Component {
       sortValueProp,
       dateRangeValue,
       protocolSelected,
+      clearAll
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
 
@@ -233,34 +234,40 @@ class SearchPanel extends React.Component {
                 name="TOC"
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
+                clearAll={clearAll}
               />
               <FilterSection
                 name="sponsor"
                 sponsorData={sponsorData}
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
+                clearAll={clearAll}
               />
               <FilterSection
                 name="indication"
                 indicationData={indicationData}
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
+                clearAll={clearAll}
               />
               <FilterSection
                 name="phase"
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
+                clearAll={clearAll}
               />
               <FilterSection
                 name="document"
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
+                clearAll={clearAll}
               />
               <FilterSection
                 name="date"
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
                 dateRangeValue={dateRangeValue}
+                clearAll={clearAll}
               />
               {/* {filterList.length > 0 &&
                 filterList.map((section, index) => (

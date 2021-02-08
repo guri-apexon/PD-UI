@@ -54,6 +54,7 @@ const Search = (props) => {
     dateType: [1],
     dateSection: [1],
   });
+  const [clearAll, setClearAll] = useState(false);
   const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [selection, setSelection] = useState(true);
@@ -337,6 +338,7 @@ const Search = (props) => {
     // debugger
   };
   const hancleClearAll = (inputPresent, input) => {
+    setClearAll(true);
     if (inputPresent) {
       setSearchQuery({
         sponsor: [],
@@ -350,6 +352,7 @@ const Search = (props) => {
       // let ele = document.getElementById("range-date-id");
       // clearInputFields("range-date-id");
       setDateRangeValue([null, null]);
+      // setClearAll(false)
       dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
       props.history.push(`/search?key=${input}`);
     } else {
@@ -365,6 +368,7 @@ const Search = (props) => {
       setDateRangeValue([null, null]);
       // clearInputFields("range-date-id");
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
+      // setClearAll(false)
       props.history.push(`/search`);
     }
   };
@@ -483,6 +487,7 @@ const Search = (props) => {
   };
   const deleteSearchInput = () => {
     setSearchInput("");
+    setClearAll(true);
     setIdPresent(false);
     setSearchQuery({
       sponsor: [],
@@ -526,6 +531,7 @@ const Search = (props) => {
   };
 
   const onSearchQuery = (list, identifier) => {
+    setClearAll(false);
     let tempQuery = _.cloneDeep(searchQuery);
     tempQuery[identifier] = list;
     setSearchQuery(tempQuery);
@@ -629,6 +635,7 @@ const Search = (props) => {
             sortValueProp={sortValueProp}
             dateRangeValue={dateRangeValue}
             protocolSelected={protocolSelected}
+            clearAll={clearAll}
           />
         </div>
       </div>

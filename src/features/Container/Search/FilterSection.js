@@ -30,6 +30,7 @@ const CollapseCard = ({
   onConstructSearchQuery,
   searchQuery,
   dateRangeValue,
+  clearAll
 }) => {
   if (name === "TOC") {
     return (
@@ -56,6 +57,7 @@ const CollapseCard = ({
               identifier="indication"
               onCheckboxClick={onConstructSearchQuery}
               listValue={searchQuery.indication}
+              clearAll={clearAll}
             />
           ) : (
             <div
@@ -83,6 +85,7 @@ const CollapseCard = ({
               identifier="sponsor"
               onCheckboxClick={onConstructSearchQuery}
               listValue={searchQuery.sponsor}
+              clearAll={clearAll}
             />
           ) : (
             <div
@@ -146,6 +149,7 @@ const CollapseCard = ({
               searchQuery.dateSection[0]
             }
             dateRangeValue={dateRangeValue}
+            clearAll={clearAll}
           />
         </Collapsible>
       </span>
