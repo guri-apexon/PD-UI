@@ -262,6 +262,12 @@ export const DateRangeCard = ({
     }
     if (dateRange[0] === null && dateRange[1] === null) {
       setErrorMessage("");
+      setDateRange([null, null]);
+      const range = {
+        from: null,
+        to: null,
+      };
+      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
     }
   }, [dateRange]);
 

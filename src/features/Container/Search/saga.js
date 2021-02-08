@@ -211,11 +211,11 @@ function* updateSearchAssociated(action) {
     });
     // Checking Primary or Secondary User based on Protocol Number
     let userId = yield getState();
-    let userStatusURL =`${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId}&protocol=${action.payload.data.protocolNumber}`
+    let userStatusURL = `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId}&protocol=${action.payload.data.protocolNumber}`;
     const userStatus = yield call(httpCall, {
       url: userStatusURL,
-      method: "GET"
-    })
+      method: "GET",
+    });
     // const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.protocolNumber}`;
     //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
     // const config = {
@@ -228,13 +228,13 @@ function* updateSearchAssociated(action) {
       arr.sort((a, b) => {
         return moment(b.uploadDate) - moment(a.uploadDate);
       });
-      let primaryUser= userStatus && userStatus.data?true:false
-      let resultarr= arr.map(item=>{
-        return{
+      let primaryUser = userStatus && userStatus.data ? true : false;
+      let resultarr = arr.map((item) => {
+        return {
           ...item,
-          isPrimaryUser:primaryUser
-        }
-      })
+          isPrimaryUser: primaryUser,
+        };
+      });
       let result = setAsssociateProtocols(
         // action.payload.data.protocolNumber,
         action.payload.data.id,
@@ -270,8 +270,6 @@ function* updateSearchAssociated(action) {
   }
   // yield put(getSearchResult(action.payload));
 }
-
-
 
 function* getRecentData(action) {
   if (action.payload === "0") {
@@ -331,18 +329,26 @@ function* getRecentData(action) {
 }
 
 function* getDataByRange(action) {
-  let fromDate = new Date(action.payload.from);
-  let toDate = new Date(action.payload.to);
-  let momFromDate = moment(fromDate);
-  let momToDate = moment(toDate);
-  const from = momFromDate.format("YYYYMMDDHHMMSS");
-  const to = momToDate.format("YYYYMMDDHHMMSS");
+  if (action.payload.from && action.payload.from) {
+    let fromDate = new Date(action.payload.from);
+    let toDate = new Date(action.payload.to);
+    let momFromDate = moment(fromDate);
+    let momToDate = moment(toDate);
+    const from = momFromDate.format("YYYYMMDDHHMMSS");
+    const to = momToDate.format("YYYYMMDDHHMMSS");
 
-  const rangeDate = {
-    from,
-    to,
-  };
-  yield put(getRangeDate(rangeDate));
+    const rangeDate = {
+      from,
+      to,
+    };
+    yield put(getRangeDate(rangeDate));
+  } else {
+    const rangeDate = {
+      from: null,
+      to: null,
+    };
+    yield put(getRangeDate(rangeDate));
+  }
 
   // try {
   //   // const url = `http://localhost:4000/filter/?from=${from}&to=${to}`;
@@ -388,7 +394,7 @@ function* getState() {
 }
 
 function* saveSearch(action) {
-  if(action.payload) {
+  if (action.payload) {
     let userId = yield getState();
     const url = `${BASE_URL_8000}/api/saved_search/`;
     const config = {
@@ -431,7 +437,7 @@ export default function* protocolSaga() {
 
 export function createJSONFormat(data) {
   let arr = [];
-console.log('ddddd', data)
+  console.log("ddddd", data);
   for (let i = 0; i < data.length; i++) {
     // let sampleRows = data.filter(
     //   (item) => item._source.ProtocolNo === data[i]._source.ProtocolNo
@@ -497,7 +503,7 @@ export function setAsssociateProtocols(id, data, associateDocs, isPrimaryUser) {
         temp.rows = associateDocs;
         temp.rowsLoading = false;
         temp.viewAssociate = true;
-        temp.isPrimaryUser  = isPrimaryUser
+        temp.isPrimaryUser = isPrimaryUser;
         return temp;
       }
       return item;
