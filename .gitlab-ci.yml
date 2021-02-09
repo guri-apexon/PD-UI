@@ -23,10 +23,12 @@ build:
   only:
     - master
 
-.test:
+test:
   stage: test
+  tags:
+    - ui-runner
   script:
-    - npm test
+    - $env:CI=$false; npm test
   only:
     - master
 
