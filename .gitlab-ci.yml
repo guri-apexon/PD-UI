@@ -9,7 +9,7 @@ cache:
   paths:
     - node_modules/
 
-.build:
+build:
   #image: node:12.20.1
   stage: build
   tags:
