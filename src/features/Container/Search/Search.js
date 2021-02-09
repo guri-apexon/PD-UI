@@ -351,9 +351,15 @@ const Search = (props) => {
       });
       // let ele = document.getElementById("range-date-id");
       // clearInputFields("range-date-id");
-      setDateRangeValue([null, null]);
+      // setDateRangeValue([null, null]);
       // setClearAll(false)
+      const range = {
+        from: null,
+        to: null,
+      };
+      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
+      // setDateRangeValue([null, null]);
       props.history.push(`/search?key=${input}`);
     } else {
       setSearchQuery({
@@ -365,8 +371,9 @@ const Search = (props) => {
         dateType: [1],
         dateSection: [1],
       });
-      setDateRangeValue([null, null]);
+      // setDateRangeValue([null, null]);
       // clearInputFields("range-date-id");
+      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
       // setClearAll(false)
       props.history.push(`/search`);
@@ -498,6 +505,7 @@ const Search = (props) => {
       dateType: [1],
       dateSection: [1],
     });
+    dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     props.history.push(`/search`);
   };
