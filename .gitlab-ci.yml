@@ -16,7 +16,7 @@ build:
     - 06d-ui-runner
   script:
     - npm install
-    - npm run build
+    - $env:CI=$false; npm run build
   artifacts:
     paths:
       - ./build
