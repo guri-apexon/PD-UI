@@ -1,5 +1,9 @@
 image: node:12.20.1
 
+default:
+  before_script:
+    - git config --system core.longpaths true
+
 stages:
   - build
   - test
