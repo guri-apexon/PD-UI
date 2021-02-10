@@ -31,6 +31,8 @@ import {
 } from "./Data/constants";
 import axios from "axios";
 
+import moment from "moment";
+import { formatESDate } from "../../../utils/utilFunction";
 let protArr = [];
 const Search = (props) => {
   const resultList = useSelector(searchResult);
@@ -318,24 +320,58 @@ const Search = (props) => {
 
     setIdPresent(true);
     setSearchInput(inp);
+    // debugger;
     if (rangeDate.from && rangeDate.to) {
-      const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`;
-      // setSearchInput(dateQuery);
-      elasticSearchQuery += `${dateQuery}`;
-      resultQuery += dateQuery;
+      let date11 = formatESDate(rangeDate.from);
+      let date22 = formatESDate(rangeDate.to);
+      let d1 = moment(date11)
+      let d2 = moment(date22)
+      let date1 = d1.format("MM-DD-YYYY");
+      let date2 = d2.format("MM-DD-YYYY");
+      // debugger
+      if (d1._isValid && d2._isValid) {
+        if (isFutureDate(date1) || isFutureDate(date2)) {
+          alert("Future date is allowed.");
+        } else {
+          const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`;
+          // setSearchInput(dateQuery);
+          elasticSearchQuery += `${dateQuery}`;
+          resultQuery += dateQuery;
+          setElasticSearchQuesry(elasticSearchQuery);
+          dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+          props.history.replace({
+            pathname: "/search",
+            search: `?${resultQuery}`,
+          });
+        }
+      } else {
+        alert("Date is not valid");
+      }
     } else if (recentDate.from) {
       // setSearchInput(parsed[`key`]);
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`;
       // setSearchInput(dateQuery);
       elasticSearchQuery += `${dateQuery}`;
       resultQuery += dateQuery;
+      setElasticSearchQuesry(elasticSearchQuery);
+      dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+      props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
       // elasticSearchQuery+=` ${parsed[`key`]}`;
+    } else {
+      setElasticSearchQuesry(elasticSearchQuery);
+      dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+      props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
     }
     // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
-    setElasticSearchQuesry(elasticSearchQuery);
-    dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
-    props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
+    // setElasticSearchQuesry(elasticSearchQuery);
+    // dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+    // props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
     // debugger
+  };
+  const isFutureDate = (value) => {
+    let d_now = new Date();
+    let d_inp = new Date(value);
+    return d_now.getTime() <= d_inp.getTime();
   };
   const hancleClearAll = (inputPresent, input) => {
     setClearAll(true);

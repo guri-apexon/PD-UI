@@ -211,7 +211,7 @@ export const DateRangeCard = ({
 }) => {
   const [value, setValue] = React.useState("0");
   const [value1, setValue1] = React.useState([]);
-  const [errorMessage, setErrorMessage] = useState("");
+ 
   // const [dateRange, setDateRange] = React.useState({
   //   fromDate: "",
   //   toDate: "",
@@ -240,11 +240,21 @@ export const DateRangeCard = ({
       let date2 = dateRange[1].format("MM-DD-YYYY");
       if (isFutureDate(date1) || isFutureDate(date2)) {
         // alert("Future date is restricted");
-        setErrorMessage(
-          "You are trying to select Future Date. Please use date range picker to select correct date range"
-        );
+        
+        // setErrorMessage(
+        //   "Future date will not be considered"
+        // );
+        // setErrorStatus(true)
+        const range = {
+          from: date1,
+          to: date2,
+        };
+        // if (dateRange.fromDate && dateRange.toDate) {
+        dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+        // setDateRange([null, null]);
       } else {
-        setErrorMessage("");
+        // setErrorMessage("");
+        // setErrorStatus(false)
         const range = {
           from: date1,
           to: date2,
@@ -369,11 +379,11 @@ export const DateRangeCard = ({
                 />
               ))}
             </RadioGroup>
-            {errorMessage ? (
+            {/* {errorMessage ? (
               <div className="errorMessage-dateRange">
                 <p>{errorMessage}</p>
               </div>
-            ) : null}
+            ) : null} */}
             <div
               style={{ marginTop: 20 }}
               data-testid="range-date-wrapper"
@@ -561,7 +571,7 @@ export class CheckboxTest extends React.Component {
     return this.state.list.length > 0 ? (
       <div className="virtualization-set">
         <div className="list">
-          {this.state.list.map((value,index) => (
+          {this.state.list.map((value, index) => (
             <div className="new-checkbox-style">
               <input
                 type="checkbox"
