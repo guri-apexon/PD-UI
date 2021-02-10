@@ -18,7 +18,7 @@ import Table, {
 import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
 import axios from "axios";
-import {BASE_URL_8000, UI_URL} from '../../../utils/api';
+import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 
 import "./ProtocolTable.scss";
 
@@ -226,15 +226,19 @@ const ExpandableComponent = ({ row }) => {
         >
           {"Indication"}
         </Typography>
-        {row.indication.length > 40 ? (
-          <Tooltip variant="light" title={row.indication} placement="top">
+        {row.indication && row.indication.length > 40 ? (
+          <Tooltip
+            variant="light"
+            title={row.indication && row.indication}
+            placement="top"
+          >
             <Typography className="fw-8 ex-text" variant="body2">
-              {row.indication}
+              {row.indication ? row.indication : "-"}
             </Typography>
           </Tooltip>
         ) : (
           <Typography className="fw-8" variant="body2">
-            {row.indication}
+            {row.indication ? row.indication : "-"}
           </Typography>
         )}
       </div>
@@ -264,9 +268,28 @@ const ExpandableComponent = ({ row }) => {
         </Typography>
         <Typography className="fw-8" variant="body2">
           {row.fileName ? (
-            <a href="javascript:void(0)" onClick={() => handleDownload(row)}>
-              {row.fileName}
-            </a>
+            row.fileName.length > 40 ? (
+              <Tooltip
+                variant="light"
+                title={row.fileName && row.fileName}
+                placement="top"
+              >
+                <Typography className="fw-8 ex-text" variant="body2">
+                  <div className="long-text2">
+                    <a
+                      href="javascript:void(0)"
+                      onClick={() => handleDownload(row)}
+                    >
+                      {row.fileName}
+                    </a>
+                  </div>
+                </Typography>
+              </Tooltip>
+            ) : (
+              <a href="javascript:void(0)" onClick={() => handleDownload(row)}>
+                {row.fileName}
+              </a>
+            )
           ) : (
             // eslint-disable-line
             "-"
@@ -285,9 +308,11 @@ const handleDownload = async (row) => {
   );
 
   url = `${UI_URL}/${resp.data}`;
-  let encodeUrl=encodeURI(url)
+  let encodeUrl = encodeURI(url);
   let myWindow = window.open("about:blank", "_blank");
-  myWindow.document.write(`<embed src=${encodeUrl}  frameborder="0" width="100%" height="100%">`);
+  myWindow.document.write(
+    `<embed src=${encodeUrl}  frameborder="0" width="100%" height="100%">`
+  );
 
   // window.open(
   //   url,
@@ -320,7 +345,7 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
   // useEffect(() => {
   //   dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
   // }, [selectedRows]);
-  // console.log('initial-rows', initialRows, pageRows);
+  // console.log("initial-rows", initialRows, pageRows);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
       <Table

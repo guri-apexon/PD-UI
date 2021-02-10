@@ -3,7 +3,7 @@
     width: 50%;
     float: left;
   }
-
+  
   a:-webkit-any-link {
     text-decoration: none;
   }
@@ -26,11 +26,14 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .long-text {
+  .long-text, .long-text2 {
     max-width: 100px;
- overflow: hidden;
- text-overflow: ellipsis;
- white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .long-text2{
+    max-width: 400px;
   }
   // [class^="MuiTableRow-root-"] {
   //   background-color: #f6f7fb;
@@ -54,12 +57,29 @@
 
   .expanded-comp {
     display: flex;
-    padding: 8px 0px 8px 10%;
+    padding: 18px 0px 8px 10%;
     background-color: white;
     // margin-left: 3%;
-    
     text-transform: capitalize;
   }
+  // Empty Spaces when rows are less in table-- starts
+  [class^="MuiTableBody-root-"] {
+    [class^="MuiTableRow-root-"] {
+      height: 16px !important;
+      [class^="MuiTableCell-root-"]:nth-child(-n + 2) {
+        padding-top: 4px;
+      }
+      [class^="MuiTableCell-root-"]:nth-child(n + 2) {
+        padding-top: 8px;
+      }
+    }
+  }
+  [class^="EmptyRow-root-"]{
+    td{
+      height: 200px !important;
+    }
+  }
+  // Empty Spaces when rows are less in table-- ends
 }
 
 .dashboard-search-parent {
