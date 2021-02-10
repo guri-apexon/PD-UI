@@ -260,15 +260,15 @@ export const DateRangeCard = ({
       //   alert("Please select valid date range.");
       // }
     }
-    if (dateRange[0] === null && dateRange[1] === null) {
-      setErrorMessage("");
-      setDateRange([null, null]);
-      const range = {
-        from: null,
-        to: null,
-      };
-      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
-    }
+    // if (dateRange[0] === null && dateRange[1] === null) {
+    // setErrorMessage("");
+    // setDateRange([null, null]);
+    // const range = {
+    //   from: null,
+    //   to: null,
+    // };
+    // dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+    // }
   }, [dateRange]);
 
   const handleChange = (e) => {
@@ -433,7 +433,7 @@ export class CheckboxTest extends React.Component {
   }
   static getDerivedStateFromProps(props, state) {
     // debugger;
-    // console.log("Props", props);
+    console.log("Props::::::::", props.listValue);
     if (
       state.list.length === 0 &&
       props.section &&
@@ -443,16 +443,16 @@ export class CheckboxTest extends React.Component {
         list: props.section.sectionContent,
       };
     }
-    if (state.value.length === 0) {
-      return {
-        value: props.listValue,
-      };
-    }
-    if (props.clearAll) {
-      return {
-        value: [],
-      };
-    }
+    // if (state.value.length === 0) {
+    //   return {
+    //     value: props.listValue,
+    //   };
+    // }
+    // if (props.clearAll) {
+    //   return {
+    //     value: [],
+    //   };
+    // }
     // if (props.clearAll) {
     //   props.onCheckboxClick([], props.identifier);
     //   return {
@@ -477,56 +477,17 @@ export class CheckboxTest extends React.Component {
     // let checkedValue = parseInt(e.target.value, 10);
     // const { value } = this.state;
     // debugger;
+    let selectedArr = this.props.listValue;
     const selectedValue = parseInt(e.target.value, 10);
-    if (this.props.listValue.length > 0) {
-      const index = this.props.listValue.indexOf(selectedValue);
 
-      if (index > -1) {
-        if (this.props.listValue.length === 1) {
-          this.setState(
-            {
-              value: [],
-            },
-            () => {
-              // console.log(this.state.value);
-              this.props.onCheckboxClick([], this.props.identifier);
-            }
-          );
-        } else {
-          this.setState(
-            {
-              value: this.props.listValue.filter(
-                (item) => item !== selectedValue
-              ),
-            },
-            () => {
-              // console.log(this.state.value);
-              this.props.onCheckboxClick(
-                this.state.value,
-                this.props.identifier
-              );
-            }
-          );
-        }
-      } else {
-        this.setState(
-          {
-            value: this.props.listValue.concat([selectedValue]),
-          },
-          () => {
-            this.props.onCheckboxClick(this.state.value, this.props.identifier);
-          }
-        );
-      }
+    const index = selectedArr.indexOf(selectedValue);
+
+    if (index > -1) {
+      selectedArr.splice(index, 1);
+      this.props.onCheckboxClick(selectedArr, this.props.identifier);
     } else {
-      this.setState(
-        {
-          value: this.state.value.concat([selectedValue]),
-        },
-        () => {
-          this.props.onCheckboxClick(this.state.value, this.props.identifier);
-        }
-      );
+      selectedArr.push(selectedValue);
+      this.props.onCheckboxClick(selectedArr, this.props.identifier);
     }
 
     // debugger;
@@ -600,7 +561,23 @@ export class CheckboxTest extends React.Component {
     return this.state.list.length > 0 ? (
       <div className="virtualization-set">
         <div className="list">
-          <AutoSizer>
+          {this.state.list.map((value,index) => (
+            <div className="new-checkbox-style">
+              <input
+                type="checkbox"
+                id={this.state.list[index].id}
+                value={this.state.list[index].id}
+                onChange={this.handleChange}
+                checked={this.props.listValue.includes(
+                  this.state.list[index].id
+                )}
+              />
+              <label htmlFor={`#${this.state.list[index].id}`}>
+                {this.state.list[index].title}
+              </label>
+            </div>
+          ))}
+          {/* <AutoSizer>
             {({ width, height }) => {
               return (
                 <List
@@ -615,7 +592,7 @@ export class CheckboxTest extends React.Component {
                 />
               );
             }}
-          </AutoSizer>
+          </AutoSizer> */}
         </div>
       </div>
     ) : (

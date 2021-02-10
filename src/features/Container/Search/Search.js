@@ -359,7 +359,7 @@ const Search = (props) => {
       };
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
-      // setDateRangeValue([null, null]);
+      setDateRangeValue([null, null]);
       props.history.push(`/search?key=${input}`);
     } else {
       setSearchQuery({
@@ -375,6 +375,7 @@ const Search = (props) => {
       // clearInputFields("range-date-id");
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
+      setDateRangeValue([null, null]);
       // setClearAll(false)
       props.history.push(`/search`);
     }
