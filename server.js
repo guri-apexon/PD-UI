@@ -10,7 +10,7 @@ const session = require("express-session");
 const jwt_decode = require("jwt-decode");
 const dotenv = require("dotenv");
 dotenv.config();
-const PORT =  process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
@@ -621,64 +621,49 @@ app.get("/elastic", (req, res) => {
       }
     }
 
-    // if (docStatus.length === 2 || docStatus.length === 0) {
-
-    //   const rangeQuery2 = {
-    //     range: {
-    //       uploadDate: {
-    //         gte: from,
-    //         lt: to,
-    //       },
-    //     },
-    //   };
-
-    //   filterArr.push(rangeQuery2);
-    // } else if (docStatus[0] === "final") {
-    //   const rangeQuery1 = {
-    //     range: {
-    //       approval_date: {
-    //         gte: from,
-    //         lt: to,
-    //       },
-    //     },
-    //   };
-
-    //   filterArr.push(rangeQuery1);
-    // } else if (docStatus[0] === "draft") {
-    //   const rangeQuery1 = {
-    //     range: {
-    //       uploadDate: {
-    //         gte: from,
-    //         lt: to,
-    //       },
-    //     },
-    //   };
-
-    //   filterArr.push(rangeQuery1);
-    // }
-
-    mustQuery = [
-      {
-        multi_match: {
-          query: key,
-          // type: "phrase",
-          fields: tocArray,
+    if (key.includes("*") || key.includes("?")) {
+      mustQuery = [
+        {
+          query_string: {
+            query: key,
+            // type: "phrase",
+            fields: tocArray,
+          },
         },
-      },
-    ];
-    // const dateField =
-    //   docStatus[0] === "active" ? "approval_date" : "uploadDate";
-    // mustQuery = constructMustArray(dateField, key, from, to, tocArray);
+      ];
+    } else {
+      mustQuery = [
+        {
+          multi_match: {
+            query: key,
+            // type: "phrase",
+            fields: tocArray,
+          },
+        },
+      ];
+    }
   } else {
-    mustQuery = [
-      {
-        query_string: {
-          query: key,
-          // type: "phrase",
-          fields: tocArray,
+    if (key.includes("*") || key.includes("?")) {
+      mustQuery = [
+        {
+          query_string: {
+            query: key,
+            // type: "phrase",
+            fields: tocArray,
+          },
         },
-      },
-    ];
+      ];
+    } else {
+      mustQuery = [
+        {
+          multi_match: {
+            query: key,
+            // type: "phrase",
+            fields: tocArray,
+          },
+        },
+      ];
+    }
   }
   let final = {
     bool: {
