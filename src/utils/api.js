@@ -29,8 +29,8 @@ console.log("------ENVIRONMENT-------", process.env.REACT_APP_ENV);
 if (process.env.REACT_APP_ENV === "dev") {
   backendHost = "ca2spdml01q";
   backendPostHost="ca2spdml01q";
-  UIhost='https://dev-protocoldigitalization-ui.work.iqvia.com/';
-  baseUrlSSO = "https://dev-protocoldigitalization.work.iqvia.com/v1";
+  UIhost='pd-dev';
+  baseUrlSSO = "https://ca2uampd01d.quintiles.net:8080/v1";
 } else if (process.env.REACT_APP_ENV === "svt") {
   backendHost = "ca2spdml13q";
   backendPostHost="ca2spdml15q";
