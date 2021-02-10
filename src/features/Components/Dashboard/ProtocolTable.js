@@ -348,34 +348,67 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
   // console.log("initial-rows", initialRows, pageRows);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
-      <Table
-        title="My Protocols"
-        columns={columns}
-        rows={
-          initialRows &&
-          initialRows.map((row) => {
-            let temp = _.cloneDeep(row);
-            let details = {
-              key: row.id,
-              expanded: expandedRows.indexOf(row.id) >= 0,
-              selected: selectedRows.indexOf(row.id) >= 0,
-              handleToggleRow,
-              // handleChange,
-            };
-            return _.merge(temp, details);
-          })
-        }
-        initialSortedColumn="uploadDate"
-        initialSortOrder="desc"
-        rowsPerPageOptions={pageRows}
-        rowProps={{ hover: false }}
-        tablePaginationProps={{
-          labelDisplayedRows: ({ from, to, count }) =>
-            `Showing ${from}-${to} of ${count}`,
-          truncate: true,
-        }}
-        ExpandableComponent={ExpandableComponent}
-      />
+      {initialRows && initialRows.length > 0 ? (
+        <Table
+          title="My Protocols"
+          columns={columns}
+          rows={
+            initialRows &&
+            initialRows.map((row) => {
+              let temp = _.cloneDeep(row);
+              let details = {
+                key: row.id,
+                expanded: expandedRows.indexOf(row.id) >= 0,
+                selected: selectedRows.indexOf(row.id) >= 0,
+                handleToggleRow,
+                // handleChange,
+              };
+              return _.merge(temp, details);
+            })
+          }
+          initialSortedColumn="uploadDate"
+          initialSortOrder="desc"
+          rowsPerPageOptions={pageRows}
+          rowProps={{ hover: false }}
+          tablePaginationProps={{
+            labelDisplayedRows: ({ from, to, count }) =>
+              `Showing ${from}-${to} of ${count}`,
+            truncate: true,
+          }}
+          ExpandableComponent={ExpandableComponent}
+        />
+      ) : (
+        <div className="empty-protocol-table">
+          <Table
+            title="My Protocols"
+            columns={columns}
+            rows={
+              initialRows &&
+              initialRows.map((row) => {
+                let temp = _.cloneDeep(row);
+                let details = {
+                  key: row.id,
+                  expanded: expandedRows.indexOf(row.id) >= 0,
+                  selected: selectedRows.indexOf(row.id) >= 0,
+                  handleToggleRow,
+                  // handleChange,
+                };
+                return _.merge(temp, details);
+              })
+            }
+            initialSortedColumn="uploadDate"
+            initialSortOrder="desc"
+            rowsPerPageOptions={pageRows}
+            rowProps={{ hover: false }}
+            tablePaginationProps={{
+              labelDisplayedRows: ({ from, to, count }) =>
+                `Showing ${from}-${to} of ${count}`,
+              truncate: true,
+            }}
+            ExpandableComponent={ExpandableComponent}
+          />
+        </div>
+      )}
     </div>
   );
 };

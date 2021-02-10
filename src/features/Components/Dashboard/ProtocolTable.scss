@@ -74,11 +74,22 @@
       }
     }
   }
-  [class^="EmptyRow-root-"]{
-    td{
-      height: 200px !important;
+  .empty-protocol-table{
+    [class^="MuiTable-root-"]{
+      tbody{
+        tr{
+          td{
+            height: 200px !important;
+          }
+        }
+      }
     }
   }
+  // [class^="EmptyRow-root-"]{
+  //   td{
+  //     height: 200px !important;
+  //   }
+  // }
   // Empty Spaces when rows are less in table-- ends
 }
 
