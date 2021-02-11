@@ -9,7 +9,8 @@ export const covertMMDDYYYY = (date) => {
   return someday.format("DD-MMM-YYYY");
 };
 
-export const formatESDate = (date)=>{
+export const formatESDate = (date) => {
+  if (date.length > 7) {
     var str = date;
     var year = str.substring(0, 4);
     var month = str.substring(4, 6);
@@ -20,5 +21,7 @@ export const formatESDate = (date)=>{
     var date = new Date(year, month - 1, day, hour, minute, second);
     // console.log(moment(date).format("DD-MMM-YYYY"));
     return moment(date).format("DD-MMM-YYYY");
-  
-}
+  } else {
+    return "-";
+  }
+};
