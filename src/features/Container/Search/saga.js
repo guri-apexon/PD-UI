@@ -329,13 +329,40 @@ function* getRecentData(action) {
 }
 
 function* getDataByRange(action) {
-  if (action.payload.from && action.payload.from) {
+  // debugger;
+  if (action.payload.from && action.payload.to) {
     let fromDate = new Date(action.payload.from);
     let toDate = new Date(action.payload.to);
     let momFromDate = moment(fromDate);
     let momToDate = moment(toDate);
-    const from = momFromDate.format("YYYYMMDDHHMMSS");
-    const to = momToDate.format("YYYYMMDDHHMMSS");
+    const from = momFromDate.format("YYYYMMDD");
+    const to = momToDate.format("YYYYMMDD");
+
+    const rangeDate = {
+      from,
+      to,
+    };
+    yield put(getRangeDate(rangeDate));
+  } else if (action.payload.from) {
+    let fromDate = new Date(action.payload.from);
+    let toDate = new Date();
+    let momFromDate = moment(fromDate);
+    let momToDate = moment(toDate);
+    const from = momFromDate.format("YYYYMMDD");
+    const to = momToDate.format("YYYYMMDD");
+
+    const rangeDate = {
+      from,
+      to,
+    };
+    yield put(getRangeDate(rangeDate));
+  } else if (action.payload.to) {
+    let fromDate = new Date(null);
+    let toDate = new Date(action.payload.to);
+    let momFromDate = moment(fromDate);
+    let momToDate = moment(toDate);
+    const from = momFromDate.format("YYYYMMDD");
+    const to = momToDate.format("YYYYMMDD");
 
     const rangeDate = {
       from,
@@ -349,7 +376,6 @@ function* getDataByRange(action) {
     };
     yield put(getRangeDate(rangeDate));
   }
-
   // try {
   //   // const url = `http://localhost:4000/filter/?from=${from}&to=${to}`;
   //   const url = `/filter/?from=${from}&to=${to}`;

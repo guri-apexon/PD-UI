@@ -211,7 +211,7 @@ export const DateRangeCard = ({
 }) => {
   const [value, setValue] = React.useState("0");
   const [value1, setValue1] = React.useState([]);
- 
+
   // const [dateRange, setDateRange] = React.useState({
   //   fromDate: "",
   //   toDate: "",
@@ -235,49 +235,34 @@ export const DateRangeCard = ({
 
   useEffect(() => {
     // debugger;
-    if (dateRange.length === 2 && dateRange[0] && dateRange[1]) {
-      let date1 = dateRange[0].format("MM-DD-YYYY");
-      let date2 = dateRange[1].format("MM-DD-YYYY");
-      if (isFutureDate(date1) || isFutureDate(date2)) {
-        // alert("Future date is restricted");
-        
-        // setErrorMessage(
-        //   "Future date will not be considered"
-        // );
-        // setErrorStatus(true)
-        const range = {
-          from: date1,
-          to: date2,
-        };
-        // if (dateRange.fromDate && dateRange.toDate) {
-        dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
-        // setDateRange([null, null]);
-      } else {
-        // setErrorMessage("");
-        // setErrorStatus(false)
-        const range = {
-          from: date1,
-          to: date2,
-        };
-        // if (dateRange.fromDate && dateRange.toDate) {
-        dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
-      }
-      // if (date1.isValid() && date2.isValid()) {
-      // setDateRange(e.target.value);
-
-      // }
-      // } else {
-      //   alert("Please select valid date range.");
-      // }
+    let date1, date2;
+    if (dateRange[0] && dateRange[0] !== undefined) {
+      date1 = dateRange[0].format("MM-DD-YYYY");
     }
-    // if (dateRange[0] === null && dateRange[1] === null) {
-    // setErrorMessage("");
-    // setDateRange([null, null]);
-    // const range = {
-    //   from: null,
-    //   to: null,
-    // };
-    // dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+    if (dateRange[1] && dateRange[1] !== undefined) {
+      date2 = dateRange[1].format("MM-DD-YYYY");
+    }
+    const range = {
+      from: date1 || null,
+      to: date2 || null,
+    };
+    dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+    // if (dateRange.length === 2 && dateRange[0]  dateRange[1]) {
+    //   let date1 = dateRange[0].format("MM-DD-YYYY");
+    //   let date2 = dateRange[1].format("MM-DD-YYYY");
+    //   if (isFutureDate(date1) || isFutureDate(date2)) {
+    //     const range = {
+    //       from: date1,
+    //       to: date2,
+    //     };
+    //     dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+    //   } else {
+    //     const range = {
+    //       from: date1,
+    //       to: date2,
+    //     };
+    //     dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+    //   }
     // }
   }, [dateRange]);
 

@@ -320,6 +320,7 @@ const Search = (props) => {
 
     setIdPresent(true);
     setSearchInput(inp);
+    // debugger
     if (rangeDate.from && rangeDate.to) {
       let date11 = formatESDate(rangeDate.from);
       let date22 = formatESDate(rangeDate.to);
@@ -373,7 +374,7 @@ const Search = (props) => {
     return d_now.getTime() <= d_inp.getTime();
   };
   const hancleClearAll = (inputPresent, input) => {
-    setClearAll(true);
+    // setClearAll(true);
     if (inputPresent) {
       setSearchQuery({
         sponsor: [],
@@ -408,6 +409,10 @@ const Search = (props) => {
       });
       // setDateRangeValue([null, null]);
       // clearInputFields("range-date-id");
+      const range = {
+        from: null,
+        to: null,
+      };
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
       setDateRangeValue([null, null]);

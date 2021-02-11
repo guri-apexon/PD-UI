@@ -422,8 +422,8 @@ app.get("/elastic", (req, res) => {
       const rangeQuery4 = {
         range: {
           uploadDate: {
-            gte: from,
-            lt: to,
+            gte: from + "000000",
+            lte: to + "235959",
           },
         },
       };
@@ -434,7 +434,7 @@ app.get("/elastic", (req, res) => {
         range: {
           approval_date: {
             gte: from,
-            lt: to,
+            lte: to,
           },
         },
       };
@@ -444,8 +444,8 @@ app.get("/elastic", (req, res) => {
       const rangeQuery4 = {
         range: {
           uploadDate: {
-            gte: from,
-            lt: to,
+            gte: from + "000000",
+            lte: to + "235959",
           },
         },
       };
@@ -457,8 +457,8 @@ app.get("/elastic", (req, res) => {
           const rangeQuery1 = {
             range: {
               uploadDate: {
-                gte: from,
-                lt: to,
+                gte: from + "000000",
+                lte: to + "235959",
               },
             },
           };
@@ -469,8 +469,8 @@ app.get("/elastic", (req, res) => {
           const rangeQuery2 = {
             range: {
               uploadDate: {
-                gte: from,
-                lt: to,
+                gte: from + "000000",
+                lte: to + "235959",
               },
             },
           };
@@ -487,7 +487,7 @@ app.get("/elastic", (req, res) => {
               range: {
                 approval_date: {
                   gte: from,
-                  lt: to,
+                  lte: to,
                 },
               },
             };
@@ -498,8 +498,8 @@ app.get("/elastic", (req, res) => {
             const rangeQuery4 = {
               range: {
                 uploadDate: {
-                  gte: from,
-                  lt: to,
+                  gte: from + "000000",
+                  lte: to + "235959",
                 },
               },
             };
@@ -517,7 +517,7 @@ app.get("/elastic", (req, res) => {
               range: {
                 approval_date: {
                   gte: from,
-                  lt: to,
+                  lte: to,
                 },
               },
             };
@@ -547,8 +547,8 @@ app.get("/elastic", (req, res) => {
             const rangeQuery4 = {
               range: {
                 uploadDate: {
-                  gte: from,
-                  lt: to,
+                  gte: from + "000000",
+                  lte: to + "235959",
                 },
               },
             };
@@ -562,8 +562,8 @@ app.get("/elastic", (req, res) => {
       const rangeQuery4 = {
         range: {
           uploadDate: {
-            gte: from,
-            lt: to,
+            gte: from + "000000",
+            lte: to + "235959",
           },
         },
       };
@@ -576,7 +576,7 @@ app.get("/elastic", (req, res) => {
           range: {
             approval_date: {
               gte: from,
-              lt: to,
+              lte: to,
             },
           },
         };
@@ -586,8 +586,8 @@ app.get("/elastic", (req, res) => {
         const rangeQuery4 = {
           range: {
             uploadDate: {
-              gte: from,
-              lt: to,
+              gte: from + "000000",
+              lte: to + "235959",
             },
           },
         };
@@ -601,7 +601,7 @@ app.get("/elastic", (req, res) => {
           range: {
             approval_date: {
               gte: from,
-              lt: to,
+              lte: to,
             },
           },
         };
@@ -611,8 +611,8 @@ app.get("/elastic", (req, res) => {
         const rangeQuery4 = {
           range: {
             uploadDate: {
-              gte: from,
-              lt: to,
+              gte: from + "000000",
+              lte: to + "235959",
             },
           },
         };
