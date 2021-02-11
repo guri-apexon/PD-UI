@@ -385,6 +385,7 @@ export const DateRangeCard = ({
                 startLabel="Start of Range"
                 endLabel="End of Range"
                 maxDate={new Date()}
+                error={false}
                 // helperText="Please select event date"
               />
               {/* <DateRangePicker

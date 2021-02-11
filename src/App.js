@@ -60,51 +60,51 @@ function App(props) {
   //---------Revert-----------
   useEffect(() => {
     // comment in local to run
-    axios
-      .get("/session")
-      .then((res) => {
-        if (Object.keys(res.data).length) {
-          dispatch(setUserDetails(res.data));
-        }
-      })
-      .catch((err) => console.log(err));
+    // axios
+    //   .get("/session")
+    //   .then((res) => {
+    //     if (Object.keys(res.data).length) {
+    //       dispatch(setUserDetails(res.data));
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
     // Uncomment below code in local to run
-    // const details = {
-    //   userId: "u1072231",
-    //   username: "Sohan",
-    //   email: "test@iqvia.com",
-    // };
-    // dispatch(setUserDetails(details));
-    const curDate = new Date();
-    const expDate = cookiesServer.get("exp") * 1000;
-    if (!expDate) {
-      window.location.href = `${baseUrlSSO}/logout_session`;
-      console.log('App Session')
-    } else {
-      if (curDate >= expDate) {
-        console.log("exp", true);
-      }
-      let dif = curDate - expDate;
-      dif = Math.abs(dif / 1000 / 60);
-      dif = Math.round(dif * 10) / 10;
+    const details = {
+      userId: "s1019814",
+      username: "Test User",
+      email: "test@iqvia.com",
+    };
+    dispatch(setUserDetails(details));
+    // const curDate = new Date();
+    // const expDate = cookiesServer.get("exp") * 1000;
+    // if (!expDate) {
+    //   window.location.href = `${baseUrlSSO}/logout_session`;
+    //   console.log('App Session')
+    // } else {
+    //   if (curDate >= expDate) {
+    //     console.log("exp", true);
+    //   }
+    //   let dif = curDate - expDate;
+    //   dif = Math.abs(dif / 1000 / 60);
+    //   dif = Math.round(dif * 10) / 10;
   
-      console.log("mins - ", dif);
-      setInterval(function () {
-        axios
-          .get("/refresh", {
-            params: {
-              callbackUrl: window.location.href,
-            },
-          })
-          .then((res) => {
-            console.log(res);
-            if (res.data) {
-              window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-            }
-          })
-          .catch((err) => console.log(err));
-      }, 60 * dif * 1000); // 60 * 1000 milsec
-    }
+    //   console.log("mins - ", dif);
+    //   setInterval(function () {
+    //     axios
+    //       .get("/refresh", {
+    //         params: {
+    //           callbackUrl: window.location.href,
+    //         },
+    //       })
+    //       .then((res) => {
+    //         console.log(res);
+    //         if (res.data) {
+    //           window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+    //         }
+    //       })
+    //       .catch((err) => console.log(err));
+    //   }, 60 * dif * 1000); // 60 * 1000 milsec
+    // }
   }, []);
 
   useEffect(() => {
