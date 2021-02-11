@@ -142,6 +142,7 @@ class SearchPanel extends React.Component {
   };
   onExpandAllClick = () => {
     const { accordionObj, defaultExpand } = this.state;
+    const { updateSearchResult } = this.props;
     let tempDefault = true;
     if (!defaultExpand) {
       tempDefault = true;
@@ -158,6 +159,13 @@ class SearchPanel extends React.Component {
       defaultExpand: !this.state.defaultExpand,
       accordionObj: arr,
     });
+    const obj = {
+      search: true,
+      loader: false,
+      success: true,
+      data: arr,
+    };
+    updateSearchResult(obj);
   };
 
   onConstructSearchQuery = (list, identifier) => {
@@ -407,6 +415,8 @@ const mapDispatchToProps = (dispatch) => {
         type: "UPDATE_SEARCH_ASSOCIATED_PROTOCOLS",
         payload: { data, obj },
       }),
+    updateSearchResult: (obj)=>
+    dispatch({ type: "UPDATE_SEARCH_RESULT", payload: obj })
   };
 };
 export default connect(null, mapDispatchToProps)(SearchPanel);

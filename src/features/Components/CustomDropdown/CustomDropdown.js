@@ -60,13 +60,13 @@ const CustomDropdown = ({
   const onTextFieldChange = (id, e, type) => {
     let customListTemp = _.cloneDeep(source);
     let str = getModifyString(e.target.value);
-    let subStr = new RegExp(`^${str}$`, "i");
+    let subStr = new RegExp(`^${str}$`);
     const filteredList = customListTemp.filter((item) => {
       let reg = new RegExp(`^${str}[a-z0-9 ]*$`, "i");
       return item.label.toLowerCase().match(reg);
     });
     let substring= customListTemp.filter((item) => {
-      return item.label.toLowerCase().match(subStr);
+      return item.label.match(subStr);
     });
     if(substring.length === 0){
       SetSubStringExist(true)
