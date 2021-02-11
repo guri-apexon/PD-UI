@@ -320,7 +320,6 @@ const Search = (props) => {
 
     setIdPresent(true);
     setSearchInput(inp);
-    // debugger;
     if (rangeDate.from && rangeDate.to) {
       let date11 = formatESDate(rangeDate.from);
       let date22 = formatESDate(rangeDate.to);
@@ -331,7 +330,7 @@ const Search = (props) => {
       // debugger
       if (d1._isValid && d2._isValid) {
         if (isFutureDate(date1) || isFutureDate(date2)) {
-          alert("Future date is allowed.");
+          alert("Future date is not allowed. Please use date range picker to select valid date.");
         } else {
           const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`;
           // setSearchInput(dateQuery);
@@ -345,7 +344,7 @@ const Search = (props) => {
           });
         }
       } else {
-        alert("Date is not valid");
+        alert("Date is not valid. Please use date range picker to select valid date.");
       }
     } else if (recentDate.from) {
       // setSearchInput(parsed[`key`]);
