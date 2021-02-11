@@ -211,7 +211,7 @@ export const DateRangeCard = ({
 }) => {
   const [value, setValue] = React.useState("0");
   const [value1, setValue1] = React.useState([]);
-
+  const [disabled, setDisabled] = React.useState(false);
   // const [dateRange, setDateRange] = React.useState({
   //   fromDate: "",
   //   toDate: "",
@@ -271,6 +271,18 @@ export const DateRangeCard = ({
     const obj = section.sectionContent.find(
       (item) => item.value === e.target.value
     );
+    const selectedRange = parseInt(obj.id, 10);
+    if (selectedRange === 1) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+      setDateRange([null, null]);
+      const range = {
+        from: null,
+        to: null,
+      };
+      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+    }
     // debugger
     onCheckboxClick([obj.id], identifier2);
     // debugger;
@@ -386,6 +398,7 @@ export const DateRangeCard = ({
                 endLabel="End of Range"
                 maxDate={new Date()}
                 error={false}
+                disabled={disabled}
                 // helperText="Please select event date"
               />
               {/* <DateRangePicker
@@ -558,7 +571,7 @@ export class CheckboxTest extends React.Component {
       <div className="virtualization-set">
         <div className="list">
           {this.state.list.map((value, index) => (
-            <div className="new-checkbox-style">
+            <div className="new-checkbox-style" key={value.id}>
               <input
                 type="checkbox"
                 id={this.state.list[index].id}

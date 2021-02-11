@@ -393,6 +393,7 @@ const Search = (props) => {
         from: null,
         to: null,
       };
+      setElasticSearchQuesry(`key=${input}`)
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
       setDateRangeValue([null, null]);
@@ -413,6 +414,7 @@ const Search = (props) => {
         from: null,
         to: null,
       };
+      setElasticSearchQuesry("")
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
       setDateRangeValue([null, null]);
