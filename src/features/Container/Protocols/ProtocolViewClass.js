@@ -85,11 +85,19 @@ class ProtocolViewClass extends React.Component {
   getTable(item, unq, noHeader = false) {
     // for (const property in object) {
     // }
+    let footNote = [];
+    for (const [key, value] of Object.entries(item)) {
+      const note = key.split('_')[0];
+      if (note === 'FootnoteText') {
+        footNote.push(value)
+      }
+    }
+
     return (
       <div
         id={`${unq}-${item.TableIndex}`}
         key={`${unq}-${item.TableIndex}`}
-        style={{ overflowX: "auto", marginTop: "10px" }}
+        style={{ overflowX: "auto", marginTop: "10px", marginBottom: "20px" }}
         ref={this.refs[`${unq}-${item.TableIndex}`]}
       >
         {!noHeader ? (
@@ -100,6 +108,9 @@ class ProtocolViewClass extends React.Component {
           </h2>
         ) : null}
         <div dangerouslySetInnerHTML={{ __html: item.Table }} />
+        {footNote.map(notes => {
+          return notes && <p style={{ fontSize: "12px" }}>{notes}</p>
+        })}
       </div>
     );
   }
