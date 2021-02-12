@@ -626,7 +626,7 @@ app.get("/elastic", (req, res) => {
         {
           query_string: {
             query: key,
-            // type: "phrase",
+            type: "phrase",
             fields: tocArray,
           },
         },
@@ -636,7 +636,7 @@ app.get("/elastic", (req, res) => {
         {
           multi_match: {
             query: key,
-            // type: "phrase",
+            type: "phrase",
             fields: tocArray,
           },
         },
@@ -648,7 +648,7 @@ app.get("/elastic", (req, res) => {
         {
           query_string: {
             query: key,
-            // type: "phrase",
+            type: "phrase",
             fields: tocArray,
           },
         },
@@ -658,7 +658,7 @@ app.get("/elastic", (req, res) => {
         {
           multi_match: {
             query: key,
-            // type: "phrase",
+            type: "phrase",
             fields: tocArray,
           },
         },
