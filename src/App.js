@@ -11,8 +11,8 @@ import { dashboard } from "./features/Container/Dashboard/dashboardSlice";
 import Typography from "apollo-react/components/Typography";
 import IdleTimer from "react-idle-timer";
 import Cookies from "universal-cookie";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { setUserDetails, loggedUser } from "./store/userDetails";
 // import Loader from "./features/Components/Loader/Loader";
 import SessionExpired from "./SessionOut";
@@ -59,8 +59,6 @@ function App(props) {
 
   //---------Revert-----------
   useEffect(() => {
-
-    
     // comment in local to run
     axios
       .get("/session")
@@ -81,7 +79,7 @@ function App(props) {
     const expDate = cookiesServer.get("exp") * 1000;
     if (!expDate) {
       window.location.href = `${baseUrlSSO}/logout_session`;
-      console.log('App Session')
+      console.log("App Session");
     } else {
       if (curDate >= expDate) {
         console.log("exp", true);
@@ -89,25 +87,27 @@ function App(props) {
       let dif = curDate - expDate;
       dif = Math.abs(dif / 1000 / 60);
       dif = Math.round(dif * 10) / 10;
-  
+
       console.log("mins - ", dif);
-      const confTime = (dif -2);
+      const confTime = dif - 2;
       console.log("diffrence - ", confTime);
 
       setInterval(function () {
-        axios
-          .get("/refresh", {
-            params: {
-              callbackUrl: window.location.href,
-            },
-          })
-          .then((res) => {
-            console.log(res);
-            if (res.data) {
-              window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-            }
-          })
-          .catch((err) => console.log(err));
+        if (!isTimedOut) {
+          axios
+            .get("/refresh", {
+              params: {
+                callbackUrl: window.location.href,
+              },
+            })
+            .then((res) => {
+              console.log(res);
+              if (res.data) {
+                window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+              }
+            })
+            .catch((err) => console.log(err));
+        }
       }, 60 * dif * 1000); // 60 * 1000 milsec
     }
   }, []);
@@ -200,15 +200,18 @@ function App(props) {
 
   const handleOnIdle = (event) => {
     console.log("user is idle", event);
-    setIsTimeOut(true);
     var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
       eraseCookie(cookies[i].split("=")[0]);
     }
-    localStorage.setItem("isLoggedIn", false);
+    // localStorage.setItem("isLoggedIn", false);
     // window.location.href = "/dashboard";
     //---------Revert-----------
-    if (window.confirm(`Due to inactivity you will be logged out, Press OK to refresh now.`)) {
+    if (
+      window.confirm(
+        `Due to inactivity you will be logged out, Press OK to refresh now.`
+      )
+    ) {
       axios
         .get("/refresh", {
           params: {
@@ -223,8 +226,9 @@ function App(props) {
         })
         .catch((err) => console.log(err));
     } else {
-    console.log('cancel')
-    window.location.href = `${baseUrlSSO}/logout_session`;
+      console.log("cancel");
+      setIsTimeOut(true);
+      window.location.href = `${baseUrlSSO}/logout_session`;
     }
     // console.log("p", props);
     // console.log("last active", idleTimer.getLastActiveTime());
@@ -247,7 +251,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000 * 40 * 60}
+          timeout={1000 * 1 * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}
