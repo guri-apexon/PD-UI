@@ -56,7 +56,6 @@ function App(props) {
   const dashboardData = useSelector(dashboard);
   const [pathname, setPathname] = useState("/dashboard");
   const [isTimedOut, setIsTimeOut] = useState(false);
-  const [exipryTime, setExpiryTime] = useState(0);
 
   //---------Revert-----------
   useEffect(() => {
@@ -90,7 +89,6 @@ function App(props) {
       dif = Math.round(dif * 10) / 10;
 
       console.log("mins - ", dif);
-      setExpiryTime(dif);
       setInterval(function () {
         if (!isTimedOut) {
           axios
@@ -252,7 +250,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000 * exipryTime * 60}
+          timeout={1000 * 40 * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}
