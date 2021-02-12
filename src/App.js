@@ -209,10 +209,10 @@ function App(props) {
     //---------Revert-----------
     if (
       window.confirm(
-        `Due to inactivity you will be logged out, Press OK to refresh now.`
+        `Due to inactivity you will be logged out, Press OK to continue now.`
       )
     ) {
-      window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+      // window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
     } else {
       console.log("cancel");
       setIsTimeOut(true);
@@ -239,7 +239,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000 * 1 * 60}
+          timeout={1000 * 40 * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}
