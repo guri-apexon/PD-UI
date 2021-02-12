@@ -309,6 +309,9 @@ export const DateRangeCard = ({
       // debugger
       if (obj.value) {
         setValue(obj.value);
+        if (obj.value === "0") {
+          setDisabled(false);
+        }
       }
     }
   }, [listValue2]);
