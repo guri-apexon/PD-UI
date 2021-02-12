@@ -56,6 +56,7 @@ function App(props) {
   const dashboardData = useSelector(dashboard);
   const [pathname, setPathname] = useState("/dashboard");
   const [isTimedOut, setIsTimeOut] = useState(false);
+  const [exipryTime, setExpiryTime] = useState(0);
 
   //---------Revert-----------
   useEffect(() => {
@@ -89,9 +90,7 @@ function App(props) {
       dif = Math.round(dif * 10) / 10;
 
       console.log("mins - ", dif);
-      const confTime = dif - 2;
-      console.log("diffrence - ", confTime);
-
+      setExpiryTime(dif);
       setInterval(function () {
         if (!isTimedOut) {
           axios
@@ -209,9 +208,22 @@ function App(props) {
     //---------Revert-----------
     if (
       window.confirm(
-        `Due to inactivity you will be logged out, Press OK to continue now.`
+        "Applicaiton is about to timeout due to inactivity. Press OK to continue."
       )
     ) {
+      axios
+      .get("/refresh", {
+        params: {
+          callbackUrl: window.location.href,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        if (res.data) {
+          window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+        }
+      })
+      .catch((err) => console.log(err));
       // window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
     } else {
       console.log("cancel");
@@ -239,7 +251,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000 * 40 * 60}
+          timeout={1000 * exipryTime * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}
