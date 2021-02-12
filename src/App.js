@@ -110,11 +110,7 @@ function App(props) {
   
       console.log("mins - ", dif);
       console.log("diffrence - ", (dif - 2));
-      if (confirm("Press a button!")) {
-        txt = "You pressed OK!";
-      } else {
-        txt = "You pressed Cancel!";
-      }
+  
       setInterval(function () {
         axios
           .get("/refresh", {
