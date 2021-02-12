@@ -60,25 +60,7 @@ function App(props) {
   //---------Revert-----------
   useEffect(() => {
 
-    setTimeout(function () {
-      if (confirm(`You session will be refreshed in ${dif} mins. Press OK to refresh now.`)) {
-        axios
-          .get("/refresh", {
-            params: {
-              callbackUrl: window.location.href,
-            },
-          })
-          .then((res) => {
-            console.log(res);
-            if (res.data) {
-              window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-            }
-          })
-          .catch((err) => console.log(err));
-      } else {
-        console.log('cancel')
-      }
-    }, 60 * 2 * 1000); // 60 * 1000 milsec
+    
     // comment in local to run
     axios
       .get("/session")
@@ -109,8 +91,9 @@ function App(props) {
       dif = Math.round(dif * 10) / 10;
   
       console.log("mins - ", dif);
-      console.log("diffrence - ", (dif - 2));
-  
+      const confTime = (dif -2);
+      console.log("diffrence - ", confTime);
+
       setInterval(function () {
         axios
           .get("/refresh", {
@@ -225,7 +208,24 @@ function App(props) {
     localStorage.setItem("isLoggedIn", false);
     // window.location.href = "/dashboard";
     //---------Revert-----------
+    if (window.confirm(`Due to inactivity you will be logged out, Press OK to refresh now.`)) {
+      axios
+        .get("/refresh", {
+          params: {
+            callbackUrl: window.location.href,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data) {
+            window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+    console.log('cancel')
     window.location.href = `${baseUrlSSO}/logout_session`;
+    }
     // console.log("p", props);
     // console.log("last active", idleTimer.getLastActiveTime());
     // const isTimedOut = isTimedOut;
