@@ -21,6 +21,7 @@ import {
   sponsors,
   recent,
   range,
+  totalSearchResult
 } from "./searchSlice";
 import {
   phases,
@@ -36,6 +37,7 @@ import { formatESDate } from "../../../utils/utilFunction";
 let protArr = [];
 const Search = (props) => {
   const resultList = useSelector(searchResult);
+  const totalSearchResults = useSelector(totalSearchResult);
   const filterList = useSelector(searchFilter);
   const indicationData = useSelector(indications);
   const sponsorData = useSelector(sponsors);
@@ -44,6 +46,7 @@ const Search = (props) => {
   const [sortValueProp, setSortValue] = useState("1");
   const dispatch = useDispatch();
   const [idPresent, setIdPresent] = useState(false);
+  const [page, setPage] = React.useState(0);
   const [dateRangeValue, setDateRangeValue] = useState([null, null]);
 
   const [searchInput, setSearchInput] = useState("");
@@ -239,6 +242,7 @@ const Search = (props) => {
   const getSearchInput = (input) => {
     // debugger
     setSortValue("1");
+    setPage(0);
     let inp = input ? input : searchInput;
     let resultQuery = `key=${inp}`;
     for (let [key, value] of Object.entries(searchQuery)) {
@@ -557,14 +561,16 @@ const Search = (props) => {
     // console.log("onSearchChange :", onSearchChange);
   };
   const onSortChange = (data, value) => {
+    setPage(0);
     if (value === "1") {
       setSortValue(value);
       dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
     } else {
-      let newList = _.cloneDeep(resultList);
+      // let newList = _.cloneDeep(resultList);
+      let newList = _.cloneDeep(totalSearchResults);
       setSortValue(value);
-      newList.data &&
-        newList.data.sort((a, b) => {
+      newList &&
+        newList.sort((a, b) => {
           if (data && data.label === "Approval Date") {
             // let first = a[data.value] ? new Date(a[data.value]) : "";
             // let second = b[data.value] ? new Date(b[data.value]) : "";
@@ -577,7 +583,12 @@ const Search = (props) => {
             return second - first;
           }
         });
-      dispatch({ type: "UPDATE_SEARCH_RESULT", payload: newList });
+      dispatch({ type: "UPDATE_SEARCH_RESULT", payload: {loader: false,
+        search: true,
+        success: true,
+        data:newList.slice(0,10) }
+      });
+      dispatch({ type: "UPDATE_TOTAL_SEARCH_RESULT", payload: newList});
     }
   };
 
@@ -640,6 +651,11 @@ const Search = (props) => {
       dispatch({ type: "SAVE_SEARCH_SAGA", payload: parsed.key });
     }
   };
+  // const onSetPage = (event, value) => {
+  const onSetPage = (value) => {
+    setPage(value)
+    dispatch({ type: "PAGE_CHANGE", payload:value });
+  }
   return (
     <div className="search">
       <Breadcrumbs
@@ -687,6 +703,9 @@ const Search = (props) => {
             dateRangeValue={dateRangeValue}
             protocolSelected={protocolSelected}
             clearAll={clearAll}
+            page={page}
+            onSetPage={onSetPage}
+            totalSearchResult={totalSearchResults}
           />
         </div>
       </div>

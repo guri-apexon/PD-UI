@@ -13,6 +13,7 @@ import {
   getSponsors,
   getRecentDate,
   getRangeDate,
+  getTotalSearchResult
 } from "./searchSlice";
 import BASE_URL, { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
@@ -139,10 +140,14 @@ export function* getSearchData(action) {
         url,
         method: "GET",
       });
-      const data = resp.data.hits.hits;
+      const respTotal=resp.data.hits.hits;
+      const data =respTotal.slice(0,10);
+      // const data=resp.data.hits.hits;
+      
       if (resp.data && resp.data.hits && data.length !== 0) {
         const requiredFormat = createJSONFormat(data);
-
+        const totalFormat = createJSONFormat(respTotal)
+        yield put(getTotalSearchResult(totalFormat));
         const obj = {
           search: true,
           loader: false,
@@ -445,16 +450,50 @@ function* saveSearch(action) {
   }
 }
 
+function* onPageChange(action){
+
+  const obj1 = {
+    search: true,
+    loader: true,
+    success: true,
+    data: [],
+  };
+  yield put(getSearchResult(obj1));
+    const state = yield select();
+    const data = state.search.totalSearchResult;
+    //0-10, 10-20, 20-30
+    let lastPage=(action.payload+1)*10;
+    // let lastPage=(action.payload)*10;
+    let firstPage= lastPage-10;
+    let res;
+    yield res= data.slice(firstPage, lastPage);
+    console.log('pagination data :',action.payload,firstPage, lastPage,res, data);
+    const obj = {
+      search: true,
+      loader: false,
+      success: true,
+      data: res,
+    };
+    yield put(getSearchResult(obj));
+}
+
+function* updateTotalSearchResult(action){
+  yield put(getTotalSearchResult(action.payload));
+
+}
+
 function* watchIncrementAsync() {
   yield takeEvery("GET_SEARCH_FILTER", getFilterData);
   yield takeEvery("GET_SEARCH_RESULT", getSearchData);
   yield takeEvery("UPDATE_SEARCH_RESULT", updateSearchResult);
+  yield takeEvery("UPDATE_TOTAL_SEARCH_RESULT", updateTotalSearchResult);
   yield takeEvery("GET_INDICATIONS", getIndicationData);
   yield takeEvery("GET_SPONSORS", getSponsorData);
   yield takeEvery("UPDATE_SEARCH_ASSOCIATED_PROTOCOLS", updateSearchAssociated);
   yield takeEvery("FILTER_BY_RECENT_SAGA", getRecentData);
   yield takeEvery("FILTER_BY_DATE_RANGE_SAGA", getDataByRange);
   yield takeEvery("SAVE_SEARCH_SAGA", saveSearch);
+  yield takeEvery("PAGE_CHANGE", onPageChange);
 }
 
 export default function* protocolSaga() {

@@ -66,7 +66,6 @@ const CustomDropdown = ({
       let reg = new RegExp(`^${str}[a-z0-9 ]*$`, "i");
       return item.label.toLowerCase().match(reg);
     });
-    debugger;
     let substring= customListTemp.filter((item) => {
       // return item.label.match(subStr);
       return item.label.toLowerCase().match(subStr);

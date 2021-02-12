@@ -17,7 +17,9 @@ import SelectButton from "apollo-react/components/SelectButton";
 import AlignJustify from "apollo-react-icons/AlignJustify";
 import Chip from "apollo-react/components/Chip";
 import Grid from "apollo-react/components/Grid";
-
+import Pagination from 'apollo-react/components/Pagination';
+// import { Pagination } from '@material-ui/lab';
+// import Pagination from '@material-ui/lab/Pagination';
 import NoResultFound from "../../Components/NoResultFound";
 
 import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
@@ -186,6 +188,14 @@ class SearchPanel extends React.Component {
 
     // window.location.reload();
   };
+  // onPageChange= (data, value)=>{
+  //   const {onSetPage}= this.props;
+  //   onSetPage(data, value)
+  // }
+  onPageChange= (value)=>{
+    const {onSetPage}= this.props;
+    onSetPage(value)
+  }
 
   render() {
     const {
@@ -198,7 +208,10 @@ class SearchPanel extends React.Component {
       sortValueProp,
       dateRangeValue,
       protocolSelected,
-      clearAll
+      clearAll,
+      page,
+      setPage,
+      totalSearchResult
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
 
@@ -306,9 +319,13 @@ class SearchPanel extends React.Component {
               {accordionObj.length > 0 && (
                 <>
                   <div className="page-count">
-                    <span>
+                    {/* <span>
                       Showing {accordionObj.length === 0 ? "0" : "1"} -{" "}
                       {protocols} of {protocols}{" "}
+                    </span> */}
+                    <span>
+                      Showing {(page*10)+1} -{" "}
+                      {(page*10+10)<totalSearchResult.length ? (page*10+10):totalSearchResult.length} of {totalSearchResult.length}{" "}
                     </span>
                   </div>
 
@@ -378,6 +395,8 @@ class SearchPanel extends React.Component {
                           this.onViewAssociateProtocolClick
                         }
                         protocolSelected={protocolSelected}
+                        page={page}
+                        setPage={setPage}
                       />
                     </div>
                   ))
@@ -400,6 +419,12 @@ class SearchPanel extends React.Component {
                     </div>
                   )}
               {/* {resultList.loader && <Loader />} */}
+              { !resultList.loader &&
+              resultList.success &&
+              accordionObj.length !== 0 && <div className="search-pagination"> <Pagination count={totalSearchResult &&totalSearchResult.length} rowsPerPage={10} page={page} onChangePage={this.onPageChange} /></div>}
+              {/* { !resultList.loader &&
+              resultList.success &&
+              accordionObj.length !== 0 && <div> <Pagination count={totalSearchResult &&Math.ceil(totalSearchResult.length/10)} rowsPerPage={10} page={page} onChange={this.onPageChange} /></div>} */}
             </div>
           </Grid>
         </Grid>

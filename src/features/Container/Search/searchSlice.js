@@ -5,6 +5,7 @@ export const searchSlice = createSlice({
   initialState: {
     filters: {},
     searchResult: {},
+    totalSearchResult:[],
     indications: {
       sectionContent:[]
     },
@@ -26,6 +27,9 @@ export const searchSlice = createSlice({
     },
     getSearchResult: (state, action) => {
       state.searchResult = action.payload;
+    },
+    getTotalSearchResult: (state, action) =>{
+      state.totalSearchResult = action.payload
     },
     getIndications: (state, action) => {
       state.indications = action.payload;
@@ -49,6 +53,7 @@ export const {
   getSponsors,
   getRecentDate,
   getRangeDate,
+  getTotalSearchResult
 } = searchSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -56,6 +61,7 @@ export const {
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
 export const searchFilter = (state) => state.search.filters;
 export const searchResult = (state) => state.search.searchResult;
+export const totalSearchResult = (state) => state.search.totalSearchResult;
 export const indications = (state) => state.search.indications;
 export const sponsors = (state) => state.search.sponsors;
 export const recent = (state) => state.search.recent;

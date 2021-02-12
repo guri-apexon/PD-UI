@@ -10,6 +10,16 @@
     float: left;
     width: 100%;
     margin-top: 10px;
+    .search-pagination {
+      display: flex;
+      justify-content: center;
+      .MuiFormControl-marginNormal {
+        margin-top: 6px !important;
+        .MuiInput-formControl {
+        margin-top: 4px !important;
+        }
+      }
+    }
   }
   .searchPanel > div > button {
     // display: none;
