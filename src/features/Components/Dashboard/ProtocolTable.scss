@@ -3,6 +3,10 @@
     width: 50%;
     float: left;
   }
+
+  table thead tr th {
+    white-space: nowrap;
+  }
   
   a:-webkit-any-link {
     text-decoration: none;

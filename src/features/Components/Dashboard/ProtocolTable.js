@@ -188,7 +188,7 @@ const columns = [
     header: "Project ID / CRM #",
     accessor: "projectId",
     sortFunction: compareStrings,
-    width: "13%",
+    width: "15%",
     customCell: Cell,
   },
   {
