@@ -224,6 +224,7 @@ function App(props) {
         }
       })
       .catch((err) => console.log(err));
+      setIsTimeOut(false);
       // window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
     } else {
       console.log("cancel");
