@@ -91,7 +91,7 @@ const SearchCard = ({
           <p className="grid-item">Indication :</p>
         </Grid>
         <Grid md={3}>
-          {data.indication.length > textLength ? (
+          {data.indication && data.indication.length > textLength ? (
             <Tooltip
               variant="light"
               // title="Title"
@@ -129,7 +129,7 @@ const SearchCard = ({
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="sponsor-value">
-            {data.sponsor.length > textLength ? (
+            {data.sponsor && data.sponsor.length > textLength ? (
               <Tooltip
                 variant="light"
                 // title="Title"
@@ -159,7 +159,7 @@ const SearchCard = ({
           <p className="grid-item">Molecule/Device :</p>
         </Grid>
         <Grid md={3}>
-          {data.molecule.length > textLength ? (
+          {data.molecule && data.molecule.length > textLength ? (
             <Tooltip
               variant="light"
               // title="Title"
@@ -195,7 +195,7 @@ const SearchCard = ({
           <p className="grid-item">ProjectId / Opportunity :</p>
         </Grid>
         <Grid md={3}>
-          {data.projectId.length > textLength ? (
+          {data.projectId && data.projectId.length > textLength ? (
             <Tooltip
               variant="light"
               // title="Title"
