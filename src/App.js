@@ -212,19 +212,7 @@ function App(props) {
         `Due to inactivity you will be logged out, Press OK to refresh now.`
       )
     ) {
-      axios
-        .get("/refresh", {
-          params: {
-            callbackUrl: window.location.href,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-          if (res.data) {
-            window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-          }
-        })
-        .catch((err) => console.log(err));
+      window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
     } else {
       console.log("cancel");
       setIsTimeOut(true);
