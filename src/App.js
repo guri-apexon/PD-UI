@@ -59,6 +59,26 @@ function App(props) {
 
   //---------Revert-----------
   useEffect(() => {
+
+    setTimeout(function () {
+      if (confirm(`You session will be refreshed in ${dif} mins. Press OK to refresh now.`)) {
+        axios
+          .get("/refresh", {
+            params: {
+              callbackUrl: window.location.href,
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.data) {
+              window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+            }
+          })
+          .catch((err) => console.log(err));
+      } else {
+        console.log('cancel')
+      }
+    }, 60 * 2 * 1000); // 60 * 1000 milsec
     // comment in local to run
     axios
       .get("/session")
@@ -89,6 +109,12 @@ function App(props) {
       dif = Math.round(dif * 10) / 10;
   
       console.log("mins - ", dif);
+      console.log("diffrence - ", (dif - 2));
+      if (confirm("Press a button!")) {
+        txt = "You pressed OK!";
+      } else {
+        txt = "You pressed Cancel!";
+      }
       setInterval(function () {
         axios
           .get("/refresh", {
@@ -225,7 +251,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000 * 15 * 60}
+          timeout={1000 * 40 * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}
