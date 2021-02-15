@@ -50,7 +50,7 @@ const ProtocolOverview = ({ data }) => {
             </div>
           </div>
           <div className="protocol-title">
-            <div>Protocol Title</div>
+            <div style={{fontWeight:'bold'}}>Protocol Title</div>
             <div data-testid="title-value">{data.protocolTitle}</div>
           </div>
         </Card>

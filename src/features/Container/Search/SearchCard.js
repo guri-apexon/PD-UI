@@ -88,7 +88,7 @@ const SearchCard = ({
     <div style={{ marginTop: 10, marginBottom: 10 }}>
       <Grid md={11} container>
         <Grid md={3}>
-          <p className="grid-item">Indication :</p>
+          <p className="grid-item bold-class">Indication :</p>
         </Grid>
         <Grid md={3}>
           {data.indication && data.indication.length > textLength ? (
@@ -117,7 +117,7 @@ const SearchCard = ({
           )}
         </Grid>
         <Grid md={3}>
-          <p className="grid-item">Phase :</p>
+          <p className="grid-item bold-class">Phase :</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="phase-value">
@@ -125,7 +125,7 @@ const SearchCard = ({
           </p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item">Sponsor :</p>
+          <p className="grid-item bold-class">Sponsor :</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="sponsor-value">
@@ -156,7 +156,7 @@ const SearchCard = ({
           </p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item">Molecule/Device :</p>
+          <p className="grid-item bold-class">Molecule/Device :</p>
         </Grid>
         <Grid md={3}>
           {data.molecule && data.molecule.length > textLength ? (
@@ -192,7 +192,7 @@ const SearchCard = ({
       </Grid> */}
         {/* \{" "} */}
         <Grid md={3}>
-          <p className="grid-item">ProjectId / Opportunity :</p>
+          <p className="grid-item bold-class">ProjectId / Opportunity :</p>
         </Grid>
         <Grid md={3}>
           {data.projectId && data.projectId.length > textLength ? (
@@ -221,7 +221,7 @@ const SearchCard = ({
           )}
         </Grid>
         <Grid md={3}>
-          <p className="grid-item">Approval Date:</p>
+          <p className="grid-item bold-class">Approval Date:</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="date-value">
@@ -229,7 +229,7 @@ const SearchCard = ({
           </p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item">Document Status :</p>
+          <p className="grid-item bold-class">Document Status :</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="status-value">
@@ -237,7 +237,7 @@ const SearchCard = ({
           </p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item">Upload Date :</p>
+          <p className="grid-item bold-class">Upload Date :</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="upload-value">
@@ -245,7 +245,7 @@ const SearchCard = ({
           </p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item">Version #:</p>
+          <p className="grid-item bold-class">Version #:</p>
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="version-value">
@@ -253,7 +253,7 @@ const SearchCard = ({
           </p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item">Source :</p>
+          <p className="grid-item bold-class">Source :</p>
         </Grid>
         <Grid md={3}>
           <a

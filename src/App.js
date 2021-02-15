@@ -204,31 +204,33 @@ function App(props) {
     // localStorage.setItem("isLoggedIn", false);
     // window.location.href = "/dashboard";
     //---------Revert-----------
-    if (
-      window.confirm(
-        "Applicaiton is about to timeout due to inactivity. Press OK to continue."
-      )
-    ) {
-      axios
-      .get("/refresh", {
-        params: {
-          callbackUrl: window.location.href,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data) {
-          window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-        }
-      })
-      .catch((err) => console.log(err));
-      setIsTimeOut(false);
-      // window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-    } else {
-      console.log("cancel");
-      setIsTimeOut(true);
-      window.location.href = `${baseUrlSSO}/logout_session`;
-    }
+    // if (
+    //   window.confirm(
+    //     "Applicaiton is about to timeout due to inactivity. Press OK to continue."
+    //   )
+    // ) {
+    //   axios
+    //   .get("/refresh", {
+    //     params: {
+    //       callbackUrl: window.location.href,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     if (res.data) {
+    //       window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
+    //   setIsTimeOut(false);
+    //   // window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+    // } else {
+    //   console.log("cancel");
+    //   setIsTimeOut(true);
+    //   window.location.href = `${baseUrlSSO}/logout_session`;
+    // }
+    setIsTimeOut(true);
+    window.location.href = `${baseUrlSSO}/logout_session`;
     // console.log("p", props);
     // console.log("last active", idleTimer.getLastActiveTime());
     // const isTimedOut = isTimedOut;
