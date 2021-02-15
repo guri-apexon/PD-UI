@@ -947,7 +947,8 @@ app.get("/refresh", function (req, res) {
 
 //------------Revert---------------
 app.use(function (req, res, next) {
-  if (SSO_ENABLED) {
+  console.log('SSO',process.env.SSO_ENABLED);
+  if (process.env.SSO_ENABLED === "true") {
     console.log("Cookies", req.cookies);
     const getCookies = req.cookies;
     if (!getCookies.access_token || !getCookies.refresh_token) {
@@ -1010,7 +1011,10 @@ app.use(function (req, res, next) {
       console.log("Else part");
       res.redirect(`${baseUrlSSO}/logout_session`);
     }
+  } else if(process.env.SSO_ENABLED === "false") {
+    next();
   }
+  
 });
 
 app.get("/*", function (req, res) {
