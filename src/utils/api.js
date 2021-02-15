@@ -78,8 +78,8 @@ console.log('---------SSO------',baseUrlSSO);
 //   BASE_URL_8000 = `http://${backendHost}:8000`;
 // }
 BASE_URL = `http://${backendPostHost}:9001`;
-// BASE_URL_8000 = `http://${backendHost}:8000`;
-BASE_URL_8000 = `https://${backendHost}.work.iqvia.com`;
+BASE_URL_8000 = `http://${backendHost}:8000`;
+// BASE_URL_8000 = `https://${backendHost}.work.iqvia.com`;
 UI_URL= `http://${UIhost}`;
 export default BASE_URL;
 export { BASE_URL_8000, baseUrlSSO, UI_URL };
