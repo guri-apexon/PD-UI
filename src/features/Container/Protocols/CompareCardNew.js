@@ -4,8 +4,8 @@ import Card from "apollo-react/components/Card";
 const CompareCard = (props) => {
   const iqvdata = JSON.parse(props.compare.iqvdata);
   // debugger
-  // const swap = props.compare.swap || false;
-  const swap = false;
+  const swap = props.compare.swap || false;
+  // const swap = false;
   return (
     <div className="compare-card">
       <Card
