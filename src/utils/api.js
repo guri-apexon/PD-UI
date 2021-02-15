@@ -27,7 +27,7 @@ let UIhost;
 
 console.log("------ENVIRONMENT-------", process.env.REACT_APP_ENV);
 if (process.env.REACT_APP_ENV === "dev") {
-  backendHost = "dev-protocoldigitalization-api";
+  backendHost = "ca2spdml01q";
   backendPostHost="ca2spdml01q";
   UIhost='pd-dev';
   baseUrlSSO = "https://ca2uampd01d.quintiles.net:8080/v1";
