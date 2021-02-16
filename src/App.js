@@ -94,7 +94,7 @@ function App(props) {
               })
               .then((res) => {
                 console.log(res);
-                if (res.data === '102') {
+                if (res.data === 102) {
                   window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
                 }
               })
@@ -216,7 +216,7 @@ function App(props) {
       })
       .then((res) => {
         console.log(res);
-        if (res.data === '102') {
+        if (res.data === 102) {
           setInterval(function () {
             window.location.href = `${baseUrlSSO}/logout_session`;
           }, 60 * 5 * 1000);
@@ -234,7 +234,7 @@ function App(props) {
             setIsTimeOut(true);
             window.location.href = `${baseUrlSSO}/logout_session`;
           }
-        } else if (res.data === '101') {
+        } else if (res.data === 101) {
           window.location.href = `${baseUrlSSO}/logout_session`;
         }
       })

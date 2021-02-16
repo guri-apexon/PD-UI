@@ -942,7 +942,7 @@ app.get("/refresh", function (req, res) {
     })
     .catch((err) => {
       console.log(err);
-      res.send('102');
+      res.send(102);
     });
 });
 
