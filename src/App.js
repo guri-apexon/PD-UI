@@ -84,7 +84,7 @@ function App(props) {
         dif = Math.round(dif * 10) / 10;
 
         console.log("mins - ", dif);
-        setInterval(function () {
+        this.testInterval = setInterval(function () {
           if (!isTimedOut) {
             axios
               .get("/refresh", {
@@ -207,6 +207,7 @@ function App(props) {
     // localStorage.setItem("isLoggedIn", false);
     // window.location.href = "/dashboard";
     //---------Revert-----------
+    clearInterval(this.testInterval);
     axios
       .get("/refresh", {
         params: {
@@ -264,7 +265,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000 * 40 * 60}
+          timeout={1000 * 5 * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}
