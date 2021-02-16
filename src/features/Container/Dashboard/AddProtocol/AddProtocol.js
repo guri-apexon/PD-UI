@@ -41,7 +41,8 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
     dispatch({ type: "GET_SPONSOR_ADDPROTCOL_SAGA" });
   }, []); // eslint-disable-line
 
-  const onModalClose = () => {
+  const onModalClose = (e) => {
+    debugger;
     handleClose("custom");
     setValue2({ amendmentNumber: undefined, documentStatus: undefined });
     dispatch({ type: "RESET_ERROR_ADD_PROTOCOL" });
@@ -363,7 +364,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         <Modal
           variant="default"
           open={dashboardData && dashboardData.addProtocolModal}
-          onClose={() => onModalClose()}
+          onClose={(e) => onModalClose(e)}
           title="Add Protocol to Library"
           subtitle={
             dashboardData &&

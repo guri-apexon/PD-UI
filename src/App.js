@@ -17,6 +17,7 @@ import { setUserDetails, loggedUser } from "./store/userDetails";
 // import Loader from "./features/Components/Loader/Loader";
 import SessionExpired from "./SessionOut";
 import Loader from "apollo-react/components/Loader";
+import Modal from "apollo-react/components/Modal";
 import axios from "axios";
 import { baseUrlSSO, SSO_ENABLED } from "./utils/api";
 function createCookie(name, value, days) {
@@ -113,6 +114,20 @@ function App(props) {
   }, []);
 
   useEffect(() => {
+    if (isTimedOut) {
+      console.log("timer set to log out")
+      let id = setInterval(function () {
+        window.location.href = `${baseUrlSSO}/logout_session`;
+      }, 60 * 5 * 1000);
+      
+    return () => {
+      console.log("Interval cleared")
+      clearInterval(id)
+    };
+    }
+  }, [isTimedOut]);
+
+  useEffect(() => {
     if (location && location.pathname) {
       setPathname(location.pathname);
     }
@@ -200,7 +215,7 @@ function App(props) {
 
   const handleOnIdle = (event) => {
     console.log("user is idle", event);
-    
+
     var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
       eraseCookie(cookies[i].split("=")[0]);
@@ -211,60 +226,30 @@ function App(props) {
     // clearInterval(this.testInterval);
     if (!isTimedOut) {
       axios
-      .get("/refresh", {
-        params: {
-          callbackUrl: window.location.href,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.data.code === 102) {
-          setInterval(function () {
-            window.location.href = `${baseUrlSSO}/logout_session`;
-          }, 60 * 5 * 1000);
-          setIsTimeOut(true);
-          if (
-            window.confirm(
-              "Applicaiton is about to timeout due to inactivity. Press OK to continue."
-            )
-          ) {
-            
-          window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-            setIsTimeOut(false);
-            // window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-          } else {
-            console.log("cancel");
+        .get("/refresh", {
+          params: {
+            callbackUrl: window.location.href,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data.code === 102) {
             setIsTimeOut(true);
+          } else if (res.data.code === 101) {
+            console.log("Logged out from UI");
             window.location.href = `${baseUrlSSO}/logout_session`;
           }
-        } else if (res.data.code === 101) {
-          console.log('Logged out from UI')
+        })
+        .catch((err) => {
+          console.log(err);
           window.location.href = `${baseUrlSSO}/logout_session`;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        window.location.href = `${baseUrlSSO}/logout_session`;
-      });
+        });
     }
-    
-    
-    // setIsTimeOut(true);
-    // window.location.href = `${baseUrlSSO}/logout_session`;
-    // console.log("p", props);
-    // console.log("last active", idleTimer.getLastActiveTime());
-    // const isTimedOut = isTimedOut;
-
-    // if (isTimedOut) {
-    // console.log("Timout")
-    // this.props.history.push("/");
-    // } else {
-    // this.setState({ showModal: true });
-    // this.idleTimer.reset();
-    // this.setState({ isTimedOut: true });
-
-    // }
   };
+  
+  const refreshTokens = () => {
+    window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+  }
   const route = userDetails && userDetails.userId ? <Routes /> : <Loader />;
 
   return (
@@ -354,6 +339,19 @@ function App(props) {
           </span>
         )}
         {isTimedOut ? <SessionExpired /> : route}
+        <Modal
+          variant="default"
+          open={true}
+          onClose={(e) => {
+            if(e.target.localName === 'span') {
+              window.location.href = `${baseUrlSSO}/logout_session`;
+            }
+          }}
+          id="timer"
+          buttonProps={[{}, { label: "OK", onClick: refreshTokens }]}
+        >
+          <p>Applicaiton is about to timeout due to inactivity. Press OK to continue.</p>
+        </Modal>
       </div>
       <ToastContainer />
     </>
