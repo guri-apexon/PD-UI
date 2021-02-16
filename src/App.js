@@ -94,7 +94,7 @@ function App(props) {
               })
               .then((res) => {
                 console.log(res);
-                if (res.data) {
+                if (res.data === '102') {
                   window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
                 }
               })
@@ -216,10 +216,10 @@ function App(props) {
       })
       .then((res) => {
         console.log(res);
-        if (res.data) {
+        if (res.data === '102') {
           setInterval(function () {
             window.location.href = `${baseUrlSSO}/logout_session`;
-          }, 60 * 4 * 1000);
+          }, 60 * 5 * 1000);
           if (
             window.confirm(
               "Applicaiton is about to timeout due to inactivity. Press OK to continue."
@@ -234,6 +234,8 @@ function App(props) {
             setIsTimeOut(true);
             window.location.href = `${baseUrlSSO}/logout_session`;
           }
+        } else if (res.data === '101') {
+          window.location.href = `${baseUrlSSO}/logout_session`;
         }
       })
       .catch((err) => {
@@ -265,7 +267,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000 * 40 * 60}
+          timeout={1000 * 5 * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}

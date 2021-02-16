@@ -933,15 +933,16 @@ app.get("/refresh", function (req, res) {
     })
     .then(({ data }) => {
       console.log(data);
-      if (data.code === 102) {
-        res.send(true);
-      } else {
-        res.send(false);
-      }
+      res.send(data.code);
+      // if (data.code === 102) {
+      //   res.send(true);
+      // } else {
+      //   res.send(false);
+      // }
     })
     .catch((err) => {
       console.log(err);
-      res.send(false);
+      res.send('102');
     });
 });
 
