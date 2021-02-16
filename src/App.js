@@ -341,7 +341,7 @@ function App(props) {
         {isTimedOut ? <SessionExpired /> : route}
         <Modal
           variant="default"
-          open={true}
+          open={isTimedOut}
           onClose={(e) => {
             if(e.target.localName === 'span') {
               window.location.href = `${baseUrlSSO}/logout_session`;
