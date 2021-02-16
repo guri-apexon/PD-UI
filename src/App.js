@@ -219,7 +219,7 @@ function App(props) {
         if (res.data) {
           setInterval(function () {
             window.location.href = `${baseUrlSSO}/logout_session`;
-          }, 60 * 5 * 1000);
+          }, 60 * 4 * 1000);
           if (
             window.confirm(
               "Applicaiton is about to timeout due to inactivity. Press OK to continue."
@@ -265,7 +265,7 @@ function App(props) {
       <div>
         <IdleTimer
           ref={idleTimer}
-          timeout={1000 * 5 * 60}
+          timeout={1000 * 40 * 60}
           onActive={handleOnActive}
           onIdle={handleOnIdle}
           onAction={handleOnAction}
