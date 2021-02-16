@@ -29,8 +29,8 @@ console.log("------ENVIRONMENT-------", process.env.REACT_APP_ENV);
 if (process.env.REACT_APP_ENV === "dev") {
   backendHost = "dev-protocoldigitalization-api.work.iqvia.com";
   backendPostHost="dev-protocoldigitalization-ai.work.iqvia.com";
-  UIhost='pd-dev';
-  baseUrlSSO = "https://ca2uampd01d.quintiles.net:8080/v1";
+  UIhost='dev-protocoldigitalization-ui.work.iqvia.com';
+  baseUrlSSO = "https://dev-protocoldigitalization.work.iqvia.com/v1";
 } else if (process.env.REACT_APP_ENV === "svt") {
   backendHost = "ca2spdml13q";
   backendPostHost="ca2spdml15q";
@@ -81,7 +81,7 @@ console.log('---------SSO------',baseUrlSSO);
 // BASE_URL_8000 = `http://${backendHost}:8000`;
 BASE_URL = `https://${backendPostHost}`;
 BASE_URL_8000 = `https://${backendHost}`;
-UI_URL= `http://${UIhost}`;
+UI_URL= `https://${UIhost}`;
 export default BASE_URL;
 export { BASE_URL_8000, baseUrlSSO, UI_URL };
 
