@@ -933,7 +933,7 @@ app.get("/refresh", function (req, res) {
     })
     .then(({ data }) => {
       console.log(data);
-      res.send(data.code);
+      res.send(data);
       // if (data.code === 102) {
       //   res.send(true);
       // } else {
@@ -942,7 +942,7 @@ app.get("/refresh", function (req, res) {
     })
     .catch((err) => {
       console.log(err);
-      res.send(102);
+      res.send(false);
     });
 });
 
