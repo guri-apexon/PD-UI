@@ -200,6 +200,7 @@ function App(props) {
 
   const handleOnIdle = (event) => {
     console.log("user is idle", event);
+    
     var cookies = document.cookie.split(";");
     for (var i = 0; i < cookies.length; i++) {
       eraseCookie(cookies[i].split("=")[0]);
@@ -208,7 +209,8 @@ function App(props) {
     // window.location.href = "/dashboard";
     //---------Revert-----------
     // clearInterval(this.testInterval);
-    axios
+    if (!isTimedOut) {
+      axios
       .get("/refresh", {
         params: {
           callbackUrl: window.location.href,
@@ -220,6 +222,7 @@ function App(props) {
           setInterval(function () {
             window.location.href = `${baseUrlSSO}/logout_session`;
           }, 60 * 5 * 1000);
+          setIsTimeOut(true);
           if (
             window.confirm(
               "Applicaiton is about to timeout due to inactivity. Press OK to continue."
@@ -227,7 +230,7 @@ function App(props) {
           ) {
             
           window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-            // setIsTimeOut(false);
+            setIsTimeOut(false);
             // window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
           } else {
             console.log("cancel");
@@ -235,6 +238,7 @@ function App(props) {
             window.location.href = `${baseUrlSSO}/logout_session`;
           }
         } else if (res.data.code === 101) {
+          console.log('Logged out from UI')
           window.location.href = `${baseUrlSSO}/logout_session`;
         }
       })
@@ -242,7 +246,8 @@ function App(props) {
         console.log(err);
         window.location.href = `${baseUrlSSO}/logout_session`;
       });
-
+    }
+    
     
     // setIsTimeOut(true);
     // window.location.href = `${baseUrlSSO}/logout_session`;
