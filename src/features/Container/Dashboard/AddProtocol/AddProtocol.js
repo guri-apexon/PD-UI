@@ -382,7 +382,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
             <Grid item xs={5} sm={5}>
               <TextField
                 label="Protocol Number"
-                placeholder="Optional hint Text"
+                placeholder="Protocol Number"
                 fullWidth
                 value={formValues.protocolNumber}
                 helperText={formErrorValues.protocolNumber.errorMessage}
@@ -400,7 +400,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
               <div className="autocomplete-class" id="amendmentNumber">
                 <AutocompleteV2
                   label="Amendment"
-                  placeholder="Optional hint text…"
+                  placeholder="Amendment"
                   source={amendmentNumber}
                   fullWidth
                   value={value2.amendmentNumber}
@@ -431,7 +431,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
             <Grid item xs={5} sm={5}>
               <TextField
                 label="Project ID or Opportunity Number"
-                placeholder="Optional hint Text"
+                placeholder="Project ID or Opportunity Number"
                 value={formValues.projectID}
                 fullWidth
                 helperText={formErrorValues.projectID.errorMessage}
@@ -445,7 +445,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
             <Grid item xs={5} sm={5}>
               <TextField
                 label="Version Number"
-                placeholder="Optional hint Text"
+                placeholder="Version Number"
                 value={formValues.versionNumber}
                 fullWidth
                 helperText={formErrorValues.versionNumber.errorMessage}
@@ -466,7 +466,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                 <CustomDropdown
                   id="Sponsor"
                   label="Sponsor"
-                  placeholder="Optional hint text…"
+                  placeholder="Sponsor"
                   source={
                     dashboardData &&
                     dashboardData.addProtocolData &&
@@ -495,7 +495,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
               <div className="autocomplete-class">
                 <AutocompleteV2
                   label="Document Status"
-                  placeholder="Optional hint text…"
+                  placeholder="Document Status"
                   source={documentStatusList}
                   fullWidth
                   value={value2.documentStatus}
@@ -527,7 +527,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
                 <CustomDropdown
                   id="Indication"
                   label="Indication"
-                  placeholder="Optional hint text…"
+                  placeholder="Indication"
                   source={
                     dashboardData &&
                     dashboardData.addProtocolData &&
@@ -554,7 +554,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
             <Grid item xs={5} sm={5}>
               <TextField
                 label="Molecule/Device"
-                placeholder="Optional hint Text"
+                placeholder="Molecule/Device"
                 fullWidth
                 value={formValues.moleculeDevice && formValues.moleculeDevice}
                 helperText={formErrorValues.moleculeDevice.errorMessage}
