@@ -26,6 +26,8 @@ const CustomDropdown = ({
   const [expand, setExpand] = useState(false);
   const [list, setList] = useState(source);
   const [subStringExist, SetSubStringExist]= useState(false);
+  const [expandClass, setExpandClass]= useState('');
+  const textInputRef = useRef(null);
 
 
   useEffect(() => {
@@ -101,27 +103,34 @@ const CustomDropdown = ({
   };
   const onCustomClick = (id, event) => {
     setExpand(true);
-    event.target
-      .closest(`.custom-dropdown-wrapper-${id}`)
-      .classList.add("is-expanded", "focused");
+    // event.target
+    //   .closest(`.custom-dropdown-wrapper-${id}`)
+    //   .classList.add("is-expanded", "focused");
+    setExpandClass('is-expanded');
     document.addEventListener("click", handleOutsideClick, true);
   };
  
   const handleOutsideClick = (event) => {
-    if (
-      event &&
-      event.target.closest(`custom-dropdown-parent-${id}`) === null
-    ) {
-      if (
-        document.getElementsByClassName("custom-dropdown-container").length > 0
-      ) {
-        document
-          .getElementsByClassName(`custom-dropdown-wrapper-${id}`)[0]
-          .classList.remove("is-expanded", "focused");
-        setExpand(false);
-        document.removeEventListener("click", handleOutsideClick, true);
-        setBlur(true);
-      }
+    // if (
+    //   event &&
+    //   // event.target.closest(`custom-dropdown-parent-${id}`) === null
+    // ) {
+    //   if (
+    //     document.getElementsByClassName("custom-dropdown-container").length > 0
+    //   ) {
+    //     // document
+    //     //   .getElementsByClassName(`custom-dropdown-wrapper-${id}`)[0]
+    //     //   .classList.remove("is-expanded", "focused");
+    //     setExpandClass('');
+    //     setExpand(false);
+    //     document.removeEventListener("click", handleOutsideClick, true);
+    //     setBlur(true);
+    //   }
+    // }
+    if (event.target && textInputRef && textInputRef.current&& textInputRef.current.contains(event.target)) {
+      return;
+    } else {
+ setExpandClass('')
     }
   };
   const onClickAdd = (e) => {
@@ -130,15 +139,19 @@ const CustomDropdown = ({
       [insertField]: value.label,
     };
     onChange(fieldName, "", fieldType, tempValue);
+    setExpandClass('')
   };
   const onListItemClick = (e, item) => {
     setValue(item);
     onChange(fieldName, e, fieldType, item);
+    setExpandClass('');
   };
   return (
-    <div className={`custom-dropdown-parent custom-dropdown-parent-${id}`}>
+    <div className={`custom-dropdown-parent custom-dropdown-parent-${id}`}
+    ref={textInputRef}
+    >
       <div
-        className={`custom-dropdown-wrapper-${id} custom-dropdown-container`}
+        className={`custom-dropdown-wrapper-${id} custom-dropdown-container ${expandClass}`}
       >
         <TextField
           label={label}
