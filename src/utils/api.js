@@ -34,8 +34,8 @@ if (process.env.REACT_APP_ENV === "dev") {
 } else if (process.env.REACT_APP_ENV === "svt") {
   backendHost = "https://svt-protocoldigitalization-api.work.iqvia.com";
   backendPostHost="https://svt-protocoldigitalization-ai.work.iqvia.com";
-  UIhost='http://pd-svt';
-  baseUrlSSO = "https://ca2uampd01q.quintiles.net:8080/v1";
+  UIhost='https://svt-protocoldigitalization-ui.work.iqvia.com';
+  baseUrlSSO = "https://svt-protocoldigitalization.work.iqvia.com/v1";
 } else if (process.env.REACT_APP_ENV === "uat") {
   backendHost = "https://uat-protocoldigitalization-api.work.iqvia.com";
   backendPostHost="https://uat-protocoldigitalization-ai.work.iqvia.com";

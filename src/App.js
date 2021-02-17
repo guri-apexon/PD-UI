@@ -57,7 +57,7 @@ function App(props) {
   const dashboardData = useSelector(dashboard);
   const [pathname, setPathname] = useState("/dashboard");
   const [isTimedOut, setIsTimeOut] = useState(false);
-
+  const [timerId, setTimerId] = useState(0);
   //---------Revert-----------
   useEffect(() => {
     if (SSO_ENABLED) {
@@ -85,8 +85,7 @@ function App(props) {
         dif = Math.round(dif * 10) / 10;
 
         console.log("mins - ", dif);
-        setInterval(function () {
-          if (!isTimedOut) {
+        let testInterval = setTimeout(function () {
             axios
               .get("/refresh", {
                 params: {
@@ -94,14 +93,14 @@ function App(props) {
                 },
               })
               .then((res) => {
-                console.log(res);
+                console.log(res.data.code);
                 if (res.data.code === 102) {
                   window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
                 }
               })
               .catch((err) => console.log(err));
-          }
         }, 60 * dif * 1000); // 60 * 1000 milsec
+        setTimerId(testInterval);
       }
     } else {
       const details = {
@@ -115,8 +114,11 @@ function App(props) {
 
   useEffect(() => {
     if (isTimedOut) {
+      console.log('timerId',timerId);
+      clearInterval(timerId)
       console.log("timer set to log out")
-      let id = setInterval(function () {
+      let id = setTimeout(function () {
+        console.log('logout')
         window.location.href = `${baseUrlSSO}/logout_session`;
       }, 60 * 5 * 1000);
       
@@ -232,8 +234,9 @@ function App(props) {
           },
         })
         .then((res) => {
-          console.log(res);
+          console.log(res.data.code);
           if (res.data.code === 102) {
+            console.log("idle pop up");
             setIsTimeOut(true);
           } else if (res.data.code === 101) {
             console.log("Logged out from UI");
