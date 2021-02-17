@@ -41,7 +41,7 @@ const ProtocolOverview = ({ data }) => {
               </div>
               <div className="row-item">
                 <label>Document Status</label>
-                <span data-testid="status-value">{data.documentStatus}</span>
+                <span data-testid="status-value" className='text-capitalize'>{data.documentStatus}</span>
               </div>
               <div className="row-item">
                 <label>Activity</label>

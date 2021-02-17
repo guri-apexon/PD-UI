@@ -69,6 +69,11 @@ const VersionCell = ({ row, column }) => {
 const Cell = ({ row, column: { accessor: key } }) => {
   return <>{row[key] ? row[key] : "-"}</>;
 };
+
+const StatusCell = ({ row, column: { accessor: key } }) => {
+  return <span className='text-capitalize'>{row[key] ? row[key] : "-"}</span>;
+};
+
 const DataCell = ({ row, column }) =>
   moment(row[column.accessor]).format("DD-MMM-YYYY");
 const columns = [
@@ -95,6 +100,7 @@ const columns = [
   {
     header: "Document Status",
     accessor: "documentStatus",
+    customCell: StatusCell,
   },
 ];
 

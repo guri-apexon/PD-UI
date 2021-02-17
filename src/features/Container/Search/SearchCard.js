@@ -232,7 +232,7 @@ const SearchCard = ({
           <p className="grid-item bold-class">Document Status :</p>
         </Grid>
         <Grid md={3}>
-          <p className="grid-item grid-key-value" data-testid="status-value">
+          <p className="grid-item grid-key-value text-capitalize" data-testid="status-value">
             {data.documentStatus}
           </p>
         </Grid>

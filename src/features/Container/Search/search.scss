@@ -3,6 +3,9 @@
   max-width: 1140px;
   margin: 70px auto;
 
+  .text-capitalize {
+    text-transform: capitalize;
+  }
   .spon-container .Collapsible__contentOuter {
     max-height: none;
   }
@@ -621,4 +624,5 @@
     padding-left: 6px;
     color: #444444;
   }
+  
 }
