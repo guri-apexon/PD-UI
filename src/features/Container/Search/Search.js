@@ -242,6 +242,8 @@ const Search = (props) => {
   const getSearchInput = (input) => {
     // debugger
     setSortValue("1");
+    setProtocolSelected([]);
+    setPrevProtSelected('');
     setPage(0);
     let inp = input ? input : searchInput;
     let resultQuery = `key=${inp}`;
@@ -379,6 +381,8 @@ const Search = (props) => {
   };
   const hancleClearAll = (inputPresent, input) => {
     // setClearAll(true);
+    setProtocolSelected([]);
+    setPrevProtSelected('');
     if (inputPresent) {
       setSearchQuery({
         sponsor: [],

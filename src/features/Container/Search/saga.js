@@ -30,8 +30,8 @@ export function* getIndicationData(action) {
     });
 
     if (indicationList.success) {
-      let respData = indicationList.data.slice(0, 700);
-      // let respData = indicationList;
+      // let respData = indicationList.data.slice(0, 700);
+      let respData = indicationList.data;
       // debugger;
       let formatIndication = respData.map((item) => {
         return {
@@ -53,8 +53,8 @@ export function* getSponsorData(action) {
       url: sponsorUrl,
       method: "GET",
     });
-    let respData = sponsorList.data.slice(0, 8000);
-    // let respData = sponsorList;
+    // let respData = sponsorList.data.slice(0, 8000);
+    let respData = sponsorList.data;
     if (sponsorList.success) {
       let formatSponser = respData.map((item) => {
         return {
