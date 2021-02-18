@@ -58,6 +58,7 @@ function App(props) {
   const [pathname, setPathname] = useState("/dashboard");
   const [isTimedOut, setIsTimeOut] = useState(false);
   const [timerId, setTimerId] = useState(0);
+  const [idleId, setIdleid] = useState(0);
   //---------Revert-----------
   useEffect(() => {
     if (SSO_ENABLED) {
@@ -121,7 +122,7 @@ function App(props) {
         console.log('logout')
         window.location.href = `${baseUrlSSO}/logout_session`;
       }, 60 * 5 * 1000);
-      
+      setIdleid(id);
     return () => {
       console.log("Interval cleared")
       clearInterval(id)
@@ -251,6 +252,7 @@ function App(props) {
   };
   
   const refreshTokens = () => {
+    clearInterval(idleId)
     window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
   }
   const route = userDetails && userDetails.userId ? <Routes /> : <Loader />;
