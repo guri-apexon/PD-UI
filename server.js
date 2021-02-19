@@ -20,7 +20,8 @@ app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "protocols")));
 let baseUrlElastic = "";
 let baseUrlSSO = "";
-
+let access_token = "";
+let refresh_token = "";
 function authenticateUser(user, password) {
   var token = user + ":" + password;
   var hash = Buffer.from(token).toString("base64");
@@ -32,22 +33,32 @@ switch (process.env.NODE_ENV) {
   case "dev":
     baseUrlElastic = process.env.ELASTIC_DEV_URL;
     baseUrlSSO = process.env.CIMS_DEV_URL;
+    access_token = "access_token_dev";
+    refresh_token = "refresh_token_dev";
     break;
   case "svt":
     baseUrlElastic = process.env.ELASTIC_SVT_URL;
     baseUrlSSO = process.env.CIMS_SVT_URL;
+    access_token = "access_token_svt";
+    refresh_token = "refresh_token_svt";
     break;
   case "uat":
     baseUrlElastic = process.env.ELASTIC_UAT_URL;
     baseUrlSSO = process.env.CIMS_UAT_URL;
+    access_token = "access_token_uat";
+    refresh_token = "refresh_token_uat";
     break;
   case "prod":
     baseUrlElastic = process.env.ELASTIC_PROD_URL;
     baseUrlSSO = process.env.CIMS_PROD_URL;
+    access_token = "access_token";
+    refresh_token = "refresh_token";
     break;
   default:
     baseUrlElastic = process.env.ELASTIC_DEV_URL;
     baseUrlSSO = process.env.CIMS_DEV_URL;
+    access_token = "access_token_dev";
+    refresh_token = "refresh_token_dev";
 }
 console.log("baseUrlElastic", baseUrlElastic);
 console.log("baseUrlSSO", baseUrlSSO);
@@ -920,8 +931,8 @@ app.get("/refresh", function (req, res) {
   axios
     .get(`${baseUrlSSO}/validate_token`, {
       params: {
-        access_token: getCookies.access_token,
-        refresh_token: getCookies.refresh_token,
+        access_token: getCookies[access_token],
+        refresh_token: getCookies[refresh_token],
       },
       headers: {
         Authorization: authenticateUser(
@@ -952,10 +963,10 @@ app.use(function (req, res, next) {
   if (process.env.SSO_ENABLED === "true") {
     console.log("Cookies", req.cookies);
     const getCookies = req.cookies;
-    if (!getCookies.access_token || !getCookies.refresh_token) {
+    if (!getCookies[access_token] || !getCookies[refresh_token]) {
       console.log("No Tokens");
       res.redirect(`${baseUrlSSO}/logout_session`);
-    } else if (getCookies.access_token && getCookies.refresh_token) {
+    } else if (getCookies[access_token] && getCookies[refresh_token]) {
       // At request level
       const agent = new https.Agent({
         rejectUnauthorized: false,
@@ -963,8 +974,8 @@ app.use(function (req, res, next) {
       axios
         .get(`${baseUrlSSO}/validate_token`, {
           params: {
-            access_token: getCookies.access_token,
-            refresh_token: getCookies.refresh_token,
+            access_token: getCookies[access_token],
+            refresh_token: getCookies[refresh_token],
           },
           headers: {
             Authorization: authenticateUser(
@@ -986,7 +997,7 @@ app.use(function (req, res, next) {
                 username: data.user_details.first_name,
                 email: data.user_details.email,
               };
-              const decoded = jwt_decode(getCookies.refresh_token);
+              const decoded = jwt_decode(getCookies[refresh_token]);
 
               console.log(decoded);
               req.session.user = details;
