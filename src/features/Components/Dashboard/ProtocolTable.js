@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Clock from "apollo-react-icons/Clock";
@@ -7,7 +7,7 @@ import StatusCheck from "apollo-react-icons/StatusCheck";
 import StatusExclamation from "apollo-react-icons/StatusExclamation";
 import Check from "apollo-react-icons/Check";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 // import Checkbox from "apollo-react/components/Checkbox";
 import { neutral8 } from "apollo-react/colors";
 import IconButton from "apollo-react/components/IconButton";
@@ -23,7 +23,7 @@ import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import "./ProtocolTable.scss";
 
 const ActionCell = ({
-  row: { id, handleToggleRow, expanded, selected, handleChange },
+  row: { id, handleToggleRow, expanded },
 }) => {
   return (
     <div>
@@ -313,17 +313,12 @@ const handleDownload = async (row) => {
   myWindow.document.write(
     `<embed src=${encodeUrl}  frameborder="0" width="100%" height="100%">`
   );
-
-  // window.open(
-  //   url,
-  //   "_blank" // <- This is what makes it open in a new window.
-  // );
 };
 
 const ProtocolTable = ({ initialRows, pageRows }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
+  // const [selectedRows, setSelectedRows] = useState([]);
   // const handleChange = (id) => {
   //   setSelectedRows((selectedRows) =>
   //     selectedRows.indexOf(id) >= 0
@@ -345,7 +340,6 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
   // useEffect(() => {
   //   dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
   // }, [selectedRows]);
-  // console.log("initial-rows", initialRows, pageRows);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
       {initialRows && initialRows.length > 0 ? (
@@ -359,7 +353,7 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
               let details = {
                 key: row.id,
                 expanded: expandedRows.indexOf(row.id) >= 0,
-                selected: selectedRows.indexOf(row.id) >= 0,
+                // selected: selectedRows.indexOf(row.id) >= 0,
                 handleToggleRow,
                 // handleChange,
               };
@@ -389,7 +383,7 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
                 let details = {
                   key: row.id,
                   expanded: expandedRows.indexOf(row.id) >= 0,
-                  selected: selectedRows.indexOf(row.id) >= 0,
+                  // selected: selectedRows.indexOf(row.id) >= 0,
                   handleToggleRow,
                   // handleChange,
                 };

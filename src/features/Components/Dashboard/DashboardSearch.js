@@ -55,6 +55,7 @@ function DashboardSearch({ recent, saved }) {
                       </li>
                     );
                   }
+                  return null;
                 })}
               </ul>
             ) : (
@@ -102,6 +103,7 @@ function DashboardSearch({ recent, saved }) {
                       </li>
                     );
                   }
+                  return null;
                 })}
               </ul>
             ) : (

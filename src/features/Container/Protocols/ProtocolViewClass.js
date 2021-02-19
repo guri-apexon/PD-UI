@@ -1,10 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useSelector, useDispatch, connect } from "react-redux";
-import Grid from "apollo-react/components/Grid";
+import React from "react";
+import {connect } from "react-redux";
 import Card from "apollo-react/components/Card";
 import ChevronRight from "apollo-react-icons/ChevronRight";
-import { viewResult } from "./protocolSlice.js";
-import dummyTable from "./dummyTable.json";
 import Loader from "../../Components/Loader/Loader";
 
 function getStyle(style) {
@@ -16,52 +13,6 @@ function getStyle(style) {
   return "";
 }
 
-function getElement(data) {
-  let content = data[0];
-  const type = data[1];
-  // if (type === "table") {
-  //   content = JSON.parse(content);
-  //   return getTable(content);
-  // }
-  const subsectionOf = data[2];
-  const style = data[3];
-  const isBold = getStyle(style);
-  if (isBold && subsectionOf.length) {
-    return (
-      <p id={subsectionOf} className={isBold}>
-        {content}
-      </p>
-    );
-  }
-  switch (style.font_style) {
-    case "Heading1":
-      return (
-        <h1 id={subsectionOf} className={`heading1 ${isBold}`}>
-          {content}
-        </h1>
-      );
-    case "Heading2":
-      return (
-        <div className="bar">
-          <h2 id={subsectionOf} className={`heading2 ${isBold}`}>
-            {content}
-          </h2>
-        </div>
-      );
-    case "Heading3":
-      return (
-        <h3 id={subsectionOf} className={`heading3 ${isBold}`}>
-          {content}
-        </h3>
-      );
-    default:
-      return (
-        <span id={subsectionOf} className={`indent ${isBold}`}>
-          {content}
-        </span>
-      );
-  }
-}
 class ProtocolViewClass extends React.Component {
   constructor() {
     super();
@@ -83,8 +34,6 @@ class ProtocolViewClass extends React.Component {
   }
 
   getTable(item, unq, noHeader = false) {
-    // for (const property in object) {
-    // }
     let footNote = [];
     for (const [key, value] of Object.entries(item)) {
       const note = key.split('_')[0];
@@ -116,15 +65,15 @@ class ProtocolViewClass extends React.Component {
   }
 
   getTocElement = (data) => {
-    let section_level = data[0];
+    // let section_level = data[0];
     let CPT_section = data[1];
     let type = data[2];
     let content = data[3];
     let font_info = data[4];
-    let level_1_CPT_section = data[5];
-    let file_section = data[6];
-    let file_section_num = data[7];
-    let file_section_level = data[8];
+    // let level_1_CPT_section = data[5];
+    // let file_section = data[6];
+    // let file_section_num = data[7];
+    // let file_section_level = data[8];
     let seq_num = data[9];
     if (!content) {
       return null;
@@ -238,36 +187,22 @@ class ProtocolViewClass extends React.Component {
 
   handleClick(id) {
     this.setState({ section: id });
-    // if (!this.state.popupVisible) {
-    //   // attach/remove event handler
-    //   document.addEventListener("click", this.handleOutsideClick, false);
-    // } else {
-    //   document.removeEventListener("click", this.handleOutsideClick, false);
     document.addEventListener("click", this.handleOutsideClick, false);
-    // }
 
     let subData = [];
     switch (id) {
       case "Toc":
         subData = this.data.TOC;
         break;
-      // case "TableOfAppendix":
-      //   subData = this.data.TableOfAppendix;
-      //   break;
       case "TableOfTable":
         subData = this.data.TableOfTable;
         break;
-      // case "TableOfFigure":
-      //   subData = this.data.TableOfFigure;
-      //   break;
       case "SOA":
         subData = this.data.SOA;
         break;
+      default:
+        break;
     }
-
-    // this.setState((prevState) => ({
-    //   popupVisible: !prevState.popupVisible,
-    // }));
     this.setState({ popupVisible: true, subSectionData: subData });
   }
 
@@ -296,7 +231,7 @@ class ProtocolViewClass extends React.Component {
       TOC: view.tocSections,
       SOA: view.soaSections,
     };
-console.log('view', view)
+    console.log('view', view)
     if (subSections.TOC && subSections.TOC.length) {
       listData.push( { section: "Table of Contents", id: "Toc" })
     }
@@ -315,7 +250,6 @@ console.log('view', view)
           behavior: "smooth",
           block: "start",
         });
-      // this.setState({ activeSection: id });
       this.setState({
         activeSubSection: id,
         activeSection: this.state.section,
@@ -350,16 +284,6 @@ console.log('view', view)
         </div>
       );
     }
-
-    //     const rows = [
-    //       ["name1", "city1", "some other info"],
-    //       ["name2", "city2", "more info"]
-    //   ];
-
-    //   let csvContent = "data:text/csv;charset=utf-8,"
-    //       + rows.map(e => e.join(",")).join("\n");
-    //       let encodedUri = encodeURI(csvContent);
-    // window.open(encodedUri);
     return (
       <div className="view-wrapper">
         <Card className="index-column">
@@ -448,8 +372,7 @@ const mapDispatchToProps = (dispatch) => {
       }),
   };
 };
-// e5c6a06d-166f-478f-b5de-73543a46261e old
-// 44671f63-8166-4f4b-a957-cba494effc5a new
+
 const mapStateToProps = (state) => {
   const { protocol } = state;
   return {

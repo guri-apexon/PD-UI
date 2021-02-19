@@ -1,5 +1,4 @@
 import { takeEvery, all, call, put, select } from "redux-saga/effects";
-import _ from "lodash";
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getProtocols,
@@ -8,7 +7,6 @@ import {
   getRecentSearches,
   getSponsor,
   getIndication,
-  getProtocolData,
   setAddprotocolError,
   setAddProtocolModal,
   setLoading,

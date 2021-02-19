@@ -5,7 +5,7 @@ import {
   getAssociateDocuments,
   getCompare,
 } from "./protocolSlice.js";
-import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
 
 export function* getSummaryData(action) {
@@ -62,7 +62,7 @@ export function getTocSections(toc) {
     let level_1_CPT_section = captalize(item[6]);
     let section_num = captalize(item[7]);
 
-    let type = item[2];
+    // let type = item[2];
     if (
       section_num &&
       file_section_level === "1" &&

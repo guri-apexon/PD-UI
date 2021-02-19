@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import _ from "lodash";
 import Grid from "apollo-react/components/Grid";
 // import Button from "apollo-react/components/Button";
 import { loggedUser } from "../../../store/userDetails";
