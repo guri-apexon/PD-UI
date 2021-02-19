@@ -392,9 +392,9 @@ export const DateRangeCard = ({
             >
               <DateRangePicker
                 value={dateRange}
-                dateFormat={"DD/MMM/YYYY"}
+                dateFormat={"DD-MMM-YYYY"}
                 onChange={(value) => setDateRange(value)}
-                placeholder="DD/MMM/YYYY"
+                placeholder="DD-MMM-YYYY"
                 disableFuture={true}
                 style={{ display: "flex", flexDirection: "column" }}
                 startLabel="Start of Range"
