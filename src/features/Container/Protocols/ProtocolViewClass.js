@@ -1,5 +1,5 @@
 import React from "react";
-import {connect } from "react-redux";
+import { connect } from "react-redux";
 import Card from "apollo-react/components/Card";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Loader from "../../Components/Loader/Loader";
@@ -36,31 +36,37 @@ class ProtocolViewClass extends React.Component {
   getTable(item, unq, noHeader = false) {
     let footNote = [];
     for (const [key, value] of Object.entries(item)) {
-      const note = key.split('_')[0];
-      if (note === 'FootnoteText') {
-        footNote.push(value)
+      const note = key.split("_")[0];
+      if (note === "FootnoteText") {
+        footNote.push(value);
       }
     }
 
     return (
+      <>
+      <div style={{}}>
+      {!noHeader ? (
+          <h2
+            style={{ paddingTop: "20px", fontSize: "16px", marginBottom: "20px" }}
+          >
+            {item.TableName}
+          </h2>
+        ) : null}
+      </div>
       <div
         id={`${unq}-${item.TableIndex}`}
         key={`${unq}-${item.TableIndex}`}
         style={{ overflowX: "auto", marginTop: "10px", marginBottom: "20px" }}
         ref={this.refs[`${unq}-${item.TableIndex}`]}
       >
-        {!noHeader ? (
-          <h2
-            style={{ paddingTop: 10, fontSize: "16px", marginBottom: "10px" }}
-          >
-            {item.TableName}
-          </h2>
-        ) : null}
         <div dangerouslySetInnerHTML={{ __html: item.Table }} />
-        {footNote.map(notes => {
-          return notes && <p style={{ fontSize: "12px" }}>{notes}</p>
+      </div>
+      <div>
+      {footNote.map((notes) => {
+          return notes && <p style={{ fontSize: "12px" }}>{notes}</p>;
         })}
       </div>
+      </>
     );
   }
 
@@ -119,9 +125,28 @@ class ProtocolViewClass extends React.Component {
           </div>
         );
       case "Heading3":
+      case "Heading4":
         return (
           <div
             className="bar2"
+            id={`TOC-${seq_num}`}
+            key={`TOC-${seq_num}`}
+            ref={this.refs[`TOC-${seq_num}`]}
+          >
+            <h3
+              id={`CPT_section-${seq_num}`}
+              key={`CPT_section-${seq_num}`}
+              className={`heading3 ${isBold}`}
+              style={{ fontSize: "14px" }}
+            >
+              {content}
+            </h3>
+          </div>
+        );
+        case "Heading5":
+        return (
+          <div
+            className="bar3"
             id={`TOC-${seq_num}`}
             key={`TOC-${seq_num}`}
             ref={this.refs[`TOC-${seq_num}`]}
@@ -231,12 +256,12 @@ class ProtocolViewClass extends React.Component {
       TOC: view.tocSections,
       SOA: view.soaSections,
     };
-    console.log('view', view)
+    console.log("view", view);
     if (subSections.TOC && subSections.TOC.length) {
-      listData.push( { section: "Table of Contents", id: "Toc" })
+      listData.push({ section: "Table of Contents", id: "Toc" });
     }
     if (subSections.SOA && subSections.SOA.length) {
-      listData.push({ section: "Schedule of Assessments", id: "SOA" })
+      listData.push({ section: "Schedule of Assessments", id: "SOA" });
     }
     const refs = this.state.subSectionData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
@@ -330,7 +355,7 @@ class ProtocolViewClass extends React.Component {
                       }`}
                       key={`sub-section-${data.id}`}
                       onClick={() => scrollHide(data.id)}
-                      style={{width: '95%'}}
+                      style={{ width: "95%" }}
                     >
                       <span
                         style={{ marginLeft: "16px" }}
