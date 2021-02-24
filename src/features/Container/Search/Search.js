@@ -590,7 +590,7 @@ const Search = (props) => {
       dispatch({ type: "UPDATE_SEARCH_RESULT", payload: {loader: false,
         search: true,
         success: true,
-        data:newList.slice(0,10) }
+        data:newList && newList.slice(0,10) }
       });
       dispatch({ type: "UPDATE_TOTAL_SEARCH_RESULT", payload: newList});
     }

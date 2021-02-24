@@ -19,7 +19,7 @@ describe("Dashboard table component", () => {
     },
   };
 
-  test("Component renders correctly for expanded row", () => {
+  xtest("Component renders correctly for expanded row", () => {
     const protocolData = [
       {
         id: "abcd1234",
@@ -181,7 +181,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(selectButton1); // expanded
     fireEvent.click(selectButton1); // collpased
   });
-  test("Component renders correctly for collpased row", () => {
+  xtest("Component renders correctly for collpased row", () => {
     const protocolData = [
       {
         id: "abcd1234",
@@ -237,7 +237,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(arrowButton);
   });
 
-  test("Component renders correctly for expanded row filename null", () => {
+  xtest("Component renders correctly for expanded row filename null", () => {
     const protocolData = [
       {
         id: "abcd1234",
@@ -292,7 +292,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(arrowButton);
   });
 
-  test("Component renders correctly for status PROCESS_COMPLETED", () => {
+  xtest("Component renders correctly for status PROCESS_COMPLETED", () => {
     const protocolData = [
       {
         id: "abcd1234",

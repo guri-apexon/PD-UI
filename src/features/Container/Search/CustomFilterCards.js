@@ -342,7 +342,7 @@ export const DateRangeCard = ({
               }}
             >
               <RadioGroup value={value1} onChange={handleChange1}>
-                {dateType.sectionContent.map((item, i) => (
+                {dateType && dateType.sectionContent && dateType.sectionContent.map((item, i) => (
                   <Radio
                     id={item.id}
                     key={item.id}
@@ -557,7 +557,7 @@ export class CheckboxTest extends React.Component {
               id={this.state.list[index].id}
               value={this.state.list[index].id}
               onChange={this.handleChange}
-              checked={this.props.listValue.includes(this.state.list[index].id)}
+              checked={this.props.listValue && this.props.listValue.includes(this.state.list[index].id)}
             />
             <label htmlFor={`#${this.state.list[index].id}`}>
               {this.state.list[index].title}
@@ -580,7 +580,7 @@ export class CheckboxTest extends React.Component {
                 id={this.state.list[index].id}
                 value={this.state.list[index].id}
                 onChange={this.handleChange}
-                checked={this.props.listValue.includes(
+                checked={this.props.listValue && this.props.listValue.includes(
                   this.state.list[index].id
                 )}
               />

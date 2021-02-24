@@ -467,7 +467,7 @@ function* onPageChange(action){
     let firstPage= lastPage-10;
     let res;
     yield res= data.slice(firstPage, lastPage);
-    console.log('pagination data :',action.payload,firstPage, lastPage,res, data);
+    // console.log('pagination data :',action.payload,firstPage, lastPage,res, data);
     const obj = {
       search: true,
       loader: false,
@@ -502,7 +502,7 @@ export default function* protocolSaga() {
 
 export function createJSONFormat(data) {
   let arr = [];
-  console.log("ddddd", data);
+  // console.log("ddddd", data);
   for (let i = 0; i < data.length; i++) {
     // let sampleRows = data.filter(
     //   (item) => item._source.ProtocolNo === data[i]._source.ProtocolNo

@@ -13,6 +13,20 @@ import * as redux from "react-redux";
 
 let searchData = {
   filters: { data: [] },
+  totalSearchResult:[{
+    AiDocId: "a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe",
+    approvalDate: "",
+    followed: false,
+    indication: "Adavosertib",
+    isActive: 1,
+    molecule: "Adavosertib",
+    phase: "I",
+    protocolDescription: "A Phase I, Openours",
+    protocolNumber: "D601HC00008",
+    rows: [],
+    rowsLoading: true,
+    sponsor: "AstraZeneca",
+  }],
   searchResult: {
     data: [
       {

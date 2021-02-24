@@ -82,6 +82,8 @@ const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
                     onSearchQuery={mockonSearchQuery}
                     searchQuery={mocksearchQuery}
                     hancleClearAll={mockhancleClearAll}
+                    totalSearchResult={[]}
+                    dateRangeValue={[null, null]}
                 />
             </MemoryRouter>,
             {

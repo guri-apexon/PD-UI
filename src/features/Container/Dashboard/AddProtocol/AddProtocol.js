@@ -125,7 +125,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
         tempError[fieldName].error = false;
         tempError[fieldName].errorMessage = "";
         tempValues[fieldName] = dropdownValue ? dropdownValue : { label: "" };
-        console.log("valuessssss :", tempValues.amendmentNumber, "temppp");
+        // console.log("valuessssss :", tempValues.amendmentNumber, "temppp");
         setFormValues(tempValues);
         // DropDown logic changes start
         valueTemp[fieldName] = dropdownValue;

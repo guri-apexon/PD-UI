@@ -211,14 +211,14 @@ function selectAutoComplete(Container) {
   fireEvent.keyDown(autocompleteDocumentStatus, { key: 'ArrowDown' });
   fireEvent.keyDown(autocompleteDocumentStatus, { key: 'ArrowDown' });
   fireEvent.keyDown(autocomplete, { key: 'Enter' });
-  console.log('inputDocStatus :', inputDocStatus);
+  // console.log('inputDocStatus :', inputDocStatus);
   fireEvent.focusOut(inputDocStatus, {target:{value:'Approved Final'}});
 
   fireEvent.change(input, { target: { value: 'y' } });
   fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
   fireEvent.keyDown(autocomplete, { key: 'Enter' });
   fireEvent.focusOut(input, {target:{value:'Y'}});
-  console.log('test input value', input.value)
+  // console.log('test input value', input.value)
   fireEvent.change(input, { target: { value: '' } });
   expect(input.value).toBe('');
   fireEvent.focusOut(input, {target:{value:''}});

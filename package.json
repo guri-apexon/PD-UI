@@ -63,5 +63,24 @@
       "last 1 safari version",
       "not dead"
     ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/common/**/*.{ts,tsx,js,jsx}",
+      "src/features/**/*.{ts,tsx,js,jsx}",
+      "src/services/**/*.{ts,tsx,js,jsx}",
+      "src/Routes/**/*.{ts,tsx,js,jsx}",
+      "src/store/**/*.{ts,tsx,js,jsx}",
+      "!src/test-utils",
+      "!**/node_modules/**",
+      "!**/types/**",
+      "!src/**/*.d.ts",
+      "!**/constants/**",
+      "!src/common/components/formik-controls",
+      "!src/app",
+      "!src/test-utils",
+      "!src/mockdata",
+      "!src/services/endpoint.ts"
+    ]
   }
 }

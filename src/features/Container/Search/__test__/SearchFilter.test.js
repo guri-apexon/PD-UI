@@ -79,8 +79,9 @@ describe("Filter test of Search", () => {
           onSearchChange={mockonSearchChange}
           onSortChange={mockonSortChange}
           onSearchQuery={mockonSearchQuery}
-          searchQuery={mocksearchQuery}
           hancleClearAll={mockhancleClearAll}
+          totalSearchResult={[]}
+          dateRangeValue={[null, null]}
         />
       </MemoryRouter>,
       {
