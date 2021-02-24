@@ -57,18 +57,18 @@ if (process.env.REACT_APP_ENV === "dev") {
 } else if (process.env.REACT_APP_ENV === "uat") {
   backendHost = "https://uat-protocoldigitalization-api.work.iqvia.com";
   backendPostHost="https://uat-protocoldigitalization-ai.work.iqvia.com";
-  UIhost='http://pd-uat';
-  baseUrlSSO = "https://ca2uampd01c.quintiles.net:8080/v1";
+  UIhost='https://uat-protocoldigitalization-ui.work.iqvia.com';
+  baseUrlSSO = "https://uat-protocoldigitalization.work.iqvia.com/v1";
 } else if (process.env.REACT_APP_ENV === "prod") {
-  backendHost = "ca2spdml01q";
-  backendPostHost="ca2spdml01q";
-  UIhost='ca2spdml06d';
-  baseUrlSSO = "https://ca2utmsa04q.quintiles.net:8080/v1";
+  backendHost = "https://protocoldigitalization-api.work.iqvia.com";
+  backendPostHost="https://protocoldigitalization-ai.work.iqvia.com";
+  UIhost='https://protocoldigitalization-ui.work.iqvia.com';
+  baseUrlSSO = "https://protocoldigitalization.work.iqvia.com/v1";
 } else {
-  backendHost = "ca2spdml01q";
-  backendPostHost="ca2spdml01q";
-  UIhost='ca2spdml06d';
-  baseUrlSSO = "https://ca2uampd01d.quintiles.net:8080/v1";
+  backendHost = "https://dev-protocoldigitalization-api.work.iqvia.com";
+  backendPostHost="https://dev-protocoldigitalization-ai.work.iqvia.com";
+  UIhost='https://dev-protocoldigitalization-ui.work.iqvia.com';
+  baseUrlSSO = "https://dev-protocoldigitalization.work.iqvia.com/v1";
 }
 console.log('---------SSO------',baseUrlSSO);
 //   else {
