@@ -19,7 +19,8 @@ import SessionExpired from "./SessionOut";
 import Loader from "apollo-react/components/Loader";
 import Modal from "apollo-react/components/Modal";
 import axios from "axios";
-import { baseUrlSSO, SSO_ENABLED } from "./utils/api";
+import {USER_MENU, QC1_MENU, QC2_MENU } from "./AppConstant/AppConstant"
+import { baseUrlSSO, SSO_ENABLED, BASE_URL_8000 } from "./utils/api";
 function createCookie(name, value, days) {
   if (days) {
     var date = new Date();
@@ -59,6 +60,8 @@ function App(props) {
   const [isTimedOut, setIsTimeOut] = useState(false);
   const [timerId, setTimerId] = useState(0);
   const [idleId, setIdleid] = useState(0);
+  const [navMenuItems, setNavMenuItems] = useState([]);
+  const [typeOfUser, setTypeOfUser] = useState();
   //---------Revert-----------
   useEffect(() => {
     if (SSO_ENABLED) {
@@ -112,6 +115,33 @@ function App(props) {
       dispatch(setUserDetails(details));
     }
   }, []);
+  useEffect(()=>{
+   if(userDetails && userDetails.userId){
+    // axios.get(`${BASE_URL_8000}/checkuser`)
+    // .then(res=> res.data)
+    // .then(res=> {
+      // setTypeOfUser(res.data);
+      // setMenuItems(res.data);
+    // })
+    // .catch(err=> {
+    //   console.log(err);
+    //   alert('Check QC API failed');
+    // })
+    setTypeOfUser(2);
+    setMenuItems(2);
+   }
+  },[userDetails])
+  const setMenuItems = (value) =>{
+    switch(value){
+      case 0: setNavMenuItems(USER_MENU)
+      break;
+      case 1: setNavMenuItems(QC1_MENU)
+      break;
+      case 2: setNavMenuItems(QC2_MENU)
+      break;
+      default: setNavMenuItems([])
+    }
+  }
 
   useEffect(() => {
     if (isTimedOut) {
@@ -255,7 +285,7 @@ function App(props) {
     clearInterval(idleId)
     window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
   }
-  const route = userDetails && userDetails.userId ? <Routes /> : <Loader />;
+  const route = userDetails && userDetails.userId ? <Routes userType={typeOfUser}/> : <Loader />;
 
   return (
     <>
@@ -306,7 +336,7 @@ function App(props) {
               </Typography>
             )}
             // logoProps={logoProps}
-            menuItems={menuItems}
+            menuItems={navMenuItems}
             profileMenuProps={profileMenuProps}
             onClick={({ pathname }) => onClickNavigation(pathname)}
             checkIsActive={(item) => checknav(item)}
@@ -331,7 +361,7 @@ function App(props) {
             </Typography>
           )}
           // logoProps={logoProps}
-          menuItems={menuItems}
+          menuItems={navMenuItems}
           profileMenuProps={profileMenuProps}
           onClick={({ pathname }) => onClickNavigation(pathname)}
           checkIsActive={(item) => checknav(item)}
