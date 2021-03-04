@@ -22,9 +22,7 @@ import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 
 import "./ProtocolTable.scss";
 
-const ActionCell = ({
-  row: { id, handleToggleRow, expanded },
-}) => {
+const ActionCell = ({ row: { id, handleToggleRow, expanded } }) => {
   return (
     <div>
       {/* <div className="table-selection">
@@ -78,16 +76,44 @@ const Cell = ({ row, column }) => {
 };
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
-  if (row[key] && row[key].length > 25) {
+  if (row && row.screen && row.screen === "QC") {
+    if (row[key] && row[key].length > 25) {
+      /*eslint-disable */
+      return (
+        <Tooltip variant="light" title={row[key]} placement="top">
+          <div className="long-text">
+            <a
+              href="javascript:void(0)"
+              onClick={() => row.handleRowProtocolClick(row)}
+            >
+              {row[key]}
+            </a>
+          </div>
+        </Tooltip>
+      );
+      /* eslint-enable  */
+    }
     return (
-      <Tooltip variant="light" title={row[key]} placement="top">
-        <div className="long-text">
-          <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
-        </div>
-      </Tooltip>
+      /* eslint-disable  */
+      <a
+        href="javascript:void(0)"
+        onClick={() => row.handleRowProtocolClick(row)}
+      >
+        {row[key]}
+      </a>
     );
+  } else {
+    if (row[key] && row[key].length > 25) {
+      return (
+        <Tooltip variant="light" title={row[key]} placement="top">
+          <div className="long-text">
+            <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
+          </div>
+        </Tooltip>
+      );
+    }
+    return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>;
   }
-  return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>;
 };
 
 const iconStatus = (status) => {
@@ -315,7 +341,12 @@ const handleDownload = async (row) => {
   );
 };
 
-const ProtocolTable = ({ initialRows, pageRows }) => {
+const ProtocolTable = ({
+  initialRows,
+  pageRows,
+  screen,
+  handleProtocolClick,
+}) => {
   // const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
   // const [selectedRows, setSelectedRows] = useState([]);
@@ -336,6 +367,9 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
         : _.concat(expandedRows, id)
     );
   };
+  const handleRowProtocolClick = (row) => {
+    handleProtocolClick(row.id);
+  };
 
   // useEffect(() => {
   //   dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
@@ -355,6 +389,8 @@ const ProtocolTable = ({ initialRows, pageRows }) => {
                 expanded: expandedRows.indexOf(row.id) >= 0,
                 // selected: selectedRows.indexOf(row.id) >= 0,
                 handleToggleRow,
+                handleRowProtocolClick,
+                screen: screen,
                 // handleChange,
               };
               return _.merge(temp, details);

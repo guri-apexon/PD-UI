@@ -20,7 +20,7 @@ const QC = lazy(() => import("../features/Container/QC/QC"));
 const Routes = ({ userType }) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      {userType === 0 && (
+      {userType === "NORMAL" && (
         <Switch>
           <Redirect exact from="/" to="/dashboard" />
           {/* <Route exact path='/'  component={Dashboard}/> */}
@@ -31,14 +31,14 @@ const Routes = ({ userType }) => {
           <Route path="*" component={PageNotFound} />
         </Switch>
       )}
-      {userType === 1 && (
+      {userType === "QC1" && (
         <Switch>
           <Redirect exact from="/" to="/qc" />
           <Route path="/qc" component={QC} />
           <Route path="*" component={PageNotFound} />
         </Switch>
       )}
-      {userType === 2 && (
+      {userType === "QC2" && (
         <Switch>
           <Redirect exact from="/" to="/dashboard" />
           <Route path="/dashboard" component={Dashboard} />
