@@ -368,7 +368,7 @@ const ProtocolTable = ({
     );
   };
   const handleRowProtocolClick = (row) => {
-    handleProtocolClick(row.id);
+    handleProtocolClick({ id: row.id, path: row.documentFilePath });
   };
 
   // useEffect(() => {

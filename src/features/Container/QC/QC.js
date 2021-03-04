@@ -8,22 +8,28 @@ import QCProtocolTable from "./QCTable/QCProtocolTable";
 // import QCProtocolView from "./QCProtocolView/QCProtocolView";
 import QCProtocolView from "./QCProtocolView/QCProtocolView";
 import "./QC.scss";
+import "../Protocols/protocols.scss";
 
 const QCContainer = () => {
   const [value, setValue] = useState(0);
   const [protocolId, setprotocolId] = useState("");
+  const [filePath, setFilePath] = useState("");
 
   const handleClick = (e) => {
     e.preventdefault();
   };
   const handleChangeTab = (event, value) => {
     if (value !== 1) setValue(value);
-    if (value === 0) setprotocolId("");
+    if (value === 0) {
+      setprotocolId("");
+      setFilePath("");
+    }
   };
-  const handleProtocolClick = (id) => {
+  const handleProtocolClick = ({ id, path }) => {
     console.log("id11111", id);
     setValue(1);
     setprotocolId(id);
+    setFilePath(path);
   };
   let today = new Date();
   let curHr = today.getHours();
@@ -37,7 +43,10 @@ const QCContainer = () => {
   }
 
   return (
-    <div className="dashboard-parent qc-parent" style={{ padding: 20 }}>
+    <div
+      className="dashboard-parent qc-parent protocols"
+      style={{ padding: 20 }}
+    >
       {/* <h1>
         {greet} {userDetails && userDetails.username}
       </h1> */}
@@ -68,7 +77,7 @@ const QCContainer = () => {
           <QCProtocolTable handleProtocolClick={handleProtocolClick} />
         )}
         {/* {value === 1 && <QCProtocolView  />} */}
-        {value === 1 && <QCProtocolView protId={protocolId} />}
+        {value === 1 && <QCProtocolView protId={protocolId} path={filePath} />}
       </div>
     </div>
   );
