@@ -3,7 +3,7 @@ import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import { getProtocols, setError } from "./qcSlice";
 function* getState() {
   const state = yield select();
-  const type = state.user.userDetail.userType;
+  const type = state.user.userDetail.user_type;
   const id = state.user.userDetail.userId;
   return { id: id.substring(1), type: type };
 }

@@ -111,30 +111,20 @@ function App(props) {
         userId: "q810544",
         username: "Test User",
         email: "test@iqvia.com",
-        userType: "QC2",
+        user_type: "normal",
       };
       dispatch(setUserDetails(details));
     }
   }, []);
   useEffect(() => {
-    if (userDetails && userDetails.userType) {
-      // axios.get(`${BASE_URL_8000}/checkuser`)
-      // .then(res=> res.data)
-      // .then(res=> {
-      // setTypeOfUser(res.data);
-      // setMenuItems(res.data);
-      // })
-      // .catch(err=> {
-      //   console.log(err);
-      //   alert('Check QC API failed');
-      // })
-      setTypeOfUser(userDetails.userType);
-      setMenuItems(userDetails.userType);
+    if (userDetails && userDetails.user_type) {
+      setTypeOfUser(userDetails.user_type);
+      setMenuItems(userDetails.user_type);
     }
   }, [userDetails]);
   const setMenuItems = (value) => {
     switch (value) {
-      case "NORMAL":
+      case "normal":
         setNavMenuItems(USER_MENU);
         break;
       case "QC1":

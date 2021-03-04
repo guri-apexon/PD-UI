@@ -20,7 +20,7 @@ const QC = lazy(() => import("../features/Container/QC/QC"));
 const Routes = ({ userType }) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      {userType === "NORMAL" && (
+      {userType === "normal" && (
         <Switch>
           <Redirect exact from="/" to="/dashboard" />
           {/* <Route exact path='/'  component={Dashboard}/> */}
