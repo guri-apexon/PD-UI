@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { viewResult } from '../../Protocols/protocolSlice';
-import ProtocolViewClass from '../../Protocols/ProtocolViewClass';
-function QCProtocolView({ protId }) {
+import { viewResult } from './protocolSlice';
+import ProtocolViewClass from './ProtocolViewClass';
+function ProtocolView({ protId }) {
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
   useEffect(() => {
@@ -23,7 +23,7 @@ function QCProtocolView({ protId }) {
   }
   return (
     viewData && (
-      <div id="protocol-view" className="protocols">
+      <div id="protocol-view">
         <ProtocolViewClass
           view={viewData}
           data={subSections}
@@ -34,4 +34,4 @@ function QCProtocolView({ protId }) {
   );
 }
 
-export default QCProtocolView;
+export default ProtocolView;

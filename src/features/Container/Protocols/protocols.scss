@@ -15,12 +15,13 @@
     thead {
       display: none;
     }
-    table tbody tr th:first-child { display: none; }
+    table tbody tr th:first-child {
+      display: none;
+    }
   }
-  
 
   // table tbody tr:nth-child(1) { font-weight: bold; background-color: #f2f2f2; }
-  
+
   // margin-top: 70px;
   padding-left: 20px;
   max-width: 1140px;
@@ -234,7 +235,10 @@
   //   border-left: 8px solid #4CAF50;
   // }
 
-  .btn1:hover, .btn1:active, .btn1:focus, .active  {
+  .btn1:hover,
+  .btn1:active,
+  .btn1:focus,
+  .active {
     border-left: 8px solid #0491f3;
     background-color: #0491f336;
   }
@@ -282,7 +286,9 @@
     padding: 0;
   }
 
-  label {font-weight:bold}
+  label {
+    font-weight: bold;
+  }
   .text-capitalize {
     text-transform: capitalize;
   }
