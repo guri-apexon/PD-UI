@@ -6,6 +6,7 @@ import Clock from "apollo-react-icons/Clock";
 import StatusCheck from "apollo-react-icons/StatusCheck";
 import StatusExclamation from "apollo-react-icons/StatusExclamation";
 import Check from "apollo-react-icons/Check";
+import User from "apollo-react-icons/User";
 import { Link } from "react-router-dom";
 // import { useDispatch } from "react-redux";
 // import Checkbox from "apollo-react/components/Checkbox";
@@ -159,6 +160,12 @@ const iconStatus = (status) => {
       return {
         comp: <Clock htmlColor={"orange"} />,
         title: "Comparison In Progress",
+      };
+    case "QC1":
+    case "QC2":
+      return {
+        comp: <User htmlColor={"neutral7"} />,
+        title: "QC Review",
       };
     default:
       return {
