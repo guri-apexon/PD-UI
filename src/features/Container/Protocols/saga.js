@@ -55,14 +55,14 @@ export function getTocSections(toc) {
   const list = [];
   toc.data.map((item) => {
     let file_section_level = item[8].toString();
-    let heading = item[4].font_style;
-    if (!file_section_level && heading === "Heading1") {
+    let type = item[2];
+    // let heading = item[4].font_style;
+    if (!file_section_level && type === "header") {
       file_section_level = "1";
     }
     let level_1_CPT_section = captalize(item[6]);
-    let section_num = captalize(item[7]);
+    let section_num = item[7];
 
-    // let type = item[2];
     if (
       section_num &&
       file_section_level === "1" &&
@@ -75,7 +75,7 @@ export function getTocSections(toc) {
       });
       sectionList.push(level_1_CPT_section);
     } else if (
-      heading === 'Heading1' &&
+      type === "header" &&
       file_section_level === "1" &&
       level_1_CPT_section !== "Unmapped" &&
       !sectionList.includes(level_1_CPT_section)
@@ -107,6 +107,7 @@ export function getSoaSections(soa) {
 
 export function* getProtocolToc(action) {
   const URL = `${BASE_URL_8000}/api/protocol_data/?id=${action.payload}`;
+  // const URL = `/view_new.json`;
   const config = {
     url: URL,
     method: "GET",
@@ -118,11 +119,13 @@ export function* getProtocolToc(action) {
       const soa = parsedData(data.data.iqvdataSoa);
       const viewData = {
         iqvdataSoa: soa,
-        iqvdataSummary: parsedData(data.data.iqvdataSummary),
+        // iqvdataSoa: [],
+        // iqvdataSummary: parsedData(data.data.iqvdataSummary),
         iqvdataToc: toc,
         loader: false,
         tocSections: getTocSections(toc),
         soaSections: getSoaSections(soa),
+        // soaSections: [],
       };
       yield put(getProcotoclToc(viewData));
     } else {
@@ -138,6 +141,7 @@ export function* getProtocolToc(action) {
       yield put(getProcotoclToc(viewData));
     }
   } catch (err) {
+    console.log(err);
     const viewData = {
       iqvdataSoa: null,
       iqvdataSummary: null,
