@@ -85,20 +85,24 @@ function* qc2Reject() {
   }
 }
 
-function* downloadQc(action) {
-  let url = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_json`;
-  if (action.payload === "2") {
-    url = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_xlsx`;
-  }
-  const config = {
-    url: url,
-    method: "GET",
-  };
-  try {
-    const data = yield call(httpCall, config);
-    console.log(data);
-  } catch (err) {
-    console.log(err);
+function* uploadQc(action) {
+  let bodyFormData = new FormData();
+  bodyFormData.append("iqvdata_xls_file", action.payload.data);
+  const postUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_upload?aidoc_id=${action.payload.id}`;
+  debugger;
+
+  const postUploadQc = yield call(httpCall, {
+    url: postUrl,
+    method: "POST",
+    data: bodyFormData,
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  debugger;
+
+  if(postUploadQc.success){
+    toast.info("Upload Successful")
+  } else {
+    toast.error("Something Went Wrong")
   }
 }
 
@@ -107,7 +111,7 @@ export function* watchqc() {
   yield takeEvery("APPROVE_QC_SAGA", qcApprove);
   yield takeEvery("SEND_QC2_APPROVAL_SAGA", sendQc2Approval);
   yield takeEvery("REJECT_QC2_SAGA", qc2Reject);
-  yield takeEvery("DOWNLOAD_PROTOCOL_QC_SAGA", downloadQc);
+  yield takeEvery("UPLOAD_PROTOCOL_QC_SAGA", uploadQc);
 }
 
 export default function* qcSaga() {

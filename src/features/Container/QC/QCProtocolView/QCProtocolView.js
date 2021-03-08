@@ -9,6 +9,9 @@ import Button from "apollo-react/components/Button";
 import Loader from "../../../Components/Loader/Loader";
 import { viewResult } from "../../Protocols/protocolSlice";
 import ProtocolViewClass from "../../Protocols/ProtocolViewClass";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 function QCProtocolView({ protId, path, userType }) {
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
@@ -41,14 +44,9 @@ function QCProtocolView({ protId, path, userType }) {
       return;
     }
     // Create an object of formData
-    const formData = new FormData();
-
-    // Update the formData object
-    formData.append("myFile", selectedFile, selectedFile.name);
-
     // Details of the uploaded file
     console.log(selectedFile);
-
+    dispatch({type:'UPLOAD_PROTOCOL_QC_SAGA', payload:{data:selectedFile, id:protId}})
     // Request made to the backend api
     // Send formData object
     // axios.post("/api/protocol_data/qc1_protocol_upload", formData);
@@ -85,7 +83,26 @@ function QCProtocolView({ protId, path, userType }) {
 
   const handleChange = (value) => {
     console.log(value);
-    dispatch({ type: "DOWNLOAD_PROTOCOL_QC_SAGA", payload: value });
+    // dispatch({ type: "DOWNLOAD_PROTOCOL_QC_SAGA", payload: value });
+    handleDownload(value, protId);
+  };
+  const handleDownload = async (value, id) => {
+    // let url = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_json`;
+    let customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_json?aidoc_id=${id}`;
+    if (value === "2") {
+      customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_xlsx?aidoc_id=${id}`;
+    }
+    const resp = await axios.get(customUrl).catch(() => {
+      toast.error("Something Went Wrong");
+    });
+    if (resp) {
+      let url = `${UI_URL}/${resp.data}`;
+      let encodeUrl = encodeURI(url);
+      let myWindow = window.open("about:blank", "_blank");
+      myWindow.document.write(
+        `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
+      );
+    }
   };
 
   if (viewData.loader) {
