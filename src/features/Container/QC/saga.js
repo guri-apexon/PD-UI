@@ -122,6 +122,7 @@ function* uploadQc(action) {
 
   if (postUploadQc.success) {
     toast.info("Upload Successful");
+    yield put({ type: "GET_PROTOCOL_TOC_SAGA", payload: action.payload.id });
   } else {
     toast.error("Something Went Wrong");
   }

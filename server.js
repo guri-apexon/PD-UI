@@ -959,7 +959,7 @@ app.get("/refresh", function (req, res) {
 
 //------------Revert---------------
 app.use(function (req, res, next) {
-  console.log('SSO',process.env.SSO_ENABLED);
+  console.log("SSO", process.env.SSO_ENABLED);
   if (process.env.SSO_ENABLED === "true") {
     console.log("Cookies", req.cookies);
     const getCookies = req.cookies;
@@ -996,6 +996,7 @@ app.use(function (req, res, next) {
                 userId: data.user_details.username,
                 username: data.user_details.first_name,
                 email: data.user_details.email,
+                user_type: data.user_details.user_type,
               };
               const decoded = jwt_decode(getCookies[refresh_token]);
 
@@ -1023,10 +1024,9 @@ app.use(function (req, res, next) {
       console.log("Else part");
       res.redirect(`${baseUrlSSO}/logout_session`);
     }
-  } else if(process.env.SSO_ENABLED === "false") {
+  } else if (process.env.SSO_ENABLED === "false") {
     next();
   }
-  
 });
 
 app.get("/*", function (req, res) {
