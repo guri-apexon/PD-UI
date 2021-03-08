@@ -1,0 +1,26 @@
+.qc-parent {
+  padding-left: 20px;
+  max-width: 1140px;
+  margin: 30px 70px auto 10px;
+  .qc-tabs-parent {
+    margin-top: 20px;
+    .MuiTab-root {
+      font-size: 14px;
+      margin-right: 0;
+      padding: 6px 14px;
+      border: 1px solid #c3c3c3;
+      min-height: 10px;
+      opacity: 0.5;
+    }
+    .MuiTab-textColorInherit.Mui-selected {
+      opacity: 1;
+    }
+    .MuiTabs-root::before {
+      border: none;
+    }
+    .MuiTabs-indicator {
+      display: none;
+    }
+    
+  }
+}

@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import Card from "apollo-react/components/Card";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Loader from "../../Components/Loader/Loader";
@@ -29,10 +28,6 @@ class ProtocolViewClass extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.props.getProtocolIqvdata(this.props.protId);
-  }
-
   getTable(item, unq, noHeader = false) {
     let footNote = [];
     for (const [key, value] of Object.entries(item)) {
@@ -44,28 +39,32 @@ class ProtocolViewClass extends React.Component {
 
     return (
       <>
-      <div style={{}}>
-      {!noHeader ? (
-          <h2
-            style={{ paddingTop: "20px", fontSize: "16px", marginBottom: "20px" }}
-          >
-            {item.TableName}
-          </h2>
-        ) : null}
-      </div>
-      <div
-        id={`${unq}-${item.TableIndex}`}
-        key={`${unq}-${item.TableIndex}`}
-        style={{ overflowX: "auto", marginTop: "10px", marginBottom: "20px" }}
-        ref={this.refs[`${unq}-${item.TableIndex}`]}
-      >
-        <div dangerouslySetInnerHTML={{ __html: item.Table }} />
-      </div>
-      <div>
-      {footNote.map((notes) => {
-          return notes && <p style={{ fontSize: "12px" }}>{notes}</p>;
-        })}
-      </div>
+        <div style={{}}>
+          {!noHeader ? (
+            <h2
+              style={{
+                // paddingTop: "20px",
+                fontSize: "16px",
+                marginBottom: "20px",
+              }}
+            >
+              {item.TableName}
+            </h2>
+          ) : null}
+        </div>
+        <div
+          id={`${unq}-${item.TableIndex}`}
+          key={`${unq}-${item.TableIndex}`}
+          style={{ overflowX: "auto", marginTop: "10px", marginBottom: "20px" }}
+          ref={this.refs[`${unq}-${item.TableIndex}`]}
+        >
+          <div dangerouslySetInnerHTML={{ __html: item.Table }} />
+        </div>
+        <div>
+          {footNote.map((notes) => {
+            return notes && <p style={{ fontSize: "12px" }}>{notes}</p>;
+          })}
+        </div>
       </>
     );
   }
@@ -75,7 +74,7 @@ class ProtocolViewClass extends React.Component {
     let CPT_section = data[1];
     let type = data[2];
     let content = data[3];
-    let font_info = data[4];
+    // let font_info = data[4];
     // let level_1_CPT_section = data[5];
     // let file_section = data[6];
     // let file_section_num = data[7];
@@ -84,7 +83,7 @@ class ProtocolViewClass extends React.Component {
     if (!content) {
       return null;
     }
-    const isBold = getStyle(font_info);
+    // const isBold = getStyle(font_info);
     if (type === "table") {
       if (CPT_section === "Unmapped") {
         return this.getTable(content, "TOC-TABLE", true);
@@ -92,118 +91,134 @@ class ProtocolViewClass extends React.Component {
       return this.getTable(content, "TOC-TABLE");
     }
 
-    switch (font_info.font_style) {
-      case "Heading1":
+    switch (type) {
+      case "header":
         return (
           <div
-            className="bar"
             id={`TOC-${seq_num}`}
             key={`TOC-${seq_num}`}
             ref={this.refs[`TOC-${seq_num}`]}
-          >
-            <h1 className={`heading1 ${isBold}`} style={{ fontSize: "16px" }}>
-              {content}
-            </h1>
-          </div>
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
         );
-      case "Heading2":
-        return (
-          <div
-            className="bar2"
-            id={`TOC-${seq_num}`}
-            key={`TOC-${seq_num}`}
-            ref={this.refs[`TOC-${seq_num}`]}
-          >
-            <h2
-              id={`CPT_section-${seq_num}`}
-              key={`CPT_section-${seq_num}`}
-              className={`heading2 ${isBold}`}
-              style={{ fontSize: "14px" }}
-            >
-              {content}
-            </h2>
-          </div>
-        );
-      case "Heading3":
-      case "Heading4":
-        return (
-          <div
-            className="bar2"
-            id={`TOC-${seq_num}`}
-            key={`TOC-${seq_num}`}
-            ref={this.refs[`TOC-${seq_num}`]}
-          >
-            <h3
-              id={`CPT_section-${seq_num}`}
-              key={`CPT_section-${seq_num}`}
-              className={`heading3 ${isBold}`}
-              style={{ fontSize: "14px" }}
-            >
-              {content}
-            </h3>
-          </div>
-        );
-        case "Heading5":
-        return (
-          <div
-            className="bar3"
-            id={`TOC-${seq_num}`}
-            key={`TOC-${seq_num}`}
-            ref={this.refs[`TOC-${seq_num}`]}
-          >
-            <h3
-              id={`CPT_section-${seq_num}`}
-              key={`CPT_section-${seq_num}`}
-              className={`heading3 ${isBold}`}
-              style={{ fontSize: "14px" }}
-            >
-              {content}
-            </h3>
-          </div>
-        );
+      // return (
+      //   <div
+      //     className="bar"
+      //     id={`TOC-${seq_num}`}
+      //     key={`TOC-${seq_num}`}
+      //     ref={this.refs[`TOC-${seq_num}`]}
+      //   >
+      //     <h1 className={`heading1 ${isBold}`} style={{ fontSize: "16px" }}>
+      //       {content}
+      //     </h1>
+      //   </div>
+      // );
+      // case "Heading2":
+      //   return (
+      //     <div
+      //       className="bar2"
+      //       id={`TOC-${seq_num}`}
+      //       key={`TOC-${seq_num}`}
+      //       ref={this.refs[`TOC-${seq_num}`]}
+      //     >
+      //       <h2
+      //         id={`CPT_section-${seq_num}`}
+      //         key={`CPT_section-${seq_num}`}
+      //         // className={`heading2 ${isBold}`}
+      //         style={{ fontSize: "14px" }}
+      //       >
+      //         {content}
+      //       </h2>
+      //     </div>
+      //   );
+      // case "Heading3":
+      // case "Heading4":
+      //   return (
+      //     <div
+      //       className="bar2"
+      //       id={`TOC-${seq_num}`}
+      //       key={`TOC-${seq_num}`}
+      //       ref={this.refs[`TOC-${seq_num}`]}
+      //     >
+      //       <h3
+      //         id={`CPT_section-${seq_num}`}
+      //         key={`CPT_section-${seq_num}`}
+      //         // className={`heading3 ${isBold}`}
+      //         style={{ fontSize: "14px" }}
+      //       >
+      //         {content}
+      //       </h3>
+      //     </div>
+      //   );
+      // case "Heading5":
+      //   return (
+      //     <div
+      //       className="bar3"
+      //       id={`TOC-${seq_num}`}
+      //       key={`TOC-${seq_num}`}
+      //       ref={this.refs[`TOC-${seq_num}`]}
+      //     >
+      //       <h3
+      //         id={`CPT_section-${seq_num}`}
+      //         key={`CPT_section-${seq_num}`}
+      //         // className={`heading3 ${isBold}`}
+      //         style={{ fontSize: "14px" }}
+      //       >
+      //         {content}
+      //       </h3>
+      //     </div>
+      //   );
+
       default:
         if (CPT_section === "Unmapped") {
           return (
             <p
               id={`CPT_section-${seq_num}`}
               key={`CPT_section-${seq_num}`}
-              className={font_info.IsBold ? "thick" : ""}
               style={{ fontSize: "12px" }}
-            >
-              {content}
-            </p>
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
           );
+          // return (
+          //   <p
+          //     id={`CPT_section-${seq_num}`}
+          //     key={`CPT_section-${seq_num}`}
+          //     // className={font_info.IsBold ? "thick" : ""}
+          //     style={{ fontSize: "12px" }}
+          //   >
+          //     {content}
+          //   </p>
+          // );
         }
         return (
           <>
-            {isBold ? (
+            {/* {isBold ? (
               <div>
                 <br />
               </div>
-            ) : null}
+            ) : null} */}
             {type === "header" ? (
               <div
-                className="bar"
                 id={`TOC-${seq_num}`}
                 key={`TOC-${seq_num}`}
                 ref={this.refs[`TOC-${seq_num}`]}
+                dangerouslySetInnerHTML={{ __html: content }}
               >
-                <h1
+                {/* <h1
                   className={`heading1 ${isBold}`}
-                  style={{ fontSize: "16px" }}
+                  style={{ fontSize: '16px' }}
                 >
                   {content}
-                </h1>
+                </h1> */}
               </div>
             ) : (
-              <span
+              <p
                 id={`CPT_section-${seq_num}`}
                 key={`CPT_section-${seq_num}`}
-                className={`indent ${isBold}`}
+                // className={`indent ${isBold}`}
                 style={{ fontSize: "12px" }}
-              >
-                {content}
-              </span>
+                dangerouslySetInnerHTML={{ __html: content }}
+              ></p>
             )}
           </>
         );
@@ -217,13 +232,13 @@ class ProtocolViewClass extends React.Component {
     let subData = [];
     switch (id) {
       case "Toc":
-        subData = this.data.TOC;
+        subData = this.props.data.TOC;
         break;
       case "TableOfTable":
-        subData = this.data.TableOfTable;
+        subData = this.props.data.TableOfTable;
         break;
       case "SOA":
-        subData = this.data.SOA;
+        subData = this.props.data.SOA;
         break;
       default:
         break;
@@ -249,26 +264,13 @@ class ProtocolViewClass extends React.Component {
   };
 
   render() {
-    const { view } = this.props;
-    const listData = [];
+    const { view, listData } = this.props;
 
-    const subSections = {
-      TOC: view.tocSections,
-      SOA: view.soaSections,
-    };
-    console.log("view", view);
-    if (subSections.TOC && subSections.TOC.length) {
-      listData.push({ section: "Table of Contents", id: "Toc" });
-    }
-    if (subSections.SOA && subSections.SOA.length) {
-      listData.push({ section: "Schedule of Assessments", id: "SOA" });
-    }
     const refs = this.state.subSectionData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
     }, {});
     this.refs = refs;
-    this.data = subSections;
     const scrollHide = (id) => {
       refs[id].current &&
         refs[id].current.scrollIntoView({
@@ -357,9 +359,9 @@ class ProtocolViewClass extends React.Component {
                       onClick={() => scrollHide(data.id)}
                       style={{ width: "95%" }}
                     >
-                      <span
-                        style={{ marginLeft: "16px" }}
-                      >{`${data.section}`}</span>
+                      <p
+                        style={{ margin: 0, marginLeft: "16px" }}
+                      >{`${data.section}`}</p>
                     </a>
                   </span>
                 ))}
@@ -388,21 +390,4 @@ class ProtocolViewClass extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getProtocolIqvdata: (id) =>
-      dispatch({
-        type: "GET_PROTOCOL_TOC_SAGA",
-        payload: id,
-      }),
-  };
-};
-
-const mapStateToProps = (state) => {
-  const { protocol } = state;
-  return {
-    view: protocol.view,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProtocolViewClass);
+export default ProtocolViewClass;

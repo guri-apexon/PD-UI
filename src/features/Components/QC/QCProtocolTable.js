@@ -6,10 +6,7 @@ import Clock from "apollo-react-icons/Clock";
 import StatusCheck from "apollo-react-icons/StatusCheck";
 import StatusExclamation from "apollo-react-icons/StatusExclamation";
 import Check from "apollo-react-icons/Check";
-import User from "apollo-react-icons/User";
 import { Link } from "react-router-dom";
-// import { useDispatch } from "react-redux";
-// import Checkbox from "apollo-react/components/Checkbox";
 import { neutral8 } from "apollo-react/colors";
 import IconButton from "apollo-react/components/IconButton";
 import Table, {
@@ -21,18 +18,11 @@ import Typography from "apollo-react/components/Typography";
 import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 
-import "./ProtocolTable.scss";
+import "../Dashboard/ProtocolTable.scss";
 
 const ActionCell = ({ row: { id, handleToggleRow, expanded } }) => {
   return (
     <div>
-      {/* <div className="table-selection">
-        <Checkbox
-          label=""
-          checked={selected}
-          onChange={() => handleChange(id)}
-        />
-      </div> */}
       <div className="table-selection">
         <IconButton
           id="expand"
@@ -77,44 +67,35 @@ const Cell = ({ row, column }) => {
 };
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
-  if (row && row.screen && row.screen === "QC") {
-    if (row[key] && row[key].length > 25) {
+  if (row[key] && row[key].length > 25) {
       /*eslint-disable */
-      return (
-        <Tooltip variant="light" title={row[key]} placement="top">
-          <div className="long-text">
-            <a
-              href="javascript:void(0)"
-              onClick={() => row.handleRowProtocolClick(row)}
-            >
-              {row[key]}
-            </a>
-          </div>
-        </Tooltip>
-      );
-      /* eslint-enable  */
-    }
     return (
-      /* eslint-disable  */
-      <a
-        href="javascript:void(0)"
-        onClick={() => row.handleRowProtocolClick(row)}
-      >
-        {row[key]}
-      </a>
+      <Tooltip variant="light" title={row[key]} placement="top">
+        <div className="long-text">
+          {/* <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link> */}
+        
+          <a
+            href="javascript:void(0)" 
+            onClick={() => row.handleRowProtocolClick(row)}
+          >
+            {row[key]}
+          </a>
+        </div>
+      </Tooltip>
     );
-  } else {
-    if (row[key] && row[key].length > 25) {
-      return (
-        <Tooltip variant="light" title={row[key]} placement="top">
-          <div className="long-text">
-            <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
-          </div>
-        </Tooltip>
-      );
-    }
-    return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>;
+    /* eslint-enable  */
   }
+  //   return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>;
+  return (
+     /* eslint-disable  */
+    <a
+      href="javascript:void(0)"
+      onClick={() => row.handleRowProtocolClick(row)}
+    >
+      {row[key]}
+    </a>
+  );
+   /* eslint-enable  */
 };
 
 const iconStatus = (status) => {
@@ -160,12 +141,6 @@ const iconStatus = (status) => {
       return {
         comp: <Clock htmlColor={"orange"} />,
         title: "Comparison In Progress",
-      };
-    case "QC1":
-    case "QC2":
-      return {
-        comp: <User htmlColor={"neutral7"} />,
-        title: "QC Review",
       };
     default:
       return {
@@ -348,24 +323,9 @@ const handleDownload = async (row) => {
   );
 };
 
-const ProtocolTable = ({
-  initialRows,
-  pageRows,
-  screen,
-  handleProtocolClick,
-}) => {
+const ProtocolTable = ({ initialRows, pageRows, handleProtocolClick }) => {
   // const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
-  // const [selectedRows, setSelectedRows] = useState([]);
-  // const handleChange = (id) => {
-  //   setSelectedRows((selectedRows) =>
-  //     selectedRows.indexOf(id) >= 0
-  //       ? selectedRows.filter((cid) => cid !== id)
-  //       : selectedRows.length < 2
-  //       ? _.concat(selectedRows, id)
-  //       : _.concat(selectedRows)
-  //   );
-  // };
 
   const handleToggleRow = (id) => {
     setExpandedRows((expandedRows) =>
@@ -375,12 +335,9 @@ const ProtocolTable = ({
     );
   };
   const handleRowProtocolClick = (row) => {
-    handleProtocolClick({ id: row.id, path: row.documentFilePath });
+    handleProtocolClick(row.id);
   };
 
-  // useEffect(() => {
-  //   dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
-  // }, [selectedRows]);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
       {initialRows && initialRows.length > 0 ? (
@@ -397,7 +354,6 @@ const ProtocolTable = ({
                 // selected: selectedRows.indexOf(row.id) >= 0,
                 handleToggleRow,
                 handleRowProtocolClick,
-                screen: screen,
                 // handleChange,
               };
               return _.merge(temp, details);

@@ -19,7 +19,8 @@ import SessionExpired from "./SessionOut";
 import Loader from "apollo-react/components/Loader";
 import Modal from "apollo-react/components/Modal";
 import axios from "axios";
-import { baseUrlSSO, SSO_ENABLED } from "./utils/api";
+import { USER_MENU, QC1_MENU, QC2_MENU } from "./AppConstant/AppConstant";
+import { baseUrlSSO, SSO_ENABLED, BASE_URL_8000 } from "./utils/api";
 function createCookie(name, value, days) {
   if (days) {
     var date = new Date();
@@ -59,6 +60,8 @@ function App(props) {
   const [isTimedOut, setIsTimeOut] = useState(false);
   const [timerId, setTimerId] = useState(0);
   const [idleId, setIdleid] = useState(0);
+  const [navMenuItems, setNavMenuItems] = useState([]);
+  const [typeOfUser, setTypeOfUser] = useState();
   //---------Revert-----------
   useEffect(() => {
     if (SSO_ENABLED) {
@@ -87,19 +90,19 @@ function App(props) {
 
         console.log("mins - ", dif);
         let testInterval = setTimeout(function () {
-            axios
-              .get("/refresh", {
-                params: {
-                  callbackUrl: window.location.href,
-                },
-              })
-              .then((res) => {
-                console.log(res.data.code);
-                if (res.data.code === 102) {
-                  window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-                }
-              })
-              .catch((err) => console.log(err));
+          axios
+            .get("/refresh", {
+              params: {
+                callbackUrl: window.location.href,
+              },
+            })
+            .then((res) => {
+              console.log(res.data.code);
+              if (res.data.code === 102) {
+                window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
+              }
+            })
+            .catch((err) => console.log(err));
         }, 60 * dif * 1000); // 60 * 1000 milsec
         setTimerId(testInterval);
       }
@@ -108,25 +111,47 @@ function App(props) {
         userId: "q810544",
         username: "Test User",
         email: "test@iqvia.com",
+        user_type: "normal",
       };
       dispatch(setUserDetails(details));
     }
   }, []);
+  useEffect(() => {
+    if (userDetails && userDetails.user_type) {
+      setTypeOfUser(userDetails.user_type);
+      setMenuItems(userDetails.user_type);
+    }
+  }, [userDetails]);
+  const setMenuItems = (value) => {
+    switch (value) {
+      case "normal":
+        setNavMenuItems(USER_MENU);
+        break;
+      case "QC1":
+        setNavMenuItems(QC1_MENU);
+        break;
+      case "QC2":
+        setNavMenuItems(QC2_MENU);
+        break;
+      default:
+        setNavMenuItems([]);
+    }
+  };
 
   useEffect(() => {
     if (isTimedOut) {
-      console.log('timerId',timerId);
-      clearInterval(timerId)
-      console.log("timer set to log out")
+      console.log("timerId", timerId);
+      clearInterval(timerId);
+      console.log("timer set to log out");
       let id = setTimeout(function () {
-        console.log('logout')
+        console.log("logout");
         window.location.href = `${baseUrlSSO}/logout_session`;
       }, 60 * 5 * 1000);
       setIdleid(id);
-    return () => {
-      console.log("Interval cleared")
-      clearInterval(id)
-    };
+      return () => {
+        console.log("Interval cleared");
+        clearInterval(id);
+      };
     }
   }, [isTimedOut]);
 
@@ -135,20 +160,6 @@ function App(props) {
       setPathname(location.pathname);
     }
   }, [location]);
-  const menuItems = [
-    {
-      text: "Dashboard",
-      pathname: "/dashboard",
-    },
-    {
-      text: "Protocols",
-      pathname: "/protocols",
-    },
-    {
-      text: "Search",
-      pathname: "/search",
-    },
-  ];
   // const sessionMenuItems = [
   //   {
   //     text: "Login",
@@ -250,12 +261,17 @@ function App(props) {
         });
     }
   };
-  
+
   const refreshTokens = () => {
-    clearInterval(idleId)
+    clearInterval(idleId);
     window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
-  }
-  const route = userDetails && userDetails.userId ? <Routes /> : <Loader />;
+  };
+  const route =
+    userDetails && userDetails.userId ? (
+      <Routes userType={typeOfUser} />
+    ) : (
+      <Loader />
+    );
 
   return (
     <>
@@ -306,7 +322,7 @@ function App(props) {
               </Typography>
             )}
             // logoProps={logoProps}
-            menuItems={menuItems}
+            menuItems={navMenuItems}
             profileMenuProps={profileMenuProps}
             onClick={({ pathname }) => onClickNavigation(pathname)}
             checkIsActive={(item) => checknav(item)}
@@ -331,7 +347,7 @@ function App(props) {
             </Typography>
           )}
           // logoProps={logoProps}
-          menuItems={menuItems}
+          menuItems={navMenuItems}
           profileMenuProps={profileMenuProps}
           onClick={({ pathname }) => onClickNavigation(pathname)}
           checkIsActive={(item) => checknav(item)}
@@ -348,14 +364,17 @@ function App(props) {
           variant="default"
           open={isTimedOut}
           onClose={(e) => {
-            if(e.target.localName === 'span') {
+            if (e.target.localName === "span") {
               window.location.href = `${baseUrlSSO}/logout_session`;
             }
           }}
           id="timer"
           buttonProps={[{}, { label: "OK", onClick: refreshTokens }]}
         >
-          <p>Applicaiton is about to timeout due to inactivity. Press OK to continue.</p>
+          <p>
+            Applicaiton is about to timeout due to inactivity. Press OK to
+            continue.
+          </p>
         </Modal>
       </div>
       <ToastContainer />
