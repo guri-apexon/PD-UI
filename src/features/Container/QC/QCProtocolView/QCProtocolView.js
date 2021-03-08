@@ -50,6 +50,7 @@ function QCProtocolView({ protId, path, userType }) {
       type: "UPLOAD_PROTOCOL_QC_SAGA",
       payload: { data: selectedFile, id: protId },
     });
+    setSelectedFile({});
     // Request made to the backend api
     // Send formData object
     // axios.post("/api/protocol_data/qc1_protocol_upload", formData);
@@ -58,7 +59,7 @@ function QCProtocolView({ protId, path, userType }) {
   const onApprove = () => {
     const approve = window.confirm("Are you sure you want to Approve?");
     if (approve) {
-      dispatch({ type: "APPROVE_QC_SAGA" });
+      dispatch({ type: "APPROVE_QC_SAGA", payload: protId });
     } else {
       // nothing
     }
@@ -69,7 +70,7 @@ function QCProtocolView({ protId, path, userType }) {
       "Are you sure you want to send Qc2 for approval?"
     );
     if (qc2Approval) {
-      dispatch({ type: "SEND_QC2_APPROVAL_SAGA" });
+      dispatch({ type: "SEND_QC2_APPROVAL_SAGA", payload: protId });
     } else {
       // nothing
     }
@@ -78,7 +79,7 @@ function QCProtocolView({ protId, path, userType }) {
   const onReject = () => {
     const reject = window.confirm("Are you sure you want to Reject?");
     if (reject) {
-      dispatch({ type: "REJECT_QC2_SAGA" });
+      dispatch({ type: "REJECT_QC2_SAGA", payload: protId });
     } else {
       // nothing
     }
@@ -133,31 +134,60 @@ function QCProtocolView({ protId, path, userType }) {
     return (
       <div
         style={{
-          display: "inline-block",
-          margin: "auto",
-          marginTop: "10%",
+          display: "flex",
+          flexDirection: "row",
+          marginTop: 0,
         }}
       >
-        <Loader />
+        <div
+          style={{
+            display: "inline-block",
+            margin: "auto",
+            marginTop: "10%",
+          }}
+        >
+          <Loader />
+        </div>
+      </div>
+    );
+  }
+
+  if (viewData.err) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          marginTop: 0,
+        }}
+      >
+        <div
+          style={{
+            display: "inline-block",
+            margin: "auto",
+            marginTop: "10%",
+          }}
+        >
+          {viewData.err}
+        </div>
       </div>
     );
   }
 
   return (
-    !viewData.loader && (
-      <div id="protocol-view">
-        <div style={{ marginLeft: "26%", marginBottom: "5px" }}>
-          <input type="file" onChange={onFileChange} />
-          <Button
-            variant="secondary"
-            icon={<Upload />}
-            size="small"
-            style={{ marginRight: 10 }}
-            onClick={() => onFileUpload()}
-          >
-            Upload
-          </Button>
-          {/* <Button
+    <>
+      <div style={{ marginLeft: "26%", marginBottom: "5px" }}>
+        <input type="file" onChange={onFileChange} />
+        <Button
+          variant="secondary"
+          icon={<Upload />}
+          size="small"
+          style={{ marginRight: 10 }}
+          onClick={() => onFileUpload()}
+        >
+          Upload
+        </Button>
+        {/* <Button
             variant="secondary"
             icon={<Download />}
             size="small"
@@ -165,52 +195,51 @@ function QCProtocolView({ protId, path, userType }) {
           >
             Download
           </Button> */}
-          <SelectButton
-            onChange={handleChange}
-            placeholder="Download"
-            style={{ marginRight: 10, float: "right" }}
-          >
-            <MenuItem value="1">{"Download JSON"}</MenuItem>
-            <MenuItem value="2">{"Download XLSS"}</MenuItem>
-          </SelectButton>
-        </div>
-        <ProtocolViewClass
-          view={viewData}
-          data={subSections}
-          listData={listData}
-        />
-        <div style={{ marginLeft: "26%", marginTop: "5px" }}>
+        <SelectButton
+          onChange={handleChange}
+          placeholder="Download"
+          style={{ marginRight: 10, float: "right" }}
+        >
+          <MenuItem value="1">{"Download JSON"}</MenuItem>
+          <MenuItem value="2">{"Download XLSX"}</MenuItem>
+        </SelectButton>
+      </div>
+      <ProtocolViewClass
+        view={viewData}
+        data={subSections}
+        listData={listData}
+      />
+      <div style={{ marginLeft: "26%", marginTop: "5px" }}>
+        <Button
+          variant="secondary"
+          size="small"
+          style={{ marginRight: 10 }}
+          onClick={() => onApprove()}
+        >
+          Approve
+        </Button>
+        {userType === "QC1" ? (
           <Button
             variant="secondary"
             size="small"
             style={{ marginRight: 10 }}
-            onClick={() => onApprove()}
+            onClick={() => sendQc2ForApproval()}
           >
-            Approve
+            Send QC2 Approval
           </Button>
-          {userType === "QC1" ? (
-            <Button
-              variant="secondary"
-              size="small"
-              style={{ marginRight: 10 }}
-              onClick={() => sendQc2ForApproval()}
-            >
-              Send QC Approve
-            </Button>
-          ) : null}
-          {userType === "QC2" ? (
-            <Button
-              variant="secondary"
-              size="small"
-              style={{ marginRight: 10 }}
-              onClick={() => onReject()}
-            >
-              Reject
-            </Button>
-          ) : null}
-        </div>
+        ) : null}
+        {userType === "QC2" ? (
+          <Button
+            variant="secondary"
+            size="small"
+            style={{ marginRight: 10 }}
+            onClick={() => onReject()}
+          >
+            Reject
+          </Button>
+        ) : null}
       </div>
-    )
+    </>
   );
 }
 

@@ -8,7 +8,7 @@ export const protocolSlice = createSlice({
       iqvdataSoa: [],
       iqvdataSummary: {},
       iqvdataToc: {
-        data:[]
+        data: [],
       },
       loader: true,
     },
@@ -26,6 +26,7 @@ export const protocolSlice = createSlice({
       state.summary = action.payload;
     },
     getProcotoclToc: (state, action) => {
+      console.log(action.payload);
       state.view = action.payload;
     },
     getAssociateDocuments: (state, action) => {

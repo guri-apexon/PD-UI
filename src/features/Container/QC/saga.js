@@ -37,24 +37,14 @@ export function* qcProtocolsData() {
   }
 }
 
-function* qcApprove() {
-  const url = `${BASE_URL_8000}/api/protocol_data/qc_approve/ada`;
-  const config = {
-    url: url,
-    method: "GET",
-  };
-  try {
-    const data = yield call(httpCall, config);
-    console.log(data);
-    toast.info("Approved Successfully");
-  } catch (err) {
-    console.log(err);
-    toast.info("Error While Approving");
-  }
+function wait() {
+  setTimeout(function () {
+    window.location.href = "/qc";
+  }, 3000);
 }
 
-function* sendQc2Approval() {
-  const url = `${BASE_URL_8000}/api/protocol_metadata/qc1_to_qc2/ada`;
+function* qcApprove(action) {
+  const url = `${BASE_URL_8000}/api/protocol_data/qc_approve?aidoc_id=${action.payload}`;
   const config = {
     url: url,
     method: "PUT",
@@ -62,15 +52,42 @@ function* sendQc2Approval() {
   try {
     const data = yield call(httpCall, config);
     console.log(data);
-    toast.info("Sent For QC2 Approval Successfully");
+    if (data.success) {
+      toast.info("Approved Successfully");
+      wait();
+    } else {
+      toast.error("Error While Approving");
+    }
   } catch (err) {
     console.log(err);
-    toast.info("Error While Sending");
+    toast.error("Something Went Wrong");
   }
 }
 
-function* qc2Reject() {
-  const url = `${BASE_URL_8000}/api/protocol_metadata/qc_reject/ada`;
+function* sendQc2Approval(action) {
+  const url = `${BASE_URL_8000}/api/protocol_metadata/qc1_to_qc2?aidoc_id=${action.payload}`;
+  const config = {
+    url: url,
+    method: "PUT",
+  };
+  try {
+    const data = yield call(httpCall, config);
+    if (data.success) {
+      toast.info("Sent For QC2 Approval Successfully");
+      // window.location.href = "/qc";
+      wait();
+    } else {
+      toast.error("Error While Sending");
+    }
+    console.log(data);
+  } catch (err) {
+    console.log(err);
+    toast.error("Something Went Wrong");
+  }
+}
+
+function* qc2Reject(action) {
+  const url = `${BASE_URL_8000}/api/protocol_metadata/qc_reject?aidoc_id=${action.payload}`;
   const config = {
     url: url,
     method: "PUT",
@@ -78,10 +95,16 @@ function* qc2Reject() {
   try {
     const data = yield call(httpCall, config);
     console.log(data);
-    toast.info("Rejected Successfully");
+    if (data.success) {
+      toast.info("Rejected Successfully");
+      // window.location.href = "/qc";
+      wait();
+    } else {
+      toast.error("Error While Rejecting");
+    }
   } catch (err) {
     console.log(err);
-    toast.info("Error While Rejecting");
+    toast.error("Something Went Wrong");
   }
 }
 
@@ -89,7 +112,6 @@ function* uploadQc(action) {
   let bodyFormData = new FormData();
   bodyFormData.append("iqvdata_xls_file", action.payload.data);
   const postUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_upload?aidoc_id=${action.payload.id}`;
-  debugger;
 
   const postUploadQc = yield call(httpCall, {
     url: postUrl,
@@ -97,12 +119,11 @@ function* uploadQc(action) {
     data: bodyFormData,
     headers: { "Content-Type": "multipart/form-data" },
   });
-  debugger;
 
-  if(postUploadQc.success){
-    toast.info("Upload Successful")
+  if (postUploadQc.success) {
+    toast.info("Upload Successful");
   } else {
-    toast.error("Something Went Wrong")
+    toast.error("Something Went Wrong");
   }
 }
 

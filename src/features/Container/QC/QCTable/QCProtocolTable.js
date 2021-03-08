@@ -14,17 +14,17 @@ function ProtocolTable({ handleProtocolClick }) {
   }, []);
   return (
     <div className="qc-protocol-table">
-    <div id="protocol-table">
-      {error}
-      <ProtocolTableComp
-        initialRows={
-          protocolData && protocolData.length > 0 ? protocolData : []
-        }
-        pageRows={[5, 20, 30, "All"]}
-        handleProtocolClick={handleProtocolClick}
-        screen={"QC"}
-      />
-    </div>
+      <div id="protocol-table">
+        {error}
+        <ProtocolTableComp
+          initialRows={
+            protocolData && protocolData.length > 0 ? protocolData : []
+          }
+          pageRows={[5, 20, 30, "All"]}
+          handleProtocolClick={handleProtocolClick}
+          screen={"QC"}
+        />
+      </div>
     </div>
   );
 }

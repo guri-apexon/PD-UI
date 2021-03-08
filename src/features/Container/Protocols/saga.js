@@ -114,7 +114,7 @@ export function* getProtocolToc(action) {
   };
   try {
     const data = yield call(httpCall, config);
-    if (data.success) {
+    if (data.success && data.data) {
       const toc = parsedData(data.data.iqvdataToc);
       const soa = parsedData(data.data.iqvdataSoa);
       const viewData = {
