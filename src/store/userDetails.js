@@ -7,7 +7,7 @@ export const userDetails = createSlice({
       userId: "",
       username: "",
       email: "",
-      user_type: "normal",
+      user_type: "",
     },
   },
   reducers: {

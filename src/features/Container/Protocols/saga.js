@@ -106,6 +106,16 @@ export function getSoaSections(soa) {
 }
 
 export function* getProtocolToc(action) {
+  const viewData = {
+    iqvdataSoa: null,
+    iqvdataSummary: null,
+    iqvdataToc: null,
+    loader: true,
+    tocSections: null,
+    soaSections: null,
+    err: null,
+  };
+  yield put(getProcotoclToc(viewData));
   const URL = `${BASE_URL_8000}/api/protocol_data/?id=${action.payload}`;
   // const URL = `/view_new.json`;
   const config = {
