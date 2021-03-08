@@ -46,7 +46,10 @@ function QCProtocolView({ protId, path, userType }) {
     // Create an object of formData
     // Details of the uploaded file
     console.log(selectedFile);
-    dispatch({type:'UPLOAD_PROTOCOL_QC_SAGA', payload:{data:selectedFile, id:protId}})
+    dispatch({
+      type: "UPLOAD_PROTOCOL_QC_SAGA",
+      payload: { data: selectedFile, id: protId },
+    });
     // Request made to the backend api
     // Send formData object
     // axios.post("/api/protocol_data/qc1_protocol_upload", formData);
@@ -87,21 +90,42 @@ function QCProtocolView({ protId, path, userType }) {
     handleDownload(value, protId);
   };
   const handleDownload = async (value, id) => {
-    // let url = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_json`;
     let customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_json?aidoc_id=${id}`;
     if (value === "2") {
       customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_xlsx?aidoc_id=${id}`;
     }
-    const resp = await axios.get(customUrl).catch(() => {
+    const fileLocationName = await axios.get(customUrl).catch(() => {
       toast.error("Something Went Wrong");
     });
-    if (resp) {
-      let url = `${UI_URL}/${resp.data}`;
-      let encodeUrl = encodeURI(url);
-      let myWindow = window.open("about:blank", "_blank");
-      myWindow.document.write(
-        `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
-      );
+    if (fileLocationName.data) {
+      let splitFileName = fileLocationName.data.split("\\");
+      if (value === "1") {
+        //For Json
+        let url = `${UI_URL}/${splitFileName[1]}`;
+        let jsonres = await axios
+          .get(url)
+          .then((res) => res.data)
+          .catch(() => {
+            toast.error("Somethissssng Went Wrong");
+          });
+        let content = JSON.stringify(jsonres);
+        const a = document.createElement("a");
+        const file = new Blob([content], { type: "application/json" });
+        a.href = URL.createObjectURL(file);
+        a.download = splitFileName[1];
+        a.click();
+        a.remove();
+      }
+
+      if (value === "2") {
+        // For Excel
+        let url = `${UI_URL}/${splitFileName[1]}`;
+        let encodeUrl = encodeURI(url);
+        let myWindow = window.open("about:blank", "_blank");
+        myWindow.document.write(
+          `<iframe src=${encodeUrl} name="fileName" frameborder="0" width="100%" height="100%"></iframe>`
+        );
+      }
     }
   };
 
