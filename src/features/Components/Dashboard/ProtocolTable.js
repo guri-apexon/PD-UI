@@ -56,7 +56,11 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
       style={{ marginRight: 192 }}
     >
       <span>
-        <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
+        {row && row.screen && row.screen === "QC" ? (
+          <p className="adjust-ellipses">{row[key]}</p>
+        ) : (
+          <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
+        )}
       </span>
     </Tooltip>
   );

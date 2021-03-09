@@ -12,12 +12,18 @@ import ProtocolViewClass from "../../Protocols/ProtocolViewClass";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
+import { loader } from "../qcSlice";
+
 function QCProtocolView({ protId, path, userType }) {
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
+  const qcLoader = useSelector(loader);
   const [selectedFile, setSelectedFile] = useState({});
   useEffect(() => {
-    dispatch({ type: "GET_PROTOCOL_TOC_SAGA", payload: protId });
+    dispatch({
+      type: "GET_PROTOCOL_TOC_SAGA",
+      payload: { endPoint: "protocol_data/qc", id: protId },
+    });
   }, []);
   const listData = [];
   console.log("Path", path);
@@ -98,7 +104,7 @@ function QCProtocolView({ protId, path, userType }) {
     const fileLocationName = await axios.get(customUrl).catch(() => {
       toast.error("Something Went Wrong");
     });
-    if (fileLocationName.data) {
+    if (fileLocationName && fileLocationName.data) {
       let splitFileName = fileLocationName.data.split("\\");
       if (value === "1") {
         //For Json
@@ -130,7 +136,7 @@ function QCProtocolView({ protId, path, userType }) {
     }
   };
 
-  if (viewData.loader) {
+  if (viewData.loader || qcLoader) {
     return (
       <div
         style={{

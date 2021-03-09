@@ -21,6 +21,13 @@
     .MuiTabs-indicator {
       display: none;
     }
-    
+  }
+  .qc-protocol-table {
+    .adjust-ellipses {
+      max-width: 450px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
   }
 }

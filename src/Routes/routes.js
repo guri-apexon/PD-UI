@@ -34,6 +34,7 @@ const Routes = ({ userType }) => {
       {userType === "QC1" && (
         <Switch>
           <Redirect exact from="/" to="/qc" />
+          <Redirect exact from="/dashboard" to="/qc" />
           <Route path="/qc" component={QC} />
           <Route path="*" component={PageNotFound} />
         </Switch>

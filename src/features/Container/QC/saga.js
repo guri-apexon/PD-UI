@@ -1,6 +1,6 @@
 import { takeEvery, all, call, put, select } from "redux-saga/effects";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import { getProtocols, setError } from "./qcSlice";
+import { getProtocols, setError, getLoader } from "./qcSlice";
 import { toast } from "react-toastify";
 function* getState() {
   const state = yield select();
@@ -50,16 +50,20 @@ function* qcApprove(action) {
     method: "PUT",
   };
   try {
+    getLoader(true);
     const data = yield call(httpCall, config);
     console.log(data);
     if (data.success) {
+      getLoader(false);
       toast.info("Approved Successfully");
       wait();
     } else {
+      getLoader(false);
       toast.error("Error While Approving");
     }
   } catch (err) {
     console.log(err);
+    getLoader(false);
     toast.error("Something Went Wrong");
   }
 }
@@ -71,16 +75,20 @@ function* sendQc2Approval(action) {
     method: "PUT",
   };
   try {
+    getLoader(true);
     const data = yield call(httpCall, config);
     if (data.success) {
+      getLoader(false);
       toast.info("Sent For QC2 Approval Successfully");
       // window.location.href = "/qc";
       wait();
     } else {
+      getLoader(false);
       toast.error("Error While Sending");
     }
     console.log(data);
   } catch (err) {
+    getLoader(false);
     console.log(err);
     toast.error("Something Went Wrong");
   }
@@ -93,16 +101,20 @@ function* qc2Reject(action) {
     method: "PUT",
   };
   try {
+    getLoader(true);
     const data = yield call(httpCall, config);
     console.log(data);
     if (data.success) {
+      getLoader(false);
       toast.info("Rejected Successfully");
       // window.location.href = "/qc";
       wait();
     } else {
+      getLoader(false);
       toast.error("Error While Rejecting");
     }
   } catch (err) {
+    getLoader(false);
     console.log(err);
     toast.error("Something Went Wrong");
   }
@@ -112,7 +124,7 @@ function* uploadQc(action) {
   let bodyFormData = new FormData();
   bodyFormData.append("iqvdata_xls_file", action.payload.data);
   const postUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_upload?aidoc_id=${action.payload.id}`;
-
+  getLoader(true);
   const postUploadQc = yield call(httpCall, {
     url: postUrl,
     method: "POST",
@@ -121,9 +133,14 @@ function* uploadQc(action) {
   });
 
   if (postUploadQc.success) {
+    getLoader(false);
     toast.info("Upload Successful");
-    yield put({ type: "GET_PROTOCOL_TOC_SAGA", payload: action.payload.id });
+    yield put({
+      type: "GET_PROTOCOL_TOC_SAGA",
+      payload: { endPoint: "protocol_data/qc", id: action.payload.id },
+    });
   } else {
+    getLoader(false);
     toast.error("Something Went Wrong");
   }
 }
