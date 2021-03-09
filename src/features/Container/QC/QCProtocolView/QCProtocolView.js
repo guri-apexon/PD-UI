@@ -104,7 +104,7 @@ function QCProtocolView({ protId, path, userType }) {
     const fileLocationName = await axios.get(customUrl).catch(() => {
       toast.error("Something Went Wrong");
     });
-    if (fileLocationName.data) {
+    if (fileLocationName && fileLocationName.data) {
       let splitFileName = fileLocationName.data.split("\\");
       if (value === "1") {
         //For Json
