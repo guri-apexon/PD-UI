@@ -6,7 +6,10 @@ function ProtocolView({ protId }) {
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
   useEffect(() => {
-    dispatch({ type: "GET_PROTOCOL_TOC_SAGA", payload: protId });
+    dispatch({
+      type: "GET_PROTOCOL_TOC_SAGA",
+      payload: { endPoint: "protocol_data/", id: protId },
+    });
   }, []);
   const listData = [];
 

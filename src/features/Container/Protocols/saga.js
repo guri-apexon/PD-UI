@@ -116,7 +116,8 @@ export function* getProtocolToc(action) {
     err: null,
   };
   yield put(getProcotoclToc(viewData));
-  const URL = `${BASE_URL_8000}/api/protocol_data/?id=${action.payload}`;
+  const URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?id=${action.payload.id}`;
+  // let URL = `${BASE_URL_8000}/api/protocol_data/?id=${action.payload.id}`;
   // const URL = `/view_new.json`;
   const config = {
     url: URL,
@@ -130,7 +131,7 @@ export function* getProtocolToc(action) {
       const viewData = {
         iqvdataSoa: soa,
         // iqvdataSoa: [],
-        // iqvdataSummary: parsedData(data.data.iqvdataSummary),
+        iqvdataSummary: parsedData(data.data.iqvdataSummary),
         iqvdataToc: toc,
         loader: false,
         tocSections: getTocSections(toc),
