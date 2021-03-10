@@ -33,17 +33,18 @@ export function* qcProtocolsData() {
     }
   } catch (err) {
     yield put(setError("Something Went Wrong"));
-    alert("Something Went Wrong");
+    toast.error("Something Went Wrong");
   }
 }
 
 function wait() {
+  /* istanbul ignore next */
   setTimeout(function () {
     window.location.href = "/qc";
   }, 3000);
 }
 
-function* qcApprove(action) {
+export function* qcApprove(action) {
   const url = `${BASE_URL_8000}/api/protocol_data/qc_approve?aidoc_id=${action.payload}`;
   const config = {
     url: url,
@@ -68,7 +69,7 @@ function* qcApprove(action) {
   }
 }
 
-function* sendQc2Approval(action) {
+export function* sendQc2Approval(action) {
   const url = `${BASE_URL_8000}/api/protocol_metadata/qc1_to_qc2?aidoc_id=${action.payload}`;
   const config = {
     url: url,
@@ -94,7 +95,7 @@ function* sendQc2Approval(action) {
   }
 }
 
-function* qc2Reject(action) {
+export function* qc2Reject(action) {
   const url = `${BASE_URL_8000}/api/protocol_metadata/qc_reject?aidoc_id=${action.payload}`;
   const config = {
     url: url,
@@ -120,7 +121,7 @@ function* qc2Reject(action) {
   }
 }
 
-function* uploadQc(action) {
+export function* uploadQc(action) {
   let bodyFormData = new FormData();
   bodyFormData.append("iqvdata_xls_file", action.payload.data);
   const postUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_upload?aidoc_id=${action.payload.id}`;
