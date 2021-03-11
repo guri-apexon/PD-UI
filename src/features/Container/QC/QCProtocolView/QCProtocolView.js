@@ -124,15 +124,15 @@ function QCProtocolView({ protId, path, userType }) {
         a.remove();
       }
 
-      if (value === "2") {
-        // For Excel
-        let url = `${UI_URL}/${splitFileName[1]}`;
-        let encodeUrl = encodeURI(url);
-        let myWindow = window.open("about:blank", "_blank");
-        myWindow.document.write(
-          `<iframe src=${encodeUrl} name="fileName" frameborder="0" width="100%" height="100%"></iframe>`
-        );
-      }
+      // if (value === "2") {
+      //   // For Excel
+      //   let url = `${UI_URL}/${splitFileName[1]}`;
+      //   let encodeUrl = encodeURI(url);
+      //   let myWindow = window.open("about:blank", "_blank");
+      //   myWindow.document.write(
+      //     `<iframe src=${encodeUrl} name="fileName" frameborder="0" width="100%" height="100%"></iframe>`
+      //   );
+      // }
     }
   };
 
@@ -207,7 +207,7 @@ function QCProtocolView({ protId, path, userType }) {
           style={{ marginRight: 10, float: "right" }}
         >
           <MenuItem value="1">{"Download JSON"}</MenuItem>
-          <MenuItem value="2">{"Download XLSX"}</MenuItem>
+          {/* <MenuItem value="2">{"Download XLSX"}</MenuItem> */}
         </SelectButton>
       </div>
       <ProtocolViewClass
