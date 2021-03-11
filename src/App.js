@@ -87,7 +87,7 @@ function App(props) {
         let dif = curDate - expDate;
         dif = Math.abs(dif / 1000 / 60);
         dif = Math.round(dif * 10) / 10;
-        dif = dif - 5;
+        dif = dif - 1;
         console.log("mins - ", dif);
         let testInterval = setTimeout(function () {
           axios
