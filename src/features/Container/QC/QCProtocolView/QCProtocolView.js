@@ -94,8 +94,22 @@ function QCProtocolView({ protId, path, userType }) {
   const handleChange = (value) => {
     console.log(value);
     // dispatch({ type: "DOWNLOAD_PROTOCOL_QC_SAGA", payload: value });
-    handleDownload(value, protId);
+    // handleDownload(value, protId);
+    downloadObjectAsJson(viewData.download, viewData.download.id);
   };
+
+  function downloadObjectAsJson(exportObj, exportName) {
+    let dataStr =
+      "data:text/json;charset=utf-8," +
+      encodeURIComponent(JSON.stringify(exportObj));
+    let downloadAnchorNode = document.createElement("a");
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+
   const handleDownload = async (value, id) => {
     let customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_json?aidoc_id=${id}`;
     if (value === "2") {

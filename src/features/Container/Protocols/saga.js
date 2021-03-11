@@ -137,6 +137,8 @@ export function* getProtocolToc(action) {
         tocSections: getTocSections(toc),
         soaSections: getSoaSections(soa),
         // soaSections: [],
+        err: null,
+        download: data.data,
       };
       yield put(getProcotoclToc(viewData));
     } else {
