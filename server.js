@@ -1007,11 +1007,12 @@ app.use(function (req, res, next) {
               res.cookie("exp", decoded.exp);
               next();
               break;
-            // case 102:
-            //   res.redirect(
-            //     `${baseUrlSSO}${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
-            //   );
-            //   break;
+            case 102:
+              // res.redirect(
+              //   `${baseUrlSSO}${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`
+              // );
+              next();
+              break;
             default:
               res.redirect(`${baseUrlSSO}/logout_session`);
           }
