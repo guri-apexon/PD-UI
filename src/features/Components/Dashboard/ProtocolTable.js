@@ -379,7 +379,11 @@ const ProtocolTable = ({
     );
   };
   const handleRowProtocolClick = (row) => {
-    handleProtocolClick({ id: row.id, path: row.documentFilePath });
+    handleProtocolClick({
+      id: row.id,
+      path: row.documentFilePath,
+      protocol: row.protocol,
+    });
   };
 
   // useEffect(() => {

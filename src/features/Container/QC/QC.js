@@ -17,6 +17,7 @@ const QCContainer = () => {
   const type = useSelector(userType);
   const [value, setValue] = useState(0);
   const [protocolId, setprotocolId] = useState("");
+  const [protocolNumber, setProtocolNumber] = useState("");
   const [filePath, setFilePath] = useState("");
 
   const handleClick = (e) => {
@@ -26,24 +27,41 @@ const QCContainer = () => {
     if (value !== 1) setValue(value);
     if (value === 0) {
       setprotocolId("");
+      setProtocolNumber("");
       setFilePath("");
     }
   };
-  const handleProtocolClick = ({ id, path }) => {
+  const handleProtocolClick = ({ id, path, protocol }) => {
     console.log("id11111", id);
     setValue(1);
     setprotocolId(id);
+    setProtocolNumber(protocol);
     setFilePath(path);
   };
-  let today = new Date();
-  let curHr = today.getHours();
-  let greet;
-  if (curHr < 12) {
-    greet = "Good Morning, ";
-  } else if (curHr < 18) {
-    greet = "Good Afternoon, ";
-  } else {
-    greet = "Good Evening, ";
+  // let today = new Date();
+  // let curHr = today.getHours();
+  // let greet;
+  // if (curHr < 12) {
+  //   greet = "Good Morning, ";
+  // } else if (curHr < 18) {
+  //   greet = "Good Afternoon, ";
+  // } else {
+  //   greet = "Good Evening, ";
+  // }
+
+  const breadItems = [
+    { href: "/qc", onClick: (e) => handleClick(e) },
+    {
+      href: "/qc",
+      title: "QC",
+      onClick: handleClick,
+    },
+  ];
+
+  if (protocolNumber) {
+    breadItems.push({
+      title: protocolNumber,
+    });
   }
 
   return (
@@ -55,14 +73,7 @@ const QCContainer = () => {
         {greet} {userDetails && userDetails.username}
       </h1> */}
       <Breadcrumbs
-        items={[
-          { href: "/qc", onClick: (e) => handleClick(e) },
-          {
-            href: "/qc",
-            title: "QC",
-            onClick: handleClick,
-          },
-        ]}
+        items={breadItems}
         style={{ paddingInlineStart: 0, marginBottom: 0 }}
       />
       <div
