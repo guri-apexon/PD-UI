@@ -20,8 +20,9 @@ const QCContainer = () => {
   const [filePath, setFilePath] = useState("");
 
   const handleClick = (e) => {
-    e.preventdefault();
+    e.preventDefault();
   };
+  /* istanbul ignore next */
   const handleChangeTab = (event, value) => {
     if (value !== 1) setValue(value);
     if (value === 0) {
@@ -30,26 +31,16 @@ const QCContainer = () => {
     }
   };
   const handleProtocolClick = ({ id, path }) => {
-    console.log("id11111", id);
     setValue(1);
     setprotocolId(id);
     setFilePath(path);
   };
-  let today = new Date();
-  let curHr = today.getHours();
-  let greet;
-  if (curHr < 12) {
-    greet = "Good Morning, ";
-  } else if (curHr < 18) {
-    greet = "Good Afternoon, ";
-  } else {
-    greet = "Good Evening, ";
-  }
 
   return (
     <div
       className="dashboard-parent qc-parent protocols"
       style={{ padding: 20 }}
+      data-testid='qc-parent-component'
     >
       {/* <h1>
         {greet} {userDetails && userDetails.username}
