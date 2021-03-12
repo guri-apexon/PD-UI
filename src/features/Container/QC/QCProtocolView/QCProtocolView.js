@@ -26,22 +26,24 @@ function QCProtocolView({ protId, path, userType }) {
     });
   }, []);
   const listData = [];
-  console.log("Path", path);
+  // console.log("Path", path);
   const subSections = {
     TOC: viewData.tocSections,
     SOA: viewData.soaSections,
   };
-  console.log("view", viewData);
+  // console.log("view", viewData);
+   /* istanbul ignore else */
   if (subSections.TOC && subSections.TOC.length) {
     listData.push({ section: "Table of Contents", id: "Toc" });
   }
+   /* istanbul ignore else */
   if (subSections.SOA && subSections.SOA.length) {
     listData.push({ section: "Schedule of Assessments", id: "SOA" });
   }
   const onFileChange = (event) => {
     // Update the state
     // this.setState({ selectedFile: event.target.files[0] });
-    console.log(event.target.files[0]);
+    // console.log(event.target.files[0]);
     setSelectedFile(event.target.files[0]);
   };
 
@@ -51,7 +53,7 @@ function QCProtocolView({ protId, path, userType }) {
     }
     // Create an object of formData
     // Details of the uploaded file
-    console.log(selectedFile);
+    // console.log(selectedFile);
     dispatch({
       type: "UPLOAD_PROTOCOL_QC_SAGA",
       payload: { data: selectedFile, id: protId },
@@ -92,7 +94,7 @@ function QCProtocolView({ protId, path, userType }) {
   };
 
   const handleChange = (value) => {
-    console.log(value);
+    // console.log(value);
     // dispatch({ type: "DOWNLOAD_PROTOCOL_QC_SAGA", payload: value });
     // handleDownload(value, protId);
     downloadObjectAsJson(viewData.download, viewData.download.id);
@@ -110,33 +112,33 @@ function QCProtocolView({ protId, path, userType }) {
     downloadAnchorNode.remove();
   }
 
-  const handleDownload = async (value, id) => {
-    let customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_json?aidoc_id=${id}`;
-    if (value === "2") {
-      customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_xlsx?aidoc_id=${id}`;
-    }
-    const fileLocationName = await axios.get(customUrl).catch(() => {
-      toast.error("Something Went Wrong");
-    });
-    if (fileLocationName && fileLocationName.data) {
-      let splitFileName = fileLocationName.data.split("\\");
-      if (value === "1") {
-        //For Json
-        let url = `${UI_URL}/${splitFileName[1]}`;
-        let jsonres = await axios
-          .get(url)
-          .then((res) => res.data)
-          .catch(() => {
-            toast.error("Somethissssng Went Wrong");
-          });
-        let content = JSON.stringify(jsonres);
-        const a = document.createElement("a");
-        const file = new Blob([content], { type: "application/json" });
-        a.href = URL.createObjectURL(file);
-        a.download = splitFileName[1];
-        a.click();
-        a.remove();
-      }
+  // const handleDownload = async (value, id) => {
+  //   let customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_json?aidoc_id=${id}`;
+  //   if (value === "2") {
+  //     customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_xlsx?aidoc_id=${id}`;
+  //   }
+  //   const fileLocationName = await axios.get(customUrl).catch(() => {
+  //     toast.error("Something Went Wrong");
+  //   });
+  //   if (fileLocationName && fileLocationName.data) {
+  //     let splitFileName = fileLocationName.data.split("\\");
+  //     if (value === "1") {
+  //       //For Json
+  //       let url = `${UI_URL}/${splitFileName[1]}`;
+  //       let jsonres = await axios
+  //         .get(url)
+  //         .then((res) => res.data)
+  //         .catch(() => {
+  //           toast.error("Somethissssng Went Wrong");
+  //         });
+  //       let content = JSON.stringify(jsonres);
+  //       const a = document.createElement("a");
+  //       const file = new Blob([content], { type: "application/json" });
+  //       a.href = URL.createObjectURL(file);
+  //       a.download = splitFileName[1];
+  //       a.click();
+  //       a.remove();
+  //     }
 
       // if (value === "2") {
       //   // For Excel
@@ -147,8 +149,8 @@ function QCProtocolView({ protId, path, userType }) {
       //     `<iframe src=${encodeUrl} name="fileName" frameborder="0" width="100%" height="100%"></iframe>`
       //   );
       // }
-    }
-  };
+    // }
+  // };
 
   if (viewData.loader || qcLoader) {
     return (
@@ -197,13 +199,14 @@ function QCProtocolView({ protId, path, userType }) {
   return (
     <>
       <div style={{ marginLeft: "26%", marginBottom: "5px" }}>
-        <input type="file" onChange={onFileChange} />
+        <input type="file" data-testid="choose-file-upload" onChange={onFileChange} />
         <Button
           variant="secondary"
           icon={<Upload />}
           size="small"
           style={{ marginRight: 10 }}
           onClick={() => onFileUpload()}
+          data-testid="upload-file-button"
         >
           Upload
         </Button>
@@ -219,8 +222,9 @@ function QCProtocolView({ protId, path, userType }) {
           onChange={handleChange}
           placeholder="Download"
           style={{ marginRight: 10, float: "right" }}
+          data-testid="download-button"
         >
-          <MenuItem value="1">{"Download JSON"}</MenuItem>
+          <MenuItem data-testid="download-json-button" value="1">{"Download JSON"}</MenuItem>
           {/* <MenuItem value="2">{"Download XLSX"}</MenuItem> */}
         </SelectButton>
       </div>
@@ -235,6 +239,7 @@ function QCProtocolView({ protId, path, userType }) {
           size="small"
           style={{ marginRight: 10 }}
           onClick={() => onApprove()}
+          data-testid="approve-button"
         >
           Approve
         </Button>
@@ -244,6 +249,7 @@ function QCProtocolView({ protId, path, userType }) {
             size="small"
             style={{ marginRight: 10 }}
             onClick={() => sendQc2ForApproval()}
+            data-testid="sendQC2-button"
           >
             Send QC2 Approval
           </Button>
@@ -254,6 +260,7 @@ function QCProtocolView({ protId, path, userType }) {
             size="small"
             style={{ marginRight: 10 }}
             onClick={() => onReject()}
+            data-testid="reject-button"
           >
             Reject
           </Button>
