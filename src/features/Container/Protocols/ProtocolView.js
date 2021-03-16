@@ -19,10 +19,21 @@ function ProtocolView({ protId }) {
   };
   console.log("view", viewData);
   if (subSections.TOC && subSections.TOC.length) {
-    listData.push({ section: "Table of Contents", id: "Toc" });
+    listData.push({
+      section: "Table of Contents",
+      id: "TOC",
+      subSections: true,
+    });
   }
   if (subSections.SOA && subSections.SOA.length) {
-    listData.push({ section: "Schedule of Assessments", id: "SOA" });
+    listData.push({
+      section: "Schedule of Assessments",
+      id: "SOA",
+      subSections: true,
+    });
+  }
+  if (viewData.iqvdataSummary) {
+    listData.push({ section: "Summary", id: "SUM", subSections: false });
   }
   return (
     viewData && (

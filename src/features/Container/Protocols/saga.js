@@ -7,6 +7,7 @@ import {
 } from "./protocolSlice.js";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
+import summary from "./Summary_sample.json";
 
 export function* getSummaryData(action) {
   let obj = {
@@ -132,6 +133,7 @@ export function* getProtocolToc(action) {
         iqvdataSoa: soa,
         // iqvdataSoa: [],
         iqvdataSummary: parsedData(data.data.iqvdataSummary),
+        // iqvdataSummary: summary.data,
         iqvdataToc: toc,
         loader: false,
         tocSections: getTocSections(toc),
