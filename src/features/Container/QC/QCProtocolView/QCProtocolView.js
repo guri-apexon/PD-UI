@@ -32,13 +32,25 @@ function QCProtocolView({ protId, path, userType }) {
     SOA: viewData.soaSections,
   };
   // console.log("view", viewData);
-   /* istanbul ignore else */
+  /* istanbul ignore else */
   if (subSections.TOC && subSections.TOC.length) {
-    listData.push({ section: "Table of Contents", id: "Toc" });
+    listData.push({
+      section: "Table of Contents",
+      id: "TOC",
+      subSections: true,
+    });
   }
-   /* istanbul ignore else */
+  /* istanbul ignore else */
   if (subSections.SOA && subSections.SOA.length) {
-    listData.push({ section: "Schedule of Assessments", id: "SOA" });
+    listData.push({
+      section: "Schedule of Assessments",
+      id: "SOA",
+      subSections: true,
+    });
+  }
+  /* istanbul ignore else */
+  if (viewData.iqvdataSummary) {
+    listData.push({ section: "Summary", id: "SUM", subSections: false });
   }
   const onFileChange = (event) => {
     // Update the state
@@ -140,16 +152,16 @@ function QCProtocolView({ protId, path, userType }) {
   //       a.remove();
   //     }
 
-      // if (value === "2") {
-      //   // For Excel
-      //   let url = `${UI_URL}/${splitFileName[1]}`;
-      //   let encodeUrl = encodeURI(url);
-      //   let myWindow = window.open("about:blank", "_blank");
-      //   myWindow.document.write(
-      //     `<iframe src=${encodeUrl} name="fileName" frameborder="0" width="100%" height="100%"></iframe>`
-      //   );
-      // }
-    // }
+  // if (value === "2") {
+  //   // For Excel
+  //   let url = `${UI_URL}/${splitFileName[1]}`;
+  //   let encodeUrl = encodeURI(url);
+  //   let myWindow = window.open("about:blank", "_blank");
+  //   myWindow.document.write(
+  //     `<iframe src=${encodeUrl} name="fileName" frameborder="0" width="100%" height="100%"></iframe>`
+  //   );
+  // }
+  // }
   // };
 
   if (viewData.loader || qcLoader) {
@@ -199,7 +211,11 @@ function QCProtocolView({ protId, path, userType }) {
   return (
     <>
       <div style={{ marginLeft: "26%", marginBottom: "5px" }}>
-        <input type="file" data-testid="choose-file-upload" onChange={onFileChange} />
+        <input
+          type="file"
+          data-testid="choose-file-upload"
+          onChange={onFileChange}
+        />
         <Button
           variant="secondary"
           icon={<Upload />}
@@ -224,7 +240,9 @@ function QCProtocolView({ protId, path, userType }) {
           style={{ marginRight: 10, float: "right" }}
           data-testid="download-button"
         >
-          <MenuItem data-testid="download-json-button" value="1">{"Download JSON"}</MenuItem>
+          <MenuItem data-testid="download-json-button" value="1">
+            {"Download JSON"}
+          </MenuItem>
           {/* <MenuItem value="2">{"Download XLSX"}</MenuItem> */}
         </SelectButton>
       </div>

@@ -231,11 +231,8 @@ class ProtocolViewClass extends React.Component {
 
     let subData = [];
     switch (id) {
-      case "Toc":
+      case "TOC":
         subData = this.props.data.TOC;
-        break;
-      case "TableOfTable":
-        subData = this.props.data.TableOfTable;
         break;
       case "SOA":
         subData = this.props.data.SOA;
@@ -270,6 +267,28 @@ class ProtocolViewClass extends React.Component {
       acc[value.id] = React.createRef();
       return acc;
     }, {});
+
+    const refsSection = listData.reduce((acc, value) => {
+      acc[value.id] = React.createRef();
+      return acc;
+    }, {});
+    console.log(this.state);
+    const scrollSections = (id) => {
+      refsSection[id].current &&
+        refsSection[id].current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      this.setState({
+        activeSubSection: null,
+        section: id,
+        activeSection: id,
+        popupVisible: false,
+        subSectionData: [],
+      });
+      // this.hideEle();
+    };
+
     this.refs = refs;
     const scrollHide = (id) => {
       refs[id].current &&
@@ -329,17 +348,23 @@ class ProtocolViewClass extends React.Component {
                   className={`btn btn1 ${
                     this.state.activeSection === item.id ? "active" : ""
                   }`}
-                  onClick={() => this.handleClick(item.id)}
+                  onClick={() =>
+                    item.subSections
+                      ? this.handleClick(item.id)
+                      : scrollSections(item.id)
+                  }
                   key={`section-${item.id}`}
                 >
                   <span style={{ marginLeft: "16px" }}>{item.section} </span>
-                  <span style={{ float: "right", fontSize: "1em" }}>
-                    <ChevronRight
-                      className="view-more-icon"
-                      variant="small"
-                      style={{ float: "right", fontSize: "1em" }}
-                    />
-                  </span>
+                  {item.subSections && (
+                    <span style={{ float: "right", fontSize: "1em" }}>
+                      <ChevronRight
+                        className="view-more-icon"
+                        variant="small"
+                        style={{ float: "right", fontSize: "1em" }}
+                      />
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -383,6 +408,25 @@ class ProtocolViewClass extends React.Component {
                 return this.getTocElement(item);
               })}
             {view.iqvdataSoa.map((item) => this.getTable(item, "SOA"))}
+
+            <div
+              id={"SUM"}
+              key={"SUM"}
+              ref={refsSection["SUM"]}
+              style={{ marginTop: "10%" }}
+            >
+              {view.iqvdataSummary.data.map((item) => {
+                return (
+                  <>
+                    <div dangerouslySetInnerHTML={{ __html: item[2] }}></div>
+                    <p
+                      style={{ marginTop: 0, marginBottom: "10px" }}
+                      dangerouslySetInnerHTML={{ __html: item[1] }}
+                    ></p>
+                  </>
+                );
+              })}
+            </div>
           </div>
         </Card>
       </div>
