@@ -17,7 +17,7 @@ import SelectButton from "apollo-react/components/SelectButton";
 import AlignJustify from "apollo-react-icons/AlignJustify";
 import Chip from "apollo-react/components/Chip";
 import Grid from "apollo-react/components/Grid";
-import Pagination from 'apollo-react/components/Pagination';
+import Pagination from "apollo-react/components/Pagination";
 // import { Pagination } from '@material-ui/lab';
 // import Pagination from '@material-ui/lab/Pagination';
 import NoResultFound from "../../Components/NoResultFound";
@@ -192,10 +192,10 @@ class SearchPanel extends React.Component {
   //   const {onSetPage}= this.props;
   //   onSetPage(data, value)
   // }
-  onPageChange= (value)=>{
-    const {onSetPage}= this.props;
-    onSetPage(value)
-  }
+  onPageChange = (value) => {
+    const { onSetPage } = this.props;
+    onSetPage(value);
+  };
 
   render() {
     const {
@@ -211,7 +211,8 @@ class SearchPanel extends React.Component {
       clearAll,
       page,
       setPage,
-      totalSearchResult
+      totalSearchResult,
+      getSearchInput,
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
 
@@ -237,6 +238,16 @@ class SearchPanel extends React.Component {
                       {" "}
                       Clear All
                     </Link>
+                  </div>
+                  <div>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      style={{ marginRight: 0 }}
+                      onClick={() => getSearchInput()}
+                    >
+                      Apply Filter
+                    </Button>
                   </div>
                   {/* <div className="floatRight">
                     <Button
@@ -324,8 +335,11 @@ class SearchPanel extends React.Component {
                       {protocols} of {protocols}{" "}
                     </span> */}
                     <span>
-                      Showing {(page*10)+1} -{" "}
-                      {(page*10+10)<totalSearchResult.length ? (page*10+10):totalSearchResult.length} of {totalSearchResult.length}{" "}
+                      Showing {page * 10 + 1} -{" "}
+                      {page * 10 + 10 < totalSearchResult.length
+                        ? page * 10 + 10
+                        : totalSearchResult.length}{" "}
+                      of {totalSearchResult.length}{" "}
                     </span>
                   </div>
 
@@ -419,9 +433,19 @@ class SearchPanel extends React.Component {
                     </div>
                   )}
               {/* {resultList.loader && <Loader />} */}
-              { !resultList.loader &&
-              resultList.success &&
-              accordionObj.length !== 0 && <div className="search-pagination"> <Pagination count={totalSearchResult &&totalSearchResult.length} rowsPerPage={10} page={page} onChangePage={this.onPageChange} /></div>}
+              {!resultList.loader &&
+                resultList.success &&
+                accordionObj.length !== 0 && (
+                  <div className="search-pagination">
+                    {" "}
+                    <Pagination
+                      count={totalSearchResult && totalSearchResult.length}
+                      rowsPerPage={10}
+                      page={page}
+                      onChangePage={this.onPageChange}
+                    />
+                  </div>
+                )}
               {/* { !resultList.loader &&
               resultList.success &&
               accordionObj.length !== 0 && <div> <Pagination count={totalSearchResult &&Math.ceil(totalSearchResult.length/10)} rowsPerPage={10} page={page} onChange={this.onPageChange} /></div>} */}
@@ -440,8 +464,8 @@ const mapDispatchToProps = (dispatch) => {
         type: "UPDATE_SEARCH_ASSOCIATED_PROTOCOLS",
         payload: { data, obj },
       }),
-    updateSearchResult: (obj)=>
-    dispatch({ type: "UPDATE_SEARCH_RESULT", payload: obj })
+    updateSearchResult: (obj) =>
+      dispatch({ type: "UPDATE_SEARCH_RESULT", payload: obj }),
   };
 };
 export default connect(null, mapDispatchToProps)(SearchPanel);
