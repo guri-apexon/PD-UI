@@ -7,7 +7,6 @@ import {
 } from "./protocolSlice.js";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
-import summary from "./Summary_sample.json";
 
 export function* getSummaryData(action) {
   let obj = {
@@ -118,8 +117,6 @@ export function* getProtocolToc(action) {
   };
   yield put(getProcotoclToc(viewData));
   const URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?id=${action.payload.id}`;
-  // let URL = `${BASE_URL_8000}/api/protocol_data/?id=${action.payload.id}`;
-  // const URL = `/view_new.json`;
   const config = {
     url: URL,
     method: "GET",
@@ -131,14 +128,11 @@ export function* getProtocolToc(action) {
       const soa = parsedData(data.data.iqvdataSoa);
       const viewData = {
         iqvdataSoa: soa,
-        // iqvdataSoa: [],
         iqvdataSummary: parsedData(data.data.iqvdataSummary),
-        // iqvdataSummary: summary.data,
         iqvdataToc: toc,
         loader: false,
         tocSections: getTocSections(toc),
         soaSections: getSoaSections(soa),
-        // soaSections: [],
         err: null,
         download: data.data,
       };
@@ -169,37 +163,6 @@ export function* getProtocolToc(action) {
     yield put(getProcotoclToc(viewData));
   }
 }
-
-export function getElement(style) {
-  switch (style.font_style) {
-    case "Heading1":
-      return "h1";
-    default:
-      return "p";
-  }
-}
-// function* getProtocolSummary() {
-//   const URL = "/summary.json";
-//   const config = {
-//     url: URL,
-//     method: "GET",
-//   };
-//   const tocData = yield call(httpCall, config);
-//   if (tocData.success) {
-//     const sumData = tocData.data.data;
-//     // const content = sumData[0];
-//     // const type = sumData[1];
-//     // const subsectionOf = sumData[2];
-//     // const style = sumData[3];
-//     // if (style.font_style === 'Heading1') {
-//     // const ele = document.createElement(getElement(sumData[3]));
-//     // const node = document.createTextNode(content);
-//     // ele.appendChild(node);
-//     // }
-//     yield put(getProcotoclToc(sumData));
-//   }
-//   yield getProtocolToc();
-// }
 
 export function* fetchAssociateProtocol(action) {
   const URL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload}`;
