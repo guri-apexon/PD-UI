@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  fireEvent,
-  render,
-  waitForElement,
-} from "../../../../test-utils/test-utils";
+import { fireEvent, render } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import QCProtocolView from "../QCProtocolView/QCProtocolView";
 
@@ -27,7 +23,11 @@ describe("QC Protocol View container component", () => {
       protocol: {
         view: {
           iqvdataSoa: [],
-          iqvdataSummary: {},
+          iqvdataSummary: {
+            index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+            columns: ["field_name", "field_value", "field_header"],
+            data: [["protocol_name", "", "<b>Protocol Name</b>"]],
+          },
           iqvdataToc: {
             data: [],
           },
@@ -44,10 +44,10 @@ describe("QC Protocol View container component", () => {
               id: "SOA-4",
             },
           ],
-          download:{
-            id:'12222',
-            iqvdataToc:'sss'
-          }
+          download: {
+            id: "12222",
+            iqvdataToc: "sss",
+          },
         },
       },
     },
