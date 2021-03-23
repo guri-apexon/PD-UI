@@ -11,6 +11,7 @@ import SearchSection from "./SearchSection";
 
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 //------------------- Redux -----------------
 import { useSelector, useDispatch } from "react-redux";
@@ -21,7 +22,7 @@ import {
   sponsors,
   recent,
   range,
-  totalSearchResult
+  totalSearchResult,
 } from "./searchSlice";
 import {
   phases,
@@ -238,12 +239,61 @@ const Search = (props) => {
       payload: input,
     });
   };
+  const handleKeywordSearch = (input) => {
+    // debugger;
+    if (input) {
+      setSortValue("1");
+      setProtocolSelected([]);
+      setPrevProtSelected("");
+      setPage(0);
+      setSearchQuery({
+        sponsor: [],
+        indication: [],
+        phase: [],
+        documentStatus: [],
+        toc: [],
+        dateType: [1],
+        dateSection: [1],
+      });
+      // setDateRangeValue([null, null]);
+      // clearInputFields("range-date-id");
+      const range = {
+        from: null,
+        to: null,
+      };
+      // setElasticSearchQuesry("");
+      dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+      setDateRangeValue([null, null]);
+      setSearchInput(input);
+      const sort = ["relevancy", "approvalDate", "uploadDate"];
+      const body = {
+        key: input,
+        sortBy: "relevancy",
+        pageNumber: page,
+      };
+
+      // debugger;
+      dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
+      if (sponsorData.sectionContent.length === 0) {
+        dispatch({ type: "GET_SPONSORS" });
+      }
+      if (indicationData.sectionContent.length === 0) {
+        dispatch({ type: "GET_INDICATIONS" });
+      }
+      props.history.replace({
+        pathname: "/search",
+        search: `?key=${input}`,
+      });
+    } else {
+      toast.warn("Please enter something to search.");
+    }
+  };
 
   const getSearchInput = (input) => {
     // debugger
     setSortValue("1");
     setProtocolSelected([]);
-    setPrevProtSelected('');
+    setPrevProtSelected("");
     setPage(0);
     let inp = input ? input : searchInput;
     let resultQuery = `key=${inp}`;
@@ -330,14 +380,16 @@ const Search = (props) => {
     if (rangeDate.from && rangeDate.to) {
       let date11 = formatESDate(rangeDate.from);
       let date22 = formatESDate(rangeDate.to);
-      let d1 = moment(date11)
-      let d2 = moment(date22)
+      let d1 = moment(date11);
+      let d2 = moment(date22);
       let date1 = d1.format("MM-DD-YYYY");
       let date2 = d2.format("MM-DD-YYYY");
       // debugger
       if (d1._isValid && d2._isValid) {
         if (isFutureDate(date1) || isFutureDate(date2)) {
-          alert("Future date is not allowed. Please use date range picker to select valid date.");
+          alert(
+            "Future date is not allowed. Please use date range picker to select valid date."
+          );
         } else {
           const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`;
           // setSearchInput(dateQuery);
@@ -351,7 +403,9 @@ const Search = (props) => {
           });
         }
       } else {
-        alert("Date is not valid. Please use date range picker to select valid date.");
+        alert(
+          "Date is not valid. Please use date range picker to select valid date."
+        );
       }
     } else if (recentDate.from) {
       // setSearchInput(parsed[`key`]);
@@ -382,7 +436,7 @@ const Search = (props) => {
   const hancleClearAll = (inputPresent, input) => {
     // setClearAll(true);
     setProtocolSelected([]);
-    setPrevProtSelected('');
+    setPrevProtSelected("");
     if (inputPresent) {
       setSearchQuery({
         sponsor: [],
@@ -401,7 +455,7 @@ const Search = (props) => {
         from: null,
         to: null,
       };
-      setElasticSearchQuesry(`key=${input}`)
+      setElasticSearchQuesry(`key=${input}`);
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
       setDateRangeValue([null, null]);
@@ -422,7 +476,7 @@ const Search = (props) => {
         from: null,
         to: null,
       };
-      setElasticSearchQuesry("")
+      setElasticSearchQuesry("");
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
       setDateRangeValue([null, null]);
@@ -587,12 +641,16 @@ const Search = (props) => {
             return second - first;
           }
         });
-      dispatch({ type: "UPDATE_SEARCH_RESULT", payload: {loader: false,
-        search: true,
-        success: true,
-        data:newList && newList.slice(0,10) }
+      dispatch({
+        type: "UPDATE_SEARCH_RESULT",
+        payload: {
+          loader: false,
+          search: true,
+          success: true,
+          data: newList && newList.slice(0, 10),
+        },
       });
-      dispatch({ type: "UPDATE_TOTAL_SEARCH_RESULT", payload: newList});
+      dispatch({ type: "UPDATE_TOTAL_SEARCH_RESULT", payload: newList });
     }
   };
 
@@ -657,9 +715,9 @@ const Search = (props) => {
   };
   // const onSetPage = (event, value) => {
   const onSetPage = (value) => {
-    setPage(value)
-    dispatch({ type: "PAGE_CHANGE", payload:value });
-  }
+    setPage(value);
+    dispatch({ type: "PAGE_CHANGE", payload: value });
+  };
   return (
     <div className="search">
       <Breadcrumbs
@@ -685,10 +743,12 @@ const Search = (props) => {
             compareProtocol={compareProtocol}
             saveSearch={saveSearch}
             saveRecentSearch={saveRecentSearch}
+            handleKeywordSearch={handleKeywordSearch}
           />
         </div>
         <div>
           <SearchResultSection
+            getSearchInput={getSearchInput}
             filterList={filterList.data}
             resultList={resultList}
             sponsorData={sponsorData}
