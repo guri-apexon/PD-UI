@@ -130,7 +130,8 @@ const CustomDropdown = ({
     if (event.target && textInputRef && textInputRef.current&& textInputRef.current.contains(event.target)) {
       return;
     } else {
- setExpandClass('')
+ setExpandClass('');
+ setBlur(true);
     }
   };
   const onClickAdd = (e) => {

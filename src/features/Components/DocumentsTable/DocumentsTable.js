@@ -39,7 +39,7 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     //   "_blank" // <- This is what makes it open in a new window.
     // );
   };
-  return <a href="javascript:void(0)" onClick={() => handleDownload(row)}>{row[key]}</a>; // eslint-disable-line
+  return  <p className="hyperlink" data-testid="documentTable-sourcefile" onClick={() => handleDownload(row)}>{row[key]}</p>; // eslint-disable-line
 };
 const DataCell = ({row, column}) => (moment(row[column.accessor]).format('DD-MMM-YYYY'));
 const columns = [

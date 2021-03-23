@@ -14,7 +14,7 @@ import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   let url;
   const handleDownload = async (row) => {
-    console.log("Rows", row);
+    // console.log("Rows", row);
     // const resp = await axios.get(
     //   `http://ca2spdml01q:8000/api/download_file/?filePath=${row.documentFilePath}`
     // );
@@ -24,7 +24,7 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     const resp = await axios.get(
       `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
     );
-    
+
     url = `${UI_URL}/${resp.data}`;
     let encodeUrl=encodeURI(url);
     let myWindow = window.open("about:blank", "_blank");
@@ -36,9 +36,9 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     // console.log(url);
   };
   return (
-    <a href="javascript:void(0)" onClick={() => handleDownload(row)}>
+    <p className="hyperlink" onClick={() => handleDownload(row)}>
       {row[key]}
-    </a>
+    </p>
   ); // eslint-disable-line
 };
 // const VersionCell = ({ row, column }) => (
@@ -105,7 +105,7 @@ const columns = [
 ];
 
 const AssociateDocumentsTable = ({ initialsRow, handleChangeTab }) => {
-  console.log("initialsRow :", initialsRow);
+  // console.log("initialsRow :", initialsRow);
 
   // return (
   //   <Table
