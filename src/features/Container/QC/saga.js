@@ -51,20 +51,19 @@ export function* qcApprove(action) {
     method: "PUT",
   };
   try {
-    getLoader(true);
+    yield put(getLoader(true));
     const data = yield call(httpCall, config);
     console.log(data);
     if (data.success) {
-      getLoader(false);
       toast.info("Approved Successfully");
       wait();
     } else {
-      getLoader(false);
       toast.error("Error While Approving");
     }
+    yield put(getLoader(false));
   } catch (err) {
     console.log(err);
-    getLoader(false);
+    yield put(getLoader(false));
     toast.error("Something Went Wrong");
   }
 }
@@ -76,20 +75,19 @@ export function* sendQc2Approval(action) {
     method: "PUT",
   };
   try {
-    getLoader(true);
+    yield put(getLoader(true));
     const data = yield call(httpCall, config);
     if (data.success) {
-      getLoader(false);
       toast.info("Sent For QC2 Approval Successfully");
       // window.location.href = "/qc";
       wait();
     } else {
-      getLoader(false);
       toast.error("Error While Sending");
     }
+    yield put(getLoader(false));
     console.log(data);
   } catch (err) {
-    getLoader(false);
+    yield put(getLoader(false));
     console.log(err);
     toast.error("Something Went Wrong");
   }
@@ -102,20 +100,19 @@ export function* qc2Reject(action) {
     method: "PUT",
   };
   try {
-    getLoader(true);
+    yield put(getLoader(true));
     const data = yield call(httpCall, config);
     console.log(data);
     if (data.success) {
-      getLoader(false);
       toast.info("Rejected Successfully");
       // window.location.href = "/qc";
       wait();
     } else {
-      getLoader(false);
       toast.error("Error While Rejecting");
     }
+    yield put(getLoader(false));
   } catch (err) {
-    getLoader(false);
+    yield put(getLoader(false));
     console.log(err);
     toast.error("Something Went Wrong");
   }
@@ -125,23 +122,28 @@ export function* uploadQc(action) {
   let bodyFormData = new FormData();
   bodyFormData.append("iqvdata_xls_file", action.payload.data);
   const postUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_upload?aidoc_id=${action.payload.id}`;
-  getLoader(true);
-  const postUploadQc = yield call(httpCall, {
-    url: postUrl,
-    method: "POST",
-    data: bodyFormData,
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  if (postUploadQc.success) {
-    getLoader(false);
-    toast.info("Upload Successful");
-    yield put({
-      type: "GET_PROTOCOL_TOC_SAGA",
-      payload: { endPoint: "protocol_data/qc", id: action.payload.id },
+  try {
+    yield put(getLoader(true));
+    const postUploadQc = yield call(httpCall, {
+      url: postUrl,
+      method: "POST",
+      data: bodyFormData,
+      headers: { "Content-Type": "multipart/form-data" },
     });
-  } else {
-    getLoader(false);
+
+    if (postUploadQc.success) {
+      toast.info("Upload Successful");
+      yield put({
+        type: "GET_PROTOCOL_TOC_SAGA",
+        payload: { endPoint: "protocol_data/qc", id: action.payload.id },
+      });
+    } else {
+      toast.error("Something Went Wrong");
+    }
+    yield put(getLoader(false));
+  } catch (err) {
+    console.log(err);
+    yield put(getLoader(false));
     toast.error("Something Went Wrong");
   }
 }

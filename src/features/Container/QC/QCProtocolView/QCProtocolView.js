@@ -163,6 +163,7 @@ function QCProtocolView({ protId, path, userType }) {
   // }
   // }
   // };
+  console.log(qcLoader);
 
   if (viewData.loader || qcLoader) {
     return (

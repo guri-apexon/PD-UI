@@ -272,7 +272,7 @@ class ProtocolViewClass extends React.Component {
       acc[value.id] = React.createRef();
       return acc;
     }, {});
-    console.log(this.state);
+    console.log(view);
     const scrollSections = (id) => {
       refsSection[id].current &&
         refsSection[id].current.scrollIntoView({
@@ -408,25 +408,50 @@ class ProtocolViewClass extends React.Component {
                 return this.getTocElement(item);
               })}
             {view.iqvdataSoa.map((item) => this.getTable(item, "SOA"))}
+            {view.iqvdataSummary && (
+              <div
+                id={"SUM"}
+                key={"SUM"}
+                ref={refsSection["SUM"]}
+                style={{ marginTop: "10%" }}
+              >
+                <h1>Summary</h1>
+                <table border="1">
+                  <tbody>
+                    {view.iqvdataSummary.data.map((item) => {
+                      return (
+                        <tr>
+                          <td style={{ width: "30%" }}>
+                            {" "}
+                            <div
+                              style={{ fontWeight: "600" }}
+                              dangerouslySetInnerHTML={{ __html: item[2] }}
+                            ></div>
+                          </td>
+                          <td style={{ width: "70%" }}>
+                            {" "}
+                            <p
+                              style={{ marginTop: 0, marginBottom: "10px" }}
+                              dangerouslySetInnerHTML={{ __html: item[1] }}
+                            ></p>
+                          </td>
+                        </tr>
+                      );
 
-            <div
-              id={"SUM"}
-              key={"SUM"}
-              ref={refsSection["SUM"]}
-              style={{ marginTop: "10%" }}
-            >
-              {view.iqvdataSummary.data.map((item) => {
-                return (
-                  <>
-                    <div dangerouslySetInnerHTML={{ __html: item[2] }}></div>
-                    <p
-                      style={{ marginTop: 0, marginBottom: "10px" }}
-                      dangerouslySetInnerHTML={{ __html: item[1] }}
-                    ></p>
-                  </>
-                );
-              })}
-            </div>
+                      // return (
+                      //   <>
+                      //     <div dangerouslySetInnerHTML={{ __html: item[2] }}></div>
+                      //     <p
+                      //       style={{ marginTop: 0, marginBottom: "10px" }}
+                      //       dangerouslySetInnerHTML={{ __html: item[1] }}
+                      //     ></p>
+                      //   </>
+                      // );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </Card>
       </div>
