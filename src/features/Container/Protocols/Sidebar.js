@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import React from "react";
 
-
 import Blade from "apollo-react/components/Blade";
 import Download from "apollo-react-icons/Download";
 import Plus from "apollo-react-icons/Plus";
@@ -41,7 +40,7 @@ class Sidebar extends React.Component {
             side="right"
             width={350}
             expanded={open}
-            onChange={()=>setOpen(!open)}
+            onChange={() => setOpen(!open)}
             open={open}
             onClose={() => setOpen(false)}
             // title="Custom Blade"
@@ -57,18 +56,22 @@ class Sidebar extends React.Component {
               <div className="TOC">
                 <div className="header-section">Table of Contents</div>
                 <ul>
-                  <li>Synopsis</li>
-                  <li>Sponser, investigators and Trial Administative</li>
+                  <li>
+                    <a href="#Synopsis">Synopsis</a>
+                  </li>
+                  {/* <li>Sponser, investigators and Trial Administative</li>
                   <li>Background Information</li>
                   <li>Trial Objectives</li>
                   <li>Investigational Plan</li>
                   <li>Investigational Medicinal Product and others</li>
-                  <li>Trial Procedure and Assessments</li>
-                  <li>Statistics</li>
-                  <li>Ethical and Regulatory Aspects</li>
+                  <li>Trial Procedure and Assessments</li> */}
+                  <li>
+                    <a href="#Statistics">Statistics</a>
+                  </li>
+                  {/* <li>Ethical and Regulatory Aspects</li>
                   <li>Trial Management</li>
                   <li>References</li>
-                  <li>Appendices</li>
+                  <li>Appendices</li> */}
                 </ul>
               </div>
               <div className="SOA">

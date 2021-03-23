@@ -132,3 +132,78 @@
     }
   }
 }
+
+@mixin flex-row {
+  display: flex;
+  flex-direction: row;
+}
+@mixin flex-colomn {
+  display: flex;
+  flex-direction: column;
+}
+@mixin divide {
+  border: 1px solid #e8e8e8;
+  border-bottom: none;
+  margin-right: 10px;
+}
+@mixin inside-row {
+  flex: 1;
+}
+@mixin top-header {
+  padding: 14px 20px;
+  font-size: 16px;
+  @include divide();
+}
+@mixin section-header {
+  padding: 3px 10px;
+  background-color: #e8e8e8;
+  font-size: 12px;
+  @include divide();
+  border-top: none;
+}
+@mixin section-text {
+  padding: 10px 15px;
+  // background-color: #e8e8e8;
+  font-size: 14px;
+  @include divide();
+  border-top: none;
+}
+.compare-container {
+  @include flex-colomn();
+  margin-top: 20px;
+  height: 350px;
+  overflow: auto;
+  .left {
+    @include inside-row();
+  }
+  .right {
+    @include inside-row();
+  }
+  .compare-header {
+    @include flex-row();
+    .left-header {
+      @include top-header();
+    }
+    .right-header {
+      @include top-header();
+    }
+  }
+  .section-header {
+    @include flex-row();
+    .left-section {
+      @include section-header();
+    }
+    .right-section {
+      @include section-header();
+    }
+  }
+  .compare-row {
+    @include flex-row();
+    .left-text {
+      @include section-text();
+    }
+    .right-text {
+      @include section-text();
+    }
+  }
+}

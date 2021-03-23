@@ -11,11 +11,11 @@ import { associateDocs } from "./protocolSlice.js";
 
 import Sidebar from "./Sidebar";
 // import CompareCard from "./CompareCard";
-import CompareCard from "./CompareCardNew";
+import CompareCard from "./compareTable";
 
 import { compareResult } from "./protocolSlice.js";
 import Loader from "../../Components/Loader/Loader";
-
+import ArrowLeft from 'apollo-react-icons/ArrowLeft';
 
 const AmendmentCompare = ({ prot11, prot22 }) => {
   const compare = useSelector(compareResult);
@@ -71,7 +71,8 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
     }
   };
 
-  const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
+  // const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
+  const iqvdata = compare.iqvdata ? compare.iqvdata : "";
   return (
     <div className="amendment-compare">
       <Sidebar open={open} setOpen={setOpen} />
@@ -140,17 +141,17 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
             </div>
           </Grid>
           <Grid md={3} container>
-            {/* <div className="summary-button">
-            <Button
-              variant="secondary"
-              icon={<ArrowLeft color="blue" />}
-              size="small"
-              style={{ marginRight: 10 }}
-              onClick={() => setOpen(!open)}
-            >
-              Summary
-            </Button>
-          </div> */}
+            <div className="summary-button">
+              <Button
+                variant="secondary"
+                icon={<ArrowLeft color="blue" />}
+                size="small"
+                style={{ marginRight: 10 }}
+                onClick={() => setOpen(!open)}
+              >
+                Summary
+              </Button>
+            </div>
           </Grid>
         </Grid>
       ) : (
@@ -166,7 +167,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       )}
       {iqvdata && !compare.error && iqvdata.data.length > 0 && (
         <Grid container md={12}>
-          <Grid md={6}>
+          <Grid md={12}>
             <CompareCard
               float="left"
               cardID="first-card"
@@ -174,14 +175,14 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
               compare={compare}
             />
           </Grid>
-          <Grid md={6}>
+          {/* <Grid md={6}>
             <CompareCard
               float="right"
               cardID="second-card"
               data={prot2}
               compare={compare}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       )}
       {compare.called && compare.loading && (
