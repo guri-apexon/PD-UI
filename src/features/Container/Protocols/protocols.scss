@@ -18,6 +18,14 @@
     table tbody tr th:first-child {
       display: none;
     }
+    #SUM {
+      // thead {
+      //   display: table-header-group;
+      // }
+      table tbody tr th:first-child {
+        display: table-header-group;
+      }
+    }
     h1 {
       padding: 5px;
       margin-top: 50px;
