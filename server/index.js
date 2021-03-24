@@ -9,6 +9,9 @@ const https = require("https");
 const session = require("express-session");
 const jwt_decode = require("jwt-decode");
 const dotenv = require("dotenv");
+
+const { getENVURL } = require("./utility/EnvURL");
+const envURL = getENVURL();
 dotenv.config();
 let PORT;
 if (process.env.LOCAL === "true" || process.env.LOCAL) {
@@ -32,6 +35,8 @@ function authenticateUser(user, password) {
 }
 //------------------------------------ Elastic Search END POINT -----------------------
 require("./routes/elasticSearch")(app);
+//------------------------------------ Excel End Point --------------------------------
+require("./routes/converToExcel")(app);
 
 app.use(
   session({
@@ -57,10 +62,13 @@ app.use(function (req, res, next) {
   if (process.env.SSO_ENABLED === "true") {
     console.log("Cookies", req.cookies);
     const getCookies = req.cookies;
-    if (!getCookies[access_token] || !getCookies[refresh_token]) {
+    if (!getCookies[envURL.access_token] || !getCookies[envURL.refresh_token]) {
       console.log("No Tokens");
       res.redirect(`${baseUrlSSO}/logout_session`);
-    } else if (getCookies[access_token] && getCookies[refresh_token]) {
+    } else if (
+      getCookies[envURL.access_token] &&
+      getCookies[envURL.refresh_token]
+    ) {
       // At request level
       const agent = new https.Agent({
         rejectUnauthorized: false,
@@ -68,8 +76,8 @@ app.use(function (req, res, next) {
       axios
         .get(`${baseUrlSSO}/validate_token`, {
           params: {
-            access_token: getCookies[access_token],
-            refresh_token: getCookies[refresh_token],
+            access_token: getCookies[envURL.access_token],
+            refresh_token: getCookies[envURL.refresh_token],
           },
           headers: {
             Authorization: authenticateUser(
@@ -92,7 +100,7 @@ app.use(function (req, res, next) {
                 email: data.user_details.email,
                 user_type: data.user_details.user_type,
               };
-              const decoded = jwt_decode(getCookies[refresh_token]);
+              const decoded = jwt_decode(getCookies[envURL.refresh_token]);
 
               console.log(decoded);
               req.session.user = details;

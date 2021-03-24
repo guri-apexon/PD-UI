@@ -25,10 +25,16 @@ class Sidebar extends React.Component {
   onOpen = () => {
     this.setState({ open: true });
   };
+  handleDownload = (type, data) => {
+    if ((type = "toc")) {
+      this.props.handleDownloadTOC(data);
+    }
+  };
 
   render() {
     // const { expanded, open } = this.state;
-    const { open, setOpen } = this.props;
+    const { open, setOpen, compare } = this.props;
+    const data = compare.iqvdata.data;
 
     return (
       <>
@@ -49,7 +55,10 @@ class Sidebar extends React.Component {
             // hideCloseButton
           >
             <div className="sidebar-div">
-              <div className="header-section">
+              <div
+                className="header-section"
+                onClick={() => this.handleDownload("toc", data)}
+              >
                 Summary of Changes <Download />
               </div>
               <hr />

@@ -15,7 +15,7 @@ import CompareCard from "./compareTable";
 
 import { compareResult } from "./protocolSlice.js";
 import Loader from "../../Components/Loader/Loader";
-import ArrowLeft from 'apollo-react-icons/ArrowLeft';
+import ArrowLeft from "apollo-react-icons/ArrowLeft";
 
 const AmendmentCompare = ({ prot11, prot22 }) => {
   const compare = useSelector(compareResult);
@@ -70,12 +70,20 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       setVersion2(id);
     }
   };
+  const handleDownloadTOC = (data) => {
+    debugger;
+  };
 
   // const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
   const iqvdata = compare.iqvdata ? compare.iqvdata : "";
   return (
     <div className="amendment-compare">
-      <Sidebar open={open} setOpen={setOpen} />
+      <Sidebar
+        open={open}
+        setOpen={setOpen}
+        compare={compare}
+        handleDownloadTOC={handleDownloadTOC}
+      />
       {associateData && associateData.length > 1 ? (
         <Grid md={12} container>
           <Grid md={6} container>
