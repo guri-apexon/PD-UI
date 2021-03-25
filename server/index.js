@@ -64,7 +64,7 @@ app.use(function (req, res, next) {
     const getCookies = req.cookies;
     if (!getCookies[envURL.access_token] || !getCookies[envURL.refresh_token]) {
       console.log("No Tokens");
-      res.redirect(`${baseUrlSSO}/logout_session`);
+      res.redirect(`${envURL.baseUrlSSO}/logout_session`);
     } else if (
       getCookies[envURL.access_token] &&
       getCookies[envURL.refresh_token]
@@ -74,7 +74,7 @@ app.use(function (req, res, next) {
         rejectUnauthorized: false,
       });
       axios
-        .get(`${baseUrlSSO}/validate_token`, {
+        .get(`${envURL.baseUrlSSO}/validate_token`, {
           params: {
             access_token: getCookies[envURL.access_token],
             refresh_token: getCookies[envURL.refresh_token],
@@ -91,7 +91,7 @@ app.use(function (req, res, next) {
           console.log(data);
           switch (data.code) {
             case 101:
-              res.redirect(`${baseUrlSSO}${data.redirect_url}`);
+              res.redirect(`${envURL.baseUrlSSO}${data.redirect_url}`);
               break;
             case 100:
               const details = {
@@ -116,16 +116,16 @@ app.use(function (req, res, next) {
               next();
               break;
             default:
-              res.redirect(`${baseUrlSSO}/logout_session`);
+              res.redirect(`${envURL.baseUrlSSO}/logout_session`);
           }
         })
         .catch((err) => {
           console.log(err);
-          res.redirect(`${baseUrlSSO}/logout_session`);
+          res.redirect(`${envURL.baseUrlSSO}/logout_session`);
         });
     } else {
       console.log("Else part");
-      res.redirect(`${baseUrlSSO}/logout_session`);
+      res.redirect(`${envURL.baseUrlSSO}/logout_session`);
     }
   } else if (process.env.SSO_ENABLED === "false") {
     next();
