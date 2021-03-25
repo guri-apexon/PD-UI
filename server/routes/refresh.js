@@ -1,5 +1,8 @@
 const { authenticateUser } = require("../utility/SSOUtility");
+const https = require("https");
+const axios = require("axios");
 const { getENVURL } = require("../utility/EnvURL");
+const envURL = getENVURL();
 module.exports = function (app) {
   app.get("/refresh", function (req, res) {
     console.log("-----callback------", req.query);
@@ -11,8 +14,8 @@ module.exports = function (app) {
     axios
       .get(`${getENVURL().baseUrlSSO}/validate_token`, {
         params: {
-          access_token: getCookies[getENVURL().access_token],
-          refresh_token: getCookies[getENVURL().refresh_token],
+          access_token: getCookies[envURL.access_token],
+          refresh_token: getCookies[envURL.refresh_token],
         },
         headers: {
           Authorization: authenticateUser(
