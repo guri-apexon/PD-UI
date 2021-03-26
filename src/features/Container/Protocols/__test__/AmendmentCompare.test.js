@@ -37,7 +37,9 @@ describe("Version Compare test suit", () => {
     const dummyDispatch = jest.fn();
     useDispatchMock.mockReturnValue(dummyDispatch);
 
-    const { getByText, getByTestId } = render(<AmendmentCompare />);
+    const { getByText, getByTestId } = render(
+      <AmendmentCompare prot11="" prot22="" />
+    );
 
     await waitForElement(() => getByText("Select First Version to Compare"));
     await waitForElement(() => getByText("Select Second Version to Compare"));
@@ -73,10 +75,179 @@ describe("Version Compare test suit", () => {
     const dummyDispatch = jest.fn();
     useDispatchMock.mockReturnValue(dummyDispatch);
 
-    const { getByText, getByTestId } = render(<AmendmentCompare />);
-    getByText("SIGNATURE PAGES")
+    const { getAllByText, getByTestId } = render(<AmendmentCompare />);
+    getAllByText("VERSION HISTORY");
 
     // await waitForElement(() => fireEvent.click(getByTestId("compare-button")));
-    screen.debug();
+    // screen.debug();
+  });
+  test("Dispatch Value.", async () => {
+    const useSelectorMock1 = jest.spyOn(reactRedux, "useSelector");
+    const useSelectorMock2 = jest.spyOn(reactRedux, "useSelector");
+    const useDispatchMock = jest.spyOn(reactRedux, "useDispatch");
+    // beforeEach(() => {
+    //   useSelectorMock.mockClear();
+    //   useDispatchMock.mockClear();
+    // });
+    useSelectorMock1.mockReturnValue(associateData1);
+    useSelectorMock2.mockReturnValue(compare);
+
+    const dummyDispatch = jest.fn();
+    useDispatchMock.mockReturnValue(dummyDispatch);
+
+    const { getAllByText, getByTestId } = render(
+      <AmendmentCompare prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" prot22="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" />
+    );
+    // getAllByText("VERSION HISTORY");
+
+    // await waitForElement(() => fireEvent.click(getByTestId("compare-button")));
+    // screen.debug();
+  });
+  test("Should Trigger compare", async () => {
+    const useSelectorMock1 = jest.spyOn(reactRedux, "useSelector");
+    const useSelectorMock2 = jest.spyOn(reactRedux, "useSelector");
+    const useDispatchMock = jest.spyOn(reactRedux, "useDispatch");
+    // beforeEach(() => {
+    //   useSelectorMock.mockClear();
+    //   useDispatchMock.mockClear();
+    // });
+    useSelectorMock1.mockReturnValue(associateData1);
+    // useSelectorMock2.mockReturnValue(compare);
+
+    const dummyDispatch = jest.fn();
+    useDispatchMock.mockReturnValue(dummyDispatch);
+
+    const { getAllByText, getByTestId } = render(
+      <AmendmentCompare prot11="abc" prot22="cdf" />
+    );
+    const compareButton = getByTestId("compare-button");
+    fireEvent.click(compareButton);
+    // getAllByText("VERSION HISTORY");
+
+    // await waitForElement(() => fireEvent.click(getByTestId("compare-button")));
+    // screen.debug();
+  });
+  test("Should Select first Protocol to comapre", async () => {
+    const useSelectorMock1 = jest.spyOn(reactRedux, "useSelector");
+    const useSelectorMock2 = jest.spyOn(reactRedux, "useSelector");
+    const useDispatchMock = jest.spyOn(reactRedux, "useDispatch");
+    // beforeEach(() => {
+    //   useSelectorMock.mockClear();
+    //   useDispatchMock.mockClear();
+    // });
+    useSelectorMock1.mockReturnValue(associateData1);
+    // useSelectorMock2.mockReturnValue(compare);
+
+    const dummyDispatch = jest.fn();
+    useDispatchMock.mockReturnValue(dummyDispatch);
+
+    const { getAllByText, getByTestId } = render(<AmendmentCompare />);
+    const selectDiv = getByTestId("select-div1");
+    const input = selectDiv.querySelector("input");
+    fireEvent.change(input, {
+      target: { value: "0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" },
+    });
+    fireEvent.keyDown(selectDiv, { key: "ArrowDown" });
+    fireEvent.keyDown(selectDiv, { key: "Enter" });
+    // expect(compareButton.value).toBe("0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14");
+    // getAllByText("VERSION HISTORY");
+
+    // await waitForElement(() => fireEvent.click(getByTestId("compare-button")));
+    // screen.debug();
+  });
+  test("Should Select second Protocol to comapre", async () => {
+    const useSelectorMock1 = jest.spyOn(reactRedux, "useSelector");
+    const useDispatchMock = jest.spyOn(reactRedux, "useDispatch");
+    useSelectorMock1.mockReturnValue(associateData1);
+    // useSelectorMock2.mockReturnValue(compare);
+
+    const dummyDispatch = jest.fn();
+    useDispatchMock.mockReturnValue(dummyDispatch);
+
+    const { getAllByText, getByTestId } = render(<AmendmentCompare />);
+    const selectDiv = getByTestId("select-div2").children[1].children[0];
+    const input = selectDiv.querySelector("input");
+    fireEvent.click(selectDiv);
+    // fireEvent.focus(input, { key: "Enter" });
+    // fireEvent.keyDown(selectDiv, { key: "Enter" });
+    // fireEvent.change(input, {
+    //   target: { value: "0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" },
+    // });
+    // screen.debug();
+    // fireEvent.keyDown(selectDiv, { key: "ArrowDown" });
+    // screen.debug()
+    // fireEvent.keyDown(selectDiv, { key: "Enter" });
+    // screen.debug()
+    // expect(compareButton.value).toBe("0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14");
+    // getAllByText("VERSION HISTORY");
+
+    // await waitForElement(() => fireEvent.click(getByTestId("compare-button")));
+    // screen.debug();
+  });
+  test("Select Two Same Protocol to comapre", async () => {
+    const useSelectorMock1 = jest.spyOn(reactRedux, "useSelector");
+    const useDispatchMock = jest.spyOn(reactRedux, "useDispatch");
+    useSelectorMock1.mockReturnValue(associateData1);
+    // useSelectorMock2.mockReturnValue(compare);
+
+    const dummyDispatch = jest.fn();
+    useDispatchMock.mockReturnValue(dummyDispatch);
+
+    const { getAllByText, getByTestId } = render(
+      <AmendmentCompare prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" prot22="21bab274-1b66-4c14-b0a1-5487f111fc60" />
+    );
+    const selectDiv1 = getByTestId("select-div1");
+    const selectDiv2 = getByTestId("select-div2");
+    const input1 = selectDiv1.querySelector("input");
+    fireEvent.change(input1, {
+      target: { value: "0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" },
+    });
+    const input2 = selectDiv2.querySelector("input");
+    fireEvent.change(input2, {
+      target: { value: "21bab274-1b66-4c14-b0a1-5487f111fc60" },
+    });
+    fireEvent.keyDown(selectDiv1, { key: "ArrowDown" });
+    fireEvent.keyDown(selectDiv1, { key: "Enter" });
+    fireEvent.keyDown(selectDiv2, { key: "ArrowDown" });
+    fireEvent.keyDown(selectDiv2, { key: "Enter" });
+    fireEvent.click(getByTestId("compare-button"));
+    // screen.debug()
+    // expect(screen.getByRole("alert")).toHaveTextContent(
+    //   "can not comapare same version"
+    // );
+    // window.alert = jsdomAlert;
+  });
+  test("Select One Protocol to comapre", async () => {
+    const useSelectorMock1 = jest.spyOn(reactRedux, "useSelector");
+    const useDispatchMock = jest.spyOn(reactRedux, "useDispatch");
+    useSelectorMock1.mockReturnValue(associateData1);
+    // useSelectorMock2.mockReturnValue(compare);
+
+    const dummyDispatch = jest.fn();
+    useDispatchMock.mockReturnValue(dummyDispatch);
+
+    const { getAllByText, getByTestId } = render(
+      <AmendmentCompare prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" prot22="" />
+    );
+    const selectDiv1 = getByTestId("select-div1");
+    const selectDiv2 = getByTestId("select-div2");
+    const input1 = selectDiv1.querySelector("input");
+    fireEvent.change(input1, {
+      target: { value: "0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" },
+    });
+    // const input2 = selectDiv2.querySelector("input");
+    // fireEvent.change(input2, {
+    //   target: { value: "" },
+    // });
+    fireEvent.keyDown(selectDiv1, { key: "ArrowDown" });
+    fireEvent.keyDown(selectDiv1, { key: "Enter" });
+    // fireEvent.keyDown(selectDiv2, { key: "ArrowDown" });
+    // fireEvent.keyDown(selectDiv2, { key: "Enter" });
+    fireEvent.click(getByTestId("compare-button"));
+    // screen.debug()
+    // expect(screen.getByRole("alert")).toHaveTextContent(
+    //   "can not comapare same version"
+    // );
+    // window.alert = jsdomAlert;
   });
 });

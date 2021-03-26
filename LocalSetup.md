@@ -45,3 +45,6 @@ npm run dev
 #### Note 
 Please undo the above local changes before pushing your code to git.
 
+## For Coverage
+yarn test -- --coverage --watchAll=false
+

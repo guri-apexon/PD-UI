@@ -11,12 +11,12 @@ class Sidebar extends React.Component {
     expanded: false,
   };
 
-  onChange = (e, expanded) => {
-    this.setState({ expanded });
-    expanded
-      ? console.log("Blade is now expanded")
-      : console.log("Blade is now collapsed");
-  };
+  // onChange = (e, expanded) => {
+  //   this.setState({ expanded });
+  //   expanded
+  //     ? console.log("Blade is now expanded")
+  //     : console.log("Blade is now collapsed");
+  // };
 
   onClose = () => {
     this.setState({ open: true, expanded: false });
@@ -26,6 +26,7 @@ class Sidebar extends React.Component {
     this.setState({ open: true });
   };
   handleDownload = (type, data) => {
+    /* istanbul ignore else */
     if ((type = "toc")) {
       this.props.handleDownloadTOC(data);
     }
@@ -58,6 +59,7 @@ class Sidebar extends React.Component {
               <div
                 className="header-section"
                 onClick={() => this.handleDownload("toc", data)}
+                data-testid="download-div"
               >
                 Summary of Changes <Download />
               </div>
@@ -65,18 +67,29 @@ class Sidebar extends React.Component {
               <div className="TOC">
                 <div className="header-section">Table of Contents</div>
                 <ul>
-                  <li>
+                  {data.map((item, i) => {
+                    const type = item[2];
+                    const text1 = item[4];
+                    return (
+                      type === "header" && (
+                        <li>
+                          <a>{text1}</a>
+                        </li>
+                      )
+                    );
+                  })}
+                  {/* <li>
                     <a href="#Synopsis">Synopsis</a>
-                  </li>
+                  </li> */}
                   {/* <li>Sponser, investigators and Trial Administative</li>
                   <li>Background Information</li>
                   <li>Trial Objectives</li>
                   <li>Investigational Plan</li>
                   <li>Investigational Medicinal Product and others</li>
                   <li>Trial Procedure and Assessments</li> */}
-                  <li>
+                  {/* <li>
                     <a href="#Statistics">Statistics</a>
-                  </li>
+                  </li> */}
                   {/* <li>Ethical and Regulatory Aspects</li>
                   <li>Trial Management</li>
                   <li>References</li>

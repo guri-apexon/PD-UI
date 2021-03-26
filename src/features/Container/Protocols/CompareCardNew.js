@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import React from "react";
 import Card from "apollo-react/components/Card";
 

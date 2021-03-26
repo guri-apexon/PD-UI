@@ -17,6 +17,8 @@ import { compareResult } from "./protocolSlice.js";
 import Loader from "../../Components/Loader/Loader";
 import ArrowLeft from "apollo-react-icons/ArrowLeft";
 
+import axios from "axios";
+
 const AmendmentCompare = ({ prot11, prot22 }) => {
   const compare = useSelector(compareResult);
   const dispatch = useDispatch();
@@ -71,19 +73,21 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
     }
   };
   const handleDownloadTOC = (data) => {
-    debugger;
+    // debugger;
   };
 
   // const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
   const iqvdata = compare.iqvdata ? compare.iqvdata : "";
   return (
     <div className="amendment-compare">
-      <Sidebar
-        open={open}
-        setOpen={setOpen}
-        compare={compare}
-        handleDownloadTOC={handleDownloadTOC}
-      />
+      {iqvdata && (
+        <Sidebar
+          open={open}
+          setOpen={setOpen}
+          compare={compare}
+          handleDownloadTOC={handleDownloadTOC}
+        />
+      )}
       {associateData && associateData.length > 1 ? (
         <Grid md={12} container>
           <Grid md={6} container>

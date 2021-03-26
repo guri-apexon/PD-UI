@@ -25,7 +25,7 @@ const CompareTable = (props) => {
   const iqvdata = props.compare;
   const data = iqvdata.iqvdata.data;
   // const diff =
-  console.log("Compare Section Data", iqvdata);
+  // console.log("Compare Section Data", iqvdata);
   const handleHighlight = (item) => {
     var str = item[5];
     let arr = item[6];
@@ -60,28 +60,28 @@ const CompareTable = (props) => {
           if (type === textTypes.header) {
             if (diff === compareColorCode.noChange) {
               return (
-                <div className="section-header" id="Synopsis">
+                <div className="section-header" id="Synopsis" key={"aaa" + i}>
                   <div className="left left-section">{text1}</div>
                   <div className="right right-section">{text2}</div>
                 </div>
               );
             } else if (diff === compareColorCode.deleted) {
               return (
-                <div className="section-header" id="Synopsis">
+                <div className="section-header" id="Synopsis" key={"aaa" + i}>
                   <div className="left left-section text-red">{text1}</div>
                   <div className="right right-section">{text2}</div>
                 </div>
               );
             } else if (diff === compareColorCode.edited) {
               return (
-                <div className="section-header" id="Synopsis">
+                <div className="section-header" id="Synopsis" key={"aaa" + i}>
                   <div className="left left-section">{text1}</div>
                   <div className="right right-section text-blue">{text2}</div>
                 </div>
               );
             } else if (diff === compareColorCode.added) {
               return (
-                <div className="section-header" id="Synopsis">
+                <div className="section-header" id="Synopsis" key={"aaa" + i}>
                   <div className="left left-section">{text1}</div>
                   <div className="right right-section text-blue">{text2}</div>
                 </div>
@@ -90,14 +90,14 @@ const CompareTable = (props) => {
           } else if (type === textTypes.text) {
             if (diff === compareColorCode.noChange) {
               return (
-                <div className="compare-row">
+                <div className="compare-row" key={"aaa" + i}>
                   <div className="left left-text">{text1}</div>
                   <div className="right right-text">{text2}</div>
                 </div>
               );
             } else if (diff === compareColorCode.deleted) {
               return (
-                <div className="compare-row">
+                <div className="compare-row" key={"aaa" + i}>
                   <div className="left left-text text-red">{text1}</div>
                   <div className="right right-text">{text2}</div>
                 </div>
@@ -105,11 +105,10 @@ const CompareTable = (props) => {
             } else if (diff === compareColorCode.edited) {
               const arrStr = handleHighlight(item);
               return (
-                <div className="compare-row">
+                <div className="compare-row" key={"aaa" + i}>
                   <div className="left left-text">{text1}</div>
                   <div className="right right-text">
                     {arrStr.map((value, i) => {
-
                       if (i === 0 || i % 2 === 0) {
                         return <span key={i}>{value}</span>;
                       } else if (i % 2 !== 0) {
@@ -125,14 +124,14 @@ const CompareTable = (props) => {
               );
             } else if (diff === compareColorCode.added) {
               return (
-                <div className="compare-row">
+                <div className="compare-row" key={"aaa" + i}>
                   <div className="left left-text">{text1}</div>
                   <div className="right right-text text-blue">{text2}</div>
                 </div>
               );
             }
             return (
-              <div className="compare-row">
+              <div className="compare-row" key={"aaa" + i}>
                 <div className="left left-text">{text1}</div>
                 <div className="right right-text">{text2}</div>
               </div>
