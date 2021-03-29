@@ -109,4 +109,10 @@ export const Apis = {
   search: `http://ca2spdml04q:9200/pd-index/_search`,
 };
 
-export const SSO_ENABLED = true;
+let SSO;
+if (process.env.REACT_APP_LOCAL === "true" || process.env.REACT_APP_LOCAL) {
+  SSO = false;
+} else {
+  SSO = true;
+}
+export const SSO_ENABLED = SSO;

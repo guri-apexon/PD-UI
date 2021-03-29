@@ -14,7 +14,7 @@ const { getENVURL } = require("./utility/EnvURL");
 const envURL = getENVURL();
 dotenv.config();
 let PORT;
-if (process.env.LOCAL === "true" || process.env.LOCAL) {
+if (process.env.REACT_APP_LOCAL === "true" || process.env.REACT_APP_LOCAL) {
   PORT = 4000;
 } else {
   PORT = process.env.PORT || 3000;

@@ -96,7 +96,10 @@ describe("Version Compare test suit", () => {
     useDispatchMock.mockReturnValue(dummyDispatch);
 
     const { getAllByText, getByTestId } = render(
-      <AmendmentCompare prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" prot22="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" />
+      <AmendmentCompare
+        prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14"
+        prot22="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14"
+      />
     );
     // getAllByText("VERSION HISTORY");
 
@@ -194,7 +197,10 @@ describe("Version Compare test suit", () => {
     useDispatchMock.mockReturnValue(dummyDispatch);
 
     const { getAllByText, getByTestId } = render(
-      <AmendmentCompare prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" prot22="21bab274-1b66-4c14-b0a1-5487f111fc60" />
+      <AmendmentCompare
+        prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14"
+        prot22="21bab274-1b66-4c14-b0a1-5487f111fc60"
+      />
     );
     const selectDiv1 = getByTestId("select-div1");
     const selectDiv2 = getByTestId("select-div2");
@@ -227,7 +233,10 @@ describe("Version Compare test suit", () => {
     useDispatchMock.mockReturnValue(dummyDispatch);
 
     const { getAllByText, getByTestId } = render(
-      <AmendmentCompare prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14" prot22="" />
+      <AmendmentCompare
+        prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14"
+        prot22=""
+      />
     );
     const selectDiv1 = getByTestId("select-div1");
     const selectDiv2 = getByTestId("select-div2");
@@ -249,5 +258,25 @@ describe("Version Compare test suit", () => {
     //   "can not comapare same version"
     // );
     // window.alert = jsdomAlert;
+  });
+  test("Select One Protocol to comapre", async () => {
+    const useSelectorMock1 = jest.spyOn(reactRedux, "useSelector");
+    const useDispatchMock = jest.spyOn(reactRedux, "useDispatch");
+    useSelectorMock1.mockReturnValue(associateData1);
+    // useSelectorMock2.mockReturnValue(compare);
+
+    const dummyDispatch = jest.fn();
+    useDispatchMock.mockReturnValue(dummyDispatch);
+
+    const { getAllByText, getByTestId } = render(
+      <AmendmentCompare
+        prot11="0bd85f42-fa69-42c1-ac4b-b1b6d3b25e14"
+        prot22=""
+      />
+    );
+    const selectDiv1 = getByTestId("select-div1").children[1];
+    fireEvent.click(selectDiv1);
+    let selectOption = getByTestId("compare-option-1");
+    fireEvent.click(selectOption);
   });
 });

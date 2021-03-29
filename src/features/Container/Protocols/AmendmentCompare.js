@@ -106,7 +106,11 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
                   {associateData &&
                     associateData.length > 0 &&
                     associateData.map((item, i) => (
-                      <MenuItem value={item.id} key={i}>
+                      <MenuItem
+                        value={item.id}
+                        key={i}
+                        data-testid={"compare-option-1"}
+                      >
                         {item.protocol + " (" + item.versionNumber + ")"}
                       </MenuItem>
                     ))}
@@ -131,7 +135,11 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
                   {associateData &&
                     associateData.length > 0 &&
                     associateData.map((item, i) => (
-                      <MenuItem value={item.id} key={i}>
+                      <MenuItem
+                        value={item.id}
+                        key={i}
+                        data-testid={"compare-option-2"}
+                      >
                         {item.protocol + " (" + item.versionNumber + ")"}
                       </MenuItem>
                     ))}
