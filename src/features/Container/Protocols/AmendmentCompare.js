@@ -18,6 +18,7 @@ import Loader from "../../Components/Loader/Loader";
 import ArrowLeft from "apollo-react-icons/ArrowLeft";
 
 import axios from "axios";
+const FileDownload = require("js-file-download");
 
 const AmendmentCompare = ({ prot11, prot22 }) => {
   const compare = useSelector(compareResult);
@@ -74,6 +75,15 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
   };
   const handleDownloadTOC = (data) => {
     // debugger;
+    // axios.post("http://localhost:4000/create-excel", compare);
+    axios({
+      url: "http://localhost:4000/create-excel",
+      method: "POST",
+      responseType: "blob", // Important
+      data: compare,
+    }).then((response) => {
+      FileDownload(response.data, `${compare.protocolNumber}.xlsx`);
+    });
   };
 
   // const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
@@ -102,6 +112,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
                   placeholder="Select item..."
                   fullWidth
                   data-testid="select-div1"
+                  native={true}
                 >
                   {associateData &&
                     associateData.length > 0 &&
@@ -109,7 +120,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
                       <MenuItem
                         value={item.id}
                         key={i}
-                        data-testid={"compare-option-1"}
+                        data-testid={"compare-option-1" + i}
                       >
                         {item.protocol + " (" + item.versionNumber + ")"}
                       </MenuItem>
@@ -131,6 +142,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
                   placeholder="Select item..."
                   fullWidth
                   data-testid="select-div2"
+                  native={true}
                 >
                   {associateData &&
                     associateData.length > 0 &&
@@ -138,7 +150,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
                       <MenuItem
                         value={item.id}
                         key={i}
-                        data-testid={"compare-option-2"}
+                        data-testid={"compare-option-2" + i}
                       >
                         {item.protocol + " (" + item.versionNumber + ")"}
                       </MenuItem>

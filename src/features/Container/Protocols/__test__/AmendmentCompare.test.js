@@ -276,7 +276,8 @@ describe("Version Compare test suit", () => {
     );
     const selectDiv1 = getByTestId("select-div1").children[1];
     fireEvent.click(selectDiv1);
-    let selectOption = getByTestId("compare-option-1");
-    fireEvent.click(selectOption);
+    // let selectOption = getByTestId("compare-option-1");
+    // fireEvent.click(selectOption);
+    // screen.getByRole("whateve")
   });
 });
