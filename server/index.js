@@ -24,8 +24,8 @@ app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-app.use(express.static(path.join(__dirname, "build")));
-app.use(express.static(path.join(__dirname, "protocols")));
+app.use(express.static(path.join(__dirname, "../build")));
+app.use(express.static(path.join(__dirname, "../protocols")));
 
 function authenticateUser(user, password) {
   var token = user + ":" + password;
@@ -133,7 +133,7 @@ app.use(function (req, res, next) {
 });
 
 app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
 });
 
 app.listen(PORT, () => {
