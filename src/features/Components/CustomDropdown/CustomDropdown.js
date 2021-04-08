@@ -21,43 +21,45 @@ const CustomDropdown = ({
   const [value, setValue] = useState({
     label: "",
   });
-  const buttonRef = useRef(null)
+  const buttonRef = useRef(null);
   const [blur, setBlur] = useState(false);
   const [expand, setExpand] = useState(false);
   const [list, setList] = useState(source);
-  const [subStringExist, SetSubStringExist]= useState(false);
-  const [expandClass, setExpandClass]= useState('');
+  const [subStringExist, SetSubStringExist] = useState(false);
+  const [expandClass, setExpandClass] = useState("");
   const textInputRef = useRef(null);
 
-
   useEffect(() => {
-      if(blur === true){
-        if (buttonRef.current!== null && formValue && formValue.label !== buttonRef.current.innerText) {
-            onChange(fieldName, "", fieldType, { label: "" });
-            onBlur(fieldName, "", fieldType);
-          } else {
-            if(formValue && formValue.label !== value.label){
-              onBlur(fieldName, "", fieldType);
-            } else{
-              onBlur(fieldName, value.label, fieldType);
-            }
-          }
-        // if (!list.length > 0 && formValue.label !== value.label) {
-        //   onChange(fieldName, "", fieldType, { label: "" });
-        //   onBlur(fieldName, "", fieldType);
-        //   let value = {
-        //     label: "",
-        //   };
-        //   setValue(value);
-        //   setList(source);
-        // } else {
-        //   onBlur(fieldName, value.label, fieldType);
-        // }
-        // onBlur(fieldName, value.label, fieldType);
+    if (blur === true) {
+      if (
+        buttonRef.current !== null &&
+        formValue &&
+        formValue.label !== buttonRef.current.innerText
+      ) {
+        onChange(fieldName, "", fieldType, { label: "" });
+        onBlur(fieldName, "", fieldType);
+      } else {
+        if (formValue && formValue.label !== value.label) {
+          onBlur(fieldName, "", fieldType);
+        } else {
+          onBlur(fieldName, value.label, fieldType);
+        }
       }
+      // if (!list.length > 0 && formValue.label !== value.label) {
+      //   onChange(fieldName, "", fieldType, { label: "" });
+      //   onBlur(fieldName, "", fieldType);
+      //   let value = {
+      //     label: "",
+      //   };
+      //   setValue(value);
+      //   setList(source);
+      // } else {
+      //   onBlur(fieldName, value.label, fieldType);
+      // }
+      // onBlur(fieldName, value.label, fieldType);
+    }
     setBlur(false);
   }, [blur]);
-
 
   const onTextFieldChange = (id, e, type) => {
     let customListTemp = _.cloneDeep(source);
@@ -68,25 +70,25 @@ const CustomDropdown = ({
       let reg = new RegExp(`^${str}[a-z0-9 ]*$`, "i");
       return item.label.toLowerCase().match(reg);
     });
-    let substring= customListTemp.filter((item) => {
+    let substring = customListTemp.filter((item) => {
       // return item.label.match(subStr);
       return item.label.toLowerCase().match(subStr);
     });
-    if(substring.length === 0){
-      SetSubStringExist(true)
+    if (substring.length === 0) {
+      SetSubStringExist(true);
     } else {
-      SetSubStringExist(false)
+      SetSubStringExist(false);
     }
     let tempvalue = {
       label: e.target.value,
     };
     setValue(tempvalue);
     setList(filteredList);
-    if(e.target.value === "") // setting onblur to true when text is cut,so that error should display as field required
-      {
-        onChange(fieldName, e, fieldType, tempvalue);
-        setBlur(true); 
-      }     
+    if (e.target.value === "") {
+      // setting onblur to true when text is cut,so that error should display as field required
+      onChange(fieldName, e, fieldType, tempvalue);
+      setBlur(true);
+    }
   };
   const getModifyString = (value) => {
     let regConstant = ["(", ")", "+", "[", "]", "*", "?", "|", ".", "$"];
@@ -106,10 +108,10 @@ const CustomDropdown = ({
     // event.target
     //   .closest(`.custom-dropdown-wrapper-${id}`)
     //   .classList.add("is-expanded", "focused");
-    setExpandClass('is-expanded');
+    setExpandClass("is-expanded");
     document.addEventListener("click", handleOutsideClick, true);
   };
- 
+
   const handleOutsideClick = (event) => {
     // if (
     //   event &&
@@ -127,10 +129,16 @@ const CustomDropdown = ({
     //     setBlur(true);
     //   }
     // }
-    if (event.target && textInputRef && textInputRef.current&& textInputRef.current.contains(event.target)) {
+    if (
+      event.target &&
+      textInputRef &&
+      textInputRef.current &&
+      textInputRef.current.contains(event.target)
+    ) {
       return;
     } else {
- setExpandClass('')
+      setExpandClass("");
+      setBlur(true);
     }
   };
   const onClickAdd = (e) => {
@@ -139,16 +147,17 @@ const CustomDropdown = ({
       [insertField]: value.label,
     };
     onChange(fieldName, "", fieldType, tempValue);
-    setExpandClass('')
+    setExpandClass("");
   };
   const onListItemClick = (e, item) => {
     setValue(item);
     onChange(fieldName, e, fieldType, item);
-    setExpandClass('');
+    setExpandClass("");
   };
   return (
-    <div className={`custom-dropdown-parent custom-dropdown-parent-${id}`}
-    ref={textInputRef}
+    <div
+      className={`custom-dropdown-parent custom-dropdown-parent-${id}`}
+      ref={textInputRef}
     >
       <div
         className={`custom-dropdown-wrapper-${id} custom-dropdown-container ${expandClass}`}
@@ -157,7 +166,7 @@ const CustomDropdown = ({
           label={label}
           placeholder={placeholder}
           fullWidth={fullWidth}
-          value={value.label ? value.label: formValue.label}
+          value={value.label ? value.label : formValue.label}
           helperText={helperText}
           error={error}
           required={required}
@@ -165,7 +174,8 @@ const CustomDropdown = ({
           onClick={(e) => onCustomClick(id, e, "fieldType")}
         />
         <div className={`custom-dropdown-list ${error && "adjust-margin"}`}>
-          {list && list.length>0 && subStringExist && value.label && <>
+          {list && list.length > 0 && subStringExist && value.label && (
+            <>
               <p className="custom-list-item">
                 {value.label}
                 <span className="float-right" onClick={(e) => onClickAdd(e)}>
@@ -173,9 +183,9 @@ const CustomDropdown = ({
                 </span>
               </p>
             </>
-          }
+          )}
           {list && list.length > 0 ? (
-            list.map((item,index) => (
+            list.map((item, index) => (
               <p
                 key={index}
                 className="custom-list-item"
@@ -187,7 +197,9 @@ const CustomDropdown = ({
           ) : (
             <>
               <div>
-                <p className="float-left" title={value.label} ref={buttonRef}>{value.label}</p>
+                <p className="float-left" title={value.label} ref={buttonRef}>
+                  {value.label}
+                </p>
                 <p className="float-right" onClick={(e) => onClickAdd(e)}>
                   Add
                 </p>
