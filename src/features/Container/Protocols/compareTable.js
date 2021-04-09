@@ -42,7 +42,7 @@ const CompareTable = (props) => {
 
   return (
     <div>
-      <div class="compare-container">
+      <div className="compare-container">
         <div className="compare-header">
           <div className="left left-header">
             {iqvdata.protocolNumber + " (" + iqvdata.versionNumber + ")"}
@@ -130,12 +130,12 @@ const CompareTable = (props) => {
                 </div>
               );
             }
-            return (
-              <div className="compare-row" key={"aaa" + i}>
-                <div className="left left-text">{text1}</div>
-                <div className="right right-text">{text2}</div>
-              </div>
-            );
+            // return (
+            //   <div className="compare-row" key={"aaa" + i}>
+            //     <div className="left left-text">{text1}</div>
+            //     <div className="right right-text">{text2}</div>
+            //   </div>
+            // );
           }
         })}
       </div>

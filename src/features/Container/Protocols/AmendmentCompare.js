@@ -17,9 +17,6 @@ import { compareResult } from "./protocolSlice.js";
 import Loader from "../../Components/Loader/Loader";
 import ArrowLeft from "apollo-react-icons/ArrowLeft";
 
-import axios from "axios";
-const FileDownload = require("js-file-download");
-
 const AmendmentCompare = ({ prot11, prot22 }) => {
   const compare = useSelector(compareResult);
   const dispatch = useDispatch();
@@ -32,6 +29,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     dispatch({ type: "POST_COMPARE_PROTOCOL", payload: null });
+    console.log("sif", compare);
   }, []);
   useEffect(() => {
     setVersion1(prot11);
@@ -61,8 +59,9 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       alert("Please select both the fields");
     }
   };
-
+  /* istanbul ignore next */
   const handleSelect = (select, id) => {
+    console.log("od", id);
     if (select === 1) {
       let obj1 = associateData.find((item) => item.id === id);
       setProt1(obj1);
@@ -73,18 +72,16 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       setVersion2(id);
     }
   };
-  const handleDownloadTOC = (data) => {
-    // debugger;
-    // axios.post("http://localhost:4000/create-excel", compare);
-    axios({
-      url: "http://localhost:4000/create-excel",
-      method: "POST",
-      responseType: "blob", // Important
-      data: compare,
-    }).then((response) => {
-      FileDownload(response.data, `${compare.protocolNumber}.xlsx`);
-    });
-  };
+  // const handleDownloadTOC = (data) => {
+  //   axios({
+  //     url: "http://localhost:4000/create-excel",
+  //     method: "POST",
+  //     responseType: "blob", // Important
+  //     data: compare,
+  //   }).then((response) => {
+  //     FileDownload(response.data, `${compare.protocolNumber}.xlsx`);
+  //   });
+  // };
 
   // const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
   const iqvdata = compare.iqvdata ? compare.iqvdata : "";
@@ -95,71 +92,68 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
           open={open}
           setOpen={setOpen}
           compare={compare}
-          handleDownloadTOC={handleDownloadTOC}
+          // handleDownloadTOC={handleDownloadTOC}
         />
       )}
       {associateData && associateData.length > 1 ? (
-        <Grid md={12} container>
-          <Grid md={6} container>
-            <Grid md={6}>
-              <div className="version-dropdown" style={{ width: "90%" }}>
-                <Select
-                  label="Select First Version to Compare"
-                  value={version1}
-                  onChange={(e) => {
-                    handleSelect(1, e.target.value);
-                  }}
-                  placeholder="Select item..."
-                  fullWidth
-                  data-testid="select-div1"
-                  native={true}
-                >
-                  {associateData &&
-                    associateData.length > 0 &&
-                    associateData.map((item, i) => (
-                      <MenuItem
-                        value={item.id}
-                        key={i}
-                        data-testid={"compare-option-1" + i}
-                      >
-                        {item.protocol + " (" + item.versionNumber + ")"}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </div>
-            </Grid>
-            <Grid md={6}>
-              <div
-                className="version-dropdown"
-                style={{ width: "90%", float: "right", marginRight: 10 }}
+        <Grid container>
+          <Grid item md={3}>
+            <div className="version-dropdown" style={{ width: "90%" }}>
+              <Select
+                label="Select First Version to Compare"
+                value={version1}
+                onChange={(e) => {
+                  handleSelect(1, e.target.value);
+                }}
+                placeholder="Select item..."
+                fullWidth
+                data-testid="select-div1"
               >
-                <Select
-                  label="Select Second Version to Compare"
-                  value={version2}
-                  onChange={(e) => {
-                    handleSelect(2, e.target.value);
-                  }}
-                  placeholder="Select item..."
-                  fullWidth
-                  data-testid="select-div2"
-                  native={true}
-                >
-                  {associateData &&
-                    associateData.length > 0 &&
-                    associateData.map((item, i) => (
-                      <MenuItem
-                        value={item.id}
-                        key={i}
-                        data-testid={"compare-option-2" + i}
-                      >
-                        {item.protocol + " (" + item.versionNumber + ")"}
-                      </MenuItem>
-                    ))}
-                </Select>
-              </div>
-            </Grid>
+                {associateData &&
+                  associateData.length > 0 &&
+                  associateData.map((item, i) => (
+                    <MenuItem
+                      value={item.id}
+                      key={i}
+                      data-testid={"compare-option-1" + i}
+                    >
+                      {item.protocol + " (" + item.versionNumber + ")"}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </div>
           </Grid>
-          <Grid md={3} container>
+          <Grid item md={3}>
+            <div
+              className="version-dropdown"
+              style={{ width: "90%", float: "right", marginRight: 10 }}
+            >
+              <Select
+                label="Select Second Version to Compare"
+                value={version2}
+                onChange={(e) => {
+                  handleSelect(2, e.target.value);
+                }}
+                placeholder="Select item..."
+                fullWidth
+                data-testid="select-div2"
+              >
+                {associateData &&
+                  associateData.length > 0 &&
+                  associateData.map((item, i) => (
+                    <MenuItem
+                      value={item.id}
+                      key={i}
+                      data-testid={"compare-option-2" + i}
+                    >
+                      {item.protocol + " (" + item.versionNumber + ")"}
+                    </MenuItem>
+                  ))}
+              </Select>
+            </div>
+          </Grid>
+
+          <Grid md={3} item>
             <div className="compare-button">
               <Button
                 variant="primary"
@@ -172,19 +166,22 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
               </Button>
             </div>
           </Grid>
-          <Grid md={3} container>
-            <div className="summary-button">
-              <Button
-                variant="secondary"
-                icon={<ArrowLeft color="blue" />}
-                size="small"
-                style={{ marginRight: 10 }}
-                onClick={() => setOpen(!open)}
-              >
-                Summary
-              </Button>
-            </div>
-          </Grid>
+          {iqvdata && (
+            <Grid md={3} item>
+              <div className="summary-button" data-testid="summary-button-div">
+                <Button
+                  variant="secondary"
+                  icon={<ArrowLeft />}
+                  size="small"
+                  style={{ marginRight: 10 }}
+                  onClick={() => setOpen(!open)}
+                  data-testid="summary-button"
+                >
+                  Summary
+                </Button>
+              </div>
+            </Grid>
+          )}
         </Grid>
       ) : (
         <div className="single-version">
@@ -198,8 +195,8 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
         </div>
       )}
       {iqvdata && !compare.error && iqvdata.data.length > 0 && (
-        <Grid container md={12}>
-          <Grid md={12}>
+        <Grid container>
+          <Grid md={12} item>
             <CompareCard
               float="left"
               cardID="first-card"
@@ -219,6 +216,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       )}
       {compare.called && compare.loading && (
         <div
+          data-testid="loader"
           style={{
             height: 250,
             justifyContent: "center",

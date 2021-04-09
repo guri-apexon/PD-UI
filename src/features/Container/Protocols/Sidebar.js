@@ -4,6 +4,8 @@ import React from "react";
 import Blade from "apollo-react/components/Blade";
 import Download from "apollo-react-icons/Download";
 import Plus from "apollo-react-icons/Plus";
+import axios from "axios";
+const FileDownload = require("js-file-download");
 
 class Sidebar extends React.Component {
   state = {
@@ -18,17 +20,25 @@ class Sidebar extends React.Component {
   //     : console.log("Blade is now collapsed");
   // };
 
-  onClose = () => {
-    this.setState({ open: true, expanded: false });
-  };
+  // onClose = () => {
+  //   this.setState({ open: true, expanded: false });
+  // };
 
-  onOpen = () => {
-    this.setState({ open: true });
-  };
+  // onOpen = () => {
+  //   this.setState({ open: true });
+  // };
   handleDownload = (type, data) => {
     /* istanbul ignore else */
     if ((type = "toc")) {
-      this.props.handleDownloadTOC(data);
+      // this.props.handleDownloadTOC(data);
+      axios({
+        url: "http://localhost:4000/create-excel",
+        method: "POST",
+        responseType: "blob", // Important
+        data: data,
+      }).then((response) => {
+        FileDownload(response.data, `${data.protocolNumber}.xlsx`);
+      });
     }
   };
 
@@ -39,26 +49,22 @@ class Sidebar extends React.Component {
 
     return (
       <>
-        {/* <Button variant="primary" onClick={this.onOpen}>
-          {"Open Custom Blade"}
-        </Button> */}
+        {/* Protocol.scss */}
         <div className="sidebar">
           <Blade
             side="right"
             width={350}
             expanded={open}
-            onChange={() => setOpen(!open)}
             open={open}
             onClose={() => setOpen(false)}
-            // title="Custom Blade"
-            // subtitle="This blade has a custom width and `onChange` function"
             hasBackdrop={false}
-            // hideCloseButton
+            data-testid="sidebar-div"
+            className="sidebar-blade"
           >
             <div className="sidebar-div">
               <div
                 className="header-section"
-                onClick={() => this.handleDownload("toc", data)}
+                onClick={() => this.handleDownload("toc", compare)}
                 data-testid="download-div"
               >
                 Summary of Changes <Download />
@@ -72,7 +78,7 @@ class Sidebar extends React.Component {
                     const text1 = item[4];
                     return (
                       type === "header" && (
-                        <li>
+                        <li key={"toc" + i}>
                           <a>{text1}</a>
                         </li>
                       )

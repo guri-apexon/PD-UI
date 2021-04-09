@@ -84,7 +84,9 @@
       "!src/app",
       "!src/test-utils",
       "!src/mockdata",
-      "!src/services/endpoint.ts"
+      "!src/services/endpoint.ts",
+      "!/src/features/Container/Protocols/CompareCard.js",
+      "!/src/features/Container/Protocols/CompareCardNew.js"
     ]
   },
   "devDependencies": {

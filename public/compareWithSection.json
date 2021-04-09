@@ -56,9 +56,9 @@
         1,
         "Table of Contents",
         "header",
-        0,
+        1,
         "VERSION HISTORY",
-        "VERSION HISTORY",
+        "",
         [],
         1
       ],
@@ -112,8 +112,8 @@
         6,
         "Table of Contents",
         "header",
-        0,
-        "TABLE OF CONTENTS",
+        3,
+        "",
         "TABLE OF CONTENTS",
         [],
         1
