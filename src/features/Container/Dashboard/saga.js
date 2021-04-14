@@ -23,6 +23,7 @@ function* getState() {
 export function* protocolAsyn() {
   let userId = yield getState();
   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
+
   const protocolConfig = {
     url: protocolUrl,
     method: "GET",
@@ -32,6 +33,7 @@ export function* protocolAsyn() {
 
     if (protocolData.success) {
       let data = protocolData.data.map((item) => {
+        item.id = item.aidocId;
         item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
         item.protocol = !item.protocol ? "" : item.protocol;
         item.projectId = !item.projectId ? "" : item.projectId;
@@ -57,9 +59,9 @@ export function* compareSelectedAsyn(action) {
 }
 
 function sorting(data, key) {
-  return data.sort(function(x, y){
+  return data.sort(function (x, y) {
     return new Date(y[key]) - new Date(x[key]);
-})
+  });
 }
 
 export function* recentSearchAsyn() {
@@ -72,7 +74,7 @@ export function* recentSearchAsyn() {
   try {
     const searchData = yield call(httpCall, config);
     if (searchData.success) {
-      yield put(getRecentSearches(sorting(searchData.data, 'timeCreated')));
+      yield put(getRecentSearches(sorting(searchData.data, "timeCreated")));
     }
     yield put(setError(searchData.err.statusText));
   } catch (err) {
@@ -90,7 +92,7 @@ export function* savedSearchAsyn() {
   try {
     const searchData = yield call(httpCall, config);
     if (searchData.success) {
-      yield put(getSavedSearches(sorting(searchData.data, 'timeCreated')));
+      yield put(getSavedSearches(sorting(searchData.data, "timeCreated")));
     }
     yield put(setError(searchData.err.statusText));
   } catch (err) {
@@ -207,7 +209,6 @@ export function* resetErrorAddProtocol() {
 }
 
 export function* saveRecentSearch(action) {
-
   if (action.payload) {
     let userId = yield getState();
     const url = `${BASE_URL_8000}/api/recent_search/`;
