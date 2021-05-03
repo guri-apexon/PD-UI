@@ -136,6 +136,13 @@ const CompareTable = (props) => {
             //     <div className="right right-text">{text2}</div>
             //   </div>
             // );
+          }else if(type===textTypes.table){
+            return (
+                <div className="compare-row" key={"aaa" + i}>
+                  <div className="left left-text" dangerouslySetInnerHTML={{ __html: text1.Table }}></div>
+                  <div className="right right-text" dangerouslySetInnerHTML={{ __html: text2.Table }}></div>
+                </div>
+              );
           }
         })}
       </div>

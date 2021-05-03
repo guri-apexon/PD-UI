@@ -75,11 +75,15 @@ class Sidebar extends React.Component {
                 <ul>
                   {data.map((item, i) => {
                     const type = item[2];
-                    const text1 = item[4];
+                    const text1 = item[4] ? item[4] : item[5];
+
+                    const noOFDiff = item[7];
                     return (
                       type === "header" && (
                         <li key={"toc" + i}>
-                          <a>{text1}</a>
+                          <a>
+                            {text1} ({noOFDiff})
+                          </a>
                         </li>
                       )
                     );

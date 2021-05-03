@@ -56,10 +56,11 @@
         1,
         "Table of Contents",
         "header",
-        1,
+        0,
         "VERSION HISTORY",
-        "",
+        "VERSION HISTORY",
         [],
+        5,
         1
       ],
       [
@@ -86,6 +87,54 @@
         1
       ],
       [
+        33,
+        "Unmapped",
+        "table",
+        0,
+        {
+          "Table": "<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th>ColIndex</th>\n      <th>1.0</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>Version 1.0, 9 March 2020</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>Initial creation</td>\n    </tr>\n  </tbody>\n</table>",
+          "TableIndex": "1",
+          "TableName": "",
+          "Header": [0]
+        },
+        {
+          "Table": "<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th>ColIndex</th>\n      <th>1.0</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>Version 1.0, 9 March 2020</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>Initial creation</td>\n    </tr>\n  </tbody>\n</table>",
+          "TableIndex": "1",
+          "TableName": "",
+          "Header": [0]
+        },
+        [],
+        "Unmapped",
+        "VERSION HISTORY",
+        "",
+        "1",
+        25
+      ],
+      [
+        33,
+        "Unmapped",
+        "table",
+        0,
+        {
+          "Table": "<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th>ColIndex</th>\n      <th>1.0</th>\n      <th>2.0</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>Table 1</td>\n      <td>Study of Assessments ................................................................................8</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>Table 2</td>\n      <td>Study objectives.......................................................................................17</td>\n    </tr>\n    <tr>\n      <th>2</th>\n      <td>Table 3</td>\n      <td>Treatment regimen...................................................................................18</td>\n    </tr>\n    <tr>\n      <th>3</th>\n      <td>Table 4</td>\n      <td>Investigational Products...........................................................................24</td>\n    </tr>\n    <tr>\n      <th>4</th>\n      <td>Table 5</td>\n      <td>Permitted medications..............................................................................27</td>\n    </tr>\n    <tr>\n      <th>5</th>\n      <td>Table 6</td>\n      <td>Screening tests and the number of days prior to the first dose of investigational products...........................................................................34</td>\n    </tr>\n    <tr>\n      <th>6</th>\n      <td>Table 7</td>\n      <td>Laboratory safety variables......................................................................37</td>\n    </tr>\n    <tr>\n      <th>7</th>\n      <td>Table 8</td>\n      <td>Adavosertib QD Monotherapy Dose Level Reductions ............................45</td>\n    </tr>\n    <tr>\n      <th>8</th>\n      <td>Table 9</td>\n      <td>Neutrophil Blood Counts and Study Drug Action ....................................46</td>\n    </tr>\n    <tr>\n      <th>9</th>\n      <td>Table 10</td>\n      <td>Platelet Blood Counts and Study Drug Action..........................................47</td>\n    </tr>\n    <tr>\n      <th>15</th>\n      <td>Table 16</td>\n      <td>Overall Visit Response for Target Lesions...............................................86</td>\n    </tr>\n    <tr>\n      <th>16</th>\n      <td>Table 17</td>\n      <td>Overall Visit Response for Non-Target Lesions.......................................87</td>\n    </tr>\n    <tr>\n      <th>17</th>\n      <td>Table 18</td>\n      <td>Overall Visit Response ............................................................................88</td>\n    </tr>\n  </tbody>\n</table>",
+          "TableIndex": "2",
+          "TableName": "",
+          "Header": []
+        },
+        {
+          "Table": "<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th>ColIndex</th>\n      <th>1.0</th>\n      <th>2.0</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>Table 1</td>\n      <td>Study of Assessments ................................................................................8</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>Table 2</td>\n      <td>Study objectives.......................................................................................17</td>\n    </tr>\n    <tr>\n      <th>2</th>\n      <td>Table 3</td>\n      <td>Treatment regimen...................................................................................18</td>\n    </tr>\n    <tr>\n      <th>3</th>\n      <td>Table 4</td>\n      <td>Investigational Products...........................................................................24</td>\n    </tr>\n    <tr>\n      <th>4</th>\n      <td>Table 5</td>\n      <td>Permitted medications..............................................................................27</td>\n    </tr>\n    <tr>\n      <th>5</th>\n      <td>Table 6</td>\n      <td>Screening tests and the number of days prior to the first dose of investigational products...........................................................................34</td>\n    </tr>\n    <tr>\n      <th>6</th>\n      <td>Table 7</td>\n      <td>Laboratory safety variables......................................................................37</td>\n    </tr>\n    <tr>\n      <th>7</th>\n      <td>Table 8</td>\n      <td>Adavosertib QD Monotherapy Dose Level Reductions ............................45</td>\n    </tr>\n    <tr>\n      <th>8</th>\n      <td>Table 9</td>\n      <td>Neutrophil Blood Counts and Study Drug Action ....................................46</td>\n    </tr>\n    <tr>\n      <th>9</th>\n      <td>Table 10</td>\n      <td>Platelet Blood Counts and Study Drug Action..........................................47</td>\n    </tr>\n    <tr>\n      <th>10</th>\n      <td>Table 11</td>\n      <td>Management of anaemia..........................................................................47</td>\n    </tr>\n    <tr>\n      <th>11</th>\n      <td>Table 12</td>\n      <td>Adavosertib dose modifications for QTc prolongation .............................49</td>\n    </tr>\n    <tr>\n      <th>12</th>\n      <td>Table 13</td>\n      <td>PK sampling schedule for adavosertib......................................................51</td>\n    </tr>\n    <tr>\n      <th>13</th>\n      <td>Table 14</td>\n      <td>Populations for analyses ..........................................................................54</td>\n    </tr>\n    <tr>\n      <th>14</th>\n      <td>Table 15</td>\n      <td>Summary of Methods of Assessment .......................................................83</td>\n    </tr>\n    <tr>\n      <th>15</th>\n      <td>Table 16</td>\n      <td>Overall Visit Response for Target Lesions...............................................86</td>\n    </tr>\n    <tr>\n      <th>16</th>\n      <td>Table 17</td>\n      <td>Overall Visit Response for Non-Target Lesions.......................................87</td>\n    </tr>\n    <tr>\n      <th>17</th>\n      <td>Table 18</td>\n      <td>Overall Visit Response ............................................................................88</td>\n    </tr>\n  </tbody>\n</table>",
+          "TableIndex": "2",
+          "TableName": "",
+          "Header": []
+        },
+        [],
+        "Unmapped",
+        "VERSION HISTORY",
+        "",
+        "1",
+        25
+      ],
+      [
         4,
         "Table of Contents",
         "text",
@@ -108,16 +157,7 @@
         [[21, 23]],
         1
       ],
-      [
-        6,
-        "Table of Contents",
-        "header",
-        3,
-        "",
-        "TABLE OF CONTENTS",
-        [],
-        1
-      ],
+      [6, "Table of Contents", "header", 3, "", "TABLE OF CONTENTS", [], 3, 1],
       [
         7,
         "Table of Contents",
@@ -146,6 +186,7 @@
         "Introduction",
         "Introductions",
         [],
+        6,
         1
       ],
       [
@@ -198,10 +239,11 @@
         4,
         "Table of Contents",
         "header",
-        0,
+        1,
         "Background and rationale for conducting this study",
-        "Background and rationale for conducting this study",
+        "",
         [],
+        6,
         1
       ],
       [
@@ -250,7 +292,17 @@
         [[21, 23]],
         1
       ],
-      [5, "Table of Contents", "header", 0, "Background", "Background", [], 1],
+      [
+        5,
+        "Table of Contents",
+        "header",
+        0,
+        "Background",
+        "Background",
+        [],
+        6,
+        1
+      ],
       [
         1,
         "Table of Contents",

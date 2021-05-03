@@ -166,7 +166,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
               </Button>
             </div>
           </Grid>
-          {iqvdata && (
+          {/* {iqvdata && (
             <Grid md={3} item>
               <div className="summary-button" data-testid="summary-button-div">
                 <Button
@@ -181,7 +181,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
                 </Button>
               </div>
             </Grid>
-          )}
+          )} */}
         </Grid>
       ) : (
         <div className="single-version">
@@ -197,12 +197,12 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       {iqvdata && !compare.error && iqvdata.data.length > 0 && (
         <Grid container>
           <Grid md={12} item>
-            <CompareCard
+            {/* <CompareCard
               float="left"
               cardID="first-card"
               data={prot1}
               compare={compare}
-            />
+            /> */}
           </Grid>
           {/* <Grid md={6}>
             <CompareCard

@@ -19,6 +19,7 @@ export function* getSummaryData(action) {
   const resp = yield call(httpCall, { url, method: "GET" });
   // getSummaryData(data)
   if (resp.data) {
+    resp.data["id"] = resp.data.aidocId;
     let obj = {
       loading: false,
       success: true,
