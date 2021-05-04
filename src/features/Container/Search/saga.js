@@ -3,7 +3,6 @@ import {
   takeEvery,
   all,
   call,
-  takeLatest,
   select,
 } from "redux-saga/effects";
 import {
@@ -15,7 +14,7 @@ import {
   getRangeDate,
   getTotalSearchResult
 } from "./searchSlice";
-import BASE_URL, { httpCall, Apis, BASE_URL_8000 } from "../../../utils/api";
+import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
 import moment from "moment";
 
@@ -123,6 +122,7 @@ export function* getFilterData(action) {
 }
 
 export function* getSearchData(action) {
+  let userId = yield getState();
   if (action.payload) {
     const obj = {
       search: true,
@@ -133,29 +133,48 @@ export function* getSearchData(action) {
     yield put(getSearchResult(obj));
 
     try {
-      const url = `/elastic?${action.payload}`;
+      // const url = `/elastic?${action.payload}`;
       // const url = `http://localhost:4000/elastic?${action.payload}`;
 
-      const resp = yield call(httpCall, {
-        url,
-        method: "GET",
-      });
-      const respTotal=resp.data.hits.hits;
-      const data =respTotal.slice(0,10);
-      // const data=resp.data.hits.hits;
-      
-      if (resp.data && resp.data.hits && data.length !== 0) {
-        const requiredFormat = createJSONFormat(data);
-        const totalFormat = createJSONFormat(respTotal)
-        yield put(getTotalSearchResult(totalFormat));
+      // const resp = yield call(httpCall, {
+      //   url,
+      //   method: "GET",
+      // });
+      // const respTotal=resp.data.hits.hits;
+      // const data =respTotal.slice(0,10);
+      // const url1 = `/searchResponse.json`;
+      // const getresp = yield call(httpCall, {
+      //   url:url1,
+      //   method: "GET",
+      // });
+      // console.log("search Post",action.payload)
+      let postObj={
+        ...action.payload,
+        qID:userId
+      }
+      const searchurl = `http://ca2spdml01q:8001/api/keyword_search/`;
+      const searchResp = yield call(httpCall, {
+        url:searchurl,
+        method:"POST",
+        data: postObj
+        
+      })
+      if (searchResp.success && searchResp.data && searchResp.data.data.length !== 0) {
+        const requiredFormat= createJSONFormat(searchResp.data.data);
+        // console.log('searchResp2 :', requiredFormat);
+        let resp= searchResp.data;
+        resp={
+          ...resp,
+          data: requiredFormat
+        }
         const obj = {
           search: true,
           loader: false,
           success: true,
-          data: requiredFormat,
+          data: resp,
         };
-        yield put(getSearchResult(obj));
-      } else if (resp.data.hits.hits.length === 0) {
+        yield put(getSearchResult(obj))
+      } else if (searchResp.data.data.length === 0) {
         const obj = {
           search: true,
           loader: false,
@@ -189,6 +208,8 @@ export function* updateSearchResult(action) {
 
 // -----Updating and adding Associate Protocol to a Single protocol when individual expand is clicked
 function* updateSearchAssociated(action) {
+  const state = yield select();
+  const searchData = state.search.searchResult;
   let tempRes = _.cloneDeep(action.payload.obj);
   let foundIndex = tempRes.findIndex(
     (obj) => obj.id === action.payload.data.id
@@ -202,7 +223,10 @@ function* updateSearchAssociated(action) {
     search: true,
     loader: false,
     success: true,
-    data: tempRes,
+    data: {
+      ...searchData.data,
+      data:[...tempRes]
+    },
   };
   yield put(getSearchResult(initialObj));
   //ProtocolNo
@@ -247,14 +271,17 @@ function* updateSearchAssociated(action) {
         resultarr,
         primaryUser
       );
-      const obj = {
+      const obj1 = {
         search: true,
         loader: false,
         success: true,
-        data: result,
+        data: {
+          ...searchData.data,
+          data:[...result]
+        },
       };
 
-      yield put(getSearchResult(obj));
+      yield put(getSearchResult(obj1));
     } else {
       yield;
     }
@@ -288,49 +315,16 @@ function* getRecentData(action) {
     newDate.setMonth(newDate.getMonth() - parseInt(action.payload));
 
     let momDate = moment(newDate);
-    const getDate = momDate.format("YYYYMMDDHHMMSS");
+    const getDate = momDate.format("YYYYMMDD");
+    const nowData= moment(new Date()).format("YYYYMMDD");
     const recentDate = {
       from: getDate,
-      to: "now/d",
+      // to: "now/d",
+      to:nowData
     };
 
     yield put(getRecentDate(recentDate));
   }
-  // try {
-  //   // const url = `http://localhost:4000/filter?from=${getDate}&to=now/d`;
-  //   const url = `/filter?from=${getDate}&to=now/d`;
-  //   const resp = yield call(httpCall, {
-  //     url,
-  //     method: "GET",
-  //   });
-  //   const data = resp.data.hits.hits;
-
-  //   if (resp.data && resp.data.hits && data.length !== 0) {
-  //     const requiredFormat = createJSONFormat(data);
-
-  //     const obj = {
-  //       search: true,
-  //       loader: false,
-  //       success: true,
-  //       data: requiredFormat,
-  //     };
-  //     yield put(getSearchResult(obj));
-  //   } else if (resp.data.hits.hits.length === 0) {
-  //     const obj = {
-  //       search: true,
-  //       loader: false,
-  //       success: true,
-  //       data: [],
-  //     };
-  //     yield put(getSearchResult(obj));
-  //   }
-  // } catch (e) {
-  //   const obj = {
-  //     success: false,
-  //     data: [],
-  //   };
-  //   yield put(getSearchResult(obj));
-  // }
 }
 
 function* getDataByRange(action) {
@@ -502,41 +496,27 @@ export default function* protocolSaga() {
 
 export function createJSONFormat(data) {
   let arr = [];
-  // console.log("ddddd", data);
   for (let i = 0; i < data.length; i++) {
-    // let sampleRows = data.filter(
-    //   (item) => item._source.ProtocolNo === data[i]._source.ProtocolNo
-    // );
-    // let rows = sampleRows.map((item) => {
-    //   return {
-    //     version: item._source.ProtocolVersion,
-    //     draft: "",
-    //     sourceDocument: item._source.SourceFileName,
-    //     documentPath: item._source.documentPath,
-    //     uploadDate: item._source.uploadDate,
-    //     documentStatus: item._source.DocumentStatus,
-    //   };
-    // });
     let obj = {
-      protocolNumber: data[i]._source.ProtocolNo,
-      AiDocId: data[i]._source.AiDocId,
-      protocolDescription: data[i]._source.ProtocolTitle,
-      indication: data[i]._source.Indication,
-      phase: data[i]._source.phase,
-      sponsor: data[i]._source.SponsorName,
-      molecule: data[i]._source.MoleculeDevice,
-      approvalDate: data[i]._source.approval_date,
-      uploadDate: data[i]._source.uploadDate,
-      followed: false,
+      protocolNumber: data[i].ProtocolNo,
+      AiDocId: data[i].AiDocId,
+      protocolDescription: data[i].ProtocolTitle,
+      indication: data[i].Indication,
+      phase: data[i].phase,
+      sponsor: data[i].SponsorName,
+      molecule: data[i].MoleculeDevice,
+      approval_date: data[i].approval_date,
+      uploadDate: data[i].uploadDate,
+      followed: data[i].Follow ? data[i].Follow : false,
       rows: [],
       rowsLoading: true,
-      isActive: data[i]._source.is_active,
+      isActive: data[i].is_active,
       viewAssociate: false,
-      projectId: data[i]._source.ProjectId,
-      source: data[i]._source.SourceFileName,
-      path: `${data[i]._source.documentPath}\\${data[i]._source.SourceFileName}`,
-      documentStatus: data[i]._source.DocumentStatus,
-      version: data[i]._source.VersionNumber,
+      projectId: data[i].ProjectId,
+      source: data[i].SourceFileName,
+      path: `${data[i].documentPath}\\${data[i].SourceFileName}`,
+      documentStatus: data[i].DocumentStatus,
+      version: data[i].VersionNumber,
     };
     arr.push(obj);
   }
@@ -545,15 +525,14 @@ export function createJSONFormat(data) {
 }
 
 // --To Remove duplicate Protocol numbers from list
-function getUniqObject(obj) {
-  const uniqueObj = Array.from(new Set(obj.map((a) => a.protocolNumber))).map(
-    (protocolNumber) => {
-      return obj.find((a) => a.protocolNumber === protocolNumber);
-    }
-  );
-  // debugger;
-  return uniqueObj;
-}
+// function getUniqObject(obj) {
+//   const uniqueObj = Array.from(new Set(obj.map((a) => a.protocolNumber))).map(
+//     (protocolNumber) => {
+//       return obj.find((a) => a.protocolNumber === protocolNumber);
+//     }
+//   );
+//   return uniqueObj;
+// }
 // function getOnlyActiveItem(obj) {
 //   let activeObj = obj.filter((item) => item.isActive !== 0);
 //   // debugger

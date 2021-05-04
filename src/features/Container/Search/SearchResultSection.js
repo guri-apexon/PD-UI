@@ -1,15 +1,9 @@
-import Panel from "apollo-react/components/Panel";
-import _ from "lodash";
-import Typography from "apollo-react/components/Typography";
-import classNames from "classnames";
+
 import React from "react";
+import _ from "lodash";
 import SearchListingSection from "./SearchListingSection";
-import data from "./Data/row.data";
 import SearchIcon from "apollo-react-icons/Search";
-import Search from "apollo-react/components/Search";
 import Button from "apollo-react/components/Button";
-import CustomCard from "./CustomFilterCards";
-import searchData from "./Data/search.metadata";
 import FilterSection from "./FilterSection";
 import Link from "apollo-react/components/Link";
 import MenuItem from "apollo-react/components/MenuItem";
@@ -26,7 +20,9 @@ import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
 
 import Loader from "../../Components/Loader/Loader";
 import { connect } from "react-redux";
-
+import axios from "axios";
+// import { BASE_URL_8000 } from "../../../utils/api";
+import { toast } from "react-toastify";
 class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -44,17 +40,17 @@ class SearchPanel extends React.Component {
       _.isEmpty(state.accordionObj) ||
       props.resultList.loader !== state.resultListData.loader ||
       props.resultList !== state.resultListData
-    ) {
+      ) {
       let defaultValue = false;
-
       //For resetting ExpandAll button when all are expanded and Search button is click
       if (
         state.defaultExpand === true &&
         props.resultList &&
         props.resultList.data &&
-        props.resultList.data.length > 0
+        props.resultList.data.data &&
+        props.resultList.data.data.length > 0
       ) {
-        let defaultVal = props.resultList.data.filter((value) => {
+        let defaultVal = props.resultList.data.data.filter((value) => {
           return value.expanded && value.expanded === true;
         });
         if (defaultVal.length > 0) {
@@ -64,7 +60,11 @@ class SearchPanel extends React.Component {
         }
       }
       let result =
-        props.resultList && props.resultList.data ? props.resultList.data : [];
+        props.resultList &&
+        props.resultList.data &&
+        props.resultList.data.data
+          ? props.resultList.data.data
+          : [];
       let arr = [];
       for (let i = 0; i < result.length; i++) {
         let obj = _.cloneDeep(result[i]);
@@ -92,25 +92,25 @@ class SearchPanel extends React.Component {
   setExpanded = (id, obj, data) => {
     const { updateAssociateProtocol } = this.props;
     const { accordionObj } = this.state;
-
     // if (obj.expanded) {
     //   // dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
     //   updateAssociateProtocol(data, accordionObj);
     // }
-    let accObj = accordionObj;
+    let accObj = _.cloneDeep(accordionObj);
     let foundIndex = accObj.findIndex((obj) => obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
     if (accObj[foundIndex].expanded === false) {
       accObj[foundIndex].viewAssociate = false;
     }
 
-    this.setState({
-      accordionObj: [
-        ...this.state.accordionObj.slice(0, foundIndex),
-        Object.assign({}, this.state.accordionObj[foundIndex], obj),
-        ...this.state.accordionObj.slice(foundIndex + 1),
-      ],
-    });
+    // this.setState({
+    //   accordionObj: [
+    //     ...this.state.accordionObj.slice(0, foundIndex),
+    //     Object.assign({}, this.state.accordionObj[foundIndex], obj),
+    //     ...this.state.accordionObj.slice(foundIndex + 1),
+    //   ],
+    // });
+    this.setState({ accordionObj: accObj });
   };
 
   onViewAssociateProtocolClick = (data) => {
@@ -136,15 +136,13 @@ class SearchPanel extends React.Component {
 
   sortChange = (value) => {
     const { onSortChange } = this.props;
-
     let filterValue = SORT_DROPDOWN.filter((item) => item.id === value);
-
-    onSortChange(filterValue[0], value);
+    value && onSortChange(filterValue[0], value);
     // this.setState({ sortValue: value.id });
   };
   onExpandAllClick = () => {
     const { accordionObj, defaultExpand } = this.state;
-    const { updateSearchResult } = this.props;
+    const { updateSearchResult, resultList } = this.props;
     let tempDefault = true;
     if (!defaultExpand) {
       tempDefault = true;
@@ -161,13 +159,16 @@ class SearchPanel extends React.Component {
       defaultExpand: !this.state.defaultExpand,
       accordionObj: arr,
     });
-    const obj = {
+    const obj1 = {
       search: true,
       loader: false,
       success: true,
-      data: arr,
+      data: {
+        ...resultList.data,
+        data: [...arr],
+      },
     };
-    updateSearchResult(obj);
+    updateSearchResult(obj1);
   };
 
   onConstructSearchQuery = (list, identifier) => {
@@ -196,6 +197,40 @@ class SearchPanel extends React.Component {
     const { onSetPage } = this.props;
     onSetPage(value);
   };
+  handleFollow = (e, checked, protocol) => {
+    const {userDetails}= this.props;
+  console.log('e, checked, protocol :', e, checked, protocol,userDetails);
+  const id = userDetails.userId;
+    const { accordionObj } = this.state;
+    let accObj = _.cloneDeep(accordionObj);
+    let newObj = accObj.map((obj) => {
+      if (obj.protocolNumber && (obj.protocolNumber.toLowerCase() === protocol.protocolNumber.toLowerCase())) {
+      // if (obj.protocolNumber && (obj.protocolNumber === protocol.protocolNumber)) {
+      return { ...obj, followed: !obj.followed };
+      } else {
+        return obj;
+      }
+    });
+    axios.post(
+      `http://ca2spdml01q:8001/api/follow_protocol/`,
+      {
+        userId:id.substring(1),
+        protocol:protocol.protocolNumber,
+        follow: checked,
+        userRole:'secondary'
+      }
+    )
+    .then( res=>{
+    if(res && res.status===200){
+      // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
+      this.setState({ accordionObj: newObj });
+    }
+    })
+    .catch(()=>{
+      toast.error("Something Went Wrong");
+    })
+    
+  };
 
   render() {
     const {
@@ -216,14 +251,14 @@ class SearchPanel extends React.Component {
     } = this.props;
     const { accordionObj, sortValue, defaultExpand } = this.state;
 
-    let protocols = resultList.data && resultList.data.length;
-    let maxRecordsPerPage = 10;
-    let noOfProtocolsPerPages =
-      protocols > 0
-        ? protocols > maxRecordsPerPage
-          ? protocols / maxRecordsPerPage
-          : protocols
-        : 0;
+    // let protocols = resultList.data && resultList.data.length;
+    // let maxRecordsPerPage = 10;
+    // let noOfProtocolsPerPages =
+    //   protocols > 0
+    //     ? protocols > maxRecordsPerPage
+    //       ? protocols / maxRecordsPerPage
+    //       : protocols
+    //     : 0;
 
     return (
       <div id="searchPanel" className="searchPanel">
@@ -336,10 +371,13 @@ class SearchPanel extends React.Component {
                     </span> */}
                     <span>
                       Showing {page * 10 + 1} -{" "}
-                      {page * 10 + 10 < totalSearchResult.length
+                      {page * 10 + 10 <  resultList.data.total_count
                         ? page * 10 + 10
-                        : totalSearchResult.length}{" "}
-                      of {totalSearchResult.length}{" "}
+                        :  resultList.data.total_count}{" "}
+                      of{" "}
+                      {resultList &&
+                        resultList.data &&
+                        resultList.data.total_count}{" "}
                     </span>
                   </div>
 
@@ -411,6 +449,7 @@ class SearchPanel extends React.Component {
                         protocolSelected={protocolSelected}
                         page={page}
                         setPage={setPage}
+                        handleFollow={this.handleFollow}
                       />
                     </div>
                   ))
@@ -439,7 +478,11 @@ class SearchPanel extends React.Component {
                   <div className="search-pagination">
                     {" "}
                     <Pagination
-                      count={totalSearchResult && totalSearchResult.length}
+                      count={
+                        resultList &&
+                        resultList.data &&
+                        resultList.data.total_count
+                      }
                       rowsPerPage={10}
                       page={page}
                       onChangePage={this.onPageChange}
@@ -456,7 +499,11 @@ class SearchPanel extends React.Component {
     );
   }
 }
-
+const mapStateToProps = state => {
+  return {
+    userDetails: state.user.userDetail
+  }
+}
 const mapDispatchToProps = (dispatch) => {
   return {
     updateAssociateProtocol: (data, obj) =>
@@ -468,4 +515,4 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: "UPDATE_SEARCH_RESULT", payload: obj }),
   };
 };
-export default connect(null, mapDispatchToProps)(SearchPanel);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);

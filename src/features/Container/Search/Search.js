@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import queryString from "query-string";
 import "./search.scss";
 
 //------------------- Components --------------------
 
 import SearchResultSection from "./SearchResultSection";
 import SearchSection from "./SearchSection";
+import { POST_OBJECT } from "../../../AppConstant/AppConstant";
 
 //------------------- Third Party -----------------
 
@@ -31,11 +31,10 @@ import {
   dateType,
   dateSection,
 } from "./Data/constants";
-import axios from "axios";
 
 import moment from "moment";
 import { formatESDate } from "../../../utils/utilFunction";
-let protArr = [];
+
 const Search = (props) => {
   const resultList = useSelector(searchResult);
   const totalSearchResults = useSelector(totalSearchResult);
@@ -60,8 +59,9 @@ const Search = (props) => {
     dateType: [1],
     dateSection: [1],
   });
+  const [postQueryObj, setPostQueryObj]= useState(POST_OBJECT)
   const [clearAll, setClearAll] = useState(false);
-  const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
+  // const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [selection, setSelection] = useState(true);
   const [prevProtSelected, setPrevProtSelected] = useState("");
@@ -70,11 +70,15 @@ const Search = (props) => {
     // axios.get('http://ca2spdml01q:8000/api/indications/?skip=0')
     dispatch({ type: "GET_SPONSORS" });
     dispatch({ type: "GET_INDICATIONS" });
+    return ()=>{
+      dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
+    }
   }, []);
   useEffect(() => {
     let params = props.location.search;
     // const parsed = queryString.parse(params);
     let parsed = {};
+    let postObj=_.cloneDeep(POST_OBJECT);
     // if (indicationData.sectionContent.length === 0) {
     // dispatch({ type: "GET_INDICATIONS" });
     // }
@@ -85,101 +89,73 @@ const Search = (props) => {
     //   dispatch({ type: "GET_SPONSORS" });
     //   dispatch({ type: "GET_INDICATIONS" });
     // }
-    if (
-      params &&
-      sponsorData.sectionContent.length > 0 &&
-      indicationData.sectionContent.length > 0
-    ) {
+    /* istanbul ignore else */
+    if (params) {
       parsed = JSON.parse(
         '{"' + params.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
         function (key, value) {
           return key === "" ? value : decodeURIComponent(value);
         }
       );
-      let elasticSearchQuery = "key=";
       let tempQuery = _.cloneDeep(searchQuery);
+      /* istanbul ignore else */
       if ("?key" in parsed) {
         setIdPresent(true);
         setSearchInput(parsed[`?key`]);
-        elasticSearchQuery += `${parsed[`?key`]}`;
+        postObj.key=parsed[`?key`];
       }
+      /* istanbul ignore else */
       if ("toc" in parsed && TOC.sectionContent.length > 0) {
         let tempElasticQuery = TOC.sectionContent.filter((item) =>
           parsed.toc.split("+").includes(item.title)
         );
         tempQuery.toc =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
-        elasticSearchQuery += `&toc=${tempElasticQuery
-          .map((item) => item.title)
-          .join("_")}`;
+        postObj.toc=parsed.toc.split("+");
       }
-      if ("sponsor" in parsed && sponsorData.sectionContent.length > 0) {
-        // debugger;
-        let tempElasticQuery = sponsorData.sectionContent.filter((item) =>
-          parsed.sponsor.split("+").includes(item.title)
-        );
-        tempQuery.sponsor =
-          tempElasticQuery && tempElasticQuery.map((item) => item.id);
-        elasticSearchQuery += `&sponsor=${tempElasticQuery
-          .map((item) => item.title)
-          .join("_")}`;
-        // debugger;
+      /* istanbul ignore else */
+      if ("sponsor" in parsed) {
+        postObj.sponsor=parsed.sponsor.split("+");
       }
-      if ("indication" in parsed && indicationData.sectionContent.length > 0) {
-        let tempElasticQuery = indicationData.sectionContent.filter((item) =>
-          parsed.indication.split("+").includes(item.title)
-        );
-        tempQuery.indication =
-          tempElasticQuery && tempElasticQuery.map((item) => item.id);
-        elasticSearchQuery += `&indication=${tempElasticQuery
-          .map((item) => item.title)
-          .join("_")}`;
+      /* istanbul ignore else */
+      if ("indication" in parsed) {
+        postObj.indication=parsed.indication.split("+"); 
       }
+      /* istanbul ignore else */
       if ("phase" in parsed) {
-        // debugger;
         let tempElasticQuery = phases.sectionContent.filter((item) =>
           parsed.phase.split("+").includes(item.title)
         );
         tempQuery.phase =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
-        elasticSearchQuery += `&phase=${tempElasticQuery
-          .map((item) => item.title)
-          .join("_")}`;
+        postObj.phase=parsed.phase.split("+");
       }
+      /* istanbul ignore else */
       if ("documentStatus" in parsed) {
-        // debugger;
         let tempElasticQuery = documentStatus.sectionContent.filter((item) =>
           parsed.documentStatus.split("+").includes(item.value)
         );
         tempQuery.documentStatus =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
-        elasticSearchQuery += `&documentStatus=${tempElasticQuery
-          .map((item) => item.value)
-          .join("_")
-          .trim()}`;
-        // debugger;
+          postObj.documentStatus=parsed.documentStatus.split("+");
       }
+      /* istanbul ignore else */
       if ("dateFrom" in parsed && "dateTo" in parsed) {
-        const dateQuery = `&dateFrom=${parsed[`dateFrom`]}&dateTo=${
-          parsed[`dateTo`]
-        }`;
-        // setSearchInput(dateQuery);
-        elasticSearchQuery += `${dateQuery}`;
+        postObj.dateFrom=parsed[`dateFrom`];
+        postObj.dateTo=parsed[`dateTo`];
         // resultQuery+=dateQuery;
       }
+      /* istanbul ignore else */
       if ("dateType" in parsed) {
-        // debugger;
         let tempElasticQuery = dateType.sectionContent.filter((item) =>
           parsed.dateType.split("+").includes(item.value)
         );
         tempQuery.dateType =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
-        elasticSearchQuery += `&dateType=${tempElasticQuery
-          .map((item) => item.value)
-          .join("_")
-          .trim()}`;
+        postObj.dateType=parsed[`dateType`];
         // debugger;
       }
+      /* istanbul ignore else */
       if ("dateSection" in parsed) {
         // debugger;
         let tempElasticQuery = dateSection.sectionContent.filter((item) =>
@@ -187,18 +163,12 @@ const Search = (props) => {
         );
         tempQuery.dateSection =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
-        elasticSearchQuery += `&dateSection=${tempElasticQuery
-          .map((item) => item.value)
-          .join("_")
-          .trim()}`;
+        postObj.dateSection=parsed[`dateSection`];
         // debugger;
       }
-
+      setPostQueryObj(postObj);
       setSearchQuery(tempQuery);
-      // debugger;
-      setElasticSearchQuesry(elasticSearchQuery);
-      const parsed1 = queryString.parse(elasticSearchQuery);
-      dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+      dispatch({ type: "GET_SEARCH_RESULT", payload: postObj} );
     } else {
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     }
@@ -218,7 +188,46 @@ const Search = (props) => {
     //   dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     //   // dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
     // }
-  }, [dispatch, sponsorData, indicationData]);
+  }, [dispatch]);
+
+  //newcode
+  // This useEffect will get called when indication and sponsor API returns response
+  useEffect(() => {
+    let params = props.location.search;
+    console.log('params :', params, sponsorData, indicationData);
+    let parsed = {};
+    /* istanbul ignore else */
+    if (
+      params &&
+      sponsorData.sectionContent.length > 0 &&
+      indicationData.sectionContent.length > 0
+    ) {
+      parsed = JSON.parse(
+        '{"' + params.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+        function (key, value) {
+          return key === "" ? value : decodeURIComponent(value);
+        }
+      );
+      let tempQuery = _.cloneDeep(searchQuery);
+      /* istanbul ignore else */
+      if ("sponsor" in parsed && sponsorData.sectionContent.length > 0) {
+        let tempElasticQuery = sponsorData.sectionContent.filter((item) =>
+          parsed.sponsor.split("+").includes(item.title)
+        );
+        tempQuery.sponsor =
+          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+      }
+      /* istanbul ignore else */
+      if ("indication" in parsed && indicationData.sectionContent.length > 0) {
+        let tempElasticQuery = indicationData.sectionContent.filter((item) =>
+          parsed.indication.split("+").includes(item.title)
+        );
+        tempQuery.indication =
+          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+      }
+      setSearchQuery(tempQuery);
+    }
+  }, [sponsorData, indicationData]);
   const handleClick = (e) => {
     e.preventdefault();
   };
@@ -242,6 +251,8 @@ const Search = (props) => {
   const handleKeywordSearch = (input) => {
     // debugger;
     if (input) {
+      let postObj=_.cloneDeep(POST_OBJECT);
+      postObj.key=input;
       setSortValue("1");
       setProtocolSelected([]);
       setPrevProtSelected("");
@@ -265,15 +276,10 @@ const Search = (props) => {
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       setDateRangeValue([null, null]);
       setSearchInput(input);
-      const sort = ["relevancy", "approvalDate", "uploadDate"];
-      const body = {
-        key: input,
-        sortBy: "relevancy",
-        pageNumber: page,
-      };
+      setPostQueryObj(postObj);
 
       // debugger;
-      dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
+      dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
       if (sponsorData.sectionContent.length === 0) {
         dispatch({ type: "GET_SPONSORS" });
       }
@@ -291,6 +297,7 @@ const Search = (props) => {
 
   const getSearchInput = (input) => {
     // debugger
+    let postObj=_.cloneDeep(POST_OBJECT);
     setSortValue("1");
     setProtocolSelected([]);
     setPrevProtSelected("");
@@ -307,76 +314,34 @@ const Search = (props) => {
       }
     );
     // debugger;
-    let elasticSearchQuery = "key=";
-
     if ("key" in parsed) {
       setSearchInput(parsed[`key`]);
-      elasticSearchQuery += `${parsed[`key`]}`;
+      postObj.key=parsed[`key`];
     }
     if ("toc" in parsed && TOC.sectionContent.length > 0) {
-      let tempElasticQuery = TOC.sectionContent.filter((item) =>
-        parsed.toc.split("+").includes(item.title)
-      );
-      elasticSearchQuery += `&toc=${tempElasticQuery
-        .map((item) => item.title)
-        .join("_")}`;
+      postObj.toc=parsed.toc.split("+");
     }
     if ("sponsor" in parsed && sponsorData.sectionContent.length > 0) {
-      let tempElasticQuery = sponsorData.sectionContent.filter((item) =>
-        parsed.sponsor.split("+").includes(item.title)
-      );
-      elasticSearchQuery += `&sponsor=${tempElasticQuery
-        .map((item) => item.title)
-        .join("_")}`;
+      postObj.sponsor=parsed.sponsor.split("+");
     }
     if ("indication" in parsed && sponsorData.sectionContent.length > 0) {
-      let tempElasticQuery = indicationData.sectionContent.filter((item) =>
-        parsed.indication.split("+").includes(item.title)
-      );
-      elasticSearchQuery += `&indication=${tempElasticQuery
-        .map((item) => item.title)
-        .join("_")}`;
+      postObj.indication=parsed.indication.split("+"); 
     }
     if ("phase" in parsed && phases.sectionContent.length > 0) {
-      let tempElasticQuery = phases.sectionContent.filter((item) =>
-        parsed.phase.split("+").includes(item.title)
-      );
-      elasticSearchQuery += `&phase=${tempElasticQuery
-        .map((item) => item.title)
-        .join("_")}`;
+      postObj.phase=parsed.phase.split("+");
     }
     if ("documentStatus" in parsed) {
-      let tempElasticQuery = documentStatus.sectionContent.filter((item) =>
-        parsed.documentStatus.split("+").includes(item.value)
-      );
-      elasticSearchQuery += `&documentStatus=${tempElasticQuery
-        .map((item) => item.value)
-        .join("_")
-        .trim()}`;
+      postObj.documentStatus=parsed.documentStatus.split("+");
     }
     if ("dateType" in parsed) {
-      let tempElasticQuery = dateType.sectionContent.filter((item) =>
-        parsed.dateType.split("+").includes(item.value)
-      );
-      elasticSearchQuery += `&dateType=${tempElasticQuery
-        .map((item) => item.value)
-        .join("_")
-        .trim()}`;
+      postObj.dateType=parsed[`dateType`];
     }
     if ("dateSection" in parsed) {
-      // debugger;
-      let tempElasticQuery = dateSection.sectionContent.filter((item) =>
-        parsed.dateSection.split("+").includes(item.value)
-      );
-      elasticSearchQuery += `&dateSection=${tempElasticQuery
-        .map((item) => item.value)
-        .join("_")
-        .trim()}`;
+      postObj.dateSection=parsed[`dateSection`];
     }
 
     setIdPresent(true);
     setSearchInput(inp);
-    // debugger
     if (rangeDate.from && rangeDate.to) {
       let date11 = formatESDate(rangeDate.from);
       let date22 = formatESDate(rangeDate.to);
@@ -393,10 +358,10 @@ const Search = (props) => {
         } else {
           const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`;
           // setSearchInput(dateQuery);
-          elasticSearchQuery += `${dateQuery}`;
+          postObj.dateFrom=rangeDate.from;
+          postObj.dateTo=rangeDate.to;
           resultQuery += dateQuery;
-          setElasticSearchQuesry(elasticSearchQuery);
-          dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+          dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
           props.history.replace({
             pathname: "/search",
             search: `?${resultQuery}`,
@@ -408,25 +373,17 @@ const Search = (props) => {
         );
       }
     } else if (recentDate.from) {
-      // setSearchInput(parsed[`key`]);
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`;
-      // setSearchInput(dateQuery);
-      elasticSearchQuery += `${dateQuery}`;
+      postObj.dateFrom=recentDate.from;
+      postObj.dateTo=recentDate.to;
       resultQuery += dateQuery;
-      setElasticSearchQuesry(elasticSearchQuery);
-      dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+      dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
       props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
-      // elasticSearchQuery+=` ${parsed[`key`]}`;
     } else {
-      setElasticSearchQuesry(elasticSearchQuery);
-      dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
+      dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
       props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
     }
-    // dispatch({ type: "GET_SEARCH_FILTER", payload: input });
-    // setElasticSearchQuesry(elasticSearchQuery);
-    // dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
-    // props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
-    // debugger
+    setPostQueryObj(postObj);
   };
   const isFutureDate = (value) => {
     let d_now = new Date();
@@ -435,6 +392,7 @@ const Search = (props) => {
   };
   const hancleClearAll = (inputPresent, input) => {
     // setClearAll(true);
+    let postObj = _.cloneDeep(POST_OBJECT)
     setProtocolSelected([]);
     setPrevProtSelected("");
     if (inputPresent) {
@@ -447,6 +405,7 @@ const Search = (props) => {
         dateType: [1],
         dateSection: [1],
       });
+      postObj.key= input;
       // let ele = document.getElementById("range-date-id");
       // clearInputFields("range-date-id");
       // setDateRangeValue([null, null]);
@@ -455,9 +414,8 @@ const Search = (props) => {
         from: null,
         to: null,
       };
-      setElasticSearchQuesry(`key=${input}`);
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
-      dispatch({ type: "GET_SEARCH_RESULT", payload: `key=${input}` });
+      dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
       setDateRangeValue([null, null]);
       props.history.push(`/search?key=${input}`);
     } else {
@@ -476,13 +434,13 @@ const Search = (props) => {
         from: null,
         to: null,
       };
-      setElasticSearchQuesry("");
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
       setDateRangeValue([null, null]);
       // setClearAll(false)
       props.history.push(`/search`);
     }
+    setPostQueryObj(postObj);
   };
   const contructQueryFromArray = (key, value) => {
     switch (key) {
@@ -620,38 +578,11 @@ const Search = (props) => {
   };
   const onSortChange = (data, value) => {
     setPage(0);
-    if (value === "1") {
-      setSortValue(value);
-      dispatch({ type: "GET_SEARCH_RESULT", payload: elasticSearchQuery });
-    } else {
-      // let newList = _.cloneDeep(resultList);
-      let newList = _.cloneDeep(totalSearchResults);
-      setSortValue(value);
-      newList &&
-        newList.sort((a, b) => {
-          if (data && data.label === "Approval Date") {
-            // let first = a[data.value] ? new Date(a[data.value]) : "";
-            // let second = b[data.value] ? new Date(b[data.value]) : "";
-            let first = a[data.value] ? a[data.value] : "";
-            let second = b[data.value] ? b[data.value] : "";
-            return second - first;
-          } else {
-            let first = a[data.value] ? a[data.value] : "";
-            let second = b[data.value] ? b[data.value] : "";
-            return second - first;
-          }
-        });
-      dispatch({
-        type: "UPDATE_SEARCH_RESULT",
-        payload: {
-          loader: false,
-          search: true,
-          success: true,
-          data: newList && newList.slice(0, 10),
-        },
-      });
-      dispatch({ type: "UPDATE_TOTAL_SEARCH_RESULT", payload: newList });
-    }
+    let postObj= _.cloneDeep(postQueryObj);
+    postObj.sortField=data.value;
+    setSortValue(value)
+    dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+    setPostQueryObj(postObj);
   };
 
   const onSearchQuery = (list, identifier) => {
@@ -701,22 +632,27 @@ const Search = (props) => {
       props.history.push(
         `/protocols?protocolId=${protocolSelected[0]}&protocolId2=${protocolSelected[1]}&value=2`
       );
-      protArr = [];
       setProtocolSelected([]);
     } else if (protocolSelected.length < 2) {
       alert("Please select at least two protocol versions to compare");
     }
   };
   const saveSearch = () => {
-    const parsed = queryString.parse(elasticSearchQuery);
-    if (parsed) {
-      dispatch({ type: "SAVE_SEARCH_SAGA", payload: parsed.key });
+    // const parsed = queryString.parse(elasticSearchQuery);
+   
+    // if (parsed) {
+    //   dispatch({ type: "SAVE_SEARCH_SAGA", payload: parsed.key });
+    // }
+    if(postQueryObj && postQueryObj.key){
+      dispatch({ type: "SAVE_SEARCH_SAGA", payload: postQueryObj.key });
     }
   };
   // const onSetPage = (event, value) => {
   const onSetPage = (value) => {
     setPage(value);
-    dispatch({ type: "PAGE_CHANGE", payload: value });
+    let postObj= _.cloneDeep(postQueryObj);
+    postObj.pageNo=value+1;
+    dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
   };
   return (
     <div className="search">

@@ -8,13 +8,12 @@ import Checkbox from "apollo-react/components/Checkbox";
 import Folder from "apollo-react-icons/Folder";
 import Switch from "apollo-react/components/Switch";
 import Card from "apollo-react/components/Card";
-import Divider from "apollo-react/components/Divider";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-import BASE_URL, { BASE_URL_8000 } from "../../../utils/api";
+import { BASE_URL_8000 } from "../../../utils/api";
 import Tooltip from "apollo-react/components/Tooltip";
 //const [value, setValue] = React.useState(true);
 
@@ -31,6 +30,7 @@ const SearchListingSection = ({
   history,
   onViewAssociateProtocolClick,
   protocolSelected,
+  handleFollow
 }) => {
   const userId1 = useSelector(userId);
   const onExpandClick = (data) => {
@@ -52,6 +52,9 @@ const SearchListingSection = ({
       toast.info("Access Provisioned to Primary Users only");
     }
   };
+  const handleFollowChange = (e, checked, data) =>{
+  handleFollow(e, checked, data)
+  }
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
       <div className="marginTop width100 marginLeft10">
@@ -75,7 +78,7 @@ const SearchListingSection = ({
               </span>
             </div>
             <div className="divBlock ellipse" data-testid="title-value">
-              {data.protocolDescription.length > textLength ? (
+              {data.protocolDescription && data.protocolDescription.length > textLength ? (
                 <Tooltip
                   variant="light"
                   // title="Title"
@@ -101,7 +104,7 @@ const SearchListingSection = ({
             </div>
           </div>
           <div className="width5 swtichButton">
-            <Switch label="follow" size="small" checked={data.followed} />
+            <Switch label="follow" size="small" checked={data.followed}  onChange={(e, checked)=>handleFollowChange(e, checked, data)}/>
           </div>
         </div>
 

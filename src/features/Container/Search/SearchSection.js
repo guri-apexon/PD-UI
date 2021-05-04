@@ -85,6 +85,7 @@ class ProtocolSearchButton extends React.Component {
               size="small"
               style={{ marginLeft: 10, top: 5, width: 80 }}
               onClick={this.handleSearchProtocol}
+              data-testid="search-button"
             >
               Search
             </Button>
