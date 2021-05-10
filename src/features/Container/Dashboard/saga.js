@@ -23,6 +23,7 @@ function* getState() {
 export function* protocolAsyn() {
   let userId = yield getState();
   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
+
   const protocolConfig = {
     url: protocolUrl,
     method: "GET",
