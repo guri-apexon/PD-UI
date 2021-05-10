@@ -13,6 +13,11 @@ import {
   getElement
 } from "../saga";
 
+const userDetail = {
+  username: "test",
+  userId: "u1021402",
+  email: "test@iqvia.com",
+};
 describe("Protocol Saga Unit Test", () => {
   test("should run parsedData function", () => {
     let obj = {
@@ -85,16 +90,16 @@ describe("Protocol Saga Unit Test", () => {
 
   // getElement Starts
 
-  test("should run getElement function", () => {
-    let style={
-        font_style:'Heading1'
-    }
-    getElement(style);
-    let style1={
-        font_style:'p'
-    }
-    getElement(style1);
-  });
+  // test("should run getElement function", () => {
+  //   let style={
+  //       font_style:'Heading1'
+  //   }
+  //   getElement(style);
+  //   let style1={
+  //       font_style:'p'
+  //   }
+  //   getElement(style1);
+  // });
 
  // getElement Ends
 

@@ -6,7 +6,7 @@ const  SORT_DROPDOWN=[
     },
     {
         id:'2',
-        value:'approvalDate',
+        value:'approval_date',
         label:'Approval Date'
     },
     {
@@ -15,6 +15,22 @@ const  SORT_DROPDOWN=[
         label:'Upload Date'
     }
 ]
+
+export const POST_OBJECT= {
+  key: "",
+  toc: [],
+  sponsor: [],
+  indication: [],
+  phase: [],
+  documentStatus: [],
+  dateType: "",
+  dateFrom: "",
+  dateTo: "",
+  sortField: "score",
+  sortOrder: "desc",
+  pageNo: 1,
+  pageSize:10
+}
 
 
 const USER_MENU = [

@@ -16,10 +16,12 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "elasticsearch": "^16.7.2",
+    "exceljs": "^4.2.1",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "global": "^4.4.0",
     "jose": "3",
+    "js-file-download": "^0.4.12",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",
     "lorem-ipsum": "^2.0.3",
@@ -44,6 +46,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "server": "nodemon ./server/index.js",
+    "dev": "concurrently --kill-others \"yarn start\" \"yarn server\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -80,7 +84,12 @@
       "!src/app",
       "!src/test-utils",
       "!src/mockdata",
-      "!src/services/endpoint.ts"
+      "!src/services/endpoint.ts",
+      "!/src/features/Container/Protocols/CompareCard.js",
+      "!/src/features/Container/Protocols/CompareCardNew.js"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0"
   }
 }

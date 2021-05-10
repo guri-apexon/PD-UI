@@ -1,19 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Collapsible from "react-collapsible";
 
 import {
   CheckboxCard,
-  TextCard,
-  RadioCard,
   DateRangeCard,
-  TableOfContent,
   CheckboxTest,
 } from "./CustomFilterCards";
 
 import Loader from "../../Components/Loader/Loader";
 
-import { useSelector, useDispatch } from "react-redux";
-import { indications, sponsors } from "./searchSlice";
 
 import {
   TOC,
@@ -32,6 +27,9 @@ const CollapseCard = ({
   dateRangeValue,
   clearAll
 }) => {
+  const onOpenTrigger = ()=>{
+    console.log('onOpenTrigger')
+  }
   if (name === "TOC") {
     return (
       <Collapsible trigger={TOC.sectionName}>
@@ -77,7 +75,7 @@ const CollapseCard = ({
   } else if (name === "sponsor") {
     return (
       <div className="spon-container">
-        <Collapsible trigger="Sponsors">
+        <Collapsible trigger="Sponsors" onOpening={()=>onOpenTrigger()}>
           {sponsorData.sectionContent &&
           sponsorData.sectionContent.length > 0 ? (
             <CheckboxTest

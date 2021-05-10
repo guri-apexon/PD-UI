@@ -137,8 +137,8 @@ const CustomDropdown = ({
     ) {
       return;
     } else {
-      setExpandClass("");
-      setBlur(true);
+ setExpandClass('');
+ setBlur(true);
     }
   };
   const onClickAdd = (e) => {

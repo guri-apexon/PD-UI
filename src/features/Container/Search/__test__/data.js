@@ -290,3 +290,8 @@ export const searchCardData = {
   expanded: true,
   id: "EMR 200095-004",
 };
+
+
+export const paramsLocation = {
+  search:"?key=advanced&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416"
+}

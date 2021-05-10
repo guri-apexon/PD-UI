@@ -53,10 +53,12 @@ const Protocols = (props) => {
   useEffect(() => {
     let params = props.location.search;
     const parsed = queryString.parse(params);
+    /* istanbul ignore else */
     if ('protocolId' in parsed) {
       setIdPresent(true);
       dispatch({ type: 'GET_PROTOCOL_SUMMARY', payload: parsed.protocolId });
     }
+    /* istanbul ignore else */
     if ('protocolId2' in parsed && 'value' in parsed) {
       setValue(2);
       setProt({
@@ -65,13 +67,15 @@ const Protocols = (props) => {
       });
     }
   }, [dispatch, props.location]);
-
-  const handleClick = (e) => {
-    e.preventdefault();
-  };
+ /* istanbul ignore next */
+  // const handleClick = (e) => {
+  //   e.preventdefault();
+  // };
+   /* istanbul ignore next */
   const handleChangeTab = (event, value) => {
     setValue(value);
   };
+  /* istanbul ignore next */
   const handleChange = (e, checked) => {
     setFollow(checked);
   };
@@ -80,14 +84,14 @@ const Protocols = (props) => {
     return (
       <>
         {summary.success && summary.data ? (
-          <div className="protocols">
+          <div className="protocols" data-testid="protocols-component-test">
             <Breadcrumbs
               items={[
-                { href: '/dashboard', onClick: (e) => handleClick(e) },
+                { href: '/dashboard' },
                 {
                   href: '/protocols',
                   title: 'Protocols',
-                  onClick: handleClick,
+                  // onClick: handleClick,
                 },
                 {
                   title: data.protocol,

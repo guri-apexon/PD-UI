@@ -33,7 +33,11 @@ const ActionCell = ({ row: { id, handleToggleRow, expanded } }) => {
           onChange={() => handleChange(id)}
         />
       </div> */}
-      <div className="table-selection">
+      <div
+        className="table-selection"
+        data-testid="expandable-row"
+        id="expandable-row"
+      >
         <IconButton
           id="expand"
           size="small"
@@ -270,7 +274,7 @@ const ExpandableComponent = ({ row }) => {
             placement="top"
           >
             <Typography className="fw-8 ex-text" variant="body2">
-              {row.indication ? row.indication : "-"}
+              {row.indication}
             </Typography>
           </Tooltip>
         ) : (
@@ -312,7 +316,11 @@ const ExpandableComponent = ({ row }) => {
                 placement="top"
               >
                 <Typography className="fw-8 ex-text" variant="body2">
-                  <div className="long-text2">
+                  <div
+                    className="long-text2"
+                    data-testid="handle-download"
+                    id="handle-download"
+                  >
                     <a
                       href="javascript:void(0)"
                       onClick={() => handleDownload(row)}
@@ -427,30 +435,16 @@ const ProtocolTable = ({
           <Table
             title="My Protocols"
             columns={columns}
-            rows={
-              initialRows &&
-              initialRows.map((row) => {
-                let temp = _.cloneDeep(row);
-                let details = {
-                  key: row.id,
-                  expanded: expandedRows.indexOf(row.id) >= 0,
-                  // selected: selectedRows.indexOf(row.id) >= 0,
-                  handleToggleRow,
-                  // handleChange,
-                };
-                return _.merge(temp, details);
-              })
-            }
-            initialSortedColumn="uploadDate"
-            initialSortOrder="desc"
-            rowsPerPageOptions={pageRows}
-            rowProps={{ hover: false }}
+            rows={[]}
+            // initialSortedColumn="uploadDate"
+            // initialSortOrder="desc"
+            // rowsPerPageOptions={pageRows}
+            // rowProps={{ hover: false }}
             tablePaginationProps={{
               labelDisplayedRows: ({ from, to, count }) =>
                 `Showing ${from}-${to} of ${count}`,
               truncate: true,
             }}
-            ExpandableComponent={ExpandableComponent}
           />
         </div>
       )}

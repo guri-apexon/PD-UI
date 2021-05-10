@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 
 import Table from "apollo-react/components/Table";
 import columns from "./Data/column.data";
-import Button from "apollo-react/components/Button";
 import Grid from "apollo-react/components/Grid";
 import Link from "apollo-react/components/Link";
 import Loader from "../../Components/Loader/Loader";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
 import _ from "lodash";
-import { covertMMDDYYYY, formatESDate } from "../../../utils/utilFunction";
+import { formatESDate } from "../../../utils/utilFunction";
 import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import { toast } from "react-toastify";
@@ -225,7 +224,7 @@ const SearchCard = ({
         </Grid>
         <Grid md={3}>
           <p className="grid-item grid-key-value" data-testid="date-value">
-            {data.approvalDate ? formatESDate(data.approvalDate) : "-"}
+            {data.approval_date ? formatESDate(data.approval_date) : "-"}
           </p>
         </Grid>
         <Grid md={3}>

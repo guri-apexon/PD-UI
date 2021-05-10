@@ -19,7 +19,7 @@ describe("Dashboard Search component", () => {
       },
     },
   };
-  test("Component renders correctly for keyword search", () => {
+  test("Component renders correctly for saved search", () => {
     const recentData = [];
     const savedData = [
       {
@@ -28,6 +28,13 @@ describe("Dashboard Search component", () => {
         timeCreated: "2020-12-16T11:03:11.867000",
         lastUpdated: "2020-12-16T11:03:11.867000",
         id: 24,
+      },
+      {
+        keyword: "",
+        user: "1021402",
+        timeCreated: "2020-12-16T11:03:11.867000",
+        lastUpdated: "2020-12-16T11:03:11.867000",
+        id: 25,
       },
     ];
     let container = render(
@@ -41,7 +48,7 @@ describe("Dashboard Search component", () => {
     // fireEvent.change(searchbar);
     fireEvent.change(searchbar);
   });
-  test("Component renders correctly for keyword search", () => {
+  test("Component renders correctly for recent search", () => {
     const recentData = [
       {
         keyword: "Acute hepatitis",
@@ -149,7 +156,7 @@ describe("Dashboard Search component", () => {
         id: 35,
       },
       {
-        keyword: "advanced",
+        keyword: "",
         user: "1021402",
         timeCreated: "2020-12-16T12:34:59.460000",
         lastUpdated: "2020-12-16T12:34:59.460000",
