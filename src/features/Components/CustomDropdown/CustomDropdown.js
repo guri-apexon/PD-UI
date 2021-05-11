@@ -88,6 +88,7 @@ const CustomDropdown = ({
       // setting onblur to true when text is cut,so that error should display as field required
       onChange(fieldName, e, fieldType, tempvalue);
       setBlur(true);
+      setList(source);
     }
   };
   const getModifyString = (value) => {
