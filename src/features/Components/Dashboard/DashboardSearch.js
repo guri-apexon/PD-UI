@@ -27,6 +27,7 @@ function DashboardSearch({ recent, saved }) {
               fullWidth
               onKeyPress={(e) => {
                 console.log("--------clicked key enter");
+                /* istanbul ignore next */
                 if (e.key === "Enter") {
                   dispatch({
                     type: "POST_RECENT_SEARCH_DASHBOARD",
@@ -102,8 +103,9 @@ function DashboardSearch({ recent, saved }) {
                         </Link>
                       </li>
                     );
+                  } else {
+                    return null;
                   }
-                  return null;
                 })}
               </ul>
             ) : (

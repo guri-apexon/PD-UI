@@ -3,15 +3,6 @@ import Card from "apollo-react/components/Card";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Loader from "../../Components/Loader/Loader";
 
-function getStyle(style) {
-  const IsBold = style.IsBold;
-  // const font_size = style.font_size;
-  if (IsBold) {
-    return "thick";
-  }
-  return "";
-}
-
 class ProtocolViewClass extends React.Component {
   constructor() {
     super();
@@ -101,74 +92,6 @@ class ProtocolViewClass extends React.Component {
             dangerouslySetInnerHTML={{ __html: content }}
           />
         );
-      // return (
-      //   <div
-      //     className="bar"
-      //     id={`TOC-${seq_num}`}
-      //     key={`TOC-${seq_num}`}
-      //     ref={this.refs[`TOC-${seq_num}`]}
-      //   >
-      //     <h1 className={`heading1 ${isBold}`} style={{ fontSize: "16px" }}>
-      //       {content}
-      //     </h1>
-      //   </div>
-      // );
-      // case "Heading2":
-      //   return (
-      //     <div
-      //       className="bar2"
-      //       id={`TOC-${seq_num}`}
-      //       key={`TOC-${seq_num}`}
-      //       ref={this.refs[`TOC-${seq_num}`]}
-      //     >
-      //       <h2
-      //         id={`CPT_section-${seq_num}`}
-      //         key={`CPT_section-${seq_num}`}
-      //         // className={`heading2 ${isBold}`}
-      //         style={{ fontSize: "14px" }}
-      //       >
-      //         {content}
-      //       </h2>
-      //     </div>
-      //   );
-      // case "Heading3":
-      // case "Heading4":
-      //   return (
-      //     <div
-      //       className="bar2"
-      //       id={`TOC-${seq_num}`}
-      //       key={`TOC-${seq_num}`}
-      //       ref={this.refs[`TOC-${seq_num}`]}
-      //     >
-      //       <h3
-      //         id={`CPT_section-${seq_num}`}
-      //         key={`CPT_section-${seq_num}`}
-      //         // className={`heading3 ${isBold}`}
-      //         style={{ fontSize: "14px" }}
-      //       >
-      //         {content}
-      //       </h3>
-      //     </div>
-      //   );
-      // case "Heading5":
-      //   return (
-      //     <div
-      //       className="bar3"
-      //       id={`TOC-${seq_num}`}
-      //       key={`TOC-${seq_num}`}
-      //       ref={this.refs[`TOC-${seq_num}`]}
-      //     >
-      //       <h3
-      //         id={`CPT_section-${seq_num}`}
-      //         key={`CPT_section-${seq_num}`}
-      //         // className={`heading3 ${isBold}`}
-      //         style={{ fontSize: "14px" }}
-      //       >
-      //         {content}
-      //       </h3>
-      //     </div>
-      //   );
-
       default:
         if (CPT_section === "Unmapped") {
           return (
@@ -179,47 +102,16 @@ class ProtocolViewClass extends React.Component {
               dangerouslySetInnerHTML={{ __html: content }}
             />
           );
-          // return (
-          //   <p
-          //     id={`CPT_section-${seq_num}`}
-          //     key={`CPT_section-${seq_num}`}
-          //     // className={font_info.IsBold ? "thick" : ""}
-          //     style={{ fontSize: "12px" }}
-          //   >
-          //     {content}
-          //   </p>
-          // );
         }
         return (
           <>
-            {/* {isBold ? (
-              <div>
-                <br />
-              </div>
-            ) : null} */}
-            {type === "header" ? (
-              <div
-                id={`TOC-${seq_num}`}
-                key={`TOC-${seq_num}`}
-                ref={this.refs[`TOC-${seq_num}`]}
-                dangerouslySetInnerHTML={{ __html: content }}
-              >
-                {/* <h1
-                  className={`heading1 ${isBold}`}
-                  style={{ fontSize: '16px' }}
-                >
-                  {content}
-                </h1> */}
-              </div>
-            ) : (
-              <p
-                id={`CPT_section-${seq_num}`}
-                key={`CPT_section-${seq_num}`}
-                // className={`indent ${isBold}`}
-                style={{ fontSize: "12px" }}
-                dangerouslySetInnerHTML={{ __html: content }}
-              ></p>
-            )}
+            <p
+              id={`CPT_section-${seq_num}`}
+              key={`CPT_section-${seq_num}`}
+              // className={`indent ${isBold}`}
+              style={{ fontSize: "12px" }}
+              dangerouslySetInnerHTML={{ __html: content }}
+            ></p>
           </>
         );
     }
@@ -402,6 +294,7 @@ class ProtocolViewClass extends React.Component {
               overflowY: "scroll",
               height: "65vh",
             }}
+            data-testid="protocol-column-wrapper"
           >
             {view.iqvdataToc.data.length &&
               view.iqvdataToc.data.map((item) => {

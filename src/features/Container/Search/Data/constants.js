@@ -344,7 +344,7 @@ export const dateType = {
     {
       id: 1,
       title: "Approval date",
-      value: "approvalDate",
+      value: "approval_date",
       content: "",
       count: "",
     },

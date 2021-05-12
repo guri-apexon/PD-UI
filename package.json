@@ -6,26 +6,18 @@
     "@material-ui/core": "^4.11.2",
     "@material-ui/pickers": "^3.2.10",
     "@reduxjs/toolkit": "^1.1.0",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "apollo-react": "https://imshealth.myget.org/F/apollo/auth/81155eb2-e88d-47dc-bc91-954d00510908/npm/apollo-react/-/3.9.2",
     "apollo-react-icons": "https://imshealth.myget.org/F/apollo/auth/81155eb2-e88d-47dc-bc91-954d00510908/npm/apollo-react-icons/-/1.0.0-beta.7",
     "axios": "^0.21.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "elasticsearch": "^16.7.2",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
-    "global": "^4.4.0",
-    "jose": "3",
+    "js-file-download": "^0.4.12",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",
-    "lorem-ipsum": "^2.0.3",
     "moment": "^2.29.1",
-    "nodemon": "^2.0.7",
-    "pm2": "^4.5.1",
     "query-string": "^6.13.7",
     "react": "^17.0.1",
     "react-app-polyfill": "^2.0.0",
@@ -39,11 +31,12 @@
     "react-virtualized": "^9.22.3",
     "redux-saga": "^1.1.3",
     "sass": "^1.29.0",
-    "serve": "^11.3.2",
     "universal-cookie": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
+    "server": "nodemon ./server/index.js",
+    "dev": "concurrently --kill-others \"yarn start\" \"yarn server\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -80,7 +73,17 @@
       "!src/app",
       "!src/test-utils",
       "!src/mockdata",
-      "!src/services/endpoint.ts"
+      "!src/services/endpoint.ts",
+      "!/src/features/Container/Protocols/CompareCard.js",
+      "!/src/features/Container/Protocols/CompareCardNew.js"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0",
+    "@testing-library/jest-dom": "^5.12.0",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "nodemon": "^2.0.7",
+    "pm2": "^4.5.1"
   }
 }

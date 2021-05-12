@@ -13,6 +13,14 @@
     .MuiPaper-root:first-child {
       height: 170px;
     }
+    .hyperlink {
+      &:active {
+        color: -webkit-activelink;
+      }
+      color: -webkit-link;
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
   .associate-document-tab {
     width: 100%;

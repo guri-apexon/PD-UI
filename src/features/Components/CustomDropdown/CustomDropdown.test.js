@@ -13,7 +13,7 @@ describe("customDropdown test", ()=>{
             {sponsor_name: "NVT AG", sponsor_abbreviation: "NVT", id: 2, label: "NVT AG"},
           ]   
         const container = render(
-            <CustomDropdown formValue={formValue} sponsor={sponsor}/>
+            <CustomDropdown formValue={formValue} source={sponsor}/>
           );
         // debug();
     })

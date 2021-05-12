@@ -250,6 +250,10 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
             } else {
               if (field === "versionNumber" && tempError[field].error) {
                 errorExist = true;
+                if( tempValues.amendmentNumber.label === "N"){
+                  tempError[field].error = false;
+                  tempError[field].errorMessage = " ";
+                }
               } else {
                 tempError[field].error = false;
                 tempError[field].errorMessage = " ";

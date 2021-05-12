@@ -307,3 +307,7 @@
     text-transform: capitalize;
   }
 }
+
+.sidebar-blade > div > :last-child {
+  display: none;
+}
