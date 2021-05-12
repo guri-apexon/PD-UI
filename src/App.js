@@ -65,27 +65,15 @@ function App(props) {
   //---------Revert-----------
   useEffect(() => {
     if (SSO_ENABLED) {
-      if (process.env.REACT_APP_LOCAL === "true" || process.env.REACT_APP_LOCAL) {
-        console.log("Running on Local")
-      } else {
-        axios
-          .get("/session")
-          .then((res) => {
-            if (Object.keys(res.data).length) {
-              dispatch(setUserDetails(res.data));
-            }
-          })
-          .catch((err) => console.log(err));
-      }
       // comment in local to run
-      // axios
-      //   .get("/session")
-      //   .then((res) => {
-      //     if (Object.keys(res.data).length) {
-      //       dispatch(setUserDetails(res.data));
-      //     }
-      //   })
-      //   .catch((err) => console.log(err));
+      axios
+        .get("/session")
+        .then((res) => {
+          if (Object.keys(res.data).length) {
+            dispatch(setUserDetails(res.data));
+          }
+        })
+        .catch((err) => console.log(err));
 
       const curDate = new Date();
       const expDate = cookiesServer.get("exp") * 1000;
@@ -120,7 +108,7 @@ function App(props) {
       }
     } else {
       const details = {
-        userId: "u1071710",
+        userId: "q810544",
         username: "Test User",
         email: "test@iqvia.com",
         user_type: "normal",
