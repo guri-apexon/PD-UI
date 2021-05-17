@@ -1,4 +1,3 @@
-
 import React from "react";
 import _ from "lodash";
 import SearchListingSection from "./SearchListingSection";
@@ -21,7 +20,7 @@ import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
 import Loader from "../../Components/Loader/Loader";
 import { connect } from "react-redux";
 import axios from "axios";
-// import { BASE_URL_8000 } from "../../../utils/api";
+import { BASE_URL_8000 } from "../../../utils/api";
 import { toast } from "react-toastify";
 class SearchPanel extends React.Component {
   constructor(props) {
@@ -40,7 +39,7 @@ class SearchPanel extends React.Component {
       _.isEmpty(state.accordionObj) ||
       props.resultList.loader !== state.resultListData.loader ||
       props.resultList !== state.resultListData
-      ) {
+    ) {
       let defaultValue = false;
       //For resetting ExpandAll button when all are expanded and Search button is click
       if (
@@ -60,9 +59,7 @@ class SearchPanel extends React.Component {
         }
       }
       let result =
-        props.resultList &&
-        props.resultList.data &&
-        props.resultList.data.data
+        props.resultList && props.resultList.data && props.resultList.data.data
           ? props.resultList.data.data
           : [];
       let arr = [];
@@ -198,38 +195,42 @@ class SearchPanel extends React.Component {
     onSetPage(value);
   };
   handleFollow = (e, checked, protocol) => {
-    const {userDetails}= this.props;
-  console.log('e, checked, protocol :', e, checked, protocol,userDetails);
-  const id = userDetails.userId;
+    const { userDetails } = this.props;
+    console.log("e, checked, protocol :", e, checked, protocol, userDetails);
+    const id = userDetails.userId;
     const { accordionObj } = this.state;
     let accObj = _.cloneDeep(accordionObj);
     let newObj = accObj.map((obj) => {
-      if (obj.protocolNumber && (obj.protocolNumber.toLowerCase() === protocol.protocolNumber.toLowerCase())) {
-      // if (obj.protocolNumber && (obj.protocolNumber === protocol.protocolNumber)) {
-      return { ...obj, followed: !obj.followed };
+      if (
+        obj.protocolNumber &&
+        obj.protocolNumber.toLowerCase() ===
+          protocol.protocolNumber.toLowerCase()
+      ) {
+        // if (obj.protocolNumber && (obj.protocolNumber === protocol.protocolNumber)) {
+        return { ...obj, followed: !obj.followed };
       } else {
         return obj;
       }
     });
-    axios.post(
-      `http://ca2spdml01q:8001/api/follow_protocol/`,
-      {
-        userId:id.substring(1),
-        protocol:protocol.protocolNumber,
-        follow: checked,
-        userRole:'secondary'
-      }
-    )
-    .then( res=>{
-    if(res && res.status===200){
-      // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
-      this.setState({ accordionObj: newObj });
-    }
-    })
-    .catch(()=>{
-      toast.error("Something Went Wrong");
-    })
-    
+    // axios.post(
+    //   // `http://ca2spdml01q:8001/api/follow_protocol/`,
+    //   `${BASE_URL_8000}/api/follow_protocol/`,
+    //   {
+    //     userId:id.substring(1),
+    //     protocol:protocol.protocolNumber,
+    //     follow: checked,
+    //     userRole:'secondary'
+    //   }
+    // )
+    // .then( res=>{
+    // if(res && res.status===200){
+    //   // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
+    this.setState({ accordionObj: newObj });
+    // }
+    // })
+    // .catch(()=>{
+    //   toast.error("Something Went Wrong");
+    // })
   };
 
   render() {
@@ -268,11 +269,15 @@ class SearchPanel extends React.Component {
               {
                 <div className="refine-search">
                   <span>Refine your Search</span>
-                  <div style={{ paddingTop: 5 }}>
-                    <Link onClick={this.clearAllCheckbox} size="small">
-                      {" "}
+                  <div>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      style={{ marginRight: -20 }}
+                      onClick={this.clearAllCheckbox}
+                    >
                       Clear All
-                    </Link>
+                    </Button>
                   </div>
                   <div>
                     <Button
@@ -280,6 +285,7 @@ class SearchPanel extends React.Component {
                       size="small"
                       style={{ marginRight: 0 }}
                       onClick={() => getSearchInput()}
+                      data-testid="apply-filter-button"
                     >
                       Apply Filter
                     </Button>
@@ -371,9 +377,9 @@ class SearchPanel extends React.Component {
                     </span> */}
                     <span>
                       Showing {page * 10 + 1} -{" "}
-                      {page * 10 + 10 <  resultList.data.total_count
+                      {page * 10 + 10 < resultList.data.total_count
                         ? page * 10 + 10
-                        :  resultList.data.total_count}{" "}
+                        : resultList.data.total_count}{" "}
                       of{" "}
                       {resultList &&
                         resultList.data &&
@@ -499,11 +505,11 @@ class SearchPanel extends React.Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    userDetails: state.user.userDetail
-  }
-}
+    userDetails: state.user.userDetail,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     updateAssociateProtocol: (data, obj) =>

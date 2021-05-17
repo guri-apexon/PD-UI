@@ -46,7 +46,7 @@ const CollapseCard = ({
     );
   } else if (name === "indication") {
     return (
-      <div className="spon-container">
+      <div className="spon-container" data-testid="indication-checkboxes">
         <Collapsible trigger="Indications">
           {indicationData.sectionContent &&
           indicationData.sectionContent.length > 0 ? (
@@ -74,7 +74,7 @@ const CollapseCard = ({
     );
   } else if (name === "sponsor") {
     return (
-      <div className="spon-container">
+      <div className="spon-container" data-testid="sponsor-checkboxes">
         <Collapsible trigger="Sponsors" onOpening={()=>onOpenTrigger()}>
           {sponsorData.sectionContent &&
           sponsorData.sectionContent.length > 0 ? (
