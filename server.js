@@ -4,13 +4,13 @@ const axios = require("axios");
 const path = require("path");
 const app = express();
 const cors = require("cors");
+const elasticsearch = require("elasticsearch");
 const https = require("https");
 const session = require("express-session");
 const jwt_decode = require("jwt-decode");
 const dotenv = require("dotenv");
 dotenv.config();
 const PORT = process.env.PORT || 3000;
-
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
@@ -18,13 +18,49 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "protocols")));
+let baseUrlElastic = "";
+let baseUrlSSO = "";
+let access_token = "";
+let refresh_token = "";
+function authenticateUser(user, password) {
+  var token = user + ":" + password;
+  var hash = Buffer.from(token).toString("base64");
 
-// ---------------- Reading From ENV ----------------------
-let baseUrlSSO = process.env.CIMS_URL;
-let access_token = process.env.ACCESS_TOKEN;
-let refresh_token = process.env.REFRESH_TOKEN;
-
+  return "Basic " + hash;
+}
 console.log(process.env.NODE_ENV);
+switch (process.env.NODE_ENV) {
+  case "dev":
+    baseUrlElastic = process.env.ELASTIC_DEV_URL;
+    baseUrlSSO = process.env.CIMS_DEV_URL;
+    access_token = "access_token_dev";
+    refresh_token = "refresh_token_dev";
+    break;
+  case "svt":
+    baseUrlElastic = process.env.ELASTIC_SVT_URL;
+    baseUrlSSO = process.env.CIMS_SVT_URL;
+    access_token = "access_token_svt";
+    refresh_token = "refresh_token_svt";
+    break;
+  case "uat":
+    baseUrlElastic = process.env.ELASTIC_UAT_URL;
+    baseUrlSSO = process.env.CIMS_UAT_URL;
+    access_token = "access_token_uat";
+    refresh_token = "refresh_token_uat";
+    break;
+  case "prod":
+    baseUrlElastic = process.env.ELASTIC_PROD_URL;
+    baseUrlSSO = process.env.CIMS_PROD_URL;
+    access_token = "access_token";
+    refresh_token = "refresh_token";
+    break;
+  default:
+    baseUrlElastic = process.env.ELASTIC_DEV_URL;
+    baseUrlSSO = process.env.CIMS_DEV_URL;
+    access_token = "access_token_dev";
+    refresh_token = "refresh_token_dev";
+}
+console.log("baseUrlElastic", baseUrlElastic);
 console.log("baseUrlSSO", baseUrlSSO);
 
 app.use(
@@ -41,13 +77,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-
-function authenticateUser(user, password) {
-  var token = user + ":" + password;
-  var hash = Buffer.from(token).toString("base64");
-
-  return "Basic " + hash;
-}
 
 app.get("/health", function (req, res) {
   res.send("F5-UP");

@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import queryString from 'query-string';
+import React, { useEffect, useState } from "react";
+import queryString from "query-string";
 
 //------------------- CSS -------------------
-import './protocols.scss';
+import "./protocols.scss";
 
 //------------------- Redux -----------------
-import { useSelector, useDispatch } from 'react-redux';
-import { protocolSummary, getProcotoclToc } from './protocolSlice.js';
+import { useSelector, useDispatch } from "react-redux";
+import { protocolSummary, getProcotoclToc } from "./protocolSlice.js";
 
 //------------------- Components ------------
-import ProtocolOverview from './ProtocolOverview';
-import ProtocolView from './ProtocolView';
-import AmendmentCompare from './AmendmentCompare';
-import Documents from './Documents';
-import ProtocolTable from '../Dashboard/ProtocolTable';
-import NoResultFound from '../../Components/NoResultFound';
+import ProtocolOverview from "./ProtocolOverview";
+import ProtocolView from "./ProtocolView";
+import AmendmentCompare from "./AmendmentCompare";
+import Documents from "./Documents";
+import ProtocolTable from "../Dashboard/ProtocolTable";
+import NoResultFound from "../../Components/NoResultFound";
 
 //------------------- Third Party -----------
-import Breadcrumbs from 'apollo-react/components/Breadcrumbs';
-import Tab from 'apollo-react/components/Tab';
-import Tabs from 'apollo-react/components/Tabs';
-import Switch from 'apollo-react/components/Switch';
-import Loader from 'apollo-react/components/Loader';
+import Breadcrumbs from "apollo-react/components/Breadcrumbs";
+import Tab from "apollo-react/components/Tab";
+import Tabs from "apollo-react/components/Tabs";
+import Switch from "apollo-react/components/Switch";
+import Loader from "apollo-react/components/Loader";
 
 //------------------ Constants --------------
 // import BASE_URL from "../../../utils/api";
@@ -34,11 +34,17 @@ const Protocols = (props) => {
   const [follow, setFollow] = useState(false);
   const [idPresent, setIdPresent] = useState(false);
   const [prot, setProt] = useState({
-    prot1: '',
-    prot2: '',
+    prot1: "",
+    prot2: "",
   });
 
   useEffect(() => {
+    let params = props.location.search;
+    const parsed = queryString.parse(params);
+
+    if ("tab" in parsed) {
+      setValue(parseInt(parsed.tab));
+    }
     const viewData = {
       iqvdataSoa: [],
       iqvdataSummary: {},
@@ -54,12 +60,13 @@ const Protocols = (props) => {
     let params = props.location.search;
     const parsed = queryString.parse(params);
     /* istanbul ignore else */
-    if ('protocolId' in parsed) {
+
+    if ("protocolId" in parsed) {
       setIdPresent(true);
-      dispatch({ type: 'GET_PROTOCOL_SUMMARY', payload: parsed.protocolId });
+      dispatch({ type: "GET_PROTOCOL_SUMMARY", payload: parsed.protocolId });
     }
     /* istanbul ignore else */
-    if ('protocolId2' in parsed && 'value' in parsed) {
+    if ("protocolId2" in parsed && "value" in parsed) {
       setValue(2);
       setProt({
         prot1: parsed.protocolId,
@@ -67,11 +74,11 @@ const Protocols = (props) => {
       });
     }
   }, [dispatch, props.location]);
- /* istanbul ignore next */
+  /* istanbul ignore next */
   // const handleClick = (e) => {
   //   e.preventdefault();
   // };
-   /* istanbul ignore next */
+  /* istanbul ignore next */
   const handleChangeTab = (event, value) => {
     setValue(value);
   };
@@ -87,10 +94,10 @@ const Protocols = (props) => {
           <div className="protocols" data-testid="protocols-component-test">
             <Breadcrumbs
               items={[
-                { href: '/dashboard' },
+                { href: "/dashboard" },
                 {
-                  href: '/protocols',
-                  title: 'Protocols',
+                  href: "/protocols",
+                  title: "Protocols",
                   // onClick: handleClick,
                 },
                 {
@@ -103,7 +110,7 @@ const Protocols = (props) => {
             <h2 className="header">{data.Protocol}</h2>
             <div className="tab-column">
               <div className="overview">
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ display: "flex", flexDirection: "row" }}>
                   <div style={{ flex: 1 }}>
                     <Tabs
                       value={value}

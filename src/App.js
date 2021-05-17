@@ -21,6 +21,9 @@ import Modal from "apollo-react/components/Modal";
 import axios from "axios";
 import { USER_MENU, QC1_MENU, QC2_MENU } from "./AppConstant/AppConstant";
 import { baseUrlSSO, SSO_ENABLED, BASE_URL_8000 } from "./utils/api";
+
+import Navbar from "./features/Container/Navbar/Navbar";
+
 function createCookie(name, value, days) {
   if (days) {
     var date = new Date();
@@ -65,27 +68,15 @@ function App(props) {
   //---------Revert-----------
   useEffect(() => {
     if (SSO_ENABLED) {
-      if (process.env.REACT_APP_LOCAL === "true" || process.env.REACT_APP_LOCAL) {
-        console.log("Running on Local")
-      } else {
-        axios
-          .get("/session")
-          .then((res) => {
-            if (Object.keys(res.data).length) {
-              dispatch(setUserDetails(res.data));
-            }
-          })
-          .catch((err) => console.log(err));
-      }
       // comment in local to run
-      // axios
-      //   .get("/session")
-      //   .then((res) => {
-      //     if (Object.keys(res.data).length) {
-      //       dispatch(setUserDetails(res.data));
-      //     }
-      //   })
-      //   .catch((err) => console.log(err));
+      axios
+        .get("/session")
+        .then((res) => {
+          if (Object.keys(res.data).length) {
+            dispatch(setUserDetails(res.data));
+          }
+        })
+        .catch((err) => console.log(err));
 
       const curDate = new Date();
       const expDate = cookiesServer.get("exp") * 1000;
@@ -120,7 +111,7 @@ function App(props) {
       }
     } else {
       const details = {
-        userId: "u1071710",
+        userId: "u1072231",
         username: "Test User",
         email: "test@iqvia.com",
         user_type: "normal",
@@ -316,55 +307,14 @@ function App(props) {
             )}
           />
         ) : (
-          <NavigationBar
-            LogoComponent={() => (
-              <Typography
-                style={{
-                  color: "white",
-                  lineHeight: "56px",
-                  marginRight: 24,
-                  cursor: "pointer",
-                  zIndex: 2,
-                  whiteSpace: "nowrap",
-                }}
-                // onClick={() => console.log('Logo clicked')}
-                onClick={() => history.push("/")}
-              >
-                IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
-              </Typography>
-            )}
-            // logoProps={logoProps}
-            menuItems={navMenuItems}
+          <Navbar
+            navMenuItems={navMenuItems}
             profileMenuProps={profileMenuProps}
-            onClick={({ pathname }) => onClickNavigation(pathname)}
-            checkIsActive={(item) => checknav(item)}
-            waves
+            onClickNavigation={onClickNavigation}
+            checknav={checknav}
           />
         )}
-        <NavigationBar
-          LogoComponent={() => (
-            <Typography
-              style={{
-                color: "white",
-                lineHeight: "56px",
-                marginRight: 24,
-                cursor: "pointer",
-                zIndex: 2,
-                whiteSpace: "nowrap",
-              }}
-              // onClick={() => console.log('Logo clicked')}
-              onClick={() => history.push("/")}
-            >
-              IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
-            </Typography>
-          )}
-          // logoProps={logoProps}
-          menuItems={navMenuItems}
-          profileMenuProps={profileMenuProps}
-          onClick={({ pathname }) => onClickNavigation(pathname)}
-          checkIsActive={(item) => checknav(item)}
-          waves
-        />
+
         {dashboardData && dashboardData.apiError && (
           <span className="main-error-message">
             {" "}
