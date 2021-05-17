@@ -21,7 +21,7 @@ import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
 import Loader from "../../Components/Loader/Loader";
 import { connect } from "react-redux";
 import axios from "axios";
-// import { BASE_URL_8000 } from "../../../utils/api";
+import { BASE_URL_8000 } from "../../../utils/api";
 import { toast } from "react-toastify";
 class SearchPanel extends React.Component {
   constructor(props) {
@@ -211,25 +211,25 @@ class SearchPanel extends React.Component {
         return obj;
       }
     });
-    axios.post(
-      `http://ca2spdml01q:8001/api/follow_protocol/`,
-      {
-        userId:id.substring(1),
-        protocol:protocol.protocolNumber,
-        follow: checked,
-        userRole:'secondary'
-      }
-    )
-    .then( res=>{
-    if(res && res.status===200){
-      // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
+    // axios.post(
+    //   // `http://ca2spdml01q:8001/api/follow_protocol/`,
+    //   `${BASE_URL_8000}/api/follow_protocol/`,
+    //   {
+    //     userId:id.substring(1),
+    //     protocol:protocol.protocolNumber,
+    //     follow: checked,
+    //     userRole:'secondary'
+    //   }
+    // )
+    // .then( res=>{
+    // if(res && res.status===200){
+    //   // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
       this.setState({ accordionObj: newObj });
-    }
-    })
-    .catch(()=>{
-      toast.error("Something Went Wrong");
-    })
-    
+    // }
+    // })
+    // .catch(()=>{
+    //   toast.error("Something Went Wrong");
+    // }) 
   };
 
   render() {
@@ -280,6 +280,7 @@ class SearchPanel extends React.Component {
                       size="small"
                       style={{ marginRight: 0 }}
                       onClick={() => getSearchInput()}
+                      data-testid="apply-filter-button"
                     >
                       Apply Filter
                     </Button>

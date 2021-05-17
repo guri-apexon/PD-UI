@@ -228,6 +228,7 @@ const Search = (props) => {
       setSearchQuery(tempQuery);
     }
   }, [sponsorData, indicationData]);
+   /* istanbul ignore next */
   const handleClick = (e) => {
     e.preventdefault();
   };
@@ -298,6 +299,7 @@ const Search = (props) => {
   const getSearchInput = (input) => {
     // debugger
     let postObj=_.cloneDeep(POST_OBJECT);
+    let validFilters= false;
     setSortValue("1");
     setProtocolSelected([]);
     setPrevProtSelected("");
@@ -314,34 +316,43 @@ const Search = (props) => {
       }
     );
     // debugger;
+    /* istanbul ignore else */
     if ("key" in parsed) {
       setSearchInput(parsed[`key`]);
       postObj.key=parsed[`key`];
     }
+    /* istanbul ignore else */
     if ("toc" in parsed && TOC.sectionContent.length > 0) {
       postObj.toc=parsed.toc.split("+");
     }
+    /* istanbul ignore else */
     if ("sponsor" in parsed && sponsorData.sectionContent.length > 0) {
       postObj.sponsor=parsed.sponsor.split("+");
     }
+    /* istanbul ignore else */
     if ("indication" in parsed && sponsorData.sectionContent.length > 0) {
       postObj.indication=parsed.indication.split("+"); 
     }
+    /* istanbul ignore else */
     if ("phase" in parsed && phases.sectionContent.length > 0) {
       postObj.phase=parsed.phase.split("+");
     }
+    /* istanbul ignore else */
     if ("documentStatus" in parsed) {
       postObj.documentStatus=parsed.documentStatus.split("+");
     }
+    /* istanbul ignore else */
     if ("dateType" in parsed) {
       postObj.dateType=parsed[`dateType`];
     }
+    /* istanbul ignore else */
     if ("dateSection" in parsed) {
       postObj.dateSection=parsed[`dateSection`];
     }
 
     setIdPresent(true);
     setSearchInput(inp);
+     /* istanbul ignore next else*/
     if (rangeDate.from && rangeDate.to) {
       let date11 = formatESDate(rangeDate.from);
       let date22 = formatESDate(rangeDate.to);
@@ -349,7 +360,6 @@ const Search = (props) => {
       let d2 = moment(date22);
       let date1 = d1.format("MM-DD-YYYY");
       let date2 = d2.format("MM-DD-YYYY");
-      // debugger
       if (d1._isValid && d2._isValid) {
         if (isFutureDate(date1) || isFutureDate(date2)) {
           alert(
@@ -360,12 +370,15 @@ const Search = (props) => {
           // setSearchInput(dateQuery);
           postObj.dateFrom=rangeDate.from;
           postObj.dateTo=rangeDate.to;
+          validFilters= checkValidity(postObj);
           resultQuery += dateQuery;
-          dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
-          props.history.replace({
-            pathname: "/search",
-            search: `?${resultQuery}`,
-          });
+          if(validFilters){
+            dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+            props.history.replace({
+              pathname: "/search",
+              search: `?${resultQuery}`,
+            });
+          }
         }
       } else {
         alert(
@@ -376,15 +389,30 @@ const Search = (props) => {
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`;
       postObj.dateFrom=recentDate.from;
       postObj.dateTo=recentDate.to;
+      validFilters= checkValidity(postObj);
       resultQuery += dateQuery;
-      dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
-      props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
+      if(validFilters){
+        dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+        props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
+      }
     } else {
-      dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
-      props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
+      validFilters= checkValidity(postObj);
+      if(validFilters){
+        dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+        props.history.replace({ pathname: "/search", search: `?${resultQuery}` });
+      }
     }
     setPostQueryObj(postObj);
   };
+
+  const checkValidity = (postObj) =>{
+    if(postObj && (postObj.toc.length >0 || postObj.indication.length >0 || postObj.phase.length >0 || postObj.sponsor.length >0 || postObj.dateFrom.length >0 || postObj.dateTo.length >0)){
+      return true;
+    } else {
+      toast.warn("Please Select Filters");
+      return false;
+    }
+  }
   const isFutureDate = (value) => {
     let d_now = new Date();
     let d_inp = new Date(value);

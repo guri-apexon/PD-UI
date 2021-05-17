@@ -78,6 +78,7 @@ class ProtocolSearchButton extends React.Component {
             size="small"
             onChange={this.handleSaveSearchProtocol}
             value={this.state.input}
+            data-testid="key-search-input"
           />
           <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal">
             <Button

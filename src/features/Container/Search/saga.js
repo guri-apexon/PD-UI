@@ -152,7 +152,7 @@ export function* getSearchData(action) {
         ...action.payload,
         qID:userId
       }
-      const searchurl = `http://ca2spdml01q:8001/api/keyword_search/`;
+      const searchurl = `${BASE_URL_8000}/api/keyword_search/`;
       const searchResp = yield call(httpCall, {
         url:searchurl,
         method:"POST",
