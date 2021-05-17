@@ -124,7 +124,7 @@ const Protocols = (props) => {
                       <Tab label="Documents" />
                     </Tabs>
                   </div>
-                  <div style={{ marginTop: -20 }}>
+                  {/* <div style={{ marginTop: -20 }}>
                     {value !== 3 && (
                       <Switch
                         label="Follow Protocol"
@@ -134,7 +134,7 @@ const Protocols = (props) => {
                         style={{ marginRight: 0 }}
                       />
                     )}
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="tab-container">

@@ -1,4 +1,3 @@
-
 import React from "react";
 import _ from "lodash";
 import SearchListingSection from "./SearchListingSection";
@@ -40,7 +39,7 @@ class SearchPanel extends React.Component {
       _.isEmpty(state.accordionObj) ||
       props.resultList.loader !== state.resultListData.loader ||
       props.resultList !== state.resultListData
-      ) {
+    ) {
       let defaultValue = false;
       //For resetting ExpandAll button when all are expanded and Search button is click
       if (
@@ -60,9 +59,7 @@ class SearchPanel extends React.Component {
         }
       }
       let result =
-        props.resultList &&
-        props.resultList.data &&
-        props.resultList.data.data
+        props.resultList && props.resultList.data && props.resultList.data.data
           ? props.resultList.data.data
           : [];
       let arr = [];
@@ -198,15 +195,19 @@ class SearchPanel extends React.Component {
     onSetPage(value);
   };
   handleFollow = (e, checked, protocol) => {
-    const {userDetails}= this.props;
-  console.log('e, checked, protocol :', e, checked, protocol,userDetails);
-  const id = userDetails.userId;
+    const { userDetails } = this.props;
+    console.log("e, checked, protocol :", e, checked, protocol, userDetails);
+    const id = userDetails.userId;
     const { accordionObj } = this.state;
     let accObj = _.cloneDeep(accordionObj);
     let newObj = accObj.map((obj) => {
-      if (obj.protocolNumber && (obj.protocolNumber.toLowerCase() === protocol.protocolNumber.toLowerCase())) {
-      // if (obj.protocolNumber && (obj.protocolNumber === protocol.protocolNumber)) {
-      return { ...obj, followed: !obj.followed };
+      if (
+        obj.protocolNumber &&
+        obj.protocolNumber.toLowerCase() ===
+          protocol.protocolNumber.toLowerCase()
+      ) {
+        // if (obj.protocolNumber && (obj.protocolNumber === protocol.protocolNumber)) {
+        return { ...obj, followed: !obj.followed };
       } else {
         return obj;
       }
@@ -224,12 +225,12 @@ class SearchPanel extends React.Component {
     // .then( res=>{
     // if(res && res.status===200){
     //   // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
-      this.setState({ accordionObj: newObj });
+    this.setState({ accordionObj: newObj });
     // }
     // })
     // .catch(()=>{
     //   toast.error("Something Went Wrong");
-    // }) 
+    // })
   };
 
   render() {
@@ -268,11 +269,15 @@ class SearchPanel extends React.Component {
               {
                 <div className="refine-search">
                   <span>Refine your Search</span>
-                  <div style={{ paddingTop: 5 }}>
-                    <Link onClick={this.clearAllCheckbox} size="small">
-                      {" "}
+                  <div>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      style={{ marginRight: -20 }}
+                      onClick={this.clearAllCheckbox}
+                    >
                       Clear All
-                    </Link>
+                    </Button>
                   </div>
                   <div>
                     <Button
@@ -372,9 +377,9 @@ class SearchPanel extends React.Component {
                     </span> */}
                     <span>
                       Showing {page * 10 + 1} -{" "}
-                      {page * 10 + 10 <  resultList.data.total_count
+                      {page * 10 + 10 < resultList.data.total_count
                         ? page * 10 + 10
-                        :  resultList.data.total_count}{" "}
+                        : resultList.data.total_count}{" "}
                       of{" "}
                       {resultList &&
                         resultList.data &&
@@ -500,11 +505,11 @@ class SearchPanel extends React.Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    userDetails: state.user.userDetail
-  }
-}
+    userDetails: state.user.userDetail,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     updateAssociateProtocol: (data, obj) =>

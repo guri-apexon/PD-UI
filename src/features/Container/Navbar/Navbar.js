@@ -11,6 +11,8 @@ import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import { navbarNotifications } from "./navbarSlice";
 import { userId } from "../../../store/userDetails";
 
+import { toast } from "react-toastify";
+
 function Navbar({
   profileMenuProps,
   navMenuItems,
@@ -37,9 +39,12 @@ function Navbar({
     if (userresp && userresp.data) {
       history.push(`/protocols?protocolId=${data.aidocId}&tab=3`);
     } else {
-      alert(
+      toast.warn(
         "You are not an approved primary user of this protocol. Access to details denied"
       );
+      // alert(
+      //   "You are not an approved primary user of this protocol. Access to details denied"
+      // );
     }
   };
 
