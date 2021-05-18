@@ -4,7 +4,6 @@ const axios = require("axios");
 const path = require("path");
 const app = express();
 const cors = require("cors");
-const elasticsearch = require("elasticsearch");
 const https = require("https");
 const session = require("express-session");
 const jwt_decode = require("jwt-decode");
