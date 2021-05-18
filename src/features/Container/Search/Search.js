@@ -375,17 +375,22 @@ const Search = (props) => {
           resultQuery += dateQuery;
 
           filterChanged = compareObjs(postObj, postQueryObj);
-          // debugger;
-          if (filterChanged) {
-            if (validFilters) {
-              dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
-              props.history.replace({
-                pathname: "/search",
-                search: `?${resultQuery}`,
-              });
-            }
-          } else {
+          if (filterChanged && validFilters) {
+            dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+            props.history.replace({
+              pathname: "/search",
+              search: `?${resultQuery}`,
+            });
+          } else if (filterChanged && !validFilters) {
+            dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+            props.history.replace({
+              pathname: "/search",
+              search: `?${resultQuery}`,
+            });
+          } else if (!filterChanged && validFilters) {
             toast.warn("Please Edit/Modify Your Filters");
+          } else {
+            toast.warn("Please Select Filters");
           }
         }
       } else {
@@ -400,32 +405,42 @@ const Search = (props) => {
       validFilters = checkValidity(postObj);
       resultQuery += dateQuery;
       filterChanged = compareObjs(postObj, postQueryObj);
-      // debugger;
-      if (filterChanged) {
-        if (validFilters) {
-          dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
-          props.history.replace({
-            pathname: "/search",
-            search: `?${resultQuery}`,
-          });
-        }
-      } else {
+      if (filterChanged && validFilters) {
+        dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+        props.history.replace({
+          pathname: "/search",
+          search: `?${resultQuery}`,
+        });
+      } else if (filterChanged && !validFilters) {
+        dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+        props.history.replace({
+          pathname: "/search",
+          search: `?${resultQuery}`,
+        });
+      } else if (!filterChanged && validFilters) {
         toast.warn("Please Edit/Modify Your Filters");
+      } else {
+        toast.warn("Please Select Filters");
       }
     } else {
       filterChanged = compareObjs(postObj, postQueryObj);
-      // debugger;
       validFilters = checkValidity(postObj);
-      if (filterChanged) {
-        if (validFilters) {
-          dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
-          props.history.replace({
-            pathname: "/search",
-            search: `?${resultQuery}`,
-          });
-        }
-      } else {
+      if (filterChanged && validFilters) {
+        dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+        props.history.replace({
+          pathname: "/search",
+          search: `?${resultQuery}`,
+        });
+      } else if (filterChanged && !validFilters) {
+        dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+        props.history.replace({
+          pathname: "/search",
+          search: `?${resultQuery}`,
+        });
+      } else if (!filterChanged && validFilters) {
         toast.warn("Please Edit/Modify Your Filters");
+      } else {
+        toast.warn("Please Select Filters");
       }
     }
 
@@ -450,7 +465,6 @@ const Search = (props) => {
     ) {
       return true;
     } else {
-      toast.warn("Please Select Filters");
       return false;
     }
   };
