@@ -212,25 +212,25 @@ class SearchPanel extends React.Component {
         return obj;
       }
     });
-    // axios.post(
-    //   // `http://ca2spdml01q:8001/api/follow_protocol/`,
-    //   `${BASE_URL_8000}/api/follow_protocol/`,
-    //   {
-    //     userId:id.substring(1),
-    //     protocol:protocol.protocolNumber,
-    //     follow: checked,
-    //     userRole:'secondary'
-    //   }
-    // )
-    // .then( res=>{
-    // if(res && res.status===200){
-    //   // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
-    this.setState({ accordionObj: newObj });
-    // }
-    // })
-    // .catch(()=>{
-    //   toast.error("Something Went Wrong");
-    // })
+    axios
+      .post(
+        `${BASE_URL_8000}/api/follow_protocol/`,
+        {
+          userId: id.substring(1),
+          protocol: protocol.protocolNumber,
+          follow: checked,
+          userRole: protocol.UserRole,
+        }
+      )
+      .then((res) => {
+        if (res && res.status === 200) {
+          // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
+          this.setState({ accordionObj: newObj });
+        }
+      })
+      .catch(() => {
+        toast.error("Something Went Wrong");
+      });
   };
 
   render() {

@@ -31,24 +31,52 @@ const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
         }));
         let filterList = undefined;
         let resultList = {
-            data: [{
-                AiDocId: "a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe",
-                approvalDate: "",
-                followed: false,
-                indication: "Adavosertib",
-                isActive: 1,
-                molecule: "Adavosertib",
-                phase: "I",
-                protocolDescription: "A Phase I, Openours",
-                protocolNumber: "D601HC00008",
-                rows: [],
-                rowsLoading: true,
-                sponsor: "AstraZeneca",
-            }],
-            loader: false,
-            search: false,
-            success: true
-        }
+            data:{
+             ResponseCode:200,
+             count:10,
+             pageNo:1,
+             sortField: "score",
+             total_count:300,
+             phases:[],
+             sponsors:[],
+             indications:[],
+             data: [
+               {
+                 AiDocId: "a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe",
+                 approvalDate: "",
+                 followed: false,
+                 indication: "Adavosertib",
+                 isActive: 1,
+                 molecule: "Adavosertib",
+                 phase: "I",
+                 protocolDescription: "A Phase I, Openours",
+                 protocolNumber: "D601HC00008",
+                 rows: [],
+                 rowsLoading: true,
+                 sponsor: "AstraZeneca",
+               },
+               {
+                 AiDocId: "742053fb-db87-46e0-bed2-6c2ee8d94280",
+                 approvalDate: "",
+                 followed: false,
+                 indication: "none",
+                 isActive: 1,
+                 molecule: " Durvalumab (MEDI4736) and↵ tremelimumab",
+                 phase: "III",
+                 protocolDescription:
+                   "A Phase III, Randomized, Open-Label, Urothelial Cancer",
+                 protocolNumber: "",
+                 rows: [],
+                 rowsLoading: true,
+                 sponsor: "Numerics word , Countries, Country (..",
+                 uploadDate: "20210111023714",
+               },
+             ],
+            },
+             loader: false,
+             search: true,
+             success: true,
+           }
         let sponsorData = {
 
             sectionContent: [{ title: "sponsor1", id: 1 }],

@@ -28,6 +28,15 @@ let searchData = {
     sponsor: "AstraZeneca",
   }],
   searchResult: {
+   data:{
+    ResponseCode:200,
+    count:10,
+    pageNo:1,
+    sortField: "score",
+    total_count:300,
+    phases:[],
+    sponsors:[],
+    indications:[],
     data: [
       {
         AiDocId: "a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe",
@@ -60,8 +69,9 @@ let searchData = {
         uploadDate: "20210111023714",
       },
     ],
+   },
     loader: false,
-    search: false,
+    search: true,
     success: true,
   },
   sponsors: {

@@ -57,7 +57,7 @@ const SearchListingSection = ({
   }
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
-      <div className="marginTop width100 marginLeft10">
+      <div className="marginTop width100 marginLeft10" data-testid={`searchListing-card-${data.AiDocId}`}>
         <div className="width100">
           <div className="width30px">
             <Checkbox />

@@ -517,6 +517,7 @@ export function createJSONFormat(data) {
       path: `${data[i].documentPath}\\${data[i].SourceFileName}`,
       documentStatus: data[i].DocumentStatus,
       version: data[i].VersionNumber,
+      UserRole: data[i].UserRole
     };
     arr.push(obj);
   }

@@ -32,7 +32,8 @@ const CollapseCard = ({
   }
   if (name === "TOC") {
     return (
-      <Collapsible trigger={TOC.sectionName}>
+      <div data-testid="toc-checkboxes">
+      <Collapsible trigger={TOC.sectionName} >
         {/* <TextCard section={TOC} /> */}
         {TOC.sectionContent && TOC.sectionContent.length > 0 && (
           <CheckboxCard
@@ -43,6 +44,7 @@ const CollapseCard = ({
           />
         )}
       </Collapsible>
+      </div>
     );
   } else if (name === "indication") {
     return (
@@ -102,6 +104,7 @@ const CollapseCard = ({
     );
   } else if (name === "phase") {
     return (
+      <div data-testid="phase-checkboxes">
       <Collapsible trigger={phases.sectionName}>
         <CheckboxCard
           section={phases}
@@ -110,9 +113,11 @@ const CollapseCard = ({
           listValue={searchQuery.phase}
         />
       </Collapsible>
+      </div>
     );
   } else if (name === "document") {
     return (
+      <div data-testid="document-checkboxes">
       <Collapsible trigger={documentStatus.sectionName}>
         <CheckboxCard
           section={documentStatus}
@@ -121,6 +126,7 @@ const CollapseCard = ({
           listValue={searchQuery.documentStatus}
         />
       </Collapsible>
+      </div>
     );
   } else if (name === "date") {
     return (

@@ -361,6 +361,7 @@ const Search = (props) => {
       let d2 = moment(date22);
       let date1 = d1.format("MM-DD-YYYY");
       let date2 = d2.format("MM-DD-YYYY");
+      /* istanbul ignore else */
       if (d1._isValid && d2._isValid) {
         if (isFutureDate(date1) || isFutureDate(date2)) {
           alert(
