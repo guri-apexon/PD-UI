@@ -31,7 +31,12 @@ export const searchResult = {
     },
   ],
 };
-
+export const NosearchResult = {
+  search: true,
+  loader: false,
+  success: true,
+  data: [],
+};
 export const indication = {
   success: true,
   sectionContent: [
