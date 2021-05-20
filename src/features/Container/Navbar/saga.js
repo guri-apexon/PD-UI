@@ -48,7 +48,7 @@ export function* navbarNotificationData() {
 
 export function* watchNavbar() {
   yield takeEvery("GET_NOTIFICATION_SAGA", navbarNotificationData);
-  yield takeEvery("SET_NOTIFICATION_READ_SAGA", setRead);
+  // yield takeEvery("SET_NOTIFICATION_READ_SAGA", setRead);
 }
 
 export default function* qcSaga() {
