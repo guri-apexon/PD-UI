@@ -9,6 +9,15 @@
     "aidocId": "45830060-0dcd-474f-a0e7-3974dd53b208"
   },
   {
+    "id": "11",
+    "read": false,
+    "header": "Protocol-Dummy1",
+    "details": "Post-exposure Prophylaxis of COVID-19 in Adults",
+    "timestamp": "2021-04-29T00:00:00",
+    "protocolNumber": "Protocol-Dummy1",
+    "aidocId": "c599fd45-871e-406e-bfb1-d71cc9a69875"
+  },
+  {
     "id": "2",
     "read": false,
     "header": "201790",

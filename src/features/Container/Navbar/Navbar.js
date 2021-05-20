@@ -122,6 +122,7 @@ function Navbar({
   };
 
   return (
+    <div data-testid="navbar-test">
     <NavigationBar
       LogoComponent={() => (
         <Typography
@@ -147,6 +148,7 @@ function Navbar({
       checkIsActive={(item) => checknav(item)}
       waves
     />
+    </div>
   );
 }
 
