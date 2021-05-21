@@ -403,7 +403,6 @@ const ProtocolTable = ({
     <div data-testid="protocol-table-wrapper" id="test-div">
       {initialRows && initialRows.length > 0 ? (
         <Table
-          title="My Protocols"
           columns={columns}
           rows={
             initialRows &&
@@ -435,7 +434,6 @@ const ProtocolTable = ({
       ) : (
         <div className="empty-protocol-table">
           <Table
-            title="My Protocols"
             columns={columns}
             rows={[]}
             // initialSortedColumn="uploadDate"
