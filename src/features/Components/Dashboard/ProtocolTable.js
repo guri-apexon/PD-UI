@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Clock from "apollo-react-icons/Clock";
@@ -8,8 +8,8 @@ import StatusExclamation from "apollo-react-icons/StatusExclamation";
 import Check from "apollo-react-icons/Check";
 import User from "apollo-react-icons/User";
 import { Link } from "react-router-dom";
-// import { useDispatch } from "react-redux";
-// import Checkbox from "apollo-react/components/Checkbox";
+import { useDispatch } from "react-redux";
+import Checkbox from "apollo-react/components/Checkbox";
 import { neutral8 } from "apollo-react/colors";
 import IconButton from "apollo-react/components/IconButton";
 import Table, {
@@ -23,16 +23,18 @@ import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 
 import "./ProtocolTable.scss";
 
-const ActionCell = ({ row: { id, handleToggleRow, expanded } }) => {
+const ActionCell = ({
+  row: { id, handleToggleRow, expanded, selected, handleChange },
+}) => {
   return (
     <div>
-      {/* <div className="table-selection">
+      <div className="table-selection">
         <Checkbox
           label=""
           checked={selected}
           onChange={() => handleChange(id)}
         />
-      </div> */}
+      </div>
       <div
         className="table-selection"
         data-testid="expandable-row"
@@ -366,18 +368,18 @@ const ProtocolTable = ({
   screen,
   handleProtocolClick,
 }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
-  // const [selectedRows, setSelectedRows] = useState([]);
-  // const handleChange = (id) => {
-  //   setSelectedRows((selectedRows) =>
-  //     selectedRows.indexOf(id) >= 0
-  //       ? selectedRows.filter((cid) => cid !== id)
-  //       : selectedRows.length < 2
-  //       ? _.concat(selectedRows, id)
-  //       : _.concat(selectedRows)
-  //   );
-  // };
+  const [selectedRows, setSelectedRows] = useState([]);
+  const handleChange = (id) => {
+    setSelectedRows((selectedRows) =>
+      selectedRows.indexOf(id) >= 0
+        ? selectedRows.filter((cid) => cid !== id)
+        : selectedRows.length < 2
+        ? _.concat(selectedRows, id)
+        : _.concat(selectedRows)
+    );
+  };
 
   const handleToggleRow = (id) => {
     setExpandedRows((expandedRows) =>
@@ -394,9 +396,9 @@ const ProtocolTable = ({
     });
   };
 
-  // useEffect(() => {
-  //   dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
-  // }, [selectedRows]);
+  useEffect(() => {
+    dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
+  }, [selectedRows]);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
       {initialRows && initialRows.length > 0 ? (
@@ -410,11 +412,11 @@ const ProtocolTable = ({
               let details = {
                 key: row.id,
                 expanded: expandedRows.indexOf(row.id) >= 0,
-                // selected: selectedRows.indexOf(row.id) >= 0,
+                selected: selectedRows.indexOf(row.id) >= 0,
                 handleToggleRow,
                 handleRowProtocolClick,
                 screen: screen,
-                // handleChange,
+                handleChange,
               };
               return _.merge(temp, details);
             })
