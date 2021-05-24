@@ -62,7 +62,9 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
       style={{ marginRight: 192 }}
     >
       <span>
-        {row && row.screen && row.screen === "QC" ? (
+        {row &&
+        row.screen &&
+        (row.screen === "QC" || row.screen === "FollowedProtocols") ? (
           <p className="adjust-ellipses">{row[key]}</p>
         ) : (
           <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
@@ -113,6 +115,15 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
         {row[key]}
       </a>
     );
+  } else if (row && row.screen && row.screen === "FollowedProtocols") {
+    if (row[key] && row[key].length > 25) {
+      return (
+        <Tooltip variant="light" title={row[key]} placement="top">
+          <div className="long-text">{row[key]}</div>
+        </Tooltip>
+      );
+    }
+    return row[key];
   } else {
     if (row[key] && row[key].length > 25) {
       return (

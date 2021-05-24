@@ -14,6 +14,7 @@ export const dashboardSlice = createSlice({
     isLoading: true,
     savedSearches: [],
     apiError: false,
+    followedProtocols: [],
   },
   reducers: {
     getProtocols: (state, action) => {
@@ -49,6 +50,9 @@ export const dashboardSlice = createSlice({
     setApiError: (state, action) => {
       state.apiError = action.payload;
     },
+    getFollowedProtocols: (state, action) => {
+      state.followedProtocols = action.payload;
+    },
   },
 });
 
@@ -65,6 +69,7 @@ export const {
   setLoading,
   getSavedSearches,
   setApiError,
+  getFollowedProtocols,
 } = dashboardSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -76,5 +81,7 @@ export const prtocolsError = (state) => state.dashboard.tableError;
 export const protocolCompare = (state) => state.dashboard.compareSelected;
 export const recentSearches = (state) => state.dashboard.recentSearches;
 export const savedSearches = (state) => state.dashboard.savedSearches;
+export const followedProtocolsList = (state) =>
+  state.dashboard.followedProtocols;
 
 export default dashboardSlice.reducer;
