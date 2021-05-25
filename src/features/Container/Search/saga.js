@@ -303,7 +303,7 @@ function* updateSearchAssociated(action) {
   // yield put(getSearchResult(action.payload));
 }
 
-function* getRecentData(action) {
+export function* getRecentData(action) {
   if (action.payload === "0") {
     const recentDate = {
       from: "",
@@ -327,7 +327,7 @@ function* getRecentData(action) {
   }
 }
 
-function* getDataByRange(action) {
+export function* getDataByRange(action) {
   // debugger;
   if (action.payload.from && action.payload.to) {
     let fromDate = new Date(action.payload.from);

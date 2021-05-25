@@ -52,5 +52,13 @@ export const initialState = {
       error: false,
       loader: false,
     },
+    user:{
+      userDetail:{
+        userId: "u1072231",
+        username: "Subhadatta",
+        email: "subhadatta@iqvia.com",
+        user_type: "QC2",
+      }
+    }
   },
 };

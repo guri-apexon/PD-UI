@@ -8,7 +8,9 @@ import {
   getSearchData,
   createJSONFormat,
   setAsssociateProtocols,
-  updateSearchResult
+  updateSearchResult,
+  getRecentData,
+  getDataByRange
 } from "../saga";
 const userDetail = {
   username: "Sohan111",
@@ -406,20 +408,138 @@ describe("Dashboard Saga Unit Test", () => {
 
   //updateSearchResult Starts
   test("updateSearchResult success ", async () => {
-      let dispatchedActions=[]
+    let dispatchedActions = [];
     const fakeStore = {
-        dispatch: (action) => dispatchedActions.push(action),
-        getState: () => ({
-          user: {
-            userDetail: userDetail,
-          },
-        }),
-      };
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
     await runSaga(fakeStore, updateSearchResult, {
       payload: {},
       type: "",
     }).toPromise();
-    
   });
   //updateSearchResult Ends
+
+  //getRecentData Starts
+  test("getRecentData success ", async () => {
+    let dispatchedActions = [];
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getRecentData, {
+      payload: "0",
+      type: "",
+    }).toPromise();
+  });
+  //getRecentData Ends
+
+  //getRecentData Starts
+  test("getRecentData success ", async () => {
+    let dispatchedActions = [];
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getRecentData, {
+      payload: "6",
+      type: "",
+    }).toPromise();
+  });
+  //getRecentData Ends
+
+  //getDataByRange Starts
+  test("getDataByRange success with empty to and from", async () => {
+    let dispatchedActions = [];
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getDataByRange, {
+      payload: {
+        from:"",
+        to:""
+      },
+      type: "",
+    }).toPromise();
+  });
+  //getDataByRange Ends
+  //getDataByRange Starts
+  test("getDataByRange success with to and from", async () => {
+    let dispatchedActions = [];
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getDataByRange, {
+      payload: {
+        from:"20201124",
+        to:"20210524"
+      },
+      type: "",
+    }).toPromise();
+  });
+  //getDataByRange Ends
+
+  //getDataByRange Starts
+  test("getDataByRange success with from ", async () => {
+    let dispatchedActions = [];
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getDataByRange, {
+      payload: {
+        from:"20201124",
+        to:""
+      },
+      type: "",
+    }).toPromise();
+  });
+  //getDataByRange Ends
+
+  //getDataByRange Starts
+  test("getDataByRange success with to only ", async () => {
+    let dispatchedActions = [];
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getDataByRange, {
+      payload: {
+        from:"",
+        to:"20210524"
+      },
+      type: "",
+    }).toPromise();
+  });
+  //getDataByRange Ends
 });

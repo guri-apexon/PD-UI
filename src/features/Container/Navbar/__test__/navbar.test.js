@@ -10,7 +10,7 @@ import { initialState } from "./data";
 
 afterEach(cleanup);
 
-describe("Should Render Alert", () => {
+describe("Should Render Navbar and Alert", () => {
   const mockHistoryPush = jest.fn();
   jest.mock("react-router-dom", () => ({
     ...jest.requireActual("react-router-dom"),
@@ -27,6 +27,11 @@ describe("Should Render Alert", () => {
       </MemoryRouter>,
       initialState
     );
+  });
+  test("Should handle Brand click", () => {
+    const iqviaText = screen.getByText("IQVIA");
+    fireEvent.click(iqviaText);
+    screen.debug();
   });
   test("Should render navbar", () => {
     const iqviaText = screen.getByText("IQVIA");

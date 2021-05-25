@@ -159,6 +159,7 @@ const CustomDropdown = ({
     <div
       className={`custom-dropdown-parent custom-dropdown-parent-${id}`}
       ref={textInputRef}
+      data-testid="custom-dropdown-test-id"
     >
       <div
         className={`custom-dropdown-wrapper-${id} custom-dropdown-container ${expandClass}`}
@@ -174,7 +175,7 @@ const CustomDropdown = ({
           onChange={(e) => onTextFieldChange(id, e, "Textbox")}
           onClick={(e) => onCustomClick(id, e, "fieldType")}
         />
-        <div className={`custom-dropdown-list ${error && "adjust-margin"}`}>
+        <div className={`custom-dropdown-list ${error && "adjust-margin"}`} data-testid="custom-dropdown-list-customadd">
           {list && list.length > 0 && subStringExist && value.label && (
             <>
               <p className="custom-list-item">
@@ -191,6 +192,7 @@ const CustomDropdown = ({
                 key={index}
                 className="custom-list-item"
                 onClick={(e) => onListItemClick(e, item)}
+                data-testid={`custom-dropdown-list-exist-${index}`}
               >
                 {item.label}
               </p>

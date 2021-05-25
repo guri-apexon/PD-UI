@@ -4,10 +4,13 @@ import { Switch, Route, Redirect } from "react-router-dom";
 const Dashboard = lazy(() =>
   import("../features/Container/Dashboard/Dashboard")
 );
+/* istanbul ignore next */
 const Search = lazy(() => import("../features/Container/Search/Search"));
+/* istanbul ignore next */
 const Protocols = lazy(() =>
   import("../features/Container/Protocols/Protocols")
 );
+/* istanbul ignore next */
 const PageNotFound = lazy(() =>
   import("../features/Container/PageNotFound/PageNotFound")
 );

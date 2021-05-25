@@ -3,9 +3,10 @@ import * as api from "../../../../utils/api";
 
 import { navbarNotificationData, setRead } from "../saga";
 const userDetail = {
-  username: "test",
-  userId: "u1021402",
-  email: "test@iqvia.com",
+  userId: "u1072231",
+  username: "Subhadatta",
+  email: "subhadatta@iqvia.com",
+  user_type: "QC2",
 };
 describe("Navbar Saga Unit Test", () => {
   test("Should run give success data: navbarNotificationData", async () => {
