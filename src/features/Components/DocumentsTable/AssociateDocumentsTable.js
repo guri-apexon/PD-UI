@@ -6,11 +6,27 @@ import axios from "axios";
 import _ from "lodash";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 
+import Checkbox from "apollo-react/components/Checkbox";
 // const Cell = ({ row, column }) => (
 //   <a href={row.documentFilePath} target="_blank">
 //     {row.fileName}
 //   </a>
 // );
+
+const ActionCell = ({ row: { id, handleToggleRow, expanded } }) => {
+  return (
+    <div>
+      <div className="table-selection">
+        <Checkbox
+          label=""
+          // checked={selected}
+          // onChange={() => handleChange(id)}
+        />
+      </div>
+    </div>
+  );
+};
+
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   let url;
   const handleDownload = async (row) => {
@@ -26,9 +42,11 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     );
 
     url = `${UI_URL}/${resp.data}`;
-    let encodeUrl=encodeURI(url);
+    let encodeUrl = encodeURI(url);
     let myWindow = window.open("about:blank", "_blank");
-    myWindow.document.write(`<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`);
+    myWindow.document.write(
+      `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
+    );
     // window.open(
     //   url,
     //   "_blank" // <- This is what makes it open in a new window.
@@ -71,12 +89,17 @@ const Cell = ({ row, column: { accessor: key } }) => {
 };
 
 const StatusCell = ({ row, column: { accessor: key } }) => {
-  return <span className='text-capitalize'>{row[key] ? row[key] : "-"}</span>;
+  return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
 };
 
 const DataCell = ({ row, column }) =>
   moment(row[column.accessor]).format("DD-MMM-YYYY");
 const columns = [
+  // {
+  //   accessor: "action",
+  //   customCell: ActionCell,
+  //   width: "3%",
+  // },
   {
     accessor: "versionNumber",
     header: "Associated Versions",
