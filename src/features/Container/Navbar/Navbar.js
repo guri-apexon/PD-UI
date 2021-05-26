@@ -24,27 +24,29 @@ function Navbar({
   const notificationsMenuProps = useSelector(navbarNotifications);
   const userId1 = useSelector(userId);
   const [data, setData] = useState([]);
+  const userDetail = useSelector((state) => state.user.userDetail);
 
+  // console.log(">>>>>", userDetail);
   useEffect(() => {
     dispatch({ type: "GET_NOTIFICATION_SAGA" });
   }, []);
 
   const checkForPrimary = async (data) => {
+    // debugger;
     dispatch({ type: "SET_NOTIFICATION_READ_SAGA", payload: data.id });
-    const userresp = await axios.get(
-      `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
-        1
-      )}&protocol=${data.protocolNumber}`
-    );
-    if (userresp && userresp.data) {
-      history.push(`/protocols?protocolId=${data.aidocId}&tab=3`);
-    } else {
-      toast.warn(
-        "You are not an approved primary user of this protocol. Access to details denied"
+
+    if (userDetail.userId) {
+      const userID = userDetail.userId.substring(1);
+      const userresp = await axios.get(
+        `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`
       );
-      // alert(
-      //   "You are not an approved primary user of this protocol. Access to details denied"
-      // );
+      if (userresp && userresp.data) {
+        history.push(`/protocols?protocolId=${data.aidocId}&tab=3`);
+      } else {
+        toast.warn(
+          "You are not an approved primary user of this protocol. Access to details denied"
+        );
+      }
     }
   };
 
@@ -123,31 +125,31 @@ function Navbar({
 
   return (
     <div data-testid="navbar-test">
-    <NavigationBar
-      LogoComponent={() => (
-        <Typography
-          style={{
-            color: "white",
-            lineHeight: "56px",
-            marginRight: 24,
-            cursor: "pointer",
-            zIndex: 2,
-            whiteSpace: "nowrap",
-          }}
-          // onClick={() => console.log('Logo clicked')}
-          onClick={() => history.push("/")}
-        >
-          IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
-        </Typography>
-      )}
-      // logoProps={logoProps}
-      notificationsMenuProps={data}
-      menuItems={navMenuItems}
-      profileMenuProps={profileMenuProps}
-      onClick={({ pathname }) => onClickNavigation(pathname)}
-      checkIsActive={(item) => checknav(item)}
-      waves
-    />
+      <NavigationBar
+        LogoComponent={() => (
+          <Typography
+            style={{
+              color: "white",
+              lineHeight: "56px",
+              marginRight: 24,
+              cursor: "pointer",
+              zIndex: 2,
+              whiteSpace: "nowrap",
+            }}
+            // onClick={() => console.log('Logo clicked')}
+            onClick={() => history.push("/")}
+          >
+            IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
+          </Typography>
+        )}
+        // logoProps={logoProps}
+        notificationsMenuProps={data}
+        menuItems={navMenuItems}
+        profileMenuProps={profileMenuProps}
+        onClick={({ pathname }) => onClickNavigation(pathname)}
+        checkIsActive={(item) => checknav(item)}
+        waves
+      />
     </div>
   );
 }
