@@ -61,6 +61,10 @@ const CustomDropdown = ({
     setBlur(false);
   }, [blur]);
 
+  useEffect(()=>{
+    setList(source);
+  }, [source]);
+  
   const onTextFieldChange = (id, e, type) => {
     let customListTemp = _.cloneDeep(source);
     let str = getModifyString(e.target.value);

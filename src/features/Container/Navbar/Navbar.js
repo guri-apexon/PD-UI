@@ -23,6 +23,8 @@ function Navbar({
   let history = useHistory();
   const notificationsMenuProps = useSelector(navbarNotifications);
   const userId1 = useSelector(userId);
+
+  const [userData, setUserData] = useState({});
   const [data, setData] = useState([]);
   const userDetail = useSelector((state) => state.user.userDetail);
 
@@ -30,23 +32,26 @@ function Navbar({
   useEffect(() => {
     dispatch({ type: "GET_NOTIFICATION_SAGA" });
   }, []);
-
+  useEffect(() => {
+    setUserData(userDetail);
+  }, [userDetail]);
   const checkForPrimary = async (data) => {
     // debugger;
     dispatch({ type: "SET_NOTIFICATION_READ_SAGA", payload: data.id });
 
-    if (userDetail.userId) {
-      const userID = userDetail.userId.substring(1);
-      const userresp = await axios.get(
-        `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`
+    // const axiosResp = await axios.get("/session");
+    // const axiosUser = axiosResp.data;
+    // console.log("Session data", axiosUser);
+    const userID = userData.userId.substring(1);
+    const userresp = await axios.get(
+      `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`
+    );
+    if (userresp && userresp.data) {
+      history.push(`/protocols?protocolId=${data.aidocId}&tab=3`);
+    } else {
+      toast.warn(
+        "You are not an approved primary user of this protocol. Access to details denied"
       );
-      if (userresp && userresp.data) {
-        history.push(`/protocols?protocolId=${data.aidocId}&tab=3`);
-      } else {
-        toast.warn(
-          "You are not an approved primary user of this protocol. Access to details denied"
-        );
-      }
     }
   };
 
