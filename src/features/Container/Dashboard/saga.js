@@ -6,6 +6,8 @@ import {
   select,
   takeLatest,
 } from "redux-saga/effects";
+import { toast } from "react-toastify";
+
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getProtocols,
@@ -266,6 +268,32 @@ export function* saveRecentSearch(action) {
     }
   }
 }
+export function* sendQcReview() {
+  const state = yield select();
+  const ids = state.dashboard.selectedProtocols;
+  const url = `${BASE_URL_8000}/api/protocol_metadatas/qc1_to_qc2?aidoc_id=${ids}`;
+  const config = {
+    url: url,
+    method: "PUT",
+  };
+  try {
+    // yield put(getLoader(true));
+    const data = yield call(httpCall, config);
+    if (data.success) {
+      toast.info("Sent For QC2 Approval Successfully");
+      // window.location.href = "/qc";
+      // wait();
+    } else {
+      toast.error("Error While Sending");
+    }
+    // yield put(getLoader(false));
+    console.log(data);
+  } catch (err) {
+    // yield put(getLoader(false));
+    console.log(err);
+    toast.error("Something Went Wrong");
+  }
+}
 
 export function* watchDashboard() {
   yield takeLatest("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
@@ -278,6 +306,7 @@ export function* watchDashboard() {
   yield takeEvery("RESET_ERROR_ADD_PROTOCOL", resetErrorAddProtocol);
   yield takeEvery("POST_RECENT_SEARCH_DASHBOARD", saveRecentSearch);
   yield takeLatest("GET_FOLLOWED_PROTOCOL_SAGA", followedProtocols);
+  yield takeLatest("SEND_QC_REVIEW_SAGA", sendQcReview);
 }
 
 export default function* dashboardSaga() {

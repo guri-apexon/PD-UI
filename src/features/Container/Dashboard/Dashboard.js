@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Grid from "apollo-react/components/Grid";
-// import Button from "apollo-react/components/Button";
+import Button from "apollo-react/components/Button";
+
 import { loggedUser } from "../../../store/userDetails";
 import AddProtocol from "./AddProtocol/AddProtocol";
 import ProtocolTable from "./ProtocolTable";
 import DashboardSearch from "./DashboardSearch";
+import { displayAddProtocol } from "./dashboardSlice";
 
 const Dashboard = () => {
   const userDetails = useSelector(loggedUser);
+  const hide = useSelector(displayAddProtocol);
   const dispatch = useDispatch();
   // const compare = useSelector(protocolCompare);
 
@@ -23,6 +26,10 @@ const Dashboard = () => {
 
   const handleClose = () => {
     dispatch({ type: "TOGGLE_ADDPROTOCOL_MODAL", payload: false });
+  };
+
+  const sendQcReview = () => {
+    dispatch({ type: "SEND_QC_REVIEW_SAGA" });
   };
 
   let today = new Date();
@@ -43,16 +50,18 @@ const Dashboard = () => {
       </h1>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <div style={{ float: "right" }}>
-            <AddProtocol handleClose={handleClose} handleOpen={handleOpen} />
+          {hide && (
+            <div style={{ float: "right" }}>
+              <AddProtocol handleClose={handleClose} handleOpen={handleOpen} />
+            </div>
+          )}
+          <div
+            style={{ float: "right", marginTop: "10px", marginRight: "14px" }}
+          >
+            <Button variant="secondary" onClick={sendQcReview}>
+              {"Send To QC Review"}
+            </Button>
           </div>
-          {/* <div
-           style={{ float: "right", marginTop: "10px", marginRight: "14px" }}
-         >
-           <Button variant="secondary" disabled={!compare}>
-             {"Compare Selected"}
-           </Button>
-         </div> */}
         </Grid>
         <Grid item xs={12}>
           <ProtocolTable />

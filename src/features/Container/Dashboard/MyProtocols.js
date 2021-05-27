@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { prtocolsList } from "../Dashboard/dashboardSlice";
 import ProtocolTableComp from "../../Components/Dashboard/ProtocolTable";
 
-function MyProtocols() {
+function MyProtocols({ setSelectedProtocols }) {
   const dispatch = useDispatch();
   const protocolData = useSelector(prtocolsList);
 
@@ -18,6 +18,7 @@ function MyProtocols() {
           protocolData && protocolData.length > 0 ? protocolData : []
         }
         pageRows={[5, 20, 30, "All"]}
+        setSelectedProtocols={setSelectedProtocols}
       />
     </>
   );

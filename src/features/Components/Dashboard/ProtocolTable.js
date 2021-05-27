@@ -1,5 +1,6 @@
 import _ from "lodash";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Clock from "apollo-react-icons/Clock";
@@ -18,9 +19,9 @@ import Table, {
 } from "apollo-react/components/Table";
 import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
-import axios from "axios";
-import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 
+import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
 
 const ActionCell = ({
@@ -382,13 +383,16 @@ const ProtocolTable = ({
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
+
+  useEffect(() => {
+    console.log("selected Rows", selectedRows);
+    dispatch(setSelectedProtocols(selectedRows));
+  }, [selectedRows]);
   const handleChange = (id) => {
     setSelectedRows((selectedRows) =>
       selectedRows.indexOf(id) >= 0
         ? selectedRows.filter((cid) => cid !== id)
-        : selectedRows.length < 2
-        ? _.concat(selectedRows, id)
-        : _.concat(selectedRows)
+        : _.concat(selectedRows, id)
     );
   };
 
