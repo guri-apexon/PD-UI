@@ -9,6 +9,15 @@
     "aidocId": "6b173a90-78c1-4ba3-9152-af7a3e1f66d6"
   },
   {
+    "id": "1112",
+    "read": false,
+    "header": "PROAJ02",
+    "details": "Post-exposure Prophylaxis of COVID-19 in Adults",
+    "timestamp": "2021-05-25T11:00:00",
+    "protocolNumber": "PROAJ02",
+    "aidocId": "043561e5-1c2d-46f5-b7f0-ad8a209f19f7"
+  },
+  {
     "id": "112",
     "read": false,
     "header": "Prot-1-41101",
