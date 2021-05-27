@@ -39,10 +39,13 @@ function Navbar({
     // debugger;
     dispatch({ type: "SET_NOTIFICATION_READ_SAGA", payload: data.id });
 
-    // const axiosResp = await axios.get("/session");
-    // const axiosUser = axiosResp.data;
-    // console.log("Session data", axiosUser);
-    const userID = userData.userId.substring(1);
+    //---- Remove in local-----------
+    const axiosResp = await axios.get("/session");
+    const axiosUser = axiosResp.data;
+    const userID = axiosUser.userId.substring(1);
+
+    //------Uncomment in Local -------
+    // const userID = userData.userId.substring(1);
     const userresp = await axios.get(
       `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`
     );
