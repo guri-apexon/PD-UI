@@ -26,6 +26,7 @@ class CustomFileUpload extends Component {
               }),
             ],
           },
+           /* istanbul ignore next */
           () =>
             setTimeout(() => {
               // custom validations
