@@ -35,6 +35,12 @@ switch (process.env.NODE_ENV) {
     access_token = "access_token_dev";
     refresh_token = "refresh_token_dev";
     break;
+  case "test":
+    baseUrlElastic = process.env.ELASTIC_TEST_URL;
+    baseUrlSSO = process.env.CIMS_TEST_URL;
+    access_token = "access_token_test";
+    refresh_token = "refresh_token_test";
+    break;
   case "svt":
     baseUrlElastic = process.env.ELASTIC_SVT_URL;
     baseUrlSSO = process.env.CIMS_SVT_URL;
@@ -46,6 +52,12 @@ switch (process.env.NODE_ENV) {
     baseUrlSSO = process.env.CIMS_UAT_URL;
     access_token = "access_token_uat";
     refresh_token = "refresh_token_uat";
+    break;
+  case "uat1":
+    baseUrlElastic = process.env.ELASTIC_UAT1_URL;
+    baseUrlSSO = process.env.CIMS_UAT1_URL;
+    access_token = "access_token_uat1";
+    refresh_token = "refresh_token_uat1";
     break;
   case "prod":
     baseUrlElastic = process.env.ELASTIC_PROD_URL;
