@@ -1,4 +1,13 @@
-import { takeEvery, all, call, put, select } from "redux-saga/effects";
+import {
+  takeEvery,
+  all,
+  call,
+  put,
+  select,
+  takeLatest,
+} from "redux-saga/effects";
+import { toast } from "react-toastify";
+
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getProtocols,
@@ -12,6 +21,7 @@ import {
   setLoading,
   getSavedSearches,
   setApiError,
+  getFollowedProtocols,
 } from "./dashboardSlice";
 
 function* getState() {
@@ -42,6 +52,35 @@ export function* protocolAsyn() {
         return item;
       });
       yield put(getProtocols(data));
+    } else {
+      yield put(setError(protocolData.err.statusText));
+    }
+  } catch (err) {
+    yield put(setError(err.statusText));
+  }
+}
+export function* followedProtocols() {
+  let userId = yield getState();
+  const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
+
+  const protocolConfig = {
+    url: protocolUrl,
+    method: "GET",
+  };
+  try {
+    const protocolData = yield call(httpCall, protocolConfig);
+
+    if (protocolData.success) {
+      let data = protocolData.data.map((item) => {
+        item.id = item.aidocId;
+        item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
+        item.protocol = !item.protocol ? "" : item.protocol;
+        item.projectId = !item.projectId ? "" : item.projectId;
+        item.sponsor = !item.sponsor ? "" : item.sponsor;
+        item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
+        return item;
+      });
+      yield put(getFollowedProtocols(data));
     } else {
       yield put(setError(protocolData.err.statusText));
     }
@@ -229,9 +268,35 @@ export function* saveRecentSearch(action) {
     }
   }
 }
+export function* sendQcReview() {
+  const state = yield select();
+  const ids = state.dashboard.selectedProtocols;
+  const url = `${BASE_URL_8000}/api/protocol_metadatas/qc1_to_qc2?aidoc_id=${ids}`;
+  const config = {
+    url: url,
+    method: "PUT",
+  };
+  try {
+    // yield put(getLoader(true));
+    const data = yield call(httpCall, config);
+    if (data.success) {
+      toast.info("Sent For QC2 Approval Successfully");
+      // window.location.href = "/qc";
+      // wait();
+    } else {
+      toast.error("Error While Sending");
+    }
+    // yield put(getLoader(false));
+    console.log(data);
+  } catch (err) {
+    // yield put(getLoader(false));
+    console.log(err);
+    toast.error("Something Went Wrong");
+  }
+}
 
 export function* watchDashboard() {
-  yield takeEvery("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
+  yield takeLatest("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
   yield takeEvery("CHECK_COMPARE_SAGA", compareSelectedAsyn);
   yield takeEvery("GET_RECENT_SEARCH_DATA", recentSearchAsyn);
   yield takeEvery("GET_SPONSOR_ADDPROTCOL_SAGA", addProtocolSponsor);
@@ -240,6 +305,8 @@ export function* watchDashboard() {
   yield takeEvery("GET_SAVED_SEARCH_DATA", savedSearchAsyn);
   yield takeEvery("RESET_ERROR_ADD_PROTOCOL", resetErrorAddProtocol);
   yield takeEvery("POST_RECENT_SEARCH_DASHBOARD", saveRecentSearch);
+  yield takeLatest("GET_FOLLOWED_PROTOCOL_SAGA", followedProtocols);
+  yield takeLatest("SEND_QC_REVIEW_SAGA", sendQcReview);
 }
 
 export default function* dashboardSaga() {
