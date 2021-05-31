@@ -720,7 +720,7 @@ const Search = (props) => {
   };
 
   const compareTwoProtocol = (data, protocol) => {
-    // debugger;
+    debugger;
     if (prevProtSelected === "") {
       setPrevProtSelected(protocol);
       setProtocolSelected([data]);

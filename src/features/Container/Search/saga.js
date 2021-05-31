@@ -161,17 +161,13 @@ export function* getSearchData(action) {
         yield put(getSearchResult(obj));
         let phaseData = obj.data.phases;
         // debugger;
-        let formatPhases = phaseData.map((item) => {
-          if (item && item !== "" && item !== " " && item !== undefined) {
-            console.log(";------", item);
-            return {
-              title: item,
-              id: item,
-            };
-          }
+        const filtered = phaseData.filter(function (el) {
+          return el != "";
+        });
+        let formatPhases = filtered.sort().map((item) => {
           return {
-            title: "NA",
-            id: "NA",
+            title: item,
+            id: item,
           };
         });
         const phaseObj = {

@@ -14,14 +14,14 @@ import Checkbox from "apollo-react/components/Checkbox";
 // );
 
 const ActionCell = ({ row }) => {
-  console.log("....RoW........",row)
+  // console.log("....RoW........", row);
   return (
     <div>
       <div className="table-selection">
         <Checkbox
           label=""
-          // checked={selected}
-          // onChange={() => handleChange(id)}
+          checked={row.protocolSelected.includes(row.id)}
+          onChange={() => row.setProtocolToDownload(row.id)}
         />
       </div>
     </div>
@@ -133,7 +133,12 @@ const columns = [
   },
 ];
 
-const AssociateDocumentsTable = ({ initialsRow, handleChangeTab }) => {
+const AssociateDocumentsTable = ({
+  initialsRow,
+  handleChangeTab,
+  protocolSelected,
+  setProtocolToDownload,
+}) => {
   // console.log("initialsRow :", initialsRow);
 
   // return (
@@ -157,6 +162,8 @@ const AssociateDocumentsTable = ({ initialsRow, handleChangeTab }) => {
           let details = {
             key: row.id,
             handleChangeTab,
+            protocolSelected,
+            setProtocolToDownload,
           };
           return _.merge(temp, details);
         })}

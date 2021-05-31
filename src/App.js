@@ -111,7 +111,7 @@ function App(props) {
       }
     } else {
       const details = {
-        userId: "u1071710",
+        userId: "q1019814",
         username: "Test User",
         email: "test@iqvia.com",
         user_type: "normal",
