@@ -13,7 +13,8 @@ import Checkbox from "apollo-react/components/Checkbox";
 //   </a>
 // );
 
-const ActionCell = ({ row: { id, handleToggleRow, expanded } }) => {
+const ActionCell = ({ row }) => {
+  console.log("....RoW........",row)
   return (
     <div>
       <div className="table-selection">
@@ -95,11 +96,11 @@ const StatusCell = ({ row, column: { accessor: key } }) => {
 const DataCell = ({ row, column }) =>
   moment(row[column.accessor]).format("DD-MMM-YYYY");
 const columns = [
-  // {
-  //   accessor: "action",
-  //   customCell: ActionCell,
-  //   width: "3%",
-  // },
+  {
+    accessor: "action",
+    customCell: ActionCell,
+    width: "3%",
+  },
   {
     accessor: "versionNumber",
     header: "Associated Versions",
@@ -118,6 +119,11 @@ const columns = [
   {
     header: "Uploaded Date",
     accessor: "uploadDate",
+    customCell: DataCell,
+  },
+  {
+    header: "Approval Date",
+    accessor: "approvalDate",
     customCell: DataCell,
   },
   {

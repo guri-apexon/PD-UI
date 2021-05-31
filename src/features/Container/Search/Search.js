@@ -23,13 +23,15 @@ import {
   recent,
   range,
   totalSearchResult,
+  phases,
 } from "./searchSlice";
 import {
-  phases,
+  // phases,
   documentStatus,
   TOC,
   dateType,
   dateSection,
+  qcStatus,
 } from "./Data/constants";
 
 import moment from "moment";
@@ -41,6 +43,7 @@ const Search = (props) => {
   const filterList = useSelector(searchFilter);
   const indicationData = useSelector(indications);
   const sponsorData = useSelector(sponsors);
+  const phaseData = useSelector(phases);
   const recentDate = useSelector(recent);
   const rangeDate = useSelector(range);
   const [sortValueProp, setSortValue] = useState("1");
@@ -55,6 +58,7 @@ const Search = (props) => {
     indication: [],
     phase: [],
     documentStatus: [],
+    qcStatus: [],
     toc: [],
     dateType: [1],
     dateSection: [1],
@@ -123,7 +127,7 @@ const Search = (props) => {
       }
       /* istanbul ignore else */
       if ("phase" in parsed) {
-        let tempElasticQuery = phases.sectionContent.filter((item) =>
+        let tempElasticQuery = phaseData.sectionContent.filter((item) =>
           parsed.phase.split("+").includes(item.title)
         );
         tempQuery.phase =
@@ -138,6 +142,14 @@ const Search = (props) => {
         tempQuery.documentStatus =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         postObj.documentStatus = parsed.documentStatus.split("+");
+      }
+      if ("qcStatus" in parsed) {
+        let tempElasticQuery = qcStatus.sectionContent.filter((item) =>
+          parsed.qcStatus.split("+").includes(item.value)
+        );
+        tempQuery.qcStatus =
+          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+        postObj.qcStatus = parsed.qcStatus.split("+");
       }
       /* istanbul ignore else */
       if ("dateFrom" in parsed && "dateTo" in parsed) {
@@ -200,7 +212,8 @@ const Search = (props) => {
     if (
       params &&
       sponsorData.sectionContent.length > 0 &&
-      indicationData.sectionContent.length > 0
+      indicationData.sectionContent.length > 0 &&
+      phaseData.sectionContent.length > 0
     ) {
       parsed = JSON.parse(
         '{"' + params.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
@@ -225,9 +238,16 @@ const Search = (props) => {
         tempQuery.indication =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
       }
+      if ("phase" in parsed && phaseData.sectionContent.length > 0) {
+        let tempElasticQuery = phaseData.sectionContent.filter((item) =>
+          parsed.phase.split("+").includes(item.title)
+        );
+        tempQuery.phase =
+          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+      }
       setSearchQuery(tempQuery);
     }
-  }, [sponsorData, indicationData]);
+  }, [sponsorData, indicationData, phaseData]);
   /* istanbul ignore next */
   const handleClick = (e) => {
     e.preventdefault();
@@ -257,12 +277,14 @@ const Search = (props) => {
       setSortValue("1");
       setProtocolSelected([]);
       setPrevProtSelected("");
+      setIdPresent(true);
       setPage(0);
       setSearchQuery({
         sponsor: [],
         indication: [],
         phase: [],
         documentStatus: [],
+        qcStatus: [],
         toc: [],
         dateType: [1],
         dateSection: [1],
@@ -297,7 +319,6 @@ const Search = (props) => {
   };
 
   const getSearchInput = (input) => {
-    // debugger
     let postObj = _.cloneDeep(POST_OBJECT);
     let validFilters = false;
     setSortValue("1");
@@ -334,12 +355,15 @@ const Search = (props) => {
       postObj.indication = parsed.indication.split("+");
     }
     /* istanbul ignore else */
-    if ("phase" in parsed && phases.sectionContent.length > 0) {
+    if ("phase" in parsed && phaseData.sectionContent.length > 0) {
       postObj.phase = parsed.phase.split("+");
     }
     /* istanbul ignore else */
     if ("documentStatus" in parsed) {
       postObj.documentStatus = parsed.documentStatus.split("+");
+    }
+    if ("qcStatus" in parsed) {
+      postObj.qcStatus = parsed.qcStatus.split("+");
     }
     /* istanbul ignore else */
     if ("dateType" in parsed) {
@@ -487,6 +511,7 @@ const Search = (props) => {
         documentStatus: [],
         toc: [],
         dateType: [1],
+        qcStatus: [],
         dateSection: [1],
       });
       postObj.key = input;
@@ -508,6 +533,7 @@ const Search = (props) => {
         indication: [],
         phase: [],
         documentStatus: [],
+        qcStatus: [],
         toc: [],
         dateType: [1],
         dateSection: [1],
@@ -577,7 +603,7 @@ const Search = (props) => {
       }
       case "phase": {
         let str = "&phase=";
-        let extractValues = phases.sectionContent.filter((item) =>
+        let extractValues = phaseData.sectionContent.filter((item) =>
           value.includes(item.id)
         );
         if (extractValues.length > 0) {
@@ -593,6 +619,21 @@ const Search = (props) => {
       case "documentStatus": {
         let str = "&documentStatus=";
         let extractValues = documentStatus.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.value}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
+      case "qcStatus": {
+        let str = "&qcStatus=";
+        let extractValues = qcStatus.sectionContent.filter((item) =>
           value.includes(item.id)
         );
         if (extractValues.length > 0) {
@@ -648,6 +689,7 @@ const Search = (props) => {
       indication: [],
       phase: [],
       documentStatus: [],
+      qcStatus:[],
       toc: [],
       dateType: [1],
       dateSection: [1],
@@ -773,6 +815,7 @@ const Search = (props) => {
             resultList={resultList}
             sponsorData={sponsorData}
             indicationData={indicationData}
+            phaseData={phaseData}
             searchInput={searchInput}
             deleteSearchInput={deleteSearchInput}
             onSearchChange={onSearchChange}

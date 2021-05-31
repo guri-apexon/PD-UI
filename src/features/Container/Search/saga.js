@@ -1,10 +1,4 @@
-import {
-  put,
-  takeEvery,
-  all,
-  call,
-  select,
-} from "redux-saga/effects";
+import { put, takeEvery, all, call, select } from "redux-saga/effects";
 import {
   getFilters,
   getSearchResult,
@@ -12,11 +6,13 @@ import {
   getSponsors,
   getRecentDate,
   getRangeDate,
-  getTotalSearchResult
+  getTotalSearchResult,
+  getPhaseValues,
 } from "./searchSlice";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
 import moment from "moment";
+import { initialPhaseValue } from "./searchSlice";
 
 const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
 const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
@@ -69,6 +65,7 @@ export function* getSponsorData(action) {
     }
   } catch (e) {}
 }
+export function* getPhaseData(action) {}
 
 export function* getFilterData(action) {
   const url = "../../../../filters.json";
@@ -131,49 +128,57 @@ export function* getSearchData(action) {
       data: [],
     };
     yield put(getSearchResult(obj));
-
     try {
-      // const url = `/elastic?${action.payload}`;
-      // const url = `http://localhost:4000/elastic?${action.payload}`;
-
-      // const resp = yield call(httpCall, {
-      //   url,
-      //   method: "GET",
-      // });
-      // const respTotal=resp.data.hits.hits;
-      // const data =respTotal.slice(0,10);
-      // const url1 = `/searchResponse.json`;
-      // const getresp = yield call(httpCall, {
-      //   url:url1,
-      //   method: "GET",
-      // });
-      // console.log("search Post",action.payload)
-      let postObj={
+      let postObj = {
         ...action.payload,
-        qID:userId
-      }
+        qID: userId,
+      };
+      // debugger;
       const searchurl = `${BASE_URL_8000}/api/keyword_search/`;
       const searchResp = yield call(httpCall, {
-        url:searchurl,
-        method:"POST",
-        data: postObj
-        
-      })
-      if (searchResp.success && searchResp.data && searchResp.data.data.length !== 0) {
-        const requiredFormat= createJSONFormat(searchResp.data.data);
+        url: searchurl,
+        method: "POST",
+        data: postObj,
+      });
+      if (
+        searchResp.success &&
+        searchResp.data &&
+        searchResp.data.data.length !== 0
+      ) {
+        const requiredFormat = createJSONFormat(searchResp.data.data);
         // console.log('searchResp2 :', requiredFormat);
-        let resp= searchResp.data;
-        resp={
+        let resp = searchResp.data;
+        resp = {
           ...resp,
-          data: requiredFormat
-        }
+          data: requiredFormat,
+        };
         const obj = {
           search: true,
           loader: false,
           success: true,
           data: resp,
         };
-        yield put(getSearchResult(obj))
+        yield put(getSearchResult(obj));
+        let phaseData = obj.data.phases;
+        // debugger;
+        let formatPhases = phaseData.map((item) => {
+          if (item && item !== "" && item !== " " && item !== undefined) {
+            console.log(";------", item);
+            return {
+              title: item,
+              id: item,
+            };
+          }
+          return {
+            title: "NA",
+            id: "NA",
+          };
+        });
+        const phaseObj = {
+          success: true,
+          sectionContent: formatPhases,
+        };
+        yield put(getPhaseValues(phaseObj));
       } else if (searchResp.data.data.length === 0) {
         const obj = {
           search: true,
@@ -182,6 +187,11 @@ export function* getSearchData(action) {
           data: [],
         };
         yield put(getSearchResult(obj));
+        // const phaseObj = {
+        //   success: true,
+        //   sectionContent: initialPhaseValue,
+        // };
+        // yield put(getPhaseValues(phaseObj));
       }
     } catch (e) {
       const obj = {
@@ -189,6 +199,11 @@ export function* getSearchData(action) {
         data: [],
       };
       yield put(getSearchResult(obj));
+      const phaseObj = {
+        success: true,
+        sectionContent: initialPhaseValue,
+      };
+      yield put(getPhaseValues(phaseObj));
     }
   } else {
     const obj = {
@@ -198,6 +213,11 @@ export function* getSearchData(action) {
       data: [],
     };
     yield put(getSearchResult(obj));
+    const phaseObj = {
+      success: true,
+      sectionContent: initialPhaseValue,
+    };
+    yield put(getPhaseValues(phaseObj));
   }
 }
 
@@ -225,7 +245,7 @@ function* updateSearchAssociated(action) {
     success: true,
     data: {
       ...searchData.data,
-      data:[...tempRes]
+      data: [...tempRes],
     },
   };
   yield put(getSearchResult(initialObj));
@@ -277,7 +297,7 @@ function* updateSearchAssociated(action) {
         success: true,
         data: {
           ...searchData.data,
-          data:[...result]
+          data: [...result],
         },
       };
 
@@ -316,11 +336,11 @@ export function* getRecentData(action) {
 
     let momDate = moment(newDate);
     const getDate = momDate.format("YYYYMMDD");
-    const nowData= moment(new Date()).format("YYYYMMDD");
+    const nowData = moment(new Date()).format("YYYYMMDD");
     const recentDate = {
       from: getDate,
       // to: "now/d",
-      to:nowData
+      to: nowData,
     };
 
     yield put(getRecentDate(recentDate));
@@ -444,8 +464,7 @@ function* saveSearch(action) {
   }
 }
 
-function* onPageChange(action){
-
+function* onPageChange(action) {
   const obj1 = {
     search: true,
     loader: true,
@@ -453,27 +472,26 @@ function* onPageChange(action){
     data: [],
   };
   yield put(getSearchResult(obj1));
-    const state = yield select();
-    const data = state.search.totalSearchResult;
-    //0-10, 10-20, 20-30
-    let lastPage=(action.payload+1)*10;
-    // let lastPage=(action.payload)*10;
-    let firstPage= lastPage-10;
-    let res;
-    yield res= data.slice(firstPage, lastPage);
-    // console.log('pagination data :',action.payload,firstPage, lastPage,res, data);
-    const obj = {
-      search: true,
-      loader: false,
-      success: true,
-      data: res,
-    };
-    yield put(getSearchResult(obj));
+  const state = yield select();
+  const data = state.search.totalSearchResult;
+  //0-10, 10-20, 20-30
+  let lastPage = (action.payload + 1) * 10;
+  // let lastPage=(action.payload)*10;
+  let firstPage = lastPage - 10;
+  let res;
+  yield (res = data.slice(firstPage, lastPage));
+  // console.log('pagination data :',action.payload,firstPage, lastPage,res, data);
+  const obj = {
+    search: true,
+    loader: false,
+    success: true,
+    data: res,
+  };
+  yield put(getSearchResult(obj));
 }
 
-function* updateTotalSearchResult(action){
+function* updateTotalSearchResult(action) {
   yield put(getTotalSearchResult(action.payload));
-
 }
 
 function* watchIncrementAsync() {
@@ -483,6 +501,7 @@ function* watchIncrementAsync() {
   yield takeEvery("UPDATE_TOTAL_SEARCH_RESULT", updateTotalSearchResult);
   yield takeEvery("GET_INDICATIONS", getIndicationData);
   yield takeEvery("GET_SPONSORS", getSponsorData);
+  yield takeEvery("GET_PHASES", getPhaseData);
   yield takeEvery("UPDATE_SEARCH_ASSOCIATED_PROTOCOLS", updateSearchAssociated);
   yield takeEvery("FILTER_BY_RECENT_SAGA", getRecentData);
   yield takeEvery("FILTER_BY_DATE_RANGE_SAGA", getDataByRange);
@@ -517,7 +536,7 @@ export function createJSONFormat(data) {
       path: `${data[i].documentPath}\\${data[i].SourceFileName}`,
       documentStatus: data[i].DocumentStatus,
       version: data[i].VersionNumber,
-      UserRole: data[i].UserRole
+      UserRole: data[i].UserRole,
     };
     arr.push(obj);
   }

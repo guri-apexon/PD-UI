@@ -98,11 +98,11 @@ const StatusCell = ({ row, column: { accessor: key } }) => {
 };
 
 const columns = [
-  {
-    accessor: "action",
-    customCell: CheckBoxCell,
-    width: 30,
-  },
+  // {
+  //   accessor: "action",
+  //   customCell: CheckBoxCell,
+  //   width: 30,
+  // },
   {
     header: "Version #",
     accessor: "versionNumber",
