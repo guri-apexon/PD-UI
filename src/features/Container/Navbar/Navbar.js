@@ -50,7 +50,7 @@ function Navbar({
       `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`
     );
     if (userresp && userresp.data) {
-      history.push(`/protocols?protocolId=${data.aidocId}&tab=3`);
+      history.push(`/protocols?protocolId=${data.aidocId}&tab=2`);
     } else {
       toast.warn(
         "You are not an approved primary user of this protocol. Access to details denied"
