@@ -19,7 +19,7 @@ import {
   emptyAutoObj,
 } from "./constants";
 import Plus from "apollo-react-icons/Plus";
-const AddProtocol = ({ handleClose, handleOpen }) => {
+const AddProtocol = () => {
   let dropdownFocus = "";
   const dispatch = useDispatch();
   const dashboardData = useSelector(dashboard);
@@ -37,10 +37,17 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
   const [formErrorValues, setFormErrorValues] = useState(
     initialFormErrorValues
   );
+
   useEffect(() => {
     dispatch({ type: "GET_SPONSOR_ADDPROTCOL_SAGA" });
   }, []); // eslint-disable-line
+  const handleOpen = () => {
+    dispatch({ type: "TOGGLE_ADDPROTOCOL_MODAL", payload: true });
+  };
 
+  const handleClose = () => {
+    dispatch({ type: "TOGGLE_ADDPROTOCOL_MODAL", payload: false });
+  };
   const onModalClose = () => {
     handleClose("custom");
     setValue2({ amendmentNumber: undefined, documentStatus: undefined });
@@ -250,7 +257,7 @@ const AddProtocol = ({ handleClose, handleOpen }) => {
             } else {
               if (field === "versionNumber" && tempError[field].error) {
                 errorExist = true;
-                if( tempValues.amendmentNumber.label === "N"){
+                if (tempValues.amendmentNumber.label === "N") {
                   tempError[field].error = false;
                   tempError[field].errorMessage = " ";
                 }

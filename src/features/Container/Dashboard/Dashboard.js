@@ -21,14 +21,6 @@ const Dashboard = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleOpen = () => {
-    dispatch({ type: "TOGGLE_ADDPROTOCOL_MODAL", payload: true });
-  };
-
-  const handleClose = () => {
-    dispatch({ type: "TOGGLE_ADDPROTOCOL_MODAL", payload: false });
-  };
-
   const sendQcReview = () => {
     dispatch({ type: "SEND_QC_REVIEW_SAGA" });
   };
@@ -53,7 +45,7 @@ const Dashboard = () => {
         <Grid item xs={12}>
           {hide && (
             <div style={{ float: "right" }}>
-              <AddProtocol handleClose={handleClose} handleOpen={handleOpen} />
+              <AddProtocol />
             </div>
           )}
           <div

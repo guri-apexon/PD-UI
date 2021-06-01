@@ -15,6 +15,10 @@ function ProtocolTable() {
   const dispatch = useDispatch();
   const error = useSelector(prtocolsError);
   const [value, setValue] = React.useState(0);
+
+  const handleChangeTab = (event, value) => {
+    setValue(value);
+  };
   useEffect(() => {
     if (value === 0) {
       dispatch(hideAddprotocol(true));
@@ -22,9 +26,6 @@ function ProtocolTable() {
       dispatch(hideAddprotocol(false));
     }
   }, [value]);
-  const handleChangeTab = (event, value) => {
-    setValue(value);
-  };
   return (
     <div>
       {error}

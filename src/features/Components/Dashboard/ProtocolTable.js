@@ -48,6 +48,7 @@ const ActionCell = ({
               ? true
               : false
           }
+          size="small"
         />
       </div>
       <div
@@ -80,7 +81,7 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
         {row &&
         row.screen &&
         (row.screen === "QC" || row.screen === "FollowedProtocols") ? (
-          <p className="adjust-ellipses">{row[key]}</p>
+          <span className="adjust-ellipses">{row[key]}</span>
         ) : (
           <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
         )}
@@ -138,7 +139,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
         </Tooltip>
       );
     }
-    return row[key];
+    return <span>{row[key]}</span>;
   } else {
     if (row[key] && row[key].length > 25) {
       return (
