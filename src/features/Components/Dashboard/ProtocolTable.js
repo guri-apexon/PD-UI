@@ -19,13 +19,22 @@ import Table, {
 } from "apollo-react/components/Table";
 import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
+import Minus from "apollo-react-icons/Minus";
 
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
 
 const ActionCell = ({
-  row: { id, handleToggleRow, expanded, selected, handleChange },
+  row: {
+    id,
+    handleToggleRow,
+    expanded,
+    selected,
+    handleChange,
+    status,
+    qcActivity,
+  },
 }) => {
   return (
     <div>
@@ -34,6 +43,11 @@ const ActionCell = ({
           label=""
           checked={selected}
           onChange={() => handleChange(id)}
+          disabled={
+            status === "PROCESS_COMPLETED" && qcActivity === "QC_COMPLETED"
+              ? true
+              : false
+          }
         />
       </div>
       <div
@@ -139,6 +153,30 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
   }
 };
 
+const qcIconStatus = (status) => {
+  switch (status) {
+    case "QC_NOT_STARTED":
+      return {
+        comp: <Minus />,
+        title: "QC Not Started",
+      };
+    case "QC_IN_PROGRESS":
+      return {
+        comp: <Clock htmlColor={"orange"} />,
+        title: "QC In Progress",
+      };
+    case "QC_COMPLETED":
+      return {
+        comp: <Check htmlColor={"green"} />,
+        title: "QC Completed",
+      };
+    default:
+      return {
+        comp: <Minus />,
+        title: "QC Not Started",
+      };
+  }
+};
 const iconStatus = (status) => {
   switch (status) {
     case "DIGITIZER1_STARTED":
@@ -207,6 +245,18 @@ const ActivityCell = ({ row, column: { accessor: key } }) => {
     </Tooltip>
   );
 };
+
+const qcActivityCell = ({ row, column: { accessor: key } }) => {
+  const status = qcIconStatus(row[key]);
+  return (
+    <Tooltip variant="light" title={status && status.title} placement="top">
+      <IconButton size="small" data-id={row.id} style={{ marginRight: 4 }}>
+        {status && status.comp}
+      </IconButton>
+    </Tooltip>
+  );
+};
+
 const columns = [
   {
     accessor: "action",
@@ -230,6 +280,13 @@ const columns = [
     accessor: "status",
     sortFunction: compareStrings,
     customCell: ActivityCell,
+    width: "8%",
+  },
+  {
+    header: "QC Activity",
+    accessor: "qcActivity",
+    sortFunction: compareStrings,
+    customCell: qcActivityCell,
     width: "8%",
   },
   {

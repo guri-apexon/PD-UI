@@ -7,11 +7,12 @@ import { loggedUser } from "../../../store/userDetails";
 import AddProtocol from "./AddProtocol/AddProtocol";
 import ProtocolTable from "./ProtocolTable";
 import DashboardSearch from "./DashboardSearch";
-import { displayAddProtocol } from "./dashboardSlice";
+import { displayAddProtocol, selectedProtocolsList } from "./dashboardSlice";
 
 const Dashboard = () => {
   const userDetails = useSelector(loggedUser);
   const hide = useSelector(displayAddProtocol);
+  const selectedProtocols = useSelector(selectedProtocolsList);
   const dispatch = useDispatch();
   // const compare = useSelector(protocolCompare);
 
@@ -58,7 +59,11 @@ const Dashboard = () => {
           <div
             style={{ float: "right", marginTop: "10px", marginRight: "14px" }}
           >
-            <Button variant="secondary" onClick={sendQcReview}>
+            <Button
+              variant="secondary"
+              onClick={sendQcReview}
+              disabled={selectedProtocols.length ? false : true}
+            >
               {"Send To QC Review"}
             </Button>
           </div>

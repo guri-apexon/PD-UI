@@ -42,13 +42,20 @@ export function* protocolAsyn() {
     const protocolData = yield call(httpCall, protocolConfig);
 
     if (protocolData.success) {
-      let data = protocolData.data.map((item) => {
+      let data = protocolData.data.map((item, i) => {
         item.id = item.aidocId;
         item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
         item.protocol = !item.protocol ? "" : item.protocol;
         item.projectId = !item.projectId ? "" : item.projectId;
         item.sponsor = !item.sponsor ? "" : item.sponsor;
         item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
+        if (i === 1) {
+          item.qcActivity = "QC_NOT_STARTED";
+        } else if (i === 2) {
+          item.qcActivity = "QC_IN_PROGRESS";
+        } else {
+          item.qcActivity = "QC_COMPLETED";
+        }
         return item;
       });
       yield put(getProtocols(data));
