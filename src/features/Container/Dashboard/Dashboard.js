@@ -52,6 +52,7 @@ const Dashboard = () => {
             style={{ float: "right", marginTop: "10px", marginRight: "14px" }}
           >
             <Button
+              data-testid="send-qc-review"
               variant="secondary"
               onClick={sendQcReview}
               disabled={selectedProtocols.length ? false : true}

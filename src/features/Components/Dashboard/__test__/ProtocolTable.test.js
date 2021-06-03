@@ -544,7 +544,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(download);
   });
 
-  test("Component renders correctly for collpased row", () => {
+  test("Component renders correctly for expanda and collpase row", () => {
     const protocolData = [
       {
         id: "abcd1234",
