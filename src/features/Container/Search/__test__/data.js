@@ -117,9 +117,9 @@ export const sponser = {
   ],
 };
 
-export const phase = {
-  success: true,
-  sectionContent: [
+export const phase={
+  success:true,
+  sectionContent:[
     {
       id: 1,
       title: "Phase 0",
@@ -168,18 +168,18 @@ export const phase = {
       id: 12,
       title: "Phase 3b/4",
     },
-  ],
-};
+  ]
+}
 
 export const searchCardData = {
   protocolNumber: "EMR 200095-004",
   AiDocId: "59d90147-ab52-40f4-801c-2c9f4f752f27",
   protocolDescription: "Paragraph",
-  indication: "ABCC6 deficiency",
+  indication: "ABCC6 deficiency and new Disease for testing",
   phase: "II",
   sponsor: "Numerics word , Countries, Country (..",
   molecule: "Global Biostatistics",
-  approvalDate: "2013",
+  approvalDate: "20130118",
   uploadDate: "20210118133407",
   followed: false,
   rows: [
@@ -230,9 +230,9 @@ export const searchCardData = {
       documentFilePath:
         "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\59d90147-ab52-40f4-801c-2c9f4f752f27\\Protocol-2013-05-29-VER-V1.0-000001.pdf",
       protocol: "EMR 200095-004",
-      projectId: "MSC2156119J",
+      projectId: "MSC215611912313212312313242342J",
       sponsor: "Astellas Pharma Inc",
-      indication: "ABCC6 deficiency",
+      indication: "ABCC6 deficiency and aids",
       moleculeDevice: "Global Biostatistics",
       amendment: "N",
       isProcessing: false,
@@ -350,7 +350,7 @@ export const searchCardData = {
   id: "EMR 200095-004",
 };
 
+
 export const paramsLocation = {
-  search:
-    "?key=advanced&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416",
-};
+  search:"?key=advanced&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416"
+}

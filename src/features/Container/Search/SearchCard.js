@@ -40,6 +40,7 @@ const SearchCard = ({
     // debugger;
     setDataRow(result);
   }, [protocolSelected, data]);
+  /* istanbul ignore next */
   const handleSelectRow = (data, protocol) => {
     compareTwoProtocol(data, protocol);
   };
@@ -302,6 +303,7 @@ const SearchCard = ({
         size="small"
         style={{ marginRight: 10, marginTop: 5, fontWeight: 600 }}
         disabled={data && data.viewAssociate && data.viewAssociate}
+        data-testid="view_associated_protocol"
       >
         View Associate Protocols
       </Link>
