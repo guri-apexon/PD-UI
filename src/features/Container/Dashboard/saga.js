@@ -51,8 +51,22 @@ export function* protocolAsyn() {
         item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
         if (i === 1) {
           item.qcActivity = "QC_NOT_STARTED";
+          item.status = "PROCESS_COMPLETED";
         } else if (i === 2) {
+          item.qcActivity = "QC_NOT_STARTED";
+          item.status = "ERROR";
+        } else if (i === 3) {
+          item.qcActivity = "QC_NOT_STARTED";
+          item.status = "COMPARISON_COMPLETED";
+        } else if (i === 4) {
           item.qcActivity = "QC_IN_PROGRESS";
+          item.status = "PROCESS_COMPLETED";
+        } else if (i === 5) {
+          item.qcActivity = "QC_IN_PROGRESS";
+          item.status = "ERROR";
+        } else if (i === 3) {
+          item.qcActivity = "QC_IN_PROGRESS";
+          item.status = "DIGITIZER1_STARTED";
         } else {
           item.qcActivity = "QC_COMPLETED";
         }

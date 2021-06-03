@@ -46,9 +46,9 @@ const ActionCell = ({
             checked={selected}
             onChange={() => handleChange(id)}
             disabled={
-              status === "PROCESS_COMPLETED" && qcActivity === "QC_COMPLETED"
-                ? true
-                : false
+              status === "PROCESS_COMPLETED" && qcActivity === "QC_NOT_STARTED"
+                ? false
+                : true
             }
             size="small"
             data-testid="selected-row"
