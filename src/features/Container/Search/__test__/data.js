@@ -117,6 +117,60 @@ export const sponser = {
   ],
 };
 
+export const phase = {
+  success: true,
+  sectionContent: [
+    {
+      id: 1,
+      title: "Phase 0",
+    },
+    {
+      id: 2,
+      title: "Phase 1a",
+    },
+    {
+      id: 3,
+      title: "Phase 1b",
+    },
+    {
+      id: 4,
+      title: "Phase 2a",
+    },
+    {
+      id: 5,
+      title: "Phase 2b",
+    },
+    {
+      id: 6,
+      title: "Phase 3a",
+    },
+    {
+      id: 7,
+      title: "Phase 3b",
+    },
+    {
+      id: 8,
+      title: "Phase 1b/2a",
+    },
+    {
+      id: 9,
+      title: "Phase 2b/3a",
+    },
+    {
+      id: 10,
+      title: "Phase 1b/2",
+    },
+    {
+      id: 11,
+      title: "Phase 2b/3",
+    },
+    {
+      id: 12,
+      title: "Phase 3b/4",
+    },
+  ],
+};
+
 export const searchCardData = {
   protocolNumber: "EMR 200095-004",
   AiDocId: "59d90147-ab52-40f4-801c-2c9f4f752f27",
@@ -296,7 +350,7 @@ export const searchCardData = {
   id: "EMR 200095-004",
 };
 
-
 export const paramsLocation = {
-  search:"?key=advanced&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416"
-}
+  search:
+    "?key=advanced&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416",
+};
