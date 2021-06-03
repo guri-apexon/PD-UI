@@ -34,30 +34,32 @@ const ActionCell = ({
     handleChange,
     status,
     qcActivity,
+    screen,
   },
 }) => {
   return (
     <div>
+      {screen !== "QC" ? (
+        <div className="table-selection">
+          <Checkbox
+            label=""
+            checked={selected}
+            onChange={() => handleChange(id)}
+            disabled={
+              status === "PROCESS_COMPLETED" && qcActivity === "QC_COMPLETED"
+                ? true
+                : false
+            }
+            size="small"
+            data-testid="selected-row"
+          />
+        </div>
+      ) : null}
+
       <div className="table-selection">
-        <Checkbox
-          label=""
-          checked={selected}
-          onChange={() => handleChange(id)}
-          disabled={
-            status === "PROCESS_COMPLETED" && qcActivity === "QC_COMPLETED"
-              ? true
-              : false
-          }
-          size="small"
-        />
-      </div>
-      <div
-        className="table-selection"
-        data-testid="expandable-row"
-        id="expandable-row"
-      >
         <IconButton
           id="expand"
+          data-testid="expandable-row"
           size="small"
           onClick={() => handleToggleRow(id)}
         >
@@ -112,6 +114,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
         <Tooltip variant="light" title={row[key]} placement="top">
           <div className="long-text">
             <a
+              data-testid="click-link-qc"
               href="javascript:void(0)"
               onClick={() => row.handleRowProtocolClick(row)}
             >
@@ -125,6 +128,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
     return (
       /* eslint-disable  */
       <a
+        data-testid="click-link-qc"
         href="javascript:void(0)"
         onClick={() => row.handleRowProtocolClick(row)}
       >
@@ -379,7 +383,7 @@ const ExpandableComponent = ({ row }) => {
         >
           {"Source"}
         </Typography>
-        <Typography className="fw-8" variant="body2">
+        <div className="fw-8" variant="body2">
           {row.fileName ? (
             row.fileName.length > 40 ? (
               <Tooltip
@@ -411,7 +415,7 @@ const ExpandableComponent = ({ row }) => {
             // eslint-disable-line
             "-"
           )}
-        </Typography>
+        </div>
       </div>
       {/* } */}
     </div>
@@ -441,6 +445,17 @@ const ProtocolTable = ({
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
+  // useEffect(() => {
+  //   if (screen !== "QC") {
+  //     columns.splice(4, 0, {
+  //       header: "QC Activity",
+  //       accessor: "qcActivity",
+  //       sortFunction: compareStrings,
+  //       customCell: qcActivityCell,
+  //       width: "8%",
+  //     });
+  //   }
+  // }, []);
 
   useEffect(() => {
     console.log("selected Rows", selectedRows);
