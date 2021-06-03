@@ -58,14 +58,7 @@ describe("Search test suit", () => {
     );
     getByText("Indication :");
   });
-  xtest("Should Render Indication Value", () => {
-    const { getByText, getByTestId } = render(
-      <SearchCard data={searchCardData} selection={true} />
-    );
-    expect(getByTestId("indication-value")).toHaveTextContent(
-      "ABCC6 deficiency"
-    );
-  });
+
   test("Should Render Phase Field", () => {
     const { getByText, getByTestId } = render(
       <SearchCard data={searchCardData} selection={true} />
@@ -98,12 +91,6 @@ describe("Search test suit", () => {
     );
     getByText("Approval Date:");
   });
-  xtest("Should Render Recent Approval Date Value", () => {
-    const { getByText, getByTestId } = render(
-      <SearchCard data={searchCardData} selection={true} />
-    );
-    expect(getByTestId("date-value")).toHaveTextContent("30-Nov-2012");
-  });
   test("Should Render Molecule Field", () => {
     const { getByText, getByTestId } = render(
       <SearchCard data={searchCardData} selection={true} />
@@ -127,5 +114,29 @@ describe("Search test suit", () => {
     getByText("Source Document");
     getByText("Upload Date");
     getByText("Document Status");
+  });
+  test("Should call for associatd protocol Value", () => {
+    const mockViewAssociateProtocolClick = jest.fn();
+    const { getByText, getByTestId } = render(
+      <SearchCard
+        data={searchCardData}
+        selection={true}
+        onViewAssociateProtocolClick={mockViewAssociateProtocolClick}
+      />
+    );
+    const assButton = getByTestId("view_associated_protocol");
+    fireEvent.click(assButton);
+  });
+  test("Should call for download protocol", () => {
+    const mockViewAssociateProtocolClick = jest.fn();
+    const { getByText, getByTestId } = render(
+      <SearchCard
+        data={searchCardData}
+        selection={true}
+        onViewAssociateProtocolClick={mockViewAssociateProtocolClick}
+      />
+    );
+    const assButton = getByTestId("source-value");
+    fireEvent.click(assButton);
   });
 });

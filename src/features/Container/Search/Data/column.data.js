@@ -7,6 +7,7 @@ import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
 
 const arr = [];
+/* istanbul ignore next */
 const CheckBoxCell = ({ row }) => {
   // debugger
   console.log(row);

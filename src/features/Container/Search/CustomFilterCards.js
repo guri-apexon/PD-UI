@@ -72,23 +72,23 @@ const useStyles = makeStyles({
   },
 });
 
-export const TableOfContent = ({ section }) => {
-  return (
-    <Card>
-      <CardContent>
-        <div>
-          <div style={{ marginTop: 10 }}>
-            {section.sectionContent.map((content, i) => (
-              <p className="text-filter" key={content.id}>
-                {content.title}
-              </p>
-            ))}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
+// export const TableOfContent = ({ section }) => {
+//   return (
+//     <Card>
+//       <CardContent>
+//         <div>
+//           <div style={{ marginTop: 10 }}>
+//             {section.sectionContent.map((content, i) => (
+//               <p className="text-filter" key={content.id}>
+//                 {content.title}
+//               </p>
+//             ))}
+//           </div>
+//         </div>
+//       </CardContent>
+//     </Card>
+//   );
+// };
 
 export const CheckboxCard = ({
   section,
@@ -136,68 +136,68 @@ export const CheckboxCard = ({
   );
 };
 
-export const TextCard = ({ section }) => {
-  const [value, setValue] = React.useState([]);
+// export const TextCard = ({ section }) => {
+//   const [value, setValue] = React.useState([]);
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  };
+//   const handleChange = (e) => {
+//     setValue(e.target.value);
+//   };
 
-  const classes = useStyles();
-  return (
-    <Card>
-      <CardContent>
-        <div className={classes.cardSubtitle}>
-          <div style={{ marginTop: 10 }}>
-            {section.sectionContent.map((content, i) => (
-              <p
-                className="text-filter"
-                key={content.id}
-                style={{ fontSize: 13 }}
-              >
-                {content.title}
-              </p>
-            ))}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
+//   const classes = useStyles();
+//   return (
+//     <Card>
+//       <CardContent>
+//         <div className={classes.cardSubtitle}>
+//           <div style={{ marginTop: 10 }}>
+//             {section.sectionContent.map((content, i) => (
+//               <p
+//                 className="text-filter"
+//                 key={content.id}
+//                 style={{ fontSize: 13 }}
+//               >
+//                 {content.title}
+//               </p>
+//             ))}
+//           </div>
+//         </div>
+//       </CardContent>
+//     </Card>
+//   );
+// };
 
-export const RadioCard = ({ state, section, index }) => {
-  const [value, setValue] = React.useState([]);
+// export const RadioCard = ({ state, section, index }) => {
+//   const [value, setValue] = React.useState([]);
 
-  const handleChange = (e) => {
-    setValue(e.target.value);
-    state["searchValue"] = e.target.value;
-  };
+//   const handleChange = (e) => {
+//     setValue(e.target.value);
+//     state["searchValue"] = e.target.value;
+//   };
 
-  const classes = useStyles();
-  return (
-    <Card
-      className={classNames(classes.card, index === 0 && classes.cardHighlight)}
-    >
-      <CardContent>
-        <Typography className={classes.cardSubtitle} variant="caption">
-          <div style={{ marginTop: 10 }}>
-            <RadioGroup value={state["searchValue"]} onChange={handleChange}>
-              {section.sectionContent.map((content, i) => (
-                <Radio
-                  id={section.sectionContent[i].id + "_" + i}
-                  key={i}
-                  value={section.sectionContent[i].id + "_" + i}
-                  label={content.title}
-                  size="small"
-                />
-              ))}
-            </RadioGroup>
-          </div>
-        </Typography>
-      </CardContent>
-    </Card>
-  );
-};
+//   const classes = useStyles();
+//   return (
+//     <Card
+//       className={classNames(classes.card, index === 0 && classes.cardHighlight)}
+//     >
+//       <CardContent>
+//         <Typography className={classes.cardSubtitle} variant="caption">
+//           <div style={{ marginTop: 10 }}>
+//             <RadioGroup value={state["searchValue"]} onChange={handleChange}>
+//               {section.sectionContent.map((content, i) => (
+//                 <Radio
+//                   id={section.sectionContent[i].id + "_" + i}
+//                   key={i}
+//                   value={section.sectionContent[i].id + "_" + i}
+//                   label={content.title}
+//                   size="small"
+//                 />
+//               ))}
+//             </RadioGroup>
+//           </div>
+//         </Typography>
+//       </CardContent>
+//     </Card>
+//   );
+// };
 
 export const DateRangeCard = ({
   section,
