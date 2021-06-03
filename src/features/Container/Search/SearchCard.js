@@ -196,7 +196,7 @@ const SearchCard = ({
               {data.version}
             </p>
           </Grid>
-          <Grid md={6}>
+          {/* <Grid md={6}>
             <p className="grid-item bold-class">QC Status :</p>
           </Grid>
           <Grid md={6}>
@@ -206,7 +206,7 @@ const SearchCard = ({
             >
               QC Completed
             </p>
-          </Grid>
+          </Grid> */}
         </Grid>
         {/* ------------------------------------------------- */}
         <Grid md={6} container>
