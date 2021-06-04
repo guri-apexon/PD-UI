@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  act,
-  screen,
-  wait,
-} from "../../../../test-utils/test-utils";
+import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 
 import ProtocolTable from "../ProtocolTable";
@@ -696,7 +690,7 @@ describe("Dashboard table component", () => {
     ).toBeDisabled();
   });
 
-  test("Should checkbox be enabled if Activity and Qc Activity are not in completed status", () => {
+  test("Should check for checkbox to be disabled if Activity is PROCESS_COMPLETED and Qc Activity is QC_IN_PROGRESS", () => {
     const protocolData = [
       {
         id: "2a5111a6-5465-46f5-b133-a85724bae4ef",
@@ -738,10 +732,10 @@ describe("Dashboard table component", () => {
 
     expect(
       screen.getByTestId("selected-row").children[0].children[0].children[0]
-    ).toBeEnabled();
+    ).toBeDisabled();
   });
 
-  test("Should checkbox be enabled and checked", () => {
+  test("Should check for checkbox be enabled and checked", () => {
     const protocolData = [
       {
         id: "2a5111a6-5465-46f5-b133-a85724bae4ef",
@@ -770,7 +764,7 @@ describe("Dashboard table component", () => {
         uploadDate: "2021-04-08T09:51:34.077000",
         userId: "1020640",
         versionNumber: "10.1",
-        qcActivity: "QC_IN_PROGRESS",
+        qcActivity: "QC_NOT_STARTED",
       },
     ];
     render(

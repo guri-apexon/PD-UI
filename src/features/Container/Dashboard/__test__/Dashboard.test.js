@@ -57,7 +57,7 @@ describe("Protocol Table container component with Protocol data", () => {
             uploadDate: "2021-04-08T09:51:34.077000",
             userId: "1020640",
             versionNumber: "10.1",
-            qcActivity: "QC_IN_PROGRESS",
+            qcActivity: "QC_NOT_STARTED",
           },
         ],
         selectedProtocols: [],

@@ -263,7 +263,6 @@ const qcActivityCell = ({ row, column: { accessor: key } }) => {
 };
 
 function getColumns(screen) {
-  console.log("------col--------hidden-------", screen);
   const columns = [
     {
       accessor: "action",
