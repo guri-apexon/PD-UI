@@ -3,11 +3,9 @@ import dashboardslice, {
   prtocolsList,
   getProtocols,
   prtocolsError,
-  protocolCompare,
   recentSearches,
   savedSearches,
   setError,
-  setCompareSelected,
   getRecentSearches,
   getSponsor,
   getIndication,
@@ -20,7 +18,6 @@ import dashboardslice, {
 const initialState = {
   protocols: [{ id: 1 }],
   tableError: false,
-  compareSelected: false,
   recentSearches: [],
   addProtocolData: {
     sponsor: [],
@@ -33,7 +30,6 @@ const initialState = {
 const state = {
   dashboard: {
     protocols: [{ id: "12" }],
-    compareSelected: false,
     recentSearches: [{ keyword: "Acute" }],
     savedSearches: [{ keyword: "Acute" }],
     tableError: false,
@@ -65,19 +61,12 @@ describe(" DashboardSlice Test Suite", () => {
       })
     ).toEqual({ ...initialState, tableError: true });
   });
-  test("Test setCompareSelected", () => {
-    expect(
-      dashboardslice(initialState, {
-        type: setCompareSelected.type,
-        payload: true,
-      })
-    ).toEqual({ ...initialState, compareSelected: true });
-  });
+
   test("Test getRecentSearches", () => {
     expect(
       dashboardslice(initialState, {
         type: getRecentSearches.type,
-        payload: [{ keyword: "Acute" }]
+        payload: [{ keyword: "Acute" }],
       })
     ).toEqual({ ...initialState, recentSearches: [{ keyword: "Acute" }] });
   });
@@ -104,7 +93,7 @@ describe(" DashboardSlice Test Suite", () => {
       ...initialState,
       addProtocolData: {
         indication: [{ id: 4, indication_name: "ABCC6 deficiency" }],
-        sponsor:[]
+        sponsor: [],
       },
     });
   });
@@ -112,11 +101,11 @@ describe(" DashboardSlice Test Suite", () => {
     expect(
       dashboardslice(initialState, {
         type: setAddprotocolError.type,
-        payload:true,
+        payload: true,
       })
     ).toEqual({
       ...initialState,
-      addProtocolDataError :true,
+      addProtocolDataError: true,
     });
   });
 
@@ -124,37 +113,35 @@ describe(" DashboardSlice Test Suite", () => {
     expect(
       dashboardslice(initialState, {
         type: setLoading.type,
-        payload:true,
+        payload: true,
       })
     ).toEqual({
       ...initialState,
-      isLoading  :true,
+      isLoading: true,
     });
   });
   test("Test getSavedSearches", () => {
     expect(
       dashboardslice(initialState, {
         type: getSavedSearches.type,
-        payload: [{ keyword: "Acute" }]
+        payload: [{ keyword: "Acute" }],
       })
     ).toEqual({
       ...initialState,
-      savedSearches:[{ keyword: "Acute" }],
+      savedSearches: [{ keyword: "Acute" }],
     });
   });
   test("Test setApiError", () => {
     expect(
       dashboardslice(initialState, {
         type: setApiError.type,
-        payload:true,
+        payload: true,
       })
     ).toEqual({
       ...initialState,
-      apiError   :true,
+      apiError: true,
     });
   });
-
-
 
   test("Test All selector ", () => {
     dashboardslice(initialState, {
@@ -163,7 +150,6 @@ describe(" DashboardSlice Test Suite", () => {
     });
     prtocolsList(state);
     prtocolsError(state);
-    protocolCompare(state);
     recentSearches(state);
     savedSearches(state);
 

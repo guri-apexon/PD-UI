@@ -262,59 +262,64 @@ const qcActivityCell = ({ row, column: { accessor: key } }) => {
   );
 };
 
-const columns = [
-  {
-    accessor: "action",
-    customCell: ActionCell,
-    width: "3%",
-  },
-  {
-    accessor: "uploadDate",
-    sortFunction: compareDates,
-    width: "0%",
-  },
-  {
-    header: "Protocol",
-    accessor: "protocol",
-    sortFunction: compareStrings,
-    customCell: ProtocolLink,
-    width: "15%",
-  },
-  {
-    header: "Activity",
-    accessor: "status",
-    sortFunction: compareStrings,
-    customCell: ActivityCell,
-    width: "8%",
-  },
-  {
-    header: "QC Activity",
-    accessor: "qcActivity",
-    sortFunction: compareStrings,
-    customCell: qcActivityCell,
-    width: "8%",
-  },
-  {
-    header: "Sponsor",
-    accessor: "sponsor",
-    sortFunction: compareStrings,
-    width: "15%",
-    customCell: Cell,
-  },
-  {
-    header: "Project ID / CRM #",
-    accessor: "projectId",
-    sortFunction: compareStrings,
-    width: "15%",
-    customCell: Cell,
-  },
-  {
-    header: "Protocol Title",
-    accessor: "protocolTitle",
-    sortFunction: compareStrings,
-    customCell: ProtocolTitle,
-  },
-];
+function getColumns(screen) {
+  console.log("------col--------hidden-------", screen);
+  const columns = [
+    {
+      accessor: "action",
+      customCell: ActionCell,
+      width: "3%",
+    },
+    {
+      accessor: "uploadDate",
+      sortFunction: compareDates,
+      width: "0%",
+    },
+    {
+      header: "Protocol",
+      accessor: "protocol",
+      sortFunction: compareStrings,
+      customCell: ProtocolLink,
+      width: "15%",
+    },
+    {
+      header: "Activity",
+      accessor: "status",
+      sortFunction: compareStrings,
+      customCell: ActivityCell,
+      width: "8%",
+    },
+    {
+      header: "QC Activity",
+      accessor: "qcActivity",
+      sortFunction: compareStrings,
+      customCell: qcActivityCell,
+      hidden: screen === "QC" ? true : false,
+      width: "8%",
+    },
+    {
+      header: "Sponsor",
+      accessor: "sponsor",
+      sortFunction: compareStrings,
+      width: "15%",
+      customCell: Cell,
+    },
+    {
+      header: "Project ID / CRM #",
+      accessor: "projectId",
+      sortFunction: compareStrings,
+      width: "15%",
+      customCell: Cell,
+    },
+    {
+      header: "Protocol Title",
+      accessor: "protocolTitle",
+      sortFunction: compareStrings,
+      customCell: ProtocolTitle,
+    },
+  ];
+  return columns;
+}
 
 const ExpandableComponent = ({ row }) => {
   return (
@@ -445,20 +450,8 @@ const ProtocolTable = ({
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
-  // useEffect(() => {
-  //   if (screen !== "QC") {
-  //     columns.splice(4, 0, {
-  //       header: "QC Activity",
-  //       accessor: "qcActivity",
-  //       sortFunction: compareStrings,
-  //       customCell: qcActivityCell,
-  //       width: "8%",
-  //     });
-  //   }
-  // }, []);
 
   useEffect(() => {
-    console.log("selected Rows", selectedRows);
     dispatch(setSelectedProtocols(selectedRows));
   }, [selectedRows]);
   const handleChange = (id) => {
@@ -484,14 +477,14 @@ const ProtocolTable = ({
     });
   };
 
-  useEffect(() => {
-    dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
-  }, [selectedRows]);
+  // useEffect(() => {
+  //   dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
+  // }, [selectedRows]);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
       {initialRows && initialRows.length > 0 ? (
         <Table
-          columns={columns}
+          columns={getColumns(screen)}
           rows={
             initialRows &&
             initialRows.map((row) => {
@@ -522,7 +515,7 @@ const ProtocolTable = ({
       ) : (
         <div className="empty-protocol-table">
           <Table
-            columns={columns}
+            columns={getColumns(screen)}
             rows={[]}
             // initialSortedColumn="uploadDate"
             // initialSortOrder="desc"

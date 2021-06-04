@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Grid from "apollo-react/components/Grid";
 import Button from "apollo-react/components/Button";
@@ -14,12 +14,6 @@ const Dashboard = () => {
   const hide = useSelector(displayAddProtocol);
   const selectedProtocols = useSelector(selectedProtocolsList);
   const dispatch = useDispatch();
-  // const compare = useSelector(protocolCompare);
-
-  useEffect(() => {
-    dispatch({ type: "DASHBOARD_ASYNC_SAGA" });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const sendQcReview = () => {
     dispatch({ type: "SEND_QC_REVIEW_SAGA" });

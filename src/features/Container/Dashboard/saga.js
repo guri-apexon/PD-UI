@@ -12,7 +12,6 @@ import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getProtocols,
   setError,
-  setCompareSelected,
   getRecentSearches,
   getSponsor,
   getIndication,
@@ -50,25 +49,25 @@ export function* protocolAsyn() {
         item.sponsor = !item.sponsor ? "" : item.sponsor;
         item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
         if (i === 1) {
-          item.qcActivity = "QC_NOT_STARTED";
+          item.qcActivity = "QC_COMPLETED";
           item.status = "PROCESS_COMPLETED";
         } else if (i === 2) {
-          item.qcActivity = "QC_NOT_STARTED";
-          item.status = "ERROR";
+          item.qcActivity = "QC_IN_PROGRESS";
+          item.status = "PROCESS_COMPLETED";
         } else if (i === 3) {
           item.qcActivity = "QC_NOT_STARTED";
           item.status = "COMPARISON_COMPLETED";
         } else if (i === 4) {
-          item.qcActivity = "QC_IN_PROGRESS";
+          item.qcActivity = "QC_NOT_STARTED";
           item.status = "PROCESS_COMPLETED";
         } else if (i === 5) {
-          item.qcActivity = "QC_IN_PROGRESS";
+          item.qcActivity = "QC_NOT_STARTED";
           item.status = "ERROR";
-        } else if (i === 3) {
-          item.qcActivity = "QC_IN_PROGRESS";
+        } else if (i === 6) {
+          item.qcActivity = "QC_NOT_STARTED";
           item.status = "DIGITIZER1_STARTED";
         } else {
-          item.qcActivity = "QC_COMPLETED";
+          item.qcActivity = "QC_NOT_STARTED";
         }
         return item;
       });
@@ -107,14 +106,6 @@ export function* followedProtocols() {
     }
   } catch (err) {
     yield put(setError(err.statusText));
-  }
-}
-
-export function* compareSelectedAsyn(action) {
-  if (action.payload === 2) {
-    yield put(setCompareSelected(true));
-  } else {
-    yield put(setCompareSelected(false));
   }
 }
 
@@ -298,19 +289,14 @@ export function* sendQcReview() {
     method: "PUT",
   };
   try {
-    // yield put(getLoader(true));
     const data = yield call(httpCall, config);
     if (data.success) {
       toast.info("Sent For QC2 Approval Successfully");
-      // window.location.href = "/qc";
-      // wait();
     } else {
       toast.error("Error While Sending");
     }
-    // yield put(getLoader(false));
     console.log(data);
   } catch (err) {
-    // yield put(getLoader(false));
     console.log(err);
     toast.error("Something Went Wrong");
   }
@@ -318,7 +304,6 @@ export function* sendQcReview() {
 
 export function* watchDashboard() {
   yield takeLatest("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
-  yield takeEvery("CHECK_COMPARE_SAGA", compareSelectedAsyn);
   yield takeEvery("GET_RECENT_SEARCH_DATA", recentSearchAsyn);
   yield takeEvery("GET_SPONSOR_ADDPROTCOL_SAGA", addProtocolSponsor);
   yield takeEvery("POST_ADDPROTOCOL_DATA", postAddProtocol);

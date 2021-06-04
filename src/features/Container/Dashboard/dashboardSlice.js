@@ -5,7 +5,6 @@ export const dashboardSlice = createSlice({
   initialState: {
     protocols: [],
     tableError: false,
-    compareSelected: false,
     recentSearches: [],
     addProtocolData: {
       sponsor: [],
@@ -24,9 +23,6 @@ export const dashboardSlice = createSlice({
     },
     setError: (state, action) => {
       state.tableError = action.payload;
-    },
-    setCompareSelected: (state, action) => {
-      state.compareSelected = action.payload;
     },
     getRecentSearches: (state, action) => {
       state.recentSearches = action.payload;
@@ -67,7 +63,6 @@ export const dashboardSlice = createSlice({
 export const {
   getProtocols,
   setError,
-  setCompareSelected,
   getRecentSearches,
   getSponsor,
   getIndication,
@@ -88,7 +83,6 @@ export const {
 export const dashboard = (state) => state.dashboard;
 export const prtocolsList = (state) => state.dashboard.protocols;
 export const prtocolsError = (state) => state.dashboard.tableError;
-export const protocolCompare = (state) => state.dashboard.compareSelected;
 export const recentSearches = (state) => state.dashboard.recentSearches;
 export const savedSearches = (state) => state.dashboard.savedSearches;
 export const selectedProtocolsList = (state) =>
