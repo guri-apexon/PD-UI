@@ -528,7 +528,25 @@ export default function* protocolSaga() {
 
 export function createJSONFormat(data) {
   let arr = [];
+
   for (let i = 0; i < data.length; i++) {
+    const status = ["QC_NOT_STARTED", "QC_IN_PROGRESS", "QC_COMPLETED"];
+    const random = Math.floor(Math.random() * status.length);
+    let qcActivity = "";
+    switch (status[random]) {
+      case "QC_NOT_STARTED":
+        qcActivity = "QC Not Started";
+        break;
+      case "QC_IN_PROGRESS":
+        qcActivity = "QC In Progress";
+        break;
+      case "QC_COMPLETED":
+        qcActivity = "QC Completed";
+        break;
+      default:
+        qcActivity = "QC Not Started";
+        break;
+    }
     let obj = {
       protocolNumber: data[i].ProtocolNo,
       AiDocId: data[i].AiDocId,
@@ -550,6 +568,7 @@ export function createJSONFormat(data) {
       documentStatus: data[i].DocumentStatus,
       version: data[i].VersionNumber,
       UserRole: data[i].UserRole,
+      qcActivity: qcActivity,
     };
     arr.push(obj);
   }

@@ -41,16 +41,22 @@ const ProtocolOverview = ({ data }) => {
               </div>
               <div className="row-item">
                 <label>Document Status</label>
-                <span data-testid="status-value" className='text-capitalize'>{data.documentStatus}</span>
+                <span data-testid="status-value" className="text-capitalize">
+                  {data.documentStatus}
+                </span>
               </div>
               <div className="row-item">
                 <label>Activity</label>
                 <span data-testid="activity-value">{data.status}</span>
               </div>
+              <div className="row-item">
+                <label>QC Activity</label>
+                <span data-testid="activity-value">{data.qcActivity}</span>
+              </div>
             </div>
           </div>
           <div className="protocol-title">
-            <div style={{fontWeight:'bold'}}>Protocol Title</div>
+            <div style={{ fontWeight: "bold" }}>Protocol Title</div>
             <div data-testid="title-value">{data.protocolTitle}</div>
           </div>
         </Card>
@@ -91,7 +97,10 @@ const ProtocolOverview = ({ data }) => {
             />
           ) : (
             <div style={{ display: "flex", height: 100 }}>
-              <p style={{ margin: "auto", fontSize: 12 }} data-testid="no-data-digitization">
+              <p
+                style={{ margin: "auto", fontSize: 12 }}
+                data-testid="no-data-digitization"
+              >
                 Information Not Available
               </p>
             </div>

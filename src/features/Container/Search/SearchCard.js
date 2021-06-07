@@ -286,17 +286,17 @@ const SearchCard = ({
         </Grid>
         {/* ------------------------------------------------- */}
 
-        {/* <Grid md={3}>
-          <p className="grid-item bold-class">QC Status :</p>
+        <Grid md={3}>
+          <p className="grid-item bold-class">QC Activity :</p>
         </Grid>
         <Grid md={3}>
           <p
             className="grid-item grid-key-value text-capitalize"
             data-testid="status-value"
           >
-            QC Completed
+            {data.qcActivity}
           </p>
-        </Grid> */}
+        </Grid>
       </Grid>
       <Link
         onClick={() => onViewAssociateProtocolClick(data)}
