@@ -3,7 +3,10 @@ export const searchSlice = createSlice({
   name: "search",
   initialState: {
     filters: {},
-    searchResult: {},
+    searchResult: {
+      data: [],
+      loader:false
+    },
     totalSearchResult: [],
     indications: {
       sectionContent: [],

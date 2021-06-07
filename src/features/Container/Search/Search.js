@@ -203,6 +203,13 @@ const Search = (props) => {
     // }
   }, [dispatch]);
 
+  useEffect(()=>{
+    // console.log("Search data",resultList)
+    if(resultList.data.length===0 && !resultList.loader){
+      dispatch({ type: "GET_PHASES" });
+    }
+  },[resultList])
+
   //newcode
   // This useEffect will get called when indication and sponsor API returns response
   useEffect(() => {
