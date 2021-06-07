@@ -63,6 +63,7 @@ const SearchCard = ({
         1
       )}&protocol=${data.protocolNumber}`
     );
+    console.log("--------------||------------", userresp);
     if (userresp && userresp.data) {
       const resp = await axios.get(
         `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`

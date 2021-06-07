@@ -1,0 +1,66 @@
+[
+    {
+      "phaseId": 1,
+      "phaseName": "I"
+    },
+    {
+      "phaseId": 7,
+      "phaseName": "II"
+    },
+    {
+      "phaseId": 10,
+      "phaseName": "III"
+    },
+    {
+      "phaseId": 14,
+      "phaseName": "1"
+    },
+    {
+      "phaseId": 3,
+      "phaseName": "2"
+    },
+    {
+      "phaseId": 2,
+      "phaseName": "I/II"
+    },
+  
+    {
+      "phaseId": 4,
+      "phaseName": "Ib/II"
+    },
+    {
+      "phaseId": 5,
+      "phaseName": "II/III"
+    },
+    {
+      "phaseId": 6,
+      "phaseName": "IIb"
+    },
+  
+    {
+      "phaseId": 8,
+      "phaseName": "Ib"
+    },
+    {
+      "phaseId": 9,
+      "phaseName": "Ia"
+    },
+  
+    {
+      "phaseId": 11,
+      "phaseName": "I/IIa"
+    },
+    {
+      "phaseId": 12,
+      "phaseName": "Phase 1a"
+    },
+    {
+      "phaseId": 13,
+      "phaseName": "IIa"
+    },
+  
+    {
+      "phaseId": 15,
+      "phaseName": "NULL"
+    }
+  ]

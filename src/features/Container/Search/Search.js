@@ -74,6 +74,7 @@ const Search = (props) => {
     // axios.get('http://ca2spdml01q:8000/api/indications/?skip=0')
     dispatch({ type: "GET_SPONSORS" });
     dispatch({ type: "GET_INDICATIONS" });
+    dispatch({ type: "GET_PHASES" });
     return () => {
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     };
@@ -500,6 +501,7 @@ const Search = (props) => {
   };
   const hancleClearAll = (inputPresent, input) => {
     // setClearAll(true);
+    dispatch({ type: "GET_PHASES" });
     let postObj = _.cloneDeep(POST_OBJECT);
     setProtocolSelected([]);
     setPrevProtSelected("");
@@ -681,6 +683,7 @@ const Search = (props) => {
     }
   };
   const deleteSearchInput = () => {
+    dispatch({ type: "GET_PHASES" });
     setSearchInput("");
     setClearAll(true);
     setIdPresent(false);
@@ -689,7 +692,7 @@ const Search = (props) => {
       indication: [],
       phase: [],
       documentStatus: [],
-      qcStatus:[],
+      qcStatus: [],
       toc: [],
       dateType: [1],
       dateSection: [1],

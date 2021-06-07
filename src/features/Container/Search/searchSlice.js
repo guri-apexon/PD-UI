@@ -1,56 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-export const initialPhaseValue = [
-  {
-    id: 1,
-    title: "Phase 0",
-  },
-  {
-    id: 2,
-    title: "Phase 1a",
-  },
-  {
-    id: 3,
-    title: "Phase 1b",
-  },
-  {
-    id: 4,
-    title: "Phase 2a",
-  },
-  {
-    id: 5,
-    title: "Phase 2b",
-  },
-  {
-    id: 6,
-    title: "Phase 3a",
-  },
-  {
-    id: 7,
-    title: "Phase 3b",
-  },
-  {
-    id: 8,
-    title: "Phase 1b/2a",
-  },
-  {
-    id: 9,
-    title: "Phase 2b/3a",
-  },
-  {
-    id: 10,
-    title: "Phase 1b/2",
-  },
-  {
-    id: 11,
-    title: "Phase 2b/3",
-  },
-  {
-    id: 12,
-    title: "Phase 3b/4",
-  },
-];
-
 export const searchSlice = createSlice({
   name: "search",
   initialState: {
@@ -61,7 +9,7 @@ export const searchSlice = createSlice({
       sectionContent: [],
     },
     phases: {
-      sectionContent: initialPhaseValue,
+      sectionContent: [],
     },
     sponsors: {
       sectionContent: [],

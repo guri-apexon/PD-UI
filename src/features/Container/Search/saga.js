@@ -12,10 +12,10 @@ import {
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
 import moment from "moment";
-import { initialPhaseValue } from "./searchSlice";
 
 const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
 const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
+const phaseUrl = `/phases.json`;
 
 export function* getIndicationData(action) {
   try {
@@ -65,7 +65,29 @@ export function* getSponsorData(action) {
     }
   } catch (e) {}
 }
-export function* getPhaseData(action) {}
+export function* getPhaseData(action) {
+  try {
+    const phaseList = yield call(httpCall, {
+      url: phaseUrl,
+      method: "GET",
+    });
+    // let respData = sponsorList.data.slice(0, 8000);
+    let respData = phaseList.data;
+    if (phaseList.success) {
+      let formatPhases = respData.map((item) => {
+        return {
+          title: item.phaseName,
+          id: item.phaseName,
+        };
+      });
+      const obj = {
+        success: true,
+        sectionContent: formatPhases,
+      };
+      yield put(getPhaseValues(obj));
+    }
+  } catch (e) {}
+}
 
 export function* getFilterData(action) {
   const url = "../../../../filters.json";
@@ -183,11 +205,6 @@ export function* getSearchData(action) {
           data: [],
         };
         yield put(getSearchResult(obj));
-        // const phaseObj = {
-        //   success: true,
-        //   sectionContent: initialPhaseValue,
-        // };
-        // yield put(getPhaseValues(phaseObj));
       }
     } catch (e) {
       const obj = {
@@ -197,7 +214,7 @@ export function* getSearchData(action) {
       yield put(getSearchResult(obj));
       const phaseObj = {
         success: true,
-        sectionContent: initialPhaseValue,
+        sectionContent: [],
       };
       yield put(getPhaseValues(phaseObj));
     }
@@ -211,7 +228,7 @@ export function* getSearchData(action) {
     yield put(getSearchResult(obj));
     const phaseObj = {
       success: true,
-      sectionContent: initialPhaseValue,
+      sectionContent: [],
     };
     yield put(getPhaseValues(phaseObj));
   }
