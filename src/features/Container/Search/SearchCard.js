@@ -292,7 +292,7 @@ const SearchCard = ({
         <Grid md={3}>
           <p
             className="grid-item grid-key-value text-capitalize"
-            data-testid="status-value"
+            data-testid="qc-activity-value"
           >
             {data.qcActivity}
           </p>
