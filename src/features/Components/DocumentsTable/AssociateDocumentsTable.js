@@ -20,7 +20,10 @@ const ActionCell = ({ row }) => {
       <div className="table-selection">
         <Checkbox
           label=""
-          checked={row.protocolSelected.includes(row.id)}
+          checked={
+            row.protocolSelected.length > 0 &&
+            row.protocolSelected.includes(row.id)
+          }
           onChange={() => row.setProtocolToDownload(row.id)}
         />
       </div>

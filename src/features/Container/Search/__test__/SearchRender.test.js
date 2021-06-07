@@ -10,7 +10,7 @@ import SearchSection from "../SearchSection";
 import SearchListing from "../SearchListingSection";
 import SearchCard from "../SearchCard";
 
-import mockedAxios from "axios";
+import axios from "axios";
 
 import {
   searchResult,
@@ -146,14 +146,20 @@ describe("Search test suit", () => {
         onViewAssociateProtocolClick={mockViewAssociateProtocolClick}
       />
     );
-    const request = mockedAxios.get.mockResolvedValueOnce(data);
-    console.log("---||---", request, mockedAxios);
+    const mockCallApi = jest
+      .spyOn(axios, "get")
+      .mockImplementation(() => Promise.resolve(data));
+
     const assButton = getByTestId("source-value");
     fireEvent.click(assButton);
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
 
     setImmediate(() => {
       const newdata = "D361BC00001 Protocol-2020-03-03-VER-1.0.pdf";
-      mockedAxios.get.mockResolvedValueOnce(newdata);
+      const mockCallApi2 = jest
+        .spyOn(axios, "get")
+        .mockImplementation(() => Promise.resolve(newdata));
+      expect(mockCallApi2).toHaveBeenCalledTimes(1);
       // expect(getByText("mocked title"));
     });
   });

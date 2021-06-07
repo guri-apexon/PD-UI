@@ -17,6 +17,8 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "protocols")));
+app.use(express.static(path.join(__dirname, "compare_csv")));
+
 let baseUrlElastic = "";
 let baseUrlSSO = "";
 let access_token = "";

@@ -45,7 +45,7 @@ const AssociateDocs = [
 ];
 
 describe("DocumentsTable Test Suite", () => {
-  test.only("Should render Document Tab", async () => {
+  test("Should render Document Tab", async () => {
     const mockHistoryPush = jest.fn();
     let mockwrite = jest.fn(() => Promise.resolve({}));
     window.open = jest.fn(() => {
