@@ -9,7 +9,7 @@ import {
   TOC,
   phases,
   documentStatus,
-  qcStatus,
+  qcActivity,
   dateSection,
   dateType,
 } from "./Data/constants";
@@ -151,15 +151,15 @@ const CollapseCard = ({
         </Collapsible>
       </div>
     );
-  } else if (name === "qcStatus") {
+  } else if (name === "qcActivity") {
     return (
-      <div data-testid="document-checkboxes">
-        <Collapsible trigger="QC Status">
+      <div data-testid="qc-activity-checkboxes">
+        <Collapsible trigger="QC Activity">
           <CheckboxCard
-            section={qcStatus}
-            identifier="qcStatus"
+            section={qcActivity}
+            identifier="qcActivity"
             onCheckboxClick={onConstructSearchQuery}
-            listValue={searchQuery.qcStatus}
+            listValue={searchQuery.qcActivity}
           />
         </Collapsible>
       </div>
