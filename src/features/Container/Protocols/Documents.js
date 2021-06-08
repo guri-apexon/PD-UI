@@ -64,7 +64,7 @@ const Documents = ({ handleChangeTab }) => {
         const resp = await axios.get(
           `http://ca2spdml01q:8000/api/document_compare/?id1=022eddd1-e7eb-4387-86a2-94db36437438&id2=ffc6f734-13b7-45a7-9909-20e9dd1dc878`
         );
-
+        console.log(resp);
         const data = resp.data;
         if (data.numChangesTotal > 0) {
           const path = data.compareCSVPath;
@@ -114,6 +114,7 @@ const Documents = ({ handleChangeTab }) => {
           <Button
             onClick={() => downloadCompare()}
             variant="primary"
+            data-testid="compare-download-button"
             style={{
               float: "right",
               height: 38,
