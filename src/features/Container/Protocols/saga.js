@@ -20,6 +20,23 @@ export function* getSummaryData(action) {
   // getSummaryData(data)
   if (resp.data) {
     resp.data["id"] = resp.data.aidocId;
+    const status = ["QC_NOT_STARTED", "QC_IN_PROGRESS", "QC_COMPLETED"];
+    const random = Math.floor(Math.random() * status.length);
+
+    switch (status[random]) {
+      case "QC_NOT_STARTED":
+        resp.data["qcActivity"] = "QC Not Started";
+        break;
+      case "QC_IN_PROGRESS":
+        resp.data["qcActivity"] = "QC In Progress";
+        break;
+      case "QC_COMPLETED":
+        resp.data["qcActivity"] = "QC Completed";
+        break;
+      default:
+        resp.data["qcActivity"] = "QC Not Started";
+        break;
+    }
     let obj = {
       loading: false,
       success: true,

@@ -1,10 +1,4 @@
-import {
-  put,
-  takeEvery,
-  all,
-  call,
-  select,
-} from "redux-saga/effects";
+import { put, takeEvery, all, call, select } from "redux-saga/effects";
 import {
   getFilters,
   getSearchResult,
@@ -12,7 +6,8 @@ import {
   getSponsors,
   getRecentDate,
   getRangeDate,
-  getTotalSearchResult
+  getTotalSearchResult,
+  getPhaseValues,
 } from "./searchSlice";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
@@ -20,6 +15,7 @@ import moment from "moment";
 
 const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
 const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
+const phaseUrl = `/phases.json`;
 
 export function* getIndicationData(action) {
   try {
@@ -66,6 +62,29 @@ export function* getSponsorData(action) {
         sectionContent: formatSponser,
       };
       yield put(getSponsors(obj));
+    }
+  } catch (e) {}
+}
+export function* getPhaseData(action) {
+  try {
+    const phaseList = yield call(httpCall, {
+      url: phaseUrl,
+      method: "GET",
+    });
+    // let respData = sponsorList.data.slice(0, 8000);
+    let respData = phaseList.data;
+    if (phaseList.success) {
+      let formatPhases = respData.map((item) => {
+        return {
+          title: item.phaseName,
+          id: item.phaseName,
+        };
+      });
+      const obj = {
+        success: true,
+        sectionContent: formatPhases,
+      };
+      yield put(getPhaseValues(obj));
     }
   } catch (e) {}
 }
@@ -131,49 +150,53 @@ export function* getSearchData(action) {
       data: [],
     };
     yield put(getSearchResult(obj));
-
     try {
-      // const url = `/elastic?${action.payload}`;
-      // const url = `http://localhost:4000/elastic?${action.payload}`;
-
-      // const resp = yield call(httpCall, {
-      //   url,
-      //   method: "GET",
-      // });
-      // const respTotal=resp.data.hits.hits;
-      // const data =respTotal.slice(0,10);
-      // const url1 = `/searchResponse.json`;
-      // const getresp = yield call(httpCall, {
-      //   url:url1,
-      //   method: "GET",
-      // });
-      // console.log("search Post",action.payload)
-      let postObj={
+      let postObj = {
         ...action.payload,
-        qID:userId
-      }
+        qID: userId,
+      };
+      // debugger;
       const searchurl = `${BASE_URL_8000}/api/keyword_search/`;
       const searchResp = yield call(httpCall, {
-        url:searchurl,
-        method:"POST",
-        data: postObj
-        
-      })
-      if (searchResp.success && searchResp.data && searchResp.data.data.length !== 0) {
-        const requiredFormat= createJSONFormat(searchResp.data.data);
+        url: searchurl,
+        method: "POST",
+        data: postObj,
+      });
+      if (
+        searchResp.success &&
+        searchResp.data &&
+        searchResp.data.data.length !== 0
+      ) {
+        const requiredFormat = createJSONFormat(searchResp.data.data);
         // console.log('searchResp2 :', requiredFormat);
-        let resp= searchResp.data;
-        resp={
+        let resp = searchResp.data;
+        resp = {
           ...resp,
-          data: requiredFormat
-        }
+          data: requiredFormat,
+        };
         const obj = {
           search: true,
           loader: false,
           success: true,
           data: resp,
         };
-        yield put(getSearchResult(obj))
+        yield put(getSearchResult(obj));
+        let phaseData = obj.data.phases;
+        // debugger;
+        const filtered = phaseData.filter(function (el) {
+          return el != "";
+        });
+        let formatPhases = filtered.sort().map((item) => {
+          return {
+            title: item,
+            id: item,
+          };
+        });
+        const phaseObj = {
+          success: true,
+          sectionContent: formatPhases,
+        };
+        yield put(getPhaseValues(phaseObj));
       } else if (searchResp.data.data.length === 0) {
         const obj = {
           search: true,
@@ -189,6 +212,11 @@ export function* getSearchData(action) {
         data: [],
       };
       yield put(getSearchResult(obj));
+      const phaseObj = {
+        success: true,
+        sectionContent: [],
+      };
+      yield put(getPhaseValues(phaseObj));
     }
   } else {
     const obj = {
@@ -198,6 +226,11 @@ export function* getSearchData(action) {
       data: [],
     };
     yield put(getSearchResult(obj));
+    const phaseObj = {
+      success: true,
+      sectionContent: [],
+    };
+    yield put(getPhaseValues(phaseObj));
   }
 }
 
@@ -225,7 +258,7 @@ function* updateSearchAssociated(action) {
     success: true,
     data: {
       ...searchData.data,
-      data:[...tempRes]
+      data: [...tempRes],
     },
   };
   yield put(getSearchResult(initialObj));
@@ -277,7 +310,7 @@ function* updateSearchAssociated(action) {
         success: true,
         data: {
           ...searchData.data,
-          data:[...result]
+          data: [...result],
         },
       };
 
@@ -316,11 +349,11 @@ export function* getRecentData(action) {
 
     let momDate = moment(newDate);
     const getDate = momDate.format("YYYYMMDD");
-    const nowData= moment(new Date()).format("YYYYMMDD");
+    const nowData = moment(new Date()).format("YYYYMMDD");
     const recentDate = {
       from: getDate,
       // to: "now/d",
-      to:nowData
+      to: nowData,
     };
 
     yield put(getRecentDate(recentDate));
@@ -444,8 +477,7 @@ function* saveSearch(action) {
   }
 }
 
-function* onPageChange(action){
-
+function* onPageChange(action) {
   const obj1 = {
     search: true,
     loader: true,
@@ -453,27 +485,26 @@ function* onPageChange(action){
     data: [],
   };
   yield put(getSearchResult(obj1));
-    const state = yield select();
-    const data = state.search.totalSearchResult;
-    //0-10, 10-20, 20-30
-    let lastPage=(action.payload+1)*10;
-    // let lastPage=(action.payload)*10;
-    let firstPage= lastPage-10;
-    let res;
-    yield res= data.slice(firstPage, lastPage);
-    // console.log('pagination data :',action.payload,firstPage, lastPage,res, data);
-    const obj = {
-      search: true,
-      loader: false,
-      success: true,
-      data: res,
-    };
-    yield put(getSearchResult(obj));
+  const state = yield select();
+  const data = state.search.totalSearchResult;
+  //0-10, 10-20, 20-30
+  let lastPage = (action.payload + 1) * 10;
+  // let lastPage=(action.payload)*10;
+  let firstPage = lastPage - 10;
+  let res;
+  yield (res = data.slice(firstPage, lastPage));
+  // console.log('pagination data :',action.payload,firstPage, lastPage,res, data);
+  const obj = {
+    search: true,
+    loader: false,
+    success: true,
+    data: res,
+  };
+  yield put(getSearchResult(obj));
 }
 
-function* updateTotalSearchResult(action){
+function* updateTotalSearchResult(action) {
   yield put(getTotalSearchResult(action.payload));
-
 }
 
 function* watchIncrementAsync() {
@@ -483,6 +514,7 @@ function* watchIncrementAsync() {
   yield takeEvery("UPDATE_TOTAL_SEARCH_RESULT", updateTotalSearchResult);
   yield takeEvery("GET_INDICATIONS", getIndicationData);
   yield takeEvery("GET_SPONSORS", getSponsorData);
+  yield takeEvery("GET_PHASES", getPhaseData);
   yield takeEvery("UPDATE_SEARCH_ASSOCIATED_PROTOCOLS", updateSearchAssociated);
   yield takeEvery("FILTER_BY_RECENT_SAGA", getRecentData);
   yield takeEvery("FILTER_BY_DATE_RANGE_SAGA", getDataByRange);
@@ -496,7 +528,25 @@ export default function* protocolSaga() {
 
 export function createJSONFormat(data) {
   let arr = [];
+
   for (let i = 0; i < data.length; i++) {
+    const status = ["QC_NOT_STARTED", "QC_IN_PROGRESS", "QC_COMPLETED"];
+    const random = Math.floor(Math.random() * status.length);
+    let qcActivity = "";
+    switch (status[random]) {
+      case "QC_NOT_STARTED":
+        qcActivity = "QC Not Started";
+        break;
+      case "QC_IN_PROGRESS":
+        qcActivity = "QC In Progress";
+        break;
+      case "QC_COMPLETED":
+        qcActivity = "QC Completed";
+        break;
+      default:
+        qcActivity = "QC Not Started";
+        break;
+    }
     let obj = {
       protocolNumber: data[i].ProtocolNo,
       AiDocId: data[i].AiDocId,
@@ -517,7 +567,8 @@ export function createJSONFormat(data) {
       path: `${data[i].documentPath}\\${data[i].SourceFileName}`,
       documentStatus: data[i].DocumentStatus,
       version: data[i].VersionNumber,
-      UserRole: data[i].UserRole
+      UserRole: data[i].UserRole,
+      qcActivity: qcActivity,
     };
     arr.push(obj);
   }

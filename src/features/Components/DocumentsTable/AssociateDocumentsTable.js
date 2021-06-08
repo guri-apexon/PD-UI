@@ -13,14 +13,18 @@ import Checkbox from "apollo-react/components/Checkbox";
 //   </a>
 // );
 
-const ActionCell = ({ row: { id, handleToggleRow, expanded } }) => {
+const ActionCell = ({ row }) => {
+  // console.log("....RoW........", row);
   return (
     <div>
       <div className="table-selection">
         <Checkbox
           label=""
-          // checked={selected}
-          // onChange={() => handleChange(id)}
+          checked={
+            row.protocolSelected.length > 0 &&
+            row.protocolSelected.includes(row.id)
+          }
+          onChange={() => row.setProtocolToDownload(row.id)}
         />
       </div>
     </div>
@@ -95,11 +99,11 @@ const StatusCell = ({ row, column: { accessor: key } }) => {
 const DataCell = ({ row, column }) =>
   moment(row[column.accessor]).format("DD-MMM-YYYY");
 const columns = [
-  // {
-  //   accessor: "action",
-  //   customCell: ActionCell,
-  //   width: "3%",
-  // },
+  {
+    accessor: "action",
+    customCell: ActionCell,
+    width: "3%",
+  },
   {
     accessor: "versionNumber",
     header: "Associated Versions",
@@ -121,13 +125,23 @@ const columns = [
     customCell: DataCell,
   },
   {
+    header: "Approval Date",
+    accessor: "approvalDate",
+    customCell: DataCell,
+  },
+  {
     header: "Document Status",
     accessor: "documentStatus",
     customCell: StatusCell,
   },
 ];
 
-const AssociateDocumentsTable = ({ initialsRow, handleChangeTab }) => {
+const AssociateDocumentsTable = ({
+  initialsRow,
+  handleChangeTab,
+  protocolSelected,
+  setProtocolToDownload,
+}) => {
   // console.log("initialsRow :", initialsRow);
 
   // return (
@@ -151,6 +165,8 @@ const AssociateDocumentsTable = ({ initialsRow, handleChangeTab }) => {
           let details = {
             key: row.id,
             handleChangeTab,
+            protocolSelected,
+            setProtocolToDownload,
           };
           return _.merge(temp, details);
         })}

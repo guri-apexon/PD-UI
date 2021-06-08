@@ -2,7 +2,7 @@ import React from "react";
 import { MemoryRouter } from "react-router-dom";
 import { render, fireEvent } from "@testing-library/react";
 import AssociateDocumentsTable from "../AssociateDocumentsTable";
-import axios from 'axios';
+import axios from "axios";
 
 const AssociateDocs = [
   {
@@ -41,6 +41,7 @@ const AssociateDocs = [
     isActive: true,
     iqvxmlpath: "string",
     NctId: "0",
+    protocolSelected: [],
   },
 ];
 const AssociateDocs1 = [
@@ -80,25 +81,25 @@ const AssociateDocs1 = [
     isActive: true,
     iqvxmlpath: "string",
     NctId: "0",
+    protocolSelected: [],
   },
 ];
 describe("AssociateDocumentsTable Test Suite", () => {
   test("Should render AssociateDocumentsTable", async () => {
     const handleChangeTab = jest.fn();
     const mockHistoryPush = jest.fn();
-    let mockwrite= jest.fn(() => Promise.resolve({}))
-    window.open = jest.fn(()=>{
-      let  res={
-        document:{
-
-          write:mockwrite
-        }
-      }
-      return res
+    let mockwrite = jest.fn(() => Promise.resolve({}));
+    window.open = jest.fn(() => {
+      let res = {
+        document: {
+          write: mockwrite,
+        },
+      };
+      return res;
     });
     const mockCallApi = jest
       .spyOn(axios, "get")
-      .mockImplementation(() => Promise.resolve('protocol'));
+      .mockImplementation(() => Promise.resolve("protocol"));
     jest.mock("react-router-dom", () => ({
       ...jest.requireActual("react-router-dom"),
       useHistory: () => ({
@@ -122,10 +123,10 @@ describe("AssociateDocumentsTable Test Suite", () => {
       .children[0].children[1].children[0].children[1].children[0].children[0]
       .children[0];
     fireEvent.click(link);
-    let doclink= container.getByTestId("associate-document-tab").children[0].children[0].children[1].children[0].children[1].children[0].children[2].children[0]
+    let doclink = container.getByTestId("associate-document-tab").children[0]
+    .children[0].children[1].children[0].children[1].children[0].children[3].children[0];
     fireEvent.click(doclink);
     expect(mockCallApi).toHaveBeenCalledTimes(1);
-  
   });
   test("Should render AssociateDocumentsTable with no version number", async () => {
     const handleChangeTab = jest.fn();
@@ -143,6 +144,6 @@ describe("AssociateDocumentsTable Test Suite", () => {
           initialsRow={AssociateDocs1}
         />
       </MemoryRouter>
-    );  
+    );
   });
 });

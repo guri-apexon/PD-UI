@@ -335,6 +335,34 @@ export const documentStatus = {
     // },
   ],
 };
+export const qcStatus = {
+  sectionId: 9,
+  sectionName: "QC Status",
+  fieldType: "checkbox",
+  sectionContent: [
+    {
+      id: 3,
+      title: "Not QC'd",
+      value: "not_qcd",
+      content: "",
+      count: "",
+    },
+    {
+      id: 1,
+      title: "QC in Progress",
+      value: "qc_in_progress",
+      content: "",
+      count: "",
+    },
+    {
+      id: 2,
+      title: "QC Completed",
+      value: "qc_completed",
+      content: "",
+      count: "",
+    },
+  ],
+};
 
 export const dateType = {
   sectionId: 7,

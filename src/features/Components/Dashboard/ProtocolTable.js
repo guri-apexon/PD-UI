@@ -1,5 +1,6 @@
 import _ from "lodash";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Clock from "apollo-react-icons/Clock";
@@ -8,8 +9,8 @@ import StatusExclamation from "apollo-react-icons/StatusExclamation";
 import Check from "apollo-react-icons/Check";
 import User from "apollo-react-icons/User";
 import { Link } from "react-router-dom";
-// import { useDispatch } from "react-redux";
-// import Checkbox from "apollo-react/components/Checkbox";
+import { useDispatch } from "react-redux";
+import Checkbox from "apollo-react/components/Checkbox";
 import { neutral8 } from "apollo-react/colors";
 import IconButton from "apollo-react/components/IconButton";
 import Table, {
@@ -18,28 +19,47 @@ import Table, {
 } from "apollo-react/components/Table";
 import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
-import axios from "axios";
-import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import Minus from "apollo-react-icons/Minus";
 
+import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
 
-const ActionCell = ({ row: { id, handleToggleRow, expanded } }) => {
+const ActionCell = ({
+  row: {
+    id,
+    handleToggleRow,
+    expanded,
+    selected,
+    handleChange,
+    status,
+    qcActivity,
+    screen,
+  },
+}) => {
   return (
     <div>
-      {/* <div className="table-selection">
-        <Checkbox
-          label=""
-          checked={selected}
-          onChange={() => handleChange(id)}
-        />
-      </div> */}
-      <div
-        className="table-selection"
-        data-testid="expandable-row"
-        id="expandable-row"
-      >
+      {screen !== "QC" ? (
+        <div className="table-selection">
+          <Checkbox
+            label=""
+            checked={selected}
+            onChange={() => handleChange(id)}
+            disabled={
+              status === "PROCESS_COMPLETED" && qcActivity === "QC_NOT_STARTED"
+                ? false
+                : true
+            }
+            size="small"
+            data-testid="selected-row"
+          />
+        </div>
+      ) : null}
+
+      <div className="table-selection">
         <IconButton
           id="expand"
+          data-testid="expandable-row"
           size="small"
           onClick={() => handleToggleRow(id)}
         >
@@ -60,8 +80,10 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
       style={{ marginRight: 192 }}
     >
       <span>
-        {row && row.screen && row.screen === "QC" ? (
-          <p className="adjust-ellipses">{row[key]}</p>
+        {row &&
+        row.screen &&
+        (row.screen === "QC" || row.screen === "FollowedProtocols") ? (
+          <span className="adjust-ellipses">{row[key]}</span>
         ) : (
           <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
         )}
@@ -92,6 +114,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
         <Tooltip variant="light" title={row[key]} placement="top">
           <div className="long-text">
             <a
+              data-testid="click-link-qc"
               href="javascript:void(0)"
               onClick={() => row.handleRowProtocolClick(row)}
             >
@@ -105,12 +128,22 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
     return (
       /* eslint-disable  */
       <a
+        data-testid="click-link-qc"
         href="javascript:void(0)"
         onClick={() => row.handleRowProtocolClick(row)}
       >
         {row[key]}
       </a>
     );
+  } else if (row && row.screen && row.screen === "FollowedProtocols") {
+    if (row[key] && row[key].length > 25) {
+      return (
+        <Tooltip variant="light" title={row[key]} placement="top">
+          <div className="long-text">{row[key]}</div>
+        </Tooltip>
+      );
+    }
+    return <span>{row[key]}</span>;
   } else {
     if (row[key] && row[key].length > 25) {
       return (
@@ -125,6 +158,30 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
   }
 };
 
+const qcIconStatus = (status) => {
+  switch (status) {
+    case "QC_NOT_STARTED":
+      return {
+        comp: <Minus />,
+        title: "QC Not Started",
+      };
+    case "QC_IN_PROGRESS":
+      return {
+        comp: <Clock htmlColor={"orange"} />,
+        title: "QC In Progress",
+      };
+    case "QC_COMPLETED":
+      return {
+        comp: <Check htmlColor={"green"} />,
+        title: "QC Completed",
+      };
+    default:
+      return {
+        comp: <Minus />,
+        title: "QC Not Started",
+      };
+  }
+};
 const iconStatus = (status) => {
   switch (status) {
     case "DIGITIZER1_STARTED":
@@ -193,52 +250,75 @@ const ActivityCell = ({ row, column: { accessor: key } }) => {
     </Tooltip>
   );
 };
-const columns = [
-  {
-    accessor: "action",
-    customCell: ActionCell,
-    width: "3%",
-  },
-  {
-    accessor: "uploadDate",
-    sortFunction: compareDates,
-    width: "0%",
-  },
-  {
-    header: "Protocol",
-    accessor: "protocol",
-    sortFunction: compareStrings,
-    customCell: ProtocolLink,
-    width: "15%",
-  },
-  {
-    header: "Activity",
-    accessor: "status",
-    sortFunction: compareStrings,
-    customCell: ActivityCell,
-    width: "8%",
-  },
-  {
-    header: "Sponsor",
-    accessor: "sponsor",
-    sortFunction: compareStrings,
-    width: "15%",
-    customCell: Cell,
-  },
-  {
-    header: "Project ID / CRM #",
-    accessor: "projectId",
-    sortFunction: compareStrings,
-    width: "15%",
-    customCell: Cell,
-  },
-  {
-    header: "Protocol Title",
-    accessor: "protocolTitle",
-    sortFunction: compareStrings,
-    customCell: ProtocolTitle,
-  },
-];
+
+const qcActivityCell = ({ row, column: { accessor: key } }) => {
+  const status = qcIconStatus(row[key]);
+  return (
+    <Tooltip variant="light" title={status && status.title} placement="top">
+      <IconButton size="small" data-id={row.id} style={{ marginRight: 4 }}>
+        {status && status.comp}
+      </IconButton>
+    </Tooltip>
+  );
+};
+
+function getColumns(screen) {
+  const columns = [
+    {
+      accessor: "action",
+      customCell: ActionCell,
+      width: "3%",
+    },
+    {
+      accessor: "uploadDate",
+      sortFunction: compareDates,
+      width: "0%",
+    },
+    {
+      header: "Protocol",
+      accessor: "protocol",
+      sortFunction: compareStrings,
+      customCell: ProtocolLink,
+      width: "15%",
+    },
+    {
+      header: "Activity",
+      accessor: "status",
+      sortFunction: compareStrings,
+      customCell: ActivityCell,
+      width: "8%",
+    },
+    {
+      header: "QC Activity",
+      accessor: "qcActivity",
+      sortFunction: compareStrings,
+      customCell: qcActivityCell,
+      hidden: screen === "QC" ? true : false,
+      width: "8%",
+    },
+    {
+      header: "Sponsor",
+      accessor: "sponsor",
+      sortFunction: compareStrings,
+      width: "15%",
+      customCell: Cell,
+    },
+    {
+      header: "Project ID / CRM #",
+      accessor: "projectId",
+      sortFunction: compareStrings,
+      width: "15%",
+      customCell: Cell,
+    },
+    {
+      header: "Protocol Title",
+      accessor: "protocolTitle",
+      sortFunction: compareStrings,
+      customCell: ProtocolTitle,
+    },
+  ];
+  return columns;
+}
 
 const ExpandableComponent = ({ row }) => {
   return (
@@ -307,7 +387,7 @@ const ExpandableComponent = ({ row }) => {
         >
           {"Source"}
         </Typography>
-        <Typography className="fw-8" variant="body2">
+        <div className="fw-8" variant="body2">
           {row.fileName ? (
             row.fileName.length > 40 ? (
               <Tooltip
@@ -339,7 +419,7 @@ const ExpandableComponent = ({ row }) => {
             // eslint-disable-line
             "-"
           )}
-        </Typography>
+        </div>
       </div>
       {/* } */}
     </div>
@@ -366,18 +446,20 @@ const ProtocolTable = ({
   screen,
   handleProtocolClick,
 }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
-  // const [selectedRows, setSelectedRows] = useState([]);
-  // const handleChange = (id) => {
-  //   setSelectedRows((selectedRows) =>
-  //     selectedRows.indexOf(id) >= 0
-  //       ? selectedRows.filter((cid) => cid !== id)
-  //       : selectedRows.length < 2
-  //       ? _.concat(selectedRows, id)
-  //       : _.concat(selectedRows)
-  //   );
-  // };
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  useEffect(() => {
+    dispatch(setSelectedProtocols(selectedRows));
+  }, [selectedRows]);
+  const handleChange = (id) => {
+    setSelectedRows((selectedRows) =>
+      selectedRows.indexOf(id) >= 0
+        ? selectedRows.filter((cid) => cid !== id)
+        : _.concat(selectedRows, id)
+    );
+  };
 
   const handleToggleRow = (id) => {
     setExpandedRows((expandedRows) =>
@@ -401,8 +483,7 @@ const ProtocolTable = ({
     <div data-testid="protocol-table-wrapper" id="test-div">
       {initialRows && initialRows.length > 0 ? (
         <Table
-          title="My Protocols"
-          columns={columns}
+          columns={getColumns(screen)}
           rows={
             initialRows &&
             initialRows.map((row) => {
@@ -410,11 +491,11 @@ const ProtocolTable = ({
               let details = {
                 key: row.id,
                 expanded: expandedRows.indexOf(row.id) >= 0,
-                // selected: selectedRows.indexOf(row.id) >= 0,
+                selected: selectedRows.indexOf(row.id) >= 0,
                 handleToggleRow,
                 handleRowProtocolClick,
                 screen: screen,
-                // handleChange,
+                handleChange,
               };
               return _.merge(temp, details);
             })
@@ -433,8 +514,7 @@ const ProtocolTable = ({
       ) : (
         <div className="empty-protocol-table">
           <Table
-            title="My Protocols"
-            columns={columns}
+            columns={getColumns(screen)}
             rows={[]}
             // initialSortedColumn="uploadDate"
             // initialSortOrder="desc"

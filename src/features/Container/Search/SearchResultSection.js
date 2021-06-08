@@ -213,15 +213,12 @@ class SearchPanel extends React.Component {
       }
     });
     axios
-      .post(
-        `${BASE_URL_8000}/api/follow_protocol/`,
-        {
-          userId: id.substring(1),
-          protocol: protocol.protocolNumber,
-          follow: checked,
-          userRole: protocol.UserRole,
-        }
-      )
+      .post(`${BASE_URL_8000}/api/follow_protocol/`, {
+        userId: id.substring(1),
+        protocol: protocol.protocolNumber,
+        follow: checked,
+        userRole: protocol.UserRole,
+      })
       .then((res) => {
         if (res && res.status === 200) {
           // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
@@ -240,6 +237,7 @@ class SearchPanel extends React.Component {
       onSearchChange,
       sponsorData,
       indicationData,
+      phaseData,
       searchQuery,
       sortValueProp,
       dateRangeValue,
@@ -325,6 +323,7 @@ class SearchPanel extends React.Component {
               />
               <FilterSection
                 name="phase"
+                phaseData={phaseData}
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
                 clearAll={clearAll}
@@ -335,6 +334,12 @@ class SearchPanel extends React.Component {
                 searchQuery={searchQuery}
                 clearAll={clearAll}
               />
+              {/* <FilterSection
+                name="qcStatus"
+                onConstructSearchQuery={this.onConstructSearchQuery}
+                searchQuery={searchQuery}
+                clearAll={clearAll}
+              /> */}
               <FilterSection
                 name="date"
                 onConstructSearchQuery={this.onConstructSearchQuery}

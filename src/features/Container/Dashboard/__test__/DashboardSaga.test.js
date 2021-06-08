@@ -1,6 +1,5 @@
 import React from "react";
 import { runSaga } from "redux-saga";
-import { takeEvery } from "redux-saga/effects";
 import {
   recentSearchAsyn,
   addProtocolSponsor,
@@ -9,9 +8,10 @@ import {
   resetErrorAddProtocol,
   toggleAddProtocol,
   saveRecentSearch,
-  compareSelectedAsyn,
   savedSearchAsyn,
-  watchDashboard
+  followedProtocols,
+  sendQcReview,
+  watchDashboard,
 } from "../saga";
 
 import * as api from "../../../../utils/api";
@@ -286,11 +286,11 @@ describe("Dashboard Saga Unit Test", () => {
     const mockOutput = {
       success: false,
       data: null,
-      err:{
-        data:{
-          message:'Error'
-        }
-      }
+      err: {
+        data: {
+          message: "Error",
+        },
+      },
     };
     const mockCallApi = jest
       .spyOn(api, "httpCall")
@@ -552,7 +552,6 @@ describe("Dashboard Saga Unit Test", () => {
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-
   test("saveRecentSearch Saga Error Catch", async () => {
     const dispatchedActions = [];
     const mockOutput = {
@@ -662,25 +661,47 @@ describe("Dashboard Saga Unit Test", () => {
 
   // Test savedSearchAsyn function Ends
 
-  // Test compareSelectedAsyn function Start
-  test("compareSelectedAsyn Success", async () => {
-    const dispatchedActions = [];
-    const fakeStore = {
-      dispatch: (action) => dispatchedActions.push(action),
-      getState: () => ({
-        user: {
-          userDetail: userDetail,
-        },
-      }),
-    };
-    await runSaga(fakeStore, compareSelectedAsyn, {
-      payload: 2,
+  // Test GET_FOLLOWED_PROTOCOL_SAGA function Start
 
-      type: "",
-    });
-  });
-  test("compareSelectedAsyn Success", async () => {
+  test("GET_FOLLOWED_PROTOCOL_SAGA Saga Success", async () => {
     const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [
+        {
+          id: "2a5111a6-5465-46f5-b133-a85724bae4ef",
+          amendment: "Y",
+          amendmentNumber: null,
+          approvalDate: null,
+          completenessOfDigitization: null,
+          digitizedConfidenceInterval: null,
+          documentFilePath:
+            "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\2a5111a6-5465-46f5-b133-a85724bae4ef\\Protocol-2020-04-09-VER-000001.pdf",
+          documentStatus: "final",
+          draftVersion: null,
+          errorCode: null,
+          errorReason: null,
+          fileName: "Protocol-2020-04-09-VER-000001.pdf",
+          indication: "ABCC6 deficiency",
+          moleculeDevice: "test",
+          percentComplete: "100",
+          phase: "I",
+          projectId: "",
+          protocol: "JBT101-RIS-001",
+          protocolTitle:
+            "A Phase 1, 2-part, Single-dose, Non-Randomized, Open-label, Parallel-group Study to Assess the Pharmacokinetics and Safety of Lenabasum in Subjects with Renal Impairment Compared with Matched Controls",
+          sponsor: "Corbus Pharmaceuticals",
+          status: "PROCESS_COMPLETED",
+          uploadDate: "2021-04-08T09:51:34.077000",
+          userId: "1020640",
+          versionNumber: "10.1",
+          qcActivity: "QC_IN_PROGRESS",
+        },
+      ],
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
@@ -689,17 +710,98 @@ describe("Dashboard Saga Unit Test", () => {
         },
       }),
     };
-    await runSaga(fakeStore, compareSelectedAsyn, {
-      data: {
-        payload: 1,
-      },
+
+    await runSaga(fakeStore, followedProtocols, {
       type: "",
-    });
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-  // Test compareSelectedAsyn function Ends
+
+  test("GET_FOLLOWED_PROTOCOL_SAGA Saga fails", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, followedProtocols, {
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  // Test GET_FOLLOWED_PROTOCOL_SAGA function Ends
+
+  // Test SEND_QC_REVIEW_SAGA function Start
+
+  test("SEND_QC_REVIEW_SAGA Saga Success", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+        dashboard: {
+          selectedProtocols: ["id1"],
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, sendQcReview, {
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("SEND_QC_REVIEW_SAGA Saga fails", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail: userDetail,
+        },
+        dashboard: {
+          selectedProtocols: ["id1"],
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, sendQcReview, {
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+  // Test SEND_QC_REVIEW_SAGA function Ends
 
   //watch All Sagas
-  test('should watch all Dashboard Sagas', () => {
-    const watchAll = watchDashboard();
+  test("should watch all Dashboard Sagas", () => {
+    watchDashboard();
   });
 });

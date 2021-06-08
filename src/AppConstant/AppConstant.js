@@ -23,6 +23,7 @@ export const POST_OBJECT = {
   indication: [],
   phase: [],
   documentStatus: [],
+  qcStatus:[],
   dateType: "approval_date",
   dateFrom: "",
   dateTo: "",

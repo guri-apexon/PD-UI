@@ -58,10 +58,10 @@ class ProtocolSearchButton extends React.Component {
     };
 
     const menuItems = [
-      {
-        text: "Compare",
-        onClick: handleClick("Compare"),
-      },
+      // {
+      //   text: "Compare",
+      //   onClick: handleClick("Compare"),
+      // },
       {
         text: "Save Search",
         onClick: handleClick("Save"),

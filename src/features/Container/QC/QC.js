@@ -66,6 +66,7 @@ const QCContainer = () => {
       <Breadcrumbs
         items={breadItems}
         style={{ paddingInlineStart: 0, marginBottom: 0 }}
+        data-testid="breadcrumb-click"
       />
       <div
         className="qc-tabs-parent"

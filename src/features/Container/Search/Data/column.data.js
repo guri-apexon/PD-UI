@@ -7,6 +7,7 @@ import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
 
 const arr = [];
+/* istanbul ignore next */
 const CheckBoxCell = ({ row }) => {
   // debugger
   console.log(row);
@@ -98,11 +99,11 @@ const StatusCell = ({ row, column: { accessor: key } }) => {
 };
 
 const columns = [
-  {
-    accessor: "action",
-    customCell: CheckBoxCell,
-    width: 30,
-  },
+  // {
+  //   accessor: "action",
+  //   customCell: CheckBoxCell,
+  //   width: 30,
+  // },
   {
     header: "Version #",
     accessor: "versionNumber",

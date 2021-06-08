@@ -1,25 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 export const searchSlice = createSlice({
   name: "search",
   initialState: {
     filters: {},
-    searchResult: {},
-    totalSearchResult:[],
+    searchResult: {
+      data: [],
+      loader:false
+    },
+    totalSearchResult: [],
     indications: {
-      sectionContent:[]
+      sectionContent: [],
+    },
+    phases: {
+      sectionContent: [],
     },
     sponsors: {
-      sectionContent:[]
+      sectionContent: [],
     },
     recent: {
-      from: '',
-      to: ''
+      from: "",
+      to: "",
     },
     range: {
-      from: '',
-      to: ''
-    }
+      from: "",
+      to: "",
+    },
   },
   reducers: {
     getFilters: (state, action) => {
@@ -28,8 +33,8 @@ export const searchSlice = createSlice({
     getSearchResult: (state, action) => {
       state.searchResult = action.payload;
     },
-    getTotalSearchResult: (state, action) =>{
-      state.totalSearchResult = action.payload
+    getTotalSearchResult: (state, action) => {
+      state.totalSearchResult = action.payload;
     },
     getIndications: (state, action) => {
       state.indications = action.payload;
@@ -38,11 +43,14 @@ export const searchSlice = createSlice({
       state.sponsors = action.payload;
     },
     getRecentDate: (state, action) => {
-      state.recent = action.payload
+      state.recent = action.payload;
     },
     getRangeDate: (state, action) => {
-      state.range = action.payload
-    }
+      state.range = action.payload;
+    },
+    getPhaseValues: (state, action) => {
+      state.phases = action.payload;
+    },
   },
 });
 
@@ -53,7 +61,8 @@ export const {
   getSponsors,
   getRecentDate,
   getRangeDate,
-  getTotalSearchResult
+  getTotalSearchResult,
+  getPhaseValues,
 } = searchSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -64,6 +73,7 @@ export const searchResult = (state) => state.search.searchResult;
 export const totalSearchResult = (state) => state.search.totalSearchResult;
 export const indications = (state) => state.search.indications;
 export const sponsors = (state) => state.search.sponsors;
+export const phases = (state) => state.search.phases;
 export const recent = (state) => state.search.recent;
 export const range = (state) => state.search.range;
 

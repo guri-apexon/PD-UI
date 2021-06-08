@@ -120,7 +120,7 @@ const Protocols = (props) => {
                     >
                       <Tab label="Overview" />
                       <Tab label="Protocol View" />
-                      <Tab label="Version Compare" />
+                      {/* <Tab label="Version Compare" /> */}
                       <Tab label="Documents" />
                     </Tabs>
                   </div>
@@ -140,10 +140,10 @@ const Protocols = (props) => {
                 <div className="tab-container">
                   {value === 0 && <ProtocolOverview data={data} />}
                   {value === 1 && <ProtocolView protId={data.id} />}
-                  {value === 2 && (
+                  {/* {value === 2 && (
                     <AmendmentCompare prot11={prot.prot1} prot22={prot.prot2} />
-                  )}
-                  {value === 3 && (
+                  )} */}
+                  {value === 2 && (
                     <Documents handleChangeTab={handleChangeTab} />
                   )}
                 </div>

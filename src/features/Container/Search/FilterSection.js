@@ -1,19 +1,15 @@
 import React from "react";
 import Collapsible from "react-collapsible";
 
-import {
-  CheckboxCard,
-  DateRangeCard,
-  CheckboxTest,
-} from "./CustomFilterCards";
+import { CheckboxCard, DateRangeCard, CheckboxTest } from "./CustomFilterCards";
 
 import Loader from "../../Components/Loader/Loader";
-
 
 import {
   TOC,
   phases,
   documentStatus,
+  qcStatus,
   dateSection,
   dateType,
 } from "./Data/constants";
@@ -22,28 +18,29 @@ const CollapseCard = ({
   name,
   indicationData,
   sponsorData,
+  phaseData,
   onConstructSearchQuery,
   searchQuery,
   dateRangeValue,
-  clearAll
+  clearAll,
 }) => {
-  const onOpenTrigger = ()=>{
-    console.log('onOpenTrigger')
-  }
+  const onOpenTrigger = () => {
+    console.log("onOpenTrigger");
+  };
   if (name === "TOC") {
     return (
       <div data-testid="toc-checkboxes">
-      <Collapsible trigger={TOC.sectionName} >
-        {/* <TextCard section={TOC} /> */}
-        {TOC.sectionContent && TOC.sectionContent.length > 0 && (
-          <CheckboxCard
-            section={TOC}
-            identifier="toc"
-            onCheckboxClick={onConstructSearchQuery}
-            listValue={searchQuery.toc}
-          />
-        )}
-      </Collapsible>
+        <Collapsible trigger={TOC.sectionName}>
+          {/* <TextCard section={TOC} /> */}
+          {TOC.sectionContent && TOC.sectionContent.length > 0 && (
+            <CheckboxCard
+              section={TOC}
+              identifier="toc"
+              onCheckboxClick={onConstructSearchQuery}
+              listValue={searchQuery.toc}
+            />
+          )}
+        </Collapsible>
       </div>
     );
   } else if (name === "indication") {
@@ -77,7 +74,7 @@ const CollapseCard = ({
   } else if (name === "sponsor") {
     return (
       <div className="spon-container" data-testid="sponsor-checkboxes">
-        <Collapsible trigger="Sponsors" onOpening={()=>onOpenTrigger()}>
+        <Collapsible trigger="Sponsors" onOpening={() => onOpenTrigger()}>
           {sponsorData.sectionContent &&
           sponsorData.sectionContent.length > 0 ? (
             <CheckboxTest
@@ -103,29 +100,68 @@ const CollapseCard = ({
       </div>
     );
   } else if (name === "phase") {
+    console.log("::::PhaseData", phaseData);
     return (
+      // <div className="spon-container" data-testid="phase-checkboxes">
+      //   <Collapsible trigger="Phase" onOpening={() => onOpenTrigger()}>
+      //     {phaseData.sectionContent &&
+      //     phaseData.sectionContent.length > 0 ? (
+      //       <CheckboxTest
+      //         section={phaseData}
+      //         identifier="phase"
+      //         onCheckboxClick={onConstructSearchQuery}
+      //         listValue={searchQuery.phase}
+      //         clearAll={clearAll}
+      //       />
+      //     ) : (
+      //       <div
+      //         style={{
+      //           height: 300,
+      //           justifyContent: "center",
+      //           alignItems: "center",
+      //           display: "flex",
+      //         }}
+      //       >
+      //         <Loader />
+      //       </div>
+      //     )}
+      //   </Collapsible>
+      // </div>
       <div data-testid="phase-checkboxes">
-      <Collapsible trigger={phases.sectionName}>
-        <CheckboxCard
-          section={phases}
-          identifier="phase"
-          onCheckboxClick={onConstructSearchQuery}
-          listValue={searchQuery.phase}
-        />
-      </Collapsible>
+        <Collapsible trigger="Phase">
+          <CheckboxCard
+            section={phaseData}
+            identifier="phase"
+            onCheckboxClick={onConstructSearchQuery}
+            listValue={searchQuery.phase}
+          />
+        </Collapsible>
       </div>
     );
   } else if (name === "document") {
     return (
       <div data-testid="document-checkboxes">
-      <Collapsible trigger={documentStatus.sectionName}>
-        <CheckboxCard
-          section={documentStatus}
-          identifier="documentStatus"
-          onCheckboxClick={onConstructSearchQuery}
-          listValue={searchQuery.documentStatus}
-        />
-      </Collapsible>
+        <Collapsible trigger={documentStatus.sectionName}>
+          <CheckboxCard
+            section={documentStatus}
+            identifier="documentStatus"
+            onCheckboxClick={onConstructSearchQuery}
+            listValue={searchQuery.documentStatus}
+          />
+        </Collapsible>
+      </div>
+    );
+  } else if (name === "qcStatus") {
+    return (
+      <div data-testid="document-checkboxes">
+        <Collapsible trigger="QC Status">
+          <CheckboxCard
+            section={qcStatus}
+            identifier="qcStatus"
+            onCheckboxClick={onConstructSearchQuery}
+            listValue={searchQuery.qcStatus}
+          />
+        </Collapsible>
       </div>
     );
   } else if (name === "date") {
