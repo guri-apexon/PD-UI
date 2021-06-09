@@ -1,6 +1,6 @@
 import { runSaga } from "redux-saga";
 import * as api from "../../../../utils/api";
-
+import protocolData from "./protocolJSON.json";
 import {
   parsedData,
   getSummaryData,
@@ -10,7 +10,7 @@ import {
   getSoaSections,
   getTocSections,
   captalize,
-  getElement
+  getElement,
 } from "../saga";
 
 const userDetail = {
@@ -51,18 +51,18 @@ describe("Protocol Saga Unit Test", () => {
   test("should run getTocSections function", () => {
     let toc = {
       data: [
-        
-         [   "",
-         "Unmapped",
-         "text",
-         "TITLE PAGE",
-         { font_style: "" },
-         { IsBold: false, font_size: -1, font_style: "Heading1" },
-         "Unmapped",
-         "TITLE PAGE",
-         "  ",
-         1]
-        
+        [
+          "",
+          "Unmapped",
+          "text",
+          "TITLE PAGE",
+          { font_style: "" },
+          { IsBold: false, font_size: -1, font_style: "Heading1" },
+          "Unmapped",
+          "TITLE PAGE",
+          "  ",
+          1,
+        ],
       ],
     };
     getTocSections(toc);
@@ -70,18 +70,18 @@ describe("Protocol Saga Unit Test", () => {
   test("should run getTocSections function", () => {
     let toc = {
       data: [
-        
-         [   "",
-         "Unmapped",
-         "text",
-         "TITLE PAGE",
-         { IsBold: false, font_size: -1, font_style: "Heading1" },
-         "Heading1",
-         "Unmapped1",
-         "TITLE PAGE",
-         "",
-         1]
-        
+        [
+          "",
+          "Unmapped",
+          "text",
+          "TITLE PAGE",
+          { IsBold: false, font_size: -1, font_style: "Heading1" },
+          "Heading1",
+          "Unmapped1",
+          "TITLE PAGE",
+          "",
+          1,
+        ],
       ],
     };
     getTocSections(toc);
@@ -101,7 +101,7 @@ describe("Protocol Saga Unit Test", () => {
   //   getElement(style1);
   // });
 
- // getElement Ends
+  // getElement Ends
 
   // getSummaryData Starts
   test("getSummaryData should be success", async () => {
@@ -146,6 +146,7 @@ describe("Protocol Saga Unit Test", () => {
         userId: "1063396",
         userUpdated: null,
         versionNumber: "6",
+        qcActivity: "QC_NOT_STARTED",
       },
     };
     const mockCallApi = jest
@@ -245,23 +246,9 @@ describe("Protocol Saga Unit Test", () => {
 
   test("getProtocolToc should be Success", async () => {
     const dispatchedActions = [];
-    let obj = {
-      id: "1",
-    };
     const mockOutput = {
       success: true,
-      data: {
-        documentFilePath: "\\quintiles.net",
-        fileName: "Protocol-2020-04-09-VER-000001.pdf",
-        id: "51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc",
-        iqvdata: null,
-        iqvdataSoa: JSON.stringify(JSON.stringify(obj)),
-        iqvdataSoaStd: null,
-        iqvdataSummary: JSON.stringify(JSON.stringify(obj)),
-        iqvdataToc: JSON.stringify(JSON.stringify(obj)),
-        isActive: true,
-        userId: "1111",
-      },
+      data: protocolData,
     };
     const mockCallApi = jest
       .spyOn(api, "httpCall")
