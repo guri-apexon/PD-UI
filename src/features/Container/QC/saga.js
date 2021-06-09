@@ -1,6 +1,6 @@
 import { takeEvery, all, call, put, select } from "redux-saga/effects";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import { getProtocols, setError, getLoader } from "./qcSlice";
+import { getProtocols, setError, getLoader, setTableLoader } from "./qcSlice";
 import { toast } from "react-toastify";
 function* getState() {
   const state = yield select();
@@ -9,6 +9,7 @@ function* getState() {
   return { id: id.substring(1), type: type };
 }
 export function* qcProtocolsData() {
+  yield put(setTableLoader(true));
   let user = yield getState();
   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${user.type}`;
   const protocolConfig = {
@@ -28,10 +29,13 @@ export function* qcProtocolsData() {
         return item;
       });
       yield put(getProtocols(data));
+      yield put(setTableLoader(false));
     } else {
+      yield put(setTableLoader(false));
       yield put(setError(protocolData.err.statusText));
     }
   } catch (err) {
+    yield put(setTableLoader(false));
     yield put(setError("Something Went Wrong"));
     toast.error("Something Went Wrong");
   }
