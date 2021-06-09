@@ -97,6 +97,48 @@ const AssociateDocs = [
     nctId: null,
     protocolSelected: [],
   },
+  {
+    id: "ca88a438-b426-45fb-b5b7-4b5752901f30",
+    userId: "1019814",
+    fileName: "Protocol-2020-04-14-DOD-000001.pdf",
+    documentFilePath:
+      "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\ca88a438-b426-45fb-b5b7-4b5752901f30\\Protocol-2020-04-14-DOD-000001.pdf",
+    protocol: "JBT101-RIS-001",
+    projectId: null,
+    sponsor: "Corbus Pharmaceuticals",
+    indication: "Renal Impairment Compared with Matched Controls",
+    moleculeDevice: "Lenabasum (JBT-101)",
+    amendment: "Y",
+    isProcessing: false,
+    percentComplete: "100",
+    compareStatus: null,
+    iqvXmlPathProc: null,
+    iqvXmlPathComp: null,
+    shortTitle: null,
+    versionNumber: "1",
+    documentStatus: "final",
+    draftVersion: null,
+    errorCode: null,
+    errorReason: null,
+    status: "PROCESS_COMPLETED",
+    phase: "I",
+    digitizedConfidenceInterval: null,
+    completenessOfDigitization: null,
+    protocolTitle:
+      "A Phase 1, 2-part, Single-dose, Non-Randomized, Open-label, Parallel-group Study to Assess the Pharmacokinetics and Safety of Lenabasum in Subjects with Renal Impairment Compared with Matched Controls",
+    studyStatus: "1",
+    sourceSystem: "Dev",
+    environment: "dev",
+    uploadDate: "2021-01-18T16:45:30.723000",
+    timeCreated: "2021-01-18T16:45:30.723000",
+    lastUpdated: "2021-01-18T18:43:34.983000",
+    userCreated: null,
+    userUpdated: null,
+    approvalDate: "2020-04-14T17:38:34.887000",
+    isActive: true,
+    nctId: null,
+    protocolSelected: [],
+  },
 ];
 const summaryData = {
   aidocId: "2a5111a6-5465-46f5-b133-a85724bae4ef",
@@ -226,32 +268,89 @@ describe("Should render document tab", () => {
     fireEvent.click(downloadButton);
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-//   test("Should download response with error", () => {
-//     const handleChangeTab = jest.fn();
-//     const data = {
-//       data: {
-//         detail: "No result found",
-//       },
-//     };
-//     const mockCallApi = jest
-//       .spyOn(axios, "get")
-//       .mockImplementation(() => Promise.reject(new Error("data")));
-//     const container = render(
-//       <MemoryRouter>
-//         <Documents handleChangeTab={handleChangeTab} />
-//       </MemoryRouter>,
-//       initialState
-//     );
-//     const checkbox1 = container.getByTestId("associate-document-tab")
-//       .children[0].children[0].children[1].children[0].children[1].children[0]
-//       .children[0].children[0].children[0].children[0];
-//     fireEvent.click(checkbox1);
-//     const checkbox2 = container.getByTestId("associate-document-tab")
-//       .children[0].children[0].children[1].children[0].children[1].children[1]
-//       .children[0].children[0].children[0].children[0];
-//     fireEvent.click(checkbox2);
-//     const downloadButton = container.getByTestId("compare-download-button");
-//     fireEvent.click(downloadButton);
-//     expect(mockCallApi).toHaveBeenCalledTimes(1);
-//   });
+  test("Should try to select three protocols", () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState
+    );
+    const checkbox1 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const checkbox3 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[2]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox3);
+  });
+  test("Should select two protocols and deselect one", () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState
+    );
+    const checkbox1 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+
+    fireEvent.click(checkbox2);
+  });
+  test("Should click on same protocol twice", () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState
+    );
+    const checkbox1 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+  });
+  //   test("Should download response with error", () => {
+  //     const handleChangeTab = jest.fn();
+  //     const data = {
+  //       data: {
+  //         detail: "No result found",
+  //       },
+  //     };
+  //     const mockCallApi = jest
+  //       .spyOn(axios, "get")
+  //       .mockImplementation(() => Promise.reject(new Error("data")));
+  //     const container = render(
+  //       <MemoryRouter>
+  //         <Documents handleChangeTab={handleChangeTab} />
+  //       </MemoryRouter>,
+  //       initialState
+  //     );
+  //     const checkbox1 = container.getByTestId("associate-document-tab")
+  //       .children[0].children[0].children[1].children[0].children[1].children[0]
+  //       .children[0].children[0].children[0].children[0];
+  //     fireEvent.click(checkbox1);
+  //     const checkbox2 = container.getByTestId("associate-document-tab")
+  //       .children[0].children[0].children[1].children[0].children[1].children[1]
+  //       .children[0].children[0].children[0].children[0];
+  //     fireEvent.click(checkbox2);
+  //     const downloadButton = container.getByTestId("compare-download-button");
+  //     fireEvent.click(downloadButton);
+  //     expect(mockCallApi).toHaveBeenCalledTimes(1);
+  //   });
 });
