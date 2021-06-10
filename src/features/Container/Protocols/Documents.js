@@ -22,29 +22,27 @@ const Documents = ({ handleChangeTab }) => {
   //   console.log("Selected", protocolSelected);
   // }, [protocolSelected]);
   const setProtocolToDownload = (id) => {
-    if (prevProtSelected === "") {
-      setPrevProtSelected(id);
+    console.log(id);
+    if (protocolSelected.length === 0) {
       setProtocolSelected([id]);
-    } else {
-      if (protocolSelected.length === 1) {
-        if (prevProtSelected === id) {
-          setProtocolSelected((protocolSelected) =>
-            protocolSelected.filter((item) => item !== id)
-          );
-          setPrevProtSelected("");
-        } else {
-          setProtocolSelected([protocolSelected[0], id]);
-        }
-      } else if (protocolSelected.length === 2) {
-        const index = protocolSelected.indexOf(id);
-        if (index > -1) {
-          setProtocolSelected((protocolSelected) =>
-            protocolSelected.filter((item) => item !== id)
-          );
-        } else {
-          toast.warn("Comparison is available only for two protocols.");
-          // alert("Comparison is available only for two protocols.");
-        }
+    } else if (protocolSelected.length === 1) {
+      const index = protocolSelected.indexOf(id);
+      if (index > -1) {
+        setProtocolSelected((protocolSelected) =>
+          protocolSelected.filter((item) => item !== id)
+        );
+      } else {
+        setProtocolSelected([...protocolSelected, id]);
+      }
+    } else if (protocolSelected.length === 2) {
+      const index = protocolSelected.indexOf(id);
+      if (index > -1) {
+        setProtocolSelected((protocolSelected) =>
+          protocolSelected.filter((item) => item !== id)
+        );
+      } else {
+        toast.warn("Comparison is available only for two protocols.");
+        // setProtocolSelected([...protocolSelected, id]);
       }
     }
   };
@@ -53,18 +51,17 @@ const Documents = ({ handleChangeTab }) => {
     if (protocolSelected.length <= 1) {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
-      // API Call
-      // const postBody = {
-      //   docID: protocolSelected[0],
-      //   docID2: protocolSelected[1],
-      // };
-
-      // dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
       try {
-        const resp = await axios.get(
-          `http://ca2spdml01q:8000/api/document_compare/?id1=022eddd1-e7eb-4387-86a2-94db36437438&id2=ffc6f734-13b7-45a7-9909-20e9dd1dc878`
-        );
+        // id1 = "1c39ca0b-ebc4-4307-bcaf-b4770d9fcbfb"
+        // id2 = "545e1adb-ad3c-423e-a58b-f402db6ff0e0"
 
+        // const resp = await axios.get(
+        //   `http://ca2spdml01q:8000/api/document_compare/?id1=022eddd1-e7eb-4387-86a2-94db36437438&id2=ffc6f734-13b7-45a7-9909-20e9dd1dc878`
+        // );
+        const resp = await axios.get(
+          `http://ca2spdml01q:8000/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`
+        );
+        console.log(resp);
         const data = resp.data;
         if (data.numChangesTotal > 0) {
           const path = data.compareCSVPath;
@@ -86,6 +83,8 @@ const Documents = ({ handleChangeTab }) => {
           // Clean up and remove the link
           link.parentNode.removeChild(link);
         } else {
+          //alert
+          toast.info("No difference found for this compare");
         }
       } catch (e) {
         console.log("Compare Resp", e.response);
@@ -110,21 +109,24 @@ const Documents = ({ handleChangeTab }) => {
             <DocumentsTable initialsRow={summary.success && [summary.data]} />
           </div>
         </Grid>
-        <div style={{ width: "100%", marginTop: "10px", marginRight: "7px" }}>
-          <Button
-            onClick={() => downloadCompare()}
-            variant="primary"
-            style={{
-              float: "right",
-              height: 38,
-              width: 235,
-              boxShadow:
-                "0 4px 8px 0 rgb(5 85 252 / 32%), 0 4px 16px 0 rgb(0 0 0 / 4%)",
-            }}
-          >
-            {"Download Compare Result"}
-          </Button>
-        </div>
+        {associateDocuments && associateDocuments.length > 1 && (
+          <div style={{ width: "100%", marginTop: "10px", marginRight: "7px" }}>
+            <Button
+              onClick={() => downloadCompare()}
+              variant="primary"
+              data-testid="compare-download-button"
+              style={{
+                float: "right",
+                height: 38,
+                width: 235,
+                boxShadow:
+                  "0 4px 8px 0 rgb(5 85 252 / 32%), 0 4px 16px 0 rgb(0 0 0 / 4%)",
+              }}
+            >
+              {"Download Compare Result"}
+            </Button>
+          </div>
+        )}
         <Grid item xs={12}>
           <div className="associate-document-tab">
             <AssociateDocumentsTable
@@ -133,6 +135,11 @@ const Documents = ({ handleChangeTab }) => {
               setProtocolToDownload={setProtocolToDownload}
               //  initialsRow={protocolData && protocolData}
               initialsRow={associateDocuments && associateDocuments}
+              showCheckbox={
+                associateDocuments && associateDocuments.length > 1
+                  ? true
+                  : false
+              }
             />
           </div>
         </Grid>

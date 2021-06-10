@@ -11,7 +11,7 @@ import {
 import MyProtocols from "./MyProtocols";
 import FollowedProtocols from "./FollowedProtocols";
 
-function ProtocolTable() {
+function ProtocolTable({ pageRows }) {
   const dispatch = useDispatch();
   const error = useSelector(prtocolsError);
   const [value, setValue] = React.useState(0);
@@ -35,9 +35,12 @@ function ProtocolTable() {
       </Tabs>
       <div style={{ padding: 24 }} id="protocol-table">
         {value === 0 && (
-          <MyProtocols setSelectedProtocols={setSelectedProtocols} />
+          <MyProtocols
+            setSelectedProtocols={setSelectedProtocols}
+            pageRows={pageRows}
+          />
         )}
-        {value === 1 && <FollowedProtocols />}
+        {value === 1 && <FollowedProtocols pageRows={pageRows} />}
       </div>
     </div>
   );

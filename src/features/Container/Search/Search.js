@@ -31,7 +31,7 @@ import {
   TOC,
   dateType,
   dateSection,
-  qcStatus,
+  qcActivity,
 } from "./Data/constants";
 
 import moment from "moment";
@@ -58,7 +58,7 @@ const Search = (props) => {
     indication: [],
     phase: [],
     documentStatus: [],
-    qcStatus: [],
+    qcActivity: [],
     toc: [],
     dateType: [1],
     dateSection: [1],
@@ -144,13 +144,13 @@ const Search = (props) => {
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         postObj.documentStatus = parsed.documentStatus.split("+");
       }
-      if ("qcStatus" in parsed) {
-        let tempElasticQuery = qcStatus.sectionContent.filter((item) =>
-          parsed.qcStatus.split("+").includes(item.value)
+      if ("qcActivity" in parsed) {
+        let tempElasticQuery = qcActivity.sectionContent.filter((item) =>
+          parsed.qcActivity.split("+").includes(item.value)
         );
-        tempQuery.qcStatus =
+        tempQuery.qcActivity =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
-        postObj.qcStatus = parsed.qcStatus.split("+");
+        postObj.qcActivity = parsed.qcActivity.split("+");
       }
       /* istanbul ignore else */
       if ("dateFrom" in parsed && "dateTo" in parsed) {
@@ -203,12 +203,12 @@ const Search = (props) => {
     // }
   }, [dispatch]);
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log("Search data",resultList)
-    if(resultList.data.length===0 && !resultList.loader){
+    if (resultList.data.length === 0 && !resultList.loader) {
       dispatch({ type: "GET_PHASES" });
     }
-  },[resultList])
+  }, [resultList]);
 
   //newcode
   // This useEffect will get called when indication and sponsor API returns response
@@ -292,7 +292,7 @@ const Search = (props) => {
         indication: [],
         phase: [],
         documentStatus: [],
-        qcStatus: [],
+        qcActivity: [],
         toc: [],
         dateType: [1],
         dateSection: [1],
@@ -370,8 +370,8 @@ const Search = (props) => {
     if ("documentStatus" in parsed) {
       postObj.documentStatus = parsed.documentStatus.split("+");
     }
-    if ("qcStatus" in parsed) {
-      postObj.qcStatus = parsed.qcStatus.split("+");
+    if ("qcActivity" in parsed) {
+      postObj.qcActivity = parsed.qcActivity.split("+");
     }
     /* istanbul ignore else */
     if ("dateType" in parsed) {
@@ -520,7 +520,7 @@ const Search = (props) => {
         documentStatus: [],
         toc: [],
         dateType: [1],
-        qcStatus: [],
+        qcActivity: [],
         dateSection: [1],
       });
       postObj.key = input;
@@ -542,7 +542,7 @@ const Search = (props) => {
         indication: [],
         phase: [],
         documentStatus: [],
-        qcStatus: [],
+        qcActivity: [],
         toc: [],
         dateType: [1],
         dateSection: [1],
@@ -640,9 +640,9 @@ const Search = (props) => {
         }
         return str;
       }
-      case "qcStatus": {
-        let str = "&qcStatus=";
-        let extractValues = qcStatus.sectionContent.filter((item) =>
+      case "qcActivity": {
+        let str = "&qcActivity=";
+        let extractValues = qcActivity.sectionContent.filter((item) =>
           value.includes(item.id)
         );
         if (extractValues.length > 0) {
@@ -699,7 +699,7 @@ const Search = (props) => {
       indication: [],
       phase: [],
       documentStatus: [],
-      qcStatus: [],
+      qcActivity: [],
       toc: [],
       dateType: [1],
       dateSection: [1],

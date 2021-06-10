@@ -445,6 +445,7 @@ const ProtocolTable = ({
   pageRows,
   screen,
   handleProtocolClick,
+  isLoading,
 }) => {
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
@@ -476,58 +477,39 @@ const ProtocolTable = ({
     });
   };
 
-  // useEffect(() => {
-  //   dispatch({ type: "CHECK_COMPARE_SAGA", payload: selectedRows.length });
-  // }, [selectedRows]);
+  console.log("isLoading", isLoading);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
-      {initialRows && initialRows.length > 0 ? (
-        <Table
-          columns={getColumns(screen)}
-          rows={
-            initialRows &&
-            initialRows.map((row) => {
-              let temp = _.cloneDeep(row);
-              let details = {
-                key: row.id,
-                expanded: expandedRows.indexOf(row.id) >= 0,
-                selected: selectedRows.indexOf(row.id) >= 0,
-                handleToggleRow,
-                handleRowProtocolClick,
-                screen: screen,
-                handleChange,
-              };
-              return _.merge(temp, details);
-            })
-          }
-          initialSortedColumn="uploadDate"
-          initialSortOrder="desc"
-          rowsPerPageOptions={pageRows}
-          rowProps={{ hover: false }}
-          tablePaginationProps={{
-            labelDisplayedRows: ({ from, to, count }) =>
-              `Showing ${from}-${to} of ${count}`,
-            truncate: true,
-          }}
-          ExpandableComponent={ExpandableComponent}
-        />
-      ) : (
-        <div className="empty-protocol-table">
-          <Table
-            columns={getColumns(screen)}
-            rows={[]}
-            // initialSortedColumn="uploadDate"
-            // initialSortOrder="desc"
-            // rowsPerPageOptions={pageRows}
-            // rowProps={{ hover: false }}
-            tablePaginationProps={{
-              labelDisplayedRows: ({ from, to, count }) =>
-                `Showing ${from}-${to} of ${count}`,
-              truncate: true,
-            }}
-          />
-        </div>
-      )}
+      <Table
+        columns={getColumns(screen)}
+        rows={
+          initialRows &&
+          initialRows.map((row) => {
+            let temp = _.cloneDeep(row);
+            let details = {
+              key: row.id,
+              expanded: expandedRows.indexOf(row.id) >= 0,
+              selected: selectedRows.indexOf(row.id) >= 0,
+              handleToggleRow,
+              handleRowProtocolClick,
+              screen: screen,
+              handleChange,
+            };
+            return _.merge(temp, details);
+          })
+        }
+        initialSortedColumn="uploadDate"
+        initialSortOrder="desc"
+        isLoading={isLoading}
+        rowsPerPageOptions={pageRows}
+        rowProps={{ hover: false }}
+        tablePaginationProps={{
+          labelDisplayedRows: ({ from, to, count }) =>
+            `Showing ${from}-${to} of ${count}`,
+          truncate: true,
+        }}
+        ExpandableComponent={ExpandableComponent}
+      />
     </div>
   );
 };

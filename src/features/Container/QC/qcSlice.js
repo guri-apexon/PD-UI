@@ -6,6 +6,7 @@ export const qcSlice = createSlice({
     protocols: [],
     tableError: false,
     loader: false,
+    tableLoading: true,
   },
   reducers: {
     getProtocols: (state, action) => {
@@ -17,10 +18,14 @@ export const qcSlice = createSlice({
     getLoader: (state, action) => {
       state.loader = action.payload;
     },
+    setTableLoader: (state, action) => {
+      state.tableLoading = action.payload;
+    },
   },
 });
 
-export const { getProtocols, setError, getLoader } = qcSlice.actions;
+export const { getProtocols, setError, getLoader, setTableLoader } =
+  qcSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -29,5 +34,6 @@ export const qc = (state) => state.qc;
 export const qcProtocols = (state) => state.qc.protocols;
 export const qcProtocolsError = (state) => state.qc.tableError;
 export const loader = (state) => state.qc.loader;
+export const tableLoader = (state) => state.qc.tableLoading;
 
 export default qcSlice.reducer;

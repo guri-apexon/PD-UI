@@ -177,10 +177,11 @@ export const searchCardData = {
   protocolDescription: "Paragraph",
   indication: "ABCC6 deficiency and new Disease for testing",
   phase: "II",
-  sponsor: "Numerics word , Countries, Country,Numerics word , Countries, Country ",
+  sponsor:
+    "Numerics word , Countries, Country,Numerics word , Countries, Country ",
   molecule: "Global Biostatistics Global Biostatistics",
   approval_date: "20130118",
-  projectId:"UXA27595UXA27595UXA27595UXA27595",
+  projectId: "UXA27595UXA27595UXA27595UXA27595",
   uploadDate: "20210118133407",
   followed: false,
   rows: [
@@ -242,7 +243,7 @@ export const searchCardData2 = {
   sponsor: "AstraZeneca",
   molecule: "Global",
   approval_date: null,
-  projectId:"UXA27595",
+  projectId: "UXA27595",
   uploadDate: null,
   followed: false,
   rows: [
@@ -298,5 +299,5 @@ export const searchCardData2 = {
 
 export const paramsLocation = {
   search:
-    "?key=advanced&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416",
+    "?key=advanced&qcActivity=QC_COMPLETED&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416",
 };

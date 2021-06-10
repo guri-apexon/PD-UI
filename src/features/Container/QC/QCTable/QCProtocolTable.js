@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { qcProtocols, qcProtocolsError } from "../qcSlice";
+import { qcProtocols, qcProtocolsError, tableLoader } from "../qcSlice";
 // import ProtocolTableComp from "../../../Components/QC/QCProtocolTable";
 import ProtocolTableComp from "../../../Components/Dashboard/ProtocolTable";
 
@@ -8,6 +8,7 @@ function ProtocolTable({ handleProtocolClick }) {
   const dispatch = useDispatch();
   const protocolData = useSelector(qcProtocols);
   const error = useSelector(qcProtocolsError);
+  const loader = useSelector(tableLoader);
   useEffect(() => {
     // dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
     dispatch({ type: "GET_QC_PROTOCOL_TABLE_SAGA" });
@@ -20,7 +21,8 @@ function ProtocolTable({ handleProtocolClick }) {
           initialRows={
             protocolData && protocolData.length > 0 ? protocolData : []
           }
-          pageRows={[5, 20, 30, "All"]}
+          isLoading={loader}
+          pageRows={[10, 20, 30, "All"]}
           handleProtocolClick={handleProtocolClick}
           screen={"QC"}
         />

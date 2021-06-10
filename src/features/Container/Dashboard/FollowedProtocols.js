@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { followedProtocolsList } from "../Dashboard/dashboardSlice";
+import {
+  followedProtocolsList,
+  tableLoader,
+} from "../Dashboard/dashboardSlice";
 import ProtocolTableComp from "../../Components/Dashboard/ProtocolTable";
 
-function FollowedProtocols() {
+function FollowedProtocols({ pageRows }) {
   const dispatch = useDispatch();
   const protocolData = useSelector(followedProtocolsList);
+  const loader = useSelector(tableLoader);
 
   useEffect(() => {
     dispatch({ type: "GET_FOLLOWED_PROTOCOL_SAGA" });
@@ -17,7 +21,8 @@ function FollowedProtocols() {
         initialRows={
           protocolData && protocolData.length > 0 ? protocolData : []
         }
-        pageRows={[5, 20, 30, "All"]}
+        isLoading={loader}
+        pageRows={pageRows}
         screen="FollowedProtocols"
       />
     </>

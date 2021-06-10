@@ -123,6 +123,7 @@ export const CheckboxCard = ({
                   value={section.sectionContent[i].id}
                   label={content.title}
                   size="small"
+                  data-testid={content.value}
                   // onChange= {(e)=> onCheckBoxClick(e)}
                   // checked='true'
                   // checked={value && value.includes(content.id)}
@@ -342,15 +343,17 @@ export const DateRangeCard = ({
               }}
             >
               <RadioGroup value={value1} onChange={handleChange1}>
-                {dateType && dateType.sectionContent && dateType.sectionContent.map((item, i) => (
-                  <Radio
-                    id={item.id}
-                    key={item.id}
-                    value={item.id}
-                    label={item.title}
-                    size="small"
-                  />
-                ))}
+                {dateType &&
+                  dateType.sectionContent &&
+                  dateType.sectionContent.map((item, i) => (
+                    <Radio
+                      id={item.id}
+                      key={item.id}
+                      value={item.id}
+                      label={item.title}
+                      size="small"
+                    />
+                  ))}
               </RadioGroup>
               {/* <CheckboxGroup value={value1} onChange={handleChange1}>
                 {dateType.sectionContent.map((content, i) => (
@@ -557,7 +560,10 @@ export class CheckboxTest extends React.Component {
               id={this.state.list[index].id}
               value={this.state.list[index].id}
               onChange={this.handleChange}
-              checked={this.props.listValue && this.props.listValue.includes(this.state.list[index].id)}
+              checked={
+                this.props.listValue &&
+                this.props.listValue.includes(this.state.list[index].id)
+              }
             />
             <label htmlFor={`#${this.state.list[index].id}`}>
               {this.state.list[index].title}
@@ -580,9 +586,10 @@ export class CheckboxTest extends React.Component {
                 id={this.state.list[index].id}
                 value={this.state.list[index].id}
                 onChange={this.handleChange}
-                checked={this.props.listValue && this.props.listValue.includes(
-                  this.state.list[index].id
-                )}
+                checked={
+                  this.props.listValue &&
+                  this.props.listValue.includes(this.state.list[index].id)
+                }
               />
               <label htmlFor={`#${this.state.list[index].id}`}>
                 {this.state.list[index].title}

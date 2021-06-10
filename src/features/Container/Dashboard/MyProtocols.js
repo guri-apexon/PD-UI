@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { prtocolsList } from "../Dashboard/dashboardSlice";
+import { prtocolsList, tableLoader } from "../Dashboard/dashboardSlice";
 import ProtocolTableComp from "../../Components/Dashboard/ProtocolTable";
 
-function MyProtocols({ setSelectedProtocols }) {
+function MyProtocols({ setSelectedProtocols, pageRows }) {
   const dispatch = useDispatch();
   const protocolData = useSelector(prtocolsList);
+  const loader = useSelector(tableLoader);
 
   useEffect(() => {
     dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
@@ -17,7 +18,8 @@ function MyProtocols({ setSelectedProtocols }) {
         initialRows={
           protocolData && protocolData.length > 0 ? protocolData : []
         }
-        pageRows={[5, 20, 30, "All"]}
+        isLoading={loader}
+        pageRows={pageRows}
         setSelectedProtocols={setSelectedProtocols}
       />
     </>

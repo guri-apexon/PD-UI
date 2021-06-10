@@ -39,7 +39,7 @@ describe("Search.js Render", () => {
           search: {
             indications: indication,
             sponsors: sponser,
-            phases:phase,
+            phases: phase,
             filters: searchResult,
             searchResult: searchResult,
           },
@@ -61,7 +61,7 @@ describe("Search.js Render", () => {
           search: {
             indications: indication,
             sponsors: sponser,
-            phases:phase,
+            phases: phase,
             filters: searchResult,
             searchResult: searchResult,
           },
@@ -87,7 +87,7 @@ describe("Search.js Render", () => {
           search: {
             indications: indication,
             sponsors: sponser,
-            phases:phase,
+            phases: phase,
             filters: searchResult,
             searchResult: searchResult,
             range: {
@@ -140,6 +140,8 @@ describe("Search.js Render", () => {
         .children[0].children[0].children[0].children[0].children[0].children[0]
         .children[0].children[0]
     );
+    fireEvent.click(screen.getByTestId("qc-activity-checkboxes").children[0]);
+    fireEvent.click(screen.getByTestId("QC_NOT_STARTED"));
 
     let applyFilterButton = container.getByTestId("apply-filter-button");
     fireEvent.click(applyFilterButton);
@@ -156,7 +158,7 @@ describe("Search.js Render", () => {
           search: {
             indications: indication,
             sponsors: sponser,
-            phases:phase,
+            phases: phase,
             filters: searchResult,
             searchResult: searchResult,
             range: {
@@ -209,6 +211,9 @@ describe("Search.js Render", () => {
         .children[0].children[0].children[0].children[0].children[0].children[0]
         .children[0].children[0]
     );
+    fireEvent.click(screen.getByTestId("qc-activity-checkboxes").children[0]);
+    fireEvent.click(screen.getByTestId("QC_NOT_STARTED"));
+
     let applyFilterButton = container.getByTestId("apply-filter-button");
     fireEvent.click(applyFilterButton);
   });
@@ -224,7 +229,7 @@ describe("Search.js Render", () => {
           search: {
             indications: indication,
             sponsors: sponser,
-            phases:phase,
+            phases: phase,
             filters: searchResult,
             searchResult: NosearchResult,
             range: {

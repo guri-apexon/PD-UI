@@ -334,12 +334,12 @@ class SearchPanel extends React.Component {
                 searchQuery={searchQuery}
                 clearAll={clearAll}
               />
-              {/* <FilterSection
-                name="qcStatus"
+              <FilterSection
+                name="qcActivity"
                 onConstructSearchQuery={this.onConstructSearchQuery}
                 searchQuery={searchQuery}
                 clearAll={clearAll}
-              /> */}
+              />
               <FilterSection
                 name="date"
                 onConstructSearchQuery={this.onConstructSearchQuery}

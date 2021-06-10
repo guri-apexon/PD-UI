@@ -21,6 +21,7 @@ import {
   getSavedSearches,
   setApiError,
   getFollowedProtocols,
+  setTableLoader,
 } from "./dashboardSlice";
 
 function* getState() {
@@ -30,6 +31,7 @@ function* getState() {
 }
 
 export function* protocolAsyn() {
+  yield put(setTableLoader(true));
   let userId = yield getState();
   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
 
@@ -61,14 +63,18 @@ export function* protocolAsyn() {
         return item;
       });
       yield put(getProtocols(data));
+      yield put(setTableLoader(false));
     } else {
+      yield put(setTableLoader(false));
       yield put(setError(protocolData.err.statusText));
     }
   } catch (err) {
+    yield put(setTableLoader(false));
     yield put(setError(err.statusText));
   }
 }
 export function* followedProtocols() {
+  yield put(setTableLoader(true));
   let userId = yield getState();
   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
 
@@ -113,10 +119,13 @@ export function* followedProtocols() {
         return item;
       });
       yield put(getFollowedProtocols(data));
+      yield put(setTableLoader(false));
     } else {
+      yield put(setTableLoader(false));
       yield put(setError(protocolData.err.statusText));
     }
   } catch (err) {
+    yield put(setTableLoader(false));
     yield put(setError(err.statusText));
   }
 }
