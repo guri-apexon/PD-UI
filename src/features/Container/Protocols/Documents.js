@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DocumentsTable from "../../Components/DocumentsTable/DocumentsTable";
 import AssociateDocumentsTable from "../../Components/DocumentsTable/AssociateDocumentsTable";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { protocolSummary, associateDocs } from "./protocolSlice.js";
 import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
@@ -10,17 +10,15 @@ import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import axios from "axios";
+import FileDownload from "js-file-download";
+import Loader from "apollo-react/components/Loader";
 
 const Documents = ({ handleChangeTab }) => {
   const summary = useSelector(protocolSummary);
   const associateDocuments = useSelector(associateDocs);
-  const dispatch = useDispatch();
   const [protocolSelected, setProtocolSelected] = useState([]);
-  const [prevProtSelected, setPrevProtSelected] = useState("");
+  const [loader, setLoader] = useState(false);
 
-  // useEffect(() => {
-  //   console.log("Selected", protocolSelected);
-  // }, [protocolSelected]);
   const setProtocolToDownload = (id) => {
     console.log(id);
     if (protocolSelected.length === 0) {
@@ -51,55 +49,45 @@ const Documents = ({ handleChangeTab }) => {
     if (protocolSelected.length <= 1) {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
+      setLoader(true);
       try {
-        // id1 = "1c39ca0b-ebc4-4307-bcaf-b4770d9fcbfb"
-        // id2 = "545e1adb-ad3c-423e-a58b-f402db6ff0e0"
-
-        // const resp = await axios.get(
-        //   `http://ca2spdml01q:8000/api/document_compare/?id1=022eddd1-e7eb-4387-86a2-94db36437438&id2=ffc6f734-13b7-45a7-9909-20e9dd1dc878`
-        // );
         const resp = await axios.get(
-          `http://ca2spdml01q:8000/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`
+          `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`
         );
-        console.log(resp);
         const data = resp.data;
         if (data.numChangesTotal > 0) {
           const path = data.compareCSVPath;
           let splitArr = path.split("/");
           const fileName = splitArr[splitArr.length - 1];
           const filePath = `${UI_URL}/${fileName}`;
-          console.log(filePath);
 
-          const link = document.createElement("a");
-          link.href = filePath;
-          link.setAttribute("download", `${fileName}`);
-
-          // Append to html link element page
-          document.body.appendChild(link);
-
-          // Start download
-          link.click();
-
-          // Clean up and remove the link
-          link.parentNode.removeChild(link);
+          axios({
+            url: filePath,
+            method: "GET",
+            responseType: "blob", // Important
+          }).then((response) => {
+            FileDownload(response.data, fileName);
+            setLoader(false);
+            setProtocolSelected([]);
+          });
         } else {
-          //alert
+          setLoader(false);
           toast.info("No difference found for this compare");
         }
       } catch (e) {
+        setLoader(false);
         console.log("Compare Resp", e.response);
-        toast.error(e.response.data.detail);
+        if (e.response && e.response.data) {
+          toast.error(e.response.data.detail);
+        }else{
+          toast.error("Something Went Wrong. Please Try Again.")
+        }
       }
-
-      // console.log("Compare Response",resp.data)
-      // if(resp.data){
-
-      // }
-      // toast.warn("No difference found for this compare");
     }
   };
   return (
     <div className="document-tab">
+      {loader && <Loader />}
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <div
