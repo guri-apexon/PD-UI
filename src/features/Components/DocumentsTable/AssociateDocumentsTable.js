@@ -135,12 +135,45 @@ const columns = [
     customCell: StatusCell,
   },
 ];
+const noActionColumns = [
+  {
+    accessor: "versionNumber",
+    header: "Associated Versions",
+    customCell: VersionCell,
+  },
+  {
+    accessor: "draftVersion",
+    header: "Draft#",
+    customCell: Cell,
+  },
+  {
+    accessor: "fileName",
+    header: "Source Document",
+    customCell: DownloadLink,
+  },
+  {
+    header: "Uploaded Date",
+    accessor: "uploadDate",
+    customCell: DataCell,
+  },
+  {
+    header: "Approval Date",
+    accessor: "approvalDate",
+    customCell: DataCell,
+  },
+  {
+    header: "Document Status",
+    accessor: "documentStatus",
+    customCell: StatusCell,
+  },
+];
 
 const AssociateDocumentsTable = ({
   initialsRow,
   handleChangeTab,
   protocolSelected,
   setProtocolToDownload,
+  showCheckbox,
 }) => {
   // console.log("initialsRow :", initialsRow);
 
@@ -170,7 +203,7 @@ const AssociateDocumentsTable = ({
           };
           return _.merge(temp, details);
         })}
-        columns={columns}
+        columns={showCheckbox ? columns : noActionColumns}
       />
     </div>
   );
