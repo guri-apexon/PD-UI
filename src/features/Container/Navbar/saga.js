@@ -18,7 +18,15 @@ export function* navbarNotificationData() {
     const notificationData = yield call(httpCall, notificationConfig);
 
     if (notificationData.success) {
-      yield put(getNotification(notificationData.data));
+      const parseData = notificationData.data.map((item) => {
+        item.read = item.readFlag;
+        item.header = item.protocol;
+        item.details = item.shortTitle;
+        item.timestamp = item.timeCreated;
+        item.protocolNumber = item.protocol;
+        return item;
+      });
+      yield put(getNotification(parseData));
     } else {
       yield put(setError(notificationData.err.statusText));
     }
