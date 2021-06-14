@@ -147,8 +147,9 @@ export function* recentSearchAsyn() {
     const searchData = yield call(httpCall, config);
     if (searchData.success) {
       yield put(getRecentSearches(sorting(searchData.data, "timeCreated")));
+    } else {
+      yield put(setError(searchData.err.statusText));
     }
-    yield put(setError(searchData.err.statusText));
   } catch (err) {
     yield put(setError(err.statusText));
   }
@@ -165,8 +166,9 @@ export function* savedSearchAsyn() {
     const searchData = yield call(httpCall, config);
     if (searchData.success) {
       yield put(getSavedSearches(sorting(searchData.data, "timeCreated")));
+    } else {
+      yield put(setError(searchData.err.statusText));
     }
-    yield put(setError(searchData.err.statusText));
   } catch (err) {
     yield put(setError(err.statusText));
   }

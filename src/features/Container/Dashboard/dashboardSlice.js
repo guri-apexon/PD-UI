@@ -59,7 +59,6 @@ export const dashboardSlice = createSlice({
       state.displayAddProtocol = action.payload;
     },
     setTableLoader: (state, action) => {
-      console.log(action);
       state.tableLoading = action.payload;
     },
   },

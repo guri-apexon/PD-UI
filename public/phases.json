@@ -12,6 +12,10 @@
       "phaseName": "III"
     },
     {
+      "phaseId": 16,
+      "phaseName": "IV"
+    },
+    {
       "phaseId": 14,
       "phaseName": "1"
     },
@@ -45,11 +49,6 @@
       "phaseId": 9,
       "phaseName": "Ia"
     },
-  
-    {
-      "phaseId": 11,
-      "phaseName": "I/IIa"
-    },
     {
       "phaseId": 12,
       "phaseName": "Phase 1a"
@@ -57,10 +56,5 @@
     {
       "phaseId": 13,
       "phaseName": "IIa"
-    },
-  
-    {
-      "phaseId": 15,
-      "phaseName": "NULL"
     }
   ]

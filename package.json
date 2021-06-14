@@ -35,10 +35,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "server": "nodemon ./server/index.js",
-    "dev": "concurrently --kill-others \"yarn start\" \"yarn server\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "coverage": "npm run test --coverage --wathcAll=false",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -83,11 +82,9 @@
     ]
   },
   "devDependencies": {
-    "concurrently": "^6.0.0",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "nodemon": "^2.0.7",
     "pm2": "^4.5.1"
   }
 }

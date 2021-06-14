@@ -588,7 +588,7 @@
 .virtualization-set {
   .list {
     padding: 10px;
-    height: 350px;
+    max-height: 350px;
     width: 271px;
   }
   .list > div > div {

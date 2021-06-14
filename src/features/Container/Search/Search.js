@@ -203,13 +203,6 @@ const Search = (props) => {
     // }
   }, [dispatch]);
 
-  useEffect(() => {
-    // console.log("Search data",resultList)
-    if (resultList.data.length === 0 && !resultList.loader) {
-      dispatch({ type: "GET_PHASES" });
-    }
-  }, [resultList]);
-
   //newcode
   // This useEffect will get called when indication and sponsor API returns response
   useEffect(() => {
@@ -508,7 +501,6 @@ const Search = (props) => {
   };
   const hancleClearAll = (inputPresent, input) => {
     // setClearAll(true);
-    dispatch({ type: "GET_PHASES" });
     let postObj = _.cloneDeep(POST_OBJECT);
     setProtocolSelected([]);
     setPrevProtSelected("");
@@ -537,6 +529,7 @@ const Search = (props) => {
       setDateRangeValue([null, null]);
       props.history.push(`/search?key=${input}`);
     } else {
+      dispatch({ type: "GET_PHASES" });
       setSearchQuery({
         sponsor: [],
         indication: [],
