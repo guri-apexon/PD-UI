@@ -17,6 +17,8 @@ const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
 const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
 const phaseUrl = `/phases.json`;
 
+const ALLISP = `${BASE_URL_8000}/api/keyword_search/`;
+
 export function* getIndicationData(action) {
   try {
     const indicationList = yield call(httpCall, {
@@ -66,25 +68,52 @@ export function* getSponsorData(action) {
   } catch (e) {}
 }
 export function* getPhaseData(action) {
+  const phaseObj = {
+    success: true,
+    sectionContent: [],
+  };
+  yield put(getPhaseValues(phaseObj));
+  let userId = yield getState();
+  const postBody = {
+    key: "",
+    toc: [],
+    sponsor: [],
+    indication: [],
+    phase: [],
+    documentStatus: [],
+    dateType: "",
+    dateFrom: "",
+    dateTo: "",
+    sortField: "",
+    sortOrder: "",
+    pageNo: 1,
+    pageSize: 10,
+    qID: userId,
+  };
   try {
-    const phaseList = yield call(httpCall, {
-      url: phaseUrl,
-      method: "GET",
+    const respData = yield call(httpCall, {
+      url: ALLISP,
+      method: "POST",
+      data: postBody,
     });
-    // let respData = sponsorList.data.slice(0, 8000);
-    let respData = phaseList.data;
-    if (phaseList.success) {
-      let formatPhases = respData.map((item) => {
+
+    if (respData.success) {
+      let phaseData = respData.data.phases;
+      // debugger;
+      const filtered = phaseData.filter(function (el) {
+        return el !== "";
+      });
+      let formatPhases = filtered.sort().map((item) => {
         return {
-          title: item.phaseName,
-          id: item.phaseName,
+          title: item,
+          id: item,
         };
       });
-      const obj = {
+      const phaseObj = {
         success: true,
         sectionContent: formatPhases,
       };
-      yield put(getPhaseValues(obj));
+      yield put(getPhaseValues(phaseObj));
     }
   } catch (e) {}
 }
@@ -139,8 +168,37 @@ export function* getFilterData(action) {
     }
   } catch (e) {}
 }
-
+function constructFilterObject(arr) {
+  if (arr.length > 0) {
+    let phaseData = arr;
+    const filtered = phaseData.filter(function (el) {
+      return el != "";
+    });
+    let formatPhases = filtered.sort().map((item) => {
+      return {
+        title: item,
+        id: item,
+      };
+    });
+    const phaseObj = {
+      success: true,
+      sectionContent: formatPhases,
+    };
+    return phaseObj;
+  } else {
+    const phaseObj = {
+      success: true,
+      sectionContent: [],
+    };
+    return phaseObj;
+  }
+}
 export function* getSearchData(action) {
+  const phaseObj = {
+    success: true,
+    sectionContent: [],
+  };
+  yield put(getPhaseValues(phaseObj));
   let userId = yield getState();
   if (action.payload) {
     const obj = {
@@ -162,49 +220,30 @@ export function* getSearchData(action) {
         method: "POST",
         data: postObj,
       });
-      if (
-        searchResp.success &&
-        searchResp.data &&
-        searchResp.data.data.length !== 0
-      ) {
-        const requiredFormat = createJSONFormat(searchResp.data.data);
-        // console.log('searchResp2 :', requiredFormat);
-        let resp = searchResp.data;
-        resp = {
-          ...resp,
-          data: requiredFormat,
-        };
-        const obj = {
-          search: true,
-          loader: false,
-          success: true,
-          data: resp,
-        };
-        yield put(getSearchResult(obj));
-        let phaseData = obj.data.phases;
-        // debugger;
-        const filtered = phaseData.filter(function (el) {
-          return el != "";
-        });
-        let formatPhases = filtered.sort().map((item) => {
-          return {
-            title: item,
-            id: item,
+      if (searchResp.success) {
+        const resData = searchResp.data;
+        const searchData = resData.data;
+        const phaseData = resData.phases;
+        if (searchData.length > 0) {
+          const requiredFormat = createJSONFormat(resData.data);
+          const searchObj = {
+            search: true,
+            loader: false,
+            success: true,
+            data: { ...resData, data: requiredFormat },
           };
-        });
-        const phaseObj = {
-          success: true,
-          sectionContent: formatPhases,
-        };
-        yield put(getPhaseValues(phaseObj));
-      } else if (searchResp.data.data.length === 0) {
-        const obj = {
-          search: true,
-          loader: false,
-          success: true,
-          data: [],
-        };
-        yield put(getSearchResult(obj));
+          yield put(getSearchResult(searchObj));
+        } else {
+          const obj = {
+            search: true,
+            loader: false,
+            success: true,
+            data: [],
+          };
+          yield put(getSearchResult(obj));
+        }
+        const phaseList = constructFilterObject(phaseData);
+        yield put(getPhaseValues(phaseList));
       }
     } catch (e) {
       const obj = {
@@ -506,6 +545,60 @@ function* onPageChange(action) {
 function* updateTotalSearchResult(action) {
   yield put(getTotalSearchResult(action.payload));
 }
+function formatFilterObject(arr) {
+  const filtered = arr.filter(function (el) {
+    return el !== "";
+  });
+  let formatedData = filtered.map((item) => {
+    return {
+      title: item,
+      id: item,
+    };
+  });
+  const obj = {
+    success: true,
+    sectionContent: formatedData,
+  };
+  return obj;
+}
+function* getALLISP() {
+  // getIndications,
+  // getSponsors,
+  // getPhaseValues,
+  const postBody = {
+    key: "",
+    toc: [],
+    sponsor: [],
+    indication: [],
+    phase: [],
+    documentStatus: [],
+    dateType: "",
+    dateFrom: "",
+    dateTo: "",
+    sortField: "",
+    sortOrder: "",
+    pageNo: 1,
+    pageSize: 10,
+    qID: "q1061485",
+  };
+  try {
+    const ispList = yield call(httpCall, {
+      url: ALLISP,
+      method: "POST",
+      data: postBody,
+    });
+
+    if (ispList.success) {
+      let respData = ispList.data;
+      let phaseData = formatFilterObject(respData.phases);
+      let indicationData = formatFilterObject(respData.indications);
+      let sponsorData = formatFilterObject(respData.sponsors);
+      yield put(getPhaseValues(phaseData));
+      yield put(getIndications(indicationData));
+      yield put(getSponsors(sponsorData));
+    }
+  } catch (e) {}
+}
 
 function* watchIncrementAsync() {
   yield takeEvery("GET_SEARCH_FILTER", getFilterData);
@@ -520,6 +613,7 @@ function* watchIncrementAsync() {
   yield takeEvery("FILTER_BY_DATE_RANGE_SAGA", getDataByRange);
   yield takeEvery("SAVE_SEARCH_SAGA", saveSearch);
   yield takeEvery("PAGE_CHANGE", onPageChange);
+  yield takeEvery("GET_INDICATIONs_SPONSORS_PHASES", getALLISP);
 }
 
 export default function* protocolSaga() {

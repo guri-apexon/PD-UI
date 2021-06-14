@@ -104,8 +104,8 @@ const CollapseCard = ({
     return (
       // <div className="spon-container" data-testid="phase-checkboxes">
       //   <Collapsible trigger="Phase" onOpening={() => onOpenTrigger()}>
-      //     {phaseData.sectionContent &&
-      //     phaseData.sectionContent.length > 0 ? (
+      // {phaseData.sectionContent &&
+      // phaseData.sectionContent.length > 0 ? (
       //       <CheckboxTest
       //         section={phaseData}
       //         identifier="phase"
@@ -113,28 +113,41 @@ const CollapseCard = ({
       //         listValue={searchQuery.phase}
       //         clearAll={clearAll}
       //       />
-      //     ) : (
-      //       <div
-      //         style={{
-      //           height: 300,
-      //           justifyContent: "center",
-      //           alignItems: "center",
-      //           display: "flex",
-      //         }}
-      //       >
-      //         <Loader />
-      //       </div>
-      //     )}
+      // ) : (
+      //   <div
+      //     style={{
+      //       height: 300,
+      //       justifyContent: "center",
+      //       alignItems: "center",
+      //       display: "flex",
+      //     }}
+      //   >
+      //     <Loader />
+      //   </div>
+      // )}
       //   </Collapsible>
       // </div>
       <div data-testid="phase-checkboxes">
         <Collapsible trigger="Phase">
-          <CheckboxCard
-            section={phaseData}
-            identifier="phase"
-            onCheckboxClick={onConstructSearchQuery}
-            listValue={searchQuery.phase}
-          />
+          {phaseData.sectionContent && phaseData.sectionContent.length > 0 ? (
+            <CheckboxCard
+              section={phaseData}
+              identifier="phase"
+              onCheckboxClick={onConstructSearchQuery}
+              listValue={searchQuery.phase}
+            />
+          ) : (
+            <div
+              style={{
+                height: 300,
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <Loader />
+            </div>
+          )}
         </Collapsible>
       </div>
     );
