@@ -22,40 +22,57 @@ function Navbar({
   const dispatch = useDispatch();
   let history = useHistory();
   const notificationsMenuProps = useSelector(navbarNotifications);
-  const userId1 = useSelector(userId);
-
   const [userData, setUserData] = useState({});
   const [data, setData] = useState([]);
   const userDetail = useSelector((state) => state.user.userDetail);
 
   // console.log(">>>>>", userDetail);
   useEffect(() => {
-    dispatch({ type: "GET_NOTIFICATION_SAGA" });
-  }, []);
+    if ("userId" in userData) {
+      const userID = userData.userId.substring(1);
+      if (userID) {
+        dispatch({ type: "GET_NOTIFICATION_SAGA", payload: userID });
+      }
+    }
+  }, [userData, dispatch]);
   useEffect(() => {
     setUserData(userDetail);
   }, [userDetail]);
   const checkForPrimary = async (data) => {
     // debugger;
-    dispatch({ type: "SET_NOTIFICATION_READ_SAGA", payload: data.id });
+    const postObj = {
+      id: data.id,
+      protocol: data.protocol,
+      aidocId: data.aidocId,
+      readFlag: true,
+    };
+    const notificationUrl = `${BASE_URL_8000}/api/notification_read`;
+    try {
+      const readResp = await axios.post(notificationUrl, postObj);
+      if (readResp) {
+        const userID = userData.userId.substring(1);
+        const userresp = await axios.get(
+          `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`
+        );
+        if (userresp && userresp.data) {
+          dispatch({ type: "GET_NOTIFICATION_SAGA", payload: userID });
+          history.push(`/protocols?protocolId=${data.aidocId}&tab=2`);
+        } else {
+          toast.warn(
+            "You are not an approved primary user of this protocol. Access to details denied"
+          );
+        }
+      } else {
+      }
+    } catch (err) {}
+    // dispatch({ type: "SET_NOTIFICATION_READ_SAGA", payload: postObj });
 
     //---- Remove in local-----------
-    const axiosResp = await axios.get("/session");
-    const axiosUser = axiosResp.data;
-    const userID = axiosUser.userId.substring(1);
+    // const axiosResp = await axios.get("/session");
+    // const axiosUser = axiosResp.data;
+    // const userID = axiosUser.userId.substring(1);
 
     //------Uncomment in Local -------
-    // const userID = userData.userId.substring(1);
-    const userresp = await axios.get(
-      `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`
-    );
-    if (userresp && userresp.data) {
-      history.push(`/protocols?protocolId=${data.aidocId}&tab=2`);
-    } else {
-      toast.warn(
-        "You are not an approved primary user of this protocol. Access to details denied"
-      );
-    }
   };
 
   useEffect(() => {
@@ -88,77 +105,39 @@ function Navbar({
       console.log("notificationsMenuProps", data);
       setData(data);
     }
-  }, [notificationsMenuProps]);
-
-  const notificationsMenuPropsTest = {
-    newNotifications: true,
-    notifications: [
-      {
-        icon: InfoIcon,
-        read: false,
-        header: "Header 1",
-        details: "Lorem ipsum dolor sit ame. Lorem ipsum dolor sit ame.",
-        timestamp: moment("2013-09-17T00:00:00"),
-      },
-      {
-        icon: InfoIcon,
-        read: false,
-        header: "Header",
-        details: "Lorem ipsum dolor sit ame. Lorem ipsum dolor sit ame.",
-        timestamp: moment(),
-      },
-      {
-        icon: InfoIcon,
-        read: true,
-        header: "Header",
-        details: "Lorem ipsum dolor sit ame",
-        timestamp: moment().subtract(1, "day"),
-      },
-      {
-        icon: InfoIcon,
-        read: false,
-        header: "Header",
-        details: "Lorem ipsum dolor sit ame",
-        timestamp: moment().subtract(2, "day"),
-      },
-      {
-        icon: InfoIcon,
-        read: true,
-        header: "Header",
-        details: "Lorem ipsum dolor sit ame",
-        timestamp: moment().subtract(3, "day"),
-      },
-    ],
-  };
+  }, [notificationsMenuProps, userDetail]);
 
   return (
-    <div data-testid="navbar-test">
-      <NavigationBar
-        LogoComponent={() => (
-          <Typography
-            style={{
-              color: "white",
-              lineHeight: "56px",
-              marginRight: 24,
-              cursor: "pointer",
-              zIndex: 2,
-              whiteSpace: "nowrap",
-            }}
-            // onClick={() => console.log('Logo clicked')}
-            onClick={() => history.push("/")}
-          >
-            IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
-          </Typography>
-        )}
-        // logoProps={logoProps}
-        notificationsMenuProps={data}
-        menuItems={navMenuItems}
-        profileMenuProps={profileMenuProps}
-        onClick={({ pathname }) => onClickNavigation(pathname)}
-        checkIsActive={(item) => checknav(item)}
-        waves
-      />
-    </div>
+    "userId" in userData &&
+    userData.userId && (
+      <div data-testid="navbar-test">
+        <NavigationBar
+          LogoComponent={() => (
+            <Typography
+              style={{
+                color: "white",
+                lineHeight: "56px",
+                marginRight: 24,
+                cursor: "pointer",
+                zIndex: 2,
+                whiteSpace: "nowrap",
+              }}
+              // onClick={() => console.log('Logo clicked')}
+              onClick={() => history.push("/")}
+            >
+              IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
+            </Typography>
+          )}
+          // logoProps={logoProps}
+          notificationsMenuProps={data}
+          menuItems={navMenuItems}
+          profileMenuProps={profileMenuProps}
+          onClick={({ pathname }) => onClickNavigation(pathname)}
+          checkIsActive={(item) => checknav(item)}
+          waves
+        />
+      </div>
+    )
   );
 }
 

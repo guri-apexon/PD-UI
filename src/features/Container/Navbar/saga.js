@@ -8,8 +8,9 @@ import { getNotification, setError } from "./navbarSlice";
 //   const id = state.user.userDetail.userId;
 //   return { id: id.substring(1), type: type };
 // }
-export function* navbarNotificationData() {
-  const notificationUrl = `/notifications.json`;
+
+export function* navbarNotificationData(action) {
+  const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${action.payload}`;
   const notificationConfig = {
     url: notificationUrl,
     method: "GET",
@@ -36,10 +37,11 @@ export function* navbarNotificationData() {
 }
 
 // export function* setRead(action) {
-//   const notificationUrl = `${BASE_URL_8000}/notification?id=${action.payload}`;
+//   const notificationUrl = `${BASE_URL_8000}/api/notification_read`;
 //   const notificationConfig = {
 //     url: notificationUrl,
-//     method: "PUT",
+//     method: "POST",
+//     data: action.payload,
 //   };
 //   try {
 //     const notificationData = yield call(httpCall, notificationConfig);
