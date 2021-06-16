@@ -65,11 +65,16 @@ const Documents = ({ handleChangeTab }) => {
             url: filePath,
             method: "GET",
             responseType: "blob", // Important
-          }).then((response) => {
-            FileDownload(response.data, fileName);
-            setLoader(false);
-            setProtocolSelected([]);
-          });
+          })
+            .then((response) => {
+              FileDownload(response.data, fileName);
+              setLoader(false);
+              setProtocolSelected([]);
+            })
+            .catch((e) => {
+              setLoader(false);
+              toast.error("File Download Failed.");
+            });
         } else {
           setLoader(false);
           toast.info("No difference found for this compare");
@@ -79,8 +84,8 @@ const Documents = ({ handleChangeTab }) => {
         console.log("Compare Resp", e.response);
         if (e.response && e.response.data) {
           toast.error(e.response.data.detail);
-        }else{
-          toast.error("Something Went Wrong. Please Try Again.")
+        } else {
+          toast.error("Something Went Wrong. Please Try Again.");
         }
       }
     }
