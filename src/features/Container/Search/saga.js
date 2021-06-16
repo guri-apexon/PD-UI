@@ -70,6 +70,7 @@ export function* getSponsorData(action) {
 export function* getPhaseData(action) {
   const phaseObj = {
     success: true,
+    loader:true,
     sectionContent: [],
   };
   yield put(getPhaseValues(phaseObj));
@@ -111,6 +112,7 @@ export function* getPhaseData(action) {
       });
       const phaseObj = {
         success: true,
+        loader:false,
         sectionContent: formatPhases,
       };
       yield put(getPhaseValues(phaseObj));
@@ -182,12 +184,14 @@ function constructFilterObject(arr) {
     });
     const phaseObj = {
       success: true,
+      loader:false,
       sectionContent: formatPhases,
     };
     return phaseObj;
   } else {
     const phaseObj = {
       success: true,
+      loader:false,
       sectionContent: [],
     };
     return phaseObj;
@@ -196,6 +200,7 @@ function constructFilterObject(arr) {
 export function* getSearchData(action) {
   const phaseObj = {
     success: true,
+    loader:true,
     sectionContent: [],
   };
   yield put(getPhaseValues(phaseObj));
@@ -253,6 +258,7 @@ export function* getSearchData(action) {
       yield put(getSearchResult(obj));
       const phaseObj = {
         success: true,
+        loader:false,
         sectionContent: [],
       };
       yield put(getPhaseValues(phaseObj));
@@ -267,6 +273,7 @@ export function* getSearchData(action) {
     yield put(getSearchResult(obj));
     const phaseObj = {
       success: true,
+      loader:false,
       sectionContent: [],
     };
     yield put(getPhaseValues(phaseObj));

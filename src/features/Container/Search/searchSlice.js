@@ -12,6 +12,8 @@ export const searchSlice = createSlice({
       sectionContent: [],
     },
     phases: {
+      success: true,
+      loader: true,
       sectionContent: [],
     },
     sponsors: {

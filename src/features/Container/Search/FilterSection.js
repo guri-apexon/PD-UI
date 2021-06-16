@@ -129,14 +129,7 @@ const CollapseCard = ({
       // </div>
       <div data-testid="phase-checkboxes">
         <Collapsible trigger="Phase">
-          {phaseData.sectionContent && phaseData.sectionContent.length > 0 ? (
-            <CheckboxCard
-              section={phaseData}
-              identifier="phase"
-              onCheckboxClick={onConstructSearchQuery}
-              listValue={searchQuery.phase}
-            />
-          ) : (
+          {phaseData.loader && (
             <div
               style={{
                 height: 300,
@@ -148,6 +141,31 @@ const CollapseCard = ({
               <Loader />
             </div>
           )}
+          {phaseData.sectionContent && phaseData.sectionContent.length > 0 && (
+            <CheckboxCard
+              section={phaseData}
+              identifier="phase"
+              onCheckboxClick={onConstructSearchQuery}
+              listValue={searchQuery.phase}
+            />
+          )}
+          {phaseData.sectionContent &&
+            phaseData.sectionContent.length === 0 &&
+            !phaseData.loader && (
+              <div
+                style={{
+                  height: 50,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  display: "flex",
+                }}
+              >
+                <p style={{ padding: 10, textAlign: "center" }}>
+                  
+                </p>
+                ​
+              </div>
+            )}
         </Collapsible>
       </div>
     );
