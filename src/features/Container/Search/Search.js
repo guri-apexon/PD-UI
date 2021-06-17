@@ -33,7 +33,7 @@ import {
   dateSection,
   qcActivity,
 } from "./Data/constants";
-
+import Loader from "apollo-react/components/Loader";
 import moment from "moment";
 import { formatESDate } from "../../../utils/utilFunction";
 
@@ -74,7 +74,7 @@ const Search = (props) => {
     // axios.get('http://ca2spdml01q:8000/api/indications/?skip=0')
     dispatch({ type: "GET_SPONSORS" });
     dispatch({ type: "GET_INDICATIONS" });
-    dispatch({ type: "GET_PHASES" });
+    dispatch({ type: "GET_PHASES", payload: phaseData });
     return () => {
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     };
@@ -529,7 +529,7 @@ const Search = (props) => {
       setDateRangeValue([null, null]);
       props.history.push(`/search?key=${input}`);
     } else {
-      dispatch({ type: "GET_PHASES" });
+      dispatch({ type: "GET_PHASES", payload: phaseData });
       setSearchQuery({
         sponsor: [],
         indication: [],
@@ -683,7 +683,10 @@ const Search = (props) => {
     }
   };
   const deleteSearchInput = () => {
-    dispatch({ type: "GET_PHASES" });
+    const phaseObj = {
+      sectionContent: [],
+    };
+    dispatch({ type: "GET_PHASES", payload: phaseObj });
     setSearchInput("");
     setClearAll(true);
     setIdPresent(false);
@@ -799,46 +802,51 @@ const Search = (props) => {
         ]}
         style={{ paddingInlineStart: 0, marginBottom: 0 }}
       />
-      <div className="marginLeft10">
-        <div>
-          <SearchSection
-            getSearchInput={getSearchInput}
-            history={props.history}
-            idPresent={idPresent}
-            compareProtocol={compareProtocol}
-            saveSearch={saveSearch}
-            saveRecentSearch={saveRecentSearch}
-            handleKeywordSearch={handleKeywordSearch}
-          />
+      {sponsorData.sectionContent.length > 0 &&
+      indicationData.sectionContent.length > 0 ? (
+        <div className="marginLeft10">
+          <div>
+            <SearchSection
+              getSearchInput={getSearchInput}
+              history={props.history}
+              idPresent={idPresent}
+              compareProtocol={compareProtocol}
+              saveSearch={saveSearch}
+              saveRecentSearch={saveRecentSearch}
+              handleKeywordSearch={handleKeywordSearch}
+            />
+          </div>
+          <div>
+            <SearchResultSection
+              getSearchInput={getSearchInput}
+              filterList={filterList.data}
+              resultList={resultList}
+              sponsorData={sponsorData}
+              indicationData={indicationData}
+              phaseData={phaseData}
+              searchInput={searchInput}
+              deleteSearchInput={deleteSearchInput}
+              onSearchChange={onSearchChange}
+              onSortChange={onSortChange}
+              onSearchQuery={onSearchQuery}
+              searchQuery={searchQuery}
+              hancleClearAll={hancleClearAll}
+              history={props.history}
+              compareTwoProtocol={compareTwoProtocol}
+              selection={selection}
+              sortValueProp={sortValueProp}
+              dateRangeValue={dateRangeValue}
+              protocolSelected={protocolSelected}
+              clearAll={clearAll}
+              page={page}
+              onSetPage={onSetPage}
+              totalSearchResult={totalSearchResults}
+            />
+          </div>
         </div>
-        <div>
-          <SearchResultSection
-            getSearchInput={getSearchInput}
-            filterList={filterList.data}
-            resultList={resultList}
-            sponsorData={sponsorData}
-            indicationData={indicationData}
-            phaseData={phaseData}
-            searchInput={searchInput}
-            deleteSearchInput={deleteSearchInput}
-            onSearchChange={onSearchChange}
-            onSortChange={onSortChange}
-            onSearchQuery={onSearchQuery}
-            searchQuery={searchQuery}
-            hancleClearAll={hancleClearAll}
-            history={props.history}
-            compareTwoProtocol={compareTwoProtocol}
-            selection={selection}
-            sortValueProp={sortValueProp}
-            dateRangeValue={dateRangeValue}
-            protocolSelected={protocolSelected}
-            clearAll={clearAll}
-            page={page}
-            onSetPage={onSetPage}
-            totalSearchResult={totalSearchResults}
-          />
-        </div>
-      </div>
+      ) : (
+        phaseData.loader && <Loader />
+      )}
     </div>
   );
 };

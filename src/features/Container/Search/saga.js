@@ -68,56 +68,58 @@ export function* getSponsorData(action) {
   } catch (e) {}
 }
 export function* getPhaseData(action) {
-  const phaseObj = {
-    success: true,
-    loader:true,
-    sectionContent: [],
-  };
-  yield put(getPhaseValues(phaseObj));
-  let userId = yield getState();
-  const postBody = {
-    key: "",
-    toc: [],
-    sponsor: [],
-    indication: [],
-    phase: [],
-    documentStatus: [],
-    dateType: "",
-    dateFrom: "",
-    dateTo: "",
-    sortField: "",
-    sortOrder: "",
-    pageNo: 1,
-    pageSize: 10,
-    qID: userId,
-  };
-  try {
-    const respData = yield call(httpCall, {
-      url: ALLISP,
-      method: "POST",
-      data: postBody,
-    });
+  if (action.payload.sectionContent.length === 0) {
+    const phaseObj = {
+      success: true,
+      loader: true,
+      sectionContent: [],
+    };
+    yield put(getPhaseValues(phaseObj));
+    let userId = yield getState();
+    const postBody = {
+      key: "",
+      toc: [],
+      sponsor: [],
+      indication: [],
+      phase: [],
+      documentStatus: [],
+      dateType: "",
+      dateFrom: "",
+      dateTo: "",
+      sortField: "",
+      sortOrder: "",
+      pageNo: 1,
+      pageSize: 10,
+      qID: userId,
+    };
+    try {
+      const respData = yield call(httpCall, {
+        url: ALLISP,
+        method: "POST",
+        data: postBody,
+      });
 
-    if (respData.success) {
-      let phaseData = respData.data.phases;
-      // debugger;
-      const filtered = phaseData.filter(function (el) {
-        return el !== "";
-      });
-      let formatPhases = filtered.sort().map((item) => {
-        return {
-          title: item,
-          id: item,
+      if (respData.success) {
+        let phaseData = respData.data.phases;
+        // debugger;
+        const filtered = phaseData.filter(function (el) {
+          return el !== "";
+        });
+        let formatPhases = filtered.sort().map((item) => {
+          return {
+            title: item,
+            id: item,
+          };
+        });
+        const phaseObj = {
+          success: true,
+          loader: false,
+          sectionContent: formatPhases,
         };
-      });
-      const phaseObj = {
-        success: true,
-        loader:false,
-        sectionContent: formatPhases,
-      };
-      yield put(getPhaseValues(phaseObj));
-    }
-  } catch (e) {}
+        yield put(getPhaseValues(phaseObj));
+      }
+    } catch (e) {}
+  }
 }
 
 export function* getFilterData(action) {
@@ -184,26 +186,20 @@ function constructFilterObject(arr) {
     });
     const phaseObj = {
       success: true,
-      loader:false,
+      loader: false,
       sectionContent: formatPhases,
     };
     return phaseObj;
   } else {
     const phaseObj = {
       success: true,
-      loader:false,
+      loader: false,
       sectionContent: [],
     };
     return phaseObj;
   }
 }
 export function* getSearchData(action) {
-  const phaseObj = {
-    success: true,
-    loader:true,
-    sectionContent: [],
-  };
-  yield put(getPhaseValues(phaseObj));
   let userId = yield getState();
   if (action.payload) {
     const obj = {
@@ -258,7 +254,7 @@ export function* getSearchData(action) {
       yield put(getSearchResult(obj));
       const phaseObj = {
         success: true,
-        loader:false,
+        loader: false,
         sectionContent: [],
       };
       yield put(getPhaseValues(phaseObj));
@@ -271,12 +267,6 @@ export function* getSearchData(action) {
       data: [],
     };
     yield put(getSearchResult(obj));
-    const phaseObj = {
-      success: true,
-      loader:false,
-      sectionContent: [],
-    };
-    yield put(getPhaseValues(phaseObj));
   }
 }
 
