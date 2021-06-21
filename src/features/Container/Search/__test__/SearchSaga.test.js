@@ -10,7 +10,7 @@ import {
   setAsssociateProtocols,
   updateSearchResult,
   getRecentData,
-  getDataByRange
+  getDataByRange,
 } from "../saga";
 const userDetail = {
   username: "Sohan111",
@@ -473,8 +473,8 @@ describe("Dashboard Saga Unit Test", () => {
     };
     await runSaga(fakeStore, getDataByRange, {
       payload: {
-        from:"",
-        to:""
+        from: "",
+        to: "",
       },
       type: "",
     }).toPromise();
@@ -493,8 +493,8 @@ describe("Dashboard Saga Unit Test", () => {
     };
     await runSaga(fakeStore, getDataByRange, {
       payload: {
-        from:"20201124",
-        to:"20210524"
+        from: "20201124",
+        to: "20210524",
       },
       type: "",
     }).toPromise();
@@ -514,8 +514,8 @@ describe("Dashboard Saga Unit Test", () => {
     };
     await runSaga(fakeStore, getDataByRange, {
       payload: {
-        from:"20201124",
-        to:""
+        from: "20201124",
+        to: "",
       },
       type: "",
     }).toPromise();
@@ -535,8 +535,8 @@ describe("Dashboard Saga Unit Test", () => {
     };
     await runSaga(fakeStore, getDataByRange, {
       payload: {
-        from:"",
-        to:"20210524"
+        from: "",
+        to: "20210524",
       },
       type: "",
     }).toPromise();

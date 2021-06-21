@@ -25,7 +25,8 @@ describe("Compare Sidebar test suit", () => {
     );
   });
   test("Should Close modal", () => {
-    const closeButton = screen.getByTestId("sidebar-div").children[0].children[0];
+    const closeButton =
+      screen.getByTestId("sidebar-div").children[0].children[0];
     screen.debug();
     fireEvent.click(closeButton);
     screen.debug();

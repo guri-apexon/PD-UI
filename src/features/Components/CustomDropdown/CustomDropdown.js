@@ -61,10 +61,10 @@ const CustomDropdown = ({
     setBlur(false);
   }, [blur]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setList(source);
   }, [source]);
-  
+
   const onTextFieldChange = (id, e, type) => {
     let customListTemp = _.cloneDeep(source);
     let str = getModifyString(e.target.value);
@@ -142,8 +142,8 @@ const CustomDropdown = ({
     ) {
       return;
     } else {
- setExpandClass('');
- setBlur(true);
+      setExpandClass("");
+      setBlur(true);
     }
   };
   const onClickAdd = (e) => {
@@ -179,7 +179,10 @@ const CustomDropdown = ({
           onChange={(e) => onTextFieldChange(id, e, "Textbox")}
           onClick={(e) => onCustomClick(id, e, "fieldType")}
         />
-        <div className={`custom-dropdown-list ${error && "adjust-margin"}`} data-testid="custom-dropdown-list-customadd">
+        <div
+          className={`custom-dropdown-list ${error && "adjust-margin"}`}
+          data-testid="custom-dropdown-list-customadd"
+        >
           {list && list.length > 0 && subStringExist && value.label && (
             <>
               <p className="custom-list-item">

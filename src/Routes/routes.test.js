@@ -17,7 +17,7 @@ describe("Render Routes Sucessfully", () => {
   });
   test("Routes QC1", () => {
     render(
-        <Provider store={store}>
+      <Provider store={store}>
         <BrowserRouter>
           <Routes userType="QC1" />)
         </BrowserRouter>
@@ -26,7 +26,7 @@ describe("Render Routes Sucessfully", () => {
   });
   test("Routes QC2", () => {
     render(
-        <Provider store={store}>
+      <Provider store={store}>
         <BrowserRouter>
           <Routes userType="QC2" />)
         </BrowserRouter>

@@ -170,7 +170,6 @@ describe("QC Protocol View container component", () => {
     fireEvent.click(downloadButton);
     let downloadJsonButton = container.getByTestId("download-json-button");
     fireEvent.click(downloadJsonButton);
-
   });
 });
 describe("QC Protocol View container component Laoder", () => {

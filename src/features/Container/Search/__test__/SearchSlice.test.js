@@ -12,7 +12,7 @@ import searchSlice, {
   indications,
   sponsors,
   recent,
-  range
+  range,
 } from "../searchSlice";
 
 const initialState = {
@@ -236,13 +236,13 @@ describe(" Search Slice Test Suite", () => {
     });
   });
 
-  test("Test all Searc Slice", ()=>{
-    searchFilter(initialState)
+  test("Test all Searc Slice", () => {
+    searchFilter(initialState);
     searchResult(initialState);
     totalSearchResult(initialState);
     indications(initialState);
     sponsors(initialState);
     recent(initialState);
-    range(initialState)
-  })
+    range(initialState);
+  });
 });

@@ -1,4 +1,12 @@
-import qcSlice, { getProtocols, setError, getLoader,qc, qcProtocols, qcProtocolsError, loader } from "../qcSlice";
+import qcSlice, {
+  getProtocols,
+  setError,
+  getLoader,
+  qc,
+  qcProtocols,
+  qcProtocolsError,
+  loader,
+} from "../qcSlice";
 
 const initialState = {
   protocols: [],
@@ -7,12 +15,12 @@ const initialState = {
 };
 
 const state = {
-    qc:{
-        protocols: [],
-        tableError: false,
-        loader: false,
-    }
-}
+  qc: {
+    protocols: [],
+    tableError: false,
+    loader: false,
+  },
+};
 
 describe(" QCSlice Test Suite", () => {
   test("Set Protocols For QC", () => {
@@ -70,6 +78,5 @@ describe(" QCSlice Test Suite", () => {
     qcProtocols(state);
     qcProtocolsError(state);
     loader(state);
-   
   });
 });

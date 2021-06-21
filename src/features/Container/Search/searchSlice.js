@@ -5,7 +5,7 @@ export const searchSlice = createSlice({
     filters: {},
     searchResult: {
       data: [],
-      loader:false
+      loader: false,
     },
     totalSearchResult: [],
     indications: {

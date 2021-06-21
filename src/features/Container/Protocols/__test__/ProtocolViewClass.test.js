@@ -222,8 +222,8 @@ describe("Protocol View container component", () => {
 
     // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(section);
-    let subSection = container.getByTestId("dropdown-menu-test").children[0]
-      .children[0];
+    let subSection =
+      container.getByTestId("dropdown-menu-test").children[0].children[0];
     fireEvent.click(subSection);
   });
   test("should render ProtocolViewClass section dropdown click outside", () => {

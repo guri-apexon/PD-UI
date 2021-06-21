@@ -24,20 +24,22 @@ describe("customDropdown test", () => {
     );
     // container.children[0].children[1].children[1].children[0].children[0].children[1].children[1]
     // console.log(' container.children[0].children[1].children[1].children[0].children[0].children[1].children[1] :', container.getByTestId('custom-file-upload').children[0].children[1].children[1].children[0].children[0].children[1].children[1]);
-    let button = container.getByTestId('custom-file-upload').children[0].children[1].children[1].children[0].children[0].children[1].children[1];
+    let button =
+      container.getByTestId("custom-file-upload").children[0].children[1]
+        .children[1].children[0].children[0].children[1].children[1];
     fireEvent.click(button);
     // console.log("container :", container.getByTestId('custom-file-upload').children[0].children[0]);
   });
 
   test("Should Upload File in Custom File", async () => {
-    jest.setTimeout(1500000)
+    jest.setTimeout(1500000);
     const file = new File(["(⌐□_□)"], "chucknorris.doc", {
       type: "application/msword",
     });
     let formFile = [file];
     const setUploadFile = jest.fn();
     const handleFileUploadError = jest.fn();
-    const handleUpload= jest.fn()
+    const handleUpload = jest.fn();
     const container = render(
       <CustomFileUpload
         formSelectedFiles={[]}
@@ -45,7 +47,8 @@ describe("customDropdown test", () => {
         setUploadFile={setUploadFile}
       />
     );
-    let input =container.getByTestId('custom-file-upload').children[0].children[0];
+    let input =
+      container.getByTestId("custom-file-upload").children[0].children[0];
     fireEvent.change(input, { target: { files: formFile } });
     jest.useFakeTimers();
     // container.instance().setTimeoutFn();

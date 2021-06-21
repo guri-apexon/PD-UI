@@ -38,10 +38,17 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "coverage": "npm run test --coverage --wathcAll=false",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "additional-rule": "warn",
+      "semi": 0,
+      "no-console": 0
+    }
   },
   "browserslist": {
     "production": [
@@ -81,10 +88,15 @@
       "!src/features/Container/Search/Data/search.metadata.js"
     ]
   },
+  "husky": {
+    "hooks": {}
+  },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "pm2": "^4.5.1"
+    "husky": "^6.0.0",
+    "pm2": "^4.5.1",
+    "prettier": "^2.3.1"
   }
 }

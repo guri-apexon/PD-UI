@@ -132,19 +132,19 @@ var searchData = {
           id: "PHA_1",
           title: "2",
           content: "",
-          count:""
+          count: "",
         },
         {
           id: "PHA_2",
           title: "1",
           content: "",
-          count:""
+          count: "",
         },
         {
           id: "PHA_3",
           title: "3",
           content: "",
-          count:""
+          count: "",
         },
       ],
     },
@@ -157,20 +157,20 @@ var searchData = {
           id: "DOC_1",
           title: "Draft",
           content: "",
-          count:""
+          count: "",
         },
         {
           id: "DOC_2",
           title: "Final Approved",
           content: "",
-          count:""
+          count: "",
         },
         {
           id: "DOC_3",
           title: "Rejected",
           content: "",
-          count:""
-        }
+          count: "",
+        },
       ],
     },
     {
@@ -182,14 +182,14 @@ var searchData = {
           id: "AMD_1",
           title: "View All Protocol Documents",
           content: "",
-          count:""
+          count: "",
         },
         {
           id: "AMD_1",
           title: "Show Only Amendment",
           content: "",
-          count:""
-        }
+          count: "",
+        },
       ],
     },
     {
@@ -201,20 +201,20 @@ var searchData = {
           id: "DATE_1",
           title: "Last 6 Months",
           content: "",
-          count:""
+          count: "",
         },
         {
           id: "DATE_2",
           title: "Last 12 Months",
           content: "",
-          count:""
+          count: "",
         },
         {
           id: "DATE_3",
           title: "Last 5 Years",
           content: "",
-          count:""
-        }
+          count: "",
+        },
       ],
     },
   ],
