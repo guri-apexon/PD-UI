@@ -19,7 +19,7 @@
       .MuiFormControl-marginNormal {
         margin-top: 6px !important;
         .MuiInput-formControl {
-        margin-top: 4px !important;
+          margin-top: 4px !important;
         }
       }
     }
@@ -114,7 +114,8 @@
   //   display: none;
   // }
   .accordion-start > div {
-    border-bottom: none;
+    border: none;
+    // border-bottom: none;
   }
   .accordion-start {
     .grid-key-value {
@@ -177,8 +178,8 @@
     justify-content: space-between;
     font-size: 14px;
     margin-bottom: 5px;
-    button{
-      span{
+    button {
+      span {
         padding-top: 0px;
       }
     }
@@ -419,8 +420,8 @@
     font-weight: 600;
     cursor: pointer;
 
-   // strong {
-      // text-transform: uppercase;
+    // strong {
+    // text-transform: uppercase;
     // }
   }
 
@@ -464,8 +465,8 @@
     max-height: 300px;
     overflow: auto !important;
   }
-  .spon-container{
-    .Collapsible__contentOuter{
+  .spon-container {
+    .Collapsible__contentOuter {
       overflow-x: hidden !important;
     }
   }
@@ -628,5 +629,4 @@
     padding-left: 6px;
     color: #444444;
   }
-  
 }
