@@ -10,6 +10,7 @@ import Typography from "apollo-react/components/Typography";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import { navbarNotifications } from "./navbarSlice";
 import { userId } from "../../../store/userDetails";
+import Alerts from "./Alerts";
 
 import { toast } from "react-toastify";
 
@@ -75,45 +76,13 @@ function Navbar({
     //------Uncomment in Local -------
   };
 
-  useEffect(() => {
-    console.log(notificationsMenuProps);
-    const noti = _.cloneDeep(notificationsMenuProps);
-    if (noti.length) {
-      let newNotifications = false;
-      // Sorting by latest timestamp
-      noti.sort(function (a, b) {
-        return new Date(b.timestamp) - new Date(a.timestamp);
-      });
-      // converting timestamp to moment
-      // adding icons
-      // checking for new notifications
-      let notifications = noti.map((item) => {
-        item.icon = InfoIcon;
-        item.timestamp = moment(item.timestamp);
-        item.onClick = () => checkForPrimary(item);
-        // (window.location.href = `/protocols?protocolId=${item.id}&tab=3`);
-        if (!item.read) {
-          newNotifications = true;
-        }
-        return item;
-      });
-      let data = {
-        newNotifications: newNotifications,
-        notifications: notifications,
-      };
-
-      console.log("notificationsMenuProps", data);
-      setData(data);
-    }
-  }, [notificationsMenuProps, userDetail]);
-
   return (
     "userId" in userData &&
     userData.userId && (
       <div data-testid="navbar-test">
         <NavigationBar
           LogoComponent={() => (
-            <Typography
+            <div
               style={{
                 color: "white",
                 lineHeight: "56px",
@@ -126,15 +95,16 @@ function Navbar({
               onClick={() => history.push("/")}
             >
               IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
-            </Typography>
+            </div>
           )}
           // logoProps={logoProps}
-          notificationsMenuProps={data}
+          // notificationsMenuProps={data}
           menuItems={navMenuItems}
           profileMenuProps={profileMenuProps}
           onClick={({ pathname }) => onClickNavigation(pathname)}
           checkIsActive={(item) => checknav(item)}
           waves
+          otherButtons={<Alerts list={notificationsMenuProps} />}
         />
       </div>
     )
