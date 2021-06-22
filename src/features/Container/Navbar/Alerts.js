@@ -4,7 +4,7 @@ import BellIcon from "apollo-react-icons/Bell";
 import Badge from "apollo-react/components/Badge";
 
 import Popover from "apollo-react/components/Popover";
-
+import Typography from "apollo-react/components/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -50,13 +50,13 @@ const useStyles = makeStyles((theme) => ({
     outline: "none",
     paddingLeft: 14,
     paddingRight: 24,
-    backgroundColor: "#0076ae",
-    color: "#000000",
+    backgroundColor: "#eaeaea",
+    color: "#0076ae",
     "& p": {
-      color: "#000000",
+      color: "#0076ae",
     },
     "& svg": {
-      color: "#000000",
+      color: "#0076ae",
     },
   },
   timestamp: {
@@ -109,11 +109,11 @@ function Alerts({ list }) {
   return (
     <>
       <button
-        className="alert-icon"
+        className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}
         onClick={(e) => setAnchorEl(e.currentTarget)}
       >
         <Badge badgeContent={newNotifications.length} max={99}>
-          <BellIcon fontSize="small" />
+          <BellIcon />
         </Badge>
       </button>
       <Popover
@@ -156,13 +156,13 @@ function Alerts({ list }) {
               <>
                 {header && (
                   <ListItem className={classes.dayLabel} key={i}>
-                    <p
+                    <Typography
                       variant="body2"
                       gutterBottom
                       className={classes.dayLabelText}
                     >
                       {header}
-                    </p>
+                    </Typography>
                   </ListItem>
                 )}
                 <ListItem
@@ -173,7 +173,7 @@ function Alerts({ list }) {
                   }
                   key={i + 1}
                 >
-                  <Tooltip title={item.details} aria-label="add">
+                  <Tooltip title={item.details} placement="right">
                     <ListItemText
                       primary={item.header}
                       secondary={item.details}
@@ -184,9 +184,13 @@ function Alerts({ list }) {
                       }}
                     />
                   </Tooltip>
-                  <p variant="body2" gutterBottom className={classes.timestamp}>
+                  <Typography
+                    variant="body2"
+                    gutterBottom
+                    className={classes.timestamp}
+                  >
                     {moment(item.timestamp).format("LT")}
-                  </p>
+                  </Typography>
                 </ListItem>
               </>
             );

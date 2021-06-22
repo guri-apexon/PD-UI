@@ -19,9 +19,13 @@ export function* navbarNotificationData(action) {
     const notificationData = yield call(httpCall, notificationConfig);
 
     if (notificationData.success) {
-      const parseData = notificationData.data.map((item) => {
+      const parseData = notificationData.data.map((item, index) => {
         item.read = item.readFlag;
+        if (index === 1) {
+          item.read = false;
+        }
         // item.read = false;
+        // item.read = item.readFlag;
         item.header = item.protocol;
         // item.details = item.shortTitle;
         item.details =
