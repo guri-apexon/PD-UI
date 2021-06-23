@@ -1,0 +1,76 @@
+.root {
+    width: "100%";
+    max-width: 360;
+    background-color: #ffffff;
+    position: "relative";
+    overflow: "auto";
+    max-height: 300;
+    padding-bottom: 0;
+  }
+  .listItem {
+    height: 72;
+    outline: "none";
+    padding-left: 14;
+    padding-right: 24;
+    color: "#444444";
+  }
+  .listItemTextRoot {
+    padding-left: 0;
+    white-space: "nowrap";
+  }
+  .listItemTextPrimary {
+    font-size: 16;
+    font-weight: 600;
+    color: "inherit";
+  }
+  .listItemTextSecondary {
+    width: 310;
+    font-size: 14;
+    color: "inherit";
+    overflow: "hidden";
+    text-overflow: "ellipsis";
+    line-height: 1.71;
+  }
+  .listItemNotRead {
+    height: 72;
+    outline: "none";
+    padding-left: 14;
+    padding-right: 24;
+    background-color: "#eaeaea";
+    color: "#0076ae";
+    & p {
+      color: "#0076ae";
+    }
+    & svg {
+      color: "#0076ae";
+    }
+  }
+  .timestamp {
+    color: "#595959";
+    bottom: 8;
+    position: "relative";
+    white-space: "nowrap";
+    line-height: 1.71;
+    // IE11-specific selector
+    // @media all and (-ms-high-contrast: none) (-ms-high-contrast: active) {
+    //   right: 48;
+    // }
+  }
+  .icon {
+    color: "#0557d5";
+    min-width: 0;
+    margin-right: 16;
+  }
+  .iconSize {
+    font-size: 19.22;
+    padding: 0.4;
+    box-sizing: "content-box";
+  }
+  .dayLabel {
+    background-color: "#f8f9fb";
+    height: 32;
+    outline: "none";
+  }
+  .dayLabelText {
+    font-weight: 600;
+  }

@@ -273,6 +273,7 @@ function getColumns(screen) {
       accessor: "uploadDate",
       sortFunction: compareDates,
       width: "0%",
+      hidden: true,
     },
     {
       header: "Protocol",
@@ -477,7 +478,6 @@ const ProtocolTable = ({
     });
   };
 
-  console.log("isLoading", isLoading);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
       <Table
