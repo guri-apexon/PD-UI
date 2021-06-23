@@ -12,9 +12,9 @@ function FollowedProtocols({ pageRows }) {
   const protocolData = useSelector(followedProtocolsList);
   const loader = useSelector(tableLoader);
 
-  useEffect(() => {
-    dispatch({ type: "GET_FOLLOWED_PROTOCOL_SAGA" });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({ type: "GET_FOLLOWED_PROTOCOL_SAGA" });
+  // }, []);
   return (
     <>
       <ProtocolTableComp

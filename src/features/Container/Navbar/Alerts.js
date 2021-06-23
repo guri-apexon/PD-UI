@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 14,
     paddingRight: 24,
     color: "#444444",
+    borderBottom: "0.5px solid rgb(128 128 128 / 15%)",
   },
   listItemTextRoot: {
     paddingLeft: 0,
@@ -36,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     fontWeight: 600,
     color: "inherit",
+    maxWidth: "300px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   listItemTextSecondary: {
     width: 310,

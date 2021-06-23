@@ -165,7 +165,8 @@ const qcIconStatus = (status) => {
         comp: <Minus />,
         title: "QC Not Started",
       };
-    case "QC_IN_PROGRESS":
+    case "QC1":
+    case "QC2":
       return {
         comp: <Clock htmlColor={"orange"} />,
         title: "QC In Progress",
@@ -283,7 +284,7 @@ function getColumns(screen) {
       width: "15%",
     },
     {
-      header: "Activity",
+      header: "PD Activity",
       accessor: "status",
       sortFunction: compareStrings,
       customCell: ActivityCell,

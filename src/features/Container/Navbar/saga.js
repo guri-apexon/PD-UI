@@ -19,17 +19,12 @@ export function* navbarNotificationData(action) {
     const notificationData = yield call(httpCall, notificationConfig);
 
     if (notificationData.success) {
-      const parseData = notificationData.data.map((item, index) => {
+      const parseData = notificationData.data.map((item) => {
         item.read = item.readFlag;
-        if (index === 1) {
-          item.read = false;
-        }
         // item.read = false;
         // item.read = item.readFlag;
         item.header = item.protocol;
-        // item.details = item.shortTitle;
-        item.details =
-          "A Phase I, Open-label Study to Assess the Safety, Tolerability, Pharmacokinetics and Anti-Tumour Activity of Adavosertib (AZD1775) in Japanese Patients with Advanced Solid Tumours";
+        item.details = item.shortTitle;
         item.timestamp = item.timeCreated;
         item.protocolNumber = item.protocol;
         return item;

@@ -43,26 +43,26 @@ export function* protocolAsyn() {
     const protocolData = yield call(httpCall, protocolConfig);
 
     if (protocolData.success) {
-      let data = protocolData.data.map((item, i) => {
-        item.id = item.aidocId;
+      const followedProtocolData = [];
+      const myPorotocolsData = [];
+      protocolData.data.map((item, i) => {
+        // item.id = item.aidocId;
         item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
         item.protocol = !item.protocol ? "" : item.protocol;
         item.projectId = !item.projectId ? "" : item.projectId;
         item.sponsor = !item.sponsor ? "" : item.sponsor;
         item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
-
-        if (i === 1) {
-          item.qcActivity = "QC_COMPLETED";
-        } else if (i === 2) {
-          item.qcActivity = "QC_IN_PROGRESS";
-        } else if (i === 3) {
-          item.qcActivity = "QC_NOT_STARTED";
+        item.qcActivity = item.qcStatus;
+        if (!item.uploaded_or_primary_user_flg) {
+          followedProtocolData.push(item);
         } else {
-          item.qcActivity = "QC_NOT_STARTED";
+          myPorotocolsData.push(item);
         }
         return item;
       });
-      yield put(getProtocols(data));
+
+      yield put(getProtocols(myPorotocolsData));
+      yield put(getFollowedProtocols(followedProtocolData));
       yield put(setTableLoader(false));
     } else {
       yield put(setTableLoader(false));
@@ -73,62 +73,62 @@ export function* protocolAsyn() {
     yield put(setError(err.statusText));
   }
 }
-export function* followedProtocols() {
-  yield put(setTableLoader(true));
-  let userId = yield getState();
-  const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
+// export function* followedProtocols() {
+//   yield put(setTableLoader(true));
+//   let userId = yield getState();
+//   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
 
-  const protocolConfig = {
-    url: protocolUrl,
-    method: "GET",
-  };
-  try {
-    const protocolData = yield call(httpCall, protocolConfig);
+//   const protocolConfig = {
+//     url: protocolUrl,
+//     method: "GET",
+//   };
+//   try {
+//     const protocolData = yield call(httpCall, protocolConfig);
 
-    if (protocolData.success) {
-      let data = protocolData.data.map((item, i) => {
-        item.id = item.aidocId;
-        item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
-        item.protocol = !item.protocol ? "" : item.protocol;
-        item.projectId = !item.projectId ? "" : item.projectId;
-        item.sponsor = !item.sponsor ? "" : item.sponsor;
-        item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
+//     if (protocolData.success) {
+//       let data = protocolData.data.map((item, i) => {
+//         item.id = item.aidocId;
+//         item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
+//         item.protocol = !item.protocol ? "" : item.protocol;
+//         item.projectId = !item.projectId ? "" : item.projectId;
+//         item.sponsor = !item.sponsor ? "" : item.sponsor;
+//         item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
 
-        // To be removed when API available
-        if (i === 1) {
-          item.qcActivity = "QC_COMPLETED";
-          item.status = "PROCESS_COMPLETED";
-        } else if (i === 2) {
-          item.qcActivity = "QC_IN_PROGRESS";
-          item.status = "PROCESS_COMPLETED";
-        } else if (i === 3) {
-          item.qcActivity = "QC_NOT_STARTED";
-          item.status = "COMPARISON_COMPLETED";
-        } else if (i === 4) {
-          item.qcActivity = "QC_NOT_STARTED";
-          item.status = "PROCESS_COMPLETED";
-        } else if (i === 5) {
-          item.qcActivity = "QC_NOT_STARTED";
-          item.status = "ERROR";
-        } else if (i === 6) {
-          item.qcActivity = "QC_NOT_STARTED";
-          item.status = "DIGITIZER1_STARTED";
-        } else {
-          item.qcActivity = "QC_NOT_STARTED";
-        }
-        return item;
-      });
-      yield put(getFollowedProtocols(data));
-      yield put(setTableLoader(false));
-    } else {
-      yield put(setTableLoader(false));
-      yield put(setError(protocolData.err.statusText));
-    }
-  } catch (err) {
-    yield put(setTableLoader(false));
-    yield put(setError(err.statusText));
-  }
-}
+//         // To be removed when API available
+//         if (i === 1) {
+//           item.qcActivity = "QC_COMPLETED";
+//           item.status = "PROCESS_COMPLETED";
+//         } else if (i === 2) {
+//           item.qcActivity = "QC_IN_PROGRESS";
+//           item.status = "PROCESS_COMPLETED";
+//         } else if (i === 3) {
+//           item.qcActivity = "QC_NOT_STARTED";
+//           item.status = "COMPARISON_COMPLETED";
+//         } else if (i === 4) {
+//           item.qcActivity = "QC_NOT_STARTED";
+//           item.status = "PROCESS_COMPLETED";
+//         } else if (i === 5) {
+//           item.qcActivity = "QC_NOT_STARTED";
+//           item.status = "ERROR";
+//         } else if (i === 6) {
+//           item.qcActivity = "QC_NOT_STARTED";
+//           item.status = "DIGITIZER1_STARTED";
+//         } else {
+//           item.qcActivity = "QC_NOT_STARTED";
+//         }
+//         return item;
+//       });
+//       yield put(getFollowedProtocols(data));
+//       yield put(setTableLoader(false));
+//     } else {
+//       yield put(setTableLoader(false));
+//       yield put(setError(protocolData.err.statusText));
+//     }
+//   } catch (err) {
+//     yield put(setTableLoader(false));
+//     yield put(setError(err.statusText));
+//   }
+// }
 
 function sorting(data, key) {
   return data.sort(function (x, y) {
@@ -334,7 +334,7 @@ export function* watchDashboard() {
   yield takeEvery("GET_SAVED_SEARCH_DATA", savedSearchAsyn);
   yield takeEvery("RESET_ERROR_ADD_PROTOCOL", resetErrorAddProtocol);
   yield takeEvery("POST_RECENT_SEARCH_DASHBOARD", saveRecentSearch);
-  yield takeLatest("GET_FOLLOWED_PROTOCOL_SAGA", followedProtocols);
+  // yield takeLatest("GET_FOLLOWED_PROTOCOL_SAGA", followedProtocols);
   yield takeLatest("SEND_QC_REVIEW_SAGA", sendQcReview);
 }
 
