@@ -7,7 +7,7 @@ import {
   takeLatest,
 } from "redux-saga/effects";
 import { toast } from "react-toastify";
-
+import moment from "moment";
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getProtocols,
@@ -51,7 +51,9 @@ export function* protocolAsyn() {
         item.protocol = !item.protocol ? "" : item.protocol;
         item.projectId = !item.projectId ? "" : item.projectId;
         item.sponsor = !item.sponsor ? "" : item.sponsor;
-        item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
+        item.uploadDate = !item.uploadDate
+          ? ""
+          : moment(item.uploadDate).format("L");
         item.qcActivity = item.qcStatus;
         if (!item.uploaded_or_primary_user_flg) {
           followedProtocolData.push(item);

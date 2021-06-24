@@ -22,7 +22,7 @@ export function* navbarNotificationData(action) {
       const parseData = notificationData.data.map((item) => {
         item.read = item.readFlag;
         item.header = item.protocol;
-        item.details = item.shortTitle;
+        item.details = item.protocolTitle;
         // item.details =
         // "PHASE 3, RANDOMIZED, OPEN-LABEL, ACTIVE-CONTROLLED STUDY EVALUATING THE EFFICACY AND SAFETY OF ORAL VADADUSTAT FOR THE CORRECTION OF ANEMIA IN SUBJECTS WITH NON-DIALYSIS-DEPENDENT CHRONIC KIDNEY DISEASE (NDD-CKD) (PRO2TECT - CORRECTION)";
         item.timestamp = item.timeCreated;
