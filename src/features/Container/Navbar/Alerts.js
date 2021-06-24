@@ -71,6 +71,7 @@ function Alerts({ list }) {
   return (
     <>
       <button
+        data-testid="alert-bell-icon"
         className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}
         onClick={(e) => setAnchorEl(e.currentTarget)}
       >
@@ -101,6 +102,7 @@ function Alerts({ list }) {
         }}
       >
         <List
+          data-testid="nav-alert-list"
           className={"root"}
           component="nav"
           aria-label="main mailbox folders"
@@ -114,9 +116,9 @@ function Alerts({ list }) {
               header = getDayLabelText(item.timestamp);
             }
             return (
-              <>
+              <span key={item.id}>
                 {header && (
-                  <ListItem className={"dayLabel"} key={item.id}>
+                  <ListItem className={"dayLabel"}>
                     <Typography
                       variant="body2"
                       gutterBottom
@@ -136,9 +138,17 @@ function Alerts({ list }) {
                   onClick={() => checkForPrimary(item)}
                 >
                   <div className="ListItemText-root listItemTextRoot ListItemText-multiline">
-                    <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1 Typography-displayBlock">
-                      {item.header}
-                    </span>
+                    {item.header && item.header.length > 30 ? (
+                      <Tooltip title={item.header} placement="top">
+                        <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1 Typography-displayBlock">
+                          {item.header}
+                        </span>
+                      </Tooltip>
+                    ) : (
+                      <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1 Typography-displayBlock">
+                        {item.header}
+                      </span>
+                    )}
                     <Tooltip title={item.details} placement="right">
                       <p className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock">
                         {item.details}
@@ -152,7 +162,7 @@ function Alerts({ list }) {
 
                   <span className="TouchRipple-root"></span>
                 </div>
-              </>
+              </span>
             );
           })}
         </List>

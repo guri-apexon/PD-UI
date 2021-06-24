@@ -107,6 +107,8 @@
   font-size: 16px;
   font-weight: 600;
   color: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .listItemTextSecondary {
   width: 310px;
