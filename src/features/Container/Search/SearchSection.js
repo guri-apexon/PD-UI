@@ -24,7 +24,7 @@ class ProtocolSearchButton extends React.Component {
   };
 
   handleDeleteChip = (e) => {
-    this.state["search"] = "";
+    this.setState["search"] = "";
   };
 
   handleSearchProtocol = (e) => {

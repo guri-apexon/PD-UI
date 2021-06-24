@@ -9,7 +9,6 @@ import "./handleSearch.scss";
 
 import {
   TOC,
-  phases,
   documentStatus,
   qcActivity,
   dateSection,
@@ -193,14 +192,19 @@ const HandleSearch = (props) => {
   }, [sectiondata]);
 
   useEffect(() => {
+    console.log("useEffect", typed);
     const timeoutId = setTimeout(() => {
       if (typed) {
-        const newArr = searchWords(typed, data.sectionContent);
+        console.log("typed if", typed);
+        const newArr = searchWords(typed, sectiondata.sectionContent);
+        console.log("Array length", newArr, newArr.length);
         if (newArr.length !== 0) {
+          console.log("typed length if", typed);
           setData({ success: true, sectionContent: newArr });
           setIndex(index + 1);
           setNoResult(false);
         } else {
+          console.log("typed length else", typed);
           setData({ success: true, sectionContent: newArr });
           setIndex(index + 1);
           setNoResult(true);
@@ -210,6 +214,7 @@ const HandleSearch = (props) => {
     return () => clearTimeout(timeoutId);
   }, [typed]);
   const handleTextChange = (value) => {
+    // debugger
     setTyped(value);
     if (value === "") {
       setData(sectiondata);
@@ -222,9 +227,9 @@ const HandleSearch = (props) => {
         <div className="handle-search-component">
           <Search
             placeholder="Search"
-            size="small"
             onChange={(e) => handleTextChange(e.target.value)}
             value={typed}
+            fullWidth
           />
         </div>
         {data.sectionContent && data.sectionContent.length > 0 ? (
@@ -250,13 +255,19 @@ const HandleSearch = (props) => {
             </div>
           )
         )}
-        {noResult && <div className="no-result">No {forSection} found.</div>}
+        {noResult && (
+          <div className="no-result">
+            No {forSection} found for keyword searched. Please try something
+            else.
+          </div>
+        )}
       </Collapsible>
     </>
   );
 };
 
 const searchWords = (nameKey, myArray) => {
+  console.log("Coming", nameKey, myArray);
   let arr = [];
   for (var i = 0; i < myArray.length; i++) {
     if (myArray[i].title.toLowerCase().includes(nameKey.toLowerCase())) {

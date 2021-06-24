@@ -15,7 +15,6 @@ import moment from "moment";
 
 const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
 const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
-const phaseUrl = `/phases.json`;
 
 const ALLISP = `${BASE_URL_8000}/api/keyword_search/`;
 
@@ -176,7 +175,7 @@ function constructFilterObject(arr) {
   if (arr.length > 0) {
     let phaseData = arr;
     const filtered = phaseData.filter(function (el) {
-      return el != "";
+      return el !== "";
     });
     let formatPhases = filtered.sort().map((item) => {
       return {

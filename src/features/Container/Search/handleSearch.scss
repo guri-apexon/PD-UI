@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
+  padding: 6px 22px;
 }
 .spon-container .Collapsible span {
   text-transform: capitalize;
@@ -12,5 +13,18 @@
   margin-bottom: 30px;
   margin-top: 30px;
   font-weight: 500;
-  text-transform: capitalize;
+  // text-transform: capitalize;
+  padding: 6px 18px;
+}
+.spon-container {
+  .Collapsible__contentOuter {
+    overflow: hidden !important;
+    .virtualization-set {
+      overflow: auto;
+      overflow-x: hidden;
+      input[type="search"] {
+        height: 32px;
+      }
+    }
+  }
 }

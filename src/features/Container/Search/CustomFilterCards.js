@@ -1,7 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { neutral7 } from "apollo-react/colors";
-import classNames from "classnames";
-
 import Card from "apollo-react/components/Card";
 import CardContent from "apollo-react/components/CardContent";
 import Typography from "apollo-react/components/Typography";
@@ -12,18 +10,11 @@ import Radio from "apollo-react/components/Radio";
 import RadioGroup from "apollo-react/components/RadioGroup";
 import DateRangePicker from "apollo-react/components/DateRangePickerV2";
 
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import moment from "moment";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-import {
-  List,
-  AutoSizer,
-  CellMeasurer,
-  CellMeasurerCache,
-} from "react-virtualized";
+import { CellMeasurerCache } from "react-virtualized";
 
-import axios from "axios";
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -72,24 +63,6 @@ const useStyles = makeStyles({
   },
 });
 
-// export const TableOfContent = ({ section }) => {
-//   return (
-//     <Card>
-//       <CardContent>
-//         <div>
-//           <div style={{ marginTop: 10 }}>
-//             {section.sectionContent.map((content, i) => (
-//               <p className="text-filter" key={content.id}>
-//                 {content.title}
-//               </p>
-//             ))}
-//           </div>
-//         </div>
-//       </CardContent>
-//     </Card>
-//   );
-// };
-
 export const CheckboxCard = ({
   section,
   index,
@@ -137,69 +110,6 @@ export const CheckboxCard = ({
   );
 };
 
-// export const TextCard = ({ section }) => {
-//   const [value, setValue] = React.useState([]);
-
-//   const handleChange = (e) => {
-//     setValue(e.target.value);
-//   };
-
-//   const classes = useStyles();
-//   return (
-//     <Card>
-//       <CardContent>
-//         <div className={classes.cardSubtitle}>
-//           <div style={{ marginTop: 10 }}>
-//             {section.sectionContent.map((content, i) => (
-//               <p
-//                 className="text-filter"
-//                 key={content.id}
-//                 style={{ fontSize: 13 }}
-//               >
-//                 {content.title}
-//               </p>
-//             ))}
-//           </div>
-//         </div>
-//       </CardContent>
-//     </Card>
-//   );
-// };
-
-// export const RadioCard = ({ state, section, index }) => {
-//   const [value, setValue] = React.useState([]);
-
-//   const handleChange = (e) => {
-//     setValue(e.target.value);
-//     state["searchValue"] = e.target.value;
-//   };
-
-//   const classes = useStyles();
-//   return (
-//     <Card
-//       className={classNames(classes.card, index === 0 && classes.cardHighlight)}
-//     >
-//       <CardContent>
-//         <Typography className={classes.cardSubtitle} variant="caption">
-//           <div style={{ marginTop: 10 }}>
-//             <RadioGroup value={state["searchValue"]} onChange={handleChange}>
-//               {section.sectionContent.map((content, i) => (
-//                 <Radio
-//                   id={section.sectionContent[i].id + "_" + i}
-//                   key={i}
-//                   value={section.sectionContent[i].id + "_" + i}
-//                   label={content.title}
-//                   size="small"
-//                 />
-//               ))}
-//             </RadioGroup>
-//           </div>
-//         </Typography>
-//       </CardContent>
-//     </Card>
-//   );
-// };
-
 export const DateRangeCard = ({
   section,
   dateType,
@@ -227,12 +137,7 @@ export const DateRangeCard = ({
       // debugger;
       dispatch({ type: "FILTER_BY_RECENT_SAGA", payload: value });
     }
-  }, [value]);
-  const isFutureDate = (value) => {
-    let d_now = new Date();
-    let d_inp = new Date(value);
-    return d_now.getTime() <= d_inp.getTime();
-  };
+  }, [value, dispatch]);
 
   useEffect(() => {
     // debugger;
@@ -248,24 +153,7 @@ export const DateRangeCard = ({
       to: date2 || null,
     };
     dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
-    // if (dateRange.length === 2 && dateRange[0]  dateRange[1]) {
-    //   let date1 = dateRange[0].format("MM-DD-YYYY");
-    //   let date2 = dateRange[1].format("MM-DD-YYYY");
-    //   if (isFutureDate(date1) || isFutureDate(date2)) {
-    //     const range = {
-    //       from: date1,
-    //       to: date2,
-    //     };
-    //     dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
-    //   } else {
-    //     const range = {
-    //       from: date1,
-    //       to: date2,
-    //     };
-    //     dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
-    //   }
-    // }
-  }, [dateRange]);
+  }, [dateRange, dispatch]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -286,11 +174,6 @@ export const DateRangeCard = ({
     }
     // debugger
     onCheckboxClick([obj.id], identifier2);
-    // debugger;
-  };
-
-  const handleRange = (e) => {
-    setDateRange(e.target.value);
     // debugger;
   };
 
@@ -315,7 +198,7 @@ export const DateRangeCard = ({
         }
       }
     }
-  }, [listValue2]);
+  }, [listValue2, section.sectionContent]);
 
   const handleChange1 = (e) => {
     setValue1(parseInt(e.target.value));
@@ -429,8 +312,6 @@ export const DateRangeCard = ({
     </Card>
   );
 };
-
-const rowCount = 1000;
 
 export class CheckboxTest extends React.Component {
   constructor() {

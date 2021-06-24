@@ -1,43 +1,41 @@
-import CheckBox from "apollo-react/components/Checkbox";
+// import CheckBox from "apollo-react/components/Checkbox";
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
-
-const arr = [];
 /* istanbul ignore next */
-const CheckBoxCell = ({ row }) => {
-  // debugger
-  console.log(row);
-  // if(row.protocolSelected.includes(row.id)){
-  // debugger
-  return (
-    <>
-      {row.isPrimaryUser ? (
-        <div>
-          <CheckBox
-            onChange={() => row.handleSelectRow(row.id, row.protocol)}
-            checked={row.protocolSelected.includes(row.id)}
-          />
-        </div>
-      ) : (
-        <div>
-          <CheckBox disabled />
-        </div>
-      )}
-    </>
-  );
-  // }else{
-  //   // debugger
-  //   return (
-  //     <div>
-  //       <CheckBox onChange={() => row.handleSelectRow(row.id, row.protocol)} checked={false}/>
-  //     </div>
-  //   );
-  // }
-};
+// const CheckBoxCell = ({ row }) => {
+//   // debugger
+//   console.log(row);
+//   // if(row.protocolSelected.includes(row.id)){
+//   // debugger
+//   return (
+//     <>
+//       {row.isPrimaryUser ? (
+//         <div>
+//           <CheckBox
+//             onChange={() => row.handleSelectRow(row.id, row.protocol)}
+//             checked={row.protocolSelected.includes(row.id)}
+//           />
+//         </div>
+//       ) : (
+//         <div>
+//           <CheckBox disabled />
+//         </div>
+//       )}
+//     </>
+//   );
+//   // }else{
+//   //   // debugger
+//   //   return (
+//   //     <div>
+//   //       <CheckBox onChange={() => row.handleSelectRow(row.id, row.protocol)} checked={false}/>
+//   //     </div>
+//   //   );
+//   // }
+// };
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
   return (
     <>
