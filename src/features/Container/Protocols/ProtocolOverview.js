@@ -51,7 +51,7 @@ const ProtocolOverview = ({ data }) => {
               </div>
               <div className="row-item">
                 <label>QC Activity</label>
-                <span data-testid="qc-activity-value">{data.qcActivity}</span>
+                <span data-testid="qc-activity-value">{data.qcStatus}</span>
               </div>
             </div>
           </div>

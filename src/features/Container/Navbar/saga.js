@@ -21,14 +21,18 @@ export function* navbarNotificationData(action) {
     if (notificationData.success) {
       const parseData = notificationData.data.map((item) => {
         item.read = item.readFlag;
-        // item.read = false;
-        // item.read = item.readFlag;
         item.header = item.protocol;
         item.details = item.shortTitle;
+        // item.details =
+        // "PHASE 3, RANDOMIZED, OPEN-LABEL, ACTIVE-CONTROLLED STUDY EVALUATING THE EFFICACY AND SAFETY OF ORAL VADADUSTAT FOR THE CORRECTION OF ANEMIA IN SUBJECTS WITH NON-DIALYSIS-DEPENDENT CHRONIC KIDNEY DISEASE (NDD-CKD) (PRO2TECT - CORRECTION)";
         item.timestamp = item.timeCreated;
         item.protocolNumber = item.protocol;
         return item;
       });
+      parseData.sort(function (a, b) {
+        return new Date(b.timestamp) - new Date(a.timestamp);
+      });
+
       yield put(getNotification(parseData));
     } else {
       yield put(setError(notificationData.err.statusText));

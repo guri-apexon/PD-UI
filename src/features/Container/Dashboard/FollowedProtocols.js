@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 
 import {
   followedProtocolsList,
@@ -8,13 +8,9 @@ import {
 import ProtocolTableComp from "../../Components/Dashboard/ProtocolTable";
 
 function FollowedProtocols({ pageRows }) {
-  const dispatch = useDispatch();
   const protocolData = useSelector(followedProtocolsList);
   const loader = useSelector(tableLoader);
 
-  // useEffect(() => {
-  //   dispatch({ type: "GET_FOLLOWED_PROTOCOL_SAGA" });
-  // }, []);
   return (
     <>
       <ProtocolTableComp
