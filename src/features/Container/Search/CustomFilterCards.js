@@ -439,7 +439,6 @@ export class CheckboxTest extends React.Component {
       list: [],
       value: [],
     };
-    this.renderRow = this.renderRow.bind(this);
 
     this.cache = new CellMeasurerCache({
       fixedWidth: true,
@@ -447,8 +446,6 @@ export class CheckboxTest extends React.Component {
     });
   }
   static getDerivedStateFromProps(props, state) {
-    // debugger;
-    console.log("Props::::::::", props.listValue);
     if (
       state.list.length === 0 &&
       props.section &&
@@ -458,40 +455,9 @@ export class CheckboxTest extends React.Component {
         list: props.section.sectionContent,
       };
     }
-    // if (state.value.length === 0) {
-    //   return {
-    //     value: props.listValue,
-    //   };
-    // }
-    // if (props.clearAll) {
-    //   return {
-    //     value: [],
-    //   };
-    // }
-    // if (props.clearAll) {
-    //   props.onCheckboxClick([], props.identifier);
-    //   return {
-    //     value: [],
-    //   };
-    // }
-
     return null;
   }
-  // componentDidMount() {
-  //   axios
-  //     .get("http://ca2spdml01q:8000/api/protocol_sponsor/?skip=0")
-  //     .then((res) => {
-  //       const data = res.data;
-  //       this.setState({
-  //         list: data,
-  //       });
-  //     });
-  // }
   handleChange = (e) => {
-    // setValue(e.target.value);
-    // let checkedValue = parseInt(e.target.value, 10);
-    // const { value } = this.state;
-    // debugger;
     let selectedArr = this.props.listValue;
     const selectedValue = parseInt(e.target.value, 10);
 
@@ -504,78 +470,9 @@ export class CheckboxTest extends React.Component {
       selectedArr.push(selectedValue);
       this.props.onCheckboxClick(selectedArr, this.props.identifier);
     }
-
-    // debugger;
-    // if (index > -1) {
-    //   this.setState(
-    //     {
-    //       value: this.state.value.filter((item) => item !== selectedValue),
-    //     },
-    //     () => {
-    //       console.log(this.state.value);
-    //       this.props.onCheckboxClick(this.state.value, this.props.identifier);
-    //     }
-    //   );
-    // } else {
-    //   this.setState(
-    //     {
-    //       value: this.state.value.concat([selectedValue]),
-    //     },
-    //     () => {
-    //       this.props.onCheckboxClick(this.state.value, this.props.identifier);
-    //     }
-    //   );
-    // }
-
-    // debugger;
   };
-  // componentDidUpdate(prevProps, prevState){
-  //   console.log("Prev",prevProps, prevState)
-  //   console.log("current",this.props, this.state)
-  // }
-  // componentDidUpdate(prevProps, prevState) {
-  //   if (prevProps.clearAll !== this.props.clearAll) {
-  //     // debugger;
-  //     if (this.props.clearAll) {
-  //       this.setState({
-  //         value: [],
-  //       });
-  //     }
-  //   }
-  // }
-
-  renderRow({ index, key, style, parent }) {
-    return (
-      <CellMeasurer
-        key={key}
-        cache={this.cache}
-        parent={parent}
-        columnIndex={0}
-        rowIndex={index}
-      >
-        <div style={style} className="row">
-          <div className="new-checkbox-style">
-            <input
-              type="checkbox"
-              id={this.state.list[index].id}
-              value={this.state.list[index].id}
-              onChange={this.handleChange}
-              checked={
-                this.props.listValue &&
-                this.props.listValue.includes(this.state.list[index].id)
-              }
-            />
-            <label htmlFor={`#${this.state.list[index].id}`}>
-              {this.state.list[index].title}
-            </label>
-          </div>
-        </div>
-      </CellMeasurer>
-    );
-  }
 
   render() {
-    console.log("Loaded", this.props.listValue);
     return this.state.list.length > 0 ? (
       <div className="virtualization-set">
         <div className="list">
@@ -596,22 +493,6 @@ export class CheckboxTest extends React.Component {
               </label>
             </div>
           ))}
-          {/* <AutoSizer>
-            {({ width, height }) => {
-              return (
-                <List
-                  width={width}
-                  height={height}
-                  deferredMeasurementCache={this.cache}
-                  rowHeight={this.cache.rowHeight}
-                  rowRenderer={this.renderRow}
-                  rowCount={this.state.list.length}
-                  overscanRowCount={3}
-                  data={this.props.listValue}
-                />
-              );
-            }}
-          </AutoSizer> */}
         </div>
       </div>
     ) : (
