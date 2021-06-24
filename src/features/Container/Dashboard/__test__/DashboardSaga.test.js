@@ -663,7 +663,7 @@ describe("Dashboard Saga Unit Test", () => {
 
   // Test GET_FOLLOWED_PROTOCOL_SAGA function Start
 
-  test("GET_FOLLOWED_PROTOCOL_SAGA Saga Success", async () => {
+  xtest("GET_FOLLOWED_PROTOCOL_SAGA Saga Success", async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
@@ -717,7 +717,7 @@ describe("Dashboard Saga Unit Test", () => {
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  test("GET_FOLLOWED_PROTOCOL_SAGA Saga fails", async () => {
+  xtest("GET_FOLLOWED_PROTOCOL_SAGA Saga fails", async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,

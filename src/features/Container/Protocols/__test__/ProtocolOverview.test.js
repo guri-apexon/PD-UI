@@ -160,8 +160,8 @@ describe("Protocol Overview Testsuit", () => {
     const { getByTestId, getByText } = render(
       <ProtocolOverview data={startingState} />
     );
-    let cardHeader = getByText("Activity");
-    expect(cardHeader).toHaveTextContent("Activity");
+    let cardHeader = getByText("PD Activity");
+    expect(cardHeader).toHaveTextContent("PD Activity");
   });
 
   test("Should have Activity with value", async () => {
