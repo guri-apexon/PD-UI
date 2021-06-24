@@ -95,7 +95,7 @@ const Cell = ({ row, column: { accessor: key } }) => {
 };
 
 const StatusCell = ({ row, column: { accessor: key } }) => {
-  return <span className='text-capitalize'>{row[key] ? row[key] : "-"}</span>;
+  return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
 };
 
 const columns = [

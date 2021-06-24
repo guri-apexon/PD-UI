@@ -1,6 +1,13 @@
 import { runSaga } from "redux-saga";
 
-import { qcProtocolsData,  qcApprove, sendQc2Approval, qc2Reject,uploadQc, watchqc} from "../saga";
+import {
+  qcProtocolsData,
+  qcApprove,
+  sendQc2Approval,
+  qc2Reject,
+  uploadQc,
+  watchqc,
+} from "../saga";
 import * as api from "../../../../utils/api";
 const userDetail = {
   username: "Sohan111",
@@ -9,13 +16,13 @@ const userDetail = {
   user_type: "QC2",
 };
 const file = new File(["(⌐□_□)"], "chucknorris.json", {
-    type: "application/json",
-  });
+  type: "application/json",
+});
 
 const uploadData = {
-    data:[file],
-    id:1111
-}
+  data: [file],
+  id: 1111,
+};
 describe("Qc Saga Unit Test", () => {
   test("qcProtocolsData Success", async () => {
     const dispatchedActions = [];
@@ -211,7 +218,6 @@ describe("Qc Saga Unit Test", () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-
 
   // sendQc2Approval
   test("sendQc2Approval Success", async () => {
@@ -413,8 +419,8 @@ describe("Qc Saga Unit Test", () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-  
-  test('should watch all Dashboard Sagas', () => {
+
+  test("should watch all Dashboard Sagas", () => {
     const watchAll = watchqc();
   });
 });

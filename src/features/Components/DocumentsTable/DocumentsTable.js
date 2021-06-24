@@ -1,15 +1,15 @@
 import Table from "apollo-react/components/Table";
 import React, { useEffect } from "react";
-import moment from 'moment'
+import moment from "moment";
 import axios from "axios";
-import {BASE_URL_8000, UI_URL} from '../../../utils/api';
+import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 // const Cell = ({ row, column }) => (
-  // <a href={row.documentFilePath} target="_blank">
-  //   {row.fileName}
-  // </a>
-  // <span onClick={()=>downloadDoc(row.path)}>
-  //   {row.fileName}
-  // </span>
+// <a href={row.documentFilePath} target="_blank">
+//   {row.fileName}
+// </a>
+// <span onClick={()=>downloadDoc(row.path)}>
+//   {row.fileName}
+// </span>
 // );
 // const downloadDoc = (path) =>{
 //   // file://quintiles.net/enterprise/Services/protdigtest/
@@ -28,20 +28,31 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     const resp = await axios.get(
       `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
     );
-  
+
     url = `${UI_URL}/${resp.data}`;
-    let encodeUrl=encodeURI(url);
+    let encodeUrl = encodeURI(url);
     let myWindow = window.open("about:blank", "_blank");
-    myWindow.document.write(`<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`);
-  
+    myWindow.document.write(
+      `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
+    );
+
     // window.open(
     //   url,
     //   "_blank" // <- This is what makes it open in a new window.
     // );
   };
-  return  <p className="hyperlink" data-testid="documentTable-sourcefile" onClick={() => handleDownload(row)}>{row[key]}</p>; // eslint-disable-line
+  return (
+    <p
+      className="hyperlink"
+      data-testid="documentTable-sourcefile"
+      onClick={() => handleDownload(row)}
+    >
+      {row[key]}
+    </p>
+  ); // eslint-disable-line
 };
-const DataCell = ({row, column}) => (moment(row[column.accessor]).format('DD-MMM-YYYY'));
+const DataCell = ({ row, column }) =>
+  moment(row[column.accessor]).format("DD-MMM-YYYY");
 const columns = [
   {
     accessor: "fileName",
@@ -60,8 +71,14 @@ const columns = [
 ];
 
 const DocumentsTable = ({ initialsRow }) => {
-    
-  return <Table title="Source Document" rows={initialsRow} columns={columns}  />;
+  return (
+    <Table
+      title="Source Document"
+      rows={initialsRow}
+      columns={columns}
+      hidePagination
+    />
+  );
 };
 
 export default DocumentsTable;

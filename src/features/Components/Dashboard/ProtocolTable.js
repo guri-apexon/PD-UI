@@ -165,7 +165,8 @@ const qcIconStatus = (status) => {
         comp: <Minus />,
         title: "QC Not Started",
       };
-    case "QC_IN_PROGRESS":
+    case "QC1":
+    case "QC2":
       return {
         comp: <Clock htmlColor={"orange"} />,
         title: "QC In Progress",
@@ -273,6 +274,7 @@ function getColumns(screen) {
       accessor: "uploadDate",
       sortFunction: compareDates,
       width: "0%",
+      hidden: true,
     },
     {
       header: "Protocol",
@@ -282,7 +284,7 @@ function getColumns(screen) {
       width: "15%",
     },
     {
-      header: "Activity",
+      header: "PD Activity",
       accessor: "status",
       sortFunction: compareStrings,
       customCell: ActivityCell,
@@ -477,7 +479,6 @@ const ProtocolTable = ({
     });
   };
 
-  console.log("isLoading", isLoading);
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
       <Table

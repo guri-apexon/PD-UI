@@ -7,7 +7,7 @@ describe("customDropdown test", () => {
     let formValue = {
       label: "",
     };
-    let onChange=jest.fn();
+    let onChange = jest.fn();
     let onBlur = jest.fn();
     let sponsor = [
       {
@@ -18,7 +18,12 @@ describe("customDropdown test", () => {
       },
     ];
     const container = render(
-      <CustomDropdown formValue={formValue} source={sponsor} onChange={onChange} onBlur={onBlur} />
+      <CustomDropdown
+        formValue={formValue}
+        source={sponsor}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
     );
     // debug();
   });
@@ -26,7 +31,7 @@ describe("customDropdown test", () => {
     let formValue = {
       label: "",
     };
-    let onChange=jest.fn();
+    let onChange = jest.fn();
     let onBlur = jest.fn();
     let sponsor = [
       {
@@ -37,7 +42,12 @@ describe("customDropdown test", () => {
       },
     ];
     const container = render(
-      <CustomDropdown formValue={formValue} source={sponsor} onChange={onChange} onBlur={onBlur}/>
+      <CustomDropdown
+        formValue={formValue}
+        source={sponsor}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
     );
     let dropdown = container.getByTestId("custom-dropdown-test-id").children[0]
       .children[0].children[1].children[0];
@@ -49,7 +59,7 @@ describe("customDropdown test", () => {
     let formValue = {
       label: "",
     };
-    let onChange=jest.fn();
+    let onChange = jest.fn();
     let onBlur = jest.fn();
     let sponsor = [
       {
@@ -60,7 +70,12 @@ describe("customDropdown test", () => {
       },
     ];
     const container = render(
-      <CustomDropdown formValue={formValue} source={sponsor} onChange={onChange} onBlur={onBlur}/>
+      <CustomDropdown
+        formValue={formValue}
+        source={sponsor}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
     );
     let dropdown = container.getByTestId("custom-dropdown-test-id").children[0]
       .children[0].children[1].children[0];
@@ -70,7 +85,7 @@ describe("customDropdown test", () => {
     let formValue = {
       label: "",
     };
-    let onChange=jest.fn();
+    let onChange = jest.fn();
     let onBlur = jest.fn();
     let sponsor = [
       {
@@ -87,7 +102,12 @@ describe("customDropdown test", () => {
       },
     ];
     const container = render(
-      <CustomDropdown formValue={formValue} source={sponsor} onChange={onChange} onBlur={onBlur} />
+      <CustomDropdown
+        formValue={formValue}
+        source={sponsor}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
     );
     let dropdown = container.getByTestId("custom-dropdown-test-id").children[0]
       .children[0].children[1].children[0];
@@ -99,7 +119,7 @@ describe("customDropdown test", () => {
     let formValue = {
       label: "",
     };
-    let onChange=jest.fn();
+    let onChange = jest.fn();
     let onBlur = jest.fn();
     let sponsor = [
       {
@@ -110,7 +130,12 @@ describe("customDropdown test", () => {
       },
     ];
     const container = render(
-      <CustomDropdown formValue={formValue} source={sponsor} onChange={onChange} onBlur={onBlur} />
+      <CustomDropdown
+        formValue={formValue}
+        source={sponsor}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
     );
     let dropdown = container.getByTestId("custom-dropdown-test-id").children[0]
       .children[0].children[1].children[0];
@@ -121,7 +146,7 @@ describe("customDropdown test", () => {
     let formValue = {
       label: "",
     };
-    let onChange=jest.fn();
+    let onChange = jest.fn();
     let onBlur = jest.fn();
     let sponsor = [
       {
@@ -138,7 +163,12 @@ describe("customDropdown test", () => {
       },
     ];
     const container = render(
-      <CustomDropdown formValue={formValue} source={sponsor} onChange={onChange} onBlur={onBlur} />
+      <CustomDropdown
+        formValue={formValue}
+        source={sponsor}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
     );
     let dropdown = container.getByTestId("custom-dropdown-test-id").children[0]
       .children[0].children[1].children[0];
@@ -151,7 +181,7 @@ describe("customDropdown test", () => {
     let formValue = {
       label: "",
     };
-    let onChange=jest.fn();
+    let onChange = jest.fn();
     let onBlur = jest.fn();
     let sponsor = [
       {
@@ -168,19 +198,24 @@ describe("customDropdown test", () => {
       },
     ];
     const container = render(
-      <CustomDropdown formValue={formValue} source={sponsor} onChange={onChange} onBlur={onBlur} />
+      <CustomDropdown
+        formValue={formValue}
+        source={sponsor}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
     );
     let dropdown = container.getByTestId("custom-dropdown-test-id").children[0]
       .children[0].children[1].children[0];
 
-    fireEvent.click(dropdown)
+    fireEvent.click(dropdown);
   });
 
   test("customDropdown render test 8", async () => {
     let formValue = {
       label: "",
     };
-    let onChange=jest.fn();
+    let onChange = jest.fn();
     let onBlur = jest.fn();
     let sponsor = [
       {
@@ -197,11 +232,17 @@ describe("customDropdown test", () => {
       },
     ];
     const container = render(
-      <CustomDropdown formValue={formValue} source={sponsor} onChange={onChange} onBlur={onBlur} />
+      <CustomDropdown
+        formValue={formValue}
+        source={sponsor}
+        onChange={onChange}
+        onBlur={onBlur}
+      />
     );
-    let dropdown = container.getByTestId("custom-dropdown-test-id").children[0] .children[0].children[1].children[0];
-    let listItem = container.getByTestId('custom-dropdown-list-exist-0');
+    let dropdown = container.getByTestId("custom-dropdown-test-id").children[0]
+      .children[0].children[1].children[0];
+    let listItem = container.getByTestId("custom-dropdown-list-exist-0");
     fireEvent.change(dropdown, { target: { value: "N" } });
-    fireEvent.click(listItem)
+    fireEvent.click(listItem);
   });
 });

@@ -30,7 +30,7 @@ const SearchListingSection = ({
   history,
   onViewAssociateProtocolClick,
   protocolSelected,
-  handleFollow
+  handleFollow,
 }) => {
   const userId1 = useSelector(userId);
   const onExpandClick = (data) => {
@@ -52,12 +52,15 @@ const SearchListingSection = ({
       toast.info("Access Provisioned to Primary Users only");
     }
   };
-  const handleFollowChange = (e, checked, data) =>{
-  handleFollow(e, checked, data)
-  }
+  const handleFollowChange = (e, checked, data) => {
+    handleFollow(e, checked, data);
+  };
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
-      <div className="marginTop width100 marginLeft10" data-testid={`searchListing-card-${data.AiDocId}`}>
+      <div
+        className="marginTop width100 marginLeft10"
+        data-testid={`searchListing-card-${data.AiDocId}`}
+      >
         <div className="width100">
           <div className="width30px">
             <Checkbox />
@@ -78,7 +81,8 @@ const SearchListingSection = ({
               </span>
             </div>
             <div className="divBlock ellipse" data-testid="title-value">
-              {data.protocolDescription && data.protocolDescription.length > textLength ? (
+              {data.protocolDescription &&
+              data.protocolDescription.length > textLength ? (
                 <Tooltip
                   variant="light"
                   // title="Title"
@@ -94,9 +98,7 @@ const SearchListingSection = ({
                   </p>
                 </Tooltip>
               ) : (
-                <p
-                  className="grid-item grid-key-value"
-                >
+                <p className="grid-item grid-key-value">
                   {data.protocolDescription}
                 </p>
               )}
@@ -104,7 +106,12 @@ const SearchListingSection = ({
             </div>
           </div>
           <div className="width5 swtichButton">
-            <Switch label="follow" size="small" checked={data.followed}  onChange={(e, checked)=>handleFollowChange(e, checked, data)}/>
+            <Switch
+              label="follow"
+              size="small"
+              checked={data.followed}
+              onChange={(e, checked) => handleFollowChange(e, checked, data)}
+            />
           </div>
         </div>
 

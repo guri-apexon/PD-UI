@@ -204,6 +204,14 @@ const AssociateDocumentsTable = ({
           return _.merge(temp, details);
         })}
         columns={showCheckbox ? columns : noActionColumns}
+        rowsPerPageOptions={[5, 10, "All"]}
+        tablePaginationProps={{
+          labelDisplayedRows: ({ from, to, count }) =>
+            `${
+              count === 1 ? "Document" : "Documents"
+            } ${from}-${to} of ${count}`,
+          truncate: true,
+        }}
       />
     </div>
   );

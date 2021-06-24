@@ -40,7 +40,7 @@ export const initialFormErrorValues = {
     error: false,
     errorMessage: " ",
     // regex: "^[1-9]*?.[0-9]{0,2}$", // eslint-disable-line
-    regex:/^[1-9]\d*(?:\.\d{1,2})?$/gm,  // eslint-disable-line
+    regex: /^[1-9]\d*(?:\.\d{1,2})?$/gm, // eslint-disable-line
     type: "Textbox",
   },
   sponsor: {

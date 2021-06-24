@@ -1,7 +1,5 @@
 import React from "react";
-import {
-  render
-} from "../../../test-utils/test-utils";
+import { render } from "../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import Documents from "./Documents";
 import * as redux from "react-redux";

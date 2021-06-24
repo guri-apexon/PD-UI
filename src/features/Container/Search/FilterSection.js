@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Collapsible from "react-collapsible";
+import Search from "apollo-react/components/Search";
 
 import { CheckboxCard, DateRangeCard, CheckboxTest } from "./CustomFilterCards";
 
 import Loader from "../../Components/Loader/Loader";
+import "./handleSearch.scss";
 
 import {
   TOC,
@@ -24,9 +26,6 @@ const CollapseCard = ({
   dateRangeValue,
   clearAll,
 }) => {
-  const onOpenTrigger = () => {
-    console.log("onOpenTrigger");
-  };
   if (name === "TOC") {
     return (
       <div data-testid="toc-checkboxes">
@@ -46,87 +45,35 @@ const CollapseCard = ({
   } else if (name === "indication") {
     return (
       <div className="spon-container" data-testid="indication-checkboxes">
-        <Collapsible trigger="Indications">
-          {indicationData.sectionContent &&
-          indicationData.sectionContent.length > 0 ? (
-            <CheckboxTest
-              section={indicationData}
-              identifier="indication"
-              onCheckboxClick={onConstructSearchQuery}
-              listValue={searchQuery.indication}
+        {indicationData.sectionContent &&
+          indicationData.sectionContent.length > 0 && (
+            <HandleSearch
+              sectiondata={indicationData}
+              onConstructSearchQuery={onConstructSearchQuery}
+              searchQuery={searchQuery}
               clearAll={clearAll}
+              forSection="indication"
             />
-          ) : (
-            <div
-              style={{
-                height: 300,
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
-              }}
-            >
-              <Loader />
-            </div>
           )}
-        </Collapsible>
       </div>
     );
   } else if (name === "sponsor") {
     return (
       <div className="spon-container" data-testid="sponsor-checkboxes">
-        <Collapsible trigger="Sponsors" onOpening={() => onOpenTrigger()}>
-          {sponsorData.sectionContent &&
-          sponsorData.sectionContent.length > 0 ? (
-            <CheckboxTest
-              section={sponsorData}
-              identifier="sponsor"
-              onCheckboxClick={onConstructSearchQuery}
-              listValue={searchQuery.sponsor}
+        {sponsorData.sectionContent &&
+          sponsorData.sectionContent.length > 0 && (
+            <HandleSearch
+              sectiondata={sponsorData}
+              onConstructSearchQuery={onConstructSearchQuery}
+              searchQuery={searchQuery}
               clearAll={clearAll}
+              forSection="sponsor"
             />
-          ) : (
-            <div
-              style={{
-                height: 300,
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
-              }}
-            >
-              <Loader />
-            </div>
           )}
-        </Collapsible>
       </div>
     );
   } else if (name === "phase") {
-    console.log("::::PhaseData", phaseData);
     return (
-      // <div className="spon-container" data-testid="phase-checkboxes">
-      //   <Collapsible trigger="Phase" onOpening={() => onOpenTrigger()}>
-      // {phaseData.sectionContent &&
-      // phaseData.sectionContent.length > 0 ? (
-      //       <CheckboxTest
-      //         section={phaseData}
-      //         identifier="phase"
-      //         onCheckboxClick={onConstructSearchQuery}
-      //         listValue={searchQuery.phase}
-      //         clearAll={clearAll}
-      //       />
-      // ) : (
-      //   <div
-      //     style={{
-      //       height: 300,
-      //       justifyContent: "center",
-      //       alignItems: "center",
-      //       display: "flex",
-      //     }}
-      //   >
-      //     <Loader />
-      //   </div>
-      // )}
-      //   </Collapsible>
-      // </div>
       <div data-testid="phase-checkboxes">
         <Collapsible trigger="Phase">
           {phaseData.loader && (
@@ -160,10 +107,7 @@ const CollapseCard = ({
                   display: "flex",
                 }}
               >
-                <p style={{ padding: 10, textAlign: "center" }}>
-                  
-                </p>
-                ​
+                <p style={{ padding: 10, textAlign: "center" }}></p>​
               </div>
             )}
         </Collapsible>
@@ -227,41 +171,97 @@ const CollapseCard = ({
     );
   }
   return null;
-  // return (
-  //   <Collapsible trigger={section.sectionName}>
-  //     {section.fieldType === "text" ? (
-  //       <TableOfContent
-  //         state={state}
-  //         key={section.sectionId}
-  //         section={section}
-  //         index={index}
-  //       />
-  //     ) : section.fieldType === "radio" ? (
-  //       section.sectionName === "Date Range" ? (
-  //         <DateRangeCard
-  //           state={state}
-  //           key={section.sectionId}
-  //           section={section}
-  //           index={index}
-  //         />
-  //       ) : (
-  //         <RadioCard
-  //           state={state}
-  //           key={section.sectionId}
-  //           section={section}
-  //           index={index}
-  //         />
-  //       )
-  //     ) : (
-  //       <CheckboxCard
-  //         state={state}
-  //         key={section.sectionId}
-  //         section={section}
-  //         index={index}
-  //       />
-  //     )}
-  //   </Collapsible>
-  // );
 };
 
 export default CollapseCard;
+
+const HandleSearch = (props) => {
+  const {
+    sectiondata,
+    onConstructSearchQuery,
+    searchQuery,
+    clearAll,
+    forSection,
+  } = props;
+
+  const [data, setData] = useState({});
+  const [index, setIndex] = useState(0);
+  const [typed, setTyped] = useState("");
+  const [noResult, setNoResult] = useState(false);
+  useEffect(() => {
+    setData(sectiondata);
+  }, [sectiondata]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (typed) {
+        const newArr = searchWords(typed, data.sectionContent);
+        if (newArr.length !== 0) {
+          setData({ success: true, sectionContent: newArr });
+          setIndex(index + 1);
+          setNoResult(false);
+        } else {
+          setData({ success: true, sectionContent: newArr });
+          setIndex(index + 1);
+          setNoResult(true);
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [typed]);
+  const handleTextChange = (value) => {
+    setTyped(value);
+    if (value === "") {
+      setData(sectiondata);
+      setIndex(index + 1);
+    }
+  };
+  return (
+    <>
+      <Collapsible trigger={forSection + "s"}>
+        <div className="handle-search-component">
+          <Search
+            placeholder="Search"
+            size="small"
+            onChange={(e) => handleTextChange(e.target.value)}
+            value={typed}
+          />
+        </div>
+        {data.sectionContent && data.sectionContent.length > 0 ? (
+          <CheckboxTest
+            key={index}
+            section={data}
+            identifier={forSection}
+            onCheckboxClick={onConstructSearchQuery}
+            listValue={searchQuery[forSection]}
+            clearAll={clearAll}
+          />
+        ) : (
+          !noResult && (
+            <div
+              style={{
+                height: 300,
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <Loader />
+            </div>
+          )
+        )}
+        {noResult && <div className="no-result">No {forSection} found.</div>}
+      </Collapsible>
+    </>
+  );
+};
+
+const searchWords = (nameKey, myArray) => {
+  let arr = [];
+  for (var i = 0; i < myArray.length; i++) {
+    if (myArray[i].title.toLowerCase().includes(nameKey.toLowerCase())) {
+      arr.push({ ...myArray[i] });
+    }
+  }
+  return arr;
+};

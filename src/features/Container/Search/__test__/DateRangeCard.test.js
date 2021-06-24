@@ -9,9 +9,9 @@ import {
 import "@testing-library/jest-dom/extend-expect";
 import * as redux from "react-redux";
 
-import {dateSection} from '../Data/constants';
+import { dateSection } from "../Data/constants";
 
-import {DateRangeCard} from "../CustomFilterCards";
+import { DateRangeCard } from "../CustomFilterCards";
 
 describe("DateRangeCard container component", () => {
   const state = {
@@ -33,9 +33,12 @@ describe("DateRangeCard container component", () => {
     const useDispatchSpy = jest.spyOn(redux, "useDispatch");
     const mockDispatchFn = jest.fn();
     useDispatchSpy.mockReturnValue(mockDispatchFn);
-    let container = render(<DateRangeCard section={dateSection} dateRangeValue={[null, null]}/>, state);
-    let radio = container.getByTestId("recent-date-wrapper")
-    .children[0].children[1].children[0];
+    let container = render(
+      <DateRangeCard section={dateSection} dateRangeValue={[null, null]} />,
+      state
+    );
+    let radio = container.getByTestId("recent-date-wrapper").children[0]
+      .children[1].children[0];
     fireEvent.click(radio);
   });
 
@@ -44,16 +47,19 @@ describe("DateRangeCard container component", () => {
     const mockDispatchFn = jest.fn();
     useDispatchSpy.mockReturnValue(mockDispatchFn);
     let container = render(<DateRangeCard section={dateSection} />, state);
-    let inputSel = container.getByTestId("range-date-wrapper")
-    .children[0].children[0].children[0].children[1].children[0]
+    let inputSel =
+      container.getByTestId("range-date-wrapper").children[0].children[0]
+        .children[0].children[1].children[0];
     fireEvent.click(inputSel);
-    
-    let dateSel = container.getByTestId("range-date-wrapper")
-    .children[0].children[1].children[0].children[0].children[1].children[0].children[5]
+
+    let dateSel =
+      container.getByTestId("range-date-wrapper").children[0].children[1]
+        .children[0].children[0].children[1].children[0].children[5];
     fireEvent.click(dateSel);
 
-    let dateSel2 = container.getByTestId("range-date-wrapper")
-    .children[1].children[1].children[0].children[0].children[1].children[1].children[5]
+    let dateSel2 =
+      container.getByTestId("range-date-wrapper").children[1].children[1]
+        .children[0].children[0].children[1].children[1].children[5];
     fireEvent.click(dateSel2);
   });
 });

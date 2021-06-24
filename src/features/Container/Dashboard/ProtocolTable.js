@@ -20,6 +20,9 @@ function ProtocolTable({ pageRows }) {
     setValue(value);
   };
   useEffect(() => {
+    dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
+  }, []);
+  useEffect(() => {
     if (value === 0) {
       dispatch(hideAddprotocol(true));
     } else {

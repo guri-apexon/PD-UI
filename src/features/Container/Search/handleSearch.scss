@@ -1,0 +1,16 @@
+.handle-search-component {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+.spon-container .Collapsible span {
+  text-transform: capitalize;
+}
+.no-result {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
