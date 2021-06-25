@@ -42,7 +42,7 @@
     "plint": "prettier --check .",
     "format": "prettier --write .",
     "lint": "eslint .",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "browserslist": {
     "production": [
@@ -79,6 +79,15 @@
       "!src/features/Container/Search/Data/row.js",
       "!src/features/Container/Search/Data/search.metadata.js"
     ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "eslint:recommended"
+    ],
+    "rules": {
+      "no-console": 0
+    }
   },
   "husky": {
     "hooks": {

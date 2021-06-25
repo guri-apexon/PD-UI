@@ -1,7 +1,20 @@
 import React from "react";
 import Card from "apollo-react/components/Card";
 import DonutChart from "apollo-react/components/DonutChart";
-import _ from "lodash";
+
+const QCStatus = (status) => {
+  switch (status) {
+    case "QC_NOT_STARTED":
+      return "QC Not Started";
+    case "QC1":
+    case "QC2":
+      return "QC In Progress";
+    case "QC_COMPLETED":
+      return "QC Completed";
+    default:
+      return "QC Not Started";
+  }
+};
 
 const ProtocolOverview = ({ data }) => {
   return (
@@ -51,7 +64,9 @@ const ProtocolOverview = ({ data }) => {
               </div>
               <div className="row-item">
                 <label>QC Activity</label>
-                <span data-testid="qc-activity-value">{data.qcStatus}</span>
+                <span data-testid="qc-activity-value">
+                  {QCStatus(data.qcStatus)}
+                </span>
               </div>
             </div>
           </div>

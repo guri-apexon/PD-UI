@@ -55,7 +55,7 @@ export function* protocolAsyn() {
           ? ""
           : moment(item.uploadDate).format("L");
         item.qcActivity = item.qcStatus;
-        if (!item.uploaded_or_primary_user_flg) {
+        if (!item.userUploadedPrimaryFlag) {
           followedProtocolData.push(item);
         } else {
           myPorotocolsData.push(item);
