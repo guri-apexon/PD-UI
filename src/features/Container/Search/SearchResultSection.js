@@ -4,15 +4,12 @@ import SearchListingSection from "./SearchListingSection";
 import SearchIcon from "apollo-react-icons/Search";
 import Button from "apollo-react/components/Button";
 import FilterSection from "./FilterSection";
-import Link from "apollo-react/components/Link";
 import MenuItem from "apollo-react/components/MenuItem";
 import SelectButton from "apollo-react/components/SelectButton";
 import AlignJustify from "apollo-react-icons/AlignJustify";
 import Chip from "apollo-react/components/Chip";
 import Grid from "apollo-react/components/Grid";
 import Pagination from "apollo-react/components/Pagination";
-// import { Pagination } from '@material-ui/lab';
-// import Pagination from '@material-ui/lab/Pagination';
 import NoResultFound from "../../Components/NoResultFound";
 
 import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
@@ -81,32 +78,18 @@ class SearchPanel extends React.Component {
         defaultExpand: defaultValue,
       };
     }
-
-    // Return null if the state hasn't changed
     return null;
   }
   componentDidMount() {}
   setExpanded = (id, obj, data) => {
-    const { updateAssociateProtocol } = this.props;
     const { accordionObj } = this.state;
-    // if (obj.expanded) {
-    //   // dispatch({type:"UPDATE_SEARCH_ASSCIATED_PROTOCOLS", payload: data})
-    //   updateAssociateProtocol(data, accordionObj);
-    // }
+
     let accObj = _.cloneDeep(accordionObj);
     let foundIndex = accObj.findIndex((obj) => obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
     if (accObj[foundIndex].expanded === false) {
       accObj[foundIndex].viewAssociate = false;
     }
-
-    // this.setState({
-    //   accordionObj: [
-    //     ...this.state.accordionObj.slice(0, foundIndex),
-    //     Object.assign({}, this.state.accordionObj[foundIndex], obj),
-    //     ...this.state.accordionObj.slice(foundIndex + 1),
-    //   ],
-    // });
     this.setState({ accordionObj: accObj });
   };
 
@@ -115,21 +98,6 @@ class SearchPanel extends React.Component {
     const { accordionObj } = this.state;
     updateAssociateProtocol(data, accordionObj);
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    const { accordionObj } = this.state;
-    // if (prevState.defaultExpand !== this.state.defaultExpand) {
-    // let arr = accordionObj.map(item => {
-    //   return { ...item, expanded: true };
-    // });
-
-    // this.setState({
-    //   accordionObj: accordionObj.map((item) => {
-    //     return { ...item, expanded: true };
-    //   }),
-    // });
-    // }
-  }
 
   sortChange = (value) => {
     const { onSortChange } = this.props;
@@ -196,7 +164,6 @@ class SearchPanel extends React.Component {
   };
   handleFollow = (e, checked, protocol) => {
     const { userDetails } = this.props;
-    console.log("e, checked, protocol :", e, checked, protocol, userDetails);
     const id = userDetails.userId;
     const { accordionObj } = this.state;
     let accObj = _.cloneDeep(accordionObj);
@@ -232,9 +199,7 @@ class SearchPanel extends React.Component {
 
   render() {
     const {
-      filterList = [],
       resultList,
-      onSearchChange,
       sponsorData,
       indicationData,
       phaseData,
@@ -245,10 +210,9 @@ class SearchPanel extends React.Component {
       clearAll,
       page,
       setPage,
-      totalSearchResult,
       getSearchInput,
     } = this.props;
-    const { accordionObj, sortValue, defaultExpand } = this.state;
+    const { accordionObj, defaultExpand } = this.state;
 
     // let protocols = resultList.data && resultList.data.length;
     // let maxRecordsPerPage = 10;
