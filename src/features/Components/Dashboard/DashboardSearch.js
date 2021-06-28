@@ -97,7 +97,7 @@ function DashboardSearch({ recent, saved }) {
                 {saved.map((item) => {
                   if (item.keyword) {
                     return (
-                      <li key={item.sponsorId} className="search-list-li">
+                      <li key={item.saveId} className="search-list-li">
                         <Link to={`/search?key=${item.keyword}`}>
                           {item.keyword}
                         </Link>

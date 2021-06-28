@@ -1,4 +1,11 @@
-import { put, takeEvery, all, call, takeLatest } from "redux-saga/effects";
+import {
+  put,
+  takeEvery,
+  all,
+  call,
+  takeLatest,
+  select,
+} from "redux-saga/effects";
 import {
   getSummary,
   getProcotoclToc,
@@ -6,7 +13,13 @@ import {
   getCompare,
 } from "./protocolSlice.js";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+
+function* getUserId() {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  return id.substring(1);
+}
 
 export function* getSummaryData(action) {
   let obj = {
@@ -15,33 +28,16 @@ export function* getSummaryData(action) {
     data: null,
   };
   yield put(getSummary(obj));
-  const url = `${BASE_URL_8000}/api/protocol_attributes/?id=${action.payload}`;
+  let userId = yield getUserId();
+  // const url = `${BASE_URL_8000}/api/protocol_attributes/?id=${action.payload}`;
+  const url = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}&docId=${action.payload}`;
+
   const resp = yield call(httpCall, { url, method: "GET" });
-  // getSummaryData(data)
-  if (resp.data) {
-    // resp.data["id"] = resp.data.aidocId;
-    // const status = ["QC_NOT_STARTED", "QC_IN_PROGRESS", "QC_COMPLETED"];
-    // const random = Math.floor(Math.random() * status.length);
-
-    // switch (status[random]) {
-    //   case "QC_NOT_STARTED":
-    //     resp.data["qcActivity"] = "QC Not Started";
-    //     break;
-    //   case "QC_IN_PROGRESS":
-    //     resp.data["qcActivity"] = "QC In Progress";
-    //     break;
-    //   case "QC_COMPLETED":
-    //     resp.data["qcActivity"] = "QC Completed";
-    //     break;
-    //   default:
-    //     resp.data["qcActivity"] = "QC Not Started";
-    //     break;
-    // }
-
+  if (resp.data && resp.data.length) {
     let obj = {
       loading: false,
       success: true,
-      data: resp.data,
+      data: resp.data[0],
     };
     yield put(getSummary(obj));
     yield put({
@@ -216,7 +212,7 @@ export function* getCompareResult(action) {
 
     if (resp.data) {
       // debugger;
-      let temp = _.cloneDeep(resp.data);
+      let temp = cloneDeep(resp.data);
       temp.loading = false;
       temp.called = true;
       yield put(getCompare(temp));

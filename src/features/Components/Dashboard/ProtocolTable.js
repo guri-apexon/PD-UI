@@ -273,7 +273,7 @@ function getColumns(screen) {
     {
       accessor: "uploadDate",
       sortFunction: compareDates,
-      width: "0%",
+      width: 0,
       hidden: true,
     },
     {

@@ -39,15 +39,10 @@
     "test": "react-scripts test",
     "coverage": "npm run test --coverage --wathcAll=false",
     "eject": "react-scripts eject",
-    "lint": "prettier --check .",
-    "format": "prettier --write ."
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "semi": 0,
-      "no-console": 0
-    }
+    "plint": "prettier --check .",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "prepare": "husky"
   },
   "browserslist": {
     "production": [
@@ -64,21 +59,19 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/common/**/*.{ts,tsx,js,jsx}",
-      "src/features/**/*.{ts,tsx,js,jsx}",
-      "src/services/**/*.{ts,tsx,js,jsx}",
-      "src/Routes/**/*.{ts,tsx,js,jsx}",
-      "src/store/**/*.{ts,tsx,js,jsx}",
+      "src/common/**/*.{js,jsx}",
+      "src/features/**/*.{js,jsx}",
+      "src/services/**/*.{,js,jsx}",
+      "src/Routes/**/*.{js,jsx}",
+      "src/store/**/*.{js,jsx}",
       "!src/test-utils",
       "!**/node_modules/**",
       "!**/types/**",
-      "!src/**/*.d.ts",
       "!**/constants/**",
       "!src/common/components/formik-controls",
       "!src/app",
       "!src/test-utils",
       "!src/mockdata",
-      "!src/services/endpoint.ts",
       "!src/features/Container/Protocols/CompareCard.js",
       "!src/features/Container/Protocols/CompareCardNew.js",
       "!src/features/Container/Protocols/compareTable.js",
@@ -86,6 +79,15 @@
       "!src/features/Container/Search/Data/row.js",
       "!src/features/Container/Search/Data/search.metadata.js"
     ]
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "eslint:recommended"
+    ],
+    "rules": {
+      "no-console": 0
+    }
   },
   "husky": {
     "hooks": {
