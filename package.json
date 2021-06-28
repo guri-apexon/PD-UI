@@ -42,6 +42,7 @@
     "plint": "prettier --check .",
     "format": "prettier --write .",
     "lint": "eslint .",
+    "lint:fix": "eslint --fix --ext .js,.jsx .",
     "prepare": "husky"
   },
   "browserslist": {

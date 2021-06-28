@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import TextField from "apollo-react/components/TextField";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import "./CustomDropdown.scss";
 const CustomDropdown = ({
   label,
@@ -23,7 +23,7 @@ const CustomDropdown = ({
   });
   const buttonRef = useRef(null);
   const [blur, setBlur] = useState(false);
-  const [expand, setExpand] = useState(false);
+  // const [expand, setExpand] = useState(false);
   const [list, setList] = useState(source);
   const [subStringExist, SetSubStringExist] = useState(false);
   const [expandClass, setExpandClass] = useState("");
@@ -66,7 +66,7 @@ const CustomDropdown = ({
   }, [source]);
 
   const onTextFieldChange = (id, e, type) => {
-    let customListTemp = _.cloneDeep(source);
+    let customListTemp = cloneDeep(source);
     let str = getModifyString(e.target.value);
     let subStr = new RegExp(`^${str}$`, "i");
     // let subStr = new RegExp(`^${str}$`);
@@ -109,7 +109,7 @@ const CustomDropdown = ({
     return tempValue;
   };
   const onCustomClick = (id, event) => {
-    setExpand(true);
+    // setExpand(true);
     // event.target
     //   .closest(`.custom-dropdown-wrapper-${id}`)
     //   .classList.add("is-expanded", "focused");

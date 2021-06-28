@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
+import { render, screen } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import * as redux from "react-redux";
 

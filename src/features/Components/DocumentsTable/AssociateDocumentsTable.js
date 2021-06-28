@@ -1,7 +1,7 @@
 import Table from "apollo-react/components/Table";
 import React from "react";
 import moment from "moment";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import _ from "lodash";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";

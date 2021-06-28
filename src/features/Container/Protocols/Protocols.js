@@ -19,7 +19,6 @@ import NoResultFound from "../../Components/NoResultFound";
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
 import Tab from "apollo-react/components/Tab";
 import Tabs from "apollo-react/components/Tabs";
-import Switch from "apollo-react/components/Switch";
 import Loader from "apollo-react/components/Loader";
 
 const Protocols = (props) => {

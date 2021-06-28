@@ -1,12 +1,6 @@
 // __tests__/fetch.test.js
 import React from "react";
-import {
-  render,
-  fireEvent,
-  act,
-  screen,
-  wait,
-} from "../../../../test-utils/test-utils";
+import { render, fireEvent } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import AddProtocol from "./AddProtocol";
 

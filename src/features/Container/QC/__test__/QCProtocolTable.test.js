@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent } from "../../../../test-utils/test-utils";
+import { render } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import QCProtocolTable from "../QCTable/QCProtocolTable";
 
@@ -24,7 +24,7 @@ describe("Protocol Table container component", () => {
   };
   test("should render QC", () => {
     const handleProtocolClick = jest.fn();
-    const container = render(
+    render(
       <QCProtocolTable handleProtocolClick={handleProtocolClick} />,
       state
     );
@@ -43,7 +43,7 @@ describe("Protocol Table container component", () => {
   };
   test("should render QC", () => {
     const handleProtocolClick = jest.fn();
-    const container = render(
+    render(
       <QCProtocolTable handleProtocolClick={handleProtocolClick} />,
       state
     );

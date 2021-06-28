@@ -1,4 +1,3 @@
-import React from "react";
 import { runSaga } from "redux-saga";
 import {
   recentSearchAsyn,

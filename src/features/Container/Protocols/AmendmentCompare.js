@@ -10,21 +10,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { associateDocs } from "./protocolSlice.js";
 
 import Sidebar from "./Sidebar";
-// import CompareCard from "./CompareCard";
-import CompareCard from "./compareTable";
 
 import { compareResult } from "./protocolSlice.js";
 import Loader from "../../Components/Loader/Loader";
-import ArrowLeft from "apollo-react-icons/ArrowLeft";
 
 const AmendmentCompare = ({ prot11, prot22 }) => {
   const compare = useSelector(compareResult);
   const dispatch = useDispatch();
   const associateData = useSelector(associateDocs);
   const [version1, setVersion1] = useState("");
-  const [prot1, setProt1] = useState({});
+  // const [prot1, setProt1] = useState({});
   const [version2, setVersion2] = useState("");
-  const [prot2, setProt2] = useState({});
+  // const [prot2, setProt2] = useState({});
 
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -63,12 +60,12 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
   const handleSelect = (select, id) => {
     console.log("od", id);
     if (select === 1) {
-      let obj1 = associateData.find((item) => item.id === id);
-      setProt1(obj1);
+      // let obj1 = associateData.find((item) => item.id === id);
+      // setProt1(obj1);
       setVersion1(id);
     } else {
-      let obj2 = associateData.find((item) => item.id === id);
-      setProt2(obj2);
+      // let obj2 = associateData.find((item) => item.id === id);
+      // setProt2(obj2);
       setVersion2(id);
     }
   };

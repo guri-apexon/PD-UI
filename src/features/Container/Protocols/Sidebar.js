@@ -29,7 +29,7 @@ class Sidebar extends React.Component {
   // };
   handleDownload = (type, data) => {
     /* istanbul ignore else */
-    if ((type = "toc")) {
+    if (type === "toc") {
       // this.props.handleDownloadTOC(data);
       axios({
         url: "http://localhost:4000/create-excel",

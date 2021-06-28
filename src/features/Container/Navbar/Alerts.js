@@ -47,9 +47,10 @@ function Alerts({ list }) {
             "You are not an approved primary user of this protocol. Access to details denied"
           );
         }
-      } else {
       }
-    } catch (err) {}
+    } catch (err) {
+      console.log(err);
+    }
     // dispatch({ type: "SET_NOTIFICATION_READ_SAGA", payload: postObj });
 
     //---- Remove in local-----------

@@ -419,8 +419,4 @@ describe("Qc Saga Unit Test", () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-
-  test("should watch all Dashboard Sagas", () => {
-    const watchAll = watchqc();
-  });
 });

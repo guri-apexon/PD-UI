@@ -10,7 +10,7 @@ import Loader from "apollo-react/components/Loader";
 import CustomDropdown from "../../../Components/CustomDropdown/CustomDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { dashboard } from "../dashboardSlice";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import {
   initialFormErrorValues,
   initialFormValues,
@@ -26,7 +26,7 @@ const AddProtocol = () => {
   let [formValues, setFormValues] = useState(initialFormValues);
   const [inputValue2, setInputValue2] = React.useState();
   const [documentValue2, setDocumentValue2] = React.useState();
-  let [valueTemp, setValueTemp] = useState({
+  let [valueTemp] = useState({
     amendmentNumber: { label: "" },
     documentStatus: { label: "" },
   });
@@ -61,8 +61,8 @@ const AddProtocol = () => {
     handleOpen("custom");
   };
   const onTextFieldChange = (fieldName, e, fieldType, dropdownValue) => {
-    let tempError = _.cloneDeep(formErrorValues);
-    let tempValues = _.cloneDeep(formValues);
+    let tempError = cloneDeep(formErrorValues);
+    let tempValues = cloneDeep(formValues);
     //  console.log("dashboardData1 :", fieldName, 'e, fieldType', dropdownValue );
     if (fieldType === "Textbox") {
       if (
@@ -125,7 +125,7 @@ const AddProtocol = () => {
       if (dropdownValue != null) {
         dropdownFocus =
           dropdownValue && dropdownValue.label && dropdownValue.label;
-        let tempValue2 = _.cloneDeep(value2);
+        let tempValue2 = cloneDeep(value2);
         tempValue2[fieldName] = dropdownValue;
         setValue2(tempValue2);
 
@@ -150,8 +150,8 @@ const AddProtocol = () => {
   };
 
   const onFieldBlur = (fieldName, e, fieldType) => {
-    let temp = _.cloneDeep(formErrorValues);
-    let temp2 = _.cloneDeep(valueTemp);
+    let temp = cloneDeep(formErrorValues);
+    let temp2 = cloneDeep(valueTemp);
     if (fieldType === "Textbox") {
       if (
         !e.target.value.trim().length > 0 &&
@@ -220,20 +220,20 @@ const AddProtocol = () => {
   };
   const handleFileUploadError = (msg, err, fieldName) => {
     // console.log("file uplaod called error");
-    let tempError = _.cloneDeep(formErrorValues);
+    let tempError = cloneDeep(formErrorValues);
     tempError[fieldName].error = err;
     tempError[fieldName].errorMessage = msg;
     setFormErrorValues(tempError);
   };
   const setUploadFile = (file, fieldName) => {
     // console.log("file uplaod called");
-    let tempValue = _.cloneDeep(formValues);
+    let tempValue = cloneDeep(formValues);
     tempValue[fieldName] = file;
     setFormValues(tempValue);
   };
   const handleSaveForm = () => {
-    const tempValues = _.cloneDeep(formValues);
-    const tempError = _.cloneDeep(formErrorValues);
+    const tempValues = cloneDeep(formValues);
+    const tempError = cloneDeep(formErrorValues);
     let errorExist = false;
     for (let field of Object.keys(tempError)) {
       switch (tempError[field].type) {
@@ -316,7 +316,7 @@ const AddProtocol = () => {
     }
   };
   const sendPostData = () => {
-    const tempFormValues = _.cloneDeep(formValues);
+    const tempFormValues = cloneDeep(formValues);
     let postData = {};
     postData = {
       protocol_number: tempFormValues.protocolNumber
