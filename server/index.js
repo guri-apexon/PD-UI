@@ -4,6 +4,7 @@ const axios = require("axios");
 const path = require("path");
 const app = express();
 const cors = require("cors");
+const fs = require("fs");
 
 const https = require("https");
 const session = require("express-session");
@@ -34,9 +35,47 @@ function authenticateUser(user, password) {
   return "Basic " + hash;
 }
 //------------------------------------ Elastic Search END POINT -----------------------
-require("./routes/elasticSearch")(app);
+// require("./routes/elasticSearch")(app);
 //------------------------------------ Excel End Point --------------------------------
-require("./routes/converToExcel")(app);
+// require("./routes/converToExcel")(app);
+app.get("/api/pdf/download", (req, res) => {
+  const dfsPath = req.query.path;
+  if (dfsPath) {
+    try {
+      var file = fs.createReadStream(dfsPath);
+      // var stat = fs.statSync(dfsPath);
+      // console.log(file)
+      // res.setHeader("Content-Length", stat.size);
+      res.setHeader("Content-Type", "application/pdf");
+      res.setHeader("Content-Disposition", "attachment; filename=Protocol.pdf");
+      file.pipe(res);
+    } catch (e) {
+      const errMsg = {
+        messgae:
+          "Unable to connect DFS location due to network issue. Please try again.",
+      };
+      res.status(403).send(errMsg);
+    }
+  }
+
+  console.log("::::", dfsPath);
+
+  // res.send("Happy")
+});
+app.all("/api/csv/download", (req, res) => {
+  // res.download("//quintiles.net/enterprise/Services/protdigtest/pilot_iqvxml/compare/ea9f1437-ebd1-43e8-9088-9077c73ac790/ea9f1437-ebd1-43e8-9088-9077c73ac790.compare_detail.csv")
+  var file = fs.createReadStream(
+    "//quintiles.net/enterprise/Services/protdigtest/pilot_iqvxml/compare/ea9f1437-ebd1-43e8-9088-9077c73ac790/ea9f1437-ebd1-43e8-9088-9077c73ac790.compare_detail.csv"
+  );
+  var stat = fs.statSync(
+    "//quintiles.net/enterprise/Services/protdigtest/pilot_iqvxml/compare/ea9f1437-ebd1-43e8-9088-9077c73ac790/ea9f1437-ebd1-43e8-9088-9077c73ac790.compare_detail.csv"
+  );
+  // console.log(file)
+  res.setHeader("Content-Length", stat.size);
+  res.setHeader("Content-Type", "text/csv");
+  res.setHeader("Content-Disposition", "attachment; filename=compare.csv");
+  file.pipe(res);
+});
 
 app.use(
   session({

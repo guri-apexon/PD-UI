@@ -67,7 +67,6 @@ const Search = (props) => {
   const [clearAll, setClearAll] = useState(false);
   // const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
   const [protocolSelected, setProtocolSelected] = useState([]);
-  const [selection, setSelection] = useState(true);
   const [prevProtSelected, setPrevProtSelected] = useState("");
   // let arr = [];
   useEffect(() => {
@@ -726,7 +725,6 @@ const Search = (props) => {
   };
 
   const compareTwoProtocol = (data, protocol) => {
-    debugger;
     if (prevProtSelected === "") {
       setPrevProtSelected(protocol);
       setProtocolSelected([data]);
@@ -833,7 +831,6 @@ const Search = (props) => {
               hancleClearAll={hancleClearAll}
               history={props.history}
               compareTwoProtocol={compareTwoProtocol}
-              selection={selection}
               sortValueProp={sortValueProp}
               dateRangeValue={dateRangeValue}
               protocolSelected={protocolSelected}

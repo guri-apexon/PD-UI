@@ -110,13 +110,13 @@ describe("Search.js Render", () => {
     let sponsorCollapse = container.getByTestId("sponsor-checkboxes");
     fireEvent.click(sponsorCollapse.children[0].children[0]);
     fireEvent.click(
-      sponsorCollapse.children[0].children[1].children[0].children[0]
+      sponsorCollapse.children[0].children[1].children[0].children[1]
         .children[0].children[0].children[0]
     );
     let indicationCollapse = container.getByTestId("indication-checkboxes");
     fireEvent.click(indicationCollapse.children[0].children[0]);
     fireEvent.click(
-      indicationCollapse.children[0].children[1].children[0].children[0]
+      indicationCollapse.children[0].children[1].children[0].children[1]
         .children[0].children[0].children[0]
     );
     let tocCollapse = container.getByTestId("toc-checkboxes");
@@ -181,13 +181,13 @@ describe("Search.js Render", () => {
     let sponsorCollapse = container.getByTestId("sponsor-checkboxes");
     fireEvent.click(sponsorCollapse.children[0].children[0]);
     fireEvent.click(
-      sponsorCollapse.children[0].children[1].children[0].children[0]
+      sponsorCollapse.children[0].children[1].children[0].children[1]
         .children[0].children[0].children[0]
     );
     let indicationCollapse = container.getByTestId("indication-checkboxes");
     fireEvent.click(indicationCollapse.children[0].children[0]);
     fireEvent.click(
-      indicationCollapse.children[0].children[1].children[0].children[0]
+      indicationCollapse.children[0].children[1].children[0].children[1]
         .children[0].children[0].children[0]
     );
     let tocCollapse = container.getByTestId("toc-checkboxes");
