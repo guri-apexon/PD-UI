@@ -260,7 +260,7 @@ describe("Should Render Document success", () => {
 
     expect(
       container.getByTestId("source-document-tab").children[0].children[0]
-        .children[0].children[0].children[0].textContent
+        .children[0].children[0].textContent
     ).toBe("Source Document");
   });
 });
