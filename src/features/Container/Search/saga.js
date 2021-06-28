@@ -11,6 +11,7 @@ import {
 } from "./searchSlice";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import _ from "lodash";
+import { toast } from "react-toastify";
 import moment from "moment";
 
 const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
@@ -348,6 +349,11 @@ function* updateSearchAssociated(action) {
           data: [...result],
         },
       };
+      if (associateDocs.data.length === 0) {
+        toast.info(
+          `The Protocol: "${action.payload.data.protocolNumber}" selected has no associated protocols available`
+        );
+      }
 
       yield put(getSearchResult(obj1));
     } else {

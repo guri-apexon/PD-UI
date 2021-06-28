@@ -4,7 +4,8 @@ import Table from "apollo-react/components/Table";
 import columns from "./Data/column.data";
 import Grid from "apollo-react/components/Grid";
 import Link from "apollo-react/components/Link";
-import Loader from "../../Components/Loader/Loader";
+import Loader1 from "../../Components/Loader/Loader";
+import Loader from "apollo-react/components/Loader";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
 import _ from "lodash";
@@ -23,6 +24,7 @@ const SearchCard = ({
   protocolSelected,
 }) => {
   const [dataRow, setDataRow] = useState([]);
+  const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
   // let rowContent = "";
   // if (data && !data.rowsLoading) {
@@ -46,18 +48,28 @@ const SearchCard = ({
   };
 
   const handleDownload = async (row) => {
-    // const resp = await axios.get(
-    //   `http://ca2spdml01q:8000/api/download_file/?filePath=${row.path}`
-    // );
-    // if (resp.data.includes("/")) {
-    //   let url = `http://ca2spdml06d:3000/${resp.data.split("/")[1]}`;
-    //   window.open(
-    //     url,
-    //     "_blank" // <- This is what makes it open in a new window.
-    //   );
-    // } else {
-    // let url = `http://ca2spdml06d:3000/${resp.data}`;
-
+    // setLoader(true);
+    // console.log("path", row.path);
+    // const dfsPath = row.path.replaceAll("\\", "/");
+    // console.log("DFS", dfsPath);
+    // try {
+    //   const resp = await axios({
+    //     url: "http://localhost:4000/api/pdf/download",
+    //     method: "GET",
+    //     params: {
+    //       path: dfsPath,
+    //     },
+    //     responseType: "blob", // Important
+    //   });
+    //   // console.log("resp", resp);
+    //   const blob = resp.data;
+    //   let url = URL.createObjectURL(blob);
+    //   setLoader(false);
+    //   window.open(url, "_blank");
+    // } catch (err) {
+    //   setLoader(false);
+    //   console.log(err);
+    // }
     const userresp = await axios.get(
       `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
         1
@@ -78,15 +90,10 @@ const SearchCard = ({
     } else {
       toast.info("Access Provisioned to Primary Users only");
     }
-
-    // window.open(
-    //   url,
-    //   "_blank" // <- This is what makes it open in a new window.
-    // );
-    // }
   };
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>
+      {loader && <Loader />}
       <Grid md={11} container>
         {/* ------------------------------------------------- */}
         <Grid md={6} container>
@@ -326,11 +333,11 @@ const SearchCard = ({
               display: "flex",
             }}
           >
-            <Loader />
+            <Loader1 />
           </div>
         ) : (
           <div className="width100 search-inner-table">
-            {dataRow.length > 0 ? (
+            {dataRow.length > 0 && (
               <Table
                 columns={columns}
                 rows={dataRow.map((row) => ({
@@ -341,8 +348,6 @@ const SearchCard = ({
                 }))}
                 hidePagination
               />
-            ) : (
-              <Table columns={columns} rows={[]} hidePagination />
             )}
           </div>
         )}
