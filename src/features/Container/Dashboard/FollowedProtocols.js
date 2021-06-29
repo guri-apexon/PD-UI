@@ -7,7 +7,7 @@ import {
 } from "../Dashboard/dashboardSlice";
 import ProtocolTableComp from "../../Components/Dashboard/ProtocolTable";
 
-function FollowedProtocols({ pageRows }) {
+function FollowedProtocols({ pageRows, maxHeight }) {
   const protocolData = useSelector(followedProtocolsList);
   const loader = useSelector(tableLoader);
 
@@ -20,6 +20,7 @@ function FollowedProtocols({ pageRows }) {
         isLoading={loader}
         pageRows={pageRows}
         screen="FollowedProtocols"
+        maxHeight={maxHeight}
       />
     </>
   );

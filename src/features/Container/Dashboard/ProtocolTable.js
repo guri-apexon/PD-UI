@@ -11,7 +11,7 @@ import {
 import MyProtocols from "./MyProtocols";
 import FollowedProtocols from "./FollowedProtocols";
 
-function ProtocolTable({ pageRows }) {
+function ProtocolTable({ pageRows, maxHeight }) {
   const dispatch = useDispatch();
   const error = useSelector(prtocolsError);
   const [value, setValue] = React.useState(0);
@@ -41,9 +41,12 @@ function ProtocolTable({ pageRows }) {
           <MyProtocols
             setSelectedProtocols={setSelectedProtocols}
             pageRows={pageRows}
+            maxHeight={maxHeight}
           />
         )}
-        {value === 1 && <FollowedProtocols pageRows={pageRows} />}
+        {value === 1 && (
+          <FollowedProtocols pageRows={pageRows} maxHeight={maxHeight} />
+        )}
       </div>
     </div>
   );

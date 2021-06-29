@@ -25,6 +25,7 @@ function ProtocolTable({ handleProtocolClick }) {
           pageRows={[10, 20, 30, "All"]}
           handleProtocolClick={handleProtocolClick}
           screen={"QC"}
+          maxHeight={600}
         />
       </div>
     </div>

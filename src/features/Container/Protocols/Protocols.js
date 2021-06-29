@@ -126,7 +126,7 @@ const Protocols = (props) => {
   } else {
     return (
       <div className="protocols">
-        <ProtocolTable pageRows={[10, 20, 30, "All"]} />
+        <ProtocolTable pageRows={[10, 20, 30, "All"]} maxHeight={600} />
       </div>
     );
   }
