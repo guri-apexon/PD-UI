@@ -1,12 +1,6 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import {
-  render,
-  fireEvent,
-  act,
-  screen,
-  wait,
-} from "../../../../test-utils/test-utils";
+import { render, fireEvent } from "../../../../test-utils/test-utils";
 import { cleanup } from "@testing-library/react";
 import Documents from "../Documents";
 import axios from "axios";
@@ -200,7 +194,7 @@ afterEach(cleanup);
 describe("Should render document tab", () => {
   test("Should Render without error", () => {
     const handleChangeTab = jest.fn();
-    const container = render(
+    render(
       <MemoryRouter>
         <Documents handleChangeTab={handleChangeTab} />
       </MemoryRouter>

@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  act,
-  screen,
-  wait,
-} from "../../../../test-utils/test-utils";
+import { render, fireEvent } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import SearchResultSection from "../SearchResultSection";
 import { MemoryRouter } from "react-router-dom";
 import axios from "axios";
-import * as redux from "react-redux";
 
 describe("Filter test of Search", () => {
   const mockDispatch = jest.fn();
@@ -23,7 +16,6 @@ describe("Filter test of Search", () => {
     const mockonSearchChange = jest.fn();
     const mockonSortChange = jest.fn();
     const mockonSearchQuery = jest.fn();
-    const mocksearchQuery = jest.fn();
     const mockhancleClearAll = jest.fn();
     const mockHistoryPush = jest.fn();
     // const useDispatchSpy = jest.spyOn(redux, "useDispatch");
@@ -160,7 +152,6 @@ describe("Filter test of Search", () => {
     const mockonSearchChange = jest.fn();
     const mockonSortChange = jest.fn();
     const mockonSearchQuery = jest.fn();
-    const mocksearchQuery = jest.fn();
     const mockhancleClearAll = jest.fn();
     const mockHistoryPush = jest.fn();
     // const useDispatchSpy = jest.spyOn(redux, "useDispatch");

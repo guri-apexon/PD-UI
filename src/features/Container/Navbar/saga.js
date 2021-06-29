@@ -1,4 +1,4 @@
-import { takeEvery, all, call, put, select } from "redux-saga/effects";
+import { takeEvery, all, call, put } from "redux-saga/effects";
 
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import { getNotification, setError } from "./navbarSlice";

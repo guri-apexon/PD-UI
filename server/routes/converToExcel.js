@@ -5,12 +5,7 @@ const {
   topHeaderTextStyle,
   textColors,
 } = require("../constants/excelStyleConst");
-const {
-  compareColorCode,
-  codeMeanings,
-  colunmHeder,
-  textType,
-} = require("../constants/excelConst");
+const { textType } = require("../constants/excelConst");
 
 module.exports = function (app) {
   app.all("/create-excel", (req, res) => {
@@ -39,7 +34,7 @@ module.exports = function (app) {
       const columnText1 = item[4];
       const columnText2 = item[5];
 
-      const diffArray = item[6];
+      // const diffArray = item[6];
       //------------------------------ Header Style Handled -----------------------------
       if (itemTextType === textType.header) {
         if (diff === 2 || diff === 3) {
@@ -161,6 +156,7 @@ module.exports = function (app) {
           });
         }
       }
+      return item;
     });
 
     sheet.getRow(1).eachCell((cell) => {

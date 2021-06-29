@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, wait, screen } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import CustomFileUpload from "./CustomFileUpload";
 
 jest.useFakeTimers();
@@ -39,7 +39,7 @@ describe("customDropdown test", () => {
     let formFile = [file];
     const setUploadFile = jest.fn();
     const handleFileUploadError = jest.fn();
-    const handleUpload = jest.fn();
+    // const handleUpload = jest.fn();
     const container = render(
       <CustomFileUpload
         formSelectedFiles={[]}

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { prtocolsList, tableLoader } from "../Dashboard/dashboardSlice";
 import ProtocolTableComp from "../../Components/Dashboard/ProtocolTable";
 
-function MyProtocols({ setSelectedProtocols, pageRows }) {
+function MyProtocols({ setSelectedProtocols, pageRows, maxHeight }) {
   const protocolData = useSelector(prtocolsList);
   const loader = useSelector(tableLoader);
 
@@ -17,6 +17,7 @@ function MyProtocols({ setSelectedProtocols, pageRows }) {
         isLoading={loader}
         pageRows={pageRows}
         setSelectedProtocols={setSelectedProtocols}
+        maxHeight={maxHeight}
       />
     </>
   );

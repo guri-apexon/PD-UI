@@ -1,7 +1,7 @@
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 
-import { cleanup, waitForElement } from "@testing-library/react";
+import { cleanup } from "@testing-library/react";
 import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
 
 import AmendmentCompare from "../AmendmentCompare";

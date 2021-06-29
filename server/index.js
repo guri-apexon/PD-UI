@@ -132,7 +132,7 @@ app.use(function (req, res, next) {
             case 101:
               res.redirect(`${envURL.baseUrlSSO}${data.redirect_url}`);
               break;
-            case 100:
+            case 100: {
               const details = {
                 userId: data.user_details.username,
                 username: data.user_details.first_name,
@@ -141,13 +141,13 @@ app.use(function (req, res, next) {
               };
               const decoded = jwt_decode(getCookies[envURL.refresh_token]);
 
-              console.log(decoded);
               req.session.user = details;
               req.session.expiry = decoded.exp;
               req.session.cookies = getCookies;
               res.cookie("exp", decoded.exp);
               next();
               break;
+            }
             case 102:
               // res.redirect(
               //   `${baseUrlSSO}${data.redirect_url}?callback=http://ca2spdml06d.quintiles.net:3000/dashboard`

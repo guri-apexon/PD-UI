@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  render,
-  fireEvent,
-  act,
-  screen,
-  wait,
-} from "../../../../test-utils/test-utils";
+import { render, fireEvent } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import SearchResultSection from "../SearchResultSection";
 import { MemoryRouter } from "react-router-dom";
-import * as redux from "react-redux";
+// import * as redux from "react-redux";
 
 describe("Sort of SearchResultSection", () => {
   test("Should Render SearchResultSection", () => {
@@ -17,11 +11,11 @@ describe("Sort of SearchResultSection", () => {
     const mockonSearchChange = jest.fn();
     const mockonSortChange = jest.fn();
     const mockonSearchQuery = jest.fn();
-    const mocksearchQuery = jest.fn();
+    // const mocksearchQuery = jest.fn();
     const mockhancleClearAll = jest.fn();
     const mockHistoryPush = jest.fn();
-    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
-    const mockDispatchFn = jest.fn();
+    // const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    // const mockDispatchFn = jest.fn();
     jest.mock("react-router-dom", () => ({
       ...jest.requireActual("react-router-dom"),
       useHistory: () => ({
@@ -115,7 +109,6 @@ describe("Sort of SearchResultSection", () => {
           onSearchChange={mockonSearchChange}
           onSortChange={mockonSortChange}
           onSearchQuery={mockonSearchQuery}
-          searchQuery={mocksearchQuery}
           hancleClearAll={mockhancleClearAll}
           totalSearchResult={[]}
           dateRangeValue={[null, null]}

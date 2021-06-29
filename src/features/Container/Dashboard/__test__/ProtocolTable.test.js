@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
+import { render, screen } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import * as redux from "react-redux";
 
@@ -19,7 +19,7 @@ describe("Protocol Table container component", () => {
     const useDispatchSpy = jest.spyOn(redux, "useDispatch");
     const mockDispatchFn = jest.fn();
     useDispatchSpy.mockReturnValue(mockDispatchFn);
-    render(<ProtocolTable />, state);
+    render(<ProtocolTable pageRows={[5, 20, 30, "All"]} />, state);
   });
 
   xtest("should tabIndex of Followed Button to be 0", () => {

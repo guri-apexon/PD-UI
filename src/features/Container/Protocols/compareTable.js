@@ -1,5 +1,4 @@
 import React from "react";
-import Card from "apollo-react/components/Card";
 
 const textTypes = {
   header: "header",
@@ -13,12 +12,12 @@ const compareColorCode = {
   edited: 2,
 };
 
-const codeMeanings = {
-  0: "No Change",
-  1: "Deleted",
-  2: "Updated",
-  3: "Inserted",
-};
+// const codeMeanings = {
+//   0: "No Change",
+//   1: "Deleted",
+//   2: "Updated",
+//   3: "Inserted",
+// };
 
 const CompareTable = (props) => {
   //   const iqvdata = JSON.parse(props.compare.iqvdata);
@@ -56,7 +55,7 @@ const CompareTable = (props) => {
           const diff = item[3];
           const text1 = item[4];
           const text2 = item[5];
-          const difChar = item[6];
+          // const difChar = item[6];
           if (type === textTypes.header) {
             if (diff === compareColorCode.noChange) {
               return (
@@ -118,6 +117,7 @@ const CompareTable = (props) => {
                           </span>
                         );
                       }
+                      return null;
                     })}
                   </div>
                 </div>
@@ -150,6 +150,7 @@ const CompareTable = (props) => {
               </div>
             );
           }
+          return null;
         })}
       </div>
       {/* <div class="compare-container">

@@ -20,7 +20,7 @@ import Loader from "apollo-react/components/Loader";
 import Modal from "apollo-react/components/Modal";
 import axios from "axios";
 import { USER_MENU, QC1_MENU, QC2_MENU } from "./AppConstant/AppConstant";
-import { baseUrlSSO, SSO_ENABLED, BASE_URL_8000 } from "./utils/api";
+import { baseUrlSSO, SSO_ENABLED } from "./utils/api";
 
 import Navbar from "./features/Container/Navbar/Navbar";
 
@@ -111,8 +111,8 @@ function App(props) {
       }
     } else {
       const details = {
-        // userId: "q846158",
-        userId: "u1072234",
+        // userId: "q846158", // Arjun
+        userId: "u1072231",
         username: "Test User",
         email: "test@iqvia.com",
         user_type: "normal",

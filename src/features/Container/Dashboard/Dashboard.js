@@ -56,7 +56,7 @@ const Dashboard = () => {
           </div>
         </Grid>
         <Grid item xs={12}>
-          <ProtocolTable pageRows={[5, 20, 30, "All"]} />
+          <ProtocolTable pageRows={[5, 20, 30, "All"]} maxHeight={400} />
         </Grid>
         <Grid item xs={12}>
           <DashboardSearch />

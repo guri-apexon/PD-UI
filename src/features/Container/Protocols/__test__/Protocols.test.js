@@ -75,10 +75,6 @@ describe("Renders Protocols Component", () => {
     //    let dashboardLink= container.getByTestId('protocols-component-test').children[0].children[0];
     //    fireEvent.click(dashboardLink,{  target: { preventdefault: () => {} } });
   });
-  let location2 = {
-    search:
-      "?protocolId=3978efd6-301e-46a7-a37f-341ef9c16219&protocolId2=4978efd6-301e-46a7-a37f-341ef9c16219&value",
-  };
   // test("Should render Protocols Component Successful iwth two ids", () => {
   //   render(<Protocols location={location2} />, state)
   //  });

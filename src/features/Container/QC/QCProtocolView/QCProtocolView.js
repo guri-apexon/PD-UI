@@ -4,14 +4,10 @@ import MenuItem from "apollo-react/components/MenuItem";
 import SelectButton from "apollo-react/components/SelectButton";
 
 import Upload from "apollo-react-icons/Upload";
-import Download from "apollo-react-icons/Download";
 import Button from "apollo-react/components/Button";
 import Loader from "../../../Components/Loader/Loader";
 import { viewResult } from "../../Protocols/protocolSlice";
 import ProtocolViewClass from "../../Protocols/ProtocolViewClass";
-import { toast } from "react-toastify";
-import axios from "axios";
-import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 import { loader } from "../qcSlice";
 
 function QCProtocolView({ protId, path, userType }) {

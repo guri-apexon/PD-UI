@@ -1,7 +1,7 @@
 import { runSaga } from "redux-saga";
 import * as api from "../../../../utils/api";
 
-import { navbarNotificationData, setRead } from "../saga";
+import { navbarNotificationData } from "../saga";
 const userDetail = {
   userId: "u1072231",
   username: "Subhadatta",

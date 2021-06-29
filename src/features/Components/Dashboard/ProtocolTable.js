@@ -448,6 +448,7 @@ const ProtocolTable = ({
   screen,
   handleProtocolClick,
   isLoading,
+  maxHeight,
 }) => {
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
@@ -510,6 +511,9 @@ const ProtocolTable = ({
           truncate: true,
         }}
         ExpandableComponent={ExpandableComponent}
+        defaultRowsPerPage={pageRows[1]}
+        hasScroll
+        maxHeight={maxHeight}
       />
     </div>
   );

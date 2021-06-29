@@ -8,7 +8,7 @@ import Loader1 from "../../Components/Loader/Loader";
 import Loader from "apollo-react/components/Loader";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import { formatESDate } from "../../../utils/utilFunction";
 import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
@@ -24,7 +24,7 @@ const SearchCard = ({
   protocolSelected,
 }) => {
   const [dataRow, setDataRow] = useState([]);
-  const [loader, setLoader] = useState(false);
+  const [loader] = useState(false);
   const userId1 = useSelector(userId);
   // let rowContent = "";
   // if (data && !data.rowsLoading) {
@@ -33,7 +33,7 @@ const SearchCard = ({
   // }
   // const selection1 = selection;
   useEffect(() => {
-    let arrOfObj = _.cloneDeep(data.rows);
+    let arrOfObj = cloneDeep(data.rows);
     var result = arrOfObj.map(function (el) {
       var o = Object.assign({}, el);
       o.protocolSelected = protocolSelected;

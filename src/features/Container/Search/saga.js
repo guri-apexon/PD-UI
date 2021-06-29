@@ -10,7 +10,7 @@ import {
   getPhaseValues,
 } from "./searchSlice";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import { toast } from "react-toastify";
 import moment from "moment";
 
@@ -42,7 +42,9 @@ export function* getIndicationData(action) {
       };
       yield put(getIndications(obj));
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 export function* getSponsorData(action) {
   try {
@@ -65,7 +67,9 @@ export function* getSponsorData(action) {
       };
       yield put(getSponsors(obj));
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 export function* getPhaseData(action) {
   if (action.payload.sectionContent.length === 0) {
@@ -118,7 +122,9 @@ export function* getPhaseData(action) {
         };
         yield put(getPhaseValues(phaseObj));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
@@ -153,11 +159,11 @@ export function* getFilterData(action) {
       });
       let formatFilter = data.data.map((item) => {
         if (item.sectionName === "Sponsors") {
-          let items = _.cloneDeep(item);
+          let items = cloneDeep(item);
           items.sectionContent = formatSponser;
           return items;
         } else if (item.sectionName === "Indication") {
-          let items = _.cloneDeep(item);
+          let items = cloneDeep(item);
           items.sectionContent = formatIndication;
           return items;
         } else {
@@ -170,7 +176,9 @@ export function* getFilterData(action) {
       };
       yield put(getFilters(obj));
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 function constructFilterObject(arr) {
   if (arr.length > 0) {
@@ -279,7 +287,7 @@ export function* updateSearchResult(action) {
 function* updateSearchAssociated(action) {
   const state = yield select();
   const searchData = state.search.searchResult;
-  let tempRes = _.cloneDeep(action.payload.obj);
+  let tempRes = cloneDeep(action.payload.obj);
   let foundIndex = tempRes.findIndex(
     (obj) => obj.id === action.payload.data.id
   );
@@ -322,7 +330,7 @@ function* updateSearchAssociated(action) {
     // };
     //  const associateDocs = yield call(httpCall, config);
     if (associateDocs.success) {
-      let arr = _.cloneDeep(associateDocs.data);
+      let arr = cloneDeep(associateDocs.data);
       arr.sort((a, b) => {
         return moment(b.uploadDate) - moment(a.uploadDate);
       });
@@ -599,7 +607,9 @@ function* getALLISP() {
       yield put(getIndications(indicationData));
       yield put(getSponsors(sponsorData));
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function* watchIncrementAsync() {
@@ -691,7 +701,7 @@ export function setAsssociateProtocols(id, data, associateDocs, isPrimaryUser) {
     data &&
     data.map((item) => {
       if (item.id === id) {
-        let temp = _.cloneDeep(item);
+        let temp = cloneDeep(item);
         temp.rows = associateDocs;
         temp.rowsLoading = false;
         temp.viewAssociate = true;

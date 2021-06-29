@@ -1,5 +1,5 @@
 import Table from "apollo-react/components/Table";
-import React, { useEffect } from "react";
+import React from "react";
 import moment from "moment";
 import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";

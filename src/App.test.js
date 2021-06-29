@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import store from "./store/store";
 import App from "./App";
 
 test("renders learn react link", async () => {
-  const { getByText, debug } = render(
+  render(
     <Provider store={store}>
       <BrowserRouter>
         <App />

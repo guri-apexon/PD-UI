@@ -1,10 +1,9 @@
 import React from "react";
-import * as reactRedux from "react-redux";
-import { cleanup, waitForElement } from "@testing-library/react";
+import { cleanup } from "@testing-library/react";
 // import { fireEvent } from "@testing-library/user-event";
 import "@testing-library/jest-dom/extend-expect";
 
-import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
+import { render, fireEvent } from "../../../../test-utils/test-utils";
 
 import SearchSection from "../SearchSection";
 import SearchListing from "../SearchListingSection";
@@ -12,13 +11,7 @@ import SearchCard from "../SearchCard";
 
 import axios from "axios";
 
-import {
-  searchResult,
-  indication,
-  sponser,
-  searchCardData,
-  searchCardData2,
-} from "./data";
+import { searchCardData, searchCardData2 } from "./data";
 
 afterEach(cleanup);
 
@@ -30,57 +23,47 @@ describe("Search test suit", () => {
     render(<SearchListing data={searchCardData} />);
   });
   test("Should Render Protocol Name Field", () => {
-    const { getByText, getByTestId } = render(
-      <SearchListing data={searchCardData} />
-    );
+    const { getByText } = render(<SearchListing data={searchCardData} />);
     getByText("Protocol:");
     // screen.debug()
   });
   test("Should Render Protocol Name Value", () => {
-    const { getByText, getByTestId } = render(
-      <SearchListing data={searchCardData} />
-    );
+    const { getByTestId } = render(<SearchListing data={searchCardData} />);
     expect(getByTestId("name-value")).toHaveTextContent("EMR 200095-004");
   });
   test("Should Render Protocol Title Value", () => {
-    const { getByText, getByTestId } = render(
-      <SearchListing data={searchCardData} />
-    );
+    const { getByTestId } = render(<SearchListing data={searchCardData} />);
     expect(getByTestId("title-value")).toHaveTextContent("Paragraph");
   });
   test("Should Render Accordion", () => {
-    const { getByText, getByTestId } = render(
-      <SearchListing data={searchCardData} />
-    );
+    const { getByText } = render(<SearchListing data={searchCardData} />);
     getByText("Protocol Data");
   });
   test("Should Render Search Card", () => {
-    const { getByText, getByTestId } = render(
-      <SearchCard data={searchCardData} selection={true} />
-    );
+    render(<SearchCard data={searchCardData} selection={true} />);
     // screen.debug();
   });
   test("Should Render Indication Field", () => {
-    const { getByText, getByTestId } = render(
+    const { getByText } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
     getByText("Indication :");
   });
 
   test("Should Render Phase Field", () => {
-    const { getByText, getByTestId } = render(
+    const { getByText } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
     getByText("Phase :");
   });
   test("Should Render Phase Value", () => {
-    const { getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
     expect(getByTestId("phase-value")).toHaveTextContent("II");
   });
   test("Should Render Sponsor Field", () => {
-    const { getByText, getByTestId } = render(
+    const { getByText } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
     getByText("Sponsor :");
@@ -94,19 +77,19 @@ describe("Search test suit", () => {
   //   // );
   // });
   test("Should Render Recent Approval Date Field", () => {
-    const { getByText, getByTestId } = render(
+    const { getByText } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
     getByText("Approval Date:");
   });
   test("Should Render Molecule Field", () => {
-    const { getByText, getByTestId } = render(
+    const { getByText } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
     getByText("Molecule/Device :");
   });
   test("Should Render Molecule Value", () => {
-    const { getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
     expect(getByTestId("molecule-value")).toHaveTextContent(
@@ -114,7 +97,7 @@ describe("Search test suit", () => {
     );
   });
   test("Should Render table with Version #, Draft #, Source Document, Upload Date, Document Status", () => {
-    const { getByText, getByTestId } = render(
+    const { getByText } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
     getByText("Version #");
@@ -125,7 +108,7 @@ describe("Search test suit", () => {
   });
   test("Should call for associatd protocol Value", () => {
     const mockViewAssociateProtocolClick = jest.fn();
-    const { getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <SearchCard
         data={searchCardData}
         selection={true}
@@ -139,7 +122,7 @@ describe("Search test suit", () => {
     const mockViewAssociateProtocolClick = jest.fn();
 
     const data = 1;
-    const { getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <SearchCard
         data={searchCardData2}
         selection={true}

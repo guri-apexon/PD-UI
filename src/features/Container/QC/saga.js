@@ -1,7 +1,10 @@
 import { takeEvery, all, call, put, select } from "redux-saga/effects";
+import moment from "moment";
+import { toast } from "react-toastify";
+
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import { getProtocols, setError, getLoader, setTableLoader } from "./qcSlice";
-import { toast } from "react-toastify";
+
 function* getState() {
   const state = yield select();
   const type = state.user.userDetail.user_type;
@@ -25,7 +28,9 @@ export function* qcProtocolsData() {
         item.protocol = !item.protocol ? "" : item.protocol;
         item.projectId = !item.projectId ? "" : item.projectId;
         item.sponsor = !item.sponsor ? "" : item.sponsor;
-        item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
+        item.uploadDate = !item.uploadDate
+          ? ""
+          : moment(item.uploadDate).format("L");
         return item;
       });
       yield put(getProtocols(data));

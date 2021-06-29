@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
+import { render } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 
 import FollowedProtocols from "../FollowedProtocols";
@@ -16,7 +16,10 @@ describe("Followed Protocol component with Empty Data", () => {
   };
 
   test("should render ProtocolTable", () => {
-    render(<FollowedProtocols />, state);
+    render(
+      <FollowedProtocols pageRows={[5, 20, 30, "All"]} maxHeight={400} />,
+      state
+    );
   });
 });
 describe("Followed Protocol component with Data", () => {
@@ -60,6 +63,6 @@ describe("Followed Protocol component with Data", () => {
   };
 
   test("should render ProtocolTable", () => {
-    render(<FollowedProtocols />, state);
+    render(<FollowedProtocols pageRows={[5, 20, 30, "All"]} />, state);
   });
 });

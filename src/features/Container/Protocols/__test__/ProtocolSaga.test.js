@@ -10,7 +10,6 @@ import {
   getSoaSections,
   getTocSections,
   captalize,
-  getElement,
 } from "../saga";
 
 const userDetail = {
@@ -270,9 +269,7 @@ describe("Protocol Saga Unit Test", () => {
 
   test("getProtocolToc should be Fails", async () => {
     const dispatchedActions = [];
-    let obj = {
-      id: "1",
-    };
+
     const mockOutput = {
       success: false,
       data: {},
@@ -296,9 +293,7 @@ describe("Protocol Saga Unit Test", () => {
   });
   test("getProtocolToc should be Error out", async () => {
     const dispatchedActions = [];
-    let obj = {
-      id: "1",
-    };
+
     const mockOutput = {
       success: false,
       data: {},
@@ -327,9 +322,7 @@ describe("Protocol Saga Unit Test", () => {
 
   test("getCompareResult should be Success", async () => {
     const dispatchedActions = [];
-    let obj = {
-      id: "1",
-    };
+
     const mockOutput = {
       success: true,
       data: {

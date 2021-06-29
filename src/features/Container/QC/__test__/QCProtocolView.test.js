@@ -204,7 +204,7 @@ describe("QC Protocol View container component Laoder", () => {
     const filePath = "//path";
     const type = "QC1";
 
-    const container = render(
+    render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
       state
     );
@@ -214,7 +214,7 @@ describe("QC Protocol View container component Laoder", () => {
     const filePath = "//path";
     const type = "QC2";
 
-    const container = render(
+    render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
       state
     );
@@ -242,7 +242,7 @@ describe("QC Protocol View container component Error", () => {
     const filePath = "//path";
     const type = "QC1";
 
-    const container = render(
+    render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
       state
     );
@@ -251,7 +251,7 @@ describe("QC Protocol View container component Error", () => {
     const protocolId = "212121";
     const filePath = "//path";
     const type = "QC2";
-    const container = render(
+    render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
       state
     );

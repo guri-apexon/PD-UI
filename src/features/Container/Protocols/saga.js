@@ -101,6 +101,7 @@ export function getTocSections(toc) {
       });
       sectionList.push(level_1_CPT_section);
     }
+    return item;
   });
   return list;
 }
@@ -115,6 +116,7 @@ export function getSoaSections(soa) {
       section: `${TableName}`,
       id: `SOA-${TableIndex}`,
     });
+    return item;
     // sectionList.push(CPT_section);
   });
   return list;
