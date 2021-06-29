@@ -18,7 +18,7 @@ function FollowedProtocols({ pageRows, maxHeight }) {
           protocolData && protocolData.length > 0 ? protocolData : []
         }
         isLoading={loader}
-        pageRows={pageRows}
+        pageRows={protocolData && protocolData.length > 0 ? pageRows : []}
         screen="FollowedProtocols"
         maxHeight={maxHeight}
       />

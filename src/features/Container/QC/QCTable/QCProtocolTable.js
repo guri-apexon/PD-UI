@@ -22,7 +22,9 @@ function ProtocolTable({ handleProtocolClick }) {
             protocolData && protocolData.length > 0 ? protocolData : []
           }
           isLoading={loader}
-          pageRows={[10, 20, 30, "All"]}
+          pageRows={
+            protocolData && protocolData.length > 0 ? [10, 20, 30, "All"] : []
+          }
           handleProtocolClick={handleProtocolClick}
           screen={"QC"}
           maxHeight={600}

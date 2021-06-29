@@ -212,6 +212,9 @@ const AssociateDocumentsTable = ({
             } ${from}-${to} of ${count}`,
           truncate: true,
         }}
+        defaultRowsPerPage={5}
+        hasScroll
+        maxHeight={350}
       />
     </div>
   );

@@ -449,6 +449,7 @@ const ProtocolTable = ({
   handleProtocolClick,
   isLoading,
   maxHeight,
+  defaultRows,
 }) => {
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
@@ -479,7 +480,6 @@ const ProtocolTable = ({
       protocol: row.protocol,
     });
   };
-
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
       <Table
@@ -511,7 +511,7 @@ const ProtocolTable = ({
           truncate: true,
         }}
         ExpandableComponent={ExpandableComponent}
-        defaultRowsPerPage={pageRows[1]}
+        defaultRowsPerPage={20}
         hasScroll
         maxHeight={maxHeight}
       />

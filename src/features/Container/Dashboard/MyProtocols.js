@@ -15,7 +15,7 @@ function MyProtocols({ setSelectedProtocols, pageRows, maxHeight }) {
           protocolData && protocolData.length > 0 ? protocolData : []
         }
         isLoading={loader}
-        pageRows={pageRows}
+        pageRows={protocolData && protocolData.length > 0 ? pageRows : []}
         setSelectedProtocols={setSelectedProtocols}
         maxHeight={maxHeight}
       />

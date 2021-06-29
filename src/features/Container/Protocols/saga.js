@@ -42,7 +42,7 @@ export function* getSummaryData(action) {
     yield put(getSummary(obj));
     yield put({
       type: "FETCH_ASSOCIATE_PROTOCOLS",
-      payload: resp.data.protocol,
+      payload: resp.data[0].protocol,
     });
   } else {
     let obj = {
