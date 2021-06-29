@@ -6,7 +6,6 @@ import {
   sendQc2Approval,
   qc2Reject,
   uploadQc,
-  watchqc,
 } from "../saga";
 import * as api from "../../../../utils/api";
 const userDetail = {
