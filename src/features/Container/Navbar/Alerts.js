@@ -24,7 +24,6 @@ function Alerts({ list }) {
   const uid = useSelector(userId);
 
   const checkForPrimary = async (data) => {
-    // debugger;
     const postObj = {
       id: data.id,
       protocol: data.protocol,

@@ -24,11 +24,11 @@ const SearchCard = ({
   protocolSelected,
 }) => {
   const [dataRow, setDataRow] = useState([]);
-  const [loader] = useState(false);
+  const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
   // let rowContent = "";
   // if (data && !data.rowsLoading) {
-  //   rowContent = cloneDeep(data.rows);
+  //   rowContent = _.cloneDeep(data.rows);
   //   rowContent.handleSelectRow = compareTwoProtocol();
   // }
   // const selection1 = selection;
@@ -39,6 +39,7 @@ const SearchCard = ({
       o.protocolSelected = protocolSelected;
       return o;
     });
+    // debugger;
     setDataRow(result);
   }, [protocolSelected, data]);
   /* istanbul ignore next */
@@ -47,48 +48,59 @@ const SearchCard = ({
   };
 
   const handleDownload = async (row) => {
-    // setLoader(true);
-    // console.log("path", row.path);
-    // const dfsPath = row.path.replaceAll("\\", "/");
-    // console.log("DFS", dfsPath);
-    // try {
-    //   const resp = await axios({
-    //     url: "http://localhost:4000/api/pdf/download",
-    //     method: "GET",
-    //     params: {
-    //       path: dfsPath,
-    //     },
-    //     responseType: "blob", // Important
-    //   });
-    //   // console.log("resp", resp);
-    //   const blob = resp.data;
-    //   let url = URL.createObjectURL(blob);
-    //   setLoader(false);
-    //   window.open(url, "_blank");
-    // } catch (err) {
-    //   setLoader(false);
-    //   console.log(err);
-    // }
+    console.log("No Need", BASE_URL_8000, UI_URL, userId1);
+    console.log("path", row.path);
+    const dfsPath = row.path.replaceAll("\\", "/");
+    console.log("DFS", dfsPath);
     const userresp = await axios.get(
       `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
         1
       )}&protocol=${data.protocolNumber}`
     );
-    console.log("--------------||------------", userresp);
     if (userresp && userresp.data) {
-      const resp = await axios.get(
-        `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`
-      );
-
-      let url = `${UI_URL}/${resp.data}`;
-      let encodeUrl = encodeURI(url);
-      let myWindow = window.open("about:blank", "_blank");
-      myWindow.document.write(
-        `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
-      );
+      setLoader(true);
+      try {
+        const resp = await axios({
+          url: "http://localhost:4000/api/download",
+          method: "GET",
+          params: {
+            path: dfsPath,
+          },
+          responseType: "blob", // Important
+        });
+        // console.log("resp", resp);
+        const blob = resp.data;
+        let url = URL.createObjectURL(blob);
+        setLoader(false);
+        window.open(url, "_blank");
+      } catch (err) {
+        setLoader(false);
+        toast.error("Document is not available.");
+      }
     } else {
       toast.info("Access Provisioned to Primary Users only");
     }
+
+    // const userresp = await axios.get(
+    //   `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
+    //     1
+    //   )}&protocol=${data.protocolNumber}`
+    // );
+    // console.log("--------------||------------", userresp);
+    // if (userresp && userresp.data) {
+    //   const resp = await axios.get(
+    //     `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`
+    //   );
+
+    //   let url = `${UI_URL}/${resp.data}`;
+    //   let encodeUrl = encodeURI(url);
+    //   let myWindow = window.open("about:blank", "_blank");
+    //   myWindow.document.write(
+    //     `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
+    //   );
+    // } else {
+    //   toast.info("Access Provisioned to Primary Users only");
+    // }
   };
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>

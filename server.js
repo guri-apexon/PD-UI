@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const axios = require("axios");
+const fs = require("fs");
 const path = require("path");
 const app = express();
 const cors = require("cors");
@@ -9,7 +10,7 @@ const session = require("express-session");
 const jwt_decode = require("jwt-decode");
 const dotenv = require("dotenv");
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = 4000;
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
@@ -90,6 +91,59 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.get("/api/download", (req, res) => {
+  // FOR DOCX === application/vnd.openxmlformats-officedocument.wordprocessingml.document
+  // FOR CSV === text/csv
+  // FOR PDF === application/pdf
+  const dfsPath = req.query.path;
+  const ext = path.extname(dfsPath);
+  console.log(ext);
+  if (dfsPath) {
+    try {
+      var file = fs.createReadStream(dfsPath);
+      // console.log("FIle", file);
+      file.on("error", (err) => {
+        res.status(404).send({
+          message: "Document is not available.",
+        });
+      });
+      file.on("close", () => {
+        res.end();
+      });
+      if (ext === ".pdf") {
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=Protocol.pdf"
+        );
+        file.pipe(res);
+      } else if (ext === ".csv") {
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=compare.csv"
+        );
+        file.pipe(res);
+      } else if (ext === ".docx") {
+        res.setHeader(
+          "Content-Type",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        );
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=Protocol.docx"
+        );
+        file.pipe(res);
+      }
+    } catch (e) {
+      const errMsg = {
+        message:
+          "Unable to connect DFS location due to network issue. Please try again.",
+      };
+      res.status(403).send(errMsg);
+    }
+  }
+});
 
 app.get("/health", function (req, res) {
   res.send("F5-UP");

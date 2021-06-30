@@ -29,7 +29,6 @@ export function* getIndicationData(action) {
     if (indicationList.success) {
       // let respData = indicationList.data.slice(0, 700);
       let respData = indicationList.data;
-      // debugger;
       let formatIndication = respData.map((item) => {
         return {
           title: item.indicationName,
@@ -105,7 +104,6 @@ export function* getPhaseData(action) {
 
       if (respData.success) {
         let phaseData = respData.data.phases;
-        // debugger;
         const filtered = phaseData.filter(function (el) {
           return el !== "";
         });
@@ -222,7 +220,6 @@ export function* getSearchData(action) {
         ...action.payload,
         qID: userId,
       };
-      // debugger;
       const searchurl = `${BASE_URL_8000}/api/keyword_search/`;
       const searchResp = yield call(httpCall, {
         url: searchurl,
@@ -307,7 +304,6 @@ function* updateSearchAssociated(action) {
   };
   yield put(getSearchResult(initialObj));
   //ProtocolNo
-  // debugger
   if (action.payload.data.protocolNumber) {
     let associateURL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}`;
     // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=SSR_AKB-6548-CI-0014`;
@@ -410,7 +406,6 @@ export function* getRecentData(action) {
 }
 
 export function* getDataByRange(action) {
-  // debugger;
   if (action.payload.from && action.payload.to) {
     let fromDate = new Date(action.payload.from);
     let toDate = new Date(action.payload.to);
@@ -693,7 +688,6 @@ export function createJSONFormat(data) {
 // }
 // function getOnlyActiveItem(obj) {
 //   let activeObj = obj.filter((item) => item.isActive !== 0);
-//   // debugger
 //   return activeObj;
 // }
 export function setAsssociateProtocols(id, data, associateDocs, isPrimaryUser) {

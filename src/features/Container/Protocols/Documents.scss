@@ -24,8 +24,8 @@
   }
   .associate-document-tab {
     width: 100%;
-    [class^="InternalTablePagination-toolbar-"] {
-      display: none;
+    [class^="Table-tableWrapper-"] {
+      overflow-x: hidden;
     }
     .hyperlink {
       &:active {

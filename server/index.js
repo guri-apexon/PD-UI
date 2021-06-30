@@ -39,28 +39,57 @@ function authenticateUser(user, password) {
 //------------------------------------ Excel End Point --------------------------------
 // require("./routes/converToExcel")(app);
 app.get("/api/pdf/download", (req, res) => {
+  // FOR DOCX === application/vnd.openxmlformats-officedocument.wordprocessingml.document
+  // FOR CSV === text/csv
+  // FOR PDF === application/pdf
   const dfsPath = req.query.path;
+  const ext = path.extname(dfsPath);
+  console.log(ext);
   if (dfsPath) {
     try {
       var file = fs.createReadStream(dfsPath);
-      // var stat = fs.statSync(dfsPath);
-      // console.log(file)
-      // res.setHeader("Content-Length", stat.size);
-      res.setHeader("Content-Type", "application/pdf");
-      res.setHeader("Content-Disposition", "attachment; filename=Protocol.pdf");
-      file.pipe(res);
+      // console.log("FIle", file);
+      file.on("error", (err) => {
+        res.status(404).send({
+          message: "Document is not available.",
+        });
+      });
+      file.on("close", () => {
+        res.end();
+      });
+      if (ext === ".pdf") {
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=Protocol.pdf"
+        );
+        file.pipe(res);
+      } else if (ext === ".csv") {
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=compare.csv"
+        );
+        file.pipe(res);
+      } else if (ext === ".docx") {
+        res.setHeader(
+          "Content-Type",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        );
+        res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=Protocol.docx"
+        );
+        file.pipe(res);
+      }
     } catch (e) {
       const errMsg = {
-        messgae:
+        message:
           "Unable to connect DFS location due to network issue. Please try again.",
       };
       res.status(403).send(errMsg);
     }
   }
-
-  console.log("::::", dfsPath);
-
-  // res.send("Happy")
 });
 app.all("/api/csv/download", (req, res) => {
   // res.download("//quintiles.net/enterprise/Services/protdigtest/pilot_iqvxml/compare/ea9f1437-ebd1-43e8-9088-9077c73ac790/ea9f1437-ebd1-43e8-9088-9077c73ac790.compare_detail.csv")

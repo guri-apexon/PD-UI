@@ -7,10 +7,8 @@ import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
 /* istanbul ignore next */
 // const CheckBoxCell = ({ row }) => {
-//   // debugger
 //   console.log(row);
 //   // if(row.protocolSelected.includes(row.id)){
-//   // debugger
 //   return (
 //     <>
 //       {row.isPrimaryUser ? (
@@ -28,7 +26,6 @@ import { covertMMDDYYYY } from "../../../../utils/utilFunction";
 //     </>
 //   );
 //   // }else{
-//   //   // debugger
 //   //   return (
 //   //     <div>
 //   //       <CheckBox onChange={() => row.handleSelectRow(row.id, row.protocol)} checked={false}/>

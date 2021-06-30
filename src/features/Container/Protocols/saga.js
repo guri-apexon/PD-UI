@@ -42,7 +42,7 @@ export function* getSummaryData(action) {
     yield put(getSummary(obj));
     yield put({
       type: "FETCH_ASSOCIATE_PROTOCOLS",
-      payload: resp.data.protocol,
+      payload: resp.data[0].protocol,
     });
   } else {
     let obj = {
@@ -198,7 +198,6 @@ export function* fetchAssociateProtocol(action) {
 
 export function* getCompareResult(action) {
   if (action.payload) {
-    // debugger;
     yield put(
       getCompare({
         iqvdata: "",
@@ -213,13 +212,11 @@ export function* getCompareResult(action) {
     const resp = yield call(httpCall, { url, method: "GET" });
 
     if (resp.data) {
-      // debugger;
       let temp = cloneDeep(resp.data);
       temp.loading = false;
       temp.called = true;
       yield put(getCompare(temp));
     } else {
-      // debugger;
       let temp = {
         iqvdata: "",
         loading: false,

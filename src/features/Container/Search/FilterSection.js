@@ -190,6 +190,13 @@ const HandleSearch = (props) => {
   useEffect(() => {
     setData(sectiondata);
   }, [sectiondata]);
+  useEffect(() => {
+    if (clearAll && typed !== "") {
+      setTyped("");
+      setData(sectiondata);
+      setIndex(index + 1);
+    }
+  }, [clearAll]);
 
   useEffect(() => {
     console.log("useEffect", typed);
@@ -214,7 +221,6 @@ const HandleSearch = (props) => {
     return () => clearTimeout(timeoutId);
   }, [typed]);
   const handleTextChange = (value) => {
-    // debugger
     setTyped(value);
     if (value === "") {
       setData(sectiondata);
