@@ -214,7 +214,6 @@ const HandleSearch = (props) => {
     return () => clearTimeout(timeoutId);
   }, [typed]);
   const handleTextChange = (value) => {
-    // debugger
     setTyped(value);
     if (value === "") {
       setData(sectiondata);

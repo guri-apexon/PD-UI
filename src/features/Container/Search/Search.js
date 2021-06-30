@@ -10,7 +10,7 @@ import { POST_OBJECT } from "../../../AppConstant/AppConstant";
 //------------------- Third Party -----------------
 
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import { toast } from "react-toastify";
 
 //------------------- Redux -----------------
@@ -82,7 +82,7 @@ const Search = (props) => {
     let params = props.location.search;
     // const parsed = queryString.parse(params);
     let parsed = {};
-    let postObj = _.cloneDeep(POST_OBJECT);
+    let postObj = cloneDeep(POST_OBJECT);
     // if (indicationData.sectionContent.length === 0) {
     // dispatch({ type: "GET_INDICATIONS" });
     // }
@@ -101,7 +101,7 @@ const Search = (props) => {
           return key === "" ? value : decodeURIComponent(value);
         }
       );
-      let tempQuery = _.cloneDeep(searchQuery);
+      let tempQuery = cloneDeep(searchQuery);
       /* istanbul ignore else */
       if ("?key" in parsed) {
         setIdPresent(true);
@@ -165,18 +165,15 @@ const Search = (props) => {
         tempQuery.dateType =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         postObj.dateType = parsed[`dateType`];
-        // debugger;
       }
       /* istanbul ignore else */
       if ("dateSection" in parsed) {
-        // debugger;
         let tempElasticQuery = dateSection.sectionContent.filter((item) =>
           parsed.dateSection.split("+").includes(item.value)
         );
         tempQuery.dateSection =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         postObj.dateSection = parsed[`dateSection`];
-        // debugger;
       }
       setPostQueryObj(postObj);
       setSearchQuery(tempQuery);
@@ -187,7 +184,7 @@ const Search = (props) => {
 
     // dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.searchKey });
     // dispatch({ type: "GET_SEARCH_RESULT", payload: parsed.searchKey });
-    // let tempQuery= _.cloneDeep(searchQuery);
+    // let tempQuery= cloneDeep(searchQuery);
     // tempQuery.sponsor=[1,2,3,4];
     // setSearchQuery(tempQuery);
     // if ("?key" in parsed) {
@@ -221,7 +218,7 @@ const Search = (props) => {
           return key === "" ? value : decodeURIComponent(value);
         }
       );
-      let tempQuery = _.cloneDeep(searchQuery);
+      let tempQuery = cloneDeep(searchQuery);
       /* istanbul ignore else */
       if ("sponsor" in parsed && sponsorData.sectionContent.length > 0) {
         let tempElasticQuery = sponsorData.sectionContent.filter((item) =>
@@ -270,9 +267,8 @@ const Search = (props) => {
     });
   };
   const handleKeywordSearch = (input) => {
-    // debugger;
     if (input) {
-      let postObj = _.cloneDeep(POST_OBJECT);
+      let postObj = cloneDeep(POST_OBJECT);
       postObj.key = input;
       setSortValue("1");
       setProtocolSelected([]);
@@ -301,7 +297,6 @@ const Search = (props) => {
       setSearchInput(input);
       setPostQueryObj(postObj);
 
-      // debugger;
       dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
       if (sponsorData.sectionContent.length === 0) {
         dispatch({ type: "GET_SPONSORS" });
@@ -319,7 +314,7 @@ const Search = (props) => {
   };
 
   const getSearchInput = (input) => {
-    let postObj = _.cloneDeep(POST_OBJECT);
+    let postObj = cloneDeep(POST_OBJECT);
     let validFilters = false;
     setSortValue("1");
     setProtocolSelected([]);
@@ -336,7 +331,6 @@ const Search = (props) => {
         return key === "" ? value : decodeURIComponent(value);
       }
     );
-    // debugger;
     /* istanbul ignore else */
     if ("key" in parsed) {
       setSearchInput(parsed[`key`]);
@@ -500,7 +494,7 @@ const Search = (props) => {
   };
   const hancleClearAll = (inputPresent, input) => {
     // setClearAll(true);
-    let postObj = _.cloneDeep(POST_OBJECT);
+    let postObj = cloneDeep(POST_OBJECT);
     setProtocolSelected([]);
     setPrevProtSelected("");
     if (inputPresent) {
@@ -709,7 +703,7 @@ const Search = (props) => {
   };
   const onSortChange = (data, value) => {
     setPage(0);
-    let postObj = _.cloneDeep(postQueryObj);
+    let postObj = cloneDeep(postQueryObj);
     postObj.sortField = data.value;
     setSortValue(value);
     dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
@@ -718,10 +712,9 @@ const Search = (props) => {
 
   const onSearchQuery = (list, identifier) => {
     setClearAll(false);
-    let tempQuery = _.cloneDeep(searchQuery);
+    let tempQuery = cloneDeep(searchQuery);
     tempQuery[identifier] = list;
     setSearchQuery(tempQuery);
-    // debugger;
   };
 
   const compareTwoProtocol = (data, protocol) => {
@@ -780,7 +773,7 @@ const Search = (props) => {
   // const onSetPage = (event, value) => {
   const onSetPage = (value) => {
     setPage(value);
-    let postObj = _.cloneDeep(postQueryObj);
+    let postObj = cloneDeep(postQueryObj);
     postObj.pageNo = value + 1;
     dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
   };

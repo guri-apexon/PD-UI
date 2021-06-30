@@ -1,5 +1,7 @@
-import _ from "lodash";
 import React, { useState, useEffect } from "react";
+import concat from "lodash/concat";
+import cloneDeep from "lodash/cloneDeep";
+import merge from "lodash/merge";
 import axios from "axios";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
@@ -462,7 +464,7 @@ const ProtocolTable = ({
     setSelectedRows((selectedRows) =>
       selectedRows.indexOf(id) >= 0
         ? selectedRows.filter((cid) => cid !== id)
-        : _.concat(selectedRows, id)
+        : concat(selectedRows, id)
     );
   };
 
@@ -470,7 +472,7 @@ const ProtocolTable = ({
     setExpandedRows((expandedRows) =>
       expandedRows.indexOf(id) >= 0
         ? expandedRows.filter((eid) => eid !== id)
-        : _.concat(expandedRows, id)
+        : concat(expandedRows, id)
     );
   };
   const handleRowProtocolClick = (row) => {
@@ -487,7 +489,7 @@ const ProtocolTable = ({
         rows={
           initialRows &&
           initialRows.map((row) => {
-            let temp = _.cloneDeep(row);
+            let temp = cloneDeep(row);
             let details = {
               key: row.id,
               expanded: expandedRows.indexOf(row.id) >= 0,
@@ -497,7 +499,7 @@ const ProtocolTable = ({
               screen: screen,
               handleChange,
             };
-            return _.merge(temp, details);
+            return merge(temp, details);
           })
         }
         initialSortedColumn="uploadDate"

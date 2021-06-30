@@ -3,7 +3,8 @@ import React from "react";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import merge from "lodash/merge";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 
 import Checkbox from "apollo-react/components/Checkbox";
@@ -194,14 +195,14 @@ const AssociateDocumentsTable = ({
       <Table
         title="Associated Documents"
         rows={initialsRow.map((row) => {
-          let temp = _.cloneDeep(row);
+          let temp = cloneDeep(row);
           let details = {
             key: row.id,
             handleChangeTab,
             protocolSelected,
             setProtocolToDownload,
           };
-          return _.merge(temp, details);
+          return merge(temp, details);
         })}
         columns={showCheckbox ? columns : noActionColumns}
         rowsPerPageOptions={[5, 10, "All"]}

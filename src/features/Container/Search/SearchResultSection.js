@@ -1,5 +1,6 @@
 import React from "react";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import isEmpty from "lodash/isEmpty";
 import SearchListingSection from "./SearchListingSection";
 import SearchIcon from "apollo-react-icons/Search";
 import Button from "apollo-react/components/Button";
@@ -33,7 +34,7 @@ class SearchPanel extends React.Component {
   }
   static getDerivedStateFromProps(props, state) {
     if (
-      _.isEmpty(state.accordionObj) ||
+      isEmpty(state.accordionObj) ||
       props.resultList.loader !== state.resultListData.loader ||
       props.resultList !== state.resultListData
     ) {
@@ -61,7 +62,7 @@ class SearchPanel extends React.Component {
           : [];
       let arr = [];
       for (let i = 0; i < result.length; i++) {
-        let obj = _.cloneDeep(result[i]);
+        let obj = cloneDeep(result[i]);
         obj.expanded = result[i].expanded ? result[i].expanded : false;
         obj.id = result[i].AiDocId;
         // let obj = {
@@ -69,7 +70,6 @@ class SearchPanel extends React.Component {
         //   id: result[i].protocolNumber,
         //   ...result[i],
         // };
-        // debugger
         arr.push(obj);
       }
       return {
@@ -84,7 +84,7 @@ class SearchPanel extends React.Component {
   setExpanded = (id, obj, data) => {
     const { accordionObj } = this.state;
 
-    let accObj = _.cloneDeep(accordionObj);
+    let accObj = cloneDeep(accordionObj);
     let foundIndex = accObj.findIndex((obj) => obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
     if (accObj[foundIndex].expanded === false) {
@@ -115,7 +115,7 @@ class SearchPanel extends React.Component {
       tempDefault = false;
     }
     let arr = accordionObj.map((item) => {
-      let temp = _.cloneDeep(item);
+      let temp = cloneDeep(item);
       temp.expanded = tempDefault;
       temp.viewAssociate = tempDefault === false ? false : temp.viewAssociate;
       return temp;
@@ -166,7 +166,7 @@ class SearchPanel extends React.Component {
     const { userDetails } = this.props;
     const id = userDetails.userId;
     const { accordionObj } = this.state;
-    let accObj = _.cloneDeep(accordionObj);
+    let accObj = cloneDeep(accordionObj);
     let newObj = accObj.map((obj) => {
       if (
         obj.protocolNumber &&
