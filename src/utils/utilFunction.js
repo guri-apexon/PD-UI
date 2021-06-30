@@ -1,12 +1,12 @@
-import moment from "moment";
-export const convertData = (date) => {
-  let a = moment(date, "YYYYMMDD");
-  return a.format("DD-MMM-YYYY");
-};
-
 export const covertMMDDYYYY = (date) => {
-  const someday = moment(date);
-  return someday.format("DD-MMM-YYYY");
+  const dateFormat = new Date(date);
+  return dateFormat
+    .toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    })
+    .replace(/ /g, "-");
 };
 
 export const formatESDate = (dateString) => {
@@ -19,8 +19,13 @@ export const formatESDate = (dateString) => {
     let minute = str.substring(10, 12);
     let second = str.substring(12, 14);
     let date = new Date(year, month - 1, day, hour, minute, second);
-    // console.log(moment(date).format("DD-MMM-YYYY"));
-    return moment(date).format("DD-MMM-YYYY");
+    return date
+      .toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+      .replace(/ /g, "-");
   } else {
     return "-";
   }

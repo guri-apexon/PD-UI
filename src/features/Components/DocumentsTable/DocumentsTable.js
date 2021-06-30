@@ -1,6 +1,5 @@
 import Table from "apollo-react/components/Table";
 import React from "react";
-import moment from "moment";
 import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 // const Cell = ({ row, column }) => (
@@ -51,8 +50,16 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     </p>
   ); // eslint-disable-line
 };
-const DataCell = ({ row, column }) =>
-  moment(row[column.accessor]).format("DD-MMM-YYYY");
+const DateCell = ({ row, column }) => {
+  const date = new Date(row[column.accessor]);
+  return date
+    .toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    })
+    .replace(/ /g, "-");
+};
 const columns = [
   {
     accessor: "fileName",
@@ -62,7 +69,7 @@ const columns = [
   {
     header: "Uploaded Date",
     accessor: "uploadDate",
-    customCell: DataCell,
+    customCell: DateCell,
   },
   {
     header: "Uploaded By",

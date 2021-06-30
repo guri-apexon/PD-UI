@@ -1,5 +1,4 @@
 import { takeEvery, all, call, put, select } from "redux-saga/effects";
-import moment from "moment";
 import { toast } from "react-toastify";
 
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
@@ -28,9 +27,7 @@ export function* qcProtocolsData() {
         item.protocol = !item.protocol ? "" : item.protocol;
         item.projectId = !item.projectId ? "" : item.projectId;
         item.sponsor = !item.sponsor ? "" : item.sponsor;
-        item.uploadDate = !item.uploadDate
-          ? ""
-          : moment(item.uploadDate).format("L");
+        item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
         return item;
       });
       yield put(getProtocols(data));
@@ -79,10 +76,15 @@ export function* qcApprove(action) {
 }
 
 export function* sendQc2Approval(action) {
-  const url = `${BASE_URL_8000}/api/protocol_metadata/qc1_to_qc2?aidoc_id=${action.payload}`;
+  const url = `${BASE_URL_8000}/api/protocol_metadata/change_qc_status`;
+  const obj = {
+    docIdArray: [action.payload],
+    targetStatus: "QC2",
+  };
   const config = {
     url: url,
     method: "PUT",
+    data: obj,
   };
   try {
     yield put(getLoader(true));
@@ -104,10 +106,15 @@ export function* sendQc2Approval(action) {
 }
 
 export function* qc2Reject(action) {
-  const url = `${BASE_URL_8000}/api/protocol_metadata/qc_reject?aidoc_id=${action.payload}`;
+  const url = `${BASE_URL_8000}/api/protocol_metadata/change_qc_status`;
+  const obj = {
+    docIdArray: [action.payload],
+    targetStatus: "QC1",
+  };
   const config = {
     url: url,
     method: "PUT",
+    data: obj,
   };
   try {
     yield put(getLoader(true));

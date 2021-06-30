@@ -1,18 +1,15 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { qcProtocols, qcProtocolsError, tableLoader } from "../qcSlice";
 // import ProtocolTableComp from "../../../Components/QC/QCProtocolTable";
 import ProtocolTableComp from "../../../Components/Dashboard/ProtocolTable";
 
 function ProtocolTable({ handleProtocolClick }) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const protocolData = useSelector(qcProtocols);
   const error = useSelector(qcProtocolsError);
   const loader = useSelector(tableLoader);
-  useEffect(() => {
-    // dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
-    dispatch({ type: "GET_QC_PROTOCOL_TABLE_SAGA" });
-  }, []);
+
   return (
     <div className="qc-protocol-table">
       <div id="protocol-table">
