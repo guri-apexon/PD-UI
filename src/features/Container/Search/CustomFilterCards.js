@@ -79,7 +79,6 @@ export const CheckboxCard = ({
   const handleChange = (e) => {
     setValue(e.target.value);
     onCheckboxClick(e.target.value, identifier);
-    // debugger;
   };
 
   const classes = useStyles();
@@ -134,13 +133,11 @@ export const DateRangeCard = ({
     // setValue(listValue)
     if (value) {
       // props.history.push(`/search?${resultQuery}`);
-      // debugger;
       dispatch({ type: "FILTER_BY_RECENT_SAGA", payload: value });
     }
   }, [value, dispatch]);
 
   useEffect(() => {
-    // debugger;
     let date1, date2;
     if (dateRange[0] && dateRange[0] !== undefined) {
       date1 = dateRange[0].format("MM-DD-YYYY");
@@ -172,25 +169,19 @@ export const DateRangeCard = ({
       };
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
     }
-    // debugger
     onCheckboxClick([obj.id], identifier2);
-    // debugger;
   };
 
   useEffect(() => {
-    // debugger;
     setValue1(listValue);
   }, [listValue]);
   useEffect(() => {
-    // debugger;
     setDateRange(dateRangeValue);
   }, [dateRangeValue]);
 
   useEffect(() => {
-    // debugger;
     if (listValue2 !== undefined) {
       const obj = section.sectionContent.find((item) => item.id === listValue2);
-      // debugger
       if (obj.value) {
         setValue(obj.value);
         if (obj.value === "0") {
@@ -204,7 +195,6 @@ export const DateRangeCard = ({
     setValue1(parseInt(e.target.value));
     let select = parseInt(e.target.value, 10);
     onCheckboxClick([select], identifier);
-    // debugger;
   };
 
   const classes = useStyles();

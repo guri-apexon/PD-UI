@@ -28,7 +28,7 @@ const SearchCard = ({
   const userId1 = useSelector(userId);
   // let rowContent = "";
   // if (data && !data.rowsLoading) {
-  //   rowContent = _.cloneDeep(data.rows);
+  //   rowContent = cloneDeep(data.rows);
   //   rowContent.handleSelectRow = compareTwoProtocol();
   // }
   // const selection1 = selection;
@@ -39,7 +39,6 @@ const SearchCard = ({
       o.protocolSelected = protocolSelected;
       return o;
     });
-    // debugger;
     setDataRow(result);
   }, [protocolSelected, data]);
   /* istanbul ignore next */
