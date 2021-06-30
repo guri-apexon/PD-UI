@@ -10,7 +10,7 @@ const session = require("express-session");
 const jwt_decode = require("jwt-decode");
 const dotenv = require("dotenv");
 dotenv.config();
-const PORT = 4000;
+const PORT = process.env.PORT || 3000;
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));

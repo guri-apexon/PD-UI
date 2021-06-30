@@ -61,7 +61,7 @@ const SearchCard = ({
       setLoader(true);
       try {
         const resp = await axios({
-          url: "http://localhost:4000/api/download",
+          url: "/api/download",
           method: "GET",
           params: {
             path: dfsPath,
