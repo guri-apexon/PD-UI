@@ -190,6 +190,13 @@ const HandleSearch = (props) => {
   useEffect(() => {
     setData(sectiondata);
   }, [sectiondata]);
+  useEffect(() => {
+    if (clearAll && typed !== "") {
+      setTyped("");
+      setData(sectiondata);
+      setIndex(index + 1);
+    }
+  }, [clearAll]);
 
   useEffect(() => {
     console.log("useEffect", typed);

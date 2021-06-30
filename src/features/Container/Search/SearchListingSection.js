@@ -3,7 +3,7 @@ import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
 import AccordionSummary from "apollo-react/components/AccordionSummary";
 import Typography from "apollo-react/components/Typography";
-import SearchCard from "./SearchCard";
+import SearchCard from "./SearchCard_back";
 import Checkbox from "apollo-react/components/Checkbox";
 import Folder from "apollo-react-icons/Folder";
 import Switch from "apollo-react/components/Switch";

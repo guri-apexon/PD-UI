@@ -498,8 +498,12 @@ const Search = (props) => {
     let d_inp = new Date(value);
     return d_now.getTime() <= d_inp.getTime();
   };
+  const clearSearchText = (value) => {
+    setClearAll(value);
+  };
   const hancleClearAll = (inputPresent, input) => {
     // setClearAll(true);
+    clearSearchText(true);
     let postObj = _.cloneDeep(POST_OBJECT);
     setProtocolSelected([]);
     setPrevProtSelected("");
@@ -682,6 +686,7 @@ const Search = (props) => {
     }
   };
   const deleteSearchInput = () => {
+    clearSearchText(true);
     const phaseObj = {
       sectionContent: [],
     };
