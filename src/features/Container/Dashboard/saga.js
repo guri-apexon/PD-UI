@@ -249,8 +249,6 @@ export function* saveRecentSearch(action) {
 export function* sendQcReview() {
   const state = yield select();
   const ids = state.dashboard.selectedProtocols;
-  const protocols = state.dashboard.protocols;
-  const folProtocols = state.dashboard.followedProtocols;
   const obj = {
     docIdArray: ids,
     targetStatus: "QC1",
@@ -263,15 +261,6 @@ export function* sendQcReview() {
   };
   try {
     const data = yield call(httpCall, config);
-    // {
-    //   "all_success": true,
-    //   "response": {
-    //     "315e15a2-5399-4cd0-bc26-dfd706b4b7b5": {
-    //       "is_success": true,
-    //       "message": "Successfully changed qcStatus from QC_NOT_STARTED to QC1"
-    //     }
-    //   }
-    // }
     const success = [];
     const failure = [];
     const resObj = data.data.response;
@@ -283,23 +272,8 @@ export function* sendQcReview() {
       }
       return item;
     });
-    const protocolsData = protocols.concat(folProtocols);
-    const followedProtocolData = [];
-    const myPorotocolsData = [];
-    protocolsData.map((item) => {
-      if (ids.includes(item.id)) {
-        item.qcActivity = "QC1";
-      }
-      if (!item.userUploadedPrimaryFlag) {
-        followedProtocolData.push(item);
-      } else {
-        myPorotocolsData.push(item);
-      }
-      return item;
-    });
 
-    yield put(getProtocols(myPorotocolsData));
-    yield put(getFollowedProtocols(followedProtocolData));
+    yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
     if (success.length) {
       toast.info(
         `Selected Protocols ${success.toString()}, sent to QC Review Successfully`
