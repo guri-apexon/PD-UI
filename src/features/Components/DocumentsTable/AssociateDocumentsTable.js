@@ -1,6 +1,5 @@
 import Table from "apollo-react/components/Table";
 import React from "react";
-import moment from "moment";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
@@ -97,8 +96,16 @@ const StatusCell = ({ row, column: { accessor: key } }) => {
   return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
 };
 
-const DataCell = ({ row, column }) =>
-  moment(row[column.accessor]).format("DD-MMM-YYYY");
+const DateCell = ({ row, column }) => {
+  const date = new Date(row[column.accessor]);
+  return date
+    .toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    })
+    .replace(/ /g, "-");
+};
 const columns = [
   {
     accessor: "action",
@@ -123,12 +130,12 @@ const columns = [
   {
     header: "Uploaded Date",
     accessor: "uploadDate",
-    customCell: DataCell,
+    customCell: DateCell,
   },
   {
     header: "Approval Date",
     accessor: "approvalDate",
-    customCell: DataCell,
+    customCell: DateCell,
   },
   {
     header: "Document Status",
@@ -155,12 +162,12 @@ const noActionColumns = [
   {
     header: "Uploaded Date",
     accessor: "uploadDate",
-    customCell: DataCell,
+    customCell: DateCell,
   },
   {
     header: "Approval Date",
     accessor: "approvalDate",
-    customCell: DataCell,
+    customCell: DateCell,
   },
   {
     header: "Document Status",

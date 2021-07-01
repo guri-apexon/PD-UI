@@ -7,7 +7,6 @@ import {
   takeLatest,
 } from "redux-saga/effects";
 import { toast } from "react-toastify";
-import moment from "moment";
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getProtocols,
@@ -51,9 +50,7 @@ export function* protocolAsyn() {
         item.protocol = !item.protocol ? "" : item.protocol;
         item.projectId = !item.projectId ? "" : item.projectId;
         item.sponsor = !item.sponsor ? "" : item.sponsor;
-        item.uploadDate = !item.uploadDate
-          ? ""
-          : moment(item.uploadDate).format("L");
+        item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
         item.qcActivity = item.qcStatus;
         if (!item.userUploadedPrimaryFlag) {
           followedProtocolData.push(item);
@@ -75,62 +72,6 @@ export function* protocolAsyn() {
     yield put(setError(err.statusText));
   }
 }
-// export function* followedProtocols() {
-//   yield put(setTableLoader(true));
-//   let userId = yield getState();
-//   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
-
-//   const protocolConfig = {
-//     url: protocolUrl,
-//     method: "GET",
-//   };
-//   try {
-//     const protocolData = yield call(httpCall, protocolConfig);
-
-//     if (protocolData.success) {
-//       let data = protocolData.data.map((item, i) => {
-//         item.id = item.aidocId;
-//         item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
-//         item.protocol = !item.protocol ? "" : item.protocol;
-//         item.projectId = !item.projectId ? "" : item.projectId;
-//         item.sponsor = !item.sponsor ? "" : item.sponsor;
-//         item.uploadDate = !item.uploadDate ? "" : item.uploadDate;
-
-//         // To be removed when API available
-//         if (i === 1) {
-//           item.qcActivity = "QC_COMPLETED";
-//           item.status = "PROCESS_COMPLETED";
-//         } else if (i === 2) {
-//           item.qcActivity = "QC_IN_PROGRESS";
-//           item.status = "PROCESS_COMPLETED";
-//         } else if (i === 3) {
-//           item.qcActivity = "QC_NOT_STARTED";
-//           item.status = "COMPARISON_COMPLETED";
-//         } else if (i === 4) {
-//           item.qcActivity = "QC_NOT_STARTED";
-//           item.status = "PROCESS_COMPLETED";
-//         } else if (i === 5) {
-//           item.qcActivity = "QC_NOT_STARTED";
-//           item.status = "ERROR";
-//         } else if (i === 6) {
-//           item.qcActivity = "QC_NOT_STARTED";
-//           item.status = "DIGITIZER1_STARTED";
-//         } else {
-//           item.qcActivity = "QC_NOT_STARTED";
-//         }
-//         return item;
-//       });
-//       yield put(getFollowedProtocols(data));
-//       yield put(setTableLoader(false));
-//     } else {
-//       yield put(setTableLoader(false));
-//       yield put(setError(protocolData.err.statusText));
-//     }
-//   } catch (err) {
-//     yield put(setTableLoader(false));
-//     yield put(setError(err.statusText));
-//   }
-// }
 
 function sorting(data, key) {
   return data.sort(function (x, y) {
@@ -308,19 +249,41 @@ export function* saveRecentSearch(action) {
 export function* sendQcReview() {
   const state = yield select();
   const ids = state.dashboard.selectedProtocols;
-  const url = `${BASE_URL_8000}/api/protocol_metadatas/qc1_to_qc2?aidoc_id=${ids}`;
+  const obj = {
+    docIdArray: ids,
+    targetStatus: "QC1",
+  };
+  const url = `${BASE_URL_8000}/api/protocol_metadata/change_qc_status`;
   const config = {
     url: url,
     method: "PUT",
+    data: obj,
   };
   try {
     const data = yield call(httpCall, config);
-    if (data.success) {
-      toast.info("Sent For QC2 Approval Successfully");
-    } else {
-      toast.error("Error While Sending");
+    const success = [];
+    const failure = [];
+    const resObj = data.data.response;
+    ids.map((item) => {
+      if (resObj[item] && resObj[item].is_success) {
+        success.push(item);
+      } else {
+        failure.push(item);
+      }
+      return item;
+    });
+
+    yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
+    if (success.length) {
+      toast.info(
+        `Selected Protocols ${success.toString()}, sent to QC Review Successfully`
+      );
     }
-    console.log(data);
+    if (failure.length) {
+      toast.error(
+        `Selected Protocols ${success.toString()}, coudn't be sent to QC Review Successfully`
+      );
+    }
   } catch (err) {
     console.log(err);
     toast.error("Something Went Wrong");
@@ -336,7 +299,6 @@ export function* watchDashboard() {
   yield takeEvery("GET_SAVED_SEARCH_DATA", savedSearchAsyn);
   yield takeEvery("RESET_ERROR_ADD_PROTOCOL", resetErrorAddProtocol);
   yield takeEvery("POST_RECENT_SEARCH_DASHBOARD", saveRecentSearch);
-  // yield takeLatest("GET_FOLLOWED_PROTOCOL_SAGA", followedProtocols);
   yield takeLatest("SEND_QC_REVIEW_SAGA", sendQcReview);
 }
 

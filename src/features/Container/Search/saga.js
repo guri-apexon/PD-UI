@@ -12,7 +12,7 @@ import {
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import cloneDeep from "lodash/cloneDeep";
 import { toast } from "react-toastify";
-import moment from "moment";
+// import moment from "moment";
 
 const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
 const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
@@ -328,7 +328,7 @@ function* updateSearchAssociated(action) {
     if (associateDocs.success) {
       let arr = cloneDeep(associateDocs.data);
       arr.sort((a, b) => {
-        return moment(b.uploadDate) - moment(a.uploadDate);
+        return new Date(b.uploadDate) - new Date(a.uploadDate);
       });
       let primaryUser = userStatus && userStatus.data ? true : false;
       let resultarr = arr.map((item) => {
@@ -392,9 +392,11 @@ export function* getRecentData(action) {
     let newDate = new Date();
     newDate.setMonth(newDate.getMonth() - parseInt(action.payload));
 
-    let momDate = moment(newDate);
-    const getDate = momDate.format("YYYYMMDD");
-    const nowData = moment(new Date()).format("YYYYMMDD");
+    // let momDate = moment(newDate);
+    // const getDate = momDate.format("YYYYMMDD");
+    // const nowData = moment(new Date()).format("YYYYMMDD");
+    const getDate = convertDate(newDate);
+    const nowData = convertDate(new Date());
     const recentDate = {
       from: getDate,
       // to: "now/d",
@@ -405,14 +407,20 @@ export function* getRecentData(action) {
   }
 }
 
+function convertDate(date) {
+  return date.toISOString().slice(0, 10).replace(/-/g, "");
+}
+
 export function* getDataByRange(action) {
   if (action.payload.from && action.payload.to) {
-    let fromDate = new Date(action.payload.from);
-    let toDate = new Date(action.payload.to);
-    let momFromDate = moment(fromDate);
-    let momToDate = moment(toDate);
-    const from = momFromDate.format("YYYYMMDD");
-    const to = momToDate.format("YYYYMMDD");
+    const from = convertDate(new Date(action.payload.from));
+    const to = convertDate(new Date(action.payload.to));
+    // let fromDate = new Date(action.payload.from);
+    // let toDate = new Date(action.payload.to);
+    // let momFromDate = moment(fromDate);
+    // let momToDate = moment(toDate);
+    // const from = momFromDate.format("YYYYMMDD");
+    // const to = momToDate.format("YYYYMMDD");
 
     const rangeDate = {
       from,
@@ -420,12 +428,14 @@ export function* getDataByRange(action) {
     };
     yield put(getRangeDate(rangeDate));
   } else if (action.payload.from) {
-    let fromDate = new Date(action.payload.from);
-    let toDate = new Date();
-    let momFromDate = moment(fromDate);
-    let momToDate = moment(toDate);
-    const from = momFromDate.format("YYYYMMDD");
-    const to = momToDate.format("YYYYMMDD");
+    const from = convertDate(new Date(action.payload.from));
+    const to = convertDate(new Date());
+    // let fromDate = new Date(action.payload.from);
+    // let toDate = new Date();
+    // let momFromDate = moment(fromDate);
+    // let momToDate = moment(toDate);
+    // const from = momFromDate.format("YYYYMMDD");
+    // const to = momToDate.format("YYYYMMDD");
 
     const rangeDate = {
       from,
@@ -433,12 +443,14 @@ export function* getDataByRange(action) {
     };
     yield put(getRangeDate(rangeDate));
   } else if (action.payload.to) {
-    let fromDate = new Date(null);
-    let toDate = new Date(action.payload.to);
-    let momFromDate = moment(fromDate);
-    let momToDate = moment(toDate);
-    const from = momFromDate.format("YYYYMMDD");
-    const to = momToDate.format("YYYYMMDD");
+    const from = convertDate(new Date(null));
+    const to = convertDate(new Date(action.payload.to));
+    // let fromDate = new Date(null);
+    // let toDate = new Date(action.payload.to);
+    // let momFromDate = moment(fromDate);
+    // let momToDate = moment(toDate);
+    // const from = momFromDate.format("YYYYMMDD");
+    // const to = momToDate.format("YYYYMMDD");
 
     const rangeDate = {
       from,

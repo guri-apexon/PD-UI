@@ -16,18 +16,12 @@ const PageNotFound = lazy(() =>
 );
 const QC = lazy(() => import("../features/Container/QC/QC"));
 
-// import Dashboard from '../features/Container/Dashboard/Dashboard';
-// import Protocols from '../features/Container/Protocols/Protocols';
-// import Search from '../features/Container/Search/Search';
-// import { Counter as Csaga } from "../features/counterSaga/Counter";
 const Routes = ({ userType }) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       {userType === "normal" && (
         <Switch>
           <Redirect exact from="/" to="/dashboard" />
-          {/* <Route exact path='/'  component={Dashboard}/> */}
-          {/* <Route path="/saga"> <Csaga /></Route> */}
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/protocols" component={Protocols} />
           <Route path="/search" component={Search} />

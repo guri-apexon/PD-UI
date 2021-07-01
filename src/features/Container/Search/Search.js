@@ -34,8 +34,7 @@ import {
   qcActivity,
 } from "./Data/constants";
 import Loader from "apollo-react/components/Loader";
-import moment from "moment";
-import { formatESDate } from "../../../utils/utilFunction";
+import { formatESDate, convertDatesFormat } from "../../../utils/utilFunction";
 
 const Search = (props) => {
   const resultList = useSelector(searchResult);
@@ -304,6 +303,7 @@ const Search = (props) => {
       if (indicationData.sectionContent.length === 0) {
         dispatch({ type: "GET_INDICATIONS" });
       }
+      clearSearchText(true);
       props.history.replace({
         pathname: "/search",
         search: `?key=${input}`,
@@ -367,7 +367,9 @@ const Search = (props) => {
     if ("dateSection" in parsed) {
       postObj.dateSection = parsed[`dateSection`];
     }
-
+    function isValidDate(d) {
+      return d instanceof Date && !isNaN(d);
+    }
     setIdPresent(true);
     setSearchInput(inp);
     /* istanbul ignore next else*/
@@ -375,12 +377,14 @@ const Search = (props) => {
     if (rangeDate.from && rangeDate.to) {
       let date11 = formatESDate(rangeDate.from);
       let date22 = formatESDate(rangeDate.to);
-      let d1 = moment(date11);
-      let d2 = moment(date22);
-      let date1 = d1.format("MM-DD-YYYY");
-      let date2 = d2.format("MM-DD-YYYY");
+      let d1 = new Date(date11);
+      let d2 = new Date(date22);
+      // let date1 = d1.format("MM-DD-YYYY");
+      // let date2 = d2.format("MM-DD-YYYY");
+      const date1 = convertDatesFormat("mmddyyyy", "-", date11);
+      const date2 = convertDatesFormat("mmddyyyy", "-", date22);
       /* istanbul ignore else */
-      if (d1._isValid && d2._isValid) {
+      if (isValidDate(d1) && isValidDate(d2)) {
         if (isFutureDate(date1) || isFutureDate(date2)) {
           alert(
             "Future date is not allowed. Please use date range picker to select valid date."

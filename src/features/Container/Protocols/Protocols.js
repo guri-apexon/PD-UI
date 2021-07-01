@@ -11,7 +11,7 @@ import { protocolSummary, getProcotoclToc } from "./protocolSlice.js";
 //------------------- Components ------------
 import ProtocolOverview from "./ProtocolOverview";
 import ProtocolView from "./ProtocolView";
-import Documents from "./Documents";
+import Documents from "./Documents_back";
 import ProtocolTable from "../Dashboard/ProtocolTable";
 import NoResultFound from "../../Components/NoResultFound";
 

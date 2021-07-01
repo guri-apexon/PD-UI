@@ -82,32 +82,7 @@ if (process.env.REACT_APP_ENV === "dev") {
   baseUrlSSO = "https://dev-protocoldigitalization.work.iqvia.com/v1";
 }
 console.log("---------SSO------", baseUrlSSO);
-//   else {
-//   const apiVersion = "v1";
 
-//   const hostname = window && window.location && window.location.hostname;
-//   // debugger;
-//   if (hostname.includes("ca2spdml06d")) {
-//     //DEV
-//     backendHost = "ca2spdml01q";
-//   } else if (
-//     hostname.includes("ca2spdml06c") ||
-//     hostname.includes("ca2spdml07c")
-//   ) {
-//     //UAT
-//     backendHost = "ca2spdml05c";
-//   } else if (hostname.includes("ca2spdml16q")) {
-//     //SVT
-//     backendHost = `ca2spdml15q`;
-//   } else if (hostname.includes("localhost")) {
-//     //SVT
-//     backendHost = `ca2spdml01q`;
-//   }
-//   BASE_URL = `http://${backendHost}:9001`;
-//   BASE_URL_8000 = `http://${backendHost}:8000`;
-// }
-// BASE_URL = `http://${backendPostHost}:9001`;
-// BASE_URL_8000 = `http://${backendHost}:8000`;
 BASE_URL = `${backendPostHost}`;
 BASE_URL_8000 = `${backendHost}`;
 UI_URL = `${UIhost}`;

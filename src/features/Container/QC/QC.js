@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
 import Tab from "apollo-react/components/Tab";
@@ -14,6 +14,7 @@ import "./QC.scss";
 import "../Protocols/protocols.scss";
 
 const QCContainer = () => {
+  const dispatch = useDispatch();
   const type = useSelector(userType);
   const [value, setValue] = useState(0);
   const [protocolId, setprotocolId] = useState("");
@@ -53,6 +54,10 @@ const QCContainer = () => {
       title: protocolNumber,
     });
   }
+  useEffect(() => {
+    // dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
+    dispatch({ type: "GET_QC_PROTOCOL_TABLE_SAGA" });
+  }, []);
 
   return (
     <div
