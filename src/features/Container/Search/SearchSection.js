@@ -100,6 +100,122 @@ class ProtocolSearchButton extends React.Component {
             />
           )}
         </div>
+        {/* <div>
+          <div id="chip" className="chip-grp">
+            <div>
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="3-D Pharmaceuticals"
+                onDelete={() => {}}
+              />
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="4C Medical Technologies"
+                onDelete={() => {}}
+              />
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="ABCC6 deficiency"
+                onDelete={() => {}}
+              />
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="Abdominal aortic aneurysm"
+                onDelete={() => {}}
+              />
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="Final Approved"
+                onDelete={() => {}}
+              />
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="3-D Pharmaceuticals"
+                onDelete={() => {}}
+              />
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="4C Medical Technologies"
+                onDelete={() => {}}
+              />
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="ABCC6 deficiency"
+                onDelete={() => {}}
+              />
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="Abdominal aortic aneurysm"
+                onDelete={() => {}}
+              />
+              <Chip
+                style={{
+                  backgroundColor: "#f3f3f3",
+                  borderColor: "#f3f3f3",
+                  color: "#333",
+                }}
+                color="#f3f3f3"
+                size="small"
+                label="Final Approved"
+                onDelete={() => {}}
+              />
+            </div>
+          </div>
+        </div> */}
       </div>
     );
   }

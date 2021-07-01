@@ -62,7 +62,7 @@ const Documents = ({ handleChangeTab }) => {
           //   const filePath = `${UI_URL}/${fileName}`;
 
           axios({
-            url: "http://localhost:4000/api/pdf/download",
+            url: "/api/download",
             method: "GET",
             params: {
               path: path,

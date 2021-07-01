@@ -303,6 +303,7 @@ const Search = (props) => {
       if (indicationData.sectionContent.length === 0) {
         dispatch({ type: "GET_INDICATIONS" });
       }
+      clearSearchText(true);
       props.history.replace({
         pathname: "/search",
         search: `?key=${input}`,
