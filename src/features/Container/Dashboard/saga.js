@@ -21,6 +21,7 @@ import {
   setApiError,
   getFollowedProtocols,
   setTableLoader,
+  setSelectedProtocols,
 } from "./dashboardSlice";
 
 function* getState() {
@@ -31,6 +32,7 @@ function* getState() {
 
 export function* protocolAsyn() {
   yield put(setTableLoader(true));
+  yield put(setSelectedProtocols([]));
   let userId = yield getState();
   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
 

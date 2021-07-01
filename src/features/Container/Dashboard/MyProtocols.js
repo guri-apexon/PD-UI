@@ -18,6 +18,7 @@ function MyProtocols({ setSelectedProtocols, pageRows, maxHeight }) {
         pageRows={protocolData && protocolData.length > 0 ? pageRows : []}
         setSelectedProtocols={setSelectedProtocols}
         maxHeight={maxHeight}
+        defaultRows={pageRows[0]}
       />
     </>
   );
