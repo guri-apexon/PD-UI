@@ -45,20 +45,9 @@ const CustomDropdown = ({
           onBlur(fieldName, value.label, fieldType);
         }
       }
-      // if (!list.length > 0 && formValue.label !== value.label) {
-      //   onChange(fieldName, "", fieldType, { label: "" });
-      //   onBlur(fieldName, "", fieldType);
-      //   let value = {
-      //     label: "",
-      //   };
-      //   setValue(value);
-      //   setList(source);
-      // } else {
-      //   onBlur(fieldName, value.label, fieldType);
-      // }
-      // onBlur(fieldName, value.label, fieldType);
     }
     setBlur(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blur]);
 
   useEffect(() => {
@@ -118,22 +107,6 @@ const CustomDropdown = ({
   };
 
   const handleOutsideClick = (event) => {
-    // if (
-    //   event &&
-    //   // event.target.closest(`custom-dropdown-parent-${id}`) === null
-    // ) {
-    //   if (
-    //     document.getElementsByClassName("custom-dropdown-container").length > 0
-    //   ) {
-    //     // document
-    //     //   .getElementsByClassName(`custom-dropdown-wrapper-${id}`)[0]
-    //     //   .classList.remove("is-expanded", "focused");
-    //     setExpandClass('');
-    //     setExpand(false);
-    //     document.removeEventListener("click", handleOutsideClick, true);
-    //     setBlur(true);
-    //   }
-    // }
     if (
       event.target &&
       textInputRef &&

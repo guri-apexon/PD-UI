@@ -513,7 +513,7 @@ const ProtocolTable = ({
           truncate: true,
         }}
         ExpandableComponent={ExpandableComponent}
-        defaultRowsPerPage={20}
+        defaultRowsPerPage={pageRows[0]}
         hasScroll
         maxHeight={maxHeight}
       />

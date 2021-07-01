@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Collapsible from "react-collapsible";
 import Search from "apollo-react/components/Search";
