@@ -9,6 +9,29 @@ export const covertMMDDYYYY = (date) => {
     .replace(/ /g, "-");
 };
 
+export const convertDatesFormat = (format, seperator, date) => {
+  let newDate = new Date(date);
+  let dd = newDate.getDate();
+
+  let mm = newDate.getMonth() + 1;
+  const yyyy = newDate.getFullYear();
+  if (dd < 10) {
+    dd = `0${dd}`;
+  }
+
+  if (mm < 10) {
+    mm = `0${mm}`;
+  }
+  switch (format) {
+    case "mmddyyyy":
+      return `${mm}${seperator}${dd}${seperator}${yyyy}`;
+    case "ddmmyyyy":
+      return `${mm}${seperator}${dd}${seperator}${yyyy}`;
+    default:
+      return newDate;
+  }
+};
+
 export const formatESDate = (dateString) => {
   if (dateString.length > 7) {
     let str = dateString;

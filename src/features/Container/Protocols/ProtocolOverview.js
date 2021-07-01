@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "apollo-react/components/Card";
-import DonutChart from "apollo-react/components/DonutChart";
+// import DonutChart from "apollo-react/components/DonutChart";
 
 const QCStatus = (status) => {
   switch (status) {
@@ -80,16 +80,17 @@ const ProtocolOverview = ({ data }) => {
         <div className="">
           <p className="chart-title">Digitized Confidence Interval</p>
           {!isNaN(parseInt(data.digitizedConfidenceInterval, 10)) ? (
-            <DonutChart
-              dropshadow
-              percent={parseInt(data.digitizedConfidenceInterval, 10)}
-              subtitle="Label"
-              stroke="#0768fd"
-              tooltipTitle=""
-              tooltipSubtitle=""
-              style={{ height: "200px", width: "200px" }}
-            />
+            <div></div>
           ) : (
+            // <DonutChart
+            //   dropshadow
+            //   percent={parseInt(data.digitizedConfidenceInterval, 10)}
+            //   subtitle="Label"
+            //   stroke="#0768fd"
+            //   tooltipTitle=""
+            //   tooltipSubtitle=""
+            //   style={{ height: "200px", width: "200px" }}
+            // />
             <div style={{ display: "flex", height: 100 }}>
               <p
                 style={{ margin: "auto", fontSize: 12 }}
@@ -101,16 +102,17 @@ const ProtocolOverview = ({ data }) => {
           )}
           <p className="chart-title">Completeness of Digitization</p>
           {!isNaN(parseInt(data.completenessOfDigitization, 10)) ? (
-            <DonutChart
-              dropshadow
-              percent={parseInt(data.completenessOfDigitization, 10)}
-              subtitle="Label"
-              // stroke="#0768fd"
-              tooltipTitle=""
-              tooltipSubtitle=""
-              style={{ height: "200px", width: "200px" }}
-            />
+            <div></div>
           ) : (
+            // <DonutChart
+            //   dropshadow
+            //   percent={parseInt(data.completenessOfDigitization, 10)}
+            //   subtitle="Label"
+            //   // stroke="#0768fd"
+            //   tooltipTitle=""
+            //   tooltipSubtitle=""
+            //   style={{ height: "200px", width: "200px" }}
+            // />
             <div style={{ display: "flex", height: 100 }}>
               <p
                 style={{ margin: "auto", fontSize: 12 }}
