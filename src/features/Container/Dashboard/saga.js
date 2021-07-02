@@ -277,14 +277,10 @@ export function* sendQcReview() {
 
     yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
     if (success.length) {
-      toast.info(
-        `Selected Protocols ${success.toString()}, sent to QC Review Successfully`
-      );
+      toast.info(`Sent to QC Review Successfully`);
     }
     if (failure.length) {
-      toast.error(
-        `Selected Protocols ${success.toString()}, coudn't be sent to QC Review Successfully`
-      );
+      toast.error(`Something Went Wrong`);
     }
   } catch (err) {
     console.log(err);
