@@ -92,11 +92,14 @@ app.use(
   })
 );
 app.get("/api/download", (req, res) => {
-  // FOR DOCX === application/vnd.openxmlformats-officedocument.wordprocessingml.document
-  // FOR CSV === text/csv
-  // FOR PDF === application/pdf
-  const dfsPath = req.query.path;
-  res.download(dfsPath);
+  try {
+    const dfsPath = req.query.path;
+    res.download(dfsPath);
+  } catch (err) {
+    console.log(err);
+    res.status(405).send({ message: "Not Found" });
+  }
+
   // const ext = path.extname(dfsPath);
   // console.log(ext);
   // res.download(dfsPath);
