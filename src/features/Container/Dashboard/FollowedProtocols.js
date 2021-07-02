@@ -21,6 +21,7 @@ function FollowedProtocols({ pageRows, maxHeight }) {
         pageRows={protocolData && protocolData.length > 0 ? pageRows : []}
         screen="FollowedProtocols"
         maxHeight={maxHeight}
+        defaultRows={pageRows[0]}
       />
     </>
   );

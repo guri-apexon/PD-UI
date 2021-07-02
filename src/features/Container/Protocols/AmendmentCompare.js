@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import "./compare.scss";
 
@@ -58,7 +59,6 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
   };
   /* istanbul ignore next */
   const handleSelect = (select, id) => {
-    console.log("od", id);
     if (select === 1) {
       // let obj1 = associateData.find((item) => item.id === id);
       // setProt1(obj1);

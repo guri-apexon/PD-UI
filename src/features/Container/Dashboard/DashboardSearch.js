@@ -9,6 +9,7 @@ function DashboardSearch() {
   useEffect(() => {
     dispatch({ type: "GET_RECENT_SEARCH_DATA" });
     dispatch({ type: "GET_SAVED_SEARCH_DATA" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <DashboardSearchComp

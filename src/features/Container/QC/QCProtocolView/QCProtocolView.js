@@ -20,6 +20,7 @@ function QCProtocolView({ protId, path, userType }) {
       type: "GET_PROTOCOL_TOC_SAGA",
       payload: { endPoint: "protocol_data/qc", id: protId },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const listData = [];
   // console.log("Path", path);

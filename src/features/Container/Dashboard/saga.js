@@ -21,6 +21,7 @@ import {
   setApiError,
   getFollowedProtocols,
   setTableLoader,
+  setSelectedProtocols,
 } from "./dashboardSlice";
 
 function* getState() {
@@ -31,6 +32,7 @@ function* getState() {
 
 export function* protocolAsyn() {
   yield put(setTableLoader(true));
+  yield put(setSelectedProtocols([]));
   let userId = yield getState();
   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
 
@@ -275,14 +277,10 @@ export function* sendQcReview() {
 
     yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
     if (success.length) {
-      toast.info(
-        `Selected Protocols ${success.toString()}, sent to QC Review Successfully`
-      );
+      toast.info(`Sent to QC Review Successfully`);
     }
     if (failure.length) {
-      toast.error(
-        `Selected Protocols ${success.toString()}, coudn't be sent to QC Review Successfully`
-      );
+      toast.error(`Something Went Wrong`);
     }
   } catch (err) {
     console.log(err);

@@ -1,38 +1,9 @@
-// import CheckBox from "apollo-react/components/Checkbox";
-import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
 
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
-/* istanbul ignore next */
-// const CheckBoxCell = ({ row }) => {
-//   console.log(row);
-//   // if(row.protocolSelected.includes(row.id)){
-//   return (
-//     <>
-//       {row.isPrimaryUser ? (
-//         <div>
-//           <CheckBox
-//             onChange={() => row.handleSelectRow(row.id, row.protocol)}
-//             checked={row.protocolSelected.includes(row.id)}
-//           />
-//         </div>
-//       ) : (
-//         <div>
-//           <CheckBox disabled />
-//         </div>
-//       )}
-//     </>
-//   );
-//   // }else{
-//   //   return (
-//   //     <div>
-//   //       <CheckBox onChange={() => row.handleSelectRow(row.id, row.protocol)} checked={false}/>
-//   //     </div>
-//   //   );
-//   // }
-// };
+
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
   return (
     <>
@@ -78,10 +49,10 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     </>
   );
 };
-const dateFormat = ({ row, column: { accessor: key } }) => {
+const dateFormat = ({ row }) => {
   return <>{covertMMDDYYYY(row.uploadDate)}</>;
 };
-const dateFormatApp = ({ row, column: { accessor: key } }) => {
+const dateFormatApp = ({ row }) => {
   return <>{row.approvalDate ? covertMMDDYYYY(row.approvalDate) : "-"}</>;
 };
 
@@ -94,11 +65,6 @@ const StatusCell = ({ row, column: { accessor: key } }) => {
 };
 
 const columns = [
-  // {
-  //   accessor: "action",
-  //   customCell: CheckBoxCell,
-  //   width: 30,
-  // },
   {
     header: "Version #",
     accessor: "versionNumber",

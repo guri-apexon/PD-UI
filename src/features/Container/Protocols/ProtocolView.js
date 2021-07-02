@@ -10,6 +10,7 @@ function ProtocolView({ protId }) {
       type: "GET_PROTOCOL_TOC_SAGA",
       payload: { endPoint: "protocol_data/", id: protId },
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const listData = [];
 

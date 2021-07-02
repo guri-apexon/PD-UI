@@ -43,6 +43,7 @@ const Protocols = (props) => {
       loader: true,
     };
     getProcotoclToc(viewData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
