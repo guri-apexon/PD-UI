@@ -8,15 +8,19 @@ import {
   prtocolsError,
   setSelectedProtocols,
   hideAddprotocol,
+  tableLoader,
 } from "../Dashboard/dashboardSlice";
 import MyProtocols from "./MyProtocols";
 import FollowedProtocols from "./FollowedProtocols";
+import Loader from "../../Components/Loader/Loader";
 
 function ProtocolTable({ pageRows, maxHeight }) {
   const dispatch = useDispatch();
   const error = useSelector(prtocolsError);
   const [value, setValue] = React.useState(0);
+  const loader = useSelector(tableLoader);
 
+  // const memoizedPageRows = useMemo(() => pageRows, [pageRows]);
   const handleChangeTab = (event, value) => {
     setValue(value);
   };
@@ -30,8 +34,22 @@ function ProtocolTable({ pageRows, maxHeight }) {
       dispatch(hideAddprotocol(false));
     }
   }, [value]);
+  if (loader) {
+    return (
+      <div
+        style={{
+          height: 400,
+          justifyContent: "center",
+          alignItems: "center",
+          display: "flex",
+        }}
+      >
+        <Loader />
+      </div>
+    );
+  }
   return (
-    <div>
+    <>
       {error}
       <Tabs value={value} onChange={handleChangeTab} truncate>
         <Tab label="My Protocols" />
@@ -49,8 +67,8 @@ function ProtocolTable({ pageRows, maxHeight }) {
           <FollowedProtocols pageRows={pageRows} maxHeight={maxHeight} />
         )}
       </div>
-    </div>
+    </>
   );
 }
 
-export default ProtocolTable;
+export default React.memo(ProtocolTable);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ChevronRight from "apollo-react-icons/ChevronRight";
@@ -118,4 +118,4 @@ function DashboardSearch({ recent, saved }) {
   );
 }
 
-export default DashboardSearch;
+export default memo(DashboardSearch);

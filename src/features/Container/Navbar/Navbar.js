@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import NavigationBar from "apollo-react/components/NavigationBar";
-
-import { navbarNotifications } from "./navbarSlice";
 import Alerts from "./Alerts";
 import {
   USER_MENU,
@@ -33,7 +31,7 @@ function Navbar() {
   const dispatch = useDispatch();
   let history = useHistory();
   let location = useLocation();
-  const notificationsMenuProps = useSelector(navbarNotifications);
+
   const [userData, setUserData] = useState({});
   const userDetail = useSelector((state) => state.user.userDetail);
   const [pathname, setPathname] = useState("/dashboard");
@@ -101,7 +99,7 @@ function Navbar() {
           onClick={({ pathname }) => onClickNavigation(pathname)}
           checkIsActive={(item) => checknav(item)}
           waves
-          otherButtons={<Alerts list={notificationsMenuProps} />}
+          otherButtons={<Alerts />}
         />
       </div>
     )

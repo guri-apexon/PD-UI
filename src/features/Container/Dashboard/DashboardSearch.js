@@ -19,4 +19,4 @@ function DashboardSearch() {
   );
 }
 
-export default DashboardSearch;
+export default React.memo(DashboardSearch);

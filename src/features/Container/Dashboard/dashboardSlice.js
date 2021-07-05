@@ -17,6 +17,7 @@ export const dashboardSlice = createSlice({
     selectedProtocols: [],
     displayAddProtocol: true,
     tableLoading: true,
+    dashboardSearchLoader: true,
   },
   reducers: {
     getProtocols: (state, action) => {
@@ -61,6 +62,9 @@ export const dashboardSlice = createSlice({
     setTableLoader: (state, action) => {
       state.tableLoading = action.payload;
     },
+    getDashboardSearchLoader: (state, action) => {
+      state.dashboardSearchLoader = action.payload;
+    },
   },
 });
 
@@ -80,6 +84,7 @@ export const {
   setSelectedProtocols,
   hideAddprotocol,
   setTableLoader,
+  getDashboardSearchLoader,
 } = dashboardSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -97,5 +102,7 @@ export const followedProtocolsList = (state) =>
 export const displayAddProtocol = (state) => state.dashboard.displayAddProtocol;
 export const tableLoader = (state) => state.dashboard.tableLoading;
 export const dashboadAPIError = (state) => state.dashboard.apiError;
+export const dashboadSearchLoader = (state) =>
+  state.dashboard.dashboadSearchLoader;
 
 export default dashboardSlice.reducer;

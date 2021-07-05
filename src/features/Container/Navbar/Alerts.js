@@ -14,15 +14,29 @@ import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "apollo-react/components/Tooltip";
 import { userId } from "../../../store/userDetails";
 import { BASE_URL_8000 } from "../../../utils/api";
+import { navbarNotifications } from "./navbarSlice";
 
 import "./Alerts.scss";
 
-function Alerts({ list }) {
+function Alerts() {
   let history = useHistory();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const uid = useSelector(userId);
-
+  const notificationsMenuProps = useSelector(navbarNotifications);
+  if (!notificationsMenuProps.length) {
+    return (
+      <button
+        data-testid="alert-bell-icon"
+        className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+      >
+        <Badge badgeContent={0} max={99}>
+          <BellIcon />
+        </Badge>
+      </button>
+    );
+  }
   const checkForPrimary = async (data) => {
     const postObj = {
       id: data.id,
@@ -60,7 +74,9 @@ function Alerts({ list }) {
     //------Uncomment in Local -------
   };
 
-  const newNotifications = list.filter((item) => item.read === false);
+  const newNotifications = notificationsMenuProps.filter(
+    (item) => item.read === false
+  );
   const getDayLabelText = (timestamp) => {
     return moment().isSame(timestamp, "day")
       ? "Today"
@@ -107,11 +123,14 @@ function Alerts({ list }) {
           component="nav"
           aria-label="main mailbox folders"
         >
-          {list.map((item, i) => {
+          {notificationsMenuProps.map((item, i) => {
             let header = null;
             if (
               i === 0 ||
-              !moment(list[i - 1].timestamp).isSame(item.timestamp, "day")
+              !moment(notificationsMenuProps[i - 1].timestamp).isSame(
+                item.timestamp,
+                "day"
+              )
             ) {
               header = getDayLabelText(item.timestamp);
             }
