@@ -52,7 +52,7 @@ function wait() {
 
 export function* qcApprove(action) {
   let user = yield getState();
-  const url = `${BASE_URL_8000}/api/protocol_data/qc_approve?aidoc_id=${action.payload}&approvedBy=${user.id}`;
+  const url = `${BASE_URL_8000}/api/protocol_metadata/qc_approve?aidoc_id=${action.payload}&approvedBy=${user.id}`;
   const config = {
     url: url,
     method: "PUT",

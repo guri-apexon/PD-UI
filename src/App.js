@@ -1,20 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
 import IdleTimer from "react-idle-timer";
 import Cookies from "universal-cookie";
 import { ToastContainer } from "react-toastify";
 import Loader from "apollo-react/components/Loader";
 import Modal from "apollo-react/components/Modal";
-import NavigationBar from "apollo-react/components/NavigationBar";
-
 import Routes from "./Routes/routes";
-import { dashboard } from "./features/Container/Dashboard/dashboardSlice";
 import { setUserDetails, loggedUser } from "./store/userDetails";
 import SessionExpired from "./SessionOut";
-import { USER_MENU, QC1_MENU, QC2_MENU } from "./AppConstant/AppConstant";
 import { baseUrlSSO, SSO_ENABLED } from "./utils/api";
 import Navbar from "./features/Container/Navbar/Navbar";
 
@@ -26,15 +21,9 @@ function App() {
   const userDetails = useSelector(loggedUser);
   const dispatch = useDispatch();
   const idleTimer = useRef(null);
-  let history = useHistory();
-  let location = useLocation();
-  const dashboardData = useSelector(dashboard);
-  const [pathname, setPathname] = useState("/dashboard");
   const [isTimedOut, setIsTimeOut] = useState(false);
   const [timerId, setTimerId] = useState(0);
   const [idleId, setIdleid] = useState(0);
-  const [navMenuItems, setNavMenuItems] = useState([]);
-  const [typeOfUser, setTypeOfUser] = useState();
   //---------Revert-----------
   useEffect(() => {
     if (SSO_ENABLED) {
@@ -90,27 +79,6 @@ function App() {
       dispatch(setUserDetails(details));
     }
   }, []);
-  useEffect(() => {
-    if (userDetails && userDetails.user_type) {
-      setTypeOfUser(userDetails.user_type);
-      setMenuItems(userDetails.user_type);
-    }
-  }, [userDetails]);
-  const setMenuItems = (value) => {
-    switch (value) {
-      case "normal":
-        setNavMenuItems(USER_MENU);
-        break;
-      case "QC1":
-        setNavMenuItems(QC1_MENU);
-        break;
-      case "QC2":
-        setNavMenuItems(QC2_MENU);
-        break;
-      default:
-        setNavMenuItems([]);
-    }
-  };
 
   useEffect(() => {
     if (isTimedOut) {
@@ -128,34 +96,6 @@ function App() {
       };
     }
   }, [isTimedOut]);
-
-  useEffect(() => {
-    if (location && location.pathname) {
-      setPathname(location.pathname);
-    }
-  }, [location]);
-  const onLogoutClick = () => {
-    window.location.href = `${baseUrlSSO}/logout_session`;
-  };
-  const profileMenuProps = {
-    name: userDetails.username,
-    title: "",
-    email: userDetails.email,
-    logoutButtonProps: {
-      onClick: () => onLogoutClick(),
-    },
-    menuItems: [],
-  };
-
-  const onClickNavigation = (pathname) => {
-    history.push(pathname);
-    setPathname(pathname);
-  };
-  const checknav = (item) => {
-    return item.pathname
-      ? item.pathname === pathname
-      : item.menuItems.some((item) => item.pathname === pathname);
-  };
 
   const handleOnAction = (event) => {
     // console.log("user did something", event);
@@ -200,73 +140,41 @@ function App() {
   };
   const route =
     userDetails && userDetails.userId ? (
-      <Routes userType={typeOfUser} />
+      <>
+        <Navbar />
+        <Routes userType={userDetails.user_type} />
+      </>
     ) : (
       <Loader />
     );
 
   return (
     <>
-      <div>
-        <IdleTimer
-          ref={idleTimer}
-          timeout={1000 * 40 * 60}
-          onActive={handleOnActive}
-          onIdle={handleOnIdle}
-          onAction={handleOnAction}
-          debounce={250}
-        />
-        {isTimedOut ? (
-          <NavigationBar
-            LogoComponent={() => (
-              <p
-                style={{
-                  color: "white",
-                  lineHeight: "56px",
-                  marginRight: 24,
-                  cursor: "pointer",
-                  zIndex: 2,
-                  whiteSpace: "nowrap",
-                }}
-                onClick={() => history.push("/")}
-              >
-                IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
-              </p>
-            )}
-          />
-        ) : (
-          <Navbar
-            navMenuItems={navMenuItems}
-            profileMenuProps={profileMenuProps}
-            onClickNavigation={onClickNavigation}
-            checknav={checknav}
-          />
-        )}
-
-        {dashboardData && dashboardData.apiError && (
-          <span className="main-error-message">
-            {" "}
-            Something Went Wrong, API Failed
-          </span>
-        )}
-        {isTimedOut ? <SessionExpired /> : route}
-        <Modal
-          variant="default"
-          open={isTimedOut}
-          onClose={(e) => {
-            if (e.target.localName === "span") {
-              window.location.href = `${baseUrlSSO}/logout_session`;
-            }
-          }}
-          id="timer"
-          buttonProps={[{}, { label: "OK", onClick: refreshTokens }]}
-        >
-          <p>
-            Applicaiton is about to timeout due to inactivity. Press OK to
-            continue.
-          </p>
-        </Modal>
-      </div>
+      <IdleTimer
+        ref={idleTimer}
+        timeout={1000 * 40 * 60}
+        onActive={handleOnActive}
+        onIdle={handleOnIdle}
+        onAction={handleOnAction}
+        debounce={250}
+      />
+      {isTimedOut ? <SessionExpired /> : route}
+      <Modal
+        variant="default"
+        open={isTimedOut}
+        onClose={(e) => {
+          if (e.target.localName === "span") {
+            window.location.href = `${baseUrlSSO}/logout_session`;
+          }
+        }}
+        id="timer"
+        buttonProps={[{}, { label: "OK", onClick: refreshTokens }]}
+      >
+        <p>
+          Applicaiton is about to timeout due to inactivity. Press OK to
+          continue.
+        </p>
+      </Modal>
       <ToastContainer />
     </>
   );

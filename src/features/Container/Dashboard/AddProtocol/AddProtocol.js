@@ -6,7 +6,8 @@ import Grid from "apollo-react/components/Grid";
 import AutocompleteV2 from "apollo-react/components/AutocompleteV2";
 import CustomFileUpload from "./CustomFileUpload";
 import Typography from "apollo-react/components/Typography";
-import Loader from "apollo-react/components/Loader";
+// import Loader from "apollo-react/components/Loader";
+import Loader from "../../../Components/Loader/Loader";
 import CustomDropdown from "../../../Components/CustomDropdown/CustomDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { dashboard } from "../dashboardSlice";
@@ -358,6 +359,9 @@ const AddProtocol = () => {
   };
   // console.log("dashboardData1 :", dashboardData.addProtocolModal, );
   // console.log('valuessssss amend',formValues.amendmentNumber, value2);
+  // if (!dashboardData.addProtocolData.sponsor.length) {
+  //   return <Loader />;
+  // }
   return (
     <>
       <div className="add-protocol">
@@ -613,4 +617,4 @@ const AddProtocol = () => {
   );
 };
 
-export default AddProtocol;
+export default React.memo(AddProtocol);

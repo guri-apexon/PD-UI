@@ -15,31 +15,30 @@ import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 //   console.log('sssssss')
 //   window.open('file:///quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf')
 // }
+const handleDownload = async (row) => {
+  console.log("Rows", row);
+  // const resp = await axios.get(
+  //   `http://ca2spdml01q:8000/api/download_file/?filePath=${row.documentFilePath}`
+  // );
+
+  // url = `http://ca2spdml06d:3000/${resp.data}`;
+  const resp = await axios.get(
+    `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
+  );
+
+  let url = `${UI_URL}/${resp.data}`;
+  let encodeUrl = encodeURI(url);
+  let myWindow = window.open("about:blank", "_blank");
+  myWindow.document.write(
+    `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
+  );
+
+  // window.open(
+  //   url,
+  //   "_blank" // <- This is what makes it open in a new window.
+  // );
+};
 const DownloadLink = ({ row, column: { accessor: key } }) => {
-  let url;
-  const handleDownload = async (row) => {
-    console.log("Rows", row);
-    // const resp = await axios.get(
-    //   `http://ca2spdml01q:8000/api/download_file/?filePath=${row.documentFilePath}`
-    // );
-
-    // url = `http://ca2spdml06d:3000/${resp.data}`;
-    const resp = await axios.get(
-      `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
-    );
-
-    url = `${UI_URL}/${resp.data}`;
-    let encodeUrl = encodeURI(url);
-    let myWindow = window.open("about:blank", "_blank");
-    myWindow.document.write(
-      `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
-    );
-
-    // window.open(
-    //   url,
-    //   "_blank" // <- This is what makes it open in a new window.
-    // );
-  };
   return (
     <p
       className="hyperlink"
@@ -84,6 +83,7 @@ const DocumentsTable = ({ initialsRow }) => {
       rows={initialsRow}
       columns={columns}
       hidePagination
+      maxHeight={160}
     />
   );
 };

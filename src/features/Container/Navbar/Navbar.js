@@ -1,23 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import NavigationBar from "apollo-react/components/NavigationBar";
-
-import { navbarNotifications } from "./navbarSlice";
 import Alerts from "./Alerts";
+import {
+  USER_MENU,
+  QC1_MENU,
+  QC2_MENU,
+} from "../../../AppConstant/AppConstant";
+import { baseUrlSSO } from "../../../utils/api";
 
-function Navbar({
-  profileMenuProps,
-  navMenuItems,
-  onClickNavigation,
-  checknav,
-}) {
+const setMenuItems = (value) => {
+  switch (value) {
+    case "normal":
+      return USER_MENU;
+    case "QC1":
+      return QC1_MENU;
+    case "QC2":
+      return QC2_MENU;
+    default:
+      return [];
+  }
+};
+
+const onLogoutClick = () => {
+  window.location.href = `${baseUrlSSO}/logout_session`;
+};
+
+function Navbar() {
   const dispatch = useDispatch();
   let history = useHistory();
-  const notificationsMenuProps = useSelector(navbarNotifications);
+  let location = useLocation();
+
   const [userData, setUserData] = useState({});
   const userDetail = useSelector((state) => state.user.userDetail);
-
+  const [pathname, setPathname] = useState("/dashboard");
   useEffect(() => {
     if ("userId" in userData) {
       const userID = userData.userId.substring(1);
@@ -29,6 +46,33 @@ function Navbar({
   useEffect(() => {
     setUserData(userDetail);
   }, [userDetail]);
+
+  useEffect(() => {
+    if (location && location.pathname) {
+      setPathname(location.pathname);
+    }
+  }, [location]);
+
+  const onClickNavigation = (pathname) => {
+    history.push(pathname);
+    setPathname(pathname);
+  };
+
+  const checknav = (item) => {
+    return item.pathname
+      ? item.pathname === pathname
+      : item.menuItems.some((item) => item.pathname === pathname);
+  };
+
+  const profileMenuProps = {
+    name: userDetail.username,
+    title: "",
+    email: userDetail.email,
+    logoutButtonProps: {
+      onClick: () => onLogoutClick(),
+    },
+    menuItems: [],
+  };
 
   return (
     "userId" in userData &&
@@ -45,22 +89,21 @@ function Navbar({
                 zIndex: 2,
                 whiteSpace: "nowrap",
               }}
-              // onClick={() => console.log('Logo clicked')}
               onClick={() => history.push("/")}
             >
               IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
             </div>
           )}
-          menuItems={navMenuItems}
+          menuItems={setMenuItems(userDetail.user_type)}
           profileMenuProps={profileMenuProps}
           onClick={({ pathname }) => onClickNavigation(pathname)}
           checkIsActive={(item) => checknav(item)}
           waves
-          otherButtons={<Alerts list={notificationsMenuProps} />}
+          otherButtons={<Alerts />}
         />
       </div>
     )
   );
 }
 
-export default Navbar;
+export default React.memo(Navbar);
