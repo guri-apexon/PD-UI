@@ -92,69 +92,8 @@ app.use(
   })
 );
 app.get("/api/download", (req, res) => {
-  try {
-    const dfsPath = req.query.path;
-    res.download(dfsPath);
-  } catch (err) {
-    console.log(err);
-    res.status(405).send({ message: "Not Found" });
-  }
-
-  // const ext = path.extname(dfsPath);
-  // console.log(ext);
-  // res.download(dfsPath);
-  // if (dfsPath) {
-  //   console.log(dfsPath);
-  //   try {
-  //     var file = fs.createReadStream(dfsPath);
-  //     // console.log("FIle", file);
-  //     file.on("error", (err) => {
-  //       console.log("Inside on Error", err);
-  //       res.status(404).send({
-  //         message: "Document is not available.",
-  //       });
-  //     });
-  //     file.on("close", () => {
-  //       console.log("Inside Close");
-  //       res.end();
-  //     });
-  //     if (ext === ".pdf") {
-  //       console.log("Inside PDF");
-  //       res.setHeader("Content-Type", "application/pdf");
-  //       res.setHeader(
-  //         "Content-Disposition",
-  //         "attachment; filename=Protocol.pdf"
-  //       );
-  //       file.pipe(res);
-  //     } else if (ext === ".csv") {
-  //       console.log("Inside CSV");
-  //       res.setHeader("Content-Type", "text/csv");
-  //       res.setHeader(
-  //         "Content-Disposition",
-  //         "attachment; filename=compare.csv"
-  //       );
-  //       file.pipe(res);
-  //     } else if (ext === ".docx") {
-  //       console.log("Inside docx");
-  //       res.setHeader(
-  //         "Content-Type",
-  //         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-  //       );
-  //       res.setHeader(
-  //         "Content-Disposition",
-  //         "attachment; filename=Protocol.docx"
-  //       );
-  //       file.pipe(res);
-  //     }
-  //   } catch (e) {
-  //     console.log("Inside on Error", e);
-  //     const errMsg = {
-  //       message:
-  //         "Unable to connect DFS location due to network issue. Please try again.",
-  //     };
-  //     res.status(403).send(errMsg);
-  //   }
-  // }
+  const dfsPath = req.query.path;
+  res.download(dfsPath);
 });
 
 app.get("/health", function (req, res) {
