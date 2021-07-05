@@ -96,5 +96,6 @@ export const followedProtocolsList = (state) =>
   state.dashboard.followedProtocols;
 export const displayAddProtocol = (state) => state.dashboard.displayAddProtocol;
 export const tableLoader = (state) => state.dashboard.tableLoading;
+export const dashboadAPIError = (state) => state.dashboard.apiError;
 
 export default dashboardSlice.reducer;

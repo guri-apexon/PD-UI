@@ -7,14 +7,19 @@ import { loggedUser } from "../../../store/userDetails";
 import AddProtocol from "./AddProtocol/AddProtocol";
 import ProtocolTable from "./ProtocolTable";
 import DashboardSearch from "./DashboardSearch";
-import { displayAddProtocol, selectedProtocolsList } from "./dashboardSlice";
+import {
+  displayAddProtocol,
+  selectedProtocolsList,
+  dashboadAPIError,
+} from "./dashboardSlice";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const userDetails = useSelector(loggedUser);
   const hide = useSelector(displayAddProtocol);
   const selectedProtocols = useSelector(selectedProtocolsList);
-  const dispatch = useDispatch();
 
+  const dashboardData = useSelector(dashboadAPIError);
   const sendQcReview = () => {
     dispatch({ type: "SEND_QC_REVIEW_SAGA" });
   };
@@ -32,6 +37,12 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-parent" style={{ padding: 20 }}>
+      {dashboardData && dashboardData.apiError && (
+        <span className="main-error-message">
+          {" "}
+          Something Went Wrong, API Failed
+        </span>
+      )}
       <h1>
         {greet} {userDetails && userDetails.username}
       </h1>
