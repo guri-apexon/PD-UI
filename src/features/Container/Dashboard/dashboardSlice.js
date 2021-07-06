@@ -11,7 +11,7 @@ export const dashboardSlice = createSlice({
       indication: [],
     },
     addProtocolModal: false,
-    isLoading: true,
+    isLoading: false,
     savedSearches: [],
     apiError: false,
     followedProtocols: [],

@@ -6,6 +6,7 @@ import Grid from "apollo-react/components/Grid";
 import AutocompleteV2 from "apollo-react/components/AutocompleteV2";
 import CustomFileUpload from "./CustomFileUpload";
 import Typography from "apollo-react/components/Typography";
+import PageLoader from "apollo-react/components/Loader";
 import Loader from "../../../Components/Loader/Loader";
 import CustomDropdown from "../../../Components/CustomDropdown/CustomDropdown";
 import { useDispatch, useSelector } from "react-redux";
@@ -390,6 +391,7 @@ const AddProtocol = () => {
           id="add-protocol-modal"
           data-testid="add-protocol-modal"
         >
+          {dashboardData.isLoading && <PageLoader />}
           <Grid container spacing={2}>
             <Grid item xs={5} sm={5}>
               <TextField

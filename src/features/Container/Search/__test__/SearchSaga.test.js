@@ -17,7 +17,7 @@ const userDetail = {
   userId: "u1021402",
   email: "test@iqvia.com",
 };
-describe("Dashboard Saga Unit Test", () => {
+describe("Search Saga Unit Test", () => {
   //getIndicationData Starts
   test("getIndicationData success", async () => {
     const dispatchedActions = [];
