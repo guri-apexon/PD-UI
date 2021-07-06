@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "apollo-react/components/Button";
 import TextField from "apollo-react/components/TextField";
 import Modal from "apollo-react/components/Modal";
@@ -6,7 +6,6 @@ import Grid from "apollo-react/components/Grid";
 import AutocompleteV2 from "apollo-react/components/AutocompleteV2";
 import CustomFileUpload from "./CustomFileUpload";
 import Typography from "apollo-react/components/Typography";
-// import Loader from "apollo-react/components/Loader";
 import Loader from "../../../Components/Loader/Loader";
 import CustomDropdown from "../../../Components/CustomDropdown/CustomDropdown";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,10 +38,14 @@ const AddProtocol = () => {
     initialFormErrorValues
   );
 
-  useEffect(() => {
-    dispatch({ type: "GET_SPONSOR_ADDPROTCOL_SAGA" });
-  }, []); // eslint-disable-line
   const handleOpen = () => {
+    if (
+      !dashboardData.addProtocolData.sponsor.length &&
+      !dashboardData.addProtocolData.indication.length
+    ) {
+      dispatch({ type: "GET_SPONSOR_ADDPROTCOL_SAGA" });
+      dispatch({ type: "GET_INDICATION_ADDPROTCOL_SAGA" });
+    }
     dispatch({ type: "TOGGLE_ADDPROTOCOL_MODAL", payload: true });
   };
 
@@ -357,11 +360,6 @@ const AddProtocol = () => {
     };
     dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
   };
-  // console.log("dashboardData1 :", dashboardData.addProtocolModal, );
-  // console.log('valuessssss amend',formValues.amendmentNumber, value2);
-  // if (!dashboardData.addProtocolData.sponsor.length) {
-  //   return <Loader />;
-  // }
   return (
     <>
       <div className="add-protocol">
@@ -392,7 +390,6 @@ const AddProtocol = () => {
           id="add-protocol-modal"
           data-testid="add-protocol-modal"
         >
-          {dashboardData && dashboardData.isLoading && <Loader />}
           <Grid container spacing={2}>
             <Grid item xs={5} sm={5}>
               <TextField
@@ -478,30 +475,34 @@ const AddProtocol = () => {
 
             <Grid item xs={5} sm={5}>
               <div className="autocomplete-class" id="sponsor">
-                <CustomDropdown
-                  id="Sponsor"
-                  label="Sponsor"
-                  placeholder="Sponsor"
-                  source={
-                    dashboardData &&
-                    dashboardData.addProtocolData &&
-                    dashboardData.addProtocolData.sponsor
-                  }
-                  fullWidth
-                  fieldType="CustomDropdown"
-                  fieldName="sponsor"
-                  formValue={
-                    formValues.sponsor && formValues.sponsor
-                      ? formValues.sponsor
-                      : emptyAutoObj
-                  }
-                  helperText={formErrorValues.sponsor.errorMessage.trim()}
-                  error={formErrorValues.sponsor.error}
-                  required={formErrorValues.sponsor.isRequired}
-                  onBlur={onFieldBlur}
-                  onChange={onTextFieldChange}
-                  insertField="sponsor_name"
-                />
+                {dashboardData.sponsorLoading ? (
+                  <Loader />
+                ) : (
+                  <CustomDropdown
+                    id="Sponsor"
+                    label="Sponsor"
+                    placeholder="Sponsor"
+                    source={
+                      dashboardData &&
+                      dashboardData.addProtocolData &&
+                      dashboardData.addProtocolData.sponsor
+                    }
+                    fullWidth
+                    fieldType="CustomDropdown"
+                    fieldName="sponsor"
+                    formValue={
+                      formValues.sponsor && formValues.sponsor
+                        ? formValues.sponsor
+                        : emptyAutoObj
+                    }
+                    helperText={formErrorValues.sponsor.errorMessage.trim()}
+                    error={formErrorValues.sponsor.error}
+                    required={formErrorValues.sponsor.isRequired}
+                    onBlur={onFieldBlur}
+                    onChange={onTextFieldChange}
+                    insertField="sponsor_name"
+                  />
+                )}
               </div>
             </Grid>
 
@@ -539,30 +540,34 @@ const AddProtocol = () => {
             <Grid item xs={1} sm={1}></Grid>
             <Grid item xs={5} sm={5}>
               <div className="autocomplete-class" id="indication-container">
-                <CustomDropdown
-                  id="Indication"
-                  label="Indication"
-                  placeholder="Indication"
-                  source={
-                    dashboardData &&
-                    dashboardData.addProtocolData &&
-                    dashboardData.addProtocolData.indication
-                  }
-                  fullWidth
-                  fieldType="CustomDropdown"
-                  fieldName="indication"
-                  formValue={
-                    formValues.indication && formValues.indication
-                      ? formValues.indication
-                      : emptyAutoObj
-                  }
-                  helperText={formErrorValues.indication.errorMessage.trim()}
-                  error={formErrorValues.indication.error}
-                  required={formErrorValues.indication.isRequired}
-                  onBlur={onFieldBlur}
-                  onChange={onTextFieldChange}
-                  insertField="indication_name"
-                />
+                {dashboardData.indicationLoading ? (
+                  <Loader />
+                ) : (
+                  <CustomDropdown
+                    id="Indication"
+                    label="Indication"
+                    placeholder="Indication"
+                    source={
+                      dashboardData &&
+                      dashboardData.addProtocolData &&
+                      dashboardData.addProtocolData.indication
+                    }
+                    fullWidth
+                    fieldType="CustomDropdown"
+                    fieldName="indication"
+                    formValue={
+                      formValues.indication && formValues.indication
+                        ? formValues.indication
+                        : emptyAutoObj
+                    }
+                    helperText={formErrorValues.indication.errorMessage.trim()}
+                    error={formErrorValues.indication.error}
+                    required={formErrorValues.indication.isRequired}
+                    onBlur={onFieldBlur}
+                    onChange={onTextFieldChange}
+                    insertField="indication_name"
+                  />
+                )}
               </div>
             </Grid>
             <Grid item xs={1} sm={1}></Grid>

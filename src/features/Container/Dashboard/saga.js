@@ -22,6 +22,8 @@ import {
   getFollowedProtocols,
   setTableLoader,
   setSelectedProtocols,
+  setIndicationLoading,
+  setSponsorLoading,
 } from "./dashboardSlice";
 
 function* getState() {
@@ -121,50 +123,56 @@ export function* savedSearchAsyn() {
 
 export function* addProtocolSponsor() {
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
-  const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
-  // const protocolData = yield call(httpCall, {url, method:'GET'});
-  yield put(setLoading(true));
-  // try {
-  //   const protocolData = yield call(httpCall, { url, method: "GET" });
-  //   if (protocolData.success) {
-  //     yield put(getProtocolData(protocolData.data));
-  //   }
-  //   yield put(setError(protocolData.err.statusText));
-  // } catch (err) {
-  //   yield put(setError(err.statusText));
-  // }
+  yield put(setSponsorLoading(true));
 
   try {
     const sponsorList = yield call(httpCall, {
       url: sponsorUrl,
       method: "GET",
     });
-    const indicationList = yield call(httpCall, {
-      url: indicationUrl,
-      method: "GET",
-    });
-    if (sponsorList.success && indicationList.success) {
-      let actualIndicationList = indicationList.data.map((item) => {
-        let temp = Object.assign({}, item);
-        temp.label = item.indicationName;
-        return temp;
-      });
+    if (sponsorList.success) {
       let actualSponsorList = sponsorList.data.map((item) => {
         let temp = Object.assign({}, item);
         temp.label = item.sponsorName;
         return temp;
       });
       yield put(getSponsor(actualSponsorList));
-      yield put(getIndication(actualIndicationList));
-      yield put(setLoading(false));
+      yield put(setSponsorLoading(false));
     } else {
       yield put(setError(sponsorList.err.statusText));
-      yield put(setLoading(false));
+      yield put(setSponsorLoading(false));
       yield put(setApiError(true));
     }
   } catch (err) {
     yield put(setError(err.statusText));
-    yield put(setLoading(false));
+    yield put(setSponsorLoading(false));
+    yield put(setApiError(true));
+  }
+}
+export function* addProtocolIndication() {
+  const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
+  yield put(setIndicationLoading(true));
+  try {
+    const indicationList = yield call(httpCall, {
+      url: indicationUrl,
+      method: "GET",
+    });
+    if (indicationList.success) {
+      let actualIndicationList = indicationList.data.map((item) => {
+        let temp = Object.assign({}, item);
+        temp.label = item.indicationName;
+        return temp;
+      });
+      yield put(getIndication(actualIndicationList));
+      yield put(setIndicationLoading(false));
+    } else {
+      yield put(setError(indicationList.err.statusText));
+      yield put(setIndicationLoading(false));
+      yield put(setApiError(true));
+    }
+  } catch (err) {
+    yield put(setError(err.statusText));
+    yield put(setIndicationLoading(false));
     yield put(setApiError(true));
   }
 }
@@ -298,6 +306,7 @@ export function* watchDashboard() {
   yield takeEvery("RESET_ERROR_ADD_PROTOCOL", resetErrorAddProtocol);
   yield takeEvery("POST_RECENT_SEARCH_DASHBOARD", saveRecentSearch);
   yield takeLatest("SEND_QC_REVIEW_SAGA", sendQcReview);
+  yield takeLatest("GET_INDICATION_ADDPROTCOL_SAGA", addProtocolIndication);
 }
 
 export default function* dashboardSaga() {

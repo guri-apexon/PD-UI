@@ -11,7 +11,7 @@ import "./handleSearch.scss";
 import {
   TOC,
   documentStatus,
-  qcActivity,
+  qcStatus,
   dateSection,
   dateType,
 } from "./Data/constants";
@@ -126,15 +126,15 @@ const CollapseCard = ({
         </Collapsible>
       </div>
     );
-  } else if (name === "qcActivity") {
+  } else if (name === "qcStatus") {
     return (
       <div data-testid="qc-activity-checkboxes">
         <Collapsible trigger="QC Activity">
           <CheckboxCard
-            section={qcActivity}
-            identifier="qcActivity"
+            section={qcStatus}
+            identifier="qcStatus"
             onCheckboxClick={onConstructSearchQuery}
-            listValue={searchQuery.qcActivity}
+            listValue={searchQuery.qcStatus}
           />
         </Collapsible>
       </div>

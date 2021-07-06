@@ -300,7 +300,7 @@ const SearchCard = ({
             className="grid-item grid-key-value text-capitalize"
             data-testid="qc-activity-value"
           >
-            {data.qcActivity}
+            {data.qcStatus}
           </p>
         </Grid>
       </Grid>
