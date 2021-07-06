@@ -8,6 +8,7 @@ export const dashboardSlice = createSlice({
     recentSearches: [],
     addProtocolData: {
       sponsor: [],
+      indication: [],
     },
     addProtocolModal: false,
     isLoading: true,
@@ -18,6 +19,8 @@ export const dashboardSlice = createSlice({
     displayAddProtocol: true,
     tableLoading: true,
     dashboardSearchLoader: true,
+    indicationLoading: true,
+    sponsorLoading: true,
   },
   reducers: {
     getProtocols: (state, action) => {
@@ -65,6 +68,12 @@ export const dashboardSlice = createSlice({
     getDashboardSearchLoader: (state, action) => {
       state.dashboardSearchLoader = action.payload;
     },
+    setIndicationLoading: (state, action) => {
+      state.indicationLoading = action.payload;
+    },
+    setSponsorLoading: (state, action) => {
+      state.sponsorLoading = action.payload;
+    },
   },
 });
 
@@ -85,6 +94,8 @@ export const {
   hideAddprotocol,
   setTableLoader,
   getDashboardSearchLoader,
+  setIndicationLoading,
+  setSponsorLoading,
 } = dashboardSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
