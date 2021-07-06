@@ -299,5 +299,5 @@ export const searchCardData2 = {
 
 export const paramsLocation = {
   search:
-    "?key=advanced&qcActivity=QC_COMPLETED&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416",
+    "?key=advanced&qcStatus=QC_COMPLETED&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416",
 };

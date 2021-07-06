@@ -335,7 +335,7 @@ export const documentStatus = {
     // },
   ],
 };
-export const qcActivity = {
+export const qcStatus = {
   sectionId: 9,
   sectionName: "QC Activity",
   fieldType: "checkbox",
@@ -350,7 +350,7 @@ export const qcActivity = {
     {
       id: 1,
       title: "QC In Progress",
-      value: "QC_IN_PROGRESS",
+      value: "QC1+QC2",
       content: "",
       count: "",
     },

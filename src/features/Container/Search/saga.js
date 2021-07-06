@@ -643,21 +643,22 @@ export function createJSONFormat(data) {
   let arr = [];
 
   for (let i = 0; i < data.length; i++) {
-    const status = ["QC_NOT_STARTED", "QC_IN_PROGRESS", "QC_COMPLETED"];
+    const status = ["QC_NOT_STARTED", "QC1", "QC2", "QC_COMPLETED"];
     const random = Math.floor(Math.random() * status.length);
-    let qcActivity = "";
-    switch (status[random]) {
+    let qcStatus = "";
+    switch (data[i].qcStatus || status[random]) {
       case "QC_NOT_STARTED":
-        qcActivity = "QC Not Started";
+        qcStatus = "QC Not Started";
         break;
-      case "QC_IN_PROGRESS":
-        qcActivity = "QC In Progress";
+      case "QC1":
+      case "QC2":
+        qcStatus = "QC In Progress";
         break;
       case "QC_COMPLETED":
-        qcActivity = "QC Completed";
+        qcStatus = "QC Completed";
         break;
       default:
-        qcActivity = "QC Not Started";
+        qcStatus = "QC Not Started";
         break;
     }
     let obj = {
@@ -681,7 +682,7 @@ export function createJSONFormat(data) {
       documentStatus: data[i].DocumentStatus,
       version: data[i].VersionNumber,
       UserRole: data[i].UserRole,
-      qcActivity: qcActivity,
+      qcStatus: qcStatus,
     };
     arr.push(obj);
   }
