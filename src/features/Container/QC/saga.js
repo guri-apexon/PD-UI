@@ -152,7 +152,7 @@ export function* uploadQc(action) {
       toast.info("Upload Successful");
       yield put({
         type: "GET_PROTOCOL_TOC_SAGA",
-        payload: { endPoint: "protocol_data/qc", id: action.payload.id },
+        payload: { endPoint: "protocol_data/", id: action.payload.id },
       });
     } else {
       toast.error("Something Went Wrong");
