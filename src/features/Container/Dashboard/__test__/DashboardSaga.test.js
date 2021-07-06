@@ -147,7 +147,7 @@ describe("Dashboard Saga Unit Test", () => {
       payload: {},
       type: "",
     }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(2);
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
   test("addProtocolSponsor Saga error", async () => {
@@ -173,7 +173,7 @@ describe("Dashboard Saga Unit Test", () => {
       payload: {},
       type: "",
     }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(2);
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
   test("addProtocolSponsor Saga fails", async () => {
@@ -196,7 +196,7 @@ describe("Dashboard Saga Unit Test", () => {
       payload: {},
       type: "",
     }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(2);
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
   // AddProtocol Test Cases End
