@@ -63,6 +63,7 @@ const Documents = ({ handleChangeTab }) => {
 
           axios({
             url: "/api/download",
+            // url: "http://localhost:4000/api/download",
             method: "GET",
             params: {
               path: path,
@@ -88,7 +89,7 @@ const Documents = ({ handleChangeTab }) => {
         if (e.response && e.response.data) {
           toast.error(e.response.data.detail);
         } else {
-          toast.error("Something Went Wrong. Please Try Again.");
+          toast.error("Data Fetching failed. Please Try Again.");
         }
       }
     }

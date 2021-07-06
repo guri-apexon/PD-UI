@@ -68,36 +68,39 @@ const columns = [
   {
     header: "Version #",
     accessor: "versionNumber",
-    width: 90,
+    width: "10%",
     customCell: ProtocolLink,
   },
   {
     header: "Draft #",
     accessor: "draftVersion",
-    width: 75,
+    width: "10%",
     customCell: Cell,
   },
   {
     header: "Source Document",
     accessor: "fileName",
-    width: 150,
+    width: "20%",
     customCell: DownloadLink,
   },
   {
     header: "Approval Date",
     accessor: "approvalDate",
+    width: "10%",
     customCell: dateFormatApp,
   },
   {
     header: "Upload Date",
     accessor: "uploadDate",
     customCell: dateFormat,
+    width: "10%",
   },
 
   {
     header: "Document Status",
     accessor: "documentStatus",
     customCell: StatusCell,
+    width: "10%",
   },
 ];
 

@@ -85,11 +85,11 @@
     }
   }
 
-    [class^="EmptyRow-root-"] {
-      td {
-        height: 200px !important;
-      }
+  [class^="EmptyRow-root-"] {
+    td {
+      height: 200px !important;
     }
+  }
   // [class^="EmptyRow-root-"]{
   //   td{
   //     height: 200px !important;
@@ -123,3 +123,20 @@
     margin-left: 14px;
   }
 }
+.expand-asso-table{
+  padding: 20px;
+  .view-asso-prot {
+    display: flex;
+    flex-direction: column;
+    padding: 0 45px;
+    a {
+      color: blue;
+      // margin-left: 20px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      width: 15%;
+    }
+  }
+}
+
