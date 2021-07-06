@@ -643,10 +643,8 @@ export function createJSONFormat(data) {
   let arr = [];
 
   for (let i = 0; i < data.length; i++) {
-    const status = ["QC_NOT_STARTED", "QC1", "QC2", "QC_COMPLETED"];
-    const random = Math.floor(Math.random() * status.length);
     let qcStatus = "";
-    switch (data[i].qcStatus || status[random]) {
+    switch (data[i].qcStatus) {
       case "QC_NOT_STARTED":
         qcStatus = "QC Not Started";
         break;
@@ -658,7 +656,7 @@ export function createJSONFormat(data) {
         qcStatus = "QC Completed";
         break;
       default:
-        qcStatus = "QC Not Started";
+        qcStatus = "-";
         break;
     }
     let obj = {

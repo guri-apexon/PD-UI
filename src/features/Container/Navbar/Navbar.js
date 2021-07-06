@@ -54,8 +54,10 @@ function Navbar() {
   }, [location]);
 
   const onClickNavigation = (pathname) => {
-    history.push(pathname);
-    setPathname(pathname);
+    if (pathname !== "/protocols") {
+      history.push(pathname);
+      setPathname(pathname);
+    }
   };
 
   const checknav = (item) => {
