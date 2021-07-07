@@ -18,13 +18,13 @@ import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
 
-import columns from "../../Container/Search/Data/column.data";
-import Tag from 'apollo-react/components/Tag';
+import columns from "./columns";
+import Tag from "apollo-react/components/Tag";
 
 const ActionCell = ({ row: { id, handleToggleRow, expanded, protocol } }) => {
   return (
     <div>
-      <div className="table-selection" style={{ height: 45 }}>
+      <div className="follow-table-selection" style={{ height: 45 }}>
         <IconButton
           id="expand"
           data-testid="expandable-row"
@@ -45,10 +45,10 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
       title={"Protocol Title"}
       subtitle={row[key]}
       placement="top"
-    //   style={{ marginRight: 192 }}
+      //   style={{ marginRight: 192 }}
     >
       <span>
-        <span className="adjust-ellipses">{row[key].substring(0,40)}...</span>
+        <span className="adjust-ellipses">{row[key].substring(0, 40)}...</span>
       </span>
     </Tooltip>
   );
@@ -121,7 +121,9 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
 };
 const HandleUnFollow = ({ row }) => {
   return (
-    <Tag label="Unfollow" color="#ff0000" />
+    <Link onClick={() => row.handleUnfollow(row)}>
+      <Tag label="Unfollow" color="#ff0000" />
+    </Link>
   );
 };
 
@@ -251,6 +253,7 @@ const ProtocolTable = ({
   maxHeight,
   defaultRows,
   fetchAssociateData,
+  handleUnfollow,
 }) => {
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
@@ -295,6 +298,7 @@ const ProtocolTable = ({
         screen: screen,
         handleChange,
         fetchAssociateData,
+        handleUnfollow,
       };
       return merge(temp, details);
     });

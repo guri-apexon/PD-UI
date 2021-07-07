@@ -123,6 +123,12 @@
     margin-left: 14px;
   }
 }
+.follow-table-selection{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
 .expand-asso-table{
   padding: 20px;
   .view-asso-prot {
