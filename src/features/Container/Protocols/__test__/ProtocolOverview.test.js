@@ -149,17 +149,17 @@ describe("Protocol Overview Testsuit", () => {
     expect(cardHeader).toHaveTextContent("Protocol Title");
   });
 
-  test("Should have Digitized Confidence Interval", async () => {
-    const { getByText } = render(<ProtocolOverview data={startingState} />);
-    let cardHeader = getByText(/Digitized Confidence Interval/);
-    expect(cardHeader).toHaveTextContent("Digitized Confidence Interval");
-  });
+  // test("Should have Digitized Confidence Interval", async () => {
+  //   const { getByText } = render(<ProtocolOverview data={startingState} />);
+  //   let cardHeader = getByText(/Digitized Confidence Interval/);
+  //   expect(cardHeader).toHaveTextContent("Digitized Confidence Interval");
+  // });
 
-  test("Should show Information Not available for Confidence Interval, if data is not available", async () => {
-    const { getByTestId } = render(<ProtocolOverview data={startingState} />);
-    let cardHeader = getByTestId("no-data-confidense");
-    expect(cardHeader).toHaveTextContent("Information Not Available");
-  });
+  // test("Should show Information Not available for Confidence Interval, if data is not available", async () => {
+  //   const { getByTestId } = render(<ProtocolOverview data={startingState} />);
+  //   let cardHeader = getByTestId("no-data-confidense");
+  //   expect(cardHeader).toHaveTextContent("Information Not Available");
+  // });
   test("Should show chart for Confidence Interval, if data is available", async () => {
     startingState.digitizedConfidenceInterval = "20";
     const { queryByTestId } = render(<ProtocolOverview data={startingState} />);
@@ -167,16 +167,16 @@ describe("Protocol Overview Testsuit", () => {
     expect(cardHeader).toBeNull();
   });
 
-  test("Should have Completeness of Digitization", async () => {
-    const { getByText } = render(<ProtocolOverview data={startingState} />);
-    let cardHeader = getByText(/Completeness of Digitization/);
-    expect(cardHeader).toHaveTextContent("Completeness of Digitization");
-  });
-  test("Should show Information Not available for Completeness of Digitization, if data is not available", async () => {
-    const { getByTestId } = render(<ProtocolOverview data={startingState} />);
-    let cardHeader = getByTestId("no-data-digitization");
-    expect(cardHeader).toHaveTextContent("Information Not Available");
-  });
+  // test("Should have Completeness of Digitization", async () => {
+  //   const { getByText } = render(<ProtocolOverview data={startingState} />);
+  //   let cardHeader = getByText(/Completeness of Digitization/);
+  //   expect(cardHeader).toHaveTextContent("Completeness of Digitization");
+  // });
+  // test("Should show Information Not available for Completeness of Digitization, if data is not available", async () => {
+  //   const { getByTestId } = render(<ProtocolOverview data={startingState} />);
+  //   let cardHeader = getByTestId("no-data-digitization");
+  //   expect(cardHeader).toHaveTextContent("Information Not Available");
+  // });
   test("Should show chart for Completeness of Digitization, if data is available", async () => {
     startingState.completenessOfDigitization = "20";
     const { queryByTestId } = render(<ProtocolOverview data={startingState} />);

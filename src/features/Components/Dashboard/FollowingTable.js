@@ -208,6 +208,7 @@ const ExpandableComponent = ({ row }) => {
             style={{ fontWeight: 600 }}
             disabled={!row.linkEnabled}
             data-testid="dashboard_view_associated_protocol"
+
           >
             View Associate Protocols
           </Link>

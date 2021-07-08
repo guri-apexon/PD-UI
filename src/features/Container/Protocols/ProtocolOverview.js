@@ -76,7 +76,7 @@ const ProtocolOverview = ({ data }) => {
           </div>
         </Card>
       </div>
-      {false && (
+      {/* {false && (
         <Card style={{ padding: "10px 16px" }} className="chart-column">
           <div className="">
             <p className="chart-title">Digitized Confidence Interval</p>
@@ -125,7 +125,7 @@ const ProtocolOverview = ({ data }) => {
             )}
           </div>
         </Card>
-      )}
+      )} */}
     </>
   );
 };

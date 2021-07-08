@@ -408,13 +408,18 @@ export function* getRecentData(action) {
 }
 
 function convertDate(date) {
+  console.log("date value", date);
   return date.toISOString().slice(0, 10).replace(/-/g, "");
 }
 
 export function* getDataByRange(action) {
   if (action.payload.from && action.payload.to) {
+    console.log("-------------------", action.payload);
+    console.log("****####*****", new Date(action.payload.from));
+    console.log("*********", convertDate(new Date(action.payload.from)));
     const from = convertDate(new Date(action.payload.from));
     const to = convertDate(new Date(action.payload.to));
+    
     // let fromDate = new Date(action.payload.from);
     // let toDate = new Date(action.payload.to);
     // let momFromDate = moment(fromDate);
