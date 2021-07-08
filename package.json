@@ -78,9 +78,11 @@
       "!src/features/Container/Protocols/CompareCard.js",
       "!src/features/Container/Protocols/CompareCardNew.js",
       "!src/features/Container/Protocols/compareTable.js",
+      "!src/features/Container/Protocols/Documents_back.js",
       "!src/features/Container/Search/Data/row.data.js",
       "!src/features/Container/Search/Data/row.js",
-      "!src/features/Container/Search/Data/search.metadata.js"
+      "!src/features/Container/Search/Data/search.metadata.js",
+      "!src/features/Container/Search/SearchCard.js"
     ]
   },
   "eslintConfig": {

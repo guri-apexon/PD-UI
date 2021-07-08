@@ -133,7 +133,7 @@ export function* getProtocolToc(action) {
     err: null,
   };
   yield put(getProcotoclToc(viewData));
-  const URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?id=${action.payload.id}`;
+  const URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?id=${action.payload.id}&user=${action.payload.user}`;
   const config = {
     url: URL,
     method: "GET",

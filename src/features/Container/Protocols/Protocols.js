@@ -11,8 +11,8 @@ import { protocolSummary, getProcotoclToc } from "./protocolSlice.js";
 //------------------- Components ------------
 import ProtocolOverview from "./ProtocolOverview";
 import ProtocolView from "./ProtocolView";
-import Documents from "./Documents_back";
-import ProtocolTable from "../Dashboard/ProtocolTable";
+import Documents from "./Documents";
+// import ProtocolTable from "../Dashboard/ProtocolTable";
 import NoResultFound from "../../Components/NoResultFound";
 
 //------------------- Third Party -----------
@@ -127,7 +127,7 @@ const Protocols = (props) => {
   } else {
     return (
       <div className="protocols">
-        <ProtocolTable pageRows={[10, 20, 30, "All"]} maxHeight={600} />
+        {/* <ProtocolTable pageRows={[10, 20, 30, "All"]} maxHeight={600} /> */}
       </div>
     );
   }

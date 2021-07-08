@@ -482,26 +482,26 @@ const ProtocolTable = ({
       protocol: row.protocol,
     });
   };
-  const newRows =
-    initialRows &&
-    initialRows.map((row) => {
-      let temp = cloneDeep(row);
-      let details = {
-        key: row.id,
-        expanded: expandedRows.indexOf(row.id) >= 0,
-        selected: selectedRows.indexOf(row.id) >= 0,
-        handleToggleRow,
-        handleRowProtocolClick,
-        screen: screen,
-        handleChange,
-      };
-      return merge(temp, details);
-    });
   return (
     <div data-testid="protocol-table-wrapper" id="test-div">
       <Table
         columns={getColumns(screen)}
-        rows={newRows}
+        rows={
+          initialRows &&
+          initialRows.map((row) => {
+            let temp = cloneDeep(row);
+            let details = {
+              key: row.id,
+              expanded: expandedRows.indexOf(row.id) >= 0,
+              selected: selectedRows.indexOf(row.id) >= 0,
+              handleToggleRow,
+              handleRowProtocolClick,
+              screen: screen,
+              handleChange,
+            };
+            return merge(temp, details);
+          })
+        }
         initialSortedColumn="uploadDate"
         initialSortOrder="desc"
         isLoading={isLoading}
@@ -521,4 +521,4 @@ const ProtocolTable = ({
   );
 };
 
-export default React.memo(ProtocolTable);
+export default ProtocolTable;

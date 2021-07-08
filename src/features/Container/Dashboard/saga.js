@@ -32,48 +32,52 @@ function* getState() {
   return id.substring(1);
 }
 
-export function* protocolAsyn() {
-  yield put(setTableLoader(true));
-  yield put(setSelectedProtocols([]));
-  let userId = yield getState();
-  const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
+export function* protocolAsyn(action) {
+  if (action.payload && action.payload.length > 0) {
+    yield put(getFollowedProtocols(action.payload));
+  } else {
+    yield put(setTableLoader(true));
+    yield put(setSelectedProtocols([]));
+    let userId = yield getState();
+    const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
 
-  const protocolConfig = {
-    url: protocolUrl,
-    method: "GET",
-  };
-  try {
-    const protocolData = yield call(httpCall, protocolConfig);
+    const protocolConfig = {
+      url: protocolUrl,
+      method: "GET",
+    };
+    try {
+      const protocolData = yield call(httpCall, protocolConfig);
 
-    if (protocolData.success) {
-      const followedProtocolData = [];
-      const myPorotocolsData = [];
-      protocolData.data.map((item, i) => {
-        // item.id = item.aidocId;
-        item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
-        item.protocol = !item.protocol ? "" : item.protocol;
-        item.projectId = !item.projectId ? "" : item.projectId;
-        item.sponsor = !item.sponsor ? "" : item.sponsor;
-        item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
-        item.qcActivity = item.qcStatus;
-        if (!item.userUploadedPrimaryFlag) {
-          followedProtocolData.push(item);
-        } else {
-          myPorotocolsData.push(item);
-        }
-        return item;
-      });
+      if (protocolData.success) {
+        const followedProtocolData = [];
+        const myPorotocolsData = [];
+        protocolData.data.map((item, i) => {
+          // item.id = item.aidocId;
+          item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
+          item.protocol = !item.protocol ? "" : item.protocol;
+          item.projectId = !item.projectId ? "" : item.projectId;
+          item.sponsor = !item.sponsor ? "" : item.sponsor;
+          item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
+          item.qcActivity = item.qcStatus;
+          if (!item.userUploadedPrimaryFlag) {
+            followedProtocolData.push(item);
+          } else {
+            myPorotocolsData.push(item);
+          }
+          return item;
+        });
 
-      yield put(getProtocols(myPorotocolsData));
-      yield put(getFollowedProtocols(followedProtocolData));
+        yield put(getProtocols(myPorotocolsData));
+        yield put(getFollowedProtocols(followedProtocolData));
+        yield put(setTableLoader(false));
+      } else {
+        yield put(setTableLoader(false));
+        yield put(setError(protocolData.err.statusText));
+      }
+    } catch (err) {
       yield put(setTableLoader(false));
-    } else {
-      yield put(setTableLoader(false));
-      yield put(setError(protocolData.err.statusText));
+      yield put(setError(err.statusText));
     }
-  } catch (err) {
-    yield put(setTableLoader(false));
-    yield put(setError(err.statusText));
   }
 }
 

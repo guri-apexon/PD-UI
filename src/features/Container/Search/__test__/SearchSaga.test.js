@@ -493,8 +493,8 @@ describe("Search Saga Unit Test", () => {
     };
     await runSaga(fakeStore, getDataByRange, {
       payload: {
-        from: "20201124",
-        to: "20210524",
+        from: "2020-11-24",
+        to: "2020-11-24",
       },
       type: "",
     }).toPromise();
@@ -514,7 +514,7 @@ describe("Search Saga Unit Test", () => {
     };
     await runSaga(fakeStore, getDataByRange, {
       payload: {
-        from: "20201124",
+        from: "2020-11-24",
         to: "",
       },
       type: "",
@@ -536,7 +536,7 @@ describe("Search Saga Unit Test", () => {
     await runSaga(fakeStore, getDataByRange, {
       payload: {
         from: "",
-        to: "20210524",
+        to: "2020-11-24",
       },
       type: "",
     }).toPromise();

@@ -408,13 +408,18 @@ export function* getRecentData(action) {
 }
 
 function convertDate(date) {
+  console.log("date value", date);
   return date.toISOString().slice(0, 10).replace(/-/g, "");
 }
 
 export function* getDataByRange(action) {
   if (action.payload.from && action.payload.to) {
+    console.log("-------------------", action.payload);
+    console.log("****####*****", new Date(action.payload.from));
+    console.log("*********", convertDate(new Date(action.payload.from)));
     const from = convertDate(new Date(action.payload.from));
     const to = convertDate(new Date(action.payload.to));
+    
     // let fromDate = new Date(action.payload.from);
     // let toDate = new Date(action.payload.to);
     // let momFromDate = moment(fromDate);
@@ -643,10 +648,8 @@ export function createJSONFormat(data) {
   let arr = [];
 
   for (let i = 0; i < data.length; i++) {
-    const status = ["QC_NOT_STARTED", "QC1", "QC2", "QC_COMPLETED"];
-    const random = Math.floor(Math.random() * status.length);
     let qcStatus = "";
-    switch (data[i].qcStatus || status[random]) {
+    switch (data[i].qcStatus) {
       case "QC_NOT_STARTED":
         qcStatus = "QC Not Started";
         break;
@@ -658,7 +661,7 @@ export function createJSONFormat(data) {
         qcStatus = "QC Completed";
         break;
       default:
-        qcStatus = "QC Not Started";
+        qcStatus = "-";
         break;
     }
     let obj = {

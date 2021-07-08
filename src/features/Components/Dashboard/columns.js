@@ -1,51 +1,21 @@
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
-
-import { covertMMDDYYYY } from "../../../../utils/utilFunction";
-
-const ProtocolLink = ({ row, column: { accessor: key } }) => {
-  return (
-    <>
-      {row.isPrimaryUser ? (
-        row[key] ? (
-          <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>
-        ) : (
-          "-"
-        )
-      ) : (
-        <span>{row[key]}</span>
-      )}
-    </>
-  );
-};
+import { covertMMDDYYYY } from "../../../utils/utilFunction";
+import Tooltip from "apollo-react/components/Tooltip";
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
-  let url;
-  const handleDownload = async (row) => {
-    const resp = await axios.get(
-      `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
-    );
-
-    url = `${UI_URL}/${resp.data}`;
-    let encodeUrl = encodeURI(url);
-    let myWindow = window.open("about:blank", "_blank");
-    myWindow.document.write(
-      `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
-    );
-
-    // window.open(
-    //   url,
-    //   "_blank" // <- This is what makes it open in a new window.
-    // );
-  };
   return (
     <>
-      {row.isPrimaryUser ? (
-        <a onClick={() => handleDownload(row)}>{row[key]}</a>
-      ) : (
-        <span>{row[key]}</span>
-      )}
+      <Tooltip
+        variant="light"
+        title={"Protocol Title"}
+        subtitle={row[key]}
+        placement="top"
+      >
+        <span>
+          <span className="adjust-ellipses">
+            {row[key].substring(0, 50)}...
+          </span>
+        </span>
+      </Tooltip>
     </>
   );
 };
@@ -69,7 +39,7 @@ const columns = [
     header: "Version #",
     accessor: "versionNumber",
     width: "10%",
-    customCell: ProtocolLink,
+    customCell: Cell,
   },
   {
     header: "Draft #",

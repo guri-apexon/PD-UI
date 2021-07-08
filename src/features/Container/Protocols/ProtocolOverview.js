@@ -76,54 +76,56 @@ const ProtocolOverview = ({ data }) => {
           </div>
         </Card>
       </div>
-      <Card style={{ padding: "10px 16px" }} className="chart-column">
-        <div className="">
-          <p className="chart-title">Digitized Confidence Interval</p>
-          {!isNaN(parseInt(data.digitizedConfidenceInterval, 10)) ? (
-            <div></div>
-          ) : (
-            // <DonutChart
-            //   dropshadow
-            //   percent={parseInt(data.digitizedConfidenceInterval, 10)}
-            //   subtitle="Label"
-            //   stroke="#0768fd"
-            //   tooltipTitle=""
-            //   tooltipSubtitle=""
-            //   style={{ height: "200px", width: "200px" }}
-            // />
-            <div style={{ display: "flex", height: 100 }}>
-              <p
-                style={{ margin: "auto", fontSize: 12 }}
-                data-testid="no-data-confidense"
-              >
-                Information Not Available
-              </p>
-            </div>
-          )}
-          <p className="chart-title">Completeness of Digitization</p>
-          {!isNaN(parseInt(data.completenessOfDigitization, 10)) ? (
-            <div></div>
-          ) : (
-            // <DonutChart
-            //   dropshadow
-            //   percent={parseInt(data.completenessOfDigitization, 10)}
-            //   subtitle="Label"
-            //   // stroke="#0768fd"
-            //   tooltipTitle=""
-            //   tooltipSubtitle=""
-            //   style={{ height: "200px", width: "200px" }}
-            // />
-            <div style={{ display: "flex", height: 100 }}>
-              <p
-                style={{ margin: "auto", fontSize: 12 }}
-                data-testid="no-data-digitization"
-              >
-                Information Not Available
-              </p>
-            </div>
-          )}
-        </div>
-      </Card>
+      {/* {false && (
+        <Card style={{ padding: "10px 16px" }} className="chart-column">
+          <div className="">
+            <p className="chart-title">Digitized Confidence Interval</p>
+            {!isNaN(parseInt(data.digitizedConfidenceInterval, 10)) ? (
+              <div></div>
+            ) : (
+              // <DonutChart
+              //   dropshadow
+              //   percent={parseInt(data.digitizedConfidenceInterval, 10)}
+              //   subtitle="Label"
+              //   stroke="#0768fd"
+              //   tooltipTitle=""
+              //   tooltipSubtitle=""
+              //   style={{ height: "200px", width: "200px" }}
+              // />
+              <div style={{ display: "flex", height: 100 }}>
+                <p
+                  style={{ margin: "auto", fontSize: 12 }}
+                  data-testid="no-data-confidense"
+                >
+                  Information Not Available
+                </p>
+              </div>
+            )}
+            <p className="chart-title">Completeness of Digitization</p>
+            {!isNaN(parseInt(data.completenessOfDigitization, 10)) ? (
+              <div></div>
+            ) : (
+              // <DonutChart
+              //   dropshadow
+              //   percent={parseInt(data.completenessOfDigitization, 10)}
+              //   subtitle="Label"
+              //   // stroke="#0768fd"
+              //   tooltipTitle=""
+              //   tooltipSubtitle=""
+              //   style={{ height: "200px", width: "200px" }}
+              // />
+              <div style={{ display: "flex", height: 100 }}>
+                <p
+                  style={{ margin: "auto", fontSize: 12 }}
+                  data-testid="no-data-digitization"
+                >
+                  Information Not Available
+                </p>
+              </div>
+            )}
+          </div>
+        </Card>
+      )} */}
     </>
   );
 };
