@@ -13,6 +13,7 @@ import Table, {
   compareDates,
 } from "apollo-react/components/Table";
 import Tooltip from "apollo-react/components/Tooltip";
+import Loader from "../Loader/Loader";
 
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
@@ -21,7 +22,7 @@ import "./ProtocolTable.scss";
 import columns from "./columns";
 import Tag from "apollo-react/components/Tag";
 
-const ActionCell = ({ row: { id, handleToggleRow, expanded, protocol } }) => {
+const ActionCell = ({ row }) => {
   return (
     <div>
       <div className="follow-table-selection" style={{ height: 45 }}>
@@ -29,9 +30,9 @@ const ActionCell = ({ row: { id, handleToggleRow, expanded, protocol } }) => {
           id="expand"
           data-testid="expandable-row"
           size="small"
-          onClick={() => handleToggleRow(id, protocol)}
+          onClick={() => row.handleToggleRow(row.id, row)}
         >
-          {expanded ? <ChevronDown /> : <ChevronRight />}
+          {row.expanded ? <ChevronDown /> : <ChevronRight />}
         </IconButton>
       </div>
     </div>
@@ -122,7 +123,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
 const HandleUnFollow = ({ row }) => {
   return (
     <Link onClick={() => row.handleUnfollow(row)}>
-      <Tag label="Unfollow" color="#ff0000" />
+      <Tag label="Unfollow" color="#0076ae" />
     </Link>
   );
 };
@@ -199,34 +200,44 @@ const ExpandableComponent = ({ row }) => {
   };
   return (
     <div className="expand-asso-table">
-      <div className="view-asso-prot">
-        <div>
-          <Link
-            onClick={() => fetchAssociateDat()}
-            variant="secondary"
-            size="small"
-            style={{ fontWeight: 600 }}
-            disabled={!row.linkEnabled}
-            data-testid="dashboard_view_associated_protocol"
-
-          >
-            View Associate Protocols
-          </Link>
+      {row.linkEnabled ? (
+        <div
+          style={{
+            height: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+          }}
+        >
+          <Loader />
         </div>
-
-        <div>
+      ) : (
+        <>
           {row.associateddata && row.associateddata.length > 0 && (
-            <Table
-              columns={columns}
-              rows={row.associateddata.map((row) => ({
-                ...row,
-                key: row.id,
-              }))}
-              hidePagination
-            />
+            <div className="view-asso-prot">
+              <div>
+                <h4>Associate Protocols</h4>
+              </div>
+
+              <div>
+                <Table
+                  columns={columns}
+                  rows={row.associateddata.map((row) => ({
+                    ...row,
+                    key: row.id,
+                  }))}
+                  hidePagination
+                />
+              </div>
+            </div>
           )}
-        </div>
-      </div>
+          {row.associateddata.length === 0 && (
+            <h4 style={{ textAlign: "center" }}>
+              {row.protocol} has no associated protocols available.
+            </h4>
+          )}
+        </>
+      )}
     </div>
   );
 };
@@ -271,13 +282,15 @@ const ProtocolTable = ({
     );
   };
 
-  const handleToggleRow = (id, protocol) => {
+  const handleToggleRow = (id, row) => {
     setExpandedRows((expandedRows) =>
       expandedRows.indexOf(id) >= 0
         ? expandedRows.filter((eid) => eid !== id)
         : concat(expandedRows, id)
     );
-    // fetchAssociateData({ id, protocol });
+    if (row.associateddata.length === 0) {
+      fetchAssociateData(row);
+    }
   };
   const handleRowProtocolClick = (row) => {
     handleProtocolClick({

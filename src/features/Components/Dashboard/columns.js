@@ -12,7 +12,9 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
       >
         <span>
           <span className="adjust-ellipses">
-            {row[key].substring(0, 50)}...
+            {row[key].length > 50
+              ? row[key].substring(0, 50) + "..."
+              : row[key]}
           </span>
         </span>
       </Tooltip>

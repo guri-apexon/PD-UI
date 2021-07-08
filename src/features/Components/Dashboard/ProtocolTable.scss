@@ -130,11 +130,21 @@
   justify-content: center;
 }
 .expand-asso-table{
-  padding: 20px;
+  padding-left: 55px;
+  background-color: #fff;
   .view-asso-prot {
     display: flex;
     flex-direction: column;
-    padding: 0 45px;
+    padding: 10px;
+    padding-top: 0px;
+    background-color: #f2f2fe;
+    // margin-top: 5px;
+    // margin-bottom: 5px;
+    margin-right: 5px;
+    h4{
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
     a {
       color: blue;
       // margin-left: 20px;
@@ -142,6 +152,9 @@
       margin-bottom: 10px;
       cursor: pointer;
       width: 15%;
+    }
+    td,th{
+      text-align: center;
     }
   }
 }
