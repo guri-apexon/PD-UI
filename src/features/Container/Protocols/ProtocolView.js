@@ -8,7 +8,7 @@ function ProtocolView({ protId }) {
   useEffect(() => {
     dispatch({
       type: "GET_PROTOCOL_TOC_SAGA",
-      payload: { endPoint: "protocol_data/", id: protId },
+      payload: { endPoint: "protocol_data/", id: protId, user: "normal" },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
