@@ -136,7 +136,7 @@ function getColumns(screen) {
       width: "3%",
     },
     {
-      accessor: "uploadDate",
+      accessor: "approvalDate",
       sortFunction: compareDates,
       width: 0,
       hidden: true,
@@ -321,7 +321,7 @@ const ProtocolTable = ({
       <Table
         columns={getColumns(screen)}
         rows={newRows}
-        initialSortedColumn="uploadDate"
+        initialSortedColumn="approvalDate"
         initialSortOrder="desc"
         isLoading={isLoading}
         rowsPerPageOptions={pageRows}
