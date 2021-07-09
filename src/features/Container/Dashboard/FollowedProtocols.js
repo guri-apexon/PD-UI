@@ -10,6 +10,7 @@ import {
 import ProtocolTableComp from "../../Components/Dashboard/FollowingTable";
 import { cloneDeep, uniqBy } from "lodash-es";
 import { toast } from "react-toastify";
+// import { date } from "@material-ui/pickers/constants/prop-types";
 
 function FollowedProtocols({ pageRows, maxHeight }) {
   const dispatch = useDispatch();
@@ -67,6 +68,11 @@ function FollowedProtocols({ pageRows, maxHeight }) {
   useEffect(() => {
     if (protocolData.length > 0) {
       let tempData = cloneDeep(protocolData);
+      tempData.sort((a, b) => {
+        const aDate = new Date(a.approvalDate);
+        const bDate = new Date(b.approvalDate);
+        return bDate - aDate;
+      });
       let temp = uniqBy(tempData, "protocol");
       for (let i = 0; i < temp.length; i++) {
         temp[i].associateddata = [];

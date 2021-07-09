@@ -15,20 +15,24 @@ function ActionButtons() {
   return (
     <>
       {hide && (
-        <div style={{ float: "right" }}>
-          <AddProtocol />
-        </div>
+        <>
+          <div style={{ float: "right" }}>
+            <AddProtocol />
+          </div>
+          <div
+            style={{ float: "right", marginTop: "10px", marginRight: "14px" }}
+          >
+            <Button
+              data-testid="send-qc-review"
+              variant="secondary"
+              onClick={sendQcReview}
+              disabled={selectedProtocols.length ? false : true}
+            >
+              {"Send To QC Review"}
+            </Button>
+          </div>
+        </>
       )}
-      <div style={{ float: "right", marginTop: "10px", marginRight: "14px" }}>
-        <Button
-          data-testid="send-qc-review"
-          variant="secondary"
-          onClick={sendQcReview}
-          disabled={selectedProtocols.length ? false : true}
-        >
-          {"Send To QC Review"}
-        </Button>
-      </div>
     </>
   );
 }
