@@ -59,10 +59,12 @@ export function* protocolAsyn(action) {
           item.sponsor = !item.sponsor ? "" : item.sponsor;
           item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
           item.qcActivity = item.qcStatus;
-          if (item.userUploadedPrimaryFlag) {
+          if (item.userUploadedFlag || item.userPrimaryRoleFlag) {
             myPorotocolsData.push(item);
           }
-          followedProtocolData.push(item);
+          if (item.userFollowingFlag) {
+            followedProtocolData.push(item);
+          }
           return item;
         });
 
