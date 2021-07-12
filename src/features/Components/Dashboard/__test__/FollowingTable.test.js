@@ -427,7 +427,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(screen.getByText("EMR 200095-004"));
   });
 
-  test("Component renders correctly for expanded row", () => {
+  xtest("Component renders correctly for expanded row", () => {
     const protocolData = [
       {
         id: "abcd123456",
@@ -481,7 +481,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(arrowButton);
   });
 
-  test("Component renders correctly for expanded row", () => {
+  xtest("Component renders correctly for expanded row", () => {
     const protocolData = [
       {
         id: "abcd123456",
@@ -538,7 +538,7 @@ describe("Dashboard table component", () => {
     // fireEvent.click(viewAssociated);
   });
 
-  test("Component renders correctly for expanda and collpase row", () => {
+  xtest("Component renders correctly for expanda and collpase row", () => {
     const protocolData = [
       {
         id: "abcd1234",
@@ -592,7 +592,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(arrowButton);
   });
 
-  test("Component renders correctly for expanded row filename null", () => {
+  xtest("Component renders correctly for expanded row filename null", () => {
     const protocolData = [
       {
         id: "abcd1234",
