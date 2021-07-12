@@ -8,7 +8,8 @@ import {
   tableLoader,
 } from "../Dashboard/dashboardSlice";
 import ProtocolTableComp from "../../Components/Dashboard/FollowingTable";
-import { cloneDeep, uniqBy } from "lodash-es";
+import cloneDeep from "lodash/cloneDeep";
+import uniqBy from "lodash/uniqBy";
 import { toast } from "react-toastify";
 // import { date } from "@material-ui/pickers/constants/prop-types";
 
