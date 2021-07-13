@@ -26,16 +26,20 @@ function FollowedProtocols({ pageRows, maxHeight }) {
         `${BASE_URL_8000}/api/Related_protocols/?protocol=${row.protocol}`
       );
       const data = resp.data;
-      let temp = cloneDeep(formatedData);
-      for (let i = 0; i < temp.length; i++) {
-        if (temp[i].id === row.id) {
-          temp[i].associateddata = data;
-          temp[i].linkEnabled = false;
+      if (data.length > 0) {
+        let temp = cloneDeep(formatedData);
+        for (let i = 0; i < temp.length; i++) {
+          if (temp[i].id === row.id) {
+            temp[i].associateddata = data;
+            temp[i].linkEnabled = false;
+          }
         }
+        setFormatedData(temp);
+      } else {
+        toast.info(
+          `The Protocol: "${row.protocol}" selected has no associated protocols available`
+        );
       }
-      setFormatedData(temp);
-      // console.log(formatedData);
-      console.log("data", temp);
     } catch (e) {
       console.log(e);
     }
