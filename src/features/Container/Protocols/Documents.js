@@ -8,7 +8,7 @@ import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
 import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
-import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import { BASE_URL_8000 } from "../../../utils/api";
 import axios from "axios";
 import FileDownload from "js-file-download";
 import Loader from "apollo-react/components/Loader";
@@ -59,10 +59,10 @@ const Documents = ({ handleChangeTab }) => {
           const path = data.compareCSVPath;
           let splitArr = path.split("/");
           const fileName = splitArr[splitArr.length - 1];
-          const filePath = `${UI_URL}/${fileName}`;
+          // const filePath = `${UI_URL}/${fileName}`;
 
           axios({
-            url: filePath,
+            url: `http://localhost:4000/api/compare?path=${fileName}`,
             method: "GET",
             responseType: "blob", // Important
           })
