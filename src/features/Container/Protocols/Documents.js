@@ -62,7 +62,7 @@ const Documents = ({ handleChangeTab }) => {
           // const filePath = `${UI_URL}/${fileName}`;
 
           axios({
-            url: `http://localhost:4000/api/compare?path=${fileName}`,
+            url: `/api/compare?path=${fileName}`,
             method: "GET",
             responseType: "blob", // Important
           })
