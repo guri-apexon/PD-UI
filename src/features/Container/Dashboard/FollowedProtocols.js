@@ -64,6 +64,9 @@ function FollowedProtocols({ pageRows, maxHeight }) {
           toast.info(`Protocol Successfully Unfollowed`);
           setFormatedData(lists);
           dispatch({ type: "GET_PROTOCOL_TABLE_SAGA", payload: lists });
+
+          const id = userDetail.userId;
+          dispatch({ type: "GET_NOTIFICATION_SAGA", payload: id.substring(1) });
         }
       })
       .catch(() => {
