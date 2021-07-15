@@ -70,7 +70,7 @@ const Documents = ({ handleChangeTab }) => {
         if (e.response && e.response.data) {
           toast.error(e.response.data.detail);
         } else {
-          toast.error("Something Went Wrong. Please Try Again.");
+          toast.error("Data fetching failed. Please try again.");
         }
       }
     }
