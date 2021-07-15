@@ -25,7 +25,10 @@ function FollowedProtocols({ pageRows, maxHeight }) {
       const resp = await axios.get(
         `${BASE_URL_8000}/api/Related_protocols/?protocol=${row.protocol}`
       );
-      const data = resp.data;
+      const respData = resp.data;
+      const data = respData.sort((a, b) => {
+        return new Date(b.approvalDate) - new Date(a.approvalDate);
+      });
       if (data.length > 0) {
         let temp = cloneDeep(formatedData);
         for (let i = 0; i < temp.length; i++) {

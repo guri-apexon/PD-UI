@@ -326,7 +326,13 @@ function* updateSearchAssociated(action) {
     // };
     //  const associateDocs = yield call(httpCall, config);
     if (associateDocs.success) {
-      let arr = cloneDeep(associateDocs.data);
+      let temp = cloneDeep(associateDocs.data);
+      let arr = temp.filter((item) => item.id !== action.payload.data.id);
+      if (arr.length === 0) {
+        toast.info(
+          `The Protocol: "${action.payload.data.protocolNumber}" selected has no associated protocols available`
+        );
+      }
       arr.sort((a, b) => {
         return new Date(b.uploadDate) - new Date(a.uploadDate);
       });
