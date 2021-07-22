@@ -52,8 +52,8 @@ function Alerts() {
         const userresp = await axios.get(
           `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`
         );
+        dispatch({ type: "GET_NOTIFICATION_SAGA", payload: userID });
         if (userresp && userresp.data) {
-          dispatch({ type: "GET_NOTIFICATION_SAGA", payload: userID });
           history.push(`/protocols?protocolId=${data.aidocId}&tab=2`);
         } else {
           toast.warn(

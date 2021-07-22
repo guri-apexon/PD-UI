@@ -10,7 +10,6 @@ import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
 import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import axios from "axios";
-import FileDownload from "js-file-download";
 import Loader from "apollo-react/components/Loader";
 
 const Documents = ({ handleChangeTab }) => {
@@ -49,7 +48,6 @@ const Documents = ({ handleChangeTab }) => {
     if (protocolSelected.length <= 1) {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
-      setLoader(true);
       try {
         const resp = await axios.get(
           `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`
@@ -59,22 +57,9 @@ const Documents = ({ handleChangeTab }) => {
           const path = data.compareCSVPath;
           let splitArr = path.split("/");
           const fileName = splitArr[splitArr.length - 1];
-          const filePath = `${UI_URL}/${fileName}`;
 
-          axios({
-            url: filePath,
-            method: "GET",
-            responseType: "blob", // Important
-          })
-            .then((response) => {
-              FileDownload(response.data, fileName);
-              setLoader(false);
-              setProtocolSelected([]);
-            })
-            .catch((e) => {
-              setLoader(false);
-              toast.error("File Download Failed.");
-            });
+          const filePath = `${UI_URL}/${fileName}`;
+          window.open(filePath, "_blank");
         } else {
           setLoader(false);
           toast.info("No difference found for this compare");
@@ -85,7 +70,7 @@ const Documents = ({ handleChangeTab }) => {
         if (e.response && e.response.data) {
           toast.error(e.response.data.detail);
         } else {
-          toast.error("Something Went Wrong. Please Try Again.");
+          toast.error("Data fetching failed. Please try again.");
         }
       }
     }

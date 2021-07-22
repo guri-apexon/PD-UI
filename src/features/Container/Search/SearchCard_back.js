@@ -5,7 +5,6 @@ import columns from "./Data/column.data";
 import Grid from "apollo-react/components/Grid";
 import Link from "apollo-react/components/Link";
 import Loader1 from "../../Components/Loader/Loader";
-import Loader from "apollo-react/components/Loader";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
@@ -24,14 +23,8 @@ const SearchCard = ({
   protocolSelected,
 }) => {
   const [dataRow, setDataRow] = useState([]);
-  const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
-  // let rowContent = "";
-  // if (data && !data.rowsLoading) {
-  //   rowContent = _.cloneDeep(data.rows);
-  //   rowContent.handleSelectRow = compareTwoProtocol();
-  // }
-  // const selection1 = selection;
+
   useEffect(() => {
     let arrOfObj = cloneDeep(data.rows);
     var result = arrOfObj.map(function (el) {
@@ -39,7 +32,6 @@ const SearchCard = ({
       o.protocolSelected = protocolSelected;
       return o;
     });
-    // debugger;
     setDataRow(result);
   }, [protocolSelected, data]);
   /* istanbul ignore next */
@@ -48,8 +40,6 @@ const SearchCard = ({
   };
 
   const handleDownload = async (row) => {
-    console.log("No Need", BASE_URL_8000, UI_URL, userId1);
-    console.log("path", row.path);
     const dfsPath = row.path.replaceAll("\\", "/");
     console.log("DFS", dfsPath);
     const userresp = await axios.get(
@@ -58,53 +48,26 @@ const SearchCard = ({
       )}&protocol=${data.protocolNumber}`
     );
     if (userresp && userresp.data) {
-      setLoader(true);
-      try {
-        const resp = await axios({
-          url: "/api/download",
-          method: "GET",
-          params: {
-            path: dfsPath,
-          },
-          responseType: "blob", // Important
-        });
-        // console.log("resp", resp);
-        const blob = resp.data;
-        let url = URL.createObjectURL(blob);
-        setLoader(false);
-        window.open(url, "_blank");
-      } catch (err) {
-        setLoader(false);
-        toast.error("Document is not available.");
+      const resp = await axios.get(
+        `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`
+      );
+
+      if (resp.data === "Downloading failed") {
+        toast.error("Document not found.");
+      } else {
+        let url = `${UI_URL}/${resp.data}`;
+        let encodeUrl = encodeURI(url);
+        let myWindow = window.open("about:blank", "_blank");
+        myWindow.document.write(
+          `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
+        );
       }
     } else {
       toast.info("Access Provisioned to Primary Users only");
     }
-
-    // const userresp = await axios.get(
-    //   `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
-    //     1
-    //   )}&protocol=${data.protocolNumber}`
-    // );
-    // console.log("--------------||------------", userresp);
-    // if (userresp && userresp.data) {
-    //   const resp = await axios.get(
-    //     `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`
-    //   );
-
-    //   let url = `${UI_URL}/${resp.data}`;
-    //   let encodeUrl = encodeURI(url);
-    //   let myWindow = window.open("about:blank", "_blank");
-    //   myWindow.document.write(
-    //     `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
-    //   );
-    // } else {
-    //   toast.info("Access Provisioned to Primary Users only");
-    // }
   };
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>
-      {loader && <Loader />}
       <Grid md={11} container>
         {/* ------------------------------------------------- */}
         <Grid md={6} container>

@@ -25,17 +25,24 @@ function FollowedProtocols({ pageRows, maxHeight }) {
       const resp = await axios.get(
         `${BASE_URL_8000}/api/Related_protocols/?protocol=${row.protocol}`
       );
-      const data = resp.data;
-      let temp = cloneDeep(formatedData);
-      for (let i = 0; i < temp.length; i++) {
-        if (temp[i].id === row.id) {
-          temp[i].associateddata = data;
-          temp[i].linkEnabled = false;
+      const respData = resp.data;
+      const data = respData.sort((a, b) => {
+        return new Date(b.approvalDate) - new Date(a.approvalDate);
+      });
+      if (data.length > 0) {
+        let temp = cloneDeep(formatedData);
+        for (let i = 0; i < temp.length; i++) {
+          if (temp[i].id === row.id) {
+            temp[i].associateddata = data;
+            temp[i].linkEnabled = false;
+          }
         }
+        setFormatedData(temp);
+      } else {
+        toast.info(
+          `The Protocol: "${row.protocol}" selected has no associated protocols available`
+        );
       }
-      setFormatedData(temp);
-      // console.log(formatedData);
-      console.log("data", temp);
     } catch (e) {
       console.log(e);
     }
@@ -60,6 +67,9 @@ function FollowedProtocols({ pageRows, maxHeight }) {
           toast.info(`Protocol Successfully Unfollowed`);
           setFormatedData(lists);
           dispatch({ type: "GET_PROTOCOL_TABLE_SAGA", payload: lists });
+
+          const id = userDetail.userId;
+          dispatch({ type: "GET_NOTIFICATION_SAGA", payload: id.substring(1) });
         }
       })
       .catch(() => {
