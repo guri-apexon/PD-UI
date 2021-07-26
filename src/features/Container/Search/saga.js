@@ -359,11 +359,11 @@ function* updateSearchAssociated(action) {
           data: [...result],
         },
       };
-      if (associateDocs.data.length === 0) {
-        toast.info(
-          `The Protocol: "${action.payload.data.protocolNumber}" selected has no associated protocols available`
-        );
-      }
+      // if (associateDocs.data.length === 0) {
+      //   toast.info(
+      //     `The Protocol: "${action.payload.data.protocolNumber}" selected has no associated protocols available`
+      //   );
+      // }
 
       yield put(getSearchResult(obj1));
     } else {

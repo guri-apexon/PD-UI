@@ -395,10 +395,14 @@ const Search = (props) => {
           // setSearchInput(dateQuery);
           postObj.dateFrom = rangeDate.from;
           postObj.dateTo = rangeDate.to;
-          validFilters = checkValidity(postObj);
           resultQuery += dateQuery;
 
-          filterChanged = compareObjs(postObj, postQueryObj);
+          let postObj1 = cloneDeep(postObj);
+          let postQueryObj1 = cloneDeep(postQueryObj);
+          delete postObj1.key;
+          delete postQueryObj1.key;
+          filterChanged = compareObjs(postObj1, postQueryObj1);
+          validFilters = checkValidity(postObj);
           if (filterChanged && validFilters) {
             dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
             props.history.replace({
@@ -426,9 +430,14 @@ const Search = (props) => {
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`;
       postObj.dateFrom = recentDate.from;
       postObj.dateTo = recentDate.to;
-      validFilters = checkValidity(postObj);
       resultQuery += dateQuery;
-      filterChanged = compareObjs(postObj, postQueryObj);
+
+      let postObj1 = cloneDeep(postObj);
+      let postQueryObj1 = cloneDeep(postQueryObj);
+      delete postObj1.key;
+      delete postQueryObj1.key;
+      filterChanged = compareObjs(postObj1, postQueryObj1);
+      validFilters = checkValidity(postObj);
       if (filterChanged && validFilters) {
         dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
         props.history.replace({
@@ -447,7 +456,11 @@ const Search = (props) => {
         toast.warn("Please Select Filters");
       }
     } else {
-      filterChanged = compareObjs(postObj, postQueryObj);
+      let postObj1 = cloneDeep(postObj);
+      let postQueryObj1 = cloneDeep(postQueryObj);
+      delete postObj1.key;
+      delete postQueryObj1.key;
+      filterChanged = compareObjs(postObj1, postQueryObj1);
       validFilters = checkValidity(postObj);
       if (filterChanged && validFilters) {
         dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
@@ -456,11 +469,18 @@ const Search = (props) => {
           search: `?${resultQuery}`,
         });
       } else if (filterChanged && !validFilters) {
-        dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
-        props.history.replace({
-          pathname: "/search",
-          search: `?${resultQuery}`,
-        });
+        if (postObj.key) {
+          dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+          props.history.replace({
+            pathname: "/search",
+            search: `?${resultQuery}`,
+          });
+        } else {
+          dispatch({ type: "GET_SEARCH_RESULT" });
+          props.history.replace({
+            pathname: "/search",
+          });
+        }
       } else if (!filterChanged && validFilters) {
         toast.warn("Please Edit/Modify Your Filters");
       } else {
