@@ -462,6 +462,7 @@ const Search = (props) => {
       delete postQueryObj1.key;
       filterChanged = compareObjs(postObj1, postQueryObj1);
       validFilters = checkValidity(postObj);
+      debugger; // eslint-disable-line no-debugger
       if (filterChanged && validFilters) {
         dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
         props.history.replace({
@@ -504,6 +505,8 @@ const Search = (props) => {
         postObj.indication.length > 0 ||
         postObj.phase.length > 0 ||
         postObj.sponsor.length > 0 ||
+        postObj.documentStatus.length > 0 ||
+        postObj.qcStatus.length > 0 ||
         postObj.dateFrom.length > 0 ||
         postObj.dateTo.length > 0)
     ) {
