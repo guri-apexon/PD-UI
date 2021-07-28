@@ -462,6 +462,7 @@ const Search = (props) => {
       delete postQueryObj1.key;
       filterChanged = compareObjs(postObj1, postQueryObj1);
       validFilters = checkValidity(postObj);
+      // debugger; // eslint-disable-line no-debugger
       if (filterChanged && validFilters) {
         dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
         props.history.replace({
@@ -708,6 +709,7 @@ const Search = (props) => {
   };
   const deleteSearchInput = () => {
     clearSearchText(true);
+    let postObj = cloneDeep(POST_OBJECT);
     const phaseObj = {
       sectionContent: [],
     };
@@ -725,6 +727,7 @@ const Search = (props) => {
       dateType: [1],
       dateSection: [1],
     });
+    setPostQueryObj(postObj);
     dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     props.history.push(`/search`);
