@@ -10,6 +10,7 @@ import {
   getPhaseValues,
 } from "./searchSlice";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import { localISOTime } from "../../../utils/utilFunction";
 import cloneDeep from "lodash/cloneDeep";
 import { toast } from "react-toastify";
 // import moment from "moment";
@@ -523,8 +524,8 @@ function* saveSearch(action) {
       data: {
         keyword: action.payload,
         userId: userId,
-        timeCreated: new Date().toISOString(),
-        lastUpdated: new Date().toISOString(),
+        timeCreated: localISOTime(),
+        lastUpdated: localISOTime(),
       },
     };
     try {
