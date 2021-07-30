@@ -8,6 +8,7 @@ import {
 } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import { localISOTime } from "../../../utils/utilFunction";
 import {
   getProtocols,
   setError,
@@ -250,8 +251,8 @@ export function* saveRecentSearch(action) {
       data: {
         keyword: action.payload,
         userId: userId,
-        timeCreated: new Date().toISOString(),
-        lastUpdated: new Date().toISOString(),
+        timeCreated: localISOTime(),
+        lastUpdated: localISOTime(),
       },
     };
     try {
