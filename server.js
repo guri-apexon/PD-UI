@@ -91,15 +91,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.get("/api/compare", (req, res) => {
-  const dfsPath = req.query.path;
-  var file = __dirname + "/compare_csv/" + dfsPath;
-  res.download(file);
-});
-app.get("/api/download", (req, res) => {
-  const dfsPath = req.query.path;
-  res.download(dfsPath);
-});
 
 app.get("/health", function (req, res) {
   res.send("F5-UP");
