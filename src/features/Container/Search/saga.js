@@ -10,6 +10,7 @@ import {
   getPhaseValues,
 } from "./searchSlice";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import { localISOTime } from "../../../utils/utilFunction";
 import cloneDeep from "lodash/cloneDeep";
 import { toast } from "react-toastify";
 // import moment from "moment";
@@ -359,11 +360,11 @@ function* updateSearchAssociated(action) {
           data: [...result],
         },
       };
-      if (associateDocs.data.length === 0) {
-        toast.info(
-          `The Protocol: "${action.payload.data.protocolNumber}" selected has no associated protocols available`
-        );
-      }
+      // if (associateDocs.data.length === 0) {
+      //   toast.info(
+      //     `The Protocol: "${action.payload.data.protocolNumber}" selected has no associated protocols available`
+      //   );
+      // }
 
       yield put(getSearchResult(obj1));
     } else {
@@ -523,8 +524,8 @@ function* saveSearch(action) {
       data: {
         keyword: action.payload,
         userId: userId,
-        timeCreated: new Date().toISOString(),
-        lastUpdated: new Date().toISOString(),
+        timeCreated: localISOTime(),
+        lastUpdated: localISOTime(),
       },
     };
     try {

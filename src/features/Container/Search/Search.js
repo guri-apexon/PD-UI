@@ -395,10 +395,14 @@ const Search = (props) => {
           // setSearchInput(dateQuery);
           postObj.dateFrom = rangeDate.from;
           postObj.dateTo = rangeDate.to;
-          validFilters = checkValidity(postObj);
           resultQuery += dateQuery;
 
-          filterChanged = compareObjs(postObj, postQueryObj);
+          let postObj1 = cloneDeep(postObj);
+          let postQueryObj1 = cloneDeep(postQueryObj);
+          delete postObj1.key;
+          delete postQueryObj1.key;
+          filterChanged = compareObjs(postObj1, postQueryObj1);
+          validFilters = checkValidity(postObj);
           if (filterChanged && validFilters) {
             dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
             props.history.replace({
@@ -426,9 +430,14 @@ const Search = (props) => {
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`;
       postObj.dateFrom = recentDate.from;
       postObj.dateTo = recentDate.to;
-      validFilters = checkValidity(postObj);
       resultQuery += dateQuery;
-      filterChanged = compareObjs(postObj, postQueryObj);
+
+      let postObj1 = cloneDeep(postObj);
+      let postQueryObj1 = cloneDeep(postQueryObj);
+      delete postObj1.key;
+      delete postQueryObj1.key;
+      filterChanged = compareObjs(postObj1, postQueryObj1);
+      validFilters = checkValidity(postObj);
       if (filterChanged && validFilters) {
         dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
         props.history.replace({
@@ -447,8 +456,13 @@ const Search = (props) => {
         toast.warn("Please Select Filters");
       }
     } else {
-      filterChanged = compareObjs(postObj, postQueryObj);
+      let postObj1 = cloneDeep(postObj);
+      let postQueryObj1 = cloneDeep(postQueryObj);
+      delete postObj1.key;
+      delete postQueryObj1.key;
+      filterChanged = compareObjs(postObj1, postQueryObj1);
       validFilters = checkValidity(postObj);
+      // debugger; // eslint-disable-line no-debugger
       if (filterChanged && validFilters) {
         dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
         props.history.replace({
@@ -456,11 +470,18 @@ const Search = (props) => {
           search: `?${resultQuery}`,
         });
       } else if (filterChanged && !validFilters) {
-        dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
-        props.history.replace({
-          pathname: "/search",
-          search: `?${resultQuery}`,
-        });
+        if (postObj.key) {
+          dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
+          props.history.replace({
+            pathname: "/search",
+            search: `?${resultQuery}`,
+          });
+        } else {
+          dispatch({ type: "GET_SEARCH_RESULT" });
+          props.history.replace({
+            pathname: "/search",
+          });
+        }
       } else if (!filterChanged && validFilters) {
         toast.warn("Please Edit/Modify Your Filters");
       } else {
@@ -484,6 +505,8 @@ const Search = (props) => {
         postObj.indication.length > 0 ||
         postObj.phase.length > 0 ||
         postObj.sponsor.length > 0 ||
+        postObj.documentStatus.length > 0 ||
+        postObj.qcStatus.length > 0 ||
         postObj.dateFrom.length > 0 ||
         postObj.dateTo.length > 0)
     ) {
@@ -686,6 +709,7 @@ const Search = (props) => {
   };
   const deleteSearchInput = () => {
     clearSearchText(true);
+    let postObj = cloneDeep(POST_OBJECT);
     const phaseObj = {
       sectionContent: [],
     };
@@ -703,6 +727,7 @@ const Search = (props) => {
       dateType: [1],
       dateSection: [1],
     });
+    setPostQueryObj(postObj);
     dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     props.history.push(`/search`);

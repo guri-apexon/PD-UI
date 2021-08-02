@@ -39,6 +39,13 @@ function FollowedProtocols({ pageRows, maxHeight }) {
         }
         setFormatedData(temp);
       } else {
+        let temp = cloneDeep(formatedData);
+        for (let i = 0; i < temp.length; i++) {
+          if (temp[i].id === row.id) {
+            temp[i].linkEnabled = false;
+          }
+        }
+        setFormatedData(temp);
         toast.info(
           `The Protocol: "${row.protocol}" selected has no associated protocols available`
         );
