@@ -58,8 +58,15 @@ const Documents = ({ handleChangeTab }) => {
           let splitArr = path.split("/");
           const fileName = splitArr[splitArr.length - 1];
 
-          const filePath = `${UI_URL}/${fileName}`;
-          window.open(filePath, "_blank");
+          const file_path = `${UI_URL}/${fileName}`;
+          var a = document.createElement("A");
+          a.href = file_path;
+          a.download = file_path.substr(file_path.lastIndexOf("/") + 1);
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setProtocolSelected([]);
+          // window.open(filePath, "_blank");
         } else {
           setLoader(false);
           toast.info("No difference found for this compare");
