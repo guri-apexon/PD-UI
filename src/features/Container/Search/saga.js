@@ -415,7 +415,20 @@ export function* getRecentData(action) {
 }
 
 function convertDate(date) {
-  return date.toISOString().slice(0, 10).replace(/-/g, "");
+  let newDate = new Date(date);
+  let dd = newDate.getDate();
+
+  let mm = newDate.getMonth() + 1;
+  const yyyy = newDate.getFullYear();
+  if (dd < 10) {
+    dd = `0${dd}`;
+  }
+
+  if (mm < 10) {
+    mm = `0${mm}`;
+  }
+  // console.log(`${yyyy}${mm}${dd}`)
+  return `${yyyy}${mm}${dd}`;
 }
 
 export function* getDataByRange(action) {
