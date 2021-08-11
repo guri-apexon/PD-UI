@@ -201,6 +201,10 @@ export function* postAddProtocol(postData) {
         method: "POST",
         data: bodyFormData,
         headers: { "Content-Type": "multipart/form-data" },
+        auth: {
+          username: process.env.REACT_APP_USERNAME,
+          password: process.env.REACT_APP_PASSWORD,
+        },
       });
       if (postResponse.success) {
         yield put(setAddProtocolModal(false));
