@@ -59,12 +59,16 @@ const Documents = ({ handleChangeTab }) => {
           const fileName = splitArr[splitArr.length - 1];
 
           const file_path = `${UI_URL}/${fileName}`;
-          let a = document.createElement("A");
-          a.href = file_path;
-          a.download = file_path.substr(file_path.lastIndexOf("/") + 1);
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
+          let link = document.createElement("a");
+          link.setAttribute("href", file_path);
+          link.setAttribute("download", "Compare-Difference.csv");
+          document.body.appendChild(link);
+          link.click();
+          // a.href = file_path;
+          // a.download = file_path.substr(file_path.lastIndexOf("/") + 1);
+          // document.body.appendChild(a);
+          // a.click();
+          // document.body.removeChild(a);
           setProtocolSelected([]);
           // window.open(filePath, "_blank");
         } else {
