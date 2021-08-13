@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL_8000 } from "../../../utils/api";
@@ -6,6 +6,7 @@ import { BASE_URL_8000 } from "../../../utils/api";
 import {
   followedProtocolsList,
   tableLoader,
+  getFollowedProtocols,
 } from "../Dashboard/dashboardSlice";
 import ProtocolTableComp from "../../Components/Dashboard/FollowingTable";
 import cloneDeep from "lodash/cloneDeep";
@@ -16,9 +17,9 @@ import { toast } from "react-toastify";
 function FollowedProtocols({ pageRows, maxHeight }) {
   const dispatch = useDispatch();
   const protocolData = useSelector(followedProtocolsList);
-  const userDetail = useSelector((state) => state.user.userDetail);
+  // const userDetail = useSelector((state) => state.user.userDetail);
   const loader = useSelector(tableLoader);
-  const [formatedData, setFormatedData] = useState([]);
+  // const [formatedData, setFormatedData] = useState([]);
 
   const fetchAssociateData = async (row) => {
     try {
@@ -30,22 +31,22 @@ function FollowedProtocols({ pageRows, maxHeight }) {
         return new Date(b.approvalDate) - new Date(a.approvalDate);
       });
       if (data.length > 0) {
-        let temp = cloneDeep(formatedData);
+        let temp = cloneDeep(protocolData);
         for (let i = 0; i < temp.length; i++) {
           if (temp[i].id === row.id) {
             temp[i].associateddata = data;
             temp[i].linkEnabled = false;
           }
         }
-        setFormatedData(temp);
+        dispatch(getFollowedProtocols(temp));
       } else {
-        let temp = cloneDeep(formatedData);
+        let temp = cloneDeep(protocolData);
         for (let i = 0; i < temp.length; i++) {
           if (temp[i].id === row.id) {
             temp[i].linkEnabled = false;
           }
         }
-        setFormatedData(temp);
+        dispatch(getFollowedProtocols(temp));
         toast.info(
           `The Protocol: "${row.protocol}" selected has no associated protocols available`
         );
@@ -55,33 +56,10 @@ function FollowedProtocols({ pageRows, maxHeight }) {
     }
   };
   const handleUnfollow = (row) => {
-    console.log(row);
-    console.log(userDetail);
-    const id = userDetail.userId;
-    let temp = cloneDeep(formatedData);
-    var lists = temp.filter((item) => {
-      return item.protocol !== row.protocol;
+    dispatch({
+      type: "HANDLE_FOLLOW_SAGA",
+      payload: { data: row, follow: false },
     });
-    axios
-      .post(`${BASE_URL_8000}/api/follow_protocol/`, {
-        userId: id.substring(1),
-        protocol: row.protocol,
-        follow: false,
-        userRole: row.UserRole,
-      })
-      .then((res) => {
-        if (res && res.status === 200) {
-          toast.info(`Protocol Successfully Unfollowed`);
-          setFormatedData(lists);
-          dispatch({ type: "GET_PROTOCOL_TABLE_SAGA", payload: lists });
-
-          const id = userDetail.userId;
-          dispatch({ type: "GET_NOTIFICATION_SAGA", payload: id.substring(1) });
-        }
-      })
-      .catch(() => {
-        toast.error("Something Went Wrong");
-      });
   };
   useEffect(() => {
     if (protocolData.length > 0) {
@@ -97,14 +75,14 @@ function FollowedProtocols({ pageRows, maxHeight }) {
         temp[i].linkEnabled = true;
       }
       console.log("check", temp);
-      setFormatedData(temp);
+      dispatch(getFollowedProtocols(temp));
     }
   }, []);
   return (
     <>
       <ProtocolTableComp
         initialRows={
-          protocolData && protocolData.length > 0 ? formatedData : []
+          protocolData && protocolData.length > 0 ? protocolData : []
         }
         isLoading={loader}
         pageRows={protocolData && protocolData.length > 0 ? pageRows : []}

@@ -6,8 +6,10 @@ import {
   select,
   takeLatest,
 } from "redux-saga/effects";
+import cloneDeep from "lodash/cloneDeep";
+// import uniqBy from "lodash/uniqBy";
 import { toast } from "react-toastify";
-import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import BASE_URL, { httpCall, BASE_URL_8000, UI_URL } from "../../../utils/api";
 import { localISOTime } from "../../../utils/utilFunction";
 import {
   getProtocols,
@@ -303,6 +305,61 @@ export function* sendQcReview() {
   }
 }
 
+function* handleDownload(action) {
+  try {
+    const config = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${action.payload}`,
+      method: "GET",
+    };
+    let url;
+    const resp = yield call(httpCall, config);
+
+    url = `${UI_URL}/${resp.data}`;
+    let encodeUrl = encodeURI(url);
+    let myWindow = window.open("about:blank", "_blank");
+    myWindow.document.write(
+      `<embed src=${encodeUrl}  frameborder="0" width="100%" height="100%">`
+    );
+  } catch (err) {
+    console.log(err);
+    toast.error("Download Failed");
+  }
+}
+
+function* handleFollow(action) {
+  try {
+    const { data, follow } = action.payload;
+    const id = yield getState();
+    const state = yield select();
+    const protocolData = state.dashboard.followedProtocols;
+    let temp = cloneDeep(protocolData);
+    var lists = temp.filter((item) => {
+      return item.protocol !== data.protocol;
+    });
+    const config = {
+      url: `${BASE_URL_8000}/api/follow_protocol/`,
+      method: "POST",
+      data: {
+        userId: id,
+        protocol: data.protocol,
+        follow: follow,
+        userRole: data.UserRole,
+      },
+    };
+    const res = yield call(httpCall, config);
+    if (res && res.data) {
+      toast.info(`Protocol Successfully Unfollowed`);
+      yield put(getFollowedProtocols(lists));
+      yield put({ type: "GET_PROTOCOL_TABLE_SAGA", payload: lists });
+
+      yield put({ type: "GET_NOTIFICATION_SAGA", payload: id });
+    }
+  } catch (err) {
+    toast.error("Something Went Wrong");
+    console.log(err);
+  }
+}
+
 export function* watchDashboard() {
   yield takeLatest("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
   yield takeEvery("GET_RECENT_SEARCH_DATA", recentSearchAsyn);
@@ -314,6 +371,8 @@ export function* watchDashboard() {
   yield takeEvery("POST_RECENT_SEARCH_DASHBOARD", saveRecentSearch);
   yield takeLatest("SEND_QC_REVIEW_SAGA", sendQcReview);
   yield takeLatest("GET_INDICATION_ADDPROTCOL_SAGA", addProtocolIndication);
+  yield takeLatest("HANDLE_DOWNLOAD_SAGA", handleDownload);
+  yield takeLatest("HANDLE_FOLLOW_SAGA", handleFollow);
 }
 
 export default function* dashboardSaga() {

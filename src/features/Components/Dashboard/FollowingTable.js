@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import concat from "lodash/concat";
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
-import axios from "axios";
+// import axios from "axios";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Link from "apollo-react/components/Link";
@@ -15,7 +15,7 @@ import Table, {
 import Tooltip from "apollo-react/components/Tooltip";
 import Loader from "../Loader/Loader";
 
-import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+// import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
 
@@ -194,10 +194,9 @@ function getColumns(screen) {
 }
 
 const ExpandableComponent = ({ row }) => {
-  console.log(row);
-  const fetchAssociateDat = () => {
-    row.fetchAssociateData(row);
-  };
+  // const fetchAssociateDat = () => {
+  //   row.fetchAssociateData(row);
+  // };
   return (
     <div className="expand-asso-table">
       {row.linkEnabled ? (
@@ -242,19 +241,19 @@ const ExpandableComponent = ({ row }) => {
   );
 };
 
-const handleDownload = async (row) => {
-  let url;
-  const resp = await axios.get(
-    `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
-  );
+// const handleDownload = async (row) => {
+//   let url;
+//   const resp = await axios.get(
+//     `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
+//   );
 
-  url = `${UI_URL}/${resp.data}`;
-  let encodeUrl = encodeURI(url);
-  let myWindow = window.open("about:blank", "_blank");
-  myWindow.document.write(
-    `<embed src=${encodeUrl}  frameborder="0" width="100%" height="100%">`
-  );
-};
+//   url = `${UI_URL}/${resp.data}`;
+//   let encodeUrl = encodeURI(url);
+//   let myWindow = window.open("about:blank", "_blank");
+//   myWindow.document.write(
+//     `<embed src=${encodeUrl}  frameborder="0" width="100%" height="100%">`
+//   );
+// };
 
 const ProtocolTable = ({
   initialRows,
