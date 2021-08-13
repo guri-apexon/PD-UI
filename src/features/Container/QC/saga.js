@@ -2,6 +2,7 @@ import { takeEvery, all, call, put, select } from "redux-saga/effects";
 import { toast } from "react-toastify";
 
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import { iconStatus } from "../../../utils/utilFunction";
 import { getProtocols, setError, getLoader, setTableLoader } from "./qcSlice";
 
 function* getState() {
@@ -10,6 +11,7 @@ function* getState() {
   const id = state.user.userDetail.userId;
   return { id: id.substring(1), type: type };
 }
+
 export function* qcProtocolsData() {
   yield put(setTableLoader(true));
   let user = yield getState();
@@ -28,6 +30,7 @@ export function* qcProtocolsData() {
         item.projectId = !item.projectId ? "" : item.projectId;
         item.sponsor = !item.sponsor ? "" : item.sponsor;
         item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
+        item.status = iconStatus(item.status);
         return item;
       });
       yield put(getProtocols(data));

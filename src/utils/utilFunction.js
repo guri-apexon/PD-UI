@@ -59,3 +59,51 @@ export const localISOTime = () => {
   let localISOTime = new Date(Date.now() - tzoffset).toISOString().slice(0, -1);
   return localISOTime;
 };
+
+export const iconStatus = (status) => {
+  switch (status) {
+    case "DIGITIZER1_STARTED":
+    case "DIGITIZER2_STARTED":
+    case "DIGITIZER1_COMPLETED":
+    case "DIGITIZER2_COMPLETED":
+    case "DIGITIZER2_OMOPUPDATE_STARTED":
+    case "DIGITIZER2_OMOPUPDATE_COMPLETED":
+    case "I2E_OMOP_UPDATE_STARTED":
+    case "I2E_OMOP_UPDATE_COMPLETED":
+      return "Digitization In Progress";
+    case "TRIAGE_STARTED":
+    case "TRIAGE_COMPLETED":
+      return "Upload Complete";
+    case "EXTRACTION_STARTED":
+    case "EXTRACTION_COMPLETED":
+    case "FINALIZATION_STARTED":
+    case "FINALIZATION_COMPLETED":
+      return "Extraction In Progress";
+    case "PROCESS_COMPLETED":
+      return "Digitization Complete";
+    case "ERROR":
+      return "Digitization Error";
+    case "COMPARISON_STARTED":
+    case "COMPARISON_COMPLETED":
+      return "Comparison In Progress";
+    case "QC1":
+    case "QC2":
+      return "QC Review";
+    default:
+      return "Digitization Error";
+  }
+};
+
+export const qcIconStatus = (status) => {
+  switch (status) {
+    case "QC_NOT_STARTED":
+      return "QC Not Started";
+    case "QC1":
+    case "QC2":
+      return "QC In Progress";
+    case "QC_COMPLETED":
+      return "QC Completed";
+    default:
+      return "QC Not Started";
+  }
+};
