@@ -8,7 +8,11 @@ import {
 } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import BASE_URL, { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import { localISOTime } from "../../../utils/utilFunction";
+import {
+  localISOTime,
+  qcIconStatus,
+  iconStatus,
+} from "../../../utils/utilFunction";
 import {
   getProtocols,
   setError,
@@ -59,7 +63,8 @@ export function* protocolAsyn(action) {
           item.projectId = !item.projectId ? "" : item.projectId;
           item.sponsor = !item.sponsor ? "" : item.sponsor;
           item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
-          item.qcActivity = item.qcStatus;
+          item.qcActivity = qcIconStatus(item.qcStatus);
+          item.status = iconStatus(item.status);
           if (item.userUploadedFlag || item.userPrimaryRoleFlag) {
             myPorotocolsData.push(item);
           }
