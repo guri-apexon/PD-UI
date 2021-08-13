@@ -49,6 +49,12 @@ export const formatESDate = (dateString) => {
         year: "numeric",
       })
       .replace(/ /g, "-");
+  } else if (dateString.length === 4) {
+    if (isNaN(dateString)) {
+      return "-";
+    } else {
+      return "1-Jan-" + dateString;
+    }
   } else {
     return "-";
   }
