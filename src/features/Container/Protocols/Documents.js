@@ -8,7 +8,7 @@ import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
 import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
-import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import { BASE_URL_8000 } from "../../../utils/api";
 import axios from "axios";
 import Loader from "apollo-react/components/Loader";
 
@@ -58,13 +58,12 @@ const Documents = ({ handleChangeTab }) => {
           let splitArr = path.split("/");
           const fileName = splitArr[splitArr.length - 1];
 
-          const file_path = `${UI_URL}/${fileName}`;
-          let a = document.createElement("A");
-          a.href = file_path;
-          a.download = file_path.substr(file_path.lastIndexOf("/") + 1);
+          let a = document.createElement("a");
+          a.href = "/" + fileName;
+          a.download = fileName;
           document.body.appendChild(a);
           a.click();
-          document.body.removeChild(a);
+          // document.body.removeChild(a);
           setProtocolSelected([]);
           // window.open(filePath, "_blank");
         } else {
