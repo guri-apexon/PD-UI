@@ -62,7 +62,10 @@ const Documents = ({ handleChangeTab }) => {
           a.href = "/" + fileName;
           a.download = fileName;
           document.body.appendChild(a);
-          a.click();
+          setTimeout(function () {
+            a.click();
+          }, 1500);
+
           // document.body.removeChild(a);
           setProtocolSelected([]);
           // window.open(filePath, "_blank");
