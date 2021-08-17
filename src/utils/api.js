@@ -46,17 +46,17 @@ export const httpCall = async (config) => {
 };
 
 export const getToken = async () => {
-  let formdata = new FormData();
-  formdata.append("username", "ypd_api_test");
-  formdata.append("password", "uR@TnSa5*$1ka~hasj^!4t32re");
+  // let formdata = new FormData();
+  // formdata.append("username", "ypd_api_test");
+  // formdata.append("password", "uR@TnSa5*$1ka~hasj^!4t32re");
   const headerConfig = {
     url: `${BASE_URL_8000}/api/token/`,
     method: "POST",
-    data: formdata,
     headers: {
       "Content-Type": "multipart/form-data",
       "Cache-Control": "no-store, no-cache,",
       Pragma: "no-cache",
+      Authorization: `Basic ${process.env.REACT_APP_BASIC}`,
     },
   };
   try {
