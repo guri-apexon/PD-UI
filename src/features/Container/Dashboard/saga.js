@@ -360,6 +360,46 @@ function* handleFollow(action) {
   }
 }
 
+function* fetchAssociateData(action) {
+  const { protocol, id } = action.payload;
+  const state = yield select();
+  const protocolData = state.dashboard.followedProtocols;
+  try {
+    const config = {
+      url: `${BASE_URL_8000}/api/Related_protocols/?protocol=${protocol}`,
+      method: "GET",
+    };
+    const resp = yield call(httpCall, config);
+    const respData = resp.data;
+    const data = respData.sort((a, b) => {
+      return new Date(b.approvalDate) - new Date(a.approvalDate);
+    });
+    if (data.length > 0) {
+      let temp = cloneDeep(protocolData);
+      for (let i = 0; i < temp.length; i++) {
+        if (temp[i].id === id) {
+          temp[i].associateddata = data;
+          temp[i].linkEnabled = false;
+        }
+      }
+      yield put(getFollowedProtocols(temp));
+    } else {
+      let temp = cloneDeep(protocolData);
+      for (let i = 0; i < temp.length; i++) {
+        if (temp[i].id === id) {
+          temp[i].linkEnabled = false;
+        }
+      }
+      yield put(getFollowedProtocols(temp));
+      toast.info(
+        `The Protocol: "${protocol}" selected has no associated protocols available`
+      );
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 export function* watchDashboard() {
   yield takeLatest("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
   yield takeEvery("GET_RECENT_SEARCH_DATA", recentSearchAsyn);
@@ -373,6 +413,7 @@ export function* watchDashboard() {
   yield takeLatest("GET_INDICATION_ADDPROTCOL_SAGA", addProtocolIndication);
   yield takeLatest("HANDLE_DOWNLOAD_SAGA", handleDownload);
   yield takeLatest("HANDLE_FOLLOW_SAGA", handleFollow);
+  yield takeLatest("FETCH_ASSOCIATE_DATA", fetchAssociateData);
 }
 
 export default function* dashboardSaga() {

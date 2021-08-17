@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { BASE_URL_8000 } from "../../../utils/api";
+// import axios from "axios";
+// import { BASE_URL_8000 } from "../../../utils/api";
 
 import {
   followedProtocolsList,
@@ -11,7 +11,7 @@ import {
 import ProtocolTableComp from "../../Components/Dashboard/FollowingTable";
 import cloneDeep from "lodash/cloneDeep";
 import uniqBy from "lodash/uniqBy";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 // import { date } from "@material-ui/pickers/constants/prop-types";
 
 function FollowedProtocols({ pageRows, maxHeight }) {
@@ -22,38 +22,10 @@ function FollowedProtocols({ pageRows, maxHeight }) {
   // const [formatedData, setFormatedData] = useState([]);
 
   const fetchAssociateData = async (row) => {
-    try {
-      const resp = await axios.get(
-        `${BASE_URL_8000}/api/Related_protocols/?protocol=${row.protocol}`
-      );
-      const respData = resp.data;
-      const data = respData.sort((a, b) => {
-        return new Date(b.approvalDate) - new Date(a.approvalDate);
-      });
-      if (data.length > 0) {
-        let temp = cloneDeep(protocolData);
-        for (let i = 0; i < temp.length; i++) {
-          if (temp[i].id === row.id) {
-            temp[i].associateddata = data;
-            temp[i].linkEnabled = false;
-          }
-        }
-        dispatch(getFollowedProtocols(temp));
-      } else {
-        let temp = cloneDeep(protocolData);
-        for (let i = 0; i < temp.length; i++) {
-          if (temp[i].id === row.id) {
-            temp[i].linkEnabled = false;
-          }
-        }
-        dispatch(getFollowedProtocols(temp));
-        toast.info(
-          `The Protocol: "${row.protocol}" selected has no associated protocols available`
-        );
-      }
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch({
+      type: "FETCH_ASSOCIATE_DATA",
+      payload: { protocol: row.protocol, id: row.id },
+    });
   };
   const handleUnfollow = (row) => {
     dispatch({

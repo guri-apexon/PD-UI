@@ -17,8 +17,7 @@ import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
 
 import Loader from "../../Components/Loader/Loader";
 import { connect } from "react-redux";
-import axios from "axios";
-import { BASE_URL_8000 } from "../../../utils/api";
+import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import { toast } from "react-toastify";
 class SearchPanel extends React.Component {
   constructor(props) {
@@ -162,7 +161,7 @@ class SearchPanel extends React.Component {
     const { onSetPage } = this.props;
     onSetPage(value);
   };
-  handleFollow = (e, checked, protocol) => {
+  handleFollow = async (e, checked, protocol) => {
     const { userDetails } = this.props;
     const id = userDetails.userId;
     const { accordionObj } = this.state;
@@ -179,24 +178,27 @@ class SearchPanel extends React.Component {
         return obj;
       }
     });
-    axios
-      .post(`${BASE_URL_8000}/api/follow_protocol/`, {
+    const Config = {
+      url: `${BASE_URL_8000}/api/follow_protocol/`,
+      method: "POST",
+      data: {
         userId: id.substring(1),
         protocol: protocol.protocolNumber,
         follow: checked,
         userRole: protocol.UserRole,
-      })
-      .then((res) => {
-        if (res && res.status === 200) {
-          // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
-          this.setState({ accordionObj: newObj });
-          const id = userDetails.userId;
-          this.props.updateAlerts(id.substring(1));
-        }
-      })
-      .catch(() => {
-        toast.error("Something Went Wrong");
-      });
+      },
+    };
+    try {
+      const res = await httpCall(Config);
+      if (res.success) {
+        // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
+        this.setState({ accordionObj: newObj });
+        const id = userDetails.userId;
+        this.props.updateAlerts(id.substring(1));
+      }
+    } catch (err) {
+      toast.error("Something Went Wrong");
+    }
   };
 
   render() {

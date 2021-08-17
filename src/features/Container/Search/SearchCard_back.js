@@ -9,8 +9,7 @@ import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
 import { formatESDate } from "../../../utils/utilFunction";
-import axios from "axios";
-import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import { BASE_URL_8000, UI_URL, httpCall } from "../../../utils/api";
 import { toast } from "react-toastify";
 import Tooltip from "apollo-react/components/Tooltip";
 
@@ -42,15 +41,19 @@ const SearchCard = ({
   const handleDownload = async (row) => {
     const dfsPath = row.path.replaceAll("\\", "/");
     console.log("DFS", dfsPath);
-    const userresp = await axios.get(
-      `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
+    const primaryConfig = {
+      url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
         1
-      )}&protocol=${data.protocolNumber}`
-    );
+      )}&protocol=${data.protocolNumber}`,
+      method: "GET",
+    };
+    const userresp = await httpCall(primaryConfig);
     if (userresp && userresp.data) {
-      const resp = await axios.get(
-        `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`
-      );
+      const config = {
+        url: `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`,
+        method: "GET",
+      };
+      const resp = await httpCall(config);
 
       if (resp.data === "Downloading failed") {
         toast.error("Document not found.");
