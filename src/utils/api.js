@@ -1,12 +1,22 @@
 import axios from "axios";
+import Cookies from "universal-cookie";
+
+const cookiesServer = new Cookies();
 
 export const httpCall = async (config) => {
+  const token = cookiesServer.get("api_token");
+  if (!token) {
+    await getToken();
+  }
   let headerConfig;
   if (config && config.headers) {
     headerConfig = {
       ...config,
       headers: {
         ...config.headers,
+        Authorization: config.checkAuth
+          ? `Basic ${process.env.REACT_APP_BASIC}`
+          : `Bearer ${token}`,
         "Cache-Control": "no-store, no-cache,",
         Pragma: "no-cache",
       },
@@ -15,6 +25,7 @@ export const httpCall = async (config) => {
     headerConfig = {
       ...config,
       headers: {
+        Authorization: config.auth ? config.auth : `Bearer ${token}`,
         "Cache-Control": "no-store, no-cache,",
         Pragma: "no-cache",
       },
@@ -34,6 +45,43 @@ export const httpCall = async (config) => {
   }
 };
 
+export const getToken = async () => {
+  // let formdata = new FormData();
+  // formdata.append("username", "ypd_api_test");
+  // formdata.append("password", "uR@TnSa5*$1ka~hasj^!4t32re");
+  const headerConfig = {
+    url: `${BASE_URL_8000}/api/token/`,
+    method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Cache-Control": "no-store, no-cache,",
+      Pragma: "no-cache",
+      Authorization: `Basic ${process.env.REACT_APP_BASIC}`,
+    },
+  };
+  try {
+    const response = await axios(headerConfig);
+    if (response.status === 200) {
+      cookiesServer.set("api_token", response.data.access_token);
+    } else if (response.status === 401) {
+      console.log("error", response);
+    }
+    return {
+      err: null,
+      status: response.status,
+    };
+  } catch (err) {
+    console.log(err);
+    if (err.response.status === 401) {
+      console.log("error", err.response.data);
+    }
+    return {
+      status: err.response.status,
+      err: err.response.data.detail,
+    };
+  }
+};
+
 // export const API_ROOT = `${backendHost}/api/${apiVersion}`;
 
 let BASE_URL = "";
@@ -45,6 +93,7 @@ let UI_URL = "";
 let UIhost;
 
 console.log("------ENVIRONMENT-------", process.env.REACT_APP_ENV);
+console.log("----------------", process.env.REACT_APP_BASIC);
 if (process.env.REACT_APP_ENV === "dev") {
   backendHost = "https://dev-protocoldigitalization-api.work.iqvia.com";
   backendPostHost = "https://dev-protocoldigitalization-ai.work.iqvia.com";

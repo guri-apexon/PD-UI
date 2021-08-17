@@ -1,13 +1,13 @@
-import { takeEvery, all, call, put } from "redux-saga/effects";
+import { takeEvery, all, call, put, select } from "redux-saga/effects";
 
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import { getNotification, setError } from "./navbarSlice";
-// function* getState() {
-//   const state = yield select();
-//   const type = state.user.userDetail.user_type;
-//   const id = state.user.userDetail.userId;
-//   return { id: id.substring(1), type: type };
-// }
+import { toast } from "react-toastify";
+function* getState() {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  return id.substring(1);
+}
 
 export function* navbarNotificationData(action) {
   const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${action.payload}`;
@@ -42,6 +42,41 @@ export function* navbarNotificationData(action) {
   }
 }
 
+function* readNotification(action) {
+  const data = action.payload;
+  const readConfig = {
+    url: `${BASE_URL_8000}/api/notification_read/`,
+    method: "POST",
+    data: {
+      id: data.id,
+      protocol: data.protocol,
+      aidocId: data.aidocId,
+      readFlag: true,
+    },
+  };
+  try {
+    const readResp = yield call(httpCall, readConfig);
+    if (readResp.success) {
+      const userID = yield getState();
+      const primaryConfig = {
+        url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`,
+        method: "GET",
+      };
+      const userresp = yield call(httpCall, primaryConfig);
+      yield put({ type: "GET_NOTIFICATION_SAGA", payload: userID });
+      if (userresp.success && userresp.data) {
+        window.location.href = `/protocols?protocolId=${data.aidocId}&tab=2`;
+      } else {
+        toast.warn(
+          "You are not an approved primary user of this protocol. Access to details denied"
+        );
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 // export function* setRead(action) {
 //   const notificationUrl = `${BASE_URL_8000}/api/notification_read`;
 //   const notificationConfig = {
@@ -64,6 +99,7 @@ export function* navbarNotificationData(action) {
 
 export function* watchNavbar() {
   yield takeEvery("GET_NOTIFICATION_SAGA", navbarNotificationData);
+  yield takeEvery("READ_NOTIFICATION_SAGA", readNotification);
   // yield takeEvery("SET_NOTIFICATION_READ_SAGA", setRead);
 }
 

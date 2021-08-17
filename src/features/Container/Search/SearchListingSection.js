@@ -10,10 +10,9 @@ import Switch from "apollo-react/components/Switch";
 import Card from "apollo-react/components/Card";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { toast } from "react-toastify";
 
-import { BASE_URL_8000 } from "../../../utils/api";
+import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import Tooltip from "apollo-react/components/Tooltip";
 //const [value, setValue] = React.useState(true);
 
@@ -41,11 +40,13 @@ const SearchListingSection = ({
     );
   };
   const handleTitle = async (data) => {
-    const resp = await axios.get(
-      `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
+    const config = {
+      url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
         1
-      )}&protocol=${data.protocolNumber}`
-    );
+      )}&protocol=${data.protocolNumber}`,
+      method: "GET",
+    };
+    const resp = await httpCall(config);
     if (resp && resp.data) {
       history.push(`/protocols?protocolId=${data.AiDocId}`);
     } else {

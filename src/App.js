@@ -4,13 +4,13 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import IdleTimer from "react-idle-timer";
 import Cookies from "universal-cookie";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import Loader from "apollo-react/components/Loader";
 import Modal from "apollo-react/components/Modal";
 import Routes from "./Routes/routes";
 import { setUserDetails, loggedUser } from "./store/userDetails";
 import SessionExpired from "./SessionOut";
-import { baseUrlSSO, SSO_ENABLED } from "./utils/api";
+import { baseUrlSSO, SSO_ENABLED, getToken } from "./utils/api";
 import Navbar from "./features/Container/Navbar/Navbar";
 
 import "./App.scss";
@@ -71,13 +71,18 @@ function App() {
     } else {
       const details = {
         // userId: "q846158", // Arjun
-        userId: "u1072234",
+        userId: "u1072231",
         username: "Test User",
         email: "test@iqvia.com",
         user_type: "normal",
       };
       dispatch(setUserDetails(details));
     }
+    getToken().then((token) => {
+      if (token.err) {
+        toast.error(token.err);
+      }
+    });
   }, []);
 
   useEffect(() => {

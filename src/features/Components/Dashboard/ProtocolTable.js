@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import concat from "lodash/concat";
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
-import axios from "axios";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Clock from "apollo-react-icons/Clock";
@@ -23,7 +22,7 @@ import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
 import Minus from "apollo-react-icons/Minus";
 
-import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+// import { BASE_URL_8000, UI_URL } from "../../../utils/api";
 import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
 
@@ -431,17 +430,7 @@ const ExpandableComponent = ({ row }) => {
 };
 
 const handleDownload = async (row) => {
-  let url;
-  const resp = await axios.get(
-    `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
-  );
-
-  url = `${UI_URL}/${resp.data}`;
-  let encodeUrl = encodeURI(url);
-  let myWindow = window.open("about:blank", "_blank");
-  myWindow.document.write(
-    `<embed src=${encodeUrl}  frameborder="0" width="100%" height="100%">`
-  );
+  row.dispatch({ type: "HANDLE_DOWNLOAD_SAGA", payload: row.documentFilePath });
 };
 
 const ProtocolTable = ({
@@ -498,6 +487,7 @@ const ProtocolTable = ({
               handleRowProtocolClick,
               screen: screen,
               handleChange,
+              dispatch,
             };
             return merge(temp, details);
           })

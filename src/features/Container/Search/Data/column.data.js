@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { BASE_URL_8000, UI_URL } from "../../../../utils/api";
+import { BASE_URL_8000, httpCall, UI_URL } from "../../../../utils/api";
 
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
 
@@ -23,9 +22,11 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   let url;
   const handleDownload = async (row) => {
-    const resp = await axios.get(
-      `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
-    );
+    const config = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
+      method: "GET",
+    };
+    const resp = await httpCall(config);
 
     url = `${UI_URL}/${resp.data}`;
     let encodeUrl = encodeURI(url);
