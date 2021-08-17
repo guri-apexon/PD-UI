@@ -98,13 +98,17 @@ const StatusCell = ({ row, column: { accessor: key } }) => {
 
 const DateCell = ({ row, column }) => {
   const date = new Date(row[column.accessor]);
-  return date
-    .toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    })
-    .replace(/ /g, "-");
+  if (row[column.accessor]) {
+    return date
+      .toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+      .replace(/ /g, "-");
+  } else {
+    return "-";
+  }
 };
 const columns = [
   {
