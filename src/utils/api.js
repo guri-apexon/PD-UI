@@ -4,9 +4,10 @@ import Cookies from "universal-cookie";
 const cookiesServer = new Cookies();
 
 export const httpCall = async (config) => {
-  const token = cookiesServer.get("api_token");
+  let token = cookiesServer.get("api_token");
   if (!token) {
     await getToken();
+    token = cookiesServer.get("api_token");
   }
   let headerConfig;
   if (config && config.headers) {
@@ -33,10 +34,17 @@ export const httpCall = async (config) => {
   }
   try {
     const response = await axios(headerConfig);
-    return {
-      success: true,
-      data: response.data,
-    };
+    if (response.status === 200) {
+      return {
+        success: true,
+        data: response.data,
+      };
+    } else if (response.status === 401) {
+      return {
+        success: false,
+        data: response.data.detail,
+      };
+    }
   } catch (err) {
     return {
       success: false,
@@ -62,7 +70,13 @@ export const getToken = async () => {
   try {
     const response = await axios(headerConfig);
     if (response.status === 200) {
+      cookiesServer.remove("api_token");
       cookiesServer.set("api_token", response.data.access_token);
+      return {
+        err: null,
+        status: response.status,
+        token: response.data.access_token,
+      };
     } else if (response.status === 401) {
       console.log("error", response);
     }
@@ -93,7 +107,6 @@ let UI_URL = "";
 let UIhost;
 
 console.log("------ENVIRONMENT-------", process.env.REACT_APP_ENV);
-console.log("----------------", process.env.REACT_APP_BASIC);
 if (process.env.REACT_APP_ENV === "dev") {
   backendHost = "https://dev-protocoldigitalization-api.work.iqvia.com";
   backendPostHost = "https://dev-protocoldigitalization-ai.work.iqvia.com";
