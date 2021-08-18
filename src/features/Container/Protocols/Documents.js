@@ -8,8 +8,7 @@ import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
 import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
-import { BASE_URL_8000 } from "../../../utils/api";
-import axios from "axios";
+import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
 
 const Documents = ({ handleChangeTab }) => {
@@ -49,9 +48,11 @@ const Documents = ({ handleChangeTab }) => {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
       try {
-        const resp = await axios.get(
-          `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`
-        );
+        const config = {
+          url: `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
+          method: "GET",
+        };
+        const resp = await httpCall(config);
         const data = resp.data;
         if (data.numChangesTotal > 0) {
           const path = data.compareCSVPath;

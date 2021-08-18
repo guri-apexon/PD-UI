@@ -1,10 +1,9 @@
 import Table from "apollo-react/components/Table";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
-import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import { BASE_URL_8000, UI_URL, httpCall } from "../../../utils/api";
 
 import Checkbox from "apollo-react/components/Checkbox";
 // const Cell = ({ row, column }) => (
@@ -41,9 +40,11 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
 
     // url = `http://ca2spdml06d:3000/${resp.data}`;
 
-    const resp = await axios.get(
-      `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
-    );
+    const config = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
+      method: "GET",
+    };
+    const resp = await httpCall(config);
 
     url = `${UI_URL}/${resp.data}`;
     let encodeUrl = encodeURI(url);

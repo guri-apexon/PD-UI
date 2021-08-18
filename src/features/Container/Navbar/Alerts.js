@@ -1,9 +1,9 @@
 import React from "react";
 import moment from "moment";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-toastify";
-import axios from "axios";
+// import { toast } from "react-toastify";
+// import axios from "axios";
 import BellIcon from "apollo-react-icons/Bell";
 import Badge from "apollo-react/components/Badge";
 
@@ -12,17 +12,17 @@ import Typography from "apollo-react/components/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "apollo-react/components/Tooltip";
-import { userId } from "../../../store/userDetails";
-import { BASE_URL_8000 } from "../../../utils/api";
+// import { userId } from "../../../store/userDetails";
+// import { BASE_URL_8000 } from "../../../utils/api";
 import { navbarNotifications } from "./navbarSlice";
 
 import "./Alerts.scss";
 
 function Alerts() {
-  let history = useHistory();
+  // let history = useHistory();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const uid = useSelector(userId);
+  // const uid = useSelector(userId);
   const notificationsMenuProps = useSelector(navbarNotifications);
   if (!notificationsMenuProps.length) {
     return (
@@ -38,32 +38,8 @@ function Alerts() {
     );
   }
   const checkForPrimary = async (data) => {
-    const postObj = {
-      id: data.id,
-      protocol: data.protocol,
-      aidocId: data.aidocId,
-      readFlag: true,
-    };
-    const notificationUrl = `${BASE_URL_8000}/api/notification_read/`;
-    try {
-      const readResp = await axios.post(notificationUrl, postObj);
-      if (readResp) {
-        const userID = uid.substring(1);
-        const userresp = await axios.get(
-          `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`
-        );
-        dispatch({ type: "GET_NOTIFICATION_SAGA", payload: userID });
-        if (userresp && userresp.data) {
-          history.push(`/protocols?protocolId=${data.aidocId}&tab=2`);
-        } else {
-          toast.warn(
-            "You are not an approved primary user of this protocol. Access to details denied"
-          );
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch({ type: "READ_NOTIFICATION_SAGA", payload: data });
+
     // dispatch({ type: "SET_NOTIFICATION_READ_SAGA", payload: postObj });
 
     //---- Remove in local-----------

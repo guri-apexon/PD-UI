@@ -1,7 +1,6 @@
 import Table from "apollo-react/components/Table";
 import React from "react";
-import axios from "axios";
-import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import { BASE_URL_8000, UI_URL, httpCall } from "../../../utils/api";
 // const Cell = ({ row, column }) => (
 // <a href={row.documentFilePath} target="_blank">
 //   {row.fileName}
@@ -22,9 +21,11 @@ const handleDownload = async (row) => {
   // );
 
   // url = `http://ca2spdml06d:3000/${resp.data}`;
-  const resp = await axios.get(
-    `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
-  );
+  const config = {
+    url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
+    method: "GET",
+  };
+  const resp = await httpCall(config);
 
   let url = `${UI_URL}/${resp.data}`;
   let encodeUrl = encodeURI(url);
