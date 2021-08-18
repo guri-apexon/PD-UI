@@ -86,12 +86,16 @@ export const getToken = async () => {
     };
   } catch (err) {
     console.log(err);
-    if (err.response.status === 401) {
+    if (err && err.response.status === 401) {
       console.log("error", err.response.data);
+      return {
+        status: err.response.status,
+        err: err.response.data.detail,
+      };
     }
     return {
-      status: err.response.status,
-      err: err.response.data.detail,
+      status: "CORS",
+      err: "Something Went Wrong",
     };
   }
 };
