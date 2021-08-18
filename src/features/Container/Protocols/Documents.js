@@ -8,7 +8,7 @@ import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
 import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
-import { BASE_URL_8000, UI_URL, httpCall } from "../../../utils/api";
+import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
 
 const Documents = ({ handleChangeTab }) => {
@@ -59,16 +59,14 @@ const Documents = ({ handleChangeTab }) => {
           let splitArr = path.split("/");
           const fileName = splitArr[splitArr.length - 1];
 
-          const file_path = `${UI_URL}/${fileName}`;
-          let link = document.createElement("a");
-          link.setAttribute("href", file_path);
-          link.setAttribute("download", "Compare-Difference.csv");
-          document.body.appendChild(link);
-          link.click();
-          // a.href = file_path;
-          // a.download = file_path.substr(file_path.lastIndexOf("/") + 1);
-          // document.body.appendChild(a);
-          // a.click();
+          let a = document.createElement("a");
+          a.href = "/" + fileName;
+          a.download = fileName;
+          document.body.appendChild(a);
+          setTimeout(function () {
+            a.click();
+          }, 1500);
+
           // document.body.removeChild(a);
           setProtocolSelected([]);
           // window.open(filePath, "_blank");
