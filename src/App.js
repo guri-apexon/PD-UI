@@ -24,8 +24,18 @@ function App() {
   const [isTimedOut, setIsTimeOut] = useState(false);
   const [timerId, setTimerId] = useState(0);
   const [idleId, setIdleid] = useState(0);
+  const [jwt, setJwt] = useState(null);
   //---------Revert-----------
   useEffect(() => {
+    cookiesServer.remove("api_token");
+    getToken().then((data) => {
+      if (data.token) {
+        setJwt(data.token);
+      }
+      if (data.err) {
+        toast.error(data.err);
+      }
+    });
     if (SSO_ENABLED) {
       // comment in local to run
       axios
@@ -71,18 +81,13 @@ function App() {
     } else {
       const details = {
         // userId: "q846158", // Arjun
-        userId: "u1072231",
+        userId: "q846158",
         username: "Test User",
         email: "test@iqvia.com",
         user_type: "normal",
       };
       dispatch(setUserDetails(details));
     }
-    getToken().then((token) => {
-      if (token.err) {
-        toast.error(token.err);
-      }
-    });
   }, []);
 
   useEffect(() => {
@@ -144,7 +149,7 @@ function App() {
     window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
   };
   const route =
-    userDetails && userDetails.userId ? (
+    jwt && userDetails && userDetails.userId ? (
       <>
         <Navbar />
         <Routes userType={userDetails.user_type} />
