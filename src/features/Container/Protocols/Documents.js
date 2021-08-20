@@ -8,7 +8,7 @@ import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
 import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
-import { BASE_URL_8000, httpCall } from "../../../utils/api";
+import { BASE_URL_8000, httpCall, UI_URL } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
 
 const Documents = ({ handleChangeTab }) => {
@@ -58,18 +58,12 @@ const Documents = ({ handleChangeTab }) => {
           const path = data.compareCSVPath;
           let splitArr = path.split("/");
           const fileName = splitArr[splitArr.length - 1];
-
-          let a = document.createElement("a");
-          a.href = "/" + fileName;
-          a.download = fileName;
-          document.body.appendChild(a);
+          const filePath = `${UI_URL}/${fileName}`;
+          var popupwin = window.open(filePath, "_blank");
           setTimeout(function () {
-            a.click();
-          }, 1500);
-
-          // document.body.removeChild(a);
+            popupwin.close();
+          }, 5000);
           setProtocolSelected([]);
-          // window.open(filePath, "_blank");
         } else {
           setLoader(false);
           toast.info("No difference found for this compare");
