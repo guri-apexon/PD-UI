@@ -47,7 +47,8 @@ const ActionCell = ({
             checked={selected}
             onChange={() => handleChange(id)}
             disabled={
-              status === "PROCESS_COMPLETED" && qcActivity === "QC_NOT_STARTED"
+              status === "Digitization Complete" &&
+              qcActivity === "QC Not Started"
                 ? false
                 : true
             }
