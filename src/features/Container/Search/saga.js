@@ -217,10 +217,19 @@ export function* getSearchData(action) {
     };
     yield put(getSearchResult(obj));
     try {
-      let postObj = {
-        ...action.payload,
-        qID: userId,
-      };
+      let postObj;
+      if (action.payload.key === "*") {
+        postObj = {
+          ...action.payload,
+          qID: userId,
+          key: "",
+        };
+      } else {
+        postObj = {
+          ...action.payload,
+          qID: userId,
+        };
+      }
       const searchurl = `${BASE_URL_8000}/api/keyword_search/`;
       const searchResp = yield call(httpCall, {
         url: searchurl,
