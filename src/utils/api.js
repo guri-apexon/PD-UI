@@ -34,6 +34,7 @@ export const httpCall = async (config) => {
   }
   try {
     const response = await axios(headerConfig);
+    console.log(response);
     if (response.status === 200) {
       return {
         success: true,
@@ -169,4 +170,4 @@ export const Apis = {
   search: `http://ca2spdml04q:9200/pd-index/_search`,
 };
 
-export const SSO_ENABLED = false;
+export const SSO_ENABLED = true;

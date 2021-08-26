@@ -8,7 +8,7 @@ import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
 import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
-import { httpCall } from "../../../utils/api";
+import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
 import FileDownload from "js-file-download";
 
@@ -51,23 +51,16 @@ const Documents = ({ handleChangeTab }) => {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
       try {
-        let percentage;
         const config = {
-          url: `http://ca2spdml110q:8008/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
+          url: `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
           method: "GET",
           responseType: "blob",
-          onDownloadProgress: (progressEvent) => {
-            percentage = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            ); // you can use this to show user percentage of file downloaded
-            console.log(percentage);
-          },
         };
         const resp = await httpCall(config);
         if (resp.message === "Success") {
           FileDownload(
             resp.data,
-            `${protocolSelected[0]}-${protocolSelected[1]}.compare_detail.csv`
+            `${protocolSelected[0]}_${protocolSelected[1]}.compare_detail.csv`
           );
           // console.log(completed);
           // if (completed === 100 || completed === "100") {

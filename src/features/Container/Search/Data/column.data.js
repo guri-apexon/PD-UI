@@ -1,8 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Link } from "react-router-dom";
-import { BASE_URL_8000, httpCall, UI_URL } from "../../../../utils/api";
-
 import { covertMMDDYYYY } from "../../../../utils/utilFunction";
+import { BASE_URL_8000, httpCall } from "../../../../utils/api";
+
+import React, { useState } from "react";
+import Loader from "apollo-react/components/Loader";
+import { toast } from "react-toastify";
+import FileDownload from "js-file-download";
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
   return (
@@ -21,28 +25,29 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
 };
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
-  let url;
+  const [loader, setLoader] = useState(false);
   const handleDownload = async (row) => {
+    setLoader(true);
+    let splitArr = row.documentFilePath.split("\\");
+    const fileName = splitArr[splitArr.length - 1];
+    console.log(fileName);
     const config = {
       url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
       method: "GET",
+      responseType: "blob",
     };
+
     const resp = await httpCall(config);
-
-    url = `${UI_URL}/${resp.data}`;
-    let encodeUrl = encodeURI(url);
-    let myWindow = window.open("about:blank", "_blank");
-    myWindow.document.write(
-      `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
-    );
-
-    // window.open(
-    //   url,
-    //   "_blank" // <- This is what makes it open in a new window.
-    // );
+    if (resp.success) {
+      FileDownload(resp.data, fileName);
+    } else {
+      toast.error("Download Failed");
+    }
+    setLoader(false);
   };
   return (
     <>
+      {loader && <Loader />}
       {row.isPrimaryUser ? (
         <a onClick={() => handleDownload(row)}>{row[key]}</a>
       ) : (
