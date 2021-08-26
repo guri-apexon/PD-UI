@@ -8,14 +8,16 @@ import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
 import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
-import { BASE_URL_8000, httpCall, UI_URL } from "../../../utils/api";
+import { httpCall } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
+import FileDownload from "js-file-download";
 
 const Documents = ({ handleChangeTab }) => {
   const summary = useSelector(protocolSummary);
   const associateDocuments = useSelector(associateDocs);
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [loader, setLoader] = useState(false);
+  // const [completed, setCompleted] = useState(0);
 
   const setProtocolToDownload = (id) => {
     console.log(id);
@@ -44,30 +46,41 @@ const Documents = ({ handleChangeTab }) => {
   };
   const downloadCompare = async () => {
     console.log("Selected", protocolSelected);
+    setLoader(true);
     if (protocolSelected.length <= 1) {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
       try {
+        let percentage;
         const config = {
-          url: `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
+          url: `http://ca2spdml110q:8008/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
           method: "GET",
+          responseType: "blob",
+          onDownloadProgress: (progressEvent) => {
+            percentage = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            ); // you can use this to show user percentage of file downloaded
+            console.log(percentage);
+          },
         };
         const resp = await httpCall(config);
-        const data = resp.data;
-        if (data.numChangesTotal > 0) {
-          const path = data.compareCSVPath;
-          let splitArr = path.split("/");
-          const fileName = splitArr[splitArr.length - 1];
-          const filePath = `${UI_URL}/${fileName}`;
-          var popupwin = window.open(filePath, "_blank");
-          setTimeout(function () {
-            popupwin.close();
-          }, 5000);
-          setProtocolSelected([]);
-        } else {
+        if (resp.message === "Success") {
+          FileDownload(
+            resp.data,
+            `${protocolSelected[0]}-${protocolSelected[1]}.compare_detail.csv`
+          );
+          // console.log(completed);
+          // if (completed === 100 || completed === "100") {
           setLoader(false);
+          // }
+        } else if (resp.message === "No-Content") {
           toast.info("No difference found for this compare");
+          setLoader(false);
+        } else if (resp.message === "Not-Found") {
+          toast.error("Compare is not available for selected documents.");
+          setLoader(false);
         }
+        setProtocolSelected([]);
       } catch (e) {
         setLoader(false);
         console.log("Compare Resp", e.response);

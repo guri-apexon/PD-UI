@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Link } from "react-router-dom";
 import { BASE_URL_8000, httpCall, UI_URL } from "../../../../utils/api";
 

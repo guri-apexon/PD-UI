@@ -38,17 +38,26 @@ export const httpCall = async (config) => {
       return {
         success: true,
         data: response.data,
+        message: "Success",
+      };
+    } else if (response.status === 204) {
+      return {
+        success: true,
+        data: response.data,
+        message: "No-Content",
       };
     } else if (response.status === 401) {
       return {
         success: false,
         data: response.data.detail,
+        message: "Authentication-Error",
       };
     }
   } catch (err) {
     return {
       success: false,
       err: err.response,
+      message: "Not-Found",
     };
   }
 };
@@ -86,7 +95,7 @@ export const getToken = async () => {
     };
   } catch (err) {
     console.log(err);
-    if (err && err.response.status === 401) {
+    if (err && err.response && err.response.status === 401) {
       console.log("error", err.response.data);
       return {
         status: err.response.status,
@@ -160,4 +169,4 @@ export const Apis = {
   search: `http://ca2spdml04q:9200/pd-index/_search`,
 };
 
-export const SSO_ENABLED = true;
+export const SSO_ENABLED = false;
