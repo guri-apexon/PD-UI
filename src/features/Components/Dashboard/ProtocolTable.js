@@ -21,10 +21,12 @@ import Table, {
 import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
 import Minus from "apollo-react-icons/Minus";
-
-// import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import FileDownload from "js-file-download";
+import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
+import Loader from "apollo-react/components/Loader";
+import { toast } from "react-toastify";
 
 const ActionCell = ({
   row: {
@@ -275,114 +277,140 @@ function getColumns(screen) {
 }
 
 const ExpandableComponent = ({ row }) => {
+  const [loader, setLoader] = useState(false);
+  const handleDownload = async (row) => {
+    setLoader(true);
+    let splitArr = row.documentFilePath.split("\\");
+    const fileName = splitArr[splitArr.length - 1];
+    console.log(fileName);
+    const config = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
+      method: "GET",
+      responseType: "blob",
+    };
+
+    const resp = await httpCall(config);
+    if (resp.success) {
+      FileDownload(resp.data, fileName);
+    } else {
+      toast.error("Download Failed");
+    }
+    setLoader(false);
+  };
   return (
-    <div className="expanded-comp">
-      <div style={{ width: "10%" }}>
-        <Typography
-          style={{
-            fontWeight: 500,
-            color: neutral8,
-            marginRight: "20px",
-          }}
-        >
-          {"Phase"}
-        </Typography>
-        <Typography className="fw-8" variant="body2">
-          {row.phase}
-        </Typography>
-      </div>
-      <div className="extended-data" style={{ width: "30%" }}>
-        <Typography
-          style={{
-            fontWeight: 500,
-            color: neutral8,
-            marginRight: "20px",
-          }}
-        >
-          {"Indication"}
-        </Typography>
-        {row.indication && row.indication.length > 40 ? (
-          <Tooltip
-            variant="light"
-            title={row.indication && row.indication}
-            placement="top"
+    <>
+      {loader && <Loader />}
+      <div className="expanded-comp">
+        <div style={{ width: "10%" }}>
+          <Typography
+            style={{
+              fontWeight: 500,
+              color: neutral8,
+              marginRight: "20px",
+            }}
           >
-            <Typography className="fw-8 ex-text" variant="body2">
-              {row.indication}
-            </Typography>
-          </Tooltip>
-        ) : (
-          <Typography className="fw-8" variant="body2">
-            {row.indication ? row.indication : "-"}
+            {"Phase"}
           </Typography>
-        )}
-      </div>
-      <div className="extended-data" style={{ width: "15%" }}>
-        <Typography
-          style={{
-            fontWeight: 500,
-            color: neutral8,
-            marginRight: "20px",
-          }}
-        >
-          {"Document Status"}
-        </Typography>
-        <Typography className="fw-8" variant="body2">
-          {row.documentStatus}
-        </Typography>
-      </div>
-      <div>
-        <Typography
-          style={{
-            fontWeight: 500,
-            color: neutral8,
-            marginRight: "20px",
-          }}
-        >
-          {"Source"}
-        </Typography>
-        <div className="fw-8" variant="body2">
-          {row.fileName ? (
-            row.fileName.length > 40 ? (
-              <Tooltip
-                variant="light"
-                title={row.fileName && row.fileName}
-                placement="top"
-              >
-                <Typography className="fw-8 ex-text" variant="body2">
-                  <div
-                    className="long-text2"
-                    data-testid="handle-download"
-                    id="handle-download"
-                  >
-                    <a
-                      href="javascript:void(0)"
-                      onClick={() => handleDownload(row)}
-                    >
-                      {row.fileName}
-                    </a>
-                  </div>
-                </Typography>
-              </Tooltip>
-            ) : (
-              <a href="javascript:void(0)" onClick={() => handleDownload(row)}>
-                {row.fileName}
-              </a>
-            )
+          <Typography className="fw-8" variant="body2">
+            {row.phase}
+          </Typography>
+        </div>
+        <div className="extended-data" style={{ width: "30%" }}>
+          <Typography
+            style={{
+              fontWeight: 500,
+              color: neutral8,
+              marginRight: "20px",
+            }}
+          >
+            {"Indication"}
+          </Typography>
+          {row.indication && row.indication.length > 40 ? (
+            <Tooltip
+              variant="light"
+              title={row.indication && row.indication}
+              placement="top"
+            >
+              <Typography className="fw-8 ex-text" variant="body2">
+                {row.indication}
+              </Typography>
+            </Tooltip>
           ) : (
-            // eslint-disable-line
-            "-"
+            <Typography className="fw-8" variant="body2">
+              {row.indication ? row.indication : "-"}
+            </Typography>
           )}
         </div>
+        <div className="extended-data" style={{ width: "15%" }}>
+          <Typography
+            style={{
+              fontWeight: 500,
+              color: neutral8,
+              marginRight: "20px",
+            }}
+          >
+            {"Document Status"}
+          </Typography>
+          <Typography className="fw-8" variant="body2">
+            {row.documentStatus}
+          </Typography>
+        </div>
+        <div>
+          <Typography
+            style={{
+              fontWeight: 500,
+              color: neutral8,
+              marginRight: "20px",
+            }}
+          >
+            {"Source"}
+          </Typography>
+          <div className="fw-8" variant="body2">
+            {row.fileName ? (
+              row.fileName.length > 40 ? (
+                <Tooltip
+                  variant="light"
+                  title={row.fileName && row.fileName}
+                  placement="top"
+                >
+                  <Typography className="fw-8 ex-text" variant="body2">
+                    <div
+                      className="long-text2"
+                      data-testid="handle-download"
+                      id="handle-download"
+                    >
+                      <a
+                        href="javascript:void(0)"
+                        onClick={() => handleDownload(row)}
+                      >
+                        {row.fileName}
+                      </a>
+                    </div>
+                  </Typography>
+                </Tooltip>
+              ) : (
+                <a
+                  href="javascript:void(0)"
+                  onClick={() => handleDownload(row)}
+                >
+                  {row.fileName}
+                </a>
+              )
+            ) : (
+              // eslint-disable-line
+              "-"
+            )}
+          </div>
+        </div>
+        {/* } */}
       </div>
-      {/* } */}
-    </div>
+    </>
   );
 };
 
-const handleDownload = async (row) => {
-  row.dispatch({ type: "HANDLE_DOWNLOAD_SAGA", payload: row.documentFilePath });
-};
+// const handleDownload = async (row) => {
+//   row.dispatch({ type: "HANDLE_DOWNLOAD_SAGA", payload: row.documentFilePath });
+// };
 
 const ProtocolTable = ({
   initialRows,
