@@ -7,6 +7,7 @@ import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import FileDownload from "js-file-download";
 import Checkbox from "apollo-react/components/Checkbox";
 import Loader from "apollo-react/components/Loader";
+import { toast } from "react-toastify";
 
 const ActionCell = ({ row }) => {
   // console.log("....RoW........", row);
@@ -40,7 +41,11 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
       responseType: "blob",
     };
     const resp = await httpCall(config);
-    FileDownload(resp.data, fileName);
+    if (resp.success) {
+      FileDownload(resp.data, fileName);
+    } else {
+      toast.error("Download Failed");
+    }
     setLoader(false);
   };
   return (
