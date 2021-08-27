@@ -728,8 +728,13 @@ const Search = (props) => {
       dateSection: [1],
     });
     setPostQueryObj(postObj);
+    const range = {
+      from: null,
+      to: null,
+    };
     dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
+    setDateRangeValue([null, null]);
     props.history.push(`/search`);
   };
 
