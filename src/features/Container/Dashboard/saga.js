@@ -214,13 +214,7 @@ export function* postAddProtocol(postData) {
         yield put(setAddProtocolModal(false));
       } else {
         yield put(setAddProtocolModal(true));
-        yield put(
-          setAddprotocolError(
-            postResponse.err && postResponse.err.data
-              ? postResponse.err.data.message
-              : "API Error"
-          )
-        );
+        yield put(setAddprotocolError("Upload Failed"));
       }
     } else {
       yield put(setAddProtocolModal(true));
@@ -236,7 +230,7 @@ export function* postAddProtocol(postData) {
     yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
     yield put(setLoading(false));
   } catch (err) {
-    yield put(setAddprotocolError(err.statusText));
+    yield put(setAddprotocolError("Upload Failed"));
     yield put(setAddProtocolModal(false));
     yield put(setLoading(false));
   }
