@@ -1,5 +1,6 @@
 export const covertMMDDYYYY = (date) => {
-  const dateFormat = new Date(date);
+  const onlyDate = date.split("T")[0];
+  const dateFormat = new Date(onlyDate);
   return dateFormat
     .toLocaleDateString("en-GB", {
       day: "numeric",
@@ -53,7 +54,7 @@ export const formatESDate = (dateString) => {
     if (isNaN(dateString)) {
       return "-";
     } else {
-      return "1-Jan-" + dateString;
+      return "-";
     }
   } else {
     return "-";
