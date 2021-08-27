@@ -1,118 +1,23 @@
-#possible envs dev, svt, uat, prod, sandbox
-
-#-------------- Only For Local -------------
-#----- Remove it/ Make it false in other ENVS ------
-REACT_APP_LOCAL=true
-#-------------------------------------------
-
-REACT_APP_ENV=dev
-NODE_ENV=dev
+#possible envs dev,test, svt, uat, prod
+REACT_APP_ENV=test
+NODE_ENV=test
 PORT=80
-# Set your database/API connection information here
-API_KEY=**************************
-API_URL=**************************
 
-#ENV_CHANGES_FOR_FUTURE_RELEASE
-
-#FOR REACT 
-REACT_APP_BACKEND_API=https://dev-protocoldigitalization-api.work.iqvia.com
-REACT_APP_BACKEND_AI=https://dev-protocoldigitalization-ai.work.iqvia.com
-REACT_APP_UI_HOSTED_URL=https://dev-protocoldigitalization-ui.work.iqvia.com
-REACT_APP_SSO_URL=https://dev-protocoldigitalization.work.iqvia.com/v1
-
-
-REACT_APP_SEARCH=http://ca2spdml01q:8001/api/keyword_search
-
-#FOR NODE
-CIMS_URL=https://ca2utmsa04q.quintiles.net:8080/v1
-ACCESS_TOKEN=access_token_dev
-REFRESH_TOKEN=refresh_token_dev
-
-SSO_ENABLED=false
 CIMS_API_VER=v1
-
 CIMS_USER=pd_app
 CIMS_PWD=pd_app1
 
-
-
-
-
-
-#-----------------------------------DO NOT CHAGE BELOW CODE------------------------------------------
-
-#----------------------------------REFERENCES FOR DEV--------------------------------
-
-#REACT_APP_backendHost=https://dev-protocoldigitalization-api.work.iqvia.com
-#REACT_APP_backendPostHost=https://dev-protocoldigitalization-ai.work.iqvia.com
-#REACT_APP_UIhost=https://dev-protocoldigitalization-ui.work.iqvia.com
-#REACT_APP_baseUrlSSO=https://dev-protocoldigitalization.work.iqvia.com/v1
-
-#ELASTIC_SEARCH=http://ca2spdml04q:9200/pd-index-3
-#CIMS_DEV_URL=https://ca2utmsa04q.quintiles.net:8080/v1
-
-
-
-
-#----------------------------REFERENCES FOR SVT------------------------------
-
-#REACT_APP_backendHost=https://svt-protocoldigitalization-api.work.iqvia.com
-#REACT_APP_backendPostHost=https://svt-protocoldigitalization-ai.work.iqvia.com
-#REACT_APP_UIhost=https://svt-protocoldigitalization-ui.work.iqvia.com
-#REACT_APP_baseUrlSSO=https://svt-protocoldigitalization.work.iqvia.com/v1
-
-#ELASTIC_SEARCH=http://ca2spdml14q:9200/pd-index
-#CIMS_URL=https://ca2utmsa04q.quintiles.net:8080/v1
-
-
-
-
-
-#-----------------REFERENCES FOR UAT-------------------------
-
-#REACT_APP_backendHost=https://uat-protocoldigitalization-api.work.iqvia.com
-#REACT_APP_backendPostHost=https://uat-protocoldigitalization-ai.work.iqvia.com
-#REACT_APP_UIhost=https://uat-protocoldigitalization-ui.work.iqvia.com
-#REACT_APP_baseUrlSSO=https://uat-protocoldigitalization.work.iqvia.com/v1
-
-#ELASTIC_SEARCH=http://ca2spdml04c:9200/pd-index
-#CIMS_URL=https://ca2utmsa04q.quintiles.net:8080/v1
-
-
-#---------------REFERENCES FOR PROD----------------------------------
-
-#REACT_APP_backendHost=https://protocoldigitalization-api.work.iqvia.com
-#REACT_APP_backendPostHost=https://protocoldigitalization-ai.work.iqvia.com
-#REACT_APP_UIhost=https://protocoldigitalization-ui.work.iqvia.com
-#REACT_APP_baseUrlSSO=https://protocoldigitalization.work.iqvia.com/v1
-
-#ELASTIC_SEARCH=http://ca2spdml04c:9200/pd-index
-#CIMS_URL=https://ca2utmsa04q.quintiles.net:8080/v1
-
-
-
-
-#NO NEED FOR INDIVISUAL SERVER URL
-#NEED TO REMOVE DEPENDANCY ON FOLLOWING
-
+REACT_APP_BASIC=eXBkX2FwaV90ZXN0OnVSQFRuU2E1KiQxa2F+aGFzal4hNHQzMnJl
 
 #DEV
-#ELASTIC_DEV_URL=http://ca2spdml04q:9200/pd-index-3
-#CIMS_DEV_URL=https://ca2utmsa04q.quintiles.net:8080/v1
-
+CIMS_DEV_URL=https://dev-protocoldigitalization.work.iqvia.com/v1
 #SVT
-#ELASTIC_SVT_URL=http://ca2spdml14q:9200/pd-index
-#CIMS_SVT_URL=https://ca2utmsa04q.quintiles.net:8080/v1
+CIMS_SVT_URL=https://svt-protocoldigitalization.work.iqvia.com/v1
 #UAT
-#ELASTIC_UAT_URL=http://ca2spdml04c:9200/pd-index
-#CIMS_UAT_URL=https://ca2utmsa04q.quintiles.net:8080/v1
+CIMS_UAT_URL=https://uat-protocoldigitalization.work.iqvia.com/v1
 #PROD
-#ELASTIC_PROD_URL=http://ca2spdml04q:9200/pd-index
-#CIMS_PROD_URL=https://ca2utmsa04q.quintiles.net:8080/v1
-
-#SANDBOX
-#ELASTIC_SANDBOX_URL=http://ca2spdml04c:9200/pd-index
-#CIMS_SANDBOX_URL=https://ca2utmsa04q.quintiles.net:8080/v1
-
-
-
+CIMS_PROD_URL=https://protocoldigitalization.work.iqvia.com/v1
+ 
+#TEST
+CIMS_TEST_URL=https://test-protocoldigitalization.work.iqvia.com/v1
+SSO_ENABLED=true

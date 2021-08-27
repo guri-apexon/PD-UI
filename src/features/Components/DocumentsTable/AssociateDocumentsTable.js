@@ -1,16 +1,13 @@
 import Table from "apollo-react/components/Table";
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
-import { BASE_URL_8000, UI_URL, httpCall } from "../../../utils/api";
-
+import { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import FileDownload from "js-file-download";
 import Checkbox from "apollo-react/components/Checkbox";
-// const Cell = ({ row, column }) => (
-//   <a href={row.documentFilePath} target="_blank">
-//     {row.fileName}
-//   </a>
-// );
+import Loader from "apollo-react/components/Loader";
+import { toast } from "react-toastify";
 
 const ActionCell = ({ row }) => {
   // console.log("....RoW........", row);
@@ -31,44 +28,35 @@ const ActionCell = ({ row }) => {
 };
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
-  let url;
+  // let url;
+  const [loader, setLoader] = useState(false);
   const handleDownload = async (row) => {
-    // console.log("Rows", row);
-    // const resp = await axios.get(
-    //   `http://ca2spdml01q:8000/api/download_file/?filePath=${row.documentFilePath}`
-    // );
-
-    // url = `http://ca2spdml06d:3000/${resp.data}`;
-
+    setLoader(true);
+    let splitArr = row.documentFilePath.split("\\");
+    const fileName = splitArr[splitArr.length - 1];
+    console.log(fileName);
     const config = {
       url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
       method: "GET",
+      responseType: "blob",
     };
     const resp = await httpCall(config);
-
-    url = `${UI_URL}/${resp.data}`;
-    let encodeUrl = encodeURI(url);
-    let myWindow = window.open("about:blank", "_blank");
-    myWindow.document.write(
-      `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
-    );
-    // window.open(
-    //   url,
-    //   "_blank" // <- This is what makes it open in a new window.
-    // );
-    // console.log(url);
+    if (resp.success) {
+      FileDownload(resp.data, fileName);
+    } else {
+      toast.error("Download Failed");
+    }
+    setLoader(false);
   };
   return (
-    <p className="hyperlink" onClick={() => handleDownload(row)}>
-      {row[key]}
-    </p>
+    <>
+      {loader && <Loader />}
+      <p className="hyperlink" onClick={() => handleDownload(row)}>
+        {row[key]}
+      </p>
+    </>
   ); // eslint-disable-line
 };
-// const VersionCell = ({ row, column }) => (
-//   <a href="/" target="_blank">
-//     {row.VersionNumber}
-//   </a>
-// );
 
 const VersionCell = ({ row, column }) => {
   let history = useHistory();
