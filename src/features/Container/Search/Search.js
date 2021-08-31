@@ -261,10 +261,10 @@ const Search = (props) => {
   // }, [searchInput]);
 
   const saveRecentSearch = (input) => {
-    dispatch({
-      type: "POST_RECENT_SEARCH_DASHBOARD",
-      payload: input,
-    });
+    // dispatch({
+    //   type: "POST_RECENT_SEARCH_DASHBOARD",
+    //   payload: input,
+    // });
   };
   const handleKeywordSearch = (input) => {
     if (input) {

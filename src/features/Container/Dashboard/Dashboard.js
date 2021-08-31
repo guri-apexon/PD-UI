@@ -4,7 +4,7 @@ import Grid from "apollo-react/components/Grid";
 import { loggedUser } from "../../../store/userDetails";
 
 import ProtocolTable from "./ProtocolTable";
-import DashboardSearch from "./DashboardSearch";
+// import DashboardSearch from "./DashboardSearch";
 import { dashboadAPIError } from "./dashboardSlice";
 import ActionButtons from "./ActionButtons";
 
@@ -40,9 +40,9 @@ const Dashboard = () => {
         <Grid item xs={12}>
           <ProtocolTable pageRows={memoizedPageRows} maxHeight={400} />
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <DashboardSearch />
-        </Grid>
+        </Grid> */}
       </Grid>
     </div>
   );

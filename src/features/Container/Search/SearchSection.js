@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 
 import Button from "apollo-react/components/Button";
 import Search from "apollo-react/components/Search";
-import MenuButton from "apollo-react/components/MenuButton";
+// import MenuButton from "apollo-react/components/MenuButton";
 
 class ProtocolSearchButton extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class ProtocolSearchButton extends React.Component {
     e.preventDefault();
     // this.props.getSearchInput(this.state.input);
     this.props.handleKeywordSearch(this.state.input);
-    this.props.saveRecentSearch(this.state.input);
+    // this.props.saveRecentSearch(this.state.input);
     // this.props.history.push(`/search?key=${this.state.input}`);
     this.setState({ input: "" });
     // ReactDOM.render(
@@ -47,24 +47,24 @@ class ProtocolSearchButton extends React.Component {
   };
 
   render() {
-    const handleClick = (label) => () => {
-      if (label === "Compare") {
-        this.props.compareProtocol();
-      } else {
-        this.props.saveSearch();
-      }
-    };
+    // const handleClick = (label) => () => {
+    //   if (label === "Compare") {
+    //     this.props.compareProtocol();
+    //   } else {
+    //     this.props.saveSearch();
+    //   }
+    // };
 
-    const menuItems = [
-      // {
-      //   text: "Compare",
-      //   onClick: handleClick("Compare"),
-      // },
-      {
-        text: "Save Search",
-        onClick: handleClick("Save"),
-      },
-    ];
+    // const menuItems = [
+    //   // {
+    //   //   text: "Compare",
+    //   //   onClick: handleClick("Compare"),
+    //   // },
+    //   {
+    //     text: "Save Search",
+    //     onClick: handleClick("Save"),
+    //   },
+    // ];
 
     return (
       <div className="width100">
@@ -90,7 +90,7 @@ class ProtocolSearchButton extends React.Component {
             </Button>
           </div>
         </form>
-        <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal floatRight">
+        {/* <div className="MuiFormControl-root MuiTextField-root MuiFormControl-marginNormal floatRight">
           {this.props.idPresent && (
             <MenuButton
               buttonText="Select Action"
@@ -99,7 +99,7 @@ class ProtocolSearchButton extends React.Component {
               style={{ top: 8 }}
             />
           )}
-        </div>
+        </div> */}
         {/* <div>
           <div id="chip" className="chip-grp">
             <div>
