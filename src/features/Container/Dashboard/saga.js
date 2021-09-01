@@ -10,7 +10,11 @@ import cloneDeep from "lodash/cloneDeep";
 // import uniqBy from "lodash/uniqBy";
 import { toast } from "react-toastify";
 import BASE_URL, { httpCall, BASE_URL_8000, UI_URL } from "../../../utils/api";
-import { localISOTime } from "../../../utils/utilFunction";
+import {
+  localISOTime,
+  qcIconStatus,
+  iconStatus,
+} from "../../../utils/utilFunction";
 import {
   getProtocols,
   setError,
@@ -61,7 +65,8 @@ export function* protocolAsyn(action) {
           item.projectId = !item.projectId ? "" : item.projectId;
           item.sponsor = !item.sponsor ? "" : item.sponsor;
           item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
-          item.qcActivity = item.qcStatus;
+          item.qcActivity = qcIconStatus(item.qcStatus);
+          item.status = iconStatus(item.status);
           if (item.userUploadedFlag || item.userPrimaryRoleFlag) {
             myPorotocolsData.push(item);
           }
@@ -209,13 +214,7 @@ export function* postAddProtocol(postData) {
         yield put(setAddProtocolModal(false));
       } else {
         yield put(setAddProtocolModal(true));
-        yield put(
-          setAddprotocolError(
-            postResponse.err && postResponse.err.data
-              ? postResponse.err.data.message
-              : "API Error"
-          )
-        );
+        yield put(setAddprotocolError("Upload Failed"));
       }
     } else {
       yield put(setAddProtocolModal(true));
@@ -231,7 +230,7 @@ export function* postAddProtocol(postData) {
     yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
     yield put(setLoading(false));
   } catch (err) {
-    yield put(setAddprotocolError(err.statusText));
+    yield put(setAddprotocolError("Upload Failed"));
     yield put(setAddProtocolModal(false));
     yield put(setLoading(false));
   }

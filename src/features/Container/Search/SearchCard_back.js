@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 
 import Table from "apollo-react/components/Table";
@@ -9,9 +10,11 @@ import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
 import { formatESDate } from "../../../utils/utilFunction";
-import { BASE_URL_8000, UI_URL, httpCall } from "../../../utils/api";
+import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import { toast } from "react-toastify";
 import Tooltip from "apollo-react/components/Tooltip";
+import Loader from "apollo-react/components/Loader";
+import FileDownload from "js-file-download";
 
 const textLength = 24;
 const SearchCard = ({
@@ -23,6 +26,7 @@ const SearchCard = ({
 }) => {
   const [dataRow, setDataRow] = useState([]);
   const userId1 = useSelector(userId);
+  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     let arrOfObj = cloneDeep(data.rows);
@@ -39,8 +43,6 @@ const SearchCard = ({
   };
 
   const handleDownload = async (row) => {
-    const dfsPath = row.path.replaceAll("\\", "/");
-    console.log("DFS", dfsPath);
     const primaryConfig = {
       url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
         1
@@ -48,29 +50,30 @@ const SearchCard = ({
       method: "GET",
     };
     const userresp = await httpCall(primaryConfig);
+    console.log("--------------||------------", userresp);
     if (userresp && userresp.data) {
+      setLoader(true);
+      let splitArr = row.path.split("\\");
+      const fileName = splitArr[splitArr.length - 1];
       const config = {
         url: `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`,
         method: "GET",
+        responseType: "blob",
       };
       const resp = await httpCall(config);
-
-      if (resp.data === "Downloading failed") {
-        toast.error("Document not found.");
+      if (resp.success) {
+        FileDownload(resp.data, fileName);
       } else {
-        let url = `${UI_URL}/${resp.data}`;
-        let encodeUrl = encodeURI(url);
-        let myWindow = window.open("about:blank", "_blank");
-        myWindow.document.write(
-          `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
-        );
+        toast.error("Download Failed");
       }
+      setLoader(false);
     } else {
       toast.info("Access Provisioned to Primary Users only");
     }
   };
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>
+      {loader && <Loader />}
       <Grid md={11} container>
         {/* ------------------------------------------------- */}
         <Grid md={6} container>

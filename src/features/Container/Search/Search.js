@@ -261,10 +261,10 @@ const Search = (props) => {
   // }, [searchInput]);
 
   const saveRecentSearch = (input) => {
-    dispatch({
-      type: "POST_RECENT_SEARCH_DASHBOARD",
-      payload: input,
-    });
+    // dispatch({
+    //   type: "POST_RECENT_SEARCH_DASHBOARD",
+    //   payload: input,
+    // });
   };
   const handleKeywordSearch = (input) => {
     if (input) {
@@ -728,8 +728,13 @@ const Search = (props) => {
       dateSection: [1],
     });
     setPostQueryObj(postObj);
+    const range = {
+      from: null,
+      to: null,
+    };
     dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
+    setDateRangeValue([null, null]);
     props.history.push(`/search`);
   };
 

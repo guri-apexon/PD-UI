@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 
 import Table from "apollo-react/components/Table";
@@ -10,9 +11,10 @@ import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
 import { formatESDate } from "../../../utils/utilFunction";
-import { BASE_URL_8000, UI_URL, httpCall } from "../../../utils/api";
+import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import { toast } from "react-toastify";
 import Tooltip from "apollo-react/components/Tooltip";
+import FileDownload from "js-file-download";
 
 const textLength = 24;
 const SearchCard = ({
@@ -23,7 +25,7 @@ const SearchCard = ({
   protocolSelected,
 }) => {
   const [dataRow, setDataRow] = useState([]);
-  const [loader] = useState(false);
+  const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
   // let rowContent = "";
   // if (data && !data.rowsLoading) {
@@ -46,28 +48,6 @@ const SearchCard = ({
   };
 
   const handleDownload = async (row) => {
-    // setLoader(true);
-    // console.log("path", row.path);
-    // const dfsPath = row.path.replaceAll("\\", "/");
-    // console.log("DFS", dfsPath);
-    // try {
-    //   const resp = await axios({
-    //     url: "http://localhost:4000/api/pdf/download",
-    //     method: "GET",
-    //     params: {
-    //       path: dfsPath,
-    //     },
-    //     responseType: "blob", // Important
-    //   });
-    //   // console.log("resp", resp);
-    //   const blob = resp.data;
-    //   let url = URL.createObjectURL(blob);
-    //   setLoader(false);
-    //   window.open(url, "_blank");
-    // } catch (err) {
-    //   setLoader(false);
-    //   console.log(err);
-    // }
     const primaryConfig = {
       url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
         1
@@ -77,17 +57,21 @@ const SearchCard = ({
     const userresp = await httpCall(primaryConfig);
     console.log("--------------||------------", userresp);
     if (userresp && userresp.data) {
+      setLoader(true);
+      let splitArr = row.path.split("\\");
+      const fileName = splitArr[splitArr.length - 1];
       const config = {
         url: `${BASE_URL_8000}/api/download_file/?filePath=${row.path}`,
         method: "GET",
+        responseType: "blob",
       };
       const resp = await httpCall(config);
-      let url = `${UI_URL}/${resp.data}`;
-      let encodeUrl = encodeURI(url);
-      let myWindow = window.open("about:blank", "_blank");
-      myWindow.document.write(
-        `<embed src=${encodeUrl} frameborder="0" width="100%" height="100%">`
-      );
+      if (resp.success) {
+        FileDownload(resp.data, fileName);
+      } else {
+        toast.error("Download Failed");
+      }
+      setLoader(false);
     } else {
       toast.info("Access Provisioned to Primary Users only");
     }

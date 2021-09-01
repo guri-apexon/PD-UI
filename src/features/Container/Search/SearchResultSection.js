@@ -341,13 +341,9 @@ class SearchPanel extends React.Component {
 
           <Grid md={9}>
             <div className="width100 ">
-              {accordionObj.length > 0 && (
-                <>
-                  <div className="page-count">
-                    {/* <span>
-                      Showing {accordionObj.length === 0 ? "0" : "1"} -{" "}
-                      {protocols} of {protocols}{" "}
-                    </span> */}
+              <div>
+                <div className="page-count">
+                  {accordionObj.length > 0 ? (
                     <span>
                       Showing {page * 10 + 1} -{" "}
                       {page * 10 + 10 < resultList.data.total_count
@@ -358,12 +354,16 @@ class SearchPanel extends React.Component {
                         resultList.data &&
                         resultList.data.total_count}{" "}
                     </span>
-                  </div>
-
-                  <div className="search-icon">
-                    <SearchIcon style={{ color: "#0557d5" }} size="small" />
-                  </div>
-
+                  ) : (
+                    <span>Showing 0 - 0 of 0</span>
+                  )}
+                </div>
+                <div className="search-icon">
+                  <SearchIcon style={{ color: "#0557d5" }} size="small" />
+                </div>
+              </div>
+              {accordionObj.length > 0 && (
+                <>
                   <div className="sort-by" data-testid="sortby-container">
                     <span>Sort by</span>
                     <SelectButton
@@ -374,9 +374,6 @@ class SearchPanel extends React.Component {
                       defaultValue={sortValueProp}
                       onChange={(value) => this.sortChange(value)}
                     >
-                      {/* <MenuItem value="1">{"Relevancy"}</MenuItem>
-                  <MenuItem value="2">{"Approval Date"}</MenuItem>
-                   <MenuItem value="3">{"Upload Date"}</MenuItem> */}
                       {SORT_DROPDOWN.map((item) => (
                         <MenuItem
                           data-testid={`sortby-container${item.id}`}
@@ -397,19 +394,23 @@ class SearchPanel extends React.Component {
                       {!defaultExpand ? "Expand All" : "Collapse All"}
                     </span>
                   </div>
-                  <div id="chip" className="chip">
-                    {this.props.searchInput && (
-                      <Chip
-                        color="white"
-                        label={this.props["searchInput"]}
-                        value={this.props["searchInput"]}
-                        onDelete={(e) => this.props.deleteSearchInput(e)}
-                        size={"small"}
-                      />
-                    )}
-                  </div>
                 </>
               )}
+              {
+                <div id="chip" className="chip">
+                  {this.props.searchInput && (
+                    <Chip
+                      color="white"
+                      label={this.props["searchInput"]}
+                      value={this.props["searchInput"]}
+                      onDelete={(e) => this.props.deleteSearchInput(e)}
+                      size={"small"}
+                    />
+                  )}
+                </div>
+              }
+            </div>
+            <div className="width100 ">
               {!resultList.loader &&
               resultList.success &&
               accordionObj.length !== 0

@@ -21,10 +21,12 @@ import Table, {
 import Tooltip from "apollo-react/components/Tooltip";
 import Typography from "apollo-react/components/Typography";
 import Minus from "apollo-react-icons/Minus";
-
-// import { BASE_URL_8000, UI_URL } from "../../../utils/api";
+import FileDownload from "js-file-download";
+import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
+import Loader from "apollo-react/components/Loader";
+import { toast } from "react-toastify";
 
 const ActionCell = ({
   row: {
@@ -47,7 +49,8 @@ const ActionCell = ({
             checked={selected}
             onChange={() => handleChange(id)}
             disabled={
-              status === "PROCESS_COMPLETED" && qcActivity === "QC_NOT_STARTED"
+              status === "Digitization Complete" &&
+              qcActivity === "QC Not Started"
                 ? false
                 : true
             }
@@ -161,104 +164,54 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
 
 const qcIconStatus = (status) => {
   switch (status) {
-    case "QC_NOT_STARTED":
-      return {
-        comp: <Minus />,
-        title: "QC Not Started",
-      };
-    case "QC1":
-    case "QC2":
-      return {
-        comp: <Clock htmlColor={"orange"} />,
-        title: "QC In Progress",
-      };
-    case "QC_COMPLETED":
-      return {
-        comp: <Check htmlColor={"green"} />,
-        title: "QC Completed",
-      };
+    case "QC Not Started":
+      return <Minus />;
+    case "QC In Progress":
+      return <Clock htmlColor={"orange"} />;
+    case "QC Completed":
+      return <Check htmlColor={"green"} />;
     default:
-      return {
-        comp: <Minus />,
-        title: "QC Not Started",
-      };
+      return <Minus />;
   }
 };
 const iconStatus = (status) => {
   switch (status) {
-    case "DIGITIZER1_STARTED":
-    case "DIGITIZER2_STARTED":
-    case "DIGITIZER1_COMPLETED":
-    case "DIGITIZER2_COMPLETED":
-    case "DIGITIZER2_OMOPUPDATE_STARTED":
-    case "DIGITIZER2_OMOPUPDATE_COMPLETED":
-    case "I2E_OMOP_UPDATE_STARTED":
-    case "I2E_OMOP_UPDATE_COMPLETED":
-      return {
-        comp: <Clock htmlColor={"orange"} />,
-        title: "Digitization In Progress",
-      };
-    case "TRIAGE_STARTED":
-    case "TRIAGE_COMPLETED":
-      return {
-        comp: <StatusCheck htmlColor={"cornflowerblue"} />,
-        title: "Upload Complete",
-      };
-    case "EXTRACTION_STARTED":
-    case "EXTRACTION_COMPLETED":
-    case "FINALIZATION_STARTED":
-    case "FINALIZATION_COMPLETED":
-      return {
-        comp: <Clock htmlColor={"orange"} />,
-        title: "Extraction In Progress",
-      };
-    case "PROCESS_COMPLETED":
-      return {
-        comp: <Check htmlColor={"green"} />,
-        title: "Digitization Complete",
-      };
-    case "ERROR":
-      return {
-        comp: <StatusExclamation htmlColor={"red"} />,
-        title: "Digitization Error",
-      };
-    case "COMPARISON_STARTED":
-    case "COMPARISON_COMPLETED":
-      return {
-        comp: <Clock htmlColor={"orange"} />,
-        title: "Comparison In Progress",
-      };
-    case "QC1":
-    case "QC2":
-      return {
-        comp: <User htmlColor={"neutral7"} />,
-        title: "QC Review",
-      };
+    case "Digitization In Progress":
+      return <Clock htmlColor={"orange"} />;
+    case "Upload Complete":
+      return <StatusCheck htmlColor={"cornflowerblue"} />;
+    case "Extraction In Progress":
+      return <Clock htmlColor={"orange"} />;
+    case "Digitization Complete":
+      return <Check htmlColor={"green"} />;
+    case "Digitization Error":
+      return <StatusExclamation htmlColor={"red"} />;
+    case "Comparison In Progress":
+      return <Clock htmlColor={"orange"} />;
+    case "QC Review":
+      return <User htmlColor={"neutral7"} />;
     default:
-      return {
-        comp: <StatusExclamation htmlColor={"red"} />,
-        title: "Digitization Error",
-      };
+      return <StatusExclamation htmlColor={"red"} />;
   }
 };
 
 const ActivityCell = ({ row, column: { accessor: key } }) => {
-  const status = iconStatus(row[key]);
+  const statusIcon = iconStatus(row[key]);
   return (
-    <Tooltip variant="light" title={status && status.title} placement="top">
+    <Tooltip variant="light" title={row[key]} placement="top">
       <IconButton size="small" data-id={row.id} style={{ marginRight: 4 }}>
-        {status && status.comp}
+        {statusIcon}
       </IconButton>
     </Tooltip>
   );
 };
 
 const qcActivityCell = ({ row, column: { accessor: key } }) => {
-  const status = qcIconStatus(row[key]);
+  const statusIcon = qcIconStatus(row[key]);
   return (
-    <Tooltip variant="light" title={status && status.title} placement="top">
+    <Tooltip variant="light" title={row[key]} placement="top">
       <IconButton size="small" data-id={row.id} style={{ marginRight: 4 }}>
-        {status && status.comp}
+        {statusIcon}
       </IconButton>
     </Tooltip>
   );
@@ -324,114 +277,140 @@ function getColumns(screen) {
 }
 
 const ExpandableComponent = ({ row }) => {
+  const [loader, setLoader] = useState(false);
+  const handleDownload = async (row) => {
+    setLoader(true);
+    let splitArr = row.documentFilePath.split("\\");
+    const fileName = splitArr[splitArr.length - 1];
+    console.log(fileName);
+    const config = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
+      method: "GET",
+      responseType: "blob",
+    };
+
+    const resp = await httpCall(config);
+    if (resp.success) {
+      FileDownload(resp.data, fileName);
+    } else {
+      toast.error("Download Failed");
+    }
+    setLoader(false);
+  };
   return (
-    <div className="expanded-comp">
-      <div style={{ width: "10%" }}>
-        <Typography
-          style={{
-            fontWeight: 500,
-            color: neutral8,
-            marginRight: "20px",
-          }}
-        >
-          {"Phase"}
-        </Typography>
-        <Typography className="fw-8" variant="body2">
-          {row.phase}
-        </Typography>
-      </div>
-      <div className="extended-data" style={{ width: "30%" }}>
-        <Typography
-          style={{
-            fontWeight: 500,
-            color: neutral8,
-            marginRight: "20px",
-          }}
-        >
-          {"Indication"}
-        </Typography>
-        {row.indication && row.indication.length > 40 ? (
-          <Tooltip
-            variant="light"
-            title={row.indication && row.indication}
-            placement="top"
+    <>
+      {loader && <Loader />}
+      <div className="expanded-comp">
+        <div style={{ width: "10%" }}>
+          <Typography
+            style={{
+              fontWeight: 500,
+              color: neutral8,
+              marginRight: "20px",
+            }}
           >
-            <Typography className="fw-8 ex-text" variant="body2">
-              {row.indication}
-            </Typography>
-          </Tooltip>
-        ) : (
-          <Typography className="fw-8" variant="body2">
-            {row.indication ? row.indication : "-"}
+            {"Phase"}
           </Typography>
-        )}
-      </div>
-      <div className="extended-data" style={{ width: "15%" }}>
-        <Typography
-          style={{
-            fontWeight: 500,
-            color: neutral8,
-            marginRight: "20px",
-          }}
-        >
-          {"Document Status"}
-        </Typography>
-        <Typography className="fw-8" variant="body2">
-          {row.documentStatus}
-        </Typography>
-      </div>
-      <div>
-        <Typography
-          style={{
-            fontWeight: 500,
-            color: neutral8,
-            marginRight: "20px",
-          }}
-        >
-          {"Source"}
-        </Typography>
-        <div className="fw-8" variant="body2">
-          {row.fileName ? (
-            row.fileName.length > 40 ? (
-              <Tooltip
-                variant="light"
-                title={row.fileName && row.fileName}
-                placement="top"
-              >
-                <Typography className="fw-8 ex-text" variant="body2">
-                  <div
-                    className="long-text2"
-                    data-testid="handle-download"
-                    id="handle-download"
-                  >
-                    <a
-                      href="javascript:void(0)"
-                      onClick={() => handleDownload(row)}
-                    >
-                      {row.fileName}
-                    </a>
-                  </div>
-                </Typography>
-              </Tooltip>
-            ) : (
-              <a href="javascript:void(0)" onClick={() => handleDownload(row)}>
-                {row.fileName}
-              </a>
-            )
+          <Typography className="fw-8" variant="body2">
+            {row.phase}
+          </Typography>
+        </div>
+        <div className="extended-data" style={{ width: "30%" }}>
+          <Typography
+            style={{
+              fontWeight: 500,
+              color: neutral8,
+              marginRight: "20px",
+            }}
+          >
+            {"Indication"}
+          </Typography>
+          {row.indication && row.indication.length > 40 ? (
+            <Tooltip
+              variant="light"
+              title={row.indication && row.indication}
+              placement="top"
+            >
+              <Typography className="fw-8 ex-text" variant="body2">
+                {row.indication}
+              </Typography>
+            </Tooltip>
           ) : (
-            // eslint-disable-line
-            "-"
+            <Typography className="fw-8" variant="body2">
+              {row.indication ? row.indication : "-"}
+            </Typography>
           )}
         </div>
+        <div className="extended-data" style={{ width: "15%" }}>
+          <Typography
+            style={{
+              fontWeight: 500,
+              color: neutral8,
+              marginRight: "20px",
+            }}
+          >
+            {"Document Status"}
+          </Typography>
+          <Typography className="fw-8" variant="body2">
+            {row.documentStatus}
+          </Typography>
+        </div>
+        <div>
+          <Typography
+            style={{
+              fontWeight: 500,
+              color: neutral8,
+              marginRight: "20px",
+            }}
+          >
+            {"Source"}
+          </Typography>
+          <div className="fw-8" variant="body2">
+            {row.fileName ? (
+              row.fileName.length > 40 ? (
+                <Tooltip
+                  variant="light"
+                  title={row.fileName && row.fileName}
+                  placement="top"
+                >
+                  <Typography className="fw-8 ex-text" variant="body2">
+                    <div
+                      className="long-text2"
+                      data-testid="handle-download"
+                      id="handle-download"
+                    >
+                      <a
+                        href="javascript:void(0)"
+                        onClick={() => handleDownload(row)}
+                      >
+                        {row.fileName}
+                      </a>
+                    </div>
+                  </Typography>
+                </Tooltip>
+              ) : (
+                <a
+                  href="javascript:void(0)"
+                  onClick={() => handleDownload(row)}
+                >
+                  {row.fileName}
+                </a>
+              )
+            ) : (
+              // eslint-disable-line
+              "-"
+            )}
+          </div>
+        </div>
+        {/* } */}
       </div>
-      {/* } */}
-    </div>
+    </>
   );
 };
 
-const handleDownload = async (row) => {
-  row.dispatch({ type: "HANDLE_DOWNLOAD_SAGA", payload: row.documentFilePath });
-};
+// const handleDownload = async (row) => {
+//   row.dispatch({ type: "HANDLE_DOWNLOAD_SAGA", payload: row.documentFilePath });
+// };
 
 const ProtocolTable = ({
   initialRows,
