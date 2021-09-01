@@ -8,14 +8,16 @@ import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
 import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
-import { BASE_URL_8000, UI_URL, httpCall } from "../../../utils/api";
+import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
+import FileDownload from "js-file-download";
 
 const Documents = ({ handleChangeTab }) => {
   const summary = useSelector(protocolSummary);
   const associateDocuments = useSelector(associateDocs);
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [loader, setLoader] = useState(false);
+  // const [completed, setCompleted] = useState(0);
 
   const setProtocolToDownload = (id) => {
     console.log(id);
@@ -44,6 +46,7 @@ const Documents = ({ handleChangeTab }) => {
   };
   const downloadCompare = async () => {
     console.log("Selected", protocolSelected);
+    setLoader(true);
     if (protocolSelected.length <= 1) {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
@@ -51,31 +54,26 @@ const Documents = ({ handleChangeTab }) => {
         const config = {
           url: `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
           method: "GET",
+          responseType: "blob",
         };
         const resp = await httpCall(config);
-        const data = resp.data;
-        if (data.numChangesTotal > 0) {
-          const path = data.compareCSVPath;
-          let splitArr = path.split("/");
-          const fileName = splitArr[splitArr.length - 1];
-
-          const file_path = `${UI_URL}/${fileName}`;
-          let link = document.createElement("a");
-          link.setAttribute("href", file_path);
-          link.setAttribute("download", "Compare-Difference.csv");
-          document.body.appendChild(link);
-          link.click();
-          // a.href = file_path;
-          // a.download = file_path.substr(file_path.lastIndexOf("/") + 1);
-          // document.body.appendChild(a);
-          // a.click();
-          // document.body.removeChild(a);
-          setProtocolSelected([]);
-          // window.open(filePath, "_blank");
-        } else {
+        if (resp.message === "Success") {
+          FileDownload(
+            resp.data,
+            `${protocolSelected[0]}_${protocolSelected[1]}.compare_detail.csv`
+          );
+          // console.log(completed);
+          // if (completed === 100 || completed === "100") {
           setLoader(false);
+          // }
+        } else if (resp.message === "No-Content") {
           toast.info("No difference found for this compare");
+          setLoader(false);
+        } else if (resp.message === "Not-Found") {
+          toast.error("Compare is not available for selected documents.");
+          setLoader(false);
         }
+        setProtocolSelected([]);
       } catch (e) {
         setLoader(false);
         console.log("Compare Resp", e.response);

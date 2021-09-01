@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import Card from "apollo-react/components/Card";
 import ChevronRight from "apollo-react-icons/ChevronRight";

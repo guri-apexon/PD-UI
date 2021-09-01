@@ -1,45 +1,52 @@
-image: node:12.20.1
-
-default:
-  before_script:
-    - git config --system core.longpaths true
+image: node:12.20
 
 stages:
-  - build
   - test
-  - deploy
+  - build_and_deploy
 
 cache:
   paths:
     - node_modules/
 
-build:
-  #image: node:12.20.1
-  stage: build
-  tags:
-    - ui-runner
+test:
+  stage: test
+
+  tags: 
+    - pd-ui-test
   script:
+    - echo "Testing App"
     - npm install
-    - $env:CI=$false; npm run build
+    - npm test
+    - echo "Test successfully!"
+  only:
+    refs:
+      - CICD-develop
+    variables: 
+      - $ENVIRONMENT== "dev"
+
+build:
+  stage: build_and_deploy
+
+  tags: 
+    - pd-ui-test
+
+  before_script:
+    - Copy-Item "env_backup.txt" -Destination ".env"
+  script: 
+    - echo "Start building App"
+    - npm install
+    - npm run build
+    - npm install --global pm2@latest
+    - npm run stop
+    - npm run deploy
+    - echo "Build and Deloyed Successfully!"
+
   artifacts:
     paths:
       - ./build
+      
   only:
-    - master
-
-test:
-  stage: test
-  tags:
-    - ui-runner
-  script:
-    - $env:CI=$false; npm test
-  only:
-    - master
-
-.deploy_dev:
-  stage: deploy
-  script:
-    - pm2 restart server.js
-
-
-  
+    refs:
+      - CICD-develop
+    variables: 
+      - $ENVIRONMENT== "dev"
