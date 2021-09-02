@@ -45,12 +45,11 @@ const Documents = ({ handleChangeTab }) => {
     }
   };
   const downloadCompare = async () => {
-    console.log("Selected", protocolSelected);
-    setLoader(true);
     if (protocolSelected.length <= 1) {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
       try {
+        setLoader(true);
         const config = {
           url: `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
           method: "GET",
