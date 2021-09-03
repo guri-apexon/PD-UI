@@ -871,6 +871,7 @@ const Search = (props) => {
               page={page}
               onSetPage={onSetPage}
               totalSearchResult={totalSearchResults}
+              filters={postQueryObj}
             />
           </div>
         </div>
