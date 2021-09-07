@@ -97,18 +97,22 @@ const FilterChip = (props) => {
   };
   const renderDateRange = (dateRange) => {
     return (
-      <div className="section">
-        <label>Date Range :</label>
-        <div className="chip-inside">
-          <Chip
-            color="white"
-            size="small"
-            label={`${formatESDate(dateRange[0])} - ${formatESDate(
-              dateRange[1]
-            )}`}
-            onDelete={() => handleDateRangeDelete()}
-          />
-        </div>
+      <div>
+        {dateRange[0] && dateRange[1] && (
+          <div className="section">
+            <label>Date Range :</label>
+            <div className="chip-inside">
+              <Chip
+                color="white"
+                size="small"
+                label={`${formatESDate(dateRange[0])} - ${formatESDate(
+                  dateRange[1]
+                )}`}
+                onDelete={() => handleDateRangeDelete()}
+              />
+            </div>
+          </div>
+        )}
       </div>
     );
   };
