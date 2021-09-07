@@ -212,11 +212,13 @@ class SearchPanel extends React.Component {
       searchQuery,
       sortValueProp,
       dateRangeValue,
+      setDateRangeValue,
       protocolSelected,
       clearAll,
       page,
       setPage,
       getSearchInput,
+      filters,
     } = this.props;
     const { accordionObj, defaultExpand } = this.state;
 
@@ -271,7 +273,11 @@ class SearchPanel extends React.Component {
               }
             </div>
             <div>
-              <FilterChip filters={this.props.filters} />
+              <FilterChip
+                filters={filters}
+                onSearchQuery={this.props.onSearchQuery}
+                setDateRangeValue={setDateRangeValue}
+              />
             </div>
             <div>
               <FilterSection
