@@ -6,7 +6,6 @@ import columns from "./Data/column.data";
 import Grid from "apollo-react/components/Grid";
 import Link from "apollo-react/components/Link";
 import Loader1 from "../../Components/Loader/Loader";
-import Loader from "apollo-react/components/Loader";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
 import cloneDeep from "lodash/cloneDeep";
@@ -14,6 +13,7 @@ import { formatESDate } from "../../../utils/utilFunction";
 import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import { toast } from "react-toastify";
 import Tooltip from "apollo-react/components/Tooltip";
+import Loader from "apollo-react/components/Loader";
 import FileDownload from "js-file-download";
 
 const textLength = 24;
@@ -25,14 +25,9 @@ const SearchCard = ({
   protocolSelected,
 }) => {
   const [dataRow, setDataRow] = useState([]);
-  const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
-  // let rowContent = "";
-  // if (data && !data.rowsLoading) {
-  //   rowContent = cloneDeep(data.rows);
-  //   rowContent.handleSelectRow = compareTwoProtocol();
-  // }
-  // const selection1 = selection;
+  const [loader, setLoader] = useState(false);
+
   useEffect(() => {
     let arrOfObj = cloneDeep(data.rows);
     var result = arrOfObj.map(function (el) {

@@ -36,6 +36,10 @@ describe("Search.js Render", () => {
             phases: phase,
             filters: searchResult,
             searchResult: searchResult,
+            range: {
+              from: "",
+              to: "",
+            },
           },
         },
       }
@@ -58,6 +62,10 @@ describe("Search.js Render", () => {
             phases: phase,
             filters: searchResult,
             searchResult: searchResult,
+            range: {
+              from: "",
+              to: "",
+            },
           },
         },
       }
