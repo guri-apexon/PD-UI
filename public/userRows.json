@@ -1,0 +1,56 @@
+[
+    {
+        "userId": "8473",
+        "firstName": "Sohan",
+        "lastName": "Khatawkar",
+        "email": "sohan.khatawkar@iqvia.com",
+        "country": "India",
+        "createdDate": "08/02/2021",
+        "userType": "admin"
+      },
+      {
+        "userId": "8474",
+        "firstName": "Subhadatta",
+        "lastName": "Samal",
+        "email": "subha@iqvia.com",
+        "country": "India",
+        "createdDate": "08/03/2021",
+        "userType": "normal"
+      },
+      {
+        "userId": "8475",
+        "firstName": "Veera",
+        "lastName": "Prathap",
+        "email": "veera@iqvia.com",
+        "country": "India",
+        "createdDate": "08/04/2021",
+        "userType": "normal"
+      },
+      {
+        "userId": "8476",
+        "firstName": "Jiju",
+        "lastName": "Mohan",
+        "email": "jiju@iqvia.com",
+        "country": "India",
+        "createdDate": "08/01/2021",
+        "userType": "QC1"
+      },
+      {
+        "userId": "8477",
+        "firstName": "Barry",
+        "lastName": "Ahrens",
+        "email": "barry@iqvia.com",
+        "country": "USA",
+        "createdDate": "08/06/2021",
+        "userType": "QC2"
+      },
+      {
+        "userId": "8478",
+        "firstName": "Shankar",
+        "lastName": "Raju",
+        "email": "shankar@iqvia.com",
+        "country": "India",
+        "createdDate": "07/02/2021",
+        "userType": "QC1"
+      }
+]
