@@ -54,7 +54,7 @@ const FilterChip = (props) => {
     } else {
       return (
         <div className="section">
-          <label>Date Section :</label>
+          <label>Date Range :</label>
           <div className="chip-inside" key={data[0].id}>
             <Chip
               color="white"

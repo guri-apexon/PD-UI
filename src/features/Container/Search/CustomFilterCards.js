@@ -187,6 +187,8 @@ export const DateRangeCard = ({
         setValue(obj.value);
         if (obj.value === "0") {
           setDisabled(false);
+        } else {
+          setDisabled(true);
         }
       }
     }

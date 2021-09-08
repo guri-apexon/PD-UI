@@ -3,6 +3,7 @@ import { render, fireEvent } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import SearchResultSection from "../SearchResultSection";
 import { MemoryRouter } from "react-router-dom";
+import { filterChipObject } from "./data";
 // import * as redux from "react-redux";
 
 describe("Sort of SearchResultSection", () => {
@@ -14,6 +15,7 @@ describe("Sort of SearchResultSection", () => {
     // const mocksearchQuery = jest.fn();
     const mockhancleClearAll = jest.fn();
     const mockHistoryPush = jest.fn();
+    const mockSetDateRange = jest.fn();
     // const useDispatchSpy = jest.spyOn(redux, "useDispatch");
     // const mockDispatchFn = jest.fn();
     jest.mock("react-router-dom", () => ({
@@ -112,6 +114,8 @@ describe("Sort of SearchResultSection", () => {
           hancleClearAll={mockhancleClearAll}
           totalSearchResult={[]}
           dateRangeValue={[null, null]}
+          filters={filterChipObject}
+          setDateRangeValue={mockSetDateRange}
         />
       </MemoryRouter>,
       {

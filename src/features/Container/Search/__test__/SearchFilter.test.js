@@ -4,6 +4,7 @@ import "@testing-library/jest-dom/extend-expect";
 import SearchResultSection from "../SearchResultSection";
 import { MemoryRouter } from "react-router-dom";
 import axios from "axios";
+import { filterChipObject } from "./data";
 
 describe("Filter test of Search", () => {
   const mockDispatch = jest.fn();
@@ -18,6 +19,7 @@ describe("Filter test of Search", () => {
     const mockonSearchQuery = jest.fn();
     const mockhancleClearAll = jest.fn();
     const mockHistoryPush = jest.fn();
+    const mockSetDateRange = jest.fn();
     // const useDispatchSpy = jest.spyOn(redux, "useDispatch");
     // const mockDispatchFn = jest.fn();
     jest.mock("react-router-dom", () => ({
@@ -123,6 +125,8 @@ describe("Filter test of Search", () => {
           totalSearchResult={[]}
           dateRangeValue={[null, null]}
           history={historymock}
+          filters={filterChipObject}
+          setDateRangeValue={mockSetDateRange}
         />
       </MemoryRouter>,
       {
@@ -155,6 +159,7 @@ describe("Filter test of Search", () => {
     const mockonSearchQuery = jest.fn();
     const mockhancleClearAll = jest.fn();
     const mockHistoryPush = jest.fn();
+    const mockSetDateRange = jest.fn();
     // const useDispatchSpy = jest.spyOn(redux, "useDispatch");
     // const mockDispatchFn = jest.fn();
     jest.mock("react-router-dom", () => ({
@@ -260,6 +265,8 @@ describe("Filter test of Search", () => {
           totalSearchResult={[]}
           dateRangeValue={[null, null]}
           history={historymock}
+          filters={filterChipObject}
+          setDateRangeValue={mockSetDateRange}
         />
       </MemoryRouter>,
       {
