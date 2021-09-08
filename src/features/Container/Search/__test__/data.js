@@ -367,3 +367,32 @@ export const filterChipObject = {
     },
   ],
 };
+export const defaultFilterChipObject = {
+  key: "",
+  toc: [],
+  sponsor: [],
+  indication: [],
+  phase: [],
+  qcStatus: [],
+  documentStatus: [],
+  dateType: [
+    {
+      id: 1,
+      title: "Approval date",
+      value: "approval_date",
+    },
+  ],
+  dateFrom: "",
+  dateTo: "",
+  sortField: "score",
+  sortOrder: "desc",
+  pageNo: 1,
+  pageSize: 10,
+  dateSection: [
+    {
+      id: 1,
+      title: "All Dates",
+      value: "0",
+    },
+  ],
+};

@@ -55,7 +55,11 @@ const FilterChip = (props) => {
       return (
         <div className="section">
           <label>Date Range :</label>
-          <div className="chip-inside" key={data[0].id}>
+          <div
+            className="chip-inside"
+            key={data[0].id}
+            data-testid="date-range-section"
+          >
             <Chip
               color="white"
               size="small"
@@ -82,7 +86,7 @@ const FilterChip = (props) => {
       return (
         <div className="section">
           <label>Date Type :</label>
-          <div className="chip-inside" key={data[0].id}>
+          <div className="chip-inside" key={data[0].id} data-testid="date-type">
             <Chip
               color="white"
               size="small"
@@ -101,7 +105,7 @@ const FilterChip = (props) => {
         {dateRange[0] && dateRange[1] && (
           <div className="section">
             <label>Date Range :</label>
-            <div className="chip-inside">
+            <div className="chip-inside" data-testid="date-range">
               <Chip
                 color="white"
                 size="small"
@@ -143,7 +147,11 @@ const FilterChip = (props) => {
             <div className="section">
               <label>Table of Contents :</label>
               {filters.toc.map((item) => (
-                <div className="chip-inside" key={item.id}>
+                <div
+                  className="chip-inside"
+                  key={item.id}
+                  data-testid="chip-toc"
+                >
                   <Chip
                     color="white"
                     size="small"
@@ -159,7 +167,11 @@ const FilterChip = (props) => {
             <div className="section">
               <label>Sponsors :</label>
               {filters.sponsor.map((item) => (
-                <div className="chip-inside" key={item.id}>
+                <div
+                  className="chip-inside"
+                  key={item.id}
+                  data-testid="chip-sponsor"
+                >
                   <Chip
                     color="white"
                     size="small"
@@ -177,7 +189,11 @@ const FilterChip = (props) => {
             <div className="section">
               <label>Indications :</label>
               {filters.indication.map((item) => (
-                <div className="chip-inside" key={item.id}>
+                <div
+                  className="chip-inside"
+                  key={item.id}
+                  data-testid="chip-indication"
+                >
                   <Chip
                     color="white"
                     size="small"
@@ -195,7 +211,11 @@ const FilterChip = (props) => {
             <div className="section">
               <label>Phases :</label>
               {filters.phase.map((item) => (
-                <div className="chip-inside" key={item.id}>
+                <div
+                  className="chip-inside"
+                  key={item.id}
+                  data-testid="chip-phase"
+                >
                   <Chip
                     color="white"
                     size="small"
@@ -211,7 +231,11 @@ const FilterChip = (props) => {
             <div className="section">
               <label>Document Status :</label>
               {filters.documentStatus.map((item) => (
-                <div className="chip-inside" key={item.id}>
+                <div
+                  className="chip-inside"
+                  key={item.id}
+                  data-testid="chip-document"
+                >
                   <Chip
                     color="white"
                     size="small"
@@ -233,7 +257,11 @@ const FilterChip = (props) => {
             <div className="section">
               <label>QC Activity :</label>
               {filters.qcStatus.map((item) => (
-                <div className="chip-inside" key={item.id}>
+                <div
+                  className="chip-inside"
+                  key={item.id}
+                  data-testid="chip-qc"
+                >
                   <Chip
                     color="white"
                     size="small"
