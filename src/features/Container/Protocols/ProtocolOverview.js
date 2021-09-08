@@ -2,6 +2,7 @@ import React from "react";
 import Card from "apollo-react/components/Card";
 // import DonutChart from "apollo-react/components/DonutChart";
 
+/* istanbul ignore next*/
 const QCStatus = (status) => {
   switch (status) {
     case "QC_NOT_STARTED":

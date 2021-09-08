@@ -301,3 +301,69 @@ export const paramsLocation = {
   search:
     "?key=advanced&qcStatus=QC_COMPLETED&sponsor=3-D%20Pharmaceuticals&indication=ABCC6%20deficiency&phase=Phase%200&documentStatus=final&toc=Protocol%20Summary&dateType=approval_date&dateSection=12&dateFrom=20200416&dateTo=20210416",
 };
+
+export const filterChipObject = {
+  key: "",
+  toc: [
+    {
+      id: 1,
+      title: "Protocol Summary",
+    },
+  ],
+  sponsor: [
+    {
+      title: "3-D Pharmaceuticals",
+      id: 7816,
+    },
+  ],
+  indication: [
+    {
+      title: "ABCC6 deficiency",
+      id: 132,
+    },
+  ],
+  phase: [
+    {
+      title: "III",
+      id: "III",
+    },
+  ],
+  qcStatus: [
+    {
+      id: 3,
+      title: "QC Not Started",
+      value: "QC_NOT_STARTED",
+      content: "",
+      count: "",
+    },
+  ],
+  documentStatus: [
+    {
+      id: 1,
+      title: "Draft",
+      value: "draft",
+      content: "",
+      count: "",
+    },
+  ],
+  dateType: [
+    {
+      id: 2,
+      title: "Upload date",
+      value: "uploadDate",
+    },
+  ],
+  dateFrom: "",
+  dateTo: "",
+  sortField: "score",
+  sortOrder: "desc",
+  pageNo: 1,
+  pageSize: 10,
+  dateSection: [
+    {
+      id: 2,
+      title: "Last 6 Months",
+      value: "6",
+    },
+  ],
+};

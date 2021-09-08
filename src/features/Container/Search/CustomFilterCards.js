@@ -14,6 +14,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { CellMeasurerCache } from "react-virtualized";
+import { FixedSizeList as List } from "react-window";
 
 const useStyles = makeStyles({
   root: {
@@ -186,6 +187,8 @@ export const DateRangeCard = ({
         setValue(obj.value);
         if (obj.value === "0") {
           setDisabled(false);
+        } else {
+          setDisabled(true);
         }
       }
     }
@@ -302,6 +305,11 @@ export const DateRangeCard = ({
     </Card>
   );
 };
+const ListStyle = {
+  position: "relative",
+  width: "99%",
+  overflowX: "hidden",
+};
 
 export class CheckboxTest extends React.Component {
   constructor() {
@@ -347,23 +355,38 @@ export class CheckboxTest extends React.Component {
     return this.state.list.length > 0 ? (
       <div className="virtualization-set">
         <div className="list">
-          {this.state.list.map((value, index) => (
-            <div className="new-checkbox-style" key={value.id}>
-              <input
-                type="checkbox"
-                id={this.state.list[index].id}
-                value={this.state.list[index].id}
-                onChange={this.handleChange}
-                checked={
-                  this.props.listValue &&
-                  this.props.listValue.includes(this.state.list[index].id)
-                }
-              />
-              <label htmlFor={`#${this.state.list[index].id}`}>
-                {this.state.list[index].title}
-              </label>
-            </div>
-          ))}
+          <List
+            className="List"
+            style={ListStyle} // adding styles
+            itemData={this.state.list} // adding your own data
+            height={300}
+            itemCount={this.state.list.length}
+            itemSize={35}
+          >
+            {({ index, style, data }) => {
+              return (
+                <div
+                  className="new-checkbox-style"
+                  key={data[index].id}
+                  style={style}
+                >
+                  <input
+                    type="checkbox"
+                    id={data[index].id}
+                    value={data[index].id}
+                    onChange={this.handleChange}
+                    checked={
+                      this.props.listValue &&
+                      this.props.listValue.includes(data[index].id)
+                    }
+                  />
+                  <label htmlFor={`#${data[index].id}`}>
+                    {data[index].title}
+                  </label>
+                </div>
+              );
+            }}
+          </List>
         </div>
       </div>
     ) : (

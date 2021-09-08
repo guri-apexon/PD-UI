@@ -19,6 +19,8 @@ import Loader from "../../Components/Loader/Loader";
 import { connect } from "react-redux";
 import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import { toast } from "react-toastify";
+import FilterChip from "./FilterChips";
+
 class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -210,11 +212,13 @@ class SearchPanel extends React.Component {
       searchQuery,
       sortValueProp,
       dateRangeValue,
+      setDateRangeValue,
       protocolSelected,
       clearAll,
       page,
       setPage,
       getSearchInput,
+      filters,
     } = this.props;
     const { accordionObj, defaultExpand } = this.state;
 
@@ -267,6 +271,13 @@ class SearchPanel extends React.Component {
                   </div> */}
                 </div>
               }
+            </div>
+            <div>
+              <FilterChip
+                filters={filters}
+                onSearchQuery={this.props.onSearchQuery}
+                setDateRangeValue={setDateRangeValue}
+              />
             </div>
             <div>
               <FilterSection

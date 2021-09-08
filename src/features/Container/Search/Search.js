@@ -68,6 +68,7 @@ const Search = (props) => {
   // const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [prevProtSelected, setPrevProtSelected] = useState("");
+  const [filterChipObject, setFilterChipObject] = useState(POST_OBJECT);
   // let arr = [];
   useEffect(() => {
     // axios.get('http://ca2spdml01q:8000/api/indications/?skip=0')
@@ -149,7 +150,21 @@ const Search = (props) => {
         );
         tempQuery.qcStatus =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
-        postObj.qcStatus = parsed.qcStatus.split("+");
+
+        let arr = [];
+        let str = parsed.qcStatus;
+        if (str.includes("QC1-QC2")) {
+          arr = str.split("+");
+          let index = arr.indexOf("QC1-QC2");
+
+          if (index !== -1) {
+            arr[index] = "QC1";
+          }
+          arr.push("QC2");
+        } else {
+          arr = str.split("+");
+        }
+        postObj.qcStatus = arr;
       }
       /* istanbul ignore else */
       if ("dateFrom" in parsed && "dateTo" in parsed) {
@@ -203,7 +218,6 @@ const Search = (props) => {
   // This useEffect will get called when indication and sponsor API returns response
   useEffect(() => {
     let params = props.location.search;
-    console.log("params :", params, sponsorData, indicationData);
     let parsed = {};
     /* istanbul ignore else */
     if (
@@ -249,16 +263,6 @@ const Search = (props) => {
   const handleClick = (e) => {
     e.preventdefault();
   };
-  // useEffect(() => {
-  //   if (searchInput.length > 0) {
-  //     setIdPresent(true);
-  //     let params = props.location.search;
-  //     const parsed = queryString.parse(params);
-
-  //     // dispatch({ type: "GET_SEARCH_FILTER", payload: searchInput });
-  //     // dispatch({ type: "GET_SEARCH_RESULT", payload: searchInput });
-  //   }
-  // }, [searchInput]);
 
   const saveRecentSearch = (input) => {
     // dispatch({
@@ -358,7 +362,20 @@ const Search = (props) => {
       postObj.documentStatus = parsed.documentStatus.split("+");
     }
     if ("qcStatus" in parsed) {
-      postObj.qcStatus = parsed.qcStatus.split("+");
+      let arr = [];
+      let str = parsed.qcStatus;
+      if (str.includes("QC1-QC2")) {
+        arr = str.split("+");
+        let index = arr.indexOf("QC1-QC2");
+
+        if (index !== -1) {
+          arr[index] = "QC1";
+        }
+        arr.push("QC2");
+      } else {
+        arr = str.split("+");
+      }
+      postObj.qcStatus = arr;
     }
     /* istanbul ignore else */
     if ("dateType" in parsed) {
@@ -391,11 +408,11 @@ const Search = (props) => {
             "Future date is not allowed. Please use date range picker to select valid date."
           );
         } else {
-          const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`;
+          // const dateQuery = `&dateFrom=${rangeDate.from}&dateTo=${rangeDate.to}`;
           // setSearchInput(dateQuery);
           postObj.dateFrom = rangeDate.from;
           postObj.dateTo = rangeDate.to;
-          resultQuery += dateQuery;
+          // resultQuery += dateQuery;
 
           let postObj1 = cloneDeep(postObj);
           let postQueryObj1 = cloneDeep(postQueryObj);
@@ -749,6 +766,85 @@ const Search = (props) => {
     dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
     setPostQueryObj(postObj);
   };
+  // const constructDataFromSearchQuery = (key, value) => {
+  //   let filterChip = cloneDeep(filterChipObject);
+  //   if (key === "toc") {
+  //     let extractValues = TOC.sectionContent.filter((item) =>
+  //       value.includes(item.id)
+  //     );
+  //     filterChip.toc = extractValues;
+  //     setFilterChipObject(filterChip);
+  //   } else if (key === "sponsor") {
+  //     let extractValues = sponsorData.sectionContent.filter((item) =>
+  //       value.includes(item.id)
+  //     );
+  //     filterChip.sponsor = extractValues;
+  //     setFilterChipObject(filterChip);
+  //   }
+  // };
+  useEffect(() => {
+    let filterChip = cloneDeep(filterChipObject);
+    console.log("Search Query", searchQuery);
+    for (let [key, value] of Object.entries(searchQuery)) {
+      // eslint-disable-next-line no-debugger
+      // debugger;
+      if (value.length > 0) {
+        if (key === "toc") {
+          let extractValues = TOC.sectionContent.filter((item) =>
+            value.includes(item.id)
+          );
+          filterChip.toc = extractValues;
+          setFilterChipObject(filterChip);
+        } else if (key === "sponsor") {
+          let extractValues = sponsorData.sectionContent.filter((item) =>
+            value.includes(item.id)
+          );
+          filterChip.sponsor = extractValues;
+          setFilterChipObject(filterChip);
+        } else if (key === "indication") {
+          let extractValues = indicationData.sectionContent.filter((item) =>
+            value.includes(item.id)
+          );
+          filterChip.indication = extractValues;
+          setFilterChipObject(filterChip);
+        } else if (key === "phase") {
+          let extractValues = phaseData.sectionContent.filter((item) =>
+            value.includes(item.id)
+          );
+          filterChip.phase = extractValues;
+          setFilterChipObject(filterChip);
+        } else if (key === "documentStatus") {
+          let extractValues = documentStatus.sectionContent.filter((item) =>
+            value.includes(item.id)
+          );
+          filterChip.documentStatus = extractValues;
+          setFilterChipObject(filterChip);
+        } else if (key === "qcStatus") {
+          let extractValues = qcStatus.sectionContent.filter((item) =>
+            value.includes(item.id)
+          );
+          filterChip.qcStatus = extractValues;
+          setFilterChipObject(filterChip);
+        } else if (key === "dateSection") {
+          let extractValues = dateSection.sectionContent.filter((item) =>
+            value.includes(item.id)
+          );
+          filterChip.dateSection = extractValues;
+          setFilterChipObject(filterChip);
+        } else if (key === "dateType") {
+          let extractValues = dateType.sectionContent.filter((item) =>
+            value.includes(item.id)
+          );
+          filterChip.dateType = extractValues;
+          setFilterChipObject(filterChip);
+        }
+      } else if (value.length === 0) {
+        // let filterChip = cloneDeep(filterChipObject);
+        filterChip[key] = [];
+        setFilterChipObject(filterChip);
+      }
+    }
+  }, [searchQuery]);
 
   const onSearchQuery = (list, identifier) => {
     setClearAll(false);
@@ -769,7 +865,7 @@ const Search = (props) => {
             setProtocolSelected((protocolSelected) =>
               protocolSelected.filter((item) => item !== data)
             );
-            console.log(protocolSelected);
+
             setPrevProtSelected("");
           } else {
             setProtocolSelected([protocolSelected[0], data]);
@@ -867,10 +963,12 @@ const Search = (props) => {
               sortValueProp={sortValueProp}
               dateRangeValue={dateRangeValue}
               protocolSelected={protocolSelected}
+              setDateRangeValue={setDateRangeValue}
               clearAll={clearAll}
               page={page}
               onSetPage={onSetPage}
               totalSearchResult={totalSearchResults}
+              filters={filterChipObject}
             />
           </div>
         </div>
