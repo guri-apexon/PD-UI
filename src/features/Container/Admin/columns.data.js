@@ -147,10 +147,10 @@ const columns = [
     header: "User Role",
     accessor: "userType",
     sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter("userType"),
+    filterFunction: createStringArraySearchFilter("userType"),
     filterComponent: createSelectFilterComponent(
       ["normal", "QC1", "QC2", "admin"],
-      { size: "small" }
+      { size: "small", multiple: true }
     ),
     // customCell: makeEditableSelectCell(["normal", "QC1", "QC2", "admin"]),
     width: 120,

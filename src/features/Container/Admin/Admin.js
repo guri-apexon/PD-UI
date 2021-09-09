@@ -6,6 +6,7 @@ import Tabs from "apollo-react/components/Tabs";
 import Card from "apollo-react/components/Card";
 import UsersTable from "./UsersTable";
 import UsersRole from "./UsersRole";
+import "./AdminTable.scss";
 
 import { usersList } from "./adminSlice";
 import ProtocolMap from "./ProtocolMap";
