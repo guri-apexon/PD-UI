@@ -40,7 +40,7 @@ const UsersTable = ({ initialRows }) => {
         //   console.log(rowsPerPage, sortedColumn, sortOrder, filters, page);
         //   return initialRows;
         // }}
-        initialSortedColumn="createdDate"
+        initialSortedColumn="date_of_registration"
         initialSortOrder="desc"
         rowsPerPageOptions={[5, 10, 15]}
         tablePaginationProps={{

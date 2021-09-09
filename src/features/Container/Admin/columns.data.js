@@ -31,8 +31,8 @@ export const IntegerFilter = ({ accessor, filters, updateFilterValue }) => {
 const DateCell = ({ row, column: { accessor } }) => {
   const rowValue = row[accessor];
   const date =
-    rowValue && moment(rowValue, "MM/DD/YYYY").isValid()
-      ? moment(rowValue, "MM/DD/YYYY").format("M/D/YYYY")
+    rowValue && moment(rowValue).isValid()
+      ? moment(rowValue).format("M/D/YYYY")
       : rowValue;
 
   return <div style={{ paddingTop: "12px" }}>{date}</div>;
@@ -45,7 +45,7 @@ const ActionCell = ({ row }) => (
         <IconButton
           size="small"
           onClick={() => console.log("edit")}
-          data-id={row.userId}
+          data-id={row.username}
           style={{ marginRight: 4 }}
         >
           <Pencil />
@@ -57,7 +57,7 @@ const ActionCell = ({ row }) => (
         <IconButton
           size="small"
           onClick={() => console.log("delete")}
-          data-id={row.userId}
+          data-id={row.username}
         >
           <Trash />
         </IconButton>
@@ -96,26 +96,26 @@ const Cell = ({ row, column }) => (
 const columns = [
   {
     header: "User ID",
-    accessor: "userId",
+    accessor: "username",
     sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter("userId"),
+    filterFunction: createStringSearchFilter("username"),
     filterComponent: TextFieldFilter,
     width: 90,
     customCell: Cell,
   },
   {
     header: "First Name",
-    accessor: "firstName",
+    accessor: "first_name",
     sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter("firstName"),
+    filterFunction: createStringSearchFilter("first_name"),
     filterComponent: TextFieldFilter,
     // customCell: EditableCell,
   },
   {
     header: "Last Name",
-    accessor: "lastName",
+    accessor: "last_name",
     sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter("lastName"),
+    filterFunction: createStringSearchFilter("last_name"),
     filterComponent: TextFieldFilter,
     // customCell: EditableCell,
   },
@@ -138,16 +138,16 @@ const columns = [
   },
   {
     header: "Created Date",
-    accessor: "createdDate",
+    accessor: "date_of_registration",
     sortFunction: compareDates,
     customCell: DateCell,
     width: 120,
   },
   {
     header: "User Role",
-    accessor: "userType",
+    accessor: "user_type",
     sortFunction: compareStrings,
-    filterFunction: createStringArraySearchFilter("userType"),
+    filterFunction: createStringArraySearchFilter("user_type"),
     filterComponent: createSelectFilterComponent(
       ["normal", "QC1", "QC2", "admin"],
       { size: "small", multiple: true }
