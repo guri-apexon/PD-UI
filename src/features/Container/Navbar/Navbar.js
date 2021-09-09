@@ -7,6 +7,7 @@ import {
   USER_MENU,
   QC1_MENU,
   QC2_MENU,
+  ADMIN_MENU,
 } from "../../../AppConstant/AppConstant";
 import { baseUrlSSO } from "../../../utils/api";
 
@@ -18,6 +19,8 @@ const setMenuItems = (value) => {
       return QC1_MENU;
     case "QC2":
       return QC2_MENU;
+    case "admin":
+      return ADMIN_MENU;
     default:
       return [];
   }
