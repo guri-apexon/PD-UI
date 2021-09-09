@@ -1,18 +1,18 @@
 image: node:12.20
 
-stages:
-  - test
-  - build_and_deploy
-
 cache:
   paths:
     - node_modules/
+
+stages:
+  - test
+  - build_and_deploy
 
 test:
   stage: test
 
   tags: 
-    - pd-ui-test
+    - pd-ui-dev
   script:
     - echo "Testing App"
     - npm install
@@ -20,7 +20,7 @@ test:
     - echo "Test successfully!"
   only:
     refs:
-      - CICD-develop
+      - develop
     variables: 
       - $ENVIRONMENT== "dev"
 
@@ -28,7 +28,7 @@ build:
   stage: build_and_deploy
 
   tags: 
-    - pd-ui-test
+    - pd-ui-dev
 
   before_script:
     - Copy-Item "env_backup.txt" -Destination ".env"
@@ -47,6 +47,6 @@ build:
       
   only:
     refs:
-      - CICD-develop
+      - develop
     variables: 
       - $ENVIRONMENT== "dev"

@@ -1,14 +1,14 @@
 #possible envs dev,test, svt, uat, prod
-REACT_APP_ENV=test
-NODE_ENV=test
+REACT_APP_ENV=dev
+NODE_ENV=dev
 PORT=80
 
 CIMS_API_VER=v1
 CIMS_USER=pd_app
 CIMS_PWD=pd_app1
 
-REACT_APP_BASIC=eXBkX2FwaV90ZXN0OnVSQFRuU2E1KiQxa2F+aGFzal4hNHQzMnJl
-
+#REACT_APP_BASIC=eXBkX2FwaV90ZXN0OnVSQFRuU2E1KiQxa2F+aGFzal4hNHQzMnJl
+REACT_APP_BASIC=eXBkX2FwaV9kZXY6Ump1MSphUyRedkA1M2FEZWhrbjJyIWE0fg==
 #DEV
 CIMS_DEV_URL=https://dev-protocoldigitalization.work.iqvia.com/v1
 #SVT

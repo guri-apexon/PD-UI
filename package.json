@@ -46,7 +46,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix --ext .js,.jsx .",
     "prepare": "husky",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "yarn:coverage": "yarn test -- --coverage --watchAll=false",
+    "yarn:single:coverage": "yarn test filterchip.test.js --coverage"
   },
   "browserslist": {
     "production": [
