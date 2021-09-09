@@ -23,7 +23,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
     </>
   );
 };
-
+/* istanbul ignore next*/
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   const [loader, setLoader] = useState(false);
   const handleDownload = async (row) => {
