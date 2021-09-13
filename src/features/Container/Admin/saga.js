@@ -1,9 +1,9 @@
 import { all, call, takeLatest, put } from "redux-saga/effects";
-import { httpCall } from "../../../utils/api";
+import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import { getUsers, getRoles, getProtocolMap } from "./adminSlice";
 
 function* usersFunction() {
-  const Url = `/userRows.json`;
+  const Url = `${BASE_URL_8000}/api/user/read_all_users`;
 
   const Config = {
     url: Url,
