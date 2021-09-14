@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const protocolSlice = createSlice({
   name: "protocol",
   initialState: {
+    userName: "",
     summary: {},
     view: {
       iqvdataSoa: [],
