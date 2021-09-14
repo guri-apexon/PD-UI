@@ -6,7 +6,7 @@ import Table from "apollo-react/components/Table";
 import columns from "./columns.data";
 
 const CustomButtonHeader = ({ toggleFilters, clear }) => (
-  <div>
+  <div data-testid="user-action-buttons">
     <Button
       size="small"
       variant="primary"

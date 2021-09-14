@@ -14,20 +14,6 @@ import {
 } from "apollo-react/components/Table";
 import TextField from "apollo-react/components/TextField";
 
-export const IntegerFilter = ({ accessor, filters, updateFilterValue }) => {
-  return (
-    <TextField
-      value={filters[accessor]}
-      name={accessor}
-      onChange={updateFilterValue}
-      type="number"
-      style={{ width: 74 }}
-      margin="none"
-      size="small"
-    />
-  );
-};
-
 const DateCell = ({ row, column: { accessor } }) => {
   const rowValue = row[accessor];
   const date =
@@ -74,6 +60,7 @@ const TextFieldFilter = ({ accessor, filters, updateFilterValue }) => {
       onChange={updateFilterValue}
       margin="none"
       size="small"
+      data-testid={accessor}
     />
   );
 };
