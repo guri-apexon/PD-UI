@@ -24,33 +24,36 @@ const DateCell = ({ row, column: { accessor } }) => {
   return <div style={{ paddingTop: "12px" }}>{date}</div>;
 };
 
-const ActionCell = ({ row }) => (
-  <div>
-    <span>
-      <Tooltip title="Edit">
-        <IconButton
-          size="small"
-          onClick={() => console.log("edit")}
-          data-id={row.username}
-          style={{ marginRight: 4 }}
-        >
-          <Pencil />
-        </IconButton>
-      </Tooltip>
-    </span>
-    <span>
-      <Tooltip title="Delete">
-        <IconButton
-          size="small"
-          onClick={() => console.log("delete")}
-          data-id={row.username}
-        >
-          <Trash />
-        </IconButton>
-      </Tooltip>
-    </span>
-  </div>
-);
+const ActionCell = ({ row }) => {
+  const { username, onDelete } = row;
+  return (
+    <div>
+      <span>
+        <Tooltip title="Edit">
+          <IconButton
+            size="small"
+            onClick={() => console.log("edit")}
+            data-id={row.username}
+            style={{ marginRight: 4 }}
+          >
+            <Pencil />
+          </IconButton>
+        </Tooltip>
+      </span>
+      <span>
+        <Tooltip title="Delete">
+          <IconButton
+            size="small"
+            onClick={() => onDelete(username)}
+            data-id={row.username}
+          >
+            <Trash />
+          </IconButton>
+        </Tooltip>
+      </span>
+    </div>
+  );
+};
 
 const TextFieldFilter = ({ accessor, filters, updateFilterValue }) => {
   return (
