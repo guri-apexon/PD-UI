@@ -1,4 +1,5 @@
 import { all, call, takeLatest, put, select } from "redux-saga/effects";
+import moment from "moment";
 import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import { getUsers, getRoles, getProtocolMap } from "./adminSlice";
@@ -12,8 +13,17 @@ export function* usersFunction() {
   };
   try {
     const data = yield call(httpCall, Config);
-    console.log(data.data);
-    yield put(getUsers(data.data));
+    if (data.success) {
+      const userData = data.data.map((item) => {
+        item.date_of_registration = moment(item.date_of_registration).format(
+          "MM/DD/YYYY"
+        );
+        return item;
+      });
+
+      console.log(userData);
+      yield put(getUsers(userData));
+    }
   } catch (err) {
     console.log(err);
   }
