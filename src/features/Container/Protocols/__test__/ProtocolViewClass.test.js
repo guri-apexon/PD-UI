@@ -235,17 +235,4 @@ describe("Protocol View container component", () => {
     let outsideDiv = container.getByTestId("protocol-column-wrapper");
     fireEvent.click(outsideDiv);
   });
-  xtest("should render ProtocolViewClass section dropdown click scroll to Summary Section", () => {
-    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
-    const mockDispatchFn = jest.fn();
-    useDispatchSpy.mockReturnValue(mockDispatchFn);
-    view.err = null;
-    let container = render(
-      <ProtocolViewClass view={view} data={subSections} listData={listData} />,
-      state
-    );
-    let section = container.getByTestId("dropdown-wrapper-test").children[2];
-    // console.log("-----------------arrow------------", arrowButton);
-    fireEvent.click(section);
-  });
 });
