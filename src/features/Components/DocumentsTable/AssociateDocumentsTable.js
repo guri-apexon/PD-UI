@@ -103,7 +103,6 @@ const columns = [
   {
     accessor: "action",
     customCell: ActionCell,
-    width: "3%",
   },
   {
     accessor: "versionNumber",

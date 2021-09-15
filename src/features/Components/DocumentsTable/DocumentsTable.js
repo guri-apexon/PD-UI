@@ -61,7 +61,7 @@ const columns = [
   },
   {
     header: "Uploaded By",
-    accessor: "userCreated",
+    accessor: "userName",
   },
 ];
 
