@@ -72,12 +72,35 @@ function* deleteUser(action) {
     toast.error(`User is not deleted`);
   }
 }
+function* updateUser(action) {
+  // const Url = `/protocol-map.json`;
+  const editedRow = action.payload;
+  // const Config = {
+  //   url: Url,
+  //   method: "GET",
+  // };
+  try {
+    // const data = yield call(httpCall, Config);
+    // console.log(data.data);
+    const state = yield select();
+    const userRows = state.admin.users;
+    const updatedUserList = userRows.map((row) =>
+      row.username === editedRow.username ? editedRow : row
+    );
+    yield put(getUsers(updatedUserList));
+    toast.info(`User details are successfully modified`);
+  } catch (err) {
+    console.log(err);
+    toast.error(`User details is not updated`);
+  }
+}
 
 export function* watchAdmin() {
   yield takeLatest("GET_USERS_SAGA", usersFunction);
   yield takeLatest("GET_ROLES_SAGA", getRolesFunction);
   yield takeLatest("GET_PROTOCOL_MAP_SAGA", getProtocolMapData);
   yield takeLatest("DELETE_USER_SAGA", deleteUser);
+  yield takeLatest("UPDATE_USER_SAGA", updateUser);
 }
 
 export default function* adminSaga() {

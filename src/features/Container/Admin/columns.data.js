@@ -6,6 +6,7 @@ import Pencil from "apollo-react-icons/Pencil";
 import Trash from "apollo-react-icons/Trash";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "apollo-react/components/IconButton";
+import Button from "apollo-react/components/Button";
 import {
   compareDates,
   compareStrings,
@@ -13,6 +14,15 @@ import {
   createSelectFilterComponent,
 } from "apollo-react/components/Table";
 import TextField from "apollo-react/components/TextField";
+import MenuItem from "apollo-react/components/MenuItem";
+import Select from "apollo-react/components/Select";
+
+const fieldStyles = {
+  style: {
+    marginTop: 3,
+    marginLeft: -8,
+  },
+};
 
 const DateCell = ({ row, column: { accessor } }) => {
   const rowValue = row[accessor];
@@ -25,14 +35,40 @@ const DateCell = ({ row, column: { accessor } }) => {
 };
 
 const ActionCell = ({ row }) => {
-  const { username, onDelete } = row;
-  return (
+  const {
+    username,
+    onRowEdit,
+    onRowSave,
+    editMode,
+    onCancel,
+    editedRow,
+    onDelete,
+  } = row;
+  return editMode ? (
+    <div style={{ marginTop: 8, whiteSpace: "nowrap" }}>
+      <Button size="small" style={{ marginRight: 8 }} onClick={onCancel}>
+        {"Cancel"}
+      </Button>
+      <Button
+        size="small"
+        variant="primary"
+        onClick={onRowSave}
+        disabled={
+          Object.values(editedRow).some((item) => !item) ||
+          (editMode &&
+            !Object.keys(editedRow).some((key) => editedRow[key] !== row[key]))
+        }
+      >
+        {"Save"}
+      </Button>
+    </div>
+  ) : (
     <div>
       <span>
         <Tooltip title="Edit">
           <IconButton
             size="small"
-            onClick={() => console.log("edit")}
+            onClick={() => onRowEdit(username)}
             data-id={row.username}
             style={{ marginRight: 4 }}
           >
@@ -77,6 +113,43 @@ export function createStringArraySearchFilter(accessor) {
     );
 }
 
+const EditableCell = ({ row, column: { accessor: key } }) =>
+  row.editMode ? (
+    <TextField
+      size="small"
+      fullWidth
+      value={row.editedRow[key]}
+      onChange={(e) => row.editRow(key, e.target.value)}
+      error={!row.editedRow[key]}
+      helperText={!row.editedRow[key] && "Required"}
+      {...fieldStyles}
+    />
+  ) : (
+    row[key]
+  );
+
+const makeEditableSelectCell =
+  (options) =>
+  ({ row, column: { accessor: key } }) =>
+    row.editMode ? (
+      <Select
+        size="small"
+        fullWidth
+        canDeselect={false}
+        value={row.editedRow[key]}
+        onChange={(e) => row.editRow(key, e.target.value)}
+        {...fieldStyles}
+      >
+        {options.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    ) : (
+      row[key]
+    );
+
 const Cell = ({ row, column }) => (
   <div style={{ paddingTop: row.editMode ? 12 : 0 }}>
     {row[column.accessor]}
@@ -99,7 +172,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("first_name"),
     filterComponent: TextFieldFilter,
-    // customCell: EditableCell,
+    customCell: EditableCell,
   },
   {
     header: "Last Name",
@@ -107,7 +180,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("last_name"),
     filterComponent: TextFieldFilter,
-    // customCell: EditableCell,
+    customCell: EditableCell,
   },
   {
     header: "Email",
@@ -115,7 +188,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("email"),
     filterComponent: TextFieldFilter,
-    // customCell: EditableCell,
+    customCell: EditableCell,
   },
   {
     header: "Country",
@@ -123,7 +196,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("country"),
     filterComponent: TextFieldFilter,
-    // customCell: EditableCell,
+    customCell: EditableCell,
     width: 120,
   },
   {
@@ -142,7 +215,7 @@ const columns = [
       ["normal", "QC1", "QC2", "admin"],
       { size: "small", multiple: true }
     ),
-    // customCell: makeEditableSelectCell(["normal", "QC1", "QC2", "admin"]),
+    customCell: makeEditableSelectCell(["normal", "QC1", "QC2", "admin"]),
     width: 120,
   },
   {

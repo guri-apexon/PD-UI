@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import FilterIcon from "apollo-react-icons/Filter";
 import PlusIcon from "apollo-react-icons/Plus";
@@ -6,7 +6,7 @@ import Button from "apollo-react/components/Button";
 import Table from "apollo-react/components/Table";
 
 import columns from "./columns.data";
-// import { getUsers } from "./adminSlice";
+import { getUsers } from "./adminSlice";
 
 const CustomButtonHeader = ({ toggleFilters, clear }) => (
   <div data-testid="user-action-buttons">
@@ -32,6 +32,39 @@ const CustomButtonHeader = ({ toggleFilters, clear }) => (
 
 const UsersTable = ({ initialRows }) => {
   const dispatch = useDispatch();
+  const [editedRow, setEditedRow] = useState({});
+
+  const onRowEdit = (userId) => {
+    setEditedRow(initialRows.find((row) => row.username === userId));
+  };
+
+  const onRowSave = () => {
+    let confirmBox = window.confirm(
+      "Do you want to save the modified details?"
+    );
+    if (confirmBox) {
+      dispatch({ type: "UPDATE_USER_SAGA", payload: editedRow });
+      dispatch(
+        getUsers(
+          initialRows.map((row) =>
+            row.username === editedRow.username ? editedRow : row
+          )
+        )
+      );
+      setEditedRow({});
+    } else {
+      setEditedRow({});
+    }
+  };
+
+  const onCancel = () => {
+    setEditedRow({});
+  };
+
+  const editRow = (key, value) => {
+    setEditedRow({ ...editedRow, [key]: value });
+  };
+
   const onDelete = (userId) => {
     let confirmBox = window.confirm("Do you want to delete the Selected User?");
     if (confirmBox) {
@@ -45,7 +78,13 @@ const UsersTable = ({ initialRows }) => {
         columns={columns}
         rows={initialRows.map((row) => ({
           ...row,
+          onRowEdit,
+          onRowSave,
+          onCancel,
           onDelete,
+          editRow,
+          editMode: editedRow.username === row.username,
+          editedRow,
           key: row.username,
         }))}
         // onChange={(rowsPerPage, sortedColumn, sortOrder, filters, page) => {
