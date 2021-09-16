@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from "react";
 import DocumentsTable from "../../Components/DocumentsTable/DocumentsTable";
 import AssociateDocumentsTable from "../../Components/DocumentsTable/AssociateDocumentsTable";
 
@@ -11,13 +12,47 @@ import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
 import FileDownload from "js-file-download";
+import cloneDeep from "lodash/cloneDeep";
 
 const Documents = ({ handleChangeTab }) => {
   const summary = useSelector(protocolSummary);
   const associateDocuments = useSelector(associateDocs);
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [loader, setLoader] = useState(false);
+  const [summaryData, setSummaryData] = useState({});
+  const [userName, setUserName] = useState("");
   // const [completed, setCompleted] = useState(0);
+
+  const getUserName = async (userID) => {
+    const config = {
+      url: `${BASE_URL_8000}/api/user/read_all_users?userId=${userID}`,
+      method: "GET",
+    };
+    const userDetailResp = await httpCall(config);
+    console.log(userDetailResp);
+    if (userDetailResp.success) {
+      const userName = `${userDetailResp.data.first_name} ${userDetailResp.data.last_name}`;
+      setUserName(userName);
+    } else {
+      setUserName("");
+    }
+  };
+  useEffect(() => {
+    let newObj = cloneDeep(summary.data);
+    newObj.userName = userName;
+    setSummaryData(newObj);
+  }, [userName]);
+  useEffect(() => {
+    if (summary.success && summary.data.userId) {
+      if (isNaN(parseInt(summary.data.userId))) {
+        let newObj = cloneDeep(summary.data);
+        newObj.userName = "-";
+        setSummaryData(newObj);
+      } else {
+        getUserName(summary.data.userId);
+      }
+    }
+  }, [summary]);
 
   const setProtocolToDownload = (id) => {
     console.log(id);
@@ -76,6 +111,7 @@ const Documents = ({ handleChangeTab }) => {
       } catch (e) {
         setLoader(false);
         console.log("Compare Resp", e.response);
+        /* istanbul ignore next*/
         if (e.response && e.response.data) {
           toast.error(e.response.data.detail);
         } else {
@@ -93,7 +129,9 @@ const Documents = ({ handleChangeTab }) => {
             className="source-document-tab"
             data-testid="source-document-tab"
           >
-            <DocumentsTable initialsRow={summary.success && [summary.data]} />
+            {"userName" in summaryData && summaryData.userName && (
+              <DocumentsTable initialsRow={[summaryData]} />
+            )}
           </div>
         </Grid>
         {associateDocuments && associateDocuments.length > 1 && (

@@ -1,11 +1,12 @@
 import React from "react";
-import moment from "moment";
+// import moment from "moment";
 
 import Cog from "apollo-react-icons/Cog";
 import Pencil from "apollo-react-icons/Pencil";
 import Trash from "apollo-react-icons/Trash";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "apollo-react/components/IconButton";
+import Button from "apollo-react/components/Button";
 import {
   compareDates,
   compareStrings,
@@ -13,58 +14,90 @@ import {
   createSelectFilterComponent,
 } from "apollo-react/components/Table";
 import TextField from "apollo-react/components/TextField";
+import MenuItem from "apollo-react/components/MenuItem";
+import Select from "apollo-react/components/Select";
 
-export const IntegerFilter = ({ accessor, filters, updateFilterValue }) => {
-  return (
-    <TextField
-      value={filters[accessor]}
-      name={accessor}
-      onChange={updateFilterValue}
-      type="number"
-      style={{ width: 74 }}
-      margin="none"
-      size="small"
-    />
+const fieldStyles = {
+  style: {
+    marginTop: 3,
+    marginLeft: -8,
+  },
+};
+
+// const DateCell = ({ row, column: { accessor } }) => {
+//   const rowValue = row[accessor];
+//   const date =
+//     rowValue && moment(rowValue).isValid()
+//       ? moment(rowValue).format("MM/DD/YYYY")
+//       : rowValue;
+
+//   return <div style={{ paddingTop: "12px" }}>{date}</div>;
+// };
+
+const ActionCell = ({ row }) => {
+  const {
+    username,
+    onRowEdit,
+    onRowSave,
+    editMode,
+    onCancel,
+    editedRow,
+    onDelete,
+  } = row;
+  return editMode ? (
+    <div style={{ marginTop: 8, whiteSpace: "nowrap" }}>
+      <Button
+        data-testid="edit-cancel"
+        size="small"
+        style={{ marginRight: 8 }}
+        onClick={onCancel}
+      >
+        {"Cancel"}
+      </Button>
+      <Button
+        data-testid="edit-save"
+        size="small"
+        variant="primary"
+        onClick={onRowSave}
+        disabled={
+          Object.values(editedRow).some((item) => !item) ||
+          (editMode &&
+            !Object.keys(editedRow).some((key) => editedRow[key] !== row[key]))
+        }
+      >
+        {"Save"}
+      </Button>
+    </div>
+  ) : (
+    <div>
+      <span>
+        <Tooltip title="Edit">
+          <IconButton
+            size="small"
+            onClick={() => onRowEdit(username)}
+            data-id={row.username}
+            data-testid={`edit-${row.username}`}
+            style={{ marginRight: 4 }}
+          >
+            <Pencil />
+          </IconButton>
+        </Tooltip>
+      </span>
+      <span>
+        <Tooltip title="Delete">
+          <IconButton
+            data-testid={`delete-${row.username}`}
+            size="small"
+            onClick={() => onDelete(username)}
+            data-id={row.username}
+          >
+            <Trash />
+          </IconButton>
+        </Tooltip>
+      </span>
+    </div>
   );
 };
-
-const DateCell = ({ row, column: { accessor } }) => {
-  const rowValue = row[accessor];
-  const date =
-    rowValue && moment(rowValue).isValid()
-      ? moment(rowValue).format("M/D/YYYY")
-      : rowValue;
-
-  return <div style={{ paddingTop: "12px" }}>{date}</div>;
-};
-
-const ActionCell = ({ row }) => (
-  <div>
-    <span>
-      <Tooltip title="Edit">
-        <IconButton
-          size="small"
-          onClick={() => console.log("edit")}
-          data-id={row.username}
-          style={{ marginRight: 4 }}
-        >
-          <Pencil />
-        </IconButton>
-      </Tooltip>
-    </span>
-    <span>
-      <Tooltip title="Delete">
-        <IconButton
-          size="small"
-          onClick={() => console.log("delete")}
-          data-id={row.username}
-        >
-          <Trash />
-        </IconButton>
-      </Tooltip>
-    </span>
-  </div>
-);
 
 const TextFieldFilter = ({ accessor, filters, updateFilterValue }) => {
   return (
@@ -74,6 +107,7 @@ const TextFieldFilter = ({ accessor, filters, updateFilterValue }) => {
       onChange={updateFilterValue}
       margin="none"
       size="small"
+      data-testid={accessor}
     />
   );
 };
@@ -86,6 +120,45 @@ export function createStringArraySearchFilter(accessor) {
       (value) => value.toUpperCase() === row[accessor].toUpperCase()
     );
 }
+
+const EditableCell = ({ row, column: { accessor: key } }) =>
+  row.editMode ? (
+    <TextField
+      data-testid={`editablecell-${row.username}`}
+      size="small"
+      fullWidth
+      value={row.editedRow[key]}
+      onChange={(e) => row.editRow(key, e.target.value)}
+      error={!row.editedRow[key]}
+      helperText={!row.editedRow[key] && "Required"}
+      {...fieldStyles}
+    />
+  ) : (
+    row[key]
+  );
+
+const makeEditableSelectCell =
+  (options) =>
+  ({ row, column: { accessor: key } }) =>
+    row.editMode ? (
+      <Select
+        data-testid={`editablecell-select-${row.username}`}
+        size="small"
+        fullWidth
+        canDeselect={false}
+        value={row.editedRow[key]}
+        onChange={(e) => row.editRow(key, e.target.value)}
+        {...fieldStyles}
+      >
+        {options.map((option) => (
+          <MenuItem key={option} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    ) : (
+      row[key]
+    );
 
 const Cell = ({ row, column }) => (
   <div style={{ paddingTop: row.editMode ? 12 : 0 }}>
@@ -109,7 +182,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("first_name"),
     filterComponent: TextFieldFilter,
-    // customCell: EditableCell,
+    customCell: Cell,
   },
   {
     header: "Last Name",
@@ -117,7 +190,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("last_name"),
     filterComponent: TextFieldFilter,
-    // customCell: EditableCell,
+    customCell: Cell,
   },
   {
     header: "Email",
@@ -125,7 +198,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("email"),
     filterComponent: TextFieldFilter,
-    // customCell: EditableCell,
+    customCell: Cell,
   },
   {
     header: "Country",
@@ -133,14 +206,14 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("country"),
     filterComponent: TextFieldFilter,
-    // customCell: EditableCell,
+    customCell: EditableCell,
     width: 120,
   },
   {
     header: "Created Date",
     accessor: "date_of_registration",
     sortFunction: compareDates,
-    customCell: DateCell,
+    customCell: Cell,
     width: 120,
   },
   {
@@ -152,7 +225,7 @@ const columns = [
       ["normal", "QC1", "QC2", "admin"],
       { size: "small", multiple: true }
     ),
-    // customCell: makeEditableSelectCell(["normal", "QC1", "QC2", "admin"]),
+    customCell: makeEditableSelectCell(["normal", "QC1", "QC2", "admin"]),
     width: 120,
   },
   {

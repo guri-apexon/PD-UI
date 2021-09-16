@@ -3,7 +3,8 @@ import { MemoryRouter } from "react-router-dom";
 import { render, fireEvent } from "../../../../test-utils/test-utils";
 import { cleanup } from "@testing-library/react";
 import Documents from "../Documents";
-import axios from "axios";
+// import axios from "axios";
+import * as api from "../../../../utils/api";
 
 const AssociateDocs = [
   {
@@ -161,6 +162,7 @@ const summaryData = {
     "A Phase 1, 2-part, Single-dose, Non-Randomized, Open-label, Parallel-group Study to Assess the Pharmacokinetics and Safety of Lenabasum in Subjects with Renal Impairment Compared with Matched Controls",
   amendmentNumber: null,
   approvalDate: null,
+  userName: "Subha",
 };
 const initialState = {
   initialState: {
@@ -190,6 +192,134 @@ const initialState = {
   },
 };
 
+const summaryDataWithoutUserID = {
+  aidocId: "2a5111a6-5465-46f5-b133-a85724bae4ef",
+  amendment: "Y",
+  completenessOfDigitization: null,
+  digitizedConfidenceInterval: null,
+  documentFilePath:
+    "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\2a5111a6-5465-46f5-b133-a85724bae4ef\\Protocol-2020-04-09-VER-000001.pdf",
+  documentStatus: "final",
+  draftVersion: null,
+  errorCode: null,
+  errorReason: null,
+  fileName: "Protocol-2020-04-09-VER-000001.pdf",
+  indication: "ABCC6 deficiency",
+  sponsor: "Corbus Pharmaceuticals",
+  versionNumber: "10.1",
+  percentComplete: "100",
+  projectId: "",
+  protocol: "JBT101-RIS-001",
+  userId: "bulk",
+  status: "PROCESS_COMPLETED",
+  uploadDate: "2021-04-08T09:51:34.077000",
+  moleculeDevice: "test",
+  phase: "I",
+  protocolTitle:
+    "A Phase 1, 2-part, Single-dose, Non-Randomized, Open-label, Parallel-group Study to Assess the Pharmacokinetics and Safety of Lenabasum in Subjects with Renal Impairment Compared with Matched Controls",
+  amendmentNumber: null,
+  approvalDate: null,
+  userName: "",
+};
+const AssociateDocsWithOneDoc = [
+  {
+    id: "ca88a438-b426-45fb-b5b7-4b5752901f30",
+    userId: "1019814",
+    fileName: "Protocol-2020-04-14-DOD-000001.pdf",
+    documentFilePath:
+      "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\ca88a438-b426-45fb-b5b7-4b5752901f30\\Protocol-2020-04-14-DOD-000001.pdf",
+    protocol: "JBT101-RIS-001",
+    projectId: null,
+    sponsor: "Corbus Pharmaceuticals",
+    indication: "Renal Impairment Compared with Matched Controls",
+    moleculeDevice: "Lenabasum (JBT-101)",
+    amendment: "Y",
+    isProcessing: false,
+    percentComplete: "100",
+    compareStatus: null,
+    iqvXmlPathProc: null,
+    iqvXmlPathComp: null,
+    shortTitle: null,
+    versionNumber: "1",
+    documentStatus: "final",
+    draftVersion: null,
+    errorCode: null,
+    errorReason: null,
+    status: "PROCESS_COMPLETED",
+    phase: "I",
+    digitizedConfidenceInterval: null,
+    completenessOfDigitization: null,
+    protocolTitle:
+      "A Phase 1, 2-part, Single-dose, Non-Randomized, Open-label, Parallel-group Study to Assess the Pharmacokinetics and Safety of Lenabasum in Subjects with Renal Impairment Compared with Matched Controls",
+    studyStatus: "1",
+    sourceSystem: "Dev",
+    environment: "dev",
+    uploadDate: "2021-01-18T16:45:30.723000",
+    timeCreated: "2021-01-18T16:45:30.723000",
+    lastUpdated: "2021-01-18T18:43:34.983000",
+    userCreated: null,
+    userUpdated: null,
+    approvalDate: "2020-04-14T17:38:34.887000",
+    isActive: true,
+    nctId: null,
+    protocolSelected: [],
+  },
+];
+const initialState2 = {
+  initialState: {
+    protocol: {
+      summary: {
+        loading: false,
+        success: true,
+        data: summaryDataWithoutUserID,
+      },
+      view: {
+        iqvdataSoa: [],
+        iqvdataSummary: {},
+        iqvdataToc: {
+          data: [],
+        },
+        loader: true,
+      },
+      associateDocs: AssociateDocs,
+      compare: {
+        loading: false,
+        called: false,
+        iqvdata: "",
+        error: false,
+        message: "",
+      },
+    },
+  },
+};
+const initialState3 = {
+  initialState: {
+    protocol: {
+      summary: {
+        loading: false,
+        success: true,
+        data: summaryDataWithoutUserID,
+      },
+      view: {
+        iqvdataSoa: [],
+        iqvdataSummary: {},
+        iqvdataToc: {
+          data: [],
+        },
+        loader: true,
+      },
+      associateDocs: AssociateDocsWithOneDoc,
+      compare: {
+        loading: false,
+        called: false,
+        iqvdata: "",
+        error: false,
+        message: "",
+      },
+    },
+  },
+};
+
 afterEach(cleanup);
 describe("Should render document tab", () => {
   test("Should Render without error", () => {
@@ -197,7 +327,8 @@ describe("Should render document tab", () => {
     render(
       <MemoryRouter>
         <Documents handleChangeTab={handleChangeTab} />
-      </MemoryRouter>
+      </MemoryRouter>,
+      initialState
     );
   });
 
@@ -211,57 +342,6 @@ describe("Should render document tab", () => {
     );
     const downloadButton = container.getByTestId("compare-download-button");
     fireEvent.click(downloadButton);
-  });
-  test("Should click on one checkbox and click download", () => {
-    const handleChangeTab = jest.fn();
-    const container = render(
-      <MemoryRouter>
-        <Documents handleChangeTab={handleChangeTab} />
-      </MemoryRouter>,
-      initialState
-    );
-    const checkbox1 = container.getByTestId("associate-document-tab")
-      .children[0].children[0].children[1].children[0].children[1].children[0]
-      .children[0].children[0].children[0].children[0];
-    fireEvent.click(checkbox1);
-    // const checkbox2 = container.getByTestId("associate-document-tab")
-    //   .children[0].children[0].children[1].children[0].children[1].children[1]
-    //   .children[0].children[0].children[0].children[0];
-    // fireEvent.click(checkbox2);
-    const downloadButton = container.getByTestId("compare-download-button");
-    fireEvent.click(downloadButton);
-    // expect(mockCallApi).toHaveBeenCalledTimes(1);
-  });
-  test("Should click on the checkbox and click download", () => {
-    const handleChangeTab = jest.fn();
-    const data = {
-      data: {
-        compareCSVPath:
-          "//quintiles.net/enterprise/Services/protdigtest/pilot_iqvxml/compare/d3893842-3a4f-4ce9-b46e-bd73054e26dc/d3893842-3a4f-4ce9-b46e-bd73054e26dc.compare_detail.csv",
-        numChangesTotal: 618,
-      },
-    };
-    const mockCallApi = jest
-      .spyOn(axios, "get")
-      .mockImplementation(() => Promise.resolve(data));
-    console.log(mockCallApi);
-    const container = render(
-      <MemoryRouter>
-        <Documents handleChangeTab={handleChangeTab} />
-      </MemoryRouter>,
-      initialState
-    );
-    const checkbox1 = container.getByTestId("associate-document-tab")
-      .children[0].children[0].children[1].children[0].children[1].children[0]
-      .children[0].children[0].children[0].children[0];
-    fireEvent.click(checkbox1);
-    const checkbox2 = container.getByTestId("associate-document-tab")
-      .children[0].children[0].children[1].children[0].children[1].children[1]
-      .children[0].children[0].children[0].children[0];
-    fireEvent.click(checkbox2);
-    const downloadButton = container.getByTestId("compare-download-button");
-    fireEvent.click(downloadButton);
-    // expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
   test("Should try to select three protocols", () => {
     const handleChangeTab = jest.fn();
@@ -320,32 +400,151 @@ describe("Should render document tab", () => {
       .children[0].children[0].children[0].children[0];
     fireEvent.click(checkbox2);
   });
-  //   test("Should download response with error", () => {
-  //     const handleChangeTab = jest.fn();
-  //     const data = {
-  //       data: {
-  //         detail: "No result found",
-  //       },
-  //     };
-  //     const mockCallApi = jest
-  //       .spyOn(axios, "get")
-  //       .mockImplementation(() => Promise.reject(new Error("data")));
-  //     const container = render(
-  //       <MemoryRouter>
-  //         <Documents handleChangeTab={handleChangeTab} />
-  //       </MemoryRouter>,
-  //       initialState
-  //     );
-  //     const checkbox1 = container.getByTestId("associate-document-tab")
-  //       .children[0].children[0].children[1].children[0].children[1].children[0]
-  //       .children[0].children[0].children[0].children[0];
-  //     fireEvent.click(checkbox1);
-  //     const checkbox2 = container.getByTestId("associate-document-tab")
-  //       .children[0].children[0].children[1].children[0].children[1].children[1]
-  //       .children[0].children[0].children[0].children[0];
-  //     fireEvent.click(checkbox2);
-  //     const downloadButton = container.getByTestId("compare-download-button");
-  //     fireEvent.click(downloadButton);
-  //     expect(mockCallApi).toHaveBeenCalledTimes(1);
-  //   });
+  test("Should click on one checkbox and click download", () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState
+    );
+    const checkbox1 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    // const checkbox2 = container.getByTestId("associate-document-tab")
+    //   .children[0].children[0].children[1].children[0].children[1].children[1]
+    //   .children[0].children[0].children[0].children[0];
+    // fireEvent.click(checkbox2);
+    const downloadButton = container.getByTestId("compare-download-button");
+    fireEvent.click(downloadButton);
+    // expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+  test("Should click on the checkbox and click download", async () => {
+    const handleChangeTab = jest.fn();
+    const data = {
+      success: true,
+      data: "",
+      message: "Success",
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(data));
+
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState
+    );
+    const checkbox1 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const downloadButton = container.getByTestId("compare-download-button");
+    fireEvent.click(downloadButton);
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
+  test("Should click on the checkbox and click download with no content", async () => {
+    const handleChangeTab = jest.fn();
+    const data = {
+      success: true,
+      data: "",
+      message: "No-Content",
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(data));
+
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState
+    );
+    const checkbox1 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const downloadButton = container.getByTestId("compare-download-button");
+    fireEvent.click(downloadButton);
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
+  test("Should click on the checkbox and click download with no result", async () => {
+    const handleChangeTab = jest.fn();
+    const data = {
+      success: false,
+      data: "",
+      message: "Not-Found",
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(data));
+
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState
+    );
+    const checkbox1 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId("associate-document-tab")
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const downloadButton = container.getByTestId("compare-download-button");
+    fireEvent.click(downloadButton);
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
+  test("Should check isNan for userID", async () => {
+    const handleChangeTab = jest.fn();
+    const data = {
+      success: true,
+      data: "",
+      message: "Not-Found",
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(data));
+
+    render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState2
+    );
+
+    expect(mockCallApi).toHaveBeenCalledTimes(0);
+  });
+  test("Should check for user detail fetch failure", async () => {
+    const handleChangeTab = jest.fn();
+    const data = {
+      success: false,
+      data: "",
+      message: "Not-Found",
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(data));
+
+    render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState3
+    );
+
+    expect(mockCallApi).toHaveBeenCalledTimes(0);
+  });
 });
