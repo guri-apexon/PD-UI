@@ -46,10 +46,16 @@ const ActionCell = ({ row }) => {
   } = row;
   return editMode ? (
     <div style={{ marginTop: 8, whiteSpace: "nowrap" }}>
-      <Button size="small" style={{ marginRight: 8 }} onClick={onCancel}>
+      <Button
+        data-testid="edit-cancel"
+        size="small"
+        style={{ marginRight: 8 }}
+        onClick={onCancel}
+      >
         {"Cancel"}
       </Button>
       <Button
+        data-testid="edit-save"
         size="small"
         variant="primary"
         onClick={onRowSave}
@@ -70,6 +76,7 @@ const ActionCell = ({ row }) => {
             size="small"
             onClick={() => onRowEdit(username)}
             data-id={row.username}
+            data-testid={`edit-${row.username}`}
             style={{ marginRight: 4 }}
           >
             <Pencil />
@@ -79,6 +86,7 @@ const ActionCell = ({ row }) => {
       <span>
         <Tooltip title="Delete">
           <IconButton
+            data-testid={`delete-${row.username}`}
             size="small"
             onClick={() => onDelete(username)}
             data-id={row.username}
@@ -116,6 +124,7 @@ export function createStringArraySearchFilter(accessor) {
 const EditableCell = ({ row, column: { accessor: key } }) =>
   row.editMode ? (
     <TextField
+      data-testid={`editablecell-${row.username}`}
       size="small"
       fullWidth
       value={row.editedRow[key]}
@@ -133,6 +142,7 @@ const makeEditableSelectCell =
   ({ row, column: { accessor: key } }) =>
     row.editMode ? (
       <Select
+        data-testid={`editablecell-select-${row.username}`}
         size="small"
         fullWidth
         canDeselect={false}
@@ -172,7 +182,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("first_name"),
     filterComponent: TextFieldFilter,
-    customCell: EditableCell,
+    customCell: Cell,
   },
   {
     header: "Last Name",
@@ -180,7 +190,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("last_name"),
     filterComponent: TextFieldFilter,
-    customCell: EditableCell,
+    customCell: Cell,
   },
   {
     header: "Email",
@@ -188,7 +198,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("email"),
     filterComponent: TextFieldFilter,
-    customCell: EditableCell,
+    customCell: Cell,
   },
   {
     header: "Country",

@@ -6,7 +6,6 @@ import Button from "apollo-react/components/Button";
 import Table from "apollo-react/components/Table";
 
 import columns from "./columns.data";
-import { getUsers } from "./adminSlice";
 
 const CustomButtonHeader = ({ toggleFilters, clear }) => (
   <div data-testid="user-action-buttons">
@@ -44,13 +43,6 @@ const UsersTable = ({ initialRows }) => {
     );
     if (confirmBox) {
       dispatch({ type: "UPDATE_USER_SAGA", payload: editedRow });
-      dispatch(
-        getUsers(
-          initialRows.map((row) =>
-            row.username === editedRow.username ? editedRow : row
-          )
-        )
-      );
       setEditedRow({});
     } else {
       setEditedRow({});
