@@ -13,7 +13,7 @@ import dashboardslice, {
   setLoading,
   getSavedSearches,
   setApiError,
-} from "./dashboardSlice";
+} from "../dashboardSlice";
 
 const initialState = {
   protocols: [{ id: 1 }],

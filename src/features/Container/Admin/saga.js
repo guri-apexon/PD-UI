@@ -60,45 +60,61 @@ function* getProtocolMapData() {
     console.log(err);
   }
 }
-function* deleteUser(action) {
-  // const Url = `/protocol-map.json`;
+export function* deleteUser(action) {
+  const Url = `${BASE_URL_8000}/api/user_login/delete_user`;
 
-  // const Config = {
-  //   url: Url,
-  //   method: "GET",
-  // };
+  const Config = {
+    url: Url,
+    method: "PUT",
+    data: {
+      username: action.payload,
+      active_user: false,
+    },
+  };
   try {
-    // const data = yield call(httpCall, Config);
-    // console.log(data.data);
-    const state = yield select();
-    const userRows = state.admin.users;
-    const updatedUserList = userRows.filter(
-      (row) => row.username !== action.payload
-    );
-    yield put(getUsers(updatedUserList));
-    toast.info(`User is successfully deleted`);
+    const data = yield call(httpCall, Config);
+    if (data.success) {
+      const state = yield select();
+      const userRows = state.admin.users;
+      const updatedUserList = userRows.filter(
+        (row) => row.username !== action.payload
+      );
+      yield put(getUsers(updatedUserList));
+      toast.info(`User is successfully deleted`);
+    } else {
+      toast.error(`User is not deleted`);
+    }
   } catch (err) {
     console.log(err);
     toast.error(`User is not deleted`);
   }
 }
-function* updateUser(action) {
-  // const Url = `/protocol-map.json`;
+export function* updateUser(action) {
   const editedRow = action.payload;
-  // const Config = {
-  //   url: Url,
-  //   method: "GET",
-  // };
+  const Url = `${BASE_URL_8000}/api/user_login/update_existing`;
+
+  const Config = {
+    url: Url,
+    method: "PUT",
+    data: {
+      username: editedRow.username,
+      country: editedRow.country,
+      user_type: editedRow.user_type,
+    },
+  };
   try {
-    // const data = yield call(httpCall, Config);
-    // console.log(data.data);
-    const state = yield select();
-    const userRows = state.admin.users;
-    const updatedUserList = userRows.map((row) =>
-      row.username === editedRow.username ? editedRow : row
-    );
-    yield put(getUsers(updatedUserList));
-    toast.info(`User details are successfully modified`);
+    const data = yield call(httpCall, Config);
+    if (data.success) {
+      const state = yield select();
+      const userRows = state.admin.users;
+      const updatedUserList = userRows.map((row) =>
+        row.username === editedRow.username ? editedRow : row
+      );
+      yield put(getUsers(updatedUserList));
+      toast.info(`User details are successfully modified`);
+    } else {
+      toast.error(`User details is not updated`);
+    }
   } catch (err) {
     console.log(err);
     toast.error(`User details is not updated`);
