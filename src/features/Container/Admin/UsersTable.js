@@ -4,16 +4,17 @@ import FilterIcon from "apollo-react-icons/Filter";
 import PlusIcon from "apollo-react-icons/Plus";
 import Button from "apollo-react/components/Button";
 import Table from "apollo-react/components/Table";
+import NewUser from "./NewUser";
 
 import columns from "./columns.data";
 
-const CustomButtonHeader = ({ toggleFilters, clear }) => (
+const CustomButtonHeader = ({ toggleFilters, setIsOpen }) => (
   <div data-testid="user-action-buttons">
     <Button
       size="small"
       variant="primary"
       icon={PlusIcon}
-      onClick={() => console.log("Add New User")}
+      onClick={() => setIsOpen(true)}
       style={{ marginRight: 8 }}
     >
       New User
@@ -32,6 +33,7 @@ const CustomButtonHeader = ({ toggleFilters, clear }) => (
 const UsersTable = ({ initialRows }) => {
   const dispatch = useDispatch();
   const [editedRow, setEditedRow] = useState({});
+  const [isOpen, setIsOpen] = useState(false);
 
   const onRowEdit = (userId) => {
     setEditedRow(initialRows.find((row) => row.username === userId));
@@ -92,10 +94,13 @@ const UsersTable = ({ initialRows }) => {
           truncate: true,
         }}
         // showFilterIcon
-        CustomHeader={(props) => <CustomButtonHeader {...props} />}
+        CustomHeader={(props) => (
+          <CustomButtonHeader setIsOpen={setIsOpen} {...props} />
+        )}
         hasScroll
         maxHeight={345}
       />
+      <NewUser isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };
