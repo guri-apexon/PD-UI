@@ -120,6 +120,27 @@ export function* updateUser(action) {
     toast.error(`User details is not updated`);
   }
 }
+export function* addNewUser(action) {
+  const userDetails = action.payload;
+  const Url = `${BASE_URL_8000}/api/user_login/update_existing`;
+
+  const Config = {
+    url: Url,
+    method: "POST",
+    data: userDetails,
+  };
+  try {
+    const data = yield call(httpCall, Config);
+    if (data.success) {
+      toast.info(`User is successfully added`);
+    } else {
+      toast.error(`Error while adding user`);
+    }
+  } catch (err) {
+    console.log(err);
+    toast.error(`Error while adding user`);
+  }
+}
 
 export function* watchAdmin() {
   yield takeLatest("GET_USERS_SAGA", usersFunction);
@@ -127,6 +148,7 @@ export function* watchAdmin() {
   yield takeLatest("GET_PROTOCOL_MAP_SAGA", getProtocolMapData);
   yield takeLatest("DELETE_USER_SAGA", deleteUser);
   yield takeLatest("UPDATE_USER_SAGA", updateUser);
+  yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
 }
 
 export default function* adminSaga() {

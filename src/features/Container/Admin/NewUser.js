@@ -64,7 +64,7 @@ function NewUser({ isOpen, setIsOpen }) {
       formValue.userId &&
       formValue.userRole
     ) {
-      dispatchEvent({ type: "ADD_NEW_USER_SAGA", payload: formValue });
+      console.log("User Added");
     }
     console.log(formValue);
   };
@@ -181,6 +181,7 @@ function NewUser({ isOpen, setIsOpen }) {
               setRole(e.target.value);
             }}
             required
+            data-testid="user-role-select"
           >
             {options.map((option) => (
               <MenuItem key={option} value={option}>
