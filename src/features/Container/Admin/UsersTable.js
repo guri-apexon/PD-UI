@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Loader from "apollo-react/components/Loader";
 import FilterIcon from "apollo-react-icons/Filter";
 import PlusIcon from "apollo-react-icons/Plus";
 import Button from "apollo-react/components/Button";
 import Table from "apollo-react/components/Table";
 import NewUser from "./NewUser";
+
+import { loader, setModalToggle } from "./adminSlice";
 
 import columns from "./columns.data";
 
@@ -32,13 +35,15 @@ const CustomButtonHeader = ({ toggleFilters, setIsOpen }) => (
 
 const UsersTable = ({ initialRows }) => {
   const dispatch = useDispatch();
-  const [editedRow, setEditedRow] = useState({});
-  const [isOpen, setIsOpen] = useState(false);
 
+  const isLoading = useSelector(loader);
+  const [editedRow, setEditedRow] = useState({});
   const onRowEdit = (userId) => {
     setEditedRow(initialRows.find((row) => row.username === userId));
   };
-
+  const setIsOpen = (value) => {
+    dispatch(setModalToggle(value));
+  };
   const onRowSave = () => {
     let confirmBox = window.confirm(
       "Do you want to save the modified details?"
@@ -68,6 +73,7 @@ const UsersTable = ({ initialRows }) => {
 
   return (
     <div style={{ paddingTop: 20 }}>
+      {isLoading && <Loader />}
       <Table
         columns={columns}
         rows={initialRows.map((row) => ({
@@ -100,7 +106,7 @@ const UsersTable = ({ initialRows }) => {
         hasScroll
         maxHeight={345}
       />
-      <NewUser isOpen={isOpen} setIsOpen={setIsOpen} />
+      <NewUser setIsOpen={setIsOpen} />
     </div>
   );
 };
