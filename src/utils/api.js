@@ -63,8 +63,17 @@ export const httpCall = async (config) => {
 };
 
 export const httpCallSDA = async (config) => {
+  let headerConfig;
+
+  headerConfig = {
+    ...config,
+    headers: {
+      "Cache-Control": "no-store, no-cache,",
+      Pragma: "no-cache",
+    },
+  };
   try {
-    const response = await axios(config);
+    const response = await axios(headerConfig);
     if (response.status === 200) {
       return {
         success: true,

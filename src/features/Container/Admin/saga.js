@@ -28,7 +28,6 @@ export function* usersFunction() {
         return item;
       });
 
-      console.log(userData);
       yield put(getUsers(userData));
     }
   } catch (err) {
@@ -141,7 +140,6 @@ export function* addNewUser(action) {
     data.user_type = item.userRole;
     return data;
   });
-  console.log(details);
   const Config = {
     url: Url,
     method: "POST",
