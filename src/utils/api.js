@@ -62,6 +62,46 @@ export const httpCall = async (config) => {
   }
 };
 
+export const httpCallSDA = async (config) => {
+  let headerConfig;
+
+  headerConfig = {
+    ...config,
+    headers: {
+      "Cache-Control": "no-store, no-cache,",
+      Pragma: "no-cache",
+    },
+  };
+  try {
+    const response = await axios(headerConfig);
+    if (response.status === 200) {
+      return {
+        success: true,
+        data: response.data,
+        message: "Success",
+      };
+    } else if (response.status === 404 || response.status === 409) {
+      return {
+        success: false,
+        code: response.code,
+        message: response.message,
+      };
+    } else {
+      return {
+        success: false,
+        code: response.code,
+        message: response.message,
+      };
+    }
+  } catch (err) {
+    return {
+      success: false,
+      err: err.response,
+      message: "Not-Found",
+    };
+  }
+};
+
 export const getToken = async () => {
   // let formdata = new FormData();
   // formdata.append("username", "ypd_api_test");
