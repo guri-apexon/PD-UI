@@ -1,7 +1,7 @@
 import { all, call, takeLatest, put, select } from "redux-saga/effects";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import { httpCall, httpCallSDA, BASE_URL_8000 } from "../../../utils/api";
 import { getUsers, getRoles, getProtocolMap } from "./adminSlice";
 
 export function* usersFunction() {
@@ -120,25 +120,67 @@ export function* updateUser(action) {
     toast.error(`User details is not updated`);
   }
 }
-export function* addNewUser(action) {
+export function* addNewUser(userDetails) {
+  const Url = `${BASE_URL_8000}/api/create_new_user/new_user`;
+  const details = userDetails.map((item) => {
+    let data = {};
+    data.username = item.userId;
+    data.first_name = item.firstName;
+    data.last_name = item.lastName;
+    data.email = item.email;
+    data.country = item.country;
+    data.user_type = item.userRole;
+    return data;
+  });
+  const Config = {
+    url: Url,
+    method: "POST",
+    data: details[0],
+  };
+  console.log(Config);
+  try {
+    const data = yield call(httpCall, Config);
+    console.log(data);
+    if (data.success) {
+      toast.info(`User is successfully added to PD`);
+    } else {
+      toast.error(`Error while adding user to PD`);
+    }
+  } catch (err) {
+    console.log(err);
+    toast.error(`Error while adding user to PD`);
+  }
+}
+export function* addNewUserSDA(action) {
+  const state = yield select();
+  const userEmail = state.user.userDetail.email;
   const userDetails = action.payload;
-  const Url = `${BASE_URL_8000}/api/user_login/update_existing`;
+  const Url = `${process.env.REACT_APP_SDA}/sda-rest-api/api/external/entitlement/V1/ApplicationUsers`;
 
   const Config = {
     url: Url,
     method: "POST",
-    data: userDetails,
+    params: {
+      roleType: "Reader",
+      appKey: process.env.REACT_APP_SDA_AUTH,
+      userType: "internal",
+      networkId: userDetails.userId,
+      updatedBy: userEmail,
+    },
   };
+  console.log(Config);
   try {
-    const data = yield call(httpCall, Config);
+    const data = yield call(httpCallSDA, Config);
+    console.log(data);
     if (data.success) {
-      toast.info(`User is successfully added`);
+      toast.info(`User is successfully added to SDA`);
+      yield addNewUser([userDetails]);
     } else {
-      toast.error(`Error while adding user`);
+      toast.error(data.message);
     }
   } catch (err) {
     console.log(err);
-    toast.error(`Error while adding user`);
+    toast.error(`Error while adding user to SDA`);
   }
 }
 
@@ -148,7 +190,7 @@ export function* watchAdmin() {
   yield takeLatest("GET_PROTOCOL_MAP_SAGA", getProtocolMapData);
   yield takeLatest("DELETE_USER_SAGA", deleteUser);
   yield takeLatest("UPDATE_USER_SAGA", updateUser);
-  yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
+  yield takeLatest("ADD_NEW_USER_SAGA", addNewUserSDA);
 }
 
 export default function* adminSaga() {

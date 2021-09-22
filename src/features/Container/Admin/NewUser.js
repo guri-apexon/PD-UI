@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import trim from "lodash/trim";
+import { useDispatch } from "react-redux";
 import Modal from "apollo-react/components/Modal";
 import Grid from "apollo-react/components/Grid";
 import TextField from "apollo-react/components/TextField";
@@ -24,6 +26,7 @@ const errorValue = {
 };
 
 function NewUser({ isOpen, setIsOpen }) {
+  const dispatch = useDispatch();
   const [role, setRole] = useState("");
   const [formValue, setFormValue] = useState(intialValue);
   const [formErrValue, setFormErrValue] = useState(errorValue);
@@ -64,19 +67,19 @@ function NewUser({ isOpen, setIsOpen }) {
       formValue.userId &&
       formValue.userRole
     ) {
-      console.log("User Added");
+      dispatch({ type: "ADD_NEW_USER_SAGA", payload: formValue });
     }
     console.log(formValue);
   };
 
   const handleChange = (key, value) => {
     const data = { ...formValue };
-    data[key] = value;
+    data[key] = trim(value);
     setFormValue(data);
   };
   const onFieldBlur = (key, value) => {
     let err = { ...formErrValue };
-    if (value) {
+    if (trim(value)) {
       err[key].error = false;
       err[key].message = "";
     } else {
