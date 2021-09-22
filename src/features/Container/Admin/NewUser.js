@@ -55,8 +55,11 @@ function NewUser({ setIsOpen }) {
     if (!formValue.email) {
       err.email.error = true;
       err.email.message = "Required";
-    } else if (
-      !/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(formValue.email)
+    }
+    if (
+      !/^(([a-zA-Z0-9])|([a-zA-Z0-9]+\.[A-Za-z]))+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(
+        formValue.email
+      )
     ) {
       err.email.error = true;
       err.email.message = "Enter valid email";
@@ -98,7 +101,9 @@ function NewUser({ setIsOpen }) {
     if (
       key === "email" &&
       trim(value) &&
-      !/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(trim(value))
+      !/^(([a-zA-Z0-9])|([a-zA-Z0-9]+\.[A-Za-z]))+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(
+        trim(value)
+      )
     ) {
       err.email.error = true;
       err.email.message = "Enter valid email";
