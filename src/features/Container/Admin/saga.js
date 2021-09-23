@@ -7,6 +7,9 @@ import {
   getRoles,
   getProtocolMap,
   setUserRoleErr,
+  setModalToggle,
+  setLoader,
+  setNewUserError,
 } from "./adminSlice";
 
 export function* usersFunction() {
@@ -26,7 +29,6 @@ export function* usersFunction() {
         return item;
       });
 
-      console.log(userData);
       yield put(getUsers(userData));
     }
   } catch (err) {
@@ -131,6 +133,83 @@ export function* updateUser(action) {
     toast.error(`User details is not updated`);
   }
 }
+export function* addNewUser(action) {
+  yield put(setLoader(true));
+  let userDetails = action.payload;
+  const Url = `${BASE_URL_8000}/api/create_new_user/new_user`;
+  const details = [userDetails].map((item) => {
+    let data = {};
+    data.username = item.userId;
+    data.first_name = item.firstName;
+    data.last_name = item.lastName;
+    data.email = item.email;
+    data.country = item.country;
+    data.user_type = item.userRole;
+    return data;
+  });
+  const Config = {
+    url: Url,
+    method: "POST",
+    data: details[0],
+  };
+  try {
+    const data = yield call(httpCall, Config);
+    yield put(setLoader(false));
+    if (data.success) {
+      toast.info(`User is successfully added to PD`);
+      yield put(setModalToggle(false));
+      yield put(setNewUserError(""));
+      yield put({ type: "GET_USERS_SAGA" });
+    } else if (data.err && data.err.data) {
+      toast.error(data.err.data.detail);
+      yield put(setNewUserError(data.err.data.detail));
+    } else {
+      yield put(setNewUserError("Error while adding user to PD"));
+      toast.error(`Error while adding user to PD`);
+    }
+  } catch (err) {
+    console.log(err);
+    yield put(setLoader(false));
+    yield put(setNewUserError("Error while adding user to PD"));
+    toast.error(`Error while adding user to PD`);
+  }
+}
+// export function* addNewUserSDA(action) {
+//   const state = yield select();
+//   const userEmail = state.user.userDetail.email;
+//   const userDetails = action.payload;
+//   const Url = `${process.env.REACT_APP_SDA}/sda-rest-api/api/external/entitlement/V1/ApplicationUsers`;
+
+//   const Config = {
+//     url: Url,
+//     method: "POST",
+//     params: {
+//       roleType: "Reader",
+//       appKey: process.env.REACT_APP_SDA_AUTH,
+//       userType: "internal",
+//       networkId: userDetails.userId,
+//       updatedBy: userEmail,
+//     },
+//     proxy: {
+//       protocol: "https",
+//       host: "dev-protocoldigitalization.work.iqvia.com",
+//     },
+//   };
+//   console.log(Config);
+//   try {
+//     const data = yield call(httpCallSDA, Config);
+//     console.log(data);
+//     if (data.success) {
+//       toast.info(`User is successfully added to SDA`);
+//       yield addNewUser([userDetails]);
+//     } else {
+//       toast.error(data.message);
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     toast.error(`Error while adding user to SDA`);
+//   }
+// }
 
 export function* addNewRole(action) {
   const roleData = action.payload;
@@ -171,6 +250,7 @@ export function* watchAdmin() {
   yield takeLatest("DELETE_USER_SAGA", deleteUser);
   yield takeLatest("UPDATE_USER_SAGA", updateUser);
   yield takeLatest("ADD_NEW_ROLE_SAGA", addNewRole);
+  yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
 }
 
 export default function* adminSaga() {
