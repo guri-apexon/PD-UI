@@ -212,6 +212,7 @@ export function* addNewUser(action) {
 // }
 
 export function* addNewRole(action) {
+  yield put(setLoader(true));
   const roleData = action.payload;
   const Url = `${BASE_URL_8000}/api/roles/new_role`;
   const Config = {
@@ -224,9 +225,10 @@ export function* addNewRole(action) {
   };
   try {
     const data = yield call(httpCall, Config);
+    yield put(setLoader(false));
     if (data.success) {
       toast.info(`New User Role is successfully added`);
-      // yield put(setModalToggle(false));
+      yield put(setModalToggle(false));
       yield put(setUserRoleErr(""));
       yield put({ type: "GET_ROLES_SAGA" });
     } else if (data.err && data.err.data) {
@@ -238,6 +240,7 @@ export function* addNewRole(action) {
     }
   } catch (err) {
     console.log(err);
+    yield put(setLoader(false));
     yield put(setUserRoleErr("Error while adding roles to PD"));
     toast.error(`Error while adding roles to PD`);
   }

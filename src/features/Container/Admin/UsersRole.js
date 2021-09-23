@@ -16,6 +16,8 @@ import {
   roleValues,
   roleError,
   setUserRoleErr,
+  modalToggle,
+  setModalToggle,
 } from "./adminSlice";
 
 const errorValue = {
@@ -52,12 +54,13 @@ const CustomButtonHeader = ({ setIsOpen }) => (
 
 const UsersRole = ({ initialRows }) => {
   const dispatch = useDispatch();
-  // const isOpen = useSelector(modalToggle);
+  const isOpen = useSelector(modalToggle);
   const formValue = useSelector(roleValues);
   const error = useSelector(roleError);
   const [formErrValue, setFormErrValue] = useState(errorValue);
-
-  const [isOpen, setIsOpen] = useState(false);
+  const setIsOpen = (value) => {
+    dispatch(setModalToggle(value));
+  };
   const handleSaveForm = () => {
     let err = cloneDeep(formErrValue);
     if (!formValue.role) {
