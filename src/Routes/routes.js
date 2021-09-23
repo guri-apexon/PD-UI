@@ -49,7 +49,7 @@ const Routes = ({ userType }) => {
       )}
       {userType === "admin" && (
         <Switch>
-          <Redirect exact from="/" to="/admin" />
+          <Redirect exact from="/" to="/dashboard" />
           <Route path="/admin" component={Admin} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/protocols" component={Protocols} />

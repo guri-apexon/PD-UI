@@ -33,4 +33,14 @@ describe("Render Routes Sucessfully", () => {
       </Provider>
     );
   });
+
+  test("Routes Admin", () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes userType="admin" />)
+        </BrowserRouter>
+      </Provider>
+    );
+  });
 });

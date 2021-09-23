@@ -1,19 +1,23 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import Loader from "apollo-react/components/Loader";
 import FilterIcon from "apollo-react-icons/Filter";
 import PlusIcon from "apollo-react-icons/Plus";
 import Button from "apollo-react/components/Button";
 import Table from "apollo-react/components/Table";
+import NewUser from "./NewUser";
+
+import { loader, setModalToggle } from "./adminSlice";
 
 import columns from "./columns.data";
 
-const CustomButtonHeader = ({ toggleFilters, clear }) => (
+const CustomButtonHeader = ({ toggleFilters, setIsOpen }) => (
   <div data-testid="user-action-buttons">
     <Button
       size="small"
       variant="primary"
       icon={PlusIcon}
-      onClick={() => console.log("Add New User")}
+      onClick={() => setIsOpen(true)}
       style={{ marginRight: 8 }}
     >
       New User
@@ -31,12 +35,15 @@ const CustomButtonHeader = ({ toggleFilters, clear }) => (
 
 const UsersTable = ({ initialRows }) => {
   const dispatch = useDispatch();
-  const [editedRow, setEditedRow] = useState({});
 
+  const isLoading = useSelector(loader);
+  const [editedRow, setEditedRow] = useState({});
   const onRowEdit = (userId) => {
     setEditedRow(initialRows.find((row) => row.username === userId));
   };
-
+  const setIsOpen = (value) => {
+    dispatch(setModalToggle(value));
+  };
   const onRowSave = () => {
     let confirmBox = window.confirm(
       "Do you want to save the modified details?"
@@ -66,6 +73,7 @@ const UsersTable = ({ initialRows }) => {
 
   return (
     <div style={{ paddingTop: 20 }}>
+      {isLoading && <Loader />}
       <Table
         columns={columns}
         rows={initialRows.map((row) => ({
@@ -92,10 +100,13 @@ const UsersTable = ({ initialRows }) => {
           truncate: true,
         }}
         // showFilterIcon
-        CustomHeader={(props) => <CustomButtonHeader {...props} />}
+        CustomHeader={(props) => (
+          <CustomButtonHeader setIsOpen={setIsOpen} {...props} />
+        )}
         hasScroll
         maxHeight={345}
       />
+      <NewUser setIsOpen={setIsOpen} />
     </div>
   );
 };
