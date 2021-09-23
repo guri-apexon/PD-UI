@@ -36,7 +36,7 @@ export function* usersFunction() {
   }
 }
 
-function* getRolesFunction() {
+export function* getRolesFunction() {
   const Url = `${BASE_URL_8000}/api/roles/get_all_roles`;
 
   const Config = {
