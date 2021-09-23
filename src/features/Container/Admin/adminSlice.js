@@ -17,6 +17,11 @@ export const adminSlice = createSlice({
     },
     modalToggle: false,
     newUserError: "",
+    roleError: "",
+    roleValues: {
+      role: "",
+      description: "",
+    },
   },
   reducers: {
     getUsers: (state, action) => {
@@ -27,6 +32,12 @@ export const adminSlice = createSlice({
     },
     getProtocolMap: (state, action) => {
       state.map = action.payload;
+    },
+    setUserRole: (state, action) => {
+      state.roleValues = action.payload;
+    },
+    setUserRoleErr: (state, action) => {
+      state.roleError = action.payload;
     },
     setNewUserValues: (state, action) => {
       state.newUser = action.payload;
@@ -47,6 +58,8 @@ export const {
   getUsers,
   getRoles,
   getProtocolMap,
+  setUserRole,
+  setUserRoleErr,
   setLoader,
   setModalToggle,
   setNewUserValues,
@@ -56,6 +69,8 @@ export const {
 export const usersList = (state) => state.admin.users;
 export const rolesList = (state) => state.admin.roles;
 export const protocolMap = (state) => state.admin.map;
+export const roleValues = (state) => state.admin.roleValues;
+export const roleError = (state) => state.admin.roleError;
 export const newUser = (state) => state.admin.newUser;
 export const loader = (state) => state.admin.loader;
 export const modalToggle = (state) => state.admin.modalToggle;

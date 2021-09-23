@@ -1,0 +1,22 @@
+[
+    {
+        "id": "1",
+        "role": "normal",
+        "description": "Have access to Dashboard, Protocols, Search Functionality"
+      },
+      {
+        "id": "2",
+        "role": "QC1",
+        "description": "Have access only to QC process"
+      },
+      {
+        "id": "3",
+        "role": "QC2",
+        "description": "Have access to Dashboard, Protocols, Search and QC Process"
+      },
+      {
+        "id": "4",
+        "role": "admin",
+        "description": "Have access to Dashboard, Protocols, Search and User management"
+      }
+]

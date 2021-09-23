@@ -1,5 +1,12 @@
 import { runSaga } from "redux-saga";
-import { usersFunction, deleteUser, updateUser, addNewUser } from "../saga";
+import {
+  usersFunction,
+  deleteUser,
+  updateUser,
+  addNewUser,
+  addNewRole,
+  getRolesFunction,
+} from "../saga";
 import * as api from "../../../../utils/api";
 
 describe("Admin Saga Unit Test", () => {
@@ -422,6 +429,181 @@ describe("Admin Saga Unit Test", () => {
         country: "India",
         user_type: "normal",
       },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("addNewRole Saga Success", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: true,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [
+            {
+              roleName: "QC2",
+              roleDescription:
+                "Have access to Dashboard, Protocols, Search and QC Process",
+            },
+          ],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, addNewRole, {
+      payload: {
+        roleName: "QC1",
+        roleDescription: "Have access to QC Process",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("addNewRole Saga Failure", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      err: {
+        data: {
+          detail:
+            "Role Details Already Exist With The Given Above Role Name Along With Some Description",
+        },
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [
+            {
+              roleName: "QC2",
+              roleDescription:
+                "Have access to Dashboard, Protocols, Search and QC Process",
+            },
+          ],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, addNewRole, {
+      payload: {
+        roleName: "QC2",
+        roleDescription: "Have access to QC Process",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("addNewRole Saga Failure", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: {
+        data: {
+          detail:
+            "Role Details Already Exist With The Given Above Role Name Along With Some Description",
+        },
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [
+            {
+              roleName: "QC2",
+              roleDescription:
+                "Have access to Dashboard, Protocols, Search and QC Process",
+            },
+          ],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, addNewRole, {
+      payload: {
+        roleName: "QC2",
+        roleDescription: "Have access to QC Process",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("getRolesFunction Saga Success", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [
+        {
+          roleName: "QC1",
+          roleDescription: "Have access to QC Process",
+        },
+      ],
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getRolesFunction, {
+      payload: "",
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("getRolesFunction Saga Failure", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: {
+        roleName: "QC1",
+        roleDescription: "Have access to QC Process",
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getRolesFunction, {
+      payload: "",
       type: "",
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);

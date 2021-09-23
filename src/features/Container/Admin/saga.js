@@ -6,6 +6,7 @@ import {
   getUsers,
   getRoles,
   getProtocolMap,
+  setUserRoleErr,
   setModalToggle,
   setLoader,
   setNewUserError,
@@ -35,8 +36,8 @@ export function* usersFunction() {
   }
 }
 
-function* getRolesFunction() {
-  const Url = `/userRoles.json`;
+export function* getRolesFunction() {
+  const Url = `${BASE_URL_8000}/api/roles/get_all_roles`;
 
   const Config = {
     url: Url,
@@ -44,8 +45,14 @@ function* getRolesFunction() {
   };
   try {
     const data = yield call(httpCall, Config);
-    console.log(data.data);
-    yield put(getRoles(data.data));
+    if (data.success && data.data) {
+      const roles = data.data.map((item) => {
+        item.role = item.roleName;
+        item.description = item.roleDescription;
+        return item;
+      });
+      yield put(getRoles(roles));
+    }
   } catch (err) {
     console.log(err);
   }
@@ -204,12 +211,48 @@ export function* addNewUser(action) {
 //   }
 // }
 
+export function* addNewRole(action) {
+  yield put(setLoader(true));
+  const roleData = action.payload;
+  const Url = `${BASE_URL_8000}/api/roles/new_role`;
+  const Config = {
+    url: Url,
+    method: "POST",
+    data: {
+      roleName: roleData.role,
+      roleDescription: roleData.description,
+    },
+  };
+  try {
+    const data = yield call(httpCall, Config);
+    yield put(setLoader(false));
+    if (data.success) {
+      toast.info(`New User Role is successfully added`);
+      yield put(setModalToggle(false));
+      yield put(setUserRoleErr(""));
+      yield put({ type: "GET_ROLES_SAGA" });
+    } else if (data.err && data.err.data) {
+      toast.error(data.err.data.detail);
+      yield put(setUserRoleErr(data.err.data.detail));
+    } else {
+      yield put(setUserRoleErr("Error while adding roles to PD"));
+      toast.error(`Error while adding roles to PD`);
+    }
+  } catch (err) {
+    console.log(err);
+    yield put(setLoader(false));
+    yield put(setUserRoleErr("Error while adding roles to PD"));
+    toast.error(`Error while adding roles to PD`);
+  }
+}
+
 export function* watchAdmin() {
   yield takeLatest("GET_USERS_SAGA", usersFunction);
   yield takeLatest("GET_ROLES_SAGA", getRolesFunction);
   yield takeLatest("GET_PROTOCOL_MAP_SAGA", getProtocolMapData);
   yield takeLatest("DELETE_USER_SAGA", deleteUser);
   yield takeLatest("UPDATE_USER_SAGA", updateUser);
+  yield takeLatest("ADD_NEW_ROLE_SAGA", addNewRole);
   yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
 }
 
