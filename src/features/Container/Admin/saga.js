@@ -35,7 +35,7 @@ export function* usersFunction() {
 }
 
 function* getRolesFunction() {
-  const Url = `/userRoles.json`;
+  const Url = `${BASE_URL_8000}/api/roles/get_all_roles`;
 
   const Config = {
     url: Url,
@@ -43,8 +43,14 @@ function* getRolesFunction() {
   };
   try {
     const data = yield call(httpCall, Config);
-    console.log(data.data);
-    yield put(getRoles(data.data));
+    if (data.success && data.data) {
+      const roles = data.data.map((item) => {
+        item.role = item.roleName;
+        item.description = item.roleDescription;
+        return item;
+      });
+      yield put(getRoles(roles));
+    }
   } catch (err) {
     console.log(err);
   }
@@ -127,11 +133,15 @@ export function* updateUser(action) {
 }
 
 export function* addNewRole(action) {
-  const Url = `${BASE_URL_8000}/api/read_all_users`;
+  const roleData = action.payload;
+  const Url = `${BASE_URL_8000}/api/roles/new_role`;
   const Config = {
     url: Url,
     method: "POST",
-    data: action.payload,
+    data: {
+      roleName: roleData.role,
+      roleDescription: roleData.description,
+    },
   };
   try {
     const data = yield call(httpCall, Config);
@@ -149,8 +159,8 @@ export function* addNewRole(action) {
     }
   } catch (err) {
     console.log(err);
-    yield put(setUserRoleErr("Error while adding user to PD"));
-    toast.error(`Error while adding user to PD`);
+    yield put(setUserRoleErr("Error while adding roles to PD"));
+    toast.error(`Error while adding roles to PD`);
   }
 }
 
