@@ -2,7 +2,12 @@ import { all, call, takeLatest, put, select } from "redux-saga/effects";
 import moment from "moment";
 import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import { getUsers, getRoles, getProtocolMap } from "./adminSlice";
+import {
+  getUsers,
+  getRoles,
+  getProtocolMap,
+  setUserRoleErr,
+} from "./adminSlice";
 
 export function* usersFunction() {
   const Url = `${BASE_URL_8000}/api/user/read_all_users`;
@@ -121,12 +126,41 @@ export function* updateUser(action) {
   }
 }
 
+export function* addNewRole(action) {
+  const Url = `${BASE_URL_8000}/api/read_all_users`;
+  const Config = {
+    url: Url,
+    method: "POST",
+    data: action.payload,
+  };
+  try {
+    const data = yield call(httpCall, Config);
+    if (data.success) {
+      toast.info(`New User Role is successfully added`);
+      // yield put(setModalToggle(false));
+      yield put(setUserRoleErr(""));
+      yield put({ type: "GET_ROLES_SAGA" });
+    } else if (data.err && data.err.data) {
+      toast.error(data.err.data.detail);
+      yield put(setUserRoleErr(data.err.data.detail));
+    } else {
+      yield put(setUserRoleErr("Error while adding roles to PD"));
+      toast.error(`Error while adding roles to PD`);
+    }
+  } catch (err) {
+    console.log(err);
+    yield put(setUserRoleErr("Error while adding user to PD"));
+    toast.error(`Error while adding user to PD`);
+  }
+}
+
 export function* watchAdmin() {
   yield takeLatest("GET_USERS_SAGA", usersFunction);
   yield takeLatest("GET_ROLES_SAGA", getRolesFunction);
   yield takeLatest("GET_PROTOCOL_MAP_SAGA", getProtocolMapData);
   yield takeLatest("DELETE_USER_SAGA", deleteUser);
   yield takeLatest("UPDATE_USER_SAGA", updateUser);
+  yield takeLatest("ADD_NEW_ROLE_SAGA", addNewRole);
 }
 
 export default function* adminSaga() {

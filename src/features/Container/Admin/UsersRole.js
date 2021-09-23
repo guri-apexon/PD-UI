@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import trim from "lodash/trim";
+import cloneDeep from "lodash/cloneDeep";
+
 import PlusIcon from "apollo-react-icons/Plus";
 
 import Modal from "apollo-react/components/Modal";
@@ -7,6 +11,17 @@ import TextField from "apollo-react/components/TextField";
 import Button from "apollo-react/components/Button";
 import Table from "apollo-react/components/Table";
 import { compareStrings } from "apollo-react/components/Table";
+import {
+  setUserRole,
+  roleValues,
+  roleError,
+  setUserRoleErr,
+} from "./adminSlice";
+
+const errorValue = {
+  role: { error: false, message: "" },
+  description: { error: false, message: "" },
+};
 
 const columns = [
   {
@@ -35,12 +50,46 @@ const CustomButtonHeader = ({ setIsOpen }) => (
   </div>
 );
 
-const handleSaveForm = () => {
-  console.log("click save");
-};
-
 const UsersRole = ({ initialRows }) => {
+  const dispatch = useDispatch();
+  // const isOpen = useSelector(modalToggle);
+  const formValue = useSelector(roleValues);
+  const error = useSelector(roleError);
+  const [formErrValue, setFormErrValue] = useState(errorValue);
+
   const [isOpen, setIsOpen] = useState(false);
+  const handleSaveForm = () => {
+    let err = cloneDeep(formErrValue);
+    if (!formValue.role) {
+      err.role.error = true;
+      err.role.message = "Required";
+    }
+    if (!formValue.description) {
+      err.description.error = true;
+      err.description.message = "Required";
+    }
+    setFormErrValue(err);
+    if (formValue.role && formValue.description) {
+      dispatch({ type: "ADD_NEW_ROLE_SAGA", payload: formValue });
+    }
+    console.log(formValue);
+  };
+  const handleChange = (key, value) => {
+    const data = cloneDeep(formValue);
+    data[key] = trim(value);
+    dispatch(setUserRole(data));
+  };
+  const onFieldBlur = (key, value) => {
+    let err = cloneDeep(formErrValue);
+    if (trim(value)) {
+      err[key].error = false;
+      err[key].message = "";
+    } else {
+      err[key].error = true;
+      err[key].message = "Required";
+    }
+    setFormErrValue(err);
+  };
 
   return (
     <div style={{ overflowX: "auto", paddingTop: 20 }}>
@@ -60,9 +109,14 @@ const UsersRole = ({ initialRows }) => {
       <Modal
         variant="default"
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          setIsOpen(false);
+          setFormErrValue(errorValue);
+          dispatch(setUserRole({}));
+          dispatch(setUserRoleErr(""));
+        }}
         title="Add New Role to PD"
-        // subtitle={}
+        subtitle={error && <span style={{ color: "red" }}>{error}</span>}
         buttonProps={[{}, { label: "Create", onClick: handleSaveForm }]}
         id="new-role-modal"
         data-testid="new-role-modal"
@@ -73,14 +127,11 @@ const UsersRole = ({ initialRows }) => {
               label="User Role"
               placeholder="Role"
               fullWidth
-              // value={}
-              // helperText={formErrorValues.protocolNumber.errorMessage}
-              // error={formErrorValues.protocolNumber.error}
-              // required={formErrorValues.protocolNumber.isRequired}
-              // onChange={(e) =>
-              //   onTextFieldChange("protocolNumber", e, "Textbox")
-              // }
-              // onBlur={(e) => onFieldBlur("protocolNumber", e, "Textbox")}
+              required
+              helperText={formErrValue.role.message}
+              error={formErrValue.role.error}
+              onChange={(e) => handleChange("role", e.target.value)}
+              onBlur={(e) => onFieldBlur("role", e.target.value)}
               data-testid="user-role-texfield"
             />
           </Grid>
@@ -90,14 +141,10 @@ const UsersRole = ({ initialRows }) => {
               placeholder="Description"
               fullWidth
               sizeAdjustable
-              // value={}
-              // helperText={formErrorValues.protocolNumber.errorMessage}
-              // error={formErrorValues.protocolNumber.error}
-              // required={formErrorValues.protocolNumber.isRequired}
-              // onChange={(e) =>
-              //   onTextFieldChange("protocolNumber", e, "Textbox")
-              // }
-              // onBlur={(e) => onFieldBlur("protocolNumber", e, "Textbox")}
+              helperText={formErrValue.description.message}
+              error={formErrValue.description.error}
+              onChange={(e) => handleChange("description", e.target.value)}
+              onBlur={(e) => onFieldBlur("description", e.target.value)}
               data-testid="role-description-texfield"
             />
           </Grid>
