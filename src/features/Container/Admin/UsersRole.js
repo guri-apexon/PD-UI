@@ -143,6 +143,7 @@ const UsersRole = ({ initialRows }) => {
               label="Description"
               placeholder="Description"
               fullWidth
+              required
               sizeAdjustable
               helperText={formErrValue.description.message}
               error={formErrValue.description.error}
