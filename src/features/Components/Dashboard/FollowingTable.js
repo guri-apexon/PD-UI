@@ -5,7 +5,7 @@ import merge from "lodash/merge";
 // import axios from "axios";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
-import Link from "apollo-react/components/Link";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import IconButton from "apollo-react/components/IconButton";
 import Table, {
@@ -49,7 +49,11 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
       //   style={{ marginRight: 192 }}
     >
       <span>
-        <span className="adjust-ellipses">{row[key].substring(0, 40)}...</span>
+        <span className="adjust-ellipses">
+          <Link to={`/protocols?protocolId=${row["id"]}`}>
+            {row[key].substring(0, 40)}...
+          </Link>
+        </span>
       </span>
     </Tooltip>
   );
@@ -99,14 +103,23 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
       </a>
     );
   } else if (row && row.screen && row.screen === "FollowedProtocols") {
-    if (row[key] && row[key].length > 25) {
+    if (row[key] && row[key].length > 20) {
       return (
-        <Tooltip variant="light" title={row[key]} placement="top">
-          <div className="long-text">{row[key]}</div>
+        <Tooltip
+          variant="light"
+          title={"Protocol Number"}
+          subtitle={row[key]}
+          placement="top"
+        >
+          <span>
+            <Link to={`/protocols?protocolId=${row["id"]}`}>
+              {row[key].substring(0, 20)}...
+            </Link>
+          </span>
         </Tooltip>
       );
     }
-    return <span>{row[key]}</span>;
+    return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>;
   } else {
     if (row[key] && row[key].length > 25) {
       return (

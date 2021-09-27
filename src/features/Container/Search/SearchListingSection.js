@@ -8,11 +8,11 @@ import Checkbox from "apollo-react/components/Checkbox";
 import Folder from "apollo-react-icons/Folder";
 import Switch from "apollo-react/components/Switch";
 import Card from "apollo-react/components/Card";
-import { userId } from "../../../store/userDetails";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-
-import { BASE_URL_8000, httpCall } from "../../../utils/api";
+// import { userId } from "../../../store/userDetails";
+// import { useSelector } from "react-redux";
+// import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+// import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import Tooltip from "apollo-react/components/Tooltip";
 //const [value, setValue] = React.useState(true);
 
@@ -31,7 +31,7 @@ const SearchListingSection = ({
   protocolSelected,
   handleFollow,
 }) => {
-  const userId1 = useSelector(userId);
+  // const userId1 = useSelector(userId);
   const onExpandClick = (data) => {
     setExpanded(
       data.AiDocId,
@@ -39,20 +39,20 @@ const SearchListingSection = ({
       data
     );
   };
-  const handleTitle = async (data) => {
-    const config = {
-      url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
-        1
-      )}&protocol=${data.protocolNumber}`,
-      method: "GET",
-    };
-    const resp = await httpCall(config);
-    if (resp && resp.data) {
-      history.push(`/protocols?protocolId=${data.AiDocId}`);
-    } else {
-      toast.info("Access Provisioned to Primary Users only");
-    }
-  };
+  // const handleTitle = async (data) => {
+  //   const config = {
+  //     url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
+  //       1
+  //     )}&protocol=${data.protocolNumber}`,
+  //     method: "GET",
+  //   };
+  //   const resp = await httpCall(config);
+  //   if (resp && resp.data) {
+  //     history.push(`/protocols?protocolId=${data.AiDocId}`);
+  //   } else {
+  //     toast.info("Access Provisioned to Primary Users only");
+  //   }
+  // };
   const handleFollowChange = (e, checked, data) => {
     handleFollow(e, checked, data);
   };
@@ -73,12 +73,15 @@ const SearchListingSection = ({
             <div className="divBlock">
               <span className="blueText">
                 Protocol:{" "}
-                <strong
+                {/* <strong
                   onClick={() => handleTitle(data)}
                   data-testid="name-value"
                 >
                   {data.protocolNumber}
-                </strong>
+                </strong> */}
+                <Link to={`/protocols?protocolId=${data.AiDocId}`}>
+                  {data.protocolNumber}
+                </Link>
               </span>
             </div>
             <div className="divBlock ellipse" data-testid="title-value">

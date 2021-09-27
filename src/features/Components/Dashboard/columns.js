@@ -1,5 +1,6 @@
 import { covertMMDDYYYY } from "../../../utils/utilFunction";
 import Tooltip from "apollo-react/components/Tooltip";
+import { Link } from "react-router-dom";
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   return (
@@ -35,13 +36,22 @@ const Cell = ({ row, column: { accessor: key } }) => {
 const StatusCell = ({ row, column: { accessor: key } }) => {
   return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
 };
+const ProtocolVersion = ({ row, column: { accessor: key } }) => {
+  return (
+    <span>
+      <span className="adjust-ellipses">
+        <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
+      </span>
+    </span>
+  );
+};
 
 const columns = [
   {
     header: "Version #",
     accessor: "versionNumber",
     width: "10%",
-    customCell: Cell,
+    customCell: ProtocolVersion,
   },
   {
     header: "Draft #",

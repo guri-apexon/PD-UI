@@ -11,15 +11,7 @@ import FileDownload from "js-file-download";
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
   return (
     <>
-      {row.isPrimaryUser ? (
-        row[key] ? (
-          <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>
-        ) : (
-          "-"
-        )
-      ) : (
-        <span>{row[key]}</span>
-      )}
+      <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>
     </>
   );
 };
