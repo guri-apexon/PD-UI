@@ -1,7 +1,7 @@
 import { all, call, takeLatest, put, select } from "redux-saga/effects";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import { httpCall, BASE_URL_8000, httpCallSDA } from "../../../utils/api";
 import {
   getUsers,
   getRoles,
@@ -153,6 +153,7 @@ export function* addNewUser(action) {
     data: details[0],
   };
   try {
+    yield addNewUserSDA(action);
     const data = yield call(httpCall, Config);
     yield put(setLoader(false));
     if (data.success) {
@@ -174,42 +175,42 @@ export function* addNewUser(action) {
     toast.error(`Error while adding user to PD`);
   }
 }
-// export function* addNewUserSDA(action) {
-//   const state = yield select();
-//   const userEmail = state.user.userDetail.email;
-//   const userDetails = action.payload;
-//   const Url = `${process.env.REACT_APP_SDA}/sda-rest-api/api/external/entitlement/V1/ApplicationUsers`;
+export function* addNewUserSDA(action) {
+  const state = yield select();
+  const userEmail = state.user.userDetail.email;
+  const userDetails = action.payload;
+  const Url = `${process.env.REACT_APP_SDA}/sda-rest-api/api/external/entitlement/V1/ApplicationUsers`;
 
-//   const Config = {
-//     url: Url,
-//     method: "POST",
-//     params: {
-//       roleType: "Reader",
-//       appKey: process.env.REACT_APP_SDA_AUTH,
-//       userType: "internal",
-//       networkId: userDetails.userId,
-//       updatedBy: userEmail,
-//     },
-//     proxy: {
-//       protocol: "https",
-//       host: "dev-protocoldigitalization.work.iqvia.com",
-//     },
-//   };
-//   console.log(Config);
-//   try {
-//     const data = yield call(httpCallSDA, Config);
-//     console.log(data);
-//     if (data.success) {
-//       toast.info(`User is successfully added to SDA`);
-//       yield addNewUser([userDetails]);
-//     } else {
-//       toast.error(data.message);
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     toast.error(`Error while adding user to SDA`);
-//   }
-// }
+  const Config = {
+    url: Url,
+    method: "POST",
+    params: {
+      roleType: "Reader",
+      appKey: process.env.REACT_APP_SDA_AUTH,
+      userType: "internal",
+      networkId: userDetails.userId,
+      updatedBy: userEmail,
+    },
+    // proxy: {
+    //   protocol: "https",
+    //   host: "dev-protocoldigitalization.work.iqvia.com",
+    // },
+  };
+  console.log(Config);
+  try {
+    const data = yield call(httpCallSDA, Config);
+    console.log(data);
+    if (data.success) {
+      toast.info(`User is successfully added to SDA`);
+      // yield addNewUser([userDetails]);
+    } else {
+      toast.error(data.message);
+    }
+  } catch (err) {
+    console.log(err);
+    toast.error(`Error while adding user to SDA`);
+  }
+}
 
 export function* addNewRole(action) {
   yield put(setLoader(true));
