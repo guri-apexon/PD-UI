@@ -21,6 +21,7 @@ import "./ProtocolTable.scss";
 
 import columns from "./columns";
 import Tag from "apollo-react/components/Tag";
+import { redaction } from "../../../AppConstant/AppConstant";
 
 const ActionCell = ({ row }) => {
   return (
@@ -60,7 +61,15 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
 };
 
 const Cell = ({ row, column }) => {
-  if (row[column.accessor] && row[column.accessor].length > 25) {
+  if (row[column.accessor] && row[column.accessor] === redaction.text) {
+    return (
+      <Tooltip variant="light" title={redaction.hoverText} placement="top">
+        <div className="long-text blur" style={{ fontWeight: 800 }}>
+          {row[column.accessor]}
+        </div>
+      </Tooltip>
+    );
+  } else if (row[column.accessor].length > 15) {
     return (
       <Tooltip variant="light" title={row[column.accessor]} placement="top">
         <div className="long-text" style={{ fontWeight: 800 }}>
@@ -68,9 +77,9 @@ const Cell = ({ row, column }) => {
         </div>
       </Tooltip>
     );
+  } else {
+    return <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
   }
-
-  return <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
 };
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => {

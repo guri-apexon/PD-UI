@@ -1,6 +1,6 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent } from "../../../../test-utils/test-utils";
 import AssociateDocumentsTable from "../AssociateDocumentsTable";
 import axios from "axios";
 

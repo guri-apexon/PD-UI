@@ -90,4 +90,9 @@ const ADMIN_MENU = [
     pathname: "/admin",
   },
 ];
-export { SORT_DROPDOWN, USER_MENU, QC1_MENU, QC2_MENU, ADMIN_MENU };
+
+const redaction = {
+  text: "3-D Pharmaceuticals",
+  hoverText: "Redacted Information",
+};
+export { SORT_DROPDOWN, USER_MENU, QC1_MENU, QC2_MENU, ADMIN_MENU, redaction };

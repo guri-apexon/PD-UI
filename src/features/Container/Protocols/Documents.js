@@ -13,15 +13,40 @@ import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
 import FileDownload from "js-file-download";
 import cloneDeep from "lodash/cloneDeep";
+import { userId } from "../../../store/userDetails";
 
 const Documents = ({ handleChangeTab }) => {
   const summary = useSelector(protocolSummary);
+  const userId1 = useSelector(userId);
   const associateDocuments = useSelector(associateDocs);
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [loader, setLoader] = useState(false);
   const [summaryData, setSummaryData] = useState({});
   const [userName, setUserName] = useState("");
+  const [primaryUser, setPrimaryUser] = useState(false);
   // const [completed, setCompleted] = useState(0);
+
+  const getUserRole = async (data) => {
+    console.log("Protocol Doc Data", data);
+    const primaryConfig = {
+      url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
+        1
+      )}&protocol=${data.protocol}`,
+      method: "GET",
+    };
+    const userresp = await httpCall(primaryConfig);
+    if (userresp.data) {
+      setPrimaryUser(true);
+    } else {
+      setPrimaryUser(false);
+    }
+    console.log(userresp);
+  };
+  useEffect(() => {
+    if (summary.success) {
+      getUserRole(summary.data);
+    }
+  }, [summary]);
 
   const getUserName = async (userID) => {
     const config = {
@@ -83,40 +108,45 @@ const Documents = ({ handleChangeTab }) => {
     if (protocolSelected.length <= 1) {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
-      try {
-        setLoader(true);
-        const config = {
-          url: `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
-          method: "GET",
-          responseType: "blob",
-        };
-        const resp = await httpCall(config);
-        if (resp.message === "Success") {
-          FileDownload(
-            resp.data,
-            `${protocolSelected[0]}_${protocolSelected[1]}.compare_detail.csv`
-          );
-          // console.log(completed);
-          // if (completed === 100 || completed === "100") {
+      if (primaryUser) {
+        try {
+          setLoader(true);
+          const config = {
+            url: `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
+            method: "GET",
+            responseType: "blob",
+          };
+          const resp = await httpCall(config);
+          if (resp.message === "Success") {
+            FileDownload(
+              resp.data,
+              `${protocolSelected[0]}_${protocolSelected[1]}.compare_detail.csv`
+            );
+            // console.log(completed);
+            // if (completed === 100 || completed === "100") {
+            setLoader(false);
+            // }
+          } else if (resp.message === "No-Content") {
+            toast.info("No difference found for this compare");
+            setLoader(false);
+          } else if (resp.message === "Not-Found") {
+            toast.error("Compare is not available for selected documents.");
+            setLoader(false);
+          }
+          setProtocolSelected([]);
+        } catch (e) {
           setLoader(false);
-          // }
-        } else if (resp.message === "No-Content") {
-          toast.info("No difference found for this compare");
-          setLoader(false);
-        } else if (resp.message === "Not-Found") {
-          toast.error("Compare is not available for selected documents.");
-          setLoader(false);
+          console.log("Compare Resp", e.response);
+          /* istanbul ignore next*/
+          if (e.response && e.response.data) {
+            toast.error(e.response.data.detail);
+          } else {
+            toast.error("Data fetching failed. Please try again.");
+          }
         }
+      } else {
+        toast.info("Access Provisioned to Primary Users only");
         setProtocolSelected([]);
-      } catch (e) {
-        setLoader(false);
-        console.log("Compare Resp", e.response);
-        /* istanbul ignore next*/
-        if (e.response && e.response.data) {
-          toast.error(e.response.data.detail);
-        } else {
-          toast.error("Data fetching failed. Please try again.");
-        }
       }
     }
   };

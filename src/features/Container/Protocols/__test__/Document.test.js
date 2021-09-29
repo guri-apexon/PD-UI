@@ -525,7 +525,7 @@ describe("Should render document tab", () => {
       initialState2
     );
 
-    expect(mockCallApi).toHaveBeenCalledTimes(0);
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
   test("Should check for user detail fetch failure", async () => {
     const handleChangeTab = jest.fn();
@@ -545,6 +545,6 @@ describe("Should render document tab", () => {
       initialState3
     );
 
-    expect(mockCallApi).toHaveBeenCalledTimes(0);
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 });

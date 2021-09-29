@@ -14,6 +14,7 @@ import Card from "apollo-react/components/Card";
 import { Link } from "react-router-dom";
 // import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import Tooltip from "apollo-react/components/Tooltip";
+import { redaction } from "../../../AppConstant/AppConstant";
 //const [value, setValue] = React.useState(true);
 
 //const handleChange = (e, checked) => {
@@ -56,6 +57,31 @@ const SearchListingSection = ({
   const handleFollowChange = (e, checked, data) => {
     handleFollow(e, checked, data);
   };
+  const redactionCheckRender = (value, testid) => {
+    return value && value === redaction.text ? (
+      <>
+        <Tooltip variant="light" title={redaction.hoverText} placement="left">
+          <span className="blur">{value}</span>
+        </Tooltip>
+      </>
+    ) : (
+      <>
+        {value.length > textLength ? (
+          <Tooltip
+            variant="light"
+            title={data.protocolDescription}
+            placement="left"
+          >
+            <p className="grid-item grid-key-value" style={{ marginRight: 10 }}>
+              {value}
+            </p>
+          </Tooltip>
+        ) : (
+          <p className="grid-item grid-key-value">{data.protocolDescription}</p>
+        )}
+      </>
+    );
+  };
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
       <div
@@ -73,40 +99,16 @@ const SearchListingSection = ({
             <div className="divBlock">
               <span className="blueText">
                 Protocol:{" "}
-                {/* <strong
-                  onClick={() => handleTitle(data)}
+                <Link
+                  to={`/protocols?protocolId=${data.AiDocId}`}
                   data-testid="name-value"
                 >
-                  {data.protocolNumber}
-                </strong> */}
-                <Link to={`/protocols?protocolId=${data.AiDocId}`}>
                   {data.protocolNumber}
                 </Link>
               </span>
             </div>
             <div className="divBlock ellipse" data-testid="title-value">
-              {data.protocolDescription &&
-              data.protocolDescription.length > textLength ? (
-                <Tooltip
-                  variant="light"
-                  // title="Title"
-                  subtitle={data.protocolDescription}
-                  placement="left"
-                  // style={{ marginRight: 48 }}
-                >
-                  <p
-                    className="grid-item grid-key-value"
-                    style={{ marginRight: 10 }}
-                  >
-                    {data.protocolDescription}
-                  </p>
-                </Tooltip>
-              ) : (
-                <p className="grid-item grid-key-value">
-                  {data.protocolDescription}
-                </p>
-              )}
-              {/* {data.protocolDescription} */}
+              {redactionCheckRender(data.protocolDescription)}
             </div>
           </div>
           <div className="width5 swtichButton">

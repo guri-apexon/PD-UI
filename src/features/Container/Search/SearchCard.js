@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import Tooltip from "apollo-react/components/Tooltip";
 import Loader from "apollo-react/components/Loader";
 import FileDownload from "js-file-download";
+import { redaction } from "../../../AppConstant/AppConstant";
 
 const textLength = 24;
 const SearchCard = ({
@@ -71,6 +72,33 @@ const SearchCard = ({
       toast.info("Access Provisioned to Primary Users only");
     }
   };
+  const redactionCheckRender = (value, testid) => {
+    return value && value === redaction.text ? (
+      <>
+        <Tooltip variant="light" title={redaction.hoverText} placement="left">
+          <span className="blur">{value}</span>
+        </Tooltip>
+      </>
+    ) : (
+      <>
+        {value && value.length > textLength ? (
+          <Tooltip variant="light" title={value} placement="left">
+            <p
+              className="grid-item grid-key-value"
+              data-testid={testid}
+              style={{ marginRight: 10 }}
+            >
+              {value}
+            </p>
+          </Tooltip>
+        ) : (
+          <p className="grid-item grid-key-value" data-testid={testid}>
+            {value}
+          </p>
+        )}
+      </>
+    );
+  };
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>
       {loader && <Loader />}
@@ -81,176 +109,62 @@ const SearchCard = ({
             <p className="grid-item bold-class">Indication :</p>
           </Grid>
           <Grid md={6}>
-            {data.indication && data.indication.length > textLength ? (
-              <Tooltip
-                variant="light"
-                // title="Title"
-                subtitle={data.indication}
-                placement="left"
-                // style={{ marginRight: 48 }}
-              >
-                <p
-                  className="grid-item grid-key-value"
-                  data-testid="indication-value"
-                  style={{ marginRight: 10 }}
-                >
-                  {data.indication}
-                </p>
-              </Tooltip>
-            ) : (
-              <p
-                className="grid-item grid-key-value"
-                data-testid="indication-value"
-              >
-                {data.indication}
-              </p>
-            )}
+            {redactionCheckRender(data.indication, "indication-value")}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Sponsor :</p>
           </Grid>
           <Grid md={6}>
-            <p className="grid-item grid-key-value" data-testid="sponsor-value">
-              {data.sponsor && data.sponsor.length > textLength ? (
-                <Tooltip
-                  variant="light"
-                  // title="Title"
-                  subtitle={data.sponsor}
-                  placement="left"
-                  // style={{ marginRight: 48 }}
-                >
-                  <p
-                    className="grid-item grid-key-value"
-                    data-testid="indication-value"
-                    style={{ marginRight: 10 }}
-                  >
-                    {data.sponsor}
-                  </p>
-                </Tooltip>
-              ) : (
-                <p
-                  className="grid-item grid-key-value"
-                  data-testid="sponsor-value"
-                >
-                  {data.sponsor}
-                </p>
-              )}
-            </p>
+            {redactionCheckRender(data.sponsor, "sponsor-value")}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">ProjectId / Opportunity :</p>
           </Grid>
           <Grid md={6}>
-            {data.projectId && data.projectId.length > textLength ? (
-              <Tooltip
-                variant="light"
-                // title="Title"
-                subtitle={data.projectId}
-                placement="left"
-                // style={{ marginRight: 48 }}
-              >
-                <p
-                  className="grid-item grid-key-value"
-                  data-testid="projectid-value"
-                  style={{ marginRight: 10 }}
-                >
-                  {data.projectId}
-                </p>
-              </Tooltip>
-            ) : (
-              <p
-                className="grid-item grid-key-value"
-                data-testid="projectid-value"
-              >
-                {data.projectId}
-              </p>
-            )}
+            {redactionCheckRender(data.projectId, "projectid-value")}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Document Status :</p>
           </Grid>
           <Grid md={6}>
-            <p
-              className="grid-item grid-key-value text-capitalize"
-              data-testid="status-value"
-            >
-              {data.documentStatus}
-            </p>
+            {redactionCheckRender(data.documentStatus, "status-value")}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Version #:</p>
           </Grid>
           <Grid md={6}>
-            <p className="grid-item grid-key-value" data-testid="version-value">
-              {data.version}
-            </p>
+            {redactionCheckRender(data.version, "version-value")}
           </Grid>
-          {/* <Grid md={6}>
-            <p className="grid-item bold-class">QC Status :</p>
-          </Grid>
-          <Grid md={6}>
-            <p
-              className="grid-item grid-key-value text-capitalize"
-              data-testid="status-value"
-            >
-              QC Completed
-            </p>
-          </Grid> */}
         </Grid>
         {/* ------------------------------------------------- */}
         <Grid md={6} container>
           <Grid md={6}>
             <p className="grid-item bold-class">Phase :</p>
           </Grid>
-          <Grid md={6}>
-            <p className="grid-item grid-key-value" data-testid="phase-value">
-              {data.phase}
-            </p>
-          </Grid>
+          <Grid md={6}>{redactionCheckRender(data.phase, "phase-value")}</Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Molecule/Device :</p>
           </Grid>
           <Grid md={6}>
-            {data.molecule && data.molecule.length > textLength ? (
-              <Tooltip
-                variant="light"
-                // title="Title"
-                subtitle={data.molecule}
-                placement="left"
-                // style={{ marginRight: 48 }}
-              >
-                <p
-                  className="grid-item grid-key-value"
-                  data-testid="molecule-value"
-                  style={{ marginRight: 10 }}
-                >
-                  {data.molecule}
-                </p>
-              </Tooltip>
-            ) : (
-              <p
-                className="grid-item grid-key-value"
-                data-testid="molecule-value"
-              >
-                {data.molecule}
-              </p>
-            )}
+            {redactionCheckRender(data.molecule, "molecule-value")}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Approval Date:</p>
           </Grid>
           <Grid md={6}>
-            <p className="grid-item grid-key-value" data-testid="date-value">
-              {data.approval_date ? formatESDate(data.approval_date) : "-"}
-            </p>
+            {redactionCheckRender(
+              data.approval_date ? formatESDate(data.approval_date) : "-",
+              "date-value"
+            )}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Upload Date :</p>
           </Grid>
           <Grid md={6}>
-            <p className="grid-item grid-key-value" data-testid="upload-value">
-              {data.uploadDate ? formatESDate(data.uploadDate) : "-"}
-            </p>
+            {redactionCheckRender(
+              data.uploadDate ? formatESDate(data.uploadDate) : "-",
+              "upload-value"
+            )}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Source :</p>
