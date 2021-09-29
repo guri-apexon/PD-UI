@@ -58,19 +58,31 @@ export function* getRolesFunction() {
   }
 }
 
-function* getProtocolMapData() {
-  const Url = `/protocol-map.json`;
+function* getProtocolMapData(action) {
+  const Url = `${BASE_URL_8000}/api/user_protocol/read_user_protocols_by_userId_or_protocol`;
 
   const Config = {
     url: Url,
     method: "GET",
+    params: {
+      userId: action.payload.userId,
+      protocol: action.payload.protocol,
+    },
   };
   try {
     const data = yield call(httpCall, Config);
     console.log(data.data);
-    yield put(getProtocolMap(data.data));
+    if (data.success) {
+      const searchData = data.data ? data.data : [];
+      yield put(getProtocolMap(searchData));
+    } else if (data.err && data.err.data) {
+      toast.error(data.err.data.detail);
+    } else {
+      toast.error(`Error while searching for User or Protocol`);
+    }
   } catch (err) {
     console.log(err);
+    toast.error(`Error while searching for User or Protocol`);
   }
 }
 export function* deleteUser(action) {

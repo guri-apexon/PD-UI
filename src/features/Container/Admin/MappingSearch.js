@@ -13,7 +13,7 @@ function MappingSearch() {
 
   const getSearchResult = () => {
     const data = {
-      id: userId,
+      userId,
       protocol,
     };
     dispatch({ type: "GET_PROTOCOL_MAP_SAGA", payload: data });
