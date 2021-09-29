@@ -1,5 +1,7 @@
+import MappingSearch from "./MappingSearch";
+
 function ProtocolMap() {
-  return <h1>User Role</h1>;
+  return <MappingSearch />;
 }
 
 export default ProtocolMap;
