@@ -60,7 +60,7 @@ export function* getRolesFunction() {
 
 function* getProtocolMapData(action) {
   const Url = `${BASE_URL_8000}/api/user_protocol/read_user_protocols_by_userId_or_protocol`;
-
+  yield put(setLoader(true));
   const Config = {
     url: Url,
     method: "GET",
@@ -71,7 +71,6 @@ function* getProtocolMapData(action) {
   };
   try {
     const data = yield call(httpCall, Config);
-    console.log(data.data);
     if (data.success) {
       const searchData = data.data ? data.data : [];
       yield put(getProtocolMap(searchData));
@@ -80,8 +79,10 @@ function* getProtocolMapData(action) {
     } else {
       toast.error(`Error while searching for User or Protocol`);
     }
+    yield put(setLoader(false));
   } catch (err) {
     console.log(err);
+    yield put(setLoader(false));
     toast.error(`Error while searching for User or Protocol`);
   }
 }
@@ -116,7 +117,7 @@ export function* deleteUser(action) {
 }
 export function* deleteMapping(action) {
   const Url = `${BASE_URL_8000}/api/user_protocol/delete_userprotocol`;
-
+  yield put(setLoader(true));
   const Config = {
     url: Url,
     method: "PUT",
@@ -131,18 +132,27 @@ export function* deleteMapping(action) {
     if (data.success) {
       const state = yield select();
       const mappingRows = state.admin.map;
-      const updatedUserList = mappingRows.filter(
-        (row) =>
-          row.username !== action.payload.userId &&
-          row.protocol !== action.payload.protocol
-      );
-      yield put(getUsers(updatedUserList));
+      console.log(mappingRows);
+      const updatedMappingList = mappingRows.filter((row) => {
+        if (
+          row.userId === action.payload.userId &&
+          row.protocol === action.payload.protocol
+        )
+          return false;
+        return true;
+      });
+      console.log(updatedMappingList);
+      yield put(getProtocolMap(updatedMappingList));
       toast.info(`Protocol Mapping is successfully deleted`);
+    } else if (data.err && data.err.data) {
+      toast.error(data.err.data.detail);
     } else {
       toast.error(`Protocol Mapping is not deleted`);
     }
+    yield put(setLoader(false));
   } catch (err) {
     console.log(err);
+    yield put(setLoader(false));
     toast.error(`Protocol Mapping is not deleted`);
   }
 }
