@@ -1,6 +1,7 @@
 import { useState, memo } from "react";
 import { useDispatch } from "react-redux";
-// import { useHistory } from "react-router-dom";
+import trim from "lodash/trim";
+import { toast } from "react-toastify";
 import Search from "apollo-react/components/Search";
 import Grid from "apollo-react/components/Grid";
 import Button from "apollo-react/components/Button";
@@ -10,13 +11,43 @@ function MappingSearch() {
   const dispatch = useDispatch();
   const [userId, setUserId] = useState("");
   const [protocol, setProtocol] = useState("");
+  const [userErr, setUserErr] = useState(false);
+  const [protocolErr, setProtocolErr] = useState(false);
+
+  const handleChange = (key, value) => {
+    if (key === "id") {
+      setUserId(trim(value));
+    } else if (key === "protocol") {
+      setProtocol(trim(value));
+    }
+  };
+
+  const onFieldBlur = (key, value) => {
+    const alphaNumeric = /[!@#/$%&/*/^();,?"':=/+`~/]/.test(protocol);
+    const idValidation = /u|q{1}[0-9]+$/.test(userId);
+    console.log(idValidation);
+    if (key === "id" && userId && !idValidation) {
+      setUserErr(true);
+    } else if (key === "id") {
+      setUserErr(false);
+    }
+    if (key === "protocol" && protocol && alphaNumeric) {
+      setProtocolErr(true);
+    } else if (key === "protocol") {
+      setProtocolErr(false);
+    }
+  };
 
   const getSearchResult = () => {
-    const data = {
-      userId,
-      protocol,
-    };
-    dispatch({ type: "GET_PROTOCOL_MAP_SAGA", payload: data });
+    if (userErr || protocolErr || (!userId && !protocol)) {
+      toast.error(`Please enter valid input`);
+    } else {
+      const data = {
+        userId,
+        protocol,
+      };
+      dispatch({ type: "GET_PROTOCOL_MAP_SAGA", payload: data });
+    }
   };
   return (
     <div
@@ -30,7 +61,10 @@ function MappingSearch() {
             <Search
               placeholder="Enter User ID"
               fullWidth
-              onChange={(e) => setUserId(e.target.value)}
+              onChange={(e) => handleChange("id", e.target.value)}
+              onBlur={(e) => onFieldBlur("id", e.target.value)}
+              error={userErr}
+              helperText={userErr ? "Invalid User ID" : ""}
             />
           </span>
         </Grid>
@@ -39,7 +73,10 @@ function MappingSearch() {
             <Search
               placeholder="Enter Protocol Number"
               fullWidth
-              onChange={(e) => setProtocol(e.target.value)}
+              onChange={(e) => handleChange("protocol", e.target.value)}
+              onBlur={(e) => onFieldBlur("protocol", e.target.value)}
+              error={protocolErr}
+              helperText={protocolErr ? "Invalid Protocol Number" : ""}
             />
           </span>
         </Grid>
