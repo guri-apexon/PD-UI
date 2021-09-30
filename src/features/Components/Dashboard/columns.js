@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { covertMMDDYYYY } from "../../../utils/utilFunction";
 import Tooltip from "apollo-react/components/Tooltip";
 import { Link } from "react-router-dom";
@@ -8,39 +7,30 @@ import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
 import { userId } from "../../../store/userDetails";
+import { useSelector } from "react-redux";
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
+  console.log("UserID Required", userId1);
   const handleDownload = async (row) => {
-    const primaryConfig = {
-      url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
-        1
-      )}&protocol=${row.protocol}`,
+    setLoader(true);
+    let splitArr = row.documentFilePath.split("\\");
+    const fileName = splitArr[splitArr.length - 1];
+    console.log(fileName);
+    const config = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}&userId=${userId1}`,
       method: "GET",
+      responseType: "blob",
     };
-    const userresp = await httpCall(primaryConfig);
-    if (userresp && userresp.data) {
-      setLoader(true);
-      let splitArr = row.documentFilePath.split("\\");
-      const fileName = splitArr[splitArr.length - 1];
-      console.log(fileName);
-      const config = {
-        url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
-        method: "GET",
-        responseType: "blob",
-      };
 
-      const resp = await httpCall(config);
-      if (resp.success) {
-        FileDownload(resp.data, fileName);
-      } else {
-        toast.error("Download Failed");
-      }
-      setLoader(false);
+    const resp = await httpCall(config);
+    if (resp.success) {
+      FileDownload(resp.data, fileName);
     } else {
-      toast.info("Access Provisioned to Primary Users only");
+      toast.error("Download Failed");
     }
+    setLoader(false);
   };
   return (
     <>

@@ -27,6 +27,8 @@ import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
 import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
+import { userId } from "../../../store/userDetails";
+import { useSelector } from "react-redux";
 
 const ActionCell = ({
   row: {
@@ -278,13 +280,15 @@ function getColumns(screen) {
 
 const ExpandableComponent = ({ row }) => {
   const [loader, setLoader] = useState(false);
+  const userId1 = useSelector(userId);
+  console.log("UserID Required", userId1);
   const handleDownload = async (row) => {
     setLoader(true);
     let splitArr = row.documentFilePath.split("\\");
     const fileName = splitArr[splitArr.length - 1];
     console.log(fileName);
     const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}&userId=${userId1}`,
       method: "GET",
       responseType: "blob",
     };
