@@ -23,7 +23,7 @@ describe("Dashboard table component", () => {
         protocol: "EMR 200095-004",
         protocolName:
           "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
-        projectId: 123,
+        projectId: "123sacas",
         sponser: "Merck KGaA to be more than 25 characters long",
         indication: "Bone necrosis",
         molecule: "string",
@@ -63,7 +63,7 @@ describe("Dashboard table component", () => {
         protocol: "EMR 200095-004 Testing for more than 25 characters tooltip",
         protocolName:
           "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
-        projectId: 123,
+        projectId: "123",
         sponser: "Merck KGaA Testing for more than 25 characters tooltip",
         indication: "Bone necrosis Testing for more than 25 characters tooltip",
         molecule: "string",
@@ -97,6 +97,7 @@ describe("Dashboard table component", () => {
       <ProtocolTable
         initialRows={protocolData}
         pageRows={[5, 20, 30, "All"]}
+        screen="FollowedProtocols"
       />,
       state
     );
@@ -108,6 +109,7 @@ describe("Dashboard table component", () => {
       <ProtocolTable
         initialRows={protocolData}
         pageRows={[5, 20, 30, "All"]}
+        screen="FollowedProtocols"
       />,
       state
     );
@@ -239,6 +241,7 @@ describe("Dashboard table component", () => {
       <ProtocolTable
         initialRows={protocolData}
         pageRows={[5, 20, 30, "All"]}
+        screen="FollowedProtocols"
       />,
       state
     );
@@ -255,7 +258,7 @@ describe("Dashboard table component", () => {
         protocol: "EMR 200095-004",
         protocolName:
           "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
-        projectId: 123,
+        projectId: "123123",
         sponser: "Merck KGaA",
         indication: "Bone necrosis",
         molecule: "string",
@@ -427,7 +430,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(screen.getByText("EMR 200095-004"));
   });
 
-  xtest("Component renders correctly for expanded row", () => {
+  test("Component renders correctly for expanded row", () => {
     const protocolData = [
       {
         id: "abcd123456",
@@ -481,7 +484,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(arrowButton);
   });
 
-  xtest("Component renders correctly for expanded row", () => {
+  test("Component renders correctly for expanded row", () => {
     const protocolData = [
       {
         id: "abcd123456",
@@ -538,7 +541,7 @@ describe("Dashboard table component", () => {
     // fireEvent.click(viewAssociated);
   });
 
-  xtest("Component renders correctly for expanda and collpase row", () => {
+  test("Component renders correctly for expanda and collpase row", () => {
     const protocolData = [
       {
         id: "abcd1234",
@@ -592,7 +595,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(arrowButton);
   });
 
-  xtest("Component renders correctly for expanded row filename null", () => {
+  test("Component renders correctly for expanded row filename null", () => {
     const protocolData = [
       {
         id: "abcd1234",

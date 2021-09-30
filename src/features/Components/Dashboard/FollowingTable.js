@@ -61,6 +61,8 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
 };
 
 const Cell = ({ row, column }) => {
+  console.log("ACCESSOR", column.accessor);
+  console.log("ACCESSOR Value", row[column.accessor]);
   if (row[column.accessor] && row[column.accessor] === redaction.text) {
     return (
       <Tooltip variant="light" title={redaction.hoverText} placement="top">
@@ -69,7 +71,7 @@ const Cell = ({ row, column }) => {
         </div>
       </Tooltip>
     );
-  } else if (row[column.accessor].length > 15) {
+  } else if (row[column.accessor] && row[column.accessor].length > 15) {
     return (
       <Tooltip variant="light" title={row[column.accessor]} placement="top">
         <div className="long-text" style={{ fontWeight: 800 }}>
@@ -234,7 +236,7 @@ const ExpandableComponent = ({ row }) => {
         </div>
       ) : (
         <>
-          {row.associateddata && row.associateddata.length > 0 && (
+          {"associateddata" in row && row.associateddata.length > 0 && (
             <div className="view-asso-prot">
               <div>
                 <h4>Associate Protocols</h4>
@@ -243,16 +245,19 @@ const ExpandableComponent = ({ row }) => {
               <div>
                 <Table
                   columns={columns}
-                  rows={row.associateddata.map((row) => ({
-                    ...row,
-                    key: row.id,
-                  }))}
+                  rows={
+                    "associateddata" in row &&
+                    row.associateddata.map((row) => ({
+                      ...row,
+                      key: row.id,
+                    }))
+                  }
                   hidePagination
                 />
               </div>
             </div>
           )}
-          {row.associateddata.length === 0 && (
+          {"associateddata" in row && row.associateddata.length === 0 && (
             <h4 style={{ textAlign: "center" }}>
               {row.protocol} has no associated protocols available.
             </h4>
@@ -309,7 +314,7 @@ const ProtocolTable = ({
         ? expandedRows.filter((eid) => eid !== id)
         : concat(expandedRows, id)
     );
-    if (row.associateddata.length === 0) {
+    if ("associateddata" in row && row.associateddata.length === 0) {
       fetchAssociateData(row);
     }
   };

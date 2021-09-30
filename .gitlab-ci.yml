@@ -20,7 +20,7 @@ test:
     - echo "Test successfully!"
   only:
     refs:
-      - develop
+      - Redaction
     variables: 
       - $ENVIRONMENT== "dev"
 
@@ -47,6 +47,6 @@ build:
       
   only:
     refs:
-      - develop
+      - Redaction
     variables: 
       - $ENVIRONMENT== "dev"
