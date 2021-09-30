@@ -114,6 +114,38 @@ export function* deleteUser(action) {
     toast.error(`User is not deleted`);
   }
 }
+export function* deleteMapping(action) {
+  const Url = `${BASE_URL_8000}/api/user_protocol/delete_userprotocol`;
+
+  const Config = {
+    url: Url,
+    method: "PUT",
+    data: {
+      userId: action.payload.userId,
+      protocol: action.payload.protocol,
+      isActive: false,
+    },
+  };
+  try {
+    const data = yield call(httpCall, Config);
+    if (data.success) {
+      const state = yield select();
+      const mappingRows = state.admin.map;
+      const updatedUserList = mappingRows.filter(
+        (row) =>
+          row.username !== action.payload.userId &&
+          row.protocol !== action.payload.protocol
+      );
+      yield put(getUsers(updatedUserList));
+      toast.info(`Protocol Mapping is successfully deleted`);
+    } else {
+      toast.error(`Protocol Mapping is not deleted`);
+    }
+  } catch (err) {
+    console.log(err);
+    toast.error(`Protocol Mapping is not deleted`);
+  }
+}
 export function* updateUser(action) {
   const editedRow = action.payload;
   const Url = `${BASE_URL_8000}/api/user_login/update_existing`;
@@ -267,6 +299,7 @@ export function* watchAdmin() {
   yield takeLatest("UPDATE_USER_SAGA", updateUser);
   yield takeLatest("ADD_NEW_ROLE_SAGA", addNewRole);
   yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
+  yield takeLatest("DELETE_USER_PROTOCOL_MAPPING", deleteMapping);
 }
 
 export default function* adminSaga() {
