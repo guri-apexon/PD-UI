@@ -6,6 +6,7 @@ import Search from "apollo-react/components/Search";
 import Grid from "apollo-react/components/Grid";
 import Button from "apollo-react/components/Button";
 import BulkMap from "./BulkMap";
+import AddNewMapping from "./AddNewMapping";
 
 function MappingSearch() {
   const dispatch = useDispatch();
@@ -88,13 +89,7 @@ function MappingSearch() {
           >
             Search
           </Button>
-          <Button
-            variant="primary"
-            style={{ marginRight: 10 }}
-            onClick={() => console.log("open")}
-          >
-            Map
-          </Button>
+          <AddNewMapping />
           <BulkMap />
         </Grid>
       </Grid>
