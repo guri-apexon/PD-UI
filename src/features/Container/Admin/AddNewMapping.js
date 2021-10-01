@@ -1,4 +1,4 @@
-import { useState, memo } from "react";
+import { useState, memo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import trim from "lodash/trim";
 import cloneDeep from "lodash/cloneDeep";
@@ -44,6 +44,24 @@ function AddNewMapping() {
   const [formErrValue, setFormErrValue] = useState(errorValue);
   const [follow, setFollow] = useState("");
 
+  useEffect(() => {
+    if (!isOpen) {
+      const reset = {
+        userId: { error: false, message: "" },
+        protocol: { error: false, message: "" },
+        role: { error: false, message: "" },
+        following: { error: false, message: "" },
+      };
+      dispatch(setNewMappingValues(mapValue));
+      setFormErrValue(reset);
+      setRole("");
+      setFollow("");
+      dispatch(setNewMappingError(""));
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
   const handleSaveForm = () => {
     let err = cloneDeep(formErrValue);
     if (!formValue.userId) {
@@ -70,7 +88,7 @@ function AddNewMapping() {
       formValue.role &&
       formValue.following
     ) {
-      dispatch({ type: "ADD_NEW_USER_SAGA", payload: formValue });
+      dispatch({ type: "ADD_NEW_MAPPING_SAGA", payload: formValue });
     }
     console.log(formValue);
   };
@@ -129,18 +147,7 @@ function AddNewMapping() {
         variant="default"
         open={isOpen}
         onClose={() => {
-          const reset = {
-            userId: { error: false, message: "" },
-            protocol: { error: false, message: "" },
-            role: { error: false, message: "" },
-            following: { error: false, message: "" },
-          };
           dispatch(setModalToggle(false));
-          dispatch(setNewMappingValues(mapValue));
-          setFormErrValue(reset);
-          setRole("");
-          setFollow("");
-          dispatch(setNewMappingError(""));
         }}
         title="Map User to Protocol"
         subtitle={error && <span style={{ color: "red" }}>{error}</span>}

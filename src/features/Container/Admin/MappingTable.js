@@ -92,7 +92,7 @@ const MappingTable = () => {
         rows={initialRows.map((row) => ({
           ...row,
           onDelete,
-          key: row.userId,
+          key: row.uid,
         }))}
         initialSortedColumn="lastUpdated"
         initialSortOrder="desc"

@@ -10,6 +10,7 @@ import {
   setModalToggle,
   setLoader,
   setNewUserError,
+  setNewMappingError,
 } from "./adminSlice";
 
 export function* usersFunction() {
@@ -65,7 +66,7 @@ function* getProtocolMapData(action) {
     url: Url,
     method: "GET",
     params: {
-      userId: action.payload.userId,
+      userId: action.payload.userId.substring(1),
       protocol: action.payload.protocol,
     },
   };
@@ -73,6 +74,10 @@ function* getProtocolMapData(action) {
     const data = yield call(httpCall, Config);
     if (data.success) {
       const searchData = data.data ? data.data : [];
+      searchData.map((item, index) => {
+        item.uid = index + 1;
+        return item;
+      });
       yield put(getProtocolMap(searchData));
     } else if (data.err && data.err.data) {
       toast.error(data.err.data.detail);
@@ -301,6 +306,50 @@ export function* addNewRole(action) {
   }
 }
 
+export function* newMapping(action) {
+  yield put(setLoader(true));
+  let mapDetails = action.payload;
+  const Url = `${BASE_URL_8000}/api/user_protocol/`;
+  const details = [mapDetails].map((item) => {
+    let data = {};
+    data.userId = item.userId.substring(1);
+    data.protocol = item.protocol;
+    data.userRole = item.role;
+    data.projectId = item.projectId;
+    data.follow = item.following;
+    return data;
+  });
+  const Config = {
+    url: Url,
+    method: "POST",
+    data: details[0],
+  };
+  try {
+    const data = yield call(httpCall, Config);
+    yield put(setLoader(false));
+    if (data.success) {
+      toast.info(`Details are saved to the system.`);
+      yield put(setModalToggle(false));
+      yield put(setNewMappingError(""));
+    } else if (data.err && data.err.data) {
+      toast.error(data.err.data.detail);
+      yield put(setNewMappingError(data.err.data.detail));
+    } else {
+      yield put(
+        setNewMappingError("Error while adding User Protocol Mapping to PD")
+      );
+      toast.error(`Error while adding User Protocol Mapping to PD`);
+    }
+  } catch (err) {
+    console.log(err);
+    yield put(setLoader(false));
+    yield put(
+      setNewMappingError("Error while adding User Protocol Mapping to PD")
+    );
+    toast.error(`Error while adding User Protocol Mapping to PD`);
+  }
+}
+
 export function* watchAdmin() {
   yield takeLatest("GET_USERS_SAGA", usersFunction);
   yield takeLatest("GET_ROLES_SAGA", getRolesFunction);
@@ -310,6 +359,7 @@ export function* watchAdmin() {
   yield takeLatest("ADD_NEW_ROLE_SAGA", addNewRole);
   yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
   yield takeLatest("DELETE_USER_PROTOCOL_MAPPING", deleteMapping);
+  yield takeLatest("ADD_NEW_MAPPING_SAGA", newMapping);
 }
 
 export default function* adminSaga() {
