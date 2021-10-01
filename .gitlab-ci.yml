@@ -16,7 +16,7 @@ test:
   script:
     - echo "Testing App"
     - npm install
-    - npm test
+    - npm run test
     - echo "Test successfully!"
   only:
     refs:
