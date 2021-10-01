@@ -1,52 +1,53 @@
 image: node:12.20
 
-cache:
-  paths:
+pages:
+  cache:
+    paths:
     - node_modules/
 
-stages:
-  - test
-  - build_and_deploy
+  stages:
+    - test
+    - build_and_deploy
 
-.test:
-  stage: test
+  .test:
+    stage: test
 
-  tags: 
-    - pd-ui-dev
-  script:
-    - echo "Testing App"
-    - npm install
-    - npm run test
-    - echo "Test successfully!"
-  only:
-    refs:
-      - Redaction
-    variables: 
-      - $ENVIRONMENT== "dev"
+    tags: 
+      - pd-ui-dev
+    script:
+      - echo "Testing App"
+      - npm install
+      - npm run test
+      - echo "Test successfully!"
+    only:
+      refs:
+        - Redaction
+      variables: 
+        - $ENVIRONMENT== "dev"
 
-build:
-  stage: build_and_deploy
+  build:
+    stage: build_and_deploy
 
-  tags: 
-    - pd-ui-dev
+    tags: 
+      - pd-ui-dev
 
-  before_script:
-    - Copy-Item "env_backup.txt" -Destination ".env"
-  script: 
-    - echo "Start building App"
-    - npm install
-    - npm run build
-    - npm install --global pm2@latest
-    - npm run stop
-    - npm run deploy
-    - echo "Build and Deloyed Successfully!"
+    before_script:
+      - Copy-Item "env_backup.txt" -Destination ".env"
+    script: 
+      - echo "Start building App"
+      - npm install
+      - npm run build
+      - npm install --global pm2@latest
+      - npm run stop
+      - npm run deploy
+      - echo "Build and Deloyed Successfully!"
 
-  artifacts:
-    paths:
-      - ./build
-      
-  only:
-    refs:
-      - Redaction
-    variables: 
-      - $ENVIRONMENT== "dev"
+    artifacts:
+      paths:
+        - ./build
+        
+    only:
+      refs:
+        - Redaction
+      variables: 
+        - $ENVIRONMENT== "dev"
