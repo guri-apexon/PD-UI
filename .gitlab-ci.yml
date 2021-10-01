@@ -34,11 +34,7 @@ build:
     - Copy-Item "env_backup.txt" -Destination ".env"
   script: 
     - echo "Start building App"
-    - npm install
-    - npm run build
-    - npm install --global pm2@latest
-    - npm run stop
-    - npm run deploy
+    - ./deploy.sh
     - echo "Build and Deloyed Successfully!"
 
   artifacts:
