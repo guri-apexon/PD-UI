@@ -34,7 +34,7 @@ build:
     - Copy-Item "env_backup.txt" -Destination ".env"
   script: 
     - echo "Start building App"
-    - ./deploy.sh
+    - sh deploy.sh
     - echo "Build and Deloyed Successfully!"
 
   artifacts:
