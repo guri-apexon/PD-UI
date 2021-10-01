@@ -22,6 +22,13 @@ export const adminSlice = createSlice({
       role: "",
       description: "",
     },
+    newMapping: {
+      userId: null,
+      protocol: null,
+      role: null,
+      following: null,
+    },
+    newMappingError: "",
   },
   reducers: {
     getUsers: (state, action) => {
@@ -51,6 +58,12 @@ export const adminSlice = createSlice({
     setNewUserError: (state, action) => {
       state.newUserError = action.payload;
     },
+    setNewMappingValues: (state, action) => {
+      state.newMapping = action.payload;
+    },
+    setNewMappingError: (state, action) => {
+      state.newMappingError = action.payload;
+    },
   },
 });
 
@@ -64,6 +77,8 @@ export const {
   setModalToggle,
   setNewUserValues,
   setNewUserError,
+  setNewMappingValues,
+  setNewMappingError,
 } = adminSlice.actions;
 
 export const usersList = (state) => state.admin.users;
@@ -75,5 +90,7 @@ export const newUser = (state) => state.admin.newUser;
 export const loader = (state) => state.admin.loader;
 export const modalToggle = (state) => state.admin.modalToggle;
 export const newUserError = (state) => state.admin.newUserError;
+export const newMapping = (state) => state.admin.newMapping;
+export const newMappingError = (state) => state.admin.newMappingError;
 
 export default adminSlice.reducer;
