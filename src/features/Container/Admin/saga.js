@@ -25,7 +25,7 @@ export function* usersFunction() {
     if (data.success) {
       const userData = data.data.map((item) => {
         item.date_of_registration = moment(item.date_of_registration).format(
-          "MM/DD/YYYY"
+          "MM/DD/YYYY HH:mm:ss"
         );
         return item;
       });
@@ -76,6 +76,12 @@ function* getProtocolMapData(action) {
       const searchData = data.data ? data.data : [];
       searchData.map((item, index) => {
         item.uid = index + 1;
+        item.timeCreated = moment(item.timeCreated).format(
+          "MM/DD/YYYY HH:mm:ss"
+        );
+        item.lastUpdated = moment(item.lastUpdated).format(
+          "MM/DD/YYYY HH:mm:ss"
+        );
         return item;
       });
       yield put(getProtocolMap(searchData));
@@ -314,9 +320,9 @@ export function* newMapping(action) {
     let data = {};
     data.userId = item.userId.substring(1);
     data.protocol = item.protocol;
-    data.userRole = item.role;
+    data.userRole = item.role.toLowerCase();
     data.projectId = item.projectId;
-    data.follow = item.following;
+    data.follow = item.following === "1" ? true : false;
     return data;
   });
   const Config = {

@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment-timezone";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "apollo-react/components/Table";
 import { compareStrings, compareDates } from "apollo-react/components/Table";
@@ -8,8 +9,10 @@ import Trash from "apollo-react-icons/Trash";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "apollo-react/components/IconButton";
 
-const FollowCell = ({ row, column }) =>
-  row[column.accessor] === "1" ? "Yes" : "No";
+const FollowCell = ({ row, column }) => (row[column.accessor] ? "Yes" : "No");
+
+const DateCell = ({ row, column }) =>
+  moment(row[column.accessor]).format("MM/DD/YYYY");
 
 const ActionCell = ({ row }) => {
   return (
@@ -55,11 +58,13 @@ const columns = [
     header: "Created Date",
     accessor: "timeCreated",
     sortFunction: compareDates,
+    customCell: DateCell,
   },
   {
     header: "Updated Date",
     accessor: "lastUpdated",
     sortFunction: compareDates,
+    customCell: DateCell,
   },
   {
     header: <Cog size="small" />,
