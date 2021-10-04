@@ -49,7 +49,9 @@ const SearchCard = ({
     let splitArr = row.path.split("\\");
     const fileName = splitArr[splitArr.length - 1];
     const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.path}&userId=${userId1}`,
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${
+        row.path
+      }&userId=${userId1.substring(1)}&protocol=${row.protocolNumber}`,
       method: "GET",
       responseType: "blob",
     };
@@ -57,7 +59,11 @@ const SearchCard = ({
     if (resp.success) {
       FileDownload(resp.data, fileName);
     } else {
-      toast.error("Download Failed");
+      if (resp.message === "No Access") {
+        toast.info("Access Provisioned to Primary Users only");
+      } else {
+        toast.error("Download Failed");
+      }
     }
     setLoader(false);
   };

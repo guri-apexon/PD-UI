@@ -89,7 +89,11 @@ const Documents = ({ handleChangeTab }) => {
         setLoader(true);
         console.log("UserID Required", userId1);
         const config = {
-          url: `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}&userId=${userId1}`,
+          url: `${BASE_URL_8000}/api/document_compare/?id1=${
+            protocolSelected[0]
+          }&id2=${protocolSelected[1]}&userId=${userId1.substring(
+            1
+          )}&protocol=${summary.data.protocol}`,
           method: "GET",
           responseType: "blob",
         };
