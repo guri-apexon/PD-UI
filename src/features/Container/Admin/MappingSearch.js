@@ -26,7 +26,6 @@ function MappingSearch() {
   const onFieldBlur = (key, value) => {
     const alphaNumeric = /[!@#/$%&/*/^();,?"':=/+`~/]/.test(protocol);
     const idValidation = /u|q{1}[0-9]+$/.test(userId);
-    console.log(idValidation);
     if (key === "id" && userId && !idValidation) {
       setUserErr(true);
     } else if (key === "id") {
@@ -52,34 +51,32 @@ function MappingSearch() {
   };
   return (
     <div
-      className="dashboard-search-parent"
-      data-testid="dashboard-search"
-      id="dashboard-search-wrapper"
+      className="admin-search-parent"
+      data-testid="admin-search"
+      id="admin-search-wrapper"
     >
       <Grid container spacing={2}>
         <Grid item xs={4} style={{ paddingLeft: "3em", paddingRight: "3em" }}>
-          <span data-testid="dashboard-search-bar" id="dashboard-search-bar">
-            <Search
-              placeholder="Enter User ID"
-              fullWidth
-              onChange={(e) => handleChange("id", e.target.value)}
-              onBlur={(e) => onFieldBlur("id", e.target.value)}
-              error={userErr}
-              helperText={userErr ? "Invalid User ID" : ""}
-            />
-          </span>
+          <Search
+            placeholder="Enter User ID"
+            fullWidth
+            onChange={(e) => handleChange("id", e.target.value)}
+            onBlur={(e) => onFieldBlur("id", e.target.value)}
+            error={userErr}
+            helperText={userErr ? "Invalid User ID" : ""}
+            data-testid="admin-search-user-id"
+          />
         </Grid>
         <Grid item xs={4} style={{ paddingLeft: "3em", paddingRight: "3em" }}>
-          <span data-testid="dashboard-search-bar" id="dashboard-search-bar">
-            <Search
-              placeholder="Enter Protocol Number"
-              fullWidth
-              onChange={(e) => handleChange("protocol", e.target.value)}
-              onBlur={(e) => onFieldBlur("protocol", e.target.value)}
-              error={protocolErr}
-              helperText={protocolErr ? "Invalid Protocol Number" : ""}
-            />
-          </span>
+          <Search
+            placeholder="Enter Protocol Number"
+            fullWidth
+            onChange={(e) => handleChange("protocol", e.target.value)}
+            onBlur={(e) => onFieldBlur("protocol", e.target.value)}
+            error={protocolErr}
+            helperText={protocolErr ? "Invalid Protocol Number" : ""}
+            data-testid="admin-search-protocol-number"
+          />
         </Grid>
         <Grid item xs={4} style={{ marginTop: "20px", marginBottom: "8px" }}>
           <Button

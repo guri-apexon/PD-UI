@@ -218,7 +218,6 @@ export function* addNewUser(action) {
     data: details[0],
   };
   try {
-    yield addNewUserSDA(action);
     const data = yield call(httpCall, Config);
     yield put(setLoader(false));
     if (data.success) {

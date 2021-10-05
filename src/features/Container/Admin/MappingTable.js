@@ -23,7 +23,7 @@ const ActionCell = ({ row }) => {
           onClick={() =>
             row.onDelete({ userId: row.userId, protocol: row.protocol })
           }
-          data-id={row.userId}
+          data-testid={`delete-${row.uid}`}
         >
           <Trash />
         </IconButton>

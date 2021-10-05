@@ -309,12 +309,12 @@ describe("Admin Saga Unit Test", () => {
     };
     await runSaga(fakeStore, addNewUser, {
       payload: {
-        username: "u107223",
-        first_name: "dad",
-        last_name: "In",
+        userId: "u107223",
+        firstName: "dad",
+        lastName: "In",
         email: "s@iqvia.com",
         country: "India",
-        user_type: "normal",
+        userRole: "normal",
       },
       type: "",
     }).toPromise();
@@ -366,12 +366,12 @@ describe("Admin Saga Unit Test", () => {
     };
     await runSaga(fakeStore, addNewUser, {
       payload: {
-        username: "u1072231",
-        first_name: "dad",
-        last_name: "In",
+        userId: "u107223",
+        firstName: "dad",
+        lastName: "In",
         email: "s@iqvia.com",
         country: "India",
-        user_type: "normal",
+        userRole: "normal",
       },
       type: "",
     }).toPromise();
@@ -422,12 +422,12 @@ describe("Admin Saga Unit Test", () => {
     };
     await runSaga(fakeStore, addNewUser, {
       payload: {
-        username: "u1072231",
-        first_name: "dad",
-        last_name: "In",
+        userId: "u107223",
+        firstName: "dad",
+        lastName: "In",
         email: "s@iqvia.com",
         country: "India",
-        user_type: "normal",
+        userRole: "normal",
       },
       type: "",
     }).toPromise();
