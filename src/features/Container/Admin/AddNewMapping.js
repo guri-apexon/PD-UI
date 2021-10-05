@@ -106,8 +106,6 @@ function AddNewMapping() {
     dispatch(setNewMappingValues(data));
   };
   const onFieldBlur = (key, value) => {
-    console.log("key", key);
-    console.log("value", value);
     let err = cloneDeep(formErrValue);
     const trimValue = trim(value);
     if (key === "userId" && trimValue && !/u|q{1}[0-9]+$/.test(trimValue)) {
