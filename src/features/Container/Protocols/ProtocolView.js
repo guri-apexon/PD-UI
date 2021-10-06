@@ -2,13 +2,21 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { viewResult } from "./protocolSlice";
 import ProtocolViewClass from "./ProtocolViewClass";
+import { protocolSummary } from "./protocolSlice.js";
+
 function ProtocolView({ protId }) {
+  const summary = useSelector(protocolSummary);
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
   useEffect(() => {
     dispatch({
       type: "GET_PROTOCOL_TOC_SAGA",
-      payload: { endPoint: "protocol_data/", id: protId, user: "normal" },
+      payload: {
+        endPoint: "protocol_data/",
+        id: protId,
+        user: "normal",
+        protocol: summary.data.protocol,
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

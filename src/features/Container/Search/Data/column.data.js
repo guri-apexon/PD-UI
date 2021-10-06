@@ -21,12 +21,12 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
-  console.log("UserID Required", userId1);
+
   const handleDownload = async (row) => {
     setLoader(true);
     let splitArr = row.documentFilePath.split("\\");
     const fileName = splitArr[splitArr.length - 1];
-    console.log(fileName);
+
     const config = {
       url: `${BASE_URL_8000}/api/download_file/?filePath=${
         row.documentFilePath

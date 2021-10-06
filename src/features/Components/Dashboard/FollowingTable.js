@@ -39,15 +39,51 @@ const ActionCell = ({ row }) => {
     </div>
   );
 };
-
+function createFullMarkup(str) {
+  return {
+    __html: str.replace(
+      redaction.text,
+      `<span class="blur">${redaction.text}</span>`
+    ),
+  };
+}
+function createMarkup(str) {
+  return {
+    __html: str
+      .substring(0, 40)
+      .replace(redaction.text, `<span class="blur">${redaction.text}</span>`),
+  };
+}
 const ProtocolTitle = ({ row, column: { accessor: key } }) => {
+  if (row[key].includes(redaction.text)) {
+    return (
+      <Tooltip
+        variant="light"
+        title={"Protocol Title"}
+        subtitle={
+          <div dangerouslySetInnerHTML={createFullMarkup(row[key])}></div>
+        }
+        placement="top"
+      >
+        <span>
+          {row && row.screen && row.screen === "QC" ? (
+            <span className="adjust-ellipses">{row[key]}</span>
+          ) : (
+            <Link
+              to={`/protocols?protocolId=${row["id"]}`}
+              dangerouslySetInnerHTML={createMarkup(row[key])}
+            ></Link>
+          )}
+        </span>
+      </Tooltip>
+    );
+  }
   return (
     <Tooltip
       variant="light"
       title={"Protocol Title"}
       subtitle={row[key]}
       placement="top"
-      //   style={{ marginRight: 192 }}
     >
       <span>
         <span className="adjust-ellipses">
@@ -61,8 +97,6 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
 };
 
 const Cell = ({ row, column }) => {
-  console.log("ACCESSOR", column.accessor);
-  console.log("ACCESSOR Value", row[column.accessor]);
   if (row[column.accessor] && row[column.accessor] === redaction.text) {
     return (
       <Tooltip variant="light" title={redaction.hoverText} placement="top">

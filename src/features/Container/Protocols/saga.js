@@ -139,7 +139,8 @@ export function* getProtocolToc(action) {
   };
   let userId = yield getFullUserId();
   yield put(getProcotoclToc(viewData));
-  const URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?id=${action.payload.id}&user=${action.payload.user}&userId=${userId}`;
+  // const URL = `/QC_New_re.json`;
+  const URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
   const config = {
     url: URL,
     method: "GET",
