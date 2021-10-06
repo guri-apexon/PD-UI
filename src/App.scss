@@ -64,3 +64,9 @@
     transform: translateY(0px);
   }
 }
+.blur {
+  filter: blur(2px);
+}
+.redact {
+  filter: blur(2px);
+}

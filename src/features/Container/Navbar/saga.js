@@ -1,13 +1,13 @@
-import { takeEvery, all, call, put, select } from "redux-saga/effects";
+import { takeEvery, all, call, put } from "redux-saga/effects";
 
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import { getNotification, setError } from "./navbarSlice";
-import { toast } from "react-toastify";
-function* getState() {
-  const state = yield select();
-  const id = state.user.userDetail.userId;
-  return id.substring(1);
-}
+// import { toast } from "react-toastify";
+// function* getState() {
+//   const state = yield select();
+//   const id = state.user.userDetail.userId;
+//   return id.substring(1);
+// }
 
 export function* navbarNotificationData(action) {
   const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${action.payload}`;
@@ -57,20 +57,21 @@ function* readNotification(action) {
   try {
     const readResp = yield call(httpCall, readConfig);
     if (readResp.success) {
-      const userID = yield getState();
-      const primaryConfig = {
-        url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`,
-        method: "GET",
-      };
-      const userresp = yield call(httpCall, primaryConfig);
-      yield put({ type: "GET_NOTIFICATION_SAGA", payload: userID });
-      if (userresp.success && userresp.data) {
-        window.location.href = `/protocols?protocolId=${data.aidocId}&tab=2`;
-      } else {
-        toast.warn(
-          "You are not an approved primary user of this protocol. Access to details denied"
-        );
-      }
+      // const userID = yield getState();
+      window.location.href = `/protocols?protocolId=${data.aidocId}&tab=2`;
+      // const primaryConfig = {
+      //   url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userID}&protocol=${data.protocolNumber}`,
+      //   method: "GET",
+      // };
+      // const userresp = yield call(httpCall, primaryConfig);
+      // yield put({ type: "GET_NOTIFICATION_SAGA", payload: userID });
+      // if (userresp.success && userresp.data) {
+      //   window.location.href = `/protocols?protocolId=${data.aidocId}&tab=2`;
+      // } else {
+      //   toast.warn(
+      //     "You are not an approved primary user of this protocol. Access to details denied"
+      //   );
+      // }
     }
   } catch (err) {
     console.log(err);

@@ -419,6 +419,13 @@
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
+    a {
+      color: #0557d5 !important;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
 
     // strong {
     // text-transform: uppercase;

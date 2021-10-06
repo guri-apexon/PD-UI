@@ -8,7 +8,7 @@ stages:
   - test
   - build_and_deploy
 
-test:
+.test:
   stage: test
 
   tags: 
@@ -16,7 +16,7 @@ test:
   script:
     - echo "Testing App"
     - npm install
-    - npm test
+    - npm run test
     - echo "Test successfully!"
   only:
     refs:
@@ -34,11 +34,7 @@ build:
     - Copy-Item "env_backup.txt" -Destination ".env"
   script: 
     - echo "Start building App"
-    - npm install
-    - npm run build
-    - npm install --global pm2@latest
-    - npm run stop
-    - npm run deploy
+    - sh .\deploy.sh
     - echo "Build and Deloyed Successfully!"
 
   artifacts:

@@ -7,32 +7,30 @@ import React, { useState } from "react";
 import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
 import FileDownload from "js-file-download";
+import { userId } from "../../../../store/userDetails";
+import { useSelector } from "react-redux";
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
   return (
     <>
-      {row.isPrimaryUser ? (
-        row[key] ? (
-          <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>
-        ) : (
-          "-"
-        )
-      ) : (
-        <span>{row[key]}</span>
-      )}
+      <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>
     </>
   );
 };
 /* istanbul ignore next*/
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   const [loader, setLoader] = useState(false);
+  const userId1 = useSelector(userId);
+
   const handleDownload = async (row) => {
     setLoader(true);
     let splitArr = row.documentFilePath.split("\\");
     const fileName = splitArr[splitArr.length - 1];
-    console.log(fileName);
+
     const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${
+        row.documentFilePath
+      }&userId=${userId1.substring(1)}&protocol=${row.protocol}`,
       method: "GET",
       responseType: "blob",
     };
@@ -41,18 +39,18 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     if (resp.success) {
       FileDownload(resp.data, fileName);
     } else {
-      toast.error("Download Failed");
+      if (resp.message === "No Access") {
+        toast.info("Access Provisioned to Primary Users only");
+      } else {
+        toast.error("Download Failed");
+      }
     }
     setLoader(false);
   };
   return (
     <>
       {loader && <Loader />}
-      {row.isPrimaryUser ? (
-        <a onClick={() => handleDownload(row)}>{row[key]}</a>
-      ) : (
-        <span>{row[key]}</span>
-      )}
+      <a onClick={() => handleDownload(row)}>{row[key]}</a>
     </>
   );
 };

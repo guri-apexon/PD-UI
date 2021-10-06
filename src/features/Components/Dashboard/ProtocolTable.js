@@ -27,6 +27,9 @@ import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
 import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
+import { userId } from "../../../store/userDetails";
+import { useSelector } from "react-redux";
+import { redaction } from "../../../AppConstant/AppConstant";
 
 const ActionCell = ({
   row: {
@@ -74,12 +77,46 @@ const ActionCell = ({
   );
 };
 
+function createFullMarkup(str) {
+  return {
+    __html: str.replace(
+      redaction.text,
+      `<span class="blur">${redaction.text}</span>`
+    ),
+  };
+}
 const ProtocolTitle = ({ row, column: { accessor: key } }) => {
+  if (row[key].includes(redaction.text)) {
+    return (
+      <Tooltip
+        variant="light"
+        title={"Protocol Title"}
+        subtitle={
+          <div dangerouslySetInnerHTML={createFullMarkup(row[key])}></div>
+        }
+        placement="top"
+        style={{ marginRight: 192 }}
+      >
+        <span>
+          {row &&
+          row.screen &&
+          (row.screen === "QC" || row.screen === "FollowedProtocols") ? (
+            <span className="adjust-ellipses">{row[key]}</span>
+          ) : (
+            <Link
+              to={`/protocols?protocolId=${row["id"]}`}
+              dangerouslySetInnerHTML={createFullMarkup(row[key])}
+            ></Link>
+          )}
+        </span>
+      </Tooltip>
+    );
+  }
   return (
     <Tooltip
       variant="light"
       title={"Protocol Title"}
-      subtitle={row[key]}
+      subtitle={<div>{row[key]}</div>}
       placement="top"
       style={{ marginRight: 192 }}
     >
@@ -278,13 +315,18 @@ function getColumns(screen) {
 
 const ExpandableComponent = ({ row }) => {
   const [loader, setLoader] = useState(false);
+  const userId1 = useSelector(userId);
+
   const handleDownload = async (row) => {
     setLoader(true);
+
     let splitArr = row.documentFilePath.split("\\");
     const fileName = splitArr[splitArr.length - 1];
-    console.log(fileName);
+
     const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${
+        row.documentFilePath
+      }&userId=${userId1.substring(1)}&protocol=${row.protocol}`,
       method: "GET",
       responseType: "blob",
     };
@@ -293,7 +335,11 @@ const ExpandableComponent = ({ row }) => {
     if (resp.success) {
       FileDownload(resp.data, fileName);
     } else {
-      toast.error("Download Failed");
+      if (resp.message === "No Access") {
+        toast.info("Access Provisioned to Primary Users only");
+      } else {
+        toast.error("Download Failed");
+      }
     }
     setLoader(false);
   };

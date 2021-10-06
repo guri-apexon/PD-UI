@@ -1,5 +1,6 @@
 import Table from "apollo-react/components/Table";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
@@ -8,6 +9,7 @@ import FileDownload from "js-file-download";
 import Checkbox from "apollo-react/components/Checkbox";
 import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
+import { userId } from "../../../store/userDetails";
 
 const ActionCell = ({ row }) => {
   // console.log("....RoW........", row);
@@ -30,13 +32,17 @@ const ActionCell = ({ row }) => {
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   // let url;
   const [loader, setLoader] = useState(false);
+  const userId1 = useSelector(userId);
+  console.log("UserID Required", userId1);
   const handleDownload = async (row) => {
     setLoader(true);
     let splitArr = row.documentFilePath.split("\\");
     const fileName = splitArr[splitArr.length - 1];
     console.log(fileName);
     const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`,
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${
+        row.documentFilePath
+      }&userId=${userId1.substring(1)}&protocol=${row.protocol}`,
       method: "GET",
       responseType: "blob",
     };
@@ -44,7 +50,11 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     if (resp.success) {
       FileDownload(resp.data, fileName);
     } else {
-      toast.error("Download Failed");
+      if (resp.message === "No Access") {
+        toast.info("Access Provisioned to Primary Users only");
+      } else {
+        toast.error("Download Failed");
+      }
     }
     setLoader(false);
   };
@@ -174,6 +184,7 @@ const AssociateDocumentsTable = ({
   protocolSelected,
   setProtocolToDownload,
   showCheckbox,
+  primaryUser,
 }) => {
   // console.log("initialsRow :", initialsRow);
 

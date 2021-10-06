@@ -295,6 +295,7 @@ export const searchCardData2 = {
   isActive: 1,
   expanded: true,
   id: "EMR 200095-004",
+  path: "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\496cbc00-9830-48c2-87d4-af973c6813fa\\Protocol - DZA66453_Final Protocol_V1.0 - Protocol - 08-May-2019.pdf",
 };
 
 export const paramsLocation = {

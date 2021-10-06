@@ -13,9 +13,11 @@ import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
 import FileDownload from "js-file-download";
 import cloneDeep from "lodash/cloneDeep";
+import { userId } from "../../../store/userDetails";
 
 const Documents = ({ handleChangeTab }) => {
   const summary = useSelector(protocolSummary);
+  const userId1 = useSelector(userId);
   const associateDocuments = useSelector(associateDocs);
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -85,8 +87,13 @@ const Documents = ({ handleChangeTab }) => {
     } else if (protocolSelected.length === 2) {
       try {
         setLoader(true);
+        console.log("UserID Required", userId1);
         const config = {
-          url: `${BASE_URL_8000}/api/document_compare/?id1=${protocolSelected[0]}&id2=${protocolSelected[1]}`,
+          url: `${BASE_URL_8000}/api/document_compare/?id1=${
+            protocolSelected[0]
+          }&id2=${protocolSelected[1]}&userId=${userId1.substring(
+            1
+          )}&protocol=${summary.data.protocol}`,
           method: "GET",
           responseType: "blob",
         };

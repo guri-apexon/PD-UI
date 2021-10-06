@@ -20,6 +20,11 @@ function* getUserId() {
   const id = state.user.userDetail.userId;
   return id.substring(1);
 }
+function* getFullUserId() {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  return id;
+}
 
 export function* getSummaryData(action) {
   let obj = {
@@ -132,8 +137,10 @@ export function* getProtocolToc(action) {
     soaSections: null,
     err: null,
   };
+  let userId = yield getFullUserId();
   yield put(getProcotoclToc(viewData));
-  const URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?id=${action.payload.id}&user=${action.payload.user}`;
+  // const URL = `/QC_New_re.json`;
+  const URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
   const config = {
     url: URL,
     method: "GET",

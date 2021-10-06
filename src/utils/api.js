@@ -54,6 +54,13 @@ export const httpCall = async (config) => {
       };
     }
   } catch (err) {
+    if (err.response.status === 403) {
+      return {
+        success: false,
+        data: "",
+        message: "No Access",
+      };
+    }
     return {
       success: false,
       err: err.response,

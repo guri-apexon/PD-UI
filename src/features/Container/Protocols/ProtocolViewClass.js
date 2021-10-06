@@ -3,6 +3,7 @@ import React from "react";
 import Card from "apollo-react/components/Card";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Loader from "../../Components/Loader/Loader";
+import { redaction } from "../../../AppConstant/AppConstant";
 
 class ProtocolViewClass extends React.Component {
   constructor() {
@@ -50,6 +51,7 @@ class ProtocolViewClass extends React.Component {
           style={{ overflowX: "auto", marginTop: "10px", marginBottom: "20px" }}
           ref={this.refs[`${unq}-${item.TableIndex}`]}
         >
+          {/* <div dangerouslySetInnerHTML={this.createFullMarkup(item.Table)} /> */}
           <div dangerouslySetInnerHTML={{ __html: item.Table }} />
         </div>
         <div>
@@ -60,7 +62,20 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
-
+  createFullMarkup(str) {
+    if (str || str !== undefined) {
+      return {
+        __html: str.replaceAll(
+          redaction.text,
+          `<span class="blur">${redaction.text}</span>`
+        ),
+      };
+    } else {
+      return {
+        __html: "<div></div>",
+      };
+    }
+  }
   getTocElement = (data) => {
     // let section_level = data[0];
     let CPT_section = data[1];
@@ -90,7 +105,7 @@ class ProtocolViewClass extends React.Component {
             id={`TOC-${seq_num}`}
             key={`TOC-${seq_num}`}
             ref={this.refs[`TOC-${seq_num}`]}
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={this.createFullMarkup(data[3])}
           />
         );
       default:
@@ -100,7 +115,7 @@ class ProtocolViewClass extends React.Component {
               id={`CPT_section-${seq_num}`}
               key={`CPT_section-${seq_num}`}
               style={{ fontSize: "12px" }}
-              dangerouslySetInnerHTML={{ __html: content }}
+              dangerouslySetInnerHTML={this.createFullMarkup(data[3])}
             />
           );
         }
@@ -111,7 +126,7 @@ class ProtocolViewClass extends React.Component {
               key={`CPT_section-${seq_num}`}
               // className={`indent ${isBold}`}
               style={{ fontSize: "12px" }}
-              dangerouslySetInnerHTML={{ __html: content }}
+              dangerouslySetInnerHTML={this.createFullMarkup(data[3])}
             ></p>
           </>
         );
@@ -165,7 +180,6 @@ class ProtocolViewClass extends React.Component {
       acc[value.id] = React.createRef();
       return acc;
     }, {});
-    console.log(view);
     const scrollSections = (id) => {
       refsSection[id].current &&
         refsSection[id].current.scrollIntoView({
@@ -319,14 +333,20 @@ class ProtocolViewClass extends React.Component {
                             {" "}
                             <div
                               style={{ fontWeight: "600" }}
-                              dangerouslySetInnerHTML={{ __html: item[2] }}
+                              // dangerouslySetInnerHTML={{ __html: item[2] }}
+                              dangerouslySetInnerHTML={this.createFullMarkup(
+                                item[2]
+                              )}
                             ></div>
                           </td>
                           <td style={{ width: "70%" }}>
                             {" "}
                             <p
                               style={{ marginTop: 0, marginBottom: "10px" }}
-                              dangerouslySetInnerHTML={{ __html: item[1] }}
+                              // dangerouslySetInnerHTML={{ __html: item[1] }}
+                              dangerouslySetInnerHTML={this.createFullMarkup(
+                                item[1]
+                              )}
                             ></p>
                           </td>
                         </tr>

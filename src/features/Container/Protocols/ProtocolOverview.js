@@ -1,5 +1,7 @@
 import React from "react";
 import Card from "apollo-react/components/Card";
+import { redaction } from "../../../AppConstant/AppConstant";
+import Tooltip from "apollo-react/components/Tooltip";
 // import DonutChart from "apollo-react/components/DonutChart";
 
 /* istanbul ignore next*/
@@ -18,6 +20,19 @@ const QCStatus = (status) => {
 };
 
 const ProtocolOverview = ({ data }) => {
+  const redactionCheckRender = (value, testId) => {
+    return (
+      <span data-testid={testId}>
+        {value && value === redaction.text ? (
+          <Tooltip variant="light" title={redaction.hoverText} placement="left">
+            <span className="blur">{value}</span>
+          </Tooltip>
+        ) : (
+          <span>{value}</span>
+        )}
+      </span>
+    );
+  };
   return (
     <>
       <div className="tab-card">
@@ -29,51 +44,51 @@ const ProtocolOverview = ({ data }) => {
             <div className="column-6-12">
               <div className="row-item">
                 <label>Project ID/CRM#</label>
-                <span data-testid="project-value">{data.projectId}</span>
+                {redactionCheckRender(data.projectId, "project-value")}
               </div>
               <div className="row-item">
                 <label>Sponsor </label>
-                <span data-testid="sponser-value">{data.sponsor}</span>
+                {redactionCheckRender(data.sponsor, "sponser-value")}
               </div>
               <div className="row-item">
                 <label>Indication</label>
-                <span data-testid="indication-value">{data.indication}</span>
+                {redactionCheckRender(data.indication, "indication-value")}
               </div>
               <div className="row-item">
                 <label>Molecule / Device</label>
-                <span data-testid="molecule-value">{data.moleculeDevice}</span>
+                {redactionCheckRender(data.moleculeDevice, "molecule-value")}
               </div>
             </div>
             <div className="column-6-12">
               <div className="row-item">
                 <label>Amendment</label>
-                <span data-testid="amendment-value">{data.amendment}</span>
+                {redactionCheckRender(data.amendment, "amendment-value")}
               </div>
               <div className="row-item">
                 <label>Version</label>
-                <span data-testid="version-value">{data.versionNumber}</span>
+                {redactionCheckRender(data.versionNumber, "version-value")}
               </div>
               <div className="row-item">
                 <label>Document Status</label>
-                <span data-testid="status-value" className="text-capitalize">
-                  {data.documentStatus}
-                </span>
+                {redactionCheckRender(data.documentStatus, "status-value")}
               </div>
               <div className="row-item">
                 <label>PD Activity</label>
-                <span data-testid="activity-value">{data.status}</span>
+                {redactionCheckRender(data.status, "activity-value")}
               </div>
               <div className="row-item">
                 <label>QC Activity</label>
-                <span data-testid="qc-activity-value">
-                  {QCStatus(data.qcStatus)}
-                </span>
+                {redactionCheckRender(
+                  QCStatus(data.qcStatus),
+                  "qc-activity-value"
+                )}
               </div>
             </div>
           </div>
           <div className="protocol-title">
             <div style={{ fontWeight: "bold" }}>Protocol Title</div>
-            <div data-testid="title-value">{data.protocolTitle}</div>
+            {redactionCheckRender(data.protocolTitle, "title-value")}
+            {/* <div data-testid="title-value">{data.protocolTitle}</div> */}
           </div>
         </Card>
       </div>

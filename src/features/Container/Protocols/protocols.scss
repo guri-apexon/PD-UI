@@ -1,4 +1,10 @@
 .protocols {
+  .protocol-title span {
+    font-size: 12px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+  }
   .view-wrapper {
     html {
       scroll-behavior: smooth;

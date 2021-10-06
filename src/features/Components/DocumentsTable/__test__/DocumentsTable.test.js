@@ -1,6 +1,6 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import { render } from "@testing-library/react";
+import { render } from "../../../../test-utils/test-utils";
 import DocumentsTable from "../DocumentsTable";
 import axios from "axios";
 

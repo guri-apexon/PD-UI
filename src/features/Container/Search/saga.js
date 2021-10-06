@@ -83,17 +83,19 @@ export function* getPhaseData(action) {
     const postBody = {
       key: "",
       toc: [],
-      sponsor: [],
-      indication: [],
-      phase: [],
-      documentStatus: [],
-      dateType: "",
+      sponsor: ["3SBio"],
+      indication: ["Acne"],
+      phase: ["I/Ib"],
+      qcStatus: [],
+      documentStatus: ["final"],
+      dateType: "approval_date",
       dateFrom: "",
       dateTo: "",
-      sortField: "",
-      sortOrder: "",
+      sortField: "score",
+      sortOrder: "desc",
       pageNo: 1,
       pageSize: 10,
+      dateSection: "0",
       qID: userId,
     };
     try {
@@ -322,12 +324,12 @@ function* updateSearchAssociated(action) {
       method: "GET",
     });
     // Checking Primary or Secondary User based on Protocol Number
-    let userId = yield getState();
-    let userStatusURL = `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId}&protocol=${action.payload.data.protocolNumber}`;
-    const userStatus = yield call(httpCall, {
-      url: userStatusURL,
-      method: "GET",
-    });
+    // let userId = yield getState();
+    // let userStatusURL = `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId}&protocol=${action.payload.data.protocolNumber}`;
+    // const userStatus = yield call(httpCall, {
+    //   url: userStatusURL,
+    //   method: "GET",
+    // });
     // const URL = `http://ca2spdml01q:8000/api/Related_protocols/?protocol=${action.payload.protocolNumber}`;
     //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
     // const config = {
@@ -346,19 +348,17 @@ function* updateSearchAssociated(action) {
       arr.sort((a, b) => {
         return new Date(b.uploadDate) - new Date(a.uploadDate);
       });
-      let primaryUser = userStatus && userStatus.data ? true : false;
+      // let primaryUser = userStatus && userStatus.data ? true : false;
       let resultarr = arr.map((item) => {
         return {
           ...item,
-          isPrimaryUser: primaryUser,
         };
       });
       let result = setAsssociateProtocols(
         // action.payload.data.protocolNumber,
         action.payload.data.id,
         action.payload.obj,
-        resultarr,
-        primaryUser
+        resultarr
       );
       const obj1 = {
         search: true,
@@ -730,7 +730,7 @@ export function createJSONFormat(data) {
 //   let activeObj = obj.filter((item) => item.isActive !== 0);
 //   return activeObj;
 // }
-export function setAsssociateProtocols(id, data, associateDocs, isPrimaryUser) {
+export function setAsssociateProtocols(id, data, associateDocs) {
   let arr =
     data &&
     data.map((item) => {
@@ -739,7 +739,6 @@ export function setAsssociateProtocols(id, data, associateDocs, isPrimaryUser) {
         temp.rows = associateDocs;
         temp.rowsLoading = false;
         temp.viewAssociate = true;
-        temp.isPrimaryUser = isPrimaryUser;
         return temp;
       }
       return item;

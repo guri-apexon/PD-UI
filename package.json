@@ -39,6 +39,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "stop": "pm2 stop server.js",
+    "deploy": "pm2 start server.js",
     "coverage": "npm run test --coverage --wathcAll=false",
     "eject": "react-scripts eject",
     "plint": "prettier --check .",
