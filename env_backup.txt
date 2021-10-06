@@ -1,7 +1,7 @@
 #possible envs dev,test, svt, uat, prod
 REACT_APP_ENV=dev
 NODE_ENV=dev
-PORT=3000
+PORT=80
 
 CIMS_API_VER=v1
 CIMS_USER=pd_app
