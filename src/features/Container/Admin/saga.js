@@ -1,7 +1,7 @@
 import { all, call, takeLatest, put, select } from "redux-saga/effects";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { httpCall, BASE_URL_8000, httpCallSDA } from "../../../utils/api";
+import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getUsers,
   getRoles,
@@ -59,7 +59,7 @@ export function* getRolesFunction() {
   }
 }
 
-function* getProtocolMapData(action) {
+export function* getProtocolMapData(action) {
   const Url = `${BASE_URL_8000}/api/user_protocol/read_user_protocols_by_userId_or_protocol`;
   yield put(setLoader(true));
   const Config = {
@@ -85,7 +85,7 @@ function* getProtocolMapData(action) {
         return item;
       });
       yield put(getProtocolMap(searchData));
-    } else if (data.err && data.err.data) {
+    } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
     } else {
       toast.error(`Error while searching for User or Protocol`);
@@ -155,7 +155,7 @@ export function* deleteMapping(action) {
       console.log(updatedMappingList);
       yield put(getProtocolMap(updatedMappingList));
       toast.info(`Protocol Mapping is successfully deleted`);
-    } else if (data.err && data.err.data) {
+    } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
     } else {
       toast.error(`Protocol Mapping is not deleted`);
@@ -225,7 +225,7 @@ export function* addNewUser(action) {
       yield put(setModalToggle(false));
       yield put(setNewUserError(""));
       yield put({ type: "GET_USERS_SAGA" });
-    } else if (data.err && data.err.data) {
+    } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
       yield put(setNewUserError(data.err.data.detail));
     } else {
@@ -239,42 +239,42 @@ export function* addNewUser(action) {
     toast.error(`Error while adding user to PD`);
   }
 }
-export function* addNewUserSDA(action) {
-  const state = yield select();
-  const userEmail = state.user.userDetail.email;
-  const userDetails = action.payload;
-  const Url = `${process.env.REACT_APP_SDA}/sda-rest-api/api/external/entitlement/V1/ApplicationUsers`;
+// export function* addNewUserSDA(action) {
+//   const state = yield select();
+//   const userEmail = state.user.userDetail.email;
+//   const userDetails = action.payload;
+//   const Url = `${process.env.REACT_APP_SDA}/sda-rest-api/api/external/entitlement/V1/ApplicationUsers`;
 
-  const Config = {
-    url: Url,
-    method: "POST",
-    params: {
-      roleType: "Reader",
-      appKey: process.env.REACT_APP_SDA_AUTH,
-      userType: "internal",
-      networkId: userDetails.userId,
-      updatedBy: userEmail,
-    },
-    // proxy: {
-    //   protocol: "https",
-    //   host: "dev-protocoldigitalization.work.iqvia.com",
-    // },
-  };
-  console.log(Config);
-  try {
-    const data = yield call(httpCallSDA, Config);
-    console.log(data);
-    if (data.success) {
-      toast.info(`User is successfully added to SDA`);
-      // yield addNewUser([userDetails]);
-    } else {
-      toast.error(data.message);
-    }
-  } catch (err) {
-    console.log(err);
-    toast.error(`Error while adding user to SDA`);
-  }
-}
+//   const Config = {
+//     url: Url,
+//     method: "POST",
+//     params: {
+//       roleType: "Reader",
+//       appKey: process.env.REACT_APP_SDA_AUTH,
+//       userType: "internal",
+//       networkId: userDetails.userId,
+//       updatedBy: userEmail,
+//     },
+//     // proxy: {
+//     //   protocol: "https",
+//     //   host: "dev-protocoldigitalization.work.iqvia.com",
+//     // },
+//   };
+//   console.log(Config);
+//   try {
+//     const data = yield call(httpCallSDA, Config);
+//     console.log(data);
+//     if (data.success) {
+//       toast.info(`User is successfully added to SDA`);
+//       // yield addNewUser([userDetails]);
+//     } else {
+//       toast.error(data.message);
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     toast.error(`Error while adding user to SDA`);
+//   }
+// }
 
 export function* addNewRole(action) {
   yield put(setLoader(true));
@@ -296,7 +296,7 @@ export function* addNewRole(action) {
       yield put(setModalToggle(false));
       yield put(setUserRoleErr(""));
       yield put({ type: "GET_ROLES_SAGA" });
-    } else if (data.err && data.err.data) {
+    } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
       yield put(setUserRoleErr(data.err.data.detail));
     } else {
@@ -315,28 +315,29 @@ export function* newMapping(action) {
   yield put(setLoader(true));
   let mapDetails = action.payload;
   const Url = `${BASE_URL_8000}/api/user_protocol/`;
-  const details = [mapDetails].map((item) => {
-    let data = {};
-    data.userId = item.userId.substring(1);
-    data.protocol = item.protocol;
-    data.userRole = item.role.toLowerCase();
-    data.projectId = item.projectId;
-    data.follow = item.following === "1" ? true : false;
-    return data;
-  });
-  const Config = {
-    url: Url,
-    method: "POST",
-    data: details[0],
-  };
   try {
+    const details = [mapDetails].map((item) => {
+      let data = {};
+      data.userId = item.userId.substring(1);
+      data.protocol = item.protocol;
+      data.userRole = item.role.toLowerCase();
+      data.projectId = item.projectId;
+      data.follow = item.following === "1" ? true : false;
+      return data;
+    });
+    const Config = {
+      url: Url,
+      method: "POST",
+      data: details[0],
+    };
+
     const data = yield call(httpCall, Config);
     yield put(setLoader(false));
     if (data.success) {
       toast.info(`Details are saved to the system.`);
       yield put(setModalToggle(false));
       yield put(setNewMappingError(""));
-    } else if (data.err && data.err.data) {
+    } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
       yield put(setNewMappingError(data.err.data.detail));
     } else {

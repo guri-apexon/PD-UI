@@ -6,6 +6,9 @@ import {
   addNewUser,
   addNewRole,
   getRolesFunction,
+  getProtocolMapData,
+  deleteMapping,
+  newMapping,
 } from "../saga";
 import * as api from "../../../../utils/api";
 
@@ -607,5 +610,309 @@ describe("Admin Saga Unit Test", () => {
       type: "",
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Protocol Mapping Test Cases", () => {
+  test("getProtocolMapData Saga Success", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [
+        {
+          follow: false,
+          isActive: true,
+          lastUpdated: "2021-01-28T05:31:26.877000",
+          protocol: "Protocol-1AA",
+          timeCreated: "2021-01-28T05:31:26.877000",
+          userId: "1072231",
+          userRole: "primary",
+        },
+        {
+          follow: true,
+          isActive: true,
+          lastUpdated: "2021-08-03T13:18:15.420000",
+          protocol: "Test Summary",
+          timeCreated: "2021-04-14T08:03:34.260000",
+          userId: "1072231",
+          userRole: "primary",
+        },
+      ],
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getProtocolMapData, {
+      payload: { userId: "u1072231" },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("getProtocolMapData Saga Failure show detail message", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: {
+        err: {
+          data: {
+            detail: "No record found for the given userId or Protocol",
+          },
+        },
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getProtocolMapData, {
+      payload: { userId: "u1072" },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("getProtocolMapData Saga Failure show Error Message", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: null,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getProtocolMapData, {
+      payload: { userId: "u1072" },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("deleteMapping Saga Success", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: true,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [
+            {
+              follow: false,
+              isActive: true,
+              lastUpdated: "2021-01-28T05:31:26.877000",
+              protocol: "Protocol-1AA",
+              timeCreated: "2021-01-28T05:31:26.877000",
+              userId: "1072231",
+              userRole: "primary",
+            },
+            {
+              follow: true,
+              isActive: true,
+              lastUpdated: "2021-08-03T13:18:15.420000",
+              protocol: "Test Summary",
+              timeCreated: "2021-04-14T08:03:34.260000",
+              userId: "1072231",
+              userRole: "primary",
+            },
+          ],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, deleteMapping, {
+      payload: { userId: "u1072231", protocol: "Test Summary" },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("deleteMapping Saga Failure show detail message", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: {
+        err: {
+          data: {
+            detail: "No record found for the given userId or Protocol",
+          },
+        },
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, deleteMapping, {
+      payload: { userId: "u1072" },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("deleteMapping Saga Failure show Error Message", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: null,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, deleteMapping, {
+      payload: { userId: "u1072" },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("newMapping Saga Success", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: true,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, newMapping, {
+      payload: {
+        following: false,
+        projectId: null,
+        protocol: "Protocol-1AA",
+        userId: "u1072231",
+        role: "Primary",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("newMapping Saga Failure show detail message", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: {
+        err: {
+          data: {
+            detail: "Already exist",
+          },
+        },
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, newMapping, {
+      payload: {
+        following: false,
+        projectId: null,
+        protocol: "Protocol-1AA",
+        userId: "u1072231",
+        role: "Primary",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("newMapping Saga Failure show Error Message", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: null,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, newMapping, {
+      payload: { userId: "u1072" },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(0);
   });
 });
