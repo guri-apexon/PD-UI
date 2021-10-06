@@ -10,6 +10,7 @@ import {
   setModalToggle,
   setLoader,
   setNewUserError,
+  setNewMappingError,
 } from "./adminSlice";
 
 export function* usersFunction() {
@@ -24,7 +25,7 @@ export function* usersFunction() {
     if (data.success) {
       const userData = data.data.map((item) => {
         item.date_of_registration = moment(item.date_of_registration).format(
-          "MM/DD/YYYY"
+          "MM/DD/YYYY HH:mm:ss"
         );
         return item;
       });
@@ -58,19 +59,42 @@ export function* getRolesFunction() {
   }
 }
 
-function* getProtocolMapData() {
-  const Url = `/protocol-map.json`;
-
+export function* getProtocolMapData(action) {
+  const Url = `${BASE_URL_8000}/api/user_protocol/read_user_protocols_by_userId_or_protocol`;
+  yield put(setLoader(true));
   const Config = {
     url: Url,
     method: "GET",
+    params: {
+      userId: action.payload.userId.substring(1),
+      protocol: action.payload.protocol,
+    },
   };
   try {
     const data = yield call(httpCall, Config);
-    console.log(data.data);
-    yield put(getProtocolMap(data.data));
+    if (data.success) {
+      const searchData = data.data ? data.data : [];
+      searchData.map((item, index) => {
+        item.uid = index + 1;
+        item.timeCreated = moment(item.timeCreated).format(
+          "MM/DD/YYYY HH:mm:ss"
+        );
+        item.lastUpdated = moment(item.lastUpdated).format(
+          "MM/DD/YYYY HH:mm:ss"
+        );
+        return item;
+      });
+      yield put(getProtocolMap(searchData));
+    } else if (data.err && data.err.data && data.err.data.detail) {
+      toast.error(data.err.data.detail);
+    } else {
+      toast.error(`Error while searching for User or Protocol`);
+    }
+    yield put(setLoader(false));
   } catch (err) {
     console.log(err);
+    yield put(setLoader(false));
+    toast.error(`Error while searching for User or Protocol`);
   }
 }
 export function* deleteUser(action) {
@@ -100,6 +124,47 @@ export function* deleteUser(action) {
   } catch (err) {
     console.log(err);
     toast.error(`User is not deleted`);
+  }
+}
+export function* deleteMapping(action) {
+  const Url = `${BASE_URL_8000}/api/user_protocol/delete_userprotocol`;
+  yield put(setLoader(true));
+  const Config = {
+    url: Url,
+    method: "PUT",
+    data: {
+      userId: action.payload.userId,
+      protocol: action.payload.protocol,
+      isActive: false,
+    },
+  };
+  try {
+    const data = yield call(httpCall, Config);
+    if (data.success) {
+      const state = yield select();
+      const mappingRows = state.admin.map;
+      console.log(mappingRows);
+      const updatedMappingList = mappingRows.filter((row) => {
+        if (
+          row.userId === action.payload.userId &&
+          row.protocol === action.payload.protocol
+        )
+          return false;
+        return true;
+      });
+      console.log(updatedMappingList);
+      yield put(getProtocolMap(updatedMappingList));
+      toast.info(`Protocol Mapping is successfully deleted`);
+    } else if (data.err && data.err.data && data.err.data.detail) {
+      toast.error(data.err.data.detail);
+    } else {
+      toast.error(`Protocol Mapping is not deleted`);
+    }
+    yield put(setLoader(false));
+  } catch (err) {
+    console.log(err);
+    yield put(setLoader(false));
+    toast.error(`Protocol Mapping is not deleted`);
   }
 }
 export function* updateUser(action) {
@@ -160,7 +225,7 @@ export function* addNewUser(action) {
       yield put(setModalToggle(false));
       yield put(setNewUserError(""));
       yield put({ type: "GET_USERS_SAGA" });
-    } else if (data.err && data.err.data) {
+    } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
       yield put(setNewUserError(data.err.data.detail));
     } else {
@@ -190,10 +255,10 @@ export function* addNewUser(action) {
 //       networkId: userDetails.userId,
 //       updatedBy: userEmail,
 //     },
-//     proxy: {
-//       protocol: "https",
-//       host: "dev-protocoldigitalization.work.iqvia.com",
-//     },
+//     // proxy: {
+//     //   protocol: "https",
+//     //   host: "dev-protocoldigitalization.work.iqvia.com",
+//     // },
 //   };
 //   console.log(Config);
 //   try {
@@ -201,7 +266,7 @@ export function* addNewUser(action) {
 //     console.log(data);
 //     if (data.success) {
 //       toast.info(`User is successfully added to SDA`);
-//       yield addNewUser([userDetails]);
+//       // yield addNewUser([userDetails]);
 //     } else {
 //       toast.error(data.message);
 //     }
@@ -231,7 +296,7 @@ export function* addNewRole(action) {
       yield put(setModalToggle(false));
       yield put(setUserRoleErr(""));
       yield put({ type: "GET_ROLES_SAGA" });
-    } else if (data.err && data.err.data) {
+    } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
       yield put(setUserRoleErr(data.err.data.detail));
     } else {
@@ -246,6 +311,51 @@ export function* addNewRole(action) {
   }
 }
 
+export function* newMapping(action) {
+  yield put(setLoader(true));
+  let mapDetails = action.payload;
+  const Url = `${BASE_URL_8000}/api/user_protocol/`;
+  try {
+    const details = [mapDetails].map((item) => {
+      let data = {};
+      data.userId = item.userId.substring(1);
+      data.protocol = item.protocol;
+      data.userRole = item.role.toLowerCase();
+      data.projectId = item.projectId;
+      data.follow = item.following === "1" ? true : false;
+      return data;
+    });
+    const Config = {
+      url: Url,
+      method: "POST",
+      data: details[0],
+    };
+
+    const data = yield call(httpCall, Config);
+    yield put(setLoader(false));
+    if (data.success) {
+      toast.info(`Details are saved to the system.`);
+      yield put(setModalToggle(false));
+      yield put(setNewMappingError(""));
+    } else if (data.err && data.err.data && data.err.data.detail) {
+      toast.error(data.err.data.detail);
+      yield put(setNewMappingError(data.err.data.detail));
+    } else {
+      yield put(
+        setNewMappingError("Error while adding User Protocol Mapping to PD")
+      );
+      toast.error(`Error while adding User Protocol Mapping to PD`);
+    }
+  } catch (err) {
+    console.log(err);
+    yield put(setLoader(false));
+    yield put(
+      setNewMappingError("Error while adding User Protocol Mapping to PD")
+    );
+    toast.error(`Error while adding User Protocol Mapping to PD`);
+  }
+}
+
 export function* watchAdmin() {
   yield takeLatest("GET_USERS_SAGA", usersFunction);
   yield takeLatest("GET_ROLES_SAGA", getRolesFunction);
@@ -254,6 +364,8 @@ export function* watchAdmin() {
   yield takeLatest("UPDATE_USER_SAGA", updateUser);
   yield takeLatest("ADD_NEW_ROLE_SAGA", addNewRole);
   yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
+  yield takeLatest("DELETE_USER_PROTOCOL_MAPPING", deleteMapping);
+  yield takeLatest("ADD_NEW_MAPPING_SAGA", newMapping);
 }
 
 export default function* adminSaga() {

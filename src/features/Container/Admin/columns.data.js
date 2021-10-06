@@ -1,5 +1,5 @@
 import React from "react";
-// import moment from "moment";
+import moment from "moment";
 
 import Cog from "apollo-react-icons/Cog";
 import Pencil from "apollo-react-icons/Pencil";
@@ -24,15 +24,8 @@ const fieldStyles = {
   },
 };
 
-// const DateCell = ({ row, column: { accessor } }) => {
-//   const rowValue = row[accessor];
-//   const date =
-//     rowValue && moment(rowValue).isValid()
-//       ? moment(rowValue).format("MM/DD/YYYY")
-//       : rowValue;
-
-//   return <div style={{ paddingTop: "12px" }}>{date}</div>;
-// };
+const DateCell = ({ row, column }) =>
+  moment(row[column.accessor]).format("MM/DD/YYYY");
 
 const ActionCell = ({ row }) => {
   const {
@@ -213,7 +206,7 @@ const columns = [
     header: "Created Date",
     accessor: "date_of_registration",
     sortFunction: compareDates,
-    customCell: Cell,
+    customCell: DateCell,
     width: 120,
   },
   {
