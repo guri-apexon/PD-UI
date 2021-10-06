@@ -38,7 +38,7 @@ function Admin() {
         <div>
           {value === 0 && <UsersTable initialRows={users} />}
           {value === 1 && <UsersRole initialRows={roles} />}
-          {value === 2 && <ProtocolMap initialRows={[]} />}
+          {value === 2 && <ProtocolMap />}
         </div>
       </Card>
     </div>

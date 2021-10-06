@@ -147,7 +147,8 @@ describe("NewUser Screen", () => {
       },
     });
     let edit = screen.getByTestId("last-name-texfield");
-    edit.children[1].children[0].focus();
+    fireEvent.change(edit.children[1].children[0], { target: { value: "" } });
+    fireEvent.focusOut(edit.children[1].children[0]);
     let create = screen.getByText("Create");
     fireEvent.click(create);
     expect(edit.children[2]).toBeInTheDocument();
@@ -160,7 +161,24 @@ describe("NewUser Screen", () => {
       },
     });
     let edit = screen.getByTestId("email-texfield");
-    edit.children[1].children[0].focus();
+    fireEvent.change(edit.children[1].children[0], { target: { value: "" } });
+    fireEvent.focusOut(edit.children[1].children[0]);
+    let create = screen.getByText("Create");
+    fireEvent.click(create);
+    expect(edit.children[2]).toBeInTheDocument();
+  });
+
+  test("should focus the email show required message", () => {
+    render(<NewUser setIsOpen={mockHandleOpen} />, {
+      initialState: {
+        admin: mockState,
+      },
+    });
+    let edit = screen.getByTestId("email-texfield");
+    fireEvent.change(edit.children[1].children[0], {
+      target: { value: "sohan.iqvia.com" },
+    });
+    fireEvent.focusOut(edit.children[1].children[0]);
     let create = screen.getByText("Create");
     fireEvent.click(create);
     expect(edit.children[2]).toBeInTheDocument();
@@ -173,7 +191,8 @@ describe("NewUser Screen", () => {
       },
     });
     let edit = screen.getByTestId("Country-texfield");
-    edit.children[1].children[0].focus();
+    fireEvent.change(edit.children[1].children[0], { target: { value: "" } });
+    fireEvent.focusOut(edit.children[1].children[0]);
     let create = screen.getByText("Create");
     fireEvent.click(create);
     expect(edit.children[2]).toBeInTheDocument();
@@ -186,20 +205,22 @@ describe("NewUser Screen", () => {
       },
     });
     let edit = screen.getByTestId("user-id-texfield");
-    edit.children[1].children[0].focus();
+    fireEvent.change(edit.children[1].children[0], { target: { value: "" } });
+    fireEvent.focusOut(edit.children[1].children[0]);
     let create = screen.getByText("Create");
     fireEvent.click(create);
     expect(edit.children[2]).toBeInTheDocument();
   });
 
-  test("should focus the user id show required message", () => {
+  test("should focus the user role show required message", () => {
     render(<NewUser setIsOpen={mockHandleOpen} />, {
       initialState: {
         admin: mockState,
       },
     });
     let edit = screen.getByTestId("user-role-select");
-    edit.children[1].children[1].focus();
+    fireEvent.change(edit.children[1].children[1], { target: { value: "" } });
+    fireEvent.focusOut(edit.children[1].children[1]);
     let create = screen.getByText("Create");
     fireEvent.click(create);
     expect(edit.children[2]).toBeInTheDocument();
