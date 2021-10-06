@@ -216,4 +216,4 @@ export const Apis = {
   search: `http://ca2spdml04q:9200/pd-index/_search`,
 };
 
-export const SSO_ENABLED = false;
+export const SSO_ENABLED = true;

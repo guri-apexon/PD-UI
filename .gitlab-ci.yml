@@ -20,7 +20,7 @@ stages:
     - echo "Test successfully!"
   only:
     refs:
-      - Redaction
+      - develop
     variables: 
       - $ENVIRONMENT== "dev"
 
@@ -43,6 +43,6 @@ build:
       
   only:
     refs:
-      - Redaction
+      - develop
     variables: 
       - $ENVIRONMENT== "dev"
