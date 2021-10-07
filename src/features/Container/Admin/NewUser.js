@@ -3,6 +3,7 @@ import trim from "lodash/trim";
 import cloneDeep from "lodash/cloneDeep";
 import { useSelector, useDispatch } from "react-redux";
 import Modal from "apollo-react/components/Modal";
+import UserIcon from "apollo-react-icons/User";
 import Grid from "apollo-react/components/Grid";
 import TextField from "apollo-react/components/TextField";
 import MenuItem from "apollo-react/components/MenuItem";
@@ -38,8 +39,8 @@ function NewUser({ setIsOpen }) {
   const isOpen = useSelector(modalToggle);
   const formValue = useSelector(newUser);
   const error = useSelector(newUserError);
+  const [userId, setUserId] = useState("");
   const [role, setRole] = useState("");
-  //   const [formValue, setFormValue] = useState(intialValue);
   const [formErrValue, setFormErrValue] = useState(errorValue);
 
   const handleSaveForm = () => {
@@ -68,11 +69,11 @@ function NewUser({ setIsOpen }) {
       err.country.error = true;
       err.country.message = "Required";
     }
-    if (!formValue.userId) {
+    if (!userId) {
       err.userId.error = true;
       err.userId.message = "Required";
     }
-    if (!formValue.userRole) {
+    if (!role) {
       err.userRole.error = true;
       err.userRole.message = "Required";
     }
@@ -83,8 +84,8 @@ function NewUser({ setIsOpen }) {
       formValue.lastName &&
       formValue.email &&
       formValue.country &&
-      formValue.userId &&
-      formValue.userRole
+      userId &&
+      role
     ) {
       dispatch({ type: "ADD_NEW_USER_SAGA", payload: formValue });
     }
@@ -93,21 +94,38 @@ function NewUser({ setIsOpen }) {
 
   const handleChange = (key, value) => {
     const data = cloneDeep(formValue);
+
     data[key] = trim(value);
     dispatch(setNewUserValues(data));
   };
+  const getUser = () => {
+    let err = cloneDeep(formErrValue);
+    if (userId && !/u|q{1}[0-9]+$/.test(userId)) {
+      err.userId.error = true;
+      err.userId.message = "Enter valid user id";
+    } else if (userId) {
+      err.userId.error = false;
+      err.userId.message = "";
+      dispatch({ type: "GET_USER_DETAILS_LDAP", payload: userId });
+    }
+  };
   const onFieldBlur = (key, value) => {
     let err = cloneDeep(formErrValue);
-    if (
+    const trimValue = trim(value);
+
+    if (key === "userId" && userId && !/u|q{1}[0-9]+$/.test(userId)) {
+      err.userId.error = true;
+      err.userId.message = "Enter valid user id";
+    } else if (
       key === "email" &&
-      trim(value) &&
+      trimValue &&
       !/^(([a-zA-Z0-9])|([a-zA-Z0-9]+\.[A-Za-z]))+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(
-        trim(value)
+        trimValue
       )
     ) {
       err.email.error = true;
       err.email.message = "Enter valid email";
-    } else if (trim(value)) {
+    } else if (trimValue) {
       err[key].error = false;
       err[key].message = "";
     } else {
@@ -134,6 +152,7 @@ function NewUser({ setIsOpen }) {
         dispatch(setNewUserValues(userValue));
         setFormErrValue(reset);
         setRole("");
+        setUserId("");
         dispatch(setNewUserError(""));
       }}
       subtitle={error && <span style={{ color: "red" }}>{error}</span>}
@@ -145,62 +164,6 @@ function NewUser({ setIsOpen }) {
       <Grid container spacing={2}>
         <Grid item xs={6} sm={6}>
           <TextField
-            label="First Name"
-            placeholder="First Name"
-            type="text"
-            fullWidth
-            required
-            helperText={formErrValue.firstName.message}
-            error={formErrValue.firstName.error}
-            onChange={(e) => handleChange("firstName", e.target.value)}
-            onBlur={(e) => onFieldBlur("firstName", e.target.value)}
-            data-testid="first-name-texfield"
-          />
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <TextField
-            label="Last Name"
-            placeholder="Last Name"
-            type="text"
-            fullWidth
-            required
-            helperText={formErrValue.lastName.message}
-            error={formErrValue.lastName.error}
-            onChange={(e) => handleChange("lastName", e.target.value)}
-            onBlur={(e) => onFieldBlur("lastName", e.target.value)}
-            data-testid="last-name-texfield"
-          />
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <TextField
-            label="Email"
-            placeholder="Email"
-            fullWidth
-            required
-            type="email"
-            helperText={formErrValue.email.message}
-            error={formErrValue.email.error}
-            onChange={(e) => handleChange("email", e.target.value)}
-            onBlur={(e) => onFieldBlur("email", e.target.value)}
-            data-testid="email-texfield"
-          />
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <TextField
-            label="Country"
-            placeholder="Country"
-            fullWidth
-            type="text"
-            required
-            helperText={formErrValue.country.message}
-            error={formErrValue.country.error}
-            onChange={(e) => handleChange("country", e.target.value)}
-            onBlur={(e) => onFieldBlur("country", e.target.value)}
-            data-testid="Country-texfield"
-          />
-        </Grid>
-        <Grid item xs={6} sm={6}>
-          <TextField
             label="User ID"
             placeholder="qid/uid"
             fullWidth
@@ -208,8 +171,12 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.userId.message}
             error={formErrValue.userId.error}
-            onChange={(e) => handleChange("userId", e.target.value)}
+            onChange={(e) => setUserId(trim(e.target.value))}
             onBlur={(e) => onFieldBlur("userId", e.target.value)}
+            icon={<UserIcon />}
+            iconProps={{
+              onClick: () => getUser(),
+            }}
             data-testid="user-id-texfield"
           />
         </Grid>
@@ -236,6 +203,66 @@ function NewUser({ setIsOpen }) {
               </MenuItem>
             ))}
           </Select>
+        </Grid>
+        <Grid item xs={6} sm={6}>
+          <TextField
+            label="First Name"
+            placeholder="First Name"
+            type="text"
+            fullWidth
+            required
+            helperText={formErrValue.firstName.message}
+            error={formErrValue.firstName.error}
+            value={formValue.firstName}
+            onChange={(e) => handleChange("firstName", e.target.value)}
+            onBlur={(e) => onFieldBlur("firstName", e.target.value)}
+            data-testid="first-name-texfield"
+          />
+        </Grid>
+        <Grid item xs={6} sm={6}>
+          <TextField
+            label="Last Name"
+            placeholder="Last Name"
+            type="text"
+            fullWidth
+            required
+            helperText={formErrValue.lastName.message}
+            error={formErrValue.lastName.error}
+            value={formValue.lastName}
+            onChange={(e) => handleChange("lastName", e.target.value)}
+            onBlur={(e) => onFieldBlur("lastName", e.target.value)}
+            data-testid="last-name-texfield"
+          />
+        </Grid>
+        <Grid item xs={6} sm={6}>
+          <TextField
+            label="Email"
+            placeholder="Email"
+            fullWidth
+            required
+            type="email"
+            helperText={formErrValue.email.message}
+            error={formErrValue.email.error}
+            value={formValue.email}
+            onChange={(e) => handleChange("email", e.target.value)}
+            onBlur={(e) => onFieldBlur("email", e.target.value)}
+            data-testid="email-texfield"
+          />
+        </Grid>
+        <Grid item xs={6} sm={6}>
+          <TextField
+            label="Country"
+            placeholder="Country"
+            fullWidth
+            type="text"
+            required
+            helperText={formErrValue.country.message}
+            error={formErrValue.country.error}
+            value={formValue.country}
+            onChange={(e) => handleChange("country", e.target.value)}
+            onBlur={(e) => onFieldBlur("country", e.target.value)}
+            data-testid="Country-texfield"
+          />
         </Grid>
       </Grid>
     </Modal>

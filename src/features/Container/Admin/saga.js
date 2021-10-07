@@ -11,6 +11,7 @@ import {
   setLoader,
   setNewUserError,
   setNewMappingError,
+  setNewUserValues,
 } from "./adminSlice";
 
 export function* usersFunction() {
@@ -356,6 +357,57 @@ export function* newMapping(action) {
   }
 }
 
+export function* getUserDetails(action) {
+  const Url = `${BASE_URL_8000}/api/ldap_user_details/`;
+
+  const Config = {
+    url: Url,
+    method: "GET",
+    params: {
+      userId: action.payload,
+    },
+  };
+  // const userValue = {
+  //   userId: null,
+  //   firstName: null,
+  //   lastName: null,
+  //   email: null,
+  //   country: null,
+  //   userRole: null,
+  // };
+  try {
+    const userData = yield call(httpCall, Config);
+    if (userData.success && userData.data) {
+      let data = {};
+      data.userId = userData.data.userId;
+      data.firstName = userData.data.first_name;
+      data.lastName = userData.data.last_name;
+      data.email = userData.data.email;
+      data.country = userData.data.country;
+
+      yield put(setNewUserValues(data));
+      yield put(setNewUserError(""));
+    } else if (userData.err && userData.err.data && userData.err.data.detail) {
+      toast.error(userData.err.data.detail);
+      yield put(setNewUserValues({}));
+      yield put(setNewUserError(userData.err.data.detail));
+    } else {
+      yield put(setNewUserValues({}));
+      yield put(
+        setNewUserError("Error while fetching user details try again later")
+      );
+      toast.error(`Error while fetching user details try again later`);
+    }
+  } catch (err) {
+    console.log(err);
+    yield put(setNewUserValues({}));
+    yield put(
+      setNewUserError("Error while fetching user details try again later")
+    );
+    toast.error(`Error while fetching user details try again later`);
+  }
+}
+
 export function* watchAdmin() {
   yield takeLatest("GET_USERS_SAGA", usersFunction);
   yield takeLatest("GET_ROLES_SAGA", getRolesFunction);
@@ -366,6 +418,7 @@ export function* watchAdmin() {
   yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
   yield takeLatest("DELETE_USER_PROTOCOL_MAPPING", deleteMapping);
   yield takeLatest("ADD_NEW_MAPPING_SAGA", newMapping);
+  yield takeLatest("GET_USER_DETAILS_LDAP", getUserDetails);
 }
 
 export default function* adminSaga() {
