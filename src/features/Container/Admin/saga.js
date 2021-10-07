@@ -12,6 +12,9 @@ import {
   setNewUserError,
   setNewMappingError,
   setNewUserValues,
+  setUserError,
+  setUserLoader,
+  setFormError,
 } from "./adminSlice";
 
 export function* usersFunction() {
@@ -367,15 +370,22 @@ export function* getUserDetails(action) {
       userId: action.payload,
     },
   };
-  // const userValue = {
-  //   userId: null,
-  //   firstName: null,
-  //   lastName: null,
-  //   email: null,
-  //   country: null,
-  //   userRole: null,
-  // };
+  const errorValue = {
+    firstName: { error: false, message: "" },
+    lastName: { error: false, message: "" },
+    email: { error: false, message: "" },
+    country: { error: false, message: "" },
+    userId: { error: false, message: "" },
+    userRole: { error: false, message: "" },
+  };
+  const userValue = {
+    firstName: null,
+    lastName: null,
+    email: null,
+    country: null,
+  };
   try {
+    yield put(setUserLoader(true));
     const userData = yield call(httpCall, Config);
     if (userData.success && userData.data) {
       let data = {};
@@ -386,24 +396,30 @@ export function* getUserDetails(action) {
       data.country = userData.data.country;
 
       yield put(setNewUserValues(data));
-      yield put(setNewUserError(""));
+      yield put(setUserError(""));
+
+      yield put(setFormError(errorValue));
     } else if (userData.err && userData.err.data && userData.err.data.detail) {
       toast.error(userData.err.data.detail);
-      yield put(setNewUserValues({}));
-      yield put(setNewUserError(userData.err.data.detail));
+      yield put(setNewUserValues(userValue));
+      yield put(setUserError(userData.err.data.detail));
     } else {
-      yield put(setNewUserValues({}));
+      yield put(setNewUserValues(userValue));
       yield put(
-        setNewUserError("Error while fetching user details try again later")
+        setUserError("Error while fetching user details try again later")
       );
       toast.error(`Error while fetching user details try again later`);
     }
+    yield put(setNewUserError(""));
+    yield put(setUserLoader(false));
   } catch (err) {
+    yield put(setUserLoader(false));
     console.log(err);
-    yield put(setNewUserValues({}));
+    yield put(setNewUserValues(userValue));
     yield put(
-      setNewUserError("Error while fetching user details try again later")
+      setUserError("Error while fetching user details try again later")
     );
+    yield put(setNewUserError(""));
     toast.error(`Error while fetching user details try again later`);
   }
 }

@@ -29,6 +29,16 @@ export const adminSlice = createSlice({
       following: null,
     },
     newMappingError: "",
+    getUserError: "",
+    getUserLoader: false,
+    formErrorValues: {
+      firstName: { error: false, message: "" },
+      lastName: { error: false, message: "" },
+      email: { error: false, message: "" },
+      country: { error: false, message: "" },
+      userId: { error: false, message: "" },
+      userRole: { error: false, message: "" },
+    },
   },
   reducers: {
     getUsers: (state, action) => {
@@ -64,6 +74,15 @@ export const adminSlice = createSlice({
     setNewMappingError: (state, action) => {
       state.newMappingError = action.payload;
     },
+    setUserError: (state, action) => {
+      state.getUserError = action.payload;
+    },
+    setUserLoader: (state, action) => {
+      state.getUserLoader = action.payload;
+    },
+    setFormError: (state, action) => {
+      state.formErrorValues = action.payload;
+    },
   },
 });
 
@@ -79,6 +98,9 @@ export const {
   setNewUserError,
   setNewMappingValues,
   setNewMappingError,
+  setUserError,
+  setUserLoader,
+  setFormError,
 } = adminSlice.actions;
 
 export const usersList = (state) => state.admin.users;
@@ -92,5 +114,8 @@ export const modalToggle = (state) => state.admin.modalToggle;
 export const newUserError = (state) => state.admin.newUserError;
 export const newMapping = (state) => state.admin.newMapping;
 export const newMappingError = (state) => state.admin.newMappingError;
+export const getUserError = (state) => state.admin.getUserError;
+export const getUserLoader = (state) => state.admin.getUserLoader;
+export const formErrorValues = (state) => state.admin.formErrorValues;
 
 export default adminSlice.reducer;

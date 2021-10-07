@@ -3,7 +3,8 @@ import trim from "lodash/trim";
 import cloneDeep from "lodash/cloneDeep";
 import { useSelector, useDispatch } from "react-redux";
 import Modal from "apollo-react/components/Modal";
-import UserIcon from "apollo-react-icons/User";
+import Button from "apollo-react/components/Button";
+import Loader from "apollo-react/components/Loader";
 import Grid from "apollo-react/components/Grid";
 import TextField from "apollo-react/components/TextField";
 import MenuItem from "apollo-react/components/MenuItem";
@@ -14,72 +15,97 @@ import {
   newUser,
   newUserError,
   setNewUserError,
+  getUserError,
+  getUserLoader,
+  formErrorValues,
+  setFormError,
 } from "./adminSlice";
 
 const options = ["normal", "QC1", "QC2", "admin"];
 const userValue = {
-  userId: null,
   firstName: null,
   lastName: null,
   email: null,
   country: null,
-  userRole: null,
 };
-const errorValue = {
-  firstName: { error: false, message: "" },
-  lastName: { error: false, message: "" },
-  email: { error: false, message: "" },
-  country: { error: false, message: "" },
-  userId: { error: false, message: "" },
-  userRole: { error: false, message: "" },
-};
+// const errorValue = {
+//   firstName: { error: false, message: "" },
+//   lastName: { error: false, message: "" },
+//   email: { error: false, message: "" },
+//   country: { error: false, message: "" },
+//   userId: { error: false, message: "" },
+//   userRole: { error: false, message: "" },
+// };
 
 function NewUser({ setIsOpen }) {
   const dispatch = useDispatch();
   const isOpen = useSelector(modalToggle);
   const formValue = useSelector(newUser);
   const error = useSelector(newUserError);
+  const userIdError = useSelector(getUserError);
+  const userLoader = useSelector(getUserLoader);
+  const formErrValue = useSelector(formErrorValues);
   const [userId, setUserId] = useState("");
   const [role, setRole] = useState("");
-  const [formErrValue, setFormErrValue] = useState(errorValue);
 
   const handleSaveForm = () => {
     let err = cloneDeep(formErrValue);
     if (!formValue.firstName) {
       err.firstName.error = true;
       err.firstName.message = "Required";
+    } else {
+      err.firstName.error = false;
+      err.firstName.message = "";
     }
     if (!formValue.lastName) {
       err.lastName.error = true;
       err.lastName.message = "Required";
+    } else {
+      err.lastName.error = false;
+      err.lastName.message = "";
     }
     if (!formValue.email) {
       err.email.error = true;
       err.email.message = "Required";
-    }
-    if (
+    } else if (
       !/^(([a-zA-Z0-9])|([a-zA-Z0-9]+\.[A-Za-z]))+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(
         formValue.email
       )
     ) {
       err.email.error = true;
       err.email.message = "Enter valid email";
+    } else {
+      err.email.error = false;
+      err.email.message = "";
     }
     if (!formValue.country) {
       err.country.error = true;
       err.country.message = "Required";
+    } else {
+      err.country.error = false;
+      err.country.message = "";
     }
     if (!userId) {
       err.userId.error = true;
       err.userId.message = "Required";
+    } else if (userId && !/u|q{1}[0-9]+$/.test(userId)) {
+      err.userId.error = true;
+      err.userId.message = "Enter valid user id";
+    } else {
+      err.userId.error = false;
+      err.userId.message = "";
     }
     if (!role) {
       err.userRole.error = true;
       err.userRole.message = "Required";
+    } else {
+      err.userRole.error = false;
+      err.userRole.message = "";
     }
 
-    setFormErrValue(err);
+    dispatch(setFormError(err));
     if (
+      !userIdError &&
       formValue.firstName &&
       formValue.lastName &&
       formValue.email &&
@@ -87,9 +113,12 @@ function NewUser({ setIsOpen }) {
       userId &&
       role
     ) {
-      dispatch({ type: "ADD_NEW_USER_SAGA", payload: formValue });
+      const obj = { ...formValue };
+      obj.userId = userId;
+      obj.userRole = role;
+      dispatch({ type: "ADD_NEW_USER_SAGA", payload: obj });
+      console.log(obj);
     }
-    console.log(formValue);
   };
 
   const handleChange = (key, value) => {
@@ -107,7 +136,11 @@ function NewUser({ setIsOpen }) {
       err.userId.error = false;
       err.userId.message = "";
       dispatch({ type: "GET_USER_DETAILS_LDAP", payload: userId });
+    } else {
+      err.userId.error = true;
+      err.userId.message = "Required";
     }
+    dispatch(setFormError(err));
   };
   const onFieldBlur = (key, value) => {
     let err = cloneDeep(formErrValue);
@@ -132,9 +165,9 @@ function NewUser({ setIsOpen }) {
       err[key].error = true;
       err[key].message = "Required";
     }
-    setFormErrValue(err);
+    dispatch(setFormError(err));
   };
-
+  console.log("fffff", formValue);
   return (
     <Modal
       variant="default"
@@ -150,7 +183,7 @@ function NewUser({ setIsOpen }) {
         };
         setIsOpen(false);
         dispatch(setNewUserValues(userValue));
-        setFormErrValue(reset);
+        dispatch(setFormError(reset));
         setRole("");
         setUserId("");
         dispatch(setNewUserError(""));
@@ -173,12 +206,18 @@ function NewUser({ setIsOpen }) {
             error={formErrValue.userId.error}
             onChange={(e) => setUserId(trim(e.target.value))}
             onBlur={(e) => onFieldBlur("userId", e.target.value)}
-            icon={<UserIcon />}
-            iconProps={{
-              onClick: () => getUser(),
-            }}
             data-testid="user-id-texfield"
           />
+          <span style={{ color: "red", fontSize: "13px" }}>{userIdError}</span>
+        </Grid>
+        <Grid item xs={6} sm={6}>
+          <Button
+            variant="primary"
+            style={{ marginTop: "15%" }}
+            onClick={() => getUser()}
+          >
+            Search
+          </Button>
         </Grid>
         <Grid item xs={6} sm={6}>
           <Select
@@ -204,6 +243,14 @@ function NewUser({ setIsOpen }) {
             ))}
           </Select>
         </Grid>
+        <Grid item xs={6} sm={6}></Grid>
+        {userLoader && (
+          <Grid item xs={12}>
+            <div style={{ height: 30 }}>
+              <Loader isInner />
+            </div>
+          </Grid>
+        )}
         <Grid item xs={6} sm={6}>
           <TextField
             label="First Name"
@@ -213,7 +260,7 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.firstName.message}
             error={formErrValue.firstName.error}
-            value={formValue.firstName}
+            value={!userIdError ? formValue.firstName : ""}
             onChange={(e) => handleChange("firstName", e.target.value)}
             onBlur={(e) => onFieldBlur("firstName", e.target.value)}
             data-testid="first-name-texfield"
@@ -228,7 +275,7 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.lastName.message}
             error={formErrValue.lastName.error}
-            value={formValue.lastName}
+            value={!userIdError ? formValue.lastName : ""}
             onChange={(e) => handleChange("lastName", e.target.value)}
             onBlur={(e) => onFieldBlur("lastName", e.target.value)}
             data-testid="last-name-texfield"
@@ -243,7 +290,7 @@ function NewUser({ setIsOpen }) {
             type="email"
             helperText={formErrValue.email.message}
             error={formErrValue.email.error}
-            value={formValue.email}
+            value={!userIdError ? formValue.email : ""}
             onChange={(e) => handleChange("email", e.target.value)}
             onBlur={(e) => onFieldBlur("email", e.target.value)}
             data-testid="email-texfield"
@@ -258,7 +305,7 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.country.message}
             error={formErrValue.country.error}
-            value={formValue.country}
+            value={!userIdError ? formValue.country : ""}
             onChange={(e) => handleChange("country", e.target.value)}
             onBlur={(e) => onFieldBlur("country", e.target.value)}
             data-testid="Country-texfield"
