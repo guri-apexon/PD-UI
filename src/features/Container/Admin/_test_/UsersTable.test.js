@@ -73,7 +73,7 @@ describe("UsersTable Screen Edit and Delete user", () => {
       email: "sohan.khatawkar@iqvia.com",
       country: "India",
       date_of_registration: "2021-01-29T04:09:44.277000",
-      user_type: "normal",
+      user_type: "admin",
     },
     {
       username: "q1036048",
@@ -99,16 +99,6 @@ describe("UsersTable Screen Edit and Delete user", () => {
     render(<UsersTable initialRows={userData} />);
     fireEvent.click(screen.getByTestId("edit-u1072231"));
     fireEvent.click(screen.getByTestId("edit-cancel"));
-  });
-
-  test("should click on Edit button and then save on row Editable cell", () => {
-    render(<UsersTable initialRows={userData} />);
-    fireEvent.click(screen.getByTestId("edit-u1072231"));
-    let edit = screen.getByTestId("editablecell-u1072231").children[1]
-      .children[0];
-    console.log(edit);
-    fireEvent.change(edit, { target: { value: "USA" } });
-    fireEvent.click(screen.getByTestId("edit-save"));
   });
 
   test("should click on Edit button and then save on row Editable Select cell", () => {

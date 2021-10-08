@@ -11,6 +11,10 @@ import {
   setLoader,
   setNewUserError,
   setNewMappingError,
+  setNewUserValues,
+  setUserError,
+  setUserLoader,
+  setFormError,
 } from "./adminSlice";
 
 export function* usersFunction() {
@@ -143,7 +147,6 @@ export function* deleteMapping(action) {
     if (data.success) {
       const state = yield select();
       const mappingRows = state.admin.map;
-      console.log(mappingRows);
       const updatedMappingList = mappingRows.filter((row) => {
         if (
           row.userId === action.payload.userId &&
@@ -152,7 +155,6 @@ export function* deleteMapping(action) {
           return false;
         return true;
       });
-      console.log(updatedMappingList);
       yield put(getProtocolMap(updatedMappingList));
       toast.info(`Protocol Mapping is successfully deleted`);
     } else if (data.err && data.err.data && data.err.data.detail) {
@@ -356,6 +358,70 @@ export function* newMapping(action) {
   }
 }
 
+export function* getUserDetails(action) {
+  const Url = `${BASE_URL_8000}/api/ldap_user_details/`;
+
+  const Config = {
+    url: Url,
+    method: "GET",
+    params: {
+      userId: action.payload,
+    },
+  };
+  const errorValue = {
+    firstName: { error: false, message: "" },
+    lastName: { error: false, message: "" },
+    email: { error: false, message: "" },
+    country: { error: false, message: "" },
+    userId: { error: false, message: "" },
+    userRole: { error: false, message: "" },
+  };
+  const userValue = {
+    firstName: null,
+    lastName: null,
+    email: null,
+    country: null,
+  };
+  try {
+    yield put(setUserLoader(true));
+    const userData = yield call(httpCall, Config);
+    if (userData.success && userData.data) {
+      let data = {};
+      data.userId = userData.data.userId;
+      data.firstName = userData.data.first_name;
+      data.lastName = userData.data.last_name;
+      data.email = userData.data.email;
+      data.country = userData.data.country;
+
+      yield put(setNewUserValues(data));
+      yield put(setUserError(""));
+
+      yield put(setFormError(errorValue));
+    } else if (userData.err && userData.err.data && userData.err.data.detail) {
+      toast.error(userData.err.data.detail);
+      yield put(setNewUserValues(userValue));
+      yield put(setUserError(userData.err.data.detail));
+    } else {
+      yield put(setNewUserValues(userValue));
+      yield put(
+        setUserError("Error while fetching user details try again later")
+      );
+      toast.error(`Error while fetching user details try again later`);
+    }
+    yield put(setNewUserError(""));
+    yield put(setUserLoader(false));
+  } catch (err) {
+    yield put(setUserLoader(false));
+    console.log(err);
+    yield put(setNewUserValues(userValue));
+    yield put(
+      setUserError("Error while fetching user details try again later")
+    );
+    yield put(setNewUserError(""));
+    toast.error(`Error while fetching user details try again later`);
+  }
+}
+
 export function* watchAdmin() {
   yield takeLatest("GET_USERS_SAGA", usersFunction);
   yield takeLatest("GET_ROLES_SAGA", getRolesFunction);
@@ -366,6 +432,7 @@ export function* watchAdmin() {
   yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
   yield takeLatest("DELETE_USER_PROTOCOL_MAPPING", deleteMapping);
   yield takeLatest("ADD_NEW_MAPPING_SAGA", newMapping);
+  yield takeLatest("GET_USER_DETAILS_LDAP", getUserDetails);
 }
 
 export default function* adminSaga() {

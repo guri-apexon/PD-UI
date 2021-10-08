@@ -68,7 +68,6 @@ const ActionCell = ({ row }) => {
           <IconButton
             size="small"
             onClick={() => onRowEdit(username)}
-            data-id={row.username}
             data-testid={`edit-${row.username}`}
             style={{ marginRight: 4 }}
           >
@@ -114,21 +113,21 @@ export function createStringArraySearchFilter(accessor) {
     );
 }
 
-const EditableCell = ({ row, column: { accessor: key } }) =>
-  row.editMode ? (
-    <TextField
-      data-testid={`editablecell-${row.username}`}
-      size="small"
-      fullWidth
-      value={row.editedRow[key]}
-      onChange={(e) => row.editRow(key, e.target.value)}
-      error={!row.editedRow[key]}
-      helperText={!row.editedRow[key] && "Required"}
-      {...fieldStyles}
-    />
-  ) : (
-    row[key]
-  );
+// const EditableCell = ({ row, column: { accessor: key } }) =>
+//   row.editMode ? (
+//     <TextField
+//       data-testid={`editablecell-${row.username}`}
+//       size="small"
+//       fullWidth
+//       value={row.editedRow[key]}
+//       onChange={(e) => row.editRow(key, e.target.value)}
+//       error={!row.editedRow[key]}
+//       helperText={!row.editedRow[key] && "Required"}
+//       {...fieldStyles}
+//     />
+//   ) : (
+//     row[key]
+//   );
 
 const makeEditableSelectCell =
   (options) =>
@@ -199,7 +198,7 @@ const columns = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter("country"),
     filterComponent: TextFieldFilter,
-    customCell: EditableCell,
+    customCell: Cell,
     width: 120,
   },
   {

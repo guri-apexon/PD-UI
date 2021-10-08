@@ -9,6 +9,7 @@ import {
   getProtocolMapData,
   deleteMapping,
   newMapping,
+  getUserDetails,
 } from "../saga";
 import * as api from "../../../../utils/api";
 
@@ -914,5 +915,137 @@ describe("Protocol Mapping Test Cases", () => {
       type: "",
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(0);
+  });
+
+  test("getUserDetails Saga Success", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: {
+        userId: "u1072231",
+        first_name: "Sohan",
+        last_name: "Khatawkar",
+        email: "sohan.khatawkar@iqvia.com",
+        country: "India",
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getUserDetails, {
+      payload: {
+        userId: "u1072231",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("getUserDetails Saga Failure Detail Message", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: {
+        err: {
+          data: {
+            detail: "Already exist",
+          },
+        },
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getUserDetails, {
+      payload: {
+        userId: "u10722",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("getUserDetails Saga Failure Detail Message", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: null,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getUserDetails, {
+      payload: {
+        userId: "u1072323434",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("getUserDetails Saga Success", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [
+        {
+          userId: "u1072231",
+          first_name: "Sohan",
+          last_name: "Khatawkar",
+          email: "sohan.khatawkar@iqvia.com",
+          country: "India",
+        },
+      ],
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getUserDetails, {
+      payload: {
+        userId: "u1072231",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 });
