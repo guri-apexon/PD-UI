@@ -91,7 +91,12 @@ const QCContainer = () => {
         )}
         {/* {value === 1 && <QCProtocolView  />} */}
         {value === 1 && (
-          <QCProtocolView protId={protocolId} path={filePath} userType={type} />
+          <QCProtocolView
+            protId={protocolId}
+            path={filePath}
+            userType={type}
+            protocolNumber={protocolNumber}
+          />
         )}
       </div>
     </div>
