@@ -19,6 +19,7 @@ import {
   getUserLoader,
   formErrorValues,
   setFormError,
+  setUserError,
 } from "./adminSlice";
 
 const options = ["normal", "QC1", "QC2", "admin"];
@@ -28,14 +29,6 @@ const userValue = {
   email: null,
   country: null,
 };
-// const errorValue = {
-//   firstName: { error: false, message: "" },
-//   lastName: { error: false, message: "" },
-//   email: { error: false, message: "" },
-//   country: { error: false, message: "" },
-//   userId: { error: false, message: "" },
-//   userRole: { error: false, message: "" },
-// };
 
 function NewUser({ setIsOpen }) {
   const dispatch = useDispatch();
@@ -117,7 +110,6 @@ function NewUser({ setIsOpen }) {
       obj.userId = userId;
       obj.userRole = role;
       dispatch({ type: "ADD_NEW_USER_SAGA", payload: obj });
-      console.log(obj);
     }
   };
 
@@ -167,7 +159,6 @@ function NewUser({ setIsOpen }) {
     }
     dispatch(setFormError(err));
   };
-  console.log("fffff", formValue);
   return (
     <Modal
       variant="default"
@@ -187,6 +178,7 @@ function NewUser({ setIsOpen }) {
         setRole("");
         setUserId("");
         dispatch(setNewUserError(""));
+        dispatch(setUserError(""));
       }}
       subtitle={error && <span style={{ color: "red" }}>{error}</span>}
       title="Add New Users to PD"

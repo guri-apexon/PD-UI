@@ -58,6 +58,7 @@ export const httpCall = async (config) => {
       return {
         success: false,
         data: "",
+        err: err.response,
         message: "No Access",
       };
     }

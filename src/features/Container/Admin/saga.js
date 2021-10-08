@@ -147,7 +147,6 @@ export function* deleteMapping(action) {
     if (data.success) {
       const state = yield select();
       const mappingRows = state.admin.map;
-      console.log(mappingRows);
       const updatedMappingList = mappingRows.filter((row) => {
         if (
           row.userId === action.payload.userId &&
@@ -156,7 +155,6 @@ export function* deleteMapping(action) {
           return false;
         return true;
       });
-      console.log(updatedMappingList);
       yield put(getProtocolMap(updatedMappingList));
       toast.info(`Protocol Mapping is successfully deleted`);
     } else if (data.err && data.err.data && data.err.data.detail) {
