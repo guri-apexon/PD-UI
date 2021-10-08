@@ -20,6 +20,16 @@ describe("NewUser Screen", () => {
     },
     modalToggle: true,
     newUserError: "",
+    getUserError: "",
+    getUserLoader: false,
+    formErrorValues: {
+      firstName: { error: false, message: "" },
+      lastName: { error: false, message: "" },
+      email: { error: false, message: "" },
+      country: { error: false, message: "" },
+      userId: { error: false, message: "" },
+      userRole: { error: false, message: "" },
+    },
   };
   const mockHandleOpen = jest.fn();
   test("should render NewUser screen", () => {
@@ -233,5 +243,68 @@ describe("NewUser Screen", () => {
       },
     });
     fireEvent.click(screen.getByText("Cancel"));
+  });
+
+  test("should search user empty", () => {
+    render(<NewUser setIsOpen={mockHandleOpen} />, {
+      initialState: {
+        admin: mockState,
+      },
+    });
+    fireEvent.click(screen.getByText("Search"));
+    expect(
+      screen.getByTestId("user-id-texfield").children[2]
+    ).toBeInTheDocument();
+  });
+
+  test("should search with In valid User Id", async () => {
+    render(<NewUser setIsOpen={mockHandleOpen} />, {
+      initialState: {
+        admin: mockState,
+      },
+    });
+    let edit = screen.getByTestId("user-id-texfield");
+    fireEvent.change(edit.children[1].children[0], {
+      target: { value: "u10722" },
+    });
+    fireEvent.focusOut(edit.children[1].children[0]);
+    fireEvent.click(screen.getByText("Search"));
+    expect(screen.getByTestId("user-id-error")).toBeInTheDocument();
+  });
+
+  test("should search with In valid User Id format", async () => {
+    render(<NewUser setIsOpen={mockHandleOpen} />, {
+      initialState: {
+        admin: mockState,
+      },
+    });
+    let edit = screen.getByTestId("user-id-texfield");
+    fireEvent.change(edit.children[1].children[0], {
+      target: { value: "w10722" },
+    });
+    fireEvent.focusOut(edit.children[1].children[0]);
+    fireEvent.click(screen.getByText("Search"));
+    expect(screen.getByTestId("user-id-error")).toBeInTheDocument();
+  });
+
+  test("should search with valid User Id and then invalid User Id", async () => {
+    render(<NewUser setIsOpen={mockHandleOpen} />, {
+      initialState: {
+        admin: mockState,
+      },
+    });
+    let edit = screen.getByTestId("user-id-texfield");
+    fireEvent.change(edit.children[1].children[0], {
+      target: { value: "u1072231" },
+    });
+    fireEvent.focusOut(edit.children[1].children[0]);
+    fireEvent.click(screen.getByText("Search"));
+    expect(edit.children[2]).toBeUndefined();
+
+    fireEvent.change(edit.children[1].children[0], {
+      target: { value: "w107" },
+    });
+    fireEvent.click(screen.getByText("Search"));
+    fireEvent.click(screen.getByText("Create"));
   });
 });

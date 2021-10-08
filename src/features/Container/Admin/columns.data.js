@@ -68,7 +68,6 @@ const ActionCell = ({ row }) => {
           <IconButton
             size="small"
             onClick={() => onRowEdit(username)}
-            data-id={row.username}
             data-testid={`edit-${row.username}`}
             style={{ marginRight: 4 }}
           >

@@ -200,7 +200,12 @@ function NewUser({ setIsOpen }) {
             onBlur={(e) => onFieldBlur("userId", e.target.value)}
             data-testid="user-id-texfield"
           />
-          <span style={{ color: "red", fontSize: "13px" }}>{userIdError}</span>
+          <span
+            data-testid="user-id-error"
+            style={{ color: "red", fontSize: "13px" }}
+          >
+            {userIdError}
+          </span>
         </Grid>
         <Grid item xs={6} sm={6}>
           <Button
