@@ -10,7 +10,7 @@ import { viewResult } from "../../Protocols/protocolSlice";
 import ProtocolViewClass from "../../Protocols/ProtocolViewClass";
 import { loader } from "../qcSlice";
 
-function QCProtocolView({ protId, path, userType }) {
+function QCProtocolView({ protId, path, userType, protocolNumber }) {
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
   const qcLoader = useSelector(loader);
@@ -18,7 +18,12 @@ function QCProtocolView({ protId, path, userType }) {
   useEffect(() => {
     dispatch({
       type: "GET_PROTOCOL_TOC_SAGA",
-      payload: { endPoint: "protocol_data/", id: protId, user: "qc" },
+      payload: {
+        endPoint: "protocol_data/",
+        id: protId,
+        user: "qc",
+        protocol: protocolNumber,
+      },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

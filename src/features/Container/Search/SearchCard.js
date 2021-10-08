@@ -29,6 +29,15 @@ const SearchCard = ({
   const userId1 = useSelector(userId);
   const [loader, setLoader] = useState(false);
 
+  const createFullMarkup = (str) => {
+    return {
+      __html: str.replace(
+        redaction.text,
+        `<span class="blur">${redaction.text}</span>`
+      ),
+    };
+  };
+
   useEffect(() => {
     let arrOfObj = cloneDeep(data.rows);
     var result = arrOfObj.map(function (el) {
@@ -94,6 +103,24 @@ const SearchCard = ({
       </>
     );
   };
+  const handleDateRedaction = (value, testid) => {
+    if (testid === "date-value") {
+      console.log("approval date", value);
+    }
+    return value && value === redaction.text ? (
+      <>
+        <Tooltip variant="light" title={redaction.hoverText} placement="left">
+          <span className="blur">{value}</span>
+        </Tooltip>
+      </>
+    ) : (
+      <>
+        <p className="grid-item grid-key-value" data-testid={testid}>
+          {formatESDate(data.uploadDate)}
+        </p>
+      </>
+    );
+  };
   return (
     <div style={{ marginTop: 10, marginBottom: 10 }}>
       {loader && <Loader />}
@@ -147,19 +174,17 @@ const SearchCard = ({
             <p className="grid-item bold-class">Approval Date:</p>
           </Grid>
           <Grid md={6}>
-            {redactionCheckRender(
-              data.approval_date ? formatESDate(data.approval_date) : "-",
-              "date-value"
-            )}
+            {handleDateRedaction(data.approval_date, "date-value")}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Upload Date :</p>
           </Grid>
           <Grid md={6}>
-            {redactionCheckRender(
+            {handleDateRedaction(data.uploadDate, "upload-value")}
+            {/* {redactionCheckRender(
               data.uploadDate ? formatESDate(data.uploadDate) : "-",
               "upload-value"
-            )}
+            )} */}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Source :</p>
@@ -175,9 +200,8 @@ const SearchCard = ({
                 cursor: "pointer",
                 whiteSpace: "normal",
               }}
-            >
-              {data.source}
-            </a>
+              dangerouslySetInnerHTML={createFullMarkup(data.source)}
+            />
           </Grid>
         </Grid>
         {/* ------------------------------------------------- */}
@@ -190,7 +214,7 @@ const SearchCard = ({
             className="grid-item grid-key-value text-capitalize"
             data-testid="qc-activity-value"
           >
-            {data.qcStatus}
+            {redactionCheckRender(data.qcStatus, "qc-activity-value")}
           </p>
         </Grid>
       </Grid>

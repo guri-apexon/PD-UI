@@ -54,13 +54,29 @@ const SearchListingSection = ({
   //     toast.info("Access Provisioned to Primary Users only");
   //   }
   // };
+  const createFullMarkup = (str) => {
+    return {
+      __html: str.replace(
+        redaction.text,
+        `<span class="blur">${redaction.text}</span>`
+      ),
+    };
+  };
   const handleFollowChange = (e, checked, data) => {
     handleFollow(e, checked, data);
   };
   const redactionCheckRender = (value, testid) => {
     return value && value === redaction.text ? (
       <>
-        <Tooltip variant="light" title={redaction.hoverText} placement="left">
+        <Tooltip
+          variant="light"
+          subtitle={
+            <div
+              dangerouslySetInnerHTML={createFullMarkup(redaction.text)}
+            ></div>
+          }
+          placement="left"
+        >
           <span className="blur">{value}</span>
         </Tooltip>
       </>
@@ -102,8 +118,11 @@ const SearchListingSection = ({
                 <Link
                   to={`/protocols?protocolId=${data.AiDocId}`}
                   data-testid="name-value"
+                  dangerouslySetInnerHTML={createFullMarkup(
+                    data.protocolNumber
+                  )}
                 >
-                  {data.protocolNumber}
+                  {/* {data.protocolNumber} */}
                 </Link>
               </span>
             </div>
