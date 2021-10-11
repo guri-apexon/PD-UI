@@ -39,6 +39,8 @@ export const adminSlice = createSlice({
       userId: { error: false, message: "" },
       userRole: { error: false, message: "" },
     },
+    bulkMapResponse: [],
+    bulkMapError: "",
   },
   reducers: {
     getUsers: (state, action) => {
@@ -83,6 +85,12 @@ export const adminSlice = createSlice({
     setFormError: (state, action) => {
       state.formErrorValues = action.payload;
     },
+    setBulkMapResponse: (state, action) => {
+      state.bulkMapResponse = action.payload;
+    },
+    setBulkMapError: (state, action) => {
+      state.bulkMapError = action.payload;
+    },
   },
 });
 
@@ -101,6 +109,8 @@ export const {
   setUserError,
   setUserLoader,
   setFormError,
+  setBulkMapError,
+  setBulkMapResponse,
 } = adminSlice.actions;
 
 export const usersList = (state) => state.admin.users;
@@ -117,5 +127,7 @@ export const newMappingError = (state) => state.admin.newMappingError;
 export const getUserError = (state) => state.admin.getUserError;
 export const getUserLoader = (state) => state.admin.getUserLoader;
 export const formErrorValues = (state) => state.admin.formErrorValues;
+export const bulkMapError = (state) => state.admin.bulkMapError;
+export const bulkMapResponse = (state) => state.admin.bulkMapResponse;
 
 export default adminSlice.reducer;
