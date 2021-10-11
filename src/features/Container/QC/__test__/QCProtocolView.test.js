@@ -56,8 +56,14 @@ describe("QC Protocol View container component", () => {
     const protocolId = "212121";
     const filePath = "//path";
     const type = "QC1";
+    const protocolNum = "abc";
     const container = render(
-      <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
+      <QCProtocolView
+        protId={protocolId}
+        path={filePath}
+        userType={type}
+        protocolNumber={protocolNum}
+      />,
       state
     );
     //sendQC2-button

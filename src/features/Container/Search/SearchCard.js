@@ -30,12 +30,20 @@ const SearchCard = ({
   const [loader, setLoader] = useState(false);
 
   const createFullMarkup = (str) => {
-    return {
-      __html: str.replace(
-        redaction.text,
-        `<span class="blur">${redaction.text}</span>`
-      ),
-    };
+    if (str || str !== undefined) {
+      if (str.includes(redaction.text)) {
+        return {
+          __html: str.replace(
+            redaction.text,
+            `<span class="blur">${redaction.text}</span>`
+          ),
+        };
+      } else {
+        return {
+          __html: str,
+        };
+      }
+    }
   };
 
   useEffect(() => {

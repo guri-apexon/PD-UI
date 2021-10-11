@@ -20,7 +20,26 @@ class ProtocolViewClass extends React.Component {
       activeSubSection: null,
     };
   }
-
+  createFullMarkup(str) {
+    if (str || str !== undefined) {
+      if (str.includes(redaction.text)) {
+        return {
+          __html: str.replaceAll(
+            redaction.text,
+            `<span class="blur">${redaction.text}</span>`
+          ),
+        };
+      } else {
+        return {
+          __html: str,
+        };
+      }
+    } else {
+      return {
+        __html: "<div></div>",
+      };
+    }
+  }
   getTable(item, unq, noHeader = false) {
     let footNote = [];
     for (const [key, value] of Object.entries(item)) {
@@ -40,8 +59,9 @@ class ProtocolViewClass extends React.Component {
                 fontSize: "16px",
                 marginBottom: "20px",
               }}
+              dangerouslySetInnerHTML={this.createFullMarkup(item.TableName)}
             >
-              {item.TableName}
+              {/* {item.TableName} */}
             </h2>
           ) : null}
         </div>
@@ -56,26 +76,22 @@ class ProtocolViewClass extends React.Component {
         </div>
         <div>
           {footNote.map((notes) => {
-            return notes && <p style={{ fontSize: "12px" }}>{notes}</p>;
+            return (
+              notes && (
+                <p
+                  style={{ fontSize: "12px" }}
+                  dangerouslySetInnerHTML={this.createFullMarkup(notes)}
+                >
+                  {/* {notes} */}
+                </p>
+              )
+            );
           })}
         </div>
       </>
     );
   }
-  createFullMarkup(str) {
-    if (str || str !== undefined) {
-      return {
-        __html: str.replaceAll(
-          redaction.text,
-          `<span class="blur">${redaction.text}</span>`
-        ),
-      };
-    } else {
-      return {
-        __html: "<div></div>",
-      };
-    }
-  }
+
   getTocElement = (data) => {
     // let section_level = data[0];
     let CPT_section = data[1];
@@ -262,7 +278,12 @@ class ProtocolViewClass extends React.Component {
                   }
                   key={`section-${item.id}`}
                 >
-                  <span style={{ marginLeft: "16px" }}>{item.section} </span>
+                  <span
+                    style={{ marginLeft: "16px" }}
+                    dangerouslySetInnerHTML={{ __html: item.section }}
+                  >
+                    {/* {item.section}{" "} */}
+                  </span>
                   {item.subSections && (
                     <span style={{ float: "right", fontSize: "1em" }}>
                       <ChevronRight
@@ -293,7 +314,10 @@ class ProtocolViewClass extends React.Component {
                     >
                       <p
                         style={{ margin: 0, marginLeft: "16px" }}
-                      >{`${data.section}`}</p>
+                        dangerouslySetInnerHTML={{ __html: data.section }}
+                      >
+                        {/* {`${data.section}`} */}
+                      </p>
                     </a>
                   </span>
                 ))}

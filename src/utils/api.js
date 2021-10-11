@@ -18,8 +18,6 @@ export const httpCall = async (config) => {
         Authorization: config.checkAuth
           ? `Basic ${process.env.REACT_APP_BASIC}`
           : `Bearer ${token}`,
-        "Cache-Control": "no-store, no-cache,",
-        Pragma: "no-cache",
       },
     };
   } else {
@@ -27,8 +25,6 @@ export const httpCall = async (config) => {
       ...config,
       headers: {
         Authorization: config.auth ? config.auth : `Bearer ${token}`,
-        "Cache-Control": "no-store, no-cache,",
-        Pragma: "no-cache",
       },
     };
   }
@@ -75,10 +71,6 @@ export const httpCallSDA = async (config) => {
 
   headerConfig = {
     ...config,
-    headers: {
-      "Cache-Control": "no-store, no-cache,",
-      Pragma: "no-cache",
-    },
   };
   try {
     const response = await axios(headerConfig);
@@ -119,8 +111,6 @@ export const getToken = async () => {
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
-      "Cache-Control": "no-store, no-cache,",
-      Pragma: "no-cache",
       Authorization: `Basic ${process.env.REACT_APP_BASIC}`,
     },
   };
