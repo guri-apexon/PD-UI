@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "../../../../test-utils/test-utils";
 import ProtocolView from "../ProtocolView";
+import { summary } from "./data";
 let initialState = {
   protocol: {
     view: {
@@ -22,11 +23,16 @@ let initialState = {
         },
       ],
     },
+    summary: {
+      data: summary,
+      loading: false,
+      success: true,
+    },
   },
 };
 describe("ProtocolView", () => {
   test("ProtocolView Component", () => {
-    render(<ProtocolView />, {
+    render(<ProtocolView protId="c498c738-a42e-4e5b-8886-b6a39ca15bf5" />, {
       initialState,
     });
   });
