@@ -21,7 +21,6 @@ class ProtocolViewClass extends React.Component {
     };
   }
   createFullMarkup(str) {
-    console.log("Unit Testing ---------", str);
     if (str || str !== undefined) {
       if (str.includes(redaction.text)) {
         return {

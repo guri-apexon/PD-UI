@@ -34,7 +34,6 @@ export const convertDatesFormat = (format, seperator, date) => {
 };
 
 export const formatESDate = (dateString) => {
-  console.log("Unit Test-------------", dateString);
   if (dateString && dateString !== undefined) {
     if (dateString.length > 7) {
       let str = dateString;

@@ -8,7 +8,7 @@ stages:
   - test
   - build_and_deploy
 
-.test:
+test:
   stage: test
 
   tags: 
