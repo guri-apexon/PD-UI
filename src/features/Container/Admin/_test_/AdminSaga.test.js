@@ -10,6 +10,7 @@ import {
   deleteMapping,
   newMapping,
   getUserDetails,
+  bulkUploadMapping,
 } from "../saga";
 import * as api from "../../../../utils/api";
 
@@ -664,11 +665,9 @@ describe("Protocol Mapping Test Cases", () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,
-      data: {
-        err: {
-          data: {
-            detail: "No record found for the given userId or Protocol",
-          },
+      err: {
+        data: {
+          detail: "No record found for the given userId or Protocol",
         },
       },
     };
@@ -857,11 +856,9 @@ describe("Protocol Mapping Test Cases", () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,
-      data: {
-        err: {
-          data: {
-            detail: "Already exist",
-          },
+      err: {
+        data: {
+          detail: "Already exist",
         },
       },
     };
@@ -955,11 +952,9 @@ describe("Protocol Mapping Test Cases", () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,
-      data: {
-        err: {
-          data: {
-            detail: "Already exist",
-          },
+      err: {
+        data: {
+          detail: "Already exist",
         },
       },
     };
@@ -1044,6 +1039,103 @@ describe("Protocol Mapping Test Cases", () => {
       payload: {
         userId: "u1072231",
       },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("bulkUploadMapping Saga Success", async () => {
+    const file = new File(["(⌐□_□)"], "Bulk_Map2.xlsx", {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: ["Test data 1", "Test data 2", "Test data 3"],
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, bulkUploadMapping, {
+      payload: file,
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("bulkUploadMapping Saga Failure", async () => {
+    const file = new File(["(⌐□_□)"], "hello.png", {
+      type: "image/png",
+    });
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      err: {
+        data: {
+          detail: "Invaid file",
+        },
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, bulkUploadMapping, {
+      payload: file,
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("bulkUploadMapping Saga Failure", async () => {
+    const file = new File(["(⌐□_□)"], "hello.png", {
+      type: "image/png",
+    });
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: {
+        err: {
+          data: {
+            detail: ["Invaid file"],
+          },
+        },
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        admin: {
+          roles: [],
+          map: [],
+          loader: false,
+        },
+      }),
+    };
+    await runSaga(fakeStore, bulkUploadMapping, {
+      payload: file,
       type: "",
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);

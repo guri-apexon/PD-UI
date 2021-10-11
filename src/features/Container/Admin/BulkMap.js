@@ -96,8 +96,8 @@ function BulkMap() {
           bulkError && <span style={{ color: "red" }}>{bulkError}</span>
         }
         buttonProps={[{}, { label: "Upload", onClick: handleSaveForm }]}
-        id="new-user-modal"
-        data-testid="new-user-modal"
+        id="bulk-map-modal"
+        data-testid="bulk-map-modal"
       >
         {mapLoader && (
           <div style={{ height: 30 }}>
