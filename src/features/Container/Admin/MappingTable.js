@@ -9,8 +9,6 @@ import Trash from "apollo-react-icons/Trash";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "apollo-react/components/IconButton";
 
-const FollowCell = ({ row, column }) => (row[column.accessor] ? "Yes" : "No");
-
 const DateCell = ({ row, column }) =>
   moment(row[column.accessor]).format("MM/DD/YYYY");
 
@@ -52,7 +50,6 @@ const columns = [
     header: "Following",
     accessor: "follow",
     sortFunction: compareStrings,
-    customCell: FollowCell,
   },
   {
     header: "Created Date",

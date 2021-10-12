@@ -20,6 +20,8 @@ describe("BulkMap Screen", () => {
     },
     modalToggle: true,
     newUserError: "",
+    bulkMapResponse: [],
+    bulkMapError: "",
   };
 
   test("should Open the model", () => {
@@ -43,7 +45,7 @@ describe("BulkMap Screen", () => {
     fireEvent.click(screen.getByText("Cancel"));
   });
 
-  test("should Upload BulkMap file", () => {
+  test("should throw error when try to upload files other than excel ", () => {
     render(<BulkMap />, {
       initialState: {
         admin: mockState,

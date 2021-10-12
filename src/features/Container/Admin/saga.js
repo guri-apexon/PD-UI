@@ -15,6 +15,8 @@ import {
   setUserError,
   setUserLoader,
   setFormError,
+  setBulkMapResponse,
+  setBulkMapError,
 } from "./adminSlice";
 
 export function* usersFunction() {
@@ -78,8 +80,9 @@ export function* getProtocolMapData(action) {
     const data = yield call(httpCall, Config);
     if (data.success) {
       const searchData = data.data ? data.data : [];
-      searchData.map((item, index) => {
-        item.uid = index + 1;
+      searchData.map((item) => {
+        item.uid = item.id;
+        item.follow = item.follow ? "Yes" : "No";
         item.timeCreated = moment(item.timeCreated).format(
           "MM/DD/YYYY HH:mm:ss"
         );
@@ -422,6 +425,49 @@ export function* getUserDetails(action) {
   }
 }
 
+export function* bulkUploadMapping(action) {
+  yield put(setLoader(true));
+  let bodyFormData = new FormData();
+  bodyFormData.append("user_protocol_xls_file", action.payload);
+  const Url = `${BASE_URL_8000}/api/user_protocol/user_protocol_many`;
+  const Config = {
+    url: Url,
+    method: "POST",
+    data: bodyFormData,
+    headers: { "Content-Type": "multipart/form-data" },
+  };
+  try {
+    const data = yield call(httpCall, Config);
+    console.log(data);
+    yield put(setLoader(false));
+    if (data.success) {
+      yield put(setBulkMapResponse(data.data));
+    } else if (
+      data.err &&
+      data.err.data &&
+      typeof data.err.data.detail === "string"
+    ) {
+      toast.error(data.err.data.detail);
+      yield put(setBulkMapError(data.err.data.detail));
+      yield put(setBulkMapResponse([]));
+    } else {
+      yield put(
+        setBulkMapError("Error while adding User Protocol Mapping to PD")
+      );
+      yield put(setBulkMapResponse([]));
+      toast.error(`Error while adding User Protocol Mapping to PD`);
+    }
+  } catch (err) {
+    console.log(err);
+    yield put(setLoader(false));
+    yield put(setBulkMapResponse([]));
+    yield put(
+      setBulkMapError("Error while adding User Protocol Mapping to PD")
+    );
+    toast.error(`Error while adding User Protocol Mapping to PD`);
+  }
+}
+
 export function* watchAdmin() {
   yield takeLatest("GET_USERS_SAGA", usersFunction);
   yield takeLatest("GET_ROLES_SAGA", getRolesFunction);
@@ -433,6 +479,7 @@ export function* watchAdmin() {
   yield takeLatest("DELETE_USER_PROTOCOL_MAPPING", deleteMapping);
   yield takeLatest("ADD_NEW_MAPPING_SAGA", newMapping);
   yield takeLatest("GET_USER_DETAILS_LDAP", getUserDetails);
+  yield takeLatest("BULK_UPLOAD_MAPPING_SAGA", bulkUploadMapping);
 }
 
 export default function* adminSaga() {
