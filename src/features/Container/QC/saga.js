@@ -206,8 +206,8 @@ export function getSoaSections(soa) {
 }
 export function* uploadQc(action) {
   let bodyFormData = new FormData();
-  bodyFormData.append("iqvdata_xls_file", action.payload.data);
-  const postUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_upload?aidoc_id=${action.payload.id}`;
+  bodyFormData.append("uploaded_json_file", action.payload.data);
+  const postUrl = `${BASE_URL_8000}/api/protocol_qcdata/qc1_protocol_upload?aidoc_id=${action.payload.id}`;
   try {
     yield put(getLoader(true));
     const postUploadQc = yield call(httpCall, {
