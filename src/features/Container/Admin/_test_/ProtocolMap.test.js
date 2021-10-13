@@ -20,6 +20,7 @@ describe("ProtocolMap Screen", () => {
     },
     modalToggle: true,
     newUserError: "",
+    searchedData: {},
   };
   test("should render ProtocolMap screen", () => {
     render(<ProtocolMap />);
