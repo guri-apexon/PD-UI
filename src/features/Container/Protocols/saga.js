@@ -141,7 +141,13 @@ export function* getProtocolToc(action) {
   yield put(getProcotoclToc(viewData));
   // console.log("Protocol View", userId);
   // const URL = `/QC_New_re.json`;
-  const URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
+  let URL = "";
+  if (action.payload.user === "qc") {
+    URL = `${BASE_URL_8000}/api/protocol_qcdata/?id=${action.payload.id}`;
+  } else {
+    URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
+  }
+
   const config = {
     url: URL,
     method: "GET",
