@@ -90,7 +90,6 @@ function AddNewMapping() {
     ) {
       dispatch({ type: "ADD_NEW_MAPPING_SAGA", payload: formValue });
     }
-    console.log(formValue);
   };
 
   const handleChange = (key, value) => {
@@ -108,7 +107,7 @@ function AddNewMapping() {
   const onFieldBlur = (key, value) => {
     let err = cloneDeep(formErrValue);
     const trimValue = trim(value);
-    if (key === "userId" && trimValue && !/u|q{1}[0-9]+$/.test(trimValue)) {
+    if (key === "userId" && trimValue && !/^[0-9]*$/.test(trimValue)) {
       err.userId.error = true;
       err.userId.message = "Enter valid User Id";
     } else if (

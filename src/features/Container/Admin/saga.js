@@ -17,6 +17,7 @@ import {
   setFormError,
   setBulkMapResponse,
   setBulkMapError,
+  setSearch,
 } from "./adminSlice";
 
 export function* usersFunction() {
@@ -72,7 +73,7 @@ export function* getProtocolMapData(action) {
     url: Url,
     method: "GET",
     params: {
-      userId: action.payload.userId.substring(1),
+      userId: action.payload.userId,
       protocol: action.payload.protocol,
     },
   };
@@ -81,7 +82,6 @@ export function* getProtocolMapData(action) {
     if (data.success) {
       const searchData = data.data ? data.data : [];
       searchData.map((item) => {
-        item.uid = item.id;
         item.follow = item.follow ? "Yes" : "No";
         item.timeCreated = moment(item.timeCreated).format(
           "MM/DD/YYYY HH:mm:ss"
@@ -92,6 +92,12 @@ export function* getProtocolMapData(action) {
         return item;
       });
       yield put(getProtocolMap(searchData));
+      yield put(
+        setSearch({
+          userId: action.payload.userId,
+          protocol: action.payload.protocol,
+        })
+      );
     } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
     } else {
@@ -323,7 +329,7 @@ export function* newMapping(action) {
   try {
     const details = [mapDetails].map((item) => {
       let data = {};
-      data.userId = item.userId.substring(1);
+      data.userId = item.userId;
       data.protocol = item.protocol;
       data.userRole = item.role.toLowerCase();
       data.projectId = item.projectId;
@@ -342,6 +348,12 @@ export function* newMapping(action) {
       toast.info(`Details are saved to the system.`);
       yield put(setModalToggle(false));
       yield put(setNewMappingError(""));
+      const data = {
+        userId: mapDetails.userId,
+        protocol: mapDetails.protocol,
+      };
+      yield put(setSearch(data));
+      yield put({ type: "GET_PROTOCOL_MAP_SAGA", payload: data });
     } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
       yield put(setNewMappingError(data.err.data.detail));
