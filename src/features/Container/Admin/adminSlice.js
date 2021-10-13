@@ -41,6 +41,7 @@ export const adminSlice = createSlice({
     },
     bulkMapResponse: [],
     bulkMapError: "",
+    searchedData: {},
   },
   reducers: {
     getUsers: (state, action) => {
@@ -91,6 +92,9 @@ export const adminSlice = createSlice({
     setBulkMapError: (state, action) => {
       state.bulkMapError = action.payload;
     },
+    setSearch: (state, action) => {
+      state.searchedData = action.payload;
+    },
   },
 });
 
@@ -111,6 +115,7 @@ export const {
   setFormError,
   setBulkMapError,
   setBulkMapResponse,
+  setSearch,
 } = adminSlice.actions;
 
 export const usersList = (state) => state.admin.users;
@@ -129,5 +134,6 @@ export const getUserLoader = (state) => state.admin.getUserLoader;
 export const formErrorValues = (state) => state.admin.formErrorValues;
 export const bulkMapError = (state) => state.admin.bulkMapError;
 export const bulkMapResponse = (state) => state.admin.bulkMapResponse;
+export const searchedData = (state) => state.admin.searchedData;
 
 export default adminSlice.reducer;

@@ -1,9 +1,9 @@
 import React from "react";
 import moment from "moment-timezone";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import Loader from "apollo-react/components/Loader";
 import Table from "apollo-react/components/Table";
 import { compareStrings, compareDates } from "apollo-react/components/Table";
-import { protocolMap } from "./adminSlice";
 import Cog from "apollo-react-icons/Cog";
 import Trash from "apollo-react-icons/Trash";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -21,7 +21,7 @@ const ActionCell = ({ row }) => {
           onClick={() =>
             row.onDelete({ userId: row.userId, protocol: row.protocol })
           }
-          data-testid={`delete-${row.uid}`}
+          data-testid={`delete-${row.id}`}
         >
           <Trash />
         </IconButton>
@@ -71,9 +71,8 @@ const columns = [
   },
 ];
 
-const MappingTable = () => {
+const MappingTable = ({ initialRows, loader }) => {
   const dispatch = useDispatch();
-  const initialRows = useSelector(protocolMap);
 
   const onDelete = ({ userId, protocol }) => {
     let confirmBox = window.confirm(
@@ -89,22 +88,28 @@ const MappingTable = () => {
 
   return (
     <div style={{ overflowX: "auto", paddingTop: 20 }}>
-      <Table
-        columns={columns}
-        rows={initialRows.map((row) => ({
-          ...row,
-          onDelete,
-          key: row.uid,
-        }))}
-        initialSortedColumn="lastUpdated"
-        initialSortOrder="desc"
-        rowsPerPageOptions={[5, 10, 15, "All"]}
-        tablePaginationProps={{
-          labelDisplayedRows: ({ from, to, count }) =>
-            `Mapping ${from}-${to} of ${count}`,
-          truncate: true,
-        }}
-      />
+      {loader ? (
+        <Loader />
+      ) : (
+        <Table
+          columns={columns}
+          rows={initialRows.map((row) => ({
+            ...row,
+            onDelete,
+            key: row.id,
+          }))}
+          initialSortedColumn="lastUpdated"
+          initialSortOrder="desc"
+          rowsPerPageOptions={[5, 10, 15, "All"]}
+          tablePaginationProps={{
+            labelDisplayedRows: ({ from, to, count }) =>
+              `Mapping ${from}-${to} of ${count}`,
+            truncate: true,
+          }}
+          hasScroll
+          maxHeight={345}
+        />
+      )}
     </div>
   );
 };

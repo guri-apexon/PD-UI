@@ -1,5 +1,5 @@
-import { useState, memo } from "react";
-import { useDispatch } from "react-redux";
+import { useState, memo, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import trim from "lodash/trim";
 import { toast } from "react-toastify";
 import Search from "apollo-react/components/Search";
@@ -8,12 +8,20 @@ import Button from "apollo-react/components/Button";
 import BulkMap from "./BulkMap";
 import AddNewMapping from "./AddNewMapping";
 
+import { searchedData } from "./adminSlice";
+
 function MappingSearch() {
   const dispatch = useDispatch();
-  const [userId, setUserId] = useState("");
-  const [protocol, setProtocol] = useState("");
+  const search = useSelector(searchedData);
+  const [userId, setUserId] = useState(search.userId);
+  const [protocol, setProtocol] = useState(search.protocol);
   const [userErr, setUserErr] = useState(false);
   const [protocolErr, setProtocolErr] = useState(false);
+
+  useEffect(() => {
+    setUserId(search.userId);
+    setProtocol(search.protocol);
+  }, [search]);
 
   const handleChange = (key, value) => {
     if (key === "id") {
@@ -25,7 +33,7 @@ function MappingSearch() {
 
   const onFieldBlur = (key, value) => {
     const alphaNumeric = /[!@#/$%&/*/^();,?"':=/+`~/]/.test(protocol);
-    const idValidation = /u|q{1}[0-9]+$/.test(userId);
+    const idValidation = /^[0-9]*$/.test(userId);
     if (key === "id" && userId && !idValidation) {
       setUserErr(true);
     } else if (key === "id") {
@@ -43,8 +51,8 @@ function MappingSearch() {
       toast.error(`Please enter valid input`);
     } else {
       const data = {
-        userId,
-        protocol,
+        userId: userId,
+        protocol: protocol,
       };
       dispatch({ type: "GET_PROTOCOL_MAP_SAGA", payload: data });
     }
@@ -63,6 +71,7 @@ function MappingSearch() {
             onChange={(e) => handleChange("id", e.target.value)}
             onBlur={(e) => onFieldBlur("id", e.target.value)}
             error={userErr}
+            value={userId}
             helperText={userErr ? "Invalid User ID" : ""}
             data-testid="admin-search-user-id"
           />
@@ -74,6 +83,7 @@ function MappingSearch() {
             onChange={(e) => handleChange("protocol", e.target.value)}
             onBlur={(e) => onFieldBlur("protocol", e.target.value)}
             error={protocolErr}
+            value={protocol}
             helperText={protocolErr ? "Invalid Protocol Number" : ""}
             data-testid="admin-search-protocol-number"
           />

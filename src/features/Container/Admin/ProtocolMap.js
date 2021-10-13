@@ -1,16 +1,15 @@
 import { useSelector } from "react-redux";
-import Loader from "apollo-react/components/Loader";
-import { loader } from "./adminSlice";
+import { loader, protocolMap } from "./adminSlice";
 import MappingSearch from "./MappingSearch";
 import MappingTable from "./MappingTable";
 
 function ProtocolMap() {
   const isLoading = useSelector(loader);
+  const initialRows = useSelector(protocolMap);
   return (
     <>
-      {isLoading && <Loader />}
       <MappingSearch />
-      <MappingTable />
+      <MappingTable initialRows={initialRows} loader={isLoading} />
     </>
   );
 }
