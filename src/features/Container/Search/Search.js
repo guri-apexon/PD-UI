@@ -63,12 +63,26 @@ const Search = (props) => {
     dateType: [1],
     dateSection: [1],
   });
+  const [searchQueryTemp, setSearchQueryTemp] = useState({
+    sponsor: [],
+    indication: [],
+    phase: [],
+    documentStatus: [],
+    qcStatus: [],
+    toc: [],
+    dateType: [1],
+    dateSection: [1],
+  });
   const [postQueryObj, setPostQueryObj] = useState(POST_OBJECT);
   const [clearAll, setClearAll] = useState(false);
   // const [elasticSearchQuery, setElasticSearchQuesry] = useState("");
   const [protocolSelected, setProtocolSelected] = useState([]);
   const [prevProtSelected, setPrevProtSelected] = useState("");
   const [filterChipObject, setFilterChipObject] = useState(POST_OBJECT);
+  const [enableFilter, setEnableFilter] = useState(false);
+  const [dateTemp, setDateTemp] = useState({
+    dateRange: { from: "", to: "" },
+  });
   // let arr = [];
   useEffect(() => {
     // axios.get('http://ca2spdml01q:8000/api/indications/?skip=0')
@@ -272,6 +286,7 @@ const Search = (props) => {
   };
   const handleKeywordSearch = (input) => {
     if (input) {
+      setEnableFilter(false);
       let postObj = cloneDeep(POST_OBJECT);
       postObj.key = input;
       setSortValue("1");
@@ -325,6 +340,9 @@ const Search = (props) => {
     setProtocolSelected([]);
     setPrevProtSelected("");
     setPage(0);
+    let tempQuery = cloneDeep(searchQuery);
+    setSearchQueryTemp(tempQuery);
+    setEnableFilter(false);
     let inp = input ? input : searchInput;
     let resultQuery = `key=${inp}`;
     for (let [key, value] of Object.entries(searchQuery)) {
@@ -393,6 +411,10 @@ const Search = (props) => {
     /* istanbul ignore next else*/
     let filterChanged = false;
     if (rangeDate.from && rangeDate.to) {
+      const obj = {
+        dateRange: { from: rangeDate.from, to: rangeDate.to },
+      };
+      setDateTemp(obj);
       let date11 = formatESDate(rangeDate.from);
       let date22 = formatESDate(rangeDate.to);
       let d1 = new Date(date11);
@@ -444,6 +466,10 @@ const Search = (props) => {
         );
       }
     } else if (recentDate.from) {
+      const obj = {
+        dateRange: { from: recentDate.from, to: recentDate.to },
+      };
+      setDateTemp(obj);
       const dateQuery = `&dateFrom=${recentDate.from}&dateTo=${recentDate.to}`;
       postObj.dateFrom = recentDate.from;
       postObj.dateTo = recentDate.to;
@@ -473,6 +499,10 @@ const Search = (props) => {
         toast.warn("Please Select Filters");
       }
     } else {
+      const obj = {
+        dateRange: { from: "", to: "" },
+      };
+      setDateTemp(obj);
       let postObj1 = cloneDeep(postObj);
       let postQueryObj1 = cloneDeep(postQueryObj);
       delete postObj1.key;
@@ -758,6 +788,27 @@ const Search = (props) => {
   const onSearchChange = () => {
     // console.log("onSearchChange :", onSearchChange);
   };
+  useEffect(() => {
+    console.log("Date Range", rangeDate);
+    console.log("Date Range recent", recentDate);
+
+    let obj = { dateRange: { from: "", to: "" } };
+    if (recentDate.from && recentDate.to) {
+      obj = {
+        dateRange: { from: recentDate.from, to: recentDate.to },
+      };
+    } else if (rangeDate.from && rangeDate.to) {
+      obj = {
+        dateRange: { from: rangeDate.from, to: rangeDate.to },
+      };
+    }
+    console.log("Date Range Objects", obj, dateTemp);
+    if (compareObjs(obj, dateTemp)) {
+      setEnableFilter(true);
+    } else {
+      setEnableFilter(false);
+    }
+  }, [rangeDate, recentDate]);
   const onSortChange = (data, value) => {
     setPage(0);
     let postObj = cloneDeep(postQueryObj);
@@ -848,9 +899,15 @@ const Search = (props) => {
 
   const onSearchQuery = (list, identifier) => {
     setClearAll(false);
+    let prevFilterObj = cloneDeep(searchQueryTemp);
     let tempQuery = cloneDeep(searchQuery);
     tempQuery[identifier] = list;
     setSearchQuery(tempQuery);
+    if (compareObjs(prevFilterObj, tempQuery)) {
+      setEnableFilter(true);
+    } else {
+      setEnableFilter(false);
+    }
   };
 
   const compareTwoProtocol = (data, protocol) => {
@@ -945,6 +1002,8 @@ const Search = (props) => {
           </div>
           <div>
             <SearchResultSection
+              enableFilter={enableFilter}
+              setEnableFilter={setEnableFilter}
               getSearchInput={getSearchInput}
               filterList={filterList.data}
               resultList={resultList}
