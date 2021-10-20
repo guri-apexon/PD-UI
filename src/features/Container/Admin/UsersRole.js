@@ -28,12 +28,12 @@ const errorValue = {
 const columns = [
   {
     header: "User Role",
-    accessor: "role",
+    accessor: "roleName",
     sortFunction: compareStrings,
   },
   {
     header: "Description",
-    accessor: "description",
+    accessor: "roleDescription",
     sortFunction: compareStrings,
   },
 ];
@@ -73,9 +73,11 @@ const UsersRole = ({ initialRows }) => {
     }
     setFormErrValue(err);
     if (formValue.role && formValue.description) {
-      dispatch({ type: "ADD_NEW_ROLE_SAGA", payload: formValue });
+      let confirmBox = window.confirm("Do you want to create new user role?");
+      if (confirmBox) {
+        dispatch({ type: "ADD_NEW_ROLE_SAGA", payload: formValue });
+      }
     }
-    console.log(formValue);
   };
   const handleChange = (key, value) => {
     const data = cloneDeep(formValue);
@@ -98,11 +100,8 @@ const UsersRole = ({ initialRows }) => {
     <div style={{ overflowX: "auto", paddingTop: 20 }}>
       <Table
         columns={columns}
-        rows={initialRows.map((row) => ({
-          ...row,
-          key: row.id,
-        }))}
-        initialSortedColumn="role"
+        rows={cloneDeep(initialRows)}
+        initialSortedColumn="roleName"
         initialSortOrder="asc"
         hidePagination
         CustomHeader={(props) => (

@@ -4,7 +4,8 @@ export const adminSlice = createSlice({
   name: "admin",
   initialState: {
     users: [],
-    roles: [],
+    userRoles: [],
+    protocolRoles: [],
     map: [],
     loader: false,
     newUser: {
@@ -47,8 +48,11 @@ export const adminSlice = createSlice({
     getUsers: (state, action) => {
       state.users = action.payload;
     },
-    getRoles: (state, action) => {
-      state.roles = action.payload;
+    getUserRoles: (state, action) => {
+      state.userRoles = action.payload;
+    },
+    getProtocolRoles: (state, action) => {
+      state.protocolRoles = action.payload;
     },
     getProtocolMap: (state, action) => {
       state.map = action.payload;
@@ -100,7 +104,8 @@ export const adminSlice = createSlice({
 
 export const {
   getUsers,
-  getRoles,
+  getUserRoles,
+  getProtocolRoles,
   getProtocolMap,
   setUserRole,
   setUserRoleErr,
@@ -119,7 +124,8 @@ export const {
 } = adminSlice.actions;
 
 export const usersList = (state) => state.admin.users;
-export const rolesList = (state) => state.admin.roles;
+export const userRolesList = (state) => state.admin.userRoles;
+export const protocolRolesList = (state) => state.admin.protocolRoles;
 export const protocolMap = (state) => state.admin.map;
 export const roleValues = (state) => state.admin.roleValues;
 export const roleError = (state) => state.admin.roleError;

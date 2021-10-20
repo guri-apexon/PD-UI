@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getUsers,
-  getRoles,
+  getUserRoles,
+  getProtocolRoles,
   getProtocolMap,
   setUserRoleErr,
   setModalToggle,
@@ -28,6 +29,7 @@ export function* usersFunction() {
     method: "GET",
   };
   try {
+    yield getRolesFunction();
     const data = yield call(httpCall, Config);
     if (data.success) {
       const userData = data.data.map((item) => {
@@ -54,12 +56,25 @@ export function* getRolesFunction() {
   try {
     const data = yield call(httpCall, Config);
     if (data.success && data.data) {
-      const roles = data.data.map((item) => {
-        item.role = item.roleName;
-        item.description = item.roleDescription;
+      const userRole = [];
+      const protocolRole = [];
+      data.data.map((item) => {
+        item.key = item.id;
+        if (item.roleLevel === "user") {
+          userRole.push(item);
+        } else if (item.roleLevel === "protocol") {
+          protocolRole.push(item);
+        }
         return item;
       });
-      yield put(getRoles(roles));
+      console.log(userRole);
+      const test = userRole.map((row) => ({
+        ...row,
+        key: row.id,
+      }));
+      console.log(test);
+      yield put(getUserRoles(userRole));
+      yield put(getProtocolRoles(protocolRole));
     }
   } catch (err) {
     console.log(err);
@@ -297,6 +312,7 @@ export function* addNewRole(action) {
     data: {
       roleName: roleData.role,
       roleDescription: roleData.description,
+      roleLevel: "user",
     },
   };
   try {
