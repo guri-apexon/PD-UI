@@ -81,7 +81,7 @@ const Documents = ({ handleChangeTab }) => {
       }
     }
   };
-  const downloadCompare = async () => {
+  const downloadCompare = async (type) => {
     if (protocolSelected.length <= 1) {
       toast.warn("Please select two versions, for compare and download");
     } else if (protocolSelected.length === 2) {
@@ -93,7 +93,7 @@ const Documents = ({ handleChangeTab }) => {
             protocolSelected[0]
           }&id2=${protocolSelected[1]}&userId=${userId1.substring(
             1
-          )}&protocol=${summary.data.protocol}`,
+          )}&protocol=${summary.data.protocol}&fileType=${type}`,
           method: "GET",
           responseType: "blob",
         };
@@ -101,7 +101,7 @@ const Documents = ({ handleChangeTab }) => {
         if (resp.message === "Success") {
           FileDownload(
             resp.data,
-            `${protocolSelected[0]}_${protocolSelected[1]}.compare_detail.csv`
+            `${protocolSelected[0]}_${protocolSelected[1]}.compare_detail${type}`
           );
           // console.log(completed);
           // if (completed === 100 || completed === "100") {
@@ -142,21 +142,43 @@ const Documents = ({ handleChangeTab }) => {
           </div>
         </Grid>
         {associateDocuments && associateDocuments.length > 1 && (
-          <div style={{ width: "100%", marginTop: "10px", marginRight: "7px" }}>
-            <Button
-              onClick={() => downloadCompare()}
-              variant="primary"
-              data-testid="compare-download-button"
-              style={{
-                float: "right",
-                height: 38,
-                width: 235,
-                boxShadow:
-                  "0 4px 8px 0 rgb(5 85 252 / 32%), 0 4px 16px 0 rgb(0 0 0 / 4%)",
-              }}
+          <div className="compare-buttons">
+            <div
+              style={{ width: "100%", marginTop: "10px", marginRight: "7px" }}
             >
-              {"Download Compare Result"}
-            </Button>
+              <Button
+                onClick={() => downloadCompare(".xlsx")}
+                variant="primary"
+                data-testid="compare-download-button"
+                style={{
+                  float: "right",
+                  height: 38,
+                  width: 265,
+                  boxShadow:
+                    "0 4px 8px 0 rgb(5 85 252 / 32%), 0 4px 16px 0 rgb(0 0 0 / 4%)",
+                }}
+              >
+                {"Download Compare Result (.xlsx)"}
+              </Button>
+            </div>
+            <div
+              style={{ width: "100%", marginTop: "10px", marginRight: "7px" }}
+            >
+              <Button
+                onClick={() => downloadCompare(".csv")}
+                variant="primary"
+                data-testid="compare-download-button"
+                style={{
+                  float: "right",
+                  height: 38,
+                  width: 265,
+                  boxShadow:
+                    "0 4px 8px 0 rgb(5 85 252 / 32%), 0 4px 16px 0 rgb(0 0 0 / 4%)",
+                }}
+              >
+                {"Download Compare Result (.csv)"}
+              </Button>
+            </div>
           </div>
         )}
         <Grid item xs={12}>
