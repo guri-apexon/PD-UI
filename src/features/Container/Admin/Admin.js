@@ -15,7 +15,7 @@ import ProtocolMap from "./ProtocolMap";
 function Admin() {
   const dispatch = useDispatch();
   const users = useSelector(usersList);
-  const roles = useSelector(userRolesList);
+  const userRoles = useSelector(userRolesList);
   const [value, setValue] = React.useState(0);
 
   const handleChangeTab = (event, value) => {
@@ -35,8 +35,10 @@ function Admin() {
           <Tab label="Protocol Mapping" />
         </Tabs>
         <div>
-          {value === 0 && <UsersTable initialRows={users} />}
-          {value === 1 && <UsersRole initialRows={roles} />}
+          {value === 0 && (
+            <UsersTable initialRows={users} userRoles={userRoles} />
+          )}
+          {value === 1 && <UsersRole initialRows={userRoles} />}
           {value === 2 && <ProtocolMap />}
         </div>
       </Card>

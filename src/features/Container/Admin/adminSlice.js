@@ -43,6 +43,10 @@ export const adminSlice = createSlice({
     bulkMapResponse: [],
     bulkMapError: "",
     searchedData: {},
+    roleOptions: {
+      user: [],
+      protocol: [],
+    },
   },
   reducers: {
     getUsers: (state, action) => {
@@ -51,8 +55,8 @@ export const adminSlice = createSlice({
     getUserRoles: (state, action) => {
       state.userRoles = action.payload;
     },
-    getProtocolRoles: (state, action) => {
-      state.protocolRoles = action.payload;
+    getRolesOptions: (state, action) => {
+      state.roleOptions = action.payload;
     },
     getProtocolMap: (state, action) => {
       state.map = action.payload;
@@ -105,7 +109,7 @@ export const adminSlice = createSlice({
 export const {
   getUsers,
   getUserRoles,
-  getProtocolRoles,
+  getRolesOptions,
   getProtocolMap,
   setUserRole,
   setUserRoleErr,
@@ -125,7 +129,7 @@ export const {
 
 export const usersList = (state) => state.admin.users;
 export const userRolesList = (state) => state.admin.userRoles;
-export const protocolRolesList = (state) => state.admin.protocolRoles;
+export const rolesOptionsList = (state) => state.admin.roleOptions;
 export const protocolMap = (state) => state.admin.map;
 export const roleValues = (state) => state.admin.roleValues;
 export const roleError = (state) => state.admin.roleError;

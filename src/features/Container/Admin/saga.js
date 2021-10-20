@@ -5,7 +5,7 @@ import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getUsers,
   getUserRoles,
-  getProtocolRoles,
+  getRolesOptions,
   getProtocolMap,
   setUserRoleErr,
   setModalToggle,
@@ -29,6 +29,7 @@ export function* usersFunction() {
     method: "GET",
   };
   try {
+    yield put(setLoader(true));
     yield getRolesFunction();
     const data = yield call(httpCall, Config);
     if (data.success) {
@@ -41,8 +42,10 @@ export function* usersFunction() {
 
       yield put(getUsers(userData));
     }
+    yield put(setLoader(false));
   } catch (err) {
     console.log(err);
+    yield put(setLoader(false));
   }
 }
 
@@ -58,23 +61,23 @@ export function* getRolesFunction() {
     if (data.success && data.data) {
       const userRole = [];
       const protocolRole = [];
+      const rolesOptions = {
+        user: [],
+        protocol: [],
+      };
       data.data.map((item) => {
         item.key = item.id;
         if (item.roleLevel === "user") {
           userRole.push(item);
+          rolesOptions.user.push(item.roleName);
         } else if (item.roleLevel === "protocol") {
           protocolRole.push(item);
+          rolesOptions.protocol.push(item.roleName);
         }
         return item;
       });
-      console.log(userRole);
-      const test = userRole.map((row) => ({
-        ...row,
-        key: row.id,
-      }));
-      console.log(test);
       yield put(getUserRoles(userRole));
-      yield put(getProtocolRoles(protocolRole));
+      yield put(getRolesOptions(rolesOptions));
     }
   } catch (err) {
     console.log(err);
