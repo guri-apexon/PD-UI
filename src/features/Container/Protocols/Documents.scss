@@ -1,5 +1,9 @@
 .document-tab {
   width: 100%;
+  .compare-buttons {
+    display: flex;
+    margin-left: auto;
+  }
 
   .source-document-tab {
     width: 100%;
