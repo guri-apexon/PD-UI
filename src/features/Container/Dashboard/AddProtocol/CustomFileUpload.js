@@ -37,6 +37,7 @@ class CustomFileUpload extends Component {
         setTimeout(() => {
           // custom validations
           const files = selectedFiles.map((file) => {
+            console.log(file);
             file.loading = false;
             if (
               allowedTypes.length &&
@@ -48,6 +49,13 @@ class CustomFileUpload extends Component {
               file.errorMessage = "Please upload PDF or Word format only";
               handleFileUploadError(
                 "Please upload PDF or Word format only",
+                true,
+                "uploadFile"
+              );
+            } else if (/[!@#/$%&/*/^();,?"':=/+`~/]/.test(file.name)) {
+              file.errorMessage = "Enter Valid File Name";
+              handleFileUploadError(
+                "Enter Valid File Name",
                 true,
                 "uploadFile"
               );
