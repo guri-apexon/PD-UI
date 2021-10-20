@@ -9,7 +9,6 @@ const allowedTypes = [
   "application/msword",
   "wordprocessingml",
 ];
-// const maxSize = 150000000;
 class CustomFileUpload extends Component {
   constructor(props) {
     super(props);
@@ -43,9 +42,6 @@ class CustomFileUpload extends Component {
               allowedTypes.length &&
               !allowedTypes.filter((type) => file.type.includes(type)).length
             ) {
-              //   file.errorMessage = `${
-              //     file.name.split('.')[file.name.split('.').length - 1]
-              //   } format is not supported`;
               file.errorMessage = "Please upload PDF or Word format only";
               handleFileUploadError(
                 "Please upload PDF or Word format only",
@@ -62,10 +58,6 @@ class CustomFileUpload extends Component {
             } else {
               handleFileUploadError(" ", false, "uploadFile");
             }
-            //  else if (maxSize) { // && file.size > maxSize
-            //   file.errorMessage = `File is too large (max is ${maxSize} bytes)`;
-            //   handleFileUploadError(`File is too large (max is ${maxSize} bytes`, true, 'uploadFile');
-            // }
             return file;
           });
 
@@ -89,7 +81,6 @@ class CustomFileUpload extends Component {
   render() {
     const { formSelectedFiles } = this.props;
     const { selectedFiles } = this.state;
-    // console.log('selectedFiles :', selectedFiles, formSelectedFiles);
     return (
       <div data-testid="custom-file-upload">
         <FileUpload
@@ -100,11 +91,13 @@ class CustomFileUpload extends Component {
           }
           onUpload={this.handleUpload}
           onFileDelete={this.handleDelete}
-          // label="Place the protocol document in PDF or Word format below"
           maxItems={1}
-          // {...props}
           fullWidth
         />
+        <span>
+          Note - A filename can be alphanumeric and can only contain -_
+          characters
+        </span>
       </div>
     );
   }
