@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Loader from "apollo-react/components/Loader";
+// import Loader from "apollo-react/components/Loader";
 import FilterIcon from "apollo-react-icons/Filter";
 import PlusIcon from "apollo-react-icons/Plus";
 import Button from "apollo-react/components/Button";
@@ -73,9 +73,10 @@ const UsersTable = ({ initialRows }) => {
 
   return (
     <div style={{ paddingTop: 20 }}>
-      {isLoading && <Loader />}
+      {/* {isLoading && <Loader />} */}
       <Table
         columns={columns}
+        isLoading={isLoading}
         rows={initialRows.map((row) => ({
           ...row,
           onRowEdit,
@@ -87,10 +88,6 @@ const UsersTable = ({ initialRows }) => {
           editedRow,
           key: row.username,
         }))}
-        // onChange={(rowsPerPage, sortedColumn, sortOrder, filters, page) => {
-        //   console.log(rowsPerPage, sortedColumn, sortOrder, filters, page);
-        //   return initialRows;
-        // }}
         initialSortedColumn="date_of_registration"
         initialSortOrder="desc"
         rowsPerPageOptions={[5, 10, 15]}
@@ -99,7 +96,6 @@ const UsersTable = ({ initialRows }) => {
             `${count === 1 ? "User" : "Users"} ${from}-${to} of ${count}`,
           truncate: true,
         }}
-        // showFilterIcon
         CustomHeader={(props) => (
           <CustomButtonHeader setIsOpen={setIsOpen} {...props} />
         )}

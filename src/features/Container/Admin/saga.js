@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import {
   getUsers,
-  getRoles,
+  getUserRoles,
+  getRolesOptions,
   getProtocolMap,
   setUserRoleErr,
   setModalToggle,
@@ -28,6 +29,8 @@ export function* usersFunction() {
     method: "GET",
   };
   try {
+    yield put(setLoader(true));
+    yield getRolesFunction();
     const data = yield call(httpCall, Config);
     if (data.success) {
       const userData = data.data.map((item) => {
@@ -39,8 +42,10 @@ export function* usersFunction() {
 
       yield put(getUsers(userData));
     }
+    yield put(setLoader(false));
   } catch (err) {
     console.log(err);
+    yield put(setLoader(false));
   }
 }
 
@@ -54,12 +59,25 @@ export function* getRolesFunction() {
   try {
     const data = yield call(httpCall, Config);
     if (data.success && data.data) {
-      const roles = data.data.map((item) => {
-        item.role = item.roleName;
-        item.description = item.roleDescription;
+      const userRole = [];
+      const protocolRole = [];
+      const rolesOptions = {
+        user: [],
+        protocol: [],
+      };
+      data.data.map((item) => {
+        item.key = item.id;
+        if (item.roleLevel === "user") {
+          userRole.push(item);
+          rolesOptions.user.push(item.roleName);
+        } else if (item.roleLevel === "protocol") {
+          protocolRole.push(item);
+          rolesOptions.protocol.push(item.roleName);
+        }
         return item;
       });
-      yield put(getRoles(roles));
+      yield put(getUserRoles(userRole));
+      yield put(getRolesOptions(rolesOptions));
     }
   } catch (err) {
     console.log(err);
@@ -297,6 +315,7 @@ export function* addNewRole(action) {
     data: {
       roleName: roleData.role,
       roleDescription: roleData.description,
+      roleLevel: "user",
     },
   };
   try {

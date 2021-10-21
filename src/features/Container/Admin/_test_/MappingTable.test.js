@@ -21,6 +21,10 @@ describe("MappingTable Screen", () => {
     modalToggle: true,
     newUserError: "",
     searchedData: {},
+    roleOptions: {
+      user: ["normal", "QC1", "QC2", "admin"],
+      protocol: ["Primary", "Secondary"],
+    },
   };
 
   const mapValues = [

@@ -30,6 +30,10 @@ describe("NewUser Screen", () => {
       userId: { error: false, message: "" },
       userRole: { error: false, message: "" },
     },
+    roleOptions: {
+      user: ["normal", "QC1", "QC2", "admin"],
+      protocol: ["primary", "secondary"],
+    },
   };
   const mockHandleOpen = jest.fn();
   test("should render NewUser screen", () => {

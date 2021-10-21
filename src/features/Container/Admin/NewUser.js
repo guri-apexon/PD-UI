@@ -20,9 +20,9 @@ import {
   formErrorValues,
   setFormError,
   setUserError,
+  rolesOptionsList,
 } from "./adminSlice";
 
-const options = ["normal", "QC1", "QC2", "admin"];
 const userValue = {
   firstName: null,
   lastName: null,
@@ -38,6 +38,7 @@ function NewUser({ setIsOpen }) {
   const userIdError = useSelector(getUserError);
   const userLoader = useSelector(getUserLoader);
   const formErrValue = useSelector(formErrorValues);
+  const userRoles = useSelector(rolesOptionsList);
   const [userId, setUserId] = useState("");
   const [role, setRole] = useState("");
 
@@ -233,7 +234,7 @@ function NewUser({ setIsOpen }) {
             required
             data-testid="user-role-select"
           >
-            {options.map((option) => (
+            {userRoles.user.map((option) => (
               <MenuItem key={option} value={option}>
                 {option}
               </MenuItem>

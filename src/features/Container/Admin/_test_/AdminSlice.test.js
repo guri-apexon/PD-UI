@@ -1,4 +1,8 @@
-import adminSlice, { getUsers, getRoles, getProtocolMap } from "../adminSlice";
+import adminSlice, {
+  getUsers,
+  getUserRoles,
+  getProtocolMap,
+} from "../adminSlice";
 
 const initialState = {
   users: [],
@@ -37,13 +41,13 @@ describe(" adminSlice Test Suite", () => {
     ).toEqual({ ...initialState, users: userData });
   });
 
-  test("getRoles", () => {
+  test("getUserRoles", () => {
     expect(
       adminSlice(initialState, {
-        type: getRoles.type,
+        type: getUserRoles.type,
         payload: [],
       })
-    ).toEqual({ ...initialState, users: [] });
+    ).toEqual({ ...initialState, userRoles: [] });
   });
   test("getProtocolMap", () => {
     expect(
