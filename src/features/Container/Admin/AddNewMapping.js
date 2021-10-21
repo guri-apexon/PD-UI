@@ -16,6 +16,7 @@ import {
   setNewMappingError,
   newMapping,
   newMappingError,
+  rolesOptionsList,
 } from "./adminSlice";
 
 const mapValue = {
@@ -31,7 +32,7 @@ const errorValue = {
   role: { error: false, message: "" },
   following: { error: false, message: "" },
 };
-const roleOptions = ["Primary", "Secondary"];
+// const roleOptions = ["Primary", "Secondary"];
 const followOptions = ["Yes", "No"];
 
 function AddNewMapping() {
@@ -39,6 +40,7 @@ function AddNewMapping() {
   const isOpen = useSelector(modalToggle);
   const formValue = useSelector(newMapping);
   const error = useSelector(newMappingError);
+  const roles = useSelector(rolesOptionsList);
   const [role, setRole] = useState("");
   //   const [formValue, setFormValue] = useState(intialValue);
   const [formErrValue, setFormErrValue] = useState(errorValue);
@@ -196,7 +198,7 @@ function AddNewMapping() {
               required
               data-testid="role-select"
             >
-              {roleOptions.map((option) => (
+              {roles.protocol.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>

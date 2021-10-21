@@ -21,9 +21,17 @@ describe("ProtocolMap Screen", () => {
     modalToggle: true,
     newUserError: "",
     searchedData: {},
+    roleOptions: {
+      user: ["normal", "QC1", "QC2", "admin"],
+      protocol: ["Primary", "Secondary"],
+    },
   };
   test("should render ProtocolMap screen", () => {
-    render(<ProtocolMap />);
+    render(<ProtocolMap />, {
+      initialState: {
+        admin: mockState,
+      },
+    });
   });
 
   test("should render ProtocolMap screen loading", () => {

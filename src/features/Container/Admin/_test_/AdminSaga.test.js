@@ -57,7 +57,7 @@ describe("Admin Saga Unit Test", () => {
       payload: {},
       type: "",
     }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(1);
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
 
   test("usersFunction Saga Failure", async () => {
@@ -82,7 +82,7 @@ describe("Admin Saga Unit Test", () => {
       payload: {},
       type: "",
     }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(1);
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
 
   test("deleteUser Saga Success", async () => {
