@@ -93,7 +93,7 @@ const Documents = ({ handleChangeTab }) => {
             protocolSelected[0]
           }&id2=${protocolSelected[1]}&userId=${userId1.substring(
             1
-          )}&protocol=${summary.data.protocol}&fileType=${type}`,
+          )}&protocol=${summary.data.protocol}&file_type=${type}`,
           method: "GET",
           responseType: "blob",
         };
@@ -147,6 +147,28 @@ const Documents = ({ handleChangeTab }) => {
               style={{ width: "100%", marginTop: "10px", marginRight: "7px" }}
             >
               <Button
+                onClick={() => downloadCompare(".csv")}
+                variant="primary"
+                data-testid="compare-download-button"
+                style={{
+                  float: "right",
+                  height: 38,
+                  width: 265,
+                  boxShadow:
+                    "0 4px 8px 0 rgb(5 85 252 / 32%), 0 4px 16px 0 rgb(0 0 0 / 4%)",
+                }}
+              >
+                {"Download Compare Result"}
+              </Button>
+            </div>
+          </div>
+        )}
+        {/* {associateDocuments && associateDocuments.length > 1 && (
+          <div className="compare-buttons">
+            <div
+              style={{ width: "100%", marginTop: "10px", marginRight: "7px" }}
+            >
+              <Button
                 onClick={() => downloadCompare(".xlsx")}
                 variant="primary"
                 data-testid="compare-download-button"
@@ -180,7 +202,7 @@ const Documents = ({ handleChangeTab }) => {
               </Button>
             </div>
           </div>
-        )}
+        )} */}
         <Grid item xs={12}>
           <div className="associate-document-tab">
             <AssociateDocumentsTable
