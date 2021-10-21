@@ -219,6 +219,7 @@ class SearchPanel extends React.Component {
       setPage,
       getSearchInput,
       filters,
+      enableFilter,
     } = this.props;
     const { accordionObj, defaultExpand } = this.state;
 
@@ -256,6 +257,7 @@ class SearchPanel extends React.Component {
                       style={{ marginRight: 0 }}
                       onClick={() => getSearchInput()}
                       data-testid="apply-filter-button"
+                      disabled={!enableFilter}
                     >
                       Apply Filter
                     </Button>
