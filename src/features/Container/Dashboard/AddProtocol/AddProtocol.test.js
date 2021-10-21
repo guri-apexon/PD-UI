@@ -271,6 +271,93 @@ describe("Add Protocol Test Suite", () => {
     fireEvent.change(fileUpload);
     // fireEvent.click(fileUpload);
   });
+
+  test("Should check file upload throws error for other file types", async () => {
+    const mockHandleOpen = jest.fn();
+    const mockHandleClose = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    const container = render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      }
+    );
+    const file = new File(["(⌐□_□)"], "chucknorris.png", {
+      type: "img/png",
+    });
+    let fileUpload =
+      container.getByTestId("custom-fileupload").children[0].children[0]
+        .children[0];
+    // console.log('fileUpload :', fileUpload);
+    // fireEvent.change(fileUpload, {target:{value:'a'}});
+    Object.defineProperty(fileUpload, "files", {
+      value: [file],
+    });
+    fireEvent.change(fileUpload);
+    // fireEvent.click(fileUpload);
+  });
+
+  test("Should throw error for wrong file name", async () => {
+    const mockHandleOpen = jest.fn();
+    const mockHandleClose = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    const container = render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      }
+    );
+    const file = new File(["(⌐□_□)"], "ABCD (test)-1.pdf", {
+      type: "application/pdf",
+    });
+    let fileUpload =
+      container.getByTestId("custom-fileupload").children[0].children[0]
+        .children[0];
+    // console.log('fileUpload :', fileUpload);
+    // fireEvent.change(fileUpload, {target:{value:'a'}});
+    Object.defineProperty(fileUpload, "files", {
+      value: [file],
+    });
+    fireEvent.change(fileUpload);
+    // fireEvent.click(fileUpload);
+  });
+
+  test("Should work correctly for valid file name", async () => {
+    const mockHandleOpen = jest.fn();
+    const mockHandleClose = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    const container = render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      }
+    );
+    const file = new File(["(⌐□_□)"], "ABCD-1_test.pdf", {
+      type: "application/pdf",
+    });
+    let fileUpload =
+      container.getByTestId("custom-fileupload").children[0].children[0]
+        .children[0];
+    // console.log('fileUpload :', fileUpload);
+    // fireEvent.change(fileUpload, {target:{value:'a'}});
+    Object.defineProperty(fileUpload, "files", {
+      value: [file],
+    });
+    fireEvent.change(fileUpload);
+    // fireEvent.click(fileUpload);
+  });
 });
 
 function selectAutoComplete(Container) {
