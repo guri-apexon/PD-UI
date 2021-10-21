@@ -18,6 +18,10 @@ describe("AddNewMapping Screen", () => {
     },
     modalToggle: true,
     AddNewMappingError: "",
+    roleOptions: {
+      user: ["normal", "QC1", "QC2", "admin"],
+      protocol: ["Primary", "Secondary"],
+    },
   };
 
   test("should render AddNewMapping screen", () => {
