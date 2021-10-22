@@ -160,7 +160,6 @@ const Cell = ({ row, column }) => (
 
 const getColumns = (data) => {
   const roles = cloneDeep(data);
-  console.log("getColumns ===> ", roles);
   const columns = [
     {
       header: "User ID",
