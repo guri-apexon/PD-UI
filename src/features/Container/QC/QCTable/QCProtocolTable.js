@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { qcProtocols, qcProtocolsError, tableLoader } from "../qcSlice";
 // import ProtocolTableComp from "../../../Components/QC/QCProtocolTable";
-import ProtocolTableComp from "../../../Components/Dashboard/ProtocolTable";
+import ProtocolTableComp from "../../../Components/Dashboard/QCTable";
 
 function ProtocolTable({ handleProtocolClick }) {
   // const dispatch = useDispatch();
