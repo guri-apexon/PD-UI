@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-// import Loader from "apollo-react/components/Loader";
+import { useDispatch } from "react-redux";
 import FilterIcon from "apollo-react-icons/Filter";
 import PlusIcon from "apollo-react-icons/Plus";
 import Button from "apollo-react/components/Button";
 import Table from "apollo-react/components/Table";
 import NewUser from "./NewUser";
 
-import { loader, setModalToggle } from "./adminSlice";
-
-import columns from "./columns.data";
+import { setModalToggle } from "./adminSlice";
 
 const CustomButtonHeader = ({ toggleFilters, setIsOpen }) => (
   <div data-testid="user-action-buttons">
@@ -33,14 +30,14 @@ const CustomButtonHeader = ({ toggleFilters, setIsOpen }) => (
   </div>
 );
 
-const UsersTable = ({ initialRows }) => {
+const UsersTable = ({ initialRows, columns }) => {
   const dispatch = useDispatch();
-
-  const isLoading = useSelector(loader);
   const [editedRow, setEditedRow] = useState({});
+
   const onRowEdit = (userId) => {
     setEditedRow(initialRows.find((row) => row.username === userId));
   };
+
   const setIsOpen = (value) => {
     dispatch(setModalToggle(value));
   };
@@ -73,10 +70,8 @@ const UsersTable = ({ initialRows }) => {
 
   return (
     <div style={{ paddingTop: 20 }}>
-      {/* {isLoading && <Loader />} */}
       <Table
         columns={columns}
-        isLoading={isLoading}
         rows={initialRows.map((row) => ({
           ...row,
           onRowEdit,

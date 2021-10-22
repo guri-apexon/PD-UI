@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-
+import cloneDeep from "lodash/cloneDeep";
 import Cog from "apollo-react-icons/Cog";
 import Pencil from "apollo-react-icons/Pencil";
 import Trash from "apollo-react-icons/Trash";
@@ -158,75 +158,80 @@ const Cell = ({ row, column }) => (
   </div>
 );
 
-const columns = [
-  {
-    header: "User ID",
-    accessor: "username",
-    sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter("username"),
-    filterComponent: TextFieldFilter,
-    width: 90,
-    customCell: Cell,
-  },
-  {
-    header: "First Name",
-    accessor: "first_name",
-    sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter("first_name"),
-    filterComponent: TextFieldFilter,
-    customCell: Cell,
-  },
-  {
-    header: "Last Name",
-    accessor: "last_name",
-    sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter("last_name"),
-    filterComponent: TextFieldFilter,
-    customCell: Cell,
-  },
-  {
-    header: "Email",
-    accessor: "email",
-    sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter("email"),
-    filterComponent: TextFieldFilter,
-    customCell: Cell,
-  },
-  {
-    header: "Country",
-    accessor: "country",
-    sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter("country"),
-    filterComponent: TextFieldFilter,
-    customCell: Cell,
-    width: 120,
-  },
-  {
-    header: "Created Date",
-    accessor: "date_of_registration",
-    sortFunction: compareDates,
-    customCell: DateCell,
-    width: 120,
-  },
-  {
-    header: "User Role",
-    accessor: "user_type",
-    sortFunction: compareStrings,
-    filterFunction: createStringArraySearchFilter("user_type"),
-    filterComponent: createSelectFilterComponent(
-      ["normal", "QC1", "QC2", "admin"],
-      { size: "small", multiple: true }
-    ),
-    customCell: makeEditableSelectCell(["normal", "QC1", "QC2", "admin"]),
-    width: 120,
-  },
-  {
-    header: <Cog size="small" />,
-    accessor: "action",
-    customCell: ActionCell,
-    align: "center",
-    width: 120,
-  },
-];
+const getColumns = (data) => {
+  const roles = cloneDeep(data);
+  console.log("getColumns ===> ", roles);
+  const columns = [
+    {
+      header: "User ID",
+      accessor: "username",
+      sortFunction: compareStrings,
+      filterFunction: createStringSearchFilter("username"),
+      filterComponent: TextFieldFilter,
+      width: 90,
+      customCell: Cell,
+    },
+    {
+      header: "First Name",
+      accessor: "first_name",
+      sortFunction: compareStrings,
+      filterFunction: createStringSearchFilter("first_name"),
+      filterComponent: TextFieldFilter,
+      customCell: Cell,
+    },
+    {
+      header: "Last Name",
+      accessor: "last_name",
+      sortFunction: compareStrings,
+      filterFunction: createStringSearchFilter("last_name"),
+      filterComponent: TextFieldFilter,
+      customCell: Cell,
+    },
+    {
+      header: "Email",
+      accessor: "email",
+      sortFunction: compareStrings,
+      filterFunction: createStringSearchFilter("email"),
+      filterComponent: TextFieldFilter,
+      customCell: Cell,
+    },
+    {
+      header: "Country",
+      accessor: "country",
+      sortFunction: compareStrings,
+      filterFunction: createStringSearchFilter("country"),
+      filterComponent: TextFieldFilter,
+      customCell: Cell,
+      width: 120,
+    },
+    {
+      header: "Created Date",
+      accessor: "date_of_registration",
+      sortFunction: compareDates,
+      customCell: DateCell,
+      width: 120,
+    },
+    {
+      header: "User Role",
+      accessor: "user_type",
+      sortFunction: compareStrings,
+      filterFunction: createStringArraySearchFilter("user_type"),
+      filterComponent: createSelectFilterComponent(roles, {
+        size: "small",
+        multiple: true,
+      }),
+      customCell: makeEditableSelectCell(roles),
+      width: 120,
+    },
+    {
+      header: <Cog size="small" />,
+      accessor: "action",
+      customCell: ActionCell,
+      align: "center",
+      width: 120,
+    },
+  ];
+  return columns;
+};
 
-export default columns;
+export default getColumns;
