@@ -29,7 +29,7 @@ const ActionCell = ({ row }) => {
       <div className="follow-table-selection" style={{ height: 45 }}>
         <IconButton
           id="expand"
-          data-testid="expandable-row"
+          data-testid={`expandable-row-${row.protocol}`}
           size="small"
           onClick={() => row.handleToggleRow(row.id, row)}
         >
@@ -180,7 +180,10 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
 };
 const HandleUnFollow = ({ row }) => {
   return (
-    <Link onClick={() => row.handleUnfollow(row)}>
+    <Link
+      onClick={() => row.handleUnfollow(row)}
+      data-testid={`unfollow-${row.protocol}`}
+    >
       <Tag label="Unfollow" color="#0076ae" />
     </Link>
   );
@@ -252,9 +255,6 @@ function getColumns(screen) {
 }
 
 const ExpandableComponent = ({ row }) => {
-  // const fetchAssociateDat = () => {
-  //   row.fetchAssociateData(row);
-  // };
   return (
     <div className="expand-asso-table">
       {row.linkEnabled ? (

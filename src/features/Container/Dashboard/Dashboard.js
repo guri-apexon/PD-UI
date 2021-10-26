@@ -26,7 +26,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-parent" style={{ padding: 20 }}>
       {dashboardError && dashboardError.apiError && (
-        <span className="main-error-message">
+        <span className="main-error-message" data-testid="API-Error">
           Something Went Wrong, API Failed
         </span>
       )}
