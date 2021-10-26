@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import axios from "axios";
-// import { BASE_URL_8000 } from "../../../utils/api";
 
 import {
   followedProtocolsList,
@@ -12,15 +10,11 @@ import {
 import ProtocolTableComp from "../../Components/Dashboard/FollowingTable";
 import cloneDeep from "lodash/cloneDeep";
 import uniqBy from "lodash/uniqBy";
-// import { toast } from "react-toastify";
-// import { date } from "@material-ui/pickers/constants/prop-types";
 
 function FollowedProtocols({ pageRows, maxHeight }) {
   const dispatch = useDispatch();
   const protocolData = useSelector(followedProtocolsList);
-  // const userDetail = useSelector((state) => state.user.userDetail);
   const loader = useSelector(tableLoader);
-  // const [formatedData, setFormatedData] = useState([]);
 
   const fetchAssociateData = async (row) => {
     dispatch({

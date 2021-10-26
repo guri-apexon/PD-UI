@@ -177,12 +177,11 @@ export function* addProtocolIndication() {
         return temp;
       });
       yield put(getIndication(actualIndicationList));
-      yield put(setIndicationLoading(false));
     } else {
       yield put(setError(indicationList.err.statusText));
-      yield put(setIndicationLoading(false));
       yield put(setApiError(true));
     }
+    yield put(setIndicationLoading(false));
   } catch (err) {
     yield put(setError(err.statusText));
     yield put(setIndicationLoading(false));
@@ -325,7 +324,7 @@ function* handleDownload(action) {
   }
 }
 
-function* handleFollow(action) {
+export function* handleFollow(action) {
   try {
     const { data, follow } = action.payload;
     const id = yield getState();
@@ -359,7 +358,7 @@ function* handleFollow(action) {
   }
 }
 
-function* fetchAssociateData(action) {
+export function* fetchAssociateData(action) {
   const { protocol, id } = action.payload;
   const state = yield select();
   const protocolData = state.dashboard.followedProtocols;

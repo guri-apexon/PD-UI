@@ -48,7 +48,7 @@ class CustomFileUpload extends Component {
                 true,
                 "uploadFile"
               );
-            } else if (/[!@#/$%&/*/^(){}\\[\];,.?"':=/+`~/]/.test(file.name)) {
+            } else if (/[!@#/$%&/*/^(){}\\[\];,?"':=/+`~/]/.test(file.name)) {
               file.errorMessage = "Enter Valid File Name";
               handleFileUploadError(
                 "Enter Valid File Name",
