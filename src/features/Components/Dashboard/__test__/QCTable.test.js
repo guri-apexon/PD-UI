@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 
-import ProtocolTable from "../ProtocolTable";
+import ProtocolTable from "../QCTable";
 
 describe("Dashboard table component", () => {
   const state = {
@@ -91,14 +91,12 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     render(
       <ProtocolTable
         initialRows={protocolData}
         pageRows={[5, 20, 30, "All"]}
-        isLoading={false}
       />,
       state
     );
@@ -154,7 +152,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
       {
         id: "abcd123456",
@@ -194,7 +191,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
       {
         amendment: "N",
@@ -237,7 +233,6 @@ describe("Dashboard table component", () => {
         userId: "1034911",
         userUpdated: null,
         versionNumber: "1",
-        qcActivity: "QC Not Started",
       },
     ];
     render(
@@ -288,7 +283,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
       {
         id: "abcd123456",
@@ -328,7 +322,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     render(
@@ -380,7 +373,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
       {
         id: "abcd123456",
@@ -420,7 +412,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     const fakeFn = jest.fn();
@@ -476,7 +467,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     let container = render(
@@ -531,7 +521,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     let container = render(
@@ -588,7 +577,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     let container = render(
@@ -643,7 +631,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     let container = render(

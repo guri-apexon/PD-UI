@@ -1,6 +1,6 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import { render } from "../../../../test-utils/test-utils";
+import { render, screen, fireEvent } from "../../../../test-utils/test-utils";
 import DocumentsTable from "../DocumentsTable";
 import axios from "axios";
 
@@ -41,6 +41,9 @@ const AssociateDocs = [
     isActive: true,
     iqvxmlpath: "string",
     NctId: "0",
+    userName: "Sohan Khatawkar",
+    documentFilePath:
+      "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\1fd2c7c3-394c-4ce3-9ed9-6ef0c92a836d\\ProtAmend-2021-03-16-VER-Amend 2-000001.pdf",
   },
 ];
 
@@ -66,15 +69,15 @@ describe("DocumentsTable Test Suite", () => {
         push: mockHistoryPush,
       }),
     }));
-    const container = render(
+    render(
       <MemoryRouter>
         <DocumentsTable initialsRow={AssociateDocs} />
       </MemoryRouter>
     );
-    let link = container.getByTestId("documentTable-sourcefile");
+    let link = screen.getByTestId("documentTable-sourcefile");
     console.log("link :", link);
 
-    // fireEvent.click(link);
+    fireEvent.click(link);
 
     // expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
