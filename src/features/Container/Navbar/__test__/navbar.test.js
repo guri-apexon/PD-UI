@@ -68,7 +68,7 @@ describe("Should Render Navbar and Alert", () => {
       readFlag: false,
       protocolTitle:
         "PHASE 3, RANDOMIZED, OPEN-LABEL, ACTIVE-CONTROLLED STUDY EVALUATING THE EFFICACY AND SAFETY OF ORAL VADADUSTAT FOR THE CORRECTION OF ANEMIA IN SUBJECTS WITH NON-DIALYSIS-DEPENDENT CHRONIC KIDNEY DISEASE (NDD-CKD) (PRO2TECT - CORRECTION)",
-      timeCreated: "2021-06-24T11:22:10.017000",
+      timeCreated: new Date(),
     },
   ];
   let historymock = jest.fn();
@@ -108,5 +108,83 @@ describe("Should Render Navbar and Alert", () => {
     fireEvent.click(
       screen.getByTestId("nav-alert-list").children[0].children[1]
     );
+  });
+});
+
+describe("Should Render Navbar", () => {
+  const state = {
+    initialState: {
+      navbar: {
+        notifications: [
+          {
+            aidocId: "9f1f6bd8-3899-48b3-9629-69bdb5f83263",
+            id: "7242",
+            protocol: "Redaction-SDS-PROT",
+            protocolTitle: "",
+            readFlag: false,
+            timeCreated: "2021-10-11T13:13:43.303000",
+          },
+          {
+            aidocId: "dfbb0964-616b-4ab3-bc31-13e252f44d8a",
+            id: "7959",
+            protocol: "Excel-CSV-Prot",
+            protocolTitle: "",
+            readFlag: false,
+            timeCreated: "2021-10-21T07:58:54.933000",
+          },
+        ],
+        error: false,
+        loader: false,
+      },
+      user: {
+        userDetail: {
+          userId: "u1072231",
+          username: "Subhadatta",
+          email: "subhadatta@iqvia.com",
+          user_type: "QC1",
+        },
+      },
+    },
+  };
+  test("Should set Menu Items", () => {
+    render(<Navbar />, state);
+  });
+
+  test("Should set Menu Items admin", () => {
+    state.initialState.user.userDetail.user_type = "admin";
+    render(<Navbar />, state);
+  });
+
+  test("Should set Menu Items normal", () => {
+    state.initialState.user.userDetail.user_type = "normal";
+    render(<Navbar />, state);
+  });
+
+  test("Should open the profile and logout", () => {
+    state.initialState.user.userDetail.user_type = "normal";
+    render(<Navbar />, state);
+    const drop = screen.getByText("Subhadatta");
+    fireEvent.click(drop);
+    fireEvent.click(screen.getByText("Log out"));
+  });
+
+  test("Should open Search", () => {
+    render(<Navbar />, state);
+    fireEvent.click(screen.getByText("Search"));
+  });
+
+  test("Should open Protocols", () => {
+    render(<Navbar />, state);
+    fireEvent.click(screen.getByText("Protocols"));
+  });
+
+  test("Should render for empty results", () => {
+    state.initialState.navbar.notifications = [];
+    render(<Navbar />, state);
+    fireEvent.click(screen.getByText("Search"));
+  });
+  test("Should render for empty user type", () => {
+    state.initialState.user.userDetail.user_type = "";
+    render(<Navbar />, state);
   });
 });

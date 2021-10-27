@@ -1,7 +1,7 @@
 import { runSaga } from "redux-saga";
 import * as api from "../../../../utils/api";
 
-import { navbarNotificationData } from "../saga";
+import { navbarNotificationData, readNotification } from "../saga";
 const userDetail = {
   userId: "u1072231",
   username: "Subhadatta",
@@ -14,13 +14,20 @@ describe("Navbar Saga Unit Test", () => {
     const mockOutput = {
       data: [
         {
-          id: "1",
-          read: false,
-          header: "D8850C00003",
-          details: "Post-exposure Prophylaxis of COVID-19 in Adults",
-          timestamp: "2021-04-29T00:00:00",
-          protocolNumber: "D8850C00003",
-          aidocId: "45830060-0dcd-474f-a0e7-3974dd53b208",
+          aidocId: "9f1f6bd8-3899-48b3-9629-69bdb5f83263",
+          id: "7242",
+          protocol: "Redaction-SDS-PROT",
+          protocolTitle: "",
+          readFlag: false,
+          timeCreated: "2021-10-11T13:13:43.303000",
+        },
+        {
+          aidocId: "dfbb0964-616b-4ab3-bc31-13e252f44d8a",
+          id: "7959",
+          protocol: "Excel-CSV-Prot",
+          protocolTitle: "",
+          readFlag: false,
+          timeCreated: "2021-10-21T07:58:54.933000",
         },
       ],
       success: true,
@@ -66,5 +73,35 @@ describe("Navbar Saga Unit Test", () => {
       type: "",
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test("Should run give success data: readNotification", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      data: [],
+      success: true,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        navbar: {
+          notifications: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, readNotification, {
+      payload: {
+        aidocId: "dfbb0964-616b-4ab3-bc31-13e252f44d8a",
+        id: "7959",
+        protocol: "Excel-CSV-Prot",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+    // navbarNotificationData(data);
   });
 });
