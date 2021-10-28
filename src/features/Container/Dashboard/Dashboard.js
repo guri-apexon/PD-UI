@@ -11,6 +11,7 @@ import ActionButtons from "./ActionButtons";
 let today = new Date();
 let curHr = today.getHours();
 let greet;
+/* istanbul ignore next */
 if (curHr < 12) {
   greet = "Good Morning, ";
 } else if (curHr < 18) {
@@ -25,6 +26,7 @@ const Dashboard = () => {
   const dashboardError = useSelector(dashboadAPIError);
   return (
     <div className="dashboard-parent" style={{ padding: 20 }}>
+      {/* istanbul ignore next */}
       {dashboardError && dashboardError.apiError && (
         <span className="main-error-message" data-testid="API-Error">
           Something Went Wrong, API Failed

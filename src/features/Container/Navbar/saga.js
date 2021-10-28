@@ -74,6 +74,7 @@ export function* readNotification(action) {
       // }
     }
   } catch (err) {
+    /* istanbul ignore next */
     console.log(err);
   }
 }

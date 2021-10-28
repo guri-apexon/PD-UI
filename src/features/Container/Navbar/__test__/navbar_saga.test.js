@@ -104,4 +104,33 @@ describe("Navbar Saga Unit Test", () => {
     expect(mockCallApi).toHaveBeenCalledTimes(1);
     // navbarNotificationData(data);
   });
+  test("Should run give failure data: readNotification", async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      data: [],
+      success: false,
+    };
+    const mockCallApi = jest
+      .spyOn(api, "httpCall")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        navbar: {
+          notifications: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, readNotification, {
+      payload: {
+        aidocId: "dfbb0964-616b-4ab3-bc31-13e252f44d8a",
+        id: "7959",
+        protocol: "Excel-CSV-Prot",
+      },
+      type: "",
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+    // navbarNotificationData(data);
+  });
 });

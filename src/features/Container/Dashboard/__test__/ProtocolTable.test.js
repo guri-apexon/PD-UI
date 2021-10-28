@@ -22,6 +22,13 @@ describe("Protocol Table container component", () => {
     render(<ProtocolTable pageRows={[5, 20, 30, "All"]} />, state);
   });
 
+  test("should render ProtocolTable Value 1", () => {
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    render(<ProtocolTable pageRows={[5, 20, 30, "All"]} value={1} />, state);
+  });
+
   xtest("should tabIndex of Followed Button to be 0", () => {
     const useDispatchSpy = jest.spyOn(redux, "useDispatch");
     const mockDispatchFn = jest.fn();

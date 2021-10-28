@@ -41,9 +41,7 @@ function Navbar() {
   useEffect(() => {
     if ("userId" in userData) {
       const userID = userData.userId.substring(1);
-      if (userID) {
-        dispatch({ type: "GET_NOTIFICATION_SAGA", payload: userID });
-      }
+      dispatch({ type: "GET_NOTIFICATION_SAGA", payload: userID });
     }
   }, [userData, dispatch]);
   useEffect(() => {
