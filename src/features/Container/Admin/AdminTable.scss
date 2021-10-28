@@ -25,3 +25,7 @@
 [class^="Table-tableWrapper-"] {
   overflow-x: hidden;
 }
+
+[class^="MuiInputBase-root-"].Mui-disabled {
+  opacity: 0.7;
+}

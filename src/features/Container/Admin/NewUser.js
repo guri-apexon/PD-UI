@@ -262,6 +262,7 @@ function NewUser({ setIsOpen }) {
             onChange={(e) => handleChange("firstName", e.target.value)}
             onBlur={(e) => onFieldBlur("firstName", e.target.value)}
             data-testid="first-name-texfield"
+            disabled
           />
         </Grid>
         <Grid item xs={6} sm={6}>
@@ -277,6 +278,7 @@ function NewUser({ setIsOpen }) {
             onChange={(e) => handleChange("lastName", e.target.value)}
             onBlur={(e) => onFieldBlur("lastName", e.target.value)}
             data-testid="last-name-texfield"
+            disabled
           />
         </Grid>
         <Grid item xs={6} sm={6}>
@@ -292,6 +294,7 @@ function NewUser({ setIsOpen }) {
             onChange={(e) => handleChange("email", e.target.value)}
             onBlur={(e) => onFieldBlur("email", e.target.value)}
             data-testid="email-texfield"
+            disabled
           />
         </Grid>
         <Grid item xs={6} sm={6}>
@@ -307,6 +310,7 @@ function NewUser({ setIsOpen }) {
             onChange={(e) => handleChange("country", e.target.value)}
             onBlur={(e) => onFieldBlur("country", e.target.value)}
             data-testid="Country-texfield"
+            disabled
           />
         </Grid>
       </Grid>
