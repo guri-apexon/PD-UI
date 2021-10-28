@@ -61,9 +61,9 @@ const dateFormatApp = ({ row }) => {
   return <>{row.approvalDate ? covertMMDDYYYY(row.approvalDate) : "-"}</>;
 };
 
-const Cell = ({ row, column: { accessor: key } }) => {
-  return <>{row[key] ? row[key] : "-"}</>;
-};
+// const Cell = ({ row, column: { accessor: key } }) => {
+//   return <>{row[key] ? row[key] : "-"}</>;
+// };
 
 const StatusCell = ({ row, column: { accessor: key } }) => {
   return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
@@ -76,12 +76,12 @@ const columns = [
     width: "10%",
     customCell: ProtocolLink,
   },
-  {
-    header: "Draft #",
-    accessor: "draftVersion",
-    width: "10%",
-    customCell: Cell,
-  },
+  // {
+  //   header: "Draft #",
+  //   accessor: "draftVersion",
+  //   width: "10%",
+  //   customCell: Cell,
+  // },
   {
     header: "Source Document",
     accessor: "fileName",
