@@ -104,7 +104,7 @@ function BulkMap() {
             <Loader isInner />
           </div>
         )}
-        <div style={{ maxWidth: 700, minWidth: 400 }}>
+        <div style={{ maxWidth: 700, minWidth: 400 }} data-testid="file-upload">
           <FileUpload
             label="Add file with Protocol Mapping details"
             value={selectedFiles}

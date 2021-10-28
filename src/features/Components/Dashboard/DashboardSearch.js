@@ -26,7 +26,6 @@ function DashboardSearch({ recent, saved }) {
               placeholder="Protocol Number, Indication, Key word, etc"
               fullWidth
               onKeyPress={(e) => {
-                console.log("--------clicked key enter");
                 /* istanbul ignore next */
                 if (e.key === "Enter") {
                   dispatch({

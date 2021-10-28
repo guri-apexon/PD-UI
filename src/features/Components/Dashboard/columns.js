@@ -49,7 +49,11 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
       >
         <span>
           <span className="adjust-ellipses">
-            <a href="javascript:void(0)" onClick={() => handleDownload(row)}>
+            <a
+              href="javascript:void(0)"
+              data-testid={`download-${row.protocol}`}
+              onClick={() => handleDownload(row)}
+            >
               {row[key].length > 50
                 ? row[key].substring(0, 50) + "..."
                 : row[key]}

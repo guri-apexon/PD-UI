@@ -35,7 +35,7 @@ describe("Protocol Table container component", () => {
   test("should switch to tab QC Protocol View", () => {
     render(<QC />, state);
 
-    fireEvent.click(screen.getByTestId("click-link-qc"));
+    fireEvent.click(screen.getByTestId("click-link-12344"));
     expect(screen.getByText(/12344/)).toBeInTheDocument();
     // let TabLink = container.getByTestId("qc-parent-component").children[1].children[0].children[0].children[0].children[0].children[0]
     //  fireEvent.click(TabLink);

@@ -8,6 +8,7 @@ import {
   uploadQc,
 } from "../saga";
 import * as api from "../../../../utils/api";
+import QC from "./QC_New_re.json";
 const userDetail = {
   username: "Sohan111",
   userId: "u1021402",
@@ -373,7 +374,7 @@ describe("Qc Saga Unit Test", () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
-      data: true,
+      data: QC,
     };
     const mockCallApi = jest
       .spyOn(api, "httpCall")
@@ -398,8 +399,9 @@ describe("Qc Saga Unit Test", () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,
-      data: null,
+      data: QC,
     };
+    console.log(QC.iqvdataSoa);
     const mockCallApi = jest
       .spyOn(api, "httpCall")
       .mockImplementation(() => Promise.resolve(mockOutput));

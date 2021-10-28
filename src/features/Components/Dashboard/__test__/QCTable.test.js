@@ -2,7 +2,7 @@ import React from "react";
 import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 
-import ProtocolTable from "../ProtocolTable";
+import ProtocolTable from "../QCTable";
 
 describe("Dashboard table component", () => {
   const state = {
@@ -91,14 +91,12 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     render(
       <ProtocolTable
         initialRows={protocolData}
         pageRows={[5, 20, 30, "All"]}
-        isLoading={false}
       />,
       state
     );
@@ -154,7 +152,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
       {
         id: "abcd123456",
@@ -194,7 +191,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
       {
         amendment: "N",
@@ -237,7 +233,6 @@ describe("Dashboard table component", () => {
         userId: "1034911",
         userUpdated: null,
         versionNumber: "1",
-        qcActivity: "QC Not Started",
       },
     ];
     render(
@@ -288,7 +283,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
       {
         id: "abcd123456",
@@ -328,7 +322,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     render(
@@ -380,7 +373,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
       {
         id: "abcd123456",
@@ -420,7 +412,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     const fakeFn = jest.fn();
@@ -476,7 +467,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     let container = render(
@@ -489,7 +479,6 @@ describe("Dashboard table component", () => {
     let arrowButton = container.getByTestId("expandable-row");
     // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
-    fireEvent.click(screen.getByTestId("handle-download").children[0]);
   });
 
   test("Component renders correctly for expanded row", () => {
@@ -532,7 +521,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     let container = render(
@@ -589,7 +577,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     let container = render(
@@ -644,7 +631,6 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        qcActivity: "QC Not Started",
       },
     ];
     let container = render(
@@ -859,7 +845,7 @@ describe("Dashboard table component Redaction", () => {
         fileName: "Protocol-2013-05-29-VER-V1.0-000001.pdf",
         documentFilePath:
           "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
-        protocol: "EMR 200095-004",
+        protocol: "EMR 200095-005",
         protocolName:
           "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
         projectId: 123,
@@ -899,21 +885,21 @@ describe("Dashboard table component Redaction", () => {
           "Protocol-2013-05-29-VER-V1.0-00000111111111111111111111111111111111.pdf",
         documentFilePath:
           "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
-        protocol: "EMR 200095-004 Testing for more than 25 characters tooltip",
+        protocol: "EMR 200095",
         protocolName:
           "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
         projectId: 123,
         sponser: "~REDACTED~",
         indication: "~REDACTED~",
         molecule: "~REDACTED~",
-        amendment: "~REDACTED~",
+        amendment: "string",
         versionNumber: 1.0,
         documentStatus: "Final",
         draftVersion: 0.0,
         errorCode: 0,
         errorReason: "string",
         status: "Digitization Complete",
-        phase: "~REDACTED~",
+        phase: "Ib/II",
         digitizedConfidenceInterval: "string",
         completenessOfDigitization: "string",
         protocolTitle:
@@ -931,108 +917,21 @@ describe("Dashboard table component Redaction", () => {
         iqvxmlpath: "string",
         nctId: "0",
         qcActivity: "QC Not Started",
+        handleRowProtocolClick: () => {},
       },
     ];
+    const fakeFn = jest.fn();
     render(
       <ProtocolTable
         initialRows={protocolData}
         pageRows={[5, 20, 30, "All"]}
         isLoading={false}
         screen="QC"
+        handleProtocolClick={fakeFn}
       />,
       state
     );
-  });
 
-  test("Component renders correctly with Redacted Information", () => {
-    const protocolData = [
-      {
-        id: "abcd1234",
-        userId: "1021402",
-        fileName: "Protocol-2013-05-29-VER-V1.0-000001.pdf",
-        documentFilePath:
-          "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
-        protocol: "EMR 200095-004",
-        protocolName:
-          "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
-        projectId: 123,
-        sponser: "Merck KGaA to be more than 25 characters long",
-        indication: "Bone necrosis",
-        moleculeDevice: "~REDACTED~",
-        amendment: "string",
-        versionNumber: 1.0,
-        documentStatus: "Final",
-        draftVersion: 0.0,
-        errorCode: 0,
-        errorReason: "string",
-        status: "Digitization In Progress",
-        phase: "Ib/II",
-        digitizedConfidenceInterval: "string",
-        completenessOfDigitization: "string",
-        protocolTitle:
-          "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of ~REDACTED~ as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
-        studyStatus: "string",
-        sourceSystem: "string",
-        environment: "dev",
-        uploadDate: "2020-12-16T08:46:42.633000",
-        timeCreated: "2020-12-16T08:46:42.633000",
-        timeUpdated: "2020-12-16T08:46:42.633000",
-        userCreated: "1021402",
-        userModified: "string",
-        approvalDate: "2013-06-26T08:46:42.633000",
-        isActive: true,
-        iqvxmlpath: "string",
-        nctId: "0",
-        qcActivity: "QC Not Started",
-      },
-      {
-        id: "abcd123456",
-        userId: "1021402",
-        fileName:
-          "Protocol-2013-05-29-VER-V1.0-00000111111111111111111111111111111111.pdf",
-        documentFilePath:
-          "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
-        protocol: "EMR 200095-004 Testing for more than 25 characters tooltip",
-        protocolName:
-          "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
-        projectId: 123,
-        sponser: "~REDACTED~",
-        indication: "~REDACTED~",
-        molecule: "~REDACTED~",
-        amendment: "~REDACTED~",
-        versionNumber: 1.0,
-        documentStatus: "Final",
-        draftVersion: 0.0,
-        errorCode: 0,
-        errorReason: "string",
-        status: "Digitization Complete",
-        phase: "~REDACTED~",
-        digitizedConfidenceInterval: "string",
-        completenessOfDigitization: "string",
-        protocolTitle:
-          "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
-        studyStatus: "string",
-        sourceSystem: "string",
-        environment: "dev",
-        uploadDate: "2020-12-16T08:46:42.633000",
-        timeCreated: "2020-12-16T08:46:42.633000",
-        timeUpdated: "2020-12-16T08:46:42.633000",
-        userCreated: "1021402",
-        userModified: "string",
-        approvalDate: "2013-06-26T08:46:42.633000",
-        isActive: true,
-        iqvxmlpath: "string",
-        nctId: "0",
-        qcActivity: "QC Not Started",
-      },
-    ];
-    render(
-      <ProtocolTable
-        initialRows={protocolData}
-        pageRows={[5, 20, 30, "All"]}
-        isLoading={false}
-      />,
-      state
-    );
+    fireEvent.click(screen.getByTestId("click-link-EMR 200095"));
   });
 });

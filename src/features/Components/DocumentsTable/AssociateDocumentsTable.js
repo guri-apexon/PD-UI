@@ -47,6 +47,7 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
       responseType: "blob",
     };
     const resp = await httpCall(config);
+    /* istanbul ignore next */
     if (resp.success) {
       FileDownload(resp.data, fileName);
     } else {
@@ -77,7 +78,11 @@ const VersionCell = ({ row, column }) => {
   return (
     <>
       {row.versionNumber ? (
-        <p className="hyperlink" onClick={() => onHandleChange(row)}>
+        <p
+          className="hyperlink"
+          data-testid={`version-${row.versionNumber}`}
+          onClick={() => onHandleChange(row)}
+        >
           {" "}
           {row.versionNumber}
         </p>

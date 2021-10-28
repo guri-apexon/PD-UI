@@ -439,7 +439,7 @@ describe("Dashboard table component", () => {
           "Protocol-2013-05-29-VER-V1.0-00000111111111111111111111111111111111.pdf",
         documentFilePath:
           "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
-        protocol: "EMR 200095-004 Testing for more than 25 characters tooltip",
+        protocol: "EMR",
         protocolName:
           "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
         projectId: 123,
@@ -470,16 +470,24 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
+        associateddata: [],
       },
     ];
+    const fetchAssociateData = jest.fn();
+    const handleUnfollow = jest.fn();
     let container = render(
       <ProtocolTable
         initialRows={protocolData}
         pageRows={[5, 20, 30, "All"]}
+        fetchAssociateData={fetchAssociateData}
+        handleUnfollow={handleUnfollow}
+        isLoading={false}
+        defaultRows={5}
+        screen="FollowedProtocols"
       />,
       state
     );
-    let arrowButton = container.getByTestId("expandable-row");
+    let arrowButton = container.getByTestId("expandable-row-EMR");
     // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
   });
@@ -493,7 +501,7 @@ describe("Dashboard table component", () => {
           "Protocol-2013-05-29-VER-V1.0-00000111111111111111111111111111111111.pdf",
         documentFilePath:
           "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
-        protocol: "EMR 200095-004 Testing for more than 25 characters tooltip",
+        protocol: "EMR 200095-004",
         protocolName:
           "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
         projectId: 123,
@@ -524,6 +532,88 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
+        associateddata: [
+          {
+            id: "abcd123456",
+            userId: "1021402",
+            fileName:
+              "Protocol-2013-05-29-VER-V1.0-00000111111111111111111111111111111111.pdf",
+            documentFilePath:
+              "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
+            protocol: "EMR 200095-004",
+            protocolName:
+              "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
+            projectId: 123,
+            sponser: "Merck KGaA Testing for more than 25 characters tooltip",
+            indication:
+              "Bone necrosis Testing for more than 25 characters tooltip",
+            molecule: "string",
+            amendment: "string",
+            versionNumber: 1.0,
+            documentStatus: "Final",
+            draftVersion: 0.0,
+            errorCode: 0,
+            errorReason: "string",
+            status: "COMPARISON_STARTED",
+            phase: "Ib/II",
+            digitizedConfidenceInterval: "string",
+            completenessOfDigitization: "string",
+            protocolTitle:
+              "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
+            studyStatus: "string",
+            sourceSystem: "string",
+            environment: "dev",
+            uploadDate: "2020-12-16T08:46:42.633000",
+            timeCreated: "2020-12-16T08:46:42.633000",
+            timeUpdated: "2020-12-16T08:46:42.633000",
+            userCreated: "1021402",
+            userModified: "string",
+            approvalDate: "2013-06-26T08:46:42.633000",
+            isActive: true,
+            iqvxmlpath: "string",
+            nctId: "0",
+          },
+          {
+            id: "abcd1234567",
+            userId: "1021402",
+            fileName:
+              "Protocol-2013-05-29-VER-V1.0-00000111111111111111111111111111111111.pdf",
+            documentFilePath:
+              "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
+            protocol: "EMR 200095-005",
+            protocolName:
+              "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
+            projectId: 123,
+            sponser: "Merck KGaA Testing for more than 25 characters tooltip",
+            indication:
+              "Bone necrosis Testing for more than 25 characters tooltip",
+            molecule: "string",
+            amendment: "string",
+            versionNumber: 1.0,
+            documentStatus: "",
+            draftVersion: "",
+            errorCode: 0,
+            errorReason: "string",
+            status: "COMPARISON_STARTED",
+            phase: "Ib/II",
+            digitizedConfidenceInterval: "string",
+            completenessOfDigitization: "string",
+            protocolTitle:
+              "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
+            studyStatus: "string",
+            sourceSystem: "string",
+            environment: "dev",
+            uploadDate: "2020-12-16T08:46:42.633000",
+            timeCreated: "2020-12-16T08:46:42.633000",
+            timeUpdated: "2020-12-16T08:46:42.633000",
+            userCreated: "1021402",
+            userModified: "string",
+            approvalDate: "",
+            isActive: true,
+            iqvxmlpath: "string",
+            nctId: "0",
+          },
+        ],
       },
     ];
     let container = render(
@@ -533,7 +623,7 @@ describe("Dashboard table component", () => {
       />,
       state
     );
-    let arrowButton = container.getByTestId("expandable-row");
+    let arrowButton = container.getByTestId("expandable-row-EMR 200095-004");
 
     // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
@@ -589,7 +679,7 @@ describe("Dashboard table component", () => {
       />,
       state
     );
-    let arrowButton = container.getByTestId("expandable-row");
+    let arrowButton = container.getByTestId("expandable-row-EMR 200095-004");
     // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
     fireEvent.click(arrowButton);
@@ -600,7 +690,8 @@ describe("Dashboard table component", () => {
       {
         id: "abcd1234",
         userId: "1021402",
-        fileName: null,
+        fileName:
+          "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A",
         documentFilePath:
           "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
         protocol: "EMR 200095-004",
@@ -643,9 +734,10 @@ describe("Dashboard table component", () => {
       />,
       state
     );
-    let arrowButton = container.getByTestId("expandable-row");
+    let arrowButton = container.getByTestId("expandable-row-EMR 200095-004");
     // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
+    // fireEvent.click(screen.getByTestId("download-EMR 200095-004"));
   });
 
   test("Should Component render correctly for FollowedProtocols tab", () => {
@@ -669,7 +761,7 @@ describe("Dashboard table component", () => {
         percentComplete: "100",
         phase: "I",
         projectId: "",
-        protocol: "JBT101-RIS-001",
+        protocol: "JBT101-RIS-001 to be longer thant 25 characters to test",
         protocolTitle:
           "A Phase 1, 2-part, Single-dose, Non-Randomized, Open-label, Parallel-group Study to Assess the Pharmacokinetics and Safety of Lenabasum in Subjects with Renal Impairment Compared with Matched Controls",
         sponsor: "Corbus Pharmaceuticals",
@@ -684,6 +776,108 @@ describe("Dashboard table component", () => {
       <ProtocolTable
         initialRows={protocolData}
         pageRows={[5, 20, 30, "All"]}
+        screen="FollowedProtocols"
+      />,
+      state
+    );
+  });
+});
+
+describe("Dashboard table component Redaction", () => {
+  const state = {
+    initialState: {
+      dashboard: {
+        protocols: [],
+      },
+    },
+  };
+  test("Component renders correctly with Redacted Information", () => {
+    const protocolData = [
+      {
+        id: "abcd1234",
+        userId: "1021402",
+        fileName: "Protocol-2013-05-29-VER-V1.0-000001.pdf",
+        documentFilePath:
+          "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
+        protocol: "EMR 200095-004",
+        protocolName:
+          "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
+        projectId: 123,
+        sponser: "Merck KGaA to be more than 25 characters long",
+        indication: "Bone necrosis",
+        moleculeDevice: "~REDACTED~",
+        amendment: "string",
+        versionNumber: 1.0,
+        documentStatus: "Final",
+        draftVersion: 0.0,
+        errorCode: 0,
+        errorReason: "string",
+        status: "Digitization In Progress",
+        phase: "Ib/II",
+        digitizedConfidenceInterval: "string",
+        completenessOfDigitization: "string",
+        protocolTitle:
+          "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of ~REDACTED~ as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
+        studyStatus: "string",
+        sourceSystem: "string",
+        environment: "dev",
+        uploadDate: "2020-12-16T08:46:42.633000",
+        timeCreated: "2020-12-16T08:46:42.633000",
+        timeUpdated: "2020-12-16T08:46:42.633000",
+        userCreated: "1021402",
+        userModified: "string",
+        approvalDate: "2013-06-26T08:46:42.633000",
+        isActive: true,
+        iqvxmlpath: "string",
+        nctId: "0",
+        qcActivity: "QC Not Started",
+      },
+      {
+        id: "abcd123456",
+        userId: "1021402",
+        fileName:
+          "Protocol-2013-05-29-VER-V1.0-00000111111111111111111111111111111111.pdf",
+        documentFilePath:
+          "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
+        protocol: "EMR 200095-004 Testing for more than 25 characters tooltip",
+        protocolName:
+          "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
+        projectId: 123,
+        sponser: "Merck KGaA Testing for more than 25 characters tooltip",
+        indication: "Bone necrosis Testing for more than 25 characters tooltip",
+        molecule: "string",
+        amendment: "string",
+        versionNumber: 1.0,
+        documentStatus: "Final",
+        draftVersion: 0.0,
+        errorCode: 0,
+        errorReason: "string",
+        status: "Digitization Complete",
+        phase: "Ib/II",
+        digitizedConfidenceInterval: "string",
+        completenessOfDigitization: "string",
+        protocolTitle:
+          "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
+        studyStatus: "string",
+        sourceSystem: "string",
+        environment: "dev",
+        uploadDate: "2020-12-16T08:46:42.633000",
+        timeCreated: "2020-12-16T08:46:42.633000",
+        timeUpdated: "2020-12-16T08:46:42.633000",
+        userCreated: "1021402",
+        userModified: "string",
+        approvalDate: "2013-06-26T08:46:42.633000",
+        isActive: true,
+        iqvxmlpath: "string",
+        nctId: "0",
+        qcActivity: "QC Not Started",
+      },
+    ];
+    render(
+      <ProtocolTable
+        initialRows={protocolData}
+        pageRows={[5, 20, 30, "All"]}
+        isLoading={false}
         screen="FollowedProtocols"
       />,
       state

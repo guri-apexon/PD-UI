@@ -19,6 +19,21 @@ describe("Protocol Table container component with empty and default values", () 
     render(<Dashboard />, state);
   });
 
+  xtest("should render Dashboard API Error", () => {
+    const stateLocal = {
+      initialState: {
+        dashboard: {
+          protocols: [],
+          selectedProtocols: [],
+          displayAddProtocol: false,
+          apiError: true,
+        },
+      },
+    };
+    render(<Dashboard dashboardError={{ apiError: true }} />, stateLocal);
+    expect(screen.getByTestId("API-Error")).toBeInTheDocument();
+  });
+
   test("should the Send To QC Review button be disabled", () => {
     render(<Dashboard />, state);
     // screen.getByTestId(/Send To QC Review/);

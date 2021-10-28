@@ -42,7 +42,7 @@ export function* navbarNotificationData(action) {
   }
 }
 
-function* readNotification(action) {
+export function* readNotification(action) {
   const data = action.payload;
   const readConfig = {
     url: `${BASE_URL_8000}/api/notification_read/`,
@@ -74,6 +74,7 @@ function* readNotification(action) {
       // }
     }
   } catch (err) {
+    /* istanbul ignore next */
     console.log(err);
   }
 }

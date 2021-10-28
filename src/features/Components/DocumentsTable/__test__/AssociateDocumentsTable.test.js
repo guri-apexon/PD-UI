@@ -1,6 +1,6 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import { render, fireEvent } from "../../../../test-utils/test-utils";
+import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
 import AssociateDocumentsTable from "../AssociateDocumentsTable";
 import axios from "axios";
 
@@ -68,7 +68,7 @@ const AssociateDocs = [
       "A 2-Part Study of the Pharmacokinetics and Safety of a Single Dose of Lenabasum in Subjects with Renal Impairment Compared with Matched Controls Rationale:",
     versionNumber: "10.1",
     documentStatus: "final",
-    draftVersion: null,
+    draftVersion: "1",
     errorCode: null,
     errorReason: null,
     status: "PROCESS_COMPLETED",
@@ -147,7 +147,7 @@ const AssociateDocs1 = [
     Indication: "Bone necrosis",
     Molecule: "string",
     Amendment: "string",
-    versionNumber: "",
+    versionNumber: "1",
     documentStatus: "",
     draftVersion: "",
     errorCode: 0,
@@ -237,5 +237,17 @@ describe("AssociateDocumentsTable Test Suite", () => {
         />
       </MemoryRouter>
     );
+  });
+
+  test("Should click version number", async () => {
+    const handleChangeTab = jest.fn();
+    render(
+      <AssociateDocumentsTable
+        handleChangeTab={handleChangeTab}
+        initialsRow={AssociateDocs1}
+      />
+    );
+
+    fireEvent.click(screen.getByTestId("version-1"));
   });
 });
