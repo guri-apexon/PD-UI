@@ -111,6 +111,7 @@ export const qcIconStatus = (status) => {
       return "QC Not Started";
     case "QC1":
     case "QC2":
+    case "FEEDBACK_RUN":
       return "QC In Progress";
     case "QC_COMPLETED":
       return "QC Completed";

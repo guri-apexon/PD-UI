@@ -36,11 +36,12 @@ export const initialFormErrorValues = {
     type: "Textbox",
   },
   versionNumber: {
-    isRequired: false,
+    isRequired: true,
     error: false,
     errorMessage: " ",
+    regex: /^\w+([\s-_.]\w+)*$/,
     // regex: "^[1-9]*?.[0-9]{0,2}$", // eslint-disable-line
-    regex: /^[1-9]\d*(?:\.\d{1,2})?$/gm, // eslint-disable-line
+    // regex: /^[1-9]\d*(?:\.\d{1,2})?$/gm, // eslint-disable-line
     type: "Textbox",
   },
   sponsor: {

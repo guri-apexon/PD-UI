@@ -20,6 +20,10 @@ import {
   emptyAutoObj,
 } from "./constants";
 import Plus from "apollo-react-icons/Plus";
+
+const versionRegx = /^[a-zA-Z0-9\s-._ ]*$/;
+const versionErrText =
+  "Only Alphabets, Numbers, Hyphen(-),Underscore(_), Dot(.) and space are allowed";
 const AddProtocol = () => {
   let dropdownFocus = "";
   const dispatch = useDispatch();
@@ -83,7 +87,8 @@ const AddProtocol = () => {
       if (formErrorValues[fieldName].regex && e.target.value.length > 0) {
         let reg = formErrorValues[fieldName].regex;
         // let reg = new RegExp(formErrorValues[fieldName].regex);
-        let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
+        // let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
+        let isNumber = versionRegx.test(e.target.value);
         if (isNumber && reg.test(parseFloat(e.target.value))) {
           tempValues[fieldName] = e.target.value;
           tempError[fieldName].error = false;
@@ -91,8 +96,7 @@ const AddProtocol = () => {
         } else {
           tempValues[fieldName] = e.target.value;
           tempError[fieldName].error = true;
-          tempError[fieldName].errorMessage =
-            "Does not Match, Positive and upto 2 Decimals only";
+          tempError[fieldName].errorMessage = versionErrText;
         }
       } else {
         tempValues[fieldName] = e.target.value;
@@ -177,14 +181,16 @@ const AddProtocol = () => {
       ) {
         let reg = formErrorValues[fieldName].regex;
         // let reg = new RegExp(formErrorValues[fieldName].regex);
-        let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
+        // let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
+        let isNumber = versionRegx.test(e.target.value);
         if (isNumber && reg.test(parseFloat(e.target.value))) {
           temp[fieldName].error = false;
           temp[fieldName].errorMessage = " ";
         } else {
           temp[fieldName].error = true;
-          temp[fieldName].errorMessage =
-            "Does not Match, Positive and upto 2 Decimals only";
+          // temp[fieldName].errorMessage =
+          //   "Does not Match, Positive and upto 2 Decimals only";
+          temp[fieldName].errorMessage = versionErrText;
         }
       }
       setFormErrorValues(temp);
@@ -250,26 +256,10 @@ const AddProtocol = () => {
               !tempError[field].error) ||
             !tempError[field].isRequired
           ) {
-            if (
-              field === "versionNumber" &&
-              !tempError.amendmentNumber.error &&
-              tempValues.amendmentNumber.label === "Y" &&
-              !tempValues.versionNumber.length
-            ) {
+            if (field === "versionNumber1") {
               tempError[field].error = true;
-              tempError[field].errorMessage = "Required When Amendment is Y";
+              tempError[field].errorMessage = "Required";
               errorExist = true;
-            } else {
-              if (field === "versionNumber" && tempError[field].error) {
-                errorExist = true;
-                if (tempValues.amendmentNumber.label === "N") {
-                  tempError[field].error = false;
-                  tempError[field].errorMessage = " ";
-                }
-              } else {
-                tempError[field].error = false;
-                tempError[field].errorMessage = " ";
-              }
             }
           } else {
             tempError[field].error = true;
