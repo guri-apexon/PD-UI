@@ -22,6 +22,8 @@ import {
 import Plus from "apollo-react-icons/Plus";
 
 const versionRegx = /^[a-zA-Z0-9\s-._ ]*$/;
+const versionErrText =
+  "Only Alphabets, Numbers, Hyphen(-),Underscore(_), Dot(.) and space are allowed";
 const AddProtocol = () => {
   let dropdownFocus = "";
   const dispatch = useDispatch();
@@ -94,8 +96,7 @@ const AddProtocol = () => {
         } else {
           tempValues[fieldName] = e.target.value;
           tempError[fieldName].error = true;
-          tempError[fieldName].errorMessage =
-            "Only Alphabets, Numbers, Hypen(-),Undersore(_), Dot(.) and space are allowed";
+          tempError[fieldName].errorMessage = versionErrText;
         }
       } else {
         tempValues[fieldName] = e.target.value;
@@ -189,8 +190,7 @@ const AddProtocol = () => {
           temp[fieldName].error = true;
           // temp[fieldName].errorMessage =
           //   "Does not Match, Positive and upto 2 Decimals only";
-          temp[fieldName].errorMessage =
-            "Only Alphabets, Numbers, Hypen(-),Undersore(_), Dot(.) and space are allowed";
+          temp[fieldName].errorMessage = versionErrText;
         }
       }
       setFormErrorValues(temp);
