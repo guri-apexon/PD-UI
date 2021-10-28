@@ -163,7 +163,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
         <Tooltip variant="light" title={row[key]} placement="top">
           <div className="long-text">
             <a
-              data-testid="click-link-qc"
+              data-testid={`click-link-${row.protocol}`}
               href="javascript:void(0)"
               onClick={() => row.handleRowProtocolClick(row)}
             >
@@ -177,7 +177,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
     return (
       /* eslint-disable  */
       <a
-        data-testid="click-link-qc"
+        data-testid={`click-link-${row.protocol}`}
         href="javascript:void(0)"
         onClick={() => row.handleRowProtocolClick(row)}
       >

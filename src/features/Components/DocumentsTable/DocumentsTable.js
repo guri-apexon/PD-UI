@@ -24,6 +24,7 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
       responseType: "blob",
     };
     const resp = await httpCall(config);
+    /* istanbul ignore next */
     if (resp.success) {
       FileDownload(resp.data, fileName);
     } else {

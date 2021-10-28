@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import concat from "lodash/concat";
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
@@ -16,7 +16,7 @@ import Tooltip from "apollo-react/components/Tooltip";
 import Loader from "../Loader/Loader";
 
 // import { BASE_URL_8000, UI_URL } from "../../../utils/api";
-import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
+// import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
 
 import columns from "./columns";
@@ -126,7 +126,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
         <Tooltip variant="light" title={row[key]} placement="top">
           <div className="long-text">
             <a
-              data-testid="click-link-qc"
+              data-testid={`click-link-${row.protocol}`}
               href="javascript:void(0)"
               onClick={() => row.handleRowProtocolClick(row)}
             >
@@ -140,7 +140,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
     return (
       /* eslint-disable  */
       <a
-        data-testid="click-link-qc"
+        data-testid={`click-link-${row.protocol}`}
         href="javascript:void(0)"
         onClick={() => row.handleRowProtocolClick(row)}
       >
@@ -329,18 +329,18 @@ const ProtocolTable = ({
 }) => {
   const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
+  // const [selectedRows, setSelectedRows] = useState([]);
 
-  useEffect(() => {
-    dispatch(setSelectedProtocols(selectedRows));
-  }, [selectedRows]);
-  const handleChange = (id) => {
-    setSelectedRows((selectedRows) =>
-      selectedRows.indexOf(id) >= 0
-        ? selectedRows.filter((cid) => cid !== id)
-        : concat(selectedRows, id)
-    );
-  };
+  // useEffect(() => {
+  //   dispatch(setSelectedProtocols(selectedRows));
+  // }, [selectedRows]);
+  // const handleChange = (id) => {
+  //   setSelectedRows((selectedRows) =>
+  //     selectedRows.indexOf(id) >= 0
+  //       ? selectedRows.filter((cid) => cid !== id)
+  //       : concat(selectedRows, id)
+  //   );
+  // };
 
   const handleToggleRow = (id, row) => {
     setExpandedRows((expandedRows) =>
@@ -366,11 +366,9 @@ const ProtocolTable = ({
       let details = {
         key: row.id,
         expanded: expandedRows.indexOf(row.id) >= 0,
-        selected: selectedRows.indexOf(row.id) >= 0,
         handleToggleRow,
         handleRowProtocolClick,
         screen: screen,
-        handleChange,
         fetchAssociateData,
         handleUnfollow,
       };

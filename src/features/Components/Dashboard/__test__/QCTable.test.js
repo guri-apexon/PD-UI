@@ -845,7 +845,7 @@ describe("Dashboard table component Redaction", () => {
         fileName: "Protocol-2013-05-29-VER-V1.0-000001.pdf",
         documentFilePath:
           "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
-        protocol: "EMR 200095-004",
+        protocol: "EMR 200095-005",
         protocolName:
           "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
         projectId: 123,
@@ -885,13 +885,13 @@ describe("Dashboard table component Redaction", () => {
           "Protocol-2013-05-29-VER-V1.0-00000111111111111111111111111111111111.pdf",
         documentFilePath:
           "//quintiles.net/enterprise/Services/protdigtest/data/IQVIA protocol/Protocol-2013-05-29-VER-V1.0-000001.pdf",
-        protocol: "EMR 200095-004 Testing for more than 25 characters tooltip",
+        protocol: "EMR 200095",
         protocolName:
           "A Multicenter, Randomized, Phase IB / II Trial to evaluate the efficacy, safety, and Pharmacokinetics of MSC2156119J as Monotherapy versus Sorafenib in Asian Subjects with MET+ Advanced Hepatocellular Carcinoma and Child-Pugh Class A Liver Function",
         projectId: 123,
-        sponser: "Merck KGaA Testing for more than 25 characters tooltip",
-        indication: "Bone necrosis Testing for more than 25 characters tooltip",
-        molecule: "string",
+        sponser: "~REDACTED~",
+        indication: "~REDACTED~",
+        molecule: "~REDACTED~",
         amendment: "string",
         versionNumber: 1.0,
         documentStatus: "Final",
@@ -917,15 +917,21 @@ describe("Dashboard table component Redaction", () => {
         iqvxmlpath: "string",
         nctId: "0",
         qcActivity: "QC Not Started",
+        handleRowProtocolClick: () => {},
       },
     ];
+    const fakeFn = jest.fn();
     render(
       <ProtocolTable
         initialRows={protocolData}
         pageRows={[5, 20, 30, "All"]}
         isLoading={false}
+        screen="QC"
+        handleProtocolClick={fakeFn}
       />,
       state
     );
+
+    fireEvent.click(screen.getByTestId("click-link-EMR 200095"));
   });
 });
