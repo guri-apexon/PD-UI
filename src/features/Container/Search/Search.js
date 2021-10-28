@@ -175,6 +175,7 @@ const Search = (props) => {
             arr[index] = "QC1";
           }
           arr.push("QC2");
+          // arr.push("FEEDBACK_RUN");
         } else {
           arr = str.split("+");
         }
@@ -390,6 +391,7 @@ const Search = (props) => {
           arr[index] = "QC1";
         }
         arr.push("QC2");
+        // arr.push("FEEDBACK_RUN");
       } else {
         arr = str.split("+");
       }

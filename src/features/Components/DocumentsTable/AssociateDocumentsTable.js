@@ -119,11 +119,11 @@ const columns = [
     header: "Associated Versions",
     customCell: VersionCell,
   },
-  {
-    accessor: "draftVersion",
-    header: "Draft#",
-    customCell: Cell,
-  },
+  // {
+  //   accessor: "draftVersion",
+  //   header: "Draft#",
+  //   customCell: Cell,
+  // },
   {
     accessor: "fileName",
     header: "Source Document",

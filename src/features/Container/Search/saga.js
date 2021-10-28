@@ -679,6 +679,7 @@ export function createJSONFormat(data) {
         break;
       case "QC1":
       case "QC2":
+      case "FEEDBACK_RUN":
         qcStatus = "QC In Progress";
         break;
       case "QC_COMPLETED":
