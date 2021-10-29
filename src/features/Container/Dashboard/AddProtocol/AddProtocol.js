@@ -242,6 +242,7 @@ const AddProtocol = () => {
     tempValue[fieldName] = file;
     setFormValues(tempValue);
   };
+  /* istanbul ignore next */
   const handleSaveForm = () => {
     const tempValues = cloneDeep(formValues);
     const tempError = cloneDeep(formErrorValues);
@@ -443,6 +444,7 @@ const AddProtocol = () => {
                 required={formErrorValues.projectID.isRequired}
                 onChange={(e) => onTextFieldChange("projectID", e, "Textbox")}
                 onBlur={(e) => onFieldBlur("projectID", e, "Textbox")}
+                data-testid="projectID-texfield"
               />
             </Grid>
             <Grid item xs={1} sm={1}></Grid>
