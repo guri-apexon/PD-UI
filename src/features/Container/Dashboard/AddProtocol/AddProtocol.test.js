@@ -1,6 +1,6 @@
 // __tests__/fetch.test.js
 import React from "react";
-import { render, fireEvent } from "../../../../test-utils/test-utils";
+import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import AddProtocol from "./AddProtocol";
 
@@ -35,19 +35,24 @@ describe("Add Protocol Test Suite", () => {
   test("Should render AddProtocol Component", async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
-    const container = render(
+    const { getByTestId, getByText } = render(
       <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
       {
         initialState: {
           dashboard: {
             addProtocolModal: false,
             isLoading: false,
+            addProtocolData: {
+              sponsor: [],
+              indication: [],
+            },
           },
         },
       }
     );
     // container
-    container.getByText("Add Protocol to Library");
+    getByText("Add Protocol to Library");
+    fireEvent.click(getByTestId("add-protocol-button"));
   });
   test("Should render AddProtocol Component without Modal", async () => {
     const mockHandleOpen = jest.fn();
@@ -357,6 +362,66 @@ describe("Add Protocol Test Suite", () => {
     });
     fireEvent.change(fileUpload);
     // fireEvent.click(fileUpload);
+  });
+
+  test("Should work correctly for valid project ID", async () => {
+    const mockHandleOpen = jest.fn();
+    const mockHandleClose = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      }
+    );
+    let edit = screen.getByTestId("projectID-texfield").children[1].children[0];
+    fireEvent.change(edit, { target: { value: "Sohan" } });
+    fireEvent.focusOut(edit);
+    expect(edit.value).toEqual("Sohan");
+  });
+
+  test("Should work correctly for valid molecule Device", async () => {
+    const mockHandleOpen = jest.fn();
+    const mockHandleClose = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      }
+    );
+    let edit = screen.getByTestId("molecule-texfield").children[1].children[0];
+    fireEvent.change(edit, { target: { value: "Sohan" } });
+    fireEvent.focusOut(edit);
+    expect(edit.value).toEqual("Sohan");
+  });
+
+  test("Should work correctly for valid document status", async () => {
+    const mockHandleOpen = jest.fn();
+    const mockHandleClose = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, "useDispatch");
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      }
+    );
+    let edit = screen.getByTestId("document-status-texfield").children[0]
+      .children[0].children[0].children[0];
+    fireEvent.change(edit, { target: { value: "Draft" } });
+    expect(edit.value).toEqual("Draft");
   });
 });
 
