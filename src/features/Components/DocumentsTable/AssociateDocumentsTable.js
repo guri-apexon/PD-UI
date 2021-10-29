@@ -10,6 +10,7 @@ import Checkbox from "apollo-react/components/Checkbox";
 import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
 import { userId } from "../../../store/userDetails";
+import { qcIconStatus } from "../../../utils/utilFunction";
 
 const ActionCell = ({ row }) => {
   // console.log("....RoW........", row);
@@ -92,9 +93,9 @@ const VersionCell = ({ row, column }) => {
     </>
   );
 };
-const Cell = ({ row, column: { accessor: key } }) => {
-  return <>{row[key] ? row[key] : "-"}</>;
-};
+// const Cell = ({ row, column: { accessor: key } }) => {
+//   return <>{row[key] ? row[key] : "-"}</>;
+// };
 
 const StatusCell = ({ row, column: { accessor: key } }) => {
   return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
@@ -114,6 +115,10 @@ const DateCell = ({ row, column }) => {
     return "-";
   }
 };
+const qcActivityStatus = ({ row }) => {
+  return <div>{qcIconStatus(row.qcStatus)}</div>;
+};
+
 const columns = [
   {
     accessor: "action",
@@ -149,6 +154,11 @@ const columns = [
     accessor: "documentStatus",
     customCell: StatusCell,
   },
+  {
+    header: "QC Activity",
+    accessor: "qcStatus",
+    customCell: qcActivityStatus,
+  },
 ];
 const noActionColumns = [
   {
@@ -156,11 +166,11 @@ const noActionColumns = [
     header: "Associated Versions",
     customCell: VersionCell,
   },
-  {
-    accessor: "draftVersion",
-    header: "Draft#",
-    customCell: Cell,
-  },
+  // {
+  //   accessor: "draftVersion",
+  //   header: "Draft#",
+  //   customCell: Cell,
+  // },
   {
     accessor: "fileName",
     header: "Source Document",
@@ -180,6 +190,11 @@ const noActionColumns = [
     header: "Document Status",
     accessor: "documentStatus",
     customCell: StatusCell,
+  },
+  {
+    header: "QC Activity",
+    accessor: "qcStatus",
+    customCell: qcActivityStatus,
   },
 ];
 
