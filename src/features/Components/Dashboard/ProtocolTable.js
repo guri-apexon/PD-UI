@@ -79,7 +79,7 @@ const ActionCell = ({
 
 function createFullMarkup(str) {
   return {
-    __html: str.replace(
+    __html: str.replaceAll(
       redaction.text,
       `<span class="blur">${redaction.text}</span>`
     ),

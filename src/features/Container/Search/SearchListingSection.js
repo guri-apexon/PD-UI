@@ -13,15 +13,16 @@ import Card from "apollo-react/components/Card";
 // import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 // import { BASE_URL_8000, httpCall } from "../../../utils/api";
-import Tooltip from "apollo-react/components/Tooltip";
+// import Tooltip from "apollo-react/components/Tooltip";
 import { redaction } from "../../../AppConstant/AppConstant";
+import { handleProtocolTitle } from "../../../utils/utilFunction";
 //const [value, setValue] = React.useState(true);
 
 //const handleChange = (e, checked) => {
 //    setValue(checked);
 //};
 
-const textLength = 50;
+// const textLength = 50;
 const SearchListingSection = ({
   data,
   setExpanded,
@@ -73,39 +74,6 @@ const SearchListingSection = ({
   const handleFollowChange = (e, checked, data) => {
     handleFollow(e, checked, data);
   };
-  const redactionCheckRender = (value, testid) => {
-    return value && value === redaction.text ? (
-      <>
-        <Tooltip
-          variant="light"
-          subtitle={
-            <div
-              dangerouslySetInnerHTML={createFullMarkup(redaction.text)}
-            ></div>
-          }
-          placement="left"
-        >
-          <span className="blur">{value}</span>
-        </Tooltip>
-      </>
-    ) : (
-      <>
-        {value.length > textLength ? (
-          <Tooltip
-            variant="light"
-            title={data.protocolDescription}
-            placement="left"
-          >
-            <p className="grid-item grid-key-value" style={{ marginRight: 10 }}>
-              {value}
-            </p>
-          </Tooltip>
-        ) : (
-          <p className="grid-item grid-key-value">{data.protocolDescription}</p>
-        )}
-      </>
-    );
-  };
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
       <div
@@ -135,7 +103,7 @@ const SearchListingSection = ({
               </span>
             </div>
             <div className="divBlock ellipse" data-testid="title-value">
-              {redactionCheckRender(data.protocolDescription)}
+              {handleProtocolTitle(data.protocolDescription, "title-value")}
             </div>
           </div>
           <div className="width5 swtichButton">
