@@ -7,13 +7,15 @@ import { useSelector } from "react-redux";
 import { protocolSummary, associateDocs } from "./protocolSlice.js";
 import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
-import Button from "apollo-react/components/Button";
+// import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
 import FileDownload from "js-file-download";
 import cloneDeep from "lodash/cloneDeep";
 import { userId } from "../../../store/userDetails";
+
+import MenuButton from "apollo-react/components/MenuButton";
 
 const Documents = ({ handleChangeTab }) => {
   const summary = useSelector(protocolSummary);
@@ -127,6 +129,17 @@ const Documents = ({ handleChangeTab }) => {
       }
     }
   };
+  const menuItems = [
+    {
+      text: "CSV",
+      onClick: () => downloadCompare(".csv"),
+    },
+    {
+      text: "Excel",
+      onClick: () => downloadCompare(".xlsx"),
+    },
+  ];
+
   return (
     <div className="document-tab">
       {loader && <Loader />}
@@ -143,42 +156,10 @@ const Documents = ({ handleChangeTab }) => {
         </Grid>
         {associateDocuments && associateDocuments.length > 1 && (
           <div className="compare-buttons">
-            <div
-              style={{ width: "100%", marginTop: "10px", marginRight: "7px" }}
-            >
-              <Button
-                onClick={() => downloadCompare(".xlsx")}
-                variant="primary"
-                data-testid="compare-download-button"
-                style={{
-                  float: "right",
-                  height: 38,
-                  width: 265,
-                  boxShadow:
-                    "0 4px 8px 0 rgb(5 85 252 / 32%), 0 4px 16px 0 rgb(0 0 0 / 4%)",
-                }}
-              >
-                {"Download Compare Result (.xlsx)"}
-              </Button>
-            </div>
-            <div
-              style={{ width: "100%", marginTop: "10px", marginRight: "7px" }}
-            >
-              <Button
-                onClick={() => downloadCompare(".csv")}
-                variant="primary"
-                data-testid="compare-download-button"
-                style={{
-                  float: "right",
-                  height: 38,
-                  width: 265,
-                  boxShadow:
-                    "0 4px 8px 0 rgb(5 85 252 / 32%), 0 4px 16px 0 rgb(0 0 0 / 4%)",
-                }}
-              >
-                {"Download Compare Result (.csv)"}
-              </Button>
-            </div>
+            <MenuButton
+              buttonText="Download Compare Result"
+              menuItems={menuItems}
+            />
           </div>
         )}
         <Grid item xs={12}>
