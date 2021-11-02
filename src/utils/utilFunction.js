@@ -1,3 +1,6 @@
+import { redaction } from "../AppConstant/AppConstant";
+import Tooltip from "apollo-react/components/Tooltip";
+
 export const covertMMDDYYYY = (date) => {
   const onlyDate = date.split("T")[0];
   const dateFormat = new Date(onlyDate);
@@ -118,4 +121,30 @@ export const qcIconStatus = (status) => {
     default:
       return "QC Not Started";
   }
+};
+
+function createFullMarkup(str) {
+  return {
+    __html: str.replaceAll(
+      redaction.text,
+      `<span class="blur">${redaction.text}</span>`
+    ),
+  };
+}
+export const handleProtocolTitle = (value, testID) => {
+  return (
+    <Tooltip
+      variant="light"
+      title={"Protocol Title"}
+      subtitle={<div dangerouslySetInnerHTML={createFullMarkup(value)}></div>}
+      placement="top"
+    >
+      <span>
+        <span
+          className="adjust-ellipses"
+          dangerouslySetInnerHTML={createFullMarkup(value)}
+        ></span>
+      </span>
+    </Tooltip>
+  );
 };

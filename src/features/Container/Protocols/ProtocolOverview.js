@@ -2,6 +2,7 @@ import React from "react";
 import Card from "apollo-react/components/Card";
 import { redaction } from "../../../AppConstant/AppConstant";
 import Tooltip from "apollo-react/components/Tooltip";
+import { handleProtocolTitle } from "../../../utils/utilFunction";
 // import DonutChart from "apollo-react/components/DonutChart";
 
 /* istanbul ignore next*/
@@ -88,7 +89,7 @@ const ProtocolOverview = ({ data }) => {
           </div>
           <div className="protocol-title">
             <div style={{ fontWeight: "bold" }}>Protocol Title</div>
-            {redactionCheckRender(data.protocolTitle, "title-value")}
+            {handleProtocolTitle(data.protocolTitle, "title-value")}
             {/* <div data-testid="title-value">{data.protocolTitle}</div> */}
           </div>
         </Card>
