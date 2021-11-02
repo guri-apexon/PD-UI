@@ -3,17 +3,15 @@
   .compare-buttons {
     display: flex;
     margin-left: auto;
+    button {
+      background-color: #0768fd;
+      color: #fff;
+      margin-right: 7px;
+    }
   }
 
   .source-document-tab {
     width: 100%;
-    // [class^="Table-root-"] {
-    //   height: 160px;
-    // }
-    // [class^="InternalTablePagination-toolbar-"],
-    // [class^=".MuiTableFooter-root-"] {
-    //   display: none;
-    // }
     [class^="Table-tableWrapper-"] {
       overflow: hidden;
     }
