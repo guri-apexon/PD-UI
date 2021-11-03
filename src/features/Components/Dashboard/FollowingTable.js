@@ -22,6 +22,7 @@ import "./ProtocolTable.scss";
 import columns from "./columns";
 import Tag from "apollo-react/components/Tag";
 import { redaction } from "../../../AppConstant/AppConstant";
+const replaceall = require("replaceall");
 
 const ActionCell = ({ row }) => {
   return (
@@ -41,9 +42,10 @@ const ActionCell = ({ row }) => {
 };
 function createFullMarkup(str) {
   return {
-    __html: str.replaceAll(
+    __html: replaceall(
       redaction.text,
-      `<span class="blur">${redaction.text}</span>`
+      `<span class="blur">${redaction.text}</span>`,
+      str
     ),
   };
 }
@@ -182,7 +184,7 @@ const HandleUnFollow = ({ row }) => {
   return (
     <Link
       onClick={() => row.handleUnfollow(row)}
-      data-testid={`unfollow-${row.protocol}`}
+      data-testid={`unfollow-button-test-${row.protocol}`}
     >
       <Tag label="Unfollow" color="#0076ae" />
     </Link>

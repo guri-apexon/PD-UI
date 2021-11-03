@@ -50,7 +50,7 @@ export const httpCall = async (config) => {
       };
     }
   } catch (err) {
-    if (err.response.status === 403) {
+    if (err && err.response && err.response.status === 403) {
       return {
         success: false,
         data: "",

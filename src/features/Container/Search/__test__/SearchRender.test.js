@@ -96,12 +96,12 @@ describe("Search test suit", () => {
       "Global Biostatistics"
     );
   });
-  test("Should Render table with Version #, Draft #, Source Document, Upload Date, Document Status", () => {
+  test("Should Render table with Version #, Source Document, Upload Date, Document Status", () => {
     const { getByText } = render(
       <SearchCard data={searchCardData} selection={true} />
     );
     getByText("Version #");
-    getByText("Draft #");
+    // getByText("Draft #");
     getByText("Source Document");
     getByText("Upload Date");
     getByText("Document Status");

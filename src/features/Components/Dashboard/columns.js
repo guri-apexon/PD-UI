@@ -51,7 +51,7 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
           <span className="adjust-ellipses">
             <a
               href="javascript:void(0)"
-              data-testid={`download-${row.protocol}`}
+              data-testid={`download-follow-asso`}
               onClick={() => handleDownload(row)}
             >
               {row[key].length > 50
@@ -71,9 +71,9 @@ const dateFormatApp = ({ row }) => {
   return <>{row.approvalDate ? covertMMDDYYYY(row.approvalDate) : "-"}</>;
 };
 
-const Cell = ({ row, column: { accessor: key } }) => {
-  return <>{row[key] ? row[key] : "-"}</>;
-};
+// const Cell = ({ row, column: { accessor: key } }) => {
+//   return <>{row[key] ? row[key] : "-"}</>;
+// };
 
 const StatusCell = ({ row, column: { accessor: key } }) => {
   return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
@@ -95,12 +95,12 @@ const columns = [
     width: "10%",
     customCell: ProtocolVersion,
   },
-  {
-    header: "Draft #",
-    accessor: "draftVersion",
-    width: "10%",
-    customCell: Cell,
-  },
+  // {
+  //   header: "Draft #",
+  //   accessor: "draftVersion",
+  //   width: "10%",
+  //   customCell: Cell,
+  // },
   {
     header: "Source Document",
     accessor: "fileName",

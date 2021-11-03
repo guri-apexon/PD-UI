@@ -1,6 +1,6 @@
 import React from "react";
 import { MemoryRouter } from "react-router-dom";
-import { render, fireEvent } from "../../../../test-utils/test-utils";
+import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
 import { cleanup } from "@testing-library/react";
 import Documents from "../Documents";
 // import axios from "axios";
@@ -332,7 +332,7 @@ describe("Should render document tab", () => {
     );
   });
 
-  test("Should give warning on download button click", () => {
+  test("Should give warning on csv download button click", () => {
     const handleChangeTab = jest.fn();
     const container = render(
       <MemoryRouter>
@@ -340,8 +340,34 @@ describe("Should render document tab", () => {
       </MemoryRouter>,
       initialState
     );
-    const downloadButton = container.getByTestId("compare-download-button");
-    fireEvent.click(downloadButton);
+
+    const dropButton = container.getByRole("button", {
+      name: "Download Compare Result",
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByRole("menuitem", { name: "CSV" });
+    fireEvent.click(item1);
+    // const downloadButton = container.getByTestId("compare-download-button");
+    // fireEvent.click(downloadButton);
+  });
+  test("Should give warning on excel download button click", () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState
+    );
+
+    const dropButton = container.getByRole("button", {
+      name: "Download Compare Result",
+    });
+    fireEvent.click(dropButton);
+
+    const item2 = screen.getByRole("menuitem", { name: "Excel" });
+    fireEvent.click(item2);
+    // const downloadButton = container.getByTestId("compare-download-button");
+    // fireEvent.click(downloadButton);
   });
   test("Should try to select three protocols", () => {
     const handleChangeTab = jest.fn();
@@ -412,13 +438,12 @@ describe("Should render document tab", () => {
       .children[0].children[0].children[1].children[0].children[1].children[0]
       .children[0].children[0].children[0].children[0];
     fireEvent.click(checkbox1);
-    // const checkbox2 = container.getByTestId("associate-document-tab")
-    //   .children[0].children[0].children[1].children[0].children[1].children[1]
-    //   .children[0].children[0].children[0].children[0];
-    // fireEvent.click(checkbox2);
-    const downloadButton = container.getByTestId("compare-download-button");
-    fireEvent.click(downloadButton);
-    // expect(mockCallApi).toHaveBeenCalledTimes(1);
+    const dropButton = container.getByRole("button", {
+      name: "Download Compare Result",
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByRole("menuitem", { name: "CSV" });
+    fireEvent.click(item1);
   });
   test("Should click on the checkbox and click download", async () => {
     const handleChangeTab = jest.fn();
@@ -445,8 +470,12 @@ describe("Should render document tab", () => {
       .children[0].children[0].children[1].children[0].children[1].children[1]
       .children[0].children[0].children[0].children[0];
     fireEvent.click(checkbox2);
-    const downloadButton = container.getByTestId("compare-download-button");
-    fireEvent.click(downloadButton);
+    const dropButton = container.getByRole("button", {
+      name: "Download Compare Result",
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByRole("menuitem", { name: "CSV" });
+    fireEvent.click(item1);
     expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
   test("Should click on the checkbox and click download with no content", async () => {
@@ -474,8 +503,12 @@ describe("Should render document tab", () => {
       .children[0].children[0].children[1].children[0].children[1].children[1]
       .children[0].children[0].children[0].children[0];
     fireEvent.click(checkbox2);
-    const downloadButton = container.getByTestId("compare-download-button");
-    fireEvent.click(downloadButton);
+    const dropButton = container.getByRole("button", {
+      name: "Download Compare Result",
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByRole("menuitem", { name: "CSV" });
+    fireEvent.click(item1);
     expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
   test("Should click on the checkbox and click download with no result", async () => {
@@ -503,8 +536,12 @@ describe("Should render document tab", () => {
       .children[0].children[0].children[1].children[0].children[1].children[1]
       .children[0].children[0].children[0].children[0];
     fireEvent.click(checkbox2);
-    const downloadButton = container.getByTestId("compare-download-button");
-    fireEvent.click(downloadButton);
+    const dropButton = container.getByRole("button", {
+      name: "Download Compare Result",
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByRole("menuitem", { name: "CSV" });
+    fireEvent.click(item1);
     expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
   test("Should check isNan for userID", async () => {
