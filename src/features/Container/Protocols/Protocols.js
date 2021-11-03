@@ -100,6 +100,7 @@ const Protocols = (props) => {
                       onChange={handleChangeTab}
                       size="small"
                       truncate
+                      data-testid="protocols-tabs"
                     >
                       <Tab label="Overview" />
                       <Tab label="Protocol View" />

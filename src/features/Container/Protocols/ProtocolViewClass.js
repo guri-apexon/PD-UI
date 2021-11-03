@@ -4,6 +4,7 @@ import Card from "apollo-react/components/Card";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import Loader from "../../Components/Loader/Loader";
 import { redaction } from "../../../AppConstant/AppConstant";
+const replaceall = require("replaceall");
 
 class ProtocolViewClass extends React.Component {
   constructor() {
@@ -24,9 +25,10 @@ class ProtocolViewClass extends React.Component {
     if (str || str !== undefined) {
       if (str.includes(redaction.text)) {
         return {
-          __html: str.replaceAll(
+          __html: replaceall(
             redaction.text,
-            `<span class="blur">${redaction.text}</span>`
+            `<span class="blur">${redaction.text}</span>`,
+            str
           ),
         };
       } else {

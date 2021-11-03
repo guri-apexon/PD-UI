@@ -1,6 +1,7 @@
 import React from "react";
 import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
+import axios from "axios";
 
 import ProtocolTable from "../FollowingTable";
 
@@ -430,7 +431,7 @@ describe("Dashboard table component", () => {
     fireEvent.click(screen.getByText("EMR 200095-004"));
   });
 
-  test("Component renders correctly for expanded row", () => {
+  test("Component renders correctly for expanded row", async () => {
     const protocolData = [
       {
         id: "abcd123456",
@@ -470,11 +471,62 @@ describe("Dashboard table component", () => {
         isActive: true,
         iqvxmlpath: "string",
         nctId: "0",
-        associateddata: [],
+        associateddata: [
+          {
+            id: "213d1901-73fb-4e9f-80c1-00a4a803f8ac",
+            userId: "1072231",
+            fileName: "Protocol.pdf",
+            documentFilePath:
+              "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\213d1901-73fb-4e9f-80c1-00a4a803f8ac\\Protocol - scp v3.0 - Sponsor Protocol - 13-Nov-2020.pdf",
+            protocol: "SOHPT5",
+            projectId: "SOAP6",
+            sponsor: "(CKD)Chong Kun Dang Pharm",
+            indication: "ABCC6 deficiency",
+            moleculeDevice: "M4",
+            amendment: "N",
+            isProcessing: false,
+            percentComplete: "100",
+            compareStatus: null,
+            iqvXmlPathProc: null,
+            iqvXmlPathComp: null,
+            shortTitle: "Post-exposure Prophylaxis of COVID-19 in Adults",
+            versionNumber: "1.2",
+            documentStatus: "final",
+            draftVersion: null,
+            errorCode: null,
+            errorReason: null,
+            status: "PROCESS_COMPLETED",
+            qcStatus: "QC1",
+            phase: "III",
+            digitizedConfidenceInterval: null,
+            completenessOfDigitization: null,
+            protocolTitle:
+              "Study in Adults to Determine the Safety and Efficacy of AZD7442, a Combination Product of Two Monoclonal Antibodies (AZD8895 and AZD1061), for Post-exposure Prophylaxis of COVID-19",
+            studyStatus: null,
+            sourceSystem: null,
+            environment: null,
+            uploadDate: "2021-07-01T10:56:53.230000",
+            timeCreated: "2021-07-01T10:56:53.230000",
+            lastUpdated: "2021-07-01T11:09:30.490000",
+            userCreated: null,
+            userUpdated: null,
+            approvalDate: "2020-11-13T00:00:00",
+            isActive: true,
+            nctId: null,
+          },
+        ],
       },
     ];
+    const mockOutput = {
+      success: true,
+      data: "abc",
+    };
     const fetchAssociateData = jest.fn();
     const handleUnfollow = jest.fn();
+    const mockCallApi = jest
+      .spyOn(axios, "get")
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    console.log(mockCallApi);
     let container = render(
       <ProtocolTable
         initialRows={protocolData}
@@ -490,6 +542,12 @@ describe("Dashboard table component", () => {
     let arrowButton = container.getByTestId("expandable-row-EMR");
     // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
+
+    let link = screen.getByRole("link", {
+      name: "Protocol.pdf",
+    });
+    await fireEvent.click(link);
+    // await expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
   test("Component renders correctly for expanded row", () => {

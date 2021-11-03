@@ -1,5 +1,6 @@
 import { redaction } from "../AppConstant/AppConstant";
 import Tooltip from "apollo-react/components/Tooltip";
+const replaceall = require("replaceall");
 
 export const covertMMDDYYYY = (date) => {
   const onlyDate = date.split("T")[0];
@@ -125,9 +126,10 @@ export const qcIconStatus = (status) => {
 
 function createFullMarkup(str) {
   return {
-    __html: str.replaceAll(
+    __html: replaceall(
       redaction.text,
-      `<span class="blur">${redaction.text}</span>`
+      `<span class="blur">${redaction.text}</span>`,
+      str
     ),
   };
 }

@@ -795,14 +795,22 @@ const Search = (props) => {
     console.log("Date Range recent", recentDate);
 
     let obj = { dateRange: { from: "", to: "" } };
-    if (recentDate.from && recentDate.to) {
-      obj = {
-        dateRange: { from: recentDate.from, to: recentDate.to },
-      };
-    } else if (rangeDate.from && rangeDate.to) {
-      obj = {
-        dateRange: { from: rangeDate.from, to: rangeDate.to },
-      };
+    if (
+      recentDate &&
+      "from" in recentDate &&
+      "to" in recentDate &&
+      recentDate.from !== undefined &&
+      recentDate.to !== undefined
+    ) {
+      if (recentDate.from && recentDate.to) {
+        obj = {
+          dateRange: { from: recentDate.from, to: recentDate.to },
+        };
+      } else if (rangeDate.from && rangeDate.to) {
+        obj = {
+          dateRange: { from: rangeDate.from, to: rangeDate.to },
+        };
+      }
     }
     console.log("Date Range Objects", obj, dateTemp);
     if (compareObjs(obj, dateTemp)) {

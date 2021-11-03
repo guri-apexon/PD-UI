@@ -30,6 +30,7 @@ import { toast } from "react-toastify";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
 import { redaction } from "../../../AppConstant/AppConstant";
+const replaceall = require("replaceall");
 
 const ActionCell = ({
   row: {
@@ -79,9 +80,10 @@ const ActionCell = ({
 
 function createFullMarkup(str) {
   return {
-    __html: str.replaceAll(
+    __html: replaceall(
       redaction.text,
-      `<span class="blur">${redaction.text}</span>`
+      `<span class="blur">${redaction.text}</span>`,
+      str
     ),
   };
 }

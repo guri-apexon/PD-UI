@@ -215,7 +215,7 @@ describe("AssociateDocumentsTable Test Suite", () => {
       .children[0];
     fireEvent.click(link);
     let doclink = container.getByTestId("associate-document-tab").children[0]
-      .children[0].children[1].children[0].children[1].children[0].children[3]
+      .children[0].children[1].children[0].children[1].children[0].children[2]
       .children[0];
     fireEvent.click(doclink);
     // expect(mockCallApi).toHaveBeenCalledTimes(1);
