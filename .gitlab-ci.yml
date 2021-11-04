@@ -15,8 +15,7 @@ test:
     - pd-ui-dev
   script:
     - echo "Testing App"
-    - npm install
-    - npm run test
+    - sh CI-scripts/unit-test.sh
     - echo "Test successfully!"
   allow_failure: true
   only:
