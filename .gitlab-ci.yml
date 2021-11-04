@@ -8,7 +8,7 @@ stages:
   - test
   - build_and_deploy
 
-.test:
+test:
   stage: test
 
   tags: 
@@ -21,7 +21,7 @@ stages:
   allow_failure: true
   only:
     refs:
-      - develop
+      - Sonar-CICD
     variables: 
       - $ENVIRONMENT== "dev"
 
@@ -38,7 +38,7 @@ build:
 
   artifacts:
     paths:
-      - ./build
+      - build
       
   only:
     refs:
