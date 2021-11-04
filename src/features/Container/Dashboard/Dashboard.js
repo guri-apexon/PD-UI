@@ -33,7 +33,7 @@ const Dashboard = () => {
         </span>
       )}
       <h1>
-        {greet} {userDetails && userDetails.username} Testing
+        {greet} {userDetails && userDetails.username}
       </h1>
       <Grid container spacing={2}>
         <Grid item xs={12}>
