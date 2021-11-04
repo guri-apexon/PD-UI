@@ -8,7 +8,7 @@ stages:
   - test
   - build_and_deploy
 
-test:
+.test:
   stage: test
 
   tags: 
@@ -31,12 +31,10 @@ build:
   tags: 
     - pd-ui-dev
 
-  before_script:
-    - Copy-Item "env_backup.txt" -Destination ".env"
   script: 
     - echo "Start building App"
-    - sh .\deploy.sh
-    - echo "Build and Deloyed Successfully!"
+    - sh CI-scripts/deploy.sh
+    - echo "Build and Deployed Successfully!"
 
   artifacts:
     paths:
@@ -44,6 +42,6 @@ build:
       
   only:
     refs:
-      - develop
+      - Sonar-CICD
     variables: 
       - $ENVIRONMENT== "dev"
