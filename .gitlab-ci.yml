@@ -8,6 +8,7 @@ stages:
   - test
   - build_and_deploy
 
+# UNIT-TEST 
 test:
   stage: test
 
@@ -24,6 +25,34 @@ test:
     variables: 
       - $ENVIRONMENT== "dev"
 
+# SONAR
+Perform Sonarqube Analysis and quality gate:
+  image: sonarsource/sonar-scanner-cli
+  stage: sonar-scan
+  before_script:
+    - echo "Setting up for Sonarqube Analysis on PD $CI_COMMIT_REF_NAME branch"
+    - apk upgrade --update-cache --available && apk add openssl
+    - openssl s_client -connect   usadc-vspsq01.quintiles.net:443 | keytool -import -noprompt -alias sonarqbue_test -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit
+
+  script:
+    - echo "Running Sonarqube Analysis on $CI_COMMIT_REF_NAME branch"
+    - apk upgrade --update-cache --available && apk add openssl
+    - npm install --force
+    - npm run test -- --coverage --watchAll=false
+    - sh CI-Scripts/sonarqube.sh branch > /tmp/sonar.log
+    # - cat /tmp/sonar.log
+    - echo "Running Sonarqube quality gate on $CI_COMMIT_REF_NAME branch"
+    - sh CI-Scripts/qualitygate.sh
+  allow_failure: true
+  tags:
+    - ca2ugitla006p-D4
+  only:
+    refs:
+      - Sonar-CICD
+    variables:
+      - $ENVIRONMENT== "dev"
+
+# Build AND DEPLOY
 build:
   stage: build_and_deploy
 
