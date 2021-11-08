@@ -38,7 +38,7 @@ Perform Sonarqube Analysis and quality gate:
     - echo "Running Sonarqube Analysis on $CI_COMMIT_REF_NAME branch"
     - apk upgrade --update-cache --available && apk add openssl
     - npm install --force -s
-    - npm run coverage 
+    - npm run coverage -s
     - sh CI-Scripts/sonarqube.sh branch > /tmp/sonar.log
     - echo "Running Sonarqube quality gate on $CI_COMMIT_REF_NAME branch"
     - sh CI-Scripts/qualitygate.sh

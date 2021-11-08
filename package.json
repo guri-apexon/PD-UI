@@ -42,7 +42,7 @@
     "test": "react-scripts test",
     "stop": "pm2 stop server.js",
     "deploy": "pm2 start server.js",
-    "coverage": "react-scripts test -s --env=jsdom --watchAll=false --coverage",
+    "coverage": "react-scripts test --env=jsdom --watchAll=false --coverage",
     "eject": "react-scripts eject",
     "plint": "prettier --check .",
     "format": "prettier --write .",
