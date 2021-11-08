@@ -6,9 +6,9 @@ cache:
 
 stages:
   - test
+  - sonar-scan
   - build_and_deploy
 
-# UNIT-TEST 
 test:
   stage: test
 
@@ -25,7 +25,6 @@ test:
     variables: 
       - $ENVIRONMENT== "dev"
 
-# SONAR
 Perform Sonarqube Analysis and quality gate:
   image: sonarsource/sonar-scanner-cli
   stage: sonar-scan
@@ -40,7 +39,6 @@ Perform Sonarqube Analysis and quality gate:
     - npm install --force
     - npm run test -- --coverage --watchAll=false
     - sh CI-Scripts/sonarqube.sh branch > /tmp/sonar.log
-    # - cat /tmp/sonar.log
     - echo "Running Sonarqube quality gate on $CI_COMMIT_REF_NAME branch"
     - sh CI-Scripts/qualitygate.sh
   allow_failure: true
@@ -52,7 +50,6 @@ Perform Sonarqube Analysis and quality gate:
     variables:
       - $ENVIRONMENT== "dev"
 
-# Build AND DEPLOY
 build:
   stage: build_and_deploy
 
