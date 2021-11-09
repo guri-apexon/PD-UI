@@ -113,6 +113,7 @@ const AddProtocol = () => {
       setFormValues(tempValues);
       setFormErrorValues(tempError);
     }
+    /* istanbul ignore next */
     if (fieldType === "CustomDropdown") {
       if (
         dropdownValue &&
@@ -236,6 +237,7 @@ const AddProtocol = () => {
     tempError[fieldName].errorMessage = msg;
     setFormErrorValues(tempError);
   };
+  /* istanbul ignore next */
   const setUploadFile = (file, fieldName) => {
     // console.log("file uplaod called");
     let tempValue = cloneDeep(formValues);
@@ -311,6 +313,7 @@ const AddProtocol = () => {
       sendPostData();
     }
   };
+  /* istanbul ignore next */
   const sendPostData = () => {
     const tempFormValues = cloneDeep(formValues);
     let postData = {};
