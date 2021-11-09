@@ -21,7 +21,7 @@ stages:
   allow_failure: true
   only:
     refs:
-      - Sonar-CICD
+      - develop
     variables: 
       - $ENVIRONMENT== "dev"
 
@@ -45,7 +45,7 @@ Perform Sonarqube Analysis and quality gate:
     - ca2ugitla006p-D4
   only:
     refs:
-      - Sonar-CICD
+      - develop
     variables:
       - $ENVIRONMENT== "dev"
 
@@ -66,6 +66,6 @@ Perform Sonarqube Analysis and quality gate:
       
   only:
     refs:
-      - Sonar-CICD
+      - develop
     variables: 
       - $ENVIRONMENT== "dev"
