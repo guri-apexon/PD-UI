@@ -9,7 +9,7 @@ stages:
   - sonar-scan
   - build_and_deploy
 
-.test:
+test:
   stage: test
 
   tags: 
@@ -49,7 +49,7 @@ Perform Sonarqube Analysis and quality gate:
     variables:
       - $ENVIRONMENT== "dev"
 
-.build:
+build:
   stage: build_and_deploy
 
   tags: 
