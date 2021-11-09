@@ -7,8 +7,12 @@ CIMS_API_VER=v1
 CIMS_USER=pd_app
 CIMS_PWD=pd_app1
 
-#REACT_APP_BASIC=eXBkX2FwaV90ZXN0OnVSQFRuU2E1KiQxa2F+aGFzal4hNHQzMnJl
+#dev
 REACT_APP_BASIC=eXBkX2FwaV9kZXY6Ump1MSphUyRedkA1M2FEZWhrbjJyIWE0fg==
+
+#test
+#REACT_APP_BASIC=eXBkX2FwaV90ZXN0OnVSQFRuU2E1KiQxa2F+aGFzal4hNHQzMnJl
+
 #DEV
 CIMS_DEV_URL=https://dev-protocoldigitalization.work.iqvia.com/v1
 #SVT
