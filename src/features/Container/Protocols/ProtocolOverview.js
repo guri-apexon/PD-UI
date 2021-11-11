@@ -4,6 +4,7 @@ import { redaction } from "../../../AppConstant/AppConstant";
 import Tooltip from "apollo-react/components/Tooltip";
 import { handleProtocolTitle } from "../../../utils/utilFunction";
 // import DonutChart from "apollo-react/components/DonutChart";
+import { iconStatus } from "../../../utils/utilFunction";
 
 /* istanbul ignore next*/
 const QCStatus = (status) => {
@@ -76,7 +77,10 @@ const ProtocolOverview = ({ data }) => {
               </div>
               <div className="row-item">
                 <label>PD Activity</label>
-                {redactionCheckRender(data.status, "activity-value")}
+                {redactionCheckRender(
+                  iconStatus(data.status, data.qcStatus),
+                  "activity-value"
+                )}
               </div>
               <div className="row-item">
                 <label>QC Activity</label>

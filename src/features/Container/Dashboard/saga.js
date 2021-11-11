@@ -66,7 +66,7 @@ export function* protocolAsyn(action) {
           item.sponsor = !item.sponsor ? "" : item.sponsor;
           item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
           item.qcActivity = qcIconStatus(item.qcStatus);
-          item.status = iconStatus(item.status);
+          item.status = iconStatus(item.status, item.qcStatus);
           if (item.userUploadedFlag || item.userPrimaryRoleFlag) {
             myPorotocolsData.push(item);
           }
