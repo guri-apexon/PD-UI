@@ -218,7 +218,7 @@ const qcIconStatus = (status) => {
     case "QC Completed":
       return <Check htmlColor={"green"} />;
     default:
-      return <Minus />;
+      return <StatusExclamation htmlColor={"red"} />;
   }
 };
 const iconStatus = (status) => {

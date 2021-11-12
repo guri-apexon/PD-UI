@@ -4,23 +4,7 @@ import { redaction } from "../../../AppConstant/AppConstant";
 import Tooltip from "apollo-react/components/Tooltip";
 import { handleProtocolTitle } from "../../../utils/utilFunction";
 // import DonutChart from "apollo-react/components/DonutChart";
-import { iconStatus } from "../../../utils/utilFunction";
-
-/* istanbul ignore next*/
-const QCStatus = (status) => {
-  switch (status) {
-    case "QC_NOT_STARTED":
-      return "QC Not Started";
-    case "QC1":
-    case "QC2":
-    case "FEEDBACK_RUN":
-      return "QC In Progress";
-    case "QC_COMPLETED":
-      return "QC Completed";
-    default:
-      return "QC Not Started";
-  }
-};
+import { iconStatus, qcIconStatus } from "../../../utils/utilFunction";
 
 const ProtocolOverview = ({ data }) => {
   const redactionCheckRender = (value, testId) => {
@@ -85,7 +69,7 @@ const ProtocolOverview = ({ data }) => {
               <div className="row-item">
                 <label>QC Activity</label>
                 {redactionCheckRender(
-                  QCStatus(data.qcStatus),
+                  qcIconStatus(data.qcStatus, data.status),
                   "qc-activity-value"
                 )}
               </div>

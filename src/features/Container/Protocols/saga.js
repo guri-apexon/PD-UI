@@ -34,7 +34,6 @@ export function* getSummaryData(action) {
   };
   yield put(getSummary(obj));
   let userId = yield getUserId();
-  // const url = `${BASE_URL_8000}/api/protocol_attributes/?id=${action.payload}`;
   const url = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}&docId=${action.payload}`;
 
   const resp = yield call(httpCall, { url, method: "GET" });

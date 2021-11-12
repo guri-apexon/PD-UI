@@ -113,18 +113,25 @@ export const iconStatus = (status, qcStatus) => {
   }
 };
 
-export const qcIconStatus = (status) => {
-  switch (status) {
-    case "QC_NOT_STARTED":
-      return "QC Not Started";
-    case "QC1":
-    case "QC2":
-    case "FEEDBACK_RUN":
-      return "QC In Progress";
-    case "QC_COMPLETED":
-      return "QC Completed";
-    default:
-      return "QC Not Started";
+export const qcIconStatus = (status, pdStatus) => {
+  if (
+    (status === "QC1" || status === "QC2" || status === "FEEDBACK_RUN") &&
+    pdStatus === "ERROR"
+  ) {
+    return "ERROR";
+  } else {
+    switch (status) {
+      case "QC_NOT_STARTED":
+        return "QC Not Started";
+      case "QC1":
+      case "QC2":
+      case "FEEDBACK_RUN":
+        return "QC In Progress";
+      case "QC_COMPLETED":
+        return "QC Completed";
+      default:
+        return "ERROR";
+    }
   }
 };
 
