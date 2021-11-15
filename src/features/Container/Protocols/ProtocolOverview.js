@@ -4,22 +4,7 @@ import { redaction } from "../../../AppConstant/AppConstant";
 import Tooltip from "apollo-react/components/Tooltip";
 import { handleProtocolTitle } from "../../../utils/utilFunction";
 // import DonutChart from "apollo-react/components/DonutChart";
-
-/* istanbul ignore next*/
-const QCStatus = (status) => {
-  switch (status) {
-    case "QC_NOT_STARTED":
-      return "QC Not Started";
-    case "QC1":
-    case "QC2":
-    case "FEEDBACK_RUN":
-      return "QC In Progress";
-    case "QC_COMPLETED":
-      return "QC Completed";
-    default:
-      return "QC Not Started";
-  }
-};
+import { iconStatus, qcIconStatus } from "../../../utils/utilFunction";
 
 const ProtocolOverview = ({ data }) => {
   const redactionCheckRender = (value, testId) => {
@@ -76,12 +61,15 @@ const ProtocolOverview = ({ data }) => {
               </div>
               <div className="row-item">
                 <label>PD Activity</label>
-                {redactionCheckRender(data.status, "activity-value")}
+                {redactionCheckRender(
+                  iconStatus(data.status, data.qcStatus),
+                  "activity-value"
+                )}
               </div>
               <div className="row-item">
                 <label>QC Activity</label>
                 {redactionCheckRender(
-                  QCStatus(data.qcStatus),
+                  qcIconStatus(data.qcStatus, data.status),
                   "qc-activity-value"
                 )}
               </div>
@@ -94,56 +82,6 @@ const ProtocolOverview = ({ data }) => {
           </div>
         </Card>
       </div>
-      {/* {false && (
-        <Card style={{ padding: "10px 16px" }} className="chart-column">
-          <div className="">
-            <p className="chart-title">Digitized Confidence Interval</p>
-            {!isNaN(parseInt(data.digitizedConfidenceInterval, 10)) ? (
-              <div></div>
-            ) : (
-              // <DonutChart
-              //   dropshadow
-              //   percent={parseInt(data.digitizedConfidenceInterval, 10)}
-              //   subtitle="Label"
-              //   stroke="#0768fd"
-              //   tooltipTitle=""
-              //   tooltipSubtitle=""
-              //   style={{ height: "200px", width: "200px" }}
-              // />
-              <div style={{ display: "flex", height: 100 }}>
-                <p
-                  style={{ margin: "auto", fontSize: 12 }}
-                  data-testid="no-data-confidense"
-                >
-                  Information Not Available
-                </p>
-              </div>
-            )}
-            <p className="chart-title">Completeness of Digitization</p>
-            {!isNaN(parseInt(data.completenessOfDigitization, 10)) ? (
-              <div></div>
-            ) : (
-              // <DonutChart
-              //   dropshadow
-              //   percent={parseInt(data.completenessOfDigitization, 10)}
-              //   subtitle="Label"
-              //   // stroke="#0768fd"
-              //   tooltipTitle=""
-              //   tooltipSubtitle=""
-              //   style={{ height: "200px", width: "200px" }}
-              // />
-              <div style={{ display: "flex", height: 100 }}>
-                <p
-                  style={{ margin: "auto", fontSize: 12 }}
-                  data-testid="no-data-digitization"
-                >
-                  Information Not Available
-                </p>
-              </div>
-            )}
-          </div>
-        </Card>
-      )} */}
     </>
   );
 };
