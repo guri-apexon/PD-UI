@@ -144,6 +144,10 @@ function createFullMarkup(str) {
         str
       ),
     };
+  } else {
+    return {
+      __html: str,
+    };
   }
 }
 export const handleProtocolTitle = (value, testID) => {
