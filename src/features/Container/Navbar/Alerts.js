@@ -30,7 +30,9 @@ function createFullMarkup(str) {
       ),
     };
   } else {
-    return "";
+    return {
+      __html: str,
+    };
   }
 }
 
