@@ -17,6 +17,22 @@ import Tooltip from "apollo-react/components/Tooltip";
 import { navbarNotifications } from "./navbarSlice";
 
 import "./Alerts.scss";
+import { redaction } from "../../../AppConstant/AppConstant";
+const replaceall = require("replaceall");
+
+function createFullMarkup(str) {
+  if (str) {
+    return {
+      __html: replaceall(
+        redaction.text,
+        `<span class="blur">${redaction.text}</span>`,
+        str
+      ),
+    };
+  } else {
+    return "";
+  }
+}
 
 function Alerts() {
   // let history = useHistory();
@@ -144,9 +160,22 @@ function Alerts() {
                         {item.header}
                       </span>
                     )}
-                    <Tooltip title={item.details} placement="right">
-                      <p className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock">
-                        {item.details}
+                    <Tooltip
+                      title={"Protocol Title"}
+                      subtitle={
+                        <div
+                          dangerouslySetInnerHTML={createFullMarkup(
+                            item.details
+                          )}
+                        ></div>
+                      }
+                      placement="right"
+                    >
+                      <p
+                        className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock"
+                        dangerouslySetInnerHTML={createFullMarkup(item.details)}
+                      >
+                        {/* {item.details} */}
                       </p>
                     </Tooltip>
                   </div>
