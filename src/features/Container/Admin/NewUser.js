@@ -82,7 +82,7 @@ function NewUser({ setIsOpen }) {
     if (!userId) {
       err.userId.error = true;
       err.userId.message = "Required";
-    } else if (userId && !/u|q{1}[0-9]+$/.test(userId)) {
+    } else if (userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
       err.userId.message = "Enter valid user id";
     } else {
@@ -122,7 +122,7 @@ function NewUser({ setIsOpen }) {
   };
   const getUser = () => {
     let err = cloneDeep(formErrValue);
-    if (userId && !/[0-9]+$/.test(userId)) {
+    if (userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
       err.userId.message = "Enter valid user id";
     } else if (userId) {
@@ -139,7 +139,7 @@ function NewUser({ setIsOpen }) {
     let err = cloneDeep(formErrValue);
     const trimValue = trim(value);
 
-    if (key === "userId" && userId && !/[0-9]+$/.test(userId)) {
+    if (key === "userId" && userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
       err.userId.message = "Enter valid user id";
     } else if (
