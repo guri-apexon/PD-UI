@@ -82,7 +82,7 @@ function NewUser({ setIsOpen }) {
     if (!userId) {
       err.userId.error = true;
       err.userId.message = "Required";
-    } else if (userId && !/u|q{1}[0-9]+$/.test(userId)) {
+    } else if (userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
       err.userId.message = "Enter valid user id";
     } else {
@@ -107,10 +107,7 @@ function NewUser({ setIsOpen }) {
       userId &&
       role
     ) {
-      const obj = { ...formValue };
-      obj.userId = userId;
-      obj.userRole = role;
-      dispatch({ type: "ADD_NEW_USER_SAGA", payload: obj });
+      dispatch({ type: "ADD_NEW_USER_SAGA" });
     }
   };
 
@@ -122,7 +119,7 @@ function NewUser({ setIsOpen }) {
   };
   const getUser = () => {
     let err = cloneDeep(formErrValue);
-    if (userId && !/u|q{1}[0-9]+$/.test(userId)) {
+    if (userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
       err.userId.message = "Enter valid user id";
     } else if (userId) {
@@ -139,7 +136,7 @@ function NewUser({ setIsOpen }) {
     let err = cloneDeep(formErrValue);
     const trimValue = trim(value);
 
-    if (key === "userId" && userId && !/u|q{1}[0-9]+$/.test(userId)) {
+    if (key === "userId" && userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
       err.userId.message = "Enter valid user id";
     } else if (
@@ -191,7 +188,7 @@ function NewUser({ setIsOpen }) {
         <Grid item xs={6} sm={6}>
           <TextField
             label="User ID"
-            placeholder="qid/uid"
+            placeholder="Enter only number"
             fullWidth
             type="text"
             required
