@@ -53,7 +53,7 @@ describe("Protocol Overview Testsuit", () => {
   test("Should have Activity with value", async () => {
     const { getByTestId } = render(<ProtocolOverview data={startingState} />);
     let cardHeader = getByTestId("activity-value");
-    expect(cardHeader).toHaveTextContent("Upload Complete");
+    expect(cardHeader).toHaveTextContent("Digitization Error");
   });
 
   test("Should have Protocol Title", async () => {
