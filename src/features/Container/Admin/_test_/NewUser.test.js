@@ -72,8 +72,8 @@ describe("NewUser Screen", () => {
     expect(editEmail.value).toEqual("sohan.khatawkar@iqvia.com");
     fireEvent.change(editCountry, { target: { value: "India" } });
     expect(editCountry.value).toEqual("India");
-    fireEvent.change(editUserId, { target: { value: "u1072231" } });
-    expect(editUserId.value).toEqual("u1072231");
+    fireEvent.change(editUserId, { target: { value: "1072231" } });
+    expect(editUserId.value).toEqual("1072231");
     fireEvent.change(editRole, { target: { value: "admin" } });
     expect(editRole.value).toEqual("admin");
     fireEvent.click(screen.getByText("Create"));
@@ -127,8 +127,8 @@ describe("NewUser Screen", () => {
       },
     });
     let edit = screen.getByTestId("user-id-texfield").children[1].children[0];
-    fireEvent.change(edit, { target: { value: "u1072231" } });
-    expect(edit.value).toEqual("u1072231");
+    fireEvent.change(edit, { target: { value: "1072231" } });
+    expect(edit.value).toEqual("1072231");
   });
   test("should change the user role", () => {
     render(<NewUser setIsOpen={mockHandleOpen} />, {
@@ -299,7 +299,7 @@ describe("NewUser Screen", () => {
     });
     let edit = screen.getByTestId("user-id-texfield");
     fireEvent.change(edit.children[1].children[0], {
-      target: { value: "u1072231" },
+      target: { value: "1072231" },
     });
     fireEvent.focusOut(edit.children[1].children[0]);
     fireEvent.click(screen.getByText("Search"));

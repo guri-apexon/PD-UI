@@ -107,10 +107,7 @@ function NewUser({ setIsOpen }) {
       userId &&
       role
     ) {
-      const obj = { ...formValue };
-      obj.userId = userId;
-      obj.userRole = role;
-      dispatch({ type: "ADD_NEW_USER_SAGA", payload: obj });
+      dispatch({ type: "ADD_NEW_USER_SAGA" });
     }
   };
 

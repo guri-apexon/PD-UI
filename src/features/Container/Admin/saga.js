@@ -227,9 +227,10 @@ export function* updateUser(action) {
     toast.error(`User details is not updated`);
   }
 }
-export function* addNewUser(action) {
+export function* addNewUser() {
   yield put(setLoader(true));
-  let userDetails = action.payload;
+  const state = yield select();
+  let userDetails = state.admin.newUser;
   const Url = `${BASE_URL_8000}/api/create_new_user/new_user`;
   const details = [userDetails].map((item) => {
     let data = {};
