@@ -30,7 +30,7 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.7% </span>
+                <span class="strong">57.71% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>146/253</span>
             </div>
@@ -2541,7 +2541,7 @@ const Search = (props) =&gt; {
     if ("documentStatus" in parsed) {
       postObj.documentStatus = parsed.documentStatus.split("+");
     }
-    if ("qcStatus" in parsed) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if ("qcStatus" in parsed) {
       let arr = [];
       let str = parsed.qcStatus;
       <span class="missing-if-branch" title="if path not taken" >I</span>if (str.includes("QC1-QC2")) {
@@ -2628,7 +2628,7 @@ const Search = (props) =&gt; {
           "Date is not valid. Please use date range picker to select valid date."
         );
       }
-    } else if (recentDate.from) {
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (recentDate.from) {
       const obj = {
         dateRange: { from: recentDate.from, to: recentDate.to },
       };
@@ -2644,13 +2644,13 @@ const Search = (props) =&gt; {
       delete postQueryObj1.key;
       filterChanged = compareObjs(postObj1, postQueryObj1);
       validFilters = checkValidity(postObj);
-      if (filterChanged &amp;&amp; validFilters) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (filterChanged &amp;&amp; validFilters) {
         dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
         props.history.replace({
           pathname: "/search",
           search: `?${resultQuery}`,
         });
-      } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="else path not taken" >E</span>if (filterChanged &amp;&amp; !validFilters) {</span>
+      } else <span class="cstat-no" title="statement not covered" >if (filterChanged &amp;&amp; !validFilters) {</span>
 <span class="cstat-no" title="statement not covered" >        dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });</span>
 <span class="cstat-no" title="statement not covered" >        props.history.replace({</span>
           pathname: "/search",
@@ -2661,7 +2661,7 @@ const Search = (props) =&gt; {
       } else {
 <span class="cstat-no" title="statement not covered" >        toast.warn("Please Select Filters");</span>
       }
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+    } else {
       const obj = <span class="cstat-no" title="statement not covered" >{</span>
         dateRange: { from: "", to: "" },
       };
@@ -2709,7 +2709,7 @@ const Search = (props) =&gt; {
   };
 &nbsp;
   const checkValidity = (postObj) =&gt; {
-    if (
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (
       postObj &amp;&amp;
       (postObj.toc.length &gt; 0 ||
 <span class="branch-2 cbranch-no" title="branch not covered" >        postObj.indication.length &gt; 0 </span>||
@@ -2721,7 +2721,7 @@ const Search = (props) =&gt; {
 <span class="branch-8 cbranch-no" title="branch not covered" >        postObj.dateTo.length &gt; 0)</span>
     ) {
       return true;
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+    } else {
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
   };
@@ -2796,7 +2796,7 @@ const Search = (props) =&gt; {
         let extractValues = TOC.sectionContent.filter((item) =&gt;
           value.includes(item.id)
         );
-        if (extractValues.length &gt; 0) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (extractValues.length &gt; 0) {
           extractValues.map((item) =&gt; {
             str += `${item.title}+`;
             return true;
@@ -2843,7 +2843,7 @@ const Search = (props) =&gt; {
         let extractValues = phaseData.sectionContent.filter((item) =&gt;
           value.includes(item.id)
         );
-        if (extractValues.length &gt; 0) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (extractValues.length &gt; 0) {
           extractValues.map((item) =&gt; {
             str += `${item.title}+`;
             return true;
@@ -2858,7 +2858,7 @@ const Search = (props) =&gt; {
         let extractValues = documentStatus.sectionContent.filter((item) =&gt;
           value.includes(item.id)
         );
-        if (extractValues.length &gt; 0) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (extractValues.length &gt; 0) {
           extractValues.map((item) =&gt; {
             str += `${item.value}+`;
             return true;
@@ -2873,7 +2873,7 @@ const Search = (props) =&gt; {
         let extractValues = qcStatus.sectionContent.filter((item) =&gt;
           value.includes(item.id)
         );
-        if (extractValues.length &gt; 0) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (extractValues.length &gt; 0) {
           extractValues.map((item) =&gt; {
             str += `${item.value}+`;
             return true;
@@ -2888,7 +2888,7 @@ const Search = (props) =&gt; {
         let extractValues = dateType.sectionContent.filter((item) =&gt;
           value.includes(item.id)
         );
-        if (extractValues.length &gt; 0) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (extractValues.length &gt; 0) {
           extractValues.map((item) =&gt; {
             str += `${item.value}+`;
             return true;
@@ -2903,7 +2903,7 @@ const Search = (props) =&gt; {
         let extractValues = dateSection.sectionContent.filter((item) =&gt;
           value.includes(item.id)
         );
-        if (extractValues.length &gt; 0) {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (extractValues.length &gt; 0) {
           extractValues.map((item) =&gt; {
             str += `${item.value}+`;
             return true;
@@ -3053,14 +3053,14 @@ const Search = (props) =&gt; {
           );
           filterChip.dateSection = extractValues;
           setFilterChipObject(filterChip);
-        } else if (key === "dateType") {
+        } else <span class="missing-if-branch" title="else path not taken" >E</span>if (key === "dateType") {
           let extractValues = dateType.sectionContent.filter((item) =&gt;
             value.includes(item.id)
           );
           filterChip.dateType = extractValues;
           setFilterChipObject(filterChip);
         }
-      } else if (value.length === 0) {
+      } else <span class="missing-if-branch" title="else path not taken" >E</span>if (value.length === 0) {
         // let filterChip = cloneDeep(filterChipObject);
         filterChip[key] = [];
         setFilterChipObject(filterChip);
@@ -3074,9 +3074,9 @@ const Search = (props) =&gt; {
     let tempQuery = cloneDeep(searchQuery);
     tempQuery[identifier] = list;
     setSearchQuery(tempQuery);
-    if (compareObjs(prevFilterObj, tempQuery)) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (compareObjs(prevFilterObj, tempQuery)) {
       setEnableFilter(true);
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+    } else {
 <span class="cstat-no" title="statement not covered" >      setEnableFilter(false);</span>
     }
   };
@@ -3217,7 +3217,7 @@ export default Search;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Mon Nov 08 2021 13:41:58 GMT+0530 (India Standard Time)
+                at Thu Nov 18 2021 16:10:23 GMT+0530 (India Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

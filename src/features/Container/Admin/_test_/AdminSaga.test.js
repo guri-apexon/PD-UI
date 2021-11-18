@@ -309,18 +309,18 @@ describe("Admin Saga Unit Test", () => {
           roles: [],
           map: [],
           loader: false,
+          newUser: {
+            userId: "u107223",
+            firstName: "dad",
+            lastName: "In",
+            email: "s@iqvia.com",
+            country: "India",
+            userRole: "normal",
+          },
         },
       }),
     };
     await runSaga(fakeStore, addNewUser, {
-      payload: {
-        userId: "u107223",
-        firstName: "dad",
-        lastName: "In",
-        email: "s@iqvia.com",
-        country: "India",
-        userRole: "normal",
-      },
       type: "",
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
@@ -366,18 +366,18 @@ describe("Admin Saga Unit Test", () => {
           ],
           roles: [],
           map: [],
+          newUser: {
+            userId: "u107223",
+            firstName: "dad",
+            lastName: "In",
+            email: "s@iqvia.com",
+            country: "India",
+            userRole: "normal",
+          },
         },
       }),
     };
     await runSaga(fakeStore, addNewUser, {
-      payload: {
-        userId: "u107223",
-        firstName: "dad",
-        lastName: "In",
-        email: "s@iqvia.com",
-        country: "India",
-        userRole: "normal",
-      },
       type: "",
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
@@ -422,18 +422,18 @@ describe("Admin Saga Unit Test", () => {
           ],
           roles: [],
           map: [],
+          newUser: {
+            userId: "u107223",
+            firstName: "dad",
+            lastName: "In",
+            email: "s@iqvia.com",
+            country: "India",
+            userRole: "normal",
+          },
         },
       }),
     };
     await runSaga(fakeStore, addNewUser, {
-      payload: {
-        userId: "u107223",
-        firstName: "dad",
-        lastName: "In",
-        email: "s@iqvia.com",
-        country: "India",
-        userRole: "normal",
-      },
       type: "",
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
