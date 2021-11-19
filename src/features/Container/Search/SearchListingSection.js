@@ -8,21 +8,12 @@ import Checkbox from "apollo-react/components/Checkbox";
 import Folder from "apollo-react-icons/Folder";
 import Switch from "apollo-react/components/Switch";
 import Card from "apollo-react/components/Card";
-// import { userId } from "../../../store/userDetails";
-// import { useSelector } from "react-redux";
-// import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-// import { BASE_URL_8000, httpCall } from "../../../utils/api";
-// import Tooltip from "apollo-react/components/Tooltip";
-import { redaction } from "../../../AppConstant/AppConstant";
 import { handleProtocolTitle } from "../../../utils/utilFunction";
-//const [value, setValue] = React.useState(true);
+import { uploadDateValidation } from "../../../utils/utilFunction";
+import { userRole } from "../../../AppConstant/AppConstant";
+import { formatESDate } from "../../../utils/utilFunction";
 
-//const handleChange = (e, checked) => {
-//    setValue(checked);
-//};
-
-// const textLength = 50;
 const SearchListingSection = ({
   data,
   setExpanded,
@@ -41,38 +32,46 @@ const SearchListingSection = ({
       data
     );
   };
-  // const handleTitle = async (data) => {
-  //   const config = {
-  //     url: `${BASE_URL_8000}/api/user_protocol/is_primary_user?userId=${userId1.substring(
-  //       1
-  //     )}&protocol=${data.protocolNumber}`,
-  //     method: "GET",
-  //   };
-  //   const resp = await httpCall(config);
-  //   if (resp && resp.data) {
-  //     history.push(`/protocols?protocolId=${data.AiDocId}`);
-  //   } else {
-  //     toast.info("Access Provisioned to Primary Users only");
-  //   }
-  // };
-  const createFullMarkup = (str) => {
-    if (str || str !== undefined) {
-      if (str.includes(redaction.text)) {
-        return {
-          __html: str.replace(
-            redaction.text,
-            `<span class="blur">${redaction.text}</span>`
-          ),
-        };
-      } else {
-        return {
-          __html: str,
-        };
-      }
-    }
-  };
   const handleFollowChange = (e, checked, data) => {
     handleFollow(e, checked, data);
+  };
+  const handleLinkRender = (data) => {
+    if (data.userRole === userRole.primary) {
+      return (
+        <Link
+          className="title-link-protocol-1"
+          to={`/protocols?protocolId=${data.AiDocId}`}
+        >
+          Protocol:{" "}
+          {data.protocolNumber.length > 18
+            ? data.protocolNumber.substring(0, 18) + "..."
+            : data.protocolNumber}
+        </Link>
+      );
+    } else {
+      if (uploadDateValidation(formatESDate(data.uploadDate))) {
+        return (
+          <Link
+            className="title-link-protocol-1"
+            to={`/protocols?protocolId=${data.AiDocId}`}
+          >
+            Protocol:{" "}
+            {data.protocolNumber.length > 18
+              ? data.protocolNumber.substring(0, 18) + "..."
+              : data.protocolNumber}
+          </Link>
+        );
+      } else {
+        return (
+          <span className="title-no-link-protocol-1">
+            Protocol:{" "}
+            {data.protocolNumber.length > 18
+              ? data.protocolNumber.substring(0, 18) + "..."
+              : data.protocolNumber}
+          </span>
+        );
+      }
+    }
   };
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
@@ -89,17 +88,17 @@ const SearchListingSection = ({
           </div>
           <div className="width85">
             <div className="divBlock">
-              <span className="blueText">
-                Protocol:{" "}
-                <Link
+              <span>
+                {handleLinkRender(data)}
+                {/* <Link
                   to={`/protocols?protocolId=${data.AiDocId}`}
                   data-testid="name-value"
                   dangerouslySetInnerHTML={createFullMarkup(
                     data.protocolNumber
                   )}
                 >
-                  {/* {data.protocolNumber} */}
-                </Link>
+                  {data.protocolNumber}
+                </Link> */}
               </span>
             </div>
             <div className="divBlock ellipse" data-testid="title-value">

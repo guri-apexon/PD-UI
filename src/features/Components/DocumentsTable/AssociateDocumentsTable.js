@@ -11,6 +11,8 @@ import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
 import { userId } from "../../../store/userDetails";
 import { qcIconStatus } from "../../../utils/utilFunction";
+import { userRole } from "../../../AppConstant/AppConstant";
+import { uploadDateValidation } from "../../../utils/utilFunction";
 
 const ActionCell = ({ row }) => {
   // console.log("....RoW........", row);
@@ -76,22 +78,47 @@ const VersionCell = ({ row, column }) => {
     row.handleChangeTab("", 0);
     history.push(`/protocols?protocolId=${row["id"]}`);
   };
-  return (
-    <>
-      {row.versionNumber ? (
-        <p
-          className="hyperlink"
-          data-testid={`version-${row.versionNumber}`}
-          onClick={() => onHandleChange(row)}
-        >
-          {" "}
-          {row.versionNumber}
-        </p>
-      ) : (
-        "-"
-      )}
-    </>
-  );
+  if (row.userRole === userRole.primary) {
+    return (
+      <>
+        {row.versionNumber ? (
+          <p
+            className="hyperlink"
+            data-testid={`version-${row.versionNumber}`}
+            onClick={() => onHandleChange(row)}
+          >
+            {" "}
+            {row.versionNumber}
+          </p>
+        ) : (
+          "-"
+        )}
+      </>
+    );
+  } else {
+    if (uploadDateValidation(row.uploadDate)) {
+      return (
+        <>
+          {row.versionNumber ? (
+            <p
+              className="hyperlink"
+              data-testid={`version-${row.versionNumber}`}
+              onClick={() => onHandleChange(row)}
+            >
+              {" "}
+              {row.versionNumber}
+            </p>
+          ) : (
+            "-"
+          )}
+        </>
+      );
+    } else {
+      return (
+        <p data-testid={`version-${row.versionNumber}`}> {row.versionNumber}</p>
+      );
+    }
+  }
 };
 // const Cell = ({ row, column: { accessor: key } }) => {
 //   return <>{row[key] ? row[key] : "-"}</>;

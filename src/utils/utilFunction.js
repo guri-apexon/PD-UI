@@ -167,3 +167,13 @@ export const handleProtocolTitle = (value, testID) => {
     </Tooltip>
   );
 };
+export const uploadDateValidation = (uploadDate) => {
+  console.log("Date Before", process.env.REACT_APP_DATE_BEFORE);
+  const baseDate = new Date(process.env.REACT_APP_DATE_BEFORE);
+  const compareDate = new Date(uploadDate);
+  if (compareDate > baseDate) {
+    return true;
+  } else {
+    return false;
+  }
+};

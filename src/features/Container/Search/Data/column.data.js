@@ -9,12 +9,56 @@ import { toast } from "react-toastify";
 import FileDownload from "js-file-download";
 import { userId } from "../../../../store/userDetails";
 import { useSelector } from "react-redux";
+import { userRole } from "../../../../AppConstant/AppConstant";
+import { uploadDateValidation } from "../../../../utils/utilFunction";
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
+  const handleLinkRender = () => {
+    if (row.userRole === userRole.primary) {
+      return (
+        <div>
+          <Link
+            className="title-link-protocol"
+            to={`/protocols?protocolId=${row["id"]}`}
+          >
+            {row[key].length > 18
+              ? row[key].substring(0, 18) + "..."
+              : row[key]}
+          </Link>
+        </div>
+      );
+    } else {
+      if (uploadDateValidation(row.uploadDate)) {
+        return (
+          <div>
+            <Link
+              className="title-link-protocol"
+              to={`/protocols?protocolId=${row["id"]}`}
+            >
+              {row[key].length > 18
+                ? row[key].substring(0, 18) + "..."
+                : row[key]}
+            </Link>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            {/* <span className="title-no-link-protocol">{row[key]}</span> */}
+            <span>
+              {row[key].length > 18
+                ? row[key].substring(0, 18) + "..."
+                : row[key]}
+            </span>
+          </div>
+        );
+      }
+    }
+  };
   return (
-    <>
-      <Link to={`/protocols?protocolId=${row.id}`}>{row[key]}</Link>
-    </>
+    <span>
+      <span className="adjust-ellipses">{handleLinkRender()}</span>
+    </span>
   );
 };
 /* istanbul ignore next*/
@@ -61,9 +105,9 @@ const dateFormatApp = ({ row }) => {
   return <>{row.approvalDate ? covertMMDDYYYY(row.approvalDate) : "-"}</>;
 };
 
-// const Cell = ({ row, column: { accessor: key } }) => {
-//   return <>{row[key] ? row[key] : "-"}</>;
-// };
+const Cell = ({ row, column: { accessor: key } }) => {
+  return <>{row[key] ? row[key] : "-"}</>;
+};
 
 const StatusCell = ({ row, column: { accessor: key } }) => {
   return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
@@ -105,6 +149,12 @@ const columns = [
     header: "Document Status",
     accessor: "documentStatus",
     customCell: StatusCell,
+    width: "10%",
+  },
+  {
+    header: "Uploaded By",
+    accessor: "uploadedBy",
+    customCell: Cell,
     width: "10%",
   },
 ];

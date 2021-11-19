@@ -124,7 +124,7 @@ const SearchCard = ({
     ) : (
       <>
         <p className="grid-item grid-key-value" data-testid={testid}>
-          {formatESDate(data.uploadDate)}
+          {formatESDate(value)}
         </p>
       </>
     );
@@ -223,6 +223,17 @@ const SearchCard = ({
             data-testid="qc-activity-value"
           >
             {redactionCheckRender(data.qcStatus, "qc-activity-value")}
+          </p>
+        </Grid>
+        <Grid md={3}>
+          <p className="grid-item bold-class">Uploaded By :</p>
+        </Grid>
+        <Grid md={3}>
+          <p
+            className="grid-item grid-key-value text-capitalize"
+            data-testid="qc-activity-value"
+          >
+            {redactionCheckRender(data.uploadedBy, "uploadedBy-value")}
           </p>
         </Grid>
       </Grid>

@@ -6,7 +6,6 @@ import merge from "lodash/merge";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import IconButton from "apollo-react/components/IconButton";
 import Table, {
   compareStrings,
@@ -14,14 +13,12 @@ import Table, {
 } from "apollo-react/components/Table";
 import Tooltip from "apollo-react/components/Tooltip";
 import Loader from "../Loader/Loader";
-
-// import { BASE_URL_8000, UI_URL } from "../../../utils/api";
-// import { setSelectedProtocols } from "../../Container/Dashboard/dashboardSlice";
 import "./ProtocolTable.scss";
-
 import columns from "./columns";
 import Tag from "apollo-react/components/Tag";
 import { redaction } from "../../../AppConstant/AppConstant";
+import { uploadDateValidation } from "../../../utils/utilFunction";
+
 const replaceall = require("replaceall");
 
 const ActionCell = ({ row }) => {
@@ -57,43 +54,53 @@ function createMarkup(str) {
   };
 }
 const ProtocolTitle = ({ row, column: { accessor: key } }) => {
-  if (row[key].includes(redaction.text)) {
-    return (
-      <Tooltip
-        variant="light"
-        title={"Protocol Title"}
-        subtitle={
-          <div dangerouslySetInnerHTML={createFullMarkup(row[key])}></div>
-        }
-        placement="top"
-      >
-        <span>
-          {row && row.screen && row.screen === "QC" ? (
-            <span className="adjust-ellipses">{row[key]}</span>
-          ) : (
+  const handleLinkRender = () => {
+    if (row.userUploadedFlag) {
+      return (
+        <div>
+          <Link
+            className="title-link-protocol"
+            to={`/protocols?protocolId=${row["id"]}`}
+            dangerouslySetInnerHTML={createMarkup(row[key])}
+          ></Link>
+          <span>{row[key].length > 40 ? "..." : ""}</span>
+        </div>
+      );
+    } else {
+      if (uploadDateValidation(row.uploadDate)) {
+        return (
+          <div>
             <Link
+              className="title-link-protocol"
               to={`/protocols?protocolId=${row["id"]}`}
               dangerouslySetInnerHTML={createMarkup(row[key])}
             ></Link>
-          )}
-        </span>
-      </Tooltip>
-    );
-  }
+            <span>{row[key].length > 40 ? "..." : ""}</span>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            <span
+              className="title-no-link-protocol"
+              dangerouslySetInnerHTML={createMarkup(row[key])}
+            ></span>
+            <span>{row[key].length > 40 ? "..." : ""}</span>
+          </div>
+        );
+      }
+    }
+  };
   return (
     <Tooltip
       variant="light"
       title={"Protocol Title"}
-      subtitle={row[key]}
+      subtitle={
+        <div dangerouslySetInnerHTML={createFullMarkup(row[key])}></div>
+      }
       placement="top"
     >
-      <span>
-        <span className="adjust-ellipses">
-          <Link to={`/protocols?protocolId=${row["id"]}`}>
-            {row[key].substring(0, 40)}...
-          </Link>
-        </span>
-      </span>
+      <span>{handleLinkRender()}</span>
     </Tooltip>
   );
 };
@@ -121,64 +128,58 @@ const Cell = ({ row, column }) => {
 };
 
 const ProtocolLink = ({ row, column: { accessor: key } }) => {
-  if (row && row.screen && row.screen === "QC") {
-    if (row[key] && row[key].length > 25) {
-      /*eslint-disable */
+  const handleLinkRender = () => {
+    if (row.userUploadedFlag) {
       return (
-        <Tooltip variant="light" title={row[key]} placement="top">
-          <div className="long-text">
-            <a
-              data-testid={`click-link-${row.protocol}`}
-              href="javascript:void(0)"
-              onClick={() => row.handleRowProtocolClick(row)}
+        <div>
+          <Link
+            className="title-link-protocol"
+            to={`/protocols?protocolId=${row["id"]}`}
+          >
+            {row[key].length > 18
+              ? row[key].substring(0, 18) + "..."
+              : row[key]}
+          </Link>
+        </div>
+      );
+    } else {
+      if (uploadDateValidation(row.uploadDate)) {
+        return (
+          <div>
+            <Link
+              className="title-link-protocol"
+              to={`/protocols?protocolId=${row["id"]}`}
             >
-              {row[key]}
-            </a>
-          </div>
-        </Tooltip>
-      );
-      /* eslint-enable  */
-    }
-    return (
-      /* eslint-disable  */
-      <a
-        data-testid={`click-link-${row.protocol}`}
-        href="javascript:void(0)"
-        onClick={() => row.handleRowProtocolClick(row)}
-      >
-        {row[key]}
-      </a>
-    );
-  } else if (row && row.screen && row.screen === "FollowedProtocols") {
-    if (row[key] && row[key].length > 20) {
-      return (
-        <Tooltip
-          variant="light"
-          title={"Protocol Number"}
-          subtitle={row[key]}
-          placement="top"
-        >
-          <span>
-            <Link to={`/protocols?protocolId=${row["id"]}`}>
-              {row[key].substring(0, 20)}...
+              {row[key].length > 18
+                ? row[key].substring(0, 18) + "..."
+                : row[key]}
             </Link>
-          </span>
-        </Tooltip>
-      );
-    }
-    return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>;
-  } else {
-    if (row[key] && row[key].length > 25) {
-      return (
-        <Tooltip variant="light" title={row[key]} placement="top">
-          <div className="long-text">
-            <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
           </div>
-        </Tooltip>
-      );
+        );
+      } else {
+        return (
+          <div>
+            {/* <span className="title-no-link-protocol">{row[key]}</span> */}
+            <span>
+              {row[key].length > 18
+                ? row[key].substring(0, 18) + "..."
+                : row[key]}
+            </span>
+          </div>
+        );
+      }
     }
-    return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>;
-  }
+  };
+  return (
+    <Tooltip
+      variant="light"
+      title={"Protocol Number"}
+      subtitle={row[key]}
+      placement="top"
+    >
+      <span>{handleLinkRender()}</span>
+    </Tooltip>
+  );
 };
 const HandleUnFollow = ({ row }) => {
   return (
@@ -329,7 +330,6 @@ const ProtocolTable = ({
   fetchAssociateData,
   handleUnfollow,
 }) => {
-  const dispatch = useDispatch();
   const [expandedRows, setExpandedRows] = useState([]);
   // const [selectedRows, setSelectedRows] = useState([]);
 

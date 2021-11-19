@@ -10,6 +10,8 @@ import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
+import { uploadDateValidation } from "../../../utils/utilFunction";
+import { userRole } from "../../../AppConstant/AppConstant";
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
   const [loader, setLoader] = useState(false);
@@ -71,19 +73,59 @@ const dateFormatApp = ({ row }) => {
   return <>{row.approvalDate ? covertMMDDYYYY(row.approvalDate) : "-"}</>;
 };
 
-// const Cell = ({ row, column: { accessor: key } }) => {
-//   return <>{row[key] ? row[key] : "-"}</>;
-// };
+const Cell = ({ row, column: { accessor: key } }) => {
+  return <>{row[key] ? row[key] : "-"}</>;
+};
 
 const StatusCell = ({ row, column: { accessor: key } }) => {
   return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
 };
 const ProtocolVersion = ({ row, column: { accessor: key } }) => {
+  const handleLinkRender = () => {
+    if (row.userRole === userRole.primary) {
+      return (
+        <div>
+          <Link
+            className="title-link-protocol"
+            to={`/protocols?protocolId=${row["id"]}`}
+          >
+            {row[key].length > 18
+              ? row[key].substring(0, 18) + "..."
+              : row[key]}
+          </Link>
+        </div>
+      );
+    } else {
+      if (uploadDateValidation(row.uploadDate)) {
+        return (
+          <div>
+            <Link
+              className="title-link-protocol"
+              to={`/protocols?protocolId=${row["id"]}`}
+            >
+              {row[key].length > 18
+                ? row[key].substring(0, 18) + "..."
+                : row[key]}
+            </Link>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            {/* <span className="title-no-link-protocol">{row[key]}</span> */}
+            <span>
+              {row[key].length > 18
+                ? row[key].substring(0, 18) + "..."
+                : row[key]}
+            </span>
+          </div>
+        );
+      }
+    }
+  };
   return (
     <span>
-      <span className="adjust-ellipses">
-        <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
-      </span>
+      <span className="adjust-ellipses">{handleLinkRender()}</span>
     </span>
   );
 };
@@ -124,6 +166,12 @@ const columns = [
     header: "Document Status",
     accessor: "documentStatus",
     customCell: StatusCell,
+    width: "10%",
+  },
+  {
+    header: "Uploaded By",
+    accessor: "uploadedBy",
+    customCell: Cell,
     width: "10%",
   },
 ];
