@@ -66,9 +66,9 @@ const SearchCard = ({
     let splitArr = row.path.split("\\");
     const fileName = splitArr[splitArr.length - 1];
     const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
         row.path
-      }&userId=${userId1.substring(1)}&protocol=${row.protocolNumber}`,
+      )}&userId=${userId1.substring(1)}&protocol=${row.protocolNumber}`,
       method: "GET",
       responseType: "blob",
     };

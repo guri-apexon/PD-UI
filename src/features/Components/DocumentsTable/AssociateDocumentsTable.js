@@ -41,9 +41,9 @@ const DownloadLink = ({ row, column: { accessor: key } }) => {
     const fileName = splitArr[splitArr.length - 1];
     console.log(fileName);
     const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
         row.documentFilePath
-      }&userId=${userId1.substring(1)}&protocol=${row.protocol}`,
+      )}&userId=${userId1.substring(1)}&protocol=${row.protocol}`,
       method: "GET",
       responseType: "blob",
     };

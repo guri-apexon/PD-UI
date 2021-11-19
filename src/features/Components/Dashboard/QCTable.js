@@ -332,7 +332,9 @@ const ExpandableComponent = ({ row }) => {
     const fileName = splitArr[splitArr.length - 1];
 
     const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}&userId=qc&protocol=${row.protocol}`,
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
+        row.documentFilePath
+      )}&userId=qc&protocol=${row.protocol}`,
       method: "GET",
       responseType: "blob",
     };

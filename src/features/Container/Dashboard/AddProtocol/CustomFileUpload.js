@@ -48,13 +48,6 @@ class CustomFileUpload extends Component {
                 true,
                 "uploadFile"
               );
-            } else if (/[!@#/$%&/*/^(){}\\[\];,?"':=/+`~/]/.test(file.name)) {
-              file.errorMessage = "Enter Valid File Name";
-              handleFileUploadError(
-                "Enter Valid File Name",
-                true,
-                "uploadFile"
-              );
             } else {
               handleFileUploadError(" ", false, "uploadFile");
             }
@@ -94,10 +87,6 @@ class CustomFileUpload extends Component {
           maxItems={1}
           fullWidth
         />
-        <span>
-          Note - A filename can be alphanumeric and can only contain -_
-          characters
-        </span>
       </div>
     );
   }
