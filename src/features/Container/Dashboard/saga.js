@@ -306,7 +306,9 @@ export function* sendQcReview() {
 function* handleDownload(action) {
   try {
     const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${action.payload}`,
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
+        action.payload
+      )}`,
       method: "GET",
     };
     let url;

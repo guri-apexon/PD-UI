@@ -158,15 +158,14 @@ export function* deleteUser(action) {
   }
 }
 export function* deleteMapping(action) {
-  const Url = `${BASE_URL_8000}/api/user_protocol/delete_userprotocol`;
+  const Url = `${BASE_URL_8000}/api/user_protocol/`;
   yield put(setLoader(true));
   const Config = {
     url: Url,
-    method: "PUT",
-    data: {
+    method: "DELETE",
+    params: {
       userId: action.payload.userId,
       protocol: action.payload.protocol,
-      isActive: false,
     },
   };
   try {
