@@ -394,7 +394,8 @@ export function* newMapping(action) {
 
 export function* getUserDetails(action) {
   const Url = `${BASE_URL_8000}/api/ldap_user_details/`;
-
+  const state = yield select();
+  let userDetails = state.admin.newUser;
   const Config = {
     url: Url,
     method: "GET",
@@ -422,10 +423,12 @@ export function* getUserDetails(action) {
     if (userData.success && userData.data) {
       let data = {};
       data.userId = userData.data.userId;
+      data.id = action.payload;
       data.firstName = userData.data.first_name;
       data.lastName = userData.data.last_name;
       data.email = userData.data.email;
       data.country = userData.data.country;
+      data.userRole = userDetails.userRole;
 
       yield put(setNewUserValues(data));
       yield put(setUserError(""));

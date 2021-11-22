@@ -39,8 +39,8 @@ function NewUser({ setIsOpen }) {
   const userLoader = useSelector(getUserLoader);
   const formErrValue = useSelector(formErrorValues);
   const userRoles = useSelector(rolesOptionsList);
-  const [userId, setUserId] = useState("");
-  const [role, setRole] = useState("");
+  const [userId, setUserId] = useState(formValue.id);
+  const [role, setRole] = useState(formValue.userRole);
 
   const handleSaveForm = () => {
     let err = cloneDeep(formErrValue);
@@ -192,6 +192,7 @@ function NewUser({ setIsOpen }) {
             fullWidth
             type="text"
             required
+            value={userId}
             helperText={formErrValue.userId.message}
             error={formErrValue.userId.error}
             onChange={(e) => setUserId(trim(e.target.value))}
