@@ -36,43 +36,62 @@ const SearchListingSection = ({
     handleFollow(e, checked, data);
   };
   const handleLinkRender = (data) => {
-    if (data.userRole === userRole.primary) {
+    if (data.UserRole === userRole.primary) {
       return (
-        <Link
-          className="title-link-protocol-1"
-          to={`/protocols?protocolId=${data.AiDocId}`}
-        >
-          Protocol:{" "}
-          {data.protocolNumber.length > 18
-            ? data.protocolNumber.substring(0, 18) + "..."
-            : data.protocolNumber}
-        </Link>
-      );
-    } else {
-      if (uploadDateValidation(formatESDate(data.uploadDate))) {
-        return (
+        <label className="blueText">
+          Protocol :{" "}
           <Link
             className="title-link-protocol-1"
             to={`/protocols?protocolId=${data.AiDocId}`}
           >
-            Protocol:{" "}
-            {data.protocolNumber.length > 18
-              ? data.protocolNumber.substring(0, 18) + "..."
-              : data.protocolNumber}
+            {data.protocolNumber}
           </Link>
+        </label>
+      );
+    } else {
+      if (uploadDateValidation(formatESDate(data.uploadDate))) {
+        return (
+          <label className="blueText">
+            Protocol :{" "}
+            <Link
+              className="title-link-protocol-1"
+              to={`/protocols?protocolId=${data.AiDocId}`}
+            >
+              {data.protocolNumber}
+            </Link>
+          </label>
         );
       } else {
         return (
-          <span className="title-no-link-protocol-1">
-            Protocol:{" "}
-            {data.protocolNumber.length > 18
-              ? data.protocolNumber.substring(0, 18) + "..."
-              : data.protocolNumber}
-          </span>
+          <label className="blueText">
+            Protocol :{" "}
+            <span className="title-no-link-protocol-1">
+              {data.protocolNumber}
+            </span>
+          </label>
         );
       }
     }
   };
+  // const handleTitleRender = (data) => {
+  //   if (data.UserRole === userRole.primary) {
+  //     return handleProtocolTitle(data.protocolDescription, "title-value");
+  //   } else {
+  //     if (uploadDateValidation(formatESDate(data.uploadDate))) {
+  //       return handleProtocolTitle(data.protocolDescription, "title-value");
+  //     } else {
+  //       return (
+  //         <Tooltip variant="light" title={redaction.hoverText} placement="top">
+  //           <span>
+  //             <span className="adjust-ellipses">
+  //               <span class="blur">{redaction.text}</span>
+  //             </span>
+  //           </span>
+  //         </Tooltip>
+  //       );
+  //     }
+  //   }
+  // };
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
       <div

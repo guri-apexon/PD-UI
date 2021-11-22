@@ -158,7 +158,7 @@ export const handleProtocolTitle = (value, testID) => {
       subtitle={<div dangerouslySetInnerHTML={createFullMarkup(value)}></div>}
       placement="top"
     >
-      <span>
+      <span data-testid={testID}>
         <span
           className="adjust-ellipses"
           dangerouslySetInnerHTML={createFullMarkup(value)}
