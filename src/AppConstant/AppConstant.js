@@ -1,3 +1,28 @@
+const userRole = {
+  primary: "primary",
+  secondary: "secondary",
+};
+const messages = {
+  legacyDocMsg: "You are not authorized to view this protocol detail.",
+  downloadFileContent: {
+    header: "Download Content Demo",
+    body: ["Table of Contents", "SOA", "Summary"],
+  },
+  compareMessage:
+    "Please Select One Baseline Document and One Comparator Document to Download Compare Result.",
+  versionMessage: {
+    heading: "Allowed Characters",
+    infoMessage: [
+      "Alphabets",
+      "Numbers",
+      "Space",
+      "Underscore ( _ )",
+      "Hyphen ( - )",
+      "Dot ( . )",
+    ],
+    validationMessage: "Invalid Entry. Please Refer Information Icon.",
+  },
+};
 const SORT_DROPDOWN = [
   {
     id: "1",
@@ -95,4 +120,13 @@ const redaction = {
   text: "~REDACTED~",
   hoverText: "Redacted Information",
 };
-export { SORT_DROPDOWN, USER_MENU, QC1_MENU, QC2_MENU, ADMIN_MENU, redaction };
+export {
+  SORT_DROPDOWN,
+  USER_MENU,
+  QC1_MENU,
+  QC2_MENU,
+  ADMIN_MENU,
+  redaction,
+  messages,
+  userRole,
+};

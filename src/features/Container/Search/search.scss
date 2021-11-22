@@ -2,6 +2,21 @@
   padding-left: 20px;
   max-width: 1140px;
   margin: 70px auto;
+  span {
+    a.title-link-protocol-1 {
+      color: #0e0aff !important;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    span.title-no-link-protocol-1 {
+      color: #333 !important;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+  }
 
   .text-capitalize {
     text-transform: capitalize;
