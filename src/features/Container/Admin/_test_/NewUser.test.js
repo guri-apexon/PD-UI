@@ -12,11 +12,12 @@ describe("NewUser Screen", () => {
     loader: false,
     newUser: {
       userId: null,
+      id: "",
       firstName: null,
       lastName: null,
       email: null,
       country: null,
-      userRole: null,
+      userRole: "",
     },
     modalToggle: true,
     newUserError: "",
