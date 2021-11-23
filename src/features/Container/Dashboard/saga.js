@@ -71,7 +71,6 @@ export function* protocolAsyn(action) {
             myPorotocolsData.push(item);
           }
           if (item.userFollowingFlag) {
-            console.log("Follow", item);
             followedProtocolData.push(item);
           }
           return item;

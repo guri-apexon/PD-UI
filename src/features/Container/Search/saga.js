@@ -712,6 +712,7 @@ export function createJSONFormat(data) {
       version: data[i].VersionNumber,
       UserRole: data[i].UserRole,
       qcStatus: qcStatus,
+      uploadedBy: data[i].uploadedBy,
     };
     arr.push(obj);
   }
