@@ -3,7 +3,8 @@ const userRole = {
   secondary: "secondary",
 };
 const messages = {
-  legacyDocMsg: "You are not authorized to view this protocol detail.",
+  legacyDocMsg:
+    "You are not authorized to view this protocol detail. Please re-process the document.",
   downloadFileContent: {
     header: "Download Content Demo",
     body: ["Table of Contents", "SOA", "Summary"],

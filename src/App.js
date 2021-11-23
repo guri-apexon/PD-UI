@@ -27,6 +27,7 @@ function App() {
   const [jwt, setJwt] = useState(null);
   //---------Revert-----------
   useEffect(() => {
+    console.log("Date Before", process.env.REACT_APP_DATE_BEFORE);
     cookiesServer.remove("api_token");
     getToken().then((data) => {
       if (data.token) {

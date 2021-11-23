@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
 import AccordionSummary from "apollo-react/components/AccordionSummary";
@@ -11,8 +11,10 @@ import Card from "apollo-react/components/Card";
 import { Link } from "react-router-dom";
 import { handleProtocolTitle } from "../../../utils/utilFunction";
 import { uploadDateValidation } from "../../../utils/utilFunction";
-import { userRole } from "../../../AppConstant/AppConstant";
+import { userRole, messages } from "../../../AppConstant/AppConstant";
 import { formatESDate } from "../../../utils/utilFunction";
+import Modal from "apollo-react/components/Modal";
+import { toast } from "react-toastify";
 
 const SearchListingSection = ({
   data,
@@ -25,6 +27,8 @@ const SearchListingSection = ({
   handleFollow,
 }) => {
   // const userId1 = useSelector(userId);
+  const [openModal, setModalOpen] = useState(false);
+  const [documentSelected, setDocumentSelected] = useState({});
   const onExpandClick = (data) => {
     setExpanded(
       data.AiDocId,
@@ -36,45 +40,89 @@ const SearchListingSection = ({
     handleFollow(e, checked, data);
   };
   const handleLinkRender = (data) => {
-    if (data.userRole === userRole.primary) {
+    if (data.UserRole === userRole.primary) {
       return (
-        <Link
-          className="title-link-protocol-1"
-          to={`/protocols?protocolId=${data.AiDocId}`}
-        >
-          Protocol:{" "}
-          {data.protocolNumber.length > 18
-            ? data.protocolNumber.substring(0, 18) + "..."
-            : data.protocolNumber}
-        </Link>
-      );
-    } else {
-      if (uploadDateValidation(formatESDate(data.uploadDate))) {
-        return (
+        <label className="blueText">
+          Protocol :{" "}
           <Link
             className="title-link-protocol-1"
             to={`/protocols?protocolId=${data.AiDocId}`}
           >
-            Protocol:{" "}
-            {data.protocolNumber.length > 18
-              ? data.protocolNumber.substring(0, 18) + "..."
-              : data.protocolNumber}
+            {data.protocolNumber}
           </Link>
+        </label>
+      );
+    } else {
+      if (uploadDateValidation(formatESDate(data.uploadDate))) {
+        return (
+          <label className="blueText">
+            Protocol :{" "}
+            <Link
+              className="title-link-protocol-1"
+              to={`/protocols?protocolId=${data.AiDocId}`}
+            >
+              {data.protocolNumber}
+            </Link>
+          </label>
         );
       } else {
         return (
-          <span className="title-no-link-protocol-1">
-            Protocol:{" "}
-            {data.protocolNumber.length > 18
-              ? data.protocolNumber.substring(0, 18) + "..."
-              : data.protocolNumber}
-          </span>
+          <label className="blueText">
+            Protocol :{" "}
+            <span
+              className="title-link-protocol-1"
+              // onClick={() => modalRender(data)}
+            >
+              {data.protocolNumber}
+            </span>
+          </label>
         );
       }
     }
   };
+  // const handleTitleRender = (data) => {
+  //   if (data.UserRole === userRole.primary) {
+  //     return handleProtocolTitle(data.protocolDescription, "title-value");
+  //   } else {
+  //     if (uploadDateValidation(formatESDate(data.uploadDate))) {
+  //       return handleProtocolTitle(data.protocolDescription, "title-value");
+  //     } else {
+  //       return (
+  //         <Tooltip variant="light" title={redaction.hoverText} placement="top">
+  //           <span>
+  //             <span className="adjust-ellipses">
+  //               <span class="blur">{redaction.text}</span>
+  //             </span>
+  //           </span>
+  //         </Tooltip>
+  //       );
+  //     }
+  //   }
+  // };
+  const modalRender = (data) => {
+    setDocumentSelected(data);
+    setModalOpen(!openModal);
+  };
+  const handleReprocess = () => {
+    console.log("Document Selected", documentSelected);
+    toast.success("API not Integrated.");
+    setModalOpen(!openModal);
+  };
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
+      <Modal
+        open={openModal}
+        variant="warning"
+        onClose={() => modalRender()}
+        title="Re-Process Required"
+        // subtitle="Optional Subtitle"
+        message={messages.legacyDocMsg}
+        buttonProps={[
+          {},
+          { label: "Re-Process", onClick: () => handleReprocess() },
+        ]}
+        id="warning"
+      />
       <div
         className="marginTop width100 marginLeft10"
         data-testid={`searchListing-card-${data.AiDocId}`}

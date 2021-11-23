@@ -158,7 +158,7 @@ export const handleProtocolTitle = (value, testID) => {
       subtitle={<div dangerouslySetInnerHTML={createFullMarkup(value)}></div>}
       placement="top"
     >
-      <span>
+      <span data-testid={testID}>
         <span
           className="adjust-ellipses"
           dangerouslySetInnerHTML={createFullMarkup(value)}
@@ -168,7 +168,6 @@ export const handleProtocolTitle = (value, testID) => {
   );
 };
 export const uploadDateValidation = (uploadDate) => {
-  console.log("Date Before", process.env.REACT_APP_DATE_BEFORE);
   const baseDate = new Date(process.env.REACT_APP_DATE_BEFORE);
   const compareDate = new Date(uploadDate);
   if (compareDate > baseDate) {

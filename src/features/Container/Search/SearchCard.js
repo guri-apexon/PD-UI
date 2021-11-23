@@ -61,7 +61,7 @@ const SearchCard = ({
   };
 
   const handleDownload = async (row) => {
-    console.log("UserID Required", userId1);
+    // console.log("UserID Required", userId1);
     setLoader(true);
     let splitArr = row.path.split("\\");
     const fileName = splitArr[splitArr.length - 1];
@@ -113,7 +113,7 @@ const SearchCard = ({
   };
   const handleDateRedaction = (value, testid) => {
     if (testid === "date-value") {
-      console.log("approval date", value);
+      // console.log("approval date", value);
     }
     return value && value === redaction.text ? (
       <>

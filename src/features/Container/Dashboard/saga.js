@@ -71,6 +71,7 @@ export function* protocolAsyn(action) {
             myPorotocolsData.push(item);
           }
           if (item.userFollowingFlag) {
+            console.log("Follow", item);
             followedProtocolData.push(item);
           }
           return item;
@@ -363,10 +364,11 @@ export function* handleFollow(action) {
 export function* fetchAssociateData(action) {
   const { protocol, id } = action.payload;
   const state = yield select();
+  const userId = yield getState();
   const protocolData = state.dashboard.followedProtocols;
   try {
     const config = {
-      url: `${BASE_URL_8000}/api/Related_protocols/?protocol=${protocol}`,
+      url: `${BASE_URL_8000}/api/Related_protocols/?protocol=${protocol}&userId=${userId}`,
       method: "GET",
     };
     const resp = yield call(httpCall, config);
