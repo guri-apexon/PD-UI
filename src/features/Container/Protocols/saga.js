@@ -195,7 +195,8 @@ export function* getProtocolToc(action) {
 }
 
 export function* fetchAssociateProtocol(action) {
-  const URL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload}`;
+  let userId = yield getUserId();
+  const URL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload}&userId=${userId}`;
   //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   const config = {
     url: URL,

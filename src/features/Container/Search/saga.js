@@ -317,7 +317,8 @@ function* updateSearchAssociated(action) {
   yield put(getSearchResult(initialObj));
   //ProtocolNo
   if (action.payload.data.protocolNumber) {
-    let associateURL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}`;
+    let userId = yield getState();
+    let associateURL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}&userId=${userId}`;
     // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=SSR_AKB-6548-CI-0014`;
     const associateDocs = yield call(httpCall, {
       url: associateURL,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
 import AccordionSummary from "apollo-react/components/AccordionSummary";
@@ -11,8 +11,10 @@ import Card from "apollo-react/components/Card";
 import { Link } from "react-router-dom";
 import { handleProtocolTitle } from "../../../utils/utilFunction";
 import { uploadDateValidation } from "../../../utils/utilFunction";
-import { userRole } from "../../../AppConstant/AppConstant";
+import { userRole, messages } from "../../../AppConstant/AppConstant";
 import { formatESDate } from "../../../utils/utilFunction";
+import Modal from "apollo-react/components/Modal";
+import { toast } from "react-toastify";
 
 const SearchListingSection = ({
   data,
@@ -25,6 +27,8 @@ const SearchListingSection = ({
   handleFollow,
 }) => {
   // const userId1 = useSelector(userId);
+  const [openModal, setModalOpen] = useState(false);
+  const [documentSelected, setDocumentSelected] = useState({});
   const onExpandClick = (data) => {
     setExpanded(
       data.AiDocId,
@@ -65,7 +69,10 @@ const SearchListingSection = ({
         return (
           <label className="blueText">
             Protocol :{" "}
-            <span className="title-no-link-protocol-1">
+            <span
+              className="title-link-protocol-1"
+              // onClick={() => modalRender(data)}
+            >
               {data.protocolNumber}
             </span>
           </label>
@@ -92,8 +99,30 @@ const SearchListingSection = ({
   //     }
   //   }
   // };
+  const modalRender = (data) => {
+    setDocumentSelected(data);
+    setModalOpen(!openModal);
+  };
+  const handleReprocess = () => {
+    console.log("Document Selected", documentSelected);
+    toast.success("API not Integrated.");
+    setModalOpen(!openModal);
+  };
   return (
     <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
+      <Modal
+        open={openModal}
+        variant="warning"
+        onClose={() => modalRender()}
+        title="Re-Process Required"
+        // subtitle="Optional Subtitle"
+        message={messages.legacyDocMsg}
+        buttonProps={[
+          {},
+          { label: "Re-Process", onClick: () => handleReprocess() },
+        ]}
+        id="warning"
+      />
       <div
         className="marginTop width100 marginLeft10"
         data-testid={`searchListing-card-${data.AiDocId}`}
