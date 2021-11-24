@@ -1,3 +1,6 @@
+.modal-csv-excel-detail {
+  max-width: 920px !important;
+}
 .dropdown-text-style {
   display: flex;
   align-items: center;
@@ -26,6 +29,9 @@
     font-size: 14px;
     .compare-Detail {
       margin-right: 10px;
+      span {
+        margin-left: 5px;
+      }
     }
     .compare-container {
       display: flex;

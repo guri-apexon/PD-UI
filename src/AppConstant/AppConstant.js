@@ -17,14 +17,51 @@ const messages = {
         ],
       },
       {
-        header: "Download Content For EXCEL",
-        body: ["Table of Contents"],
+        header: "In the Excel output, there are 3 tabs",
+        body: [
+          "Summary",
+          "TOC--Table of Contents section headers",
+          "SOA--Schedule of Assessments items, grouped by visit",
+        ],
+      },
+      {
+        header: "In the Excel TOC tab, there are 4 fields",
+        body: [
+          "baseline document section header ",
+          "compare document section header",
+          "Modification (high-level)",
+          "Specific Change",
+        ],
+      },
+      {
+        header: "In the Excel SOA tab, there are 5 fields",
+        body: [
+          "baseline document section header",
+          "compare document section header",
+          "Modification (high-level)",
+          "Specific Change",
+          "Visit",
+        ],
       },
     ],
   },
   downloadFileContentCSV: {
-    header: "Download Content For CSV",
-    body: ["Table of Contents", "SOA", "Summary"],
+    header: "CSV Content",
+    body: [
+      {
+        header: "Description",
+        body: [
+          "In the compare output, there is content compared from 2 unique documents, usually from the same clinical trial (for example, 2 different versions).",
+          "The baseline document may also be known as document A or left-hand-side (LHS) document.",
+          "The comparator document may also be known as document B or right-hand side (RHS) document.",
+        ],
+      },
+      {
+        header:
+          "In the CSV output, each item is compared and modified items are listed as records.",
+        body: [],
+      },
+    ],
   },
   compareMessage:
     "Please Select One Baseline Document and One Comparator Document to Download Compare Result.",
