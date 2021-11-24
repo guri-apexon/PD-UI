@@ -5,8 +5,25 @@ const userRole = {
 const messages = {
   legacyDocMsg:
     "You are not authorized to view this protocol detail. Please re-process the document.",
-  downloadFileContent: {
-    header: "Download Content Demo",
+  downloadFileContentExcel: {
+    header: "Excel Content",
+    body: [
+      {
+        header: "Description",
+        body: [
+          "In the compare output, there is content compared from 2 unique documents, usually from the same clinical trial (for example, 2 different versions).",
+          "The baseline document may also be known as document A or left-hand-side (LHS) document.",
+          "The comparator document may also be known as document B or right-hand side (RHS) document.",
+        ],
+      },
+      {
+        header: "Download Content For EXCEL",
+        body: ["Table of Contents"],
+      },
+    ],
+  },
+  downloadFileContentCSV: {
+    header: "Download Content For CSV",
     body: ["Table of Contents", "SOA", "Summary"],
   },
   compareMessage:

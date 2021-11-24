@@ -15,7 +15,37 @@ import { userRole } from "../../../AppConstant/AppConstant";
 import { uploadDateValidation } from "../../../utils/utilFunction";
 
 const ActionCell = ({ row }) => {
-  // console.log("....RoW........", row);
+  if (row.protocolSelected.source && row.protocolSelected.target === "") {
+    return (
+      <div>
+        <div className="table-selection source-selected">
+          <Checkbox
+            label=""
+            checked={row.protocolSelected.source === row.id ? true : false}
+            onClick={() => row.setProtocolToDownload(row)}
+          />
+        </div>
+      </div>
+    );
+  }
+  if (row.protocolSelected.source && row.protocolSelected.target) {
+    return (
+      <div>
+        <div className="table-selection source-selected">
+          <Checkbox
+            label=""
+            checked={
+              row.protocolSelected.source === row.id ||
+              row.protocolSelected.target === row.id
+                ? true
+                : false
+            }
+            onClick={() => row.setProtocolToDownload(row)}
+          />
+        </div>
+      </div>
+    );
+  }
   return (
     <div>
       <div className="table-selection">
@@ -25,7 +55,7 @@ const ActionCell = ({ row }) => {
             row.protocolSelected.length > 0 &&
             row.protocolSelected.includes(row.id)
           }
-          onChange={() => row.setProtocolToDownload(row.id)}
+          onClick={() => row.setProtocolToDownload(row)}
         />
       </div>
     </div>

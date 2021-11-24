@@ -1,5 +1,45 @@
+.dropdown-text-style {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  .info-icon {
+    margin-left: auto;
+  }
+  button {
+    height: 20px;
+  }
+}
+.compare-main-button {
+  svg {
+    height: 16px;
+    vertical-align: middle;
+    margin-left: 5px;
+    margin-top: 0px;
+  }
+}
 .document-tab {
   width: 100%;
+  .compare-info {
+    display: flex;
+    margin-left: 10px;
+    align-items: flex-end;
+    font-size: 14px;
+    .compare-Detail {
+      margin-right: 10px;
+    }
+    .compare-container {
+      display: flex;
+      .compare-Detail {
+        span {
+          margin-left: 5px;
+        }
+      }
+    }
+    .compare-message {
+      font-weight: 600;
+      color: #0768fd;
+    }
+  }
   .compare-buttons {
     display: flex;
     margin-left: auto;
