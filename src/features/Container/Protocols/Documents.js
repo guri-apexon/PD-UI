@@ -18,7 +18,7 @@ import { userId } from "../../../store/userDetails";
 
 import MenuButton from "apollo-react/components/MenuButton";
 import { messages } from "../../../AppConstant/AppConstant";
-// import Tooltip from "apollo-react/components/Tooltip";
+import Tooltip from "apollo-react/components/Tooltip";
 import InfoIcon from "apollo-react-icons/Info";
 import IconButton from "apollo-react/components/IconButton";
 import Download from "apollo-react-icons/Download";
@@ -229,13 +229,19 @@ const Documents = ({ handleChangeTab }) => {
         <div className="dropdown-text-style">
           <div>CSV</div>
           <div className="info-icon">
-            <IconButton
-              color="primary"
-              onClick={(e) => openToolTip(e, "csv")}
-              size="small"
+            <Tooltip
+              variant="light"
+              title={"Please click here to see the detail."}
+              placement="top"
             >
-              <InfoIcon size="small" />
-            </IconButton>
+              <IconButton
+                color="primary"
+                onClick={(e) => openToolTip(e, "csv")}
+                size="small"
+              >
+                <InfoIcon size="small" />
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
       ),
@@ -247,13 +253,19 @@ const Documents = ({ handleChangeTab }) => {
         <div className="dropdown-text-style" ref={tooltip2Ref}>
           <div>Excel</div>
           <div className="info-icon">
-            <IconButton
-              color="primary"
-              onClick={(e) => openToolTip(e, "excel")}
-              size="small"
+            <Tooltip
+              variant="light"
+              title={"Please click here to see the detail."}
+              placement="top"
             >
-              <InfoIcon size="small" />
-            </IconButton>
+              <IconButton
+                color="primary"
+                onClick={(e) => openToolTip(e, "excel")}
+                size="small"
+              >
+                <InfoIcon size="small" />
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
       ),
