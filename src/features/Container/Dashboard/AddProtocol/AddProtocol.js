@@ -20,10 +20,13 @@ import {
   emptyAutoObj,
 } from "./constants";
 import Plus from "apollo-react-icons/Plus";
+import InfoIcon from "apollo-react-icons/Info";
+import IconButton from "apollo-react/components/IconButton";
+import Tooltip from "apollo-react/components/Tooltip";
+import { messages } from "../../../../AppConstant/AppConstant";
 
 const versionRegx = /^[a-zA-Z0-9\s-._ ]*$/;
-const versionErrText =
-  "Only Alphabets, Numbers, Hyphen(-),Underscore(_), Dot(.) and space are allowed";
+const versionErrText = messages.versionMessage.validationMessage;
 const AddProtocol = () => {
   let dropdownFocus = "";
   const dispatch = useDispatch();
@@ -355,6 +358,15 @@ const AddProtocol = () => {
     };
     dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
   };
+  const getSubTitle = (arr) => {
+    return (
+      <ul className="version-validation">
+        {arr.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    );
+  };
   return (
     <>
       <div className="add-protocol">
@@ -453,7 +465,24 @@ const AddProtocol = () => {
             <Grid item xs={1} sm={1}></Grid>
             <Grid item xs={5} sm={5}>
               <TextField
-                label="Version Number"
+                className="version-text-field"
+                label={
+                  <span>
+                    Version Number <span className="asteric">*</span>
+                    <Tooltip
+                      variant="light"
+                      title={messages.versionMessage.heading}
+                      subtitle={getSubTitle(
+                        messages.versionMessage.infoMessage
+                      )}
+                      placement="left"
+                    >
+                      <IconButton color="grey" size="small">
+                        <InfoIcon size="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </span>
+                }
                 placeholder="Version Number"
                 value={formValues.versionNumber}
                 fullWidth
@@ -466,6 +495,18 @@ const AddProtocol = () => {
                 onBlur={(e) => onFieldBlur("versionNumber", e, "Textbox")}
                 // type="number"
                 data-testid="version-number-texfield"
+                // icon={
+                //   <Tooltip
+                //     variant="light"
+                //     title={messages.versionMessage.heading}
+                //     subtitle={getSubTitle(messages.versionMessage.infoMessage)}
+                //     placement="left"
+                //   >
+                //     <IconButton color="grey" size="small">
+                //       <InfoIcon size="small" />
+                //     </IconButton>
+                //   </Tooltip>
+                // }
               />
             </Grid>
             <Grid item xs={1} sm={1}></Grid>
