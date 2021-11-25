@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import DocumentsTable from "../../Components/DocumentsTable/DocumentsTable";
 import AssociateDocumentsTable from "../../Components/DocumentsTable/AssociateDocumentsTable";
-// import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 import { useSelector } from "react-redux";
 import { protocolSummary, associateDocs } from "./protocolSlice.js";
@@ -18,12 +18,11 @@ import { userId } from "../../../store/userDetails";
 
 import MenuButton from "apollo-react/components/MenuButton";
 import { messages } from "../../../AppConstant/AppConstant";
-import Tooltip from "apollo-react/components/Tooltip";
+// import Tooltip from "apollo-react/components/Tooltip";
 import InfoIcon from "apollo-react-icons/Info";
 import IconButton from "apollo-react/components/IconButton";
 import Download from "apollo-react-icons/Download";
-// import Peek from "apollo-react/components/Peek";
-import Modal from "apollo-react/components/Modal";
+import Peek from "apollo-react/components/Peek";
 
 const message1 = "Please Select Base Document for Compare";
 const message2 = "Please Select Comparator Document for Compare";
@@ -42,10 +41,7 @@ const Documents = ({ handleChangeTab }) => {
   const [summaryData, setSummaryData] = useState({});
   const [userName, setUserName] = useState("");
   const [tooltip1, setToolTip1] = useState(false);
-  const [tooltipSelected, setToolTipSelected] = useState(
-    messages.downloadFileContentCSV
-  );
-  //   const [tooltip2, setToolTip2] = useState(false);
+  const [tooltip2, setToolTip2] = useState(false);
   const tooltip1Ref = useRef(null);
   const tooltip2Ref = useRef(null);
   // const [completed, setCompleted] = useState(0);
@@ -92,7 +88,7 @@ const Documents = ({ handleChangeTab }) => {
         !tooltip2Ref.current.contains(event.target)
       ) {
         setToolTip1(false);
-        // setToolTip2(false);
+        setToolTip2(false);
       }
     }
 
@@ -191,8 +187,8 @@ const Documents = ({ handleChangeTab }) => {
     console.log("TOOLTIP", arr);
     return (
       <div>
-        {/* <h3>{arr.header}</h3> */}
-        <ol className="version-validation">
+        <h3>{arr.header}</h3>
+        <ol className="version-validation" style={{ width: 700 }}>
           {arr.body.map((item, i) => (
             <li key={i} className="compare-text-header">
               {item.header}
@@ -209,19 +205,17 @@ const Documents = ({ handleChangeTab }) => {
       </div>
     );
   };
-  const openToolTip = (e, type) => {
+  const handleToottip = (e, tooltip) => {
     e.stopPropagation();
-    if (type === "csv") {
-      setToolTipSelected(messages.downloadFileContentCSV);
+    if (tooltip === 1) {
+      setToolTip1(!tooltip1);
+    } else if (tooltip === 2) {
+      setToolTip2(!tooltip2);
     } else {
-      setToolTipSelected(messages.downloadFileContentExcel);
+      setToolTip1(false);
+      setToolTip2(false);
     }
-    setToolTip1(true);
   };
-  const closeToolTip = () => {
-    setToolTip1(false);
-  };
-
   const menuItems = [
     {
       key: "CSV",
@@ -229,19 +223,27 @@ const Documents = ({ handleChangeTab }) => {
         <div className="dropdown-text-style">
           <div>CSV</div>
           <div className="info-icon">
-            <Tooltip
-              variant="light"
-              title={"Please click here to see the detail."}
-              placement="top"
-            >
-              <IconButton
-                color="primary"
-                onClick={(e) => openToolTip(e, "csv")}
-                size="small"
-              >
-                <InfoIcon size="small" />
-              </IconButton>
-            </Tooltip>
+            <Peek
+              placement="left"
+              anchor={
+                <IconButton
+                  color="primary"
+                  onClick={(e) => handleToottip(e, 1)}
+                  size="small"
+                >
+                  <InfoIcon size="small" />
+                </IconButton>
+              }
+              content={
+                <div ref={tooltip1Ref}>
+                  {fileContent(messages.downloadFileContentExcel)}
+                </div>
+              }
+              open={tooltip1}
+              disableFocusListener
+              disableHoverListener
+              disableTouchListener
+            />
           </div>
         </div>
       ),
@@ -253,19 +255,27 @@ const Documents = ({ handleChangeTab }) => {
         <div className="dropdown-text-style" ref={tooltip2Ref}>
           <div>Excel</div>
           <div className="info-icon">
-            <Tooltip
-              variant="light"
-              title={"Please click here to see the detail."}
-              placement="top"
-            >
-              <IconButton
-                color="primary"
-                onClick={(e) => openToolTip(e, "excel")}
-                size="small"
-              >
-                <InfoIcon size="small" />
-              </IconButton>
-            </Tooltip>
+            <Peek
+              placement="left"
+              anchor={
+                <IconButton
+                  color="primary"
+                  onClick={(e) => handleToottip(e, 2)}
+                  size="small"
+                >
+                  <InfoIcon size="small" />
+                </IconButton>
+              }
+              content={
+                <div ref={tooltip2Ref}>
+                  {fileContent(messages.downloadFileContentExcel)}
+                </div>
+              }
+              open={tooltip2}
+              disableFocusListener
+              disableHoverListener
+              disableTouchListener
+            />
           </div>
         </div>
       ),
@@ -283,84 +293,75 @@ const Documents = ({ handleChangeTab }) => {
 
   // console.log("Protocol Selected", protocolSelected);
   return (
-    <div className="document-tab">
-      {loader && <Loader />}
-      <Modal
-        open={tooltip1}
-        onClose={() => closeToolTip()}
-        title={tooltipSelected.header}
-        // subtitle="Optional Subtitle"
-        children={fileContent(tooltipSelected)}
-        buttonProps={[{ label: "Okay" }]}
-        id="neutral"
-        hideButtons={true}
-        className="modal-csv-excel-detail"
-      />
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <div
-            className="source-document-tab"
-            data-testid="source-document-tab"
-          >
-            {"userName" in summaryData && summaryData.userName && (
-              <DocumentsTable initialsRow={[summaryData]} />
-            )}
-          </div>
-        </Grid>
-        {associateDocuments && associateDocuments.length > 1 && (
-          <>
-            <div className="compare-info">
-              {protocolSelected.source && protocolSelected.target === "" && (
-                <div className="compare-Detail">
-                  <label>Baseline Document :</label>
-                  <span>{`${protocolSelected.sourceData.protocol} (${protocolSelected.sourceData.documentStatus} ${protocolSelected.sourceData.versionNumber})`}</span>
-                </div>
+    <ClickAwayListener onClickAway={(e) => handleToottip(e, 3)}>
+      <div className="document-tab">
+        {loader && <Loader />}
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <div
+              className="source-document-tab"
+              data-testid="source-document-tab"
+            >
+              {"userName" in summaryData && summaryData.userName && (
+                <DocumentsTable initialsRow={[summaryData]} />
               )}
-              {protocolSelected.source && protocolSelected.target && (
-                <div className="compare-container">
+            </div>
+          </Grid>
+          {associateDocuments && associateDocuments.length > 1 && (
+            <>
+              <div className="compare-info">
+                {protocolSelected.source && protocolSelected.target === "" && (
                   <div className="compare-Detail">
                     <label>Baseline Document :</label>
                     <span>{`${protocolSelected.sourceData.protocol} (${protocolSelected.sourceData.documentStatus} ${protocolSelected.sourceData.versionNumber})`}</span>
                   </div>
-                  <div className="compare-Detail">
-                    <label>Comparator Document :</label>
-                    <span>{`${protocolSelected.targetData.protocol} (${protocolSelected.targetData.documentStatus} ${protocolSelected.targetData.versionNumber})`}</span>
+                )}
+                {protocolSelected.source && protocolSelected.target && (
+                  <div className="compare-container">
+                    <div className="compare-Detail">
+                      <label>Baseline Document :</label>
+                      <span>{`${protocolSelected.sourceData.protocol} (${protocolSelected.sourceData.documentStatus} ${protocolSelected.sourceData.versionNumber})`}</span>
+                    </div>
+                    <div className="compare-Detail">
+                      <label>Comparator Document :</label>
+                      <span>{`${protocolSelected.targetData.protocol} (${protocolSelected.targetData.documentStatus} ${protocolSelected.targetData.versionNumber})`}</span>
+                    </div>
                   </div>
-                </div>
-              )}
-              <span className="compare-message">{compareMessage}</span>
-            </div>
-            <div className="compare-buttons">
-              <MenuButton
-                buttonText={downloadButton()}
-                menuItems={menuItems}
-                disabled={
-                  protocolSelected.source && protocolSelected.target
-                    ? false
-                    : true
+                )}
+                <span className="compare-message">{compareMessage}</span>
+              </div>
+              <div className="compare-buttons">
+                <MenuButton
+                  buttonText={downloadButton()}
+                  menuItems={menuItems}
+                  disabled={
+                    protocolSelected.source && protocolSelected.target
+                      ? false
+                      : true
+                  }
+                />
+              </div>
+            </>
+          )}
+          <Grid item xs={12}>
+            <div className="associate-document-tab">
+              <AssociateDocumentsTable
+                handleChangeTab={handleChangeTab}
+                protocolSelected={protocolSelected}
+                setProtocolToDownload={setProtocolToDownload}
+                //  initialsRow={protocolData && protocolData}
+                initialsRow={associateDocuments && associateDocuments}
+                showCheckbox={
+                  associateDocuments && associateDocuments.length > 1
+                    ? true
+                    : false
                 }
               />
             </div>
-          </>
-        )}
-        <Grid item xs={12}>
-          <div className="associate-document-tab">
-            <AssociateDocumentsTable
-              handleChangeTab={handleChangeTab}
-              protocolSelected={protocolSelected}
-              setProtocolToDownload={setProtocolToDownload}
-              //  initialsRow={protocolData && protocolData}
-              initialsRow={associateDocuments && associateDocuments}
-              showCheckbox={
-                associateDocuments && associateDocuments.length > 1
-                  ? true
-                  : false
-              }
-            />
-          </div>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </ClickAwayListener>
   );
 };
 
