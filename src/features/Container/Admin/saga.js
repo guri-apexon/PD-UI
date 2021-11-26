@@ -1,7 +1,7 @@
 import { all, call, takeLatest, put, select } from "redux-saga/effects";
 import moment from "moment";
 import { toast } from "react-toastify";
-import { httpCall, BASE_URL_8000 } from "../../../utils/api";
+import { httpCall, BASE_URL_8000, httpCallSDA } from "../../../utils/api";
 import {
   getUsers,
   getUserRoles,
@@ -247,19 +247,22 @@ export function* addNewUser() {
     data: details[0],
   };
   try {
-    const data = yield call(httpCall, Config);
-    yield put(setLoader(false));
-    if (data.success) {
-      toast.info(`User is successfully added to PD`);
-      yield put(setModalToggle(false));
-      yield put(setNewUserError(""));
-      yield put({ type: "GET_USERS_SAGA" });
-    } else if (data.err && data.err.data && data.err.data.detail) {
-      toast.error(data.err.data.detail);
-      yield put(setNewUserError(data.err.data.detail));
-    } else {
-      yield put(setNewUserError("Error while adding user to PD"));
-      toast.error(`Error while adding user to PD`);
+    const SDA = yield addNewUserSDA(userDetails.userId);
+    if (SDA) {
+      const data = yield call(httpCall, Config);
+      yield put(setLoader(false));
+      if (data.success) {
+        toast.info(`User is successfully added to PD`);
+        yield put(setModalToggle(false));
+        yield put(setNewUserError(""));
+        yield put({ type: "GET_USERS_SAGA" });
+      } else if (data.err && data.err.data && data.err.data.detail) {
+        toast.error(data.err.data.detail);
+        yield put(setNewUserError(data.err.data.detail));
+      } else {
+        yield put(setNewUserError("Error while adding user to PD"));
+        toast.error(`Error while adding user to PD`);
+      }
     }
   } catch (err) {
     console.log(err);
@@ -268,42 +271,44 @@ export function* addNewUser() {
     toast.error(`Error while adding user to PD`);
   }
 }
-// export function* addNewUserSDA(action) {
-//   const state = yield select();
-//   const userEmail = state.user.userDetail.email;
-//   const userDetails = action.payload;
-//   const Url = `${process.env.REACT_APP_SDA}/sda-rest-api/api/external/entitlement/V1/ApplicationUsers`;
+export function* addNewUserSDA(userId) {
+  const state = yield select();
+  const userEmail = state.user.userDetail.email;
+  // const userDetails = user;
+  const Url = `${process.env.REACT_APP_SDA}/sda-rest-api/api/external/entitlement/V1/ApplicationUsers`;
 
-//   const Config = {
-//     url: Url,
-//     method: "POST",
-//     params: {
-//       roleType: "Reader",
-//       appKey: process.env.REACT_APP_SDA_AUTH,
-//       userType: "internal",
-//       networkId: userDetails.userId,
-//       updatedBy: userEmail,
-//     },
-//     // proxy: {
-//     //   protocol: "https",
-//     //   host: "dev-protocoldigitalization.work.iqvia.com",
-//     // },
-//   };
-//   console.log(Config);
-//   try {
-//     const data = yield call(httpCallSDA, Config);
-//     console.log(data);
-//     if (data.success) {
-//       toast.info(`User is successfully added to SDA`);
-//       // yield addNewUser([userDetails]);
-//     } else {
-//       toast.error(data.message);
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     toast.error(`Error while adding user to SDA`);
-//   }
-// }
+  const Config = {
+    url: Url,
+    method: "POST",
+    params: {
+      roleType: "Reader",
+      appKey: process.env.REACT_APP_SDA_AUTH,
+      userType: "internal",
+      networkId: userId,
+      updatedBy: userEmail,
+    },
+  };
+  console.log(Config);
+  try {
+    const data = yield call(httpCallSDA, Config);
+    console.log(data);
+    if (data.success) {
+      toast.info(`User is successfully added to SDA`);
+      return true;
+      // yield addNewUser([userDetails]);
+    } else if (data.code === "DUPLICATE_ENTITY") {
+      toast.error(data.message);
+      return true;
+    } else {
+      toast.error(data.message);
+      return false;
+    }
+  } catch (err) {
+    console.log(err);
+    toast.error(`Error while adding user to SDA`);
+    return false;
+  }
+}
 
 export function* addNewRole(action) {
   yield put(setLoader(true));

@@ -74,6 +74,7 @@ export const httpCallSDA = async (config) => {
   };
   try {
     const response = await axios(headerConfig);
+    console.log(response);
     if (response.status === 200) {
       return {
         success: true,
@@ -94,10 +95,19 @@ export const httpCallSDA = async (config) => {
       };
     }
   } catch (err) {
+    if (err.response.status === 404 || err.response.status === 409) {
+      return {
+        success: false,
+        code: err.response.data.code,
+        message: err.response.data.message,
+      };
+    }
     return {
       success: false,
       err: err.response,
-      message: "Not-Found",
+      message: err.response.data.message
+        ? err.response.data.message
+        : "Not-Found",
     };
   }
 };
