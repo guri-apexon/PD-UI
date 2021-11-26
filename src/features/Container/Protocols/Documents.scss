@@ -58,6 +58,11 @@
 
   .source-document-tab {
     width: 100%;
+    border: 1px solid #dedede;
+    box-shadow: 0 4px 16px 0 rgb(0 0 0 / 6%);
+    table {
+      margin-bottom: 15px;
+    }
     [class^="Table-tableWrapper-"] {
       overflow: hidden;
     }
