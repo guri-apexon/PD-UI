@@ -252,7 +252,17 @@ export function* addNewUser() {
       const data = yield call(httpCall, Config);
       yield put(setLoader(false));
       if (data.success) {
+        const userValue = {
+          userId: null,
+          id: "",
+          firstName: null,
+          lastName: null,
+          email: null,
+          country: null,
+          userRole: "",
+        };
         toast.info(`User is successfully added to PD`);
+        yield put(setNewUserValues(userValue));
         yield put(setModalToggle(false));
         yield put(setNewUserError(""));
         yield put({ type: "GET_USERS_SAGA" });
@@ -264,6 +274,9 @@ export function* addNewUser() {
         toast.error(`Error while adding user to PD`);
       }
     }
+    yield put(setLoader(false));
+    yield put(setNewUserError("Error while adding user to PD"));
+    toast.error(`Error while adding user to PD`);
   } catch (err) {
     console.log(err);
     yield put(setLoader(false));
@@ -274,7 +287,6 @@ export function* addNewUser() {
 export function* addNewUserSDA(userId) {
   const state = yield select();
   const userEmail = state.user.userDetail.email;
-  // const userDetails = user;
   const Url = `${process.env.REACT_APP_SDA}/sda-rest-api/api/external/entitlement/V1/ApplicationUsers`;
 
   const Config = {
@@ -288,14 +300,12 @@ export function* addNewUserSDA(userId) {
       updatedBy: userEmail,
     },
   };
-  console.log(Config);
   try {
     const data = yield call(httpCallSDA, Config);
     console.log(data);
     if (data.success) {
       toast.info(`User is successfully added to SDA`);
       return true;
-      // yield addNewUser([userDetails]);
     } else if (data.code === "DUPLICATE_ENTITY") {
       toast.error(data.message);
       return true;

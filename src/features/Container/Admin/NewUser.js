@@ -24,10 +24,13 @@ import {
 } from "./adminSlice";
 
 const userValue = {
+  userId: null,
+  id: "",
   firstName: null,
   lastName: null,
   email: null,
   country: null,
+  userRole: "",
 };
 
 function NewUser({ setIsOpen }) {

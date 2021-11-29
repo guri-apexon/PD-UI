@@ -95,7 +95,11 @@ export const httpCallSDA = async (config) => {
       };
     }
   } catch (err) {
-    if (err.response.status === 404 || err.response.status === 409) {
+    console.log(err.response);
+    if (
+      err.response &&
+      (err.response.status === 404 || err.response.status === 409)
+    ) {
       return {
         success: false,
         code: err.response.data.code,
@@ -105,17 +109,15 @@ export const httpCallSDA = async (config) => {
     return {
       success: false,
       err: err.response,
-      message: err.response.data.message
-        ? err.response.data.message
-        : "Not-Found",
+      message:
+        err.response && err.response.data && err.response.data.message
+          ? err.response.data.message
+          : "Error while adding user to SDA",
     };
   }
 };
 
 export const getToken = async () => {
-  // let formdata = new FormData();
-  // formdata.append("username", "ypd_api_test");
-  // formdata.append("password", "uR@TnSa5*$1ka~hasj^!4t32re");
   const headerConfig = {
     url: `${BASE_URL_8000}/api/token/`,
     method: "POST",
