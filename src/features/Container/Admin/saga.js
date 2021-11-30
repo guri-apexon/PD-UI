@@ -273,10 +273,11 @@ export function* addNewUser() {
         yield put(setNewUserError("Error while adding user to PD"));
         toast.error(`Error while adding user to PD`);
       }
+    } else {
+      yield put(setLoader(false));
+      yield put(setNewUserError("Error while adding user to PD"));
+      toast.error(`Error while adding user to PD`);
     }
-    yield put(setLoader(false));
-    yield put(setNewUserError("Error while adding user to PD"));
-    toast.error(`Error while adding user to PD`);
   } catch (err) {
     console.log(err);
     yield put(setLoader(false));
