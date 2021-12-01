@@ -13,7 +13,7 @@ test:
   stage: test
 
   tags: 
-    - pd-ui-dev
+    - pd-ui-test
   script:
     - echo "Testing App"
     - sh CI-scripts/unit-test.sh
@@ -21,9 +21,9 @@ test:
   allow_failure: true
   only:
     refs:
-      - develop
+      - Test-env-CICD
     variables: 
-      - $ENVIRONMENT== "dev"
+      - $ENVIRONMENT== "test"
 
 Perform Sonarqube Analysis and quality gate:
   image: sonarsource/sonar-scanner-cli
@@ -45,15 +45,15 @@ Perform Sonarqube Analysis and quality gate:
     - ca2ugitla006p-D4
   only:
     refs:
-      - develop
+      - Test-env-CICD
     variables:
-      - $ENVIRONMENT== "dev"
+      - $ENVIRONMENT== "test"
 
 build:
   stage: build_and_deploy
 
   tags: 
-    - pd-ui-dev
+    - pd-ui-test
 
   script: 
     - echo "Start building App"
@@ -66,6 +66,6 @@ build:
       
   only:
     refs:
-      - develop
+      - Test-env-CICD
     variables: 
-      - $ENVIRONMENT== "dev"
+      - $ENVIRONMENT== "test"

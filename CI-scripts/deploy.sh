@@ -10,7 +10,12 @@
 # /d/Projects/PD/deploy/UI/DSqjFzgy/0/protocol-dig/pd-ui
 # DEPLOY_LOCATION is your choice
 
-PULL_LOCALION="/d/Projects/PD/deploy/UI/DSqjFzgy/0/protocol-dig/pd-ui"
+# dev 
+#PULL_LOCALION="/d/Projects/PD/deploy/UI/DSqjFzgy/0/protocol-dig/pd-ui"
+#DEPLOY_LOCATION="/d/UI/pd-ui"
+
+# test
+PULL_LOCALION="/d/Projects/PD/deploy/UI/cDAsDngH/0/protocol-dig/pd-ui"
 DEPLOY_LOCATION="/d/UI/pd-ui"
 
 # Copy Everything from "PULL_LOCALION" to "DEPLOY_LOCATION"
