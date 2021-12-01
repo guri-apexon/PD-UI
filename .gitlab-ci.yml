@@ -1,5 +1,6 @@
 variables:
-  PACKAGE: "UI"
+  PULL: "UI/pull/"
+  DEPLOY: "UI/deploy/"
   NSSM_PATH: "/D/Projects/PD/softwares/nssm/win64/nssm.exe"
 
 
