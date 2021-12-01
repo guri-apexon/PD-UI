@@ -1,6 +1,6 @@
 variables:
   PACKAGE: "UI"
-  NSSM_PATH: "/D/Projects/PD/softwares/nssm/nssm-2.24/win64/nssm.exe"
+  NSSM_PATH: "/D/Projects/PD/softwares/nssm/win64/nssm.exe"
 
 
 image: node:12.20
