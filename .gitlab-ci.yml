@@ -1,8 +1,5 @@
 variables:
-  PULL: "UI/pull/"
-  DEPLOY: "UI/deploy/"
-  NSSM_PATH: "/D/Projects/PD/softwares/nssm/win64/nssm.exe"
-
+  PACKAGE: "pull"
 
 image: node:12.20
 
@@ -84,7 +81,7 @@ test-deploy:
     - pd-ui-test
 
   variables:
-    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PULL}"
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
 
   script: 
     - echo "Start building App"
