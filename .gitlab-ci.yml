@@ -1,3 +1,8 @@
+variables:
+  PACKAGE: "UI"
+  NSSM_PATH: "/D/Projects/PD/softwares/nssm/nssm-2.24/win64/nssm.exe"
+
+
 image: node:12.20
 
 cache:
@@ -7,13 +12,14 @@ cache:
 stages:
   - test
   - sonar-scan
-  - build_and_deploy
+  - dev-deploy
+  - test-deploy
 
 test:
   stage: test
 
   tags: 
-    - pd-ui-test
+    - pd-ui-dev
   script:
     - echo "Testing App"
     - sh CI-scripts/unit-test.sh
@@ -21,9 +27,9 @@ test:
   allow_failure: true
   only:
     refs:
-      - Test-env-CICD
+      - develop
     variables: 
-      - $ENVIRONMENT== "test"
+      - $ENVIRONMENT== "dev"
 
 Perform Sonarqube Analysis and quality gate:
   image: sonarsource/sonar-scanner-cli
@@ -45,15 +51,39 @@ Perform Sonarqube Analysis and quality gate:
     - ca2ugitla006p-D4
   only:
     refs:
-      - Test-env-CICD
+      - develop
     variables:
-      - $ENVIRONMENT== "test"
+      - $ENVIRONMENT== "dev"
 
-build:
-  stage: build_and_deploy
+dev-deploy:
+  stage: dev-deploy
+
+  tags: 
+    - pd-ui-dev
+
+  script: 
+    - echo "Start building App"
+    - sh CI-scripts/deploy.sh
+    - echo "Build and Deployed Successfully!"
+
+  artifacts:
+    paths:
+      - build
+      
+  only:
+    refs:
+      - develop
+    variables: 
+      - $ENVIRONMENT== "dev"
+
+test-deploy:
+  stage: test-deploy
 
   tags: 
     - pd-ui-test
+
+  variables:
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
 
   script: 
     - echo "Start building App"

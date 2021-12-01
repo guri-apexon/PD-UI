@@ -15,7 +15,7 @@
 #DEPLOY_LOCATION="/d/UI/pd-ui"
 
 # test
-PULL_LOCALION="/d/Projects/PD/deploy/UI/cDAsDngH/0/protocol-dig/pd-ui"
+PULL_LOCALION="/d/Projects/PD/deploy/UI/"
 DEPLOY_LOCATION="/d/UI/pd-ui"
 
 # Copy Everything from "PULL_LOCALION" to "DEPLOY_LOCATION"
