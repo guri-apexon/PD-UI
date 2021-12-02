@@ -323,7 +323,7 @@ describe("Admin Saga Unit Test", () => {
     await runSaga(fakeStore, addNewUser, {
       type: "",
     }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(1);
+    expect(mockCallApi).toHaveBeenCalledTimes(0);
   });
   test("updateUser Saga Failure", async () => {
     const dispatchedActions = [];
@@ -380,7 +380,7 @@ describe("Admin Saga Unit Test", () => {
     await runSaga(fakeStore, addNewUser, {
       type: "",
     }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(1);
+    expect(mockCallApi).toHaveBeenCalledTimes(0);
   });
 
   test("updateUser Saga Failure", async () => {
@@ -436,7 +436,7 @@ describe("Admin Saga Unit Test", () => {
     await runSaga(fakeStore, addNewUser, {
       type: "",
     }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(1);
+    expect(mockCallApi).toHaveBeenCalledTimes(0);
   });
 
   test("addNewRole Saga Success", async () => {

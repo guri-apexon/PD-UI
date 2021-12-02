@@ -32,7 +32,6 @@ const errorValue = {
   role: { error: false, message: "" },
   following: { error: false, message: "" },
 };
-// const roleOptions = ["Primary", "Secondary"];
 const followOptions = ["Yes", "No"];
 
 function AddNewMapping() {
@@ -42,7 +41,6 @@ function AddNewMapping() {
   const error = useSelector(newMappingError);
   const roles = useSelector(rolesOptionsList);
   const [role, setRole] = useState("");
-  //   const [formValue, setFormValue] = useState(intialValue);
   const [formErrValue, setFormErrValue] = useState(errorValue);
   const [follow, setFollow] = useState("");
 
@@ -85,6 +83,7 @@ function AddNewMapping() {
 
     setFormErrValue(err);
     if (
+      !err.userId.error &&
       formValue.userId &&
       formValue.protocol &&
       formValue.role &&
@@ -97,10 +96,10 @@ function AddNewMapping() {
   const handleChange = (key, value) => {
     const data = cloneDeep(formValue);
     data[key] = trim(value);
-    if (key === "role" && trim(value) === "Primary") {
+    if (key === "role" && trim(value) === "primary") {
       data["following"] = "1"; // Yes
       setFollow("1");
-    } else if (key === "role" && trim(value) === "Secondary") {
+    } else if (key === "role" && trim(value) === "secondary") {
       data["following"] = ""; // No
       setFollow("");
     }
@@ -126,7 +125,7 @@ function AddNewMapping() {
       err[key].error = true;
       err[key].message = "Required";
     }
-    if (key === "role" && trimValue === "Primary") {
+    if (key === "role" && trimValue === "primary") {
       err["following"].error = false;
       err["following"].message = "";
     }

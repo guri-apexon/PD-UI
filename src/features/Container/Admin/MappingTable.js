@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment-timezone";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loader from "apollo-react/components/Loader";
 import Table from "apollo-react/components/Table";
 import { compareStrings, compareDates } from "apollo-react/components/Table";
@@ -8,6 +8,7 @@ import Cog from "apollo-react-icons/Cog";
 import Trash from "apollo-react-icons/Trash";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "apollo-react/components/IconButton";
+import { loader } from "./adminSlice";
 
 const DateCell = ({ row, column }) =>
   moment(row[column.accessor]).format("MM/DD/YYYY");
@@ -71,8 +72,10 @@ const columns = [
   },
 ];
 
-const MappingTable = ({ initialRows, loader }) => {
+const MappingTable = ({ initialRows }) => {
   const dispatch = useDispatch();
+
+  const isLoading = useSelector(loader);
 
   const onDelete = ({ userId, protocol }) => {
     let confirmBox = window.confirm(
@@ -88,7 +91,7 @@ const MappingTable = ({ initialRows, loader }) => {
 
   return (
     <div style={{ overflowX: "auto", paddingTop: 20 }}>
-      {loader ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <Table

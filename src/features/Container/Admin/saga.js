@@ -19,6 +19,7 @@ import {
   setBulkMapResponse,
   setBulkMapError,
   setSearch,
+  setMapLoader,
 } from "./adminSlice";
 
 export function* usersFunction() {
@@ -476,7 +477,7 @@ export function* getUserDetails(action) {
 }
 
 export function* bulkUploadMapping(action) {
-  yield put(setLoader(true));
+  yield put(setMapLoader(true));
   let bodyFormData = new FormData();
   bodyFormData.append("user_protocol_xls_file", action.payload);
   const Url = `${BASE_URL_8000}/api/user_protocol/user_protocol_many`;
@@ -489,7 +490,7 @@ export function* bulkUploadMapping(action) {
   try {
     const data = yield call(httpCall, Config);
     console.log(data);
-    yield put(setLoader(false));
+    yield put(setMapLoader(false));
     if (data.success) {
       yield put(setBulkMapResponse(data.data));
     } else if (
@@ -509,7 +510,7 @@ export function* bulkUploadMapping(action) {
     }
   } catch (err) {
     console.log(err);
-    yield put(setLoader(false));
+    yield put(setMapLoader(false));
     yield put(setBulkMapResponse([]));
     yield put(
       setBulkMapError("Error while adding User Protocol Mapping to PD")

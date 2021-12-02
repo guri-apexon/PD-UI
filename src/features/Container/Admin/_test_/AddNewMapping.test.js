@@ -20,7 +20,7 @@ describe("AddNewMapping Screen", () => {
     AddNewMappingError: "",
     roleOptions: {
       user: ["normal", "QC1", "QC2", "admin"],
-      protocol: ["Primary", "Secondary"],
+      protocol: ["primary", "secondary"],
     },
   };
 
@@ -65,8 +65,8 @@ describe("AddNewMapping Screen", () => {
     fireEvent.change(editProtocol, { target: { value: "Protocol-1AA" } });
     expect(editProtocol.value).toEqual("Protocol-1AA");
 
-    fireEvent.change(editRole, { target: { value: "Primary" } });
-    expect(editRole.value).toEqual("Primary");
+    fireEvent.change(editRole, { target: { value: "primary" } });
+    expect(editRole.value).toEqual("primary");
     expect(editFollowing.value).toEqual("1");
 
     fireEvent.change(editProjectId, { target: { value: "Protocol-1AA" } });
@@ -110,8 +110,8 @@ describe("AddNewMapping Screen", () => {
       },
     });
     let edit = screen.getByTestId("role-select").children[1].children[1];
-    fireEvent.change(edit, { target: { value: "Secondary" } });
-    expect(edit.value).toEqual("Secondary");
+    fireEvent.change(edit, { target: { value: "secondary" } });
+    expect(edit.value).toEqual("secondary");
   });
 
   test("should focus the user id show required message", () => {
@@ -186,10 +186,10 @@ describe("AddNewMapping Screen", () => {
     });
     let edit = screen.getByTestId("role-select");
     fireEvent.change(edit.children[1].children[1], {
-      target: { value: "Primary" },
+      target: { value: "primary" },
     });
     fireEvent.focusOut(edit.children[1].children[1]);
-    expect(edit.children[1].children[1].value).toEqual("Primary");
+    expect(edit.children[1].children[1].value).toEqual("primary");
   });
 
   test("should focus the following show required message", () => {
