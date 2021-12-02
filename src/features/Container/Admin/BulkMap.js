@@ -11,7 +11,7 @@ import AccordionDetails from "apollo-react/components/AccordionDetails";
 import AccordionSummary from "apollo-react/components/AccordionSummary";
 import Typography from "apollo-react/components/Typography";
 import {
-  loader,
+  mappingLoader,
   bulkMapResponse,
   bulkMapError,
   setBulkMapError,
@@ -21,7 +21,7 @@ import {
 function BulkMap() {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const mapLoader = useSelector(loader);
+  const mapLoader = useSelector(mappingLoader);
   const bulkError = useSelector(bulkMapError);
   const bulkResponse = useSelector(bulkMapResponse);
   const [selectedFiles, setSelectedFiles] = useState([]);
