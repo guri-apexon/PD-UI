@@ -85,6 +85,7 @@ function AddNewMapping() {
 
     setFormErrValue(err);
     if (
+      !err.userId.error &&
       formValue.userId &&
       formValue.protocol &&
       formValue.role &&

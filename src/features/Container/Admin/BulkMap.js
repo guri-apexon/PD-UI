@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import isEmpty from "lodash/isEmpty";
 import Button from "apollo-react/components/Button";
 import Modal from "apollo-react/components/Modal";
@@ -105,6 +106,19 @@ function BulkMap() {
           </div>
         )}
         <div style={{ maxWidth: 700, minWidth: 400 }} data-testid="file-upload">
+          <div>
+            <p>
+              Click here for Bulk Map sample excel :{" "}
+              <Link
+                style={{ textDecoration: "none" }}
+                to="/Bulk Map.xlsx"
+                target="_blank"
+                download
+              >
+                Download
+              </Link>
+            </p>
+          </div>
           <FileUpload
             label="Add file with Protocol Mapping details"
             value={selectedFiles}
