@@ -12,6 +12,10 @@ stages:
   - sonar-scan
   - dev-deploy
   - test-deploy
+  - uat1-deploy
+  - svt-deploy
+  - uat-deploy
+  - prod-deploy
 
 test:
   stage: test
@@ -74,6 +78,7 @@ dev-deploy:
     variables: 
       - $ENVIRONMENT== "dev"
 
+      
 test-deploy:
   stage: test-deploy
 
@@ -94,6 +99,107 @@ test-deploy:
       
   only:
     refs:
-      - Test-env-CICD
+      - develop
     variables: 
       - $ENVIRONMENT== "test"
+
+
+uat1-deploy:
+  stage: uat1-deploy
+
+  tags: 
+    - pd-ui-uat1
+
+  variables:
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
+
+  script: 
+    - echo "Start building App"
+    - sh CI-scripts/deploy.sh
+    - echo "Build and Deployed Successfully!"
+
+  artifacts:
+    paths:
+      - build
+      
+  only:
+    refs:
+      - release-1.4
+    variables: 
+      - $ENVIRONMENT== "uat1"
+
+
+svt-deploy:
+  stage: svt-deploy
+
+  tags: 
+    - pd-ui-svt
+
+  variables:
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
+
+  script: 
+    - echo "Start building App"
+    - sh CI-scripts/deploy.sh
+    - echo "Build and Deployed Successfully!"
+
+  artifacts:
+    paths:
+      - build
+      
+  only:
+    refs:
+      - release-1.4
+    variables: 
+      - $ENVIRONMENT== "svt"
+
+
+uat-deploy:
+  stage: uat-deploy
+
+  tags: 
+    - pd-ui-uat
+
+  variables:
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
+
+  script: 
+    - echo "Start building App"
+    - sh CI-scripts/deploy.sh
+    - echo "Build and Deployed Successfully!"
+
+  artifacts:
+    paths:
+      - build
+      
+  only:
+    refs:
+      - release-1.4
+    variables: 
+      - $ENVIRONMENT== "uat"
+
+
+prod-deploy:
+  stage: prod-deploy
+
+  tags: 
+    - pd-ui-prod
+
+  variables:
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
+
+  script: 
+    - echo "Start building App"
+    - sh CI-scripts/deploy.sh
+    - echo "Build and Deployed Successfully!"
+
+  artifacts:
+    paths:
+      - build
+      
+  only:
+    refs:
+      - release-1.4
+    variables: 
+      - $ENVIRONMENT== "prod"
+
