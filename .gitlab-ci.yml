@@ -1,5 +1,5 @@
 variables:
-  PACKAGE: "pull"
+  PACKAGE: "pd-ui-git"
 
 image: node:12.20
 

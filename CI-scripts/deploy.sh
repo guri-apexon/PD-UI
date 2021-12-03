@@ -15,8 +15,8 @@
 #DEPLOY_LOCATION="/d/UI/pd-ui"
 
 # test
-PULL_LOCALION="/d/Projects/PD/deploy/UI/pull/"
-DEPLOY_LOCATION="/d/Projects/PD/deploy/UI/deploy/"
+PULL_LOCALION="/d/Projects/PD/deploy/UI/pd-ui-git/"
+DEPLOY_LOCATION="/d/Projects/PD/deploy/UI/pd-ui/"
 
 # Copy Everything from "PULL_LOCALION" to "DEPLOY_LOCATION"
 cp -R $PULL_LOCALION/* $DEPLOY_LOCATION/
