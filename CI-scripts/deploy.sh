@@ -10,8 +10,13 @@
 # /d/Projects/PD/deploy/UI/DSqjFzgy/0/protocol-dig/pd-ui
 # DEPLOY_LOCATION is your choice
 
-PULL_LOCALION="/d/Projects/PD/deploy/UI/DSqjFzgy/0/protocol-dig/pd-ui"
-DEPLOY_LOCATION="/d/UI/pd-ui"
+# dev 
+#PULL_LOCALION="/d/Projects/PD/deploy/UI/DSqjFzgy/0/protocol-dig/pd-ui"
+#DEPLOY_LOCATION="/d/UI/pd-ui"
+
+# test
+PULL_LOCALION="/d/Projects/PD/deploy/UI/pd-ui-git/"
+DEPLOY_LOCATION="/d/Projects/PD/deploy/UI/pd-ui/"
 
 # Copy Everything from "PULL_LOCALION" to "DEPLOY_LOCATION"
 cp -R $PULL_LOCALION/* $DEPLOY_LOCATION/

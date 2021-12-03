@@ -1,3 +1,6 @@
+variables:
+  PACKAGE: "pd-ui-git"
+
 image: node:12.20
 
 cache:
@@ -7,7 +10,8 @@ cache:
 stages:
   - test
   - sonar-scan
-  - build_and_deploy
+  - dev-deploy
+  - test-deploy
 
 test:
   stage: test
@@ -49,8 +53,8 @@ Perform Sonarqube Analysis and quality gate:
     variables:
       - $ENVIRONMENT== "dev"
 
-build:
-  stage: build_and_deploy
+dev-deploy:
+  stage: dev-deploy
 
   tags: 
     - pd-ui-dev
@@ -69,3 +73,27 @@ build:
       - develop
     variables: 
       - $ENVIRONMENT== "dev"
+
+test-deploy:
+  stage: test-deploy
+
+  tags: 
+    - pd-ui-test
+
+  variables:
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
+
+  script: 
+    - echo "Start building App"
+    - sh CI-scripts/deploy.sh
+    - echo "Build and Deployed Successfully!"
+
+  artifacts:
+    paths:
+      - build
+      
+  only:
+    refs:
+      - Test-env-CICD
+    variables: 
+      - $ENVIRONMENT== "test"
