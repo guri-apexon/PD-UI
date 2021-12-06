@@ -22,6 +22,10 @@ test:
 
   tags: 
     - pd-ui-dev
+  
+  variables:
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
+  
   script:
     - echo "Testing App"
     - sh CI-scripts/unit-test.sh
@@ -62,6 +66,9 @@ dev-deploy:
 
   tags: 
     - pd-ui-dev
+
+  variables:
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
 
   script: 
     - echo "Start building App"
