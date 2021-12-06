@@ -8,7 +8,7 @@ cache:
     - node_modules/
 
 stages:
-  - test
+  - unit-test
   - sonar-scan
   - dev-deploy
   - test-deploy
@@ -17,8 +17,8 @@ stages:
   - uat-deploy
   - prod-deploy
 
-test:
-  stage: test
+unit-test:
+  stage: unit-test
 
   tags: 
     - pd-ui-dev
@@ -58,7 +58,7 @@ Perform Sonarqube Analysis and quality gate:
   only:
     refs:
       - develop
-    variables:
+    variables: 
       - $ENVIRONMENT== "dev"
 
 dev-deploy:
