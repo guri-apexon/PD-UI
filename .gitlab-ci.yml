@@ -8,7 +8,7 @@ cache:
     - node_modules/
 
 stages:
-  - test
+  - unit-test
   - sonar-scan
   - dev-deploy
   - test-deploy
@@ -17,8 +17,8 @@ stages:
   - uat-deploy
   - prod-deploy
 
-test:
-  stage: test
+unit-test:
+  stage: unit-test
 
   tags: 
     - pd-ui-dev
@@ -33,7 +33,7 @@ test:
   allow_failure: true
   only:
     refs:
-      - develop
+      - CICD
     variables: 
       - $ENVIRONMENT== "dev"
 
@@ -81,7 +81,7 @@ dev-deploy:
       
   only:
     refs:
-      - develop
+      - CICD
     variables: 
       - $ENVIRONMENT== "dev"
 
