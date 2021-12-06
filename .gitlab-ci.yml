@@ -57,8 +57,8 @@ Perform Sonarqube Analysis and quality gate:
     - ca2ugitla006p-D4
   only:
     refs:
-      - develop
-    variables:
+      - CICD
+    variables: 
       - $ENVIRONMENT== "dev"
 
 dev-deploy:
