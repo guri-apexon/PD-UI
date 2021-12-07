@@ -48,6 +48,12 @@ export const httpCall = async (config) => {
         data: response.data.detail,
         message: "Authentication-Error",
       };
+    } else if (response.status === 409) {
+      return {
+        success: true,
+        data: response.data.detail,
+        code: "DUPLICATE_ENTITY",
+      };
     }
   } catch (err) {
     if (err && err.response && err.response.status === 403) {
@@ -56,6 +62,12 @@ export const httpCall = async (config) => {
         data: "",
         err: err.response,
         message: "No Access",
+      };
+    } else if (err.response && err.response.status === 409) {
+      return {
+        success: false,
+        data: err.response.data.detail,
+        code: "DUPLICATE_ENTITY",
       };
     }
     return {
