@@ -262,28 +262,50 @@ export function* addNewUser() {
           country: null,
           userRole: "",
         };
-        toast.info(`User is successfully added to PD`);
+        toast.info(`User addition is successful`);
         yield put(setNewUserValues(userValue));
         yield put(setModalToggle(false));
         yield put(setNewUserError(""));
         yield put({ type: "GET_USERS_SAGA" });
-      } else if (data.err && data.err.data && data.err.data.detail) {
-        toast.error(data.err.data.detail);
-        yield put(setNewUserError(data.err.data.detail));
+      } else if (data.code === "DUPLICATE_ENTITY") {
+        toast.error("User profile already exist");
+        yield put(setNewUserError("User profile already exist"));
       } else {
-        yield put(setNewUserError("Error while adding user to PD"));
-        toast.error(`Error while adding user to PD`);
+        yield put(
+          setNewUserError(
+            "Error while adding the user, please contact administrator or try after sometime."
+          )
+        );
+        toast.error(
+          `Error while adding the user, please contact administrator or try after sometime.`
+        );
       }
     } else {
       yield put(setLoader(false));
-      yield put(setNewUserError("Error while adding user to PD"));
-      toast.error(`Error while adding user to PD`);
+      yield put(
+        setNewUserError(
+          "Error while adding the user, please contact administrator or try after sometime."
+        )
+      );
+      toast.error(
+        `Error while adding the user, please contact administrator or try after sometime.`
+      );
     }
   } catch (err) {
-    console.log(err);
     yield put(setLoader(false));
-    yield put(setNewUserError("Error while adding user to PD"));
-    toast.error(`Error while adding user to PD`);
+    if (err.code === "DUPLICATE_ENTITY") {
+      toast.error("User profile already exist");
+      yield put(setNewUserError("User profile already exist"));
+    } else {
+      yield put(
+        setNewUserError(
+          "Error while adding the user, please contact administrator or try after sometime."
+        )
+      );
+      toast.error(
+        `Error while adding the user, please contact administrator or try after sometime.`
+      );
+    }
   }
 }
 export function* addNewUserSDA(userId) {
@@ -306,18 +328,14 @@ export function* addNewUserSDA(userId) {
     const data = yield call(httpCallSDA, Config);
     console.log(data);
     if (data.success) {
-      toast.info(`User is successfully added to SDA`);
       return true;
     } else if (data.code === "DUPLICATE_ENTITY") {
-      toast.error(data.message);
       return true;
     } else {
-      toast.error(data.message);
       return false;
     }
   } catch (err) {
     console.log(err);
-    toast.error(`Error while adding user to SDA`);
     return false;
   }
 }

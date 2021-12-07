@@ -55,7 +55,7 @@ const ProtocolOverview = ({ data }) => {
                 <label>Version</label>
                 {redactionCheckRender(data.versionNumber, "version-value")}
               </div>
-              <div className="row-item">
+              <div className="row-item text-capitalize">
                 <label>Document Status</label>
                 {redactionCheckRender(data.documentStatus, "status-value")}
               </div>
