@@ -407,7 +407,11 @@ const ExpandableComponent = ({ row }) => {
           >
             {"Document Status"}
           </Typography>
-          <Typography className="fw-8" variant="body2">
+          <Typography
+            className="fw-8"
+            variant="body2"
+            style={{ textTransform: "capitalize" }}
+          >
             {row.documentStatus}
           </Typography>
         </div>

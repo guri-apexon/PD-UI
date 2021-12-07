@@ -157,7 +157,9 @@ const SearchCard = ({
             <p className="grid-item bold-class">Document Status :</p>
           </Grid>
           <Grid md={6}>
-            {redactionCheckRender(data.documentStatus, "status-value")}
+            <span className="text-capitalize">
+              {redactionCheckRender(data.documentStatus, "status-value")}
+            </span>
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Version #:</p>
