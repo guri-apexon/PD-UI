@@ -2,13 +2,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import DocumentsTable from "../../Components/DocumentsTable/DocumentsTable";
 import AssociateDocumentsTable from "../../Components/DocumentsTable/AssociateDocumentsTable";
-// import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 import { useSelector } from "react-redux";
 import { protocolSummary, associateDocs } from "./protocolSlice.js";
 import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
-// import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
@@ -22,7 +20,6 @@ import Tooltip from "apollo-react/components/Tooltip";
 import InfoIcon from "apollo-react-icons/Info";
 import IconButton from "apollo-react/components/IconButton";
 import Download from "apollo-react-icons/Download";
-// import Peek from "apollo-react/components/Peek";
 import Modal from "apollo-react/components/Modal";
 
 const message1 = "Please Select Base Document for Compare";
@@ -45,10 +42,8 @@ const Documents = ({ handleChangeTab }) => {
   const [tooltipSelected, setToolTipSelected] = useState(
     messages.downloadFileContentCSV
   );
-  //   const [tooltip2, setToolTip2] = useState(false);
   const tooltip1Ref = useRef(null);
   const tooltip2Ref = useRef(null);
-  // const [completed, setCompleted] = useState(0);
 
   const getUserName = async (userID) => {
     const config = {
@@ -92,7 +87,6 @@ const Documents = ({ handleChangeTab }) => {
         !tooltip2Ref.current.contains(event.target)
       ) {
         setToolTip1(false);
-        // setToolTip2(false);
       }
     }
 
@@ -148,7 +142,6 @@ const Documents = ({ handleChangeTab }) => {
   const downloadCompare = async (type) => {
     try {
       setLoader(true);
-      // console.log("UserID Required", userId1);
       const config = {
         url: `${BASE_URL_8000}/api/document_compare/?id1=${
           protocolSelected.source
@@ -164,10 +157,7 @@ const Documents = ({ handleChangeTab }) => {
           resp.data,
           `${protocolSelected.source}_${protocolSelected.target}.compare_detail${type}`
         );
-        // console.log(completed);
-        // if (completed === 100 || completed === "100") {
         setLoader(false);
-        // }
       } else if (resp.message === "No-Content") {
         toast.info("No difference found for this compare");
         setLoader(false);
@@ -281,7 +271,6 @@ const Documents = ({ handleChangeTab }) => {
     );
   };
 
-  // console.log("Protocol Selected", protocolSelected);
   return (
     <div className="document-tab">
       {loader && <Loader />}

@@ -245,23 +245,7 @@
 <a name='L186'></a><a href='#L186'>186</a>
 <a name='L187'></a><a href='#L187'>187</a>
 <a name='L188'></a><a href='#L188'>188</a>
-<a name='L189'></a><a href='#L189'>189</a>
-<a name='L190'></a><a href='#L190'>190</a>
-<a name='L191'></a><a href='#L191'>191</a>
-<a name='L192'></a><a href='#L192'>192</a>
-<a name='L193'></a><a href='#L193'>193</a>
-<a name='L194'></a><a href='#L194'>194</a>
-<a name='L195'></a><a href='#L195'>195</a>
-<a name='L196'></a><a href='#L196'>196</a>
-<a name='L197'></a><a href='#L197'>197</a>
-<a name='L198'></a><a href='#L198'>198</a>
-<a name='L199'></a><a href='#L199'>199</a>
-<a name='L200'></a><a href='#L200'>200</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L189'></a><a href='#L189'>189</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -295,10 +279,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">21x</span>
 <span class="cline-any cline-yes">20x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-yes">3x</span>
@@ -315,8 +297,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">17x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -407,8 +387,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -457,10 +435,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
 import moment from "moment";
-// import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-// import { toast } from "react-toastify";
-// import axios from "axios";
 import BellIcon from "apollo-react-icons/Bell";
 import Badge from "apollo-react/components/Badge";
 &nbsp;
@@ -469,8 +444,6 @@ import Typography from "apollo-react/components/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "apollo-react/components/Tooltip";
-// import { userId } from "../../../store/userDetails";
-// import { BASE_URL_8000 } from "../../../utils/api";
 import { navbarNotifications } from "./navbarSlice";
 &nbsp;
 import "./Alerts.scss";
@@ -494,10 +467,8 @@ function createFullMarkup(str) {
 }
 &nbsp;
 function Alerts() {
-  // let history = useHistory();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  // const uid = useSelector(userId);
   const notificationsMenuProps = useSelector(navbarNotifications);
   if (!notificationsMenuProps.length) {
     return (
@@ -514,8 +485,6 @@ function Alerts() {
   }
   const checkForPrimary = async (data) =&gt; {
     dispatch({ type: "READ_NOTIFICATION_SAGA", payload: data });
-&nbsp;
-    // dispatch({ type: "SET_NOTIFICATION_READ_SAGA", payload: postObj });
 &nbsp;
     //---- Remove in local-----------
     // const axiosResp = await axios.get("/session");
@@ -633,9 +602,7 @@ function Alerts() {
                       &lt;p
                         className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock"
                         dangerouslySetInnerHTML={createFullMarkup(item.details)}
-                      &gt;
-                        {/* {item.details} */}
-                      &lt;/p&gt;
+                      &gt;&lt;/p&gt;
                     &lt;/Tooltip&gt;
                   &lt;/div&gt;
 &nbsp;
@@ -661,7 +628,7 @@ export default Alerts;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Nov 26 2021 12:36:27 GMT+0530 (India Standard Time)
+                at Wed Dec 15 2021 12:31:41 GMT+0530 (India Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

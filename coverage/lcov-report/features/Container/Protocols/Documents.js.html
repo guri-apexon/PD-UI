@@ -413,21 +413,7 @@
 <a name='L354'></a><a href='#L354'>354</a>
 <a name='L355'></a><a href='#L355'>355</a>
 <a name='L356'></a><a href='#L356'>356</a>
-<a name='L357'></a><a href='#L357'>357</a>
-<a name='L358'></a><a href='#L358'>358</a>
-<a name='L359'></a><a href='#L359'>359</a>
-<a name='L360'></a><a href='#L360'>360</a>
-<a name='L361'></a><a href='#L361'>361</a>
-<a name='L362'></a><a href='#L362'>362</a>
-<a name='L363'></a><a href='#L363'>363</a>
-<a name='L364'></a><a href='#L364'>364</a>
-<a name='L365'></a><a href='#L365'>365</a>
-<a name='L366'></a><a href='#L366'>366</a>
-<a name='L367'></a><a href='#L367'>367</a>
-<a name='L368'></a><a href='#L368'>368</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L357'></a><a href='#L357'>357</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -471,10 +457,8 @@
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">36x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -518,7 +502,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -574,7 +557,6 @@
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -590,10 +572,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -707,7 +686,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -795,13 +773,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import DocumentsTable from "../../Components/DocumentsTable/DocumentsTable";
 import AssociateDocumentsTable from "../../Components/DocumentsTable/AssociateDocumentsTable";
-// import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 &nbsp;
 import { useSelector } from "react-redux";
 import { protocolSummary, associateDocs } from "./protocolSlice.js";
 import Grid from "apollo-react/components/Grid";
 import "./Documents.scss";
-// import Button from "apollo-react/components/Button";
 import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import Loader from "apollo-react/components/Loader";
@@ -815,7 +791,6 @@ import Tooltip from "apollo-react/components/Tooltip";
 import InfoIcon from "apollo-react-icons/Info";
 import IconButton from "apollo-react/components/IconButton";
 import Download from "apollo-react-icons/Download";
-// import Peek from "apollo-react/components/Peek";
 import Modal from "apollo-react/components/Modal";
 &nbsp;
 const message1 = "Please Select Base Document for Compare";
@@ -838,10 +813,8 @@ const Documents = ({ handleChangeTab }) =&gt; {
   const [tooltipSelected, setToolTipSelected] = useState(
     messages.downloadFileContentCSV
   );
-  //   const [tooltip2, setToolTip2] = useState(false);
   const tooltip1Ref = useRef(null);
   const tooltip2Ref = useRef(null);
-  // const [completed, setCompleted] = useState(0);
 &nbsp;
   const getUserName = async (userID) =&gt; {
     const config = {
@@ -885,7 +858,6 @@ const Documents = ({ handleChangeTab }) =&gt; {
         !tooltip2Ref.current.contains(event.target)
       ) {
 <span class="cstat-no" title="statement not covered" >        setToolTip1(false);</span>
-        // setToolTip2(false);
       }
     }
 &nbsp;
@@ -941,7 +913,6 @@ const Documents = ({ handleChangeTab }) =&gt; {
   const downloadCompare = async (type) =&gt; {
     try {
       setLoader(true);
-      // console.log("UserID Required", userId1);
       const config = {
         url: `${BASE_URL_8000}/api/document_compare/?id1=${
           protocolSelected.source
@@ -957,10 +928,7 @@ const Documents = ({ handleChangeTab }) =&gt; {
           resp.data,
           `${protocolSelected.source}_${protocolSelected.target}.compare_detail${type}`
         );
-        // console.log(completed);
-        // if (completed === 100 || completed === "100") {
 <span class="cstat-no" title="statement not covered" >        setLoader(false);</span>
-        // }
       } else if (resp.message === "No-Content") {
         toast.info("No difference found for this compare");
         setLoader(false);
@@ -1074,7 +1042,6 @@ const Documents = ({ handleChangeTab }) =&gt; {
     );
   };
 &nbsp;
-  // console.log("Protocol Selected", protocolSelected);
   return (
     &lt;div className="document-tab"&gt;
       {loader &amp;&amp; &lt;Loader /&gt;}
@@ -1165,7 +1132,7 @@ export default Documents;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Nov 26 2021 12:36:27 GMT+0530 (India Standard Time)
+                at Wed Dec 15 2021 12:31:41 GMT+0530 (India Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

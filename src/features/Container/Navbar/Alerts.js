@@ -1,9 +1,6 @@
 import React from "react";
 import moment from "moment";
-// import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-// import { toast } from "react-toastify";
-// import axios from "axios";
 import BellIcon from "apollo-react-icons/Bell";
 import Badge from "apollo-react/components/Badge";
 
@@ -12,8 +9,6 @@ import Typography from "apollo-react/components/Typography";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "apollo-react/components/Tooltip";
-// import { userId } from "../../../store/userDetails";
-// import { BASE_URL_8000 } from "../../../utils/api";
 import { navbarNotifications } from "./navbarSlice";
 
 import "./Alerts.scss";
@@ -37,10 +32,8 @@ function createFullMarkup(str) {
 }
 
 function Alerts() {
-  // let history = useHistory();
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  // const uid = useSelector(userId);
   const notificationsMenuProps = useSelector(navbarNotifications);
   if (!notificationsMenuProps.length) {
     return (
@@ -57,8 +50,6 @@ function Alerts() {
   }
   const checkForPrimary = async (data) => {
     dispatch({ type: "READ_NOTIFICATION_SAGA", payload: data });
-
-    // dispatch({ type: "SET_NOTIFICATION_READ_SAGA", payload: postObj });
 
     //---- Remove in local-----------
     // const axiosResp = await axios.get("/session");
@@ -176,9 +167,7 @@ function Alerts() {
                       <p
                         className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock"
                         dangerouslySetInnerHTML={createFullMarkup(item.details)}
-                      >
-                        {/* {item.details} */}
-                      </p>
+                      ></p>
                     </Tooltip>
                   </div>
 

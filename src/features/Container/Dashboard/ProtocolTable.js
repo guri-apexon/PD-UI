@@ -19,8 +19,6 @@ function ProtocolTable({ pageRows, maxHeight }) {
   const error = useSelector(prtocolsError);
   const [value, setValue] = React.useState(0);
   const loader = useSelector(tableLoader);
-
-  // const memoizedPageRows = useMemo(() => pageRows, [pageRows]);
   const handleChangeTab = (event, value) => {
     setValue(value);
   };

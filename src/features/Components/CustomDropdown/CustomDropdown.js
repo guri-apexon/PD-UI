@@ -23,7 +23,6 @@ const CustomDropdown = ({
   });
   const buttonRef = useRef(null);
   const [blur, setBlur] = useState(false);
-  // const [expand, setExpand] = useState(false);
   const [list, setList] = useState(source);
   const [subStringExist, SetSubStringExist] = useState(false);
   const [expandClass, setExpandClass] = useState("");
@@ -54,17 +53,28 @@ const CustomDropdown = ({
     setList(source);
   }, [source]);
 
+  const getModifyString = (value) => {
+    let regConstant = ["(", ")", "+", "[", "]", "*", "?", "|", ".", "$"];
+    return value
+      .split("")
+      .map((val) => {
+        if (regConstant.includes(val)) {
+          return `\\${val}`;
+        }
+        return val;
+      })
+      .join("");
+  };
+
   const onTextFieldChange = (id, e, type) => {
     let customListTemp = cloneDeep(source);
     let str = getModifyString(e.target.value);
     let subStr = new RegExp(`^${str}$`, "i");
-    // let subStr = new RegExp(`^${str}$`);
     const filteredList = customListTemp.filter((item) => {
       let reg = new RegExp(`^${str}[a-z0-9 ]*$`, "i");
       return item.label.toLowerCase().match(reg);
     });
     let substring = customListTemp.filter((item) => {
-      // return item.label.match(subStr);
       return item.label.toLowerCase().match(subStr);
     });
     if (substring.length === 0) {
@@ -84,27 +94,6 @@ const CustomDropdown = ({
       setList(source);
     }
   };
-  const getModifyString = (value) => {
-    let regConstant = ["(", ")", "+", "[", "]", "*", "?", "|", ".", "$"];
-    let tempValue = value
-      .split("")
-      .map((val) => {
-        if (regConstant.includes(val)) {
-          return `\\${val}`;
-        }
-        return val;
-      })
-      .join("");
-    return tempValue;
-  };
-  const onCustomClick = (id, event) => {
-    // setExpand(true);
-    // event.target
-    //   .closest(`.custom-dropdown-wrapper-${id}`)
-    //   .classList.add("is-expanded", "focused");
-    setExpandClass("is-expanded");
-    document.addEventListener("click", handleOutsideClick, true);
-  };
 
   const handleOutsideClick = (event) => {
     if (
@@ -119,6 +108,12 @@ const CustomDropdown = ({
       setBlur(true);
     }
   };
+
+  const onCustomClick = (id, event) => {
+    setExpandClass("is-expanded");
+    document.addEventListener("click", handleOutsideClick, true);
+  };
+
   const onClickAdd = (e) => {
     let tempValue = {
       label: value.label,

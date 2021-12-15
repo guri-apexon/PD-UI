@@ -10,9 +10,11 @@ import Checkbox from "apollo-react/components/Checkbox";
 import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
 import { userId } from "../../../store/userDetails";
-import { qcIconStatus } from "../../../utils/utilFunction";
+import {
+  qcIconStatus,
+  uploadDateValidation,
+} from "../../../utils/utilFunction";
 import { userRole } from "../../../AppConstant/AppConstant";
-import { uploadDateValidation } from "../../../utils/utilFunction";
 
 const ActionCell = ({ row }) => {
   if (row.protocolSelected.source && row.protocolSelected.target === "") {
@@ -63,7 +65,6 @@ const ActionCell = ({ row }) => {
 };
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {
-  // let url;
   const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
   console.log("UserID Required", userId1);
@@ -150,9 +151,6 @@ const VersionCell = ({ row, column }) => {
     }
   }
 };
-// const Cell = ({ row, column: { accessor: key } }) => {
-//   return <>{row[key] ? row[key] : "-"}</>;
-// };
 
 const StatusCell = ({ row, column: { accessor: key } }) => {
   return <span className="text-capitalize">{row[key] ? row[key] : "-"}</span>;
@@ -263,17 +261,6 @@ const AssociateDocumentsTable = ({
   showCheckbox,
   primaryUser,
 }) => {
-  // console.log("initialsRow :", initialsRow);
-
-  // return (
-  //   <Table
-  //   title="Associated Documents"
-  //   rows={initialsRow}
-  //   columns={columns}
-  //   initialSortOrder="asc"
-  //   initialSortedColumn="fileName"
-  //   />
-  // );
   return (
     <div
       className="associate11-document-tab"
