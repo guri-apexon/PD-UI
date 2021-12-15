@@ -285,6 +285,11 @@ const Search = (props) => {
     //   payload: input,
     // });
   };
+
+  const clearSearchText = (value) => {
+    setClearAll(value);
+  };
+
   const handleKeywordSearch = (input) => {
     if (input) {
       setEnableFilter(false);
@@ -305,13 +310,10 @@ const Search = (props) => {
         dateType: [1],
         dateSection: [1],
       });
-      // setDateRangeValue([null, null]);
-      // clearInputFields("range-date-id");
       const range = {
         from: null,
         to: null,
       };
-      // setElasticSearchQuesry("");
       dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
       setDateRangeValue([null, null]);
       setSearchInput(input);
@@ -331,6 +333,166 @@ const Search = (props) => {
       });
     } else {
       toast.warn("Please enter something to search.");
+    }
+  };
+
+  const contructQueryFromArray = (key, value) => {
+    switch (key) {
+      case "toc": {
+        let str = "&toc=";
+        let extractValues = TOC.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.title}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
+      case "sponsor": {
+        let str = "&sponsor=";
+        let extractValues =
+          sponsorData.sectionContent &&
+          sponsorData.sectionContent.filter((item) => value.includes(item.id));
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.title}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
+      case "indication": {
+        let str = "&indication=";
+        let extractValues =
+          indicationData.sectionContent &&
+          indicationData.sectionContent.filter((item) =>
+            value.includes(item.id)
+          );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.title}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
+      case "phase": {
+        let str = "&phase=";
+        let extractValues = phaseData.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.title}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
+      case "documentStatus": {
+        let str = "&documentStatus=";
+        let extractValues = documentStatus.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.value}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
+      case "qcStatus": {
+        let str = "&qcStatus=";
+        let extractValues = qcStatus.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.value}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
+      case "dateType": {
+        let str = "&dateType=";
+        let extractValues = dateType.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.value}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
+      case "dateSection": {
+        let str = "&dateSection=";
+        let extractValues = dateSection.sectionContent.filter((item) =>
+          value.includes(item.id)
+        );
+        if (extractValues.length > 0) {
+          extractValues.map((item) => {
+            str += `${item.value}+`;
+            return true;
+          });
+          let trimstr = str.slice(0, -1);
+          str = trimstr;
+        }
+        return str;
+      }
+      default:
+        return "";
+    }
+  };
+
+  const isFutureDate = (value) => {
+    let d_now = new Date();
+    let d_inp = new Date(value);
+    return d_now.getTime() <= d_inp.getTime();
+  };
+
+  const compareObjs = (a, b) => {
+    if (JSON.stringify(a) === JSON.stringify(b)) {
+      return false;
+    }
+    return true;
+  };
+
+  const checkValidity = (postObj) => {
+    if (
+      postObj &&
+      (postObj.toc.length > 0 ||
+        postObj.indication.length > 0 ||
+        postObj.phase.length > 0 ||
+        postObj.sponsor.length > 0 ||
+        postObj.documentStatus.length > 0 ||
+        postObj.qcStatus.length > 0 ||
+        postObj.dateFrom.length > 0 ||
+        postObj.dateTo.length > 0)
+    ) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -540,40 +702,8 @@ const Search = (props) => {
 
     setPostQueryObj(postObj);
   };
-  const compareObjs = (a, b) => {
-    if (JSON.stringify(a) === JSON.stringify(b)) {
-      return false;
-    }
-    return true;
-  };
 
-  const checkValidity = (postObj) => {
-    if (
-      postObj &&
-      (postObj.toc.length > 0 ||
-        postObj.indication.length > 0 ||
-        postObj.phase.length > 0 ||
-        postObj.sponsor.length > 0 ||
-        postObj.documentStatus.length > 0 ||
-        postObj.qcStatus.length > 0 ||
-        postObj.dateFrom.length > 0 ||
-        postObj.dateTo.length > 0)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-  const isFutureDate = (value) => {
-    let d_now = new Date();
-    let d_inp = new Date(value);
-    return d_now.getTime() <= d_inp.getTime();
-  };
-  const clearSearchText = (value) => {
-    setClearAll(value);
-  };
   const hancleClearAll = (inputPresent, input) => {
-    // setClearAll(true);
     clearSearchText(true);
     let postObj = cloneDeep(POST_OBJECT);
     setProtocolSelected([]);
@@ -590,10 +720,6 @@ const Search = (props) => {
         dateSection: [1],
       });
       postObj.key = input;
-      // let ele = document.getElementById("range-date-id");
-      // clearInputFields("range-date-id");
-      // setDateRangeValue([null, null]);
-      // setClearAll(false)
       const range = {
         from: null,
         to: null,
@@ -628,134 +754,7 @@ const Search = (props) => {
     }
     setPostQueryObj(postObj);
   };
-  const contructQueryFromArray = (key, value) => {
-    switch (key) {
-      case "toc": {
-        let str = "&toc=";
-        let extractValues = TOC.sectionContent.filter((item) =>
-          value.includes(item.id)
-        );
-        if (extractValues.length > 0) {
-          extractValues.map((item) => {
-            str += `${item.title}+`;
-            return true;
-          });
-          let trimstr = str.slice(0, -1);
-          str = trimstr;
-        }
-        return str;
-      }
-      case "sponsor": {
-        let str = "&sponsor=";
-        let extractValues =
-          sponsorData.sectionContent &&
-          sponsorData.sectionContent.filter((item) => value.includes(item.id));
-        if (extractValues.length > 0) {
-          extractValues.map((item) => {
-            str += `${item.title}+`;
-            return true;
-          });
-          let trimstr = str.slice(0, -1);
-          str = trimstr;
-        }
-        return str;
-      }
-      case "indication": {
-        let str = "&indication=";
-        let extractValues =
-          indicationData.sectionContent &&
-          indicationData.sectionContent.filter((item) =>
-            value.includes(item.id)
-          );
-        if (extractValues.length > 0) {
-          extractValues.map((item) => {
-            str += `${item.title}+`;
-            return true;
-          });
-          let trimstr = str.slice(0, -1);
-          str = trimstr;
-        }
-        return str;
-      }
-      case "phase": {
-        let str = "&phase=";
-        let extractValues = phaseData.sectionContent.filter((item) =>
-          value.includes(item.id)
-        );
-        if (extractValues.length > 0) {
-          extractValues.map((item) => {
-            str += `${item.title}+`;
-            return true;
-          });
-          let trimstr = str.slice(0, -1);
-          str = trimstr;
-        }
-        return str;
-      }
-      case "documentStatus": {
-        let str = "&documentStatus=";
-        let extractValues = documentStatus.sectionContent.filter((item) =>
-          value.includes(item.id)
-        );
-        if (extractValues.length > 0) {
-          extractValues.map((item) => {
-            str += `${item.value}+`;
-            return true;
-          });
-          let trimstr = str.slice(0, -1);
-          str = trimstr;
-        }
-        return str;
-      }
-      case "qcStatus": {
-        let str = "&qcStatus=";
-        let extractValues = qcStatus.sectionContent.filter((item) =>
-          value.includes(item.id)
-        );
-        if (extractValues.length > 0) {
-          extractValues.map((item) => {
-            str += `${item.value}+`;
-            return true;
-          });
-          let trimstr = str.slice(0, -1);
-          str = trimstr;
-        }
-        return str;
-      }
-      case "dateType": {
-        let str = "&dateType=";
-        let extractValues = dateType.sectionContent.filter((item) =>
-          value.includes(item.id)
-        );
-        if (extractValues.length > 0) {
-          extractValues.map((item) => {
-            str += `${item.value}+`;
-            return true;
-          });
-          let trimstr = str.slice(0, -1);
-          str = trimstr;
-        }
-        return str;
-      }
-      case "dateSection": {
-        let str = "&dateSection=";
-        let extractValues = dateSection.sectionContent.filter((item) =>
-          value.includes(item.id)
-        );
-        if (extractValues.length > 0) {
-          extractValues.map((item) => {
-            str += `${item.value}+`;
-            return true;
-          });
-          let trimstr = str.slice(0, -1);
-          str = trimstr;
-        }
-        return str;
-      }
-      default:
-        return "";
-    }
-  };
+
   const deleteSearchInput = () => {
     clearSearchText(true);
     let postObj = cloneDeep(POST_OBJECT);

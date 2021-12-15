@@ -16,6 +16,113 @@ import {
   dateType,
 } from "./Data/constants";
 
+const HandleSearch = (props) => {
+  const {
+    sectiondata,
+    onConstructSearchQuery,
+    searchQuery,
+    clearAll,
+    forSection,
+  } = props;
+
+  const [data, setData] = useState({});
+  const [index, setIndex] = useState(0);
+  const [typed, setTyped] = useState("");
+  const [noResult, setNoResult] = useState(false);
+  useEffect(() => {
+    setData(sectiondata);
+  }, [sectiondata]);
+  useEffect(() => {
+    if (clearAll && typed !== "") {
+      setTyped("");
+      setData(sectiondata);
+      setIndex(index + 1);
+    }
+  }, [clearAll]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (typed) {
+        console.log("typed if", typed);
+        const newArr = searchWords(typed, sectiondata.sectionContent);
+        console.log("Array length", newArr, newArr.length);
+        if (newArr.length !== 0) {
+          console.log("typed length if", typed);
+          setData({ success: true, sectionContent: newArr });
+          setIndex(index + 1);
+          setNoResult(false);
+        } else {
+          console.log("typed length else", typed);
+          setData({ success: true, sectionContent: newArr });
+          setIndex(index + 1);
+          setNoResult(true);
+        }
+      }
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [typed]);
+  const handleTextChange = (value) => {
+    setTyped(value);
+    if (value === "") {
+      setData(sectiondata);
+      setIndex(index + 1);
+    }
+  };
+  return (
+    <>
+      <Collapsible trigger={forSection + "s"}>
+        <div className="handle-search-component">
+          <Search
+            placeholder="Search"
+            onChange={(e) => handleTextChange(e.target.value)}
+            value={typed}
+            fullWidth
+          />
+        </div>
+        {data.sectionContent && data.sectionContent.length > 0 ? (
+          <CheckboxTest
+            key={index}
+            section={data}
+            identifier={forSection}
+            onCheckboxClick={onConstructSearchQuery}
+            listValue={searchQuery[forSection]}
+            clearAll={clearAll}
+          />
+        ) : (
+          !noResult && (
+            <div
+              style={{
+                height: 300,
+                justifyContent: "center",
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <Loader />
+            </div>
+          )
+        )}
+        {noResult && (
+          <div className="no-result">
+            No {forSection} found for keyword searched. Please try something
+            else.
+          </div>
+        )}
+      </Collapsible>
+    </>
+  );
+};
+
+const searchWords = (nameKey, myArray) => {
+  let arr = [];
+  for (var i = 0; i < myArray.length; i++) {
+    if (myArray[i].title.toLowerCase().includes(nameKey.toLowerCase())) {
+      arr.push({ ...myArray[i] });
+    }
+  }
+  return arr;
+};
+
 const CollapseCard = ({
   name,
   indicationData,
@@ -30,7 +137,6 @@ const CollapseCard = ({
     return (
       <div data-testid="toc-checkboxes">
         <Collapsible trigger={TOC.sectionName}>
-          {/* <TextCard section={TOC} /> */}
           {TOC.sectionContent && TOC.sectionContent.length > 0 && (
             <CheckboxCard
               section={TOC}
@@ -174,112 +280,3 @@ const CollapseCard = ({
 };
 
 export default CollapseCard;
-
-const HandleSearch = (props) => {
-  const {
-    sectiondata,
-    onConstructSearchQuery,
-    searchQuery,
-    clearAll,
-    forSection,
-  } = props;
-
-  const [data, setData] = useState({});
-  const [index, setIndex] = useState(0);
-  const [typed, setTyped] = useState("");
-  const [noResult, setNoResult] = useState(false);
-  useEffect(() => {
-    setData(sectiondata);
-  }, [sectiondata]);
-  useEffect(() => {
-    if (clearAll && typed !== "") {
-      setTyped("");
-      setData(sectiondata);
-      setIndex(index + 1);
-    }
-  }, [clearAll]);
-
-  useEffect(() => {
-    console.log("useEffect", typed);
-    const timeoutId = setTimeout(() => {
-      if (typed) {
-        console.log("typed if", typed);
-        const newArr = searchWords(typed, sectiondata.sectionContent);
-        console.log("Array length", newArr, newArr.length);
-        if (newArr.length !== 0) {
-          console.log("typed length if", typed);
-          setData({ success: true, sectionContent: newArr });
-          setIndex(index + 1);
-          setNoResult(false);
-        } else {
-          console.log("typed length else", typed);
-          setData({ success: true, sectionContent: newArr });
-          setIndex(index + 1);
-          setNoResult(true);
-        }
-      }
-    }, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [typed]);
-  const handleTextChange = (value) => {
-    setTyped(value);
-    if (value === "") {
-      setData(sectiondata);
-      setIndex(index + 1);
-    }
-  };
-  return (
-    <>
-      <Collapsible trigger={forSection + "s"}>
-        <div className="handle-search-component">
-          <Search
-            placeholder="Search"
-            onChange={(e) => handleTextChange(e.target.value)}
-            value={typed}
-            fullWidth
-          />
-        </div>
-        {data.sectionContent && data.sectionContent.length > 0 ? (
-          <CheckboxTest
-            key={index}
-            section={data}
-            identifier={forSection}
-            onCheckboxClick={onConstructSearchQuery}
-            listValue={searchQuery[forSection]}
-            clearAll={clearAll}
-          />
-        ) : (
-          !noResult && (
-            <div
-              style={{
-                height: 300,
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
-              }}
-            >
-              <Loader />
-            </div>
-          )
-        )}
-        {noResult && (
-          <div className="no-result">
-            No {forSection} found for keyword searched. Please try something
-            else.
-          </div>
-        )}
-      </Collapsible>
-    </>
-  );
-};
-
-const searchWords = (nameKey, myArray) => {
-  console.log("Coming", nameKey, myArray);
-  let arr = [];
-  for (var i = 0; i < myArray.length; i++) {
-    if (myArray[i].title.toLowerCase().includes(nameKey.toLowerCase())) {
-      arr.push({ ...myArray[i] });
-    }
-  }
-  return arr;
-};

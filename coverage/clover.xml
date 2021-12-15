@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1639551702521" clover="3.2.0">
-  <project timestamp="1639551702521" name="All files">
-    <metrics statements="3401" coveredstatements="2804" conditionals="1708" coveredconditionals="1350" methods="822" coveredmethods="698" elements="5931" coveredelements="4852" complexity="0" loc="3401" ncloc="3401" packages="21" files="71" classes="71"/>
+<coverage generated="1639557440412" clover="3.2.0">
+  <project timestamp="1639557440412" name="All files">
+    <metrics statements="3396" coveredstatements="2804" conditionals="1704" coveredconditionals="1350" methods="822" coveredmethods="698" elements="5922" coveredelements="4852" complexity="0" loc="3396" ncloc="3396" packages="21" files="71" classes="71"/>
     <package name="Routes">
       <metrics statements="6" coveredstatements="6" conditionals="8" coveredconditionals="8" methods="4" coveredmethods="3"/>
       <file name="routes.js" path="C:\Users\U1072231\Desktop\PD\UI\pd-ui\src\Routes\routes.js">
@@ -97,7 +97,7 @@
       </file>
     </package>
     <package name="features.Components.Dashboard">
-      <metrics statements="281" coveredstatements="238" conditionals="281" coveredconditionals="235" methods="93" coveredmethods="82"/>
+      <metrics statements="276" coveredstatements="238" conditionals="277" coveredconditionals="235" methods="93" coveredmethods="82"/>
       <file name="DashboardSearch.js" path="C:\Users\U1072231\Desktop\PD\UI\pd-ui\src\features\Components\Dashboard\DashboardSearch.js">
         <metrics statements="11" coveredstatements="11" conditionals="25" coveredconditionals="25" methods="5" coveredmethods="4"/>
         <line num="11" count="4" type="stmt"/>
@@ -358,7 +358,7 @@
         <line num="539" count="56" type="stmt"/>
       </file>
       <file name="columns.js" path="C:\Users\U1072231\Desktop\PD\UI\pd-ui\src\features\Components\Dashboard\columns.js">
-        <metrics statements="34" coveredstatements="26" conditionals="24" coveredconditionals="12" methods="9" coveredmethods="9"/>
+        <metrics statements="29" coveredstatements="26" conditionals="20" coveredconditionals="12" methods="9" coveredmethods="9"/>
         <line num="18" count="5" type="stmt"/>
         <line num="19" count="7" type="stmt"/>
         <line num="20" count="7" type="stmt"/>
@@ -368,31 +368,26 @@
         <line num="24" count="1" type="stmt"/>
         <line num="25" count="1" type="stmt"/>
         <line num="33" count="1" type="stmt"/>
-        <line num="34" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="37" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="45" count="7" type="stmt"/>
-        <line num="59" count="1" type="stmt"/>
-        <line num="71" count="5" type="stmt"/>
-        <line num="72" count="6" type="stmt"/>
-        <line num="74" count="5" type="stmt"/>
-        <line num="75" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="78" count="5" type="stmt"/>
-        <line num="79" count="6" type="cond" truecount="1" falsecount="1"/>
-        <line num="82" count="5" type="stmt"/>
-        <line num="83" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="85" count="5" type="stmt"/>
-        <line num="86" count="6" type="stmt"/>
-        <line num="87" count="6" type="cond" truecount="1" falsecount="1"/>
-        <line num="88" count="0" type="stmt"/>
-        <line num="101" count="6" type="cond" truecount="1" falsecount="1"/>
-        <line num="102" count="0" type="stmt"/>
-        <line num="115" count="6" type="stmt"/>
-        <line num="128" count="6" type="stmt"/>
-        <line num="135" count="5" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="46" count="7" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="72" count="5" type="stmt"/>
+        <line num="73" count="6" type="stmt"/>
+        <line num="75" count="5" type="stmt"/>
+        <line num="76" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="79" count="5" type="stmt"/>
+        <line num="80" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="83" count="5" type="stmt"/>
+        <line num="84" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="86" count="5" type="stmt"/>
+        <line num="87" count="6" type="stmt"/>
+        <line num="88" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="102" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="103" count="0" type="stmt"/>
+        <line num="116" count="6" type="stmt"/>
+        <line num="129" count="6" type="stmt"/>
+        <line num="136" count="5" type="stmt"/>
       </file>
     </package>
     <package name="features.Components.DocumentsTable">
