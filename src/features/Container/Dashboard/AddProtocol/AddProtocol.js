@@ -248,6 +248,48 @@ const AddProtocol = () => {
     setFormValues(tempValue);
   };
   /* istanbul ignore next */
+  const sendPostData = () => {
+    const tempFormValues = cloneDeep(formValues);
+    let postData = {};
+    postData = {
+      protocol_number: tempFormValues.protocolNumber
+        ? encodeURIComponent(tempFormValues.protocolNumber)
+        : "",
+      indication:
+        tempFormValues.indication && tempFormValues.indication.label
+          ? encodeURIComponent(tempFormValues.indication.label)
+          : "",
+      protocol_version: tempFormValues.versionNumber
+        ? tempFormValues.versionNumber
+        : "",
+      is_active: true,
+      created_by: "User",
+      modified_by: "User",
+      sponsor:
+        tempFormValues && tempFormValues.sponsor && tempFormValues.sponsor.label
+          ? encodeURIComponent(tempFormValues.sponsor.label)
+          : "",
+      amendmentNumber:
+        tempFormValues &&
+        tempFormValues.amendmentNumber &&
+        tempFormValues.amendmentNumber.label,
+      documentStatus:
+        tempFormValues.documentStatus &&
+        encodeURIComponent(tempFormValues.documentStatus.value),
+      projectID:
+        tempFormValues.projectID &&
+        encodeURIComponent(tempFormValues.projectID),
+      moleculeDevice: tempFormValues.moleculeDevice
+        ? encodeURIComponent(tempFormValues.moleculeDevice)
+        : "",
+      uploadFile: tempFormValues.uploadFile ? tempFormValues.uploadFile : [],
+      fileName:
+        tempFormValues.uploadFile[0].name &&
+        encodeURIComponent(tempFormValues.uploadFile[0].name),
+    };
+    dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
+  };
+  /* istanbul ignore next */
   const handleSaveForm = () => {
     const tempValues = cloneDeep(formValues);
     const tempError = cloneDeep(formErrorValues);
@@ -316,48 +358,7 @@ const AddProtocol = () => {
       sendPostData();
     }
   };
-  /* istanbul ignore next */
-  const sendPostData = () => {
-    const tempFormValues = cloneDeep(formValues);
-    let postData = {};
-    postData = {
-      protocol_number: tempFormValues.protocolNumber
-        ? encodeURIComponent(tempFormValues.protocolNumber)
-        : "",
-      indication:
-        tempFormValues.indication && tempFormValues.indication.label
-          ? encodeURIComponent(tempFormValues.indication.label)
-          : "",
-      protocol_version: tempFormValues.versionNumber
-        ? tempFormValues.versionNumber
-        : "",
-      is_active: true,
-      created_by: "User",
-      modified_by: "User",
-      sponsor:
-        tempFormValues && tempFormValues.sponsor && tempFormValues.sponsor.label
-          ? encodeURIComponent(tempFormValues.sponsor.label)
-          : "",
-      amendmentNumber:
-        tempFormValues &&
-        tempFormValues.amendmentNumber &&
-        tempFormValues.amendmentNumber.label,
-      documentStatus:
-        tempFormValues.documentStatus &&
-        encodeURIComponent(tempFormValues.documentStatus.value),
-      projectID:
-        tempFormValues.projectID &&
-        encodeURIComponent(tempFormValues.projectID),
-      moleculeDevice: tempFormValues.moleculeDevice
-        ? encodeURIComponent(tempFormValues.moleculeDevice)
-        : "",
-      uploadFile: tempFormValues.uploadFile ? tempFormValues.uploadFile : [],
-      fileName:
-        tempFormValues.uploadFile[0].name &&
-        encodeURIComponent(tempFormValues.uploadFile[0].name),
-    };
-    dispatch({ type: "POST_ADDPROTOCOL_DATA", payload: postData });
-  };
+
   const getSubTitle = (arr) => {
     return (
       <ul className="version-validation">

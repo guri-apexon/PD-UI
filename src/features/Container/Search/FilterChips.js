@@ -34,7 +34,13 @@ const FilterChip = (props) => {
   const { filters, onSearchQuery, setDateRangeValue } = props;
   const rangeDate = useSelector(range);
   const dispatch = useDispatch();
-  console.log("Search", filters);
+
+  const handleDateSectionDelete = () => {
+    onSearchQuery([1], "dateSection");
+  };
+  const handleDateTypeDelete = () => {
+    onSearchQuery([1], "dateType");
+  };
 
   const handleDelete = (item, list, identifier) => {
     console.log("You clicked the delete icon.", item, list, identifier);
@@ -42,10 +48,6 @@ const FilterChip = (props) => {
     const finalList = newList.map((item) => item.id);
     console.log("final List", finalList);
     onSearchQuery(finalList, identifier);
-    // let newFilter = { ...filters };
-    // newFilter[identifier] = newList;
-    // setfilters(newFilter);
-    // console.log(newList, identifier, finalList);
   };
   const renderDateSection = (data) => {
     console.log(data);
@@ -72,12 +74,7 @@ const FilterChip = (props) => {
       );
     }
   };
-  const handleDateSectionDelete = () => {
-    onSearchQuery([1], "dateSection");
-  };
-  const handleDateTypeDelete = () => {
-    onSearchQuery([1], "dateType");
-  };
+
   const renderDateType = (data) => {
     console.log(data);
     if (data[0].value === "approval_date") {
