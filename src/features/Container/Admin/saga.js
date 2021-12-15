@@ -61,7 +61,6 @@ export function* getRolesFunction() {
     const data = yield call(httpCall, Config);
     if (data.success && data.data) {
       const userRole = [];
-      const protocolRole = [];
       const rolesOptions = {
         user: [],
         protocol: [],
@@ -72,7 +71,6 @@ export function* getRolesFunction() {
           userRole.push(item);
           rolesOptions.user.push(item.roleName);
         } else if (item.roleLevel === "protocol") {
-          protocolRole.push(item);
           rolesOptions.protocol.push(item.roleName);
         }
         return item;

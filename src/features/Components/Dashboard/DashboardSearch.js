@@ -1,12 +1,11 @@
 import { useState, memo } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import ChevronLeft from "apollo-react-icons/ChevronLeft";
 import Button from "apollo-react/components/Button";
 import Search from "apollo-react/components/Search";
 import Grid from "apollo-react/components/Grid";
-import { Link } from "react-router-dom";
 
 function DashboardSearch({ recent, saved }) {
   const dispatch = useDispatch();

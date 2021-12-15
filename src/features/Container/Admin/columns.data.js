@@ -113,22 +113,6 @@ export function createStringArraySearchFilter(accessor) {
     );
 }
 
-// const EditableCell = ({ row, column: { accessor: key } }) =>
-//   row.editMode ? (
-//     <TextField
-//       data-testid={`editablecell-${row.username}`}
-//       size="small"
-//       fullWidth
-//       value={row.editedRow[key]}
-//       onChange={(e) => row.editRow(key, e.target.value)}
-//       error={!row.editedRow[key]}
-//       helperText={!row.editedRow[key] && "Required"}
-//       {...fieldStyles}
-//     />
-//   ) : (
-//     row[key]
-//   );
-
 const makeEditableSelectCell =
   (options) =>
   ({ row, column: { accessor: key } }) =>
@@ -160,7 +144,7 @@ const Cell = ({ row, column }) => (
 
 const getColumns = (data) => {
   const roles = cloneDeep(data);
-  const columns = [
+  return [
     {
       header: "User ID",
       accessor: "username",
@@ -230,7 +214,6 @@ const getColumns = (data) => {
       width: 120,
     },
   ];
-  return columns;
 };
 
 export default getColumns;

@@ -1,7 +1,10 @@
 /* eslint-disable no-script-url */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
-import { covertMMDDYYYY } from "../../../utils/utilFunction";
+import {
+  covertMMDDYYYY,
+  uploadDateValidation,
+} from "../../../utils/utilFunction";
 import Tooltip from "apollo-react/components/Tooltip";
 import { Link } from "react-router-dom";
 import FileDownload from "js-file-download";
@@ -10,7 +13,6 @@ import Loader from "apollo-react/components/Loader";
 import { toast } from "react-toastify";
 import { userId } from "../../../store/userDetails";
 import { useSelector } from "react-redux";
-import { uploadDateValidation } from "../../../utils/utilFunction";
 import { userRole } from "../../../AppConstant/AppConstant";
 
 const DownloadLink = ({ row, column: { accessor: key } }) => {

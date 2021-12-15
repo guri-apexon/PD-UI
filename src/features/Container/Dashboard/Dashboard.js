@@ -4,7 +4,6 @@ import Grid from "apollo-react/components/Grid";
 import { loggedUser } from "../../../store/userDetails";
 
 import ProtocolTable from "./ProtocolTable";
-// import DashboardSearch from "./DashboardSearch";
 import { dashboadAPIError } from "./dashboardSlice";
 import ActionButtons from "./ActionButtons";
 

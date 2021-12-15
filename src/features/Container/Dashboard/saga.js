@@ -7,7 +7,6 @@ import {
   takeLatest,
 } from "redux-saga/effects";
 import cloneDeep from "lodash/cloneDeep";
-// import uniqBy from "lodash/uniqBy";
 import { toast } from "react-toastify";
 import BASE_URL, { httpCall, BASE_URL_8000, UI_URL } from "../../../utils/api";
 import {
@@ -59,7 +58,6 @@ export function* protocolAsyn(action) {
         const followedProtocolData = [];
         const myPorotocolsData = [];
         protocolData.data.map((item, i) => {
-          // item.id = item.aidocId;
           item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
           item.protocol = !item.protocol ? "" : item.protocol;
           item.projectId = !item.projectId ? "" : item.projectId;

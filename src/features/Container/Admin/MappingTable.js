@@ -2,8 +2,10 @@ import React from "react";
 import moment from "moment-timezone";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "apollo-react/components/Loader";
-import Table from "apollo-react/components/Table";
-import { compareStrings, compareDates } from "apollo-react/components/Table";
+import Table, {
+  compareStrings,
+  compareDates,
+} from "apollo-react/components/Table";
 import Cog from "apollo-react-icons/Cog";
 import Trash from "apollo-react-icons/Trash";
 import Tooltip from "@material-ui/core/Tooltip";

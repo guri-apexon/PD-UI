@@ -9,8 +9,7 @@ import Modal from "apollo-react/components/Modal";
 import Grid from "apollo-react/components/Grid";
 import TextField from "apollo-react/components/TextField";
 import Button from "apollo-react/components/Button";
-import Table from "apollo-react/components/Table";
-import { compareStrings } from "apollo-react/components/Table";
+import Table, { compareStrings } from "apollo-react/components/Table";
 import {
   setUserRole,
   roleValues,

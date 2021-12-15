@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import concat from "lodash/concat";
 import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
-// import axios from "axios";
 import ChevronDown from "apollo-react-icons/ChevronDown";
 import ChevronRight from "apollo-react-icons/ChevronRight";
 import { Link } from "react-router-dom";
@@ -193,7 +192,7 @@ const HandleUnFollow = ({ row }) => {
 };
 
 function getColumns(screen) {
-  const columns = [
+  return [
     {
       accessor: "action",
       customCell: ActionCell,
@@ -254,7 +253,6 @@ function getColumns(screen) {
       width: "8%",
     },
   ];
-  return columns;
 }
 
 const ExpandableComponent = ({ row }) => {
@@ -305,20 +303,6 @@ const ExpandableComponent = ({ row }) => {
   );
 };
 
-// const handleDownload = async (row) => {
-//   let url;
-//   const resp = await axios.get(
-//     `${BASE_URL_8000}/api/download_file/?filePath=${row.documentFilePath}`
-//   );
-
-//   url = `${UI_URL}/${resp.data}`;
-//   let encodeUrl = encodeURI(url);
-//   let myWindow = window.open("about:blank", "_blank");
-//   myWindow.document.write(
-//     `<embed src=${encodeUrl}  frameborder="0" width="100%" height="100%">`
-//   );
-// };
-
 const ProtocolTable = ({
   initialRows,
   pageRows,
@@ -331,18 +315,6 @@ const ProtocolTable = ({
   handleUnfollow,
 }) => {
   const [expandedRows, setExpandedRows] = useState([]);
-  // const [selectedRows, setSelectedRows] = useState([]);
-
-  // useEffect(() => {
-  //   dispatch(setSelectedProtocols(selectedRows));
-  // }, [selectedRows]);
-  // const handleChange = (id) => {
-  //   setSelectedRows((selectedRows) =>
-  //     selectedRows.indexOf(id) >= 0
-  //       ? selectedRows.filter((cid) => cid !== id)
-  //       : concat(selectedRows, id)
-  //   );
-  // };
 
   const handleToggleRow = (id, row) => {
     setExpandedRows((expandedRows) =>
