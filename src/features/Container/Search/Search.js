@@ -753,6 +753,16 @@ const Search = (props) => {
       props.history.push(`/search`);
     }
     setPostQueryObj(postObj);
+    setSearchQueryTemp({
+      sponsor: [],
+      indication: [],
+      phase: [],
+      documentStatus: [],
+      qcStatus: [],
+      toc: [],
+      dateType: [1],
+      dateSection: [1],
+    });
   };
 
   const deleteSearchInput = () => {
