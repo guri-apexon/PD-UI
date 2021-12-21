@@ -12,6 +12,7 @@ import { POST_OBJECT } from "../../../AppConstant/AppConstant";
 
 import Breadcrumbs from "apollo-react/components/Breadcrumbs";
 import cloneDeep from "lodash/cloneDeep";
+import isEqual from "lodash/isEqual";
 import { toast } from "react-toastify";
 
 //------------------- Redux -----------------
@@ -472,10 +473,15 @@ const Search = (props) => {
   };
 
   const compareObjs = (a, b) => {
-    if (JSON.stringify(a) === JSON.stringify(b)) {
+    if (isEqual(a, b)) {
       return false;
+    } else {
+      return true;
     }
-    return true;
+    // if (JSON.stringify(a) === JSON.stringify(b)) {
+    //   return false;
+    // }
+    // return true;
   };
 
   const checkValidity = (postObj) => {
