@@ -15,7 +15,15 @@ import {
   dateSection,
   dateType,
 } from "./Data/constants";
-
+const searchWords = (nameKey, myArray) => {
+  let arr = [];
+  for (var i = 0; i < myArray.length; i++) {
+    if (myArray[i].title.toLowerCase().includes(nameKey.toLowerCase())) {
+      arr.push({ ...myArray[i] });
+    }
+  }
+  return arr;
+};
 const HandleSearch = (props) => {
   const {
     sectiondata,
@@ -111,16 +119,6 @@ const HandleSearch = (props) => {
       </Collapsible>
     </>
   );
-};
-
-const searchWords = (nameKey, myArray) => {
-  let arr = [];
-  for (var i = 0; i < myArray.length; i++) {
-    if (myArray[i].title.toLowerCase().includes(nameKey.toLowerCase())) {
-      arr.push({ ...myArray[i] });
-    }
-  }
-  return arr;
 };
 
 const CollapseCard = ({

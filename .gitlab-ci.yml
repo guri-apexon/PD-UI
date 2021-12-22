@@ -57,9 +57,9 @@ Perform Sonarqube Analysis and quality gate:
     - ca2ugitla006p-D4
   only:
     refs:
-      - develop
+      - sonar-cube-fix
     variables: 
-      - $ENVIRONMENT== "dev"
+      - $ENVIRONMENT== "sonar"
 
 dev-deploy:
   stage: dev-deploy

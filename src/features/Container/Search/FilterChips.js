@@ -96,6 +96,14 @@ const FilterChip = (props) => {
       );
     }
   };
+  const handleDateRangeDelete = () => {
+    setDateRangeValue([null, null]);
+    const range = {
+      from: null,
+      to: null,
+    };
+    dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+  };
   const renderDateRange = (dateRange) => {
     return (
       <div>
@@ -117,14 +125,7 @@ const FilterChip = (props) => {
       </div>
     );
   };
-  const handleDateRangeDelete = () => {
-    setDateRangeValue([null, null]);
-    const range = {
-      from: null,
-      to: null,
-    };
-    dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
-  };
+
   if (
     filters.toc.length > 0 ||
     filters.sponsor.length > 0 ||

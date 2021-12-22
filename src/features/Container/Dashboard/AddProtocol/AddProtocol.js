@@ -61,7 +61,7 @@ const AddProtocol = () => {
     dispatch({ type: "TOGGLE_ADDPROTOCOL_MODAL", payload: false });
   };
   const onModalClose = () => {
-    handleClose("custom");
+    handleClose();
     setValue2({ amendmentNumber: undefined, documentStatus: undefined });
     dispatch({ type: "RESET_ERROR_ADD_PROTOCOL" });
   };
@@ -70,7 +70,7 @@ const AddProtocol = () => {
     setFormValues(initialFormValues);
     setValue2({ amendmentNumber: undefined, documentStatus: undefined });
     setFormErrorValues(initialFormErrorValues);
-    handleOpen("custom");
+    handleOpen();
   };
   const onTextFieldChange = (fieldName, e, fieldType, dropdownValue) => {
     let tempError = cloneDeep(formErrorValues);
@@ -125,9 +125,8 @@ const AddProtocol = () => {
       ) {
         tempError[fieldName].error = false;
         tempError[fieldName].errorMessage = "";
-        tempValues[fieldName] = dropdownValue ? dropdownValue : { label: "" };
-        dropdownFocus =
-          dropdownValue && dropdownValue.label ? dropdownValue.label : "";
+        tempValues[fieldName] = dropdownValue;
+        dropdownFocus = dropdownValue.label;
       } else {
         tempValues[fieldName] = { label: "" };
       }
@@ -374,7 +373,7 @@ const AddProtocol = () => {
         <div className="add-protocol-button">
           <Button
             variant="primary"
-            onClick={() => onModalOpen("custom")}
+            onClick={() => onModalOpen()}
             icon={Plus}
             data-testid="add-protocol-button"
           >
@@ -428,9 +427,7 @@ const AddProtocol = () => {
                   helperText={formErrorValues.amendmentNumber.errorMessage}
                   error={formErrorValues.amendmentNumber.error}
                   required={formErrorValues.amendmentNumber.isRequired}
-                  onBlur={(e, newValue) =>
-                    onFieldBlur("amendmentNumber", e, "Dropdown", newValue)
-                  }
+                  onBlur={(e) => onFieldBlur("amendmentNumber", e, "Dropdown")}
                   onChange={(e, newValue) =>
                     onTextFieldChange(
                       "amendmentNumber",
@@ -530,9 +527,7 @@ const AddProtocol = () => {
                     fieldType="CustomDropdown"
                     fieldName="sponsor"
                     formValue={
-                      formValues.sponsor && formValues.sponsor
-                        ? formValues.sponsor
-                        : emptyAutoObj
+                      formValues.sponsor ? formValues.sponsor : emptyAutoObj
                     }
                     helperText={formErrorValues.sponsor.errorMessage.trim()}
                     error={formErrorValues.sponsor.error}
@@ -558,7 +553,7 @@ const AddProtocol = () => {
                   error={formErrorValues.documentStatus.error}
                   required={formErrorValues.documentStatus.isRequired}
                   onBlur={(e, newValue) =>
-                    onFieldBlur("documentStatus", e, "Dropdown", newValue)
+                    onFieldBlur("documentStatus", e, "Dropdown")
                   }
                   onChange={(e, newValue) => {
                     onTextFieldChange(
@@ -595,7 +590,7 @@ const AddProtocol = () => {
                     fieldType="CustomDropdown"
                     fieldName="indication"
                     formValue={
-                      formValues.indication && formValues.indication
+                      formValues.indication
                         ? formValues.indication
                         : emptyAutoObj
                     }
@@ -615,7 +610,7 @@ const AddProtocol = () => {
                 label="Molecule/Device"
                 placeholder="Molecule/Device"
                 fullWidth
-                value={formValues.moleculeDevice && formValues.moleculeDevice}
+                value={formValues.moleculeDevice}
                 helperText={formErrorValues.moleculeDevice.errorMessage}
                 error={formErrorValues.moleculeDevice.error}
                 required={formErrorValues.moleculeDevice.isRequired}
