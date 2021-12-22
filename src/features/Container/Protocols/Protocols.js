@@ -79,8 +79,9 @@ const Protocols = (props) => {
               items={[
                 { href: "/dashboard" },
                 {
-                  href: "/protocols",
                   title: "Protocols",
+                  className: "br-cr-protocol",
+                  disabled: true,
                   // onClick: handleClick,
                 },
                 {
