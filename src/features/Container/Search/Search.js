@@ -63,6 +63,7 @@ const Search = (props) => {
     toc: [],
     dateType: [1],
     dateSection: [1],
+    range: { from: "", to: "" },
   });
   const [searchQueryTemp, setSearchQueryTemp] = useState({
     sponsor: [],
@@ -73,6 +74,7 @@ const Search = (props) => {
     toc: [],
     dateType: [1],
     dateSection: [1],
+    range: { from: "", to: "" },
   });
   const [postQueryObj, setPostQueryObj] = useState(POST_OBJECT);
   const [clearAll, setClearAll] = useState(false);
@@ -207,7 +209,7 @@ const Search = (props) => {
         postObj.dateSection = parsed[`dateSection`];
       }
       setPostQueryObj(postObj);
-      setSearchQuery(tempQuery);
+      setSearchQuery({ ...tempQuery, range: searchQuery.range });
       dispatch({ type: "GET_SEARCH_RESULT", payload: postObj });
     } else {
       dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
@@ -272,7 +274,7 @@ const Search = (props) => {
         tempQuery.phase =
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
       }
-      setSearchQuery(tempQuery);
+      setSearchQuery({ ...tempQuery, range: searchQuery.range });
     }
   }, [sponsorData, indicationData, phaseData]);
   /* istanbul ignore next */
@@ -310,6 +312,7 @@ const Search = (props) => {
         toc: [],
         dateType: [1],
         dateSection: [1],
+        range: { from: "", to: "" },
       });
       const range = {
         from: null,
@@ -724,6 +727,7 @@ const Search = (props) => {
         dateType: [1],
         qcStatus: [],
         dateSection: [1],
+        range: { from: "", to: "" },
       });
       postObj.key = input;
       const range = {
@@ -745,6 +749,7 @@ const Search = (props) => {
         toc: [],
         dateType: [1],
         dateSection: [1],
+        range: { from: "", to: "" },
       });
       // setDateRangeValue([null, null]);
       // clearInputFields("range-date-id");
@@ -768,6 +773,7 @@ const Search = (props) => {
       toc: [],
       dateType: [1],
       dateSection: [1],
+      range: { from: "", to: "" },
     });
     setDateTemp({
       dateRange: { from: "", to: "" },
@@ -793,6 +799,7 @@ const Search = (props) => {
       toc: [],
       dateType: [1],
       dateSection: [1],
+      range: { from: "", to: "" },
     });
     const range = {
       from: null,
@@ -811,6 +818,7 @@ const Search = (props) => {
       toc: [],
       dateType: [1],
       dateSection: [1],
+      range: { from: "", to: "" },
     });
     setDateTemp({
       dateRange: { from: "", to: "" },
@@ -844,11 +852,13 @@ const Search = (props) => {
       }
     }
     console.log("Date Range Objects", obj, dateTemp);
-    if (compareObjs(obj, dateTemp)) {
-      setEnableFilter(true);
-    } else {
-      setEnableFilter(false);
-    }
+    const searchQueryObj = { ...searchQuery, range: obj.dateRange };
+    setSearchQuery(searchQueryObj);
+    // if (compareObjs(obj, dateTemp)) {
+    //   setEnableFilter(true);
+    // } else {
+    //   setEnableFilter(false);
+    // }
   }, [rangeDate, recentDate]);
   const onSortChange = (data, value) => {
     setPage(0);
@@ -936,19 +946,28 @@ const Search = (props) => {
         setFilterChipObject(filterChip);
       }
     }
-  }, [searchQuery]);
 
-  const onSearchQuery = (list, identifier) => {
-    setClearAll(false);
     let prevFilterObj = cloneDeep(searchQueryTemp);
     let tempQuery = cloneDeep(searchQuery);
-    tempQuery[identifier] = list;
-    setSearchQuery(tempQuery);
+    console.log("Compare", prevFilterObj, tempQuery);
     if (compareObjs(prevFilterObj, tempQuery)) {
       setEnableFilter(true);
     } else {
       setEnableFilter(false);
     }
+  }, [searchQuery]);
+
+  const onSearchQuery = (list, identifier) => {
+    setClearAll(false);
+    // let prevFilterObj = cloneDeep(searchQueryTemp);
+    let tempQuery = cloneDeep(searchQuery);
+    tempQuery[identifier] = list.sort();
+    setSearchQuery(tempQuery);
+    // if (compareObjs(prevFilterObj, tempQuery)) {
+    //   setEnableFilter(true);
+    // } else {
+    //   setEnableFilter(false);
+    // }
   };
 
   const compareTwoProtocol = (data, protocol) => {
