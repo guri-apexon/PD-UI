@@ -230,7 +230,7 @@ const Search = (props) => {
     //   dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     //   // dispatch({ type: "GET_SEARCH_FILTER", payload: parsed.key });
     // }
-  }, [dispatch]);
+  }, []);
 
   //newcode
   // This useEffect will get called when indication and sponsor API returns response
@@ -257,7 +257,7 @@ const Search = (props) => {
           parsed.sponsor.split("+").includes(item.title)
         );
         tempQuery.sponsor =
-          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+          tempElasticQuery && tempElasticQuery.map((item) => item.id).sort();
       }
       /* istanbul ignore else */
       if ("indication" in parsed && indicationData.sectionContent.length > 0) {
@@ -265,14 +265,14 @@ const Search = (props) => {
           parsed.indication.split("+").includes(item.title)
         );
         tempQuery.indication =
-          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+          tempElasticQuery && tempElasticQuery.map((item) => item.id).sort();
       }
       if ("phase" in parsed && phaseData.sectionContent.length > 0) {
         let tempElasticQuery = phaseData.sectionContent.filter((item) =>
           parsed.phase.split("+").includes(item.title)
         );
         tempQuery.phase =
-          tempElasticQuery && tempElasticQuery.map((item) => item.id);
+          tempElasticQuery && tempElasticQuery.map((item) => item.id).sort();
       }
       setSearchQuery({ ...tempQuery, range: searchQuery.range });
     }
@@ -853,6 +853,7 @@ const Search = (props) => {
     }
     console.log("Date Range Objects", obj, dateTemp);
     const searchQueryObj = { ...searchQuery, range: obj.dateRange };
+    console.log("Compare range", searchQueryObj);
     setSearchQuery(searchQueryObj);
     // if (compareObjs(obj, dateTemp)) {
     //   setEnableFilter(true);
