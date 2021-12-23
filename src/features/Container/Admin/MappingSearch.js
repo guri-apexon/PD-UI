@@ -16,7 +16,7 @@ function MappingSearch() {
   const [userId, setUserId] = useState(search.userId);
   const [protocol, setProtocol] = useState(search.protocol);
   const [userErr, setUserErr] = useState(false);
-  const [protocolErr, setProtocolErr] = useState(false);
+  // const [protocolErr, setProtocolErr] = useState(false);
 
   useEffect(() => {
     setUserId(search.userId);
@@ -32,22 +32,16 @@ function MappingSearch() {
   };
 
   const onFieldBlur = (key, value) => {
-    const alphaNumeric = /[!@#/$%&/*/^();,?"':=/+`~/]/.test(protocol);
     const idValidation = /^[0-9]*$/.test(userId);
     if (key === "id" && userId && !idValidation) {
       setUserErr(true);
     } else if (key === "id") {
       setUserErr(false);
     }
-    if (key === "protocol" && protocol && alphaNumeric) {
-      setProtocolErr(true);
-    } else if (key === "protocol") {
-      setProtocolErr(false);
-    }
   };
 
   const getSearchResult = () => {
-    if (userErr || protocolErr || (!userId && !protocol)) {
+    if (userErr || (!userId && !protocol)) {
       toast.error(`Please enter valid input`);
     } else {
       const data = {
@@ -82,9 +76,7 @@ function MappingSearch() {
             fullWidth
             onChange={(e) => handleChange("protocol", e.target.value)}
             onBlur={(e) => onFieldBlur("protocol", e.target.value)}
-            error={protocolErr}
             value={protocol}
-            helperText={protocolErr ? "Invalid Protocol Number" : ""}
             data-testid="admin-search-protocol-number"
           />
         </Grid>
