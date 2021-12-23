@@ -38,7 +38,7 @@ describe("MappingSearch Screen", () => {
       screen.getByTestId("admin-search-user-id").children[2]
     ).toBeInTheDocument();
   });
-  test("should throw error for invalid protocol number", () => {
+  test("should not throw error for invalid protocol number", () => {
     render(<MappingSearch />);
     let editProtocol = screen.getByTestId("admin-search-protocol-number")
       .children[1].children[1];
@@ -48,7 +48,7 @@ describe("MappingSearch Screen", () => {
 
     expect(
       screen.getByTestId("admin-search-protocol-number").children[2]
-    ).toBeInTheDocument();
+    ).toBeUndefined();
   });
 
   test("should not throw error if user id is empty", () => {

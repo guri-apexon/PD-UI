@@ -163,7 +163,7 @@ describe("AddNewMapping Screen", () => {
       target: { value: "#435@#$" },
     });
     fireEvent.focusOut(edit.children[1].children[0]);
-    expect(edit.children[2]).toBeInTheDocument();
+    expect(edit.children[2]).toBeUndefined();
   });
 
   test("should focus the role show required message", () => {
