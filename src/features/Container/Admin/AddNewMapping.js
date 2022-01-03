@@ -111,13 +111,6 @@ function AddNewMapping() {
     if (key === "userId" && trimValue && !/^[0-9]*$/.test(trimValue)) {
       err.userId.error = true;
       err.userId.message = "Enter valid User Id";
-    } else if (
-      key === "protocol" &&
-      trimValue &&
-      /[!@#/$%&/*/^();,?"':=/+`~/]/.test(trimValue)
-    ) {
-      err.protocol.error = true;
-      err.protocol.message = "Enter valid Protocol Number";
     } else if (trimValue) {
       err[key].error = false;
       err[key].message = "";
