@@ -1,3 +1,4 @@
+const versionReg = /^\w+([\s-_.]\w+)*$/;
 export const initialFormValues = {
   protocolNumber: "",
   amendmentNumber: {},
@@ -39,9 +40,7 @@ export const initialFormErrorValues = {
     isRequired: true,
     error: false,
     errorMessage: " ",
-    regex: /^\w+([\s-_.]\w+)*$/,
-    // regex: "^[1-9]*?.[0-9]{0,2}$", // eslint-disable-line
-    // regex: /^[1-9]\d*(?:\.\d{1,2})?$/gm, // eslint-disable-line
+    regex: versionReg,
     type: "Textbox",
   },
   sponsor: {

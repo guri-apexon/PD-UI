@@ -339,7 +339,7 @@ const Documents = ({ handleChangeTab }) => {
               protocolSelected={protocolSelected}
               setProtocolToDownload={setProtocolToDownload}
               //  initialsRow={protocolData && protocolData}
-              initialsRow={associateDocuments && associateDocuments}
+              initialsRow={associateDocuments}
               showCheckbox={
                 associateDocuments && associateDocuments.length > 1
                   ? true

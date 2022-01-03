@@ -109,7 +109,7 @@ const CustomDropdown = ({
     }
   };
 
-  const onCustomClick = (id, event) => {
+  const onCustomClick = () => {
     setExpandClass("is-expanded");
     document.addEventListener("click", handleOutsideClick, true);
   };
@@ -145,7 +145,7 @@ const CustomDropdown = ({
           error={error}
           required={required}
           onChange={(e) => onTextFieldChange(id, e, "Textbox")}
-          onClick={(e) => onCustomClick(id, e, "fieldType")}
+          onClick={(e) => onCustomClick()}
         />
         <div
           className={`custom-dropdown-list ${error && "adjust-margin"}`}

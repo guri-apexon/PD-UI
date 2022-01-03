@@ -253,15 +253,12 @@ export function* getCompareResult(action) {
   }
 }
 
-export function* getUserDetailByID(action) {}
-
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery("GET_PROTOCOL_SUMMARY", getSummaryData);
   yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolToc);
   yield takeLatest("FETCH_ASSOCIATE_PROTOCOLS", fetchAssociateProtocol);
   yield takeEvery("POST_COMPARE_PROTOCOL", getCompareResult);
-  yield takeEvery("GET_USER_DETAIL_BY_ID", getUserDetailByID);
 }
 
 // notice how we now only export the rootSaga
