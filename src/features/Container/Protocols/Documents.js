@@ -139,6 +139,7 @@ const Documents = ({ handleChangeTab }) => {
       setCompareMessage(message2);
     }
   };
+  /* istanbul ignore next */
   const downloadCompare = async (type) => {
     try {
       setLoader(true);
@@ -199,6 +200,7 @@ const Documents = ({ handleChangeTab }) => {
       </div>
     );
   };
+  /* istanbul ignore next */
   const openToolTip = (e, type) => {
     e.stopPropagation();
     if (type === "csv") {
@@ -208,6 +210,7 @@ const Documents = ({ handleChangeTab }) => {
     }
     setToolTip1(true);
   };
+  /* istanbul ignore next */
   const closeToolTip = () => {
     setToolTip1(false);
   };

@@ -34,10 +34,11 @@ const FilterChip = (props) => {
   const { filters, onSearchQuery, setDateRangeValue } = props;
   const rangeDate = useSelector(range);
   const dispatch = useDispatch();
-
+  /* istanbul ignore next */
   const handleDateSectionDelete = () => {
     onSearchQuery([1], "dateSection");
   };
+  /* istanbul ignore next */
   const handleDateTypeDelete = () => {
     onSearchQuery([1], "dateType");
   };

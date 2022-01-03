@@ -288,7 +288,7 @@ const Search = (props) => {
     //   payload: input,
     // });
   };
-
+  /* istanbul ignore next */
   const clearSearchText = (value) => {
     setClearAll(value);
   };
@@ -339,7 +339,7 @@ const Search = (props) => {
       toast.warn("Please enter something to search.");
     }
   };
-
+  /* istanbul ignore next */
   const contructQueryFromArray = (key, value) => {
     switch (key) {
       case "toc": {
@@ -468,7 +468,7 @@ const Search = (props) => {
         return "";
     }
   };
-
+  /* istanbul ignore next */
   const isFutureDate = (value) => {
     let d_now = new Date();
     let d_inp = new Date(value);
@@ -486,7 +486,7 @@ const Search = (props) => {
     // }
     // return true;
   };
-
+  /* istanbul ignore next */
   const checkValidity = (postObj) => {
     if (
       postObj &&
@@ -504,7 +504,7 @@ const Search = (props) => {
       return false;
     }
   };
-
+  /* istanbul ignore next */
   const getSearchInput = (input) => {
     let postObj = cloneDeep(POST_OBJECT);
     let validFilters = false;
@@ -711,7 +711,7 @@ const Search = (props) => {
 
     setPostQueryObj(postObj);
   };
-
+  /* istanbul ignore next */
   const hancleClearAll = (inputPresent, input) => {
     clearSearchText(true);
     let postObj = cloneDeep(POST_OBJECT);
@@ -764,6 +764,7 @@ const Search = (props) => {
       props.history.push(`/search`);
     }
     setPostQueryObj(postObj);
+    /* istanbul ignore next */
     setSearchQueryTemp({
       sponsor: [],
       indication: [],
@@ -775,11 +776,12 @@ const Search = (props) => {
       dateSection: [1],
       range: { from: "", to: "" },
     });
+    /* istanbul ignore next */
     setDateTemp({
       dateRange: { from: "", to: "" },
     });
   };
-
+  /* istanbul ignore next */
   const deleteSearchInput = () => {
     clearSearchText(true);
     let postObj = cloneDeep(POST_OBJECT);
@@ -809,6 +811,7 @@ const Search = (props) => {
     dispatch({ type: "GET_SEARCH_RESULT", payload: "" });
     setDateRangeValue([null, null]);
     setPostQueryObj(postObj);
+    /* istanbul ignore next */
     setSearchQueryTemp({
       sponsor: [],
       indication: [],
@@ -820,6 +823,7 @@ const Search = (props) => {
       dateSection: [1],
       range: { from: "", to: "" },
     });
+    /* istanbul ignore next */
     setDateTemp({
       dateRange: { from: "", to: "" },
     });
@@ -829,6 +833,7 @@ const Search = (props) => {
   const onSearchChange = () => {
     // console.log("onSearchChange :", onSearchChange);
   };
+  /* istanbul ignore next */
   useEffect(() => {
     console.log("Date Range", rangeDate);
     console.log("Date Range recent", recentDate);
@@ -885,6 +890,7 @@ const Search = (props) => {
   //     setFilterChipObject(filterChip);
   //   }
   // };
+  /* istanbul ignore next */
   useEffect(() => {
     let filterChip = cloneDeep(filterChipObject);
     console.log("Search Query", searchQuery);
@@ -957,7 +963,7 @@ const Search = (props) => {
       setEnableFilter(false);
     }
   }, [searchQuery]);
-
+  /* istanbul ignore next */
   const onSearchQuery = (list, identifier) => {
     setClearAll(false);
     // let prevFilterObj = cloneDeep(searchQueryTemp);
@@ -970,7 +976,7 @@ const Search = (props) => {
     //   setEnableFilter(false);
     // }
   };
-
+  /* istanbul ignore next */
   const compareTwoProtocol = (data, protocol) => {
     if (prevProtSelected === "") {
       setPrevProtSelected(protocol);
@@ -1004,6 +1010,7 @@ const Search = (props) => {
       }
     }
   };
+  /* istanbul ignore next */
   const compareProtocol = () => {
     if (protocolSelected.length === 2) {
       props.history.push(
@@ -1014,6 +1021,7 @@ const Search = (props) => {
       alert("Please select at least two protocol versions to compare");
     }
   };
+  /* istanbul ignore next */
   const saveSearch = () => {
     // const parsed = queryString.parse(elasticSearchQuery);
 
@@ -1025,6 +1033,7 @@ const Search = (props) => {
     }
   };
   // const onSetPage = (event, value) => {
+  /* istanbul ignore next */
   const onSetPage = (value) => {
     setPage(value);
     let postObj = cloneDeep(postQueryObj);
