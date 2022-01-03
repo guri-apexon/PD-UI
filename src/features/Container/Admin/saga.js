@@ -226,6 +226,8 @@ export function* updateUser(action) {
   }
 }
 export function* addNewUser() {
+  const USER_ERROR =
+    "Error while adding the user, please contact administrator or try after sometime.";
   yield put(setLoader(true));
   const state = yield select();
   let userDetails = state.admin.newUser;
@@ -246,6 +248,7 @@ export function* addNewUser() {
     data: details[0],
   };
   try {
+    /* istanbul ignore next */
     const SDA = yield addNewUserSDA(userDetails.userId);
     if (SDA) {
       const data = yield call(httpCall, Config);
@@ -265,29 +268,23 @@ export function* addNewUser() {
         yield put(setModalToggle(false));
         yield put(setNewUserError(""));
         yield put({ type: "GET_USERS_SAGA" });
-      } else if (data.code === "DUPLICATE_ENTITY") {
-        toast.error("User profile already exist");
-        yield put(setNewUserError("User profile already exist"));
-      } else {
-        yield put(
-          setNewUserError(
-            "Error while adding the user, please contact administrator or try after sometime."
-          )
-        );
-        toast.error(
-          `Error while adding the user, please contact administrator or try after sometime.`
-        );
       }
+      // else if (data.code === "DUPLICATE_ENTITY") {
+      //   toast.error("User profile already exist");
+      //   yield put(setNewUserError("User profile already exist"));
+      // } else {
+      //   yield put(
+      //     setNewUserError(
+      //       "Error while adding the user, please contact administrator or try after sometime."
+      //     )
+      //   );
+
+      // }
+      toast.error(USER_ERROR);
     } else {
       yield put(setLoader(false));
-      yield put(
-        setNewUserError(
-          "Error while adding the user, please contact administrator or try after sometime."
-        )
-      );
-      toast.error(
-        `Error while adding the user, please contact administrator or try after sometime.`
-      );
+      yield put(setNewUserError(USER_ERROR));
+      toast.error(USER_ERROR);
     }
   } catch (err) {
     yield put(setLoader(false));
@@ -295,17 +292,12 @@ export function* addNewUser() {
       toast.error("User profile already exist");
       yield put(setNewUserError("User profile already exist"));
     } else {
-      yield put(
-        setNewUserError(
-          "Error while adding the user, please contact administrator or try after sometime."
-        )
-      );
-      toast.error(
-        `Error while adding the user, please contact administrator or try after sometime.`
-      );
+      yield put(setNewUserError());
+      toast.error(USER_ERROR);
     }
   }
 }
+/* istanbul ignore next */
 export function* addNewUserSDA(userId) {
   const state = yield select();
   const userEmail = state.user.userDetail.email;
