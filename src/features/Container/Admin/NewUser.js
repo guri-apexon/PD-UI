@@ -33,6 +33,9 @@ const userValue = {
   userRole: "",
 };
 
+const emailReg =
+  /^(([a-zA-Z0-9])|([a-zA-Z0-9]+\.[A-Za-z]))+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+
 function NewUser({ setIsOpen }) {
   const dispatch = useDispatch();
   const isOpen = useSelector(modalToggle);
@@ -64,11 +67,7 @@ function NewUser({ setIsOpen }) {
     if (!formValue.email) {
       err.email.error = true;
       err.email.message = "Required";
-    } else if (
-      !/^(([a-zA-Z0-9])|([a-zA-Z0-9]+\.[A-Za-z]))+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(
-        formValue.email
-      )
-    ) {
+    } else if (!emailReg.test(formValue.email)) {
       err.email.error = true;
       err.email.message = "Enter valid email";
     } else {
@@ -142,13 +141,7 @@ function NewUser({ setIsOpen }) {
     if (key === "userId" && userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
       err.userId.message = "Enter valid user id";
-    } else if (
-      key === "email" &&
-      trimValue &&
-      !/^(([a-zA-Z0-9])|([a-zA-Z0-9]+\.[A-Za-z]))+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(
-        trimValue
-      )
-    ) {
+    } else if (key === "email" && trimValue && !emailReg.test(trimValue)) {
       err.email.error = true;
       err.email.message = "Enter valid email";
     } else if (trimValue) {
