@@ -116,7 +116,6 @@ const AddProtocol = () => {
       setFormValues(tempValues);
       setFormErrorValues(tempError);
     }
-    /* istanbul ignore next */
     if (fieldType === "CustomDropdown") {
       if (
         dropdownValue &&
@@ -199,7 +198,6 @@ const AddProtocol = () => {
       setFormErrorValues(temp);
     }
     if (fieldType === "Dropdown") {
-      /* istanbul ignore else */
       if (!dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
         if (fieldName === "amendmentNumber") {
           temp.versionNumber.error = false;
@@ -239,7 +237,6 @@ const AddProtocol = () => {
     tempError[fieldName].errorMessage = msg;
     setFormErrorValues(tempError);
   };
-  /* istanbul ignore next */
   const setUploadFile = (file, fieldName) => {
     // console.log("file uplaod called");
     let tempValue = cloneDeep(formValues);

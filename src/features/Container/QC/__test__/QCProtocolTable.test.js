@@ -54,13 +54,13 @@ describe("Protocol Table container component", () => {
       },
     },
   };
-  test("should render QC", () => {
-    const handleProtocolClick = jest.fn();
-    render(
-      <QCProtocolTable handleProtocolClick={handleProtocolClick} />,
-      state
-    );
-  });
+  // test("should render QC", () => {
+  //   const handleProtocolClick = jest.fn();
+  //   render(
+  //     <QCProtocolTable handleProtocolClick={handleProtocolClick} />,
+  //     state
+  //   );
+  // });
 
   test("should render QC", () => {
     const handleProtocolClick = jest.fn();
