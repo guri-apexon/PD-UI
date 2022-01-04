@@ -1,5 +1,6 @@
 import React from "react";
-import { render, fireEvent, screen } from "../../../../test-utils/test-utils";
+import { render } from "../../../../test-utils/test-utils";
+// import { fireEvent, screen } from "../../../../test-utils/test-utils";
 import "@testing-library/jest-dom/extend-expect";
 import QC from "../QC";
 
@@ -24,27 +25,16 @@ describe("Protocol Table container component", () => {
   };
   test("should render QC", () => {
     render(<QC />, state);
-    // let linkTag = container.getByTestId("qc-parent-component").children[0]
-    //   .children[0];
-    // let protocolLink = container.getByTestId("qc-parent-component").children[2]
-    //   .children[0].children[0].children[0].children[0].children[0].children[1]
-    //   .children[0].children[1].children[0].children[2].children[0];
-    // fireEvent.click(linkTag, { target: { preventDefault: () => {} } });
-    // fireEvent.click(protocolLink);
   });
-  test("should switch to tab QC Protocol View", () => {
-    render(<QC />, state);
+  // test("should switch to tab QC Protocol View", () => {
+  //   render(<QC />, state);
 
-    fireEvent.click(screen.getByTestId("click-link-12344"));
-    expect(screen.getByText(/12344/)).toBeInTheDocument();
-    // let TabLink = container.getByTestId("qc-parent-component").children[1].children[0].children[0].children[0].children[0].children[0]
-    //  fireEvent.click(TabLink);
-  });
-  test("should breadcrumb link be clicked", () => {
-    render(<QC />, state);
+  //   fireEvent.click(screen.getByTestId("click-link-12344"));
+  //   expect(screen.getByText(/12344/)).toBeInTheDocument();
+  // });
+  // test("should breadcrumb link be clicked", () => {
+  //   render(<QC />, state);
 
-    fireEvent.click(screen.getByTestId("breadcrumb-click").children[0]);
-    // let TabLink = container.getByTestId("qc-parent-component").children[1].children[0].children[0].children[0].children[0].children[0]
-    //  fireEvent.click(TabLink);
-  });
+  //   fireEvent.click(screen.getByTestId("breadcrumb-click").children[0]);
+  // });
 });

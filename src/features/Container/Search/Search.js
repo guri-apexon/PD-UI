@@ -120,13 +120,11 @@ const Search = (props) => {
         }
       );
       let tempQuery = cloneDeep(searchQuery);
-      /* istanbul ignore else */
       if ("?key" in parsed) {
         setIdPresent(true);
         setSearchInput(parsed[`?key`]);
         postObj.key = parsed[`?key`];
       }
-      /* istanbul ignore else */
       if ("toc" in parsed && TOC.sectionContent.length > 0) {
         let tempElasticQuery = TOC.sectionContent.filter((item) =>
           parsed.toc.split("+").includes(item.title)
@@ -135,15 +133,13 @@ const Search = (props) => {
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         postObj.toc = parsed.toc.split("+");
       }
-      /* istanbul ignore else */
+
       if ("sponsor" in parsed) {
         postObj.sponsor = parsed.sponsor.split("+");
       }
-      /* istanbul ignore else */
       if ("indication" in parsed) {
         postObj.indication = parsed.indication.split("+");
       }
-      /* istanbul ignore else */
       if ("phase" in parsed) {
         let tempElasticQuery = phaseData.sectionContent.filter((item) =>
           parsed.phase.split("+").includes(item.title)
@@ -152,7 +148,7 @@ const Search = (props) => {
           tempElasticQuery && tempElasticQuery.map((item) => item.id);
         postObj.phase = parsed.phase.split("+");
       }
-      /* istanbul ignore else */
+
       if ("documentStatus" in parsed) {
         let tempElasticQuery = documentStatus.sectionContent.filter((item) =>
           parsed.documentStatus.split("+").includes(item.value)
