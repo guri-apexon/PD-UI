@@ -95,7 +95,6 @@
       "!src/features/Container/Protocols/__test__/data.js",
       "!src/features/Container/Search/saga.js",
       "!src/features/Container/Search/FilterSection.js",
-      "!src/features/Container/Admin/adminSlice.js",
       "!src/features/Container/Admin/saga.js",
       "!src/features/Container/Search/SearchListingSection.js",
       "!src/features/Components/Dashboard/FollowingTable.js"
