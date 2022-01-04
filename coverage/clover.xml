@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1641204373014" clover="3.2.0">
-  <project timestamp="1641204373014" name="All files">
-    <metrics statements="2255" coveredstatements="2044" conditionals="1201" coveredconditionals="1047" methods="619" coveredmethods="546" elements="4075" coveredelements="3637" complexity="0" loc="2255" ncloc="2255" packages="20" files="62" classes="62"/>
+<coverage generated="1641296079620" clover="3.2.0">
+  <project timestamp="1641296079621" name="All files">
+    <metrics statements="2329" coveredstatements="2087" conditionals="1218" coveredconditionals="1052" methods="660" coveredmethods="580" elements="4207" coveredelements="3719" complexity="0" loc="2329" ncloc="2329" packages="20" files="63" classes="63"/>
     <package name="Routes">
       <metrics statements="6" coveredstatements="6" conditionals="8" coveredconditionals="8" methods="4" coveredmethods="3"/>
       <file name="routes.js" path="C:\Users\u1072234\Desktop\Coding Space\pd-ui\src\Routes\routes.js">
@@ -394,7 +394,7 @@
       </file>
     </package>
     <package name="features.Container.Admin">
-      <metrics statements="376" coveredstatements="351" conditionals="174" coveredconditionals="146" methods="110" coveredmethods="101"/>
+      <metrics statements="416" coveredstatements="386" conditionals="174" coveredconditionals="146" methods="148" coveredmethods="134"/>
       <file name="AddNewMapping.js" path="C:\Users\u1072234\Desktop\Coding Space\pd-ui\src\features\Container\Admin\AddNewMapping.js">
         <metrics statements="77" coveredstatements="71" conditionals="40" coveredconditionals="37" methods="18" coveredmethods="15"/>
         <line num="22" count="4" type="stmt"/>
@@ -773,6 +773,49 @@
         <line num="91" count="25" type="cond" truecount="2" falsecount="0"/>
         <line num="95" count="25" type="stmt"/>
       </file>
+      <file name="adminSlice.js" path="C:\Users\u1072234\Desktop\Coding Space\pd-ui\src\features\Container\Admin\adminSlice.js">
+        <metrics statements="40" coveredstatements="35" conditionals="0" coveredconditionals="0" methods="38" coveredmethods="33"/>
+        <line num="3" count="43" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="67" count="3" type="stmt"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="73" count="12" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="79" count="4" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="85" count="19" type="stmt"/>
+        <line num="88" count="8" type="stmt"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="97" count="24" type="stmt"/>
+        <line num="100" count="1" type="stmt"/>
+        <line num="103" count="4" type="stmt"/>
+        <line num="106" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
+        <line num="134" count="43" type="stmt"/>
+        <line num="136" count="43" type="stmt"/>
+        <line num="137" count="43" type="stmt"/>
+        <line num="138" count="179" type="stmt"/>
+        <line num="139" count="43" type="stmt"/>
+        <line num="140" count="43" type="stmt"/>
+        <line num="141" count="43" type="stmt"/>
+        <line num="142" count="94" type="stmt"/>
+        <line num="143" count="43" type="stmt"/>
+        <line num="144" count="189" type="stmt"/>
+        <line num="145" count="105" type="stmt"/>
+        <line num="146" count="48" type="stmt"/>
+        <line num="147" count="72" type="stmt"/>
+        <line num="148" count="105" type="stmt"/>
+        <line num="149" count="105" type="stmt"/>
+        <line num="150" count="78" type="stmt"/>
+        <line num="151" count="43" type="stmt"/>
+        <line num="152" count="43" type="stmt"/>
+        <line num="153" count="43" type="stmt"/>
+        <line num="154" count="43" type="stmt"/>
+      </file>
       <file name="columns.data.js" path="C:\Users\u1072234\Desktop\Coding Space\pd-ui\src\features\Container\Admin\columns.data.js">
         <metrics statements="25" coveredstatements="24" conditionals="12" coveredconditionals="10" methods="16" coveredmethods="15"/>
         <line num="20" count="2" type="stmt"/>
@@ -803,7 +846,7 @@
       </file>
     </package>
     <package name="features.Container.Dashboard">
-      <metrics statements="296" coveredstatements="277" conditionals="95" coveredconditionals="87" methods="68" coveredmethods="60"/>
+      <metrics statements="301" coveredstatements="280" conditionals="99" coveredconditionals="89" methods="68" coveredmethods="60"/>
       <file name="ActionButtons.js" path="C:\Users\u1072234\Desktop\Coding Space\pd-ui\src\features\Container\Dashboard\ActionButtons.js">
         <metrics statements="6" coveredstatements="6" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
         <line num="9" count="13" type="stmt"/>
@@ -814,9 +857,14 @@
         <line num="15" count="12" type="stmt"/>
       </file>
       <file name="Dashboard.js" path="C:\Users\u1072234\Desktop\Coding Space\pd-ui\src\features\Container\Dashboard\Dashboard.js">
-        <metrics statements="7" coveredstatements="7" conditionals="5" coveredconditionals="3" methods="2" coveredmethods="2"/>
+        <metrics statements="12" coveredstatements="10" conditionals="9" coveredconditionals="5" methods="2" coveredmethods="2"/>
         <line num="10" count="2" type="stmt"/>
         <line num="11" count="2" type="stmt"/>
+        <line num="14" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
         <line num="22" count="2" type="stmt"/>
         <line num="23" count="6" type="stmt"/>
         <line num="24" count="5" type="stmt"/>
@@ -2020,7 +2068,7 @@
       </file>
     </package>
     <package name="features.Container.Search">
-      <metrics statements="410" coveredstatements="330" conditionals="218" coveredconditionals="179" methods="126" coveredmethods="100"/>
+      <metrics statements="439" coveredstatements="335" conditionals="231" coveredconditionals="182" methods="129" coveredmethods="101"/>
       <file name="CustomFilterCards.js" path="C:\Users\u1072234\Desktop\Coding Space\pd-ui\src\features\Container\Search\CustomFilterCards.js">
         <metrics statements="79" coveredstatements="52" conditionals="36" coveredconditionals="24" methods="23" coveredmethods="17"/>
         <line num="19" count="5" type="stmt"/>
@@ -2157,7 +2205,7 @@
         <line num="285" count="18" type="stmt"/>
       </file>
       <file name="Search.js" path="C:\Users\u1072234\Desktop\Coding Space\pd-ui\src\features\Container\Search\Search.js">
-        <metrics statements="159" coveredstatements="150" conditionals="71" coveredconditionals="66" methods="31" coveredmethods="27"/>
+        <metrics statements="188" coveredstatements="155" conditionals="84" coveredconditionals="69" methods="34" coveredmethods="28"/>
         <line num="41" count="2" type="stmt"/>
         <line num="42" count="49" type="stmt"/>
         <line num="43" count="47" type="stmt"/>
@@ -2303,20 +2351,49 @@
         <line num="333" count="3" type="stmt"/>
         <line num="334" count="3" type="stmt"/>
         <line num="339" count="1" type="stmt"/>
-        <line num="478" count="47" type="stmt"/>
-        <line num="479" count="26" type="cond" truecount="2" falsecount="0"/>
-        <line num="480" count="15" type="stmt"/>
-        <line num="482" count="11" type="stmt"/>
-        <line num="833" count="47" type="stmt"/>
-        <line num="869" count="47" type="stmt"/>
+        <line num="471" count="47" type="stmt"/>
+        <line num="472" count="0" type="stmt"/>
+        <line num="473" count="0" type="stmt"/>
+        <line num="474" count="0" type="stmt"/>
+        <line num="477" count="47" type="stmt"/>
+        <line num="478" count="26" type="cond" truecount="2" falsecount="0"/>
+        <line num="479" count="15" type="stmt"/>
+        <line num="481" count="11" type="stmt"/>
+        <line num="488" count="47" type="stmt"/>
+        <line num="489" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="500" count="1" type="stmt"/>
+        <line num="502" count="0" type="stmt"/>
+        <line num="712" count="47" type="stmt"/>
+        <line num="713" count="0" type="stmt"/>
+        <line num="714" count="0" type="stmt"/>
+        <line num="715" count="0" type="stmt"/>
+        <line num="716" count="0" type="stmt"/>
+        <line num="717" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="718" count="0" type="stmt"/>
+        <line num="729" count="0" type="stmt"/>
+        <line num="730" count="0" type="stmt"/>
+        <line num="734" count="0" type="stmt"/>
+        <line num="735" count="0" type="stmt"/>
+        <line num="736" count="0" type="stmt"/>
+        <line num="737" count="0" type="stmt"/>
+        <line num="739" count="0" type="stmt"/>
+        <line num="740" count="0" type="stmt"/>
+        <line num="753" count="0" type="stmt"/>
+        <line num="757" count="0" type="stmt"/>
+        <line num="758" count="0" type="stmt"/>
+        <line num="759" count="0" type="stmt"/>
+        <line num="761" count="0" type="stmt"/>
+        <line num="763" count="0" type="stmt"/>
+        <line num="830" count="47" type="stmt"/>
+        <line num="866" count="47" type="stmt"/>
+        <line num="867" count="2" type="stmt"/>
+        <line num="868" count="2" type="stmt"/>
+        <line num="869" count="2" type="stmt"/>
         <line num="870" count="2" type="stmt"/>
         <line num="871" count="2" type="stmt"/>
         <line num="872" count="2" type="stmt"/>
-        <line num="873" count="2" type="stmt"/>
-        <line num="874" count="2" type="stmt"/>
-        <line num="875" count="2" type="stmt"/>
-        <line num="1043" count="47" type="stmt"/>
-        <line num="1047" count="0" type="stmt"/>
+        <line num="1040" count="47" type="stmt"/>
+        <line num="1044" count="0" type="stmt"/>
       </file>
       <file name="SearchResultSection.js" path="C:\Users\u1072234\Desktop\Coding Space\pd-ui\src\features\Container\Search\SearchResultSection.js">
         <metrics statements="93" coveredstatements="55" conditionals="68" coveredconditionals="47" methods="28" coveredmethods="17"/>

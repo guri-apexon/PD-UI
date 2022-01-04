@@ -468,7 +468,6 @@ const Search = (props) => {
         return "";
     }
   };
-  /* istanbul ignore next */
   const isFutureDate = (value) => {
     let d_now = new Date();
     let d_inp = new Date(value);
@@ -486,7 +485,6 @@ const Search = (props) => {
     // }
     // return true;
   };
-  /* istanbul ignore next */
   const checkValidity = (postObj) => {
     if (
       postObj &&
@@ -711,7 +709,6 @@ const Search = (props) => {
 
     setPostQueryObj(postObj);
   };
-  /* istanbul ignore next */
   const hancleClearAll = (inputPresent, input) => {
     clearSearchText(true);
     let postObj = cloneDeep(POST_OBJECT);
