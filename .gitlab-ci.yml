@@ -11,6 +11,7 @@ stages:
   - unit-test
   - sonar-scan
   - dev-deploy
+  - dev-deploy-other
   - test-deploy
   - uat1-deploy
   - svt-deploy
@@ -82,6 +83,30 @@ dev-deploy:
   only:
     refs:
       - develop
+    variables: 
+      - $ENVIRONMENT== "dev"
+
+dev-deploy-other:
+  stage: dev-deploy-other
+
+  tags: 
+    - pd-ui-dev
+
+  variables:
+    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
+
+  script: 
+    - echo "Start building App"
+    - sh CI-scripts/deploy.sh
+    - echo "Build and Deployed Successfully!"
+
+  artifacts:
+    paths:
+      - build
+      
+  only:
+    refs:
+      - Protocol-View-New
     variables: 
       - $ENVIRONMENT== "dev"
 
