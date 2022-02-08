@@ -20,6 +20,7 @@ import Breadcrumbs from "apollo-react/components/Breadcrumbs";
 import Tab from "apollo-react/components/Tab";
 import Tabs from "apollo-react/components/Tabs";
 import Loader from "apollo-react/components/Loader";
+import ProtocolNewView from "./Protocol-New-View";
 
 const Protocols = (props) => {
   const summary = useSelector(protocolSummary);
@@ -106,6 +107,7 @@ const Protocols = (props) => {
                       <Tab label="Overview" />
                       <Tab label="Protocol View" />
                       <Tab label="Documents" />
+                      <Tab label="Protocol-New-View" />
                     </Tabs>
                   </div>
                 </div>
@@ -115,6 +117,12 @@ const Protocols = (props) => {
                   {value === 1 && <ProtocolView protId={data.id} />}
                   {value === 2 && (
                     <Documents handleChangeTab={handleChangeTab} />
+                  )}
+                  {value === 3 && (
+                    <ProtocolNewView
+                      handleChangeTab={handleChangeTab}
+                      path={data.documentFilePath}
+                    />
                   )}
                 </div>
               </div>

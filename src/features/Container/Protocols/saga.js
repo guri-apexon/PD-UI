@@ -253,12 +253,49 @@ export function* getCompareResult(action) {
   }
 }
 
+export function* getStaticData(action) {
+  const viewData = {
+    iqvdataSoa: null,
+    iqvdataSummary: null,
+    iqvdataToc: null,
+    loader: true,
+    tocSections: null,
+    soaSections: null,
+    err: null,
+  };
+  // let userId = yield getUserId();
+  yield put(getProcotoclToc(viewData));
+
+  // let URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
+
+  let url = "/toc-new.json";
+
+  const config = {
+    url: url,
+    method: "GET",
+  };
+
+  const { data } = yield call(httpCall, config);
+  const dataReq = {
+    iqvdataSoa: "",
+    iqvdataSummary: "",
+    iqvdataToc: "",
+    loader: false,
+    tocSections: data,
+    soaSections: "",
+    err: null,
+    download: "",
+  };
+  yield put(getProcotoclToc(dataReq));
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery("GET_PROTOCOL_SUMMARY", getSummaryData);
   yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolToc);
   yield takeLatest("FETCH_ASSOCIATE_PROTOCOLS", fetchAssociateProtocol);
   yield takeEvery("POST_COMPARE_PROTOCOL", getCompareResult);
+  yield takeEvery("GET_STATIC_DATA", getStaticData);
 }
 
 // notice how we now only export the rootSaga
