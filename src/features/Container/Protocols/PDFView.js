@@ -6,7 +6,7 @@ import "./sample.less";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-export default function PDFView() {
+export default function PDFView(props) {
   // let splitArr = path.documentFilePath.split("\\");
   // const pdfFile = splitArr[splitArr.length - 1];
   const pdfFile = "/Protocol - V1 - 07-Jun-2020.pdf";
@@ -39,7 +39,7 @@ export default function PDFView() {
                 <div id={`page-${pages}`} key={i}>
                   <Page
                     width={500}
-                    scale={1.0}
+                    scale={props.scale}
                     renderAnnotationLayer={false}
                     renderTextLayer={false}
                     pageNumber={pages}

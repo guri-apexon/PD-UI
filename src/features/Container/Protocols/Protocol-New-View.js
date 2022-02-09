@@ -9,6 +9,8 @@ import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
 import AccordionSummary from "apollo-react/components/AccordionSummary";
 import Modal from "apollo-react/components/Modal";
+import ArrowLeft from "apollo-react-icons/ArrowLeft";
+import ArrowRight from "apollo-react-icons/ArrowRight";
 
 import PDFView from "./PDFView";
 
@@ -26,19 +28,26 @@ class ProtocolViewClass extends React.Component {
       activeSubSection: null,
       custom: false,
       item: null,
+      leftArrow: true,
+      rightArrow: false,
+      pdfSectionWidth: "50%",
+      pdfScale: 1.0,
+      contentSectionWidth: "50%",
+      pdfDisplay: true,
+      contentDisplay: true,
     };
   }
 
   handleOpen = (item) => {
     this.setState({ ...this.state, custom: true, item });
-    console.log(item);
+    // console.log(item);
   };
   onChange = (event) => {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     const update = [...this.state.item];
     update[3] = event.target.value;
     this.setState({ ...this.state, item: update });
-    console.log(update);
+    // console.log(update);
   };
 
   handleClose = () => {
@@ -46,7 +55,7 @@ class ProtocolViewClass extends React.Component {
   };
 
   handleSave = () => {
-    console.log("Your progress has been saved.");
+    // console.log("Your progress has been saved.");
     this.props.dispatch({
       type: "SET_VIEW_DATA",
       payload: {
@@ -101,7 +110,7 @@ class ProtocolViewClass extends React.Component {
   }
 
   getTocElement = (data) => {
-    console.log("TOC Data", data);
+    // console.log("TOC Data", data);
     let CPT_section = data[1];
     let type = data[2];
     let content = data[3];
@@ -144,15 +153,15 @@ class ProtocolViewClass extends React.Component {
   };
 
   scrollToPage(page) {
-    console.log(page);
+    // console.log(page);
     const pageNum = parseInt(page);
-    // if (pageNum) {
-    const ele = document.getElementById(`page-${pageNum + 1}`);
-    ele.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-    // }
+    if (pageNum || pageNum === 0) {
+      const ele = document.getElementById(`page-${pageNum + 1}`);
+      ele.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   }
   renderContent(data) {
     return <div>{data.map((item) => this.getTocElement(item))}</div>;
@@ -226,15 +235,102 @@ class ProtocolViewClass extends React.Component {
       })
     );
   };
+  handleArrowChange = (section) => {
+    if (section === "PDF") {
+      this.setState({
+        leftArrow: false,
+        rightArrow: true,
+      });
+    } else {
+      this.setState({
+        leftArrow: true,
+        rightArrow: false,
+      });
+    }
+  };
+  handleExpand = () => {
+    const { rightArrow, leftArrow, contentDisplay, pdfDisplay } = this.state;
+    if (rightArrow) {
+      if (contentDisplay && !pdfDisplay) {
+        this.setState({
+          pdfScale: 1.0,
+          pdfSectionWidth: "50%",
+          contentSectionWidth: "50%",
+          rightArrow: false,
+          leftArrow: true,
+          contentDisplay: true,
+          pdfDisplay: true,
+        });
+      } else {
+        this.setState({
+          pdfScale: 1.5,
+          pdfSectionWidth: "80%",
+          contentSectionWidth: "20%",
+          rightArrow: false,
+          leftArrow: true,
+          contentDisplay: false,
+          pdfDisplay: true,
+        });
+      }
+    } else if (leftArrow) {
+      if (!contentDisplay && pdfDisplay) {
+        this.setState({
+          pdfScale: 1.0,
+          pdfSectionWidth: "50%",
+          contentSectionWidth: "50%",
+          rightArrow: false,
+          leftArrow: true,
+          contentDisplay: true,
+          pdfDisplay: true,
+        });
+      } else {
+        this.setState({
+          pdfScale: 0.4,
+          pdfSectionWidth: "20%",
+          contentSectionWidth: "80%",
+          leftArrow: false,
+          rightArrow: true,
+          pdfDisplay: false,
+          contentDisplay: true,
+        });
+      }
+    }
+  };
   render() {
     const toc = ViewData;
+    const {
+      leftArrow,
+      rightArrow,
+      pdfSectionWidth,
+      pdfScale,
+      contentSectionWidth,
+      pdfDisplay,
+      contentDisplay,
+    } = this.state;
     return (
       <div className="protocol-view-component">
-        <div className="pdf-render-section">
-          <PDFView path={this.props.path} />
+        <div
+          className="pdf-render-section"
+          onMouseEnter={() => {
+            pdfDisplay && contentDisplay && this.handleArrowChange("PDF");
+          }}
+          style={{ width: pdfSectionWidth }}
+        >
+          <PDFView path={this.props.path} scale={pdfScale} />
         </div>
-
-        <div className="digitized-content-render-section">
+        {(leftArrow || rightArrow) && (
+          <div className="arrow-container" onClick={this.handleExpand}>
+            {leftArrow && <ArrowLeft />}
+            {rightArrow && <ArrowRight />}
+          </div>
+        )}
+        <div
+          className="digitized-content-render-section"
+          onMouseEnter={() => {
+            contentDisplay && pdfDisplay && this.handleArrowChange("CONTENT");
+          }}
+          style={{ width: contentSectionWidth }}
+        >
           <div className="protocol-column">
             <div
               className="accordion-start-container"
@@ -244,6 +340,7 @@ class ProtocolViewClass extends React.Component {
             </div>
           </div>
         </div>
+
         <>
           <Modal
             open={this.state.custom}

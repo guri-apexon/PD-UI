@@ -5,15 +5,35 @@
   .pdf-render-section {
     flex: 1;
     width: 50%;
+    margin-right: 5px;
+  }
+  .arrow-container {
+    height: 68vh;
+    width: 10px;
+    background-color: #c1c1c1;
+    display: flex;
+    cursor: pointer;
+
+    svg {
+      margin: auto;
+      width: 15px;
+      height: 15px;
+      margin-left: -2px;
+      fill: #fff;
+    }
+  }
+  .arrow-container:hover {
+    background-color: #c1c1c1c4;
   }
   .digitized-content-render-section {
     flex: 1;
     width: 50%;
     .protocol-column {
+      margin-left: 5px;
       .accordion-start-container {
         scroll-padding: 50px 0px 0px 50px;
         overflow-y: scroll;
-        height: 65vh;
+        height: 68vh;
         .accordion-parent {
           margin-bottom: 5px;
           .accordion-parent-detail-container {
