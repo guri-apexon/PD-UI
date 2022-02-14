@@ -68,6 +68,9 @@ class ProtocolViewClass extends React.Component {
   };
 
   getTable(item, unq, noHeader = false) {
+    console.log("Table Start----------------------------");
+    console.log("Table", item.TableProperties);
+    console.log("Table End------------------------------");
     let footNote = [];
     for (const [key, value] of Object.entries(item)) {
       const note = key.split("_")[0];
@@ -110,7 +113,6 @@ class ProtocolViewClass extends React.Component {
   }
 
   getTocElement = (data) => {
-    // console.log("TOC Data", data);
     let CPT_section = data[1];
     let type = data[2];
     let content = data[3];

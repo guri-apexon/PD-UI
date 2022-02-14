@@ -21,6 +21,7 @@ import Tab from "apollo-react/components/Tab";
 import Tabs from "apollo-react/components/Tabs";
 import Loader from "apollo-react/components/Loader";
 import ProtocolNewView from "./Protocol-New-View";
+import TableEdit from "./TableEdit";
 
 const Protocols = (props) => {
   const summary = useSelector(protocolSummary);
@@ -108,6 +109,7 @@ const Protocols = (props) => {
                       <Tab label="Protocol View" />
                       <Tab label="Documents" />
                       <Tab label="Protocol-New-View" />
+                      <Tab label="Table Edit" />
                     </Tabs>
                   </div>
                 </div>
@@ -120,6 +122,12 @@ const Protocols = (props) => {
                   )}
                   {value === 3 && (
                     <ProtocolNewView
+                      handleChangeTab={handleChangeTab}
+                      path={data.documentFilePath}
+                    />
+                  )}
+                  {value === 4 && (
+                    <TableEdit
                       handleChangeTab={handleChangeTab}
                       path={data.documentFilePath}
                     />
