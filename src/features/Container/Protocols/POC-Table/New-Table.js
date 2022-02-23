@@ -11,7 +11,6 @@ const gridStyle = { minHeight: 200 };
 
 const NewTable = (props) => {
   const { noOfColumns } = props;
-  const [cellRef, setCellRef] = useState(null);
   const [dataSource, setDataSource] = useState([]);
   const [tableColumn, setTableColumn] = useState([]);
 
@@ -25,34 +24,10 @@ const NewTable = (props) => {
         defaultVisible: false,
       };
       let columns = [obj, ...getColumns(noOfColumns)];
-      // let dataSource = [];
-      // let dataObj = {};
-      for (let i = 0; i < columns.length; i++) {
-        columns[i].cellDOMProps = cellDOMProps;
-      }
-      // for (let i = 0; i < columns.length; i++) {
-      //   if (columns[i].name === "id") {
-      //     dataObj.id = uuidv4();
-      //   } else {
-      //     dataObj[columns[i].name] = "";
-      //   }
-      // }
-      // dataSource.push(dataObj);
-      // setDataSource(dataSource);
       setTableColumn(columns);
     }
   }, [noOfColumns]);
 
-  const cellDOMProps = (cellProps) => {
-    return {
-      onClick: () => {
-        cellRef.current.startEdit({
-          columnId: cellProps.id,
-          rowIndex: cellProps.rowIndex,
-        });
-      },
-    };
-  };
   const onEditComplete = (arg) => {
     const data = [...dataSource];
     const newData = data.map((item) => {
@@ -116,15 +91,16 @@ const NewTable = (props) => {
             </Button>
           )}
         </div>
-        <ReactDataGrid
-          onReady={setCellRef}
-          idProperty="id"
-          style={gridStyle}
-          onEditComplete={onEditComplete}
-          editable={true}
-          columns={tableColumn}
-          dataSource={dataSource}
-        />
+        {tableColumn.length > 0 && (
+          <ReactDataGrid
+            idProperty="id"
+            style={gridStyle}
+            onEditComplete={onEditComplete}
+            editable={true}
+            columns={tableColumn}
+            dataSource={dataSource}
+          />
+        )}
       </div>
       {/* )} */}
     </div>

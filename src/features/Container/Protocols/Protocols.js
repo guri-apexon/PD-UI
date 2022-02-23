@@ -21,7 +21,8 @@ import Tab from "apollo-react/components/Tab";
 import Tabs from "apollo-react/components/Tabs";
 import Loader from "apollo-react/components/Loader";
 import ProtocolNewView from "./Protocol-New-View";
-import TableEdit from "./TableEdit";
+import TableEdit from "./ag-grid";
+import CreateTable from "./ag-grid/CreateTable";
 
 const Protocols = (props) => {
   const summary = useSelector(protocolSummary);
@@ -108,8 +109,9 @@ const Protocols = (props) => {
                       <Tab label="Overview" />
                       <Tab label="Protocol View" />
                       <Tab label="Documents" />
-                      <Tab label="Protocol-New-View" />
-                      <Tab label="Table Edit" />
+                      <Tab label="POC Protocol View" />
+                      <Tab label="POC Table Edit" />
+                      <Tab label="POC Add Table" />
                     </Tabs>
                   </div>
                 </div>
@@ -128,6 +130,12 @@ const Protocols = (props) => {
                   )}
                   {value === 4 && (
                     <TableEdit
+                      handleChangeTab={handleChangeTab}
+                      path={data.documentFilePath}
+                    />
+                  )}
+                  {value === 5 && (
+                    <CreateTable
                       handleChangeTab={handleChangeTab}
                       path={data.documentFilePath}
                     />

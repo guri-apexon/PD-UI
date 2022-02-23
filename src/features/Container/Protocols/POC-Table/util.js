@@ -6,10 +6,19 @@ export const getColumns = (column) => {
   let dataObj = {};
   for (let i = 0; i < columnLength; i++) {
     let obj = {
-      name: i + ".0",
-      header: i + ".0",
+      name: i + 1 + ".0",
+      header: i + 1 + ".0",
       defaultFlex: 1,
       minWidth: 50,
+      render: ({ value }) => {
+        console.log("html  =  ", value);
+        return (
+          <div
+            className="value-inside"
+            dangerouslySetInnerHTML={{ __html: value }}
+          />
+        );
+      },
     };
     dataObj[obj.name] = "";
     columns.push(obj);
@@ -48,7 +57,7 @@ export const getDataSourceFromJSON = (data) => {
     let row = {};
     row.id = uuidv4();
     Object.keys(data[i]).map((key) => {
-      console.log(data[i][key]);
+      // console.log(data[i][key]);
       row[key] = data[i][key].content;
     });
     dataSource.push(row);

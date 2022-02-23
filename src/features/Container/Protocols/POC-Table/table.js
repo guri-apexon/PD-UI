@@ -12,7 +12,7 @@ import Button from "apollo-react/components/Button/Button";
 const gridStyle = { minHeight: 700 };
 
 const TableEdit = () => {
-  const [gridRef, setGridRef] = useState(null);
+  // const [gridRef, setGridRef] = useState(null);
   const [dataSource, setDataSource] = useState([]);
   const [columns, setColumns] = useState([]);
   const getColumnFromJSON = (data) => {
@@ -33,7 +33,7 @@ const TableEdit = () => {
           header: elm,
           defaultFlex: 1,
           minWidth: 50,
-          cellDOMProps: cellDOMProps,
+          // cellDOMProps: cellDOMProps,
         };
         columns.push(column);
       });
@@ -48,16 +48,16 @@ const TableEdit = () => {
     setDataSource(dataSource);
     setColumns(columns);
   }, []);
-  const cellDOMProps = (cellProps) => {
-    return {
-      onClick: () => {
-        gridRef.current.startEdit({
-          columnId: cellProps.id,
-          rowIndex: cellProps.rowIndex,
-        });
-      },
-    };
-  };
+  // const cellDOMProps = (cellProps) => {
+  //   return {
+  //     onClick: () => {
+  //       gridRef.current.startEdit({
+  //         columnId: cellProps.id,
+  //         rowIndex: cellProps.rowIndex,
+  //       });
+  //     },
+  //   };
+  // };
 
   // const columns = [
   //   {
@@ -148,16 +148,17 @@ const TableEdit = () => {
           Add Row
         </Button>
       </div>
-
-      <ReactDataGrid
-        onReady={setGridRef}
-        idProperty="id"
-        style={gridStyle}
-        onEditComplete={onEditComplete}
-        editable={true}
-        columns={columns}
-        dataSource={dataSource}
-      />
+      {dataSource.length > 0 && columns.length > 0 && (
+        <ReactDataGrid
+          // onReady={setGridRef}
+          idProperty="id"
+          style={gridStyle}
+          onEditComplete={onEditComplete}
+          editable={true}
+          columns={columns}
+          dataSource={dataSource}
+        />
+      )}
     </div>
   );
 };
