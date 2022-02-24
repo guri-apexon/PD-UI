@@ -87,3 +87,10 @@ export const getEmptyRowByColumnSize = (columnSize) => {
   }
   return row;
 };
+export const getEmptyRowTableJSON = (columnSize) => {
+  let row = {};
+  for (let i = 1; i <= columnSize; i++) {
+    row[i + ".0"] = "";
+  }
+  return row;
+};

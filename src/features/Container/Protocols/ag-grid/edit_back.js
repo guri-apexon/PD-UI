@@ -5,8 +5,16 @@ import Button from "apollo-react/components/Button/Button";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
-import { getEmptyRowByColumnSize, getEmptyRowTableJSON } from "./utils";
-import cloneDeep from "lodash/cloneDeep";
+// import tableJSONData from "./data/tableProperties.json";
+import {
+  // createFinalTableJSON,
+  getColumnFromJSON,
+  getDataSourceFromJSON,
+  getEmptyRowByColumnSize,
+  getEmptyRowTableJSON,
+} from "./utils";
+import { cloneDeep } from "lodash";
+// import { cloneDeep } from "lodash";
 
 const QC_CHANGE_TYPE = {
   ADDED: "add",
@@ -15,19 +23,30 @@ const QC_CHANGE_TYPE = {
 };
 
 const EditTable = (props) => {
-  const { table, dataSource, columns } = props;
+  const { data } = props;
   const gridRef = useRef();
   const [rowData, setRowData] = useState([]);
   const [columnDefs, setColumnData] = useState([]);
   const [tableJSON, setTableJSON] = useState([]);
 
   useEffect(() => {
-    console.log(columns);
-    setColumnData(columns);
-    setRowData(dataSource);
-    setTableJSON(table);
-  }, [table, dataSource, columns]);
+    if (data.length > 0) {
+      const dataColumn = getColumnFromJSON(data);
+      setColumnData(dataColumn);
+      const dataSource = getDataSourceFromJSON(data);
+      setRowData(dataSource);
+      setTableJSON(data);
+    }
+  }, [data]);
 
+  // useEffect(() => {
+  //   if (tableJSON.length > 0) {
+  //     const data = getColumnFromJSON(tableJSON);
+  //     setColumnData(data);
+  //     const dataSource = getDataSourceFromJSON(tableJSON);
+  //     setRowData(dataSource);
+  //   }
+  // }, [data]);
   const onGridReady = useCallback((params) => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
@@ -86,7 +105,9 @@ const EditTable = (props) => {
     setTableJSON(dataSource);
   };
   const onCellValueChanged = (event) => {
+    console.log("data after changes is: ", event);
     if (event.oldValue !== event.value) {
+      console.log(`Value changed from "${event.oldValue}" to "${event.value}"`);
       updateTableJSON(tableJSON, event);
     } else {
       console.log(`Nothing changed`);
@@ -108,6 +129,8 @@ const EditTable = (props) => {
     gridRef.current.api.forEachNode(function (node) {
       rowData.push(node.data);
     });
+    console.log("Row Data:");
+    console.log(rowData);
     return rowData;
   }, []);
   const handleAddRow = useCallback(() => {
