@@ -10,7 +10,8 @@ import {
   getDataSourceFromJSON,
 } from "./utils";
 
-const Table = () => {
+const Table = (props) => {
+  // const { type, tableJSONData } = props;
   const [dataSource, setDataSource] = useState([]);
   const [columns, setColumn] = useState([]);
 
@@ -18,13 +19,20 @@ const Table = () => {
   const [showTable, setShowTable] = useState(false);
 
   const [editTable, setEditTable] = useState(false);
+  // useEffect(() => {
+  //   if (type === "edit") {
+  //     setEditTable(true);
+  //   }
+  // }, [type]);
 
   useEffect(() => {
     if (editTable) {
       const dataColumn = getColumnFromJSON(tableJSONData);
       setColumn(dataColumn);
+
       const dataSource = getDataSourceFromJSON(tableJSONData);
       setDataSource(dataSource);
+      console.log("Data Source", dataSource);
     }
   }, [editTable]);
   const createTable = () => {
@@ -40,7 +48,7 @@ const Table = () => {
         <Button
           variant="primary"
           size="small"
-          style={{ marginBottom: 10, marginTop: 10 }}
+          style={{ margin: 10 }}
           onClick={() => setEditTable(false)}
         >
           Add Table

@@ -7,9 +7,25 @@ import "./sample.less";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 export default function PDFView(props) {
+  // const { fileURL } = props;
+  // const [filename, setFileName] = useState("");
+  const [isPDF] = useState(true);
+
   // let splitArr = path.documentFilePath.split("\\");
   // const pdfFile = splitArr[splitArr.length - 1];
-  const pdfFile = "/Protocol - V1 - 07-Jun-2020.pdf";
+  const filename = "/d5180c00025csp-FINAL-25Feb-clean.pdf";
+  // useState(() => {
+  //   const type = filename.type;
+  //   if (type === "application/pdf") {
+  //     setIsPDF(true);
+  //   } else {
+  //     setIsPDF(false);
+  //   }
+  // }, [filename]);
+  // useEffect(() => {
+  //   setFileName(fileURL);
+  // }, [fileURL]);
+
   const [numPages, setNumPages] = useState(null);
   //   const [refs, setRefs] = useState(null);
   function onDocumentLoadSuccess(data) {
@@ -17,8 +33,8 @@ export default function PDFView(props) {
     // const checkRef = [...Array(data.numPages)].map(() => React.createRef());
     // setRefs(checkRef);
   }
-
-  return (
+  console.log("PDF", filename);
+  return filename && isPDF ? (
     <div className="Example">
       <div className="Example__container">
         <div
@@ -30,7 +46,7 @@ export default function PDFView(props) {
             height: "65vh",
           }}
         >
-          <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
+          <Document file={filename} onLoadSuccess={onDocumentLoadSuccess}>
             {Array.apply(null, { length: numPages })
               .map((val, index) => {
                 return index + 1;
@@ -50,5 +66,7 @@ export default function PDFView(props) {
         </div>
       </div>
     </div>
+  ) : (
+    <div></div>
   );
 }

@@ -22,7 +22,9 @@ import Tabs from "apollo-react/components/Tabs";
 import Loader from "apollo-react/components/Loader";
 import ProtocolNewView from "./Protocol-New-View";
 import TableEdit from "./ag-grid";
-import CreateTable from "./ag-grid/CreateTable";
+// import CreateTable from "./ag-grid/CreateTable";
+import "ag-grid-community/dist/styles/ag-grid.css";
+import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 const Protocols = (props) => {
   const summary = useSelector(protocolSummary);
@@ -111,7 +113,7 @@ const Protocols = (props) => {
                       <Tab label="Documents" />
                       <Tab label="POC Protocol View" />
                       <Tab label="POC Table Edit" />
-                      <Tab label="POC Add Table" />
+                      {/* <Tab label="POC Add Table" /> */}
                     </Tabs>
                   </div>
                 </div>
@@ -134,12 +136,12 @@ const Protocols = (props) => {
                       path={data.documentFilePath}
                     />
                   )}
-                  {value === 5 && (
+                  {/* {value === 5 && (
                     <CreateTable
                       handleChangeTab={handleChangeTab}
                       path={data.documentFilePath}
                     />
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

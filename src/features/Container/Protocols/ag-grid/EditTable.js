@@ -3,7 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import Button from "apollo-react/components/Button/Button";
 
 import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+// import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
 import { getEmptyRowByColumnSize, getEmptyRowTableJSON } from "./utils";
 import cloneDeep from "lodash/cloneDeep";
@@ -158,7 +158,7 @@ const EditTable = (props) => {
     getRowData();
   }, [columnDefs, tableJSON]);
   return (
-    <div className="ag-theme-alpine" style={{ height: 400, width: "100%" }}>
+    <div className="ag-theme-alpine">
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
           variant="primary"
@@ -192,6 +192,7 @@ const EditTable = (props) => {
         onGridReady={onGridReady}
         onCellValueChanged={onCellValueChanged}
         rowSelection={"multiple"}
+        domLayout="autoHeight"
       ></AgGridReact>
     </div>
   );

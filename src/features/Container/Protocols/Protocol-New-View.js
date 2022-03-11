@@ -15,7 +15,17 @@ import ArrowRight from "apollo-react-icons/ArrowRight";
 import PDFView from "./PDFView";
 
 import "./protocol-view.scss";
-import ViewData from "./toc_back.json";
+// import ViewData from "./Protocol-view/data.json";
+// import axios from "axios";
+import { withRouter } from "react-router-dom";
+// import axios from "axios";
+import { BASE_URL_8000, httpCall } from "../../../utils/api";
+import { cloneDeep } from "lodash";
+
+// import ViewData from "./ag-grid/data/section.json";
+
+// import Table from "./ag-grid";
+const queryString = require("query-string");
 
 class ProtocolViewClass extends React.Component {
   constructor() {
@@ -35,12 +45,69 @@ class ProtocolViewClass extends React.Component {
       contentSectionWidth: "50%",
       pdfDisplay: true,
       contentDisplay: true,
+      editIndex: null,
+      editValue: "",
+      ViewData: [],
+      pdfFileURL: "",
+      expandedSections: [],
     };
   }
 
-  handleOpen = (item) => {
-    this.setState({ ...this.state, custom: true, item });
+  fetchData = async (id) => {
+    const config = {
+      url: "http://ca2spdml01q:8001/api/sections_api/lvl1_metadata?aidocid=02cb4d51-273c-4d85-b2d4-495454133b36&child=[1,2,3]",
+      method: "GET",
+    };
+    const { data } = await httpCall(config);
+
+    this.setState({ ViewData: data });
+  };
+  fetchPDF = async () => {
+    const { summary, userID } = this.props;
+    const config = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
+        summary.data.documentFilePath
+      )}&userId=${userID.substring(1)}&protocol=${summary.data.protocol}`,
+      method: "GET",
+      responseType: "blob",
+    };
+
+    const resp = await httpCall(config);
+    const file = new Blob([resp.data], { type: "application/pdf" });
+    console.log("file URL file", file);
+    // const fileURL = URL.createObjectURL(file);
+    // console.log("file URL", fileURL);
+    this.setState({
+      pdfFileURL: file,
+    });
+    // window.open(fileURL);
+  };
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.summary !== this.props.summary) {
+  //     this.fetchPDF(this.props.summary);
+  //   }
+  // }
+  componentDidMount() {
+    const { location } = this.props.history;
+    const parsed = queryString.parse(location.search);
+    console.log(parsed);
+    this.fetchData(parsed.protocolId);
+    this.fetchPDF(this.props.summary);
+  }
+  handleOpen = (index, content) => {
+    // this.setState({ ...this.state, custom: true, item });
     // console.log(item);
+    this.setState({
+      editIndex: index,
+      editValue: content,
+    });
+  };
+  saveData = () => {
+    console.log("calling...");
+    this.setState({
+      editIndex: null,
+      editValue: "",
+    });
   };
   onChange = (event) => {
     // console.log(event.target.value);
@@ -71,6 +138,8 @@ class ProtocolViewClass extends React.Component {
     // console.log("Table Start----------------------------");
     // console.log("Table", item.TableProperties);
     // console.log("Table End------------------------------");
+    // const tableProperties = JSON.parse(item.TableProperties);
+    // console.log(tableProperties);
     let footNote = [];
     for (const [key, value] of Object.entries(item)) {
       const note = key.split("_")[0];
@@ -83,15 +152,7 @@ class ProtocolViewClass extends React.Component {
       <>
         <div style={{}}>
           {!noHeader ? (
-            <h2
-              style={{
-                // paddingTop: "20px",
-                fontSize: "16px",
-                marginBottom: "20px",
-              }}
-            >
-              {item.TableName}
-            </h2>
+            <div className="level-3-header">{item.TableName}</div>
           ) : null}
         </div>
         <div
@@ -102,6 +163,7 @@ class ProtocolViewClass extends React.Component {
           ref={this.refs[`${unq}-${item.TableIndex}`]}
         >
           <div dangerouslySetInnerHTML={{ __html: item.Table }} />
+          {/* <Table type="edit" tableJSONData={tableProperties} /> */}
         </div>
         <div>
           {footNote.map((notes) => {
@@ -112,50 +174,65 @@ class ProtocolViewClass extends React.Component {
     );
   }
 
-  getTocElement = (data) => {
-    let CPT_section = data[1];
-    let type = data[2];
-    let content = data[3];
-    let seq_num = data[9];
+  getTocElement = (data, index) => {
+    let type = data.derived_section_type;
+    let content = data.content;
+    let seq_num = data.font_info.roi_id.para;
     if (!content) {
       return null;
     }
     if (type === "table") {
-      if (CPT_section === "Unmapped") {
-        return this.getTable(content, "TOC-TABLE", true);
-      }
       return this.getTable(content, "TOC-TABLE");
     }
-
+    const { editIndex, editValue } = this.state;
     switch (type) {
       case "header":
-        return (
+        return editIndex !== index ? (
           <div
             className="level-3-header"
             id={`TOC-${seq_num}`}
             key={`TOC-${seq_num}`}
             ref={this.refs[`TOC-${seq_num}`]}
             dangerouslySetInnerHTML={{ __html: content }}
+            onDoubleClick={() => this.handleOpen(index, content)}
           />
+        ) : (
+          <textarea
+            onBlur={() => this.saveData()}
+            onChange={(e) => this.setState({ editValue: e.target.value })}
+            value={editIndex === index ? editValue : content}
+            className="pd-view-text-area"
+            autoFocus
+          ></textarea>
         );
       default:
         return (
           <>
-            <p
-              id={`CPT_section-${seq_num}`}
-              key={`CPT_section-${seq_num}`}
-              // className={`indent ${isBold}`}
-              onClick={() => this.handleOpen(data)}
-              style={{ fontSize: "12px" }}
-              dangerouslySetInnerHTML={{ __html: content }}
-            ></p>
+            {editIndex !== index ? (
+              <p
+                id={`CPT_section-${seq_num}`}
+                key={`CPT_section-${seq_num}`}
+                className={`text-para`}
+                onDoubleClick={() => this.handleOpen(index, content)}
+                style={{ fontSize: "12px" }}
+                dangerouslySetInnerHTML={{ __html: content }}
+              ></p>
+            ) : (
+              <textarea
+                value={editIndex === index ? editValue : content}
+                className="pd-view-text-area"
+                onChange={(e) => this.setState({ editValue: e.target.value })}
+                onBlur={() => this.saveData()}
+                autoFocus
+              ></textarea>
+            )}
           </>
         );
     }
   };
 
   scrollToPage(page) {
-    // console.log(page);
+    console.log("csalcnlsakcn", page);
     const pageNum = parseInt(page);
     if (pageNum || pageNum === 0) {
       const ele = document.getElementById(`page-${pageNum + 1}`);
@@ -168,8 +245,9 @@ class ProtocolViewClass extends React.Component {
   renderContent(data) {
     return <div>{data.map((item) => this.getTocElement(item))}</div>;
   }
-  renderAccordionDetail = (data) => {
-    if (data.header) {
+  renderAccordionDetail = (data, index) => {
+    // console.log("Indexes", index);
+    if (data.derived_section_type === "header2") {
       return (
         <Accordion key={data.id} className="accordion-child">
           <AccordionSummary>
@@ -185,22 +263,100 @@ class ProtocolViewClass extends React.Component {
         </Accordion>
       );
     } else {
-      return this.renderContent(data.data);
+      return this.getTocElement(data, index);
     }
   };
-  renderAccordion = (data) => {
+  renderAccordion = (fullData) => {
+    const data = fullData.protocol_data_sections;
+    let finalData = [];
+    const keysArr = Object.keys(data);
+    for (let i = 0; i < keysArr.length; i++) {
+      // console.log(data[keysArr[i]]);
+      // console.log(data[keysArr[i]].section_metadata);
+      const headingLevel = parseInt(
+        data[keysArr[i]].section_metadata.derived_heading_level
+      );
+
+      if (headingLevel === 1) {
+        finalData.push(data[keysArr[i]]);
+        // } else {
+        //   const elementsInsideParent =
+        //     finalData[finalData.length - 1].source_document_content;
+        //   const elementsInsideChild = data[keysArr[i]].source_document_content;
+
+        //   const finalObject = Object.assign(
+        //     elementsInsideParent,
+        //     elementsInsideChild
+        //   );
+        //   finalData[finalData.length - 1].source_document_content = finalObject;
+      }
+    }
+
+    // ------------------------------- Old Approach ----------------------------------
+    // const data = fullData.protocol_data_sections;
+    // let finalData = [];
+    // const keysArr = Object.keys(data);
+    // for (let i = 0; i < keysArr.length; i++) {
+    //   console.log(data[keysArr[i]]);
+    //   console.log(data[keysArr[i]].section_metadata);
+    //   const headingLevel = parseInt(
+    //     data[keysArr[i]].section_metadata.derived_heading_level
+    //   );
+
+    //   if (headingLevel === 1) {
+    //     finalData.push(data[keysArr[i]]);
+    //   } else if (headingLevel === 2) {
+    //     const parentSourceHeadingNumber =
+    //       data[keysArr[i]].section_metadata.parent_heading_num_tree[0];
+
+    //     for (let j = 0; j < finalData.length; j++) {
+    //       const sourceHeadingNumber =
+    //         finalData[j].section_metadata.source_heading_number;
+    //       if (parentSourceHeadingNumber === sourceHeadingNumber) {
+    //         const elementsInsideParent = finalData[j].source_document_content;
+    //         const elementsInsideChild =
+    //           data[keysArr[i]].source_document_content;
+    //         const finalObject = Object.assign(
+    //           elementsInsideParent,
+    //           elementsInsideChild
+    //         );
+    //         finalData[j].source_document_content = finalObject;
+    //       }
+    //     }
+    //   } else {
+    //     const parentSourceHeadingNumber =
+    //       data[keysArr[i]].section_metadata.parent_heading_num_tree[0];
+
+    //     for (let j = 0; j < finalData.length; j++) {
+    //       const sourceHeadingNumber =
+    //         finalData[j].section_metadata.source_heading_number;
+    //       if (parentSourceHeadingNumber === sourceHeadingNumber) {
+    //         const elementsInsideParent = finalData[j].source_document_content;
+    //         const elementsInsideChild =
+    //           data[keysArr[i]].source_document_content;
+    //         const finalObject = Object.assign(
+    //           elementsInsideParent,
+    //           elementsInsideChild
+    //         );
+    //         finalData[j].source_document_content = finalObject;
+    //       }
+    //     }
+    //   }
+    // }
+    // console.log("merge data", finalData);
+
     return (
-      data.length > 0 &&
-      data.map((section, index) => {
+      finalData.length > 0 &&
+      finalData.map((elem, index) => {
         return (
           <Accordion
-            key={section.id}
+            key={elem.section_metadata.source_file_section}
             className="accordion-parent"
-            onChange={() => this.scrollToPage(section.page)}
+            onChange={() => this.scrollToPage(elem.section_metadata.page)}
           >
             <AccordionSummary>
               <div className="accordion-parent-header">
-                {section.header.toLowerCase()}{" "}
+                {elem.section_metadata.source_file_section.toLowerCase()}{" "}
                 {index % 2 ? (
                   <EyeHidden style={{ color: "#9f9fa1", float: "right" }} />
                 ) : (
@@ -224,9 +380,12 @@ class ProtocolViewClass extends React.Component {
             </AccordionSummary>
             <AccordionDetails className="accordion-parent-detail-container">
               <div className="accordion-parent-detail">
-                {section.data.map((subSection) =>
-                  this.renderAccordionDetail(subSection)
-                )}
+                {/* {Object.keys(elem.source_document_content).map((key2) =>
+                  this.renderAccordionDetail(
+                    elem.source_document_content[key2],
+                    key2
+                  )
+                )} */}
                 {/* {toc[key].data.map((item) => {
                 return this.getTocElement(item);
               })} */}
@@ -236,6 +395,126 @@ class ProtocolViewClass extends React.Component {
         );
       })
     );
+  };
+  handleSectionClicked = async (section, key) => {
+    const { expandedSections, ViewData } = this.state;
+    const page = section.section_metadata.page;
+    const arr = cloneDeep(expandedSections);
+    const index = arr.indexOf(key);
+    // const { summary } = this.props;
+    // const id = summary.data.id
+    if (index > -1) {
+      arr.splice(index, 1);
+      this.setState({
+        expandedSections: arr,
+      });
+    } else {
+      arr.push(key);
+      this.setState({
+        expandedSections: arr,
+      });
+      const cloneViewData = cloneDeep(ViewData);
+      console.log("with key", cloneViewData.protocol_data_sections[key]);
+      if (
+        "source_document_content" in cloneViewData.protocol_data_sections[key]
+      ) {
+        console.log("Data Present");
+      } else {
+        const childArr = section.section_metadata.child_secid_seq.map(
+          (elm) => elm[0]
+        );
+        const childString = childArr.toString();
+        const config = {
+          url: `http://ca2spdml01q:8001/api/sections_api/particular_sections?aidocid=02cb4d51-273c-4d85-b2d4-495454133b36&sec_id=${childString}`,
+          method: "GET",
+        };
+
+        const { data } = await httpCall(config);
+        const finalDocContent = [];
+
+        const documentContent = data.protocol_data_sections;
+        Object.keys(documentContent).map((key) => {
+          finalDocContent.push(documentContent[key].source_document_content);
+        });
+        cloneViewData.protocol_data_sections[key].source_document_content =
+          Object.assign({}, ...finalDocContent);
+        this.setState({
+          ViewData: cloneViewData,
+        });
+        console.log(cloneViewData);
+      }
+    }
+    this.scrollToPage(page);
+  };
+  renderSectionContent = () => {};
+  renderHeader = (fullData) => {
+    const { expandedSections } = this.state;
+    const data = fullData.protocol_data_sections;
+    console.log("Hello", expandedSections);
+    return (
+      Object.keys(data).length > 0 &&
+      Object.keys(data).map((key, index) => {
+        console.log(data[key]);
+        return (
+          <Accordion
+            key={data[key].section_metadata.source_file_section}
+            className="accordion-parent"
+            expanded={expandedSections.includes(key)}
+          >
+            <AccordionSummary>
+              <div
+                className="accordion-parent-header"
+                onClick={() => this.handleSectionClicked(data[key], key)}
+              >
+                {data[key].section_metadata.source_file_section.toLowerCase()}{" "}
+                {index % 2 ? (
+                  <EyeHidden style={{ color: "#9f9fa1", float: "right" }} />
+                ) : (
+                  <Tooltip
+                    variant="dark"
+                    extraLabels={[
+                      {
+                        title: "Last Reviewed",
+                        subtitle: "12-Oct-2021",
+                      },
+                      { title: "Reviewd By", subtitle: "1072231" },
+                      { title: "No. of reviews", subtitle: "3" },
+                    ]}
+                    placement="top"
+                    style={{ marginRight: 192 }}
+                  >
+                    <EyeShow style={{ color: "#0469a4", float: "right" }} />
+                  </Tooltip>
+                )}
+              </div>
+            </AccordionSummary>
+            <AccordionDetails className="accordion-parent-detail-container">
+              <div className="accordion-parent-detail">
+                {"source_document_content" in data[key] &&
+                  Object.keys(data[key].source_document_content).map((key2) =>
+                    this.renderAccordionDetail(
+                      data[key].source_document_content[key2],
+                      key2
+                    )
+                  )}
+                {/* {toc[key].data.map((item) => {
+                return this.getTocElement(item);
+              })} */}
+              </div>
+            </AccordionDetails>
+          </Accordion>
+        );
+      })
+    );
+    // for (let i = 0; i < keysArr.length; i++) {
+    //   const headingLevel = parseInt(
+    //     data[keysArr[i]].section_metadata.derived_heading_level
+    //   );
+
+    //   if (headingLevel === 1) {
+    //     finalData.push(data[keysArr[i]]);
+    //   }
+    // }
   };
   handleArrowChange = (section) => {
     if (section === "PDF") {
@@ -299,6 +578,7 @@ class ProtocolViewClass extends React.Component {
     }
   };
   render() {
+    const { ViewData } = this.state;
     const toc = ViewData;
     const {
       leftArrow,
@@ -308,6 +588,9 @@ class ProtocolViewClass extends React.Component {
       contentSectionWidth,
       pdfDisplay,
       contentDisplay,
+      editIndex,
+      editValue,
+      pdfFileURL,
     } = this.state;
     return (
       <div className="protocol-view-component">
@@ -318,7 +601,11 @@ class ProtocolViewClass extends React.Component {
           }}
           style={{ width: pdfSectionWidth }}
         >
-          <PDFView path={this.props.path} scale={pdfScale} />
+          <PDFView
+            path={this.props.path}
+            scale={pdfScale}
+            fileURL={pdfFileURL}
+          />
         </div>
         {(leftArrow || rightArrow) && (
           <div className="arrow-container" onClick={this.handleExpand}>
@@ -338,7 +625,11 @@ class ProtocolViewClass extends React.Component {
               className="accordion-start-container"
               data-testid="protocol-column-wrapper"
             >
-              {this.renderAccordion(toc)}
+              {"aidocid" in toc ? (
+                this.renderHeader(toc, editIndex, editValue)
+              ) : (
+                <div>No Data Found</div>
+              )}
             </div>
           </div>
         </div>
@@ -369,4 +660,11 @@ class ProtocolViewClass extends React.Component {
   }
 }
 
-export default connect()(ProtocolViewClass);
+const mapStateToProps = (state) => {
+  return {
+    userID: state.user.userDetail.userId,
+    summary: state.protocol.summary,
+  };
+};
+const Wrapper = withRouter(ProtocolViewClass);
+export default connect(mapStateToProps, {})(Wrapper);

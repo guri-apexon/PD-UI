@@ -4,9 +4,12 @@ export const getColumnFromJSON = (data) => {
   if (data.length > 0) {
     Object.keys(data[0]).map((elm, i) => {
       let column = {
+        flex: 1,
         field: i + "a",
         editable: true,
         resizable: true,
+        rowHeight: "auto",
+        // cellStyle: { "line-height": "2px" },
         cellRenderer: (params) => {
           // put the value in bold
           if (params.value !== undefined) {

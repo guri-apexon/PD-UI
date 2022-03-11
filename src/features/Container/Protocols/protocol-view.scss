@@ -1,6 +1,7 @@
 .protocol-view-component {
   display: flex;
   height: 100%;
+  width: 100%;
   max-width: 1140px;
   .pdf-render-section {
     flex: 1;
@@ -37,7 +38,7 @@
         .accordion-parent {
           margin-bottom: 5px;
           .accordion-parent-detail-container {
-            padding: 0 10px 10px 12px;
+            padding: 0px 8px;
             margin-top: 20px;
           }
           .accordion-parent-header {
@@ -57,11 +58,24 @@
             text-transform: capitalize;
           }
           .level-3-header {
-            background-color: #f4f4f4;
-            padding: 3px 8px 5px 8px;
-            font-size: 14px;
+            // background-color: #f4f4f4;
+            // padding: 3px 8px 5px 8px;
+            font-size: 16px;
             margin-top: 10px;
             margin-bottom: 10px;
+            font-weight: bold;
+          }
+          .text-para {
+            padding: 0px 8px;
+          }
+          .pd-view-text-area {
+            height: 50px;
+            width: 85%;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-style: normal;
+            font-family: "Proxima Nova";
+            line-height: 22px;
           }
         }
         .accordion-parent > div:nth-child(1) {
@@ -76,6 +90,7 @@
   border-collapse: collapse;
   width: 100%;
   font-size: 14px;
+  padding: 0px 8px;
 }
 .table-container table {
   border: none;
@@ -101,4 +116,14 @@
 }
 .table-container tr > th:nth-child(1) {
   display: none;
+}
+
+.ag-cell {
+  display: block !important;
+  line-height: 22px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  .value-inside {
+    word-break: normal;
+  }
 }
