@@ -21,6 +21,7 @@ import { withRouter } from "react-router-dom";
 // import axios from "axios";
 import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import { cloneDeep } from "lodash";
+import Loader from "../../Components/Loader/Loader";
 
 // import ViewData from "./ag-grid/data/section.json";
 
@@ -50,6 +51,8 @@ class ProtocolViewClass extends React.Component {
       ViewData: [],
       pdfFileURL: "",
       expandedSections: [],
+      sectionLoader: true,
+      sectionError: false,
     };
   }
 
@@ -61,7 +64,7 @@ class ProtocolViewClass extends React.Component {
     try {
       const { data } = await httpCall(config);
 
-      this.setState({ ViewData: data });
+      this.setState({ ViewData: data, sectionLoader: false });
     } catch (e) {
       console.log(e);
     }
@@ -449,6 +452,7 @@ class ProtocolViewClass extends React.Component {
           this.setState({
             ViewData: cloneViewData,
           });
+          this.setState({ contentLoader: false });
           console.log(cloneViewData);
         } catch (e) {
           console.log(e);
@@ -500,7 +504,10 @@ class ProtocolViewClass extends React.Component {
               </div>
             </AccordionSummary>
             <AccordionDetails className="accordion-parent-detail-container">
-              <div className="accordion-parent-detail">
+              <div
+                className="accordion-parent-detail"
+                style={{ width: "100%" }}
+              >
                 {"source_document_content" in data[key] &&
                   Object.keys(data[key].source_document_content).map((key2) =>
                     this.renderAccordionDetail(
@@ -602,70 +609,93 @@ class ProtocolViewClass extends React.Component {
       editIndex,
       editValue,
       pdfFileURL,
+      sectionLoader,
+      sectionError,
     } = this.state;
     return (
-      <div className="protocol-view-component">
-        <div
-          className="pdf-render-section"
-          onMouseEnter={() => {
-            pdfDisplay && contentDisplay && this.handleArrowChange("PDF");
-          }}
-          style={{ width: pdfSectionWidth }}
-        >
-          <PDFView
-            path={this.props.path}
-            scale={pdfScale}
-            fileURL={pdfFileURL}
-          />
-        </div>
-        {(leftArrow || rightArrow) && (
-          <div className="arrow-container" onClick={this.handleExpand}>
-            {leftArrow && <ArrowLeft />}
-            {rightArrow && <ArrowRight />}
+      <div style={{ width: "100%" }}>
+        {sectionLoader && !sectionError ? (
+          <div
+            style={{
+              height: 400,
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Loader />
+          </div>
+        ) : (
+          <div className="protocol-view-component">
+            <div
+              className="pdf-render-section"
+              onMouseEnter={() => {
+                pdfDisplay && contentDisplay && this.handleArrowChange("PDF");
+              }}
+              style={{ width: pdfSectionWidth }}
+            >
+              <PDFView
+                path={this.props.path}
+                scale={pdfScale}
+                fileURL={pdfFileURL}
+              />
+            </div>
+            {(leftArrow || rightArrow) && (
+              <div className="arrow-container" onClick={this.handleExpand}>
+                {leftArrow && <ArrowLeft />}
+                {rightArrow && <ArrowRight />}
+              </div>
+            )}
+            {sectionError ? (
+              <h6>Data Feching Failed</h6>
+            ) : (
+              <div
+                className="digitized-content-render-section"
+                onMouseEnter={() => {
+                  contentDisplay &&
+                    pdfDisplay &&
+                    this.handleArrowChange("CONTENT");
+                }}
+                style={{ width: contentSectionWidth }}
+              >
+                <div className="protocol-column">
+                  <div
+                    className="accordion-start-container"
+                    data-testid="protocol-column-wrapper"
+                  >
+                    {toc && "aidocid" in toc ? (
+                      this.renderHeader(toc, editIndex, editValue)
+                    ) : (
+                      <div>No Data Found</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <>
+              <Modal
+                open={this.state.custom}
+                variant="default"
+                onClose={() => this.handleClose("custom")}
+                title="Header"
+                buttonProps={[{}, { label: "Save", onClick: this.handleSave }]}
+                id="custom"
+              >
+                <TextField
+                  label="Label"
+                  placeholder="Placeholder"
+                  helperText="This is a note about the field"
+                  sizeAdjustable
+                  minWidth={300}
+                  minHeight={180}
+                  value={this.state.item && this.state.item[3]}
+                  onChange={this.onChange}
+                />
+              </Modal>
+            </>
           </div>
         )}
-        <div
-          className="digitized-content-render-section"
-          onMouseEnter={() => {
-            contentDisplay && pdfDisplay && this.handleArrowChange("CONTENT");
-          }}
-          style={{ width: contentSectionWidth }}
-        >
-          <div className="protocol-column">
-            <div
-              className="accordion-start-container"
-              data-testid="protocol-column-wrapper"
-            >
-              {"aidocid" in toc ? (
-                this.renderHeader(toc, editIndex, editValue)
-              ) : (
-                <div>No Data Found</div>
-              )}
-            </div>
-          </div>
-        </div>
-
-        <>
-          <Modal
-            open={this.state.custom}
-            variant="default"
-            onClose={() => this.handleClose("custom")}
-            title="Header"
-            buttonProps={[{}, { label: "Save", onClick: this.handleSave }]}
-            id="custom"
-          >
-            <TextField
-              label="Label"
-              placeholder="Placeholder"
-              helperText="This is a note about the field"
-              sizeAdjustable
-              minWidth={300}
-              minHeight={180}
-              value={this.state.item && this.state.item[3]}
-              onChange={this.onChange}
-            />
-          </Modal>
-        </>
       </div>
     );
   }
