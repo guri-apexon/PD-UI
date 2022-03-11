@@ -55,12 +55,16 @@ class ProtocolViewClass extends React.Component {
 
   fetchData = async (id) => {
     const config = {
-      url: "http://ca2spdml01q:8001/api/sections_api/lvl1_metadata?aidocid=02cb4d51-273c-4d85-b2d4-495454133b36&child=[1,2,3]",
+      url: `${BASE_URL_8000}/api/sections_api/lvl1_metadata?aidocid=02cb4d51-273c-4d85-b2d4-495454133b36`,
       method: "GET",
     };
-    const { data } = await httpCall(config);
+    try {
+      const { data } = await httpCall(config);
 
-    this.setState({ ViewData: data });
+      this.setState({ ViewData: data });
+    } catch (e) {
+      console.log(e);
+    }
   };
   fetchPDF = async () => {
     const { summary, userID } = this.props;
@@ -71,15 +75,19 @@ class ProtocolViewClass extends React.Component {
       method: "GET",
       responseType: "blob",
     };
+    try {
+      const resp = await httpCall(config);
+      const file = new Blob([resp.data], { type: "application/pdf" });
+      console.log("file URL file", file);
+      // const fileURL = URL.createObjectURL(file);
+      // console.log("file URL", fileURL);
+      this.setState({
+        pdfFileURL: file,
+      });
+    } catch (e) {
+      console.log(e);
+    }
 
-    const resp = await httpCall(config);
-    const file = new Blob([resp.data], { type: "application/pdf" });
-    console.log("file URL file", file);
-    // const fileURL = URL.createObjectURL(file);
-    // console.log("file URL", fileURL);
-    this.setState({
-      pdfFileURL: file,
-    });
     // window.open(fileURL);
   };
   // componentDidUpdate(prevProps, prevState) {
@@ -425,23 +433,26 @@ class ProtocolViewClass extends React.Component {
         );
         const childString = childArr.toString();
         const config = {
-          url: `http://ca2spdml01q:8001/api/sections_api/particular_sections?aidocid=02cb4d51-273c-4d85-b2d4-495454133b36&sec_id=${childString}`,
+          url: `${BASE_URL_8000}/api/sections_api/particular_sections?aidocid=02cb4d51-273c-4d85-b2d4-495454133b36&sec_id=${childString}`,
           method: "GET",
         };
+        try {
+          const { data } = await httpCall(config);
+          const finalDocContent = [];
 
-        const { data } = await httpCall(config);
-        const finalDocContent = [];
-
-        const documentContent = data.protocol_data_sections;
-        Object.keys(documentContent).map((key) => {
-          finalDocContent.push(documentContent[key].source_document_content);
-        });
-        cloneViewData.protocol_data_sections[key].source_document_content =
-          Object.assign({}, ...finalDocContent);
-        this.setState({
-          ViewData: cloneViewData,
-        });
-        console.log(cloneViewData);
+          const documentContent = data.protocol_data_sections;
+          Object.keys(documentContent).map((key) => {
+            finalDocContent.push(documentContent[key].source_document_content);
+          });
+          cloneViewData.protocol_data_sections[key].source_document_content =
+            Object.assign({}, ...finalDocContent);
+          this.setState({
+            ViewData: cloneViewData,
+          });
+          console.log(cloneViewData);
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
     this.scrollToPage(page);
