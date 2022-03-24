@@ -1,0 +1,95 @@
+.modal-csv-excel-detail {
+  max-width: 920px !important;
+}
+.dropdown-text-style {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  .info-icon {
+    margin-left: auto;
+  }
+  button {
+    height: 20px;
+  }
+}
+.compare-main-button {
+  svg {
+    height: 16px;
+    vertical-align: middle;
+    margin-left: 5px;
+    margin-top: 0px;
+  }
+}
+.document-tab {
+  width: 100%;
+  .compare-info {
+    display: flex;
+    margin-left: 10px;
+    align-items: flex-end;
+    font-size: 14px;
+    .compare-Detail {
+      margin-right: 10px;
+      span {
+        margin-left: 5px;
+      }
+    }
+    .compare-container {
+      display: flex;
+      .compare-Detail {
+        span {
+          margin-left: 5px;
+        }
+      }
+    }
+    .compare-message {
+      font-weight: 600;
+      color: #0768fd;
+    }
+  }
+  .compare-buttons {
+    display: flex;
+    margin-left: auto;
+    button {
+      background-color: #0768fd;
+      color: #fff;
+      margin-right: 7px;
+    }
+  }
+
+  .source-document-tab {
+    width: 100%;
+    border: 1px solid #dedede;
+    box-shadow: 0 4px 16px 0 rgb(0 0 0 / 6%);
+    table {
+      margin-bottom: 15px;
+    }
+    [class^="Table-tableWrapper-"] {
+      overflow: hidden;
+    }
+    tbody tr:last-child {
+      display: none;
+    }
+    .hyperlink {
+      &:active {
+        color: -webkit-activelink;
+      }
+      color: -webkit-link;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+  .associate-document-tab {
+    width: 100%;
+    [class^="Table-tableWrapper-"] {
+      overflow-x: hidden;
+    }
+    .hyperlink {
+      &:active {
+        color: -webkit-activelink;
+      }
+      color: -webkit-link;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { fork, all } from "redux-saga/effects";
 import dashboardSaga from "../features/Container/Dashboard/saga";
-import protocolSaga from "../features/Container/Protocols/saga";
+import protocolSaga from "../features/Container/Protocols/store/saga";
 import searchSaga from "../features/Container/Search/saga";
 import qcSaga from "../features/Container/QC/saga";
 import navbarSaga from "../features/Container/Navbar/saga";

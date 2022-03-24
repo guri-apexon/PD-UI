@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import { iconStatus } from "../../../utils/utilFunction";
 import { getProtocols, setError, getLoader, setTableLoader } from "./qcSlice";
-import { getProcotoclToc } from "../Protocols/protocolSlice";
+import { getProcotoclToc } from "../Protocols-back/protocolSlice";
 
 function* getState() {
   const state = yield select();

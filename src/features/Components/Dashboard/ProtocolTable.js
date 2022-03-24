@@ -106,7 +106,7 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
             <span className="adjust-ellipses">{row[key]}</span>
           ) : (
             <Link
-              to={`/protocols?protocolId=${row["id"]}`}
+              to={`/protocols?tab=OVERVIEW&protocol=${row["protocol"]}&protocolId=${row["id"]}&file=${row["documentFilePath"]}`}
               dangerouslySetInnerHTML={createFullMarkup(row[key])}
             ></Link>
           )}
@@ -128,7 +128,11 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
         (row.screen === "QC" || row.screen === "FollowedProtocols") ? (
           <span className="adjust-ellipses">{row[key]}</span>
         ) : (
-          <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
+          <Link
+            to={`/protocols?tab=OVERVIEW&protocol=${row["protocol"]}&protocolId=${row["id"]}&file=${row["documentFilePath"]}`}
+          >
+            {row[key]}
+          </Link>
         )}
       </span>
     </Tooltip>
@@ -200,12 +204,22 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
       return (
         <Tooltip variant="light" title={row[key]} placement="top">
           <div className="long-text">
-            <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>
+            <Link
+              to={`/protocols?tab=OVERVIEW&protocol=${row["protocol"]}&protocolId=${row["id"]}&file=${row["documentFilePath"]}`}
+            >
+              {row[key]}
+            </Link>
           </div>
         </Tooltip>
       );
     }
-    return <Link to={`/protocols?protocolId=${row["id"]}`}>{row[key]}</Link>;
+    return (
+      <Link
+        to={`/protocols?tab=OVERVIEW&protocol=${row["protocol"]}&protocolId=${row["id"]}&file=${row["documentFilePath"]}`}
+      >
+        {row[key]}
+      </Link>
+    );
   }
 };
 

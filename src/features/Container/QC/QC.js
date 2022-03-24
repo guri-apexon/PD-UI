@@ -11,7 +11,7 @@ import QCProtocolTable from "./QCTable/QCProtocolTable";
 import QCProtocolView from "./QCProtocolView/QCProtocolView";
 import { userType } from "../../../store/userDetails";
 import "./QC.scss";
-import "../Protocols/protocols.scss";
+import "../Protocols-back/protocols.scss";
 
 const QCContainer = () => {
   const dispatch = useDispatch();

@@ -1,0 +1,20 @@
+.zoom-container {
+  display: flex;
+  position: relative;
+  z-index: 2;
+  .zoom-out {
+    position: absolute;
+    height: 20px;
+    right: 12%;
+    cursor: pointer;
+  }
+  .zoom-in {
+    position: absolute;
+    height: 20px;
+    right: 6%;
+    cursor: pointer;
+  }
+}
+.react-pdf__Document {
+  z-index: 1;
+}

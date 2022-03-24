@@ -1,0 +1,40 @@
+.tab-card {
+  display: flex;
+  border: 1px solid #e9e9e9;
+  box-shadow: 0 4px 16px 0 rgb(0 0 0 / 4%);
+  padding: 6px 12px;
+  .card-header {
+    font-size: 16px;
+  }
+  .data-container {
+    display: flex;
+    .column-1-2 {
+      display: flex;
+      flex-direction: column;
+      .row-item {
+        display: flex;
+        padding: 5px;
+        label {
+          font-size: 13px;
+          width: 250px;
+          font-weight: 700;
+        }
+        span {
+          font-size: 13px;
+          width: 250px;
+        }
+      }
+    }
+  }
+  .protocol-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    .adjust-ellipses {
+      font-size: 13px;
+      font-weight: 400;
+      margin-top: 7px;
+      display: block;
+    }
+  }
+}

@@ -22,11 +22,98 @@ import { withRouter } from "react-router-dom";
 import { BASE_URL_8000, httpCall } from "../../../utils/api";
 import { cloneDeep } from "lodash";
 import Loader from "../../Components/Loader/Loader";
+// import plusICON from "../../../assets/images/plus.png";
+import Plus from "apollo-react-icons/Plus";
+import IconMenuButton from "apollo-react/components/IconMenuButton";
 
 // import ViewData from "./ag-grid/data/section.json";
 
+import Table from "apollo-react-icons/Table";
+import TextStyle from "apollo-react-icons/TextStyle";
+import TextBold from "apollo-react-icons/TextBold";
+import Image from "apollo-react-icons/Image";
+import FileAccountPlan from "apollo-react-icons/FileAccountPlan";
 // import Table from "./ag-grid";
 const queryString = require("query-string");
+
+const handleClick = (label) => () => {
+  console.log(`You picked ${label}.`);
+};
+
+const TableElement = () => {
+  return (
+    <div className="add-element">
+      <Table fontSize="extraSmall" />
+      <span>Table</span>
+    </div>
+  );
+};
+const TextHeader2 = () => {
+  return (
+    <div className="add-element">
+      <TextBold fontSize="extraSmall" />
+      <span>Header 2</span>
+    </div>
+  );
+};
+const TextHeader3 = () => {
+  return (
+    <div className="add-element">
+      <TextBold fontSize="extraSmall" />
+      <span>Header 3</span>
+    </div>
+  );
+};
+const TextElement = () => {
+  return (
+    <div className="add-element">
+      <TextStyle fontSize="extraSmall" />
+      <span>Text</span>
+    </div>
+  );
+};
+const ImageElement = () => {
+  return (
+    <div className="add-element">
+      <Image fontSize="extraSmall" />
+      <span>Image</span>
+    </div>
+  );
+};
+const SectionElement = () => {
+  return (
+    <div className="add-element">
+      <FileAccountPlan fontSize="extraSmall" />
+      <span>Section</span>
+    </div>
+  );
+};
+const menuItems = [
+  {
+    label: <TableElement />,
+    onClick: handleClick("table"),
+  },
+  {
+    text: <TextElement />,
+    onClick: handleClick("text"),
+  },
+  {
+    text: <TextHeader2 />,
+    onClick: handleClick("header2"),
+  },
+  {
+    text: <TextHeader3 />,
+    onClick: handleClick("header3"),
+  },
+  {
+    text: <ImageElement />,
+    onClick: handleClick("image"),
+  },
+  {
+    text: <SectionElement />,
+    onClick: handleClick("section"),
+  },
+];
 
 class ProtocolViewClass extends React.Component {
   constructor() {
@@ -53,6 +140,7 @@ class ProtocolViewClass extends React.Component {
       expandedSections: [],
       sectionLoader: true,
       sectionError: false,
+      hoverIndex: null,
     };
   }
 
@@ -256,25 +344,61 @@ class ProtocolViewClass extends React.Component {
   renderContent(data) {
     return <div>{data.map((item) => this.getTocElement(item))}</div>;
   }
+  handleHover = (index) => {
+    this.setState({ hoverIndex: index });
+  };
+  handleLeave = (index) => {
+    this.setState({ hoverIndex: null });
+  };
   renderAccordionDetail = (data, index) => {
-    // console.log("Indexes", index);
-    if (data.derived_section_type === "header2") {
-      return (
-        <Accordion key={data.id} className="accordion-child">
-          <AccordionSummary>
-            <div className="accordion-child-header">
-              {data.header.toLowerCase()}{" "}
+    console.log("Indexes", data, index);
+    const { hoverIndex } = this.state;
+    if (data.content) {
+      if (data.derived_section_type === "header2") {
+        return (
+          <Accordion key={data.id} className="accordion-child">
+            <AccordionSummary>
+              <div className="accordion-child-header">
+                {data.header.toLowerCase()}{" "}
+              </div>
+            </AccordionSummary>
+            <AccordionDetails className="accordion-child-detail-container">
+              <div className="accordion-child-detail">
+                {this.renderContent(data.data)}
+              </div>
+            </AccordionDetails>
+          </Accordion>
+        );
+      } else {
+        return (
+          <div className="option-content-container">
+            <div
+              onMouseEnter={() => this.handleHover(index)}
+              // onMouseLeave={() => this.handleLeave(index)}
+            >
+              {this.getTocElement(data, index)}
             </div>
-          </AccordionSummary>
-          <AccordionDetails className="accordion-child-detail-container">
-            <div className="accordion-child-detail">
-              {this.renderContent(data.data)}
+            <div
+              // className="no-option"
+              className={index === hoverIndex ? "show-option" : "no-option"}
+            >
+              <Tooltip
+                className="tooltip-add-element"
+                title="Actions"
+                disableFocusListener
+              >
+                <IconMenuButton
+                  className="icon-buttons"
+                  id="actions-elements"
+                  menuItems={menuItems}
+                >
+                  <Plus className="plus-icon" size="small" />
+                </IconMenuButton>
+              </Tooltip>
             </div>
-          </AccordionDetails>
-        </Accordion>
-      );
-    } else {
-      return this.getTocElement(data, index);
+          </div>
+        );
+      }
     }
   };
   renderAccordion = (fullData) => {
@@ -612,6 +736,7 @@ class ProtocolViewClass extends React.Component {
       sectionLoader,
       sectionError,
     } = this.state;
+    console.log("Hover Index", this.state.hoverIndex);
     return (
       <div style={{ width: "100%" }}>
         {sectionLoader && !sectionError ? (
@@ -633,6 +758,7 @@ class ProtocolViewClass extends React.Component {
                 pdfDisplay && contentDisplay && this.handleArrowChange("PDF");
               }}
               style={{ width: pdfSectionWidth }}
+              draggable
             >
               <PDFView
                 path={this.props.path}
@@ -657,6 +783,7 @@ class ProtocolViewClass extends React.Component {
                     this.handleArrowChange("CONTENT");
                 }}
                 style={{ width: contentSectionWidth }}
+                draggable
               >
                 <div className="protocol-column">
                   <div

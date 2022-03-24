@@ -59,7 +59,7 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
         <div>
           <Link
             className="title-link-protocol"
-            to={`/protocols?protocolId=${row["id"]}`}
+            to={`/protocols?tab=OVERVIEW&protocol=${row["protocol"]}&protocolId=${row["id"]}&file=${row["documentFilePath"]}`}
             dangerouslySetInnerHTML={createMarkup(row[key])}
           ></Link>
           <span>{row[key].length > 40 ? "..." : ""}</span>
@@ -71,7 +71,7 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
           <div>
             <Link
               className="title-link-protocol"
-              to={`/protocols?protocolId=${row["id"]}`}
+              to={`/protocols?tab=OVERVIEW&protocol=${row["protocol"]}&protocolId=${row["id"]}&file=${row["documentFilePath"]}`}
               dangerouslySetInnerHTML={createMarkup(row[key])}
             ></Link>
             <span>{row[key].length > 40 ? "..." : ""}</span>
@@ -133,7 +133,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
         <div>
           <Link
             className="title-link-protocol"
-            to={`/protocols?protocolId=${row["id"]}`}
+            to={`/protocols?tab=OVERVIEW&protocol=${row["protocol"]}&protocolId=${row["id"]}&file=${row["documentFilePath"]}`}
           >
             {row[key].length > 18
               ? row[key].substring(0, 18) + "..."
@@ -147,7 +147,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
           <div>
             <Link
               className="title-link-protocol"
-              to={`/protocols?protocolId=${row["id"]}`}
+              to={`/protocols?tab=OVERVIEW&protocol=${row["protocol"]}&protocolId=${row["id"]}&file=${row["documentFilePath"]}`}
             >
               {row[key].length > 18
                 ? row[key].substring(0, 18) + "..."

@@ -1,0 +1,1102 @@
+[
+  {
+    "source_file_section": "TITLE",
+    "source_heading_number": "",
+    "parent_heading_num_seq": [
+      ""
+    ],
+    "parent_sec_id_seq": [
+      1
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 1,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 1,
+    "child_secid_seq": [
+      [
+        1,
+        "",
+        "TITLE",
+        1
+      ]
+    ]
+  },
+  {
+    "source_file_section": "TABLEOF CONTENTS",
+    "source_heading_number": "Table",
+    "parent_heading_num_seq": [
+      "Table"
+    ],
+    "parent_sec_id_seq": [
+      2
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 0,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 2,
+    "child_secid_seq": [
+      [
+        2,
+        "Table",
+        "TABLEOF CONTENTS",
+        1
+      ]
+    ]
+  },
+  {
+    "source_file_section": "LIST OF ABBREVIATIONS",
+    "source_heading_number": "",
+    "parent_heading_num_seq": [
+      ""
+    ],
+    "parent_sec_id_seq": [
+      3
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 1,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 3,
+    "child_secid_seq": [
+      [
+        3,
+        "",
+        "LIST OF ABBREVIATIONS",
+        1
+      ]
+    ]
+  },
+  {
+    "source_file_section": "INTRODUCTION",
+    "source_heading_number": "1",
+    "parent_heading_num_seq": [
+      "1"
+    ],
+    "parent_sec_id_seq": [
+      4
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 4,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 4,
+    "child_secid_seq": [
+      [
+        4,
+        "1",
+        "INTRODUCTION",
+        1
+      ],
+      [
+        5,
+        "1.1",
+        "Disease Background",
+        2
+      ],
+      [
+        6,
+        "1.2",
+        "Nirsevimab Background",
+        2
+      ],
+      [
+        7,
+        "1.3",
+        "Summary of Nonclinical Experience",
+        2
+      ],
+      [
+        8,
+        "1.4",
+        "Summary of Clinical Experience",
+        2
+      ],
+      [
+        9,
+        "1.4.1",
+        "Phase 1a Study D5290C00001",
+        3
+      ],
+      [
+        10,
+        "1.4.2",
+        "Phase 1b/2a Study D5290C00002",
+        3
+      ],
+      [
+        11,
+        "1.4.3",
+        "Phase 2b Study D5290C00003",
+        3
+      ],
+      [
+        12,
+        "1.5",
+        "Rationale for Conducting the Study",
+        2
+      ],
+      [
+        13,
+        "1.6",
+        "Benefit-Risk and Ethical Assessment",
+        2
+      ],
+      [
+        14,
+        "1.7",
+        "Research Hypotheses",
+        2
+      ],
+      [
+        15,
+        "1.7.1",
+        "Primary Hypothesis",
+        3
+      ],
+      [
+        16,
+        "1.7.2",
+        "Secondary Hypotheses",
+        3
+      ]
+    ]
+  },
+  {
+    "source_file_section": "OBJECTIVES AND ENDPOINTS",
+    "source_heading_number": "2",
+    "parent_heading_num_seq": [
+      "2"
+    ],
+    "parent_sec_id_seq": [
+      17
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 9,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 17,
+    "child_secid_seq": [
+      [
+        17,
+        "2",
+        "OBJECTIVES AND ENDPOINTS",
+        1
+      ],
+      [
+        18,
+        "Table 1",
+        "Primary Objective and Associated Endpoint",
+        "2"
+      ],
+      [
+        19,
+        "Table 2",
+        "Secondary Objectives and Associated Endpoints",
+        "2"
+      ],
+      [
+        20,
+        "Table 3",
+        "Exploratory Objectives and Associated Endpoints",
+        "2"
+      ]
+    ]
+  },
+  {
+    "source_file_section": "STUDY DESIGN",
+    "source_heading_number": "3",
+    "parent_heading_num_seq": [
+      "3"
+    ],
+    "parent_sec_id_seq": [
+      21
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 0,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 21,
+    "child_secid_seq": [
+      [
+        21,
+        "3",
+        "STUDY DESIGN",
+        1
+      ],
+      [
+        22,
+        "3.1",
+        "Description of the Study",
+        2
+      ],
+      [
+        23,
+        "3.1.1",
+        "Overview",
+        3
+      ]
+    ]
+  },
+  {
+    "source_file_section": "Figure 1  Study Flow Diagram",
+    "source_heading_number": "",
+    "parent_heading_num_seq": [
+      ""
+    ],
+    "parent_sec_id_seq": [
+      24
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 4,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 24,
+    "child_secid_seq": [
+      [
+        24,
+        "",
+        "Figure 1  Study Flow Diagram",
+        1
+      ],
+      [
+        25,
+        "3.1.2",
+        "Treatment Regimen",
+        3
+      ],
+      [
+        26,
+        "3.2",
+        "Rationale for Dose, Population, and Endpoints",
+        2
+      ],
+      [
+        27,
+        "3.2.1",
+        "Dose Rationale",
+        3
+      ],
+      [
+        28,
+        "3.2.2",
+        "Rationale for Study Population",
+        3
+      ],
+      [
+        29,
+        "3.2.3",
+        "Rationale for Endpoints",
+        3
+      ]
+    ]
+  },
+  {
+    "source_file_section": "MATERIALS AND METHODS",
+    "source_heading_number": "4",
+    "parent_heading_num_seq": [
+      "4"
+    ],
+    "parent_sec_id_seq": [
+      30
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 5,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 30,
+    "child_secid_seq": [
+      [
+        30,
+        "4",
+        "MATERIALS AND METHODS",
+        1
+      ],
+      [
+        31,
+        "4.1",
+        "Subjects",
+        2
+      ],
+      [
+        32,
+        "4.1.1",
+        "Number of Subjects",
+        3
+      ],
+      [
+        33,
+        "4.1.2",
+        "Inclusion Criteria",
+        3
+      ],
+      [
+        34,
+        "4.1.3",
+        "Exclusion Criteria",
+        3
+      ],
+      [
+        35,
+        "4.1.4",
+        "Subject Enrollment and Randomization",
+        3
+      ],
+      [
+        36,
+        "4.1.5",
+        "Withdrawal from the Study",
+        3
+      ],
+      [
+        37,
+        "4.1.6",
+        "Discontinuation of Investigational Product",
+        3
+      ],
+      [
+        38,
+        "4.1.7",
+        "Lost to Follow-up",
+        3
+      ],
+      [
+        39,
+        "4.1.8",
+        "Replacement of Subjects",
+        3
+      ],
+      [
+        40,
+        "4.1.9",
+        "Withdrawal of Informed Consent for Data and Biological Samples",
+        3
+      ],
+      [
+        41,
+        "4.2",
+        "Schedule of Study Procedures",
+        2
+      ],
+      [
+        42,
+        "4.2.1",
+        "Enrollment/Screening Period",
+        3
+      ],
+      [
+        43,
+        "Table 4",
+        "Schedule of Screening Procedures",
+        "4"
+      ],
+      [
+        44,
+        "4.2.2",
+        "Treatment and Follow-up Periods",
+        3
+      ],
+      [
+        45,
+        "Table 5",
+        "Schedule of Treatment Period and Follow-up Period Study Procedures",
+        "4"
+      ],
+      [
+        46,
+        "4.3",
+        "Description of Study Procedures",
+        2
+      ],
+      [
+        47,
+        "4.3.1",
+        "Efficacy.",
+        3
+      ],
+      [
+        48,
+        "4.3.1.1",
+        "Lower Respiratory Tract Infection",
+        4
+      ],
+      [
+        49,
+        "Table 6",
+        "Criteria for Meeting the Protocol-defined Endpoint of Medically Attended RSV LRTI",
+        "5"
+      ],
+      [
+        50,
+        "4.3.2",
+        "Medical History and Physical Examination, Weight, and Vital Signs",
+        3
+      ],
+      [
+        51,
+        "4.3.3",
+        "Pharmacokinetics and Antidrug Antibody",
+        3
+      ],
+      [
+        52,
+        "4.3.3.1",
+        "Pharmacokinetic Evaluation",
+        4
+      ],
+      [
+        53,
+        "4.3.3.2",
+        "Antidrug Antibody Evaluation",
+        4
+      ],
+      [
+        54,
+        "4.3.4",
+        "Healthcare Resource Utilization",
+        3
+      ],
+      [
+        55,
+        "4.3.5",
+        "Skin Reactions",
+        3
+      ],
+      [
+        56,
+        "4.4",
+        "Study Suspension or Termination",
+        2
+      ],
+      [
+        57,
+        "4.5",
+        "Investigational Products",
+        2
+      ],
+      [
+        58,
+        "4.5.1",
+        "Identity of Investigational Products",
+        3
+      ],
+      [
+        59,
+        "Table 7",
+        "Identification of Investigational Products",
+        "4"
+      ],
+      [
+        60,
+        "4.5.1.1",
+        "Investigational Product Inspection",
+        4
+      ],
+      [
+        61,
+        "4.5.1.2",
+        "Dose Administration Steps",
+        4
+      ],
+      [
+        62,
+        "4.5.1.3",
+        "Treatment Administration",
+        4
+      ],
+      [
+        63,
+        "4.5.1.4",
+        "Monitoring of Dose Administration",
+        4
+      ],
+      [
+        64,
+        "4.5.1.5",
+        "Reporting Product Complaints",
+        4
+      ],
+      [
+        65,
+        "4.5.2",
+        "Additional Study Medications",
+        3
+      ],
+      [
+        66,
+        "4.5.3",
+        "Labeling",
+        3
+      ],
+      [
+        67,
+        "4.5.4",
+        "Storage",
+        3
+      ],
+      [
+        68,
+        "4.5.5",
+        "Treatment Compliance",
+        3
+      ],
+      [
+        69,
+        "4.5.6",
+        "Accountability",
+        3
+      ],
+      [
+        70,
+        "4.6",
+        "Treatment Assignment and Blinding",
+        2
+      ],
+      [
+        71,
+        "4.6.1",
+        "Methods for Assigning Treatment Groups",
+        3
+      ],
+      [
+        72,
+        "4.6.2",
+        "Methods to Ensure Blinding",
+        3
+      ],
+      [
+        73,
+        "4.6.3",
+        "Methods for Unblinding",
+        3
+      ],
+      [
+        74,
+        "4.6.3.1",
+        "Unblinding in the Event of a Medical Emergency",
+        4
+      ],
+      [
+        75,
+        "4.7",
+        "Restrictions During the Study and Concomitant Treatment(s)",
+        2
+      ],
+      [
+        76,
+        "4.7.1",
+        "Permitted Concomitant Medications",
+        3
+      ],
+      [
+        77,
+        "4.7.2",
+        "Prohibited Concomitant Medications",
+        3
+      ],
+      [
+        78,
+        "4.8",
+        "Statistical Evaluation",
+        2
+      ],
+      [
+        79,
+        "4.8.1",
+        "General Considerations",
+        3
+      ],
+      [
+        80,
+        "4.8.2",
+        "Sample Size",
+        3
+      ],
+      [
+        81,
+        "4.8.3",
+        "Efficacy",
+        3
+      ],
+      [
+        82,
+        "4.8.3.1",
+        "Primary Efficacy Analysis",
+        4
+      ],
+      [
+        83,
+        "4.8.3.2",
+        "Secondary Analyses of the Primary Endpoint",
+        4
+      ],
+      [
+        84,
+        "4.8.3.3",
+        "Supplementary Analyses of the Primary Endpoint",
+        4
+      ],
+      [
+        85,
+        "4.8.3.4",
+        "Secondary Efficacy Analyses",
+        4
+      ],
+      [
+        86,
+        "4.8.4",
+        "Safety",
+        3
+      ],
+      [
+        87,
+        "4.8.5",
+        "Analysis of Pharmacokinetics and Antidrug Antibody",
+        3
+      ],
+      [
+        88,
+        "4.8.5.1",
+        "Pharmacokinetic Analysis",
+        4
+      ],
+      [
+        89,
+        "4.8.5.2",
+        "Antidrug Antibody Analysis",
+        4
+      ],
+      [
+        90,
+        "4.8.6",
+        "Exploratory Analysis",
+        3
+      ],
+      [
+        91,
+        "4.8.6.1",
+        "Healthcare Resource Utilization",
+        4
+      ],
+      [
+        92,
+        "4.8.6.2",
+        "Monitoring RSV Resistance to Nirsevimab",
+        4
+      ],
+      [
+        93,
+        "4.8.6.3",
+        "RSV LRTI Occurring from Day 152 to Day 361",
+        4
+      ],
+      [
+        94,
+        "4.8.7",
+        "Data Monitoring Committee",
+        3
+      ],
+      [
+        95,
+        "4.8.8",
+        "Interim Analysis",
+        3
+      ]
+    ]
+  },
+  {
+    "source_file_section": "ASSESSMENT OF SAFETY",
+    "source_heading_number": "5",
+    "parent_heading_num_seq": [
+      "5"
+    ],
+    "parent_sec_id_seq": [
+      96
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 9,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 96,
+    "child_secid_seq": [
+      [
+        96,
+        "5",
+        "ASSESSMENT OF SAFETY",
+        1
+      ],
+      [
+        97,
+        "5.1",
+        "Definition of Adverse Events",
+        2
+      ],
+      [
+        98,
+        "5.2",
+        "Definition of Serious Adverse Events",
+        2
+      ],
+      [
+        99,
+        "5.3",
+        "Definition of Adverse Events of Special Interest",
+        2
+      ],
+      [
+        100,
+        "5.3.1",
+        "Anaphylaxis and Other Serious Hypersensitivity Reactions Including",
+        3
+      ],
+      [
+        101,
+        "5.3.2",
+        "Thrombocytopenia",
+        3
+      ],
+      [
+        102,
+        "5.4",
+        "Definition of New Onset Chronic Disease",
+        2
+      ],
+      [
+        103,
+        "5.5",
+        "Recording of Adverse Events",
+        2
+      ],
+      [
+        104,
+        "5.5.1",
+        "Time Period for Collection of Adverse Events",
+        3
+      ],
+      [
+        105,
+        "5.5.2",
+        "Follow-up of Unresolved Adverse Events",
+        3
+      ],
+      [
+        106,
+        "5.5.3",
+        "Deaths",
+        3
+      ]
+    ]
+  },
+  {
+    "source_file_section": "Potential Hy’s Law and Hy’s Law",
+    "source_heading_number": "",
+    "parent_heading_num_seq": [
+      ""
+    ],
+    "parent_sec_id_seq": [
+      107
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 7,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 107,
+    "child_secid_seq": [
+      [
+        107,
+        "",
+        "Potential Hy’s Law and Hy’s Law",
+        1
+      ],
+      [
+        108,
+        "5.6",
+        "Reporting of Serious Adverse Events",
+        2
+      ],
+      [
+        109,
+        "5.7",
+        "Other Events Requiring Immediate Reporting",
+        2
+      ],
+      [
+        110,
+        "5.7.1",
+        "Overdose",
+        3
+      ],
+      [
+        111,
+        "5.7.2",
+        "Medication Error",
+        3
+      ],
+      [
+        112,
+        "5.7.3",
+        "Adverse Events of Special Interest",
+        3
+      ],
+      [
+        113,
+        "5.7.3.1",
+        "Anaphylaxis and Other Serious Hypersensitivity Reactions Including",
+        4
+      ],
+      [
+        114,
+        "5.7.3.2",
+        "Thrombocytopenia",
+        4
+      ],
+      [
+        115,
+        "5.7.4",
+        "New Onset Chronic Disease",
+        3
+      ]
+    ]
+  },
+  {
+    "source_file_section": "STUDY AND DATA MANAGEMENT",
+    "source_heading_number": "6",
+    "parent_heading_num_seq": [
+      "6"
+    ],
+    "parent_sec_id_seq": [
+      116
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 1,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 116,
+    "child_secid_seq": [
+      [
+        116,
+        "6",
+        "STUDY AND DATA MANAGEMENT",
+        1
+      ],
+      [
+        117,
+        "6.1",
+        "Training of Study Site Personnel",
+        2
+      ],
+      [
+        118,
+        "6.2",
+        "Monitoring of the Study",
+        2
+      ],
+      [
+        119,
+        "6.2.1",
+        "Source Data",
+        3
+      ],
+      [
+        120,
+        "6.2.2",
+        "Study Agreements",
+        3
+      ],
+      [
+        121,
+        "6.2.3",
+        "Archiving of Study Documents",
+        3
+      ],
+      [
+        122,
+        "6.3",
+        "Study Timetable and End of Study",
+        2
+      ],
+      [
+        123,
+        "6.4",
+        "Data Management",
+        2
+      ],
+      [
+        124,
+        "6.5",
+        "Study Physician Coverage",
+        2
+      ]
+    ]
+  },
+  {
+    "source_file_section": "ETHICAL AND REGULATORY REQUIREMENTS",
+    "source_heading_number": "7",
+    "parent_heading_num_seq": [
+      "7"
+    ],
+    "parent_sec_id_seq": [
+      125
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 1,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 125,
+    "child_secid_seq": [
+      [
+        125,
+        "7",
+        "ETHICAL AND REGULATORY REQUIREMENTS",
+        1
+      ],
+      [
+        126,
+        "7.1",
+        "Subject Data Protection",
+        2
+      ],
+      [
+        127,
+        "7.2",
+        "Ethics and Regulatory Review",
+        2
+      ],
+      [
+        128,
+        "7.3",
+        "Informed Consent",
+        2
+      ],
+      [
+        129,
+        "7.4",
+        "Changes to the Protocol and Informed Consent Form",
+        2
+      ],
+      [
+        130,
+        "7.5",
+        "Audits and Inspections",
+        2
+      ]
+    ]
+  },
+  {
+    "source_file_section": "REFERENCES",
+    "source_heading_number": "8",
+    "parent_heading_num_seq": [
+      "8"
+    ],
+    "parent_sec_id_seq": [
+      131
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 7,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 131,
+    "child_secid_seq": [
+      [
+        131,
+        "8",
+        "REFERENCES",
+        1
+      ]
+    ]
+  },
+  {
+    "source_file_section": "Appendix A Additional Safety Guidance",
+    "source_heading_number": "",
+    "parent_heading_num_seq": [
+      ""
+    ],
+    "parent_sec_id_seq": [
+      132
+    ],
+    "derived_heading_level": 1,
+    "pt_from_ontology": [
+      ""
+    ],
+    "medical_terms": [],
+    "page": 1,
+    "is_active": true,
+    "aidocid": "ssr_cr1",
+    "genre": "2_section_metadata",
+    "sec_id": 132,
+    "child_secid_seq": [
+      [
+        132,
+        "",
+        "Appendix A Additional Safety Guidance",
+        1
+      ]
+    ]
+  }
+]

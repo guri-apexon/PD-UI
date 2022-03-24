@@ -6,8 +6,8 @@ import SelectButton from "apollo-react/components/SelectButton";
 import Upload from "apollo-react-icons/Upload";
 import Button from "apollo-react/components/Button";
 import Loader from "../../../Components/Loader/Loader";
-import { viewResult } from "../../Protocols/protocolSlice";
-import ProtocolViewClass from "../../Protocols/ProtocolViewClass";
+import { viewResult } from "../../Protocols-back/protocolSlice";
+import ProtocolViewClass from "../../Protocols-back/ProtocolViewClass";
 import { loader } from "../qcSlice";
 
 function QCProtocolView({ protId, path, userType, protocolNumber }) {

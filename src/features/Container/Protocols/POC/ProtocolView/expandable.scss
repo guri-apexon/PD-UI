@@ -1,0 +1,17 @@
+#right_panel {
+  position: absolute;
+  width: 49%;
+  padding-left: 4px;
+  height: 74vh;
+  right: 0;
+  background-color: #f0f0f0;
+}
+
+#resize {
+  background-color: #ccc;
+  position: absolute;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  cursor: w-resize;
+}
