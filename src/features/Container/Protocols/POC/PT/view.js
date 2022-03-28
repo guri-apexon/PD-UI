@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { wrapper } from "../../store/slice";
+import { ptWrapper } from "../../store/slice";
 import { ActionTypes } from "../../store/ActionTypes";
 
 import Loader from "../../../../Components/Loader/Loader";
-// import cloneDeep from "lodash/cloneDeep";
+import cloneDeep from "lodash/cloneDeep";
 
 import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
@@ -25,7 +25,11 @@ import FileAccountPlan from "apollo-react-icons/FileAccountPlan";
 import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
 
 import AGTable from "./Table";
-import { isEmpty } from "lodash";
+import { Button } from "apollo-react/node_modules/@material-ui/core";
+
+const handleClick = (label) => () => {
+  console.log(`You picked ${label}.`);
+};
 
 const TableElement = () => {
   return (
@@ -75,21 +79,47 @@ const SectionElement = () => {
     </div>
   );
 };
+const menuItems = [
+  {
+    label: <TableElement />,
+    onClick: handleClick("table"),
+  },
+  {
+    text: <TextElement />,
+    onClick: handleClick("text"),
+  },
+  {
+    text: <TextHeader2 />,
+    onClick: handleClick("header2"),
+  },
+  {
+    text: <TextHeader3 />,
+    onClick: handleClick("header3"),
+  },
+  {
+    text: <ImageElement />,
+    onClick: handleClick("image"),
+  },
+  {
+    text: <SectionElement />,
+    onClick: handleClick("section"),
+  },
+];
 
 const View = () => {
   const dispatch = useDispatch();
-  const { data, success, loader } = useSelector(wrapper);
+
+  const [input, setInput] = useState("");
+  const { data, success, loader } = useSelector(ptWrapper);
+
+  const [expandedSections, setExpandedSections] = useState([]);
   const [hoverIndex, setHoverIndex] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
 
-  useEffect(() => {
-    let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
-    dispatch({
-      type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
-      payload: { id: staticID, body: false },
-    });
-  }, []);
+  // useEffect(() => {
+
+  // }, []);
   const handleOpen = (index, content) => {
     setEditIndex(index);
     setEditValue(content);
@@ -98,39 +128,12 @@ const View = () => {
     setEditIndex(null);
     setEditValue("");
   };
-  const handleClick = (label) => () => {
-    console.log(`You picked ${label}.`);
-    console.log(`At Line ID ${hoverIndex}`);
-    console.log("Section Name");
-  };
-  const menuItems = [
-    {
-      label: <TableElement />,
-      onClick: handleClick("table"),
-    },
-    {
-      text: <TextElement />,
-      onClick: handleClick("text"),
-    },
-    {
-      text: <TextHeader2 />,
-      onClick: handleClick("header2"),
-    },
-    {
-      text: <TextHeader3 />,
-      onClick: handleClick("header3"),
-    },
-    {
-      text: <ImageElement />,
-      onClick: handleClick("image"),
-    },
-    {
-      text: <SectionElement />,
-      onClick: handleClick("section"),
-    },
-  ];
-  const getTable = (item, data, unq, noHeader = false) => {
-    console.log("Table Data", item);
+  const getTable = (item, unq, noHeader = false) => {
+    // console.log("Table Start----------------------------");
+    // console.log("Table", item.TableProperties);
+    // console.log("Table End------------------------------");
+    // const tableProperties = JSON.parse(item.TableProperties);
+    // console.log(tableProperties);
     const tableProperties = JSON.parse(item.TableProperties);
     const dataColumn = getColumnFromJSON(tableProperties);
     const dataSource = getDataSourceFromJSON(tableProperties);
@@ -155,24 +158,16 @@ const View = () => {
           key={`${unq}-${item.TableIndex}`}
           style={{ overflowX: "auto", marginTop: "10px", marginBottom: "20px" }}
         >
-          {/* <div dangerouslySetInnerHTML={{ __html: item.Table }} /> */}
+          <div dangerouslySetInnerHTML={{ __html: item.Table }} />
           <AGTable
-            table={tableProperties}
+            table={item.TableProperties}
             dataSource={dataSource}
             columns={dataColumn}
-            item={data}
-            showOptions={true}
           />
         </div>
         <div>
-          {footNote.map((notes, i) => {
-            return (
-              notes && (
-                <p key={notes + i} style={{ fontSize: "12px" }}>
-                  {notes}
-                </p>
-              )
-            );
+          {footNote.map((notes) => {
+            return notes && <p style={{ fontSize: "12px" }}>{notes}</p>;
           })}
         </div>
       </>
@@ -182,13 +177,12 @@ const View = () => {
   const getTocElement = (data, index) => {
     let type = data.derived_section_type;
     let content = data.content;
-    let seq_num = index;
-
+    let seq_num = data.font_info.roi_id.para;
     if (!content) {
       return null;
     }
     if (type === "table") {
-      return getTable(content, data, "TOC-TABLE");
+      return getTable(content, "TOC-TABLE");
     }
     switch (type) {
       case "header":
@@ -210,16 +204,6 @@ const View = () => {
             autoFocus
           ></textarea>
         );
-      case "image":
-        return (
-          <div className="image-extract">
-            <img
-              src={"data:image/*;base64," + content}
-              alt=""
-              style={{ height: "auto", width: "100%" }}
-            />
-          </div>
-        );
       default:
         return (
           <>
@@ -231,7 +215,6 @@ const View = () => {
                 onDoubleClick={() => handleOpen(index, content)}
                 style={{ fontSize: "12px" }}
                 dangerouslySetInnerHTML={{ __html: content }}
-                onClick={() => scrollToPage(data.page)}
               ></p>
             ) : (
               <textarea
@@ -247,11 +230,9 @@ const View = () => {
     }
   };
   const renderContent = (data) => {
-    return data.map((item, i) => (
-      <div key={item.type + i}>{this.getTocElement(item)}</div>
-    ));
+    return <div>{data.map((item) => this.getTocElement(item))}</div>;
   };
-  const renderAccordionDetail = (data) => {
+  const renderAccordionDetail = (data, index) => {
     if (data.content) {
       if (data.derived_section_type === "header2") {
         return (
@@ -272,16 +253,14 @@ const View = () => {
         return (
           <div className="option-content-container">
             <div
-              onMouseEnter={() => setHoverIndex(data.line_id)}
+              onMouseEnter={() => setHoverIndex(index)}
               // onMouseLeave={() => this.handleLeave(index)}
             >
-              {getTocElement(data, data.line_id)}
+              {getTocElement(data, index)}
             </div>
             <div
               // className="no-option"
-              className={
-                data.line_id === hoverIndex ? "show-option" : "no-option"
-              }
+              className={index === hoverIndex ? "show-option" : "no-option"}
             >
               <Tooltip
                 className="tooltip-add-element"
@@ -303,72 +282,65 @@ const View = () => {
     }
   };
   const scrollToPage = (page) => {
-    if (page > 0) {
-      const pageNum = parseInt(page);
-      if (pageNum || pageNum === 0) {
-        const ele = document.getElementById(`page-${pageNum}`);
-        ele.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
+    console.log("csalcnlsakcn", page);
+    const pageNum = parseInt(page);
+    if (pageNum || pageNum === 0) {
+      const ele = document.getElementById(`page-${pageNum + 1}`);
+      ele.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+  const handleSectionClicked = async (section, key) => {
+    const page = section.section_metadata.page;
+    const arr = cloneDeep(expandedSections);
+    const index = arr.indexOf(key);
+
+    if (index > -1) {
+      arr.splice(index, 1);
+      setExpandedSections(arr);
+    } else {
+      arr.push(key);
+      setExpandedSections(arr);
+      const cloneViewData = cloneDeep(data);
+      console.log("with key", cloneViewData.protocol_data_sections[key]);
+      if (
+        "source_document_content" in cloneViewData.protocol_data_sections[key]
+      ) {
+        console.log("Data Present");
+      } else {
+        const childArr = section.section_metadata.child_secid_seq.map(
+          (elm) => elm[0]
+        );
+        const childString = childArr.toString();
+        dispatch({
+          type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
+          payload: { id: "", body: true, childString, keyIndex: key },
         });
       }
     }
+    scrollToPage(page);
   };
-  const handleSectionClicked = async (section) => {
-    let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
-    const sectionHeader = section.header;
-    const page = sectionHeader.page;
-    const sectionName = sectionHeader.source_file_section;
-    const sectionDetail = section.detail;
-
-    if (!sectionDetail) {
-      const childArr = sectionHeader.child_secid_seq.map((elm) => elm[0]);
-      const childString = childArr.toString();
-      dispatch({
-        type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
-        payload: {
-          id: staticID,
-          body: true,
-          childString,
-          sectionName,
-        },
-      });
-    } else {
-      dispatch({
-        type: ActionTypes.HANDLE_EXPAND_BPO,
-        payload: {
-          sectionName,
-        },
-      });
-    }
-    if (page > 0) {
-      scrollToPage(page);
-    } else {
-      let pageNumber = sectionHeader.indexes.seg_pages;
-      if (pageNumber.length > 0) {
-        scrollToPage(pageNumber[0]);
-      }
-    }
-  };
-  const renderHeader = (data) => {
-    console.log("-----", data);
-    if (!isEmpty(data)) {
-      return Object.keys(data).map((key, index) => {
-        const section = data[key];
-        const sectionHeader = section.header;
-        const sectionName = sectionHeader.source_file_section;
+  const renderHeader = (fullData) => {
+    const data = fullData.protocol_data_sections;
+    console.log("Hello", expandedSections);
+    return (
+      Object.keys(data).length > 0 &&
+      Object.keys(data).map((key, index) => {
+        console.log(data[key]);
         return (
           <Accordion
-            key={sectionName + index}
+            key={data[key].section_metadata.source_file_section}
             className="accordion-parent"
-            expanded={section.expanded}
+            expanded={expandedSections.includes(key)}
           >
             <AccordionSummary>
               <div
                 className="accordion-parent-header"
-                onClick={() => handleSectionClicked(section)}
+                onClick={() => handleSectionClicked(data[key], key)}
               >
-                {sectionName.toLowerCase()}{" "}
+                {data[key].section_metadata.source_file_section.toLowerCase()}{" "}
                 {index % 2 ? (
                   <EyeHidden style={{ color: "#9f9fa1", float: "right" }} />
                 ) : (
@@ -391,54 +363,53 @@ const View = () => {
               </div>
             </AccordionSummary>
             <AccordionDetails className="accordion-parent-detail-container">
-              {section && !isEmpty(section) && (
-                <div
-                  className="accordion-parent-detail"
-                  style={{ width: "100%" }}
-                >
-                  {section.loading && (
-                    <div
-                      style={{
-                        height: 200,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      <Loader />
-                    </div>
+              <div
+                className="accordion-parent-detail"
+                style={{ width: "100%" }}
+              >
+                {"source_document_content" in data[key] &&
+                  Object.keys(data[key].source_document_content).map((key2) =>
+                    renderAccordionDetail(
+                      data[key].source_document_content[key2],
+                      key2
+                    )
                   )}
-                  {!section.loading &&
-                    section.success &&
-                    section.detail.map((elem) => {
-                      return (
-                        <div key={elem.line_id}>
-                          {renderAccordionDetail(elem)}
-                        </div>
-                      );
-                    })}
-                  {!section.loading && !section.success && (
-                    <div
-                      style={{
-                        height: 200,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      <h4>No Data Found</h4>
-                    </div>
-                  )}
-                </div>
-              )}
+              </div>
             </AccordionDetails>
           </Accordion>
         );
+      })
+    );
+  };
+  const handlePTSearch = () => {
+    let staticID = "02cb4d51-273c-4d85-b2d4-495454133b36";
+    if (input) {
+      dispatch({
+        type: ActionTypes.GET_PT_DATA,
+        payload: { id: staticID, body: false, input },
       });
     }
   };
+  console.log("Wrapper Data", data, loader, success);
   return (
     <div>
+      <div className="pt-search">
+        <form onSubmit={handlePTSearch}>
+          <input
+            type="text"
+            onChange={(e) => setInput(e.target.value)}
+            value={input}
+          />
+          <Button
+            variant="primary"
+            size="small"
+            style={{ margin: 10 }}
+            onClick={() => handlePTSearch()}
+          >
+            PT Search
+          </Button>
+        </form>
+      </div>
       {loader && (
         <div
           style={{

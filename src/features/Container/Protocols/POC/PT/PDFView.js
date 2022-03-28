@@ -18,7 +18,7 @@ export default function PDFView({ name, dfsPath, zoom }) {
   const dispatch = useDispatch();
   // const { data, success, loader } = useSelector(fileStream);
 
-  const [pdfScale, setPdfScale] = useState(1.2);
+  const [pdfScale, setPdfScale] = useState(0.2);
   const [isPDF] = useState(true);
   const [numPages, setNumPages] = useState(null);
   const [pdfPageNum, setPDFPageNum] = useState(0);

@@ -1,16 +1,17 @@
-.resize-container {
+.resize-container-pt {
   position: relative;
   width: 100%;
   .left-panel {
-    width: 48vw;
+    width: 0vw;
     position: absolute;
     left: 0;
     height: 74vh;
+    display: none;
     // padding-left: 4px;
   }
   .right-panel {
     position: absolute;
-    width: 48vw;
+    width: 96vw;
     // padding-left: 4px;
     height: 74vh;
     right: 0;
@@ -19,14 +20,10 @@
   .resize {
     background-color: #ccc;
     position: absolute;
-    left: 50%;
+    left: 0%;
     width: 4px;
     height: 74vh;
     cursor: w-resize;
-  }
-  .edit-button {
-    position: absolute;
-    right: 0;
-    top: -45px;
+    display: none;
   }
 }

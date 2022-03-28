@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { wrapper } from "../../store/slice";
-import { ActionTypes } from "../../store/ActionTypes";
+import { wrapper } from "../../../store/slice";
+import { ActionTypes } from "../../../store/ActionTypes";
 
-import Loader from "../../../../Components/Loader/Loader";
-// import cloneDeep from "lodash/cloneDeep";
+import Loader from "../../../../../Components/Loader/Loader";
+import { isEmpty } from "lodash";
 
 import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
@@ -13,75 +13,13 @@ import Tooltip from "apollo-react/components/Tooltip";
 import EyeHidden from "apollo-react-icons/EyeHidden";
 import EyeShow from "apollo-react-icons/EyeShow";
 
-import Plus from "apollo-react-icons/Plus";
-import IconMenuButton from "apollo-react/components/IconMenuButton";
+import { getColumnFromJSON, getDataSourceFromJSON } from "../utils";
 
-import Table from "apollo-react-icons/Table";
-import TextStyle from "apollo-react-icons/TextStyle";
-import TextBold from "apollo-react-icons/TextBold";
-import Image from "apollo-react-icons/Image";
-import FileAccountPlan from "apollo-react-icons/FileAccountPlan";
-
-import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
-
-import AGTable from "./Table";
-import { isEmpty } from "lodash";
-
-const TableElement = () => {
-  return (
-    <div className="add-element">
-      <Table fontSize="extraSmall" />
-      <span>Table</span>
-    </div>
-  );
-};
-const TextHeader2 = () => {
-  return (
-    <div className="add-element">
-      <TextBold fontSize="extraSmall" />
-      <span>Header 2</span>
-    </div>
-  );
-};
-const TextHeader3 = () => {
-  return (
-    <div className="add-element">
-      <TextBold fontSize="extraSmall" />
-      <span>Header 3</span>
-    </div>
-  );
-};
-const TextElement = () => {
-  return (
-    <div className="add-element">
-      <TextStyle fontSize="extraSmall" />
-      <span>Text</span>
-    </div>
-  );
-};
-const ImageElement = () => {
-  return (
-    <div className="add-element">
-      <Image fontSize="extraSmall" />
-      <span>Image</span>
-    </div>
-  );
-};
-const SectionElement = () => {
-  return (
-    <div className="add-element">
-      <FileAccountPlan fontSize="extraSmall" />
-      <span>Section</span>
-    </div>
-  );
-};
+import AGTable from "../Table";
 
 const View = () => {
   const dispatch = useDispatch();
   const { data, success, loader } = useSelector(wrapper);
-  const [hoverIndex, setHoverIndex] = useState(null);
-  const [editIndex, setEditIndex] = useState(null);
-  const [editValue, setEditValue] = useState("");
 
   useEffect(() => {
     let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
@@ -90,45 +28,6 @@ const View = () => {
       payload: { id: staticID, body: false },
     });
   }, []);
-  const handleOpen = (index, content) => {
-    setEditIndex(index);
-    setEditValue(content);
-  };
-  const saveData = () => {
-    setEditIndex(null);
-    setEditValue("");
-  };
-  const handleClick = (label) => () => {
-    console.log(`You picked ${label}.`);
-    console.log(`At Line ID ${hoverIndex}`);
-    console.log("Section Name");
-  };
-  const menuItems = [
-    {
-      label: <TableElement />,
-      onClick: handleClick("table"),
-    },
-    {
-      text: <TextElement />,
-      onClick: handleClick("text"),
-    },
-    {
-      text: <TextHeader2 />,
-      onClick: handleClick("header2"),
-    },
-    {
-      text: <TextHeader3 />,
-      onClick: handleClick("header3"),
-    },
-    {
-      text: <ImageElement />,
-      onClick: handleClick("image"),
-    },
-    {
-      text: <SectionElement />,
-      onClick: handleClick("section"),
-    },
-  ];
   const getTable = (item, data, unq, noHeader = false) => {
     console.log("Table Data", item);
     const tableProperties = JSON.parse(item.TableProperties);
@@ -161,7 +60,7 @@ const View = () => {
             dataSource={dataSource}
             columns={dataColumn}
             item={data}
-            showOptions={true}
+            showOptions={false}
           />
         </div>
         <div>
@@ -192,23 +91,13 @@ const View = () => {
     }
     switch (type) {
       case "header":
-        return editIndex !== index ? (
+        return (
           <div
             className="level-3-header"
             id={`TOC-${seq_num}`}
             key={`TOC-${seq_num}`}
-            // ref={this.refs[`TOC-${seq_num}`]}
             dangerouslySetInnerHTML={{ __html: content }}
-            onDoubleClick={() => handleOpen(index, content)}
           />
-        ) : (
-          <textarea
-            onBlur={() => saveData()}
-            onChange={(e) => setEditValue(e.target.value)}
-            value={editIndex === index ? editValue : content}
-            className="pd-view-text-area"
-            autoFocus
-          ></textarea>
         );
       case "image":
         return (
@@ -222,27 +111,14 @@ const View = () => {
         );
       default:
         return (
-          <>
-            {editIndex !== index ? (
-              <p
-                id={`CPT_section-${seq_num}`}
-                key={`CPT_section-${seq_num}`}
-                className={`text-para`}
-                onDoubleClick={() => handleOpen(index, content)}
-                style={{ fontSize: "12px" }}
-                dangerouslySetInnerHTML={{ __html: content }}
-                onClick={() => scrollToPage(data.page)}
-              ></p>
-            ) : (
-              <textarea
-                value={editIndex === index ? editValue : content}
-                className="pd-view-text-area"
-                onChange={(e) => setEditValue(e.target.value)}
-                onBlur={() => saveData()}
-                autoFocus
-              ></textarea>
-            )}
-          </>
+          <p
+            id={`CPT_section-${seq_num}`}
+            key={`CPT_section-${seq_num}`}
+            className={`text-para`}
+            style={{ fontSize: "12px" }}
+            dangerouslySetInnerHTML={{ __html: content }}
+            onClick={() => scrollToPage(data.page)}
+          ></p>
         );
     }
   };
@@ -271,38 +147,14 @@ const View = () => {
       } else {
         return (
           <div className="option-content-container">
-            <div
-              onMouseEnter={() => setHoverIndex(data.line_id)}
-              // onMouseLeave={() => this.handleLeave(index)}
-            >
-              {getTocElement(data, data.line_id)}
-            </div>
-            <div
-              // className="no-option"
-              className={
-                data.line_id === hoverIndex ? "show-option" : "no-option"
-              }
-            >
-              <Tooltip
-                className="tooltip-add-element"
-                title="Actions"
-                disableFocusListener
-              >
-                <IconMenuButton
-                  className="icon-buttons"
-                  id="actions-elements"
-                  menuItems={menuItems}
-                >
-                  <Plus className="plus-icon" size="small" />
-                </IconMenuButton>
-              </Tooltip>
-            </div>
+            <div>{getTocElement(data, data.line_id)}</div>
           </div>
         );
       }
     }
   };
   const scrollToPage = (page) => {
+    console.log(page);
     if (page > 0) {
       const pageNum = parseInt(page);
       if (pageNum || pageNum === 0) {

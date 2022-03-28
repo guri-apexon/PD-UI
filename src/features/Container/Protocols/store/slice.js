@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const protocolSlice = createSlice({
   name: "protocols",
   initialState: {
+    docID: "",
     overview: {
       success: false,
       loading: false,
@@ -34,6 +35,12 @@ export const protocolSlice = createSlice({
       success: false,
       error: "",
       data: null,
+    },
+    ptData: {
+      loader: false,
+      success: false,
+      error: "",
+      data: null,
       detail: null,
     },
   },
@@ -53,6 +60,12 @@ export const protocolSlice = createSlice({
     getWrapperData: (state, action) => {
       state.wrapperData = action.payload;
     },
+    getPTData: (state, action) => {
+      state.ptData = action.payload;
+    },
+    setDOCID: (state, action) => {
+      state.docID = action.payload;
+    },
   },
 });
 
@@ -62,6 +75,8 @@ export const {
   getAssociateDocuments,
   getFileStream,
   getWrapperData,
+  getPTData,
+  setDOCID,
 } = protocolSlice.actions;
 
 export default protocolSlice.reducer;
@@ -71,3 +86,5 @@ export const protocolViewData = (state) => state.protocol.view;
 export const relatedProtocol = (state) => state.protocol.associateDocs;
 export const fileStream = (state) => state.protocol.fileStream;
 export const wrapper = (state) => state.protocol.wrapperData;
+export const ptWrapper = (state) => state.protocol.ptData;
+export const docID = (state) => state.protocol.docID;

@@ -4,7 +4,7 @@ import { wrapper } from "../../store/slice";
 import { ActionTypes } from "../../store/ActionTypes";
 
 import Loader from "../../../../Components/Loader/Loader";
-// import cloneDeep from "lodash/cloneDeep";
+import cloneDeep from "lodash/cloneDeep";
 
 import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
@@ -25,7 +25,6 @@ import FileAccountPlan from "apollo-react-icons/FileAccountPlan";
 import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
 
 import AGTable from "./Table";
-import { isEmpty } from "lodash";
 
 const TableElement = () => {
   return (
@@ -78,7 +77,9 @@ const SectionElement = () => {
 
 const View = () => {
   const dispatch = useDispatch();
-  const { data, success, loader } = useSelector(wrapper);
+  const { data, detail, success, loader } = useSelector(wrapper);
+
+  const [expandedSections, setExpandedSections] = useState([]);
   const [hoverIndex, setHoverIndex] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
@@ -303,6 +304,7 @@ const View = () => {
     }
   };
   const scrollToPage = (page) => {
+    console.log(page);
     if (page > 0) {
       const pageNum = parseInt(page);
       if (pageNum || pageNum === 0) {
@@ -316,52 +318,68 @@ const View = () => {
   };
   const handleSectionClicked = async (section) => {
     let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
-    const sectionHeader = section.header;
-    const page = sectionHeader.page;
-    const sectionName = sectionHeader.source_file_section;
-    const sectionDetail = section.detail;
+    const page = section.page;
+    const sectionName = section.source_file_section;
+    const arr = cloneDeep(expandedSections);
+    const index = arr.indexOf(sectionName);
 
-    if (!sectionDetail) {
-      const childArr = sectionHeader.child_secid_seq.map((elm) => elm[0]);
-      const childString = childArr.toString();
-      dispatch({
-        type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
-        payload: {
-          id: staticID,
-          body: true,
-          childString,
-          sectionName,
-        },
-      });
+    if (index > -1) {
+      arr.splice(index, 1);
+      setExpandedSections(arr);
     } else {
-      dispatch({
-        type: ActionTypes.HANDLE_EXPAND_BPO,
-        payload: {
-          sectionName,
-        },
-      });
+      arr.push(sectionName);
+      setExpandedSections(arr);
+      if (detail) {
+        const cloneViewData = cloneDeep(detail);
+        if (sectionName in cloneViewData) {
+          console.log("Data Present");
+        } else {
+          const childArr = section.child_secid_seq.map((elm) => elm[0]);
+          const childString = childArr.toString();
+          dispatch({
+            type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
+            payload: {
+              id: staticID,
+              body: true,
+              childString,
+              keyIndex: sectionName,
+            },
+          });
+        }
+      } else {
+        const childArr = section.child_secid_seq.map((elm) => elm[0]);
+        const childString = childArr.toString();
+        dispatch({
+          type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
+          payload: {
+            id: staticID,
+            body: true,
+            childString,
+            keyIndex: sectionName,
+          },
+        });
+      }
     }
     if (page > 0) {
       scrollToPage(page);
     } else {
-      let pageNumber = sectionHeader.indexes.seg_pages;
+      let pageNumber = section.indexes.seg_pages;
       if (pageNumber.length > 0) {
         scrollToPage(pageNumber[0]);
       }
     }
   };
   const renderHeader = (data) => {
-    console.log("-----", data);
-    if (!isEmpty(data)) {
-      return Object.keys(data).map((key, index) => {
-        const section = data[key];
-        const sectionHeader = section.header;
-        const sectionName = sectionHeader.source_file_section;
+    return (
+      data &&
+      data.length > 0 &&
+      data.map((section, index) => {
+        const sectionName = section.source_file_section;
         return (
           <Accordion
             key={sectionName + index}
             className="accordion-parent"
-            expanded={section.expanded}
+            expanded={expandedSections.includes(sectionName)}
           >
             <AccordionSummary>
               <div
@@ -391,12 +409,12 @@ const View = () => {
               </div>
             </AccordionSummary>
             <AccordionDetails className="accordion-parent-detail-container">
-              {section && !isEmpty(section) && (
+              {detail && sectionName in detail && (
                 <div
                   className="accordion-parent-detail"
                   style={{ width: "100%" }}
                 >
-                  {section.loading && (
+                  {detail[sectionName].loading && (
                     <div
                       style={{
                         height: 200,
@@ -408,34 +426,35 @@ const View = () => {
                       <Loader />
                     </div>
                   )}
-                  {!section.loading &&
-                    section.success &&
-                    section.detail.map((elem) => {
+                  {!detail[sectionName].loading &&
+                    detail[sectionName].success &&
+                    detail[sectionName].data.map((elem) => {
                       return (
                         <div key={elem.line_id}>
                           {renderAccordionDetail(elem)}
                         </div>
                       );
                     })}
-                  {!section.loading && !section.success && (
-                    <div
-                      style={{
-                        height: 200,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      <h4>No Data Found</h4>
-                    </div>
-                  )}
+                  {!detail[sectionName].loading &&
+                    !detail[sectionName].success && (
+                      <div
+                        style={{
+                          height: 200,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          display: "flex",
+                        }}
+                      >
+                        <h4>No Data Found</h4>
+                      </div>
+                    )}
                 </div>
               )}
             </AccordionDetails>
           </Accordion>
         );
-      });
-    }
+      })
+    );
   };
   return (
     <div>

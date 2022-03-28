@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import "./resize.scss";
 import PDFView from "../PDFView";
 import View from "../NewView";
+import ViewOnly from "../View-only";
+import Button from "apollo-react/components/Button/Button";
 
 const Expandable = ({ name, dfsPath }) => {
-  const [pdfZoom, setPDFZoom] = useState(1.4);
+  const [edit, setEdit] = useState(false);
+  const [pdfZoom, setPDFZoom] = useState(1.2);
   const [pdfWidth, setPDFWidth] = useState(650);
   useEffect(() => {
     if (pdfWidth < 300) {
@@ -12,7 +15,7 @@ const Expandable = ({ name, dfsPath }) => {
     } else if (pdfWidth < 600) {
       setPDFZoom(1.0);
     } else if (pdfWidth < 800) {
-      setPDFZoom(1.4);
+      setPDFZoom(1.2);
     } else if (pdfWidth > 800) {
       setPDFZoom(1.8);
     }
@@ -56,12 +59,19 @@ const Expandable = ({ name, dfsPath }) => {
   }, []);
   return (
     <div className="resize-container">
+      <Button className="edit-button" onClick={() => setEdit(!edit)}>
+        {edit ? "Save Changes" : "Edit Content"}
+      </Button>
       <div id="left-panel" className="left-panel">
         <PDFView name={name} dfsPath={dfsPath} zoom={pdfZoom} />
       </div>
       <div className="resize" id="resize"></div>
       <div id="right-panel" className="right-panel">
-        <View name={name} dfsPath={dfsPath} />
+        {edit ? (
+          <View name={name} dfsPath={dfsPath} />
+        ) : (
+          <ViewOnly name={name} dfsPath={dfsPath} />
+        )}
       </div>
       {/* <div id="right_panel">{props.children}</div> */}
     </div>

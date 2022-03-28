@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { wrapper } from "../../store/slice";
+import { ptWrapper } from "../../store/slice";
 import { ActionTypes } from "../../store/ActionTypes";
 
 import Loader from "../../../../Components/Loader/Loader";
-// import cloneDeep from "lodash/cloneDeep";
+import cloneDeep from "lodash/cloneDeep";
 
 import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
@@ -25,7 +25,7 @@ import FileAccountPlan from "apollo-react-icons/FileAccountPlan";
 import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
 
 import AGTable from "./Table";
-import { isEmpty } from "lodash";
+import Button from "apollo-react/components/Button/Button";
 
 const TableElement = () => {
   return (
@@ -78,18 +78,15 @@ const SectionElement = () => {
 
 const View = () => {
   const dispatch = useDispatch();
-  const { data, success, loader } = useSelector(wrapper);
+  const [input, setInput] = useState("");
+  const { data, detail, success, loader, error } = useSelector(ptWrapper);
+
+  const [expandedSections, setExpandedSections] = useState([]);
   const [hoverIndex, setHoverIndex] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
 
-  useEffect(() => {
-    let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
-    dispatch({
-      type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
-      payload: { id: staticID, body: false },
-    });
-  }, []);
+  useEffect(() => {}, []);
   const handleOpen = (index, content) => {
     setEditIndex(index);
     setEditValue(content);
@@ -101,7 +98,6 @@ const View = () => {
   const handleClick = (label) => () => {
     console.log(`You picked ${label}.`);
     console.log(`At Line ID ${hoverIndex}`);
-    console.log("Section Name");
   };
   const menuItems = [
     {
@@ -130,7 +126,6 @@ const View = () => {
     },
   ];
   const getTable = (item, data, unq, noHeader = false) => {
-    console.log("Table Data", item);
     const tableProperties = JSON.parse(item.TableProperties);
     const dataColumn = getColumnFromJSON(tableProperties);
     const dataSource = getDataSourceFromJSON(tableProperties);
@@ -161,7 +156,6 @@ const View = () => {
             dataSource={dataSource}
             columns={dataColumn}
             item={data}
-            showOptions={true}
           />
         </div>
         <div>
@@ -209,16 +203,6 @@ const View = () => {
             className="pd-view-text-area"
             autoFocus
           ></textarea>
-        );
-      case "image":
-        return (
-          <div className="image-extract">
-            <img
-              src={"data:image/*;base64," + content}
-              alt=""
-              style={{ height: "auto", width: "100%" }}
-            />
-          </div>
         );
       default:
         return (
@@ -306,7 +290,7 @@ const View = () => {
     if (page > 0) {
       const pageNum = parseInt(page);
       if (pageNum || pageNum === 0) {
-        const ele = document.getElementById(`page-${pageNum}`);
+        const ele = document.getElementById(`page-${pageNum + 1}`);
         ele.scrollIntoView({
           behavior: "smooth",
           block: "start",
@@ -315,53 +299,67 @@ const View = () => {
     }
   };
   const handleSectionClicked = async (section) => {
+    // eslint-disable-next-line no-debugger
+    debugger;
     let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
-    const sectionHeader = section.header;
-    const page = sectionHeader.page;
-    const sectionName = sectionHeader.source_file_section;
-    const sectionDetail = section.detail;
+    const page = section.page;
+    const sectionName = section.source_file_section;
+    const arr = cloneDeep(expandedSections);
+    const index = arr.indexOf(sectionName);
 
-    if (!sectionDetail) {
-      const childArr = sectionHeader.child_secid_seq.map((elm) => elm[0]);
-      const childString = childArr.toString();
-      dispatch({
-        type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
-        payload: {
-          id: staticID,
-          body: true,
-          childString,
-          sectionName,
-        },
-      });
+    if (index > -1) {
+      arr.splice(index, 1);
+      setExpandedSections(arr);
     } else {
-      dispatch({
-        type: ActionTypes.HANDLE_EXPAND_BPO,
-        payload: {
-          sectionName,
-        },
-      });
+      arr.push(sectionName);
+      setExpandedSections(arr);
+      if (detail) {
+        const cloneViewData = cloneDeep(detail);
+        if (sectionName in cloneViewData) {
+          console.log("Data Present");
+        } else {
+          dispatch({
+            type: ActionTypes.GET_PT_DATA,
+            payload: {
+              id: staticID,
+              body: true,
+              keyIndex: sectionName,
+              input,
+            },
+          });
+        }
+      } else {
+        dispatch({
+          type: ActionTypes.GET_PT_DATA,
+          payload: {
+            id: staticID,
+            body: true,
+            keyIndex: sectionName,
+            input,
+          },
+        });
+      }
     }
     if (page > 0) {
       scrollToPage(page);
     } else {
-      let pageNumber = sectionHeader.indexes.seg_pages;
+      let pageNumber = section.indexes.seg_pages;
       if (pageNumber.length > 0) {
         scrollToPage(pageNumber[0]);
       }
     }
   };
   const renderHeader = (data) => {
-    console.log("-----", data);
-    if (!isEmpty(data)) {
-      return Object.keys(data).map((key, index) => {
-        const section = data[key];
-        const sectionHeader = section.header;
-        const sectionName = sectionHeader.source_file_section;
+    return (
+      data &&
+      data.length > 0 &&
+      data.map((section, index) => {
+        const sectionName = section.source_file_section;
         return (
           <Accordion
             key={sectionName + index}
             className="accordion-parent"
-            expanded={section.expanded}
+            expanded={expandedSections.includes(sectionName)}
           >
             <AccordionSummary>
               <div
@@ -391,12 +389,12 @@ const View = () => {
               </div>
             </AccordionSummary>
             <AccordionDetails className="accordion-parent-detail-container">
-              {section && !isEmpty(section) && (
+              {detail && sectionName in detail && (
                 <div
                   className="accordion-parent-detail"
                   style={{ width: "100%" }}
                 >
-                  {section.loading && (
+                  {detail[sectionName].loading && (
                     <div
                       style={{
                         height: 200,
@@ -408,37 +406,50 @@ const View = () => {
                       <Loader />
                     </div>
                   )}
-                  {!section.loading &&
-                    section.success &&
-                    section.detail.map((elem) => {
+                  {!detail[sectionName].loading &&
+                    detail[sectionName].success &&
+                    detail[sectionName].data.map((elem) => {
                       return (
                         <div key={elem.line_id}>
                           {renderAccordionDetail(elem)}
                         </div>
                       );
                     })}
-                  {!section.loading && !section.success && (
-                    <div
-                      style={{
-                        height: 200,
-                        justifyContent: "center",
-                        alignItems: "center",
-                        display: "flex",
-                      }}
-                    >
-                      <h4>No Data Found</h4>
-                    </div>
-                  )}
                 </div>
               )}
             </AccordionDetails>
           </Accordion>
         );
-      });
-    }
+      })
+    );
+  };
+  const handlePTSearch = (e) => {
+    e.preventDefault();
+    let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
+    dispatch({
+      type: ActionTypes.GET_PT_DATA,
+      payload: { id: staticID, body: false, input },
+    });
   };
   return (
     <div>
+      <div className="pt-search">
+        <form onSubmit={handlePTSearch}>
+          <input
+            type="text"
+            onChange={(e) => setInput(e.target.value)}
+            value={input}
+          />
+          <Button
+            variant="primary"
+            size="small"
+            style={{ margin: 10 }}
+            onClick={(e) => handlePTSearch(e)}
+          >
+            PT Search
+          </Button>
+        </form>
+      </div>
       {loader && (
         <div
           style={{
@@ -461,6 +472,18 @@ const View = () => {
               {renderHeader(data)}
             </div>
           </div>
+        </div>
+      )}
+      {error && (
+        <div
+          style={{
+            height: 400,
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+          }}
+        >
+          <h2>No Data Found</h2>
         </div>
       )}
     </div>

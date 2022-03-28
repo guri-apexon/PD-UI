@@ -5,7 +5,7 @@ import ProtocolOverview from "../Overview";
 import ProtocolView from "../ProtocolView";
 import Documents from "../Document";
 import POCProtocoolView from "../POC/ProtocolView";
-import Table from "../POC/TableView";
+import Table from "../POC/PT";
 
 const queryString = require("query-string");
 
@@ -83,7 +83,7 @@ const TabContainer = ({ history }) => {
           }
           onClick={(e) => handleTabClick(tabs.POC_TABLE_VIEW)}
         >
-          POC Table View
+          POC PT Search
         </button>
       </div>
 

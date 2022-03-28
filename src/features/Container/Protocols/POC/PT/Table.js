@@ -21,7 +21,7 @@ const QC_CHANGE_TYPE = {
 };
 
 const Table = (props) => {
-  const { table, dataSource, columns, item, showOptions } = props;
+  const { table, dataSource, columns, item } = props;
   console.log(item);
   const gridRef = useRef();
   const [rowData, setRowData] = useState([]);
@@ -195,42 +195,40 @@ const Table = (props) => {
   }, []);
   return (
     <div className="ag-theme-alpine">
-      {showOptions && (
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            variant="secondary"
-            size="small"
-            style={{ marginBottom: 10, marginTop: 10, marginLeft: 10 }}
-            onClick={handleAddRow}
-          >
-            <img src={addRowImg} alt="Add Row" />
-          </Button>
-          <Button
-            variant="secondary"
-            size="small"
-            style={{ marginBottom: 10, marginTop: 10, marginLeft: 10 }}
-            onClick={handleAddColumn}
-          >
-            <img src={addColumnImg} alt="Add Column" />
-          </Button>
-          <Button
-            variant="secondary"
-            size="small"
-            style={{ marginBottom: 10, marginTop: 10, marginLeft: 10 }}
-            onClick={handleDeleteRow}
-          >
-            <img src={deleteRowImg} alt="Delete Row" />
-          </Button>
-          <Button
-            variant="primary"
-            size="small"
-            style={{ marginBottom: 10, marginTop: 10, marginLeft: 10 }}
-            onClick={handleTableSubmit}
-          >
-            <img src={saveImg} alt="Save" />
-          </Button>
-        </div>
-      )}
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          variant="secondary"
+          size="small"
+          style={{ marginBottom: 10, marginTop: 10, marginLeft: 10 }}
+          onClick={handleAddRow}
+        >
+          <img src={addRowImg} alt="Add Row" />
+        </Button>
+        <Button
+          variant="secondary"
+          size="small"
+          style={{ marginBottom: 10, marginTop: 10, marginLeft: 10 }}
+          onClick={handleAddColumn}
+        >
+          <img src={addColumnImg} alt="Add Column" />
+        </Button>
+        <Button
+          variant="secondary"
+          size="small"
+          style={{ marginBottom: 10, marginTop: 10, marginLeft: 10 }}
+          onClick={handleDeleteRow}
+        >
+          <img src={deleteRowImg} alt="Delete Row" />
+        </Button>
+        <Button
+          variant="primary"
+          size="small"
+          style={{ marginBottom: 10, marginTop: 10, marginLeft: 10 }}
+          onClick={handleTableSubmit}
+        >
+          <img src={saveImg} alt="Save" />
+        </Button>
+      </div>
       <AgGridReact
         ref={gridRef}
         rowData={rowData}
