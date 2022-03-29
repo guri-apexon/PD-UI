@@ -55,6 +55,7 @@ export function* fetchProtocolViewData(action) {
     if (success) {
       const currentData1 = yield getWrapperState();
       let cloneData1 = cloneDeep(currentData1);
+      data.shift();
       const obj1 = {
         loading: false,
         success: true,
@@ -92,8 +93,6 @@ export function* fetchProtocolViewData(action) {
       yield put(getWrapperData(preLoadingState));
     }
   } else {
-    // eslint-disable-next-line no-debugger
-    debugger;
     if (id === docID) {
       const currentData = yield getWrapperState();
       yield put(getWrapperData(currentData));

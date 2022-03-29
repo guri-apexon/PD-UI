@@ -82,6 +82,7 @@ const View = () => {
     let type = data.derived_section_type;
     let content = data.content;
     let seq_num = index;
+    let bold = data.font_info.IsBold;
 
     if (!content) {
       return null;
@@ -110,7 +111,16 @@ const View = () => {
           </div>
         );
       default:
-        return (
+        return bold ? (
+          <p
+            id={`CPT_section-${seq_num}`}
+            key={`CPT_section-${seq_num}`}
+            className={`text-para`}
+            style={{ fontSize: "12px", fontWeight: "bold" }}
+            dangerouslySetInnerHTML={{ __html: content }}
+            onClick={() => scrollToPage(data.page)}
+          ></p>
+        ) : (
           <p
             id={`CPT_section-${seq_num}`}
             key={`CPT_section-${seq_num}`}
@@ -122,36 +132,64 @@ const View = () => {
         );
     }
   };
-  const renderContent = (data) => {
-    return data.map((item, i) => (
-      <div key={item.type + i}>{this.getTocElement(item)}</div>
-    ));
+  // const renderContent = (data) => {
+  //   return data.map((item, i) => (
+  //     <div key={item.type + i}>{this.getTocElement(item)}</div>
+  //   ));
+  // };
+  const renderSubHeader = (data) => {
+    const pre = data.source_heading_number;
+    const header = data.source_file_section;
+    const text = pre + " " + header;
+    return (
+      <div
+        className="level-3-header"
+        id={`TOC-${text}`}
+        key={`TOC-${text}`}
+        dangerouslySetInnerHTML={{ __html: text }}
+        onClick={() => scrollToPage(data.page)}
+      />
+    );
   };
   const renderAccordionDetail = (data) => {
-    if (data.content) {
-      if (data.derived_section_type === "header2") {
-        return (
-          <Accordion key={data.id} className="accordion-child">
-            <AccordionSummary>
-              <div className="accordion-child-header">
-                {data.header.toLowerCase()}{" "}
-              </div>
-            </AccordionSummary>
-            <AccordionDetails className="accordion-child-detail-container">
-              <div className="accordion-child-detail">
-                {renderContent(data.data)}
-              </div>
-            </AccordionDetails>
-          </Accordion>
-        );
-      } else {
-        return (
-          <div className="option-content-container">
-            <div>{getTocElement(data, data.line_id)}</div>
-          </div>
-        );
-      }
+    console.log("Data", data);
+    if (data.genre === "2_section_metadata") {
+      return (
+        <div className="option-content-container">
+          <div>{renderSubHeader(data)}</div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="option-content-container">
+          <div>{getTocElement(data, data.line_id)}</div>
+        </div>
+      );
     }
+    // if (data.content) {
+    //   if (data.derived_section_type === "header2") {
+    //     return (
+    //       <Accordion key={data.id} className="accordion-child">
+    //         <AccordionSummary>
+    //           <div className="accordion-child-header">
+    //             {data.header.toLowerCase()}{" "}
+    //           </div>
+    //         </AccordionSummary>
+    //         <AccordionDetails className="accordion-child-detail-container">
+    //           <div className="accordion-child-detail">
+    //             {renderContent(data.data)}
+    //           </div>
+    //         </AccordionDetails>
+    //       </Accordion>
+    //     );
+    //   } else {
+    //     return (
+    //       <div className="option-content-container">
+    //         <div>{getTocElement(data, data.line_id)}</div>
+    //       </div>
+    //     );
+    //   }
+    // }
   };
   const scrollToPage = (page) => {
     console.log(page);
