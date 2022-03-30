@@ -6,6 +6,7 @@ import ProtocolView from "../ProtocolView";
 import Documents from "../Document";
 import POCProtocoolView from "../POC/ProtocolView";
 import Table from "../POC/PT";
+import EntitySearch from "../POC/EnityValue";
 
 const queryString = require("query-string");
 
@@ -15,6 +16,7 @@ const tabs = {
   DOCUMENT: "DOCUMENT",
   POC_PROTOCOL_VIEW: "POC_PROTOCOL_VIEW",
   POC_TABLE_VIEW: "POC_TABLE_VIEW",
+  POC_ENTITY_SEARCH: "POC_ENTITY_SEARCH",
 };
 
 const TabContainer = ({ history }) => {
@@ -84,6 +86,16 @@ const TabContainer = ({ history }) => {
           onClick={(e) => handleTabClick(tabs.POC_TABLE_VIEW)}
         >
           DEBUG PT Search
+        </button>
+        <button
+          className={
+            activeTab === tabs.POC_ENTITY_SEARCH
+              ? "tablinks active"
+              : "tablinks"
+          }
+          onClick={(e) => handleTabClick(tabs.POC_ENTITY_SEARCH)}
+        >
+          DEBUG ENTITY Search
         </button>
       </div>
 
@@ -156,6 +168,23 @@ const TabContainer = ({ history }) => {
       >
         {activeTab === tabs.POC_TABLE_VIEW && (
           <Table id={protocolId} name={protocolName} dfsPath={fileName} />
+        )}
+      </div>
+      <div
+        id="poc-entity-view"
+        className="tabcontent"
+        style={
+          activeTab === tabs.POC_ENTITY_SEARCH
+            ? { display: "block" }
+            : { display: "none" }
+        }
+      >
+        {activeTab === tabs.POC_ENTITY_SEARCH && (
+          <EntitySearch
+            id={protocolId}
+            name={protocolName}
+            dfsPath={fileName}
+          />
         )}
       </div>
     </div>

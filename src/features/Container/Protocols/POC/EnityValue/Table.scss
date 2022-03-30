@@ -1,0 +1,21 @@
+.ag-theme-alpine {
+  margin-right: 20px;
+  .ag-header {
+    display: none;
+  }
+  button {
+    height: 24px;
+    img {
+      height: 15px;
+      width: auto;
+    }
+  }
+  .cell-wrap-text {
+    white-space: normal !important;
+  }
+  .ag-cell .value-inside {
+    word-break: normal;
+    line-height: 1.4;
+    font-size: 12px;
+  }
+}
