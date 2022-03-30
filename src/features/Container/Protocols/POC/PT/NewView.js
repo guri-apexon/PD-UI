@@ -318,7 +318,7 @@ const View = ({ id, name, dfsPath }) => {
     }
   };
   const handleSectionClicked = async (section) => {
-    let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
+    // let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
     const page = section.page;
     const sectionName = section.source_file_section;
     const arr = cloneDeep(expandedSections);
@@ -349,7 +349,7 @@ const View = ({ id, name, dfsPath }) => {
         dispatch({
           type: ActionTypes.GET_PT_DATA,
           payload: {
-            id: staticID,
+            id,
             body: true,
             keyIndex: sectionName,
             input,
