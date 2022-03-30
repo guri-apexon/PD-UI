@@ -83,7 +83,7 @@ const TabContainer = ({ history }) => {
           }
           onClick={(e) => handleTabClick(tabs.POC_TABLE_VIEW)}
         >
-          POC PT Search
+          DEBUG PT Search
         </button>
       </div>
 

@@ -3,7 +3,7 @@ import "./resize.scss";
 import PDFView from "../PDFView";
 import View from "../NewView";
 
-const Expandable = ({ name, dfsPath }) => {
+const Expandable = ({ id, name, dfsPath }) => {
   const [pdfZoom] = useState(0.2);
   // const [pdfWidth, setPDFWidth] = useState(650);
   // useEffect(() => {
@@ -61,7 +61,7 @@ const Expandable = ({ name, dfsPath }) => {
       </div>
       <div className="resize" id="resize"></div>
       <div id="right-panel" className="right-panel">
-        <View name={name} dfsPath={dfsPath} />
+        <View name={name} dfsPath={dfsPath} id={id} />
       </div>
       {/* <div id="right_panel">{props.children}</div> */}
     </div>

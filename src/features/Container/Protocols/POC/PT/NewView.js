@@ -27,6 +27,25 @@ import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
 import AGTable from "./Table";
 import Button from "apollo-react/components/Button/Button";
 
+const options = [
+  {
+    name: "Study Aims",
+    value: "Study Aims",
+  },
+  {
+    name: "Primary objectives",
+    value: "Primary objectives",
+  },
+  {
+    name: "Secondary objectives",
+    value: "Secondary objectives",
+  },
+  {
+    name: "Exploratory objectives",
+    value: "Exploratory objectives",
+  },
+];
+
 const TableElement = () => {
   return (
     <div className="add-element">
@@ -76,9 +95,9 @@ const SectionElement = () => {
   );
 };
 
-const View = () => {
+const View = ({ id, name, dfsPath }) => {
   const dispatch = useDispatch();
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState("Study Aims");
   const { data, detail, success, loader, error } = useSelector(ptWrapper);
 
   const [expandedSections, setExpandedSections] = useState([]);
@@ -299,8 +318,6 @@ const View = () => {
     }
   };
   const handleSectionClicked = async (section) => {
-    // eslint-disable-next-line no-debugger
-    debugger;
     let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
     const page = section.page;
     const sectionName = section.source_file_section;
@@ -321,7 +338,7 @@ const View = () => {
           dispatch({
             type: ActionTypes.GET_PT_DATA,
             payload: {
-              id: staticID,
+              id,
               body: true,
               keyIndex: sectionName,
               input,
@@ -424,22 +441,34 @@ const View = () => {
     );
   };
   const handlePTSearch = (e) => {
+    console.log(input);
     e.preventDefault();
-    let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
+    // let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
     dispatch({
       type: ActionTypes.GET_PT_DATA,
-      payload: { id: staticID, body: false, input },
+      payload: { id, body: false, input },
     });
   };
+  // const handleSubmit = (value) => {
+  //   console.log(value);
+  // };
   return (
     <div>
       <div className="pt-search">
         <form onSubmit={handlePTSearch}>
-          <input
+          {/* <input
             type="text"
             onChange={(e) => setInput(e.target.value)}
             value={input}
-          />
+          /> */}
+          <select
+            className="pt-select"
+            onChange={(e) => setInput(e.target.value)}
+          >
+            {options.map((item) => {
+              return <option>{item.name}</option>;
+            })}
+          </select>
           <Button
             variant="primary"
             size="small"
