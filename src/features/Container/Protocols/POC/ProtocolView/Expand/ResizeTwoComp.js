@@ -5,7 +5,7 @@ import View from "../NewView";
 import ViewOnly from "../View-only";
 import Button from "apollo-react/components/Button/Button";
 
-const Expandable = ({ name, dfsPath }) => {
+const Expandable = ({ id, name, dfsPath }) => {
   const [edit, setEdit] = useState(false);
   const [pdfZoom, setPDFZoom] = useState(1.2);
   const [pdfWidth, setPDFWidth] = useState(650);
@@ -68,9 +68,9 @@ const Expandable = ({ name, dfsPath }) => {
       <div className="resize" id="resize"></div>
       <div id="right-panel" className="right-panel">
         {edit ? (
-          <View name={name} dfsPath={dfsPath} />
+          <View id={id} name={name} dfsPath={dfsPath} />
         ) : (
-          <ViewOnly name={name} dfsPath={dfsPath} />
+          <ViewOnly id={id} name={name} dfsPath={dfsPath} />
         )}
       </div>
       {/* <div id="right_panel">{props.children}</div> */}

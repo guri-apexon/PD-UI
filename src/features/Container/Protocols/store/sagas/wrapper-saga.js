@@ -131,6 +131,14 @@ export function* fetchProtocolViewData(action) {
         };
         yield put(getWrapperData(successState));
         yield put(setDOCID(id));
+      } else {
+        const errorState = {
+          loader: false,
+          success: false,
+          error: "NO DATA FOUND",
+          data: null,
+        };
+        yield put(getWrapperData(errorState));
       }
     }
   }

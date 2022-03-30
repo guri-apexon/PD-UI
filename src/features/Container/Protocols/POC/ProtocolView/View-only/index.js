@@ -17,12 +17,12 @@ import { getColumnFromJSON, getDataSourceFromJSON } from "../utils";
 
 import AGTable from "../Table";
 
-const View = () => {
+const View = ({ id }) => {
   const dispatch = useDispatch();
-  const { data, success, loader } = useSelector(wrapper);
+  const { data, success, loader, error } = useSelector(wrapper);
 
   useEffect(() => {
-    let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
+    let staticID = id;
     dispatch({
       type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
       payload: { id: staticID, body: false },
@@ -205,7 +205,7 @@ const View = () => {
     }
   };
   const handleSectionClicked = async (section) => {
-    let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
+    let staticID = id;
     const sectionHeader = section.header;
     const page = sectionHeader.page;
     const sectionName = sectionHeader.source_file_section;
@@ -351,6 +351,18 @@ const View = () => {
               {renderHeader(data)}
             </div>
           </div>
+        </div>
+      )}
+      {!loader && !success && error && (
+        <div
+          style={{
+            height: 400,
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+          }}
+        >
+          <h2>No Data Found</h2>
         </div>
       )}
     </div>

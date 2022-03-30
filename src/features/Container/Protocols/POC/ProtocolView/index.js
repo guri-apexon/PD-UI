@@ -8,7 +8,7 @@ import Expandable from "./Expand/ResizeTwoComp";
 const ProtocolView = ({ id, name, dfsPath }) => {
   return (
     <div className="protocol-view-new">
-      <Expandable name={name} dfsPath={dfsPath} />
+      <Expandable id={id} name={name} dfsPath={dfsPath} />
       {/* <div className="document-section">
         <PDFView name={name} dfsPath={dfsPath} />
       </div>
