@@ -31,7 +31,7 @@ const EntitySearch = ({ id, name, dfsPath }) => {
     setLoader(true);
     let url = "";
     if (entityValue) {
-      url = `${BASE_URL_8000}/api/segments/get_matching_entity?aidocid=${id}&entity_name=${entityName}}&entity_value=${entityValue}&with_data=true`;
+      url = `${BASE_URL_8000}/api/segments/get_matching_entity?aidocid=${id}&entity_name=${entityName}&entity_value=${entityValue}&with_data=true`;
     } else {
       url = `${BASE_URL_8000}/api/segments/get_matching_entity?aidocid=${id}&entity_name=${entityName}&with_data=true`;
     }
