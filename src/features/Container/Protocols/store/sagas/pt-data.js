@@ -10,7 +10,7 @@ function* getPTState() {
 }
 
 export function* fetchPTData(action) {
-  const { id, body, childString, keyIndex, input } = action.payload;
+  const { id, body, childString, keyIndex, input, headerName } = action.payload;
   const currentData = yield getPTState();
   const cloneData = cloneDeep(currentData);
   console.log(childString, id, BASE_URL_8000);
@@ -29,7 +29,13 @@ export function* fetchPTData(action) {
     yield put(getPTData(preLoadingState));
 
     // const URL = "/POC/particular.json";
-    const URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&with_data=true`;
+    let URL = "";
+
+    if (headerName) {
+      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&with_data=true&header_name=${headerName}`;
+    } else {
+      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&with_data=true`;
+    }
     const config = {
       url: URL,
       method: "GET",
@@ -59,8 +65,14 @@ export function* fetchPTData(action) {
       detail: null,
     };
     yield put(getPTData(preLoadingState));
-    const URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}`;
-    // const URL = "/POC/lev-1.json";
+
+    let URL = "";
+
+    if (headerName) {
+      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&header_name=${headerName}`;
+    } else {
+      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}`;
+    }
     const config = {
       url: URL,
       method: "GET",

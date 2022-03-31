@@ -98,6 +98,7 @@ const SectionElement = () => {
 const View = ({ id, name, dfsPath }) => {
   const dispatch = useDispatch();
   const [input, setInput] = useState("Study Aims");
+  const [headerName, setHeaderName] = useState("");
   const { data, detail, success, loader, error } = useSelector(ptWrapper);
 
   const [expandedSections, setExpandedSections] = useState([]);
@@ -342,6 +343,7 @@ const View = ({ id, name, dfsPath }) => {
               body: true,
               keyIndex: sectionName,
               input,
+              headerName,
             },
           });
         }
@@ -353,6 +355,7 @@ const View = ({ id, name, dfsPath }) => {
             body: true,
             keyIndex: sectionName,
             input,
+            headerName,
           },
         });
       }
@@ -446,7 +449,7 @@ const View = ({ id, name, dfsPath }) => {
     // let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
     dispatch({
       type: ActionTypes.GET_PT_DATA,
-      payload: { id, body: false, input },
+      payload: { id, body: false, input, headerName },
     });
   };
   // const handleSubmit = (value) => {
@@ -456,19 +459,26 @@ const View = ({ id, name, dfsPath }) => {
     <div>
       <div className="pt-search">
         <form onSubmit={handlePTSearch}>
-          {/* <input
-            type="text"
-            onChange={(e) => setInput(e.target.value)}
-            value={input}
-          /> */}
-          <select
-            className="pt-select"
-            onChange={(e) => setInput(e.target.value)}
-          >
-            {options.map((item) => {
-              return <option>{item.name}</option>;
-            })}
-          </select>
+          <div className="pt-search-select">
+            <label>Preferred Term</label>
+            <select
+              className="pt-select"
+              onChange={(e) => setInput(e.target.value)}
+            >
+              {options.map((item) => {
+                return <option>{item.name}</option>;
+              })}
+            </select>
+          </div>
+          <div className="pt-search-header">
+            <label>Header Name</label>
+            <input
+              type="text"
+              onChange={(e) => setHeaderName(e.target.value)}
+              value={headerName}
+            />
+          </div>
+
           <Button
             variant="primary"
             size="small"
