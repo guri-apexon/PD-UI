@@ -12,10 +12,18 @@
   }
   .cell-wrap-text {
     white-space: normal !important;
+    padding: 10px 12px;
   }
   .ag-cell .value-inside {
     word-break: normal;
     line-height: 1.4;
     font-size: 12px;
   }
+}
+.ag-theme-alpine .ag-cell-wrapper > :not(.ag-cell-value):not(.ag-group-value) {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  flex: auto;
+  padding: 10px 12px;
 }
