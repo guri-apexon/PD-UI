@@ -25,6 +25,7 @@ const options = [
 const EntitySearch = ({ id, name, dfsPath }) => {
   const [data, setData] = useState(null);
   const [loader, setLoader] = useState(false);
+  const [error, setError] = useState(false);
   const [entityName, setEntityName] = useState("");
   const [entityValue, setEntityValue] = useState("");
   const fetchData = async () => {
@@ -43,6 +44,10 @@ const EntitySearch = ({ id, name, dfsPath }) => {
     if (success) {
       setData(data);
       setLoader(false);
+    } else {
+      setData(null);
+      setLoader(false);
+      setError(true);
     }
   };
   //   useEffect(() => {
@@ -243,6 +248,18 @@ const EntitySearch = ({ id, name, dfsPath }) => {
                   return renderAccordionDetail(elem);
                 })}
             </div>
+          </div>
+        )}
+        {error && (
+          <div
+            style={{
+              height: 200,
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <h2>No Data Found</h2>
           </div>
         )}
       </div>

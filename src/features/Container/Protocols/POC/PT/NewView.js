@@ -350,6 +350,7 @@ const View = ({ id, name, dfsPath }) => {
               keyIndex: sectionName,
               input,
               headerName,
+              childString: section.sec_id,
             },
           });
         }
@@ -362,6 +363,7 @@ const View = ({ id, name, dfsPath }) => {
             keyIndex: sectionName,
             input,
             headerName,
+            childString: section.sec_id,
           },
         });
       }
@@ -383,6 +385,7 @@ const View = ({ id, name, dfsPath }) => {
       data.length > 0 &&
       data.map((section, index) => {
         const sectionName = section.source_file_section;
+        const headerPrefix = section.source_heading_number;
         return (
           <Accordion
             key={sectionName + index}
@@ -394,7 +397,7 @@ const View = ({ id, name, dfsPath }) => {
                 className="accordion-parent-header"
                 onClick={() => handleSectionClicked(section)}
               >
-                {sectionName.toLowerCase()}{" "}
+                {headerPrefix} {sectionName.toLowerCase()}
                 {index % 2 ? (
                   <EyeHidden style={{ color: "#9f9fa1", float: "right" }} />
                 ) : (

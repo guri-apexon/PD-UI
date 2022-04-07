@@ -29,13 +29,14 @@ export function* fetchPTData(action) {
     yield put(getPTData(preLoadingState));
 
     // const URL = "/POC/particular.json";
-    let URL = "";
+    // let URL = "";
 
-    if (headerName) {
-      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&with_data=true&header_name=${headerName}`;
-    } else {
-      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&with_data=true`;
-    }
+    // if (headerName) {
+    //   URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&with_data=true&header_name=${headerName}`;
+    // } else {
+    //   URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&with_data=true`;
+    // }
+    const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${childString}`;
     const config = {
       url: URL,
       method: "GET",
