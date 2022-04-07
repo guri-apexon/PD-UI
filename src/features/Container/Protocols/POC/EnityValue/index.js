@@ -250,7 +250,7 @@ const EntitySearch = ({ id, name, dfsPath }) => {
             </div>
           </div>
         )}
-        {error && (
+        {error && !data && (
           <div
             style={{
               height: 200,

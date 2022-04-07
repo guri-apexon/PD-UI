@@ -106,7 +106,7 @@ const View = ({ id, name, dfsPath }) => {
   const { data, detail, success, loader, error } = useSelector(ptWrapper);
 
   const [expandedSections, setExpandedSections] = useState([]);
-  const [hoverIndex, setHoverIndex] = useState(null);
+  const [hoverIndex] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
 
@@ -282,8 +282,8 @@ const View = ({ id, name, dfsPath }) => {
         return (
           <div className="option-content-container">
             <div
-              onMouseEnter={() => setHoverIndex(data.line_id)}
-              // onMouseLeave={() => this.handleLeave(index)}
+            // onMouseEnter={() => setHoverIndex(data.line_id)}
+            // onMouseLeave={() => this.handleLeave(index)}
             >
               {getTocElement(data, data.line_id)}
             </div>
