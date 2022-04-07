@@ -10,7 +10,7 @@ import AGTable from "./Table";
 const options = [
   {
     name: "--",
-    value: "--",
+    value: "",
   },
   {
     name: "Molecule",
@@ -25,7 +25,7 @@ const options = [
 const EntitySearch = ({ id, name, dfsPath }) => {
   const [data, setData] = useState(null);
   const [loader, setLoader] = useState(false);
-  const [entityName, setEntityName] = useState("Molecule");
+  const [entityName, setEntityName] = useState("");
   const [entityValue, setEntityValue] = useState("");
   const fetchData = async () => {
     setLoader(true);
@@ -179,6 +179,13 @@ const EntitySearch = ({ id, name, dfsPath }) => {
       );
     }
   };
+  const handleSearchCriteria = (value) => {
+    for (let i = 0; i < options.length; i++) {
+      if (value === options[i].name) {
+        setEntityName(options[i].value);
+      }
+    }
+  };
   console.log(data, loader);
   return (
     <div>
@@ -187,7 +194,7 @@ const EntitySearch = ({ id, name, dfsPath }) => {
           <label>Entity Name: </label>
           <select
             className="entity-name-select"
-            onChange={(e) => setEntityName(e.target.value)}
+            onChange={(e) => handleSearchCriteria(e.target.value)}
             value={entityName}
           >
             {options.map((item) => {

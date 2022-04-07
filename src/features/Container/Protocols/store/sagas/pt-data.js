@@ -73,6 +73,14 @@ export function* fetchPTData(action) {
     } else {
       URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}`;
     }
+
+    // if (headerName && input) {
+    //   URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&header_name=${headerName}`;
+    // } else if (headerName) {
+    //   URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}`;
+    // } else if (input) {
+    //   URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}`;
+    // }
     const config = {
       url: URL,
       method: "GET",

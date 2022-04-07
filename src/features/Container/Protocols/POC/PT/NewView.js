@@ -29,20 +29,24 @@ import Button from "apollo-react/components/Button/Button";
 
 const options = [
   {
-    name: "Study Aims",
-    value: "Study Aims",
+    name: "--",
+    value: "",
   },
   {
-    name: "Primary objectives",
-    value: "Primary objectives",
+    name: "Eligibility Criteria",
+    value: "Eligibility Criteria",
   },
   {
-    name: "Secondary objectives",
-    value: "Secondary objectives",
+    name: "Inclusion Criteria",
+    value: "Inclusion Criteria",
   },
   {
-    name: "Exploratory objectives",
-    value: "Exploratory objectives",
+    name: "Exclusion Criteria",
+    value: "Exclusion Criteria",
+  },
+  {
+    name: "Lifestyle Considerations",
+    value: "Lifestyle Considerations",
   },
 ];
 
@@ -97,7 +101,7 @@ const SectionElement = () => {
 
 const View = ({ id, name, dfsPath }) => {
   const dispatch = useDispatch();
-  const [input, setInput] = useState("Study Aims");
+  const [input, setInput] = useState("");
   const [headerName, setHeaderName] = useState("");
   const { data, detail, success, loader, error } = useSelector(ptWrapper);
 
@@ -256,6 +260,8 @@ const View = ({ id, name, dfsPath }) => {
     ));
   };
   const renderAccordionDetail = (data) => {
+    // eslint-disable-next-line no-debugger
+    // debugger;
     if (data.content) {
       if (data.derived_section_type === "header2") {
         return (
@@ -370,6 +376,8 @@ const View = ({ id, name, dfsPath }) => {
     }
   };
   const renderHeader = (data) => {
+    // // eslint-disable-next-line no-debugger
+    // debugger;
     return (
       data &&
       data.length > 0 &&
@@ -455,6 +463,13 @@ const View = ({ id, name, dfsPath }) => {
   // const handleSubmit = (value) => {
   //   console.log(value);
   // };
+  const handleSearchCriteria = (value) => {
+    for (let i = 0; i < options.length; i++) {
+      if (value === options[i].name) {
+        setInput(options[i].value);
+      }
+    }
+  };
   return (
     <div>
       <div className="pt-search">
@@ -463,7 +478,7 @@ const View = ({ id, name, dfsPath }) => {
             <label>Preferred Term</label>
             <select
               className="pt-select"
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => handleSearchCriteria(e.target.value)}
             >
               {options.map((item) => {
                 return <option>{item.name}</option>;
