@@ -36,6 +36,12 @@ export const protocolSlice = createSlice({
       error: "",
       data: null,
     },
+    wrapperDataMeta: {
+      loader: false,
+      success: false,
+      error: "",
+      data: null,
+    },
     ptData: {
       loader: false,
       success: false,
@@ -60,6 +66,9 @@ export const protocolSlice = createSlice({
     getWrapperData: (state, action) => {
       state.wrapperData = action.payload;
     },
+    getWrapperDataMeta: (state, action) => {
+      state.wrapperDataMeta = action.payload;
+    },
     getPTData: (state, action) => {
       state.ptData = action.payload;
     },
@@ -77,6 +86,7 @@ export const {
   getWrapperData,
   getPTData,
   setDOCID,
+  getWrapperDataMeta,
 } = protocolSlice.actions;
 
 export default protocolSlice.reducer;
@@ -86,5 +96,6 @@ export const protocolViewData = (state) => state.protocol.view;
 export const relatedProtocol = (state) => state.protocol.associateDocs;
 export const fileStream = (state) => state.protocol.fileStream;
 export const wrapper = (state) => state.protocol.wrapperData;
+export const wrapperMeta = (state) => state.protocol.wrapperDataMeta;
 export const ptWrapper = (state) => state.protocol.ptData;
 export const docID = (state) => state.protocol.docID;

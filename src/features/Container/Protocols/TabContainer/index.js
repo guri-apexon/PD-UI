@@ -8,6 +8,7 @@ import POCProtocoolView from "../POC/ProtocolView";
 import Table from "../POC/PT";
 import EntitySearch from "../POC/EnityValue";
 import ObjectiveEndpoints from "../POC/ObjNEndpoints";
+import MetadataView from "../POC/Metadata";
 
 const queryString = require("query-string");
 
@@ -19,6 +20,7 @@ const tabs = {
   POC_TABLE_VIEW: "POC_TABLE_VIEW",
   POC_ENTITY_SEARCH: "POC_ENTITY_SEARCH",
   OBJECTIVE_ENDPOINTS: "OBJECTIVE_ENDPOINTS",
+  METADATA_VIEW: "METADATA_VIEW",
 };
 
 const TabContainer = ({ history }) => {
@@ -108,6 +110,14 @@ const TabContainer = ({ history }) => {
           onClick={(e) => handleTabClick(tabs.OBJECTIVE_ENDPOINTS)}
         >
           Objectives & Endpoints
+        </button>
+        <button
+          className={
+            activeTab === tabs.METADATA_VIEW ? "tablinks active" : "tablinks"
+          }
+          onClick={(e) => handleTabClick(tabs.METADATA_VIEW)}
+        >
+          Metadata View
         </button>
       </div>
 
@@ -210,6 +220,23 @@ const TabContainer = ({ history }) => {
       >
         {activeTab === tabs.OBJECTIVE_ENDPOINTS && (
           <ObjectiveEndpoints
+            id={protocolId}
+            name={protocolName}
+            dfsPath={fileName}
+          />
+        )}
+      </div>
+      <div
+        id="poc-metadata-view"
+        className="tabcontent"
+        style={
+          activeTab === tabs.METADATA_VIEW
+            ? { display: "block" }
+            : { display: "none" }
+        }
+      >
+        {activeTab === tabs.METADATA_VIEW && (
+          <MetadataView
             id={protocolId}
             name={protocolName}
             dfsPath={fileName}

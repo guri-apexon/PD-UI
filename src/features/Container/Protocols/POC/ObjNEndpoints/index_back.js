@@ -51,7 +51,8 @@ const Endpoints = [
 ];
 
 const ObjectiveEndpoints = ({ id, name, dfsPath }) => {
-  const [data, setData] = useState(null);
+  const [objectiveData, setObjectiveData] = useState(null);
+  const [endpointData, setEndpointData] = useState(null);
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
   const [objectiveName, setObjectiveName] = useState("All objectives");
@@ -67,11 +68,15 @@ const ObjectiveEndpoints = ({ id, name, dfsPath }) => {
       };
       const { data, success } = await httpCall(config);
       if (success) {
-        setData(data[id]);
+        const objectives = data[id].objectives;
+        const endpoints = data[id].endpoints;
+        setObjectiveData(objectives);
+        setEndpointData(endpoints);
         setLoader(false);
         setError(false);
       } else {
-        setData(null);
+        setObjectiveData(null);
+        setEndpointData(null);
         setLoader(false);
         setError(true);
       }
@@ -81,13 +86,7 @@ const ObjectiveEndpoints = ({ id, name, dfsPath }) => {
     return (
       <div>
         {list.map((item) => {
-          return (
-            <p
-              dangerouslySetInnerHTML={{
-                __html: `${item.ser_num}. ${item.text}`,
-              }}
-            ></p>
-          );
+          return <p>{`${item.ser_num}. ${item.text}`}</p>;
         })}
       </div>
     );
@@ -108,34 +107,23 @@ const ObjectiveEndpoints = ({ id, name, dfsPath }) => {
       </div>
     );
   };
-  const renderContent = (data) => {
+  const renderContent = (data, header) => {
     console.log("Data", data);
-    const objectiveData = data.objectives;
-    const endpointData = data.endpoints;
     return (
       <div>
-        <h2>Objectives & Endpoints</h2>
-        {Object.keys(objectiveData).map((key) => {
+        <h2>{header}</h2>
+        {Object.keys(data).map((key) => {
           if (key !== "derived_info") {
             return (
-              <div className="card-section">
-                <h4 className="key-headers">{key + " Objectives"}</h4>
-                <p>{renderList(objectiveData[key])}</p>
-                <h4 className="key-headers">{key + " Endpoints"}</h4>
-                {endpointData[key] ? (
-                  <>
-                    <p>{renderList(endpointData[key])}</p>
-                    <div>
-                      {renderDerivedInfo(endpointData.derived_info[key])}
-                    </div>
-                  </>
-                ) : (
-                  <div>No Matching for {key} Endpoints</div>
-                )}
+              <div>
+                <h4 className="key-headers">{key}</h4>
+                <p>{renderList(data[key])}</p>
+                <div>
+                  {header === "Endpoints" &&
+                    renderDerivedInfo(data.derived_info[key])}
+                </div>
               </div>
             );
-          } else {
-            return null;
           }
         })}
       </div>
@@ -214,7 +202,22 @@ const ObjectiveEndpoints = ({ id, name, dfsPath }) => {
               data-testid="protocol-column-wrapper"
               style={{ marginBottom: 50 }}
             >
-              {data && !isEmpty(data) && renderContent(data)}
+              {objectiveData &&
+                !isEmpty(objectiveData) &&
+                renderContent(objectiveData, "Objectives")}
+            </div>
+          </div>
+        )}
+        {!loader && (
+          <div className="protocol-column">
+            <div
+              className="accordion-start-container"
+              data-testid="protocol-column-wrapper"
+              style={{ marginBottom: 50 }}
+            >
+              {endpointData &&
+                !isEmpty(endpointData) &&
+                renderContent(endpointData, "Endpoints")}
             </div>
           </div>
         )}

@@ -7,6 +7,7 @@ import { fetchViewData } from "./sagas/view-saga";
 import { fetchRelatedProtocols } from "./sagas/related-saga";
 import { fetchFileStream } from "./sagas/fileStream-saga";
 import { fetchProtocolViewData, handleExpandBPO } from "./sagas/wrapper-saga";
+import { fetchProtocolViewData1, handleExpandBPO1 } from "./sagas/wrapper-meta";
 import { fetchPTData } from "./sagas/pt-data";
 
 function* watchProtocolAsync() {
@@ -17,6 +18,8 @@ function* watchProtocolAsync() {
   yield takeLatest(ActionTypes.GET_FILE_STREAM, fetchFileStream);
   yield takeLatest(ActionTypes.GET_PT_DATA, fetchPTData);
   yield takeLatest(ActionTypes.HANDLE_EXPAND_BPO, handleExpandBPO);
+  yield takeLatest(ActionTypes.HANDLE_EXPAND_BPO1, handleExpandBPO1);
+  yield takeLatest(ActionTypes.GET_PROTOCOL_VIEW_NEW1, fetchProtocolViewData1);
 }
 export default function* protocolSaga() {
   yield all([watchProtocolAsync()]);

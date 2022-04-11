@@ -1,0 +1,20 @@
+.medical-term {
+  display: flex;
+  .word {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+  }
+  .word-box {
+    border: 1px solid #eee;
+    label {
+      border-bottom: 1px solid;
+      padding: 3px;
+      background: #e3e3e3;
+    }
+    span {
+      background: rgb(255, 219, 225);
+      padding: 3px;
+    }
+  }
+}
