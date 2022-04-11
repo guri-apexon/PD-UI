@@ -7,6 +7,7 @@ import Documents from "../Document";
 import POCProtocoolView from "../POC/ProtocolView";
 import Table from "../POC/PT";
 import EntitySearch from "../POC/EnityValue";
+import ObjectiveEndpoints from "../POC/ObjNEndpoints";
 
 const queryString = require("query-string");
 
@@ -17,6 +18,7 @@ const tabs = {
   POC_PROTOCOL_VIEW: "POC_PROTOCOL_VIEW",
   POC_TABLE_VIEW: "POC_TABLE_VIEW",
   POC_ENTITY_SEARCH: "POC_ENTITY_SEARCH",
+  OBJECTIVE_ENDPOINTS: "OBJECTIVE_ENDPOINTS",
 };
 
 const TabContainer = ({ history }) => {
@@ -96,6 +98,16 @@ const TabContainer = ({ history }) => {
           onClick={(e) => handleTabClick(tabs.POC_ENTITY_SEARCH)}
         >
           DEBUG ENTITY Search
+        </button>
+        <button
+          className={
+            activeTab === tabs.OBJECTIVE_ENDPOINTS
+              ? "tablinks active"
+              : "tablinks"
+          }
+          onClick={(e) => handleTabClick(tabs.OBJECTIVE_ENDPOINTS)}
+        >
+          Objectives & Endpoints
         </button>
       </div>
 
@@ -181,6 +193,23 @@ const TabContainer = ({ history }) => {
       >
         {activeTab === tabs.POC_ENTITY_SEARCH && (
           <EntitySearch
+            id={protocolId}
+            name={protocolName}
+            dfsPath={fileName}
+          />
+        )}
+      </div>
+      <div
+        id="poc-objective-view"
+        className="tabcontent"
+        style={
+          activeTab === tabs.OBJECTIVE_ENDPOINTS
+            ? { display: "block" }
+            : { display: "none" }
+        }
+      >
+        {activeTab === tabs.OBJECTIVE_ENDPOINTS && (
+          <ObjectiveEndpoints
             id={protocolId}
             name={protocolName}
             dfsPath={fileName}
