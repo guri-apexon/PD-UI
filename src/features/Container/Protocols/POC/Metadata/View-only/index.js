@@ -19,6 +19,9 @@ import AGTable from "../Table";
 
 import ObjNEnd from "../components/ObjNEnd";
 import MedicalTerm from "../components/MedicalTerm";
+import Attributes from "../components/Attributes";
+
+import "./viewOnly.scss";
 
 const View = ({ id }) => {
   const dispatch = useDispatch();
@@ -323,7 +326,16 @@ const View = ({ id }) => {
                     section.success &&
                     sectionName === "Study Population" && (
                       <div>
-                        <MedicalTerm />
+                        <h3>Inclusion Criteria: </h3>
+                        <div className="study-population-acco">
+                          <Attributes />
+                          <MedicalTerm />
+                        </div>
+                        <h3>Exclusion Criteria: </h3>
+                        <div className="study-population-acco">
+                          <Attributes />
+                          <MedicalTerm />
+                        </div>
                       </div>
                     )}
                   {!section.loading && !section.success && (

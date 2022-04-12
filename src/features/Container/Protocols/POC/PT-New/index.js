@@ -13,12 +13,20 @@ const options = [
     value: "",
   },
   {
-    name: "Molecule",
-    value: "Molecule",
+    name: "Eligibility Criteria",
+    value: "Eligibility Criteria",
   },
   {
-    name: "ANY: Organization",
-    value: "ANY: Organization",
+    name: "Inclusion Criteria",
+    value: "Inclusion Criteria",
+  },
+  {
+    name: "Exclusion Criteria",
+    value: "Exclusion Criteria",
+  },
+  {
+    name: "Lifestyle Considerations",
+    value: "Lifestyle Considerations",
   },
 ];
 
@@ -26,19 +34,18 @@ const EntitySearch = ({ id, name, dfsPath }) => {
   const [data, setData] = useState(null);
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
-  const [entityName, setEntityName] = useState("");
-  const [entityValue, setEntityValue] = useState("");
-  const fetchData = async (e) => {
-    e.preventDefault();
+  const [input, setInput] = useState("");
+  const [headerName, setHeaderName] = useState("");
+  const fetchData = async () => {
     setLoader(true);
-    let url = "";
-    if (entityValue) {
-      url = `${BASE_URL_8000}/api/segments/get_matching_entity?aidocid=${id}&entity_name=${entityName}&entity_value=${entityValue}&with_data=true`;
+    let URL = "";
+    if (headerName) {
+      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&header_name=${headerName}`;
     } else {
-      url = `${BASE_URL_8000}/api/segments/get_matching_entity?aidocid=${id}&entity_name=${entityName}&with_data=true`;
+      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}`;
     }
     const config = {
-      url: url,
+      url: URL,
       method: "GET",
     };
     const { data, success } = await httpCall(config);
@@ -108,7 +115,7 @@ const EntitySearch = ({ id, name, dfsPath }) => {
     let type = data.derived_section_type;
     let content = data.content;
     let seq_num = index;
-    let bold = data.font_info.IsBold;
+    // let bold = data.font_info.IsBold;
 
     if (!content) {
       return null;
@@ -137,15 +144,7 @@ const EntitySearch = ({ id, name, dfsPath }) => {
           </div>
         );
       default:
-        return bold ? (
-          <p
-            id={`CPT_section-${seq_num}`}
-            key={`CPT_section-${seq_num}`}
-            className={`text-para`}
-            style={{ fontSize: "12px", fontWeight: "bold" }}
-            dangerouslySetInnerHTML={{ __html: content }}
-          ></p>
-        ) : (
+        return (
           <p
             id={`CPT_section-${seq_num}`}
             key={`CPT_section-${seq_num}`}
@@ -188,44 +187,50 @@ const EntitySearch = ({ id, name, dfsPath }) => {
   const handleSearchCriteria = (value) => {
     for (let i = 0; i < options.length; i++) {
       if (value === options[i].name) {
-        setEntityName(options[i].value);
+        setInput(options[i].value);
       }
     }
+  };
+  const handlePTSearch = (e) => {
+    e.preventDefault();
+    fetchData();
   };
   console.log(data, loader);
   return (
     <div>
       <div className="view-data-container" style={{ marginBottom: 50 }}>
-        <form onSubmit={fetchData} className="pt-form">
-          <div className="pt-search-select">
-            <label>Entity Name: </label>
-            <select
-              className="pt-select"
-              onChange={(e) => handleSearchCriteria(e.target.value)}
-              value={entityName}
+        <div>
+          <form onSubmit={handlePTSearch} className="pt-form">
+            <div className="pt-search-select">
+              <label>Preferred Term</label>
+              <select
+                className="pt-select"
+                onChange={(e) => handleSearchCriteria(e.target.value)}
+              >
+                {options.map((item) => {
+                  return <option>{item.name}</option>;
+                })}
+              </select>
+            </div>
+            <div className="pt-search-header">
+              <label>Header Name</label>
+              <input
+                type="text"
+                onChange={(e) => setHeaderName(e.target.value)}
+                value={headerName}
+              />
+            </div>
+
+            <Button
+              variant="primary"
+              size="small"
+              style={{ margin: 10 }}
+              onClick={(e) => handlePTSearch(e)}
             >
-              {options.map((item) => {
-                return <option>{item.name}</option>;
-              })}
-            </select>
-          </div>
-          <div className="pt-search-header">
-            <label>Entity Value: </label>
-            <input
-              type="text"
-              onChange={(e) => setEntityValue(e.target.value)}
-              value={entityValue}
-            />
-          </div>
-          <Button
-            variant="primary"
-            size="small"
-            style={{ margin: 10 }}
-            onClick={(e) => fetchData(e)}
-          >
-            Search
-          </Button>
-        </form>
+              PT Search
+            </Button>
+          </form>
+        </div>
         {loader && (
           <div
             style={{

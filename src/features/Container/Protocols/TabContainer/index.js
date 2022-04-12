@@ -5,7 +5,7 @@ import ProtocolOverview from "../Overview";
 import ProtocolView from "../ProtocolView";
 import Documents from "../Document";
 import POCProtocoolView from "../POC/ProtocolView";
-import Table from "../POC/PT";
+import PTSearch from "../POC/PT-New";
 import EntitySearch from "../POC/EnityValue";
 import ObjectiveEndpoints from "../POC/ObjNEndpoints";
 import MetadataView from "../POC/Metadata";
@@ -101,7 +101,7 @@ const TabContainer = ({ history }) => {
         >
           DEBUG ENTITY Search
         </button>
-        <button
+        {/* <button
           className={
             activeTab === tabs.OBJECTIVE_ENDPOINTS
               ? "tablinks active"
@@ -110,7 +110,7 @@ const TabContainer = ({ history }) => {
           onClick={(e) => handleTabClick(tabs.OBJECTIVE_ENDPOINTS)}
         >
           Objectives & Endpoints
-        </button>
+        </button> */}
         <button
           className={
             activeTab === tabs.METADATA_VIEW ? "tablinks active" : "tablinks"
@@ -189,7 +189,7 @@ const TabContainer = ({ history }) => {
         }
       >
         {activeTab === tabs.POC_TABLE_VIEW && (
-          <Table id={protocolId} name={protocolName} dfsPath={fileName} />
+          <PTSearch id={protocolId} name={protocolName} dfsPath={fileName} />
         )}
       </div>
       <div

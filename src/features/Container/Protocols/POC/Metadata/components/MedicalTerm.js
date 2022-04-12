@@ -1,4 +1,8 @@
 import "./medical.scss";
+import Accordion from "apollo-react/components/Accordion";
+import AccordionDetails from "apollo-react/components/AccordionDetails";
+import AccordionSummary from "apollo-react/components/AccordionSummary";
+
 const words = [
   {
     name: "journey",
@@ -44,11 +48,18 @@ const MedicalTerm = () => {
     }
   };
   return (
-    <div className="medical-term">
-      {sentenceArr.map((elem) => (
-        <div>{renderWords(elem)}</div>
-      ))}
-    </div>
+    <Accordion>
+      <AccordionSummary>
+        <div className="accordion-parent-header">Medical Terms</div>
+      </AccordionSummary>
+      <AccordionDetails>
+        <div className="medical-term">
+          {sentenceArr.map((elem) => (
+            <div>{renderWords(elem)}</div>
+          ))}
+        </div>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 
