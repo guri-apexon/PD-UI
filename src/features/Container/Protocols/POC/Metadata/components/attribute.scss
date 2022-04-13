@@ -1,0 +1,18 @@
+.attributes-term {
+  width: 100%;
+  .ag-theme-alpine .ag-header {
+    display: block;
+  }
+  .ag-theme-alpine .ag-layout-auto-height .ag-center-cols-clipper,
+  .ag-theme-alpine .ag-layout-auto-height .ag-center-cols-container,
+  .ag-theme-alpine .ag-layout-print .ag-center-cols-clipper,
+  .ag-theme-alpine .ag-layout-print .ag-center-cols-container {
+    min-height: 50px;
+  }
+}
+.meta-parent-header {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: 500;
+}

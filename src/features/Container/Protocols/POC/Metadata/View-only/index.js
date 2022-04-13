@@ -18,8 +18,7 @@ import { getColumnFromJSON, getDataSourceFromJSON } from "../utils";
 import AGTable from "../Table";
 
 import ObjNEnd from "../components/ObjNEnd";
-import MedicalTerm from "../components/MedicalTerm";
-import Attributes from "../components/Attributes";
+import InExMetadata from "../components/InExMetadata";
 
 import "./viewOnly.scss";
 
@@ -326,16 +325,38 @@ const View = ({ id }) => {
                     section.success &&
                     sectionName === "Study Population" && (
                       <div>
-                        <h3>Inclusion Criteria: </h3>
-                        <div className="study-population-acco">
-                          <Attributes />
-                          <MedicalTerm />
-                        </div>
-                        <h3>Exclusion Criteria: </h3>
-                        <div className="study-population-acco">
-                          <Attributes />
-                          <MedicalTerm />
-                        </div>
+                        <InExMetadata
+                          data={section.detail}
+                          id={id}
+                          scrollToPage={scrollToPage}
+                        />
+                        {/* <Accordion>
+                          <AccordionSummary>
+                            <div className="accordion-parent-header">
+                              Inclusion Criteria
+                            </div>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div className="study-population-acco">
+                              <Attributes />
+                              <MedicalTerm />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion>
+
+                        <Accordion>
+                          <AccordionSummary>
+                            <div className="accordion-parent-header">
+                              Exclusion Criteria
+                            </div>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <div className="study-population-acco">
+                              <Attributes />
+                              <MedicalTerm />
+                            </div>
+                          </AccordionDetails>
+                        </Accordion> */}
                       </div>
                     )}
                   {!section.loading && !section.success && (

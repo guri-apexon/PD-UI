@@ -1,4 +1,7 @@
 import { isEmpty } from "lodash";
+import Accordion from "apollo-react/components/Accordion";
+import AccordionDetails from "apollo-react/components/AccordionDetails";
+import AccordionSummary from "apollo-react/components/AccordionSummary";
 
 const ObjNEnd = ({ data }) => {
   const renderList = (list) => {
@@ -18,17 +21,28 @@ const ObjNEnd = ({ data }) => {
   };
   const renderDerivedInfo = (obj) => {
     return (
-      <div className="derived-info">
-        <h4>Derived Information</h4>
-        <h5>Derived Count: {obj.derived_count}</h5>
-        <h5>Derived Mechanism: </h5>
-        {obj.derived_mechanism.length > 0 && (
-          <ul>
-            {obj.derived_mechanism.map((ele) => {
-              return <li>{ele}</li>;
-            })}
-          </ul>
-        )}
+      <div className="derived-mechanism">
+        <Accordion>
+          <AccordionSummary>
+            <div className="meta-parent-header">Derived Information</div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div>
+              <div style={{ display: "block" }}>
+                <h5>Derived Count: {obj.derived_count}</h5>
+              </div>
+
+              <h5>Derived Mechanism: </h5>
+              {obj.derived_mechanism.length > 0 && (
+                <ul>
+                  {obj.derived_mechanism.map((ele) => {
+                    return <li>{ele}</li>;
+                  })}
+                </ul>
+              )}
+            </div>
+          </AccordionDetails>
+        </Accordion>
       </div>
     );
   };
@@ -68,7 +82,7 @@ const ObjNEnd = ({ data }) => {
   return (
     <div className="protocol-column">
       <div
-        className="accordion-start-container"
+        // className="accordion-start-container"
         data-testid="protocol-column-wrapper"
         style={{ marginBottom: 50 }}
       >
