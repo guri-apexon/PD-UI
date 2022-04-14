@@ -63,7 +63,7 @@ const Attributes = ({ data }) => {
       </AccordionSummary>
       <AccordionDetails>
         <div className="attributes-term">
-          <div className="ag-theme-alpine">
+          <div className="ag-theme-alpine-at">
             <table>
               {Object.keys(data).map((key) => (
                 <tr key={key}>
