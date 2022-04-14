@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { AgGridReact } from "ag-grid-react";
+import { useEffect, useState } from "react";
 
 import "./attribute.scss";
 import { isEmpty } from "lodash";
@@ -9,20 +8,22 @@ import AccordionDetails from "apollo-react/components/AccordionDetails";
 import AccordionSummary from "apollo-react/components/AccordionSummary";
 
 const Attributes = ({ data }) => {
-  const gridRef = useRef();
+  // const gridRef = useRef();
   const [rowData, setRowData] = useState([]);
   const [columnDefs, setColumnData] = useState([]);
+  const [cellKey, setCellKey] = useState("");
+  const [cellValue, setCellValue] = useState("");
 
-  const onGridReady = useCallback((params) => {
-    gridRef.current.api.sizeColumnsToFit();
-  }, []);
-  const onCellValueChanged = (event) => {
-    if (event.oldValue !== event.value) {
-      console.log(event);
-    } else {
-      console.log(`Nothing changed`);
-    }
-  };
+  // const onGridReady = useCallback((params) => {
+  //   gridRef.current.api.sizeColumnsToFit();
+  // }, []);
+  // const onCellValueChanged = (event) => {
+  //   if (event.oldValue !== event.value) {
+  //     console.log(event);
+  //   } else {
+  //     console.log(`Nothing changed`);
+  //   }
+  // };
   useEffect(() => {
     const columns = getColumns(data);
     setColumnData(columns);
@@ -46,6 +47,14 @@ const Attributes = ({ data }) => {
       return columns;
     }
   };
+  const handleTableEdit = (key) => {
+    setCellKey(key);
+    setCellValue(data[key]);
+  };
+  const setToDefault = () => {
+    setCellKey("");
+    setCellValue("");
+  };
   console.log(rowData, columnDefs);
   return !isEmpty(rowData) ? (
     <Accordion>
@@ -55,7 +64,27 @@ const Attributes = ({ data }) => {
       <AccordionDetails>
         <div className="attributes-term">
           <div className="ag-theme-alpine">
-            <AgGridReact
+            <table>
+              {Object.keys(data).map((key) => (
+                <tr key={key}>
+                  <th>{key}</th>
+                  <td onDoubleClick={() => handleTableEdit(key)}>
+                    {cellKey === key ? (
+                      <input
+                        type="text"
+                        value={cellValue}
+                        onChange={(e) => setCellValue(e.target.value)}
+                        onBlur={() => setToDefault()}
+                        style={{ padding: 10 }}
+                      />
+                    ) : (
+                      <span>{data[key]}</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </table>
+            {/* <AgGridReact
               ref={gridRef}
               rowData={[rowData]}
               columnDefs={columnDefs}
@@ -65,7 +94,7 @@ const Attributes = ({ data }) => {
               domLayout="autoHeight"
               rowDragManaged={true}
               animateRows={true}
-            ></AgGridReact>
+            ></AgGridReact> */}
           </div>
         </div>
       </AccordionDetails>

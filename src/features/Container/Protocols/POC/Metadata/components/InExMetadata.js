@@ -93,8 +93,10 @@ const InExMetadata = ({ data, id, scrollToPage }) => {
             </AccordionSummary>
             <AccordionDetails className="meta-study-population-acco">
               <div className="study-population-acco">
-                <Attributes data={item.attributes} />
-                {item.detail && (
+                {item.detail && item.medical_terms && (
+                  <Attributes data={item.attributes} />
+                )}
+                {item.detail && item.medical_terms && (
                   <MedicalTerm data={item.medical_terms} detail={item.detail} />
                 )}
                 {item.detail && item.derived_info && (

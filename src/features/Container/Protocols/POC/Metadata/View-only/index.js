@@ -1,21 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { wrapperMeta } from "../../../store/slice";
 import { ActionTypes } from "../../../store/ActionTypes";
 
 import Loader from "../../../../../Components/Loader/Loader";
-import { isEmpty } from "lodash";
+import { cloneDeep, isEmpty } from "lodash";
 
 import Accordion from "apollo-react/components/Accordion";
 import AccordionDetails from "apollo-react/components/AccordionDetails";
 import AccordionSummary from "apollo-react/components/AccordionSummary";
-import Tooltip from "apollo-react/components/Tooltip";
-import EyeHidden from "apollo-react-icons/EyeHidden";
-import EyeShow from "apollo-react-icons/EyeShow";
+import Switch from "apollo-react/components/Switch";
 
-import { getColumnFromJSON, getDataSourceFromJSON } from "../utils";
+// import { getColumnFromJSON, getDataSourceFromJSON } from "../utils";
 
-import AGTable from "../Table";
+// import AGTable from "../Table";
 
 import ObjNEnd from "../components/ObjNEnd";
 import InExMetadata from "../components/InExMetadata";
@@ -24,6 +22,7 @@ import "./viewOnly.scss";
 
 const View = ({ id }) => {
   const dispatch = useDispatch();
+  const [toogleIDs, setToggleIDs] = useState([]);
   const { data, success, loader, error } = useSelector(wrapperMeta);
 
   useEffect(() => {
@@ -33,169 +32,169 @@ const View = ({ id }) => {
       payload: { id: staticID, body: false },
     });
   }, []);
-  const getTable = (item, data, unq, noHeader = false) => {
-    console.log("Table Data", item);
-    const tableProperties = JSON.parse(item.TableProperties);
-    const dataColumn = getColumnFromJSON(tableProperties);
-    const dataSource = getDataSourceFromJSON(tableProperties);
-    let footNote = [];
-    for (const [key, value] of Object.entries(item)) {
-      const note = key.split("_")[0];
-      if (note === "FootnoteText") {
-        footNote.push(value);
-      }
-    }
+  // const getTable = (item, data, unq, noHeader = false) => {
+  //   console.log("Table Data", item);
+  //   const tableProperties = JSON.parse(item.TableProperties);
+  //   const dataColumn = getColumnFromJSON(tableProperties);
+  //   const dataSource = getDataSourceFromJSON(tableProperties);
+  //   let footNote = [];
+  //   for (const [key, value] of Object.entries(item)) {
+  //     const note = key.split("_")[0];
+  //     if (note === "FootnoteText") {
+  //       footNote.push(value);
+  //     }
+  //   }
 
-    return (
-      <>
-        <div style={{}}>
-          {!noHeader ? (
-            <div className="level-3-header">{item.TableName}</div>
-          ) : null}
-        </div>
-        <div
-          className="table-container"
-          id={`${unq}-${item.TableIndex}`}
-          key={`${unq}-${item.TableIndex}`}
-          style={{ overflowX: "auto", marginTop: "10px", marginBottom: "20px" }}
-        >
-          {/* <div dangerouslySetInnerHTML={{ __html: item.Table }} /> */}
-          <AGTable
-            table={tableProperties}
-            dataSource={dataSource}
-            columns={dataColumn}
-            item={data}
-            showOptions={false}
-          />
-        </div>
-        <div>
-          {footNote.map((notes, i) => {
-            return (
-              notes && (
-                <p key={notes + i} style={{ fontSize: "12px" }}>
-                  {notes}
-                </p>
-              )
-            );
-          })}
-        </div>
-      </>
-    );
-  };
+  //   return (
+  //     <>
+  //       <div style={{}}>
+  //         {!noHeader ? (
+  //           <div className="level-3-header">{item.TableName}</div>
+  //         ) : null}
+  //       </div>
+  //       <div
+  //         className="table-container"
+  //         id={`${unq}-${item.TableIndex}`}
+  //         key={`${unq}-${item.TableIndex}`}
+  //         style={{ overflowX: "auto", marginTop: "10px", marginBottom: "20px" }}
+  //       >
+  //         {/* <div dangerouslySetInnerHTML={{ __html: item.Table }} /> */}
+  //         <AGTable
+  //           table={tableProperties}
+  //           dataSource={dataSource}
+  //           columns={dataColumn}
+  //           item={data}
+  //           showOptions={false}
+  //         />
+  //       </div>
+  //       <div>
+  //         {footNote.map((notes, i) => {
+  //           return (
+  //             notes && (
+  //               <p key={notes + i} style={{ fontSize: "12px" }}>
+  //                 {notes}
+  //               </p>
+  //             )
+  //           );
+  //         })}
+  //       </div>
+  //     </>
+  //   );
+  // };
 
-  const getTocElement = (data, index) => {
-    let type = data.derived_section_type;
-    let content = data.content;
-    let seq_num = index;
-    let bold = data.font_info.IsBold;
+  // const getTocElement = (data, index) => {
+  //   let type = data.derived_section_type;
+  //   let content = data.content;
+  //   let seq_num = index;
+  //   let bold = data.font_info.IsBold;
 
-    if (!content) {
-      return null;
-    }
-    if (type === "table") {
-      return getTable(content, data, "TOC-TABLE");
-    }
-    switch (type) {
-      case "header":
-        return (
-          <div
-            className="level-3-header"
-            id={`TOC-${seq_num}`}
-            key={`TOC-${seq_num}`}
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-        );
-      case "image":
-        return (
-          <div className="image-extract">
-            <img
-              src={"data:image/*;base64," + content}
-              alt=""
-              style={{ height: "auto", width: "100%" }}
-            />
-          </div>
-        );
-      default:
-        return bold ? (
-          <p
-            id={`CPT_section-${seq_num}`}
-            key={`CPT_section-${seq_num}`}
-            className={`text-para`}
-            style={{ fontSize: "12px", fontWeight: "bold" }}
-            dangerouslySetInnerHTML={{ __html: content }}
-            onClick={() => scrollToPage(data.page)}
-          ></p>
-        ) : (
-          <p
-            id={`CPT_section-${seq_num}`}
-            key={`CPT_section-${seq_num}`}
-            className={`text-para`}
-            style={{ fontSize: "12px" }}
-            dangerouslySetInnerHTML={{ __html: content }}
-            onClick={() => scrollToPage(data.page)}
-          ></p>
-        );
-    }
-  };
+  //   if (!content) {
+  //     return null;
+  //   }
+  //   if (type === "table") {
+  //     return getTable(content, data, "TOC-TABLE");
+  //   }
+  //   switch (type) {
+  //     case "header":
+  //       return (
+  //         <div
+  //           className="level-3-header"
+  //           id={`TOC-${seq_num}`}
+  //           key={`TOC-${seq_num}`}
+  //           dangerouslySetInnerHTML={{ __html: content }}
+  //         />
+  //       );
+  //     case "image":
+  //       return (
+  //         <div className="image-extract">
+  //           <img
+  //             src={"data:image/*;base64," + content}
+  //             alt=""
+  //             style={{ height: "auto", width: "100%" }}
+  //           />
+  //         </div>
+  //       );
+  //     default:
+  //       return bold ? (
+  //         <p
+  //           id={`CPT_section-${seq_num}`}
+  //           key={`CPT_section-${seq_num}`}
+  //           className={`text-para`}
+  //           style={{ fontSize: "12px", fontWeight: "bold" }}
+  //           dangerouslySetInnerHTML={{ __html: content }}
+  //           onClick={() => scrollToPage(data.page)}
+  //         ></p>
+  //       ) : (
+  //         <p
+  //           id={`CPT_section-${seq_num}`}
+  //           key={`CPT_section-${seq_num}`}
+  //           className={`text-para`}
+  //           style={{ fontSize: "12px" }}
+  //           dangerouslySetInnerHTML={{ __html: content }}
+  //           onClick={() => scrollToPage(data.page)}
+  //         ></p>
+  //       );
+  //   }
+  // };
   // const renderContent = (data) => {
   //   return data.map((item, i) => (
   //     <div key={item.type + i}>{this.getTocElement(item)}</div>
   //   ));
   // };
-  const renderSubHeader = (data) => {
-    const pre = data.source_heading_number;
-    const header = data.source_file_section;
-    const text = pre + " " + header;
-    return (
-      <div
-        className="level-3-header"
-        id={`TOC-${text}`}
-        key={`TOC-${text}`}
-        dangerouslySetInnerHTML={{ __html: text }}
-        onClick={() => scrollToPage(data.page)}
-      />
-    );
-  };
-  const renderAccordionDetail = (data) => {
-    console.log("Data", data);
-    if (data.genre === "2_section_metadata") {
-      return (
-        <div className="option-content-container">
-          <div>{renderSubHeader(data)}</div>
-        </div>
-      );
-    } else {
-      return (
-        <div className="option-content-container">
-          <div>{getTocElement(data, data.line_id)}</div>
-        </div>
-      );
-    }
-    // if (data.content) {
-    //   if (data.derived_section_type === "header2") {
-    //     return (
-    //       <Accordion key={data.id} className="accordion-child">
-    //         <AccordionSummary>
-    //           <div className="accordion-child-header">
-    //             {data.header.toLowerCase()}{" "}
-    //           </div>
-    //         </AccordionSummary>
-    //         <AccordionDetails className="accordion-child-detail-container">
-    //           <div className="accordion-child-detail">
-    //             {renderContent(data.data)}
-    //           </div>
-    //         </AccordionDetails>
-    //       </Accordion>
-    //     );
-    //   } else {
-    //     return (
-    //       <div className="option-content-container">
-    //         <div>{getTocElement(data, data.line_id)}</div>
-    //       </div>
-    //     );
-    //   }
-    // }
-  };
+  // const renderSubHeader = (data) => {
+  //   const pre = data.source_heading_number;
+  //   const header = data.source_file_section;
+  //   const text = pre + " " + header;
+  //   return (
+  //     <div
+  //       className="level-3-header"
+  //       id={`TOC-${text}`}
+  //       key={`TOC-${text}`}
+  //       dangerouslySetInnerHTML={{ __html: text }}
+  //       onClick={() => scrollToPage(data.page)}
+  //     />
+  //   );
+  // };
+  // const renderAccordionDetail = (data) => {
+  //   console.log("Data", data);
+  //   if (data.genre === "2_section_metadata") {
+  //     return (
+  //       <div className="option-content-container">
+  //         <div>{renderSubHeader(data)}</div>
+  //       </div>
+  //     );
+  //   } else {
+  //     return (
+  //       <div className="option-content-container">
+  //         <div>{getTocElement(data, data.line_id)}</div>
+  //       </div>
+  //     );
+  //   }
+  //   // if (data.content) {
+  //   //   if (data.derived_section_type === "header2") {
+  //   //     return (
+  //   //       <Accordion key={data.id} className="accordion-child">
+  //   //         <AccordionSummary>
+  //   //           <div className="accordion-child-header">
+  //   //             {data.header.toLowerCase()}{" "}
+  //   //           </div>
+  //   //         </AccordionSummary>
+  //   //         <AccordionDetails className="accordion-child-detail-container">
+  //   //           <div className="accordion-child-detail">
+  //   //             {renderContent(data.data)}
+  //   //           </div>
+  //   //         </AccordionDetails>
+  //   //       </Accordion>
+  //   //     );
+  //   //   } else {
+  //   //     return (
+  //   //       <div className="option-content-container">
+  //   //         <div>{getTocElement(data, data.line_id)}</div>
+  //   //       </div>
+  //   //     );
+  //   //   }
+  //   // }
+  // };
   const scrollToPage = (page) => {
     console.log(page);
     if (page > 0) {
@@ -245,6 +244,20 @@ const View = ({ id }) => {
       }
     }
   };
+  const handlePTToggle = (id, e) => {
+    e.stopPropagation();
+    // eslint-disable-next-line no-debugger
+    debugger;
+    let secIds = cloneDeep(toogleIDs);
+    const index = secIds.findIndex((xID) => xID === id);
+    // if()
+    if (index > -1) {
+      secIds.splice(index, 1);
+    } else {
+      secIds.push(id);
+    }
+    setToggleIDs(secIds);
+  };
   const renderHeader = (data) => {
     console.log("-----", data);
     if (!isEmpty(data)) {
@@ -252,6 +265,8 @@ const View = ({ id }) => {
         const section = data[key];
         const sectionHeader = section.header;
         const sectionName = sectionHeader.source_file_section;
+        const secId = sectionHeader.sec_id;
+        const pt = sectionHeader.pt_from_ontology[0];
         return (
           <Accordion
             key={sectionName + index}
@@ -262,27 +277,23 @@ const View = ({ id }) => {
               <div
                 className="accordion-parent-header"
                 onClick={() => handleSectionClicked(section)}
+                style={{ display: "flex", justifyContent: "space-between" }}
               >
-                {sectionName.toLowerCase()}{" "}
-                {index % 2 ? (
-                  <EyeHidden style={{ color: "#9f9fa1", float: "right" }} />
-                ) : (
-                  <Tooltip
-                    variant="dark"
-                    extraLabels={[
-                      {
-                        title: "Last Reviewed",
-                        subtitle: "12-Oct-2021",
-                      },
-                      { title: "Reviewd By", subtitle: "1072231" },
-                      { title: "No. of reviews", subtitle: "3" },
-                    ]}
-                    placement="top"
-                    style={{ marginRight: 192 }}
-                  >
-                    <EyeShow style={{ color: "#0469a4", float: "right" }} />
-                  </Tooltip>
-                )}
+                {toogleIDs.includes(secId)
+                  ? pt.toLowerCase()
+                  : sectionName.toLowerCase()}
+                <div
+                  onClick={(e) => handlePTToggle(secId, e)}
+                  className="toggle-prefer-term"
+                >
+                  <Switch
+                    label="Prefer Term"
+                    // style={{ color: "#9f9fa1", float: "right" }}
+                    checked={toogleIDs.includes(secId)}
+                    size="small"
+                    // onChange={}
+                  />
+                </div>
               </div>
             </AccordionSummary>
             <AccordionDetails className="accordion-parent-detail-container">
@@ -303,7 +314,7 @@ const View = ({ id }) => {
                       <Loader />
                     </div>
                   )}
-                  {!section.loading &&
+                  {/* {!section.loading &&
                     section.success &&
                     sectionName !== "Objectives and Endpoints" &&
                     sectionName !== "Study Population" &&
@@ -313,7 +324,7 @@ const View = ({ id }) => {
                           {renderAccordionDetail(elem)}
                         </div>
                       );
-                    })}
+                    })} */}
                   {!section.loading &&
                     section.success &&
                     sectionName === "Objectives and Endpoints" && (
@@ -323,7 +334,7 @@ const View = ({ id }) => {
                     )}
                   {!section.loading &&
                     section.success &&
-                    sectionName === "Study Population" && (
+                    sectionName !== "Objectives and Endpoints" && (
                       <div>
                         <InExMetadata
                           data={section.detail}

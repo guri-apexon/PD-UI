@@ -10,3 +10,13 @@
 .derived-mechanism {
   margin-top: 10px;
 }
+.toggle-prefer-term {
+  margin-right: -30px;
+  label {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+  label > span:nth-child(2) {
+    margin-right: 10px;
+  }
+}

@@ -172,7 +172,8 @@ export function* fetchProtocolViewData1(action) {
         };
         yield put(getWrapperDataMeta(preLoadingState));
       }
-    } else if (sectionName === "Study Population") {
+      // } else if (sectionName === "Study Population") {
+    } else {
       const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${childString}`;
       const config = {
         url: URL,
@@ -234,56 +235,57 @@ export function* fetchProtocolViewData1(action) {
         };
         yield put(getWrapperDataMeta(preLoadingState));
       }
-    } else {
-      // const URL = "/POC/particular.json";
-      const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${childString}`;
-      const config = {
-        url: URL,
-        method: "GET",
-      };
-      const { data, success } = yield call(httpCall, config);
-
-      if (success) {
-        const currentData1 = yield getWrapperState();
-        let cloneData1 = cloneDeep(currentData1);
-        data.shift();
-        const obj1 = {
-          loading: false,
-          success: true,
-          error: "",
-          detail: data,
-          expanded: true,
-          header: cloneData1.data[sectionName].header,
-        };
-        cloneData1.data[sectionName] = obj1;
-        const preLoadingState = {
-          loader: false,
-          success: true,
-          error: "",
-          data: cloneData1.data,
-        };
-        yield put(getWrapperDataMeta(preLoadingState));
-      } else {
-        const currentData2 = yield getWrapperState();
-        let cloneData2 = cloneDeep(currentData2);
-        const obj2 = {
-          loading: false,
-          success: true,
-          error: "",
-          detail: null,
-          expanded: true,
-          header: cloneData2.data[sectionName].header,
-        };
-        cloneData2.data[sectionName] = obj2;
-        const preLoadingState = {
-          loader: false,
-          success: true,
-          error: "",
-          data: cloneData2.data,
-        };
-        yield put(getWrapperDataMeta(preLoadingState));
-      }
     }
+    // else {
+    //   // const URL = "/POC/particular.json";
+    //   const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${childString}`;
+    //   const config = {
+    //     url: URL,
+    //     method: "GET",
+    //   };
+    //   const { data, success } = yield call(httpCall, config);
+
+    //   if (success) {
+    //     const currentData1 = yield getWrapperState();
+    //     let cloneData1 = cloneDeep(currentData1);
+    //     data.shift();
+    //     const obj1 = {
+    //       loading: false,
+    //       success: true,
+    //       error: "",
+    //       detail: data,
+    //       expanded: true,
+    //       header: cloneData1.data[sectionName].header,
+    //     };
+    //     cloneData1.data[sectionName] = obj1;
+    //     const preLoadingState = {
+    //       loader: false,
+    //       success: true,
+    //       error: "",
+    //       data: cloneData1.data,
+    //     };
+    //     yield put(getWrapperDataMeta(preLoadingState));
+    //   } else {
+    //     const currentData2 = yield getWrapperState();
+    //     let cloneData2 = cloneDeep(currentData2);
+    //     const obj2 = {
+    //       loading: false,
+    //       success: true,
+    //       error: "",
+    //       detail: null,
+    //       expanded: true,
+    //       header: cloneData2.data[sectionName].header,
+    //     };
+    //     cloneData2.data[sectionName] = obj2;
+    //     const preLoadingState = {
+    //       loader: false,
+    //       success: true,
+    //       error: "",
+    //       data: cloneData2.data,
+    //     };
+    //     yield put(getWrapperDataMeta(preLoadingState));
+    //   }
+    // }
   } else {
     // if (id === docID) {
     //   const currentData = yield getWrapperState();

@@ -92,31 +92,35 @@ const MedicalTerm = ({ data, detail }) => {
       return <div className="word">{elem}</div>;
     }
   };
-  const renderSentences = (para) => {
-    const sentenceArr = para.split(" ");
-    return (
-      <div className="medical-term">
-        {sentenceArr.map((elem) => (
-          <div>{renderWords(elem)}</div>
-        ))}
-      </div>
-    );
+  const renderSentences = (section) => {
+    if (section.derived_section_type === "text" && section.content) {
+      const sentenceArr = section.content.split(" ");
+      return (
+        <div className="medical-term">
+          {sentenceArr.map((elem) => (
+            <div>{renderWords(elem)}</div>
+          ))}
+        </div>
+      );
+    }
   };
   return (
-    <Accordion>
-      <AccordionSummary>
-        <div className="meta-parent-header">Medical Terms</div>
-      </AccordionSummary>
-      <AccordionDetails>
-        <div className="meta-container">
-          <div className="attributes-term">
-            {detail &&
-              detail.length > 0 &&
-              detail.map((elem) => <div>{renderSentences(elem.content)}</div>)}
+    detail.length > 0 && (
+      <Accordion>
+        <AccordionSummary>
+          <div className="meta-parent-header">Medical Terms</div>
+        </AccordionSummary>
+        <AccordionDetails>
+          <div className="meta-container">
+            <div className="attributes-term">
+              {detail &&
+                detail.length > 0 &&
+                detail.map((elem) => <div>{renderSentences(elem)}</div>)}
+            </div>
           </div>
-        </div>
-      </AccordionDetails>
-    </Accordion>
+        </AccordionDetails>
+      </Accordion>
+    )
   );
 };
 
