@@ -26,10 +26,6 @@ import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
 
 import AGTable from "./Table";
 
-const handleClick = (label) => () => {
-  console.log(`You picked ${label}.`);
-};
-
 const TableElement = () => {
   return (
     <div className="add-element">
@@ -78,32 +74,6 @@ const SectionElement = () => {
     </div>
   );
 };
-const menuItems = [
-  {
-    label: <TableElement />,
-    onClick: handleClick("table"),
-  },
-  {
-    text: <TextElement />,
-    onClick: handleClick("text"),
-  },
-  {
-    text: <TextHeader2 />,
-    onClick: handleClick("header2"),
-  },
-  {
-    text: <TextHeader3 />,
-    onClick: handleClick("header3"),
-  },
-  {
-    text: <ImageElement />,
-    onClick: handleClick("image"),
-  },
-  {
-    text: <SectionElement />,
-    onClick: handleClick("section"),
-  },
-];
 
 const View = () => {
   const dispatch = useDispatch();
@@ -121,6 +91,35 @@ const View = () => {
       payload: { id: staticID, body: false },
     });
   }, []);
+  const handleClick = (label) => () => {
+    console.log(`You picked ${label}.`);
+  };
+  const menuItems = [
+    {
+      label: <TableElement />,
+      onClick: handleClick("table"),
+    },
+    {
+      text: <TextElement />,
+      onClick: handleClick("text"),
+    },
+    {
+      text: <TextHeader2 />,
+      onClick: handleClick("header2"),
+    },
+    {
+      text: <TextHeader3 />,
+      onClick: handleClick("header3"),
+    },
+    {
+      text: <ImageElement />,
+      onClick: handleClick("image"),
+    },
+    {
+      text: <SectionElement />,
+      onClick: handleClick("section"),
+    },
+  ];
   const handleOpen = (index, content) => {
     setEditIndex(index);
     setEditValue(content);

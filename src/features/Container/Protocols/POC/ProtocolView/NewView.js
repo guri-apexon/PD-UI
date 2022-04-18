@@ -20,12 +20,13 @@ import Table from "apollo-react-icons/Table";
 import TextStyle from "apollo-react-icons/TextStyle";
 import TextBold from "apollo-react-icons/TextBold";
 import Image from "apollo-react-icons/Image";
-import FileAccountPlan from "apollo-react-icons/FileAccountPlan";
+// import FileAccountPlan from "apollo-react-icons/FileAccountPlan";
 
 import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
 
 import AGTable from "./Table";
 import { isEmpty } from "lodash";
+import { QC_CHANGE_TYPE } from "../../store/sagas/utils";
 
 const TableElement = () => {
   return (
@@ -39,18 +40,18 @@ const TextHeader2 = () => {
   return (
     <div className="add-element">
       <TextBold fontSize="extraSmall" />
-      <span>Header 2</span>
+      <span>Header</span>
     </div>
   );
 };
-const TextHeader3 = () => {
-  return (
-    <div className="add-element">
-      <TextBold fontSize="extraSmall" />
-      <span>Header 3</span>
-    </div>
-  );
-};
+// const TextHeader3 = () => {
+//   return (
+//     <div className="add-element">
+//       <TextBold fontSize="extraSmall" />
+//       <span>Header 3</span>
+//     </div>
+//   );
+// };
 const TextElement = () => {
   return (
     <div className="add-element">
@@ -67,14 +68,6 @@ const ImageElement = () => {
     </div>
   );
 };
-const SectionElement = () => {
-  return (
-    <div className="add-element">
-      <FileAccountPlan fontSize="extraSmall" />
-      <span>Section</span>
-    </div>
-  );
-};
 
 const View = () => {
   const dispatch = useDispatch();
@@ -82,6 +75,7 @@ const View = () => {
   const [hoverIndex, setHoverIndex] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
+  const [hoverSection, setHoverSection] = useState("");
 
   useEffect(() => {
     let staticID = "09e5f949-e170-4bd3-baac-77e377ed4821";
@@ -95,13 +89,31 @@ const View = () => {
     setEditValue(content);
   };
   const saveData = () => {
+    const obj = {
+      lineId: hoverIndex,
+      sectionName: hoverSection,
+      content: editValue,
+    };
+    dispatch({
+      type: ActionTypes.UPDATE_PROTOCOL_VIEW_CHANGES,
+      payload: obj,
+    });
     setEditIndex(null);
     setEditValue("");
   };
-  const handleClick = (label) => () => {
-    console.log(`You picked ${label}.`);
+  const handleClick = (type) => () => {
+    console.log(`You picked ${type}.`);
     console.log(`At Line ID ${hoverIndex}`);
     console.log("Section Name");
+    const obj = {
+      derivedSectionType: type,
+      lineId: hoverIndex,
+      sectionName: hoverSection,
+    };
+    dispatch({
+      type: ActionTypes.UPDATE_PROTOCOL_VIEW,
+      payload: obj,
+    });
   };
   const menuItems = [
     {
@@ -114,19 +126,11 @@ const View = () => {
     },
     {
       text: <TextHeader2 />,
-      onClick: handleClick("header2"),
-    },
-    {
-      text: <TextHeader3 />,
-      onClick: handleClick("header3"),
+      onClick: handleClick("header"),
     },
     {
       text: <ImageElement />,
       onClick: handleClick("image"),
-    },
-    {
-      text: <SectionElement />,
-      onClick: handleClick("section"),
     },
   ];
   const getTable = (item, data, unq, noHeader = false) => {
@@ -178,7 +182,59 @@ const View = () => {
       </>
     );
   };
-
+  const renderStyleText = (data, index) => {
+    let content = data.content;
+    let seq_num = index;
+    if (data.qc_change_type === QC_CHANGE_TYPE.ADDED) {
+      return (
+        <p
+          id={`CPT_section-${seq_num}`}
+          key={`CPT_section-${seq_num}`}
+          className={`text-para qc-added`}
+          onDoubleClick={() => handleOpen(index, content)}
+          style={{ fontSize: "12px" }}
+          dangerouslySetInnerHTML={{ __html: content }}
+          onClick={() => scrollToPage(data.page)}
+        ></p>
+      );
+    } else if (data.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
+      return (
+        <p
+          id={`CPT_section-${seq_num}`}
+          key={`CPT_section-${seq_num}`}
+          className={`text-para qc-updated`}
+          onDoubleClick={() => handleOpen(index, content)}
+          style={{ fontSize: "12px" }}
+          dangerouslySetInnerHTML={{ __html: content }}
+          onClick={() => scrollToPage(data.page)}
+        ></p>
+      );
+    } else if (data.qc_change_type === QC_CHANGE_TYPE.DELETED) {
+      return (
+        <p
+          id={`CPT_section-${seq_num}`}
+          key={`CPT_section-${seq_num}`}
+          className={`text-para qc-deleted`}
+          onDoubleClick={() => handleOpen(index, content)}
+          style={{ fontSize: "12px" }}
+          dangerouslySetInnerHTML={{ __html: content }}
+          onClick={() => scrollToPage(data.page)}
+        ></p>
+      );
+    } else {
+      return (
+        <p
+          id={`CPT_section-${seq_num}`}
+          key={`CPT_section-${seq_num}`}
+          className={`text-para`}
+          onDoubleClick={() => handleOpen(index, content)}
+          style={{ fontSize: "12px" }}
+          dangerouslySetInnerHTML={{ __html: content }}
+          onClick={() => scrollToPage(data.page)}
+        ></p>
+      );
+    }
+  };
   const getTocElement = (data, index) => {
     let type = data.derived_section_type;
     let content = data.content;
@@ -224,15 +280,7 @@ const View = () => {
         return (
           <>
             {editIndex !== index ? (
-              <p
-                id={`CPT_section-${seq_num}`}
-                key={`CPT_section-${seq_num}`}
-                className={`text-para`}
-                onDoubleClick={() => handleOpen(index, content)}
-                style={{ fontSize: "12px" }}
-                dangerouslySetInnerHTML={{ __html: content }}
-                onClick={() => scrollToPage(data.page)}
-              ></p>
+              renderStyleText(data, index)
             ) : (
               <textarea
                 value={editIndex === index ? editValue : content}
@@ -251,7 +299,7 @@ const View = () => {
       <div key={item.type + i}>{this.getTocElement(item)}</div>
     ));
   };
-  const renderAccordionDetail = (data) => {
+  const renderAccordionDetail = (data, section) => {
     if (data.content) {
       if (data.derived_section_type === "header2") {
         return (
@@ -272,7 +320,10 @@ const View = () => {
         return (
           <div className="option-content-container">
             <div
-              onMouseEnter={() => setHoverIndex(data.line_id)}
+              onMouseEnter={() => {
+                setHoverIndex(data.line_id);
+                setHoverSection(section);
+              }}
               // onMouseLeave={() => this.handleLeave(index)}
             >
               {getTocElement(data, data.line_id)}
@@ -413,7 +464,7 @@ const View = () => {
                     section.detail.map((elem) => {
                       return (
                         <div key={elem.line_id}>
-                          {renderAccordionDetail(elem)}
+                          {renderAccordionDetail(elem, key)}
                         </div>
                       );
                     })}

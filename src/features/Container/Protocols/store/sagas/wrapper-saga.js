@@ -2,6 +2,7 @@ import { put, call, select } from "redux-saga/effects";
 import { getWrapperData, setDOCID } from "../slice";
 import { httpCall, BASE_URL_8000 } from "../../../../../utils/api";
 import { cloneDeep } from "lodash";
+import { createHeaderField, createTableField, createTextField } from "./utils";
 
 function* getWrapperState() {
   const state = yield select();
@@ -142,4 +143,59 @@ export function* fetchProtocolViewData(action) {
       }
     }
   }
+}
+
+export function* updateDataStream(action) {
+  const { derivedSectionType, lineId, sectionName } = action.payload;
+  const currentData = yield getWrapperState();
+  let cloneData = cloneDeep(currentData);
+
+  console.log("___________________");
+  console.log(cloneData);
+  console.log(derivedSectionType, lineId, sectionName);
+  console.log("___________________");
+
+  let arrToUpdate = cloneData.data[sectionName].detail;
+  for (let i = 0; i < arrToUpdate.length; i++) {
+    if (arrToUpdate[i].line_id === lineId) {
+      if (derivedSectionType === "text") {
+        let newLineID = parseFloat(lineId) + 0.1;
+        const obj = createTextField(newLineID, arrToUpdate[i]);
+        arrToUpdate.splice(i + 1, 0, obj);
+        break;
+      } else if (derivedSectionType === "header") {
+        let newLineID = parseFloat(lineId) + 0.1;
+        const obj = createHeaderField(newLineID, arrToUpdate[i]);
+        arrToUpdate.splice(i + 1, 0, obj);
+        break;
+      } else if (derivedSectionType === "table") {
+        let newLineID = parseFloat(lineId) + 0.1;
+        const obj = createTableField(newLineID, arrToUpdate[i]);
+        arrToUpdate.splice(i + 1, 0, obj);
+        break;
+      }
+    }
+  }
+  console.log("updated Array", arrToUpdate);
+  yield put(getWrapperData(cloneData));
+}
+
+export function* updateDataEdit(action) {
+  const { content, lineId, sectionName } = action.payload;
+  const currentData = yield getWrapperState();
+  let cloneData = cloneDeep(currentData);
+
+  console.log("___________________");
+  console.log(cloneData);
+  console.log(content, lineId, sectionName);
+  console.log("___________________");
+
+  let arrToUpdate = cloneData.data[sectionName].detail;
+  for (let i = 0; i < arrToUpdate.length; i++) {
+    if (arrToUpdate[i].line_id === lineId) {
+      arrToUpdate[i].content = content;
+    }
+  }
+  console.log("updated Array", arrToUpdate);
+  yield put(getWrapperData(cloneData));
 }
