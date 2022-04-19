@@ -105,15 +105,15 @@ const View = () => {
     console.log(`You picked ${type}.`);
     console.log(`At Line ID ${hoverIndex}`);
     console.log("Section Name");
-    const obj = {
-      derivedSectionType: type,
-      lineId: hoverIndex,
-      sectionName: hoverSection,
-    };
-    dispatch({
-      type: ActionTypes.UPDATE_PROTOCOL_VIEW,
-      payload: obj,
-    });
+    // const obj = {
+    //   derivedSectionType: type,
+    //   lineId: hoverIndex,
+    //   sectionName: hoverSection,
+    // };
+    // dispatch({
+    //   type: ActionTypes.UPDATE_PROTOCOL_VIEW,
+    //   payload: obj,
+    // });
   };
   const menuItems = [
     {

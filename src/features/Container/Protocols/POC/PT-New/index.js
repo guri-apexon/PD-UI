@@ -4,7 +4,7 @@ import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
 import Button from "apollo-react/components/Button/Button";
 import "./style.scss";
 import Loader from "../../../../Components/Loader/Loader";
-
+import Switch from "apollo-react/components/Switch";
 import AGTable from "./Table";
 
 const options = [
@@ -36,13 +36,16 @@ const EntitySearch = ({ id, name, dfsPath }) => {
   const [error, setError] = useState(false);
   const [input, setInput] = useState("");
   const [headerName, setHeaderName] = useState("");
+  const [headerNumber, setheaderNumber] = useState("");
+  const [allSection, setAllSection] = useState(false);
+
   const fetchData = async () => {
     setLoader(true);
     let URL = "";
     if (headerName) {
-      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&header_name=${headerName}`;
+      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&header_name=${headerName}&header_num=${headerNumber}&all_section=${allSection}&with_subsections=true`;
     } else {
-      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}`;
+      URL = `${BASE_URL_8000}/api/segments/section_data_by_name?aidocid=${id}&preferred_term=${input}&header_num=${headerNumber}&all_section=${allSection}&with_subsections=true`;
     }
     const config = {
       url: URL,
@@ -195,6 +198,9 @@ const EntitySearch = ({ id, name, dfsPath }) => {
     e.preventDefault();
     fetchData();
   };
+  const handleAllSection = (e, checked) => {
+    setAllSection(checked);
+  };
   console.log(data, loader);
   return (
     <div>
@@ -218,6 +224,22 @@ const EntitySearch = ({ id, name, dfsPath }) => {
                 type="text"
                 onChange={(e) => setHeaderName(e.target.value)}
                 value={headerName}
+              />
+            </div>
+            <div className="pt-search-header">
+              <label>Header Number</label>
+              <input
+                type="text"
+                onChange={(e) => setheaderNumber(e.target.value)}
+                value={headerNumber}
+              />
+            </div>
+            <div style={{ marginLeft: 10 }}>
+              <Switch
+                label="All Section"
+                checked={allSection}
+                onChange={handleAllSection}
+                size="small"
               />
             </div>
 

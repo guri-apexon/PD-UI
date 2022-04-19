@@ -17,6 +17,7 @@ import { getColumnFromJSON, getDataSourceFromJSON } from "../utils";
 
 import AGTable from "../Table";
 
+const searchText = "Inclusion-criteriaascaXsacsac";
 const View = ({ id }) => {
   const dispatch = useDispatch();
   const { data, success, loader, error } = useSelector(wrapper);
@@ -77,6 +78,11 @@ const View = ({ id }) => {
       </>
     );
   };
+  const getContentWithHighLight = (content) => {
+    const regex = new RegExp(searchText, "gi");
+    const newText = content.replace(regex, `<mark class="highlight">$&</mark>`);
+    return newText;
+  };
 
   const getTocElement = (data, index) => {
     let type = data.derived_section_type;
@@ -117,7 +123,9 @@ const View = ({ id }) => {
             key={`CPT_section-${seq_num}`}
             className={`text-para`}
             style={{ fontSize: "12px", fontWeight: "bold" }}
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: getContentWithHighLight(content),
+            }}
             onClick={() => scrollToPage(data.page)}
           ></p>
         ) : (
@@ -126,7 +134,9 @@ const View = ({ id }) => {
             key={`CPT_section-${seq_num}`}
             className={`text-para`}
             style={{ fontSize: "12px" }}
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: getContentWithHighLight(content),
+            }}
             onClick={() => scrollToPage(data.page)}
           ></p>
         );
