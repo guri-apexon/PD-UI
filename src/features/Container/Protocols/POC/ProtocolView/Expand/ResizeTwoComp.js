@@ -4,9 +4,11 @@ import PDFView from "../PDFView";
 import View from "../NewView";
 import ViewOnly from "../View-only";
 import Button from "apollo-react/components/Button/Button";
+import AtrributeView from "../AttributeView";
 
 const Expandable = ({ id, name, dfsPath }) => {
   const [edit, setEdit] = useState(false);
+  const [showAttributes, setShowAttributes] = useState(false);
   const [pdfZoom, setPDFZoom] = useState(1.2);
   const [pdfWidth, setPDFWidth] = useState(650);
   useEffect(() => {
@@ -20,6 +22,13 @@ const Expandable = ({ id, name, dfsPath }) => {
       setPDFZoom(1.8);
     }
   }, [pdfWidth]);
+  useEffect(() => {
+    if (showAttributes) {
+      setPDFWidth(400);
+    } else {
+      setPDFWidth(650);
+    }
+  }, [showAttributes]);
   useEffect(() => {
     var m_pos;
 
@@ -59,20 +68,42 @@ const Expandable = ({ id, name, dfsPath }) => {
   }, []);
   return (
     <div className="resize-container">
-      <Button className="edit-button" onClick={() => setEdit(!edit)}>
-        {edit ? "Save Changes" : "Edit Content"}
+      {!showAttributes && (
+        <Button className="edit-button" onClick={() => setEdit(!edit)}>
+          {edit ? "Save Changes" : "Edit Content"}
+        </Button>
+      )}
+      <Button
+        className="atrribute-button"
+        onClick={() => setShowAttributes(!showAttributes)}
+        style={showAttributes ? { right: 0 } : { right: 120 }}
+      >
+        {showAttributes ? "Content View" : "Atrribute View"}
       </Button>
-      <div id="left-panel" className="left-panel">
+      <div
+        id="left-panel"
+        className={showAttributes ? "left-panel-attr" : "left-panel"}
+      >
         <PDFView name={name} dfsPath={dfsPath} zoom={pdfZoom} />
       </div>
-      <div className="resize" id="resize"></div>
-      <div id="right-panel" className="right-panel">
-        {edit ? (
-          <View id={id} name={name} dfsPath={dfsPath} />
-        ) : (
-          <ViewOnly id={id} name={name} dfsPath={dfsPath} />
-        )}
-      </div>
+      <div
+        className={showAttributes ? "resize-attr" : "resize"}
+        id="resize"
+      ></div>
+      {!showAttributes && (
+        <div id="right-panel" className="right-panel">
+          {edit ? (
+            <View id={id} name={name} dfsPath={dfsPath} />
+          ) : (
+            <ViewOnly id={id} name={name} dfsPath={dfsPath} />
+          )}
+        </div>
+      )}
+      {showAttributes && (
+        <div id="right-panel" className="right-panel-attr">
+          <AtrributeView id={id} name={name} dfsPath={dfsPath} />
+        </div>
+      )}
       {/* <div id="right_panel">{props.children}</div> */}
     </div>
   );

@@ -8,9 +8,22 @@
     height: 74vh;
     // padding-left: 4px;
   }
+  .left-panel-attr {
+    width: 38vw;
+    position: absolute;
+    left: 0;
+    height: 74vh;
+  }
   .right-panel {
     position: absolute;
     width: 48vw;
+    // padding-left: 4px;
+    height: 74vh;
+    right: 0;
+  }
+  .right-panel-attr {
+    position: absolute;
+    width: 58vw;
     // padding-left: 4px;
     height: 74vh;
     right: 0;
@@ -24,9 +37,22 @@
     height: 74vh;
     cursor: w-resize;
   }
+  .resize-attr {
+    background-color: #ccc;
+    position: absolute;
+    left: 40%;
+    width: 4px;
+    height: 74vh;
+    cursor: w-resize;
+  }
   .edit-button {
     position: absolute;
     right: 0;
+    top: -45px;
+  }
+  .atrribute-button {
+    position: absolute;
+    right: 120px;
     top: -45px;
   }
 }
