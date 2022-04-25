@@ -5,6 +5,7 @@ import moment from "moment";
 import { cloneDeep, isEmpty } from "lodash";
 import Button from "apollo-react/components/Button/Button";
 import { httpCall, BASE_URL_8000 } from "../../../../../../utils/api";
+import { toast } from "react-toastify";
 
 const Attributes = ({ data, id }) => {
   const [cellKey, setCellKey] = useState("");
@@ -64,6 +65,8 @@ const Attributes = ({ data, id }) => {
       };
       const { data } = await httpCall(config);
       console.log(data);
+      setModified({});
+      toast.success("Successfully Saved the Changes.");
     } catch (err) {
       console.log(err);
     }

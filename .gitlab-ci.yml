@@ -106,8 +106,8 @@ dev-deploy-other:
       
   only:
     refs:
-      - Protocol-View-New
-      # - develop
+      # - Protocol-View-New
+      - develop
     variables: 
       - $ENVIRONMENT== "dev"
 
