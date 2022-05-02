@@ -27,6 +27,7 @@ import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
 import AGTable from "./Table";
 import { isEmpty } from "lodash";
 import { QC_CHANGE_TYPE } from "../../store/sagas/utils";
+// import CKEditorComp from "./CKEditer";
 
 const TableElement = () => {
   return (
@@ -90,7 +91,7 @@ const View = () => {
   };
   const saveData = () => {
     const obj = {
-      lineId: hoverIndex,
+      lineId: editIndex,
       sectionName: hoverSection,
       content: editValue,
     };
@@ -105,15 +106,15 @@ const View = () => {
     console.log(`You picked ${type}.`);
     console.log(`At Line ID ${hoverIndex}`);
     console.log("Section Name");
-    // const obj = {
-    //   derivedSectionType: type,
-    //   lineId: hoverIndex,
-    //   sectionName: hoverSection,
-    // };
-    // dispatch({
-    //   type: ActionTypes.UPDATE_PROTOCOL_VIEW,
-    //   payload: obj,
-    // });
+    const obj = {
+      derivedSectionType: type,
+      lineId: hoverIndex,
+      sectionName: hoverSection,
+    };
+    dispatch({
+      type: ActionTypes.UPDATE_PROTOCOL_VIEW,
+      payload: obj,
+    });
   };
   const menuItems = [
     {
@@ -321,6 +322,7 @@ const View = () => {
           <div className="option-content-container">
             <div
               onMouseEnter={() => {
+                console.log(data.line_id);
                 setHoverIndex(data.line_id);
                 setHoverSection(section);
               }}
@@ -459,6 +461,7 @@ const View = () => {
                       <Loader />
                     </div>
                   )}
+                  {/* <CKEditorComp data={section.detail} /> */}
                   {!section.loading &&
                     section.success &&
                     section.detail.map((elem) => {

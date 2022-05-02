@@ -2,7 +2,11 @@ import { put, call, select } from "redux-saga/effects";
 import { getWrapperData, setDOCID } from "../slice";
 import { httpCall, BASE_URL_8000 } from "../../../../../utils/api";
 import { cloneDeep } from "lodash";
-import { createHeaderField, createTableField, createTextField } from "./utils";
+import {
+  // createHeaderField,
+  // createTableField,
+  createTextField,
+} from "./utils";
 
 function* getWrapperState() {
   const state = yield select();
@@ -146,6 +150,8 @@ export function* fetchProtocolViewData(action) {
 }
 
 export function* updateDataStream(action) {
+  // eslint-disable-next-line no-debugger
+  debugger;
   const { derivedSectionType, lineId, sectionName } = action.payload;
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
@@ -163,16 +169,16 @@ export function* updateDataStream(action) {
         const obj = createTextField(newLineID, arrToUpdate[i]);
         arrToUpdate.splice(i + 1, 0, obj);
         break;
-      } else if (derivedSectionType === "header") {
-        let newLineID = parseFloat(lineId) + 0.1;
-        const obj = createHeaderField(newLineID, arrToUpdate[i]);
-        arrToUpdate.splice(i + 1, 0, obj);
-        break;
-      } else if (derivedSectionType === "table") {
-        let newLineID = parseFloat(lineId) + 0.1;
-        const obj = createTableField(newLineID, arrToUpdate[i]);
-        arrToUpdate.splice(i + 1, 0, obj);
-        break;
+        // } else if (derivedSectionType === "header") {
+        //   let newLineID = parseFloat(lineId) + 0.1;
+        //   const obj = createHeaderField(newLineID, arrToUpdate[i]);
+        //   arrToUpdate.splice(i + 1, 0, obj);
+        //   break;
+        // } else if (derivedSectionType === "table") {
+        //   let newLineID = parseFloat(lineId) + 0.1;
+        //   const obj = createTableField(newLineID, arrToUpdate[i]);
+        //   arrToUpdate.splice(i + 1, 0, obj);
+        //   break;
       }
     }
   }
@@ -181,6 +187,8 @@ export function* updateDataStream(action) {
 }
 
 export function* updateDataEdit(action) {
+  // eslint-disable-next-line no-debugger
+  debugger;
   const { content, lineId, sectionName } = action.payload;
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);

@@ -1,6 +1,23 @@
 .resize-container {
   position: relative;
   width: 100%;
+  .floating-button {
+    ul {
+      position: absolute;
+      top: 66vh;
+      right: 0vw;
+      z-index: 100;
+      a {
+        background: rgb(12, 0, 221);
+        background: linear-gradient(
+          0deg,
+          rgba(12, 0, 221, 1) 0%,
+          rgba(0, 212, 255, 1) 100%,
+          rgba(101, 167, 255, 1) 100%
+        );
+      }
+    }
+  }
   .left-panel {
     width: 48vw;
     position: absolute;
@@ -9,7 +26,7 @@
     // padding-left: 4px;
   }
   .left-panel-attr {
-    width: 38vw;
+    width: 58vw;
     position: absolute;
     left: 0;
     height: 74vh;
@@ -23,7 +40,7 @@
   }
   .right-panel-attr {
     position: absolute;
-    width: 58vw;
+    width: 38vw;
     // padding-left: 4px;
     height: 74vh;
     right: 0;
@@ -40,7 +57,7 @@
   .resize-attr {
     background-color: #ccc;
     position: absolute;
-    left: 40%;
+    left: 60%;
     width: 4px;
     height: 74vh;
     cursor: w-resize;

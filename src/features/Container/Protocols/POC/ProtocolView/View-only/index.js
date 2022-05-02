@@ -12,6 +12,9 @@ import AccordionSummary from "apollo-react/components/AccordionSummary";
 import Tooltip from "apollo-react/components/Tooltip";
 import EyeHidden from "apollo-react-icons/EyeHidden";
 import EyeShow from "apollo-react-icons/EyeShow";
+// import CKEditorComp from "../CKEditer";
+import ContentEditable from "react-contenteditable";
+// import InlineEditor from "@ckeditor/ckeditor5-editor-inline/src/inlineeditor";
 
 import { getColumnFromJSON, getDataSourceFromJSON } from "../utils";
 
@@ -83,7 +86,9 @@ const View = ({ id }) => {
     const newText = content.replace(regex, `<mark class="highlight">$&</mark>`);
     return newText;
   };
-
+  const handleContentEdit = (event) => {
+    console.log("Content Coming", event.target.value);
+  };
   const getTocElement = (data, index) => {
     let type = data.derived_section_type;
     let content = data.content;
@@ -127,18 +132,29 @@ const View = ({ id }) => {
               __html: getContentWithHighLight(content),
             }}
             onClick={() => scrollToPage(data.page)}
+            contenteditable="true"
+            onChange={handleContentEdit}
           ></p>
         ) : (
-          <p
-            id={`CPT_section-${seq_num}`}
-            key={`CPT_section-${seq_num}`}
-            className={`text-para`}
-            style={{ fontSize: "12px" }}
-            dangerouslySetInnerHTML={{
-              __html: getContentWithHighLight(content),
-            }}
-            onClick={() => scrollToPage(data.page)}
-          ></p>
+          <ContentEditable
+            // innerRef={this.contentEditable}
+            html={content} // innerHTML of the editable div
+            disabled={false} // use true to disable editing
+            onChange={handleContentEdit} // handle innerHTML change
+            tagName="article" // Use a custom HTML tag (uses a div by default)
+          />
+          // <div
+          //   id={`CPT_section-${seq_num}`}
+          //   key={`CPT_section-${seq_num}`}
+          //   className={`text-para`}
+          //   style={{ fontSize: "12px" }}
+          //   dangerouslySetInnerHTML={{
+          //     __html: getContentWithHighLight(content),
+          //   }}
+          //   onClick={() => scrollToPage(data.page)}
+          //   contenteditable="true"
+          //   onChange={handleContentEdit}
+          // ></div>
         );
     }
   };
@@ -266,7 +282,7 @@ const View = ({ id }) => {
             <AccordionSummary>
               <div
                 className="accordion-parent-header"
-                onClick={() => handleSectionClicked(section)}
+                onClick={() => handleSectionClicked(section, sectionName)}
               >
                 {sectionName.toLowerCase()}{" "}
                 {index % 2 ? (
@@ -293,6 +309,7 @@ const View = ({ id }) => {
             <AccordionDetails className="accordion-parent-detail-container">
               {section && !isEmpty(section) && (
                 <div
+                  id={sectionName}
                   className="accordion-parent-detail"
                   style={{ width: "100%" }}
                 >
@@ -308,6 +325,7 @@ const View = ({ id }) => {
                       <Loader />
                     </div>
                   )}
+                  {/* <CKEditorComp data={section.detail} /> */}
                   {!section.loading &&
                     section.success &&
                     section.detail.map((elem) => {

@@ -25,6 +25,7 @@ import FileAccountPlan from "apollo-react-icons/FileAccountPlan";
 import { getColumnFromJSON, getDataSourceFromJSON } from "./utils";
 
 import AGTable from "./Table";
+import CKEditorComp from "./CKEditer";
 
 const TableElement = () => {
   return (
@@ -367,6 +368,7 @@ const View = () => {
                 className="accordion-parent-detail"
                 style={{ width: "100%" }}
               >
+                <CKEditorComp data={data[key].source_document_content} />
                 {"source_document_content" in data[key] &&
                   Object.keys(data[key].source_document_content).map((key2) =>
                     renderAccordionDetail(

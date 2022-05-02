@@ -7,7 +7,7 @@ import Button from "apollo-react/components/Button/Button";
 import { httpCall, BASE_URL_8000 } from "../../../../../../utils/api";
 import { toast } from "react-toastify";
 
-const Attributes = ({ data, id }) => {
+const Attributes = ({ data, id, fetchData }) => {
   const [cellKey, setCellKey] = useState("");
   const [cellValue, setCellValue] = useState("");
   const [attributeData, setAttributeData] = useState({});
@@ -65,6 +65,7 @@ const Attributes = ({ data, id }) => {
       };
       const { data } = await httpCall(config);
       console.log(data);
+      fetchData();
       setModified({});
       toast.success("Successfully Saved the Changes.");
     } catch (err) {

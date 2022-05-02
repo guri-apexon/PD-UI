@@ -24,7 +24,7 @@ const AtrributeView = ({ id }) => {
 
   return (
     <div className="attribute-view">
-      <Attributes data={attributes} id={id} />
+      <Attributes data={attributes} id={id} fetchData={fetchData} />
     </div>
   );
 };
