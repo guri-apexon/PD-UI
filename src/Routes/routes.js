@@ -14,7 +14,7 @@ const Protocols = lazy(() =>
 const PageNotFound = lazy(() =>
   import("../features/Container/PageNotFound/PageNotFound")
 );
-const QC = lazy(() => import("../features/Container/QC/QC"));
+// const QC = lazy(() => import("../features/Container/QC/QC"));
 const Admin = lazy(() => import("../features/Container/Admin/Admin"));
 
 const Routes = ({ userType }) => {
@@ -33,7 +33,7 @@ const Routes = ({ userType }) => {
         <Switch>
           <Redirect exact from="/" to="/qc" />
           <Redirect exact from="/dashboard" to="/qc" />
-          <Route path="/qc" component={QC} />
+          {/* <Route path="/qc" component={QC} /> */}
           <Route path="*" component={PageNotFound} />
         </Switch>
       )}
@@ -43,7 +43,7 @@ const Routes = ({ userType }) => {
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/protocols" component={Protocols} />
           <Route path="/search" component={Search} />
-          <Route path="/qc" component={QC} />
+          {/* <Route path="/qc" component={QC} /> */}
           <Route path="*" component={PageNotFound} />
         </Switch>
       )}

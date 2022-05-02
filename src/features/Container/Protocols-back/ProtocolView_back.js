@@ -9,15 +9,18 @@ function ProtocolView({ protId }) {
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
   useEffect(() => {
-    dispatch({
-      type: "GET_PROTOCOL_TOC_SAGA",
-      payload: {
-        endPoint: "protocol_data/",
-        id: protId,
-        user: "normal",
-        protocol: summary.data.protocol,
-      },
-    });
+    if ("data" in summary) {
+      dispatch({
+        type: "GET_PROTOCOL_TOC_SAGA",
+        payload: {
+          endPoint: "protocol_data/",
+          id: protId,
+          user: "normal",
+          protocol: summary.data.protocol,
+        },
+      });
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const listData = [];

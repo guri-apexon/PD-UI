@@ -2,7 +2,7 @@ import "./style.scss";
 import { useEffect, useState } from "react";
 
 import ProtocolOverview from "../Overview";
-import ProtocolView from "../ProtocolView";
+// import ProtocolView from "../ProtocolView";
 import Documents from "../Document";
 import POCProtocoolView from "../POC/ProtocolView";
 import PTSearch from "../POC/PT-New";
@@ -57,14 +57,14 @@ const TabContainer = ({ history }) => {
         >
           Overview
         </button>
-        <button
+        {/* <button
           className={
             activeTab === tabs.PROTOCOL_VIEW ? "tablinks active" : "tablinks"
           }
           onClick={(e) => handleTabClick(tabs.PROTOCOL_VIEW)}
         >
           Protocol View
-        </button>
+        </button> */}
         <button
           className={
             activeTab === tabs.DOCUMENT ? "tablinks active" : "tablinks"
@@ -135,7 +135,7 @@ const TabContainer = ({ history }) => {
         )}
       </div>
 
-      <div
+      {/* <div
         id="view"
         className="tabcontent"
         style={
@@ -147,7 +147,7 @@ const TabContainer = ({ history }) => {
         {activeTab === tabs.PROTOCOL_VIEW && (
           <ProtocolView id={protocolId} name={protocolName} />
         )}
-      </div>
+      </div> */}
 
       <div
         id="document"
