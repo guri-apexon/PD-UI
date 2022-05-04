@@ -101,9 +101,11 @@ export function* handleExpandBPO1(action) {
 }
 export function* fetchProtocolViewData1(action) {
   const { id, body, childString, sectionName } = action.payload;
+  console.log(childString, id, BASE_URL_8000);
   // const docID = yield getDOCIDState();
 
   if (body) {
+    console.log("Section Name: ", sectionName);
     const currentData = yield getWrapperState();
     let cloneData = cloneDeep(currentData);
     const obj = {
@@ -205,6 +207,7 @@ export function* fetchProtocolViewData1(action) {
           header: cloneData1.data[sectionName].header,
         };
         cloneData1.data[sectionName] = obj1;
+        console.log("API Data", cloneData1);
         const preLoadingState = {
           loader: false,
           success: true,

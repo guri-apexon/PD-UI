@@ -1,0 +1,22 @@
+.protocols-breadcrum {
+  margin-bottom: 5px;
+  margin-left: -7px;
+  ol {
+    margin-block-start: 0px;
+    svg {
+      font-size: 12px;
+    }
+    a {
+      margin-top: -1px;
+      svg {
+        font-size: 14px;
+      }
+    }
+    li {
+      button {
+        color: #333 !important;
+        font-size: 12px;
+      }
+    }
+  }
+}

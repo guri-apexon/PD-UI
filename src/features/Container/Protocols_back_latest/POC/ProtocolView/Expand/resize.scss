@@ -1,0 +1,75 @@
+.resize-container {
+  position: relative;
+  width: 100%;
+  .floating-button {
+    ul {
+      position: absolute;
+      top: 66vh;
+      right: 0vw;
+      z-index: 100;
+      a {
+        background: rgb(12, 0, 221);
+        background: linear-gradient(
+          0deg,
+          rgba(12, 0, 221, 1) 0%,
+          rgba(0, 212, 255, 1) 100%,
+          rgba(101, 167, 255, 1) 100%
+        );
+      }
+    }
+  }
+  .left-panel {
+    width: 48vw;
+    position: absolute;
+    left: 0;
+    height: 74vh;
+    // padding-left: 4px;
+  }
+  .left-panel-attr {
+    width: 58vw;
+    position: absolute;
+    left: 0;
+    height: 74vh;
+  }
+  .right-panel {
+    position: absolute;
+    width: 48vw;
+    // padding-left: 4px;
+    height: 74vh;
+    right: 0;
+  }
+  .right-panel-attr {
+    position: absolute;
+    width: 38vw;
+    // padding-left: 4px;
+    height: 74vh;
+    right: 0;
+  }
+
+  .resize {
+    background-color: #ccc;
+    position: absolute;
+    left: 50%;
+    width: 4px;
+    height: 74vh;
+    cursor: w-resize;
+  }
+  .resize-attr {
+    background-color: #ccc;
+    position: absolute;
+    left: 60%;
+    width: 4px;
+    height: 74vh;
+    cursor: w-resize;
+  }
+  .edit-button {
+    position: absolute;
+    right: 0;
+    top: -45px;
+  }
+  .atrribute-button {
+    position: absolute;
+    right: 120px;
+    top: -45px;
+  }
+}

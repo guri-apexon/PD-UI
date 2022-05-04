@@ -27,6 +27,7 @@ export function* handleExpandBPO(action) {
 }
 export function* fetchProtocolViewData(action) {
   const { id, body, childString, sectionName } = action.payload;
+  console.log(childString, id, BASE_URL_8000);
   const docID = yield getDOCIDState();
   if (body) {
     const currentData = yield getWrapperState();
@@ -155,6 +156,11 @@ export function* updateDataStream(action) {
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
 
+  console.log("___________________");
+  console.log(cloneData);
+  console.log(derivedSectionType, lineId, sectionName);
+  console.log("___________________");
+
   let arrToUpdate = cloneData.data[sectionName].detail;
   for (let i = 0; i < arrToUpdate.length; i++) {
     if (arrToUpdate[i].line_id === lineId) {
@@ -176,6 +182,7 @@ export function* updateDataStream(action) {
       }
     }
   }
+  console.log("updated Array", arrToUpdate);
   yield put(getWrapperData(cloneData));
 }
 
@@ -186,11 +193,17 @@ export function* updateDataEdit(action) {
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
 
+  console.log("___________________");
+  console.log(cloneData);
+  console.log(content, lineId, sectionName);
+  console.log("___________________");
+
   let arrToUpdate = cloneData.data[sectionName].detail;
   for (let i = 0; i < arrToUpdate.length; i++) {
     if (arrToUpdate[i].line_id === lineId) {
       arrToUpdate[i].content = content;
     }
   }
+  console.log("updated Array", arrToUpdate);
   yield put(getWrapperData(cloneData));
 }

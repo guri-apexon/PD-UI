@@ -13,6 +13,7 @@ export function* fetchPTData(action) {
   const { id, body, childString, keyIndex, input, headerName } = action.payload;
   const currentData = yield getPTState();
   const cloneData = cloneDeep(currentData);
+  console.log(childString, id, BASE_URL_8000);
   if (body) {
     let preObjState = cloneData.detail ? cloneData.detail : {};
     const preNewObj = {};

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { httpCall, BASE_URL_8000 } from "../../../utils/api";
 import { iconStatus } from "../../../utils/utilFunction";
 import { getProtocols, setError, getLoader, setTableLoader } from "./qcSlice";
-import { getProcotoclToc } from "../Protocols-back/protocolSlice";
+import { getViewdata } from "../Protocols/store/slice";
 
 function* getState() {
   const state = yield select();
@@ -233,7 +233,7 @@ export function* uploadQc(action) {
           err: null,
           download: postUploadQc.data,
         };
-        yield put(getProcotoclToc(viewData));
+        yield put(getViewdata(viewData));
       }
       // yield put({
       //   type: "GET_PROTOCOL_TOC_SAGA",

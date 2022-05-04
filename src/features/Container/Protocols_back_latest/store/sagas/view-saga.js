@@ -82,6 +82,7 @@ export function* fetchViewData(action) {
   };
   let userId = yield getUserId();
   yield put(getViewdata(viewData));
+  // console.log("Protocol View", userId);
   // const URL = `/QC_New_re.json`;
   let URL = "";
   if (action.payload.user === "qc") {

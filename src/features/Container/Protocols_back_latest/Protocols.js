@@ -1,6 +1,6 @@
 import "./Protocol.scss";
-import ProtocolBreadcrumbs from "./Components/Breadcrum";
-import TabContainer from "./Tabs";
+import ProtocolBreadcrumbs from "./Breadcrum";
+import TabContainer from "./TabContainer";
 
 const Protocols = (props) => {
   return (
