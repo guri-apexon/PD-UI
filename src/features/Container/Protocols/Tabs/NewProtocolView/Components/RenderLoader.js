@@ -4,7 +4,7 @@ const RenderLoader = () => {
   return (
     <div
       style={{
-        height: 200,
+        height: 400,
         justifyContent: "center",
         alignItems: "center",
         display: "flex",

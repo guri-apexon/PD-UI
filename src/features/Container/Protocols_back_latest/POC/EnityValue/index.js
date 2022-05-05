@@ -51,6 +51,14 @@ const EntitySearch = ({ id, name, dfsPath }) => {
       setError(true);
     }
   };
+  const getContentWithHighLight = (content) => {
+    const regex = new RegExp(entityValue, "gi");
+    const newText = entityValue.replace(
+      regex,
+      `<mark class="highlight">$&</mark>`
+    );
+    return newText;
+  };
   //   useEffect(() => {
   //     fetchData();
   //   }, []);
@@ -143,7 +151,9 @@ const EntitySearch = ({ id, name, dfsPath }) => {
             key={`CPT_section-${seq_num}`}
             className={`text-para`}
             style={{ fontSize: "12px", fontWeight: "bold" }}
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: getContentWithHighLight(content),
+            }}
           ></p>
         ) : (
           <p
@@ -151,7 +161,9 @@ const EntitySearch = ({ id, name, dfsPath }) => {
             key={`CPT_section-${seq_num}`}
             className={`text-para`}
             style={{ fontSize: "12px" }}
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: getContentWithHighLight(content),
+            }}
           ></p>
         );
     }

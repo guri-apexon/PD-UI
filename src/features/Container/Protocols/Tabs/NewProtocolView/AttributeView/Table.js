@@ -9,8 +9,13 @@ import { toast } from "react-toastify";
 const Attributes = ({ data, id, fetchData }) => {
   const [cellKey, setCellKey] = useState("");
   const [cellValue, setCellValue] = useState("");
+  const [cellKeyHeader, setCellKeyHeader] = useState("");
+  const [cellValueHeader, setCellValueHeader] = useState("");
   const [attributeData, setAttributeData] = useState({});
   const [modified, setModified] = useState({});
+  // const [newRowTitle, setNewRowTitle] = useState("");
+  // const [newRowValue, setNewRowValue] = useState("");
+  const [indexRow, setIndexRow] = useState(100);
 
   useEffect(() => {
     setAttributeData(data);
@@ -28,14 +33,44 @@ const Attributes = ({ data, id, fetchData }) => {
         display_name: cloneData[key].display_name,
         value: value,
         data_type: cloneData[key].data_type,
+        qc_change:
+          "qc_change" in cloneData[key] ? cloneData[key].qc_change : "",
       };
 
       setModified(cloneModified);
     }
   };
+  const updateDataHeader = (key, value) => {
+    // const newKey = value.split(" ").join("_").toLowerCase();
+    if (attributeData[key].display_name !== value) {
+      let cloneData = cloneDeep(attributeData);
+      cloneData[key].display_name = value;
+      setAttributeData(cloneData);
+
+      let cloneModified = cloneDeep(modified);
+
+      cloneModified[key] = {
+        display_name: value,
+        value: cloneData[key].value,
+        data_type: cloneData[key].data_type,
+        qc_change: cloneData[key].qc_change,
+      };
+
+      setModified(cloneModified);
+    }
+  };
+  const handleTableEditHeader = (key, value) => {
+    setCellKeyHeader(key);
+    setCellValueHeader(value);
+  };
   const handleTableEdit = (key, value) => {
     setCellKey(key);
     setCellValue(value);
+  };
+  const setToDefaultHeader = (key, value) => {
+    updateDataHeader(key, value);
+    setCellKeyHeader("");
+    setCellValueHeader("");
   };
   const setToDefault = (key, value) => {
     updateData(key, value);
@@ -50,13 +85,30 @@ const Attributes = ({ data, id, fetchData }) => {
   const formatdate = (date) => {
     return moment(date).format("DD-MMM-YYYY");
   };
+  const getModifiedObj = (modified) => {
+    let newModified = {};
+    for (let key of Object.keys(modified)) {
+      if (modified[key].qc_change === "add") {
+        const newKey = modified[key].display_name
+          .split(" ")
+          .join("_")
+          .toLowerCase();
+        newModified[newKey] = { ...modified[key] };
+      } else {
+        newModified[key] = { ...modified[key] };
+      }
+    }
+    return newModified;
+  };
   const saveData = async () => {
+    const modifiedObj = getModifiedObj(modified);
+    console.log("Modified Obj", modifiedObj);
     try {
       const config = {
         url: `${BASE_URL_8000}/api/segments/put_document_attributes`,
         method: "put",
         data: {
-          attributes: modified,
+          attributes: modifiedObj,
           user_id: "u1072234",
           aidocid: id,
         },
@@ -70,18 +122,62 @@ const Attributes = ({ data, id, fetchData }) => {
       console.log(err);
     }
   };
+  const handleAddAttributes = () => {
+    const cloneData = { ...attributeData };
+    const obj = {
+      data_type: "string",
+      display_name: "Attribute Name",
+      value: "Attribute Value",
+      qc_change: "add",
+    };
+    cloneData[indexRow] = obj;
+    // const finalObj = { ...data, obj };
+    setAttributeData(cloneData);
+    console.log(cloneData);
+    setIndexRow(indexRow - 1);
+  };
+  console.log("Modified", modified);
   return (
     <div>
-      {!isEmpty(modified) && (
-        <Button onClick={() => saveData()}>Save Changes</Button>
-      )}
+      <div className="attribute-button">
+        {!isEmpty(modified) && (
+          <Button onClick={() => saveData()}>Save Changes</Button>
+        )}
+        <Button onClick={() => handleAddAttributes()}>Add Attributes</Button>
+      </div>
+
       {/* <div className="meta-parent-header">Attributes</div> */}
       <div className="attributes-term">
         <div className="ag-theme-alpine-at">
           <table>
             {Object.keys(attributeData).map((key) => (
               <tr key={key}>
-                <th>{attributeData[key].display_name}</th>
+                {"qc_change" in attributeData[key] &&
+                attributeData[key].qc_change === "add" ? (
+                  <th
+                    onDoubleClick={() =>
+                      handleTableEditHeader(
+                        key,
+                        attributeData[key].display_name
+                      )
+                    }
+                  >
+                    {cellKeyHeader === key ? (
+                      <textarea
+                        value={cellValueHeader}
+                        onChange={(e) => setCellValueHeader(e.target.value)}
+                        onBlur={() => setToDefaultHeader(key, cellValueHeader)}
+                        style={{ padding: 10, width: "90%", fontSize: 14 }}
+                        rows={3}
+                        autoFocus
+                      />
+                    ) : (
+                      <span>{attributeData[key].display_name}</span>
+                    )}
+                  </th>
+                ) : (
+                  <th>{attributeData[key].display_name}</th>
+                )}
                 <td
                   onDoubleClick={() =>
                     handleTableEdit(key, attributeData[key].value)
@@ -100,7 +196,6 @@ const Attributes = ({ data, id, fetchData }) => {
                       />
                     ) : (
                       <textarea
-                        type="text"
                         value={cellValue}
                         onChange={(e) => setCellValue(e.target.value)}
                         onBlur={() => setToDefault(key, cellValue)}
@@ -119,6 +214,26 @@ const Attributes = ({ data, id, fetchData }) => {
                 </td>
               </tr>
             ))}
+            {/* <tr>
+              <th>
+                <textarea
+                  value={newRowTitle}
+                  onChange={(e) => setNewRowTitle(e.target.value)}
+                  style={{ padding: 10, width: "90%", fontSize: 14 }}
+                  rows={3}
+                  autoFocus
+                />
+              </th>
+              <td>
+                <textarea
+                  value={newRowValue}
+                  onChange={(e) => setNewRowValue(e.target.value)}
+                  style={{ padding: 10, width: "90%", fontSize: 14 }}
+                  rows={3}
+                  autoFocus
+                />
+              </td>
+            </tr> */}
           </table>
         </div>
       </div>

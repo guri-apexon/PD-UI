@@ -100,7 +100,7 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
           )}
         </div>
       );
-    } else {
+    } else if (data.content) {
       return (
         <div className="option-content-container">
           <div onMouseEnter={() => handleMouseHover(data.line_id, sectionName)}>

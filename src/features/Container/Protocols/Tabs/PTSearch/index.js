@@ -31,7 +31,7 @@ const options = [
 ];
 
 const EntitySearch = ({ id, name, dfsPath }) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
   const [input, setInput] = useState("");
@@ -56,7 +56,7 @@ const EntitySearch = ({ id, name, dfsPath }) => {
       setData(data);
       setLoader(false);
     } else {
-      setData(null);
+      setData([]);
       setLoader(false);
       setError(true);
     }
@@ -265,21 +265,20 @@ const EntitySearch = ({ id, name, dfsPath }) => {
             <Loader />
           </div>
         )}
-        {!loader && (
+        {!loader && data.length > 0 && (
           <div className="protocol-column">
             <div
               className="accordion-start-container"
               data-testid="protocol-column-wrapper"
               style={{ marginBottom: 50 }}
             >
-              {data &&
-                data.map((elem) => {
-                  return renderAccordionDetail(elem);
-                })}
+              {data.map((elem) => {
+                return renderAccordionDetail(elem);
+              })}
             </div>
           </div>
         )}
-        {error && !data && (
+        {error && (
           <div
             style={{
               height: 200,

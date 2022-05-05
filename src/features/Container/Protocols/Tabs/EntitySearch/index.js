@@ -23,11 +23,12 @@ const options = [
 ];
 
 const EntitySearch = ({ id, name, dfsPath }) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
   const [error, setError] = useState(false);
   const [entityName, setEntityName] = useState("");
   const [entityValue, setEntityValue] = useState("");
+  const [searchText, setSearchText] = useState("");
   const fetchData = async (e) => {
     e.preventDefault();
     setLoader(true);
@@ -45,8 +46,9 @@ const EntitySearch = ({ id, name, dfsPath }) => {
     if (success) {
       setData(data);
       setLoader(false);
+      setSearchText(entityValue);
     } else {
-      setData(null);
+      setData([]);
       setLoader(false);
       setError(true);
     }
@@ -54,6 +56,11 @@ const EntitySearch = ({ id, name, dfsPath }) => {
   //   useEffect(() => {
   //     fetchData();
   //   }, []);
+  const getContentWithHighLight = (content) => {
+    const regex = new RegExp(searchText, "gi");
+    const newText = content.replace(regex, `<mark class="highlight">$&</mark>`);
+    return newText;
+  };
   const getTable = (item, data, unq, noHeader = false) => {
     console.log("Table Data", item);
     const tableProperties = JSON.parse(item.TableProperties);
@@ -143,7 +150,9 @@ const EntitySearch = ({ id, name, dfsPath }) => {
             key={`CPT_section-${seq_num}`}
             className={`text-para`}
             style={{ fontSize: "12px", fontWeight: "bold" }}
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: searchText ? getContentWithHighLight(content) : content,
+            }}
           ></p>
         ) : (
           <p
@@ -151,7 +160,9 @@ const EntitySearch = ({ id, name, dfsPath }) => {
             key={`CPT_section-${seq_num}`}
             className={`text-para`}
             style={{ fontSize: "12px" }}
-            dangerouslySetInnerHTML={{ __html: content }}
+            dangerouslySetInnerHTML={{
+              __html: searchText ? getContentWithHighLight(content) : content,
+            }}
           ></p>
         );
     }
@@ -238,21 +249,20 @@ const EntitySearch = ({ id, name, dfsPath }) => {
             <Loader />
           </div>
         )}
-        {!loader && (
-          <div className="protocol-column">
+        {!loader && data.length > 0 && (
+          <div className="protocol-column-pt">
             <div
               className="accordion-start-container"
               data-testid="protocol-column-wrapper"
               style={{ marginBottom: 50 }}
             >
-              {data &&
-                data.map((elem) => {
-                  return renderAccordionDetail(elem);
-                })}
+              {data.map((elem) => {
+                return renderAccordionDetail(elem);
+              })}
             </div>
           </div>
         )}
-        {error && !data && (
+        {error && (
           <div
             style={{
               height: 200,
