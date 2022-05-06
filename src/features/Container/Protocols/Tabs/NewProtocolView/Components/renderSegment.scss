@@ -1,0 +1,11 @@
+.format-container {
+  position: relative;
+  .button-container {
+    position: absolute;
+    right: 0;
+    top: -24px;
+    img {
+      height: 10px;
+    }
+  }
+}

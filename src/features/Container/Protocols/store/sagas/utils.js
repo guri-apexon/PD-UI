@@ -27,6 +27,7 @@ export const createTextField = (newLineID, detail) => {
     is_active: detail.is_active,
     aidocid: detail.aidocid,
     genre: detail.genre,
+    hover: false,
   };
   return obj;
 };

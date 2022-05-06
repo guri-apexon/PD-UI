@@ -36,6 +36,8 @@ export const protocolSlice = createSlice({
       error: "",
       data: null,
     },
+    segmentUpdated: {},
+    segmentInserted: {},
     wrapperDataMeta: {
       loader: false,
       success: false,
@@ -66,6 +68,12 @@ export const protocolSlice = createSlice({
     getWrapperData: (state, action) => {
       state.wrapperData = action.payload;
     },
+    getSegmentUpdated: (state, action) => {
+      state.segmentUpdated = action.payload;
+    },
+    getSegmentInserted: (state, action) => {
+      state.segmentInserted = action.payload;
+    },
     getWrapperDataMeta: (state, action) => {
       state.wrapperDataMeta = action.payload;
     },
@@ -87,6 +95,8 @@ export const {
   getPTData,
   setDOCID,
   getWrapperDataMeta,
+  getSegmentUpdated,
+  getSegmentInserted,
 } = protocolSlice.actions;
 
 export default protocolSlice.reducer;
@@ -99,3 +109,5 @@ export const wrapper = (state) => state.protocol.wrapperData;
 export const wrapperMeta = (state) => state.protocol.wrapperDataMeta;
 export const ptWrapper = (state) => state.protocol.ptData;
 export const docID = (state) => state.protocol.docID;
+export const updatedSegment = (state) => state.protocol.segmentUpdated;
+export const insertedSegment = (state) => state.protocol.segmentInserted;

@@ -1,17 +1,33 @@
 import { put, call, select } from "redux-saga/effects";
-import { getWrapperData, setDOCID } from "../slice";
+import {
+  getWrapperData,
+  setDOCID,
+  getSegmentUpdated,
+  getSegmentInserted,
+} from "../slice";
 import { httpCall, BASE_URL_8000 } from "../../../../../utils/api";
-import { cloneDeep } from "lodash";
+import { cloneDeep, isEmpty } from "lodash";
 import {
   // createHeaderField,
   // createTableField,
   createTextField,
 } from "./utils";
+import { toast } from "react-toastify";
 
 function* getWrapperState() {
   const state = yield select();
   const wrapper = state.protocol.wrapperData;
   return wrapper;
+}
+function* getSegmentUpdatedState() {
+  const state = yield select();
+  const segment = state.protocol.segmentUpdated;
+  return segment;
+}
+function* getSegmentInsertedState() {
+  const state = yield select();
+  const segment = state.protocol.segmentInserted;
+  return segment;
 }
 function* getDOCIDState() {
   const state = yield select();
@@ -147,10 +163,42 @@ export function* fetchProtocolViewData(action) {
     }
   }
 }
+const objectToArray = (obj) => {
+  if (!isEmpty(obj)) {
+    const arr = Object.keys(obj).map((key) => obj[key]);
+    return arr;
+  }
+};
+export function* UpdateAPI(action) {
+  const { id } = action.payload;
+  const currentUpdatedSegment = yield getSegmentUpdatedState();
+  const currentInsertedSegment = yield getSegmentInsertedState();
+
+  const updatedArr = objectToArray(currentUpdatedSegment);
+  const insertedArr = objectToArray(currentInsertedSegment);
+
+  console.log("OBJECT TO ARRAY", updatedArr, insertedArr, id);
+  const URL = `${BASE_URL_8000}/api/segments/modify_segments?aidocid_in=${id}&userid_in=1072234`;
+
+  if (updatedArr.length > 0) {
+    const config = {
+      url: URL,
+      method: "PUT",
+      data: updatedArr,
+    };
+    const { data, success } = yield call(httpCall, config);
+    if (success) {
+      console.log("data", data);
+      toast.success("Changes Saved Successfully");
+    } else {
+      toast.error("Changes Not Saved.");
+    }
+  } else {
+    toast.info("Nothing to update");
+  }
+}
 
 export function* updateDataStream(action) {
-  // eslint-disable-next-line no-debugger
-  debugger;
   const { derivedSectionType, lineId, sectionName } = action.payload;
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
@@ -180,17 +228,50 @@ export function* updateDataStream(action) {
 }
 
 export function* updateDataEdit(action) {
-  // eslint-disable-next-line no-debugger
-  debugger;
   const { content, lineId, sectionName } = action.payload;
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
+  const currentUpdatedSegment = yield getSegmentUpdatedState();
+  let cloneUpdatedSegment = cloneDeep(currentUpdatedSegment);
+
+  const currentInsertedSegment = yield getSegmentInsertedState();
+  let cloneInsertedSegment = cloneDeep(currentInsertedSegment);
 
   let arrToUpdate = cloneData.data[sectionName].detail;
   for (let i = 0; i < arrToUpdate.length; i++) {
     if (arrToUpdate[i].line_id === lineId) {
       arrToUpdate[i].content = content;
+      if (arrToUpdate[i].qc_change_type === "add") {
+        cloneInsertedSegment[lineId] = {
+          prev_line_id: arrToUpdate[i - 1].line_id,
+          after_line_id: arrToUpdate[i + 1].line_id,
+          derived_section_type: "text",
+          input_seq_num: -1,
+          qc_change_type: "",
+          page: 5,
+          is_active: true,
+          sec_id: arrToUpdate[i].sec_id,
+          genre: arrToUpdate[i].genre,
+          font_info: {},
+          content: content,
+        };
+        // console.log("Insert gener", obj);
+        // cloneSegment[lineId] = obj;
+      } else {
+        cloneUpdatedSegment[lineId] = {
+          sec_id: arrToUpdate[i].sec_id,
+          line_id: arrToUpdate[i].line_id,
+          genre: arrToUpdate[i].genre,
+          update_type: "update_segment",
+          font_info: arrToUpdate[i].font_info,
+          content: content,
+        };
+        // console.log("Modified gener", obj);
+        // cloneSegment[lineId] = obj;
+      }
     }
   }
+  yield put(getSegmentUpdated(cloneUpdatedSegment));
+  yield put(getSegmentInserted(cloneInsertedSegment));
   yield put(getWrapperData(cloneData));
 }

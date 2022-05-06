@@ -11,6 +11,7 @@ import {
   handleExpandBPO,
   updateDataStream,
   updateDataEdit,
+  UpdateAPI,
 } from "./sagas/wrapper-saga";
 import { fetchProtocolViewData1, handleExpandBPO1 } from "./sagas/wrapper-meta";
 import { fetchPTData } from "./sagas/pt-data";
@@ -27,6 +28,7 @@ function* watchProtocolAsync() {
   yield takeLatest(ActionTypes.GET_PROTOCOL_VIEW_NEW1, fetchProtocolViewData1);
   yield takeLatest(ActionTypes.UPDATE_PROTOCOL_VIEW, updateDataStream);
   yield takeLatest(ActionTypes.UPDATE_PROTOCOL_VIEW_CHANGES, updateDataEdit);
+  yield takeLatest(ActionTypes.API_UPDATE_SEGMENT, UpdateAPI);
 }
 export default function* protocolSaga() {
   yield all([watchProtocolAsync()]);

@@ -18,6 +18,7 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
   const dispatch = useDispatch();
   const [hoverIndex, setHoverIndex] = useState(null);
   const [hoverSection, setHoverSection] = useState("");
+  const [activeLineID, setActiveLineID] = useState("");
   const sectionHeader = section.header;
   const sectionName = sectionHeader.source_file_section;
   const handleClick = (type) => () => {
@@ -108,8 +109,10 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
               data={data}
               edit={edit}
               handleContentEdit={handleContentEdit}
+              setActiveLineID={setActiveLineID}
+              activeLineID={activeLineID}
             />
-            {edit && (
+            {edit && !("hover" in data) && (
               <HoverComponent
                 line_id={data.line_id}
                 hoverIndex={hoverIndex}
@@ -121,7 +124,6 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
       );
     }
   };
-  console.log("Hover Detail", hoverIndex, hoverSection);
   return (
     <div
       id={sectionName}

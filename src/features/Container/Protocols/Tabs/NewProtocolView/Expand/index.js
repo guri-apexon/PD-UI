@@ -3,11 +3,14 @@ import "./style.scss";
 import PDFView from "../PDFView";
 import AtrributeView from "../AttributeView";
 import FloatingButton from "../Components/FloatingButton";
+import { ActionTypes } from "../../../store/ActionTypes";
 
 // ---------------- New Components -------------------------
 import ProtocolView from "../ContentView/index";
+import { useDispatch } from "react-redux";
 
 const Expandable = ({ id, name, dfsPath }) => {
+  const dispatch = useDispatch();
   const [edit, setEdit] = useState(false);
   const [showAttributes, setShowAttributes] = useState(false);
   const [pdfZoom, setPDFZoom] = useState(1.2);
@@ -89,6 +92,7 @@ const Expandable = ({ id, name, dfsPath }) => {
       } else {
         setShowAttributes(false);
         setEdit(false);
+        dispatch({ type: ActionTypes.API_UPDATE_SEGMENT, payload: { id } });
       }
     }
   };
