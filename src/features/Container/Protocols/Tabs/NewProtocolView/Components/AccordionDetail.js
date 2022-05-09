@@ -18,7 +18,6 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
   const dispatch = useDispatch();
   const [hoverIndex, setHoverIndex] = useState(null);
   const [hoverSection, setHoverSection] = useState("");
-  const [activeLineID, setActiveLineID] = useState("");
   const sectionHeader = section.header;
   const sectionName = sectionHeader.source_file_section;
   const handleClick = (type) => () => {
@@ -103,22 +102,25 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
       );
     } else if (data.content) {
       return (
-        <div className="option-content-container">
+        <div
+          className="option-content-container"
+          style={{ marginBottom: edit ? 20 : 0 }}
+        >
           <div onMouseEnter={() => handleMouseHover(data.line_id, sectionName)}>
             <RenderSegment
               data={data}
               edit={edit}
               handleContentEdit={handleContentEdit}
-              setActiveLineID={setActiveLineID}
-              activeLineID={activeLineID}
             />
-            {edit && !("hover" in data) && (
-              <HoverComponent
-                line_id={data.line_id}
-                hoverIndex={hoverIndex}
-                menuItems={menuItems}
-              />
-            )}
+            <div>
+              {edit && !("hover" in data) && (
+                <HoverComponent
+                  line_id={data.line_id}
+                  hoverIndex={hoverIndex}
+                  menuItems={menuItems}
+                />
+              )}
+            </div>
           </div>
         </div>
       );
@@ -128,7 +130,7 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
     <div
       id={sectionName}
       className="accordion-parent-detail"
-      style={{ width: "100%" }}
+      style={{ width: "100%", marginBottom: 20 }}
     >
       {section.loading && <RenderLoader />}
       {!section.loading &&

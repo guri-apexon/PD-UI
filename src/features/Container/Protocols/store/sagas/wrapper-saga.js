@@ -174,27 +174,40 @@ export function* UpdateAPI(action) {
   const currentUpdatedSegment = yield getSegmentUpdatedState();
   const currentInsertedSegment = yield getSegmentInsertedState();
 
-  const updatedArr = objectToArray(currentUpdatedSegment);
-  const insertedArr = objectToArray(currentInsertedSegment);
-
-  console.log("OBJECT TO ARRAY", updatedArr, insertedArr, id);
-  const URL = `${BASE_URL_8000}/api/segments/modify_segments?aidocid_in=${id}&userid_in=1072234`;
-
-  if (updatedArr.length > 0) {
-    const config = {
-      url: URL,
+  if (!isEmpty(currentUpdatedSegment)) {
+    const updatedArr = objectToArray(currentUpdatedSegment);
+    const URLUpdate = `${BASE_URL_8000}/api/segments/modify_segments?aidocid_in=${id}&userid_in=1072234`;
+    const configUpdate = {
+      url: URLUpdate,
       method: "PUT",
       data: updatedArr,
     };
-    const { data, success } = yield call(httpCall, config);
+    const { data, success } = yield call(httpCall, configUpdate);
     if (success) {
       console.log("data", data);
-      toast.success("Changes Saved Successfully");
+      toast.success("Content Updated Successfully");
     } else {
-      toast.error("Changes Not Saved.");
+      toast.error("Content Updation Not Saved.");
     }
-  } else {
-    toast.info("Nothing to update");
+  }
+  if (!isEmpty(currentInsertedSegment)) {
+    const insertedArr = objectToArray(currentInsertedSegment);
+    const URLInsert = `${BASE_URL_8000}/api/segments/add_segments?aidocid_in=${id}&userid_in=1072234`;
+    const configInsert = {
+      url: URLInsert,
+      method: "PUT",
+      data: insertedArr,
+    };
+    const { data, success } = yield call(httpCall, configInsert);
+    if (success) {
+      console.log("data", data);
+      toast.success("Content Inserted Successfully");
+    } else {
+      toast.error("Content Insertion Not Saved.");
+    }
+  }
+  if (isEmpty(currentUpdatedSegment) && isEmpty(currentInsertedSegment)) {
+    toast.info("Nothing to update.");
   }
 }
 
@@ -207,9 +220,18 @@ export function* updateDataStream(action) {
   for (let i = 0; i < arrToUpdate.length; i++) {
     if (arrToUpdate[i].line_id === lineId) {
       if (derivedSectionType === "text") {
-        let newLineID = parseFloat(lineId) + 0.1;
+        let newLineID;
+        if (i === arrToUpdate.length - 1) {
+          newLineID = parseFloat(arrToUpdate[i].line_id) + 0.1;
+        } else {
+          newLineID =
+            (parseFloat(arrToUpdate[i].line_id) +
+              parseFloat(arrToUpdate[i + 1].line_id)) /
+            2;
+        }
         const obj = createTextField(newLineID, arrToUpdate[i]);
         arrToUpdate.splice(i + 1, 0, obj);
+        arrToUpdate[i] = { ...arrToUpdate[i], hover: false };
         break;
         // } else if (derivedSectionType === "header") {
         //   let newLineID = parseFloat(lineId) + 0.1;
@@ -240,34 +262,62 @@ export function* updateDataEdit(action) {
   let arrToUpdate = cloneData.data[sectionName].detail;
   for (let i = 0; i < arrToUpdate.length; i++) {
     if (arrToUpdate[i].line_id === lineId) {
-      arrToUpdate[i].content = content;
-      if (arrToUpdate[i].qc_change_type === "add") {
-        cloneInsertedSegment[lineId] = {
-          prev_line_id: arrToUpdate[i - 1].line_id,
-          after_line_id: arrToUpdate[i + 1].line_id,
-          derived_section_type: "text",
-          input_seq_num: -1,
-          qc_change_type: "",
-          page: 5,
-          is_active: true,
-          sec_id: arrToUpdate[i].sec_id,
-          genre: arrToUpdate[i].genre,
-          font_info: {},
-          content: content,
-        };
-        // console.log("Insert gener", obj);
-        // cloneSegment[lineId] = obj;
+      if (content) {
+        arrToUpdate[i].content = content;
       } else {
-        cloneUpdatedSegment[lineId] = {
-          sec_id: arrToUpdate[i].sec_id,
-          line_id: arrToUpdate[i].line_id,
-          genre: arrToUpdate[i].genre,
-          update_type: "update_segment",
-          font_info: arrToUpdate[i].font_info,
-          content: content,
-        };
-        // console.log("Modified gener", obj);
-        // cloneSegment[lineId] = obj;
+        arrToUpdate[i].content = "Segment Deleted";
+      }
+
+      if (arrToUpdate[i].qc_change_type === "add") {
+        if (i === arrToUpdate.length - 1) {
+          cloneInsertedSegment[lineId] = {
+            prev_line_id: arrToUpdate[i - 1].line_id,
+            after_line_id: -1,
+            derived_section_type: "text",
+            input_seq_num: -1,
+            qc_change_type: "",
+            page: 5,
+            is_active: true,
+            sec_id: arrToUpdate[i].sec_id,
+            genre: arrToUpdate[i].genre,
+            font_info: {},
+            content: content,
+          };
+        } else {
+          cloneInsertedSegment[lineId] = {
+            prev_line_id: arrToUpdate[i - 1].line_id,
+            after_line_id: arrToUpdate[i + 1].line_id,
+            derived_section_type: "text",
+            input_seq_num: -1,
+            qc_change_type: "",
+            page: 5,
+            is_active: true,
+            sec_id: arrToUpdate[i].sec_id,
+            genre: arrToUpdate[i].genre,
+            font_info: {},
+            content: content,
+          };
+        }
+      } else {
+        if (content) {
+          cloneUpdatedSegment[lineId] = {
+            sec_id: arrToUpdate[i].sec_id,
+            line_id: arrToUpdate[i].line_id,
+            genre: arrToUpdate[i].genre,
+            update_type: "update_segment",
+            font_info: arrToUpdate[i].font_info,
+            content: content,
+          };
+        } else {
+          cloneUpdatedSegment[lineId] = {
+            sec_id: arrToUpdate[i].sec_id,
+            line_id: arrToUpdate[i].line_id,
+            genre: arrToUpdate[i].genre,
+            update_type: "soft_delete_segment",
+            font_info: arrToUpdate[i].font_info,
+            content: "",
+          };
+        }
       }
     }
   }

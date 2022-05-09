@@ -17,17 +17,17 @@ export const createTextField = (newLineID, detail) => {
   const obj = {
     content: ADDTEXT,
     font_info: {},
-    input_seq_num: detail.input_seq_num,
     derived_section_type: "text",
+    qc_change_type: QC_CHANGE_TYPE.ADDED,
+    hover: false,
+    input_seq_num: detail.input_seq_num,
     synonyms_extracted_terms: detail.synonyms_extracted_terms,
     semantic_extraction: detail.semantic_extraction,
-    qc_change_type: QC_CHANGE_TYPE.ADDED,
     sec_id: detail.sec_id,
     line_id: newLineID,
     is_active: detail.is_active,
     aidocid: detail.aidocid,
     genre: detail.genre,
-    hover: false,
   };
   return obj;
 };

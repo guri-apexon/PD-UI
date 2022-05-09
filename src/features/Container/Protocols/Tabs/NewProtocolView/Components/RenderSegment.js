@@ -10,6 +10,7 @@ import RenderTable from "./RenderTable";
 // import subScriptIcon from "../../../../../../assets/images/subscript.png";
 // ---------------------------------------------------------------------------------
 import "./renderSegment.scss";
+import React, { useRef } from "react";
 
 const segmentType = {
   table: "table",
@@ -18,17 +19,32 @@ const segmentType = {
   image: "image",
 };
 
-const RenderSegment = ({
-  data,
-  edit,
-  handleContentEdit,
-  activeLineID,
-  setActiveLineID,
-}) => {
+const RenderSegment = ({ data, edit, handleContentEdit }) => {
+  // const [currentEditData, setCurrentEditData] = useState("");
+  // const [currentLineID, setCurrentLineID] = useState("");
+  const currentEditData = useRef("");
+  const currentLineID = useRef("");
   let type = data.derived_section_type;
   let content = data.content;
   let lineID = data.line_id;
   //   let bold = data.font_info.IsBold;
+
+  const handleChange = (value, id) => {
+    currentEditData.current = value;
+    currentLineID.current = id;
+    // setCurrentLineID(id);
+  };
+  const handleBlur = () => {
+    console.log(
+      "CHanges on Blur",
+      currentEditData.current,
+      currentLineID.current
+    );
+    handleContentEdit(currentEditData.current, currentLineID.current);
+    currentEditData.current = "";
+    currentLineID.current = "";
+    // setCurrentLineID("");
+  };
   if (content) {
     if (type === segmentType.table) {
       return <RenderTable data={data} edit={edit} />;
@@ -59,11 +75,15 @@ const RenderSegment = ({
           <ContentEditable
             className="edit-text-con"
             // innerRef={this.contentEditable}
-            html={content} // innerHTML of the editable div
+            html={
+              currentLineID.current === lineID
+                ? currentEditData.current
+                : content
+            } // innerHTML of the editable div
             disabled={edit ? false : true} // use true to disable editing
-            onChange={(event) => handleContentEdit(event.target.value, lineID)} // handle innerHTML change
+            onChange={(event) => handleChange(event.target.value, lineID)} // handle innerHTML change
+            onBlur={handleBlur}
             tagName="div" // Use a custom HTML tag (uses a div by default)
-            onClick={() => setActiveLineID(lineID)}
           />
 
           {/* ----------------------- For Text Format/ Dont Delete ---------------------------
@@ -130,4 +150,10 @@ const RenderSegment = ({
   }
 };
 
-export default RenderSegment;
+export default React.memo(RenderSegment);
+// , (prevProps, nextProps) => {
+//   if (prevProps.data === nextProps.data || prevProps.edit === nextProps.edit) {
+//     return true;
+//   }
+//   return false; // props are not equal -> update the component
+// }
