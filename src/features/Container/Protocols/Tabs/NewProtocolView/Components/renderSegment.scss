@@ -3,9 +3,17 @@
   .button-container {
     position: absolute;
     right: 0;
-    top: -24px;
+    top: -28px;
+    border: 1px solid #c9c9c9;
+    .button-exec-icon {
+      background-color: #fff;
+      border: navajowhite;
+      border-right: 1px solid #c9c9c9;
+      cursor: pointer;
+      padding: 5px;
+    }
     img {
-      height: 10px;
+      height: 12px;
     }
   }
 }

@@ -1,9 +1,8 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
-import Button from "apollo-react/components/Button/Button";
-
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import Button from "apollo-react/components/Button/Button";
 
 import { getEmptyRowByColumnSize, getEmptyRowTableJSON } from "../utils";
 import cloneDeep from "lodash/cloneDeep";

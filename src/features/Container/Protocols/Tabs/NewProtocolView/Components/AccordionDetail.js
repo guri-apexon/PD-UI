@@ -18,6 +18,7 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
   const dispatch = useDispatch();
   const [hoverIndex, setHoverIndex] = useState(null);
   const [hoverSection, setHoverSection] = useState("");
+  const [activeLineID, setActiveLineID] = useState("");
   const sectionHeader = section.header;
   const sectionName = sectionHeader.source_file_section;
   const handleClick = (type) => () => {
@@ -111,6 +112,8 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
               data={data}
               edit={edit}
               handleContentEdit={handleContentEdit}
+              activeLineID={activeLineID}
+              setActiveLineID={setActiveLineID}
             />
             <div>
               {edit && !("hover" in data) && (

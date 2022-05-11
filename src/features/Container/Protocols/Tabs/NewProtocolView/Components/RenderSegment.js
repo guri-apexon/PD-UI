@@ -1,14 +1,12 @@
 import ContentEditable from "react-contenteditable";
 import RenderTable from "./RenderTable";
 
-//----------------------- For Text Format/ Dont Delete ---------------------------
-// import boldIcon from "../../../../../../assets/images/bold.png";
-// import italicIcon from "../../../../../../assets/images/italic.png";
-// import strikeIcon from "../../../../../../assets/images/strikethrough-text-interface-sign.png";
-// import underlineIcon from "../../../../../../assets/images/underline.png";
-// import superScriptIcon from "../../../../../../assets/images/superscript.png";
-// import subScriptIcon from "../../../../../../assets/images/subscript.png";
-// ---------------------------------------------------------------------------------
+import boldIcon from "../../../../../../assets/images/bold.png";
+import italicIcon from "../../../../../../assets/images/italic.png";
+import strikeIcon from "../../../../../../assets/images/strikethrough-text-interface-sign.png";
+import underlineIcon from "../../../../../../assets/images/underline.png";
+import superScriptIcon from "../../../../../../assets/images/superscript.png";
+import subScriptIcon from "../../../../../../assets/images/subscript.png";
 import "./renderSegment.scss";
 import React, { useRef } from "react";
 
@@ -19,7 +17,13 @@ const segmentType = {
   image: "image",
 };
 
-const RenderSegment = ({ data, edit, handleContentEdit }) => {
+const RenderSegment = ({
+  data,
+  edit,
+  handleContentEdit,
+  activeLineID,
+  setActiveLineID,
+}) => {
   // const [currentEditData, setCurrentEditData] = useState("");
   // const [currentLineID, setCurrentLineID] = useState("");
   const currentEditData = useRef("");
@@ -84,13 +88,12 @@ const RenderSegment = ({ data, edit, handleContentEdit }) => {
             onChange={(event) => handleChange(event.target.value, lineID)} // handle innerHTML change
             onBlur={handleBlur}
             tagName="div" // Use a custom HTML tag (uses a div by default)
+            onClick={() => setActiveLineID(lineID)}
           />
-
-          {/* ----------------------- For Text Format/ Dont Delete ---------------------------
-
-           {edit && lineID === activeLineID && (
+          {edit && lineID === activeLineID && (
             <div className="button-container">
               <button
+                className="button-exec-icon"
                 onMouseDown={(evt) => {
                   evt.preventDefault(); // Avoids loosing focus from the editable area
                   document.execCommand("bold", false, "strong"); // Send the command to the browser
@@ -99,6 +102,7 @@ const RenderSegment = ({ data, edit, handleContentEdit }) => {
                 <img src={boldIcon} alt="BOLD" />
               </button>
               <button
+                className="button-exec-icon"
                 onMouseDown={(evt) => {
                   evt.preventDefault(); // Avoids loosing focus from the editable area
                   document.execCommand("italic", false, "i"); // Send the command to the browser
@@ -107,6 +111,7 @@ const RenderSegment = ({ data, edit, handleContentEdit }) => {
                 <img src={italicIcon} alt="ITALIC" />
               </button>
               <button
+                className="button-exec-icon"
                 onMouseDown={(evt) => {
                   evt.preventDefault(); // Avoids loosing focus from the editable area
                   document.execCommand("underline", false, "u"); // Send the command to the browser
@@ -115,6 +120,7 @@ const RenderSegment = ({ data, edit, handleContentEdit }) => {
                 <img src={underlineIcon} alt="underline" />
               </button>
               <button
+                className="button-exec-icon"
                 onMouseDown={(evt) => {
                   evt.preventDefault(); // Avoids loosing focus from the editable area
                   document.execCommand("strikeThrough", false, "s"); // Send the command to the browser
@@ -123,6 +129,7 @@ const RenderSegment = ({ data, edit, handleContentEdit }) => {
                 <img src={strikeIcon} alt="strikeThrough" />
               </button>
               <button
+                className="button-exec-icon"
                 onMouseDown={(evt) => {
                   evt.preventDefault(); // Avoids loosing focus from the editable area
                   document.execCommand("superscript"); // Send the command to the browser
@@ -131,6 +138,7 @@ const RenderSegment = ({ data, edit, handleContentEdit }) => {
                 <img src={superScriptIcon} alt="superScriptIcon" />
               </button>
               <button
+                className="button-exec-icon"
                 onMouseDown={(evt) => {
                   evt.preventDefault(); // Avoids loosing focus from the editable area
                   document.execCommand("subscript"); // Send the command to the browser
@@ -139,9 +147,7 @@ const RenderSegment = ({ data, edit, handleContentEdit }) => {
                 <img src={subScriptIcon} alt="subScriptIcon" />
               </button>
             </div>
-          )} 
-          -----------------------------------------------------------------------------------------------------
-          */}
+          )}
         </div>
       );
     }

@@ -265,7 +265,7 @@ export function* updateDataEdit(action) {
       if (content) {
         arrToUpdate[i].content = content;
       } else {
-        arrToUpdate[i].content = "Segment Deleted";
+        arrToUpdate[i].content = "This line got deleted.";
       }
 
       if (arrToUpdate[i].qc_change_type === "add") {
