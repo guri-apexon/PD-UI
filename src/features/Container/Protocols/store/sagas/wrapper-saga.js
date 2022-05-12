@@ -265,7 +265,7 @@ export function* updateDataEdit(action) {
       if (content) {
         arrToUpdate[i].content = content;
       } else {
-        arrToUpdate[i].content = "This line got deleted.";
+        arrToUpdate[i].content = "";
       }
 
       if (arrToUpdate[i].qc_change_type === "add") {
