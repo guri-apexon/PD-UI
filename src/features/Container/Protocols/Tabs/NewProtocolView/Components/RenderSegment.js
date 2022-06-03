@@ -50,6 +50,12 @@ const RenderSegment = ({
     currentLineID.current = "";
     // setCurrentLineID("");
   };
+  const handleImageDelete = () => {
+    dispatch({
+      type: ActionTypes.DELETE_IMAGE,
+      payload: { sectionName, lineID },
+    });
+  };
   const handleTableDelete = () => {
     dispatch({
       type: ActionTypes.DELETE_TABLE,
@@ -96,10 +102,17 @@ const RenderSegment = ({
       );
     } else if (type === segmentType.image) {
       if ("imageButton" in data && data.imageButton === true) {
-        return <FileUpload />;
+        return <FileUpload deleteImage={handleImageDelete} />;
       }
       return (
-        <div className="image-extract">
+        <div className="image-container">
+          {edit && (
+            <div className="image-buttons">
+              <button className="button delete" onClick={handleImageDelete}>
+                Delete Image
+              </button>
+            </div>
+          )}
           <img
             src={"data:image/*;base64," + content}
             alt=""

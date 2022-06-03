@@ -378,3 +378,16 @@ export function* deleteTableByLineID(action) {
   }
   yield put(getWrapperData(cloneData));
 }
+export function* deleteImageByLineID(action) {
+  const { lineID, sectionName } = action.payload;
+  const currentData = yield getWrapperState();
+  let cloneData = cloneDeep(currentData);
+  let arrToUpdate = cloneData.data[sectionName].detail;
+  for (let i = 0; i < arrToUpdate.length; i++) {
+    if (arrToUpdate[i].line_id === lineID) {
+      arrToUpdate[i].content = "";
+      arrToUpdate[i].imageButton = false;
+    }
+  }
+  yield put(getWrapperData(cloneData));
+}

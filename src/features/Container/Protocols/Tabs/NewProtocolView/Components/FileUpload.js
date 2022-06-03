@@ -1,6 +1,7 @@
 import { useState } from "react";
+import "./fileUpload.scss";
 
-const FileUpload = () => {
+const FileUpload = ({ deleteImage }) => {
   const [imgSrc, setImgSrc] = useState("");
 
   const handleFileUpload = (e) => {
@@ -10,7 +11,14 @@ const FileUpload = () => {
     setImgSrc(url);
   };
   return (
-    <div>
+    <div className="image-container">
+      {imgSrc && (
+        <div className="image-buttons">
+          <button className="button delete" onClick={deleteImage}>
+            Delete Image
+          </button>
+        </div>
+      )}
       <form>
         <input
           type="file"

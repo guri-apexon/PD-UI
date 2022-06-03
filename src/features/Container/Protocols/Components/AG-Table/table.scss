@@ -1,4 +1,8 @@
 .table-container {
+  .delete {
+    background-color: red !important;
+    color: #fff;
+  }
   .ag-row-drag {
     max-width: 20px;
   }
@@ -9,9 +13,11 @@
   // .ag-theme-alpine {
   //   height: 200px;
   // }
+
   .button {
     font-size: 10px;
     margin-left: 2px;
+    padding: 5px;
     background-color: #fff;
     border: none;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

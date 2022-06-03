@@ -161,10 +161,10 @@ const TableComp = ({
           <button className="button add-row" onClick={handleDeleteRow}>
             Delete Row
           </button>
-          <button className="button add-row" onClick={handleSave}>
+          <button className="button add-row save-button" onClick={handleSave}>
             Save
           </button>
-          <button className="button add-row" onClick={handleTableDelete}>
+          <button className="button add-row delete" onClick={handleTableDelete}>
             Delete Table
           </button>
           {/* <button className="button save-button" onClick={getFinalData}>

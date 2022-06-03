@@ -1,0 +1,20 @@
+.image-container {
+  .image-buttons {
+    display: flex;
+    justify-content: end;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    .button {
+      font-size: 10px;
+      margin-left: 2px;
+      padding: 5px;
+      background-color: #fff;
+      border: none;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+    .delete {
+      background-color: red;
+      color: #fff;
+    }
+  }
+}
