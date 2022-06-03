@@ -6,12 +6,6 @@
   // .ag-theme-alpine {
   //   height: 200px;
   // }
-  .ag-theme-alpine
-    .ag-cell-wrapper
-    > :not(.ag-cell-value):not(.ag-group-value) {
-    padding: 0;
-    max-width: 10px;
-  }
   .button {
     font-size: 10px;
     margin-left: 2px;
