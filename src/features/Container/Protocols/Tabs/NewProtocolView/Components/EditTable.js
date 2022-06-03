@@ -171,12 +171,10 @@ const Table = (props) => {
     selectedRowData.forEach(function (dataItem) {
       const keys = Object.keys(dataItem);
       for (let i = 0; i < keys.length; i++) {
-        dataItem[keys[i]] = `<strike>DELETED</strike>`;
+        dataItem[keys[i]] = `<strike>${dataItem[keys[i]]}</strike>`;
       }
-      // dataItem.category = category;
     });
     gridRef.current.api.applyTransaction({ update: selectedRowData });
-    // const dataSource = cloneDeep(tableJSON);
     const selectedRows = gridRef.current.api.getSelectedNodes();
     updateDELETEDROWJSON(selectedRows);
 

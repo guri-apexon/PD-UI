@@ -8,6 +8,8 @@ import {
 import { httpCall, BASE_URL_8000 } from "../../../../../utils/api";
 import { cloneDeep, isEmpty } from "lodash";
 import {
+  createImageField,
+  createTableField,
   // createHeaderField,
   // createTableField,
   createTextField,
@@ -215,7 +217,7 @@ export function* updateDataStream(action) {
   const { derivedSectionType, lineId, sectionName } = action.payload;
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
-
+  console.log(derivedSectionType);
   let arrToUpdate = cloneData.data[sectionName].detail;
   for (let i = 0; i < arrToUpdate.length; i++) {
     if (arrToUpdate[i].line_id === lineId) {
@@ -243,6 +245,16 @@ export function* updateDataStream(action) {
         //   const obj = createTableField(newLineID, arrToUpdate[i]);
         //   arrToUpdate.splice(i + 1, 0, obj);
         //   break;
+      } else if (derivedSectionType === "table") {
+        let newLineID = parseFloat(lineId) + 0.1;
+        const obj = createTableField(newLineID, arrToUpdate[i], 3, 3);
+        arrToUpdate.splice(i + 1, 0, obj);
+        break;
+      } else if (derivedSectionType === "image") {
+        let newLineID = parseFloat(lineId) + 0.1;
+        const obj = createImageField(newLineID, arrToUpdate[i], 3, 3);
+        arrToUpdate.splice(i + 1, 0, obj);
+        break;
       }
     }
   }
@@ -323,5 +335,24 @@ export function* updateDataEdit(action) {
   }
   yield put(getSegmentUpdated(cloneUpdatedSegment));
   yield put(getSegmentInserted(cloneInsertedSegment));
+  yield put(getWrapperData(cloneData));
+}
+export function* enableTableForEdit(action) {
+  // eslint-disable-next-line no-debugger
+  debugger;
+  const { lineID, sectionName } = action.payload;
+  console.log("ENABLE", lineID, sectionName);
+  const currentData = yield getWrapperState();
+  let cloneData = cloneDeep(currentData);
+  let arrToUpdate = cloneData.data[sectionName].detail;
+  for (let i = 0; i < arrToUpdate.length; i++) {
+    if (
+      arrToUpdate[i].derived_section_type === "table" &&
+      parseFloat(lineID) === parseFloat(arrToUpdate[i].line_id)
+    ) {
+      arrToUpdate[i].editEnabledFor = lineID;
+      break;
+    }
+  }
   yield put(getWrapperData(cloneData));
 }

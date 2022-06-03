@@ -1,0 +1,44 @@
+.table-container {
+  .column-checkbox {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  // .ag-theme-alpine {
+  //   height: 200px;
+  // }
+  .ag-theme-alpine
+    .ag-cell-wrapper
+    > :not(.ag-cell-value):not(.ag-group-value) {
+    padding: 0;
+    max-width: 10px;
+  }
+  .button {
+    font-size: 10px;
+    margin-left: 2px;
+    background-color: #fff;
+    border: none;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  }
+  .button-container {
+    display: flex;
+    justify-content: end;
+    margin-right: 20px;
+    margin-bottom: 10px;
+  }
+  .save-button {
+    background-color: green;
+    color: #fff;
+    border: none;
+  }
+  .edit-table {
+    background-color: rgb(81, 81, 81);
+    color: #fff;
+    border: none;
+  }
+}
+.button-container-index {
+  display: flex;
+  justify-content: end;
+  margin-right: 12px;
+  margin-bottom: 5px;
+}

@@ -1,4 +1,5 @@
 import { select } from "redux-saga/effects";
+import { tableJSONByRowAndColumnLength } from "../../Components/AG-Table/Utils/createTable";
 
 export const QC_CHANGE_TYPE = {
   ADDED: "add",
@@ -6,6 +7,7 @@ export const QC_CHANGE_TYPE = {
   DELETED: "delete",
 };
 const ADDTEXT = "Add Text Here";
+const IMAGEADD = "Add Image";
 
 export function* getUserId() {
   const state = yield select();
@@ -56,12 +58,11 @@ export const createHeaderField = (newLineID, detail) => {
   return obj;
 };
 
-export const createTableField = (newLineID, detail) => {
+export const createTableField = (newLineID, detail, rows, columns) => {
   const obj = {
     content: {
       Table: "",
-      TableProperties:
-        '[{"1.0":{"entities":[],"content":"Edit Col-1","roi_id":{"table_roi_id":"b9a2e1ff-efb4-476d-b43d-a198c56ea43c","row_roi_id":"77fd70eb-3620-4daf-beae-eaba14f948aa","column_roi_id":"101ce83c-a6f2-472f-bb6d-06e6bbcd6cce","datacell_roi_id":"f56b87d1-1aaf-45b4-8940-2689f613952c"},"table_index":0.0,"qc_change_type":""},"2.0":{"entities":[],"content":"Edit Col-2","roi_id":{"table_roi_id":"b9a2e1ff-efb4-476d-b43d-a198c56ea43c","row_roi_id":"77fd70eb-3620-4daf-beae-eaba14f948aa","column_roi_id":"101ce83c-a6f2-472f-bb6d-06e6bbcd6cce","datacell_roi_id":"f56b87d1-1aaf-45b4-8940-2689f613952c"},"table_index":0.0,"qc_change_type":""}}]',
+      TableProperties: tableJSONByRowAndColumnLength(rows, columns),
       SectionHeaderPrintPage: "0",
       TableIndex: "1",
       TableName: "",
@@ -85,6 +86,26 @@ export const createTableField = (newLineID, detail) => {
     is_active: detail.is_active,
     aidocid: detail.aidocid,
     genre: detail.genre,
+  };
+  return obj;
+};
+
+export const createImageField = (newLineID, detail) => {
+  const obj = {
+    content: IMAGEADD,
+    font_info: {},
+    derived_section_type: "image",
+    qc_change_type: QC_CHANGE_TYPE.ADDED,
+    hover: false,
+    input_seq_num: detail.input_seq_num,
+    synonyms_extracted_terms: detail.synonyms_extracted_terms,
+    semantic_extraction: detail.semantic_extraction,
+    sec_id: detail.sec_id,
+    line_id: newLineID,
+    is_active: detail.is_active,
+    aidocid: detail.aidocid,
+    genre: detail.genre,
+    imageButton: true,
   };
   return obj;
 };

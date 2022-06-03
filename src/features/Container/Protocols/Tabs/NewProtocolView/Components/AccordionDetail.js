@@ -111,6 +111,7 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
             <RenderSegment
               data={data}
               edit={edit}
+              sectionName={sectionName}
               handleContentEdit={handleContentEdit}
               activeLineID={activeLineID}
               setActiveLineID={setActiveLineID}

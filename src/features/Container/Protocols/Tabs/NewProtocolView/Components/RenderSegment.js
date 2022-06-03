@@ -1,5 +1,5 @@
 import ContentEditable from "react-contenteditable";
-import RenderTable from "./RenderTable";
+// import RenderTable from "./RenderTable";
 
 import boldIcon from "../../../../../../assets/images/bold.png";
 import italicIcon from "../../../../../../assets/images/italic.png";
@@ -7,8 +7,13 @@ import strikeIcon from "../../../../../../assets/images/strikethrough-text-inter
 import underlineIcon from "../../../../../../assets/images/underline.png";
 import superScriptIcon from "../../../../../../assets/images/superscript.png";
 import subScriptIcon from "../../../../../../assets/images/subscript.png";
+import listIcon from "../../../../../../assets/images/list.png";
 import "./renderSegment.scss";
 import React, { useRef } from "react";
+import PDTable from "../../../Components/AG-Table";
+import FileUpload from "./FileUpload";
+import { useDispatch } from "react-redux";
+import { ActionTypes } from "../../../store/ActionTypes";
 
 const segmentType = {
   table: "table",
@@ -23,15 +28,16 @@ const RenderSegment = ({
   handleContentEdit,
   activeLineID,
   setActiveLineID,
+  sectionName,
 }) => {
   // const [currentEditData, setCurrentEditData] = useState("");
   // const [currentLineID, setCurrentLineID] = useState("");
+  const dispatch = useDispatch();
   const currentEditData = useRef("");
   const currentLineID = useRef("");
   let type = data.derived_section_type;
   let content = data.content;
   let lineID = data.line_id;
-  //   let bold = data.font_info.IsBold;
 
   const handleChange = (value, id) => {
     currentEditData.current = value;
@@ -39,19 +45,33 @@ const RenderSegment = ({
     // setCurrentLineID(id);
   };
   const handleBlur = () => {
-    console.log(
-      "CHanges on Blur",
-      currentEditData.current,
-      currentLineID.current
-    );
     handleContentEdit(currentEditData.current, currentLineID.current);
     currentEditData.current = "";
     currentLineID.current = "";
     // setCurrentLineID("");
   };
+  const handleTableSave = (content, lineID) => {
+    handleContentEdit(content, lineID);
+  };
+  const enableTableForEdit = () => {
+    dispatch({
+      type: ActionTypes.ENABLE_TABLE,
+      payload: { lineID, sectionName },
+    });
+  };
+
   if (content) {
     if (type === segmentType.table) {
-      return <RenderTable data={data} edit={edit} />;
+      // return <RenderTable data={data} edit={edit} />;
+      return (
+        <PDTable
+          data={data}
+          edit={edit}
+          handleSave={handleTableSave}
+          key={lineID}
+          enableTableForEdit={enableTableForEdit}
+        />
+      );
     } else if (type === segmentType.header) {
       return (
         <ContentEditable
@@ -64,12 +84,19 @@ const RenderSegment = ({
         />
       );
     } else if (type === segmentType.image) {
+      if ("imageButton" in data && data.imageButton === true) {
+        return <FileUpload />;
+      }
       return (
         <div className="image-extract">
           <img
             src={"data:image/*;base64," + content}
             alt=""
-            style={{ height: "auto", width: "100%" }}
+            style={{
+              height: "auto",
+              maxWidth: "100%",
+              objectFit: "cover",
+            }}
           />
         </div>
       );
@@ -145,6 +172,15 @@ const RenderSegment = ({
                 }}
               >
                 <img src={subScriptIcon} alt="subScriptIcon" />
+              </button>
+              <button
+                className="button-exec-icon"
+                onMouseDown={(evt) => {
+                  evt.preventDefault(); // Avoids loosing focus from the editable area
+                  document.execCommand("insertUnorderedList"); // Send the command to the browser
+                }}
+              >
+                <img src={listIcon} alt="list" />
               </button>
             </div>
           )}
