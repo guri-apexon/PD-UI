@@ -25,6 +25,7 @@ const TableComp = ({
   handleSave,
   lineID,
   gridOptions,
+  handleTableDelete,
 }) => {
   const gridRef = useRef();
   const [dataSource, setDataSource] = useState([]);
@@ -146,6 +147,7 @@ const TableComp = ({
   //   handleSave(json, lineID);
   //   setEditTable(false);
   // };
+
   return (
     <div className="table-container">
       {editTable && (
@@ -158,6 +160,12 @@ const TableComp = ({
           </button>
           <button className="button add-row" onClick={handleDeleteRow}>
             Delete Row
+          </button>
+          <button className="button add-row" onClick={handleSave}>
+            Save
+          </button>
+          <button className="button add-row" onClick={handleTableDelete}>
+            Delete Table
           </button>
           {/* <button className="button save-button" onClick={getFinalData}>
             Save

@@ -338,20 +338,42 @@ export function* updateDataEdit(action) {
   yield put(getWrapperData(cloneData));
 }
 export function* enableTableForEdit(action) {
-  // eslint-disable-next-line no-debugger
-  debugger;
   const { lineID, sectionName } = action.payload;
   console.log("ENABLE", lineID, sectionName);
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
   let arrToUpdate = cloneData.data[sectionName].detail;
   for (let i = 0; i < arrToUpdate.length; i++) {
-    if (
-      arrToUpdate[i].derived_section_type === "table" &&
-      parseFloat(lineID) === parseFloat(arrToUpdate[i].line_id)
-    ) {
-      arrToUpdate[i].editEnabledFor = lineID;
-      break;
+    arrToUpdate[i].editEnabledFor = lineID;
+    // if (
+    //   arrToUpdate[i].derived_section_type === "table" &&
+    //   parseFloat(lineID) === parseFloat(arrToUpdate[i].line_id)
+    // ) {
+    //   arrToUpdate[i].editEnabledFor = lineID;
+    //   break;
+    // }
+  }
+  yield put(getWrapperData(cloneData));
+}
+
+export function* disableTableForEdit(action) {
+  const { sectionName } = action.payload;
+  const currentData = yield getWrapperState();
+  let cloneData = cloneDeep(currentData);
+  let arrToUpdate = cloneData.data[sectionName].detail;
+  for (let i = 0; i < arrToUpdate.length; i++) {
+    arrToUpdate[i].editEnabledFor = "";
+  }
+  yield put(getWrapperData(cloneData));
+}
+export function* deleteTableByLineID(action) {
+  const { lineID, sectionName } = action.payload;
+  const currentData = yield getWrapperState();
+  let cloneData = cloneDeep(currentData);
+  let arrToUpdate = cloneData.data[sectionName].detail;
+  for (let i = 0; i < arrToUpdate.length; i++) {
+    if (arrToUpdate[i].line_id === lineID) {
+      arrToUpdate[i].content = "";
     }
   }
   yield put(getWrapperData(cloneData));

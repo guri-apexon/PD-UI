@@ -13,7 +13,13 @@ import ViewTable from "./ViewTable";
 
 const SHARED_OPTIONS = { suppressCellSelection: true };
 
-const PDTable = ({ data, edit, handleSave, enableTableForEdit }) => {
+const PDTable = ({
+  data,
+  edit,
+  handleSave,
+  enableTableForEdit,
+  handleTableDelete,
+}) => {
   const [dataSource, setDataSource] = useState([]);
   const [columnInfo, setColumnInfo] = useState([]);
   const [columnInfoNonEdit, setColumnInfoNonEdit] = useState([]);
@@ -56,6 +62,7 @@ const PDTable = ({ data, edit, handleSave, enableTableForEdit }) => {
           edit={edit}
           handleSave={handleSaveTable}
           lineID={data.line_id}
+          handleTableDelete={handleTableDelete}
           gridOptions={{ ...SHARED_OPTIONS }}
         />
       ) : (

@@ -13,6 +13,8 @@ import {
   updateDataEdit,
   UpdateAPI,
   enableTableForEdit,
+  disableTableForEdit,
+  deleteTableByLineID,
 } from "./sagas/wrapper-saga";
 import { fetchProtocolViewData1, handleExpandBPO1 } from "./sagas/wrapper-meta";
 import { fetchPTData } from "./sagas/pt-data";
@@ -31,6 +33,8 @@ function* watchProtocolAsync() {
   yield takeLatest(ActionTypes.UPDATE_PROTOCOL_VIEW_CHANGES, updateDataEdit);
   yield takeLatest(ActionTypes.API_UPDATE_SEGMENT, UpdateAPI);
   yield takeLatest(ActionTypes.ENABLE_TABLE, enableTableForEdit);
+  yield takeLatest(ActionTypes.DISABLE_TABLE, disableTableForEdit);
+  yield takeLatest(ActionTypes.DELETE_TABLE, deleteTableByLineID);
 }
 export default function* protocolSaga() {
   yield all([watchProtocolAsync()]);

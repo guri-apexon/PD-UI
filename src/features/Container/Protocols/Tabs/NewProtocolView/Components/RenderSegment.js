@@ -50,8 +50,18 @@ const RenderSegment = ({
     currentLineID.current = "";
     // setCurrentLineID("");
   };
+  const handleTableDelete = () => {
+    dispatch({
+      type: ActionTypes.DELETE_TABLE,
+      payload: { sectionName, lineID },
+    });
+  };
   const handleTableSave = (content, lineID) => {
-    handleContentEdit(content, lineID);
+    // handleContentEdit(content, lineID);
+    dispatch({
+      type: ActionTypes.DISABLE_TABLE,
+      payload: { sectionName },
+    });
   };
   const enableTableForEdit = () => {
     dispatch({
@@ -70,6 +80,7 @@ const RenderSegment = ({
           handleSave={handleTableSave}
           key={lineID}
           enableTableForEdit={enableTableForEdit}
+          handleTableDelete={handleTableDelete}
         />
       );
     } else if (type === segmentType.header) {

@@ -1,4 +1,7 @@
 .table-container {
+  .ag-row-drag {
+    max-width: 20px;
+  }
   .column-checkbox {
     display: flex;
     justify-content: space-evenly;
