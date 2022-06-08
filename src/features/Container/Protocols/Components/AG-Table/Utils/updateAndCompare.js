@@ -254,12 +254,24 @@ export const updateTableJSONOnColumnAddition = (columnLength, json) => {
   }
   return cloneData;
 };
+
+const instanceIdStartsFrom = (columns) => {
+  const res = columns.reduce(function (prev, current) {
+    return prev.instanceId < current.instanceId ? prev : current;
+  });
+
+  console.log("Lowest ID", res.instanceId);
+  return res.instanceId;
+};
 export const handleColumnSwaping2 = (json, newColumns) => {
-  console.log(newColumns);
+  console.log("Table Columns", newColumns);
+  const baseInstanceIdTemp = instanceIdStartsFrom(newColumns);
+  const baseInstanceId = parseInt(baseInstanceIdTemp);
   let cloneJSON = cloneDeep(json);
 
   for (let i = 0; i < newColumns.length; i++) {
-    const fromIndex = parseInt(newColumns[i].instanceId);
+    const fromIndexTemp = parseInt(newColumns[i].instanceId);
+    const fromIndex = fromIndexTemp - baseInstanceId;
     const toIndex = i;
     if (fromIndex !== toIndex) {
       for (let j = 0; j < cloneJSON.length; j++) {
@@ -273,6 +285,7 @@ export const handleColumnSwaping2 = (json, newColumns) => {
   console.log(deletedColumns);
   return deletedColumns;
 };
+
 const handleDeletedColumns = (json, columns) => {
   let cloneData = cloneDeep(json);
   for (let i = 0; i < columns.length; i++) {

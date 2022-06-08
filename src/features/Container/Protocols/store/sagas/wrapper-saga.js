@@ -15,6 +15,7 @@ import {
   createTextField,
 } from "./utils";
 import { toast } from "react-toastify";
+import { ActionTypes } from "../ActionTypes";
 
 function* getWrapperState() {
   const state = yield select();
@@ -31,11 +32,11 @@ function* getSegmentInsertedState() {
   const segment = state.protocol.segmentInserted;
   return segment;
 }
-function* getDOCIDState() {
-  const state = yield select();
-  const id = state.protocol.docID;
-  return id;
-}
+// function* getDOCIDState() {
+//   const state = yield select();
+//   const id = state.protocol.docID;
+//   return id;
+// }
 export function* handleExpandBPO(action) {
   const { sectionName } = action.payload;
   const currentData = yield getWrapperState();
@@ -45,7 +46,7 @@ export function* handleExpandBPO(action) {
 }
 export function* fetchProtocolViewData(action) {
   const { id, body, childString, sectionName } = action.payload;
-  const docID = yield getDOCIDState();
+  // const docID = yield getDOCIDState();
   if (body) {
     const currentData = yield getWrapperState();
     let cloneData = cloneDeep(currentData);
@@ -115,54 +116,54 @@ export function* fetchProtocolViewData(action) {
       yield put(getWrapperData(preLoadingState));
     }
   } else {
-    if (id === docID) {
-      const currentData = yield getWrapperState();
-      yield put(getWrapperData(currentData));
-    } else {
-      const preLoadingState = {
-        loader: true,
-        success: false,
-        error: "",
-        data: null,
-        detail: null,
-      };
-      yield put(getWrapperData(preLoadingState));
-      const URL = `${BASE_URL_8000}/api/segments/section_metadata_by_level?aidocid=${id}`;
-      // const URL = "/POC/lev-1.json";
-      const config = {
-        url: URL,
-        method: "GET",
-      };
-      const { data, success } = yield call(httpCall, config);
-      if (success) {
-        let dataFormat = {};
-        for (let i = 0; i < data.length; i++) {
-          dataFormat[data[i].source_file_section] = {
-            header: data[i],
-            detail: null,
-            loading: false,
-            success: false,
-            expanded: false,
-          };
-        }
-        const successState = {
-          loader: false,
-          success: true,
-          error: "",
-          data: dataFormat,
-        };
-        yield put(getWrapperData(successState));
-        yield put(setDOCID(id));
-      } else {
-        const errorState = {
-          loader: false,
+    // if (id === docID) {
+    //   const currentData = yield getWrapperState();
+    //   yield put(getWrapperData(currentData));
+    // } else {
+    const preLoadingState = {
+      loader: true,
+      success: false,
+      error: "",
+      data: null,
+      detail: null,
+    };
+    yield put(getWrapperData(preLoadingState));
+    const URL = `${BASE_URL_8000}/api/segments/section_metadata_by_level?aidocid=${id}`;
+    // const URL = "/POC/lev-1.json";
+    const config = {
+      url: URL,
+      method: "GET",
+    };
+    const { data, success } = yield call(httpCall, config);
+    if (success) {
+      let dataFormat = {};
+      for (let i = 0; i < data.length; i++) {
+        dataFormat[data[i].source_file_section] = {
+          header: data[i],
+          detail: null,
+          loading: false,
           success: false,
-          error: "NO DATA FOUND",
-          data: null,
+          expanded: false,
         };
-        yield put(getWrapperData(errorState));
       }
+      const successState = {
+        loader: false,
+        success: true,
+        error: "",
+        data: dataFormat,
+      };
+      yield put(getWrapperData(successState));
+      yield put(setDOCID(id));
+    } else {
+      const errorState = {
+        loader: false,
+        success: false,
+        error: "NO DATA FOUND",
+        data: null,
+      };
+      yield put(getWrapperData(errorState));
     }
+    // }
   }
 }
 const objectToArray = (obj) => {
@@ -187,6 +188,11 @@ export function* UpdateAPI(action) {
     const { data, success } = yield call(httpCall, configUpdate);
     if (success) {
       console.log("data", data);
+      yield put({
+        type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
+        payload: { id: id, body: false },
+      });
+      yield put(getSegmentUpdated({}));
       toast.success("Content Updated Successfully");
     } else {
       toast.error("Content Updation Not Saved.");
@@ -203,6 +209,11 @@ export function* UpdateAPI(action) {
     const { data, success } = yield call(httpCall, configInsert);
     if (success) {
       console.log("data", data);
+      yield put({
+        type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
+        payload: { id: id, body: false },
+      });
+      yield put(getSegmentInserted({}));
       toast.success("Content Inserted Successfully");
     } else {
       toast.error("Content Insertion Not Saved.");

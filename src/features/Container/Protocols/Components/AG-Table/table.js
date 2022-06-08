@@ -7,7 +7,7 @@ import {
   getEmptyRowByColumnSize,
   getEmptyRowTableJSON,
   getNewColumnInfoArr,
-  // handleColumnSwaping2,
+  handleColumnSwaping2,
   updateDataSourceOnColumnAddition,
   updateTableJSONOnColumnAddition,
   updateTablePropertiesOnRowDrag,
@@ -139,14 +139,14 @@ const TableComp = ({
 
     getRowData();
   }, [columnInfo, tableProperties]);
-  // const getFinalData = () => {
-  //   const columns = gridRef.current.columnApi.getAllGridColumns();
-  //   console.log("Get data Columns", columns);
-  //   const finalJSON = handleColumnSwaping2(tableProperties, columns);
-  //   const json = JSON.stringify(finalJSON);
-  //   handleSave(json, lineID);
-  //   setEditTable(false);
-  // };
+  const getFinalData = () => {
+    const columns = gridRef.current.columnApi.getAllGridColumns();
+    console.log("Get data Columns", columns);
+    const finalJSON = handleColumnSwaping2(tableProperties, columns);
+    const json = JSON.stringify(finalJSON);
+    handleSave(json, lineID);
+    setEditTable(false);
+  };
 
   return (
     <div className="table-container">
@@ -161,7 +161,7 @@ const TableComp = ({
           <button className="button add-row" onClick={handleDeleteRow}>
             Delete Row
           </button>
-          <button className="button add-row save-button" onClick={handleSave}>
+          <button className="button add-row save-button" onClick={getFinalData}>
             Save
           </button>
           <button className="button add-row delete" onClick={handleTableDelete}>

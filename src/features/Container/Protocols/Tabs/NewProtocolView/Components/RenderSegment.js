@@ -63,7 +63,7 @@ const RenderSegment = ({
     });
   };
   const handleTableSave = (content, lineID) => {
-    // handleContentEdit(content, lineID);
+    handleContentEdit(content, lineID);
     dispatch({
       type: ActionTypes.DISABLE_TABLE,
       payload: { sectionName },
@@ -92,12 +92,13 @@ const RenderSegment = ({
     } else if (type === segmentType.header) {
       return (
         <ContentEditable
-          className="edit-header-co"
+          className="line-content edit-header-co"
           // innerRef={this.contentEditable}
           html={content} // innerHTML of the editable div
           disabled={edit ? false : true} // use true to disable editing
           onChange={(event) => handleContentEdit(event.target.value, lineID)} // handle innerHTML change
           tagName="div" // Use a custom HTML tag (uses a div by default)
+          data-placeholder
         />
       );
     } else if (type === segmentType.image) {
@@ -128,7 +129,7 @@ const RenderSegment = ({
       return (
         <div className="format-container">
           <ContentEditable
-            className="edit-text-con"
+            className="line-content edit-text-con"
             // innerRef={this.contentEditable}
             html={
               currentLineID.current === lineID
@@ -140,6 +141,7 @@ const RenderSegment = ({
             onBlur={handleBlur}
             tagName="div" // Use a custom HTML tag (uses a div by default)
             onClick={() => setActiveLineID(lineID)}
+            data-placeholder
           />
           {edit && lineID === activeLineID && (
             <div className="button-container">

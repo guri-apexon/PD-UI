@@ -32,13 +32,13 @@ const Expandable = ({ id, name, dfsPath }) => {
       setPDFZoom(1.8);
     }
   }, [pdfWidth]);
-  // useEffect(() => {
-  //   if (showAttributes) {
-  //     setPDFWidth(900);
-  //   } else {
-  //     setPDFWidth(650);
-  //   }
-  // }, [showAttributes]);
+  useEffect(() => {
+    if (showAttributes) {
+      setPDFWidth(900);
+    } else {
+      setPDFWidth(650);
+    }
+  }, [showAttributes]);
   useEffect(() => {
     var m_pos;
 
@@ -119,30 +119,31 @@ const Expandable = ({ id, name, dfsPath }) => {
         />
       </div>
 
-      <div id="left-panel" className={"left-panel"}>
+      <div
+        id="left-panel"
+        className={showAttributes ? "left-panel-attr" : "left-panel"}
+      >
         <PDFView name={name} dfsPath={dfsPath} zoom={pdfZoom} />
       </div>
-      <div className={"resize"} id="resize"></div>
-
-      <div id="right-panel" className="right-panel">
-        {showAttributes ? (
-          <AtrributeView id={id} name={name} dfsPath={dfsPath} />
-        ) : (
+      <div
+        className={showAttributes ? "resize-attr" : "resize"}
+        id="resize"
+      ></div>
+      {!showAttributes && (
+        <div id="right-panel" className="right-panel">
           <ProtocolView id={id} name={name} dfsPath={dfsPath} edit={edit} />
-        )}
-
-        {/* {edit ? (
+          {/* {edit ? (
             <View id={id} name={name} dfsPath={dfsPath} />
           ) : (
             <ViewOnly id={id} name={name} dfsPath={dfsPath} />
           )} */}
-      </div>
-
-      {/* {showAttributes && (
+        </div>
+      )}
+      {showAttributes && (
         <div id="right-panel" className="right-panel-attr">
           <AtrributeView id={id} name={name} dfsPath={dfsPath} />
         </div>
-      )} */}
+      )}
       {/* <div id="right_panel">{props.children}</div> */}
     </div>
   );

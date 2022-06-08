@@ -372,27 +372,6 @@ label {
     height: 0px;
     border-bottom: 1px solid transparent;
   }
-  .show-option {
-    position: relative;
-    display: flex;
-    justify-content: end;
-    border-bottom: 1px dotted;
-    border-color: blue;
-    button {
-      height: 15px;
-      width: 15px;
-      position: absolute;
-      right: 3px;
-      background-color: rgb(128, 128, 128);
-      padding: 10px;
-      top: 3px;
-    }
-    .plus-icon {
-      height: 10px;
-      width: 10px;
-      color: #fff;
-    }
-  }
 }
 .protocol-column {
   margin-left: 5px;
@@ -448,13 +427,7 @@ label {
     }
   }
 }
-.table-container {
-  font-family: Arial, Helvetica, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 14px;
-  padding: 0px 8px;
-}
+
 .table-container table {
   border: none;
 }

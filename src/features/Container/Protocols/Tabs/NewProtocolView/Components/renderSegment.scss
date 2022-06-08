@@ -1,5 +1,8 @@
 .format-container {
   position: relative;
+  .line-content {
+    outline: none;
+  }
   .button-container {
     position: absolute;
     right: 0;

@@ -13,6 +13,7 @@ import {
 } from "./HoverElements";
 import { useDispatch } from "react-redux";
 import { ActionTypes } from "../../../store/ActionTypes";
+import "./accordionDetail.scss";
 
 const AccordionBody = ({ section, edit, scrollToPage }) => {
   const dispatch = useDispatch();
@@ -107,7 +108,10 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
           className="option-content-container"
           style={{ marginBottom: edit ? 20 : 0 }}
         >
-          <div onMouseEnter={() => handleMouseHover(data.line_id, sectionName)}>
+          <div
+            onClick={() => handleMouseHover(data.line_id, sectionName)}
+            style={{ position: "relative" }}
+          >
             <RenderSegment
               data={data}
               edit={edit}
@@ -116,7 +120,7 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
               activeLineID={activeLineID}
               setActiveLineID={setActiveLineID}
             />
-            <div>
+            <>
               {edit && !("hover" in data) && (
                 <HoverComponent
                   line_id={data.line_id}
@@ -124,7 +128,7 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
                   menuItems={menuItems}
                 />
               )}
-            </div>
+            </>
           </div>
         </div>
       );
