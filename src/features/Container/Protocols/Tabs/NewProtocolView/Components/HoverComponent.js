@@ -1,6 +1,7 @@
 import Tooltip from "apollo-react/components/Tooltip";
 import IconMenuButton from "apollo-react/components/IconMenuButton";
 import Plus from "apollo-react-icons/Plus";
+import { v4 as uuidv4 } from "uuid";
 
 function HoverComponent({ line_id, hoverIndex, menuItems }) {
   return (
@@ -15,7 +16,7 @@ function HoverComponent({ line_id, hoverIndex, menuItems }) {
       >
         <IconMenuButton
           className="icon-buttons"
-          id={"actions-elements" + line_id}
+          id={"actions-elements" + uuidv4()}
           menuItems={menuItems}
         >
           <Plus className="plus-icon" size="small" />

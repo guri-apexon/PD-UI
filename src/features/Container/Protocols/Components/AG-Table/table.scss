@@ -1,4 +1,112 @@
+.view-only-table {
+  .ag-header {
+    display: none;
+  }
+}
+.edit-table {
+  .ag-header {
+    display: block;
+  }
+}
 .table-container {
+  position: relative;
+  margin-bottom: 40px;
+  margin-top: 20px;
+  .action-button-menu {
+    display: flex;
+    position: absolute;
+    right: 10px;
+    top: -10px;
+    // right: 0;
+    // top: -15px;
+    button {
+      height: 25px;
+      width: 25px;
+      margin-right: 10px;
+      svg {
+        height: 15px;
+        width: 15px;
+      }
+    }
+    .add-button {
+      background-color: #095898;
+      color: #fff;
+    }
+    .remove-button {
+      background-color: #333;
+      color: #fff;
+    }
+    ul {
+      a {
+        border-radius: 0;
+        border: none;
+        box-shadow: none;
+      }
+      li {
+        height: 30px;
+        width: 30px;
+      }
+      .li-1 {
+        background-color: #0173ac;
+      }
+      .li-2 {
+        background-color: rgb(129, 129, 129);
+      }
+      .li-3 {
+        background-color: rgb(129, 129, 129);
+      }
+    }
+  }
+  .ag-theme-alpine {
+    position: relative;
+    .ag-row-drag {
+      padding: 0 !important;
+    }
+    // .ag-cell-wrapper > *:not(.ag-cell-value):not(.ag-group-value) {
+    //   height: 30px !important;
+    // }
+    // .ag-cell-wrapper {
+    //   height: 30px;
+    // }
+    .add-column-new {
+      position: absolute;
+      right: -25px;
+      font-size: 25px;
+      // height: 100%;
+      width: 15px;
+      padding: 5px;
+      // border: 1px solid #6e6e6e;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .add-column-new:hover {
+      background-color: rgb(220, 220, 220);
+      cursor: pointer;
+    }
+    .add-row-new {
+      position: absolute;
+      bottom: -24px;
+      font-size: 25px;
+      height: 15px;
+      // width: 100%;
+      padding: 5px;
+      // border: 1px solid #6e6e6e;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+      display: flex;
+      cursor: pointer;
+
+      // justify-content: center;
+      label {
+        margin-top: -12px;
+        // margin-left: 10px;
+      }
+    }
+    .add-row-new:hover {
+      background-color: rgb(220, 220, 220);
+    }
+  }
   .delete {
     background-color: #6e6e6e !important;
     color: #fff;
@@ -42,6 +150,6 @@
 .button-container-index {
   display: flex;
   justify-content: end;
-  margin-right: 12px;
+  margin-right: 20px;
   margin-bottom: 5px;
 }

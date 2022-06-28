@@ -1,12 +1,14 @@
 import Table from "apollo-react-icons/Table";
 import TextStyle from "apollo-react-icons/TextStyle";
-import TextBold from "apollo-react-icons/TextBold";
+import HeaderImg from "../../../../../../assets/images/heading.png";
 import Image from "apollo-react-icons/Image";
 
 export const TableElement = () => {
   return (
     <div className="add-element">
-      <Table fontSize="extraSmall" />
+      <div className="icon-container">
+        <Table fontSize="extraSmall" />
+      </div>
       <span>Table</span>
     </div>
   );
@@ -14,7 +16,9 @@ export const TableElement = () => {
 export const TextHeader2 = () => {
   return (
     <div className="add-element">
-      <TextBold fontSize="extraSmall" />
+      <div className="icon-container">
+        <img src={HeaderImg} alt="Header" style={{ height: 15 }} />
+      </div>
       <span>Header</span>
     </div>
   );
@@ -30,7 +34,9 @@ export const TextHeader2 = () => {
 export const TextElement = () => {
   return (
     <div className="add-element">
-      <TextStyle fontSize="extraSmall" />
+      <div className="icon-container">
+        <TextStyle fontSize="extraSmall" />
+      </div>
       <span>Text</span>
     </div>
   );
@@ -38,7 +44,9 @@ export const TextElement = () => {
 export const ImageElement = () => {
   return (
     <div className="add-element">
-      <Image fontSize="extraSmall" />
+      <div className="icon-container">
+        <Image fontSize="extraSmall" />
+      </div>
       <span>Image</span>
     </div>
   );

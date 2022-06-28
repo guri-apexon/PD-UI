@@ -1,0 +1,49 @@
+[
+  {
+    "content": "Asthma",
+    "font_info": {},
+    "derived_section_type": "header",
+    "derived_heading_level": 2,
+    "qc_change_type": "",
+    "sec_id": 1,
+    "page": 1,
+    "line_id": "unique-id-2"
+  },
+  {
+    "content": {
+      "Table": "",
+      "TableProperties": "",
+      "SectionHeaderPrintPage": "0",
+      "TableIndex": "1",
+      "TableName": "",
+      "Header": []
+    },
+    "font_info": {},
+    "derived_section_type": "table",
+    "derived_heading_level": "",
+    "qc_change_type": "",
+    "sec_id": 1,
+    "page": 1,
+    "line_id": "unique-id-1"
+  },
+  {
+    "content": "Asthma",
+    "font_info": {},
+    "derived_section_type": "text",
+    "derived_heading_level": "",
+    "qc_change_type": "",
+    "sec_id": 1,
+    "page": 1,
+    "line_id": "unique-id-2"
+  },
+  {
+    "content": "Some ~REDACTED~ information",
+    "font_info": {},
+    "derived_section_type": "text",
+    "derived_heading_level": "",
+    "qc_change_type": "",
+    "sec_id": 1,
+    "page": 1,
+    "line_id": "unique-id-3"
+  }
+]

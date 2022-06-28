@@ -10,7 +10,7 @@ import { cloneDeep, isEmpty } from "lodash";
 import {
   createImageField,
   createTableField,
-  // createHeaderField,
+  createHeaderField,
   // createTableField,
   createTextField,
 } from "./utils";
@@ -57,6 +57,7 @@ export function* fetchProtocolViewData(action) {
       detail: null,
       expanded: true,
       header: cloneData.data[sectionName].header,
+      position: cloneData.data[sectionName].position,
     };
     cloneData.data[sectionName] = obj;
     const preLoadingState = {
@@ -86,6 +87,7 @@ export function* fetchProtocolViewData(action) {
         detail: data,
         expanded: true,
         header: cloneData1.data[sectionName].header,
+        position: cloneData.data[sectionName].position,
       };
       cloneData1.data[sectionName] = obj1;
       const preLoadingState = {
@@ -144,6 +146,7 @@ export function* fetchProtocolViewData(action) {
           loading: false,
           success: false,
           expanded: false,
+          position: i,
         };
       }
       const successState = {
@@ -225,50 +228,82 @@ export function* UpdateAPI(action) {
 }
 
 export function* updateDataStream(action) {
-  const { derivedSectionType, lineId, sectionName } = action.payload;
+  const { derivedSectionType, lineId, sectionName, isSectionHeader } =
+    action.payload;
+  console.log("Action Payload", action.payload);
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
-  console.log(derivedSectionType);
-  let arrToUpdate = cloneData.data[sectionName].detail;
-  for (let i = 0; i < arrToUpdate.length; i++) {
-    if (arrToUpdate[i].line_id === lineId) {
-      if (derivedSectionType === "text") {
-        let newLineID;
-        if (i === arrToUpdate.length - 1) {
-          newLineID = parseFloat(arrToUpdate[i].line_id) + 0.1;
-        } else {
-          newLineID =
-            (parseFloat(arrToUpdate[i].line_id) +
-              parseFloat(arrToUpdate[i + 1].line_id)) /
-            2;
+  if (isSectionHeader) {
+    let arrToUpdate = cloneData.data[sectionName].detail;
+    for (let i = 0; i < arrToUpdate.length; i++) {
+      if (arrToUpdate[i].sec_id === lineId) {
+        // eslint-disable-next-line no-debugger
+        debugger;
+        const prevLineId = parseFloat(arrToUpdate[i + 1].line_id) - 1;
+        const nextLineId = parseFloat(arrToUpdate[i + 1].line_id);
+        let newLineID = (prevLineId + nextLineId) / 2;
+        let obj = {};
+        if (derivedSectionType === "text") {
+          obj = createTextField(newLineID, arrToUpdate[i + 1]);
+        } else if (derivedSectionType === "table") {
+          obj = createTableField(newLineID, arrToUpdate[i], 3, 3);
+        } else if (derivedSectionType === "image") {
+          obj = createImageField(newLineID, arrToUpdate[i]);
         }
-        const obj = createTextField(newLineID, arrToUpdate[i]);
+        // const obj = createTextField(newLineID, arrToUpdate[i + 1]);
         arrToUpdate.splice(i + 1, 0, obj);
         arrToUpdate[i] = { ...arrToUpdate[i], hover: false };
         break;
-        // } else if (derivedSectionType === "header") {
-        //   let newLineID = parseFloat(lineId) + 0.1;
-        //   const obj = createHeaderField(newLineID, arrToUpdate[i]);
-        //   arrToUpdate.splice(i + 1, 0, obj);
-        //   break;
-        // } else if (derivedSectionType === "table") {
-        //   let newLineID = parseFloat(lineId) + 0.1;
-        //   const obj = createTableField(newLineID, arrToUpdate[i]);
-        //   arrToUpdate.splice(i + 1, 0, obj);
-        //   break;
-      } else if (derivedSectionType === "table") {
-        let newLineID = parseFloat(lineId) + 0.1;
-        const obj = createTableField(newLineID, arrToUpdate[i], 3, 3);
-        arrToUpdate.splice(i + 1, 0, obj);
-        break;
-      } else if (derivedSectionType === "image") {
-        let newLineID = parseFloat(lineId) + 0.1;
-        const obj = createImageField(newLineID, arrToUpdate[i], 3, 3);
-        arrToUpdate.splice(i + 1, 0, obj);
-        break;
+      }
+    }
+  } else {
+    let arrToUpdate = cloneData.data[sectionName].detail;
+    for (let i = 0; i < arrToUpdate.length; i++) {
+      if (arrToUpdate[i].line_id === lineId) {
+        if (derivedSectionType === "text") {
+          let newLineID;
+          if (i === arrToUpdate.length - 1) {
+            newLineID = parseFloat(arrToUpdate[i].line_id) + 0.1;
+          } else {
+            newLineID =
+              (parseFloat(arrToUpdate[i].line_id) +
+                parseFloat(arrToUpdate[i + 1].line_id)) /
+              2;
+          }
+          const obj = createTextField(newLineID, arrToUpdate[i]);
+          arrToUpdate.splice(i + 1, 0, obj);
+          arrToUpdate[i] = { ...arrToUpdate[i], hover: false };
+          break;
+          // } else if (derivedSectionType === "header") {
+          // let newLineID = parseFloat(lineId) + 0.1;
+          // const obj = createHeaderField(newLineID, arrToUpdate[i]);
+          // arrToUpdate.splice(i + 1, 0, obj);
+          // break;
+          // } else if (derivedSectionType === "table") {
+          //   let newLineID = parseFloat(lineId) + 0.1;
+          //   const obj = createTableField(newLineID, arrToUpdate[i]);
+          //   arrToUpdate.splice(i + 1, 0, obj);
+          //   break;
+        } else if (derivedSectionType === "header") {
+          let newLineID = parseFloat(lineId) + 0.1;
+          const obj = createHeaderField(newLineID, arrToUpdate[i]);
+          arrToUpdate.splice(i + 1, 0, obj);
+          break;
+        } else if (derivedSectionType === "table") {
+          let newLineID = parseFloat(lineId) + 0.1;
+          const obj = createTableField(newLineID, arrToUpdate[i], 3, 3);
+          arrToUpdate.splice(i + 1, 0, obj);
+          break;
+        } else if (derivedSectionType === "image") {
+          let newLineID = parseFloat(lineId) + 0.1;
+          const obj = createImageField(newLineID, arrToUpdate[i], 3, 3);
+          arrToUpdate.splice(i + 1, 0, obj);
+          break;
+        }
       }
     }
   }
+
   yield put(getWrapperData(cloneData));
 }
 
@@ -350,7 +385,6 @@ export function* updateDataEdit(action) {
 }
 export function* enableTableForEdit(action) {
   const { lineID, sectionName } = action.payload;
-  console.log("ENABLE", lineID, sectionName);
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
   let arrToUpdate = cloneData.data[sectionName].detail;
@@ -400,5 +434,66 @@ export function* deleteImageByLineID(action) {
       arrToUpdate[i].imageButton = false;
     }
   }
+  yield put(getWrapperData(cloneData));
+}
+
+const sortObjectBasedOnPosition = (state) => {
+  let cloneState = cloneDeep(state);
+  const order = [],
+    res = {};
+  Object.keys(cloneState).forEach((key) => {
+    return (order[cloneState[key]["position"]] = key);
+  });
+  order.forEach((key) => {
+    res[key] = cloneState[key];
+  });
+  return res;
+};
+
+const pushObjectToState = (data, obj) => {
+  let dataClone = cloneDeep(data);
+  const newPosition = parseInt(obj.position);
+  Object.keys(dataClone).forEach((key) => {
+    if (dataClone[key].position > newPosition) {
+      dataClone[key].position = dataClone[key].position + 1;
+    }
+  });
+  dataClone["New Section"] = { ...obj, position: newPosition + 1 };
+  return dataClone;
+};
+
+export function* addSection(action) {
+  const { section, sectionName } = action.payload;
+  const currentData = yield getWrapperState();
+  let cloneData = cloneDeep(currentData);
+  const header = {
+    source_file_section: sectionName,
+    source_heading_number: "",
+    input_seq_num: null,
+    parent_heading_num_seq: null,
+    parent_sec_id_seq: null,
+    derived_heading_level: 1,
+    pt_from_ontology: null,
+    medical_terms: null,
+    page: null,
+    font_info: {},
+    is_active: true,
+    indexes: {
+      seg_pages: [],
+    },
+    aidocid: "09e5f949-e170-4bd3-baac-77e377ed4821",
+    genre: "2_section_metadata",
+    sec_id: null,
+    child_secid_seq: [],
+  };
+  const obj = {
+    ...section,
+    detail: null,
+    header,
+    qc_change_type: "add",
+  };
+  const newState = pushObjectToState(cloneData.data, obj);
+  const sortedObj = sortObjectBasedOnPosition(newState);
+  cloneData.data = sortedObj;
   yield put(getWrapperData(cloneData));
 }

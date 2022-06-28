@@ -13,8 +13,10 @@ import AccordionSummary from "apollo-react/components/AccordionSummary";
 import RenderError from "../Components/RenderError";
 import RenderLoader from "../Components/RenderLoader";
 import AccordionHeader from "../Components/AccordionHeader";
+import SectionEdit from "../Components/SectionHeaderEdit";
 import AccordionBody from "../Components/AccordionDetail";
 import "./style.scss";
+import SectionBodyEdit from "../Components/SectionBodyEdit";
 
 // const searchText = "Inclusion-criteriaascaXsacsac";
 const ProtocolView = ({ id, edit }) => {
@@ -99,19 +101,30 @@ const ProtocolView = ({ id, edit }) => {
             expanded={section.expanded}
           >
             <AccordionSummary>
-              <AccordionHeader
-                section={section}
-                handleSectionClicked={handleSectionClicked}
-              />
+              {"qc_change_type" in section &&
+              section.qc_change_type === "add" ? (
+                <SectionEdit section={section} />
+              ) : (
+                <AccordionHeader
+                  section={section}
+                  handleSectionClicked={handleSectionClicked}
+                />
+              )}
             </AccordionSummary>
             <AccordionDetails className="accordion-parent-detail-container">
-              {section && !isEmpty(section) && (
-                <AccordionBody
-                  edit={edit}
-                  section={section}
-                  scrollToPage={scrollToPage}
-                  handleContentEdit={handleContentEdit}
-                />
+              {"qc_change_type" in section &&
+              section.qc_change_type === "add" ? (
+                <SectionBodyEdit />
+              ) : (
+                section &&
+                !isEmpty(section) && (
+                  <AccordionBody
+                    edit={edit}
+                    section={section}
+                    scrollToPage={scrollToPage}
+                    handleContentEdit={handleContentEdit}
+                  />
+                )
               )}
             </AccordionDetails>
           </Accordion>

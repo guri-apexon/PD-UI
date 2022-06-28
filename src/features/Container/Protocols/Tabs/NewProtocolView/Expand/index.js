@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./style.scss";
 import PDFView from "../PDFView";
+// import DocumentViewer from "../Components/FileViewer";
 import AtrributeView from "../AttributeView";
 import FloatingButton from "../Components/FloatingButton";
 import { ActionTypes } from "../../../store/ActionTypes";
@@ -96,7 +97,7 @@ const Expandable = ({ id, name, dfsPath }) => {
       }
     }
   };
-  console.log("--------", id, name, dfsPath);
+  console.log("--------", id, name, dfsPath, pdfZoom);
   return (
     <div className="resize-container">
       {/* {!showAttributes && (
@@ -121,6 +122,7 @@ const Expandable = ({ id, name, dfsPath }) => {
 
       <div id="left-panel" className={"left-panel"}>
         <PDFView name={name} dfsPath={dfsPath} zoom={pdfZoom} />
+        {/* <DocumentViewer /> */}
       </div>
       <div className={"resize"} id="resize"></div>
 

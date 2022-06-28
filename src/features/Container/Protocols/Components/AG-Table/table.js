@@ -14,6 +14,8 @@ import {
 } from "./Utils/updateAndCompare";
 import { cloneDeep } from "lodash";
 import "./table.scss";
+// import ActionButton from "./ActionButtons";
+import { AddMenu, RemoveMenu } from "./MenuButton";
 
 const TableComp = ({
   rowData,
@@ -31,13 +33,11 @@ const TableComp = ({
   const [dataSource, setDataSource] = useState([]);
   const [columnInfo, setColumnInfo] = useState([]);
   const [tableProperties, setTableProperties] = useState("");
+
   useEffect(() => {
     setTableProperties(tableData);
     setDataSource(rowData);
     setColumnInfo(columnData);
-    console.log("Table JSON", tableData);
-    console.log("Data Source", rowData);
-    console.log("COlumn Info", columnData);
   }, [rowData, columnData, tableData]);
   const onGridReady = useCallback((params) => {
     gridRef.current.api.sizeColumnsToFit();
@@ -59,12 +59,9 @@ const TableComp = ({
     }
   };
   const onRowDragEnd = (e) => {
-    console.log("Row Drag", tableProperties, e);
     const rowDragUpdate = updateTablePropertiesOnRowDrag(tableProperties, e);
-    console.log("Row Drag", rowDragUpdate);
     setDataSource(getRowData());
     setTableProperties(rowDragUpdate);
-    // getRowData();
   };
 
   const handleRowAdd = () => {
@@ -147,30 +144,31 @@ const TableComp = ({
     handleSave(json, lineID);
     setEditTable(false);
   };
+  const handleActionButton = (buttonName) => {
+    console.log("Button Clicked", buttonName);
+
+    if (buttonName === "add-row") {
+      handleRowAdd();
+    } else if (buttonName === "add-column") {
+      handleColumnAdd();
+    } else if (buttonName === "delete-row") {
+      handleDeleteRow();
+    } else if (buttonName === "delete-table") {
+      handleTableDelete();
+    } else if (buttonName === "save") {
+      getFinalData();
+    }
+  };
 
   return (
-    <div className="table-container">
+    <div className="edit-table table-container">
       {editTable && (
-        <div className="button-container">
-          <button className="button add-row" onClick={handleRowAdd}>
-            Add Row
-          </button>
-          <button className="button add-row" onClick={handleColumnAdd}>
-            Add Column
-          </button>
-          <button className="button add-row" onClick={handleDeleteRow}>
-            Delete Row
-          </button>
-          <button className="button add-row save-button" onClick={getFinalData}>
-            Save
-          </button>
-          <button className="button add-row delete" onClick={handleTableDelete}>
-            Delete Table
-          </button>
-          {/* <button className="button save-button" onClick={getFinalData}>
-            Save
-          </button> */}
-        </div>
+        <>
+          <div className="action-button-menu">
+            <RemoveMenu onClick={handleActionButton} />
+            <AddMenu onClick={handleActionButton} />
+          </div>
+        </>
       )}
       {editTable && (
         <div className="column-checkbox">
@@ -188,6 +186,9 @@ const TableComp = ({
         </div>
       )}
       <div className="ag-theme-alpine">
+        <div className="add-column-new" onClick={handleColumnAdd}>
+          <label>+</label>
+        </div>
         <AgGridReact
           ref={gridRef}
           rowData={dataSource}
@@ -203,6 +204,9 @@ const TableComp = ({
           suppressDragLeaveHidesColumns={true}
           // gridOptions={gridOptions}
         ></AgGridReact>
+        <div className="add-row-new" onClick={handleRowAdd}>
+          <label>+</label>
+        </div>
       </div>
     </div>
   );

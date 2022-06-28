@@ -16,6 +16,7 @@ import {
   disableTableForEdit,
   deleteTableByLineID,
   deleteImageByLineID,
+  addSection,
 } from "./sagas/wrapper-saga";
 import { fetchProtocolViewData1, handleExpandBPO1 } from "./sagas/wrapper-meta";
 import { fetchPTData } from "./sagas/pt-data";
@@ -37,6 +38,7 @@ function* watchProtocolAsync() {
   yield takeLatest(ActionTypes.DISABLE_TABLE, disableTableForEdit);
   yield takeLatest(ActionTypes.DELETE_TABLE, deleteTableByLineID);
   yield takeLatest(ActionTypes.DELETE_IMAGE, deleteImageByLineID);
+  yield takeLatest(ActionTypes.ADD_SECTION, addSection);
 }
 export default function* protocolSaga() {
   yield all([watchProtocolAsync()]);

@@ -386,12 +386,24 @@ label {
         margin-top: 20px;
       }
       .accordion-parent-header {
+        display: flex;
         color: inherit;
         font-size: 16px;
         font-weight: 500;
         line-height: inherit;
         padding-top: 12px;
         text-transform: capitalize;
+        justify-content: space-between;
+        .accordion-header-icons {
+          display: flex;
+          justify-content: space-around;
+          width: 76px;
+          .accordion-icon {
+            color: rgb(4, 105, 164);
+            float: right;
+            height: 20px;
+          }
+        }
       }
       .accordion-child-header {
         color: inherit;

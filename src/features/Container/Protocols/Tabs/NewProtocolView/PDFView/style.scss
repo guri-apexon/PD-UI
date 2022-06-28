@@ -15,6 +15,47 @@
     cursor: pointer;
   }
 }
+.text-pdf {
+  margin-left: -8px;
+}
 .react-pdf__Document {
   z-index: 1;
+  position: relative;
+  .pdf-menu-container {
+    position: sticky;
+    top: 0%;
+    z-index: 2;
+    margin-left: -5px;
+    .pdf-menu-button {
+      background-color: #fff;
+      border: none;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      img {
+        height: 20px;
+      }
+    }
+    .pdf-menu {
+      display: flex;
+      background-color: #f3f3f3;
+      box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+      margin-top: 10px;
+      padding: 10px 18px;
+      ul:first-child {
+        list-style-type: none;
+        margin-block-start: 0;
+        margin-block-end: 0;
+        padding-inline-start: 0;
+        li {
+          margin-bottom: 5px;
+          a {
+            text-decoration: none;
+            color: #333;
+          }
+          a:hover {
+            background-color: rgb(211, 211, 211);
+          }
+        }
+      }
+    }
+  }
 }

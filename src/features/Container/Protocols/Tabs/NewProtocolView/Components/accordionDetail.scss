@@ -2,7 +2,14 @@
   width: 100%;
   margin-bottom: 20px;
   padding-left: 30px;
+
   .option-content-container {
+    .line-content {
+      outline: none;
+    }
+    .edit-header-co {
+      font-weight: bold;
+    }
     .show-option {
       position: absolute;
       display: flex;

@@ -16,7 +16,7 @@ const ViewTable = ({ rowData, columnData }) => {
     gridRef.current.api.sizeColumnsToFit();
   }, []);
   return (
-    <div className="table-container">
+    <div className="view-only-table table-container">
       <div className="ag-theme-alpine">
         <AgGridReact
           ref={gridRef}

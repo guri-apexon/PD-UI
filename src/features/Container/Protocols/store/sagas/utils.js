@@ -29,13 +29,13 @@ export const createTextField = (newLineID, detail) => {
     line_id: newLineID,
     is_active: detail.is_active,
     aidocid: detail.aidocid,
-    genre: detail.genre,
+    genre: "3_line_item",
   };
   return obj;
 };
 export const createHeaderField = (newLineID, detail) => {
   const obj = {
-    content: `<b>${ADDTEXT}</b>`,
+    content: `<h2>${ADDTEXT}</h2>`,
     font_info: {
       IsBold: true,
       font_size: "",
@@ -53,7 +53,7 @@ export const createHeaderField = (newLineID, detail) => {
     line_id: newLineID,
     is_active: detail.is_active,
     aidocid: detail.aidocid,
-    genre: detail.genre,
+    genre: "3_line_item",
   };
   return obj;
 };
@@ -85,7 +85,7 @@ export const createTableField = (newLineID, detail, rows, columns) => {
     line_id: newLineID,
     is_active: detail.is_active,
     aidocid: detail.aidocid,
-    genre: detail.genre,
+    genre: "3_line_item",
   };
   return obj;
 };
@@ -104,7 +104,7 @@ export const createImageField = (newLineID, detail) => {
     line_id: newLineID,
     is_active: detail.is_active,
     aidocid: detail.aidocid,
-    genre: detail.genre,
+    genre: "3_line_item",
     imageButton: true,
   };
   return obj;

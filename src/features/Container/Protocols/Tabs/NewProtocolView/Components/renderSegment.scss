@@ -1,19 +1,20 @@
 .format-container {
   position: relative;
-  .line-content {
-    outline: none;
-  }
   .button-container {
     position: absolute;
     right: 0;
     top: -28px;
-    border: 1px solid #c9c9c9;
+    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+    // border: 1px solid #c9c9c9;
     .button-exec-icon {
       background-color: #fff;
       border: navajowhite;
-      border-right: 1px solid #c9c9c9;
+      // border-right: 1px solid #c9c9c9;
       cursor: pointer;
       padding: 5px;
+    }
+    .button-exec-icon:hover {
+      background-color: #eee;
     }
     img {
       height: 12px;

@@ -26,19 +26,6 @@
     flex: 1;
     max-width: 50%;
   }
-  .add-element {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    svg {
-      vertical-align: middle;
-      margin-right: 7px;
-      font-size: 14px;
-    }
-    span {
-      font-size: 16px;
-    }
-  }
   #actions-elements {
     li {
       height: 30px;
