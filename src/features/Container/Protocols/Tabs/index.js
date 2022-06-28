@@ -8,6 +8,7 @@ import POCProtocoolView from "./NewProtocolView";
 import PTSearch from "./PTSearch";
 import EntitySearch from "./EntitySearch";
 import MetadataView from "./Metadata";
+import Compare from "./ProtocolCompare";
 
 const queryString = require("query-string");
 
@@ -15,6 +16,7 @@ const tabs = {
   OVERVIEW: "OVERVIEW",
   PROTOCOL_VIEW: "PROTOCOL_VIEW",
   DOCUMENT: "DOCUMENT",
+  VERSION_COMPARE: "VERSION_COMPARE",
   POC_PROTOCOL_VIEW: "POC_PROTOCOL_VIEW",
   POC_TABLE_VIEW: "POC_TABLE_VIEW",
   POC_ENTITY_SEARCH: "POC_ENTITY_SEARCH",
@@ -80,6 +82,14 @@ const TabContainer = ({ history }) => {
           onClick={(e) => handleTabClick(tabs.POC_PROTOCOL_VIEW)}
         >
           POC Protocol View
+        </button>
+        <button
+          className={
+            activeTab === tabs.VERSION_COMPARE ? "tablinks active" : "tablinks"
+          }
+          onClick={(e) => handleTabClick(tabs.VERSION_COMPARE)}
+        >
+          Version Compare
         </button>
         <button
           className={
@@ -165,6 +175,19 @@ const TabContainer = ({ history }) => {
             name={protocolName}
             dfsPath={fileName}
           />
+        )}
+      </div>
+      <div
+        id="version-compare"
+        className="tabcontent"
+        style={
+          activeTab === tabs.VERSION_COMPARE
+            ? { display: "block" }
+            : { display: "none" }
+        }
+      >
+        {activeTab === tabs.VERSION_COMPARE && (
+          <Compare id={protocolId} name={protocolName} dfsPath={fileName} />
         )}
       </div>
       <div
