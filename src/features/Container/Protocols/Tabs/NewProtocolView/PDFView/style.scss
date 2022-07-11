@@ -1,31 +1,35 @@
-.zoom-container {
+.pd-pdf-container {
+  position: relative;
   display: flex;
-  position: relative;
-  z-index: 2;
-  .zoom-out {
+  justify-content: center;
+  scroll-padding: 50px 0px 0px 50px;
+  padding: 10px 16px;
+  overflow-y: auto;
+  height: 74vh;
+  .pd-pdf-navigation {
+    display: flex;
     position: absolute;
-    height: 20px;
-    right: 70px;
-    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 66%;
+    background-color: #eee;
+    .zoom-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      width: 80px;
+      img {
+        height: 20px;
+        cursor: pointer;
+      }
+    }
   }
-  .zoom-in {
-    position: absolute;
-    height: 20px;
-    right: 35px;
-    cursor: pointer;
-  }
-}
-.text-pdf {
-  margin-left: -8px;
-}
-.react-pdf__Document {
-  z-index: 1;
-  position: relative;
   .pdf-menu-container {
-    position: sticky;
-    top: 0%;
+    position: absolute;
+    top: 20px;
     z-index: 2;
-    margin-left: -5px;
+    margin-left: 15px;
     .pdf-menu-button {
       background-color: #fff;
       border: none;

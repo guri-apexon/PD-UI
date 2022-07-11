@@ -4,6 +4,7 @@ import {
   setDOCID,
   getSegmentUpdated,
   getSegmentInserted,
+  setPageNumber,
 } from "../slice";
 import { httpCall, BASE_URL_8000 } from "../../../../../utils/api";
 import { cloneDeep, isEmpty } from "lodash";
@@ -496,4 +497,8 @@ export function* addSection(action) {
   const sortedObj = sortObjectBasedOnPosition(newState);
   cloneData.data = sortedObj;
   yield put(getWrapperData(cloneData));
+}
+
+export function* setPdfPageNumber(action) {
+  yield put(setPageNumber(action.payload));
 }

@@ -43,13 +43,16 @@ const ProtocolView = ({ id, edit }) => {
     console.log(page);
     if (page > 0) {
       const pageNum = parseInt(page);
-      if (pageNum || pageNum === 0) {
-        const ele = document.getElementById(`page-${pageNum}`);
-        ele.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
+      dispatch({ type: ActionTypes.PAGE_NUMBER, payload: pageNum });
+      // if (pageNum || pageNum === 0) {
+      //   const ele = document.getElementById(`page-${pageNum}`);
+      //   if (ele) {
+      //     ele.scrollIntoView({
+      //       behavior: "smooth",
+      //       block: "start",
+      //     });
+      //   }
+      // }
     }
   };
   const handleSectionClicked = async (section) => {
@@ -79,6 +82,8 @@ const ProtocolView = ({ id, edit }) => {
         },
       });
     }
+    // eslint-disable-next-line no-debugger
+    debugger;
     if (page > 0) {
       scrollToPage(page);
     } else {

@@ -4,6 +4,7 @@ export const protocolSlice = createSlice({
   name: "protocols",
   initialState: {
     docID: "",
+    pageNumber: 1,
     overview: {
       success: false,
       loading: false,
@@ -83,6 +84,9 @@ export const protocolSlice = createSlice({
     setDOCID: (state, action) => {
       state.docID = action.payload;
     },
+    setPageNumber: (state, action) => {
+      state.pageNumber = action.payload;
+    },
   },
 });
 
@@ -97,6 +101,7 @@ export const {
   getWrapperDataMeta,
   getSegmentUpdated,
   getSegmentInserted,
+  setPageNumber,
 } = protocolSlice.actions;
 
 export default protocolSlice.reducer;
@@ -111,3 +116,4 @@ export const ptWrapper = (state) => state.protocol.ptData;
 export const docID = (state) => state.protocol.docID;
 export const updatedSegment = (state) => state.protocol.segmentUpdated;
 export const insertedSegment = (state) => state.protocol.segmentInserted;
+export const pdfPageNumber = (state) => state.protocol.pageNumber;

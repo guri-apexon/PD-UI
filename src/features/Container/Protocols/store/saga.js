@@ -17,6 +17,7 @@ import {
   deleteTableByLineID,
   deleteImageByLineID,
   addSection,
+  setPdfPageNumber,
 } from "./sagas/wrapper-saga";
 import { fetchProtocolViewData1, handleExpandBPO1 } from "./sagas/wrapper-meta";
 import { fetchPTData } from "./sagas/pt-data";
@@ -39,6 +40,7 @@ function* watchProtocolAsync() {
   yield takeLatest(ActionTypes.DELETE_TABLE, deleteTableByLineID);
   yield takeLatest(ActionTypes.DELETE_IMAGE, deleteImageByLineID);
   yield takeLatest(ActionTypes.ADD_SECTION, addSection);
+  yield takeLatest(ActionTypes.PAGE_NUMBER, setPdfPageNumber);
 }
 export default function* protocolSaga() {
   yield all([watchProtocolAsync()]);
