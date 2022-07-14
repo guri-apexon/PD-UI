@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { ActionTypes } from "../../../store/ActionTypes";
 import "./accordionDetail.scss";
 import ContentEditHeader from "./ContentEditHeader";
+import { generateHeaderID } from "../utils";
 
 const AccordionBody = ({ section, edit, scrollToPage }) => {
   const dispatch = useDispatch();
@@ -123,6 +124,7 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
     if (data.genre === "2_section_metadata") {
       return (
         <div
+          id={generateHeaderID(data.page)}
           className="option-content-container"
           onClick={() => handleMouseHover(data.sec_id, sectionName, true)}
         >

@@ -4,6 +4,7 @@ import EyeShow from "apollo-react-icons/EyeShow";
 import Plus from "apollo-react-icons/Plus";
 import { useDispatch } from "react-redux";
 import { ActionTypes } from "../../../store/ActionTypes";
+import { generateHeaderID } from "../utils";
 
 const AccordionHeader = ({ section, handleSectionClicked }) => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const AccordionHeader = ({ section, handleSectionClicked }) => {
   };
   return (
     <div
+      id={generateHeaderID(sectionHeader.page)}
       className="accordion-parent-header"
       onClick={() => handleSectionClicked(section, sectionName)}
     >

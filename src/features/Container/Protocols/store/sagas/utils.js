@@ -14,6 +14,39 @@ export function* getUserId() {
   const id = state.user.userDetail.userId;
   return id.substring(1);
 }
+export const getPageWiseSection = (data, pageNumber) => {
+  console.log("Datttta,", data, pageNumber);
+  if (data) {
+    let sectionDetail = {};
+    const keys = Object.keys(data);
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      const keyPlus = keys[i + 1];
+      const startingPageNumber = data[key].header.page;
+
+      let endingPageNumber = 0;
+      if (i === keys.length - 1) {
+        endingPageNumber = 100000;
+      } else {
+        endingPageNumber = parseInt(data[keyPlus].header.page) - 1;
+      }
+      if (pageNumber >= startingPageNumber && pageNumber <= endingPageNumber) {
+        const childArr = data[key].header.child_secid_seq.map((elm) => elm[0]);
+        const childString = childArr.toString();
+        sectionDetail.id = data[key].header.aidocid;
+        sectionDetail.sectionName = data[key].header.source_file_section;
+        sectionDetail.childString = childString;
+        if (data[key].detail) {
+          sectionDetail.dataPresent = true;
+        } else {
+          sectionDetail.dataPresent = false;
+        }
+        break;
+      }
+    }
+    return sectionDetail;
+  }
+};
 
 export const createTextField = (newLineID, detail) => {
   const obj = {

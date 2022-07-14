@@ -17,11 +17,18 @@ import SectionEdit from "../Components/SectionHeaderEdit";
 import AccordionBody from "../Components/AccordionDetail";
 import "./style.scss";
 import SectionBodyEdit from "../Components/SectionBodyEdit";
+import { pdfPageNumber } from "../../../store/slice";
 
 // const searchText = "Inclusion-criteriaascaXsacsac";
 const ProtocolView = ({ id, edit }) => {
   const dispatch = useDispatch();
   const { data, success, loader, error } = useSelector(wrapper);
+
+  const activePage = useSelector(pdfPageNumber);
+
+  useEffect(() => {
+    dispatch({ type: ActionTypes.SECTION_BY_PAGE, payload: activePage });
+  }, [activePage]);
 
   useEffect(() => {
     let staticID = id;
@@ -82,8 +89,6 @@ const ProtocolView = ({ id, edit }) => {
         },
       });
     }
-    // eslint-disable-next-line no-debugger
-    debugger;
     if (page > 0) {
       scrollToPage(page);
     } else {

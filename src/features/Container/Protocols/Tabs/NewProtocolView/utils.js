@@ -1,3 +1,7 @@
+export const generateHeaderID = (page) => {
+  return `digi-page-header-${page}`;
+};
+
 export const getColumnFromJSON = (data) => {
   // console.log(data);
   let columns = [];

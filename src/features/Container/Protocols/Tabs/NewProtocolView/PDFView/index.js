@@ -8,8 +8,9 @@ import ZoomIn from "../../../../../../assets/images/zoom-in.png";
 import menuIcon from "../../../../../../assets/images/list.png";
 
 import samplePDF from "./d5180c00025csp-FINAL-25Feb-clean.pdf";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { pdfPageNumber } from "../../../store/slice";
+import { ActionTypes } from "../../../store/ActionTypes";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const PDFRenderer = () => {
@@ -21,29 +22,27 @@ const PDFRenderer = () => {
   const [pdfScale, setPdfScale] = useState(1.0);
   const [displayMenu, setDisplayMenu] = useState(false);
   const menuRef = useRef(null);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setPageNumber(pdf_PageNumber);
   }, [pdf_PageNumber]);
 
   useEffect(() => {
-    /**
-     * Alert if clicked on outside of element
-     */
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setDisplayMenu(false);
       }
     }
-    // Bind the event listener
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      // Unbind the event listener on clean up
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuRef]);
 
   useEffect(() => {
     setPageNumber(page + 1);
+    // dispatch({ type: ActionTypes.PAGE_NUMBER, payload: page });
   }, [page]);
 
   useEffect(() => {
@@ -58,8 +57,13 @@ const PDFRenderer = () => {
   function onItemClick({ pageNumber }) {
     setPageNumber(pageNumber);
     setDisplayMenu(false);
+    dispatch({ type: ActionTypes.PAGE_NUMBER, payload: pageNumber });
   }
 
+  const handlePagination = (page) => {
+    setPage(page);
+    dispatch({ type: ActionTypes.PAGE_NUMBER, payload: page + 1 });
+  };
   return (
     <div className="pd-pdf-container">
       <div onClick={() => setShowPagination(!showPagination)}>
@@ -79,7 +83,7 @@ const PDFRenderer = () => {
               className="pdf-menu"
               style={{ display: displayMenu ? "flex" : "none" }}
             >
-              <Outline onItemClick={onItemClick} />
+              {displayMenu && <Outline onItemClick={onItemClick} />}
             </div>
           </div>
           <Page
@@ -97,7 +101,7 @@ const PDFRenderer = () => {
               count={numPages}
               rowsPerPage={1}
               page={page}
-              onChangePage={setPage}
+              onChangePage={handlePagination}
             />
           )}
           <div className="zoom-container">

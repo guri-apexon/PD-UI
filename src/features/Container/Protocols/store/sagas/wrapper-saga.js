@@ -14,9 +14,11 @@ import {
   createHeaderField,
   // createTableField,
   createTextField,
+  getPageWiseSection,
 } from "./utils";
 import { toast } from "react-toastify";
 import { ActionTypes } from "../ActionTypes";
+import { generateHeaderID } from "../../Tabs/NewProtocolView/utils";
 
 function* getWrapperState() {
   const state = yield select();
@@ -39,10 +41,11 @@ function* getSegmentInsertedState() {
 //   return id;
 // }
 export function* handleExpandBPO(action) {
-  const { sectionName } = action.payload;
+  const { sectionName, value } = action.payload;
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
-  cloneData.data[sectionName].expanded = !cloneData.data[sectionName].expanded;
+  cloneData.data[sectionName].expanded =
+    value || !cloneData.data[sectionName].expanded;
   yield put(getWrapperData(cloneData));
 }
 export function* fetchProtocolViewData(action) {
@@ -501,4 +504,40 @@ export function* addSection(action) {
 
 export function* setPdfPageNumber(action) {
   yield put(setPageNumber(action.payload));
+}
+export function* extractDataByPageNumber(action) {
+  const currentData = yield getWrapperState();
+  let cloneData = cloneDeep(currentData);
+
+  const sectionDetail = getPageWiseSection(cloneData.data, action.payload);
+  console.log("Section Detail By Page", sectionDetail);
+
+  if (sectionDetail) {
+    const ele = document.getElementById(generateHeaderID(action.payload));
+    if (ele) {
+      ele.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+    if (!sectionDetail.dataPresent) {
+      yield put({
+        type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
+        payload: {
+          id: sectionDetail.id,
+          childString: sectionDetail.childString,
+          sectionName: sectionDetail.sectionName,
+          body: true,
+        },
+      });
+    } else {
+      yield put({
+        type: ActionTypes.HANDLE_EXPAND_BPO,
+        payload: {
+          sectionName: sectionDetail.sectionName,
+          value: true,
+        },
+      });
+    }
+  }
 }
