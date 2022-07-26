@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const dashboardSlice = createSlice({
   name: "dashboard",
   initialState: {
+    guidedTour: false,
     protocols: [],
     tableError: false,
     recentSearches: [],
@@ -23,6 +24,9 @@ export const dashboardSlice = createSlice({
     sponsorLoading: true,
   },
   reducers: {
+    setGuidedTour: (state, action) => {
+      state.guidedTour = action.payload;
+    },
     getProtocols: (state, action) => {
       state.protocols = action.payload;
     },
@@ -78,6 +82,7 @@ export const dashboardSlice = createSlice({
 });
 
 export const {
+  setGuidedTour,
   getProtocols,
   setError,
   getRecentSearches,
@@ -113,6 +118,7 @@ export const followedProtocolsList = (state) =>
 export const displayAddProtocol = (state) => state.dashboard.displayAddProtocol;
 export const tableLoader = (state) => state.dashboard.tableLoading;
 export const dashboadAPIError = (state) => state.dashboard.apiError;
+export const guidedTourState = (state) => state.dashboard.guidedTour;
 export const dashboadSearchLoader = (state) =>
   state.dashboard.dashboadSearchLoader;
 

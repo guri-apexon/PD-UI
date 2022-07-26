@@ -38,6 +38,7 @@ function Navbar() {
   const [userData, setUserData] = useState({});
   const userDetail = useSelector((state) => state.user.userDetail);
   const [pathname, setPathname] = useState("/dashboard");
+
   useEffect(() => {
     if ("userId" in userData) {
       const userID = userData.userId.substring(1);
@@ -80,8 +81,9 @@ function Navbar() {
   return (
     "userId" in userData &&
     userData.userId && (
-      <div data-testid="navbar-test">
+      <div className="navbar-container" data-testid="navbar-test">
         <NavigationBar
+          className="navbar"
           LogoComponent={() => (
             <div
               style={{

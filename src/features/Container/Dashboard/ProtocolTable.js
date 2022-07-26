@@ -50,8 +50,8 @@ function ProtocolTable({ pageRows, maxHeight }) {
     <>
       {error}
       <Tabs value={value} onChange={handleChangeTab} truncate>
-        <Tab label="My Protocols" />
-        <Tab label="Following Protocols" />
+        <Tab className="my-protocols" label="My Protocols" />
+        <Tab className="following-protocols" label="Following Protocols" />
       </Tabs>
       <div style={{ padding: 24 }} id="protocol-table">
         {value === 0 && (

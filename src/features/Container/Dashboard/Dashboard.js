@@ -23,6 +23,7 @@ const Dashboard = () => {
   const userDetails = useSelector(loggedUser);
   const memoizedPageRows = React.useMemo(() => [5, 20, 30, "All"], []);
   const dashboardError = useSelector(dashboadAPIError);
+
   return (
     <div className="dashboard-parent" style={{ padding: 20 }}>
       {dashboardError && dashboardError.apiError && (

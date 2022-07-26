@@ -116,6 +116,7 @@ const ProtocolTitle = ({ row, column: { accessor: key } }) => {
   }
   return (
     <Tooltip
+      className="protocol-title"
       variant="light"
       title={"Protocol Title"}
       subtitle={<div>{row[key]}</div>}
@@ -215,6 +216,7 @@ const ProtocolLink = ({ row, column: { accessor: key } }) => {
     }
     return (
       <Link
+        className="protocol-link"
         to={`/protocols?tab=OVERVIEW&protocol=${row["protocol"]}&protocolId=${row["id"]}&file=${row["documentFilePath"]}`}
       >
         {row[key]}

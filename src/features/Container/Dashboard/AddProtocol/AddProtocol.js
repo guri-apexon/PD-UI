@@ -393,6 +393,7 @@ const AddProtocol = () => {
           buttonProps={[{}, { label: "Save", onClick: handleSaveForm }]}
           id="add-protocol-modal"
           data-testid="add-protocol-modal"
+          className="add-protocol-modal"
         >
           {dashboardData.isLoading && <PageLoader />}
           <Grid container spacing={2}>
