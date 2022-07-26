@@ -30,6 +30,7 @@ import {
   setSelectedProtocols,
   setIndicationLoading,
   setSponsorLoading,
+  setGuidedTour,
 } from "./dashboardSlice";
 
 function* getState() {
@@ -399,6 +400,10 @@ export function* fetchAssociateData(action) {
   }
 }
 
+export function* setTourActive(action) {
+  yield put(setGuidedTour(action.payload))
+}
+
 export function* watchDashboard() {
   yield takeLatest("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
   yield takeEvery("GET_RECENT_SEARCH_DATA", recentSearchAsyn);
@@ -413,6 +418,7 @@ export function* watchDashboard() {
   yield takeLatest("HANDLE_DOWNLOAD_SAGA", handleDownload);
   yield takeLatest("HANDLE_FOLLOW_SAGA", handleFollow);
   yield takeLatest("FETCH_ASSOCIATE_DATA", fetchAssociateData);
+  yield takeEvery("SET_TOUR_ACTIVE", setTourActive);
 }
 
 export default function* dashboardSaga() {

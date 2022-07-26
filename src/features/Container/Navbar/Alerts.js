@@ -2,6 +2,8 @@ import React from "react";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import BellIcon from "apollo-react-icons/Bell";
+//import Question from 'apollo-react-icons/Question';
+import Help from 'apollo-react-icons/Help';
 import Badge from "apollo-react/components/Badge";
 
 import Popover from "apollo-react/components/Popover";
@@ -10,6 +12,9 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "apollo-react/components/Tooltip";
 import { navbarNotifications } from "./navbarSlice";
+
+import GuidedTour from "./GuidedTour";
+import { guidedTourState } from "../Dashboard/dashboardSlice";
 
 import "./Alerts.scss";
 import { redaction } from "../../../AppConstant/AppConstant";
@@ -35,17 +40,37 @@ function Alerts() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const notificationsMenuProps = useSelector(navbarNotifications);
+  const dashboardTour = useSelector(guidedTourState);
+
+  const handleActivateTour = () => {
+    dispatch({
+        type: "SET_TOUR_ACTIVE",
+        payload: true,
+    });
+  }
+
   if (!notificationsMenuProps.length) {
     return (
-      <button
-        data-testid="alert-bell-icon"
-        className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-      >
-        <Badge badgeContent={0} max={99}>
-          <BellIcon />
-        </Badge>
-      </button>
+      <>
+        {dashboardTour && (<GuidedTour />)}
+        <button
+          data-testid="guided-tour-help-icon"
+          className="guide-icon"
+          onClick={handleActivateTour}
+        >
+          <Help />
+        </button>
+        <button
+          data-testid="alert-bell-icon"
+          className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+        >
+          <Badge badgeContent={0} max={99}>
+            <BellIcon />
+          </Badge>
+        </button>
+
+      </>
     );
   }
   const checkForPrimary = async (data) => {
@@ -66,11 +91,12 @@ function Alerts() {
     return moment().isSame(timestamp, "day")
       ? "Today"
       : moment().subtract(1, "day").isSame(timestamp, "day")
-      ? "Yesterday"
-      : moment(timestamp).format("ddd MMM D");
+        ? "Yesterday"
+        : moment(timestamp).format("ddd MMM D");
   };
   return (
     <>
+      
       <button
         data-testid="alert-bell-icon"
         className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}
@@ -182,6 +208,13 @@ function Alerts() {
           })}
         </List>
       </Popover>
+      <button
+        data-testid="guided-tour-help-icon"
+        className="guide-icon"
+        onClick={handleActivateTour}
+      >
+        <Help />
+      </button>
     </>
   );
 }
