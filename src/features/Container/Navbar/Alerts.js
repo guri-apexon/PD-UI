@@ -2,7 +2,6 @@ import React from "react";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import BellIcon from "apollo-react-icons/Bell";
-//import Question from 'apollo-react-icons/Question';
 import Help from 'apollo-react-icons/Help';
 import Badge from "apollo-react/components/Badge";
 
@@ -12,13 +11,17 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Tooltip from "apollo-react/components/Tooltip";
 import { navbarNotifications } from "./navbarSlice";
+import { ClickAwayListener } from "@material-ui/core";
 
-import GuidedTour from "./GuidedTour";
+import GuidedTour from "./Guided Tour/GuidedTour";
 import { guidedTourState } from "../Dashboard/dashboardSlice";
 
 import "./Alerts.scss";
 import { redaction } from "../../../AppConstant/AppConstant";
+import { useEffect } from "react";
 const replaceall = require("replaceall");
+
+const dashboardPath = '/dashboard';
 
 function createFullMarkup(str) {
   if (str) {
@@ -36,30 +39,69 @@ function createFullMarkup(str) {
   }
 }
 
+
 function Alerts() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const notificationsMenuProps = useSelector(navbarNotifications);
+
+  const currentPath = window.location.pathname;
   const dashboardTour = useSelector(guidedTourState);
+  const [pathname, setPathname] = React.useState(currentPath);
+  const [open, setOpen] = React.useState(false);
+  const isDashboard = (pathname === dashboardPath);
+
+  useEffect(() => {
+    setPathname(currentPath);
+  })
+
+  const openTooltip = () => {
+    setOpen(true);
+  }
+
+  const closeTooltip = () => {
+    setOpen(false);
+  }
 
   const handleActivateTour = () => {
     dispatch({
-        type: "SET_TOUR_ACTIVE",
-        payload: true,
+      type: "SET_TOUR_ACTIVE",
+      payload: true,
     });
   }
 
   if (!notificationsMenuProps.length) {
     return (
       <>
-        {dashboardTour && (<GuidedTour />)}
-        <button
-          data-testid="guided-tour-help-icon"
-          className="guide-icon"
-          onClick={handleActivateTour}
-        >
-          <Help />
-        </button>
+        {isDashboard && dashboardTour && (<GuidedTour />)}
+        {isDashboard &&
+          (<button
+            data-testid="guided-tour-help-icon"
+            className="guide-icon"
+            onClick={handleActivateTour}
+          >
+            <Help />
+          </button>)}
+        {!isDashboard &&
+          <ClickAwayListener onClickAway={closeTooltip}>
+            <Tooltip
+              title={'Tour is currently unavailable for this page'}
+              placement="bottom"
+              disableHoverListener
+              disableFocusListener
+              disableTouchListener
+              onClose={closeTooltip}
+              open={open}
+            >
+              <button
+                className="guide-icon"
+                onClick={openTooltip}
+              >
+                <Help />
+              </button>
+            </Tooltip>
+          </ClickAwayListener>
+        }
         <button
           data-testid="alert-bell-icon"
           className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}
@@ -96,7 +138,7 @@ function Alerts() {
   };
   return (
     <>
-      
+
       <button
         data-testid="alert-bell-icon"
         className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}

@@ -23,6 +23,7 @@ function ActionButtons() {
             style={{ float: "right", marginTop: "10px", marginRight: "14px" }}
           >
             <Button
+              className="send-qc-review"
               data-testid="send-qc-review"
               variant="secondary"
               onClick={sendQcReview}

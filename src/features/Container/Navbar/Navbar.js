@@ -11,6 +11,7 @@ import {
 } from "../../../AppConstant/AppConstant";
 import { baseUrlSSO } from "../../../utils/api";
 
+
 const setMenuItems = (value) => {
   switch (value) {
     case "normal":
@@ -105,6 +106,9 @@ function Navbar() {
           checkIsActive={(item) => checknav(item)}
           waves
           otherButtons={<Alerts />}
+          style={{
+            zIndex: 1,
+          }}
         />
       </div>
     )
