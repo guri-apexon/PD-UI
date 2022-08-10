@@ -13,7 +13,7 @@ import Tooltip from "apollo-react/components/Tooltip";
 import { navbarNotifications } from "./navbarSlice";
 import { ClickAwayListener } from "@material-ui/core";
 
-import GuidedTour from "./Guided Tour/GuidedTour";
+import GuidedTour from "../../Components/GuidedTour/src/components/GuidedTour";
 import { guidedTourState } from "../Dashboard/dashboardSlice";
 
 import "./Alerts.scss";
@@ -53,7 +53,7 @@ function Alerts() {
 
   useEffect(() => {
     setPathname(currentPath);
-  })
+  }, [currentPath])
 
   const openTooltip = () => {
     setOpen(true);

@@ -1,3 +1,4 @@
+import React from 'react';
 
 function CustomTooltip({ step, tooltipProps }) {
 

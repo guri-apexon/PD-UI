@@ -1,10 +1,13 @@
 import React from 'react';
 import { useDispatch } from "react-redux";
 
-import Joyride, { STATUS } from 'react-joyride'
-import CustomTooltip from "./CustomTooltip";
+// import Joyride, { STATUS } from 'react-joyride'
+// import Joyride, { STATUS } from './react-joyride/es/index';
+// import Joyride, { STATUS } from '../../../Components/GuidedTour/src/index';
+import Joyride, { STATUS } from '../index';
+import CustomTooltip from './Tooltip/CustomTooltip';
 
-import { steps } from "./Steps";
+import { steps } from './Steps';
 import "./GuidedTour.scss";
 
 function GuidedTour() {
