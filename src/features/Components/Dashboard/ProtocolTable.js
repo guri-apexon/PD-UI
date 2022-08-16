@@ -158,7 +158,7 @@ const Cell = ({ row, column }) => {
       </Tooltip>
     );
   } else {
-    return <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
+    return <div className={`wrapper-${row[column.accessor]}`} style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
   }
 };
 
