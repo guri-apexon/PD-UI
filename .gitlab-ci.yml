@@ -106,8 +106,8 @@ dev-deploy-other:
       
   only:
     refs:
-      # - POC-Protocol-View
-      - develop
+      - POC-Protocol-View
+      # - develop
     variables: 
       - $ENVIRONMENT== "dev"
 
