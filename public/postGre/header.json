@@ -1,0 +1,236 @@
+[
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "fa1a8bf0-681c-427f-bfb5-c22006726d05",
+    "LinkLevel": 1,
+    "page": 1,
+    "sec_id": "",
+    "source_file_section": "blank_header",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 0,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "5ea6207f-4f9b-4d9c-863b-5c0472dd6f88",
+    "LinkLevel": 1,
+    "page": 1,
+    "sec_id": "",
+    "source_file_section": "TITLE PAGE",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 1,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "d0f29374-c971-4a96-b5cf-5f75cc223e87",
+    "LinkLevel": 1,
+    "page": 3,
+    "sec_id": "TABLE",
+    "source_file_section": "TABLE OF CONTENTS",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 2,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "d1eb714f-0d87-11ed-a9ab-005056ab6469",
+    "LinkLevel": 1,
+    "page": 4,
+    "sec_id": "1.1",
+    "source_file_section": "1.1 Synopsis",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 3,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "53e2a71b-4385-4393-a91e-d187cea44500",
+    "LinkLevel": 1,
+    "page": 4,
+    "sec_id": "1",
+    "source_file_section": "1 PROTOCOL SUMMARY",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 4,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "d1eb7150-0d87-11ed-bd28-005056ab6469",
+    "LinkLevel": 1,
+    "page": 7,
+    "sec_id": "1.2",
+    "source_file_section": "1.2 Schema",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 5,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "d1eb7151-0d87-11ed-b8f8-005056ab6469",
+    "LinkLevel": 1,
+    "page": 8,
+    "sec_id": "1.3",
+    "source_file_section": "1.3 Schedule of Activities",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 6,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "37f2d03b-65ac-4278-bbfb-6a35c4134990",
+    "LinkLevel": 1,
+    "page": 11,
+    "sec_id": "2",
+    "source_file_section": "2 OBJECTIVES AND ENDPOINTS",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 7,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "17f34527-bc9c-45ad-9be9-01d4be298d14",
+    "LinkLevel": 1,
+    "page": 11,
+    "sec_id": "3",
+    "source_file_section": "3 STUDY POPULATION",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 8,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "d1eb7154-0d87-11ed-a612-005056ab6469",
+    "LinkLevel": 1,
+    "page": 13,
+    "sec_id": "3.1",
+    "source_file_section": "3.1 Inclusion Criteria",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 9,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "d1eb7155-0d87-11ed-a7c9-005056ab6469",
+    "LinkLevel": 1,
+    "page": 14,
+    "sec_id": "3.2",
+    "source_file_section": "3.2 Exclusion Criteria",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 10,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "d1eb7156-0d87-11ed-86f3-005056ab6469",
+    "LinkLevel": 1,
+    "page": 16,
+    "sec_id": "3.3",
+    "source_file_section": "3.3 Lifestyle Considerations",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 11,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "group_type": "DocumentLinks",
+    "link_id": "d1eb7159-0d87-11ed-9d48-005056ab6469",
+    "LinkLevel": 1,
+    "page": 16,
+    "sec_id": "3.4",
+    "source_file_section": "3.4 Screen Failures",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 12,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  }
+]

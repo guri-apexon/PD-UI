@@ -170,9 +170,12 @@ const AccordionBody = ({ section, edit, scrollToPage }) => {
       className="accordion-parent-detail"
       style={{ width: "100%", marginBottom: 20 }}
     >
+      {section.error && <RenderError />}
       {section.loading && <RenderLoader />}
       {!section.loading &&
         section.success &&
+        section.detail &&
+        section.detail.length > 0 &&
         section.detail.map((elem, i) => {
           return <div key={"line-id" + i}>{renderAccordionDetail(elem)}</div>;
         })}

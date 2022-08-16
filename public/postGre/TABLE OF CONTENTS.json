@@ -1,0 +1,939 @@
+[
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "header",
+    "content": "TABLE OF CONTENTS",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "Heading1Unnumbered",
+      "entity": [],
+      "roi_id": {
+        "para": "a7f7c8e3-253d-4b10-bba7-a59501e515c7",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+      "DStrike": false,
+      "Emboss": false,
+      "group_type": "fontInfo",
+      "Highlight": "",
+      "id": "6f95725d-590e-479a-b806-e13ca068a411",
+      "Imprint": false,
+      "iqv_standard_term": "",
+      "Italics": false,
+      "link_id": "d0f29374-c971-4a96-b5cf-5f75cc223e87",
+      "link_id_level2": "",
+      "link_id_level3": "",
+      "link_id_level4": "",
+      "link_id_level5": "",
+      "link_id_level6": "",
+      "link_id_subsection1": "",
+      "link_id_subsection2": "",
+      "link_id_subsection3": "",
+      "Outline": false,
+      "parent_id": "743ecbdb-b098-4af4-b7dd-e47bd058d018",
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 1,
+    "qc_change_type": "",
+    "line_id": "a7f7c8e3-253d-4b10-bba7-a59501e515c7",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "04e98a1c-ee0f-4b05-8bd6-61703335b7c7",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 2,
+    "qc_change_type": "",
+    "line_id": "04e98a1c-ee0f-4b05-8bd6-61703335b7c7",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "70c73d45-3672-45cc-9f6b-cfa7f1f67a09",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 3,
+    "qc_change_type": "",
+    "line_id": "70c73d45-3672-45cc-9f6b-cfa7f1f67a09",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "7a613698-7e4b-4297-b782-3c6e04181210",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 4,
+    "qc_change_type": "",
+    "line_id": "7a613698-7e4b-4297-b782-3c6e04181210",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "b746e7aa-01eb-443a-b6e2-66238626789f",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 5,
+    "qc_change_type": "",
+    "line_id": "b746e7aa-01eb-443a-b6e2-66238626789f",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "1f9eef81-2a01-450d-bd68-d62e556021fe",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 6,
+    "qc_change_type": "",
+    "line_id": "1f9eef81-2a01-450d-bd68-d62e556021fe",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "30a36dbb-7b4b-4525-a694-9fa2aa4fe65a",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 7,
+    "qc_change_type": "",
+    "line_id": "30a36dbb-7b4b-4525-a694-9fa2aa4fe65a",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "fbc908ed-df11-40ef-88b1-33e50f0794e6",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 8,
+    "qc_change_type": "",
+    "line_id": "fbc908ed-df11-40ef-88b1-33e50f0794e6",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "b2644156-b39d-4ec3-a5cb-4dccf08e61ac",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 9,
+    "qc_change_type": "",
+    "line_id": "b2644156-b39d-4ec3-a5cb-4dccf08e61ac",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "e8afe8b9-5728-4cb8-a435-2f7ecdf9698d",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 10,
+    "qc_change_type": "",
+    "line_id": "e8afe8b9-5728-4cb8-a435-2f7ecdf9698d",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "ac892501-fb99-4cd5-8e88-47d1eba462a2",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 11,
+    "qc_change_type": "",
+    "line_id": "ac892501-fb99-4cd5-8e88-47d1eba462a2",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "f0ecb3a5-d2f6-4827-a440-7f260cb51963",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 12,
+    "qc_change_type": "",
+    "line_id": "f0ecb3a5-d2f6-4827-a440-7f260cb51963",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "6b7e7eb0-8841-4e79-a5b1-92b4c8bfbf59",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 13,
+    "qc_change_type": "",
+    "line_id": "6b7e7eb0-8841-4e79-a5b1-92b4c8bfbf59",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "dadc53c2-2c7f-498e-8371-c0e0b5fae4e1",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 14,
+    "qc_change_type": "",
+    "line_id": "dadc53c2-2c7f-498e-8371-c0e0b5fae4e1",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "fc63d45f-c8a2-4235-b7d4-1e45ad0327d8",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 15,
+    "qc_change_type": "",
+    "line_id": "fc63d45f-c8a2-4235-b7d4-1e45ad0327d8",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "Paragraph",
+      "entity": [],
+      "roi_id": {
+        "para": "367d0dbb-582e-4e22-ba95-2fb1dfa952a1",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+      "DStrike": false,
+      "Emboss": false,
+      "group_type": "fontInfo",
+      "Highlight": "",
+      "id": "c7a5f5b2-19cd-4e8c-b953-6d6ef2e99805",
+      "Imprint": false,
+      "iqv_standard_term": "",
+      "Italics": false,
+      "link_id": "d0f29374-c971-4a96-b5cf-5f75cc223e87",
+      "link_id_level2": "",
+      "link_id_level3": "",
+      "link_id_level4": "",
+      "link_id_level5": "",
+      "link_id_level6": "",
+      "link_id_subsection1": "",
+      "link_id_subsection2": "",
+      "link_id_subsection3": "",
+      "Outline": false,
+      "parent_id": "53925456-4e26-4586-a26c-079a9c588479",
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 16,
+    "qc_change_type": "",
+    "line_id": "367d0dbb-582e-4e22-ba95-2fb1dfa952a1",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "4c7213b7-951b-46fc-877c-7dca282830e3",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 17,
+    "qc_change_type": "",
+    "line_id": "4c7213b7-951b-46fc-877c-7dca282830e3",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "Figure 1      7",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "TableofFigures",
+      "entity": [],
+      "roi_id": {
+        "para": "a29aa015-0150-4b8a-8e85-48f32370c527",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+      "DStrike": false,
+      "Emboss": false,
+      "group_type": "fontInfo",
+      "Highlight": "",
+      "id": "18af517e-87a9-48ba-8c63-79896c00d712",
+      "Imprint": false,
+      "iqv_standard_term": "",
+      "Italics": false,
+      "link_id": "d0f29374-c971-4a96-b5cf-5f75cc223e87",
+      "link_id_level2": "",
+      "link_id_level3": "",
+      "link_id_level4": "",
+      "link_id_level5": "",
+      "link_id_level6": "",
+      "link_id_subsection1": "",
+      "link_id_subsection2": "",
+      "link_id_subsection3": "",
+      "Outline": false,
+      "parent_id": "7cd43632-f4e0-4c25-ba6a-655ffe7d6291",
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 18,
+    "qc_change_type": "",
+    "line_id": "a29aa015-0150-4b8a-8e85-48f32370c527",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "Paragraph",
+      "entity": [],
+      "roi_id": {
+        "para": "ec1aa6fd-ec47-4472-865e-5d3e222a7ba6",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+      "DStrike": false,
+      "Emboss": false,
+      "group_type": "fontInfo",
+      "Highlight": "",
+      "id": "19996b5c-ac45-4a03-8b09-97caa9e929b5",
+      "Imprint": false,
+      "iqv_standard_term": "",
+      "Italics": false,
+      "link_id": "d0f29374-c971-4a96-b5cf-5f75cc223e87",
+      "link_id_level2": "",
+      "link_id_level3": "",
+      "link_id_level4": "",
+      "link_id_level5": "",
+      "link_id_level6": "",
+      "link_id_subsection1": "",
+      "link_id_subsection2": "",
+      "link_id_subsection3": "",
+      "Outline": false,
+      "parent_id": "82467fe4-367e-44a7-84ad-7e7a7768a999",
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 19,
+    "qc_change_type": "",
+    "line_id": "ec1aa6fd-ec47-4472-865e-5d3e222a7ba6",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "",
+      "entity": [],
+      "roi_id": {
+        "para": "02fdaa83-4666-4e86-b454-dad4956c097c",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 20,
+    "qc_change_type": "",
+    "line_id": "02fdaa83-4666-4e86-b454-dad4956c097c",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "8     Table 1",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "TableofFigures",
+      "entity": [],
+      "roi_id": {
+        "para": "09ff34c7-9578-4367-b71e-0f35045a26d2",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+      "DStrike": false,
+      "Emboss": false,
+      "group_type": "fontInfo",
+      "Highlight": "",
+      "id": "c3715166-9b3c-4bbd-97b3-982a0b38dcb6",
+      "Imprint": false,
+      "iqv_standard_term": "",
+      "Italics": false,
+      "link_id": "d0f29374-c971-4a96-b5cf-5f75cc223e87",
+      "link_id_level2": "",
+      "link_id_level3": "",
+      "link_id_level4": "",
+      "link_id_level5": "",
+      "link_id_level6": "",
+      "link_id_subsection1": "",
+      "link_id_subsection2": "",
+      "link_id_subsection3": "",
+      "Outline": false,
+      "parent_id": "d3909a05-57cc-41f0-9fce-5da113a5400b",
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 21,
+    "qc_change_type": "",
+    "line_id": "09ff34c7-9578-4367-b71e-0f35045a26d2",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "Table 2 11",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "TableofFigures",
+      "entity": [],
+      "roi_id": {
+        "para": "65f13ce8-cb8a-40b1-a955-46d39f7da9fa",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+      "DStrike": false,
+      "Emboss": false,
+      "group_type": "fontInfo",
+      "Highlight": "",
+      "id": "c88d13cd-ff98-46d2-8327-c451340c0db6",
+      "Imprint": false,
+      "iqv_standard_term": "",
+      "Italics": false,
+      "link_id": "d0f29374-c971-4a96-b5cf-5f75cc223e87",
+      "link_id_level2": "",
+      "link_id_level3": "",
+      "link_id_level4": "",
+      "link_id_level5": "",
+      "link_id_level6": "",
+      "link_id_subsection1": "",
+      "link_id_subsection2": "",
+      "link_id_subsection3": "",
+      "Outline": false,
+      "parent_id": "59d2e3fb-4010-4942-aec2-dd1d2706420d",
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 22,
+    "qc_change_type": "",
+    "line_id": "65f13ce8-cb8a-40b1-a955-46d39f7da9fa",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  },
+  {
+    "section_level": "",
+    "CPT_section": "Unmapped",
+    "type": "text",
+    "content": "",
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "Paragraph",
+      "entity": [],
+      "roi_id": {
+        "para": "7a2870bf-ab94-4511-a675-491bdb70e105",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "doc_id": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+      "DStrike": false,
+      "Emboss": false,
+      "group_type": "fontInfo",
+      "Highlight": "",
+      "id": "e8e91b05-314d-4e20-b0dc-638acdbec4f4",
+      "Imprint": false,
+      "iqv_standard_term": "",
+      "Italics": false,
+      "link_id": "d0f29374-c971-4a96-b5cf-5f75cc223e87",
+      "link_id_level2": "",
+      "link_id_level3": "",
+      "link_id_level4": "",
+      "link_id_level5": "",
+      "link_id_level6": "",
+      "link_id_subsection1": "",
+      "link_id_subsection2": "",
+      "link_id_subsection3": "",
+      "Outline": false,
+      "parent_id": "f09d90c5-a2dc-4488-9845-df72d8ad003d",
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "level_1_CPT_section": "Unmapped",
+    "file_section": "OF CONTENTS",
+    "file_section_num": "TABLE",
+    "file_section_level": "1",
+    "seq_num": 23,
+    "qc_change_type": "",
+    "line_id": "7a2870bf-ab94-4511-a675-491bdb70e105",
+    "aidocid": "74646d51-2f7b-4a8b-a86f-8da709ea4e5c",
+    "synonyms_extracted_terms": "",
+    "semantic_extraction": "",
+    "audit": {
+      "last_updated_user": "1072234",
+      "updated_time": "2022-05-12T08:53:42.883000"
+    }
+  }
+]

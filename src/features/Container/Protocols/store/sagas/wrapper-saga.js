@@ -49,8 +49,9 @@ export function* handleExpandBPO(action) {
   yield put(getWrapperData(cloneData));
 }
 export function* fetchProtocolViewData(action) {
-  const { id, body, childString, sectionName } = action.payload;
-  // const docID = yield getDOCIDState();
+  const { aidoc_id, body, link_level, link_id, protocol, sectionName } =
+    action.payload;
+
   if (body) {
     const currentData = yield getWrapperState();
     let cloneData = cloneDeep(currentData);
@@ -71,19 +72,19 @@ export function* fetchProtocolViewData(action) {
       data: cloneData.data,
     };
     yield put(getWrapperData(preLoadingState));
-
-    // const URL = "/POC/particular.json";
-    const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${childString}`;
+    const URL = `${BASE_URL_8000}/api/cpt_data/get_section_data?aidoc_id=${aidoc_id}&link_level=${link_level}&link_id=${link_id}&userId=1072234&protocol=${protocol}&user=normal`;
+    // const URL = `http://ca2spdml01q:8000/api/cpt_data/get_section_data?aidoc_id=${aidoc_id}&link_level=${link_level}&link_id=${link_id}&userId=1072234&protocol=${protocol}&user=normal`;
+    // const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${childString}`;
     const config = {
       url: URL,
       method: "GET",
     };
     const { data, success } = yield call(httpCall, config);
 
-    if (success) {
+    if (success && !isEmpty(data)) {
       const currentData1 = yield getWrapperState();
       let cloneData1 = cloneDeep(currentData1);
-      data.shift();
+      // data.shift();
       const obj1 = {
         loading: false,
         success: true,
@@ -107,8 +108,8 @@ export function* fetchProtocolViewData(action) {
       const obj2 = {
         loading: false,
         success: true,
-        error: "",
-        detail: null,
+        error: "NO Data",
+        detail: [],
         expanded: true,
         header: cloneData2.data[sectionName].header,
       };
@@ -134,8 +135,9 @@ export function* fetchProtocolViewData(action) {
       detail: null,
     };
     yield put(getWrapperData(preLoadingState));
-    const URL = `${BASE_URL_8000}/api/segments/section_metadata_by_level?aidocid=${id}`;
-    // const URL = "/POC/lev-1.json";
+    const URL = `${BASE_URL_8000}/api/cpt_data/?aidoc_id=${aidoc_id}&link_level=1`;
+    // const URL = `http://ca2spdml01q:8000/api/cpt_data/?aidoc_id=${aidoc_id}&link_level=1`;
+    // const URL = `${BASE_URL_8000}/api/segments/section_metadata_by_level?aidocid=${id}`;
     const config = {
       url: URL,
       method: "GET",
@@ -160,7 +162,7 @@ export function* fetchProtocolViewData(action) {
         data: dataFormat,
       };
       yield put(getWrapperData(successState));
-      yield put(setDOCID(id));
+      yield put(setDOCID(aidoc_id));
     } else {
       const errorState = {
         loader: false,

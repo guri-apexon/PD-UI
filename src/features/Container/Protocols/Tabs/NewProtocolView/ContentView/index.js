@@ -17,24 +17,23 @@ import SectionEdit from "../Components/SectionHeaderEdit";
 import AccordionBody from "../Components/AccordionDetail";
 import "./style.scss";
 import SectionBodyEdit from "../Components/SectionBodyEdit";
-import { pdfPageNumber } from "../../../store/slice";
+// import { pdfPageNumber } from "../../../store/slice";
 
 // const searchText = "Inclusion-criteriaascaXsacsac";
-const ProtocolView = ({ id, edit }) => {
+const ProtocolView = ({ id, name, edit }) => {
   const dispatch = useDispatch();
   const { data, success, loader, error } = useSelector(wrapper);
 
-  const activePage = useSelector(pdfPageNumber);
+  // const activePage = useSelector(pdfPageNumber);
+
+  // useEffect(() => {
+  //   dispatch({ type: ActionTypes.SECTION_BY_PAGE, payload: activePage });
+  // }, [activePage]);
 
   useEffect(() => {
-    dispatch({ type: ActionTypes.SECTION_BY_PAGE, payload: activePage });
-  }, [activePage]);
-
-  useEffect(() => {
-    let staticID = id;
     dispatch({
       type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
-      payload: { id: staticID, body: false },
+      payload: { aidoc_id: id, body: false },
     });
   }, []);
 
@@ -63,21 +62,21 @@ const ProtocolView = ({ id, edit }) => {
     }
   };
   const handleSectionClicked = async (section) => {
-    let staticID = id;
+    console.log("Section Detail", section);
     const sectionHeader = section.header;
     const page = sectionHeader.page;
     const sectionName = sectionHeader.source_file_section;
     const sectionDetail = section.detail;
 
     if (!sectionDetail) {
-      const childArr = sectionHeader.child_secid_seq.map((elm) => elm[0]);
-      const childString = childArr.toString();
       dispatch({
         type: ActionTypes.GET_PROTOCOL_VIEW_NEW,
         payload: {
-          id: staticID,
+          aidoc_id: sectionHeader.doc_id,
           body: true,
-          childString,
+          link_level: sectionHeader.LinkLevel,
+          link_id: sectionHeader.link_id,
+          protocol: name,
           sectionName,
         },
       });
@@ -91,11 +90,11 @@ const ProtocolView = ({ id, edit }) => {
     }
     if (page > 0) {
       scrollToPage(page);
-    } else {
-      let pageNumber = sectionHeader.indexes.seg_pages;
-      if (pageNumber.length > 0) {
-        scrollToPage(pageNumber[0]);
-      }
+      // } else {
+      //   let pageNumber = sectionHeader.indexes.seg_pages;
+      //   if (pageNumber.length > 0) {
+      //     scrollToPage(pageNumber[0]);
+      //   }
     }
   };
   const renderHeader = (data) => {

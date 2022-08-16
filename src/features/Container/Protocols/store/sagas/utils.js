@@ -31,11 +31,11 @@ export const getPageWiseSection = (data, pageNumber) => {
         endingPageNumber = parseInt(data[keyPlus].header.page) - 1;
       }
       if (pageNumber >= startingPageNumber && pageNumber <= endingPageNumber) {
-        const childArr = data[key].header.child_secid_seq.map((elm) => elm[0]);
-        const childString = childArr.toString();
+        // const childArr = data[key].header.child_secid_seq.map((elm) => elm[0]);
+        // const childString = childArr.toString();
         sectionDetail.id = data[key].header.aidocid;
         sectionDetail.sectionName = data[key].header.source_file_section;
-        sectionDetail.childString = childString;
+        sectionDetail.childString = null;
         if (data[key].detail) {
           sectionDetail.dataPresent = true;
         } else {

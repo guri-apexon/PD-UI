@@ -211,7 +211,7 @@ const CollapseCard = ({
                   display: "flex",
                 }}
               >
-                <p style={{ padding: 10, textAlign: "center" }}></p>​
+                <p style={{ padding: 10, textAlign: "center" }}></p>
               </div>
             )}
         </Collapsible>

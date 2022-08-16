@@ -22,7 +22,7 @@ const RenderSegment = ({
   sectionName,
 }) => {
   const dispatch = useDispatch();
-  let type = data.derived_section_type;
+  let type = data.type;
   let content = data.content;
   let lineID = data.line_id;
 

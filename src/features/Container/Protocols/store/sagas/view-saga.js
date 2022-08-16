@@ -81,13 +81,15 @@ export function* fetchViewData(action) {
     err: null,
   };
   let userId = yield getUserId();
+  console.log(userId);
   yield put(getViewdata(viewData));
   // const URL = `/QC_New_re.json`;
   let URL = "";
   if (action.payload.user === "qc") {
     URL = `${BASE_URL_8000}/api/protocol_qcdata/?id=${action.payload.id}`;
   } else {
-    URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
+    // URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
+    URL = "/compare.json";
   }
 
   const config = {
