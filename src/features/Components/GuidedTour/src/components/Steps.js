@@ -1,38 +1,39 @@
 import React from 'react';
 import addProtocolImage from '../../../../../assets/images/add-protocol-modal.png';
 import followingProtocolsTableImage from '../../../../../assets/images/following-protocols-table.png';
+import expandedDataImage from '../../../../../assets/images/expanded-data.png';
 import Content from './Content';
+
+const addProtocolStepContent = 'The following form will appear after clicking the Add Protocol button';
+const followingProtocolsStepContent = 'Clicking the Following Protocols tab will display a similar list of protocols in the Following Protocols table'
+const expandedDataStepContent = 'A protocol item that has additional data fields will be shown after clicking the expand button';
 
 
 export const { steps } = {
   steps: [
     {
       target: '.navbar',
-      // content: 'You can use the navigation bar to navigate to different pages in the application',
       content: 'You can use the navigation bar to navigate to different pages in the application',
       disableBeacon: true,
     },
     {
-      // target: '.MuiButton-label-29',
-      target: '.MuiButton-label-28',
+      target: 'button[pathname="/dashboard"]',
       content: 'Dashboard contains user and following protocols as well as add protocol feature',
       disableBeacon: true,
     },
     {
-      // target: '.MuiButton-label-61',
-      target: '.MuiButton-label-60',
+      target: 'button[pathname="/protocols"]',
       content: 'Protocol view can be accessed once a protocol item is selected ofr viewing/editing',
       disableBeacon: true,
 
     },
     {
-      // target: '.MuiButton-label-93',
-      target: '.MuiButton-label-92',
+      target: 'button[pathname="/search"]',
       content: 'Go to the Search tab to search for new protocol items',
       disableBeacon: true,
     },
     {
-      target: '.MuiButton-label-125',
+      target: 'button[pathname="/admin"]',
       content: 'Admins can view and update users, roles, and mappings from the Admin page',
       disableBeacon: true,
     },
@@ -44,7 +45,7 @@ export const { steps } = {
     {
       target: 'body',
       disableBeacon: true,
-      content: <Content image={addProtocolImage} />,
+      content: <Content content={addProtocolStepContent} image={addProtocolImage} containerWidth={500} containerGap={20} imageWidth={300} imageHeight={200} />,
       placement: 'center',
     },
     {
@@ -65,75 +66,29 @@ export const { steps } = {
     {
       target: 'body',
       disableBeacon: true,
-      content:
-        <>
-          <div
-            className="content-container"
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              width: '600px',
-              columnGap: '20px',
-              alignContent: 'center'
-            }}
-          >
-            <div className="content-image-container">
-              <img
-                width='400px'
-                height='150px'
-                src={followingProtocolsTableImage}
-                alt='Screenshot of following protocols table'
-              />
-            </div>
-            <div 
-              className="content-header-container"
-            >
-              Clicking the Following Protocols tab will display a similar list of protocols in the Following Protocols table
-            </div>
-          </div>
-        </>
-      ,
+      content: <Content content={followingProtocolsStepContent} image={followingProtocolsTableImage} containerWidth={600} containerGap={20} imageWidth={400} imageHeight={150}/>,
       placement: 'center',
     },
     {
-      target: '.MuiTableSortLabel-root-365',
-      content: 'Protocols can be sorted in alphabetical order',
+      target: '.MuiTableRow-root',
+      content: 'Protocols can be sorted in ascending/descending order by the particular fields',
       disableBeacon: true,
     },
     {
-      target: '.MuiTableSortLabel-root-413',
-      content: 'Organize order by PD status',
-      disableBeacon: true,
-    },
-    {
-      target: '.MuiTableSortLabel-root-461',
-      content: 'Sort by QC status',
-      disableBeacon: true,
-    },
-    {
-      target: '.MuiTableSortLabel-root-509',
-      content: 'Sort in alphabetical order of name of sponsor',
-      disableBeacon: true,
-    },
-    {
-      target: '.MuiTableSortLabel-root-557',
-      content: "Organize items by Project ID or CRM #'s",
-      disableBeacon: true,
-    },
-    {
-      target: '.MuiTableSortLabel-root-605',
-      content: 'Sort by title of protocol document',
-      disableBeacon: true,
-    },
-    {
-      target: '.MuiIconButton-label-673',
+      target: 'input[type="checkbox"]',
       content: 'Click here to select a protocol item',
       disableBeacon: true,
     },
     {
-      target: '.MuiIconButton-label-727',
-      content: 'Clicking here will display additional fields (i.e. Phase, Indication, Docmument Status, Source)',
+      target: 'button[data-testid="expandable-row"]',
+      content: 'Click this button to display additional protocol data fields',
       disableBeacon: true,
+    },
+    {
+      target: 'body',
+      content: <Content content={expandedDataStepContent} image={expandedDataImage} containerWidth={600} containerGap={20} imageWidth={400} imageHeight={70} />,
+      placement: 'center',
+      disableBeacon: true
     },
     {
       target: '.protocol-link',
@@ -141,22 +96,22 @@ export const { steps } = {
       disableBeacon: true,
     },
     {
-      target: '.MuiIconButton-label-782',
+      target: '.activity-cell',
       content: 'Digitization status will be indicated here',
       disableBeacon: true,
     },
     {
-      target: '.MuiIconButton-label-837',
+      target: '.qc-activity-cell',
       content: 'QC status will be indicated here',
       disableBeacon: true,
     },
     {
-      target: '.wrapper-AstraZeneca',
+      target: 'div[field="sponsor"]',
       content: 'Sponsor of the protocol document will be indicated as well',
       disableBeacon: true,
     },
     {
-      target: ".wrapper-2020-000554-97",
+      target: 'div[field="projectId"]',
       content: 'A protocol item may have a Project ID or CRM #',
       disableBeacon: true,
     },
@@ -166,25 +121,9 @@ export const { steps } = {
       disableBeacon: true,
     },
     {
-      target: '.MuiButton-label-1994',
-      content: 'Navigate to further pages of protocol documents',
+      target: '.MuiTableFooter-root',
+      content: 'Use the pagination options to navigate to further pages in the Protocols Table',
       disableBeacon: true,
-    },
-    {
-      target: '.MuiButton-label-2058',
-      content: 'List all protocol items on current table page',
-      disableBeacon: true,
-    },
-    {
-      target: '.MuiInputBase-root-2274',
-      content: 'Enter a table page number to navigate directly to the page',
-      disableBeacon: true,
-    },
-    {
-      target: '.MuiTypography-root-2359',
-      content: 'Navigate to last page in table',
-      disableBeacon: true,
-    },
-
+    }
   ]
 };

@@ -144,7 +144,7 @@ const Cell = ({ row, column }) => {
   if (row[column.accessor] && row[column.accessor] === redaction.text) {
     return (
       <Tooltip variant="light" title={redaction.hoverText} placement="top">
-        <div className="long-text blur" style={{ fontWeight: 800 }}>
+        <div className="long-text blur" field={column.accessor} style={{ fontWeight: 800 }}>
           {row[column.accessor]}
         </div>
       </Tooltip>
@@ -152,13 +152,13 @@ const Cell = ({ row, column }) => {
   } else if (row[column.accessor] && row[column.accessor].length > 15) {
     return (
       <Tooltip variant="light" title={row[column.accessor]} placement="top">
-        <div className="long-text" style={{ fontWeight: 800 }}>
+        <div className="long-text" field={column.accessor} style={{ fontWeight: 800 }}>
           {row[column.accessor]}
         </div>
       </Tooltip>
     );
   } else {
-    return <div className={`wrapper-${row[column.accessor]}`} style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
+    return <div className="long-text" field={column.accessor} style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
   }
 };
 
@@ -262,7 +262,7 @@ const ActivityCell = ({ row, column: { accessor: key } }) => {
   const statusIcon = iconStatus(row[key]);
   return (
     <Tooltip variant="light" title={row[key]} placement="top">
-      <IconButton size="small" data-id={row.id} style={{ marginRight: 4 }}>
+      <IconButton className="activity-cell" size="small" data-id={row.id} style={{ marginRight: 4 }}>
         {statusIcon}
       </IconButton>
     </Tooltip>
@@ -273,7 +273,7 @@ const qcActivityCell = ({ row, column: { accessor: key } }) => {
   const statusIcon = qcIconStatus(row[key]);
   return (
     <Tooltip variant="light" title={row[key]} placement="top">
-      <IconButton size="small" data-id={row.id} style={{ marginRight: 4 }}>
+      <IconButton className="qc-activity-cell" size="small" data-id={row.id} style={{ marginRight: 4 }}>
         {statusIcon}
       </IconButton>
     </Tooltip>

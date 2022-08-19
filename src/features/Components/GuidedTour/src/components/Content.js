@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Content({ image }) {
+function Content({content, image, containerWidth, containerGap, imageWidth, imageHeight }) {
     
     return (
         <>
@@ -9,23 +9,21 @@ function Content({ image }) {
                 style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    width: '500px',
-                    columnGap: '20px',
+                    width: containerWidth,
+                    columnGap: containerGap,
                     alignContent: 'center'
                 }}
             >
                 <div className="content-image-container">
                     <img
-                        width='300px'
-                        height='200px'
+                        width={imageWidth}
+                        height={imageHeight}
                         src={image}
-                        alt='Screenshot of navigation bar'
+                        alt='Content screenshot'
                     />
                 </div>
-                <div
-                    className="content-header-container"
-                >
-                    The following form will appear upon clicking the Add Protocol Button to allow creation of a new protocol document entry
+                <div className="content-header-container">
+                    {content}
                 </div>
             </div>
         </>
