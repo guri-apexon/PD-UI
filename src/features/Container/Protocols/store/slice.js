@@ -64,7 +64,7 @@ export const protocolSlice = createSlice({
       state.associateDocs = action.payload;
     },
     getFileStream: (state, action) => {
-      state.pdfStream = action.payload;
+      state.fileStream = action.payload;
     },
     getWrapperData: (state, action) => {
       state.wrapperData = action.payload;

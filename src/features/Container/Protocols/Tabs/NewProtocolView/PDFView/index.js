@@ -7,14 +7,16 @@ import ZoomOut from "../../../../../../assets/images/zoom-out.png";
 import ZoomIn from "../../../../../../assets/images/zoom-in.png";
 import menuIcon from "../../../../../../assets/images/list.png";
 
-import samplePDF from "./d5180c00025csp-FINAL-25Feb-clean.pdf";
+// import samplePDF from "./d5180c00025csp-FINAL-25Feb-clean.pdf";
 import { useDispatch, useSelector } from "react-redux";
-import { pdfPageNumber } from "../../../store/slice";
+import { pdfPageNumber, fileStream } from "../../../store/slice";
 import { ActionTypes } from "../../../store/ActionTypes";
+import Loader from "apollo-react/components/Loader";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const PDFRenderer = () => {
+const PDFRenderer = ({ name, dfsPath }) => {
   const pdf_PageNumber = useSelector(pdfPageNumber);
+  const { loader, error, data } = useSelector(fileStream);
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [page, setPage] = useState(0);
@@ -23,6 +25,13 @@ const PDFRenderer = () => {
   const [displayMenu, setDisplayMenu] = useState(false);
   const menuRef = useRef(null);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: ActionTypes.GET_FILE_STREAM,
+      payload: { name, dfsPath, type: "application/pdf" },
+    });
+  }, [dfsPath, name]);
 
   useEffect(() => {
     setPageNumber(pdf_PageNumber);
@@ -64,11 +73,17 @@ const PDFRenderer = () => {
     setPage(page);
     dispatch({ type: ActionTypes.PAGE_NUMBER, payload: page + 1 });
   };
+  if (loader) {
+    return <Loader />;
+  }
+  if (error) {
+    return <h1>No data</h1>;
+  }
   return (
     <div className="pd-pdf-container">
       <div onClick={() => setShowPagination(!showPagination)}>
         <Document
-          file={samplePDF}
+          file={data}
           onLoadSuccess={onDocumentLoadSuccess}
           onItemClick={onItemClick}
         >

@@ -28,6 +28,14 @@ const TabContainer = ({ history }) => {
   const [protocolId, setProtocolId] = useState("");
   const [protocolName, setProtocolName] = useState("");
   const [fileName, setFileName] = useState("");
+  const [fileType, setFileType] = useState("pdf");
+  const getFileExtension = (filename) => {
+    const extension = filename.substring(
+      filename.lastIndexOf(".") + 1,
+      filename.length
+    );
+    return extension;
+  };
 
   useEffect(() => {
     const { location } = history;
@@ -36,6 +44,7 @@ const TabContainer = ({ history }) => {
     setProtocolId(parsed.protocolId);
     setProtocolName(parsed.protocol);
     setFileName(parsed.file);
+    setFileType(getFileExtension(parsed.file));
   }, [history]);
 
   const handleTabClick = (tabName) => {
@@ -174,6 +183,7 @@ const TabContainer = ({ history }) => {
             id={protocolId}
             name={protocolName}
             dfsPath={fileName}
+            fileType={fileType}
           />
         )}
       </div>

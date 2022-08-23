@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./style.scss";
 import PDFView from "../PDFView";
+import DocView from "../DocRenderer";
 // import DocumentViewer from "../Components/FileViewer";
 import AtrributeView from "../AttributeView";
 import FloatingButton from "../Components/FloatingButton";
@@ -10,7 +11,7 @@ import { ActionTypes } from "../../../store/ActionTypes";
 import ProtocolView from "../ContentView/index";
 import { useDispatch } from "react-redux";
 
-const Expandable = ({ id, name, dfsPath }) => {
+const Expandable = ({ id, name, dfsPath, fileType }) => {
   const dispatch = useDispatch();
   const [edit, setEdit] = useState(false);
   const [showAttributes, setShowAttributes] = useState(false);
@@ -97,7 +98,7 @@ const Expandable = ({ id, name, dfsPath }) => {
       }
     }
   };
-  console.log("--------", id, name, dfsPath, pdfZoom);
+  console.log("--------", id, name, dfsPath, pdfZoom, fileType);
   return (
     <div className="resize-container">
       {/* {!showAttributes && (
@@ -121,7 +122,11 @@ const Expandable = ({ id, name, dfsPath }) => {
       </div>
 
       <div id="left-panel" className={"left-panel"}>
-        <PDFView name={name} dfsPath={dfsPath} zoom={pdfZoom} />
+        {fileType === "pdf" ? (
+          <PDFView name={name} dfsPath={dfsPath} zoom={pdfZoom} />
+        ) : (
+          <DocView name={name} dfsPath={dfsPath} />
+        )}
         {/* <DocumentViewer /> */}
       </div>
       <div className={"resize"} id="resize"></div>

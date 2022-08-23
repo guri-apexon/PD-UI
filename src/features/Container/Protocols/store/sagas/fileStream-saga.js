@@ -13,7 +13,7 @@ export function* fetchFileStream(action) {
   yield put(getFileStream(preLoadingState));
 
   let userId = yield getUserId();
-  const { name, dfsPath } = action.payload;
+  const { name, dfsPath, type } = action.payload;
   const config = {
     url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
       dfsPath
@@ -23,7 +23,7 @@ export function* fetchFileStream(action) {
   };
   const { data, success } = yield call(httpCall, config);
   if (success) {
-    const file = new Blob([data], { type: "application/pdf" });
+    const file = new Blob([data], { type });
     const successState = {
       loader: false,
       success: true,
