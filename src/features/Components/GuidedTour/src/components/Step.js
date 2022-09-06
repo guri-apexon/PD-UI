@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Floater from 'react-floater';
+// import Floater from '../../../Floater/src/index.tsx';
 import treeChanges from 'tree-changes';
 import is from 'is-lite';
 

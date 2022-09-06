@@ -1,7 +1,7 @@
 import React from 'react';
 
-function Content({content, image, containerWidth, containerGap, imageWidth, imageHeight }) {
-    
+function Content({ content, image, containerWidth, containerGap, imageWidth, imageHeight, padding }) {
+
     return (
         <>
             <div
@@ -11,7 +11,7 @@ function Content({content, image, containerWidth, containerGap, imageWidth, imag
                     flexDirection: 'row',
                     width: containerWidth,
                     columnGap: containerGap,
-                    alignContent: 'center'
+                    alignContent: 'left',
                 }}
             >
                 <div className="content-image-container">

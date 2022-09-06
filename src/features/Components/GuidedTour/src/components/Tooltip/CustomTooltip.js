@@ -1,7 +1,7 @@
 import React from 'react';
 
 function CustomTooltip({ step, tooltipProps }) {
-
+    
     return (
         <div
             className="tooltip-container"

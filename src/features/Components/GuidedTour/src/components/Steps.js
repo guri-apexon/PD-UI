@@ -45,7 +45,7 @@ export const { steps } = {
     {
       target: 'body',
       disableBeacon: true,
-      content: <Content content={addProtocolStepContent} image={addProtocolImage} containerWidth={500} containerGap={20} imageWidth={300} imageHeight={200} />,
+      content: <Content content={addProtocolStepContent} image={addProtocolImage} containerWidth={500} containerGap={20} imageWidth={300} imageHeight={200} padding={'50px 0'} />,
       placement: 'center',
     },
     {
@@ -66,7 +66,7 @@ export const { steps } = {
     {
       target: 'body',
       disableBeacon: true,
-      content: <Content content={followingProtocolsStepContent} image={followingProtocolsTableImage} containerWidth={600} containerGap={20} imageWidth={400} imageHeight={150}/>,
+      content: <Content content={followingProtocolsStepContent} image={followingProtocolsTableImage} containerWidth={600} containerGap={20} imageWidth={400} imageHeight={150} padding={'0px 0'} />,
       placement: 'center',
     },
     {
@@ -86,7 +86,7 @@ export const { steps } = {
     },
     {
       target: 'body',
-      content: <Content content={expandedDataStepContent} image={expandedDataImage} containerWidth={600} containerGap={20} imageWidth={400} imageHeight={70} />,
+      content: <Content content={expandedDataStepContent} image={expandedDataImage} containerWidth={700} containerGap={20} imageWidth={500} imageHeight={100} padding={'0px 0'} />,
       placement: 'center',
       disableBeacon: true
     },
@@ -97,12 +97,12 @@ export const { steps } = {
     },
     {
       target: '.activity-cell',
-      content: 'Digitization status will be indicated here',
+      content: 'This status symbol indicates digitization is in progress',
       disableBeacon: true,
     },
     {
       target: '.qc-activity-cell',
-      content: 'QC status will be indicated here',
+      content: 'This status symbol indicates QC is in progress',
       disableBeacon: true,
     },
     {
@@ -124,6 +124,7 @@ export const { steps } = {
       target: '.MuiTableFooter-root',
       content: 'Use the pagination options to navigate to further pages in the Protocols Table',
       disableBeacon: true,
+      placement: 'bottom',
     }
   ]
 };
