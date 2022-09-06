@@ -13,8 +13,9 @@ import Tooltip from "apollo-react/components/Tooltip";
 import { navbarNotifications } from "./navbarSlice";
 import { ClickAwayListener } from "@material-ui/core";
 
-import GuidedTour from "../../Components/GuidedTour/src/components/GuidedTour";
-import { guidedTourState } from "../Dashboard/dashboardSlice";
+// import GuidedTour from "../../Components/GuidedTour/src/components/GuidedTour";
+// import { guidedTourState } from "../Dashboard/dashboardSlice";
+// import { STATUS } from "../../Components/GuidedTour/src/index";
 
 import "./Alerts.scss";
 import { redaction } from "../../../AppConstant/AppConstant";
@@ -46,7 +47,7 @@ function Alerts() {
   const notificationsMenuProps = useSelector(navbarNotifications);
 
   const currentPath = window.location.pathname;
-  const dashboardTour = useSelector(guidedTourState);
+  // const dashboardTour = useSelector(guidedTourState);
   const [pathname, setPathname] = React.useState(currentPath);
   const [open, setOpen] = React.useState(false);
   const isDashboard = (pathname === dashboardPath);
@@ -70,18 +71,43 @@ function Alerts() {
     });
   }
 
+  /* const handleCloseTour = () => {
+    dispatch({
+      type: "SET_TOUR_ACTIVE",
+      payload: false,
+    })
+  }
+
+
+  const handleTourCompletion = (data) => {
+    const { status } = data;
+    const finishedStatuses = [STATUS.FINISHED];
+
+    if (finishedStatuses.includes(status)) {
+      handleCloseTour();
+    }
+  } */
+
   if (!notificationsMenuProps.length) {
     return (
       <>
-        {isDashboard && dashboardTour && (<GuidedTour />)}
+        {/* {isDashboard && dashboardTour &&
+          (
+            <GuidedTour
+              closeTourCallback={handleCloseTour}
+              tourCompletionCallback={handleTourCompletion}
+            />
+          )
+        } */}
         {isDashboard &&
-          (<button
-            data-testid="guided-tour-help-icon"
-            className="guide-icon"
-            onClick={handleActivateTour}
-          >
-            <Help />
-          </button>)}
+          (
+            <button
+              data-testid="guided-tour-help-icon"
+              className="guide-icon"
+              onClick={handleActivateTour}
+            >
+              <Help />
+            </button>)}
         {!isDashboard &&
           <ClickAwayListener onClickAway={closeTooltip}>
             <Tooltip

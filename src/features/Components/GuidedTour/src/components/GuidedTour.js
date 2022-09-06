@@ -1,49 +1,21 @@
 import React from 'react';
-import { useDispatch } from "react-redux";
+import CarouselComp from './Carousel';
+import Close from 'apollo-react-icons/Close';
+import './GuidedTour.scss';
 
-// import Joyride, { STATUS } from 'react-joyride'
-// import Joyride, { STATUS } from './react-joyride/es/index';
-// import Joyride, { STATUS } from '../../../Components/GuidedTour/src/index';
-import Joyride, { STATUS } from '../index';
-import CustomTooltip from './Tooltip/CustomTooltip';
-
-import { steps } from './Steps';
-import "./GuidedTour.scss";
-
-function GuidedTour() {
-
-    const dispatch = useDispatch();
-
-    const closeTour = () => {
-        dispatch({
-            type: "SET_TOUR_ACTIVE",
-            payload: false,
-        })
-    }
-
-
-    const tourCompletionCallback = (data) => {
-        const { status } = data;
-        const finishedStatuses = [STATUS.FINISHED];
-
-        if (finishedStatuses.includes(status)) {
-            dispatch({
-                type: "SET_TOUR_ACTIVE",
-                payload: false,
-            });
-        }
-    }
-
+function GuidedTour({ cards, closeTourCallback }) {
     return (
-        <>
-            <Joyride
-                steps={steps}
-                tooltipComponent={CustomTooltip}
-                callback={tourCompletionCallback}
-                closeTourHandler={closeTour}
-            />
-        </>
-
+        <div className="guided-tour-container">
+            <div className="close-button-container">
+                <button
+                    className='close-button'
+                    onClick={closeTourCallback}
+                >
+                    <Close style={{ color: 'white' }} />
+                </button>
+            </div>
+            <CarouselComp cards={cards} closeTourCallback={closeTourCallback} />
+        </div>
     );
 }
 

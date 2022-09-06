@@ -16,7 +16,6 @@ import { getBrowser, isLegacy, log } from '../modules/helpers';
 import LIFECYCLE from '../constants/lifecycle';
 
 import Spotlight from './Spotlight';
-import Close from 'apollo-react-icons/Close';
 
 export default class JoyrideOverlay extends React.Component {
 
@@ -226,7 +225,7 @@ export default class JoyrideOverlay extends React.Component {
           styles={{
           }}
         >
-          <div
+          {/* <div
             className="tour-close-button-contaier"
             style={{
               zIndex: 200,
@@ -246,7 +245,7 @@ export default class JoyrideOverlay extends React.Component {
             >
               <Close style={{ color: 'white' }} />
             </button>
-          </div>
+          </div> */}
           {spotlight}
         </div>
       </>
