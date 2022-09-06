@@ -19,6 +19,7 @@ import tourStepPDStatusDigitizationInProgressImage from '../../../assets/images/
 import tourStepPDStatusDigitizationCompleteImage from '../../../assets/images/tour-step-pd-status-digitization-complete.png';
 import tourStepQCStatusQCNotStartedImage from '../../../assets/images/tour-step-qc-status-qc-not-started.png';
 import tourStepQCStatusQCInProgressImage from '../../../assets/images/tour-step-qc-status-qc-in-progress.png';
+import tourStepQCStatusQCCompleteImage from '../../../assets/images/tour-step-qc-status-qc-complete.png';
 import tourStepSponsorImage from '../../../assets/images/tour-step-sponsor.png';
 import tourStepProjectIDImage from '../../../assets/images/tour-step-project-id.png';
 import tourStepProtocolTitleImage from '../../../assets/images/tour-step-protocol-title.png';
@@ -42,6 +43,7 @@ const tourStepPDStatusDigitizationInProgress = <CarouselCard image={tourStepPDSt
 const tourStepPDStatusDigitizationComplete = <CarouselCard image={tourStepPDStatusDigitizationCompleteImage} />;
 const tourStepQCStatusQCNotStarted = <CarouselCard image={tourStepQCStatusQCNotStartedImage} />;
 const tourStepQCStatusQCInProgress = <CarouselCard image={tourStepQCStatusQCInProgressImage} />;
+const tourStepQCStatusQCComplete = <CarouselCard image={tourStepQCStatusQCCompleteImage} />;
 const tourStepSponor = <CarouselCard image={tourStepSponsorImage} />;
 const tourStepProjectID = <CarouselCard image={tourStepProjectIDImage} />;
 const tourStepProtocolTitle = <CarouselCard image={tourStepProtocolTitleImage} />;
@@ -66,6 +68,7 @@ const Cards = [
     tourStepPDStatusDigitizationComplete,
     tourStepQCStatusQCNotStarted,
     tourStepQCStatusQCInProgress,
+    tourStepQCStatusQCComplete,
     tourStepSponor,
     tourStepProjectID,
     tourStepProtocolTitle,
