@@ -14,6 +14,10 @@ export function* getUserId() {
   const id = state.user.userDetail.userId;
   return id.substring(1);
 }
+export function* getUserDetail() {
+  const state = yield select();
+  return state.user.userDetail;
+}
 export const getPageWiseSection = (data, pageNumber) => {
   console.log("Datttta,", data, pageNumber);
   if (data) {

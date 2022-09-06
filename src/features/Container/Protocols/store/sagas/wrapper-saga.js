@@ -19,6 +19,7 @@ import {
 import { toast } from "react-toastify";
 import { ActionTypes } from "../ActionTypes";
 import { generateHeaderID } from "../../Tabs/NewProtocolView/utils";
+import { getUserId, getUserDetail } from "./utils";
 
 function* getWrapperState() {
   const state = yield select();
@@ -51,7 +52,8 @@ export function* handleExpandBPO(action) {
 export function* fetchProtocolViewData(action) {
   const { aidoc_id, body, link_level, link_id, protocol, sectionName } =
     action.payload;
-
+  let userId = yield getUserId();
+  let userDetail = yield getUserDetail();
   if (body) {
     const currentData = yield getWrapperState();
     let cloneData = cloneDeep(currentData);
@@ -72,7 +74,7 @@ export function* fetchProtocolViewData(action) {
       data: cloneData.data,
     };
     yield put(getWrapperData(preLoadingState));
-    const URL = `${BASE_URL_8000}/api/cpt_data/get_section_data?aidoc_id=${aidoc_id}&link_level=${link_level}&link_id=${link_id}&userId=1072234&protocol=${protocol}&user=normal`;
+    const URL = `${BASE_URL_8000}/api/cpt_data/get_section_data?aidoc_id=${aidoc_id}&link_level=${link_level}&link_id=${link_id}&userId=${userId}&protocol=${protocol}&user=${userDetail.user_type}`;
     // const URL = `http://ca2spdml01q:8000/api/cpt_data/get_section_data?aidoc_id=${aidoc_id}&link_level=${link_level}&link_id=${link_id}&userId=1072234&protocol=${protocol}&user=normal`;
     // const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${childString}`;
     const config = {
