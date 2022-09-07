@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade, Navigation } from 'swiper';
 
-import 'swiper/swiper.min.css';
-import 'swiper/modules/navigation/navigation.min.css';
-import 'swiper/modules/pagination/pagination.min.css';
-import 'swiper/modules/effect-fade/effect-fade.min.css';
+import "swiper/css/bundle";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/effect-fade";
+
 
 const CarouselComp = ({ cards, closeTourCallback }) => {
 
