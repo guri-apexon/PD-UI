@@ -7,12 +7,15 @@ import tourStepProtocolsImage from '../../../assets/images/tour-step-protocols.p
 import tourStepSearchImage from '../../../assets/images/tour-step-search.png';
 import tourStepAdminImage from '../../../assets/images/tour-step-admin.png';
 import tourStepAddProtocolImage from '../../../assets/images/tour-step-add-protocol.png';
+import tourStepAddProtocolModalImage from '../../../assets/images/tour-step-add-protocol-modal.png';
 import tourStepSendQCImage from '../../../assets/images/tour-step-send-qc.png';
 import tourStepMyProtocolsImage from '../../../assets/images/tour-step-my-protocols.png';
 import tourStepFollowingProtocolsImage from '../../../assets/images/tour-step-following-protocols.png';
+import tourStepFollowingProtocolsPageImage from '../../../assets/images/tour-step-following-protocols-page.png';
 import tourStepTableSortImage from '../../../assets/images/tour-step-table-sort.png';
 import tourStepCheckboxImage from '../../../assets/images/tour-step-checkbox.png';
 import tourStepExpandableComponentImage from '../../../assets/images/tour-step-expandable-component.png';
+import tourStepExpandedFieldsImage from '../../../assets/images/tour-step-expanded-fields.png';
 import tourStepProtocolLinkImage from '../../../assets/images/tour-step-protocol-link.png';
 import tourStepPDStatusUploadCompleteImage from '../../../assets/images/tour-step-pd-status-upload-complete.png';
 import tourStepPDStatusDigitizationInProgressImage from '../../../assets/images/tour-step-pd-status-digitization-in-progress.png';
@@ -31,12 +34,15 @@ const tourStepProtocols = <CarouselCard image={tourStepProtocolsImage} />;
 const tourStepSearch = <CarouselCard image={tourStepSearchImage} />;
 const tourStepAdmin = <CarouselCard image={tourStepAdminImage} />;
 const tourStepAddProtocol = <CarouselCard image={tourStepAddProtocolImage} />;
+const tourStepAddProtocolModal = <CarouselCard image={tourStepAddProtocolModalImage} />;
 const tourStepSendQC = <CarouselCard image={tourStepSendQCImage} />;
 const tourStepMyProtocols = <CarouselCard image={tourStepMyProtocolsImage} />;
 const tourStepFollowingProtocols = <CarouselCard image={tourStepFollowingProtocolsImage} />;
+const tourStepFollowingProtocolsPage = <CarouselCard image={tourStepFollowingProtocolsPageImage} />;
 const tourStepTableSort = <CarouselCard image={tourStepTableSortImage} />;
 const tourStepCheckbox = <CarouselCard image={tourStepCheckboxImage} />;
 const tourStepExpandableComponent = <CarouselCard image={tourStepExpandableComponentImage} />;
+const tourStepExpandedFields = <CarouselCard image={tourStepExpandedFieldsImage} />;
 const tourStepProtocolLink = <CarouselCard image={tourStepProtocolLinkImage} />;
 const tourStepPDStatusUploadComplete = <CarouselCard image={tourStepPDStatusUploadCompleteImage} />;
 const tourStepPDStatusDigitizationInProgress = <CarouselCard image={tourStepPDStatusDigitizationInProgressImage} />;
@@ -56,12 +62,15 @@ const Cards = [
     tourStepSearch,
     tourStepAdmin,
     tourStepAddProtocol,
+    tourStepAddProtocolModal,
     tourStepSendQC,
     tourStepMyProtocols,
     tourStepFollowingProtocols,
+    tourStepFollowingProtocolsPage,
     tourStepTableSort,
     tourStepCheckbox,
     tourStepExpandableComponent,
+    tourStepExpandedFields,
     tourStepProtocolLink,
     tourStepPDStatusUploadComplete,
     tourStepPDStatusDigitizationInProgress,
