@@ -12,8 +12,8 @@ const expandedDataStepContent = 'A protocol item that has additional data fields
 export const { steps } = {
   steps: [
     {
-      target: '.navbar',
-      content: 'You can use the navigation bar to navigate to different pages in the application',
+      target: '.search',
+      content: 'Search test',
       disableBeacon: true,
     },
     {

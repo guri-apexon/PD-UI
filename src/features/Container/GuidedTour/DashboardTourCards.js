@@ -55,7 +55,7 @@ const tourStepProjectID = <CarouselCard image={tourStepProjectIDImage} />;
 const tourStepProtocolTitle = <CarouselCard image={tourStepProtocolTitleImage} />;
 const tourStepTablePagination = <CarouselCard image={tourStepTablePaginationImage} />;
 
-const Cards = [
+const cards = [
     tourStepNavbar,
     tourStepDashboard,
     tourStepProtocols,
@@ -84,4 +84,4 @@ const Cards = [
     tourStepTablePagination
 ];
 
-export default Cards;
+export default cards;
