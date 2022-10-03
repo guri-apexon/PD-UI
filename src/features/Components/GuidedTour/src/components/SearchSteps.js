@@ -48,7 +48,12 @@ export const { steps } = {
       },
       {
         target: '.Card-interactive-323',
-        content: "Protocols for which secondary access is granted may contain redacted information",
+        content: "Associated protocol data can be viewed by clicking the Protocol Data expansion",
+        disableBeacon: true,
+      },
+      {
+        target: '.search-inner-table',
+        content: "Related versions of the same protocol document can be retrieved by clicking the View Associate Protocols option",
         disableBeacon: true,
       }
       

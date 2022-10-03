@@ -20,6 +20,9 @@ import tourStepDateRangeFilterExpandedImage1 from '../../../assets/images/tour-s
 import tourStepDateRangeFilterExpandedImage2 from '../../../assets/images/tour-step-date-range-filter-expanded-2.png';
 import tourStepSecondaryProtocolImage from '../../../assets/images/tour-step-secondary-protocol.png';
 import tourStepSecondaryProtocolExpandedImage from '../../../assets/images/tour-step-secondary-protocol-expanded.png';
+import tourStepPrimaryProtocolImage from '../../../assets/images/tour-step-primary-protocol.png';
+import tourStepPrimaryProtocolExpandedImage from '../../../assets/images/tour-step-primary-protocol-expanded.png';
+import tourStepViewAssociateProtocolsImage from '../../../assets/images/tour-step-view-associate-protocols.png';
 
 
 const tourStepSearchbar = <CarouselCard image={tourStepSearchbarImage} />;
@@ -41,6 +44,9 @@ const tourStepDateRangeFilterExpanded1 = <CarouselCard image={tourStepDateRangeF
 const tourStepDateRangeFilterExpanded2 = <CarouselCard image={tourStepDateRangeFilterExpandedImage2} />;
 const tourStepSecondaryProtocol = <CarouselCard image={tourStepSecondaryProtocolImage} />;
 const tourStepSecondaryProtocolExpanded = <CarouselCard image={tourStepSecondaryProtocolExpandedImage} />;
+const tourStepPrimaryProtocol = <CarouselCard image={tourStepPrimaryProtocolImage} />;
+const tourStepPrimaryProtocolExpanded = <CarouselCard image={tourStepPrimaryProtocolExpandedImage} />;
+const tourStepViewAssociateProtocols = <CarouselCard image={tourStepViewAssociateProtocolsImage} />;
 
 const cards = [
     tourStepSearchbar,
@@ -61,7 +67,10 @@ const cards = [
     tourStepDateRangeFilterExpanded1,
     tourStepDateRangeFilterExpanded2,
     tourStepSecondaryProtocol,
-    tourStepSecondaryProtocolExpanded
+    tourStepSecondaryProtocolExpanded,
+    tourStepPrimaryProtocol,
+    tourStepPrimaryProtocolExpanded,
+    tourStepViewAssociateProtocols
 ];
 
 export default cards;
