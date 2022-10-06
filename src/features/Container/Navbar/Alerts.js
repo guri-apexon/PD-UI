@@ -13,16 +13,13 @@ import Tooltip from "apollo-react/components/Tooltip";
 import { navbarNotifications } from "./navbarSlice";
 import { ClickAwayListener } from "@material-ui/core";
 
-// import GuidedTour from "../../Components/GuidedTour/src/components/GuidedTour";
-// import { guidedTourState } from "../Dashboard/dashboardSlice";
-// import { STATUS } from "../../Components/GuidedTour/src/index";
-
 import "./Alerts.scss";
 import { redaction } from "../../../AppConstant/AppConstant";
 import { useEffect } from "react";
 const replaceall = require("replaceall");
 
 const dashboardPath = '/dashboard';
+const searchPath = '/search';
 
 function createFullMarkup(str) {
   if (str) {
@@ -47,10 +44,10 @@ function Alerts() {
   const notificationsMenuProps = useSelector(navbarNotifications);
 
   const currentPath = window.location.pathname;
-  // const dashboardTour = useSelector(guidedTourState);
   const [pathname, setPathname] = React.useState(currentPath);
   const [open, setOpen] = React.useState(false);
   const isDashboard = (pathname === dashboardPath);
+  const isSearch = (pathname === searchPath);
 
   useEffect(() => {
     setPathname(currentPath);
@@ -71,35 +68,10 @@ function Alerts() {
     });
   }
 
-  /* const handleCloseTour = () => {
-    dispatch({
-      type: "SET_TOUR_ACTIVE",
-      payload: false,
-    })
-  }
-
-
-  const handleTourCompletion = (data) => {
-    const { status } = data;
-    const finishedStatuses = [STATUS.FINISHED];
-
-    if (finishedStatuses.includes(status)) {
-      handleCloseTour();
-    }
-  } */
-
   if (!notificationsMenuProps.length) {
     return (
       <>
-        {/* {isDashboard && dashboardTour &&
-          (
-            <GuidedTour
-              closeTourCallback={handleCloseTour}
-              tourCompletionCallback={handleTourCompletion}
-            />
-          )
-        } */}
-        {isDashboard &&
+        {(isDashboard || isSearch) &&
           (
             <button
               data-testid="guided-tour-help-icon"
@@ -108,7 +80,7 @@ function Alerts() {
             >
               <Help />
             </button>)}
-        {!isDashboard &&
+        {!(isDashboard || isSearch) &&
           <ClickAwayListener onClickAway={closeTooltip}>
             <Tooltip
               title={'Tour is currently unavailable for this page'}

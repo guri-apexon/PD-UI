@@ -68,7 +68,7 @@ class ProtocolSearchButton extends React.Component {
 
     return (
       <div className="width100">
-        <form onSubmit={this.handleSearchProtocol} style={{ float: "left" }}>
+        <form className="search-bar" onSubmit={this.handleSearchProtocol} style={{ float: "left" }}>
           <Search
             id="txtSearchProtocol"
             style={{ width: "500px" }}

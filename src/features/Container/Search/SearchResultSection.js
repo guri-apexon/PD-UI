@@ -235,7 +235,7 @@ class SearchPanel extends React.Component {
     return (
       <div id="searchPanel" className="searchPanel">
         <Grid container md={12}>
-          <Grid md={3}>
+          <Grid  className="filter-panel" md={3}>
             <div variant="body2">
               {
                 <div className="refine-search">

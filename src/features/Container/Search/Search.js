@@ -38,6 +38,12 @@ import {
 import Loader from "apollo-react/components/Loader";
 import { formatESDate, convertDatesFormat } from "../../../utils/utilFunction";
 
+import GuidedTour from "../../Components/GuidedTour/src/components/GuidedTour";
+import { guidedTourState } from "../Dashboard/dashboardSlice";
+import cards from "../GuidedTour/SearchTourCards";
+
+const searchPath = '/search';
+
 const Search = (props) => {
   const resultList = useSelector(searchResult);
   const totalSearchResults = useSelector(totalSearchResult);
@@ -86,6 +92,22 @@ const Search = (props) => {
   const [dateTemp, setDateTemp] = useState({
     dateRange: { from: "", to: "" },
   });
+
+  const currentPath = window.location.pathname;
+  const searchTour = useSelector(guidedTourState);
+  const [pathname, setPathname] = React.useState(currentPath);
+  const isSearch = (pathname === searchPath);
+
+  useEffect(() => {
+    setPathname(currentPath);
+  }, [currentPath]);
+
+  const handleCloseTour = () => {
+    dispatch({
+      type: "SET_TOUR_ACTIVE",
+      payload: false,
+    })
+  };
   // let arr = [];
   useEffect(() => {
     // axios.get('http://ca2spdml01q:8000/api/indications/?skip=0')
@@ -1035,6 +1057,7 @@ const Search = (props) => {
   };
   return (
     <div className="search">
+      {isSearch && searchTour && (<GuidedTour cards={cards} closeTourCallback={handleCloseTour} />)}
       <Breadcrumbs
         items={[
           { href: "/dashboard", onClick: (e) => handleClick(e) },

@@ -8,9 +8,8 @@ import { dashboadAPIError } from "./dashboardSlice";
 import ActionButtons from "./ActionButtons";
 
 import GuidedTour from "../../Components/GuidedTour/src/components/GuidedTour";
-import { guidedTourState } from "../Dashboard/dashboardSlice";
-
-import Cards from "../GuidedTour/Cards";
+import { guidedTourState } from "./dashboardSlice";
+import cards from "../GuidedTour/DashboardTourCards";
 
 const dashboardPath = '/dashboard';
 
@@ -51,7 +50,7 @@ const Dashboard = () => {
   return (
     <>
       {isDashboard && dashboardTour && (
-        <GuidedTour cards={Cards} closeTourCallback={handleCloseTour} />
+        <GuidedTour cards={cards} closeTourCallback={handleCloseTour} />
       )}
       <div className="dashboard-parent" style={{ padding: 20 }}>
         {dashboardError && dashboardError.apiError && (
