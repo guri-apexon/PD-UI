@@ -10,6 +10,7 @@ import {
 } from "./Utils/dataAndColumn";
 import { cloneDeep } from "lodash";
 import ViewTable from "./ViewTable";
+import ContentEdit from "../../Tabs/NewProtocolView/Components/ContentEdit";
 
 const SHARED_OPTIONS = { suppressCellSelection: true };
 
@@ -50,6 +51,41 @@ const PDTable = ({
     cloneData.content.TableProperties = tableJSON;
     handleSave(cloneData.content, lineID);
   };
+  const getFootnoteArray = (content) => {
+    const arr = [];
+    for (const [key, value] of Object.entries(content)) {
+      const reg = /FootnoteText/i;
+      let result = reg.test(key);
+      if (result) {
+        arr.push({
+          key,
+          value,
+        });
+      }
+    }
+    return arr;
+  };
+  const renderFootnote = (content) => {
+    const footnoteArr = getFootnoteArray(content);
+    if (footnoteArr.length > 0) {
+      return footnoteArr.map((item) => {
+        return (
+          <ContentEdit
+            data={data}
+            content={item.value}
+            edit={edit}
+            lineID={item.key}
+            // setActiveLineID={setActiveLineID}
+            // activeLineID={activeLineID}
+            // handleContentEdit={handleContentEdit}
+            className="line-content edit-text-con"
+          />
+        );
+      });
+    }
+    return <div>{}</div>;
+  };
+
   return (
     <div key={"Table" + data.line_id} style={{ height: "100%" }}>
       {"editEnabledFor" in data && data.editEnabledFor === data.line_id ? (
@@ -84,6 +120,7 @@ const PDTable = ({
           />
         </div>
       )}
+      {data.content && renderFootnote(data.content)}
     </div>
   );
 };

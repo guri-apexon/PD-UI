@@ -44,6 +44,7 @@ export const getColumnInfoFromSourceData = (data) => {
     cellClass: "cell-wrap-text",
     rowDrag: false,
     hide: false,
+    minWidth: 100,
     cellRenderer: (params) => {
       if (params.value !== undefined) {
         return (
@@ -91,6 +92,7 @@ export const getColumnInfoFromSourceDataNonEditable = (data) => {
     cellClass: "cell-wrap-text",
     rowDrag: true,
     hide: false,
+    minWidth: 100,
     cellRenderer: (params) => {
       if (params.value !== undefined) {
         return (
