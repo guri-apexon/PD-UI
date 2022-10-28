@@ -18,6 +18,12 @@ import {
 } from "./adminSlice";
 import ProtocolMap from "./ProtocolMap";
 
+import GuidedTour from "../../Components/GuidedTour/src/components/GuidedTour";
+import { guidedTourState } from "../Dashboard/dashboardSlice";
+import cards from "../GuidedTour/AdminTourCards";
+
+const adminPath = '/admin';
+
 function Admin() {
   const dispatch = useDispatch();
   const isLoading = useSelector(loader);
@@ -26,6 +32,22 @@ function Admin() {
   const roleOptions = useSelector(rolesOptionsList);
   const [value, setValue] = useState(0);
   const [columns, setColumns] = useState([]);
+
+  const currentPath = window.location.pathname;
+  const adminTour = useSelector(guidedTourState);
+  const [pathname, setPathname] = React.useState(currentPath);
+  const isAdmin = (pathname === adminPath);
+
+  useEffect(() => {
+    setPathname(currentPath);
+  }, [currentPath]);
+
+  const handleCloseTour = () => {
+    dispatch({
+      type: "SET_TOUR_ACTIVE",
+      payload: false,
+    })
+  };
 
   useEffect(() => {
     if ("user" in roleOptions && roleOptions.user.length > 0) {
@@ -43,6 +65,7 @@ function Admin() {
   };
   return (
     <div style={{ padding: 20, marginTop: 60 }}>
+      {isAdmin && adminTour && (<GuidedTour cards={cards} closeTourCallback={handleCloseTour} />)}
       <Card style={{ padding: 20 }}>
         <Tabs value={value} onChange={handleChangeTab} truncate>
           <Tab label="Users" />

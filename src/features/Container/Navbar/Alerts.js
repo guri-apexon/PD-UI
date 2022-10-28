@@ -20,6 +20,7 @@ const replaceall = require("replaceall");
 
 const dashboardPath = '/dashboard';
 const searchPath = '/search';
+const adminPath = '/admin';
 
 function createFullMarkup(str) {
   if (str) {
@@ -46,8 +47,10 @@ function Alerts() {
   const currentPath = window.location.pathname;
   const [pathname, setPathname] = React.useState(currentPath);
   const [open, setOpen] = React.useState(false);
+
   const isDashboard = (pathname === dashboardPath);
   const isSearch = (pathname === searchPath);
+  const isAdmin = (pathname === adminPath);
 
   useEffect(() => {
     setPathname(currentPath);
@@ -71,7 +74,7 @@ function Alerts() {
   if (!notificationsMenuProps.length) {
     return (
       <>
-        {(isDashboard || isSearch) &&
+        {(isDashboard || isSearch || isAdmin) &&
           (
             <button
               data-testid="guided-tour-help-icon"
@@ -80,7 +83,7 @@ function Alerts() {
             >
               <Help />
             </button>)}
-        {!(isDashboard || isSearch) &&
+        {!(isDashboard || isSearch || isAdmin) &&
           <ClickAwayListener onClickAway={closeTooltip}>
             <Tooltip
               title={'Tour is currently unavailable for this page'}
