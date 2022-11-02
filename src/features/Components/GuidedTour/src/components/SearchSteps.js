@@ -2,6 +2,11 @@
 export const { steps } = {
     steps: [
       {
+        target: 'div[role="tablist"]',
+        content: 'Admin test',
+        disableBeacon: true,
+      },
+      {
         target: '.search-bar',
         content: 'Search by giving a keyword appearing in a protocol field',
         disableBeacon: true,
@@ -58,4 +63,4 @@ export const { steps } = {
       }
       
     ]
-  };
+  }

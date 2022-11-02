@@ -12,6 +12,11 @@ const expandedDataStepContent = 'A protocol item that has additional data fields
 export const { steps } = {
   steps: [
     {
+      target: '.navbar-container',
+      content: 'Admin test',
+      disableBeacon: true,
+    },
+    {
       target: '.search',
       content: 'Search test',
       disableBeacon: true,

@@ -5,7 +5,7 @@ import './GuidedTour.scss';
 
 /* import Joyride from './index';
 import CustomTooltip from './Tooltip/CustomTooltip';
-import { steps } from './SearchSteps'; */
+import { steps } from './AdminSteps'; */
 
 function GuidedTour({ cards, closeTourCallback }) {
     return (
