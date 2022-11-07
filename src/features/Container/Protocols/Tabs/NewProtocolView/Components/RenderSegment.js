@@ -1,6 +1,6 @@
 import "./renderSegment.scss";
 import React from "react";
-import PDTable from "../../../Components/AG-Table";
+import PDTable from "../../../Components/pd-table";
 import FileUpload from "./FileUpload";
 import { useDispatch } from "react-redux";
 import { ActionTypes } from "../../../store/ActionTypes";
@@ -32,38 +32,52 @@ const RenderSegment = ({
       payload: { sectionName, lineID },
     });
   };
-  const handleTableDelete = () => {
-    dispatch({
-      type: ActionTypes.DELETE_TABLE,
-      payload: { sectionName, lineID },
-    });
-  };
-  const handleTableSave = (content, lineID) => {
-    handleContentEdit(content, lineID);
-    dispatch({
-      type: ActionTypes.DISABLE_TABLE,
-      payload: { sectionName },
-    });
-  };
-  const enableTableForEdit = () => {
-    dispatch({
-      type: ActionTypes.ENABLE_TABLE,
-      payload: { lineID, sectionName },
-    });
-  };
+  // const handleTableDelete = () => {
+  //   dispatch({
+  //     type: ActionTypes.DELETE_TABLE,
+  //     payload: { sectionName, lineID },
+  //   });
+  // };
+  // const handleTableSave = (content, lineID) => {
+  //   handleContentEdit(content, lineID);
+  //   dispatch({
+  //     type: ActionTypes.DISABLE_TABLE,
+  //     payload: { sectionName },
+  //   });
+  // };
+  // const handleModifySegment = (...data) => {
+  //   console.log("table Change", data);
+  // };
+  // const enableTableForEdit = () => {
+  //   dispatch({
+  //     type: ActionTypes.ENABLE_TABLE,
+  //     payload: { lineID, sectionName },
+  //   });
+  // };
 
   if (content) {
     if (type === segmentType.table) {
       // return <RenderTable data={data} edit={edit} />;
       return (
-        <PDTable
-          data={data}
-          edit={edit}
-          handleSave={handleTableSave}
-          key={lineID}
-          enableTableForEdit={enableTableForEdit}
-          handleTableDelete={handleTableDelete}
-        />
+        <div onClick={() => edit && setActiveLineID(data.line_id)}>
+          <PDTable
+            data={data.content}
+            edit={edit}
+            onChange={handleContentEdit}
+            index={"index"}
+            segment={data}
+            activeLineID={activeLineID}
+            lineID={data.line_id}
+          />
+        </div>
+        // <PDTable
+        //   data={data}
+        //   edit={edit}
+        //   handleSave={handleTableSave}
+        //   key={lineID}
+        //   enableTableForEdit={enableTableForEdit}
+        //   handleTableDelete={handleTableDelete}
+        // />
       );
     } else if (type === segmentType.header) {
       return (

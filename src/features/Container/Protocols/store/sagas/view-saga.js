@@ -88,8 +88,8 @@ export function* fetchViewData(action) {
   if (action.payload.user === "qc") {
     URL = `${BASE_URL_8000}/api/protocol_qcdata/?id=${action.payload.id}`;
   } else {
-    // URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
-    URL = "/compare.json";
+    URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
+    // URL = "/compare.json";
   }
 
   const config = {

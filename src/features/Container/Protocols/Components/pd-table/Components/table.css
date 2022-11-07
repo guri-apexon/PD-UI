@@ -1,0 +1,121 @@
+.pd-table-container {
+  display: flex;
+  margin: 20px;
+}
+.pd-table-inner {
+  display: table;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  overflow: auto;
+}
+.pd-table-row {
+  display: flex;
+  min-height: 50px;
+  justify-content: center;
+}
+.pd-table-cell {
+  text-align: left;
+  border: 1px solid #c1c1c1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  box-sizing: border-box;
+  min-width: 100px;
+}
+
+/* .pd-table-inner {
+  display: table;
+  width: 100%;
+  overflow: scroll;
+  background-color: #eee;
+  border-spacing: 2px;
+  border-radius: 4px;
+}
+.pd-table-row {
+  display: table-row;
+}
+.pd-table-cell {
+  display: table-cell;
+  vertical-align: top;
+  background-color: #fff;
+  padding: 10px 8px;
+} */
+.pd-table-cell span {
+  font-size: 12px;
+  padding: 5px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-width: 40%;
+  outline: none;
+  color: #000;
+}
+.pd-table-empty-cell-row {
+  width: 100%;
+  display: inline-block;
+}
+.pd-empty-row-cells {
+  position: absolute;
+  left: -5px;
+  /* display: grid;
+  flex-direction: column;
+  justify-content: center; */
+}
+.pd-empty-cells {
+  display: flex;
+  justify-content: center;
+}
+.pd-empty-cell-column {
+  width: 100px;
+  text-align: center;
+  position: relative;
+}
+.pd-empty-cell-row {
+  height: 50px;
+  position: relative;
+}
+.pd-dropdown {
+  position: absolute;
+  top: 30px;
+  left: 40px;
+  z-index: 2;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: 220px;
+  background-color: #fff;
+  font-size: 14px;
+}
+.pd-dropdown ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 3px 2px;
+}
+.pd-dropdown ul li {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+}
+.pd-dropdown ul li:hover {
+  background-color: #eee;
+}
+.pd-dropdown ul li .pd-arrow-icon {
+  box-shadow: 0 2px 12px 0px rgb(0 0 0 / 14%);
+  margin-right: 5px;
+  padding: 3px 5px;
+  border: 1px solid #eee;
+  display: flex;
+  width: 20px;
+  justify-content: center;
+  height: 20px;
+  align-items: center;
+}
+.pd-more-icon img {
+  height: 20px;
+}
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 30px;
+}

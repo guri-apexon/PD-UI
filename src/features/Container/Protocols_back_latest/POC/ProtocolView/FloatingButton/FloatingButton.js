@@ -24,8 +24,8 @@ const FloatingButton = ({ onChildClick, showAttributes, edit }) => {
       isOpen={isOpen}
     >
       <MainButton
-        iconResting={<Plus style={{ fontSize: 20 }} nativeColor="white" />}
-        iconActive={<Close style={{ fontSize: 20 }} nativeColor="white" />}
+        iconResting={<Plus style={{ fontSize: 20 }} />}
+        iconActive={<Close style={{ fontSize: 20 }} />}
         backgroundColor="black"
         onClick={() => setOpen(!isOpen)}
         size={50}

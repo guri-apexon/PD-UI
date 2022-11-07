@@ -25,12 +25,8 @@ const ActionButton = ({ onChildClick, showAttributes, edit }) => {
       isOpen={isOpen}
     >
       <MainButton
-        iconResting={
-          <EllipsisVertical style={{ fontSize: 20 }} nativeColor="white" />
-        }
-        iconActive={
-          <EllipsisVertical style={{ fontSize: 20 }} nativeColor="white" />
-        }
+        iconResting={<EllipsisVertical style={{ fontSize: 20 }} />}
+        iconActive={<EllipsisVertical style={{ fontSize: 20 }} />}
         backgroundColor="black"
         onClick={() => setOpen(!isOpen)}
         size={50}

@@ -24,9 +24,8 @@ const FloatingButton = ({ onChildClick, showAttributes, edit }) => {
       isOpen={isOpen}
     >
       <MainButton
-        iconResting={<Plus style={{ fontSize: 20 }} nativeColor="white" />}
-        iconActive={<Close style={{ fontSize: 20 }} nativeColor="white" />}
-        backgroundColor="black"
+        iconResting={<Plus style={{ fontSize: 20 }} />}
+        iconActive={<Close style={{ fontSize: 20 }} />}
         onClick={() => setOpen(!isOpen)}
         size={50}
         direction="left"
@@ -42,7 +41,6 @@ const FloatingButton = ({ onChildClick, showAttributes, edit }) => {
             <img src={editDocumentICON} alt="EDIT" style={{ height: 20 }} />
           </Tooltip>
         }
-        backgroundColor="white"
         size={40}
         onClick={() => onChildClick("edit")}
       />
@@ -58,7 +56,6 @@ const FloatingButton = ({ onChildClick, showAttributes, edit }) => {
             <img src={attributesICON} alt="EDIT" style={{ height: 20 }} />
           </Tooltip>
         }
-        backgroundColor="white"
         size={40}
         onClick={() => onChildClick("attributes")}
       />
@@ -73,7 +70,6 @@ const FloatingButton = ({ onChildClick, showAttributes, edit }) => {
             <img src={saveICON} alt="EDIT" style={{ height: 20 }} />
           </Tooltip>
         }
-        backgroundColor="white"
         size={40}
         onClick={() => onChildClick("save")}
       />

@@ -317,6 +317,8 @@ export function* updateDataStream(action) {
 
 export function* updateDataEdit(action) {
   const { content, lineId, sectionName } = action.payload;
+
+  console.log("Update Data", action.payload);
   const currentData = yield getWrapperState();
   let cloneData = cloneDeep(currentData);
   const currentUpdatedSegment = yield getSegmentUpdatedState();
