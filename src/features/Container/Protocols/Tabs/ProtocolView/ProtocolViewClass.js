@@ -232,9 +232,10 @@ class ProtocolViewClass extends React.Component {
       return (
         <div
           style={{
-            display: "inline-block",
-            margin: "auto",
-            marginTop: "10%",
+            height: 400,
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
           }}
         >
           <Loader />
