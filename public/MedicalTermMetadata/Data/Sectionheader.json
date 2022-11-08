@@ -1,0 +1,248 @@
+[
+  {
+    "source_file_section": "TITLE",
+    "source_heading_number": "",
+    "input_seq_num": 1,
+    "parent_heading_num_seq": [""],
+    "parent_sec_id_seq": [1],
+    "derived_heading_level": 1,
+    "pt_from_ontology": ["Title Page"],
+    "medical_terms": [],
+    "page": 1,
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "Paragraph",
+      "print_page": 1,
+      "entity": [],
+      "roi_id": {
+        "para": "4ffe3c3f-9a95-4faa-b8a2-5208244cb17d",
+        "childbox": "",
+        "subtext": ""
+      }
+    },
+    "is_active": true,
+    "indexes": {
+      "seg_pages": [1, 2]
+    },
+    "aidocid": "09e5f949-e170-4bd3-baac-77e377ed4821",
+    "genre": "2_section_metadata",
+    "sec_id": 1,
+    "child_secid_seq": [[1, "", "TITLE", 1]]
+  },
+  {
+    "source_file_section": "TABLE OF CONTENTS",
+    "source_heading_number": "Table",
+    "input_seq_num": 43,
+    "parent_heading_num_seq": ["Table"],
+    "parent_sec_id_seq": [2],
+    "derived_heading_level": 1,
+    "pt_from_ontology": ["Table of Contents"],
+    "medical_terms": [],
+    "page": 3,
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "Heading1Unnumbered",
+      "print_page": 3,
+      "entity": [],
+      "roi_id": {
+        "para": "633a14e8-0dba-4fc1-a46f-efc766ca2d0e",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "DStrike": false,
+      "Emboss": false,
+      "Highlight": "",
+      "Imprint": false,
+      "Italics": false,
+      "Outline": false,
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "is_active": true,
+    "indexes": {
+      "seg_pages": [3]
+    },
+    "aidocid": "09e5f949-e170-4bd3-baac-77e377ed4821",
+    "genre": "2_section_metadata",
+    "sec_id": 2,
+    "child_secid_seq": [[2, "Table", "TABLEOF CONTENTS", 1]]
+  },
+  {
+    "source_file_section": "Protocol Summary",
+    "source_heading_number": "1",
+    "input_seq_num": 66,
+    "parent_heading_num_seq": ["1"],
+    "parent_sec_id_seq": [3],
+    "derived_heading_level": 1,
+    "pt_from_ontology": ["Protocol Summary"],
+    "medical_terms": [],
+    "page": 4,
+    "font_info": {
+      "IsBold": false,
+      "font_size": -1,
+      "font_style": "Heading1",
+      "print_page": -1,
+      "entity": [],
+      "roi_id": {
+        "para": "98b8bd07-decc-4e3f-93d1-cc1474728b0a",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "DStrike": false,
+      "Emboss": false,
+      "Highlight": "",
+      "Imprint": false,
+      "Italics": false,
+      "Outline": false,
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "is_active": true,
+    "indexes": {
+      "seg_pages": []
+    },
+    "aidocid": "09e5f949-e170-4bd3-baac-77e377ed4821",
+    "genre": "2_section_metadata",
+    "sec_id": 3,
+    "child_secid_seq": [
+      [3, "1", "Protocol Summary", 1],
+      [4, "1.1", "Synopsis", 2],
+      [5, "1.2", "Schema", 2],
+      [5.1, "Figure 1", "Study Design", 3],
+      [6, "1.3", "Schedule of Activities", 2],
+      [6.1, "Table", "1  Schedule of Activities", "3"],
+      [7, "Table", "1  Schedule of Activities", "3"]
+    ]
+  },
+  {
+    "source_file_section": "Objectives and Endpoints",
+    "source_heading_number": "2",
+    "input_seq_num": 254,
+    "parent_heading_num_seq": ["2"],
+    "parent_sec_id_seq": [8],
+    "derived_heading_level": 1,
+    "pt_from_ontology": ["study aims"],
+    "medical_terms": [],
+    "page": 11,
+    "font_info": {
+      "IsBold": true,
+      "font_size": -1,
+      "font_style": "Heading1",
+      "print_page": 11,
+      "entity": [],
+      "roi_id": {
+        "para": "",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "DStrike": false,
+      "Emboss": false,
+      "Highlight": "",
+      "Imprint": false,
+      "Italics": false,
+      "Outline": false,
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "is_active": true,
+    "indexes": {
+      "seg_pages": [12]
+    },
+    "aidocid": "09e5f949-e170-4bd3-baac-77e377ed4821",
+    "genre": "2_section_metadata",
+    "sec_id": 8,
+    "child_secid_seq": [
+      [8, "2", "Objectives and Endpoints", 1],
+      [9, "Table 2", "Objectives and Endpoints", "2"]
+    ]
+  },
+  {
+    "source_file_section": "Study Population",
+    "source_heading_number": "3",
+    "input_seq_num": 259,
+    "parent_heading_num_seq": ["3"],
+    "parent_sec_id_seq": [10],
+    "derived_heading_level": 1,
+    "pt_from_ontology": ["eligibility criteria"],
+    "medical_terms": [],
+    "page": 12,
+    "font_info": {
+      "IsBold": true,
+      "font_size": -1,
+      "font_style": "Heading1",
+      "print_page": 12,
+      "entity": [],
+      "roi_id": {
+        "para": "037a04f4-d1c0-47f3-ac7d-efa4d718acd6",
+        "childbox": "",
+        "subtext": ""
+      },
+      "Bold": false,
+      "Caps": false,
+      "ColorRGB": 0,
+      "DStrike": false,
+      "Emboss": false,
+      "Highlight": "",
+      "Imprint": false,
+      "Italics": false,
+      "Outline": false,
+      "rFonts": "",
+      "rStyle": "",
+      "Shadow": false,
+      "Size": -1,
+      "SmallCaps": false,
+      "Strike": false,
+      "Underline": "",
+      "Vanish": false,
+      "VertAlign": ""
+    },
+    "is_active": true,
+    "indexes": {
+      "seg_pages": [12]
+    },
+    "aidocid": "09e5f949-e170-4bd3-baac-77e377ed4821",
+    "genre": "2_section_metadata",
+    "sec_id": 10,
+    "child_secid_seq": [
+      [10, "3", "Study Population", 1],
+      [11, "3.1", "Inclusion Criteria", 2],
+      [12, "3.2", "Exclusion Criteria", 2],
+      [13, "3.3", "Lifestyle Considerations", 2],
+      [14, "3.3.1", "Meals and Dietary Restrictions", 3],
+      [15, "3.3.2", "Activity", 3],
+      [16, "3.4", "Screen Failures", 2]
+    ]
+  }
+]

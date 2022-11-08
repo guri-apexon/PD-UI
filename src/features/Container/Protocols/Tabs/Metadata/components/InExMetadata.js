@@ -3,7 +3,8 @@ import AccordionDetails from "apollo-react/components/AccordionDetails";
 import AccordionSummary from "apollo-react/components/AccordionSummary";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
-import { BASE_URL_8000, httpCall } from "../../../../../../utils/api";
+// import { BASE_URL_8000, httpCall } from "../../../../../../utils/api";
+import { httpCall } from "../../../../../../utils/api";
 
 import Attributes from "./Attributes";
 import MedicalTerm from "./MedicalTerm";
@@ -29,7 +30,13 @@ const InExMetadata = ({ data, id, scrollToPage }) => {
         scrollToPage(pageNumber[0]);
       }
     }
-    const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${sectionHeader.sec_id}`;
+    // const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${sectionHeader.sec_id}`;
+    let URL;
+    if (sectionHeader.source_file_section === "Inclusion Criteria") {
+      URL = "/MedicalTermMetadata/Data/Inclusion.json";
+    } else if (sectionHeader.source_file_section === "Exclusion Criteria") {
+      URL = "/MedicalTermMetadata/Data/Exclusion.json";
+    }
     const config = {
       url: URL,
       method: "GET",

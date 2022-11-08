@@ -1,0 +1,91 @@
+{
+  "09e5f949-e170-4bd3-baac-77e377ed4821": {
+    "objectives": {
+      "primary": [
+        {
+          "ser_num": 1,
+          "text": "To describe the PK parameters following a single SC administration of tezepelumab 70 mg in children with mild, moderate, or severe asthma"
+        }
+      ],
+      "secondary": [
+        {
+          "ser_num": 1,
+          "text": "To evaluate the immunogenicity of tezepelumab"
+        }
+      ],
+      "safety": [
+        {
+          "ser_num": 1,
+          "text": "To evaluate the safety and tolerability following a single SC administration of tezepelumab 70 mg"
+        }
+      ],
+      "exploratory": [
+        {
+          "ser_num": 1,
+          "text": "To evaluate the PD following a single SC administration of tezepelumab 70 mg"
+        }
+      ]
+    },
+    "endpoints": {
+      "primary": [
+        {
+          "ser_num": 1,
+          "text": "Maximum concentration (C<sub>max</sub>) Time to C<sub>max</sub> (t<sub>max</sub>) Area under the concentration-time curve (AUC) Terminal phase elimination half-life (t 1\\/2 ) Apparent clearance (CL\\/F) Apparent steady-state volume of distribution (V<sub>ss</sub>\\/F)"
+        }
+      ],
+      "derived_info": {
+        "primary": {
+          "derived_count": 6,
+          "derived_mechanism": [
+            "Maximum concentration (Cmax)",
+            "Time to Cmax (tmax)",
+            "Area under the concentration-time curve (AUC)",
+            "Terminal phase elimination half-life (t1/2)",
+            "Apparent clearance (CL/F)",
+            "Apparent steady-state volume of distribution (Vss/F)"
+          ]
+        },
+        "secondary": {
+          "derived_count": 1,
+          "derived_mechanism": ["Presence of anti-drug antibodies (ADA)"]
+        },
+        "safety": {
+          "derived_count": 4,
+          "derived_mechanism": [
+            "Adverse events/serious adverse events",
+            "Vital signs",
+            "Laboratory parameters",
+            "Electrocardiogram (ECG)"
+          ]
+        },
+        "exploratory": {
+          "derived_count": 4,
+          "derived_mechanism": [
+            "Pulmonary function (FEV1, FVC)",
+            "Blood eosinophil levels",
+            "FENO",
+            "PQoL"
+          ]
+        }
+      },
+      "secondary": [
+        {
+          "ser_num": 1,
+          "text": "Presence of anti-drug antibodies (ADA)"
+        }
+      ],
+      "safety": [
+        {
+          "ser_num": 1,
+          "text": "Adverse events\\/serious adverse events Vital signs Laboratory parameters Electrocardiogram (ECG)"
+        }
+      ],
+      "exploratory": [
+        {
+          "ser_num": 1,
+          "text": "Pulmonary function (FEV<sub>1</sub> FVC) Blood eosinophil levels FENO PQoL"
+        }
+      ]
+    }
+  }
+}

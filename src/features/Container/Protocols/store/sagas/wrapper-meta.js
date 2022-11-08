@@ -1,6 +1,7 @@
 import { put, call, select } from "redux-saga/effects";
 import { getWrapperDataMeta, setDOCID } from "../slice";
-import { httpCall, BASE_URL_8000 } from "../../../../../utils/api";
+// import { httpCall, BASE_URL_8000 } from "../../../../../utils/api";
+import { httpCall } from "../../../../../utils/api";
 import { cloneDeep } from "lodash";
 
 // const inMedicalTerm = [
@@ -102,7 +103,7 @@ export function* handleExpandBPO1(action) {
 export function* fetchProtocolViewData1(action) {
   const { id, body, childString, sectionName } = action.payload;
   // const docID = yield getDOCIDState();
-
+  console.log(childString);
   if (body) {
     const currentData = yield getWrapperState();
     let cloneData = cloneDeep(currentData);
@@ -123,7 +124,8 @@ export function* fetchProtocolViewData1(action) {
     };
     yield put(getWrapperDataMeta(preLoadingState));
     if (sectionName === "Objectives and Endpoints") {
-      let url = `${BASE_URL_8000}/api/segments/get_objectives_endpoints?aidocid=${id}&objectives=All%20objectives&endpoints=All%20endpoints`;
+      // let url = `${BASE_URL_8000}/api/segments/get_objectives_endpoints?aidocid=${id}&objectives=All%20objectives&endpoints=All%20endpoints`;
+      let url = `/MedicalTermMetadata/Data/Objectives.json`;
 
       const config = {
         url: url,
@@ -138,7 +140,7 @@ export function* fetchProtocolViewData1(action) {
           loading: false,
           success: true,
           error: "",
-          detail: data[id],
+          detail: data["09e5f949-e170-4bd3-baac-77e377ed4821"],
           expanded: true,
           header: cloneData1.data[sectionName].header,
         };
@@ -172,7 +174,9 @@ export function* fetchProtocolViewData1(action) {
       }
       // } else if (sectionName === "Study Population") {
     } else {
-      const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${childString}`;
+      // const URL = `${BASE_URL_8000}/api/segments/section_data_by_secid?aidocid=${id}&section_id=${childString}`;
+      const URL = `/MedicalTermMetadata/Data/SectionData.json`;
+
       const config = {
         url: URL,
         method: "GET",
@@ -296,8 +300,8 @@ export function* fetchProtocolViewData1(action) {
       detail: null,
     };
     yield put(getWrapperDataMeta(preLoadingState));
-    const URL = `${BASE_URL_8000}/api/segments/section_metadata_by_level?aidocid=${id}`;
-    // const URL = "/POC/lev-1.json";
+    // const URL = `${BASE_URL_8000}/api/segments/section_metadata_by_level?aidocid=${id}`;
+    const URL = "/MedicalTermMetadata/Data/Sectionheader.json";
     const config = {
       url: URL,
       method: "GET",
