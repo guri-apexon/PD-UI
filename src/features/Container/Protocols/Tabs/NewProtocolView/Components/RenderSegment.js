@@ -61,7 +61,7 @@ const RenderSegment = ({
       return (
         <div onClick={() => edit && setActiveLineID(data.line_id)}>
           <PDTable
-            data={data.content}
+            data={content}
             edit={edit}
             onChange={handleContentEdit}
             index={"index"}
@@ -82,7 +82,6 @@ const RenderSegment = ({
     } else if (type === segmentType.header) {
       return (
         <ContentEdit
-          data={data}
           content={content}
           edit={edit}
           lineID={lineID}
@@ -136,7 +135,6 @@ const RenderSegment = ({
     } else {
       return (
         <ContentEdit
-          data={data}
           content={content}
           edit={edit}
           lineID={lineID}

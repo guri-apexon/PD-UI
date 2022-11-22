@@ -3,11 +3,9 @@ import ContentEditable from "react-contenteditable";
 import FontProperties from "./FontProperties";
 
 const ContentEdit = ({
-  data,
   edit,
   lineID,
   setActiveLineID,
-  handleSave,
   activeLineID,
   handleContentEdit,
   content,

@@ -19,7 +19,7 @@ import {
   addSection,
   setPdfPageNumber,
   extractDataByPageNumber,
-} from "./sagas/wrapper-saga";
+} from "./sagas/wrapper-saga-new";
 import { fetchProtocolViewData1, handleExpandBPO1 } from "./sagas/wrapper-meta";
 import { fetchPTData } from "./sagas/pt-data";
 
