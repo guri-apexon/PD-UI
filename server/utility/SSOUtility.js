@@ -1,8 +1,8 @@
 function authenticateUser(user, password) {
-  var token = user + ":" + password;
-  var hash = Buffer.from(token).toString("base64");
+  const token = `${user}:${password}`;
+  const hash = Buffer.from(token).toString('base64');
 
-  return "Basic " + hash;
+  return `Basic ${hash}`;
 }
 
 module.exports = {

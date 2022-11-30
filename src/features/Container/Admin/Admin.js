@@ -1,22 +1,22 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Tab from "apollo-react/components/Tab";
-import Tabs from "apollo-react/components/Tabs";
-import Card from "apollo-react/components/Card";
-import Loader from "apollo-react/components/Loader";
-import UsersTable from "./UsersTable";
-import UsersRole from "./UsersRole";
-import getColumns from "./columns.data";
-import "./AdminTable.scss";
+/* eslint-disable */
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Tab from 'apollo-react/components/Tab';
+import Tabs from 'apollo-react/components/Tabs';
+import Card from 'apollo-react/components/Card';
+import Loader from 'apollo-react/components/Loader';
+import UsersTable from './UsersTable';
+import UsersRole from './UsersRole';
+import getColumns from './columns.data';
+import './AdminTable.scss';
 
 import {
   usersList,
   userRolesList,
   rolesOptionsList,
   loader,
-} from "./adminSlice";
-import ProtocolMap from "./ProtocolMap";
+} from './adminSlice';
+import ProtocolMap from './ProtocolMap';
 
 function Admin() {
   const dispatch = useDispatch();
@@ -28,14 +28,14 @@ function Admin() {
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    if ("user" in roleOptions && roleOptions.user.length > 0) {
+    if ('user' in roleOptions && roleOptions.user.length > 0) {
       const columnList = getColumns(roleOptions.user);
       setColumns(columnList);
     }
   }, [roleOptions]);
 
   useEffect(() => {
-    dispatch({ type: "GET_USERS_SAGA" });
+    dispatch({ type: 'GET_USERS_SAGA' });
   }, []);
 
   const handleChangeTab = (event, value) => {

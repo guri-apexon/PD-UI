@@ -1,33 +1,32 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import "./compare.scss";
+/* eslint-disable */
+import { useEffect, useState } from 'react';
+import './compare.scss';
 
-import Grid from "apollo-react/components/Grid";
-import MenuItem from "apollo-react/components/MenuItem";
-import Select from "apollo-react/components/Select";
-import Button from "apollo-react/components/Button";
+import Grid from 'apollo-react/components/Grid';
+import MenuItem from 'apollo-react/components/MenuItem';
+import Select from 'apollo-react/components/Select';
+import Button from 'apollo-react/components/Button';
 
-import { useSelector, useDispatch } from "react-redux";
-import { associateDocs } from "./protocolSlice.js";
+import { useSelector, useDispatch } from 'react-redux';
+import { associateDocs, compareResult } from './protocolSlice.js';
 
-import Sidebar from "./Sidebar";
+import Sidebar from './Sidebar';
 
-import { compareResult } from "./protocolSlice.js";
-import Loader from "../../Components/Loader/Loader";
+import Loader from '../../Components/Loader/Loader';
 
-const AmendmentCompare = ({ prot11, prot22 }) => {
+function AmendmentCompare({ prot11, prot22 }) {
   const compare = useSelector(compareResult);
   const dispatch = useDispatch();
   const associateData = useSelector(associateDocs);
-  const [version1, setVersion1] = useState("");
+  const [version1, setVersion1] = useState('');
   // const [prot1, setProt1] = useState({});
-  const [version2, setVersion2] = useState("");
+  const [version2, setVersion2] = useState('');
   // const [prot2, setProt2] = useState({});
 
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    dispatch({ type: "POST_COMPARE_PROTOCOL", payload: null });
-    console.log("sif", compare);
+    dispatch({ type: 'POST_COMPARE_PROTOCOL', payload: null });
+    console.log('sif', compare);
   }, []);
   useEffect(() => {
     setVersion1(prot11);
@@ -37,24 +36,24 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       docID2: prot22,
     };
     if (prot11 && prot22) {
-      dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
+      dispatch({ type: 'POST_COMPARE_PROTOCOL', payload: postBody });
     }
   }, [prot11, prot22]);
 
   const handleCompare = () => {
     if (version1 && version2) {
       if (version1 === version2) {
-        alert("can not comapare same version");
+        alert('can not comapare same version');
       } else {
         const postBody = {
           docID: version1,
           docID2: version2,
         };
 
-        dispatch({ type: "POST_COMPARE_PROTOCOL", payload: postBody });
+        dispatch({ type: 'POST_COMPARE_PROTOCOL', payload: postBody });
       }
     } else {
-      alert("Please select both the fields");
+      alert('Please select both the fields');
     }
   };
   /* istanbul ignore next */
@@ -81,7 +80,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
   // };
 
   // const iqvdata = compare.iqvdata ? JSON.parse(compare.iqvdata) : "";
-  const iqvdata = compare.iqvdata ? compare.iqvdata : "";
+  const iqvdata = compare.iqvdata ? compare.iqvdata : '';
   return (
     <div className="amendment-compare">
       {iqvdata && (
@@ -95,7 +94,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       {associateData && associateData.length > 1 ? (
         <Grid container>
           <Grid item md={3}>
-            <div className="version-dropdown" style={{ width: "90%" }}>
+            <div className="version-dropdown" style={{ width: '90%' }}>
               <Select
                 label="Select First Version to Compare"
                 value={version1}
@@ -112,9 +111,9 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
                     <MenuItem
                       value={item.id}
                       key={i}
-                      data-testid={"compare-option-1" + i}
+                      data-testid={`compare-option-1${i}`}
                     >
-                      {item.protocol + " (" + item.versionNumber + ")"}
+                      {`${item.protocol} (${item.versionNumber})`}
                     </MenuItem>
                   ))}
               </Select>
@@ -123,7 +122,7 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
           <Grid item md={3}>
             <div
               className="version-dropdown"
-              style={{ width: "90%", float: "right", marginRight: 10 }}
+              style={{ width: '90%', float: 'right', marginRight: 10 }}
             >
               <Select
                 label="Select Second Version to Compare"
@@ -141,9 +140,9 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
                     <MenuItem
                       value={item.id}
                       key={i}
-                      data-testid={"compare-option-2" + i}
+                      data-testid={`compare-option-2${i}`}
                     >
-                      {item.protocol + " (" + item.versionNumber + ")"}
+                      {`${item.protocol} (${item.versionNumber})`}
                     </MenuItem>
                   ))}
               </Select>
@@ -216,9 +215,9 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
           data-testid="loader"
           style={{
             height: 250,
-            justifyContent: "center",
-            alignItems: "center",
-            display: "flex",
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
           }}
         >
           <Loader />
@@ -226,6 +225,6 @@ const AmendmentCompare = ({ prot11, prot22 }) => {
       )}
     </div>
   );
-};
+}
 
 export default AmendmentCompare;

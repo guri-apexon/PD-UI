@@ -1,15 +1,16 @@
-import { useState, memo } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory, Link } from "react-router-dom";
-import ChevronRight from "apollo-react-icons/ChevronRight";
-import ChevronLeft from "apollo-react-icons/ChevronLeft";
-import Button from "apollo-react/components/Button";
-import Search from "apollo-react/components/Search";
-import Grid from "apollo-react/components/Grid";
+/* eslint-disable */
+import { useState, memo } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory, Link } from 'react-router-dom';
+import ChevronRight from 'apollo-react-icons/ChevronRight';
+import ChevronLeft from 'apollo-react-icons/ChevronLeft';
+import Button from 'apollo-react/components/Button';
+import Search from 'apollo-react/components/Search';
+import Grid from 'apollo-react/components/Grid';
 
 function DashboardSearch({ recent, saved }) {
   const dispatch = useDispatch();
-  let history = useHistory();
+  const history = useHistory();
   const [viewMore, setViewMore] = useState(false);
   return (
     <div
@@ -19,16 +20,16 @@ function DashboardSearch({ recent, saved }) {
     >
       <h3>Search</h3>
       <Grid container spacing={2}>
-        <Grid item xs={6} style={{ paddingLeft: "3em", paddingRight: "3em" }}>
+        <Grid item xs={6} style={{ paddingLeft: '3em', paddingRight: '3em' }}>
           <span data-testid="dashboard-search-bar" id="dashboard-search-bar">
             <Search
               placeholder="Protocol Number, Indication, Key word, etc"
               fullWidth
               onKeyPress={(e) => {
                 /* istanbul ignore next */
-                if (e.key === "Enter") {
+                if (e.key === 'Enter') {
                   dispatch({
-                    type: "POST_RECENT_SEARCH_DASHBOARD",
+                    type: 'POST_RECENT_SEARCH_DASHBOARD',
                     payload: e.target.value,
                   });
                   history.push(`/search?key=${e.target.value}`);
@@ -41,7 +42,7 @@ function DashboardSearch({ recent, saved }) {
             {recent && recent.length > 0 ? (
               <ul
                 className={
-                  viewMore ? "search-list-ul-scroll" : "search-list-ul"
+                  viewMore ? 'search-list-ul-scroll' : 'search-list-ul'
                 }
               >
                 {recent.map((item, index) => {
@@ -58,17 +59,17 @@ function DashboardSearch({ recent, saved }) {
                 })}
               </ul>
             ) : (
-              "No Search data available"
+              'No Search data available'
             )}
           </div>
           {recent && recent.length > 5 ? (
             <span data-testid="view-more" id="view-more-btn">
               <Button
                 variant="secondary"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 onClick={() => setViewMore(!viewMore)}
               >
-                <span>{viewMore ? "View Less" : "View More"}</span>
+                <span>{viewMore ? 'View Less' : 'View More'}</span>
                 {viewMore ? (
                   <ChevronLeft className="view-more-icon" />
                 ) : (
@@ -83,9 +84,9 @@ function DashboardSearch({ recent, saved }) {
           item
           xs={6}
           style={{
-            paddingLeft: "3em",
-            paddingRight: "3em",
-            borderLeft: "1px solid #d9d9d9",
+            paddingLeft: '3em',
+            paddingRight: '3em',
+            borderLeft: '1px solid #d9d9d9',
           }}
         >
           <div>
@@ -101,13 +102,12 @@ function DashboardSearch({ recent, saved }) {
                         </Link>
                       </li>
                     );
-                  } else {
-                    return null;
                   }
+                  return null;
                 })}
               </ul>
             ) : (
-              "No Search data available"
+              'No Search data available'
             )}
           </div>
         </Grid>

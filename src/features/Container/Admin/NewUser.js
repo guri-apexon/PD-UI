@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import trim from "lodash/trim";
-import cloneDeep from "lodash/cloneDeep";
-import { useSelector, useDispatch } from "react-redux";
-import Modal from "apollo-react/components/Modal";
-import Button from "apollo-react/components/Button";
-import Loader from "apollo-react/components/Loader";
-import Grid from "apollo-react/components/Grid";
-import TextField from "apollo-react/components/TextField";
-import MenuItem from "apollo-react/components/MenuItem";
-import Select from "apollo-react/components/Select";
+/* eslint-disable */
+import { useState } from 'react';
+import trim from 'lodash/trim';
+import cloneDeep from 'lodash/cloneDeep';
+import { useSelector, useDispatch } from 'react-redux';
+import Modal from 'apollo-react/components/Modal';
+import Button from 'apollo-react/components/Button';
+import Loader from 'apollo-react/components/Loader';
+import Grid from 'apollo-react/components/Grid';
+import TextField from 'apollo-react/components/TextField';
+import MenuItem from 'apollo-react/components/MenuItem';
+import Select from 'apollo-react/components/Select';
 import {
   modalToggle,
   setNewUserValues,
@@ -21,16 +22,16 @@ import {
   setFormError,
   setUserError,
   rolesOptionsList,
-} from "./adminSlice";
+} from './adminSlice';
 
 const userValue = {
   userId: null,
-  id: "",
+  id: '',
   firstName: null,
   lastName: null,
   email: null,
   country: null,
-  userRole: "",
+  userRole: '',
 };
 
 const emailReg =
@@ -49,54 +50,54 @@ function NewUser({ setIsOpen }) {
   const [role, setRole] = useState(formValue.userRole);
 
   const handleSaveForm = () => {
-    let err = cloneDeep(formErrValue);
+    const err = cloneDeep(formErrValue);
     if (!formValue.firstName) {
       err.firstName.error = true;
-      err.firstName.message = "Required";
+      err.firstName.message = 'Required';
     } else {
       err.firstName.error = false;
-      err.firstName.message = "";
+      err.firstName.message = '';
     }
     if (!formValue.lastName) {
       err.lastName.error = true;
-      err.lastName.message = "Required";
+      err.lastName.message = 'Required';
     } else {
       err.lastName.error = false;
-      err.lastName.message = "";
+      err.lastName.message = '';
     }
     if (!formValue.email) {
       err.email.error = true;
-      err.email.message = "Required";
+      err.email.message = 'Required';
     } else if (!emailReg.test(formValue.email)) {
       err.email.error = true;
-      err.email.message = "Enter valid email";
+      err.email.message = 'Enter valid email';
     } else {
       err.email.error = false;
-      err.email.message = "";
+      err.email.message = '';
     }
     if (!formValue.country) {
       err.country.error = true;
-      err.country.message = "Required";
+      err.country.message = 'Required';
     } else {
       err.country.error = false;
-      err.country.message = "";
+      err.country.message = '';
     }
     if (!userId) {
       err.userId.error = true;
-      err.userId.message = "Required";
+      err.userId.message = 'Required';
     } else if (userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
-      err.userId.message = "Enter valid user id";
+      err.userId.message = 'Enter valid user id';
     } else {
       err.userId.error = false;
-      err.userId.message = "";
+      err.userId.message = '';
     }
     if (!role) {
       err.userRole.error = true;
-      err.userRole.message = "Required";
+      err.userRole.message = 'Required';
     } else {
       err.userRole.error = false;
-      err.userRole.message = "";
+      err.userRole.message = '';
     }
 
     dispatch(setFormError(err));
@@ -109,7 +110,7 @@ function NewUser({ setIsOpen }) {
       userId &&
       role
     ) {
-      dispatch({ type: "ADD_NEW_USER_SAGA" });
+      dispatch({ type: 'ADD_NEW_USER_SAGA' });
     }
   };
 
@@ -120,36 +121,36 @@ function NewUser({ setIsOpen }) {
     dispatch(setNewUserValues(data));
   };
   const getUser = () => {
-    let err = cloneDeep(formErrValue);
+    const err = cloneDeep(formErrValue);
     if (userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
-      err.userId.message = "Enter valid user id";
+      err.userId.message = 'Enter valid user id';
     } else if (userId) {
       err.userId.error = false;
-      err.userId.message = "";
-      dispatch({ type: "GET_USER_DETAILS_LDAP", payload: userId });
+      err.userId.message = '';
+      dispatch({ type: 'GET_USER_DETAILS_LDAP', payload: userId });
     } else {
       err.userId.error = true;
-      err.userId.message = "Required";
+      err.userId.message = 'Required';
     }
     dispatch(setFormError(err));
   };
   const onFieldBlur = (key, value) => {
-    let err = cloneDeep(formErrValue);
+    const err = cloneDeep(formErrValue);
     const trimValue = trim(value);
 
-    if (key === "userId" && userId && !/^[0-9]*$/.test(userId)) {
+    if (key === 'userId' && userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
-      err.userId.message = "Enter valid user id";
-    } else if (key === "email" && trimValue && !emailReg.test(trimValue)) {
+      err.userId.message = 'Enter valid user id';
+    } else if (key === 'email' && trimValue && !emailReg.test(trimValue)) {
       err.email.error = true;
-      err.email.message = "Enter valid email";
+      err.email.message = 'Enter valid email';
     } else if (trimValue) {
       err[key].error = false;
-      err[key].message = "";
+      err[key].message = '';
     } else {
       err[key].error = true;
-      err[key].message = "Required";
+      err[key].message = 'Required';
     }
     dispatch(setFormError(err));
   };
@@ -159,24 +160,24 @@ function NewUser({ setIsOpen }) {
       open={isOpen}
       onClose={() => {
         const reset = {
-          firstName: { error: false, message: "" },
-          lastName: { error: false, message: "" },
-          email: { error: false, message: "" },
-          country: { error: false, message: "" },
-          userId: { error: false, message: "" },
-          userRole: { error: false, message: "" },
+          firstName: { error: false, message: '' },
+          lastName: { error: false, message: '' },
+          email: { error: false, message: '' },
+          country: { error: false, message: '' },
+          userId: { error: false, message: '' },
+          userRole: { error: false, message: '' },
         };
         setIsOpen(false);
         dispatch(setNewUserValues(userValue));
         dispatch(setFormError(reset));
-        setRole("");
-        setUserId("");
-        dispatch(setNewUserError(""));
-        dispatch(setUserError(""));
+        setRole('');
+        setUserId('');
+        dispatch(setNewUserError(''));
+        dispatch(setUserError(''));
       }}
-      subtitle={error && <span style={{ color: "red" }}>{error}</span>}
+      subtitle={error && <span style={{ color: 'red' }}>{error}</span>}
       title="Add New Users to PD"
-      buttonProps={[{}, { label: "Create", onClick: handleSaveForm }]}
+      buttonProps={[{}, { label: 'Create', onClick: handleSaveForm }]}
       id="new-user-modal"
       data-testid="new-user-modal"
     >
@@ -192,12 +193,12 @@ function NewUser({ setIsOpen }) {
             helperText={formErrValue.userId.message}
             error={formErrValue.userId.error}
             onChange={(e) => setUserId(trim(e.target.value))}
-            onBlur={(e) => onFieldBlur("userId", e.target.value)}
+            onBlur={(e) => onFieldBlur('userId', e.target.value)}
             data-testid="user-id-texfield"
           />
           <span
             data-testid="user-id-error"
-            style={{ color: "red", fontSize: "13px" }}
+            style={{ color: 'red', fontSize: '13px' }}
           >
             {userIdError}
           </span>
@@ -205,7 +206,7 @@ function NewUser({ setIsOpen }) {
         <Grid item xs={6} sm={6}>
           <Button
             variant="primary"
-            style={{ marginTop: "15%" }}
+            style={{ marginTop: '15%' }}
             onClick={() => getUser()}
           >
             Search
@@ -216,13 +217,13 @@ function NewUser({ setIsOpen }) {
             label="User Role"
             helperText={`${formErrValue.userRole.message} You can select one option`}
             error={formErrValue.userRole.error}
-            onBlur={(e) => onFieldBlur("userRole", e.target.value)}
+            onBlur={(e) => onFieldBlur('userRole', e.target.value)}
             fullWidth
-            canDeselect={true}
+            canDeselect
             placeholder="Select User Role"
             value={role}
             onChange={(e) => {
-              handleChange("userRole", e.target.value);
+              handleChange('userRole', e.target.value);
               setRole(e.target.value);
             }}
             required
@@ -235,7 +236,7 @@ function NewUser({ setIsOpen }) {
             ))}
           </Select>
         </Grid>
-        <Grid item xs={6} sm={6}></Grid>
+        <Grid item xs={6} sm={6} />
         {userLoader && (
           <Grid item xs={12}>
             <div style={{ height: 30 }}>
@@ -252,9 +253,9 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.firstName.message}
             error={formErrValue.firstName.error}
-            value={!userIdError ? formValue.firstName : ""}
-            onChange={(e) => handleChange("firstName", e.target.value)}
-            onBlur={(e) => onFieldBlur("firstName", e.target.value)}
+            value={!userIdError ? formValue.firstName : ''}
+            onChange={(e) => handleChange('firstName', e.target.value)}
+            onBlur={(e) => onFieldBlur('firstName', e.target.value)}
             data-testid="first-name-texfield"
             disabled
           />
@@ -268,9 +269,9 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.lastName.message}
             error={formErrValue.lastName.error}
-            value={!userIdError ? formValue.lastName : ""}
-            onChange={(e) => handleChange("lastName", e.target.value)}
-            onBlur={(e) => onFieldBlur("lastName", e.target.value)}
+            value={!userIdError ? formValue.lastName : ''}
+            onChange={(e) => handleChange('lastName', e.target.value)}
+            onBlur={(e) => onFieldBlur('lastName', e.target.value)}
             data-testid="last-name-texfield"
             disabled
           />
@@ -284,9 +285,9 @@ function NewUser({ setIsOpen }) {
             type="email"
             helperText={formErrValue.email.message}
             error={formErrValue.email.error}
-            value={!userIdError ? formValue.email : ""}
-            onChange={(e) => handleChange("email", e.target.value)}
-            onBlur={(e) => onFieldBlur("email", e.target.value)}
+            value={!userIdError ? formValue.email : ''}
+            onChange={(e) => handleChange('email', e.target.value)}
+            onBlur={(e) => onFieldBlur('email', e.target.value)}
             data-testid="email-texfield"
             disabled
           />
@@ -300,9 +301,9 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.country.message}
             error={formErrValue.country.error}
-            value={!userIdError ? formValue.country : ""}
-            onChange={(e) => handleChange("country", e.target.value)}
-            onBlur={(e) => onFieldBlur("country", e.target.value)}
+            value={!userIdError ? formValue.country : ''}
+            onChange={(e) => handleChange('country', e.target.value)}
+            onBlur={(e) => onFieldBlur('country', e.target.value)}
             data-testid="Country-texfield"
             disabled
           />

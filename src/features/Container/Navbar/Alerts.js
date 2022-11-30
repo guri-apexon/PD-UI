@@ -1,19 +1,21 @@
-import React from "react";
-import moment from "moment";
-import { useSelector, useDispatch } from "react-redux";
-import BellIcon from "apollo-react-icons/Bell";
-import Badge from "apollo-react/components/Badge";
+/* eslint-disable */
+import React from 'react';
+import moment from 'moment';
+import { useSelector, useDispatch } from 'react-redux';
+import BellIcon from 'apollo-react-icons/Bell';
+import Badge from 'apollo-react/components/Badge';
 
-import Popover from "apollo-react/components/Popover";
-import Typography from "apollo-react/components/Typography";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Tooltip from "apollo-react/components/Tooltip";
-import { navbarNotifications } from "./navbarSlice";
+import Popover from 'apollo-react/components/Popover';
+import Typography from 'apollo-react/components/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Tooltip from 'apollo-react/components/Tooltip';
+import { navbarNotifications } from './navbarSlice';
 
-import "./Alerts.scss";
-import { redaction } from "../../../AppConstant/AppConstant";
-const replaceall = require("replaceall");
+import './Alerts.scss';
+import { redaction } from '../../../AppConstant/AppConstant';
+
+const replaceall = require('replaceall');
 
 function createFullMarkup(str) {
   if (str) {
@@ -21,14 +23,13 @@ function createFullMarkup(str) {
       __html: replaceall(
         redaction.text,
         `<span class="blur">${redaction.text}</span>`,
-        str
+        str,
       ),
     };
-  } else {
-    return {
-      __html: str,
-    };
   }
+  return {
+    __html: str,
+  };
 }
 
 function Alerts() {
@@ -39,7 +40,7 @@ function Alerts() {
     return (
       <button
         data-testid="alert-bell-icon"
-        className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}
+        className={`alert-icon ${!!anchorEl && 'alert-icon-active'}`}
         onClick={(e) => setAnchorEl(e.currentTarget)}
       >
         <Badge badgeContent={0} max={99}>
@@ -49,31 +50,31 @@ function Alerts() {
     );
   }
   const checkForPrimary = async (data) => {
-    dispatch({ type: "READ_NOTIFICATION_SAGA", payload: data });
+    dispatch({ type: 'READ_NOTIFICATION_SAGA', payload: data });
 
-    //---- Remove in local-----------
+    // ---- Remove in local-----------
     // const axiosResp = await axios.get("/session");
     // const axiosUser = axiosResp.data;
     // const userID = axiosUser.userId.substring(1);
 
-    //------Uncomment in Local -------
+    // ------Uncomment in Local -------
   };
 
   const newNotifications = notificationsMenuProps.filter(
-    (item) => item.read === false
+    (item) => item.read === false,
   );
   const getDayLabelText = (timestamp) => {
-    return moment().isSame(timestamp, "day")
-      ? "Today"
-      : moment().subtract(1, "day").isSame(timestamp, "day")
-      ? "Yesterday"
-      : moment(timestamp).format("ddd MMM D");
+    return moment().isSame(timestamp, 'day')
+      ? 'Today'
+      : moment().subtract(1, 'day').isSame(timestamp, 'day')
+      ? 'Yesterday'
+      : moment(timestamp).format('ddd MMM D');
   };
   return (
     <>
       <button
         data-testid="alert-bell-icon"
-        className={`alert-icon ${!!anchorEl && "alert-icon-active"}`}
+        className={`alert-icon ${!!anchorEl && 'alert-icon-active'}`}
         onClick={(e) => setAnchorEl(e.currentTarget)}
       >
         <Badge badgeContent={newNotifications.length} max={99}>
@@ -86,25 +87,25 @@ function Alerts() {
         onClose={() => setAnchorEl(null)}
         PaperProps={{
           style: {
-            width: "100%",
+            width: '100%',
             maxWidth: 360,
-            borderColor: "#e9e9e9",
-            boxShadow: "0 8px 20px 0 rgba(0, 0, 0, 0.08)",
+            borderColor: '#e9e9e9',
+            boxShadow: '0 8px 20px 0 rgba(0, 0, 0, 0.08)',
             padding: 0,
           },
         }}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
+          vertical: 'bottom',
+          horizontal: 'right',
         }}
         transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
       >
         <List
           data-testid="nav-alert-list"
-          className={"root"}
+          className="root"
           component="nav"
           aria-label="main mailbox folders"
         >
@@ -114,7 +115,7 @@ function Alerts() {
               i === 0 ||
               !moment(notificationsMenuProps[i - 1].timestamp).isSame(
                 item.timestamp,
-                "day"
+                'day',
               )
             ) {
               header = getDayLabelText(item.timestamp);
@@ -122,11 +123,11 @@ function Alerts() {
             return (
               <span key={item.id}>
                 {header && (
-                  <ListItem className={"dayLabel"}>
+                  <ListItem className="dayLabel">
                     <Typography
                       variant="body2"
                       gutterBottom
-                      className={"dayLabelText"}
+                      className="dayLabelText"
                     >
                       {header}
                     </Typography>
@@ -135,7 +136,7 @@ function Alerts() {
 
                 <div
                   className={`ButtonBase-root ListItem-root 
-                    ${item.read ? "listItem" : "listItemNotRead"}
+                    ${item.read ? 'listItem' : 'listItemNotRead'}
                    ListItem-button`}
                   role="button"
                   key={`${item.id}-${item.timestamp}`}
@@ -154,28 +155,28 @@ function Alerts() {
                       </span>
                     )}
                     <Tooltip
-                      title={"Protocol Title"}
+                      title="Protocol Title"
                       subtitle={
                         <div
                           dangerouslySetInnerHTML={createFullMarkup(
-                            item.details
+                            item.details,
                           )}
-                        ></div>
+                        />
                       }
                       placement="right"
                     >
                       <p
                         className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock"
                         dangerouslySetInnerHTML={createFullMarkup(item.details)}
-                      ></p>
+                      />
                     </Tooltip>
                   </div>
 
                   <p className="Typography-root timestamp Typography-body2 Typography-gutterBottom">
-                    {moment(item.timestamp).format("LT")}
+                    {moment(item.timestamp).format('LT')}
                   </p>
 
-                  <span className="TouchRipple-root"></span>
+                  <span className="TouchRipple-root" />
                 </div>
               </span>
             );

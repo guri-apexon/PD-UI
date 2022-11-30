@@ -1,10 +1,10 @@
-const elasticsearch = require("elasticsearch");
-const { ElasticsearchFields } = require("../constants/elasticSearch");
+const elasticsearch = require('elasticsearch');
+const { ElasticsearchFields } = require('../constants/elasticSearch');
 const {
   constructFilterArray,
   getTOCArray,
-} = require("../utility/elasticSearchUtility");
-const { getENVURL } = require("../utility/EnvURL");
+} = require('../utility/elasticSearchUtility');
+const { getENVURL } = require('../utility/EnvURL');
 
 const client = new elasticsearch.Client({
   host: `${getENVURL().baseUrlElastic}`,
@@ -13,8 +13,8 @@ const client = new elasticsearch.Client({
 });
 
 module.exports = function (app) {
-  app.get("/elastic", (req, res) => {
-    const key = req.query.key;
+  app.get('/elastic', (req, res) => {
+    const { key } = req.query;
     const from = req.query.dateFrom;
     const to = req.query.dateTo;
 
@@ -25,22 +25,22 @@ module.exports = function (app) {
     let phaseArr = [];
     let dateTypeArr = [];
     if (req.query.toc) {
-      toc = req.query.toc.split("_");
+      toc = req.query.toc.split('_');
     }
     if (req.query.documentStatus) {
-      docStatus = req.query.documentStatus.split("_");
+      docStatus = req.query.documentStatus.split('_');
     }
     if (req.query.indication) {
-      indicationArr = req.query.indication.split("_");
+      indicationArr = req.query.indication.split('_');
     }
     if (req.query.sponsor) {
-      sponsorArr = req.query.sponsor.split("_");
+      sponsorArr = req.query.sponsor.split('_');
     }
     if (req.query.phase) {
-      phaseArr = req.query.phase.split("_");
+      phaseArr = req.query.phase.split('_');
     }
     if (req.query.dateType) {
-      dateTypeArr = req.query.dateType.split("_");
+      dateTypeArr = req.query.dateType.split('_');
     }
 
     const filters = {
@@ -49,23 +49,23 @@ module.exports = function (app) {
       phases: phaseArr,
       status: docStatus,
     };
-    let filterArr = constructFilterArray(filters);
+    const filterArr = constructFilterArray(filters);
     let mustQuery;
-    let tocArray = getTOCArray(toc);
+    const tocArray = getTOCArray(toc);
 
     if (from && to) {
       if (docStatus.length === 2 && dateTypeArr.length === 2) {
         const rangeQuery4 = {
           range: {
             uploadDate: {
-              gte: from + "000000",
-              lte: to + "235959",
+              gte: `${from}000000`,
+              lte: `${to}235959`,
             },
           },
         };
 
         filterArr.push(rangeQuery4);
-      } else if (docStatus.length === 2 && dateTypeArr[0] === "approvalDate") {
+      } else if (docStatus.length === 2 && dateTypeArr[0] === 'approvalDate') {
         const rangeQuery3 = {
           range: {
             approval_date: {
@@ -76,12 +76,12 @@ module.exports = function (app) {
         };
 
         filterArr.push(rangeQuery3);
-      } else if (docStatus.length === 2 && dateTypeArr[0] === "uploadDate") {
+      } else if (docStatus.length === 2 && dateTypeArr[0] === 'uploadDate') {
         const rangeQuery4 = {
           range: {
             uploadDate: {
-              gte: from + "000000",
-              lte: to + "235959",
+              gte: `${from}000000`,
+              lte: `${to}235959`,
             },
           },
         };
@@ -89,24 +89,24 @@ module.exports = function (app) {
         filterArr.push(rangeQuery4);
       } else {
         for (let i = 0; i < docStatus.length; i++) {
-          if (docStatus[i] === "final" && dateTypeArr.length === 2) {
+          if (docStatus[i] === 'final' && dateTypeArr.length === 2) {
             const rangeQuery1 = {
               range: {
                 uploadDate: {
-                  gte: from + "000000",
-                  lte: to + "235959",
+                  gte: `${from}000000`,
+                  lte: `${to}235959`,
                 },
               },
             };
 
             filterArr.push(rangeQuery1);
           }
-          if (docStatus[i] === "draft" && dateTypeArr.length === 2) {
+          if (docStatus[i] === 'draft' && dateTypeArr.length === 2) {
             const rangeQuery2 = {
               range: {
                 uploadDate: {
-                  gte: from + "000000",
-                  lte: to + "235959",
+                  gte: `${from}000000`,
+                  lte: `${to}235959`,
                 },
               },
             };
@@ -114,11 +114,11 @@ module.exports = function (app) {
             filterArr.push(rangeQuery2);
           }
           if (
-            docStatus[i] === "final" &&
+            docStatus[i] === 'final' &&
             dateTypeArr.length < 2 &&
             dateTypeArr.length !== 0
           ) {
-            if (dateTypeArr[0] === "approvalDate") {
+            if (dateTypeArr[0] === 'approvalDate') {
               const rangeQuery3 = {
                 range: {
                   approval_date: {
@@ -130,12 +130,12 @@ module.exports = function (app) {
 
               filterArr.push(rangeQuery3);
             }
-            if (dateTypeArr[0] === "uploadDate") {
+            if (dateTypeArr[0] === 'uploadDate') {
               const rangeQuery4 = {
                 range: {
                   uploadDate: {
-                    gte: from + "000000",
-                    lte: to + "235959",
+                    gte: `${from}000000`,
+                    lte: `${to}235959`,
                   },
                 },
               };
@@ -144,11 +144,11 @@ module.exports = function (app) {
             }
           }
           if (
-            docStatus[i] === "draft" &&
+            docStatus[i] === 'draft' &&
             dateTypeArr.length < 2 &&
             dateTypeArr.length !== 0
           ) {
-            if (dateTypeArr[0] === "approvalDate") {
+            if (dateTypeArr[0] === 'approvalDate') {
               const rangeQuery3 = {
                 range: {
                   approval_date: {
@@ -160,12 +160,12 @@ module.exports = function (app) {
 
               filterArr.push(rangeQuery3);
             }
-            if (dateTypeArr[0] === "uploadDate") {
+            if (dateTypeArr[0] === 'uploadDate') {
               const rangeQuery4 = {
                 range: {
                   uploadDate: {
-                    gte: from + "000000",
-                    lte: to + "235959",
+                    gte: `${from}000000`,
+                    lte: `${to}235959`,
                   },
                 },
               };
@@ -179,8 +179,8 @@ module.exports = function (app) {
         const rangeQuery4 = {
           range: {
             uploadDate: {
-              gte: from + "000000",
-              lte: to + "235959",
+              gte: `${from}000000`,
+              lte: `${to}235959`,
             },
           },
         };
@@ -188,7 +188,7 @@ module.exports = function (app) {
         filterArr.push(rangeQuery4);
       }
       if (docStatus.length === 1 && dateTypeArr.length === 0) {
-        if (docStatus[0] === "final") {
+        if (docStatus[0] === 'final') {
           const rangeQuery4 = {
             range: {
               approval_date: {
@@ -199,12 +199,12 @@ module.exports = function (app) {
           };
 
           filterArr.push(rangeQuery4);
-        } else if (docStatus[0] === "draft") {
+        } else if (docStatus[0] === 'draft') {
           const rangeQuery4 = {
             range: {
               uploadDate: {
-                gte: from + "000000",
-                lte: to + "235959",
+                gte: `${from}000000`,
+                lte: `${to}235959`,
               },
             },
           };
@@ -213,7 +213,7 @@ module.exports = function (app) {
         }
       }
       if (docStatus.length === 0 && dateTypeArr.length === 1) {
-        if (dateTypeArr[0] === "approvalDate") {
+        if (dateTypeArr[0] === 'approvalDate') {
           const rangeQuery4 = {
             range: {
               approval_date: {
@@ -224,12 +224,12 @@ module.exports = function (app) {
           };
 
           filterArr.push(rangeQuery4);
-        } else if (dateTypeArr[0] === "uploadDate") {
+        } else if (dateTypeArr[0] === 'uploadDate') {
           const rangeQuery4 = {
             range: {
               uploadDate: {
-                gte: from + "000000",
-                lte: to + "235959",
+                gte: `${from}000000`,
+                lte: `${to}235959`,
               },
             },
           };
@@ -238,12 +238,12 @@ module.exports = function (app) {
         }
       }
 
-      if (key.includes("*") || key.includes("?")) {
+      if (key.includes('*') || key.includes('?')) {
         mustQuery = [
           {
             query_string: {
               query: key,
-              type: "phrase",
+              type: 'phrase',
               fields: tocArray,
             },
           },
@@ -253,36 +253,34 @@ module.exports = function (app) {
           {
             multi_match: {
               query: key,
-              type: "phrase",
+              type: 'phrase',
               fields: tocArray,
             },
           },
         ];
       }
+    } else if (key.includes('*') || key.includes('?')) {
+      mustQuery = [
+        {
+          query_string: {
+            query: key,
+            type: 'phrase',
+            fields: tocArray,
+          },
+        },
+      ];
     } else {
-      if (key.includes("*") || key.includes("?")) {
-        mustQuery = [
-          {
-            query_string: {
-              query: key,
-              type: "phrase",
-              fields: tocArray,
-            },
+      mustQuery = [
+        {
+          multi_match: {
+            query: key,
+            type: 'phrase',
+            fields: tocArray,
           },
-        ];
-      } else {
-        mustQuery = [
-          {
-            multi_match: {
-              query: key,
-              type: "phrase",
-              fields: tocArray,
-            },
-          },
-        ];
-      }
+        },
+      ];
     }
-    let final = {
+    const final = {
       bool: {
         must: filterArr,
       },

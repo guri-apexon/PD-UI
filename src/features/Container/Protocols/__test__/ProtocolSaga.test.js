@@ -1,6 +1,6 @@
-import { runSaga } from "redux-saga";
-import * as api from "../../../../utils/api";
-import protocolData from "./protocolJSON.json";
+import { runSaga } from 'redux-saga';
+import * as api from '../../../../utils/api';
+import protocolData from './protocolJSON.json';
 import {
   parsedData,
   getSummaryData,
@@ -10,75 +10,75 @@ import {
   getSoaSections,
   getTocSections,
   captalize,
-} from "../saga";
+} from '../saga';
 
 const userDetail = {
-  username: "test",
-  userId: "u1021402",
-  email: "test@iqvia.com",
+  username: 'test',
+  userId: 'u1021402',
+  email: 'test@iqvia.com',
 };
-describe("Protocol Saga Unit Test", () => {
-  test("should run parsedData function", () => {
-    let obj = {
-      id: "1",
+describe('Protocol Saga Unit Test', () => {
+  test('should run parsedData function', () => {
+    const obj = {
+      id: '1',
     };
     parsedData(JSON.stringify(JSON.stringify(obj)));
   });
-  //getSoaSections Starts
-  test("should run getSoaSections function", () => {
-    let obj = [
+  // getSoaSections Starts
+  test('should run getSoaSections function', () => {
+    const obj = [
       {
-        TableIndex: "1",
-        TableName: "TableName",
+        TableIndex: '1',
+        TableName: 'TableName',
       },
     ];
     getSoaSections(obj);
   });
 
-  //getSoaSections Ends
-  //captalize Starts
+  // getSoaSections Ends
+  // captalize Starts
 
-  test("should run getSoaSections function", () => {
-    let obj = "Table sections";
+  test('should run getSoaSections function', () => {
+    const obj = 'Table sections';
     captalize(obj);
   });
 
-  //captalize Ends
+  // captalize Ends
 
   // getTocSections Starts
 
-  test("should run getTocSections function", () => {
-    let toc = {
+  test('should run getTocSections function', () => {
+    const toc = {
       data: [
         [
-          "",
-          "Unmapped",
-          "text",
-          "TITLE PAGE",
-          { font_style: "" },
-          { IsBold: false, font_size: -1, font_style: "Heading1" },
-          "Unmapped",
-          "TITLE PAGE",
-          "  ",
+          '',
+          'Unmapped',
+          'text',
+          'TITLE PAGE',
+          { font_style: '' },
+          { IsBold: false, font_size: -1, font_style: 'Heading1' },
+          'Unmapped',
+          'TITLE PAGE',
+          '  ',
           1,
         ],
       ],
     };
     getTocSections(toc);
   });
-  test("should run getTocSections function", () => {
-    let toc = {
+  test('should run getTocSections function', () => {
+    const toc = {
       data: [
         [
-          "",
-          "Unmapped",
-          "text",
-          "TITLE PAGE",
-          { IsBold: false, font_size: -1, font_style: "Heading1" },
-          "Heading1",
-          "Unmapped1",
-          "TITLE PAGE",
-          "",
+          '',
+          'Unmapped',
+          'text',
+          'TITLE PAGE',
+          { IsBold: false, font_size: -1, font_style: 'Heading1' },
+          'Heading1',
+          'Unmapped1',
+          'TITLE PAGE',
+          '',
           1,
         ],
       ],
@@ -103,171 +103,171 @@ describe("Protocol Saga Unit Test", () => {
   // getElement Ends
 
   // getSummaryData Starts
-  test("getSummaryData should be success", async () => {
+  test('getSummaryData should be success', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
       data: {
-        amendment: "N",
+        amendment: 'N',
         approvalDate: null,
         compareStatus: null,
         completenessOfDigitization: null,
         digitizedConfidenceInterval: null,
-        documentFilePath: "quintiles.net",
-        documentStatus: "final",
+        documentFilePath: 'quintiles.net',
+        documentStatus: 'final',
         draftVersion: null,
-        environment: "dev",
+        environment: 'dev',
         errorCode: null,
         errorReason: null,
-        fileName: "Protocol-2020-04-09-VER-000001.pdf",
-        id: "51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc",
-        indication: "Renal Impairment Compared with Matched Controls",
+        fileName: 'Protocol-2020-04-09-VER-000001.pdf',
+        id: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+        indication: 'Renal Impairment Compared with Matched Controls',
         iqvXmlPathComp: null,
         iqvXmlPathProc: null,
         isActive: true,
         isProcessing: false,
-        lastUpdated: "2021-01-28T11:09:47.977000",
-        moleculeDevice: "Lenabasum (JBT-101)",
+        lastUpdated: '2021-01-28T11:09:47.977000',
+        moleculeDevice: 'Lenabasum (JBT-101)',
         nctId: null,
-        percentComplete: "100",
+        percentComplete: '100',
         phase: null,
-        projectId: "Protocol-2020-04-09-VER-000001.pdf",
-        protocol: "JBT101-RIS-001",
+        projectId: 'Protocol-2020-04-09-VER-000001.pdf',
+        protocol: 'JBT101-RIS-001',
         protocolTitle: null,
         shortTitle: null,
-        sourceSystem: "dev",
-        sponsor: "Corbus Pharmaceuticals",
-        status: "PROCESS_COMPLETED",
-        studyStatus: "1",
-        timeCreated: "2021-01-28T10:56:35.377000",
-        uploadDate: "2021-01-28T10:56:35.377000",
+        sourceSystem: 'dev',
+        sponsor: 'Corbus Pharmaceuticals',
+        status: 'PROCESS_COMPLETED',
+        studyStatus: '1',
+        timeCreated: '2021-01-28T10:56:35.377000',
+        uploadDate: '2021-01-28T10:56:35.377000',
         userCreated: null,
-        userId: "1063396",
+        userId: '1063396',
         userUpdated: null,
-        versionNumber: "6",
-        qcActivity: "QC_NOT_STARTED",
+        versionNumber: '6',
+        qcActivity: 'QC_NOT_STARTED',
       },
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, getSummaryData, {
-      payload: "51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc",
-      type: "",
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  test("getSummaryData should be Fails", async () => {
+  test('getSummaryData should be Fails', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
       data: null,
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, getSummaryData, {
-      payload: "51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc",
-      type: "",
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
   // getSummaryData Ends
 
-  //fetchAssociateProtocol Starts
-  test("fetchAssociateProtocol should be Success", async () => {
+  // fetchAssociateProtocol Starts
+  test('fetchAssociateProtocol should be Success', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
       data: [],
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, fetchAssociateProtocol, {
-      payload: "51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc",
-      type: "",
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  test("fetchAssociateProtocol should be Fails", async () => {
+  test('fetchAssociateProtocol should be Fails', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,
       data: [],
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, fetchAssociateProtocol, {
-      payload: "51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc",
-      type: "",
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-  //fetchAssociateProtocol Ends
+  // fetchAssociateProtocol Ends
 
-  //getProtocolToc Start
+  // getProtocolToc Start
 
-  test("getProtocolToc should be Success", async () => {
+  test('getProtocolToc should be Success', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
       data: protocolData,
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, getProtocolToc, {
-      payload: "51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc",
-      type: "",
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  test("getProtocolToc should be Fails", async () => {
+  test('getProtocolToc should be Fails', async () => {
     const dispatchedActions = [];
 
     const mockOutput = {
@@ -275,23 +275,23 @@ describe("Protocol Saga Unit Test", () => {
       data: {},
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, getProtocolToc, {
-      payload: "51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc",
-      type: "",
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-  test("getProtocolToc should be Error out", async () => {
+  test('getProtocolToc should be Error out', async () => {
     const dispatchedActions = [];
 
     const mockOutput = {
@@ -299,105 +299,105 @@ describe("Protocol Saga Unit Test", () => {
       data: {},
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.reject(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, getProtocolToc, {
-      payload: "51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc",
-      type: "",
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  //getProtocolToc Ends
+  // getProtocolToc Ends
 
-  //getCompareResult Starts
+  // getCompareResult Starts
 
-  test("getCompareResult should be Success", async () => {
+  test('getCompareResult should be Success', async () => {
     const dispatchedActions = [];
 
     const mockOutput = {
       success: true,
       data: {
-        id: "1111",
+        id: '1111',
       },
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, getCompareResult, {
       payload: {
-        docID2: "1111",
+        docID2: '1111',
       },
-      type: "",
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  test("getCompareResult should be Fails", async () => {
+  test('getCompareResult should be Fails', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
       data: null,
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, getCompareResult, {
       payload: {
-        docID2: "1111",
+        docID2: '1111',
       },
-      type: "",
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  test("getCompareResult should be Error", async () => {
+  test('getCompareResult should be Error', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
       data: null,
     };
     const mockCallApi = jest
-      .spyOn(api, "httpCall")
+      .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
     const fakeStore = {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         user: {
-          userDetail: userDetail,
+          userDetail,
         },
       }),
     };
     await runSaga(fakeStore, getCompareResult, {
       payload: null,
-      type: "",
+      type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(0);
   });
 
-  //getCompareResult Ends
+  // getCompareResult Ends
 });

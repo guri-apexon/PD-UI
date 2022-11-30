@@ -1,13 +1,13 @@
-import { takeEvery, all, call, put } from "redux-saga/effects";
-
-import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import { getNotification, setError } from "./navbarSlice";
+/* eslint-disable */
+import { takeEvery, all, call, put } from 'redux-saga/effects';
+import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+import { getNotification, setError } from './navbarSlice';
 
 export function* navbarNotificationData(action) {
   const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${action.payload}`;
   const notificationConfig = {
     url: notificationUrl,
-    method: "GET",
+    method: 'GET',
   };
   try {
     const notificationData = yield call(httpCall, notificationConfig);
@@ -30,7 +30,7 @@ export function* navbarNotificationData(action) {
       yield put(setError(notificationData.err.statusText));
     }
   } catch (err) {
-    yield put(setError("Something Went Wrong"));
+    yield put(setError('Something Went Wrong'));
   }
 }
 
@@ -38,7 +38,7 @@ export function* readNotification(action) {
   const data = action.payload;
   const readConfig = {
     url: `${BASE_URL_8000}/api/notification_read/`,
-    method: "POST",
+    method: 'POST',
     data: {
       id: data.id,
       protocol: data.protocol,
@@ -78,8 +78,8 @@ export function* readNotification(action) {
 // }
 
 export function* watchNavbar() {
-  yield takeEvery("GET_NOTIFICATION_SAGA", navbarNotificationData);
-  yield takeEvery("READ_NOTIFICATION_SAGA", readNotification);
+  yield takeEvery('GET_NOTIFICATION_SAGA', navbarNotificationData);
+  yield takeEvery('READ_NOTIFICATION_SAGA', readNotification);
 }
 
 export default function* qcSaga() {

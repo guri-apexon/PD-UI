@@ -1,6 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+
 export const searchSlice = createSlice({
-  name: "search",
+  name: 'search',
   initialState: {
     filters: {},
     searchResult: {
@@ -20,12 +21,12 @@ export const searchSlice = createSlice({
       sectionContent: [],
     },
     recent: {
-      from: "",
-      to: "",
+      from: '',
+      to: '',
     },
     range: {
-      from: "",
-      to: "",
+      from: '',
+      to: '',
     },
   },
   reducers: {

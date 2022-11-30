@@ -1,22 +1,27 @@
-import React, { useState } from "react";
-import Accordion from "apollo-react/components/Accordion";
-import AccordionDetails from "apollo-react/components/AccordionDetails";
-import AccordionSummary from "apollo-react/components/AccordionSummary";
-import Typography from "apollo-react/components/Typography";
-import SearchCard from "./SearchCard";
-import Checkbox from "apollo-react/components/Checkbox";
-import Folder from "apollo-react-icons/Folder";
-import Switch from "apollo-react/components/Switch";
-import Card from "apollo-react/components/Card";
-import { Link } from "react-router-dom";
-import { handleProtocolTitle } from "../../../utils/utilFunction";
-import { uploadDateValidation } from "../../../utils/utilFunction";
-import { userRole, messages } from "../../../AppConstant/AppConstant";
-import { formatESDate } from "../../../utils/utilFunction";
-import Modal from "apollo-react/components/Modal";
-import { toast } from "react-toastify";
+/* eslint-disable */
+import React, { useState } from 'react';
+import Accordion from 'apollo-react/components/Accordion';
+import AccordionDetails from 'apollo-react/components/AccordionDetails';
+import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import Typography from 'apollo-react/components/Typography';
+import Checkbox from 'apollo-react/components/Checkbox';
+import Folder from 'apollo-react-icons/Folder';
+import Switch from 'apollo-react/components/Switch';
+import Card from 'apollo-react/components/Card';
+import { Link } from 'react-router-dom';
+import Modal from 'apollo-react/components/Modal';
+import { toast } from 'react-toastify';
+import {
+  handleProtocolTitle,
+  uploadDateValidation,
+  formatESDate,
+} from '../../../utils/utilFunction';
 
-const SearchListingSection = ({
+import { userRole, messages } from '../../../AppConstant/AppConstant';
+
+import SearchCard from './SearchCard';
+
+function SearchListingSection({
   data,
   setExpanded,
   compareTwoProtocol,
@@ -25,7 +30,7 @@ const SearchListingSection = ({
   onViewAssociateProtocolClick,
   protocolSelected,
   handleFollow,
-}) => {
+}) {
   // const userId1 = useSelector(userId);
   const [openModal, setModalOpen] = useState(false);
   const [documentSelected, setDocumentSelected] = useState({});
@@ -33,7 +38,7 @@ const SearchListingSection = ({
     setExpanded(
       data.AiDocId,
       { id: data.AiDocId, expanded: !data.expanded },
-      data
+      data,
     );
   };
   const handleFollowChange = (e, checked, data) => {
@@ -43,7 +48,7 @@ const SearchListingSection = ({
     if (data.UserRole === userRole.primary) {
       return (
         <label className="blueText">
-          Protocol :{" "}
+          Protocol :{' '}
           <Link
             className="title-link-protocol-1"
             to={`/protocols?protocolId=${data.AiDocId}`}
@@ -52,33 +57,31 @@ const SearchListingSection = ({
           </Link>
         </label>
       );
-    } else {
-      if (uploadDateValidation(formatESDate(data.uploadDate))) {
-        return (
-          <label className="blueText">
-            Protocol :{" "}
-            <Link
-              className="title-link-protocol-1"
-              to={`/protocols?protocolId=${data.AiDocId}`}
-            >
-              {data.protocolNumber}
-            </Link>
-          </label>
-        );
-      } else {
-        return (
-          <label className="blueText">
-            Protocol :{" "}
-            <span
-              className="title-link-protocol-1"
-              // onClick={() => modalRender(data)}
-            >
-              {data.protocolNumber}
-            </span>
-          </label>
-        );
-      }
     }
+    if (uploadDateValidation(formatESDate(data.uploadDate))) {
+      return (
+        <label className="blueText">
+          Protocol :{' '}
+          <Link
+            className="title-link-protocol-1"
+            to={`/protocols?protocolId=${data.AiDocId}`}
+          >
+            {data.protocolNumber}
+          </Link>
+        </label>
+      );
+    }
+    return (
+      <label className="blueText">
+        Protocol :{' '}
+        <span
+          className="title-link-protocol-1"
+          // onClick={() => modalRender(data)}
+        >
+          {data.protocolNumber}
+        </span>
+      </label>
+    );
   };
   // const handleTitleRender = (data) => {
   //   if (data.UserRole === userRole.primary) {
@@ -104,12 +107,12 @@ const SearchListingSection = ({
     setModalOpen(!openModal);
   };
   const handleReprocess = () => {
-    console.log("Document Selected", documentSelected);
-    toast.success("API not Integrated.");
+    console.log('Document Selected', documentSelected);
+    toast.success('API not Integrated.');
     setModalOpen(!openModal);
   };
   return (
-    <Card interactive style={{ width: "99%", margin: "10px", marginTop: 2 }}>
+    <Card interactive style={{ width: '99%', margin: '10px', marginTop: 2 }}>
       <Modal
         open={openModal}
         variant="warning"
@@ -119,7 +122,7 @@ const SearchListingSection = ({
         message={messages.legacyDocMsg}
         buttonProps={[
           {},
-          { label: "Re-Process", onClick: () => handleReprocess() },
+          { label: 'Re-Process', onClick: () => handleReprocess() },
         ]}
         id="warning"
       />
@@ -132,7 +135,7 @@ const SearchListingSection = ({
             <Checkbox />
           </div>
           <div className="width30px">
-            <Folder style={{ color: "purple" }} />
+            <Folder style={{ color: 'purple' }} />
           </div>
           <div className="width85">
             <div className="divBlock">
@@ -150,7 +153,7 @@ const SearchListingSection = ({
               </span>
             </div>
             <div className="divBlock ellipse" data-testid="title-value">
-              {handleProtocolTitle(data.protocolDescription, "title-value")}
+              {handleProtocolTitle(data.protocolDescription, 'title-value')}
             </div>
           </div>
           <div className="width5 swtichButton">
@@ -189,6 +192,6 @@ const SearchListingSection = ({
       </div>
     </Card>
   );
-};
+}
 
 export default SearchListingSection;

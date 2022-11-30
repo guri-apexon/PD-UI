@@ -1,14 +1,14 @@
-import { useState, memo, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import trim from "lodash/trim";
-import { toast } from "react-toastify";
-import Search from "apollo-react/components/Search";
-import Grid from "apollo-react/components/Grid";
-import Button from "apollo-react/components/Button";
-import BulkMap from "./BulkMap";
-import AddNewMapping from "./AddNewMapping";
+import { useState, memo, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import trim from 'lodash/trim';
+import { toast } from 'react-toastify';
+import Search from 'apollo-react/components/Search';
+import Grid from 'apollo-react/components/Grid';
+import Button from 'apollo-react/components/Button';
+import BulkMap from './BulkMap';
+import AddNewMapping from './AddNewMapping';
 
-import { searchedData } from "./adminSlice";
+import { searchedData } from './adminSlice';
 
 function MappingSearch() {
   const dispatch = useDispatch();
@@ -24,31 +24,31 @@ function MappingSearch() {
   }, [search]);
 
   const handleChange = (key, value) => {
-    if (key === "id") {
+    if (key === 'id') {
       setUserId(trim(value));
-    } else if (key === "protocol") {
+    } else if (key === 'protocol') {
       setProtocol(trim(value));
     }
   };
 
-  const onFieldBlur = (key, value) => {
+  const onFieldBlur = (key) => {
     const idValidation = /^[0-9]*$/.test(userId);
-    if (key === "id" && userId && !idValidation) {
+    if (key === 'id' && userId && !idValidation) {
       setUserErr(true);
-    } else if (key === "id") {
+    } else if (key === 'id') {
       setUserErr(false);
     }
   };
 
   const getSearchResult = () => {
     if (userErr || (!userId && !protocol)) {
-      toast.error(`Please enter valid input`);
+      toast.error('Please enter valid input');
     } else {
       const data = {
-        userId: userId,
-        protocol: protocol,
+        userId,
+        protocol,
       };
-      dispatch({ type: "GET_PROTOCOL_MAP_SAGA", payload: data });
+      dispatch({ type: 'GET_PROTOCOL_MAP_SAGA', payload: data });
     }
   };
   return (
@@ -58,29 +58,29 @@ function MappingSearch() {
       id="admin-search-wrapper"
     >
       <Grid container spacing={2}>
-        <Grid item xs={4} style={{ paddingLeft: "3em", paddingRight: "3em" }}>
+        <Grid item xs={4} style={{ paddingLeft: '3em', paddingRight: '3em' }}>
           <Search
             placeholder="Enter User ID"
             fullWidth
-            onChange={(e) => handleChange("id", e.target.value)}
-            onBlur={(e) => onFieldBlur("id", e.target.value)}
+            onChange={(e) => handleChange('id', e.target.value)}
+            onBlur={(e) => onFieldBlur('id', e.target.value)}
             error={userErr}
             value={userId}
-            helperText={userErr ? "Invalid User ID" : ""}
+            helperText={userErr ? 'Invalid User ID' : ''}
             data-testid="admin-search-user-id"
           />
         </Grid>
-        <Grid item xs={4} style={{ paddingLeft: "3em", paddingRight: "3em" }}>
+        <Grid item xs={4} style={{ paddingLeft: '3em', paddingRight: '3em' }}>
           <Search
             placeholder="Enter Protocol Number"
             fullWidth
-            onChange={(e) => handleChange("protocol", e.target.value)}
-            onBlur={(e) => onFieldBlur("protocol", e.target.value)}
+            onChange={(e) => handleChange('protocol', e.target.value)}
+            onBlur={(e) => onFieldBlur('protocol', e.target.value)}
             value={protocol}
             data-testid="admin-search-protocol-number"
           />
         </Grid>
-        <Grid item xs={4} style={{ marginTop: "20px", marginBottom: "8px" }}>
+        <Grid item xs={4} style={{ marginTop: '20px', marginBottom: '8px' }}>
           <Button
             variant="primary"
             style={{ marginRight: 10 }}

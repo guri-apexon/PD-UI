@@ -1,9 +1,10 @@
-import React from "react";
+/* eslint-disable */
+import React from 'react';
 
 const textTypes = {
-  header: "header",
-  text: "text",
-  table: "table",
+  header: 'header',
+  text: 'text',
+  table: 'table',
 };
 const compareColorCode = {
   noChange: 0,
@@ -19,19 +20,19 @@ const compareColorCode = {
 //   3: "Inserted",
 // };
 
-const CompareTable = (props) => {
+function CompareTable(props) {
   //   const iqvdata = JSON.parse(props.compare.iqvdata);
   const iqvdata = props.compare;
-  const data = iqvdata.iqvdata.data;
+  const { data } = iqvdata.iqvdata;
   // const diff =
   // console.log("Compare Section Data", iqvdata);
   const handleHighlight = (item) => {
-    var str = item[5];
-    let arr = item[6];
-    let vv = [].concat(...arr);
+    const str = item[5];
+    const arr = item[6];
+    const vv = [].concat(...arr);
     let i = 0;
-    let str1 = vv.map((item) => {
-      let res = str.slice(i, item);
+    const str1 = vv.map((item) => {
+      const res = str.slice(i, item);
       i = item;
       return res;
     });
@@ -44,10 +45,10 @@ const CompareTable = (props) => {
       <div className="compare-container">
         <div className="compare-header">
           <div className="left left-header">
-            {iqvdata.protocolNumber + " (" + iqvdata.versionNumber + ")"}
+            {`${iqvdata.protocolNumber} (${iqvdata.versionNumber})`}
           </div>
           <div className="right right-header">
-            {iqvdata.protocolNumber2 + " (" + iqvdata.versionNumber2 + ")"}
+            {`${iqvdata.protocolNumber2} (${iqvdata.versionNumber2})`}
           </div>
         </div>
         {data.map((item, i) => {
@@ -59,28 +60,31 @@ const CompareTable = (props) => {
           if (type === textTypes.header) {
             if (diff === compareColorCode.noChange) {
               return (
-                <div className="section-header" id="Synopsis" key={"aaa" + i}>
+                <div className="section-header" id="Synopsis" key={`aaa${i}`}>
                   <div className="left left-section">{text1}</div>
                   <div className="right right-section">{text2}</div>
                 </div>
               );
-            } else if (diff === compareColorCode.deleted) {
+            }
+            if (diff === compareColorCode.deleted) {
               return (
-                <div className="section-header" id="Synopsis" key={"aaa" + i}>
+                <div className="section-header" id="Synopsis" key={`aaa${i}`}>
                   <div className="left left-section text-red">{text1}</div>
                   <div className="right right-section">{text2}</div>
                 </div>
               );
-            } else if (diff === compareColorCode.edited) {
+            }
+            if (diff === compareColorCode.edited) {
               return (
-                <div className="section-header" id="Synopsis" key={"aaa" + i}>
+                <div className="section-header" id="Synopsis" key={`aaa${i}`}>
                   <div className="left left-section">{text1}</div>
                   <div className="right right-section text-blue">{text2}</div>
                 </div>
               );
-            } else if (diff === compareColorCode.added) {
+            }
+            if (diff === compareColorCode.added) {
               return (
-                <div className="section-header" id="Synopsis" key={"aaa" + i}>
+                <div className="section-header" id="Synopsis" key={`aaa${i}`}>
                   <div className="left left-section">{text1}</div>
                   <div className="right right-section text-blue">{text2}</div>
                 </div>
@@ -89,28 +93,31 @@ const CompareTable = (props) => {
           } else if (type === textTypes.text) {
             if (diff === compareColorCode.noChange) {
               return (
-                <div className="compare-row" key={"aaa" + i}>
+                <div className="compare-row" key={`aaa${i}`}>
                   <div className="left left-text">{text1}</div>
                   <div className="right right-text">{text2}</div>
                 </div>
               );
-            } else if (diff === compareColorCode.deleted) {
+            }
+            if (diff === compareColorCode.deleted) {
               return (
-                <div className="compare-row" key={"aaa" + i}>
+                <div className="compare-row" key={`aaa${i}`}>
                   <div className="left left-text text-red">{text1}</div>
                   <div className="right right-text">{text2}</div>
                 </div>
               );
-            } else if (diff === compareColorCode.edited) {
+            }
+            if (diff === compareColorCode.edited) {
               const arrStr = handleHighlight(item);
               return (
-                <div className="compare-row" key={"aaa" + i}>
+                <div className="compare-row" key={`aaa${i}`}>
                   <div className="left left-text">{text1}</div>
                   <div className="right right-text">
                     {arrStr.map((value, i) => {
                       if (i === 0 || i % 2 === 0) {
                         return <span key={i}>{value}</span>;
-                      } else if (i % 2 !== 0) {
+                      }
+                      if (i % 2 !== 0) {
                         return (
                           <span key={i} className="text-blue">
                             {value}
@@ -122,9 +129,10 @@ const CompareTable = (props) => {
                   </div>
                 </div>
               );
-            } else if (diff === compareColorCode.added) {
+            }
+            if (diff === compareColorCode.added) {
               return (
-                <div className="compare-row" key={"aaa" + i}>
+                <div className="compare-row" key={`aaa${i}`}>
                   <div className="left left-text">{text1}</div>
                   <div className="right right-text text-blue">{text2}</div>
                 </div>
@@ -138,15 +146,15 @@ const CompareTable = (props) => {
             // );
           } else if (type === textTypes.table) {
             return (
-              <div className="compare-row" key={"aaa" + i}>
+              <div className="compare-row" key={`aaa${i}`}>
                 <div
                   className="left left-text"
                   dangerouslySetInnerHTML={{ __html: text1.Table }}
-                ></div>
+                />
                 <div
                   className="right right-text"
                   dangerouslySetInnerHTML={{ __html: text2.Table }}
-                ></div>
+                />
               </div>
             );
           }
@@ -266,6 +274,6 @@ const CompareTable = (props) => {
     </div>
     // </Card>
   );
-};
+}
 
 export default CompareTable;

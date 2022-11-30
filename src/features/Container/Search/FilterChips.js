@@ -1,11 +1,10 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-prototype-builtins */
-import React from "react";
-import Chip from "apollo-react/components/Chip";
-import "./filterchips.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { range } from "./searchSlice";
-import { formatESDate } from "../../../utils/utilFunction";
+/* eslint-disable */
+import React from 'react';
+import Chip from 'apollo-react/components/Chip';
+import './filterchips.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { range } from './searchSlice';
+import { formatESDate } from '../../../utils/utilFunction';
 
 // const disableChip = (arr, value) => {
 //   let newArr = [...arr];
@@ -17,7 +16,7 @@ import { formatESDate } from "../../../utils/utilFunction";
 //   return newArr;
 // };
 const removeByAttr = function (arr, attr, value) {
-  var i = arr.length;
+  let i = arr.length;
   while (i--) {
     if (
       arr[i] &&
@@ -30,72 +29,70 @@ const removeByAttr = function (arr, attr, value) {
   }
   return arr;
 };
-const FilterChip = (props) => {
+function FilterChip(props) {
   const { filters, onSearchQuery, setDateRangeValue } = props;
   const rangeDate = useSelector(range);
   const dispatch = useDispatch();
   /* istanbul ignore next */
   const handleDateSectionDelete = () => {
-    onSearchQuery([1], "dateSection");
+    onSearchQuery([1], 'dateSection');
   };
   /* istanbul ignore next */
   const handleDateTypeDelete = () => {
-    onSearchQuery([1], "dateType");
+    onSearchQuery([1], 'dateType');
   };
 
   const handleDelete = (item, list, identifier) => {
-    console.log("You clicked the delete icon.", item, list, identifier);
-    const newList = removeByAttr([...list], "id", item.id);
+    console.log('You clicked the delete icon.', item, list, identifier);
+    const newList = removeByAttr([...list], 'id', item.id);
     const finalList = newList.map((item) => item.id);
-    console.log("final List", finalList);
+    console.log('final List', finalList);
     onSearchQuery(finalList, identifier);
   };
   const renderDateSection = (data) => {
     console.log(data);
-    if (data[0].value === "0") {
-      return <div></div>;
-    } else {
-      return (
-        <div className="section">
-          <label>Date Range :</label>
-          <div
-            className="chip-inside"
-            key={data[0].id}
-            data-testid="date-range-section"
-          >
-            <Chip
-              color="white"
-              size="small"
-              label={data[0].title}
-              disabled={data[0].disabled}
-              onDelete={() => handleDateSectionDelete()}
-            />
-          </div>
-        </div>
-      );
+    if (data[0].value === '0') {
+      return <div />;
     }
+    return (
+      <div className="section">
+        <label>Date Range :</label>
+        <div
+          className="chip-inside"
+          key={data[0].id}
+          data-testid="date-range-section"
+        >
+          <Chip
+            color="white"
+            size="small"
+            label={data[0].title}
+            disabled={data[0].disabled}
+            onDelete={() => handleDateSectionDelete()}
+          />
+        </div>
+      </div>
+    );
   };
 
   const renderDateType = (data) => {
     console.log(data);
-    if (data[0].value === "approval_date") {
-      return <div></div>;
-    } else {
-      return (
-        <div className="section">
-          <label>Date Type :</label>
-          <div className="chip-inside" key={data[0].id} data-testid="date-type">
-            <Chip
-              color="white"
-              size="small"
-              label={data[0].title}
-              disabled={data[0].disabled}
-              onDelete={() => handleDateTypeDelete()}
-            />
-          </div>
-        </div>
-      );
+    if (data[0].value === 'approval_date') {
+      return <div />;
     }
+    return (
+      <div className="section">
+        <label>Date Type :</label>
+        <div className="chip-inside" key={data[0].id} data-testid="date-type">
+          <Chip
+            color="white"
+            size="small"
+            label={data[0].title}
+            disabled={data[0].disabled}
+            onDelete={() => handleDateTypeDelete()}
+          />
+        </div>
+      </div>
+    );
   };
   const handleDateRangeDelete = () => {
     setDateRangeValue([null, null]);
@@ -103,7 +100,7 @@ const FilterChip = (props) => {
       from: null,
       to: null,
     };
-    dispatch({ type: "FILTER_BY_DATE_RANGE_SAGA", payload: range });
+    dispatch({ type: 'FILTER_BY_DATE_RANGE_SAGA', payload: range });
   };
   const renderDateRange = (dateRange) => {
     return (
@@ -116,7 +113,7 @@ const FilterChip = (props) => {
                 color="white"
                 size="small"
                 label={`${formatESDate(dateRange[0])} - ${formatESDate(
-                  dateRange[1]
+                  dateRange[1],
                 )}`}
                 onDelete={() => handleDateRangeDelete()}
               />
@@ -135,8 +132,8 @@ const FilterChip = (props) => {
     filters.documentStatus.length > 0 ||
     filters.qcStatus.length > 0 ||
     (filters.dateType.length > 0 &&
-      filters.dateType[0].value !== "approval_date") ||
-    (filters.dateSection.length > 0 && filters.dateSection[0].value !== "0") ||
+      filters.dateType[0].value !== 'approval_date') ||
+    (filters.dateSection.length > 0 && filters.dateSection[0].value !== '0') ||
     (rangeDate.from && rangeDate.to)
   ) {
     return (
@@ -156,7 +153,7 @@ const FilterChip = (props) => {
                     size="small"
                     label={item.title}
                     disabled={item.disabled}
-                    onDelete={() => handleDelete(item, filters.toc, "toc")}
+                    onDelete={() => handleDelete(item, filters.toc, 'toc')}
                   />
                 </div>
               ))}
@@ -177,7 +174,7 @@ const FilterChip = (props) => {
                     label={item.title}
                     disabled={item.disabled}
                     onDelete={() =>
-                      handleDelete(item, filters.sponsor, "sponsor")
+                      handleDelete(item, filters.sponsor, 'sponsor')
                     }
                   />
                 </div>
@@ -199,7 +196,7 @@ const FilterChip = (props) => {
                     label={item.title}
                     disabled={item.disabled}
                     onDelete={() =>
-                      handleDelete(item, filters.indication, "indication")
+                      handleDelete(item, filters.indication, 'indication')
                     }
                   />
                 </div>
@@ -220,7 +217,7 @@ const FilterChip = (props) => {
                     size="small"
                     label={item.title}
                     disabled={item.disabled}
-                    onDelete={() => handleDelete(item, filters.phase, "phase")}
+                    onDelete={() => handleDelete(item, filters.phase, 'phase')}
                   />
                 </div>
               ))}
@@ -244,7 +241,7 @@ const FilterChip = (props) => {
                       handleDelete(
                         item,
                         filters.documentStatus,
-                        "documentStatus"
+                        'documentStatus',
                       )
                     }
                   />
@@ -267,7 +264,7 @@ const FilterChip = (props) => {
                     label={item.title}
                     disabled={item.disabled}
                     onDelete={() =>
-                      handleDelete(item, filters.qcStatus, "qcStatus")
+                      handleDelete(item, filters.qcStatus, 'qcStatus')
                     }
                   />
                 </div>
@@ -281,8 +278,7 @@ const FilterChip = (props) => {
         </div>
       </div>
     );
-  } else {
-    return <div></div>;
   }
-};
+  return <div />;
+}
 export default FilterChip;

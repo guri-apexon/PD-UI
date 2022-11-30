@@ -1,7 +1,8 @@
-import { all, call, takeLatest, put, select } from "redux-saga/effects";
-import moment from "moment";
-import { toast } from "react-toastify";
-import { httpCall, BASE_URL_8000, httpCallSDA } from "../../../utils/api";
+/* eslint-disable */
+import { all, call, takeLatest, put, select } from 'redux-saga/effects';
+import moment from 'moment';
+import { toast } from 'react-toastify';
+import { httpCall, BASE_URL_8000, httpCallSDA } from '../../../utils/api';
 import {
   getUsers,
   getUserRoles,
@@ -20,14 +21,14 @@ import {
   setBulkMapError,
   setSearch,
   setMapLoader,
-} from "./adminSlice";
+} from './adminSlice';
 
 export function* usersFunction() {
   const Url = `${BASE_URL_8000}/api/user/read_all_users`;
 
   const Config = {
     url: Url,
-    method: "GET",
+    method: 'GET',
   };
   try {
     yield put(setLoader(true));
@@ -36,7 +37,7 @@ export function* usersFunction() {
     if (data.success) {
       const userData = data.data.map((item) => {
         item.date_of_registration = moment(item.date_of_registration).format(
-          "MM/DD/YYYY HH:mm:ss"
+          'MM/DD/YYYY HH:mm:ss',
         );
         return item;
       });
@@ -55,7 +56,7 @@ export function* getRolesFunction() {
 
   const Config = {
     url: Url,
-    method: "GET",
+    method: 'GET',
   };
   try {
     const data = yield call(httpCall, Config);
@@ -67,10 +68,10 @@ export function* getRolesFunction() {
       };
       data.data.map((item) => {
         item.key = item.id;
-        if (item.roleLevel === "user") {
+        if (item.roleLevel === 'user') {
           userRole.push(item);
           rolesOptions.user.push(item.roleName);
-        } else if (item.roleLevel === "protocol") {
+        } else if (item.roleLevel === 'protocol') {
           rolesOptions.protocol.push(item.roleName);
         }
         return item;
@@ -88,7 +89,7 @@ export function* getProtocolMapData(action) {
   yield put(setLoader(true));
   const Config = {
     url: Url,
-    method: "GET",
+    method: 'GET',
     params: {
       userId: action.payload.userId,
       protocol: action.payload.protocol,
@@ -99,12 +100,12 @@ export function* getProtocolMapData(action) {
     if (data.success) {
       const searchData = data.data ? data.data : [];
       searchData.map((item) => {
-        item.follow = item.follow ? "Yes" : "No";
+        item.follow = item.follow ? 'Yes' : 'No';
         item.timeCreated = moment(item.timeCreated).format(
-          "MM/DD/YYYY HH:mm:ss"
+          'MM/DD/YYYY HH:mm:ss',
         );
         item.lastUpdated = moment(item.lastUpdated).format(
-          "MM/DD/YYYY HH:mm:ss"
+          'MM/DD/YYYY HH:mm:ss',
         );
         return item;
       });
@@ -113,18 +114,18 @@ export function* getProtocolMapData(action) {
         setSearch({
           userId: action.payload.userId,
           protocol: action.payload.protocol,
-        })
+        }),
       );
     } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
     } else {
-      toast.error(`Error while searching for User or Protocol`);
+      toast.error('Error while searching for User or Protocol');
     }
     yield put(setLoader(false));
   } catch (err) {
     console.log(err);
     yield put(setLoader(false));
-    toast.error(`Error while searching for User or Protocol`);
+    toast.error('Error while searching for User or Protocol');
   }
 }
 export function* deleteUser(action) {
@@ -132,7 +133,7 @@ export function* deleteUser(action) {
 
   const Config = {
     url: Url,
-    method: "PUT",
+    method: 'PUT',
     data: {
       username: action.payload,
       active_user: false,
@@ -144,16 +145,16 @@ export function* deleteUser(action) {
       const state = yield select();
       const userRows = state.admin.users;
       const updatedUserList = userRows.filter(
-        (row) => row.username !== action.payload
+        (row) => row.username !== action.payload,
       );
       yield put(getUsers(updatedUserList));
-      toast.info(`User is successfully deleted`);
+      toast.info('User is successfully deleted');
     } else {
-      toast.error(`User is not deleted`);
+      toast.error('User is not deleted');
     }
   } catch (err) {
     console.log(err);
-    toast.error(`User is not deleted`);
+    toast.error('User is not deleted');
   }
 }
 export function* deleteMapping(action) {
@@ -161,7 +162,7 @@ export function* deleteMapping(action) {
   yield put(setLoader(true));
   const Config = {
     url: Url,
-    method: "DELETE",
+    method: 'DELETE',
     params: {
       userId: action.payload.userId,
       protocol: action.payload.protocol,
@@ -181,17 +182,17 @@ export function* deleteMapping(action) {
         return true;
       });
       yield put(getProtocolMap(updatedMappingList));
-      toast.info(`Protocol Mapping is successfully deleted`);
+      toast.info('Protocol Mapping is successfully deleted');
     } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
     } else {
-      toast.error(`Protocol Mapping is not deleted`);
+      toast.error('Protocol Mapping is not deleted');
     }
     yield put(setLoader(false));
   } catch (err) {
     console.log(err);
     yield put(setLoader(false));
-    toast.error(`Protocol Mapping is not deleted`);
+    toast.error('Protocol Mapping is not deleted');
   }
 }
 export function* updateUser(action) {
@@ -200,7 +201,7 @@ export function* updateUser(action) {
 
   const Config = {
     url: Url,
-    method: "PUT",
+    method: 'PUT',
     data: {
       username: editedRow.username,
       country: editedRow.country,
@@ -213,27 +214,27 @@ export function* updateUser(action) {
       const state = yield select();
       const userRows = state.admin.users;
       const updatedUserList = userRows.map((row) =>
-        row.username === editedRow.username ? editedRow : row
+        row.username === editedRow.username ? editedRow : row,
       );
       yield put(getUsers(updatedUserList));
-      toast.info(`User details are successfully modified`);
+      toast.info('User details are successfully modified');
     } else {
-      toast.error(`User details is not updated`);
+      toast.error('User details is not updated');
     }
   } catch (err) {
     console.log(err);
-    toast.error(`User details is not updated`);
+    toast.error('User details is not updated');
   }
 }
 export function* addNewUser() {
   const USER_ERROR =
-    "Error while adding the user, please contact administrator or try after sometime.";
+    'Error while adding the user, please contact administrator or try after sometime.';
   yield put(setLoader(true));
   const state = yield select();
-  let userDetails = state.admin.newUser;
+  const userDetails = state.admin.newUser;
   const Url = `${BASE_URL_8000}/api/create_new_user/new_user`;
   const details = [userDetails].map((item) => {
-    let data = {};
+    const data = {};
     data.username = item.userId;
     data.first_name = item.firstName;
     data.last_name = item.lastName;
@@ -244,7 +245,7 @@ export function* addNewUser() {
   });
   const Config = {
     url: Url,
-    method: "POST",
+    method: 'POST',
     data: details[0],
   };
   try {
@@ -256,18 +257,18 @@ export function* addNewUser() {
       if (data.success) {
         const userValue = {
           userId: null,
-          id: "",
+          id: '',
           firstName: null,
           lastName: null,
           email: null,
           country: null,
-          userRole: "",
+          userRole: '',
         };
-        toast.info(`User addition is successful`);
+        toast.info('User addition is successful');
         yield put(setNewUserValues(userValue));
         yield put(setModalToggle(false));
-        yield put(setNewUserError(""));
-        yield put({ type: "GET_USERS_SAGA" });
+        yield put(setNewUserError(''));
+        yield put({ type: 'GET_USERS_SAGA' });
       }
       // else if (data.code === "DUPLICATE_ENTITY") {
       //   toast.error("User profile already exist");
@@ -288,9 +289,9 @@ export function* addNewUser() {
     }
   } catch (err) {
     yield put(setLoader(false));
-    if (err.code === "DUPLICATE_ENTITY") {
-      toast.error("User profile already exist");
-      yield put(setNewUserError("User profile already exist"));
+    if (err.code === 'DUPLICATE_ENTITY') {
+      toast.error('User profile already exist');
+      yield put(setNewUserError('User profile already exist'));
     } else {
       yield put(setNewUserError());
       toast.error(USER_ERROR);
@@ -305,11 +306,11 @@ export function* addNewUserSDA(userId) {
 
   const Config = {
     url: Url,
-    method: "POST",
+    method: 'POST',
     params: {
-      roleType: "Reader",
+      roleType: 'Reader',
       appKey: process.env.REACT_APP_SDA_AUTH,
-      userType: "internal",
+      userType: 'internal',
       networkId: userId,
       updatedBy: userEmail,
     },
@@ -319,11 +320,11 @@ export function* addNewUserSDA(userId) {
     console.log(data);
     if (data.success) {
       return true;
-    } else if (data.code === "DUPLICATE_ENTITY") {
-      return true;
-    } else {
-      return false;
     }
+    if (data.code === 'DUPLICATE_ENTITY') {
+      return true;
+    }
+    return false;
   } catch (err) {
     console.log(err);
     return false;
@@ -336,105 +337,105 @@ export function* addNewRole(action) {
   const Url = `${BASE_URL_8000}/api/roles/new_role`;
   const Config = {
     url: Url,
-    method: "POST",
+    method: 'POST',
     data: {
       roleName: roleData.role,
       roleDescription: roleData.description,
-      roleLevel: "user",
+      roleLevel: 'user',
     },
   };
   try {
     const data = yield call(httpCall, Config);
     yield put(setLoader(false));
     if (data.success) {
-      toast.info(`New User Role is successfully added`);
+      toast.info('New User Role is successfully added');
       yield put(setModalToggle(false));
-      yield put(setUserRoleErr(""));
-      yield put({ type: "GET_ROLES_SAGA" });
+      yield put(setUserRoleErr(''));
+      yield put({ type: 'GET_ROLES_SAGA' });
     } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
       yield put(setUserRoleErr(data.err.data.detail));
     } else {
-      yield put(setUserRoleErr("Error while adding roles to PD"));
-      toast.error(`Error while adding roles to PD`);
+      yield put(setUserRoleErr('Error while adding roles to PD'));
+      toast.error('Error while adding roles to PD');
     }
   } catch (err) {
     console.log(err);
     yield put(setLoader(false));
-    yield put(setUserRoleErr("Error while adding roles to PD"));
-    toast.error(`Error while adding roles to PD`);
+    yield put(setUserRoleErr('Error while adding roles to PD'));
+    toast.error('Error while adding roles to PD');
   }
 }
 
 export function* newMapping(action) {
   yield put(setLoader(true));
-  let mapDetails = action.payload;
+  const mapDetails = action.payload;
   const Url = `${BASE_URL_8000}/api/user_protocol/`;
   try {
     const details = [mapDetails].map((item) => {
-      let data = {};
+      const data = {};
       data.userId = item.userId;
       data.protocol = item.protocol;
       data.userRole = item.role.toLowerCase();
       data.projectId = item.projectId;
-      data.follow = item.following === "1" ? true : false;
+      data.follow = item.following === '1';
       return data;
     });
     const Config = {
       url: Url,
-      method: "POST",
+      method: 'POST',
       data: details[0],
     };
 
     const data = yield call(httpCall, Config);
     yield put(setLoader(false));
     if (data.success) {
-      toast.info(`Details are saved to the system.`);
+      toast.info('Details are saved to the system.');
       yield put(setModalToggle(false));
-      yield put(setNewMappingError(""));
+      yield put(setNewMappingError(''));
       const data = {
         userId: mapDetails.userId,
         protocol: mapDetails.protocol,
       };
       yield put(setSearch(data));
-      yield put({ type: "GET_PROTOCOL_MAP_SAGA", payload: data });
+      yield put({ type: 'GET_PROTOCOL_MAP_SAGA', payload: data });
     } else if (data.err && data.err.data && data.err.data.detail) {
       toast.error(data.err.data.detail);
       yield put(setNewMappingError(data.err.data.detail));
     } else {
       yield put(
-        setNewMappingError("Error while adding User Protocol Mapping to PD")
+        setNewMappingError('Error while adding User Protocol Mapping to PD'),
       );
-      toast.error(`Error while adding User Protocol Mapping to PD`);
+      toast.error('Error while adding User Protocol Mapping to PD');
     }
   } catch (err) {
     console.log(err);
     yield put(setLoader(false));
     yield put(
-      setNewMappingError("Error while adding User Protocol Mapping to PD")
+      setNewMappingError('Error while adding User Protocol Mapping to PD'),
     );
-    toast.error(`Error while adding User Protocol Mapping to PD`);
+    toast.error('Error while adding User Protocol Mapping to PD');
   }
 }
 
 export function* getUserDetails(action) {
   const Url = `${BASE_URL_8000}/api/ldap_user_details/`;
   const state = yield select();
-  let userDetails = state.admin.newUser;
+  const userDetails = state.admin.newUser;
   const Config = {
     url: Url,
-    method: "GET",
+    method: 'GET',
     params: {
       userId: action.payload,
     },
   };
   const errorValue = {
-    firstName: { error: false, message: "" },
-    lastName: { error: false, message: "" },
-    email: { error: false, message: "" },
-    country: { error: false, message: "" },
-    userId: { error: false, message: "" },
-    userRole: { error: false, message: "" },
+    firstName: { error: false, message: '' },
+    lastName: { error: false, message: '' },
+    email: { error: false, message: '' },
+    country: { error: false, message: '' },
+    userId: { error: false, message: '' },
+    userRole: { error: false, message: '' },
   };
   const userValue = {
     firstName: null,
@@ -446,7 +447,7 @@ export function* getUserDetails(action) {
     yield put(setUserLoader(true));
     const userData = yield call(httpCall, Config);
     if (userData.success && userData.data) {
-      let data = {};
+      const data = {};
       data.userId = userData.data.userId;
       data.id = action.payload;
       data.firstName = userData.data.first_name;
@@ -456,7 +457,7 @@ export function* getUserDetails(action) {
       data.userRole = userDetails.userRole;
 
       yield put(setNewUserValues(data));
-      yield put(setUserError(""));
+      yield put(setUserError(''));
 
       yield put(setFormError(errorValue));
     } else if (userData.err && userData.err.data && userData.err.data.detail) {
@@ -466,34 +467,34 @@ export function* getUserDetails(action) {
     } else {
       yield put(setNewUserValues(userValue));
       yield put(
-        setUserError("Error while fetching user details try again later")
+        setUserError('Error while fetching user details try again later'),
       );
-      toast.error(`Error while fetching user details try again later`);
+      toast.error('Error while fetching user details try again later');
     }
-    yield put(setNewUserError(""));
+    yield put(setNewUserError(''));
     yield put(setUserLoader(false));
   } catch (err) {
     yield put(setUserLoader(false));
     console.log(err);
     yield put(setNewUserValues(userValue));
     yield put(
-      setUserError("Error while fetching user details try again later")
+      setUserError('Error while fetching user details try again later'),
     );
-    yield put(setNewUserError(""));
-    toast.error(`Error while fetching user details try again later`);
+    yield put(setNewUserError(''));
+    toast.error('Error while fetching user details try again later');
   }
 }
 
 export function* bulkUploadMapping(action) {
   yield put(setMapLoader(true));
-  let bodyFormData = new FormData();
-  bodyFormData.append("user_protocol_xls_file", action.payload);
+  const bodyFormData = new FormData();
+  bodyFormData.append('user_protocol_xls_file', action.payload);
   const Url = `${BASE_URL_8000}/api/user_protocol/user_protocol_many`;
   const Config = {
     url: Url,
-    method: "POST",
+    method: 'POST',
     data: bodyFormData,
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: { 'Content-Type': 'multipart/form-data' },
   };
   try {
     const data = yield call(httpCall, Config);
@@ -504,41 +505,41 @@ export function* bulkUploadMapping(action) {
     } else if (
       data.err &&
       data.err.data &&
-      typeof data.err.data.detail === "string"
+      typeof data.err.data.detail === 'string'
     ) {
       toast.error(data.err.data.detail);
       yield put(setBulkMapError(data.err.data.detail));
       yield put(setBulkMapResponse([]));
     } else {
       yield put(
-        setBulkMapError("Error while adding User Protocol Mapping to PD")
+        setBulkMapError('Error while adding User Protocol Mapping to PD'),
       );
       yield put(setBulkMapResponse([]));
-      toast.error(`Error while adding User Protocol Mapping to PD`);
+      toast.error('Error while adding User Protocol Mapping to PD');
     }
   } catch (err) {
     console.log(err);
     yield put(setMapLoader(false));
     yield put(setBulkMapResponse([]));
     yield put(
-      setBulkMapError("Error while adding User Protocol Mapping to PD")
+      setBulkMapError('Error while adding User Protocol Mapping to PD'),
     );
-    toast.error(`Error while adding User Protocol Mapping to PD`);
+    toast.error('Error while adding User Protocol Mapping to PD');
   }
 }
 
 export function* watchAdmin() {
-  yield takeLatest("GET_USERS_SAGA", usersFunction);
-  yield takeLatest("GET_ROLES_SAGA", getRolesFunction);
-  yield takeLatest("GET_PROTOCOL_MAP_SAGA", getProtocolMapData);
-  yield takeLatest("DELETE_USER_SAGA", deleteUser);
-  yield takeLatest("UPDATE_USER_SAGA", updateUser);
-  yield takeLatest("ADD_NEW_ROLE_SAGA", addNewRole);
-  yield takeLatest("ADD_NEW_USER_SAGA", addNewUser);
-  yield takeLatest("DELETE_USER_PROTOCOL_MAPPING", deleteMapping);
-  yield takeLatest("ADD_NEW_MAPPING_SAGA", newMapping);
-  yield takeLatest("GET_USER_DETAILS_LDAP", getUserDetails);
-  yield takeLatest("BULK_UPLOAD_MAPPING_SAGA", bulkUploadMapping);
+  yield takeLatest('GET_USERS_SAGA', usersFunction);
+  yield takeLatest('GET_ROLES_SAGA', getRolesFunction);
+  yield takeLatest('GET_PROTOCOL_MAP_SAGA', getProtocolMapData);
+  yield takeLatest('DELETE_USER_SAGA', deleteUser);
+  yield takeLatest('UPDATE_USER_SAGA', updateUser);
+  yield takeLatest('ADD_NEW_ROLE_SAGA', addNewRole);
+  yield takeLatest('ADD_NEW_USER_SAGA', addNewUser);
+  yield takeLatest('DELETE_USER_PROTOCOL_MAPPING', deleteMapping);
+  yield takeLatest('ADD_NEW_MAPPING_SAGA', newMapping);
+  yield takeLatest('GET_USER_DETAILS_LDAP', getUserDetails);
+  yield takeLatest('BULK_UPLOAD_MAPPING_SAGA', bulkUploadMapping);
 }
 
 export default function* adminSaga() {

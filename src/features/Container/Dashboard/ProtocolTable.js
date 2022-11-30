@@ -1,18 +1,18 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Tab from "apollo-react/components/Tab";
-import Tabs from "apollo-react/components/Tabs";
+/* eslint-disable */
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Tab from 'apollo-react/components/Tab';
+import Tabs from 'apollo-react/components/Tabs';
 
 import {
   prtocolsError,
   setSelectedProtocols,
   hideAddprotocol,
   tableLoader,
-} from "../Dashboard/dashboardSlice";
-import MyProtocols from "./MyProtocols";
-import FollowedProtocols from "./FollowedProtocols";
-import Loader from "../../Components/Loader/Loader";
+} from './dashboardSlice';
+import MyProtocols from './MyProtocols';
+import FollowedProtocols from './FollowedProtocols';
+import Loader from '../../Components/Loader/Loader';
 
 function ProtocolTable({ pageRows, maxHeight }) {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ function ProtocolTable({ pageRows, maxHeight }) {
     setValue(value);
   };
   useEffect(() => {
-    dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
+    dispatch({ type: 'GET_PROTOCOL_TABLE_SAGA' });
   }, []);
   useEffect(() => {
     if (value === 0) {
@@ -37,9 +37,9 @@ function ProtocolTable({ pageRows, maxHeight }) {
       <div
         style={{
           height: 400,
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
+          justifyContent: 'center',
+          alignItems: 'center',
+          display: 'flex',
         }}
       >
         <Loader />

@@ -1,10 +1,8 @@
-import React from "react";
-import { render } from "../../test-utils/test-utils";
+import { render } from '../../test-utils/test-utils';
+import NoResultFound from './NoResultFound';
 
-import NoResultFound from "./NoResultFound";
-
-describe("PageNotFound", () => {
-  test("Render PageNot Found ", () => {
+describe('PageNotFound', () => {
+  test('Render PageNot Found ', () => {
     render(<NoResultFound />);
   });
 });

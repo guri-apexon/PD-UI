@@ -1,12 +1,12 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import Collapsible from "react-collapsible";
-import Search from "apollo-react/components/Search";
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
+import Collapsible from 'react-collapsible';
+import Search from 'apollo-react/components/Search';
 
-import { CheckboxCard, DateRangeCard, CheckboxTest } from "./CustomFilterCards";
+import { CheckboxCard, DateRangeCard, CheckboxTest } from './CustomFilterCards';
 
-import Loader from "../../Components/Loader/Loader";
-import "./handleSearch.scss";
+import Loader from '../../Components/Loader/Loader';
+import './handleSearch.scss';
 
 import {
   TOC,
@@ -14,17 +14,18 @@ import {
   qcStatus,
   dateSection,
   dateType,
-} from "./Data/constants";
+} from './Data/constants';
+
 const searchWords = (nameKey, myArray) => {
-  let arr = [];
-  for (var i = 0; i < myArray.length; i++) {
+  const arr = [];
+  for (let i = 0; i < myArray.length; i++) {
     if (myArray[i].title.toLowerCase().includes(nameKey.toLowerCase())) {
       arr.push({ ...myArray[i] });
     }
   }
   return arr;
 };
-const HandleSearch = (props) => {
+function HandleSearch(props) {
   const {
     sectiondata,
     onConstructSearchQuery,
@@ -35,14 +36,14 @@ const HandleSearch = (props) => {
 
   const [data, setData] = useState({});
   const [index, setIndex] = useState(0);
-  const [typed, setTyped] = useState("");
+  const [typed, setTyped] = useState('');
   const [noResult, setNoResult] = useState(false);
   useEffect(() => {
     setData(sectiondata);
   }, [sectiondata]);
   useEffect(() => {
-    if (clearAll && typed !== "") {
-      setTyped("");
+    if (clearAll && typed !== '') {
+      setTyped('');
       setData(sectiondata);
       setIndex(index + 1);
     }
@@ -51,16 +52,16 @@ const HandleSearch = (props) => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (typed) {
-        console.log("typed if", typed);
+        console.log('typed if', typed);
         const newArr = searchWords(typed, sectiondata.sectionContent);
-        console.log("Array length", newArr, newArr.length);
+        console.log('Array length', newArr, newArr.length);
         if (newArr.length !== 0) {
-          console.log("typed length if", typed);
+          console.log('typed length if', typed);
           setData({ success: true, sectionContent: newArr });
           setIndex(index + 1);
           setNoResult(false);
         } else {
-          console.log("typed length else", typed);
+          console.log('typed length else', typed);
           setData({ success: true, sectionContent: newArr });
           setIndex(index + 1);
           setNoResult(true);
@@ -71,57 +72,54 @@ const HandleSearch = (props) => {
   }, [typed]);
   const handleTextChange = (value) => {
     setTyped(value);
-    if (value === "") {
+    if (value === '') {
       setData(sectiondata);
       setIndex(index + 1);
     }
   };
   return (
-    <>
-      <Collapsible trigger={forSection + "s"}>
-        <div className="handle-search-component">
-          <Search
-            placeholder="Search"
-            onChange={(e) => handleTextChange(e.target.value)}
-            value={typed}
-            fullWidth
-          />
-        </div>
-        {data.sectionContent && data.sectionContent.length > 0 ? (
-          <CheckboxTest
-            key={index}
-            section={data}
-            identifier={forSection}
-            onCheckboxClick={onConstructSearchQuery}
-            listValue={searchQuery[forSection]}
-            clearAll={clearAll}
-          />
-        ) : (
-          !noResult && (
-            <div
-              style={{
-                height: 300,
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
-              }}
-            >
-              <Loader />
-            </div>
-          )
-        )}
-        {noResult && (
-          <div className="no-result">
-            No {forSection} found for keyword searched. Please try something
-            else.
+    <Collapsible trigger={`${forSection}s`}>
+      <div className="handle-search-component">
+        <Search
+          placeholder="Search"
+          onChange={(e) => handleTextChange(e.target.value)}
+          value={typed}
+          fullWidth
+        />
+      </div>
+      {data.sectionContent && data.sectionContent.length > 0 ? (
+        <CheckboxTest
+          key={index}
+          section={data}
+          identifier={forSection}
+          onCheckboxClick={onConstructSearchQuery}
+          listValue={searchQuery[forSection]}
+          clearAll={clearAll}
+        />
+      ) : (
+        !noResult && (
+          <div
+            style={{
+              height: 300,
+              justifyContent: 'center',
+              alignItems: 'center',
+              display: 'flex',
+            }}
+          >
+            <Loader />
           </div>
-        )}
-      </Collapsible>
-    </>
+        )
+      )}
+      {noResult && (
+        <div className="no-result">
+          No {forSection} found for keyword searched. Please try something else.
+        </div>
+      )}
+    </Collapsible>
   );
-};
+}
 
-const CollapseCard = ({
+function CollapseCard({
   name,
   indicationData,
   sponsorData,
@@ -130,8 +128,8 @@ const CollapseCard = ({
   searchQuery,
   dateRangeValue,
   clearAll,
-}) => {
-  if (name === "TOC") {
+}) {
+  if (name === 'TOC') {
     return (
       <div data-testid="toc-checkboxes">
         <Collapsible trigger={TOC.sectionName}>
@@ -146,7 +144,8 @@ const CollapseCard = ({
         </Collapsible>
       </div>
     );
-  } else if (name === "indication") {
+  }
+  if (name === 'indication') {
     return (
       <div className="spon-container" data-testid="indication-checkboxes">
         {indicationData.sectionContent &&
@@ -161,7 +160,8 @@ const CollapseCard = ({
           )}
       </div>
     );
-  } else if (name === "sponsor") {
+  }
+  if (name === 'sponsor') {
     return (
       <div className="spon-container" data-testid="sponsor-checkboxes">
         {sponsorData.sectionContent &&
@@ -176,7 +176,8 @@ const CollapseCard = ({
           )}
       </div>
     );
-  } else if (name === "phase") {
+  }
+  if (name === 'phase') {
     return (
       <div data-testid="phase-checkboxes">
         <Collapsible trigger="Phase">
@@ -184,9 +185,9 @@ const CollapseCard = ({
             <div
               style={{
                 height: 300,
-                justifyContent: "center",
-                alignItems: "center",
-                display: "flex",
+                justifyContent: 'center',
+                alignItems: 'center',
+                display: 'flex',
               }}
             >
               <Loader />
@@ -206,18 +207,19 @@ const CollapseCard = ({
               <div
                 style={{
                   height: 50,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  display: "flex",
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  display: 'flex',
                 }}
               >
-                <p style={{ padding: 10, textAlign: "center" }}></p>​
+                <p style={{ padding: 10, textAlign: 'center' }} />​
               </div>
             )}
         </Collapsible>
       </div>
     );
-  } else if (name === "document") {
+  }
+  if (name === 'document') {
     return (
       <div data-testid="document-checkboxes">
         <Collapsible trigger={documentStatus.sectionName}>
@@ -230,7 +232,8 @@ const CollapseCard = ({
         </Collapsible>
       </div>
     );
-  } else if (name === "qcStatus") {
+  }
+  if (name === 'qcStatus') {
     return (
       <div data-testid="qc-activity-checkboxes">
         <Collapsible trigger="QC Activity">
@@ -243,13 +246,14 @@ const CollapseCard = ({
         </Collapsible>
       </div>
     );
-  } else if (name === "date") {
+  }
+  if (name === 'date') {
     return (
       <span className="date-filter">
         <Collapsible
           trigger={dateSection.sectionName}
           classname="testing"
-          style={{ height: "550px", float: "left", width: "100%" }}
+          style={{ height: '550px', float: 'left', width: '100%' }}
         >
           <DateRangeCard
             section={dateSection}
@@ -275,6 +279,6 @@ const CollapseCard = ({
     );
   }
   return null;
-};
+}
 
 export default CollapseCard;

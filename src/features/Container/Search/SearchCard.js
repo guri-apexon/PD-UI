@@ -1,30 +1,30 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useState } from "react";
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
 
-import Table from "apollo-react/components/Table";
-import columns from "./Data/column.data";
-import Grid from "apollo-react/components/Grid";
-import Link from "apollo-react/components/Link";
-import Loader1 from "../../Components/Loader/Loader";
-import { userId } from "../../../store/userDetails";
-import { useSelector } from "react-redux";
-import cloneDeep from "lodash/cloneDeep";
-import { formatESDate } from "../../../utils/utilFunction";
-import { BASE_URL_8000, httpCall } from "../../../utils/api";
-import { toast } from "react-toastify";
-import Tooltip from "apollo-react/components/Tooltip";
-import Loader from "apollo-react/components/Loader";
-import FileDownload from "js-file-download";
-import { redaction } from "../../../AppConstant/AppConstant";
+import Table from 'apollo-react/components/Table';
+import Grid from 'apollo-react/components/Grid';
+import Link from 'apollo-react/components/Link';
+import { useSelector } from 'react-redux';
+import cloneDeep from 'lodash/cloneDeep';
+import { toast } from 'react-toastify';
+import Tooltip from 'apollo-react/components/Tooltip';
+import Loader from 'apollo-react/components/Loader';
+import FileDownload from 'js-file-download';
+import { BASE_URL_8000, httpCall } from '../../../utils/api';
+import { formatESDate } from '../../../utils/utilFunction';
+import { userId } from '../../../store/userDetails';
+import Loader1 from '../../Components/Loader/Loader';
+import columns from './Data/column.data';
+import { redaction } from '../../../AppConstant/AppConstant';
 
 const textLength = 24;
-const SearchCard = ({
+function SearchCard({
   data,
   compareTwoProtocol,
   selection,
   onViewAssociateProtocolClick,
   protocolSelected,
-}) => {
+}) {
   const [dataRow, setDataRow] = useState([]);
   const userId1 = useSelector(userId);
   const [loader, setLoader] = useState(false);
@@ -35,21 +35,20 @@ const SearchCard = ({
         return {
           __html: str.replace(
             redaction.text,
-            `<span class="blur">${redaction.text}</span>`
+            `<span class="blur">${redaction.text}</span>`,
           ),
         };
-      } else {
-        return {
-          __html: str,
-        };
       }
+      return {
+        __html: str,
+      };
     }
   };
 
   useEffect(() => {
-    let arrOfObj = cloneDeep(data.rows);
-    var result = arrOfObj.map(function (el) {
-      var o = Object.assign({}, el);
+    const arrOfObj = cloneDeep(data.rows);
+    const result = arrOfObj.map(function (el) {
+      const o = { ...el };
       o.protocolSelected = protocolSelected;
       return o;
     });
@@ -63,34 +62,30 @@ const SearchCard = ({
   const handleDownload = async (row) => {
     // console.log("UserID Required", userId1);
     setLoader(true);
-    let splitArr = row.path.split("\\");
+    const splitArr = row.path.split('\\');
     const fileName = splitArr[splitArr.length - 1];
     const config = {
       url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
-        row.path
+        row.path,
       )}&userId=${userId1.substring(1)}&protocol=${row.protocolNumber}`,
-      method: "GET",
-      responseType: "blob",
+      method: 'GET',
+      responseType: 'blob',
     };
     const resp = await httpCall(config);
     if (resp.success) {
       FileDownload(resp.data, fileName);
+    } else if (resp.message === 'No Access') {
+      toast.info('Access Provisioned to Primary Users only');
     } else {
-      if (resp.message === "No Access") {
-        toast.info("Access Provisioned to Primary Users only");
-      } else {
-        toast.error("Download Failed");
-      }
+      toast.error('Download Failed');
     }
     setLoader(false);
   };
   const redactionCheckRender = (value, testid) => {
     return value && value === redaction.text ? (
-      <>
-        <Tooltip variant="light" title={redaction.hoverText} placement="left">
-          <span className="blur">{value}</span>
-        </Tooltip>
-      </>
+      <Tooltip variant="light" title={redaction.hoverText} placement="left">
+        <span className="blur">{value}</span>
+      </Tooltip>
     ) : (
       <>
         {value && value.length > textLength ? (
@@ -112,21 +107,17 @@ const SearchCard = ({
     );
   };
   const handleDateRedaction = (value, testid) => {
-    if (testid === "date-value") {
+    if (testid === 'date-value') {
       // console.log("approval date", value);
     }
     return value && value === redaction.text ? (
-      <>
-        <Tooltip variant="light" title={redaction.hoverText} placement="left">
-          <span className="blur">{value}</span>
-        </Tooltip>
-      </>
+      <Tooltip variant="light" title={redaction.hoverText} placement="left">
+        <span className="blur">{value}</span>
+      </Tooltip>
     ) : (
-      <>
-        <p className="grid-item grid-key-value" data-testid={testid}>
-          {formatESDate(value)}
-        </p>
-      </>
+      <p className="grid-item grid-key-value" data-testid={testid}>
+        {formatESDate(value)}
+      </p>
     );
   };
   return (
@@ -139,33 +130,33 @@ const SearchCard = ({
             <p className="grid-item bold-class">Indication :</p>
           </Grid>
           <Grid md={6}>
-            {redactionCheckRender(data.indication, "indication-value")}
+            {redactionCheckRender(data.indication, 'indication-value')}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Sponsor :</p>
           </Grid>
           <Grid md={6}>
-            {redactionCheckRender(data.sponsor, "sponsor-value")}
+            {redactionCheckRender(data.sponsor, 'sponsor-value')}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">ProjectId / Opportunity :</p>
           </Grid>
           <Grid md={6}>
-            {redactionCheckRender(data.projectId, "projectid-value")}
+            {redactionCheckRender(data.projectId, 'projectid-value')}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Document Status :</p>
           </Grid>
           <Grid md={6}>
             <span className="text-capitalize">
-              {redactionCheckRender(data.documentStatus, "status-value")}
+              {redactionCheckRender(data.documentStatus, 'status-value')}
             </span>
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Version #:</p>
           </Grid>
           <Grid md={6}>
-            {redactionCheckRender(data.version, "version-value")}
+            {redactionCheckRender(data.version, 'version-value')}
           </Grid>
         </Grid>
         {/* ------------------------------------------------- */}
@@ -173,24 +164,24 @@ const SearchCard = ({
           <Grid md={6}>
             <p className="grid-item bold-class">Phase :</p>
           </Grid>
-          <Grid md={6}>{redactionCheckRender(data.phase, "phase-value")}</Grid>
+          <Grid md={6}>{redactionCheckRender(data.phase, 'phase-value')}</Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Molecule/Device :</p>
           </Grid>
           <Grid md={6}>
-            {redactionCheckRender(data.molecule, "molecule-value")}
+            {redactionCheckRender(data.molecule, 'molecule-value')}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Approval Date:</p>
           </Grid>
           <Grid md={6}>
-            {handleDateRedaction(data.approval_date, "date-value")}
+            {handleDateRedaction(data.approval_date, 'date-value')}
           </Grid>
           <Grid md={6}>
             <p className="grid-item bold-class">Upload Date :</p>
           </Grid>
           <Grid md={6}>
-            {handleDateRedaction(data.uploadDate, "upload-value")}
+            {handleDateRedaction(data.uploadDate, 'upload-value')}
             {/* {redactionCheckRender(
               data.uploadDate ? formatESDate(data.uploadDate) : "-",
               "upload-value"
@@ -205,10 +196,10 @@ const SearchCard = ({
               className="grid-item grid-key-value"
               data-testid="source-value"
               style={{
-                color: "#0138ff",
-                textDecoration: "underline",
-                cursor: "pointer",
-                whiteSpace: "normal",
+                color: '#0138ff',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                whiteSpace: 'normal',
               }}
               dangerouslySetInnerHTML={createFullMarkup(data.source)}
             />
@@ -224,7 +215,7 @@ const SearchCard = ({
             className="grid-item grid-key-value text-capitalize"
             data-testid="qc-activity-value"
           >
-            {redactionCheckRender(data.qcStatus, "qc-activity-value")}
+            {redactionCheckRender(data.qcStatus, 'qc-activity-value')}
           </p>
         </Grid>
         <Grid md={3}>
@@ -235,7 +226,7 @@ const SearchCard = ({
             className="grid-item grid-key-value text-capitalize"
             data-testid="qc-activity-value"
           >
-            {redactionCheckRender(data.uploadedBy, "uploadedBy-value")}
+            {redactionCheckRender(data.uploadedBy, 'uploadedBy-value')}
           </p>
         </Grid>
       </Grid>
@@ -252,19 +243,19 @@ const SearchCard = ({
       {/* <span onClick={()=> onViewAssociateProtocolClick(data)}> View </span> */}
       <div
         className={`${
-          data.viewAssociate ? "show-associate-prot" : "hide-associate"
+          data.viewAssociate ? 'show-associate-prot' : 'hide-associate'
         }`}
         style={{
-          display: data.viewAssociate ? "block" : "none",
+          display: data.viewAssociate ? 'block' : 'none',
         }}
       >
         {data && data.rowsLoading ? (
           <div
             style={{
               height: 100,
-              justifyContent: "center",
-              alignItems: "center",
-              display: "flex",
+              justifyContent: 'center',
+              alignItems: 'center',
+              display: 'flex',
             }}
           >
             <Loader1 />
@@ -278,7 +269,7 @@ const SearchCard = ({
                   ...row,
                   handleSelectRow,
                   key: row.id,
-                  selection: selection,
+                  selection,
                 }))}
                 hidePagination
               />
@@ -288,6 +279,6 @@ const SearchCard = ({
       </div>
     </div>
   );
-};
+}
 
 export default SearchCard;

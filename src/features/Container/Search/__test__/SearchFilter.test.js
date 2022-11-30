@@ -1,18 +1,17 @@
-import React from "react";
-import { render, fireEvent } from "../../../../test-utils/test-utils";
-import "@testing-library/jest-dom/extend-expect";
-import SearchResultSection from "../SearchResultSection";
-import { MemoryRouter } from "react-router-dom";
-import axios from "axios";
-import { filterChipObject } from "./data";
+import { MemoryRouter } from 'react-router-dom';
+import axios from 'axios';
+import { render, fireEvent } from '../../../../test-utils/test-utils';
+import '@testing-library/jest-dom/extend-expect';
+import SearchResultSection from '../SearchResultSection';
+import { filterChipObject } from './data';
 
-describe("Filter test of Search", () => {
+describe('Filter test of Search', () => {
   const mockDispatch = jest.fn();
-  jest.mock("react-redux", () => ({
+  jest.mock('react-redux', () => ({
     useSelector: jest.fn(),
     useDispatch: () => mockDispatch,
   }));
-  test("Should Render Search with filter section with Primary User", () => {
+  test('Should Render Search with filter section with Primary User', () => {
     const mockdeleteSearchInput = jest.fn();
     const mockonSearchChange = jest.fn();
     const mockonSortChange = jest.fn();
@@ -22,59 +21,59 @@ describe("Filter test of Search", () => {
     const mockSetDateRange = jest.fn();
     // const useDispatchSpy = jest.spyOn(redux, "useDispatch");
     // const mockDispatchFn = jest.fn();
-    jest.mock("react-router-dom", () => ({
-      ...jest.requireActual("react-router-dom"),
+    jest.mock('react-router-dom', () => ({
+      ...jest.requireActual('react-router-dom'),
       useHistory: () => ({
         push: mockHistoryPush,
       }),
     }));
+    // eslint-disable-next-line no-unused-vars
     const mockCallApi = jest
-      .spyOn(axios, "get")
+      .spyOn(axios, 'get')
       .mockImplementation(() => Promise.resolve({ data: 1 }));
-    console.log(mockCallApi);
-    let historymock = jest.fn();
+    const historymock = jest.fn();
     historymock.push = jest.fn();
-    let filterList = undefined;
-    let resultList = {
+    const filterList = undefined;
+    const resultList = {
       data: {
         ResponseCode: 200,
         count: 10,
         pageNo: 1,
-        sortField: "score",
+        sortField: 'score',
         total_count: 300,
         phases: [],
         sponsors: [],
         indications: [],
         data: [
           {
-            AiDocId: "a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe",
-            approvalDate: "",
+            AiDocId: 'a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe',
+            approvalDate: '',
             followed: false,
-            indication: "Adavosertib",
+            indication: 'Adavosertib',
             isActive: 1,
-            molecule: "Adavosertib",
-            phase: "I",
-            protocolDescription: "A Phase I, Openours",
-            protocolNumber: "D601HC00008",
+            molecule: 'Adavosertib',
+            phase: 'I',
+            protocolDescription: 'A Phase I, Openours',
+            protocolNumber: 'D601HC00008',
             rows: [],
             rowsLoading: true,
-            sponsor: "AstraZeneca",
+            sponsor: 'AstraZeneca',
           },
           {
-            AiDocId: "742053fb-db87-46e0-bed2-6c2ee8d94280",
-            approvalDate: "",
+            AiDocId: '742053fb-db87-46e0-bed2-6c2ee8d94280',
+            approvalDate: '',
             followed: false,
-            indication: "none",
+            indication: 'none',
             isActive: 1,
-            molecule: " Durvalumab (MEDI4736) and↵ tremelimumab",
-            phase: "III",
+            molecule: ' Durvalumab (MEDI4736) and↵ tremelimumab',
+            phase: 'III',
             protocolDescription:
-              "A Phase III, Randomized, Open-Label, Urothelial Cancer",
-            protocolNumber: "",
+              'A Phase III, Randomized, Open-Label, Urothelial Cancer',
+            protocolNumber: '',
             rows: [],
             rowsLoading: true,
-            sponsor: "Numerics word , Countries, Country (..",
-            uploadDate: "20210111023714",
+            sponsor: 'Numerics word , Countries, Country (..',
+            uploadDate: '20210111023714',
           },
         ],
       },
@@ -82,25 +81,25 @@ describe("Filter test of Search", () => {
       search: true,
       success: true,
     };
-    let sponsorData = {
-      sectionContent: [{ title: "sponsor1", id: 1 }],
+    const sponsorData = {
+      sectionContent: [{ title: 'sponsor1', id: 1 }],
       success: true,
     };
-    let indicationData = {
-      sectionContent: [{ title: "ind1", id: 1 }],
+    const indicationData = {
+      sectionContent: [{ title: 'ind1', id: 1 }],
       success: true,
     };
-    let phaseData = {
+    const phaseData = {
       sectionContent: [
         {
           id: 8,
-          title: "Phase 1b/2a",
+          title: 'Phase 1b/2a',
         },
       ],
       success: true,
     };
-    let searchInput = "advanced";
-    let searchQuery = {
+    const searchInput = 'advanced';
+    const searchQuery = {
       documentStatus: [],
       indication: [],
       phase: [],
@@ -131,28 +130,28 @@ describe("Filter test of Search", () => {
       </MemoryRouter>,
       {
         initialState: {},
-      }
+      },
     );
-    let sortby = container.getByTestId("sortby-container").children[1];
+    const sortby = container.getByTestId('sortby-container').children[1];
     fireEvent.click(sortby);
-    let item = container.getByTestId("sortby-container2");
+    const item = container.getByTestId('sortby-container2');
     // console.log("item.value", item.value);
     fireEvent.click(item);
     expect(item.value).toBe(2);
-    let card1 = container.getByTestId(
-      "searchListing-card-a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe"
+    const card1 = container.getByTestId(
+      'searchListing-card-a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe',
     );
     fireEvent.click(
-      card1.children[0].children[2].children[0].children[0].children[0]
+      card1.children[0].children[2].children[0].children[0].children[0],
     );
     // expect(mockCallApi).toHaveBeenCalledTimes(1);
-    let expandIcon = card1.children[1].children[0].children[0].children[1];
+    const expandIcon = card1.children[1].children[0].children[0].children[1];
     fireEvent.click(expandIcon);
-    let followToggle = card1.children[0].children[3].children[0].children[0];
+    const followToggle = card1.children[0].children[3].children[0].children[0];
     fireEvent.click(followToggle);
   });
 
-  test("Should Render Search with filter section with Non Primary User", () => {
+  test('Should Render Search with filter section with Non Primary User', () => {
     const mockdeleteSearchInput = jest.fn();
     const mockonSearchChange = jest.fn();
     const mockonSortChange = jest.fn();
@@ -162,59 +161,59 @@ describe("Filter test of Search", () => {
     const mockSetDateRange = jest.fn();
     // const useDispatchSpy = jest.spyOn(redux, "useDispatch");
     // const mockDispatchFn = jest.fn();
-    jest.mock("react-router-dom", () => ({
-      ...jest.requireActual("react-router-dom"),
+    jest.mock('react-router-dom', () => ({
+      ...jest.requireActual('react-router-dom'),
       useHistory: () => ({
         push: mockHistoryPush,
       }),
     }));
+    // eslint-disable-next-line no-unused-vars
     const mockCallApi = jest
-      .spyOn(axios, "get")
+      .spyOn(axios, 'get')
       .mockImplementation(() => Promise.resolve({ data: 0 }));
-    console.log(mockCallApi);
-    let historymock = jest.fn();
+    const historymock = jest.fn();
     historymock.push = jest.fn();
-    let filterList = undefined;
-    let resultList = {
+    const filterList = undefined;
+    const resultList = {
       data: {
         ResponseCode: 200,
         count: 10,
         pageNo: 1,
-        sortField: "score",
+        sortField: 'score',
         total_count: 300,
         phases: [],
         sponsors: [],
         indications: [],
         data: [
           {
-            AiDocId: "a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe",
-            approvalDate: "",
+            AiDocId: 'a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe',
+            approvalDate: '',
             followed: false,
-            indication: "Adavosertib",
+            indication: 'Adavosertib',
             isActive: 1,
-            molecule: "Adavosertib",
-            phase: "I",
-            protocolDescription: "A Phase I, Openours",
-            protocolNumber: "D601HC00008",
+            molecule: 'Adavosertib',
+            phase: 'I',
+            protocolDescription: 'A Phase I, Openours',
+            protocolNumber: 'D601HC00008',
             rows: [],
             rowsLoading: true,
-            sponsor: "AstraZeneca",
+            sponsor: 'AstraZeneca',
           },
           {
-            AiDocId: "742053fb-db87-46e0-bed2-6c2ee8d94280",
-            approvalDate: "",
+            AiDocId: '742053fb-db87-46e0-bed2-6c2ee8d94280',
+            approvalDate: '',
             followed: false,
-            indication: "none",
+            indication: 'none',
             isActive: 1,
-            molecule: " Durvalumab (MEDI4736) and↵ tremelimumab",
-            phase: "III",
+            molecule: ' Durvalumab (MEDI4736) and↵ tremelimumab',
+            phase: 'III',
             protocolDescription:
-              "A Phase III, Randomized, Open-Label, Urothelial Cancer",
-            protocolNumber: "",
+              'A Phase III, Randomized, Open-Label, Urothelial Cancer',
+            protocolNumber: '',
             rows: [],
             rowsLoading: true,
-            sponsor: "Numerics word , Countries, Country (..",
-            uploadDate: "20210111023714",
+            sponsor: 'Numerics word , Countries, Country (..',
+            uploadDate: '20210111023714',
           },
         ],
       },
@@ -222,25 +221,25 @@ describe("Filter test of Search", () => {
       search: true,
       success: true,
     };
-    let sponsorData = {
-      sectionContent: [{ title: "sponsor1", id: 1 }],
+    const sponsorData = {
+      sectionContent: [{ title: 'sponsor1', id: 1 }],
       success: true,
     };
-    let indicationData = {
-      sectionContent: [{ title: "ind1", id: 1 }],
+    const indicationData = {
+      sectionContent: [{ title: 'ind1', id: 1 }],
       success: true,
     };
-    let phaseData = {
+    const phaseData = {
       sectionContent: [
         {
           id: 8,
-          title: "Phase 1b/2a",
+          title: 'Phase 1b/2a',
         },
       ],
       success: true,
     };
-    let searchInput = "advanced";
-    let searchQuery = {
+    const searchInput = 'advanced';
+    const searchQuery = {
       documentStatus: [],
       indication: [],
       phase: [],
@@ -271,24 +270,24 @@ describe("Filter test of Search", () => {
       </MemoryRouter>,
       {
         initialState: {},
-      }
+      },
     );
-    let sortby = container.getByTestId("sortby-container").children[1];
+    const sortby = container.getByTestId('sortby-container').children[1];
     fireEvent.click(sortby);
-    let item = container.getByTestId("sortby-container2");
+    const item = container.getByTestId('sortby-container2');
     // console.log("item.value", item.value);
     fireEvent.click(item);
     expect(item.value).toBe(2);
-    let card1 = container.getByTestId(
-      "searchListing-card-a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe"
+    const card1 = container.getByTestId(
+      'searchListing-card-a35f977d-ac7d-4fe7-9974-0e3e1b4a61fe',
     );
     fireEvent.click(
-      card1.children[0].children[2].children[0].children[0].children[0]
+      card1.children[0].children[2].children[0].children[0].children[0],
     );
     // expect(mockCallApi).toHaveBeenCalledTimes(1);
-    let expandIcon = card1.children[1].children[0].children[0].children[1];
+    const expandIcon = card1.children[1].children[0].children[0].children[1];
     fireEvent.click(expandIcon);
-    let followToggle = card1.children[0].children[3].children[0].children[0];
+    const followToggle = card1.children[0].children[3].children[0].children[0];
     fireEvent.click(followToggle);
   });
 });

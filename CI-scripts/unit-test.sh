@@ -20,7 +20,7 @@ cp -R $PULL_LOCALION/* $DEPLOY_LOCATION/
 cd $DEPLOY_LOCATION
 
 # INSTALL dependencies
-npm install
+npm run pd:deps
 
 # Run Unit Test Cases
 if npm run test; then

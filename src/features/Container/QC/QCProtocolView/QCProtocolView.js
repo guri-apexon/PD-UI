@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import MenuItem from "apollo-react/components/MenuItem";
-import SelectButton from "apollo-react/components/SelectButton";
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import MenuItem from 'apollo-react/components/MenuItem';
+import SelectButton from 'apollo-react/components/SelectButton';
 
-import Upload from "apollo-react-icons/Upload";
-import Button from "apollo-react/components/Button";
-import Loader from "../../../Components/Loader/Loader";
-import { viewResult } from "../../Protocols/protocolSlice";
-import ProtocolViewClass from "../../Protocols/ProtocolViewClass";
-import { loader } from "../qcSlice";
+import Upload from 'apollo-react-icons/Upload';
+import Button from 'apollo-react/components/Button';
+import Loader from '../../../Components/Loader/Loader';
+import { viewResult } from '../../Protocols/protocolSlice';
+import ProtocolViewClass from '../../Protocols/ProtocolViewClass';
+import { loader } from '../qcSlice';
 
 function QCProtocolView({ protId, path, userType, protocolNumber }) {
   const dispatch = useDispatch();
@@ -17,11 +18,11 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
   const [selectedFile, setSelectedFile] = useState({});
   useEffect(() => {
     dispatch({
-      type: "GET_PROTOCOL_TOC_SAGA",
+      type: 'GET_PROTOCOL_TOC_SAGA',
       payload: {
-        endPoint: "protocol_data/",
+        endPoint: 'protocol_data/',
         id: protId,
-        user: "qc",
+        user: 'qc',
         protocol: protocolNumber,
       },
     });
@@ -37,22 +38,22 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
   /* istanbul ignore else */
   if (subSections.TOC && subSections.TOC.length) {
     listData.push({
-      section: "Table of Contents",
-      id: "TOC",
+      section: 'Table of Contents',
+      id: 'TOC',
       subSections: true,
     });
   }
   /* istanbul ignore else */
   if (subSections.SOA && subSections.SOA.length) {
     listData.push({
-      section: "Schedule of Assessments",
-      id: "SOA",
+      section: 'Schedule of Assessments',
+      id: 'SOA',
       subSections: true,
     });
   }
   /* istanbul ignore else */
   if (viewData.iqvdataSummary) {
-    listData.push({ section: "Summary", id: "SUM", subSections: false });
+    listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
   const onFileChange = (event) => {
     // Update the state
@@ -69,7 +70,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
     // Details of the uploaded file
     // console.log(selectedFile);
     dispatch({
-      type: "UPLOAD_PROTOCOL_QC_SAGA",
+      type: 'UPLOAD_PROTOCOL_QC_SAGA',
       payload: { data: selectedFile, id: protId },
     });
     setSelectedFile({});
@@ -79,9 +80,9 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
   };
 
   const onApprove = () => {
-    const approve = window.confirm("Are you sure you want to Approve?");
+    const approve = window.confirm('Are you sure you want to Approve?');
     if (approve) {
-      dispatch({ type: "APPROVE_QC_SAGA", payload: protId });
+      dispatch({ type: 'APPROVE_QC_SAGA', payload: protId });
     } else {
       // nothing
     }
@@ -89,19 +90,19 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
 
   const sendQc2ForApproval = () => {
     const qc2Approval = window.confirm(
-      "Are you sure you want to send Qc2 for approval?"
+      'Are you sure you want to send Qc2 for approval?',
     );
     if (qc2Approval) {
-      dispatch({ type: "SEND_QC2_APPROVAL_SAGA", payload: protId });
+      dispatch({ type: 'SEND_QC2_APPROVAL_SAGA', payload: protId });
     } else {
       // nothing
     }
   };
 
   const onReject = () => {
-    const reject = window.confirm("Are you sure you want to Reject?");
+    const reject = window.confirm('Are you sure you want to Reject?');
     if (reject) {
-      dispatch({ type: "REJECT_QC2_SAGA", payload: protId });
+      dispatch({ type: 'REJECT_QC2_SAGA', payload: protId });
     } else {
       // nothing
     }
@@ -115,12 +116,12 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
   };
 
   function downloadObjectAsJson(exportObj, exportName) {
-    let dataStr =
-      "data:text/json;charset=utf-8," +
-      encodeURIComponent(JSON.stringify(exportObj));
-    let downloadAnchorNode = document.createElement("a");
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
+      JSON.stringify(exportObj),
+    )}`;
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute('href', dataStr);
+    downloadAnchorNode.setAttribute('download', `${exportName}.json`);
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
@@ -171,16 +172,16 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
     return (
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
+          display: 'flex',
+          flexDirection: 'row',
           marginTop: 0,
         }}
       >
         <div
           style={{
-            display: "inline-block",
-            margin: "auto",
-            marginTop: "10%",
+            display: 'inline-block',
+            margin: 'auto',
+            marginTop: '10%',
           }}
         >
           <Loader />
@@ -193,16 +194,16 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
     return (
       <div
         style={{
-          display: "flex",
-          flexDirection: "row",
+          display: 'flex',
+          flexDirection: 'row',
           marginTop: 0,
         }}
       >
         <div
           style={{
-            display: "inline-block",
-            margin: "auto",
-            marginTop: "10%",
+            display: 'inline-block',
+            margin: 'auto',
+            marginTop: '10%',
           }}
         >
           {viewData.err}
@@ -213,7 +214,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
 
   return (
     <>
-      <div style={{ marginLeft: "26%", marginBottom: "5px" }}>
+      <div style={{ marginLeft: '26%', marginBottom: '5px' }}>
         <input
           type="file"
           data-testid="choose-file-upload"
@@ -240,11 +241,11 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
         <SelectButton
           onChange={handleChange}
           placeholder="Download"
-          style={{ marginRight: 10, float: "right" }}
+          style={{ marginRight: 10, float: 'right' }}
           data-testid="download-button"
         >
           <MenuItem data-testid="download-json-button" value="1">
-            {"Download JSON"}
+            Download JSON
           </MenuItem>
           {/* <MenuItem value="2">{"Download XLSX"}</MenuItem> */}
         </SelectButton>
@@ -254,7 +255,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
         data={subSections}
         listData={listData}
       />
-      <div style={{ marginLeft: "26%", marginTop: "5px" }}>
+      <div style={{ marginLeft: '26%', marginTop: '5px' }}>
         <Button
           variant="secondary"
           size="small"
@@ -264,7 +265,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
         >
           Approve
         </Button>
-        {userType === "QC1" ? (
+        {userType === 'QC1' ? (
           <Button
             variant="secondary"
             size="small"
@@ -275,7 +276,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
             Send QC2 Approval
           </Button>
         ) : null}
-        {userType === "QC2" ? (
+        {userType === 'QC2' ? (
           <Button
             variant="secondary"
             size="small"

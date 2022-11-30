@@ -1,32 +1,32 @@
-const ExcelJS = require("exceljs");
+const ExcelJS = require('exceljs');
 const {
   headerStyle,
   topHeaderStyle,
   topHeaderTextStyle,
   textColors,
-} = require("../constants/excelStyleConst");
-const { textType } = require("../constants/excelConst");
+} = require('../constants/excelStyleConst');
+const { textType } = require('../constants/excelConst');
 
 module.exports = function (app) {
-  app.all("/create-excel", (req, res) => {
+  app.all('/create-excel', (req, res) => {
     console.log(req.body);
 
     const reqBody = req.body;
     const compareData = reqBody.iqvdata;
 
-    //------------------------------------- Excel Create --------------------------------------
+    // ------------------------------------- Excel Create --------------------------------------
     const workbook = new ExcelJS.Workbook();
 
-    const sheet = workbook.addWorksheet("New Test Sheet", {
-      views: [{ showGridLines: false, state: "frozen", xSplit: 1, ySplit: 1 }],
+    const sheet = workbook.addWorksheet('New Test Sheet', {
+      views: [{ showGridLines: false, state: 'frozen', xSplit: 1, ySplit: 1 }],
     });
     sheet.columns = [
-      { header: reqBody.protocolNumber, key: "1", width: 70 },
-      { header: "", key: "2", width: 10 },
-      { header: reqBody.protocolNumber2, key: "3", width: 70 },
+      { header: reqBody.protocolNumber, key: '1', width: 70 },
+      { header: '', key: '2', width: 10 },
+      { header: reqBody.protocolNumber2, key: '3', width: 70 },
     ];
 
-    //---------------------------------- Add Data to excel ----------------------------------
+    // ---------------------------------- Add Data to excel ----------------------------------
     compareData.data.map((item) => {
       const itemTextType = item[2];
       const diff = item[3];
@@ -35,12 +35,12 @@ module.exports = function (app) {
       const columnText2 = item[5];
 
       // const diffArray = item[6];
-      //------------------------------ Header Style Handled -----------------------------
+      // ------------------------------ Header Style Handled -----------------------------
       if (itemTextType === textType.header) {
         if (diff === 2 || diff === 3) {
-          sheet.addRow("", "", "");
+          sheet.addRow('', '', '');
           sheet
-            .addRow([columnText1.toUpperCase(), "", columnText2.toUpperCase()])
+            .addRow([columnText1.toUpperCase(), '', columnText2.toUpperCase()])
             .eachCell((cell, i) => {
               cell.fill = headerStyle;
               if (i === 3) {
@@ -49,11 +49,11 @@ module.exports = function (app) {
                 };
               }
             });
-          sheet.addRow("", "", "");
+          sheet.addRow('', '', '');
         } else if (diff === 1) {
-          sheet.addRow("", "", "");
+          sheet.addRow('', '', '');
           sheet
-            .addRow([columnText1.toUpperCase(), "", columnText2.toUpperCase()])
+            .addRow([columnText1.toUpperCase(), '', columnText2.toUpperCase()])
             .eachCell((cell, i) => {
               cell.fill = headerStyle;
               if (i === 1) {
@@ -62,31 +62,31 @@ module.exports = function (app) {
                 };
               }
             });
-          sheet.addRow("", "", "");
+          sheet.addRow('', '', '');
         } else {
-          sheet.addRow("", "", "");
+          sheet.addRow('', '', '');
           sheet
-            .addRow([columnText1.toUpperCase(), "", columnText2.toUpperCase()])
+            .addRow([columnText1.toUpperCase(), '', columnText2.toUpperCase()])
             .eachCell((cell, i) => {
               cell.fill = headerStyle;
             });
-          sheet.addRow("", "", "");
+          sheet.addRow('', '', '');
         }
 
-        //---------------------------------- All Text Style ----------------------------------
+        // ---------------------------------- All Text Style ----------------------------------
       } else if (itemTextType === textType.text) {
-        console.log("----------------------------------------------");
+        console.log('----------------------------------------------');
         if (diff === 2) {
-          sheet.addRow([columnText1, "", columnText2]).eachCell((cell, i) => {
+          sheet.addRow([columnText1, '', columnText2]).eachCell((cell, i) => {
             if (i === 3) {
               const arrStr = handleHighlight(item, cell);
-              console.log("blue if");
-              let richTextArr = [];
+              console.log('blue if');
+              const richTextArr = [];
               for (let a = 0; a < arrStr.length; a++) {
                 if (a === 0 || a % 2 === 0) {
-                  console.log("even");
+                  console.log('even');
                   if (arrStr[a]) {
-                    let obj = {
+                    const obj = {
                       font: {
                         color: { argb: textColors.primary },
                       },
@@ -96,7 +96,7 @@ module.exports = function (app) {
                   }
                 } else if (a % 2 !== 0) {
                   if (arrStr[a]) {
-                    let obj = {
+                    const obj = {
                       font: {
                         color: { argb: textColors.updated },
                         bold: true,
@@ -114,12 +114,12 @@ module.exports = function (app) {
             }
             cell.alignment = {
               wrapText: true,
-              vertical: "middle",
-              horizontal: "left",
+              vertical: 'middle',
+              horizontal: 'left',
             };
           });
         } else if (diff === 3) {
-          sheet.addRow([columnText1, "", columnText2]).eachCell((cell, i) => {
+          sheet.addRow([columnText1, '', columnText2]).eachCell((cell, i) => {
             if (i === 3) {
               cell.font = {
                 color: { argb: textColors.updated },
@@ -128,12 +128,12 @@ module.exports = function (app) {
             }
             cell.alignment = {
               wrapText: true,
-              vertical: "middle",
-              horizontal: "left",
+              vertical: 'middle',
+              horizontal: 'left',
             };
           });
         } else if (diff === 1) {
-          sheet.addRow([columnText1, "", columnText2]).eachCell((cell, i) => {
+          sheet.addRow([columnText1, '', columnText2]).eachCell((cell, i) => {
             if (i === 1) {
               cell.font = {
                 color: { argb: textColors.deleted },
@@ -142,16 +142,16 @@ module.exports = function (app) {
             }
             cell.alignment = {
               wrapText: true,
-              vertical: "middle",
-              horizontal: "left",
+              vertical: 'middle',
+              horizontal: 'left',
             };
           });
         } else {
-          sheet.addRow([columnText1, "", columnText2]).eachCell((cell, i) => {
+          sheet.addRow([columnText1, '', columnText2]).eachCell((cell, i) => {
             cell.alignment = {
               wrapText: true,
-              vertical: "middle",
-              horizontal: "left",
+              vertical: 'middle',
+              horizontal: 'left',
             };
           });
         }
@@ -163,12 +163,12 @@ module.exports = function (app) {
       cell.fill = topHeaderStyle;
       cell.font = topHeaderTextStyle;
     });
-    let fileName = "FileName.xlsx";
+    const fileName = 'FileName.xlsx';
     res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
-    res.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+    res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
 
     workbook.xlsx.write(res).then(function () {
       res.end();
@@ -187,12 +187,12 @@ module.exports = function (app) {
 };
 
 function handleHighlight(item, cell) {
-  var str = item[5];
-  let arr = item[6];
-  let vv = [].concat(...arr);
+  const str = item[5];
+  const arr = item[6];
+  const vv = [].concat(...arr);
   let i = 0;
-  let str1 = vv.map((item) => {
-    let res = str.slice(i, item);
+  const str1 = vv.map((item) => {
+    const res = str.slice(i, item);
     i = item;
     return res;
   });

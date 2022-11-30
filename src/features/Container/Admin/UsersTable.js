@@ -1,36 +1,39 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import FilterIcon from "apollo-react-icons/Filter";
-import PlusIcon from "apollo-react-icons/Plus";
-import Button from "apollo-react/components/Button";
-import Table from "apollo-react/components/Table";
-import NewUser from "./NewUser";
+/* eslint-disable */
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import FilterIcon from 'apollo-react-icons/Filter';
+import PlusIcon from 'apollo-react-icons/Plus';
+import Button from 'apollo-react/components/Button';
+import Table from 'apollo-react/components/Table';
+import NewUser from './NewUser';
 
-import { setModalToggle } from "./adminSlice";
+import { setModalToggle } from './adminSlice';
 
-const CustomButtonHeader = ({ toggleFilters, setIsOpen }) => (
-  <div data-testid="user-action-buttons">
-    <Button
-      size="small"
-      variant="primary"
-      icon={PlusIcon}
-      onClick={() => setIsOpen(true)}
-      style={{ marginRight: 8 }}
-    >
-      New User
-    </Button>
-    <Button
-      size="small"
-      variant="secondary"
-      icon={FilterIcon}
-      onClick={toggleFilters}
-    >
-      {"Filter"}
-    </Button>
-  </div>
-);
+function CustomButtonHeader({ toggleFilters, setIsOpen }) {
+  return (
+    <div data-testid="user-action-buttons">
+      <Button
+        size="small"
+        variant="primary"
+        icon={PlusIcon}
+        onClick={() => setIsOpen(true)}
+        style={{ marginRight: 8 }}
+      >
+        New User
+      </Button>
+      <Button
+        size="small"
+        variant="secondary"
+        icon={FilterIcon}
+        onClick={toggleFilters}
+      >
+        Filter
+      </Button>
+    </div>
+  );
+}
 
-const UsersTable = ({ initialRows, columns }) => {
+function UsersTable({ initialRows, columns }) {
   const dispatch = useDispatch();
   const [editedRow, setEditedRow] = useState({});
 
@@ -42,11 +45,11 @@ const UsersTable = ({ initialRows, columns }) => {
     dispatch(setModalToggle(value));
   };
   const onRowSave = () => {
-    let confirmBox = window.confirm(
-      "Do you want to save the modified details?"
+    const confirmBox = window.confirm(
+      'Do you want to save the modified details?',
     );
     if (confirmBox) {
-      dispatch({ type: "UPDATE_USER_SAGA", payload: editedRow });
+      dispatch({ type: 'UPDATE_USER_SAGA', payload: editedRow });
       setEditedRow({});
     } else {
       setEditedRow({});
@@ -62,9 +65,11 @@ const UsersTable = ({ initialRows, columns }) => {
   };
 
   const onDelete = (userId) => {
-    let confirmBox = window.confirm("Do you want to delete the Selected User?");
+    const confirmBox = window.confirm(
+      'Do you want to delete the Selected User?',
+    );
     if (confirmBox) {
-      dispatch({ type: "DELETE_USER_SAGA", payload: userId });
+      dispatch({ type: 'DELETE_USER_SAGA', payload: userId });
     }
   };
 
@@ -88,7 +93,7 @@ const UsersTable = ({ initialRows, columns }) => {
         rowsPerPageOptions={[5, 10, 15]}
         tablePaginationProps={{
           labelDisplayedRows: ({ from, to, count }) =>
-            `${count === 1 ? "User" : "Users"} ${from}-${to} of ${count}`,
+            `${count === 1 ? 'User' : 'Users'} ${from}-${to} of ${count}`,
           truncate: true,
         }}
         CustomHeader={(props) => (
@@ -100,6 +105,6 @@ const UsersTable = ({ initialRows, columns }) => {
       <NewUser setIsOpen={setIsOpen} />
     </div>
   );
-};
+}
 
 export default UsersTable;

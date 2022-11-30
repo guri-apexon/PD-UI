@@ -1,13 +1,13 @@
-/* istanbul ignore file */
-import React from "react";
-import Card from "apollo-react/components/Card";
+/* eslint-disable */
+import React from 'react';
+import Card from 'apollo-react/components/Card';
 
-const CompareCard = (props) => {
+function CompareCard(props) {
   return (
     <div className="compare-card">
       <Card
         style={{
-          width: "98%",
+          width: '98%',
           float: props.float,
         }}
       >
@@ -60,6 +60,6 @@ const CompareCard = (props) => {
       </Card>
     </div>
   );
-};
+}
 
 export default CompareCard;

@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const dashboardSlice = createSlice({
-  name: "dashboard",
+  name: 'dashboard',
   initialState: {
     protocols: [],
     tableError: false,

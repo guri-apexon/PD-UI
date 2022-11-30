@@ -1,38 +1,37 @@
-import React from "react";
-import cloneDeep from "lodash/cloneDeep";
-import isEmpty from "lodash/isEmpty";
-import SearchListingSection from "./SearchListingSection";
-import SearchIcon from "apollo-react-icons/Search";
-import Button from "apollo-react/components/Button";
-import FilterSection from "./FilterSection";
-import MenuItem from "apollo-react/components/MenuItem";
-import SelectButton from "apollo-react/components/SelectButton";
-import AlignJustify from "apollo-react-icons/AlignJustify";
-import Chip from "apollo-react/components/Chip";
-import Grid from "apollo-react/components/Grid";
-import Pagination from "apollo-react/components/Pagination";
-import NoResultFound from "../../Components/NoResultFound";
+import React from 'react';
+import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
+import SearchIcon from 'apollo-react-icons/Search';
+import Button from 'apollo-react/components/Button';
+import MenuItem from 'apollo-react/components/MenuItem';
+import SelectButton from 'apollo-react/components/SelectButton';
+import AlignJustify from 'apollo-react-icons/AlignJustify';
+import Chip from 'apollo-react/components/Chip';
+import Grid from 'apollo-react/components/Grid';
+import Pagination from 'apollo-react/components/Pagination';
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
+import NoResultFound from '../../Components/NoResultFound';
 
-import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
+import { SORT_DROPDOWN } from '../../../AppConstant/AppConstant';
 
-import Loader from "../../Components/Loader/Loader";
-import { connect } from "react-redux";
-import { BASE_URL_8000, httpCall } from "../../../utils/api";
-import { toast } from "react-toastify";
-import FilterChip from "./FilterChips";
+import Loader from '../../Components/Loader/Loader';
+import { BASE_URL_8000, httpCall } from '../../../utils/api';
+import FilterSection from './FilterSection';
+import SearchListingSection from './SearchListingSection';
+import FilterChip from './FilterChips';
 
+/* eslint-disable */
 class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seachValue: [],
       defaultExpand: false,
-      accID: "",
       accordionObj: {},
       resultListData: { loader: null },
-      sortValue: "1",
     };
   }
+
   static getDerivedStateFromProps(props, state) {
     if (
       isEmpty(state.accordionObj) ||
@@ -40,7 +39,7 @@ class SearchPanel extends React.Component {
       props.resultList !== state.resultListData
     ) {
       let defaultValue = false;
-      //For resetting ExpandAll button when all are expanded and Search button is click
+      // For resetting ExpandAll button when all are expanded and Search button is click
       if (
         state.defaultExpand === true &&
         props.resultList &&
@@ -48,7 +47,7 @@ class SearchPanel extends React.Component {
         props.resultList.data.data &&
         props.resultList.data.data.length > 0
       ) {
-        let defaultVal = props.resultList.data.data.filter((value) => {
+        const defaultVal = props.resultList.data.data.filter((value) => {
           return value.expanded && value.expanded === true;
         });
         if (defaultVal.length > 0) {
@@ -57,13 +56,13 @@ class SearchPanel extends React.Component {
           defaultValue = false;
         }
       }
-      let result =
+      const result =
         props.resultList && props.resultList.data && props.resultList.data.data
           ? props.resultList.data.data
           : [];
-      let arr = [];
+      const arr = [];
       for (let i = 0; i < result.length; i++) {
-        let obj = cloneDeep(result[i]);
+        const obj = cloneDeep(result[i]);
         obj.expanded = result[i].expanded ? result[i].expanded : false;
         obj.id = result[i].AiDocId;
         // let obj = {
@@ -81,12 +80,14 @@ class SearchPanel extends React.Component {
     }
     return null;
   }
+
   componentDidMount() {}
+
   setExpanded = (id, obj, data) => {
     const { accordionObj } = this.state;
 
-    let accObj = cloneDeep(accordionObj);
-    let foundIndex = accObj.findIndex((obj) => obj.id === id);
+    const accObj = cloneDeep(accordionObj);
+    const foundIndex = accObj.findIndex((obj) => obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
     if (accObj[foundIndex].expanded === false) {
       accObj[foundIndex].viewAssociate = false;
@@ -102,10 +103,11 @@ class SearchPanel extends React.Component {
 
   sortChange = (value) => {
     const { onSortChange } = this.props;
-    let filterValue = SORT_DROPDOWN.filter((item) => item.id === value);
+    const filterValue = SORT_DROPDOWN.filter((item) => item.id === value);
     value && onSortChange(filterValue[0], value);
     // this.setState({ sortValue: value.id });
   };
+
   onExpandAllClick = () => {
     const { accordionObj, defaultExpand } = this.state;
     const { updateSearchResult, resultList } = this.props;
@@ -115,8 +117,8 @@ class SearchPanel extends React.Component {
     } else {
       tempDefault = false;
     }
-    let arr = accordionObj.map((item) => {
-      let temp = cloneDeep(item);
+    const arr = accordionObj.map((item) => {
+      const temp = cloneDeep(item);
       temp.expanded = tempDefault;
       temp.viewAssociate = tempDefault === false ? false : temp.viewAssociate;
       return temp;
@@ -142,6 +144,7 @@ class SearchPanel extends React.Component {
 
     onSearchQuery(list, identifier);
   };
+
   clearAllCheckbox = () => {
     // this.state["searchValue"] = [];
     // this.setState({ searchValue: [] });
@@ -155,6 +158,7 @@ class SearchPanel extends React.Component {
 
     // window.location.reload();
   };
+
   // onPageChange= (data, value)=>{
   //   const {onSetPage}= this.props;
   //   onSetPage(data, value)
@@ -163,12 +167,13 @@ class SearchPanel extends React.Component {
     const { onSetPage } = this.props;
     onSetPage(value);
   };
+
   handleFollow = async (e, checked, protocol) => {
     const { userDetails } = this.props;
     const id = userDetails.userId;
     const { accordionObj } = this.state;
-    let accObj = cloneDeep(accordionObj);
-    let newObj = accObj.map((obj) => {
+    const accObj = cloneDeep(accordionObj);
+    const newObj = accObj.map((obj) => {
       if (
         obj.protocolNumber &&
         obj.protocolNumber.toLowerCase() ===
@@ -176,13 +181,12 @@ class SearchPanel extends React.Component {
       ) {
         // if (obj.protocolNumber && (obj.protocolNumber === protocol.protocolNumber)) {
         return { ...obj, followed: !obj.followed };
-      } else {
-        return obj;
       }
+      return obj;
     });
     const Config = {
       url: `${BASE_URL_8000}/api/follow_protocol/`,
-      method: "POST",
+      method: 'POST',
       data: {
         userId: id.substring(1),
         protocol: protocol.protocolNumber,
@@ -199,7 +203,7 @@ class SearchPanel extends React.Component {
         this.props.updateAlerts(id.substring(1));
       }
     } catch (err) {
-      toast.error("Something Went Wrong");
+      toast.error('Something Went Wrong');
     }
   };
 
@@ -358,21 +362,21 @@ class SearchPanel extends React.Component {
                 <div className="page-count">
                   {accordionObj.length > 0 ? (
                     <span>
-                      Showing {page * 10 + 1} -{" "}
+                      Showing {page * 10 + 1} -{' '}
                       {page * 10 + 10 < resultList.data.total_count
                         ? page * 10 + 10
-                        : resultList.data.total_count}{" "}
-                      of{" "}
+                        : resultList.data.total_count}{' '}
+                      of{' '}
                       {resultList &&
                         resultList.data &&
-                        resultList.data.total_count}{" "}
+                        resultList.data.total_count}{' '}
                     </span>
                   ) : (
                     <span>Showing 0 - 0 of 0</span>
                   )}
                 </div>
                 <div className="search-icon">
-                  <SearchIcon style={{ color: "#0557d5" }} size="small" />
+                  <SearchIcon style={{ color: '#0557d5' }} size="small" />
                 </div>
               </div>
               {accordionObj.length > 0 && (
@@ -402,26 +406,24 @@ class SearchPanel extends React.Component {
                     className="expand-all"
                     onClick={() => this.onExpandAllClick()}
                   >
-                    <AlignJustify style={{ color: "blue" }} size="small" />
+                    <AlignJustify style={{ color: 'blue' }} size="small" />
                     <span>
-                      {!defaultExpand ? "Expand All" : "Collapse All"}
+                      {!defaultExpand ? 'Expand All' : 'Collapse All'}
                     </span>
                   </div>
                 </>
               )}
-              {
-                <div id="chip" className="chip">
-                  {this.props.searchInput && (
-                    <Chip
-                      color="white"
-                      label={this.props["searchInput"]}
-                      value={this.props["searchInput"]}
-                      onDelete={(e) => this.props.deleteSearchInput(e)}
-                      size={"small"}
-                    />
-                  )}
-                </div>
-              }
+              <div id="chip" className="chip">
+                {this.props.searchInput && (
+                  <Chip
+                    color="white"
+                    label={this.props.searchInput}
+                    value={this.props.searchInput}
+                    onDelete={(e) => this.props.deleteSearchInput(e)}
+                    size="small"
+                  />
+                )}
+              </div>
             </div>
             <div className="width100 ">
               {!resultList.loader &&
@@ -454,9 +456,9 @@ class SearchPanel extends React.Component {
                         <div
                           style={{
                             height: 400,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            display: "flex",
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            display: 'flex',
                           }}
                         >
                           <Loader />
@@ -469,7 +471,7 @@ class SearchPanel extends React.Component {
                 resultList.success &&
                 accordionObj.length !== 0 && (
                   <div className="search-pagination">
-                    {" "}
+                    {' '}
                     <Pagination
                       count={
                         resultList &&
@@ -501,13 +503,13 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateAssociateProtocol: (data, obj) =>
       dispatch({
-        type: "UPDATE_SEARCH_ASSOCIATED_PROTOCOLS",
+        type: 'UPDATE_SEARCH_ASSOCIATED_PROTOCOLS',
         payload: { data, obj },
       }),
     updateSearchResult: (obj) =>
-      dispatch({ type: "UPDATE_SEARCH_RESULT", payload: obj }),
+      dispatch({ type: 'UPDATE_SEARCH_RESULT', payload: obj }),
     updateAlerts: (id) =>
-      dispatch({ type: "GET_NOTIFICATION_SAGA", payload: id }),
+      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: id }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);

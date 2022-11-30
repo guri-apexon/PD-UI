@@ -1,15 +1,14 @@
-import React from "react";
 import {
   render,
   fireEvent,
   screen,
   // waitFor,
-} from "../../../../test-utils/test-utils";
-import "@testing-library/jest-dom/extend-expect";
+} from '../../../../test-utils/test-utils';
+import '@testing-library/jest-dom/extend-expect';
 
-import BulkMap from "../BulkMap";
+import BulkMap from '../BulkMap';
 
-describe("BulkMap Screen", () => {
+describe('BulkMap Screen', () => {
   const mockState = {
     users: [],
     roles: [],
@@ -24,12 +23,12 @@ describe("BulkMap Screen", () => {
       userRole: null,
     },
     modalToggle: true,
-    newUserError: "",
+    newUserError: '',
     bulkMapResponse: [],
-    bulkMapError: "",
+    bulkMapError: '',
   };
 
-  test("should Open the model", () => {
+  test('should Open the model', () => {
     const data = { ...mockState };
     data.modalToggle = false;
     render(<BulkMap />, {
@@ -37,41 +36,41 @@ describe("BulkMap Screen", () => {
         admin: mockState,
       },
     });
-    fireEvent.click(screen.getByText("Bulk Map"));
+    fireEvent.click(screen.getByText('Bulk Map'));
   });
 
-  test("should close BulkMap screen", () => {
+  test('should close BulkMap screen', () => {
     render(<BulkMap />, {
       initialState: {
         admin: mockState,
       },
     });
-    fireEvent.click(screen.getByText("Bulk Map"));
-    fireEvent.click(screen.getByText("Cancel"));
+    fireEvent.click(screen.getByText('Bulk Map'));
+    fireEvent.click(screen.getByText('Cancel'));
   });
 
-  test("should throw error when try to upload files other than excel ", () => {
+  test('should throw error when try to upload files other than excel ', () => {
     render(<BulkMap />, {
       initialState: {
         admin: mockState,
       },
     });
-    fireEvent.click(screen.getByText("Bulk Map"));
-    fireEvent.click(screen.getByText("Upload"));
+    fireEvent.click(screen.getByText('Bulk Map'));
+    fireEvent.click(screen.getByText('Upload'));
   });
 
-  test("should upload BulkMap screen Error", async () => {
-    const file = new File(["(⌐□_□)"], "hello.pdf", {
-      type: "image/pdf",
+  test('should upload BulkMap screen Error', async () => {
+    const file = new File(['(⌐□_□)'], 'hello.pdf', {
+      type: 'image/pdf',
     });
     render(<BulkMap />, {
       initialState: {
         admin: mockState,
       },
     });
-    fireEvent.click(screen.getByText("Bulk Map"));
+    fireEvent.click(screen.getByText('Bulk Map'));
     // get the upload button
-    let uploader = screen.getByTestId("file-upload").children[0].children[0];
+    const uploader = screen.getByTestId('file-upload').children[0].children[0];
     // simulate ulpoad event and wait until finish
     // await waitFor(() =>
     //   fireEvent.change(uploader, {
@@ -81,21 +80,21 @@ describe("BulkMap Screen", () => {
     fireEvent.change(uploader, {
       target: { files: [file] },
     });
-    fireEvent.click(screen.getByText("Upload"));
+    fireEvent.click(screen.getByText('Upload'));
   });
 
-  test("should upload BulkMap screen", async () => {
-    const file = new File(["(⌐□_□)"], "hello.xlsx", {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  test('should upload BulkMap screen', async () => {
+    const file = new File(['(⌐□_□)'], 'hello.xlsx', {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     });
     render(<BulkMap />, {
       initialState: {
         admin: mockState,
       },
     });
-    fireEvent.click(screen.getByText("Bulk Map"));
+    fireEvent.click(screen.getByText('Bulk Map'));
     // get the upload button
-    let uploader = screen.getByTestId("file-upload").children[0].children[0];
+    const uploader = screen.getByTestId('file-upload').children[0].children[0];
     // simulate ulpoad event and wait until finish
     // await waitFor(() =>
     //   fireEvent.change(uploader, {
@@ -105,17 +104,17 @@ describe("BulkMap Screen", () => {
     fireEvent.change(uploader, {
       target: { files: [file] },
     });
-    fireEvent.click(screen.getByText("Upload"));
+    fireEvent.click(screen.getByText('Upload'));
   });
 
-  test("should Open the model and show resp error", () => {
+  test('should Open the model and show resp error', () => {
     const data = { ...mockState };
-    data.bulkMapResponse = ["Uploaded with some success"];
+    data.bulkMapResponse = ['Uploaded with some success'];
     render(<BulkMap />, {
       initialState: {
         admin: mockState,
       },
     });
-    fireEvent.click(screen.getByText("Bulk Map"));
+    fireEvent.click(screen.getByText('Bulk Map'));
   });
 });

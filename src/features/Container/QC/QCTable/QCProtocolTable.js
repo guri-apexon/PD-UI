@@ -1,8 +1,9 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { qcProtocols, qcProtocolsError, tableLoader } from "../qcSlice";
+/* eslint-disable */
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { qcProtocols, qcProtocolsError, tableLoader } from '../qcSlice';
 // import ProtocolTableComp from "../../../Components/QC/QCProtocolTable";
-import ProtocolTableComp from "../../../Components/Dashboard/QCTable";
+import ProtocolTableComp from '../../../Components/Dashboard/QCTable';
 
 function ProtocolTable({ handleProtocolClick }) {
   // const dispatch = useDispatch();
@@ -20,10 +21,10 @@ function ProtocolTable({ handleProtocolClick }) {
           }
           isLoading={loader}
           pageRows={
-            protocolData && protocolData.length > 0 ? [10, 20, 30, "All"] : []
+            protocolData && protocolData.length > 0 ? [10, 20, 30, 'All'] : []
           }
           handleProtocolClick={handleProtocolClick}
-          screen={"QC"}
+          screen="QC"
           maxHeight={600}
           defaultRows={10}
         />

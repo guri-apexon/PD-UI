@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import TextField from "apollo-react/components/TextField";
-import cloneDeep from "lodash/cloneDeep";
-import "./CustomDropdown.scss";
-const CustomDropdown = ({
+/* eslint-disable */
+import { useState, useEffect, useRef } from 'react';
+import TextField from 'apollo-react/components/TextField';
+import cloneDeep from 'lodash/cloneDeep';
+import './CustomDropdown.scss';
+
+function CustomDropdown({
   label,
   placeholder,
   fullWidth,
@@ -17,15 +19,15 @@ const CustomDropdown = ({
   fieldType,
   fieldName,
   insertField,
-}) => {
+}) {
   const [value, setValue] = useState({
-    label: "",
+    label: '',
   });
   const buttonRef = useRef(null);
   const [blur, setBlur] = useState(false);
   const [list, setList] = useState(source);
   const [subStringExist, SetSubStringExist] = useState(false);
-  const [expandClass, setExpandClass] = useState("");
+  const [expandClass, setExpandClass] = useState('');
   const textInputRef = useRef(null);
 
   useEffect(() => {
@@ -35,14 +37,12 @@ const CustomDropdown = ({
         formValue &&
         formValue.label !== buttonRef.current.innerText
       ) {
-        onChange(fieldName, "", fieldType, { label: "" });
-        onBlur(fieldName, "", fieldType);
+        onChange(fieldName, '', fieldType, { label: '' });
+        onBlur(fieldName, '', fieldType);
+      } else if (formValue && formValue.label !== value.label) {
+        onBlur(fieldName, '', fieldType);
       } else {
-        if (formValue && formValue.label !== value.label) {
-          onBlur(fieldName, "", fieldType);
-        } else {
-          onBlur(fieldName, value.label, fieldType);
-        }
+        onBlur(fieldName, value.label, fieldType);
       }
     }
     setBlur(false);
@@ -54,27 +54,27 @@ const CustomDropdown = ({
   }, [source]);
 
   const getModifyString = (value) => {
-    let regConstant = ["(", ")", "+", "[", "]", "*", "?", "|", ".", "$"];
+    const regConstant = ['(', ')', '+', '[', ']', '*', '?', '|', '.', '$'];
     return value
-      .split("")
+      .split('')
       .map((val) => {
         if (regConstant.includes(val)) {
           return `\\${val}`;
         }
         return val;
       })
-      .join("");
+      .join('');
   };
 
   const onTextFieldChange = (id, e, type) => {
-    let customListTemp = cloneDeep(source);
-    let str = getModifyString(e.target.value);
-    let subStr = new RegExp(`^${str}$`, "i");
+    const customListTemp = cloneDeep(source);
+    const str = getModifyString(e.target.value);
+    const subStr = new RegExp(`^${str}$`, 'i');
     const filteredList = customListTemp.filter((item) => {
-      let reg = new RegExp(`^${str}[a-z0-9 ]*$`, "i");
+      const reg = new RegExp(`^${str}[a-z0-9 ]*$`, 'i');
       return item.label.toLowerCase().match(reg);
     });
-    let substring = customListTemp.filter((item) => {
+    const substring = customListTemp.filter((item) => {
       return item.label.toLowerCase().match(subStr);
     });
     if (substring.length === 0) {
@@ -82,12 +82,12 @@ const CustomDropdown = ({
     } else {
       SetSubStringExist(false);
     }
-    let tempvalue = {
+    const tempvalue = {
       label: e.target.value,
     };
     setValue(tempvalue);
     setList(filteredList);
-    if (e.target.value === "") {
+    if (e.target.value === '') {
       // setting onblur to true when text is cut,so that error should display as field required
       onChange(fieldName, e, fieldType, tempvalue);
       setBlur(true);
@@ -102,30 +102,29 @@ const CustomDropdown = ({
       textInputRef.current &&
       textInputRef.current.contains(event.target)
     ) {
-      return;
     } else {
-      setExpandClass("");
+      setExpandClass('');
       setBlur(true);
     }
   };
 
   const onCustomClick = () => {
-    setExpandClass("is-expanded");
-    document.addEventListener("click", handleOutsideClick, true);
+    setExpandClass('is-expanded');
+    document.addEventListener('click', handleOutsideClick, true);
   };
 
   const onClickAdd = (e) => {
-    let tempValue = {
+    const tempValue = {
       label: value.label,
       [insertField]: value.label,
     };
-    onChange(fieldName, "", fieldType, tempValue);
-    setExpandClass("");
+    onChange(fieldName, '', fieldType, tempValue);
+    setExpandClass('');
   };
   const onListItemClick = (e, item) => {
     setValue(item);
     onChange(fieldName, e, fieldType, item);
-    setExpandClass("");
+    setExpandClass('');
   };
   return (
     <div
@@ -144,22 +143,20 @@ const CustomDropdown = ({
           helperText={helperText}
           error={error}
           required={required}
-          onChange={(e) => onTextFieldChange(id, e, "Textbox")}
+          onChange={(e) => onTextFieldChange(id, e, 'Textbox')}
           onClick={(e) => onCustomClick()}
         />
         <div
-          className={`custom-dropdown-list ${error && "adjust-margin"}`}
+          className={`custom-dropdown-list ${error && 'adjust-margin'}`}
           data-testid="custom-dropdown-list-customadd"
         >
           {list && list.length > 0 && subStringExist && value.label && (
-            <>
-              <p className="custom-list-item">
-                {value.label}
-                <span className="float-right" onClick={(e) => onClickAdd(e)}>
-                  Add
-                </span>
-              </p>
-            </>
+            <p className="custom-list-item">
+              {value.label}
+              <span className="float-right" onClick={(e) => onClickAdd(e)}>
+                Add
+              </span>
+            </p>
           )}
           {list && list.length > 0 ? (
             list.map((item, index) => (
@@ -191,6 +188,6 @@ const CustomDropdown = ({
       </div>
     </div>
   );
-};
+}
 
 export default CustomDropdown;

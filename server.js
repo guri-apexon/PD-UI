@@ -1,86 +1,88 @@
-const express = require("express");
-const cookieParser = require("cookie-parser");
-const axios = require("axios");
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const axios = require('axios');
 // const fs = require("fs");
-const path = require("path");
+const path = require('path');
+
 const app = express();
-const cors = require("cors");
-const https = require("https");
-const session = require("express-session");
-const jwt_decode = require("jwt-decode");
-const dotenv = require("dotenv");
+const cors = require('cors');
+const https = require('https');
+const session = require('express-session');
+const jwt_decode = require('jwt-decode');
+const dotenv = require('dotenv');
+
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 app.use(cookieParser());
 app.use(cors());
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-app.use(express.static(path.join(__dirname, "build")));
-app.use(express.static(path.join(__dirname, "protocols")));
-app.use(express.static(path.join(__dirname, "compare_csv")));
+app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'protocols')));
+app.use(express.static(path.join(__dirname, 'compare_csv')));
 
-let baseUrlElastic = "";
-let baseUrlSSO = "";
-let access_token = "";
-let refresh_token = "";
+let baseUrlElastic = '';
+let baseUrlSSO = '';
+let access_token = '';
+let refresh_token = '';
 function authenticateUser(user, password) {
-  var token = user + ":" + password;
-  var hash = Buffer.from(token).toString("base64");
+  const token = `${user}:${password}`;
+  const hash = Buffer.from(token).toString('base64');
 
-  return "Basic " + hash;
+  return `Basic ${hash}`;
 }
 console.log(process.env.NODE_ENV);
 switch (process.env.NODE_ENV) {
-  case "dev":
+  case 'dev':
     baseUrlElastic = process.env.ELASTIC_DEV_URL;
     baseUrlSSO = process.env.CIMS_DEV_URL;
-    access_token = "access_token_dev";
-    refresh_token = "refresh_token_dev";
+    access_token = 'access_token_dev';
+    refresh_token = 'refresh_token_dev';
     break;
-  case "test":
+  case 'test':
     baseUrlElastic = process.env.ELASTIC_TEST_URL;
     baseUrlSSO = process.env.CIMS_TEST_URL;
-    access_token = "access_token_test";
-    refresh_token = "refresh_token_test";
+    access_token = 'access_token_test';
+    refresh_token = 'refresh_token_test';
     break;
-  case "svt":
+  case 'svt':
     baseUrlElastic = process.env.ELASTIC_SVT_URL;
     baseUrlSSO = process.env.CIMS_SVT_URL;
-    access_token = "access_token_svt";
-    refresh_token = "refresh_token_svt";
+    access_token = 'access_token_svt';
+    refresh_token = 'refresh_token_svt';
     break;
-  case "uat":
+  case 'uat':
     baseUrlElastic = process.env.ELASTIC_UAT_URL;
     baseUrlSSO = process.env.CIMS_UAT_URL;
-    access_token = "access_token_uat";
-    refresh_token = "refresh_token_uat";
+    access_token = 'access_token_uat';
+    refresh_token = 'refresh_token_uat';
     break;
-  case "uat1":
+  case 'uat1':
     baseUrlElastic = process.env.ELASTIC_UAT1_URL;
     baseUrlSSO = process.env.CIMS_UAT1_URL;
-    access_token = "access_token_uat1";
-    refresh_token = "refresh_token_uat1";
+    access_token = 'access_token_uat1';
+    refresh_token = 'refresh_token_uat1';
     break;
-  case "prod":
+  case 'prod':
     baseUrlElastic = process.env.ELASTIC_PROD_URL;
     baseUrlSSO = process.env.CIMS_PROD_URL;
-    access_token = "access_token";
-    refresh_token = "refresh_token";
+    access_token = 'access_token';
+    refresh_token = 'refresh_token';
     break;
   default:
     baseUrlElastic = process.env.ELASTIC_DEV_URL;
     baseUrlSSO = process.env.CIMS_DEV_URL;
-    access_token = "access_token_dev";
-    refresh_token = "refresh_token_dev";
+    access_token = 'access_token_dev';
+    refresh_token = 'refresh_token_dev';
 }
-console.log("baseUrlElastic", baseUrlElastic);
-console.log("baseUrlSSO", baseUrlSSO);
+console.log('baseUrlElastic', baseUrlElastic);
+console.log('baseUrlSSO', baseUrlSSO);
 
 app.use(
   session({
     // It holds the secret key for session
-    secret: "Your_Secret_Key",
+    secret: 'Your_Secret_Key',
 
     // Forces the session to be saved
     // back to the session store
@@ -89,20 +91,20 @@ app.use(
     // Forces a session that is "uninitialized"
     // to be saved to the store
     saveUninitialized: true,
-  })
+  }),
 );
 
-app.get("/health", function (req, res) {
-  res.send("F5-UP");
+app.get('/health', function (req, res) {
+  res.send('F5-UP');
 });
 
-app.get("/session", function (req, res) {
-  console.log("session", req.session.user);
+app.get('/session', function (req, res) {
+  console.log('session', req.session.user);
   res.send(req.session.user);
 });
 
-app.get("/refresh", function (req, res) {
-  console.log("-----callback------", req.query);
+app.get('/refresh', function (req, res) {
+  console.log('-----callback------', req.query);
   const getCookies = req.session.cookies;
 
   const agent = new https.Agent({
@@ -117,7 +119,7 @@ app.get("/refresh", function (req, res) {
       headers: {
         Authorization: authenticateUser(
           process.env.CIMS_USER,
-          process.env.CIMS_PWD
+          process.env.CIMS_PWD,
         ),
       },
       httpsAgent: agent,
@@ -137,14 +139,14 @@ app.get("/refresh", function (req, res) {
     });
 });
 
-//------------Revert---------------
+// ------------Revert---------------
 app.use(function (req, res, next) {
-  console.log("SSO", process.env.SSO_ENABLED);
-  if (process.env.SSO_ENABLED === "true") {
-    console.log("Cookies", req.cookies);
+  console.log('SSO', process.env.SSO_ENABLED);
+  if (process.env.SSO_ENABLED === 'true') {
+    console.log('Cookies', req.cookies);
     const getCookies = req.cookies;
     if (!getCookies[access_token] || !getCookies[refresh_token]) {
-      console.log("No Tokens");
+      console.log('No Tokens');
       res.redirect(`${baseUrlSSO}/logout_session`);
     } else if (getCookies[access_token] && getCookies[refresh_token]) {
       // At request level
@@ -160,7 +162,7 @@ app.use(function (req, res, next) {
           headers: {
             Authorization: authenticateUser(
               process.env.CIMS_USER,
-              process.env.CIMS_PWD
+              process.env.CIMS_PWD,
             ),
           },
           httpsAgent: agent,
@@ -182,7 +184,7 @@ app.use(function (req, res, next) {
               req.session.user = details;
               req.session.expiry = decoded.exp;
               req.session.cookies = getCookies;
-              res.cookie("exp", decoded.exp);
+              res.cookie('exp', decoded.exp);
               next();
               break;
             }
@@ -201,16 +203,16 @@ app.use(function (req, res, next) {
           res.redirect(`${baseUrlSSO}/logout_session`);
         });
     } else {
-      console.log("Else part");
+      console.log('Else part');
       res.redirect(`${baseUrlSSO}/logout_session`);
     }
-  } else if (process.env.SSO_ENABLED === "false") {
+  } else if (process.env.SSO_ENABLED === 'false') {
     next();
   }
 });
 
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(PORT);

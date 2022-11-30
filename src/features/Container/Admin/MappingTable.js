@@ -1,21 +1,21 @@
-import React from "react";
-import moment from "moment-timezone";
-import { useDispatch, useSelector } from "react-redux";
-import Loader from "apollo-react/components/Loader";
+/* eslint-disable */
+import moment from 'moment-timezone';
+import { useDispatch, useSelector } from 'react-redux';
+import Loader from 'apollo-react/components/Loader';
 import Table, {
   compareStrings,
   compareDates,
-} from "apollo-react/components/Table";
-import Cog from "apollo-react-icons/Cog";
-import Trash from "apollo-react-icons/Trash";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "apollo-react/components/IconButton";
-import { loader } from "./adminSlice";
+} from 'apollo-react/components/Table';
+import Cog from 'apollo-react-icons/Cog';
+import Trash from 'apollo-react-icons/Trash';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from 'apollo-react/components/IconButton';
+import { loader } from './adminSlice';
 
 const DateCell = ({ row, column }) =>
-  moment(row[column.accessor]).format("MM/DD/YYYY");
+  moment(row[column.accessor]).format('MM/DD/YYYY');
 
-const ActionCell = ({ row }) => {
+function ActionCell({ row }) {
   return (
     <div>
       <Tooltip title="Delete">
@@ -31,68 +31,68 @@ const ActionCell = ({ row }) => {
       </Tooltip>
     </div>
   );
-};
+}
 
 const columns = [
   {
-    header: "User ID",
-    accessor: "userId",
+    header: 'User ID',
+    accessor: 'userId',
     sortFunction: compareStrings,
   },
   {
-    header: "Protocol",
-    accessor: "protocol",
+    header: 'Protocol',
+    accessor: 'protocol',
     sortFunction: compareStrings,
   },
   {
-    header: "Role",
-    accessor: "userRole",
+    header: 'Role',
+    accessor: 'userRole',
     sortFunction: compareStrings,
   },
   {
-    header: "Following",
-    accessor: "follow",
+    header: 'Following',
+    accessor: 'follow',
     sortFunction: compareStrings,
   },
   {
-    header: "Created Date",
-    accessor: "timeCreated",
+    header: 'Created Date',
+    accessor: 'timeCreated',
     sortFunction: compareDates,
     customCell: DateCell,
   },
   {
-    header: "Updated Date",
-    accessor: "lastUpdated",
+    header: 'Updated Date',
+    accessor: 'lastUpdated',
     sortFunction: compareDates,
     customCell: DateCell,
   },
   {
     header: <Cog size="small" />,
-    accessor: "action",
+    accessor: 'action',
     customCell: ActionCell,
-    align: "center",
+    align: 'center',
   },
 ];
 
-const MappingTable = ({ initialRows }) => {
+function MappingTable({ initialRows }) {
   const dispatch = useDispatch();
 
   const isLoading = useSelector(loader);
 
   const onDelete = ({ userId, protocol }) => {
-    let confirmBox = window.confirm(
-      "Do you want to delete the Selected Mapping?"
+    const confirmBox = window.confirm(
+      'Do you want to delete the Selected Mapping?',
     );
     if (confirmBox) {
       dispatch({
-        type: "DELETE_USER_PROTOCOL_MAPPING",
-        payload: { userId: userId, protocol: protocol },
+        type: 'DELETE_USER_PROTOCOL_MAPPING',
+        payload: { userId, protocol },
       });
     }
   };
 
   return (
-    <div style={{ overflowX: "auto", paddingTop: 20 }}>
+    <div style={{ overflowX: 'auto', paddingTop: 20 }}>
       {isLoading ? (
         <Loader />
       ) : (
@@ -105,7 +105,7 @@ const MappingTable = ({ initialRows }) => {
           }))}
           initialSortedColumn="lastUpdated"
           initialSortOrder="desc"
-          rowsPerPageOptions={[5, 10, 15, "All"]}
+          rowsPerPageOptions={[5, 10, 15, 'All']}
           tablePaginationProps={{
             labelDisplayedRows: ({ from, to, count }) =>
               `Mapping ${from}-${to} of ${count}`,
@@ -117,6 +117,6 @@ const MappingTable = ({ initialRows }) => {
       )}
     </div>
   );
-};
+}
 
 export default MappingTable;
