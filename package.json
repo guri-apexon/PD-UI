@@ -18,6 +18,7 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
+    "prop-types": "^15.8.1",
     "query-string": "^6.13.7",
     "react": "^17.0.1",
     "react-app-polyfill": "^2.0.0",
@@ -34,9 +35,11 @@
     "replaceall": "^0.1.6",
     "sass": "^1.29.0",
     "source-map-explorer": "^2.5.2",
-    "universal-cookie": "^4.0.4"
+    "universal-cookie": "^4.0.4",
+    "uuid": "^9.0.0"
   },
   "scripts": {
+    "pd:deps": "npm install --legacy-peer-deps",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -46,9 +49,8 @@
     "eject": "react-scripts eject",
     "plint": "prettier --check .",
     "format": "prettier --write .",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix --ext .js,.jsx .",
-    "prepare": "husky",
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix --ext .js,.jsx .",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "yarn:coverage": "yarn test -- --coverage --watchAll=false",
     "yarn:single:coverage": "yarn test filterchip.test.js --coverage"
@@ -100,33 +102,20 @@
       "!src/features/Components/Dashboard/FollowingTable.js"
     ]
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "eslint:recommended"
-    ],
-    "rules": {
-      "no-console": 0,
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn"
-    }
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "npm run test"
-    }
-  },
-  "lint-staged": {
-    "*": "prettier --write"
-  },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "husky": "^6.0.0",
-    "lint-staged": "^11.0.0",
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "pm2": "^4.5.1",
-    "prettier": "^2.3.1"
+    "prettier": "^2.7.1"
   }
 }

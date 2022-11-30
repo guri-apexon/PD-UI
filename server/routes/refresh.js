@@ -1,11 +1,12 @@
-const { authenticateUser } = require("../utility/SSOUtility");
-const https = require("https");
-const axios = require("axios");
-const { getENVURL } = require("../utility/EnvURL");
+const https = require('https');
+const axios = require('axios');
+const { authenticateUser } = require('../utility/SSOUtility');
+const { getENVURL } = require('../utility/EnvURL');
+
 const envURL = getENVURL();
 module.exports = function (app) {
-  app.get("/refresh", function (req, res) {
-    console.log("-----callback------", req.query);
+  app.get('/refresh', function (req, res) {
+    console.log('-----callback------', req.query);
     const getCookies = req.session.cookies;
 
     const agent = new https.Agent({
@@ -20,7 +21,7 @@ module.exports = function (app) {
         headers: {
           Authorization: authenticateUser(
             process.env.CIMS_USER,
-            process.env.CIMS_PWD
+            process.env.CIMS_PWD,
           ),
         },
         httpsAgent: agent,

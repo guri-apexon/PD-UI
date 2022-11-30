@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const protocolSlice = createSlice({
-  name: "protocol",
+  name: 'protocol',
   initialState: {
-    userName: "",
+    userName: '',
     summary: {},
     view: {
       iqvdataSoa: [],
@@ -17,9 +17,9 @@ export const protocolSlice = createSlice({
     compare: {
       loading: false,
       called: false,
-      iqvdata: "",
+      iqvdata: '',
       error: false,
-      message: "",
+      message: '',
     },
   },
   reducers: {
@@ -27,7 +27,6 @@ export const protocolSlice = createSlice({
       state.summary = action.payload;
     },
     getProcotoclToc: (state, action) => {
-      console.log(action.payload);
       state.view = action.payload;
     },
     getAssociateDocuments: (state, action) => {

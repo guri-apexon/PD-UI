@@ -1,26 +1,27 @@
-import React, { Suspense, lazy } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+/* eslint-disable */
+import { Suspense, lazy } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 const Dashboard = lazy(() =>
-  import("../features/Container/Dashboard/Dashboard")
+  import('../features/Container/Dashboard/Dashboard'),
 );
 /* istanbul ignore next */
-const Search = lazy(() => import("../features/Container/Search/Search"));
+const Search = lazy(() => import('../features/Container/Search/Search'));
 /* istanbul ignore next */
 const Protocols = lazy(() =>
-  import("../features/Container/Protocols/Protocols")
+  import('../features/Container/Protocols/Protocols'),
 );
 /* istanbul ignore next */
 const PageNotFound = lazy(() =>
-  import("../features/Container/PageNotFound/PageNotFound")
+  import('../features/Container/PageNotFound/PageNotFound'),
 );
-const QC = lazy(() => import("../features/Container/QC/QC"));
-const Admin = lazy(() => import("../features/Container/Admin/Admin"));
+const QC = lazy(() => import('../features/Container/QC/QC'));
+const Admin = lazy(() => import('../features/Container/Admin/Admin'));
 
-const Routes = ({ userType }) => {
+function Routes({ userType }) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      {userType === "normal" && (
+      {userType === 'normal' && (
         <Switch>
           <Redirect exact from="/" to="/dashboard" />
           <Route path="/dashboard" component={Dashboard} />
@@ -29,7 +30,7 @@ const Routes = ({ userType }) => {
           <Route path="*" component={PageNotFound} />
         </Switch>
       )}
-      {userType === "QC1" && (
+      {userType === 'QC1' && (
         <Switch>
           <Redirect exact from="/" to="/qc" />
           <Redirect exact from="/dashboard" to="/qc" />
@@ -37,7 +38,7 @@ const Routes = ({ userType }) => {
           <Route path="*" component={PageNotFound} />
         </Switch>
       )}
-      {userType === "QC2" && (
+      {userType === 'QC2' && (
         <Switch>
           <Redirect exact from="/" to="/dashboard" />
           <Route path="/dashboard" component={Dashboard} />
@@ -47,7 +48,7 @@ const Routes = ({ userType }) => {
           <Route path="*" component={PageNotFound} />
         </Switch>
       )}
-      {userType === "admin" && (
+      {userType === 'admin' && (
         <Switch>
           <Redirect exact from="/" to="/dashboard" />
           <Route path="/admin" component={Admin} />
@@ -59,6 +60,6 @@ const Routes = ({ userType }) => {
       )}
     </Suspense>
   );
-};
+}
 
 export default Routes;

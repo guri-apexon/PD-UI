@@ -1,26 +1,27 @@
-import React, { useState } from "react";
-import concat from "lodash/concat";
-import cloneDeep from "lodash/cloneDeep";
-import merge from "lodash/merge";
-import ChevronDown from "apollo-react-icons/ChevronDown";
-import ChevronRight from "apollo-react-icons/ChevronRight";
-import { Link } from "react-router-dom";
-import IconButton from "apollo-react/components/IconButton";
+/* eslint-disable */
+import React, { useState } from 'react';
+import concat from 'lodash/concat';
+import cloneDeep from 'lodash/cloneDeep';
+import merge from 'lodash/merge';
+import ChevronDown from 'apollo-react-icons/ChevronDown';
+import ChevronRight from 'apollo-react-icons/ChevronRight';
+import { Link } from 'react-router-dom';
+import IconButton from 'apollo-react/components/IconButton';
 import Table, {
   compareStrings,
   compareDates,
-} from "apollo-react/components/Table";
-import Tooltip from "apollo-react/components/Tooltip";
-import Loader from "../Loader/Loader";
-import "./ProtocolTable.scss";
-import columns from "./columns";
-import Tag from "apollo-react/components/Tag";
-import { redaction } from "../../../AppConstant/AppConstant";
-import { uploadDateValidation } from "../../../utils/utilFunction";
+} from 'apollo-react/components/Table';
+import Tooltip from 'apollo-react/components/Tooltip';
+import Loader from '../Loader/Loader';
+import './ProtocolTable.scss';
+import columns from './columns';
+import Tag from 'apollo-react/components/Tag';
+import { redaction } from '../../../AppConstant/AppConstant';
+import { uploadDateValidation } from '../../../utils/utilFunction';
 
-const replaceall = require("replaceall");
+const replaceall = require('replaceall');
 
-const ActionCell = ({ row }) => {
+function ActionCell({ row }) {
   return (
     <div>
       <div className="follow-table-selection" style={{ height: 45 }}>
@@ -35,13 +36,13 @@ const ActionCell = ({ row }) => {
       </div>
     </div>
   );
-};
+}
 function createFullMarkup(str) {
   return {
     __html: replaceall(
       redaction.text,
       `<span class="blur">${redaction.text}</span>`,
-      str
+      str,
     ),
   };
 }
@@ -52,59 +53,55 @@ function createMarkup(str) {
       .replace(redaction.text, `<span class="blur">${redaction.text}</span>`),
   };
 }
-const ProtocolTitle = ({ row, column: { accessor: key } }) => {
+function ProtocolTitle({ row, column: { accessor: key } }) {
   const handleLinkRender = () => {
     if (row.userUploadedFlag) {
       return (
         <div>
           <Link
             className="title-link-protocol"
-            to={`/protocols?protocolId=${row["id"]}`}
+            to={`/protocols?protocolId=${row.id}`}
             dangerouslySetInnerHTML={createMarkup(row[key])}
-          ></Link>
-          <span>{row[key].length > 40 ? "..." : ""}</span>
+          />
+          <span>{row[key].length > 40 ? '...' : ''}</span>
         </div>
       );
-    } else {
-      if (uploadDateValidation(row.uploadDate)) {
-        return (
-          <div>
-            <Link
-              className="title-link-protocol"
-              to={`/protocols?protocolId=${row["id"]}`}
-              dangerouslySetInnerHTML={createMarkup(row[key])}
-            ></Link>
-            <span>{row[key].length > 40 ? "..." : ""}</span>
-          </div>
-        );
-      } else {
-        return (
-          <div>
-            <span
-              className="title-no-link-protocol"
-              dangerouslySetInnerHTML={createMarkup(row[key])}
-            ></span>
-            <span>{row[key].length > 40 ? "..." : ""}</span>
-          </div>
-        );
-      }
     }
+    if (uploadDateValidation(row.uploadDate)) {
+      return (
+        <div>
+          <Link
+            className="title-link-protocol"
+            to={`/protocols?protocolId=${row.id}`}
+            dangerouslySetInnerHTML={createMarkup(row[key])}
+          />
+          <span>{row[key].length > 40 ? '...' : ''}</span>
+        </div>
+      );
+    }
+    return (
+      <div>
+        <span
+          className="title-no-link-protocol"
+          dangerouslySetInnerHTML={createMarkup(row[key])}
+        />
+        <span>{row[key].length > 40 ? '...' : ''}</span>
+      </div>
+    );
   };
   return (
     <Tooltip
       variant="light"
-      title={"Protocol Title"}
-      subtitle={
-        <div dangerouslySetInnerHTML={createFullMarkup(row[key])}></div>
-      }
+      title="Protocol Title"
+      subtitle={<div dangerouslySetInnerHTML={createFullMarkup(row[key])} />}
       placement="top"
     >
       <span>{handleLinkRender()}</span>
     </Tooltip>
   );
-};
+}
 
-const Cell = ({ row, column }) => {
+function Cell({ row, column }) {
   if (row[column.accessor] && row[column.accessor] === redaction.text) {
     return (
       <Tooltip variant="light" title={redaction.hoverText} placement="top">
@@ -113,7 +110,8 @@ const Cell = ({ row, column }) => {
         </div>
       </Tooltip>
     );
-  } else if (row[column.accessor] && row[column.accessor].length > 15) {
+  }
+  if (row[column.accessor] && row[column.accessor].length > 15) {
     return (
       <Tooltip variant="light" title={row[column.accessor]} placement="top">
         <div className="long-text" style={{ fontWeight: 800 }}>
@@ -121,66 +119,61 @@ const Cell = ({ row, column }) => {
         </div>
       </Tooltip>
     );
-  } else {
-    return <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
   }
-};
+  return <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
+}
 
-const ProtocolLink = ({ row, column: { accessor: key } }) => {
+function ProtocolLink({ row, column: { accessor: key } }) {
   const handleLinkRender = () => {
     if (row.userUploadedFlag) {
       return (
         <div>
           <Link
             className="title-link-protocol"
-            to={`/protocols?protocolId=${row["id"]}`}
+            to={`/protocols?protocolId=${row.id}`}
           >
             {row[key].length > 18
-              ? row[key].substring(0, 18) + "..."
+              ? `${row[key].substring(0, 18)}...`
               : row[key]}
           </Link>
         </div>
       );
-    } else {
-      if (uploadDateValidation(row.uploadDate)) {
-        return (
-          <div>
-            <Link
-              className="title-link-protocol"
-              to={`/protocols?protocolId=${row["id"]}`}
-            >
-              {row[key].length > 18
-                ? row[key].substring(0, 18) + "..."
-                : row[key]}
-            </Link>
-          </div>
-        );
-      } else {
-        return (
-          <div>
-            {/* <span className="title-no-link-protocol">{row[key]}</span> */}
-            <span>
-              {row[key].length > 18
-                ? row[key].substring(0, 18) + "..."
-                : row[key]}
-            </span>
-          </div>
-        );
-      }
     }
+    if (uploadDateValidation(row.uploadDate)) {
+      return (
+        <div>
+          <Link
+            className="title-link-protocol"
+            to={`/protocols?protocolId=${row.id}`}
+          >
+            {row[key].length > 18
+              ? `${row[key].substring(0, 18)}...`
+              : row[key]}
+          </Link>
+        </div>
+      );
+    }
+    return (
+      <div>
+        {/* <span className="title-no-link-protocol">{row[key]}</span> */}
+        <span>
+          {row[key].length > 18 ? `${row[key].substring(0, 18)}...` : row[key]}
+        </span>
+      </div>
+    );
   };
   return (
     <Tooltip
       variant="light"
-      title={"Protocol Number"}
+      title="Protocol Number"
       subtitle={row[key]}
       placement="top"
     >
       <span>{handleLinkRender()}</span>
     </Tooltip>
   );
-};
-const HandleUnFollow = ({ row }) => {
+}
+function HandleUnFollow({ row }) {
   return (
     <Link
       onClick={() => row.handleUnfollow(row)}
@@ -189,89 +182,89 @@ const HandleUnFollow = ({ row }) => {
       <Tag label="Unfollow" color="#0076ae" />
     </Link>
   );
-};
+}
 
 function getColumns(screen) {
   return [
     {
-      accessor: "action",
+      accessor: 'action',
       customCell: ActionCell,
-      width: "3%",
+      width: '3%',
     },
     {
-      accessor: "approvalDate",
+      accessor: 'approvalDate',
       sortFunction: compareDates,
       width: 0,
       hidden: true,
     },
     {
-      header: "Protocol",
-      accessor: "protocol",
+      header: 'Protocol',
+      accessor: 'protocol',
       sortFunction: compareStrings,
       customCell: ProtocolLink,
-      width: "15%",
+      width: '15%',
     },
     {
-      header: "Indication",
-      accessor: "indication",
+      header: 'Indication',
+      accessor: 'indication',
       sortFunction: compareStrings,
-      width: "13%",
+      width: '13%',
       customCell: Cell,
     },
     {
-      header: "Sponsor",
-      accessor: "sponsor",
+      header: 'Sponsor',
+      accessor: 'sponsor',
       sortFunction: compareStrings,
-      width: "13%",
+      width: '13%',
       customCell: Cell,
     },
     {
-      header: "Phase",
-      accessor: "phase",
+      header: 'Phase',
+      accessor: 'phase',
       sortFunction: compareStrings,
-      width: "8%",
+      width: '8%',
       customCell: Cell,
     },
     {
-      header: "Project ID / CRM #",
-      accessor: "projectId",
+      header: 'Project ID / CRM #',
+      accessor: 'projectId',
       sortFunction: compareStrings,
-      width: "13%",
+      width: '13%',
       customCell: Cell,
     },
     {
-      header: "Protocol Title",
-      accessor: "protocolTitle",
+      header: 'Protocol Title',
+      accessor: 'protocolTitle',
       sortFunction: compareStrings,
       customCell: ProtocolTitle,
       width: 100,
     },
     {
-      header: "Action",
-      accessor: "action",
+      header: 'Action',
+      accessor: 'action',
       customCell: HandleUnFollow,
-      width: "8%",
+      width: '8%',
     },
   ];
 }
 
-const ExpandableComponent = ({ row }) => {
+function ExpandableComponent({ row }) {
   return (
     <div className="expand-asso-table">
       {row.linkEnabled ? (
         <div
           style={{
             height: 100,
-            justifyContent: "center",
-            alignItems: "center",
-            display: "flex",
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
           }}
         >
           <Loader />
         </div>
       ) : (
         <>
-          {"associateddata" in row && row.associateddata.length > 0 && (
+          {'associateddata' in row && row.associateddata.length > 0 && (
             <div className="view-asso-prot">
               <div>
                 <h4>Associate Protocols</h4>
@@ -281,7 +274,7 @@ const ExpandableComponent = ({ row }) => {
                 <Table
                   columns={columns}
                   rows={
-                    "associateddata" in row &&
+                    'associateddata' in row &&
                     row.associateddata.map((row) => ({
                       ...row,
                       key: row.id,
@@ -292,8 +285,8 @@ const ExpandableComponent = ({ row }) => {
               </div>
             </div>
           )}
-          {"associateddata" in row && row.associateddata.length === 0 && (
-            <h4 style={{ textAlign: "center" }}>
+          {'associateddata' in row && row.associateddata.length === 0 && (
+            <h4 style={{ textAlign: 'center' }}>
               {row.protocol} has no associated protocols available.
             </h4>
           )}
@@ -301,9 +294,9 @@ const ExpandableComponent = ({ row }) => {
       )}
     </div>
   );
-};
+}
 
-const ProtocolTable = ({
+function ProtocolTable({
   initialRows,
   pageRows,
   screen,
@@ -313,16 +306,16 @@ const ProtocolTable = ({
   defaultRows,
   fetchAssociateData,
   handleUnfollow,
-}) => {
+}) {
   const [expandedRows, setExpandedRows] = useState([]);
 
   const handleToggleRow = (id, row) => {
     setExpandedRows((expandedRows) =>
       expandedRows.indexOf(id) >= 0
         ? expandedRows.filter((eid) => eid !== id)
-        : concat(expandedRows, id)
+        : concat(expandedRows, id),
     );
-    if ("associateddata" in row && row.associateddata.length === 0) {
+    if ('associateddata' in row && row.associateddata.length === 0) {
       fetchAssociateData(row);
     }
   };
@@ -336,13 +329,13 @@ const ProtocolTable = ({
   const newRows =
     initialRows &&
     initialRows.map((row) => {
-      let temp = cloneDeep(row);
-      let details = {
+      const temp = cloneDeep(row);
+      const details = {
         key: row.id,
         expanded: expandedRows.indexOf(row.id) >= 0,
         handleToggleRow,
         handleRowProtocolClick,
-        screen: screen,
+        screen,
         fetchAssociateData,
         handleUnfollow,
       };
@@ -370,6 +363,6 @@ const ProtocolTable = ({
       />
     </div>
   );
-};
+}
 
 export default React.memo(ProtocolTable);

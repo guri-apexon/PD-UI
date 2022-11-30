@@ -1,19 +1,18 @@
-import React from "react";
-import { fireEvent, render } from "../../../../test-utils/test-utils";
-import "@testing-library/jest-dom/extend-expect";
-import QCProtocolView from "../QCProtocolView/QCProtocolView";
+import { fireEvent, render } from '../../../../test-utils/test-utils';
+import '@testing-library/jest-dom/extend-expect';
+import QCProtocolView from '../QCProtocolView/QCProtocolView';
 
-describe("QC Protocol View container component", () => {
+describe('QC Protocol View container component', () => {
   const state = {
     initialState: {
       qc: {
         protocols: [
           {
-            protocolTitle: "Title",
-            protocol: "12344",
-            projectId: "Project1",
-            sponsor: "Astella",
-            uploadDate: "aa",
+            protocolTitle: 'Title',
+            protocol: '12344',
+            projectId: 'Project1',
+            sponsor: 'Astella',
+            uploadDate: 'aa',
             id: 1,
           },
         ],
@@ -25,8 +24,8 @@ describe("QC Protocol View container component", () => {
           iqvdataSoa: [],
           iqvdataSummary: {
             index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-            columns: ["field_name", "field_value", "field_header"],
-            data: [["protocol_name", "", "<b>Protocol Name</b>"]],
+            columns: ['field_name', 'field_value', 'field_header'],
+            data: [['protocol_name', '', '<b>Protocol Name</b>']],
           },
           iqvdataToc: {
             data: [],
@@ -34,29 +33,29 @@ describe("QC Protocol View container component", () => {
           loader: false,
           tocSections: [
             {
-              section: "section",
-              id: "TOC-24",
+              section: 'section',
+              id: 'TOC-24',
             },
           ],
           soaSections: [
             {
-              section: "Study of Assessments(Schedule of Assessment)",
-              id: "SOA-4",
+              section: 'Study of Assessments(Schedule of Assessment)',
+              id: 'SOA-4',
             },
           ],
           download: {
-            id: "12222",
-            iqvdataToc: "sss",
+            id: '12222',
+            iqvdataToc: 'sss',
           },
         },
       },
     },
   };
-  test("should render for QC1 send QC2", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC1";
-    const protocolNum = "abc";
+  test('should render for QC1 send QC2', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC1';
+    const protocolNum = 'abc';
     const container = render(
       <QCProtocolView
         protId={protocolId}
@@ -64,121 +63,121 @@ describe("QC Protocol View container component", () => {
         userType={type}
         protocolNumber={protocolNum}
       />,
-      state
+      state,
     );
-    //sendQC2-button
-    let sendQC2 = container.getByTestId("sendQC2-button");
+    // sendQC2-button
+    const sendQC2 = container.getByTestId('sendQC2-button');
     fireEvent.click(sendQC2);
   });
-  test("should render for QC1 send QC2 with confirm window", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC1";
+  test('should render for QC1 send QC2 with confirm window', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC1';
     window.confirm = jest.fn().mockImplementation(() => true);
     const container = render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
-    //sendQC2-button
-    let sendQC2 = container.getByTestId("sendQC2-button");
+    // sendQC2-button
+    const sendQC2 = container.getByTestId('sendQC2-button');
     fireEvent.click(sendQC2);
   });
-  test("should render for QC1approve button click without confirm window", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC1";
+  test('should render for QC1approve button click without confirm window', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC1';
     const container = render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
-    //sendQC2-button
-    let approve = container.getByTestId("approve-button");
+    // sendQC2-button
+    const approve = container.getByTestId('approve-button');
     fireEvent.click(approve);
   });
-  test("should render for QC1 approve with confirm window", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC1";
+  test('should render for QC1 approve with confirm window', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC1';
     window.confirm = jest.fn().mockImplementation(() => true);
     const container = render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
-    //sendQC2-button
-    let approve = container.getByTestId("approve-button");
+    // sendQC2-button
+    const approve = container.getByTestId('approve-button');
     fireEvent.click(approve);
   });
-  test("should render for QC2 and Click Reject button with confirm window", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC2";
+  test('should render for QC2 and Click Reject button with confirm window', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC2';
     window.confirm = jest.fn().mockImplementation(() => true);
     const container = render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
-    let rejectButton = container.getByTestId("reject-button");
+    const rejectButton = container.getByTestId('reject-button');
     fireEvent.click(rejectButton);
   });
-  test("should render for QC2 and Click Reject button", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC2";
+  test('should render for QC2 and Click Reject button', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC2';
 
     const container = render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
-    let rejectButton = container.getByTestId("reject-button");
+    const rejectButton = container.getByTestId('reject-button');
     fireEvent.click(rejectButton);
   });
 
-  test("should render for QC1 and Choos file button", async () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC1";
+  test('should render for QC1 and Choos file button', async () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC1';
 
     const container = render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
-    const file = new File(["(⌐□_□)"], "chucknorris.json", {
-      type: "application/json",
+    const file = new File(['(⌐□_□)'], 'chucknorris.json', {
+      type: 'application/json',
     });
-    let chooseFile = container.getByTestId("choose-file-upload");
-    let UploadFile = container.getByTestId("upload-file-button");
+    const chooseFile = container.getByTestId('choose-file-upload');
+    const UploadFile = container.getByTestId('upload-file-button');
     await fireEvent.change(chooseFile, { target: { files: [file] } });
     expect(chooseFile.files[0]);
     fireEvent.click(UploadFile);
   });
-  test("should render for QC1 and upload without File", async () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC1";
+  test('should render for QC1 and upload without File', async () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC1';
 
     const container = render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
-    let UploadFile = container.getByTestId("upload-file-button");
+    const UploadFile = container.getByTestId('upload-file-button');
     fireEvent.click(UploadFile);
   });
-  test("should render for QC1 and upload without File", async () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC1";
+  test('should render for QC1 and upload without File', async () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC1';
 
     const container = render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
-    let downloadButton = container.getByTestId("download-button");
+    const downloadButton = container.getByTestId('download-button');
     fireEvent.click(downloadButton);
-    let downloadJsonButton = container.getByTestId("download-json-button");
+    const downloadJsonButton = container.getByTestId('download-json-button');
     fireEvent.click(downloadJsonButton);
   });
 });
-describe("QC Protocol View container component Laoder", () => {
+describe('QC Protocol View container component Laoder', () => {
   const state = {
     initialState: {
       protocol: {
@@ -191,43 +190,43 @@ describe("QC Protocol View container component Laoder", () => {
           loader: true,
           tocSections: [
             {
-              section: "section",
-              id: "TOC-24",
+              section: 'section',
+              id: 'TOC-24',
             },
           ],
           soaSections: [
             {
-              section: "Study of Assessments(Schedule of Assessment)",
-              id: "SOA-4",
+              section: 'Study of Assessments(Schedule of Assessment)',
+              id: 'SOA-4',
             },
           ],
         },
       },
     },
   };
-  test("should render QC Loader", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC1";
+  test('should render QC Loader', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC1';
 
     render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
   });
-  test("should render QC", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC2";
+  test('should render QC', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC2';
 
     render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
   });
 });
 
-describe("QC Protocol View container component Error", () => {
+describe('QC Protocol View container component Error', () => {
   const state = {
     initialState: {
       protocol: {
@@ -238,28 +237,28 @@ describe("QC Protocol View container component Error", () => {
             data: [],
           },
           loader: false,
-          err: "Error",
+          err: 'Error',
         },
       },
     },
   };
-  test("should render QC with Error", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC1";
+  test('should render QC with Error', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC1';
 
     render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
   });
-  test("should render QC", () => {
-    const protocolId = "212121";
-    const filePath = "//path";
-    const type = "QC2";
+  test('should render QC', () => {
+    const protocolId = '212121';
+    const filePath = '//path';
+    const type = 'QC2';
     render(
       <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
-      state
+      state,
     );
   });
 });

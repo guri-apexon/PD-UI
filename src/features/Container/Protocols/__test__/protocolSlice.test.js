@@ -1,9 +1,9 @@
-import protocolSlice, {
+import protocolPageSlice, {
   getSummary,
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
-} from "../protocolSlice";
+} from '../protocolSlice';
 
 const initialState = {
   summary: {},
@@ -19,28 +19,28 @@ const initialState = {
   compare: {
     loading: false,
     called: false,
-    iqvdata: "",
+    iqvdata: '',
     error: false,
-    message: "",
+    message: '',
   },
 };
 
-describe(" ProtocolSlice Test Suite", () => {
-  test("getSummary test", () => {
-    let obj = {
+describe(' ProtocolSlice Test Suite', () => {
+  test('getSummary test', () => {
+    const obj = {
       loading: true,
       success: false,
       data: [],
     };
     expect(
-      protocolSlice(initialState, {
+      protocolPageSlice(initialState, {
         type: getSummary.type,
         payload: obj,
-      })
+      }),
     ).toEqual({ ...initialState, summary: obj });
   });
 
-  test("getProcotoclToc test", () => {
+  test('getProcotoclToc test', () => {
     const viewData = {
       iqvdataSoa: null,
       iqvdataSummary: null,
@@ -51,36 +51,36 @@ describe(" ProtocolSlice Test Suite", () => {
       err: null,
     };
     expect(
-      protocolSlice(initialState, {
+      protocolPageSlice(initialState, {
         type: getProcotoclToc.type,
         payload: viewData,
-      })
+      }),
     ).toEqual({ ...initialState, view: viewData });
   });
 
-  test("getAssociateDocuments test", () => {
-    const associateDocs = [{ protocol: "JBT101-RIS-001" }];
+  test('getAssociateDocuments test', () => {
+    const associateDocs = [{ protocol: 'JBT101-RIS-001' }];
     expect(
-      protocolSlice(initialState, {
+      protocolPageSlice(initialState, {
         type: getAssociateDocuments.type,
         payload: associateDocs,
-      })
-    ).toEqual({ ...initialState, associateDocs: associateDocs });
+      }),
+    ).toEqual({ ...initialState, associateDocs });
   });
 
-  test("getCompare test", () => {
+  test('getCompare test', () => {
     const compData = {
-      iqvdata: "",
+      iqvdata: '',
       loading: true,
       called: true,
       error: false,
-      message: "",
+      message: '',
     };
     expect(
-      protocolSlice(initialState, {
+      protocolPageSlice(initialState, {
         type: getCompare.type,
         payload: compData,
-      })
+      }),
     ).toEqual({ ...initialState, compare: compData });
   });
 });

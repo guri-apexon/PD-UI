@@ -1,4 +1,6 @@
-import { put, takeEvery, all, call, select } from "redux-saga/effects";
+import { put, takeEvery, all, call, select } from 'redux-saga/effects';
+import cloneDeep from 'lodash/cloneDeep';
+import { toast } from 'react-toastify';
 import {
   getFilters,
   getSearchResult,
@@ -8,11 +10,9 @@ import {
   getRangeDate,
   getTotalSearchResult,
   getPhaseValues,
-} from "./searchSlice";
-import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import { localISOTime } from "../../../utils/utilFunction";
-import cloneDeep from "lodash/cloneDeep";
-import { toast } from "react-toastify";
+} from './searchSlice';
+import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+import { localISOTime } from '../../../utils/utilFunction';
 // import moment from "moment";
 
 const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
@@ -20,17 +20,105 @@ const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
 
 const ALLISP = `${BASE_URL_8000}/api/keyword_search/`;
 
-export function* getIndicationData(action) {
+function* getState() {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  // userId = id;
+  return id.substring(1);
+}
+export function setAsssociateProtocols(id, data, associateDocs) {
+  const arr =
+    data &&
+    data.map((item) => {
+      if (item.id === id) {
+        const temp = cloneDeep(item);
+        temp.rows = associateDocs;
+        temp.rowsLoading = false;
+        temp.viewAssociate = true;
+        return temp;
+      }
+      return item;
+    });
+
+  return arr;
+}
+function convertDate(date) {
+  const newDate = new Date(date);
+  let dd = newDate.getDate();
+
+  let mm = newDate.getMonth() + 1;
+  const yyyy = newDate.getFullYear();
+  if (dd < 10) {
+    dd = `0${dd}`;
+  }
+
+  if (mm < 10) {
+    mm = `0${mm}`;
+  }
+  // console.log(`${yyyy}${mm}${dd}`)
+  return `${yyyy}${mm}${dd}`;
+}
+export function createJSONFormat(data) {
+  const arr = [];
+
+  for (let i = 0; i < data.length; i++) {
+    let qcStatus = '';
+    switch (data[i].qcStatus) {
+      case 'QC_NOT_STARTED':
+        qcStatus = 'QC Not Started';
+        break;
+      case 'QC1':
+      case 'QC2':
+      case 'FEEDBACK_RUN':
+        qcStatus = 'QC In Progress';
+        break;
+      case 'QC_COMPLETED':
+        qcStatus = 'QC Completed';
+        break;
+      default:
+        qcStatus = '-';
+        break;
+    }
+    const obj = {
+      protocolNumber: data[i].ProtocolNo,
+      AiDocId: data[i].AiDocId,
+      protocolDescription: data[i].ProtocolTitle,
+      indication: data[i].Indication,
+      phase: data[i].phase,
+      sponsor: data[i].SponsorName,
+      molecule: data[i].MoleculeDevice,
+      approval_date: data[i].approval_date,
+      uploadDate: data[i].uploadDate,
+      followed: data[i].Follow ? data[i].Follow : false,
+      rows: [],
+      rowsLoading: true,
+      isActive: data[i].is_active,
+      viewAssociate: false,
+      projectId: data[i].ProjectId,
+      source: data[i].SourceFileName,
+      path: `${data[i].documentPath}\\${data[i].SourceFileName}`,
+      documentStatus: data[i].DocumentStatus,
+      version: data[i].VersionNumber,
+      UserRole: data[i].UserRole,
+      qcStatus,
+      uploadedBy: data[i].uploadedBy,
+    };
+    arr.push(obj);
+  }
+
+  return arr;
+}
+export function* getIndicationData() {
   try {
     const indicationList = yield call(httpCall, {
       url: indicationUrl,
-      method: "GET",
+      method: 'GET',
     });
 
     if (indicationList.success) {
       // let respData = indicationList.data.slice(0, 700);
-      let respData = indicationList.data;
-      let formatIndication = respData.map((item) => {
+      const respData = indicationList.data;
+      const formatIndication = respData.map((item) => {
         return {
           title: item.indicationName,
           id: item.indId,
@@ -43,19 +131,19 @@ export function* getIndicationData(action) {
       yield put(getIndications(obj));
     }
   } catch (e) {
-    console.log(e);
+    toast.error('Something went wrong');
   }
 }
-export function* getSponsorData(action) {
+export function* getSponsorData() {
   try {
     const sponsorList = yield call(httpCall, {
       url: sponsorUrl,
-      method: "GET",
+      method: 'GET',
     });
     // let respData = sponsorList.data.slice(0, 8000);
-    let respData = sponsorList.data;
+    const respData = sponsorList.data;
     if (sponsorList.success) {
-      let formatSponser = respData.map((item) => {
+      const formatSponser = respData.map((item) => {
         return {
           title: item.sponsorName,
           id: item.sponsorId,
@@ -68,7 +156,7 @@ export function* getSponsorData(action) {
       yield put(getSponsors(obj));
     }
   } catch (e) {
-    console.log(e);
+    toast.error('Something went wrong');
   }
 }
 export function* getPhaseData(action) {
@@ -79,38 +167,39 @@ export function* getPhaseData(action) {
       sectionContent: [],
     };
     yield put(getPhaseValues(phaseObj));
-    let userId = yield getState();
+    const userId = yield getState();
     const postBody = {
-      key: "",
+      key: '',
       toc: [],
-      sponsor: ["3SBio"],
-      indication: ["Acne"],
-      phase: ["I/Ib"],
+      sponsor: ['3SBio'],
+      indication: ['Acne'],
+      phase: ['I/Ib'],
       qcStatus: [],
-      documentStatus: ["final"],
-      dateType: "approval_date",
-      dateFrom: "",
-      dateTo: "",
-      sortField: "score",
-      sortOrder: "desc",
+      documentStatus: ['final'],
+      dateType: 'approval_date',
+      dateFrom: '',
+      dateTo: '',
+      sortField: 'score',
+      sortOrder: 'desc',
       pageNo: 1,
       pageSize: 10,
-      dateSection: "0",
+      dateSection: '0',
       qID: userId,
     };
     try {
       const respData = yield call(httpCall, {
         url: ALLISP,
-        method: "POST",
+        method: 'POST',
         data: postBody,
       });
 
       if (respData.success) {
-        let phaseData = respData.data.phases;
+        const phaseData = respData.data.phases;
+        // eslint-disable-next-line func-names
         const filtered = phaseData.filter(function (el) {
-          return el !== "";
+          return el !== '';
         });
-        let formatPhases = filtered.sort().map((item) => {
+        const formatPhases = filtered.sort().map((item) => {
           return {
             title: item,
             id: item,
@@ -124,52 +213,52 @@ export function* getPhaseData(action) {
         yield put(getPhaseValues(phaseObj));
       }
     } catch (e) {
-      console.log(e);
+      toast.error('Something went wrong');
     }
   }
 }
 
-export function* getFilterData(action) {
-  const url = "../../../../filters.json";
+export function* getFilterData() {
+  const url = '../../../../filters.json';
   const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
   const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
 
   try {
-    const data = yield call(httpCall, { url, method: "GET" });
+    const data = yield call(httpCall, { url, method: 'GET' });
     const sponsorList = yield call(httpCall, {
       url: sponsorUrl,
-      method: "GET",
+      method: 'GET',
     });
     const indicationList = yield call(httpCall, {
       url: indicationUrl,
-      method: "GET",
+      method: 'GET',
     });
     if (indicationList.success && sponsorList.success) {
       // let data = data;
-      let formatSponser = sponsorList.data.map((item) => {
+      const formatSponser = sponsorList.data.map((item) => {
         return {
           title: item.sponsor_name,
           id: item.id,
         };
       });
-      let formatIndication = indicationList.data.map((item) => {
+      const formatIndication = indicationList.data.map((item) => {
         return {
           title: item.indication_name,
           id: item.id,
         };
       });
-      let formatFilter = data.data.map((item) => {
-        if (item.sectionName === "Sponsors") {
-          let items = cloneDeep(item);
+      const formatFilter = data.data.map((item) => {
+        if (item.sectionName === 'Sponsors') {
+          const items = cloneDeep(item);
           items.sectionContent = formatSponser;
           return items;
-        } else if (item.sectionName === "Indication") {
-          let items = cloneDeep(item);
+        }
+        if (item.sectionName === 'Indication') {
+          const items = cloneDeep(item);
           items.sectionContent = formatIndication;
           return items;
-        } else {
-          return item;
         }
+        return item;
       });
       const obj = {
         success: true,
@@ -178,16 +267,17 @@ export function* getFilterData(action) {
       yield put(getFilters(obj));
     }
   } catch (e) {
-    console.log(e);
+    toast.error('Something went wrong');
   }
 }
 function constructFilterObject(arr) {
   if (arr.length > 0) {
-    let phaseData = arr;
+    const phaseData = arr;
+    // eslint-disable-next-line func-names
     const filtered = phaseData.filter(function (el) {
-      return el !== "";
+      return el !== '';
     });
-    let formatPhases = filtered.sort().map((item) => {
+    const formatPhases = filtered.sort().map((item) => {
       return {
         title: item,
         id: item,
@@ -199,17 +289,16 @@ function constructFilterObject(arr) {
       sectionContent: formatPhases,
     };
     return phaseObj;
-  } else {
-    const phaseObj = {
-      success: true,
-      loader: false,
-      sectionContent: [],
-    };
-    return phaseObj;
   }
+  const phaseObj = {
+    success: true,
+    loader: false,
+    sectionContent: [],
+  };
+  return phaseObj;
 }
 export function* getSearchData(action) {
-  let userId = yield getState();
+  const userId = yield getState();
   if (action.payload) {
     const obj = {
       search: true,
@@ -220,11 +309,11 @@ export function* getSearchData(action) {
     yield put(getSearchResult(obj));
     try {
       let postObj;
-      if (action.payload.key === "*") {
+      if (action.payload.key === '*') {
         postObj = {
           ...action.payload,
           qID: userId,
-          key: "",
+          key: '',
         };
       } else {
         postObj = {
@@ -235,7 +324,7 @@ export function* getSearchData(action) {
       const searchurl = `${BASE_URL_8000}/api/keyword_search/`;
       const searchResp = yield call(httpCall, {
         url: searchurl,
-        method: "POST",
+        method: 'POST',
         data: postObj,
       });
       if (searchResp.success) {
@@ -296,9 +385,9 @@ export function* updateSearchResult(action) {
 function* updateSearchAssociated(action) {
   const state = yield select();
   const searchData = state.search.searchResult;
-  let tempRes = cloneDeep(action.payload.obj);
-  let foundIndex = tempRes.findIndex(
-    (obj) => obj.id === action.payload.data.id
+  const tempRes = cloneDeep(action.payload.obj);
+  const foundIndex = tempRes.findIndex(
+    (obj) => obj.id === action.payload.data.id,
   );
   tempRes[foundIndex].rowsLoading = true;
   tempRes[foundIndex].expanded = true;
@@ -315,14 +404,14 @@ function* updateSearchAssociated(action) {
     },
   };
   yield put(getSearchResult(initialObj));
-  //ProtocolNo
+  // ProtocolNo
   if (action.payload.data.protocolNumber) {
-    let userId = yield getState();
-    let associateURL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}&userId=${userId}`;
+    const userId = yield getState();
+    const associateURL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload.data.protocolNumber}&userId=${userId}`;
     // let associateURL =  `http://ca2spdml01q:8000/api/Related_protocols/?protocol=SSR_AKB-6548-CI-0014`;
     const associateDocs = yield call(httpCall, {
       url: associateURL,
-      method: "GET",
+      method: 'GET',
     });
     // Checking Primary or Secondary User based on Protocol Number
     // let userId = yield getState();
@@ -339,27 +428,27 @@ function* updateSearchAssociated(action) {
     // };
     //  const associateDocs = yield call(httpCall, config);
     if (associateDocs.success) {
-      let temp = cloneDeep(associateDocs.data);
-      let arr = temp.filter((item) => item.id !== action.payload.data.id);
+      const temp = cloneDeep(associateDocs.data);
+      const arr = temp.filter((item) => item.id !== action.payload.data.id);
       if (arr.length === 0) {
         toast.info(
-          `The Protocol: "${action.payload.data.protocolNumber}" selected has no associated protocols available`
+          `The Protocol: "${action.payload.data.protocolNumber}" selected has no associated protocols available`,
         );
       }
       arr.sort((a, b) => {
         return new Date(b.uploadDate) - new Date(a.uploadDate);
       });
       // let primaryUser = userStatus && userStatus.data ? true : false;
-      let resultarr = arr.map((item) => {
+      const resultarr = arr.map((item) => {
         return {
           ...item,
         };
       });
-      let result = setAsssociateProtocols(
+      const result = setAsssociateProtocols(
         // action.payload.data.protocolNumber,
         action.payload.data.id,
         action.payload.obj,
-        resultarr
+        resultarr,
       );
       const obj1 = {
         search: true,
@@ -381,11 +470,11 @@ function* updateSearchAssociated(action) {
       yield;
     }
   } else {
-    let result = setAsssociateProtocols(
+    const result = setAsssociateProtocols(
       // action.payload.data.protocolNumber,
       action.payload.data.id,
       action.payload.obj,
-      []
+      [],
     );
     const obj = {
       search: true,
@@ -399,15 +488,15 @@ function* updateSearchAssociated(action) {
 }
 
 export function* getRecentData(action) {
-  if (action.payload === "0") {
+  if (action.payload === '0') {
     const recentDate = {
-      from: "",
-      to: "",
+      from: '',
+      to: '',
     };
     yield put(getRecentDate(recentDate));
   } else {
-    let newDate = new Date();
-    newDate.setMonth(newDate.getMonth() - parseInt(action.payload));
+    const newDate = new Date();
+    newDate.setMonth(newDate.getMonth() - parseInt(action.payload, 10));
 
     // let momDate = moment(newDate);
     // const getDate = momDate.format("YYYYMMDD");
@@ -422,23 +511,6 @@ export function* getRecentData(action) {
 
     yield put(getRecentDate(recentDate));
   }
-}
-
-function convertDate(date) {
-  let newDate = new Date(date);
-  let dd = newDate.getDate();
-
-  let mm = newDate.getMonth() + 1;
-  const yyyy = newDate.getFullYear();
-  if (dd < 10) {
-    dd = `0${dd}`;
-  }
-
-  if (mm < 10) {
-    mm = `0${mm}`;
-  }
-  // console.log(`${yyyy}${mm}${dd}`)
-  return `${yyyy}${mm}${dd}`;
 }
 
 export function* getDataByRange(action) {
@@ -530,23 +602,17 @@ export function* getDataByRange(action) {
   //   yield put(getSearchResult(obj));
   // }
 }
-function* getState() {
-  const state = yield select();
-  const id = state.user.userDetail.userId;
-  // userId = id;
-  return id.substring(1);
-}
 
 function* saveSearch(action) {
   if (action.payload) {
-    let userId = yield getState();
+    const userId = yield getState();
     const url = `${BASE_URL_8000}/api/saved_search/`;
     const config = {
       url,
-      method: "POST",
+      method: 'POST',
       data: {
         keyword: action.payload,
-        userId: userId,
+        userId,
         timeCreated: localISOTime(),
         lastUpdated: localISOTime(),
       },
@@ -558,7 +624,7 @@ function* saveSearch(action) {
       // }
       // yield put(setError(searchData.err.statusText));
     } catch (err) {
-      console.log(err);
+      toast.error('Something went wrong');
     }
   }
 }
@@ -573,10 +639,10 @@ function* onPageChange(action) {
   yield put(getSearchResult(obj1));
   const state = yield select();
   const data = state.search.totalSearchResult;
-  //0-10, 10-20, 20-30
-  let lastPage = (action.payload + 1) * 10;
+  // 0-10, 10-20, 20-30
+  const lastPage = (action.payload + 1) * 10;
   // let lastPage=(action.payload)*10;
-  let firstPage = lastPage - 10;
+  const firstPage = lastPage - 10;
   let res;
   yield (res = data.slice(firstPage, lastPage));
   // console.log('pagination data :',action.payload,firstPage, lastPage,res, data);
@@ -593,10 +659,11 @@ function* updateTotalSearchResult(action) {
   yield put(getTotalSearchResult(action.payload));
 }
 function formatFilterObject(arr) {
+  // eslint-disable-next-line func-names
   const filtered = arr.filter(function (el) {
-    return el !== "";
+    return el !== '';
   });
-  let formatedData = filtered.map((item) => {
+  const formatedData = filtered.map((item) => {
     return {
       title: item,
       id: item,
@@ -613,111 +680,60 @@ function* getALLISP() {
   // getSponsors,
   // getPhaseValues,
   const postBody = {
-    key: "",
+    key: '',
     toc: [],
     sponsor: [],
     indication: [],
     phase: [],
     documentStatus: [],
-    dateType: "",
-    dateFrom: "",
-    dateTo: "",
-    sortField: "",
-    sortOrder: "",
+    dateType: '',
+    dateFrom: '',
+    dateTo: '',
+    sortField: '',
+    sortOrder: '',
     pageNo: 1,
     pageSize: 10,
-    qID: "q1061485",
+    qID: 'q1061485',
   };
   try {
     const ispList = yield call(httpCall, {
       url: ALLISP,
-      method: "POST",
+      method: 'POST',
       data: postBody,
     });
 
     if (ispList.success) {
-      let respData = ispList.data;
-      let phaseData = formatFilterObject(respData.phases);
-      let indicationData = formatFilterObject(respData.indications);
-      let sponsorData = formatFilterObject(respData.sponsors);
+      const respData = ispList.data;
+      const phaseData = formatFilterObject(respData.phases);
+      const indicationData = formatFilterObject(respData.indications);
+      const sponsorData = formatFilterObject(respData.sponsors);
       yield put(getPhaseValues(phaseData));
       yield put(getIndications(indicationData));
       yield put(getSponsors(sponsorData));
     }
   } catch (e) {
-    console.log(e);
+    toast.error('Something went wrong');
   }
 }
 
 function* watchIncrementAsync() {
-  yield takeEvery("GET_SEARCH_FILTER", getFilterData);
-  yield takeEvery("GET_SEARCH_RESULT", getSearchData);
-  yield takeEvery("UPDATE_SEARCH_RESULT", updateSearchResult);
-  yield takeEvery("UPDATE_TOTAL_SEARCH_RESULT", updateTotalSearchResult);
-  yield takeEvery("GET_INDICATIONS", getIndicationData);
-  yield takeEvery("GET_SPONSORS", getSponsorData);
-  yield takeEvery("GET_PHASES", getPhaseData);
-  yield takeEvery("UPDATE_SEARCH_ASSOCIATED_PROTOCOLS", updateSearchAssociated);
-  yield takeEvery("FILTER_BY_RECENT_SAGA", getRecentData);
-  yield takeEvery("FILTER_BY_DATE_RANGE_SAGA", getDataByRange);
-  yield takeEvery("SAVE_SEARCH_SAGA", saveSearch);
-  yield takeEvery("PAGE_CHANGE", onPageChange);
-  yield takeEvery("GET_INDICATIONs_SPONSORS_PHASES", getALLISP);
+  yield takeEvery('GET_SEARCH_FILTER', getFilterData);
+  yield takeEvery('GET_SEARCH_RESULT', getSearchData);
+  yield takeEvery('UPDATE_SEARCH_RESULT', updateSearchResult);
+  yield takeEvery('UPDATE_TOTAL_SEARCH_RESULT', updateTotalSearchResult);
+  yield takeEvery('GET_INDICATIONS', getIndicationData);
+  yield takeEvery('GET_SPONSORS', getSponsorData);
+  yield takeEvery('GET_PHASES', getPhaseData);
+  yield takeEvery('UPDATE_SEARCH_ASSOCIATED_PROTOCOLS', updateSearchAssociated);
+  yield takeEvery('FILTER_BY_RECENT_SAGA', getRecentData);
+  yield takeEvery('FILTER_BY_DATE_RANGE_SAGA', getDataByRange);
+  yield takeEvery('SAVE_SEARCH_SAGA', saveSearch);
+  yield takeEvery('PAGE_CHANGE', onPageChange);
+  yield takeEvery('GET_INDICATIONs_SPONSORS_PHASES', getALLISP);
 }
 
 export default function* protocolSaga() {
   yield all([watchIncrementAsync()]);
-}
-
-export function createJSONFormat(data) {
-  let arr = [];
-
-  for (let i = 0; i < data.length; i++) {
-    let qcStatus = "";
-    switch (data[i].qcStatus) {
-      case "QC_NOT_STARTED":
-        qcStatus = "QC Not Started";
-        break;
-      case "QC1":
-      case "QC2":
-      case "FEEDBACK_RUN":
-        qcStatus = "QC In Progress";
-        break;
-      case "QC_COMPLETED":
-        qcStatus = "QC Completed";
-        break;
-      default:
-        qcStatus = "-";
-        break;
-    }
-    let obj = {
-      protocolNumber: data[i].ProtocolNo,
-      AiDocId: data[i].AiDocId,
-      protocolDescription: data[i].ProtocolTitle,
-      indication: data[i].Indication,
-      phase: data[i].phase,
-      sponsor: data[i].SponsorName,
-      molecule: data[i].MoleculeDevice,
-      approval_date: data[i].approval_date,
-      uploadDate: data[i].uploadDate,
-      followed: data[i].Follow ? data[i].Follow : false,
-      rows: [],
-      rowsLoading: true,
-      isActive: data[i].is_active,
-      viewAssociate: false,
-      projectId: data[i].ProjectId,
-      source: data[i].SourceFileName,
-      path: `${data[i].documentPath}\\${data[i].SourceFileName}`,
-      documentStatus: data[i].DocumentStatus,
-      version: data[i].VersionNumber,
-      UserRole: data[i].UserRole,
-      qcStatus: qcStatus,
-      uploadedBy: data[i].uploadedBy,
-    };
-    arr.push(obj);
-  }
-
-  return arr;
 }
 
 // --To Remove duplicate Protocol numbers from list
@@ -733,19 +749,3 @@ export function createJSONFormat(data) {
 //   let activeObj = obj.filter((item) => item.isActive !== 0);
 //   return activeObj;
 // }
-export function setAsssociateProtocols(id, data, associateDocs) {
-  let arr =
-    data &&
-    data.map((item) => {
-      if (item.id === id) {
-        let temp = cloneDeep(item);
-        temp.rows = associateDocs;
-        temp.rowsLoading = false;
-        temp.viewAssociate = true;
-        return temp;
-      }
-      return item;
-    });
-
-  return arr;
-}

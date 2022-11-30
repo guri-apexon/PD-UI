@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import trim from "lodash/trim";
-import cloneDeep from "lodash/cloneDeep";
+/* eslint-disable */
+import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import trim from 'lodash/trim';
+import cloneDeep from 'lodash/cloneDeep';
 
-import PlusIcon from "apollo-react-icons/Plus";
+import PlusIcon from 'apollo-react-icons/Plus';
 
-import Modal from "apollo-react/components/Modal";
-import Grid from "apollo-react/components/Grid";
-import TextField from "apollo-react/components/TextField";
-import Button from "apollo-react/components/Button";
-import Table, { compareStrings } from "apollo-react/components/Table";
+import Modal from 'apollo-react/components/Modal';
+import Grid from 'apollo-react/components/Grid';
+import TextField from 'apollo-react/components/TextField';
+import Button from 'apollo-react/components/Button';
+import Table, { compareStrings } from 'apollo-react/components/Table';
 import {
   setUserRole,
   roleValues,
@@ -17,41 +18,43 @@ import {
   setUserRoleErr,
   modalToggle,
   setModalToggle,
-} from "./adminSlice";
+} from './adminSlice';
 
 const errorValue = {
-  role: { error: false, message: "" },
-  description: { error: false, message: "" },
+  role: { error: false, message: '' },
+  description: { error: false, message: '' },
 };
 
 const columns = [
   {
-    header: "User Role",
-    accessor: "roleName",
+    header: 'User Role',
+    accessor: 'roleName',
     sortFunction: compareStrings,
   },
   {
-    header: "Description",
-    accessor: "roleDescription",
+    header: 'Description',
+    accessor: 'roleDescription',
     sortFunction: compareStrings,
   },
 ];
 
-const CustomButtonHeader = ({ setIsOpen }) => (
-  <div>
-    <Button
-      size="small"
-      variant="primary"
-      icon={PlusIcon}
-      onClick={() => setIsOpen(true)}
-      style={{ marginRight: 8 }}
-    >
-      New Role
-    </Button>
-  </div>
-);
+function CustomButtonHeader({ setIsOpen }) {
+  return (
+    <div>
+      <Button
+        size="small"
+        variant="primary"
+        icon={PlusIcon}
+        onClick={() => setIsOpen(true)}
+        style={{ marginRight: 8 }}
+      >
+        New Role
+      </Button>
+    </div>
+  );
+}
 
-const UsersRole = ({ initialRows }) => {
+function UsersRole({ initialRows }) {
   const dispatch = useDispatch();
   const isOpen = useSelector(modalToggle);
   const formValue = useSelector(roleValues);
@@ -61,20 +64,20 @@ const UsersRole = ({ initialRows }) => {
     dispatch(setModalToggle(value));
   };
   const handleSaveForm = () => {
-    let err = cloneDeep(formErrValue);
+    const err = cloneDeep(formErrValue);
     if (!formValue.role) {
       err.role.error = true;
-      err.role.message = "Required";
+      err.role.message = 'Required';
     }
     if (!formValue.description) {
       err.description.error = true;
-      err.description.message = "Required";
+      err.description.message = 'Required';
     }
     setFormErrValue(err);
     if (formValue.role && formValue.description) {
-      let confirmBox = window.confirm("Do you want to create new user role?");
+      const confirmBox = window.confirm('Do you want to create new user role?');
       if (confirmBox) {
-        dispatch({ type: "ADD_NEW_ROLE_SAGA", payload: formValue });
+        dispatch({ type: 'ADD_NEW_ROLE_SAGA', payload: formValue });
       }
     }
   };
@@ -84,19 +87,19 @@ const UsersRole = ({ initialRows }) => {
     dispatch(setUserRole(data));
   };
   const onFieldBlur = (key, value) => {
-    let err = cloneDeep(formErrValue);
+    const err = cloneDeep(formErrValue);
     if (trim(value)) {
       err[key].error = false;
-      err[key].message = "";
+      err[key].message = '';
     } else {
       err[key].error = true;
-      err[key].message = "Required";
+      err[key].message = 'Required';
     }
     setFormErrValue(err);
   };
 
   return (
-    <div style={{ overflowX: "auto", paddingTop: 20 }}>
+    <div style={{ overflowX: 'auto', paddingTop: 20 }}>
       <Table
         columns={columns}
         rows={cloneDeep(initialRows)}
@@ -114,11 +117,11 @@ const UsersRole = ({ initialRows }) => {
           setIsOpen(false);
           setFormErrValue(errorValue);
           dispatch(setUserRole({}));
-          dispatch(setUserRoleErr(""));
+          dispatch(setUserRoleErr(''));
         }}
         title="Add New Role to PD"
-        subtitle={error && <span style={{ color: "red" }}>{error}</span>}
-        buttonProps={[{}, { label: "Create", onClick: handleSaveForm }]}
+        subtitle={error && <span style={{ color: 'red' }}>{error}</span>}
+        buttonProps={[{}, { label: 'Create', onClick: handleSaveForm }]}
         id="new-role-modal"
         data-testid="new-role-modal"
       >
@@ -131,8 +134,8 @@ const UsersRole = ({ initialRows }) => {
               required
               helperText={formErrValue.role.message}
               error={formErrValue.role.error}
-              onChange={(e) => handleChange("role", e.target.value)}
-              onBlur={(e) => onFieldBlur("role", e.target.value)}
+              onChange={(e) => handleChange('role', e.target.value)}
+              onBlur={(e) => onFieldBlur('role', e.target.value)}
               data-testid="user-role-texfield"
             />
           </Grid>
@@ -145,8 +148,8 @@ const UsersRole = ({ initialRows }) => {
               sizeAdjustable
               helperText={formErrValue.description.message}
               error={formErrValue.description.error}
-              onChange={(e) => handleChange("description", e.target.value)}
-              onBlur={(e) => onFieldBlur("description", e.target.value)}
+              onChange={(e) => handleChange('description', e.target.value)}
+              onBlur={(e) => onFieldBlur('description', e.target.value)}
               data-testid="role-description-texfield"
             />
           </Grid>
@@ -154,6 +157,6 @@ const UsersRole = ({ initialRows }) => {
       </Modal>
     </div>
   );
-};
+}
 
 export default UsersRole;

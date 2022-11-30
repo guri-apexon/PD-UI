@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
-import { protocolMap } from "./adminSlice";
-import MappingSearch from "./MappingSearch";
-import MappingTable from "./MappingTable";
+import { useSelector } from 'react-redux';
+import { protocolMap } from './adminSlice';
+import MappingSearch from './MappingSearch';
+import MappingTable from './MappingTable';
 
 function ProtocolMap() {
   const initialRows = useSelector(protocolMap);

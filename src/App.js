@@ -1,20 +1,20 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import axios from "axios";
-import IdleTimer from "react-idle-timer";
-import Cookies from "universal-cookie";
-import { ToastContainer, toast } from "react-toastify";
-import Loader from "apollo-react/components/Loader";
-import Modal from "apollo-react/components/Modal";
-import Routes from "./Routes/routes";
-import { setUserDetails, loggedUser } from "./store/userDetails";
-import SessionExpired from "./SessionOut";
-import { baseUrlSSO, SSO_ENABLED, getToken } from "./utils/api";
-import Navbar from "./features/Container/Navbar/Navbar";
+/* eslint-disable */
+import React, { useEffect, useState, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
+import IdleTimer from 'react-idle-timer';
+import Cookies from 'universal-cookie';
+import { ToastContainer, toast } from 'react-toastify';
+import Loader from 'apollo-react/components/Loader';
+import Modal from 'apollo-react/components/Modal';
+import Routes from './Routes/routes';
+import { setUserDetails, loggedUser } from './store/userDetails';
+import SessionExpired from './SessionOut';
+import { baseUrlSSO, SSO_ENABLED, getToken } from './utils/api';
+import Navbar from './features/Container/Navbar/Navbar';
 
-import "./App.scss";
-import "react-toastify/dist/ReactToastify.css";
+import './App.scss';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const cookiesServer = new Cookies();
@@ -25,10 +25,10 @@ function App() {
   const [timerId, setTimerId] = useState(0);
   const [idleId, setIdleid] = useState(0);
   const [jwt, setJwt] = useState(null);
-  //---------Revert-----------
+  // ---------Revert-----------
   useEffect(() => {
-    console.log("Date Before", process.env.REACT_APP_DATE_BEFORE);
-    cookiesServer.remove("api_token");
+    console.log('Date Before', process.env.REACT_APP_DATE_BEFORE);
+    cookiesServer.remove('api_token');
     getToken().then((data) => {
       if (data.token) {
         setJwt(data.token);
@@ -40,7 +40,7 @@ function App() {
     if (SSO_ENABLED) {
       // comment in local to run
       axios
-        .get("/session")
+        .get('/session')
         .then((res) => {
           if (Object.keys(res.data).length) {
             dispatch(setUserDetails(res.data));
@@ -49,22 +49,22 @@ function App() {
         .catch((err) => console.log(err));
 
       const curDate = new Date();
-      const expDate = cookiesServer.get("exp") * 1000;
+      const expDate = cookiesServer.get('exp') * 1000;
       if (!expDate) {
         window.location.href = `${baseUrlSSO}/logout_session`;
-        console.log("App Session");
+        console.log('App Session');
       } else {
         if (curDate >= expDate) {
-          console.log("exp", true);
+          console.log('exp', true);
         }
         let dif = curDate - expDate;
         dif = Math.abs(dif / 1000 / 60);
         dif = Math.round(dif * 10) / 10;
-        dif = dif - 1;
-        console.log("mins - ", dif);
-        let testInterval = setTimeout(function () {
+        dif -= 1;
+        console.log('mins - ', dif);
+        const testInterval = setTimeout(function () {
           axios
-            .get("/refresh", {
+            .get('/refresh', {
               params: {
                 callbackUrl: window.location.href,
               },
@@ -82,10 +82,10 @@ function App() {
     } else {
       const details = {
         // userId: "q846158", // Arjun
-        userId: "u1072234",
-        username: "Test User",
-        email: "test@iqvia.com",
-        user_type: "normal",
+        userId: process.env.REACT_APP_USERID,
+        username: 'Test User',
+        email: 'test@iqvia.com',
+        user_type: 'normal',
       };
       dispatch(setUserDetails(details));
     }
@@ -93,16 +93,16 @@ function App() {
 
   useEffect(() => {
     if (isTimedOut) {
-      console.log("timerId", timerId);
+      console.log('timerId', timerId);
       clearInterval(timerId);
-      console.log("timer set to log out");
-      let id = setTimeout(function () {
-        console.log("logout");
+      console.log('timer set to log out');
+      const id = setTimeout(function () {
+        console.log('logout');
         window.location.href = `${baseUrlSSO}/logout_session`;
       }, 60 * 5 * 1000);
       setIdleid(id);
       return () => {
-        console.log("Interval cleared");
+        console.log('Interval cleared');
         clearInterval(id);
       };
     }
@@ -114,16 +114,16 @@ function App() {
   };
 
   const handleOnActive = (event) => {
-    console.log("user is active", event);
+    console.log('user is active', event);
     // console.log("time remaining", idleTimer.getRemainingTime());
     // setIsTimeOut(false);
   };
 
   const handleOnIdle = (event) => {
-    console.log("user is idle", event);
+    console.log('user is idle', event);
     if (!isTimedOut) {
       axios
-        .get("/refresh", {
+        .get('/refresh', {
           params: {
             callbackUrl: window.location.href,
           },
@@ -131,10 +131,10 @@ function App() {
         .then((res) => {
           console.log(res.data.code);
           if (res.data.code === 102) {
-            console.log("idle pop up");
+            console.log('idle pop up');
             setIsTimeOut(true);
           } else if (res.data.code === 101) {
-            console.log("Logged out from UI");
+            console.log('Logged out from UI');
             window.location.href = `${baseUrlSSO}/logout_session`;
           }
         })
@@ -174,12 +174,12 @@ function App() {
         variant="default"
         open={isTimedOut}
         onClose={(e) => {
-          if (e.target.localName === "span") {
+          if (e.target.localName === 'span') {
             window.location.href = `${baseUrlSSO}/logout_session`;
           }
         }}
         id="timer"
-        buttonProps={[{}, { label: "OK", onClick: refreshTokens }]}
+        buttonProps={[{}, { label: 'OK', onClick: refreshTokens }]}
       >
         <p>
           Applicaiton is about to timeout due to inactivity. Press OK to

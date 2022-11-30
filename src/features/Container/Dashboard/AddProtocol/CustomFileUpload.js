@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import FileUpload from "apollo-react/components/FileUpload";
+/* eslint-disable */
+import { Component } from 'react';
+import FileUpload from 'apollo-react/components/FileUpload';
 
 const allowedTypes = [
-  ".doc",
-  ".pdf",
-  ".docx",
-  "application/pdf",
-  "application/msword",
-  "wordprocessingml",
+  '.doc',
+  '.pdf',
+  '.docx',
+  'application/pdf',
+  'application/msword',
+  'wordprocessingml',
 ];
 class CustomFileUpload extends Component {
   constructor(props) {
@@ -42,22 +43,22 @@ class CustomFileUpload extends Component {
               allowedTypes.length &&
               !allowedTypes.filter((type) => file.type.includes(type)).length
             ) {
-              file.errorMessage = "Please upload PDF or Word format only";
+              file.errorMessage = 'Please upload PDF or Word format only';
               handleFileUploadError(
-                "Please upload PDF or Word format only",
+                'Please upload PDF or Word format only',
                 true,
-                "uploadFile"
+                'uploadFile',
               );
             } else {
-              handleFileUploadError(" ", false, "uploadFile");
+              handleFileUploadError(' ', false, 'uploadFile');
             }
             return file;
           });
 
           this.setState({ selectedFiles: [...existingFiles, ...files] }, () => {
-            setUploadFile(this.state.selectedFiles, "uploadFile");
+            setUploadFile(this.state.selectedFiles, 'uploadFile');
           });
-        }, 1000)
+        }, 1000),
     );
   };
 
@@ -67,7 +68,7 @@ class CustomFileUpload extends Component {
     const selectedFiles = old.filter((item) => item.name !== file.name);
 
     this.setState({ selectedFiles }, () => {
-      setUploadFile(this.state.selectedFiles, "uploadFile");
+      setUploadFile(this.state.selectedFiles, 'uploadFile');
     });
   };
 

@@ -1,46 +1,45 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useRef } from "react";
-import DocumentsTable from "../../Components/DocumentsTable/DocumentsTable";
-import AssociateDocumentsTable from "../../Components/DocumentsTable/AssociateDocumentsTable";
+import { useState, useEffect, useRef } from 'react';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
+import Grid from 'apollo-react/components/Grid';
+import './Documents.scss';
+import { toast } from 'react-toastify';
+import Loader from 'apollo-react/components/Loader';
+import FileDownload from 'js-file-download';
+import cloneDeep from 'lodash/cloneDeep';
+import MenuButton from 'apollo-react/components/MenuButton';
+import Tooltip from 'apollo-react/components/Tooltip';
+import InfoIcon from 'apollo-react-icons/Info';
+import IconButton from 'apollo-react/components/IconButton';
+import Download from 'apollo-react-icons/Download';
+import Modal from 'apollo-react/components/Modal';
+import { messages } from '../../../AppConstant/AppConstant';
+import { userId } from '../../../store/userDetails';
+import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+import { protocolSummary, associateDocs } from './protocolSlice';
+import AssociateDocumentsTable from '../../Components/DocumentsTable/AssociateDocumentsTable';
+import DocumentsTable from '../../Components/DocumentsTable/DocumentsTable';
 
-import { useSelector } from "react-redux";
-import { protocolSummary, associateDocs } from "./protocolSlice.js";
-import Grid from "apollo-react/components/Grid";
-import "./Documents.scss";
-import { toast } from "react-toastify";
-import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import Loader from "apollo-react/components/Loader";
-import FileDownload from "js-file-download";
-import cloneDeep from "lodash/cloneDeep";
-import { userId } from "../../../store/userDetails";
-
-import MenuButton from "apollo-react/components/MenuButton";
-import { messages } from "../../../AppConstant/AppConstant";
-import Tooltip from "apollo-react/components/Tooltip";
-import InfoIcon from "apollo-react-icons/Info";
-import IconButton from "apollo-react/components/IconButton";
-import Download from "apollo-react-icons/Download";
-import Modal from "apollo-react/components/Modal";
-
-const message1 = "Please Select Base Document for Compare";
-const message2 = "Please Select Comparator Document for Compare";
-const Documents = ({ handleChangeTab }) => {
+const message1 = 'Please Select Base Document for Compare';
+const message2 = 'Please Select Comparator Document for Compare';
+function Documents({ handleChangeTab }) {
   const summary = useSelector(protocolSummary);
   const userId1 = useSelector(userId);
   const associateDocuments = useSelector(associateDocs);
   const [protocolSelected, setProtocolSelected] = useState({
-    source: "",
-    target: "",
-    sourceData: "",
-    targetData: "",
+    source: '',
+    target: '',
+    sourceData: '',
+    targetData: '',
   });
   const [compareMessage, setCompareMessage] = useState(message1);
   const [loader, setLoader] = useState(false);
   const [summaryData, setSummaryData] = useState({});
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState('');
   const [tooltip1, setToolTip1] = useState(false);
   const [tooltipSelected, setToolTipSelected] = useState(
-    messages.downloadFileContentCSV
+    messages.downloadFileContentCSV,
   );
   const tooltip1Ref = useRef(null);
   const tooltip2Ref = useRef(null);
@@ -48,27 +47,29 @@ const Documents = ({ handleChangeTab }) => {
   const getUserName = async (userID) => {
     const config = {
       url: `${BASE_URL_8000}/api/user/read_all_users?userId=${userID}`,
-      method: "GET",
+      method: 'GET',
     };
     const userDetailResp = await httpCall(config);
-    console.log(userDetailResp);
     if (userDetailResp.success) {
       const userName = `${userDetailResp.data.first_name} ${userDetailResp.data.last_name}`;
       setUserName(userName);
     } else {
-      setUserName("");
+      setUserName('');
     }
   };
+  /* eslint-disable */
   useEffect(() => {
-    let newObj = cloneDeep(summary.data);
+    const newObj = cloneDeep(summary.data);
     newObj.userName = userName;
     setSummaryData(newObj);
   }, [userName]);
+  /* eslint-enable */
   useEffect(() => {
     if (summary.success && summary.data.userId) {
-      if (isNaN(parseInt(summary.data.userId))) {
-        let newObj = cloneDeep(summary.data);
-        newObj.userName = "-";
+      // eslint-disable-next-line no-restricted-globals
+      if (isNaN(parseInt(summary.data.userId, 10))) {
+        const newObj = cloneDeep(summary.data);
+        newObj.userName = '-';
         setSummaryData(newObj);
       } else {
         getUserName(summary.data.userId);
@@ -91,10 +92,10 @@ const Documents = ({ handleChangeTab }) => {
     }
 
     // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
       // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [tooltip1Ref, tooltip2Ref]);
 
@@ -102,19 +103,19 @@ const Documents = ({ handleChangeTab }) => {
     if (protocolSelected.source) {
       if (protocolSelected.source === data.id) {
         const obj = {
-          source: "",
-          target: "",
-          sourceData: "",
-          targetData: "",
+          source: '',
+          target: '',
+          sourceData: '',
+          targetData: '',
         };
         setProtocolSelected(obj);
         setCompareMessage(message1);
       } else if (protocolSelected.target === data.id) {
         const obj = {
           source: protocolSelected.source,
-          target: "",
+          target: '',
           sourceData: protocolSelected.sourceData,
-          targetData: "",
+          targetData: '',
         };
         setProtocolSelected(obj);
         setCompareMessage(message2);
@@ -126,14 +127,14 @@ const Documents = ({ handleChangeTab }) => {
           targetData: data,
         };
         setProtocolSelected(obj);
-        setCompareMessage("");
+        setCompareMessage('');
       }
     } else {
       const obj = {
         source: data.id,
-        target: "",
+        target: '',
         sourceData: data,
-        targetData: "",
+        targetData: '',
       };
       setProtocolSelected(obj);
       setCompareMessage(message2);
@@ -147,49 +148,46 @@ const Documents = ({ handleChangeTab }) => {
         url: `${BASE_URL_8000}/api/document_compare/?id1=${
           protocolSelected.source
         }&id2=${protocolSelected.target}&userId=${userId1.substring(
-          1
+          1,
         )}&protocol=${summary.data.protocol}&file_type=${type}`,
-        method: "GET",
-        responseType: "blob",
+        method: 'GET',
+        responseType: 'blob',
       };
       const resp = await httpCall(config);
-      if (resp.message === "Success") {
+      if (resp.message === 'Success') {
         FileDownload(
           resp.data,
-          `${protocolSelected.source}_${protocolSelected.target}.compare_detail${type}`
+          `${protocolSelected.source}_${protocolSelected.target}.compare_detail${type}`,
         );
         setLoader(false);
-      } else if (resp.message === "No-Content") {
-        toast.info("No difference found for this compare");
+      } else if (resp.message === 'No-Content') {
+        toast.info('No difference found for this compare');
         setLoader(false);
-      } else if (resp.message === "Not-Found") {
-        toast.error("Compare is not available for selected documents.");
+      } else if (resp.message === 'Not-Found') {
+        toast.error('Compare is not available for selected documents.');
         setLoader(false);
       }
       setProtocolSelected([]);
     } catch (e) {
       setLoader(false);
-      console.log("Compare Resp", e.response);
-      /* istanbul ignore next*/
+      /* istanbul ignore next */
       if (e.response && e.response.data) {
         toast.error(e.response.data.detail);
       } else {
-        toast.error("Data fetching failed. Please try again.");
+        toast.error('Data fetching failed. Please try again.');
       }
     }
   };
   const fileContent = (arr) => {
-    console.log("TOOLTIP", arr);
     return (
       <div>
-        {/* <h3>{arr.header}</h3> */}
         <ol className="version-validation">
-          {arr.body.map((item, i) => (
-            <li key={i} className="compare-text-header">
+          {arr.body.map((item) => (
+            <li key={uuidv4()} className="compare-text-header">
               {item.header}
               <ul>
-                {item.body.map((subHeader, j) => (
-                  <li className="compare-text-sub-header" key={j}>
+                {item.body.map((subHeader) => (
+                  <li className="compare-text-sub-header" key={uuidv4()}>
                     {subHeader}
                   </li>
                 ))}
@@ -203,7 +201,7 @@ const Documents = ({ handleChangeTab }) => {
   /* istanbul ignore next */
   const openToolTip = (e, type) => {
     e.stopPropagation();
-    if (type === "csv") {
+    if (type === 'csv') {
       setToolTipSelected(messages.downloadFileContentCSV);
     } else {
       setToolTipSelected(messages.downloadFileContentExcel);
@@ -217,19 +215,19 @@ const Documents = ({ handleChangeTab }) => {
 
   const menuItems = [
     {
-      key: "CSV",
+      key: 'CSV',
       text: (
         <div className="dropdown-text-style">
           <div>CSV</div>
           <div className="info-icon">
             <Tooltip
               variant="light"
-              title={"Please click here to see the detail."}
+              title="Please click here to see the detail."
               placement="top"
             >
               <IconButton
                 color="primary"
-                onClick={(e) => openToolTip(e, "csv")}
+                onClick={(e) => openToolTip(e, 'csv')}
                 size="small"
               >
                 <InfoIcon size="small" />
@@ -238,22 +236,22 @@ const Documents = ({ handleChangeTab }) => {
           </div>
         </div>
       ),
-      onClick: () => downloadCompare(".csv"),
+      onClick: () => downloadCompare('.csv'),
     },
     {
-      key: "EXCEL",
+      key: 'EXCEL',
       text: (
         <div className="dropdown-text-style" ref={tooltip2Ref}>
           <div>Excel</div>
           <div className="info-icon">
             <Tooltip
               variant="light"
-              title={"Please click here to see the detail."}
+              title="Please click here to see the detail."
               placement="top"
             >
               <IconButton
                 color="primary"
-                onClick={(e) => openToolTip(e, "excel")}
+                onClick={(e) => openToolTip(e, 'excel')}
                 size="small"
               >
                 <InfoIcon size="small" />
@@ -262,7 +260,7 @@ const Documents = ({ handleChangeTab }) => {
           </div>
         </div>
       ),
-      onClick: () => downloadCompare(".xlsx"),
+      onClick: () => downloadCompare('.xlsx'),
     },
   ];
   const downloadButton = () => {
@@ -281,11 +279,11 @@ const Documents = ({ handleChangeTab }) => {
         open={tooltip1}
         onClose={() => closeToolTip()}
         title={tooltipSelected.header}
-        // subtitle="Optional Subtitle"
+        // eslint-disable-next-line react/no-children-prop
         children={fileContent(tooltipSelected)}
-        buttonProps={[{ label: "Okay" }]}
+        buttonProps={[{ label: 'Okay' }]}
         id="neutral"
-        hideButtons={true}
+        hideButtons
         className="modal-csv-excel-detail"
       />
       <Grid container spacing={2}>
@@ -294,7 +292,7 @@ const Documents = ({ handleChangeTab }) => {
             className="source-document-tab"
             data-testid="source-document-tab"
           >
-            {"userName" in summaryData && summaryData.userName && (
+            {'userName' in summaryData && summaryData.userName && (
               <DocumentsTable initialsRow={[summaryData]} />
             )}
           </div>
@@ -302,7 +300,7 @@ const Documents = ({ handleChangeTab }) => {
         {associateDocuments && associateDocuments.length > 1 && (
           <>
             <div className="compare-info">
-              {protocolSelected.source && protocolSelected.target === "" && (
+              {protocolSelected.source && protocolSelected.target === '' && (
                 <div className="compare-Detail">
                   <label>Baseline Document :</label>
                   <span>{`${protocolSelected.sourceData.protocol} (${protocolSelected.sourceData.documentStatus} ${protocolSelected.sourceData.versionNumber})`}</span>
@@ -326,11 +324,7 @@ const Documents = ({ handleChangeTab }) => {
               <MenuButton
                 buttonText={downloadButton()}
                 menuItems={menuItems}
-                disabled={
-                  protocolSelected.source && protocolSelected.target
-                    ? false
-                    : true
-                }
+                disabled={!(protocolSelected.source && protocolSelected.target)}
               />
             </div>
           </>
@@ -344,9 +338,7 @@ const Documents = ({ handleChangeTab }) => {
               //  initialsRow={protocolData && protocolData}
               initialsRow={associateDocuments}
               showCheckbox={
-                associateDocuments && associateDocuments.length > 1
-                  ? true
-                  : false
+                !!(associateDocuments && associateDocuments.length > 1)
               }
             />
           </div>
@@ -354,6 +346,9 @@ const Documents = ({ handleChangeTab }) => {
       </Grid>
     </div>
   );
-};
+}
 
 export default Documents;
+Documents.propTypes = {
+  handleChangeTab: PropTypes.isRequired,
+};

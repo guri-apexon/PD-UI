@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+/* eslint-disable */
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Breadcrumbs from "apollo-react/components/Breadcrumbs";
-import Tab from "apollo-react/components/Tab";
-import Tabs from "apollo-react/components/Tabs";
+import Breadcrumbs from 'apollo-react/components/Breadcrumbs';
+import Tab from 'apollo-react/components/Tab';
+import Tabs from 'apollo-react/components/Tabs';
 // import QCTable from './QCTable/QCTable';
-import QCProtocolTable from "./QCTable/QCProtocolTable";
+import QCProtocolTable from './QCTable/QCProtocolTable';
 
 // import QCProtocolView from "./QCProtocolView/QCProtocolView";
-import QCProtocolView from "./QCProtocolView/QCProtocolView";
-import { userType } from "../../../store/userDetails";
-import "./QC.scss";
-import "../Protocols/protocols.scss";
+import QCProtocolView from './QCProtocolView/QCProtocolView';
+import { userType } from '../../../store/userDetails';
+import './QC.scss';
+import '../Protocols/protocols.scss';
 
-const QCContainer = () => {
+function QCContainer() {
   const dispatch = useDispatch();
   const type = useSelector(userType);
   const [value, setValue] = useState(0);
-  const [protocolId, setprotocolId] = useState("");
-  const [protocolNumber, setProtocolNumber] = useState("");
-  const [filePath, setFilePath] = useState("");
+  const [protocolId, setprotocolId] = useState('');
+  const [protocolNumber, setProtocolNumber] = useState('');
+  const [filePath, setFilePath] = useState('');
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -28,9 +29,9 @@ const QCContainer = () => {
   const handleChangeTab = (event, value) => {
     if (value !== 1) setValue(value);
     if (value === 0) {
-      setprotocolId("");
-      setProtocolNumber("");
-      setFilePath("");
+      setprotocolId('');
+      setProtocolNumber('');
+      setFilePath('');
     }
   };
   const handleProtocolClick = ({ id, path, protocol }) => {
@@ -41,10 +42,10 @@ const QCContainer = () => {
   };
 
   const breadItems = [
-    { href: "/qc", onClick: (e) => handleClick(e) },
+    { href: '/qc', onClick: (e) => handleClick(e) },
     {
-      href: "/qc",
-      title: "QC",
+      href: '/qc',
+      title: 'QC',
       onClick: handleClick,
     },
   ];
@@ -56,7 +57,7 @@ const QCContainer = () => {
   }
   useEffect(() => {
     // dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
-    dispatch({ type: "GET_QC_PROTOCOL_TABLE_SAGA" });
+    dispatch({ type: 'GET_QC_PROTOCOL_TABLE_SAGA' });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -76,7 +77,7 @@ const QCContainer = () => {
       />
       <div
         className="qc-tabs-parent"
-        style={{ display: "flex", flexDirection: "row" }}
+        style={{ display: 'flex', flexDirection: 'row' }}
       >
         <div style={{ flex: 1 }}>
           <Tabs value={value} onChange={handleChangeTab} size="small" truncate>
@@ -101,6 +102,6 @@ const QCContainer = () => {
       </div>
     </div>
   );
-};
+}
 
 export default QCContainer;

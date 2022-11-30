@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const navbarSlice = createSlice({
-  name: "navbar",
+  name: 'navbar',
   initialState: {
     notifications: [],
     error: false,

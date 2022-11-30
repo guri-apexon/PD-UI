@@ -1,11 +1,12 @@
-/* eslint-disable no-console */
-import React from "react";
+/* eslint-disable */
+import React from 'react';
 
-import Blade from "apollo-react/components/Blade";
-import Download from "apollo-react-icons/Download";
-import Plus from "apollo-react-icons/Plus";
-import axios from "axios";
-const FileDownload = require("js-file-download");
+import Blade from 'apollo-react/components/Blade';
+import Download from 'apollo-react-icons/Download';
+import Plus from 'apollo-react-icons/Plus';
+import axios from 'axios';
+
+const FileDownload = require('js-file-download');
 
 class Sidebar extends React.Component {
   state = {
@@ -29,13 +30,13 @@ class Sidebar extends React.Component {
   // };
   handleDownload = (type, data) => {
     /* istanbul ignore else */
-    if (type === "toc") {
+    if (type === 'toc') {
       // this.props.handleDownloadTOC(data);
       axios({
-        url: "http://localhost:4000/create-excel",
-        method: "POST",
-        responseType: "blob", // Important
-        data: data,
+        url: 'http://localhost:4000/create-excel',
+        method: 'POST',
+        responseType: 'blob', // Important
+        data,
       }).then((response) => {
         FileDownload(response.data, `${data.protocolNumber}.xlsx`);
       });
@@ -45,7 +46,7 @@ class Sidebar extends React.Component {
   render() {
     // const { expanded, open } = this.state;
     const { open, setOpen, compare } = this.props;
-    const data = compare.iqvdata.data;
+    const { data } = compare.iqvdata;
 
     return (
       <>
@@ -64,7 +65,7 @@ class Sidebar extends React.Component {
             <div className="sidebar-div">
               <div
                 className="header-section"
-                onClick={() => this.handleDownload("toc", compare)}
+                onClick={() => this.handleDownload('toc', compare)}
                 data-testid="download-div"
               >
                 Summary of Changes <Download />
@@ -79,8 +80,8 @@ class Sidebar extends React.Component {
 
                     const noOFDiff = item[7];
                     return (
-                      type === "header" && (
-                        <li key={"toc" + i}>
+                      type === 'header' && (
+                        <li key={`toc${i}`}>
                           <a>
                             {text1} ({noOFDiff})
                           </a>

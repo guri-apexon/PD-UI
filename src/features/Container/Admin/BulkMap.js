@@ -1,22 +1,23 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import isEmpty from "lodash/isEmpty";
-import Button from "apollo-react/components/Button";
-import Modal from "apollo-react/components/Modal";
-import Loader from "apollo-react/components/Loader";
-import FileUpload from "apollo-react/components/FileUpload";
-import Accordion from "apollo-react/components/Accordion";
-import AccordionDetails from "apollo-react/components/AccordionDetails";
-import AccordionSummary from "apollo-react/components/AccordionSummary";
-import Typography from "apollo-react/components/Typography";
+/* eslint-disable */
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import isEmpty from 'lodash/isEmpty';
+import Button from 'apollo-react/components/Button';
+import Modal from 'apollo-react/components/Modal';
+import Loader from 'apollo-react/components/Loader';
+import FileUpload from 'apollo-react/components/FileUpload';
+import Accordion from 'apollo-react/components/Accordion';
+import AccordionDetails from 'apollo-react/components/AccordionDetails';
+import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import Typography from 'apollo-react/components/Typography';
 import {
   mappingLoader,
   bulkMapResponse,
   bulkMapError,
   setBulkMapError,
   setBulkMapResponse,
-} from "./adminSlice";
+} from './adminSlice';
 
 function BulkMap() {
   const dispatch = useDispatch();
@@ -27,10 +28,10 @@ function BulkMap() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const handleSaveForm = () => {
     if (selectedFiles.length < 1) {
-      dispatch(setBulkMapError("Atleast single file is required for upload"));
+      dispatch(setBulkMapError('Atleast single file is required for upload'));
     } else {
       dispatch({
-        type: "BULK_UPLOAD_MAPPING_SAGA",
+        type: 'BULK_UPLOAD_MAPPING_SAGA',
         payload: selectedFiles[0],
       });
     }
@@ -39,22 +40,22 @@ function BulkMap() {
   const handleUpload = (selectedFiles) => {
     if (
       selectedFiles[0].type ===
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     ) {
       setSelectedFiles(selectedFiles);
     } else {
       dispatch(
         setBulkMapError(
-          "Invalid file received, please provide excel file(.xlsx)"
-        )
+          'Invalid file received, please provide excel file(.xlsx)',
+        ),
       );
     }
   };
 
   const handleDelete = () => {
     setSelectedFiles([]);
-    dispatch(setBulkMapError(""));
-    dispatch(setBulkMapResponse(""));
+    dispatch(setBulkMapError(''));
+    dispatch(setBulkMapResponse(''));
   };
 
   const resposeObject = () => {
@@ -64,10 +65,10 @@ function BulkMap() {
           <AccordionSummary>
             <Typography>Response with details are below</Typography>
           </AccordionSummary>
-          <AccordionDetails style={{ display: "block" }}>
+          <AccordionDetails style={{ display: 'block' }}>
             {bulkResponse.map((item) => {
               return (
-                <Typography style={{ color: "#2142a8" }}>{item}</Typography>
+                <Typography style={{ color: '#2142a8' }}>{item}</Typography>
               );
             })}
           </AccordionDetails>
@@ -94,9 +95,9 @@ function BulkMap() {
         }}
         title="Map User to Protocol"
         subtitle={
-          bulkError && <span style={{ color: "red" }}>{bulkError}</span>
+          bulkError && <span style={{ color: 'red' }}>{bulkError}</span>
         }
-        buttonProps={[{}, { label: "Upload", onClick: handleSaveForm }]}
+        buttonProps={[{}, { label: 'Upload', onClick: handleSaveForm }]}
         id="bulk-map-modal"
         data-testid="bulk-map-modal"
       >
@@ -108,9 +109,9 @@ function BulkMap() {
         <div style={{ maxWidth: 700, minWidth: 400 }} data-testid="file-upload">
           <div>
             <p>
-              Click here for Bulk Map sample excel :{" "}
+              Click here for Bulk Map sample excel :{' '}
               <Link
-                style={{ textDecoration: "none" }}
+                style={{ textDecoration: 'none' }}
                 to="/Bulk Map.xlsx"
                 target="_blank"
                 download
@@ -127,7 +128,7 @@ function BulkMap() {
             fullWidth
             dropAreaHeight={150}
             maxItems={1}
-            required={true}
+            required
           />
         </div>
         {resposeObject()}

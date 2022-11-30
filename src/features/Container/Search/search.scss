@@ -154,17 +154,17 @@
         }
       }
     }
-    div[class*="MuiExpansionPanelSummary-root"] {
+    div[class*='MuiExpansionPanelSummary-root'] {
       margin-left: 24px;
       min-height: 30px;
-      div[class*="MuiExpansionPanelSummary-content"] {
+      div[class*='MuiExpansionPanelSummary-content'] {
         // margin-left: 24px;
         min-height: 30px;
         p {
           padding: 3px 0px;
         }
       }
-      div[class*="MuiExpansionPanelSummary-expandIcon"] {
+      div[class*='MuiExpansionPanelSummary-expandIcon'] {
         height: 30px;
         width: 30px;
         top: 15px;
@@ -395,11 +395,11 @@
     text-align: left !important;
   }
 
-  [class*="MuiCheckbox-colorPrimary"] {
+  [class*='MuiCheckbox-colorPrimary'] {
     top: 0 !important;
   }
 
-  [class*="Panel-container"] {
+  [class*='Panel-container'] {
     float: left !important;
   }
 
@@ -515,7 +515,7 @@
     font-weight: 500;
   }
   .Collapsible__trigger::after {
-    content: "+";
+    content: '+';
     position: absolute;
     font-size: 22px;
     right: 10px;
@@ -526,7 +526,7 @@
   }
 
   .Collapsible__trigger.is-open::after {
-    content: "-";
+    content: '-';
   }
 
   .Collapsible__trigger.is-disabled {
@@ -550,13 +550,13 @@
     color: black;
   }
 
-  div[class^="Panel-container"] span.MuiTypography-root {
+  div[class^='Panel-container'] span.MuiTypography-root {
     margin-left: 10px;
     font-size: 15px;
   }
 
-  div[class*="MuiFormGroup-root"]
-    span[class*="MuiIconButton-label"]:first-child {
+  div[class*='MuiFormGroup-root']
+    span[class*='MuiIconButton-label']:first-child {
     top: 6px;
     font-family: Proxima Nova, Nunito Sans, sans-serif;
     font-size: 10px;
@@ -565,14 +565,14 @@
       width: 18px;
     }
   }
-  span[class*="MuiRadio-colorPrimary"] {
+  span[class*='MuiRadio-colorPrimary'] {
     top: 0;
   }
-  span[class*="MuiFormControlLabel-label-"] {
+  span[class*='MuiFormControlLabel-label-'] {
     font-size: 13px;
   }
 
-  div[class*="Panel-container"] {
+  div[class*='Panel-container'] {
     border: none !important;
   }
 }
@@ -659,5 +659,6 @@
     font-size: 13px;
     padding-left: 6px;
     color: #444444;
+    margin-top: 7px;
   }
 }

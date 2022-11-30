@@ -1,21 +1,21 @@
-import React from "react";
-import moment from "moment";
-import cloneDeep from "lodash/cloneDeep";
-import Cog from "apollo-react-icons/Cog";
-import Pencil from "apollo-react-icons/Pencil";
-import Trash from "apollo-react-icons/Trash";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "apollo-react/components/IconButton";
-import Button from "apollo-react/components/Button";
+/* eslint-disable */
+import moment from 'moment';
+import cloneDeep from 'lodash/cloneDeep';
+import Cog from 'apollo-react-icons/Cog';
+import Pencil from 'apollo-react-icons/Pencil';
+import Trash from 'apollo-react-icons/Trash';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from 'apollo-react/components/IconButton';
+import Button from 'apollo-react/components/Button';
 import {
   compareDates,
   compareStrings,
   createStringSearchFilter,
   createSelectFilterComponent,
-} from "apollo-react/components/Table";
-import TextField from "apollo-react/components/TextField";
-import MenuItem from "apollo-react/components/MenuItem";
-import Select from "apollo-react/components/Select";
+} from 'apollo-react/components/Table';
+import TextField from 'apollo-react/components/TextField';
+import MenuItem from 'apollo-react/components/MenuItem';
+import Select from 'apollo-react/components/Select';
 
 const fieldStyles = {
   style: {
@@ -25,9 +25,9 @@ const fieldStyles = {
 };
 
 const DateCell = ({ row, column }) =>
-  moment(row[column.accessor]).format("MM/DD/YYYY");
+  moment(row[column.accessor]).format('MM/DD/YYYY');
 
-const ActionCell = ({ row }) => {
+function ActionCell({ row }) {
   const {
     username,
     onRowEdit,
@@ -38,14 +38,14 @@ const ActionCell = ({ row }) => {
     onDelete,
   } = row;
   return editMode ? (
-    <div style={{ marginTop: 8, whiteSpace: "nowrap" }}>
+    <div style={{ marginTop: 8, whiteSpace: 'nowrap' }}>
       <Button
         data-testid="edit-cancel"
         size="small"
         style={{ marginRight: 8 }}
         onClick={onCancel}
       >
-        {"Cancel"}
+        Cancel
       </Button>
       <Button
         data-testid="edit-save"
@@ -58,7 +58,7 @@ const ActionCell = ({ row }) => {
             !Object.keys(editedRow).some((key) => editedRow[key] !== row[key]))
         }
       >
-        {"Save"}
+        Save
       </Button>
     </div>
   ) : (
@@ -89,9 +89,9 @@ const ActionCell = ({ row }) => {
       </span>
     </div>
   );
-};
+}
 
-const TextFieldFilter = ({ accessor, filters, updateFilterValue }) => {
+function TextFieldFilter({ accessor, filters, updateFilterValue }) {
   return (
     <TextField
       value={filters[accessor]}
@@ -102,21 +102,20 @@ const TextFieldFilter = ({ accessor, filters, updateFilterValue }) => {
       data-testid={accessor}
     />
   );
-};
+}
 
 export function createStringArraySearchFilter(accessor) {
   return (row, filters) =>
     !Array.isArray(filters[accessor]) ||
     filters[accessor].length === 0 ||
     filters[accessor].some(
-      (value) => value.toUpperCase() === row[accessor].toUpperCase()
+      (value) => value.toUpperCase() === row[accessor].toUpperCase(),
     );
 }
 
-const makeEditableSelectCell =
-  (options) =>
-  ({ row, column: { accessor: key } }) =>
-    row.editMode ? (
+const makeEditableSelectCell = (options) =>
+  function ({ row, column: { accessor: key } }) {
+    return row.editMode ? (
       <Select
         data-testid={`editablecell-select-${row.username}`}
         size="small"
@@ -135,72 +134,75 @@ const makeEditableSelectCell =
     ) : (
       row[key]
     );
+  };
 
-const Cell = ({ row, column }) => (
-  <div style={{ paddingTop: row.editMode ? 12 : 0 }}>
-    {row[column.accessor]}
-  </div>
-);
+function Cell({ row, column }) {
+  return (
+    <div style={{ paddingTop: row.editMode ? 12 : 0 }}>
+      {row[column.accessor]}
+    </div>
+  );
+}
 
 const getColumns = (data) => {
   const roles = cloneDeep(data);
   return [
     {
-      header: "User ID",
-      accessor: "username",
+      header: 'User ID',
+      accessor: 'username',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("username"),
+      filterFunction: createStringSearchFilter('username'),
       filterComponent: TextFieldFilter,
       width: 90,
       customCell: Cell,
     },
     {
-      header: "First Name",
-      accessor: "first_name",
+      header: 'First Name',
+      accessor: 'first_name',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("first_name"),
+      filterFunction: createStringSearchFilter('first_name'),
       filterComponent: TextFieldFilter,
       customCell: Cell,
     },
     {
-      header: "Last Name",
-      accessor: "last_name",
+      header: 'Last Name',
+      accessor: 'last_name',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("last_name"),
+      filterFunction: createStringSearchFilter('last_name'),
       filterComponent: TextFieldFilter,
       customCell: Cell,
     },
     {
-      header: "Email",
-      accessor: "email",
+      header: 'Email',
+      accessor: 'email',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("email"),
+      filterFunction: createStringSearchFilter('email'),
       filterComponent: TextFieldFilter,
       customCell: Cell,
     },
     {
-      header: "Country",
-      accessor: "country",
+      header: 'Country',
+      accessor: 'country',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("country"),
+      filterFunction: createStringSearchFilter('country'),
       filterComponent: TextFieldFilter,
       customCell: Cell,
       width: 120,
     },
     {
-      header: "Created Date",
-      accessor: "date_of_registration",
+      header: 'Created Date',
+      accessor: 'date_of_registration',
       sortFunction: compareDates,
       customCell: DateCell,
       width: 120,
     },
     {
-      header: "User Role",
-      accessor: "user_type",
+      header: 'User Role',
+      accessor: 'user_type',
       sortFunction: compareStrings,
-      filterFunction: createStringArraySearchFilter("user_type"),
+      filterFunction: createStringArraySearchFilter('user_type'),
       filterComponent: createSelectFilterComponent(roles, {
-        size: "small",
+        size: 'small',
         multiple: true,
       }),
       customCell: makeEditableSelectCell(roles),
@@ -208,9 +210,9 @@ const getColumns = (data) => {
     },
     {
       header: <Cog size="small" />,
-      accessor: "action",
+      accessor: 'action',
       customCell: ActionCell,
-      align: "center",
+      align: 'center',
       width: 120,
     },
   ];

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import qcSlice, {
   getProtocols,
   setError,
@@ -6,7 +7,7 @@ import qcSlice, {
   qcProtocols,
   qcProtocolsError,
   loader,
-} from "../qcSlice";
+} from '../qcSlice';
 
 const initialState = {
   protocols: [],
@@ -22,57 +23,57 @@ const state = {
   },
 };
 
-describe(" QCSlice Test Suite", () => {
-  test("Set Protocols For QC", () => {
+describe(' QCSlice Test Suite', () => {
+  test('Set Protocols For QC', () => {
     expect(
       qcSlice(initialState, {
         type: getProtocols.type,
         payload: [
           {
-            protocolTitle: "",
-            protocol: "",
-            projectId: "",
-            sponsor: "",
-            uploadDate: "",
+            protocolTitle: '',
+            protocol: '',
+            projectId: '',
+            sponsor: '',
+            uploadDate: '',
             id: 1,
           },
         ],
-      })
+      }),
     ).toEqual({
       ...initialState,
       protocols: [
         {
-          protocolTitle: "",
-          protocol: "",
-          projectId: "",
-          sponsor: "",
-          uploadDate: "",
+          protocolTitle: '',
+          protocol: '',
+          projectId: '',
+          sponsor: '',
+          uploadDate: '',
           id: 1,
         },
       ],
     });
   });
 
-  test("Set Error For QC", () => {
+  test('Set Error For QC', () => {
     expect(
       qcSlice(initialState, {
         type: setError.type,
         payload: false,
-      })
+      }),
     ).toEqual({ ...initialState, tableError: false });
   });
-  test("Set Loader For QC", () => {
+  test('Set Loader For QC', () => {
     expect(
       qcSlice(initialState, {
         type: getLoader.type,
         payload: false,
-      })
+      }),
     ).toEqual({ ...initialState, loader: false });
   });
-  test("Test All selector ", () => {
+  test('Test All selector ', () => {
     qcSlice(initialState, {
       type: getProtocols.type,
-      payload: [{ id: "abcd" }],
+      payload: [{ id: 'abcd' }],
     });
     qc(state);
     qcProtocols(state);

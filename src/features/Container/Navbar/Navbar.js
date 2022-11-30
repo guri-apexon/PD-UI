@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import NavigationBar from "apollo-react/components/NavigationBar";
-import Alerts from "./Alerts";
+/* eslint-disable */
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import NavigationBar from 'apollo-react/components/NavigationBar';
+import Alerts from './Alerts';
 import {
   USER_MENU,
   QC1_MENU,
   QC2_MENU,
   ADMIN_MENU,
-} from "../../../AppConstant/AppConstant";
-import { baseUrlSSO } from "../../../utils/api";
+} from '../../../AppConstant/AppConstant';
+import { baseUrlSSO } from '../../../utils/api';
 
 const setMenuItems = (value) => {
   switch (value) {
-    case "normal":
+    case 'normal':
       return USER_MENU;
-    case "QC1":
+    case 'QC1':
       return QC1_MENU;
-    case "QC2":
+    case 'QC2':
       return QC2_MENU;
-    case "admin":
+    case 'admin':
       return ADMIN_MENU;
     default:
       return [];
@@ -32,16 +33,16 @@ const onLogoutClick = () => {
 
 function Navbar() {
   const dispatch = useDispatch();
-  let history = useHistory();
-  let location = useLocation();
+  const history = useHistory();
+  const location = useLocation();
 
   const [userData, setUserData] = useState({});
   const userDetail = useSelector((state) => state.user.userDetail);
-  const [pathname, setPathname] = useState("/dashboard");
+  const [pathname, setPathname] = useState('/dashboard');
   useEffect(() => {
-    if ("userId" in userData) {
+    if ('userId' in userData) {
       const userID = userData.userId.substring(1);
-      dispatch({ type: "GET_NOTIFICATION_SAGA", payload: userID });
+      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: userID });
     }
   }, [userData, dispatch]);
   useEffect(() => {
@@ -55,7 +56,7 @@ function Navbar() {
   }, [location]);
 
   const onClickNavigation = (pathname) => {
-    if (pathname !== "/protocols") {
+    if (pathname !== '/protocols') {
       history.push(pathname);
       setPathname(pathname);
     }
@@ -69,7 +70,7 @@ function Navbar() {
 
   const profileMenuProps = {
     name: userDetail.username,
-    title: "",
+    title: '',
     email: userDetail.email,
     logoutButtonProps: {
       onClick: () => onLogoutClick(),
@@ -78,21 +79,21 @@ function Navbar() {
   };
 
   return (
-    "userId" in userData &&
+    'userId' in userData &&
     userData.userId && (
       <div data-testid="navbar-test">
         <NavigationBar
           LogoComponent={() => (
             <div
               style={{
-                color: "white",
-                lineHeight: "56px",
+                color: 'white',
+                lineHeight: '56px',
                 marginRight: 24,
-                cursor: "pointer",
+                cursor: 'pointer',
                 zIndex: 2,
-                whiteSpace: "nowrap",
+                whiteSpace: 'nowrap',
               }}
-              onClick={() => history.push("/")}
+              onClick={() => history.push('/')}
             >
               IQVIA <span style={{ fontWeight: 400 }}>Protocol Library</span>
             </div>

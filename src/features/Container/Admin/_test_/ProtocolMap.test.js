@@ -1,10 +1,9 @@
-import React from "react";
-import { render } from "../../../../test-utils/test-utils";
-import "@testing-library/jest-dom/extend-expect";
+import { render } from '../../../../test-utils/test-utils';
+import '@testing-library/jest-dom/extend-expect';
 
-import ProtocolMap from "../ProtocolMap";
+import ProtocolMap from '../ProtocolMap';
 
-describe("ProtocolMap Screen", () => {
+describe('ProtocolMap Screen', () => {
   const mockState = {
     users: [],
     roles: [],
@@ -19,14 +18,14 @@ describe("ProtocolMap Screen", () => {
       userRole: null,
     },
     modalToggle: true,
-    newUserError: "",
+    newUserError: '',
     searchedData: {},
     roleOptions: {
-      user: ["normal", "QC1", "QC2", "admin"],
-      protocol: ["Primary", "Secondary"],
+      user: ['normal', 'QC1', 'QC2', 'admin'],
+      protocol: ['Primary', 'Secondary'],
     },
   };
-  test("should render ProtocolMap screen", () => {
+  test('should render ProtocolMap screen', () => {
     render(<ProtocolMap />, {
       initialState: {
         admin: mockState,
@@ -34,7 +33,7 @@ describe("ProtocolMap Screen", () => {
     });
   });
 
-  test("should render ProtocolMap screen loading", () => {
+  test('should render ProtocolMap screen loading', () => {
     mockState.loader = true;
     render(<ProtocolMap />, {
       initialState: {

@@ -1,10 +1,9 @@
-import React from "react";
-import { render as rtlRender } from "@testing-library/react";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
-import rootReducer from "../store/rootReducer";
-import { BrowserRouter as Router } from "react-router-dom";
-import { combineReducers } from "redux";
+/* eslint-disable */
+import { render as rtlRender } from '@testing-library/react';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import rootReducer from '../store/rootReducer';
 
 const rootReducerCombined = combineReducers(rootReducer);
 
@@ -14,7 +13,7 @@ function render(
     initialState,
     store = createStore(rootReducerCombined, initialState),
     ...renderOptions
-  } = {}
+  } = {},
 ) {
   function Wrapper({ children }) {
     return (
@@ -27,7 +26,7 @@ function render(
 }
 
 // re-export everything
-export * from "@testing-library/react";
+export * from '@testing-library/react';
 
 // override render method
 export { render };

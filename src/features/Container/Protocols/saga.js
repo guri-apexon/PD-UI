@@ -5,51 +5,46 @@ import {
   call,
   takeLatest,
   select,
-} from "redux-saga/effects";
+} from 'redux-saga/effects';
+import cloneDeep from 'lodash/cloneDeep';
 import {
   getSummary,
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
-} from "./protocolSlice.js";
-import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import cloneDeep from "lodash/cloneDeep";
+} from './protocolSlice';
+import { httpCall, BASE_URL_8000 } from '../../../utils/api';
 
 function* getUserId() {
   const state = yield select();
   const id = state.user.userDetail.userId;
   return id.substring(1);
 }
-// function* getFullUserId() {
-//   const state = yield select();
-//   const id = state.user.userDetail.userId;
-//   return id;
-// }
 
 export function* getSummaryData(action) {
-  let obj = {
+  const obj = {
     loading: true,
     success: false,
     data: null,
   };
   yield put(getSummary(obj));
-  let userId = yield getUserId();
+  const userId = yield getUserId();
   const url = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}&docId=${action.payload}`;
 
-  const resp = yield call(httpCall, { url, method: "GET" });
+  const resp = yield call(httpCall, { url, method: 'GET' });
   if (resp.data && resp.data.length) {
-    let obj = {
+    const obj = {
       loading: false,
       success: true,
       data: resp.data[0],
     };
     yield put(getSummary(obj));
     yield put({
-      type: "FETCH_ASSOCIATE_PROTOCOLS",
+      type: 'FETCH_ASSOCIATE_PROTOCOLS',
       payload: resp.data[0].protocol,
     });
   } else {
-    let obj = {
+    const obj = {
       loading: false,
       success: true,
       data: null,
@@ -68,24 +63,23 @@ export function captalize(data) {
     .toLowerCase()
     .replace(/\w\S*/g, (w) => w.replace(/^\w/, (c) => c.toUpperCase()));
 }
-
+/* eslint-disable */
 export function getTocSections(toc) {
   const sectionList = [];
   const list = [];
   toc.data.map((item) => {
     let file_section_level = item[8].toString();
-    let type = item[2];
-    // let heading = item[4].font_style;
-    if (!file_section_level && type === "header") {
-      file_section_level = "1";
+    const type = item[2];
+    if (!file_section_level && type === 'header') {
+      file_section_level = '1';
     }
-    let level_1_CPT_section = captalize(item[6]);
-    let section_num = item[7];
+    const level_1_CPT_section = captalize(item[6]);
+    const section_num = item[7];
 
     if (
       section_num &&
-      file_section_level === "1" &&
-      level_1_CPT_section !== "Unmapped" &&
+      file_section_level === '1' &&
+      level_1_CPT_section !== 'Unmapped' &&
       !sectionList.includes(level_1_CPT_section)
     ) {
       list.push({
@@ -94,9 +88,9 @@ export function getTocSections(toc) {
       });
       sectionList.push(level_1_CPT_section);
     } else if (
-      type === "header" &&
-      file_section_level === "1" &&
-      level_1_CPT_section !== "Unmapped" &&
+      type === 'header' &&
+      file_section_level === '1' &&
+      level_1_CPT_section !== 'Unmapped' &&
       !sectionList.includes(level_1_CPT_section)
     ) {
       list.push({
@@ -109,19 +103,18 @@ export function getTocSections(toc) {
   });
   return list;
 }
-
+/* eslint-enable */
 export function getSoaSections(soa) {
   // const sectionList = [];
   const list = [];
   soa.map((item) => {
-    let TableIndex = item.TableIndex;
-    let TableName = item.TableName;
+    const { TableIndex } = item;
+    const { TableName } = item;
     list.push({
       section: `${TableName}`,
       id: `SOA-${TableIndex}`,
     });
     return item;
-    // sectionList.push(CPT_section);
   });
   return list;
 }
@@ -136,12 +129,10 @@ export function* getProtocolToc(action) {
     soaSections: null,
     err: null,
   };
-  let userId = yield getUserId();
+  const userId = yield getUserId();
   yield put(getProcotoclToc(viewData));
-  // console.log("Protocol View", userId);
-  // const URL = `/QC_New_re.json`;
-  let URL = "";
-  if (action.payload.user === "qc") {
+  let URL = '';
+  if (action.payload.user === 'qc') {
     URL = `${BASE_URL_8000}/api/protocol_qcdata/?id=${action.payload.id}`;
   } else {
     URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
@@ -149,7 +140,7 @@ export function* getProtocolToc(action) {
 
   const config = {
     url: URL,
-    method: "GET",
+    method: 'GET',
   };
   try {
     const data = yield call(httpCall, config);
@@ -175,12 +166,11 @@ export function* getProtocolToc(action) {
         loader: false,
         tocSections: null,
         soaSections: null,
-        err: "No data found",
+        err: 'No data found',
       };
       yield put(getProcotoclToc(viewData));
     }
   } catch (err) {
-    console.log(err);
     const viewData = {
       iqvdataSoa: null,
       iqvdataSummary: null,
@@ -188,19 +178,19 @@ export function* getProtocolToc(action) {
       loader: false,
       tocSections: null,
       soaSections: null,
-      err: "No data found",
+      err: 'No data found',
     };
     yield put(getProcotoclToc(viewData));
   }
 }
 
 export function* fetchAssociateProtocol(action) {
-  let userId = yield getUserId();
+  const userId = yield getUserId();
   const URL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload}&userId=${userId}`;
   //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   const config = {
     url: URL,
-    method: "GET",
+    method: 'GET',
   };
   const associateDocs = yield call(httpCall, config);
   if (associateDocs.success) {
@@ -214,51 +204,51 @@ export function* getCompareResult(action) {
   if (action.payload) {
     yield put(
       getCompare({
-        iqvdata: "",
+        iqvdata: '',
         loading: true,
         called: true,
         error: false,
-        message: "",
-      })
+        message: '',
+      }),
     );
     // const url = `${BASE_URL_8000}/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
-    const url = `/compareWithSection.json`;
-    const resp = yield call(httpCall, { url, method: "GET" });
+    const url = '/compareWithSection.json';
+    const resp = yield call(httpCall, { url, method: 'GET' });
 
     if (resp.data) {
-      let temp = cloneDeep(resp.data);
+      const temp = cloneDeep(resp.data);
       temp.loading = false;
       temp.called = true;
       yield put(getCompare(temp));
     } else {
-      let temp = {
-        iqvdata: "",
+      const temp = {
+        iqvdata: '',
         loading: false,
         called: false,
         error: true,
-        message: "Comparison is Under Process.",
+        message: 'Comparison is Under Process.',
       };
       yield put(getCompare(temp));
     }
   } else {
     yield put(
       getCompare({
-        iqvdata: "",
+        iqvdata: '',
         loading: false,
         called: false,
         error: false,
-        message: "",
-      })
+        message: '',
+      }),
     );
   }
 }
 
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
-  yield takeEvery("GET_PROTOCOL_SUMMARY", getSummaryData);
-  yield takeLatest("GET_PROTOCOL_TOC_SAGA", getProtocolToc);
-  yield takeLatest("FETCH_ASSOCIATE_PROTOCOLS", fetchAssociateProtocol);
-  yield takeEvery("POST_COMPARE_PROTOCOL", getCompareResult);
+  yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
+  yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
+  yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol);
+  yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
 }
 
 // notice how we now only export the rootSaga

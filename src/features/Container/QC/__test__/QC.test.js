@@ -1,20 +1,21 @@
-import React from "react";
-import { render } from "../../../../test-utils/test-utils";
+/* eslint-disable */
+import React from 'react';
+import { render } from '../../../../test-utils/test-utils';
 // import { fireEvent, screen } from "../../../../test-utils/test-utils";
-import "@testing-library/jest-dom/extend-expect";
-import QC from "../QC";
+import '@testing-library/jest-dom/extend-expect';
+import QC from '../QC';
 
-describe("Protocol Table container component", () => {
+describe('Protocol Table container component', () => {
   const state = {
     initialState: {
       qc: {
         protocols: [
           {
-            protocolTitle: "Title",
-            protocol: "12344",
-            projectId: "Project1",
-            sponsor: "Astella",
-            uploadDate: "aa",
+            protocolTitle: 'Title',
+            protocol: '12344',
+            projectId: 'Project1',
+            sponsor: 'Astella',
+            uploadDate: 'aa',
             id: 1,
           },
         ],
@@ -23,7 +24,7 @@ describe("Protocol Table container component", () => {
       },
     },
   };
-  test("should render QC", () => {
+  test('should render QC', () => {
     render(<QC />, state);
   });
   // test("should switch to tab QC Protocol View", () => {

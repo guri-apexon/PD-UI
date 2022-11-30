@@ -1,38 +1,38 @@
-import React, { useEffect, useState } from "react";
-import queryString from "query-string";
+import { useEffect, useState } from 'react';
+import queryString from 'query-string';
+import PropTypes from 'prop-types';
+// ------------------- CSS -------------------
+import './protocols.scss';
 
-//------------------- CSS -------------------
-import "./protocols.scss";
+// ------------------- Redux -----------------
+import { useSelector, useDispatch } from 'react-redux';
+import Breadcrumbs from 'apollo-react/components/Breadcrumbs';
+import Tab from 'apollo-react/components/Tab';
+import Tabs from 'apollo-react/components/Tabs';
+import Loader from 'apollo-react/components/Loader';
+import { protocolSummary, getProcotoclToc } from './protocolSlice';
 
-//------------------- Redux -----------------
-import { useSelector, useDispatch } from "react-redux";
-import { protocolSummary, getProcotoclToc } from "./protocolSlice.js";
+// ------------------- Components ------------
+import ProtocolOverview from './ProtocolOverview';
+import ProtocolView from './ProtocolView';
+import Documents from './Documents';
+import NoResultFound from '../../Components/NoResultFound';
 
-//------------------- Components ------------
-import ProtocolOverview from "./ProtocolOverview";
-import ProtocolView from "./ProtocolView";
-import Documents from "./Documents";
-// import ProtocolTable from "../Dashboard/ProtocolTable";
-import NoResultFound from "../../Components/NoResultFound";
+// ------------------- Third Party -----------
 
-//------------------- Third Party -----------
-import Breadcrumbs from "apollo-react/components/Breadcrumbs";
-import Tab from "apollo-react/components/Tab";
-import Tabs from "apollo-react/components/Tabs";
-import Loader from "apollo-react/components/Loader";
-
-const Protocols = (props) => {
+function Protocols({ location }) {
   const summary = useSelector(protocolSummary);
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
 
   useEffect(() => {
-    let params = props.location.search;
+    debugger;
+    const params = location.search;
     const parsed = queryString.parse(params);
 
-    if ("tab" in parsed) {
-      setValue(parseInt(parsed.tab));
+    if ('tab' in parsed) {
+      setValue(parseInt(parsed.tab, 10));
     }
     const viewData = {
       iqvdataSoa: [],
@@ -43,27 +43,24 @@ const Protocols = (props) => {
       loader: true,
     };
     getProcotoclToc(viewData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    /* eslint-disable */
   }, []);
+  /* eslint-enable */
 
   useEffect(() => {
-    let params = props.location.search;
+    const params = location.search;
     const parsed = queryString.parse(params);
     /* istanbul ignore else */
 
-    if ("protocolId" in parsed) {
+    if ('protocolId' in parsed) {
       setIdPresent(true);
-      dispatch({ type: "GET_PROTOCOL_SUMMARY", payload: parsed.protocolId });
+      dispatch({ type: 'GET_PROTOCOL_SUMMARY', payload: parsed.protocolId });
     }
     /* istanbul ignore else */
-    if ("protocolId2" in parsed && "value" in parsed) {
+    if ('protocolId2' in parsed && 'value' in parsed) {
       setValue(2);
     }
-  }, [dispatch, props.location]);
-  /* istanbul ignore next */
-  // const handleClick = (e) => {
-  //   e.preventdefault();
-  // };
+  }, [dispatch, location]);
   /* istanbul ignore next */
   const handleChangeTab = (event, value) => {
     setValue(value);
@@ -77,10 +74,10 @@ const Protocols = (props) => {
           <div className="protocols" data-testid="protocols-component-test">
             <Breadcrumbs
               items={[
-                { href: "/dashboard" },
+                { href: '/dashboard' },
                 {
-                  title: "Protocols",
-                  className: "br-cr-protocol",
+                  title: 'Protocols',
+                  className: 'br-cr-protocol',
                   disabled: true,
                   // onClick: handleClick,
                 },
@@ -94,7 +91,7 @@ const Protocols = (props) => {
             <h2 className="header">{data.Protocol}</h2>
             <div className="tab-column">
               <div className="overview">
-                <div style={{ display: "flex", flexDirection: "row" }}>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
                   <div style={{ flex: 1 }}>
                     <Tabs
                       value={value}
@@ -126,13 +123,16 @@ const Protocols = (props) => {
         {summary.loading && <Loader isInner />}
       </>
     );
-  } else {
-    return (
-      <div className="protocols">
-        {/* <ProtocolTable pageRows={[10, 20, 30, "All"]} maxHeight={600} /> */}
-      </div>
-    );
   }
-};
+  return (
+    <div className="protocols">
+      {/* <ProtocolTable pageRows={[10, 20, 30, "All"]} maxHeight={600} /> */}
+    </div>
+  );
+}
 
 export default Protocols;
+
+Protocols.propTypes = {
+  location: PropTypes.isRequired,
+};

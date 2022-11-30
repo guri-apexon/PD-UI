@@ -1,27 +1,27 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import Grid from "apollo-react/components/Grid";
-import { loggedUser } from "../../../store/userDetails";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import Grid from 'apollo-react/components/Grid';
+import { loggedUser } from '../../../store/userDetails';
 
-import ProtocolTable from "./ProtocolTable";
-import { dashboadAPIError } from "./dashboardSlice";
-import ActionButtons from "./ActionButtons";
+import ProtocolTable from './ProtocolTable';
+import { dashboadAPIError } from './dashboardSlice';
+import ActionButtons from './ActionButtons';
 
-let today = new Date();
-let curHr = today.getHours();
+const today = new Date();
+const curHr = today.getHours();
 let greet;
 
 if (curHr < 12) {
-  greet = "Good Morning, ";
+  greet = 'Good Morning, ';
 } else if (curHr < 18) {
-  greet = "Good Afternoon, ";
+  greet = 'Good Afternoon, ';
 } else {
-  greet = "Good Evening, ";
+  greet = 'Good Evening, ';
 }
 
-const Dashboard = () => {
+function Dashboard() {
   const userDetails = useSelector(loggedUser);
-  const memoizedPageRows = React.useMemo(() => [5, 20, 30, "All"], []);
+  const memoizedPageRows = React.useMemo(() => [5, 20, 30, 'All'], []);
   const dashboardError = useSelector(dashboadAPIError);
   return (
     <div className="dashboard-parent" style={{ padding: 20 }}>
@@ -46,6 +46,6 @@ const Dashboard = () => {
       </Grid>
     </div>
   );
-};
+}
 
 export default React.memo(Dashboard);

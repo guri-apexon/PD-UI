@@ -1,13 +1,11 @@
-import React from "react";
-
-const NoResultFound = (props) => {
+function NoResultFound() {
   const style = {
     parent: {
-      display: "flex",
+      display: 'flex',
       height: 400,
     },
     child: {
-      margin: "auto",
+      margin: 'auto',
     },
   };
   return (
@@ -15,6 +13,6 @@ const NoResultFound = (props) => {
       <h3 style={style.child}>No Result Found</h3>
     </div>
   );
-};
+}
 
 export default NoResultFound;

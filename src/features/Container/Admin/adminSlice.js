@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export const adminSlice = createSlice({
-  name: "admin",
+  name: 'admin',
   initialState: {
     users: [],
     userRoles: [],
@@ -10,19 +10,19 @@ export const adminSlice = createSlice({
     loader: false,
     newUser: {
       userId: null,
-      id: "",
+      id: '',
       firstName: null,
       lastName: null,
       email: null,
       country: null,
-      userRole: "",
+      userRole: '',
     },
     modalToggle: false,
-    newUserError: "",
-    roleError: "",
+    newUserError: '',
+    roleError: '',
     roleValues: {
-      role: "",
-      description: "",
+      role: '',
+      description: '',
     },
     newMapping: {
       userId: null,
@@ -30,19 +30,19 @@ export const adminSlice = createSlice({
       role: null,
       following: null,
     },
-    newMappingError: "",
-    getUserError: "",
+    newMappingError: '',
+    getUserError: '',
     getUserLoader: false,
     formErrorValues: {
-      firstName: { error: false, message: "" },
-      lastName: { error: false, message: "" },
-      email: { error: false, message: "" },
-      country: { error: false, message: "" },
-      userId: { error: false, message: "" },
-      userRole: { error: false, message: "" },
+      firstName: { error: false, message: '' },
+      lastName: { error: false, message: '' },
+      email: { error: false, message: '' },
+      country: { error: false, message: '' },
+      userId: { error: false, message: '' },
+      userRole: { error: false, message: '' },
     },
     bulkMapResponse: [],
-    bulkMapError: "",
+    bulkMapError: '',
     searchedData: {},
     roleOptions: {
       user: [],
