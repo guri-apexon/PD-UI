@@ -4,16 +4,13 @@ import Card from 'apollo-react/components/Card';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
 import Loader from '../../Components/Loader/Loader';
 import { redaction } from '../../../AppConstant/AppConstant';
-
+import Pdf from '../Protocols/pdfviewer';
 const replaceall = require('replaceall');
-
 class ProtocolViewClass extends React.Component {
   constructor() {
     super();
-
     this.handleClick = this.handleClick.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
-
     this.state = {
       popupVisible: false,
       subSectionData: [],
@@ -22,7 +19,6 @@ class ProtocolViewClass extends React.Component {
       activeSubSection: null,
     };
   }
-
   createFullMarkup(str) {
     if (str || str !== undefined) {
       if (str.includes(redaction.text)) {
@@ -42,7 +38,6 @@ class ProtocolViewClass extends React.Component {
       __html: '<div></div>',
     };
   }
-
   getTable(item, unq, noHeader = false) {
     const footNote = [];
     for (const [key, value] of Object.entries(item)) {
@@ -51,7 +46,6 @@ class ProtocolViewClass extends React.Component {
         footNote.push(value);
       }
     }
-
     return (
       <>
         <div style={{}}>
@@ -94,7 +88,6 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
-
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -116,7 +109,6 @@ class ProtocolViewClass extends React.Component {
       }
       return this.getTable(content, 'TOC-TABLE');
     }
-
     switch (type) {
       case 'header':
         return (
@@ -149,11 +141,9 @@ class ProtocolViewClass extends React.Component {
         );
     }
   };
-
   handleClick(id) {
     this.setState({ section: id });
     document.addEventListener('click', this.handleOutsideClick, false);
-
     let subData = [];
     switch (id) {
       case 'TOC':
@@ -167,7 +157,6 @@ class ProtocolViewClass extends React.Component {
     }
     this.setState({ popupVisible: true, subSectionData: subData });
   }
-
   handleOutsideClick(e) {
     // ignore clicks on the component itself
     if (e.target && this.node && this.node.contains(e.target)) {
@@ -179,20 +168,16 @@ class ProtocolViewClass extends React.Component {
       this.handleClick();
     }
   }
-
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false, subSectionData: [] });
   };
-
   render() {
     const { view, listData } = this.props;
-
     const refs = this.state.subSectionData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
     }, {});
-
     const refsSection = listData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
@@ -212,7 +197,6 @@ class ProtocolViewClass extends React.Component {
       });
       // this.hideEle();
     };
-
     this.refs = refs;
     const scrollHide = (id) => {
       refs[id].current &&
@@ -226,7 +210,6 @@ class ProtocolViewClass extends React.Component {
       });
       this.hideEle();
     };
-
     if (view.loader) {
       return (
         <div
@@ -240,7 +223,6 @@ class ProtocolViewClass extends React.Component {
         </div>
       );
     }
-
     if (view.err) {
       return (
         <div
@@ -256,7 +238,7 @@ class ProtocolViewClass extends React.Component {
     }
     return (
       <div className="view-wrapper">
-        <Card className="index-column">
+        {/* <Card className="index-column">
           <div
             ref={(node) => {
               this.node = node;
@@ -284,7 +266,7 @@ class ProtocolViewClass extends React.Component {
                     dangerouslySetInnerHTML={{ __html: item.section }}
                   >
                     {/* {item.section}{" "} */}
-                  </span>
+        {/* </span>
                   {item.subSections && (
                     <span style={{ float: 'right', fontSize: '1em' }}>
                       <ChevronRight
@@ -296,8 +278,8 @@ class ProtocolViewClass extends React.Component {
                   )}
                 </button>
               ))}
-            </div>
-            {this.state.popupVisible && (
+            </div> */}
+        {/* {this.state.popupVisible && (
               <div
                 className="dropdown-menu sample"
                 data-testid="dropdown-menu-test"
@@ -318,14 +300,15 @@ class ProtocolViewClass extends React.Component {
                         dangerouslySetInnerHTML={{ __html: data.section }}
                       >
                         {/* {`${data.section}`} */}
-                      </p>
+        {/* </p>
                     </a>
                   </span>
                 ))}
               </div>
             )}
           </div>
-        </Card>
+        </Card> */}
+
         <Card className="protocol-column">
           <div
             style={{
@@ -333,6 +316,23 @@ class ProtocolViewClass extends React.Component {
               padding: '10px 16px',
               overflowY: 'scroll',
               height: '65vh',
+              width:"100%"
+            }}
+            data-testid="protocol-column-wrapper"
+            
+          >
+            <div>
+              <Pdf/></div>
+              </div>
+        </Card>
+        <Card className="protocol-column">
+          <div
+            style={{
+              scrollPadding: '50px 0px 0px 50px',
+              padding: '6px 16px',
+              overflowY: 'scroll',
+              height: '65vh',
+              width:"100%"
             }}
             data-testid="protocol-column-wrapper"
           >
@@ -376,7 +376,6 @@ class ProtocolViewClass extends React.Component {
                           </td>
                         </tr>
                       );
-
                       // return (
                       //   <>
                       //     <div dangerouslySetInnerHTML={{ __html: item[2] }}></div>
@@ -397,5 +396,4 @@ class ProtocolViewClass extends React.Component {
     );
   }
 }
-
 export default ProtocolViewClass;
