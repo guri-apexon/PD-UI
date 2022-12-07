@@ -61,6 +61,7 @@ Perform Sonarqube Analysis and quality gate:
     refs:
       - merge_requests
       - develop
+      - Sonar-Check
     variables: 
       - $ENVIRONMENT== "dev"
 
