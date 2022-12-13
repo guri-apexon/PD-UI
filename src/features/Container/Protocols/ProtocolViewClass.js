@@ -5,6 +5,17 @@ import ChevronRight from 'apollo-react-icons/ChevronRight';
 import Loader from '../../Components/Loader/Loader';
 import { redaction } from '../../../AppConstant/AppConstant';
 import Pdf from '../Protocols/pdfviewer';
+import Accordion from 'apollo-react/components/Accordion';
+import Records from './records.json';
+import AccordionDetails from 'apollo-react/components/AccordionDetails';
+
+import AccordionSummary from 'apollo-react/components/AccordionSummary';
+
+import Typography from 'apollo-react/components/Typography';
+import Drag from 'apollo-react-icons/Drag';
+import Digitize from './DigitalizeCard';
+
+
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
   constructor() {
@@ -17,6 +28,7 @@ class ProtocolViewClass extends React.Component {
       section: null,
       activeSection: null,
       activeSubSection: null,
+      headerDetails: '',
     };
   }
   createFullMarkup(str) {
@@ -87,6 +99,9 @@ class ProtocolViewClass extends React.Component {
         </div>
       </>
     );
+  }
+  sectionDetails=(item)=>{
+this.headerDetails(item)
   }
   getTocElement = (data) => {
     // let section_level = data[0];
@@ -316,82 +331,16 @@ class ProtocolViewClass extends React.Component {
               padding: '10px 16px',
               overflowY: 'scroll',
               height: '65vh',
-              width:"100%"
+              // width: '100%',
             }}
             data-testid="protocol-column-wrapper"
-            
           >
             <div>
-              <Pdf/></div>
-              </div>
-        </Card>
-        <Card className="protocol-column">
-          <div
-            style={{
-              scrollPadding: '50px 0px 0px 50px',
-              padding: '6px 16px',
-              overflowY: 'scroll',
-              height: '65vh',
-              width:"100%"
-            }}
-            data-testid="protocol-column-wrapper"
-          >
-            {view.iqvdataToc.data.length &&
-              view.iqvdataToc.data.map((item) => {
-                return this.getTocElement(item);
-              })}
-            {view.iqvdataSoa.map((item) => this.getTable(item, 'SOA'))}
-            {view.iqvdataSummary && (
-              <div
-                id="SUM"
-                key="SUM"
-                ref={refsSection.SUM}
-                style={{ marginTop: '10%' }}
-              >
-                <h1>Summary</h1>
-                <table border="1">
-                  <tbody>
-                    {view.iqvdataSummary.data.map((item) => {
-                      return (
-                        <tr>
-                          <td style={{ width: '30%' }}>
-                            {' '}
-                            <div
-                              style={{ fontWeight: '600' }}
-                              // dangerouslySetInnerHTML={{ __html: item[2] }}
-                              dangerouslySetInnerHTML={this.createFullMarkup(
-                                item[2],
-                              )}
-                            />
-                          </td>
-                          <td style={{ width: '70%' }}>
-                            {' '}
-                            <p
-                              style={{ marginTop: 0, marginBottom: '10px' }}
-                              // dangerouslySetInnerHTML={{ __html: item[1] }}
-                              dangerouslySetInnerHTML={this.createFullMarkup(
-                                item[1],
-                              )}
-                            />
-                          </td>
-                        </tr>
-                      );
-                      // return (
-                      //   <>
-                      //     <div dangerouslySetInnerHTML={{ __html: item[2] }}></div>
-                      //     <p
-                      //       style={{ marginTop: 0, marginBottom: "10px" }}
-                      //       dangerouslySetInnerHTML={{ __html: item[1] }}
-                      //     ></p>
-                      //   </>
-                      // );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
+              <Pdf />
+            </div>
           </div>
         </Card>
+        <Digitize/>
       </div>
     );
   }

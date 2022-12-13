@@ -1,0 +1,326 @@
+[
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6eefcd1-72c2-11ed-bf3a-005056ab6469",
+      "LinkLevel": 1,
+      "page": 1,
+      "sec_id": "",
+      "source_file_section": "TITLE PAGE",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 0,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "9c5c32cb-6c79-4f9b-b831-fd5691a1199f",
+      "LinkLevel": 1,
+      "page": 1,
+      "sec_id": "",
+      "source_file_section": "blank_header",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 1,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6eefcd2-72c2-11ed-80f3-005056ab6469",
+      "LinkLevel": 1,
+      "page": 2,
+      "sec_id": "",
+      "source_file_section": "SPONSOR SIGNATORY",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 2,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6eefcd3-72c2-11ed-81ad-005056ab6469",
+      "LinkLevel": 1,
+      "page": 3,
+      "sec_id": "TABLE",
+      "source_file_section": "TABLE OF CONTENTS",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 3,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef23d8-72c2-11ed-b64c-005056ab6469",
+      "LinkLevel": 1,
+      "page": 3,
+      "sec_id": "TABLE",
+      "source_file_section": "TABLE OF CONTENTS",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 4,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6eefcd4-72c2-11ed-a8a2-005056ab6469",
+      "LinkLevel": 1,
+      "page": 9,
+      "sec_id": "",
+      "source_file_section": "LIST OF IN-TEXT TABLES",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 5,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef23d6-72c2-11ed-913b-005056ab6469",
+      "LinkLevel": 1,
+      "page": 10,
+      "sec_id": "",
+      "source_file_section": "LIST OF IN-TEXT FIGURES",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 6,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef23d9-72c2-11ed-aace-005056ab6469",
+      "LinkLevel": 1,
+      "page": 11,
+      "sec_id": "1.0",
+      "source_file_section": "1.0 PROTOCOL SUMMARY",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 7,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef23de-72c2-11ed-a582-005056ab6469",
+      "LinkLevel": 1,
+      "page": 26,
+      "sec_id": "2.0",
+      "source_file_section": "2.0 INTRODUCTION",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 8,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef23e2-72c2-11ed-a99e-005056ab6469",
+      "LinkLevel": 1,
+      "page": 30,
+      "sec_id": "3.0",
+      "source_file_section": "3.0 OBJECTIVES AND ENDPOINTS",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 9,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef23ed-72c2-11ed-8dd8-005056ab6469",
+      "LinkLevel": 1,
+      "page": 32,
+      "sec_id": "4.0",
+      "source_file_section": "4.0 STUDY DESIGN",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 10,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef23f2-72c2-11ed-8289-005056ab6469",
+      "LinkLevel": 1,
+      "page": 35,
+      "sec_id": "5.0",
+      "source_file_section": "5.0 STUDY POPULATION",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 11,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef23fd-72c2-11ed-996d-005056ab6469",
+      "LinkLevel": 1,
+      "page": 41,
+      "sec_id": "6.0",
+      "source_file_section": "6.0 STUDY TREATMENT",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 12,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef2411-72c2-11ed-8d04-005056ab6469",
+      "LinkLevel": 1,
+      "page": 50,
+      "sec_id": "7.0",
+      "source_file_section": "7.0 DISCONTINUATION OF BLINDED STUDY MEDICATION AND PATIENT DISCONTINUATION/ WITHDRAWAL",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 13,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef4ae0-72c2-11ed-806b-005056ab6469",
+      "LinkLevel": 1,
+      "page": 55,
+      "sec_id": "8.0",
+      "source_file_section": "8.0 STUDY ASSESSMENTS AND PROCEDURES",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 14,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef4b2f-72c2-11ed-b201-005056ab6469",
+      "LinkLevel": 1,
+      "page": 73,
+      "sec_id": "9.0",
+      "source_file_section": "9.0 STATISTICAL CONSIDERATIONS",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 15,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef4b3a-72c2-11ed-8ad7-005056ab6469",
+      "LinkLevel": 1,
+      "page": 78,
+      "sec_id": "10.0",
+      "source_file_section": "10.0 REFERENCE LIST",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 16,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    },
+    {
+      "doc_id": "d0939759-9295-42b0-b072-0769c048cfed",
+      "group_type": "DocumentLinks",
+      "link_id": "c6ef4b3b-72c2-11ed-b51a-005056ab6469",
+      "LinkLevel": 1,
+      "page": 80,
+      "sec_id": "11.0",
+      "source_file_section": "11.0 APPENDICES",
+      "LinkType": "toc",
+      "qc_change_type": "",
+      "sequence": 17,
+      "section_locked": false,
+      "audit_info": {
+        "last_reviewed_date": "",
+        "last_reviewed_by": "",
+        "total_no_review": ""
+      }
+    }
+  ]
