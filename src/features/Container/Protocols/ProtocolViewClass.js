@@ -257,9 +257,9 @@ class ProtocolViewClass extends React.Component {
       );
     }
     return (
+      
       <div className="view-wrapper">
-        {/* <BladeLeft /> */}
-        {/* <Card className="index-column">
+         {/* <Card className="index-column">
           <div
             ref={(node) => {
               this.node = node;
@@ -329,18 +329,23 @@ class ProtocolViewClass extends React.Component {
             )}
           </div>
         </Card> */}
-
+        
         <Card className="protocol-column">
+        <div style={{fontWeight:'bold', zIndex:999,padding:15,position:'fixed',backgroundColor:"#FFFAFA", paddingTop:0,paddingBottom:0}}>Source Document</div>
           <div
             style={{
               scrollPadding: '50px 0px 0px 50px',
-              padding: '10px 16px',
+              padding: '6px 16px',
               overflowY: 'scroll',
               height: '65vh',
-              // width: '100%',
+              width:"100%",
+            
+              
             }}
             data-testid="protocol-column-wrapper"
           >
+            
+            
             <div>
               <Pdf page={page} refs={this.props.refx} />
             </div>

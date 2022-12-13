@@ -7,11 +7,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 function Pdf({ page, refs }) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
-
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
-    console.log('setpages', numPages);
   };
+  console.log('Enter2');
 
   // const arr = [0, 1, 2, 3, 4, 5];
   // const refs = arr.reduce((acc, value) => {

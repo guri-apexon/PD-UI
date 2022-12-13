@@ -7,6 +7,8 @@ import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 
 import Typography from 'apollo-react/components/Typography';
+import Pencil from 'apollo-react-icons/Pencil';
+import EyeShow from 'apollo-react-icons/EyeShow';
 import Drag from 'apollo-react-icons/Drag';
 import Records from './records.json';
 
@@ -68,7 +70,19 @@ function Digitize({ sectionNumber, sectionRef }) {
 
   return (
     <Card className="protocol-column">
-      {/* <div style={{fontWeight:'bold', zIndex:999,padding:15,position:'fixed',backgroundColor:"#FFFAFA", paddingTop:0,paddingBottom:0,margin:'10px'}}>Digitized Data</div> */}
+      <div
+        style={{
+          fontWeight: 'bold',
+          zIndex: 999,
+          padding: 15,
+          position: 'fixed',
+          backgroundColor: '#FFFAFA',
+          paddingTop: 0,
+          paddingBottom: 0,
+        }}
+      >
+        Digitized Data
+      </div>
 
       <div
         style={{
@@ -78,6 +92,7 @@ function Digitize({ sectionNumber, sectionRef }) {
           overflowY: 'scroll',
           height: '65vh',
           // width: '100%',
+          margin: 10,
         }}
         data-testid="protocol-column-wrapper"
       >
@@ -95,7 +110,10 @@ function Digitize({ sectionNumber, sectionRef }) {
             <Drag style={{ color: 'grey', fontSize: '1em', padding: '15px' }} />
             <Accordion
               expanded={expanded[index]}
-              style={{ width: '100%', marginBottom: '4px' }}
+              style={{
+                width: '100%',
+                marginBottom: '4px',
+              }}
               onChange={handleChange(index)}
             >
               <AccordionSummary
@@ -103,8 +121,25 @@ function Digitize({ sectionNumber, sectionRef }) {
                   fontSize: '0.5em',
                 }}
               >
-                <Typography style={{ fontSize: '1.5em' }}>
+                <Typography
+                  style={{
+                    fontSize: '1.5em',
+                    // display: 'flex',
+                    // flexDirection: 'row',
+                  }}
+                >
                   {items.source_file_section}
+                  <div
+                    style={{
+                      paddingLeft: '320px',
+                      marginTop: '-25px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <EyeShow />
+                    <Pencil />
+                  </div>
                 </Typography>
               </AccordionSummary>
 
