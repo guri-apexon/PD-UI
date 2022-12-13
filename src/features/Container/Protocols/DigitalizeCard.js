@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import Card from 'apollo-react/components/Card';
-
+import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
@@ -19,13 +19,9 @@ const panels = () => {
   return ex;
 };
 
-function Digitize() {
+function Digitize({ sectionNumber, sectionRef }) {
   const [expanded, setExpanded] = useState(panels);
   const allOpen = expanded.every((exp) => exp);
-
-  //   const onClick = () => {
-  //     setExpanded((oldPanels) => oldPanels.map(() => !allOpen));
-  //   };
 
   const handleChange = (panelIndex) => () => {
     console.log('test1');
@@ -42,6 +38,33 @@ function Digitize() {
       return newPanels;
     });
   };
+  const handleClick = (sectionNumber) => {
+    console.log('click');
+    setExpanded((oldPanels) => {
+      console.log('test2');
+      const newPanels = [...oldPanels];
+      for (let i = 0; i < newPanels.length; i++) {
+        if (i !== sectionNumber) {
+          newPanels[i] = false;
+        }
+      }
+      newPanels[sectionNumber] = !newPanels[sectionNumber];
+      console.log(newPanels);
+      return newPanels;
+    });
+  };
+  useEffect(() => {
+    if (sectionNumber === 'undefined' || sectionNumber === undefined) {
+      //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      sectionRef[sectionNumber].current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'start',
+      });
+      handleClick(sectionNumber);
+    }
+  }, [sectionNumber]);
 
   return (
     <Card className="protocol-column">
@@ -61,6 +84,7 @@ function Digitize() {
         {Records.map((items, index) => (
           <div
             key={React.key}
+            ref={sectionRef[index]}
             style={{
               listStyleType: 'none',
               display: 'flex',
@@ -100,3 +124,7 @@ function Digitize() {
 }
 
 export default Digitize;
+Digitize.propTypes = {
+  sectionNumber: PropTypes.isRequired,
+  sectionRef: PropTypes.isRequired,
+};

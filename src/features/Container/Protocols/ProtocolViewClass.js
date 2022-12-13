@@ -15,7 +15,6 @@ import Typography from 'apollo-react/components/Typography';
 import Drag from 'apollo-react-icons/Drag';
 import Digitize from './DigitalizeCard';
 
-
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
   constructor() {
@@ -30,6 +29,10 @@ class ProtocolViewClass extends React.Component {
       activeSubSection: null,
       headerDetails: '',
     };
+  }
+
+  componentDidMount() {
+    console.log('protocolViewClass', this.props.refx);
   }
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -100,9 +103,9 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
-  sectionDetails=(item)=>{
-this.headerDetails(item)
-  }
+  sectionDetails = (item) => {
+    this.headerDetails(item);
+  };
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -183,16 +186,18 @@ this.headerDetails(item)
       this.handleClick();
     }
   }
+
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false, subSectionData: [] });
   };
   render() {
-    const { view, listData } = this.props;
+    const { view, listData, page } = this.props;
     const refs = this.state.subSectionData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
     }, {});
+    console.log('page-', page);
     const refsSection = listData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
@@ -336,11 +341,14 @@ this.headerDetails(item)
             data-testid="protocol-column-wrapper"
           >
             <div>
-              <Pdf />
+              <Pdf page={page} refs={this.props.refx} />
             </div>
           </div>
         </Card>
-        <Digitize/>
+        <Digitize
+          sectionRef={this.props.sectionRef}
+          sectionNumber={this.props.sectionNumber}
+        />
       </div>
     );
   }

@@ -1,6 +1,6 @@
-@import "./assets/styles/counter.scss";
-@import "./assets/styles/dashboard.scss";
-@import "./assets/styles/addprotocol.scss";
+@import './assets/styles/counter.scss';
+@import './assets/styles/dashboard.scss';
+@import './assets/styles/addprotocol.scss';
 .App {
   text-align: center;
 }
@@ -73,4 +73,9 @@
 
 .text-capitalize {
   text-transform: capitalize;
+}
+
+.Blade-paper-312 {
+  width: 18% !important;
+  margin-top: 4.5% !important;
 }
