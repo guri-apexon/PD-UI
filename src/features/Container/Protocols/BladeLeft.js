@@ -16,24 +16,26 @@ const styles = {
   content: {
     color: neutral8,
     lineHeight: '24px',
-    marginTop: '50px',
+    marginTop: '4.5%',
   },
 };
 
 function BladeLeft({ handlePageNo }) {
   const [open, setOpen] = useState(true);
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
 
   const onClose = () => {
-    // setOpen(false);
+    setOpen(false);
   };
-  const onChange = (e, ex) => {
-    setExpanded(ex);
-    console.log('expanded', ex);
+
+  const onChange = (e, expanded) => {
+    setExpanded(expanded);
+    console.log({ expanded });
   };
+
   const onOpen = () => {
     setOpen(true);
-    // setExpanded(true);
+    setExpanded(true);
   };
 
   const data = [
@@ -43,21 +45,18 @@ function BladeLeft({ handlePageNo }) {
 
   return (
     <div>
-      <Avatar size="small" onClick={onOpen}>
+      {/* <Avatar size="small" onClick={onOpen}>
         <ArrowRight />
-      </Avatar>
+      </Avatar> */}
 
       <div>
         <Blade
-          onChange={(e) => {
-            onChange(e, expanded);
-          }}
+          onChange={onChange}
           open={open}
           expanded={expanded}
           onClose={onClose}
           title="Navigation"
           hasBackdrop
-          style={{ width: '80px' }}
         >
           <div>
             {data.map((item, index) => {
@@ -86,12 +85,6 @@ function BladeLeft({ handlePageNo }) {
                     <Typography>Subsection {index} </Typography>
                   </AccordionDetails>
                 </Accordion>
-                // <div key={React.key}>
-                //   <div style={{ display: 'flex' }}>
-                //     <ArrowDown />
-                //     <Typography>{item.section}</Typography>
-                //   </div>
-                // </div>
               );
             })}
           </div>
@@ -101,8 +94,7 @@ function BladeLeft({ handlePageNo }) {
   );
 }
 
-// export default withStyles(styles)(BladeLeft);
-export default BladeLeft;
+export default withStyles(styles)(BladeLeft);
 
 BladeLeft.propTypes = {
   handlePageNo: PropTypes.isRequired,

@@ -258,6 +258,7 @@ class ProtocolViewClass extends React.Component {
     }
     return (
       <div className="view-wrapper">
+        {/* <BladeLeft /> */}
         {/* <Card className="index-column">
           <div
             ref={(node) => {
