@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { render } from '../../../../test-utils/test-utils';
+import { render, fireEvent } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
-
 import Pdf from '../pdfviewer';
 
 function Testing() {
@@ -32,5 +31,23 @@ describe('pdfviewer component', () => {
 describe('Onload', () => {
   test('Document load Success', () => {
     render(<Testing2 />);
+  });
+
+  test('Zoom In Counter', () => {
+    // render the component on virtual dom
+    const screen = render(<Pdf />);
+    const zoomIn = screen.getByTestId('zoomIn');
+    expect(zoomIn).toBeInTheDocument();
+    fireEvent.click(zoomIn);
+  });
+
+  //
+
+  test('Zoom Out Counter', () => {
+    // render the component on virtual dom
+    const screen = render(<Pdf />);
+    const zoomOut = screen.getByTestId('zoomOut');
+    expect(zoomOut).toBeInTheDocument();
+    fireEvent.click(zoomOut);
   });
 });

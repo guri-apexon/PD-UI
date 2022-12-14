@@ -69,7 +69,7 @@ function Digitize({ sectionNumber, sectionRef }) {
   }, [sectionNumber]);
 
   return (
-    <Card className="protocol-column">
+    <Card className="protocol-column" style={{ borderRight: '0' }}>
       <div
         style={{
           fontWeight: 'bold',
@@ -83,7 +83,6 @@ function Digitize({ sectionNumber, sectionRef }) {
       >
         Digitized Data
       </div>
-
       <div
         style={{
           scrollPadding: '50px 0px 0px 50px',
@@ -107,12 +106,24 @@ function Digitize({ sectionNumber, sectionRef }) {
               padding: '2px',
             }}
           >
-            <Drag style={{ color: 'grey', fontSize: '1em', padding: '15px' }} />
+            <Drag
+              style={{
+                color: 'grey',
+                fontSize: '1.2em',
+                padding: '15px',
+                paddingLeft: '5px',
+              }}
+            />
             <Accordion
               expanded={expanded[index]}
               style={{
                 width: '100%',
-                marginBottom: '4px',
+                marginBottom: '-2px',
+                border: 0,
+                borderTop: 0,
+                borderRadius: 0,
+                // height: '44px',
+                backgroundColor: '#F8F8F9',
               }}
               onChange={handleChange(index)}
             >
@@ -124,25 +135,23 @@ function Digitize({ sectionNumber, sectionRef }) {
                 <Typography
                   style={{
                     fontSize: '1.5em',
-                    // display: 'flex',
-                    // flexDirection: 'row',
+                    fontweight: 'strong',
                   }}
                 >
                   {items.source_file_section}
                   <div
                     style={{
-                      paddingLeft: '320px',
+                      paddingLeft: '330px',
                       marginTop: '-25px',
                       display: 'flex',
                       flexDirection: 'row',
                     }}
                   >
                     <EyeShow />
-                    <Pencil />
+                    <Pencil style={{ paddingLeft: '20px' }} />
                   </div>
                 </Typography>
               </AccordionSummary>
-
               <AccordionDetails>
                 <Typography>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
