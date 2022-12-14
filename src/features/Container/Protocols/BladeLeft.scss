@@ -16,6 +16,30 @@
   [class*='blade-body-'] > div > div [class*='MuiAccordion-root-'] {
     height: 41px;
   }
+
+  [class*='MuiAccordionSummary-root-'] {
+    height: 20px;
+    min-height: unset;
+  }
+
+  [class*='MuiAccordionSummary-root-'] > div:first-child {
+    height: 24px;
+    min-height: unset;
+  }
+
+  [class*='MuiAccordionSummary-root-'] > div:first-child > p {
+    height: 18px;
+    margin: 0;
+  }
+
+  [class*='MuiAccordionSummary-root-'] > div:nth-child(2) {
+    height: 14px;
+    top: 10px;
+  }
+
+  [class*='MuiAccordion-root'] {
+    margin-top: 10px;
+  }
 }
 
 .header-unselect {

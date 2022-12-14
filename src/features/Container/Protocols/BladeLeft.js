@@ -135,7 +135,7 @@ function BladeLeft({ handlePageNo }) {
           width={215}
           marginTop={165}
         >
-          <div style={{ background: 'red' }}>
+          <div>
             {data.map((item, index) => {
               return (
                 <Accordion
