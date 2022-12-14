@@ -1,0 +1,27 @@
+.bladeContainer {
+  hr {
+    margin-bottom: 0;
+  }
+
+  [class*='Blade-body-'] {
+    background: #f6f7fb;
+  }
+
+  [class*='Blade-body-'] > div > div {
+    background: #f6f7fb;
+  }
+  [class*='Blade-body-'] > div > div [class*='Accordion-expanded-'] > p {
+    font-weight: bold;
+  }
+  [class*='blade-body-'] > div > div [class*='MuiAccordion-root-'] {
+    height: 41px;
+  }
+}
+
+.header-unselect {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 80px;
+  margin-top: 14%;
+}

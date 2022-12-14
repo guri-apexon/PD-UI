@@ -11,6 +11,7 @@ import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import ArrowDown from 'apollo-react-icons/ArrowDown';
+import './BladeLeft.scss';
 
 const styles = {
   blade: {
@@ -23,20 +24,20 @@ const styles = {
 
 function BladeLeft({ handlePageNo }) {
   const [open, setOpen] = useState(true);
-  const [expanded, setExpanded] = useState(false);
+  const [expand, setExpand] = useState(false);
 
   const onClose = () => {
     setOpen(false);
   };
 
   const onChange = (e, expanded) => {
-    setExpanded(expanded);
+    setExpand(expanded);
     console.log({ expanded });
     console.log('Open', open);
   };
 
   const handleClick = (expanded) => {
-    setExpanded(expanded);
+    setExpand(expanded);
     console.log('expandable', { expanded });
   };
 
@@ -95,38 +96,58 @@ function BladeLeft({ handlePageNo }) {
         { sub_section: 'subsection1' },
       ],
     },
+    {
+      section: 'xyz6',
+      pageNo: 5,
+      subsection: [
+        { sub_section: 'subsection1' },
+        { sub_section: 'subsection1' },
+      ],
+    },
+    {
+      section: 'xyz6',
+      pageNo: 5,
+      subsection: [
+        { sub_section: 'subsection1' },
+        { sub_section: 'subsection1' },
+      ],
+    },
+    {
+      section: 'xyz6',
+      pageNo: 5,
+      subsection: [
+        { sub_section: 'subsection1' },
+        { sub_section: 'subsection1' },
+      ],
+    },
   ];
 
   return (
     <div>
-      <div style={{ backgroundColor: 'black' }}>
+      <div className="bladeContainer">
         <Blade
           onChange={onChange}
           open={open}
-          expanded={expanded}
+          expanded={expand}
           // onClose={onClose}
           title="Navigation"
           className="blade"
           width={215}
-          marginTop={170}
+          marginTop={165}
         >
           <div style={{ background: 'red' }}>
             {data.map((item, index) => {
               return (
                 <Accordion
                   key={React.key}
-                  style={{ background: '#f8f9fb;', border: 'none' }}
+                  style={{
+                    border: 'none',
+                  }}
                 >
-                  <AccordionSummary expandIcon={<ArrowDown />}>
+                  <AccordionSummary>
                     <Tooltip title={item.section}>
                       <Typography
-                        style={{
-                          whiteSpace: 'nowrap',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          width: '30px',
-                          marginTop: '3.5%',
-                        }}
+                        className={expand ? 'header-unselect' : 'Mui-expanded'}
                         onClick={(e) => {
                           // setExpanded(false);
                           // setOpen(true);
