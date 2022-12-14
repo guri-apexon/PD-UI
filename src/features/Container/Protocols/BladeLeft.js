@@ -11,7 +11,6 @@ import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import ArrowDown from 'apollo-react-icons/ArrowDown';
-import './LeftBlade.scss';
 
 const styles = {
   blade: {
