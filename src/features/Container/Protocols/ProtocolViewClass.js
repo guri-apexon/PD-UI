@@ -14,6 +14,8 @@ import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import Typography from 'apollo-react/components/Typography';
 import Drag from 'apollo-react-icons/Drag';
 import Digitize from './DigitalizeCard';
+import Panel from 'apollo-react/components/Panel';
+import PanelGroup from 'apollo-react/components/PanelGroup';
 
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
@@ -257,9 +259,8 @@ class ProtocolViewClass extends React.Component {
       );
     }
     return (
-      
       <div className="view-wrapper">
-         {/* <Card className="index-column">
+        {/* <Card className="index-column">
           <div
             ref={(node) => {
               this.node = node;
@@ -329,32 +330,54 @@ class ProtocolViewClass extends React.Component {
             )}
           </div>
         </Card> */}
-        
-        <Card className="protocol-column">
-        <div style={{fontWeight:'bold', zIndex:999,padding:15,position:'fixed',backgroundColor:"#FFFAFA", paddingTop:0,paddingBottom:0}}>Source Document</div>
-          <div
-            style={{
-              scrollPadding: '50px 0px 0px 50px',
-              padding: '6px 16px',
-              overflowY: 'scroll',
-              height: '65vh',
-              width:"100%",
-            
-              
-            }}
-            data-testid="protocol-column-wrapper"
-          >
-            
-            
-            <div>
-              <Pdf page={page} refs={this.props.refx} />
-            </div>
-          </div>
-        </Card>
-        <Digitize
-          sectionRef={this.props.sectionRef}
-          sectionNumber={this.props.sectionNumber}
-        />
+
+        <PanelGroup
+          style={{
+            display: 'flex',
+            height: 400,
+            padding: 24,
+            boxSizing: 'content-box',
+            // width: '800px',
+          }}
+        >
+          <Panel width={550} minWidth={350} maxWidth={630} hideButton resizable>
+            <Card className="protocol-column">
+              <div
+                style={{
+                  fontWeight: 'bold',
+                  zIndex: 999,
+                  padding: 15,
+                  position: 'fixed',
+                  backgroundColor: '#FFFAFA',
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                }}
+              >
+                Source Document
+              </div>
+              <div
+                style={{
+                  scrollPadding: '50px 0px 0px 50px',
+                  padding: '6px 16px',
+                  overflowY: 'scroll',
+                  height: '72vh',
+                  width: '100%',
+                }}
+                data-testid="protocol-column-wrapper"
+              >
+                <div>
+                  <Pdf page={page} refs={this.props.refx} />
+                </div>
+              </div>
+            </Card>
+          </Panel>
+          <Panel width={'auto'} hideButton>
+            <Digitize
+              sectionRef={this.props.sectionRef}
+              sectionNumber={this.props.sectionNumber}
+            />
+          </Panel>
+        </PanelGroup>
       </div>
     );
   }

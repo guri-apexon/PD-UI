@@ -73,7 +73,7 @@ function Digitize({ sectionNumber, sectionRef }) {
       <div
         style={{
           fontWeight: 'bold',
-          zIndex: 999,
+          zIndex: 1,
           padding: 15,
           position: 'fixed',
           backgroundColor: '#FFFAFA',
@@ -90,7 +90,7 @@ function Digitize({ sectionNumber, sectionRef }) {
           paddingTop: '20px',
           overflowY: 'scroll',
           height: '65vh',
-          // width: '100%',
+          position: 'fixed',
           margin: 10,
         }}
         data-testid="protocol-column-wrapper"
@@ -117,7 +117,7 @@ function Digitize({ sectionNumber, sectionRef }) {
             <Accordion
               expanded={expanded[index]}
               style={{
-                width: '100%',
+                // width: '100%',
                 marginBottom: '-2px',
                 border: 0,
                 borderTop: 0,
