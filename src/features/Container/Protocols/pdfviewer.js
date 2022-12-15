@@ -25,7 +25,7 @@ function Pdf({ page, refs }) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else {
       console.log('page:-------In UseEffect');
-      refs[page].current.scrollIntoView({ behavior: 'instant' });
+      refs[page - 1].current.scrollIntoView({ behavior: 'instant' });
     }
   }, [page]);
   const clickHandler = () => {
