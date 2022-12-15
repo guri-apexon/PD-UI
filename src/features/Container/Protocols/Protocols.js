@@ -26,7 +26,7 @@ function Protocols({ location }) {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
-  const [arrr, setarrr] = useState(new Array(10));
+  const [arrr, setarrr] = useState(new Array(50));
 
   useEffect(() => {
     debugger;
@@ -51,7 +51,7 @@ function Protocols({ location }) {
   /* eslint-enable */
 
   const forLoop = async (_) => {
-    for (let index = 0; index < 6; index++) {
+    for (let index = 0; index < 50; index++) {
       arrr.push(index);
     }
   };
