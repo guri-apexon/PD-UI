@@ -1,5 +1,5 @@
 import withStyles from '@material-ui/core/styles/withStyles';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { neutral8 } from 'apollo-react/colors';
@@ -32,13 +32,6 @@ function BladeLeft({ handlePageNo }) {
 
   const onChange = (e, expanded) => {
     setExpand(expanded);
-    console.log({ expanded });
-    console.log('Open', open);
-  };
-
-  const handleClick = (expanded) => {
-    setExpand(expanded);
-    console.log('expandable', { expanded });
   };
 
   const data = [
@@ -46,7 +39,15 @@ function BladeLeft({ handlePageNo }) {
       section:
         'abcrtyuuhgfddfghgdvhtfgyfghjjyujnbvgyjbvghbvfghthgffyujjgggjjnbg',
       pageNo: 2,
-      subsection: [{ sub_section: 'subsection1' }],
+      subsection: [
+        {
+          sub_section: 'subsection1',
+          subSection1: [
+            { sub_Section: 'Sub_Sub_section 1.1.1' },
+            { sub_Section: 'Sub_Sub_section 1.1.2' },
+          ],
+        },
+      ],
     },
     {
       section: 'xyz1',
@@ -122,6 +123,13 @@ function BladeLeft({ handlePageNo }) {
     },
   ];
 
+  useEffect(() => {
+    if (!open) {
+      setOpen(true);
+      setExpand(false);
+    }
+  }, [open]);
+
   return (
     <div>
       <div className="bladeContainer">
@@ -129,13 +137,13 @@ function BladeLeft({ handlePageNo }) {
           onChange={onChange}
           open={open}
           expanded={expand}
-          // onClose={onClose}
+          onClose={onClose}
           title="Navigation"
           className="blade"
           width={215}
-          marginTop={165}
+          marginTop={159}
         >
-          <div>
+          <div style={{ paddingLeft: '7px' }}>
             {data.map((item, index) => {
               return (
                 <Accordion
@@ -147,11 +155,8 @@ function BladeLeft({ handlePageNo }) {
                   <AccordionSummary>
                     <Tooltip title={item.section}>
                       <Typography
-                        className={expand ? 'header-unselect' : 'Mui-expanded'}
+                        className="header-unselect"
                         onClick={(e) => {
-                          // setExpanded(false);
-                          // setOpen(true);
-                          // onChange(e,);
                           handlePageNo(e, item.pageNo, index);
                         }}
                       >
@@ -160,9 +165,54 @@ function BladeLeft({ handlePageNo }) {
                     </Tooltip>
                   </AccordionSummary>
 
-                  <AccordionDetails>
-                    <Typography>Subsection {index} </Typography>
-                  </AccordionDetails>
+                  {item.subsection.map((level1, index1) => {
+                    return (
+                      <Accordion
+                        key={React.key}
+                        style={{
+                          border: 'none',
+                        }}
+                      >
+                        <AccordionSummary>
+                          <Tooltip title={item.section}>
+                            <Typography
+                              className="header-unselect"
+                              onClick={(e) => {
+                                handlePageNo(e, item.pageNo, index);
+                              }}
+                            >
+                              {item.section}
+                            </Typography>
+                          </Tooltip>
+                        </AccordionSummary>
+
+                        {level1.subSection1 &&
+                          level1.subSection1.map((level2, index2) => {
+                            return (
+                              <Accordion
+                                key={React.key}
+                                style={{
+                                  border: 'none',
+                                }}
+                              >
+                                <AccordionSummary>
+                                  <Tooltip title={level2.sub_Section}>
+                                    <Typography
+                                      className="header-unselect"
+                                      onClick={(e) => {
+                                        handlePageNo(e, item.pageNo, index);
+                                      }}
+                                    >
+                                      {level2.sub_Section}
+                                    </Typography>
+                                  </Tooltip>
+                                </AccordionSummary>
+                              </Accordion>
+                            );
+                          })}
+                      </Accordion>
+                    );
+                  })}
                 </Accordion>
               );
             })}
@@ -172,7 +222,6 @@ function BladeLeft({ handlePageNo }) {
     </div>
   );
 }
-
 export default withStyles(styles)(BladeLeft);
 
 BladeLeft.propTypes = {
