@@ -11,6 +11,7 @@ import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import ArrowDown from 'apollo-react-icons/ArrowDown';
+import record from './Dummy.json';
 import './BladeLeft.scss';
 
 const styles = {
@@ -25,6 +26,7 @@ const styles = {
 function BladeLeft({ handlePageNo }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
+  const [data, setData] = useState(record);
 
   const onClose = () => {
     setOpen(false);
@@ -34,94 +36,94 @@ function BladeLeft({ handlePageNo }) {
     setExpand(expanded);
   };
 
-  const data = [
-    {
-      section:
-        'abcrtyuuhgfddfghgdvhtfgyfghjjyujnbvgyjbvghbvfghthgffyujjgggjjnbg',
-      pageNo: 2,
-      subsection: [
-        {
-          sub_section: 'subsection1',
-          subSection1: [
-            { sub_Section: 'Sub_Sub_section 1.1.1' },
-            { sub_Section: 'Sub_Sub_section 1.1.2' },
-          ],
-        },
-      ],
-    },
-    {
-      section: 'xyz1',
-      pageNo: 5,
-      subsection: [
-        { sub_section: 'subsection1' },
-        { sub_section: 'subsection1' },
-      ],
-    },
-    {
-      section: 'xyz2',
-      pageNo: 5,
-      subsection: [
-        { sub_section: 'subsection1' },
-        { sub_section: 'subsection1' },
-      ],
-    },
-    {
-      section: 'xyz3',
-      pageNo: 5,
-      subsection: [
-        { sub_section: 'subsection1' },
-        { sub_section: 'subsection1' },
-      ],
-    },
-    {
-      section: 'xyz4',
-      pageNo: 5,
-      subsection: [
-        { sub_section: 'subsection1' },
-        { sub_section: 'subsection1' },
-      ],
-    },
-    {
-      section: 'xyz5',
-      pageNo: 5,
-      subsection: [
-        { sub_section: 'subsection1' },
-        { sub_section: 'subsection1' },
-      ],
-    },
-    {
-      section: 'xyz6',
-      pageNo: 5,
-      subsection: [
-        { sub_section: 'subsection1' },
-        { sub_section: 'subsection1' },
-      ],
-    },
-    {
-      section: 'xyz6',
-      pageNo: 5,
-      subsection: [
-        { sub_section: 'subsection1' },
-        { sub_section: 'subsection1' },
-      ],
-    },
-    {
-      section: 'xyz6',
-      pageNo: 5,
-      subsection: [
-        { sub_section: 'subsection1' },
-        { sub_section: 'subsection1' },
-      ],
-    },
-    {
-      section: 'xyz6',
-      pageNo: 5,
-      subsection: [
-        { sub_section: 'subsection1' },
-        { sub_section: 'subsection1' },
-      ],
-    },
-  ];
+  // const data = [
+  //   {
+  //     section:
+  //       'abcrtyuuhgfddfghgdvhtfgyfghjjyujnbvgyjbvghbvfghthgffyujjgggjjnbg',
+  //     pageNo: 2,
+  //     subsection: [
+  //       {
+  //         sub_section: 'subsection1',
+  //         subSection1: [
+  //           { sub_Section: 'Sub_Sub_section 1.1.1' },
+  //           { sub_Section: 'Sub_Sub_section 1.1.2' },
+  //         ],
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     section: 'xyz1',
+  //     pageNo: 5,
+  //     subsection: [
+  //       { sub_section: 'subsection1' },
+  //       { sub_section: 'subsection1' },
+  //     ],
+  //   },
+  //   {
+  //     section: 'xyz2',
+  //     pageNo: 5,
+  //     subsection: [
+  //       { sub_section: 'subsection1' },
+  //       { sub_section: 'subsection1' },
+  //     ],
+  //   },
+  //   {
+  //     section: 'xyz3',
+  //     pageNo: 5,
+  //     subsection: [
+  //       { sub_section: 'subsection1' },
+  //       { sub_section: 'subsection1' },
+  //     ],
+  //   },
+  //   {
+  //     section: 'xyz4',
+  //     pageNo: 5,
+  //     subsection: [
+  //       { sub_section: 'subsection1' },
+  //       { sub_section: 'subsection1' },
+  //     ],
+  //   },
+  //   {
+  //     section: 'xyz5',
+  //     pageNo: 5,
+  //     subsection: [
+  //       { sub_section: 'subsection1' },
+  //       { sub_section: 'subsection1' },
+  //     ],
+  //   },
+  //   {
+  //     section: 'xyz6',
+  //     pageNo: 5,
+  //     subsection: [
+  //       { sub_section: 'subsection1' },
+  //       { sub_section: 'subsection1' },
+  //     ],
+  //   },
+  //   {
+  //     section: 'xyz6',
+  //     pageNo: 5,
+  //     subsection: [
+  //       { sub_section: 'subsection1' },
+  //       { sub_section: 'subsection1' },
+  //     ],
+  //   },
+  //   {
+  //     section: 'xyz6',
+  //     pageNo: 5,
+  //     subsection: [
+  //       { sub_section: 'subsection1' },
+  //       { sub_section: 'subsection1' },
+  //     ],
+  //   },
+  //   {
+  //     section: 'xyz6',
+  //     pageNo: 5,
+  //     subsection: [
+  //       { sub_section: 'subsection1' },
+  //       { sub_section: 'subsection1' },
+  //     ],
+  //   },
+  // ];
 
   useEffect(() => {
     if (!open) {
@@ -153,19 +155,19 @@ function BladeLeft({ handlePageNo }) {
                   }}
                 >
                   <AccordionSummary>
-                    <Tooltip title={item.section}>
+                    <Tooltip title={item.source_file_section}>
                       <Typography
                         className="header-unselect"
                         onClick={(e) => {
-                          handlePageNo(e, item.pageNo, index);
+                          handlePageNo(e, item.page, index);
                         }}
                       >
-                        {item.section}
+                        {item.source_file_section}
                       </Typography>
                     </Tooltip>
                   </AccordionSummary>
 
-                  {item.subsection.map((level1, index1) => {
+                  {/* {item.subsection.map((level1, index1) => {
                     return (
                       <Accordion
                         key={React.key}
@@ -212,7 +214,7 @@ function BladeLeft({ handlePageNo }) {
                           })}
                       </Accordion>
                     );
-                  })}
+                  })} */}
                 </Accordion>
               );
             })}
