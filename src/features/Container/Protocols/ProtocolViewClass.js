@@ -5,16 +5,11 @@ import ChevronRight from 'apollo-react-icons/ChevronRight';
 import Loader from '../../Components/Loader/Loader';
 import { redaction } from '../../../AppConstant/AppConstant';
 import Pdf from '../Protocols/pdfviewer';
-import Accordion from 'apollo-react/components/Accordion';
-import Records from './records.json';
-import AccordionDetails from 'apollo-react/components/AccordionDetails';
-
-import AccordionSummary from 'apollo-react/components/AccordionSummary';
-
-import Typography from 'apollo-react/components/Typography';
-import Drag from 'apollo-react-icons/Drag';
-import Digitize from './DigitalizeCard';
-
+// import Digitize from './DigitizeCard';
+import { connect } from 'react-redux';
+import Cookies from 'universal-cookie';
+import { BASE_URL_8000, httpCall } from '../../../utils/api';
+// import { headerList } from '../../../store/Digitized/actions';
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
   constructor() {
@@ -27,12 +22,35 @@ class ProtocolViewClass extends React.Component {
       section: null,
       activeSection: null,
       activeSubSection: null,
-      headerDetails: '',
+      headerDetails: [],
+      sectionDocument: [],
     };
   }
+ 
 
+
+  async getSectiondata(){
+    const config = {
+      url: `http://127.0.0.1:8000/api/cpt_data/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1`,
+      method: 'GET',
+      responseType: 'blob',
+    };
+  
+    const resp = await httpCall(config);
+    if (resp.success) {
+     console.log("response console")
+    } else {
+      if (resp.message === 'No Access') {
+        toast.info('Access Provisioned to Primary Users only');
+      } else {
+        toast.error('Download Failed');
+      }
+    }
+  }
   componentDidMount() {
-    console.log('protocolViewClass', this.props.refx);
+    // console.log('items',this.props.items);
+    this.getSectiondata()
+   
   }
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -103,9 +121,6 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
-  sectionDetails = (item) => {
-    this.headerDetails(item);
-  };
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -186,7 +201,6 @@ class ProtocolViewClass extends React.Component {
       this.handleClick();
     }
   }
-
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false, subSectionData: [] });
@@ -257,9 +271,8 @@ class ProtocolViewClass extends React.Component {
       );
     }
     return (
-      
       <div className="view-wrapper">
-         {/* <Card className="index-column">
+        {/* <Card className="index-column">
           <div
             ref={(node) => {
               this.node = node;
@@ -329,23 +342,30 @@ class ProtocolViewClass extends React.Component {
             )}
           </div>
         </Card> */}
-        
-        <Card className="protocol-column">
-        <div style={{fontWeight:'bold', zIndex:999,padding:15,position:'fixed',backgroundColor:"#FFFAFA", paddingTop:0,paddingBottom:0}}>Source Document</div>
+        <Card className="protocol-column" style={{ borderLeft: '0' }}>
+          <div
+            style={{
+              fontWeight: 'bold',
+              zIndex: 999,
+              padding: 15,
+              position: 'fixed',
+              backgroundColor: '#FFFAFA',
+              paddingTop: 0,
+              paddingBottom: 0,
+            }}
+          >
+            Source Document
+          </div>
           <div
             style={{
               scrollPadding: '50px 0px 0px 50px',
               padding: '6px 16px',
               overflowY: 'scroll',
               height: '65vh',
-              width:"100%",
-            
-              
+              width: '100%',
             }}
             data-testid="protocol-column-wrapper"
           >
-            
-            
             <div>
               <Pdf page={page} refs={this.props.refx} />
             </div>
@@ -354,9 +374,20 @@ class ProtocolViewClass extends React.Component {
         <Digitize
           sectionRef={this.props.sectionRef}
           sectionNumber={this.props.sectionNumber}
+          headerDetails={this.state.headerDetails}
         />
       </div>
     );
   }
 }
-export default ProtocolViewClass;
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    headerList: () => dispatch(headerList()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ProtocolViewClass);

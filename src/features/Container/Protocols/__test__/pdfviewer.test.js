@@ -1,25 +1,28 @@
 import { useState } from 'react';
-import { render, fireEvent } from '../../../../test-utils/test-utils';
+import { render } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
+
 import Pdf from '../pdfviewer';
 
 function Testing() {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const onDocumentLoadSuccess = ({ numPages }) => {
+    setNumPages(numPages);
+  };
   return (
     <Pdf
       value={(numPages, pageNumber)}
       setValue={(setNumPages, setPageNumber)}
+      onDocumentLoadSuccess={numPages}
+      setNumPages={numPages}
     />
   );
 }
 
 function Testing2() {
-  const [numPages, setNumPages] = useState(null);
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-  };
-  return <Pdf onDocumentLoadSuccess={numPages} setNumPages={numPages} />;
+  const onDocumentLoadSuccess = ({ numPages }) => {};
+  return <Pdf />;
 }
 
 describe('pdfviewer component', () => {
@@ -31,23 +34,5 @@ describe('pdfviewer component', () => {
 describe('Onload', () => {
   test('Document load Success', () => {
     render(<Testing2 />);
-  });
-
-  test('Zoom In Counter', () => {
-    // render the component on virtual dom
-    const screen = render(<Pdf />);
-    const zoomIn = screen.getByTestId('zoomIn');
-    expect(zoomIn).toBeInTheDocument();
-    fireEvent.click(zoomIn);
-  });
-
-  //
-
-  test('Zoom Out Counter', () => {
-    // render the component on virtual dom
-    const screen = render(<Pdf />);
-    const zoomOut = screen.getByTestId('zoomOut');
-    expect(zoomOut).toBeInTheDocument();
-    fireEvent.click(zoomOut);
   });
 });

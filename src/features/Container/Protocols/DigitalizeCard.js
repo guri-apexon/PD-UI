@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import Card from 'apollo-react/components/Card';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
-
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Drag from 'apollo-react-icons/Drag';
-import Records from './records.json';
 
-const panels = () => {
-  const ex = [];
-  const arraylength = Records.length;
-  for (let i = 0; i < arraylength; i++) {
-    ex[i] = false;
-  }
-  return ex;
-};
-
-function Digitize({ sectionNumber, sectionRef }) {
+function Digitize({ sectionNumber, sectionRef, headerDetails }) {
+  const panels = () => {
+    const ex = [];
+    const arraylength = headerDetails.length;
+    for (let i = 0; i < arraylength; i++) {
+      ex[i] = false;
+    }
+    return ex;
+  };
   const [expanded, setExpanded] = useState(panels);
   const allOpen = expanded.every((exp) => exp);
-
+  const [test, setTest] = useState();
   const handleChange = (panelIndex) => () => {
     console.log('test1');
     setExpanded((oldPanels) => {
@@ -39,6 +36,12 @@ function Digitize({ sectionNumber, sectionRef }) {
       console.log(newPanels);
       return newPanels;
     });
+  };
+  const onClickHandler = (event) => {
+    event.preventDefault();
+    // const aidoc_id= 123
+    // const link_level=34
+    // const link_id=456
   };
   const handleClick = (sectionNumber) => {
     console.log('click');
@@ -56,6 +59,7 @@ function Digitize({ sectionNumber, sectionRef }) {
     });
   };
   useEffect(() => {
+    console.log(headerDetails, 'headerDetails');
     if (sectionNumber === 'undefined' || sectionNumber === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else {
@@ -66,8 +70,7 @@ function Digitize({ sectionNumber, sectionRef }) {
       });
       handleClick(sectionNumber);
     }
-  }, [sectionNumber]);
-
+  }, [sectionNumber, headerDetails]);
   return (
     <Card className="protocol-column" style={{ borderRight: '0' }}>
       <div
@@ -95,7 +98,7 @@ function Digitize({ sectionNumber, sectionRef }) {
         }}
         data-testid="protocol-column-wrapper"
       >
-        {Records.map((items, index) => (
+        {headerDetails.map((value, index) => (
           <div
             key={React.key}
             ref={sectionRef[index]}
@@ -137,8 +140,9 @@ function Digitize({ sectionNumber, sectionRef }) {
                     fontSize: '1.5em',
                     fontweight: 'strong',
                   }}
+                  onClick={onClickHandler()}
                 >
-                  {items.source_file_section}
+                  {value.source_file_section}
                   <div
                     style={{
                       paddingLeft: '330px',
@@ -166,9 +170,9 @@ function Digitize({ sectionNumber, sectionRef }) {
     </Card>
   );
 }
-
 export default Digitize;
 Digitize.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
+  headerDetails: PropTypes.isRequired,
 };
