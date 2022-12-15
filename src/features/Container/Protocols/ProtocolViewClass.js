@@ -8,7 +8,6 @@ import Pdf from '../Protocols/pdfviewer';
 // import Digitize from './DigitizeCard';
 import { connect } from 'react-redux';
 import Cookies from 'universal-cookie';
-import { BASE_URL_8000, httpCall } from '../../../utils/api';
 // import { headerList } from '../../../store/Digitized/actions';
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
@@ -22,35 +21,25 @@ class ProtocolViewClass extends React.Component {
       section: null,
       activeSection: null,
       activeSubSection: null,
-      headerDetails: [],
-      sectionDocument: [],
+      headerDetails:[] ,
+      sectionDocument:[],
     };
-  }
- 
-
-
-  async getSectiondata(){
-    const config = {
-      url: `http://127.0.0.1:8000/api/cpt_data/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1`,
-      method: 'GET',
-      responseType: 'blob',
-    };
-  
-    const resp = await httpCall(config);
-    if (resp.success) {
-     console.log("response console")
-    } else {
-      if (resp.message === 'No Access') {
-        toast.info('Access Provisioned to Primary Users only');
-      } else {
-        toast.error('Download Failed');
-      }
-    }
   }
   componentDidMount() {
     // console.log('items',this.props.items);
-    this.getSectiondata()
-   
+    const cookiesServer = new Cookies();
+    const res=fetch("http://127.0.0.1:8000/api/cpt_data/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1", {
+  "headers": {
+    "accept": "application/json",
+    "accept-language": "en-US,en;q=0.9",
+    "authorization": `Bearer ${cookiesServer.get('api_token')}`
+  },
+ 
+  "method": "GET",
+ 
+}).then((response)=>response.json())
+.then((items)=>this.setState({headerDetails:items})
+)
   }
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -385,9 +374,9 @@ const mapStateToProps = (state) => {
     items: state.items,
   };
 };
-const mapDispatchToProps = (dispatch) => {
-  return {
-    headerList: () => dispatch(headerList()),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(ProtocolViewClass);
+const mapDispatchToProps=(dispatch)=>{
+  return{
+    headerList:()=>dispatch(headerList())
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(ProtocolViewClass);

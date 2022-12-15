@@ -9,7 +9,7 @@ import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Drag from 'apollo-react-icons/Drag';
-
+// import Records from './records.json';
 function Digitize({ sectionNumber, sectionRef, headerDetails }) {
   const panels = () => {
     const ex = [];
