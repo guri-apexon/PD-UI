@@ -283,11 +283,14 @@
     flex: 3 1;
     display: flex;
     flex-direction: column;
+    height: 50%;
+    width: 50%;
   }
   .view-wrapper {
     position: relative;
     width: 100%;
     display: flex;
+   
   }
   .view-wrapper .MuiCard-root {
     padding: 0;

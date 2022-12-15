@@ -17,6 +17,10 @@ import Digitize from './DigitalizeCard';
 import Panel from 'apollo-react/components/Panel';
 import PanelGroup from 'apollo-react/components/PanelGroup';
 
+// import Digitize from './DigitizeCard';
+import { connect } from 'react-redux';
+import Cookies from 'universal-cookie';
+// import { headerList } from '../../../store/Digitized/actions';
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
   constructor() {
@@ -29,12 +33,25 @@ class ProtocolViewClass extends React.Component {
       section: null,
       activeSection: null,
       activeSubSection: null,
-      headerDetails: '',
+      headerDetails:[] ,
+      sectionDocument:[],
     };
   }
-
   componentDidMount() {
-    console.log('protocolViewClass', this.props.refx);
+    // console.log('items',this.props.items);
+    const cookiesServer = new Cookies();
+    const res=fetch("http://127.0.0.1:8000/api/cpt_data/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1", {
+  "headers": {
+    "accept": "application/json",
+    "accept-language": "en-US,en;q=0.9",
+    "authorization": `Bearer ${cookiesServer.get('api_token')}`
+  },
+ 
+  "method": "GET",
+ 
+}).then((response)=>response.json())
+.then((items)=>this.setState({headerDetails:items})
+)
   }
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -105,9 +122,6 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
-  sectionDetails = (item) => {
-    this.headerDetails(item);
-  };
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -188,7 +202,6 @@ class ProtocolViewClass extends React.Component {
       this.handleClick();
     }
   }
-
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false, subSectionData: [] });
@@ -340,8 +353,14 @@ class ProtocolViewClass extends React.Component {
             // width: '800px',
           }}
         >
-          <Panel width={550} minWidth={350} maxWidth={630} hideButton resizable>
-            <Card className="protocol-column">
+          <Panel
+            width={window.innerWidth / 2}
+            minWidth={350}
+            maxWidth={630}
+            hideButton
+            resizable
+          >
+            <Card className="protocol-source-column">
               <div
                 style={{
                   fontWeight: 'bold',
@@ -375,6 +394,7 @@ class ProtocolViewClass extends React.Component {
             <Digitize
               sectionRef={this.props.sectionRef}
               sectionNumber={this.props.sectionNumber}
+              headerDetails={this.state.headerDetails}
             />
           </Panel>
         </PanelGroup>
@@ -382,4 +402,14 @@ class ProtocolViewClass extends React.Component {
     );
   }
 }
-export default ProtocolViewClass;
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+  };
+};
+const mapDispatchToProps=(dispatch)=>{
+  return{
+    headerList:()=>dispatch(headerList())
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(ProtocolViewClass);
