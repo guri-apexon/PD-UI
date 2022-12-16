@@ -76,7 +76,7 @@ function ProtocolView({ protId, refs }) {
   };
 
   return (
-    <div>
+    <div className="protocol_data_container">
       <div>
         <BladeLeft handlePageNo={handlePageNo} />
       </div>

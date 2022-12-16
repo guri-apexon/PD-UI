@@ -73,27 +73,23 @@ function Digitize({ sectionNumber, sectionRef }) {
     >
       <div className="panel-heading">Digitized Data</div>
       <div
-        style={{
-          scrollPadding: '50px 0px 0px 50px',
-          padding: '6px 16px',
-          paddingTop: '20px',
-          overflowY: 'scroll',
-          height: '65vh',
-          position: 'fixed',
-          margin: 10,
-        }}
+        className="digitize-panel-content"
+        // style={{
+        //   scrollPadding: '50px 0px 0px 50px',
+        //   padding: '6px 16px',
+        //   paddingTop: '20px',
+        //   overflowY: 'scroll',
+        //   height: '65vh',
+        //   position: 'fixed',
+        //   margin: 10,
+        // }}
         data-testid="protocol-column-wrapper"
       >
         {Records.map((items, index) => (
           <div
             key={React.key}
             ref={sectionRef ?? [index]}
-            style={{
-              listStyleType: 'none',
-              display: 'flex',
-              flexDirection: 'row',
-              padding: '2px',
-            }}
+            className="digitized_data_item"
           >
             <Drag
               style={{

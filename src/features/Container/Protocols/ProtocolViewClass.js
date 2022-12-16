@@ -265,85 +265,12 @@ class ProtocolViewClass extends React.Component {
       );
     }
     return (
-    
       <div className="view-wrapper">
-        {/* <Card className="index-column">
-          <div
-            ref={(node) => {
-              this.node = node;
-            }}
-          >
-            <div
-              className="dropdown-wrapper"
-              data-testid="dropdown-wrapper-test"
-              id="dropdown-wrapper-id"
-            >
-              {listData.map((item) => (
-                <button
-                  className={`btn btn1 ${
-                    this.state.activeSection === item.id ? 'active' : ''
-                  }`}
-                  onClick={() =>
-                    item.subSections
-                      ? this.handleClick(item.id)
-                      : scrollSections(item.id)
-                  }
-                  key={`section-${item.id}`}
-                >
-                  <span
-                    style={{ marginLeft: '16px' }}
-                    dangerouslySetInnerHTML={{ __html: item.section }}
-                  >
-                    {/* {item.section}{" "} */}
-        {/* </span>
-                  {item.subSections && (
-                    <span style={{ float: 'right', fontSize: '1em' }}>
-                      <ChevronRight
-                        className="view-more-icon"
-                        variant="small"
-                        style={{ float: 'right', fontSize: '1em' }}
-                      />
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div> */}
-        {/* {this.state.popupVisible && (
-              <div
-                className="dropdown-menu sample"
-                data-testid="dropdown-menu-test"
-                id="dropdown-menu-id"
-              >
-                {this.state.subSectionData.map((data, i) => (
-                  <span>
-                    <a
-                      className={`btn btn1 ${
-                        this.state.activeSubSection === data.id ? 'active' : ''
-                      }`}
-                      key={`sub-section-${data.id}`}
-                      onClick={() => scrollHide(data.id)}
-                      style={{ width: '95%' }}
-                    >
-                      <p
-                        style={{ margin: 0, marginLeft: '16px' }}
-                        dangerouslySetInnerHTML={{ __html: data.section }}
-                      >
-                        {/* {`${data.section}`} */}
-        {/* </p>
-                    </a>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        </Card> */}
-
         <PanelGroup
           style={{
             display: 'flex',
             padding: 1,
             boxSizing: 'content-box',
-            // width: '800px',
           }}
         >
           <Panel
@@ -354,18 +281,7 @@ class ProtocolViewClass extends React.Component {
             resizable
           >
             <Card className="protocol-source-column">
-              <div
-                style={{
-                  fontWeight: 'bold',
-                  zIndex: 999,
-                  backgroundColor: '#FFFAFA',
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-                className="panel-heading"
-              >
-                Source Document
-              </div>
+              <div className="panel-heading">Source Document</div>
               <div
                 style={{
                   scrollPadding: '50px 0px 0px 50px',

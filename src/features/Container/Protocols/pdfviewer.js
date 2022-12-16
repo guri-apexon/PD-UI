@@ -97,38 +97,21 @@ function Pdf({ page, refs }) {
         ))}
         {/* <Page pageNumber={page1 + 1} scale={pageScale} /> */}
       </Document>
-      <div
-        className="sticky-bottom"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: 'groove',
-        }}
-      >
-        <Card
-          style={{
-            maxWidth: 230,
-            height: 28,
-            border: 2,
-            alignItems: 'center',
-            top: '10px',
-          }}
-        >
+      <div className="sticky-bottom">
+        <div>
           <Pagination
             count={numPages}
             rowsPerPage={1}
             page={currentPage}
             onChangePage={(pg) => setPage(pg)}
           />
-        </Card>
-        <Card
+        </div>
+        <div
           style={{
             maxWidth: 230,
             height: 28,
             border: 2,
             alignItems: 'center',
-            top: '10px',
           }}
         >
           <Button
@@ -151,7 +134,7 @@ function Pdf({ page, refs }) {
           >
             {' '}
           </Button>
-        </Card>
+        </div>
       </div>
     </div>
   );
