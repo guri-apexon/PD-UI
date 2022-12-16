@@ -39,7 +39,7 @@ function Pdf({ page, refs }) {
   }, [page]);
 
   useEffect(() => {
-    if (currentPage && refs[currentPage].current) {
+    if (refs[currentPage].current) {
       console.log('Test1');
       console.log(currentPage, refs);
       refs[currentPage].current.scrollIntoView({ behavior: 'instant' });

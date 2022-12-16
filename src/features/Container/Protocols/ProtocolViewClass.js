@@ -347,16 +347,15 @@ class ProtocolViewClass extends React.Component {
         <PanelGroup
           style={{
             display: 'flex',
-            height: 400,
-            padding: 24,
+            padding: 1,
             boxSizing: 'content-box',
             // width: '800px',
           }}
         >
           <Panel
             width={window.innerWidth / 2}
-            minWidth={350}
-            maxWidth={630}
+            minWidth={window.innerWidth / 4}
+            maxWidth={window.innerWidth / 1.5}
             hideButton
             resizable
           >
@@ -365,12 +364,11 @@ class ProtocolViewClass extends React.Component {
                 style={{
                   fontWeight: 'bold',
                   zIndex: 999,
-                  padding: 15,
-                  position: 'fixed',
                   backgroundColor: '#FFFAFA',
                   paddingTop: 0,
                   paddingBottom: 0,
                 }}
+                className="panel-heading"
               >
                 Source Document
               </div>

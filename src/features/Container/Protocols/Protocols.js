@@ -90,32 +90,35 @@ function Protocols({ location }) {
       <>
         {summary.success && summary.data ? (
           <div className="protocols" data-testid="protocols-component-test">
-            <Breadcrumbs
-              items={[
-                { href: '/dashboard' },
-                {
-                  title: 'Protocols',
-                  className: 'br-cr-protocol',
-                  disabled: true,
-                  // onClick: handleClick,
-                },
-                {
-                  title: data.protocol,
-                },
-              ]}
-              style={{ paddingInlineStart: 0, marginBottom: 0 }}
-            />
+            <div className="p-rl-20">
+              <Breadcrumbs
+                items={[
+                  { href: '/dashboard' },
+                  {
+                    title: 'Protocols',
+                    className: 'br-cr-protocol',
+                    disabled: true,
+                    // onClick: handleClick,
+                  },
+                  {
+                    title: data.protocol,
+                  },
+                ]}
+                style={{ paddingInlineStart: 0, marginBottom: 0 }}
+              />
 
-            <h2 className="header">{data.Protocol}</h2>
+              <h2 className="header">{data.Protocol}</h2>
+            </div>
             <div className="tab-column">
               <div className="overview">
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1 }} className="p-rl-20">
                     <Tabs
                       value={value}
                       onChange={handleChangeTab}
                       size="small"
                       truncate
+                      className="protocol-tabs"
                       data-testid="protocols-tabs"
                     >
                       <Tab label="Overview" />

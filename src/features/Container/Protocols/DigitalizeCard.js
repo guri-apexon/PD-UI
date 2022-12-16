@@ -72,17 +72,20 @@ function Digitize({ sectionNumber, sectionRef, headerDetails }) {
     }
   }, [sectionNumber, headerDetails]);
   return (
-    <Card className="protocol-column" style={{ borderRight: '0' }}>
+    <Card
+      className="protocol-column protocol-digitize-column"
+      style={{ borderRight: '0' }}
+    >
       <div
         style={{
           fontWeight: 'bold',
           zIndex: 1,
           padding: 15,
-          position: 'fixed',
           backgroundColor: '#FFFAFA',
           paddingTop: 0,
           paddingBottom: 0,
         }}
+        className="panel-heading"
       >
         Digitized Data
       </div>
