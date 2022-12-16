@@ -53,7 +53,7 @@ function Pdf({ page, refs }) {
         {/* <Page pageNumber={pageNumber} /> */}
 
         {Array.from(new Array(numPages), (el, index) => (
-          <div ref={refs[index]} key={index}>
+          <div ref={refs ?? [index]} key={index}>
             <Page
               key={`page_${index + 1}`}
               className="pdf-page"
