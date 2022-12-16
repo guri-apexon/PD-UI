@@ -4,7 +4,7 @@ import Button from 'apollo-react/components/Button';
 import PropTypes from 'prop-types';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-function Pdf({ page, refs }) {
+function Pdf({ page, refs, pageRight }) {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const onDocumentLoadSuccess = ({ numPages }) => {
@@ -12,30 +12,24 @@ function Pdf({ page, refs }) {
   };
   console.log('Enter2');
 
-  // const arr = [0, 1, 2, 3, 4, 5];
-  // const refs = arr.reduce((acc, value) => {
-  //   acc[value] = createRef();
-  //   return acc;
-  // }, {});
-
   useEffect(() => {
-    console.log('-------', refs);
-    console.log('useEffect page No', page);
     if (page === 'undefined' || page === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else {
-      console.log('page:-------In UseEffect');
       refs[page - 1].current.scrollIntoView({ behavior: 'instant' });
     }
   }, [page]);
-  const clickHandler = () => {
-    console.log(refs);
-    refs[2].current.scrollIntoView({ behavior: 'smooth' });
-  };
+
+  useEffect(() => {
+    if (refs[pageRight].current) {
+      refs[pageRight - 1].current.scrollIntoView({ behavior: 'instant' });
+    }
+  }, [pageRight]);
+
   const handlePageNumber = (pageNumber) => {
     setPageNumber(pageNumber);
   };
-  console.log('page', page);
+
   return (
     <div>
       {/* <Button
@@ -74,4 +68,5 @@ export default Pdf;
 Pdf.propTypes = {
   page: PropTypes.isRequired,
   refs: PropTypes.isRequired,
+  pageRight: PropTypes.isRequired,
 };

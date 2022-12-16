@@ -21,12 +21,12 @@ const panels = () => {
   return ex;
 };
 
-function Digitize({ sectionNumber, sectionRef }) {
+function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
   const [expanded, setExpanded] = useState(panels);
   const allOpen = expanded.every((exp) => exp);
 
-  const handleChange = (panelIndex) => () => {
-    console.log('test1');
+  const handleChange = (panelIndex) => {
+    console.log('handleChange');
     setExpanded((oldPanels) => {
       console.log('test2');
       const newPanels = [...oldPanels];
@@ -122,20 +122,26 @@ function Digitize({ sectionNumber, sectionRef }) {
                 border: 0,
                 borderTop: 0,
                 borderRadius: 0,
-                // height: '44px',
                 backgroundColor: '#F8F8F9',
               }}
-              onChange={handleChange(index)}
+              onChange={() => {
+                handleChange(index);
+                handlePageRight(items.page);
+              }}
             >
               <AccordionSummary
                 style={{
                   fontSize: '0.5em',
                 }}
               >
+                {console.log(expanded)}
                 <Typography
                   style={{
                     fontSize: '1.5em',
                     fontweight: 'strong',
+                  }}
+                  onClick={(items) => {
+                    console.log(items);
                   }}
                 >
                   {items.source_file_section}
@@ -171,4 +177,5 @@ export default Digitize;
 Digitize.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
+  handlePageRight: PropTypes.isRequired,
 };

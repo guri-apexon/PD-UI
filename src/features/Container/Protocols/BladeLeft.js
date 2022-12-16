@@ -1,6 +1,5 @@
 import withStyles from '@material-ui/core/styles/withStyles';
 import React, { useState, useEffect } from 'react';
-
 import { neutral8 } from 'apollo-react/colors';
 import Tooltip from 'apollo-react/components/Tooltip';
 import PropTypes from 'prop-types';
@@ -8,6 +7,7 @@ import Blade from 'apollo-react/components/Blade';
 import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
 import TextField from 'apollo-react/components/TextField';
+import { List } from 'react-virtualized';
 import Search from 'apollo-react-icons/Search';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import record from './Dummy.json';
@@ -42,6 +42,15 @@ function BladeLeft({ handlePageNo }) {
     }
   }, [open]);
 
+  // const rowRenders = ({ data, index, key, style }) => {
+  //   const item = data[index];
+  //   return (
+  //     <div key={key} style={style}>
+  //       <div>{item.source_file_section}</div>
+  //     </div>
+  //   );
+  // };
+
   return (
     <div>
       <div className="bladeContainer">
@@ -55,9 +64,23 @@ function BladeLeft({ handlePageNo }) {
           width={263}
           marginTop={159}
         >
-          <TextField placeholder="&#61442;  Search" className="search-Box" />
+          <TextField
+            icon={<Search />}
+            placeholder="Search"
+            className="search-Box"
+          />
           <div style={{ paddingLeft: '7px' }}>
-            {data.map((item, index) => {
+            {/* <List
+              width={600}
+              height={600}
+              rowHeight={50}
+              rowCount={data.length}
+              rowRenderer={(data, index, key, style) => {
+                console.log(data.length);
+                rowRenders(data, index, key, style);
+              }}
+            /> */}
+            {data?.map((item, index) => {
               return (
                 <Accordion
                   key={React.key}
@@ -78,7 +101,7 @@ function BladeLeft({ handlePageNo }) {
                     </Tooltip>
                   </AccordionSummary>
 
-                  {/* {item.subsection.map((level1, index1) => {
+                  {item?.subsection?.map((level1, index1) => {
                     return (
                       <Accordion
                         key={React.key}
@@ -125,7 +148,7 @@ function BladeLeft({ handlePageNo }) {
                           })}
                       </Accordion>
                     );
-                  })} */}
+                  })}
                 </Accordion>
               );
             })}
