@@ -1,5 +1,5 @@
 import { createRef, useState, useEffect } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import { Page, Document, pdfjs } from 'react-pdf';
 import Button from 'apollo-react/components/Button';
 import PropTypes from 'prop-types';
 
