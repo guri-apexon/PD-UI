@@ -99,61 +99,54 @@ function Digitize({ sectionNumber, sectionRef }) {
                 paddingLeft: '5px',
               }}
             />
-            <Accordion
-              expanded={expanded[index]}
-              style={{
-                // width: '100%',
-                marginBottom: '-2px',
-                border: 0,
-                borderTop: 0,
-                borderRadius: 0,
-                // height: '44px',
-                backgroundColor: '#F8F8F9',
-              }}
-              onChange={handleChange(index)}
-            >
-              <AccordionSummary
-                style={{
-                  fontSize: '0.5em',
-                }}
+            <div>
+              <Accordion
+                expanded={expanded[index]}
+                onChange={handleChange(index)}
               >
-                <div
-                  className=""
+                <AccordionSummary
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    height: 48,
+                    fontSize: '0.5em',
                   }}
                 >
-                  <Typography
-                    style={{
-                      fontSize: '1.5em',
-                      fontweight: 'strong',
-                    }}
-                    // onClick={onClickHandler()}
-                  >
-                    {items?.source_file_section}
-                  </Typography>
                   <div
+                    className=""
                     style={{
                       display: 'flex',
-                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      height: 48,
                     }}
                   >
-                    <EyeShow />
-                    <Pencil style={{ paddingLeft: '20px' }} />
+                    <Typography
+                      style={{
+                        fontSize: '1.5em',
+                        fontweight: 'strong',
+                      }}
+                      // onClick={onClickHandler()}
+                    >
+                      {items?.source_file_section}
+                    </Typography>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                      }}
+                    >
+                      <EyeShow />
+                      <Pencil style={{ paddingLeft: '20px' }} />
+                    </div>
                   </div>
-                </div>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Suspendisse malesuada lacus ex, sit amet blandit leo
+                    lobortis eget.
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            </div>
           </div>
         ))}
       </div>

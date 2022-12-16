@@ -271,6 +271,7 @@ class ProtocolViewClass extends React.Component {
             display: 'flex',
             padding: 1,
             boxSizing: 'content-box',
+            width: '100%',
           }}
         >
           <Panel
