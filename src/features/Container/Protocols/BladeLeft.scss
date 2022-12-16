@@ -12,6 +12,9 @@
     padding: 0;
   }
 
+  [class*='Blade-header-'] > h3 {
+    text-align: center;
+  }
   [class*='Blade-body-'] > div > div {
     background: #f6f7fb;
   }
@@ -23,7 +26,8 @@
   }
 
   [class*='MuiAccordionSummary-root-'] {
-    height: 22px;
+    height: 24px;
+    width: 226px;
     min-height: unset;
   }
 
@@ -33,7 +37,7 @@
   }
 
   [class*='MuiAccordionSummary-root-'] > div:first-child > p {
-    height: 18px;
+    height: 24px;
     margin: 0;
   }
 
@@ -73,6 +77,16 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 120px;
   margin-top: 14%;
+  height: 24px;
+  width: 226px;
+  color: #000000;
+  font-family: 'Proxima Nova';
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.search-Box {
+  width: 205px;
+  background-color: #ffffff;
 }
