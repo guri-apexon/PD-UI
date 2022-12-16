@@ -72,12 +72,8 @@ function Pdf({ page, refs }) {
   return (
     <div
       id="pdfDocument"
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'left',
-        flexdirection: Column,
-      }}
+      className="pdf_container"
+      data-testid="protocol-column-wrapper"
     >
       <Document
         file="/ALM-Executing-TestCases_DefectManagementProcess.pdf"
@@ -95,25 +91,15 @@ function Pdf({ page, refs }) {
             />
           </div>
         ))}
-        {/* <Page pageNumber={page1 + 1} scale={pageScale} /> */}
       </Document>
       <div className="sticky-bottom">
+        <Pagination
+          count={numPages}
+          rowsPerPage={1}
+          page={currentPage}
+          onChangePage={(pg) => setPage(pg)}
+        />
         <div>
-          <Pagination
-            count={numPages}
-            rowsPerPage={1}
-            page={currentPage}
-            onChangePage={(pg) => setPage(pg)}
-          />
-        </div>
-        <div
-          style={{
-            maxWidth: 230,
-            height: 28,
-            border: 2,
-            alignItems: 'center',
-          }}
-        >
           <Button
             size="small"
             icon={<PlusIcon />}

@@ -74,15 +74,6 @@ function Digitize({ sectionNumber, sectionRef }) {
       <div className="panel-heading">Digitized Data</div>
       <div
         className="digitize-panel-content"
-        // style={{
-        //   scrollPadding: '50px 0px 0px 50px',
-        //   padding: '6px 16px',
-        //   paddingTop: '20px',
-        //   overflowY: 'scroll',
-        //   height: '65vh',
-        //   position: 'fixed',
-        //   margin: 10,
-        // }}
         data-testid="protocol-column-wrapper"
       >
         {Records.map((items, index) => (
@@ -91,49 +82,23 @@ function Digitize({ sectionNumber, sectionRef }) {
             ref={sectionRef ?? [index]}
             className="digitized_data_item"
           >
-            <Drag
-              style={{
-                color: 'grey',
-                fontSize: '1.2em',
-                padding: '15px',
-                paddingLeft: '5px',
-              }}
-            />
+            <Drag />
             <div>
               <Accordion
                 expanded={expanded[index]}
                 onChange={handleChange(index)}
               >
-                <AccordionSummary
-                  style={{
-                    fontSize: '0.5em',
-                  }}
-                >
-                  <div
-                    className=""
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      height: 48,
-                    }}
-                  >
+                <AccordionSummary>
+                  <div className="accordion_summary">
                     <Typography
-                      style={{
-                        fontweight: 'strong',
-                      }}
-                      // onClick={onClickHandler()}
+
+                    // onClick={onClickHandler()}
                     >
                       {items?.source_file_section}
                     </Typography>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                      }}
-                    >
+                    <div className="accordion_summary_icons">
                       <EyeShow />
-                      <Pencil style={{ paddingLeft: '20px' }} />
+                      <Pencil />
                     </div>
                   </div>
                 </AccordionSummary>
