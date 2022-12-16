@@ -120,7 +120,6 @@ function Digitize({ sectionNumber, sectionRef }) {
                   >
                     <Typography
                       style={{
-                        fontSize: '1.5em',
                         fontweight: 'strong',
                       }}
                       // onClick={onClickHandler()}

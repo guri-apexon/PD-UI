@@ -282,7 +282,9 @@ class ProtocolViewClass extends React.Component {
             resizable
           >
             <Card className="protocol-source-column">
-              <div className="panel-heading">Source Document</div>
+              <div className="panel-heading" style={{ marginLeft: '10px' }}>
+                Source Document
+              </div>
               <div
                 style={{
                   scrollPadding: '50px 0px 0px 50px',
