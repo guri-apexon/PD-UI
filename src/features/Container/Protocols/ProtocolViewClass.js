@@ -4,25 +4,43 @@ import Card from 'apollo-react/components/Card';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
 import Loader from '../../Components/Loader/Loader';
 import { redaction } from '../../../AppConstant/AppConstant';
-
+import Pdf from '../Protocols/pdfviewer';
+// import Digitize from './DigitizeCard';
+import { connect } from 'react-redux';
+import Cookies from 'universal-cookie';
+// import { headerList } from '../../../store/Digitized/actions';
 const replaceall = require('replaceall');
-
 class ProtocolViewClass extends React.Component {
   constructor() {
     super();
-
     this.handleClick = this.handleClick.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
-
     this.state = {
       popupVisible: false,
       subSectionData: [],
       section: null,
       activeSection: null,
       activeSubSection: null,
+      headerDetails:[] ,
+      sectionDocument:[],
     };
   }
-
+  componentDidMount() {
+    // console.log('items',this.props.items);
+    const cookiesServer = new Cookies();
+    const res=fetch("http://127.0.0.1:8000/api/cpt_data/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1", {
+  "headers": {
+    "accept": "application/json",
+    "accept-language": "en-US,en;q=0.9",
+    "authorization": `Bearer ${cookiesServer.get('api_token')}`
+  },
+ 
+  "method": "GET",
+ 
+}).then((response)=>response.json())
+.then((items)=>this.setState({headerDetails:items})
+)
+  }
   createFullMarkup(str) {
     if (str || str !== undefined) {
       if (str.includes(redaction.text)) {
@@ -42,7 +60,6 @@ class ProtocolViewClass extends React.Component {
       __html: '<div></div>',
     };
   }
-
   getTable(item, unq, noHeader = false) {
     const footNote = [];
     for (const [key, value] of Object.entries(item)) {
@@ -51,7 +68,6 @@ class ProtocolViewClass extends React.Component {
         footNote.push(value);
       }
     }
-
     return (
       <>
         <div style={{}}>
@@ -94,7 +110,6 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
-
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -116,7 +131,6 @@ class ProtocolViewClass extends React.Component {
       }
       return this.getTable(content, 'TOC-TABLE');
     }
-
     switch (type) {
       case 'header':
         return (
@@ -149,11 +163,9 @@ class ProtocolViewClass extends React.Component {
         );
     }
   };
-
   handleClick(id) {
     this.setState({ section: id });
     document.addEventListener('click', this.handleOutsideClick, false);
-
     let subData = [];
     switch (id) {
       case 'TOC':
@@ -167,7 +179,6 @@ class ProtocolViewClass extends React.Component {
     }
     this.setState({ popupVisible: true, subSectionData: subData });
   }
-
   handleOutsideClick(e) {
     // ignore clicks on the component itself
     if (e.target && this.node && this.node.contains(e.target)) {
@@ -179,20 +190,17 @@ class ProtocolViewClass extends React.Component {
       this.handleClick();
     }
   }
-
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false, subSectionData: [] });
   };
-
   render() {
-    const { view, listData } = this.props;
-
+    const { view, listData, page } = this.props;
     const refs = this.state.subSectionData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
     }, {});
-
+    console.log('page-', page);
     const refsSection = listData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
@@ -212,7 +220,6 @@ class ProtocolViewClass extends React.Component {
       });
       // this.hideEle();
     };
-
     this.refs = refs;
     const scrollHide = (id) => {
       refs[id].current &&
@@ -226,7 +233,6 @@ class ProtocolViewClass extends React.Component {
       });
       this.hideEle();
     };
-
     if (view.loader) {
       return (
         <div
@@ -240,7 +246,6 @@ class ProtocolViewClass extends React.Component {
         </div>
       );
     }
-
     if (view.err) {
       return (
         <div
@@ -256,7 +261,7 @@ class ProtocolViewClass extends React.Component {
     }
     return (
       <div className="view-wrapper">
-        <Card className="index-column">
+        {/* <Card className="index-column">
           <div
             ref={(node) => {
               this.node = node;
@@ -284,7 +289,7 @@ class ProtocolViewClass extends React.Component {
                     dangerouslySetInnerHTML={{ __html: item.section }}
                   >
                     {/* {item.section}{" "} */}
-                  </span>
+        {/* </span>
                   {item.subSections && (
                     <span style={{ float: 'right', fontSize: '1em' }}>
                       <ChevronRight
@@ -296,8 +301,8 @@ class ProtocolViewClass extends React.Component {
                   )}
                 </button>
               ))}
-            </div>
-            {this.state.popupVisible && (
+            </div> */}
+        {/* {this.state.popupVisible && (
               <div
                 className="dropdown-menu sample"
                 data-testid="dropdown-menu-test"
@@ -318,84 +323,60 @@ class ProtocolViewClass extends React.Component {
                         dangerouslySetInnerHTML={{ __html: data.section }}
                       >
                         {/* {`${data.section}`} */}
-                      </p>
+        {/* </p>
                     </a>
                   </span>
                 ))}
               </div>
             )}
           </div>
-        </Card>
-        <Card className="protocol-column">
+        </Card> */}
+        <Card className="protocol-column" style={{ borderLeft: '0' }}>
+          <div
+            style={{
+              fontWeight: 'bold',
+              zIndex: 999,
+              padding: 15,
+              position: 'fixed',
+              backgroundColor: '#FFFAFA',
+              paddingTop: 0,
+              paddingBottom: 0,
+            }}
+          >
+            Source Document
+          </div>
           <div
             style={{
               scrollPadding: '50px 0px 0px 50px',
-              padding: '10px 16px',
+              padding: '6px 16px',
               overflowY: 'scroll',
               height: '65vh',
+              width: '100%',
             }}
             data-testid="protocol-column-wrapper"
           >
-            {view.iqvdataToc.data.length &&
-              view.iqvdataToc.data.map((item) => {
-                return this.getTocElement(item);
-              })}
-            {view.iqvdataSoa.map((item) => this.getTable(item, 'SOA'))}
-            {view.iqvdataSummary && (
-              <div
-                id="SUM"
-                key="SUM"
-                ref={refsSection.SUM}
-                style={{ marginTop: '10%' }}
-              >
-                <h1>Summary</h1>
-                <table border="1">
-                  <tbody>
-                    {view.iqvdataSummary.data.map((item) => {
-                      return (
-                        <tr>
-                          <td style={{ width: '30%' }}>
-                            {' '}
-                            <div
-                              style={{ fontWeight: '600' }}
-                              // dangerouslySetInnerHTML={{ __html: item[2] }}
-                              dangerouslySetInnerHTML={this.createFullMarkup(
-                                item[2],
-                              )}
-                            />
-                          </td>
-                          <td style={{ width: '70%' }}>
-                            {' '}
-                            <p
-                              style={{ marginTop: 0, marginBottom: '10px' }}
-                              // dangerouslySetInnerHTML={{ __html: item[1] }}
-                              dangerouslySetInnerHTML={this.createFullMarkup(
-                                item[1],
-                              )}
-                            />
-                          </td>
-                        </tr>
-                      );
-
-                      // return (
-                      //   <>
-                      //     <div dangerouslySetInnerHTML={{ __html: item[2] }}></div>
-                      //     <p
-                      //       style={{ marginTop: 0, marginBottom: "10px" }}
-                      //       dangerouslySetInnerHTML={{ __html: item[1] }}
-                      //     ></p>
-                      //   </>
-                      // );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            )}
+            <div>
+              <Pdf page={page} refs={this.props.refx} />
+            </div>
           </div>
         </Card>
+        <Digitize
+          sectionRef={this.props.sectionRef}
+          sectionNumber={this.props.sectionNumber}
+          headerDetails={this.state.headerDetails}
+        />
       </div>
     );
   }
 }
-
-export default ProtocolViewClass;
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+  };
+};
+const mapDispatchToProps=(dispatch)=>{
+  return{
+    headerList:()=>dispatch(headerList())
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(ProtocolViewClass);

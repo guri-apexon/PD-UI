@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createRef } from 'react';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 // ------------------- CSS -------------------
@@ -17,6 +17,7 @@ import ProtocolOverview from './ProtocolOverview';
 import ProtocolView from './ProtocolView';
 import Documents from './Documents';
 import NoResultFound from '../../Components/NoResultFound';
+import Records from './records.json';
 
 // ------------------- Third Party -----------
 
@@ -25,6 +26,7 @@ function Protocols({ location }) {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
+  const [arrr, setarrr] = useState(new Array(10));
 
   useEffect(() => {
     const params = location.search;
@@ -42,9 +44,16 @@ function Protocols({ location }) {
       loader: true,
     };
     getProcotoclToc(viewData);
+    // setSectionIndex(new Array(Records.length));
     /* eslint-disable */
-  }, []);
+  }, [Records.length]);
   /* eslint-enable */
+
+  const forLoop = async (_) => {
+    for (let index = 0; index < 6; index++) {
+      arrr.push(index);
+    }
+  };
 
   useEffect(() => {
     const params = location.search;
@@ -59,11 +68,20 @@ function Protocols({ location }) {
     if ('protocolId2' in parsed && 'value' in parsed) {
       setValue(2);
     }
+    forLoop();
   }, [dispatch, location]);
   /* istanbul ignore next */
+
   const handleChangeTab = (event, value) => {
     setValue(value);
   };
+  console.log(Records.length);
+
+  const refs = arrr.reduce((refs, value) => {
+    refs[value] = createRef();
+    return refs;
+  }, {});
+  // console.log('sectionIndex', sectionIndex);
 
   if (idPresent) {
     const { data } = summary;
@@ -108,7 +126,7 @@ function Protocols({ location }) {
 
                 <div className="tab-container">
                   {value === 0 && <ProtocolOverview data={data} />}
-                  {value === 1 && <ProtocolView protId={data.id} />}
+                  {value === 1 && <ProtocolView protId={data.id} refs={refs} />}
                   {value === 2 && (
                     <Documents handleChangeTab={handleChangeTab} />
                   )}

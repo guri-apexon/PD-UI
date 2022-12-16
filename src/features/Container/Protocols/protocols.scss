@@ -51,7 +51,6 @@
       background-color: rgb(211 211 211 / 50%);
       font-size: 14px;
     }
-
     h3,
     h4,
     h5,
@@ -64,9 +63,7 @@
       font-size: 14px;
     }
   }
-
   // table tbody tr:nth-child(1) { font-weight: bold; background-color: #f2f2f2; }
-
   // margin-top: 70px;
   padding-left: 20px;
   max-width: 1140px;
@@ -83,7 +80,7 @@
     margin-top: 10px;
     margin-left: 9px;
   }
-  .tab-column {
+  tab-column {
     display: flex;
     .overview {
       margin-left: 9px;
@@ -93,9 +90,12 @@
         font-size: 14px;
         margin-right: 0;
         padding: 6px 14px;
-        border: 1px solid #c3c3c3;
+        border: 0px solid white;
         min-height: 10px;
         opacity: 0.5;
+        border-bottom-width: 4px;
+        --tw-border-opacity: 0;
+        border-color: rgb(10, 149, 235);
       }
       .MuiTab-textColorInherit.Mui-selected {
         opacity: 1;
@@ -114,7 +114,6 @@
       .tab-card {
         flex: 3;
         // border: 1px solid #c3c3c3;
-
         height: max-content;
         .protocol-title div:first-child {
           font-size: 14px;
@@ -162,11 +161,9 @@
           font-size: 14px;
           font-weight: 500;
         }
-
         .recharts-wrapper {
           height: 180px !important;
           width: 180px !important;
-
           .recharts-surface {
             height: 180px !important;
             width: 180px !important;
@@ -175,28 +172,22 @@
       }
     }
   }
-
   .normal {
     font-weight: normal;
   }
-
   .thick {
     font-weight: bold;
   }
-
   .indent {
     margin-left: 10px;
   }
-
   p {
     margin-bottom: 0;
     // margin-top: 5px;
   }
-
   .thicker {
     font-weight: 900;
   }
-
   .dropdown-wrapper {
     // position: relative;
     width: 100%;
@@ -204,7 +195,6 @@
     // border-radius: 0.25rem;
     font-size: 14px;
   }
-
   .dropdown-item {
     display: block;
     width: auto;
@@ -217,7 +207,6 @@
     background-color: transparent;
     border: 0;
   }
-
   .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -239,7 +228,6 @@
     width: 30%;
     overflow: hidden;
   }
-
   .sample {
     max-height: 200px;
     overflow-y: auto;
@@ -249,11 +237,9 @@
     left: 9%;
     will-change: transform;
   }
-
   .show-nav {
     display: block;
   }
-
   .btn {
     width: 100%;
     /* height: 27px; */
@@ -273,13 +259,11 @@
     border-left: 8px solid transparent;
     text-transform: capitalize;
   }
-
   // .btn1 {
   //   background-color:rgba(0,255,0,0.2);
   //   color: black;
   //   border-left: 8px solid #4CAF50;
   // }
-
   .btn1:hover,
   .btn1:active,
   .btn1:focus,
@@ -287,7 +271,6 @@
     border-left: 8px solid #0491f3;
     background-color: #0491f336;
   }
-
   .index-column {
     flex: 1 1;
     height: max-content;
@@ -296,19 +279,18 @@
     flex: 3 1;
     display: flex;
     flex-direction: column;
-    margin-left: 10px;
+    height: 50%;
+    width: 50%;
   }
-
   .view-wrapper {
     position: relative;
     width: 100%;
     display: flex;
+   
   }
-
   .view-wrapper .MuiCard-root {
     padding: 0;
   }
-
   label {
     font-weight: bold;
   }
@@ -316,7 +298,6 @@
     text-transform: capitalize;
   }
 }
-
 .sidebar-blade > div > :last-child {
   display: none;
 }

@@ -1,13 +1,35 @@
-import { useEffect } from 'react';
+import { useEffect, useState, createRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { viewResult, protocolSummary } from './protocolSlice';
 import ProtocolViewClass from './ProtocolViewClass';
+import BladeLeft from './BladeLeft';
+import Records from './records.json';
 
-function ProtocolView({ protId }) {
+const panels = () => {
+  const ex = [];
+  const arraylength = Records.length;
+  for (let i = 0; i < arraylength; i++) {
+    ex[i] = i;
+  }
+
+  const refsection = ex.reduce((refsection, value) => {
+    refsection[value] = createRef();
+    console.log('----', value);
+    return refsection;
+  }, {});
+  console.log('refsection:-', refsection);
+  return refsection;
+};
+
+function ProtocolView({ protId, refs }) {
   const summary = useSelector(protocolSummary);
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
+  const [pageNo, setPageNo] = useState();
+  const [sectionNumber, setSectionNumber] = useState();
+  const [sectionRef, setSectionRef] = useState(panels);
+
   useEffect(() => {
     dispatch({
       type: 'GET_PROTOCOL_TOC_SAGA',
@@ -47,18 +69,34 @@ function ProtocolView({ protId }) {
   if (viewData.iqvdataSummary) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
+  console.log('protocolView', refs);
+  const handlePageNo = (event, page, sectionNo) => {
+    setPageNo(page);
+    setSectionNumber(sectionNo);
+  };
+
   return (
-    viewData && (
-      <ProtocolViewClass
-        view={viewData}
-        data={subSections}
-        listData={listData}
-      />
-    )
+    <div>
+      <div>
+        <BladeLeft handlePageNo={handlePageNo} />
+      </div>
+      {viewData && (
+        <ProtocolViewClass
+          view={viewData}
+          data={subSections}
+          listData={listData}
+          page={pageNo}
+          refx={refs}
+          sectionNumber={sectionNumber}
+          sectionRef={sectionRef}
+        />
+      )}
+    </div>
   );
 }
 
 export default ProtocolView;
 ProtocolView.propTypes = {
   protId: PropTypes.isRequired,
+  refs: PropTypes.isRequired,
 };

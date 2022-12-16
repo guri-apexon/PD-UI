@@ -82,10 +82,10 @@ function App() {
     } else {
       const details = {
         // userId: "q846158", // Arjun
-        userId: process.env.REACT_APP_USERID,
-        username: 'Test User',
-        email: 'test@iqvia.com',
-        user_type: 'normal',
+        userId: "u1149900",
+        username: "Test User",
+        email: "test@iqvia.com",
+        user_type: "normal",
       };
       dispatch(setUserDetails(details));
     }
