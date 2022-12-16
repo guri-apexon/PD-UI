@@ -27,10 +27,13 @@
 
   [class*='MuiAccordionSummary-root-'] {
     height: 24px;
-    width: 226px;
+    width: 100%;
     min-height: unset;
   }
-
+  div[class*='Blade-body-']{
+    overflow-x: hidden;
+  }
+  
   [class*='MuiAccordionSummary-root-'] > div:first-child {
     height: 24px;
     min-height: unset;

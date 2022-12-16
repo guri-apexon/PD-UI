@@ -5,6 +5,8 @@ import ChevronRight from 'apollo-react-icons/ChevronRight';
 import Loader from '../../Components/Loader/Loader';
 import { redaction } from '../../../AppConstant/AppConstant';
 import Pdf from '../Protocols/pdfviewer';
+import Digitize from './DigitalizeCard';
+
 import Accordion from 'apollo-react/components/Accordion';
 import Records from './records.json';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -13,7 +15,6 @@ import AccordionSummary from 'apollo-react/components/AccordionSummary';
 
 import Typography from 'apollo-react/components/Typography';
 import Drag from 'apollo-react-icons/Drag';
-import Digitize from './DigitalizeCard';
 import Panel from 'apollo-react/components/Panel';
 import PanelGroup from 'apollo-react/components/PanelGroup';
 
@@ -33,10 +34,10 @@ class ProtocolViewClass extends React.Component {
       section: null,
       activeSection: null,
       activeSubSection: null,
-      headerDetails:[] ,
-      sectionDocument:[],
+      headerDetails: '',
     };
   }
+
   componentDidMount() {
     // console.log('items',this.props.items);
     const cookiesServer = new Cookies();
@@ -50,9 +51,17 @@ class ProtocolViewClass extends React.Component {
   "method": "GET",
  
 }).then((response)=>response.json())
-.then((items)=>this.setState({headerDetails:items})
+.then((items)=>{
+  const filteredItems = items.filter(x=>{
+    return x.source_file_section!=="blank_header"
+  });
+  console.log("filteredItems", filteredItems);
+  this.setState({headerDetails:filteredItems})
+}
 )
+    console.log('protocolViewClass', this.props.refx);
   }
+
   createFullMarkup(str) {
     if (str || str !== undefined) {
       if (str.includes(redaction.text)) {
@@ -122,6 +131,9 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
+  sectionDetails = (item) => {
+    this.headerDetails(item);
+  };
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -202,6 +214,7 @@ class ProtocolViewClass extends React.Component {
       this.handleClick();
     }
   }
+
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false, subSectionData: [] });
@@ -273,83 +286,12 @@ class ProtocolViewClass extends React.Component {
     }
     return (
       <div className="view-wrapper">
-        {/* <Card className="index-column">
-          <div
-            ref={(node) => {
-              this.node = node;
-            }}
-          >
-            <div
-              className="dropdown-wrapper"
-              data-testid="dropdown-wrapper-test"
-              id="dropdown-wrapper-id"
-            >
-              {listData.map((item) => (
-                <button
-                  className={`btn btn1 ${
-                    this.state.activeSection === item.id ? 'active' : ''
-                  }`}
-                  onClick={() =>
-                    item.subSections
-                      ? this.handleClick(item.id)
-                      : scrollSections(item.id)
-                  }
-                  key={`section-${item.id}`}
-                >
-                  <span
-                    style={{ marginLeft: '16px' }}
-                    dangerouslySetInnerHTML={{ __html: item.section }}
-                  >
-                    {/* {item.section}{" "} */}
-        {/* </span>
-                  {item.subSections && (
-                    <span style={{ float: 'right', fontSize: '1em' }}>
-                      <ChevronRight
-                        className="view-more-icon"
-                        variant="small"
-                        style={{ float: 'right', fontSize: '1em' }}
-                      />
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div> */}
-        {/* {this.state.popupVisible && (
-              <div
-                className="dropdown-menu sample"
-                data-testid="dropdown-menu-test"
-                id="dropdown-menu-id"
-              >
-                {this.state.subSectionData.map((data, i) => (
-                  <span>
-                    <a
-                      className={`btn btn1 ${
-                        this.state.activeSubSection === data.id ? 'active' : ''
-                      }`}
-                      key={`sub-section-${data.id}`}
-                      onClick={() => scrollHide(data.id)}
-                      style={{ width: '95%' }}
-                    >
-                      <p
-                        style={{ margin: 0, marginLeft: '16px' }}
-                        dangerouslySetInnerHTML={{ __html: data.section }}
-                      >
-                        {/* {`${data.section}`} */}
-        {/* </p>
-                    </a>
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-        </Card> */}
-
         <PanelGroup
           style={{
             display: 'flex',
             padding: 1,
             boxSizing: 'content-box',
-            // width: '800px',
+            width: '100%',
           }}
         >
           <Panel
@@ -360,16 +302,7 @@ class ProtocolViewClass extends React.Component {
             resizable
           >
             <Card className="protocol-source-column">
-              <div
-                style={{
-                  fontWeight: 'bold',
-                  zIndex: 999,
-                  backgroundColor: '#FFFAFA',
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                }}
-                className="panel-heading"
-              >
+              <div className="panel-heading" style={{ marginLeft: '10px' }}>
                 Source Document
               </div>
               <div
@@ -400,14 +333,4 @@ class ProtocolViewClass extends React.Component {
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    items: state.items,
-  };
-};
-const mapDispatchToProps=(dispatch)=>{
-  return{
-    headerList:()=>dispatch(headerList())
-  }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(ProtocolViewClass);
+export default ProtocolViewClass;

@@ -55,7 +55,7 @@ function BladeLeft({ handlePageNo }) {
           width={263}
           marginTop={159}
         >
-          <TextField placeholder="&#61442;  Search" className="search-Box" />
+          {/* <TextField placeholder="&#61442;  Search" className="search-Box" /> */}
           <div style={{ paddingLeft: '7px' }}>
             {data.map((item, index) => {
               return (

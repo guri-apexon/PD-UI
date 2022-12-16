@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { viewResult, protocolSummary } from './protocolSlice';
 import ProtocolViewClass from './ProtocolViewClass';
 import BladeLeft from './BladeLeft';
-import Records from './records.json';
+import Records from './Dummy.json';
 
 const panels = () => {
   const ex = [];
@@ -76,7 +76,7 @@ function ProtocolView({ protId, refs }) {
   };
 
   return (
-    <div>
+    <div className="protocol_data_container">
       <div>
         <BladeLeft handlePageNo={handlePageNo} />
       </div>

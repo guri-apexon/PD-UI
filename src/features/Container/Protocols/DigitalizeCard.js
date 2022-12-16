@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import Card from 'apollo-react/components/Card';
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
+
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Drag from 'apollo-react-icons/Drag';
-// import Records from './records.json';
-function Digitize({ sectionNumber, sectionRef, headerDetails }) {
+import Records from './records.json';
+
+function Digitize({ sectionNumber, sectionRef }) {
   const panels = () => {
     const ex = [];
-    const arraylength = headerDetails.length;
+    const arraylength = Records.length;
     for (let i = 0; i < arraylength; i++) {
       ex[i] = false;
     }
@@ -21,7 +23,6 @@ function Digitize({ sectionNumber, sectionRef, headerDetails }) {
   };
   const [expanded, setExpanded] = useState(panels);
   const allOpen = expanded.every((exp) => exp);
-  const [test, setTest] = useState();
   const handleChange = (panelIndex) => () => {
     console.log('test1');
     setExpanded((oldPanels) => {
@@ -36,12 +37,6 @@ function Digitize({ sectionNumber, sectionRef, headerDetails }) {
       console.log(newPanels);
       return newPanels;
     });
-  };
-  const onClickHandler = (event) => {
-    // event.preventDefault();
-    // const aidoc_id= 123
-    // const link_level=34
-    // const link_id=456
   };
   const handleClick = (sectionNumber) => {
     console.log('click');
@@ -59,10 +54,13 @@ function Digitize({ sectionNumber, sectionRef, headerDetails }) {
     });
   };
   useEffect(() => {
-    console.log(headerDetails, 'headerDetails');
     if (sectionNumber === 'undefined' || sectionNumber === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
-    } else {
+    } else if (
+      sectionRef &&
+      sectionRef[sectionNumber] &&
+      sectionRef[sectionNumber].current
+    ) {
       sectionRef[sectionNumber].current.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
@@ -70,47 +68,32 @@ function Digitize({ sectionNumber, sectionRef, headerDetails }) {
       });
       handleClick(sectionNumber);
     }
-  }, [sectionNumber, headerDetails]);
+  }, [sectionNumber]);
+
   return (
     <Card
       className="protocol-column protocol-digitize-column"
       style={{ borderRight: '0' }}
     >
+      <div className="panel-heading">Digitized Data</div>
       <div
-        style={{
-          fontWeight: 'bold',
-          zIndex: 1,
-          padding: 15,
-          backgroundColor: '#FFFAFA',
-          paddingTop: 0,
-          paddingBottom: 0,
-        }}
-        className="panel-heading"
-      >
-        Digitized Data
-      </div>
-      <div
-        style={{
-          scrollPadding: '50px 0px 0px 50px',
-          padding: '6px 16px',
-          paddingTop: '20px',
-          overflowY: 'scroll',
-          height: '65vh',
-          position: 'fixed',
-          margin: 10,
-        }}
+        className="digitize-panel-content"
+        // style={{
+        //   scrollPadding: '50px 0px 0px 50px',
+        //   padding: '6px 16px',
+        //   paddingTop: '20px',
+        //   overflowY: 'scroll',
+        //   height: '65vh',
+        //   position: 'fixed',
+        //   margin: 10,
+        // }}
         data-testid="protocol-column-wrapper"
       >
-        {headerDetails.map((value, index) => (
+        {Records.map((items, index) => (
           <div
             key={React.key}
             ref={sectionRef[index]}
-            style={{
-              listStyleType: 'none',
-              display: 'flex',
-              flexDirection: 'row',
-              padding: '2px',
-            }}
+            className="digitized_data_item"
           >
             <Drag
               style={{
@@ -120,70 +103,62 @@ function Digitize({ sectionNumber, sectionRef, headerDetails }) {
                 paddingLeft: '5px',
               }}
             />
-            <Accordion
-              expanded={expanded[index]}
-              style={{
-                // width: '100%',
-                marginBottom: '-2px',
-                border: 0,
-                borderTop: 0,
-                borderRadius: 0,
-                // height: '44px',
-                backgroundColor: '#F8F8F9',
-              }}
-              onChange={handleChange(index)}
-            >
-              <AccordionSummary
-                style={{
-                  fontSize: '0.5em',
-                }}
+            <div>
+              <Accordion
+                expanded={expanded[index]}
+                onChange={handleChange(index)}
               >
-                <div
-                  className=""
+                <AccordionSummary
                   style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    height: 48,
+                    fontSize: '0.5em',
                   }}
                 >
-                  <Typography
-                    style={{
-                      fontSize: '1.5em',
-                      fontweight: 'strong',
-                    }}
-                    onClick={onClickHandler()}
-                  >
-                    {value.source_file_section}
-                  </Typography>
                   <div
+                    className=""
                     style={{
                       display: 'flex',
-                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      height: 48,
                     }}
                   >
-                    <EyeShow />
-                    <Pencil style={{ paddingLeft: '20px' }} />
+                    <Typography
+                      style={{
+                        fontweight: 'strong',
+                      }}
+                      // onClick={onClickHandler()}
+                    >
+                      {items?.source_file_section}
+                    </Typography>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                      }}
+                    >
+                      <EyeShow />
+                      <Pencil style={{ paddingLeft: '20px' }} />
+                    </div>
                   </div>
-                </div>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Suspendisse malesuada lacus ex, sit amet blandit leo
+                    lobortis eget.
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            </div>
           </div>
         ))}
       </div>
     </Card>
   );
 }
+
 export default Digitize;
 Digitize.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
-  headerDetails: PropTypes.isRequired,
 };
