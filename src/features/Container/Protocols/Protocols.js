@@ -29,7 +29,6 @@ function Protocols({ location }) {
   const [arrr, setarrr] = useState(new Array(50));
 
   useEffect(() => {
-    debugger;
     const params = location.search;
     const parsed = queryString.parse(params);
 
