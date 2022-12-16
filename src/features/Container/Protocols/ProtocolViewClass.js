@@ -5,6 +5,19 @@ import ChevronRight from 'apollo-react-icons/ChevronRight';
 import Loader from '../../Components/Loader/Loader';
 import { redaction } from '../../../AppConstant/AppConstant';
 import Pdf from '../Protocols/pdfviewer';
+import Digitize from './DigitalizeCard';
+
+import Accordion from 'apollo-react/components/Accordion';
+import Records from './records.json';
+import AccordionDetails from 'apollo-react/components/AccordionDetails';
+
+import AccordionSummary from 'apollo-react/components/AccordionSummary';
+
+import Typography from 'apollo-react/components/Typography';
+import Drag from 'apollo-react-icons/Drag';
+import Panel from 'apollo-react/components/Panel';
+import PanelGroup from 'apollo-react/components/PanelGroup';
+
 // import Digitize from './DigitizeCard';
 import { connect } from 'react-redux';
 import Cookies from 'universal-cookie';
@@ -21,26 +34,14 @@ class ProtocolViewClass extends React.Component {
       section: null,
       activeSection: null,
       activeSubSection: null,
-      headerDetails:[] ,
-      sectionDocument:[],
+      headerDetails: '',
     };
   }
+
   componentDidMount() {
-    // console.log('items',this.props.items);
-    const cookiesServer = new Cookies();
-    const res=fetch("http://127.0.0.1:8000/api/cpt_data/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1", {
-  "headers": {
-    "accept": "application/json",
-    "accept-language": "en-US,en;q=0.9",
-    "authorization": `Bearer ${cookiesServer.get('api_token')}`
-  },
- 
-  "method": "GET",
- 
-}).then((response)=>response.json())
-.then((items)=>this.setState({headerDetails:items})
-)
+    console.log('protocolViewClass', this.props.refx);
   }
+
   createFullMarkup(str) {
     if (str || str !== undefined) {
       if (str.includes(redaction.text)) {
@@ -110,6 +111,9 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
+  sectionDetails = (item) => {
+    this.headerDetails(item);
+  };
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -190,6 +194,7 @@ class ProtocolViewClass extends React.Component {
       this.handleClick();
     }
   }
+
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false, subSectionData: [] });
@@ -260,6 +265,7 @@ class ProtocolViewClass extends React.Component {
       );
     }
     return (
+    
       <div className="view-wrapper">
         {/* <Card className="index-column">
           <div
@@ -331,52 +337,61 @@ class ProtocolViewClass extends React.Component {
             )}
           </div>
         </Card> */}
-        <Card className="protocol-column" style={{ borderLeft: '0' }}>
-          <div
-            style={{
-              fontWeight: 'bold',
-              zIndex: 999,
-              padding: 15,
-              position: 'fixed',
-              backgroundColor: '#FFFAFA',
-              paddingTop: 0,
-              paddingBottom: 0,
-            }}
+
+        <PanelGroup
+          style={{
+            display: 'flex',
+            padding: 1,
+            boxSizing: 'content-box',
+            // width: '800px',
+          }}
+        >
+          <Panel
+            width={window.innerWidth / 2}
+            minWidth={window.innerWidth / 4}
+            maxWidth={window.innerWidth / 1.5}
+            hideButton
+            resizable
           >
-            Source Document
-          </div>
-          <div
-            style={{
-              scrollPadding: '50px 0px 0px 50px',
-              padding: '6px 16px',
-              overflowY: 'scroll',
-              height: '65vh',
-              width: '100%',
-            }}
-            data-testid="protocol-column-wrapper"
-          >
-            <div>
-              <Pdf page={page} refs={this.props.refx} />
-            </div>
-          </div>
-        </Card>
-        <Digitize
-          sectionRef={this.props.sectionRef}
-          sectionNumber={this.props.sectionNumber}
-          headerDetails={this.state.headerDetails}
-        />
+            <Card className="protocol-source-column">
+              <div
+                style={{
+                  fontWeight: 'bold',
+                  zIndex: 999,
+                  backgroundColor: '#FFFAFA',
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                }}
+                className="panel-heading"
+              >
+                Source Document
+              </div>
+              <div
+                style={{
+                  scrollPadding: '50px 0px 0px 50px',
+                  padding: '6px 16px',
+                  overflowY: 'scroll',
+                  height: '72vh',
+                  width: '100%',
+                }}
+                data-testid="protocol-column-wrapper"
+              >
+                <div>
+                  <Pdf page={page} refs={this.props.refx} />
+                </div>
+              </div>
+            </Card>
+          </Panel>
+          <Panel width={'auto'} hideButton>
+            <Digitize
+              sectionRef={this.props.sectionRef}
+              sectionNumber={this.props.sectionNumber}
+              headerDetails={this.state.headerDetails}
+            />
+          </Panel>
+        </PanelGroup>
       </div>
     );
   }
 }
-const mapStateToProps = (state) => {
-  return {
-    items: state.items,
-  };
-};
-const mapDispatchToProps=(dispatch)=>{
-  return{
-    headerList:()=>dispatch(headerList())
-  }
-}
-export default connect(mapStateToProps,mapDispatchToProps)(ProtocolViewClass);
+export default ProtocolViewClass;
