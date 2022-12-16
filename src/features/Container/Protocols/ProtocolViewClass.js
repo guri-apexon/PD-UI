@@ -40,7 +40,7 @@ class ProtocolViewClass extends React.Component {
   componentDidMount() {
     // console.log('items',this.props.items);
     const cookiesServer = new Cookies();
-    const res=fetch("http://127.0.0.1:8000/api/cpt_data/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1", {
+    const res=fetch("http://127.0.0.1:8000/api/cpt_data/?aidoc_id=000b6888-fa7e-4c0e-a913-319d68512270&link_level=1", {
   "headers": {
     "accept": "application/json",
     "accept-language": "en-US,en;q=0.9",

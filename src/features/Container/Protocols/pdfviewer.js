@@ -80,7 +80,7 @@ function Pdf({ page, refs }) {
       }}
     >
       <Document
-        file="/ALM-Executing-TestCases_DefectManagementProcess.pdf"
+        file="/Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf"
         onLoadSuccess={onDocumentLoadSuccess}
       >
         {Array.from(new Array(numPages), (el, index) => (
