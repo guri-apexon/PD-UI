@@ -1,0 +1,1352 @@
+[
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d657e-726c-11ed-ad14-005056ab6469",
+    "LinkLevel": 1,
+    "page": 1,
+    "sec_id": "",
+    "source_file_section": "CLINICAL STUDY PROTOCOL",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 0,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "9b3e5d03-dd9d-4e18-ac8f-4d8243ec01b2",
+    "LinkLevel": 1,
+    "page": 1,
+    "sec_id": "",
+    "source_file_section": "blank_header",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 1,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d657f-726c-11ed-b571-005056ab6469",
+    "LinkLevel": 1,
+    "page": 2,
+    "sec_id": "",
+    "source_file_section": "INVESTIGATOR SIGNATURE PAGE",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 2,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6580-726c-11ed-8135-005056ab6469",
+    "LinkLevel": 1,
+    "page": 3,
+    "sec_id": "",
+    "source_file_section": "SUMMARY OF MAJOR PROTOCOL AMENDMENT CHANGES",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 3,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6581-726c-11ed-8f50-005056ab6469",
+    "LinkLevel": 1,
+    "page": 4,
+    "sec_id": "Table",
+    "source_file_section": "Table of Contents",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 4,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6582-726c-11ed-ac2c-005056ab6469",
+    "LinkLevel": 1,
+    "page": 7,
+    "sec_id": "",
+    "source_file_section": "List of Tables",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 5,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6583-726c-11ed-9c61-005056ab6469",
+    "LinkLevel": 1,
+    "page": 8,
+    "sec_id": "",
+    "source_file_section": "LIST OF ABBREVIATIONS",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 6,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6584-726c-11ed-a45d-005056ab6469",
+    "LinkLevel": 1,
+    "page": 10,
+    "sec_id": "",
+    "source_file_section": "PROTOCOL SYNOPSIS",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 7,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6585-726c-11ed-8f01-005056ab6469",
+    "LinkLevel": 1,
+    "page": 15,
+    "sec_id": "1.",
+    "source_file_section": "1. Introduction",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 8,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6586-726c-11ed-a582-005056ab6469",
+    "LinkLevel": 2,
+    "page": 15,
+    "sec_id": "1.1.",
+    "source_file_section": "1.1. Epidemiology of Chronic Kidney Disease (CKD) and End-Stage Renal Disease (ESRD)",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 9,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6587-726c-11ed-9193-005056ab6469",
+    "LinkLevel": 2,
+    "page": 15,
+    "sec_id": "1.2.",
+    "source_file_section": "1.2. Anemia Associated with Chronic Kidney Disease",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 10,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6588-726c-11ed-ae67-005056ab6469",
+    "LinkLevel": 2,
+    "page": 16,
+    "sec_id": "1.3.",
+    "source_file_section": "1.3. Treatment of Anemia",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 11,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6589-726c-11ed-80e3-005056ab6469",
+    "LinkLevel": 2,
+    "page": 16,
+    "sec_id": "1.4.",
+    "source_file_section": "1.4. Rationale for HIF Prolyl Hydroxylase Inhibitors to Treat Anemia",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 12,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d658a-726c-11ed-adbd-005056ab6469",
+    "LinkLevel": 2,
+    "page": 17,
+    "sec_id": "1.5.",
+    "source_file_section": "1.5. Roxadustat as Therapy for Anemia",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 13,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d658b-726c-11ed-a005-005056ab6469",
+    "LinkLevel": 2,
+    "page": 17,
+    "sec_id": "1.6.",
+    "source_file_section": "1.6. Clinical Experience with Roxadustat",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 14,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6590-726c-11ed-8a1c-005056ab6469",
+    "LinkLevel": 2,
+    "page": 20,
+    "sec_id": "1.7.",
+    "source_file_section": "1.7. Rationale for Subject Population",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 15,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6591-726c-11ed-b36b-005056ab6469",
+    "LinkLevel": 2,
+    "page": 21,
+    "sec_id": "1.8.",
+    "source_file_section": "1.8. Rationale for Dose Selection",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 16,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6594-726c-11ed-b1eb-005056ab6469",
+    "LinkLevel": 2,
+    "page": 23,
+    "sec_id": "2.2.",
+    "source_file_section": "2.2. Secondary Objectives",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 17,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6595-726c-11ed-b08a-005056ab6469",
+    "LinkLevel": 2,
+    "page": 23,
+    "sec_id": "2.3.",
+    "source_file_section": "2.3. Exploratory Objectives",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 18,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6592-726c-11ed-a6a7-005056ab6469",
+    "LinkLevel": 1,
+    "page": 23,
+    "sec_id": "2.",
+    "source_file_section": "2. Objectives",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 19,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6593-726c-11ed-948c-005056ab6469",
+    "LinkLevel": 2,
+    "page": 23,
+    "sec_id": "2.1.",
+    "source_file_section": "2.1. Primary Objective",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 20,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6596-726c-11ed-b2de-005056ab6469",
+    "LinkLevel": 1,
+    "page": 24,
+    "sec_id": "3.",
+    "source_file_section": "3. Endpoints and Assessments",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 21,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6597-726c-11ed-8037-005056ab6469",
+    "LinkLevel": 2,
+    "page": 24,
+    "sec_id": "3.1.",
+    "source_file_section": "3.1. Efficacy",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 22,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6598-726c-11ed-94c6-005056ab6469",
+    "LinkLevel": 2,
+    "page": 24,
+    "sec_id": "3.2.",
+    "source_file_section": "3.2. Safety",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 23,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d6599-726c-11ed-815c-005056ab6469",
+    "LinkLevel": 2,
+    "page": 24,
+    "sec_id": "3.3.",
+    "source_file_section": "3.3. Select biomarkers",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 24,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d659a-726c-11ed-9540-005056ab6469",
+    "LinkLevel": 1,
+    "page": 25,
+    "sec_id": "4.",
+    "source_file_section": "4. Study Design",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 25,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d659b-726c-11ed-8385-005056ab6469",
+    "LinkLevel": 2,
+    "page": 25,
+    "sec_id": "4.1.",
+    "source_file_section": "4.1. Description of the Study",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 26,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d659d-726c-11ed-815b-005056ab6469",
+    "LinkLevel": 2,
+    "page": 25,
+    "sec_id": "4.2.",
+    "source_file_section": "4.2. Randomization and Treatment Assignment",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 27,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65a0-726c-11ed-8da7-005056ab6469",
+    "LinkLevel": 2,
+    "page": 26,
+    "sec_id": "4.3.",
+    "source_file_section": "4.3. Study Treatment",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 28,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65a3-726c-11ed-ab05-005056ab6469",
+    "LinkLevel": 2,
+    "page": 27,
+    "sec_id": "4.4.",
+    "source_file_section": "4.4. Concomitant Medications, Procedures and Nondrug Therapies",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 29,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65a8-726c-11ed-bce8-005056ab6469",
+    "LinkLevel": 2,
+    "page": 28,
+    "sec_id": "4.5.",
+    "source_file_section": "4.5. Safety Plan",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 30,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65aa-726c-11ed-b55f-005056ab6469",
+    "LinkLevel": 2,
+    "page": 15,
+    "sec_id": "4.6.",
+    "source_file_section": "4.6. Data Monitoring Committee",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 31,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ab-726c-11ed-a013-005056ab6469",
+    "LinkLevel": 1,
+    "page": 16,
+    "sec_id": "5.",
+    "source_file_section": "5. Eligibility Criteria",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 32,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ac-726c-11ed-a01f-005056ab6469",
+    "LinkLevel": 2,
+    "page": 16,
+    "sec_id": "5.1.",
+    "source_file_section": "5.1. Inclusion Criteria",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 33,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ad-726c-11ed-a573-005056ab6469",
+    "LinkLevel": 2,
+    "page": 16,
+    "sec_id": "5.2.",
+    "source_file_section": "5.2. Exclusion Criteria",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 34,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ae-726c-11ed-8cfe-005056ab6469",
+    "LinkLevel": 1,
+    "page": 16,
+    "sec_id": "6.",
+    "source_file_section": "6. Study Drug/Treatment Supply",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 35,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65af-726c-11ed-be93-005056ab6469",
+    "LinkLevel": 2,
+    "page": 17,
+    "sec_id": "6.1.",
+    "source_file_section": "6.1. FibroGen Investigational Product",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 36,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65b4-726c-11ed-829c-005056ab6469",
+    "LinkLevel": 2,
+    "page": 17,
+    "sec_id": "7.1.",
+    "source_file_section": "7.1. Study Procedures by Visit",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 37,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65b3-726c-11ed-991a-005056ab6469",
+    "LinkLevel": 1,
+    "page": 18,
+    "sec_id": "7.",
+    "source_file_section": "7. Study Procedures",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 38,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65c0-726c-11ed-afdb-005056ab6469",
+    "LinkLevel": 2,
+    "page": 18,
+    "sec_id": "7.5.",
+    "source_file_section": "7.5. Assessments",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 39,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65bd-726c-11ed-95c5-005056ab6469",
+    "LinkLevel": 2,
+    "page": 18,
+    "sec_id": "7.2.",
+    "source_file_section": "7.2. Post-Treatment Follow-Up Period",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 40,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65be-726c-11ed-9204-005056ab6469",
+    "LinkLevel": 2,
+    "page": 18,
+    "sec_id": "7.3.",
+    "source_file_section": "7.3. Missed Visits",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 41,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65bf-726c-11ed-b8b6-005056ab6469",
+    "LinkLevel": 2,
+    "page": 19,
+    "sec_id": "7.4.",
+    "source_file_section": "7.4. Unscheduled Visits",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 42,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65c6-726c-11ed-8e8a-005056ab6469",
+    "LinkLevel": 1,
+    "page": 20,
+    "sec_id": "8.",
+    "source_file_section": "8. Subject Discontinuation",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 43,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65c7-726c-11ed-a8a0-005056ab6469",
+    "LinkLevel": 1,
+    "page": 20,
+    "sec_id": "9.",
+    "source_file_section": "9. Study Termination by FibroGen",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 44,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65c8-726c-11ed-88dc-005056ab6469",
+    "LinkLevel": 1,
+    "page": 21,
+    "sec_id": "10.",
+    "source_file_section": "10. Statistics",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 45,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65c9-726c-11ed-8496-005056ab6469",
+    "LinkLevel": 2,
+    "page": 21,
+    "sec_id": "10.1.",
+    "source_file_section": "10.1. Sample Size Determination",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 46,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ca-726c-11ed-a5d5-005056ab6469",
+    "LinkLevel": 2,
+    "page": 21,
+    "sec_id": "10.2.",
+    "source_file_section": "10.2. Treatment Assignment",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 47,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65cb-726c-11ed-8734-005056ab6469",
+    "LinkLevel": 2,
+    "page": 21,
+    "sec_id": "10.3.",
+    "source_file_section": "10.3. Analysis Population",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 48,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65cc-726c-11ed-a311-005056ab6469",
+    "LinkLevel": 2,
+    "page": 21,
+    "sec_id": "10.4.",
+    "source_file_section": "10.4. Interim Analysis",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 49,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65cf-726c-11ed-a471-005056ab6469",
+    "LinkLevel": 2,
+    "page": 21,
+    "sec_id": "10.6.",
+    "source_file_section": "10.6. Statistical Analysis",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 50,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ce-726c-11ed-af88-005056ab6469",
+    "LinkLevel": 2,
+    "page": 22,
+    "sec_id": "10.5.",
+    "source_file_section": "10.5. Replacement of Subjects",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 51,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65d4-726c-11ed-b9f5-005056ab6469",
+    "LinkLevel": 2,
+    "page": 22,
+    "sec_id": "10.7.",
+    "source_file_section": "10.7. Statistical Analysis Plan",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 52,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65d5-726c-11ed-8c3b-005056ab6469",
+    "LinkLevel": 1,
+    "page": 22,
+    "sec_id": "11.",
+    "source_file_section": "11. Safety",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 53,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65d6-726c-11ed-a4ef-005056ab6469",
+    "LinkLevel": 2,
+    "page": 23,
+    "sec_id": "11.1.",
+    "source_file_section": "11.1. Background",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 54,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65d7-726c-11ed-8f14-005056ab6469",
+    "LinkLevel": 2,
+    "page": 23,
+    "sec_id": "11.2.",
+    "source_file_section": "11.2. Definitions",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 55,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65dc-726c-11ed-92e1-005056ab6469",
+    "LinkLevel": 2,
+    "page": 23,
+    "sec_id": "11.3.",
+    "source_file_section": "11.3. Procedures for Eliciting, Recording, and Reporting Adverse Events",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 56,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65e7-726c-11ed-9842-005056ab6469",
+    "LinkLevel": 2,
+    "page": 24,
+    "sec_id": "12.2.",
+    "source_file_section": "12.2. Compliance with Laws and Regulations",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 57,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65e6-726c-11ed-9c59-005056ab6469",
+    "LinkLevel": 2,
+    "page": 25,
+    "sec_id": "12.1.",
+    "source_file_section": "12.1. Data Quality Assurance",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 58,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65e5-726c-11ed-b5c0-005056ab6469",
+    "LinkLevel": 1,
+    "page": 25,
+    "sec_id": "12.",
+    "source_file_section": "12. Study Monitoring",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 59,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65e8-726c-11ed-8027-005056ab6469",
+    "LinkLevel": 2,
+    "page": 25,
+    "sec_id": "12.3.",
+    "source_file_section": "12.3. Data Collection and Handling",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 60,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65e9-726c-11ed-8f3a-005056ab6469",
+    "LinkLevel": 1,
+    "page": 26,
+    "sec_id": "13.",
+    "source_file_section": "13. Human Subjects",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 61,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ea-726c-11ed-bba3-005056ab6469",
+    "LinkLevel": 2,
+    "page": 26,
+    "sec_id": "13.1.",
+    "source_file_section": "13.1. Ethical Considerations",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 62,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65eb-726c-11ed-b578-005056ab6469",
+    "LinkLevel": 2,
+    "page": 26,
+    "sec_id": "13.2.",
+    "source_file_section": "13.2. Communication with the Institutional Review Board or Independent Ethics Committee",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 63,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ec-726c-11ed-bc56-005056ab6469",
+    "LinkLevel": 2,
+    "page": 26,
+    "sec_id": "13.3.",
+    "source_file_section": "13.3. Informed Consent Form",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 64,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ed-726c-11ed-ad86-005056ab6469",
+    "LinkLevel": 2,
+    "page": 27,
+    "sec_id": "13.4.",
+    "source_file_section": "13.4. Subject Confidentiality",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 65,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ee-726c-11ed-a0b1-005056ab6469",
+    "LinkLevel": 1,
+    "page": 27,
+    "sec_id": "14.",
+    "source_file_section": "14. Investigator Requirements",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 66,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65ef-726c-11ed-904a-005056ab6469",
+    "LinkLevel": 2,
+    "page": 28,
+    "sec_id": "14.1.",
+    "source_file_section": "14.1. Study Medication Accountability",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 67,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65f0-726c-11ed-bdf7-005056ab6469",
+    "LinkLevel": 2,
+    "page": 27,
+    "sec_id": "14.2.",
+    "source_file_section": "14.2. Disclosure of Data",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 68,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65f1-726c-11ed-bb1d-005056ab6469",
+    "LinkLevel": 2,
+    "page": 28,
+    "sec_id": "14.3.",
+    "source_file_section": "14.3. Retention of Records",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 69,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65f2-726c-11ed-a58f-005056ab6469",
+    "LinkLevel": 1,
+    "page": 28,
+    "sec_id": "15.",
+    "source_file_section": "15. Publication Policy",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 70,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65f3-726c-11ed-a5aa-005056ab6469",
+    "LinkLevel": 1,
+    "page": 28,
+    "sec_id": "16.",
+    "source_file_section": "16. References",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 71,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65f4-726c-11ed-bb50-005056ab6469",
+    "LinkLevel": 1,
+    "page": 29,
+    "sec_id": "",
+    "source_file_section": "Appendix A. Schedule of Study Assessments",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 72,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65f5-726c-11ed-8560-005056ab6469",
+    "LinkLevel": 1,
+    "page": 29,
+    "sec_id": "",
+    "source_file_section": "Appendix B. Dosing for Subjects Previously Treated with Placebo",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 73,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  },
+  {
+    "doc_id": "1698be28-1cf3-466e-8f56-5fc920029057",
+    "group_type": "DocumentLinks",
+    "link_id": "552d65f6-726c-11ed-b794-005056ab6469",
+    "LinkLevel": 1,
+    "page": 29,
+    "sec_id": "",
+    "source_file_section": "Appendix C. Dose Adjustment Guidelines for roxadustat",
+    "LinkType": "toc",
+    "qc_change_type": "",
+    "sequence": 74,
+    "section_locked": false,
+    "audit_info": {
+      "last_reviewed_date": "",
+      "last_reviewed_by": "",
+      "total_no_review": ""
+    }
+  }
+]

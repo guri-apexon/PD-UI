@@ -26,10 +26,9 @@ function Protocols({ location }) {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
-  const [arrr, setarrr] = useState(new Array(10));
+  const [arrr, setarrr] = useState(new Array(50));
 
   useEffect(() => {
-    debugger;
     const params = location.search;
     const parsed = queryString.parse(params);
 
@@ -51,7 +50,7 @@ function Protocols({ location }) {
   /* eslint-enable */
 
   const forLoop = async (_) => {
-    for (let index = 0; index < 6; index++) {
+    for (let index = 0; index < 50; index++) {
       arrr.push(index);
     }
   };
@@ -90,32 +89,35 @@ function Protocols({ location }) {
       <>
         {summary.success && summary.data ? (
           <div className="protocols" data-testid="protocols-component-test">
-            <Breadcrumbs
-              items={[
-                { href: '/dashboard' },
-                {
-                  title: 'Protocols',
-                  className: 'br-cr-protocol',
-                  disabled: true,
-                  // onClick: handleClick,
-                },
-                {
-                  title: data.protocol,
-                },
-              ]}
-              style={{ paddingInlineStart: 0, marginBottom: 0 }}
-            />
+            <div className="p-rl-20">
+              <Breadcrumbs
+                items={[
+                  { href: '/dashboard' },
+                  {
+                    title: 'Protocols',
+                    className: 'br-cr-protocol',
+                    disabled: true,
+                    // onClick: handleClick,
+                  },
+                  {
+                    title: data.protocol,
+                  },
+                ]}
+                style={{ paddingInlineStart: 0, marginBottom: 0 }}
+              />
 
-            <h2 className="header">{data.Protocol}</h2>
+              <h2 className="header">{data.Protocol}</h2>
+            </div>
             <div className="tab-column">
               <div className="overview">
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <div style={{ flex: 1 }}>
+                  <div style={{ flex: 1 }} className="p-rl-20">
                     <Tabs
                       value={value}
                       onChange={handleChangeTab}
                       size="small"
                       truncate
+                      className="protocol-tabs"
                       data-testid="protocols-tabs"
                     >
                       <Tab label="Overview" />

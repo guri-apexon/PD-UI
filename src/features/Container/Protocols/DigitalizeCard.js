@@ -67,20 +67,11 @@ function Digitize({ sectionNumber, sectionRef }) {
   }, [sectionNumber]);
 
   return (
-    <Card className="protocol-column" style={{ borderRight: '0' }}>
-      <div
-        style={{
-          fontWeight: 'bold',
-          zIndex: 999,
-          padding: 15,
-          position: 'fixed',
-          backgroundColor: '#FFFAFA',
-          paddingTop: 0,
-          paddingBottom: 0,
-        }}
-      >
-        Digitized Data
-      </div>
+    <Card
+      className="protocol-column protocol-digitize-column"
+      style={{ borderRight: '0' }}
+    >
+      <div className="panel-heading">Digitized Data</div>
       <div
         style={{
           scrollPadding: '50px 0px 0px 50px',
@@ -88,7 +79,7 @@ function Digitize({ sectionNumber, sectionRef }) {
           paddingTop: '20px',
           overflowY: 'scroll',
           height: '65vh',
-          // width: '100%',
+          position: 'fixed',
           margin: 10,
         }}
         data-testid="protocol-column-wrapper"
@@ -115,7 +106,7 @@ function Digitize({ sectionNumber, sectionRef }) {
             <Accordion
               expanded={expanded[index]}
               style={{
-                width: '100%',
+                // width: '100%',
                 marginBottom: '-2px',
                 border: 0,
                 borderTop: 0,
@@ -130,17 +121,26 @@ function Digitize({ sectionNumber, sectionRef }) {
                   fontSize: '0.5em',
                 }}
               >
-                <Typography
+                <div
+                  className=""
                   style={{
-                    fontSize: '1.5em',
-                    fontweight: 'strong',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    height: 48,
                   }}
                 >
-                  {items.source_file_section}
+                  <Typography
+                    style={{
+                      fontSize: '1.5em',
+                      fontweight: 'strong',
+                    }}
+                    // onClick={onClickHandler()}
+                  >
+                    {items?.source_file_section}
+                  </Typography>
                   <div
                     style={{
-                      paddingLeft: '90%',
-                      marginTop: '-25px',
                       display: 'flex',
                       flexDirection: 'row',
                     }}
@@ -148,7 +148,7 @@ function Digitize({ sectionNumber, sectionRef }) {
                     <EyeShow />
                     <Pencil style={{ paddingLeft: '20px' }} />
                   </div>
-                </Typography>
+                </div>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography>

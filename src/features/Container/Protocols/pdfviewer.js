@@ -1,12 +1,19 @@
-import { createRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Button from 'apollo-react/components/Button';
+import Pagination from 'apollo-react/components/Pagination';
+import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
+import PlusIcon from 'apollo-react-icons/Plus';
+import Minus from 'apollo-react-icons/Minus';
+import { Column } from 'react-virtualized';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 function Pdf({ page, refs }) {
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [numPages, setNumPages] = useState(0);
+  const [currentPage, setPage] = useState(0);
+  const [pageScale, setPageScale] = useState(1);
+  // const [pageNumber, setPageNumber] = useState(1);
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
@@ -21,37 +28,61 @@ function Pdf({ page, refs }) {
   useEffect(() => {
     console.log('-------', refs);
     console.log('useEffect page No', page);
+    console.log('currentpage', currentPage);
+    // console.log('pageNumber', pageNumber);
     if (page === 'undefined' || page === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else {
       console.log('page:-------In UseEffect');
-      refs[page].current.scrollIntoView({ behavior: 'instant' });
+      refs[page - 1].current.scrollIntoView({ behavior: 'instant' });
     }
   }, [page]);
+
+  useEffect(() => {
+    if (refs[currentPage].current) {
+      console.log('Test1');
+      console.log(currentPage, refs);
+      refs[currentPage].current.scrollIntoView({ behavior: 'instant' });
+    }
+    console.log('Test');
+    console.log(currentPage, refs);
+  }, [currentPage]);
+
   const clickHandler = () => {
     console.log(refs);
     refs[2].current.scrollIntoView({ behavior: 'smooth' });
   };
-  const handlePageNumber = (pageNumber) => {
-    setPageNumber(pageNumber);
+  // const handlePageNumber = (pageNumber) => {
+  //   setPageNumber(pageNumber);
+  // };
+  const handleZoomIn = () => {
+    if (pageScale < 1.2) {
+      setPageScale(pageScale + 0.1);
+      console.log(pageScale);
+    }
   };
+  const handleZoomOut = () => {
+    if (pageScale >= 0.5) {
+      setPageScale(pageScale - 0.1);
+      console.log(pageScale);
+    }
+  };
+
   console.log('page', page);
   return (
-    <div>
-      {/* <Button
-        variant="primary"
-        onClick={() => {
-          clickHandler();
-        }}
-      >
-        sbb
-      </Button> */}
+    <div
+      id="pdfDocument"
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'left',
+        flexdirection: Column,
+      }}
+    >
       <Document
         file="/ALM-Executing-TestCases_DefectManagementProcess.pdf"
         onLoadSuccess={onDocumentLoadSuccess}
       >
-        {/* <Page pageNumber={pageNumber} /> */}
-
         {Array.from(new Array(numPages), (el, index) => (
           <div ref={refs ?? [index]} key={index}>
             <Page
@@ -60,13 +91,68 @@ function Pdf({ page, refs }) {
               pageNumber={index + 1}
               width="510"
               id={index}
+              scale={pageScale}
             />
           </div>
         ))}
+        {/* <Page pageNumber={page1 + 1} scale={pageScale} /> */}
       </Document>
-      <p>
-        Page {pageNumber} of {numPages}
-      </p>
+      <div
+        className="sticky-bottom"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          border: 'groove',
+        }}
+      >
+        <Card
+          style={{
+            maxWidth: 230,
+            height: 28,
+            border: 2,
+            alignItems: 'center',
+            top: '10px',
+          }}
+        >
+          <Pagination
+            count={numPages}
+            rowsPerPage={1}
+            page={currentPage}
+            onChangePage={(pg) => setPage(pg)}
+          />
+        </Card>
+        <Card
+          style={{
+            maxWidth: 230,
+            height: 28,
+            border: 2,
+            alignItems: 'center',
+            top: '10px',
+          }}
+        >
+          <Button
+            size="small"
+            icon={<PlusIcon />}
+            className="buttonStyles"
+            data-testid="zoomIn"
+            disabled={pageScale >= 1.5}
+            onClick={handleZoomIn}
+          >
+            {' '}
+          </Button>
+          <Button
+            size="small"
+            icon={<Minus />}
+            className="buttonStyles"
+            data-testid="zoomOut"
+            disabled={pageScale <= 0.5}
+            onClick={handleZoomOut}
+          >
+            {' '}
+          </Button>
+        </Card>
+      </div>
     </div>
   );
 }
