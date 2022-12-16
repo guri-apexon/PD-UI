@@ -12,21 +12,19 @@ import EyeShow from 'apollo-react-icons/EyeShow';
 import Drag from 'apollo-react-icons/Drag';
 import Records from './records.json';
 
-const panels = () => {
-  const ex = [];
-  const arraylength = Records.length;
-  for (let i = 0; i < arraylength; i++) {
-    ex[i] = false;
-  }
-  return ex;
-};
-
 function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
+  const panels = () => {
+    const ex = [];
+    const arraylength = Records.length;
+    for (let i = 0; i < arraylength; i++) {
+      ex[i] = false;
+    }
+    return ex;
+  };
   const [expanded, setExpanded] = useState(panels);
   const allOpen = expanded.every((exp) => exp);
-
-  const handleChange = (panelIndex) => {
-    console.log('handleChange');
+  const handleChange = (panelIndex) => () => {
+    console.log('test1');
     setExpanded((oldPanels) => {
       console.log('test2');
       const newPanels = [...oldPanels];
@@ -58,7 +56,11 @@ function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
   useEffect(() => {
     if (sectionNumber === 'undefined' || sectionNumber === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
-    } else {
+    } else if (
+      sectionRef &&
+      sectionRef[sectionNumber] &&
+      sectionRef[sectionNumber].current
+    ) {
       sectionRef[sectionNumber].current.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
@@ -69,42 +71,29 @@ function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
   }, [sectionNumber]);
 
   return (
-    <Card className="protocol-column" style={{ borderRight: '0' }}>
+    <Card
+      className="protocol-column protocol-digitize-column"
+      style={{ borderRight: '0' }}
+    >
+      <div className="panel-heading">Digitized Data</div>
       <div
-        style={{
-          fontWeight: 'bold',
-          zIndex: 999,
-          padding: 15,
-          position: 'fixed',
-          backgroundColor: '#FFFAFA',
-          paddingTop: 0,
-          paddingBottom: 0,
-        }}
-      >
-        Digitized Data
-      </div>
-      <div
-        style={{
-          scrollPadding: '50px 0px 0px 50px',
-          padding: '6px 16px',
-          paddingTop: '20px',
-          overflowY: 'scroll',
-          height: '65vh',
-          // width: '100%',
-          margin: 10,
-        }}
+        className="digitize-panel-content"
+        // style={{
+        //   scrollPadding: '50px 0px 0px 50px',
+        //   padding: '6px 16px',
+        //   paddingTop: '20px',
+        //   overflowY: 'scroll',
+        //   height: '65vh',
+        //   position: 'fixed',
+        //   margin: 10,
+        // }}
         data-testid="protocol-column-wrapper"
       >
         {Records.map((items, index) => (
           <div
             key={React.key}
             ref={sectionRef[index]}
-            style={{
-              listStyleType: 'none',
-              display: 'flex',
-              flexDirection: 'row',
-              padding: '2px',
-            }}
+            className="digitized_data_item"
           >
             <Drag
               style={{
@@ -114,58 +103,59 @@ function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
                 paddingLeft: '5px',
               }}
             />
-            <Accordion
-              expanded={expanded[index]}
-              style={{
-                width: '100%',
-                marginBottom: '-2px',
-                border: 0,
-                borderTop: 0,
-                borderRadius: 0,
-                backgroundColor: '#F8F8F9',
-              }}
-              onChange={() => {
-                handleChange(index);
-                handlePageRight(items.page);
-              }}
-            >
-              <AccordionSummary
-                style={{
-                  fontSize: '0.5em',
+            <div>
+              <Accordion
+                expanded={expanded[index]}
+                onChange={() => {
+                  handleChange(index);
+                  handlePageRight(items.page);
                 }}
               >
-                {console.log(expanded)}
-                <Typography
+                <AccordionSummary
                   style={{
-                    fontSize: '1.5em',
-                    fontweight: 'strong',
+                    fontSize: '0.5em',
                   }}
                   onClick={(items) => {
                     console.log(items);
                   }}
                 >
-                  {items.source_file_section}
                   <div
+                    className=""
                     style={{
-                      paddingLeft: '330px',
-                      marginTop: '-25px',
                       display: 'flex',
-                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      height: 48,
                     }}
                   >
-                    <EyeShow />
-                    <Pencil style={{ paddingLeft: '20px' }} />
+                    <Typography
+                      style={{
+                        fontweight: 'strong',
+                      }}
+                      // onClick={onClickHandler()}
+                    >
+                      {items?.source_file_section}
+                    </Typography>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                      }}
+                    >
+                      <EyeShow />
+                      <Pencil style={{ paddingLeft: '20px' }} />
+                    </div>
                   </div>
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Typography>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Suspendisse malesuada lacus ex, sit amet blandit leo
+                    lobortis eget.
+                  </Typography>
+                </AccordionDetails>
+              </Accordion>
+            </div>
           </div>
         ))}
       </div>

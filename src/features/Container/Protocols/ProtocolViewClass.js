@@ -5,6 +5,8 @@ import ChevronRight from 'apollo-react-icons/ChevronRight';
 import Loader from '../../Components/Loader/Loader';
 import { redaction } from '../../../AppConstant/AppConstant';
 import Pdf from '../Protocols/pdfviewer';
+import Digitize from './DigitalizeCard';
+
 import Accordion from 'apollo-react/components/Accordion';
 import Records from './records.json';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -13,8 +15,13 @@ import AccordionSummary from 'apollo-react/components/AccordionSummary';
 
 import Typography from 'apollo-react/components/Typography';
 import Drag from 'apollo-react-icons/Drag';
-import Digitize from './DigitalizeCard';
+import Panel from 'apollo-react/components/Panel';
+import PanelGroup from 'apollo-react/components/PanelGroup';
 
+// import Digitize from './DigitizeCard';
+import { connect } from 'react-redux';
+import Cookies from 'universal-cookie';
+// import { headerList } from '../../../store/Digitized/actions';
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
   constructor() {
@@ -32,8 +39,29 @@ class ProtocolViewClass extends React.Component {
   }
 
   componentDidMount() {
+    // console.log('items',this.props.items);
+    const cookiesServer = new Cookies();
+    const res=fetch("http://127.0.0.1:8000/api/cpt_data/?aidoc_id=000b6888-fa7e-4c0e-a913-319d68512270&link_level=1", {
+  "headers": {
+    "accept": "application/json",
+    "accept-language": "en-US,en;q=0.9",
+    "authorization": `Bearer ${cookiesServer.get('api_token')}`
+  },
+ 
+  "method": "GET",
+ 
+}).then((response)=>response.json())
+.then((items)=>{
+  const filteredItems = items.filter(x=>{
+    return x.source_file_section!=="blank_header"
+  });
+  console.log("filteredItems", filteredItems);
+  this.setState({headerDetails:filteredItems})
+}
+)
     console.log('protocolViewClass', this.props.refx);
   }
+
   createFullMarkup(str) {
     if (str || str !== undefined) {
       if (str.includes(redaction.text)) {
@@ -257,104 +285,50 @@ class ProtocolViewClass extends React.Component {
       );
     }
     return (
-      
       <div className="view-wrapper">
-         {/* <Card className="index-column">
-          <div
-            ref={(node) => {
-              this.node = node;
-            }}
+        <PanelGroup
+          style={{
+            display: 'flex',
+            padding: 1,
+            boxSizing: 'content-box',
+            width: '100%',
+          }}
+        >
+          <Panel
+            width={window.innerWidth / 2}
+            minWidth={window.innerWidth / 4}
+            maxWidth={window.innerWidth / 1.5}
+            hideButton
+            resizable
           >
-            <div
-              className="dropdown-wrapper"
-              data-testid="dropdown-wrapper-test"
-              id="dropdown-wrapper-id"
-            >
-              {listData.map((item) => (
-                <button
-                  className={`btn btn1 ${
-                    this.state.activeSection === item.id ? 'active' : ''
-                  }`}
-                  onClick={() =>
-                    item.subSections
-                      ? this.handleClick(item.id)
-                      : scrollSections(item.id)
-                  }
-                  key={`section-${item.id}`}
-                >
-                  <span
-                    style={{ marginLeft: '16px' }}
-                    dangerouslySetInnerHTML={{ __html: item.section }}
-                  >
-                    {/* {item.section}{" "} */}
-        {/* </span>
-                  {item.subSections && (
-                    <span style={{ float: 'right', fontSize: '1em' }}>
-                      <ChevronRight
-                        className="view-more-icon"
-                        variant="small"
-                        style={{ float: 'right', fontSize: '1em' }}
-                      />
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div> */}
-        {/* {this.state.popupVisible && (
-              <div
-                className="dropdown-menu sample"
-                data-testid="dropdown-menu-test"
-                id="dropdown-menu-id"
-              >
-                {this.state.subSectionData.map((data, i) => (
-                  <span>
-                    <a
-                      className={`btn btn1 ${
-                        this.state.activeSubSection === data.id ? 'active' : ''
-                      }`}
-                      key={`sub-section-${data.id}`}
-                      onClick={() => scrollHide(data.id)}
-                      style={{ width: '95%' }}
-                    >
-                      <p
-                        style={{ margin: 0, marginLeft: '16px' }}
-                        dangerouslySetInnerHTML={{ __html: data.section }}
-                      >
-                        {/* {`${data.section}`} */}
-        {/* </p>
-                    </a>
-                  </span>
-                ))}
+            <Card className="protocol-source-column">
+              <div className="panel-heading" style={{ marginLeft: '10px' }}>
+                Source Document
               </div>
-            )}
-          </div>
-        </Card> */}
-        
-        <Card className="protocol-column">
-        <div style={{fontWeight:'bold', zIndex:999,padding:15,position:'fixed',backgroundColor:"#FFFAFA", paddingTop:0,paddingBottom:0}}>Source Document</div>
-          <div
-            style={{
-              scrollPadding: '50px 0px 0px 50px',
-              padding: '6px 16px',
-              overflowY: 'scroll',
-              height: '65vh',
-              width:"100%",
-            
-              
-            }}
-            data-testid="protocol-column-wrapper"
-          >
-            
-            
-            <div>
-              <Pdf page={page} refs={this.props.refx} />
-            </div>
-          </div>
-        </Card>
-        <Digitize
-          sectionRef={this.props.sectionRef}
-          sectionNumber={this.props.sectionNumber}
-        />
+              <div
+                style={{
+                  scrollPadding: '50px 0px 0px 50px',
+                  padding: '6px 16px',
+                  overflowY: 'scroll',
+                  height: '72vh',
+                  width: '100%',
+                }}
+                data-testid="protocol-column-wrapper"
+              >
+                <div>
+                  <Pdf page={page} refs={this.props.refx} />
+                </div>
+              </div>
+            </Card>
+          </Panel>
+          <Panel width={'auto'} hideButton>
+            <Digitize
+              sectionRef={this.props.sectionRef}
+              sectionNumber={this.props.sectionNumber}
+              headerDetails={this.state.headerDetails}
+            />
+          </Panel>
+        </PanelGroup>
       </div>
     );
   }

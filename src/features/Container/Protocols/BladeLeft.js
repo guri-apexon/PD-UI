@@ -64,11 +64,11 @@ function BladeLeft({ handlePageNo }) {
           width={263}
           marginTop={159}
         >
-          <TextField
+          {/* <TextField
             icon={<Search />}
             placeholder="Search"
             className="search-Box"
-          />
+          /> */}
           <div style={{ paddingLeft: '7px' }}>
             {/* <List
               width={600}
