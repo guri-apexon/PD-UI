@@ -12,6 +12,7 @@ import {
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
+  getProtocolTocData,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000 } from '../../../utils/api';
 
@@ -243,12 +244,79 @@ export function* getCompareResult(action) {
   }
 }
 
+export function* getProtocolTocDataResult(action) {
+  const viewData = {
+    iqvdataSoa: null,
+    iqvdataSummary: null,
+    iqvdataToc: null,
+    loader: true,
+    tocSections: null,
+    soaSections: null,
+    err: null,
+  };
+  console.log('Calling getProtocolTocDataResult ');
+  const userId = yield getUserId();
+  yield put(getProtocolTocData(viewData));
+  let URL = '';
+  if (action.payload.user === 'qc') {
+    URL = `${BASE_URL_8000}/api/protocol_qcdata/?id=${action.payload.id}`;
+  } else {
+    URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
+  }
+
+  const config = {
+    url: URL,
+    method: 'GET',
+  };
+  try {
+    const data = yield call(httpCall, config);
+    if (data.success && data.data) {
+      const toc = parsedData(data.data.iqvdataToc);
+      const soa = parsedData(data.data.iqvdataSoa);
+      const viewData = {
+        iqvdataSoa: soa,
+        iqvdataSummary: parsedData(data.data.iqvdataSummary),
+        iqvdataToc: toc,
+        loader: false,
+        tocSections: getTocSections(toc),
+        soaSections: getSoaSections(soa),
+        err: null,
+        download: data.data,
+      };
+      yield put(getProtocolTocData(viewData));
+    } else {
+      const viewData = {
+        iqvdataSoa: null,
+        iqvdataSummary: null,
+        iqvdataToc: null,
+        loader: false,
+        tocSections: null,
+        soaSections: null,
+        err: 'No data found',
+      };
+      yield put(getProtocolTocData(viewData));
+    }
+  } catch (err) {
+    const viewData = {
+      iqvdataSoa: null,
+      iqvdataSummary: null,
+      iqvdataToc: null,
+      loader: false,
+      tocSections: null,
+      soaSections: null,
+      err: 'No data found',
+    };
+    yield put(getProtocolTocData(viewData));
+  }
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
   yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
   yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol);
   yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
+  yield takeEvery('POST_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
 }
 
 // notice how we now only export the rootSaga

@@ -3,32 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { viewResult, protocolSummary } from './protocolSlice';
 import ProtocolViewClass from './ProtocolViewClass';
-import BladeLeft from './BladeLeft';
 import Records from './Dummy.json';
-
-const panels = () => {
-  const ex = [];
-  const arraylength = Records.length;
-  for (let i = 0; i < arraylength; i++) {
-    ex[i] = i;
-  }
-
-  const refsection = ex.reduce((refsection, value) => {
-    refsection[value] = createRef();
-    console.log('----', value);
-    return refsection;
-  }, {});
-  console.log('refsection:-', refsection);
-  return refsection;
-};
 
 function ProtocolView({ protId, refs }) {
   const summary = useSelector(protocolSummary);
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
-  const [pageNo, setPageNo] = useState();
-  const [sectionNumber, setSectionNumber] = useState();
-  const [sectionRef, setSectionRef] = useState(panels);
 
   useEffect(() => {
     dispatch({
@@ -43,6 +23,36 @@ function ProtocolView({ protId, refs }) {
     /* eslint-disable */
   }, []);
   /* eslint-enable */
+
+  // Write Down section api things.
+  useEffect(() => {
+    dispatch({
+      type: 'POST_PROTOCOL_TOC_DATA',
+      payload: {
+        endPoint: 'protocol_data/',
+        id: protId,
+        user: 'normal',
+        protocol: summary.data.protocol,
+      },
+    });
+    /* eslint-disable */
+  }, []);
+  /* eslint-enable */
+
+  const panels = () => {
+    const ex = [];
+    const arraylength = Records.length;
+    for (let i = 0; i <= arraylength; i++) {
+      ex[i] = i;
+    }
+
+    const refsection = ex.reduce((refsection, value) => {
+      refsection[value] = createRef();
+      return refsection;
+    }, {});
+    return refsection;
+  };
+  const [sectionRef] = useState(panels);
   const listData = [];
 
   const subSections = {
@@ -69,25 +79,15 @@ function ProtocolView({ protId, refs }) {
   if (viewData.iqvdataSummary) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
-  console.log('protocolView', refs);
-  const handlePageNo = (event, page, sectionNo) => {
-    setPageNo(page);
-    setSectionNumber(sectionNo);
-  };
 
   return (
     <div className="protocol_data_container">
-      <div>
-        <BladeLeft handlePageNo={handlePageNo} />
-      </div>
       {viewData && (
         <ProtocolViewClass
           view={viewData}
           data={subSections}
           listData={listData}
-          page={pageNo}
           refx={refs}
-          sectionNumber={sectionNumber}
           sectionRef={sectionRef}
         />
       )}

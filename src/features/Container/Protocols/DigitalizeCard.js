@@ -22,11 +22,10 @@ function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
     return ex;
   };
   const [expanded, setExpanded] = useState(panels);
-  const allOpen = expanded.every((exp) => exp);
-  const handleChange = (panelIndex) => () => {
-    console.log('test1');
+
+  const handleChange = (panelIndex, items) => () => {
+    handlePageRight(items.page);
     setExpanded((oldPanels) => {
-      console.log('test2');
       const newPanels = [...oldPanels];
       for (let i = 0; i < newPanels.length; i++) {
         if (i !== panelIndex) {
@@ -34,14 +33,12 @@ function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
         }
       }
       newPanels[panelIndex] = !newPanels[panelIndex];
-      console.log(newPanels);
+
       return newPanels;
     });
   };
   const handleClick = (sectionNumber) => {
-    console.log('click');
     setExpanded((oldPanels) => {
-      console.log('test2');
       const newPanels = [...oldPanels];
       for (let i = 0; i < newPanels.length; i++) {
         if (i !== sectionNumber) {
@@ -49,7 +46,7 @@ function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
         }
       }
       newPanels[sectionNumber] = !newPanels[sectionNumber];
-      console.log(newPanels);
+
       return newPanels;
     });
   };
@@ -62,9 +59,7 @@ function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
       sectionRef[sectionNumber].current
     ) {
       sectionRef[sectionNumber].current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'start',
+        behavior: 'instant',
       });
       handleClick(sectionNumber);
     }
@@ -90,11 +85,7 @@ function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
         data-testid="protocol-column-wrapper"
       >
         {Records.map((items, index) => (
-          <div
-            key={React.key}
-            ref={sectionRef[index]}
-            className="digitized_data_item"
-          >
+          <div key={React.key} className="digitized_data_item">
             <Drag
               style={{
                 color: 'grey',
@@ -106,17 +97,12 @@ function Digitize({ sectionNumber, sectionRef, handlePageRight }) {
             <div>
               <Accordion
                 expanded={expanded[index]}
-                onChange={() => {
-                  handleChange(index);
-                  handlePageRight(items.page);
-                }}
+                ref={sectionRef[index]}
+                onChange={handleChange(index, items)}
               >
                 <AccordionSummary
                   style={{
                     fontSize: '0.5em',
-                  }}
-                  onClick={(items) => {
-                    console.log(items);
                   }}
                 >
                   <div

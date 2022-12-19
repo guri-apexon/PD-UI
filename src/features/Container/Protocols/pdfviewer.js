@@ -1,8 +1,7 @@
-import { useState, useEffect, createRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Button from 'apollo-react/components/Button';
 import Pagination from 'apollo-react/components/Pagination';
-import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import PlusIcon from 'apollo-react-icons/Plus';
 import Minus from 'apollo-react-icons/Minus';
@@ -12,47 +11,34 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 function Pdf({ page, refs, pageRight }) {
   const [numPages, setNumPages] = useState(0);
-  const [currentPage, setPage] = useState(0);
+  const [currentPage, setPage] = useState(1);
   const [pageScale, setPageScale] = useState(1);
-  // const [pageNumber, setPageNumber] = useState(1);
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
 
   useEffect(() => {
-    if (page === 'undefined' || page === undefined) {
-      //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
-    } else if (refs[page - 1].current) {
-      refs[page - 1].current.scrollIntoView({ behavior: 'instant' });
-    }
+    setPage(page - 1);
   }, [page]);
 
   useEffect(() => {
-    if (refs[currentPage].current) {
-      console.log('Test1');
-      console.log(currentPage, refs);
-      refs[currentPage].current.scrollIntoView({ behavior: 'instant' });
+    if (refs[currentPage]?.current) {
+      refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
-
-    console.log(currentPage, refs);
   }, [currentPage]);
 
   useEffect(() => {
-    if (refs[pageRight].current) {
-      refs[pageRight - 1].current.scrollIntoView({ behavior: 'instant' });
-    }
+    setPage(pageRight - 1);
   }, [pageRight]);
 
   const handleZoomIn = () => {
     if (pageScale < 1.2) {
       setPageScale(pageScale + 0.1);
-      console.log(pageScale);
     }
   };
   const handleZoomOut = () => {
     if (pageScale >= 0.5) {
       setPageScale(pageScale - 0.1);
-      console.log(pageScale);
     }
   };
 

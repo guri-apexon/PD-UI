@@ -6,9 +6,6 @@ import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
 import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
-import TextField from 'apollo-react/components/TextField';
-import { List } from 'react-virtualized';
-import Search from 'apollo-react-icons/Search';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import record from './Dummy.json';
 import './BladeLeft.scss';
@@ -63,6 +60,7 @@ function BladeLeft({ handlePageNo }) {
           className="blade"
           width={263}
           marginTop={159}
+          hasBackdrop
         >
           {/* <TextField
             icon={<Search />}
@@ -101,7 +99,7 @@ function BladeLeft({ handlePageNo }) {
                     </Tooltip>
                   </AccordionSummary>
 
-                  {item?.subsection?.map((level1, index1) => {
+                  {item?.subsection?.map((level1) => {
                     return (
                       <Accordion
                         key={React.key}
@@ -123,7 +121,7 @@ function BladeLeft({ handlePageNo }) {
                         </AccordionSummary>
 
                         {level1.subSection1 &&
-                          level1.subSection1.map((level2, index2) => {
+                          level1.subSection1.map((level2) => {
                             return (
                               <Accordion
                                 key={React.key}
@@ -161,5 +159,6 @@ function BladeLeft({ handlePageNo }) {
 export default withStyles(styles)(BladeLeft);
 
 BladeLeft.propTypes = {
-  handlePageNo: PropTypes.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  handlePageNo: PropTypes.func,
 };
