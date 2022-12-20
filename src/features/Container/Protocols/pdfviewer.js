@@ -2,39 +2,34 @@ import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Button from 'apollo-react/components/Button';
 import Pagination from 'apollo-react/components/Pagination';
-import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import PlusIcon from 'apollo-react-icons/Plus';
 import Minus from 'apollo-react-icons/Minus';
 import { Column } from 'react-virtualized';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-function Pdf({ page, refs }) {
+
+function Pdf({ page, refs, pageRight }) {
   const [numPages, setNumPages] = useState(0);
-  const [currentPage, setPage] = useState(0);
+  const [currentPage, setPage] = useState(1);
   const [pageScale, setPageScale] = useState(1);
-  // const [pageNumber, setPageNumber] = useState(1);
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
 
   useEffect(() => {
-    if (page === 'undefined' || page === undefined) {
-      //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      refs[page - 1].current.scrollIntoView({ behavior: 'instant' });
-    }
+    setPage(page - 1);
   }, [page]);
 
   useEffect(() => {
-    if (refs[currentPage].current) {
-      refs[currentPage].current.scrollIntoView({ behavior: 'instant' });
+    if (refs[currentPage]?.current) {
+      refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
   }, [currentPage]);
 
-  const clickHandler = () => {
-    refs[2].current.scrollIntoView({ behavior: 'smooth' });
-  };
+  useEffect(() => {
+    setPage(pageRight - 1);
+  }, [pageRight]);
 
   const handleZoomIn = () => {
     if (pageScale < 1.2) {
@@ -54,7 +49,7 @@ function Pdf({ page, refs }) {
       data-testid="protocol-column-wrapper"
     >
       <Document
-        file="/ALM-Executing-TestCases_DefectManagementProcess.pdf"
+        file="/Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf"
         onLoadSuccess={onDocumentLoadSuccess}
       >
         {Array.from(new Array(numPages), (el, index) => (
@@ -63,7 +58,7 @@ function Pdf({ page, refs }) {
               key={`page_${index + 1}`}
               className="pdf-page"
               pageNumber={index + 1}
-              width="510"
+              width="490"
               id={index}
               scale={pageScale}
             />
@@ -103,8 +98,10 @@ function Pdf({ page, refs }) {
     </div>
   );
 }
+
 export default Pdf;
 Pdf.propTypes = {
   page: PropTypes.isRequired,
   refs: PropTypes.isRequired,
+  pageRight: PropTypes.isRequired,
 };

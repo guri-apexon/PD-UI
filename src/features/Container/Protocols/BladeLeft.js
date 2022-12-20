@@ -1,16 +1,14 @@
 import withStyles from '@material-ui/core/styles/withStyles';
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-
 import { neutral8 } from 'apollo-react/colors';
 import Tooltip from 'apollo-react/components/Tooltip';
 import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
 import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
-import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import ArrowDown from 'apollo-react-icons/ArrowDown';
+import { FixedSizeList } from 'react-window';
+
 import record from './Dummy.json';
 import './BladeLeft.scss';
 
@@ -26,7 +24,7 @@ const styles = {
 function BladeLeft({ handlePageNo }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
-  const [data, setData] = useState(record);
+  const [data] = useState(record);
 
   const onClose = () => {
     setOpen(false);
@@ -35,95 +33,6 @@ function BladeLeft({ handlePageNo }) {
   const onChange = (e, expanded) => {
     setExpand(expanded);
   };
-
-  // const data = [
-  //   {
-  //     section:
-  //       'abcrtyuuhgfddfghgdvhtfgyfghjjyujnbvgyjbvghbvfghthgffyujjgggjjnbg',
-  //     pageNo: 2,
-  //     subsection: [
-  //       {
-  //         sub_section: 'subsection1',
-  //         subSection1: [
-  //           { sub_Section: 'Sub_Sub_section 1.1.1' },
-  //           { sub_Section: 'Sub_Sub_section 1.1.2' },
-  //         ],
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     section: 'xyz1',
-  //     pageNo: 5,
-  //     subsection: [
-  //       { sub_section: 'subsection1' },
-  //       { sub_section: 'subsection1' },
-  //     ],
-  //   },
-  //   {
-  //     section: 'xyz2',
-  //     pageNo: 5,
-  //     subsection: [
-  //       { sub_section: 'subsection1' },
-  //       { sub_section: 'subsection1' },
-  //     ],
-  //   },
-  //   {
-  //     section: 'xyz3',
-  //     pageNo: 5,
-  //     subsection: [
-  //       { sub_section: 'subsection1' },
-  //       { sub_section: 'subsection1' },
-  //     ],
-  //   },
-  //   {
-  //     section: 'xyz4',
-  //     pageNo: 5,
-  //     subsection: [
-  //       { sub_section: 'subsection1' },
-  //       { sub_section: 'subsection1' },
-  //     ],
-  //   },
-  //   {
-  //     section: 'xyz5',
-  //     pageNo: 5,
-  //     subsection: [
-  //       { sub_section: 'subsection1' },
-  //       { sub_section: 'subsection1' },
-  //     ],
-  //   },
-  //   {
-  //     section: 'xyz6',
-  //     pageNo: 5,
-  //     subsection: [
-  //       { sub_section: 'subsection1' },
-  //       { sub_section: 'subsection1' },
-  //     ],
-  //   },
-  //   {
-  //     section: 'xyz6',
-  //     pageNo: 5,
-  //     subsection: [
-  //       { sub_section: 'subsection1' },
-  //       { sub_section: 'subsection1' },
-  //     ],
-  //   },
-  //   {
-  //     section: 'xyz6',
-  //     pageNo: 5,
-  //     subsection: [
-  //       { sub_section: 'subsection1' },
-  //       { sub_section: 'subsection1' },
-  //     ],
-  //   },
-  //   {
-  //     section: 'xyz6',
-  //     pageNo: 5,
-  //     subsection: [
-  //       { sub_section: 'subsection1' },
-  //       { sub_section: 'subsection1' },
-  //     ],
-  //   },
-  // ];
 
   useEffect(() => {
     if (!open) {
@@ -142,11 +51,18 @@ function BladeLeft({ handlePageNo }) {
           onClose={onClose}
           title="Navigation"
           className="blade"
-          width={215}
-          marginTop={159}
+          width={263}
+          marginTop={134}
+          hasBackdrop
         >
+          {/* <TextField
+            icon={<Search />}
+            placeholder="Search"
+            className="search-Box"
+          /> */}
+
           <div style={{ paddingLeft: '7px' }}>
-            {data.map((item, index) => {
+            {data?.map((item, index) => {
               return (
                 <Accordion
                   key={React.key}
@@ -167,7 +83,7 @@ function BladeLeft({ handlePageNo }) {
                     </Tooltip>
                   </AccordionSummary>
 
-                  {/* {item.subsection.map((level1, index1) => {
+                  {/* {item?.subsection?.map((level1) => {
                     return (
                       <Accordion
                         key={React.key}
@@ -189,7 +105,7 @@ function BladeLeft({ handlePageNo }) {
                         </AccordionSummary>
 
                         {level1.subSection1 &&
-                          level1.subSection1.map((level2, index2) => {
+                          level1.subSection1.map((level2) => {
                             return (
                               <Accordion
                                 key={React.key}
@@ -227,5 +143,6 @@ function BladeLeft({ handlePageNo }) {
 export default withStyles(styles)(BladeLeft);
 
 BladeLeft.propTypes = {
-  handlePageNo: PropTypes.isRequired,
+  // eslint-disable-next-line react/require-default-props
+  handlePageNo: PropTypes.func,
 };

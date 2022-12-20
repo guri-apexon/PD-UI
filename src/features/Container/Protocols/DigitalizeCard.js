@@ -27,7 +27,7 @@ const EditHarddata =
 
 // import { userRole } from '../../../../AppConstant/AppConstant';
 
-function Digitize({ sectionNumber, sectionRef, data }) {
+function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
   const dispatch = useDispatch();
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
@@ -54,7 +54,8 @@ function Digitize({ sectionNumber, sectionRef, data }) {
   // const [expanded, setExpanded] = useState(panels);
   const allOpen = expanded.every((exp) => exp);
 
-  const handleChange = (panelIndex) => {
+  const handleChange = (panelIndex, items) => {
+    handlePageRight(items.page);
     setExpanded((oldPanels) => {
       const newPanels = [...oldPanels];
       for (let i = 0; i < newPanels.length; i++) {
@@ -66,6 +67,7 @@ function Digitize({ sectionNumber, sectionRef, data }) {
       return newPanels;
     });
   };
+
   const handleClick = (sectionNumber) => {
     setExpanded((oldPanels) => {
       const newPanels = [...oldPanels];
@@ -83,11 +85,13 @@ function Digitize({ sectionNumber, sectionRef, data }) {
   useEffect(() => {
     if (sectionNumber === 'undefined' || sectionNumber === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
-    } else {
+    } else if (
+      sectionRef &&
+      sectionRef[sectionNumber] &&
+      sectionRef[sectionNumber].current
+    ) {
       sectionRef[sectionNumber].current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'start',
+        behavior: 'instant',
       });
       handleClick(sectionNumber);
     }
@@ -222,4 +226,5 @@ Digitize.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
   data: PropTypes.isRequired,
+  handlePageRight: PropTypes.isRequired,
 };

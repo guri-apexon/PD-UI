@@ -26,7 +26,7 @@ function Protocols({ location }) {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
-  const [arrr, setarrr] = useState(new Array(50));
+  const [arrr] = useState(new Array(100));
 
   useEffect(() => {
     const params = location.search;
@@ -50,7 +50,7 @@ function Protocols({ location }) {
   /* eslint-enable */
 
   const forLoop = async (_) => {
-    for (let index = 0; index < 50; index++) {
+    for (let index = 0; index < 100; index++) {
       arrr.push(index);
     }
   };
@@ -75,14 +75,11 @@ function Protocols({ location }) {
   const handleChangeTab = (event, value) => {
     setValue(value);
   };
-  console.log(Records.length);
 
   const refs = arrr.reduce((refs, value) => {
     refs[value] = createRef();
     return refs;
   }, {});
-  // console.log('sectionIndex', sectionIndex);
-  console.log('summary', summary);
   if (idPresent) {
     const { data } = summary;
     return (
@@ -108,7 +105,7 @@ function Protocols({ location }) {
               <h2 className="header">{data.Protocol}</h2>
             </div>
             <div className="tab-column">
-              <div className="overview">
+              <div className="overview overview-card">
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                   <div style={{ flex: 1 }} className="p-rl-20">
                     <Tabs

@@ -3,8 +3,11 @@
   margin-top: 10px;
 }
 
+.overview-card {
+  margin-top: -12px;
+}
 .protocols {
-  margin-top: 60px;
+  margin-top: 40px;
   // max-width: 1200px;
 
   .p-rl-20 {
@@ -124,6 +127,7 @@
       margin-left: 9px;
       margin-top: 10px;
       width: 100%;
+      margin-top: -12px !important;
       .MuiTab-root {
         font-size: 14px;
         margin-right: 0;
@@ -333,12 +337,13 @@
 
   .view-wrapper .digitize-panel-content {
     overflow-y: scroll;
-    height: 72vh;
+    height: 68vh;
     width: 100%;
   }
 
   .view-wrapper .MuiCard-root {
     padding: 0;
+    height: 100% !important;
   }
   label {
     font-weight: bold;

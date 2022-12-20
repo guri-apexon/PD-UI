@@ -17,6 +17,7 @@ import Typography from 'apollo-react/components/Typography';
 import Drag from 'apollo-react-icons/Drag';
 import Panel from 'apollo-react/components/Panel';
 import PanelGroup from 'apollo-react/components/PanelGroup';
+import BladeLeft from './BladeLeft';
 
 // import Digitize from './DigitizeCard';
 import { connect } from 'react-redux';
@@ -35,12 +36,44 @@ class ProtocolViewClass extends React.Component {
       activeSection: null,
       activeSubSection: null,
       headerDetails: '',
+      pageRight: 1,
+      pageNo: 1,
+      sectionNumber: undefined,
     };
   }
 
-  componentDidMount() {
-    console.log('protocolViewClass', this.props.refx);
-  }
+  handlePageRight = (pageRight) => {
+    this.setState({ pageRight: pageRight });
+  };
+
+  handlePageNo = (event, page, sectionNo) => {
+    this.setState({ pageNo: page });
+    this.setState({ sectionNumber: sectionNo });
+  };
+
+  //   componentDidMount() {
+  //     // console.log('items',this.props.items);
+  //     const cookiesServer = new Cookies();
+  //     const res=fetch("http://127.0.0.1:8000/api/cpt_data/?aidoc_id=000b6888-fa7e-4c0e-a913-319d68512270&link_level=1", {
+  //   "headers": {
+  //     "accept": "application/json",
+  //     "accept-language": "en-US,en;q=0.9",
+  //     "authorization": `Bearer ${cookiesServer.get('api_token')}`
+  //   },
+
+  //   "method": "GET",
+
+  // }).then((response)=>response.json())
+  // .then((items)=>{
+  //   const filteredItems = items.filter(x=>{
+  //     return x.source_file_section!=="blank_header"
+  //   });
+  //   console.log("filteredItems", filteredItems);
+  //   this.setState({headerDetails:filteredItems})
+  // }
+  // )
+  //     console.log('protocolViewClass', this.props.refx);
+  //   }
 
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -202,7 +235,7 @@ class ProtocolViewClass extends React.Component {
       acc[value.id] = React.createRef();
       return acc;
     }, {});
-    console.log('page-', page);
+
     const refsSection = listData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
@@ -242,6 +275,7 @@ class ProtocolViewClass extends React.Component {
             display: 'inline-block',
             margin: 'auto',
             marginTop: '10%',
+            paddingLeft: '45%',
           }}
         >
           <Loader />
@@ -262,32 +296,43 @@ class ProtocolViewClass extends React.Component {
       );
     }
     return (
-      <div className="view-wrapper">
-        <PanelGroup className="panel_group">
-          <Panel
-            width={window.innerWidth / 2}
-            minWidth={window.innerWidth / 4}
-            maxWidth={window.innerWidth / 1.5}
-            hideButton
-            resizable
-          >
-            <Card className="protocol-source-column">
-              <div className="panel-heading" style={{ marginLeft: '10px' }}>
-                Source Document
-              </div>
-              <Pdf page={page} refs={this.props.refx} />
-            </Card>
-          </Panel>
-          <Panel width={'auto'} hideButton>
-            <Digitize
-              sectionRef={this.props.sectionRef}
-              sectionNumber={this.props.sectionNumber}
-              headerDetails={this.state.headerDetails}
-              data={this.props.data}
-            />
-          </Panel>
-        </PanelGroup>
-      </div>
+      <>
+        <div>
+          <BladeLeft handlePageNo={this.handlePageNo} />
+        </div>
+        <div className="view-wrapper">
+          <PanelGroup className="panel_group">
+            <Panel
+              width={window.innerWidth / 2}
+              minWidth={window.innerWidth / 4}
+              maxWidth={window.innerWidth / 1.5}
+              hideButton
+              resizable
+            >
+              <Card className="protocol-source-column">
+                <div className="panel-heading" style={{ marginLeft: '10px' }}>
+                  Source Document
+                </div>
+
+                <Pdf
+                  page={this.state.pageNo}
+                  refs={this.props.refx}
+                  pageRight={this.state.pageRight}
+                />
+              </Card>
+            </Panel>
+            <Panel width={'auto'} hideButton>
+              <Digitize
+                sectionRef={this.props.sectionRef}
+                sectionNumber={this.state.sectionNumber}
+                headerDetails={this.state.headerDetails}
+                handlePageRight={this.handlePageRight}
+                data={this.props.data}
+              />
+            </Panel>
+          </PanelGroup>
+        </div>
+      </>
     );
   }
 }
