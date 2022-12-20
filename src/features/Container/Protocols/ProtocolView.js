@@ -22,7 +22,7 @@ const panels = () => {
   return refsection;
 };
 
-function ProtocolView({ protId, refs }) {
+function ProtocolView({ protId, refs, data }) {
   const summary = useSelector(protocolSummary);
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
@@ -83,12 +83,13 @@ function ProtocolView({ protId, refs }) {
       {viewData && (
         <ProtocolViewClass
           view={viewData}
-          data={subSections}
+          data1={subSections}
           listData={listData}
           page={pageNo}
           refx={refs}
           sectionNumber={sectionNumber}
           sectionRef={sectionRef}
+          data={data}
         />
       )}
     </div>
@@ -99,4 +100,5 @@ export default ProtocolView;
 ProtocolView.propTypes = {
   protId: PropTypes.isRequired,
   refs: PropTypes.isRequired,
+  data: PropTypes.isRequired,
 };

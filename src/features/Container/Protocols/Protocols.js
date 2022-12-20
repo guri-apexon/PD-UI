@@ -82,7 +82,7 @@ function Protocols({ location }) {
     return refs;
   }, {});
   // console.log('sectionIndex', sectionIndex);
-
+  console.log('summary', summary);
   if (idPresent) {
     const { data } = summary;
     return (
@@ -105,7 +105,6 @@ function Protocols({ location }) {
                 ]}
                 style={{ paddingInlineStart: 0, marginBottom: 0 }}
               />
-
               <h2 className="header">{data.Protocol}</h2>
             </div>
             <div className="tab-column">
@@ -129,7 +128,9 @@ function Protocols({ location }) {
 
                 <div className="tab-container">
                   {value === 0 && <ProtocolOverview data={data} />}
-                  {value === 1 && <ProtocolView protId={data.id} refs={refs} />}
+                  {value === 1 && (
+                    <ProtocolView protId={data.id} data={data} refs={refs} />
+                  )}
                   {value === 2 && (
                     <Documents handleChangeTab={handleChangeTab} />
                   )}

@@ -306,6 +306,7 @@ class ProtocolViewClass extends React.Component {
               sectionRef={this.props.sectionRef}
               sectionNumber={this.props.sectionNumber}
               headerDetails={this.state.headerDetails}
+              data={this.props.data}
             />
           </Panel>
         </PanelGroup>

@@ -17,58 +17,36 @@ function Pdf({ page, refs }) {
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
-  console.log('Enter2');
-
-  // const arr = [0, 1, 2, 3, 4, 5];
-  // const refs = arr.reduce((acc, value) => {
-  //   acc[value] = createRef();
-  //   return acc;
-  // }, {});
 
   useEffect(() => {
-    console.log('-------', refs);
-    console.log('useEffect page No', page);
-    console.log('currentpage', currentPage);
-    // console.log('pageNumber', pageNumber);
     if (page === 'undefined' || page === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else {
-      console.log('page:-------In UseEffect');
       refs[page - 1].current.scrollIntoView({ behavior: 'instant' });
     }
   }, [page]);
 
   useEffect(() => {
     if (refs[currentPage].current) {
-      console.log('Test1');
-      console.log(currentPage, refs);
       refs[currentPage].current.scrollIntoView({ behavior: 'instant' });
     }
-    console.log('Test');
-    console.log(currentPage, refs);
   }, [currentPage]);
 
   const clickHandler = () => {
-    console.log(refs);
     refs[2].current.scrollIntoView({ behavior: 'smooth' });
   };
-  // const handlePageNumber = (pageNumber) => {
-  //   setPageNumber(pageNumber);
-  // };
+
   const handleZoomIn = () => {
     if (pageScale < 1.2) {
       setPageScale(pageScale + 0.1);
-      console.log(pageScale);
     }
   };
   const handleZoomOut = () => {
     if (pageScale >= 0.5) {
       setPageScale(pageScale - 0.1);
-      console.log(pageScale);
     }
   };
 
-  console.log('page', page);
   return (
     <div
       id="pdfDocument"
@@ -84,7 +62,7 @@ function Pdf({ page, refs }) {
         onLoadSuccess={onDocumentLoadSuccess}
       >
         {Array.from(new Array(numPages), (el, index) => (
-          <div ref={refs ?? [index]} key={index}>
+          <div ref={refs[index]} key={index}>
             <Page
               key={`page_${index + 1}`}
               className="pdf-page"
