@@ -184,8 +184,8 @@ let UI_URL = '';
 let UIhost;
 /* eslint-enable */
 if (process.env.REACT_APP_ENV === 'local') {
-  // backendHost = 'http://127.0.0.1:8001';
-  backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  backendHost = 'http://127.0.0.1:8001';
+  // backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
@@ -236,7 +236,7 @@ export const Apis = {
   protocol: `${BASE_URL}/api/protocol`,
   search: 'http://ca2spdml04q:9200/pd-index/_search',
   HEADER_LIST: '/api/cpt_data',
-  GET_SECTION_CONTENT: '/get_section_data',
+  GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
 };
 
 export const SSO_ENABLED = false;

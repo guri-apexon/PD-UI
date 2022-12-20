@@ -69,7 +69,7 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
 
   const handleChange = (panelIndex, items) => {
     handlePageRight(items.page);
-    let newPanels = expanded.map((val) => (val = false));
+    const newPanels = expanded.map((val) => false);
     newPanels[panelIndex] = !newPanels[panelIndex];
     setExpanded(newPanels);
   };
@@ -228,6 +228,7 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                     {sectionHeaderDetails.data &&
                       isArray(sectionHeaderDetails.data) &&
                       sectionHeaderDetails.data.map((value) => (
+                        // eslint-disable-next-line react/jsx-no-useless-fragment
                         <>
                           {editFlag ? (
                             <MultilineEdit
