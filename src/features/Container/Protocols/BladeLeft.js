@@ -104,7 +104,7 @@ function BladeLeft({ handlePageNo }) {
                           </Tooltip>
                         </AccordionSummary>
 
-                        {/* {level1.subSection1 &&
+                        {level1.subSection1 &&
                           level1.subSection1.map((level2) => {
                             return (
                               <Accordion
@@ -127,7 +127,7 @@ function BladeLeft({ handlePageNo }) {
                                 </AccordionSummary>
                               </Accordion>
                             );
-                          })} */}
+                          })}
                       </Accordion>
                     );
                   })}
