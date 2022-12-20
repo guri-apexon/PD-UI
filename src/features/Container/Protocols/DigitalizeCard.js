@@ -143,7 +143,6 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                   expanded={expanded[index]}
                   onChange={() => handleChange(index)}
                   onClick={() => {
-                    debugger;
                     dispatch({
                       type: 'GET_SECTION_LIST',
                       payload: {
