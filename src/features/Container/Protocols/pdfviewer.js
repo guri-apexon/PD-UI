@@ -32,14 +32,14 @@ function Pdf({ page, refs, pageRight }) {
   }, [pageRight]);
 
   const handleZoomIn = () => {
-    if (pageScale < 1.2) {
-      setPageScale(pageScale + 0.1);
-    }
+    // if (pageScale < 1.2) {
+    setPageScale(pageScale + 0.1);
+    // }
   };
   const handleZoomOut = () => {
-    if (pageScale >= 0.5) {
-      setPageScale(pageScale - 0.1);
-    }
+    // if (pageScale >= 0.5) {
+    setPageScale(pageScale - 0.1);
+    // }
   };
 
   return (
@@ -78,7 +78,7 @@ function Pdf({ page, refs, pageRight }) {
             icon={<PlusIcon />}
             className="buttonStyles"
             data-testid="zoomIn"
-            disabled={pageScale >= 1.5}
+            disabled={pageScale >= 1.2}
             onClick={handleZoomIn}
           >
             {' '}
