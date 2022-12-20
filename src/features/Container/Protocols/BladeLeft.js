@@ -7,6 +7,8 @@ import Blade from 'apollo-react/components/Blade';
 import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import { FixedSizeList } from 'react-window';
+
 import record from './Dummy.json';
 import './BladeLeft.scss';
 
@@ -39,15 +41,6 @@ function BladeLeft({ handlePageNo }) {
     }
   }, [open]);
 
-  // const rowRenders = ({ data, index, key, style }) => {
-  //   const item = data[index];
-  //   return (
-  //     <div key={key} style={style}>
-  //       <div>{item.source_file_section}</div>
-  //     </div>
-  //   );
-  // };
-
   return (
     <div>
       <div className="bladeContainer">
@@ -59,7 +52,7 @@ function BladeLeft({ handlePageNo }) {
           title="Navigation"
           className="blade"
           width={263}
-          marginTop={159}
+          marginTop={134}
           hasBackdrop
         >
           {/* <TextField
@@ -67,17 +60,8 @@ function BladeLeft({ handlePageNo }) {
             placeholder="Search"
             className="search-Box"
           /> */}
+
           <div style={{ paddingLeft: '7px' }}>
-            {/* <List
-              width={600}
-              height={600}
-              rowHeight={50}
-              rowCount={data.length}
-              rowRenderer={(data, index, key, style) => {
-                console.log(data.length);
-                rowRenders(data, index, key, style);
-              }}
-            /> */}
             {data?.map((item, index) => {
               return (
                 <Accordion
@@ -99,7 +83,7 @@ function BladeLeft({ handlePageNo }) {
                     </Tooltip>
                   </AccordionSummary>
 
-                  {item?.subsection?.map((level1) => {
+                  {/* {item?.subsection?.map((level1) => {
                     return (
                       <Accordion
                         key={React.key}
@@ -146,7 +130,7 @@ function BladeLeft({ handlePageNo }) {
                           })}
                       </Accordion>
                     );
-                  })}
+                  })} */}
                 </Accordion>
               );
             })}

@@ -36,9 +36,9 @@ class ProtocolViewClass extends React.Component {
       activeSection: null,
       activeSubSection: null,
       headerDetails: '',
-      pageRight: 0,
-      pageNo: 0,
-      sectionNumber: 0,
+      pageRight: 1,
+      pageNo: 1,
+      sectionNumber: undefined,
     };
   }
 
@@ -278,6 +278,7 @@ class ProtocolViewClass extends React.Component {
             display: 'inline-block',
             margin: 'auto',
             marginTop: '10%',
+            paddingLeft: '45%',
           }}
         >
           <Loader />
@@ -319,7 +320,10 @@ class ProtocolViewClass extends React.Component {
               resizable
             >
               <Card className="protocol-source-column">
-                <div className="panel-heading" style={{ marginLeft: '10px' }}>
+                <div
+                  className="panel-heading"
+                  style={{ marginLeft: '10px', marginTop: '0px' }}
+                >
                   Source Document
                 </div>
                 <div
@@ -327,7 +331,7 @@ class ProtocolViewClass extends React.Component {
                     scrollPadding: '50px 0px 0px 50px',
                     padding: '6px 16px',
                     overflowY: 'scroll',
-                    height: '72vh',
+                    height: '67vh',
                     width: '100%',
                   }}
                   data-testid="protocol-column-wrapper"

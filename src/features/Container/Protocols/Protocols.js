@@ -107,7 +107,7 @@ function Protocols({ location }) {
               <h2 className="header">{data.Protocol}</h2>
             </div>
             <div className="tab-column">
-              <div className="overview">
+              <div className="overview overview-card">
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                   <div style={{ flex: 1 }} className="p-rl-20">
                     <Tabs

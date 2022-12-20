@@ -62,7 +62,7 @@ function Pdf({ page, refs, pageRight }) {
               key={`page_${index + 1}`}
               className="pdf-page"
               pageNumber={index + 1}
-              width="510"
+              width="490"
               id={index}
               scale={pageScale}
             />
