@@ -182,10 +182,14 @@ let backendPostHost;
 let baseUrlSSO;
 let UI_URL = '';
 let UIhost;
-let BASE_URL_8001 = '';
-let baseUrlLocal = '';
 /* eslint-enable */
-if (process.env.REACT_APP_ENV === 'dev') {
+if (process.env.REACT_APP_ENV === 'local') {
+  // backendHost = 'http://127.0.0.1:8001';
+  backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
+  UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
+  baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
+} else if (process.env.REACT_APP_ENV === 'dev') {
   backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
@@ -222,8 +226,6 @@ if (process.env.REACT_APP_ENV === 'dev') {
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
 }
 
-backendHost = 'http://127.0.0.1:8000';
-
 BASE_URL = `${backendPostHost}`;
 BASE_URL_8000 = `${backendHost}`;
 UI_URL = `${UIhost}`;
@@ -233,6 +235,8 @@ export { BASE_URL_8000, baseUrlSSO, UI_URL };
 export const Apis = {
   protocol: `${BASE_URL}/api/protocol`,
   search: 'http://ca2spdml04q:9200/pd-index/_search',
+  HEADER_LIST: '/api/cpt_data',
+  GET_SECTION_CONTENT: '/get_section_data',
 };
 
 export const SSO_ENABLED = false;

@@ -19,7 +19,7 @@ import {
   getProtocolTocData,
 } from './protocolSlice';
 
-import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
 function* getUserId() {
   const state = yield select();
@@ -206,7 +206,7 @@ export function* fetchAssociateProtocol(action) {
   }
 }
 export function* fetchSectionHeaderList(action) {
-  const URL = `${BASE_URL_8000}/api/cpt_data/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1&toc=0`;
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1&toc=0`;
   //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   const config = {
     url: URL,
@@ -229,7 +229,7 @@ function* getState() {
 export function* getSectionList(action) {
   const userId = yield getState();
   const config = {
-    url: `${BASE_URL_8000}/get_section_data?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
+    url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
 
     method: 'GET',
   };

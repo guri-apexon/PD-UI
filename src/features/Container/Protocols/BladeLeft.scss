@@ -71,6 +71,9 @@
 
   [class*='MuiAccordionSummary-expandIcon'] {
     padding-top: 0 !important;
+    *{
+      background: none !important;
+    }
   }
   .Mui-expanded
     [class*='MuiAccordionDetails-root']
