@@ -7,13 +7,18 @@ import {
   select,
 } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
+import { useSelector } from 'react-redux';
 import {
   getSummary,
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
+  getHeaderList,
+  protocolResult,
+  getSectionDetails,
 } from './protocolSlice';
-import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+
+import { httpCall, BASE_URL_8000, BASE_URL_8001 } from '../../../utils/api';
 
 function* getUserId() {
   const state = yield select();
@@ -199,6 +204,44 @@ export function* fetchAssociateProtocol(action) {
     yield put(getAssociateDocuments([]));
   }
 }
+export function* fetchSectionHeaderList(action) {
+  const URL = `${BASE_URL_8001}/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1`;
+  //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
+  const config = {
+    url: URL,
+    method: 'GET',
+  };
+  const header = yield call(httpCall, config);
+  console.log(header, 'header');
+  if (header.success) {
+    yield put(getHeaderList(header));
+  } else {
+    yield put(getHeaderList([]));
+  }
+}
+function* getState() {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  // userId = id;
+  return id.substring(1);
+}
+export function* getSectionList(action) {
+  const userId = yield getState();
+  const config = {
+    url: `${BASE_URL_8001}/get_section_data?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
+
+    method: 'GET',
+  };
+  const sectionDetails = yield call(httpCall, config);
+  console.log(sectionDetails, 'sectionDetails');
+  if (sectionDetails.success) {
+    yield put(getSectionDetails(sectionDetails));
+  } else if (sectionDetails.message === 'No Access') {
+    console.log('No Access');
+  } else {
+    console.log('Error while loading');
+  }
+}
 
 export function* getCompareResult(action) {
   if (action.payload) {
@@ -249,6 +292,8 @@ function* watchProtocolAsync() {
   yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
   yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol);
   yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
+  yield takeEvery('GET_PROTOCOL_SECTION', fetchSectionHeaderList);
+  yield takeEvery('GET_SECTION_LIST', getSectionList);
 }
 
 // notice how we now only export the rootSaga

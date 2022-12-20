@@ -111,9 +111,6 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
-  sectionDetails = (item) => {
-    this.headerDetails(item);
-  };
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -285,7 +282,6 @@ class ProtocolViewClass extends React.Component {
             <Digitize
               sectionRef={this.props.sectionRef}
               sectionNumber={this.props.sectionNumber}
-              headerDetails={this.state.headerDetails}
             />
           </Panel>
         </PanelGroup>

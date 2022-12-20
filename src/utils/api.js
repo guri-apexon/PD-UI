@@ -182,12 +182,15 @@ let backendPostHost;
 let baseUrlSSO;
 let UI_URL = '';
 let UIhost;
+let BASE_URL_8001 = '';
+let baseUrlLocal = '';
 /* eslint-enable */
 if (process.env.REACT_APP_ENV === 'dev') {
   backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
+  baseUrlLocal = 'http://127.0.0.1:8001/api/cpt_data';
 } else if (process.env.REACT_APP_ENV === 'test') {
   backendHost = 'https://test-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://test-protocoldigitalization-ai.work.iqvia.com';
@@ -222,9 +225,10 @@ if (process.env.REACT_APP_ENV === 'dev') {
 
 BASE_URL = `${backendPostHost}`;
 BASE_URL_8000 = `${backendHost}`;
+BASE_URL_8001 = `${baseUrlLocal}`;
 UI_URL = `${UIhost}`;
 export default BASE_URL;
-export { BASE_URL_8000, baseUrlSSO, UI_URL };
+export { BASE_URL_8000, baseUrlSSO, UI_URL, BASE_URL_8001 };
 
 export const Apis = {
   protocol: `${BASE_URL}/api/protocol`,

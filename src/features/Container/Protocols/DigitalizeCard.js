@@ -5,28 +5,42 @@ import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import { useLocation } from 'react-router-dom';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Drag from 'apollo-react-icons/Drag';
-import Records from './records.json';
+import Loader from '../../Components/Loader/Loader';
+import {
+  headerResult,
+  protocolSummary,
+  sectionDetailsResult,
+} from './protocolSlice';
+import Record from './records.json';
 
 function Digitize({ sectionNumber, sectionRef }) {
-  const panels = () => {
+  const dispatch = useDispatch();
+  const summary = useSelector(headerResult);
+  const protocolAllItems = useSelector(protocolSummary);
+  const sectionHeaderDetails = useSelector(sectionDetailsResult);
+  // const [data, setData] = useState(summary);
+  const [expanded, setExpanded] = useState([]);
+  const [loader, setLoader] = useState(false);
+
+  const panels = (data) => {
+    debugger;
+    console.log(data, 'data123');
     const ex = [];
-    const arraylength = Records.length;
+    const arraylength = data ? data.length : 0;
     for (let i = 0; i < arraylength; i++) {
       ex[i] = false;
     }
     return ex;
   };
-  const [expanded, setExpanded] = useState(panels);
-  const allOpen = expanded.every((exp) => exp);
-  const handleChange = (panelIndex) => () => {
-    console.log('test1');
+  const handleChange = (panelIndex) => {
     setExpanded((oldPanels) => {
-      console.log('test2');
       const newPanels = [...oldPanels];
       for (let i = 0; i < newPanels.length; i++) {
         if (i !== panelIndex) {
@@ -53,6 +67,7 @@ function Digitize({ sectionNumber, sectionRef }) {
       return newPanels;
     });
   };
+
   useEffect(() => {
     if (sectionNumber === 'undefined' || sectionNumber === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
@@ -66,6 +81,14 @@ function Digitize({ sectionNumber, sectionRef }) {
     }
   }, [sectionNumber]);
 
+  useEffect(() => {
+    if (!summary.data) {
+      dispatch({ type: 'GET_PROTOCOL_SECTION' });
+    }
+    console.log('coming to useeffect 2nd');
+    setExpanded(panels(summary.data));
+  }, [summary]);
+
   return (
     <Card
       className="protocol-column protocol-digitize-column"
@@ -76,43 +99,91 @@ function Digitize({ sectionNumber, sectionRef }) {
         className="digitize-panel-content"
         data-testid="protocol-column-wrapper"
       >
-        {Records.map((items, index) => (
-          <div
-            key={React.key}
-            ref={sectionRef ?? [index]}
-            className="digitized_data_item"
-          >
-            <Drag />
-            <div>
-              <Accordion
-                expanded={expanded[index]}
-                onChange={handleChange(index)}
-              >
-                <AccordionSummary>
-                  <div className="accordion_summary">
-                    <Typography
-
-                    // onClick={onClickHandler()}
+        {/* summary.data */}
+        {!summary.data ? (
+          <Loader />
+        ) : (
+          summary.data.map((items, index) => (
+            <div
+              key={React.key}
+              ref={sectionRef[index]}
+              className="digitized_data_item"
+            >
+              <Drag
+                style={{
+                  color: 'grey',
+                  fontSize: '1.2em',
+                  padding: '15px',
+                  paddingLeft: '5px',
+                }}
+              />
+              <div>
+                <Accordion
+                  expanded={expanded[index]}
+                  onChange={() => handleChange(index)}
+                >
+                  <AccordionSummary
+                    style={{
+                      fontSize: '0.5em',
+                    }}
+                    onClick={() =>
+                      dispatch({
+                        type: 'GET_SECTION_LIST',
+                        payload: {
+                          linkId: items.link_id,
+                          docId: items.doc_id,
+                          protocol: protocolAllItems.data.protocol,
+                        },
+                      })
+                    }
+                  >
+                    <div
+                      className=""
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        height: 48,
+                      }}
                     >
-                      {items?.source_file_section}
-                    </Typography>
-                    <div className="accordion_summary_icons">
-                      <EyeShow />
-                      <Pencil />
+                      <Typography
+                        style={{
+                          fontweight: 'strong',
+                        }}
+                        // onClick={onClickHandler()}
+                      >
+                        {items.source_file_section}
+                      </Typography>
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                        }}
+                      >
+                        <EyeShow />
+                        <Pencil style={{ paddingLeft: '20px' }} />
+                      </div>
                     </div>
-                  </div>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
+                  </AccordionSummary>
+
+                  <AccordionDetails
+                    style={{
+                      width: '80% !important',
+                      height: 'auto',
+                      overflowX: 'scroll',
+                      overflowY: 'scroll',
+                    }}
+                  >
+                    {sectionHeaderDetails.data &&
+                      sectionHeaderDetails.data.map((value) => (
+                        <Typography key={React.key}>{value.content}</Typography>
+                      ))}
+                  </AccordionDetails>
+                </Accordion>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </Card>
   );
