@@ -227,10 +227,10 @@ function* getState() {
   return id.substring(1);
 }
 export function* getSectionList(action) {
+  console.log(action);
   const userId = yield getState();
   const config = {
-    url: `${BASE_URL_8000}/get_section_data?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
-
+    url: `${BASE_URL_8000}/api/cpt_data/get_section_data?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
     method: 'GET',
   };
   const sectionDetails = yield call(httpCall, config);

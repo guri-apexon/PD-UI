@@ -106,6 +106,8 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
     dispatch({ type: 'GET_PROTOCOL_SECTION' });
   }, []);
 
+  console.log({ sectionHeaderDetails, expanded, editFlag });
+
   return (
     <Card
       className="protocol-column protocol-digitize-column"
@@ -140,21 +142,22 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                 <Accordion
                   expanded={expanded[index]}
                   onChange={() => handleChange(index)}
+                  onClick={() => {
+                    debugger;
+                    dispatch({
+                      type: 'GET_SECTION_LIST',
+                      payload: {
+                        linkId: items.link_id,
+                        docId: items.doc_id,
+                        protocol: protocolAllItems.data.protocol,
+                      },
+                    });
+                  }}
                 >
                   <AccordionSummary
                     style={{
                       fontSize: '0.5em',
                     }}
-                    onClick={() =>
-                      dispatch({
-                        type: 'GET_SECTION_LIST',
-                        payload: {
-                          linkId: items.link_id,
-                          docId: items.doc_id,
-                          protocol: protocolAllItems.data.protocol,
-                        },
-                      })
-                    }
                   >
                     <div
                       className=""
@@ -182,7 +185,7 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                         <EyeShow />
                         {data.userPrimaryRoleFlag === true ? null : (
                           <Pencil
-                            Onclick={() => setEditFlag(true)}
+                            onClick={() => setEditFlag(true)}
                             style={{ paddingLeft: '20px' }}
                           />
                         )}
@@ -198,6 +201,22 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                       overflowY: 'scroll',
                     }}
                   >
+                    {sectionHeaderDetails.data &&
+                      sectionHeaderDetails.data.map((value) => (
+                        <>
+                          {editFlag ? (
+                            <MultilineEdit
+                              editFlag={editFlag}
+                              getedited={getedited}
+                            />
+                          ) : (
+                            <Typography key={React.key}>
+                              {value.content}
+                            </Typography>
+                          )}
+                        </>
+                      ))}
+
                     {/* {data.userPrimaryRoleFlag === true ? (
                       EditHarddata
                     ) : (
@@ -206,10 +225,10 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                         getedited={getedited}
                       />
                     )} */}
-                    {sectionHeaderDetails.data &&
+                    {/* {sectionHeaderDetails.data &&
                       sectionHeaderDetails.data.map((value) => (
                         <Typography key={React.key}>{value.content}</Typography>
-                      ))}
+                      ))} */}
                   </AccordionDetails>
                 </Accordion>
               </div>

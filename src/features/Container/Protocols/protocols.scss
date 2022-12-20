@@ -7,7 +7,11 @@
   margin-top: -12px;
 }
 .protocols {
-  margin-top: 40px;
+  > div.p-rl-20:first-child {
+    padding-left: 16px;
+  }
+
+  margin-top: 48px;
   // max-width: 1200px;
 
   .p-rl-20 {
@@ -337,7 +341,7 @@
 
   .view-wrapper .digitize-panel-content {
     overflow-y: scroll;
-    height: 68vh;
+    height: 74vh;
     width: 100%;
   }
 
@@ -415,7 +419,7 @@
 .digitized_data_item {
   list-style-type: none;
   flex-direction: row;
-  padding: 2px 2px 2px 15px;
+  padding: 2px 2px 0 15px;
   position: relative;
 }
 
@@ -454,6 +458,33 @@
   flex-direction: row;
   width: 60px;
   justify-content: space-between;
+}
+
+.digitized_data_item [class*='MuiAccordionSummary-root'] {
+  background: #f6f7fb;
+}
+
+.digitized_data_item [class*='Accordion-expanded'] {
+  background: transparent !important;
+}
+
+.digitized_data_item [class*='MuiAccordionDetails-root-'] {
+  height: auto;
+  overflow: auto !important;
+  padding: 0 30px 20px 10px;
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+}
+
+.digitized_data_item .edited-text {
+  width: 100%;
+}
+
+.digitized_data_item .edited-text input {
+  resize: vertical !important;
 }
 
 .loader {

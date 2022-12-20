@@ -31,7 +31,6 @@ function MultilineEdit({ value, setValue, getedited }) {
     <div className="edited-text">
       <TextField
         rows={1}
-        // aria-label="Field name"
         value={text}
         onChange={(e) => {
           onChange(e);
@@ -41,6 +40,7 @@ function MultilineEdit({ value, setValue, getedited }) {
         sizeAdjustable
         minWidth={600}
         minHeight={180}
+        fullWidth
         overflow-y="Scroll"
       />
       {/* <Check onClick={() => getedited(false)} /> */}
