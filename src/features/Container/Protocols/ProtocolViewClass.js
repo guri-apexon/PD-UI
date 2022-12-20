@@ -111,9 +111,6 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
-  sectionDetails = (item) => {
-    this.headerDetails(item);
-  };
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -266,14 +263,7 @@ class ProtocolViewClass extends React.Component {
     }
     return (
       <div className="view-wrapper">
-        <PanelGroup
-          style={{
-            display: 'flex',
-            padding: 1,
-            boxSizing: 'content-box',
-            width: '100%',
-          }}
-        >
+        <PanelGroup className="panel_group">
           <Panel
             width={window.innerWidth / 2}
             minWidth={window.innerWidth / 4}
@@ -285,20 +275,7 @@ class ProtocolViewClass extends React.Component {
               <div className="panel-heading" style={{ marginLeft: '10px' }}>
                 Source Document
               </div>
-              <div
-                style={{
-                  scrollPadding: '50px 0px 0px 50px',
-                  padding: '6px 16px',
-                  overflowY: 'scroll',
-                  height: '72vh',
-                  width: '100%',
-                }}
-                data-testid="protocol-column-wrapper"
-              >
-                <div>
-                  <Pdf page={page} refs={this.props.refx} />
-                </div>
-              </div>
+              <Pdf page={page} refs={this.props.refx} />
             </Card>
           </Panel>
           <Panel width={'auto'} hideButton>
