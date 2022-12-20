@@ -5,7 +5,7 @@ import { viewResult, protocolSummary } from './protocolSlice';
 import ProtocolViewClass from './ProtocolViewClass';
 import Records from './Dummy.json';
 
-function ProtocolView({ protId, refs }) {
+function ProtocolView({ protId, refs, data }) {
   const summary = useSelector(protocolSummary);
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
@@ -85,10 +85,11 @@ function ProtocolView({ protId, refs }) {
       {viewData && (
         <ProtocolViewClass
           view={viewData}
-          data={subSections}
+          data1={subSections}
           listData={listData}
           refx={refs}
           sectionRef={sectionRef}
+          data={data}
         />
       )}
     </div>
@@ -99,4 +100,5 @@ export default ProtocolView;
 ProtocolView.propTypes = {
   protId: PropTypes.isRequired,
   refs: PropTypes.isRequired,
+  data: PropTypes.isRequired,
 };

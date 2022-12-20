@@ -45,12 +45,8 @@ function Pdf({ page, refs, pageRight }) {
   return (
     <div
       id="pdfDocument"
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'left',
-        flexdirection: Column,
-      }}
+      className="pdf_container"
+      data-testid="protocol-column-wrapper"
     >
       <Document
         file="/Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf"
@@ -68,25 +64,15 @@ function Pdf({ page, refs, pageRight }) {
             />
           </div>
         ))}
-        {/* <Page pageNumber={page1 + 1} scale={pageScale} /> */}
       </Document>
       <div className="sticky-bottom">
+        <Pagination
+          count={numPages}
+          rowsPerPage={1}
+          page={currentPage}
+          onChangePage={(pg) => setPage(pg)}
+        />
         <div>
-          <Pagination
-            count={numPages}
-            rowsPerPage={1}
-            page={currentPage}
-            onChangePage={(pg) => setPage(pg)}
-          />
-        </div>
-        <div
-          style={{
-            maxWidth: 230,
-            height: 28,
-            border: 2,
-            alignItems: 'center',
-          }}
-        >
           <Button
             size="small"
             icon={<PlusIcon />}

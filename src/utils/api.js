@@ -182,6 +182,8 @@ let backendPostHost;
 let baseUrlSSO;
 let UI_URL = '';
 let UIhost;
+let BASE_URL_8001 = '';
+let baseUrlLocal = '';
 /* eslint-enable */
 if (process.env.REACT_APP_ENV === 'dev') {
   backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
@@ -219,6 +221,8 @@ if (process.env.REACT_APP_ENV === 'dev') {
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
 }
+
+backendHost = 'http://127.0.0.1:8000';
 
 BASE_URL = `${backendPostHost}`;
 BASE_URL_8000 = `${backendHost}`;
