@@ -3,6 +3,7 @@ import Accordion from 'apollo-react/components/Accordion';
 import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
+import { isArray } from 'lodash';
 
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useLocation } from 'react-router-dom';
@@ -20,6 +21,9 @@ import {
   headerResult,
   protocolSummary,
   sectionDetailsResult,
+  setSectionLoader,
+  sectionLoader,
+  resetSectionData,
 } from './protocolSlice';
 
 const EditHarddata =
@@ -29,12 +33,21 @@ const EditHarddata =
 
 function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
   const dispatch = useDispatch();
+  const [headerList, setHeaderList] = useState([]);
+
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
+  const sectionContentLoader = useSelector(sectionLoader);
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
   // const [data, setData] = useState(summary);
   const [expanded, setExpanded] = useState([]);
   const [loader, setLoader] = useState(false);
+
+  useEffect(() => {
+    if (summary?.data) {
+      setHeaderList(summary.data);
+    }
+  }, [summary]);
 
   const panels = (data) => {
     console.log(data, 'data123');
@@ -56,16 +69,9 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
 
   const handleChange = (panelIndex, items) => {
     handlePageRight(items.page);
-    setExpanded((oldPanels) => {
-      const newPanels = [...oldPanels];
-      for (let i = 0; i < newPanels.length; i++) {
-        if (i !== panelIndex) {
-          newPanels[i] = false;
-        }
-      }
-      newPanels[panelIndex] = !newPanels[panelIndex];
-      return newPanels;
-    });
+    let newPanels = expanded.map((val) => (val = false));
+    newPanels[panelIndex] = !newPanels[panelIndex];
+    setExpanded(newPanels);
   };
 
   const handleClick = (sectionNumber) => {
@@ -106,7 +112,20 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
     dispatch({ type: 'GET_PROTOCOL_SECTION' });
   }, []);
 
-  console.log({ sectionHeaderDetails, expanded, editFlag });
+  const onAccordionClick = (index, items) => {
+    if (expanded[index] === false) {
+      dispatch(setSectionLoader());
+      dispatch(resetSectionData());
+      dispatch({
+        type: 'GET_SECTION_LIST',
+        payload: {
+          linkId: items.link_id,
+          docId: items.doc_id,
+          protocol: protocolAllItems.data.protocol,
+        },
+      });
+    }
+  };
 
   return (
     <Card
@@ -118,13 +137,28 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
         className="digitize-panel-content"
         data-testid="protocol-column-wrapper"
       >
+        {sectionContentLoader && (
+          <div
+            className="loader"
+            style={{
+              position: 'absolute',
+              right: 0,
+              left: 0,
+              top: 0,
+              bottom: 0,
+              zIndex: 1000,
+            }}
+          >
+            <Loader />
+          </div>
+        )}
         {/* summary.data */}
         {!summary.data ? (
           <div className="loader">
             <Loader />
           </div>
         ) : (
-          summary.data.map((items, index) => (
+          headerList.map((items, index) => (
             <div
               key={React.key}
               ref={sectionRef[index]}
@@ -141,17 +175,8 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
               <div>
                 <Accordion
                   expanded={expanded[index]}
-                  onChange={() => handleChange(index)}
-                  onClick={() => {
-                    dispatch({
-                      type: 'GET_SECTION_LIST',
-                      payload: {
-                        linkId: items.link_id,
-                        docId: items.doc_id,
-                        protocol: protocolAllItems.data.protocol,
-                      },
-                    });
-                  }}
+                  onChange={() => handleChange(index, items)}
+                  onClick={() => onAccordionClick(index, items)}
                 >
                   <AccordionSummary
                     style={{
@@ -201,6 +226,7 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                     }}
                   >
                     {sectionHeaderDetails.data &&
+                      isArray(sectionHeaderDetails.data) &&
                       sectionHeaderDetails.data.map((value) => (
                         <>
                           {editFlag ? (
@@ -240,6 +266,7 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
 }
 
 export default Digitize;
+
 Digitize.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,

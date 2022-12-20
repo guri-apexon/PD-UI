@@ -17,6 +17,7 @@ import {
   protocolResult,
   getSectionDetails,
   getProtocolTocData,
+  resetSectionLoader,
 } from './protocolSlice';
 
 import { httpCall, BASE_URL_8000 } from '../../../utils/api';
@@ -235,6 +236,8 @@ export function* getSectionList(action) {
   };
   const sectionDetails = yield call(httpCall, config);
   console.log(sectionDetails, 'sectionDetails');
+  yield put(resetSectionLoader());
+
   if (sectionDetails.success) {
     yield put(getSectionDetails(sectionDetails));
   } else if (sectionDetails.message === 'No Access') {

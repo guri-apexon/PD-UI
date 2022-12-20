@@ -26,6 +26,7 @@ export const protocolSlice = createSlice({
     protocol: '',
     sectionDetails: {},
     protocolTocData: [],
+    sectionLoader: false,
   },
   reducers: {
     getSummary: (state, action) => {
@@ -52,6 +53,16 @@ export const protocolSlice = createSlice({
     getProtocolTocData: (state, action) => {
       state.protocolTocData = action.payload;
     },
+    setSectionLoader: (state, action) => {
+      state.sectionLoader = true;
+    },
+    resetSectionLoader: (state, action) => {
+      state.sectionLoader = false;
+    },
+
+    resetSectionData: (state, action) => {
+      state.sectionDetails = {};
+    },
   },
 });
 
@@ -64,6 +75,9 @@ export const {
   getSectionDetails,
   getSectionProtocol,
   getProtocolTocData,
+  setSectionLoader,
+  resetSectionLoader,
+  resetSectionData,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -77,5 +91,7 @@ export const headerResult = (state) => state.protocol.header;
 export const protocolResult = (state) => state.protocol.protocol;
 export const sectionDetailsResult = (state) => state.protocol.sectionDetails;
 export const protocolTocData = (state) => state.protocol.protocolTocData;
+
+export const sectionLoader = (state) => state.protocol.sectionLoader;
 
 export default protocolSlice.reducer;
