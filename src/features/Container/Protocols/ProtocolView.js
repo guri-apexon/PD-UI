@@ -1,12 +1,11 @@
-import { useEffect, useState, createRef } from 'react';
+import { useState, createRef } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { viewResult, protocolSummary } from './protocolSlice';
+import { viewResult } from './protocolSlice';
 import ProtocolViewClass from './ProtocolViewClass';
 import Records from './Dummy.json';
 
-function ProtocolView({ protId, refs, data }) {
-  const summary = useSelector(protocolSummary);
+function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
 
   const panels = () => {
@@ -68,7 +67,6 @@ function ProtocolView({ protId, refs, data }) {
 
 export default ProtocolView;
 ProtocolView.propTypes = {
-  protId: PropTypes.isRequired,
   refs: PropTypes.isRequired,
   data: PropTypes.isRequired,
 };
