@@ -6,15 +6,14 @@ import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import { isArray } from 'lodash';
 
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import { useLocation } from 'react-router-dom';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
-
+import { AutoSizer, List } from 'react-virtualized';
 import Drag from 'apollo-react-icons/Drag';
-import Records from './records.json';
+import DigitizeAccordion from './DigitizeAccordion';
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../Components/Loader/Loader';
 import {
@@ -22,7 +21,6 @@ import {
   protocolSummary,
   sectionDetailsResult,
   setSectionLoader,
-  sectionLoader,
   resetSectionData,
 } from './protocolSlice';
 
@@ -37,8 +35,9 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
 
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
-  const sectionContentLoader = useSelector(sectionLoader);
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
+
+  const [currentActiveCard, setCurrentActiveCard] = useState(null);
   // const [data, setData] = useState(summary);
   const [expanded, setExpanded] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -99,7 +98,10 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
       sectionRef[sectionNumber].current.scrollIntoView({
         behavior: 'instant',
       });
-      handleClick(sectionNumber);
+      setCurrentActiveCard(headerList[sectionNumber].link_id);
+      console.clear();
+      console.log(sectionNumber, headerList[sectionNumber].link_id);
+      // handleClick(sectionNumber);
     }
   }, [sectionNumber]);
 
@@ -137,21 +139,6 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
         className="digitize-panel-content"
         data-testid="protocol-column-wrapper"
       >
-        {sectionContentLoader && (
-          <div
-            className="loader"
-            style={{
-              position: 'absolute',
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              zIndex: 1000,
-            }}
-          >
-            <Loader />
-          </div>
-        )}
         {/* summary.data */}
         {!summary.data ? (
           <div className="loader">
@@ -173,7 +160,15 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                 }}
               />
               <div>
-                <Accordion
+                <DigitizeAccordion
+                  item={items}
+                  protocol={protocolAllItems.data.protocol}
+                  primaryRole={data.userPrimaryRoleFlag}
+                  currentActiveCard={currentActiveCard}
+                  setCurrentActiveCard={setCurrentActiveCard}
+                />
+
+                {/* <Accordion
                   expanded={expanded[index]}
                   onChange={() => handleChange(index, items)}
                   onClick={() => onAccordionClick(index, items)}
@@ -242,21 +237,10 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                           )}
                         </>
                       ))}
-
-                    {/* {data.userPrimaryRoleFlag === true ? (
-                      EditHarddata
-                    ) : (
-                      <MultilineEdit
-                        editFlag={editFlag}
-                        getedited={getedited}
-                      />
-                    )} */}
-                    {/* {sectionHeaderDetails.data &&
-                      sectionHeaderDetails.data.map((value) => (
-                        <Typography key={React.key}>{value.content}</Typography>
-                      ))} */}
                   </AccordionDetails>
                 </Accordion>
+       
+        */}
               </div>
             </div>
           ))
