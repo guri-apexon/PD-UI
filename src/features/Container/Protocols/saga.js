@@ -7,14 +7,12 @@ import {
   select,
 } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
-import { useSelector } from 'react-redux';
 import {
   getSummary,
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
   getHeaderList,
-  protocolResult,
   getSectionDetails,
   getProtocolTocData,
   resetSectionLoader,
@@ -206,9 +204,8 @@ export function* fetchAssociateProtocol(action) {
     yield put(getAssociateDocuments([]));
   }
 }
-export function* fetchSectionHeaderList(action) {
+export function* fetchSectionHeaderList() {
   const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1&toc=0`;
-  //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   const config = {
     url: URL,
     method: 'GET',

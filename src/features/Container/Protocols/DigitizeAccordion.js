@@ -35,8 +35,6 @@ function DigitizeAccordion({
 }) {
   const dispatch = useDispatch();
 
-  console.log({ item });
-
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
 

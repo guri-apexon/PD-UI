@@ -5,7 +5,6 @@ import Pagination from 'apollo-react/components/Pagination';
 import PropTypes from 'prop-types';
 import PlusIcon from 'apollo-react-icons/Plus';
 import Minus from 'apollo-react-icons/Minus';
-import { Column } from 'react-virtualized';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -25,6 +24,7 @@ function Pdf({ page, refs, pageRight }) {
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   useEffect(() => {

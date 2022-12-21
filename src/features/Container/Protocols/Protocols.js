@@ -49,7 +49,7 @@ function Protocols({ location }) {
   }, [Records.length]);
   /* eslint-enable */
 
-  const forLoop = async (_) => {
+  const forLoop = async () => {
     for (let index = 0; index < 100; index++) {
       arrr.push(index);
     }
@@ -69,6 +69,7 @@ function Protocols({ location }) {
       setValue(2);
     }
     forLoop();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, location]);
   /* istanbul ignore next */
 
