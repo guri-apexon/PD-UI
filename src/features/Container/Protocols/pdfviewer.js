@@ -11,7 +11,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 function Pdf({ page, refs, pageRight }) {
   const [numPages, setNumPages] = useState(0);
   const [currentPage, setPage] = useState(1);
-  const [pageScale, setPageScale] = useState(1);
+  const [pageScale, setPageScale] = useState(1.5);
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
@@ -78,7 +78,7 @@ function Pdf({ page, refs, pageRight }) {
             icon={<PlusIcon />}
             className="buttonStyles"
             data-testid="zoomIn"
-            disabled={pageScale >= 1.2}
+            disabled={pageScale >= 1.8}
             onClick={handleZoomIn}
           >
             {' '}
