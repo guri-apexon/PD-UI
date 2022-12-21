@@ -7,14 +7,12 @@ import {
   select,
 } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
-import { useSelector } from 'react-redux';
 import {
   getSummary,
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
   getHeaderList,
-  protocolResult,
   getSectionDetails,
   getProtocolTocData,
   resetSectionLoader,
@@ -206,9 +204,8 @@ export function* fetchAssociateProtocol(action) {
     yield put(getAssociateDocuments([]));
   }
 }
-export function* fetchSectionHeaderList(action) {
+export function* fetchSectionHeaderList() {
   const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1&toc=0`;
-  //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   const config = {
     url: URL,
     method: 'GET',
@@ -232,7 +229,6 @@ export function* getSectionList(action) {
   const userId = yield getState();
   const config = {
     url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
-
     method: 'GET',
   };
   const sectionDetails = yield call(httpCall, config);
@@ -240,7 +236,12 @@ export function* getSectionList(action) {
   yield put(resetSectionLoader());
 
   if (sectionDetails.success) {
-    yield put(getSectionDetails(sectionDetails));
+    yield put(
+      getSectionDetails({
+        sections: sectionDetails.data,
+        linkId: action.payload.linkId,
+      }),
+    );
   } else if (sectionDetails.message === 'No Access') {
     console.log('No Access');
   } else {

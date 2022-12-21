@@ -53,14 +53,14 @@ export const protocolSlice = createSlice({
     getProtocolTocData: (state, action) => {
       state.protocolTocData = action.payload;
     },
-    setSectionLoader: (state, action) => {
+    setSectionLoader: (state) => {
       state.sectionLoader = true;
     },
-    resetSectionLoader: (state, action) => {
+    resetSectionLoader: (state) => {
       state.sectionLoader = false;
     },
 
-    resetSectionData: (state, action) => {
+    resetSectionData: (state) => {
       state.sectionDetails = {};
     },
   },

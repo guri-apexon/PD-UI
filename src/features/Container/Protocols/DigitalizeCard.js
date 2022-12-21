@@ -6,15 +6,14 @@ import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import { isArray } from 'lodash';
 
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import { useLocation } from 'react-router-dom';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
-
+import { AutoSizer, List } from 'react-virtualized';
 import Drag from 'apollo-react-icons/Drag';
-import Records from './records.json';
+import DigitizeAccordion from './DigitizeAccordion';
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../Components/Loader/Loader';
 import {
@@ -22,14 +21,8 @@ import {
   protocolSummary,
   sectionDetailsResult,
   setSectionLoader,
-  sectionLoader,
   resetSectionData,
 } from './protocolSlice';
-
-const EditHarddata =
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
-
-// import { userRole } from '../../../../AppConstant/AppConstant';
 
 function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
   const dispatch = useDispatch();
@@ -37,11 +30,11 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
 
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
-  const sectionContentLoader = useSelector(sectionLoader);
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
+
+  const [currentActiveCard, setCurrentActiveCard] = useState(null);
   // const [data, setData] = useState(summary);
   const [expanded, setExpanded] = useState([]);
-  const [loader, setLoader] = useState(false);
 
   useEffect(() => {
     if (summary?.data) {
@@ -64,12 +57,9 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
     console.log('getedied', getedited);
   };
 
-  // const [expanded, setExpanded] = useState(panels);
-  const allOpen = expanded.every((exp) => exp);
-
   const handleChange = (panelIndex, items) => {
     handlePageRight(items.page);
-    const newPanels = expanded.map((val) => false);
+    const newPanels = expanded.map(() => false);
     newPanels[panelIndex] = !newPanels[panelIndex];
     setExpanded(newPanels);
   };
@@ -99,8 +89,12 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
       sectionRef[sectionNumber].current.scrollIntoView({
         behavior: 'instant',
       });
-      handleClick(sectionNumber);
+      setCurrentActiveCard(headerList[sectionNumber].link_id);
+      console.clear();
+      console.log(sectionNumber, headerList[sectionNumber].link_id);
+      // handleClick(sectionNumber);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionNumber]);
 
   useEffect(() => {
@@ -110,6 +104,7 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
 
   useEffect(() => {
     dispatch({ type: 'GET_PROTOCOL_SECTION' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onAccordionClick = (index, items) => {
@@ -137,21 +132,6 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
         className="digitize-panel-content"
         data-testid="protocol-column-wrapper"
       >
-        {sectionContentLoader && (
-          <div
-            className="loader"
-            style={{
-              position: 'absolute',
-              right: 0,
-              left: 0,
-              top: 0,
-              bottom: 0,
-              zIndex: 1000,
-            }}
-          >
-            <Loader />
-          </div>
-        )}
         {/* summary.data */}
         {!summary.data ? (
           <div className="loader">
@@ -173,7 +153,15 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                 }}
               />
               <div>
-                <Accordion
+                <DigitizeAccordion
+                  item={items}
+                  protocol={protocolAllItems.data.protocol}
+                  primaryRole={data.userPrimaryRoleFlag}
+                  currentActiveCard={currentActiveCard}
+                  setCurrentActiveCard={setCurrentActiveCard}
+                />
+
+                {/* <Accordion
                   expanded={expanded[index]}
                   onChange={() => handleChange(index, items)}
                   onClick={() => onAccordionClick(index, items)}
@@ -242,21 +230,10 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                           )}
                         </>
                       ))}
-
-                    {/* {data.userPrimaryRoleFlag === true ? (
-                      EditHarddata
-                    ) : (
-                      <MultilineEdit
-                        editFlag={editFlag}
-                        getedited={getedited}
-                      />
-                    )} */}
-                    {/* {sectionHeaderDetails.data &&
-                      sectionHeaderDetails.data.map((value) => (
-                        <Typography key={React.key}>{value.content}</Typography>
-                      ))} */}
                   </AccordionDetails>
                 </Accordion>
+       
+        */}
               </div>
             </div>
           ))

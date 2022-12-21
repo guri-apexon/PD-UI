@@ -7,7 +7,6 @@ import Blade from 'apollo-react/components/Blade';
 import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import { FixedSizeList } from 'react-window';
 
 import record from './Dummy.json';
 import './BladeLeft.scss';

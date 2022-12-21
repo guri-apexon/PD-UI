@@ -8,7 +8,7 @@
 #sonar scan
 /.scannerwork
 # testing
-#/coverage
+/coverage
 
 # production
 /build

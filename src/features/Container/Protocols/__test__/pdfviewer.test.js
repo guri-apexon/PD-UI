@@ -8,10 +8,6 @@ function Testing() {
 
   const [pageNumber, setPageNumber] = useState(1);
 
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-  };
-
   return (
     <Pdf
       value={(numPages, pageNumber)}
@@ -23,8 +19,6 @@ function Testing() {
 }
 
 function Testing2() {
-  const onDocumentLoadSuccess = ({ numPages }) => {};
-
   return <Pdf />;
 }
 
