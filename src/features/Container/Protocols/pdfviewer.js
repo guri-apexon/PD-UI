@@ -33,12 +33,12 @@ function Pdf({ page, refs, pageRight }) {
 
   const handleZoomIn = () => {
     // if (pageScale < 1.2) {
-    setPageScale(pageScale + 0.1);
+    setPageScale(pageScale + 0.2);
     // }
   };
   const handleZoomOut = () => {
     // if (pageScale >= 0.5) {
-    setPageScale(pageScale - 0.1);
+    setPageScale(pageScale - 0.2);
     // }
   };
 
