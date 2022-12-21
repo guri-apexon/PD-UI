@@ -1,30 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
-import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import { isArray } from 'lodash';
-
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useSelector, useDispatch } from 'react-redux';
-
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
-
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../Components/Loader/Loader';
 import {
-  headerResult,
-  protocolSummary,
   sectionDetailsResult,
   sectionLoader,
   setSectionLoader,
   resetSectionData,
 } from './protocolSlice';
-
-const EditHarddata =
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
 function DigitizeAccordion({
   item,

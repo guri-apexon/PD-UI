@@ -7,6 +7,8 @@ import {
   select,
 } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
+import { toast } from 'react-toastify';
+
 import {
   getSummary,
   getProcotoclToc,
@@ -17,7 +19,6 @@ import {
   getProtocolTocData,
   resetSectionLoader,
 } from './protocolSlice';
-
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
 function* getUserId() {
@@ -211,11 +212,11 @@ export function* fetchSectionHeaderList() {
     method: 'GET',
   };
   const header = yield call(httpCall, config);
-  console.log(header, 'header');
   if (header.success) {
     yield put(getHeaderList(header));
   } else {
-    yield put(getHeaderList([]));
+    yield put(getHeaderList({ data: [] }));
+    toast.error('Something Went Wrong');
   }
 }
 function* getState() {
