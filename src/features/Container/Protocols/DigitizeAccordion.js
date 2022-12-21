@@ -88,6 +88,7 @@ function DigitizeAccordion({
             style={{
               fontweight: 'strong',
             }}
+            data-testid="accordion-header"
             // onClick={onClickHandler()}
           >
             {item.source_file_section}

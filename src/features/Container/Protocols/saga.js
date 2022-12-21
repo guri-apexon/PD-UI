@@ -215,7 +215,7 @@ export function* fetchSectionHeaderList() {
   if (header.success) {
     yield put(getHeaderList(header));
   } else {
-    yield put(getHeaderList({ data: [] }));
+    yield put(getHeaderList({ success: false, data: [] }));
     toast.error('Something Went Wrong');
   }
 }

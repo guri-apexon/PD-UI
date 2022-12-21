@@ -83,9 +83,7 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                 </div>
               </div>
             ))}
-            {headerList.length === 0 && (
-              <div className="loader">No Data found</div>
-            )}
+            {!summary.success && <div className="loader">No Data found</div>}
           </>
         )}
       </div>
