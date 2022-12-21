@@ -58,9 +58,6 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
           </div>
         ) : (
           <>
-            {headerList.length === 0 && (
-              <div className="loader">No Data found</div>
-            )}
             {headerList.map((items, index) => (
               <div
                 key={React.key}
@@ -86,6 +83,9 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
                 </div>
               </div>
             ))}
+            {headerList.length === 0 && (
+              <div className="loader">No Data found</div>
+            )}
           </>
         )}
       </div>
