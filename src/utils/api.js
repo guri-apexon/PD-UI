@@ -227,6 +227,8 @@ if (environment === 'local') {
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
 }
 
+backendHost = 'http://127.0.0.1:8000';
+
 BASE_URL = `${backendPostHost}`;
 BASE_URL_8000 = `${backendHost}`;
 UI_URL = `${UIhost}`;
