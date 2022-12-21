@@ -36,10 +36,11 @@
     height: 24px;
     width: 100%;
     min-height: unset;
-    padding-left: 55px;
+    padding-left: 61px;
   }
   div[class*='Blade-body-'] {
     overflow-x: hidden;
+    overflow-y: scroll;
   }
 
   [class*='MuiAccordionSummary-root-'] > div:first-child {
@@ -55,7 +56,7 @@
   [class*='MuiAccordionSummary-root-'] > div:nth-child(2) {
     height: 14px;
     top: 10px;
-    left: 20px;
+    left: 26px;
   }
 
   [class*='MuiAccordion-root'] {
@@ -71,7 +72,7 @@
 
   [class*='MuiAccordionSummary-expandIcon'] {
     padding-top: 0 !important;
-    *{
+    * {
       background: none !important;
     }
   }

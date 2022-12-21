@@ -17,7 +17,7 @@ import Typography from 'apollo-react/components/Typography';
 import Drag from 'apollo-react-icons/Drag';
 import Panel from 'apollo-react/components/Panel';
 import PanelGroup from 'apollo-react/components/PanelGroup';
-import BladeLeft from './BladeLeft';
+import BladeLeft from './BladeLeft/BladeLeft';
 
 // import Digitize from './DigitizeCard';
 import { connect } from 'react-redux';
