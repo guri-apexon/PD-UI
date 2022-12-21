@@ -7,7 +7,7 @@ import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../Components/Loader/Loader';
 import { headerResult, protocolSummary } from './protocolSlice';
 
-function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
+function Digitize({ sectionNumber, sectionRef, data }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
 
@@ -40,6 +40,7 @@ function Digitize({ sectionNumber, sectionRef, data, handlePageRight }) {
 
   useEffect(() => {
     dispatch({ type: 'GET_PROTOCOL_SECTION' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -97,5 +98,4 @@ Digitize.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
   data: PropTypes.isRequired,
-  handlePageRight: PropTypes.isRequired,
 };

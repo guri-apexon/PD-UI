@@ -106,33 +106,31 @@ function Protocols({ location }) {
               <h2 className="header">{data.Protocol}</h2>
             </div>
             <div className="tab-column">
-              <div className="overview overview-card">
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <div style={{ flex: 1 }} className="p-rl-20">
-                    <Tabs
-                      value={value}
-                      onChange={handleChangeTab}
-                      size="small"
-                      truncate
-                      className="protocol-tabs"
-                      data-testid="protocols-tabs"
-                    >
-                      <Tab label="Overview" />
-                      <Tab label="Protocol View" />
-                      <Tab label="Documents" />
-                    </Tabs>
-                  </div>
-                </div>
+              {/* <div className="d-flex-100">
+              </div> */}
 
-                <div className="tab-container">
-                  {value === 0 && <ProtocolOverview data={data} />}
-                  {value === 1 && (
-                    <ProtocolView protId={data.id} data={data} refs={refs} />
-                  )}
-                  {value === 2 && (
-                    <Documents handleChangeTab={handleChangeTab} />
-                  )}
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ flex: 1 }} className="p-rl-20">
+                  <Tabs
+                    value={value}
+                    onChange={handleChangeTab}
+                    size="small"
+                    className="protocol-tabs"
+                    data-testid="protocols-tabs"
+                  >
+                    <Tab label="Overview" />
+                    <Tab label="Protocol View" />
+                    <Tab label="Documents" />
+                  </Tabs>
                 </div>
+              </div>
+
+              <div className="tab-container">
+                {value === 0 && <ProtocolOverview data={data} />}
+                {value === 1 && (
+                  <ProtocolView protId={data.id} data={data} refs={refs} />
+                )}
+                {value === 2 && <Documents handleChangeTab={handleChangeTab} />}
               </div>
             </div>
           </div>

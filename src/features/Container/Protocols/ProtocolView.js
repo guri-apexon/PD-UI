@@ -1,43 +1,12 @@
-import { useEffect, useState, createRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, createRef } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { viewResult, protocolSummary } from './protocolSlice';
+import { viewResult } from './protocolSlice';
 import ProtocolViewClass from './ProtocolViewClass';
 import Records from './Dummy.json';
 
-function ProtocolView({ protId, refs, data }) {
-  const summary = useSelector(protocolSummary);
-  const dispatch = useDispatch();
+function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
-
-  useEffect(() => {
-    dispatch({
-      type: 'GET_PROTOCOL_TOC_SAGA',
-      payload: {
-        endPoint: 'protocol_data/',
-        id: protId,
-        user: 'normal',
-        protocol: summary.data.protocol,
-      },
-    });
-    /* eslint-disable */
-  }, []);
-  /* eslint-enable */
-
-  // Write Down section api things.
-  useEffect(() => {
-    dispatch({
-      type: 'POST_PROTOCOL_TOC_DATA',
-      payload: {
-        endPoint: 'protocol_data/',
-        id: protId,
-        user: 'normal',
-        protocol: summary.data.protocol,
-      },
-    });
-    /* eslint-disable */
-  }, []);
-  /* eslint-enable */
 
   const panels = () => {
     const ex = [];
@@ -98,7 +67,6 @@ function ProtocolView({ protId, refs, data }) {
 
 export default ProtocolView;
 ProtocolView.propTypes = {
-  protId: PropTypes.isRequired,
   refs: PropTypes.isRequired,
   data: PropTypes.isRequired,
 };

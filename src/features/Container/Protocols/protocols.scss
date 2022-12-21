@@ -120,18 +120,22 @@
     margin-top: 0px;
     margin-bottom: 0px;
   }
+  .d-flex-100{
+    display: flex;
+    width: 100%;
+  }
   h2.header {
     color: #333;
     margin-top: 10px;
     margin-left: 9px;
   }
-  tab-column {
+  .tab-column {
     display: flex;
+    flex-direction: column;
     .overview {
       margin-left: 9px;
       margin-top: 10px;
       width: 100%;
-      margin-top: -12px !important;
       .MuiTab-root {
         font-size: 14px;
         margin-right: 0;
@@ -157,7 +161,7 @@
         flex-direction: row;
         margin-top: 0px;
       }
-      .tab-card {
+      &.tab-card {
         flex: 3;
         // border: 1px solid #c3c3c3;
         height: max-content;
