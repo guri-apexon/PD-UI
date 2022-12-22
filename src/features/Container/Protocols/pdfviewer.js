@@ -1,39 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Button from 'apollo-react/components/Button';
 import Pagination from 'apollo-react/components/Pagination';
 import PropTypes from 'prop-types';
 import PlusIcon from 'apollo-react-icons/Plus';
 import Minus from 'apollo-react-icons/Minus';
-import { useIntersectionObserver } from '@wojtekmaj/react-hooks';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-
-const observerConfig = {
-  // How much of the page needs to be visible to consider page visible
-  threshold: 0,
-};
-
-function PageWithObserver({ pageNumber, setPageVisibility, ...otherProps }) {
-  const [page, setPage] = useState();
-
-  const onIntersectionChange = useCallback(
-    ([entry]) => {
-      setPageVisibility(pageNumber, entry.isIntersecting);
-    },
-    [pageNumber, setPageVisibility],
-  );
-
-  useIntersectionObserver(page, observerConfig, onIntersectionChange);
-
-  return <Page canvasRef={setPage} pageNumber={pageNumber} {...otherProps} />;
-}
 
 function Pdf({ page, refs, pageRight }) {
   const [numPages, setNumPages] = useState(0);
   const [currentPage, setPage] = useState(1);
-  const [pageScale, setPageScale] = useState(1);
-  const [visiblePages, setVisiblePages] = useState({});
+  const [pageScale, setPageScale] = useState(1.5);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -56,31 +34,31 @@ function Pdf({ page, refs, pageRight }) {
 
   const handleZoomIn = () => {
     // if (pageScale < 1.2) {
-    setPageScale(pageScale + 0.1);
+    setPageScale(pageScale + 0.2);
     // }
   };
   const handleZoomOut = () => {
     // if (pageScale >= 0.5) {
-    setPageScale(pageScale - 0.1);
+    setPageScale(pageScale - 0.2);
     // }
   };
 
-  const setPageVisibility = useCallback((pageNumber, isIntersecting) => {
-    setVisiblePages((prevVisiblePages) => ({
-      ...prevVisiblePages,
-      [pageNumber]: isIntersecting,
-    }));
-  }, []);
-
-  useEffect(() => {
-    console.log({ visiblePages });
-  }, [visiblePages]);
+  function listener(el) {
+    if (numPages) {
+      const avg = el.target.scrollHeight / numPages;
+      const pg = Math.ceil(el.target.scrollTop / avg);
+      if (pg <= numPages) {
+        setPage(pg);
+      }
+    }
+  }
 
   return (
     <div
       id="pdfDocument"
       className="pdf_container"
       data-testid="protocol-column-wrapper"
+      onScroll={listener}
     >
       <Document
         file="/Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf"
@@ -88,15 +66,6 @@ function Pdf({ page, refs, pageRight }) {
       >
         {Array.from(new Array(numPages), (el, index) => (
           <div ref={refs[index]} key={index}>
-            <PageWithObserver
-              key={`page_${index + 1}`}
-              className="pdf-page"
-              pageNumber={index + 1}
-              width="490"
-              id={index}
-              scale={pageScale}
-              setPageVisibility={setPageVisibility}
-            />
             <Page
               key={`page_${index + 1}`}
               className="pdf-page"
@@ -147,9 +116,4 @@ Pdf.propTypes = {
   page: PropTypes.isRequired,
   refs: PropTypes.isRequired,
   pageRight: PropTypes.isRequired,
-};
-
-PageWithObserver.propTypes = {
-  pageNumber: PropTypes.isRequired,
-  setPageVisibility: PropTypes.isRequired,
 };

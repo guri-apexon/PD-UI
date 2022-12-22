@@ -205,8 +205,11 @@ export function* fetchAssociateProtocol(action) {
     yield put(getAssociateDocuments([]));
   }
 }
-export function* fetchSectionHeaderList() {
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1&toc=0`;
+export function* fetchSectionHeaderList(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
   const config = {
     url: URL,
     method: 'GET',

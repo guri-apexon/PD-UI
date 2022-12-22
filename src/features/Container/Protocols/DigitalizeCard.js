@@ -39,7 +39,12 @@ function Digitize({ sectionNumber, sectionRef, data }) {
   }, [sectionNumber]);
 
   useEffect(() => {
-    dispatch({ type: 'GET_PROTOCOL_SECTION' });
+    dispatch({
+      type: 'GET_PROTOCOL_SECTION',
+      payload: {
+        docId: data.id,
+      },
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
