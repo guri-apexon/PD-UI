@@ -24,7 +24,7 @@ function Pdf({ page, refs, pageRight }) {
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentPage]);
 
   useEffect(() => {

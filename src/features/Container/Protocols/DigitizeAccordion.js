@@ -57,7 +57,7 @@ function DigitizeAccordion({
       setCurrentActiveCard(null);
       setShowEdit(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [expanded]);
 
   useEffect(() => {
@@ -66,7 +66,7 @@ function DigitizeAccordion({
     } else if (currentActiveCard === item.link_id && !expanded) {
       setExpanded(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentActiveCard]);
 
   const onEditClick = () => {
