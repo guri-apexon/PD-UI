@@ -100,11 +100,8 @@
     .pdf_container {
       display: flex;
       justify-content: center;
-      scroll-padding: 50px 0px 0px 50px;
-      padding: 6px 16px;
       overflow-y: scroll;
-      height: 65vh;
-      width: 100%;
+      height: 74vh;
     }
   }
   // table tbody tr:nth-child(1) { font-weight: bold; background-color: #f2f2f2; }
@@ -120,7 +117,7 @@
     margin-top: 0px;
     margin-bottom: 0px;
   }
-  .d-flex-100{
+  .d-flex-100 {
     display: flex;
     width: 100%;
   }
