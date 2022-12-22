@@ -120,7 +120,7 @@
     margin-top: 0px;
     margin-bottom: 0px;
   }
-  .d-flex-100{
+  .d-flex-100 {
     display: flex;
     width: 100%;
   }
@@ -365,15 +365,9 @@
   display: none;
 }
 
-.pdf-loaded react-pdf__Page__canvas pdf-page {
-  display: inline-block;
-  position: absolute;
-  z-index: 1;
-}
 .sticky-bottom {
   display: flex;
   align-items: center;
-  justify-content: center;
   bottom: 15px;
   position: absolute;
   justify-content: space-between;
@@ -399,8 +393,6 @@
   background-color: #595959;
   color: #fff;
   min-width: auto !important;
-  text-align: center;
-  padding-left: 10px;
   left: 2px;
   margin-right: 10px;
   padding-left: 10px;
@@ -428,7 +420,6 @@
 }
 
 .digitized_data_item > svg {
-  position: absolute;
   position: absolute;
   height: 18px;
   color: #3b3b3b;
