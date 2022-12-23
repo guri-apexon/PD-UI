@@ -206,9 +206,10 @@ export function* fetchAssociateProtocol(action) {
   }
 }
 export function* fetchSectionHeaderList(action) {
-  const {
-    payload: { docId },
-  } = action;
+  // const {
+  //   payload: { docId },
+  // } = action;
+  const docId = '000b6888-fa7e-4c0e-a913-319d68512270';
   const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
   const config = {
     url: URL,
