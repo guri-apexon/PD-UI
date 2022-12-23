@@ -14,7 +14,6 @@ function Digitize({ sectionNumber, sectionRef, data }) {
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
-  // const [data, setData] = useState(summary);
 
   useEffect(() => {
     if (summary?.data) {
@@ -53,7 +52,9 @@ function Digitize({ sectionNumber, sectionRef, data }) {
       className="protocol-column protocol-digitize-column"
       style={{ borderRight: '0' }}
     >
-      <div className="panel-heading">Digitized Data</div>
+      <div className="panel-heading" data-testid="header">
+        Digitized Data
+      </div>
       <div
         className="digitize-panel-content"
         data-testid="protocol-column-wrapper"

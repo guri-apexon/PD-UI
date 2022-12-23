@@ -103,7 +103,11 @@ function DigitizeAccordion({
           >
             <EyeShow />
             {!primaryRole && (
-              <Pencil onClick={onEditClick} style={{ paddingLeft: '20px' }} />
+              <Pencil
+                onClick={onEditClick}
+                style={{ paddingLeft: '20px' }}
+                data-testid="edit-icon"
+              />
             )}
           </div>
         </div>
