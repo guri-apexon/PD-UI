@@ -69,7 +69,7 @@ function Protocols({ location }) {
       setValue(2);
     }
     forLoop();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [dispatch, location]);
   /* istanbul ignore next */
 

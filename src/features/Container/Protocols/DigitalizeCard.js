@@ -34,7 +34,7 @@ function Digitize({ sectionNumber, sectionRef, data }) {
       });
       setCurrentActiveCard(headerList[sectionNumber].link_id);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [sectionNumber]);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ function Digitize({ sectionNumber, sectionRef, data }) {
         docId: data.id,
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   return (

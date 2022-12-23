@@ -101,7 +101,7 @@
       display: flex;
       justify-content: center;
       overflow-y: scroll;
-      height: 74vh;
+      height: 78vh;
     }
   }
   // table tbody tr:nth-child(1) { font-weight: bold; background-color: #f2f2f2; }
@@ -342,7 +342,7 @@
 
   .view-wrapper .digitize-panel-content {
     overflow-y: auto;
-    height: 74vh;
+    height: 78vh;
     width: 100%;
   }
 
@@ -362,15 +362,9 @@
   display: none;
 }
 
-.pdf-loaded react-pdf__Page__canvas pdf-page {
-  display: inline-block;
-  position: absolute;
-  z-index: 1;
-}
 .sticky-bottom {
   display: flex;
   align-items: center;
-  justify-content: center;
   bottom: 15px;
   position: absolute;
   justify-content: space-between;
@@ -396,8 +390,6 @@
   background-color: #595959;
   color: #fff;
   min-width: auto !important;
-  text-align: center;
-  padding-left: 10px;
   left: 2px;
   margin-right: 10px;
   padding-left: 10px;
@@ -425,7 +417,6 @@
 }
 
 .digitized_data_item > svg {
-  position: absolute;
   position: absolute;
   height: 18px;
   color: #3b3b3b;

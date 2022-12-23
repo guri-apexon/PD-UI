@@ -26,7 +26,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
         protocol: protocolNumber,
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
   const listData = [];
   // console.log("Path", path);
