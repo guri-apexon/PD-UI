@@ -1,5 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useState, fireEvent } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
+
 import { render } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import Pdf, { useIntersectionObserver } from '../pdfviewer';
@@ -58,45 +60,30 @@ describe('useIntersectionObserver()', () => {
   );
 });
 
-function Testing() {
-  const [numPages, setNumPages] = useState(null);
-
-  const [pageNumber, setPageNumber] = useState(1);
-
-  return (
-    <Pdf
-      value={(numPages, pageNumber)}
-      setValue={(setNumPages, setPageNumber)}
-      onDocumentLoadSuccess={numPages}
-      setNumPages={numPages}
-    />
-  );
-}
-
-function Testing2() {
-  return <Pdf />;
-}
-
-describe('pdfviewer component', () => {
-  test('should show Pdf', () => {
-    render(<Testing />);
+describe('PDF VIEWER', () => {
+  test('Load PDF Documnet', () => {
+    jest.doMock('react-pdf', () => ({
+      pdfjs: { GlobalWorkerOptions: { workerSrc: 'abc' } },
+      Document: ({
+        onLoadSuccess = (pdf = { numPages: 4 }) => pdf.numPages,
+      }) => {
+        return <div>{onLoadSuccess({ numPages: 4 })}</div>;
+      },
+      Outline: null,
+      Page: () => <div>def</div>,
+    }));
   });
-});
 
-describe('Onload', () => {
-  test('Document load Success', () => {
-    render(<Testing2 />);
-  });
   test('Zoom Out Counter', () => {
-    const screen = render(<Pdf />);
-    const zoomOut = screen.getByRole('zoomOut');
+    const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />);
+    const zoomOut = screen.getByTestId('zoomOut');
     expect(zoomOut).toBeInTheDocument('pageScale');
     fireEvent.click(zoomOut);
   });
 
   test('Zoom In Counter', () => {
-    const screen = render(<Pdf />);
-    const zoomIn = screen.getByRole('zoomIn');
+    const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />);
+    const zoomIn = screen.getByTestId('zoomIn');
     expect(zoomIn).toBeInTheDocument('pageScale');
     fireEvent.click(zoomIn);
   });

@@ -91,7 +91,6 @@ function Pdf({ page, refs, pageRight }) {
   }, [visiblePages]);
 
   const getCurrentPage = () => {
-    console.log(scrollPage, currentPage);
     return scrollPage - 1 || currentPage;
   };
 

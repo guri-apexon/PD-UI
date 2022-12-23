@@ -10,6 +10,9 @@ import {
   getSoaSections,
   getTocSections,
   captalize,
+  fetchSectionHeaderList,
+  getSectionList,
+  getProtocolTocDataResult,
 } from '../saga';
 
 const userDetail = {
@@ -66,6 +69,7 @@ describe('Protocol Saga Unit Test', () => {
     };
     getTocSections(toc);
   });
+
   test('should run getTocSections function', () => {
     const toc = {
       data: [
@@ -85,22 +89,8 @@ describe('Protocol Saga Unit Test', () => {
     };
     getTocSections(toc);
   });
+
   // getTocSections  Ends
-
-  // getElement Starts
-
-  // test("should run getElement function", () => {
-  //   let style={
-  //       font_style:'Heading1'
-  //   }
-  //   getElement(style);
-  //   let style1={
-  //       font_style:'p'
-  //   }
-  //   getElement(style1);
-  // });
-
-  // getElement Ends
 
   // getSummaryData Starts
   test('getSummaryData should be success', async () => {
@@ -291,6 +281,7 @@ describe('Protocol Saga Unit Test', () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
+
   test('getProtocolToc should be Error out', async () => {
     const dispatchedActions = [];
 
@@ -315,11 +306,9 @@ describe('Protocol Saga Unit Test', () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-
   // getProtocolToc Ends
 
   // getCompareResult Starts
-
   test('getCompareResult should be Success', async () => {
     const dispatchedActions = [];
 
@@ -399,5 +388,217 @@ describe('Protocol Saga Unit Test', () => {
     expect(mockCallApi).toHaveBeenCalledTimes(0);
   });
 
-  // getCompareResult Ends
+  test('fetchSectionHeaderList success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, fetchSectionHeaderList, {
+      payload: { docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc' },
+    }).toPromise();
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('fetchSectionHeaderList failure', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, fetchSectionHeaderList, {
+      payload: { docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc' },
+    }).toPromise();
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getSectionList success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getSectionList, {
+      payload: {
+        docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+        protocol: '15-06',
+        linkId: 'linkId',
+      },
+    }).toPromise();
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getSectionList with no message success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      message: 'No Access',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getSectionList, {
+      payload: {
+        docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+        protocol: '15-06',
+        linkId: 'linkId',
+      },
+    }).toPromise();
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getSectionList failure', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getSectionList, {
+      payload: {
+        docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+        protocol: '15-06',
+        linkId: 'linkId',
+      },
+    }).toPromise();
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getProtocolTocDataResult without user try success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: {
+        iqvdataToc: JSON.stringify({
+          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        }),
+        iqvdataSoa: JSON.stringify({
+          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        }),
+        iqvdataSummary: JSON.stringify({
+          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        }),
+      },
+    };
+    const payload = {
+      id: 'afsdwe',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getProtocolTocDataResult, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getProtocolTocDataResult without user try failure(catch)', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+      iqvdataSoa: [],
+    };
+    const payload = {
+      id: 'afsdwe',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getProtocolTocDataResult, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getProtocolTocDataResult without user failure', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const payload = {
+      id: 'afsdwe',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getProtocolTocDataResult, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
 });
