@@ -216,6 +216,9 @@ export function* fetchSectionHeaderList(action) {
   };
   const header = yield call(httpCall, config);
   if (header.success) {
+    if (!header.data?.length) {
+      toast.error(header.message);
+    }
     yield put(getHeaderList(header));
   } else {
     yield put(getHeaderList({ success: false, data: [] }));

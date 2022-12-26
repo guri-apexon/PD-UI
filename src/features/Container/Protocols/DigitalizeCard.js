@@ -16,7 +16,7 @@ function Digitize({ sectionNumber, sectionRef, data }) {
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
 
   useEffect(() => {
-    if (summary?.data) {
+    if (summary?.data?.length) {
       setHeaderList(
         summary.data.filter((x) => {
           return x.source_file_section !== 'blank_header';

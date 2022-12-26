@@ -59,6 +59,13 @@ export const httpCall = async (config) => {
         code: 'DUPLICATE_ENTITY',
       };
     }
+    if (response.status === 206) {
+      return {
+        success: true,
+        data: [],
+        message: response.data,
+      };
+    }
   } catch (err) {
     if (err && err.response && err.response.status === 403) {
       return {
