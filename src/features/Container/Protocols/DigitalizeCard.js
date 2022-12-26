@@ -3,11 +3,24 @@ import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
+import {
+  List,
+  AutoSizer,
+  CellMeasurer,
+  CellMeasurerCache,
+} from 'react-virtualized';
 import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../Components/Loader/Loader';
 import { headerResult, protocolSummary } from './protocolSlice';
 
 function Digitize({ sectionNumber, sectionRef, data }) {
+  const cache = React.useRef(
+    new CellMeasurerCache({
+      fixedWidth: true,
+      defaultHeight: 100,
+    }),
+  );
+
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
 
@@ -47,6 +60,44 @@ function Digitize({ sectionNumber, sectionRef, data }) {
     // eslint-disable-next-line
   }, []);
 
+  const rowRenderer = ({ key, index, style, parent }) => {
+    const item = headerList[index];
+
+    return (
+      <CellMeasurer
+        key={key}
+        cache={cache.current}
+        parent={parent}
+        columnIndex={0}
+        rowIndex={index}
+      >
+        <div
+          key={React.key}
+          ref={sectionRef[index]}
+          className="digitized_data_item"
+        >
+          <Drag
+            style={{
+              color: 'grey',
+              fontSize: '1.2em',
+              padding: '15px',
+              paddingLeft: '5px',
+            }}
+          />
+          <div>
+            <DigitizeAccordion
+              item={item}
+              protocol={protocolAllItems.data.protocol}
+              primaryRole={data.userPrimaryRoleFlag}
+              currentActiveCard={currentActiveCard}
+              setCurrentActiveCard={setCurrentActiveCard}
+            />
+          </div>
+        </div>
+      </CellMeasurer>
+    );
+  };
+
   return (
     <Card
       className="protocol-column protocol-digitize-column"
@@ -65,31 +116,45 @@ function Digitize({ sectionNumber, sectionRef, data }) {
           </div>
         ) : (
           <>
-            {headerList.map((items, index) => (
-              <div
-                key={React.key}
-                ref={sectionRef[index]}
-                className="digitized_data_item"
-              >
-                <Drag
-                  style={{
-                    color: 'grey',
-                    fontSize: '1.2em',
-                    padding: '15px',
-                    paddingLeft: '5px',
-                  }}
-                />
-                <div>
-                  <DigitizeAccordion
-                    item={items}
-                    protocol={protocolAllItems.data.protocol}
-                    primaryRole={data.userPrimaryRoleFlag}
-                    currentActiveCard={currentActiveCard}
-                    setCurrentActiveCard={setCurrentActiveCard}
+            <div style={{ width: '100%', height: '78vh' }}>
+              {/* <AutoSizer>
+                {({ width, height }) => (
+                  <List
+                    width={width}
+                    height={height}
+                    rowHeight={cache.current.rowHeight}
+                    deferredMeasurementCache={cache.current}
+                    rowCount={headerList.length}
+                    rowRenderer={rowRenderer}
                   />
+                )}
+              </AutoSizer> */}
+              {headerList.map((items, index) => (
+                <div
+                  key={React.key}
+                  ref={sectionRef[index]}
+                  className="digitized_data_item"
+                >
+                  <Drag
+                    style={{
+                      color: 'grey',
+                      fontSize: '1.2em',
+                      padding: '15px',
+                      paddingLeft: '5px',
+                    }}
+                  />
+                  <div>
+                    <DigitizeAccordion
+                      item={items}
+                      protocol={protocolAllItems.data.protocol}
+                      primaryRole={data.userPrimaryRoleFlag}
+                      currentActiveCard={currentActiveCard}
+                      setCurrentActiveCard={setCurrentActiveCard}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
             {!summary.success && <div className="loader">No Data found</div>}
           </>
         )}

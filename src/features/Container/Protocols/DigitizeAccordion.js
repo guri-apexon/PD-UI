@@ -3,6 +3,12 @@ import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import { isArray } from 'lodash';
+import {
+  List,
+  AutoSizer,
+  CellMeasurer,
+  CellMeasurerCache,
+} from 'react-virtualized';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
@@ -24,15 +30,32 @@ function DigitizeAccordion({
   currentActiveCard,
   setCurrentActiveCard,
 }) {
+  const cache = React.useRef(
+    new CellMeasurerCache({
+      fixedWidth: true,
+      defaultHeight: 100,
+    }),
+  );
+
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
+  const [sections, setSections] = useState([]);
 
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
   const sectionContentLoader = useSelector(sectionLoader);
 
-  const { sections, linkId } = sectionHeaderDetails;
+  const { linkId } = sectionHeaderDetails;
+
+  useEffect(() => {
+    if (
+      sectionHeaderDetails?.sections &&
+      isArray(sectionHeaderDetails?.sections)
+    ) {
+      setSections(sectionHeaderDetails?.sections);
+    }
+  }, [sectionHeaderDetails]);
 
   const handleChange = () => {
     setExpanded(!expanded);
@@ -72,6 +95,30 @@ function DigitizeAccordion({
   const onEditClick = () => {
     setExpanded(true);
     setShowEdit(true);
+  };
+
+  const rowRenderer = ({ key, index, style, parent }) => {
+    const item = sections[index];
+    console.log({ sections });
+
+    return (
+      // <CellMeasurer
+      //   key={key}
+      //   cache={cache.current}
+      //   parent={parent}
+      //   columnIndex={0}
+      //   rowIndex={index}
+      // >
+      <div>
+        {showedit ? (
+          <MultilineEdit />
+        ) : (
+          <Typography key={React.key}>{item.content}</Typography>
+        )}
+      </div>
+      //
+      // </CellMeasurer>
+    );
   };
 
   return (
@@ -117,6 +164,7 @@ function DigitizeAccordion({
         style={{
           width: '80% !important',
           height: 'auto',
+          minHeight: '350px',
           overflowX: 'scroll',
           overflowY: 'scroll',
         }}
@@ -131,7 +179,22 @@ function DigitizeAccordion({
             <Loader />
           </div>
         )}
-        {sections &&
+        <div style={{ flex: '1 1 auto' }}>
+          <AutoSizer>
+            {({ width, height }) => (
+              <List
+                width={width}
+                height={height}
+                rowHeight={200}
+                // deferredMeasurementCache={cache.current}
+                rowCount={sections.length}
+                rowRenderer={rowRenderer}
+              />
+            )}
+          </AutoSizer>
+        </div>
+
+        {/* {sections &&
           isArray(sections) &&
           sections?.map((value) => (
             // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -142,7 +205,7 @@ function DigitizeAccordion({
                 <Typography key={React.key}>{value.content}</Typography>
               )}
             </>
-          ))}
+          ))} */}
       </AccordionDetails>
     </Accordion>
   );
