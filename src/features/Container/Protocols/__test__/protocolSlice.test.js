@@ -3,6 +3,13 @@ import protocolPageSlice, {
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
+  getHeaderList,
+  getSectionProtocol,
+  getSectionDetails,
+  getProtocolTocData,
+  setSectionLoader,
+  resetSectionLoader,
+  resetSectionData,
 } from '../protocolSlice';
 
 const initialState = {
@@ -82,5 +89,89 @@ describe(' ProtocolSlice Test Suite', () => {
         payload: compData,
       }),
     ).toEqual({ ...initialState, compare: compData });
+  });
+
+  test('getHeaderList slice', () => {
+    const payload = {
+      actionData: 'actionData',
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: getHeaderList.type,
+        payload,
+      }),
+    ).toEqual({ ...initialState, header: payload });
+  });
+
+  test('getHeaderList slice', () => {
+    const payload = {
+      actionData: 'actionData',
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: getSectionProtocol.type,
+        payload,
+      }),
+    ).toEqual({ ...initialState, protocol: payload });
+  });
+
+  test('getSectionProtocol slice', () => {
+    const payload = {
+      actionData: 'actionData',
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: getSectionProtocol.type,
+        payload,
+      }),
+    ).toEqual({ ...initialState, protocol: payload });
+  });
+
+  test('getSectionDetails slice', () => {
+    const payload = {
+      actionData: 'actionData',
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: getSectionDetails.type,
+        payload,
+      }),
+    ).toEqual({ ...initialState, sectionDetails: payload });
+  });
+
+  test('getProtocolTocData slice', () => {
+    const payload = {
+      actionData: 'actionData',
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: getProtocolTocData.type,
+        payload,
+      }),
+    ).toEqual({ ...initialState, protocolTocData: payload });
+  });
+
+  test('setSectionLoader slice', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setSectionLoader.type,
+      }),
+    ).toEqual({ ...initialState, sectionLoader: true });
+  });
+
+  test('resetSectionLoader slice', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: resetSectionLoader.type,
+      }),
+    ).toEqual({ ...initialState, sectionLoader: false });
+  });
+
+  test('resetSectionData', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: resetSectionData.type,
+      }),
+    ).toEqual({ ...initialState, sectionDetails: {} });
   });
 });

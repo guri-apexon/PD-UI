@@ -1,3 +1,8 @@
+import * as reactRedux from 'react-redux';
+import { Provider } from 'react-redux';
+
+import store from '../../../../store/store';
+
 import { render } from '../../../../test-utils/test-utils';
 import DigitizeAccordion from '../DigitizeAccordion';
 
@@ -21,9 +26,65 @@ const item = {
 };
 
 describe('DigitizeAccordion', () => {
-  test('should save input and lose focus when user presses enter', () => {
-    const component = render(<DigitizeAccordion item={item} />);
+  test('render accordion', () => {
+    const component = render(
+      <Provider store={store}>
+        <DigitizeAccordion item={item} />
+      </Provider>,
+    );
     const header = component.getByText('blank_header');
     expect(header).toBeInTheDocument();
+  });
+
+  // test('does not show pencil icon for primary role', () => {
+  //   const bool = true;
+  //   const component = render(
+  //     <DigitizeAccordion item={item} primaryRole={bool} />,
+  //   );
+  //   expect(component.find('.loader')).not.toBeInTheDocument();
+  // });
+
+  // test('accordion on closed state', () => {
+  //   const bool = true;
+  //   const component = render(
+  //     <DigitizeAccordion
+  //       item={item}
+  //       primaryRole={bool}
+  //       protocol="1234"
+  //       currentActiveCard={1}
+  //       setCurrentActiveCard={jest.fn()}
+  //     />,
+  //   );
+  //   expect(component.find('.loader')).not.toBeInTheDocument();
+  // });
+
+  test('Accordion loaded with store values', () => {
+    const bool = true;
+    render(
+      <Provider store={store}>
+        <DigitizeAccordion
+          item={item}
+          primaryRole={bool}
+          protocol="1234"
+          currentActiveCard={1}
+          setCurrentActiveCard={jest.fn()}
+        />
+      </Provider>,
+    );
+  });
+
+  test('Accordion is open when the currentActiveCard is of the same item id', () => {
+    const bool = true;
+    render(
+      <Provider store={store}>
+        <DigitizeAccordion
+          item={item}
+          primaryRole={bool}
+          protocol="1234"
+          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
+          setCurrentActiveCard={jest.fn()}
+        />
+      </Provider>,
+    );
   });
 });

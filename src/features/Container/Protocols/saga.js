@@ -306,7 +306,6 @@ export function* getProtocolTocDataResult(action) {
     soaSections: null,
     err: null,
   };
-  console.log('Calling getProtocolTocDataResult ');
   const userId = yield getUserId();
   yield put(getProtocolTocData(viewData));
   let URL = '';

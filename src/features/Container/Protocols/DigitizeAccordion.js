@@ -77,53 +77,29 @@ function DigitizeAccordion({
   return (
     <Accordion expanded={expanded} onChange={handleChange}>
       <AccordionSummary>
-        <div
-          className=""
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            height: 48,
-          }}
-        >
+        <div className="accordion_summary_container">
           <Typography
-            style={{
-              fontweight: 'strong',
-            }}
             data-testid="accordion-header"
             // onClick={onClickHandler()}
           >
             {item.source_file_section}
           </Typography>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}
-          >
+          <div className="accordion_summary_actions">
             <EyeShow />
             {!primaryRole && (
-              <Pencil onClick={onEditClick} style={{ paddingLeft: '20px' }} />
+              <Pencil
+                onClick={onEditClick}
+                style={{ paddingLeft: '20px' }}
+                data-testid="edit-icon"
+              />
             )}
           </div>
         </div>
       </AccordionSummary>
 
-      <AccordionDetails
-        style={{
-          width: '80% !important',
-          height: 'auto',
-          overflowX: 'scroll',
-          overflowY: 'scroll',
-        }}
-      >
+      <AccordionDetails className="accordion_details">
         {sectionContentLoader && (
-          <div
-            className="loader"
-            style={{
-              height: '40px',
-            }}
-          >
+          <div className="loader accordion_details_loader">
             <Loader />
           </div>
         )}
