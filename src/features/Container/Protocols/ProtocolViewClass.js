@@ -53,29 +53,8 @@ class ProtocolViewClass extends React.Component {
     this.setState({ sectionNumber: sectionNo });
   };
 
-  //   componentDidMount() {
-  //     // console.log('items',this.props.items);
-  //     const cookiesServer = new Cookies();
-  //     const res=fetch("http://127.0.0.1:8000/api/cpt_data/?aidoc_id=000b6888-fa7e-4c0e-a913-319d68512270&link_level=1", {
-  //   "headers": {
-  //     "accept": "application/json",
-  //     "accept-language": "en-US,en;q=0.9",
-  //     "authorization": `Bearer ${cookiesServer.get('api_token')}`
-  //   },
-
-  //   "method": "GET",
-
-  // }).then((response)=>response.json())
-  // .then((items)=>{
-  //   const filteredItems = items.filter(x=>{
-  //     return x.source_file_section!=="blank_header"
-  //   });
-  //   console.log("filteredItems", filteredItems);
-  //   this.setState({headerDetails:filteredItems})
-  // }
-  // )
-  //     console.log('protocolViewClass', this.props.refx);
-  //   }
+  componentDidMount() {
+  }
 
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -270,33 +249,7 @@ class ProtocolViewClass extends React.Component {
       });
       this.hideEle();
     };
-    if (view.loader) {
-      return (
-        <div
-          style={{
-            display: 'inline-block',
-            margin: 'auto',
-            marginTop: '10%',
-            paddingLeft: '45%',
-          }}
-        >
-          <Loader />
-        </div>
-      );
-    }
-    if (view.err) {
-      return (
-        <div
-          style={{
-            display: 'inline-block',
-            margin: 'auto',
-            marginTop: '10%',
-          }}
-        >
-          {view.err}
-        </div>
-      );
-    }
+    
     return (
       <>
         <div>

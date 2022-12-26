@@ -11,7 +11,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 function Pdf({ page, refs, pageRight }) {
   const [numPages, setNumPages] = useState(0);
   const [currentPage, setPage] = useState(1);
-  const [pageScale, setPageScale] = useState(1);
+  const [pageScale, setPageScale] = useState(1.5);
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
@@ -24,7 +24,7 @@ function Pdf({ page, refs, pageRight }) {
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [currentPage]);
 
   useEffect(() => {
@@ -33,12 +33,12 @@ function Pdf({ page, refs, pageRight }) {
 
   const handleZoomIn = () => {
     // if (pageScale < 1.2) {
-    setPageScale(pageScale + 0.1);
+    setPageScale(pageScale + 0.2);
     // }
   };
   const handleZoomOut = () => {
     // if (pageScale >= 0.5) {
-    setPageScale(pageScale - 0.1);
+    setPageScale(pageScale - 0.2);
     // }
   };
 
@@ -78,7 +78,7 @@ function Pdf({ page, refs, pageRight }) {
             icon={<PlusIcon />}
             className="buttonStyles"
             data-testid="zoomIn"
-            disabled={pageScale >= 1.2}
+            disabled={pageScale >= 1.8}
             onClick={handleZoomIn}
           >
             {' '}

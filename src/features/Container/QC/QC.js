@@ -58,7 +58,7 @@ function QCContainer() {
   useEffect(() => {
     // dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
     dispatch({ type: 'GET_QC_PROTOCOL_TABLE_SAGA' });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   return (

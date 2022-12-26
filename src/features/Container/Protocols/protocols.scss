@@ -100,10 +100,8 @@
     .pdf_container {
       display: flex;
       justify-content: center;
-      scroll-padding: 50px 0px 0px 50px;
-      padding: 6px 16px;
       overflow-y: scroll;
-      height: 65vh;
+      height: 74vh;
       width: 100%;
     }
   }
@@ -120,18 +118,22 @@
     margin-top: 0px;
     margin-bottom: 0px;
   }
+  .d-flex-100 {
+    display: flex;
+    width: 100%;
+  }
   h2.header {
     color: #333;
     margin-top: 10px;
     margin-left: 9px;
   }
-  tab-column {
+  .tab-column {
     display: flex;
+    flex-direction: column;
     .overview {
       margin-left: 9px;
       margin-top: 10px;
       width: 100%;
-      margin-top: -12px !important;
       .MuiTab-root {
         font-size: 14px;
         margin-right: 0;
@@ -157,7 +159,7 @@
         flex-direction: row;
         margin-top: 0px;
       }
-      .tab-card {
+      &.tab-card {
         flex: 3;
         // border: 1px solid #c3c3c3;
         height: max-content;
@@ -340,8 +342,8 @@
   }
 
   .view-wrapper .digitize-panel-content {
-    overflow-y: scroll;
-    height: 65vh;
+    overflow-y: auto;
+    height: 74vh;
     width: 100%;
   }
 
@@ -361,15 +363,9 @@
   display: none;
 }
 
-.pdf-loaded react-pdf__Page__canvas pdf-page {
-  display: inline-block;
-  position: absolute;
-  z-index: 1;
-}
 .sticky-bottom {
   display: flex;
   align-items: center;
-  justify-content: center;
   bottom: 15px;
   position: absolute;
   justify-content: space-between;
@@ -395,8 +391,6 @@
   background-color: #595959;
   color: #fff;
   min-width: auto !important;
-  text-align: center;
-  padding-left: 10px;
   left: 2px;
   margin-right: 10px;
   padding-left: 10px;
@@ -424,7 +418,6 @@
 }
 
 .digitized_data_item > svg {
-  position: absolute;
   position: absolute;
   height: 18px;
   color: #3b3b3b;

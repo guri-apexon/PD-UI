@@ -7,6 +7,8 @@ import {
   select,
 } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
+import { toast } from 'react-toastify';
+
 import {
   getSummary,
   getProcotoclToc,
@@ -17,7 +19,6 @@ import {
   getProtocolTocData,
   resetSectionLoader,
 } from './protocolSlice';
-
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
 function* getUserId() {
@@ -204,18 +205,21 @@ export function* fetchAssociateProtocol(action) {
     yield put(getAssociateDocuments([]));
   }
 }
-export function* fetchSectionHeaderList() {
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1&toc=0`;
+export function* fetchSectionHeaderList(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
   const config = {
     url: URL,
     method: 'GET',
   };
   const header = yield call(httpCall, config);
-  console.log(header, 'header');
   if (header.success) {
     yield put(getHeaderList(header));
   } else {
-    yield put(getHeaderList([]));
+    yield put(getHeaderList({ success: false, data: [] }));
+    toast.error('Something Went Wrong');
   }
 }
 function* getState() {
@@ -229,7 +233,6 @@ export function* getSectionList(action) {
   const userId = yield getState();
   const config = {
     url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
-
     method: 'GET',
   };
   const sectionDetails = yield call(httpCall, config);
@@ -237,7 +240,12 @@ export function* getSectionList(action) {
   yield put(resetSectionLoader());
 
   if (sectionDetails.success) {
-    yield put(getSectionDetails(sectionDetails));
+    yield put(
+      getSectionDetails({
+        sections: sectionDetails.data,
+        linkId: action.payload.linkId,
+      }),
+    );
   } else if (sectionDetails.message === 'No Access') {
     console.log('No Access');
   } else {
