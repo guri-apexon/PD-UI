@@ -18,10 +18,12 @@ import Drag from 'apollo-react-icons/Drag';
 import Panel from 'apollo-react/components/Panel';
 import PanelGroup from 'apollo-react/components/PanelGroup';
 import BladeLeft from './BladeLeft/BladeLeft';
+import BladeRight from './BladeRight/BladeRight';
 
 // import Digitize from './DigitizeCard';
 import { connect } from 'react-redux';
 import Cookies from 'universal-cookie';
+
 // import { headerList } from '../../../store/Digitized/actions';
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
@@ -299,6 +301,10 @@ class ProtocolViewClass extends React.Component {
       <>
         <div>
           <BladeLeft handlePageNo={this.handlePageNo} />
+          <BladeRight />
+        </div>
+        <div>
+          <BladeRight />
         </div>
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
