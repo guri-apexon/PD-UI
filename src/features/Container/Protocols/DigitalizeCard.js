@@ -7,14 +7,20 @@ import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../Components/Loader/Loader';
 import { headerResult, protocolSummary } from './protocolSlice';
 
-function Digitize({ sectionNumber, sectionRef, data }) {
+function Digitize({
+  sectionNumber,
+  sectionRef,
+  data,
+  paginationPage,
+  handlePageRight,
+}) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
 
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
-  // const [data, setData] = useState(summary);
+  const [sectionSequence, setSectionSequence] = useState(0);
 
   useEffect(() => {
     if (summary?.data) {
@@ -23,19 +29,25 @@ function Digitize({ sectionNumber, sectionRef, data }) {
   }, [summary]);
 
   useEffect(() => {
-    if (sectionNumber === 'undefined' || sectionNumber === undefined) {
+    console.log('sectionSequence', sectionSequence);
+    if (sectionSequence === 'undefined' || sectionSequence === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else if (
-      sectionRef &&
-      sectionRef[sectionNumber] &&
-      sectionRef[sectionNumber].current
+      sectionRef[sectionSequence] &&
+      sectionRef[sectionSequence].current
     ) {
-      sectionRef[sectionNumber].current.scrollIntoView({
+      sectionRef[sectionSequence]?.current?.scrollIntoView({
         behavior: 'instant',
       });
-      setCurrentActiveCard(headerList[sectionNumber].link_id);
+      setCurrentActiveCard(headerList[sectionSequence].link_id);
     }
     // eslint-disable-next-line
+  }, [sectionSequence]);
+  useEffect(() => {
+    console.log('>>>>>>>', sectionNumber);
+    if (sectionNumber >= 0) {
+      setSectionSequence(sectionNumber);
+    }
   }, [sectionNumber]);
 
   useEffect(() => {
@@ -48,6 +60,26 @@ function Digitize({ sectionNumber, sectionRef, data }) {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    console.log('page', paginationPage);
+    let sectionNo;
+    let lastpage;
+
+    for (let i = 0; i < headerList.length; i++) {
+      if (headerList[i].page === paginationPage) {
+        sectionNo = headerList[i].sequence;
+        setSectionSequence(sectionNo);
+        break;
+      } else if (headerList[i].page > paginationPage) {
+        setSectionSequence(lastpage);
+        break;
+      }
+      lastpage = headerList[i].sequence;
+    }
+
+    console.log('section No value', sectionNo);
+    console.log('section Last value', lastpage);
+  }, [paginationPage]);
   return (
     <Card
       className="protocol-column protocol-digitize-column"
@@ -85,6 +117,8 @@ function Digitize({ sectionNumber, sectionRef, data }) {
                     primaryRole={data.userPrimaryRoleFlag}
                     currentActiveCard={currentActiveCard}
                     setCurrentActiveCard={setCurrentActiveCard}
+                    index={index}
+                    handlePageRight={handlePageRight}
                   />
                 </div>
               </div>
@@ -103,4 +137,6 @@ Digitize.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
   data: PropTypes.isRequired,
+  paginationPage: PropTypes.isRequired,
+  handlePageRight: PropTypes.isRequired,
 };

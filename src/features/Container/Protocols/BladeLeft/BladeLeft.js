@@ -8,7 +8,7 @@ import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 
-import record from '../Dummy.json';
+import record from '../Records1.json';
 import './BladeLeft.scss';
 
 const styles = {
@@ -74,7 +74,7 @@ function BladeLeft({ handlePageNo }) {
                       <Typography
                         className="header-unselect"
                         onClick={(e) => {
-                          handlePageNo(e, item.page, index);
+                          handlePageNo(e, item.page, item.sequence);
                         }}
                       >
                         {item.source_file_section}

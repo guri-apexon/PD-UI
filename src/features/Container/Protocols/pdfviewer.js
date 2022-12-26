@@ -8,9 +8,9 @@ import Minus from 'apollo-react-icons/Minus';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-function Pdf({ page, refs, pageRight }) {
+function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   const [numPages, setNumPages] = useState(0);
-  const [currentPage, setPage] = useState(1);
+  const [currentPage, setPage] = useState(0);
   const [pageScale, setPageScale] = useState(1.5);
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -28,7 +28,7 @@ function Pdf({ page, refs, pageRight }) {
   }, [currentPage]);
 
   useEffect(() => {
-    setPage(pageRight - 1);
+    setPage(pageRight);
   }, [pageRight]);
 
   const handleZoomIn = () => {
@@ -70,7 +70,10 @@ function Pdf({ page, refs, pageRight }) {
           count={numPages}
           rowsPerPage={1}
           page={currentPage}
-          onChangePage={(pg) => setPage(pg)}
+          onChangePage={(pg) => {
+            setPage(pg);
+            handlePaginationPage(pg);
+          }}
         />
         <div>
           <Button
@@ -104,4 +107,5 @@ Pdf.propTypes = {
   page: PropTypes.isRequired,
   refs: PropTypes.isRequired,
   pageRight: PropTypes.isRequired,
+  handlePaginationPage: PropTypes.isRequired,
 };

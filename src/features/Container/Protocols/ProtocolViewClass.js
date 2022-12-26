@@ -41,6 +41,7 @@ class ProtocolViewClass extends React.Component {
       pageRight: 1,
       pageNo: 1,
       sectionNumber: undefined,
+      paginationPage: undefined,
     };
   }
 
@@ -48,13 +49,16 @@ class ProtocolViewClass extends React.Component {
     this.setState({ pageRight: pageRight });
   };
 
+  handlePaginationPage = (paginationPage) => {
+    this.setState({ paginationPage: paginationPage });
+  };
+
   handlePageNo = (event, page, sectionNo) => {
     this.setState({ pageNo: page });
     this.setState({ sectionNumber: sectionNo });
   };
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -249,7 +253,7 @@ class ProtocolViewClass extends React.Component {
       });
       this.hideEle();
     };
-    
+
     return (
       <>
         <div>
@@ -277,6 +281,7 @@ class ProtocolViewClass extends React.Component {
                   page={this.state.pageNo}
                   refs={this.props.refx}
                   pageRight={this.state.pageRight}
+                  handlePaginationPage={this.handlePaginationPage}
                 />
               </Card>
             </Panel>
@@ -287,6 +292,7 @@ class ProtocolViewClass extends React.Component {
                 headerDetails={this.state.headerDetails}
                 handlePageRight={this.handlePageRight}
                 data={this.props.data}
+                paginationPage={this.state.paginationPage}
               />
             </Panel>
           </PanelGroup>
