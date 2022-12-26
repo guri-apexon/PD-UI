@@ -18,7 +18,11 @@ function Digitize({ sectionNumber, sectionRef, data }) {
 
   useEffect(() => {
     if (summary?.data) {
-      setHeaderList(summary.data);
+      setHeaderList(
+        summary.data.filter((x) => {
+          return x.source_file_section !== 'blank_header';
+        }),
+      );
     }
   }, [summary]);
 
