@@ -29,7 +29,6 @@ function Digitize({
   }, [summary]);
 
   useEffect(() => {
-    console.log('sectionSequence', sectionSequence);
     if (sectionSequence === 'undefined' || sectionSequence === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else if (
@@ -44,7 +43,6 @@ function Digitize({
     // eslint-disable-next-line
   }, [sectionSequence]);
   useEffect(() => {
-    console.log('>>>>>>>', sectionNumber);
     if (sectionNumber >= 0) {
       setSectionSequence(sectionNumber);
     }
@@ -61,7 +59,6 @@ function Digitize({
   }, []);
 
   useEffect(() => {
-    console.log('page', paginationPage);
     let sectionNo;
     let lastpage;
 
@@ -76,16 +73,15 @@ function Digitize({
       }
       lastpage = headerList[i].sequence;
     }
-
-    console.log('section No value', sectionNo);
-    console.log('section Last value', lastpage);
   }, [paginationPage]);
   return (
     <Card
       className="protocol-column protocol-digitize-column"
       style={{ borderRight: '0' }}
     >
-      <div className="panel-heading">Digitized Data</div>
+      <div className="panel-heading" data-testid="header">
+        Digitized Data
+      </div>
       <div
         className="digitize-panel-content"
         data-testid="protocol-column-wrapper"

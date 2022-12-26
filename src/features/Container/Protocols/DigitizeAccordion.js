@@ -77,7 +77,7 @@ function DigitizeAccordion({
   };
 
   return (
-    <Accordion expanded={expanded} onChange={() => handleChange(item.sequence)}>
+    <Accordion expanded={expanded} onChange={() => handleChange(item.page)}>
       <AccordionSummary>
         <div
           className=""
@@ -105,7 +105,11 @@ function DigitizeAccordion({
           >
             <EyeShow />
             {!primaryRole && (
-              <Pencil onClick={onEditClick} style={{ paddingLeft: '20px' }} />
+              <Pencil
+                onClick={onEditClick}
+                style={{ paddingLeft: '20px' }}
+                data-testid="edit-icon"
+              />
             )}
           </div>
         </div>

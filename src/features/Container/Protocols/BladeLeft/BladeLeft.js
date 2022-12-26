@@ -74,7 +74,7 @@ function BladeLeft({ handlePageNo }) {
                       <Typography
                         className="header-unselect"
                         onClick={(e) => {
-                          handlePageNo(e, item.page, item.sequence);
+                          handlePageNo(e, item.page, index);
                         }}
                       >
                         {item.source_file_section}
