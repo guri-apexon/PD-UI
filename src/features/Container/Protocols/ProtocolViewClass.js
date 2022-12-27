@@ -40,7 +40,7 @@ class ProtocolViewClass extends React.Component {
       headerDetails: '',
       pageRight: 0,
       pageNo: 0,
-      sectionNumber: -1,
+      sectionNumber: undefined,
       paginationPage: 0,
     };
   }
