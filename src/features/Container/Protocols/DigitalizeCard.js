@@ -19,7 +19,7 @@ function Digitize({
 
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
-  const [currentActiveCard, setCurrentActiveCard] = useState(null);
+  const [currentActiveCard, setCurrentActiveCard] = useState(0);
   const [sectionSequence, setSectionSequence] = useState(undefined);
 
   useEffect(() => {
