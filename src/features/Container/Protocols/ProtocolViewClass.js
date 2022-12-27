@@ -38,10 +38,10 @@ class ProtocolViewClass extends React.Component {
       activeSection: null,
       activeSubSection: null,
       headerDetails: '',
-      pageRight: undefined,
-      pageNo: undefined,
-      sectionNumber: undefined,
-      paginationPage: undefined,
+      pageRight: 0,
+      pageNo: 0,
+      sectionNumber: -1,
+      paginationPage: 0,
     };
   }
 
