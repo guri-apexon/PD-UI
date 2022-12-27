@@ -13,7 +13,13 @@ import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../Components/Loader/Loader';
 import { headerResult, protocolSummary } from './protocolSlice';
 
-function Digitize({ sectionNumber, sectionRef, data }) {
+function Digitize({
+  sectionNumber,
+  sectionRef,
+  data,
+  paginationPage,
+  handlePageRight,
+}) {
   const cache = React.useRef(
     new CellMeasurerCache({
       fixedWidth: true,
@@ -27,6 +33,7 @@ function Digitize({ sectionNumber, sectionRef, data }) {
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
+  const [sectionSequence, setSectionSequence] = useState(0);
 
   useEffect(() => {
     if (summary?.data) {
@@ -35,19 +42,24 @@ function Digitize({ sectionNumber, sectionRef, data }) {
   }, [summary]);
 
   useEffect(() => {
-    if (sectionNumber === 'undefined' || sectionNumber === undefined) {
+    if (sectionSequence === 'undefined' || sectionSequence === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else if (
-      sectionRef &&
-      sectionRef[sectionNumber] &&
-      sectionRef[sectionNumber].current
+      sectionRef[sectionSequence] &&
+      sectionRef[sectionSequence].current
     ) {
-      sectionRef[sectionNumber].current.scrollIntoView({
+      sectionRef[sectionSequence]?.current?.scrollIntoView({
         behavior: 'instant',
       });
-      setCurrentActiveCard(headerList[sectionNumber].link_id);
+      setCurrentActiveCard(headerList[sectionSequence].link_id);
     }
     // eslint-disable-next-line
+  }, [sectionSequence]);
+
+  useEffect(() => {
+    if (sectionNumber >= 0) {
+      setSectionSequence(sectionNumber);
+    }
   }, [sectionNumber]);
 
   useEffect(() => {
@@ -62,7 +74,6 @@ function Digitize({ sectionNumber, sectionRef, data }) {
 
   const rowRenderer = ({ key, index, style, parent }) => {
     const item = headerList[index];
-
     return (
       <CellMeasurer
         key={key}
@@ -72,9 +83,9 @@ function Digitize({ sectionNumber, sectionRef, data }) {
         rowIndex={index}
       >
         <div
-          key={React.key}
           ref={sectionRef[index]}
           className="digitized_data_item"
+          style={style}
         >
           <Drag
             style={{
@@ -91,12 +102,31 @@ function Digitize({ sectionNumber, sectionRef, data }) {
               primaryRole={data.userPrimaryRoleFlag}
               currentActiveCard={currentActiveCard}
               setCurrentActiveCard={setCurrentActiveCard}
+              index={index}
+              handlePageRight={handlePageRight}
             />
           </div>
         </div>
       </CellMeasurer>
     );
   };
+
+  useEffect(() => {
+    let sectionNo;
+    let lastpage;
+
+    for (let i = 0; i < headerList.length; i++) {
+      if (headerList[i].page === paginationPage) {
+        sectionNo = headerList[i].sequence;
+        setSectionSequence(sectionNo);
+        break;
+      } else if (headerList[i].page > paginationPage) {
+        setSectionSequence(lastpage);
+        break;
+      }
+      lastpage = headerList[i].sequence;
+    }
+  }, [paginationPage]);
 
   return (
     <Card
@@ -116,45 +146,47 @@ function Digitize({ sectionNumber, sectionRef, data }) {
           </div>
         ) : (
           <>
-            <div style={{ width: '100%', height: '78vh' }}>
-              {/* <AutoSizer>
-                {({ width, height }) => (
-                  <List
-                    width={width}
-                    height={height}
-                    rowHeight={cache.current.rowHeight}
-                    deferredMeasurementCache={cache.current}
-                    rowCount={headerList.length}
-                    rowRenderer={rowRenderer}
+            {/* <div style={{ width: '100%', height: '78vh' }}> */}
+            {/* <AutoSizer>
+              {({ width, height }) => (
+                <List
+                  width={width}
+                  height={height}
+                  rowHeight={cache.current.rowHeight}
+                  deferredMeasurementCache={cache.current}
+                  rowCount={headerList.length}
+                  rowRenderer={rowRenderer}
+                />
+              )}
+            </AutoSizer> */}
+            {headerList.map((items, index) => (
+              <div
+                key={React.key}
+                ref={sectionRef[index]}
+                className="digitized_data_item"
+              >
+                <Drag
+                  style={{
+                    color: 'grey',
+                    fontSize: '1.2em',
+                    padding: '15px',
+                    paddingLeft: '5px',
+                  }}
+                />
+                <div>
+                  <DigitizeAccordion
+                    item={items}
+                    protocol={protocolAllItems.data.protocol}
+                    primaryRole={data.userPrimaryRoleFlag}
+                    currentActiveCard={currentActiveCard}
+                    setCurrentActiveCard={setCurrentActiveCard}
+                    index={index}
+                    handlePageRight={handlePageRight}
                   />
-                )}
-              </AutoSizer> */}
-              {headerList.map((items, index) => (
-                <div
-                  key={React.key}
-                  ref={sectionRef[index]}
-                  className="digitized_data_item"
-                >
-                  <Drag
-                    style={{
-                      color: 'grey',
-                      fontSize: '1.2em',
-                      padding: '15px',
-                      paddingLeft: '5px',
-                    }}
-                  />
-                  <div>
-                    <DigitizeAccordion
-                      item={items}
-                      protocol={protocolAllItems.data.protocol}
-                      primaryRole={data.userPrimaryRoleFlag}
-                      currentActiveCard={currentActiveCard}
-                      setCurrentActiveCard={setCurrentActiveCard}
-                    />
-                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+            {/* </div> */}
             {!summary.success && <div className="loader">No Data found</div>}
           </>
         )}
@@ -169,4 +201,6 @@ Digitize.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
   data: PropTypes.isRequired,
+  paginationPage: PropTypes.isRequired,
+  handlePageRight: PropTypes.isRequired,
 };

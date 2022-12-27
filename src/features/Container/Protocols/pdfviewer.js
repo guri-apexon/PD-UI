@@ -37,7 +37,7 @@ function PageWithObserver({ pageNumber, setPageVisibility, ...otherProps }) {
   useIntersectionObserver(page, observerConfig, onIntersectionChange);
   return <Page canvasRef={setPage} pageNumber={pageNumber} {...otherProps} />;
 }
-function Pdf({ page, refs, pageRight }) {
+function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   const [numPages, setNumPages] = useState(0);
   const [currentPage, setPage] = useState(1);
   const [pageScale, setPageScale] = useState(1.5);
@@ -49,19 +49,26 @@ function Pdf({ page, refs, pageRight }) {
   };
 
   useEffect(() => {
-    setPage(page - 1);
-    setScrollPage(page);
+    setPage(page);
   }, [page]);
 
+  // useEffect(() => {
+  //   if (rightpage === -1) {
+  //     console.log('((((', pageRight);
+  //     setPage(scrollPage - 1);
+  //     handlePaginationPage(scrollPage - 1);
+  //   }
+  // }, [scrollPage]);
+
   useEffect(() => {
+    console.log('currentPage', currentPage);
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
-    // eslint-disable-next-line
   }, [currentPage]);
 
   useEffect(() => {
-    setPage(pageRight - 1);
+    setPage(pageRight);
   }, [pageRight]);
 
   const handleZoomIn = () => {
@@ -79,19 +86,21 @@ function Pdf({ page, refs, pageRight }) {
   }, []);
 
   useEffect(() => {
-    console.clear();
-
     const visible = Object.entries(visiblePages)
       .filter(([key, value]) => value)
       .map(([key]) => key);
     if (visible.length === 1) {
       setScrollPage(parseInt(visible[0], 10));
     }
-    console.log(visible);
   }, [visiblePages]);
+
+  useEffect(() => {
+    setPage(scrollPage - 1);
+  }, [scrollPage]);
 
   const getCurrentPage = () => {
     return scrollPage - 1 || currentPage;
+    // return currentPage;
   };
 
   return (
@@ -122,29 +131,31 @@ function Pdf({ page, refs, pageRight }) {
         <Pagination
           count={numPages}
           rowsPerPage={1}
-          page={getCurrentPage()}
-          onChangePage={(pg) => setPage(pg)}
+          // page={getCurrentPage()}
+          page={currentPage}
+          onChangePage={(pg) => {
+            setPage(pg);
+            handlePaginationPage(pg);
+          }}
         />
         <div>
           <Button
             size="small"
-            icon={<PlusIcon />}
             className="buttonStyles"
             data-testid="zoomIn"
             disabled={pageScale >= 1.2}
             onClick={handleZoomIn}
           >
-            {' '}
+            <PlusIcon />
           </Button>
           <Button
             size="small"
-            icon={<Minus />}
             className="buttonStyles"
             data-testid="zoomOut"
             disabled={pageScale <= 0.5}
             onClick={handleZoomOut}
           >
-            {' '}
+            <Minus />
           </Button>
         </div>
       </div>
@@ -157,6 +168,7 @@ Pdf.propTypes = {
   page: PropTypes.isRequired,
   refs: PropTypes.isRequired,
   pageRight: PropTypes.isRequired,
+  handlePaginationPage: PropTypes.isRequired,
 };
 
 PageWithObserver.propTypes = {

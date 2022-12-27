@@ -8,7 +8,7 @@ import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 
-import record from '../Dummy.json';
+import record from '../Records1.json';
 import './BladeLeft.scss';
 
 const styles = {
@@ -51,7 +51,7 @@ function BladeLeft({ handlePageNo }) {
           title="Navigation"
           className="blade"
           width={263}
-          marginTop={134}
+          marginTop={141}
           hasBackdrop
         >
           {/* <TextField

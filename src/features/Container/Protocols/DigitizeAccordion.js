@@ -29,6 +29,7 @@ function DigitizeAccordion({
   primaryRole,
   currentActiveCard,
   setCurrentActiveCard,
+  handlePageRight,
 }) {
   const cache = React.useRef(
     new CellMeasurerCache({
@@ -54,10 +55,13 @@ function DigitizeAccordion({
       isArray(sectionHeaderDetails?.sections)
     ) {
       setSections(sectionHeaderDetails?.sections);
+    } else {
+      setSections([]);
     }
   }, [sectionHeaderDetails]);
 
-  const handleChange = () => {
+  const handleChange = (sequence) => {
+    handlePageRight(sequence);
     setExpanded(!expanded);
   };
 
@@ -102,37 +106,28 @@ function DigitizeAccordion({
     console.log({ sections });
 
     return (
-      // <CellMeasurer
-      //   key={key}
-      //   cache={cache.current}
-      //   parent={parent}
-      //   columnIndex={0}
-      //   rowIndex={index}
-      // >
-      <div>
-        {showedit ? (
-          <MultilineEdit />
-        ) : (
-          <Typography key={React.key}>{item.content}</Typography>
-        )}
-      </div>
-      //
-      // </CellMeasurer>
+      <CellMeasurer
+        key={key}
+        cache={cache.current}
+        parent={parent}
+        columnIndex={0}
+        rowIndex={index}
+      >
+        <div style={style}>
+          {showedit ? (
+            <MultilineEdit />
+          ) : (
+            <Typography key={React.key}>{item.content}</Typography>
+          )}
+        </div>
+      </CellMeasurer>
     );
   };
 
   return (
     <Accordion expanded={expanded} onChange={handleChange}>
       <AccordionSummary>
-        <div
-          className=""
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            height: 48,
-          }}
-        >
+        <div className="accordion_summary_container">
           <Typography
             style={{
               fontweight: 'strong',
@@ -150,62 +145,48 @@ function DigitizeAccordion({
           >
             <EyeShow />
             {!primaryRole && (
-              <Pencil
-                onClick={onEditClick}
-                style={{ paddingLeft: '20px' }}
-                data-testid="edit-icon"
-              />
+              <Pencil onClick={onEditClick} style={{ paddingLeft: '20px' }} />
             )}
           </div>
         </div>
       </AccordionSummary>
 
-      <AccordionDetails
-        style={{
-          width: '80% !important',
-          height: 'auto',
-          minHeight: '350px',
-          overflowX: 'scroll',
-          overflowY: 'scroll',
-        }}
-      >
+      <AccordionDetails>
         {sectionContentLoader && (
-          <div
-            className="loader"
-            style={{
-              height: '40px',
-            }}
-          >
+          <div className="loader accordion_details_loader">
             <Loader />
           </div>
         )}
-        <div style={{ flex: '1 1 auto' }}>
-          <AutoSizer>
-            {({ width, height }) => (
-              <List
-                width={width}
-                height={height}
-                rowHeight={200}
-                // deferredMeasurementCache={cache.current}
-                rowCount={sections.length}
-                rowRenderer={rowRenderer}
-              />
-            )}
-          </AutoSizer>
-        </div>
-
-        {/* {sections &&
-          isArray(sections) &&
-          sections?.map((value) => (
-            // eslint-disable-next-line react/jsx-no-useless-fragment
-            <>
-              {showedit ? (
-                <MultilineEdit />
-              ) : (
-                <Typography key={React.key}>{value.content}</Typography>
+        {sections?.length > 0 && (
+          <div style={{ height: '200px' }}>
+            <AutoSizer>
+              {({ width, height }) => (
+                <List
+                  width={width}
+                  height={height}
+                  rowHeight={cache.current.rowHeight}
+                  deferredMeasurementCache={cache.current}
+                  overscanRowCount={5}
+                  rowCount={sections.length}
+                  rowRenderer={rowRenderer}
+                />
               )}
-            </>
-          ))} */}
+            </AutoSizer>
+          </div>
+        )}
+
+        {/* // {sections &&
+        //   isArray(sections) &&
+        //   sections?.map((value) => (
+        //     // eslint-disable-next-line react/jsx-no-useless-fragment
+        //     <>
+        //       {showedit ? (
+        //         <MultilineEdit />
+        //       ) : (
+        //         <Typography key={React.key}>{value.content}</Typography>
+        //       )}
+        //     </>
+        //   ))} */}
       </AccordionDetails>
     </Accordion>
   );
@@ -219,4 +200,5 @@ DigitizeAccordion.propTypes = {
   primaryRole: PropTypes.isRequired,
   currentActiveCard: PropTypes.isRequired,
   setCurrentActiveCard: PropTypes.isRequired,
+  handlePageRight: PropTypes.isRequired,
 };
