@@ -23,6 +23,7 @@ function DigitizeAccordion({
   primaryRole,
   currentActiveCard,
   setCurrentActiveCard,
+  handlePageRight,
 }) {
   const dispatch = useDispatch();
 
@@ -34,7 +35,8 @@ function DigitizeAccordion({
 
   const { sections, linkId } = sectionHeaderDetails;
 
-  const handleChange = () => {
+  const handleChange = (sequence) => {
+    handlePageRight(sequence);
     setExpanded(!expanded);
   };
 
@@ -75,7 +77,7 @@ function DigitizeAccordion({
   };
 
   return (
-    <Accordion expanded={expanded} onChange={handleChange}>
+    <Accordion expanded={expanded} onChange={() => handleChange(item.page)}>
       <AccordionSummary>
         <div className="accordion_summary_container">
           <Typography
@@ -128,4 +130,5 @@ DigitizeAccordion.propTypes = {
   primaryRole: PropTypes.isRequired,
   currentActiveCard: PropTypes.isRequired,
   setCurrentActiveCard: PropTypes.isRequired,
+  handlePageRight: PropTypes.isRequired,
 };

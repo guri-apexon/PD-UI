@@ -18,10 +18,12 @@ import Drag from 'apollo-react-icons/Drag';
 import Panel from 'apollo-react/components/Panel';
 import PanelGroup from 'apollo-react/components/PanelGroup';
 import BladeLeft from './BladeLeft/BladeLeft';
+import BladeRight from './BladeRight/BladeRight';
 
 // import Digitize from './DigitizeCard';
 import { connect } from 'react-redux';
 import Cookies from 'universal-cookie';
+
 // import { headerList } from '../../../store/Digitized/actions';
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
@@ -36,9 +38,10 @@ class ProtocolViewClass extends React.Component {
       activeSection: null,
       activeSubSection: null,
       headerDetails: '',
-      pageRight: 1,
-      pageNo: 1,
+      pageRight: undefined,
+      pageNo: undefined,
       sectionNumber: undefined,
+      paginationPage: undefined,
     };
   }
 
@@ -46,13 +49,16 @@ class ProtocolViewClass extends React.Component {
     this.setState({ pageRight: pageRight });
   };
 
+  handlePaginationPage = (paginationPage) => {
+    this.setState({ paginationPage: paginationPage });
+  };
+
   handlePageNo = (event, page, sectionNo) => {
     this.setState({ pageNo: page });
     this.setState({ sectionNumber: sectionNo });
   };
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -247,11 +253,15 @@ class ProtocolViewClass extends React.Component {
       });
       this.hideEle();
     };
-    
+
     return (
       <>
         <div>
           <BladeLeft handlePageNo={this.handlePageNo} />
+          <BladeRight />
+        </div>
+        <div>
+          <BladeRight />
         </div>
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
@@ -271,6 +281,7 @@ class ProtocolViewClass extends React.Component {
                   page={this.state.pageNo}
                   refs={this.props.refx}
                   pageRight={this.state.pageRight}
+                  handlePaginationPage={this.handlePaginationPage}
                 />
               </Card>
             </Panel>
@@ -281,6 +292,7 @@ class ProtocolViewClass extends React.Component {
                 headerDetails={this.state.headerDetails}
                 handlePageRight={this.handlePageRight}
                 data={this.props.data}
+                paginationPage={this.state.paginationPage}
               />
             </Panel>
           </PanelGroup>

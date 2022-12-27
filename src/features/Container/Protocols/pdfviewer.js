@@ -37,31 +37,48 @@ function PageWithObserver({ pageNumber, setPageVisibility, ...otherProps }) {
   useIntersectionObserver(page, observerConfig, onIntersectionChange);
   return <Page canvasRef={setPage} pageNumber={pageNumber} {...otherProps} />;
 }
-function Pdf({ page, refs, pageRight }) {
+function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   const [numPages, setNumPages] = useState(0);
-  const [currentPage, setPage] = useState(1);
+  const [currentPage, setPage] = useState(0);
   const [pageScale, setPageScale] = useState(1.5);
   const [visiblePages, setVisiblePages] = useState({});
   const [scrollPage, setScrollPage] = useState(1);
+  const [rightpage, setRightPage] = useState(pageRight);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
 
   useEffect(() => {
-    setPage(page - 1);
-    setScrollPage(page);
-  }, [page]);
+    setRightPage(pageRight);
+  }, [pageRight]);
 
   useEffect(() => {
+    setPage(page - 1);
+    setScrollPage(page);
+    console.log('page>>>>', page);
+  }, [page]);
+
+  // useEffect(() => {
+  //   if (rightpage === -1) {
+  //     console.log('((((', pageRight);
+  //     setPage(scrollPage - 1);
+  //     handlePaginationPage(scrollPage - 1);
+  //   }
+  // }, [scrollPage]);
+
+  useEffect(() => {
+    console.log('currentPage', currentPage);
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
+    setRightPage(-1);
+    console.log('&&&&', pageRight);
     // eslint-disable-next-line
   }, [currentPage]);
 
   useEffect(() => {
-    setPage(pageRight - 1);
+    setPage(pageRight);
   }, [pageRight]);
 
   const handleZoomIn = () => {
@@ -79,7 +96,7 @@ function Pdf({ page, refs, pageRight }) {
   }, []);
 
   useEffect(() => {
-    console.clear();
+    // console.clear();
 
     const visible = Object.entries(visiblePages)
       .filter(([key, value]) => value)
@@ -87,11 +104,15 @@ function Pdf({ page, refs, pageRight }) {
     if (visible.length === 1) {
       setScrollPage(parseInt(visible[0], 10));
     }
-    console.log(visible);
+    console.log('>>>>', visible);
+    // setPage(visible);
   }, [visiblePages]);
 
   const getCurrentPage = () => {
-    return scrollPage - 1 || currentPage;
+    // return scrollPage - 1 || currentPage;
+    console.log('scrollPage', scrollPage);
+    // setPage(scrollPage);
+    return currentPage;
   };
 
   return (
@@ -123,7 +144,11 @@ function Pdf({ page, refs, pageRight }) {
           count={numPages}
           rowsPerPage={1}
           page={getCurrentPage()}
-          onChangePage={(pg) => setPage(pg)}
+          // page={currentPage}
+          onChangePage={(pg) => {
+            setPage(pg);
+            handlePaginationPage(pg);
+          }}
         />
         <div>
           <Button
@@ -157,6 +182,7 @@ Pdf.propTypes = {
   page: PropTypes.isRequired,
   refs: PropTypes.isRequired,
   pageRight: PropTypes.isRequired,
+  handlePaginationPage: PropTypes.isRequired,
 };
 
 PageWithObserver.propTypes = {
