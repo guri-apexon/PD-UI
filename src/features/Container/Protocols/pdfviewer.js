@@ -56,7 +56,6 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   useEffect(() => {
     setPage(page - 1);
     setScrollPage(page);
-    console.log('page>>>>', page);
   }, [page]);
 
   // useEffect(() => {
@@ -153,23 +152,21 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
         <div>
           <Button
             size="small"
-            icon={<PlusIcon />}
             className="buttonStyles"
             data-testid="zoomIn"
             disabled={pageScale >= 1.2}
             onClick={handleZoomIn}
           >
-            {' '}
+            <PlusIcon />
           </Button>
           <Button
             size="small"
-            icon={<Minus />}
             className="buttonStyles"
             data-testid="zoomOut"
             disabled={pageScale <= 0.5}
             onClick={handleZoomOut}
           >
-            {' '}
+            <Minus />
           </Button>
         </div>
       </div>
