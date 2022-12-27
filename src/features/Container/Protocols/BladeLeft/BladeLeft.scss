@@ -40,7 +40,12 @@
   }
   div[class*='Blade-body-'] {
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
+  }
+
+  div[class*='Blade-body-'] > div > div > div {
+    position: relative !important;
+    height: unset !important;
   }
 
   [class*='MuiAccordionSummary-root-'] > div:first-child {
@@ -107,4 +112,18 @@
 .search-Box {
   width: 205px;
   background-color: #ffffff;
+}
+
+.autoSizer {
+  // width: ;
+  height: calc(50vh - 0px);
+  overflow-y: scroll;
+  background-color: chartreuse;
+}
+
+.list-position {
+  // position: unset !important;
+  // height: unset !important;
+  display: flex;
+  min-height: 50px;
 }

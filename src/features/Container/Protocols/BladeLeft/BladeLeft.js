@@ -7,10 +7,17 @@ import Blade from 'apollo-react/components/Blade';
 import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+
+import {
+  AutoSizer,
+  CellMeasurer,
+  CellMeasurerCache,
+  List,
+} from 'react-virtualized';
 import { useSelector, useDispatch } from 'react-redux';
 import { protocolTocData } from '../protocolSlice';
 
-import record from '../Records1.json';
+import record from '../Dummy.json';
 import './BladeLeft.scss';
 
 const styles = {
@@ -59,6 +66,177 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     }
   }, [open]);
 
+  const cache = new CellMeasurerCache({
+    fixedWidth: true,
+    defaultHeight: 100,
+  });
+  const rowRender = ({ key, index, style, parent }) => {
+    const level1 = data[index];
+    console.log('>>>data Virtual', level1.source_file_section);
+    console.log('length', data.length);
+    return (
+      <CellMeasurer
+        key={key}
+        cache={cache}
+        parent={parent}
+        columnIndex={0}
+        rowIndex={index}
+      >
+        <div style={style}>
+          {level1.source_file_section}
+          {/* <Accordion
+            key={React.key}
+            style={{
+              border: 'none',
+            }}
+          >
+            <AccordionSummary>
+              <Tooltip title={level1.source_file_section}>
+                <Typography
+                  className="header-unselect"
+                  onClick={(e) => {
+                    handlePageNo(e, level1.page, index);
+                  }}
+                >
+                  {level1.source_file_section}
+                </Typography>
+              </Tooltip>
+            </AccordionSummary>
+            {level1?.subsection?.map((level2) => {
+              return (
+                <Accordion
+                  key={React.key}
+                  style={{
+                    border: 'none',
+                  }}
+                >
+                  <AccordionSummary>
+                    <Tooltip title={level2?.section}>
+                      <Typography
+                        className="header-unselect"
+                        onClick={(e) => {
+                          handlePageNo(e, level1.pageNo, index);
+                        }}
+                      >
+                        {level2?.section}
+                      </Typography>
+                    </Tooltip>
+                  </AccordionSummary>
+                  {level2.subSection1 &&
+                    level2.subSection1.map((level3) => {
+                      return (
+                        <Accordion
+                          key={React.key}
+                          style={{
+                            border: 'none',
+                          }}
+                        >
+                          <AccordionSummary>
+                            <Tooltip title={level3.sub_Section}>
+                              <Typography
+                                className="header-unselect"
+                                onClick={(e) => {
+                                  handlePageNo(e, level3.pageNo, index);
+                                }}
+                              >
+                                {level3.sub_Section}
+                              </Typography>
+                            </Tooltip>
+                          </AccordionSummary>
+                          {level3.subSection1 &&
+                            level3.subSection1.map((level4) => {
+                              return (
+                                <Accordion
+                                  key={React.key}
+                                  style={{
+                                    border: 'none',
+                                  }}
+                                >
+                                  <AccordionSummary>
+                                    <Tooltip title={level4.sub_Section}>
+                                      <Typography
+                                        className="header-unselect"
+                                        onClick={(e) => {
+                                          handlePageNo(e, level4.pageNo, index);
+                                        }}
+                                      >
+                                        {level4.sub_Section}
+                                      </Typography>
+                                    </Tooltip>
+                                  </AccordionSummary>
+                                  {level4.subSection1 &&
+                                    level4.subSection1.map((level5) => {
+                                      return (
+                                        <Accordion
+                                          key={React.key}
+                                          style={{
+                                            border: 'none',
+                                          }}
+                                        >
+                                          <AccordionSummary>
+                                            <Tooltip title={level5.sub_Section}>
+                                              <Typography
+                                                className="header-unselect"
+                                                onClick={(e) => {
+                                                  handlePageNo(
+                                                    e,
+                                                    level5.pageNo,
+                                                    index,
+                                                  );
+                                                }}
+                                              >
+                                                {level5.sub_Section}
+                                              </Typography>
+                                            </Tooltip>
+                                          </AccordionSummary>
+                                          {level5.subSection1 &&
+                                            level5.subSection1.map((level6) => {
+                                              return (
+                                                <Accordion
+                                                  key={React.key}
+                                                  style={{
+                                                    border: 'none',
+                                                  }}
+                                                >
+                                                  <AccordionSummary>
+                                                    <Tooltip
+                                                      title={level6.sub_Section}
+                                                    >
+                                                      <Typography
+                                                        className="header-unselect"
+                                                        onClick={(e) => {
+                                                          handlePageNo(
+                                                            e,
+                                                            level6.pageNo,
+                                                            index,
+                                                          );
+                                                        }}
+                                                      >
+                                                        {level6.sub_Section}
+                                                      </Typography>
+                                                    </Tooltip>
+                                                  </AccordionSummary>
+                                                </Accordion>
+                                              );
+                                            })}
+                                        </Accordion>
+                                      );
+                                    })}
+                                </Accordion>
+                              );
+                            })}
+                        </Accordion>
+                      );
+                    })}
+                </Accordion>
+              );
+            })}
+          </Accordion> */}
+        </div>
+      </CellMeasurer>
+    );
+  };
+
   return (
     <div>
       <div className="bladeContainer">
@@ -78,8 +256,25 @@ function BladeLeft({ handlePageNo, dataSummary }) {
             placeholder="Search"
             className="search-Box"
           /> */}
-
-          <div style={{ paddingLeft: '7px' }}>
+          <div className="autoSizer">
+            <AutoSizer>
+              {({ width, height }) => {
+                return (
+                  <List
+                    width={600}
+                    height={400}
+                    rowHeight={50}
+                    rowCount={data.length}
+                    // eslint-disable-next-line react/no-unstable-nested-components
+                    rowRenderer={rowRender}
+                    overscanRowCount={5}
+                    deferredMeasurementCache={cache}
+                  />
+                );
+              }}
+            </AutoSizer>
+          </div>
+          {/* <div style={{ paddingLeft: '7px' }}>
             {data?.map((item, index) => {
               return (
                 <Accordion
@@ -248,7 +443,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                 </Accordion>
               );
             })}
-          </div>
+          </div> */}
         </Blade>
       </div>
     </div>
