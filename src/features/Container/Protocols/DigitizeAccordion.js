@@ -108,24 +108,6 @@ function DigitizeAccordion({
     setShowEdit(true);
   };
 
-  const rowRenderer = ({ key, index, style, parent }) => {
-    const item = sections[index];
-
-    return (
-      <CellMeasurer
-        key={key}
-        cache={cache.current}
-        parent={parent}
-        columnIndex={0}
-        rowIndex={index}
-      >
-        <div style={style}>
-          <Typography key={React.key}>{item.content}</Typography>
-        </div>
-      </CellMeasurer>
-    );
-  };
-
   return (
     <Accordion expanded={expanded} onChange={handleChange}>
       <AccordionSummary>
@@ -201,19 +183,6 @@ function DigitizeAccordion({
               </AutoSizer>
             </div>
           ))}
-
-        {/* // {sections &&
-        //   isArray(sections) &&
-        //   sections?.map((value) => (
-        //     // eslint-disable-next-line react/jsx-no-useless-fragment
-        //     <>
-        //       {showedit ? (
-        //         <MultilineEdit />
-        //       ) : (
-        //         <Typography key={React.key}>{value.content}</Typography>
-        //       )}
-        //     </>
-        //   ))} */}
       </AccordionDetails>
     </Accordion>
   );
