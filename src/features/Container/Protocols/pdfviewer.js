@@ -5,13 +5,21 @@ import Pagination from 'apollo-react/components/Pagination';
 import PropTypes from 'prop-types';
 import PlusIcon from 'apollo-react-icons/Plus';
 import Minus from 'apollo-react-icons/Minus';
+import { useDispatch, useSelector } from 'react-redux';
+import { protocolSummary, getPdfData } from './protocolSlice';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 function Pdf({ page, refs, pageRight }) {
+  const protocolAllItems = useSelector(protocolSummary);
+  const dispatch = useDispatch();
+  const fileStream = useSelector(getPdfData);
   const [numPages, setNumPages] = useState(0);
   const [currentPage, setPage] = useState(1);
   const [pageScale, setPageScale] = useState(1.5);
+  const [pdfString, setPdfString] = useState(null);
+
+  const { documentFilePath, protocol } = protocolAllItems.data;
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
@@ -42,6 +50,22 @@ function Pdf({ page, refs, pageRight }) {
     // }
   };
 
+  useEffect(() => {
+    dispatch({
+      type: 'GET_FILE_STREAM',
+      payload: {
+        name: protocol,
+        dfsPath: documentFilePath,
+      },
+    });
+  }, [documentFilePath]);
+
+  useEffect(() => {
+    if (fileStream.success) {
+      setPdfString(fileStream.data);
+    }
+  }, [fileStream]);
+
   return (
     <div
       id="pdfDocument"
@@ -49,7 +73,8 @@ function Pdf({ page, refs, pageRight }) {
       data-testid="protocol-column-wrapper"
     >
       <Document
-        file="/Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf"
+        // file="/Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf"
+        file={pdfString}
         onLoadSuccess={onDocumentLoadSuccess}
       >
         {Array.from(new Array(numPages), (el, index) => (
