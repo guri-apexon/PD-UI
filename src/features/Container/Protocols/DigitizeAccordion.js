@@ -31,7 +31,6 @@ function DigitizeAccordion({
   primaryRole,
   currentActiveCard,
   setCurrentActiveCard,
-  index,
   handlePageRight,
 }) {
   const cache = React.useRef(
