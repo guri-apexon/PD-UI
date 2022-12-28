@@ -381,7 +381,6 @@ export function* fetchFileStream(action) {
     method: 'GET',
     responseType: 'blob',
   };
-  console.log('config', config);
   const { data, success } = yield call(httpCall, config);
   if (success) {
     const file = new Blob([data], { type: 'application/pdf' });
