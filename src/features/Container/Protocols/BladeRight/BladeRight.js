@@ -66,6 +66,7 @@ function BladeLeft() {
     <div>
       <div className="bladeContainerRight">
         <Blade
+          data-testid="Blade-value"
           onChange={onChange}
           open={open}
           expanded={expand}
@@ -79,6 +80,7 @@ function BladeLeft() {
         >
           <div className="switch-padding">
             <Switch
+              data-testid="Term-value"
               size="small"
               label="Preferred Term"
               checked={value}
@@ -90,6 +92,7 @@ function BladeLeft() {
             <h3>Navigation Menu</h3>
             <ul className="Button-flex">
               <Button
+                data-testid="Home-value"
                 className={textValue[0] ? 'link-text-clicked' : 'link-text'}
                 onClick={() => {
                   handleClick(0);
@@ -98,6 +101,7 @@ function BladeLeft() {
                 <House className="icon-padding" /> Home
               </Button>
               <Button
+                data-testid="Medical Terms-value"
                 className={textValue[1] ? 'link-text-clicked' : 'link-text'}
                 onClick={() => {
                   handleClick(1);
@@ -106,6 +110,7 @@ function BladeLeft() {
                 <PresentationBarDark className="icon-padding" /> Medical Terms
               </Button>
               <Button
+                data-testid="Dipa View-value"
                 className={textValue[2] ? 'link-text-clicked' : 'link-text'}
                 onClick={() => {
                   handleClick(2);
@@ -114,6 +119,7 @@ function BladeLeft() {
                 <MedicalCard className="icon-padding" /> Dipa View
               </Button>
               <Button
+                data-testid="Normalized Soa-value"
                 className={textValue[3] ? 'link-text-clicked' : 'link-text'}
                 onClick={() => {
                   handleClick(3);
@@ -122,6 +128,7 @@ function BladeLeft() {
                 <Stethoscope className="icon-padding" /> Normalized Soa
               </Button>
               <Button
+                data-testid="Meta Data-value"
                 className={textValue[4] ? 'link-text-clicked' : 'link-text'}
                 onClick={() => {
                   handleClick(4);
