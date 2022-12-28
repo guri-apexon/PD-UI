@@ -68,7 +68,8 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }, [currentPage]);
 
   useEffect(() => {
-    setPage(pageRight);
+    console.log({ pageRight });
+    setPage(pageRight - 1);
   }, [pageRight]);
 
   const handleZoomIn = () => {
@@ -86,17 +87,17 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }, []);
 
   useEffect(() => {
-    // console.clear();
-
     const visible = Object.entries(visiblePages)
       .filter(([key, value]) => value)
       .map(([key]) => key);
     if (visible.length === 1) {
       setScrollPage(parseInt(visible[0], 10));
     }
-    console.log('>>>>', visible);
-    // setPage(visible);
   }, [visiblePages]);
+
+  useEffect(() => {
+    setPage(scrollPage - 1);
+  }, [scrollPage]);
 
   const getCurrentPage = () => {
     return scrollPage - 1 || currentPage;
@@ -131,8 +132,8 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
         <Pagination
           count={numPages}
           rowsPerPage={1}
-          page={getCurrentPage()}
-          // page={currentPage}
+          // page={getCurrentPage()}
+          page={currentPage}
           onChangePage={(pg) => {
             setPage(pg);
             handlePaginationPage(pg);

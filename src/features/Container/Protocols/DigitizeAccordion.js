@@ -3,11 +3,19 @@ import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import { isArray } from 'lodash';
+import {
+  List,
+  AutoSizer,
+  CellMeasurer,
+  CellMeasurerCache,
+} from 'react-virtualized';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
+import Lock from 'apollo-react-icons/Lock';
+import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../Components/Loader/Loader';
 import {
@@ -23,21 +31,45 @@ function DigitizeAccordion({
   primaryRole,
   currentActiveCard,
   setCurrentActiveCard,
+  index,
   handlePageRight,
 }) {
+  const cache = React.useRef(
+    new CellMeasurerCache({
+      fixedWidth: true,
+      defaultHeight: 100,
+    }),
+  );
+
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
-
+  const [sections, setSections] = useState([]);
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
   const sectionContentLoader = useSelector(sectionLoader);
 
-  const { sections, linkId } = sectionHeaderDetails;
+  const { linkId } = sectionHeaderDetails;
 
-  const handleChange = (sequence) => {
-    handlePageRight(sequence);
+  useEffect(() => {
+    if (
+      sectionHeaderDetails?.sections &&
+      isArray(sectionHeaderDetails?.sections)
+    ) {
+      setSections(sectionHeaderDetails?.sections);
+    } else {
+      setSections([]);
+    }
+  }, [sectionHeaderDetails]);
+
+  const handleChange = () => {
+    handlePageRight(item.page);
     setExpanded(!expanded);
+  };
+
+  const onSaveClick = (e) => {
+    e.stopPropagation();
+    setShowEdit(false);
   };
 
   useEffect(() => {
@@ -71,52 +103,100 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
-  const onEditClick = () => {
+  const onEditClick = (e) => {
+    e.stopPropagation();
     setExpanded(true);
     setShowEdit(true);
   };
 
+  const rowRenderer = ({ key, index, style, parent }) => {
+    const item = sections[index];
+
+    return (
+      <CellMeasurer
+        key={key}
+        cache={cache.current}
+        parent={parent}
+        columnIndex={0}
+        rowIndex={index}
+      >
+        <div style={style}>
+          <Typography key={React.key}>{item.content}</Typography>
+        </div>
+      </CellMeasurer>
+    );
+  };
+
   return (
-    <Accordion expanded={expanded} onChange={() => handleChange(item.page)}>
+    <Accordion expanded={expanded} onChange={handleChange}>
       <AccordionSummary>
         <div className="accordion_summary_container">
           <Typography
+            style={{
+              fontweight: 'strong',
+            }}
             data-testid="accordion-header"
             // onClick={onClickHandler()}
           >
             {item.source_file_section}
           </Typography>
-          <div className="accordion_summary_actions">
-            <EyeShow />
-            {!primaryRole && (
-              <Pencil
-                onClick={onEditClick}
-                style={{ paddingLeft: '20px' }}
-                data-testid="edit-icon"
-              />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+            }}
+          >
+            <Lock style={{ paddingRight: '10px' }} />
+            <EyeShow style={{ paddingRight: '10px' }} />
+            {!primaryRole && !showedit ? (
+              <Pencil onClick={onEditClick} />
+            ) : (
+              <Save onClick={onSaveClick} />
             )}
           </div>
         </div>
       </AccordionSummary>
 
-      <AccordionDetails className="accordion_details">
+      <AccordionDetails>
         {sectionContentLoader && (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
         )}
-        {sections &&
-          isArray(sections) &&
-          sections?.map((value) => (
-            // eslint-disable-next-line react/jsx-no-useless-fragment
-            <>
-              {showedit ? (
-                <MultilineEdit />
-              ) : (
-                <Typography key={React.key}>{value.content}</Typography>
-              )}
-            </>
+        {/* <MultilineEdit data={sections} /> */}
+        {sections?.length > 0 &&
+          (showedit ? (
+            <MultilineEdit data={sections} />
+          ) : (
+            <div style={{ height: '200px' }}>
+              <AutoSizer>
+                {({ width, height }) => (
+                  <List
+                    width={width}
+                    height={height}
+                    rowHeight={cache.current.rowHeight}
+                    deferredMeasurementCache={cache.current}
+                    overscanRowCount={5}
+                    rowCount={sections.length}
+                    rowRenderer={rowRenderer}
+                  />
+                )}
+              </AutoSizer>
+            </div>
           ))}
+
+        {/* // {sections &&
+        //   isArray(sections) &&
+        //   sections?.map((value) => (
+        //     // eslint-disable-next-line react/jsx-no-useless-fragment
+        //     <>
+        //       {showedit ? (
+        //         <MultilineEdit />
+        //       ) : (
+        //         <Typography key={React.key}>{value.content}</Typography>
+        //       )}
+        //     </>
+        //   ))} */}
       </AccordionDetails>
     </Accordion>
   );
