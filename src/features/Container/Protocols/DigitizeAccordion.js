@@ -14,6 +14,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
+import Lock from 'apollo-react-icons/Lock';
+import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../Components/Loader/Loader';
 import {
@@ -29,6 +31,7 @@ function DigitizeAccordion({
   primaryRole,
   currentActiveCard,
   setCurrentActiveCard,
+  index,
   handlePageRight,
 }) {
   const cache = React.useRef(
@@ -43,7 +46,6 @@ function DigitizeAccordion({
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sections, setSections] = useState([]);
-
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
   const sectionContentLoader = useSelector(sectionLoader);
 
@@ -60,9 +62,14 @@ function DigitizeAccordion({
     }
   }, [sectionHeaderDetails]);
 
-  const handleChange = (sequence) => {
-    handlePageRight(sequence);
+  const handleChange = () => {
+    handlePageRight(item.page);
     setExpanded(!expanded);
+  };
+
+  const onSaveClick = (e) => {
+    e.stopPropagation();
+    setShowEdit(false);
   };
 
   useEffect(() => {
@@ -96,14 +103,14 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
-  const onEditClick = () => {
+  const onEditClick = (e) => {
+    e.stopPropagation();
     setExpanded(true);
     setShowEdit(true);
   };
 
   const rowRenderer = ({ key, index, style, parent }) => {
     const item = sections[index];
-    console.log({ sections });
 
     return (
       <CellMeasurer
@@ -114,11 +121,7 @@ function DigitizeAccordion({
         rowIndex={index}
       >
         <div style={style}>
-          {showedit ? (
-            <MultilineEdit />
-          ) : (
-            <Typography key={React.key}>{item.content}</Typography>
-          )}
+          <Typography key={React.key}>{item.content}</Typography>
         </div>
       </CellMeasurer>
     );
@@ -143,9 +146,12 @@ function DigitizeAccordion({
               flexDirection: 'row',
             }}
           >
-            <EyeShow />
-            {!primaryRole && (
-              <Pencil onClick={onEditClick} style={{ paddingLeft: '20px' }} />
+            <Lock style={{ paddingRight: '10px' }} />
+            <EyeShow style={{ paddingRight: '10px' }} />
+            {!primaryRole && !showedit ? (
+              <Pencil onClick={onEditClick} />
+            ) : (
+              <Save onClick={onSaveClick} />
             )}
           </div>
         </div>
@@ -157,23 +163,27 @@ function DigitizeAccordion({
             <Loader />
           </div>
         )}
-        {sections?.length > 0 && (
-          <div style={{ height: '200px' }}>
-            <AutoSizer>
-              {({ width, height }) => (
-                <List
-                  width={width}
-                  height={height}
-                  rowHeight={cache.current.rowHeight}
-                  deferredMeasurementCache={cache.current}
-                  overscanRowCount={5}
-                  rowCount={sections.length}
-                  rowRenderer={rowRenderer}
-                />
-              )}
-            </AutoSizer>
-          </div>
-        )}
+        {/* <MultilineEdit data={sections} /> */}
+        {sections?.length > 0 &&
+          (showedit ? (
+            <MultilineEdit data={sections} />
+          ) : (
+            <div style={{ height: '200px' }}>
+              <AutoSizer>
+                {({ width, height }) => (
+                  <List
+                    width={width}
+                    height={height}
+                    rowHeight={cache.current.rowHeight}
+                    deferredMeasurementCache={cache.current}
+                    overscanRowCount={5}
+                    rowCount={sections.length}
+                    rowRenderer={rowRenderer}
+                  />
+                )}
+              </AutoSizer>
+            </div>
+          ))}
 
         {/* // {sections &&
         //   isArray(sections) &&

@@ -68,7 +68,8 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }, [currentPage]);
 
   useEffect(() => {
-    setPage(pageRight);
+    console.log({ pageRight });
+    setPage(pageRight - 1);
   }, [pageRight]);
 
   const handleZoomIn = () => {
