@@ -178,7 +178,25 @@ function DigitizeAccordion({
                     deferredMeasurementCache={cache.current}
                     overscanRowCount={5}
                     rowCount={sections.length}
-                    rowRenderer={rowRenderer}
+                    // eslint-disable-next-line
+                    rowRenderer={({ key, index, style, parent }) => {
+                      const item = sections[index];
+                      return (
+                        <CellMeasurer
+                          key={key}
+                          cache={cache.current}
+                          parent={parent}
+                          columnIndex={0}
+                          rowIndex={index}
+                        >
+                          <div style={style}>
+                            <Typography key={React.key}>
+                              {item.content}
+                            </Typography>
+                          </div>
+                        </CellMeasurer>
+                      );
+                    }}
                   />
                 )}
               </AutoSizer>
