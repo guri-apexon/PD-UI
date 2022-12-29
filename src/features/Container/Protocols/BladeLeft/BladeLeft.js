@@ -103,7 +103,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                     </Tooltip>
                   </AccordionSummary>
 
-                  {item?.subsection?.map((level1) => {
+                  {item?.childlevel?.map((level1) => {
                     return (
                       <Accordion
                         key={React.key}
@@ -112,20 +112,20 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                         }}
                       >
                         <AccordionSummary>
-                          <Tooltip title={level1?.section}>
+                          <Tooltip title={level1?.source_file_section}>
                             <Typography
                               className="header-unselect"
                               onClick={(e) => {
                                 handlePageNo(e, item.pageNo, index);
                               }}
                             >
-                              {level1?.section}
+                              {level1?.source_file_section}
                             </Typography>
                           </Tooltip>
                         </AccordionSummary>
 
-                        {level1.subSection1 &&
-                          level1.subSection1.map((level2) => {
+                        {level1?.subSection1 &&
+                          level1?.subSection1.map((level2) => {
                             return (
                               <Accordion
                                 key={React.key}
