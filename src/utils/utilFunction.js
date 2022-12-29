@@ -139,7 +139,6 @@ export const createFullMarkup = (str) => {
   if (str) {
     return {
       __html: replaceall(
-        // redaction.text,
         redaction.text,
         `<span class="blur">${redaction.text}</span>`,
         str,
