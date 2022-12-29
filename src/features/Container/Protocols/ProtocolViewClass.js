@@ -265,26 +265,28 @@ class ProtocolViewClass extends React.Component {
         </div>
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
-            <Panel
-              width={window.innerWidth / 2}
-              minWidth={window.innerWidth / 4}
-              maxWidth={window.innerWidth / 1.5}
-              hideButton
-              resizable
-            >
-              <Card className="protocol-source-column">
-                <div className="panel-heading" style={{ marginLeft: '10px' }}>
-                  Source Document
-                </div>
+            {this.props.data.userPrimaryRoleFlag && (
+              <Panel
+                width={window.innerWidth / 2}
+                minWidth={window.innerWidth / 4}
+                maxWidth={window.innerWidth / 1.5}
+                hideButton
+                resizable
+              >
+                <Card className="protocol-source-column">
+                  <div className="panel-heading" style={{ marginLeft: '10px' }}>
+                    Source Document
+                  </div>
 
-                <Pdf
-                  page={this.state.pageNo}
-                  refs={this.props.refx}
-                  pageRight={this.state.pageRight}
-                  handlePaginationPage={this.handlePaginationPage}
-                />
-              </Card>
-            </Panel>
+                  <Pdf
+                    page={this.state.pageNo}
+                    refs={this.props.refx}
+                    pageRight={this.state.pageRight}
+                    handlePaginationPage={this.handlePaginationPage}
+                  />
+                </Card>
+              </Panel>
+            )}
             <Panel width={'auto'} hideButton>
               <Digitize
                 sectionRef={this.props.sectionRef}

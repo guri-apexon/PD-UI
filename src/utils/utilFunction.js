@@ -135,10 +135,11 @@ export const qcIconStatus = (status, pdStatus) => {
   }
 };
 
-function createFullMarkup(str) {
+export const createFullMarkup = (str) => {
   if (str) {
     return {
       __html: replaceall(
+        // redaction.text,
         redaction.text,
         `<span class="blur">${redaction.text}</span>`,
         str,
@@ -148,7 +149,8 @@ function createFullMarkup(str) {
   return {
     __html: str,
   };
-}
+};
+
 export const handleProtocolTitle = (value, testID) => {
   return (
     <Tooltip
