@@ -126,12 +126,22 @@ function DigitizeAccordion({
               flexDirection: 'row',
             }}
           >
-            <Lock style={{ paddingRight: '10px' }} data-testId="lockIcon" />
-            <EyeShow style={{ paddingRight: '10px' }} data-testId="eyeIcon" />
+            <span data-testId="lockIcon">
+              <Lock style={{ paddingRight: '10px' }} />
+            </span>
+            <span data-testId="eyeIcon">
+              <EyeShow style={{ paddingRight: '10px' }} />
+            </span>
             {!primaryRole && !showedit ? (
-              <Pencil onClick={onEditClick} data-testId="pencilIcon" />
+              // eslint-disable-next-line
+              <span data-testId="pencilIcon" onClick={onEditClick}>
+                <Pencil />
+              </span>
             ) : (
-              <Save onClick={onSaveClick} data-testId="saveIcon" />
+              // eslint-disable-next-line
+              <span data-testId="saveIcon" onClick={onSaveClick}>
+                <Save />
+              </span>
             )}
           </div>
         </div>
