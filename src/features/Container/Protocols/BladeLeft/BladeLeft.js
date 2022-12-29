@@ -70,10 +70,10 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     fixedWidth: true,
     defaultHeight: 100,
   });
-  const rowRender = ({ key, index, style, parent }) => {
+  const rowRender = ({ key, index, style, parent, isScrolling }) => {
     const level1 = data[index];
     console.log('>>>data Virtual', level1.source_file_section);
-    console.log('length', data.length);
+    console.log('length', data.length, index, isScrolling);
     return (
       <CellMeasurer
         key={key}
@@ -83,8 +83,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
         rowIndex={index}
       >
         <div style={style}>
-          {level1.source_file_section}
-          {/* <Accordion
+          <Accordion
             key={React.key}
             style={{
               border: 'none',
@@ -231,7 +230,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                 </Accordion>
               );
             })}
-          </Accordion> */}
+          </Accordion>
         </div>
       </CellMeasurer>
     );
@@ -261,9 +260,9 @@ function BladeLeft({ handlePageNo, dataSummary }) {
               {({ width, height }) => {
                 return (
                   <List
-                    width={600}
-                    height={400}
-                    rowHeight={50}
+                    width={width}
+                    height={height}
+                    rowHeight={24}
                     rowCount={data.length}
                     // eslint-disable-next-line react/no-unstable-nested-components
                     rowRenderer={rowRender}
