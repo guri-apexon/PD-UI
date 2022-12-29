@@ -23,6 +23,8 @@ const sample = {
 function MultilineEdit({ data }) {
   const [value, setValue] = useState(null);
 
+  console.log({ data });
+
   useEffect(() => {
     if (data?.length > 0) {
       const arr = data.map((val, index) => ({
@@ -38,12 +40,16 @@ function MultilineEdit({ data }) {
     }
   }, [data]);
 
+  useEffect(() => {
+    console.log({ value });
+  }, [value]);
+
   const handleChangedRichTextEditor = (text) => {
     console.log({ text });
   };
 
   return (
-    <div className="Richtextcontainer">
+    <div className="Richtextcontainer" data-testId="richTextEditor">
       {value && (
         <RichTextEditor
           defaultValue={value}

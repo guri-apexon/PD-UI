@@ -117,7 +117,6 @@ function DigitizeAccordion({
               fontweight: 'strong',
             }}
             data-testid="accordion-header"
-            // onClick={onClickHandler()}
           >
             {item.source_file_section}
           </Typography>
@@ -127,12 +126,12 @@ function DigitizeAccordion({
               flexDirection: 'row',
             }}
           >
-            <Lock style={{ paddingRight: '10px' }} />
-            <EyeShow style={{ paddingRight: '10px' }} />
+            <Lock style={{ paddingRight: '10px' }} data-testId="lockIcon" />
+            <EyeShow style={{ paddingRight: '10px' }} data-testId="eyeIcon" />
             {!primaryRole && !showedit ? (
-              <Pencil onClick={onEditClick} />
+              <Pencil onClick={onEditClick} data-testId="pencilIcon" />
             ) : (
-              <Save onClick={onSaveClick} />
+              <Save onClick={onSaveClick} data-testId="saveIcon" />
             )}
           </div>
         </div>
