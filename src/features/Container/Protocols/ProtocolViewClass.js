@@ -256,7 +256,8 @@ class ProtocolViewClass extends React.Component {
     return (
       <>
         <div>
-          <BladeLeft handlePageNo={this.handlePageNo} />
+          <BladeLeft handlePageNo={this.handlePageNo}
+          dataSummary={this.props.data} />
         </div>
         <div className="view-wrapper">
           <PanelGroup className="panel_group">

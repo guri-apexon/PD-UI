@@ -230,7 +230,6 @@ function* getState() {
 }
 export function* getSectionList(action) {
   console.log(action);
-  localStorage.removeItem('sectionDetails');
   const userId = yield getState();
   const config = {
     url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
@@ -241,7 +240,6 @@ export function* getSectionList(action) {
   yield put(resetSectionLoader());
 
   if (sectionDetails.success) {
-    localStorage.setItem('sectionDetails', sectionDetails.data);
     yield put(
       getSectionDetails({
         sections: sectionDetails.data,
@@ -299,67 +297,32 @@ export function* getCompareResult(action) {
 }
 
 export function* getProtocolTocDataResult(action) {
-  const viewData = {
-    iqvdataSoa: null,
-    iqvdataSummary: null,
-    iqvdataToc: null,
-    loader: true,
-    tocSections: null,
-    soaSections: null,
-    err: null,
-  };
-  const userId = yield getUserId();
-  yield put(getProtocolTocData(viewData));
-  let URL = '';
-  if (action.payload.user === 'qc') {
-    URL = `${BASE_URL_8000}/api/protocol_qcdata/?id=${action.payload.id}`;
-  } else {
-    URL = `${BASE_URL_8000}/api/${action.payload.endPoint}?aidoc_id=${action.payload.id}&user=${action.payload.user}&userId=${userId}&protocol=${action.payload.protocol}`;
-  }
-
+  debugger;
+  console.log('getProtocolTocDataResult');
+  const {
+    payload: { docId },
+  } = action;
+  const linkLevel = action.payload.tocFlag ? 6 : 1;
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${action.payload.docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
   const config = {
     url: URL,
     method: 'GET',
   };
-  try {
-    const data = yield call(httpCall, config);
-    if (data.success && data.data) {
-      const toc = parsedData(data.data.iqvdataToc);
-      const soa = parsedData(data.data.iqvdataSoa);
-      const viewData = {
-        iqvdataSoa: soa,
-        iqvdataSummary: parsedData(data.data.iqvdataSummary),
-        iqvdataToc: toc,
-        loader: false,
-        tocSections: getTocSections(toc),
-        soaSections: getSoaSections(soa),
-        err: null,
-        download: data.data,
-      };
-      yield put(getProtocolTocData(viewData));
+  const header = yield call(httpCall, config);
+  if (header.success) {
+    if (action.payload.tocFlag === 1) {
+      yield put(getProtocolTocData(header));
     } else {
-      const viewData = {
-        iqvdataSoa: null,
-        iqvdataSummary: null,
-        iqvdataToc: null,
-        loader: false,
-        tocSections: null,
-        soaSections: null,
-        err: 'No data found',
-      };
-      yield put(getProtocolTocData(viewData));
+      yield put(getHeaderList(header));
     }
-  } catch (err) {
-    const viewData = {
-      iqvdataSoa: null,
-      iqvdataSummary: null,
-      iqvdataToc: null,
-      loader: false,
-      tocSections: null,
-      soaSections: null,
-      err: 'No data found',
-    };
-    yield put(getProtocolTocData(viewData));
+  } else {
+    if (!action.payload.tocFlag) {
+      yield put(getProtocolTocData({ success: false, data: [] }));
+    } else {
+      yield put(getHeaderList({ success: false, data: [] }));
+    }
+
+    toast.error('Something Went Wrong');
   }
 }
 
@@ -369,9 +332,9 @@ function* watchProtocolAsync() {
   yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
   yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol);
   yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
-  yield takeEvery('GET_PROTOCOL_SECTION', fetchSectionHeaderList);
+  yield takeEvery('GET_PROTOCOL_SECTION', getProtocolTocDataResult);
   yield takeEvery('GET_SECTION_LIST', getSectionList);
-  yield takeEvery('POST_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
+  yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
 }
 
 // notice how we now only export the rootSaga

@@ -54,6 +54,7 @@ function Digitize({
       type: 'GET_PROTOCOL_SECTION',
       payload: {
         docId: data.id,
+        tocFlag: 0,
       },
     });
     // eslint-disable-next-line

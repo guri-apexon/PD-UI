@@ -7,9 +7,11 @@ import Blade from 'apollo-react/components/Blade';
 import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-
+import { useSelector, useDispatch } from 'react-redux';
 import record from '../Records1.json';
 import './BladeLeft.scss';
+
+import { protocolTocData } from '../protocolSlice';
 
 const styles = {
   blade: {
@@ -20,11 +22,30 @@ const styles = {
   },
 };
 
-function BladeLeft({ handlePageNo }) {
+function BladeLeft({ handlePageNo, dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const [data] = useState(record);
+  const dispatch = useDispatch();
 
+  const [tocList, setTocList] = useState([]);
+
+  const tocData = useSelector(protocolTocData);
+
+  useEffect(() => {
+    setTocList(tocData.data);
+  }, [tocData]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'GET_PROTOCOL_TOC_DATA',
+      payload: {
+        docId: dataSummary.id,
+        tocFlag: 1,
+      },
+    });
+  }, []);
+  console.log('>>>>>>>>', tocList);
   const onClose = () => {
     setOpen(false);
   };
@@ -61,7 +82,7 @@ function BladeLeft({ handlePageNo }) {
           /> */}
 
           <div style={{ paddingLeft: '7px' }}>
-            {data?.map((item, index) => {
+            {tocList?.map((item, index) => {
               return (
                 <Accordion
                   key={React.key}
@@ -144,4 +165,5 @@ export default withStyles(styles)(BladeLeft);
 BladeLeft.propTypes = {
   // eslint-disable-next-line react/require-default-props
   handlePageNo: PropTypes.func,
+  dataSummary: PropTypes.isRequired,
 };
