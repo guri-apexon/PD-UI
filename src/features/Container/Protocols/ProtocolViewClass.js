@@ -258,11 +258,11 @@ class ProtocolViewClass extends React.Component {
       <>
         <div>
           <BladeLeft handlePageNo={this.handlePageNo} />
-          <BladeRight />
+          {/* <BladeRight /> */}
         </div>
-        <div>
+        {/* <div>
           <BladeRight />
-        </div>
+        </div> */}
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
             <Panel

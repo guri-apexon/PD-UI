@@ -126,9 +126,9 @@ function DigitizeAccordion({
               flexDirection: 'row',
             }}
           >
-            <span data-testId="lockIcon">
+            {/* <span data-testId="lockIcon">
               <Lock style={{ paddingRight: '10px' }} />
-            </span>
+            </span> */}
             <span data-testId="eyeIcon">
               <EyeShow style={{ paddingRight: '10px' }} />
             </span>

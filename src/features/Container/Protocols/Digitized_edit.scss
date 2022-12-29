@@ -13,8 +13,11 @@
   [class*='RichTextEditor-inlineControllersRoot-'] {
     display: flex;
     position: sticky;
-    top: 0;
+    top: -8px;
     background: #fff;
+    left: -8px;
+    right: -8px;
+    padding-top: 8px;
 
     [class*='MuiSelect-root'] {
       font-size: x-small;
