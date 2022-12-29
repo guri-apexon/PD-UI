@@ -297,8 +297,6 @@ export function* getCompareResult(action) {
 }
 
 export function* getProtocolTocDataResult(action) {
-  debugger;
-  console.log('getProtocolTocDataResult');
   const {
     payload: { docId },
   } = action;

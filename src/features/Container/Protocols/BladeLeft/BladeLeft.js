@@ -45,7 +45,6 @@ function BladeLeft({ handlePageNo, dataSummary }) {
       },
     });
   }, []);
-  console.log('>>>>>>>>', tocList);
   const onClose = () => {
     setOpen(false);
   };
