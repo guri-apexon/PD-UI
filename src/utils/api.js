@@ -245,6 +245,7 @@ export const Apis = {
   search: 'http://ca2spdml04q:9200/pd-index/_search',
   HEADER_LIST: '/api/cpt_data',
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
+  DOWNLOAD_API: '/api/download_file',
 };
 
 export const SSO_ENABLED = environment !== 'local';

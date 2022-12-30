@@ -18,6 +18,7 @@ import {
   getSectionDetails,
   getProtocolTocData,
   resetSectionLoader,
+  getFileStream,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
@@ -364,6 +365,46 @@ export function* getProtocolTocDataResult(action) {
   }
 }
 
+export function* fetchFileStream(action) {
+  const preLoadingState = {
+    loader: true,
+    success: false,
+    error: '',
+    data: null,
+  };
+  yield put(getFileStream(preLoadingState));
+
+  const userId = yield getUserId();
+  const { name, dfsPath } = action.payload;
+  const apiBaseUrl = 'https://dev-protocoldigitalization-api.work.iqvia.com'; // BASE_URL_8000
+  const config = {
+    url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
+      dfsPath,
+    )}&userId=${userId}&protocol=${name}`,
+    method: 'GET',
+    responseType: 'blob',
+  };
+  const { data, success } = yield call(httpCall, config);
+  if (success) {
+    const file = new Blob([data], { type: 'application/pdf' });
+    const successState = {
+      loader: false,
+      success: true,
+      error: '',
+      data: file,
+    };
+    yield put(getFileStream(successState));
+  } else {
+    const errorState = {
+      loader: false,
+      success: false,
+      error: 'Error',
+      data,
+    };
+    yield put(getFileStream(errorState));
+  }
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -373,6 +414,7 @@ function* watchProtocolAsync() {
   yield takeEvery('GET_PROTOCOL_SECTION', fetchSectionHeaderList);
   yield takeEvery('GET_SECTION_LIST', getSectionList);
   yield takeEvery('POST_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
+  yield takeEvery('GET_FILE_STREAM', fetchFileStream);
 }
 
 // notice how we now only export the rootSaga
