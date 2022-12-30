@@ -82,7 +82,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
 
           <div style={{ paddingLeft: '7px' }}>
             {tocList?.map((item, index) => {
-              const sectionIndex = index <= 0 ? 0 : index - 1;
+              const sectionIndex = index; // <= 0 ? 0 : index - 1;
               return (
                 <Accordion
                   key={React.key}
