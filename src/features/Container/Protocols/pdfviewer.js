@@ -169,7 +169,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
           <Button
             size="small"
             className="buttonStyles"
-            data-testid="zoomIn"
+            data-testId="zoomIn"
             disabled={pageScale >= 1.2}
             onClick={handleZoomIn}
           >
@@ -178,7 +178,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
           <Button
             size="small"
             className="buttonStyles"
-            data-testid="zoomOut"
+            data-testId="zoomOut"
             disabled={pageScale <= 0.5}
             onClick={handleZoomOut}
           >
