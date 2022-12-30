@@ -24,6 +24,7 @@ import {
   setSectionLoader,
   resetSectionData,
 } from './protocolSlice';
+import { createFullMarkup } from '../../../utils/utilFunction';
 
 function DigitizeAccordion({
   item,
@@ -180,9 +181,12 @@ function DigitizeAccordion({
                           rowIndex={index}
                         >
                           <div style={style}>
-                            <Typography key={React.key}>
-                              {item.content}
-                            </Typography>
+                            <Typography
+                              key={React.key}
+                              dangerouslySetInnerHTML={createFullMarkup(
+                                item.content,
+                              )}
+                            />
                           </div>
                         </CellMeasurer>
                       );
