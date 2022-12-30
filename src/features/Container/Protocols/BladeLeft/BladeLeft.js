@@ -33,7 +33,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
-    setTocList(tocData.data);
+    if (tocData.data?.length) setTocList(tocData.data);
   }, [tocData]);
 
   useEffect(() => {
@@ -82,6 +82,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
 
           <div style={{ paddingLeft: '7px' }}>
             {tocList?.map((item, index) => {
+              const sectionIndex = index <= 0 ? 0 : index - 1;
               return (
                 <Accordion
                   key={React.key}
@@ -94,7 +95,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                       <Typography
                         className="header-unselect"
                         onClick={(e) => {
-                          handlePageNo(e, item.page, index);
+                          handlePageNo(e, item.page, sectionIndex);
                         }}
                       >
                         {item.source_file_section}
@@ -115,7 +116,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                             <Typography
                               className="header-unselect"
                               onClick={(e) => {
-                                handlePageNo(e, item.pageNo, index);
+                                handlePageNo(e, item.pageNo, sectionIndex);
                               }}
                             >
                               {level1?.source_file_section}
@@ -137,7 +138,11 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                                     <Typography
                                       className="header-unselect"
                                       onClick={(e) => {
-                                        handlePageNo(e, item.pageNo, index);
+                                        handlePageNo(
+                                          e,
+                                          item.pageNo,
+                                          sectionIndex,
+                                        );
                                       }}
                                     >
                                       {level2.sub_Section}

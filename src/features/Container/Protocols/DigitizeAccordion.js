@@ -133,17 +133,18 @@ function DigitizeAccordion({
             <span data-testId="eyeIcon">
               <EyeShow style={{ paddingRight: '10px' }} />
             </span>
-            {!primaryRole && !showedit ? (
-              // eslint-disable-next-line
-              <span data-testId="pencilIcon" onClick={onEditClick}>
-                <Pencil />
-              </span>
-            ) : (
-              // eslint-disable-next-line
-              <span data-testId="saveIcon" onClick={onSaveClick}>
-                <Save />
-              </span>
-            )}
+            {primaryRole &&
+              (!showedit ? (
+                // eslint-disable-next-line
+                <span data-testId="pencilIcon" onClick={onEditClick}>
+                  <Pencil />
+                </span>
+              ) : (
+                // eslint-disable-next-line
+                <span data-testId="saveIcon" onClick={onSaveClick}>
+                  <Save />
+                </span>
+              ))}
           </div>
         </div>
       </AccordionSummary>
@@ -159,7 +160,7 @@ function DigitizeAccordion({
           (showedit ? (
             <MultilineEdit data={sections} />
           ) : (
-            <div style={{ height: '200px' }}>
+            <div style={{ height: '200px', flex: '1 1 auto' }}>
               <AutoSizer>
                 {({ width, height }) => (
                   <List

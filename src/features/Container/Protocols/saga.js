@@ -313,6 +313,10 @@ export function* getProtocolTocDataResult(action) {
   const header = yield call(httpCall, config);
   if (header.success) {
     if (action.payload.tocFlag === 1) {
+      if (header?.data?.status === 204) {
+        toast.error(header.data.message || 'Something Went Wrong');
+        header.data = [];
+      }
       yield put(getProtocolTocData(header));
     } else {
       yield put(getHeaderList(header));
@@ -339,7 +343,7 @@ export function* fetchFileStream(action) {
 
   const userId = yield getUserId();
   const { name, dfsPath } = action.payload;
-  const apiBaseUrl = 'https://dev-protocoldigitalization-api.work.iqvia.com'; // BASE_URL_8000
+  const apiBaseUrl = 'https://dev-protocoldigitalization-api.work.iqvia.com'; // BASE_URL_8000;
   const config = {
     url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
       dfsPath,
