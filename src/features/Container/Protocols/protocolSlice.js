@@ -65,7 +65,6 @@ export const protocolSlice = createSlice({
     resetSectionLoader: (state) => {
       state.sectionLoader = false;
     },
-
     resetSectionData: (state) => {
       state.sectionDetails = {};
     },

@@ -22,6 +22,7 @@ import BladeLeft from './BladeLeft/BladeLeft';
 // import Digitize from './DigitizeCard';
 import { connect } from 'react-redux';
 import Cookies from 'universal-cookie';
+
 // import { headerList } from '../../../store/Digitized/actions';
 const replaceall = require('replaceall');
 class ProtocolViewClass extends React.Component {
@@ -36,9 +37,10 @@ class ProtocolViewClass extends React.Component {
       activeSection: null,
       activeSubSection: null,
       headerDetails: '',
-      pageRight: 1,
-      pageNo: 1,
-      sectionNumber: undefined,
+      pageRight: 0,
+      pageNo: 0,
+      sectionNumber: -1,
+      paginationPage: 0,
     };
   }
 
@@ -46,13 +48,16 @@ class ProtocolViewClass extends React.Component {
     this.setState({ pageRight: pageRight });
   };
 
+  handlePaginationPage = (paginationPage) => {
+    this.setState({ paginationPage: paginationPage });
+  };
+
   handlePageNo = (event, page, sectionNo) => {
     this.setState({ pageNo: page });
     this.setState({ sectionNumber: sectionNo });
   };
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -247,11 +252,12 @@ class ProtocolViewClass extends React.Component {
       });
       this.hideEle();
     };
-    
+
     return (
       <>
         <div>
-          <BladeLeft handlePageNo={this.handlePageNo} />
+          <BladeLeft handlePageNo={this.handlePageNo}
+          dataSummary={this.props.data} />
         </div>
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
@@ -271,6 +277,7 @@ class ProtocolViewClass extends React.Component {
                   page={this.state.pageNo}
                   refs={this.props.refx}
                   pageRight={this.state.pageRight}
+                  handlePaginationPage={this.handlePaginationPage}
                 />
               </Card>
             </Panel>
@@ -281,6 +288,7 @@ class ProtocolViewClass extends React.Component {
                 headerDetails={this.state.headerDetails}
                 handlePageRight={this.handlePageRight}
                 data={this.props.data}
+                paginationPage={this.state.paginationPage}
               />
             </Panel>
           </PanelGroup>

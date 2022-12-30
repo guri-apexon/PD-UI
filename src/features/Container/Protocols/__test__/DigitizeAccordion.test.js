@@ -87,4 +87,21 @@ describe('DigitizeAccordion', () => {
       </Provider>,
     );
   });
+
+  test('Pencil icon is visible for primary user', () => {
+    const bool = false;
+    const component = render(
+      <Provider store={store}>
+        <DigitizeAccordion
+          item={item}
+          primaryRole={bool}
+          protocol="1234"
+          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
+          setCurrentActiveCard={jest.fn()}
+        />
+      </Provider>,
+    );
+    const pencil = component.getByTestId('pencilIcon');
+    expect(pencil).toBeInTheDocument();
+  });
 });

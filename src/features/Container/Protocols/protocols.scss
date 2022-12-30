@@ -392,8 +392,12 @@
   min-width: auto !important;
   left: 2px;
   margin-right: 10px;
-  padding-left: 10px;
   justify-content: center;
+
+  svg {
+    height: 16px;
+    width: 16px;
+  }
 }
 
 .MuiInputBase-inputMarginDense-3199 {

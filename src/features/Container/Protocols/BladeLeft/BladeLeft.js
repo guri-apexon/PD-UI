@@ -7,9 +7,11 @@ import Blade from 'apollo-react/components/Blade';
 import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-
-import record from '../Dummy.json';
+import { useSelector, useDispatch } from 'react-redux';
+import record from '../Records1.json';
 import './BladeLeft.scss';
+
+import { protocolTocData } from '../protocolSlice';
 
 const styles = {
   blade: {
@@ -20,11 +22,29 @@ const styles = {
   },
 };
 
-function BladeLeft({ handlePageNo }) {
+function BladeLeft({ handlePageNo, dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const [data] = useState(record);
+  const dispatch = useDispatch();
 
+  const [tocList, setTocList] = useState([]);
+
+  const tocData = useSelector(protocolTocData);
+
+  useEffect(() => {
+    setTocList(tocData.data);
+  }, [tocData]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'GET_PROTOCOL_TOC_DATA',
+      payload: {
+        docId: dataSummary.id,
+        tocFlag: 1,
+      },
+    });
+  }, []);
   const onClose = () => {
     setOpen(false);
   };
@@ -51,7 +71,7 @@ function BladeLeft({ handlePageNo }) {
           title="Navigation"
           className="blade"
           width={263}
-          marginTop={134}
+          marginTop={141}
           hasBackdrop
         >
           {/* <TextField
@@ -61,7 +81,7 @@ function BladeLeft({ handlePageNo }) {
           /> */}
 
           <div style={{ paddingLeft: '7px' }}>
-            {data?.map((item, index) => {
+            {tocList?.map((item, index) => {
               return (
                 <Accordion
                   key={React.key}
@@ -82,7 +102,7 @@ function BladeLeft({ handlePageNo }) {
                     </Tooltip>
                   </AccordionSummary>
 
-                  {item?.subsection?.map((level1) => {
+                  {item?.childlevel?.map((level1) => {
                     return (
                       <Accordion
                         key={React.key}
@@ -91,20 +111,20 @@ function BladeLeft({ handlePageNo }) {
                         }}
                       >
                         <AccordionSummary>
-                          <Tooltip title={level1?.section}>
+                          <Tooltip title={level1?.source_file_section}>
                             <Typography
                               className="header-unselect"
                               onClick={(e) => {
                                 handlePageNo(e, item.pageNo, index);
                               }}
                             >
-                              {level1?.section}
+                              {level1?.source_file_section}
                             </Typography>
                           </Tooltip>
                         </AccordionSummary>
 
-                        {level1.subSection1 &&
-                          level1.subSection1.map((level2) => {
+                        {level1?.subSection1 &&
+                          level1?.subSection1.map((level2) => {
                             return (
                               <Accordion
                                 key={React.key}
@@ -144,4 +164,5 @@ export default withStyles(styles)(BladeLeft);
 BladeLeft.propTypes = {
   // eslint-disable-next-line react/require-default-props
   handlePageNo: PropTypes.func,
+  dataSummary: PropTypes.isRequired,
 };
