@@ -104,4 +104,14 @@ describe('DigitizeAccordion', () => {
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
   });
+
+  test('Autosizer', () => {
+    jest.mock('react-virtualized', () => {
+      const ReactVirtualized = jest.requireActual('react-virtualized');
+      return {
+        ...ReactVirtualized,
+        AutoSizer: ({ children }) => children({ height: 1000, width: 1000 }),
+      };
+    });
+  });
 });
