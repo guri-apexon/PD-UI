@@ -374,8 +374,9 @@ export function* fetchFileStream(action) {
 
   const userId = yield getUserId();
   const { name, dfsPath } = action.payload;
+  const apiBaseUrl = 'https://dev-protocoldigitalization-api.work.iqvia.com'; // BASE_URL_8000
   const config = {
-    url: `https://dev-protocoldigitalization-api.work.iqvia.com/api/download_file/?filePath=${encodeURIComponent(
+    url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
       dfsPath,
     )}&userId=${userId}&protocol=${name}`,
     method: 'GET',

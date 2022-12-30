@@ -5,6 +5,7 @@ import Pagination from 'apollo-react/components/Pagination';
 import PropTypes from 'prop-types';
 import PlusIcon from 'apollo-react-icons/Plus';
 import Minus from 'apollo-react-icons/Minus';
+import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { protocolSummary, getPdfData } from './protocolSlice';
 
@@ -58,6 +59,7 @@ function Pdf({ page, refs, pageRight }) {
         dfsPath: documentFilePath,
       },
     });
+    // eslint-disable-next-line
   }, [documentFilePath]);
 
   useEffect(() => {
@@ -66,17 +68,16 @@ function Pdf({ page, refs, pageRight }) {
     }
   }, [fileStream]);
 
+  if (!pdfString) {
+    return <Loader />;
+  }
   return (
     <div
       id="pdfDocument"
       className="pdf_container"
       data-testid="protocol-column-wrapper"
     >
-      <Document
-        // file="/Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf"
-        file={pdfString}
-        onLoadSuccess={onDocumentLoadSuccess}
-      >
+      <Document file={pdfString} onLoadSuccess={onDocumentLoadSuccess}>
         {Array.from(new Array(numPages), (el, index) => (
           <div ref={refs[index]} key={index}>
             <Page
