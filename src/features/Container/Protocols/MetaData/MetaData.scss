@@ -1,0 +1,12 @@
+thead {
+  display: contents !important;
+}
+
+.digitize-panel-content {
+  overflow-y: auto;
+  height: calc(100vh - 210px);
+  width: 100%;
+}
+[class*='Table-tableWrapper-'] {
+  padding: 0 30px 0 20px !important;
+}

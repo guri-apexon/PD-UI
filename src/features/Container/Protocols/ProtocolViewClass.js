@@ -18,6 +18,9 @@ import Drag from 'apollo-react-icons/Drag';
 import Panel from 'apollo-react/components/Panel';
 import PanelGroup from 'apollo-react/components/PanelGroup';
 import BladeLeft from './BladeLeft/BladeLeft';
+import BladeRight from './BladeRight/BladeRight';
+import MetaData from './MetaData/MetaData';
+// import Meta from './MetaData/Meta';
 
 // import Digitize from './DigitizeCard';
 import { connect } from 'react-redux';
@@ -41,11 +44,16 @@ class ProtocolViewClass extends React.Component {
       pageNo: 0,
       sectionNumber: undefined,
       paginationPage: 0,
+      rightBladeValue: 'Home',
     };
   }
 
   handlePageRight = (pageRight) => {
     this.setState({ pageRight: pageRight });
+  };
+
+  handleRightBlade = (rightBladeValue) => {
+    this.setState({ rightBladeValue: rightBladeValue });
   };
 
   handlePaginationPage = (paginationPage) => {
@@ -256,8 +264,13 @@ class ProtocolViewClass extends React.Component {
     return (
       <>
         <div>
-          <BladeLeft handlePageNo={this.handlePageNo}
-          dataSummary={this.props.data} />
+          <BladeLeft
+            handlePageNo={this.handlePageNo}
+            dataSummary={this.props.data}
+          />
+        </div>
+        <div>
+          <BladeRight handleRightBlade={this.handleRightBlade} />
         </div>
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
@@ -283,16 +296,22 @@ class ProtocolViewClass extends React.Component {
                 </Card>
               </Panel>
             )}
-            <Panel width={'auto'} hideButton>
-              <Digitize
-                sectionRef={this.props.sectionRef}
-                sectionNumber={this.state.sectionNumber}
-                headerDetails={this.state.headerDetails}
-                handlePageRight={this.handlePageRight}
-                data={this.props.data}
-                paginationPage={this.state.paginationPage}
-              />
-            </Panel>
+            {this.state.rightBladeValue == 'Home' ? (
+              <Panel width={'auto'} hideButton>
+                <Digitize
+                  sectionRef={this.props.sectionRef}
+                  sectionNumber={this.state.sectionNumber}
+                  headerDetails={this.state.headerDetails}
+                  handlePageRight={this.handlePageRight}
+                  data={this.props.data}
+                  paginationPage={this.state.paginationPage}
+                />
+              </Panel>
+            ) : this.state.rightBladeValue == 'MetaData' ? (
+              <Panel width={'auto'} hideButton>
+                <MetaData />
+              </Panel>
+            ) : null}
           </PanelGroup>
         </div>
       </>
