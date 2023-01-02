@@ -8,7 +8,6 @@ import Pdf from '../Protocols/pdfviewer';
 import Digitize from './DigitalizeCard';
 
 import Accordion from 'apollo-react/components/Accordion';
-import Records from './records.json';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 
 import AccordionSummary from 'apollo-react/components/AccordionSummary';

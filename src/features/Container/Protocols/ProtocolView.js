@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { viewResult, associateDocs } from './protocolSlice';
 import ProtocolViewClass from './ProtocolViewClass';
-import Records from './Dummy.json';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
@@ -12,11 +11,6 @@ function ProtocolView({ refs, data }) {
 
   const panels = () => {
     const ex = [];
-    const arraylength = Records.length;
-    for (let i = 0; i <= arraylength; i++) {
-      ex[i] = i;
-    }
-
     const refsection = ex.reduce((refsection, value) => {
       refsection[value] = createRef();
       return refsection;
