@@ -8,7 +8,6 @@ import Typography from 'apollo-react/components/Typography';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useSelector, useDispatch } from 'react-redux';
-import record from '../Records1.json';
 import './BladeLeft.scss';
 
 import { protocolTocData } from '../protocolSlice';
@@ -25,7 +24,6 @@ const styles = {
 function BladeLeft({ handlePageNo, dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
-  const [data] = useState(record);
   const dispatch = useDispatch();
 
   const [tocList, setTocList] = useState([]);

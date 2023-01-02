@@ -17,7 +17,6 @@ import ProtocolOverview from './ProtocolOverview';
 import ProtocolView from './ProtocolView';
 import Documents from './Documents';
 import NoResultFound from '../../Components/NoResultFound';
-import Records from './records.json';
 
 // ------------------- Third Party -----------
 
@@ -46,7 +45,7 @@ function Protocols({ location }) {
     getProcotoclToc(viewData);
     // setSectionIndex(new Array(Records.length));
     /* eslint-disable */
-  }, [Records.length]);
+  }, []);
   /* eslint-enable */
 
   const forLoop = async () => {
