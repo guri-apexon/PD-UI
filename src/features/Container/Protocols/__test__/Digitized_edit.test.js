@@ -1,10 +1,5 @@
-import { useState } from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render } from '@testing-library/react';
 import MultilineEdit from '../Digitized_edit';
-
-const apples = 'apples';
-const oranges = 'oranges';
 
 const sample = [
   {

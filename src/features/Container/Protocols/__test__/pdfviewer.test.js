@@ -1,6 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { useState, fireEvent } from 'react';
-import { Document, Page, pdfjs } from 'react-pdf';
+import { fireEvent } from 'react';
 
 import { render } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
@@ -46,7 +45,9 @@ describe('useIntersectionObserver()', () => {
 
       renderHook(() => useIntersectionObserver(element, config, listener));
 
-      await new Promise((resolve) => resolve());
+      await new Promise((resolve) => {
+        resolve();
+      });
 
       expect(global.window.IntersectionObserver).toHaveBeenCalledTimes(1);
       expect(global.window.IntersectionObserver).toHaveBeenCalledWith(
@@ -65,6 +66,7 @@ describe('PDF VIEWER', () => {
     jest.doMock('react-pdf', () => ({
       pdfjs: { GlobalWorkerOptions: { workerSrc: 'abc' } },
       Document: ({
+        // eslint-disable-next-line
         onLoadSuccess = (pdf = { numPages: 4 }) => pdf.numPages,
       }) => {
         return <div>{onLoadSuccess({ numPages: 4 })}</div>;

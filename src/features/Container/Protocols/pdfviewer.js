@@ -74,6 +74,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
+    // eslint-disable-next-line
   }, [currentPage]);
 
   useEffect(() => {
@@ -97,6 +98,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
 
   useEffect(() => {
     const visible = Object.entries(visiblePages)
+      // eslint-disable-next-line
       .filter(([key, value]) => value)
       .map(([key]) => key);
     if (visible.length === 1) {
@@ -107,11 +109,6 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   useEffect(() => {
     setPage(scrollPage - 1);
   }, [scrollPage]);
-
-  const getCurrentPage = () => {
-    return scrollPage - 1 || currentPage;
-    // return currentPage;
-  };
 
   useEffect(() => {
     dispatch({
@@ -154,11 +151,10 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
           </div>
         ))}
       </Document>
-      <div className="sticky-bottom">
+      <div className="sticky-bottom pdf-pagination">
         <Pagination
           count={numPages}
           rowsPerPage={1}
-          // page={getCurrentPage()}
           page={currentPage}
           onChangePage={(pg) => {
             setPage(pg);
