@@ -1,12 +1,14 @@
-import { useState, createRef } from 'react';
+import { useState, createRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { viewResult } from './protocolSlice';
+import { viewResult, associateDocs } from './protocolSlice';
 import ProtocolViewClass from './ProtocolViewClass';
 import Records from './Dummy.json';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
+  const [protData, setprotData] = useState(data);
+  const protassociateDocs = useSelector(associateDocs);
 
   const panels = () => {
     const ex = [];
@@ -48,6 +50,15 @@ function ProtocolView({ refs, data }) {
   if (viewData.iqvdataSummary) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
+  useEffect(() => {
+    if (
+      protassociateDocs?.length &&
+      protassociateDocs[0]?.userRole === 'primary'
+    ) {
+      setprotData({ ...data, userPrimaryRoleFlag: true });
+    }
+    // eslint-disable-next-line
+  }, [protassociateDocs]);
 
   return (
     <div className="protocol_data_container">
@@ -58,7 +69,7 @@ function ProtocolView({ refs, data }) {
           listData={listData}
           refx={refs}
           sectionRef={sectionRef}
-          data={data}
+          data={protData}
         />
       )}
     </div>

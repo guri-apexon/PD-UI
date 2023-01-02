@@ -23,8 +23,12 @@ function Digitize({
   const [sectionSequence, setSectionSequence] = useState(undefined);
 
   useEffect(() => {
-    if (summary?.data) {
-      setHeaderList(summary.data);
+    if (summary?.data?.length) {
+      setHeaderList(
+        summary.data.filter((x) => {
+          return x.source_file_section !== 'blank_header';
+        }),
+      );
     }
   }, [summary]);
 
@@ -42,6 +46,7 @@ function Digitize({
     }
     // eslint-disable-next-line
   }, [sectionSequence]);
+
   useEffect(() => {
     if (sectionNumber >= 0) {
       setSectionSequence(sectionNumber);
@@ -53,6 +58,7 @@ function Digitize({
       type: 'GET_PROTOCOL_SECTION',
       payload: {
         docId: data.id,
+        tocFlag: 0,
       },
     });
     // eslint-disable-next-line
@@ -74,6 +80,7 @@ function Digitize({
       lastpage = headerList[i].sequence;
     }
   }, [paginationPage]);
+
   return (
     <Card
       className="protocol-column protocol-digitize-column"

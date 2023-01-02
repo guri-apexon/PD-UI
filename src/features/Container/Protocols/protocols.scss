@@ -101,7 +101,7 @@
       display: flex;
       justify-content: center;
       overflow-y: scroll;
-      height: 78vh;
+      height: calc(100vh - 210px);
     }
   }
   // table tbody tr:nth-child(1) { font-weight: bold; background-color: #f2f2f2; }
@@ -333,6 +333,7 @@
     position: relative;
     width: 100%;
     display: flex;
+    padding-left: 10px;
   }
   .view-wrapper > div > div:nth-child(2) {
     width: 100% !important;
@@ -342,7 +343,7 @@
 
   .view-wrapper .digitize-panel-content {
     overflow-y: auto;
-    height: 78vh;
+    height: calc(100vh - 210px);
     width: 100%;
   }
 
@@ -392,8 +393,12 @@
   min-width: auto !important;
   left: 2px;
   margin-right: 10px;
-  padding-left: 10px;
   justify-content: center;
+
+  svg {
+    height: 16px;
+    width: 16px;
+  }
 }
 
 .MuiInputBase-inputMarginDense-3199 {
@@ -486,4 +491,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.accordion_summary_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+}
+
+.accordion_summary_actions {
+  display: flex;
+  flex-direction: row;
+}
+
+.accordion_details {
+  width: 80% !important;
+  height: auto;
+  overflow-x: scroll;
+  overflow-y: scroll;
+}
+
+.accordion_details_loader {
+  height: 40px;
 }

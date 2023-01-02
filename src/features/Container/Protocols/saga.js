@@ -18,6 +18,7 @@ import {
   getSectionDetails,
   getProtocolTocData,
   resetSectionLoader,
+  getFileStream,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
@@ -216,6 +217,9 @@ export function* fetchSectionHeaderList(action) {
   };
   const header = yield call(httpCall, config);
   if (header.success) {
+    if (!header.data?.length) {
+      toast.error(header.message);
+    }
     yield put(getHeaderList(header));
   } else {
     yield put(getHeaderList({ success: false, data: [] }));
@@ -297,23 +301,74 @@ export function* getCompareResult(action) {
 }
 
 export function* getProtocolTocDataResult(action) {
-  console.log('getProtocolTocDataResult');
   const {
     payload: { docId },
   } = action;
-  // const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
-  const URL =
-    'http://127.0.0.1:8000/api/cpt_data/?aidoc_id=558a1964-bfed-4974-a52b-79848e1df372&link_level=1&toc=0';
+  const linkLevel = action.payload.tocFlag ? 6 : 1;
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${action.payload.docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
   const config = {
     url: URL,
     method: 'GET',
   };
   const header = yield call(httpCall, config);
   if (header.success) {
-    yield put(getProtocolTocData(header));
+    if (action.payload.tocFlag === 1) {
+      if (header?.data?.status === 204) {
+        toast.error(header.data.message || 'Something Went Wrong');
+        header.data = [];
+      }
+      yield put(getProtocolTocData(header));
+    } else {
+      yield put(getHeaderList(header));
+    }
   } else {
-    yield put(getProtocolTocData({ success: false, data: [] }));
+    if (!action.payload.tocFlag) {
+      yield put(getProtocolTocData({ success: false, data: [] }));
+    } else {
+      yield put(getHeaderList({ success: false, data: [] }));
+    }
+
     toast.error('Something Went Wrong');
+  }
+}
+
+export function* fetchFileStream(action) {
+  const preLoadingState = {
+    loader: true,
+    success: false,
+    error: '',
+    data: null,
+  };
+  yield put(getFileStream(preLoadingState));
+
+  const userId = yield getUserId();
+  const { name, dfsPath } = action.payload;
+  const apiBaseUrl = BASE_URL_8000; // 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  const config = {
+    url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
+      dfsPath,
+    )}&userId=${userId}&protocol=${name}`,
+    method: 'GET',
+    responseType: 'blob',
+  };
+  const { data, success } = yield call(httpCall, config);
+  if (success) {
+    const file = new Blob([data], { type: 'application/pdf' });
+    const successState = {
+      loader: false,
+      success: true,
+      error: '',
+      data: file,
+    };
+    yield put(getFileStream(successState));
+  } else {
+    const errorState = {
+      loader: false,
+      success: false,
+      error: 'Error',
+      data,
+    };
+    yield put(getFileStream(errorState));
   }
 }
 
@@ -323,8 +378,9 @@ function* watchProtocolAsync() {
   yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
   yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol);
   yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
-  yield takeEvery('GET_PROTOCOL_SECTION', fetchSectionHeaderList);
+  yield takeEvery('GET_PROTOCOL_SECTION', getProtocolTocDataResult);
   yield takeEvery('GET_SECTION_LIST', getSectionList);
+  yield takeEvery('GET_FILE_STREAM', fetchFileStream);
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
 }
 

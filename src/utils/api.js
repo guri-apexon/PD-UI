@@ -59,6 +59,13 @@ export const httpCall = async (config) => {
         code: 'DUPLICATE_ENTITY',
       };
     }
+    if (response.status === 206) {
+      return {
+        success: true,
+        data: [],
+        message: response.data,
+      };
+    }
   } catch (err) {
     if (err && err.response && err.response.status === 403) {
       return {
@@ -238,6 +245,7 @@ export const Apis = {
   search: 'http://ca2spdml04q:9200/pd-index/_search',
   HEADER_LIST: '/api/cpt_data',
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
+  DOWNLOAD_API: '/api/download_file',
 };
 
 export const SSO_ENABLED = environment !== 'local';

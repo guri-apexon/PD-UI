@@ -77,14 +77,14 @@ describe('PDF VIEWER', () => {
   test('Zoom Out Counter', () => {
     const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />);
     const zoomOut = screen.getByTestId('zoomOut');
-    expect(zoomOut).toBeInTheDocument('pageScale');
+    expect(zoomOut).toBeInTheDocument();
     fireEvent.click(zoomOut);
   });
 
   test('Zoom In Counter', () => {
     const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />);
     const zoomIn = screen.getByTestId('zoomIn');
-    expect(zoomIn).toBeInTheDocument('pageScale');
+    expect(zoomIn).toBeInTheDocument();
     fireEvent.click(zoomIn);
   });
 });
