@@ -115,7 +115,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                             <Typography
                               className="header-unselect"
                               onClick={(e) => {
-                                handlePageNo(e, item.pageNo, sectionIndex);
+                                handlePageNo(e, level1.page, sectionIndex);
                               }}
                             >
                               {level1?.source_file_section}
@@ -139,7 +139,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                                       onClick={(e) => {
                                         handlePageNo(
                                           e,
-                                          item.pageNo,
+                                          level2.page,
                                           sectionIndex,
                                         );
                                       }}

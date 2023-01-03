@@ -61,14 +61,6 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     setPage(page);
   }, [page]);
 
-  // useEffect(() => {
-  //   if (rightpage === -1) {
-  //     console.log('((((', pageRight);
-  //     setPage(scrollPage - 1);
-  //     handlePaginationPage(scrollPage - 1);
-  //   }
-  // }, [scrollPage]);
-
   useEffect(() => {
     console.log('currentPage', currentPage);
     if (refs[currentPage]?.current) {

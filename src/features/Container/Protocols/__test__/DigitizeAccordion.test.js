@@ -88,7 +88,7 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Pencil icon is visible for primary user', () => {
-    const bool = false;
+    const bool = true;
     const component = render(
       <Provider store={store}>
         <DigitizeAccordion
