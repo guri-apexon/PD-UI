@@ -5,7 +5,7 @@ import ChevronRight from 'apollo-react-icons/ChevronRight';
 import Loader from '../../Components/Loader/Loader';
 import { redaction } from '../../../AppConstant/AppConstant';
 import Pdf from '../Protocols/pdfviewer';
-import Digitize from './DigitalizeCard';
+import Digitize from './DigitizedPanel/DigitalizeCard';
 
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -269,7 +269,7 @@ class ProtocolViewClass extends React.Component {
                 resizable
               >
                 <Card className="protocol-source-column">
-                  <div className="panel-heading" style={{ marginLeft: '10px' }}>
+                  <div className="panel-heading">
                     Source Document
                   </div>
 

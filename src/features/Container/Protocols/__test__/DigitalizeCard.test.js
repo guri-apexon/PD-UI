@@ -1,7 +1,7 @@
 import { Provider } from 'react-redux';
 import store from '../../../../store/store';
 import { render, fireEvent } from '../../../../test-utils/test-utils';
-import DigitalizeCard from '../DigitalizeCard';
+import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
 
 const sectionRef = [
   {

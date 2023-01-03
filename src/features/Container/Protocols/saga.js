@@ -376,6 +376,9 @@ function* watchProtocolAsync() {
   yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
   yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol);
   yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
+}
+
+function* watchProtocolViews() {
   yield takeEvery('GET_PROTOCOL_SECTION', getProtocolTocDataResult);
   yield takeEvery('GET_SECTION_LIST', getSectionList);
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
@@ -385,5 +388,5 @@ function* watchProtocolAsync() {
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once
 export default function* protocolSaga() {
-  yield all([watchProtocolAsync()]);
+  yield all([watchProtocolAsync(), watchProtocolViews()]);
 }
