@@ -75,7 +75,7 @@ function DigitizeAccordion({
     if (expanded) {
       setCurrentActiveCard(item.link_id);
       if (linkId !== item.link_id) {
-        dispatch(setSectionLoader());
+        dispatch(setSectionLoader(true));
         dispatch(resetSectionData());
         dispatch({
           type: 'GET_SECTION_LIST',
