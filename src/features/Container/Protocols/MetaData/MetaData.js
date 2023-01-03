@@ -11,7 +11,7 @@ import TextField from 'apollo-react/components/TextField';
 import Tooltip from 'apollo-react/components/Tooltip';
 import PropTypes from 'prop-types';
 import Pencil from 'apollo-react-icons/Pencil';
-import initialRows from '../records.json';
+import initialRows from './Records.json';
 import './MetaData.scss';
 
 function ActionCell({ row }) {
