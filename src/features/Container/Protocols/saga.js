@@ -17,7 +17,7 @@ import {
   getHeaderList,
   getSectionDetails,
   getProtocolTocData,
-  resetSectionLoader,
+  setSectionLoader,
   getFileStream,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
@@ -233,15 +233,13 @@ function* getState() {
   return id.substring(1);
 }
 export function* getSectionList(action) {
-  console.log(action);
   const userId = yield getState();
   const config = {
     url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
     method: 'GET',
   };
   const sectionDetails = yield call(httpCall, config);
-  console.log(sectionDetails, 'sectionDetails');
-  yield put(resetSectionLoader());
+  yield put(setSectionLoader(false));
 
   if (sectionDetails.success) {
     yield put(
