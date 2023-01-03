@@ -112,12 +112,7 @@ function DigitizeAccordion({
     <Accordion expanded={expanded} onChange={handleChange}>
       <AccordionSummary>
         <div className="accordion_summary_container">
-          <Typography
-            style={{
-              fontweight: 'strong',
-            }}
-            data-testid="accordion-header"
-          >
+          <Typography className="section-title" data-testid="accordion-header">
             {item.source_file_section}
           </Typography>
           <div

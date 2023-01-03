@@ -73,13 +73,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
           marginTop={141}
           hasBackdrop
         >
-          {/* <TextField
-            icon={<Search />}
-            placeholder="Search"
-            className="search-Box"
-          /> */}
-
-          <div style={{ paddingLeft: '7px' }}>
+          <div className="toc-wrapper">
             {tocList?.map((item, index) => {
               const sectionIndex = index; // <= 0 ? 0 : index - 1;
               return (
