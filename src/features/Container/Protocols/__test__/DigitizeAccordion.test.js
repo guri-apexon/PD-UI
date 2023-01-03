@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import store from '../../../../store/store';
 
 import { render } from '../../../../test-utils/test-utils';
-import DigitizeAccordion from '../DigitizeAccordion';
+import DigitizeAccordion from '../DigitizedPanel/DigitizeAccordion';
 
 const item = {
   doc_id: '558a1964-bfed-4974-a52b-79848e1df372',
