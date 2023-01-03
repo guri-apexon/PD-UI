@@ -133,8 +133,9 @@ function DigitizeAccordion({
             <span data-testId="eyeIcon">
               <EyeShow style={{ paddingRight: '10px' }} />
             </span>
-            {primaryRole &&
-              (!showedit ? (
+            {
+              // primaryRole &&
+              !showedit ? (
                 // eslint-disable-next-line
                 <span data-testId="pencilIcon" onClick={onEditClick}>
                   <Pencil />
@@ -144,7 +145,8 @@ function DigitizeAccordion({
                 <span data-testId="saveIcon" onClick={onSaveClick}>
                   <Save />
                 </span>
-              ))}
+              )
+            }
           </div>
         </div>
       </AccordionSummary>
