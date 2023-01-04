@@ -43,7 +43,7 @@ function Digitize({
       sectionRef[sectionSequence]?.current?.scrollIntoView({
         behavior: 'instant',
       });
-      setCurrentActiveCard(headerList[sectionSequence].link_id);
+      setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
     // eslint-disable-next-line
   }, [sectionSequence]);
