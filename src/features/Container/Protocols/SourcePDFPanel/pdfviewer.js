@@ -7,7 +7,7 @@ import PlusIcon from 'apollo-react-icons/Plus';
 import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
-import { protocolSummary, getPdfData } from './protocolSlice';
+import { protocolSummary, getPdfData } from '../protocolSlice';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -62,15 +62,11 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }, [page]);
 
   useEffect(() => {
-    setPage(scrollPage - 1);
-    // handlePaginationPage(scrollPage - 1);
-  }, [scrollPage]);
-
-  useEffect(() => {
     console.log('currentPage', currentPage);
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
+    // eslint-disable-next-line
   }, [currentPage]);
 
   useEffect(() => {
@@ -94,6 +90,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
 
   useEffect(() => {
     const visible = Object.entries(visiblePages)
+      // eslint-disable-next-line
       .filter(([key, value]) => value)
       .map(([key]) => key);
     if (visible.length === 1) {
@@ -104,11 +101,6 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   useEffect(() => {
     setPage(scrollPage - 1);
   }, [scrollPage]);
-
-  const getCurrentPage = () => {
-    return scrollPage - 1 || currentPage;
-    // return currentPage;
-  };
 
   useEffect(() => {
     dispatch({
@@ -151,11 +143,10 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
           </div>
         ))}
       </Document>
-      <div className="sticky-bottom">
+      <div className="sticky-bottom pdf-pagination">
         <Pagination
           count={numPages}
           rowsPerPage={1}
-          // page={getCurrentPage()}
           page={currentPage}
           onChangePage={(pg) => {
             setPage(pg);

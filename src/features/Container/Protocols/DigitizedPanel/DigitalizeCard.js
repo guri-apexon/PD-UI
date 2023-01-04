@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
 import DigitizeAccordion from './DigitizeAccordion';
-import Loader from '../../Components/Loader/Loader';
-import { headerResult, protocolSummary } from './protocolSlice';
+import Loader from '../../../Components/Loader/Loader';
+import { headerResult, protocolSummary } from '../protocolSlice';
+import './Digitized.scss';
 
 function Digitize({
   sectionNumber,
@@ -42,7 +43,7 @@ function Digitize({
       sectionRef[sectionSequence]?.current?.scrollIntoView({
         behavior: 'instant',
       });
-      setCurrentActiveCard(headerList[sectionSequence].link_id);
+      setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
     // eslint-disable-next-line
   }, [sectionSequence]);
@@ -79,6 +80,7 @@ function Digitize({
       }
       lastpage = headerList[i].sequence;
     }
+    // eslint-disable-next-line
   }, [paginationPage]);
 
   return (

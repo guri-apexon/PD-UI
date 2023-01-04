@@ -14,17 +14,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
-import Lock from 'apollo-react-icons/Lock';
 import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './Digitized_edit';
-import Loader from '../../Components/Loader/Loader';
+import Loader from '../../../Components/Loader/Loader';
 import {
   sectionDetailsResult,
   sectionLoader,
   setSectionLoader,
   resetSectionData,
-} from './protocolSlice';
-import { createFullMarkup } from '../../../utils/utilFunction';
+} from '../protocolSlice';
+import { createFullMarkup } from '../../../../utils/utilFunction';
 
 function DigitizeAccordion({
   item,
@@ -76,7 +75,7 @@ function DigitizeAccordion({
     if (expanded) {
       setCurrentActiveCard(item.link_id);
       if (linkId !== item.link_id) {
-        dispatch(setSectionLoader());
+        dispatch(setSectionLoader(true));
         dispatch(resetSectionData());
         dispatch({
           type: 'GET_SECTION_LIST',
@@ -113,12 +112,7 @@ function DigitizeAccordion({
     <Accordion expanded={expanded} onChange={handleChange}>
       <AccordionSummary>
         <div className="accordion_summary_container">
-          <Typography
-            style={{
-              fontweight: 'strong',
-            }}
-            data-testid="accordion-header"
-          >
+          <Typography className="section-title" data-testid="accordion-header">
             {item.source_file_section}
           </Typography>
           <div
@@ -149,7 +143,7 @@ function DigitizeAccordion({
         </div>
       </AccordionSummary>
 
-      <AccordionDetails>
+      <AccordionDetails className="section-single-content">
         {sectionContentLoader && (
           <div className="loader accordion_details_loader">
             <Loader />
@@ -160,7 +154,7 @@ function DigitizeAccordion({
           (showedit ? (
             <MultilineEdit data={sections} />
           ) : (
-            <div style={{ height: '200px', flex: '1 1 auto' }}>
+            <div className="readable-content">
               <AutoSizer>
                 {({ width, height }) => (
                   <List
