@@ -1,4 +1,4 @@
-.thead {
+thead {
   display: contents !important;
 }
 .digitize-panel-content {
@@ -12,6 +12,12 @@
 }
 .metadata_item {
   padding: 2px 0px 2px 10px;
+}
+.metadat-flex-plus {
+  float: left;
+}
+.metadata-plus-icon {
+  float: right;
 }
 .metadata-flex {
   display: flex;
@@ -30,6 +36,12 @@
   height: 50%;
 }
 
+td {
+  border: 2px solid white;
+}
+tr {
+  border: 2px solid white;
+}
 .metadata-card {
   max-height: 450px !important;
   overflow-y: auto;

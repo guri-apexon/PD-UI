@@ -18,12 +18,10 @@ function MetaDataTable() {
     {
       header: 'Header',
       accessor: 'header',
-      sortFunction: compareNumbers,
     },
     {
       header: 'Description',
       accessor: 'name',
-      sortFunction: compareStrings,
     },
   ];
   const [column, setColumn] = useState(columns);
@@ -94,8 +92,8 @@ function MetaDataTable() {
           columns={column}
           rows={rows}
           rowId="employeeId"
-          initialSortedColumn="name"
-          initialSortOrder="asc"
+          // initialSortedColumn="name"
+          // initialSortOrder="asc"
           hidePagination
           hasScroll
           rowProps={{ hover: false }}

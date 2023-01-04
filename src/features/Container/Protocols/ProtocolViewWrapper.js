@@ -26,7 +26,7 @@ class ProtocolViewWrapper extends React.Component {
       pageNo: 0,
       sectionNumber: -1,
       paginationPage: 0,
-      rightBladeValue: 'Home',
+      rightBladeValue: 'MetaData',
     };
   }
 

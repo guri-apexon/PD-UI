@@ -6,6 +6,7 @@ import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import Card from 'apollo-react/components/Card/Card';
 import Pencil from 'apollo-react-icons/Pencil';
 import Save from 'apollo-react-icons/Save';
+import Plus from 'apollo-react-icons/Plus';
 import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import MetaDataEdit from './MetaDataEdit';
@@ -48,9 +49,13 @@ function MetaDataAccordian() {
       className="protocol-column protocol-digitize-column metadata-card"
       style={{ borderRight: '0' }}
     >
-      <div className="panel-heading" data-testid="header">
-        MetaData
+      <div className="panel-heading " data-testid="header">
+        <div className="metadat-flex-plus"> MetaData </div>
+        <div className="metadata-flex metadata-plus-icon">
+          <Plus />
+        </div>
       </div>
+
       {accordianData?.map((level1, index1) => {
         return (
           <div key={React.key} className="metadata_item">
