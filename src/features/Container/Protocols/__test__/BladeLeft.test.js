@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import '@testing-library/jest-dom/extend-expect';
-import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
+import { render, fireEvent } from '../../../../test-utils/test-utils';
 import BladeLeft from '../BladeLeft/BladeLeft';
 
 function Testing() {

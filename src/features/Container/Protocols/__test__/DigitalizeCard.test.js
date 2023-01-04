@@ -1,5 +1,3 @@
-import { Provider } from 'react-redux';
-import store from '../../../../store/store';
 import { render, fireEvent } from '../../../../test-utils/test-utils';
 import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
 import { headersList, summary } from './data';
@@ -26,7 +24,7 @@ const initialState = {
     },
     sectionDetails: {
       linkId: headersList[0].link_id,
-    }
+    },
   },
 };
 
