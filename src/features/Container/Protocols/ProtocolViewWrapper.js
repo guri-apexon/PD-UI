@@ -7,6 +7,8 @@ import Digitize from './DigitizedPanel/DigitalizeCard';
 import Panel from 'apollo-react/components/Panel';
 import PanelGroup from 'apollo-react/components/PanelGroup';
 import BladeLeft from './BladeLeft/BladeLeft';
+import BladeRight from './BladeRight/BladeRight';
+import MetaDataAccordian from './MetaData/MetaDataAccordian';
 const replaceall = require('replaceall');
 class ProtocolViewWrapper extends React.Component {
   constructor() {
@@ -24,13 +26,16 @@ class ProtocolViewWrapper extends React.Component {
       pageNo: 0,
       sectionNumber: -1,
       paginationPage: 0,
+      rightBladeValue: 'Home',
     };
   }
 
   handlePageRight = (pageRight) => {
     this.setState({ pageRight: pageRight });
   };
-
+  handleRightBlade = (rightBladeValue) => {
+    this.setState({ rightBladeValue: rightBladeValue });
+  };
   handlePaginationPage = (paginationPage) => {
     this.setState({ paginationPage: paginationPage });
   };
@@ -239,43 +244,53 @@ class ProtocolViewWrapper extends React.Component {
     return (
       <>
         <div>
-          <BladeLeft handlePageNo={this.handlePageNo}
-          dataSummary={this.props.data} />
+          <BladeLeft
+            handlePageNo={this.handlePageNo}
+            dataSummary={this.props.data}
+          />
+        </div>
+        <div>
+          <BladeRight handleRightBlade={this.handleRightBlade} />
         </div>
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
-            {this.props.data.userPrimaryRoleFlag && (
-              <Panel
-                width={window.innerWidth / 2}
-                minWidth={window.innerWidth / 4}
-                maxWidth={window.innerWidth / 1.5}
-                hideButton
-                resizable
-              >
-                <Card className="protocol-source-column">
-                  <div className="panel-heading">
-                    Source Document
-                  </div>
+            {/* {this.props.data.userPrimaryRoleFlag && ( */}
+            <Panel
+              width={window.innerWidth / 2}
+              minWidth={window.innerWidth / 4}
+              maxWidth={window.innerWidth / 1.5}
+              hideButton
+              resizable
+            >
+              <Card className="protocol-source-column">
+                <div className="panel-heading">Source Document</div>
 
-                  <Pdf
-                    page={this.state.pageNo}
-                    refs={this.props.refx}
-                    pageRight={this.state.pageRight}
-                    handlePaginationPage={this.handlePaginationPage}
-                  />
-                </Card>
-              </Panel>
-            )}
-            <Panel width={'auto'} hideButton>
-              <Digitize
-                sectionRef={this.props.sectionRef}
-                sectionNumber={this.state.sectionNumber}
-                headerDetails={this.state.headerDetails}
-                handlePageRight={this.handlePageRight}
-                data={this.props.data}
-                paginationPage={this.state.paginationPage}
-              />
+                <Pdf
+                  page={this.state.pageNo}
+                  refs={this.props.refx}
+                  pageRight={this.state.pageRight}
+                  handlePaginationPage={this.handlePaginationPage}
+                />
+              </Card>
             </Panel>
+            {/* )} */}
+
+            {this.state.rightBladeValue == 'Home' ? (
+              <Panel width={'auto'} hideButton>
+                <Digitize
+                  sectionRef={this.props.sectionRef}
+                  sectionNumber={this.state.sectionNumber}
+                  headerDetails={this.state.headerDetails}
+                  handlePageRight={this.handlePageRight}
+                  data={this.props.data}
+                  paginationPage={this.state.paginationPage}
+                />
+              </Panel>
+            ) : this.state.rightBladeValue == 'MetaData' ? (
+              <Panel width={'auto'} hideButton>
+                <MetaDataAccordian />
+              </Panel>
+            ) : null}
           </PanelGroup>
         </div>
       </>
