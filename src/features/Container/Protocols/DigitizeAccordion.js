@@ -24,6 +24,7 @@ import {
   resetSectionData,
 } from './protocolSlice';
 import { createFullMarkup } from '../../../utils/utilFunction';
+import MedicalTerm from './MedicalTerm';
 
 function DigitizeAccordion({
   item,
@@ -197,6 +198,7 @@ function DigitizeAccordion({
             </div>
           ))}
       </AccordionDetails>
+      <MedicalTerm />
     </Accordion>
   );
 }
