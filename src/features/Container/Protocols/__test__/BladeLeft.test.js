@@ -7,7 +7,13 @@ import BladeLeft from '../BladeLeft/BladeLeft';
 function Testing() {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
-  return <BladeLeft value={(open, expand)} setValue={(setOpen, setExpand)} />;
+  return (
+    <BladeLeft
+      value={(open, expand)}
+      setValue={(setOpen, setExpand)}
+      dataSummary={{ id: 1 }}
+    />
+  );
 }
 
 // function Testing2() {
@@ -20,12 +26,9 @@ function Testing() {
 
 describe.only('leftBlade should Opne when Click', () => {
   test('Open LeftBlade', () => {
-    const { container } = render(<Testing />);
-    screen.debug(undefined, Infinity);
-
-    fireEvent.click(
-      container.getElementsByClassName('Blade-expandPanelButton-309'),
-    );
-    screen.debug(undefined, Infinity);
+    const screen = render(<Testing />, {
+      initialState: { protocolTocData: { tocData: { data: [] } } },
+    });
+    fireEvent.click(screen.getByTestId('toc-component'));
   });
 });

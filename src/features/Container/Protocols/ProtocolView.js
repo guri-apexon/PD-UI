@@ -2,7 +2,7 @@ import { useState, createRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { viewResult, associateDocs } from './protocolSlice';
-import ProtocolViewClass from './ProtocolViewClass';
+import ProtocolViewWrapper from './ProtocolViewWrapper';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
@@ -60,7 +60,7 @@ function ProtocolView({ refs, data }) {
   return (
     <div className="protocol_data_container">
       {viewData && (
-        <ProtocolViewClass
+        <ProtocolViewWrapper
           view={viewData}
           data1={subSections}
           listData={listData}

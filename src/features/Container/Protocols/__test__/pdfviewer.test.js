@@ -1,11 +1,24 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { fireEvent } from 'react';
-
-import { render } from '../../../../test-utils/test-utils';
+import { render, fireEvent } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import Pdf, { useIntersectionObserver } from '../pdfviewer';
+import Pdf, { useIntersectionObserver } from '../SourcePDFPanel/pdfviewer';
+import { summary } from './data';
 
 const itIfDocumentDefined = typeof document !== 'undefined' ? it : it.skip;
+
+const initialState = {
+  protocol: {
+    summary: {
+      data: summary,
+      loading: false,
+      success: true,
+    },
+    fileStream: {
+      data: 'file://quintiles.net/enterprise/Services/protdigtest/pilot_iqvxml//574051fb-1cb5-4e6c-816c-f9964090a1e7/Prot_Amend-V3.0-2019-12-10-VER-000001%20(1).pdf',
+      success: true,
+    },
+  },
+};
 
 describe('useIntersectionObserver()', () => {
   const config = {};
@@ -77,14 +90,18 @@ describe('PDF VIEWER', () => {
   });
 
   test('Zoom Out Counter', () => {
-    const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />);
+    const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />, {
+      initialState,
+    });
     const zoomOut = screen.getByTestId('zoomOut');
     expect(zoomOut).toBeInTheDocument();
     fireEvent.click(zoomOut);
   });
 
   test('Zoom In Counter', () => {
-    const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />);
+    const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />, {
+      initialState,
+    });
     const zoomIn = screen.getByTestId('zoomIn');
     expect(zoomIn).toBeInTheDocument();
     fireEvent.click(zoomIn);

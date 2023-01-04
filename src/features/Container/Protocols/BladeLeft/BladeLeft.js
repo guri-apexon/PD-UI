@@ -63,6 +63,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     <div>
       <div className="bladeContainer">
         <Blade
+          data-testid="toc-component"
           onChange={onChange}
           open={open}
           expanded={expand}
