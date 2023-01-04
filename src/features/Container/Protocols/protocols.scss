@@ -76,7 +76,7 @@
       margin-top: 30px;
       margin-bottom: 2%;
       width: 100%;
-      background-color: rgb(211 211 211 / 50%);
+      // background-color: rgb(211 211 211 / 50%);
       font-size: 14px;
     }
     h3,
@@ -87,7 +87,7 @@
       margin-top: 30px;
       margin-bottom: 2%;
       width: 100%;
-      background-color: rgb(211 211 211 / 30%);
+      // background-color: rgb(211 211 211 / 30%);
       font-size: 14px;
     }
     .panel_group {
@@ -514,4 +514,16 @@
 
 .accordion_details_loader {
   height: 40px;
+}
+
+.ce-toolbar__content {
+  max-width: 95%;
+}
+
+.ce-block__content {
+  max-width: 95%;
+}
+
+.Richtextcontainer {
+  height: 300px;
 }

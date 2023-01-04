@@ -1,58 +1,43 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import RichTextEditor from 'apollo-react/components/RichTextEditor';
-import {
-  Editor,
-  EditorState,
-  convertFromRaw,
-  AtomicBlockUtils,
-} from 'draft-js';
-import ImageIcon from 'apollo-react-icons/Image';
-import Redo from 'apollo-react-icons/Redo';
-import Undo from 'apollo-react-icons/Undo';
+import ImageTool from '@editorjs/image';
+import { createReactEditorJS } from 'react-editor-js';
+import { EDITOR_JS_TOOLS, defaultValue } from './constants';
+// or if you inject ImageTool via standalone script
 import './Digitized_edit.scss';
 
-const sample = {
-  blocks: [
-    {
-      key: '50d3j',
-      text: 'This is an Example',
-      type: 'RightAlignedBlock',
-      depth: 0,
-      inlineStyleRanges: [
-        { offset: 0, length: 18, style: 'fontFamily-Arial Black' },
-      ],
-      entityRanges: [],
-      data: {},
+const ReactEditorJS = createReactEditorJS();
+
+const tools = {
+  ...EDITOR_JS_TOOLS,
+  image: {
+    class: ImageTool,
+    config: {
+      endpoints: {
+        byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
+        byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
+      },
     },
-  ],
-  entityMap: {},
+  },
 };
 
 function MultilineEdit({ data }) {
-  const fileRef = useRef();
+  const editorRef = useRef(null);
   const [value, setValue] = useState(null);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-
-  console.log({ data });
 
   useEffect(() => {
-    if (data?.length > 0) {
-      const arr = data.map((val, index) => ({
-        key: index.toString(),
-        text: val.content,
-        type: 'LeftAlignedBlock',
-        depth: 0,
-        inlineStyleRanges: [],
-        entityRanges: [],
-        data: {},
+    if (data.length > 0) {
+      const blocks = data.map((val) => ({
+        id: val.line_id,
+        type: val?.font_info?.font_style.includes('Heading')
+          ? 'header'
+          : 'paragraph',
+        data: {
+          text: val.content,
+        },
       }));
-      setEditorState(
-        EditorState.createWithContent(
-          convertFromRaw({ blocks: arr, entityMap: {} }),
-        ),
-      );
-      // setValue({ blocks: arr, entityMap: {} });
+
+      setValue({ blocks });
     }
   }, [data]);
 
@@ -60,72 +45,30 @@ function MultilineEdit({ data }) {
     console.log({ value });
   }, [value]);
 
-  const handleChangedRichTextEditor = (text) => {
-    console.log({ text });
+  const handleInitialize = (instance) => {
+    editorRef.current = instance;
   };
 
-  const onFileChange = (e) => {
-    console.log('fileChange', URL.createObjectURL(e.target.files[0]));
-    const contentState = editorState.getCurrentContent();
-    const contentStateWithEntity = contentState.createEntity(
-      'IMAGE',
-      'IMMUTABLE',
-      { src: URL.createObjectURL(e.target.files[0]) },
-    );
-    const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-    const newEditorState = EditorState.set(editorState, {
-      currentContent: contentStateWithEntity,
-    });
-    return AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, ' ');
+  console.log(editorRef?.current);
+
+  const handleSave = async () => {
+    try {
+      const savedData = await editorRef?.current?.save();
+      console.log({ savedData });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div className="Richtextcontainer" data-testId="richTextEditor">
+      <button onClick={handleSave}>Save</button>
       {value && (
-        <Editor
+        <ReactEditorJS
+          tools={tools}
           // defaultValue={value}
-          editorState={editorState}
-          // value={value}
-          onChange={handleChangedRichTextEditor}
-          // eslint-disable-next-line
-          customControllers={(editorState, onChange) => (
-            <>
-              <div className="style-button-group">
-                <input
-                  type="file"
-                  style={{ display: 'none' }}
-                  onChange={onFileChange}
-                  ref={fileRef}
-                />
-                <ImageIcon
-                  className="icon-button"
-                  onClick={() => {
-                    fileRef.current.click();
-                    // const undoState = EditorState.undo(editorState);
-                    // onChange(undoState);
-                  }}
-                />
-              </div>
-              <div className="style-button-group">
-                <Undo
-                  className="icon-button"
-                  onClick={() => {
-                    const undoState = EditorState.undo(editorState);
-                    onChange(undoState);
-                  }}
-                />
-              </div>
-              <div className="style-button-group">
-                <Redo
-                  className="icon-button"
-                  onClick={() => {
-                    const redoState = EditorState.redo(editorState);
-                    onChange(redoState);
-                  }}
-                />
-              </div>
-            </>
-          )}
+          data={value}
+          onInitialize={handleInitialize}
         />
       )}
     </div>
