@@ -1,0 +1,308 @@
+[
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "d06157b4-5d9e-47cf-9d40-8e0a56f77096",
+        "LinkLevel": 1,
+        "page": 1,
+        "sec_id": "",
+        "source_file_section": "blank_header",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 0,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe91978-7272-11ed-ab8c-005056ab6469",
+        "LinkLevel": 1,
+        "page": 15,
+        "sec_id": "1",
+        "source_file_section": "1 Background and rationale",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 1,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe940ff-7272-11ed-a73e-005056ab6469",
+        "LinkLevel": 1,
+        "page": 21,
+        "sec_id": "2",
+        "source_file_section": "2 Study objectives and theory of change",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 2,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe94105-7272-11ed-992b-005056ab6469",
+        "LinkLevel": 1,
+        "page": 22,
+        "sec_id": "3",
+        "source_file_section": "3 Description of the intervention",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 3,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe9410a-7272-11ed-8a13-005056ab6469",
+        "LinkLevel": 1,
+        "page": 29,
+        "sec_id": "4",
+        "source_file_section": "4 Study design",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 4,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe94114-7272-11ed-b688-005056ab6469",
+        "LinkLevel": 1,
+        "page": 32,
+        "sec_id": "5",
+        "source_file_section": "5 Study area",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 5,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe94117-7272-11ed-9a92-005056ab6469",
+        "LinkLevel": 1,
+        "page": 36,
+        "sec_id": "6",
+        "source_file_section": "6 Study population",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 6,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe9411a-7272-11ed-bb65-005056ab6469",
+        "LinkLevel": 1,
+        "page": 37,
+        "sec_id": "7",
+        "source_file_section": "7 Outcome measures and indicators",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 7,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe9411f-7272-11ed-88ca-005056ab6469",
+        "LinkLevel": 1,
+        "page": 40,
+        "sec_id": "8",
+        "source_file_section": "8 Study procedures",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 8,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe9412e-7272-11ed-b99b-005056ab6469",
+        "LinkLevel": 1,
+        "page": 46,
+        "sec_id": "9",
+        "source_file_section": "9 Statistical methods",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 9,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe94136-7272-11ed-b899-005056ab6469",
+        "LinkLevel": 1,
+        "page": 49,
+        "sec_id": "10",
+        "source_file_section": "10 Information technology, data management and monitoring",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 10,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe9413b-7272-11ed-9590-005056ab6469",
+        "LinkLevel": 1,
+        "page": 52,
+        "sec_id": "11",
+        "source_file_section": "11 Ethical considerations",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 11,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe94142-7272-11ed-b855-005056ab6469",
+        "LinkLevel": 1,
+        "page": 55,
+        "sec_id": "12",
+        "source_file_section": "12 Organization and timelines",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 12,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe94146-7272-11ed-98ef-005056ab6469",
+        "LinkLevel": 1,
+        "page": 58,
+        "sec_id": "13",
+        "source_file_section": "13 Capacity building, knowledge transfer and dissemination plans",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 13,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe94147-7272-11ed-9f01-005056ab6469",
+        "LinkLevel": 1,
+        "page": 59,
+        "sec_id": "14",
+        "source_file_section": "14 Budget",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 14,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe94148-7272-11ed-8b90-005056ab6469",
+        "LinkLevel": 1,
+        "page": 61,
+        "sec_id": "15",
+        "source_file_section": "15 References",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 15,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    },
+    {
+        "doc_id": "2afe4d3e-5e7a-414a-a15a-b061132511e1",
+        "group_type": "DocumentLinks",
+        "link_id": "afe94149-7272-11ed-82ef-005056ab6469",
+        "LinkLevel": 1,
+        "page": 65,
+        "sec_id": "16",
+        "source_file_section": "16 Appendices",
+        "LinkType": "toc",
+        "qc_change_type": "",
+        "sequence": 16,
+        "section_locked": false,
+        "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+        }
+    }
+]

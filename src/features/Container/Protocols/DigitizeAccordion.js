@@ -159,8 +159,8 @@ function DigitizeAccordion({
         )}
         {/* <MultilineEdit data={sections} /> */}
         {sections?.length > 0 &&
-          (showedit ? (
-            <MultilineEdit data={sections} />
+          (!showedit ? (
+            <MultilineEdit data={sections.slice(0, 20)} />
           ) : (
             <div style={{ height: '200px', flex: '1 1 auto' }}>
               <AutoSizer>

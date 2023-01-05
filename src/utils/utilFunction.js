@@ -1,4 +1,6 @@
 import Tooltip from 'apollo-react/components/Tooltip';
+import { cloneDeep } from 'lodash';
+
 import { redaction } from '../AppConstant/AppConstant';
 
 const replaceall = require('replaceall');
@@ -176,4 +178,18 @@ export const uploadDateValidation = (uploadDate) => {
     return true;
   }
   return false;
+};
+
+export const updateContent = (origArray, obj) => {
+  const arr = cloneDeep(origArray);
+
+  // eslint-disable-next-line consistent-return
+  arr.forEach((val) => {
+    if (val.line_id === obj.lineId) {
+      val.content = obj.content;
+      val.qc_change_type = obj.type;
+      return false;
+    }
+  });
+  return arr;
 };
