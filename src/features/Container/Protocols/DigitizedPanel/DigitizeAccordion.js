@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
@@ -105,7 +107,12 @@ function DigitizeAccordion({
   }, [currentActiveCard]);
 
   const handleEnrichedClick = (e) => {
-    console.log('Hello', e);
+    if (e.target.className === 'enriched-txt') {
+      // const termText = e.target.innerText;
+      setEnrichedTarget(e.target);
+    } else {
+      setEnrichedTarget(null);
+    }
   };
   // useEffect(() => {
   //   document
@@ -186,15 +193,14 @@ function DigitizeAccordion({
                           columnIndex={0}
                           rowIndex={index}
                         >
-                          <div style={style}>
+                          <div
+                            style={style}
+                            onClick={(e) => handleEnrichedClick(e)}
+                          >
                             <Typography
                               key={React.key}
                               dangerouslySetInnerHTML={createFullMarkup(
-                                `${
-                                  item.content
-                                }<b class="enriched-txt"="${handleEnrichedClick()}" onMouseLeave="${handleEnrichedClick(
-                                  null,
-                                )}">Enriched Text</b>`,
+                                `${item.content}<b class="enriched-txt">Enriched Text</b>`,
                               )}
                             />
                           </div>

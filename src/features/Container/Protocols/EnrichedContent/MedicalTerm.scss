@@ -1,33 +1,38 @@
-
-.medical-Text{
-    border: none;
-    background: none;
-    // margin: 0;
-	border: none;
-	background-color: white;
-	color: black;
-	border-radius: none;
-	display: flex;
-	flex-direction: column;
+.terms-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 200px;
+  li {
+    list-style-type: none;
+    .term-item {
+      border: none;
+      background: none;
+      // margin: 0;
+      border: none;
+      background-color: white;
+      color: black;
+      border-radius: none;
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      &:hover,
+      &:focus,
+      &.active {
+        background-color: #ecf3ff;
+      }
+      svg {
+        width: 0.7em;
+        height: 0.7em;
+      }
+    }
+  }
 }
-.medical-Text:hover {
-	background: white;
+.sub-popper{
+  .terms-list {
+    width: 146px;
   }
-li{
-	list-style-type: none
-  }
-  .prefered-Name
-  {
-	display: flex;
-	justify-content: space-between;
-  }
-  .cardStyle{
-	margin-left: 109%;
-    display: flex;
-    flex-direction: row;
-    width: 117%;
 }
-.edit-Icon{
-	padding-left: 10px
-	
+.edit-Icon {
+  padding-left: 10px;
 }

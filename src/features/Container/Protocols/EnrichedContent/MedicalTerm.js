@@ -9,71 +9,77 @@ import ArrowRight from 'apollo-react-icons/ArrowRight';
 import './MedicalTerm.scss';
 
 const clinicalTerms = [
-  { value: 'Synonims', text: 'Synomims' },
+  {
+    value: 'Synonims',
+    text: 'Synonims',
+    data: [{ value: 'Euismod' }, { value: 'Molestie' }, { value: 'Luptatum' }],
+  },
   { value: 'Clinical Terms', text: 'Clinical Terms' },
   { value: 'Ontology', text: 'Ontology' },
-  { value: 'Prefered Term', text: 'Prefered Term' },
+  {
+    value: 'Prefered Term',
+    text: 'Preferred Term',
+    data: [{ value: 'Euismod' }, { value: 'Molestie' }, { value: 'Luptatum' }],
+  },
   { value: 'Classification', text: 'Classification' },
 ];
 function MedicalTerm({ enrichedTarget }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
+  const [selectedTerm, setSelectedTerm] = useState(null);
 
   useEffect(() => {
-    setAnchorEl(enrichedTarget ? enrichedTarget?.currentTarget : null);
+    setAnchorEl(enrichedTarget || null);
+    if (!enrichedTarget) setSelectedTerm(null);
   }, [enrichedTarget]);
   return (
     <div>
       <Popper open={!!anchorEl} anchorEl={anchorEl}>
         <Card interactive>
-          <Typography>
-            <div className="prefered-Name">
-              <li>
-                {clinicalTerms.map((item) => {
-                  return (
-                    <Button
-                      className="medical-Text"
-                      onMouseOver={(e) =>
-                        setSAnchorEl(!SanchorEl ? e.currentTarget : null)
-                      }
-                      key={item.value}
-                      value={item.value}
-                    >
-                      {item.text}
-                      <ArrowRight />
-                    </Button>
-                  );
-                })}
-              </li>
-            </div>
-          </Typography>
+          <div className="terms-list">
+            {clinicalTerms.map((item) => {
+              return (
+                <li key={item.value}>
+                  <Button
+                    className="term-item"
+                    onMouseOver={(e) => {
+                      setSelectedTerm(item.text);
+                      setSAnchorEl(!SanchorEl ? e.currentTarget : null);
+                    }}
+                    value={item.value}
+                  >
+                    {item.text}
+                    <ArrowRight />
+                  </Button>
+                </li>
+              );
+            })}
+          </div>
         </Card>
       </Popper>
-      <div className="subheading-head">
-        <Popper open={!!SanchorEl} anchorEl={SanchorEl}>
-          <Card interactive className="cardStyle">
-            <Typography>
-              <li>
-                {clinicalTerms.map((item) => {
-                  //   console.log('item', item.text);
-                  return (
-                    <div
-                      //   className="medical-Text"
-
-                      key={item.value}
-                      value={item.value}
-                    >
+      <Popper
+        open={!!SanchorEl}
+        anchorEl={SanchorEl}
+        placement="right-start"
+        transition
+      >
+        <Card interactive className="sub-popper">
+          <div className="terms-list">
+            {clinicalTerms
+              .find((x) => x.text === selectedTerm)
+              ?.map((item) => {
+                return (
+                  <li key={item.value}>
+                    <Button value={item.value} className="term-item">
                       {item.text}
-
                       <Pencil className="edit-Icon" />
-                    </div>
-                  );
-                })}
-              </li>
-            </Typography>
-          </Card>
-        </Popper>
-      </div>
+                    </Button>
+                  </li>
+                );
+              })}
+          </div>
+        </Card>
+      </Popper>
     </div>
   );
 }
