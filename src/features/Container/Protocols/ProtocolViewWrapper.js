@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React from 'react';
 import Card from 'apollo-react/components/Card';
 import { redaction } from '../../../AppConstant/AppConstant';
@@ -223,18 +222,6 @@ class ProtocolViewWrapper extends React.Component {
       // this.hideEle();
     };
     this.refs = refs;
-    const scrollHide = (id) => {
-      refs[id].current &&
-        refs[id].current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      this.setState({
-        activeSubSection: id,
-        activeSection: this.state.section,
-      });
-      this.hideEle();
-    };
 
     return (
       <>
