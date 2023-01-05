@@ -4,59 +4,24 @@ import Card from 'apollo-react/components/Card';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
 import Loader from '../../Components/Loader/Loader';
 import { redaction } from '../../../AppConstant/AppConstant';
-import Pdf from '../Protocols/pdfviewer';
-import Digitize from './DigitalizeCard';
 
-import Accordion from 'apollo-react/components/Accordion';
-import AccordionDetails from 'apollo-react/components/AccordionDetails';
-
-import AccordionSummary from 'apollo-react/components/AccordionSummary';
-
-import Typography from 'apollo-react/components/Typography';
-import Drag from 'apollo-react-icons/Drag';
-import Panel from 'apollo-react/components/Panel';
-import PanelGroup from 'apollo-react/components/PanelGroup';
-import BladeLeft from './BladeLeft/BladeLeft';
-
-// import Digitize from './DigitizeCard';
-import { connect } from 'react-redux';
-import Cookies from 'universal-cookie';
-
-// import { headerList } from '../../../store/Digitized/actions';
 const replaceall = require('replaceall');
+
 class ProtocolViewClass extends React.Component {
   constructor() {
     super();
+
     this.handleClick = this.handleClick.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
+
     this.state = {
       popupVisible: false,
       subSectionData: [],
       section: null,
       activeSection: null,
       activeSubSection: null,
-      headerDetails: '',
-      pageRight: 0,
-      pageNo: 0,
-      sectionNumber: -1,
-      paginationPage: 0,
     };
   }
-
-  handlePageRight = (pageRight) => {
-    this.setState({ pageRight: pageRight });
-  };
-
-  handlePaginationPage = (paginationPage) => {
-    this.setState({ paginationPage: paginationPage });
-  };
-
-  handlePageNo = (event, page, sectionNo) => {
-    this.setState({ pageNo: page });
-    this.setState({ sectionNumber: sectionNo });
-  };
-
-  componentDidMount() {}
 
   createFullMarkup(str) {
     if (str || str !== undefined) {
@@ -77,6 +42,7 @@ class ProtocolViewClass extends React.Component {
       __html: '<div></div>',
     };
   }
+
   getTable(item, unq, noHeader = false) {
     const footNote = [];
     for (const [key, value] of Object.entries(item)) {
@@ -85,6 +51,7 @@ class ProtocolViewClass extends React.Component {
         footNote.push(value);
       }
     }
+
     return (
       <>
         <div style={{}}>
@@ -127,6 +94,7 @@ class ProtocolViewClass extends React.Component {
       </>
     );
   }
+
   getTocElement = (data) => {
     // let section_level = data[0];
     const CPT_section = data[1];
@@ -148,6 +116,7 @@ class ProtocolViewClass extends React.Component {
       }
       return this.getTable(content, 'TOC-TABLE');
     }
+
     switch (type) {
       case 'header':
         return (
@@ -180,9 +149,11 @@ class ProtocolViewClass extends React.Component {
         );
     }
   };
+
   handleClick(id) {
     this.setState({ section: id });
     document.addEventListener('click', this.handleOutsideClick, false);
+
     let subData = [];
     switch (id) {
       case 'TOC':
@@ -196,6 +167,7 @@ class ProtocolViewClass extends React.Component {
     }
     this.setState({ popupVisible: true, subSectionData: subData });
   }
+
   handleOutsideClick(e) {
     // ignore clicks on the component itself
     if (e.target && this.node && this.node.contains(e.target)) {
@@ -212,8 +184,10 @@ class ProtocolViewClass extends React.Component {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false, subSectionData: [] });
   };
+
   render() {
-    const { view, listData, page } = this.props;
+    const { view, listData } = this.props;
+
     const refs = this.state.subSectionData.reduce((acc, value) => {
       acc[value.id] = React.createRef();
       return acc;
@@ -238,6 +212,7 @@ class ProtocolViewClass extends React.Component {
       });
       // this.hideEle();
     };
+
     this.refs = refs;
     const scrollHide = (id) => {
       refs[id].current &&
@@ -252,50 +227,175 @@ class ProtocolViewClass extends React.Component {
       this.hideEle();
     };
 
-    return (
-      <>
-        <div>
-          <BladeLeft handlePageNo={this.handlePageNo}
-          dataSummary={this.props.data} />
+    if (view.loader) {
+      return (
+        <div
+          style={{
+            display: 'inline-block',
+            margin: 'auto',
+            marginTop: '10%',
+          }}
+        >
+          <Loader />
         </div>
-        <div className="view-wrapper">
-          <PanelGroup className="panel_group">
-            {this.props.data.userPrimaryRoleFlag && (
-              <Panel
-                width={window.innerWidth / 2}
-                minWidth={window.innerWidth / 4}
-                maxWidth={window.innerWidth / 1.5}
-                hideButton
-                resizable
-              >
-                <Card className="protocol-source-column">
-                  <div className="panel-heading" style={{ marginLeft: '10px' }}>
-                    Source Document
-                  </div>
+      );
+    }
 
-                  <Pdf
-                    page={this.state.pageNo}
-                    refs={this.props.refx}
-                    pageRight={this.state.pageRight}
-                    handlePaginationPage={this.handlePaginationPage}
-                  />
-                </Card>
-              </Panel>
-            )}
-            <Panel width={'auto'} hideButton>
-              <Digitize
-                sectionRef={this.props.sectionRef}
-                sectionNumber={this.state.sectionNumber}
-                headerDetails={this.state.headerDetails}
-                handlePageRight={this.handlePageRight}
-                data={this.props.data}
-                paginationPage={this.state.paginationPage}
-              />
-            </Panel>
-          </PanelGroup>
+    if (view.err) {
+      return (
+        <div
+          style={{
+            display: 'inline-block',
+            margin: 'auto',
+            marginTop: '10%',
+          }}
+        >
+          {view.err}
         </div>
-      </>
+      );
+    }
+    return (
+      <div className="view-wrapper">
+        <Card className="index-column">
+          <div
+            ref={(node) => {
+              this.node = node;
+            }}
+          >
+            <div
+              className="dropdown-wrapper"
+              data-testid="dropdown-wrapper-test"
+              id="dropdown-wrapper-id"
+            >
+              {listData.map((item) => (
+                <button
+                  className={`btn btn1 ${
+                    this.state.activeSection === item.id ? 'active' : ''
+                  }`}
+                  onClick={() =>
+                    item.subSections
+                      ? this.handleClick(item.id)
+                      : scrollSections(item.id)
+                  }
+                  key={`section-${item.id}`}
+                >
+                  <span
+                    style={{ marginLeft: '16px' }}
+                    dangerouslySetInnerHTML={{ __html: item.section }}
+                  >
+                    {/* {item.section}{" "} */}
+                  </span>
+                  {item.subSections && (
+                    <span style={{ float: 'right', fontSize: '1em' }}>
+                      <ChevronRight
+                        className="view-more-icon"
+                        variant="small"
+                        style={{ float: 'right', fontSize: '1em' }}
+                      />
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+            {this.state.popupVisible && (
+              <div
+                className="dropdown-menu sample"
+                data-testid="dropdown-menu-test"
+                id="dropdown-menu-id"
+              >
+                {this.state.subSectionData.map((data, i) => (
+                  <span>
+                    <a
+                      className={`btn btn1 ${
+                        this.state.activeSubSection === data.id ? 'active' : ''
+                      }`}
+                      key={`sub-section-${data.id}`}
+                      onClick={() => scrollHide(data.id)}
+                      style={{ width: '95%' }}
+                    >
+                      <p
+                        style={{ margin: 0, marginLeft: '16px' }}
+                        dangerouslySetInnerHTML={{ __html: data.section }}
+                      >
+                        {/* {`${data.section}`} */}
+                      </p>
+                    </a>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </Card>
+        <Card className="protocol-column">
+          <div
+            style={{
+              scrollPadding: '50px 0px 0px 50px',
+              padding: '10px 16px',
+              overflowY: 'scroll',
+              height: '65vh',
+            }}
+            data-testid="protocol-column-wrapper"
+          >
+            {view.iqvdataToc.data.length &&
+              view.iqvdataToc.data.map((item) => {
+                return this.getTocElement(item);
+              })}
+            {view.iqvdataSoa.map((item) => this.getTable(item, 'SOA'))}
+            {view.iqvdataSummary && (
+              <div
+                id="SUM"
+                key="SUM"
+                ref={refsSection.SUM}
+                style={{ marginTop: '10%' }}
+              >
+                <h1>Summary</h1>
+                <table border="1">
+                  <tbody>
+                    {view.iqvdataSummary.data.map((item) => {
+                      return (
+                        <tr>
+                          <td style={{ width: '30%' }}>
+                            {' '}
+                            <div
+                              style={{ fontWeight: '600' }}
+                              // dangerouslySetInnerHTML={{ __html: item[2] }}
+                              dangerouslySetInnerHTML={this.createFullMarkup(
+                                item[2],
+                              )}
+                            />
+                          </td>
+                          <td style={{ width: '70%' }}>
+                            {' '}
+                            <p
+                              style={{ marginTop: 0, marginBottom: '10px' }}
+                              // dangerouslySetInnerHTML={{ __html: item[1] }}
+                              dangerouslySetInnerHTML={this.createFullMarkup(
+                                item[1],
+                              )}
+                            />
+                          </td>
+                        </tr>
+                      );
+
+                      // return (
+                      //   <>
+                      //     <div dangerouslySetInnerHTML={{ __html: item[2] }}></div>
+                      //     <p
+                      //       style={{ marginTop: 0, marginBottom: "10px" }}
+                      //       dangerouslySetInnerHTML={{ __html: item[1] }}
+                      //     ></p>
+                      //   </>
+                      // );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </Card>
+      </div>
     );
   }
 }
+
 export default ProtocolViewClass;

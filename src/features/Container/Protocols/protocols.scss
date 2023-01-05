@@ -10,6 +10,10 @@
   > div.p-rl-20:first-child {
     padding-left: 16px;
   }
+  .protocol-breadcrumb{
+    margin-bottom: 0;
+    padding-inline-start: 0;
+  }
 
   margin-top: 48px;
   // max-width: 1200px;
@@ -25,6 +29,11 @@
     .panel-heading {
       padding: 15px 15px 15px 20px !important;
       font-weight: 600;
+    }
+  }
+  .protocol-source-column{
+    .panel-heading {
+      margin-left: 10px;
     }
   }
   .br-cr-protocol {
@@ -129,6 +138,9 @@
   .tab-column {
     display: flex;
     flex-direction: column;
+    .tabs-wrapper{
+      flex: 1;
+    }
     .overview {
       margin-left: 9px;
       margin-top: 10px;
@@ -481,13 +493,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.accordion_summary_container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 48px;
 }
 
 .accordion_summary_actions {

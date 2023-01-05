@@ -8,7 +8,6 @@ import protocolPageSlice, {
   getSectionDetails,
   getProtocolTocData,
   setSectionLoader,
-  resetSectionLoader,
   resetSectionData,
 } from '../protocolSlice';
 
@@ -151,18 +150,20 @@ describe(' ProtocolSlice Test Suite', () => {
     ).toEqual({ ...initialState, protocolTocData: payload });
   });
 
-  test('setSectionLoader slice', () => {
+  test('setSectionLoader show loader', () => {
     expect(
       protocolPageSlice(initialState, {
         type: setSectionLoader.type,
+        payload: true,
       }),
     ).toEqual({ ...initialState, sectionLoader: true });
   });
 
-  test('resetSectionLoader slice', () => {
+  test('setSectionLoader hide Loader', () => {
     expect(
       protocolPageSlice(initialState, {
-        type: resetSectionLoader.type,
+        type: setSectionLoader.type,
+        payload: false,
       }),
     ).toEqual({ ...initialState, sectionLoader: false });
   });

@@ -4,6 +4,7 @@ import { summary } from './data';
 
 const initialState = {
   protocol: {
+    protocolTocData: { tocData: { data: [] } },
     view: {
       iqvdataSoa: [{ Table: '<table> sss</table>' }],
       iqvdataSummary: {
@@ -32,8 +33,14 @@ const initialState = {
 };
 describe('ProtocolView', () => {
   test('ProtocolView Component', () => {
-    render(<ProtocolView protId="c498c738-a42e-4e5b-8886-b6a39ca15bf5" />, {
-      initialState,
-    });
+    render(
+      <ProtocolView
+        data={{ userPrimaryRoleFlag: true }}
+        protId="c498c738-a42e-4e5b-8886-b6a39ca15bf5"
+      />,
+      {
+        initialState,
+      },
+    );
   });
 });

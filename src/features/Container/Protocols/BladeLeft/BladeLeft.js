@@ -63,6 +63,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     <div>
       <div className="bladeContainer">
         <Blade
+          data-testid="toc-component"
           onChange={onChange}
           open={open}
           expanded={expand}
@@ -73,13 +74,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
           marginTop={141}
           hasBackdrop
         >
-          {/* <TextField
-            icon={<Search />}
-            placeholder="Search"
-            className="search-Box"
-          /> */}
-
-          <div style={{ paddingLeft: '7px' }}>
+          <div className="toc-wrapper">
             {tocList?.map((item, index) => {
               const sectionIndex = index; // <= 0 ? 0 : index - 1;
               return (
@@ -115,7 +110,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                             <Typography
                               className="header-unselect"
                               onClick={(e) => {
-                                handlePageNo(e, item.pageNo, sectionIndex);
+                                handlePageNo(e, level1.page, sectionIndex);
                               }}
                             >
                               {level1?.source_file_section}
@@ -139,7 +134,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                                       onClick={(e) => {
                                         handlePageNo(
                                           e,
-                                          item.pageNo,
+                                          level2.page,
                                           sectionIndex,
                                         );
                                       }}

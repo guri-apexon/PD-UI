@@ -23,10 +23,6 @@ function MultilineEdit({ data }) {
     }
   }, [data]);
 
-  useEffect(() => {
-    console.log({ value });
-  }, [value]);
-
   const handleChangedRichTextEditor = (text) => {
     console.log({ text });
   };

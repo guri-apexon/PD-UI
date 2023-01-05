@@ -7,7 +7,7 @@ import PlusIcon from 'apollo-react-icons/Plus';
 import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
-import { protocolSummary, getPdfData } from './protocolSlice';
+import { protocolSummary, getPdfData } from '../protocolSlice';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -60,14 +60,6 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   useEffect(() => {
     setPage(page);
   }, [page]);
-
-  // useEffect(() => {
-  //   if (rightpage === -1) {
-  //     console.log('((((', pageRight);
-  //     setPage(scrollPage - 1);
-  //     handlePaginationPage(scrollPage - 1);
-  //   }
-  // }, [scrollPage]);
 
   useEffect(() => {
     console.log('currentPage', currentPage);

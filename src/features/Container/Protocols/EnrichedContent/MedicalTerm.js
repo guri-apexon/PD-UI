@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import './MedicalTerm.scss';
+import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import Button from 'apollo-react/components/Button';
 import Card from 'apollo-react/components/Card';
 import Popper from 'apollo-react/components/Popper';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
+import './MedicalTerm.scss';
 
 const clinicalTerms = [
   { value: 'Synonims', text: 'Synomims' },
@@ -14,26 +15,15 @@ const clinicalTerms = [
   { value: 'Prefered Term', text: 'Prefered Term' },
   { value: 'Classification', text: 'Classification' },
 ];
-function MedicalTerm() {
+function MedicalTerm({ enrichedTarget }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
-  //   const [state, setState] = useState();
 
-  //   handleClick = (event) => {
-  //     setState({ open: true, anchorEl: event.currentTarget });
-  //   };
-
-  //   handleRequestClose = () => {
-  //     setState({ open: false });
-  //   };
+  useEffect(() => {
+    setAnchorEl(enrichedTarget ? enrichedTarget?.currentTarget : null);
+  }, [enrichedTarget]);
   return (
     <div>
-      <Button
-        className="medical-Text"
-        onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
-      >
-        Asthama
-      </Button>
       <Popper open={!!anchorEl} anchorEl={anchorEl}>
         <Card interactive>
           <Typography>
@@ -89,3 +79,7 @@ function MedicalTerm() {
 }
 
 export default MedicalTerm;
+
+MedicalTerm.propTypes = {
+  enrichedTarget: PropTypes.isRequired,
+};
