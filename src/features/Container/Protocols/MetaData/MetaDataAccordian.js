@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import Typography from 'apollo-react/components/Typography';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -20,16 +20,31 @@ function MetaDataAccordian() {
   const [accordianData, setAccordianData] = useState(accordianArray);
 
   const handleAccordian = (index) => {
+    console.log('accordianData>>>', accordianData);
     const accordianvalue = [...accordianData];
-    console.log(accordianvalue[index].isActive);
+    for (let i = 0; i < accordianData.length; i++) {
+      if (i === index) {
+        // console.log(i, ' ', index);
+      } else {
+        accordianvalue[i].isActive = false;
+      }
+    }
     accordianvalue[index].isActive = !accordianvalue[index].isActive;
+    accordianvalue[index].isEdit = false;
     setAccordianData(accordianvalue);
   };
 
   const handleEdit = (index, e) => {
     e.stopPropagation();
     const accordianvalue = [...accordianData];
-    console.log(accordianvalue[index].isActive);
+    for (let i = 0; i < accordianData.length; i++) {
+      if (i === !index) {
+        // if
+      } else {
+        accordianvalue[i].isActive = false;
+        accordianvalue[i].isEdit = false;
+      }
+    }
     accordianvalue[index].isEdit = true;
     accordianvalue[index].isActive = true;
     setAccordianData(accordianvalue);
@@ -39,7 +54,6 @@ function MetaDataAccordian() {
     e.stopPropagation();
     const accordianvalue = [...accordianData];
     console.log(accordianvalue[index].isActive);
-    // accordianvalue[index].isActive = false;
     accordianvalue[index].isEdit = false;
     setAccordianData(accordianvalue);
   };

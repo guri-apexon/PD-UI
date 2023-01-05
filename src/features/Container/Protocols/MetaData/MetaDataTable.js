@@ -1,6 +1,6 @@
 import Card from 'apollo-react/components/Card/Card';
 import EllipsisVerticalIcon from 'apollo-react-icons/EllipsisVertical';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from 'apollo-react/components/Button';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import Table, {
@@ -9,18 +9,30 @@ import Table, {
 } from 'apollo-react/components/Table';
 import PropTypes from 'prop-types';
 import Checkbox from 'apollo-react/components/Checkbox';
+import { useDispatch, useSelector } from 'react-redux';
 import initialRows from './Records.json';
 import './MetaData.scss';
+import { metaSummaryField } from '../protocolSlice';
 
 function MetaDataTable() {
   const [rows] = useState(initialRows);
+  const dispatch = useDispatch();
+  const summaryFields = useSelector(metaSummaryField);
+
+  useEffect(() => {
+    console.log('useEffect');
+    dispatch({
+      type: 'GET_METADATA_SUMMARYDATA',
+    });
+  }, []);
+
   const columns = [
     {
-      header: 'Header',
+      header: 'Key',
       accessor: 'header',
     },
     {
-      header: 'Description',
+      header: 'Value',
       accessor: 'name',
     },
   ];
@@ -40,7 +52,6 @@ function MetaDataTable() {
       }
     }
 
-    console.log('index', index);
     columnTemp.splice(index, 1);
     setColumn(columnTemp);
   };
@@ -48,13 +59,11 @@ function MetaDataTable() {
     setConfidence(checked);
     const columnTemp = [...column];
     if (checked) {
-      columnTemp.push({ header: 'Confidence', accessor: 'confidence' });
+      columnTemp.push({ header: 'Confidence Score', accessor: 'confidence' });
       setColumn(columnTemp);
     } else {
-      removeIndex('Confidence');
+      removeIndex('Confidence Score');
     }
-
-    console.log(column);
   };
 
   const handleNotes = (e, checked) => {

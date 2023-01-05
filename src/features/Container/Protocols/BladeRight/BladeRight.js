@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
 import Switch from 'apollo-react/components/Switch';
 import Button from 'apollo-react/components/Button';
-import Link from 'apollo-react/components/Link';
 import House from 'apollo-react-icons/House';
 import PresentationBarDark from 'apollo-react-icons/PresentationBarDark';
 import MedicalCard from 'apollo-react-icons/MedicalCard';
@@ -104,7 +103,7 @@ function BladeRight({ handleRightBlade }) {
                   handleClick(1);
                 }}
               >
-                <PresentationBarDark className="icon-padding" /> Medical Terms
+                <PresentationBarDark className="icon-padding" /> Clinical Terms
               </Button>
               <Button
                 className={textValue[2] ? 'link-text-clicked' : 'link-text'}
