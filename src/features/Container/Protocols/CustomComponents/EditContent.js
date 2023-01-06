@@ -12,44 +12,49 @@ function ContentEdit({
   deleteSection,
   edit,
 }) {
-  const [text, setText] = useState('');
-  const currentEditData = useRef('');
-  const currentLineID = useRef('');
+  const [text, setText] = useState(content);
+  //   const currentEditData = useRef('');
+  //   const currentLineID = useRef('');
   useEffect(() => {
     setText(content);
+    // currentEditData.current = content;
+    // currentLineID.current = lineID;
   }, [content]);
 
   const handleChange = (value, id) => {
-    currentEditData.current = value;
-    currentLineID.current = id;
+    setText(value);
+    // currentEditData.current = value;
+    // currentLineID.current = id;
     // setCurrentLineID(id);
   };
   const handleBlur = () => {
-    handleContentEdit(currentEditData.current, currentLineID.current);
-    currentEditData.current = '';
-    currentLineID.current = '';
+    handleContentEdit(text, lineID);
+    // currentEditData.current = text;
+    // currentLineID.current = lineID;
+
     // setCurrentLineID("");
   };
 
   const handleClickChild = (item, type) => {
-    if (type === 'symbol') {
-      if (currentEditData.current) {
-        const newText = `${currentEditData.current} ${item.name}`;
-        currentEditData.current = newText;
-      } else {
-        const newText = `${text} ${item.name}`;
-        setText(newText);
-      }
-    }
+    // if (type === 'symbol') {
+    //   if (currentEditData.current) {
+    //     const newText = `${currentEditData.current} ${item.name}`;
+    //     currentEditData.current = newText;
+    //   } else {
+    //     const newText = `${text} ${item.name}`;
+    //     setText(newText);
+    //   }
+    // }
   };
 
   const handleKeyDown = (e) => {
-    if (
-      [46, 8].includes(e.keyCode) &&
-      (e.target.value === '' || !e.target.value)
-    ) {
-      deleteSection(lineID);
-    }
+    console.log({ text });
+    // if (
+    //   [46, 8].includes(e.keyCode) &&
+    //   (e.target.value === '' || !e.target.value)
+    // ) {
+    //   deleteSection(lineID);
+    // }
   };
 
   return (
@@ -58,9 +63,9 @@ function ContentEdit({
         className={`contentEditable ${
           type === 'header' ? 'content_header' : null
         }`}
-        html={currentLineID.current === lineID ? currentEditData.current : text}
+        html={text}
         disabled={!edit}
-        onChange={(event) => handleChange(event.target.value, lineID)}
+        onChange={(e) => setText(e.target.value)}
         onBlur={handleBlur}
         tagName="div"
         // onClick={(e) => contentClick(lineID, e)}

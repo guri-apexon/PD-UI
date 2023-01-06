@@ -210,8 +210,8 @@ export function* fetchSectionHeaderList(action) {
   const {
     payload: { docId },
   } = action;
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
-  // const URL = '/header.json';
+  // const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
+  const URL = '/header.json';
   const config = {
     url: URL,
     method: 'GET',
@@ -237,8 +237,8 @@ export function* getSectionList(action) {
   console.log(action);
   const userId = yield getState();
   const config = {
-    url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
-    // url: '/resp.json',
+    // url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
+    url: '/resp.json',
     method: 'GET',
   };
   const sectionDetails = yield call(httpCall, config);
@@ -270,8 +270,8 @@ export function* getCompareResult(action) {
         message: '',
       }),
     );
-    const url = `${BASE_URL_8000}/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
-    // const url = '/compareWithSection.json';
+    // const url = `${BASE_URL_8000}/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
+    const url = '/compareWithSection.json';
     const resp = yield call(httpCall, { url, method: 'GET' });
 
     if (resp.data) {
@@ -307,8 +307,8 @@ export function* getProtocolTocDataResult(action) {
     payload: { docId },
   } = action;
   const linkLevel = action.payload.tocFlag ? 6 : 1;
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${action.payload.docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
-  // const URL = '/header.json';
+  // const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${action.payload.docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
+  const URL = '/header.json';
 
   const config = {
     url: URL,

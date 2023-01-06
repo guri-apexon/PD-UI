@@ -67,4 +67,5 @@ RenderContent.propTypes = {
   activeLineID: PropTypes.isRequired,
   setActiveLineID: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
+  edit: PropTypes.isRequired,
 };

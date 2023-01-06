@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import HoverComponent from './CustomComponents/HoverComponent';
 import RenderContent from './CustomComponents/RenderContent';
@@ -11,7 +12,10 @@ import {
   markContentForDelete,
 } from '../../../utils/utilFunction';
 
-function MultilineEdit({ data, edit }) {
+import { setSectionDetails } from './protocolSlice';
+
+function MultilineEdit({ data, edit, setSections }) {
+  const dispatch = useDispatch();
   const [activeLineID, setActiveLineID] = useState('');
 
   const sectionName = null;
@@ -19,8 +23,9 @@ function MultilineEdit({ data, edit }) {
   const [sectionData, setSectionData] = useState([...data]);
 
   const handleAddSegment = (obj, lineId) => () => {
-    const arr = addContent(sectionData, obj, lineId);
-    setSectionData(arr);
+    const arr = addContent(data, obj, lineId);
+    // setSections(arr);
+    dispatch(setSectionDetails(arr));
   };
 
   // const handleSectionHeaderEdit = (value, line_id) => [
@@ -34,23 +39,20 @@ function MultilineEdit({ data, edit }) {
       sectionName,
       content: value,
     };
-    const arr = updateContent(sectionData, obj);
-    setSectionData(arr);
+    const arr = updateContent(data, obj);
+    // setSections(arr);
+    dispatch(setSectionDetails(arr));
   };
 
   const deleteSection = (lineId) => {
-    const arr = markContentForDelete(sectionData, lineId);
-    setSectionData(arr);
+    const arr = markContentForDelete(data, lineId);
+    // setSections(arr);
+    dispatch(setSectionDetails(arr));
   };
-
-  useEffect(() => {
-    console.clear();
-    console.log({ sectionData });
-  }, [sectionData]);
 
   return (
     <div className="Richtextcontainer" data-testId="richTextEditor">
-      {sectionData
+      {data
         ?.filter((obj) => obj.qc_change_type !== 'delete')
         .map((data) => (
           <div key={data.line_id}>
@@ -86,4 +88,5 @@ export default MultilineEdit;
 MultilineEdit.propTypes = {
   data: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  setSections: PropTypes.isRequired,
 };

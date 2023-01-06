@@ -60,6 +60,7 @@ function DigitizeAccordion({
     } else {
       setSections([]);
     }
+    console.log('useEffect');
   }, [sectionHeaderDetails]);
 
   const handleChange = () => {
@@ -160,7 +161,11 @@ function DigitizeAccordion({
         {/* <MultilineEdit data={sections} /> */}
         {sections?.length > 0 &&
           (showedit ? (
-            <MultilineEdit data={sections} edit={showedit} />
+            <MultilineEdit
+              data={sections}
+              edit={showedit}
+              setSections={setSections}
+            />
           ) : (
             <div style={{ height: '200px', flex: '1 1 auto' }}>
               <AutoSizer>
