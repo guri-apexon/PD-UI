@@ -72,7 +72,7 @@ tr {
 
 [class*='MuiTableCell-root-']:first-child {
   background-color: #f4f4f4;
-  padding: 5px;
+  padding-left: 23px;
 }
 [class*='MuiTableCell-body-'] {
   background-color: #f9f9f9;
@@ -80,9 +80,25 @@ tr {
 }
 [class*='MuiTableCell-head-'] {
   color: black;
+  padding-left: 23px;
 }
 
 .digitize-panel-content::-webkit-scrollbar {
   background: transparent;
   width: 0px;
+}
+[class*='MuiAccordionDetails-root-'] {
+  padding: 0;
+}
+.protocols {
+  .view-wrapper {
+    table tbody tr td {
+      padding-left: 23px;
+      width: 1%;
+    }
+  }
+}
+
+[class*='MuiTableRow-root-'] {
+  height: auto !important;
 }

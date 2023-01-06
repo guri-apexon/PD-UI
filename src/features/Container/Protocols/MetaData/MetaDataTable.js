@@ -1,30 +1,12 @@
-import Card from 'apollo-react/components/Card/Card';
-import EllipsisVerticalIcon from 'apollo-react-icons/EllipsisVertical';
-import React, { useEffect, useState } from 'react';
-import Button from 'apollo-react/components/Button';
-import IconMenuButton from 'apollo-react/components/IconMenuButton';
-import Table, {
-  compareNumbers,
-  compareStrings,
-} from 'apollo-react/components/Table';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import Table from 'apollo-react/components/Table';
+
 import Checkbox from 'apollo-react/components/Checkbox';
-import { useDispatch, useSelector } from 'react-redux';
 import initialRows from './Records.json';
 import './MetaData.scss';
-import { metaSummaryField } from '../protocolSlice';
 
 function MetaDataTable() {
   const [rows] = useState(initialRows);
-  const dispatch = useDispatch();
-  const summaryFields = useSelector(metaSummaryField);
-
-  useEffect(() => {
-    console.log('useEffect');
-    dispatch({
-      type: 'GET_METADATA_SUMMARYDATA',
-    });
-  }, []);
 
   const columns = [
     {
@@ -46,7 +28,6 @@ function MetaDataTable() {
     console.log('before', columnTemp);
     let index;
     for (let i = 0; i < columnTemp.length; i++) {
-      console.log(Object.values(columnTemp[i])[0]);
       if (Object.values(columnTemp[i])[0] === key) {
         index = i;
       }
@@ -101,8 +82,6 @@ function MetaDataTable() {
           columns={column}
           rows={rows}
           rowId="employeeId"
-          // initialSortedColumn="name"
-          // initialSortOrder="asc"
           hidePagination
           hasScroll
           rowProps={{ hover: false }}

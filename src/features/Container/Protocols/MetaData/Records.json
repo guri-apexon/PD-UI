@@ -15,7 +15,8 @@
   },
   {
     "header": "versionNumber",
-    "name": "v160"
+    "name": "v160",
+    "confidence": 70
   },
   {
     "header": "amendmentNumber",
@@ -43,7 +44,8 @@
   },
   {
     "header": "moleculeDevice ",
-    "name": "mol"
+    "name": "mol",
+    "confidence": 65
   },
   {
     "header": "investigator ",
@@ -55,7 +57,9 @@
   },
   {
     "header": "drug ",
-    "name": "H1"
+    "name": "H1",
+    "confidence": 80,
+    "note": "H1 & B1"
   },
   {
     "header": "compoundNumber ",
@@ -71,7 +75,9 @@
   },
   {
     "header": "trialTypeRandomized ",
-    "name": "trial"
+    "name": "trial",
+    "confidence": 75,
+    "note": "Trial Type Taken Random"
   },
   {
     "header": "sponsorAddress ",
@@ -91,7 +97,8 @@
   },
   {
     "header": "studyPopulation ",
-    "name": 31000
+    "name": 31000,
+    "confidence": 70
   },
   {
     "header": "inclusionCriteria ",
@@ -115,6 +122,7 @@
   },
   {
     "header": "isAmendment ",
-    "name": "Y"
+    "name": "Y",
+    "note": "Y & N"
   }
 ]
