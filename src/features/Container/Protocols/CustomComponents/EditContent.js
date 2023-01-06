@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
+import PropTypes from 'prop-types';
 import FontProperties from './FontProperties';
 
 function ContentEdit({
-  edit,
+  type,
   lineID,
   setActiveLineID,
   activeLineID,
@@ -28,10 +29,12 @@ function ContentEdit({
     currentLineID.current = '';
     // setCurrentLineID("");
   };
+
   const contentClick = (lineID, e) => {
     currentEditData.current = text;
     setActiveLineID(lineID, e);
   };
+
   const handleClickChild = (item, type) => {
     if (type === 'symbol') {
       if (currentEditData.current) {
@@ -43,16 +46,19 @@ function ContentEdit({
       }
     }
   };
+
   return (
     <div className="format-container">
       <ContentEditable
-        className={'contentEditable'}
+        className={`contentEditable ${
+          type === 'header' ? 'content_header' : null
+        }`}
         html={currentLineID.current === lineID ? currentEditData.current : text}
         disabled={lineID !== activeLineID}
         onChange={(event) => handleChange(event.target.value, lineID)}
         onBlur={handleBlur}
         tagName="div"
-        onClick={(e) => contentClick(lineID, e)}
+        // onClick={(e) => contentClick(lineID, e)}
         data-placeholder
       />
       {lineID === activeLineID && <FontProperties onClick={handleClickChild} />}
@@ -60,3 +66,12 @@ function ContentEdit({
   );
 }
 export default ContentEdit;
+
+ContentEdit.propTypes = {
+  type: PropTypes.isRequired,
+  lineID: PropTypes.isRequired,
+  setActiveLineID: PropTypes.isRequired,
+  activeLineID: PropTypes.isRequired,
+  content: PropTypes.isRequired,
+  handleContentEdit: PropTypes.isRequired,
+};

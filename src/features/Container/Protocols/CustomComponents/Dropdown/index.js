@@ -1,25 +1,31 @@
-import { useState } from "react";
-import "./style.scss";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import './style.scss';
 
 const classNames = {
-  active: "dropdown-content active-show-list",
-  notActive: "dropdown-content",
+  active: 'dropdown-content active-show-list',
+  notActive: 'dropdown-content',
 };
-const Dropdown = ({
+function Dropdown({
   list,
   buttonName,
   contentStyle,
   headerStyle,
   onClick,
   type,
-}) => {
+}) {
   const [showList, setShowList] = useState(false);
   const showMenu = () => {
     setShowList(!showList);
   };
   return (
     <div className="dropdown">
-      <button className="dropbtn" onClick={showMenu} style={headerStyle}>
+      <button
+        type="button"
+        className="dropbtn"
+        onClick={showMenu}
+        style={headerStyle}
+      >
         {buttonName}
       </button>
       <div
@@ -27,14 +33,15 @@ const Dropdown = ({
         style={contentStyle}
       >
         <ul>
-          {list.map((item, i) => {
-            if (type === "header") {
+          {list.map((item) => {
+            if (type === 'header') {
               return (
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
                 <li
-                  key={item.id + i}
+                  key={React.key}
                   onMouseDown={(evt) => {
                     evt.preventDefault();
-                    document.execCommand("formatBlock", false, item.name);
+                    document.execCommand('formatBlock', false, item.name);
                   }}
                 >
                   {item.name}
@@ -42,7 +49,8 @@ const Dropdown = ({
               );
             }
             return (
-              <li key={item.id + i} onClick={() => onClick(item, type)}>
+              // eslint-disable-next-line
+              <li key={React.key} onClick={() => onClick(item, type)}>
                 {item.name}
               </li>
             );
@@ -51,5 +59,14 @@ const Dropdown = ({
       </div>
     </div>
   );
-};
+}
 export default Dropdown;
+
+Dropdown.propTypes = {
+  list: PropTypes.isRequired,
+  buttonName: PropTypes.isRequired,
+  contentStyle: PropTypes.isRequired,
+  headerStyle: PropTypes.isRequired,
+  onClick: PropTypes.isRequired,
+  type: PropTypes.isRequired,
+};

@@ -1,6 +1,6 @@
 import Tooltip from 'apollo-react/components/Tooltip';
 import { cloneDeep } from 'lodash';
-
+import { v4 as uuidv4 } from 'uuid';
 import { redaction } from '../AppConstant/AppConstant';
 
 const replaceall = require('replaceall');
@@ -191,5 +191,16 @@ export const updateContent = (origArray, obj) => {
       return false;
     }
   });
+  return arr;
+};
+
+export const addContent = (origArray, obj, lineId) => {
+  const arr = cloneDeep(origArray);
+  let index = 0;
+  obj.line_id = uuidv4();
+  // eslint-disable-next-line consistent-return
+  const idx = arr.findIndex((val) => val.line_id === lineId);
+  index = idx + 1;
+  arr.splice(index, 0, obj);
   return arr;
 };

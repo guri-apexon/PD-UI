@@ -47,6 +47,14 @@
   }
 }
 
+.content_container {
+  min-height: 30px;
+  > div > .format-container > .contentEditable {
+    min-width: 300px;
+    min-height: 24px;
+  }
+}
+
 .editable {
   margin: 0;
   height: 200px;

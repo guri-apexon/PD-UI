@@ -26,10 +26,10 @@
       margin-block-end: 0;
       li {
         list-style: none;
-        flex: 0 0 33.333333%;
         cursor: pointer;
         text-align: center;
         font-size: 12px;
+        padding: 8px;
       }
       li:hover {
         background-color: #eee;

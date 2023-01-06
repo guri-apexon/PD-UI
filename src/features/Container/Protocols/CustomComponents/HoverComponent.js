@@ -1,8 +1,12 @@
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import Plus from 'apollo-react-icons/Plus';
+import PropTypes from 'prop-types';
+
 import { v4 as uuidv4 } from 'uuid';
 import './hoverComponent.scss';
+
+import { text, header } from './constants';
 
 import {
   TableElement,
@@ -11,7 +15,7 @@ import {
   ImageElement,
 } from './MenuItems';
 
-function HoverComponent({ line_id, hoverIndex, handleAddSegment }) {
+function HoverComponent({ lineId, activeLineID, handleAddSegment }) {
   const menuItems = [
     {
       label: <TableElement />,
@@ -19,11 +23,11 @@ function HoverComponent({ line_id, hoverIndex, handleAddSegment }) {
     },
     {
       text: <TextElement />,
-      onClick: handleAddSegment('text'),
+      onClick: handleAddSegment(text, lineId),
     },
     {
       text: <TextHeader2 />,
-      onClick: handleAddSegment('header'),
+      onClick: handleAddSegment(header, lineId),
     },
     {
       text: <ImageElement />,
@@ -34,7 +38,7 @@ function HoverComponent({ line_id, hoverIndex, handleAddSegment }) {
     <div
       // className="no-option"
       className={
-        line_id === hoverIndex ? 'contentmenu show' : 'contentmenu hide'
+        lineId === activeLineID ? 'contentmenu show' : 'contentmenu hide'
       }
     >
       <Tooltip
@@ -55,3 +59,9 @@ function HoverComponent({ line_id, hoverIndex, handleAddSegment }) {
 }
 
 export default HoverComponent;
+
+HoverComponent.propTypes = {
+  lineId: PropTypes.isRequired,
+  activeLineID: PropTypes.isRequired,
+  handleAddSegment: PropTypes.isRequired,
+};

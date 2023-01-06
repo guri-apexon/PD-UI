@@ -1,16 +1,6 @@
-import boldIcon from '../../../../assets/images/bold.png';
-import italicIcon from '../../../../assets/images/italic.png';
-import strikeIcon from '../../../../assets/images/strikethrough-text-interface-sign.png';
-import underlineIcon from '../../../../assets/images/underline.png';
-import superScriptIcon from '../../../../assets/images/superscript.png';
-import subScriptIcon from '../../../../assets/images/subscript.png';
+import PropTypes from 'prop-types';
 import listIcon from '../../../../assets/images/list.png';
-// import headerIcon from "../../../../../../assets/images/heading.png";
-// import H2Icon from "../../../../../../assets/images/header-H2.png";
-// import H3Icon from "../../../../../../assets/images/heading-H3.png";
-// import H4Icon from "../../../../../../assets/images/heading-H4.png";
 import Dropdown from './Dropdown';
-// import { symbolList } from '../../../../../../AppConstant/symbols';
 
 const headerList = [
   {
@@ -128,3 +118,7 @@ function FontProperties({ onClick }) {
 }
 
 export default FontProperties;
+
+FontProperties.propTypes = {
+  onClick: PropTypes.isRequired,
+};
