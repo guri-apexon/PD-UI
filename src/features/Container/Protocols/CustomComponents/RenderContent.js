@@ -10,6 +10,7 @@ function RenderContent({
   activeLineID,
   setActiveLineID,
   deleteSection,
+  edit,
 }) {
   const { type, content, line_id: lineID } = data;
 
@@ -24,6 +25,7 @@ function RenderContent({
           activeLineID={activeLineID}
           handleContentEdit={handleContentEdit}
           deleteSection={deleteSection}
+          edit={edit}
         />
       );
     }
@@ -37,6 +39,7 @@ function RenderContent({
           activeLineID={activeLineID}
           handleContentEdit={handleContentEdit}
           deleteSection={deleteSection}
+          edit={edit}
         />
       );
     }
@@ -50,6 +53,7 @@ function RenderContent({
         activeLineID={activeLineID}
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
+        edit={edit}
       />
     );
   }

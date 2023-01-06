@@ -10,6 +10,7 @@ function ContentEdit({
   handleContentEdit,
   content,
   deleteSection,
+  edit,
 }) {
   const [text, setText] = useState('');
   const currentEditData = useRef('');
@@ -58,7 +59,7 @@ function ContentEdit({
           type === 'header' ? 'content_header' : null
         }`}
         html={currentLineID.current === lineID ? currentEditData.current : text}
-        disabled={lineID !== activeLineID}
+        disabled={!edit}
         onChange={(event) => handleChange(event.target.value, lineID)}
         onBlur={handleBlur}
         tagName="div"
@@ -66,7 +67,9 @@ function ContentEdit({
         onKeyDown={handleKeyDown}
         data-placeholder
       />
-      {lineID === activeLineID && <FontProperties onClick={handleClickChild} />}
+      {edit && lineID === activeLineID && (
+        <FontProperties onClick={handleClickChild} />
+      )}
     </div>
   );
 }
@@ -79,4 +82,5 @@ ContentEdit.propTypes = {
   content: PropTypes.isRequired,
   handleContentEdit: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
+  edit: PropTypes.isRequired,
 };
