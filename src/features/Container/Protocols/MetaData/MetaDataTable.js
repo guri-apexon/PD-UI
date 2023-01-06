@@ -62,20 +62,21 @@ function MetaDataTable() {
       className="digitize-panel-content"
       data-testid="protocol-column-wrapper"
     >
-      <div className="metadata-checkbox">
-        <Checkbox
-          label="Confidence Score"
-          checked={confidence}
-          onChange={handleConfidence}
-          size="small"
-        />
-        <Checkbox
-          label="Notes"
-          size="small"
-          checked={note}
-          onChange={handleNotes}
-        />
-      </div>
+      <Checkbox
+        label="Notes"
+        size="small"
+        checked={note}
+        onChange={handleNotes}
+        className="checkbox-pad metadata-checkbox"
+      />
+      <Checkbox
+        label="Confidence Score"
+        checked={confidence}
+        onChange={handleConfidence}
+        size="small"
+        className="metadata-checkbox checkbox-pad "
+      />
+
       <div>
         <Table
           className="table-panel"

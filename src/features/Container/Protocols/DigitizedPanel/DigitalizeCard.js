@@ -1,4 +1,6 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
+import Panel from 'apollo-react/components/Panel/Panel';
 import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +9,8 @@ import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../../Components/Loader/Loader';
 import { headerResult, protocolSummary } from '../protocolSlice';
 import './Digitized.scss';
+import BladeRight from '../BladeRight/BladeRight';
+import MetaDataAccordian from '../MetaData/MetaDataAccordian';
 
 function Digitize({
   sectionNumber,
@@ -14,6 +18,7 @@ function Digitize({
   data,
   paginationPage,
   handlePageRight,
+  rightBladeValue,
 }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
@@ -22,6 +27,7 @@ function Digitize({
   const protocolAllItems = useSelector(protocolSummary);
   const [currentActiveCard, setCurrentActiveCard] = useState(0);
   const [sectionSequence, setSectionSequence] = useState(undefined);
+  const [rightValue, setRightValue] = useState(rightBladeValue);
 
   useEffect(() => {
     if (summary?.data?.length) {
@@ -83,56 +89,69 @@ function Digitize({
     // eslint-disable-next-line
   }, [paginationPage]);
 
+  const handleRightBlade = (rightBladeValue) => {
+    setRightValue(rightBladeValue);
+  };
   return (
-    <Card
-      className="protocol-column protocol-digitize-column"
-      style={{ borderRight: '0' }}
-    >
-      <div className="panel-heading" data-testid="header">
-        Digitized Data
-      </div>
-      <div
-        className="digitize-panel-content"
-        data-testid="protocol-column-wrapper"
-      >
-        {!summary?.data ? (
-          <div className="loader">
-            <Loader />
+    <div>
+      {rightBladeValue === 'Home' ? (
+        <Card
+          className="protocol-column protocol-digitize-column"
+          style={{ borderRight: '0' }}
+        >
+          <div className="panel-heading" data-testid="header">
+            Digitized Data
           </div>
-        ) : (
-          <>
-            {headerList.map((items, index) => (
-              <div
-                key={React.key}
-                ref={sectionRef[index]}
-                className="digitized_data_item"
-              >
-                <Drag
-                  style={{
-                    color: 'grey',
-                    fontSize: '1.2em',
-                    padding: '15px',
-                    paddingLeft: '5px',
-                  }}
-                />
-                <div>
-                  <DigitizeAccordion
-                    item={items}
-                    protocol={protocolAllItems.data.protocol}
-                    primaryRole={data.userPrimaryRoleFlag}
-                    currentActiveCard={currentActiveCard}
-                    setCurrentActiveCard={setCurrentActiveCard}
-                    index={index}
-                    handlePageRight={handlePageRight}
-                  />
-                </div>
+          <div
+            className="digitize-panel-content"
+            data-testid="protocol-column-wrapper"
+          >
+            {!summary?.data ? (
+              <div className="loader">
+                <Loader />
               </div>
-            ))}
-            {!summary.success && <div className="loader">No Data found</div>}
-          </>
-        )}
-      </div>
-    </Card>
+            ) : (
+              <>
+                {headerList.map((items, index) => (
+                  <div
+                    key={React.key}
+                    ref={sectionRef[index]}
+                    className="digitized_data_item"
+                  >
+                    <Drag
+                      style={{
+                        color: 'grey',
+                        fontSize: '1.2em',
+                        padding: '15px',
+                        paddingLeft: '5px',
+                      }}
+                    />
+                    <div>
+                      <DigitizeAccordion
+                        item={items}
+                        protocol={protocolAllItems.data.protocol}
+                        primaryRole={data.userPrimaryRoleFlag}
+                        currentActiveCard={currentActiveCard}
+                        setCurrentActiveCard={setCurrentActiveCard}
+                        index={index}
+                        handlePageRight={handlePageRight}
+                      />
+                    </div>
+                  </div>
+                ))}
+                {!summary.success && (
+                  <div className="loader">No Data found</div>
+                )}
+              </>
+            )}
+          </div>
+        </Card>
+      ) : rightBladeValue === 'MetaData' ? (
+        <Panel width="auto" hideButton>
+          <MetaDataAccordian />
+        </Panel>
+      ) : null}
+    </div>
   );
 }
 
@@ -144,4 +163,5 @@ Digitize.propTypes = {
   data: PropTypes.isRequired,
   paginationPage: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
+  rightBladeValue: PropTypes.isRequired,
 };

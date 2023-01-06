@@ -21,12 +21,7 @@ function MetaDataAccordian() {
   const dispatch = useDispatch();
   const summaryFields = useSelector(metaSummaryField);
 
-  useEffect(() => {
-    console.log('useEffect');
-    dispatch({
-      type: 'GET_METADATA_SUMMARYDATA',
-    });
-  }, []);
+  useEffect(() => {}, []);
 
   const [accordianData, setAccordianData] = useState(accordianArray);
 
@@ -71,48 +66,51 @@ function MetaDataAccordian() {
   return (
     <Card className="protocol-column protocol-digitize-column metadata-card">
       <div className="panel-heading " data-testid="header">
-        <div className="metadat-flex-plus"> MetaData </div>
+        <div className="metadat-flex-plus"> Metadata </div>
         <div className="metadata-flex metadata-plus-icon">
-          <Plus />
+          <Plus size="small" className="metadata-plus-size " />
         </div>
       </div>
-
-      {accordianData?.map((level1, index1) => {
-        return (
-          <div key={React.key} className="metadata_item">
-            <Accordion expanded={level1.isActive}>
-              <AccordionSummary onClick={() => handleAccordian(index1)}>
-                <div className="accordion_summary_container">
-                  <Typography>{level1.name}</Typography>
-                  <div className="metadata-flex">
-                    {level1?.isEdit ? (
-                      <span data-testId="pencilIcon">
-                        <Save
-                          onClick={(e) => {
-                            handleSave(index1, e);
-                          }}
-                        />
-                      </span>
-                    ) : (
-                      <span data-testId="saveIcon">
-                        <Pencil
-                          onClick={(e) => {
-                            handleEdit(index1, e);
-                          }}
-                        />
-                      </span>
-                    )}
+      <div className="metaData-boarder">
+        {accordianData?.map((level1, index1) => {
+          return (
+            <div key={React.key} className="metadata_item">
+              <Accordion expanded={level1.isActive}>
+                <AccordionSummary onClick={() => handleAccordian(index1)}>
+                  <div className="accordion_summary_container">
+                    <Typography>{level1.name}</Typography>
+                    <div className="metadata-flex">
+                      {level1?.isEdit ? (
+                        <span data-testId="pencilIcon">
+                          <Save
+                            onClick={(e) => {
+                              handleSave(index1, e);
+                            }}
+                            className="metadata-plus-size"
+                          />
+                        </span>
+                      ) : (
+                        <span data-testId="saveIcon">
+                          <Pencil
+                            onClick={(e) => {
+                              handleEdit(index1, e);
+                            }}
+                            className="metadata-plus-size"
+                          />
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </AccordionSummary>
+                </AccordionSummary>
 
-              <AccordionDetails>
-                {level1?.isEdit ? <MetaDataEdit /> : <MetadataTable />}
-              </AccordionDetails>
-            </Accordion>
-          </div>
-        );
-      })}
+                <AccordionDetails>
+                  {level1?.isEdit ? <MetaDataEdit /> : <MetadataTable />}
+                </AccordionDetails>
+              </Accordion>
+            </div>
+          );
+        })}
+      </div>
     </Card>
   );
 }
