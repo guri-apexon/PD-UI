@@ -56,7 +56,11 @@ function DigitizeAccordion({
       sectionHeaderDetails?.sections &&
       isArray(sectionHeaderDetails?.sections)
     ) {
-      setSections(sectionHeaderDetails?.sections);
+      setSections(
+        sectionHeaderDetails?.sections.filter(
+          (obj) => obj.qc_change_type !== 'delete',
+        ),
+      );
     } else {
       setSections([]);
     }

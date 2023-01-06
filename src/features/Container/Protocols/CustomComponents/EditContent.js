@@ -13,22 +13,18 @@ function ContentEdit({
   edit,
 }) {
   const [text, setText] = useState(content);
-  //   const currentEditData = useRef('');
-  //   const currentLineID = useRef('');
-  useEffect(() => {
-    setText(content);
-    // currentEditData.current = content;
-    // currentLineID.current = lineID;
-  }, [content]);
+  const contentEditableRef = useRef();
 
-  const handleChange = (value, id) => {
-    setText(value);
+  const handleChange = (e) => {
+    setText(e.target.value);
     // currentEditData.current = value;
     // currentLineID.current = id;
     // setCurrentLineID(id);
   };
   const handleBlur = () => {
-    handleContentEdit(text, lineID);
+    console.log(contentEditableRef.current.innerHTML); // Correct value
+    console.log(text);
+    handleContentEdit(contentEditableRef.current.innerHTML, lineID);
     // currentEditData.current = text;
     // currentLineID.current = lineID;
 
@@ -48,24 +44,25 @@ function ContentEdit({
   };
 
   const handleKeyDown = (e) => {
-    console.log({ text });
-    // if (
-    //   [46, 8].includes(e.keyCode) &&
-    //   (e.target.value === '' || !e.target.value)
-    // ) {
-    //   deleteSection(lineID);
-    // }
+    if (
+      [46, 8].includes(e.keyCode) &&
+      (contentEditableRef.current.innerHTML === '' ||
+        !contentEditableRef.current.innerHTML)
+    ) {
+      deleteSection(lineID);
+    }
   };
 
   return (
     <div className="format-container">
       <ContentEditable
+        innerRef={contentEditableRef}
         className={`contentEditable ${
           type === 'header' ? 'content_header' : null
         }`}
         html={text}
         disabled={!edit}
-        onChange={(e) => setText(e.target.value)}
+        onChange={handleChange}
         onBlur={handleBlur}
         tagName="div"
         // onClick={(e) => contentClick(lineID, e)}
