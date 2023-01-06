@@ -73,7 +73,6 @@ export const protocolSlice = createSlice({
       state.fileStream = action.payload;
     },
     setSectionDetails: (state, action) => {
-      console.log({ action });
       state.sectionDetails.sections = action.payload;
     },
     updateSectionData: (state, action) => {

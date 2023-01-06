@@ -64,7 +64,6 @@ function DigitizeAccordion({
     } else {
       setSections([]);
     }
-    console.log('useEffect');
   }, [sectionHeaderDetails]);
 
   const handleChange = () => {

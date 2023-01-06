@@ -21,14 +21,8 @@ function ContentEdit({
 
   const handleChange = (e) => {
     setText(e.target.value);
-    // currentEditData.current = value;
-    // currentLineID.current = id;
-    // setCurrentLineID(id);
   };
   const handleBlur = () => {
-    console.log(contentEditableRef.current.innerHTML); // Correct value
-    console.log(text);
-    // handleContentEdit(contentEditableRef.current.innerHTML, lineID);
     const obj = {
       type: 'modify',
       lineId: lineID,

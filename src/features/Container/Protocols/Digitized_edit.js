@@ -14,25 +14,18 @@ import {
 
 import { setSectionDetails } from './protocolSlice';
 
-function MultilineEdit({ data, edit, setSections }) {
+function MultilineEdit({ data, edit }) {
   const dispatch = useDispatch();
   const [activeLineID, setActiveLineID] = useState('');
 
   const sectionName = null;
 
-  const [sectionData, setSectionData] = useState([...data]);
-
   const handleAddSegment = (obj, lineId) => () => {
     const arr = addContent(data, obj, lineId);
-    // setSections(arr);
     dispatch(setSectionDetails(arr));
   };
 
-  // const handleSectionHeaderEdit = (value, line_id) => [
-  //   console.log(value, line_id),
-  // ];
   const handleContentEdit = (value, lineId) => {
-    console.log({ value });
     const obj = {
       type: 'modify',
       lineId,
@@ -40,13 +33,11 @@ function MultilineEdit({ data, edit, setSections }) {
       content: value,
     };
     const arr = updateContent(data, obj);
-    // setSections(arr);
     dispatch(setSectionDetails(arr));
   };
 
   const deleteSection = (lineId) => {
     const arr = markContentForDelete(data, lineId);
-    // setSections(arr);
     dispatch(setSectionDetails(arr));
   };
 
@@ -88,5 +79,4 @@ export default MultilineEdit;
 MultilineEdit.propTypes = {
   data: PropTypes.isRequired,
   edit: PropTypes.isRequired,
-  setSections: PropTypes.isRequired,
 };
