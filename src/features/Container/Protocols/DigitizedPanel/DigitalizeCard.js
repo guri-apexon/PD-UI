@@ -147,9 +147,7 @@ function Digitize({
           </div>
         </Card>
       ) : rightBladeValue === 'MetaData' ? (
-        <Panel width="auto" hideButton>
-          <MetaDataAccordian />
-        </Panel>
+        <MetaDataAccordian />
       ) : null}
     </div>
   );
