@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Button from 'apollo-react/components/Button';
 import Card from 'apollo-react/components/Card';
 import Popper from 'apollo-react/components/Popper';
-import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
 import './MedicalTerm.scss';
@@ -39,7 +38,7 @@ function MedicalTerm({ enrichedTarget }) {
     if (!enrichedTarget) setSelectedTerm(null);
   }, [enrichedTarget]);
   return (
-    <div className="enriched-menu-wrapper">
+    <div className="enriched-menu-wrapper" data-testId="ClinicalTerms">
       <Popper open={!!anchorEl} anchorEl={anchorEl}>
         <Card interactive className="main-popper">
           <div className="terms-list">
