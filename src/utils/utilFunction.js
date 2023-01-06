@@ -204,3 +204,11 @@ export const addContent = (origArray, obj, lineId) => {
   arr.splice(index, 0, obj);
   return arr;
 };
+
+export const markContentForDelete = (origArray, lineId) => {
+  console.log(origArray);
+  const arr = cloneDeep(origArray);
+  const i = arr.findIndex((val) => val.line_id === lineId);
+  arr[i].qc_change_type = 'delete';
+  return arr;
+};

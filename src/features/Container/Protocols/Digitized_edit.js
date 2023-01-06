@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import HoverComponent from './CustomComponents/HoverComponent';
 import RenderContent from './CustomComponents/RenderContent';
 import './Digitized_edit.scss';
 
-import { updateContent, addContent } from '../../../utils/utilFunction';
+import {
+  updateContent,
+  addContent,
+  markContentForDelete,
+} from '../../../utils/utilFunction';
 
 function MultilineEdit({ data }) {
   const [activeLineID, setActiveLineID] = useState('');
@@ -34,30 +38,89 @@ function MultilineEdit({ data }) {
     setSectionData(arr);
   };
 
+  const deleteSection = (lineId) => {
+    const arr = markContentForDelete(sectionData, lineId);
+    setSectionData(arr);
+  };
+
+  useEffect(() => {
+    console.clear();
+    console.log({ sectionData });
+  }, [sectionData]);
+
   return (
     <div className="Richtextcontainer" data-testId="richTextEditor">
-      {sectionData?.map((data) => (
-        <div key={data.line_id}>
-          <div className="content_container">
-            <div
-              onClick={() => setActiveLineID(data.line_id)}
-              style={{ position: 'relative' }}
-            >
-              <RenderContent
-                data={data}
-                sectionName={sectionName}
-                handleContentEdit={handleContentEdit}
-                activeLineID={activeLineID}
-              />
-              <HoverComponent
-                lineId={data.line_id}
-                activeLineID={activeLineID}
-                handleAddSegment={handleAddSegment}
-              />
+      {/* <AutoSizer>
+        {({ width, height }) => (
+          <List
+            width={width}
+            height={height}
+            rowHeight={cache.current.rowHeight}
+            deferredMeasurementCache={cache.current}
+            overscanRowCount={5}
+            rowCount={sectionData.length}
+            // eslint-disable-next-line
+            rowRenderer={({ key, index, style, parent }) => {
+              const item = sectionData[index];
+              return (
+                <CellMeasurer
+                  key={key}
+                  cache={cache.current}
+                  parent={parent}
+                  columnIndex={0}
+                  rowIndex={index}
+                >
+                  <div className="content_container" style={style}>
+                    <div
+                      onClick={() => setActiveLineID(item.line_id)}
+                      style={{ position: 'relative' }}
+                    >
+                      <RenderContent
+                        data={item}
+                        sectionName={sectionName}
+                        handleContentEdit={handleContentEdit}
+                        activeLineID={activeLineID}
+                      />
+                      <HoverComponent
+                        lineId={item.line_id}
+                        activeLineID={activeLineID}
+                        handleAddSegment={handleAddSegment}
+                      />
+                    </div>
+                  </div>
+                </CellMeasurer>
+              );
+            }}
+          />
+        )}
+      </AutoSizer> */}
+      {sectionData
+        ?.filter((obj) => obj.qc_change_type !== 'delete')
+        .map((data) => (
+          <div key={data.line_id}>
+            <div className="content_container">
+              <div
+                onClick={() => setActiveLineID(data.line_id)}
+                style={{ position: 'relative' }}
+              >
+                <RenderContent
+                  data={data}
+                  sectionName={sectionName}
+                  handleContentEdit={handleContentEdit}
+                  activeLineID={activeLineID}
+                  deleteSection={deleteSection}
+                />
+                {activeLineID === data.line_id && (
+                  <HoverComponent
+                    lineId={data.line_id}
+                    activeLineID={activeLineID}
+                    handleAddSegment={handleAddSegment}
+                  />
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }

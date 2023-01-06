@@ -6,10 +6,10 @@ import FontProperties from './FontProperties';
 function ContentEdit({
   type,
   lineID,
-  setActiveLineID,
   activeLineID,
   handleContentEdit,
   content,
+  deleteSection,
 }) {
   const [text, setText] = useState('');
   const currentEditData = useRef('');
@@ -30,11 +30,6 @@ function ContentEdit({
     // setCurrentLineID("");
   };
 
-  const contentClick = (lineID, e) => {
-    currentEditData.current = text;
-    setActiveLineID(lineID, e);
-  };
-
   const handleClickChild = (item, type) => {
     if (type === 'symbol') {
       if (currentEditData.current) {
@@ -44,6 +39,15 @@ function ContentEdit({
         const newText = `${text} ${item.name}`;
         setText(newText);
       }
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (
+      [46, 8].includes(e.keyCode) &&
+      (e.target.value === '' || !e.target.value)
+    ) {
+      deleteSection(lineID);
     }
   };
 
@@ -59,6 +63,7 @@ function ContentEdit({
         onBlur={handleBlur}
         tagName="div"
         // onClick={(e) => contentClick(lineID, e)}
+        onKeyDown={handleKeyDown}
         data-placeholder
       />
       {lineID === activeLineID && <FontProperties onClick={handleClickChild} />}
@@ -70,8 +75,8 @@ export default ContentEdit;
 ContentEdit.propTypes = {
   type: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
-  setActiveLineID: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   content: PropTypes.isRequired,
   handleContentEdit: PropTypes.isRequired,
+  deleteSection: PropTypes.isRequired,
 };

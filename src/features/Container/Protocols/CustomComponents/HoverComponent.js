@@ -8,19 +8,10 @@ import './hoverComponent.scss';
 
 import { text, header } from './constants';
 
-import {
-  TableElement,
-  TextElement,
-  TextHeader2,
-  ImageElement,
-} from './MenuItems';
+import { TextElement, TextHeader2 } from './MenuItems';
 
 function HoverComponent({ lineId, activeLineID, handleAddSegment }) {
   const menuItems = [
-    {
-      label: <TableElement />,
-      onClick: handleAddSegment('table'),
-    },
     {
       text: <TextElement />,
       onClick: handleAddSegment(text, lineId),
@@ -28,10 +19,6 @@ function HoverComponent({ lineId, activeLineID, handleAddSegment }) {
     {
       text: <TextHeader2 />,
       onClick: handleAddSegment(header, lineId),
-    },
-    {
-      text: <ImageElement />,
-      onClick: handleAddSegment('image'),
     },
   ];
   return (

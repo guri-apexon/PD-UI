@@ -159,8 +159,8 @@ function DigitizeAccordion({
         )}
         {/* <MultilineEdit data={sections} /> */}
         {sections?.length > 0 &&
-          (!showedit ? (
-            <MultilineEdit data={sections.slice(0, 20)} />
+          (showedit ? (
+            <MultilineEdit data={sections} />
           ) : (
             <div style={{ height: '200px', flex: '1 1 auto' }}>
               <AutoSizer>
@@ -186,6 +186,9 @@ function DigitizeAccordion({
                           <div style={style}>
                             <Typography
                               key={React.key}
+                              className={
+                                item.type === 'header' ? 'content_header' : ''
+                              }
                               dangerouslySetInnerHTML={createFullMarkup(
                                 item.content,
                               )}

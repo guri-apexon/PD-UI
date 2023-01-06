@@ -2,6 +2,9 @@
   position: relative;
   width: max-content;
   min-width: 300px;
+  max-width: 100%;
+  margin-bottom: 5px;
+
   .button-container {
     position: absolute;
     right: -80px;
@@ -34,6 +37,6 @@
 
   .contentEditable.content_header {
     font-weight: bold;
-    padding: 10px 0;
+    margin-bottom: 15px;
   }
 }
