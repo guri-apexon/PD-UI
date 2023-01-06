@@ -61,6 +61,11 @@ function Digitize({
   }, [sectionNumber]);
 
   useEffect(() => {
+    setCurrentActiveCard(0);
+    setRightValue(rightBladeValue);
+  }, [rightBladeValue]);
+
+  useEffect(() => {
     dispatch({
       type: 'GET_PROTOCOL_SECTION',
       payload: {
@@ -88,13 +93,9 @@ function Digitize({
     }
     // eslint-disable-next-line
   }, [paginationPage]);
-
-  const handleRightBlade = (rightBladeValue) => {
-    setRightValue(rightBladeValue);
-  };
   return (
     <div>
-      {rightBladeValue === 'Home' ? (
+      {rightValue === 'Home' ? (
         <Card
           className="protocol-column protocol-digitize-column"
           style={{ borderRight: '0' }}
@@ -146,7 +147,7 @@ function Digitize({
             )}
           </div>
         </Card>
-      ) : rightBladeValue === 'MetaData' ? (
+      ) : rightValue === 'MetaData' ? (
         <MetaDataAccordian />
       ) : null}
     </div>
