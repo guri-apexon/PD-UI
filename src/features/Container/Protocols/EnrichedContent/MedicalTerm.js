@@ -65,7 +65,7 @@ function MedicalTerm({ enrichedTarget }) {
     setNewTermValue(childTermValue);
   }, [childTermValue]);
   return (
-    <div className="enriched-menu-wrapper">
+    <div className="enriched-menu-wrapper" data-testId="ClinicalTerms">
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
           <div className="terms-list">
