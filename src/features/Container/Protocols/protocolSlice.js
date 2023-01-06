@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { updateContentWithData } from '../../../utils/utilFunction';
 
 export const protocolSlice = createSlice({
   name: 'protocol',
@@ -75,6 +76,15 @@ export const protocolSlice = createSlice({
       console.log({ action });
       state.sectionDetails.sections = action.payload;
     },
+    updateSectionData: (state, action) => {
+      const obj = {
+        type: 'modify',
+        lineId: action.payload.lineId,
+        content: action.payload.content,
+      };
+      const arr = updateContentWithData(state.sectionDetails.sections, obj);
+      state.sectionDetails.sections = arr;
+    },
   },
 });
 
@@ -92,6 +102,7 @@ export const {
   resetSectionData,
   getFileStream,
   setSectionDetails,
+  updateSectionData,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

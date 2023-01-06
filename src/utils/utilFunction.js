@@ -212,3 +212,17 @@ export const markContentForDelete = (origArray, lineId) => {
   arr[i].qc_change_type = 'delete';
   return arr;
 };
+
+export const updateContentWithData = (origArray, obj) => {
+  const arr = cloneDeep(origArray);
+
+  // eslint-disable-next-line consistent-return
+  arr.forEach((val) => {
+    if (val.line_id === obj.lineId) {
+      val.content = obj.content;
+      val.qc_change_type = obj.type;
+      return false;
+    }
+  });
+  return arr;
+};

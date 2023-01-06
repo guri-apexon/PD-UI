@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import FontProperties from './FontProperties';
+
+import { updateSectionData } from '../protocolSlice';
 
 function ContentEdit({
   type,
@@ -12,6 +15,7 @@ function ContentEdit({
   deleteSection,
   edit,
 }) {
+  const dispatch = useDispatch();
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
 
@@ -24,7 +28,13 @@ function ContentEdit({
   const handleBlur = () => {
     console.log(contentEditableRef.current.innerHTML); // Correct value
     console.log(text);
-    handleContentEdit(contentEditableRef.current.innerHTML, lineID);
+    // handleContentEdit(contentEditableRef.current.innerHTML, lineID);
+    const obj = {
+      type: 'modify',
+      lineId: lineID,
+      content: contentEditableRef.current.innerHTML,
+    };
+    dispatch(updateSectionData(obj));
     // currentEditData.current = text;
     // currentLineID.current = lineID;
 
