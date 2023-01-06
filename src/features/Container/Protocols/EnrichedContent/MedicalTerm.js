@@ -28,28 +28,35 @@ function MedicalTerm({ enrichedTarget }) {
   const [SanchorEl, setSAnchorEl] = useState(null);
   const [selectedTerm, setSelectedTerm] = useState(null);
 
+  const childDataArr = () => {
+    return clinicalTerms.find((x) => x.text === selectedTerm)?.data;
+  };
+  const editItem = () => {
+    console.log('editItem');
+  };
   useEffect(() => {
     setAnchorEl(enrichedTarget || null);
     if (!enrichedTarget) setSelectedTerm(null);
   }, [enrichedTarget]);
   return (
-    <div>
+    <div className="enriched-menu-wrapper">
       <Popper open={!!anchorEl} anchorEl={anchorEl}>
-        <Card interactive>
+        <Card interactive className="main-popper">
           <div className="terms-list">
             {clinicalTerms.map((item) => {
+              const isActive = selectedTerm === item.text && item.data?.length;
               return (
                 <li key={item.value}>
                   <Button
                     className="term-item"
-                    onMouseOver={(e) => {
+                    onClick={(e) => {
                       setSelectedTerm(item.text);
                       setSAnchorEl(!SanchorEl ? e.currentTarget : null);
                     }}
                     value={item.value}
                   >
                     {item.text}
-                    <ArrowRight />
+                    {isActive && <ArrowRight />}
                   </Button>
                 </li>
               );
@@ -65,18 +72,16 @@ function MedicalTerm({ enrichedTarget }) {
       >
         <Card interactive className="sub-popper">
           <div className="terms-list">
-            {clinicalTerms
-              .find((x) => x.text === selectedTerm)
-              ?.map((item) => {
-                return (
-                  <li key={item.value}>
-                    <Button value={item.value} className="term-item">
-                      {item.text}
-                      <Pencil className="edit-Icon" />
-                    </Button>
-                  </li>
-                );
-              })}
+            {childDataArr()?.map((item) => {
+              return (
+                <li key={item.value}>
+                  <Button value={item.value} className="term-item">
+                    {item.value}
+                    <Pencil className="edit-Icon" onClick={editItem} />
+                  </Button>
+                </li>
+              );
+            })}
           </div>
         </Card>
       </Popper>

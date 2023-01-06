@@ -1,3 +1,6 @@
+.enriched-menu-wrapper{
+  
+}
 .terms-list {
   display: flex;
   flex-direction: column;
@@ -28,7 +31,11 @@
     }
   }
 }
+.main-popper{
+  padding: 8px 0;
+}
 .sub-popper{
+  padding: 8px 0;
   .terms-list {
     width: 146px;
   }
