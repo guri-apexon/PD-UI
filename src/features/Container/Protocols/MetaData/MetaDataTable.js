@@ -3,7 +3,6 @@ import Table from 'apollo-react/components/Table';
 
 import Checkbox from 'apollo-react/components/Checkbox';
 import initialRows from './Records.json';
-import './MetaData.scss';
 
 function MetaDataTable() {
   const [rows] = useState(initialRows);

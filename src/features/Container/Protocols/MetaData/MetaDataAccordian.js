@@ -64,7 +64,7 @@ function MetaDataAccordian() {
   };
 
   return (
-    <Card className="protocol-column protocol-digitize-column metadata-card">
+    <Card className="metadata-card">
       <div className="panel-heading " data-testid="header">
         <div className="metadat-flex-plus"> Metadata </div>
         <div className="metadata-flex metadata-plus-icon">
