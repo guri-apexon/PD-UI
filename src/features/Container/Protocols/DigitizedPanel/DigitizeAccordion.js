@@ -200,7 +200,7 @@ function DigitizeAccordion({
                             <Typography
                               key={React.key}
                               dangerouslySetInnerHTML={createFullMarkup(
-                                `${item.content}<b class="enriched-txt">Enriched Text</b>`,
+                                `${item.content} <b class="enriched-txt">Enriched Text</b>`,
                               )}
                             />
                           </div>
