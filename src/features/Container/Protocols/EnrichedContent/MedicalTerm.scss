@@ -1,5 +1,6 @@
-.enriched-menu-wrapper{
-  
+.enriched-menu-wrapper {
+  #renameTermsModal {
+  }
 }
 .terms-list {
   display: flex;
@@ -31,13 +32,19 @@
     }
   }
 }
-.main-popper{
+.main-popper {
   padding: 8px 0;
 }
-.sub-popper{
+.sub-popper {
   padding: 8px 0;
   .terms-list {
     width: 146px;
+    .sub-term-text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      // display: block;
+      // width: 80%;
+    }
   }
 }
 .edit-Icon {
