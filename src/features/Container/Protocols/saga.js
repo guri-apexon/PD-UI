@@ -19,7 +19,6 @@ import {
   getProtocolTocData,
   setSectionLoader,
   getFileStream,
-  clearProtocolDoc,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
@@ -35,7 +34,6 @@ export function* getSummaryData(action) {
     success: false,
     data: null,
   };
-  yield put(clearProtocolDoc());
   yield put(getSummary(obj));
 
   const userId = yield getUserId();
