@@ -3,12 +3,6 @@ import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import { isArray } from 'lodash';
-import {
-  List,
-  AutoSizer,
-  CellMeasurer,
-  CellMeasurerCache,
-} from 'react-virtualized';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
@@ -33,13 +27,6 @@ function DigitizeAccordion({
   setCurrentActiveCard,
   handlePageRight,
 }) {
-  const cache = React.useRef(
-    new CellMeasurerCache({
-      fixedWidth: true,
-      defaultHeight: 100,
-    }),
-  );
-
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
@@ -149,46 +136,18 @@ function DigitizeAccordion({
             <Loader />
           </div>
         )}
-        {/* <MultilineEdit data={sections} /> */}
         {sections?.length > 0 &&
           (showedit ? (
             <MultilineEdit data={sections} />
           ) : (
             <div className="readable-content">
-              <AutoSizer>
-                {({ width, height }) => (
-                  <List
-                    width={width}
-                    height={height}
-                    rowHeight={cache.current.rowHeight}
-                    deferredMeasurementCache={cache.current}
-                    overscanRowCount={5}
-                    rowCount={sections.length}
-                    // eslint-disable-next-line
-                    rowRenderer={({ key, index, style, parent }) => {
-                      const item = sections[index];
-                      return (
-                        <CellMeasurer
-                          key={key}
-                          cache={cache.current}
-                          parent={parent}
-                          columnIndex={0}
-                          rowIndex={index}
-                        >
-                          <div style={style}>
-                            <Typography
-                              key={React.key}
-                              dangerouslySetInnerHTML={createFullMarkup(
-                                item.content,
-                              )}
-                            />
-                          </div>
-                        </CellMeasurer>
-                      );
-                    }}
-                  />
-                )}
-              </AutoSizer>
+              {sections.map((section) => (
+                <p
+                  key={React.key}
+                  // eslint-disable-next-line react/no-danger
+                  dangerouslySetInnerHTML={createFullMarkup(section.content)}
+                />
+              ))}
             </div>
           ))}
       </AccordionDetails>
