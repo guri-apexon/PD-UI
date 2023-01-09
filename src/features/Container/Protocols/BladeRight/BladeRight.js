@@ -73,6 +73,7 @@ function BladeRight({ handleRightBlade, dataSummary }) {
           marginTop={141}
           hasBackdrop
           side="right"
+          data-testId="rightblade"
         >
           <div className="switch-padding">
             <Switch
@@ -92,6 +93,7 @@ function BladeRight({ handleRightBlade, dataSummary }) {
                   handleClick(0);
                   handleRightBlade('Home');
                 }}
+                data-testId="rightbladeclick"
               >
                 <House className="icon-padding" /> Home
               </Button>
