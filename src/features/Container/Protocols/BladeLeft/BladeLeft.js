@@ -1,5 +1,5 @@
 import withStyles from '@material-ui/core/styles/withStyles';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { neutral8 } from 'apollo-react/colors';
 import Tooltip from 'apollo-react/components/Tooltip';
 import PropTypes from 'prop-types';
@@ -25,6 +25,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
+  const wrapperRef = useRef(null);
 
   const [tocList, setTocList] = useState([]);
 
@@ -59,102 +60,112 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     }
   }, [open]);
 
-  return (
-    <div>
-      <div className="bladeContainer">
-        <Blade
-          data-testid="toc-component"
-          onChange={onChange}
-          open={open}
-          expanded={expand}
-          onClose={onClose}
-          title="Navigation"
-          className="blade"
-          width={263}
-          marginTop={141}
-          hasBackdrop
-        >
-          <div className="toc-wrapper">
-            {tocList?.map((item, index) => {
-              const sectionIndex = index; // <= 0 ? 0 : index - 1;
-              return (
-                <Accordion
-                  key={React.key}
-                  style={{
-                    border: 'none',
-                  }}
-                >
-                  <AccordionSummary>
-                    <Tooltip title={item.source_file_section}>
-                      <Typography
-                        className="header-unselect"
-                        onClick={(e) => {
-                          handlePageNo(e, item.page, sectionIndex);
-                        }}
-                      >
-                        {item.source_file_section}
-                      </Typography>
-                    </Tooltip>
-                  </AccordionSummary>
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
 
-                  {item?.childlevel?.map((level1) => {
-                    return (
-                      <Accordion
-                        key={React.key}
-                        style={{
-                          border: 'none',
-                        }}
-                      >
-                        <AccordionSummary>
-                          <Tooltip title={level1?.source_file_section}>
-                            <Typography
-                              className="header-unselect"
-                              onClick={(e) => {
-                                handlePageNo(e, level1.page, sectionIndex);
+  return (
+    <div className="bladeContainer">
+      <Blade
+        data-testid="toc-component"
+        onChange={onChange}
+        open={open}
+        expanded={expand}
+        onClose={onClose}
+        title="Navigation"
+        className="blade"
+        width={263}
+        marginTop={141}
+        hasBackdrop
+      >
+        <div className="toc-wrapper" ref={wrapperRef}>
+          {tocList?.map((item, index) => {
+            const sectionIndex = index; // <= 0 ? 0 : index - 1;
+            return (
+              <Accordion
+                key={React.key}
+                style={{
+                  border: 'none',
+                }}
+              >
+                <AccordionSummary>
+                  <Tooltip title={item.source_file_section}>
+                    <Typography
+                      className="header-unselect"
+                      onClick={(e) => {
+                        handlePageNo(e, item.page, sectionIndex);
+                      }}
+                    >
+                      {item.source_file_section}
+                    </Typography>
+                  </Tooltip>
+                </AccordionSummary>
+
+                {item?.childlevel?.map((level1) => {
+                  return (
+                    <Accordion
+                      key={React.key}
+                      style={{
+                        border: 'none',
+                      }}
+                    >
+                      <AccordionSummary>
+                        <Tooltip title={level1?.source_file_section}>
+                          <Typography
+                            className="header-unselect"
+                            onClick={(e) => {
+                              handlePageNo(e, level1.page, sectionIndex);
+                            }}
+                          >
+                            {level1?.source_file_section}
+                          </Typography>
+                        </Tooltip>
+                      </AccordionSummary>
+
+                      {level1?.subSection1 &&
+                        level1?.subSection1.map((level2) => {
+                          return (
+                            <Accordion
+                              key={React.key}
+                              style={{
+                                border: 'none',
                               }}
                             >
-                              {level1?.source_file_section}
-                            </Typography>
-                          </Tooltip>
-                        </AccordionSummary>
-
-                        {level1?.subSection1 &&
-                          level1?.subSection1.map((level2) => {
-                            return (
-                              <Accordion
-                                key={React.key}
-                                style={{
-                                  border: 'none',
-                                }}
-                              >
-                                <AccordionSummary>
-                                  <Tooltip title={level2.sub_Section}>
-                                    <Typography
-                                      className="header-unselect"
-                                      onClick={(e) => {
-                                        handlePageNo(
-                                          e,
-                                          level2.page,
-                                          sectionIndex,
-                                        );
-                                      }}
-                                    >
-                                      {level2.sub_Section}
-                                    </Typography>
-                                  </Tooltip>
-                                </AccordionSummary>
-                              </Accordion>
-                            );
-                          })}
-                      </Accordion>
-                    );
-                  })}
-                </Accordion>
-              );
-            })}
-          </div>
-        </Blade>
-      </div>
+                              <AccordionSummary>
+                                <Tooltip title={level2.sub_Section}>
+                                  <Typography
+                                    className="header-unselect"
+                                    onClick={(e) => {
+                                      handlePageNo(
+                                        e,
+                                        level2.page,
+                                        sectionIndex,
+                                      );
+                                    }}
+                                  >
+                                    {level2.sub_Section}
+                                  </Typography>
+                                </Tooltip>
+                              </AccordionSummary>
+                            </Accordion>
+                          );
+                        })}
+                    </Accordion>
+                  );
+                })}
+              </Accordion>
+            );
+          })}
+        </div>
+      </Blade>
     </div>
   );
 }
