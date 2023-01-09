@@ -28,6 +28,7 @@
   }
   .metadata-plus-size {
     font-size: 19px !important;
+    color: black;
   }
   .metadata-checkbox {
     // padding-left: 53%;
@@ -62,6 +63,7 @@
   [class*='MuiPaper-elevation1-'] {
     border: none;
     padding-bottom: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
   }
 
   .checkbox-pad {
@@ -115,6 +117,7 @@
     width: 1.3em;
     height: 1.2em;
     font-size: 20px;
+    color: black;
   }
   [class*='MuiAccordionSummary-expandIcon'] {
     left: 5px;

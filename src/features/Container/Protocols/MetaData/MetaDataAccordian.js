@@ -112,7 +112,11 @@ function MetaDataAccordian() {
                 </AccordionSummary>
 
                 <AccordionDetails>
-                  {level1?.isEdit ? <MetaDataEdit /> : <MetadataTable />}
+                  {level1?.isEdit ? (
+                    <MetaDataEdit />
+                  ) : (
+                    <MetadataTable accname={level1.name} />
+                  )}
                 </AccordionDetails>
               </Accordion>
             </div>
