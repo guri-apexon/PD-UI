@@ -68,6 +68,9 @@ export const protocolSlice = createSlice({
     getFileStream: (state, action) => {
       state.fileStream = action.payload;
     },
+    clearProtocolDoc: (state) => {
+      state.fileStream.data = null;
+    },
   },
 });
 
@@ -83,6 +86,7 @@ export const {
   setSectionLoader,
   resetSectionData,
   getFileStream,
+  clearProtocolDoc,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

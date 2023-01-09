@@ -62,7 +62,6 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }, [page]);
 
   useEffect(() => {
-    console.log('currentPage', currentPage);
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
@@ -70,7 +69,6 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }, [currentPage]);
 
   useEffect(() => {
-    console.log({ pageRight });
     setPage(pageRight - 1);
   }, [pageRight]);
 
@@ -122,6 +120,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   if (!pdfString) {
     return <Loader />;
   }
+
   return (
     <div
       id="pdfDocument"
