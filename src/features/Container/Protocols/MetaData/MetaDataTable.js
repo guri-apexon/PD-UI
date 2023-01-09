@@ -24,7 +24,6 @@ function MetaDataTable() {
 
   const removeIndex = (key) => {
     const columnTemp = [...column];
-    console.log('before', columnTemp);
     let index;
     for (let i = 0; i < columnTemp.length; i++) {
       if (Object.values(columnTemp[i])[0] === key) {
@@ -57,16 +56,14 @@ function MetaDataTable() {
   };
 
   return (
-    <div
-      className="digitize-panel-content"
-      data-testid="protocol-column-wrapper"
-    >
+    <div className="digitize-panel-content" data-testid="metadata-table-view">
       <Checkbox
         label="Notes"
         size="small"
         checked={note}
         onChange={handleNotes}
         className="checkbox-pad metadata-checkbox"
+        data-testid="metadata-notes"
       />
       <Checkbox
         label="Confidence Score"
@@ -74,6 +71,7 @@ function MetaDataTable() {
         onChange={handleConfidence}
         size="small"
         className="metadata-checkbox checkbox-pad "
+        data-testid="metadata-confidence"
       />
 
       <div>
