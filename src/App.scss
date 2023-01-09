@@ -74,8 +74,7 @@
 .text-capitalize {
   text-transform: capitalize;
 }
-
-.Blade-paper-312 {
-  width: 18% !important;
-  margin-top: 4.5% !important;
+.d-flex-row {
+  display: flex;
+  flex-direction: row;
 }
