@@ -250,7 +250,10 @@ class ProtocolViewWrapper extends React.Component {
           />
         </div>
         <div>
-          <BladeRight handleRightBlade={this.handleRightBlade} />
+          <BladeRight
+            handleRightBlade={this.handleRightBlade}
+            dataSummary={this.props.data}
+          />
         </div>
         <div className="view-wrapper">
           <PanelGroup className="panel_group">

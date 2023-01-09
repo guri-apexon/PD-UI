@@ -21,7 +21,7 @@ const styles = {
   },
 };
 
-function BladeRight({ handleRightBlade }) {
+function BladeRight({ handleRightBlade, dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const [value, setValue] = React.useState(false);
@@ -34,12 +34,6 @@ function BladeRight({ handleRightBlade }) {
     false,
   ]);
 
-  const handleClick = (index) => {
-    const newPanels = textValue.map(() => false);
-    newPanels[index] = !newPanels[index];
-    setTextValue(newPanels);
-  };
-
   const handleChange = (e, checked) => {
     setValue(checked);
   };
@@ -51,6 +45,12 @@ function BladeRight({ handleRightBlade }) {
   const onChange = (e, expanded) => {
     setExpand(expanded);
   };
+  const handleClick = (index) => {
+    const newPanels = textValue.map(() => false);
+    newPanels[index] = !newPanels[index];
+    setTextValue(newPanels);
+    onClose();
+  };
 
   useEffect(() => {
     if (!open) {
@@ -58,8 +58,6 @@ function BladeRight({ handleRightBlade }) {
       setExpand(false);
     }
   }, [open]);
-
-  console.log(textValue);
 
   return (
     <div>
@@ -123,6 +121,7 @@ function BladeRight({ handleRightBlade }) {
               </Button>
               <Button
                 className={textValue[4] ? 'link-text-clicked' : 'link-text'}
+                disabled={!dataSummary?.userPrimaryRoleFlag}
                 onClick={() => {
                   handleClick(4);
                   handleRightBlade('MetaData');
@@ -141,5 +140,6 @@ function BladeRight({ handleRightBlade }) {
 BladeRight.propTypes = {
   // eslint-disable-next-line react/require-default-props
   handleRightBlade: PropTypes.func,
+  dataSummary: PropTypes.isRequired,
 };
 export default withStyles(styles)(BladeRight);
