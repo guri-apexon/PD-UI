@@ -144,6 +144,7 @@ function DigitizeAccordion({
               {sections.map((section) => (
                 <p
                   key={React.key}
+                  className={section.type === 'header' ? 'header' : null}
                   // eslint-disable-next-line react/no-danger
                   dangerouslySetInnerHTML={createFullMarkup(section.content)}
                 />

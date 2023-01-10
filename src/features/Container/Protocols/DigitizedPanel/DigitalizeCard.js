@@ -30,6 +30,8 @@ function Digitize({
           return x.source_file_section !== 'blank_header';
         }),
       );
+    } else {
+      setHeaderList([]);
     }
   }, [summary]);
 

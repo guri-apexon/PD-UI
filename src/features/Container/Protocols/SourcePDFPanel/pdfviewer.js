@@ -114,6 +114,8 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   useEffect(() => {
     if (fileStream.success) {
       setPdfString(fileStream.data);
+    } else {
+      setPdfString(null);
     }
   }, [fileStream]);
 

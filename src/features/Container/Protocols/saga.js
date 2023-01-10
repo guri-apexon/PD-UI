@@ -211,6 +211,7 @@ export function* fetchSectionHeaderList(action) {
   const {
     payload: { docId },
   } = action;
+  yield put(getHeaderList({}));
   const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
   const config = {
     url: URL,
@@ -303,12 +304,15 @@ export function* getProtocolTocDataResult(action) {
   const {
     payload: { docId },
   } = action;
+  yield put(getHeaderList({}));
+
   const linkLevel = action.payload.tocFlag ? 6 : 1;
   const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
   const config = {
     url: URL,
     method: 'GET',
   };
+
   const header = yield call(httpCall, config);
   if (header.success) {
     if (action.payload.tocFlag === 1) {

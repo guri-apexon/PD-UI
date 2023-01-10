@@ -2,6 +2,14 @@
   .readable-content {
     height: 500px;
     flex: 1 1 auto;
+
+    p {
+      margin: 5px 0 0 0;
+    }
+
+    p.header {
+      font-weight: bold;
+    }
   }
 }
 .accordion_summary_container {
