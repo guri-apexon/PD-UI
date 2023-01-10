@@ -206,7 +206,6 @@ export const addContent = (origArray, obj, lineId) => {
 };
 
 export const markContentForDelete = (origArray, lineId) => {
-  console.log(origArray);
   const arr = cloneDeep(origArray);
   const i = arr.findIndex((val) => val.line_id === lineId);
   arr[i].qc_change_type = 'delete';

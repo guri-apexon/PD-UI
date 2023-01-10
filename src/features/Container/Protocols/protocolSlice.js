@@ -60,11 +60,8 @@ export const protocolSlice = createSlice({
     getProtocolTocData: (state, action) => {
       state.protocolTocData = action.payload;
     },
-    setSectionLoader: (state) => {
-      state.sectionLoader = true;
-    },
-    resetSectionLoader: (state) => {
-      state.sectionLoader = false;
+    setSectionLoader: (state, action) => {
+      state.sectionLoader = action.payload;
     },
     resetSectionData: (state) => {
       state.sectionDetails = {};
@@ -73,7 +70,6 @@ export const protocolSlice = createSlice({
       state.fileStream = action.payload;
     },
     setSectionDetails: (state, action) => {
-      console.log({ action });
       state.sectionDetails.sections = action.payload;
     },
     updateSectionData: (state, action) => {
@@ -98,7 +94,6 @@ export const {
   getSectionProtocol,
   getProtocolTocData,
   setSectionLoader,
-  resetSectionLoader,
   resetSectionData,
   getFileStream,
   setSectionDetails,

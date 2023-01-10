@@ -17,7 +17,7 @@ import {
   getHeaderList,
   getSectionDetails,
   getProtocolTocData,
-  resetSectionLoader,
+  setSectionLoader,
   getFileStream,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
@@ -210,8 +210,7 @@ export function* fetchSectionHeaderList(action) {
   const {
     payload: { docId },
   } = action;
-  // const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
-  const URL = '/header.json';
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
   const config = {
     url: URL,
     method: 'GET',
@@ -234,16 +233,13 @@ function* getState() {
   return id.substring(1);
 }
 export function* getSectionList(action) {
-  console.log(action);
   const userId = yield getState();
   const config = {
-    // url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
-    url: '/resp.json',
+    url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
     method: 'GET',
   };
   const sectionDetails = yield call(httpCall, config);
-  console.log(sectionDetails, 'sectionDetails');
-  yield put(resetSectionLoader());
+  yield put(setSectionLoader(false));
 
   if (sectionDetails.success) {
     yield put(
@@ -307,9 +303,7 @@ export function* getProtocolTocDataResult(action) {
     payload: { docId },
   } = action;
   const linkLevel = action.payload.tocFlag ? 6 : 1;
-  // const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${action.payload.docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
-  const URL = '/header.json';
-
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
   const config = {
     url: URL,
     method: 'GET',
@@ -382,6 +376,9 @@ function* watchProtocolAsync() {
   yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
   yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol);
   yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
+}
+
+function* watchProtocolViews() {
   yield takeEvery('GET_PROTOCOL_SECTION', getProtocolTocDataResult);
   yield takeEvery('GET_SECTION_LIST', getSectionList);
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
@@ -391,5 +388,5 @@ function* watchProtocolAsync() {
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once
 export default function* protocolSaga() {
-  yield all([watchProtocolAsync()]);
+  yield all([watchProtocolAsync(), watchProtocolViews()]);
 }

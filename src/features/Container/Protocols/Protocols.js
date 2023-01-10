@@ -17,7 +17,6 @@ import ProtocolOverview from './ProtocolOverview';
 import ProtocolView from './ProtocolView';
 import Documents from './Documents';
 import NoResultFound from '../../Components/NoResultFound';
-import Records from './records.json';
 
 // ------------------- Third Party -----------
 
@@ -46,7 +45,7 @@ function Protocols({ location }) {
     getProcotoclToc(viewData);
     // setSectionIndex(new Array(Records.length));
     /* eslint-disable */
-  }, [Records.length]);
+  }, []);
   /* eslint-enable */
 
   const forLoop = async () => {
@@ -89,6 +88,7 @@ function Protocols({ location }) {
           <div className="protocols" data-testid="protocols-component-test">
             <div className="p-rl-20">
               <Breadcrumbs
+                className="protocol-breadcrumb"
                 items={[
                   { href: '/dashboard' },
                   {
@@ -101,16 +101,12 @@ function Protocols({ location }) {
                     title: data.protocol,
                   },
                 ]}
-                style={{ paddingInlineStart: 0, marginBottom: 0 }}
               />
               <h2 className="header">{data.Protocol}</h2>
             </div>
             <div className="tab-column">
-              {/* <div className="d-flex-100">
-              </div> */}
-
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <div style={{ flex: 1 }} className="p-rl-20">
+              <div className="d-flex-row">
+                <div className="p-rl-20 tabs-wrapper">
                   <Tabs
                     value={value}
                     onChange={handleChangeTab}
