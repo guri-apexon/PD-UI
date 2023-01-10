@@ -57,7 +57,9 @@ function MultilineEdit({ data, edit, setSections }) {
         .map((data) => (
           <div key={data.line_id}>
             <div className="content_container">
+              {/* eslint-disable */}
               <div
+                /* eslint-enable */
                 onClick={() => edit && setActiveLineID(data.line_id)}
                 style={{ position: 'relative' }}
               >

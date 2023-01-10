@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import listIcon from '../../../../assets/images/list.png';
+import ListBullet from 'apollo-react-icons/ListBullet';
 import Dropdown from './Dropdown';
 
 const headerList = [
@@ -104,7 +104,7 @@ function FontProperties({ onClick }) {
           document.execCommand('insertUnorderedList');
         }}
       >
-        <img src={listIcon} alt="list" />
+        <ListBullet />
       </button>
       {/* <Dropdown
         list={symbolList}
