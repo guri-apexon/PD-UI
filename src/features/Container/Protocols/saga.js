@@ -354,8 +354,8 @@ export function* fetchFileStream(action) {
     method: 'GET',
     responseType: 'blob',
   };
-  const { data, success } = yield call(httpCall, config);
-  if (success) {
+  try {
+    const { data, success } = yield call(httpCall, config);
     const file = new Blob([data], { type: 'application/pdf' });
     const successState = {
       loader: false,
@@ -364,14 +364,15 @@ export function* fetchFileStream(action) {
       data: file,
     };
     yield put(getFileStream(successState));
-  } else {
+  } catch (error) {
     const errorState = {
       loader: false,
       success: false,
       error: 'Error',
-      data,
+      data: null,
     };
     yield put(getFileStream(errorState));
+    toast.error('File not found');
   }
 }
 

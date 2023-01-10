@@ -55,7 +55,7 @@ class ProtocolViewWrapper extends React.Component {
       default:
         break;
     }
-    this.setState({ popupVisible: true, subSectionData: subData });
+    this.setState({ popupVisible: true });
   }
 
   handleOutsideClick(e) {
@@ -73,7 +73,7 @@ class ProtocolViewWrapper extends React.Component {
 
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
-    this.setState({ popupVisible: false, subSectionData: [] });
+    this.setState({ popupVisible: false });
   };
 
   render() {
@@ -86,12 +86,6 @@ class ProtocolViewWrapper extends React.Component {
       headerDetails,
       paginationPage,
     } = this.state;
-    // const refs = subSectionData.reduce((acc, value) => {
-    //   acc[value.id] = React.createRef();
-    //   return acc;
-    // }, {});
-    // this.refs = refs;
-    /* eslint-enable */
 
     return (
       <>
