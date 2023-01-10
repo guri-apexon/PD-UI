@@ -129,21 +129,23 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
       className="pdf_container"
       data-testid="protocol-column-wrapper"
     >
-      <Document file={pdfString} onLoadSuccess={onDocumentLoadSuccess}>
-        {Array.from(new Array(numPages), (el, index) => (
-          <div ref={refs[index]} key={index}>
-            <PageWithObserver
-              key={`page_${index + 1}`}
-              pageNumber={index + 1}
-              setPageVisibility={setPageVisibility}
-              className="pdf-page"
-              width="490"
-              id={index}
-              scale={pageScale}
-            />
-          </div>
-        ))}
-      </Document>
+      {pdfString && (
+        <Document file={pdfString} onLoadSuccess={onDocumentLoadSuccess}>
+          {Array.from(new Array(numPages), (el, index) => (
+            <div ref={refs[index]} key={index}>
+              <PageWithObserver
+                key={`page_${index + 1}`}
+                pageNumber={index + 1}
+                setPageVisibility={setPageVisibility}
+                className="pdf-page"
+                width="490"
+                id={index}
+                scale={pageScale}
+              />
+            </div>
+          ))}
+        </Document>
+      )}
       <div className="sticky-bottom pdf-pagination">
         <Pagination
           count={numPages}
