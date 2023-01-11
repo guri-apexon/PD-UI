@@ -10,7 +10,7 @@
   > div.p-rl-20:first-child {
     padding-left: 16px;
   }
-  .protocol-breadcrumb{
+  .protocol-breadcrumb {
     margin-bottom: 0;
     padding-inline-start: 0;
   }
@@ -31,7 +31,7 @@
       font-weight: 600;
     }
   }
-  .protocol-source-column{
+  .protocol-source-column {
     .panel-heading {
       margin-left: 10px;
     }
@@ -138,7 +138,7 @@
   .tab-column {
     display: flex;
     flex-direction: column;
-    .tabs-wrapper{
+    .tabs-wrapper {
       flex: 1;
     }
     .overview {
@@ -347,9 +347,9 @@
     display: flex;
     padding-left: 10px;
   }
-  .view-wrapper > div > div:nth-child(2) {
+  .view-wrapper > div > div:last-child {
     width: 100% !important;
-    padding-right: 15px;
+    padding-right: 10px;
     float: right;
   }
 
@@ -404,7 +404,7 @@
     left: 2px;
     margin-right: 10px;
     justify-content: center;
-  
+
     svg {
       height: 16px;
       width: 16px;

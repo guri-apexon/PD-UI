@@ -32,6 +32,7 @@ function DigitizeAccordion({
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sections, setSections] = useState([]);
+  const [showLoader, setShowLoader] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
   const sectionContentLoader = useSelector(sectionLoader);
 
@@ -40,12 +41,31 @@ function DigitizeAccordion({
   useEffect(() => {
     if (
       sectionHeaderDetails?.sections &&
-      isArray(sectionHeaderDetails?.sections)
+      isArray(sectionHeaderDetails?.sections) &&
+      linkId === item.link_id
     ) {
-      setSections(sectionHeaderDetails?.sections);
+      setShowLoader(false);
+      let updatedSectionsData = [];
+      let matchedIndex = null;
+      const sectionsData = sectionHeaderDetails?.sections;
+      updatedSectionsData = sectionsData?.map((sec, index) => {
+        if (sec?.font_info?.VertAlign === 'superscript') {
+          matchedIndex = index;
+          return {
+            ...sec,
+            content: `${sectionsData[index - 1].content}_${sec?.content}`,
+          };
+        }
+        return sec;
+      });
+      if (matchedIndex) {
+        updatedSectionsData.splice(matchedIndex - 1, 1);
+      }
+      setSections(updatedSectionsData);
     } else {
       setSections([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionHeaderDetails]);
 
   const handleChange = () => {
@@ -62,6 +82,7 @@ function DigitizeAccordion({
     if (expanded) {
       setCurrentActiveCard(item.link_id);
       if (linkId !== item.link_id) {
+        setShowLoader(true);
         dispatch(setSectionLoader(true));
         dispatch(resetSectionData());
         dispatch({
@@ -131,7 +152,7 @@ function DigitizeAccordion({
       </AccordionSummary>
 
       <AccordionDetails className="section-single-content">
-        {sectionContentLoader && (
+        {(sectionContentLoader || showLoader) && (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
@@ -141,14 +162,51 @@ function DigitizeAccordion({
             <MultilineEdit data={sections} />
           ) : (
             <div className="readable-content">
-              {sections.map((section) => (
-                <p
-                  key={React.key}
-                  className={section.type === 'header' ? 'header' : null}
-                  // eslint-disable-next-line react/no-danger
-                  dangerouslySetInnerHTML={createFullMarkup(section.content)}
-                />
-              ))}
+              {sections.map((section) =>
+                section?.font_info?.VertAlign === 'superscript' ? (
+                  <div key={React.key} className="supContent">
+                    <p
+                      style={{
+                        fontWeight: `${
+                          section?.font_info?.isBold ||
+                          section.type === 'header'
+                            ? 'bold'
+                            : ''
+                        }`,
+                        fontStyle: `${
+                          section?.font_info?.Italics ? 'italics' : ''
+                        }`,
+                      }}
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={createFullMarkup(
+                        section.content.split('_')[0],
+                      )}
+                    />
+                    <sup
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={createFullMarkup(
+                        section.content.split('_')[1],
+                      )}
+                    />
+                  </div>
+                ) : (
+                  <p
+                    key={React.key}
+                    style={{
+                      fontWeight: `${
+                        section?.font_info?.isBold || section.type === 'header'
+                          ? 'bold'
+                          : ''
+                      }`,
+                      fontStyle: `${
+                        section?.font_info?.Italics ? 'italics' : ''
+                      }`,
+                    }}
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={createFullMarkup(section.content)}
+                  />
+                ),
+              )}
             </div>
           ))}
       </AccordionDetails>
