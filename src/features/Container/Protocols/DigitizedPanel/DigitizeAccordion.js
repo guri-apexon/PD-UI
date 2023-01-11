@@ -63,6 +63,7 @@ function DigitizeAccordion({
     } else {
       setSections([]);
     }
+    console.log('sectionHeaderDetails');
   }, [sectionHeaderDetails]);
 
   const handleChange = () => {

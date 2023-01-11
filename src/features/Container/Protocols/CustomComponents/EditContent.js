@@ -28,7 +28,7 @@ function ContentEdit({
       lineId: lineID,
       content: contentEditableRef.current.innerHTML,
     };
-    dispatch(updateSectionData(obj));
+    // dispatch(updateSectionData(obj));
     // currentEditData.current = text;
     // currentLineID.current = lineID;
 
