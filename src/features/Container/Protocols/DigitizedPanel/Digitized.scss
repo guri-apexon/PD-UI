@@ -18,8 +18,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 48px;
+  min-height: 48px;
   p {
     line-height: 1.2;
+    padding: 10px 0;
+  }
+}
+
+@media only screen and (max-width: 1366px) {
+  .accordion_summary_container p {
+    font-size: 14px;
   }
 }
