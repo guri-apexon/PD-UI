@@ -1,14 +1,27 @@
 .metadata-card {
-  max-height: 450px !important;
+  // max-height: 450px !important;
   overflow-y: auto;
+  overflow-y: scroll;
+  height: calc(100vh - 160px) !important;
   padding-right: 20px !important;
   thead {
     display: contents !important;
   }
   .digitize-panel-content {
-    height: calc(100vh - 210px);
     width: 100%;
     overflow-y: scroll;
+    height: auto !important;
+  }
+  .view-wrapper .MuiCard-root {
+    padding: 0;
+    // height: 100% !important;
+  }
+  .protocol-column {
+    flex: 3 1;
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    // width: 50%;
   }
 
   .metadata_item [class*='MuiAccordionSummary-root'] {
@@ -23,7 +36,7 @@
   }
   .metadata-plus-icon {
     float: right;
-    padding-right: 4.5%;
+    padding-right: 25px;
     font-size: 19px;
   }
   .metadata-plus-size {
@@ -89,6 +102,7 @@
   }
   [class*='MuiAccordionDetails-root-'] {
     padding: 0;
+    display: contents;
   }
   .protocols {
     .view-wrapper {

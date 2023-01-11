@@ -80,7 +80,7 @@ function MetaDataAccordian() {
         {accordianData?.map((level1, index1) => {
           return (
             <div key={React.key} className="metadata_item">
-              <Accordion expanded={level1.isActive}>
+              <Accordion>
                 <AccordionSummary
                   data-testId="metadataAccordian"
                   onClick={() => handleAccordian(index1)}
@@ -112,11 +112,13 @@ function MetaDataAccordian() {
                 </AccordionSummary>
 
                 <AccordionDetails>
-                  {level1?.isEdit ? (
-                    <MetaDataEdit />
-                  ) : (
-                    <MetadataTable accname={level1.name} />
-                  )}
+                  <div className="section-single-content">
+                    {level1?.isEdit ? (
+                      <MetaDataEdit />
+                    ) : (
+                      <MetadataTable accname={level1.name} />
+                    )}
+                  </div>
                 </AccordionDetails>
               </Accordion>
             </div>

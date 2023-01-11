@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import withStyles from '@material-ui/core/styles/withStyles';
 import React, { useState, useEffect } from 'react';
 import { neutral8 } from 'apollo-react/colors';
@@ -60,6 +62,8 @@ function BladeRight({ handleRightBlade, dataSummary }) {
   }, [open]);
 
   return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div>
       <div className="bladeContainerRight">
         <Blade
@@ -73,6 +77,7 @@ function BladeRight({ handleRightBlade, dataSummary }) {
           marginTop={141}
           hasBackdrop
           side="right"
+          BackdropProps={onClose}
           data-testId="rightblade"
         >
           <div className="switch-padding">
@@ -123,7 +128,7 @@ function BladeRight({ handleRightBlade, dataSummary }) {
               </Button>
               <Button
                 className={textValue[4] ? 'link-text-clicked' : 'link-text'}
-                disabled={!dataSummary?.userPrimaryRoleFlag}
+                disabled={dataSummary?.userPrimaryRoleFlag}
                 onClick={() => {
                   handleClick(4);
                   handleRightBlade('MetaData');
@@ -134,6 +139,9 @@ function BladeRight({ handleRightBlade, dataSummary }) {
             </ul>
           </div>
         </Blade>
+        {/* <div>
+          <h1>thjk</h1>
+        </div> */}
       </div>
     </div>
   );
