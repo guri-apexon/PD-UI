@@ -15,7 +15,6 @@ class ProtocolViewWrapper extends React.Component {
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.state = {
       popupVisible: false,
-      subSectionData: [],
       headerDetails: '',
       pageRight: 0,
       pageNo: 0,
@@ -39,22 +38,8 @@ class ProtocolViewWrapper extends React.Component {
     this.setState({ sectionNumber: sectionNo });
   };
 
-  handleClick(id) {
+  handleClick() {
     document.addEventListener('click', this.handleOutsideClick, false);
-    let subData = [];
-    const {
-      data: { TOC, SOA },
-    } = this.props;
-    switch (id) {
-      case 'TOC':
-        subData = TOC;
-        break;
-      case 'SOA':
-        subData = SOA;
-        break;
-      default:
-        break;
-    }
     this.setState({ popupVisible: true });
   }
 
