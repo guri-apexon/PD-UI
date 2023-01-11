@@ -74,9 +74,11 @@ class ProtocolViewWrapper extends React.Component {
 
     return (
       <>
-        <div>
-          <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
-        </div>
+        {data.userPrimaryRoleFlag ? (
+          <div>
+            <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
+          </div>
+        ) : null}
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
             {data.userPrimaryRoleFlag && (
