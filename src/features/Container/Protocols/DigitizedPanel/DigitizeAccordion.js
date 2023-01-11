@@ -45,7 +45,23 @@ function DigitizeAccordion({
       linkId === item.link_id
     ) {
       setShowLoader(false);
-      setSections(sectionHeaderDetails?.sections);
+      let updatedSectionsData = [];
+      let matchedIndex = null;
+      const sectionsData = sectionHeaderDetails?.sections;
+      updatedSectionsData = sectionsData?.map((sec, index) => {
+        if (sec?.font_info?.VertAlign === 'superscript') {
+          matchedIndex = index;
+          return {
+            ...sec,
+            content: `${sectionsData[index - 1].content}_${sec?.content}`,
+          };
+        }
+        return sec;
+      });
+      if (matchedIndex) {
+        updatedSectionsData.splice(matchedIndex - 1, 1);
+      }
+      setSections(updatedSectionsData);
     } else {
       setSections([]);
     }
@@ -146,14 +162,51 @@ function DigitizeAccordion({
             <MultilineEdit data={sections} />
           ) : (
             <div className="readable-content">
-              {sections.map((section) => (
-                <p
-                  key={React.key}
-                  className={section.type === 'header' ? 'header' : null}
-                  // eslint-disable-next-line react/no-danger
-                  dangerouslySetInnerHTML={createFullMarkup(section.content)}
-                />
-              ))}
+              {sections.map((section) =>
+                section?.font_info?.VertAlign === 'superscript' ? (
+                  <div key={React.key} className="supContent">
+                    <p
+                      style={{
+                        fontWeight: `${
+                          section?.font_info?.isBold ||
+                          section.type === 'header'
+                            ? 'bold'
+                            : ''
+                        }`,
+                        fontStyle: `${
+                          section?.font_info?.Italics ? 'italics' : ''
+                        }`,
+                      }}
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={createFullMarkup(
+                        section.content.split('_')[0],
+                      )}
+                    />
+                    <sup
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={createFullMarkup(
+                        section.content.split('_')[1],
+                      )}
+                    />
+                  </div>
+                ) : (
+                  <p
+                    key={React.key}
+                    style={{
+                      fontWeight: `${
+                        section?.font_info?.isBold || section.type === 'header'
+                          ? 'bold'
+                          : ''
+                      }`,
+                      fontStyle: `${
+                        section?.font_info?.Italics ? 'italics' : ''
+                      }`,
+                    }}
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={createFullMarkup(section.content)}
+                  />
+                ),
+              )}
             </div>
           ))}
       </AccordionDetails>
