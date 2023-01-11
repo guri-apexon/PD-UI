@@ -32,6 +32,7 @@ function DigitizeAccordion({
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sections, setSections] = useState([]);
+  const [showLoader, setShowLoader] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
   const sectionContentLoader = useSelector(sectionLoader);
 
@@ -40,12 +41,15 @@ function DigitizeAccordion({
   useEffect(() => {
     if (
       sectionHeaderDetails?.sections &&
-      isArray(sectionHeaderDetails?.sections)
+      isArray(sectionHeaderDetails?.sections) &&
+      linkId === item.link_id
     ) {
+      setShowLoader(false);
       setSections(sectionHeaderDetails?.sections);
     } else {
       setSections([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionHeaderDetails]);
 
   const handleChange = () => {
@@ -62,6 +66,7 @@ function DigitizeAccordion({
     if (expanded) {
       setCurrentActiveCard(item.link_id);
       if (linkId !== item.link_id) {
+        setShowLoader(true);
         dispatch(setSectionLoader(true));
         dispatch(resetSectionData());
         dispatch({
@@ -131,7 +136,7 @@ function DigitizeAccordion({
       </AccordionSummary>
 
       <AccordionDetails className="section-single-content">
-        {sectionContentLoader && (
+        {(sectionContentLoader || showLoader) && (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
