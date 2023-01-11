@@ -14,6 +14,7 @@ import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import MetaDataEdit from './MetaDataEdit';
 import { metaSummaryField } from '../protocolSlice';
+import MetaDataEditTable from './MetaDataEditTable';
 
 function MetaDataAccordian() {
   const accordianArray = [
@@ -113,7 +114,8 @@ function MetaDataAccordian() {
 
                 <AccordionDetails>
                   {level1?.isEdit ? (
-                    <MetaDataEdit />
+                    // <MetaDataEdit />
+                    <MetaDataEditTable />
                   ) : (
                     <MetadataTable accname={level1.name} />
                   )}

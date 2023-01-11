@@ -11,6 +11,7 @@ import { headerResult, protocolSummary } from '../protocolSlice';
 import './Digitized.scss';
 import BladeRight from '../BladeRight/BladeRight';
 import MetaDataAccordian from '../MetaData/MetaDataAccordian';
+import MetaDataEditTable from '../MetaData/MetaDataEditTable';
 
 function Digitize({
   sectionNumber,
@@ -148,7 +149,7 @@ function Digitize({
           </div>
         </Card>
       ) : rightValue === 'MetaData' ? (
-        <MetaDataAccordian />
+        <MetaDataEditTable />
       ) : null}
     </div>
   );
