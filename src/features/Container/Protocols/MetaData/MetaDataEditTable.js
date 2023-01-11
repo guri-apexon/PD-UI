@@ -16,22 +16,17 @@ function Cell({ row, column }) {
 }
 
 function EditableCell({ row, column: { accessor: key } }) {
-  //   const [inputValue, setInputValue] = useState(row.editRowData[key]);
-  //   useEffect(() => {
-  //     row.editRow(row.header, key, inputValue);
-  //   }, [inputValue]);
   console.log('Values', row.editMode);
   return row.editMode ? (
     <TextField
       size="small"
       fullWidth
-      value={row?.editRowData[key]}
+      value={row.editRowData[key]}
       onChange={(e) => {
-        row?.editRow(row?.id, key, e.target.value);
-        // setInputValue(e.target.value);
+        row.editRow(row.id, key, e.target.value);
       }}
-      error={!row?.editRowData[key]}
-      helperText={!row?.editRowData[key] && 'Required'}
+      error={!row.editRowData[key]}
+      helperText={!row.editRowData[key] && 'Required'}
     />
   ) : (
     row[key]
@@ -132,17 +127,17 @@ function MetaDataEditTable() {
         stripedRows
       />
     );
-  }, [rows, column]);
+  }, [column, editedRows]);
 
   useEffect(() => {
     setEditedRows(rows);
   }, []);
-  useEffect(() => {
-    console.log('Rows in table ', rows);
-  }, [rows]);
-  useEffect(() => {
-    console.log('editedRows in table ', editedRows);
-  }, [editedRows]);
+  //   useEffect(() => {
+  //     console.log('Rows in table ', rows);
+  //   }, [rows]);
+  //   useEffect(() => {
+  //     console.log('editedRows in table ', editedRows);
+  //   }, [editedRows]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
