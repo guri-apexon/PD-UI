@@ -8,6 +8,7 @@ import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { protocolSummary, getPdfData } from '../protocolSlice';
+import './PdfViewer.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -161,7 +162,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
             size="small"
             className="buttonStyles"
             data-testId="zoomIn"
-            disabled={pageScale >= 1.6}
+            disabled={pageScale >= 3.0}
             onClick={handleZoomIn}
           >
             <PlusIcon />
@@ -170,7 +171,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
             size="small"
             className="buttonStyles"
             data-testId="zoomOut"
-            disabled={pageScale <= 0.5}
+            disabled={pageScale <= 0.7}
             onClick={handleZoomOut}
           >
             <Minus />
