@@ -161,7 +161,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
             size="small"
             className="buttonStyles"
             data-testId="zoomIn"
-            disabled={pageScale >= 1.6}
+            disabled={pageScale >= 3.0}
             onClick={handleZoomIn}
           >
             <PlusIcon />
@@ -170,7 +170,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
             size="small"
             className="buttonStyles"
             data-testId="zoomOut"
-            disabled={pageScale <= 0.5}
+            disabled={pageScale <= 0.7}
             onClick={handleZoomOut}
           >
             <Minus />
