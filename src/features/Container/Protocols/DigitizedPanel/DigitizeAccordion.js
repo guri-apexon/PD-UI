@@ -117,7 +117,11 @@ function DigitizeAccordion({
   };
 
   return (
-    <Accordion expanded={expanded} onChange={handleChange}>
+    <Accordion
+      expanded={expanded}
+      onClick={handleChange}
+      data-testid="accordion"
+    >
       <AccordionSummary>
         <div className="accordion_summary_container">
           <Typography className="section-title" data-testid="accordion-header">
