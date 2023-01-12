@@ -92,7 +92,7 @@ function Digitize({
   }, [paginationPage]);
   return (
     <div>
-      {rightValue === 'Home' && (
+      {['Home', 'Clinical Term'].includes(rightValue) && (
         <Card
           className="protocol-column protocol-digitize-column"
           style={{ borderRight: '0' }}

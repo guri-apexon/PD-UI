@@ -20,7 +20,9 @@ import {
 } from '../protocolSlice';
 import { createFullMarkup } from '../../../../utils/utilFunction';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
+import SanitizeHTML from '../../../Components/SanitizeHtml';
 
+const enrichedDummyText = '<b class="enriched-txt">Enriched Text</b>';
 function DigitizeAccordion({
   item,
   protocol,
@@ -28,6 +30,7 @@ function DigitizeAccordion({
   currentActiveCard,
   setCurrentActiveCard,
   handlePageRight,
+  rightBladeValue,
 }) {
   const dispatch = useDispatch();
 
@@ -65,7 +68,12 @@ function DigitizeAccordion({
       }
       setSections(updatedSectionsData);
     } else {
-      setSections([]);
+      setSections([
+        {
+          content: 'fdsad sadsadsad dsadsa dsadsa dsad sadsad sada',
+        },
+      ]);
+      setShowLoader(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionHeaderDetails]);
@@ -186,15 +194,16 @@ function DigitizeAccordion({
               className="readable-content"
               onClick={(e) => handleEnrichedClick(e)}
             >
-              {sections.map((section) =>
-                section?.font_info?.VertAlign === 'superscript' ? (
+              {sections.map((section) => {
+                const enrichedTxt =
+                  rightBladeValue === 'Clinical Term' ? enrichedDummyText : '';
+                return section?.font_info?.VertAlign === 'superscript' ? (
                   <div key={React.key} className="supContent">
-                    <sup
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={createFullMarkup(
-                        section.content.split('_')[0],
-                      )}
-                    />
+                    <sup>
+                      <SanitizeHTML
+                        html={createFullMarkup(section.content.split('_')[0])}
+                      />
+                    </sup>
                     <p
                       style={{
                         fontWeight: `${
@@ -207,11 +216,12 @@ function DigitizeAccordion({
                           section?.font_info?.Italics ? 'italics' : ''
                         }`,
                       }}
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={createFullMarkup(
-                        section.content.split('_')[1],
-                      )}
-                    />
+                    >
+                      <SanitizeHTML
+                        html={createFullMarkup(section.content.split('_')[1])}
+                      />
+                      {enrichedTxt}
+                    </p>
                   </div>
                 ) : (
                   <p
@@ -226,11 +236,12 @@ function DigitizeAccordion({
                         section?.font_info?.Italics ? 'italics' : ''
                       }`,
                     }}
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={createFullMarkup(section.content)}
-                  />
-                ),
-              )}
+                  >
+                    <SanitizeHTML html={createFullMarkup(section.content)} />
+                    {enrichedTxt}
+                  </p>
+                );
+              })}
             </div>
           ))}
       </AccordionDetails>
@@ -248,4 +259,5 @@ DigitizeAccordion.propTypes = {
   currentActiveCard: PropTypes.isRequired,
   setCurrentActiveCard: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
+  rightBladeValue: PropTypes.isRequired,
 };
