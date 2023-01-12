@@ -18,7 +18,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   const fileStream = useSelector(getPdfData);
   const [numPages, setNumPages] = useState(0);
   const [currentPage, setPage] = useState(0);
-  const [pageScale, setPageScale] = useState(1.5);
+  const [pageScale, setPageScale] = useState(1.4);
   const [pdfString, setPdfString] = useState(null);
 
   const { documentFilePath, protocol } = protocolAllItems.data;
