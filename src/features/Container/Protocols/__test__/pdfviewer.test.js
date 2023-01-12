@@ -49,4 +49,13 @@ describe('PDF VIEWER', () => {
     expect(zoomIn).toBeInTheDocument();
     fireEvent.click(zoomIn);
   });
+
+  test('Zoom In Counter', () => {
+    const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />, {
+      initialState,
+    });
+    const pdfKeyDown = screen.getByTestId('protocol-column-wrapper');
+    expect(pdfKeyDown).toBeInTheDocument();
+    fireEvent.keyDown(pdfKeyDown);
+  });
 });
