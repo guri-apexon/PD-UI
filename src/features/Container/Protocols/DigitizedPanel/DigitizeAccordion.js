@@ -53,13 +53,13 @@ function DigitizeAccordion({
           matchedIndex = index;
           return {
             ...sec,
-            content: `${sectionsData[index - 1].content}_${sec?.content}`,
+            content: `${sec?.content}_${sectionsData[index + 1].content}`,
           };
         }
         return sec;
       });
       if (matchedIndex) {
-        updatedSectionsData.splice(matchedIndex - 1, 1);
+        updatedSectionsData.splice(matchedIndex + 1, 1);
       }
       setSections(updatedSectionsData);
     } else {
@@ -169,6 +169,12 @@ function DigitizeAccordion({
               {sections.map((section) =>
                 section?.font_info?.VertAlign === 'superscript' ? (
                   <div key={React.key} className="supContent">
+                    <sup
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={createFullMarkup(
+                        section.content.split('_')[0],
+                      )}
+                    />
                     <p
                       style={{
                         fontWeight: `${
@@ -181,12 +187,6 @@ function DigitizeAccordion({
                           section?.font_info?.Italics ? 'italics' : ''
                         }`,
                       }}
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={createFullMarkup(
-                        section.content.split('_')[0],
-                      )}
-                    />
-                    <sup
                       // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={createFullMarkup(
                         section.content.split('_')[1],

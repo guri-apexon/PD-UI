@@ -6,8 +6,6 @@ import './Digitized_edit.scss';
 function MultilineEdit({ data }) {
   const [value, setValue] = useState(null);
 
-  console.log({ data });
-
   useEffect(() => {
     if (data?.length > 0) {
       const arr = data.map((val, index) => ({
