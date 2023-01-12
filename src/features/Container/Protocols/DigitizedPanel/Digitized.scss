@@ -1,6 +1,7 @@
 .section-single-content {
   .readable-content {
-    height: 500px;
+    height: auto;
+    max-height: 500px;
     flex: 1 1 auto;
     .supContent {
       display: flex;
