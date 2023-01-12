@@ -25,7 +25,7 @@ function Protocols({ location }) {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
-  const [pdfArray] = useState(new Array(250));
+  const [pdfArray] = useState([]);
 
   useEffect(() => {
     const params = location.search;

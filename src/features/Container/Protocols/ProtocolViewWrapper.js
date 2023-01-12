@@ -44,7 +44,6 @@ class ProtocolViewWrapper extends React.Component {
   }
 
   handleOutsideClick(e) {
-    // ignore clicks on the component itself
     if (e.target && this.node && this.node.contains(e.target)) {
       return;
     }
@@ -63,22 +62,16 @@ class ProtocolViewWrapper extends React.Component {
 
   render() {
     const { data, refx, sectionRef, summaryData } = this.props;
-    const {
-      // subSectionData,
-      pageNo,
-      pageRight,
-      sectionNumber,
-      headerDetails,
-      paginationPage,
-    } = this.state;
+    const { pageNo, pageRight, sectionNumber, headerDetails, paginationPage } =
+      this.state;
 
     return (
       <>
-        {data.userPrimaryRoleFlag ? (
+        {data.userPrimaryRoleFlag && (
           <div>
             <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
           </div>
-        ) : null}
+        )}
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
             {data.userPrimaryRoleFlag && (
