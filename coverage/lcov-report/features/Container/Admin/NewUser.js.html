@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line high'></div>
     <pre><table class="coverage">
@@ -372,7 +378,9 @@
 <a name='L313'></a><a href='#L313'>313</a>
 <a name='L314'></a><a href='#L314'>314</a>
 <a name='L315'></a><a href='#L315'>315</a>
-<a name='L316'></a><a href='#L316'>316</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L316'></a><a href='#L316'>316</a>
+<a name='L317'></a><a href='#L317'>317</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -687,17 +695,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState } from "react";
-import trim from "lodash/trim";
-import cloneDeep from "lodash/cloneDeep";
-import { useSelector, useDispatch } from "react-redux";
-import Modal from "apollo-react/components/Modal";
-import Button from "apollo-react/components/Button";
-import Loader from "apollo-react/components/Loader";
-import Grid from "apollo-react/components/Grid";
-import TextField from "apollo-react/components/TextField";
-import MenuItem from "apollo-react/components/MenuItem";
-import Select from "apollo-react/components/Select";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable */
+import { useState } from 'react';
+import trim from 'lodash/trim';
+import cloneDeep from 'lodash/cloneDeep';
+import { useSelector, useDispatch } from 'react-redux';
+import Modal from 'apollo-react/components/Modal';
+import Button from 'apollo-react/components/Button';
+import Loader from 'apollo-react/components/Loader';
+import Grid from 'apollo-react/components/Grid';
+import TextField from 'apollo-react/components/TextField';
+import MenuItem from 'apollo-react/components/MenuItem';
+import Select from 'apollo-react/components/Select';
 import {
   modalToggle,
   setNewUserValues,
@@ -710,16 +719,16 @@ import {
   setFormError,
   setUserError,
   rolesOptionsList,
-} from "./adminSlice";
+} from './adminSlice';
 &nbsp;
 const userValue = {
   userId: null,
-  id: "",
+  id: '',
   firstName: null,
   lastName: null,
   email: null,
   country: null,
-  userRole: "",
+  userRole: '',
 };
 &nbsp;
 const emailReg =
@@ -738,54 +747,54 @@ function NewUser({ setIsOpen }) {
   const [role, setRole] = useState(formValue.userRole);
 &nbsp;
   const handleSaveForm = () =&gt; {
-    let err = cloneDeep(formErrValue);
+    const err = cloneDeep(formErrValue);
     if (!formValue.firstName) {
       err.firstName.error = true;
-      err.firstName.message = "Required";
+      err.firstName.message = 'Required';
     } else {
       err.firstName.error = false;
-      err.firstName.message = "";
+      err.firstName.message = '';
     }
     if (!formValue.lastName) {
       err.lastName.error = true;
-      err.lastName.message = "Required";
+      err.lastName.message = 'Required';
     } else {
       err.lastName.error = false;
-      err.lastName.message = "";
+      err.lastName.message = '';
     }
     if (!formValue.email) {
       err.email.error = true;
-      err.email.message = "Required";
+      err.email.message = 'Required';
     } else if (!emailReg.test(formValue.email)) {
       err.email.error = true;
-      err.email.message = "Enter valid email";
+      err.email.message = 'Enter valid email';
     } else {
       err.email.error = false;
-      err.email.message = "";
+      err.email.message = '';
     }
     if (!formValue.country) {
       err.country.error = true;
-      err.country.message = "Required";
+      err.country.message = 'Required';
     } else {
       err.country.error = false;
-      err.country.message = "";
+      err.country.message = '';
     }
     if (!userId) {
       err.userId.error = true;
-      err.userId.message = "Required";
+      err.userId.message = 'Required';
     } else if (userId &amp;&amp; !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
-      err.userId.message = "Enter valid user id";
+      err.userId.message = 'Enter valid user id';
     } else {
       err.userId.error = false;
-      err.userId.message = "";
+      err.userId.message = '';
     }
     if (!role) {
       err.userRole.error = true;
-      err.userRole.message = "Required";
+      err.userRole.message = 'Required';
     } else {
       err.userRole.error = false;
-      err.userRole.message = "";
+      err.userRole.message = '';
     }
 &nbsp;
     dispatch(setFormError(err));
@@ -798,7 +807,7 @@ function NewUser({ setIsOpen }) {
       userId &amp;&amp;
       role
     ) {
-      dispatch({ type: "ADD_NEW_USER_SAGA" });
+      dispatch({ type: 'ADD_NEW_USER_SAGA' });
     }
   };
 &nbsp;
@@ -809,36 +818,36 @@ function NewUser({ setIsOpen }) {
     dispatch(setNewUserValues(data));
   };
   const getUser = () =&gt; {
-    let err = cloneDeep(formErrValue);
+    const err = cloneDeep(formErrValue);
     if (userId &amp;&amp; !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
-      err.userId.message = "Enter valid user id";
+      err.userId.message = 'Enter valid user id';
     } else if (userId) {
       err.userId.error = false;
-      err.userId.message = "";
-      dispatch({ type: "GET_USER_DETAILS_LDAP", payload: userId });
+      err.userId.message = '';
+      dispatch({ type: 'GET_USER_DETAILS_LDAP', payload: userId });
     } else {
       err.userId.error = true;
-      err.userId.message = "Required";
+      err.userId.message = 'Required';
     }
     dispatch(setFormError(err));
   };
   const onFieldBlur = (key, value) =&gt; {
-    let err = cloneDeep(formErrValue);
+    const err = cloneDeep(formErrValue);
     const trimValue = trim(value);
 &nbsp;
-    if (key === "userId" &amp;&amp; userId &amp;&amp; !/^[0-9]*$/.test(userId)) {
+    if (key === 'userId' &amp;&amp; userId &amp;&amp; !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
-      err.userId.message = "Enter valid user id";
-    } else if (key === "email" &amp;&amp; trimValue &amp;&amp; !emailReg.test(trimValue)) {
+      err.userId.message = 'Enter valid user id';
+    } else if (key === 'email' &amp;&amp; trimValue &amp;&amp; !emailReg.test(trimValue)) {
       err.email.error = true;
-      err.email.message = "Enter valid email";
+      err.email.message = 'Enter valid email';
     } else if (trimValue) {
       err[key].error = false;
-      err[key].message = "";
+      err[key].message = '';
     } else {
       err[key].error = true;
-      err[key].message = "Required";
+      err[key].message = 'Required';
     }
     dispatch(setFormError(err));
   };
@@ -848,24 +857,24 @@ function NewUser({ setIsOpen }) {
       open={isOpen}
       onClose={() =&gt; {
         const reset = {
-          firstName: { error: false, message: "" },
-          lastName: { error: false, message: "" },
-          email: { error: false, message: "" },
-          country: { error: false, message: "" },
-          userId: { error: false, message: "" },
-          userRole: { error: false, message: "" },
+          firstName: { error: false, message: '' },
+          lastName: { error: false, message: '' },
+          email: { error: false, message: '' },
+          country: { error: false, message: '' },
+          userId: { error: false, message: '' },
+          userRole: { error: false, message: '' },
         };
         setIsOpen(false);
         dispatch(setNewUserValues(userValue));
         dispatch(setFormError(reset));
-        setRole("");
-        setUserId("");
-        dispatch(setNewUserError(""));
-        dispatch(setUserError(""));
+        setRole('');
+        setUserId('');
+        dispatch(setNewUserError(''));
+        dispatch(setUserError(''));
       }}
-      subtitle={error &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;span style={{ color: "red" }}&gt;{error}&lt;/span&gt;}</span>
+      subtitle={error &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;span style={{ color: 'red' }}&gt;{error}&lt;/span&gt;}</span>
       title="Add New Users to PD"
-      buttonProps={[{}, { label: "Create", onClick: handleSaveForm }]}
+      buttonProps={[{}, { label: 'Create', onClick: handleSaveForm }]}
       id="new-user-modal"
       data-testid="new-user-modal"
     &gt;
@@ -881,12 +890,12 @@ function NewUser({ setIsOpen }) {
             helperText={formErrValue.userId.message}
             error={formErrValue.userId.error}
             onChange={(e) =&gt; setUserId(trim(e.target.value))}
-            onBlur={(e) =&gt; onFieldBlur("userId", e.target.value)}
+            onBlur={(e) =&gt; onFieldBlur('userId', e.target.value)}
             data-testid="user-id-texfield"
           /&gt;
           &lt;span
             data-testid="user-id-error"
-            style={{ color: "red", fontSize: "13px" }}
+            style={{ color: 'red', fontSize: '13px' }}
           &gt;
             {userIdError}
           &lt;/span&gt;
@@ -894,7 +903,7 @@ function NewUser({ setIsOpen }) {
         &lt;Grid item xs={6} sm={6}&gt;
           &lt;Button
             variant="primary"
-            style={{ marginTop: "15%" }}
+            style={{ marginTop: '15%' }}
             onClick={() =&gt; getUser()}
           &gt;
             Search
@@ -905,13 +914,13 @@ function NewUser({ setIsOpen }) {
             label="User Role"
             helperText={`${formErrValue.userRole.message} You can select one option`}
             error={formErrValue.userRole.error}
-            onBlur={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >onFieldBlur("userRole", e.target.value)}</span>
+            onBlur={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >onFieldBlur('userRole', e.target.value)}</span>
             fullWidth
-            canDeselect={true}
+            canDeselect
             placeholder="Select User Role"
             value={role}
             onChange={(e) =&gt; {
-              handleChange("userRole", e.target.value);
+              handleChange('userRole', e.target.value);
               setRole(e.target.value);
             }}
             required
@@ -924,7 +933,7 @@ function NewUser({ setIsOpen }) {
             ))}
           &lt;/Select&gt;
         &lt;/Grid&gt;
-        &lt;Grid item xs={6} sm={6}&gt;&lt;/Grid&gt;
+        &lt;Grid item xs={6} sm={6} /&gt;
         {userLoader &amp;&amp; (
 <span class="branch-1 cbranch-no" title="branch not covered" >          &lt;Grid item xs={12}&gt;</span>
             &lt;div style={{ height: 30 }}&gt;
@@ -941,9 +950,9 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.firstName.message}
             error={formErrValue.firstName.error}
-            value={!userIdError ? formValue.firstName : <span class="branch-1 cbranch-no" title="branch not covered" >""}</span>
-            onChange={(e) =&gt; handleChange("firstName", e.target.value)}
-            onBlur={(e) =&gt; onFieldBlur("firstName", e.target.value)}
+            value={!userIdError ? formValue.firstName : <span class="branch-1 cbranch-no" title="branch not covered" >''}</span>
+            onChange={(e) =&gt; handleChange('firstName', e.target.value)}
+            onBlur={(e) =&gt; onFieldBlur('firstName', e.target.value)}
             data-testid="first-name-texfield"
             disabled
           /&gt;
@@ -957,9 +966,9 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.lastName.message}
             error={formErrValue.lastName.error}
-            value={!userIdError ? formValue.lastName : <span class="branch-1 cbranch-no" title="branch not covered" >""}</span>
-            onChange={(e) =&gt; handleChange("lastName", e.target.value)}
-            onBlur={(e) =&gt; onFieldBlur("lastName", e.target.value)}
+            value={!userIdError ? formValue.lastName : <span class="branch-1 cbranch-no" title="branch not covered" >''}</span>
+            onChange={(e) =&gt; handleChange('lastName', e.target.value)}
+            onBlur={(e) =&gt; onFieldBlur('lastName', e.target.value)}
             data-testid="last-name-texfield"
             disabled
           /&gt;
@@ -973,9 +982,9 @@ function NewUser({ setIsOpen }) {
             type="email"
             helperText={formErrValue.email.message}
             error={formErrValue.email.error}
-            value={!userIdError ? formValue.email : <span class="branch-1 cbranch-no" title="branch not covered" >""}</span>
-            onChange={(e) =&gt; handleChange("email", e.target.value)}
-            onBlur={(e) =&gt; onFieldBlur("email", e.target.value)}
+            value={!userIdError ? formValue.email : <span class="branch-1 cbranch-no" title="branch not covered" >''}</span>
+            onChange={(e) =&gt; handleChange('email', e.target.value)}
+            onBlur={(e) =&gt; onFieldBlur('email', e.target.value)}
             data-testid="email-texfield"
             disabled
           /&gt;
@@ -989,9 +998,9 @@ function NewUser({ setIsOpen }) {
             required
             helperText={formErrValue.country.message}
             error={formErrValue.country.error}
-            value={!userIdError ? formValue.country : <span class="branch-1 cbranch-no" title="branch not covered" >""}</span>
-            onChange={(e) =&gt; handleChange("country", e.target.value)}
-            onBlur={(e) =&gt; onFieldBlur("country", e.target.value)}
+            value={!userIdError ? formValue.country : <span class="branch-1 cbranch-no" title="branch not covered" >''}</span>
+            onChange={(e) =&gt; handleChange('country', e.target.value)}
+            onBlur={(e) =&gt; onFieldBlur('country', e.target.value)}
             data-testid="Country-texfield"
             disabled
           /&gt;
@@ -1008,10 +1017,9 @@ export default NewUser;
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {

@@ -11,6 +11,7 @@ import {
   ADMIN_MENU,
 } from '../../../AppConstant/AppConstant';
 import { baseUrlSSO } from '../../../utils/api';
+import './Navbar.scss';
 
 const setMenuItems = (value) => {
   switch (value) {
@@ -81,7 +82,7 @@ function Navbar() {
   return (
     'userId' in userData &&
     userData.userId && (
-      <div data-testid="navbar-test">
+      <div data-testid="navbar-test" className="navbar">
         <NavigationBar
           LogoComponent={() => (
             <div

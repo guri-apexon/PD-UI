@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.16% </span>
+                <span class="strong">95.6% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>197/207</span>
+                <span class='fraction'>196/205</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.12% </span>
+                <span class="strong">95.56% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>195/205</span>
+                <span class='fraction'>194/203</span>
             </div>
         
             
@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line high'></div>
     <pre><table class="coverage">
@@ -476,8 +482,8 @@
 <a name='L417'></a><a href='#L417'>417</a>
 <a name='L418'></a><a href='#L418'>418</a>
 <a name='L419'></a><a href='#L419'>419</a>
-<a name='L420'></a><a href='#L420'>420</a>
-<a name='L421'></a><a href='#L421'>421</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L420'></a><a href='#L420'>420</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -776,7 +782,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -798,7 +803,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -879,40 +883,41 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable */
+import {
   takeEvery,
   all,
   call,
   put,
   select,
   takeLatest,
-} from "redux-saga/effects";
-import cloneDeep from "lodash/cloneDeep";
-import { toast } from "react-toastify";
-import BASE_URL, { httpCall, BASE_URL_8000, UI_URL } from "../../../utils/api";
+} from 'redux-saga/effects';
+import cloneDeep from 'lodash/cloneDeep';
+import { toast } from 'react-toastify';
+import BASE_URL, { httpCall, BASE_URL_8000, UI_URL } from '../../../utils/api';
 import {
   localISOTime,
   qcIconStatus,
   iconStatus,
-} from "../../../utils/utilFunction";
+} from '../../../utils/utilFunction';
 import {
   getProtocols,
   setError,
@@ -929,7 +934,7 @@ import {
   setSelectedProtocols,
   setIndicationLoading,
   setSponsorLoading,
-} from "./dashboardSlice";
+} from './dashboardSlice';
 &nbsp;
 function* getState() {
   const state = yield select();
@@ -943,12 +948,12 @@ export function* protocolAsyn(action) {
   } else {
     yield put(setTableLoader(true));
     yield put(setSelectedProtocols([]));
-    let userId = yield getState();
+    const userId = yield getState();
     const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}`;
 &nbsp;
     const protocolConfig = {
       url: protocolUrl,
-      method: "GET",
+      method: 'GET',
     };
     try {
       const protocolData = yield call(httpCall, protocolConfig);
@@ -956,12 +961,12 @@ export function* protocolAsyn(action) {
       if (protocolData.success) {
         const followedProtocolData = [];
         const myPorotocolsData = [];
-        protocolData.data.map((item, i) =&gt; {
-          item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
-          item.protocol = !item.protocol ? "" : item.protocol;
-          item.projectId = !item.projectId ? "" : item.projectId;
-          item.sponsor = !item.sponsor ? "" : item.sponsor;
-          item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
+        protocolData.data.map((item) =&gt; {
+          item.protocolTitle = !item.protocolTitle ? '' : item.protocolTitle;
+          item.protocol = !item.protocol ? '' : item.protocol;
+          item.projectId = !item.projectId ? '' : item.projectId;
+          item.sponsor = !item.sponsor ? '' : item.sponsor;
+          item.uploadDate = !item.uploadDate ? '' : new Date(item.uploadDate);
           item.qcActivity = qcIconStatus(item.qcStatus, item.status);
           item.status = iconStatus(item.status, item.qcStatus);
           if (item.userUploadedFlag || item.userPrimaryRoleFlag) {
@@ -994,16 +999,16 @@ function sorting(data, key) {
 }
 &nbsp;
 export function* recentSearchAsyn() {
-  let userId = yield getState();
+  const userId = yield getState();
   const url = `${BASE_URL_8000}/api/recent_search/?userId=${userId}`;
   const config = {
     url,
-    method: "GET",
+    method: 'GET',
   };
   try {
     const searchData = yield call(httpCall, config);
     if (searchData.success) {
-      yield put(getRecentSearches(sorting(searchData.data, "timeCreated")));
+      yield put(getRecentSearches(sorting(searchData.data, 'timeCreated')));
     } else {
       yield put(setError(searchData.err.statusText));
     }
@@ -1013,16 +1018,16 @@ export function* recentSearchAsyn() {
 }
 &nbsp;
 export function* savedSearchAsyn() {
-  let userId = yield getState();
+  const userId = yield getState();
   const url = `${BASE_URL_8000}/api/saved_search/?userId=${userId}`;
   const config = {
     url,
-    method: "GET",
+    method: 'GET',
   };
   try {
     const searchData = yield call(httpCall, config);
     if (searchData.success) {
-      yield put(getSavedSearches(sorting(searchData.data, "timeCreated")));
+      yield put(getSavedSearches(sorting(searchData.data, 'timeCreated')));
     } else {
       yield put(setError(searchData.err.statusText));
     }
@@ -1038,11 +1043,11 @@ export function* addProtocolSponsor() {
   try {
     const sponsorList = yield call(httpCall, {
       url: sponsorUrl,
-      method: "GET",
+      method: 'GET',
     });
     if (sponsorList.success) {
-      let actualSponsorList = sponsorList.data.map((item) =&gt; {
-        let temp = Object.assign({}, item);
+      const actualSponsorList = sponsorList.data.map((item) =&gt; {
+        const temp = { ...item };
         temp.label = item.sponsorName;
         return temp;
       });
@@ -1065,11 +1070,11 @@ export function* addProtocolIndication() {
   try {
     const indicationList = yield call(httpCall, {
       url: indicationUrl,
-      method: "GET",
+      method: 'GET',
     });
     if (indicationList.success) {
-      let actualIndicationList = indicationList.data.map((item) =&gt; {
-        let temp = Object.assign({}, item);
+      const actualIndicationList = indicationList.data.map((item) =&gt; {
+        const temp = { ...item };
         temp.label = item.indicationName;
         return temp;
       });
@@ -1086,31 +1091,31 @@ export function* addProtocolIndication() {
   }
 }
 export function* postAddProtocol(postData) {
-  let userId = yield getState();
+  const userId = yield getState();
   const { payload: data } = postData;
   yield put(setLoading(true));
   const postUrl = `${BASE_URL}/pd/api/v1/documents/?sourceFileName=${data.fileName}&amp;versionNumber=${data.protocol_version}&amp;protocolNumber=${data.protocol_number}&amp;sponsor=${data.sponsor}&amp;documentStatus=${data.documentStatus}&amp;amendmentNumber=${data.amendmentNumber}&amp;projectID=${data.projectID}&amp;indication=${data.indication}&amp;moleculeDevice=${data.moleculeDevice}&amp;userId=${userId}`;
   const duplicateCheck = `${BASE_URL_8000}/api/duplicate_check/?versionNumber=${data.protocol_version}&amp;protocolNumber=${data.protocol_number}&amp;sponsor=${data.sponsor}&amp;documentStatus=${data.documentStatus}&amp;amendmentNumber=${data.amendmentNumber}&amp;userId=${userId}`;
-  var bodyFormData = new FormData();
-  bodyFormData.append("file", data.uploadFile[0]);
+  const bodyFormData = new FormData();
+  bodyFormData.append('file', data.uploadFile[0]);
   try {
     const duplicateCheckRes = yield call(httpCall, {
       url: duplicateCheck,
-      method: "GET",
+      method: 'GET',
     });
     if (duplicateCheckRes &amp;&amp; duplicateCheckRes.data === null) {
       const postResponse = yield call(httpCall, {
         url: postUrl,
-        method: "POST",
+        method: 'POST',
         data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
+        headers: { 'Content-Type': 'multipart/form-data' },
         checkAuth: true,
       });
       if (postResponse.success) {
         yield put(setAddProtocolModal(false));
       } else {
         yield put(setAddProtocolModal(true));
-        yield put(setAddprotocolError("Upload Failed"));
+        yield put(setAddprotocolError('Upload Failed'));
       }
     } else {
       yield put(setAddProtocolModal(true));
@@ -1118,15 +1123,15 @@ export function* postAddProtocol(postData) {
         setAddprotocolError(
           duplicateCheckRes &amp;&amp; duplicateCheckRes.data.Duplicate
             ? duplicateCheckRes.data.Duplicate
-            : "This protocol document cannot be added to the library because it already exists."
-        )
+            : 'This protocol document cannot be added to the library because it already exists.',
+        ),
       );
     }
 &nbsp;
-    yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
+    yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
     yield put(setLoading(false));
   } catch (err) {
-    yield put(setAddprotocolError("Upload Failed"));
+    yield put(setAddprotocolError('Upload Failed'));
     yield put(setAddProtocolModal(false));
     yield put(setLoading(false));
   }
@@ -1136,19 +1141,19 @@ export function* toggleAddProtocol(data) {
   yield put(setAddProtocolModal(data.payload));
 }
 export function* resetErrorAddProtocol() {
-  yield put(setAddprotocolError(""));
+  yield put(setAddprotocolError(''));
 }
 &nbsp;
 export function* saveRecentSearch(action) {
   if (action.payload) {
-    let userId = yield getState();
+    const userId = yield getState();
     const url = `${BASE_URL_8000}/api/recent_search/`;
     const config = {
       url,
-      method: "POST",
+      method: 'POST',
       data: {
         keyword: action.payload,
-        userId: userId,
+        userId,
         timeCreated: localISOTime(),
         lastUpdated: localISOTime(),
       },
@@ -1165,12 +1170,12 @@ export function* sendQcReview() {
   const ids = state.dashboard.selectedProtocols;
   const obj = {
     docIdArray: ids,
-    targetStatus: "QC1",
+    targetStatus: 'QC1',
   };
   const url = `${BASE_URL_8000}/api/protocol_metadata/change_qc_status`;
   const config = {
-    url: url,
-    method: "PUT",
+    url,
+    method: 'PUT',
     data: obj,
   };
   try {
@@ -1187,16 +1192,15 @@ export function* sendQcReview() {
       return item;
     });
 &nbsp;
-    yield put({ type: "GET_PROTOCOL_TABLE_SAGA" });
-    if (success.length) {
-      toast.info(`Sent to QC Review Successfully`);
+    yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (success.length) {
+      toast.info('Sent to QC Review Successfully');
     }
-    if (failure.length) {
-      toast.error(`Something Went Wrong`);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (failure.length) {
+      toast.error('Something Went Wrong');
     }
   } catch (err) {
-    console.log(err);
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
   }
 }
 &nbsp;
@@ -1204,22 +1208,21 @@ function* <span class="fstat-no" title="function not covered" >handleDownload(</
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const config = <span class="cstat-no" title="statement not covered" >{</span>
       url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
-        action.payload
+        action.payload,
       )}`,
-      method: "GET",
+      method: 'GET',
     };
     let url;
     const resp = <span class="cstat-no" title="statement not covered" >yield call(httpCall, config);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    url = `${UI_URL}/${resp.data}`;</span>
-    let encodeUrl = <span class="cstat-no" title="statement not covered" >encodeURI(url);</span>
-    let myWindow = <span class="cstat-no" title="statement not covered" >window.open("about:blank", "_blank");</span>
+    const encodeUrl = <span class="cstat-no" title="statement not covered" >encodeURI(url);</span>
+    const myWindow = <span class="cstat-no" title="statement not covered" >window.open('about:blank', '_blank');</span>
 <span class="cstat-no" title="statement not covered" >    myWindow.document.write(</span>
-      `&lt;embed src=${encodeUrl}  frameborder="0" width="100%" height="100%"&gt;`
+      `&lt;embed src=${encodeUrl}  frameborder="0" width="100%" height="100%"&gt;`,
     );
   } catch (err) {
-<span class="cstat-no" title="statement not covered" >    console.log(err);</span>
-<span class="cstat-no" title="statement not covered" >    toast.error("Download Failed");</span>
+<span class="cstat-no" title="statement not covered" >    toast.error('Download Failed');</span>
   }
 }
 &nbsp;
@@ -1229,30 +1232,30 @@ export function* handleFollow(action) {
     const id = yield getState();
     const state = yield select();
     const protocolData = state.dashboard.followedProtocols;
-    let temp = cloneDeep(protocolData);
-    var lists = temp.filter((item) =&gt; {
+    const temp = cloneDeep(protocolData);
+    const lists = temp.filter((item) =&gt; {
       return item.protocol !== data.protocol;
     });
     const config = {
       url: `${BASE_URL_8000}/api/follow_protocol/`,
-      method: "POST",
+      method: 'POST',
       data: {
         userId: id,
         protocol: data.protocol,
-        follow: follow,
+        follow,
         userRole: data.UserRole,
       },
     };
     const res = yield call(httpCall, config);
-    if (res &amp;&amp; res.data) {
-      toast.info(`Protocol Successfully Unfollowed`);
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (res &amp;&amp; res.data) {
+      toast.info('Protocol Successfully Unfollowed');
       yield put(getFollowedProtocols(lists));
-      yield put({ type: "GET_PROTOCOL_TABLE_SAGA", payload: lists });
+      yield put({ type: 'GET_PROTOCOL_TABLE_SAGA', payload: lists });
 &nbsp;
-      yield put({ type: "GET_NOTIFICATION_SAGA", payload: id });
+      yield put({ type: 'GET_NOTIFICATION_SAGA', payload: id });
     }
   } catch (err) {
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
     console.log(err);
   }
 }
@@ -1265,7 +1268,7 @@ export function* fetchAssociateData(action) {
   try {
     const config = {
       url: `${BASE_URL_8000}/api/Related_protocols/?protocol=${protocol}&amp;userId=${userId}`,
-      method: "GET",
+      method: 'GET',
     };
     const resp = yield call(httpCall, config);
     const respData = resp.data;
@@ -1273,7 +1276,7 @@ export function* fetchAssociateData(action) {
       return new Date(b.approvalDate) - new Date(a.approvalDate);
     });
     if (data.length &gt; 0) {
-      let temp = cloneDeep(protocolData);
+      const temp = cloneDeep(protocolData);
       for (let i = 0; i &lt; temp.length; i++) {
         if (temp[i].id === id) {
           temp[i].associateddata = data;
@@ -1282,7 +1285,7 @@ export function* fetchAssociateData(action) {
       }
       yield put(getFollowedProtocols(temp));
     } else {
-      let temp = cloneDeep(protocolData);
+      const temp = cloneDeep(protocolData);
       for (let i = 0; i &lt; temp.length; i++) {
         if (temp[i].id === id) {
           temp[i].linkEnabled = false;
@@ -1290,28 +1293,28 @@ export function* fetchAssociateData(action) {
       }
       yield put(getFollowedProtocols(temp));
       toast.info(
-        `The Protocol: "${protocol}" selected has no associated protocols available`
+        `The Protocol: "${protocol}" selected has no associated protocols available`,
       );
     }
   } catch (e) {
-<span class="cstat-no" title="statement not covered" >    console.log(e);</span>
+<span class="cstat-no" title="statement not covered" >    toast.error('Something Went Wrong');</span>
   }
 }
 &nbsp;
 export function* watchDashboard() {
-  yield takeLatest("GET_PROTOCOL_TABLE_SAGA", protocolAsyn);
-  yield takeEvery("GET_RECENT_SEARCH_DATA", recentSearchAsyn);
-  yield takeEvery("GET_SPONSOR_ADDPROTCOL_SAGA", addProtocolSponsor);
-  yield takeEvery("POST_ADDPROTOCOL_DATA", postAddProtocol);
-  yield takeEvery("TOGGLE_ADDPROTOCOL_MODAL", toggleAddProtocol);
-  yield takeEvery("GET_SAVED_SEARCH_DATA", savedSearchAsyn);
-  yield takeEvery("RESET_ERROR_ADD_PROTOCOL", resetErrorAddProtocol);
-  yield takeEvery("POST_RECENT_SEARCH_DASHBOARD", saveRecentSearch);
-  yield takeLatest("SEND_QC_REVIEW_SAGA", sendQcReview);
-  yield takeLatest("GET_INDICATION_ADDPROTCOL_SAGA", addProtocolIndication);
-  yield takeLatest("HANDLE_DOWNLOAD_SAGA", handleDownload);
-  yield takeLatest("HANDLE_FOLLOW_SAGA", handleFollow);
-  yield takeLatest("FETCH_ASSOCIATE_DATA", fetchAssociateData);
+  yield takeLatest('GET_PROTOCOL_TABLE_SAGA', protocolAsyn);
+  yield takeEvery('GET_RECENT_SEARCH_DATA', recentSearchAsyn);
+  yield takeEvery('GET_SPONSOR_ADDPROTCOL_SAGA', addProtocolSponsor);
+  yield takeEvery('POST_ADDPROTOCOL_DATA', postAddProtocol);
+  yield takeEvery('TOGGLE_ADDPROTOCOL_MODAL', toggleAddProtocol);
+  yield takeEvery('GET_SAVED_SEARCH_DATA', savedSearchAsyn);
+  yield takeEvery('RESET_ERROR_ADD_PROTOCOL', resetErrorAddProtocol);
+  yield takeEvery('POST_RECENT_SEARCH_DASHBOARD', saveRecentSearch);
+  yield takeLatest('SEND_QC_REVIEW_SAGA', sendQcReview);
+  yield takeLatest('GET_INDICATION_ADDPROTCOL_SAGA', addProtocolIndication);
+  yield takeLatest('HANDLE_DOWNLOAD_SAGA', handleDownload);
+  yield takeLatest('HANDLE_FOLLOW_SAGA', handleFollow);
+  yield takeLatest('FETCH_ASSOCIATE_DATA', fetchAssociateData);
 }
 &nbsp;
 export default function* dashboardSaga() {
@@ -1323,10 +1326,9 @@ export default function* dashboardSaga() {
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {

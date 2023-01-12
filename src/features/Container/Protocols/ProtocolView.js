@@ -1,26 +1,26 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, createRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { viewResult, protocolSummary } from './protocolSlice';
-import ProtocolViewClass from './ProtocolViewClass';
+import { viewResult, associateDocs } from './protocolSlice';
+import ProtocolViewWrapper from './ProtocolViewWrapper';
 
-function ProtocolView({ protId }) {
-  const summary = useSelector(protocolSummary);
-  const dispatch = useDispatch();
+function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
-  useEffect(() => {
-    dispatch({
-      type: 'GET_PROTOCOL_TOC_SAGA',
-      payload: {
-        endPoint: 'protocol_data/',
-        id: protId,
-        user: 'normal',
-        protocol: summary.data.protocol,
-      },
-    });
-    /* eslint-disable */
-  }, []);
-  /* eslint-enable */
+  const [protData, setprotData] = useState(data);
+  const protassociateDocs = useSelector(associateDocs);
+
+  const panels = () => {
+    const ex = [];
+    for (let index = 0; index < 250; index++) {
+      ex.push(index);
+    }
+    const refsection = ex.reduce((refsection, value) => {
+      refsection[value] = createRef();
+      return refsection;
+    }, {});
+    return refsection;
+  };
+  const [sectionRef] = useState(panels);
   const listData = [];
 
   const subSections = {
@@ -47,18 +47,34 @@ function ProtocolView({ protId }) {
   if (viewData.iqvdataSummary) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
+  useEffect(() => {
+    if (
+      protassociateDocs?.length &&
+      protassociateDocs[0]?.userRole === 'primary'
+    ) {
+      setprotData({ ...data, userPrimaryRoleFlag: true });
+    }
+    // eslint-disable-next-line
+  }, [protassociateDocs]);
+
   return (
-    viewData && (
-      <ProtocolViewClass
-        view={viewData}
-        data={subSections}
-        listData={listData}
-      />
-    )
+    <div className="protocol_data_container">
+      {viewData && (
+        <ProtocolViewWrapper
+          view={viewData}
+          data1={subSections}
+          listData={listData}
+          refx={refs}
+          sectionRef={sectionRef}
+          data={protData}
+        />
+      )}
+    </div>
   );
 }
 
 export default ProtocolView;
 ProtocolView.propTypes = {
-  protId: PropTypes.isRequired,
+  refs: PropTypes.isRequired,
+  data: PropTypes.isRequired,
 };

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">92.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/16</span>
+                <span class='fraction'>13/14</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">92.85% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/16</span>
+                <span class='fraction'>13/14</span>
             </div>
         
             
@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line high'></div>
     <pre><table class="coverage">
@@ -196,7 +202,7 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -255,7 +261,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
@@ -301,24 +307,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-import moment from "moment-timezone";
-import { useDispatch, useSelector } from "react-redux";
-import Loader from "apollo-react/components/Loader";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable */
+import moment from 'moment-timezone';
+import { useDispatch, useSelector } from 'react-redux';
+import Loader from 'apollo-react/components/Loader';
 import Table, {
   compareStrings,
   compareDates,
-} from "apollo-react/components/Table";
-import Cog from "apollo-react-icons/Cog";
-import Trash from "apollo-react-icons/Trash";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "apollo-react/components/IconButton";
-import { loader } from "./adminSlice";
+} from 'apollo-react/components/Table';
+import Cog from 'apollo-react-icons/Cog';
+import Trash from 'apollo-react-icons/Trash';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from 'apollo-react/components/IconButton';
+import { loader } from './adminSlice';
 &nbsp;
 const DateCell = ({ row, column }) =&gt;
-  moment(row[column.accessor]).format("MM/DD/YYYY");
+  moment(row[column.accessor]).format('MM/DD/YYYY');
 &nbsp;
-const ActionCell = ({ row }) =&gt; {
+function ActionCell({ row }) {
   return (
     &lt;div&gt;
       &lt;Tooltip title="Delete"&gt;
@@ -334,68 +340,68 @@ const ActionCell = ({ row }) =&gt; {
       &lt;/Tooltip&gt;
     &lt;/div&gt;
   );
-};
+}
 &nbsp;
 const columns = [
   {
-    header: "User ID",
-    accessor: "userId",
+    header: 'User ID',
+    accessor: 'userId',
     sortFunction: compareStrings,
   },
   {
-    header: "Protocol",
-    accessor: "protocol",
+    header: 'Protocol',
+    accessor: 'protocol',
     sortFunction: compareStrings,
   },
   {
-    header: "Role",
-    accessor: "userRole",
+    header: 'Role',
+    accessor: 'userRole',
     sortFunction: compareStrings,
   },
   {
-    header: "Following",
-    accessor: "follow",
+    header: 'Following',
+    accessor: 'follow',
     sortFunction: compareStrings,
   },
   {
-    header: "Created Date",
-    accessor: "timeCreated",
+    header: 'Created Date',
+    accessor: 'timeCreated',
     sortFunction: compareDates,
     customCell: DateCell,
   },
   {
-    header: "Updated Date",
-    accessor: "lastUpdated",
+    header: 'Updated Date',
+    accessor: 'lastUpdated',
     sortFunction: compareDates,
     customCell: DateCell,
   },
   {
     header: &lt;Cog size="small" /&gt;,
-    accessor: "action",
+    accessor: 'action',
     customCell: ActionCell,
-    align: "center",
+    align: 'center',
   },
 ];
 &nbsp;
-const MappingTable = ({ initialRows }) =&gt; {
+function MappingTable({ initialRows }) {
   const dispatch = useDispatch();
 &nbsp;
   const isLoading = useSelector(loader);
 &nbsp;
   const onDelete = ({ userId, protocol }) =&gt; {
-    let confirmBox = window.confirm(
-      "Do you want to delete the Selected Mapping?"
+    const confirmBox = window.confirm(
+      'Do you want to delete the Selected Mapping?',
     );
     <span class="missing-if-branch" title="if path not taken" >I</span>if (confirmBox) {
 <span class="cstat-no" title="statement not covered" >      dispatch({</span>
-        type: "DELETE_USER_PROTOCOL_MAPPING",
-        payload: { userId: userId, protocol: protocol },
+        type: 'DELETE_USER_PROTOCOL_MAPPING',
+        payload: { userId, protocol },
       });
     }
   };
 &nbsp;
   return (
-    &lt;div style={{ overflowX: "auto", paddingTop: 20 }}&gt;
+    &lt;div style={{ overflowX: 'auto', paddingTop: 20 }}&gt;
       {isLoading ? (
         &lt;Loader /&gt;
       ) : (
@@ -408,7 +414,7 @@ const MappingTable = ({ initialRows }) =&gt; {
           }))}
           initialSortedColumn="lastUpdated"
           initialSortOrder="desc"
-          rowsPerPageOptions={[5, 10, 15, "All"]}
+          rowsPerPageOptions={[5, 10, 15, 'All']}
           tablePaginationProps={{
             labelDisplayedRows: ({ from, to, count }) =&gt;
               `Mapping ${from}-${to} of ${count}`,
@@ -420,7 +426,7 @@ const MappingTable = ({ initialRows }) =&gt; {
       )}
     &lt;/div&gt;
   );
-};
+}
 &nbsp;
 export default MappingTable;
 &nbsp;</pre></td></tr></table></pre>
@@ -429,10 +435,9 @@ export default MappingTable;
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {

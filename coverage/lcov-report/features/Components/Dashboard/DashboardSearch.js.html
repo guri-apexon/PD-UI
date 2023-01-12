@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line high'></div>
     <pre><table class="coverage">
@@ -186,6 +192,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
@@ -294,19 +301,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState, memo } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory, Link } from "react-router-dom";
-import ChevronRight from "apollo-react-icons/ChevronRight";
-import ChevronLeft from "apollo-react-icons/ChevronLeft";
-import Button from "apollo-react/components/Button";
-import Search from "apollo-react/components/Search";
-import Grid from "apollo-react/components/Grid";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable */
+import { useState, memo } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory, Link } from 'react-router-dom';
+import ChevronRight from 'apollo-react-icons/ChevronRight';
+import ChevronLeft from 'apollo-react-icons/ChevronLeft';
+import Button from 'apollo-react/components/Button';
+import Search from 'apollo-react/components/Search';
+import Grid from 'apollo-react/components/Grid';
 &nbsp;
 function DashboardSearch({ recent, saved }) {
   const dispatch = useDispatch();
-  let history = useHistory();
+  const history = useHistory();
   const [viewMore, setViewMore] = useState(false);
   return (
     &lt;div
@@ -316,16 +323,16 @@ function DashboardSearch({ recent, saved }) {
     &gt;
       &lt;h3&gt;Search&lt;/h3&gt;
       &lt;Grid container spacing={2}&gt;
-        &lt;Grid item xs={6} style={{ paddingLeft: "3em", paddingRight: "3em" }}&gt;
+        &lt;Grid item xs={6} style={{ paddingLeft: '3em', paddingRight: '3em' }}&gt;
           &lt;span data-testid="dashboard-search-bar" id="dashboard-search-bar"&gt;
             &lt;Search
               placeholder="Protocol Number, Indication, Key word, etc"
               fullWidth
               onKeyPress={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
                 /* istanbul ignore next */
-                if (e.key === "Enter") {
+                if (e.key === 'Enter') {
                   dispatch({
-                    type: "POST_RECENT_SEARCH_DASHBOARD",
+                    type: 'POST_RECENT_SEARCH_DASHBOARD',
                     payload: e.target.value,
                   });
                   history.push(`/search?key=${e.target.value}`);
@@ -338,7 +345,7 @@ function DashboardSearch({ recent, saved }) {
             {recent &amp;&amp; recent.length &gt; 0 ? (
               &lt;ul
                 className={
-                  viewMore ? "search-list-ul-scroll" : "search-list-ul"
+                  viewMore ? 'search-list-ul-scroll' : 'search-list-ul'
                 }
               &gt;
                 {recent.map((item, index) =&gt; {
@@ -355,17 +362,17 @@ function DashboardSearch({ recent, saved }) {
                 })}
               &lt;/ul&gt;
             ) : (
-              "No Search data available"
+              'No Search data available'
             )}
           &lt;/div&gt;
           {recent &amp;&amp; recent.length &gt; 5 ? (
             &lt;span data-testid="view-more" id="view-more-btn"&gt;
               &lt;Button
                 variant="secondary"
-                style={{ width: "100%" }}
+                style={{ width: '100%' }}
                 onClick={() =&gt; setViewMore(!viewMore)}
               &gt;
-                &lt;span&gt;{viewMore ? "View Less" : "View More"}&lt;/span&gt;
+                &lt;span&gt;{viewMore ? 'View Less' : 'View More'}&lt;/span&gt;
                 {viewMore ? (
                   &lt;ChevronLeft className="view-more-icon" /&gt;
                 ) : (
@@ -380,9 +387,9 @@ function DashboardSearch({ recent, saved }) {
           item
           xs={6}
           style={{
-            paddingLeft: "3em",
-            paddingRight: "3em",
-            borderLeft: "1px solid #d9d9d9",
+            paddingLeft: '3em',
+            paddingRight: '3em',
+            borderLeft: '1px solid #d9d9d9',
           }}
         &gt;
           &lt;div&gt;
@@ -398,13 +405,12 @@ function DashboardSearch({ recent, saved }) {
                         &lt;/Link&gt;
                       &lt;/li&gt;
                     );
-                  } else {
-                    return null;
                   }
+                  return null;
                 })}
               &lt;/ul&gt;
             ) : (
-              "No Search data available"
+              'No Search data available'
             )}
           &lt;/div&gt;
         &lt;/Grid&gt;
@@ -420,10 +426,9 @@ export default memo(DashboardSearch);
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createRef } from 'react';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 // ------------------- CSS -------------------
@@ -25,6 +25,7 @@ function Protocols({ location }) {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
+  const [pdfArray] = useState(new Array(250));
 
   useEffect(() => {
     const params = location.search;
@@ -42,9 +43,16 @@ function Protocols({ location }) {
       loader: true,
     };
     getProcotoclToc(viewData);
+    // setSectionIndex(new Array(Records.length));
     /* eslint-disable */
   }, []);
   /* eslint-enable */
+
+  const pdfPage = async () => {
+    for (let index = 0; index < 250; index++) {
+      pdfArray.push(index);
+    }
+  };
 
   useEffect(() => {
     const params = location.search;
@@ -59,60 +67,66 @@ function Protocols({ location }) {
     if ('protocolId2' in parsed && 'value' in parsed) {
       setValue(2);
     }
+    pdfPage();
+    // eslint-disable-next-line
   }, [dispatch, location]);
   /* istanbul ignore next */
+
   const handleChangeTab = (event, value) => {
     setValue(value);
   };
 
+  const refs = pdfArray.reduce((refs, value) => {
+    refs[value] = createRef();
+    return refs;
+  }, {});
   if (idPresent) {
     const { data } = summary;
     return (
       <>
         {summary.success && summary.data ? (
           <div className="protocols" data-testid="protocols-component-test">
-            <Breadcrumbs
-              items={[
-                { href: '/dashboard' },
-                {
-                  title: 'Protocols',
-                  className: 'br-cr-protocol',
-                  disabled: true,
-                  // onClick: handleClick,
-                },
-                {
-                  title: data.protocol,
-                },
-              ]}
-              style={{ paddingInlineStart: 0, marginBottom: 0 }}
-            />
-
-            <h2 className="header">{data.Protocol}</h2>
+            <div className="p-rl-20">
+              <Breadcrumbs
+                className="protocol-breadcrumb"
+                items={[
+                  { href: '/dashboard' },
+                  {
+                    title: 'Protocols',
+                    className: 'br-cr-protocol',
+                    disabled: true,
+                    // onClick: handleClick,
+                  },
+                  {
+                    title: data.protocol,
+                  },
+                ]}
+              />
+              <h2 className="header">{data.Protocol}</h2>
+            </div>
             <div className="tab-column">
-              <div className="overview">
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <div style={{ flex: 1 }}>
-                    <Tabs
-                      value={value}
-                      onChange={handleChangeTab}
-                      size="small"
-                      truncate
-                      data-testid="protocols-tabs"
-                    >
-                      <Tab label="Overview" />
-                      <Tab label="Protocol View" />
-                      <Tab label="Documents" />
-                    </Tabs>
-                  </div>
+              <div className="d-flex-row">
+                <div className="p-rl-20 tabs-wrapper">
+                  <Tabs
+                    value={value}
+                    onChange={handleChangeTab}
+                    size="small"
+                    className="protocol-tabs"
+                    data-testid="protocols-tabs"
+                  >
+                    <Tab label="Overview" />
+                    <Tab label="Protocol View" />
+                    <Tab label="Documents" />
+                  </Tabs>
                 </div>
+              </div>
 
-                <div className="tab-container">
-                  {value === 0 && <ProtocolOverview data={data} />}
-                  {value === 1 && <ProtocolView protId={data.id} />}
-                  {value === 2 && (
-                    <Documents handleChangeTab={handleChangeTab} />
-                  )}
-                </div>
+              <div className="tab-container">
+                {value === 0 && <ProtocolOverview data={data} />}
+                {value === 1 && (
+                  <ProtocolView protId={data.id} data={data} refs={refs} />
+                )}
+                {value === 2 && <Documents handleChangeTab={handleChangeTab} />}
               </div>
             </div>
           </div>

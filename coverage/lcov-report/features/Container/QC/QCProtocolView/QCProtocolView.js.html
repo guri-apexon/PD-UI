@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line high'></div>
     <pre><table class="coverage">
@@ -351,7 +357,9 @@
 <a name='L292'></a><a href='#L292'>292</a>
 <a name='L293'></a><a href='#L293'>293</a>
 <a name='L294'></a><a href='#L294'>294</a>
-<a name='L295'></a><a href='#L295'>295</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L295'></a><a href='#L295'>295</a>
+<a name='L296'></a><a href='#L296'>296</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -468,8 +476,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -645,17 +653,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import MenuItem from "apollo-react/components/MenuItem";
-import SelectButton from "apollo-react/components/SelectButton";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable */
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import MenuItem from 'apollo-react/components/MenuItem';
+import SelectButton from 'apollo-react/components/SelectButton';
 &nbsp;
-import Upload from "apollo-react-icons/Upload";
-import Button from "apollo-react/components/Button";
-import Loader from "../../../Components/Loader/Loader";
-import { viewResult } from "../../Protocols/protocolSlice";
-import ProtocolViewClass from "../../Protocols/ProtocolViewClass";
-import { loader } from "../qcSlice";
+import Upload from 'apollo-react-icons/Upload';
+import Button from 'apollo-react/components/Button';
+import Loader from '../../../Components/Loader/Loader';
+import { viewResult } from '../../Protocols/protocolSlice';
+import ProtocolViewClass from '../../Protocols/ProtocolViewClass';
+import { loader } from '../qcSlice';
 &nbsp;
 function QCProtocolView({ protId, path, userType, protocolNumber }) {
   const dispatch = useDispatch();
@@ -664,15 +673,15 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
   const [selectedFile, setSelectedFile] = useState({});
   useEffect(() =&gt; {
     dispatch({
-      type: "GET_PROTOCOL_TOC_SAGA",
+      type: 'GET_PROTOCOL_TOC_SAGA',
       payload: {
-        endPoint: "protocol_data/",
+        endPoint: 'protocol_data/',
         id: protId,
-        user: "qc",
+        user: 'qc',
         protocol: protocolNumber,
       },
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
   const listData = [];
   // console.log("Path", path);
@@ -684,22 +693,22 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
   /* istanbul ignore else */
   if (subSections.TOC &amp;&amp; subSections.TOC.length) {
     listData.push({
-      section: "Table of Contents",
-      id: "TOC",
+      section: 'Table of Contents',
+      id: 'TOC',
       subSections: true,
     });
   }
   /* istanbul ignore else */
   if (subSections.SOA &amp;&amp; subSections.SOA.length) {
     listData.push({
-      section: "Schedule of Assessments",
-      id: "SOA",
+      section: 'Schedule of Assessments',
+      id: 'SOA',
       subSections: true,
     });
   }
   /* istanbul ignore else */
   if (viewData.iqvdataSummary) {
-    listData.push({ section: "Summary", id: "SUM", subSections: false });
+    listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
   const onFileChange = (event) =&gt; {
     // Update the state
@@ -716,7 +725,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
     // Details of the uploaded file
     // console.log(selectedFile);
     dispatch({
-      type: "UPLOAD_PROTOCOL_QC_SAGA",
+      type: 'UPLOAD_PROTOCOL_QC_SAGA',
       payload: { data: selectedFile, id: protId },
     });
     setSelectedFile({});
@@ -726,9 +735,9 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
   };
 &nbsp;
   const onApprove = () =&gt; {
-    const approve = window.confirm("Are you sure you want to Approve?");
+    const approve = window.confirm('Are you sure you want to Approve?');
     if (approve) {
-      dispatch({ type: "APPROVE_QC_SAGA", payload: protId });
+      dispatch({ type: 'APPROVE_QC_SAGA', payload: protId });
     } else {
       // nothing
     }
@@ -736,19 +745,19 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
 &nbsp;
   const sendQc2ForApproval = () =&gt; {
     const qc2Approval = window.confirm(
-      "Are you sure you want to send Qc2 for approval?"
+      'Are you sure you want to send Qc2 for approval?',
     );
     if (qc2Approval) {
-      dispatch({ type: "SEND_QC2_APPROVAL_SAGA", payload: protId });
+      dispatch({ type: 'SEND_QC2_APPROVAL_SAGA', payload: protId });
     } else {
       // nothing
     }
   };
 &nbsp;
   const onReject = () =&gt; {
-    const reject = window.confirm("Are you sure you want to Reject?");
+    const reject = window.confirm('Are you sure you want to Reject?');
     if (reject) {
-      dispatch({ type: "REJECT_QC2_SAGA", payload: protId });
+      dispatch({ type: 'REJECT_QC2_SAGA', payload: protId });
     } else {
       // nothing
     }
@@ -762,12 +771,12 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
   };
 &nbsp;
   function downloadObjectAsJson(exportObj, exportName) {
-    let dataStr =
-      "data:text/json;charset=utf-8," +
-      encodeURIComponent(JSON.stringify(exportObj));
-    let downloadAnchorNode = document.createElement("a");
-    downloadAnchorNode.setAttribute("href", dataStr);
-    downloadAnchorNode.setAttribute("download", exportName + ".json");
+    const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
+      JSON.stringify(exportObj),
+    )}`;
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute('href', dataStr);
+    downloadAnchorNode.setAttribute('download', `${exportName}.json`);
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
@@ -818,16 +827,16 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
     return (
       &lt;div
         style={{
-          display: "flex",
-          flexDirection: "row",
+          display: 'flex',
+          flexDirection: 'row',
           marginTop: 0,
         }}
       &gt;
         &lt;div
           style={{
-            display: "inline-block",
-            margin: "auto",
-            marginTop: "10%",
+            display: 'inline-block',
+            margin: 'auto',
+            marginTop: '10%',
           }}
         &gt;
           &lt;Loader /&gt;
@@ -840,16 +849,16 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
     return (
       &lt;div
         style={{
-          display: "flex",
-          flexDirection: "row",
+          display: 'flex',
+          flexDirection: 'row',
           marginTop: 0,
         }}
       &gt;
         &lt;div
           style={{
-            display: "inline-block",
-            margin: "auto",
-            marginTop: "10%",
+            display: 'inline-block',
+            margin: 'auto',
+            marginTop: '10%',
           }}
         &gt;
           {viewData.err}
@@ -860,7 +869,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
 &nbsp;
   return (
     &lt;&gt;
-      &lt;div style={{ marginLeft: "26%", marginBottom: "5px" }}&gt;
+      &lt;div style={{ marginLeft: '26%', marginBottom: '5px' }}&gt;
         &lt;input
           type="file"
           data-testid="choose-file-upload"
@@ -887,11 +896,11 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
         &lt;SelectButton
           onChange={handleChange}
           placeholder="Download"
-          style={{ marginRight: 10, float: "right" }}
+          style={{ marginRight: 10, float: 'right' }}
           data-testid="download-button"
         &gt;
           &lt;MenuItem data-testid="download-json-button" value="1"&gt;
-            {"Download JSON"}
+            Download JSON
           &lt;/MenuItem&gt;
           {/* &lt;MenuItem value="2"&gt;{"Download XLSX"}&lt;/MenuItem&gt; */}
         &lt;/SelectButton&gt;
@@ -901,7 +910,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
         data={subSections}
         listData={listData}
       /&gt;
-      &lt;div style={{ marginLeft: "26%", marginTop: "5px" }}&gt;
+      &lt;div style={{ marginLeft: '26%', marginTop: '5px' }}&gt;
         &lt;Button
           variant="secondary"
           size="small"
@@ -911,7 +920,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
         &gt;
           Approve
         &lt;/Button&gt;
-        {userType === "QC1" ? (
+        {userType === 'QC1' ? (
           &lt;Button
             variant="secondary"
             size="small"
@@ -922,7 +931,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
             Send QC2 Approval
           &lt;/Button&gt;
         ) : null}
-        {userType === "QC2" ? (
+        {userType === 'QC2' ? (
           &lt;Button
             variant="secondary"
             size="small"
@@ -945,10 +954,9 @@ export default QCProtocolView;
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../../prettify.js"></script>
         <script>
             window.onload = function () {

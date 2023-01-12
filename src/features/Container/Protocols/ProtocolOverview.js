@@ -23,7 +23,7 @@ function ProtocolOverview({ data }) {
     );
   };
   return (
-    <div className="tab-card">
+    <div className="tab-card overview overview-card">
       <Card style={{ padding: '10px 16px' }}>
         <p className="card-header" data-testid="overview-test">
           Overview Details

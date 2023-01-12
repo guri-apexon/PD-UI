@@ -27,7 +27,7 @@ describe('Protocol Table container component', () => {
   test('should render QC', () => {
     render(<QC />, state);
   });
-  // test("should switch to tab QC Protocol View", () => {
+  // test("should switch to tab QC ", () => {
   //   render(<QC />, state);
 
   //   fireEvent.click(screen.getByTestId("click-link-12344"));

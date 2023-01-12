@@ -59,6 +59,13 @@ export const httpCall = async (config) => {
         code: 'DUPLICATE_ENTITY',
       };
     }
+    if (response.status === 206) {
+      return {
+        success: true,
+        data: [],
+        message: response.data,
+      };
+    }
   } catch (err) {
     if (err && err.response && err.response.status === 403) {
       return {
@@ -183,32 +190,39 @@ let baseUrlSSO;
 let UI_URL = '';
 let UIhost;
 /* eslint-enable */
-if (process.env.REACT_APP_ENV === 'dev') {
+const environment = process.env.REACT_APP_ENV;
+if (environment === 'local') {
+  // backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
+  backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
+  UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
+  baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
+} else if (environment === 'dev') {
   backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
-} else if (process.env.REACT_APP_ENV === 'test') {
+} else if (environment === 'test') {
   backendHost = 'https://test-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://test-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://test-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://test-protocoldigitalization.work.iqvia.com/v1';
-} else if (process.env.REACT_APP_ENV === 'svt') {
+} else if (environment === 'svt') {
   backendHost = 'https://svt-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://svt-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://svt-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://svt-protocoldigitalization.work.iqvia.com/v1';
-} else if (process.env.REACT_APP_ENV === 'uat') {
+} else if (environment === 'uat') {
   backendHost = 'https://uat-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://uat-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://uat-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://uat-protocoldigitalization.work.iqvia.com/v1';
-} else if (process.env.REACT_APP_ENV === 'uat1') {
+} else if (environment === 'uat1') {
   backendHost = 'https://uat1-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://uat1-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://uat1-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://uat1-protocoldigitalization.work.iqvia.com/v1';
-} else if (process.env.REACT_APP_ENV === 'prod') {
+} else if (environment === 'prod') {
   backendHost = 'https://protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://protocoldigitalization-ui.work.iqvia.com';
@@ -229,6 +243,9 @@ export { BASE_URL_8000, baseUrlSSO, UI_URL };
 export const Apis = {
   protocol: `${BASE_URL}/api/protocol`,
   search: 'http://ca2spdml04q:9200/pd-index/_search',
+  HEADER_LIST: '/api/cpt_data',
+  GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
+  DOWNLOAD_API: '/api/download_file',
 };
 
-export const SSO_ENABLED = true;
+export const SSO_ENABLED = environment !== 'local';

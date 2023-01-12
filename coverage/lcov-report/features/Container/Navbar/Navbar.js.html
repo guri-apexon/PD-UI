@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line high'></div>
     <pre><table class="coverage">
@@ -169,7 +175,11 @@
 <a name='L110'></a><a href='#L110'>110</a>
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -281,28 +291,30 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import NavigationBar from "apollo-react/components/NavigationBar";
-import Alerts from "./Alerts";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable */
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import NavigationBar from 'apollo-react/components/NavigationBar';
+import Alerts from './Alerts';
 import {
   USER_MENU,
   QC1_MENU,
   QC2_MENU,
   ADMIN_MENU,
-} from "../../../AppConstant/AppConstant";
-import { baseUrlSSO } from "../../../utils/api";
+} from '../../../AppConstant/AppConstant';
+import { baseUrlSSO } from '../../../utils/api';
+import './Navbar.scss';
 &nbsp;
 const setMenuItems = (value) =&gt; {
   switch (value) {
-    case "normal":
+    case 'normal':
       return USER_MENU;
-    case "QC1":
+    case 'QC1':
       return QC1_MENU;
-    case "QC2":
+    case 'QC2':
       return QC2_MENU;
-    case "admin":
+    case 'admin':
       return ADMIN_MENU;
     default:
       return [];
@@ -315,16 +327,16 @@ const onLogoutClick = () =&gt; {
 &nbsp;
 function Navbar() {
   const dispatch = useDispatch();
-  let history = useHistory();
-  let location = useLocation();
+  const history = useHistory();
+  const location = useLocation();
 &nbsp;
   const [userData, setUserData] = useState({});
   const userDetail = useSelector((state) =&gt; state.user.userDetail);
-  const [pathname, setPathname] = useState("/dashboard");
+  const [pathname, setPathname] = useState('/dashboard');
   useEffect(() =&gt; {
-    if ("userId" in userData) {
+    if ('userId' in userData) {
       const userID = userData.userId.substring(1);
-      dispatch({ type: "GET_NOTIFICATION_SAGA", payload: userID });
+      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: userID });
     }
   }, [userData, dispatch]);
   useEffect(() =&gt; {
@@ -332,13 +344,13 @@ function Navbar() {
   }, [userDetail]);
 &nbsp;
   useEffect(() =&gt; {
-    if (location &amp;&amp; location.pathname) {
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (location &amp;&amp; location.pathname) {
       setPathname(location.pathname);
     }
   }, [location]);
 &nbsp;
   const onClickNavigation = (pathname) =&gt; {
-    if (pathname !== "/protocols") {
+    if (pathname !== '/protocols') {
       history.push(pathname);
       setPathname(pathname);
     }
@@ -352,7 +364,7 @@ function Navbar() {
 &nbsp;
   const profileMenuProps = {
     name: userDetail.username,
-    title: "",
+    title: '',
     email: userDetail.email,
     logoutButtonProps: {
       onClick: () =&gt; onLogoutClick(),
@@ -361,21 +373,21 @@ function Navbar() {
   };
 &nbsp;
   return (
-    "userId" in userData &amp;&amp;
+    'userId' in userData &amp;&amp;
     userData.userId &amp;&amp; (
-      &lt;div data-testid="navbar-test"&gt;
+      &lt;div data-testid="navbar-test" className="navbar"&gt;
         &lt;NavigationBar
           LogoComponent={() =&gt; (
             &lt;div
               style={{
-                color: "white",
-                lineHeight: "56px",
+                color: 'white',
+                lineHeight: '56px',
                 marginRight: 24,
-                cursor: "pointer",
+                cursor: 'pointer',
                 zIndex: 2,
-                whiteSpace: "nowrap",
+                whiteSpace: 'nowrap',
               }}
-              onClick={() =&gt; history.push("/")}
+              onClick={() =&gt; history.push('/')}
             &gt;
               IQVIA &lt;span style={{ fontWeight: 400 }}&gt;Protocol Library&lt;/span&gt;
             &lt;/div&gt;
@@ -399,10 +411,9 @@ export default React.memo(Navbar);
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {

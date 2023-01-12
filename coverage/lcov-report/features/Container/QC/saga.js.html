@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line high'></div>
     <pre><table class="coverage">
@@ -324,7 +330,9 @@
 <a name='L265'></a><a href='#L265'>265</a>
 <a name='L266'></a><a href='#L266'>266</a>
 <a name='L267'></a><a href='#L267'>267</a>
-<a name='L268'></a><a href='#L268'>268</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -581,49 +589,50 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { takeEvery, all, call, put, select } from "redux-saga/effects";
-import { toast } from "react-toastify";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable */
+import { takeEvery, all, call, put, select } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 &nbsp;
-import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import { iconStatus } from "../../../utils/utilFunction";
-import { getProtocols, setError, getLoader, setTableLoader } from "./qcSlice";
-import { getProcotoclToc } from "../Protocols/protocolSlice";
+import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+import { iconStatus } from '../../../utils/utilFunction';
+import { getProtocols, setError, getLoader, setTableLoader } from './qcSlice';
+import { getProcotoclToc } from '../Protocols/protocolSlice';
 &nbsp;
 function* getState() {
   const state = yield select();
   const type = state.user.userDetail.user_type;
   const id = state.user.userDetail.userId;
-  return { id: id.substring(1), type: type };
+  return { id: id.substring(1), type };
 }
 &nbsp;
 export function* qcProtocolsData() {
   yield put(setTableLoader(true));
-  let user = yield getState();
+  const user = yield getState();
   const protocolUrl = `${BASE_URL_8000}/api/protocol_metadata/?userId=${user.type}`;
   const protocolConfig = {
     url: protocolUrl,
-    method: "GET",
+    method: 'GET',
   };
   try {
     const protocolData = yield call(httpCall, protocolConfig);
 &nbsp;
     if (protocolData.success) {
-      let data = protocolData.data.map((item) =&gt; {
-        item.protocolTitle = !item.protocolTitle ? "" : item.protocolTitle;
-        item.protocol = !item.protocol ? "" : item.protocol;
-        item.projectId = !item.projectId ? "" : item.projectId;
-        item.sponsor = !item.sponsor ? "" : item.sponsor;
-        item.uploadDate = !item.uploadDate ? "" : new Date(item.uploadDate);
+      const data = protocolData.data.map((item) =&gt; {
+        item.protocolTitle = !item.protocolTitle ? '' : item.protocolTitle;
+        item.protocol = !item.protocol ? '' : item.protocol;
+        item.projectId = !item.projectId ? '' : item.projectId;
+        item.sponsor = !item.sponsor ? '' : item.sponsor;
+        item.uploadDate = !item.uploadDate ? '' : new Date(item.uploadDate);
         item.status = iconStatus(item.status);
         return item;
       });
@@ -635,40 +644,40 @@ export function* qcProtocolsData() {
     }
   } catch (err) {
     yield put(setTableLoader(false));
-    yield put(setError("Something Went Wrong"));
-    toast.error("Something Went Wrong");
+    yield put(setError('Something Went Wrong'));
+    toast.error('Something Went Wrong');
   }
 }
 &nbsp;
 function wait() {
   /* istanbul ignore next */
   setTimeout(function () {
-    window.location.href = "/qc";
+    window.location.href = '/qc';
   }, 3000);
 }
 &nbsp;
 export function* qcApprove(action) {
-  let user = yield getState();
+  const user = yield getState();
   const url = `${BASE_URL_8000}/api/protocol_metadata/qc_approve?aidoc_id=${action.payload}&amp;approvedBy=${user.id}`;
   const config = {
-    url: url,
-    method: "PUT",
+    url,
+    method: 'PUT',
   };
   try {
     yield put(getLoader(true));
     const data = yield call(httpCall, config);
     console.log(data);
     if (data.success) {
-      toast.info("Approved Successfully");
+      toast.info('Approved Successfully');
       wait();
     } else {
-      toast.error("Error While Approving");
+      toast.error('Error While Approving');
     }
     yield put(getLoader(false));
   } catch (err) {
     console.log(err);
     yield put(getLoader(false));
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
   }
 }
 &nbsp;
@@ -676,29 +685,29 @@ export function* sendQc2Approval(action) {
   const url = `${BASE_URL_8000}/api/protocol_metadata/change_qc_status`;
   const obj = {
     docIdArray: [action.payload],
-    targetStatus: "QC2",
+    targetStatus: 'QC2',
   };
   const config = {
-    url: url,
-    method: "PUT",
+    url,
+    method: 'PUT',
     data: obj,
   };
   try {
     yield put(getLoader(true));
     const data = yield call(httpCall, config);
     if (data.success) {
-      toast.info("Sent For QC2 Approval Successfully");
+      toast.info('Sent For QC2 Approval Successfully');
       // window.location.href = "/qc";
       wait();
     } else {
-      toast.error("Error While Sending");
+      toast.error('Error While Sending');
     }
     yield put(getLoader(false));
     console.log(data);
   } catch (err) {
     yield put(getLoader(false));
     console.log(err);
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
   }
 }
 &nbsp;
@@ -706,11 +715,11 @@ export function* qc2Reject(action) {
   const url = `${BASE_URL_8000}/api/protocol_metadata/change_qc_status`;
   const obj = {
     docIdArray: [action.payload],
-    targetStatus: "QC1",
+    targetStatus: 'QC1',
   };
   const config = {
-    url: url,
-    method: "PUT",
+    url,
+    method: 'PUT',
     data: obj,
   };
   try {
@@ -718,17 +727,17 @@ export function* qc2Reject(action) {
     const data = yield call(httpCall, config);
     console.log(data);
     if (data.success) {
-      toast.info("Rejected Successfully");
+      toast.info('Rejected Successfully');
       // window.location.href = "/qc";
       wait();
     } else {
-      toast.error("Error While Rejecting");
+      toast.error('Error While Rejecting');
     }
     yield put(getLoader(false));
   } catch (err) {
     yield put(getLoader(false));
     console.log(err);
-    toast.error("Something Went Wrong");
+    toast.error('Something Went Wrong');
   }
 }
 &nbsp;
@@ -746,18 +755,18 @@ export function getTocSections(toc) {
   const list = [];
   toc.data.map((item) =&gt; {
     let file_section_level = item[8].toString();
-    let type = item[2];
+    const type = item[2];
     // let heading = item[4].font_style;
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (!file_section_level &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >type === "header")</span> {
-<span class="cstat-no" title="statement not covered" >      file_section_level = "1";</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!file_section_level &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >type === 'header')</span> {
+<span class="cstat-no" title="statement not covered" >      file_section_level = '1';</span>
     }
-    let level_1_CPT_section = captalize(item[6]);
-    let section_num = item[7];
+    const level_1_CPT_section = captalize(item[6]);
+    const section_num = item[7];
 &nbsp;
     if (
       section_num &amp;&amp;
-      file_section_level === "1" &amp;&amp;
-      level_1_CPT_section !== "Unmapped" &amp;&amp;
+      file_section_level === '1' &amp;&amp;
+      level_1_CPT_section !== 'Unmapped' &amp;&amp;
       !sectionList.includes(level_1_CPT_section)
     ) {
       list.push({
@@ -766,9 +775,9 @@ export function getTocSections(toc) {
       });
       sectionList.push(level_1_CPT_section);
     } else if (
-      type === "header" &amp;&amp;
-      file_section_level === "1" &amp;&amp;
-      level_1_CPT_section !== "Unmapped" &amp;&amp;
+      type === 'header' &amp;&amp;
+      file_section_level === '1' &amp;&amp;
+      level_1_CPT_section !== 'Unmapped' &amp;&amp;
       !sectionList.includes(level_1_CPT_section)
     ) {
       list.push({
@@ -786,8 +795,8 @@ export function getSoaSections(soa) {
   // const sectionList = [];
   const list = [];
   soa.map((item) =&gt; {
-    let TableIndex = item.TableIndex;
-    let TableName = item.TableName;
+    const { TableIndex } = item;
+    const { TableName } = item;
     list.push({
       section: `${TableName}`,
       id: `SOA-${TableIndex}`,
@@ -798,22 +807,22 @@ export function getSoaSections(soa) {
   return list;
 }
 export function* uploadQc(action) {
-  let bodyFormData = new FormData();
-  bodyFormData.append("uploaded_json_file", action.payload.data);
+  const bodyFormData = new FormData();
+  bodyFormData.append('uploaded_json_file', action.payload.data);
   const postUrl = `${BASE_URL_8000}/api/protocol_qcdata/qc1_protocol_upload?aidoc_id=${action.payload.id}`;
   try {
     yield put(getLoader(true));
     const postUploadQc = yield call(httpCall, {
       url: postUrl,
-      method: "POST",
+      method: 'POST',
       data: bodyFormData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
 &nbsp;
     if (postUploadQc.success) {
-      toast.info("Upload Successful");
+      toast.info('Upload Successful');
       // yield put(getProcotoclToc(viewData));
-      if (postUploadQc.data) {
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (postUploadQc.data) {
         const toc = parsedData(postUploadQc.data.iqvdataToc);
         const soa = parsedData(postUploadQc.data.iqvdataSoa);
         const viewData = {
@@ -837,22 +846,22 @@ export function* uploadQc(action) {
       //   },
       // });
     } else {
-      toast.error("Something Went Wrong");
+      toast.error('Something Went Wrong');
     }
     yield put(getLoader(false));
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    console.log(err);</span>
 <span class="cstat-no" title="statement not covered" >    yield put(getLoader(false));</span>
-<span class="cstat-no" title="statement not covered" >    toast.error("Something Went Wrong");</span>
+<span class="cstat-no" title="statement not covered" >    toast.error('Something Went Wrong');</span>
   }
 }
 &nbsp;
 export function* watchqc() {
-  yield takeEvery("GET_QC_PROTOCOL_TABLE_SAGA", qcProtocolsData);
-  yield takeEvery("APPROVE_QC_SAGA", qcApprove);
-  yield takeEvery("SEND_QC2_APPROVAL_SAGA", sendQc2Approval);
-  yield takeEvery("REJECT_QC2_SAGA", qc2Reject);
-  yield takeEvery("UPLOAD_PROTOCOL_QC_SAGA", uploadQc);
+  yield takeEvery('GET_QC_PROTOCOL_TABLE_SAGA', qcProtocolsData);
+  yield takeEvery('APPROVE_QC_SAGA', qcApprove);
+  yield takeEvery('SEND_QC2_APPROVAL_SAGA', sendQc2Approval);
+  yield takeEvery('REJECT_QC2_SAGA', qc2Reject);
+  yield takeEvery('UPLOAD_PROTOCOL_QC_SAGA', uploadQc);
 }
 &nbsp;
 export default function* qcSaga() {
@@ -864,10 +873,9 @@ export default function* qcSaga() {
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
