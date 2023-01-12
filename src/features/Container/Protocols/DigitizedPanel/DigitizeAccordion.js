@@ -115,9 +115,10 @@ function DigitizeAccordion({
     }
   };
   // useEffect(() => {
-  //   document
-  //     .getElementsByClassName('enriched-txt')
-  //     .addEventListener('click', handleEnrichedClick);
+  //   document.addEventListener('click', handleEnrichedClick);
+  //   // return () => {
+  //   //   document.removeEventListener('click', handleEnrichedClick);
+  //   // };
   // }, []);
 
   const onEditClick = (e) => {

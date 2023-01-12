@@ -19,14 +19,38 @@ const clinicalTermsMockData = [
       { label: 'Luptatum' },
     ],
   },
-  { value: 'Clinical Terms', termLabel: 'Clinical Terms' },
-  { value: 'Ontology', termLabel: 'Ontology' },
+  {
+    value: 'Clinical Terms',
+    termLabel: 'Clinical Terms',
+    data: [
+      { label: 'Euismod dsds dsds ds' },
+      { label: 'Molestie' },
+      { label: 'Luptatum' },
+    ],
+  },
+  {
+    value: 'Ontology',
+    termLabel: 'Ontology',
+    data: [
+      { label: 'Euismod dsds dsds ds' },
+      { label: 'Molestie' },
+      { label: 'Luptatum' },
+    ],
+  },
   {
     value: 'Prefered Term',
     termLabel: 'Preferred Term',
     data: [{ label: 'Euismod' }, { label: 'Molestie' }, { label: 'Luptatum' }],
   },
-  { value: 'Classification', termLabel: 'Classification' },
+  {
+    value: 'Classification',
+    termLabel: 'Classification',
+    data: [
+      { label: 'Euismod dsds dsds ds' },
+      { label: 'Molestie' },
+      { label: 'Luptatum' },
+    ],
+  },
 ];
 function MedicalTerm({ enrichedTarget }) {
   const [clinicalTerms, setclinicalTerms] = useState(clinicalTermsMockData);
@@ -35,6 +59,7 @@ function MedicalTerm({ enrichedTarget }) {
   const [selectedTerm, setSelectedTerm] = useState(null);
   const [childTermValue, setChildTermValue] = useState(false);
   const [newTermValue, setNewTermValue] = useState('');
+  // const wrapperRef = useRef(null);
 
   const childDataArr = () => {
     return clinicalTerms.find((x) => x.termLabel === selectedTerm)?.data;
@@ -64,8 +89,23 @@ function MedicalTerm({ enrichedTarget }) {
   useEffect(() => {
     setNewTermValue(childTermValue);
   }, [childTermValue]);
+  // useEffect(() => {
+  //   function handleClickOutside(event) {
+  //     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+  //       setAnchorEl(false);
+  //     }
+  //   }
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, [wrapperRef]);
   return (
-    <div className="enriched-menu-wrapper" data-testId="ClinicalTerms">
+    <div
+      className="enriched-menu-wrapper"
+      data-testId="Termlist"
+      // ref={wrapperRef}
+    >
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
           <div className="terms-list">
@@ -75,6 +115,7 @@ function MedicalTerm({ enrichedTarget }) {
               return (
                 <li key={item.termLabel}>
                   <Button
+                    data-testId="handleSave"
                     className="term-item"
                     onClick={(e) => {
                       setSelectedTerm(item.termLabel);
