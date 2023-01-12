@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line medium'></div>
     <pre><table class="coverage">
@@ -570,7 +576,10 @@
 <a name='L511'></a><a href='#L511'>511</a>
 <a name='L512'></a><a href='#L512'>512</a>
 <a name='L513'></a><a href='#L513'>513</a>
-<a name='L514'></a><a href='#L514'>514</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L514'></a><a href='#L514'>514</a>
+<a name='L515'></a><a href='#L515'>515</a>
+<a name='L516'></a><a href='#L516'>516</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -597,8 +606,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">13x</span>
 <span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -654,6 +661,8 @@
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -678,6 +687,7 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -714,26 +724,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -750,7 +763,6 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -987,9 +999,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1083,41 +1093,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-import cloneDeep from "lodash/cloneDeep";
-import isEmpty from "lodash/isEmpty";
-import SearchListingSection from "./SearchListingSection";
-import SearchIcon from "apollo-react-icons/Search";
-import Button from "apollo-react/components/Button";
-import FilterSection from "./FilterSection";
-import MenuItem from "apollo-react/components/MenuItem";
-import SelectButton from "apollo-react/components/SelectButton";
-import AlignJustify from "apollo-react-icons/AlignJustify";
-import Chip from "apollo-react/components/Chip";
-import Grid from "apollo-react/components/Grid";
-import Pagination from "apollo-react/components/Pagination";
-import NoResultFound from "../../Components/NoResultFound";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
+import SearchIcon from 'apollo-react-icons/Search';
+import Button from 'apollo-react/components/Button';
+import MenuItem from 'apollo-react/components/MenuItem';
+import SelectButton from 'apollo-react/components/SelectButton';
+import AlignJustify from 'apollo-react-icons/AlignJustify';
+import Chip from 'apollo-react/components/Chip';
+import Grid from 'apollo-react/components/Grid';
+import Pagination from 'apollo-react/components/Pagination';
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
+import NoResultFound from '../../Components/NoResultFound';
 &nbsp;
-import { SORT_DROPDOWN } from "../../../AppConstant/AppConstant";
+import { SORT_DROPDOWN } from '../../../AppConstant/AppConstant';
 &nbsp;
-import Loader from "../../Components/Loader/Loader";
-import { connect } from "react-redux";
-import { BASE_URL_8000, httpCall } from "../../../utils/api";
-import { toast } from "react-toastify";
-import FilterChip from "./FilterChips";
+import Loader from '../../Components/Loader/Loader';
+import { BASE_URL_8000, httpCall } from '../../../utils/api';
+import FilterSection from './FilterSection';
+import SearchListingSection from './SearchListingSection';
+import FilterChip from './FilterChips';
 &nbsp;
+/* eslint-disable */
 class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      seachValue: [],
       defaultExpand: false,
-      accID: "",
       accordionObj: {},
       resultListData: { loader: null },
-      sortValue: "1",
     };
   }
+&nbsp;
   static getDerivedStateFromProps(props, state) {
     if (
       isEmpty(state.accordionObj) ||
@@ -1125,7 +1134,7 @@ class SearchPanel extends React.Component {
       props.resultList !== state.resultListData
     ) {
       let defaultValue = false;
-      //For resetting ExpandAll button when all are expanded and Search button is click
+      // For resetting ExpandAll button when all are expanded and Search button is click
       <span class="missing-if-branch" title="if path not taken" >I</span>if (
         state.defaultExpand === true &amp;&amp;
 <span class="branch-1 cbranch-no" title="branch not covered" >        props.resultList </span>&amp;&amp;
@@ -1133,7 +1142,7 @@ class SearchPanel extends React.Component {
 <span class="branch-3 cbranch-no" title="branch not covered" >        props.resultList.data.data </span>&amp;&amp;
 <span class="branch-4 cbranch-no" title="branch not covered" >        props.resultList.data.data.length &gt; 0</span>
       ) {
-        let defaultVal = <span class="cstat-no" title="statement not covered" >props.resultList.data.data.filter(<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; {</span>
+        const defaultVal = <span class="cstat-no" title="statement not covered" >props.resultList.data.data.filter(<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >          return value.expanded &amp;&amp; value.expanded === true;</span>
         });
 <span class="cstat-no" title="statement not covered" >        if (defaultVal.length &gt; 0) {</span>
@@ -1142,13 +1151,13 @@ class SearchPanel extends React.Component {
 <span class="cstat-no" title="statement not covered" >          defaultValue = false;</span>
         }
       }
-      let result =
+      const result =
         props.resultList &amp;&amp; props.resultList.data &amp;&amp; props.resultList.data.data
           ? props.resultList.data.data
           : [];
-      let arr = [];
+      const arr = [];
       for (let i = 0; i &lt; result.length; i++) {
-        let obj = cloneDeep(result[i]);
+        const obj = cloneDeep(result[i]);
         obj.expanded = result[i].expanded ? <span class="branch-0 cbranch-no" title="branch not covered" >result[i].expanded </span>: false;
         obj.id = result[i].AiDocId;
         // let obj = {
@@ -1166,12 +1175,14 @@ class SearchPanel extends React.Component {
     }
     return null;
   }
+&nbsp;
   componentDidMount() {}
+&nbsp;
   setExpanded = (id, obj, data) =&gt; {
     const { accordionObj } = this.state;
 &nbsp;
-    let accObj = cloneDeep(accordionObj);
-    let foundIndex = accObj.findIndex((obj) =&gt; obj.id === id);
+    const accObj = cloneDeep(accordionObj);
+    const foundIndex = accObj.findIndex((obj) =&gt; obj.id === id);
     accObj[foundIndex].expanded = !accObj[foundIndex].expanded;
     <span class="missing-if-branch" title="if path not taken" >I</span>if (accObj[foundIndex].expanded === false) {
 <span class="cstat-no" title="statement not covered" >      accObj[foundIndex].viewAssociate = false;</span>
@@ -1187,10 +1198,11 @@ class SearchPanel extends React.Component {
 &nbsp;
   sortChange = (value) =&gt; {
     const { onSortChange } = this.props;
-    let filterValue = SORT_DROPDOWN.filter((item) =&gt; item.id === value);
+    const filterValue = SORT_DROPDOWN.filter((item) =&gt; item.id === value);
     value &amp;&amp; onSortChange(filterValue[0], value);
     // this.setState({ sortValue: value.id });
   };
+&nbsp;
   onExpandAllClick = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
     const { accordionObj, defaultExpand } = <span class="cstat-no" title="statement not covered" >this.state;</span>
     const { updateSearchResult, resultList } = <span class="cstat-no" title="statement not covered" >this.props;</span>
@@ -1200,8 +1212,8 @@ class SearchPanel extends React.Component {
     } else {
 <span class="cstat-no" title="statement not covered" >      tempDefault = false;</span>
     }
-    let arr = <span class="cstat-no" title="statement not covered" >accordionObj.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; {</span>
-      let temp = <span class="cstat-no" title="statement not covered" >cloneDeep(item);</span>
+    const arr = <span class="cstat-no" title="statement not covered" >accordionObj.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; {</span>
+      const temp = <span class="cstat-no" title="statement not covered" >cloneDeep(item);</span>
 <span class="cstat-no" title="statement not covered" >      temp.expanded = tempDefault;</span>
 <span class="cstat-no" title="statement not covered" >      temp.viewAssociate = tempDefault === false ? false : temp.viewAssociate;</span>
 <span class="cstat-no" title="statement not covered" >      return temp;</span>
@@ -1227,6 +1239,7 @@ class SearchPanel extends React.Component {
 &nbsp;
     onSearchQuery(list, identifier);
   };
+&nbsp;
   clearAllCheckbox = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
     // this.state["searchValue"] = [];
     // this.setState({ searchValue: [] });
@@ -1240,6 +1253,7 @@ class SearchPanel extends React.Component {
 &nbsp;
     // window.location.reload();
   };
+&nbsp;
   // onPageChange= (data, value)=&gt;{
   //   const {onSetPage}= this.props;
   //   onSetPage(data, value)
@@ -1248,12 +1262,13 @@ class SearchPanel extends React.Component {
     const { onSetPage } = <span class="cstat-no" title="statement not covered" >this.props;</span>
 <span class="cstat-no" title="statement not covered" >    onSetPage(value);</span>
   };
+&nbsp;
   handleFollow = async (e, checked, protocol) =&gt; {
     const { userDetails } = this.props;
     const id = userDetails.userId;
     const { accordionObj } = this.state;
-    let accObj = cloneDeep(accordionObj);
-    let newObj = accObj.map((obj) =&gt; {
+    const accObj = cloneDeep(accordionObj);
+    const newObj = accObj.map((obj) =&gt; {
       if (
         obj.protocolNumber &amp;&amp;
         obj.protocolNumber.toLowerCase() ===
@@ -1261,13 +1276,12 @@ class SearchPanel extends React.Component {
       ) {
         // if (obj.protocolNumber &amp;&amp; (obj.protocolNumber === protocol.protocolNumber)) {
         return { ...obj, followed: !obj.followed };
-      } else {
-        return obj;
       }
+      return obj;
     });
     const Config = {
       url: `${BASE_URL_8000}/api/follow_protocol/`,
-      method: "POST",
+      method: 'POST',
       data: {
         userId: id.substring(1),
         protocol: protocol.protocolNumber,
@@ -1284,7 +1298,7 @@ class SearchPanel extends React.Component {
 <span class="cstat-no" title="statement not covered" >        this.props.updateAlerts(id.substring(1));</span>
       }
     } catch (err) {
-<span class="cstat-no" title="statement not covered" >      toast.error("Something Went Wrong");</span>
+<span class="cstat-no" title="statement not covered" >      toast.error('Something Went Wrong');</span>
     }
   };
 &nbsp;
@@ -1443,21 +1457,21 @@ class SearchPanel extends React.Component {
                 &lt;div className="page-count"&gt;
                   {accordionObj.length &gt; 0 ? (
                     &lt;span&gt;
-                      Showing {page * 10 + 1} -{" "}
+                      Showing {page * 10 + 1} -{' '}
                       {page * 10 + 10 &lt; resultList.data.total_count
                         ? page * 10 + 10
-                        : resultList.data.total_count}{" "}
-                      of{" "}
+                        : resultList.data.total_count}{' '}
+                      of{' '}
                       {resultList &amp;&amp;
                         resultList.data &amp;&amp;
-                        resultList.data.total_count}{" "}
+                        resultList.data.total_count}{' '}
                     &lt;/span&gt;
                   ) : (
                     &lt;span&gt;Showing 0 - 0 of 0&lt;/span&gt;
                   )}
                 &lt;/div&gt;
                 &lt;div className="search-icon"&gt;
-                  &lt;SearchIcon style={{ color: "#0557d5" }} size="small" /&gt;
+                  &lt;SearchIcon style={{ color: '#0557d5' }} size="small" /&gt;
                 &lt;/div&gt;
               &lt;/div&gt;
               {accordionObj.length &gt; 0 &amp;&amp; (
@@ -1487,26 +1501,24 @@ class SearchPanel extends React.Component {
                     className="expand-all"
                     onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this.onExpandAllClick()}</span>
                   &gt;
-                    &lt;AlignJustify style={{ color: "blue" }} size="small" /&gt;
+                    &lt;AlignJustify style={{ color: 'blue' }} size="small" /&gt;
                     &lt;span&gt;
-                      {!defaultExpand ? "Expand All" : <span class="branch-1 cbranch-no" title="branch not covered" >"Collapse All"}</span>
+                      {!defaultExpand ? 'Expand All' : <span class="branch-1 cbranch-no" title="branch not covered" >'Collapse All'}</span>
                     &lt;/span&gt;
                   &lt;/div&gt;
                 &lt;/&gt;
               )}
-              {
-                &lt;div id="chip" className="chip"&gt;
-                  {this.props.searchInput &amp;&amp; (
-                    &lt;Chip
-                      color="white"
-                      label={this.props["searchInput"]}
-                      value={this.props["searchInput"]}
-                      onDelete={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >this.props.deleteSearchInput(e)}</span>
-                      size={"small"}
-                    /&gt;
-                  )}
-                &lt;/div&gt;
-              }
+              &lt;div id="chip" className="chip"&gt;
+                {this.props.searchInput &amp;&amp; (
+                  &lt;Chip
+                    color="white"
+                    label={this.props.searchInput}
+                    value={this.props.searchInput}
+                    onDelete={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >this.props.deleteSearchInput(e)}</span>
+                    size="small"
+                  /&gt;
+                )}
+              &lt;/div&gt;
             &lt;/div&gt;
             &lt;div className="width100 "&gt;
               {!resultList.loader &amp;&amp;
@@ -1539,9 +1551,9 @@ class SearchPanel extends React.Component {
 <span class="branch-1 cbranch-no" title="branch not covered" >                        &lt;div</span>
                           style={{
                             height: 400,
-                            justifyContent: "center",
-                            alignItems: "center",
-                            display: "flex",
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            display: 'flex',
                           }}
                         &gt;
                           &lt;Loader /&gt;
@@ -1554,7 +1566,7 @@ class SearchPanel extends React.Component {
                 resultList.success &amp;&amp;
                 accordionObj.length !== 0 &amp;&amp; (
                   &lt;div className="search-pagination"&gt;
-                    {" "}
+                    {' '}
                     &lt;Pagination
                       count={
                         resultList &amp;&amp;
@@ -1586,13 +1598,13 @@ const mapDispatchToProps = (dispatch) =&gt; {
   return {
     updateAssociateProtocol: <span class="fstat-no" title="function not covered" >(d</span>ata, obj) =&gt;
 <span class="cstat-no" title="statement not covered" >      dispatch({</span>
-        type: "UPDATE_SEARCH_ASSOCIATED_PROTOCOLS",
+        type: 'UPDATE_SEARCH_ASSOCIATED_PROTOCOLS',
         payload: { data, obj },
       }),
     updateSearchResult: <span class="fstat-no" title="function not covered" >(o</span>bj) =&gt;
-<span class="cstat-no" title="statement not covered" >      dispatch({ type: "UPDATE_SEARCH_RESULT", payload: obj }),</span>
+<span class="cstat-no" title="statement not covered" >      dispatch({ type: 'UPDATE_SEARCH_RESULT', payload: obj }),</span>
     updateAlerts: <span class="fstat-no" title="function not covered" >(i</span>d) =&gt;
-<span class="cstat-no" title="statement not covered" >      dispatch({ type: "GET_NOTIFICATION_SAGA", payload: id }),</span>
+<span class="cstat-no" title="statement not covered" >      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: id }),</span>
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);
@@ -1602,10 +1614,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {

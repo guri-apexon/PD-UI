@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95% </span>
+                <span class="strong">94.44% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/20</span>
+                <span class='fraction'>17/18</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95% </span>
+                <span class="strong">94.44% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/20</span>
+                <span class='fraction'>17/18</span>
             </div>
         
             
@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line high'></div>
     <pre><table class="coverage">
@@ -148,8 +154,7 @@
 <a name='L89'></a><a href='#L89'>89</a>
 <a name='L90'></a><a href='#L90'>90</a>
 <a name='L91'></a><a href='#L91'>91</a>
-<a name='L92'></a><a href='#L92'>92</a>
-<a name='L93'></a><a href='#L93'>93</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L92'></a><a href='#L92'>92</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -158,7 +163,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-yes">7x</span>
@@ -175,8 +181,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -228,7 +232,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -241,41 +245,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import Table from "apollo-react/components/Table";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { httpCall, BASE_URL_8000 } from "../../../utils/api";
-import FileDownload from "js-file-download";
-import Loader from "apollo-react/components/Loader";
-import { toast } from "react-toastify";
-import { userId } from "../../../store/userDetails";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable */
+import Table from 'apollo-react/components/Table';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import FileDownload from 'js-file-download';
+import Loader from 'apollo-react/components/Loader';
+import { toast } from 'react-toastify';
+import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+import { userId } from '../../../store/userDetails';
 &nbsp;
-const DownloadLink = ({ row, column: { accessor: key } }) =&gt; {
+function DownloadLink({ row, column: { accessor: key } }) {
   const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
-  console.log("UserID Required", userId1);
+  console.log('UserID Required', userId1);
   const handleDownload = async (row) =&gt; {
     setLoader(true);
-    let splitArr = row.documentFilePath.split("\\");
+    const splitArr = row.documentFilePath.split('\\');
     const fileName = splitArr[splitArr.length - 1];
     console.log(fileName);
     const config = {
       url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
-        row.documentFilePath
+        row.documentFilePath,
       )}&amp;userId=${userId1.substring(1)}&amp;protocol=${row.protocol}`,
-      method: "GET",
-      responseType: "blob",
+      method: 'GET',
+      responseType: 'blob',
     };
     const resp = await httpCall(config);
     /* istanbul ignore next */
     if (resp.success) {
       FileDownload(resp.data, fileName);
+    } else if (resp.message === 'No Access') {
+      toast.info('Access Provisioned to Primary Users only');
     } else {
-      if (resp.message === "No Access") {
-        toast.info("Access Provisioned to Primary Users only");
-      } else {
-        toast.error("Download Failed");
-      }
+      toast.error('Download Failed');
     }
 <span class="cstat-no" title="statement not covered" >    setLoader(false);</span>
   };
@@ -291,36 +294,36 @@ const DownloadLink = ({ row, column: { accessor: key } }) =&gt; {
       &lt;/p&gt;
     &lt;/&gt;
   ); // eslint-disable-line
-};
+}
 const DateCell = ({ row, column }) =&gt; {
   const date = new Date(row[column.accessor]);
   return date
-    .toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
+    .toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
     })
-    .replace(/ /g, "-");
+    .replace(/ /g, '-');
 };
 &nbsp;
 const columns = [
   {
-    accessor: "fileName",
-    header: "Document Name",
+    accessor: 'fileName',
+    header: 'Document Name',
     customCell: DownloadLink,
   },
   {
-    header: "Uploaded Date",
-    accessor: "uploadDate",
+    header: 'Uploaded Date',
+    accessor: 'uploadDate',
     customCell: DateCell,
   },
   {
-    header: "Uploaded By",
-    accessor: "userName",
+    header: 'Uploaded By',
+    accessor: 'userName',
   },
 ];
 &nbsp;
-const DocumentsTable = ({ initialsRow, primaryUser }) =&gt; {
+function DocumentsTable({ initialsRow, primaryUser }) {
   return (
     &lt;Table
       title="Source Document"
@@ -330,7 +333,7 @@ const DocumentsTable = ({ initialsRow, primaryUser }) =&gt; {
       maxHeight={160}
     /&gt;
   );
-};
+}
 &nbsp;
 export default DocumentsTable;
 &nbsp;</pre></td></tr></table></pre>
@@ -339,10 +342,9 @@ export default DocumentsTable;
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {

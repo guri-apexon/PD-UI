@@ -7,13 +7,20 @@ import {
   select,
 } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
+import { toast } from 'react-toastify';
+
 import {
   getSummary,
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
+  getHeaderList,
+  getSectionDetails,
+  getProtocolTocData,
+  setSectionLoader,
+  getFileStream,
 } from './protocolSlice';
-import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
 function* getUserId() {
   const state = yield select();
@@ -28,6 +35,7 @@ export function* getSummaryData(action) {
     data: null,
   };
   yield put(getSummary(obj));
+
   const userId = yield getUserId();
   const url = `${BASE_URL_8000}/api/protocol_metadata/?userId=${userId}&docId=${action.payload}`;
 
@@ -199,6 +207,55 @@ export function* fetchAssociateProtocol(action) {
     yield put(getAssociateDocuments([]));
   }
 }
+export function* fetchSectionHeaderList(action) {
+  const {
+    payload: { docId },
+  } = action;
+  yield put(getHeaderList({}));
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
+  const config = {
+    url: URL,
+    method: 'GET',
+  };
+  const header = yield call(httpCall, config);
+  if (header.success) {
+    if (!header.data?.length) {
+      toast.error(header.message);
+    }
+    yield put(getHeaderList(header));
+  } else {
+    yield put(getHeaderList({ success: false, data: [] }));
+    toast.error('Something Went Wrong');
+  }
+}
+function* getState() {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  // userId = id;
+  return id.substring(1);
+}
+export function* getSectionList(action) {
+  const userId = yield getState();
+  const config = {
+    url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
+    method: 'GET',
+  };
+  const sectionDetails = yield call(httpCall, config);
+  yield put(setSectionLoader(false));
+
+  if (sectionDetails.success) {
+    yield put(
+      getSectionDetails({
+        sections: sectionDetails.data,
+        linkId: action.payload.linkId,
+      }),
+    );
+  } else if (sectionDetails.message === 'No Access') {
+    console.log('No Access');
+  } else {
+    console.log('Error while loading');
+  }
+}
 
 export function* getCompareResult(action) {
   if (action.payload) {
@@ -243,6 +300,82 @@ export function* getCompareResult(action) {
   }
 }
 
+export function* getProtocolTocDataResult(action) {
+  const {
+    payload: { docId },
+  } = action;
+  yield put(getHeaderList({}));
+
+  const linkLevel = action.payload.tocFlag ? 6 : 1;
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
+  const config = {
+    url: URL,
+    method: 'GET',
+  };
+
+  const header = yield call(httpCall, config);
+  if (header.success) {
+    if (action.payload.tocFlag === 1) {
+      if (header?.data?.status === 204) {
+        toast.error(header.data.message || 'Something Went Wrong');
+        header.data = [];
+      }
+      yield put(getProtocolTocData(header));
+    } else {
+      yield put(getHeaderList(header));
+    }
+  } else {
+    if (!action.payload.tocFlag) {
+      yield put(getProtocolTocData({ success: false, data: [] }));
+    } else {
+      yield put(getHeaderList({ success: false, data: [] }));
+    }
+
+    toast.error('Something Went Wrong');
+  }
+}
+
+export function* fetchFileStream(action) {
+  const preLoadingState = {
+    loader: true,
+    success: false,
+    error: '',
+    data: null,
+  };
+  yield put(getFileStream(preLoadingState));
+
+  const userId = yield getUserId();
+  const { name, dfsPath } = action.payload;
+  const apiBaseUrl = BASE_URL_8000; // 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  const config = {
+    url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
+      dfsPath,
+    )}&userId=${userId}&protocol=${name}`,
+    method: 'GET',
+    responseType: 'blob',
+  };
+  try {
+    const { data } = yield call(httpCall, config);
+    const file = new Blob([data], { type: 'application/pdf' });
+    const successState = {
+      loader: false,
+      success: true,
+      error: '',
+      data: file,
+    };
+    yield put(getFileStream(successState));
+  } catch (error) {
+    const errorState = {
+      loader: false,
+      success: false,
+      error: 'Error',
+      data: null,
+    };
+    yield put(getFileStream(errorState));
+    toast.error('File not found');
+  }
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -251,8 +384,15 @@ function* watchProtocolAsync() {
   yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
 }
 
+function* watchProtocolViews() {
+  yield takeEvery('GET_PROTOCOL_SECTION', getProtocolTocDataResult);
+  yield takeEvery('GET_SECTION_LIST', getSectionList);
+  yield takeEvery('GET_FILE_STREAM', fetchFileStream);
+  yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
+}
+
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once
 export default function* protocolSaga() {
-  yield all([watchProtocolAsync()]);
+  yield all([watchProtocolAsync(), watchProtocolViews()]);
 }

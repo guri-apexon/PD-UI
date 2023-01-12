@@ -60,7 +60,7 @@ function AddNewMapping() {
       dispatch(setNewMappingError(''));
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [isOpen]);
 
   const handleSaveForm = () => {

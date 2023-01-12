@@ -1,0 +1,114 @@
+.bladeContainer {
+  .toc-wrapper {
+    padding-left: 7px;
+    height: 100%;
+  }
+  hr {
+    margin-bottom: 0;
+  }
+
+  [class*='Blade-body-'] {
+    background: #f6f7fb;
+    height: 100%;
+    padding: 5px 0 0 0px !important;
+  }
+  [class*='Blade-left-'] {
+    padding: 0;
+  }
+
+  [class*='MuiBackdrop-root'] {
+    top: 141px;
+  }
+
+  [class*='Blade-header-'] > h3 {
+    text-align: center;
+  }
+  [class*='Blade-body-'] > div > div {
+    background: #f6f7fb;
+  }
+  [class*='Blade-body-'] > div > div [class*='Accordion-expanded-'] > p {
+    font-weight: bold;
+  }
+  [class*='blade-body-'] > div > div [class*='MuiAccordion-root-'] {
+    height: 41px;
+  }
+  .MuiAccordionSummary-expandIcon {
+    left: 10px;
+  }
+
+  [class*='MuiAccordionSummary-root-'] {
+    height: 24px;
+    width: 100%;
+    min-height: unset;
+    padding-left: 61px;
+  }
+  div[class*='Blade-body-'] {
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  [class*='MuiAccordionSummary-root-'] > div:first-child {
+    height: 24px;
+    min-height: unset;
+  }
+
+  [class*='MuiAccordionSummary-root-'] > div:first-child > p {
+    height: 24px;
+    margin: 0;
+  }
+
+  [class*='MuiAccordionSummary-root-'] > div:nth-child(2) {
+    height: 14px;
+    top: 10px;
+    left: 26px;
+  }
+
+  [class*='MuiAccordion-root'] {
+    margin-top: 10px;
+    background-color: #f6f7fb;
+  }
+  [class*='MuiAccordionDetails-root-'] {
+    padding: 0 0 0px 10px;
+  }
+  .Mui-expanded [class*='MuiAccordionDetails-root'] {
+    padding: 0 0 0 10px;
+  }
+
+  [class*='MuiAccordionSummary-expandIcon'] {
+    padding-top: 0 !important;
+    * {
+      background: none !important;
+    }
+  }
+  .Mui-expanded
+    [class*='MuiAccordionDetails-root']
+    [class*='MuiCollapse-container']
+    p {
+    padding: 0 0 0 20px;
+  }
+
+  .Mui-expanded [class*='MuiAccordionDetails-root'] [class*='MuiPaper-root'] {
+    background: #f6f7fb;
+  }
+  [class*='MuiCollapse-wrapper-'] {
+    padding-left: 4px;
+  }
+}
+
+.header-unselect {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 14%;
+  height: 24px;
+  width: 170px;
+  color: #000000;
+  font-family: 'Proxima Nova' sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.search-Box {
+  width: 205px;
+  background-color: #ffffff;
+}

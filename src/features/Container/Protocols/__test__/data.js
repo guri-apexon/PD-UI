@@ -529,3 +529,43 @@ export const summary = [
     nctId: null,
   },
 ];
+
+export const headersList = [
+  {
+    doc_id: '574051fb-1cb5-4e6c-816c-f9964090a1e7',
+    group_type: 'DocumentLinks',
+    link_id: '65a5685c-8836-11ed-989e-005056ab6469',
+    LinkLevel: 1,
+    page: 1,
+    sec_id: '',
+    source_file_section:
+      'The Multi-National Gilenya® Pregnancy Exposure Registry in Multiple Sclerosis',
+    LinkType: 'toc',
+    qc_change_type: '',
+    sequence: 0,
+    section_locked: false,
+    audit_info: {
+      last_reviewed_date: '',
+      last_reviewed_by: '',
+      total_no_review: '',
+    },
+  },
+  {
+    doc_id: '574051fb-1cb5-4e6c-816c-f9964090a1e7',
+    group_type: 'DocumentLinks',
+    link_id: '65a56866-8836-11ed-a073-005056ab6469',
+    LinkLevel: 1,
+    page: 10,
+    sec_id: '1',
+    source_file_section: '1 Background and rationale',
+    LinkType: 'toc',
+    qc_change_type: '',
+    sequence: 10,
+    section_locked: false,
+    audit_info: {
+      last_reviewed_date: '',
+      last_reviewed_by: '',
+      total_no_review: '',
+    },
+  },
+];

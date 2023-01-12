@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96% </span>
+                <span class="strong">95.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>24/25</span>
+                <span class='fraction'>21/22</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96% </span>
+                <span class="strong">95.45% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>24/25</span>
+                <span class='fraction'>21/22</span>
             </div>
         
             
@@ -54,6 +54,12 @@
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input oninput="onInput()" type="search" id="fileSearch">
+            </div>
+        </template>
     </div>
     <div class='status-line high'></div>
     <pre><table class="coverage">
@@ -276,7 +282,9 @@
 <a name='L217'></a><a href='#L217'>217</a>
 <a name='L218'></a><a href='#L218'>218</a>
 <a name='L219'></a><a href='#L219'>219</a>
-<a name='L220'></a><a href='#L220'>220</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L220'></a><a href='#L220'>220</a>
+<a name='L221'></a><a href='#L221'>221</a>
+<a name='L222'></a><a href='#L222'>222</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -305,7 +313,7 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">42x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -369,7 +377,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -388,7 +396,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -414,12 +421,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">210x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
@@ -495,24 +505,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
-import moment from "moment";
-import cloneDeep from "lodash/cloneDeep";
-import Cog from "apollo-react-icons/Cog";
-import Pencil from "apollo-react-icons/Pencil";
-import Trash from "apollo-react-icons/Trash";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "apollo-react/components/IconButton";
-import Button from "apollo-react/components/Button";
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/* eslint-disable */
+import moment from 'moment';
+import cloneDeep from 'lodash/cloneDeep';
+import Cog from 'apollo-react-icons/Cog';
+import Pencil from 'apollo-react-icons/Pencil';
+import Trash from 'apollo-react-icons/Trash';
+import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from 'apollo-react/components/IconButton';
+import Button from 'apollo-react/components/Button';
 import {
   compareDates,
   compareStrings,
   createStringSearchFilter,
   createSelectFilterComponent,
-} from "apollo-react/components/Table";
-import TextField from "apollo-react/components/TextField";
-import MenuItem from "apollo-react/components/MenuItem";
-import Select from "apollo-react/components/Select";
+} from 'apollo-react/components/Table';
+import TextField from 'apollo-react/components/TextField';
+import MenuItem from 'apollo-react/components/MenuItem';
+import Select from 'apollo-react/components/Select';
 &nbsp;
 const fieldStyles = {
   style: {
@@ -522,9 +532,9 @@ const fieldStyles = {
 };
 &nbsp;
 const DateCell = ({ row, column }) =&gt;
-  moment(row[column.accessor]).format("MM/DD/YYYY");
+  moment(row[column.accessor]).format('MM/DD/YYYY');
 &nbsp;
-const ActionCell = ({ row }) =&gt; {
+function ActionCell({ row }) {
   const {
     username,
     onRowEdit,
@@ -535,14 +545,14 @@ const ActionCell = ({ row }) =&gt; {
     onDelete,
   } = row;
   return editMode ? (
-    &lt;div style={{ marginTop: 8, whiteSpace: "nowrap" }}&gt;
+    &lt;div style={{ marginTop: 8, whiteSpace: 'nowrap' }}&gt;
       &lt;Button
         data-testid="edit-cancel"
         size="small"
         style={{ marginRight: 8 }}
         onClick={onCancel}
       &gt;
-        {"Cancel"}
+        Cancel
       &lt;/Button&gt;
       &lt;Button
         data-testid="edit-save"
@@ -555,7 +565,7 @@ const ActionCell = ({ row }) =&gt; {
             !Object.keys(editedRow).some((key) =&gt; editedRow[key] !== row[key]))
         }
       &gt;
-        {"Save"}
+        Save
       &lt;/Button&gt;
     &lt;/div&gt;
   ) : (
@@ -586,9 +596,9 @@ const ActionCell = ({ row }) =&gt; {
       &lt;/span&gt;
     &lt;/div&gt;
   );
-};
+}
 &nbsp;
-const TextFieldFilter = ({ accessor, filters, updateFilterValue }) =&gt; {
+function TextFieldFilter({ accessor, filters, updateFilterValue }) {
   return (
     &lt;TextField
       value={filters[accessor]}
@@ -599,21 +609,20 @@ const TextFieldFilter = ({ accessor, filters, updateFilterValue }) =&gt; {
       data-testid={accessor}
     /&gt;
   );
-};
+}
 &nbsp;
 export function createStringArraySearchFilter(accessor) {
   return (row, filters) =&gt;
     !Array.isArray(filters[accessor]) ||
 <span class="branch-1 cbranch-no" title="branch not covered" >    filters[accessor].length === 0 </span>||
 <span class="branch-2 cbranch-no" title="branch not covered" >    filters[accessor].some(</span>
-<span class="fstat-no" title="function not covered" >      (v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >value.toUpperCase() === row[accessor].toUpperCase()</span>
+<span class="fstat-no" title="function not covered" >      (v</span>alue) =&gt; <span class="cstat-no" title="statement not covered" >value.toUpperCase() === row[accessor].toUpperCase(),</span>
     );
 }
 &nbsp;
-const makeEditableSelectCell =
-  (options) =&gt;
-  ({ row, column: { accessor: key } }) =&gt;
-    row.editMode ? (
+const makeEditableSelectCell = (options) =&gt;
+  function ({ row, column: { accessor: key } }) {
+    return row.editMode ? (
       &lt;Select
         data-testid={`editablecell-select-${row.username}`}
         size="small"
@@ -632,72 +641,75 @@ const makeEditableSelectCell =
     ) : (
       row[key]
     );
+  };
 &nbsp;
-const Cell = ({ row, column }) =&gt; (
-  &lt;div style={{ paddingTop: row.editMode ? 12 : 0 }}&gt;
-    {row[column.accessor]}
-  &lt;/div&gt;
-);
+function Cell({ row, column }) {
+  return (
+    &lt;div style={{ paddingTop: row.editMode ? 12 : 0 }}&gt;
+      {row[column.accessor]}
+    &lt;/div&gt;
+  );
+}
 &nbsp;
 const getColumns = (data) =&gt; {
   const roles = cloneDeep(data);
   return [
     {
-      header: "User ID",
-      accessor: "username",
+      header: 'User ID',
+      accessor: 'username',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("username"),
+      filterFunction: createStringSearchFilter('username'),
       filterComponent: TextFieldFilter,
       width: 90,
       customCell: Cell,
     },
     {
-      header: "First Name",
-      accessor: "first_name",
+      header: 'First Name',
+      accessor: 'first_name',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("first_name"),
+      filterFunction: createStringSearchFilter('first_name'),
       filterComponent: TextFieldFilter,
       customCell: Cell,
     },
     {
-      header: "Last Name",
-      accessor: "last_name",
+      header: 'Last Name',
+      accessor: 'last_name',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("last_name"),
+      filterFunction: createStringSearchFilter('last_name'),
       filterComponent: TextFieldFilter,
       customCell: Cell,
     },
     {
-      header: "Email",
-      accessor: "email",
+      header: 'Email',
+      accessor: 'email',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("email"),
+      filterFunction: createStringSearchFilter('email'),
       filterComponent: TextFieldFilter,
       customCell: Cell,
     },
     {
-      header: "Country",
-      accessor: "country",
+      header: 'Country',
+      accessor: 'country',
       sortFunction: compareStrings,
-      filterFunction: createStringSearchFilter("country"),
+      filterFunction: createStringSearchFilter('country'),
       filterComponent: TextFieldFilter,
       customCell: Cell,
       width: 120,
     },
     {
-      header: "Created Date",
-      accessor: "date_of_registration",
+      header: 'Created Date',
+      accessor: 'date_of_registration',
       sortFunction: compareDates,
       customCell: DateCell,
       width: 120,
     },
     {
-      header: "User Role",
-      accessor: "user_type",
+      header: 'User Role',
+      accessor: 'user_type',
       sortFunction: compareStrings,
-      filterFunction: createStringArraySearchFilter("user_type"),
+      filterFunction: createStringArraySearchFilter('user_type'),
       filterComponent: createSelectFilterComponent(roles, {
-        size: "small",
+        size: 'small',
         multiple: true,
       }),
       customCell: makeEditableSelectCell(roles),
@@ -705,9 +717,9 @@ const getColumns = (data) =&gt; {
     },
     {
       header: &lt;Cog size="small" /&gt;,
-      accessor: "action",
+      accessor: 'action',
       customCell: ActionCell,
-      align: "center",
+      align: 'center',
       width: 120,
     },
   ];
@@ -720,10 +732,9 @@ export default getColumns;
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
-                <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jan 04 2022 18:22:38 GMT+0530 (India Standard Time)
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2023-01-04T07:03:19.846Z
             </div>
-        </div>
         <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
