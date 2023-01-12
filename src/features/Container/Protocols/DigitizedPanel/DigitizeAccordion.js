@@ -13,7 +13,6 @@ import MultilineEdit from './Digitized_edit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   sectionDetailsResult,
-  sectionLoader,
   setSectionLoader,
   resetSectionData,
 } from '../protocolSlice';
@@ -34,7 +33,6 @@ function DigitizeAccordion({
   const [sections, setSections] = useState([]);
   const [showLoader, setShowLoader] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
-  const sectionContentLoader = useSelector(sectionLoader);
 
   const { linkId } = sectionHeaderDetails;
 
@@ -156,7 +154,7 @@ function DigitizeAccordion({
       </AccordionSummary>
 
       <AccordionDetails className="section-single-content">
-        {(sectionContentLoader || showLoader) && (
+        {showLoader && (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
