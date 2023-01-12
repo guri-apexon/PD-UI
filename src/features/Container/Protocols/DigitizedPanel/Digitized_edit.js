@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { WysiwygEditor } from '@remirror/react-editors/wysiwyg';
 import { BoldExtension } from 'remirror/extensions';
+import { corePreset, createCoreManager } from '@remirror/preset-core';
+import { RemirrorManager } from '@remirror/core';
 import {
   Remirror,
   useHelpers,
@@ -75,6 +77,16 @@ function MultilineEdit({ data, edit }) {
   const { manager, state } = useRemirror({
     extensions: () => [new BoldExtension()],
   });
+  // const manager = createCoreManager([], {
+  //   // All nodes will have their roles set to 'presentation'
+  //   extraAttributes: [
+  //     { identifiers: 'nodes', attributes: { role: 'presentation' } },
+  //   ],
+  // });
+  // const manager = RemirrorManager.create([
+  //   ...corePreset({ rootContent: 'block*' }),
+  // ]);
+
   const dispatch = useDispatch();
   const [activeLineID, setActiveLineID] = useState('');
 

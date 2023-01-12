@@ -9,6 +9,7 @@
                 "ignoreBidiAutoUpdate": null,
                 "link_id": "dsadwds3232432"
             },
+            "link_id": "dsadwds3232432",
             "content": [
                 {
                     "type": "text",
@@ -17,6 +18,7 @@
                 },
                 {
                     "type": "text",
+                    "link_id": "dsadwds3232432",
                     "marks": [
                         {
                             "type": "bold"
