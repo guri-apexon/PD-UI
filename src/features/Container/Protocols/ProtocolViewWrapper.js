@@ -62,7 +62,7 @@ class ProtocolViewWrapper extends React.Component {
   };
 
   render() {
-    const { data, refx, sectionRef } = this.props;
+    const { data, refx, sectionRef, summaryData } = this.props;
     const {
       // subSectionData,
       pageNo,
@@ -91,13 +91,18 @@ class ProtocolViewWrapper extends React.Component {
               >
                 <Card className="protocol-source-column">
                   <div className="panel-heading">Source Document</div>
-
-                  <Pdf
-                    page={pageNo}
-                    refs={refx}
-                    pageRight={pageRight}
-                    handlePaginationPage={this.handlePaginationPage}
-                  />
+                  {summaryData?.success ? (
+                    <Pdf
+                      page={pageNo}
+                      refs={refx}
+                      pageRight={pageRight}
+                      handlePaginationPage={this.handlePaginationPage}
+                    />
+                  ) : (
+                    <div className="digitize-panel-content">
+                      <div className="loader">{summaryData.errorMsg}</div>
+                    </div>
+                  )}
                 </Card>
               </Panel>
             )}
@@ -123,4 +128,5 @@ ProtocolViewWrapper.propTypes = {
   data: PropTypes.isRequired,
   refx: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
+  summaryData: PropTypes.isRequired,
 };

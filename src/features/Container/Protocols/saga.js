@@ -317,7 +317,7 @@ export function* getProtocolTocDataResult(action) {
   if (header.success) {
     if (action.payload.tocFlag === 1) {
       if (header?.data?.status === 204) {
-        toast.error(header.data.message || 'Something Went Wrong');
+        // toast.error(header.data.message || 'Something Went Wrong');
         header.data = [];
       }
       yield put(getProtocolTocData(header));
@@ -325,13 +325,30 @@ export function* getProtocolTocDataResult(action) {
       yield put(getHeaderList(header));
     }
   } else {
+    // eslint-disable-next-line no-lonely-if
     if (!action.payload.tocFlag) {
-      yield put(getProtocolTocData({ success: false, data: [] }));
+      yield put(
+        getProtocolTocData({
+          success: false,
+          data: [],
+          errorMsg:
+            header?.err?.data?.message ||
+            'This document is not available in our database',
+        }),
+      );
     } else {
-      yield put(getHeaderList({ success: false, data: [] }));
+      yield put(
+        getHeaderList({
+          success: false,
+          data: [],
+          errorMsg:
+            header?.err?.data?.message ||
+            'This document is not available in our database',
+        }),
+      );
     }
 
-    toast.error('Something Went Wrong');
+    // toast.error('Something Went Wrong');
   }
 }
 

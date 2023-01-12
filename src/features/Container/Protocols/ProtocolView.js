@@ -1,11 +1,12 @@
 import { useState, createRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { viewResult, associateDocs } from './protocolSlice';
+import { viewResult, associateDocs, headerResult } from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
+  const summary = useSelector(headerResult);
   const [protData, setprotData] = useState(data);
   const protassociateDocs = useSelector(associateDocs);
 
@@ -67,6 +68,7 @@ function ProtocolView({ refs, data }) {
           refx={refs}
           sectionRef={sectionRef}
           data={protData}
+          summaryData={summary}
         />
       )}
     </div>

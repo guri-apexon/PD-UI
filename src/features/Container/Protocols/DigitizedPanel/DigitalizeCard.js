@@ -128,7 +128,9 @@ function Digitize({
                 </div>
               </div>
             ))}
-            {!summary.success && <div className="loader">No Data found</div>}
+            {!summary.success && (
+              <div className="loader">{`${summary.errorMsg}`}</div>
+            )}
           </>
         )}
       </div>
