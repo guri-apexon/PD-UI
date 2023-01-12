@@ -11,7 +11,7 @@ function ProtocolView({ refs, data }) {
 
   const panels = () => {
     const ex = [];
-    for (let index = 0; index < 100; index++) {
+    for (let index = 0; index < 250; index++) {
       ex.push(index);
     }
     const refsection = ex.reduce((refsection, value) => {
