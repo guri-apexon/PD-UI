@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
@@ -93,7 +92,7 @@ function Digitize({
   }, [paginationPage]);
   return (
     <div>
-      {rightValue === 'Home' ? (
+      {rightValue === 'Home' && (
         <Card
           className="protocol-column protocol-digitize-column"
           style={{ borderRight: '0' }}
@@ -146,9 +145,8 @@ function Digitize({
             )}
           </div>
         </Card>
-      ) : rightValue === 'MetaData' ? (
-        <MetaDataAccordian />
-      ) : null}
+      )}
+      {rightValue === 'MetaData' && <MetaDataAccordian />}
     </div>
   );
 }

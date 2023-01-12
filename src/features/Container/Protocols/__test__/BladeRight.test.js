@@ -1,4 +1,4 @@
-import { render, fireEvent } from '../../../../test-utils/test-utils';
+import { render } from '../../../../test-utils/test-utils';
 import BladeRight from '../BladeRight/BladeRight';
 
 const sample = [
