@@ -25,17 +25,17 @@ function Digitize({
 
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
-  const [currentActiveCard, setCurrentActiveCard] = useState(0);
-  const [sectionSequence, setSectionSequence] = useState(undefined);
   const [rightValue, setRightValue] = useState(rightBladeValue);
+  const [currentActiveCard, setCurrentActiveCard] = useState(null);
+  const [sectionSequence, setSectionSequence] = useState(-1);
 
   useEffect(() => {
     if (summary?.data?.length) {
       setHeaderList(
-        summary.data.filter((x) => {
-          return x.source_file_section !== 'blank_header';
-        }),
+        summary.data.filter((x) => x.source_file_section !== 'blank_header'),
       );
+    } else {
+      setHeaderList([]);
     }
   }, [summary]);
 

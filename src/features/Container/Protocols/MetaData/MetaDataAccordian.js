@@ -29,13 +29,6 @@ function MetaDataAccordian() {
 
   const handleAccordian = (index) => {
     const accordianvalue = [...accordianData];
-    for (let i = 0; i < accordianData.length; i++) {
-      if (i === index) {
-        // console.log(i, ' ', index);
-      } else {
-        accordianvalue[i].isActive = false;
-      }
-    }
     accordianvalue[index].isActive = !accordianvalue[index].isActive;
     accordianvalue[index].isEdit = false;
     setAccordianData(accordianvalue);
@@ -44,14 +37,6 @@ function MetaDataAccordian() {
   const handleEdit = (index, e) => {
     e.stopPropagation();
     const accordianvalue = [...accordianData];
-    for (let i = 0; i < accordianData.length; i++) {
-      if (i === !index) {
-        // if
-      } else {
-        accordianvalue[i].isActive = false;
-        accordianvalue[i].isEdit = false;
-      }
-    }
     accordianvalue[index].isEdit = true;
     accordianvalue[index].isActive = true;
     setAccordianData(accordianvalue);
@@ -80,7 +65,7 @@ function MetaDataAccordian() {
         {accordianData?.map((level1, index1) => {
           return (
             <div key={React.key} className="metadata_item">
-              <Accordion>
+              <Accordion expanded={level1.isActive}>
                 <AccordionSummary
                   data-testId="metadataAccordian"
                   onClick={() => handleAccordian(index1)}
