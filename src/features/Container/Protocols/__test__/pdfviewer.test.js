@@ -49,4 +49,16 @@ describe('PDF VIEWER', () => {
     expect(zoomIn).toBeInTheDocument();
     fireEvent.click(zoomIn);
   });
+
+  test('keydown function', () => {
+    render(<Pdf page={1} refs={jest.fn()} pageRight={2} />, {
+      initialState,
+    });
+
+    const event1 = new KeyboardEvent('keydown', { key: 'PageDown' });
+    document.dispatchEvent(event1);
+
+    const event2 = new KeyboardEvent('keydown', { key: 'PageUp' });
+    document.dispatchEvent(event2);
+  });
 });
