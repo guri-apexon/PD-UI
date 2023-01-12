@@ -26,9 +26,7 @@ function Digitize({
   useEffect(() => {
     if (summary?.data?.length) {
       setHeaderList(
-        summary.data.filter((x) => {
-          return x.source_file_section !== 'blank_header';
-        }),
+        summary.data.filter((x) => x.source_file_section !== 'blank_header'),
       );
     } else {
       setHeaderList([]);
