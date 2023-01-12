@@ -28,7 +28,6 @@ function DigitizeAccordion({
   currentActiveCard,
   setCurrentActiveCard,
   handlePageRight,
-  rightBladeValue,
 }) {
   const dispatch = useDispatch();
 
@@ -183,12 +182,19 @@ function DigitizeAccordion({
           (showedit ? (
             <MultilineEdit data={sections} />
           ) : (
-            <div className="readable-content">
+            <div
+              className="readable-content"
+              onClick={(e) => handleEnrichedClick(e)}
+            >
               {sections.map((section) =>
-                // eslint-disable-next-line no-nested-ternary
                 section?.font_info?.VertAlign === 'superscript' ? (
                   <div key={React.key} className="supContent">
-                    <sup>{createFullMarkup(section.content.split('_')[0])}</sup>
+                    <sup
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={createFullMarkup(
+                        section.content.split('_')[0],
+                      )}
+                    />
                     <p
                       style={{
                         fontWeight: `${
@@ -201,30 +207,12 @@ function DigitizeAccordion({
                           section?.font_info?.Italics ? 'italics' : ''
                         }`,
                       }}
-                    >
-                      {createFullMarkup(section.content.split('_')[1])}
-                    </p>
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={createFullMarkup(
+                        section.content.split('_')[1],
+                      )}
+                    />
                   </div>
-                ) : rightBladeValue === 'Clinical Term' ? (
-                  // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
-                  <p
-                    onClick={(e) => handleEnrichedClick(e)}
-                    key={React.key}
-                    style={{
-                      fontWeight: `${
-                        section?.font_info?.isBold || section.type === 'header'
-                          ? 'bold'
-                          : ''
-                      }`,
-                      fontStyle: `${
-                        section?.font_info?.Italics ? 'italics' : ''
-                      }`,
-                    }}
-                  >
-                    {createFullMarkup(
-                      `${section.content} <b class="enriched-txt">Enriched Text</b>`,
-                    )}
-                  </p>
                 ) : (
                   <p
                     key={React.key}
@@ -234,14 +222,13 @@ function DigitizeAccordion({
                           ? 'bold'
                           : ''
                       }`,
-
                       fontStyle: `${
                         section?.font_info?.Italics ? 'italics' : ''
                       }`,
                     }}
-                  >
-                    {createFullMarkup(section.content)}
-                  </p>
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={createFullMarkup(section.content)}
+                  />
                 ),
               )}
             </div>
@@ -261,5 +248,4 @@ DigitizeAccordion.propTypes = {
   currentActiveCard: PropTypes.isRequired,
   setCurrentActiveCard: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
-  rightBladeValue: PropTypes.isRequired,
 };
