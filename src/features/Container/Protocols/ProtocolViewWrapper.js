@@ -8,9 +8,6 @@ import Pdf from './SourcePDFPanel/pdfviewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
 import BladeRight from './BladeRight/BladeRight';
-import MetaDataAccordian from './MetaData/MetaDataAccordian';
-
-const replaceall = require('replaceall');
 
 class ProtocolViewWrapper extends React.Component {
   constructor() {

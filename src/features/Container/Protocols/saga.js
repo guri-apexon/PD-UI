@@ -377,12 +377,11 @@ export function* fetchFileStream(action) {
 }
 
 export function* getMetaDataSummaryField(action) {
-  console.log('getMetaDataSummaryField');
-  const userId = yield getState();
-  const config = {
-    url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
-    method: 'GET',
-  };
+  // const userId = yield getState();
+  // const config = {
+  //   url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
+  //   method: 'GET',
+  // };
   const sectionDetails = // yield call(httpCall, config);
     yield put(setSectionLoader(false));
 

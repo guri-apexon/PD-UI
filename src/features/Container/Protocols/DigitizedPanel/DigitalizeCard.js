@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
-import Panel from 'apollo-react/components/Panel/Panel';
 import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,7 +8,6 @@ import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../../Components/Loader/Loader';
 import { headerResult, protocolSummary } from '../protocolSlice';
 import './Digitized.scss';
-import BladeRight from '../BladeRight/BladeRight';
 import MetaDataAccordian from '../MetaData/MetaDataAccordian';
 
 function Digitize({
