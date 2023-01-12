@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { WysiwygEditor } from '@remirror/react-editors/wysiwyg';
@@ -74,6 +74,22 @@ function SaveButton() {
   );
 }
 function MultilineEdit({ data, edit }) {
+  const [value, setValue] = useState(null);
+  useEffect(() => {
+    if (data?.length > 0) {
+      const arr = data.map((val, index) => ({
+        key: index,
+        text: val.content,
+        type: 'LeftAlignedBlock',
+        depth: 0,
+        inlineStyleRanges: [],
+        entityRanges: [],
+        data: {},
+      }));
+      setValue({ blocks: arr, entityMap: {} });
+    }
+  }, [data]);
+
   const { manager, state } = useRemirror({
     extensions: () => [new BoldExtension()],
   });

@@ -1,13 +1,12 @@
 import React from 'react';
 import Card from 'apollo-react/components/Card';
 import Panel from 'apollo-react/components/Panel';
+import PropTypes from 'prop-types';
+
 import PanelGroup from 'apollo-react/components/PanelGroup';
-import { redaction } from '../../../AppConstant/AppConstant';
 import Pdf from './SourcePDFPanel/pdfviewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
-
-const replaceall = require('replaceall');
 
 class ProtocolViewWrapper extends React.Component {
   constructor() {
@@ -16,7 +15,6 @@ class ProtocolViewWrapper extends React.Component {
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
     this.state = {
       popupVisible: false,
-      subSectionData: [],
       headerDetails: '',
       pageRight: 0,
       pageNo: 0,
@@ -40,28 +38,12 @@ class ProtocolViewWrapper extends React.Component {
     this.setState({ sectionNumber: sectionNo });
   };
 
-  handleClick(id) {
+  handleClick() {
     document.addEventListener('click', this.handleOutsideClick, false);
-    let subData = [];
-    const {
-      // eslint-disable-next-line react/prop-types
-      data: { TOC, SOA },
-    } = this.props;
-    switch (id) {
-      case 'TOC':
-        subData = TOC;
-        break;
-      case 'SOA':
-        subData = SOA;
-        break;
-      default:
-        break;
-    }
-    this.setState({ popupVisible: true, subSectionData: subData });
+    this.setState({ popupVisible: true });
   }
 
   handleOutsideClick(e) {
-    // ignore clicks on the component itself
     if (e.target && this.node && this.node.contains(e.target)) {
       return;
     }
@@ -75,79 +57,43 @@ class ProtocolViewWrapper extends React.Component {
 
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
-    this.setState({ popupVisible: false, subSectionData: [] });
+    this.setState({ popupVisible: false });
   };
 
-  /* eslint-disable */
-  createFullMarkup(str) {
-    if (str || str !== undefined) {
-      if (str.includes(redaction.text)) {
-        return {
-          __html: replaceall(
-            redaction.text,
-            `<span class="blur">${redaction.text}</span>`,
-            str,
-          ),
-        };
-      }
-      return {
-        __html: str,
-      };
-    }
-    return {
-      __html: '<div></div>',
-    };
-  }
-  /* eslint-enable */
-
   render() {
-    /* eslint-disable */
     const { data, refx, sectionRef } = this.props;
-    const {
-      subSectionData,
-      pageNo,
-      pageRight,
-      sectionNumber,
-      headerDetails,
-      paginationPage,
-    } = this.state;
-    const refs = subSectionData.reduce((acc, value) => {
-      acc[value.id] = React.createRef();
-      return acc;
-    }, {});
-    this.refs = refs;
-    /* eslint-enable */
+    const { pageNo, pageRight, sectionNumber, headerDetails, paginationPage } =
+      this.state;
 
     return (
       <>
-        <div>
-          <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
-        </div>
+        {data.userPrimaryRoleFlag && (
+          <div>
+            <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
+          </div>
+        )}
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
-            {
-              /* eslint-disable react/prop-types */
-              data.userPrimaryRoleFlag && (
-                <Panel
-                  width={window.innerWidth / 2}
-                  minWidth={window.innerWidth / 4}
-                  maxWidth={window.innerWidth / 1.5}
-                  hideButton
-                  resizable
-                >
-                  <Card className="protocol-source-column">
-                    <div className="panel-heading">Source Document</div>
+            {data.userPrimaryRoleFlag && (
+              <Panel
+                width={window.innerWidth / 2}
+                minWidth={window.innerWidth / 4}
+                maxWidth={window.innerWidth / 1.5}
+                hideButton
+                resizable
+              >
+                <Card className="protocol-source-column">
+                  <div className="panel-heading">Source Document</div>
 
-                    <Pdf
-                      page={pageNo}
-                      refs={refx}
-                      pageRight={pageRight}
-                      handlePaginationPage={this.handlePaginationPage}
-                    />
-                  </Card>
-                </Panel>
-              )
-            }
+                  <Pdf
+                    page={pageNo}
+                    refs={refx}
+                    pageRight={pageRight}
+                    handlePaginationPage={this.handlePaginationPage}
+                  />
+                </Card>
+              </Panel>
+            )}
             <Panel width="auto" hideButton>
               <Digitize
                 sectionRef={sectionRef}
@@ -165,3 +111,9 @@ class ProtocolViewWrapper extends React.Component {
   }
 }
 export default ProtocolViewWrapper;
+
+ProtocolViewWrapper.propTypes = {
+  data: PropTypes.isRequired,
+  refx: PropTypes.isRequired,
+  sectionRef: PropTypes.isRequired,
+};

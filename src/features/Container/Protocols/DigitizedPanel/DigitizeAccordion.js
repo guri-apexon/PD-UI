@@ -3,12 +3,6 @@ import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import { isArray } from 'lodash';
-import {
-  List,
-  AutoSizer,
-  CellMeasurer,
-  CellMeasurerCache,
-} from 'react-virtualized';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
@@ -19,7 +13,6 @@ import MultilineEdit from './Digitized_edit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   sectionDetailsResult,
-  sectionLoader,
   setSectionLoader,
   resetSectionData,
 } from '../protocolSlice';
@@ -33,37 +26,44 @@ function DigitizeAccordion({
   setCurrentActiveCard,
   handlePageRight,
 }) {
-  const cache = React.useRef(
-    new CellMeasurerCache({
-      fixedWidth: true,
-      defaultHeight: 100,
-    }),
-  );
-
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sections, setSections] = useState([]);
+  const [showLoader, setShowLoader] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
-  const sectionContentLoader = useSelector(sectionLoader);
 
   const { linkId } = sectionHeaderDetails;
 
   useEffect(() => {
     if (
       sectionHeaderDetails?.sections &&
-      isArray(sectionHeaderDetails?.sections)
+      isArray(sectionHeaderDetails?.sections) &&
+      linkId === item.link_id
     ) {
-      setSections(
-        sectionHeaderDetails?.sections.filter(
-          (obj) => obj.qc_change_type !== 'delete',
-        ),
-      );
+      setShowLoader(false);
+      let updatedSectionsData = [];
+      let matchedIndex = null;
+      const sectionsData = sectionHeaderDetails?.sections;
+      updatedSectionsData = sectionsData?.map((sec, index) => {
+        if (sec?.font_info?.VertAlign === 'superscript') {
+          matchedIndex = index;
+          return {
+            ...sec,
+            content: `${sec?.content}_${sectionsData[index + 1].content}`,
+          };
+        }
+        return sec;
+      });
+      if (matchedIndex) {
+        updatedSectionsData.splice(matchedIndex + 1, 1);
+      }
+      setSections(updatedSectionsData);
     } else {
       setSections([]);
     }
-    console.log('sectionHeaderDetails');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sectionHeaderDetails]);
 
   const handleChange = () => {
@@ -80,6 +80,7 @@ function DigitizeAccordion({
     if (expanded) {
       setCurrentActiveCard(item.link_id);
       if (linkId !== item.link_id) {
+        setShowLoader(true);
         dispatch(setSectionLoader(true));
         dispatch(resetSectionData());
         dispatch({
@@ -114,7 +115,11 @@ function DigitizeAccordion({
   };
 
   return (
-    <Accordion expanded={expanded} onChange={handleChange}>
+    <Accordion
+      expanded={expanded}
+      onClick={handleChange}
+      data-testid="accordion"
+    >
       <AccordionSummary>
         <div className="accordion_summary_container">
           <Typography className="section-title" data-testid="accordion-header">
@@ -151,12 +156,11 @@ function DigitizeAccordion({
       </AccordionSummary>
 
       <AccordionDetails className="section-single-content">
-        {sectionContentLoader && (
+        {showLoader && (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
         )}
-        {/* <MultilineEdit data={sections} /> */}
         {sections?.length > 0 &&
           (showedit ? (
             <MultilineEdit
@@ -166,43 +170,51 @@ function DigitizeAccordion({
             />
           ) : (
             <div className="readable-content">
-              <AutoSizer>
-                {({ width, height }) => (
-                  <List
-                    width={width}
-                    height={height}
-                    rowHeight={cache.current.rowHeight}
-                    deferredMeasurementCache={cache.current}
-                    overscanRowCount={5}
-                    rowCount={sections.length}
-                    // eslint-disable-next-line
-                    rowRenderer={({ key, index, style, parent }) => {
-                      const item = sections[index];
-                      return (
-                        <CellMeasurer
-                          key={key}
-                          cache={cache.current}
-                          parent={parent}
-                          columnIndex={0}
-                          rowIndex={index}
-                        >
-                          <div style={style}>
-                            <Typography
-                              key={React.key}
-                              className={
-                                item.type === 'header' ? 'content_header' : ''
-                              }
-                              dangerouslySetInnerHTML={createFullMarkup(
-                                item.content,
-                              )}
-                            />
-                          </div>
-                        </CellMeasurer>
-                      );
+              {sections.map((section) =>
+                section?.font_info?.VertAlign === 'superscript' ? (
+                  <div key={React.key} className="supContent">
+                    <sup
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={createFullMarkup(
+                        section.content.split('_')[0],
+                      )}
+                    />
+                    <p
+                      style={{
+                        fontWeight: `${
+                          section?.font_info?.isBold ||
+                          section.type === 'header'
+                            ? 'bold'
+                            : ''
+                        }`,
+                        fontStyle: `${
+                          section?.font_info?.Italics ? 'italics' : ''
+                        }`,
+                      }}
+                      // eslint-disable-next-line react/no-danger
+                      dangerouslySetInnerHTML={createFullMarkup(
+                        section.content.split('_')[1],
+                      )}
+                    />
+                  </div>
+                ) : (
+                  <p
+                    key={React.key}
+                    style={{
+                      fontWeight: `${
+                        section?.font_info?.isBold || section.type === 'header'
+                          ? 'bold'
+                          : ''
+                      }`,
+                      fontStyle: `${
+                        section?.font_info?.Italics ? 'italics' : ''
+                      }`,
                     }}
+                    // eslint-disable-next-line react/no-danger
+                    dangerouslySetInnerHTML={createFullMarkup(section.content)}
                   />
-                )}
-              </AutoSizer>
+                ),
+              )}
             </div>
           ))}
       </AccordionDetails>
