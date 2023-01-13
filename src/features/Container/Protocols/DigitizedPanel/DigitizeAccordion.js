@@ -153,7 +153,10 @@ function DigitizeAccordion({
         </div>
       </AccordionSummary>
 
-      <AccordionDetails className="section-single-content">
+      <AccordionDetails
+        className="section-single-content"
+        onClick={(e) => e.stopPropagation()}
+      >
         {showLoader && (
           <div className="loader accordion_details_loader">
             <Loader />
