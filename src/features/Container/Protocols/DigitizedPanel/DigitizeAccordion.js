@@ -22,7 +22,7 @@ import { createFullMarkup } from '../../../../utils/utilFunction';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 
-const enrichedDummyText = '<b class="enriched-txt">Enriched Text</b>';
+const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
 function DigitizeAccordion({
   item,
   protocol,
@@ -68,11 +68,11 @@ function DigitizeAccordion({
       }
       setSections(updatedSectionsData);
     } else {
-      setSections([
-        {
-          content: 'fdsad sadsadsad dsadsa dsadsa dsad sadsad sada',
-        },
-      ]);
+      // setSections([
+      //   {
+      //     content: 'fdsad sadsadsad dsadsa dsadsa dsad sadsad sada',
+      //   },
+      // ]);
       setShowLoader(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -15,6 +15,7 @@ function SanitizeHTML({ html, options }) {
       __html: clean,
     };
   };
+  // eslint-disable-next-line react/no-danger
   return <div dangerouslySetInnerHTML={sanitize(html, options)} />;
 }
 
