@@ -11,12 +11,10 @@ import House from 'apollo-react-icons/House';
 import PresentationBarDark from 'apollo-react-icons/PresentationBarDark';
 import MedicalCard from 'apollo-react-icons/MedicalCard';
 import Stethoscope from 'apollo-react-icons/Stethoscope';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Lab from 'apollo-react-icons/Lab';
 import { RIGHT_BLADE_VALUE } from '../../../../AppConstant/AppConstant';
 import './BladeRight.scss';
-
-import { rightBladeValue } from '../protocolSlice';
 
 const styles = {
   blade: {
@@ -33,7 +31,6 @@ function BladeRight({ dataSummary }) {
   const [value, setValue] = React.useState(false);
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
-  const rightbladeRedux = useSelector(rightBladeValue);
 
   const data = [
     { name: RIGHT_BLADE_VALUE.HOME, isActive: true },
