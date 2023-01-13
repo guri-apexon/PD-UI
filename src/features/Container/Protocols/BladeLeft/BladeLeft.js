@@ -73,7 +73,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   }, [wrapperRef]);
 
   return (
-    <div className="bladeContainer">
+    <div className="bladeContainer" ref={wrapperRef}>
       <Blade
         data-testid="toc-component"
         onChange={onChange}
@@ -85,8 +85,13 @@ function BladeLeft({ handlePageNo, dataSummary }) {
         width={263}
         marginTop={141}
         hasBackdrop
+        BackdropProps={{
+          onClick: () => {
+            setOpen(false);
+          },
+        }}
       >
-        <div className="toc-wrapper" ref={wrapperRef}>
+        <div className="toc-wrapper">
           {tocList?.map((item, index) => {
             const sectionIndex = index; // <= 0 ? 0 : index - 1;
             return (
