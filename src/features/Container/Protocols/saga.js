@@ -19,6 +19,7 @@ import {
   getProtocolTocData,
   setSectionLoader,
   getFileStream,
+  getRightBladeValue,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
@@ -399,6 +400,10 @@ export function* getMetaDataSummaryField(action) {
   }
 }
 
+export function* RightBladeValue(action) {
+  yield put(getRightBladeValue(action.payload.name));
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -413,6 +418,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
   yield takeEvery('GET_METADATA_SUMMARYDATA', getMetaDataSummaryField);
+  yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
 }
 
 // notice how we now only export the rootSaga

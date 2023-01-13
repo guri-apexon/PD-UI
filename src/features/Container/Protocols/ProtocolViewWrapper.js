@@ -21,7 +21,6 @@ class ProtocolViewWrapper extends React.Component {
       pageNo: 0,
       sectionNumber: -1,
       paginationPage: 0,
-      rightValue: 'Home',
     };
   }
 
@@ -29,10 +28,6 @@ class ProtocolViewWrapper extends React.Component {
 
   handlePageRight = (pageRight) => {
     this.setState({ pageRight });
-  };
-
-  handleRightBlade = (rightValue) => {
-    this.setState({ rightValue });
   };
 
   handlePaginationPage = (paginationPage) => {
@@ -68,14 +63,8 @@ class ProtocolViewWrapper extends React.Component {
 
   render() {
     const { data, refx, sectionRef } = this.props;
-    const {
-      pageNo,
-      pageRight,
-      sectionNumber,
-      headerDetails,
-      paginationPage,
-      rightValue,
-    } = this.state;
+    const { pageNo, pageRight, sectionNumber, headerDetails, paginationPage } =
+      this.state;
 
     return (
       <>
@@ -85,10 +74,7 @@ class ProtocolViewWrapper extends React.Component {
           </div>
         )}
         <div>
-          <BladeRight
-            handleRightBlade={this.handleRightBlade}
-            dataSummary={data}
-          />
+          <BladeRight dataSummary={data} />
         </div>
 
         <div className="view-wrapper">
@@ -121,7 +107,6 @@ class ProtocolViewWrapper extends React.Component {
                 handlePageRight={this.handlePageRight}
                 data={data}
                 paginationPage={paginationPage}
-                rightBladeValue={rightValue}
               />
             </Panel>
           </PanelGroup>
