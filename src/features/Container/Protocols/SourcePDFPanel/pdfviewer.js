@@ -154,7 +154,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
             handlePaginationPage(pg + 1);
           }}
         />
-        <div>
+        <div className="zoom-controls">
           <Button
             size="small"
             className="buttonStyles"
