@@ -107,6 +107,7 @@ function DigitizeAccordion({
     } else if (!expanded && currentActiveCard === item.link_id) {
       setCurrentActiveCard(null);
       setShowEdit(false);
+      setEnrichedTarget(null);
     }
     // eslint-disable-next-line
   }, [expanded]);
@@ -180,7 +181,10 @@ function DigitizeAccordion({
         </div>
       </AccordionSummary>
 
-      <AccordionDetails className="section-single-content">
+      <AccordionDetails
+        className="section-single-content"
+        onClick={(e) => e.stopPropagation()}
+      >
         {showLoader && (
           <div className="loader accordion_details_loader">
             <Loader />
@@ -245,7 +249,7 @@ function DigitizeAccordion({
             </div>
           ))}
       </AccordionDetails>
-      <MedicalTerm enrichedTarget={enrichedTarget} />
+      <MedicalTerm enrichedTarget={enrichedTarget} expanded={expanded} />
     </Accordion>
   );
 }

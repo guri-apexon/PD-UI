@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'apollo-react/components/Button';
 import Card from 'apollo-react/components/Card';
@@ -52,14 +52,14 @@ const clinicalTermsMockData = [
     ],
   },
 ];
-function MedicalTerm({ enrichedTarget }) {
+function MedicalTerm({ enrichedTarget, expanded }) {
   const [clinicalTerms, setclinicalTerms] = useState(clinicalTermsMockData);
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
   const [selectedTerm, setSelectedTerm] = useState(null);
   const [childTermValue, setChildTermValue] = useState(false);
   const [newTermValue, setNewTermValue] = useState('');
-  // const wrapperRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   const childDataArr = () => {
     return clinicalTerms.find((x) => x.termLabel === selectedTerm)?.data;
@@ -94,17 +94,27 @@ function MedicalTerm({ enrichedTarget }) {
   //     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
   //       setAnchorEl(false);
   //     }
+  //     console.log('SetAnchorEl', setAnchorEl);
   //   }
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
+  //   // document.addEventListener('mousedown', handleClickOutside);
+  //   // return () => {
+  //   //   document.removeEventListener('mousedown', handleClickOutside);
+  //   // };
   // }, [wrapperRef]);
+  // eslint-disable-next-line consistent-return
+  // useEffect(() => {
+  //   if (!expanded) {
+  //     setAnchorEl(null);
+  //   }
+  // }, [expanded]);
+  if (!expanded) {
+    return null;
+  }
   return (
     <div
       className="enriched-menu-wrapper"
       data-testId="Termlist"
-      // ref={wrapperRef}
+      ref={wrapperRef}
     >
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
@@ -118,6 +128,9 @@ function MedicalTerm({ enrichedTarget }) {
                     data-testId="handleSave"
                     className="term-item"
                     onClick={(e) => {
+                      console.log('inclick');
+                      e.stopPropagation();
+                      e.preventDefault();
                       setSelectedTerm(item.termLabel);
                       setSAnchorEl(!SanchorEl ? e.currentTarget : null);
                     }}
@@ -146,7 +159,11 @@ function MedicalTerm({ enrichedTarget }) {
                     <span className="sub-term-text">{item.label}</span>
                     <Pencil
                       className="edit-Icon"
-                      onClick={() => setChildTermValue(item.label)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        setChildTermValue(item.label);
+                      }}
                     />
                   </Button>
                 </li>
@@ -159,7 +176,11 @@ function MedicalTerm({ enrichedTarget }) {
         disableBackdropClick
         open={childTermValue}
         variant="default"
-        onClose={() => setChildTermValue(null)}
+        onClose={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          setChildTermValue(null);
+        }}
         title="Rename Clinical Term"
         buttonProps={[
           { size: 'small' },
@@ -171,7 +192,21 @@ function MedicalTerm({ enrichedTarget }) {
           size="small"
           fullWidth
           value={newTermValue}
-          onChange={(e) => setNewTermValue(e.target.value)}
+          onChange={(e) => {
+            e.preventDefault();
+            setNewTermValue(e.target.value);
+          }}
+          onFocus={(e) => {
+            console.log('onfocus');
+            e.stopPropagation();
+            e.preventDefault();
+            setNewTermValue(e.target.value);
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            setNewTermValue(e.target.value);
+          }}
           placeholder="Enter clinical term name"
         />
       </Modal>
@@ -183,4 +218,5 @@ export default MedicalTerm;
 
 MedicalTerm.propTypes = {
   enrichedTarget: PropTypes.isRequired,
+  expanded: PropTypes.isRequired,
 };

@@ -115,6 +115,7 @@ function BladeRight({ handleRightBlade, dataSummary }) {
                   <House className="icon-padding" /> Home
                 </Button>
                 <Button
+                  disabled={!dataSummary?.userPrimaryRoleFlag}
                   className={textValue[1] ? 'link-text-clicked' : 'link-text'}
                   onClick={() => {
                     handleClick(1);
