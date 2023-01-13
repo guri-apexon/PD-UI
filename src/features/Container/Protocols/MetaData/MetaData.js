@@ -13,7 +13,7 @@ import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import MetaDataEdit from './MetaDataEdit';
 
-function MetaDataAccordian() {
+function MetaData() {
   const accordianArray = [
     { name: 'Summary Fields', isEdit: false, isActive: false },
     { name: 'Patient Burden Variables', isEdit: false, isActive: false },
@@ -110,4 +110,4 @@ function MetaDataAccordian() {
   );
 }
 
-export default MetaDataAccordian;
+export default MetaData;

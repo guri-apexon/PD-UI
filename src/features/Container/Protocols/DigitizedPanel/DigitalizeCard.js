@@ -11,7 +11,7 @@ import {
   rightBladeValue,
 } from '../protocolSlice';
 import './Digitized.scss';
-import MetaDataAccordian from '../MetaData/MetaDataAccordian';
+import MetaData from '../MetaData/MetaData';
 import { RIGHT_BLADE_VALUE } from '../../../../AppConstant/AppConstant';
 
 function Digitize({
@@ -146,7 +146,7 @@ function Digitize({
           </div>
         </Card>
       )}
-      {rightValue === RIGHT_BLADE_VALUE.META_DATA && <MetaDataAccordian />}
+      {rightValue === RIGHT_BLADE_VALUE.META_DATA && <MetaData />}
     </div>
   );
 }
