@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import Typography from 'apollo-react/components/Typography';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -12,20 +12,43 @@ import Plus from 'apollo-react-icons/Plus';
 import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import MetaDataEdit from './MetaDataEdit';
+import initialRows from './Records.json';
+import patientBurdern from './patientBurdern.json';
 
 function MetaData() {
   const accordianArray = [
-    { name: 'Summary Fields', isEdit: false, isActive: false },
-    { name: 'Patient Burden Variables', isEdit: false, isActive: false },
+    {
+      name: 'Summary Fields',
+      isEdit: false,
+      isActive: false,
+      metaData: initialRows,
+    },
+    {
+      name: 'Patient Burden Variables',
+      isEdit: false,
+      isActive: false,
+      metaData: patientBurdern,
+    },
   ];
 
-  useEffect(() => {}, []);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'GET_METADATA_VARIABLE',
+  //     payload: {
+  //       data: accordianArray,
+  //     },
+  //   });
+  // }, []);
 
+  // const reduxMetaData = useSelector(metaDataVariable);
   const [accordianData, setAccordianData] = useState(accordianArray);
 
+  // useEffect(() => {
+  //   setAccordianData(reduxMetaData);
+  // }, [reduxMetaData]);
   const handleAccordian = (index) => {
     const accordianvalue = [...accordianData];
-    accordianvalue[index].isActive = !accordianvalue[index].isActive;
+    accordianvalue[index].isActive = !accordianvalue[index]?.isActive;
     accordianvalue[index].isEdit = false;
     setAccordianData(accordianvalue);
   };
@@ -97,7 +120,7 @@ function MetaData() {
                     {level1?.isEdit ? (
                       <MetaDataEdit />
                     ) : (
-                      <MetadataTable accname={level1.name} />
+                      <MetadataTable metaData={level1.metaData} />
                     )}
                   </div>
                 </AccordionDetails>

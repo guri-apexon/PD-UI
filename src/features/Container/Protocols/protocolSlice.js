@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RIGHT_BLADE_VALUE } from '../../../AppConstant/AppConstant';
+import { RIGHT_BLADE_VALUE } from './Constant/Constants';
 
 export const protocolSlice = createSlice({
   name: 'protocol',
@@ -34,7 +34,7 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
-    metaDataSummaryField: [],
+    metaDataVariable: [],
     rightBladeValue: RIGHT_BLADE_VALUE.HOME,
   },
   reducers: {
@@ -71,8 +71,8 @@ export const protocolSlice = createSlice({
     getFileStream: (state, action) => {
       state.fileStream = action.payload;
     },
-    getMetaDataSummaryField: (state, action) => {
-      state.metaDataSummaryField = action.payload;
+    getMetaDataVariable: (state, action) => {
+      state.metaDataVariable = action.payload;
     },
     getRightBladeValue: (state, action) => {
       state.rightBladeValue = action.payload;
@@ -92,7 +92,7 @@ export const {
   setSectionLoader,
   resetSectionData,
   getFileStream,
-  getMetaDataSummaryField,
+  getMetaDataVariable,
   getRightBladeValue,
 } = protocolSlice.actions;
 
@@ -110,7 +110,7 @@ export const protocolTocData = (state) => state.protocol.protocolTocData;
 
 export const sectionLoader = (state) => state.protocol.sectionLoader;
 export const getPdfData = (state) => state.protocol.fileStream;
-export const metaSummaryField = (state) => state.protocol.metaDataSummaryField;
+export const metaDataVariable = (state) => state.protocol.metaDataVariable;
 export const rightBladeValue = (state) => state.protocol.rightBladeValue;
 
 export default protocolSlice.reducer;

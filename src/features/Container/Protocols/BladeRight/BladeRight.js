@@ -13,7 +13,7 @@ import MedicalCard from 'apollo-react-icons/MedicalCard';
 import Stethoscope from 'apollo-react-icons/Stethoscope';
 import { useDispatch } from 'react-redux';
 import Lab from 'apollo-react-icons/Lab';
-import { RIGHT_BLADE_VALUE } from '../../../../AppConstant/AppConstant';
+import { RIGHT_BLADE_VALUE } from '../Constant/Constants';
 import './BladeRight.scss';
 
 const styles = {
@@ -121,11 +121,15 @@ function BladeRight({ dataSummary }) {
           width={263}
           marginTop={141}
           hasBackdrop
+          BackdropProps={{
+            onClick: () => {
+              setOpen(false);
+            },
+          }}
           side="right"
-          BackdropProps={onClose}
           data-testId="rightblade"
         >
-          <div ref={wrapperRef}>
+          <div>
             <div className="switch-padding">
               <Switch
                 size="small"

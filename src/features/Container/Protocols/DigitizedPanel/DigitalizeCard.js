@@ -12,7 +12,7 @@ import {
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
-import { RIGHT_BLADE_VALUE } from '../../../../AppConstant/AppConstant';
+import { RIGHT_BLADE_VALUE } from '../Constant/Constants';
 
 function Digitize({
   sectionNumber,
