@@ -64,6 +64,9 @@ function MedicalTerm({ enrichedTarget, expanded }) {
     return clinicalTerms.find((x) => x.termLabel === selectedTerm)?.data;
   };
   const handleSave = () => {
+    if (newTermValue === '') {
+      return false;
+    }
     if (!childTermValue || !selectedTerm) return false;
     setclinicalTerms((prevState) =>
       prevState.map((prev) => {
@@ -81,6 +84,7 @@ function MedicalTerm({ enrichedTarget, expanded }) {
     setChildTermValue(null);
     return true;
   };
+
   useEffect(() => {
     setAnchorEl(enrichedTarget || null);
     if (!enrichedTarget) setSelectedTerm(null);
@@ -96,6 +100,7 @@ function MedicalTerm({ enrichedTarget, expanded }) {
   if (!expanded) {
     return null;
   }
+
   return (
     <div className="enriched-menu-wrapper" data-testId="Termlist">
       <Popper
@@ -174,6 +179,7 @@ function MedicalTerm({ enrichedTarget, expanded }) {
           size="small"
           fullWidth
           value={newTermValue}
+          allowBlank="none"
           onChange={(e) => {
             setNewTermValue(e.target.value);
           }}
