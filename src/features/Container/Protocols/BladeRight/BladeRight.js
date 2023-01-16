@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import withStyles from '@material-ui/core/styles/withStyles';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { neutral8 } from 'apollo-react/colors';
 import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
