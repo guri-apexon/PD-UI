@@ -31,21 +31,8 @@ function MetaData() {
     },
   ];
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'GET_METADATA_VARIABLE',
-  //     payload: {
-  //       data: accordianArray,
-  //     },
-  //   });
-  // }, []);
-
-  // const reduxMetaData = useSelector(metaDataVariable);
   const [accordianData, setAccordianData] = useState(accordianArray);
 
-  // useEffect(() => {
-  //   setAccordianData(reduxMetaData);
-  // }, [reduxMetaData]);
   const handleAccordian = (index) => {
     const accordianvalue = [...accordianData];
     accordianvalue[index].isActive = !accordianvalue[index]?.isActive;

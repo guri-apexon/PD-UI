@@ -29,7 +29,6 @@ function BladeRight({ dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const [value, setValue] = React.useState(false);
-  const wrapperRef = useRef(null);
   const dispatch = useDispatch();
 
   const data = [
@@ -71,18 +70,6 @@ function BladeRight({ dataSummary }) {
       setExpand(false);
     }
   }, [open]);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [wrapperRef]);
 
   const getIcon = (icon) => {
     if (icon === RIGHT_BLADE_VALUE.HOME) {
