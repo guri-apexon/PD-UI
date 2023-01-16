@@ -1,5 +1,4 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import withStyles from '@material-ui/core/styles/withStyles';
 import React, { useState, useEffect, useRef } from 'react';
 import { neutral8 } from 'apollo-react/colors';
@@ -52,7 +51,7 @@ function BladeRight({ handleRightBlade, dataSummary }) {
     const newPanels = textValue.map(() => false);
     newPanels[index] = !newPanels[index];
     setTextValue(newPanels);
-    onClose();
+    // onClose();
   };
 
   useEffect(() => {
@@ -75,85 +74,86 @@ function BladeRight({ handleRightBlade, dataSummary }) {
   }, [wrapperRef]);
 
   return (
-    <div>
-      <div className="bladeContainerRight">
-        <Blade
-          onChange={onChange}
-          open={open}
-          expanded={expand}
-          onClose={onClose}
-          title="Controls"
-          className="blade"
-          width={263}
-          marginTop={141}
-          hasBackdrop
-          side="right"
-          BackdropProps={onClose}
-          data-testId="rightblade"
-        >
-          <div ref={wrapperRef}>
-            <div className="switch-padding">
-              <Switch
-                size="small"
-                label="Preferred Term"
-                checked={value}
-                onChange={handleChange}
-              />
-            </div>
-            <hr className="line" />
-            <div>
-              <h3>Navigation Menu</h3>
-              <ul className="Button-flex">
-                <Button
-                  className={textValue[0] ? 'link-text-clicked' : 'link-text'}
-                  onClick={() => {
-                    handleClick(0);
-                    handleRightBlade('Home');
-                  }}
-                  data-testId="rightbladeclick"
-                >
-                  <House className="icon-padding" /> Home
-                </Button>
-                <Button
-                  className={textValue[1] ? 'link-text-clicked' : 'link-text'}
-                  onClick={() => {
-                    handleClick(1);
-                  }}
-                >
-                  <PresentationBarDark className="icon-padding" /> Clinical
-                  Terms
-                </Button>
-                <Button
-                  className={textValue[2] ? 'link-text-clicked' : 'link-text'}
-                  onClick={() => {
-                    handleClick(2);
-                  }}
-                >
-                  <MedicalCard className="icon-padding" /> Dipa View
-                </Button>
-                <Button
-                  className={textValue[3] ? 'link-text-clicked' : 'link-text'}
-                  onClick={() => {
-                    handleClick(3);
-                  }}
-                >
-                  <Stethoscope className="icon-padding" /> Normalized Soa
-                </Button>
-                <Button
-                  className={textValue[4] ? 'link-text-clicked' : 'link-text'}
-                  disabled={!dataSummary?.userPrimaryRoleFlag}
-                  onClick={() => {
-                    handleClick(4);
-                    handleRightBlade('MetaData');
-                  }}
-                >
-                  <Lab className="icon-padding" /> Meta Data
-                </Button>
-              </ul>
-            </div>
+    <div className="bladeContainerRight" ref={wrapperRef}>
+      <Blade
+        onChange={onChange}
+        open={open}
+        expanded={expand}
+        onClose={onClose}
+        title="Controls"
+        className="blade"
+        width={263}
+        marginTop={141}
+        hasBackdrop
+        side="right"
+        data-testId="rightblade"
+        BackdropProps={{
+          onClick: () => {
+            setOpen(false);
+          },
+        }}
+      >
+        <div>
+          <div className="switch-padding">
+            <Switch
+              size="small"
+              label="Preferred Term"
+              checked={value}
+              onChange={handleChange}
+            />
           </div>
-        </Blade>
-      </div>
+          <hr className="line" />
+          <div>
+            <h3>Navigation Menu</h3>
+            <ul className="Button-flex">
+              <Button
+                className={textValue[0] ? 'link-text-clicked' : 'link-text'}
+                onClick={() => {
+                  handleClick(0);
+                  handleRightBlade('Home');
+                }}
+                data-testId="rightbladeclick"
+              >
+                <House className="icon-padding" /> Home
+              </Button>
+              <Button
+                className={textValue[1] ? 'link-text-clicked' : 'link-text'}
+                onClick={() => {
+                  handleClick(1);
+                }}
+              >
+                <PresentationBarDark className="icon-padding" /> Clinical Terms
+              </Button>
+              <Button
+                className={textValue[2] ? 'link-text-clicked' : 'link-text'}
+                onClick={() => {
+                  handleClick(2);
+                }}
+              >
+                <MedicalCard className="icon-padding" /> Dipa View
+              </Button>
+              <Button
+                className={textValue[3] ? 'link-text-clicked' : 'link-text'}
+                onClick={() => {
+                  handleClick(3);
+                }}
+              >
+                <Stethoscope className="icon-padding" /> Normalized Soa
+              </Button>
+              <Button
+                className={textValue[4] ? 'link-text-clicked' : 'link-text'}
+                disabled={!dataSummary?.userPrimaryRoleFlag}
+                onClick={() => {
+                  handleClick(4);
+                  handleRightBlade('MetaData');
+                }}
+              >
+                <Lab className="icon-padding" /> Meta Data
+              </Button>
+            </ul>
+          </div>
+        </div>
+      </Blade>
     </div>
   );
 }

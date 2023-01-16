@@ -93,6 +93,10 @@
   [class*='MuiCollapse-wrapper-'] {
     padding-left: 4px;
   }
+
+  [class*='Blade-expandPanel-'] {
+    width: 0;
+  }
 }
 
 .header-unselect {

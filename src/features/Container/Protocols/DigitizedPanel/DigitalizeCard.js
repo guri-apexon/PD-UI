@@ -43,9 +43,13 @@ function Digitize({
       sectionRef[sectionSequence] &&
       sectionRef[sectionSequence].current
     ) {
-      sectionRef[sectionSequence]?.current?.scrollIntoView({
-        behavior: 'instant',
-      });
+      setTimeout(() => {
+        sectionRef[sectionSequence]?.current?.scrollIntoView({
+          behavior: 'instant',
+          block: 'end',
+        });
+      }, 300);
+
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
     // eslint-disable-next-line
@@ -90,6 +94,7 @@ function Digitize({
     }
     // eslint-disable-next-line
   }, [paginationPage]);
+
   return (
     <div>
       {rightValue === 'Home' && (

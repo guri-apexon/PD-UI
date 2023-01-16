@@ -335,12 +335,11 @@
   .view-wrapper .digitize-panel-content {
     overflow-y: auto;
     height: calc(100vh - 210px);
-    width: 100%;
+    width: calc(100% - 22px);
   }
 
   .view-wrapper .MuiCard-root {
     padding: 0;
-  //  height: 100% !important;
   }
   label {
     font-weight: bold;

@@ -118,9 +118,11 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     let pg = 0;
     if (e.key === 'PageDown' && currentPage < numPages - 1) {
       pg = currentPage + 1;
-    }
-    if (e.key === 'PageUp' && currentPage !== 0) {
+    } else if (e.key === 'PageUp' && currentPage !== 0) {
       pg = currentPage - 1;
+    } else {
+      e.stopPropagation();
+      return;
     }
     setPage(pg);
   }
