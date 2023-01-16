@@ -149,7 +149,7 @@ function Digitize({
           </div>
         </Card>
       ) : rightValue === 'MetaData' ? (
-        <MetaDataEditTable />
+        <MetaDataAccordian />
       ) : null}
     </div>
   );
