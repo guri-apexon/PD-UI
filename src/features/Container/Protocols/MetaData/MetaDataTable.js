@@ -15,7 +15,7 @@ function MetaDataTable({ accname }) {
     } else {
       setRows(patientBurdern);
     }
-  }, []);
+  }, [accname]);
   const columns = [
     {
       header: 'Key',

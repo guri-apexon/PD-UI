@@ -27,6 +27,7 @@ const initialState = {
     },
   },
 };
+const rightValue = 'Home';
 
 describe('DigitizeCard', () => {
   test('Header Close', () => {
@@ -36,29 +37,15 @@ describe('DigitizeCard', () => {
         sectionRef={sectionRef}
         data={{ id: 123 }}
         paginationPage={2}
+        rightValue="Home"
       />,
       {
         initialState,
+        rightValue,
       },
     );
     const HeaderClose = screen.getByTestId('protocol-column-wrapper');
     expect(HeaderClose).toBeInTheDocument();
     fireEvent.click(HeaderClose);
-
-    const header = screen.getByTestId('header');
-    expect(header).toBeInTheDocument();
   });
-
-  // test('check pagination page useeffect', () => {
-  //   const screen = render(
-  //     <Provider store={store}>
-  //       <DigitalizeCard
-  //         sectionNumber={1}
-  //         sectionRef={sectionRef}
-  //         data={{ id: 123 }}
-  //         paginationPage={1}
-  //       />
-  //     </Provider>,
-  //   );
-  // });
 });

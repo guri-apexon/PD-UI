@@ -1,6 +1,7 @@
 .bladeContainer {
-  .toc-wrapper{
+  .toc-wrapper {
     padding-left: 7px;
+    height: 100%;
   }
   hr {
     margin-bottom: 0;
@@ -102,7 +103,7 @@
   height: 24px;
   width: 170px;
   color: #000000;
-  font-family: 'Proxima Nova';
+  font-family: 'Proxima Nova' sans-serif;
   font-size: 14px;
   letter-spacing: 0;
 }

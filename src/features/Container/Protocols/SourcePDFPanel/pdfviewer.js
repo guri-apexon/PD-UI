@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Button from 'apollo-react/components/Button';
 import Pagination from 'apollo-react/components/Pagination';
@@ -8,48 +8,17 @@ import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { protocolSummary, getPdfData } from '../protocolSlice';
+import './PdfViewer.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-const observerConfig = {
-  // How much of the page needs to be visible to consider page visible
-  threshold: 0,
-};
-
-export function useIntersectionObserver(element, options, observerCallback) {
-  useEffect(() => {
-    if (!element || !('IntersectionObserver' in window)) {
-      return undefined;
-    }
-    const observer = new IntersectionObserver(observerCallback, options);
-    observer.observe(element);
-    return () => {
-      observer.disconnect();
-    };
-  }, [element, options, observerCallback]);
-}
-
-function PageWithObserver({ pageNumber, setPageVisibility, ...otherProps }) {
-  const [page, setPage] = useState();
-  const onIntersectionChange = useCallback(
-    ([entry]) => {
-      setPageVisibility(pageNumber, entry.isIntersecting);
-    },
-    [pageNumber, setPageVisibility],
-  );
-  useIntersectionObserver(page, observerConfig, onIntersectionChange);
-  return <Page canvasRef={setPage} pageNumber={pageNumber} {...otherProps} />;
-}
 function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   const protocolAllItems = useSelector(protocolSummary);
   const dispatch = useDispatch();
   const fileStream = useSelector(getPdfData);
   const [numPages, setNumPages] = useState(0);
-  const [currentPage, setPage] = useState(1);
-  const [pageScale, setPageScale] = useState(1.4);
-  const [visiblePages, setVisiblePages] = useState({});
-  const [scrollPage, setScrollPage] = useState(0);
-
+  const [currentPage, setPage] = useState(0);
+  const [pageScale, setPageScale] = useState(1);
   const [pdfString, setPdfString] = useState(null);
 
   const { documentFilePath, protocol } = protocolAllItems.data;
@@ -58,11 +27,12 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   };
 
   useEffect(() => {
-    setPage(page - 1);
+    if (page) {
+      setPage(page - 1);
+    }
   }, [page]);
 
   useEffect(() => {
-    console.log('currentPage', currentPage);
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
@@ -70,8 +40,9 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }, [currentPage]);
 
   useEffect(() => {
-    console.log({ pageRight });
-    setPage(pageRight - 1);
+    if (pageRight) {
+      setPage(pageRight - 1);
+    }
   }, [pageRight]);
 
   const handleZoomIn = () => {
@@ -80,27 +51,6 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   const handleZoomOut = () => {
     setPageScale(pageScale - 0.2);
   };
-
-  const setPageVisibility = useCallback((pageNumber, isIntersecting) => {
-    setVisiblePages((prevVisiblePages) => ({
-      ...prevVisiblePages,
-      [pageNumber]: isIntersecting,
-    }));
-  }, []);
-
-  useEffect(() => {
-    const visible = Object.entries(visiblePages)
-      // eslint-disable-next-line
-      .filter(([key, value]) => value)
-      .map(([key]) => key);
-    if (visible.length === 1) {
-      setScrollPage(parseInt(visible[0], 10));
-    }
-  }, [visiblePages]);
-
-  useEffect(() => {
-    setPage(scrollPage - 1);
-  }, [scrollPage]);
 
   useEffect(() => {
     dispatch({
@@ -116,33 +66,45 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   useEffect(() => {
     if (fileStream.success) {
       setPdfString(fileStream.data);
+    } else {
+      setPdfString(null);
     }
   }, [fileStream]);
 
   if (!pdfString) {
     return <Loader />;
   }
+
+  function handleKeyDown(e) {
+    let pg = 0;
+    if (e.key === 'PageDown' && currentPage < numPages - 1) {
+      pg = currentPage + 1;
+    }
+    if (e.key === 'PageUp' && currentPage !== 0) {
+      pg = currentPage - 1;
+    }
+    setPage(pg);
+  }
+
   return (
+    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       id="pdfDocument"
       className="pdf_container"
       data-testid="protocol-column-wrapper"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
     >
-      <Document file={pdfString} onLoadSuccess={onDocumentLoadSuccess}>
-        {Array.from(new Array(numPages), (el, index) => (
-          <div ref={refs[index]} key={index}>
-            <PageWithObserver
-              key={`page_${index + 1}`}
-              pageNumber={index + 1}
-              setPageVisibility={setPageVisibility}
-              className="pdf-page"
-              width="490"
-              id={index}
-              scale={pageScale}
-            />
-          </div>
-        ))}
-      </Document>
+      {pdfString && (
+        <Document
+          file={pdfString}
+          onLoadSuccess={onDocumentLoadSuccess}
+          onKeyDown={(e) => handleKeyDown(e)}
+        >
+          <Page pageNumber={currentPage + 1} scale={pageScale} />
+        </Document>
+      )}
       <div className="sticky-bottom pdf-pagination">
         <Pagination
           count={numPages}
@@ -150,7 +112,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
           page={currentPage}
           onChangePage={(pg) => {
             setPage(pg);
-            handlePaginationPage(pg);
+            handlePaginationPage(pg + 1);
           }}
         />
         <div>
@@ -158,7 +120,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
             size="small"
             className="buttonStyles"
             data-testId="zoomIn"
-            disabled={pageScale >= 1.6}
+            disabled={pageScale >= 3.0}
             onClick={handleZoomIn}
           >
             <PlusIcon />
@@ -167,7 +129,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
             size="small"
             className="buttonStyles"
             data-testId="zoomOut"
-            disabled={pageScale <= 0.5}
+            disabled={pageScale <= 0.7}
             onClick={handleZoomOut}
           >
             <Minus />
@@ -184,9 +146,4 @@ Pdf.propTypes = {
   refs: PropTypes.isRequired,
   pageRight: PropTypes.isRequired,
   handlePaginationPage: PropTypes.isRequired,
-};
-
-PageWithObserver.propTypes = {
-  pageNumber: PropTypes.isRequired,
-  setPageVisibility: PropTypes.isRequired,
 };

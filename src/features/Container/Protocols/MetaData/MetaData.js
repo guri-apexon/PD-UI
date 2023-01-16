@@ -9,20 +9,16 @@ import Card from 'apollo-react/components/Card/Card';
 import Pencil from 'apollo-react-icons/Pencil';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
-import { useDispatch, useSelector } from 'react-redux';
 import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import MetaDataEdit from './MetaDataEdit';
-import { metaSummaryField } from '../protocolSlice';
 import MetaDataEditTable from './MetaDataEditTable';
 
-function MetaDataAccordian() {
+function MetaData() {
   const accordianArray = [
     { name: 'Summary Fields', isEdit: false, isActive: false },
     { name: 'Patient Burden Variables', isEdit: false, isActive: false },
   ];
-  const dispatch = useDispatch();
-  const summaryFields = useSelector(metaSummaryField);
 
   useEffect(() => {}, []);
 
@@ -30,13 +26,6 @@ function MetaDataAccordian() {
 
   const handleAccordian = (index) => {
     const accordianvalue = [...accordianData];
-    for (let i = 0; i < accordianData.length; i++) {
-      if (i === index) {
-        // console.log(i, ' ', index);
-      } else {
-        accordianvalue[i].isActive = false;
-      }
-    }
     accordianvalue[index].isActive = !accordianvalue[index].isActive;
     accordianvalue[index].isEdit = false;
     setAccordianData(accordianvalue);
@@ -45,14 +34,6 @@ function MetaDataAccordian() {
   const handleEdit = (index, e) => {
     e.stopPropagation();
     const accordianvalue = [...accordianData];
-    for (let i = 0; i < accordianData.length; i++) {
-      if (i === !index) {
-        // if
-      } else {
-        accordianvalue[i].isActive = false;
-        accordianvalue[i].isEdit = false;
-      }
-    }
     accordianvalue[index].isEdit = true;
     accordianvalue[index].isActive = true;
     setAccordianData(accordianvalue);
@@ -129,4 +110,4 @@ function MetaDataAccordian() {
   );
 }
 
-export default MetaDataAccordian;
+export default MetaData;

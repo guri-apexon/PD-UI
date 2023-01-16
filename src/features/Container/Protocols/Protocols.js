@@ -25,7 +25,7 @@ function Protocols({ location }) {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
-  const [arrr] = useState(new Array(100));
+  const [pdfArray] = useState(new Array(250));
 
   useEffect(() => {
     const params = location.search;
@@ -48,9 +48,9 @@ function Protocols({ location }) {
   }, []);
   /* eslint-enable */
 
-  const forLoop = async () => {
-    for (let index = 0; index < 100; index++) {
-      arrr.push(index);
+  const pdfPage = async () => {
+    for (let index = 0; index < 250; index++) {
+      pdfArray.push(index);
     }
   };
 
@@ -67,7 +67,7 @@ function Protocols({ location }) {
     if ('protocolId2' in parsed && 'value' in parsed) {
       setValue(2);
     }
-    forLoop();
+    pdfPage();
     // eslint-disable-next-line
   }, [dispatch, location]);
   /* istanbul ignore next */
@@ -76,7 +76,7 @@ function Protocols({ location }) {
     setValue(value);
   };
 
-  const refs = arrr.reduce((refs, value) => {
+  const refs = pdfArray.reduce((refs, value) => {
     refs[value] = createRef();
     return refs;
   }, {});

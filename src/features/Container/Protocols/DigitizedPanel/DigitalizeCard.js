@@ -1,17 +1,18 @@
-/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
-import Panel from 'apollo-react/components/Panel/Panel';
 import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
 import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../../Components/Loader/Loader';
-import { headerResult, protocolSummary } from '../protocolSlice';
+import {
+  headerResult,
+  protocolSummary,
+  rightBladeValue,
+} from '../protocolSlice';
 import './Digitized.scss';
-import BladeRight from '../BladeRight/BladeRight';
-import MetaDataAccordian from '../MetaData/MetaDataAccordian';
-import MetaDataEditTable from '../MetaData/MetaDataEditTable';
+import MetaData from '../MetaData/MetaData';
+import { RIGHT_BLADE_VALUE } from '../../../../AppConstant/AppConstant';
 
 function Digitize({
   sectionNumber,
@@ -19,24 +20,23 @@ function Digitize({
   data,
   paginationPage,
   handlePageRight,
-  rightBladeValue,
 }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
-
+  const BladeRightValue = useSelector(rightBladeValue);
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
-  const [currentActiveCard, setCurrentActiveCard] = useState(0);
-  const [sectionSequence, setSectionSequence] = useState(undefined);
-  const [rightValue, setRightValue] = useState(rightBladeValue);
+  const [rightValue, setRightValue] = useState(BladeRightValue);
+  const [currentActiveCard, setCurrentActiveCard] = useState(null);
+  const [sectionSequence, setSectionSequence] = useState(-1);
 
   useEffect(() => {
     if (summary?.data?.length) {
       setHeaderList(
-        summary.data.filter((x) => {
-          return x.source_file_section !== 'blank_header';
-        }),
+        summary.data.filter((x) => x.source_file_section !== 'blank_header'),
       );
+    } else {
+      setHeaderList([]);
     }
   }, [summary]);
 
@@ -63,8 +63,8 @@ function Digitize({
 
   useEffect(() => {
     setCurrentActiveCard(0);
-    setRightValue(rightBladeValue);
-  }, [rightBladeValue]);
+    setRightValue(BladeRightValue);
+  }, [BladeRightValue]);
 
   useEffect(() => {
     dispatch({
@@ -95,8 +95,8 @@ function Digitize({
     // eslint-disable-next-line
   }, [paginationPage]);
   return (
-    <div>
-      {rightValue === 'Home' ? (
+    <div data-testid="protocol-column-wrapper">
+      {rightValue === RIGHT_BLADE_VALUE.HOME && (
         <Card
           className="protocol-column protocol-digitize-column"
           style={{ borderRight: '0' }}
@@ -104,10 +104,7 @@ function Digitize({
           <div className="panel-heading" data-testid="header">
             Digitized Data
           </div>
-          <div
-            className="digitize-panel-content"
-            data-testid="protocol-column-wrapper"
-          >
+          <div className="digitize-panel-content">
             {!summary?.data ? (
               <div className="loader">
                 <Loader />
@@ -148,9 +145,8 @@ function Digitize({
             )}
           </div>
         </Card>
-      ) : rightValue === 'MetaData' ? (
-        <MetaDataAccordian />
-      ) : null}
+      )}
+      {rightValue === RIGHT_BLADE_VALUE.META_DATA && <MetaData />}
     </div>
   );
 }
@@ -163,5 +159,4 @@ Digitize.propTypes = {
   data: PropTypes.isRequired,
   paginationPage: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
-  rightBladeValue: PropTypes.isRequired,
 };
