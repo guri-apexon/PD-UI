@@ -129,12 +129,6 @@ function DigitizeAccordion({
       setEnrichedTarget(null);
     }
   };
-  // useEffect(() => {
-  //   document.addEventListener('click', handleEnrichedClick);
-  //   // return () => {
-  //   //   document.removeEventListener('click', handleEnrichedClick);
-  //   // };
-  // }, []);
 
   const onEditClick = (e) => {
     e.stopPropagation();
