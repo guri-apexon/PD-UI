@@ -7,6 +7,7 @@ import PanelGroup from 'apollo-react/components/PanelGroup';
 import Pdf from './SourcePDFPanel/pdfviewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
+import BladeRight from './BladeRight/BladeRight';
 
 class ProtocolViewWrapper extends React.Component {
   constructor() {
@@ -20,6 +21,7 @@ class ProtocolViewWrapper extends React.Component {
       pageNo: 0,
       sectionNumber: -1,
       paginationPage: 0,
+      rightValue: 'Home',
     };
   }
 
@@ -27,6 +29,10 @@ class ProtocolViewWrapper extends React.Component {
 
   handlePageRight = (pageRight) => {
     this.setState({ pageRight });
+  };
+
+  handleRightBlade = (rightValue) => {
+    this.setState({ rightValue });
   };
 
   handlePaginationPage = (paginationPage) => {
@@ -62,8 +68,14 @@ class ProtocolViewWrapper extends React.Component {
 
   render() {
     const { data, refx, sectionRef, summaryData } = this.props;
-    const { pageNo, pageRight, sectionNumber, headerDetails, paginationPage } =
-      this.state;
+    const {
+      pageNo,
+      pageRight,
+      sectionNumber,
+      headerDetails,
+      paginationPage,
+      rightValue,
+    } = this.state;
 
     return (
       <>
@@ -72,6 +84,13 @@ class ProtocolViewWrapper extends React.Component {
             <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
           </div>
         )}
+        <div>
+          <BladeRight
+            handleRightBlade={this.handleRightBlade}
+            dataSummary={data}
+          />
+        </div>
+
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
             {data.userPrimaryRoleFlag && (
@@ -107,6 +126,7 @@ class ProtocolViewWrapper extends React.Component {
                 handlePageRight={this.handlePageRight}
                 data={data}
                 paginationPage={paginationPage}
+                rightBladeValue={rightValue}
               />
             </Panel>
           </PanelGroup>

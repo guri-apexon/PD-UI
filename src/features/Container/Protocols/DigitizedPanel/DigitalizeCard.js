@@ -7,6 +7,7 @@ import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../../Components/Loader/Loader';
 import { headerResult, protocolSummary } from '../protocolSlice';
 import './Digitized.scss';
+import MetaDataAccordian from '../MetaData/MetaDataAccordian';
 
 function Digitize({
   sectionNumber,
@@ -14,12 +15,14 @@ function Digitize({
   data,
   paginationPage,
   handlePageRight,
+  rightBladeValue,
 }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
 
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
+  const [rightValue, setRightValue] = useState(rightBladeValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
 
@@ -55,6 +58,11 @@ function Digitize({
   }, [sectionNumber]);
 
   useEffect(() => {
+    setCurrentActiveCard(0);
+    setRightValue(rightBladeValue);
+  }, [rightBladeValue]);
+
+  useEffect(() => {
     dispatch({
       type: 'GET_PROTOCOL_SECTION',
       payload: {
@@ -82,59 +90,63 @@ function Digitize({
     }
     // eslint-disable-next-line
   }, [paginationPage]);
-
   return (
-    <Card
-      className="protocol-column protocol-digitize-column"
-      style={{ borderRight: '0' }}
-    >
-      <div className="panel-heading" data-testid="header">
-        Digitized Data
-      </div>
-      <div
-        className="digitize-panel-content"
-        data-testid="protocol-column-wrapper"
-      >
-        {!summary?.data ? (
-          <div className="loader">
-            <Loader />
+    <div>
+      {rightValue === 'Home' && (
+        <Card
+          className="protocol-column protocol-digitize-column"
+          style={{ borderRight: '0' }}
+        >
+          <div className="panel-heading" data-testid="header">
+            Digitized Data
           </div>
-        ) : (
-          <>
-            {headerList.map((items, index) => (
-              <div
-                key={React.key}
-                ref={sectionRef[index]}
-                className="digitized_data_item"
-              >
-                <Drag
-                  style={{
-                    color: 'grey',
-                    fontSize: '1.2em',
-                    padding: '15px',
-                    paddingLeft: '5px',
-                  }}
-                />
-                <div>
-                  <DigitizeAccordion
-                    item={items}
-                    protocol={protocolAllItems.data.protocol}
-                    primaryRole={data.userPrimaryRoleFlag}
-                    currentActiveCard={currentActiveCard}
-                    setCurrentActiveCard={setCurrentActiveCard}
-                    index={index}
-                    handlePageRight={handlePageRight}
-                  />
-                </div>
+          <div
+            className="digitize-panel-content"
+            data-testid="protocol-column-wrapper"
+          >
+            {!summary?.data ? (
+              <div className="loader">
+                <Loader />
               </div>
-            ))}
-            {!summary.success && (
-              <div className="loader">{`${summary.errorMsg}`}</div>
+            ) : (
+              <>
+                {headerList.map((items, index) => (
+                  <div
+                    key={React.key}
+                    ref={sectionRef[index]}
+                    className="digitized_data_item"
+                  >
+                    <Drag
+                      style={{
+                        color: 'grey',
+                        fontSize: '1.2em',
+                        padding: '15px',
+                        paddingLeft: '5px',
+                      }}
+                    />
+                    <div>
+                      <DigitizeAccordion
+                        item={items}
+                        protocol={protocolAllItems.data.protocol}
+                        primaryRole={data.userPrimaryRoleFlag}
+                        currentActiveCard={currentActiveCard}
+                        setCurrentActiveCard={setCurrentActiveCard}
+                        index={index}
+                        handlePageRight={handlePageRight}
+                      />
+                    </div>
+                  </div>
+                ))}
+                {!summary.success && (
+                  <div className="loader">{summary.errorMsg}</div>
+                )}
+              </>
             )}
-          </>
-        )}
-      </div>
-    </Card>
+          </div>
+        </Card>
+      )}
+      {rightValue === 'MetaData' && <MetaDataAccordian />}
+    </div>
   );
 }
 
@@ -146,4 +158,5 @@ Digitize.propTypes = {
   data: PropTypes.isRequired,
   paginationPage: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
+  rightBladeValue: PropTypes.isRequired,
 };

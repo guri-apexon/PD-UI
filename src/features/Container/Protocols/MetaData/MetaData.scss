@@ -1,0 +1,146 @@
+.metadata-card {
+  // max-height: 450px !important;
+  overflow-y: auto;
+  overflow-y: scroll;
+  height: calc(100vh - 160px) !important;
+  padding-right: 20px !important;
+  thead {
+    display: contents !important;
+  }
+  .digitize-panel-content {
+    width: 100%;
+    overflow-y: scroll;
+    height: auto !important;
+  }
+  .view-wrapper .MuiCard-root {
+    padding: 0;
+    // height: 100% !important;
+  }
+  .protocol-column {
+    flex: 3 1;
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    // width: 50%;
+  }
+
+  .metadata_item [class*='MuiAccordionSummary-root'] {
+    background: #e9e9e9;
+    //padding-left: 26px;
+  }
+  .metadata_item {
+    padding: 2px 8px 2px 5px;
+  }
+  .metadat-flex-plus {
+    float: left;
+  }
+  .metadata-plus-icon {
+    float: right;
+    padding-right: 25px;
+    font-size: 19px;
+  }
+  .metadata-plus-size {
+    font-size: 19px !important;
+    color: black;
+  }
+  .metadata-checkbox {
+    // padding-left: 53%;
+    float: right;
+  }
+  .metadata_item [class*='Accordion-expanded'] {
+    background: transparent !important;
+  }
+  .protocol-column {
+    flex: 3 1;
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+  }
+  th {
+    font-weight: bold !important;
+    border: 2px solid white;
+    background-color: #f9f9f9;
+    color: black;
+  }
+  td {
+    border: 2px solid white;
+  }
+  tr {
+    border: 2px solid white;
+  }
+
+  [class*='makeStyles-scrollable-'] > tr > th {
+    background-color: #f9f9f9;
+  }
+
+  [class*='MuiPaper-elevation1-'] {
+    border: none;
+    padding-bottom: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .checkbox-pad {
+    padding-bottom: 9px;
+  }
+
+  [class*='MuiTableCell-root-']:first-child {
+    background-color: #f4f4f4;
+    padding-left: 23px;
+  }
+  [class*='MuiTableCell-body-'] {
+    background-color: #f9f9f9;
+    color: black;
+  }
+  [class*='MuiTableCell-head-'] {
+    color: black;
+    padding-left: 23px;
+  }
+
+  .digitize-panel-content::-webkit-scrollbar {
+    background: transparent;
+    width: 0px;
+  }
+  [class*='MuiAccordionDetails-root-'] {
+    padding: 0;
+    display: contents;
+  }
+  .protocols {
+    .view-wrapper {
+      table tbody tr td {
+        padding-left: 23px;
+        width: 1%;
+      }
+    }
+  }
+
+  [class*='MuiTableRow-root-'] {
+    height: auto !important;
+  }
+
+  .metaData-boarder {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .view-wrapper .MuiCard-root {
+    padding-right: 25px !important;
+    height: 100% !important;
+  }
+  [class*='Table-scrollRoot-'] {
+    width: 100% !important;
+  }
+  [class*='Accordion-icon-'] {
+    width: 1.3em;
+    height: 1.2em;
+    font-size: 20px;
+    color: black;
+  }
+  [class*='MuiAccordionSummary-expandIcon'] {
+    left: 5px;
+  }
+  .accordion_summary_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 48px;
+    padding-left: 10px;
+  }
+}
