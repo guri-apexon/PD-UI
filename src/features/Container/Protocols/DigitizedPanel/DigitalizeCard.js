@@ -24,6 +24,7 @@ function Digitize({
   const protocolAllItems = useSelector(protocolSummary);
   const [rightValue, setRightValue] = useState(rightBladeValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
+  const [currentEditCard, setCurrentEditCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
 
   useEffect(() => {
@@ -135,9 +136,10 @@ function Digitize({
                         protocol={protocolAllItems.data.protocol}
                         primaryRole={data.userPrimaryRoleFlag}
                         currentActiveCard={currentActiveCard}
-                        setCurrentActiveCard={setCurrentActiveCard}
                         index={index}
                         handlePageRight={handlePageRight}
+                        currentEditCard={currentEditCard}
+                        setCurrentEditCard={setCurrentEditCard}
                       />
                     </div>
                   </div>

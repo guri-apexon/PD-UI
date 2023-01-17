@@ -20,6 +20,8 @@ function DigitizeAccordion({
   primaryRole,
   currentActiveCard,
   handlePageRight,
+  currentEditCard,
+  setCurrentEditCard,
 }) {
   const dispatch = useDispatch();
 
@@ -66,6 +68,7 @@ function DigitizeAccordion({
   const onSaveClick = (e) => {
     e.stopPropagation();
     setShowEdit(false);
+    setCurrentEditCard(null);
   };
 
   useEffect(() => {
@@ -93,10 +96,18 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
+  useEffect(() => {
+    if (currentEditCard !== item.link_id) {
+      setShowEdit(false);
+    }
+    // eslint-disable-next-line
+  }, [currentEditCard]);
+
   const onEditClick = (e) => {
     e.stopPropagation();
     setExpanded(true);
     setShowEdit(true);
+    setCurrentEditCard(item.link_id);
   };
 
   return (
@@ -217,4 +228,6 @@ DigitizeAccordion.propTypes = {
   primaryRole: PropTypes.isRequired,
   currentActiveCard: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
+  currentEditCard: PropTypes.isRequired,
+  setCurrentEditCard: PropTypes.isRequired,
 };
