@@ -128,6 +128,7 @@ function DigitizeAccordion({
                 <Lock style={{ paddingRight: '10px' }} />
               </span>
             )}
+
             {primaryRole && (
               <>
                 <span data-testId="eyeIcon">
