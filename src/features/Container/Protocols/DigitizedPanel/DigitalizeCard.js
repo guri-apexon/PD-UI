@@ -12,7 +12,7 @@ import {
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
-import { RIGHT_BLADE_VALUE } from '../Constant/Constants';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
 function Digitize({
   sectionNumber,
@@ -96,7 +96,7 @@ function Digitize({
   }, [paginationPage]);
   return (
     <div data-testid="protocol-column-wrapper">
-      {rightValue === RIGHT_BLADE_VALUE.HOME && (
+      {rightValue === PROTOCOL_RIGHT_MENU.HOME && (
         <Card
           className="protocol-column protocol-digitize-column"
           style={{ borderRight: '0' }}
@@ -146,7 +146,7 @@ function Digitize({
           </div>
         </Card>
       )}
-      {rightValue === RIGHT_BLADE_VALUE.META_DATA && <MetaData />}
+      {rightValue === PROTOCOL_RIGHT_MENU.META_DATA && <MetaData />}
     </div>
   );
 }

@@ -12,7 +12,7 @@ import Plus from 'apollo-react-icons/Plus';
 import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import MetaDataEdit from './MetaDataEdit';
-import initialRows from './Records.json';
+import initialRows from './mockMetaData.json';
 import patientBurdern from './patientBurdern.json';
 
 function MetaData() {

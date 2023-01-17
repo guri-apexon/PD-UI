@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RIGHT_BLADE_VALUE } from './Constant/Constants';
+import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 
 export const protocolSlice = createSlice({
   name: 'protocol',
@@ -35,7 +35,7 @@ export const protocolSlice = createSlice({
       data: null,
     },
     metaDataVariable: [],
-    rightBladeValue: RIGHT_BLADE_VALUE.HOME,
+    rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
   },
   reducers: {
     getSummary: (state, action) => {
