@@ -12,7 +12,7 @@ const PROTOCOL_RIGHT_MENU = {
   META_DATA: 'Meta Data',
 };
 
-const PROTOCOL_RIGHT_MENU_VALUE = [
+const PROTOCOL_RIGHT_MENU_ARR = [
   {
     name: PROTOCOL_RIGHT_MENU.HOME,
     isActive: true,
@@ -40,4 +40,4 @@ const PROTOCOL_RIGHT_MENU_VALUE = [
   },
 ];
 // eslint-disable-next-line import/prefer-default-export
-export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_VALUE };
+export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_ARR };

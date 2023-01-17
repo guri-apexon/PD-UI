@@ -10,7 +10,7 @@ import Button from 'apollo-react/components/Button';
 import { useDispatch } from 'react-redux';
 import {
   PROTOCOL_RIGHT_MENU,
-  PROTOCOL_RIGHT_MENU_VALUE,
+  PROTOCOL_RIGHT_MENU_ARR,
 } from '../Constant/Constants';
 import './BladeRight.scss';
 
@@ -29,7 +29,7 @@ function BladeRight({ dataSummary }) {
   const [value, setValue] = React.useState(false);
   const dispatch = useDispatch();
 
-  const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_VALUE);
+  const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_ARR);
   const handleChange = (e, checked) => {
     setValue(checked);
   };

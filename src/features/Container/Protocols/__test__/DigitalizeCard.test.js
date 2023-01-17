@@ -38,7 +38,7 @@ describe('DigitizeCard', () => {
         sectionRef={sectionRef}
         data={{ id: 123 }}
         paginationPage={2}
-        rightValue={PROTOCOL_RIGHT_MENU.Home}
+        rightValue={PROTOCOL_RIGHT_MENU.HOME}
       />,
       {
         initialState,
