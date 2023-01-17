@@ -5,7 +5,6 @@ import TextField from 'apollo-react/components/TextField/TextField';
 import Checkbox from 'apollo-react/components/Checkbox';
 import Button from 'apollo-react/components/Button/Button';
 import Plus from 'apollo-react-icons/Plus';
-import patientBurdern from './patientBurdern.json';
 import CustomForm from './CustomForm';
 
 function Cell({ row, column }) {
@@ -17,24 +16,36 @@ function Cell({ row, column }) {
 }
 
 function EditableCell({ row, column: { accessor: key } }) {
-  return row.editMode ? (
+  const [val, setVal] = useState(row[key]);
+  const handleDataChange = (id, key, e) => {
+    setVal(e.target.value);
+  };
+  return key === 'name' || row?.isCustom ? (
     <TextField
       size="small"
       fullWidth
-      value={row.editRowData[key]}
+      value={val}
       onChange={(e) => {
-        row.editRow(row.id, key, e);
+        handleDataChange(row.id, key, e);
       }}
-      error={!row.editRowData[key]}
-      helperText={!row.editRowData[key] && 'Required'}
+      onBlur={() => row.editRow(row?.id, key, val)}
+      error={!row[key]}
+      helperText={!row[key] && 'Required'}
     />
   ) : (
     row[key]
   );
 }
 
-function MetaDataEditTable({ rows, setRows, metaDataList, setMetaDataList }) {
-  const [editedRows, setEditedRows] = useState([]);
+function MetaDataEditTable({
+  rows,
+  metaDataList,
+  setMetaDataList,
+  data,
+  updateRows,
+}) {
+  const { tableData } = data;
+  const [editedRow, setEditedRow] = useState({});
 
   const columns = [
     {
@@ -91,20 +102,12 @@ function MetaDataEditTable({ rows, setRows, metaDataList, setMetaDataList }) {
       removeIndex('Note');
     }
   };
-  const onEditAll = () => {
-    setEditedRows(rows);
-  };
   const editRow = (id, key, value) => {
-    setEditedRows((rows) =>
-      rows.map((row) => (row.id === id ? { ...row, [key]: value } : row)),
-    );
-  };
-
-  const editMode = editedRows?.length > 0;
-  console.log('column', editMode);
-  const onRowSave = () => {
-    // setRows(rows.map((row) => (row.id === editedRows.id ? editedRows : row)));
-    setEditedRows({});
+    const filterRow = rows.filter((row) => row?.id === id);
+    setEditedRow({
+      ...filterRow[0],
+      [key]: value,
+    });
   };
 
   const addNewRow = (rowLength) => {
@@ -112,6 +115,7 @@ function MetaDataEditTable({ rows, setRows, metaDataList, setMetaDataList }) {
       ...metaDataList,
       {
         id: metaDataList.length + rowLength + 1,
+        isCustom: true,
         header: '',
         name: '',
         type: '',
@@ -136,17 +140,20 @@ function MetaDataEditTable({ rows, setRows, metaDataList, setMetaDataList }) {
     setMetaDataList(metaDataList.filter((list) => list?.id !== id));
   };
 
+  useEffect(() => {
+    updateRows(editedRow);
+  }, [editedRow]);
+
   const RenderTable = useMemo(() => {
     return (
       <Table
         className="table-panel"
         columns={column}
-        rows={rows?.map((row, i) => ({
+        rows={rows?.map((row) => ({
           ...row,
           editRow,
-          editMode,
-          editRowData: editMode && editedRows[i],
-          editedRows,
+          editedRow: row,
+          setEditedRow,
         }))}
         rowId="id"
         hidePagination
@@ -155,17 +162,7 @@ function MetaDataEditTable({ rows, setRows, metaDataList, setMetaDataList }) {
         stripedRows
       />
     );
-  }, [column, editedRows]);
-
-  useEffect(() => {
-    setEditedRows(rows);
-  }, []);
-  //   useEffect(() => {
-  //     console.log('Rows in table ', rows);
-  //   }, [rows]);
-  //   useEffect(() => {
-  //     console.log('editedRows in table ', editedRows);
-  //   }, [editedRows]);
+  }, [column, rows]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
@@ -196,7 +193,7 @@ function MetaDataEditTable({ rows, setRows, metaDataList, setMetaDataList }) {
       ))}
       <div className="iconDiv">
         <div className="iconContainer">
-          <Plus onClick={() => addNewRow(rows.length)} />
+          <Plus onClick={() => addNewRow(tableData.length)} />
         </div>
       </div>
     </div>
@@ -207,9 +204,10 @@ MetaDataEditTable.propTypes = {
   // eslint-disable-next-line react/require-default-props
   // handleRightBlade: PropTypes.func,
   rows: PropTypes.isRequired,
-  setRows: PropTypes.isRequired,
   metaDataList: PropTypes.isRequired,
   setMetaDataList: PropTypes.isRequired,
+  data: PropTypes.isRequired,
+  updateRows: PropTypes.isRequired,
 };
 
 Cell.propTypes = {

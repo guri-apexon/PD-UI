@@ -12,14 +12,24 @@ import Plus from 'apollo-react-icons/Plus';
 import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import initialRows from './Records.json';
+import patientBurdern from './patientBurdern.json';
 import MetaDataEdit from './MetaDataEdit';
 import MetaDataEditTable from './MetaDataEditTable';
-import CustomForm from './CustomForm';
 
 function MetaData() {
   const accordianArray = [
-    { name: 'Summary Fields', isEdit: false, isActive: false },
-    { name: 'Patient Burden Variables', isEdit: false, isActive: false },
+    {
+      name: 'Summary Fields',
+      isEdit: false,
+      isActive: false,
+      tableData: initialRows,
+    },
+    {
+      name: 'Patient Burden Variables',
+      isEdit: false,
+      isActive: false,
+      tableData: patientBurdern,
+    },
   ];
 
   useEffect(() => {}, []);
@@ -28,10 +38,26 @@ function MetaData() {
   const [rows, setRows] = useState(initialRows);
   const [metaDataList, setMetaDataList] = useState([]);
 
+  const updateRows = (data) => {
+    setRows(
+      rows.map((rowData) => {
+        if (data?.id === rowData?.id) {
+          return {
+            ...rowData,
+            name: data?.name,
+            header: data?.header,
+          };
+        }
+        return rowData;
+      }),
+    );
+  };
+
   const handleAccordian = (index) => {
     const accordianvalue = [...accordianData];
     accordianvalue[index].isActive = !accordianvalue[index].isActive;
     accordianvalue[index].isEdit = false;
+    setRows(accordianData[index].tableData);
     setAccordianData(accordianvalue);
   };
 
@@ -51,7 +77,7 @@ function MetaData() {
           return {
             ...acc,
             isEdit: false,
-            rows: [...rows, ...metaDataList],
+            tableData: [...rows, ...metaDataList],
           };
         }
         return acc;
@@ -113,13 +139,14 @@ function MetaData() {
                       {/* <MetaDataEdit /> */}
                       <MetaDataEditTable
                         rows={rows}
-                        setRows={setRows}
+                        updateRows={updateRows}
                         metaDataList={metaDataList}
                         setMetaDataList={setMetaDataList}
+                        data={level1}
                       />
                     </>
                   ) : (
-                    <MetadataTable accname={level1.name} />
+                    <MetadataTable tableData={level1?.tableData} />
                   )}
                 </AccordionDetails>
               </Accordion>

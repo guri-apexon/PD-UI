@@ -3,19 +3,8 @@ import Table from 'apollo-react/components/Table';
 import PropTypes from 'prop-types';
 
 import Checkbox from 'apollo-react/components/Checkbox';
-import initialRows from './Records.json';
-import patientBurdern from './patientBurdern.json';
 
-function MetaDataTable({ accname }) {
-  const [rows, setRows] = useState();
-
-  useEffect(() => {
-    if (accname === 'Summary Fields') {
-      setRows(initialRows);
-    } else {
-      setRows(patientBurdern);
-    }
-  }, [accname]);
+function MetaDataTable({ tableData }) {
   const columns = [
     {
       header: 'Key',
@@ -87,7 +76,7 @@ function MetaDataTable({ accname }) {
         <Table
           className="table-panel"
           columns={column}
-          rows={rows}
+          rows={tableData}
           rowId="employeeId"
           hidePagination
           hasScroll
@@ -102,7 +91,7 @@ function MetaDataTable({ accname }) {
 MetaDataTable.propTypes = {
   // eslint-disable-next-line react/require-default-props
   // handleRightBlade: PropTypes.func,
-  accname: PropTypes.isRequired,
+  tableData: PropTypes.isRequired,
 };
 
 export default MetaDataTable;
