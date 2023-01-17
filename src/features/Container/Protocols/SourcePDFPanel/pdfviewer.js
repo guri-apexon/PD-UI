@@ -75,6 +75,10 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
+    setTimeout(() => {
+      document.getElementById('pdfDocument').scrollTop = 0;
+    }, 100);
+
     // eslint-disable-next-line
   }, [currentPage]);
 
@@ -115,16 +119,11 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }
 
   function handleKeyDown(e) {
-    let pg = 0;
     if (e.key === 'PageDown' && currentPage < numPages - 1) {
-      pg = currentPage + 1;
+      setPage(currentPage + 1);
     } else if (e.key === 'PageUp' && currentPage !== 0) {
-      pg = currentPage - 1;
-    } else {
-      e.stopPropagation();
-      return;
+      setPage(currentPage - 1);
     }
-    setPage(pg);
   }
 
   return (

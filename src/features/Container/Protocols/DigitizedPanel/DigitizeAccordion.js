@@ -7,6 +7,7 @@ import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
+import Lock from 'apollo-react-icons/Lock';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './Digitized_edit';
@@ -131,24 +132,28 @@ function DigitizeAccordion({
               flexDirection: 'row',
             }}
           >
-            {/* <span data-testId="lockIcon">
+            <span data-testId="lockIcon">
               <Lock style={{ paddingRight: '10px' }} />
-            </span> */}
-            <span data-testId="eyeIcon">
-              <EyeShow style={{ paddingRight: '10px' }} />
             </span>
-            {primaryRole &&
-              (!showedit ? (
-                // eslint-disable-next-line
-                <span data-testId="pencilIcon" onClick={onEditClick}>
-                  <Pencil />
+
+            {primaryRole && (
+              <>
+                <span data-testId="eyeIcon">
+                  <EyeShow style={{ paddingRight: '10px' }} />
                 </span>
-              ) : (
-                // eslint-disable-next-line
-                <span data-testId="saveIcon" onClick={onSaveClick}>
-                  <Save />
-                </span>
-              ))}
+                {!showedit ? (
+                  // eslint-disable-next-line
+                  <span data-testId="pencilIcon" onClick={onEditClick}>
+                    <Pencil />
+                  </span>
+                ) : (
+                  // eslint-disable-next-line
+                  <span data-testId="saveIcon" onClick={onSaveClick}>
+                    <Save />
+                  </span>
+                )}
+              </>
+            )}
           </div>
         </div>
       </AccordionSummary>
