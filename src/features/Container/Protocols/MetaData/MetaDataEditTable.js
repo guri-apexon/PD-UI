@@ -4,8 +4,9 @@ import PropTypes from 'prop-types';
 import TextField from 'apollo-react/components/TextField/TextField';
 import Checkbox from 'apollo-react/components/Checkbox';
 import Button from 'apollo-react/components/Button/Button';
-import initialRows from './Records.json';
+import Plus from 'apollo-react-icons/Plus';
 import patientBurdern from './patientBurdern.json';
+import CustomForm from './CustomForm';
 
 function Cell({ row, column }) {
   return (
@@ -16,14 +17,13 @@ function Cell({ row, column }) {
 }
 
 function EditableCell({ row, column: { accessor: key } }) {
-  console.log('Values', row.editMode);
   return row.editMode ? (
     <TextField
       size="small"
       fullWidth
       value={row.editRowData[key]}
       onChange={(e) => {
-        row.editRow(row.id, key, e.target.value);
+        row.editRow(row.id, key, e);
       }}
       error={!row.editRowData[key]}
       helperText={!row.editRowData[key] && 'Required'}
@@ -33,8 +33,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-function MetaDataEditTable() {
-  const [rows, setRows] = useState(initialRows);
+function MetaDataEditTable({ rows, setRows, metaDataList, setMetaDataList }) {
   const [editedRows, setEditedRows] = useState([]);
 
   const columns = [
@@ -108,6 +107,35 @@ function MetaDataEditTable() {
     setEditedRows({});
   };
 
+  const addNewRow = (rowLength) => {
+    setMetaDataList([
+      ...metaDataList,
+      {
+        id: metaDataList.length + rowLength + 1,
+        header: '',
+        name: '',
+        type: '',
+      },
+    ]);
+  };
+
+  const handleChange = (e, id) => {
+    setMetaDataList(
+      metaDataList.map((list) =>
+        list?.id === id
+          ? {
+              ...list,
+              [e.target.name]: e.target.value,
+            }
+          : list,
+      ),
+    );
+  };
+
+  const deleteMetaData = (id) => {
+    setMetaDataList(metaDataList.filter((list) => list?.id !== id));
+  };
+
   const RenderTable = useMemo(() => {
     return (
       <Table
@@ -157,10 +185,20 @@ function MetaDataEditTable() {
         className="metadata-checkbox checkbox-pad "
         data-testid="metadata-confidence"
       />
-      <Button size="small" variant="primary" onClick={onRowSave}>
-        Save
-      </Button>
       <div>{RenderTable}</div>
+      {metaDataList.map((list) => (
+        <CustomForm
+          key={list?.id}
+          item={list}
+          deleteMetaData={() => deleteMetaData(list?.id)}
+          handleChange={(e) => handleChange(e, list?.id)}
+        />
+      ))}
+      <div className="iconDiv">
+        <div className="iconContainer">
+          <Plus onClick={() => addNewRow(rows.length)} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -168,6 +206,10 @@ function MetaDataEditTable() {
 MetaDataEditTable.propTypes = {
   // eslint-disable-next-line react/require-default-props
   // handleRightBlade: PropTypes.func,
+  rows: PropTypes.isRequired,
+  setRows: PropTypes.isRequired,
+  metaDataList: PropTypes.isRequired,
+  setMetaDataList: PropTypes.isRequired,
 };
 
 Cell.propTypes = {

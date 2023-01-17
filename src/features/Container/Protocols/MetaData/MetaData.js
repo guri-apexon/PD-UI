@@ -11,8 +11,10 @@ import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
 import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
+import initialRows from './Records.json';
 import MetaDataEdit from './MetaDataEdit';
 import MetaDataEditTable from './MetaDataEditTable';
+import CustomForm from './CustomForm';
 
 function MetaData() {
   const accordianArray = [
@@ -23,6 +25,8 @@ function MetaData() {
   useEffect(() => {}, []);
 
   const [accordianData, setAccordianData] = useState(accordianArray);
+  const [rows, setRows] = useState(initialRows);
+  const [metaDataList, setMetaDataList] = useState([]);
 
   const handleAccordian = (index) => {
     const accordianvalue = [...accordianData];
@@ -41,12 +45,22 @@ function MetaData() {
 
   const handleSave = (index, e) => {
     e.stopPropagation();
-    const accordianvalue = [...accordianData];
-    console.log(accordianvalue[index].isActive);
-    accordianvalue[index].isEdit = false;
-    setAccordianData(accordianvalue);
+    setAccordianData(
+      accordianData.map((acc, i) => {
+        if (index === i) {
+          return {
+            ...acc,
+            isEdit: false,
+            rows: [...rows, ...metaDataList],
+          };
+        }
+        return acc;
+      }),
+    );
+    setMetaDataList([]);
   };
 
+  // console.log('accordianData', accordianData);
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -95,8 +109,15 @@ function MetaData() {
 
                 <AccordionDetails>
                   {level1?.isEdit ? (
-                    // <MetaDataEdit />
-                    <MetaDataEditTable />
+                    <>
+                      {/* <MetaDataEdit /> */}
+                      <MetaDataEditTable
+                        rows={rows}
+                        setRows={setRows}
+                        metaDataList={metaDataList}
+                        setMetaDataList={setMetaDataList}
+                      />
+                    </>
                   ) : (
                     <MetadataTable accname={level1.name} />
                   )}
