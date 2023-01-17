@@ -44,8 +44,7 @@ function BladeRight({ dataSummary }) {
   const handleClick = (indexblade) => {
     const tempAccordianData = [...accordianData];
     const panelValue = tempAccordianData.map((item, index) => {
-      // eslint-disable-next-line no-unused-expressions
-      indexblade === index ? (item.isActive = true) : (item.isActive = false);
+      item.isActive = indexblade === index;
       return item;
     });
     setAccordianData(panelValue);

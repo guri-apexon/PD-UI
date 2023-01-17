@@ -28,7 +28,7 @@ const initialState = {
     },
   },
 };
-const rightValue = PROTOCOL_RIGHT_MENU.HOME;
+const home = PROTOCOL_RIGHT_MENU.HOME;
 
 describe('DigitizeCard', () => {
   test('Header Close', () => {
@@ -42,7 +42,7 @@ describe('DigitizeCard', () => {
       />,
       {
         initialState,
-        rightValue,
+        home,
       },
     );
     const HeaderClose = screen.getByTestId('protocol-column-wrapper');

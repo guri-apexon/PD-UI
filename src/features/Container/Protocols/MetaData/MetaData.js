@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import Typography from 'apollo-react/components/Typography';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -9,40 +9,30 @@ import Card from 'apollo-react/components/Card/Card';
 import Pencil from 'apollo-react-icons/Pencil';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
+import { useSelector } from 'react-redux';
 import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import MetaDataEdit from './MetaDataEdit';
-import initialRows from './mockMetaData.json';
-import patientBurdern from './patientBurdern.json';
+import { metaDataVariable } from '../protocolSlice';
 
 function MetaData() {
-  const accordianArray = [
-    {
-      name: 'Summary Fields',
-      isEdit: false,
-      isActive: false,
-      metaData: initialRows,
-    },
-    {
-      name: 'Patient Burden Variables',
-      isEdit: false,
-      isActive: false,
-      metaData: patientBurdern,
-    },
-  ];
-
-  const [accordianData, setAccordianData] = useState(accordianArray);
+  const [accordianData, setAccordianData] = useState();
+  const metaDataSelector = useSelector(metaDataVariable);
+  useEffect(() => {
+    setAccordianData(metaDataSelector);
+  }, [metaDataSelector]);
 
   const handleAccordian = (index) => {
-    const accordianvalue = [...accordianData];
-    accordianvalue[index].isActive = !accordianvalue[index]?.isActive;
+    // const accordianvalue = [...accordianData];
+    const accordianvalue = JSON.parse(JSON.stringify(accordianData));
+    accordianvalue[index].isActive = true;
     accordianvalue[index].isEdit = false;
     setAccordianData(accordianvalue);
   };
 
   const handleEdit = (index, e) => {
     e.stopPropagation();
-    const accordianvalue = [...accordianData];
+    const accordianvalue = JSON.parse(JSON.stringify(accordianData));
     accordianvalue[index].isEdit = true;
     accordianvalue[index].isActive = true;
     setAccordianData(accordianvalue);
@@ -50,7 +40,7 @@ function MetaData() {
 
   const handleSave = (index, e) => {
     e.stopPropagation();
-    const accordianvalue = [...accordianData];
+    const accordianvalue = JSON.parse(JSON.stringify(accordianData));
     console.log(accordianvalue[index].isActive);
     accordianvalue[index].isEdit = false;
     setAccordianData(accordianvalue);
@@ -71,7 +61,7 @@ function MetaData() {
         {accordianData?.map((level1, index1) => {
           return (
             <div key={React.key} className="metadata_item">
-              <Accordion expanded={level1.isActive}>
+              <Accordion>
                 <AccordionSummary
                   data-testId="metadataAccordian"
                   onClick={() => handleAccordian(index1)}
