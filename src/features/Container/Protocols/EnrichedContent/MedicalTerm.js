@@ -103,12 +103,7 @@ function MedicalTerm({ enrichedTarget, expanded }) {
 
   return (
     <div className="enriched-menu-wrapper" data-testId="Termlist">
-      <Popper
-        open={!!anchorEl}
-        anchorEl={anchorEl}
-        placement="bottom-start"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
           <div className="terms-list">
             {clinicalTerms.map((item) => {
@@ -138,7 +133,6 @@ function MedicalTerm({ enrichedTarget, expanded }) {
         anchorEl={SanchorEl}
         placement="right-start"
         transition
-        onClick={(e) => e.stopPropagation()}
       >
         <Card interactive className="sub-popper">
           <div className="terms-list">
@@ -161,7 +155,6 @@ function MedicalTerm({ enrichedTarget, expanded }) {
         </Card>
       </Popper>
       <Modal
-        onClick={(e) => e.stopPropagation()}
         disableBackdropClick
         open={childTermValue}
         variant="default"

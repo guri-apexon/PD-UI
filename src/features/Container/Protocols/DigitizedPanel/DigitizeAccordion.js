@@ -137,12 +137,8 @@ function DigitizeAccordion({
   };
 
   return (
-    <Accordion
-      expanded={expanded}
-      onClick={handleChange}
-      data-testid="accordion"
-    >
-      <AccordionSummary>
+    <Accordion expanded={expanded} data-testid="accordion">
+      <AccordionSummary onClick={handleChange}>
         <div className="accordion_summary_container">
           <Typography className="section-title" data-testid="accordion-header">
             {item.source_file_section}
@@ -175,10 +171,7 @@ function DigitizeAccordion({
         </div>
       </AccordionSummary>
 
-      <AccordionDetails
-        className="section-single-content"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <AccordionDetails className="section-single-content">
         {showLoader && (
           <div className="loader accordion_details_loader">
             <Loader />
