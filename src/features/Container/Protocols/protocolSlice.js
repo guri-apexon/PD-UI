@@ -34,6 +34,7 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
+    metaDataSummaryField: [],
   },
   reducers: {
     getSummary: (state, action) => {
@@ -81,6 +82,9 @@ export const protocolSlice = createSlice({
       const arr = updateContentWithData(state.sectionDetails.sections, obj);
       state.sectionDetails.sections = arr;
     },
+    getMetaDataSummaryField: (state, action) => {
+      state.metaDataSummaryField = action.payload;
+    },
   },
 });
 
@@ -98,6 +102,7 @@ export const {
   getFileStream,
   setSectionDetails,
   updateSectionData,
+  getMetaDataSummaryField,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -114,5 +119,6 @@ export const protocolTocData = (state) => state.protocol.protocolTocData;
 
 export const sectionLoader = (state) => state.protocol.sectionLoader;
 export const getPdfData = (state) => state.protocol.fileStream;
+export const metaSummaryField = (state) => state.protocol.metaDataSummaryField;
 
 export default protocolSlice.reducer;
