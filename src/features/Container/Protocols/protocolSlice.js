@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
-import summaryField from './MetaData/mockMetaData.json';
-import patientBurdern from './MetaData/patientBurdern.json';
+import {
+  PROTOCOL_RIGHT_MENU,
+  MOCK_METADATA_VALUES,
+} from './Constant/Constants';
 
 export const protocolSlice = createSlice({
   name: 'protocol',
@@ -36,20 +37,7 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
-    metaDataVariable: [
-      {
-        name: 'Summary Fields',
-        isEdit: false,
-        isActive: false,
-        metaData: summaryField,
-      },
-      {
-        name: 'Patient Burden Variables',
-        isEdit: false,
-        isActive: false,
-        metaData: patientBurdern,
-      },
-    ],
+    metaDataVariable: MOCK_METADATA_VALUES,
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
   },
   reducers: {
