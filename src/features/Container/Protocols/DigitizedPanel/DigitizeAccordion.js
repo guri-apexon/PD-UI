@@ -116,10 +116,11 @@ function DigitizeAccordion({
               flexDirection: 'row',
             }}
           >
-            <span data-testId="lockIcon">
-              <Lock style={{ paddingRight: '10px' }} />
-            </span>
-
+            {showedit && (
+              <span data-testId="lockIcon">
+                <Lock style={{ paddingRight: '10px' }} />
+              </span>
+            )}
             {primaryRole && (
               <>
                 <span data-testId="eyeIcon">
