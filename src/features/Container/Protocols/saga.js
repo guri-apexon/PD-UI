@@ -15,7 +15,7 @@ import {
   getAssociateDocuments,
   getCompare,
   getHeaderList,
-  getSectionDetails,
+  setSectionDetails,
   getProtocolTocData,
   setSectionLoader,
   getFileStream,
@@ -245,8 +245,9 @@ export function* getSectionList(action) {
 
   if (sectionDetails.success) {
     yield put(
-      getSectionDetails({
-        sections: sectionDetails.data,
+      setSectionDetails({
+        protocol: action.payload.protocol,
+        data: sectionDetails.data,
         linkId: action.payload.linkId,
       }),
     );
@@ -404,7 +405,7 @@ export function* getMetaDataSummaryField(action) {
 
   if (sectionDetails.success) {
     yield put(
-      getSectionDetails({
+      setSectionDetails({
         sections: sectionDetails.data,
         linkId: action.payload.linkId,
       }),
