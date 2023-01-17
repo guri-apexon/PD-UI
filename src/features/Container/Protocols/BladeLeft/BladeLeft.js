@@ -102,7 +102,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                 }}
               >
                 <AccordionSummary>
-                  <Tooltip title={item.source_file_section}>
+                  <Tooltip title={item.source_file_section} placement="right">
                     <Typography
                       className="header-unselect"
                       onClick={(e) => {

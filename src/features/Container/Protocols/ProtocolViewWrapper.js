@@ -118,17 +118,19 @@ class ProtocolViewWrapper extends React.Component {
                 </Card>
               </Panel>
             )}
-            <Panel width="auto" hideButton>
-              <Digitize
-                sectionRef={sectionRef}
-                sectionNumber={sectionNumber}
-                headerDetails={headerDetails}
-                handlePageRight={this.handlePageRight}
-                data={data}
-                paginationPage={paginationPage}
-                rightBladeValue={rightValue}
-              />
-            </Panel>
+            {data && (
+              <Panel width="auto" hideButton>
+                <Digitize
+                  sectionRef={sectionRef}
+                  sectionNumber={sectionNumber}
+                  headerDetails={headerDetails}
+                  handlePageRight={this.handlePageRight}
+                  data={data}
+                  paginationPage={paginationPage}
+                  rightBladeValue={rightValue}
+                />
+              </Panel>
+            )}
           </PanelGroup>
         </div>
       </>
