@@ -45,10 +45,6 @@ function DigitizeAccordion({
   const { linkId } = sectionHeaderDetails;
 
   useEffect(() => {
-    console.log({ rightBladeValue });
-  }, [rightBladeValue]);
-
-  useEffect(() => {
     if (
       sectionHeaderDetails?.sections &&
       isArray(sectionHeaderDetails?.sections) &&
