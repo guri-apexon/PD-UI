@@ -233,7 +233,6 @@ export function* fetchSectionHeaderList(action) {
 function* getState() {
   const state = yield select();
   const id = state.user.userDetail.userId;
-  // userId = id;
   return id.substring(1);
 }
 export function* getSectionList(action) {
@@ -320,7 +319,6 @@ export function* getProtocolTocDataResult(action) {
   if (header.success) {
     if (action.payload.tocFlag === 1) {
       if (header?.data?.status === 204) {
-        // toast.error(header.data.message || 'Something Went Wrong');
         header.data = [];
       }
       yield put(getProtocolTocData(header));
@@ -350,8 +348,6 @@ export function* getProtocolTocDataResult(action) {
         }),
       );
     }
-
-    // toast.error('Something Went Wrong');
   }
 }
 

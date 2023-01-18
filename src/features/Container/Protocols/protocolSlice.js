@@ -78,7 +78,6 @@ export const protocolSlice = createSlice({
       state.sectionLoader = action.payload;
     },
     resetSectionData: (state) => {
-      console.log('reset');
       state.sectionDetails = { protocol: null, data: [] };
     },
     getFileStream: (state, action) => {
