@@ -4,29 +4,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import TextField from 'apollo-react/components/TextField';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
+import { useDispatch, useSelector } from 'react-redux';
 import './MetaData.scss';
-import initialRows from './Records.json';
-import patientBurdern from './patientBurdern.json';
 import MetaDataEdit from './MetaDataEdit';
 import Accordian from './Accordian';
+import { metaDataVariable } from '../protocolSlice';
 
 function MetaData() {
-  const accordianArray = [
-    {
-      name: 'Summary Fields',
-      isEdit: false,
-      isActive: false,
-      tableData: initialRows,
-    },
-    {
-      name: 'Patient Burden Variables',
-      isEdit: false,
-      isActive: false,
-      tableData: patientBurdern,
-    },
-  ];
-
-  const [accordianData, setAccordianData] = useState(accordianArray);
+  const metaDataSelector = useSelector(metaDataVariable);
+  const dispatch = useDispatch();
+  const [accordianData, setAccordianData] = useState([]);
   const [rows, setRows] = useState({});
   const [metaDataList, setMetaDataList] = useState({});
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +25,7 @@ function MetaData() {
         name: sectionName,
         isEdit: false,
         isActive: false,
-        tableData: [],
+        metaData: [],
       };
       setAccordianData([...accordianData, obj]);
       setSectionName(null);
@@ -63,12 +50,12 @@ function MetaData() {
   };
 
   const handleAccordian = (index) => {
-    const accordianvalue = [...accordianData];
+    const accordianvalue = JSON.parse(JSON.stringify(accordianData));
     accordianvalue[index].isActive = !accordianvalue[index].isActive;
     accordianvalue[index].isEdit = false;
     setRows({
       ...rows,
-      [accordianData[index].name]: accordianData[index].tableData,
+      [accordianData[index].name]: accordianData[index].metaData,
     });
     setAccordianData(accordianvalue);
   };
@@ -97,7 +84,7 @@ function MetaData() {
           return {
             ...acc,
             isEdit: false,
-            tableData: [...rows[acc?.name], ...metaDataList[acc?.name]],
+            metaData: [...rows[acc?.name], ...metaDataList[acc?.name]],
           };
         }
         return acc;
@@ -115,7 +102,7 @@ function MetaData() {
       name,
       isEdit: false,
       isActive: false,
-      tableData: [],
+      metaData: [],
     };
     setAccordianData(
       accordianData.map((data, i) => {
@@ -129,6 +116,30 @@ function MetaData() {
       }),
     );
   };
+
+  useEffect(() => {
+    const updatedData = metaDataSelector?.data?.map((each) => {
+      return {
+        ...each,
+        metaData: each.metaData?.map((list, index) => {
+          return {
+            ...list,
+            id: index + 1,
+          };
+        }),
+      };
+    });
+    setAccordianData(updatedData);
+  }, [metaDataSelector.data]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'GET_METADATA_VARIABLE',
+    });
+    // eslint-disable-next-line
+  }, []);
+
+  console.log(accordianData);
 
   return (
     <Card

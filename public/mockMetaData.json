@@ -1,0 +1,209 @@
+[
+  {
+    "name": "Summary Fields",
+    "isEdit": false,
+    "isActive": false,
+    "metaData": [
+      {
+        "header": "Protocol Name ",
+        "name": "Covid Study"
+      },
+      {
+        "header": "Protocol Number",
+        "name": "NCT04904757.pdf.47866775-7c21-4e07-9e09-b8b4896cfd25"
+      },
+      {
+        "header": "Protocol Title",
+        "name": "ProtocolCovid-19"
+      },
+      {
+        "header": "Protocol Short Title",
+        "name": "Covid-19"
+      },
+      {
+        "header": "Is Amendment ",
+        "name": "Y",
+        "note": "Y & N"
+      },
+      {
+        "header": "Amendment Number",
+        "name": "12345"
+      },
+      {
+        "header": "Trial Phase",
+        "name": "2nd Level",
+        "confidence": 80
+      },
+      {
+        "header": "Sponsor",
+        "name": "s1",
+        "note": "Sponser Name"
+      },
+      {
+        "header": "Sponsor Address ",
+        "name": "India"
+      },
+      {
+        "header": "Drug ",
+        "name": "H1",
+        "confidence": 80,
+        "note": "H1 & B1"
+      },
+      {
+        "header": "Approval Date",
+        "name": "1900-01-01"
+      },
+      {
+        "header": "Version Number",
+        "name": "v160",
+        "confidence": 70
+      },
+      {
+        "header": "Version Date",
+        "name": "1900-01-01"
+      },
+      {
+        "header": "Blinded ",
+        "name": ""
+      },
+      {
+        "header": "Compound Number ",
+        "name": "",
+        "confidence": 70
+      },
+      {
+        "header": "Control ",
+        "name": ""
+      },
+      {
+        "header": "Investigator ",
+        "name": "abc"
+      },
+    
+      {
+        "header": "Study Id ",
+        "name": 20
+      },
+      {
+        "header": "Number Of Subjects ",
+        "name": 6
+      },
+      {
+        "header": "Participant Age ",
+        "name": "36"
+      },
+      {
+        "header": "Participant Sex ",
+        "name": "sex"
+      },
+    
+      {
+        "header": "Exclusion Criteria ",
+        "name": "",
+        "confidence": 90
+      },
+      {
+        "header": "Inclusion Criteria ",
+        "name": "",
+        "confidence": 79
+      },
+      {
+        "header": "Indication",
+        "name": "ind"
+      },
+      {
+        "header": "Primary Objectives ",
+        "name": "36"
+      },
+      {
+        "header": "Secondary Objectives ",
+        "name": "36"
+      },
+      {
+        "header": "Study Status ",
+        "name": "Y"
+      },
+      {
+        "header": "Study Population ",
+        "name": 31000,
+        "confidence": 70
+      },
+      {
+        "header": "End Points ",
+        "name": "H1"
+      },
+      {
+        "header": "Trial Type Randomized ",
+        "name": "trial",
+        "confidence": 75,
+        "note": "Trial Type Taken Random"
+      },
+      {
+        "header": "Molecule Device ",
+        "name": "mol",
+        "confidence": 65
+      }
+    ]
+    
+  },
+  {
+    "name": "Patient Burden Variables",
+    "isEdit": false,
+    "isActive": false,
+    "metaData": [
+      {
+        "header": "Total Num Site Visit",
+        "name": 20,
+        "confidence": 70,
+        "note": "Visits"
+      },
+      {
+        "header": "Total Num Months",
+        "name": 3,
+        "confidence": 70,
+        "note": "Moths"
+      },
+      {
+        "header": "Num Visit Per Months",
+        "name": 4,
+        "confidence": 67,
+        "note": "Months Visits"
+      },
+      {
+        "header": "Freq Pro",
+        "name": "Weekly",
+        "confidence": 89
+      },
+      {
+        "header": "Median Visit Len",
+        "name": 20,
+        "confidence": 70,
+        "note": "Visit Lenth"
+      },
+      {
+        "header": "Inpatient",
+        "name": 4,
+        "confidence": 73
+      },
+      {
+        "header": "Total Num Pro",
+        "name": 2,
+        "confidence": 75,
+        "note": "Visits"
+      },
+      {
+        "header": "Median Visit Length",
+        "name": 7,
+        "confidence": 69,
+        "note": "Visits"
+      },
+      {
+        "header": "In-patient duration",
+        "name": 2,
+        "confidence": 89,
+        "note": "Visits"
+      }
+    ]
+    
+  }
+]

@@ -77,7 +77,7 @@ function Accordian({
             data={accData}
           />
         ) : (
-          <MetaDataTable tableData={accData?.tableData} />
+          <MetaDataTable metaData={accData?.metaData} />
         )}
         <div className="subAccContainer">{subAccComponent}</div>
       </AccordionDetails>

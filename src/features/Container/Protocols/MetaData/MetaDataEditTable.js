@@ -42,7 +42,7 @@ function MetaDataEditTable({
   data,
   updateRows,
 }) {
-  const { tableData } = data;
+  const { metaData } = data;
   const [editedRow, setEditedRow] = useState({});
 
   const columns = [
@@ -101,7 +101,7 @@ function MetaDataEditTable({
     }
   };
   const editRow = (id, key, value) => {
-    const filterRow = tableData.filter((row) => row?.id === id);
+    const filterRow = metaData.filter((row) => row?.id === id);
     setEditedRow({
       ...filterRow[0],
       [key]: value,
@@ -164,7 +164,7 @@ function MetaDataEditTable({
       <Table
         className="table-panel"
         columns={column}
-        rows={tableData?.map((row) => ({
+        rows={metaData?.map((row) => ({
           ...row,
           editRow,
           editedRow: row,
@@ -177,7 +177,7 @@ function MetaDataEditTable({
         stripedRows
       />
     );
-  }, [column, tableData]);
+  }, [column, metaData]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
@@ -208,7 +208,7 @@ function MetaDataEditTable({
       ))}
       <div className="iconDiv">
         <div className="iconContainer">
-          <Plus onClick={() => addNewRow(tableData.length)} />
+          <Plus onClick={() => addNewRow(metaData.length)} />
         </div>
       </div>
     </div>

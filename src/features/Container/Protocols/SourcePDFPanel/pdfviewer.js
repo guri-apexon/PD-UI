@@ -87,12 +87,12 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    // eslint-disable-next-line
     <div
       id="pdfDocument"
       className="pdf_container"
       data-testid="protocol-column-wrapper"
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+      // eslint-disable-next-line
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >

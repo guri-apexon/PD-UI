@@ -12,7 +12,7 @@ import {
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
-import { RIGHT_BLADE_VALUE } from '../../../../AppConstant/AppConstant';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
 function Digitize({
   sectionNumber,
@@ -96,15 +96,15 @@ function Digitize({
   }, [paginationPage]);
   return (
     <div data-testid="protocol-column-wrapper">
-      {rightValue === RIGHT_BLADE_VALUE.HOME && (
-        <Card
-          className="protocol-column protocol-digitize-column"
-          style={{ borderRight: '0' }}
-        >
+      {rightValue === PROTOCOL_RIGHT_MENU.HOME && (
+        <Card className="protocol-column protocol-digitize-column card-boarder">
           <div className="panel-heading" data-testid="header">
             Digitized Data
           </div>
-          <div className="digitize-panel-content">
+          <div
+            className="digitize-panel-content"
+            data-testid="protocol-column-wrapper"
+          >
             {!summary?.data ? (
               <div className="loader">
                 <Loader />
@@ -117,14 +117,7 @@ function Digitize({
                     ref={sectionRef[index]}
                     className="digitized_data_item"
                   >
-                    <Drag
-                      style={{
-                        color: 'grey',
-                        fontSize: '1.2em',
-                        padding: '15px',
-                        paddingLeft: '5px',
-                      }}
-                    />
+                    <Drag className="drag" />
                     <div>
                       <DigitizeAccordion
                         item={items}
@@ -146,7 +139,7 @@ function Digitize({
           </div>
         </Card>
       )}
-      {rightValue === RIGHT_BLADE_VALUE.META_DATA && <MetaData />}
+      {rightValue === PROTOCOL_RIGHT_MENU.META_DATA && <MetaData />}
     </div>
   );
 }

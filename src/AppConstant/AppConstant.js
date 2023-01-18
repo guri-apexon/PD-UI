@@ -176,14 +176,6 @@ const redaction = {
   hoverText: 'Redacted Information',
 };
 
-const RIGHT_BLADE_VALUE = {
-  HOME: 'Home',
-  CLINICAL_TERM: 'Clinical Term',
-  DIPA_VIEW: 'Dipa View',
-  NORMALIZED_SOA: 'Normalized Soa',
-  META_DATA: 'Meta Data',
-};
-
 export {
   SORT_DROPDOWN,
   USER_MENU,
@@ -193,5 +185,4 @@ export {
   redaction,
   messages,
   userRole,
-  RIGHT_BLADE_VALUE,
 };
