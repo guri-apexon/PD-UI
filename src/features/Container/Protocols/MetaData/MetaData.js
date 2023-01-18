@@ -17,6 +17,7 @@ function MetaData() {
   const [rows, setRows] = useState({});
   const [metaDataList, setMetaDataList] = useState({});
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
 
   const addToAccordion = (e) => {
@@ -81,10 +82,12 @@ function MetaData() {
     setAccordianData(
       accordianData.map((acc, i) => {
         if (index === i) {
+          const accMetaData =
+            rows[acc?.name].length > 0 ? rows[acc?.name] : acc.metaData;
           return {
             ...acc,
             isEdit: false,
-            metaData: [...rows[acc?.name], ...metaDataList[acc?.name]],
+            metaData: [...accMetaData, ...metaDataList[acc?.name]],
           };
         }
         return acc;
@@ -97,24 +100,27 @@ function MetaData() {
   };
 
   const addSubAccordion = (index, e, name) => {
-    e.stopPropagation();
-    const obj = {
-      name,
-      isEdit: false,
-      isActive: false,
-      metaData: [],
-    };
-    setAccordianData(
-      accordianData.map((data, i) => {
-        if (i === index) {
-          return {
-            ...data,
-            subAccList: data?.subAccList ? [...data.subAccList, obj] : [obj],
-          };
-        }
-        return data;
-      }),
-    );
+    if (e.key === 'Enter') {
+      const obj = {
+        name,
+        isEdit: false,
+        isActive: false,
+        metaData: [],
+      };
+      setAccordianData(
+        accordianData.map((data, i) => {
+          if (i === index) {
+            return {
+              ...data,
+              subAccList: data?.subAccList ? [...data.subAccList, obj] : [obj],
+            };
+          }
+          return data;
+        }),
+      );
+      setSectionName(null);
+      setIsOpenSubText(false);
+    }
   };
 
   useEffect(() => {
@@ -136,10 +142,7 @@ function MetaData() {
     dispatch({
       type: 'GET_METADATA_VARIABLE',
     });
-    // eslint-disable-next-line
   }, []);
-
-  console.log(accordianData);
 
   return (
     <Card
@@ -178,6 +181,10 @@ function MetaData() {
                 isMain
                 accData={level1}
                 metaDataList={metaDataList}
+                isOpenSubText={isOpenSubText}
+                sectionName={sectionName}
+                setSectionName={setSectionName}
+                setIsOpenSubText={setIsOpenSubText}
                 setMetaDataList={setMetaDataList}
                 handleAccordian={() => handleAccordian(index1)}
                 handleSave={(e) => handleSave(level1.name, index1, e)}

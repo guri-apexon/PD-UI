@@ -15,6 +15,10 @@ function Accordian({
   isMain,
   accData,
   metaDataList,
+  isOpenSubText,
+  sectionName,
+  setSectionName,
+  setIsOpenSubText,
   setMetaDataList,
   handleAccordian,
   handleSave,
@@ -23,8 +27,6 @@ function Accordian({
   addSubAccordion,
   subAccComponent,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [sectionName, setSectionName] = useState(null);
   return (
     <Accordion expanded={accData.isActive}>
       <AccordionSummary
@@ -41,7 +43,7 @@ function Accordian({
                     className="metadata-plus-size mR"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setIsOpen(!isOpen);
+                      setIsOpenSubText(!isOpenSubText);
                     }}
                   />
                 )}
@@ -51,23 +53,22 @@ function Accordian({
               <Pencil className="metadata-plus-size" onClick={handleEdit} />
             )}
           </div>
-          {isOpen && (
-            <div style={{ maxWidth: 400 }}>
-              <TextField
-                label=""
-                placeholder="Select or type sub-section name"
-                className="nameField"
-                fullWidth
-                value={sectionName}
-                onChange={(e) => setSectionName(e.target.value)}
-                onKeyPress={(e) => addSubAccordion(e, sectionName)}
-                size="small"
-              />
-            </div>
-          )}
         </div>
       </AccordionSummary>
-
+      {isOpenSubText && (
+        <div style={{ maxWidth: 400 }}>
+          <TextField
+            label=""
+            placeholder="Select or type sub-section name"
+            className="nameField"
+            fullWidth
+            value={sectionName}
+            onChange={(e) => setSectionName(e.target.value)}
+            onKeyPress={(e) => addSubAccordion(e, sectionName)}
+            size="small"
+          />
+        </div>
+      )}
       <AccordionDetails>
         {accData?.isEdit ? (
           <MetaDataEditTable
@@ -89,6 +90,10 @@ Accordian.propTypes = {
   isMain: PropTypes.isRequired,
   accData: PropTypes.isRequired,
   metaDataList: PropTypes.isRequired,
+  isOpenSubText: PropTypes.isRequired,
+  sectionName: PropTypes.isRequired,
+  setSectionName: PropTypes.isRequired,
+  setIsOpenSubText: PropTypes.isRequired,
   setMetaDataList: PropTypes.isRequired,
   handleAccordian: PropTypes.isRequired,
   handleSave: PropTypes.isRequired,
