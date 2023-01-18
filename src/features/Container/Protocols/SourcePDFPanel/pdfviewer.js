@@ -29,40 +29,28 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   function changeScale() {
     const letPanel = document.getElementById('pdfDocument');
     const width = parseInt(getComputedStyle(letPanel, '').width, 10);
-    if (width < 400) {
-      setPageScale(0.4);
-    } else if (width < 500) {
-      setPageScale(0.6);
-    } else if (width < 600) {
-      setPageScale(0.8);
-    } else if (width < 700) {
-      setPageScale(1);
-    } else if (width < 750) {
-      setPageScale(1.1);
-    } else if (width < 800) {
-      setPageScale(1.2);
-    } else if (width > 900) {
-      setPageScale(1.4);
-    } else if (width > 1000) {
-      setPageScale(1.6);
-    }
+    const scale = (width / 1000).toFixed(2);
+    setPageScale(scale);
   }
 
+  const addMouseMove = () => {
+    document.addEventListener('mousemove', changeScale, false);
+  };
+
+  const removeMouseMove = () => {
+    document.removeEventListener('mousemove', changeScale, false);
+  };
+
   useEffect(() => {
-    document.addEventListener(
-      'mousedown',
-      () => {
-        document.addEventListener('mousemove', changeScale, false);
-      },
-      false,
-    );
-    document.addEventListener(
-      'mouseup',
-      () => {
-        document.removeEventListener('mousemove', changeScale, false);
-      },
-      false,
-    );
+    document.addEventListener('mousedown', addMouseMove, false);
+    document.addEventListener('mouseup', removeMouseMove, false);
+
+    return () => {
+      document.removeEventListener('mousedown', addMouseMove);
+      document.removeEventListener('mouseup', removeMouseMove);
+      removeMouseMove();
+    };
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
