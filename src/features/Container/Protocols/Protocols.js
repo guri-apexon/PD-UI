@@ -86,7 +86,7 @@ function Protocols({ location }) {
       <>
         {summary.success && summary.data ? (
           <div className="protocols" data-testid="protocols-component-test">
-            <div className="p-rl-20 breadcrumb-wrapper">
+            <div className="breadcrumb-wrapper ">
               <Breadcrumbs
                 className="protocol-breadcrumb"
                 items={[
@@ -106,7 +106,7 @@ function Protocols({ location }) {
             </div>
             <div className="tab-column">
               <div className="d-flex-row">
-                <div className="p-rl-20 p-l-45 tabs-wrapper">
+                <div className="p-rl-20 tabs-wrapper">
                   <Tabs
                     value={value}
                     onChange={handleChangeTab}
