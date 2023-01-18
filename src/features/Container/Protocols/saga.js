@@ -393,9 +393,17 @@ export function* fetchFileStream(action) {
 }
 
 export function* MetaDataVariable() {
-  const MetaData = yield put(getMetaDataVariable());
+  const config = {
+    url: '/mockMetaData.json',
+    method: 'GET',
+  };
+
+  const MetaData = yield call(httpCall, config);
+
   if (MetaData.success) {
-    yield put(getMetaDataVariable());
+    yield put(getMetaDataVariable(MetaData));
+  } else {
+    yield put(getMetaDataVariable({ success: false, data: [] }));
   }
 }
 

@@ -1,8 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  PROTOCOL_RIGHT_MENU,
-  MOCK_METADATA_VALUES,
-} from './Constant/Constants';
+import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 
 export const protocolSlice = createSlice({
   name: 'protocol',
@@ -40,7 +37,7 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
-    metaDataVariable: MOCK_METADATA_VALUES,
+    metaDataVariable: [],
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
   },
   reducers: {

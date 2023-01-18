@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import Typography from 'apollo-react/components/Typography';
@@ -9,7 +7,7 @@ import Card from 'apollo-react/components/Card/Card';
 import Pencil from 'apollo-react-icons/Pencil';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import MetaDataEdit from './MetaDataEdit';
@@ -18,14 +16,21 @@ import { metaDataVariable } from '../protocolSlice';
 function MetaData() {
   const [accordianData, setAccordianData] = useState();
   const metaDataSelector = useSelector(metaDataVariable);
+  const dispatch = useDispatch();
   useEffect(() => {
-    setAccordianData(metaDataSelector);
-  }, [metaDataSelector]);
+    setAccordianData(metaDataSelector.data);
+  }, [metaDataSelector.data]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'GET_METADATA_VARIABLE',
+    });
+    // eslint-disable-next-line
+  }, []);
 
   const handleAccordian = (index) => {
-    // const accordianvalue = [...accordianData];
     const accordianvalue = JSON.parse(JSON.stringify(accordianData));
-    accordianvalue[index].isActive = true;
+    accordianvalue[index].isActive = !accordianvalue[index].isActive;
     accordianvalue[index].isEdit = false;
     setAccordianData(accordianvalue);
   };
@@ -33,15 +38,14 @@ function MetaData() {
   const handleEdit = (index, e) => {
     e.stopPropagation();
     const accordianvalue = JSON.parse(JSON.stringify(accordianData));
-    accordianvalue[index].isEdit = true;
     accordianvalue[index].isActive = true;
+    accordianvalue[index].isEdit = true;
     setAccordianData(accordianvalue);
   };
 
   const handleSave = (index, e) => {
     e.stopPropagation();
     const accordianvalue = JSON.parse(JSON.stringify(accordianData));
-    console.log(accordianvalue[index].isActive);
     accordianvalue[index].isEdit = false;
     setAccordianData(accordianvalue);
   };
@@ -61,7 +65,7 @@ function MetaData() {
         {accordianData?.map((level1, index1) => {
           return (
             <div key={React.key} className="metadata_item">
-              <Accordion>
+              <Accordion expanded={level1?.isActive}>
                 <AccordionSummary
                   data-testId="metadataAccordian"
                   onClick={() => handleAccordian(index1)}
@@ -75,6 +79,8 @@ function MetaData() {
                           onClick={(e) => {
                             handleSave(index1, e);
                           }}
+                          onKeyUp
+                          role="presentation"
                         >
                           <Save className="metadata-plus-size" />
                         </span>
@@ -84,6 +90,8 @@ function MetaData() {
                           onClick={(e) => {
                             handleEdit(index1, e);
                           }}
+                          onKeyDown
+                          role="presentation"
                         >
                           <Pencil className="metadata-plus-size" />
                         </span>
@@ -97,7 +105,7 @@ function MetaData() {
                     {level1?.isEdit ? (
                       <MetaDataEdit />
                     ) : (
-                      <MetadataTable metaData={level1.metaData} />
+                      <MetadataTable metaData={level1?.metaData} />
                     )}
                   </div>
                 </AccordionDetails>
