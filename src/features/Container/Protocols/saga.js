@@ -19,6 +19,8 @@ import {
   getProtocolTocData,
   setSectionLoader,
   getFileStream,
+  getRightBladeValue,
+  getMetaDataVariable,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
@@ -394,27 +396,15 @@ export function* fetchFileStream(action) {
   }
 }
 
-export function* getMetaDataSummaryField(action) {
-  // const userId = yield getState();
-  // const config = {
-  //   url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
-  //   method: 'GET',
-  // };
-  const sectionDetails = // yield call(httpCall, config);
-    yield put(setSectionLoader(false));
-
-  if (sectionDetails.success) {
-    yield put(
-      setSectionDetails({
-        sections: sectionDetails.data,
-        linkId: action.payload.linkId,
-      }),
-    );
-  } else if (sectionDetails.message === 'No Access') {
-    console.log('No Access');
-  } else {
-    console.log('Error while loading');
+export function* MetaDataVariable() {
+  const MetaData = yield put(getMetaDataVariable());
+  if (MetaData.success) {
+    yield put(getMetaDataVariable());
   }
+}
+
+export function* RightBladeValue(action) {
+  yield put(getRightBladeValue(action.payload.name));
 }
 
 function* watchProtocolAsync() {
@@ -430,7 +420,8 @@ function* watchProtocolViews() {
   yield takeEvery('GET_SECTION_LIST', getSectionList);
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
-  yield takeEvery('GET_METADATA_SUMMARYDATA', getMetaDataSummaryField);
+  yield takeEvery('GET_METADATA_VARIABLE', MetaDataVariable);
+  yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
 }
 
 // notice how we now only export the rootSaga

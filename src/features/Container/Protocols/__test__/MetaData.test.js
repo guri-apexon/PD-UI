@@ -1,5 +1,5 @@
 import { render, fireEvent } from '../../../../test-utils/test-utils';
-import MetaDataAccordian from '../MetaData/MetaDataAccordian';
+import MetaData from '../MetaData/MetaData';
 
 const sample = [
   {
@@ -9,7 +9,7 @@ const sample = [
 
 describe('Metadata Accordian View', () => {
   test('should render the component', () => {
-    const component = render(<MetaDataAccordian data={sample} />);
+    const component = render(<MetaData data={sample} />);
 
     const metadataAccordian = component.getByTestId('metadata-accordian');
 
@@ -21,19 +21,19 @@ describe('Metadata Accordian View', () => {
 
 describe('MetaData AccordianView', () => {
   test('MetaData edit', () => {
-    const screen = render(<MetaDataAccordian />);
+    const screen = render(<MetaData />);
     const metaDataEdit = screen.getAllByTestId('metapencilIcon');
     expect(metaDataEdit[0]).toBeInTheDocument();
     fireEvent.click(metaDataEdit[0]);
   });
   test('MetaData Click', () => {
-    const screen = render(<MetaDataAccordian />);
+    const screen = render(<MetaData />);
     const metadataAccordian = screen.getAllByTestId('metadataAccordian');
     expect(metadataAccordian[0]).toBeInTheDocument();
     fireEvent.click(metadataAccordian[0]);
   });
   test('MetaData save', () => {
-    const screen = render(<MetaDataAccordian />);
+    const screen = render(<MetaData />);
     const metaDataEdit = screen.getAllByTestId('metapencilIcon');
     expect(metaDataEdit[0]).toBeInTheDocument();
     fireEvent.click(metaDataEdit[0]);

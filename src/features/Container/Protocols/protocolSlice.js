@@ -1,4 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {
+  PROTOCOL_RIGHT_MENU,
+  MOCK_METADATA_VALUES,
+} from './Constant/Constants';
 
 export const protocolSlice = createSlice({
   name: 'protocol',
@@ -36,7 +40,8 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
-    metaDataSummaryField: [],
+    metaDataVariable: MOCK_METADATA_VALUES,
+    rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
   },
   reducers: {
     getSummary: (state, action) => {
@@ -79,8 +84,11 @@ export const protocolSlice = createSlice({
     getFileStream: (state, action) => {
       state.fileStream = action.payload;
     },
-    getMetaDataSummaryField: (state, action) => {
-      state.metaDataSummaryField = action.payload;
+    getMetaDataVariable: (state, action) => {
+      state.metaDataVariable = action.payload;
+    },
+    getRightBladeValue: (state, action) => {
+      state.rightBladeValue = action.payload;
     },
   },
 });
@@ -97,7 +105,8 @@ export const {
   setSectionLoader,
   resetSectionData,
   getFileStream,
-  getMetaDataSummaryField,
+  getMetaDataVariable,
+  getRightBladeValue,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -114,6 +123,7 @@ export const protocolTocData = (state) => state.protocol.protocolTocData;
 
 export const sectionLoader = (state) => state.protocol.sectionLoader;
 export const getPdfData = (state) => state.protocol.fileStream;
-export const metaSummaryField = (state) => state.protocol.metaDataSummaryField;
+export const metaDataVariable = (state) => state.protocol.metaDataVariable;
+export const rightBladeValue = (state) => state.protocol.rightBladeValue;
 
 export default protocolSlice.reducer;
