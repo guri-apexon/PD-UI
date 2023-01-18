@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'apollo-react/components/Table';
-import PropTypes from 'prop-types';
-
 import Checkbox from 'apollo-react/components/Checkbox';
+import PropTypes from 'prop-types';
+import {
+  METADATA_NOTE,
+  METADATA_CONFIDENCE,
+  METADATA_ACCESORS,
+} from '../Constant/Constants';
 
 function MetaDataTable({ metaData }) {
   const [rows, setRows] = useState();
@@ -41,20 +45,20 @@ function MetaDataTable({ metaData }) {
     setConfidence(checked);
     const columnTemp = [...column];
     if (checked) {
-      columnTemp.push({ header: 'Confidence Score', accessor: 'confidence' });
+      columnTemp.push(METADATA_CONFIDENCE);
       setColumn(columnTemp);
     } else {
-      removeIndex('Confidence Score');
+      removeIndex(METADATA_ACCESORS.CONFIDENCE_SCORE);
     }
   };
 
   const handleNotes = (e, checked) => {
     setNote(checked);
     if (checked) {
-      column.push({ header: 'Note', accessor: 'note' });
+      column.push(METADATA_NOTE);
       setColumn(column);
     } else {
-      removeIndex('Note');
+      removeIndex(METADATA_ACCESORS.NOTE);
     }
   };
 

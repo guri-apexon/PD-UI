@@ -379,16 +379,17 @@ export function* fetchFileStream(action) {
 }
 
 export function* MetaDataVariable() {
-  // const userId = yield getState();
-  // const config = {
-  //   url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
-  //   method: 'GET',
-  // };
-  const MetaData = // action.payload.data;  yield call(httpCall, config);
-    yield put(getMetaDataVariable());
+  const config = {
+    url: '/mockMetaData.json',
+    method: 'GET',
+  };
+
+  const MetaData = yield call(httpCall, config);
 
   if (MetaData.success) {
-    yield put(getMetaDataVariable());
+    yield put(getMetaDataVariable(MetaData));
+  } else {
+    yield put(getMetaDataVariable({ success: false, data: [] }));
   }
 }
 

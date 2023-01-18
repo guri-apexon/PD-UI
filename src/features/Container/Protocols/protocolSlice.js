@@ -37,7 +37,7 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
-    metaDataVariable: MOCK_METADATA_VALUES,
+    metaDataVariable: [],
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
   },
   reducers: {
