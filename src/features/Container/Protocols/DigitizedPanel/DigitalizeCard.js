@@ -101,7 +101,10 @@ function Digitize({
           <div className="panel-heading" data-testid="header">
             Digitized Data
           </div>
-          <div className="digitize-panel-content">
+          <div
+            className="digitize-panel-content"
+            data-testid="protocol-column-wrapper"
+          >
             {!summary?.data ? (
               <div className="loader">
                 <Loader />
