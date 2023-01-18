@@ -21,6 +21,7 @@ import {
 import { createFullMarkup } from '../../../../utils/utilFunction';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
 const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
 function DigitizeAccordion({
@@ -42,6 +43,10 @@ function DigitizeAccordion({
   const sectionHeaderDetails = useSelector(sectionDetailsResult);
 
   const { linkId } = sectionHeaderDetails;
+
+  useEffect(() => {
+    console.log({ rightBladeValue });
+  }, [rightBladeValue]);
 
   useEffect(() => {
     if (
@@ -187,7 +192,9 @@ function DigitizeAccordion({
             >
               {sections.map((section) => {
                 const enrichedTxt =
-                  rightBladeValue === 'Clinical Term' ? enrichedDummyText : '';
+                  rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+                    ? enrichedDummyText
+                    : '';
                 return section?.font_info?.VertAlign === 'superscript' ? (
                   <div key={React.key} className="supContent">
                     <sup>

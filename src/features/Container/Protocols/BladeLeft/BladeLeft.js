@@ -1,6 +1,4 @@
-import withStyles from '@material-ui/core/styles/withStyles';
 import React, { useState, useEffect, useRef } from 'react';
-import { neutral8 } from 'apollo-react/colors';
 import Tooltip from 'apollo-react/components/Tooltip';
 import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
@@ -11,15 +9,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import './BladeLeft.scss';
 
 import { protocolTocData } from '../protocolSlice';
-
-const styles = {
-  blade: {
-    color: neutral8,
-    lineHeight: '24px',
-    marginTop: '4.5%',
-    width: '200px',
-  },
-};
 
 function BladeLeft({ handlePageNo, dataSummary }) {
   const [open, setOpen] = useState(true);
@@ -169,7 +158,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     </div>
   );
 }
-export default withStyles(styles)(BladeLeft);
+export default BladeLeft;
 
 BladeLeft.propTypes = {
   // eslint-disable-next-line react/require-default-props
