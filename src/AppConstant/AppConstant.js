@@ -175,6 +175,7 @@ const redaction = {
   text: '~REDACTED~',
   hoverText: 'Redacted Information',
 };
+
 export {
   SORT_DROPDOWN,
   USER_MENU,

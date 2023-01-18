@@ -19,6 +19,8 @@ import {
   getProtocolTocData,
   setSectionLoader,
   getFileStream,
+  getRightBladeValue,
+  getMetaDataVariable,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
@@ -376,6 +378,25 @@ export function* fetchFileStream(action) {
   }
 }
 
+export function* MetaDataVariable() {
+  const config = {
+    url: '/mockMetaData.json',
+    method: 'GET',
+  };
+
+  const MetaData = yield call(httpCall, config);
+
+  if (MetaData.success) {
+    yield put(getMetaDataVariable(MetaData));
+  } else {
+    yield put(getMetaDataVariable({ success: false, data: [] }));
+  }
+}
+
+export function* RightBladeValue(action) {
+  yield put(getRightBladeValue(action.payload.name));
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -389,6 +410,8 @@ function* watchProtocolViews() {
   yield takeEvery('GET_SECTION_LIST', getSectionList);
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
+  yield takeEvery('GET_METADATA_VARIABLE', MetaDataVariable);
+  yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
 }
 
 // notice how we now only export the rootSaga

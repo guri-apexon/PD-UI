@@ -7,6 +7,7 @@ import PanelGroup from 'apollo-react/components/PanelGroup';
 import Pdf from './SourcePDFPanel/pdfviewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
+import BladeRight from './BladeRight/BladeRight';
 
 class ProtocolViewWrapper extends React.Component {
   constructor() {
@@ -72,6 +73,10 @@ class ProtocolViewWrapper extends React.Component {
             <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
           </div>
         )}
+        <div>
+          <BladeRight dataSummary={data} />
+        </div>
+
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
             {data.userPrimaryRoleFlag && (

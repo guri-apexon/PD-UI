@@ -5,8 +5,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
 import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../../Components/Loader/Loader';
-import { headerResult, protocolSummary } from '../protocolSlice';
+import {
+  headerResult,
+  protocolSummary,
+  rightBladeValue,
+} from '../protocolSlice';
 import './Digitized.scss';
+import MetaData from '../MetaData/MetaData';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
 function Digitize({
   sectionNumber,
@@ -17,9 +23,10 @@ function Digitize({
 }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
-
+  const BladeRightValue = useSelector(rightBladeValue);
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
+  const [rightValue, setRightValue] = useState(BladeRightValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
 
@@ -55,6 +62,11 @@ function Digitize({
   }, [sectionNumber]);
 
   useEffect(() => {
+    setCurrentActiveCard(0);
+    setRightValue(BladeRightValue);
+  }, [BladeRightValue]);
+
+  useEffect(() => {
     dispatch({
       type: 'GET_PROTOCOL_SECTION',
       payload: {
@@ -82,57 +94,53 @@ function Digitize({
     }
     // eslint-disable-next-line
   }, [paginationPage]);
-
   return (
-    <Card
-      className="protocol-column protocol-digitize-column"
-      style={{ borderRight: '0' }}
-    >
-      <div className="panel-heading" data-testid="header">
-        Digitized Data
-      </div>
-      <div
-        className="digitize-panel-content"
-        data-testid="protocol-column-wrapper"
-      >
-        {!summary?.data ? (
-          <div className="loader">
-            <Loader />
+    <div data-testid="protocol-column-wrapper">
+      {rightValue === PROTOCOL_RIGHT_MENU.HOME && (
+        <Card className="protocol-column protocol-digitize-column card-boarder">
+          <div className="panel-heading" data-testid="header">
+            Digitized Data
           </div>
-        ) : (
-          <>
-            {headerList.map((items, index) => (
-              <div
-                key={React.key}
-                ref={sectionRef[index]}
-                className="digitized_data_item"
-              >
-                <Drag
-                  style={{
-                    color: 'grey',
-                    fontSize: '1.2em',
-                    padding: '15px',
-                    paddingLeft: '5px',
-                  }}
-                />
-                <div>
-                  <DigitizeAccordion
-                    item={items}
-                    protocol={protocolAllItems.data.protocol}
-                    primaryRole={data.userPrimaryRoleFlag}
-                    currentActiveCard={currentActiveCard}
-                    setCurrentActiveCard={setCurrentActiveCard}
-                    index={index}
-                    handlePageRight={handlePageRight}
-                  />
-                </div>
+          <div
+            className="digitize-panel-content"
+            data-testid="protocol-column-wrapper"
+          >
+            {!summary?.data ? (
+              <div className="loader">
+                <Loader />
               </div>
-            ))}
-            {!summary.success && <div className="loader">No Data found</div>}
-          </>
-        )}
-      </div>
-    </Card>
+            ) : (
+              <>
+                {headerList.map((items, index) => (
+                  <div
+                    key={React.key}
+                    ref={sectionRef[index]}
+                    className="digitized_data_item"
+                  >
+                    <Drag className="drag" />
+                    <div>
+                      <DigitizeAccordion
+                        item={items}
+                        protocol={protocolAllItems.data.protocol}
+                        primaryRole={data.userPrimaryRoleFlag}
+                        currentActiveCard={currentActiveCard}
+                        setCurrentActiveCard={setCurrentActiveCard}
+                        index={index}
+                        handlePageRight={handlePageRight}
+                      />
+                    </div>
+                  </div>
+                ))}
+                {!summary.success && (
+                  <div className="loader">No Data found</div>
+                )}
+              </>
+            )}
+          </div>
+        </Card>
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.META_DATA && <MetaData />}
+    </div>
   );
 }
 
