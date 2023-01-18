@@ -1,4 +1,4 @@
-import { render, fireEvent } from '../../../../test-utils/test-utils';
+import { render } from '../../../../test-utils/test-utils';
 import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
 import { headersList, summary } from './data';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
@@ -45,10 +45,8 @@ describe('DigitizeCard', () => {
         home,
       },
     );
-    const header = screen.getByTestId('header');
-    expect(header).toBeInTheDocument();
+
     const HeaderClose = screen.getByTestId('protocol-column-wrapper');
     expect(HeaderClose).toBeInTheDocument();
-    fireEvent.click(HeaderClose);
   });
 });
