@@ -69,11 +69,6 @@ function DigitizeAccordion({
       }
       setSections(updatedSectionsData);
     } else {
-      // setSections([
-      //   {
-      //     content: 'fdsad sadsadsad dsadsa dsadsa dsad sadsad sada',
-      //   },
-      // ]);
       setShowLoader(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

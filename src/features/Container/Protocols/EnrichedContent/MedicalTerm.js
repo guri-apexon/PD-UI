@@ -60,7 +60,7 @@ function MedicalTerm({ enrichedTarget, expanded }) {
   }
 
   return (
-    <div className="enriched-menu-wrapper" data-testId="Termlist">
+    <div className="enriched-menu-wrapper" data-testId="term-list">
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
           <div className="terms-list">
