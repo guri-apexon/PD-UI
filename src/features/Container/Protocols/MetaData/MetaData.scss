@@ -158,8 +158,11 @@
   .valueText {
     margin-left: 10px;
     display: flex;
+    align-items: center;
     background: #f9f9f9;
-    padding: 0 10px;
+    padding-right: 10px;
+    width: 100%;
+    justify-content: space-between;
     div {
       margin: unset;
     }
@@ -174,11 +177,13 @@
         border-radius: unset;
         border: none;
         background: #eceff4;
+        padding: 2px;
       }
     }
   }
   .fieldContainer {
     display: flex;
+    align-items: center;
   }
   .delContainer {
     margin: unset;
