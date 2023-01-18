@@ -128,6 +128,7 @@ function MetaData() {
           return (
             <div key={React.key} className="metadata_item">
               <Accordian
+                data-testid="metadata-Accord"
                 accData={level1}
                 metaDataList={metaDataList}
                 setMetaDataList={setMetaDataList}

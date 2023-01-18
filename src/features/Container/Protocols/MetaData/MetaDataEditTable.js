@@ -162,6 +162,7 @@ function MetaDataEditTable({
   const RenderTable = useMemo(() => {
     return (
       <Table
+        data-testid="metadata-table"
         className="table-panel"
         columns={column}
         rows={tableData?.map((row) => ({
@@ -200,6 +201,7 @@ function MetaDataEditTable({
       <div>{RenderTable}</div>
       {metaDataList[data.name]?.map((list) => (
         <CustomForm
+          data-testid="metadata-form"
           key={list?.id}
           item={list}
           deleteMetaData={() => deleteMetaData(list?.id)}
@@ -208,7 +210,10 @@ function MetaDataEditTable({
       ))}
       <div className="iconDiv">
         <div className="iconContainer">
-          <Plus onClick={() => addNewRow(tableData.length)} />
+          <Plus
+            data-testid="metadata-add"
+            onClick={() => addNewRow(tableData?.length)}
+          />
         </div>
       </div>
     </div>

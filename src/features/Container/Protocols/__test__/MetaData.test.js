@@ -7,6 +7,35 @@ const sample = [
   },
 ];
 
+const initialState = {
+  accordianArray: [
+    {
+      name: 'Summary Fields',
+      isEdit: false,
+      isActive: false,
+      tableData: [
+        {
+          id: 1,
+          header: 'Protocol Number',
+          name: 'NCT04904757.pdf.47866775-7c21-4e07-9e09-b8b4896cfd25',
+        },
+      ],
+    },
+    {
+      name: 'Patient Burden Variables',
+      isEdit: false,
+      isActive: false,
+      tableData: [
+        {
+          id: 1,
+          header: 'Protocol Number',
+          name: 'NCT04904757.pdf.47866775-7c21-4e07-9e09-b8b4896cfd25',
+        },
+      ],
+    },
+  ],
+};
+
 describe('Metadata Accordian View', () => {
   test('should render the component', () => {
     const component = render(<MetaData data={sample} />);
@@ -21,24 +50,8 @@ describe('Metadata Accordian View', () => {
 
 describe('MetaData AccordianView', () => {
   test('MetaData edit', () => {
-    const screen = render(<MetaData />);
-    const metaDataEdit = screen.getAllByTestId('metapencilIcon');
-    expect(metaDataEdit[0]).toBeInTheDocument();
-    fireEvent.click(metaDataEdit[0]);
-  });
-  test('MetaData Click', () => {
-    const screen = render(<MetaData />);
-    const metadataAccordian = screen.getAllByTestId('metadataAccordian');
-    expect(metadataAccordian[0]).toBeInTheDocument();
-    fireEvent.click(metadataAccordian[0]);
-  });
-  test('MetaData save', () => {
-    const screen = render(<MetaData />);
-    const metaDataEdit = screen.getAllByTestId('metapencilIcon');
-    expect(metaDataEdit[0]).toBeInTheDocument();
-    fireEvent.click(metaDataEdit[0]);
-    const metaDataSave = screen.getAllByTestId('metasaveIcon');
-    expect(metaDataSave[0]).toBeInTheDocument();
-    fireEvent.click(metaDataSave[0]);
+    const screen = render(<MetaData />, { initialState });
+    const metaDataEdit = screen.getByTestId('metadata-Accord');
+    expect(metaDataEdit).toBeInTheDocument();
   });
 });

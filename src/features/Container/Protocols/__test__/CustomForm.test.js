@@ -87,6 +87,5 @@ describe('Metadata CustomFied checkbox', () => {
     const textfield = component.getByTestId('customeform-textField-checkbox');
     expect(textfield).toBeInTheDocument();
     fireEvent.change(textfield, { target: { value: 'test11' } });
-    // expect(component.getByText('OPTION1')).toBeInTheDocument();
   });
 });
