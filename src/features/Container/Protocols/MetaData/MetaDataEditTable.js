@@ -3,7 +3,6 @@ import Table from 'apollo-react/components/Table';
 import PropTypes from 'prop-types';
 import TextField from 'apollo-react/components/TextField/TextField';
 import Checkbox from 'apollo-react/components/Checkbox';
-import Button from 'apollo-react/components/Button/Button';
 import Plus from 'apollo-react-icons/Plus';
 import CustomForm from './CustomForm';
 
@@ -38,7 +37,6 @@ function EditableCell({ row, column: { accessor: key } }) {
 }
 
 function MetaDataEditTable({
-  rows,
   metaDataList,
   setMetaDataList,
   data,
@@ -103,7 +101,7 @@ function MetaDataEditTable({
     }
   };
   const editRow = (id, key, value) => {
-    const filterRow = rows.filter((row) => row?.id === id);
+    const filterRow = tableData.filter((row) => row?.id === id);
     setEditedRow({
       ...filterRow[0],
       [key]: value,
@@ -111,21 +109,35 @@ function MetaDataEditTable({
   };
 
   const addNewRow = (rowLength) => {
-    setMetaDataList([
+    setMetaDataList({
       ...metaDataList,
-      {
-        id: metaDataList.length + rowLength + 1,
-        isCustom: true,
-        header: '',
-        name: '',
-        type: '',
-      },
-    ]);
+      [data.name]: metaDataList[data.name]
+        ? [
+            ...metaDataList[data.name],
+            {
+              id: metaDataList[data.name].length + rowLength + 1,
+              isCustom: true,
+              header: '',
+              name: '',
+              type: '',
+            },
+          ]
+        : [
+            {
+              id: rowLength + 1,
+              isCustom: true,
+              header: '',
+              name: '',
+              type: '',
+            },
+          ],
+    });
   };
 
   const handleChange = (e, id) => {
-    setMetaDataList(
-      metaDataList.map((list) =>
+    setMetaDataList({
+      ...metaDataList,
+      [data.name]: metaDataList[data.name].map((list) =>
         list?.id === id
           ? {
               ...list,
@@ -133,15 +145,18 @@ function MetaDataEditTable({
             }
           : list,
       ),
-    );
+    });
   };
 
   const deleteMetaData = (id) => {
-    setMetaDataList(metaDataList.filter((list) => list?.id !== id));
+    setMetaDataList({
+      ...metaDataList,
+      [data.name]: metaDataList[data.name].filter((list) => list?.id !== id),
+    });
   };
 
   useEffect(() => {
-    updateRows(editedRow);
+    updateRows(editedRow, data?.name);
   }, [editedRow]);
 
   const RenderTable = useMemo(() => {
@@ -149,7 +164,7 @@ function MetaDataEditTable({
       <Table
         className="table-panel"
         columns={column}
-        rows={rows?.map((row) => ({
+        rows={tableData?.map((row) => ({
           ...row,
           editRow,
           editedRow: row,
@@ -162,7 +177,7 @@ function MetaDataEditTable({
         stripedRows
       />
     );
-  }, [column, rows]);
+  }, [column, tableData]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
@@ -183,7 +198,7 @@ function MetaDataEditTable({
         data-testid="metadata-confidence"
       />
       <div>{RenderTable}</div>
-      {metaDataList.map((list) => (
+      {metaDataList[data.name]?.map((list) => (
         <CustomForm
           key={list?.id}
           item={list}
@@ -203,7 +218,6 @@ function MetaDataEditTable({
 MetaDataEditTable.propTypes = {
   // eslint-disable-next-line react/require-default-props
   // handleRightBlade: PropTypes.func,
-  rows: PropTypes.isRequired,
   metaDataList: PropTypes.isRequired,
   setMetaDataList: PropTypes.isRequired,
   data: PropTypes.isRequired,

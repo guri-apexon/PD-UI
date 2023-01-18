@@ -1,20 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
-import Accordion from 'apollo-react/components/Accordion';
-import Typography from 'apollo-react/components/Typography';
-import AccordionDetails from 'apollo-react/components/AccordionDetails';
-import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import Card from 'apollo-react/components/Card/Card';
-import Pencil from 'apollo-react-icons/Pencil';
-import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
-import MetadataTable from './MetaDataTable';
 import './MetaData.scss';
 import initialRows from './Records.json';
 import patientBurdern from './patientBurdern.json';
 import MetaDataEdit from './MetaDataEdit';
-import MetaDataEditTable from './MetaDataEditTable';
+import Accordian from './Accordian';
 
 function MetaData() {
   const accordianArray = [
@@ -32,15 +25,14 @@ function MetaData() {
     },
   ];
 
-  useEffect(() => {}, []);
-
   const [accordianData, setAccordianData] = useState(accordianArray);
-  const [rows, setRows] = useState(initialRows);
-  const [metaDataList, setMetaDataList] = useState([]);
+  const [rows, setRows] = useState({});
+  const [metaDataList, setMetaDataList] = useState({});
 
-  const updateRows = (data) => {
-    setRows(
-      rows.map((rowData) => {
+  const updateRows = (data, name) => {
+    setRows({
+      ...rows,
+      [name]: rows[name].map((rowData) => {
         if (data?.id === rowData?.id) {
           return {
             ...rowData,
@@ -50,26 +42,37 @@ function MetaData() {
         }
         return rowData;
       }),
-    );
+    });
   };
 
   const handleAccordian = (index) => {
     const accordianvalue = [...accordianData];
     accordianvalue[index].isActive = !accordianvalue[index].isActive;
     accordianvalue[index].isEdit = false;
-    setRows(accordianData[index].tableData);
+    setRows({
+      ...rows,
+      [accordianData[index].name]: accordianData[index].tableData,
+    });
     setAccordianData(accordianvalue);
   };
 
   const handleEdit = (index, e) => {
     e.stopPropagation();
-    const accordianvalue = [...accordianData];
-    accordianvalue[index].isEdit = true;
-    accordianvalue[index].isActive = true;
-    setAccordianData(accordianvalue);
+    setAccordianData(
+      accordianData.map((acc, i) => {
+        if (index === i) {
+          return {
+            ...acc,
+            isEdit: true,
+            isActive: true,
+          };
+        }
+        return acc;
+      }),
+    );
   };
 
-  const handleSave = (index, e) => {
+  const handleSave = (name, index, e) => {
     e.stopPropagation();
     setAccordianData(
       accordianData.map((acc, i) => {
@@ -77,16 +80,38 @@ function MetaData() {
           return {
             ...acc,
             isEdit: false,
-            tableData: [...rows, ...metaDataList],
+            tableData: [...rows[acc?.name], ...metaDataList[acc?.name]],
           };
         }
         return acc;
       }),
     );
-    setMetaDataList([]);
+    setMetaDataList({
+      ...metaDataList,
+      [name]: [],
+    });
   };
 
-  // console.log('accordianData', accordianData);
+  const addSubAccordion = (index) => {
+    const obj = {
+      name: '',
+      isEdit: false,
+      isActive: false,
+      tableData: initialRows,
+    };
+    setAccordianData(
+      accordianData.map((data, i) => {
+        if (i === index) {
+          return {
+            ...data,
+            subAccList: data?.subAccList ? [...data.subAccList, obj] : obj,
+          };
+        }
+        return data;
+      }),
+    );
+  };
+
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -102,54 +127,16 @@ function MetaData() {
         {accordianData?.map((level1, index1) => {
           return (
             <div key={React.key} className="metadata_item">
-              <Accordion expanded={level1.isActive}>
-                <AccordionSummary
-                  data-testId="metadataAccordian"
-                  onClick={() => handleAccordian(index1)}
-                >
-                  <div className="accordion_summary_container">
-                    <Typography>{level1.name}</Typography>
-                    <div className="metadata-flex">
-                      {level1?.isEdit ? (
-                        <span
-                          data-testId="metasaveIcon"
-                          onClick={(e) => {
-                            handleSave(index1, e);
-                          }}
-                        >
-                          <Save className="metadata-plus-size" />
-                        </span>
-                      ) : (
-                        <span
-                          data-testId="metapencilIcon"
-                          onClick={(e) => {
-                            handleEdit(index1, e);
-                          }}
-                        >
-                          <Pencil className="metadata-plus-size" />
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </AccordionSummary>
-
-                <AccordionDetails>
-                  {level1?.isEdit ? (
-                    <>
-                      {/* <MetaDataEdit /> */}
-                      <MetaDataEditTable
-                        rows={rows}
-                        updateRows={updateRows}
-                        metaDataList={metaDataList}
-                        setMetaDataList={setMetaDataList}
-                        data={level1}
-                      />
-                    </>
-                  ) : (
-                    <MetadataTable tableData={level1?.tableData} />
-                  )}
-                </AccordionDetails>
-              </Accordion>
+              <Accordian
+                accData={level1}
+                metaDataList={metaDataList}
+                setMetaDataList={setMetaDataList}
+                handleAccordian={() => handleAccordian(index1)}
+                handleSave={(e) => handleSave(level1.name, index1, e)}
+                handleEdit={(e) => handleEdit(index1, e)}
+                updateRows={updateRows}
+                addSubAccordion={() => addSubAccordion(index1)}
+              />
             </div>
           );
         })}

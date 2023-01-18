@@ -1,51 +1,60 @@
 [
   {
+    "id": 1,
     "header": "Total Num Site Visit",
     "name": 20,
     "confidence": 70,
     "note": "Visits"
   },
   {
+    "id": 2,
     "header": "Total Num Months",
     "name": 3,
     "confidence": 70,
     "note": "Moths"
   },
   {
+    "id": 3,
     "header": "Num Visit Per Months",
     "name": 4,
     "confidence": 67,
     "note": "Months Visits"
   },
   {
+    "id": 4,
     "header": "Freq Pro",
     "name": "Weekly",
     "confidence": 89
   },
   {
+    "id": 5,
     "header": "Median Visit Len",
     "name": 20,
     "confidence": 70,
     "note": "Visit Lenth"
   },
   {
+    "id": 6,
     "header": "Inpatient",
     "name": 4,
     "confidence": 73
   },
   {
+    "id": 7,
     "header": "Total Num Pro",
     "name": 2,
     "confidence": 75,
     "note": "Visits"
   },
   {
+    "id": 8,
     "header": "Median Visit Length",
     "name": 7,
     "confidence": 69,
     "note": "Visits"
   },
   {
+    "id": 9,
     "header": "In-patient duration",
     "name": 2,
     "confidence": 89,
