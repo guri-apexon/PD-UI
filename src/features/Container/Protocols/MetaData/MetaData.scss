@@ -42,6 +42,17 @@
   .metadata-plus-size {
     font-size: 19px !important;
     color: black;
+    cursor: pointer;
+  }
+  .mR {
+    margin-right: 10px;
+  }
+  .nameField {
+    width: 50%;
+    z-index: 1;
+    position: absolute;
+    right: 3rem;
+    top: 1rem;
   }
   .metadata-checkbox {
     // padding-left: 53%;
@@ -195,6 +206,7 @@
 .iconDiv {
   display: flex;
   justify-content: flex-end;
+  margin-top: 10px;
   .iconContainer {
     border-radius: 50%;
     background-color: black;
@@ -207,4 +219,7 @@
       cursor: pointer;
     }
   }
+}
+.subAccContainer {
+  padding: 15px;
 }
