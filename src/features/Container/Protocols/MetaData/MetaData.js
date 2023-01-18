@@ -25,6 +25,7 @@ function MetaData() {
     dispatch({
       type: 'GET_METADATA_VARIABLE',
     });
+    // eslint-disable-next-line
   }, []);
 
   const handleAccordian = (index) => {
