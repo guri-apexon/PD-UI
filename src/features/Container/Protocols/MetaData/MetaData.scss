@@ -11,7 +11,7 @@
     width: 100%;
     overflow-y: scroll;
     height: auto !important;
-    display: block !important;
+    display: block;
   }
   .view-wrapper .MuiCard-root {
     padding: 0;
@@ -146,7 +146,7 @@
     padding-left: 10px;
   }
   .checkbox-right {
-    display: flex !important;
-    float: right !important;
+    display: flex;
+    float: right;
   }
 }
