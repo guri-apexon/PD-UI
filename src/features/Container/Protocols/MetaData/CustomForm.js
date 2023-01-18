@@ -8,7 +8,12 @@ import PropTypes from 'prop-types';
 
 function CustomForm({ deleteMetaData, handleChange, item }) {
   return (
-    <Grid container spacing={1} className="gridContainer">
+    <Grid
+      container
+      spacing={1}
+      className="gridContainer"
+      data-testid="customeform"
+    >
       <Grid item xs={11} className="fieldContainer">
         <TextField
           label=""
@@ -16,6 +21,7 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
           className="keyText"
           name="header"
           value={item?.header}
+          inputProps={{ 'data-testid': 'customeform-textField-key' }}
           onChange={(e) => handleChange(e)}
         />
         <div className="valueText">
@@ -24,6 +30,7 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
             placeholder="Enter Value"
             name="name"
             value={item?.name}
+            inputProps={{ 'data-testid': 'customeform-textField-value' }}
             onChange={(e) => handleChange(e)}
           />
           <Select
@@ -33,6 +40,7 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
             onChange={(e) => handleChange(e)}
             placeholder="Select Type"
             fullWidth
+            inputProps={{ 'data-testid': 'customeform-textField-checkbox' }}
             className="selectBox"
           >
             <MenuItem value="String">String</MenuItem>
