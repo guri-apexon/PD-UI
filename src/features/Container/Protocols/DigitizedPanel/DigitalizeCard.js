@@ -97,10 +97,7 @@ function Digitize({
   return (
     <div data-testid="protocol-column-wrapper">
       {rightValue === PROTOCOL_RIGHT_MENU.HOME && (
-        <Card
-          className="protocol-column protocol-digitize-column"
-          style={{ borderRight: '0' }}
-        >
+        <Card className="protocol-column protocol-digitize-column card-boarder">
           <div className="panel-heading" data-testid="header">
             Digitized Data
           </div>
@@ -117,14 +114,7 @@ function Digitize({
                     ref={sectionRef[index]}
                     className="digitized_data_item"
                   >
-                    <Drag
-                      style={{
-                        color: 'grey',
-                        fontSize: '1.2em',
-                        padding: '15px',
-                        paddingLeft: '5px',
-                      }}
-                    />
+                    <Drag className="drag" />
                     <div>
                       <DigitizeAccordion
                         item={items}

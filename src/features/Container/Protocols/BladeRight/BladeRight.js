@@ -1,8 +1,4 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import withStyles from '@material-ui/core/styles/withStyles';
 import React, { useState, useEffect } from 'react';
-import { neutral8 } from 'apollo-react/colors';
 import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
 import Switch from 'apollo-react/components/Switch';
@@ -13,15 +9,6 @@ import {
   PROTOCOL_RIGHT_MENU_ARR,
 } from '../Constant/Constants';
 import './BladeRight.scss';
-
-const styles = {
-  blade: {
-    color: neutral8,
-    lineHeight: '24px',
-    marginTop: '4.5%',
-    width: '200px',
-  },
-};
 
 function BladeRight({ dataSummary }) {
   const [open, setOpen] = useState(true);
@@ -137,4 +124,4 @@ function BladeRight({ dataSummary }) {
 BladeRight.propTypes = {
   dataSummary: PropTypes.isRequired,
 };
-export default withStyles(styles)(BladeRight);
+export default BladeRight;
