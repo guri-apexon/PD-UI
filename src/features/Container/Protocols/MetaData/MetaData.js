@@ -6,7 +6,6 @@ import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
 import './MetaData.scss';
-import MetaDataEdit from './MetaDataEdit';
 import Accordian from './Accordian';
 import { metaDataVariable } from '../protocolSlice';
 

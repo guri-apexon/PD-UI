@@ -4,141 +4,141 @@
     "isEdit": false,
     "isActive": false,
     "metaData": [
-      {
+      { "id":1,
         "header": "Protocol Name ",
         "name": "Covid Study"
       },
-      {
+      {  "id":2,
         "header": "Protocol Number",
         "name": "NCT04904757.pdf.47866775-7c21-4e07-9e09-b8b4896cfd25"
       },
-      {
+      { "id":3,
         "header": "Protocol Title",
         "name": "ProtocolCovid-19"
       },
-      {
+      { "id":4,
         "header": "Protocol Short Title",
         "name": "Covid-19"
       },
-      {
+      {  "id":5,
         "header": "Is Amendment ",
         "name": "Y",
         "note": "Y & N"
       },
-      {
+      { "id":6,
         "header": "Amendment Number",
         "name": "12345"
       },
-      {
+      {   "id":7,
         "header": "Trial Phase",
         "name": "2nd Level",
         "confidence": 80
       },
-      {
+      { "id":8,
         "header": "Sponsor",
         "name": "s1",
         "note": "Sponser Name"
       },
-      {
+      {  "id":9,
         "header": "Sponsor Address ",
         "name": "India"
       },
-      {
+      { "id":10,
         "header": "Drug ",
         "name": "H1",
         "confidence": 80,
         "note": "H1 & B1"
       },
-      {
+      {  "id":11,
         "header": "Approval Date",
         "name": "1900-01-01"
       },
-      {
+      {  "id":12,
         "header": "Version Number",
         "name": "v160",
         "confidence": 70
       },
-      {
+      {  "id":13,
         "header": "Version Date",
         "name": "1900-01-01"
       },
-      {
+      { "id":14,
         "header": "Blinded ",
         "name": ""
       },
-      {
+      {  "id":15,
         "header": "Compound Number ",
         "name": "",
         "confidence": 70
       },
-      {
+      {  "id":16,
         "header": "Control ",
         "name": ""
       },
-      {
+      { "id":17,
         "header": "Investigator ",
         "name": "abc"
       },
     
-      {
+      {  "id":18,
         "header": "Study Id ",
         "name": 20
       },
-      {
+      { "id":19,
         "header": "Number Of Subjects ",
         "name": 6
       },
-      {
+      { "id":20,
         "header": "Participant Age ",
         "name": "36"
       },
-      {
+      { "id":21,
         "header": "Participant Sex ",
         "name": "sex"
       },
     
-      {
+      {  "id":22,
         "header": "Exclusion Criteria ",
         "name": "",
         "confidence": 90
       },
-      {
+      { "id":23,
         "header": "Inclusion Criteria ",
         "name": "",
         "confidence": 79
       },
-      {
+      {  "id":24,
         "header": "Indication",
         "name": "ind"
       },
-      {
+      { "id":25,
         "header": "Primary Objectives ",
         "name": "36"
       },
-      {
+      { "id":26,
         "header": "Secondary Objectives ",
         "name": "36"
       },
-      {
+      { "id":27,
         "header": "Study Status ",
         "name": "Y"
       },
-      {
+      {  "id":28,
         "header": "Study Population ",
         "name": 31000,
         "confidence": 70
       },
-      {
+      {  "id":29,
         "header": "End Points ",
         "name": "H1"
       },
-      {
+      {  "id":30,
         "header": "Trial Type Randomized ",
         "name": "trial",
         "confidence": 75,
         "note": "Trial Type Taken Random"
       },
-      {
+      { "id":31,
         "header": "Molecule Device ",
         "name": "mol",
         "confidence": 65
@@ -151,53 +151,53 @@
     "isEdit": false,
     "isActive": false,
     "metaData": [
-      {
+      {  "id":1,
         "header": "Total Num Site Visit",
         "name": 20,
         "confidence": 70,
         "note": "Visits"
       },
-      {
+      { "id":2,
         "header": "Total Num Months",
         "name": 3,
         "confidence": 70,
         "note": "Moths"
       },
-      {
+      {  "id":3,
         "header": "Num Visit Per Months",
         "name": 4,
         "confidence": 67,
         "note": "Months Visits"
       },
-      {
+      { "id":4,
         "header": "Freq Pro",
         "name": "Weekly",
         "confidence": 89
       },
-      {
+      {  "id":5,
         "header": "Median Visit Len",
         "name": 20,
         "confidence": 70,
         "note": "Visit Lenth"
       },
-      {
+      {  "id":6,
         "header": "Inpatient",
         "name": 4,
         "confidence": 73
       },
-      {
+      { "id":7,
         "header": "Total Num Pro",
         "name": 2,
         "confidence": 75,
         "note": "Visits"
       },
-      {
+      { "id":8,
         "header": "Median Visit Length",
         "name": 7,
         "confidence": 69,
         "note": "Visits"
       },
-      {
+      {  "id":9,
         "header": "In-patient duration",
         "name": 2,
         "confidence": 89,
