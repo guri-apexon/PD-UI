@@ -37,7 +37,7 @@ function MetaData() {
   const updateRows = (data, name) => {
     setRows({
       ...rows,
-      [name]: rows[name].map((rowData) => {
+      [name]: rows[name]?.map((rowData) => {
         if (data?.id === rowData?.id) {
           return {
             ...rowData,
@@ -97,6 +97,11 @@ function MetaData() {
       ...metaDataList,
       [name]: [],
     });
+  };
+
+  const handleDelete = (e, index) => {
+    e.stopPropagation();
+    setAccordianData(accordianData.filter((data, i) => index !== i));
   };
 
   const addSubAccordion = (index, e, name) => {
@@ -188,6 +193,7 @@ function MetaData() {
                 setMetaDataList={setMetaDataList}
                 handleAccordian={() => handleAccordian(index1)}
                 handleSave={(e) => handleSave(level1.name, index1, e)}
+                handleDelete={(e) => handleDelete(e, index1)}
                 handleEdit={(e) => handleEdit(index1, e)}
                 updateRows={updateRows}
                 addSubAccordion={(e, name) => addSubAccordion(index1, e, name)}
