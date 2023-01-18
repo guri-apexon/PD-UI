@@ -1,6 +1,7 @@
-import { render, fireEvent } from '../../../../test-utils/test-utils';
+import { render } from '../../../../test-utils/test-utils';
 import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
 import { headersList, summary } from './data';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
 const sectionRef = [
   {
@@ -27,7 +28,7 @@ const initialState = {
     },
   },
 };
-const rightValue = 'Home';
+const home = PROTOCOL_RIGHT_MENU.HOME;
 
 describe('DigitizeCard', () => {
   test('Header Close', () => {
@@ -37,15 +38,15 @@ describe('DigitizeCard', () => {
         sectionRef={sectionRef}
         data={{ id: 123 }}
         paginationPage={2}
-        rightValue="Home"
+        rightValue={PROTOCOL_RIGHT_MENU.HOME}
       />,
       {
         initialState,
-        rightValue,
+        home,
       },
     );
+
     const HeaderClose = screen.getByTestId('protocol-column-wrapper');
     expect(HeaderClose).toBeInTheDocument();
-    fireEvent.click(HeaderClose);
   });
 });

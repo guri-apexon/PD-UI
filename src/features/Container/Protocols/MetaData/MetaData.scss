@@ -11,6 +11,7 @@
     width: 100%;
     overflow-y: scroll;
     height: auto !important;
+    display: block;
   }
   .view-wrapper .MuiCard-root {
     padding: 0;
@@ -42,6 +43,17 @@
   .metadata-plus-size {
     font-size: 19px !important;
     color: black;
+    cursor: pointer;
+  }
+  .mR {
+    margin-right: 10px;
+  }
+  .nameField {
+    width: 50%;
+    z-index: 1;
+    position: absolute;
+    right: 3rem;
+    top: 1rem;
   }
   .metadata-checkbox {
     // padding-left: 53%;
@@ -144,6 +156,10 @@
     height: 48px;
     padding-left: 10px;
   }
+  .checkbox-right {
+    display: flex;
+    float: right;
+  }
 }
 .gridContainer {
   align-items: center;
@@ -195,6 +211,7 @@
 .iconDiv {
   display: flex;
   justify-content: flex-end;
+  margin-top: 10px;
   .iconContainer {
     border-radius: 50%;
     background-color: black;
@@ -207,4 +224,7 @@
       cursor: pointer;
     }
   }
+}
+.subAccContainer {
+  padding: 15px;
 }

@@ -1,45 +1,22 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-import withStyles from '@material-ui/core/styles/withStyles';
-import React, { useState, useEffect, useRef } from 'react';
-import { neutral8 } from 'apollo-react/colors';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
 import Switch from 'apollo-react/components/Switch';
 import Button from 'apollo-react/components/Button';
-import House from 'apollo-react-icons/House';
-import PresentationBarDark from 'apollo-react-icons/PresentationBarDark';
-import MedicalCard from 'apollo-react-icons/MedicalCard';
-import Stethoscope from 'apollo-react-icons/Stethoscope';
 import { useDispatch } from 'react-redux';
-import Lab from 'apollo-react-icons/Lab';
-import { RIGHT_BLADE_VALUE } from '../../../../AppConstant/AppConstant';
+import {
+  PROTOCOL_RIGHT_MENU,
+  PROTOCOL_RIGHT_MENU_ARR,
+} from '../Constant/Constants';
 import './BladeRight.scss';
-
-const styles = {
-  blade: {
-    color: neutral8,
-    lineHeight: '24px',
-    marginTop: '4.5%',
-    width: '200px',
-  },
-};
 
 function BladeRight({ dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const [value, setValue] = React.useState(false);
-  const wrapperRef = useRef(null);
   const dispatch = useDispatch();
 
-  const data = [
-    { name: RIGHT_BLADE_VALUE.HOME, isActive: true },
-    { name: RIGHT_BLADE_VALUE.CLINICAL_TERM, isActive: false },
-    { name: RIGHT_BLADE_VALUE.DIPA_VIEW, isActive: false },
-    { name: RIGHT_BLADE_VALUE.NORMALIZED_SOA, isActive: false },
-    { name: RIGHT_BLADE_VALUE.META_DATA, isActive: false },
-  ];
-  const [accordianData, setAccordianData] = useState(data);
+  const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_ARR);
   const handleChange = (e, checked) => {
     setValue(checked);
   };
@@ -54,11 +31,7 @@ function BladeRight({ dataSummary }) {
   const handleClick = (indexblade) => {
     const tempAccordianData = [...accordianData];
     const panelValue = tempAccordianData.map((item, index) => {
-      if (indexblade === index) {
-        item.isActive = true;
-      } else {
-        item.isActive = false;
-      }
+      item.isActive = indexblade === index;
       return item;
     });
     setAccordianData(panelValue);
@@ -72,38 +45,8 @@ function BladeRight({ dataSummary }) {
     }
   }, [open]);
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [wrapperRef]);
-
-  const getIcon = (icon) => {
-    if (icon === RIGHT_BLADE_VALUE.HOME) {
-      return <House className="icon-padding" />;
-    }
-    if (icon === RIGHT_BLADE_VALUE.CLINICAL_TERM) {
-      return <PresentationBarDark className="icon-padding" />;
-    }
-    if (icon === RIGHT_BLADE_VALUE.DIPA_VIEW) {
-      return <MedicalCard className="icon-padding" />;
-    }
-    if (icon === RIGHT_BLADE_VALUE.NORMALIZED_SOA) {
-      return <Stethoscope className="icon-padding" />;
-    }
-    if (icon === RIGHT_BLADE_VALUE.META_DATA) {
-      return <Lab className="icon-padding" />;
-    }
-    return null;
-  };
   const getDisable = (flag, name) => {
-    if (name === RIGHT_BLADE_VALUE.META_DATA && !flag) {
+    if (name === PROTOCOL_RIGHT_MENU.META_DATA && !flag) {
       return true;
     }
     return false;
@@ -121,11 +64,15 @@ function BladeRight({ dataSummary }) {
           width={263}
           marginTop={141}
           hasBackdrop
+          BackdropProps={{
+            onClick: () => {
+              setOpen(false);
+            },
+          }}
           side="right"
-          BackdropProps={onClose}
           data-testId="rightblade"
         >
-          <div ref={wrapperRef}>
+          <div>
             <div className="switch-padding">
               <Switch
                 size="small"
@@ -137,7 +84,7 @@ function BladeRight({ dataSummary }) {
             <hr className="line" />
             <div>
               <h3>Navigation Menu</h3>
-              <div className="divpadding">
+              <div className="menu-item-align">
                 {accordianData?.map((item, index) => {
                   return (
                     <div className="Button-flex" key={React.key}>
@@ -160,7 +107,7 @@ function BladeRight({ dataSummary }) {
                         }}
                         data-testId="rightbladeclick"
                       >
-                        {getIcon(item?.name)} {item?.name}
+                        {item?.icon} {item?.name}
                       </Button>
                     </div>
                   );
@@ -177,4 +124,4 @@ function BladeRight({ dataSummary }) {
 BladeRight.propTypes = {
   dataSummary: PropTypes.isRequired,
 };
-export default withStyles(styles)(BladeRight);
+export default BladeRight;
