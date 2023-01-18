@@ -64,7 +64,9 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
     setTimeout(() => {
-      document.getElementById('pdfDocument').scrollTop = 0;
+      if (document.getElementById('pdfDocument')) {
+        document.getElementById('pdfDocument').scrollTop = 0;
+      }
     }, 100);
 
     // eslint-disable-next-line
