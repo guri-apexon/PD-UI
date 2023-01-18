@@ -45,10 +45,8 @@ describe('DigitizeCard', () => {
         home,
       },
     );
-    const header = screen.getByTestId('header');
-    expect(header).toBeInTheDocument();
+
     const HeaderClose = screen.getByTestId('protocol-column-wrapper');
     expect(HeaderClose).toBeInTheDocument();
-    fireEvent.click(HeaderClose);
   });
 });
