@@ -40,22 +40,4 @@ const PROTOCOL_RIGHT_MENU_ARR = [
   },
 ];
 
-const METADATA_CONFIDENCE = {
-  header: 'Confidence Score',
-  accessor: 'confidence',
-};
-
-const METADATA_ACCESORS = {
-  NOTE: 'Note',
-  CONFIDENCE_SCORE: 'Confidence Score',
-};
-
-const METADATA_NOTE = { header: 'Note', accessor: 'note' };
-
-export {
-  PROTOCOL_RIGHT_MENU,
-  PROTOCOL_RIGHT_MENU_ARR,
-  METADATA_CONFIDENCE,
-  METADATA_NOTE,
-  METADATA_ACCESORS,
-};
+export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_ARR };
