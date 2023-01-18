@@ -1,4 +1,10 @@
 .section-single-content {
+  .drag {
+    color: 'grey';
+    font-size: '1.2em';
+    padding: '15px';
+    padding-left: '5px';
+  }
   .readable-content {
     height: auto;
     max-height: 500px;
@@ -32,12 +38,6 @@
   }
 }
 
-.drag {
-  color: 'grey';
-  font-size: '1.2em';
-  padding: '15px';
-  padding-left: '5px';
-}
 .card-boarder {
   border-right: 0 !important;
 }
