@@ -2,20 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
-import { isArray } from 'lodash';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
+import Lock from 'apollo-react-icons/Lock';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../../Components/Loader/Loader';
-import {
-  sectionDetailsResult,
-  setSectionLoader,
-  resetSectionData,
-} from '../protocolSlice';
+import { sectionDetails } from '../protocolSlice';
 import { createFullMarkup } from '../../../../utils/utilFunction';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
@@ -27,9 +23,10 @@ function DigitizeAccordion({
   protocol,
   primaryRole,
   currentActiveCard,
-  setCurrentActiveCard,
   handlePageRight,
   rightBladeValue,
+  currentEditCard,
+  setCurrentEditCard,
 }) {
   const dispatch = useDispatch();
 
@@ -38,36 +35,33 @@ function DigitizeAccordion({
   const [sections, setSections] = useState([]);
   const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
-  const sectionHeaderDetails = useSelector(sectionDetailsResult);
+  const sectionHeaderDetails = useSelector(sectionDetails);
 
-  const { linkId } = sectionHeaderDetails;
+  const { data: sectionData } = sectionHeaderDetails;
 
   useEffect(() => {
-    if (
-      sectionHeaderDetails?.sections &&
-      isArray(sectionHeaderDetails?.sections) &&
-      linkId === item.link_id
-    ) {
-      setShowLoader(false);
-      let updatedSectionsData = [];
-      let matchedIndex = null;
-      const sectionsData = sectionHeaderDetails?.sections;
-      updatedSectionsData = sectionsData?.map((sec, index) => {
-        if (sec?.font_info?.VertAlign === 'superscript') {
-          matchedIndex = index;
-          return {
-            ...sec,
-            content: `${sec?.content}_${sectionsData[index + 1].content}`,
-          };
+    if (sectionData?.length > 0) {
+      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
+      if (arr.length > 0) {
+        setShowLoader(false);
+        let updatedSectionsData = [];
+        let matchedIndex = null;
+        const sectionsData = arr[0].data;
+        updatedSectionsData = sectionsData?.map((sec, index) => {
+          if (sec?.font_info?.VertAlign === 'superscript') {
+            matchedIndex = index;
+            return {
+              ...sec,
+              content: `${sec?.content}_${sectionsData[index + 1].content}`,
+            };
+          }
+          return sec;
+        });
+        if (matchedIndex) {
+          updatedSectionsData.splice(matchedIndex + 1, 1);
         }
-        return sec;
-      });
-      if (matchedIndex) {
-        updatedSectionsData.splice(matchedIndex + 1, 1);
+        setSections(updatedSectionsData);
       }
-      setSections(updatedSectionsData);
-    } else {
-      setShowLoader(false);
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
@@ -80,15 +74,14 @@ function DigitizeAccordion({
   const onSaveClick = (e) => {
     e.stopPropagation();
     setShowEdit(false);
+    setCurrentEditCard(null);
   };
 
   useEffect(() => {
     if (expanded) {
-      setCurrentActiveCard(item.link_id);
-      if (linkId !== item.link_id) {
+      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
+      if (arr.length === 0) {
         setShowLoader(true);
-        dispatch(setSectionLoader(true));
-        dispatch(resetSectionData());
         dispatch({
           type: 'GET_SECTION_LIST',
           payload: {
@@ -98,18 +91,14 @@ function DigitizeAccordion({
           },
         });
       }
-    } else if (!expanded && currentActiveCard === item.link_id) {
-      setCurrentActiveCard(null);
-      setShowEdit(false);
+    }else{
       setEnrichedTarget(null);
     }
     // eslint-disable-next-line
   }, [expanded]);
 
   useEffect(() => {
-    if (currentActiveCard !== item.link_id && expanded) {
-      setExpanded(false);
-    } else if (currentActiveCard === item.link_id && !expanded) {
+    if (currentActiveCard === item.link_id && !expanded) {
       setExpanded(true);
     }
     // eslint-disable-next-line
@@ -122,11 +111,18 @@ function DigitizeAccordion({
       setEnrichedTarget(null);
     }
   };
+  useEffect(() => {
+    if (currentEditCard !== item.link_id) {
+      setShowEdit(false);
+    }
+    // eslint-disable-next-line
+  }, [currentEditCard]);
 
   const onEditClick = (e) => {
     e.stopPropagation();
     setExpanded(true);
     setShowEdit(true);
+    setCurrentEditCard(item.link_id);
   };
 
   return (
@@ -142,24 +138,30 @@ function DigitizeAccordion({
               flexDirection: 'row',
             }}
           >
-            {/* <span data-testId="lockIcon">
-              <Lock style={{ paddingRight: '10px' }} />
-            </span> */}
-            <span data-testId="eyeIcon">
-              <EyeShow style={{ paddingRight: '10px' }} />
-            </span>
-            {primaryRole &&
-              (!showedit ? (
-                // eslint-disable-next-line
-                <span data-testId="pencilIcon" onClick={onEditClick}>
-                  <Pencil />
+            {showedit && (
+              <span data-testId="lockIcon">
+                <Lock style={{ paddingRight: '10px' }} />
+              </span>
+            )}
+
+            {primaryRole && (
+              <>
+                <span data-testId="eyeIcon">
+                  <EyeShow style={{ paddingRight: '10px' }} />
                 </span>
-              ) : (
-                // eslint-disable-next-line
-                <span data-testId="saveIcon" onClick={onSaveClick}>
-                  <Save />
-                </span>
-              ))}
+                {!showedit ? (
+                  // eslint-disable-next-line
+                  <span data-testId="pencilIcon" onClick={onEditClick}>
+                    <Pencil />
+                  </span>
+                ) : (
+                  // eslint-disable-next-line
+                  <span data-testId="saveIcon" onClick={onSaveClick}>
+                    <Save />
+                  </span>
+                )}
+              </>
+            )}
           </div>
         </div>
       </AccordionSummary>
@@ -245,7 +247,8 @@ DigitizeAccordion.propTypes = {
   protocol: PropTypes.isRequired,
   primaryRole: PropTypes.isRequired,
   currentActiveCard: PropTypes.isRequired,
-  setCurrentActiveCard: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
   rightBladeValue: PropTypes.isRequired,
+  currentEditCard: PropTypes.isRequired,
+  setCurrentEditCard: PropTypes.isRequired,
 };

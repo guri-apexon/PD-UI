@@ -21,7 +21,7 @@
   }
 
   [class*='Blade-header-'] > h3 {
-    text-align: center;
+    padding-left: 20px;
   }
   [class*='Blade-body-'] > div > div {
     background: #f6f7fb;
@@ -92,6 +92,10 @@
   }
   [class*='MuiCollapse-wrapper-'] {
     padding-left: 4px;
+  }
+
+  [class*='Blade-expandPanel-'] {
+    width: 0;
   }
 }
 
