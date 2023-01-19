@@ -26,6 +26,33 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     setNumPages(numPages);
   };
 
+  function changeScale() {
+    const letPanel = document.getElementById('pdfDocument');
+    const width = parseInt(getComputedStyle(letPanel, '').width, 10);
+    const scale = (width / 1000).toFixed(2);
+    setPageScale(scale);
+  }
+
+  const addMouseMove = () => {
+    document.addEventListener('mousemove', changeScale, false);
+  };
+
+  const removeMouseMove = () => {
+    document.removeEventListener('mousemove', changeScale, false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', addMouseMove, false);
+    document.addEventListener('mouseup', removeMouseMove, false);
+
+    return () => {
+      document.removeEventListener('mousedown', addMouseMove);
+      document.removeEventListener('mouseup', removeMouseMove);
+      removeMouseMove();
+    };
+    // eslint-disable-next-line
+  }, []);
+
   useEffect(() => {
     if (page) {
       setPage(page - 1);
@@ -36,6 +63,12 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
+    setTimeout(() => {
+      if (document.getElementById('pdfDocument')) {
+        document.getElementById('pdfDocument').scrollTop = 0;
+      }
+    }, 100);
+
     // eslint-disable-next-line
   }, [currentPage]);
 
@@ -76,23 +109,20 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }
 
   function handleKeyDown(e) {
-    let pg = 0;
     if (e.key === 'PageDown' && currentPage < numPages - 1) {
-      pg = currentPage + 1;
+      setPage(currentPage + 1);
+    } else if (e.key === 'PageUp' && currentPage !== 0) {
+      setPage(currentPage - 1);
     }
-    if (e.key === 'PageUp' && currentPage !== 0) {
-      pg = currentPage - 1;
-    }
-    setPage(pg);
   }
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+    // eslint-disable-next-line
     <div
       id="pdfDocument"
       className="pdf_container"
       data-testid="protocol-column-wrapper"
-      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+      // eslint-disable-next-line
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
@@ -115,7 +145,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
             handlePaginationPage(pg + 1);
           }}
         />
-        <div>
+        <div className="zoom-controls">
           <Button
             size="small"
             className="buttonStyles"

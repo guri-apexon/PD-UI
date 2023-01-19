@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { updateContentWithData } from '../../../utils/utilFunction';
+import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 
 export const protocolSlice = createSlice({
   name: 'protocol',
@@ -25,7 +26,10 @@ export const protocolSlice = createSlice({
     header: {},
     loader: false,
     protocol: '',
-    sectionDetails: {},
+    sectionDetails: {
+      protocol: null,
+      data: [],
+    },
     protocolTocData: [],
     sectionLoader: false,
     fileStream: {
@@ -34,7 +38,8 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
-    metaDataSummaryField: [],
+    metaDataVariable: [],
+    rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
   },
   reducers: {
     getSummary: (state, action) => {
@@ -55,8 +60,14 @@ export const protocolSlice = createSlice({
     getSectionProtocol: (state, action) => {
       state.protocol = action.payload;
     },
-    getSectionDetails: (state, action) => {
-      state.sectionDetails = action.payload;
+    setSectionDetails: (state, action) => {
+      const { protocol, linkId, data } = action.payload;
+      if (protocol === state.sectionDetails.protocol) {
+        state.sectionDetails.data.push({ linkId, data });
+      } else {
+        state.sectionDetails.protocol = protocol;
+        state.sectionDetails.data = [{ linkId, data }];
+      }
     },
     getProtocolTocData: (state, action) => {
       state.protocolTocData = action.payload;
@@ -65,13 +76,10 @@ export const protocolSlice = createSlice({
       state.sectionLoader = action.payload;
     },
     resetSectionData: (state) => {
-      state.sectionDetails = {};
+      state.sectionDetails = { protocol: null, data: [] };
     },
     getFileStream: (state, action) => {
       state.fileStream = action.payload;
-    },
-    setSectionDetails: (state, action) => {
-      state.sectionDetails.sections = action.payload;
     },
     updateSectionData: (state, action) => {
       const obj = {
@@ -85,6 +93,12 @@ export const protocolSlice = createSlice({
     getMetaDataSummaryField: (state, action) => {
       state.metaDataSummaryField = action.payload;
     },
+    getMetaDataVariable: (state, action) => {
+      state.metaDataVariable = action.payload;
+    },
+    getRightBladeValue: (state, action) => {
+      state.rightBladeValue = action.payload;
+    },
   },
 });
 
@@ -94,15 +108,16 @@ export const {
   getAssociateDocuments,
   getCompare,
   getHeaderList,
-  getSectionDetails,
+  setSectionDetails,
   getSectionProtocol,
   getProtocolTocData,
   setSectionLoader,
   resetSectionData,
   getFileStream,
-  setSectionDetails,
   updateSectionData,
   getMetaDataSummaryField,
+  getMetaDataVariable,
+  getRightBladeValue,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -114,11 +129,12 @@ export const associateDocs = (state) => state.protocol.associateDocs;
 export const compareResult = (state) => state.protocol.compare;
 export const headerResult = (state) => state.protocol.header;
 export const protocolResult = (state) => state.protocol.protocol;
-export const sectionDetailsResult = (state) => state.protocol.sectionDetails;
+export const sectionDetails = (state) => state.protocol.sectionDetails;
 export const protocolTocData = (state) => state.protocol.protocolTocData;
 
 export const sectionLoader = (state) => state.protocol.sectionLoader;
 export const getPdfData = (state) => state.protocol.fileStream;
-export const metaSummaryField = (state) => state.protocol.metaDataSummaryField;
+export const metaDataVariable = (state) => state.protocol.metaDataVariable;
+export const rightBladeValue = (state) => state.protocol.rightBladeValue;
 
 export default protocolSlice.reducer;
