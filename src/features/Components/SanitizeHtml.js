@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
+import PropTypes from 'prop-types';
 
 function SanitizeHTML({ html, options }) {
   const defaultOptions = {
@@ -10,7 +10,10 @@ function SanitizeHTML({ html, options }) {
 
   const sanitize = (dirty, options) => {
     // eslint-disable-next-line
-    const clean = DOMPurify.sanitize((dirty.__html || dirty), { ...defaultOptions, ...options });
+    const clean = DOMPurify.sanitize(dirty.__html || dirty, {
+      ...defaultOptions,
+      ...options,
+    });
     return {
       __html: clean,
     };

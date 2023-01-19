@@ -188,7 +188,10 @@ function DigitizeAccordion({
               {sections.map((section) => {
                 const enrichedTxt =
                   rightBladeValue === 'Clinical Term' ? enrichedDummyText : '';
-                return section?.font_info?.VertAlign === 'superscript' ? (
+                console.log('Content', section.content);
+                console.log('Content Length', section.content.length);
+                return section?.font_info?.VertAlign === 'superscript' &&
+                  section.content.length > 0 ? (
                   <div key={React.key} className="supContent">
                     <sup>
                       <SanitizeHTML
@@ -215,22 +218,26 @@ function DigitizeAccordion({
                     </p>
                   </div>
                 ) : (
-                  <p
-                    key={React.key}
-                    style={{
-                      fontWeight: `${
-                        section?.font_info?.isBold || section.type === 'header'
-                          ? 'bold'
-                          : ''
-                      }`,
-                      fontStyle: `${
-                        section?.font_info?.Italics ? 'italics' : ''
-                      }`,
-                    }}
-                  >
-                    <SanitizeHTML html={createFullMarkup(section.content)} />
-                    {enrichedTxt}
-                  </p>
+                  section.content.length > 0 && (
+                    <p
+                      key={React.key}
+                      style={{
+                        fontWeight: `${
+                          section?.font_info?.isBold ||
+                          section.type === 'header'
+                            ? 'bold'
+                            : ''
+                        }`,
+                        fontStyle: `${
+                          section?.font_info?.Italics ? 'italics' : ''
+                        }`,
+                      }}
+                    >
+                      <SanitizeHTML html={createFullMarkup(section.content)} />
+
+                      {enrichedTxt}
+                    </p>
+                  )
                 );
               })}
             </div>
