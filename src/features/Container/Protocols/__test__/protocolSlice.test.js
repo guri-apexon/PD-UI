@@ -5,7 +5,7 @@ import protocolPageSlice, {
   getCompare,
   getHeaderList,
   getSectionProtocol,
-  getSectionDetails,
+  setSectionDetails,
   getProtocolTocData,
   setSectionLoader,
   resetSectionData,
@@ -28,6 +28,10 @@ const initialState = {
     iqvdata: '',
     error: false,
     message: '',
+  },
+  sectionDetails: {
+    protocol: null,
+    data: [],
   },
 };
 
@@ -126,16 +130,24 @@ describe(' ProtocolSlice Test Suite', () => {
     ).toEqual({ ...initialState, protocol: payload });
   });
 
-  test('getSectionDetails slice', () => {
+  test('setSectionDetails slice', () => {
     const payload = {
-      actionData: 'actionData',
+      protocol: '15-06',
+      data: [],
+      linkId: 15,
     };
     expect(
       protocolPageSlice(initialState, {
-        type: getSectionDetails.type,
+        type: setSectionDetails.type,
         payload,
       }),
-    ).toEqual({ ...initialState, sectionDetails: payload });
+    ).toEqual({
+      ...initialState,
+      sectionDetails: {
+        protocol: '15-06',
+        data: [{ linkId: payload.linkId, data: payload.data }],
+      },
+    });
   });
 
   test('getProtocolTocData slice', () => {
@@ -173,6 +185,9 @@ describe(' ProtocolSlice Test Suite', () => {
       protocolPageSlice(initialState, {
         type: resetSectionData.type,
       }),
-    ).toEqual({ ...initialState, sectionDetails: {} });
+    ).toEqual({
+      ...initialState,
+      sectionDetails: { protocol: null, data: [] },
+    });
   });
 });

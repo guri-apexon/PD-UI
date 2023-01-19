@@ -28,6 +28,7 @@ function Digitize({
   const protocolAllItems = useSelector(protocolSummary);
   const [rightValue, setRightValue] = useState(BladeRightValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
+  const [currentEditCard, setCurrentEditCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
 
   useEffect(() => {
@@ -47,9 +48,13 @@ function Digitize({
       sectionRef[sectionSequence] &&
       sectionRef[sectionSequence].current
     ) {
-      sectionRef[sectionSequence]?.current?.scrollIntoView({
-        behavior: 'instant',
-      });
+      setTimeout(() => {
+        sectionRef[sectionSequence]?.current?.scrollIntoView({
+          behavior: 'instant',
+          block: 'end',
+        });
+      }, 300);
+
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
     // eslint-disable-next-line
@@ -94,9 +99,12 @@ function Digitize({
     }
     // eslint-disable-next-line
   }, [paginationPage]);
+
   return (
     <div data-testid="protocol-column-wrapper">
-      {rightValue === PROTOCOL_RIGHT_MENU.HOME && (
+      {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
+        rightValue,
+      ) && (
         <Card className="protocol-column protocol-digitize-column card-boarder">
           <div className="panel-heading" data-testid="header">
             Digitized Data
@@ -124,15 +132,17 @@ function Digitize({
                         protocol={protocolAllItems.data.protocol}
                         primaryRole={data.userPrimaryRoleFlag}
                         currentActiveCard={currentActiveCard}
-                        setCurrentActiveCard={setCurrentActiveCard}
                         index={index}
                         handlePageRight={handlePageRight}
+                        rightBladeValue={BladeRightValue}
+                        currentEditCard={currentEditCard}
+                        setCurrentEditCard={setCurrentEditCard}
                       />
                     </div>
                   </div>
                 ))}
                 {!summary.success && (
-                  <div className="loader">No Data found</div>
+                  <div className="loader">{summary.errorMsg}</div>
                 )}
               </>
             )}
