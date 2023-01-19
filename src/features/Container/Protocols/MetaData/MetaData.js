@@ -82,11 +82,6 @@ function MetaData() {
                   data.subAccList[subIndex].metaData,
               });
               subData.isActive = !subData.isActive;
-              // return {
-              //   ...subData,
-              //   isActive: true,
-              //   isEdit: false,
-              // };
             }
             return subData;
           });
@@ -138,16 +133,6 @@ function MetaData() {
       );
     }
   };
-
-  // const validationCheck = (name) => {
-  //   const selectedMeta = rows[name];
-  //   selectedMeta.forEach((data) => {
-  //     if (isEmpty(data.name)) {
-  //       return false;
-  //     }
-  //     return true;
-  //   });
-  // };
 
   const handleSave = (name, index, subIndex, e, type) => {
     e.stopPropagation();
