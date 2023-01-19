@@ -40,48 +40,4 @@ const PROTOCOL_RIGHT_MENU_ARR = [
   },
 ];
 
-const CLINICAL_TERMS_DATA = [
-  {
-    value: 'Synonims',
-    termLabel: 'Synonims',
-    data: [
-      { label: 'Euismod dsds dsds ds' },
-      { label: 'Molestie' },
-      { label: 'Luptatum' },
-    ],
-  },
-  {
-    value: 'Clinical Terms',
-    termLabel: 'Clinical Terms',
-    data: [
-      { label: 'Euismod dsds dsds ds' },
-      { label: 'Molestie' },
-      { label: 'Luptatum' },
-    ],
-  },
-  {
-    value: 'Ontology',
-    termLabel: 'Ontology',
-    data: [
-      { label: 'Euismod dsds dsds ds' },
-      { label: 'Molestie' },
-      { label: 'Luptatum' },
-    ],
-  },
-  {
-    value: 'Prefered Term',
-    termLabel: 'Preferred Term',
-    data: [{ label: 'Euismod' }, { label: 'Molestie' }, { label: 'Luptatum' }],
-  },
-  {
-    value: 'Classification',
-    termLabel: 'Classification',
-    data: [
-      { label: 'Euismod dsds dsds ds' },
-      { label: 'Molestie' },
-      { label: 'Luptatum' },
-    ],
-  },
-];
-
-export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_ARR, CLINICAL_TERMS_DATA };
+export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_ARR };

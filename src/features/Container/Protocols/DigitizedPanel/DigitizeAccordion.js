@@ -91,7 +91,7 @@ function DigitizeAccordion({
           },
         });
       }
-    }else{
+    } else {
       setEnrichedTarget(null);
     }
     // eslint-disable-next-line

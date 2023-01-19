@@ -7,7 +7,7 @@ import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
-import { CLINICAL_TERMS_DATA } from '../Constant/Constants';
+import CLINICAL_TERMS_DATA from './clinicalTerms.json';
 import './MedicalTerm.scss';
 
 function MedicalTerm({ enrichedTarget, expanded }) {
