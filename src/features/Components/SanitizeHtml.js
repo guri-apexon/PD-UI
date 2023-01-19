@@ -5,7 +5,6 @@ function SanitizeHTML({ html, options }) {
   const defaultOptions = {
     ALLOWED_TAGS: ['a', 'div', 'span', 'p'],
     ALLOWED_ATTR: ['style'],
-    // and many extra configurations
   };
 
   const sanitize = (dirty, options) => {
@@ -15,7 +14,7 @@ function SanitizeHTML({ html, options }) {
       __html: clean,
     };
   };
-  // eslint-disable-next-line react/no-danger
+  // eslint-disable-next-line
   return <div dangerouslySetInnerHTML={sanitize(html, options)} />;
 }
 

@@ -394,7 +394,6 @@ export function* MetaDataVariable() {
 }
 
 export function* RightBladeValue(action) {
-  console.log({ action });
   yield put(getRightBladeValue(action.payload.name));
 }
 

@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
@@ -71,7 +69,7 @@ function DigitizeAccordion({
     } else {
       setShowLoader(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [sectionHeaderDetails]);
 
   const handleChange = () => {
@@ -119,7 +117,6 @@ function DigitizeAccordion({
 
   const handleEnrichedClick = (e) => {
     if (e.target.className === 'enriched-txt') {
-      // const termText = e.target.innerText;
       setEnrichedTarget(e.target);
     } else {
       setEnrichedTarget(null);
@@ -177,10 +174,12 @@ function DigitizeAccordion({
           (showedit ? (
             <MultilineEdit data={sections} />
           ) : (
+            /* eslint-disable */
             <div
               className="readable-content"
               onClick={(e) => handleEnrichedClick(e)}
             >
+              {/* eslint-enable */}
               {sections.map((section) => {
                 const enrichedTxt =
                   rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
