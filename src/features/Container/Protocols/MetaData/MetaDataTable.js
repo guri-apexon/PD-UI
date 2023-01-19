@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Table from 'apollo-react/components/Table';
 import Checkbox from 'apollo-react/components/Checkbox';
 import PropTypes from 'prop-types';
 
 function MetaDataTable({ metaData }) {
-  const [rows, setRows] = useState();
-
   const METADATA_CONFIDENCE = {
     header: 'Confidence Score',
     accessor: 'confidence',
   };
   const METADATA_NOTE = { header: 'Note', accessor: 'note' };
-  useEffect(() => {
-    setRows(metaData);
-  }, [metaData]);
+
   const columns = [
     {
       header: 'Key',
@@ -87,7 +83,7 @@ function MetaDataTable({ metaData }) {
         <Table
           className="table-panel"
           columns={column}
-          rows={rows}
+          rows={metaData}
           rowId="employeeId"
           hidePagination
           hasScroll
