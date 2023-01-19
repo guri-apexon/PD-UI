@@ -49,15 +49,47 @@ function MetaData() {
     });
   };
 
-  const handleAccordian = (index) => {
-    const accordianvalue = JSON.parse(JSON.stringify(accordianData));
-    accordianvalue[index].isActive = !accordianvalue[index].isActive;
-    accordianvalue[index].isEdit = false;
-    setRows({
-      ...rows,
-      [accordianData[index].name]: accordianData[index].metaData,
-    });
-    setAccordianData(accordianvalue);
+  const handleAccordian = (mainIndex, subIndex, type) => {
+    if (type === 'mainSection') {
+      setRows({
+        ...rows,
+        [accordianData[mainIndex].name]: accordianData[mainIndex].metaData,
+      });
+      setAccordianData(
+        accordianData.map((data, i) => {
+          if (i === mainIndex) {
+            return {
+              ...data,
+              isActive: !data.isActive,
+              isEdit: false,
+            };
+          }
+          return data;
+        }),
+      );
+    } else {
+      // setAccordianData(
+      //   accordianData.map((data, i) => {
+      //     if (i === mainIndex) {
+      //       data.map((subData, subI) => {
+      //         if (subI === subIndex) {
+      //           setRows({
+      //             ...rows,
+      //             [data[subIndex].name]: data[subIndex].metaData,
+      //           });
+      //           return {
+      //             ...subData,
+      //             isActive: !subData.isActive,
+      //             isEdit: false,
+      //           };
+      //         }
+      //         return subData;
+      //       });
+      //     }
+      //     return data;
+      //   }),
+      // );
+    }
   };
 
   const handleEdit = (index, e) => {
@@ -94,6 +126,10 @@ function MetaData() {
     );
     setMetaDataList({
       ...metaDataList,
+      [name]: [],
+    });
+    setRows({
+      ...rows,
       [name]: [],
     });
   };
@@ -195,7 +231,9 @@ function MetaData() {
                 setSectionName={setSectionName}
                 setIsOpenSubText={setIsOpenSubText}
                 setMetaDataList={setMetaDataList}
-                handleAccordian={() => handleAccordian(index1)}
+                handleAccordian={() =>
+                  handleAccordian(index1, null, 'mainSection')
+                }
                 handleSave={(e) => handleSave(level1.name, index1, e)}
                 handleDelete={(e) => handleDelete(e, index1)}
                 handleEdit={(e) => handleEdit(index1, e)}
@@ -209,7 +247,9 @@ function MetaData() {
                       accData={subAcc}
                       metaDataList={metaDataList}
                       setMetaDataList={setMetaDataList}
-                      handleAccordian={() => handleAccordian(subIndex)}
+                      handleAccordian={() =>
+                        handleAccordian(index1, subIndex, 'subSection')
+                      }
                       handleSave={(e) => handleSave(subAcc.name, subIndex, e)}
                       handleEdit={(e) => handleEdit(subIndex, e)}
                       updateRows={updateRows}
