@@ -39,18 +39,23 @@ function Accordian({
             {accData?.isEdit ? (
               <>
                 {isMain && (
-                  <Plus
-                    className="metadata-plus-size mR"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsOpenSubText(!isOpenSubText);
-                    }}
-                  />
+                  <span data-testId="metadataplus">
+                    <Plus
+                      data-testId="metadataplus"
+                      className="metadata-plus-size mR"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsOpenSubText(!isOpenSubText);
+                      }}
+                    />
+                  </span>
                 )}
                 <Save className="metadata-plus-size" onClick={handleSave} />
               </>
             ) : (
-              <Pencil className="metadata-plus-size" onClick={handleEdit} />
+              <span data-testId="metadatapencil">
+                <Pencil className="metadata-plus-size" onClick={handleEdit} />
+              </span>
             )}
           </div>
         </div>
@@ -58,6 +63,7 @@ function Accordian({
       {isOpenSubText && (
         <div style={{ maxWidth: 400 }}>
           <TextField
+            inputProps={{ 'data-testId': 'plusTextfield' }}
             label=""
             placeholder="Select or type sub-section name"
             className="nameField"

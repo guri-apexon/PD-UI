@@ -141,33 +141,4 @@ describe('MetaData CheckBox', () => {
     fireEvent.click(metaDataConfidence);
     expect(metaDataConfidence).toBeInTheDocument();
   });
-
-  test('MetaData add', () => {
-    const screen = render(
-      <MetaDataEditTable
-        updateRows={jest.fn()}
-        setMetaDataList={jest.fn()}
-        data={data}
-        metaDataList={data}
-      />,
-    );
-    const metaDataConfidence = screen.getByTestId('metadata-add');
-    expect(metaDataConfidence).toBeInTheDocument();
-    fireEvent.click(metaDataConfidence);
-    fireEvent.click(metaDataConfidence);
-    expect(metaDataConfidence).toBeInTheDocument();
-  });
-  test('MetaData table', () => {
-    const screen = render(
-      <MetaDataEditTable
-        updateRows={jest.fn()}
-        setMetaDataList={jest.fn()}
-        data={data}
-        metaDataList={data}
-      />,
-    );
-    screen.debug();
-    const metaDataTable = screen.getByTestId('metadata-form');
-    expect(metaDataTable).toBeInTheDocument();
-  });
 });

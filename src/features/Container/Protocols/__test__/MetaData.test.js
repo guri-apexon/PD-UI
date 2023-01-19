@@ -34,16 +34,15 @@ describe('Metadata Accordian View', () => {
 });
 
 describe('MetaData AccordianView', () => {
-  // test('MetaData edit', () => {
-  //   const screen = render(<MetaData />, { initialState });
-  //   const metadataAccordian = screen.getByTestId('metadata-accordian');
-  //   expect(screen).toBeTruthy();
-  //   expect(metadataAccordian).toBeInTheDocument();
-  //   screen.debug();
-  //   const metaDataEdit = screen.getAllByTestId('metapencilIcon');
-  //   expect(metaDataEdit[0]).toBeInTheDocument();
-  //   fireEvent.click(metaDataEdit[0]);
-  // });
+  test('MetaData edit', () => {
+    const screen = render(<MetaData />, { initialState });
+    const metadataAccordian = screen.getByTestId('metadata-accordian');
+    expect(screen).toBeTruthy();
+    expect(metadataAccordian).toBeInTheDocument();
+
+    const metaDataEdit = screen.getAllByTestId('metadataaccordian');
+    expect(metaDataEdit[0]).toBeInTheDocument();
+  });
   test('MetaData Click', () => {
     const screen = render(<MetaData />, { initialState });
     const metadataAccordian = screen.getAllByTestId('metadataAccordian');
@@ -60,10 +59,13 @@ describe('MetaData AccordianView', () => {
   //   fireEvent.click(metaDataSave[0]);
   // });
 });
-describe('MetaData AccordianView', () => {
-  test('MetaData edit', () => {
-    const screen = render(<MetaData />, { initialState });
-    const metaDataEdit = screen.getByTestId('metadata-Accord');
-    expect(metaDataEdit).toBeInTheDocument();
-  });
-});
+// describe('MetaData AccordianView', () => {
+//   test('MetaData edit', () => {
+//     const screen = render(<MetaData />, { initialState });
+//     const metadataAccordian = screen.getByTestId('metadata-accordian');
+//     expect(screen).toBeTruthy();
+//     expect(metadataAccordian).toBeInTheDocument();
+//     const metaDataEdit = screen.getAllByTestId('metadataaccordian');
+//     expect(metaDataEdit[0]).toBeInTheDocument();
+//   });
+// });
