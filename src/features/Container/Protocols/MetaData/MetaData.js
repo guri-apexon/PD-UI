@@ -5,6 +5,8 @@ import TextField from 'apollo-react/components/TextField';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
+import { isEmpty } from 'lodash';
+import { toast } from 'react-toastify';
 import './MetaData.scss';
 import Accordian from './Accordian';
 import { metaDataVariable } from '../protocolSlice';
@@ -52,6 +54,7 @@ function MetaData() {
 
   const handleAccordian = (mainIndex, subIndex, type) => {
     if (type === 'mainSection') {
+      console.log(accordianData[mainIndex].metaData);
       setRows({
         ...rows,
         [accordianData[mainIndex].name]: accordianData[mainIndex].metaData,
@@ -97,6 +100,10 @@ function MetaData() {
   const handleEdit = (index, e, subIndex, type) => {
     e.stopPropagation();
     if (type === 'mainSection') {
+      setRows({
+        ...rows,
+        [accordianData[index].name]: accordianData[index].metaData,
+      });
       setAccordianData(
         accordianData.map((acc, i) => {
           if (index === i) {
@@ -115,6 +122,11 @@ function MetaData() {
           if (i === index) {
             data?.subAccList?.map((subData, subI) => {
               if (subI === subIndex) {
+                setRows({
+                  ...rows,
+                  [data.subAccList[subIndex].name]:
+                    data.subAccList[subIndex].metaData,
+                });
                 subData.isActive = true;
                 subData.isEdit = true;
               }
@@ -126,6 +138,16 @@ function MetaData() {
       );
     }
   };
+
+  // const validationCheck = (name) => {
+  //   const selectedMeta = rows[name];
+  //   selectedMeta.forEach((data) => {
+  //     if (isEmpty(data.name)) {
+  //       return false;
+  //     }
+  //     return true;
+  //   });
+  // };
 
   const handleSave = (name, index, subIndex, e, type) => {
     e.stopPropagation();
@@ -248,6 +270,8 @@ function MetaData() {
       type: 'GET_METADATA_VARIABLE',
     });
   }, []);
+
+  console.log('rows', rows);
 
   return (
     <Card

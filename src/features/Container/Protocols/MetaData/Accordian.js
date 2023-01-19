@@ -54,7 +54,7 @@ function Accordian({
                   </span>
                 )}
                 <Save className="metadata-plus-size" onClick={handleSave} />
-                {!standardList.includes(accData.name) && (
+                {!standardList?.includes(accData?.name) && (
                   <Trash
                     className="metadata-plus-size mL"
                     onClick={handleDelete}
