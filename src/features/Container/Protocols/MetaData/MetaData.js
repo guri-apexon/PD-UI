@@ -36,7 +36,7 @@ function MetaData() {
   const updateRows = (data, name) => {
     setRows({
       ...rows,
-      [name]: rows[name].map((rowData) => {
+      [name]: rows[name]?.map((rowData) => {
         if (data?.id === rowData?.id) {
           return {
             ...rowData,
@@ -96,6 +96,11 @@ function MetaData() {
       ...metaDataList,
       [name]: [],
     });
+  };
+
+  const handleDelete = (e, index) => {
+    e.stopPropagation();
+    setAccordianData(accordianData.filter((data, i) => index !== i));
   };
 
   const addSubAccordion = (index, e, name) => {
@@ -174,53 +179,47 @@ function MetaData() {
         )}
       </div>
       <div className="metaData-boarder">
-        {accordianData &&
-          accordianData.map((level1, index1) => {
-            return (
-              <div
-                key={React.key}
-                className="metadata_item"
-                data-testid="metadataaccordian"
-              >
-                <Accordian
-                  isMain
-                  accData={level1}
-                  metaDataList={metaDataList}
-                  isOpenSubText={isOpenSubText}
-                  sectionName={sectionName}
-                  setSectionName={setSectionName}
-                  setIsOpenSubText={setIsOpenSubText}
-                  setMetaDataList={setMetaDataList}
-                  handleAccordian={() => handleAccordian(index1)}
-                  handleSave={(e) => handleSave(level1.name, index1, e)}
-                  handleEdit={(e) => handleEdit(index1, e)}
-                  updateRows={updateRows}
-                  addSubAccordion={(e, name) =>
-                    addSubAccordion(index1, e, name)
-                  }
-                  subAccComponent={level1?.subAccList?.map(
-                    (subAcc, subIndex) => {
-                      return (
-                        <Accordian
-                          key={subAcc?.name}
-                          isMain={false}
-                          accData={subAcc}
-                          metaDataList={metaDataList}
-                          setMetaDataList={setMetaDataList}
-                          handleAccordian={() => handleAccordian(subIndex)}
-                          handleSave={(e) =>
-                            handleSave(subAcc.name, subIndex, e)
-                          }
-                          handleEdit={(e) => handleEdit(subIndex, e)}
-                          updateRows={updateRows}
-                        />
-                      );
-                    },
-                  )}
-                />
-              </div>
-            );
-          })}
+        {accordianData?.map((level1, index1) => {
+          return (
+            <div
+              key={React.key}
+              className="metadata_item"
+              data-testid="metadataaccordian"
+            >
+              <Accordian
+                isMain
+                accData={level1}
+                metaDataList={metaDataList}
+                isOpenSubText={isOpenSubText}
+                sectionName={sectionName}
+                setSectionName={setSectionName}
+                setIsOpenSubText={setIsOpenSubText}
+                setMetaDataList={setMetaDataList}
+                handleAccordian={() => handleAccordian(index1)}
+                handleSave={(e) => handleSave(level1.name, index1, e)}
+                handleDelete={(e) => handleDelete(e, index1)}
+                handleEdit={(e) => handleEdit(index1, e)}
+                updateRows={updateRows}
+                addSubAccordion={(e, name) => addSubAccordion(index1, e, name)}
+                subAccComponent={level1?.subAccList?.map((subAcc, subIndex) => {
+                  return (
+                    <Accordian
+                      key={subAcc?.name}
+                      isMain={false}
+                      accData={subAcc}
+                      metaDataList={metaDataList}
+                      setMetaDataList={setMetaDataList}
+                      handleAccordian={() => handleAccordian(subIndex)}
+                      handleSave={(e) => handleSave(subAcc.name, subIndex, e)}
+                      handleEdit={(e) => handleEdit(subIndex, e)}
+                      updateRows={updateRows}
+                    />
+                  );
+                })}
+              />
+            </div>
+          );
+        })}
       </div>
     </Card>
   );

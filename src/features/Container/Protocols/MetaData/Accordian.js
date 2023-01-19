@@ -8,6 +8,7 @@ import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
 import Plus from 'apollo-react-icons/Plus';
 import Save from 'apollo-react-icons/Save';
+import Trash from 'apollo-react-icons/Trash';
 import MetaDataEditTable from './MetaDataEditTable';
 import MetaDataTable from './MetaDataTable';
 
@@ -22,6 +23,7 @@ function Accordian({
   setMetaDataList,
   handleAccordian,
   handleSave,
+  handleDelete,
   handleEdit,
   updateRows,
   addSubAccordion,
@@ -50,7 +52,8 @@ function Accordian({
                     />
                   </span>
                 )}
-                <Save className="metadata-plus-size" onClick={handleSave} />
+                <Save className="metadata-plus-size mR" onClick={handleSave} />
+                <Trash className="metadata-plus-size" onClick={handleDelete} />
               </>
             ) : (
               <span data-testId="metadatapencil">
@@ -103,6 +106,7 @@ Accordian.propTypes = {
   setMetaDataList: PropTypes.isRequired,
   handleAccordian: PropTypes.isRequired,
   handleSave: PropTypes.isRequired,
+  handleDelete: PropTypes.isRequired,
   handleEdit: PropTypes.isRequired,
   updateRows: PropTypes.isRequired,
   addSubAccordion: PropTypes.isRequired,
