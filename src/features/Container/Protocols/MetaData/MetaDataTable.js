@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Table from 'apollo-react/components/Table';
+import Checkbox from 'apollo-react/components/Checkbox';
 import PropTypes from 'prop-types';
 
-import Checkbox from 'apollo-react/components/Checkbox';
-import initialRows from './Records.json';
-import patientBurdern from './patientBurdern.json';
-
-function MetaDataTable({ accname }) {
+function MetaDataTable({ metaData }) {
   const [rows, setRows] = useState();
 
+  const METADATA_CONFIDENCE = {
+    header: 'Confidence Score',
+    accessor: 'confidence',
+  };
+  const METADATA_NOTE = { header: 'Note', accessor: 'note' };
   useEffect(() => {
-    if (accname === 'Summary Fields') {
-      setRows(initialRows);
-    } else {
-      setRows(patientBurdern);
-    }
-  }, [accname]);
+    setRows(metaData);
+  }, [metaData]);
   const columns = [
     {
       header: 'Key',
@@ -47,7 +45,7 @@ function MetaDataTable({ accname }) {
     setConfidence(checked);
     const columnTemp = [...column];
     if (checked) {
-      columnTemp.push({ header: 'Confidence Score', accessor: 'confidence' });
+      columnTemp.push(METADATA_CONFIDENCE);
       setColumn(columnTemp);
     } else {
       removeIndex('Confidence Score');
@@ -57,7 +55,7 @@ function MetaDataTable({ accname }) {
   const handleNotes = (e, checked) => {
     setNote(checked);
     if (checked) {
-      column.push({ header: 'Note', accessor: 'note' });
+      column.push(METADATA_NOTE);
       setColumn(column);
     } else {
       removeIndex('Note');
@@ -66,22 +64,24 @@ function MetaDataTable({ accname }) {
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
-      <Checkbox
-        label="Notes"
-        size="small"
-        checked={note}
-        onChange={handleNotes}
-        className="checkbox-pad metadata-checkbox"
-        data-testid="metadata-notes"
-      />
-      <Checkbox
-        label="Confidence Score"
-        checked={confidence}
-        onChange={handleConfidence}
-        size="small"
-        className="metadata-checkbox checkbox-pad "
-        data-testid="metadata-confidence"
-      />
+      <div className="checkbox-right">
+        <Checkbox
+          label="Confidence Score"
+          checked={confidence}
+          onChange={handleConfidence}
+          size="small"
+          className="metadata-checkbox checkbox-pad "
+          data-testid="metadata-confidence"
+        />
+        <Checkbox
+          label="Notes"
+          size="small"
+          checked={note}
+          onChange={handleNotes}
+          className="checkbox-pad metadata-checkbox"
+          data-testid="metadata-notes"
+        />
+      </div>
 
       <div>
         <Table
@@ -100,9 +100,7 @@ function MetaDataTable({ accname }) {
 }
 
 MetaDataTable.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  // handleRightBlade: PropTypes.func,
-  accname: PropTypes.isRequired,
+  metaData: PropTypes.isRequired,
 };
 
 export default MetaDataTable;

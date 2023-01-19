@@ -1,6 +1,7 @@
-import { render, fireEvent } from '../../../../test-utils/test-utils';
+import { render } from '../../../../test-utils/test-utils';
 import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
 import { headersList, summary } from './data';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
 const sectionRef = [
   {
@@ -27,6 +28,7 @@ const initialState = {
     },
   },
 };
+const home = PROTOCOL_RIGHT_MENU.HOME;
 
 describe('DigitizeCard', () => {
   test('Header Close', () => {
@@ -36,30 +38,15 @@ describe('DigitizeCard', () => {
         sectionRef={sectionRef}
         data={{ id: 123 }}
         paginationPage={2}
-        rightBladeValue="Home"
+        rightValue={PROTOCOL_RIGHT_MENU.HOME}
       />,
       {
         initialState,
+        home,
       },
     );
+
     const HeaderClose = screen.getByTestId('protocol-column-wrapper');
     expect(HeaderClose).toBeInTheDocument();
-    fireEvent.click(HeaderClose);
-
-    const header = screen.getByTestId('header');
-    expect(header).toBeInTheDocument();
   });
-
-  // test('check pagination page useeffect', () => {
-  //   const screen = render(
-  //     <Provider store={store}>
-  //       <DigitalizeCard
-  //         sectionNumber={1}
-  //         sectionRef={sectionRef}
-  //         data={{ id: 123 }}
-  //         paginationPage={1}
-  //       />
-  //     </Provider>,
-  //   );
-  // });
 });

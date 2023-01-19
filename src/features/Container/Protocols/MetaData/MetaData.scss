@@ -11,6 +11,7 @@
     width: 100%;
     overflow-y: scroll;
     height: auto !important;
+    display: block;
   }
   .view-wrapper .MuiCard-root {
     padding: 0;
@@ -90,6 +91,7 @@
   [class*='MuiTableCell-body-'] {
     background-color: #f9f9f9;
     color: black;
+    padding-left: 21px !important;
   }
   [class*='MuiTableCell-head-'] {
     color: black;
@@ -142,5 +144,9 @@
     align-items: center;
     height: 48px;
     padding-left: 10px;
+  }
+  .checkbox-right {
+    display: flex;
+    float: right;
   }
 }

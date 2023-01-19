@@ -21,7 +21,6 @@ class ProtocolViewWrapper extends React.Component {
       pageNo: 0,
       sectionNumber: -1,
       paginationPage: 0,
-      rightValue: 'Home',
     };
   }
 
@@ -29,10 +28,6 @@ class ProtocolViewWrapper extends React.Component {
 
   handlePageRight = (pageRight) => {
     this.setState({ pageRight });
-  };
-
-  handleRightBlade = (rightValue) => {
-    this.setState({ rightValue });
   };
 
   handlePaginationPage = (paginationPage) => {
@@ -67,7 +62,7 @@ class ProtocolViewWrapper extends React.Component {
   };
 
   render() {
-    const { data, refx, sectionRef } = this.props;
+    const { data, refx, sectionRef, summaryData } = this.props;
     const {
       pageNo,
       pageRight,
@@ -85,10 +80,7 @@ class ProtocolViewWrapper extends React.Component {
           </div>
         )}
         <div>
-          <BladeRight
-            handleRightBlade={this.handleRightBlade}
-            dataSummary={data}
-          />
+          <BladeRight dataSummary={data} />
         </div>
 
         <div className="view-wrapper">
@@ -103,27 +95,34 @@ class ProtocolViewWrapper extends React.Component {
               >
                 <Card className="protocol-source-column">
                   <div className="panel-heading">Source Document</div>
-
-                  <Pdf
-                    page={pageNo}
-                    refs={refx}
-                    pageRight={pageRight}
-                    handlePaginationPage={this.handlePaginationPage}
-                  />
+                  {summaryData?.success ? (
+                    <Pdf
+                      page={pageNo}
+                      refs={refx}
+                      pageRight={pageRight}
+                      handlePaginationPage={this.handlePaginationPage}
+                    />
+                  ) : (
+                    <div className="digitize-panel-content">
+                      <div className="loader">{summaryData.errorMsg}</div>
+                    </div>
+                  )}
                 </Card>
               </Panel>
             )}
-            <Panel width="auto" hideButton>
-              <Digitize
-                sectionRef={sectionRef}
-                sectionNumber={sectionNumber}
-                headerDetails={headerDetails}
-                handlePageRight={this.handlePageRight}
-                data={data}
-                paginationPage={paginationPage}
-                rightBladeValue={rightValue}
-              />
-            </Panel>
+            {data && (
+              <Panel width="auto" hideButton>
+                <Digitize
+                  sectionRef={sectionRef}
+                  sectionNumber={sectionNumber}
+                  headerDetails={headerDetails}
+                  handlePageRight={this.handlePageRight}
+                  data={data}
+                  paginationPage={paginationPage}
+                  rightBladeValue={rightValue}
+                />
+              </Panel>
+            )}
           </PanelGroup>
         </div>
       </>
@@ -136,4 +135,5 @@ ProtocolViewWrapper.propTypes = {
   data: PropTypes.isRequired,
   refx: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
+  summaryData: PropTypes.isRequired,
 };

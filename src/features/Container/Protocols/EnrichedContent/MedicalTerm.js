@@ -7,53 +7,11 @@ import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
+import CLINICAL_TERMS_DATA from './clinicalTerms.json';
 import './MedicalTerm.scss';
 
-const clinicalTermsMockData = [
-  {
-    value: 'Synonims',
-    termLabel: 'Synonims',
-    data: [
-      { label: 'Euismod dsds dsds ds' },
-      { label: 'Molestie' },
-      { label: 'Luptatum' },
-    ],
-  },
-  {
-    value: 'Clinical Terms',
-    termLabel: 'Clinical Terms',
-    data: [
-      { label: 'Euismod dsds dsds ds' },
-      { label: 'Molestie' },
-      { label: 'Luptatum' },
-    ],
-  },
-  {
-    value: 'Ontology',
-    termLabel: 'Ontology',
-    data: [
-      { label: 'Euismod dsds dsds ds' },
-      { label: 'Molestie' },
-      { label: 'Luptatum' },
-    ],
-  },
-  {
-    value: 'Prefered Term',
-    termLabel: 'Preferred Term',
-    data: [{ label: 'Euismod' }, { label: 'Molestie' }, { label: 'Luptatum' }],
-  },
-  {
-    value: 'Classification',
-    termLabel: 'Classification',
-    data: [
-      { label: 'Euismod dsds dsds ds' },
-      { label: 'Molestie' },
-      { label: 'Luptatum' },
-    ],
-  },
-];
 function MedicalTerm({ enrichedTarget, expanded }) {
-  const [clinicalTerms, setclinicalTerms] = useState(clinicalTermsMockData);
+  const [clinicalTerms, setclinicalTerms] = useState(CLINICAL_TERMS_DATA);
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
   const [selectedTerm, setSelectedTerm] = useState(null);
@@ -102,7 +60,7 @@ function MedicalTerm({ enrichedTarget, expanded }) {
   }
 
   return (
-    <div className="enriched-menu-wrapper" data-testId="Termlist">
+    <div className="enriched-menu-wrapper" data-testId="term-list">
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
           <div className="terms-list">

@@ -1,6 +1,4 @@
-import withStyles from '@material-ui/core/styles/withStyles';
 import React, { useState, useEffect, useRef } from 'react';
-import { neutral8 } from 'apollo-react/colors';
 import Tooltip from 'apollo-react/components/Tooltip';
 import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
@@ -11,15 +9,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import './BladeLeft.scss';
 
 import { protocolTocData } from '../protocolSlice';
-
-const styles = {
-  blade: {
-    color: neutral8,
-    lineHeight: '24px',
-    marginTop: '4.5%',
-    width: '200px',
-  },
-};
 
 function BladeLeft({ handlePageNo, dataSummary }) {
   const [open, setOpen] = useState(true);
@@ -73,7 +62,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   }, [wrapperRef]);
 
   return (
-    <div className="bladeContainer">
+    <div className="bladeContainer" ref={wrapperRef}>
       <Blade
         data-testid="toc-component"
         onChange={onChange}
@@ -85,8 +74,13 @@ function BladeLeft({ handlePageNo, dataSummary }) {
         width={263}
         marginTop={141}
         hasBackdrop
+        BackdropProps={{
+          onClick: () => {
+            setOpen(false);
+          },
+        }}
       >
-        <div className="toc-wrapper" ref={wrapperRef}>
+        <div className="toc-wrapper">
           {tocList?.map((item, index) => {
             const sectionIndex = index; // <= 0 ? 0 : index - 1;
             return (
@@ -97,7 +91,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                 }}
               >
                 <AccordionSummary>
-                  <Tooltip title={item.source_file_section}>
+                  <Tooltip title={item.source_file_section} placement="right">
                     <Typography
                       className="header-unselect"
                       onClick={(e) => {
@@ -169,7 +163,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     </div>
   );
 }
-export default withStyles(styles)(BladeLeft);
+export default BladeLeft;
 
 BladeLeft.propTypes = {
   // eslint-disable-next-line react/require-default-props
