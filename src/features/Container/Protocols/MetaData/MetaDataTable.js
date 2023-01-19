@@ -96,8 +96,6 @@ function MetaDataTable({ metaData }) {
 }
 
 MetaDataTable.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  // handleRightBlade: PropTypes.func,
   metaData: PropTypes.isRequired,
 };
 

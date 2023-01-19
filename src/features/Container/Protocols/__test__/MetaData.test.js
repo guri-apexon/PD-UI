@@ -49,23 +49,4 @@ describe('MetaData AccordianView', () => {
     expect(metadataAccordian[0]).toBeInTheDocument();
     fireEvent.click(metadataAccordian[0]);
   });
-  // test('MetaData save', () => {
-  //   const screen = render(<MetaData />, { initialState });
-  //   const metaDataEdit = screen.getAllByTestId('metapencilIcon');
-  //   expect(metaDataEdit[0]).toBeInTheDocument();
-  //   fireEvent.click(metaDataEdit[0]);
-  //   const metaDataSave = screen.getAllByTestId('metasaveIcon');
-  //   expect(metaDataSave[0]).toBeInTheDocument();
-  //   fireEvent.click(metaDataSave[0]);
-  // });
 });
-// describe('MetaData AccordianView', () => {
-//   test('MetaData edit', () => {
-//     const screen = render(<MetaData />, { initialState });
-//     const metadataAccordian = screen.getByTestId('metadata-accordian');
-//     expect(screen).toBeTruthy();
-//     expect(metadataAccordian).toBeInTheDocument();
-//     const metaDataEdit = screen.getAllByTestId('metadataaccordian');
-//     expect(metaDataEdit[0]).toBeInTheDocument();
-//   });
-// });
