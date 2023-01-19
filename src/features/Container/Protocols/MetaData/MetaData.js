@@ -18,6 +18,7 @@ function MetaData() {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
+  const [standardList, setStandardList] = useState([]);
 
   const addToAccordion = (e) => {
     if (e.key === 'Enter') {
@@ -235,6 +236,11 @@ function MetaData() {
     // });
     // setAccordianData(updatedData);
     setAccordianData(metaDataSelector.data);
+    setStandardList(
+      metaDataSelector?.data?.map((list) => {
+        return list.name;
+      }),
+    );
   }, [metaDataSelector.data]);
 
   useEffect(() => {
@@ -282,6 +288,7 @@ function MetaData() {
             >
               <Accordian
                 isMain
+                standardList={standardList}
                 accData={level1}
                 metaDataList={metaDataList}
                 isOpenSubText={isOpenSubText}

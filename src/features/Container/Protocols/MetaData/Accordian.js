@@ -14,6 +14,7 @@ import MetaDataTable from './MetaDataTable';
 
 function Accordian({
   isMain,
+  standardList,
   accData,
   metaDataList,
   isOpenSubText,
@@ -52,8 +53,13 @@ function Accordian({
                     />
                   </span>
                 )}
-                <Save className="metadata-plus-size mR" onClick={handleSave} />
-                <Trash className="metadata-plus-size" onClick={handleDelete} />
+                <Save className="metadata-plus-size" onClick={handleSave} />
+                {!standardList.includes(accData.name) && (
+                  <Trash
+                    className="metadata-plus-size mL"
+                    onClick={handleDelete}
+                  />
+                )}
               </>
             ) : (
               <span data-testId="metadatapencil">
@@ -97,6 +103,7 @@ function Accordian({
 
 Accordian.propTypes = {
   isMain: PropTypes.isRequired,
+  standardList: PropTypes.isRequired,
   accData: PropTypes.isRequired,
   metaDataList: PropTypes.isRequired,
   isOpenSubText: PropTypes.isRequired,
