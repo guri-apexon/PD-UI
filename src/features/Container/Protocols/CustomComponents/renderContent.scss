@@ -11,6 +11,8 @@
     top: -40px;
     background: #fff;
     box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+    display: flex;
+    align-items: center;
     // border: 1px solid #c9c9c9;
     .button-exec-icon {
       background-color: #fff;
@@ -23,12 +25,14 @@
       cursor: pointer;
       padding: 10px;
       font-size: 14px;
+      svg{
+        width: 0.6em;
+        height: 0.6em;
+        vertical-align: middle;
+      }
     }
     .button-exec-icon:hover {
       background-color: #eee;
-    }
-    img {
-      height: 12px;
     }
   }
   .contentEditable {

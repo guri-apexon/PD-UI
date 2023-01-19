@@ -215,7 +215,7 @@ export const markContentForDelete = (origArray, lineId) => {
 export const updateContentWithData = (origArray, obj) => {
   const arr = cloneDeep(origArray);
 
-  // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line
   arr.forEach((val) => {
     if (val.line_id === obj.lineId) {
       val.content = obj.content;

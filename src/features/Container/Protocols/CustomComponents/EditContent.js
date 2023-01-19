@@ -28,6 +28,7 @@ function ContentEdit({
       lineId: lineID,
       content: contentEditableRef.current.innerHTML,
     };
+    console.log('handleBlur', obj);
     // dispatch(updateSectionData(obj));
     // currentEditData.current = text;
     // currentLineID.current = lineID;
