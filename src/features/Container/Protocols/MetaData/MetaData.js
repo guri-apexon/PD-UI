@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import TextField from 'apollo-react/components/TextField';
 import Card from 'apollo-react/components/Card/Card';
@@ -227,18 +225,6 @@ function MetaData() {
   };
 
   useEffect(() => {
-    // const updatedData = metaDataSelector?.data?.map((each) => {
-    //   return {
-    //     ...each,
-    //     metaData: each.metaData?.map((list, index) => {
-    //       return {
-    //         ...list,
-    //         id: index + 1,
-    //       };
-    //     }),
-    //   };
-    // });
-    // setAccordianData(updatedData);
     setAccordianData(metaDataSelector.data);
     setStandardList(
       metaDataSelector?.data?.map((list) => {

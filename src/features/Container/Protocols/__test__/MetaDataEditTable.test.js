@@ -1,25 +1,6 @@
 import { render, fireEvent } from '../../../../test-utils/test-utils';
 import MetaDataEditTable from '../MetaData/MetaDataEditTable';
 
-const initialState = {
-  protocol: {
-    metaDataVariable: {
-      data: [
-        {
-          name: 'Summary Fields',
-          isEdit: false,
-          isActive: false,
-          metaData: [
-            {
-              header: 'Protocol Name ',
-              name: 'Covid Study',
-            },
-          ],
-        },
-      ],
-    },
-  },
-};
 const data = [
   {
     id: 1,

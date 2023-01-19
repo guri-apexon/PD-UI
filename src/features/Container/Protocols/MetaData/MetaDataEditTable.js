@@ -157,6 +157,7 @@ function MetaDataEditTable({
 
   useEffect(() => {
     updateRows(editedRow, data?.name);
+    // eslint-disable-next-line
   }, [editedRow]);
 
   const RenderTable = useMemo(() => {
@@ -178,6 +179,7 @@ function MetaDataEditTable({
         stripedRows
       />
     );
+    // eslint-disable-next-line
   }, [column, metaData]);
 
   return (
