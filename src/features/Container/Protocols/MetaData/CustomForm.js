@@ -1,4 +1,3 @@
-import React from 'react';
 import Grid from 'apollo-react/components/Grid';
 import TextField from 'apollo-react/components/TextField';
 import Select from 'apollo-react/components/Select';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Table from 'apollo-react/components/Table';
 import Checkbox from 'apollo-react/components/Checkbox';
 import PropTypes from 'prop-types';

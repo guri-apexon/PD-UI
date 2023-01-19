@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Accordion from 'apollo-react/components/Accordion';
 import Typography from 'apollo-react/components/Typography';

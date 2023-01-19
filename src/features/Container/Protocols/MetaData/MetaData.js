@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from 'apollo-react/components/TextField';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty } from 'lodash';
-import { toast } from 'react-toastify';
 import './MetaData.scss';
 import Accordian from './Accordian';
 import { metaDataVariable } from '../protocolSlice';
@@ -54,7 +52,6 @@ function MetaData() {
 
   const handleAccordian = (mainIndex, subIndex, type) => {
     if (type === 'mainSection') {
-      console.log(accordianData[mainIndex].metaData);
       setRows({
         ...rows,
         [accordianData[mainIndex].name]: accordianData[mainIndex].metaData,
@@ -254,9 +251,7 @@ function MetaData() {
     dispatch({
       type: 'GET_METADATA_VARIABLE',
     });
-  }, []);
-
-  console.log('rows', rows);
+  }, [dispatch]);
 
   return (
     <Card
