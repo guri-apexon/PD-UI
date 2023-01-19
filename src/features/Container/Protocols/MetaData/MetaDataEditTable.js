@@ -223,8 +223,6 @@ function MetaDataEditTable({
 }
 
 MetaDataEditTable.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  // handleRightBlade: PropTypes.func,
   metaDataList: PropTypes.isRequired,
   setMetaDataList: PropTypes.isRequired,
   data: PropTypes.isRequired,
