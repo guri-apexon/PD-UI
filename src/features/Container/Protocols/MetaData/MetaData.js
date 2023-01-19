@@ -68,62 +68,104 @@ function MetaData() {
         }),
       );
     } else {
-      // setAccordianData(
-      //   accordianData.map((data, i) => {
-      //     if (i === mainIndex) {
-      //       data.map((subData, subI) => {
-      //         if (subI === subIndex) {
-      //           setRows({
-      //             ...rows,
-      //             [data[subIndex].name]: data[subIndex].metaData,
-      //           });
-      //           return {
-      //             ...subData,
-      //             isActive: !subData.isActive,
-      //             isEdit: false,
-      //           };
-      //         }
-      //         return subData;
-      //       });
-      //     }
-      //     return data;
-      //   }),
-      // );
+      const updatedAccData = accordianData.map((data, i) => {
+        if (i === mainIndex) {
+          data?.subAccList?.map((subData, subI) => {
+            if (subI === subIndex) {
+              setRows({
+                ...rows,
+                [data.subAccList[subIndex].name]:
+                  data.subAccList[subIndex].metaData,
+              });
+              subData.isActive = !subData.isActive;
+              // return {
+              //   ...subData,
+              //   isActive: true,
+              //   isEdit: false,
+              // };
+            }
+            return subData;
+          });
+        }
+        return data;
+      });
+      setAccordianData(updatedAccData);
     }
   };
 
-  const handleEdit = (index, e) => {
+  const handleEdit = (index, e, subIndex, type) => {
     e.stopPropagation();
-    setAccordianData(
-      accordianData.map((acc, i) => {
-        if (index === i) {
-          return {
-            ...acc,
-            isEdit: true,
-            isActive: true,
-          };
-        }
-        return acc;
-      }),
-    );
+    if (type === 'mainSection') {
+      setAccordianData(
+        accordianData.map((acc, i) => {
+          if (index === i) {
+            return {
+              ...acc,
+              isEdit: true,
+              isActive: true,
+            };
+          }
+          return acc;
+        }),
+      );
+    } else {
+      setAccordianData(
+        accordianData.map((data, i) => {
+          if (i === index) {
+            data?.subAccList?.map((subData, subI) => {
+              if (subI === subIndex) {
+                subData.isActive = true;
+                subData.isEdit = true;
+              }
+              return subData;
+            });
+          }
+          return data;
+        }),
+      );
+    }
   };
 
-  const handleSave = (name, index, e) => {
+  const handleSave = (name, index, subIndex, e, type) => {
     e.stopPropagation();
-    setAccordianData(
-      accordianData.map((acc, i) => {
-        if (index === i) {
-          const accMetaData =
-            rows[acc?.name].length > 0 ? rows[acc?.name] : acc.metaData;
-          return {
-            ...acc,
-            isEdit: false,
-            metaData: [...accMetaData, ...metaDataList[acc?.name]],
-          };
-        }
-        return acc;
-      }),
-    );
+    if (type === 'mainSection') {
+      setAccordianData(
+        accordianData.map((acc, i) => {
+          if (index === i) {
+            const accMetaData =
+              rows[acc?.name].length > 0 ? rows[acc?.name] : acc.metaData;
+            return {
+              ...acc,
+              isEdit: false,
+              metaData: [...accMetaData, ...metaDataList[acc?.name]],
+            };
+          }
+          return acc;
+        }),
+      );
+    } else {
+      setAccordianData(
+        accordianData.map((data, i) => {
+          if (i === index) {
+            data?.subAccList?.map((subData, subI) => {
+              if (subI === subIndex) {
+                const accMetaData =
+                  rows[subData?.name].length > 0
+                    ? rows[subData?.name]
+                    : subData.metaData;
+                subData.metaData = [
+                  ...accMetaData,
+                  ...metaDataList[subData?.name],
+                ];
+                subData.isEdit = false;
+              }
+              return subData;
+            });
+          }
+          return data;
+        }),
+      );
+    }
     setMetaDataList({
       ...metaDataList,
       [name]: [],
@@ -134,9 +176,25 @@ function MetaData() {
     });
   };
 
-  const handleDelete = (e, index) => {
+  const handleDelete = (e, index, subIndex, type) => {
     e.stopPropagation();
-    setAccordianData(accordianData.filter((data, i) => index !== i));
+    if (type === 'mainSection') {
+      setAccordianData(accordianData.filter((data, i) => index !== i));
+    } else {
+      setAccordianData(
+        accordianData.map((data, i) => {
+          if (i === index) {
+            return {
+              ...data,
+              subAccList: data?.subAccList.filter(
+                (subData, subI) => subI !== subIndex,
+              ),
+            };
+          }
+          return data;
+        }),
+      );
+    }
   };
 
   const addSubAccordion = (index, e, name) => {
@@ -234,9 +292,13 @@ function MetaData() {
                 handleAccordian={() =>
                   handleAccordian(index1, null, 'mainSection')
                 }
-                handleSave={(e) => handleSave(level1.name, index1, e)}
-                handleDelete={(e) => handleDelete(e, index1)}
-                handleEdit={(e) => handleEdit(index1, e)}
+                handleSave={(e) =>
+                  handleSave(level1.name, index1, null, e, 'mainSection')
+                }
+                handleDelete={(e) =>
+                  handleDelete(e, index1, null, 'mainSection')
+                }
+                handleEdit={(e) => handleEdit(index1, e, null, 'mainSection')}
                 updateRows={updateRows}
                 addSubAccordion={(e, name) => addSubAccordion(index1, e, name)}
                 subAccComponent={level1?.subAccList?.map((subAcc, subIndex) => {
@@ -250,8 +312,21 @@ function MetaData() {
                       handleAccordian={() =>
                         handleAccordian(index1, subIndex, 'subSection')
                       }
-                      handleSave={(e) => handleSave(subAcc.name, subIndex, e)}
-                      handleEdit={(e) => handleEdit(subIndex, e)}
+                      handleDelete={(e) =>
+                        handleDelete(e, index1, subIndex, 'subSection')
+                      }
+                      handleSave={(e) =>
+                        handleSave(
+                          subAcc.name,
+                          index1,
+                          subIndex,
+                          e,
+                          'subSection',
+                        )
+                      }
+                      handleEdit={(e) =>
+                        handleEdit(index1, e, subIndex, 'subSection')
+                      }
                       updateRows={updateRows}
                     />
                   );
