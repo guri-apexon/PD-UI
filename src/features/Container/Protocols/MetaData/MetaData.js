@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import TextField from 'apollo-react/components/TextField';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
@@ -8,6 +8,7 @@ import Accordian from './Accordian';
 import { metaDataVariable } from '../protocolSlice';
 
 function MetaData() {
+  const wrapperRef = useRef(null);
   const metaDataSelector = useSelector(metaDataVariable);
   const dispatch = useDispatch();
   const [accordianData, setAccordianData] = useState([]);
@@ -17,6 +18,18 @@ function MetaData() {
   const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
   const [standardList, setStandardList] = useState([]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
 
   const addToAccordion = (e) => {
     if (e.key === 'Enter') {
@@ -253,7 +266,7 @@ function MetaData() {
           />
         </div>
         {isOpen && (
-          <div style={{ maxWidth: 400 }}>
+          <div style={{ maxWidth: 400 }} ref={wrapperRef}>
             <TextField
               label=""
               placeholder="Select or type section name"

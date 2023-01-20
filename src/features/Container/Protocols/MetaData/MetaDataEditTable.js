@@ -19,7 +19,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   const handleDataChange = (id, key, e) => {
     setVal(e.target.value);
   };
-  return key === 'name' || row?.isCustom ? (
+  return key === 'name' || row?.isCustom || key === 'note' ? (
     <TextField
       size="small"
       fullWidth
@@ -94,7 +94,11 @@ function MetaDataEditTable({
     setNote(checked);
     const columnTemp = [...column];
     if (checked) {
-      columnTemp.push({ header: 'Note', accessor: 'note' });
+      columnTemp.push({
+        header: 'Note',
+        accessor: 'note',
+        customCell: EditableCell,
+      });
       setColumn(columnTemp);
     } else {
       removeIndex('Note');
@@ -223,8 +227,6 @@ function MetaDataEditTable({
 }
 
 MetaDataEditTable.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  // handleRightBlade: PropTypes.func,
   metaDataList: PropTypes.isRequired,
   setMetaDataList: PropTypes.isRequired,
   data: PropTypes.isRequired,
