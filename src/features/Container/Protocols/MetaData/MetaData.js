@@ -143,6 +143,7 @@ function MetaData() {
   };
 
   const handleSave = (name, index, subIndex, e, type) => {
+    console.log('metaDataList', metaDataList);
     e.stopPropagation();
     if (type === 'mainSection') {
       setAccordianData(
@@ -250,6 +251,8 @@ function MetaData() {
       type: 'GET_METADATA_VARIABLE',
     });
   }, [dispatch]);
+
+  console.log('accordianData', accordianData);
 
   return (
     <Card

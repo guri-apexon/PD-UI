@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import TextField from 'apollo-react/components/TextField/TextField';
 import Checkbox from 'apollo-react/components/Checkbox';
 import Plus from 'apollo-react-icons/Plus';
+import moment from 'moment';
 import CustomForm from './CustomForm';
 
 function Cell({ row, column }) {
@@ -145,7 +146,10 @@ function MetaDataEditTable({
         list?.id === id
           ? {
               ...list,
-              [e.target.name]: e.target.value,
+              [e.target.name]:
+                list?.type === 'Date' && e.target.name === 'name'
+                  ? moment(e.target.value).format('MM/DD/YYYY')
+                  : e.target.value,
             }
           : list,
       ),

@@ -6,7 +6,6 @@ import MenuItem from 'apollo-react/components/MenuItem';
 import Trash from 'apollo-react-icons/Trash';
 import DatePicker from 'apollo-react/components/DatePickerV2';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 function CustomForm({ deleteMetaData, handleChange, item }) {
   const [type, setType] = useState('String');
@@ -20,7 +19,7 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
     handleChange(e);
   };
 
-  const [inputValue, setInputValue] = useState(moment().format('MM/DD/YYYY'));
+  const [inputValue, setInputValue] = useState(null);
 
   return (
     <Grid
@@ -55,6 +54,7 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
 
           {type === 'Date' && (
             <DatePicker
+              name="name"
               placeholder="mm/dd/yyyy"
               value={item?.name}
               onChange={(value) =>
