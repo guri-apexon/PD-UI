@@ -13,13 +13,18 @@ import MultilineEdit from './Digitized_edit';
 import Loader from '../../../Components/Loader/Loader';
 import { sectionDetails } from '../protocolSlice';
 import { createFullMarkup } from '../../../../utils/utilFunction';
+import MedicalTerm from '../EnrichedContent/MedicalTerm';
+import SanitizeHTML from '../../../Components/SanitizeHtml';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
+const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
 function DigitizeAccordion({
   item,
   protocol,
   primaryRole,
   currentActiveCard,
   handlePageRight,
+  rightBladeValue,
   currentEditCard,
   setCurrentEditCard,
 }) {
@@ -28,6 +33,7 @@ function DigitizeAccordion({
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sections, setSections] = useState([]);
+  const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
 
@@ -58,6 +64,8 @@ function DigitizeAccordion({
           },
         });
       }
+    } else {
+      setEnrichedTarget(null);
     }
     // eslint-disable-next-line
   }, [expanded]);
@@ -69,6 +77,13 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
+  const handleEnrichedClick = (e) => {
+    if (e.target.className === 'enriched-txt') {
+      setEnrichedTarget(e.target);
+    } else {
+      setEnrichedTarget(null);
+    }
+  };
   useEffect(() => {
     if (currentEditCard !== item.link_id) {
       setShowEdit(false);
@@ -170,16 +185,24 @@ function DigitizeAccordion({
               setSections={setSections}
             />
           ) : (
-            <div className="readable-content">
-              {sections.map((section) =>
-                section?.font_info?.VertAlign === 'superscript' ? (
+            /* eslint-disable */
+            <div
+              className="readable-content"
+              onClick={(e) => handleEnrichedClick(e)}
+            >
+              {/* eslint-enable */}
+              {sections.map((section) => {
+                const enrichedTxt =
+                  rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+                    ? enrichedDummyText
+                    : '';
+                return section?.font_info?.VertAlign === 'superscript' ? (
                   <div key={React.key} className="supContent">
-                    <sup
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={createFullMarkup(
-                        section.content.split('_')[0],
-                      )}
-                    />
+                    <sup>
+                      <SanitizeHTML
+                        html={createFullMarkup(section.content.split('_')[0])}
+                      />
+                    </sup>
                     <p
                       style={{
                         fontWeight: `${
@@ -192,11 +215,12 @@ function DigitizeAccordion({
                           section?.font_info?.Italics ? 'italics' : ''
                         }`,
                       }}
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={createFullMarkup(
-                        section.content.split('_')[1],
-                      )}
-                    />
+                    >
+                      <SanitizeHTML
+                        html={createFullMarkup(section.content.split('_')[1])}
+                      />
+                      {enrichedTxt}
+                    </p>
                   </div>
                 ) : (
                   <p
@@ -211,14 +235,16 @@ function DigitizeAccordion({
                         section?.font_info?.Italics ? 'italics' : ''
                       }`,
                     }}
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={createFullMarkup(section.content)}
-                  />
-                ),
-              )}
+                  >
+                    <SanitizeHTML html={createFullMarkup(section.content)} />
+                    {enrichedTxt}
+                  </p>
+                );
+              })}
             </div>
           ))}
       </AccordionDetails>
+      <MedicalTerm enrichedTarget={enrichedTarget} expanded={expanded} />
     </Accordion>
   );
 }
@@ -231,6 +257,7 @@ DigitizeAccordion.propTypes = {
   primaryRole: PropTypes.isRequired,
   currentActiveCard: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
+  rightBladeValue: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
 };

@@ -102,7 +102,9 @@ function Digitize({
 
   return (
     <div data-testid="protocol-column-wrapper">
-      {rightValue === PROTOCOL_RIGHT_MENU.HOME && (
+      {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
+        rightValue,
+      ) && (
         <Card className="protocol-column protocol-digitize-column card-boarder">
           <div className="panel-heading" data-testid="header">
             Digitized Data
@@ -132,6 +134,7 @@ function Digitize({
                         currentActiveCard={currentActiveCard}
                         index={index}
                         handlePageRight={handlePageRight}
+                        rightBladeValue={BladeRightValue}
                         currentEditCard={currentEditCard}
                         setCurrentEditCard={setCurrentEditCard}
                       />
