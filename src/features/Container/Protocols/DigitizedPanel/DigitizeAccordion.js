@@ -33,34 +33,6 @@ function DigitizeAccordion({
 
   const { data: sectionData } = sectionHeaderDetails;
 
-  useEffect(() => {
-    console.log('sectionData', sectionData);
-    if (sectionData?.length > 0) {
-      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (arr.length > 0) {
-        setShowLoader(false);
-        let updatedSectionsData = [];
-        let matchedIndex = null;
-        const sectionsData = arr[0].data;
-        updatedSectionsData = sectionsData?.map((sec, index) => {
-          if (sec?.font_info?.VertAlign === 'superscript') {
-            matchedIndex = index;
-            return {
-              ...sec,
-              content: `${sec?.content}_${sectionsData[index + 1].content}`,
-            };
-          }
-          return sec;
-        });
-        if (matchedIndex) {
-          updatedSectionsData.splice(matchedIndex + 1, 1);
-        }
-        setSections(updatedSectionsData);
-      }
-    }
-    // eslint-disable-next-line
-  }, [sectionHeaderDetails]);
-
   const handleChange = () => {
     handlePageRight(item.page);
     setExpanded(!expanded);
@@ -110,6 +82,35 @@ function DigitizeAccordion({
     setShowEdit(true);
     setCurrentEditCard(item.link_id);
   };
+  const refreshContent = () => {
+    console.log('refreshContent');
+  };
+  useEffect(() => {
+    // eslint-disable-next-line
+    if (sectionData?.length > 0) {
+      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
+      if (arr.length > 0) {
+        setShowLoader(false);
+        let updatedSectionsData = [];
+        let matchedIndex = null;
+        const sectionsData = arr[0].data;
+        updatedSectionsData = sectionsData?.map((sec, index) => {
+          if (sec?.font_info?.VertAlign === 'superscript') {
+            matchedIndex = index;
+            return {
+              ...sec,
+              content: `${sec?.content}_${sectionsData[index + 1].content}`,
+            };
+          }
+          return sec;
+        });
+        if (matchedIndex) {
+          updatedSectionsData.splice(matchedIndex + 1, 1);
+        }
+        setSections(updatedSectionsData);
+      }
+    }
+  }, [sectionHeaderDetails]);
 
   return (
     <Accordion expanded={expanded} data-testid="accordion">
@@ -143,7 +144,7 @@ function DigitizeAccordion({
                 ) : (
                   // eslint-disable-next-line
                   <span data-testId="saveIcon" onClick={onSaveClick}>
-                    <Save />
+                    <Save onClick={() => refreshContent()} />
                   </span>
                 )}
               </>

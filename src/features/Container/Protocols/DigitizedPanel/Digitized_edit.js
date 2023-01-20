@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 import { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import HoverComponent from '../CustomComponents/HoverComponent';
 import RenderContent from '../CustomComponents/RenderContent';
@@ -13,12 +13,17 @@ import {
   markContentForDelete,
 } from '../../../../utils/utilFunction';
 
-import { setSectionDetails, updateSectionData } from '../protocolSlice';
+import {
+  setSectionDetails,
+  updateSectionData,
+  sectionDetails,
+} from '../protocolSlice';
 import SAMPLE_DOC from './data.json';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
-import ActionTypes from './ActionTypes';
 
 function MultilineEdit({ data, edit }) {
+  const sectionHeaderDetails = useSelector(sectionDetails);
+  const { data: sectionData } = sectionHeaderDetails;
   const [value, setValue] = useState(null);
   const [sections, setSections] = useState([]);
   useEffect(() => {
@@ -33,10 +38,17 @@ function MultilineEdit({ data, edit }) {
         data: {},
       }));
       setValue({ blocks: arr, entityMap: {} });
-      console.log('data', data);
+      // console.log('data', data);
       setSections(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    console.log('sectionData', sectionData);
+    if (sectionData?.length > 1) {
+      setSections(sectionData);
+    }
+  }, [sectionData]);
 
   const dispatch = useDispatch();
   const [activeLineID, setActiveLineID] = useState('');
@@ -67,10 +79,6 @@ function MultilineEdit({ data, edit }) {
   const handleAddSegment = (obj, lineId) => () => {
     const arr = addContent(data, obj, lineId);
     dispatch(updateSectionData({ data: arr, type: 'insert' }));
-    // dispatch({
-    //   type: ActionTypes.UPDATE_PROTOCOL_VIEW,
-    //   payload: { data: arr, type: 'insert' },
-    // });
   };
   const handleClickChild = (item, type) => {
     // if (type === 'symbol') {
@@ -93,7 +101,7 @@ function MultilineEdit({ data, edit }) {
         />
       )}
       <section className="section-edited-list">
-        {data
+        {sections
           ?.filter((obj) => obj.qc_change_type !== 'delete')
           .map((data) => (
             <div key={data.line_id}>

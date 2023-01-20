@@ -211,13 +211,13 @@ const setContent = (type) => {
 export const addContent = (origArray, obj, lineId) => {
   const arr = cloneDeep(origArray);
   let index = 0;
-  obj.line_id = uuidv4();
-  obj.content = setContent('text');
+  const newObj = { ...obj };
+  newObj.line_id = uuidv4();
+  newObj.content = setContent('text');
   // eslint-disable-next-line
   const idx = arr.findIndex((val) => val.line_id === lineId);
   index = idx + 1;
-  console.log('index', index);
-  arr.splice(index, 0, obj);
+  arr.splice(index, 0, newObj);
   return arr;
 };
 

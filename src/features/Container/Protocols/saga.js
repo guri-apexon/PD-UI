@@ -21,10 +21,8 @@ import {
   getFileStream,
   getRightBladeValue,
   getMetaDataVariable,
-  updateSectionData,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
-import ActionTypes from './DigitizedPanel/ActionTypes';
 
 function* getUserId() {
   const state = yield select();
@@ -412,9 +410,6 @@ export function* MetaDataVariable() {
 export function* RightBladeValue(action) {
   yield put(getRightBladeValue(action.payload.name));
 }
-// export function* updateSectionContent(action) {
-//   yield put(updateSectionData(action));
-// }
 
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
@@ -431,7 +426,6 @@ function* watchProtocolViews() {
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
   yield takeEvery('GET_METADATA_VARIABLE', MetaDataVariable);
   yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
-  // yield takeLatest(ActionTypes.UPDATE_PROTOCOL_VIEW, updateSectionContent);
 }
 
 // notice how we now only export the rootSaga

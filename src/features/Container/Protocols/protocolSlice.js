@@ -84,7 +84,8 @@ export const protocolSlice = createSlice({
     updateSectionData: (state, action) => {
       const { type, data } = action.payload;
       if (type === 'insert') {
-        state.sectionDetails.data = data;
+        console.log('STATE UPDATED');
+        // state.sectionDetails.data = data;
       } else {
         const obj = {
           type: 'modify',
