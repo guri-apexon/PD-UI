@@ -1,11 +1,27 @@
+import { useState, useEffect } from 'react';
 import Grid from 'apollo-react/components/Grid';
 import TextField from 'apollo-react/components/TextField';
 import Select from 'apollo-react/components/Select';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Trash from 'apollo-react-icons/Trash';
+import DatePicker from 'apollo-react/components/DatePickerV2';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 function CustomForm({ deleteMetaData, handleChange, item }) {
+  const [type, setType] = useState('String');
+
+  useEffect(() => {
+    console.log({ item });
+  }, [item]);
+
+  const onTypeChange = (e) => {
+    setType(e.target.value);
+    handleChange(e);
+  };
+
+  const [inputValue, setInputValue] = useState(moment().format('MM/DD/YYYY'));
+
   return (
     <Grid
       container
@@ -24,19 +40,49 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
           onChange={(e) => handleChange(e)}
         />
         <div className="valueText">
-          <TextField
-            label=""
-            placeholder="Enter Value"
-            name="name"
-            value={item?.name}
-            inputProps={{ 'data-testid': 'customeform-textField-value' }}
-            onChange={(e) => handleChange(e)}
-          />
+          {(type === 'String' || type === 'Number') && (
+            <TextField
+              label=""
+              placeholder="Enter Value"
+              type={type === 'String' ? 'text' : 'number'}
+              name="name"
+              fullWidth
+              value={item?.name}
+              inputProps={{ 'data-testid': 'customeform-textField-value' }}
+              onChange={(e) => handleChange(e)}
+            />
+          )}
+
+          {type === 'Date' && (
+            <DatePicker
+              placeholder="mm/dd/yyyy"
+              value={item?.name}
+              onChange={(value) =>
+                handleChange({ target: { name: 'name', value } })
+              }
+              inputValue={inputValue}
+              onInputChange={(inputValue) => setInputValue(inputValue)}
+            />
+          )}
+          {type === 'Boolean' && (
+            <Select
+              placeholder="Select Value"
+              label=""
+              name="name"
+              fullWidth
+              value={item?.name}
+              onChange={handleChange}
+            >
+              <MenuItem value="true">True</MenuItem>
+              <MenuItem value="false">False</MenuItem>
+            </Select>
+          )}
+
           <Select
             label=""
             name="type"
             value={item?.type}
-            onChange={(e) => handleChange(e)}
+            onChange={(e) => onTypeChange(e)}
             placeholder="Select Type"
             fullWidth
             inputProps={{ 'data-testid': 'customeform-textField-checkbox' }}
