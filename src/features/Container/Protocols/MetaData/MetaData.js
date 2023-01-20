@@ -137,10 +137,11 @@ function MetaData() {
           if (index === i) {
             const accMetaData =
               rows[acc?.name].length > 0 ? rows[acc?.name] : acc.metaData;
+            const filterMetaData = metaDataList[acc?.name] || [];
             return {
               ...acc,
               isEdit: false,
-              metaData: [...accMetaData, ...metaDataList[acc?.name]],
+              metaData: [...accMetaData, ...filterMetaData],
             };
           }
           return acc;
@@ -156,10 +157,8 @@ function MetaData() {
                   rows[subData?.name].length > 0
                     ? rows[subData?.name]
                     : subData.metaData;
-                subData.metaData = [
-                  ...accMetaData,
-                  ...metaDataList[subData?.name],
-                ];
+                const filterMetaData = metaDataList[subData?.name] || [];
+                subData.metaData = [...accMetaData, ...filterMetaData];
                 subData.isEdit = false;
               }
               return subData;
