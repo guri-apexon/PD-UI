@@ -34,6 +34,7 @@ function DigitizeAccordion({
   const { data: sectionData } = sectionHeaderDetails;
 
   useEffect(() => {
+    console.log('sectionData', sectionData);
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
       if (arr.length > 0) {

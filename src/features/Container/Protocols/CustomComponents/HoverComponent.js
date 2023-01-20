@@ -32,11 +32,16 @@ function HoverComponent({ lineId, activeLineID, handleAddSegment }) {
         className="tooltip-add-element"
         title="Actions"
         disableFocusListener
+        placement="left"
       >
         <IconMenuButton
           className="icon-buttons"
           id={uuidv4()}
           menuItems={menuItems}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
         >
           <Plus className="plus-icon" size="small" />
         </IconMenuButton>

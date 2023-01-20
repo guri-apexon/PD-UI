@@ -13,11 +13,14 @@ import {
   markContentForDelete,
 } from '../../../../utils/utilFunction';
 
-import { setSectionDetails } from '../protocolSlice';
+import { setSectionDetails, updateSectionData } from '../protocolSlice';
 import SAMPLE_DOC from './data.json';
+import FontProperties from '../CustomComponents/FontProperties/FontProperties';
+import ActionTypes from './ActionTypes';
 
 function MultilineEdit({ data, edit }) {
   const [value, setValue] = useState(null);
+  const [sections, setSections] = useState([]);
   useEffect(() => {
     if (data?.length > 0) {
       const arr = data.map((val, index) => ({
@@ -30,6 +33,8 @@ function MultilineEdit({ data, edit }) {
         data: {},
       }));
       setValue({ blocks: arr, entityMap: {} });
+      console.log('data', data);
+      setSections(data);
     }
   }, [data]);
 
@@ -37,11 +42,6 @@ function MultilineEdit({ data, edit }) {
   const [activeLineID, setActiveLineID] = useState('');
 
   const sectionName = null;
-
-  const handleAddSegment = (obj, lineId) => () => {
-    const arr = addContent(data, obj, lineId);
-    dispatch(setSectionDetails(arr));
-  };
 
   const handleContentEdit = (value, lineId) => {
     const obj = {
@@ -64,38 +64,59 @@ function MultilineEdit({ data, edit }) {
       console.log(editorRef.current.getContent({ format: 'text' }));
     }
   };
+  const handleAddSegment = (obj, lineId) => () => {
+    const arr = addContent(data, obj, lineId);
+    dispatch(updateSectionData({ data: arr, type: 'insert' }));
+    // dispatch({
+    //   type: ActionTypes.UPDATE_PROTOCOL_VIEW,
+    //   payload: { data: arr, type: 'insert' },
+    // });
+  };
+  const handleClickChild = (item, type) => {
+    // if (type === 'symbol') {
+    //   if (currentEditData.current) {
+    //     const newText = `${currentEditData.current} ${item.name}`;
+    //     currentEditData.current = newText;
+    //   } else {
+    //     const newText = `${text} ${item.name}`;
+    //     setText(newText);
+    //   }
+    // }
+  };
   return (
     <div className="Richtextcontainer" data-testId="richTextEditor">
-      {data
-        ?.filter((obj) => obj.qc_change_type !== 'delete')
-        .map((data) => (
-          <div key={data.line_id}>
-            <div className="content_container">
-              {/* eslint-disable */}
-              <div
-                /* eslint-enable */
-                onClick={() => edit && setActiveLineID(data.line_id)}
-                style={{ position: 'relative' }}
-              >
-                <RenderContent
-                  data={data}
-                  sectionName={sectionName}
-                  handleContentEdit={handleContentEdit}
-                  activeLineID={activeLineID}
-                  deleteSection={deleteSection}
-                  edit={edit}
-                />
-                {edit && activeLineID === data.line_id && (
-                  <HoverComponent
-                    lineId={data.line_id}
+      {edit && (
+        <FontProperties
+          activeLineID={activeLineID}
+          onClick={handleClickChild}
+          handleAddSegment={handleAddSegment}
+        />
+      )}
+      <section className="section-edited-list">
+        {data
+          ?.filter((obj) => obj.qc_change_type !== 'delete')
+          .map((data) => (
+            <div key={data.line_id}>
+              <div className="content_container">
+                {/* eslint-disable */}
+                <div
+                  /* eslint-enable */
+                  onClick={() => edit && setActiveLineID(data.line_id)}
+                  style={{ position: 'relative' }}
+                >
+                  <RenderContent
+                    data={data}
+                    sectionName={sectionName}
+                    handleContentEdit={handleContentEdit}
                     activeLineID={activeLineID}
-                    handleAddSegment={handleAddSegment}
+                    deleteSection={deleteSection}
+                    edit={edit}
                   />
-                )}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+      </section>
     </div>
   );
 }

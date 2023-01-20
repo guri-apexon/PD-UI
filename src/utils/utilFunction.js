@@ -194,13 +194,29 @@ export const updateContent = (origArray, obj) => {
   return arr;
 };
 
+export const contentType = {
+  table: 'table',
+  text: 'text',
+  image: 'image',
+  header: 'header',
+};
+
+const setContent = (type) => {
+  if (type === contentType.text || type === contentType.header) {
+    return 'Edit Your Text Here';
+  }
+  return '';
+};
+
 export const addContent = (origArray, obj, lineId) => {
   const arr = cloneDeep(origArray);
   let index = 0;
   obj.line_id = uuidv4();
-  // eslint-disable-next-line consistent-return
+  obj.content = setContent('text');
+  // eslint-disable-next-line
   const idx = arr.findIndex((val) => val.line_id === lineId);
   index = idx + 1;
+  console.log('index', index);
   arr.splice(index, 0, obj);
   return arr;
 };

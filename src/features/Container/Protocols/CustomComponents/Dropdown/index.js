@@ -13,6 +13,7 @@ function Dropdown({
   headerStyle,
   onClick,
   type,
+  disabled,
 }) {
   const [showList, setShowList] = useState(false);
   const showMenu = () => {
@@ -21,6 +22,7 @@ function Dropdown({
   return (
     <div className="dropdown">
       <button
+        disabled={disabled}
         type="button"
         className="dropbtn"
         onClick={showMenu}
@@ -69,4 +71,5 @@ Dropdown.propTypes = {
   headerStyle: PropTypes.isRequired,
   onClick: PropTypes.isRequired,
   type: PropTypes.isRequired,
+  disabled: PropTypes.isRequired,
 };

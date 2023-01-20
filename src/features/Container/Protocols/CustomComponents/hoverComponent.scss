@@ -1,26 +1,16 @@
 .contentmenu {
-  position: absolute;
-  left: -50px;
-  top: -8px;
-}
-
-.contentmenu.hide {
-  display: none;
-}
-
-.contentmenu.show {
-  display: block;
-
-  button {
-    height: 15px;
-    width: 15px;
-    left: 18px;
-    padding: 0;
-    top: 5px;
-
-    svg {
-      height: 15px;
-      width: 15px;
+  margin-left: auto;
+  margin-right: 20px;
+  &.hide {
+    display: none;
+  }
+  &.show {
+    button {
+      padding: 10px;
+      svg {
+        height: 15px;
+        width: 15px;
+      }
     }
   }
 }

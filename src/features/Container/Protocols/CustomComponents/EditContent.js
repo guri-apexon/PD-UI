@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import FontProperties from './FontProperties';
+import FontProperties from './FontProperties/FontProperties';
 
 import { updateSectionData } from '../protocolSlice';
 
@@ -36,18 +36,6 @@ function ContentEdit({
     // setCurrentLineID("");
   };
 
-  const handleClickChild = (item, type) => {
-    // if (type === 'symbol') {
-    //   if (currentEditData.current) {
-    //     const newText = `${currentEditData.current} ${item.name}`;
-    //     currentEditData.current = newText;
-    //   } else {
-    //     const newText = `${text} ${item.name}`;
-    //     setText(newText);
-    //   }
-    // }
-  };
-
   const handleKeyDown = (e) => {
     if (
       [46, 8].includes(e.keyCode) &&
@@ -74,9 +62,6 @@ function ContentEdit({
         onKeyDown={handleKeyDown}
         data-placeholder
       />
-      {edit && lineID === activeLineID && (
-        <FontProperties onClick={handleClickChild} />
-      )}
     </div>
   );
 }

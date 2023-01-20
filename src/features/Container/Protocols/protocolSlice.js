@@ -82,13 +82,18 @@ export const protocolSlice = createSlice({
       state.fileStream = action.payload;
     },
     updateSectionData: (state, action) => {
-      const obj = {
-        type: 'modify',
-        lineId: action.payload.lineId,
-        content: action.payload.content,
-      };
-      const arr = updateContentWithData(state.sectionDetails.sections, obj);
-      state.sectionDetails.sections = arr;
+      const { type, data } = action.payload;
+      if (type === 'insert') {
+        state.sectionDetails.data = data;
+      } else {
+        const obj = {
+          type: 'modify',
+          lineId: action.payload.lineId,
+          content: action.payload.content,
+        };
+        const arr = updateContentWithData(state.sectionDetails.sections, obj);
+        state.sectionDetails.sections = arr;
+      }
     },
     getMetaDataSummaryField: (state, action) => {
       state.metaDataSummaryField = action.payload;
