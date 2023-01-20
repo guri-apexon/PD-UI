@@ -119,7 +119,7 @@ function Digitize({
               </div>
             ) : (
               <>
-                {headerList.map((items, index) => (
+                {headerList.map((item, index) => (
                   <div
                     key={React.key}
                     ref={sectionRef[index]}
@@ -128,7 +128,7 @@ function Digitize({
                     <Drag className="drag" />
                     <div>
                       <DigitizeAccordion
-                        item={items}
+                        item={item}
                         protocol={protocolAllItems.data.protocol}
                         primaryRole={data.userPrimaryRoleFlag}
                         currentActiveCard={currentActiveCard}

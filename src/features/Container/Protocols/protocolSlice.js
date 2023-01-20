@@ -82,10 +82,12 @@ export const protocolSlice = createSlice({
       state.fileStream = action.payload;
     },
     updateSectionData: (state, action) => {
-      const { type, data } = action.payload;
+      const { type, data, linkId } = action.payload;
       if (type === 'insert') {
-        console.log('STATE UPDATED');
-        // state.sectionDetails.data = data;
+        console.log('STATE UPDATED', linkId);
+        state.sectionDetails.data = state.sectionDetails.data.map((x) =>
+          x.linkId === linkId ? { ...x, data } : x,
+        );
       } else {
         const obj = {
           type: 'modify',

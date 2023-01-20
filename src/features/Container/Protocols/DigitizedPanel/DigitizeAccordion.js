@@ -9,7 +9,7 @@ import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Save from 'apollo-react-icons/Save';
-import MultilineEdit from './Digitized_edit';
+import MultilineEdit from './DigitizedEdit';
 import Loader from '../../../Components/Loader/Loader';
 import { sectionDetails } from '../protocolSlice';
 import { createFullMarkup } from '../../../../utils/utilFunction';
@@ -32,7 +32,7 @@ function DigitizeAccordion({
 
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
-  const [sections, setSections] = useState([]);
+  const [sectionDataArr, setSectionDataArr] = useState([]);
   const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
@@ -122,7 +122,7 @@ function DigitizeAccordion({
         if (matchedIndex) {
           updatedSectionsData.splice(matchedIndex + 1, 1);
         }
-        setSections(updatedSectionsData);
+        setSectionDataArr(updatedSectionsData);
       }
     }
   }, [sectionHeaderDetails]);
@@ -168,21 +168,18 @@ function DigitizeAccordion({
         </div>
       </AccordionSummary>
 
-      <AccordionDetails
-        className="section-single-content"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <AccordionDetails className="section-single-content">
         {showLoader && (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
         )}
-        {sections?.length > 0 &&
+        {sectionDataArr?.length > 0 &&
           (showedit ? (
             <MultilineEdit
-              data={sections}
+              linkId={item.link_id}
+              sectionDataArr={sectionDataArr}
               edit={showedit}
-              setSections={setSections}
             />
           ) : (
             /* eslint-disable */
@@ -191,7 +188,7 @@ function DigitizeAccordion({
               onClick={(e) => handleEnrichedClick(e)}
             >
               {/* eslint-enable */}
-              {sections.map((section) => {
+              {sectionDataArr.map((section) => {
                 const enrichedTxt =
                   rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
                     ? enrichedDummyText

@@ -5,14 +5,14 @@ import EditContent from './EditContent';
 import './renderContent.scss';
 
 function RenderContent({
-  data,
+  sectionData,
   handleContentEdit,
   activeLineID,
   setActiveLineID,
   deleteSection,
   edit,
 }) {
-  const { type, content, line_id: lineID } = data;
+  const { type, content, line_id: lineID } = sectionData;
 
   if (content) {
     if (type === 'header') {
@@ -62,7 +62,7 @@ function RenderContent({
 export default React.memo(RenderContent);
 
 RenderContent.propTypes = {
-  data: PropTypes.isRequired,
+  sectionData: PropTypes.isRequired,
   handleContentEdit: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   setActiveLineID: PropTypes.isRequired,
