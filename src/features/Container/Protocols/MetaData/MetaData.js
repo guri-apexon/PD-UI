@@ -51,10 +51,17 @@ function MetaData() {
             ...rowData,
             name: data?.name,
             header: data?.header,
+            note: data?.note,
           };
         }
         return rowData;
       }),
+    });
+  };
+  const deleteRows = (data, name) => {
+    setRows({
+      ...rows,
+      [name]: data,
     });
   };
 
@@ -88,6 +95,7 @@ function MetaData() {
             isEdit: true,
           };
         }
+        console.log('data', data);
         return data;
       }),
     );
@@ -221,6 +229,7 @@ function MetaData() {
           // handleDelete={(e) => handleDelete(e, index1, null, 'mainSection')}
           handleEdit={(e) => handleEdit(acc, e)}
           updateRows={updateRows}
+          deleteRows={deleteRows}
           addSubAccordion={(e, name) => addSubAccordion(acc, e, name)}
           subAccComponent={acc?.subAccList?.map((subAcc) => {
             return accGenerator(subAcc, num + 1);
@@ -236,7 +245,7 @@ function MetaData() {
     });
   }, [dispatch]);
 
-  console.log('accordianData', findDeep(accordianData, 2, 'sub1'));
+  console.log('accordianData', accordianData);
 
   return (
     <Card

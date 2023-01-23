@@ -27,6 +27,7 @@ function Accordian({
   handleDelete,
   handleEdit,
   updateRows,
+  deleteRows,
   addSubAccordion,
   subAccComponent,
 }) {
@@ -105,6 +106,7 @@ function Accordian({
             metaDataList={metaDataList}
             setMetaDataList={setMetaDataList}
             data={accData}
+            deleteRows={deleteRows}
           />
         ) : (
           <MetaDataTable metaData={accData?.metaData} />
@@ -130,6 +132,7 @@ Accordian.propTypes = {
   handleDelete: PropTypes.isRequired,
   handleEdit: PropTypes.isRequired,
   updateRows: PropTypes.isRequired,
+  deleteRows: PropTypes.isRequired,
   addSubAccordion: PropTypes.isRequired,
   subAccComponent: PropTypes.isRequired,
 };

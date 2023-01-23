@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Table from 'apollo-react/components/Table';
+import Trash from 'apollo-react-icons/Trash';
 import PropTypes from 'prop-types';
 import TextField from 'apollo-react/components/TextField/TextField';
+import IconButton from 'apollo-react/components/IconButton';
 import Checkbox from 'apollo-react/components/Checkbox';
 import Plus from 'apollo-react-icons/Plus';
 import moment from 'moment';
@@ -13,6 +15,20 @@ function Cell({ row, column }) {
       {row[column.accessor]}
     </div>
   );
+}
+
+function DeleteCell({ row, column: { accessor: key } }) {
+  const value = '';
+  return row?.isCustom ? (
+    <IconButton
+      onClick={() => {
+        console.log('dndd');
+        row.deleteRow(row?.id, key);
+      }}
+    >
+      <Trash />
+    </IconButton>
+  ) : null;
 }
 
 function EditableCell({ row, column: { accessor: key } }) {
@@ -42,9 +58,11 @@ function MetaDataEditTable({
   setMetaDataList,
   data,
   updateRows,
+  deleteRows,
 }) {
   const { metaData } = data;
   const [editedRow, setEditedRow] = useState({});
+  const [deletedRow, setDeletedRow] = useState({});
 
   const columns = [
     {
@@ -61,6 +79,12 @@ function MetaDataEditTable({
       header: 'Value',
       accessor: 'name',
       customCell: EditableCell,
+    },
+    {
+      header: 'Delete',
+      accessor: 'isCustom',
+      customCell: DeleteCell,
+      align: 'right',
     },
   ];
   const [column, setColumn] = useState(columns);
@@ -112,6 +136,22 @@ function MetaDataEditTable({
       [key]: value,
     });
   };
+
+  const deleteRow = (id, key) => {
+    let index;
+    for (let i = 0; i < metaData.length; i++) {
+      if (metaData[i]?.id === id) {
+        index = i;
+      }
+    }
+    metaData.splice(index, 1);
+    setDeletedRow(metaData);
+  };
+
+  useEffect(() => {
+    deleteRows(deletedRow, data?.name);
+    // eslint-disable-next-line
+  }, [deletedRow]);
 
   const addNewRow = (rowLength) => {
     setMetaDataList({
@@ -177,7 +217,9 @@ function MetaDataEditTable({
         rows={metaData?.map((row) => ({
           ...row,
           editRow,
+          deleteRow,
           editedRow: row,
+          deletedRow: row,
           setEditedRow,
         }))}
         rowId="id"
@@ -188,7 +230,7 @@ function MetaDataEditTable({
       />
     );
     // eslint-disable-next-line
-  }, [column, metaData]);
+  }, [column, metaData.length]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
@@ -235,6 +277,7 @@ MetaDataEditTable.propTypes = {
   setMetaDataList: PropTypes.isRequired,
   data: PropTypes.isRequired,
   updateRows: PropTypes.isRequired,
+  deleteRows: PropTypes.isRequired,
 };
 
 Cell.propTypes = {
@@ -242,6 +285,10 @@ Cell.propTypes = {
   column: PropTypes.isRequired,
 };
 EditableCell.propTypes = {
+  row: PropTypes.isRequired,
+  column: PropTypes.isRequired,
+};
+DeleteCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
 };
