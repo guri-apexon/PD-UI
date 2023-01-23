@@ -49,19 +49,22 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
               value={item?.name}
               inputProps={{ 'data-testid': 'customeform-textField-value' }}
               onChange={(e) => handleChange(e)}
+              isRequired
             />
           )}
 
           {type === 'Date' && (
             <DatePicker
               name="name"
-              placeholder="mm/dd/yyyy"
+              dateFormat="DD-MMM-YYYY"
+              placeholder="dd-mmm-yyyy"
               value={item?.name}
               onChange={(value) =>
                 handleChange({ target: { name: 'name', value } })
               }
               inputValue={inputValue}
               onInputChange={(inputValue) => setInputValue(inputValue)}
+              isRequired
             />
           )}
           {type === 'Boolean' && (
@@ -72,6 +75,7 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
               fullWidth
               value={item?.name}
               onChange={handleChange}
+              isRequired
             >
               <MenuItem value="true">True</MenuItem>
               <MenuItem value="false">False</MenuItem>
@@ -87,6 +91,7 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
             fullWidth
             inputProps={{ 'data-testid': 'customeform-textField-checkbox' }}
             className="selectBox"
+            isRequired
           >
             <MenuItem value="String">String</MenuItem>
             <MenuItem value="Number">Number</MenuItem>

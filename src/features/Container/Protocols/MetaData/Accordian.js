@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Accordion from 'apollo-react/components/Accordion';
 import Typography from 'apollo-react/components/Typography';
@@ -29,6 +30,19 @@ function Accordian({
   addSubAccordion,
   subAccComponent,
 }) {
+  const wrapperRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
   return (
     <Accordion expanded={accData.isActive}>
       <AccordionSummary
@@ -48,6 +62,7 @@ function Accordian({
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsOpenSubText(!isOpenSubText);
+                        setIsOpen(!isOpen);
                       }}
                     />
                   </span>
@@ -68,8 +83,8 @@ function Accordian({
           </div>
         </div>
       </AccordionSummary>
-      {isOpenSubText && (
-        <div style={{ maxWidth: 400 }}>
+      {isOpenSubText && isOpen && (
+        <div style={{ maxWidth: 400 }} ref={wrapperRef}>
           <TextField
             inputProps={{ 'data-testId': 'plusTextfield' }}
             label=""
