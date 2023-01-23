@@ -12,7 +12,6 @@ import MetaDataEditTable from './MetaDataEditTable';
 import MetaDataTable from './MetaDataTable';
 
 function Accordian({
-  isMain,
   standardList,
   accData,
   metaDataList,
@@ -40,7 +39,7 @@ function Accordian({
           <div className="metadata-flex">
             {accData?.isEdit ? (
               <>
-                {isMain && (
+                {accData?.level <= 6 && (
                   <span data-testId="metadataplus">
                     <Plus
                       data-testId="metadataplus"
@@ -101,7 +100,6 @@ function Accordian({
 }
 
 Accordian.propTypes = {
-  isMain: PropTypes.isRequired,
   standardList: PropTypes.isRequired,
   accData: PropTypes.isRequired,
   metaDataList: PropTypes.isRequired,
