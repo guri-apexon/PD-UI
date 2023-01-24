@@ -18,7 +18,9 @@ function Accordian({
   standardList,
   accData,
   metaDataList,
+  suggestedSubList,
   isOpenSubText,
+  setSuggestedSubList,
   setIsOpenSubText,
   setMetaDataList,
   handleAccordian,
@@ -33,13 +35,6 @@ function Accordian({
   const wrapperRef = useRef(null);
   const [isModal, setisModal] = useState(false);
   const [subSectionName, setSubSectionName] = useState(false);
-  const [suggestedList, setSuggestedList] = useState([
-    { label: 'Primary Objective/Endpoint' },
-    { label: 'Secondary Objective/Endpoints' },
-    { label: 'Tertiary objectives/Endpoints' },
-    { label: 'Inclusion Criteria' },
-    { label: 'Exclusion Criteria' },
-  ]);
 
   const handleChange = (event, newValue) => {
     setSubSectionName(newValue);
@@ -60,8 +55,8 @@ function Accordian({
   useEffect(() => {
     if (subSectionName) {
       addSubAccordion(subSectionName.label);
-      setSuggestedList(
-        suggestedList.filter((list) => list.label !== subSectionName.label),
+      setSuggestedSubList(
+        suggestedSubList.filter((list) => list.label !== subSectionName.label),
       );
     }
     // eslint-disable-next-line
@@ -78,7 +73,7 @@ function Accordian({
             <div className="metadata-flex">
               {accData?.isEdit ? (
                 <>
-                  {accData?.level <= 6 && (
+                  {accData?.level <= 5 && (
                     <span data-testId="metadataplus">
                       <Plus
                         data-testId="metadataplus"
@@ -118,7 +113,7 @@ function Accordian({
               label=""
               className="nameField"
               placeholder="Select or type sub-section name"
-              source={suggestedList}
+              source={suggestedSubList}
               fullWidth
               forcePopupIcon
               showClearIndicator
@@ -171,8 +166,10 @@ Accordian.propTypes = {
   standardList: PropTypes.isRequired,
   accData: PropTypes.isRequired,
   metaDataList: PropTypes.isRequired,
+  suggestedSubList: PropTypes.isRequired,
   isOpenSubText: PropTypes.isRequired,
   setIsOpenSubText: PropTypes.isRequired,
+  setSuggestedSubList: PropTypes.isRequired,
   setMetaDataList: PropTypes.isRequired,
   handleAccordian: PropTypes.isRequired,
   handleSave: PropTypes.isRequired,

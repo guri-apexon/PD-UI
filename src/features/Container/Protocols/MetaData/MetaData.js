@@ -20,10 +20,16 @@ function MetaData() {
   const [standardList, setStandardList] = useState([]);
   const [suggestedList, setSuggestedList] = useState([
     { label: 'Objective and Endpoints' },
-    { label: 'Eligibility Criteria' },
     { label: 'Adverse Events' },
+  ]);
+
+  const [suggestedSubList, setSuggestedSubList] = useState([
+    { label: 'Primary Objective/Endpoint' },
+    { label: 'Secondary Objective/Endpoints' },
+    { label: 'Tertiary objectives/Endpoints' },
+    { label: 'Safety objectives/Endpoints' },
+    { label: 'Long Term Extension objectives' },
     { label: 'Lab Data' },
-    { label: 'Study Assessment and Procedures' },
   ]);
 
   const handleChange = (event, newValue) => {
@@ -176,7 +182,7 @@ function MetaData() {
         ? updatedData[list.name]
         : {
             ...list,
-            level: 1,
+            level: list?.level ? list.level : 1,
           };
     });
     setAccordianData(updatedData);
@@ -208,6 +214,8 @@ function MetaData() {
           metaDataList={metaDataList}
           isOpenSubText={isOpenSubText}
           sectionName={sectionName}
+          suggestedSubList={suggestedSubList}
+          setSuggestedSubList={setSuggestedSubList}
           setSectionName={setSectionName}
           setIsOpenSubText={setIsOpenSubText}
           setMetaDataList={setMetaDataList}
