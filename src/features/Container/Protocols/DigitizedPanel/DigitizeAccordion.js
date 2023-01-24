@@ -144,6 +144,12 @@ function DigitizeAccordion({
     return createFullMarkup(content);
   };
 
+  useEffect(() => {
+    setEnrichedTarget(null);
+    setSelectedEnrichedText(null);
+    setClinicalTerms(null);
+  }, [rightBladeValue]);
+
   return (
     <Accordion
       expanded={expanded}
