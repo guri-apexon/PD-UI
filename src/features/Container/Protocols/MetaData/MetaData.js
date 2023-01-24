@@ -112,11 +112,15 @@ function MetaData() {
     const filterData = Object.entries(accordianData).find(([key, value]) =>
       value?.child?.includes(accData.name),
     );
+    delete accordianData[accData.name];
     setAccordianData({
       ...accordianData,
-      [filterData[0]]: accordianData[filterData[0]].child.filter(
-        (list) => list !== accData.name,
-      ),
+      [filterData[0]]: {
+        ...accordianData[filterData[0]],
+        child: accordianData[filterData[0]].child.filter(
+          (list) => list !== accData.name,
+        ),
+      },
     });
   };
 
@@ -188,7 +192,7 @@ function MetaData() {
           setMetaDataList={setMetaDataList}
           handleAccordian={() => handleAccordian(acc)}
           handleSave={(e) => handleSave(acc, e)}
-          //   handleDelete={(e) => handleDelete(acc, e)}
+          handleDelete={(e) => handleDelete(acc, e)}
           handleEdit={(e) => handleEdit(acc, e)}
           updateRows={updateRows}
           addSubAccordion={(e, name) => addSubAccordion(acc, e, name)}
