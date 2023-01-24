@@ -17,7 +17,6 @@ import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
-const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
 function DigitizeAccordion({
   item,
   protocol,
@@ -38,7 +37,6 @@ function DigitizeAccordion({
   const sectionHeaderDetails = useSelector(sectionDetails);
 
   const { data: sectionData } = sectionHeaderDetails;
-
   useEffect(() => {
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
@@ -125,6 +123,9 @@ function DigitizeAccordion({
     setCurrentEditCard(item.link_id);
   };
 
+  const enrichedDummyText = (
+    <b className="enriched-txt">{sectionData.clinical_terms}</b>
+  );
   return (
     <Accordion
       expanded={expanded}
@@ -247,7 +248,11 @@ function DigitizeAccordion({
             </div>
           ))}
       </AccordionDetails>
-      <MedicalTerm enrichedTarget={enrichedTarget} expanded={expanded} />
+      <MedicalTerm
+        enrichedTarget={enrichedTarget}
+        expanded={expanded}
+        sectionData={sectionData}
+      />
     </Accordion>
   );
 }
