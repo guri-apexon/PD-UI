@@ -41,7 +41,7 @@ function SanitizeHTML({ html, options, clinicalTerms }) {
         // console.log({ text });
         const txt = sanitize(text, options);
         // console.log(txt);
-        setInnerHTML({ _html: txt });
+        setInnerHTML({ __html: txt });
       }
     }
     // eslint-disable-next-line
@@ -52,8 +52,13 @@ function SanitizeHTML({ html, options, clinicalTerms }) {
   }, [innerHTML]);
 
   // eslint-disable-next-line
-  return <div dangerouslySetInnerHTML={innerHTML} />;
-  // return <div>sfaf</div>;
+  // return <div dangerouslySetInnerHTML={innerHTML} />;
+  return (
+    <div>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua.
+    </div>
+  );
 }
 
 export default SanitizeHTML;
