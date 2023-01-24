@@ -31,6 +31,16 @@
   }
   .metadata_item {
     padding: 2px 8px 2px 5px;
+
+    [class*='MuiDialog-paperWidthSm-'] {
+      max-width: 410px;
+    }
+    [class*='InternalDialogTitle-title-'] {
+      text-align: center;
+    }
+    [class*='MuiDialogActions-root-'] {
+      justify-content: center;
+    }
   }
   .metadat-flex-plus {
     float: left;
@@ -55,8 +65,8 @@
     width: 50%;
     z-index: 1;
     position: absolute;
-    right: 3rem;
-    top: 1rem;
+    right: 4rem;
+    top: 2.5rem;
   }
   .metadata-checkbox {
     // padding-left: 53%;
@@ -152,6 +162,7 @@
   [class*='MuiAccordionSummary-expandIcon'] {
     left: 5px;
   }
+
   .accordion_summary_container {
     display: flex;
     justify-content: space-between;
@@ -173,6 +184,9 @@
       background: #f4f4f4;
       border-radius: unset;
     }
+    div {
+      margin-top: unset;
+    }
   }
   .valueText {
     margin-left: 10px;
@@ -183,12 +197,15 @@
     width: 100%;
     justify-content: space-between;
     div {
+      border-radius: unset;
       margin: unset;
+      background: #f9f9f9;
+      border: unset;
     }
     input {
       border-radius: unset;
-      border: none;
       background: #f9f9f9;
+      border: none;
     }
     .selectBox {
       width: 43%;
@@ -230,4 +247,17 @@
 }
 .subAccContainer {
   padding: 15px;
+}
+
+.modal {
+  max-width: 410px;
+  [class*='MuiDialog-paperWidthSm-'] {
+    max-width: 410px;
+  }
+  [class*='InternalDialogTitle-title-'] {
+    text-align: center;
+  }
+  [class*='MuiDialogActions-root-'] {
+    justify-content: center;
+  }
 }

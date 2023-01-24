@@ -67,6 +67,7 @@ describe('DigitizeAccordion', () => {
           protocol="1234"
           currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
+          setCurrentEditCard={jest.fn()}
         />
       </Provider>,
     );
@@ -82,6 +83,9 @@ describe('DigitizeAccordion', () => {
           protocol="1234"
           currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
           setCurrentActiveCard={jest.fn()}
+          setCurrentEditCard={jest.fn()}
+          handlePageRight={jest.fn()}
+          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );
@@ -97,6 +101,9 @@ describe('DigitizeAccordion', () => {
           protocol="1234"
           currentActiveCard="8ccb22b1-0aa0-487a-a47b"
           setCurrentActiveCard={jest.fn()}
+          setCurrentEditCard={jest.fn()}
+          handlePageRight={jest.fn()}
+          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );
@@ -112,6 +119,9 @@ describe('DigitizeAccordion', () => {
           protocol="1234"
           currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
           setCurrentActiveCard={jest.fn()}
+          setCurrentEditCard={jest.fn()}
+          handlePageRight={jest.fn()}
+          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );
@@ -129,6 +139,9 @@ describe('DigitizeAccordion', () => {
           protocol="1234"
           currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
           setCurrentActiveCard={jest.fn()}
+          setCurrentEditCard={jest.fn()}
+          handlePageRight={jest.fn()}
+          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );
@@ -148,6 +161,8 @@ describe('DigitizeAccordion', () => {
           currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
           setCurrentActiveCard={jest.fn()}
           handlePageRight={jest.fn()}
+          setCurrentEditCard={jest.fn()}
+          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );
@@ -166,6 +181,9 @@ describe('DigitizeAccordion', () => {
           protocol="1234"
           currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
           setCurrentActiveCard={jest.fn()}
+          setCurrentEditCard={jest.fn()}
+          handlePageRight={jest.fn()}
+          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );

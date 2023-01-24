@@ -149,7 +149,7 @@ function Digitize({
           </div>
         </Card>
       )}
-      {rightValue === PROTOCOL_RIGHT_MENU.META_DATA && <MetaData />}
+      {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && <MetaData />}
     </div>
   );
 }
