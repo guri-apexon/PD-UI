@@ -218,7 +218,6 @@ function DigitizeAccordion({
                       }}
                     >
                       <SanitizeHTML html={section.content.split('_')[1]} />
-                      {/* {enrichedTxt} */}
                     </p>
                   </div>
                 ) : (
@@ -241,8 +240,6 @@ function DigitizeAccordion({
                         html={section.content}
                         clinicalTerms={section.clinical_terms}
                       />
-
-                      {/* {enrichedTxt} */}
                     </p>
                   )
                 );

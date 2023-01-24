@@ -6,8 +6,8 @@ import replaceall from 'replaceall';
 import { createFullMarkup } from '../../utils/utilFunction';
 
 const defaultOptions = {
-  ALLOWED_TAGS: ['a', 'div', 'span', 'p'],
-  ALLOWED_ATTR: ['style'],
+  ALLOWED_TAGS: ['a', 'div', 'span', 'p', 'b'],
+  ALLOWED_ATTR: ['style', 'class'],
 };
 function SanitizeHTML({ html, options, clinicalTerms }) {
   const [innerHTML, setInnerHTML] = useState('');
@@ -15,7 +15,7 @@ function SanitizeHTML({ html, options, clinicalTerms }) {
   const replaceWithEnriched = (terms) => {
     let text = html;
     terms.forEach((term) => {
-      text = replaceall(term, <b className="enriched-txt">{term}</b>, html);
+      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, html);
     });
 
     return text;
@@ -24,14 +24,13 @@ function SanitizeHTML({ html, options, clinicalTerms }) {
   const sanitize = (content, options) => {
     // eslint-disable-next-line
     const dirty = createFullMarkup(content);
+    console.log({ dirty });
     // eslint-disable-next-line no-underscore-dangle
     const clean = DOMPurify.sanitize(dirty.__html || dirty, {
       ...defaultOptions,
       ...options,
     });
-    return {
-      __html: clean,
-    };
+    return clean;
   };
 
   useEffect(() => {
@@ -39,19 +38,22 @@ function SanitizeHTML({ html, options, clinicalTerms }) {
       const terms = Object.keys(clinicalTerms);
       if (terms.length > 0) {
         const text = replaceWithEnriched(terms);
+        // console.log({ text });
         const txt = sanitize(text, options);
-        console.clear();
-        console.log(txt);
-        setInnerHTML(txt);
+        // console.log(txt);
+        setInnerHTML({ _html: txt });
       }
     }
     // eslint-disable-next-line
   }, []);
 
-  return <div>abcd</div>;
+  useEffect(() => {
+    console.log(innerHTML);
+  }, [innerHTML]);
 
   // eslint-disable-next-line
-  // return <div dangerouslySetInnerHTML={innerHTML} />;
+  return <div dangerouslySetInnerHTML={innerHTML} />;
+  // return <div>sfaf</div>;
 }
 
 export default SanitizeHTML;
