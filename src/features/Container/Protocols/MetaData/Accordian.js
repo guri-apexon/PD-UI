@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Accordion from 'apollo-react/components/Accordion';
 import Modal from 'apollo-react/components/Modal';
+import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Typography from 'apollo-react/components/Typography';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
 import Plus from 'apollo-react-icons/Plus';
 import Save from 'apollo-react-icons/Save';
@@ -19,8 +19,6 @@ function Accordian({
   accData,
   metaDataList,
   isOpenSubText,
-  sectionName,
-  setSectionName,
   setIsOpenSubText,
   setMetaDataList,
   handleAccordian,
@@ -34,17 +32,39 @@ function Accordian({
 }) {
   const wrapperRef = useRef(null);
   const [isModal, setisModal] = useState(false);
+  const [subSectionName, setSubSectionName] = useState(false);
+  const [suggestedList, setSuggestedList] = useState([
+    { label: 'Primary Objective/Endpoint' },
+    { label: 'Secondary Objective/Endpoints' },
+    { label: 'Tertiary objectives/Endpoints' },
+    { label: 'Inclusion Criteria' },
+    { label: 'Exclusion Criteria' },
+  ]);
+
+  const handleChange = (event, newValue) => {
+    setSubSectionName(newValue);
+  };
+
+  // useEffect(() => {
+  //   function handleClickOutside(event) {
+  //     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+  //       setIsOpenSubText(false);
+  //     }
+  //   }
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, [setIsOpenSubText, wrapperRef]);
+
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setIsOpenSubText(false);
-      }
+    if (subSectionName) {
+      addSubAccordion(subSectionName.label);
+      setSuggestedList(
+        suggestedList.filter((list) => list.label !== subSectionName.label),
+      );
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [setIsOpenSubText, wrapperRef]);
+  }, [subSectionName]);
   return (
     <>
       <Accordion expanded={accData.isActive}>
@@ -93,15 +113,16 @@ function Accordian({
         </AccordionSummary>
         {isOpenSubText && (
           <div style={{ maxWidth: 400 }} ref={wrapperRef}>
-            <TextField
-              inputProps={{ 'data-testId': 'plusTextfield' }}
+            <AutocompleteV2
               label=""
-              placeholder="Select or type sub-section name"
               className="nameField"
+              placeholder="Select or type sub-section name"
+              source={suggestedList}
               fullWidth
-              value={sectionName}
-              onChange={(e) => setSectionName(e.target.value)}
-              onKeyPress={(e) => addSubAccordion(e, sectionName)}
+              forcePopupIcon
+              showClearIndicator
+              value={subSectionName}
+              onChange={handleChange}
               size="small"
             />
           </div>
@@ -150,8 +171,6 @@ Accordian.propTypes = {
   accData: PropTypes.isRequired,
   metaDataList: PropTypes.isRequired,
   isOpenSubText: PropTypes.isRequired,
-  sectionName: PropTypes.isRequired,
-  setSectionName: PropTypes.isRequired,
   setIsOpenSubText: PropTypes.isRequired,
   setMetaDataList: PropTypes.isRequired,
   handleAccordian: PropTypes.isRequired,

@@ -64,11 +64,6 @@ function MetaDataEditTable({
 
   const columns = [
     {
-      header: 'Id',
-      accessor: 'id',
-      customCell: Cell,
-    },
-    {
       header: 'Key',
       accessor: 'header',
       customCell: EditableCell,

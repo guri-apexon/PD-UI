@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import TextField from 'apollo-react/components/TextField';
+import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,24 +19,33 @@ function MetaData() {
   const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
   const [standardList, setStandardList] = useState([]);
+  const [suggestedList, setSuggestedList] = useState([
+    { label: 'Objective and Endpoints' },
+    { label: 'Eligibility Criteria' },
+    { label: 'Adverse Events' },
+    { label: 'Lab Data' },
+    { label: 'Study Assessment and Procedures' },
+  ]);
 
-  const addToAccordion = (e) => {
-    if (e.key === 'Enter') {
-      const obj = {
-        name: sectionName,
-        isEdit: false,
-        isActive: false,
-        metaData: [],
-        level: 1,
-        child: [],
-      };
-      setAccordianData({
-        ...accordianData,
-        [sectionName]: obj,
-      });
-      setSectionName(null);
-      setIsOpen(false);
-    }
+  const handleChange = (event, newValue) => {
+    setSectionName(newValue);
+  };
+
+  const addToAccordion = (name) => {
+    const obj = {
+      name,
+      isEdit: false,
+      isActive: false,
+      metaData: [],
+      level: 1,
+      child: [],
+    };
+    setAccordianData({
+      ...accordianData,
+      [name]: obj,
+    });
+    setSectionName(null);
+    setIsOpen(false);
   };
 
   const updateRows = (data, name) => {
@@ -132,28 +142,26 @@ function MetaData() {
     });
   };
 
-  const addSubAccordion = (accData, e, name) => {
-    if (e.key === 'Enter') {
-      const obj = {
-        name,
-        isEdit: false,
-        isActive: false,
-        metaData: [],
-        level: accData.level + 1,
-        child: [],
-      };
-      const selectedData = accordianData[accData.name];
-      setAccordianData({
-        ...accordianData,
-        [accData.name]: {
-          ...selectedData,
-          child: selectedData?.child ? [...selectedData.child, name] : [name],
-        },
-        [name]: obj,
-      });
-      setSectionName(null);
-      setIsOpenSubText(false);
-    }
+  const addSubAccordion = (accData, name) => {
+    const obj = {
+      name,
+      isEdit: false,
+      isActive: false,
+      metaData: [],
+      level: accData.level + 1,
+      child: [],
+    };
+    const selectedData = accordianData[accData.name];
+    setAccordianData({
+      ...accordianData,
+      [accData.name]: {
+        ...selectedData,
+        child: selectedData?.child ? [...selectedData.child, name] : [name],
+      },
+      [name]: obj,
+    });
+    setSectionName(null);
+    setIsOpenSubText(false);
   };
 
   useEffect(() => {
@@ -174,17 +182,17 @@ function MetaData() {
     );
   }, [metaDataSelector.data]);
 
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [wrapperRef]);
+  //   useEffect(() => {
+  //     function handleClickOutside(event) {
+  //       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+  //         setIsOpen(false);
+  //       }
+  //     }
+  //     document.addEventListener('mousedown', handleClickOutside);
+  //     return () => {
+  //       document.removeEventListener('mousedown', handleClickOutside);
+  //     };
+  //   }, [wrapperRef]);
 
   const accGenerator = (key, acc) => {
     return (
@@ -204,7 +212,7 @@ function MetaData() {
           handleEdit={(e) => handleEdit(acc, e)}
           updateRows={updateRows}
           deleteRows={deleteRows}
-          addSubAccordion={(e, name) => addSubAccordion(acc, e, name)}
+          addSubAccordion={(name) => addSubAccordion(acc, name)}
           subAccComponent={acc?.child?.map((subAcc) => {
             return accGenerator(subAcc, accordianData?.[subAcc]);
           })}
@@ -212,6 +220,15 @@ function MetaData() {
       </div>
     );
   };
+
+  useEffect(() => {
+    if (sectionName) {
+      addToAccordion(sectionName.label);
+      setSuggestedList(
+        suggestedList.filter((list) => list.label !== sectionName.label),
+      );
+    }
+  }, [sectionName]);
 
   useEffect(() => {
     dispatch({
@@ -224,7 +241,7 @@ function MetaData() {
       className="protocol-column protocol-digitize-column metadata-card"
       data-testid="metadata-accordian"
     >
-      <div className="panel-heading ">
+      <div className="panel-heading " ref={wrapperRef}>
         <div className="metadat-flex-plus"> Metadata </div>
         <div className="metadata-flex metadata-plus-icon">
           <Plus
@@ -234,15 +251,17 @@ function MetaData() {
           />
         </div>
         {isOpen && (
-          <div style={{ maxWidth: 400 }} ref={wrapperRef}>
-            <TextField
+          <div style={{ maxWidth: 400 }}>
+            <AutocompleteV2
               label=""
-              placeholder="Select or type section name"
               className="nameField"
+              placeholder="Select or type section name"
+              source={suggestedList}
               fullWidth
+              forcePopupIcon
+              showClearIndicator
               value={sectionName}
-              onChange={(e) => setSectionName(e.target.value)}
-              onKeyPress={(e) => addToAccordion(e)}
+              onChange={handleChange}
               size="small"
             />
           </div>
