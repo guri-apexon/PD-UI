@@ -12,7 +12,10 @@ import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../../Components/Loader/Loader';
 import { sectionDetails } from '../protocolSlice';
-import { createFullMarkup } from '../../../../utils/utilFunction';
+import {
+  createFullMarkup,
+  createEnrichedText,
+} from '../../../../utils/utilFunction';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
@@ -35,8 +38,11 @@ function DigitizeAccordion({
   const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
+  const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
+  const [clinicalTerms, setClinicalTerms] = useState(null);
 
   const { data: sectionData } = sectionHeaderDetails;
+
   useEffect(() => {
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
@@ -102,13 +108,18 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
-  const handleEnrichedClick = (e) => {
+  const handleEnrichedClick = (e, obj) => {
     if (e.target.className === 'enriched-txt') {
       setEnrichedTarget(e.target);
+      setSelectedEnrichedText(e.target.innerText);
+      setClinicalTerms(obj);
     } else {
       setEnrichedTarget(null);
+      setSelectedEnrichedText(null);
+      setClinicalTerms(null);
     }
   };
+
   useEffect(() => {
     if (currentEditCard !== item.link_id) {
       setShowEdit(false);
@@ -123,9 +134,22 @@ function DigitizeAccordion({
     setCurrentEditCard(item.link_id);
   };
 
-  const enrichedDummyText = (
-    <b className="enriched-txt">{sectionData.clinical_terms}</b>
-  );
+  const getEnrichedText = (content, clinicalTerms) => {
+    if (
+      clinicalTerms &&
+      rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+    ) {
+      return createFullMarkup(createEnrichedText(content, clinicalTerms));
+    }
+    return createFullMarkup(content);
+  };
+
+  useEffect(() => {
+    setEnrichedTarget(null);
+    setSelectedEnrichedText(null);
+    setClinicalTerms(null);
+  }, [rightBladeValue]);
+
   return (
     <Accordion
       expanded={expanded}
@@ -185,22 +209,26 @@ function DigitizeAccordion({
             <MultilineEdit data={sections} />
           ) : (
             /* eslint-disable */
-            <div
-              className="readable-content"
-              onClick={(e) => handleEnrichedClick(e)}
-            >
+            <div className="readable-content">
               {/* eslint-enable */}
               {sections.map((section) => {
-                const enrichedTxt =
-                  rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
-                    ? enrichedDummyText
-                    : '';
                 return section?.font_info?.VertAlign === 'superscript' &&
                   section.content.length > 0 ? (
-                  <div key={React.key} className="supContent">
+                  /* eslint-disable */
+                  <div
+                    key={React.key}
+                    className="supContent"
+                    onClick={(e) =>
+                      handleEnrichedClick(e, section.clinical_terms)
+                    }
+                  >
+                    {/* eslint-enable */}
                     <sup>
                       <SanitizeHTML
-                        html={createFullMarkup(section.content.split('_')[0])}
+                        html={getEnrichedText(
+                          section.content.split('_')[0],
+                          section?.clinical_terms,
+                        )}
                       />
                     </sup>
                     <p
@@ -217,13 +245,16 @@ function DigitizeAccordion({
                       }}
                     >
                       <SanitizeHTML
-                        html={createFullMarkup(section.content.split('_')[1])}
+                        html={getEnrichedText(
+                          section.content.split('_')[1],
+                          section?.clinical_terms,
+                        )}
                       />
-                      {enrichedTxt}
                     </p>
                   </div>
                 ) : (
                   section.content.length > 0 && (
+                    /* eslint-disable */
                     <p
                       key={React.key}
                       style={{
@@ -237,10 +268,17 @@ function DigitizeAccordion({
                           section?.font_info?.Italics ? 'italics' : ''
                         }`,
                       }}
+                      onClick={(e) =>
+                        handleEnrichedClick(e, section.clinical_terms)
+                      }
                     >
-                      <SanitizeHTML html={createFullMarkup(section.content)} />
-
-                      {enrichedTxt}
+                      {/* eslint-enable */}
+                      <SanitizeHTML
+                        html={getEnrichedText(
+                          section.content,
+                          section.clinical_terms,
+                        )}
+                      />
                     </p>
                   )
                 );
@@ -251,7 +289,8 @@ function DigitizeAccordion({
       <MedicalTerm
         enrichedTarget={enrichedTarget}
         expanded={expanded}
-        sectionData={sectionData}
+        enrichedText={selectedEnrichedText}
+        clinicalTerms={clinicalTerms}
       />
     </Accordion>
   );
