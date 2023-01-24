@@ -22,6 +22,7 @@ describe('Metadata Accordian View', () => {
         setMetaDataList={jest.fn()}
         data={data}
         metaDataList={data}
+        deleteRows={jest.fn()}
       />,
     );
     const metadataNote = component.getByTestId('metadata-notes');
@@ -38,6 +39,7 @@ describe('Metadata Accordian Checkbox confidence', () => {
         setMetaDataList={jest.fn()}
         data={data}
         metaDataList={data}
+        deleteRows={jest.fn()}
       />,
     );
     const metadataNote = component.getByTestId('metadata-notes');
@@ -55,6 +57,7 @@ describe('Metadata Accordian Checkbox note', () => {
         setMetaDataList={jest.fn()}
         data={data}
         metaDataList={data}
+        deleteRows={jest.fn()}
       />,
     );
     const metadataNote = component.getByTestId('metadata-confidence');
@@ -73,6 +76,7 @@ describe('MetaData CheckBox', () => {
         setMetaDataList={jest.fn()}
         data={data}
         metaDataList={data}
+        deleteRows={jest.fn()}
       />,
     );
     const metaDataNotes = screen.getByTestId('metadata-notes');
@@ -88,6 +92,7 @@ describe('MetaData CheckBox', () => {
         setMetaDataList={jest.fn()}
         data={data}
         metaDataList={data}
+        deleteRows={jest.fn()}
       />,
     );
     const metaDataNotes = screen.getByTestId('metadata-notes');
@@ -101,6 +106,7 @@ describe('MetaData CheckBox', () => {
         setMetaDataList={jest.fn()}
         data={data}
         metaDataList={data}
+        deleteRows={jest.fn()}
       />,
     );
     const metaDataConfidence = screen.getByTestId('metadata-confidence');
@@ -114,6 +120,7 @@ describe('MetaData CheckBox', () => {
         setMetaDataList={jest.fn()}
         data={data}
         metaDataList={data}
+        deleteRows={jest.fn()}
       />,
     );
     const metaDataConfidence = screen.getByTestId('metadata-confidence');

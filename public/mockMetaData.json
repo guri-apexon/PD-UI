@@ -61,87 +61,6 @@
       {  "id":13,
         "header": "Version Date",
         "name": "1900-01-01"
-      },
-      { "id":14,
-        "header": "Blinded ",
-        "name": ""
-      },
-      {  "id":15,
-        "header": "Compound Number ",
-        "name": "",
-        "confidence": 70
-      },
-      {  "id":16,
-        "header": "Control ",
-        "name": ""
-      },
-      { "id":17,
-        "header": "Investigator ",
-        "name": "abc"
-      },
-    
-      {  "id":18,
-        "header": "Study Id ",
-        "name": 20
-      },
-      { "id":19,
-        "header": "Number Of Subjects ",
-        "name": 6
-      },
-      { "id":20,
-        "header": "Participant Age ",
-        "name": "36"
-      },
-      { "id":21,
-        "header": "Participant Sex ",
-        "name": "sex"
-      },
-    
-      {  "id":22,
-        "header": "Exclusion Criteria ",
-        "name": "",
-        "confidence": 90
-      },
-      { "id":23,
-        "header": "Inclusion Criteria ",
-        "name": "",
-        "confidence": 79
-      },
-      {  "id":24,
-        "header": "Indication",
-        "name": "ind"
-      },
-      { "id":25,
-        "header": "Primary Objectives ",
-        "name": "36"
-      },
-      { "id":26,
-        "header": "Secondary Objectives ",
-        "name": "36"
-      },
-      { "id":27,
-        "header": "Study Status ",
-        "name": "Y"
-      },
-      {  "id":28,
-        "header": "Study Population ",
-        "name": 31000,
-        "confidence": 70
-      },
-      {  "id":29,
-        "header": "End Points ",
-        "name": "H1"
-      },
-      {  "id":30,
-        "header": "Trial Type Randomized ",
-        "name": "trial",
-        "confidence": 75,
-        "note": "Trial Type Taken Random"
-      },
-      { "id":31,
-        "header": "Molecule Device ",
-        "name": "mol",
-        "confidence": 65
       }
     ]
     
@@ -205,5 +124,32 @@
       }
     ]
     
+  },
+  {
+    "name": "Eligibility Criteria",
+    "isEdit": false,
+    "isActive": false,
+    "metaData": [],
+    "child": ["Inclusion Criteria", "Exclusion Criteria"]
+  },
+  {
+    "name": "Study Assessment and Procedures",
+    "isEdit": false,
+    "isActive": false,
+    "metaData": []
+  },
+  {
+    "name": "Inclusion Criteria",
+    "level": 2,
+    "isEdit": false,
+    "isActive": false,
+    "metaData": []
+  },
+  {
+    "name": "Exclusion Criteria",
+    "level": 2,
+    "isEdit": false,
+    "isActive": false,
+    "metaData": []
   }
 ]

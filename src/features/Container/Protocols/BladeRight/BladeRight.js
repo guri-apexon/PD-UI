@@ -46,7 +46,7 @@ function BladeRight({ dataSummary }) {
   }, [open]);
 
   const getDisable = (flag, name) => {
-    if (name === PROTOCOL_RIGHT_MENU.META_DATA && !flag) {
+    if (name === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && !flag) {
       return true;
     }
     if (name === PROTOCOL_RIGHT_MENU.CLINICAL_TERM && !flag) {

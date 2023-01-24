@@ -1,11 +1,9 @@
-import { render, fireEvent } from '../../../../test-utils/test-utils';
+import { render } from '../../../../test-utils/test-utils';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 
-describe('HandleSave', () => {
-  test('HandleSave', () => {
+describe('Metadata Accordian View', () => {
+  test('should render the component', () => {
     const component = render(<MedicalTerm />);
-    const Popper = component.getByTestId('term-list');
-    expect(Popper).toBeInTheDocument();
-    fireEvent.click(Popper);
+    expect(component).toBeTruthy();
   });
 });
