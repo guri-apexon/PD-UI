@@ -228,7 +228,7 @@ function MetaDataEditTable({
       />
     );
     // eslint-disable-next-line
-  }, [column, metaData.length]);
+  }, [column, metaData?.length]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
