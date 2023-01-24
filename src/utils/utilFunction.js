@@ -209,28 +209,51 @@ const setContent = (type) => {
   return '';
 };
 
-export const prepareContent = (origArray, obj, lineId) => {
-  const arr = cloneDeep(origArray);
+export const prepareContent = ({
+  sectionContent,
+  type,
+  currentLineId,
+  contentType,
+  content,
+  ...rest
+}) => {
+  const clonedSection = cloneDeep(sectionContent);
   let newObj = {};
-  if (lineId) {
-    newObj = {
-      ...PROTOCOL_CONSTANT[obj],
-      line_id: uuidv4(),
-      content: setContent('text'),
-    };
-    // eslint-disable-next-line
-    const index = arr.findIndex((val) => val.line_id === lineId) || 0;
-    arr.splice(index + 1, 0, newObj);
-    return arr;
+  switch (type) {
+    case 'ADDED':
+      if (currentLineId && contentType) {
+        newObj = {
+          ...PROTOCOL_CONSTANT[contentType],
+          line_id: uuidv4(),
+          content: setContent('text'),
+        };
+        // eslint-disable-next-line
+        const index =
+          clonedSection.findIndex((val) => val.line_id === currentLineId) || 0;
+        clonedSection.splice(index + 1, 0, newObj);
+        return clonedSection;
+      }
+      break;
+    case 'MODIFY':
+      if (clonedSection && currentLineId) {
+        return clonedSection.map((x) => {
+          if (x.line_id === currentLineId) {
+            x.qc_change_type = 'modify';
+            x.content = content;
+          }
+          return x;
+        });
+      }
+      break;
+    case 'DELETE':
+      if (clonedSection && currentLineId) {
+        return clonedSection.filter((x) => x.line_id !== currentLineId);
+      }
+      break;
+    default:
+      return clonedSection;
   }
-  console.log('origArray', origArray);
-  return arr.map((x) => {
-    if (x.line_id === obj.lineId) {
-      x.qc_change_type = obj.type;
-      x.content = obj.content;
-    }
-    return x;
-  });
+  return null;
 };
 
 export const markContentForDelete = (origArray, lineId) => {

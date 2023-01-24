@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ListBullet from 'apollo-react-icons/ListBullet';
 import IconButton from 'apollo-react/components/IconButton';
@@ -6,9 +6,11 @@ import TrashIcon from 'apollo-react-icons/Trash';
 import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
+import ProtocolContext from '../../ProtocolContext';
 
 function FontProperties({ onHeaderSelect, activeLineID }) {
   const [enable, setEnable] = useState(activeLineID);
+  const { dispatchSectionEvent } = useContext(ProtocolContext);
 
   const onFormatSelect = (e, button) => {
     e.preventDefault();
@@ -40,6 +42,9 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       default:
         break;
     }
+  };
+  const deleteSegment = () => {
+    dispatchSectionEvent('CONTENT_DELETED', { currentLineId: activeLineID });
   };
   useEffect(() => {
     setEnable(activeLineID);
@@ -133,7 +138,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       <div className="right-menu">
         <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
         <IconButton size="small">
-          <TrashIcon />
+          <TrashIcon onClick={() => deleteSegment()} />
         </IconButton>
       </div>
     </div>

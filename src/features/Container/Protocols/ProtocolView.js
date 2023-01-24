@@ -44,12 +44,36 @@ function ProtocolView({ refs, data }) {
         break;
       }
       case 'CONTENT_UPDATE': {
-        setSectionContent(prepareContent(sectionContent, payload));
+        setSectionContent(
+          prepareContent({ ...payload, type: 'MODIFY', sectionContent }),
+        );
+        break;
+      }
+      case 'CONTENT_DELETED': {
+        const content = prepareContent({
+          ...payload,
+          type: 'DELETE',
+          sectionContent,
+        });
+        setSectionContent(content);
+        dispatch(
+          updateSectionData({
+            data: content,
+            type: 'REPLACE_CONTENT',
+            linkId: selectedSection.link_id,
+          }),
+        );
         break;
       }
       case 'CONTENT_ADDED': {
         const { type, lineId } = payload;
-        const content = prepareContent(sectionContent, type, lineId);
+        const content = prepareContent({
+          ...payload,
+          type: 'ADDED',
+          contentType: type,
+          sectionContent,
+          currentLineId: lineId,
+        });
         setSectionContent(content);
         dispatch(
           updateSectionData({

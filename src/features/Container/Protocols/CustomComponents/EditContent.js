@@ -26,8 +26,7 @@ function ContentEdit({
   };
   const handleBlur = () => {
     const obj = {
-      type: 'modify',
-      lineId: lineID,
+      currentLineId: lineID,
       content: contentEditableRef.current.innerHTML,
     };
     dispatchSectionEvent('CONTENT_UPDATE', obj);

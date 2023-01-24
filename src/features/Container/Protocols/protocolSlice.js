@@ -90,13 +90,15 @@ export const protocolSlice = createSlice({
           x.linkId === linkId ? { ...x, data } : x,
         );
       } else if (content && lineId) {
-        const obj = {
-          type: 'modify',
-          lineId,
-          content,
-        };
-        const arr = prepareContent(state.sectionDetails.sections, obj);
-        state.sectionDetails.sections = arr;
+        state.sectionDetails.sections = state.sectionDetails.sections.map(
+          (x) => {
+            if (x.line_id === lineId) {
+              x.qc_change_type = 'modify';
+              x.content = content;
+            }
+            return x;
+          },
+        );
       }
     },
     getMetaDataSummaryField: (state, action) => {
