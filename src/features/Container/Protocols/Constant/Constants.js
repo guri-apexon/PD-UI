@@ -1,15 +1,15 @@
 import House from 'apollo-react-icons/House';
 import PresentationBarDark from 'apollo-react-icons/PresentationBarDark';
-import MedicalCard from 'apollo-react-icons/MedicalCard';
 import Stethoscope from 'apollo-react-icons/Stethoscope';
-import Lab from 'apollo-react-icons/Lab';
+import List from 'apollo-react-icons/List';
+import Calendar from 'apollo-react-icons/Calendar';
 
 const PROTOCOL_RIGHT_MENU = {
   HOME: 'Home',
-  CLINICAL_TERM: 'Clinical Term',
-  DIPA_VIEW: 'Dipa View',
-  NORMALIZED_SOA: 'Normalized Soa',
-  META_DATA: 'Meta Data',
+  CLINICAL_TERM: 'Clinical Terms',
+  DIPA_VIEW: 'DIPA View',
+  SCHEDULE_OF_ACTIVITIES: 'Schedule of Activities',
+  PROTOCOL_ATTRIBUTES: 'Protocol Attributes',
 };
 
 const PROTOCOL_RIGHT_MENU_ARR = [
@@ -21,22 +21,22 @@ const PROTOCOL_RIGHT_MENU_ARR = [
   {
     name: PROTOCOL_RIGHT_MENU.CLINICAL_TERM,
     isActive: false,
-    icon: <PresentationBarDark className="icon-padding" />,
+    icon: <Stethoscope className="icon-padding" />,
   },
   {
     name: PROTOCOL_RIGHT_MENU.DIPA_VIEW,
     isActive: false,
-    icon: <MedicalCard className="icon-padding" />,
+    icon: <PresentationBarDark className="icon-padding" />,
   },
   {
-    name: PROTOCOL_RIGHT_MENU.NORMALIZED_SOA,
+    name: PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES,
     isActive: false,
-    icon: <Stethoscope className="icon-padding" />,
+    icon: <Calendar className="icon-padding" />,
   },
   {
-    name: PROTOCOL_RIGHT_MENU.META_DATA,
+    name: PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES,
     isActive: false,
-    icon: <Lab className="icon-padding" />,
+    icon: <List className="icon-padding" />,
   },
 ];
 

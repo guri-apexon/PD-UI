@@ -17,11 +17,11 @@ function Cell({ row, column }) {
   );
 }
 
-function DeleteCell({ row, column: { accessor: key } }) {
+function DeleteCell({ row }) {
   return row?.isCustom ? (
     <IconButton
       onClick={() => {
-        row.deleteRow(row?.id, key);
+        row.deleteRow(row?.id);
       }}
     >
       <Trash />
@@ -82,7 +82,6 @@ function MetaDataEditTable({
       header: 'Delete',
       accessor: 'isCustom',
       customCell: DeleteCell,
-      align: 'right',
     },
   ];
   const [column, setColumn] = useState(columns);
@@ -135,7 +134,7 @@ function MetaDataEditTable({
     });
   };
 
-  const deleteRow = (id, key) => {
+  const deleteRow = (id) => {
     let index;
     for (let i = 0; i < metaData.length; i++) {
       if (metaData[i]?.id === id) {
@@ -288,6 +287,5 @@ EditableCell.propTypes = {
 };
 DeleteCell.propTypes = {
   row: PropTypes.isRequired,
-  column: PropTypes.isRequired,
 };
 export default MetaDataEditTable;
