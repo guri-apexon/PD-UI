@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Accordion from 'apollo-react/components/Accordion';
+import Modal from 'apollo-react/components/Modal';
 import Typography from 'apollo-react/components/Typography';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
@@ -11,6 +12,7 @@ import Save from 'apollo-react-icons/Save';
 import Trash from 'apollo-react-icons/Trash';
 import MetaDataEditTable from './MetaDataEditTable';
 import MetaDataTable from './MetaDataTable';
+import './MetaData.scss';
 
 function Accordian({
   isMain,
@@ -33,6 +35,7 @@ function Accordian({
 }) {
   const wrapperRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isModal, setisModal] = useState(false);
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -45,75 +48,102 @@ function Accordian({
     };
   }, [wrapperRef]);
   return (
-    <Accordion expanded={accData.isActive}>
-      <AccordionSummary
-        data-testId="metadataAccordian"
-        onClick={handleAccordian}
-      >
-        <div className="accordion_summary_container">
-          <Typography>{accData.name}</Typography>
-          <div className="metadata-flex">
-            {accData?.isEdit ? (
-              <>
-                {isMain && (
-                  <span data-testId="metadataplus">
-                    <Plus
-                      data-testId="metadataplus"
-                      className="metadata-plus-size mR"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsOpenSubText(!isOpenSubText);
-                        setIsOpen(!isOpen);
-                      }}
-                    />
-                  </span>
-                )}
-                <Save className="metadata-plus-size" onClick={handleSave} />
-                {!standardList?.includes(accData?.name) && (
-                  <Trash
-                    className="metadata-plus-size mL"
-                    onClick={handleDelete}
+    <div>
+      <Accordion expanded={accData.isActive}>
+        <AccordionSummary
+          data-testId="metadataAccordian"
+          onClick={handleAccordian}
+        >
+          <div className="accordion_summary_container">
+            <Typography>{accData.name}</Typography>
+            <div className="metadata-flex">
+              {accData?.isEdit ? (
+                <>
+                  {isMain && (
+                    <span data-testId="metadataplus">
+                      <Plus
+                        data-testId="metadataplus"
+                        className="metadata-plus-size mR"
+                        onClick={() => {
+                          setIsOpenSubText(!isOpenSubText);
+                          setIsOpen(!isOpen);
+                        }}
+                      />
+                    </span>
+                  )}
+                  <Save
+                    className="metadata-plus-size"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setisModal(true);
+                    }}
                   />
-                )}
-              </>
-            ) : (
-              <span data-testId="metadatapencil">
-                <Pencil className="metadata-plus-size" onClick={handleEdit} />
-              </span>
-            )}
+                  {!standardList?.includes(accData?.name) && (
+                    <Trash
+                      className="metadata-plus-size mL"
+                      onClick={handleDelete}
+                    />
+                  )}
+                </>
+              ) : (
+                <span data-testId="metadatapencil">
+                  <Pencil className="metadata-plus-size" onClick={handleEdit} />
+                </span>
+              )}
+            </div>
           </div>
-        </div>
-      </AccordionSummary>
-      {isOpenSubText && isOpen && (
-        <div style={{ maxWidth: 400 }} ref={wrapperRef}>
-          <TextField
-            inputProps={{ 'data-testId': 'plusTextfield' }}
-            label=""
-            placeholder="Select or type sub-section name"
-            className="nameField"
-            fullWidth
-            value={sectionName}
-            onChange={(e) => setSectionName(e.target.value)}
-            onKeyPress={(e) => addSubAccordion(e, sectionName)}
-            size="small"
-          />
-        </div>
-      )}
-      <AccordionDetails>
-        {accData?.isEdit ? (
-          <MetaDataEditTable
-            updateRows={updateRows}
-            metaDataList={metaDataList}
-            setMetaDataList={setMetaDataList}
-            data={accData}
-            deleteRows={deleteRows}
-          />
-        ) : (
-          <MetaDataTable metaData={accData?.metaData} />
+        </AccordionSummary>
+        {isOpenSubText && isOpen && (
+          <div style={{ maxWidth: 400 }} ref={wrapperRef}>
+            <TextField
+              inputProps={{ 'data-testId': 'plusTextfield' }}
+              label=""
+              placeholder="Select or type sub-section name"
+              className="nameField"
+              fullWidth
+              value={sectionName}
+              onChange={(e) => setSectionName(e.target.value)}
+              onKeyPress={(e) => addSubAccordion(e, sectionName)}
+              size="small"
+            />
+          </div>
         )}
-        <div className="subAccContainer">{subAccComponent}</div>
-      </AccordionDetails>
-    </Accordion>
+        <AccordionDetails>
+          {accData?.isEdit ? (
+            <MetaDataEditTable
+              updateRows={updateRows}
+              metaDataList={metaDataList}
+              setMetaDataList={setMetaDataList}
+              data={accData}
+              deleteRows={deleteRows}
+            />
+          ) : (
+            <MetaDataTable metaData={accData?.metaData} />
+          )}
+          <div className="subAccContainer">{subAccComponent}</div>
+        </AccordionDetails>
+      </Accordion>
+      <div className="modal">
+        <Modal
+          className="modal"
+          open={isModal}
+          onClose={() => setisModal(false)}
+          // title="Header"
+          title="Do You Really want to save it now or continue editing?"
+          buttonProps={[
+            { label: 'Continue Editing' },
+            {
+              label: 'save',
+              onClick: () => {
+                handleSave();
+                setisModal(false);
+              },
+            },
+          ]}
+          id="neutral"
+        />
+      </div>
+    </div>
   );
 }
 

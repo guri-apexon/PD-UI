@@ -102,7 +102,6 @@ function MetaData() {
   };
 
   const handleSave = (accData, e) => {
-    e.stopPropagation();
     setAccordianData(
       accordianData.map((acc) => {
         if (accData.name === acc.name) {

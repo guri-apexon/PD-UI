@@ -18,11 +18,9 @@ function Cell({ row, column }) {
 }
 
 function DeleteCell({ row, column: { accessor: key } }) {
-  const value = '';
   return row?.isCustom ? (
     <IconButton
       onClick={() => {
-        console.log('dndd');
         row.deleteRow(row?.id, key);
       }}
     >
@@ -45,8 +43,8 @@ function EditableCell({ row, column: { accessor: key } }) {
         handleDataChange(row.id, key, e);
       }}
       onBlur={() => row.editRow(row?.id, key, val)}
-      error={!row[key]}
-      helperText={!row[key] && 'Required'}
+      // error={!row[key]}
+      // helperText={!row[key]}
     />
   ) : (
     row[key]

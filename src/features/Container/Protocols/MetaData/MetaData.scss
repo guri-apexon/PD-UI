@@ -31,6 +31,16 @@
   }
   .metadata_item {
     padding: 2px 8px 2px 5px;
+
+    [class*='MuiDialog-paperWidthSm-'] {
+      max-width: 410px;
+    }
+    [class*='InternalDialogTitle-title-'] {
+      text-align: center;
+    }
+    [class*='MuiDialogActions-root-'] {
+      justify-content: center;
+    }
   }
   .metadat-flex-plus {
     float: left;
@@ -152,6 +162,7 @@
   [class*='MuiAccordionSummary-expandIcon'] {
     left: 5px;
   }
+
   .accordion_summary_container {
     display: flex;
     justify-content: space-between;
@@ -230,4 +241,17 @@
 }
 .subAccContainer {
   padding: 15px;
+}
+
+.modal {
+  max-width: 410px;
+  [class*='MuiDialog-paperWidthSm-'] {
+    max-width: 410px;
+  }
+  [class*='InternalDialogTitle-title-'] {
+    text-align: center;
+  }
+  [class*='MuiDialogActions-root-'] {
+    justify-content: center;
+  }
 }

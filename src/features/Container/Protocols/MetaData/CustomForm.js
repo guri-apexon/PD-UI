@@ -37,6 +37,8 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
           value={item?.header}
           inputProps={{ 'data-testid': 'customeform-textField-key' }}
           onChange={(e) => handleChange(e)}
+          helperText={!item?.header ? 'Required' : ''}
+          error={!item?.header}
         />
         <div className="valueText">
           {(type === 'String' || type === 'Number') && (
@@ -49,7 +51,6 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
               value={item?.name}
               inputProps={{ 'data-testid': 'customeform-textField-value' }}
               onChange={(e) => handleChange(e)}
-              isRequired
             />
           )}
 
@@ -64,7 +65,6 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
               }
               inputValue={inputValue}
               onInputChange={(inputValue) => setInputValue(inputValue)}
-              isRequired
             />
           )}
           {type === 'Boolean' && (
@@ -75,7 +75,6 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
               fullWidth
               value={item?.name}
               onChange={handleChange}
-              isRequired
             >
               <MenuItem value="true">True</MenuItem>
               <MenuItem value="false">False</MenuItem>
@@ -91,7 +90,6 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
             fullWidth
             inputProps={{ 'data-testid': 'customeform-textField-checkbox' }}
             className="selectBox"
-            isRequired
           >
             <MenuItem value="String">String</MenuItem>
             <MenuItem value="Number">Number</MenuItem>
