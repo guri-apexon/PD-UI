@@ -191,16 +191,17 @@ function DigitizeAccordion({
             >
               {/* eslint-enable */}
               {sections.map((section) => {
-                const enrichedTxt =
-                  rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
-                    ? enrichedDummyText
-                    : '';
+                // const enrichedTxt =
+                //   rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+                //     ? enrichedDummyText
+                //     : '';
                 return section?.font_info?.VertAlign === 'superscript' &&
                   section.content.length > 0 ? (
                   <div key={React.key} className="supContent">
                     <sup>
                       <SanitizeHTML
-                        html={createFullMarkup(section.content.split('_')[0])}
+                        html={section.content.split('_')[0]}
+                        clinicalTerms={section.clinical_terms}
                       />
                     </sup>
                     <p
@@ -216,10 +217,8 @@ function DigitizeAccordion({
                         }`,
                       }}
                     >
-                      <SanitizeHTML
-                        html={createFullMarkup(section.content.split('_')[1])}
-                      />
-                      {enrichedTxt}
+                      <SanitizeHTML html={section.content.split('_')[1]} />
+                      {/* {enrichedTxt} */}
                     </p>
                   </div>
                 ) : (
@@ -238,9 +237,12 @@ function DigitizeAccordion({
                         }`,
                       }}
                     >
-                      <SanitizeHTML html={createFullMarkup(section.content)} />
+                      <SanitizeHTML
+                        html={section.content}
+                        clinicalTerms={section.clinical_terms}
+                      />
 
-                      {enrichedTxt}
+                      {/* {enrichedTxt} */}
                     </p>
                   )
                 );

@@ -1,14 +1,30 @@
+import { useEffect, useState } from 'react';
 import DOMPurify from 'dompurify';
 import PropTypes from 'prop-types';
+import replaceall from 'replaceall';
 
-function SanitizeHTML({ html, options }) {
-  const defaultOptions = {
-    ALLOWED_TAGS: ['a', 'div', 'span', 'p'],
-    ALLOWED_ATTR: ['style'],
+import { createFullMarkup } from '../../utils/utilFunction';
+
+const defaultOptions = {
+  ALLOWED_TAGS: ['a', 'div', 'span', 'p'],
+  ALLOWED_ATTR: ['style'],
+};
+function SanitizeHTML({ html, options, clinicalTerms }) {
+  const [innerHTML, setInnerHTML] = useState('');
+
+  const replaceWithEnriched = (terms) => {
+    let text = html;
+    terms.forEach((term) => {
+      text = replaceall(term, <b className="enriched-txt">{term}</b>, html);
+    });
+
+    return text;
   };
 
-  const sanitize = (dirty, options) => {
+  const sanitize = (content, options) => {
     // eslint-disable-next-line
+    const dirty = createFullMarkup(content);
+    // eslint-disable-next-line no-underscore-dangle
     const clean = DOMPurify.sanitize(dirty.__html || dirty, {
       ...defaultOptions,
       ...options,
@@ -17,8 +33,25 @@ function SanitizeHTML({ html, options }) {
       __html: clean,
     };
   };
+
+  useEffect(() => {
+    if (clinicalTerms) {
+      const terms = Object.keys(clinicalTerms);
+      if (terms.length > 0) {
+        const text = replaceWithEnriched(terms);
+        const txt = sanitize(text, options);
+        console.clear();
+        console.log(txt);
+        setInnerHTML(txt);
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  return <div>abcd</div>;
+
   // eslint-disable-next-line
-  return <div dangerouslySetInnerHTML={sanitize(html, options)} />;
+  // return <div dangerouslySetInnerHTML={innerHTML} />;
 }
 
 export default SanitizeHTML;
@@ -26,4 +59,5 @@ export default SanitizeHTML;
 SanitizeHTML.propTypes = {
   html: PropTypes.isRequired,
   options: PropTypes.isRequired,
+  clinicalTerms: PropTypes.isRequired,
 };
