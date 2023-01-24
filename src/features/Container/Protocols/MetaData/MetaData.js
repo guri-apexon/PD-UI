@@ -117,19 +117,24 @@ function MetaData() {
 
   const handleDelete = (accData, e) => {
     e.stopPropagation();
-    const filterData = Object.entries(accordianData).find(([key, value]) =>
-      value?.child?.includes(accData.name),
-    );
-    delete accordianData[accData.name];
-    setAccordianData({
-      ...accordianData,
-      [filterData[0]]: {
-        ...accordianData[filterData[0]],
-        child: accordianData[filterData[0]].child.filter(
-          (list) => list !== accData.name,
-        ),
-      },
-    });
+    if (accData.level !== 1) {
+      const filterData = Object.entries(accordianData).find(([key, value]) =>
+        value?.child?.includes(accData.name),
+      );
+      setAccordianData({
+        ...accordianData,
+        [filterData[0]]: {
+          ...accordianData[filterData[0]],
+          child: accordianData[filterData[0]].child.filter(
+            (list) => list !== accData.name,
+          ),
+        },
+      });
+    } else {
+      const copyOfObject = { ...accordianData };
+      delete copyOfObject[accData.name];
+      setAccordianData({ ...copyOfObject });
+    }
   };
 
   const addSubAccordion = (accData, e, name) => {
