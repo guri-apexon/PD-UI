@@ -14,7 +14,6 @@ import './MedicalTerm.scss';
 // import { clinicalTerm } from '../protocolSlice';
 
 function MedicalTerm({ enrichedTarget, expanded, sectionData }) {
-  console.log('Medical', sectionData);
   // const clinicalTermSelector = useSelector(clinicalTerm);
   // const dispatch = useDispatch();
   const [clinicalTerms, setclinicalTerms] = useState(sectionData);
@@ -54,7 +53,6 @@ function MedicalTerm({ enrichedTarget, expanded, sectionData }) {
   };
 
   useEffect(() => {
-    // console.log('adsada', sectionDetails);
     setAnchorEl(enrichedTarget || null);
     if (!enrichedTarget) setSelectedTerm(null);
   }, [enrichedTarget]);

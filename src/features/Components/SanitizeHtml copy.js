@@ -22,27 +22,30 @@ function SanitizeHTML({ content, options, clinicalTerms }) {
   };
 
   const sanitize = (text, options) => {
-    let txt = text;
-    if (clinicalTerms) {
-      const terms = Object.keys(clinicalTerms);
-      if (terms.length > 0) {
-        // eslint-disable-next-line
-        txt = replaceWithEnriched(terms);
-      }
-    }
-    const dirty = createFullMarkup(txt);
+    // eslint-disable-next-line
+    const dirty = createFullMarkup(text);
     console.log({ dirty });
     // eslint-disable-next-line no-underscore-dangle
     const clean = DOMPurify.sanitize(dirty.__html || dirty, {
       ...defaultOptions,
       ...options,
     });
-
-    const x = { __html: clean };
-    console.log({ x });
-
-    return x;
+    return clean;
   };
+
+  useEffect(() => {
+    if (clinicalTerms) {
+      const terms = Object.keys(clinicalTerms);
+      if (terms.length > 0) {
+        const text = replaceWithEnriched(terms);
+        // console.log({ text });
+        const txt = sanitize(text, options);
+        // console.log(txt);
+        setInnerHTML({ __html: txt });
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     console.log(innerHTML);
@@ -50,15 +53,12 @@ function SanitizeHTML({ content, options, clinicalTerms }) {
 
   // eslint-disable-next-line
   // return <div dangerouslySetInnerHTML={innerHTML} />;
-
-  // eslint-disable-next-line react/no-danger
-  return <div dangerouslySetInnerHTML={sanitize(content, options)} />;
-  // return (
-  //   <div>
-  //     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-  //     tempor incididunt ut labore et dolore magna aliqua.
-  //   </div>
-  // );
+  return (
+    <div>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua.
+    </div>
+  );
 }
 
 export default SanitizeHTML;

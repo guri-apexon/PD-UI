@@ -200,8 +200,8 @@ function DigitizeAccordion({
                   <div key={React.key} className="supContent">
                     <sup>
                       <SanitizeHTML
-                        html={section.content.split('_')[0]}
-                        clinicalTerms={section.clinical_terms}
+                        content={section.content.split('_')[0]}
+                        clinicalTerms={section?.clinical_terms}
                       />
                     </sup>
                     <p
@@ -218,8 +218,8 @@ function DigitizeAccordion({
                       }}
                     >
                       <SanitizeHTML
-                        html={section.content.split('_')[1]}
-                        clinicalTerms={section.clinical_terms}
+                        content={section.content.split('_')[1]}
+                        clinicalTerms={section?.clinical_terms}
                       />
                     </p>
                   </div>
@@ -240,7 +240,7 @@ function DigitizeAccordion({
                       }}
                     >
                       <SanitizeHTML
-                        html={section.content}
+                        content={section.content}
                         clinicalTerms={section?.clinical_terms}
                       />
                     </p>
