@@ -186,7 +186,7 @@ function MetaDataEditTable({
               ...list,
               [e.target.name]:
                 list?.type === 'Date' && e.target.name === 'name'
-                  ? moment(e.target.value).format('MM/DD/YYYY')
+                  ? moment(e.target.value).format('DD-MMM-YYYY')
                   : e.target.value,
             }
           : list,

@@ -15,7 +15,6 @@ import MetaDataTable from './MetaDataTable';
 import './MetaData.scss';
 
 function Accordian({
-  isMain,
   standardList,
   accData,
   metaDataList,
@@ -48,7 +47,7 @@ function Accordian({
     };
   }, [wrapperRef]);
   return (
-    <div>
+    <>
       <Accordion expanded={accData.isActive}>
         <AccordionSummary
           data-testId="metadataAccordian"
@@ -59,14 +58,14 @@ function Accordian({
             <div className="metadata-flex">
               {accData?.isEdit ? (
                 <>
-                  {isMain && (
+                  {accData?.level <= 6 && (
                     <span data-testId="metadataplus">
                       <Plus
                         data-testId="metadataplus"
                         className="metadata-plus-size mR"
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setIsOpenSubText(!isOpenSubText);
-                          setIsOpen(!isOpen);
                         }}
                       />
                     </span>
@@ -93,7 +92,7 @@ function Accordian({
             </div>
           </div>
         </AccordionSummary>
-        {isOpenSubText && isOpen && (
+        {isOpenSubText && (
           <div style={{ maxWidth: 400 }} ref={wrapperRef}>
             <TextField
               inputProps={{ 'data-testId': 'plusTextfield' }}
@@ -134,8 +133,8 @@ function Accordian({
             { label: 'Continue Editing' },
             {
               label: 'save',
-              onClick: () => {
-                handleSave();
+              onClick: (e) => {
+                handleSave(e);
                 setisModal(false);
               },
             },
@@ -143,12 +142,11 @@ function Accordian({
           id="neutral"
         />
       </div>
-    </div>
+    </>
   );
 }
 
 Accordian.propTypes = {
-  isMain: PropTypes.isRequired,
   standardList: PropTypes.isRequired,
   accData: PropTypes.isRequired,
   metaDataList: PropTypes.isRequired,
