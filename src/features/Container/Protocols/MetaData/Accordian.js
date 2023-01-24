@@ -33,19 +33,18 @@ function Accordian({
   subAccComponent,
 }) {
   const wrapperRef = useRef(null);
-  const [isOpen, setIsOpen] = useState(false);
   const [isModal, setisModal] = useState(false);
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        setIsOpen(false);
+        setIsOpenSubText(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [wrapperRef]);
+  }, [setIsOpenSubText, wrapperRef]);
   return (
     <>
       <Accordion expanded={accData.isActive}>
