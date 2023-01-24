@@ -28,9 +28,8 @@ function MedicalTerm({
       setClinicalTerms([...Object.keys(clinicalTermsArr[enrichedText])]);
     } else {
       setClinicalTerms([]);
+      setSAnchorEl(null);
     }
-
-    console.log({ enrichedText, clinicalTermsArr });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enrichedText, clinicalTermsArr]);
 
@@ -72,6 +71,7 @@ function MedicalTerm({
   useEffect(() => {
     if (!expanded) {
       setAnchorEl(null);
+      setSAnchorEl(null);
     }
   }, [expanded]);
 
