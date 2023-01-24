@@ -45,6 +45,7 @@ function HoverComponent({ lineId, activeLineID }) {
             vertical: 'bottom',
             horizontal: 'left',
           }}
+          size="small"
         >
           <Plus className="plus-icon" size="small" />
         </IconMenuButton>

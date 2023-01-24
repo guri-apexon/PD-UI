@@ -145,9 +145,10 @@ function DigitizeAccordion({
         if (matchedIndex) {
           updatedSectionsData.splice(matchedIndex + 1, 1);
         }
-        setSectionDataArr(updatedSectionsData);
         if (editedMode && !sectionDataArr?.length)
           dispatchSectionData(updatedSectionsData);
+
+        setSectionDataArr(updatedSectionsData);
       }
     }
   }, [sectionHeaderDetails]);

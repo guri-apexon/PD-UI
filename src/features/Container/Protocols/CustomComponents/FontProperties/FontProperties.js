@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ListBullet from 'apollo-react-icons/ListBullet';
+import IconButton from 'apollo-react/components/IconButton';
+import TrashIcon from 'apollo-react-icons/Trash';
 import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
@@ -128,7 +130,12 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
         contentStyle={{ right: 0 }}
         type="symbol"
       /> */}
-      <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
+      <div className="right-menu">
+        <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
+        <IconButton size="small">
+          <TrashIcon />
+        </IconButton>
+      </div>
     </div>
   );
 }

@@ -35,4 +35,12 @@
             pointer-events:none;
         }
     }
+    .right-menu{
+      margin-left: auto;
+      display: flex;
+      margin-right: 10px;
+      button{
+        margin-right: 5px;
+      }
+    }
   }
