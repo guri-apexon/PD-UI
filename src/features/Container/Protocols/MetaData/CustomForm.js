@@ -37,8 +37,6 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
           value={item?.header}
           inputProps={{ 'data-testid': 'customeform-textField-key' }}
           onChange={(e) => handleChange(e)}
-          helperText={!item?.header ? 'Required' : ''}
-          error={!item?.header}
         />
         <div className="valueText">
           {(type === 'String' || type === 'Number') && (

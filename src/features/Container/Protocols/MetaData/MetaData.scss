@@ -184,6 +184,9 @@
       background: #f4f4f4;
       border-radius: unset;
     }
+    div {
+      margin-top: unset;
+    }
   }
   .valueText {
     margin-left: 10px;
@@ -194,12 +197,15 @@
     width: 100%;
     justify-content: space-between;
     div {
+      border-radius: unset;
       margin: unset;
+      background: #f9f9f9;
+      border: unset;
     }
     input {
       border-radius: unset;
-      border: none;
       background: #f9f9f9;
+      border: none;
     }
     .selectBox {
       width: 43%;
