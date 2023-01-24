@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import TextField from 'apollo-react/components/TextField';
 import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
@@ -128,6 +127,7 @@ function MetaData() {
   const handleDelete = (accData, e) => {
     e.stopPropagation();
     if (accData.level !== 1) {
+      // eslint-disable-next-line
       const filterData = Object.entries(accordianData).find(([key, value]) =>
         value?.child?.includes(accData.name),
       );
@@ -233,6 +233,7 @@ function MetaData() {
         suggestedList.filter((list) => list.label !== sectionName.label),
       );
     }
+    // eslint-disable-next-line
   }, [sectionName]);
 
   useEffect(() => {

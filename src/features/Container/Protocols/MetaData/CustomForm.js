@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Grid from 'apollo-react/components/Grid';
 import TextField from 'apollo-react/components/TextField';
 import Select from 'apollo-react/components/Select';
@@ -9,10 +9,6 @@ import PropTypes from 'prop-types';
 
 function CustomForm({ deleteMetaData, handleChange, item }) {
   const [type, setType] = useState('String');
-
-  useEffect(() => {
-    console.log({ item });
-  }, [item]);
 
   const onTypeChange = (e) => {
     setType(e.target.value);

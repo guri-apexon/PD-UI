@@ -64,6 +64,7 @@ function Accordian({
         suggestedList.filter((list) => list.label !== subSectionName.label),
       );
     }
+    // eslint-disable-next-line
   }, [subSectionName]);
   return (
     <>
