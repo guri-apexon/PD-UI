@@ -101,12 +101,24 @@ function MetaDataEditTable({
     columnTemp.splice(index, 1);
     setColumn(columnTemp);
   };
+  const reArrangeColumn = (data) => {
+    let index;
+    for (let i = 0; i < data.length; i++) {
+      if (Object.values(data[i])[1] === 'isCustom') {
+        index = i;
+      }
+    }
+    const obj = data[index];
+    data.splice(index, 1);
+    data.push(obj);
+    setColumn(data);
+  };
   const handleConfidence = (e, checked) => {
     setConfidence(checked);
     const columnTemp = [...column];
     if (checked) {
       columnTemp.push({ header: 'Confidence Score', accessor: 'confidence' });
-      setColumn(columnTemp);
+      reArrangeColumn(columnTemp);
     } else {
       removeIndex('Confidence Score');
     }
@@ -121,7 +133,7 @@ function MetaDataEditTable({
         accessor: 'note',
         customCell: EditableCell,
       });
-      setColumn(columnTemp);
+      reArrangeColumn(columnTemp);
     } else {
       removeIndex('Note');
     }
