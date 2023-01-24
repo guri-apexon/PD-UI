@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import FontProperties from './FontProperties/FontProperties';
 
 import { updateSectionData } from '../protocolSlice';
+import ProtocolContext from '../ProtocolContext';
 
 function ContentEdit({
   type,
@@ -18,6 +19,7 @@ function ContentEdit({
   const dispatch = useDispatch();
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
+  const { selectedSection, dispatchSectionEvent } = useContext(ProtocolContext);
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -28,8 +30,7 @@ function ContentEdit({
       lineId: lineID,
       content: contentEditableRef.current.innerHTML,
     };
-    console.log('handleBlur', obj);
-    // dispatch(updateSectionData(obj));
+    dispatchSectionEvent('CONTENT_UPDATE', obj);
     // currentEditData.current = text;
     // currentLineID.current = lineID;
 

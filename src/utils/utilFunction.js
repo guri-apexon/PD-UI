@@ -2,6 +2,7 @@ import Tooltip from 'apollo-react/components/Tooltip';
 import { cloneDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import { redaction } from '../AppConstant/AppConstant';
+import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 
 const replaceall = require('replaceall');
 
@@ -208,36 +209,33 @@ const setContent = (type) => {
   return '';
 };
 
-export const addContent = (origArray, obj, lineId) => {
+export const prepareContent = (origArray, obj, lineId) => {
   const arr = cloneDeep(origArray);
-  let index = 0;
-  const newObj = { ...obj };
-  newObj.line_id = uuidv4();
-  newObj.content = setContent('text');
-  // eslint-disable-next-line
-  const idx = arr.findIndex((val) => val.line_id === lineId);
-  index = idx + 1;
-  arr.splice(index, 0, newObj);
-  return arr;
+  let newObj = {};
+  if (lineId) {
+    newObj = {
+      ...PROTOCOL_CONSTANT[obj],
+      line_id: uuidv4(),
+      content: setContent('text'),
+    };
+    // eslint-disable-next-line
+    const index = arr.findIndex((val) => val.line_id === lineId) || 0;
+    arr.splice(index + 1, 0, newObj);
+    return arr;
+  }
+  console.log('origArray', origArray);
+  return arr.map((x) => {
+    if (x.line_id === obj.lineId) {
+      x.qc_change_type = obj.type;
+      x.content = obj.content;
+    }
+    return x;
+  });
 };
 
 export const markContentForDelete = (origArray, lineId) => {
   const arr = cloneDeep(origArray);
   const i = arr.findIndex((val) => val.line_id === lineId);
   arr[i].qc_change_type = 'delete';
-  return arr;
-};
-
-export const updateContentWithData = (origArray, obj) => {
-  const arr = cloneDeep(origArray);
-
-  // eslint-disable-next-line
-  arr.forEach((val) => {
-    if (val.line_id === obj.lineId) {
-      val.content = obj.content;
-      val.qc_change_type = obj.type;
-      return false;
-    }
-  });
   return arr;
 };

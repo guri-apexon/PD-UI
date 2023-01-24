@@ -2,22 +2,30 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
 
+const headerList = [
+  { id: 2, name: 'H2' },
+  { id: 3, name: 'H3' },
+  { id: 4, name: 'H4' },
+];
 const classNames = {
   active: 'dropdown-content active-show-list',
   notActive: 'dropdown-content',
 };
 function Dropdown({
-  list,
   buttonName,
   contentStyle,
   headerStyle,
-  onClick,
+  onHeaderSelect,
   type,
   disabled,
 }) {
   const [showList, setShowList] = useState(false);
   const showMenu = () => {
     setShowList(!showList);
+  };
+  const formatHeading = (e, name) => {
+    e.preventDefault();
+    document.execCommand('formatBlock', false, name);
   };
   return (
     <div className="dropdown">
@@ -35,16 +43,13 @@ function Dropdown({
         style={contentStyle}
       >
         <ul>
-          {list.map((item) => {
+          {headerList.map((item) => {
             if (type === 'header') {
               return (
-                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+                // eslint-disable-next-line
                 <li
                   key={React.key}
-                  onMouseDown={(evt) => {
-                    evt.preventDefault();
-                    document.execCommand('formatBlock', false, item.name);
-                  }}
+                  onMouseDown={(e) => formatHeading(e, item.name)}
                 >
                   {item.name}
                 </li>
@@ -52,7 +57,7 @@ function Dropdown({
             }
             return (
               // eslint-disable-next-line
-              <li key={React.key} onClick={() => onClick(item, type)}>
+              <li key={React.key} onClick={() => onHeaderSelect(item, type)}>
                 {item.name}
               </li>
             );
@@ -65,11 +70,10 @@ function Dropdown({
 export default Dropdown;
 
 Dropdown.propTypes = {
-  list: PropTypes.isRequired,
   buttonName: PropTypes.isRequired,
   contentStyle: PropTypes.isRequired,
   headerStyle: PropTypes.isRequired,
-  onClick: PropTypes.isRequired,
+  onHeaderSelect: PropTypes.isRequired,
   type: PropTypes.isRequired,
   disabled: PropTypes.isRequired,
 };

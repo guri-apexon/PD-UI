@@ -75,4 +75,4 @@ const header = {
 };
 
 // eslint-disable-next-line import/prefer-default-export
-export { text, header };
+export default { text, header };

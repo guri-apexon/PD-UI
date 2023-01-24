@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,13 +9,14 @@ import './DigitizedEdit.scss';
 
 import {
   updateContent,
-  addContent,
+  prepareContent,
   markContentForDelete,
 } from '../../../../utils/utilFunction';
 
 import { setSectionDetails, updateSectionData } from '../protocolSlice';
 import SAMPLE_DOC from './data.json';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
+import ProtocolContext from '../ProtocolContext';
 
 function MultilineEdit({ sectionDataArr, edit, linkId }) {
   // const [value, setValue] = useState(null);
@@ -56,10 +57,6 @@ function MultilineEdit({ sectionDataArr, edit, linkId }) {
     const arr = markContentForDelete(sectionDataArr, lineId);
     dispatch(setSectionDetails(arr));
   };
-  const handleAddSegment = (obj, lineId) => () => {
-    const arr = addContent(sectionDataArr, obj, lineId);
-    dispatch(updateSectionData({ data: arr, type: 'insert', linkId }));
-  };
   const handleClickChild = (item, type) => {
     // if (type === 'symbol') {
     //   if (currentEditData.current) {
@@ -76,8 +73,7 @@ function MultilineEdit({ sectionDataArr, edit, linkId }) {
       {edit && (
         <FontProperties
           activeLineID={activeLineID}
-          onClick={handleClickChild}
-          handleAddSegment={handleAddSegment}
+          onHeaderSelect={handleClickChild}
         />
       )}
       <section className="section-edited-list">

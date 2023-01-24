@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { updateContentWithData } from '../../../utils/utilFunction';
+import { prepareContent } from '../../../utils/utilFunction';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 
 export const protocolSlice = createSlice({
@@ -82,19 +82,20 @@ export const protocolSlice = createSlice({
       state.fileStream = action.payload;
     },
     updateSectionData: (state, action) => {
-      const { type, data, linkId } = action.payload;
-      if (type === 'insert') {
-        console.log('STATE UPDATED', linkId);
+      const { type, data, content, lineId, linkId } = action.payload;
+
+      if (type === 'REPLACE_CONTENT' && data && linkId) {
+        console.log('REPLACE_CONTENT UPDATED');
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
         );
-      } else {
+      } else if (content && lineId) {
         const obj = {
           type: 'modify',
-          lineId: action.payload.lineId,
-          content: action.payload.content,
+          lineId,
+          content,
         };
-        const arr = updateContentWithData(state.sectionDetails.sections, obj);
+        const arr = prepareContent(state.sectionDetails.sections, obj);
         state.sectionDetails.sections = arr;
       }
     },

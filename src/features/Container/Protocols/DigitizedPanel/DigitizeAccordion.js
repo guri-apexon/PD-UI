@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -16,6 +16,7 @@ import { createFullMarkup } from '../../../../utils/utilFunction';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import ProtocolContext from '../ProtocolContext';
 
 const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
 function DigitizeAccordion({
@@ -35,9 +36,12 @@ function DigitizeAccordion({
   const [sectionDataArr, setSectionDataArr] = useState([]);
   const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
+  const [editedMode, setEditedMode] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
 
   const { data: sectionData } = sectionHeaderDetails;
+
+  const { dispatchSectionEvent } = useContext(ProtocolContext);
 
   const handleChange = () => {
     handlePageRight(item.page);
@@ -91,16 +95,35 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [currentEditCard]);
 
+  const dispatchSectionData = (resetValues) => {
+    if (resetValues) {
+      dispatchSectionEvent('ON_SECTION_SELECT', {
+        selectedSection: null,
+        sectionContent: null,
+      });
+    }
+    if (item && sectionDataArr) {
+      dispatchSectionEvent('ON_SECTION_SELECT', {
+        selectedSection: item,
+        sectionContent: sectionDataArr,
+      });
+    }
+  };
   const onEditClick = (e) => {
     e.stopPropagation();
     setExpanded(true);
     setShowEdit(true);
     setCurrentEditCard(item.link_id);
+    setEditedMode(true);
+    dispatchSectionData();
   };
   const refreshContent = () => {
     console.log('refreshContent');
+    setEditedMode(false);
+    dispatchSectionData(true);
   };
   useEffect(() => {
+    console.log('sectionHeaderDetails', sectionHeaderDetails);
     // eslint-disable-next-line
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
@@ -114,7 +137,7 @@ function DigitizeAccordion({
             matchedIndex = index;
             return {
               ...sec,
-              content: `${sec?.content}_${sectionsData[index + 1].content}`,
+              content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
             };
           }
           return sec;
@@ -123,6 +146,8 @@ function DigitizeAccordion({
           updatedSectionsData.splice(matchedIndex + 1, 1);
         }
         setSectionDataArr(updatedSectionsData);
+        if (editedMode && !sectionDataArr?.length)
+          dispatchSectionData(updatedSectionsData);
       }
     }
   }, [sectionHeaderDetails]);
@@ -145,7 +170,6 @@ function DigitizeAccordion({
                 <Lock style={{ paddingRight: '10px' }} />
               </span>
             )}
-
             {primaryRole && (
               <>
                 <span data-testId="eyeIcon">
