@@ -49,12 +49,8 @@ function Digitize({
       sectionRef[sectionSequence].current
     ) {
       setTimeout(() => {
-        sectionRef[sectionSequence]?.current?.scrollIntoView({
-          behavior: 'instant',
-          block: 'end',
-        });
+        sectionRef[sectionSequence]?.current?.scrollIntoView(true);
       }, 300);
-
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
     // eslint-disable-next-line
