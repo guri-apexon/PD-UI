@@ -69,7 +69,6 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const handleChange = (index) => {
     const tempTOCActive = [...tocActive];
     tempTOCActive[index] = !tempTOCActive[index];
-    // setTocActive(tempTOCActive);
     dispatch({
       type: 'SET_TOC_Active',
       payload: {
