@@ -19,7 +19,6 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
-    console.log('tocActiveSelector', tocActiveSelector);
   }, [tocActiveSelector]);
 
   const [tocList, setTocList] = useState([]);
@@ -27,9 +26,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
-    console.log('called');
     if (tocData.data?.length) setTocList(tocData.data);
-    console.log('tocDatas', tocData.data);
   }, [tocData]);
 
   useEffect(() => {
@@ -79,7 +76,6 @@ function BladeLeft({ handlePageNo, dataSummary }) {
         data: tempTOCActive,
       },
     });
-    console.log('ACTIVE', tocActive);
   };
 
   return (

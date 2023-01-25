@@ -114,19 +114,16 @@ function DigitizeAccordion({
   }, [expanded]);
 
   useEffect(() => {
-    // console.log('TocActive Digitized', tocActive[index]);
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
     } else if (currentActiveCard === item.link_id && expanded) {
       setExpanded(!expanded);
-      console.log('the else if', expanded);
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
-      console.log('TocActive Digitized', tocActive[index]);
       setExpanded(false);
     }
     // eslint-disable-next-line
