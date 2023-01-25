@@ -104,7 +104,7 @@ class ProtocolViewWrapper extends React.Component {
                     />
                   ) : (
                     <div className="digitize-panel-content">
-                      <div className="loader">{summaryData.errorMsg}</div>
+                      <div className="loader">{summaryData?.errorMsg}</div>
                     </div>
                   )}
                 </Card>
