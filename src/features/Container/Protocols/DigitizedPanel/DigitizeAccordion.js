@@ -11,11 +11,11 @@ import EyeShow from 'apollo-react-icons/EyeShow';
 import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../../Components/Loader/Loader';
-import { sectionDetails } from '../protocolSlice';
 import {
   createFullMarkup,
   createEnrichedText,
 } from '../../../../utils/utilFunction';
+import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
@@ -29,6 +29,8 @@ function DigitizeAccordion({
   rightBladeValue,
   currentEditCard,
   setCurrentEditCard,
+  scrollToTop,
+  index,
 }) {
   const dispatch = useDispatch();
 
@@ -42,6 +44,12 @@ function DigitizeAccordion({
   const [clinicalTerms, setClinicalTerms] = useState(null);
 
   const { data: sectionData } = sectionHeaderDetails;
+  const [tocActive, setTocActive] = useState([]);
+
+  const tocActiveSelector = useSelector(TOCActive);
+  useEffect(() => {
+    if (tocActiveSelector) setTocActive(tocActiveSelector);
+  }, [tocActiveSelector]);
 
   useEffect(() => {
     if (sectionData?.length > 0) {
@@ -51,20 +59,25 @@ function DigitizeAccordion({
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = arr[0].data;
-        updatedSectionsData = sectionsData?.map((sec, index) => {
-          if (sec?.font_info?.VertAlign === 'superscript') {
-            matchedIndex = index;
-            return {
-              ...sec,
-              content: `${sec?.content}_${sectionsData[index + 1].content}`,
-            };
+        if (Array.isArray(sectionsData)) {
+          updatedSectionsData = sectionsData?.map((sec, index) => {
+            if (sec?.font_info?.VertAlign === 'superscript') {
+              matchedIndex = index;
+              return {
+                ...sec,
+                content: `${sec?.content}_${sectionsData[index + 1].content}`,
+              };
+            }
+            return sec;
+          });
+          if (matchedIndex) {
+            updatedSectionsData.splice(matchedIndex + 1, 1);
           }
-          return sec;
-        });
-        if (matchedIndex) {
-          updatedSectionsData.splice(matchedIndex + 1, 1);
+          setSections(updatedSectionsData);
         }
-        setSections(updatedSectionsData);
+        if (currentActiveCard === item.link_id) {
+          scrollToTop(item.sequence);
+        }
       }
     }
     // eslint-disable-next-line
@@ -73,6 +86,15 @@ function DigitizeAccordion({
   const handleChange = () => {
     handlePageRight(item.page);
     setExpanded(!expanded);
+    const tempTOCActive = [...tocActive];
+    tempTOCActive[index] = !tempTOCActive[index];
+    setTocActive(tempTOCActive);
+    dispatch({
+      type: 'SET_TOC_Active',
+      payload: {
+        data: tempTOCActive,
+      },
+    });
   };
 
   const onSaveClick = (e) => {
@@ -102,11 +124,20 @@ function DigitizeAccordion({
   }, [expanded]);
 
   useEffect(() => {
-    if (currentActiveCard === item.link_id && !expanded) {
+    if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
+    } else if (currentActiveCard === item.link_id && expanded) {
+      setExpanded(!expanded);
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
+
+  useEffect(() => {
+    if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
+      setExpanded(false);
+    }
+    // eslint-disable-next-line
+  }, [tocActive]);
 
   const handleEnrichedClick = (e, obj) => {
     if (e.target.className === 'enriched-txt') {
@@ -303,4 +334,6 @@ DigitizeAccordion.propTypes = {
   rightBladeValue: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
+  scrollToTop: PropTypes.isRequired,
+  index: PropTypes.isRequired,
 };
