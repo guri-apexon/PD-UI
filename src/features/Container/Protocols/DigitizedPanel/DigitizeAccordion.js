@@ -43,8 +43,6 @@ function DigitizeAccordion({
   useEffect(() => {
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      console.clear();
-      console.log({ arr });
       if (arr.length > 0) {
         setShowLoader(false);
         let updatedSectionsData = [];
