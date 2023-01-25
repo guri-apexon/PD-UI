@@ -215,7 +215,6 @@ export const prepareContent = ({
   currentLineId,
   contentType,
   content,
-  ...rest
 }) => {
   const clonedSection = cloneDeep(sectionContent);
   let newObj = {};

@@ -151,6 +151,7 @@ function DigitizeAccordion({
         setSectionDataArr(updatedSectionsData);
       }
     }
+    // eslint-disable-next-line
   }, [sectionHeaderDetails]);
 
   return (

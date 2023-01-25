@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { prepareContent } from '../../../utils/utilFunction';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 
 export const protocolSlice = createSlice({

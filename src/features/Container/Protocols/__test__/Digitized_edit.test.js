@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import MultilineEdit from '../DigitizedPanel/Digitized_edit';
+import MultilineEdit from '../DigitizedPanel/DigitizedEdit';
 
 const sample = [
   {

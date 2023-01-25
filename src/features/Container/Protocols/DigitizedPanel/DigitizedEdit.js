@@ -1,24 +1,17 @@
-/* eslint-disable react/button-has-type */
-import { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-
-import HoverComponent from '../CustomComponents/HoverComponent';
+import { useDispatch } from 'react-redux';
 import RenderContent from '../CustomComponents/RenderContent';
 import './DigitizedEdit.scss';
-
 import {
   updateContent,
-  prepareContent,
   markContentForDelete,
 } from '../../../../utils/utilFunction';
 
-import { setSectionDetails, updateSectionData } from '../protocolSlice';
-import SAMPLE_DOC from './data.json';
+import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
-import ProtocolContext from '../ProtocolContext';
 
-function MultilineEdit({ sectionDataArr, edit, linkId }) {
+function MultilineEdit({ sectionDataArr, edit }) {
   // const [value, setValue] = useState(null);
   const [sections, setSections] = useState([]);
   useEffect(() => {
@@ -58,6 +51,7 @@ function MultilineEdit({ sectionDataArr, edit, linkId }) {
     dispatch(setSectionDetails(arr));
   };
   const handleClickChild = (item, type) => {
+    console.log('handleClickChild::', item, type);
     // if (type === 'symbol') {
     //   if (currentEditData.current) {
     //     const newText = `${currentEditData.current} ${item.name}`;
@@ -107,5 +101,4 @@ export default MultilineEdit;
 MultilineEdit.propTypes = {
   sectionDataArr: PropTypes.isRequired,
   edit: PropTypes.isRequired,
-  linkId: PropTypes.isRequired,
 };
