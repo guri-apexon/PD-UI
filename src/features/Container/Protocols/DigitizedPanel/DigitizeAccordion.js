@@ -43,25 +43,29 @@ function DigitizeAccordion({
   useEffect(() => {
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
+      console.clear();
+      console.log({ arr });
       if (arr.length > 0) {
         setShowLoader(false);
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = arr[0].data;
-        updatedSectionsData = sectionsData?.map((sec, index) => {
-          if (sec?.font_info?.VertAlign === 'superscript') {
-            matchedIndex = index;
-            return {
-              ...sec,
-              content: `${sec?.content}_${sectionsData[index + 1].content}`,
-            };
+        if (Array.isArray(sectionsData)) {
+          updatedSectionsData = sectionsData?.map((sec, index) => {
+            if (sec?.font_info?.VertAlign === 'superscript') {
+              matchedIndex = index;
+              return {
+                ...sec,
+                content: `${sec?.content}_${sectionsData[index + 1].content}`,
+              };
+            }
+            return sec;
+          });
+          if (matchedIndex) {
+            updatedSectionsData.splice(matchedIndex + 1, 1);
           }
-          return sec;
-        });
-        if (matchedIndex) {
-          updatedSectionsData.splice(matchedIndex + 1, 1);
+          setSections(updatedSectionsData);
         }
-        setSections(updatedSectionsData);
         if (currentActiveCard === item.link_id) {
           scrollToTop(item.sequence);
         }
