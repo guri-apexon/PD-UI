@@ -30,14 +30,14 @@ function MedicalTerm({
       setClinicalTerms([]);
       setSAnchorEl(null);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [enrichedText, clinicalTermsArr]);
 
   useEffect(() => {
     if (selectedTerm) {
       setChildArr(clinicalTermsArr[enrichedText][selectedTerm].split(','));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [selectedTerm]);
 
   const handleSave = () => {

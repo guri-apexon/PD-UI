@@ -208,13 +208,11 @@ function DigitizeAccordion({
           (showedit ? (
             <MultilineEdit data={sections} />
           ) : (
-            /* eslint-disable */
             <div className="readable-content">
-              {/* eslint-enable */}
               {sections.map((section) => {
                 return section?.font_info?.VertAlign === 'superscript' &&
                   section.content.length > 0 ? (
-                  /* eslint-disable */
+                  // eslint-disable-next-line
                   <div
                     key={React.key}
                     className="supContent"
@@ -222,7 +220,6 @@ function DigitizeAccordion({
                       handleEnrichedClick(e, section.clinical_terms)
                     }
                   >
-                    {/* eslint-enable */}
                     <sup>
                       <SanitizeHTML
                         html={getEnrichedText(
@@ -254,7 +251,7 @@ function DigitizeAccordion({
                   </div>
                 ) : (
                   section.content.length > 0 && (
-                    /* eslint-disable */
+                    // eslint-disable-next-line
                     <p
                       key={React.key}
                       style={{
@@ -272,7 +269,6 @@ function DigitizeAccordion({
                         handleEnrichedClick(e, section.clinical_terms)
                       }
                     >
-                      {/* eslint-enable */}
                       <SanitizeHTML
                         html={getEnrichedText(
                           section.content,
