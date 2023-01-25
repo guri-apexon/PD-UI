@@ -114,7 +114,8 @@ function DigitizeAccordion({
   }, [expanded]);
 
   useEffect(() => {
-    if (currentActiveCard === item.link_id && !expanded) {
+    // console.log('TocActive Digitized', tocActive[index]);
+    if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
     } else if (currentActiveCard === item.link_id && expanded) {
       setExpanded(!expanded);
@@ -122,6 +123,14 @@ function DigitizeAccordion({
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
+
+  useEffect(() => {
+    if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
+      console.log('TocActive Digitized', tocActive[index]);
+      setExpanded(false);
+    }
+    // eslint-disable-next-line
+  }, [tocActive]);
 
   const handleEnrichedClick = (e) => {
     if (e.target.className === 'enriched-txt') {

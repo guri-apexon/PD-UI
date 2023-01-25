@@ -42,12 +42,14 @@ function Digitize({
   }, [summary]);
 
   useEffect(() => {
+    console.log('scroll');
     if (sectionSequence === 'undefined' || sectionSequence === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else if (
       sectionRef[sectionSequence] &&
       sectionRef[sectionSequence].current
     ) {
+      console.log('scroll', sectionRef[sectionSequence].current);
       setTimeout(() => {
         sectionRef[sectionSequence]?.current?.scrollIntoView({
           behavior: 'instant',
