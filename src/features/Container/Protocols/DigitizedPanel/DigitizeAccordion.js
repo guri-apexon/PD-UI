@@ -116,15 +116,6 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded) {
       setExpanded(true);
-      const tempTOCActive = [...tocActive];
-      tempTOCActive[index] = !tempTOCActive[index];
-      setTocActive(tempTOCActive);
-      dispatch({
-        type: 'SET_TOC_Active',
-        payload: {
-          data: tempTOCActive,
-        },
-      });
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);

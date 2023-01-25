@@ -15,7 +15,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const wrapperRef = useRef(null);
-  const [tocActive, setTocActive] = useState([]);
+  const [tocActive, setTocActive] = useState();
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
@@ -27,7 +27,9 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
+    console.log('called');
     if (tocData.data?.length) setTocList(tocData.data);
+    console.log('tocDatas', tocData.data);
   }, [tocData]);
 
   useEffect(() => {
@@ -70,7 +72,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const handleChange = (index) => {
     const tempTOCActive = [...tocActive];
     tempTOCActive[index] = !tempTOCActive[index];
-    setTocActive(tempTOCActive);
+    // setTocActive(tempTOCActive);
     dispatch({
       type: 'SET_TOC_Active',
       payload: {

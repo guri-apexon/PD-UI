@@ -322,13 +322,12 @@ export function* getProtocolTocDataResult(action) {
       if (header?.data?.status === 204) {
         header.data = [];
       }
-      yield put(getProtocolTocData(header));
       const tocIsactive = [];
       for (let i = 0; i < header.data.length; i++) {
         tocIsactive.push(false);
       }
-
       yield put(getTOCActive(tocIsactive));
+      yield put(getProtocolTocData(header));
     } else {
       yield put(getHeaderList(header));
     }
