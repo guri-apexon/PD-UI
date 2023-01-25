@@ -27,6 +27,7 @@ function DigitizeAccordion({
   rightBladeValue,
   currentEditCard,
   setCurrentEditCard,
+  scrollToTop,
   index,
 }) {
   const dispatch = useDispatch();
@@ -54,20 +55,25 @@ function DigitizeAccordion({
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = arr[0].data;
-        updatedSectionsData = sectionsData?.map((sec, index) => {
-          if (sec?.font_info?.VertAlign === 'superscript') {
-            matchedIndex = index;
-            return {
-              ...sec,
-              content: `${sec?.content}_${sectionsData[index + 1].content}`,
-            };
+        if (Array.isArray(sectionsData)) {
+          updatedSectionsData = sectionsData?.map((sec, index) => {
+            if (sec?.font_info?.VertAlign === 'superscript') {
+              matchedIndex = index;
+              return {
+                ...sec,
+                content: `${sec?.content}_${sectionsData[index + 1].content}`,
+              };
+            }
+            return sec;
+          });
+          if (matchedIndex) {
+            updatedSectionsData.splice(matchedIndex + 1, 1);
           }
-          return sec;
-        });
-        if (matchedIndex) {
-          updatedSectionsData.splice(matchedIndex + 1, 1);
+          setSections(updatedSectionsData);
         }
-        setSections(updatedSectionsData);
+        if (currentActiveCard === item.link_id) {
+          scrollToTop(item.sequence);
+        }
       }
     }
     // eslint-disable-next-line
@@ -276,5 +282,6 @@ DigitizeAccordion.propTypes = {
   rightBladeValue: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
+  scrollToTop: PropTypes.isRequired,
   index: PropTypes.isRequired,
 };
