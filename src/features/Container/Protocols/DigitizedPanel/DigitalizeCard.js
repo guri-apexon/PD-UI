@@ -45,7 +45,6 @@ function Digitize({
     setTimeout(() => {
       sectionRef[index]?.current?.scrollIntoView(true);
     }, 300);
-    setCurrentActiveCard(headerList[index]?.link_id);
   };
 
   useEffect(() => {
@@ -56,6 +55,7 @@ function Digitize({
       sectionRef[sectionSequence].current
     ) {
       scrollToTop(sectionSequence);
+      setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
     // eslint-disable-next-line
   }, [sectionSequence]);
@@ -63,7 +63,6 @@ function Digitize({
   useEffect(() => {
     if (sectionNumber >= 0) {
       setSectionSequence(sectionNumber);
-      console.log({ sectionNumber });
     }
   }, [sectionNumber]);
 
