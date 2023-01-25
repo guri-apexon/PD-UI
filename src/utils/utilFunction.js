@@ -1,7 +1,7 @@
 import Tooltip from 'apollo-react/components/Tooltip';
 import { cloneDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import { redaction } from '../AppConstant/AppConstant';
+import { CONTENT_TYPE, redaction } from '../AppConstant/AppConstant';
 import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 
 const replaceall = require('replaceall');
@@ -195,16 +195,44 @@ export const updateContent = (origArray, obj) => {
   return arr;
 };
 
-export const contentType = {
-  table: 'table',
-  text: 'text',
-  image: 'image',
-  header: 'header',
+export const tableJSONByRowAndColumnLength = (row, column) => {
+  const json = [];
+  for (let i = 0; i < row; i++) {
+    const rowId = uuidv4();
+    const columnObj = {};
+    for (let j = 0; j < column; j++) {
+      const obj = {
+        entities: [],
+        content: '',
+        roi_id: {
+          table_roi_id: '',
+          row_roi_id: rowId,
+          column_roi_id: '',
+          datacell_roi_id: '',
+        },
+        table_index: uuidv4(),
+        qc_change_type: '',
+      };
+      columnObj[`${j + 1}.0`] = obj;
+    }
+    json.push(columnObj);
+  }
+  return JSON.stringify(json);
 };
 
 const setContent = (type) => {
-  if (type === contentType.text || type === contentType.header) {
+  if ([CONTENT_TYPE.TEXT, CONTENT_TYPE.HEADER].includes(type)) {
     return 'Edit Your Text Here';
+  }
+  if (type === CONTENT_TYPE.TABLE) {
+    return {
+      Table: '',
+      TableProperties: tableJSONByRowAndColumnLength(2, 2),
+      SectionHeaderPrintPage: '0',
+      TableIndex: '1',
+      TableName: '',
+      Header: [],
+    };
   }
   return '';
 };
@@ -224,7 +252,7 @@ export const prepareContent = ({
         newObj = {
           ...PROTOCOL_CONSTANT[contentType],
           line_id: uuidv4(),
-          content: setContent('text'),
+          content: setContent(contentType),
         };
         // eslint-disable-next-line
         const index =

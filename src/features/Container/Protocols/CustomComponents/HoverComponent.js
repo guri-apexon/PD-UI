@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 
 import { v4 as uuidv4 } from 'uuid';
 import './hoverComponent.scss';
-import { TextElement, TextHeader2 } from './MenuItems';
+import { TableElement, TextElement, TextHeader2 } from './MenuItems';
 import ProtocolContext from '../ProtocolContext';
+import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
 
 function HoverComponent({ lineId, activeLineID }) {
   const { dispatchSectionEvent } = useContext(ProtocolContext);
@@ -17,11 +18,15 @@ function HoverComponent({ lineId, activeLineID }) {
   const menuItems = [
     {
       text: <TextElement />,
-      onClick: () => handleAddSegment('text'),
+      onClick: () => handleAddSegment(CONTENT_TYPE.TEXT),
     },
     {
       text: <TextHeader2 />,
-      onClick: () => handleAddSegment('header'),
+      onClick: () => handleAddSegment(CONTENT_TYPE.HEADER),
+    },
+    {
+      label: <TableElement />,
+      onClick: () => handleAddSegment(CONTENT_TYPE.TABLE),
     },
   ];
   return (

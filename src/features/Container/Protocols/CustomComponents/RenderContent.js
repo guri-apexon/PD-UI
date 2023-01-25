@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import EditContent from './EditContent';
 import './renderContent.scss';
+import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
 
 function RenderContent({
   sectionData,
@@ -15,7 +16,7 @@ function RenderContent({
   const { type, content, line_id: lineID } = sectionData;
 
   if (content) {
-    if (type === 'header') {
+    if (type === CONTENT_TYPE.HEADER) {
       return (
         <EditContent
           type="header"
@@ -29,7 +30,7 @@ function RenderContent({
         />
       );
     }
-    if (type === 'text') {
+    if (type === CONTENT_TYPE.TEXT) {
       return (
         <EditContent
           type="text"
@@ -41,6 +42,30 @@ function RenderContent({
           deleteSection={deleteSection}
           edit={edit}
         />
+      );
+    }
+    if (type === CONTENT_TYPE.TABLE) {
+      return (
+        // eslint-disable-next-line
+        <div onClick={() => edit && setActiveLineID(data.line_id)}>
+          <PDTable
+            data={content}
+            edit={edit}
+            onChange={handleContentEdit}
+            index="index"
+            segment={sectionData}
+            activeLineID={activeLineID}
+            lineID={activeLineID}
+          />
+        </div>
+        // <PDTable
+        //   data={data}
+        //   edit={edit}
+        //   handleSave={handleTableSave}
+        //   key={lineID}
+        //   enableTableForEdit={enableTableForEdit}
+        //   handleTableDelete={handleTableDelete}
+        // />
       );
     }
   } else {

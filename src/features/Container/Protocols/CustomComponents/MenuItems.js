@@ -21,10 +21,10 @@ export function TextElement() {
 //   );
 // }
 
-// export function TableElement() {
-//   return (
-//     <div className="add-element">
-//       <span>Table</span>
-//     </div>
-//   );
-// }
+export function TableElement() {
+  return (
+    <div className="add-element">
+      <span>Table</span>
+    </div>
+  );
+}

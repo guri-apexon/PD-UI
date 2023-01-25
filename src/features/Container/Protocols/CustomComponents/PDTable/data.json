@@ -1,0 +1,2315 @@
+[
+  {
+    "1.0": "",
+    "2.0": {
+      "entities": [],
+      "content": "Consent/Screening",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "30d2da3b-93b3-4839-bf91-b69bbe0ee66c",
+        "datacell_roi_id": "ae327199-8be3-4ddc-82eb-812fc3e6d883"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "Treatment Day",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "d9a63f06-14f6-478c-a689-36ccb3616284",
+        "datacell_roi_id": "e851690b-b01a-4b10-9b1f-183f0f1f1c22"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": {
+      "entities": [],
+      "content": "Follow-up period",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "fdae2c92-298d-4173-b10a-8431928de360",
+        "datacell_roi_id": "5cf635cf-8d72-4fb8-931d-0cebbba4c81a-1"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "5.0": {
+      "entities": [],
+      "content": "Follow-up period",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "fdae2c92-298d-4173-b10a-8431928de360",
+        "datacell_roi_id": "5cf635cf-8d72-4fb8-931d-0cebbba4c81a-2"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "6.0": {
+      "entities": [],
+      "content": "Follow-up period",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "fdae2c92-298d-4173-b10a-8431928de360",
+        "datacell_roi_id": "5cf635cf-8d72-4fb8-931d-0cebbba4c81a-3"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "7.0": {
+      "entities": [],
+      "content": "Follow-up period",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "fdae2c92-298d-4173-b10a-8431928de360",
+        "datacell_roi_id": "5cf635cf-8d72-4fb8-931d-0cebbba4c81a-4"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "Follow-up period",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "fdae2c92-298d-4173-b10a-8431928de360",
+        "datacell_roi_id": "5cf635cf-8d72-4fb8-931d-0cebbba4c81a-5"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": {
+      "entities": [],
+      "content": "Follow-up period",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "fdae2c92-298d-4173-b10a-8431928de360",
+        "datacell_roi_id": "5cf635cf-8d72-4fb8-931d-0cebbba4c81a-6"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "10.0": {
+      "entities": [],
+      "content": "Follow-up period",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "fdae2c92-298d-4173-b10a-8431928de360",
+        "datacell_roi_id": "5cf635cf-8d72-4fb8-931d-0cebbba4c81a-7"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Details in CSP Section or Appendix",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "76b09a1c-2bd1-4478-b116-2eecb421d4d1",
+        "column_roi_id": "3abf34d1-826c-4833-bb2e-9f5b8ac414b2",
+        "datacell_roi_id": "ae747694-69e0-4f42-8c47-ffaa5e8ccd52"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Visit number Visit numberVisit numberVisit numberVisit numberVisit numberVisit number",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "4b3cc0cf-5fb0-40e0-a915-84923222446e",
+        "datacell_roi_id": "83eb2aad-4388-4881-b814-e94c53acbd2d"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "V1",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "329430e1-547a-45cf-a246-a17960c6e160",
+        "datacell_roi_id": "9a3fc868-03b8-4334-b53a-119b52fde164"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "V2",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "d4604003-53da-4165-b68f-5ad2f7a84734",
+        "datacell_roi_id": "ba807d20-353f-4571-ac05-62ce327e005a"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": {
+      "entities": [],
+      "content": "V3",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "27b78c74-ad4c-4dc1-8d43-c615b1b73bcc",
+        "datacell_roi_id": "72766cad-bf99-44fc-b481-056099c01ab9"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "5.0": {
+      "entities": [],
+      "content": "V4",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "f663de51-de5f-440d-9c4d-2c4ef49eb1ff",
+        "datacell_roi_id": "73da8c9f-b6fe-4979-81d3-9e900e70e1ae"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "6.0": {
+      "entities": [],
+      "content": "V5",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "dacc9171-8c24-4e4b-9a83-fa440f8376c2",
+        "datacell_roi_id": "c1964892-c31c-4565-895f-5ef6b7a52472"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "7.0": {
+      "entities": [],
+      "content": "V6",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "6cd080d7-fa9c-4557-9c29-e6e2c219d4c9",
+        "datacell_roi_id": "cf3f60c9-e7f1-42c3-abb2-6ec35d6d38a7"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "V7",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "d14713d2-81f6-43ed-a958-e9cd43a002fa",
+        "datacell_roi_id": "77cea909-22ec-4559-9c05-6450b316977d"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": {
+      "entities": [],
+      "content": "V8",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "992d2366-d766-401c-ba9e-42efc2220b4f",
+        "datacell_roi_id": "7bd6a426-80e2-482b-a0f5-1fef18b98329"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "10.0": {
+      "entities": [],
+      "content": "V9",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "3832f056-9e14-4d19-9645-8abdf4671763",
+        "column_roi_id": "978c81e7-8b2a-45ab-af51-a1933604d8ed",
+        "datacell_roi_id": "8242fc49-642a-47a0-b315-ad82ad31b5d3"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": ""
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Study day  Procedure",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "3a1c7014-df65-436b-961a-3270dd8a6c24",
+        "datacell_roi_id": "4c02a5d2-bc86-4fd0-9013-41d487274cd5"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "Day-14 to -1",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "e857810f-304a-40be-a99e-29bab4074c11",
+        "datacell_roi_id": "58fe2cc0-6e19-45ff-9e75-5c09ecbaf61e"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "Day 1",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "914237d4-c999-4d4d-b011-aa6617590848",
+        "datacell_roi_id": "d8cd7123-6eff-4cb9-9499-a72dfe746d31"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": {
+      "entities": [],
+      "content": "Day 3",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "c539236e-c125-4903-9d94-d61f5bbd5d88",
+        "datacell_roi_id": "8d73dc24-401c-4b80-9b95-9bba37d7c229"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "5.0": {
+      "entities": [],
+      "content": "Day 7  (±1)",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "d428bc96-1a07-4c35-8f80-78ad44953407",
+        "datacell_roi_id": "35683a51-19d6-410d-91c2-9e17cafcfad1"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "6.0": {
+      "entities": [],
+      "content": "Day 11  (±1)",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "6ef352b4-0113-408c-81d6-a3e5263b2e32",
+        "datacell_roi_id": "ce3c86f2-70f4-4784-a859-086d02efa474"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "7.0": {
+      "entities": [],
+      "content": "Day 15  (±1)",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "77987deb-6583-4854-b31e-36abdee87c72",
+        "datacell_roi_id": "745c4d08-cb75-4bb7-b981-129bf0c36141"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "Day 29  (±2)",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "2a7cb0fc-d22b-4fc8-95d0-7c4bd4cad2bd",
+        "datacell_roi_id": "45437eba-556c-4892-b119-04b6e2ee8917"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": {
+      "entities": [],
+      "content": "Day 57  (±2)",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "4ab3b68e-45f0-4a1a-9789-7a7dac0786a0",
+        "datacell_roi_id": "043c5d1f-a6f3-4a1e-b26f-3acc0ea70a92"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "10.0": {
+      "entities": [],
+      "content": "Day 85/EOS  (±3)",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "048ed129-3cfa-4bab-b2ab-40fccae4c661",
+        "column_roi_id": "81eeb60e-5a31-41eb-ba08-fbeee17d1580",
+        "datacell_roi_id": "dddb34fb-e0c6-499f-8238-7074348a12ba"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": ""
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Written informed consent and assent",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "8be8c526-2ec6-4e57-bb5f-6bd492df2647",
+        "column_roi_id": "35f50081-c1a7-4b58-b882-a998311cef53",
+        "datacell_roi_id": "240cf18b-1f58-420c-85bc-ae0cf4e01b41"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "8be8c526-2ec6-4e57-bb5f-6bd492df2647",
+        "column_roi_id": "3ea3ab9a-efa7-41dd-ac9d-890ae75bccdc",
+        "datacell_roi_id": "de29adc9-27ca-4bd1-b6cb-4705576e23e9"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": "",
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Section    5.1  Appendix     A 3 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "8be8c526-2ec6-4e57-bb5f-6bd492df2647",
+        "column_roi_id": "1c78a893-c0fd-45e5-90bd-d0a26016068f",
+        "datacell_roi_id": "98c1b264-2e5c-4307-befc-bee0fe6fc971"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Assignment of SID number",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "625a6539-e48e-4387-ab5b-004f876c1a0e",
+        "column_roi_id": "5ea387b4-73a7-4d11-92ca-7f9091279082",
+        "datacell_roi_id": "23c5d9c0-a94b-4b2f-9507-a8a7685e6062"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "625a6539-e48e-4387-ab5b-004f876c1a0e",
+        "column_roi_id": "9f0bf3db-80a9-409d-8b5b-93486f06a92c",
+        "datacell_roi_id": "8c66491b-4221-4b99-9ca1-804a2a2a8d22"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": "",
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Section    6.3 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "625a6539-e48e-4387-ab5b-004f876c1a0e",
+        "column_roi_id": "0607caa4-6b9d-4404-a53c-71a5f6b1f823",
+        "datacell_roi_id": "8b6d0dd2-ac41-4960-bb2b-c41675b60e35"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Verify eligibility criteria",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "169aaaf0-e595-4330-b74a-9e77f0d78418",
+        "column_roi_id": "3825556b-0675-42ae-9f78-e8beec8e0898",
+        "datacell_roi_id": "1448fb62-5dfe-4d8d-837c-c84d683f20ee"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "169aaaf0-e595-4330-b74a-9e77f0d78418",
+        "column_roi_id": "9d4eca38-6bbf-46cc-9736-5eeda7bece76",
+        "datacell_roi_id": "d7d862de-3db9-4439-88a2-5bdce1d8bb8f"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "169aaaf0-e595-4330-b74a-9e77f0d78418",
+        "column_roi_id": "184c1bfe-8940-4f4b-829e-f162b37002f5",
+        "datacell_roi_id": "7bac48cc-f618-4e83-8172-575e1b7f9b79"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Sections    5.1     5.2 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "169aaaf0-e595-4330-b74a-9e77f0d78418",
+        "column_roi_id": "be105c3c-0928-422c-ab49-f0641a1adbef",
+        "datacell_roi_id": "e384f1b7-6ea5-4ef8-9fa3-f2ff8b7ac534"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Demography",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "61268bb9-4c7e-474c-8857-49a86e6a9623",
+        "column_roi_id": "b3e6efec-884c-4b0f-b55d-9a9d2d2ea4ee",
+        "datacell_roi_id": "4c875492-584f-4b3a-978f-9ecbd699f7d2"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "61268bb9-4c7e-474c-8857-49a86e6a9623",
+        "column_roi_id": "6e0afb7e-f39a-468f-a1ad-df02870b59ee",
+        "datacell_roi_id": "ab4bfda5-4054-45e9-875e-8f5b18bf51ff"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": "",
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Section    5.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "61268bb9-4c7e-474c-8857-49a86e6a9623",
+        "column_roi_id": "c9181427-44a6-4186-a955-33c3801d1174",
+        "datacell_roi_id": "985344b1-8bfa-4e43-b977-8f242808d6d5"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Medical history",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "542c1540-27e5-49af-9e64-8ae0e7e22b59",
+        "column_roi_id": "4abfef5e-630f-4005-88fb-f3157b5b562b",
+        "datacell_roi_id": "07b64e51-560c-44f8-b4c9-7beb62b19610"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "542c1540-27e5-49af-9e64-8ae0e7e22b59",
+        "column_roi_id": "00f7a36e-f610-498b-8ed1-3db787b4ea4a",
+        "datacell_roi_id": "c05c9e15-ec30-43ba-bcdc-ada663276ef1"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": "",
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Section    5.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "542c1540-27e5-49af-9e64-8ae0e7e22b59",
+        "column_roi_id": "0ad2cd13-113a-4ec2-9f83-4d589209f957",
+        "datacell_roi_id": "3fd74307-137b-4fb6-9ecf-5db4962e2772"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Physical examination",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "73fa87bf-14a1-4f8e-9d05-b1e82bb86cb1",
+        "column_roi_id": "0c506d8d-f226-44b9-a404-60421eb38f0a",
+        "datacell_roi_id": "62f7ad3c-13e5-449d-8deb-ec0d38315334"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X <sup>a</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "73fa87bf-14a1-4f8e-9d05-b1e82bb86cb1",
+        "column_roi_id": "4b08595c-bf16-4ab2-9d28-0494ada78fd8",
+        "datacell_roi_id": "751ad7c6-e1d2-4bcd-aa05-5f226c038e4c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X <sup>a</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "73fa87bf-14a1-4f8e-9d05-b1e82bb86cb1",
+        "column_roi_id": "85b2dc93-26b7-4908-b260-8e2405d15360",
+        "datacell_roi_id": "d7c8b254-cea7-4e68-a2ea-7e6e28ab6e0c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": {
+      "entities": [],
+      "content": "X <sup>b</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "73fa87bf-14a1-4f8e-9d05-b1e82bb86cb1",
+        "column_roi_id": "7c5483ad-01dd-4834-ad96-6396e20b675d",
+        "datacell_roi_id": "d8a05540-5daf-4cce-9ae8-6d90cb290a1f"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "6.0": "",
+    "7.0": "",
+    "8.0": {
+      "entities": [],
+      "content": "X <sup>b</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "73fa87bf-14a1-4f8e-9d05-b1e82bb86cb1",
+        "column_roi_id": "63d634ce-7233-43db-8196-12a2c2c29364",
+        "datacell_roi_id": "ee0b7238-3bb4-4a7a-aa7e-975c4da58041"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": {
+      "entities": [],
+      "content": "X <sup>b</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "73fa87bf-14a1-4f8e-9d05-b1e82bb86cb1",
+        "column_roi_id": "e1a128f8-97e0-4719-aec0-786ad3345a11",
+        "datacell_roi_id": "e7bdbe49-1ba2-4be6-a0b0-2aaab800550b"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "10.0": {
+      "entities": [],
+      "content": "X <sup>a</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "73fa87bf-14a1-4f8e-9d05-b1e82bb86cb1",
+        "column_roi_id": "0d9ada9b-e99b-4385-b7ed-8df9c4d36831",
+        "datacell_roi_id": "d6c66cf2-eca9-4744-9d40-e3cf3baa7655"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.2.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "73fa87bf-14a1-4f8e-9d05-b1e82bb86cb1",
+        "column_roi_id": "c793f454-ee39-466a-b8a9-bc2131e04bda",
+        "datacell_roi_id": "bae0e66d-05ca-470e-9e7c-dc481aa7d28b"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Weight",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b15c8866-7c3b-4167-a13a-3bd9237151d0",
+        "column_roi_id": "1a5c9a6e-03b5-4be9-9201-dccb65df37ff",
+        "datacell_roi_id": "80bfedf9-91e1-4dea-9d44-703096f24713"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b15c8866-7c3b-4167-a13a-3bd9237151d0",
+        "column_roi_id": "9212f53c-16c0-4778-a580-207b13585682",
+        "datacell_roi_id": "b9d57f28-5dbf-4871-baaa-d6a1ae58a8da"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b15c8866-7c3b-4167-a13a-3bd9237151d0",
+        "column_roi_id": "6fc9f458-1de1-43cd-bb92-24908d4361e4",
+        "datacell_roi_id": "eee1f558-08a2-454b-9c0a-fae050eeb68c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b15c8866-7c3b-4167-a13a-3bd9237151d0",
+        "column_roi_id": "d6b01a2c-6983-464c-bfe9-f9eed55df7be",
+        "datacell_roi_id": "8bb4b6d5-fd82-4611-bd56-3de8059226a6"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b15c8866-7c3b-4167-a13a-3bd9237151d0",
+        "column_roi_id": "4fc94c45-8263-4515-9b01-8deec3e8e1f1",
+        "datacell_roi_id": "f9972b92-0942-48ab-ac1e-5a253104e876"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Sections    5.1     8.2.1.1      Appendix F ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b15c8866-7c3b-4167-a13a-3bd9237151d0",
+        "column_roi_id": "3d660f38-bfbb-40c8-a771-4c974fb7754b",
+        "datacell_roi_id": "8ae55e46-8194-4118-9a16-4fc416f381aa"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Height",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b94fafc9-1db5-4af9-a04a-61152c6772fe",
+        "column_roi_id": "69c78fb1-515e-4202-97de-321e5952d392",
+        "datacell_roi_id": "4a1025b4-5606-47e6-b07d-fe661f34a4ea"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b94fafc9-1db5-4af9-a04a-61152c6772fe",
+        "column_roi_id": "184ee6bf-0e15-49a1-9083-0a5ffb9dbfa6",
+        "datacell_roi_id": "d938263d-264a-44e9-a707-f36f558a20ad"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b94fafc9-1db5-4af9-a04a-61152c6772fe",
+        "column_roi_id": "c595b964-ed52-436f-9b73-c9a2d9024431",
+        "datacell_roi_id": "93d53978-9691-410b-8904-ccc20a8eddba"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b94fafc9-1db5-4af9-a04a-61152c6772fe",
+        "column_roi_id": "0f8a4fec-b892-4b2f-b609-3ec4d128745e",
+        "datacell_roi_id": "c163b57c-55de-4787-be04-b42e6481c717"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.2.1.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "b94fafc9-1db5-4af9-a04a-61152c6772fe",
+        "column_roi_id": "ce49ab25-7c0a-48b9-9b70-eafeff159b37",
+        "datacell_roi_id": "79d53448-bf3d-4a09-8a1b-05fd4d75b826"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "12-lead ECG",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "efbd7047-3f96-4db5-8eb1-910dcfc2fa0c",
+        "column_roi_id": "2d58b6e1-e998-40df-b919-773517a3670e",
+        "datacell_roi_id": "ff8fdd3c-7a10-4731-92da-5c7c61dc4308"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "efbd7047-3f96-4db5-8eb1-910dcfc2fa0c",
+        "column_roi_id": "9eb9e8ef-b3fa-419a-8df8-8de2e54bde5f",
+        "datacell_roi_id": "61d3f53a-c572-4359-a23b-8c0a2f67ca40"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "efbd7047-3f96-4db5-8eb1-910dcfc2fa0c",
+        "column_roi_id": "33102b59-ee97-42b5-b85c-3c261bd070aa",
+        "datacell_roi_id": "c6819e15-4299-4499-a0f9-2da2f0fe40a1"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "efbd7047-3f96-4db5-8eb1-910dcfc2fa0c",
+        "column_roi_id": "c6ba4c0a-308c-498b-8085-a2d90a3b821b",
+        "datacell_roi_id": "77d9208f-75d9-4efd-9fbb-2f0715b24798"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "efbd7047-3f96-4db5-8eb1-910dcfc2fa0c",
+        "column_roi_id": "b50a2db6-0b27-4372-b4f6-1692303c95dd",
+        "datacell_roi_id": "0abc45ab-306a-4cdf-8578-c93ac72cd4bc"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.2.3 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "efbd7047-3f96-4db5-8eb1-910dcfc2fa0c",
+        "column_roi_id": "212c5967-7f21-4af1-9a18-21281be08764",
+        "datacell_roi_id": "75100e25-e533-45df-81d4-4d10747b7714"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Assessment of AEs/SAEs",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "7a280289-64f3-485a-b78e-7a1bef3d6a38",
+        "datacell_roi_id": "cd038551-40b8-4356-b37c-2be5fb9fcb1c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "8e02b9fc-1b2b-4072-b36e-f3110c549d04",
+        "datacell_roi_id": "907bfaa1-3c19-4287-9a6d-41d2f72a0085"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "9b37bcdb-e5c6-4f40-8e5b-a45851ffea4d",
+        "datacell_roi_id": "b7f925fa-31ca-4599-a1ea-e23bebbe747b"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "0e3abaef-60e4-4ff6-b473-ec6ab4ff5471",
+        "datacell_roi_id": "ce98e987-5529-4d80-ac5b-df0f923e2d67"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "5.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "662fd31e-f075-4eb9-a75b-3a180d3c1553",
+        "datacell_roi_id": "ed58189a-20ac-4653-89bb-3d5052f2d817"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "6.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "58f3af9e-da3e-4df4-856f-480bb233a735",
+        "datacell_roi_id": "d6663933-e874-470e-86f3-e4af68f221d2"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "7.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "c1a2c496-9452-46bf-a853-420b108893a0",
+        "datacell_roi_id": "13a7b745-4290-4277-ac9d-b5baeca1850d"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "c2529c1d-d8f1-4524-bc0d-9dad14158b28",
+        "datacell_roi_id": "69cbb34a-50f3-41f8-be51-62752aa45e87"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "ccb766c6-db26-4969-8bee-623b4e0131c5",
+        "datacell_roi_id": "dec78157-a355-4b6f-99b7-309940a4c9b4"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "f9ef1a38-e760-4edb-bd98-c3d910f436c0",
+        "datacell_roi_id": "077491b8-735c-4204-bbee-6dfb962e50c5"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.3 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "46d1e9b3-1537-4947-a096-f4ed5ec43e1b",
+        "column_roi_id": "46658786-1f84-4e80-87c4-aa07a3f1507d",
+        "datacell_roi_id": "87fd658f-4f64-4d6e-89a4-6b2577d47581"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Concomitant medications",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "8288f46a-69f7-49a0-9fe0-02d421e9c8ee",
+        "datacell_roi_id": "42b5ed0c-5b8c-4b57-98fb-8309c4479b33"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "7c59fc88-ba0e-430f-a080-3d1ce5b7900d",
+        "datacell_roi_id": "7f7b8cb5-4c1e-421a-a895-43fe07448207"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "506270fc-6e79-4984-b49d-f25d20e879de",
+        "datacell_roi_id": "5169b208-9ece-4597-a776-31c2099f3aa0"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "2fd8b510-4bbe-484b-bfde-08ec4eb43672",
+        "datacell_roi_id": "b60a3c65-134c-4edb-a0a7-081b77709e51"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "5.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "62d35b56-a350-42a4-8347-64e252163a39",
+        "datacell_roi_id": "775dcaaf-af11-4270-8f27-f81b3849c177"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "6.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "952c2dd6-fec2-4662-aea7-012929dd0f4e",
+        "datacell_roi_id": "890b8240-4384-427e-9f11-270345f82cda"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "7.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "3bd23bee-f6da-47a4-87c3-555a3c724a3a",
+        "datacell_roi_id": "8a438a85-5eda-44bb-a775-bdc06ff97e07"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "0a99d7fc-171d-4e47-8490-e4f142756aa6",
+        "datacell_roi_id": "ac3d9d07-e0d7-4c12-88af-371e5898fa73"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "910ac13a-53aa-4dd3-8ac7-203f673d6f11",
+        "datacell_roi_id": "3771e6f8-7438-4f4c-bb46-9f260bab4d20"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "e20bcaf0-1f08-45c6-b71a-2894fd3d3f81",
+        "datacell_roi_id": "59a3aa0b-d1f6-4bb6-a6c5-a3c88afd6693"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    6.5 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cb1c0453-1cd2-44db-87b7-83180392865e",
+        "column_roi_id": "70e0f6a1-04c2-46c8-9db3-a11052e04948",
+        "datacell_roi_id": "d0403368-1819-421f-a275-6250e5d8de32"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Vital signs",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "20c24e51-8965-4a02-8972-e3d9541b091b",
+        "datacell_roi_id": "b410c09b-5fbe-45ad-ac4a-5a639d24ee9e"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "fcae635e-ab1f-4912-aeb8-f2b0e9b25618",
+        "datacell_roi_id": "66b3b0f7-6750-4d6f-9ebd-9674e397d271"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X <sup>c</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "1da4a8c7-3fb1-47f6-a1ee-a00461d7c8fb",
+        "datacell_roi_id": "05244679-ea96-44b9-a82b-f2db02a33924"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "90e31699-de25-477c-b5ab-a10dd6a488e5",
+        "datacell_roi_id": "52691565-805c-4894-9716-1d9c57cc598f"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "5.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "9ec8dfa5-d876-4e7f-8707-204fb82abf46",
+        "datacell_roi_id": "5224af9a-62da-4b2a-8c46-e46ab46c76eb"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "6.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "963ac471-117e-4ec9-b971-c983674acf6e",
+        "datacell_roi_id": "1bccda63-f9f2-496c-8edc-97ff9b19cb16"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "7.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "7a6718ee-e18d-4389-bb47-2b4405a157f6",
+        "datacell_roi_id": "64cd8a2a-c84e-48e6-a684-1badb45b7606"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "1fc4d7f8-bd7e-469d-aa51-694f88e035ea",
+        "datacell_roi_id": "e78e3f66-5fac-4ea2-829f-035bc8fe17a1"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "e9ca6c7e-daeb-4db8-8745-841daf72a8ba",
+        "datacell_roi_id": "0ca5346f-e180-45c6-b567-74de7e5410e8"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "5ddc21f5-ca9c-4885-b83a-a9fb97f6c9b0",
+        "datacell_roi_id": "a1dba069-0212-4bbc-9725-430e56c51424"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.2.2 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "cbf815f4-7a41-4cad-a7fd-1b1aca3800ac",
+        "column_roi_id": "2c4aa6c6-2f03-447e-aeed-6357097e90fb",
+        "datacell_roi_id": "1f6a8ef3-9e4b-47e5-8068-e35dfa679f03"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Serum chemistry and haematology <sup>d</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dbd6cfcb-0466-4039-9668-89df96242de5",
+        "column_roi_id": "f36ba64b-b171-48f8-a33c-1f34a0c7a4c0",
+        "datacell_roi_id": "02e349e5-37e9-4808-bd4d-9ec4bb33a083"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dbd6cfcb-0466-4039-9668-89df96242de5",
+        "column_roi_id": "8e2d2d2a-df99-4a10-9cd5-0e546681b178",
+        "datacell_roi_id": "01560433-0794-4e7a-9baf-de0d0f48011b"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dbd6cfcb-0466-4039-9668-89df96242de5",
+        "column_roi_id": "d471332f-7ec0-4241-95ce-5efab97e66b8",
+        "datacell_roi_id": "c54bb6fb-8ee1-4f26-ad8d-cf3fa02e8b08"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dbd6cfcb-0466-4039-9668-89df96242de5",
+        "column_roi_id": "efd26e5a-28be-4195-9a8a-be8094c9cdce",
+        "datacell_roi_id": "113f6d40-2ef7-4fe6-b84f-4c176a929381"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dbd6cfcb-0466-4039-9668-89df96242de5",
+        "column_roi_id": "a3084171-cc92-401f-90c4-3edd0a2bd1b3",
+        "datacell_roi_id": "116d14ad-e617-4073-a500-575fb1132669"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dbd6cfcb-0466-4039-9668-89df96242de5",
+        "column_roi_id": "817b618d-5f29-4632-acd8-784bc305b8c5",
+        "datacell_roi_id": "632aeb58-e3f6-4ba4-8cf4-e722b19078bb"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Sections    8.2.4     8.5.3 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dbd6cfcb-0466-4039-9668-89df96242de5",
+        "column_roi_id": "b09de074-e6bf-412d-95dd-6efac24a2ab4",
+        "datacell_roi_id": "7101482e-dec4-461b-92d6-963b55abe82c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Total IgE",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "7148b31c-6f9c-42c1-97c0-757ee277b4d0",
+        "column_roi_id": "7991522a-6752-4d1f-ba8a-99c66b71bd3c",
+        "datacell_roi_id": "f906e28b-8641-4922-9073-f19366302c4c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": "",
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "7148b31c-6f9c-42c1-97c0-757ee277b4d0",
+        "column_roi_id": "4bedb23b-36a8-452c-8a31-a5b94a8bfe69",
+        "datacell_roi_id": "dbe6464b-21a8-4114-9080-63ed3cae287b"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "7148b31c-6f9c-42c1-97c0-757ee277b4d0",
+        "column_roi_id": "0c6ea834-81eb-4ea6-b598-eaca5eecfc21",
+        "datacell_roi_id": "999d711b-cba8-4073-9881-8c8960cdd937"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "7148b31c-6f9c-42c1-97c0-757ee277b4d0",
+        "column_roi_id": "4288b09b-dd3e-49d1-9cd7-601abdba7b2e",
+        "datacell_roi_id": "e7bb0bfd-d679-44f6-b19f-2bb374dfc958"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section     8 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "7148b31c-6f9c-42c1-97c0-757ee277b4d0",
+        "column_roi_id": "750a044f-5d8b-4002-9e05-67c279205176",
+        "datacell_roi_id": "16a0630f-ddd9-4c9a-9ea4-0fda5d7221ee"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Urinalysis",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "15f9c790-fab8-490a-b7e3-d05bafa891cc",
+        "column_roi_id": "f0a5413f-ea0f-4637-920b-da2f5d665957",
+        "datacell_roi_id": "9d7b94d6-39c9-4688-8f95-6c3084afe18d"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "15f9c790-fab8-490a-b7e3-d05bafa891cc",
+        "column_roi_id": "b87995cd-d46d-43d2-aab4-26edd8cbe0ee",
+        "datacell_roi_id": "301bd1b3-805c-4dba-8e6c-f9aaf6e7296f"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "15f9c790-fab8-490a-b7e3-d05bafa891cc",
+        "column_roi_id": "d68e760a-2f89-454a-9146-59db4c283ac8",
+        "datacell_roi_id": "b9657d69-ee4e-44f2-9d94-5ba47e722af7"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "15f9c790-fab8-490a-b7e3-d05bafa891cc",
+        "column_roi_id": "8080a258-b21a-4dc0-a54c-33005b013d2c",
+        "datacell_roi_id": "5d58be6a-7ebe-4f06-8ec5-5bd2d7d655fb"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "15f9c790-fab8-490a-b7e3-d05bafa891cc",
+        "column_roi_id": "ffa6fc1d-ed43-473b-a14c-c385951547cd",
+        "datacell_roi_id": "f2d20025-7549-4245-9e4c-165be36e43d4"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "15f9c790-fab8-490a-b7e3-d05bafa891cc",
+        "column_roi_id": "709e8551-ed49-4217-b4dd-d91aaaf38949",
+        "datacell_roi_id": "c38a6f95-ff65-4da3-9f50-bba36cbf8077"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.2.4 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "15f9c790-fab8-490a-b7e3-d05bafa891cc",
+        "column_roi_id": "c806d680-d87d-403a-a57c-f74284bf46a5",
+        "datacell_roi_id": "c2c6a3d9-603f-40d6-a446-ef255acd3f11"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Pregnancy test (serum β-HCG)",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "14d67f70-ad3e-49e6-93c7-c0356c627176",
+        "column_roi_id": "f1042cf8-98d7-4d87-a92b-12b714e599c5",
+        "datacell_roi_id": "d91c1c27-ab50-42e6-95bc-a05e7ab266ea"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X <sup>e</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "14d67f70-ad3e-49e6-93c7-c0356c627176",
+        "column_roi_id": "e0f4d544-0391-4d7d-89c6-bc599fd0334d",
+        "datacell_roi_id": "62dfbfa7-ec01-4100-8a0d-25310c8bc0e2"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": "",
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.2.4.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "14d67f70-ad3e-49e6-93c7-c0356c627176",
+        "column_roi_id": "dfacbc6d-f525-400d-ba1f-70d6db40f079",
+        "datacell_roi_id": "e6f6d369-1238-4e60-b464-55f34609d5e0"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Urine pregnancy test (dipstick)",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "ca10b2da-a43c-405c-a409-71c549cc6346",
+        "column_roi_id": "651d8380-35be-4db1-9eb7-537b7f2b506d",
+        "datacell_roi_id": "6612ee30-eb86-43ff-bb63-b5ce8ca9f95e"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": "",
+    "3.0": {
+      "entities": [],
+      "content": "X <sup>e</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "ca10b2da-a43c-405c-a409-71c549cc6346",
+        "column_roi_id": "be540cca-401a-4ce7-a8c4-c276fb8f8cce",
+        "datacell_roi_id": "bfc43c60-c3d1-406d-807a-3a66b80fcbf8"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X <sup>e</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "ca10b2da-a43c-405c-a409-71c549cc6346",
+        "column_roi_id": "5a1b340b-9c97-4904-830d-116cb4d48a16",
+        "datacell_roi_id": "68da6c04-027f-4fe3-b3b3-18e18cf0af34"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.2.4.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "ca10b2da-a43c-405c-a409-71c549cc6346",
+        "column_roi_id": "5543d274-9c5a-47e1-8c13-7e75cc049c10",
+        "datacell_roi_id": "2ae27eb0-dc06-4698-8242-2556b887a365"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Urine drug screen",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "16e47fc7-a8a5-4074-8d80-7da366692009",
+        "column_roi_id": "d60986cd-94be-4ae4-a6e4-16d895e00f6a",
+        "datacell_roi_id": "08789e1f-71ac-40fd-b822-3c9d7eee9b63"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": "",
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "16e47fc7-a8a5-4074-8d80-7da366692009",
+        "column_roi_id": "544ebb35-7353-436c-8763-5fb51e757ec6",
+        "datacell_roi_id": "2972b96e-68e8-44f5-a7b0-0cc72f4d36f2"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.2.4 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "16e47fc7-a8a5-4074-8d80-7da366692009",
+        "column_roi_id": "f3685147-92cc-4b6f-874a-90c9f2dc2db0",
+        "datacell_roi_id": "cbbfb8e2-8609-49d6-9dda-f234fa81b2bc"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Virology: HBsAg, HCAb; HIV-1, HIV-2",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "4b4694c0-2b94-40cc-85d3-ca3551d47d58",
+        "column_roi_id": "57cb83ad-e9d1-464f-8ec9-5787ffde1424",
+        "datacell_roi_id": "abf4ab8a-f750-48cf-95a7-4878b3e710c1"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "4b4694c0-2b94-40cc-85d3-ca3551d47d58",
+        "column_roi_id": "89c2ac39-0460-4fef-b76e-20d086744f43",
+        "datacell_roi_id": "df04939f-df8a-4832-a9c3-1444d4fbedb2"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": "",
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.2.5.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "4b4694c0-2b94-40cc-85d3-ca3551d47d58",
+        "column_roi_id": "04c1fb83-e105-45fc-a9c8-00a52a784cbd",
+        "datacell_roi_id": "c25fdad6-b661-4be8-a6e9-8f0acfeb04e2"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Blood sample for PK analysis <sup>f</sup> ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "c62ed558-fe05-4f86-aa29-cfb1abe13098",
+        "datacell_roi_id": "df75b456-f28a-4d4b-a4a7-e54dc3735ff5"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": "",
+    "3.0": {
+      "entities": [],
+      "content": "X <sup>g</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "465f66ad-d40a-44a8-bcd7-e63dadae8914",
+        "datacell_roi_id": "fa1a2a79-2039-4f45-97bb-ca69a26e9b81"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "f0d06e36-3eb7-4931-ba4b-9f6a4552c5ed",
+        "datacell_roi_id": "ca5ed4fc-15a2-47eb-a6d4-5c9c7776c306"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "5.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "aeecc0f6-79e2-487b-aa99-70cf5036701c",
+        "datacell_roi_id": "726627fa-bede-49dc-b6aa-c1a549c1fa53"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "6.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "effec30c-66fe-4b42-90d1-20f2c37d328c",
+        "datacell_roi_id": "f7981ea8-af6f-4756-ab0b-b47c9b2a4d62"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "7.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "ba801148-d3e5-490e-89a3-8233f2e3c0be",
+        "datacell_roi_id": "544bfc62-07d1-4a62-acea-9eb39a1b527b"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "cfb21c88-b645-4c0d-82fe-4968027cb61a",
+        "datacell_roi_id": "c8546be5-d3e1-40c2-be7a-01b2f221b48a"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "c0c77d60-c83a-4bc5-bd69-9749fa8adb4b",
+        "datacell_roi_id": "8a845bc7-bfbe-4319-93f9-0ad6e80e607b"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "151cb907-0e09-4842-9c4b-a65075048d7c",
+        "datacell_roi_id": "cced0965-8824-426e-80dd-b7933963b45c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.5.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "19ddf5ff-6e50-4fba-a8c9-6bc9f73b4eed",
+        "column_roi_id": "1cc9eb4b-2b67-466d-ab71-f9c60754278f",
+        "datacell_roi_id": "1003a3d5-2843-4d3d-b960-2926c155c941"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Serum for immunogenicity analysis <sup>h,i</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "e6a4fa14-5cb3-4e36-84f8-d886784fb4d9",
+        "column_roi_id": "07fd5b1f-d7fb-4f76-b245-8edeb04635a5",
+        "datacell_roi_id": "31c3274a-413c-45d4-9d6d-ef26284867da"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": "",
+    "3.0": {
+      "entities": [],
+      "content": "X <sup>j</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "e6a4fa14-5cb3-4e36-84f8-d886784fb4d9",
+        "column_roi_id": "e60af95d-0278-44c1-934e-166a09a2963b",
+        "datacell_roi_id": "dee4c1ba-664a-48ae-b684-39a713e42566"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "e6a4fa14-5cb3-4e36-84f8-d886784fb4d9",
+        "column_roi_id": "550d75a1-83a2-46fe-bb48-373d4be19d42",
+        "datacell_roi_id": "aceade2b-d500-4437-836f-f13834778db2"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "e6a4fa14-5cb3-4e36-84f8-d886784fb4d9",
+        "column_roi_id": "c6abc75a-dfc1-4ec7-867b-eff9fdd0a861",
+        "datacell_roi_id": "9ca170f7-0981-47e4-9e44-f35421735174"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.5.2 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "e6a4fa14-5cb3-4e36-84f8-d886784fb4d9",
+        "column_roi_id": "a64156cd-0732-404d-a158-c5defb6eacf0",
+        "datacell_roi_id": "ed179946-d8f5-4809-9f8f-b496e3e37b4b"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Pre-BD Spirometry",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "152bcca1-dbfc-4e9b-be88-9e32c4d4eb54",
+        "column_roi_id": "409b2bcd-f7ba-4d7c-b4e1-f5e7050e3607",
+        "datacell_roi_id": "6a2313d4-04dc-4eb3-8f96-8cb8aaab1d7c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "152bcca1-dbfc-4e9b-be88-9e32c4d4eb54",
+        "column_roi_id": "240b3df9-7ab7-4864-b8bf-73ae2b955623",
+        "datacell_roi_id": "538d96ec-b18b-4f3e-9bf3-814ebca7081e"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "152bcca1-dbfc-4e9b-be88-9e32c4d4eb54",
+        "column_roi_id": "2afb1da5-2489-4592-afb7-80d8b561c226",
+        "datacell_roi_id": "f7449237-8c4c-4296-886f-0dc36b79fc84"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "152bcca1-dbfc-4e9b-be88-9e32c4d4eb54",
+        "column_roi_id": "8abdc2e0-ac9e-4fc6-a817-92a7b03cf554",
+        "datacell_roi_id": "a818c3c0-512d-4f8c-9a86-12d1c2faee9f"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "152bcca1-dbfc-4e9b-be88-9e32c4d4eb54",
+        "column_roi_id": "0f877e49-fc77-4ac7-88e0-968e2e5209db",
+        "datacell_roi_id": "32bb6093-4c92-49a8-b036-d7843f968454"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.1.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "152bcca1-dbfc-4e9b-be88-9e32c4d4eb54",
+        "column_roi_id": "9371edae-2175-47fe-bd87-ccbe1d03f19b",
+        "datacell_roi_id": "f7d5afda-fe95-45cc-878f-c0c3edab1931"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "Post-BD Spirometry",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "d1feb956-a50c-4626-8fb5-38a4f9080adb",
+        "column_roi_id": "ea8a91cc-c4c8-4b12-867e-c0477da0299c",
+        "datacell_roi_id": "44ff3557-b798-4fcd-b9fe-055cf559f5d1"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": {
+      "entities": [],
+      "content": "X <sup>k</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "d1feb956-a50c-4626-8fb5-38a4f9080adb",
+        "column_roi_id": "d1a9ecc3-0961-4254-b224-dd8e9903404c",
+        "datacell_roi_id": "624cace8-1357-4dd4-9424-ee55c07f1790"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "3.0": {
+      "entities": [],
+      "content": "X <sup>l</sup>",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "d1feb956-a50c-4626-8fb5-38a4f9080adb",
+        "column_roi_id": "d742a81f-e8eb-4b05-96a5-2461117d771a",
+        "datacell_roi_id": "f518fbfd-fae8-4700-8637-ac4ca8f4685a"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Section    8.1.1 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "d1feb956-a50c-4626-8fb5-38a4f9080adb",
+        "column_roi_id": "1fe4cf8a-2277-440b-9fa5-3bff61c7e481",
+        "datacell_roi_id": "f4a22991-831b-4403-8371-f347aa269b4f"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "FENO",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dccd139e-6462-4ff2-921e-e895e7f1557b",
+        "column_roi_id": "15d18dd6-6af8-45af-9c1a-e8239899bfd1",
+        "datacell_roi_id": "c156f444-9662-4922-95c0-d86c1ee534a6"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": "",
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dccd139e-6462-4ff2-921e-e895e7f1557b",
+        "column_roi_id": "cf2f84ce-7194-4924-bfff-25b8b4c49523",
+        "datacell_roi_id": "089e16d7-6526-4907-9cbd-c7a61453ad34"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dccd139e-6462-4ff2-921e-e895e7f1557b",
+        "column_roi_id": "43bd5785-81f6-48f2-a0ab-d574e642a04b",
+        "datacell_roi_id": "7e171592-3f38-424c-ba5f-4303db49c332"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dccd139e-6462-4ff2-921e-e895e7f1557b",
+        "column_roi_id": "e82331b2-1aed-4d0e-b345-1d758b1e9cf9",
+        "datacell_roi_id": "630b0b13-d918-4062-a2b2-262e2632a9f0"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dccd139e-6462-4ff2-921e-e895e7f1557b",
+        "column_roi_id": "12ab8a22-cd11-4fe2-8fca-ad0398284517",
+        "datacell_roi_id": "f75e0ea1-f511-4da0-ac07-ccc529b8e4f9"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section     8.1.2 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "dccd139e-6462-4ff2-921e-e895e7f1557b",
+        "column_roi_id": "bbed1c76-e477-4a98-ad3d-bd24eb33595b",
+        "datacell_roi_id": "a1e787e3-1a27-4aac-8a57-742e1acf0d2c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "PQoL (PAQLQ)",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "a16cfeca-c83d-4212-bb92-d37f9446420f",
+        "column_roi_id": "f246c391-312b-4ac2-b7a6-0301b77bca58",
+        "datacell_roi_id": "a5628063-cb61-4c72-8339-15bdf57ad904"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": "",
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "a16cfeca-c83d-4212-bb92-d37f9446420f",
+        "column_roi_id": "df3c9804-b9b6-4ad1-9702-9d44d7d13646",
+        "datacell_roi_id": "055d5ec0-2540-4c27-9812-1859f207c043"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "a16cfeca-c83d-4212-bb92-d37f9446420f",
+        "column_roi_id": "491881e0-2972-4daf-9e0b-17b2210e1ffb",
+        "datacell_roi_id": "8c659b3d-763b-4223-b76d-c79b3b70435a"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "8.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "a16cfeca-c83d-4212-bb92-d37f9446420f",
+        "column_roi_id": "0c6f21b1-3f71-4f4e-880a-fbc11361d955",
+        "datacell_roi_id": "0721fb7d-de38-44fe-bc8c-4cbae2929756"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "9.0": "",
+    "10.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "a16cfeca-c83d-4212-bb92-d37f9446420f",
+        "column_roi_id": "5b38e84c-608b-41e5-b566-47c3179b93d4",
+        "datacell_roi_id": "e2d0e939-83f6-4a36-8734-b05d159c79b7"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "11.0": {
+      "entities": [],
+      "content": "Section     8.1.3 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "a16cfeca-c83d-4212-bb92-d37f9446420f",
+        "column_roi_id": "2ffa0126-ddce-4683-8a38-c7bbe2dd22c1",
+        "datacell_roi_id": "54aa829b-407b-4c09-af90-e01197ac466c"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  },
+  {
+    "1.0": {
+      "entities": [],
+      "content": "IP Administration",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "d8fceac3-6fdb-459f-9903-091fa34af986",
+        "column_roi_id": "c9b1d430-cd46-4801-af84-8fc41af9011a",
+        "datacell_roi_id": "e71f548c-d356-4f1c-bec7-b87c6108b922"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "2.0": "",
+    "3.0": {
+      "entities": [],
+      "content": "X",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "d8fceac3-6fdb-459f-9903-091fa34af986",
+        "column_roi_id": "bc68d51f-14c7-4367-8d16-b8e531f33eca",
+        "datacell_roi_id": "9a5e758a-2fdb-4588-9231-236ba98681cb"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    },
+    "4.0": "",
+    "5.0": "",
+    "6.0": "",
+    "7.0": "",
+    "8.0": "",
+    "9.0": "",
+    "10.0": "",
+    "11.0": {
+      "entities": [],
+      "content": "Section    6.2.2 ",
+      "roi_id": {
+        "table_roi_id": "0a14133f-a52d-4ef4-b852-26654f5f6154",
+        "row_roi_id": "d8fceac3-6fdb-459f-9903-091fa34af986",
+        "column_roi_id": "e6d2c32c-ab43-4e2c-82af-d38cfbc80646",
+        "datacell_roi_id": "9a8c7fc6-4a0d-4c60-976e-ef729b402c18"
+      },
+      "table_index": 2,
+      "qc_change_type": ""
+    }
+  }
+]
