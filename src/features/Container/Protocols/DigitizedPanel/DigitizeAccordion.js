@@ -11,7 +11,7 @@ import EyeShow from 'apollo-react-icons/EyeShow';
 import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../../Components/Loader/Loader';
-import { sectionDetails } from '../protocolSlice';
+import { sectionDetails, TOCActive } from '../protocolSlice';
 import { createFullMarkup } from '../../../../utils/utilFunction';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
@@ -27,6 +27,7 @@ function DigitizeAccordion({
   rightBladeValue,
   currentEditCard,
   setCurrentEditCard,
+  index,
 }) {
   const dispatch = useDispatch();
 
@@ -38,6 +39,12 @@ function DigitizeAccordion({
   const sectionHeaderDetails = useSelector(sectionDetails);
 
   const { data: sectionData } = sectionHeaderDetails;
+  const [tocActive, setTocActive] = useState([]);
+
+  const tocActiveSelector = useSelector(TOCActive);
+  useEffect(() => {
+    if (tocActiveSelector) setTocActive(tocActiveSelector);
+  }, [tocActiveSelector]);
 
   useEffect(() => {
     if (sectionData?.length > 0) {
@@ -69,6 +76,15 @@ function DigitizeAccordion({
   const handleChange = () => {
     handlePageRight(item.page);
     setExpanded(!expanded);
+    const tempTOCActive = [...tocActive];
+    tempTOCActive[index] = !tempTOCActive[index];
+    setTocActive(tempTOCActive);
+    dispatch({
+      type: 'SET_TOC_Active',
+      payload: {
+        data: tempTOCActive,
+      },
+    });
   };
 
   const onSaveClick = (e) => {
@@ -100,6 +116,15 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded) {
       setExpanded(true);
+      const tempTOCActive = [...tocActive];
+      tempTOCActive[index] = !tempTOCActive[index];
+      setTocActive(tempTOCActive);
+      dispatch({
+        type: 'SET_TOC_Active',
+        payload: {
+          data: tempTOCActive,
+        },
+      });
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
@@ -251,4 +276,5 @@ DigitizeAccordion.propTypes = {
   rightBladeValue: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
+  index: PropTypes.isRequired,
 };
