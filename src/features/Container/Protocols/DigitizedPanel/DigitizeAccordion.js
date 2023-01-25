@@ -27,6 +27,7 @@ function DigitizeAccordion({
   rightBladeValue,
   currentEditCard,
   setCurrentEditCard,
+  scrollToTop,
 }) {
   const dispatch = useDispatch();
 
@@ -61,6 +62,7 @@ function DigitizeAccordion({
           updatedSectionsData.splice(matchedIndex + 1, 1);
         }
         setSections(updatedSectionsData);
+        scrollToTop(item.sequence);
       }
     }
     // eslint-disable-next-line
@@ -100,6 +102,7 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded) {
       setExpanded(true);
+      console.log({ item });
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
@@ -251,4 +254,5 @@ DigitizeAccordion.propTypes = {
   rightBladeValue: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
+  scrollToTop: PropTypes.isRequired,
 };

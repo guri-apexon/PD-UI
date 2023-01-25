@@ -41,6 +41,13 @@ function Digitize({
     }
   }, [summary]);
 
+  const scrollToTop = (index) => {
+    setTimeout(() => {
+      sectionRef[index]?.current?.scrollIntoView(true);
+    }, 300);
+    setCurrentActiveCard(headerList[index]?.link_id);
+  };
+
   useEffect(() => {
     if (sectionSequence === 'undefined' || sectionSequence === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
@@ -48,10 +55,7 @@ function Digitize({
       sectionRef[sectionSequence] &&
       sectionRef[sectionSequence].current
     ) {
-      setTimeout(() => {
-        sectionRef[sectionSequence]?.current?.scrollIntoView(true);
-      }, 300);
-      setCurrentActiveCard(headerList[sectionSequence]?.link_id);
+      scrollToTop(sectionSequence);
     }
     // eslint-disable-next-line
   }, [sectionSequence]);
@@ -59,6 +63,7 @@ function Digitize({
   useEffect(() => {
     if (sectionNumber >= 0) {
       setSectionSequence(sectionNumber);
+      console.log({ sectionNumber });
     }
   }, [sectionNumber]);
 
@@ -133,6 +138,7 @@ function Digitize({
                         rightBladeValue={BladeRightValue}
                         currentEditCard={currentEditCard}
                         setCurrentEditCard={setCurrentEditCard}
+                        scrollToTop={scrollToTop}
                       />
                     </div>
                   </div>
