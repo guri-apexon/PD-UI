@@ -8,13 +8,18 @@ import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import { useSelector, useDispatch } from 'react-redux';
 import './BladeLeft.scss';
 
-import { protocolTocData } from '../protocolSlice';
+import { protocolTocData, TOCActive } from '../protocolSlice';
 
 function BladeLeft({ handlePageNo, dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const wrapperRef = useRef(null);
+  const [tocActive, setTocActive] = useState([]);
+  const tocActiveSelector = useSelector(TOCActive);
+  useEffect(() => {
+    if (tocActiveSelector) setTocActive(tocActiveSelector);
+  }, [tocActiveSelector]);
 
   const [tocList, setTocList] = useState([]);
 
@@ -61,6 +66,18 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     };
   }, [wrapperRef]);
 
+  const handleChange = (index) => {
+    const tempTOCActive = [...tocActive];
+    tempTOCActive[index] = !tempTOCActive[index];
+    setTocActive(tempTOCActive);
+    dispatch({
+      type: 'SET_TOC_Active',
+      payload: {
+        data: tempTOCActive,
+      },
+    });
+  };
+  console.log('ACTIVE', tocActive);
   return (
     <div className="bladeContainer" ref={wrapperRef}>
       <Blade
@@ -89,6 +106,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                 style={{
                   border: 'none',
                 }}
+                expanded={tocActive[index]}
               >
                 <AccordionSummary>
                   <Tooltip title={item.source_file_section} placement="right">
@@ -96,6 +114,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                       className="header-unselect"
                       onClick={(e) => {
                         handlePageNo(e, item.page, sectionIndex);
+                        handleChange(index);
                       }}
                     >
                       {item.source_file_section}
