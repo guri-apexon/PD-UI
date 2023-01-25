@@ -12,11 +12,13 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
     setText(e.target.value);
   };
   const handleBlur = () => {
-    const obj = {
-      currentLineId: lineID,
-      content: contentEditableRef.current.innerHTML,
-    };
-    dispatchSectionEvent('CONTENT_UPDATE', obj);
+    if (content !== contentEditableRef.current.innerHTML) {
+      const obj = {
+        currentLineId: lineID,
+        content: contentEditableRef.current.innerHTML,
+      };
+      dispatchSectionEvent('CONTENT_UPDATE', obj);
+    }
   };
 
   const handleKeyDown = (e) => {

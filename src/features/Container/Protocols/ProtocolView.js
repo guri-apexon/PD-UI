@@ -40,7 +40,9 @@ function ProtocolView({ refs, data }) {
           );
         }
         setSelectedSection(payload.selectedSection);
-        setSectionContent(payload.sectionContent);
+        setSectionContent(
+          payload.sectionContent ? [...payload.sectionContent] : null,
+        );
         break;
       }
       case 'CONTENT_UPDATE': {
@@ -55,6 +57,7 @@ function ProtocolView({ refs, data }) {
           type: 'DELETE',
           sectionContent,
         });
+        console.log('CONTENT_DELETED', content, sectionContent);
         setSectionContent(content);
         dispatch(
           updateSectionData({
