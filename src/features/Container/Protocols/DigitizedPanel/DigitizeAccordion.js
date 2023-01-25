@@ -116,6 +116,9 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded) {
       setExpanded(true);
+    } else if (currentActiveCard === item.link_id && expanded) {
+      setExpanded(!expanded);
+      console.log('the else if', expanded);
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
