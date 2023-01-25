@@ -19,6 +19,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
+    console.log('tocActiveSelector', tocActiveSelector);
   }, [tocActiveSelector]);
 
   const [tocList, setTocList] = useState([]);
@@ -76,8 +77,9 @@ function BladeLeft({ handlePageNo, dataSummary }) {
         data: tempTOCActive,
       },
     });
+    console.log('ACTIVE', tocActive);
   };
-  console.log('ACTIVE', tocActive);
+
   return (
     <div className="bladeContainer" ref={wrapperRef}>
       <Blade
@@ -107,6 +109,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                   border: 'none',
                 }}
                 expanded={tocActive[index]}
+                onClick={() => handleChange(index)}
               >
                 <AccordionSummary>
                   <Tooltip title={item.source_file_section} placement="right">
@@ -114,7 +117,6 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                       className="header-unselect"
                       onClick={(e) => {
                         handlePageNo(e, item.page, sectionIndex);
-                        handleChange(index);
                       }}
                     >
                       {item.source_file_section}
