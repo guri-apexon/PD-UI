@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import EditContent from './EditContent';
 import './renderContent.scss';
 import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
+import PDTable from './PDTable';
 
 function RenderContent({
   sectionData,

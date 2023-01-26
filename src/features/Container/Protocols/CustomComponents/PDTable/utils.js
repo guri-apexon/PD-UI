@@ -1,14 +1,15 @@
-import { cloneDeep } from "lodash";
-import { v4 as uuidv4 } from "uuid";
+import { cloneDeep } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+
 const QC_CHANGE_TYPE = {
-  ADDED: "add",
-  UPDATED: "modify",
-  DELETED: "delete",
+  ADDED: 'add',
+  UPDATED: 'modify',
+  DELETED: 'delete',
 };
 const getEmptyCell = () => {
   return {
     entities: [],
-    content: "",
+    content: '',
     roi_id: {
       table_roi_id: uuidv4(),
       row_roi_id: uuidv4(),
@@ -20,16 +21,16 @@ const getEmptyCell = () => {
   };
 };
 const createEmptyRow = (columnLength) => {
-  let row = {};
+  const row = {};
   [...Array(columnLength)].forEach((_, i) => {
-    const index = parseInt(i + 1) + ".0";
+    const index = `${parseInt(i + 1, 10)}.0`;
     row[index] = getEmptyCell();
   });
   return row;
 };
 
 export const updateTable = (data, content, rowIndex, columnIndex) => {
-  let cloneData = cloneDeep(data);
+  const cloneData = cloneDeep(data);
   cloneData[rowIndex][columnIndex].content = content;
   return cloneData;
 };
@@ -42,7 +43,7 @@ export const addRow = (rows, index) => {
 };
 
 export const deleteRow = (rows, index) => {
-  let data = cloneDeep(rows);
+  const data = cloneDeep(rows);
   // data.splice(index, 1);
   Object.keys(data[index]).forEach((key) => {
     data[index][key].content = `<s>${data[index][key].content}</s>`;
@@ -52,15 +53,15 @@ export const deleteRow = (rows, index) => {
 };
 
 export const addColumn = (tabledata, index) => {
-  let data = cloneDeep(tabledata);
+  const data = cloneDeep(tabledata);
   for (let i = 0; i < data.length; i++) {
     Object.keys(data[i]).forEach((key, j) => {
       if (j === index) {
         data[i][key] = getEmptyCell();
-        const newKey = parseInt(j + 2) + ".0";
+        const newKey = `${parseInt(j + 2, 10)}.0`;
         data[i][newKey] = tabledata[i][key];
       } else if (j > index) {
-        const newKey = parseInt(j + 2) + ".0";
+        const newKey = `${parseInt(j + 2, 10)}.0`;
         data[i][newKey] = tabledata[i][key];
       }
     });
@@ -68,7 +69,7 @@ export const addColumn = (tabledata, index) => {
   return data;
 };
 export const deleteColumn = (tabledata, index) => {
-  let data = cloneDeep(tabledata);
+  const data = cloneDeep(tabledata);
   for (let i = 0; i < data.length; i++) {
     Object.keys(data[i]).forEach((key, j) => {
       if (j === index) {

@@ -173,16 +173,16 @@ function PDTable({
           />
         </div>
       </div>
-      <div className="footnotes-container">
+      {/* <div className="footnotes-container">
         <FootNotes
           data={footNoteData}
           edit={edit}
           onChange={handleFootnoteEdit}
         />
-      </div>
+      </div> */}
     </>
   );
-};
+}
 
 export default PDTable;
 

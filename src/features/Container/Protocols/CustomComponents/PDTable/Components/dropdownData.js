@@ -1,14 +1,14 @@
 export const tableOperations = {
-  addRowAbove: "ADD_ROW_ABOVE",
-  addRowBelow: "ADD_ROW_BELOW",
-  addColumnRight: "ADD_COLUMN_RIGHT",
-  addColumnLeft: "ADD_COLUMN_LEFT",
-  deleteRow: "DELETE_ROW",
-  deleteColumn: "DELETE_COLUMN",
+  addRowAbove: 'ADD_ROW_ABOVE',
+  addRowBelow: 'ADD_ROW_BELOW',
+  addColumnRight: 'ADD_COLUMN_RIGHT',
+  addColumnLeft: 'ADD_COLUMN_LEFT',
+  deleteRow: 'DELETE_ROW',
+  deleteColumn: 'DELETE_COLUMN',
 };
 export const columnHoverData = [
   {
-    text: "Add Column to left",
+    text: 'Add Column to left',
     image: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                                 <path
                                   transform="matrix(0 1 1 0 2.514 2.046)"
@@ -18,7 +18,7 @@ export const columnHoverData = [
     id: tableOperations.addColumnLeft,
   },
   {
-    text: "Add Column to Right",
+    text: 'Add Column to Right',
     image: `<svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -32,7 +32,7 @@ export const columnHoverData = [
     id: tableOperations.addColumnRight,
   },
   {
-    text: "Delete Column",
+    text: 'Delete Column',
     image: `<svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -46,7 +46,7 @@ export const columnHoverData = [
 
 export const rowHoverData = [
   {
-    text: "Add row above",
+    text: 'Add row above',
     image: `<svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -60,7 +60,7 @@ export const rowHoverData = [
     id: tableOperations.addRowAbove,
   },
   {
-    text: "Add row below",
+    text: 'Add row below',
     image: `<svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -74,7 +74,7 @@ export const rowHoverData = [
     id: tableOperations.addRowBelow,
   },
   {
-    text: "Delete row",
+    text: 'Delete row',
     image: `<svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"

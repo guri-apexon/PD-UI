@@ -1,4 +1,6 @@
-const HoverList = ({ data, handleOperation, index }) => {
+import PropTypes from 'prop-types';
+
+function HoverList({ data, handleOperation, index }) {
   const handleClick = (operation) => {
     handleOperation(operation, index);
   };
@@ -6,7 +8,9 @@ const HoverList = ({ data, handleOperation, index }) => {
     <div className="pd-dropdown">
       <ul>
         {data.map((item) => (
+          // eslint-disable-next-line
           <li key={item.id} onClick={() => handleClick(item.id)}>
+            {/* eslint-disable-next-line */}
             <div
               className="pd-arrow-icon"
               dangerouslySetInnerHTML={{ __html: item.image }}
@@ -17,5 +21,11 @@ const HoverList = ({ data, handleOperation, index }) => {
       </ul>
     </div>
   );
-};
+}
 export default HoverList;
+
+HoverList.propTypes = {
+  data: PropTypes.isRequired,
+  handleOperation: PropTypes.isRequired,
+  index: PropTypes.isRequired,
+};

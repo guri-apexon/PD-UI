@@ -1,15 +1,10 @@
-import React from "react";
-import "./table.css";
-import { v4 as uuidv4 } from "uuid";
-import EmptyRowCells from "./EmptyRows";
+import React from 'react';
+import './table.scss';
+import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
+import EmptyRowCells from './EmptyRows';
 
-const DisplayTable = ({
-  data,
-  onChange,
-  handleRowOperation,
-  edit,
-  colWidth,
-}) => {
+function DisplayTable({ data, onChange, handleRowOperation, edit, colWidth }) {
   const handleChange = (columnIndex, rowIndex, e) => {
     onChange(e.target.innerHTML, columnIndex, rowIndex);
   };
@@ -31,6 +26,7 @@ const DisplayTable = ({
                 className="pd-table-cell"
                 style={{ width: `${colWidth}%` }}
               >
+                {/* eslint-disable-next-line */}
                 <span
                   dangerouslySetInnerHTML={{ __html: row[key].content }}
                   contentEditable={edit}
@@ -43,5 +39,13 @@ const DisplayTable = ({
       ))}
     </div>
   );
-};
+}
 export default React.memo(DisplayTable);
+
+DisplayTable.propTypes = {
+  data: PropTypes.isRequired,
+  onChange: PropTypes.isRequired,
+  handleRowOperation: PropTypes.isRequired,
+  edit: PropTypes.isRequired,
+  colWidth: PropTypes.isRequired,
+};

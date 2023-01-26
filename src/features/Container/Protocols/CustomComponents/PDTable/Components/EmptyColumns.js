@@ -1,10 +1,11 @@
-import { v4 as uuidv4 } from "uuid";
-import HoverList from "./HoverList";
-import moreIcon from "../../../../../../assets/images/more.png";
-import { useState, useRef, useEffect } from "react";
-import { columnHoverData } from "./dropdownData";
+import { v4 as uuidv4 } from 'uuid';
+import { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import Table from 'apollo-react-icons/Table';
+import { columnHoverData } from './dropdownData';
+import HoverList from './HoverList';
 
-const EmptyColumnCells = ({ columnLength, handleOperation, colWidth }) => {
+function EmptyColumnCells({ columnLength, handleOperation, colWidth }) {
   const columnHoverRef = useRef(null);
   const [activeIconIndex, setActiveIconIndex] = useState(null);
 
@@ -17,9 +18,9 @@ const EmptyColumnCells = ({ columnLength, handleOperation, colWidth }) => {
         setActiveIconIndex(null);
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [columnHoverRef]);
   const handleIconClick = (iconIndex) => {
@@ -37,8 +38,9 @@ const EmptyColumnCells = ({ columnLength, handleOperation, colWidth }) => {
           className="pd-empty-cell-column"
           style={{ width: `${colWidth}%` }}
         >
+          {/* eslint-disable-next-line */}
           <span className="pd-more-icon" onClick={() => handleIconClick(index)}>
-            <img src={moreIcon} alt={"more"} />
+            <Table />
           </span>
           {activeIconIndex === index && (
             <HoverList
@@ -51,6 +53,11 @@ const EmptyColumnCells = ({ columnLength, handleOperation, colWidth }) => {
       ))}
     </div>
   );
-};
+}
 
 export default EmptyColumnCells;
+EmptyColumnCells.propTypes = {
+  columnLength: PropTypes.isRequired,
+  handleOperation: PropTypes.isRequired,
+  colWidth: PropTypes.isRequired,
+};

@@ -57,7 +57,7 @@
 }
 .pd-empty-row-cells {
   position: absolute;
-  left: -5px;
+  left: 0;
   /* display: grid;
   flex-direction: column;
   justify-content: center; */
@@ -110,8 +110,13 @@
   height: 20px;
   align-items: center;
 }
-.pd-more-icon img {
-  height: 20px;
+.pd-more-icon {
+  height: .7em;
+  width: .7em;
+  svg {
+    height: .7em;
+    width: .7em;
+  }
 }
 .button-container {
   display: flex;
