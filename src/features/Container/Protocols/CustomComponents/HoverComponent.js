@@ -27,6 +27,7 @@ function HoverComponent({ lineId, activeLineID }) {
   return (
     <div
       // className="no-option"
+      data-testId="hover-component"
       className={
         lineId === activeLineID ? 'contentmenu show' : 'contentmenu hide'
       }

@@ -35,12 +35,14 @@ function Dropdown({
         className="dropbtn"
         onClick={showMenu}
         style={headerStyle}
+        data-testId="btn"
       >
         {buttonName}
       </button>
       <div
         className={showList ? classNames.active : classNames.notActive}
         style={contentStyle}
+        data-testId="options"
       >
         <ul>
           {headerList.map((item) => {
@@ -57,7 +59,11 @@ function Dropdown({
             }
             return (
               // eslint-disable-next-line
-              <li key={React.key} onClick={() => onHeaderSelect(item, type)}>
+              <li
+                data-testId="list"
+                key={React.key}
+                onClick={() => onHeaderSelect(item, type)}
+              >
                 {item.name}
               </li>
             );
