@@ -133,7 +133,9 @@ function Accordian({
               deleteRows={deleteRows}
             />
           ) : (
-            <MetaDataTable metaData={accData?.metaData} />
+            accData?.metaData?.length > 0 && (
+              <MetaDataTable metaData={accData?.metaData} />
+            )
           )}
           <div className="subAccContainer">{subAccComponent}</div>
         </AccordionDetails>

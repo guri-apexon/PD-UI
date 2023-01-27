@@ -1,0 +1,133 @@
+{
+  "exclusion_criteria": {
+    "_meta_data": [
+      {
+        "attr_name": "age",
+        "attr_value": 10,
+        "confidence": "100",
+        "note": "must be evaluted"
+      },
+      {
+        "attr_name": "weight",
+        "attr_value": 100,
+        "confidence": null,
+        "note": null
+      },
+      {
+        "attr_name": "weekdays",
+        "attr_value": ["sun", "mon", "tues"],
+        "confidence": null,
+        "note": null
+      },
+      {
+        "attr_name": "color",
+        "attr_value": "orange",
+        "confidence": null,
+        "note": null
+      }
+    ],
+    "_childs": ["health_info"],
+    "health_info": {
+      "_meta_data": [],
+      "_childs": ["body_stats"],
+      "body_stats": {
+        "_meta_data": [
+          {
+            "attr_name": "age",
+            "attr_value": 10,
+            "confidence": "100",
+            "note": "must be evaluted"
+          },
+          {
+            "attr_name": "weight",
+            "attr_value": 100,
+            "confidence": null,
+            "note": null
+          },
+          {
+            "attr_name": "weekdays",
+            "attr_value": ["sun", "mon", "tues"],
+            "confidence": null,
+            "note": null
+          },
+          {
+            "attr_name": "color",
+            "attr_value": "orange",
+            "confidence": null,
+            "note": null
+          }
+        ]
+      }
+    }
+  },
+  "summary_extended": {
+    "_meta_data": [
+      {
+        "attr_name": "age",
+        "attr_value": 10,
+        "confidence": "100",
+        "note": "must be evaluted"
+      },
+      {
+        "attr_name": "weight",
+        "attr_value": 100,
+        "confidence": null,
+        "note": null
+      },
+      {
+        "attr_name": "weekdays",
+        "attr_value": ["sun", "mon", "tues"],
+        "confidence": null,
+        "note": null
+      },
+      {
+        "attr_name": "color",
+        "attr_value": "orange",
+        "confidence": null,
+        "note": null
+      }
+    ]
+  },
+  "inclusion_criteria": {
+    "_meta_data": []
+  },
+  "isActive": true,
+  "id": "0bf2dc41-c215-4c8e-8953-006cbc975b55",
+  "userId": "Dig2_Batch_Tester",
+  "fileName": "Protocol - 26-Nov-2019.pdf",
+  "documentFilePath": "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\0bf2dc41-c215-4c8e-8953-006cbc975b55\\Protocol - 26-Nov-2019.pdf",
+  "protocol": "PD-1766.8484d9aa-c57f-434d-848a-82415bd6489d",
+  "projectId": "pid",
+  "sponsor": "s1",
+  "indication": "ind",
+  "moleculeDevice": "mol",
+  "amendment": "N",
+  "versionNumber": "v1",
+  "documentStatus": "final",
+  "draftVersion": null,
+  "uploadDate": "2022-08-11 21:32:08.017000",
+  "isProcessing": false,
+  "errorCode": null,
+  "errorReason": null,
+  "percentComplete": "100",
+  "status": "PROCESS_COMPLETED",
+  "compareStatus": null,
+  "iqvXmlPathProc": null,
+  "iqvXmlPathComp": null,
+  "protocolTitle": "Protocol Title: A Phase 3, Double-Blind, Randomized, Placebo-Controlled, Parallel Group, Multicenter Study With an Open-Label Extension to Evaluate the Efficacy and Safety of Ravulizumab in Patients With Amyotrophic Lateral Sclerosis (ALS)  Short Title: An Efficacy and Safety Study of Ravulizumab in ALS Patients Rationale:",
+  "shortTitle": "An Efficacy and Safety Study of Ravulizumab in ALS Patients",
+  "phase": "",
+  "digitizedConfidenceInterval": null,
+  "completenessOfDigitization": null,
+  "approvalDate": null,
+  "studyStatus": "stat",
+  "sourceSystem": "sys",
+  "environment": "env",
+  "nctId": null,
+  "timeCreated": "2022-08-11 21:32:08.017000",
+  "lastUpdated": "2022-08-12 05:05:18.640000",
+  "userCreated": null,
+  "userUpdated": null,
+  "qcStatus": "QC_NOT_STARTED",
+  "runId": 0
+}

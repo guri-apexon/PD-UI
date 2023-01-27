@@ -177,8 +177,10 @@
 }
 .gridContainer {
   align-items: center;
+  padding: 0 2px;
   .keyText {
     margin: unset;
+    width: 68.5%;
     input {
       border: none;
       background: #f4f4f4;
@@ -189,11 +191,11 @@
     }
   }
   .valueText {
-    margin-left: 10px;
+    margin-left: 2px;
     display: flex;
     align-items: center;
     background: #f9f9f9;
-    padding-right: 10px;
+    padding-right: 3px;
     width: 100%;
     justify-content: space-between;
     div {
@@ -208,7 +210,7 @@
       border: none;
     }
     .selectBox {
-      width: 43%;
+      width: 75%;
       div {
         border-radius: unset;
         border: none;
