@@ -49,6 +49,9 @@ function BladeRight({ dataSummary }) {
     if (name === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && !flag) {
       return true;
     }
+    if (name === PROTOCOL_RIGHT_MENU.CLINICAL_TERM && !flag) {
+      return true;
+    }
     return false;
   };
   return (
