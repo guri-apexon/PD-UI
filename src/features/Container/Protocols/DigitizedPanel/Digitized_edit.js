@@ -21,17 +21,13 @@ function MultilineEdit({ data }) {
     }
   }, [data]);
 
-  const handleChangedRichTextEditor = (text) => {
-    console.log({ text });
-  };
-
   return (
     <div className="Richtextcontainer" data-testId="richTextEditor">
       {value && (
         <RichTextEditor
           defaultValue={value}
           // value={value}
-          onChange={handleChangedRichTextEditor}
+          // onChange={handleChangedRichTextEditor}
         />
       )}
     </div>

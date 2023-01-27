@@ -11,27 +11,41 @@ import EyeShow from 'apollo-react-icons/EyeShow';
 import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './Digitized_edit';
 import Loader from '../../../Components/Loader/Loader';
-import { sectionDetails } from '../protocolSlice';
+import { sectionDetails, TOCActive } from '../protocolSlice';
 import { createFullMarkup } from '../../../../utils/utilFunction';
+import MedicalTerm from '../EnrichedContent/MedicalTerm';
+import SanitizeHTML from '../../../Components/SanitizeHtml';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
+const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
 function DigitizeAccordion({
   item,
   protocol,
   primaryRole,
   currentActiveCard,
   handlePageRight,
+  rightBladeValue,
   currentEditCard,
   setCurrentEditCard,
+  scrollToTop,
+  index,
 }) {
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sections, setSections] = useState([]);
+  const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
 
   const { data: sectionData } = sectionHeaderDetails;
+  const [tocActive, setTocActive] = useState([]);
+
+  const tocActiveSelector = useSelector(TOCActive);
+  useEffect(() => {
+    if (tocActiveSelector) setTocActive(tocActiveSelector);
+  }, [tocActiveSelector]);
 
   useEffect(() => {
     if (sectionData?.length > 0) {
@@ -41,20 +55,25 @@ function DigitizeAccordion({
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = arr[0].data;
-        updatedSectionsData = sectionsData?.map((sec, index) => {
-          if (sec?.font_info?.VertAlign === 'superscript') {
-            matchedIndex = index;
-            return {
-              ...sec,
-              content: `${sec?.content}_${sectionsData[index + 1].content}`,
-            };
+        if (Array.isArray(sectionsData)) {
+          updatedSectionsData = sectionsData?.map((sec, index) => {
+            if (sec?.font_info?.VertAlign === 'superscript') {
+              matchedIndex = index;
+              return {
+                ...sec,
+                content: `${sec?.content}_${sectionsData[index + 1].content}`,
+              };
+            }
+            return sec;
+          });
+          if (matchedIndex) {
+            updatedSectionsData.splice(matchedIndex + 1, 1);
           }
-          return sec;
-        });
-        if (matchedIndex) {
-          updatedSectionsData.splice(matchedIndex + 1, 1);
+          setSections(updatedSectionsData);
         }
-        setSections(updatedSectionsData);
+        if (currentActiveCard === item.link_id) {
+          scrollToTop(item.sequence);
+        }
       }
     }
     // eslint-disable-next-line
@@ -63,6 +82,15 @@ function DigitizeAccordion({
   const handleChange = () => {
     handlePageRight(item.page);
     setExpanded(!expanded);
+    const tempTOCActive = [...tocActive];
+    tempTOCActive[index] = !tempTOCActive[index];
+    setTocActive(tempTOCActive);
+    dispatch({
+      type: 'SET_TOC_Active',
+      payload: {
+        data: tempTOCActive,
+      },
+    });
   };
 
   const onSaveClick = (e) => {
@@ -85,17 +113,35 @@ function DigitizeAccordion({
           },
         });
       }
+    } else {
+      setEnrichedTarget(null);
     }
     // eslint-disable-next-line
   }, [expanded]);
 
   useEffect(() => {
-    if (currentActiveCard === item.link_id && !expanded) {
+    if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
+    } else if (currentActiveCard === item.link_id && expanded) {
+      setExpanded(!expanded);
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
+  useEffect(() => {
+    if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
+      setExpanded(false);
+    }
+    // eslint-disable-next-line
+  }, [tocActive]);
+
+  const handleEnrichedClick = (e) => {
+    if (e.target.className === 'enriched-txt') {
+      setEnrichedTarget(e.target);
+    } else {
+      setEnrichedTarget(null);
+    }
+  };
   useEffect(() => {
     if (currentEditCard !== item.link_id) {
       setShowEdit(false);
@@ -161,16 +207,23 @@ function DigitizeAccordion({
           (showedit ? (
             <MultilineEdit data={sections} />
           ) : (
-            <div className="readable-content">
-              {sections.map((section) =>
-                section?.font_info?.VertAlign === 'superscript' ? (
+            // eslint-disable-next-line
+            <div
+              className="readable-content"
+              onClick={(e) => handleEnrichedClick(e)}
+            >
+              {sections.map((section) => {
+                const enrichedTxt =
+                  rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+                    ? enrichedDummyText
+                    : '';
+                return section?.font_info?.VertAlign === 'superscript' ? (
                   <div key={React.key} className="supContent">
-                    <sup
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={createFullMarkup(
-                        section.content.split('_')[0],
-                      )}
-                    />
+                    <sup>
+                      <SanitizeHTML
+                        html={createFullMarkup(section.content.split('_')[0])}
+                      />
+                    </sup>
                     <p
                       style={{
                         fontWeight: `${
@@ -183,11 +236,12 @@ function DigitizeAccordion({
                           section?.font_info?.Italics ? 'italics' : ''
                         }`,
                       }}
-                      // eslint-disable-next-line react/no-danger
-                      dangerouslySetInnerHTML={createFullMarkup(
-                        section.content.split('_')[1],
-                      )}
-                    />
+                    >
+                      <SanitizeHTML
+                        html={createFullMarkup(section.content.split('_')[1])}
+                      />
+                      {enrichedTxt}
+                    </p>
                   </div>
                 ) : (
                   <p
@@ -202,14 +256,16 @@ function DigitizeAccordion({
                         section?.font_info?.Italics ? 'italics' : ''
                       }`,
                     }}
-                    // eslint-disable-next-line react/no-danger
-                    dangerouslySetInnerHTML={createFullMarkup(section.content)}
-                  />
-                ),
-              )}
+                  >
+                    <SanitizeHTML html={createFullMarkup(section.content)} />
+                    {enrichedTxt}
+                  </p>
+                );
+              })}
             </div>
           ))}
       </AccordionDetails>
+      <MedicalTerm enrichedTarget={enrichedTarget} expanded={expanded} />
     </Accordion>
   );
 }
@@ -222,6 +278,9 @@ DigitizeAccordion.propTypes = {
   primaryRole: PropTypes.isRequired,
   currentActiveCard: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
+  rightBladeValue: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
+  scrollToTop: PropTypes.isRequired,
+  index: PropTypes.isRequired,
 };

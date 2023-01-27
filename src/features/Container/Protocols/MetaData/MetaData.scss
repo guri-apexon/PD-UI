@@ -31,6 +31,16 @@
   }
   .metadata_item {
     padding: 2px 8px 2px 5px;
+
+    [class*='MuiDialog-paperWidthSm-'] {
+      max-width: 410px;
+    }
+    [class*='InternalDialogTitle-title-'] {
+      text-align: center;
+    }
+    [class*='MuiDialogActions-root-'] {
+      justify-content: center;
+    }
   }
   .metadat-flex-plus {
     float: left;
@@ -43,6 +53,20 @@
   .metadata-plus-size {
     font-size: 19px !important;
     color: black;
+    cursor: pointer;
+  }
+  .mR {
+    margin-right: 10px;
+  }
+  .mL {
+    margin-left: 10px;
+  }
+  .nameField {
+    width: 50%;
+    z-index: 1;
+    position: absolute;
+    right: 4rem;
+    top: 2.5rem;
   }
   .metadata-checkbox {
     // padding-left: 53%;
@@ -92,10 +116,12 @@
     background-color: #f9f9f9;
     color: black;
     padding-left: 21px !important;
+    word-break: break-word;
   }
   [class*='MuiTableCell-head-'] {
     color: black;
     padding-left: 23px;
+    word-break: break-all;
   }
 
   .digitize-panel-content::-webkit-scrollbar {
@@ -138,6 +164,7 @@
   [class*='MuiAccordionSummary-expandIcon'] {
     left: 5px;
   }
+
   .accordion_summary_container {
     display: flex;
     justify-content: space-between;
@@ -148,5 +175,91 @@
   .checkbox-right {
     display: flex;
     float: right;
+  }
+}
+.gridContainer {
+  align-items: center;
+  .keyText {
+    margin: unset;
+    input {
+      border: none;
+      background: #f4f4f4;
+      border-radius: unset;
+    }
+    div {
+      margin-top: unset;
+    }
+  }
+  .valueText {
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    padding-right: 10px;
+    width: 100%;
+    justify-content: space-between;
+    div {
+      border-radius: unset;
+      margin: unset;
+      background: #f9f9f9;
+      border: unset;
+    }
+    input {
+      border-radius: unset;
+      background: #f9f9f9;
+      border: none;
+    }
+    .selectBox {
+      width: 43%;
+      div {
+        border-radius: unset;
+        border: none;
+        background: #eceff4;
+        padding: 2px;
+      }
+    }
+  }
+  .fieldContainer {
+    display: flex;
+    align-items: center;
+  }
+  .delContainer {
+    margin: unset;
+    svg {
+      cursor: pointer;
+    }
+  }
+}
+.iconDiv {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  .iconContainer {
+    border-radius: 50%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    color: white;
+    svg {
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  }
+}
+.subAccContainer {
+  padding: 15px;
+}
+
+.modal {
+  max-width: 410px;
+  [class*='MuiDialog-paperWidthSm-'] {
+    max-width: 410px;
+  }
+  [class*='InternalDialogTitle-title-'] {
+    text-align: center;
+  }
+  [class*='MuiDialogActions-root-'] {
+    justify-content: center;
   }
 }

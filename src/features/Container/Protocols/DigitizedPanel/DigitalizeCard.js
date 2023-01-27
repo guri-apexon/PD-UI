@@ -41,6 +41,12 @@ function Digitize({
     }
   }, [summary]);
 
+  const scrollToTop = (index) => {
+    setTimeout(() => {
+      sectionRef[index]?.current?.scrollIntoView(true);
+    }, 300);
+  };
+
   useEffect(() => {
     if (sectionSequence === 'undefined' || sectionSequence === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
@@ -48,13 +54,7 @@ function Digitize({
       sectionRef[sectionSequence] &&
       sectionRef[sectionSequence].current
     ) {
-      setTimeout(() => {
-        sectionRef[sectionSequence]?.current?.scrollIntoView({
-          behavior: 'instant',
-          block: 'end',
-        });
-      }, 300);
-
+      scrollToTop(sectionSequence);
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
     // eslint-disable-next-line
@@ -102,7 +102,9 @@ function Digitize({
 
   return (
     <div data-testid="protocol-column-wrapper">
-      {rightValue === PROTOCOL_RIGHT_MENU.HOME && (
+      {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
+        rightValue,
+      ) && (
         <Card className="protocol-column protocol-digitize-column card-boarder">
           <div className="panel-heading" data-testid="header">
             Digitized Data
@@ -132,8 +134,10 @@ function Digitize({
                         currentActiveCard={currentActiveCard}
                         index={index}
                         handlePageRight={handlePageRight}
+                        rightBladeValue={BladeRightValue}
                         currentEditCard={currentEditCard}
                         setCurrentEditCard={setCurrentEditCard}
+                        scrollToTop={scrollToTop}
                       />
                     </div>
                   </div>
@@ -146,7 +150,7 @@ function Digitize({
           </div>
         </Card>
       )}
-      {rightValue === PROTOCOL_RIGHT_MENU.META_DATA && <MetaData />}
+      {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && <MetaData />}
     </div>
   );
 }
