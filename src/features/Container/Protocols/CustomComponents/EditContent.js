@@ -46,6 +46,7 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
         // onClick={(e) => contentClick(lineID, e)}
         onKeyDown={handleKeyDown}
         data-placeholder
+        data-testId="contentEdit"
       />
     </div>
   );
