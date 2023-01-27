@@ -54,6 +54,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       className={`${
         enable ? '' : 'disabled-btns'
       } button-container font-properties`}
+      data-testId="container"
     >
       <Dropdown
         disabled={!enable}
@@ -68,6 +69,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
         disabled={!enable}
         type="button"
         className="button-exec-icon"
+        data-testId="removeFormat"
         onMouseDown={(e) => onFormatSelect(e, 'removeFormat')}
       >
         T
@@ -106,6 +108,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       </button>
       <button
         disabled={!enable}
+        data-testId="superScript"
         type="button"
         className="button-exec-icon"
         onMouseDown={(e) => onFormatSelect(e, 'superscript')}
@@ -114,6 +117,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       </button>
       <button
         disabled={!enable}
+        data-testId="subScript"
         type="button"
         className="button-exec-icon"
         onMouseDown={(e) => onFormatSelect(e, 'subscript')}
@@ -123,6 +127,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       <button
         disabled={!enable}
         type="button"
+        data-testId="list"
         className="button-exec-icon"
         onMouseDown={(e) => onFormatSelect(e, 'UL')}
       >
@@ -137,8 +142,12 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       /> */}
       <div className="right-menu">
         <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
-        <IconButton size="small">
-          <TrashIcon onClick={() => deleteSegment()} />
+        <IconButton
+          size="small"
+          data-testId="trash-icon"
+          onClick={() => deleteSegment()}
+        >
+          <TrashIcon />
         </IconButton>
       </div>
     </div>
