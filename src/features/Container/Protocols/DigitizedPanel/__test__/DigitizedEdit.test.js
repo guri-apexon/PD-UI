@@ -1,5 +1,5 @@
-import { render, fireEvent } from '../../../../../test-utils/test-utils';
-
+import { render } from '../../../../../test-utils/test-utils';
+import ProtocolContext from '../../ProtocolContext';
 import DigitizedEdit from '../DigitizedEdit';
 
 const sectionData = [
@@ -44,9 +44,16 @@ const sectionData = [
 
 describe('DigitizedEdit', () => {
   test('render component without error', () => {
-    // const screen = render(
-    //   <DigitizedEdit sectionDataArr={sectionData} edit={false} pageRight={2} />,
-    // );
-    // expect(screen).toBeTruthy();
+    const screen = render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <DigitizedEdit
+          sectionDataArr={sectionData}
+          edit={false}
+          pageRight={2}
+        />
+        ,
+      </ProtocolContext.Provider>,
+    );
+    expect(screen).toBeTruthy();
   });
 });

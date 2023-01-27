@@ -42,7 +42,7 @@ describe('DigitizedEdit', () => {
         <EditContent
           type="text"
           lineID="6c0cf0d6-7d72-4199-ad8f-bc66b92cab12"
-          content=""
+          content={null}
           deleteSection={() => null}
           edit="true"
         />
