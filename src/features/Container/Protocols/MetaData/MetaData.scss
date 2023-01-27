@@ -72,7 +72,7 @@
     // padding-left: 53%;
     float: right;
   }
-  .metadata_item [class*='Accordion-expanded'] {
+  .metadata_item [class*='MuiAccordionSummary-root'].Mui-expanded {
     background: transparent !important;
   }
   .protocol-column {
