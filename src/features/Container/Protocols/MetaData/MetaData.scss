@@ -153,7 +153,7 @@
   [class*='Table-scrollRoot-'] {
     width: 100% !important;
   }
-  [class*='Accordion-icon-'] {
+  [class*='MuiSvgIcon-root-'] {
     width: 1.3em;
     height: 1.2em;
     font-size: 20px;
@@ -173,7 +173,6 @@
   .checkbox-right {
     display: flex;
     justify-content: flex-end;
-    margin-top: 5px;
   }
   .tableContainer {
     width: 100%;
