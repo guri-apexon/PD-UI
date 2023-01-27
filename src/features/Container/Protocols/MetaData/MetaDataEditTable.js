@@ -29,6 +29,8 @@ function DeleteCell({ row }) {
   ) : null;
 }
 
+const confidenceCol = { header: 'Confidence Score', accessor: 'confidence' };
+
 function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(row[key]);
   const handleDataChange = (id, key, e) => {
@@ -112,7 +114,7 @@ function MetaDataEditTable({
     setConfidence(checked);
     const columnTemp = [...column];
     if (checked) {
-      columnTemp.push({ header: 'Confidence Score', accessor: 'confidence' });
+      columnTemp.push(confidenceCol);
       reArrangeColumn(columnTemp);
     } else {
       removeIndex('Confidence Score');
