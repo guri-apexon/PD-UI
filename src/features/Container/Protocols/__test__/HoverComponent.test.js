@@ -1,7 +1,8 @@
 import { render, fireEvent } from '@testing-library/react';
 import HoverComponent from '../CustomComponents/HoverComponent';
+import ProtocolContext from '../ProtocolContext';
 
-describe('Digitize Edit', () => {
+describe('HoverComponent', () => {
   test('HoverComponent renders correctly with props', () => {
     const lineId = '123';
     const activeLineID = '456';
@@ -16,7 +17,9 @@ describe('Digitize Edit', () => {
     const lineId = '123';
     const activeLineID = '456';
     const { getByTestId } = render(
-      <HoverComponent lineId={lineId} activeLineID={activeLineID} />,
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <HoverComponent lineId={lineId} activeLineID={activeLineID} />{' '}
+      </ProtocolContext.Provider>,
     );
     const spy = jest.spyOn('dispatchSectionEvent');
     fireEvent.click(getByTestId('text-element'));
@@ -27,7 +30,9 @@ describe('Digitize Edit', () => {
     const lineId = '123';
     const activeLineID = '456';
     const { getByTestId } = render(
-      <HoverComponent lineId={lineId} activeLineID={activeLineID} />,
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <HoverComponent lineId={lineId} activeLineID={activeLineID} />
+      </ProtocolContext.Provider>,
     );
     expect(getByTestId('plus-icon')).toBeInTheDocument();
   });
@@ -36,7 +41,9 @@ describe('Digitize Edit', () => {
     const lineId = '123';
     const activeLineID = '456';
     const { getByTestId } = render(
-      <HoverComponent lineId={lineId} activeLineID={activeLineID} />,
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <HoverComponent lineId={lineId} activeLineID={activeLineID} />
+      </ProtocolContext.Provider>,
     );
     expect(getByTestId('text-element')).toBeInTheDocument();
     expect(getByTestId('text-header-2')).toBeInTheDocument();
@@ -46,7 +53,9 @@ describe('Digitize Edit', () => {
     const lineId = '123';
     const activeLineID = '123';
     const { getByTestId } = render(
-      <HoverComponent lineId={lineId} activeLineID={activeLineID} />,
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <HoverComponent lineId={lineId} activeLineID={activeLineID} />
+      </ProtocolContext.Provider>,
     );
     expect(getByTestId('hover-component').classList.contains('show')).toBe(
       true,
