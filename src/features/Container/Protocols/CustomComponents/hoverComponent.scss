@@ -12,3 +12,13 @@
     }
   }
 }
+#addContentMenu{
+  .add-element {
+    display: flex;
+    align-items: center;
+    svg{
+      width: 20px;
+      margin-right: 5px;
+    }
+  }
+}

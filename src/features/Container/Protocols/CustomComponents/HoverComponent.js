@@ -44,7 +44,7 @@ function HoverComponent({ lineId, activeLineID }) {
       >
         <IconMenuButton
           className="icon-buttons"
-          id={uuidv4()}
+          id="addContentMenu"
           menuItems={menuItems}
           anchorOrigin={{
             vertical: 'bottom',
