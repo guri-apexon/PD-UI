@@ -207,12 +207,11 @@ function DigitizeAccordion({
           (showedit ? (
             <MultilineEdit data={sections} />
           ) : (
-            /* eslint-disable */
+            // eslint-disable-next-line
             <div
               className="readable-content"
               onClick={(e) => handleEnrichedClick(e)}
             >
-              {/* eslint-enable */}
               {sections.map((section) => {
                 const enrichedTxt =
                   rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
