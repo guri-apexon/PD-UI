@@ -1,0 +1,77 @@
+[
+    {
+        "value": "Synonyms",
+        "termLabel": "Synonyms",
+        "data": [
+            {
+                "label": "Euismod"
+            },
+            {
+                "label": "Molestie"
+            },
+            {
+                "label": "Luptatum"
+            }
+        ]
+    },
+    {
+        "value": "Clinical Terms",
+        "termLabel": "Clinical Terms",
+        "data": [
+            {
+                "label": "Euismod"
+            },
+            {
+                "label": "Molestie"
+            },
+            {
+                "label": "Luptatum"
+            }
+        ]
+    },
+    {
+        "value": "Ontology",
+        "termLabel": "Ontology",
+        "data": [
+            {
+                "label": "Euismod"
+            },
+            {
+                "label": "Molestie"
+            },
+            {
+                "label": "Luptatum"
+            }
+        ]
+    },
+    {
+        "value": "Prefered Term",
+        "termLabel": "Preferred Term",
+        "data": [
+            {
+                "label": "Euismod"
+            },
+            {
+                "label": "Molestie"
+            },
+            {
+                "label": "Luptatum"
+            }
+        ]
+    },
+    {
+        "value": "Classification",
+        "termLabel": "Classification",
+        "data": [
+            {
+                "label": "Euismod"
+            },
+            {
+                "label": "Molestie"
+            },
+            {
+                "label": "Luptatum"
+            }
+        ]
+    }
+]

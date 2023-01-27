@@ -36,7 +36,6 @@ describe('Protocol Table container component', () => {
     // screen.getByText(/Following Protocols/);
     // screen.getByTestId("FP");
     // fireEvent.click(screen.getByRole("tablist").children[1]);
-    console.log(screen.getByRole('tablist').children[1]);
     expect(screen.getByText('Add Protocol to Library')).not.toBeInTheDocument();
   });
 });
