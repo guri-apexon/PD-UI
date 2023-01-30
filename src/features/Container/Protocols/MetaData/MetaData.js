@@ -5,6 +5,7 @@ import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
 import './MetaData.scss';
+import { isObject } from 'lodash';
 import Accordian from './Accordian';
 import { metaDataVariable } from '../protocolSlice';
 
@@ -42,9 +43,9 @@ function MetaData({ protocolId }) {
       name,
       isEdit: false,
       isActive: false,
-      metaData: [],
+      _meta_data: [],
       level: 1,
-      child: [],
+      _childs: [],
     };
     setAccordianData({
       ...accordianData,
@@ -61,8 +62,8 @@ function MetaData({ protocolId }) {
         if (data?.id === rowData?.id) {
           return {
             ...rowData,
-            name: data?.name,
-            header: data?.header,
+            attr_value: data?.attr_value,
+            attr_name: data?.attr_name,
             note: data?.note,
           };
         }
@@ -95,7 +96,8 @@ function MetaData({ protocolId }) {
     const selectedData = accordianData[accData.name];
     setRows({
       ...rows,
-      [accData.name]: accData.metaData,
+      // eslint-disable-next-line
+      [accData.name]: accData._meta_data,
     });
     setAccordianData({
       ...accordianData,
@@ -111,14 +113,15 @@ function MetaData({ protocolId }) {
     e.stopPropagation();
     const selectedData = accordianData[accData.name];
     const accMetaData =
-      rows[accData?.name].length > 0 ? rows[accData?.name] : accData.metaData;
+      // eslint-disable-next-line
+      rows[accData?.name].length > 0 ? rows[accData?.name] : accData._meta_data;
     const filterMetaData = metaDataList[accData?.name] || [];
     setAccordianData({
       ...accordianData,
       [accData.name]: {
         ...selectedData,
         isEdit: false,
-        metaData: [...accMetaData, ...filterMetaData],
+        _meta_data: [...accMetaData, ...filterMetaData],
       },
     });
     setMetaDataList({
@@ -134,15 +137,16 @@ function MetaData({ protocolId }) {
   const handleDelete = (accData, e) => {
     e.stopPropagation();
     if (accData.level !== 1) {
-      // eslint-disable-next-line
       const filterData = Object.entries(accordianData).find(([key, value]) =>
-        value?.child?.includes(accData.name),
+        // eslint-disable-next-line
+        value?._childs?.includes(accData.name),
       );
       setAccordianData({
         ...accordianData,
         [filterData[0]]: {
           ...accordianData[filterData[0]],
-          child: accordianData[filterData[0]].child.filter(
+          // eslint-disable-next-line
+          _childs: accordianData[filterData[0]]._childs.filter(
             (list) => list !== accData.name,
           ),
         },
@@ -159,16 +163,20 @@ function MetaData({ protocolId }) {
       name,
       isEdit: false,
       isActive: false,
-      metaData: [],
+      _meta_data: [],
       level: accData.level + 1,
-      child: [],
+      _childs: [],
     };
     const selectedData = accordianData[accData.name];
     setAccordianData({
       ...accordianData,
       [accData.name]: {
         ...selectedData,
-        child: selectedData?.child ? [...selectedData.child, name] : [name],
+        // eslint-disable-next-line
+        _childs: selectedData?._childs
+          ? // eslint-disable-next-line
+            [...selectedData._childs, name]
+          : [name],
       },
       [name]: obj,
     });
@@ -176,23 +184,36 @@ function MetaData({ protocolId }) {
     setIsOpenSubText(false);
   };
 
-  useEffect(() => {
-    const updatedData = {};
-    metaDataSelector?.data?.forEach((list) => {
-      updatedData[list.name] = updatedData[list.name]
-        ? updatedData[list.name]
-        : {
-            ...list,
-            level: list?.level ? list.level : 1,
-          };
+  const updatedData = {};
+  const flattenObject = (data, level) => {
+    const objectKeys = Object.keys(data);
+    objectKeys.forEach((key) => {
+      const keyValue = data[key];
+      if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
+        updatedData[key] = updatedData[key]
+          ? updatedData[key]
+          : {
+              // eslint-disable-next-line
+              _meta_data: keyValue._meta_data,
+              name: key,
+              level,
+              isActive: false,
+              isEdit: false,
+              // eslint-disable-next-line
+              _childs: keyValue?._childs ? keyValue?._childs : [],
+            };
+        // eslint-disable-next-line
+        if (keyValue?._childs && keyValue?._childs.length > 0) {
+          flattenObject(keyValue, level + 1);
+        }
+      }
     });
     setAccordianData(updatedData);
-    setStandardList(
-      metaDataSelector?.data?.map((list) => {
-        return list.name;
-      }),
-    );
-  }, [metaDataSelector.data]);
+  };
+
+  useEffect(() => {
+    flattenObject(metaDataSelector?.data?.data, 1);
+  }, [metaDataSelector?.data?.data]);
 
   useEffect(() => {
     dispatch({
@@ -237,7 +258,8 @@ function MetaData({ protocolId }) {
           updateRows={updateRows}
           deleteRows={deleteRows}
           addSubAccordion={(name) => addSubAccordion(acc, name)}
-          subAccComponent={acc?.child?.map((subAcc) => {
+          // eslint-disable-next-line
+          subAccComponent={acc?._childs?.map((subAcc) => {
             return accGenerator(subAcc, accordianData?.[subAcc]);
           })}
         />
@@ -254,12 +276,6 @@ function MetaData({ protocolId }) {
     }
     // eslint-disable-next-line
   }, [sectionName]);
-
-  useEffect(() => {
-    dispatch({
-      type: 'GET_METADATA_VARIABLE',
-    });
-  }, [dispatch]);
 
   return (
     <Card
@@ -292,7 +308,7 @@ function MetaData({ protocolId }) {
           </div>
         )}
       </div>
-      <div className="metaData-boarder">
+      <div className="_meta_data-boarder">
         {Object.entries(accordianData).map(([key, value]) => {
           return value.level === 1 && accGenerator(key, value);
         })}

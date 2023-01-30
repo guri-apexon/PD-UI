@@ -5,19 +5,19 @@ import PropTypes from 'prop-types';
 
 function MetaDataTable({ metaData }) {
   const METADATA_CONFIDENCE = {
-    header: 'Confidence Score',
+    attr_name: 'Confidence Score',
     accessor: 'confidence',
   };
-  const METADATA_NOTE = { header: 'Note', accessor: 'note' };
+  const METADATA_NOTE = { attr_name: 'Note', accessor: 'note' };
 
   const columns = [
     {
-      header: 'Key',
-      accessor: 'header',
+      attr_name: 'Key',
+      accessor: 'attr_name',
     },
     {
-      header: 'Value',
-      accessor: 'name',
+      attr_name: 'Value',
+      accessor: 'attr_value',
     },
   ];
   const [column, setColumn] = useState(columns);

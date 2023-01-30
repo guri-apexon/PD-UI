@@ -133,7 +133,11 @@ function Accordian({
               deleteRows={deleteRows}
             />
           ) : (
-            <MetaDataTable metaData={accData?.metaData} />
+            // eslint-disable-next-line
+            accData?._meta_data.length > 0 && (
+              // eslint-disable-next-line
+              <MetaDataTable metaData={accData?._meta_data} />
+            )
           )}
           <div className="subAccContainer">{subAccComponent}</div>
         </AccordionDetails>

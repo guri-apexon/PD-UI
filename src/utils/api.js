@@ -36,7 +36,6 @@ export const httpCall = async (config) => {
     };
   }
   try {
-    console.log(headerConfig);
     const response = await axios(headerConfig);
     if (response.status === 200) {
       return {

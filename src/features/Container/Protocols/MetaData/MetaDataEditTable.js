@@ -29,14 +29,14 @@ function DeleteCell({ row }) {
   ) : null;
 }
 
-const confidenceCol = { header: 'Confidence Score', accessor: 'confidence' };
+const confidenceCol = { attr_name: 'Confidence Score', accessor: 'confidence' };
 
 function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(row[key]);
   const handleDataChange = (id, key, e) => {
     setVal(e.target.value);
   };
-  return key === 'name' || row?.isCustom || key === 'note' ? (
+  return key === 'attr_value' || row?.isCustom || key === 'note' ? (
     <TextField
       size="small"
       fullWidth
@@ -60,23 +60,23 @@ function MetaDataEditTable({
   updateRows,
   deleteRows,
 }) {
-  const { metaData } = data;
+  const { _meta_data } = data;
   const [editedRow, setEditedRow] = useState({});
   const [deletedRow, setDeletedRow] = useState({});
 
   const columns = [
     {
-      header: 'Key',
-      accessor: 'header',
+      attr_name: 'Key',
+      accessor: 'attr_name',
       customCell: EditableCell,
     },
     {
-      header: 'Value',
-      accessor: 'name',
+      attr_name: 'Value',
+      accessor: 'attr_value',
       customCell: EditableCell,
     },
     {
-      header: 'Delete',
+      attr_name: 'Delete',
       accessor: 'isCustom',
       customCell: DeleteCell,
     },
@@ -126,7 +126,7 @@ function MetaDataEditTable({
     const columnTemp = [...column];
     if (checked) {
       columnTemp.push({
-        header: 'Note',
+        attr_name: 'Note',
         accessor: 'note',
         customCell: EditableCell,
       });
@@ -136,7 +136,7 @@ function MetaDataEditTable({
     }
   };
   const editRow = (id, key, value) => {
-    const filterRow = metaData.filter((row) => row?.id === id);
+    const filterRow = _meta_data.filter((row) => row?.id === id);
     setEditedRow({
       ...filterRow[0],
       [key]: value,
@@ -145,13 +145,13 @@ function MetaDataEditTable({
 
   const deleteRow = (id) => {
     let index;
-    for (let i = 0; i < metaData.length; i++) {
-      if (metaData[i]?.id === id) {
+    for (let i = 0; i < _meta_data.length; i++) {
+      if (_meta_data[i]?.id === id) {
         index = i;
       }
     }
-    metaData.splice(index, 1);
-    setDeletedRow(metaData);
+    _meta_data.splice(index, 1);
+    setDeletedRow(_meta_data);
   };
 
   useEffect(() => {
@@ -168,8 +168,8 @@ function MetaDataEditTable({
             {
               id: metaDataList[data.name].length + rowLength + 1,
               isCustom: true,
-              header: '',
-              name: '',
+              attr_name: '',
+              attr_value: '',
               type: '',
             },
           ]
@@ -177,8 +177,8 @@ function MetaDataEditTable({
             {
               id: rowLength + 1,
               isCustom: true,
-              header: '',
-              name: '',
+              attr_name: '',
+              attr_value: '',
               type: '',
             },
           ],
@@ -193,7 +193,7 @@ function MetaDataEditTable({
           ? {
               ...list,
               [e.target.name]:
-                list?.type === 'Date' && e.target.name === 'name'
+                list?.type === 'Date' && e.target.name === 'attr_value'
                   ? moment(e.target.value).format('DD-MMM-YYYY')
                   : e.target.value,
             }
@@ -220,7 +220,7 @@ function MetaDataEditTable({
         data-testid="metadata-table"
         className="table-panel"
         columns={column}
-        rows={metaData?.map((row) => ({
+        rows={_meta_data?.map((row) => ({
           ...row,
           editRow,
           deleteRow,
@@ -236,7 +236,7 @@ function MetaDataEditTable({
       />
     );
     // eslint-disable-next-line
-  }, [column, metaData?.length]);
+  }, [column, _meta_data?.length]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
@@ -272,7 +272,7 @@ function MetaDataEditTable({
         <div className="iconContainer">
           <Plus
             data-testid="metadata-add"
-            onClick={() => addNewRow(metaData.length)}
+            onClick={() => addNewRow(_meta_data.length)}
           />
         </div>
       </div>
