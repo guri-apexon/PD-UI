@@ -33,7 +33,7 @@ const confidenceCol = { header: 'Confidence Score', accessor: 'confidence' };
 
 function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(row[key]);
-  const handleDataChange = (id, key, e) => {
+  const handleDataChange = (e) => {
     setVal(e.target.value);
   };
   return key === 'name' || row?.isCustom || key === 'note' ? (
@@ -42,7 +42,7 @@ function EditableCell({ row, column: { accessor: key } }) {
       fullWidth
       value={val}
       onChange={(e) => {
-        handleDataChange(row.id, key, e);
+        handleDataChange(e);
       }}
       onBlur={() => row.editRow(row?.id, key, val)}
       // error={!row[key]}
@@ -53,14 +53,8 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-function MetaDataEditTable({
-  metaDataList,
-  setMetaDataList,
-  data,
-  updateRows,
-  deleteRows,
-}) {
-  const { metaData } = data;
+function MetaDataEditTable({ rows, setRows, data, updateRows, deleteRows }) {
+  const { metaData, name } = data;
   const [editedRow, setEditedRow] = useState({});
   const [deletedRow, setDeletedRow] = useState({});
 
@@ -74,11 +68,6 @@ function MetaDataEditTable({
       header: 'Value',
       accessor: 'name',
       customCell: EditableCell,
-    },
-    {
-      header: 'Delete',
-      accessor: 'isCustom',
-      customCell: DeleteCell,
     },
   ];
   const [column, setColumn] = useState(columns);
@@ -136,7 +125,7 @@ function MetaDataEditTable({
     }
   };
   const editRow = (id, key, value) => {
-    const filterRow = metaData.filter((row) => row?.id === id);
+    const filterRow = rows[name].filter((row) => row?.id === id);
     setEditedRow({
       ...filterRow[0],
       [key]: value,
@@ -159,36 +148,26 @@ function MetaDataEditTable({
     // eslint-disable-next-line
   }, [deletedRow]);
 
-  const addNewRow = (rowLength) => {
-    setMetaDataList({
-      ...metaDataList,
-      [data.name]: metaDataList[data.name]
-        ? [
-            ...metaDataList[data.name],
-            {
-              id: metaDataList[data.name].length + rowLength + 1,
-              isCustom: true,
-              header: '',
-              name: '',
-              type: '',
-            },
-          ]
-        : [
-            {
-              id: rowLength + 1,
-              isCustom: true,
-              header: '',
-              name: '',
-              type: '',
-            },
-          ],
+  const addNewRow = () => {
+    setRows({
+      ...rows,
+      [name]: [
+        ...rows[name],
+        {
+          id: rows[name].length + 1,
+          isCustom: true,
+          header: '',
+          name: '',
+          type: '',
+        },
+      ],
     });
   };
 
   const handleChange = (e, id) => {
-    setMetaDataList({
-      ...metaDataList,
-      [data.name]: metaDataList[data.name].map((list) =>
+    setRows({
+      ...rows,
+      [name]: rows[name].map((list) =>
         list?.id === id
           ? {
               ...list,
@@ -203,14 +182,15 @@ function MetaDataEditTable({
   };
 
   const deleteMetaData = (id) => {
-    setMetaDataList({
-      ...metaDataList,
-      [data.name]: metaDataList[data.name].filter((list) => list?.id !== id),
+    setRows({
+      ...rows,
+      [name]: rows[name].filter((list) => list?.id !== id),
     });
   };
 
   useEffect(() => {
-    updateRows(editedRow, data?.name);
+    console.log(editedRow);
+    updateRows(editedRow, name);
     // eslint-disable-next-line
   }, [editedRow]);
 
@@ -220,7 +200,7 @@ function MetaDataEditTable({
         data-testid="metadata-table"
         className="table-panel"
         columns={column}
-        rows={metaData?.map((row) => ({
+        rows={rows[name]?.map((row) => ({
           ...row,
           editRow,
           deleteRow,
@@ -236,7 +216,9 @@ function MetaDataEditTable({
       />
     );
     // eslint-disable-next-line
-  }, [column, metaData?.length]);
+  }, [column, rows[name]?.length]);
+
+  console.log('rows', rows);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
@@ -259,7 +241,7 @@ function MetaDataEditTable({
         />
       </div>
       <div>{RenderTable}</div>
-      {metaDataList[data.name]?.map((list) => (
+      {/* {rows[name]?.map((list) => (
         <CustomForm
           data-testid="metadata-form"
           key={list?.id}
@@ -267,13 +249,10 @@ function MetaDataEditTable({
           deleteMetaData={() => deleteMetaData(list?.id)}
           handleChange={(e) => handleChange(e, list?.id)}
         />
-      ))}
+      ))} */}
       <div className="iconDiv">
         <div className="iconContainer">
-          <Plus
-            data-testid="metadata-add"
-            onClick={() => addNewRow(metaData.length)}
-          />
+          <Plus data-testid="metadata-add" onClick={() => addNewRow()} />
         </div>
       </div>
     </div>
@@ -281,8 +260,8 @@ function MetaDataEditTable({
 }
 
 MetaDataEditTable.propTypes = {
-  metaDataList: PropTypes.isRequired,
-  setMetaDataList: PropTypes.isRequired,
+  rows: PropTypes.isRequired,
+  setRows: PropTypes.isRequired,
   data: PropTypes.isRequired,
   updateRows: PropTypes.isRequired,
   deleteRows: PropTypes.isRequired,

@@ -3,8 +3,9 @@ import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty, isObject, some } from 'lodash';
+import { isEmpty, isObject } from 'lodash';
 import './MetaData.scss';
+import { toast } from 'react-toastify';
 import Accordian from './Accordian';
 import { metaDataVariable } from '../protocolSlice';
 import mockData from './out.json';
@@ -115,8 +116,7 @@ function MetaData() {
     const keys = Object.keys(list[0]);
     list.forEach((data) => {
       keys.forEach((key) => {
-        if (isEmpty(data[key])) {
-          console.log(key, data[key]);
+        if (key !== 'id' && key !== 'isCustom' && isEmpty(data[key])) {
           valid = false;
         }
         return valid;
@@ -127,33 +127,31 @@ function MetaData() {
 
   const handleSave = (accData, e) => {
     e.stopPropagation();
-    console.log(metaDataList[accData?.name]);
-    console.log(formValidation(metaDataList[accData?.name]));
-    if (formValidation(metaDataList[accData?.name])) {
-      const selectedData = accordianData[accData.name];
-      const accMetaData =
-        // eslint-disable-next-line
-        rows[accData?.name].length > 0 ? rows[accData?.name] : accData.metaData;
-      const filterMetaData = metaDataList[accData?.name] || [];
-      setAccordianData({
-        ...accordianData,
-        [accData.name]: {
-          ...selectedData,
-          isEdit: false,
-          metaData: [...accMetaData, ...filterMetaData],
-        },
-      });
-      setMetaDataList({
-        ...metaDataList,
-        [accData.name]: [],
-      });
-      setRows({
-        ...rows,
-        [accData.name]: [],
-      });
-    } else {
-      alert('empty data');
-    }
+    // if (formValidation(metaDataList?.[accData?.name])) {
+    const selectedData = accordianData[accData.name];
+    const accMetaData =
+      // eslint-disable-next-line
+      rows[accData?.name].length > 0 ? rows[accData?.name] : accData.metaData;
+    const filterMetaData = metaDataList[accData?.name] || [];
+    setAccordianData({
+      ...accordianData,
+      [accData.name]: {
+        ...selectedData,
+        isEdit: false,
+        metaData: [...accMetaData, ...filterMetaData],
+      },
+    });
+    setMetaDataList({
+      ...metaDataList,
+      [accData.name]: [],
+    });
+    setRows({
+      ...rows,
+      [accData.name]: [],
+    });
+    // } else {
+    //   toast('Please fill all custom field values');
+    // }
   };
 
   const handleDelete = (accData, e) => {
@@ -243,14 +241,14 @@ function MetaData() {
         <Accordian
           standardList={standardList}
           accData={acc}
-          metaDataList={metaDataList}
+          rows={rows}
           isOpenSubText={isOpenSubText}
           sectionName={sectionName}
           suggestedSubList={suggestedSubList}
           setSuggestedSubList={setSuggestedSubList}
           setSectionName={setSectionName}
           setIsOpenSubText={setIsOpenSubText}
-          setMetaDataList={setMetaDataList}
+          setRows={setRows}
           handleAccordian={() => handleAccordian(acc)}
           handleSave={(e) => handleSave(acc, e)}
           handleDelete={(e) => handleDelete(acc, e)}
@@ -286,7 +284,6 @@ function MetaData() {
   const updatedData = {};
   const flattenObject = (data, level) => {
     const objectKeys = Object.keys(data);
-    // console.log(objectKeys);
     objectKeys.forEach((key) => {
       const keyValue = data[key];
       if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
@@ -314,6 +311,8 @@ function MetaData() {
   // useEffect(() => {
   //   flattenObject(mockData, 1);
   // }, []);
+
+  // console.log('rows', rows);
 
   return (
     <Card

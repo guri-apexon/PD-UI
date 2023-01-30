@@ -17,12 +17,12 @@ import './MetaData.scss';
 function Accordian({
   standardList,
   accData,
-  metaDataList,
+  rows,
   suggestedSubList,
   isOpenSubText,
   setSuggestedSubList,
   setIsOpenSubText,
-  setMetaDataList,
+  setRows,
   handleAccordian,
   handleSave,
   handleDelete,
@@ -127,8 +127,8 @@ function Accordian({
           {accData?.isEdit ? (
             <MetaDataEditTable
               updateRows={updateRows}
-              metaDataList={metaDataList}
-              setMetaDataList={setMetaDataList}
+              rows={rows}
+              setRows={setRows}
               data={accData}
               deleteRows={deleteRows}
             />
@@ -167,12 +167,12 @@ function Accordian({
 Accordian.propTypes = {
   standardList: PropTypes.isRequired,
   accData: PropTypes.isRequired,
-  metaDataList: PropTypes.isRequired,
+  rows: PropTypes.isRequired,
   suggestedSubList: PropTypes.isRequired,
   isOpenSubText: PropTypes.isRequired,
   setIsOpenSubText: PropTypes.isRequired,
   setSuggestedSubList: PropTypes.isRequired,
-  setMetaDataList: PropTypes.isRequired,
+  setRows: PropTypes.isRequired,
   handleAccordian: PropTypes.isRequired,
   handleSave: PropTypes.isRequired,
   handleDelete: PropTypes.isRequired,
