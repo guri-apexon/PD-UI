@@ -36,7 +36,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   const handleDataChange = (id, key, e) => {
     setVal(e.target.value);
   };
-  return key === 'attr_value' || row?.isCustom || key === 'note' ? (
+  return key === 'attr_value' || row?.isCustom || key === 'notes' ? (
     <TextField
       size="small"
       fullWidth
@@ -66,17 +66,17 @@ function MetaDataEditTable({
 
   const columns = [
     {
-      attr_name: 'Key',
+      header: 'Key',
       accessor: 'attr_name',
       customCell: EditableCell,
     },
     {
-      attr_name: 'Value',
+      header: 'Value',
       accessor: 'attr_value',
       customCell: EditableCell,
     },
     {
-      attr_name: 'Delete',
+      header: 'Delete',
       accessor: 'isCustom',
       customCell: DeleteCell,
     },
@@ -127,7 +127,7 @@ function MetaDataEditTable({
     if (checked) {
       columnTemp.push({
         attr_name: 'Note',
-        accessor: 'note',
+        accessor: 'notes',
         customCell: EditableCell,
       });
       reArrangeColumn(columnTemp);

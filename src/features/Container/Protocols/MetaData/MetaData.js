@@ -64,7 +64,7 @@ function MetaData({ protocolId }) {
             ...rowData,
             attr_value: data?.attr_value,
             attr_name: data?.attr_name,
-            note: data?.note,
+            notes: data?.notes,
           };
         }
         return rowData;
