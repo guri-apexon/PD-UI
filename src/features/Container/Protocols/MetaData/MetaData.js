@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
@@ -7,14 +8,13 @@ import { isEmpty, isObject } from 'lodash';
 import './MetaData.scss';
 import { toast } from 'react-toastify';
 import Accordian from './Accordian';
-import { metaDataVariable } from '../protocolSlice';
-import mockData from './out.json';
+import { accordianMetaData, metaDataVariable } from '../protocolSlice';
 
-function MetaData() {
+function MetaData({ protocolId }) {
   const wrapperRef = useRef(null);
   const metaDataSelector = useSelector(metaDataVariable);
+  const accordianData = useSelector(accordianMetaData);
   const dispatch = useDispatch();
-  const [accordianData, setAccordianData] = useState({});
   const [rows, setRows] = useState({});
   const [metaDataList, setMetaDataList] = useState({});
   const [isOpen, setIsOpen] = useState(false);
@@ -45,13 +45,16 @@ function MetaData() {
       name,
       isEdit: false,
       isActive: false,
-      metaData: [],
+      _meta_data: [],
       level: 1,
-      child: [],
+      _childs: [],
     };
-    setAccordianData({
-      ...accordianData,
-      [name]: obj,
+    dispatch({
+      type: 'SET_METADATA',
+      payload: {
+        ...accordianData,
+        [name]: obj,
+      },
     });
     setSectionName(null);
     setIsOpen(false);
@@ -64,9 +67,9 @@ function MetaData() {
         if (data?.id === rowData?.id) {
           return {
             ...rowData,
-            name: data?.name,
-            header: data?.header,
-            note: data?.note,
+            attr_value: data?.attr_value,
+            attr_name: data?.attr_name,
+            notes: data?.notes,
           };
         }
         return rowData;
@@ -82,12 +85,15 @@ function MetaData() {
 
   const handleAccordian = (accData) => {
     const selectedData = accordianData[accData.name];
-    setAccordianData({
-      ...accordianData,
-      [accData.name]: {
-        ...selectedData,
-        isActive: !selectedData.isActive,
-        isEdit: false,
+    dispatch({
+      type: 'SET_METADATA',
+      payload: {
+        ...accordianData,
+        [accData.name]: {
+          ...selectedData,
+          isActive: !selectedData.isActive,
+          isEdit: false,
+        },
       },
     });
     setIsOpenSubText(false);
@@ -99,14 +105,17 @@ function MetaData() {
     setRows({
       ...rows,
       // eslint-disable-next-line
-      [accData.name]: accData.metaData,
+      [accData.name]: accData._meta_data,
     });
-    setAccordianData({
-      ...accordianData,
-      [accData.name]: {
-        ...selectedData,
-        isActive: true,
-        isEdit: true,
+    dispatch({
+      type: 'SET_METADATA',
+      payload: {
+        ...accordianData,
+        [accData.name]: {
+          ...selectedData,
+          isActive: true,
+          isEdit: true,
+        },
       },
     });
   };
@@ -131,14 +140,17 @@ function MetaData() {
     const selectedData = accordianData[accData.name];
     const accMetaData =
       // eslint-disable-next-line
-      rows[accData?.name].length > 0 ? rows[accData?.name] : accData.metaData;
+      rows[accData?.name].length > 0 ? rows[accData?.name] : accData._meta_data;
     const filterMetaData = metaDataList[accData?.name] || [];
-    setAccordianData({
-      ...accordianData,
-      [accData.name]: {
-        ...selectedData,
-        isEdit: false,
-        metaData: [...accMetaData, ...filterMetaData],
+    dispatch({
+      type: 'SET_METADATA',
+      payload: {
+        ...accordianData,
+        [accData.name]: {
+          ...selectedData,
+          isEdit: false,
+          _meta_data: [...accMetaData, ...filterMetaData],
+        },
       },
     });
     setMetaDataList({
@@ -157,25 +169,32 @@ function MetaData() {
   const handleDelete = (accData, e) => {
     e.stopPropagation();
     if (accData.level !== 1) {
-      // eslint-disable-next-line
       const filterData = Object.entries(accordianData).find(([key, value]) =>
         // eslint-disable-next-line
-        value?.child?.includes(accData.name),
+        value?._childs?.includes(accData.name),
       );
-      setAccordianData({
-        ...accordianData,
-        [filterData[0]]: {
-          ...accordianData[filterData[0]],
-          // eslint-disable-next-line
-          child: accordianData[filterData[0]].child.filter(
-            (list) => list !== accData.name,
-          ),
+      dispatch({
+        type: 'SET_METADATA',
+        payload: {
+          ...accordianData,
+          [filterData[0]]: {
+            ...accordianData[filterData[0]],
+            // eslint-disable-next-line
+            _childs: accordianData[filterData[0]]._childs.filter(
+              (list) => list !== accData.name,
+            ),
+          },
         },
       });
     } else {
       const copyOfObject = { ...accordianData };
       delete copyOfObject[accData.name];
-      setAccordianData({ ...copyOfObject });
+      dispatch({
+        type: 'SET_METADATA',
+        payload: {
+          ...copyOfObject,
+        },
+      });
     }
   };
 
@@ -184,44 +203,74 @@ function MetaData() {
       name,
       isEdit: false,
       isActive: false,
-      metaData: [],
+      _meta_data: [],
       level: accData.level + 1,
-      child: [],
+      _childs: [],
     };
     const selectedData = accordianData[accData.name];
-    setAccordianData({
-      ...accordianData,
-      [accData.name]: {
-        ...selectedData,
-        // eslint-disable-next-line
-        child: selectedData?.child
-          ? // eslint-disable-next-line
-            [...selectedData.child, name]
-          : [name],
+    dispatch({
+      type: 'SET_METADATA',
+      payload: {
+        ...accordianData,
+        [accData.name]: {
+          ...selectedData,
+          // eslint-disable-next-line
+          _childs: selectedData?._childs
+            ? // eslint-disable-next-line
+              [...selectedData._childs, name]
+            : [name],
+        },
+        [name]: obj,
       },
-      [name]: obj,
     });
     setSectionName(null);
     setIsOpenSubText(false);
   };
 
-  useEffect(() => {
-    const updatedData = {};
-    metaDataSelector?.data?.forEach((list) => {
-      updatedData[list.name] = updatedData[list.name]
-        ? updatedData[list.name]
-        : {
-            ...list,
-            level: list?.level ? list.level : 1,
-          };
+  const updatedData = {};
+  const flattenObject = (data, level) => {
+    const objectKeys = data ? Object?.keys(data) : [];
+    objectKeys?.forEach((key) => {
+      const keyValue = data?.[key];
+      if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
+        updatedData[key] = updatedData[key]
+          ? updatedData[key]
+          : {
+              // eslint-disable-next-line
+              _meta_data: keyValue._meta_data,
+              name: key,
+              level,
+              isActive: false,
+              isEdit: false,
+              // eslint-disable-next-line
+              _childs: keyValue?._childs ? keyValue?._childs : [],
+            };
+        // eslint-disable-next-line
+        if (keyValue?._childs && keyValue?._childs.length > 0) {
+          flattenObject(keyValue, level + 1);
+        }
+      }
     });
-    setAccordianData(updatedData);
-    setStandardList(
-      metaDataSelector?.data?.map((list) => {
-        return list.name;
-      }),
-    );
-  }, [metaDataSelector.data]);
+    return updatedData;
+  };
+
+  useEffect(() => {
+    const result = flattenObject(metaDataSelector?.data?.data, 1);
+    dispatch({
+      type: 'SET_METADATA',
+      payload: result,
+    });
+  }, [metaDataSelector?.data?.data]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'GET_METADATA_VARIABLE',
+      payload: {
+        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+      },
+    });
+    // eslint-disable-next-line
+  }, []);
 
   //   useEffect(() => {
   //     function handleClickOutside(event) {
@@ -257,7 +306,7 @@ function MetaData() {
           deleteRows={deleteRows}
           addSubAccordion={(name) => addSubAccordion(acc, name)}
           // eslint-disable-next-line
-          subAccComponent={acc?.child?.map((subAcc) => {
+          subAccComponent={acc?._childs?.map((subAcc) => {
             return accGenerator(subAcc, accordianData?.[subAcc]);
           })}
         />
@@ -274,45 +323,6 @@ function MetaData() {
     }
     // eslint-disable-next-line
   }, [sectionName]);
-
-  useEffect(() => {
-    dispatch({
-      type: 'GET_METADATA_VARIABLE',
-    });
-  }, [dispatch]);
-
-  const updatedData = {};
-  const flattenObject = (data, level) => {
-    const objectKeys = Object.keys(data);
-    objectKeys.forEach((key) => {
-      const keyValue = data[key];
-      if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
-        updatedData[key] = updatedData[key]
-          ? updatedData[key]
-          : {
-              // eslint-disable-next-line
-              _meta_data: keyValue._meta_data,
-              name: key,
-              level,
-              isActive: false,
-              isEdit: false,
-              // eslint-disable-next-line
-              _childs: keyValue?._childs ? keyValue?._childs : [],
-            };
-        // eslint-disable-next-line
-        if (keyValue?._childs && keyValue?._childs.length > 0) {
-          flattenObject(keyValue, level + 1);
-        }
-      }
-    });
-    setAccordianData(updatedData);
-  };
-
-  // useEffect(() => {
-  //   flattenObject(mockData, 1);
-  // }, []);
-
-  // console.log('rows', rows);
 
   return (
     <Card
@@ -355,3 +365,7 @@ function MetaData() {
 }
 
 export default MetaData;
+
+MetaData.propTypes = {
+  protocolId: PropTypes.isRequired,
+};

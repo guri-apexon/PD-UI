@@ -22,6 +22,7 @@ import {
   getRightBladeValue,
   getMetaDataVariable,
   getTOCActive,
+  setAccordianData,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
@@ -398,19 +399,25 @@ export function* fetchFileStream(action) {
   }
 }
 
-export function* MetaDataVariable() {
+export function* MetaDataVariable(action) {
+  const {
+    payload: { docId },
+  } = action;
   const config = {
-    url: '/mockMetaData.json',
+    url: `http://ca2spdml101q:9001${Apis.METADATA}/meta_data_summary?op=metadata&aidocId=${docId}`,
     method: 'GET',
+    isMetaData: true,
   };
-
   const MetaData = yield call(httpCall, config);
-
   if (MetaData.success) {
     yield put(getMetaDataVariable(MetaData));
   } else {
     yield put(getMetaDataVariable({ success: false, data: [] }));
   }
+}
+
+export function* fetchMetaData(action) {
+  yield put(setAccordianData(action.payload));
 }
 
 export function* RightBladeValue(action) {
@@ -437,6 +444,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_METADATA_VARIABLE', MetaDataVariable);
   yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
   yield takeEvery('SET_TOC_Active', setTOCActive);
+  yield takeEvery('SET_METADATA', fetchMetaData);
 }
 
 // notice how we now only export the rootSaga

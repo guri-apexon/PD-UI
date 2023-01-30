@@ -150,7 +150,9 @@ function Digitize({
           </div>
         </Card>
       )}
-      {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && <MetaData />}
+      {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
+        <MetaData protocolId={data?.id} />
+      )}
     </div>
   );
 }

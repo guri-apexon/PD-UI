@@ -16,10 +16,23 @@ export const httpCall = async (config) => {
       ...config,
       headers: {
         ...config.headers,
+        // 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
         Authorization: config.checkAuth
           ? `Basic ${process.env.REACT_APP_BASIC}`
           : `Bearer ${token}`,
       },
+    };
+  } else if (config && config?.isMetaData) {
+    headerConfig = {
+      method: config.method,
+      url: config.url,
+      headers: config?.isMetaData
+        ? {
+            'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
+          }
+        : {
+            Authorization: config.auth ? config.auth : `Bearer ${token}`,
+          },
     };
   } else {
     headerConfig = {
@@ -29,6 +42,7 @@ export const httpCall = async (config) => {
       },
     };
   }
+
   try {
     const response = await axios(headerConfig);
     if (response.status === 200) {
@@ -192,8 +206,8 @@ let UIhost;
 /* eslint-enable */
 const environment = process.env.REACT_APP_ENV;
 if (environment === 'local') {
-  // backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
-  backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
+  backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  // backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
@@ -246,6 +260,7 @@ export const Apis = {
   HEADER_LIST: '/api/cpt_data',
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
   DOWNLOAD_API: '/api/download_file',
+  METADATA: '/pd/api/v1/documents',
 };
 
 export const SSO_ENABLED = environment !== 'local';

@@ -8,16 +8,16 @@ function MetaDataTable({ metaData }) {
     header: 'Confidence Score',
     accessor: 'confidence',
   };
-  const METADATA_NOTE = { header: 'Note', accessor: 'note' };
+  const METADATA_NOTE = { header: 'Note', accessor: 'notes' };
 
   const columns = [
     {
       header: 'Key',
-      accessor: 'header',
+      accessor: 'attr_name',
     },
     {
       header: 'Value',
-      accessor: 'name',
+      accessor: 'attr_value',
     },
   ];
   const [column, setColumn] = useState(columns);

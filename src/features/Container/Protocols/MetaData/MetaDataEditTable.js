@@ -29,14 +29,14 @@ function DeleteCell({ row }) {
   ) : null;
 }
 
-const confidenceCol = { header: 'Confidence Score', accessor: 'confidence' };
+const confidenceCol = { attr_name: 'Confidence Score', accessor: 'confidence' };
 
 function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(row[key]);
   const handleDataChange = (e) => {
     setVal(e.target.value);
   };
-  return key === 'name' || row?.isCustom || key === 'note' ? (
+  return key === 'attr_value' || row?.isCustom || key === 'notes' ? (
     <TextField
       size="small"
       fullWidth
@@ -54,19 +54,19 @@ function EditableCell({ row, column: { accessor: key } }) {
 }
 
 function MetaDataEditTable({ rows, setRows, data, updateRows, deleteRows }) {
-  const { metaData, name } = data;
+  const { _meta_data, name } = data;
   const [editedRow, setEditedRow] = useState({});
   const [deletedRow, setDeletedRow] = useState({});
 
   const columns = [
     {
       header: 'Key',
-      accessor: 'header',
+      accessor: 'attr_name',
       customCell: EditableCell,
     },
     {
       header: 'Value',
-      accessor: 'name',
+      accessor: 'attr_value',
       customCell: EditableCell,
     },
   ];
@@ -115,8 +115,8 @@ function MetaDataEditTable({ rows, setRows, data, updateRows, deleteRows }) {
     const columnTemp = [...column];
     if (checked) {
       columnTemp.push({
-        header: 'Note',
-        accessor: 'note',
+        attr_name: 'Note',
+        accessor: 'notes',
         customCell: EditableCell,
       });
       reArrangeColumn(columnTemp);
@@ -134,13 +134,13 @@ function MetaDataEditTable({ rows, setRows, data, updateRows, deleteRows }) {
 
   const deleteRow = (id) => {
     let index;
-    for (let i = 0; i < metaData.length; i++) {
-      if (metaData[i]?.id === id) {
+    for (let i = 0; i < _meta_data.length; i++) {
+      if (_meta_data[i]?.id === id) {
         index = i;
       }
     }
-    metaData.splice(index, 1);
-    setDeletedRow(metaData);
+    _meta_data.splice(index, 1);
+    setDeletedRow(_meta_data);
   };
 
   useEffect(() => {
@@ -172,7 +172,7 @@ function MetaDataEditTable({ rows, setRows, data, updateRows, deleteRows }) {
           ? {
               ...list,
               [e.target.name]:
-                list?.type === 'Date' && e.target.name === 'name'
+                list?.type === 'Date' && e.target.name === 'attr_value'
                   ? moment(e.target.value).format('DD-MMM-YYYY')
                   : e.target.value,
             }
