@@ -186,9 +186,9 @@ function MetaData({ protocolId }) {
 
   const updatedData = {};
   const flattenObject = (data, level) => {
-    const objectKeys = Object.keys(data);
-    objectKeys.forEach((key) => {
-      const keyValue = data[key];
+    const objectKeys = data ? Object?.keys(data) : [];
+    objectKeys?.forEach((key) => {
+      const keyValue = data?.[key];
       if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
         updatedData[key] = updatedData[key]
           ? updatedData[key]
@@ -203,7 +203,7 @@ function MetaData({ protocolId }) {
               _childs: keyValue?._childs ? keyValue?._childs : [],
             };
         // eslint-disable-next-line
-        if (keyValue?._childs && keyValue?._childs.length > 0) {
+        if (keyValue && keyValue?._childs && keyValue?._childs.length > 0) {
           flattenObject(keyValue, level + 1);
         }
       }
