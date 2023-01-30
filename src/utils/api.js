@@ -22,7 +22,7 @@ export const httpCall = async (config) => {
           : `Bearer ${token}`,
       },
     };
-  } else {
+  } else if (config && config?.isMetaData) {
     headerConfig = {
       method: config.method,
       url: config.url,
@@ -34,7 +34,15 @@ export const httpCall = async (config) => {
             Authorization: config.auth ? config.auth : `Bearer ${token}`,
           },
     };
+  } else {
+    headerConfig = {
+      ...config,
+      headers: {
+        Authorization: config.auth ? config.auth : `Bearer ${token}`,
+      },
+    };
   }
+
   try {
     console.log(headerConfig);
     const response = await axios(headerConfig);
