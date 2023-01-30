@@ -416,13 +416,22 @@ export function* MetaDataVariable(action) {
   }
 }
 
-export function* PostMetaDataVariable() {
-  // const config = {
-  //   url: `http://ca2spdml101q:9001${Apis.METADATA}/meta_data_summary?op=metadata&aidocId=${docId}`,
-  //   method: 'GET',
-  //   isMetaData: true,
-  // };
-  const MetaData = 'post check'; // yield call(httpCall, config);
+export function* PostMetaDataVariable(action) {
+  const {
+    payload: { docId, fieldName, attributes },
+  } = action;
+  const config = {
+    url: `http://ca2spdml101q:9001${Apis.METADATA}/add_meta_data`,
+    method: 'POST',
+    isMetaData: true,
+    data: {
+      op: 'addField',
+      aidocId: action.payload.docId,
+      fieldName,
+      attributes,
+    },
+  };
+  const MetaData = yield call(httpCall, config);
   console.log('metadata', MetaData);
   if (MetaData.success) {
     yield put(getMetaDataVariable(MetaData));

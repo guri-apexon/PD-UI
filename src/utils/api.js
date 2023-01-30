@@ -11,28 +11,24 @@ export const httpCall = async (config) => {
     token = cookiesServer.get('api_token');
   }
   let headerConfig;
-  if (config && config.headers) {
+  if (config && config?.isMetaData) {
+    headerConfig = {
+      data: data?.data,
+      method: config.method,
+      url: config.url,
+      headers: {
+        'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
+      },
+    };
+  } else if (config && config.headers) {
     headerConfig = {
       ...config,
       headers: {
         ...config.headers,
-        // 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
         Authorization: config.checkAuth
           ? `Basic ${process.env.REACT_APP_BASIC}`
           : `Bearer ${token}`,
       },
-    };
-  } else if (config && config?.isMetaData) {
-    headerConfig = {
-      method: config.method,
-      url: config.url,
-      headers: config?.isMetaData
-        ? {
-            'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
-          }
-        : {
-            Authorization: config.auth ? config.auth : `Bearer ${token}`,
-          },
     };
   } else {
     headerConfig = {
@@ -44,6 +40,7 @@ export const httpCall = async (config) => {
   }
 
   try {
+    console.log('headerConfig--->', headerConfig);
     const response = await axios(headerConfig);
     if (response.status === 200) {
       return {

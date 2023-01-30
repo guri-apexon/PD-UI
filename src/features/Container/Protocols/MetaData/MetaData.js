@@ -8,6 +8,7 @@ import './MetaData.scss';
 import { isObject } from 'lodash';
 import Accordian from './Accordian';
 import { accordianMetaData, metaDataVariable } from '../protocolSlice';
+import mockData from './mockData.json';
 
 function MetaData({ protocolId }) {
   const wrapperRef = useRef(null);
@@ -118,6 +119,23 @@ function MetaData({ protocolId }) {
     });
   };
 
+  const postCall = (data) => {
+    console.log(data);
+    dispatch({
+      type: 'POST_METADATA',
+      payload: {
+        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        fieldName: data.formattedName,
+        attributes: {
+          attr_name: 'key1',
+          attr_value: 'test1',
+          confidence: null,
+          note: null,
+        },
+      },
+    });
+  };
+
   const handleSave = (accData, e) => {
     e.stopPropagation();
     const selectedData = accordianData[accData.name];
@@ -136,6 +154,7 @@ function MetaData({ protocolId }) {
         },
       },
     });
+    postCall(accordianData[accData.name]);
     setMetaDataList({
       ...metaDataList,
       [accData.name]: [],
@@ -178,12 +197,6 @@ function MetaData({ protocolId }) {
     }
   };
 
-  useEffect(() => {
-    dispatch({
-      type: 'POST_METADATA',
-    });
-  }, []);
-
   const addSubAccordion = (accData, name) => {
     const obj = {
       name,
@@ -214,16 +227,19 @@ function MetaData({ protocolId }) {
   };
 
   const updatedData = {};
-  const flattenObject = (data, level) => {
+  const flattenObject = (data, level, parentKey) => {
     const objectKeys = data ? Object?.keys(data) : [];
     objectKeys?.forEach((key) => {
       const keyValue = data?.[key];
+      console.log('parentKey--->', level, parentKey);
       if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
         updatedData[key] = updatedData[key]
           ? updatedData[key]
           : {
               // eslint-disable-next-line
               _meta_data: keyValue._meta_data,
+              // eslint-disable-next-line
+              formattedName: level === 1 ? key : `${parentKey}.${key}`,
               name: key,
               level,
               isActive: false,
@@ -233,7 +249,7 @@ function MetaData({ protocolId }) {
             };
         // eslint-disable-next-line
         if (keyValue?._childs && keyValue?._childs.length > 0) {
-          flattenObject(keyValue, level + 1);
+          flattenObject(keyValue, level + 1, key);
         }
       }
     });
@@ -241,7 +257,8 @@ function MetaData({ protocolId }) {
   };
 
   useEffect(() => {
-    const result = flattenObject(metaDataSelector?.data?.data, 1);
+    // const result = flattenObject(metaDataSelector?.data?.data, 1, '');
+    const result = flattenObject(mockData.data, 1, '');
     dispatch({
       type: 'SET_METADATA',
       payload: result,
@@ -310,6 +327,7 @@ function MetaData({ protocolId }) {
     // eslint-disable-next-line
   }, [sectionName]);
 
+  console.log(accordianData);
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
