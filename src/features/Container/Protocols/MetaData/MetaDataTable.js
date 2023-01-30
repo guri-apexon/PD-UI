@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 
 function MetaDataTable({ metaData }) {
   const METADATA_CONFIDENCE = {
-    attr_name: 'Confidence Score',
+    header: 'Confidence Score',
     accessor: 'confidence',
   };
-  const METADATA_NOTE = { attr_name: 'Note', accessor: 'notes' };
+  const METADATA_NOTE = { header: 'Note', accessor: 'notes' };
 
   const columns = [
     {
