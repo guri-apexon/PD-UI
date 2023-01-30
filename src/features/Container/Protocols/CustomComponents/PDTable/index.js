@@ -9,7 +9,11 @@ import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
 import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
 import FootNotes from './Components/Footnotes';
-import { QC_CHANGE_TYPE } from '../../../../../AppConstant/AppConstant';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../../AppConstant/AppConstant';
+import { useProtContext } from '../../ProtocolContext';
 
 const getColumnID = (data, key) => {
   let column_roi_id = '';
@@ -80,6 +84,7 @@ function PDTable({
   const [columnLength, setColumnLength] = useState();
   const [colWidth, setColumnWidth] = useState(100);
   const tableRef = useRef(null);
+  const { dispatchSectionEvent } = useProtContext();
 
   useEffect(() => {
     const parsedTable = JSON.parse(data.TableProperties);
@@ -135,7 +140,13 @@ function PDTable({
       TableProperties: JSON.stringify(updatedData),
       AttachmentListProperties: footNoteData,
     };
-    onChange(content, segment.line_id);
+    dispatchSectionEvent('CONTENT_UPDATE', {
+      type: CONTENT_TYPE.TABLE,
+      lineID,
+      currentLineId: activeLineID,
+      content,
+    });
+    // onChange(content, segment.line_id);
   };
   const handleFootnoteEdit = (editedText, index) => {
     const attachmentArr = [...footNoteData];

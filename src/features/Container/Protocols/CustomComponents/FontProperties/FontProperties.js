@@ -6,11 +6,11 @@ import TrashIcon from 'apollo-react-icons/Trash';
 import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
-import ProtocolContext from '../../ProtocolContext';
+import { ProtocolContext, useProtContext } from '../../ProtocolContext';
 
 function FontProperties({ onHeaderSelect, activeLineID }) {
   const [enable, setEnable] = useState(activeLineID);
-  const { dispatchSectionEvent } = useContext(ProtocolContext);
+  const { dispatchSectionEvent } = useProtContext();
 
   const onFormatSelect = (e, button) => {
     e.preventDefault();

@@ -8,7 +8,7 @@ import {
   updateSectionData,
 } from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
-import ProtocolContext from './ProtocolContext';
+import { ProtocolContext } from './ProtocolContext';
 import { prepareContent } from '../../../utils/utilFunction';
 
 function ProtocolView({ refs, data }) {
@@ -34,7 +34,7 @@ function ProtocolView({ refs, data }) {
           dispatch(
             updateSectionData({
               data: sectionContent,
-              type: 'REPLACE_CONTENT',
+              actionType: 'REPLACE_CONTENT',
               linkId: selectedSection.link_id,
             }),
           );
@@ -46,9 +46,13 @@ function ProtocolView({ refs, data }) {
         break;
       }
       case 'CONTENT_UPDATE': {
-        setSectionContent(
-          prepareContent({ ...payload, type: 'MODIFY', sectionContent }),
-        );
+        const content = prepareContent({
+          ...payload,
+          type: 'MODIFY',
+          sectionContent,
+        });
+        setSectionContent(content);
+        console.log('CONTENT_UPDATE', payload);
         break;
       }
       case 'CONTENT_DELETED': {
@@ -62,7 +66,7 @@ function ProtocolView({ refs, data }) {
         dispatch(
           updateSectionData({
             data: content,
-            type: 'REPLACE_CONTENT',
+            actionType: 'REPLACE_CONTENT',
             linkId: selectedSection.link_id,
           }),
         );
@@ -81,7 +85,7 @@ function ProtocolView({ refs, data }) {
         dispatch(
           updateSectionData({
             data: content,
-            type: 'REPLACE_CONTENT',
+            actionType: 'REPLACE_CONTENT',
             linkId: selectedSection.link_id,
           }),
         );

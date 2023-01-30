@@ -1,12 +1,12 @@
 import { useContext, useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
-import ProtocolContext from '../ProtocolContext';
+import { ProtocolContext, useProtContext } from '../ProtocolContext';
 
 function ContentEdit({ type, lineID, content, deleteSection, edit }) {
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
-  const { dispatchSectionEvent } = useContext(ProtocolContext);
+  const { dispatchSectionEvent } = useProtContext();
 
   const handleChange = (e) => {
     setText(e.target.value);

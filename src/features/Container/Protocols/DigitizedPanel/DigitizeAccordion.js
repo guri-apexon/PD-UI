@@ -16,7 +16,7 @@ import { createFullMarkup } from '../../../../utils/utilFunction';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
-import ProtocolContext from '../ProtocolContext';
+import { ProtocolContext, useProtContext } from '../ProtocolContext';
 
 const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
 function DigitizeAccordion({
@@ -41,7 +41,7 @@ function DigitizeAccordion({
 
   const { data: sectionData } = sectionHeaderDetails;
 
-  const { dispatchSectionEvent } = useContext(ProtocolContext);
+  const { dispatchSectionEvent } = useProtContext();
 
   const handleChange = () => {
     handlePageRight(item.page);
