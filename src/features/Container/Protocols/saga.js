@@ -399,16 +399,16 @@ export function* fetchFileStream(action) {
 }
 
 export function* MetaDataVariable(action) {
-  const {
-    payload: { docId },
-  } = action;
+  // const {
+  //   payload: { docId },
+  // } = action;
   const config = {
-    url: `http://ca2spdml101q:9001${Apis.METADATA}/meta_data_summary?op=metadata&aidocId=0be44992-9573-4010-962c-de1a1b18b08d}`,
+    url: `http://ca2spdml101q:9001${Apis.METADATA}/meta_data_summary?op=metadata&aidocId=0be44992-9573-4010-962c-de1a1b18b08d`,
     method: 'GET',
-    isMetaDat: true,
+    isMetaData: true,
   };
   const MetaData = yield call(httpCall, config);
-
+  console.log('Metadata', MetaData);
   if (MetaData.success) {
     yield put(getMetaDataVariable(MetaData));
   } else {

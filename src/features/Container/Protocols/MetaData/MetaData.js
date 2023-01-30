@@ -197,9 +197,9 @@ function MetaData({ protocolId }) {
   useEffect(() => {
     dispatch({
       type: 'GET_METADATA_VARIABLE',
-      payload: {
-        docId: protocolId,
-      },
+      // payload: {
+      //   docId: protocolId,
+      // },
     });
     // eslint-disable-next-line
   }, []);
