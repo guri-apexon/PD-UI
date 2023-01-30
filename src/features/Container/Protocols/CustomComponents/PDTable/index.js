@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
+import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import Save from 'apollo-react-icons/Save';
 import IconButton from 'apollo-react/components/IconButton';
 import EmptyColumnCells from './Components/EmptyColumns';
@@ -146,13 +147,27 @@ function PDTable({
     setFootnoteData(attachmentArr);
   };
   return (
-    <>
+    <section className="content-table-wrapper">
       {lineID === activeLineID && (
         <div className="button-container">
-          Save Table
+          <ButtonGroup
+            buttonProps={[
+              {
+                size: 'small',
+                onClick: () => console.log('Test Default Click'),
+              },
+              {
+                size: 'small',
+                label: 'Save Table',
+                // icon: <Save />,
+                onClick: () => handleSave(),
+              },
+            ]}
+          />
+          {/* Save Table
           <IconButton onClick={handleSave}>
             <Save />
-          </IconButton>
+          </IconButton> */}
         </div>
       )}
       <div className="pd-table-container" ref={tableRef}>
@@ -180,7 +195,7 @@ function PDTable({
           onChange={handleFootnoteEdit}
         />
       </div> */}
-    </>
+    </section>
   );
 }
 

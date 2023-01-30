@@ -72,24 +72,20 @@ function MultilineEdit({ sectionDataArr, edit }) {
       )}
       <section className="section-edited-list">
         {sections?.map((section) => (
-          <div key={section.line_id}>
-            <div className="content_container">
-              {/* eslint-disable */}
-              <div
-                /* eslint-enable */
-                onClick={() => edit && setActiveLineID(section.line_id)}
-                style={{ position: 'relative' }}
-              >
-                <RenderContent
-                  sectionData={section}
-                  sectionName={sectionName}
-                  handleContentEdit={handleContentEdit}
-                  activeLineID={activeLineID}
-                  deleteSection={deleteSection}
-                  edit={edit}
-                />
-              </div>
-            </div>
+          // eslint-disable-next-line
+          <div
+            className="content_container"
+            key={section.line_id}
+            onClick={() => edit && setActiveLineID(section.line_id)}
+          >
+            <RenderContent
+              sectionData={section}
+              sectionName={sectionName}
+              handleContentEdit={handleContentEdit}
+              activeLineID={activeLineID}
+              deleteSection={deleteSection}
+              edit={edit}
+            />
           </div>
         ))}
       </section>
