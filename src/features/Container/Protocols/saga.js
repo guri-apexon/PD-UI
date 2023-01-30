@@ -416,6 +416,21 @@ export function* MetaDataVariable(action) {
   }
 }
 
+export function* PostMetaDataVariable() {
+  // const config = {
+  //   url: `http://ca2spdml101q:9001${Apis.METADATA}/meta_data_summary?op=metadata&aidocId=${docId}`,
+  //   method: 'GET',
+  //   isMetaData: true,
+  // };
+  const MetaData = 'post check'; // yield call(httpCall, config);
+  console.log('metadata', MetaData);
+  if (MetaData.success) {
+    yield put(getMetaDataVariable(MetaData));
+  } else {
+    yield put(getMetaDataVariable({ success: false, data: [] }));
+  }
+}
+
 export function* fetchMetaData(action) {
   yield put(setAccordianData(action.payload));
 }
@@ -445,6 +460,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
   yield takeEvery('SET_TOC_Active', setTOCActive);
   yield takeEvery('SET_METADATA', fetchMetaData);
+  yield takeEvery('POST_METADATA', PostMetaDataVariable);
 }
 
 // notice how we now only export the rootSaga

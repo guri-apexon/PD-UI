@@ -134,7 +134,7 @@ function Accordian({
             />
           ) : (
             // eslint-disable-next-line
-            accData?._meta_data.length > 0 && (
+            accData?._meta_data?.length > 0 && (
               // eslint-disable-next-line
               <MetaDataTable metaData={accData?._meta_data} />
             )

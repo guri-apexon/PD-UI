@@ -178,6 +178,12 @@ function MetaData({ protocolId }) {
     }
   };
 
+  useEffect(() => {
+    dispatch({
+      type: 'POST_METADATA',
+    });
+  }, []);
+
   const addSubAccordion = (accData, name) => {
     const obj = {
       name,
