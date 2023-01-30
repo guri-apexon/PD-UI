@@ -398,12 +398,15 @@ export function* fetchFileStream(action) {
   }
 }
 
-export function* MetaDataVariable() {
+export function* MetaDataVariable(action) {
+  const {
+    payload: { docId },
+  } = action;
   const config = {
-    url: '/mockMetaData.json',
+    url: `http://ca2spdml101q:9001${Apis.METADATA}/meta_data_summary?op=metadata&aidocId=0be44992-9573-4010-962c-de1a1b18b08d}`,
     method: 'GET',
+    isMetaDat: true,
   };
-
   const MetaData = yield call(httpCall, config);
 
   if (MetaData.success) {

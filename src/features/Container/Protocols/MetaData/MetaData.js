@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
@@ -7,7 +8,7 @@ import './MetaData.scss';
 import Accordian from './Accordian';
 import { metaDataVariable } from '../protocolSlice';
 
-function MetaData() {
+function MetaData({ protocolId }) {
   const wrapperRef = useRef(null);
   const metaDataSelector = useSelector(metaDataVariable);
   const dispatch = useDispatch();
@@ -193,6 +194,16 @@ function MetaData() {
     );
   }, [metaDataSelector.data]);
 
+  useEffect(() => {
+    dispatch({
+      type: 'GET_METADATA_VARIABLE',
+      payload: {
+        docId: protocolId,
+      },
+    });
+    // eslint-disable-next-line
+  }, []);
+
   //   useEffect(() => {
   //     function handleClickOutside(event) {
   //       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -291,3 +302,7 @@ function MetaData() {
 }
 
 export default MetaData;
+
+MetaData.propTypes = {
+  protocolId: PropTypes.isRequired,
+};
