@@ -9,6 +9,7 @@ import {
   headerResult,
   protocolSummary,
   rightBladeValue,
+  TOCActive,
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
@@ -30,6 +31,12 @@ function Digitize({
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
   const [currentEditCard, setCurrentEditCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
+  const [tocActive, setTocActive] = useState([]);
+
+  const tocActiveSelector = useSelector(TOCActive);
+  useEffect(() => {
+    if (tocActiveSelector) setTocActive(tocActiveSelector);
+  }, [tocActiveSelector]);
 
   useEffect(() => {
     if (summary?.data?.length) {
@@ -90,6 +97,14 @@ function Digitize({
       if (headerList[i].page === paginationPage) {
         sectionNo = headerList[i].sequence;
         setSectionSequence(sectionNo);
+        const tempTOCActive = [...tocActive];
+        tempTOCActive[sectionNo] = !tempTOCActive[sectionNo];
+        dispatch({
+          type: 'SET_TOC_Active',
+          payload: {
+            data: tempTOCActive,
+          },
+        });
         break;
       } else if (headerList[i].page > paginationPage) {
         setSectionSequence(lastpage);

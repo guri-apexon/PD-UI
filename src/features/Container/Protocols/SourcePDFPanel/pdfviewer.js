@@ -33,12 +33,22 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     setPageScale(scale);
   }
 
-  const addMouseMove = () => {
-    document.addEventListener('mousemove', changeScale, false);
+  const addMouseMove = (e) => {
+    const { className } = e.target;
+    if (
+      className.toString().includes('Panel-handle') ||
+      className.toString().includes('Panel-handleContainer')
+    )
+      document.addEventListener('mousemove', changeScale, false);
   };
 
-  const removeMouseMove = () => {
-    document.removeEventListener('mousemove', changeScale, false);
+  const removeMouseMove = (e) => {
+    const { className } = e.target;
+    if (
+      className.toString().includes('Panel-handle') ||
+      className.toString().includes('Panel-handleContainer')
+    )
+      document.removeEventListener('mousemove', changeScale, false);
   };
 
   useEffect(() => {
