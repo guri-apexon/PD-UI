@@ -41,6 +41,12 @@ function Digitize({
     }
   }, [summary]);
 
+  const scrollToTop = (index) => {
+    setTimeout(() => {
+      sectionRef[index]?.current?.scrollIntoView(true);
+    }, 300);
+  };
+
   useEffect(() => {
     if (sectionSequence === 'undefined' || sectionSequence === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
@@ -48,13 +54,7 @@ function Digitize({
       sectionRef[sectionSequence] &&
       sectionRef[sectionSequence].current
     ) {
-      setTimeout(() => {
-        sectionRef[sectionSequence]?.current?.scrollIntoView({
-          behavior: 'instant',
-          block: 'end',
-        });
-      }, 300);
-
+      scrollToTop(sectionSequence);
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
     // eslint-disable-next-line
@@ -137,6 +137,7 @@ function Digitize({
                         rightBladeValue={BladeRightValue}
                         currentEditCard={currentEditCard}
                         setCurrentEditCard={setCurrentEditCard}
+                        scrollToTop={scrollToTop}
                       />
                     </div>
                   </div>

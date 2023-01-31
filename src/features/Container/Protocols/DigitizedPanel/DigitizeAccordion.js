@@ -11,14 +11,16 @@ import EyeShow from 'apollo-react-icons/EyeShow';
 import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './DigitizedEdit';
 import Loader from '../../../Components/Loader/Loader';
-import { sectionDetails } from '../protocolSlice';
-import { createFullMarkup } from '../../../../utils/utilFunction';
+import {
+  createFullMarkup,
+  createEnrichedText,
+} from '../../../../utils/utilFunction';
+import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import { ProtocolContext, useProtContext } from '../ProtocolContext';
 
-const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
 function DigitizeAccordion({
   item,
   protocol,
@@ -28,6 +30,8 @@ function DigitizeAccordion({
   rightBladeValue,
   currentEditCard,
   setCurrentEditCard,
+  scrollToTop,
+  index,
 }) {
   const dispatch = useDispatch();
 
@@ -38,14 +42,31 @@ function DigitizeAccordion({
   const [showLoader, setShowLoader] = useState(false);
   const [editedMode, setEditedMode] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
+  const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
+  const [clinicalTerms, setClinicalTerms] = useState(null);
 
   const { data: sectionData } = sectionHeaderDetails;
+  const [tocActive, setTocActive] = useState([]);
+
+  const tocActiveSelector = useSelector(TOCActive);
+  useEffect(() => {
+    if (tocActiveSelector) setTocActive(tocActiveSelector);
+  }, [tocActiveSelector]);
 
   const { dispatchSectionEvent } = useProtContext();
 
   const handleChange = () => {
     handlePageRight(item.page);
     setExpanded(!expanded);
+    const tempTOCActive = [...tocActive];
+    tempTOCActive[index] = !tempTOCActive[index];
+    setTocActive(tempTOCActive);
+    dispatch({
+      type: 'SET_TOC_Active',
+      payload: {
+        data: tempTOCActive,
+      },
+    });
   };
 
   const onSaveClick = (e) => {
@@ -75,19 +96,33 @@ function DigitizeAccordion({
   }, [expanded]);
 
   useEffect(() => {
-    if (currentActiveCard === item.link_id && !expanded) {
+    if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
+    } else if (currentActiveCard === item.link_id && expanded) {
+      setExpanded(!expanded);
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
-  const handleEnrichedClick = (e) => {
+  useEffect(() => {
+    if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
+      setExpanded(false);
+    }
+    // eslint-disable-next-line
+  }, [tocActive]);
+
+  const handleEnrichedClick = (e, obj) => {
     if (e.target.className === 'enriched-txt') {
       setEnrichedTarget(e.target);
+      setSelectedEnrichedText(e.target.innerText);
+      setClinicalTerms(obj);
     } else {
       setEnrichedTarget(null);
+      setSelectedEnrichedText(null);
+      setClinicalTerms(null);
     }
   };
+
   useEffect(() => {
     if (currentEditCard !== item.link_id) {
       setShowEdit(false);
@@ -132,18 +167,20 @@ function DigitizeAccordion({
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = arr[0].data;
-        updatedSectionsData = sectionsData?.map((sec, index) => {
-          if (sec?.font_info?.VertAlign === 'superscript') {
-            matchedIndex = index;
-            return {
-              ...sec,
-              content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
-            };
+        if (Array.isArray(sectionsData)) {
+          updatedSectionsData = sectionsData?.map((sec, index) => {
+            if (sec?.font_info?.VertAlign === 'superscript') {
+              matchedIndex = index;
+              return {
+                ...sec,
+                content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
+              };
+            }
+            return sec;
+          });
+          if (matchedIndex) {
+            updatedSectionsData.splice(matchedIndex + 1, 1);
           }
-          return sec;
-        });
-        if (matchedIndex) {
-          updatedSectionsData.splice(matchedIndex + 1, 1);
         }
         if (editedMode && !sectionDataArr?.length)
           dispatchSectionData(updatedSectionsData);
@@ -154,8 +191,28 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
 
+  const getEnrichedText = (content, clinicalTerms) => {
+    if (
+      clinicalTerms &&
+      rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+    ) {
+      return createFullMarkup(createEnrichedText(content, clinicalTerms));
+    }
+    return createFullMarkup(content);
+  };
+
+  useEffect(() => {
+    setEnrichedTarget(null);
+    setSelectedEnrichedText(null);
+    setClinicalTerms(null);
+  }, [rightBladeValue]);
+
   return (
-    <Accordion expanded={expanded} data-testid="accordion">
+    <Accordion
+      expanded={expanded}
+      data-testid="accordion"
+      onScroll={(e) => handleEnrichedClick(e)}
+    >
       <AccordionSummary onClick={handleChange}>
         <div className="accordion_summary_container">
           <Typography className="section-title" data-testid="accordion-header">
@@ -194,7 +251,10 @@ function DigitizeAccordion({
         </div>
       </AccordionSummary>
 
-      <AccordionDetails className="section-single-content">
+      <AccordionDetails
+        onScroll={(e) => handleEnrichedClick(e)}
+        className="section-single-content"
+      >
         {showLoader && (
           <div className="loader accordion_details_loader">
             <Loader />
@@ -208,22 +268,24 @@ function DigitizeAccordion({
               edit={showedit}
             />
           ) : (
-            /* eslint-disable */
-            <div
-              className="readable-content"
-              onClick={(e) => handleEnrichedClick(e)}
-            >
-              {/* eslint-enable */}
+            <div className="readable-content">
               {sectionDataArr.map((section) => {
-                const enrichedTxt =
-                  rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
-                    ? enrichedDummyText
-                    : '';
-                return section?.font_info?.VertAlign === 'superscript' ? (
-                  <div key={React.key} className="supContent">
+                return section?.font_info?.VertAlign === 'superscript' &&
+                  section.content.length > 0 ? (
+                  // eslint-disable-next-line
+                  <div
+                    key={React.key}
+                    className="supContent"
+                    onClick={(e) =>
+                      handleEnrichedClick(e, section.clinical_terms)
+                    }
+                  >
                     <sup>
                       <SanitizeHTML
-                        html={createFullMarkup(section.content.split('_')[0])}
+                        html={getEnrichedText(
+                          section.content.split('_')[0],
+                          section?.clinical_terms,
+                        )}
                       />
                     </sup>
                     <p
@@ -240,34 +302,52 @@ function DigitizeAccordion({
                       }}
                     >
                       <SanitizeHTML
-                        html={createFullMarkup(section.content.split('_')[1])}
+                        html={getEnrichedText(
+                          section.content.split('_')[1],
+                          section?.clinical_terms,
+                        )}
                       />
-                      {enrichedTxt}
                     </p>
                   </div>
                 ) : (
-                  <p
-                    key={React.key}
-                    style={{
-                      fontWeight: `${
-                        section?.font_info?.isBold || section.type === 'header'
-                          ? 'bold'
-                          : ''
-                      }`,
-                      fontStyle: `${
-                        section?.font_info?.Italics ? 'italics' : ''
-                      }`,
-                    }}
-                  >
-                    <SanitizeHTML html={createFullMarkup(section.content)} />
-                    {enrichedTxt}
-                  </p>
+                  section.content.length > 0 && (
+                    // eslint-disable-next-line
+                    <p
+                      key={React.key}
+                      style={{
+                        fontWeight: `${
+                          section?.font_info?.isBold ||
+                          section.type === 'header'
+                            ? 'bold'
+                            : ''
+                        }`,
+                        fontStyle: `${
+                          section?.font_info?.Italics ? 'italics' : ''
+                        }`,
+                      }}
+                      onClick={(e) =>
+                        handleEnrichedClick(e, section.clinical_terms)
+                      }
+                    >
+                      <SanitizeHTML
+                        html={getEnrichedText(
+                          section.content,
+                          section.clinical_terms,
+                        )}
+                      />
+                    </p>
+                  )
                 );
               })}
             </div>
           ))}
       </AccordionDetails>
-      <MedicalTerm enrichedTarget={enrichedTarget} expanded={expanded} />
+      <MedicalTerm
+        enrichedTarget={enrichedTarget}
+        expanded={expanded}
+        enrichedText={selectedEnrichedText}
+        clinicalTerms={clinicalTerms}
+      />
     </Accordion>
   );
 }
@@ -283,4 +363,6 @@ DigitizeAccordion.propTypes = {
   rightBladeValue: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
+  scrollToTop: PropTypes.isRequired,
+  index: PropTypes.isRequired,
 };

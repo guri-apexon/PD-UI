@@ -29,6 +29,8 @@ function DeleteCell({ row }) {
   ) : null;
 }
 
+const confidenceCol = { header: 'Confidence Score', accessor: 'confidence' };
+
 function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(row[key]);
   const handleDataChange = (id, key, e) => {
@@ -112,7 +114,7 @@ function MetaDataEditTable({
     setConfidence(checked);
     const columnTemp = [...column];
     if (checked) {
-      columnTemp.push({ header: 'Confidence Score', accessor: 'confidence' });
+      columnTemp.push(confidenceCol);
       reArrangeColumn(columnTemp);
     } else {
       removeIndex('Confidence Score');
@@ -238,22 +240,24 @@ function MetaDataEditTable({
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
-      <Checkbox
-        label="Notes"
-        size="small"
-        checked={note}
-        onChange={handleNotes}
-        className="checkbox-pad metadata-checkbox"
-        data-testid="metadata-notes"
-      />
-      <Checkbox
-        label="Confidence Score"
-        checked={confidence}
-        onChange={handleConfidence}
-        size="small"
-        className="metadata-checkbox checkbox-pad "
-        data-testid="metadata-confidence"
-      />
+      <div className="checkbox-right">
+        <Checkbox
+          label="Notes"
+          size="small"
+          checked={note}
+          onChange={handleNotes}
+          className="checkbox-pad metadata-checkbox"
+          data-testid="metadata-notes"
+        />
+        <Checkbox
+          label="Confidence Score"
+          checked={confidence}
+          onChange={handleConfidence}
+          size="small"
+          className="metadata-checkbox checkbox-pad "
+          data-testid="metadata-confidence"
+        />
+      </div>
       <div>{RenderTable}</div>
       {metaDataList[data.name]?.map((list) => (
         <CustomForm

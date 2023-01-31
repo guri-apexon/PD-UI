@@ -79,10 +79,10 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }, [pageRight]);
 
   const handleZoomIn = () => {
-    setPageScale(pageScale + 0.2);
+    setPageScale((parseFloat(pageScale) + 0.2).toFixed(2));
   };
   const handleZoomOut = () => {
-    setPageScale(pageScale - 0.2);
+    setPageScale((parseFloat(pageScale) - 0.2).toFixed(2));
   };
 
   useEffect(() => {
