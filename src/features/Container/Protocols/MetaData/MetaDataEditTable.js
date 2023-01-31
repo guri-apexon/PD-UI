@@ -240,22 +240,24 @@ function MetaDataEditTable({
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
-      <Checkbox
-        label="Notes"
-        size="small"
-        checked={note}
-        onChange={handleNotes}
-        className="checkbox-pad metadata-checkbox"
-        data-testid="metadata-notes"
-      />
-      <Checkbox
-        label="Confidence Score"
-        checked={confidence}
-        onChange={handleConfidence}
-        size="small"
-        className="metadata-checkbox checkbox-pad "
-        data-testid="metadata-confidence"
-      />
+      <div className="checkbox-right">
+        <Checkbox
+          label="Notes"
+          size="small"
+          checked={note}
+          onChange={handleNotes}
+          className="checkbox-pad metadata-checkbox"
+          data-testid="metadata-notes"
+        />
+        <Checkbox
+          label="Confidence Score"
+          checked={confidence}
+          onChange={handleConfidence}
+          size="small"
+          className="metadata-checkbox checkbox-pad "
+          data-testid="metadata-confidence"
+        />
+      </div>
       <div>{RenderTable}</div>
       {metaDataList[data.name]?.map((list) => (
         <CustomForm
