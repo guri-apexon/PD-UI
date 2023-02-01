@@ -7,6 +7,7 @@ import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
+import enrichedTerms from './clinicalTerms.json';
 import './MedicalTerm.scss';
 
 function MedicalTerm({
@@ -24,8 +25,8 @@ function MedicalTerm({
   const [childArr, setChildArr] = useState([]);
 
   useEffect(() => {
-    if (enrichedText && clinicalTerms) {
-      setClinicalTerms([...Object.keys(clinicalTermsArr[enrichedText])]);
+    if (enrichedText) {
+      setClinicalTerms([...enrichedTerms]);
     } else {
       setClinicalTerms([]);
       setSAnchorEl(null);
@@ -35,7 +36,12 @@ function MedicalTerm({
 
   useEffect(() => {
     if (selectedTerm) {
-      setChildArr(clinicalTermsArr[enrichedText][selectedTerm].split(','));
+      const arr = clinicalTermsArr[enrichedText][selectedTerm]?.split(',');
+      if (arr && arr.length === 1 && arr[0] === '') {
+        setChildArr([]);
+      } else {
+        setChildArr(arr);
+      }
     }
     // eslint-disable-next-line
   }, [selectedTerm]);
@@ -85,18 +91,18 @@ function MedicalTerm({
         <Card interactive className="main-popper">
           <div className="terms-list">
             {clinicalTerms.map((item) => {
-              const isActive = selectedTerm === item;
+              const isActive = selectedTerm === item.key;
               return (
                 <li key={item}>
                   <Button
                     data-testId="handleSave"
                     className="term-item"
                     onClick={(e) => {
-                      setSelectedTerm(item);
+                      setSelectedTerm(item.key);
                       setSAnchorEl(!SanchorEl ? e.currentTarget : null);
                     }}
                   >
-                    {item}
+                    {item.value}
                     {isActive && <ArrowRight />}
                   </Button>
                 </li>
@@ -112,23 +118,25 @@ function MedicalTerm({
         transition
       >
         <Card interactive className="sub-popper">
-          <div className="terms-list">
-            {childArr?.map((item) => {
-              return (
-                <li key={item}>
-                  <Button value={item} className="term-item">
-                    <span className="sub-term-text">{item}</span>
-                    <Pencil
-                      className="edit-Icon"
-                      onClick={() => {
-                        setChildTermValue(item);
-                      }}
-                    />
-                  </Button>
-                </li>
-              );
-            })}
-          </div>
+          {childArr.length > 0 && (
+            <div className="terms-list">
+              {childArr?.map((item) => {
+                return (
+                  <li key={item}>
+                    <Button value={item} className="term-item">
+                      <span className="sub-term-text">{item}</span>
+                      <Pencil
+                        className="edit-Icon"
+                        onClick={() => {
+                          setChildTermValue(item);
+                        }}
+                      />
+                    </Button>
+                  </li>
+                );
+              })}
+            </div>
+          )}
         </Card>
       </Popper>
       <Modal
