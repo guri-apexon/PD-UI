@@ -12,14 +12,25 @@ export const httpCall = async (config) => {
   }
   let headerConfig;
   if (config && config?.isMetaData) {
-    headerConfig = {
-      // data: data?.data,
-      method: config.method,
-      url: config.url,
-      headers: {
-        'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
-      },
-    };
+    if (config.method === 'GET') {
+      headerConfig = {
+        method: config.method,
+        url: config.url,
+        headers: {
+          'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
+        },
+      };
+    } else if (config.method === 'POST') {
+      headerConfig = {
+        data: config?.data,
+        method: config.method,
+        url: config.url,
+        headers: {
+          'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
+        },
+        // body: config?.data,
+      };
+    }
   } else if (config && config.headers) {
     headerConfig = {
       ...config,

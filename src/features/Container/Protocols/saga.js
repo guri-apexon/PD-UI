@@ -420,6 +420,7 @@ export function* PostMetaDataVariable(action) {
   const {
     payload: { docId, fieldName, attributes },
   } = action;
+  console.log('fieldName', action.payload);
   const config = {
     url: `http://ca2spdml101q:9001${Apis.METADATA}/add_meta_data`,
     method: 'POST',
@@ -431,10 +432,11 @@ export function* PostMetaDataVariable(action) {
       attributes,
     },
   };
-  const MetaData = 'post call';
+  const MetaData = yield call(httpCall, config);
+  console.log('thjeen', MetaData);
   // const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
-    yield put(getMetaDataVariable(MetaData));
+    //  yield put(getMetaDataVariable(MetaData));
   } else {
     yield put(getMetaDataVariable({ success: false, data: [] }));
   }

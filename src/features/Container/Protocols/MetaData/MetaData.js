@@ -118,14 +118,7 @@ function MetaData({ protocolId }) {
       payload: {
         docId: '0be44992-9573-4010-962c-de1a1b18b08d',
         fieldName: data.formattedName,
-        attributes: [
-          {
-            attr_name: 'key1',
-            attr_value: 'test1',
-            confidence: null,
-            note: null,
-          },
-        ],
+        attributes: [],
       },
     });
   };
