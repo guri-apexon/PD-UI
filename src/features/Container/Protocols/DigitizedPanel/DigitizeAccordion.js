@@ -19,6 +19,7 @@ import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import ProtocolContext from '../ProtocolContext';
+import ImageUploader from '../CustomComponents/ImageUploader';
 
 const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
 
@@ -239,6 +240,17 @@ function DigitizeAccordion({
             >
               {/* eslint-enable */}
               {sectionDataArr.map((section) => {
+                if (section.type === 'image') {
+                  console.log({ section });
+                  return (
+                    <ImageUploader
+                      key={React.key}
+                      lineID={section.line_id}
+                      content={section.content}
+                      edit={false}
+                    />
+                  );
+                }
                 const enrichedTxt =
                   rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
                     ? enrichedDummyText

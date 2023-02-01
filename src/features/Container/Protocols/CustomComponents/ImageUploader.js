@@ -6,7 +6,7 @@ import ProtocolContext from '../ProtocolContext';
 import { toBase64 } from '../../../../utils/utilFunction';
 import './ImageUploader.scss';
 
-function ImageUploader({ lineID, content }) {
+function ImageUploader({ lineID, content, edit }) {
   const [img, setImg] = useState(null);
   const [value, setValue] = useState([]);
   const { dispatchSectionEvent } = useContext(ProtocolContext);
@@ -44,9 +44,9 @@ function ImageUploader({ lineID, content }) {
       setImg(content);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [content]);
 
-  return (
+  return edit ? (
     <div className="img-container">
       <div className="btn-container">
         <Button
@@ -78,9 +78,15 @@ function ImageUploader({ lineID, content }) {
           onFileDelete={handleDelete}
         />
       ) : (
-        <img src={img} alt="img" />
+        <img src={img} alt="img" className="richTextImg" />
       )}
     </div>
+  ) : (
+    img && (
+      <div className="img-container">
+        <img src={img} alt="img" className="richTextImg" />
+      </div>
+    )
   );
 }
 
@@ -89,4 +95,5 @@ export default ImageUploader;
 ImageUploader.propTypes = {
   content: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
+  edit: PropTypes.isRequired,
 };
