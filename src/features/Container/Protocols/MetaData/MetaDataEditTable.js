@@ -18,9 +18,9 @@ function Cell({ row, column }) {
 function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(row[key]);
   const [dateValue, setDateValue] = useState(moment(row[key]));
-  const [type, setType] = useState(row.type || 'String');
+  const [type, setType] = useState(row.attr_type || 'String');
   const handleDataChange = (e) => {
-    if (e?.target?.name === 'type') {
+    if (e?.target?.name === 'attr_type') {
       setType(e.target.value);
     } else if (type === 'Date') {
       setVal(dateValue);
@@ -36,17 +36,15 @@ function EditableCell({ row, column: { accessor: key } }) {
   const handleBlur = (e) => {
     row.handleChange(
       row.id,
-      e.target.name === 'type' ? type : val,
-      type === 'Date' ? 'attr_value' : e.target.name,
+      e.target.name === 'attr_type' ? type : val,
+      e.target.name === 'attr_type' ? 'attr_type' : key,
     );
   };
-
-  // console.log('dateValue--->', dateValue);
 
   const renderKeyField = () => {
     return row.isCustom ? (
       <InputKeyField
-        key={key}
+        keyName={key}
         item={row}
         inputValue={val}
         handleChange={(e) => handleDataChange(e)}
@@ -58,10 +56,10 @@ function EditableCell({ row, column: { accessor: key } }) {
   };
 
   const renderValueField = () => {
-    return key === 'attr_value' || row.isCustom ? (
+    return key === 'attr_value' || key === 'note' || row.isCustom ? (
       <ValueField
         item={row}
-        key={key}
+        keyName={key}
         type={type}
         dateValue={dateValue}
         setDateValue={setDateValue}
@@ -76,13 +74,11 @@ function EditableCell({ row, column: { accessor: key } }) {
     );
   };
 
-  return key === 'attr_name' || key === 'note'
-    ? renderKeyField()
-    : renderValueField();
+  return key === 'attr_name' ? renderKeyField() : renderValueField();
 }
 
 function MetaDataEditTable({ rows, setRows, data }) {
-  const { _meta_data, name } = data;
+  const { name } = data;
   const [selectedId, setSelectedId] = useState(null);
   const [isModal, setIsModal] = useState(false);
 
@@ -161,14 +157,13 @@ function MetaDataEditTable({ rows, setRows, data }) {
           isCustom: true,
           attr_name: '',
           attr_value: '',
-          type: '',
+          attr_type: '',
         },
       ],
     }));
   };
 
   const handleChange = (id, value, keyName) => {
-    // console.log(keyName);
     setRows((prevState) => ({
       ...prevState,
       [name]: prevState[name].map((list) =>
