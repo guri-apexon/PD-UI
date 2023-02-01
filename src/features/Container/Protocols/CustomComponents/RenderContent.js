@@ -48,8 +48,7 @@ function RenderContent({
     if (type === CONTENT_TYPE.TABLE) {
       return (
         // eslint-disable-next-line
-        <div //onClick={() => edit && setActiveLineID(lineID)}
-        >
+        <div onClick={() => edit && setActiveLineID(lineID)}>
           <PDTable
             data={content}
             edit={edit}
@@ -57,7 +56,7 @@ function RenderContent({
             index="index"
             segment={sectionData}
             activeLineID={activeLineID}
-            lineID={activeLineID}
+            lineID={lineID}
           />
         </div>
         // <PDTable

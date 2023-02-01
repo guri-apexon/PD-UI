@@ -84,6 +84,7 @@ function MultilineEdit({ sectionDataArr, edit }) {
               handleContentEdit={handleContentEdit}
               activeLineID={activeLineID}
               deleteSection={deleteSection}
+              setActiveLineID={setActiveLineID}
               edit={edit}
             />
           </div>

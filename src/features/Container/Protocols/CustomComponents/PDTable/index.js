@@ -83,6 +83,7 @@ function PDTable({
   const [footNoteData, setFootnoteData] = useState([]);
   const [columnLength, setColumnLength] = useState();
   const [colWidth, setColumnWidth] = useState(100);
+  const [disabledBtn, setDisabledBtn] = useState(false);
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -140,12 +141,16 @@ function PDTable({
       TableProperties: JSON.stringify(updatedData),
       AttachmentListProperties: footNoteData,
     };
+    setDisabledBtn(true);
     dispatchSectionEvent('CONTENT_UPDATE', {
       type: CONTENT_TYPE.TABLE,
       lineID,
       currentLineId: activeLineID,
       content,
     });
+    setTimeout(() => {
+      setDisabledBtn(false);
+    }, 1000);
     // onChange(content, segment.line_id);
   };
   const handleFootnoteEdit = (editedText, index) => {
@@ -165,11 +170,17 @@ function PDTable({
             buttonProps={[
               {
                 size: 'small',
-                onClick: () => console.log('Test Default Click'),
+                disabled: disabledBtn,
+                label: 'Delete',
+                onClick: () =>
+                  dispatchSectionEvent('CONTENT_DELETED', {
+                    currentLineId: activeLineID,
+                  }),
               },
               {
                 size: 'small',
-                label: 'Save Table',
+                disabled: disabledBtn,
+                label: disabledBtn ? 'Please wait' : 'Save Table',
                 // icon: <Save />,
                 onClick: () => handleSave(),
               },
@@ -182,22 +193,20 @@ function PDTable({
         </div>
       )}
       <div className="pd-table-container" ref={tableRef}>
-        <div>
-          {lineID === activeLineID && (
-            <EmptyColumnCells
-              columnLength={columnLength}
-              handleOperation={handleColumnOperation}
-              colWidth={colWidth}
-            />
-          )}
-          <DisplayTable
-            data={updatedData}
-            onChange={handleChange}
-            handleRowOperation={handleRowOperation}
-            edit={lineID === activeLineID}
+        {lineID === activeLineID && (
+          <EmptyColumnCells
+            columnLength={columnLength}
+            handleOperation={handleColumnOperation}
             colWidth={colWidth}
           />
-        </div>
+        )}
+        <DisplayTable
+          data={updatedData}
+          onChange={handleChange}
+          handleRowOperation={handleRowOperation}
+          edit={lineID === activeLineID}
+          colWidth={colWidth}
+        />
       </div>
       {/* <div className="footnotes-container">
         <FootNotes

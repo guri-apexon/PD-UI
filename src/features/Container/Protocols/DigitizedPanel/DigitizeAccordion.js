@@ -20,6 +20,8 @@ import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import { ProtocolContext, useProtContext } from '../ProtocolContext';
+import DisplayTable from '../CustomComponents/PDTable/Components/Table';
+import tableJson from './table.json';
 
 function DigitizeAccordion({
   item,
@@ -269,7 +271,16 @@ function DigitizeAccordion({
             />
           ) : (
             <div className="readable-content">
-              {sectionDataArr.map((section) => {
+              {[...tableJson, ...sectionDataArr].map((section) => {
+                if (section.type === 'table') {
+                  return (
+                    <DisplayTable
+                      key={React.key}
+                      data={JSON.parse(section.content.TableProperties)}
+                      colWidth={100}
+                    />
+                  );
+                }
                 return section?.font_info?.VertAlign === 'superscript' &&
                   section.content.length > 0 ? (
                   // eslint-disable-next-line

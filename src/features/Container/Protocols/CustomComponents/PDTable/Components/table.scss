@@ -1,7 +1,8 @@
 .pd-table-container {
   display: flex;
-  margin: 20px;
+  margin: 25px 20px;
   position: relative;
+  margin-bottom: 45px;
 }
 .pd-table-inner {
   display: table;
@@ -32,6 +33,7 @@
   margin-bottom: 10px;
   margin-right: 20px;
   box-shadow: inset 0 0 2px 3px rgba(233, 233, 233, .40);
+  position: relative;
 }
 /* .pd-table-inner {
   display: table;
@@ -73,6 +75,9 @@
 .pd-empty-cells {
   display: flex;
   justify-content: center;
+  position: absolute;
+  width: 100%;
+  top: -25px;
 }
 .pd-empty-cell-column {
   width: 100px;
@@ -132,4 +137,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  position: absolute;
+  right: 12px;
+  bottom: 11px;
 }
