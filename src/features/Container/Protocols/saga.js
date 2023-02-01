@@ -418,7 +418,7 @@ export function* MetaDataVariable(action) {
 
 export function* PostMetaDataVariable(action) {
   const {
-    payload: { docId, fieldName, attributes },
+    payload: { docId, fieldName, attributes, op },
   } = action;
   console.log('fieldName', action.payload);
   const config = {
@@ -426,7 +426,7 @@ export function* PostMetaDataVariable(action) {
     method: 'POST',
     isMetaData: true,
     data: {
-      op: 'addAttributes',
+      op: action.payload.op,
       aidocId: action.payload.docId,
       fieldName,
       attributes,
@@ -436,9 +436,10 @@ export function* PostMetaDataVariable(action) {
   console.log('thjeen', MetaData);
   // const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
-    //  yield put(getMetaDataVariable(MetaData));
+    console.log('tgs', action);
+    yield call(MetaDataVariable, action);
   } else {
-    yield put(getMetaDataVariable({ success: false, data: [] }));
+    // yield put(getMetaDataVariable({ success: false, data: [] }));
   }
 }
 
