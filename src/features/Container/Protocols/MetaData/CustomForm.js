@@ -6,13 +6,18 @@ import Trash from 'apollo-react-icons/Trash';
 import DatePicker from 'apollo-react/components/DatePickerV2';
 import PropTypes from 'prop-types';
 
-export function InputKeyField({ key, handleChange, handleBlur, inputValue }) {
+export function InputKeyField({
+  keyName,
+  handleChange,
+  handleBlur,
+  inputValue,
+}) {
   return (
     <TextField
       label=""
       placeholder="Enter Key"
       className="keyText"
-      name={key}
+      name={keyName}
       value={inputValue}
       inputProps={{ 'data-testid': 'customeform-textField-key' }}
       onChange={(e) => handleChange(e)}
@@ -23,7 +28,7 @@ export function InputKeyField({ key, handleChange, handleBlur, inputValue }) {
 
 export function ValueField({
   item,
-  key,
+  keyName,
   type,
   inputValue,
   dateValue,
@@ -43,13 +48,13 @@ export function ValueField({
       className="gridContainer"
       data-testid="customeform"
     >
-      {!item.isCustom ? (
+      {(!item.isCustom && keyName === 'attr_value') || keyName === 'note' ? (
         <TextField
           label=""
           className="keyText"
           placeholder="Enter Value"
           type="text"
-          name={key}
+          name={keyName}
           fullWidth
           value={inputValue}
           inputProps={{ 'data-testid': 'customeform-textField-value' }}
@@ -65,7 +70,7 @@ export function ValueField({
                   label=""
                   placeholder="Enter Value"
                   type={type === 'String' ? 'text' : 'number'}
-                  name={key}
+                  name={keyName}
                   fullWidth
                   value={inputValue}
                   inputProps={{ 'data-testid': 'customeform-textField-value' }}
@@ -76,7 +81,7 @@ export function ValueField({
 
               {type === 'Date' && (
                 <DatePicker
-                  name={key}
+                  name={keyName}
                   dateFormat="DD-MMM-YYYY"
                   placeholder="dd-mmm-yyyy"
                   value={dateValue}
@@ -90,7 +95,7 @@ export function ValueField({
                 <Select
                   placeholder="Select Value"
                   label=""
-                  name={key}
+                  name={keyName}
                   fullWidth
                   value={inputValue}
                   onChange={handleChange}
@@ -103,7 +108,7 @@ export function ValueField({
 
               <Select
                 label=""
-                name="type"
+                name="attr_type"
                 value={type}
                 onChange={(e) => onTypeChange(e)}
                 onBlur={handleBlur}
@@ -129,13 +134,13 @@ export function ValueField({
 }
 
 InputKeyField.propTypes = {
-  key: PropTypes.isRequired,
+  keyName: PropTypes.isRequired,
   handleChange: PropTypes.isRequired,
   handleBlur: PropTypes.isRequired,
   inputValue: PropTypes.isRequired,
 };
 ValueField.propTypes = {
-  key: PropTypes.isRequired,
+  keyName: PropTypes.isRequired,
   deleteMetaData: PropTypes.isRequired,
   handleChange: PropTypes.isRequired,
   item: PropTypes.isRequired,
