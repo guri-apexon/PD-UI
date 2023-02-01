@@ -62,7 +62,7 @@ function Accordian({
   }, [subSectionName]);
   return (
     <>
-      <Accordion expanded={accData.isActive}>
+      <Accordion expanded={accData?.isActive}>
         <AccordionSummary
           data-testId="metadataAccordian"
           onClick={handleAccordian}

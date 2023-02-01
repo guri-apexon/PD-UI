@@ -21,7 +21,6 @@ function MetaData({ protocolId }) {
   const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
   const [standardList, setStandardList] = useState([]);
-  const [modifiedData, setModifiedData] = useState({});
   const [suggestedList, setSuggestedList] = useState([
     { label: 'Objective and Endpoints' },
     { label: 'Adverse Events' },
@@ -111,14 +110,15 @@ function MetaData({ protocolId }) {
     return valid;
   };
 
-  const postCall = (data) => {
-    // console.log(data);
+  const postCall = (data, metaData) => {
     dispatch({
       type: 'POST_METADATA',
       payload: {
+        op: 'addAttributes',
         docId: '0be44992-9573-4010-962c-de1a1b18b08d',
         fieldName: data.formattedName,
-        attributes: [],
+        // eslint-disable-next-line
+        attributes: metaData,
       },
     });
   };
@@ -139,7 +139,7 @@ function MetaData({ protocolId }) {
         },
       },
     });
-    postCall(accordianData[accData.name]);
+    postCall(accordianData[accData.name], accMetaData);
     setRows({
       ...rows,
       [accData.name]: [],
@@ -237,7 +237,11 @@ function MetaData({ protocolId }) {
             };
         // eslint-disable-next-line
         if (keyValue?._childs && keyValue?._childs.length > 0) {
-          flattenObject(keyValue, level + 1, key);
+          flattenObject(
+            keyValue,
+            level + 1,
+            level === 1 ? key : updatedData[key]?.formattedName,
+          );
         }
       }
     });
@@ -246,7 +250,6 @@ function MetaData({ protocolId }) {
 
   useEffect(() => {
     const result = flattenObject(metaDataSelector?.data?.data, 1, '');
-    // const result = flattenObject(mockData.data, 1, '');
     dispatch({
       type: 'SET_METADATA',
       payload: result,
