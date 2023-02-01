@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 import { v4 as uuidv4 } from 'uuid';
 import './hoverComponent.scss';
-import { TextElement, TextHeader2 } from './MenuItems';
+import { TextElement, TextHeader2, ImageElement } from './MenuItems';
 import ProtocolContext from '../ProtocolContext';
 
 function HoverComponent({ lineId, activeLineID }) {
@@ -22,6 +22,10 @@ function HoverComponent({ lineId, activeLineID }) {
     {
       text: <TextHeader2 />,
       onClick: () => handleAddSegment('header'),
+    },
+    {
+      text: <ImageElement />,
+      onClick: () => handleAddSegment('image'),
     },
   ];
   return (

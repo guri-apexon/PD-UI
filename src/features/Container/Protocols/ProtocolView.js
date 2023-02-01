@@ -70,6 +70,7 @@ function ProtocolView({ refs, data }) {
       }
       case 'CONTENT_ADDED': {
         const { type, lineId } = payload;
+        console.log({ payload });
         const content = prepareContent({
           ...payload,
           type: 'ADDED',

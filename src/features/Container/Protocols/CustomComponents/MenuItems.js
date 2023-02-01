@@ -13,13 +13,13 @@ export function TextElement() {
     </div>
   );
 }
-// export function ImageElement() {
-//   return (
-//     <div className="add-element">
-//       <span>Image</span>
-//     </div>
-//   );
-// }
+export function ImageElement() {
+  return (
+    <div className="add-element">
+      <span>Image</span>
+    </div>
+  );
+}
 
 // export function TableElement() {
 //   return (

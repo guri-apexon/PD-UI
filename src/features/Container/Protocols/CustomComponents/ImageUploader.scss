@@ -1,0 +1,24 @@
+.btn-container {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+}
+
+.img-container {
+  border: 1px solid #dadada;
+
+  //   padding: 65px 35px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-right: 20px;
+  box-shadow: inset 0 0 2px 3px rgb(233 233 233 / 40%);
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 20vh;
+
+  img {
+    height: 100%;
+  }
+}
