@@ -92,7 +92,7 @@ function Digitize({
   useEffect(() => {
     let sectionNo;
     let lastpage;
-
+    const listLength = headerList.length - 1;
     for (let i = 0; i < headerList.length; i++) {
       if (headerList[i].page === paginationPage) {
         sectionNo = headerList[i].sequence;
@@ -111,6 +111,18 @@ function Digitize({
         break;
       }
       lastpage = headerList[i].sequence;
+    }
+    if (headerList[listLength]?.page < paginationPage) {
+      const sequence = headerList[listLength]?.sequence;
+      setSectionSequence(sequence);
+      const tempTOCActive = [...tocActive];
+      tempTOCActive[listLength] = !tempTOCActive[listLength];
+      dispatch({
+        type: 'SET_TOC_Active',
+        payload: {
+          data: tempTOCActive,
+        },
+      });
     }
     // eslint-disable-next-line
   }, [paginationPage]);
