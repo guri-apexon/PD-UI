@@ -426,7 +426,7 @@ export function* PostMetaDataVariable(action) {
     method: 'POST',
     isMetaData: true,
     data: {
-      op: 'addField',
+      op: 'addAttributes',
       aidocId: action.payload.docId,
       fieldName,
       attributes,

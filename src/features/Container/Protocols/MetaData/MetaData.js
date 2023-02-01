@@ -112,13 +112,18 @@ function MetaData({ protocolId }) {
   };
 
   const postCall = (data) => {
-    // console.log(data);
     dispatch({
       type: 'POST_METADATA',
       payload: {
         docId: '0be44992-9573-4010-962c-de1a1b18b08d',
-        fieldName: data.formattedName,
-        attributes: [],
+        fieldName: 'test_name.lab_data1',
+        attributes: [
+          {
+            attr_name: 'address',
+            attr_type: 'string',
+            attr_value: '156 Hopkins Avenue',
+          },
+        ],
       },
     });
   };
