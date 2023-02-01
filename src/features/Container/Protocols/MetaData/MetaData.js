@@ -9,6 +9,7 @@ import './MetaData.scss';
 import { toast } from 'react-toastify';
 import Accordian from './Accordian';
 import { accordianMetaData, metaDataVariable } from '../protocolSlice';
+import mockData from './mockData.json';
 
 function MetaData({ protocolId }) {
   const wrapperRef = useRef(null);
@@ -16,7 +17,6 @@ function MetaData({ protocolId }) {
   const accordianData = useSelector(accordianMetaData);
   const dispatch = useDispatch();
   const [rows, setRows] = useState({});
-  const [metaDataList, setMetaDataList] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
@@ -56,31 +56,8 @@ function MetaData({ protocolId }) {
         [name]: obj,
       },
     });
-    setSectionName(null);
+    setSectionName({ label: '' });
     setIsOpen(false);
-  };
-
-  const updateRows = (data, name) => {
-    setRows({
-      ...rows,
-      [name]: rows[name]?.map((rowData) => {
-        if (data?.id === rowData?.id) {
-          return {
-            ...rowData,
-            attr_value: data?.attr_value,
-            attr_name: data?.attr_name,
-            notes: data?.notes,
-          };
-        }
-        return rowData;
-      }),
-    });
-  };
-  const deleteRows = (data, name) => {
-    setRows({
-      ...rows,
-      [name]: data,
-    });
   };
 
   const handleAccordian = (accData) => {
@@ -105,7 +82,7 @@ function MetaData({ protocolId }) {
     setRows({
       ...rows,
       // eslint-disable-next-line
-      [accData.name]: accData._meta_data,
+      [accData.name]: accData._meta_data ? accData._meta_data : [],
     });
     dispatch({
       type: 'SET_METADATA',
@@ -134,14 +111,30 @@ function MetaData({ protocolId }) {
     return valid;
   };
 
+  const postCall = (data) => {
+    // console.log(data);
+    dispatch({
+      type: 'POST_METADATA',
+      payload: {
+        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        fieldName: data.formattedName,
+        attributes: [
+          {
+            attr_name: 'key1',
+            attr_value: 'test1',
+            confidence: null,
+            note: null,
+          },
+        ],
+      },
+    });
+  };
+
   const handleSave = (accData, e) => {
     e.stopPropagation();
     // if (formValidation(metaDataList?.[accData?.name])) {
     const selectedData = accordianData[accData.name];
-    const accMetaData =
-      // eslint-disable-next-line
-      rows[accData?.name].length > 0 ? rows[accData?.name] : accData._meta_data;
-    const filterMetaData = metaDataList[accData?.name] || [];
+    const accMetaData = rows[accData?.name];
     dispatch({
       type: 'SET_METADATA',
       payload: {
@@ -149,14 +142,11 @@ function MetaData({ protocolId }) {
         [accData.name]: {
           ...selectedData,
           isEdit: false,
-          _meta_data: [...accMetaData, ...filterMetaData],
+          _meta_data: [...accMetaData],
         },
       },
     });
-    setMetaDataList({
-      ...metaDataList,
-      [accData.name]: [],
-    });
+    postCall(accordianData[accData.name]);
     setRows({
       ...rows,
       [accData.name]: [],
@@ -223,12 +213,12 @@ function MetaData({ protocolId }) {
         [name]: obj,
       },
     });
-    setSectionName(null);
+    setSectionName({ label: '' });
     setIsOpenSubText(false);
   };
 
   const updatedData = {};
-  const flattenObject = (data, level) => {
+  const flattenObject = (data, level, parentKey) => {
     const objectKeys = data ? Object?.keys(data) : [];
     objectKeys?.forEach((key) => {
       const keyValue = data?.[key];
@@ -237,7 +227,14 @@ function MetaData({ protocolId }) {
           ? updatedData[key]
           : {
               // eslint-disable-next-line
-              _meta_data: keyValue._meta_data,
+              _meta_data: keyValue?._meta_data?.map((attr, index) => {
+                return {
+                  ...attr,
+                  id: index + 1,
+                };
+              }),
+              // eslint-disable-next-line
+              formattedName: level === 1 ? key : `${parentKey}.${key}`,
               name: key,
               level,
               isActive: false,
@@ -247,7 +244,7 @@ function MetaData({ protocolId }) {
             };
         // eslint-disable-next-line
         if (keyValue?._childs && keyValue?._childs.length > 0) {
-          flattenObject(keyValue, level + 1);
+          flattenObject(keyValue, level + 1, key);
         }
       }
     });
@@ -255,7 +252,8 @@ function MetaData({ protocolId }) {
   };
 
   useEffect(() => {
-    const result = flattenObject(metaDataSelector?.data?.data, 1);
+    const result = flattenObject(metaDataSelector?.data?.data, 1, '');
+    // const result = flattenObject(mockData.data, 1, '');
     dispatch({
       type: 'SET_METADATA',
       payload: result,
@@ -302,8 +300,6 @@ function MetaData({ protocolId }) {
           handleSave={(e) => handleSave(acc, e)}
           handleDelete={(e) => handleDelete(acc, e)}
           handleEdit={(e) => handleEdit(acc, e)}
-          updateRows={updateRows}
-          deleteRows={deleteRows}
           addSubAccordion={(name) => addSubAccordion(acc, name)}
           // eslint-disable-next-line
           subAccComponent={acc?._childs?.map((subAcc) => {
@@ -315,7 +311,7 @@ function MetaData({ protocolId }) {
   };
 
   useEffect(() => {
-    if (sectionName) {
+    if (sectionName?.label) {
       addToAccordion(sectionName.label);
       setSuggestedList(
         suggestedList.filter((list) => list.label !== sectionName.label),

@@ -110,16 +110,16 @@
 
   [class*='MuiTableCell-root-']:first-child {
     background-color: #f4f4f4;
-    padding-left: 23px;
+    padding-left: 10px;
+    width: max-content;
   }
   [class*='MuiTableCell-body-'] {
     background-color: #f9f9f9;
     color: black;
-    padding-left: 21px !important;
   }
   [class*='MuiTableCell-head-'] {
     color: black;
-    padding-left: 23px;
+    padding-left: 10px;
   }
 
   .digitize-panel-content::-webkit-scrollbar {
@@ -129,14 +129,6 @@
   [class*='MuiAccordionDetails-root-'] {
     padding: 0;
     display: contents;
-  }
-  .protocols {
-    .view-wrapper {
-      table tbody tr td {
-        padding-left: 23px;
-        width: 1%;
-      }
-    }
   }
 
   [class*='MuiTableRow-root-'] {
@@ -178,21 +170,20 @@
     width: 100%;
   }
 }
+.keyText {
+  margin: unset;
+  input {
+    border: none;
+    background: #f4f4f4;
+    border-radius: unset;
+  }
+  div {
+    margin-top: unset;
+  }
+}
 .gridContainer {
   align-items: center;
   padding: 0 2px;
-  .keyText {
-    margin: unset;
-    width: 68.5%;
-    input {
-      border: none;
-      background: #f4f4f4;
-      border-radius: unset;
-    }
-    div {
-      margin-top: unset;
-    }
-  }
   .valueText {
     margin-left: 2px;
     display: flex;
@@ -243,10 +234,10 @@
     display: flex;
     justify-content: center;
     padding: 5px;
-    color: white;
     svg {
       font-size: 1rem;
       cursor: pointer;
+      color: white;
     }
   }
 }

@@ -10,6 +10,7 @@ import Pencil from 'apollo-react-icons/Pencil';
 import Plus from 'apollo-react-icons/Plus';
 import Save from 'apollo-react-icons/Save';
 import Trash from 'apollo-react-icons/Trash';
+import EyeShow from 'apollo-react-icons/EyeShow';
 import MetaDataEditTable from './MetaDataEditTable';
 import MetaDataTable from './MetaDataTable';
 import './MetaData.scss';
@@ -27,8 +28,6 @@ function Accordian({
   handleSave,
   handleDelete,
   handleEdit,
-  updateRows,
-  deleteRows,
   addSubAccordion,
   subAccComponent,
 }) {
@@ -53,7 +52,7 @@ function Accordian({
   // }, [setIsOpenSubText, wrapperRef]);
 
   useEffect(() => {
-    if (subSectionName) {
+    if (subSectionName?.label) {
       addSubAccordion(subSectionName.label);
       setSuggestedSubList(
         suggestedSubList.filter((list) => list.label !== subSectionName.label),
@@ -100,9 +99,17 @@ function Accordian({
                   )}
                 </>
               ) : (
-                <span data-testId="metadatapencil">
-                  <Pencil className="metadata-plus-size" onClick={handleEdit} />
-                </span>
+                <>
+                  <span data-testId="eyeIcon">
+                    <EyeShow style={{ paddingRight: '10px' }} />
+                  </span>
+                  <span data-testId="metadatapencil">
+                    <Pencil
+                      className="metadata-plus-size"
+                      onClick={handleEdit}
+                    />
+                  </span>
+                </>
               )}
             </div>
           </div>
@@ -125,16 +132,10 @@ function Accordian({
         )}
         <AccordionDetails>
           {accData?.isEdit ? (
-            <MetaDataEditTable
-              updateRows={updateRows}
-              rows={rows}
-              setRows={setRows}
-              data={accData}
-              deleteRows={deleteRows}
-            />
+            <MetaDataEditTable rows={rows} setRows={setRows} data={accData} />
           ) : (
             // eslint-disable-next-line
-            accData?._meta_data.length > 0 && (
+            accData?._meta_data?.length > 0 && (
               // eslint-disable-next-line
               <MetaDataTable metaData={accData?._meta_data} />
             )
@@ -179,8 +180,6 @@ Accordian.propTypes = {
   handleSave: PropTypes.isRequired,
   handleDelete: PropTypes.isRequired,
   handleEdit: PropTypes.isRequired,
-  updateRows: PropTypes.isRequired,
-  deleteRows: PropTypes.isRequired,
   addSubAccordion: PropTypes.isRequired,
   subAccComponent: PropTypes.isRequired,
 };

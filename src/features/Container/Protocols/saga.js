@@ -416,6 +416,30 @@ export function* MetaDataVariable(action) {
   }
 }
 
+export function* PostMetaDataVariable(action) {
+  const {
+    payload: { docId, fieldName, attributes },
+  } = action;
+  const config = {
+    url: `http://ca2spdml101q:9001${Apis.METADATA}/add_meta_data`,
+    method: 'POST',
+    isMetaData: true,
+    data: {
+      op: 'addField',
+      aidocId: action.payload.docId,
+      fieldName,
+      attributes,
+    },
+  };
+  const MetaData = 'post call';
+  // const MetaData = yield call(httpCall, config);
+  if (MetaData.success) {
+    yield put(getMetaDataVariable(MetaData));
+  } else {
+    yield put(getMetaDataVariable({ success: false, data: [] }));
+  }
+}
+
 export function* fetchMetaData(action) {
   yield put(setAccordianData(action.payload));
 }
@@ -445,6 +469,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
   yield takeEvery('SET_TOC_Active', setTOCActive);
   yield takeEvery('SET_METADATA', fetchMetaData);
+  yield takeEvery('POST_METADATA', PostMetaDataVariable);
 }
 
 // notice how we now only export the rootSaga

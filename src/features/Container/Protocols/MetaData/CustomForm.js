@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Grid from 'apollo-react/components/Grid';
 import TextField from 'apollo-react/components/TextField';
 import Select from 'apollo-react/components/Select';
@@ -7,15 +6,35 @@ import Trash from 'apollo-react-icons/Trash';
 import DatePicker from 'apollo-react/components/DatePickerV2';
 import PropTypes from 'prop-types';
 
-function CustomForm({ deleteMetaData, handleChange, item }) {
-  const [type, setType] = useState('String');
+export function InputKeyField({ key, handleChange, handleBlur, inputValue }) {
+  return (
+    <TextField
+      label=""
+      placeholder="Enter Key"
+      className="keyText"
+      name={key}
+      value={inputValue}
+      inputProps={{ 'data-testid': 'customeform-textField-key' }}
+      onChange={(e) => handleChange(e)}
+      onBlur={(e) => handleBlur(e)}
+    />
+  );
+}
 
+export function ValueField({
+  item,
+  key,
+  type,
+  inputValue,
+  dateValue,
+  setDateValue,
+  handleChange,
+  handleBlur,
+  deleteMetaData,
+}) {
   const onTypeChange = (e) => {
-    setType(e.target.value);
     handleChange(e);
   };
-
-  const [inputValue, setInputValue] = useState(null);
 
   return (
     <Grid
@@ -24,85 +43,105 @@ function CustomForm({ deleteMetaData, handleChange, item }) {
       className="gridContainer"
       data-testid="customeform"
     >
-      <Grid item xs={11} className="fieldContainer">
+      {!item.isCustom ? (
         <TextField
           label=""
-          placeholder="Enter Key"
           className="keyText"
-          name="header"
-          value={item?.header}
-          inputProps={{ 'data-testid': 'customeform-textField-key' }}
+          placeholder="Enter Value"
+          type="text"
+          name={key}
+          fullWidth
+          value={inputValue}
+          inputProps={{ 'data-testid': 'customeform-textField-value' }}
           onChange={(e) => handleChange(e)}
+          onBlur={handleBlur}
         />
-        <div className="valueText">
-          {(type === 'String' || type === 'Number') && (
-            <TextField
-              label=""
-              placeholder="Enter Value"
-              type={type === 'String' ? 'text' : 'number'}
-              name="name"
-              fullWidth
-              value={item?.name}
-              inputProps={{ 'data-testid': 'customeform-textField-value' }}
-              onChange={(e) => handleChange(e)}
-            />
-          )}
+      ) : (
+        <>
+          <Grid item xs={11} className="fieldContainer">
+            <div className="valueText">
+              {(type === 'String' || type === 'Number') && (
+                <TextField
+                  label=""
+                  placeholder="Enter Value"
+                  type={type === 'String' ? 'text' : 'number'}
+                  name={key}
+                  fullWidth
+                  value={inputValue}
+                  inputProps={{ 'data-testid': 'customeform-textField-value' }}
+                  onChange={(e) => handleChange(e)}
+                  onBlur={handleBlur}
+                />
+              )}
 
-          {type === 'Date' && (
-            <DatePicker
-              name="name"
-              dateFormat="DD-MMM-YYYY"
-              placeholder="dd-mmm-yyyy"
-              value={item?.name}
-              onChange={(value) =>
-                handleChange({ target: { name: 'name', value } })
-              }
-              inputValue={inputValue}
-              onInputChange={(inputValue) => setInputValue(inputValue)}
-            />
-          )}
-          {type === 'Boolean' && (
-            <Select
-              placeholder="Select Value"
-              label=""
-              name="name"
-              fullWidth
-              value={item?.name}
-              onChange={handleChange}
-            >
-              <MenuItem value="true">True</MenuItem>
-              <MenuItem value="false">False</MenuItem>
-            </Select>
-          )}
+              {type === 'Date' && (
+                <DatePicker
+                  name={key}
+                  dateFormat="DD-MMM-YYYY"
+                  placeholder="dd-mmm-yyyy"
+                  value={dateValue}
+                  onChange={(dateValue) => setDateValue(dateValue)}
+                  inputValue={inputValue}
+                  onBlur={handleBlur}
+                  // onInputChange={(inputValue) => setInputValue(inputValue)}
+                />
+              )}
+              {type === 'Boolean' && (
+                <Select
+                  placeholder="Select Value"
+                  label=""
+                  name={key}
+                  fullWidth
+                  value={inputValue}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                >
+                  <MenuItem value="true">True</MenuItem>
+                  <MenuItem value="false">False</MenuItem>
+                </Select>
+              )}
 
-          <Select
-            label=""
-            name="type"
-            value={item?.type}
-            onChange={(e) => onTypeChange(e)}
-            placeholder="Select Type"
-            fullWidth
-            inputProps={{ 'data-testid': 'customeform-textField-checkbox' }}
-            className="selectBox"
-          >
-            <MenuItem value="String">String</MenuItem>
-            <MenuItem value="Number">Number</MenuItem>
-            <MenuItem value="Boolean">Boolean</MenuItem>
-            <MenuItem value="Date">Date</MenuItem>
-          </Select>
-        </div>
-      </Grid>
-      <Grid item xs={1} className="delContainer">
-        <Trash onClick={deleteMetaData} />
-      </Grid>
+              <Select
+                label=""
+                name="type"
+                value={type}
+                onChange={(e) => onTypeChange(e)}
+                onBlur={handleBlur}
+                placeholder="Select Type"
+                fullWidth
+                inputProps={{ 'data-testid': 'customeform-textField-checkbox' }}
+                className="selectBox"
+              >
+                <MenuItem value="String">String</MenuItem>
+                <MenuItem value="Number">Number</MenuItem>
+                <MenuItem value="Boolean">Boolean</MenuItem>
+                <MenuItem value="Date">Date</MenuItem>
+              </Select>
+            </div>
+          </Grid>
+          <Grid item xs={1} className="delContainer">
+            <Trash onClick={deleteMetaData} />
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 }
 
-CustomForm.propTypes = {
+InputKeyField.propTypes = {
+  key: PropTypes.isRequired,
+  handleChange: PropTypes.isRequired,
+  handleBlur: PropTypes.isRequired,
+  inputValue: PropTypes.isRequired,
+};
+ValueField.propTypes = {
+  key: PropTypes.isRequired,
   deleteMetaData: PropTypes.isRequired,
   handleChange: PropTypes.isRequired,
   item: PropTypes.isRequired,
+  type: PropTypes.isRequired,
+  inputValue: PropTypes.isRequired,
+  handleBlur: PropTypes.isRequired,
+  dateValue: PropTypes.isRequired,
+  setDateValue: PropTypes.isRequired,
 };
-
-export default CustomForm;
