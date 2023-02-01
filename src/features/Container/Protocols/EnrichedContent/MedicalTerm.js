@@ -103,7 +103,7 @@ function MedicalTerm({
                     }}
                   >
                     {item.value}
-                    {isActive && <ArrowRight />}
+                    {isActive && childArr.length > 0 && <ArrowRight />}
                   </Button>
                 </li>
               );
