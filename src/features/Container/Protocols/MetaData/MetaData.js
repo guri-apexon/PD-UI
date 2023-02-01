@@ -24,6 +24,7 @@ function MetaData({ protocolId }) {
   const [suggestedList, setSuggestedList] = useState([
     { label: 'Objective and Endpoints' },
     { label: 'Adverse Events' },
+    { label: 'Adverse Effect' },
   ]);
 
   const [suggestedSubList, setSuggestedSubList] = useState([
@@ -53,6 +54,15 @@ function MetaData({ protocolId }) {
       payload: {
         ...accordianData,
         [name]: obj,
+      },
+    });
+    dispatch({
+      type: 'POST_METADATA',
+      payload: {
+        op: 'addField',
+        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        fieldName: name,
+        attributes: [],
       },
     });
     setSectionName({ label: '' });
@@ -117,7 +127,6 @@ function MetaData({ protocolId }) {
         op: 'addAttributes',
         docId: '0be44992-9573-4010-962c-de1a1b18b08d',
         fieldName: data.formattedName,
-        // eslint-disable-next-line
         attributes: metaData,
       },
     });
@@ -191,19 +200,28 @@ function MetaData({ protocolId }) {
       _childs: [],
     };
     const selectedData = accordianData[accData.name];
+    // dispatch({
+    //   type: 'SET_METADATA',
+    //   payload: {
+    //     ...accordianData,
+    //     [accData.name]: {
+    //       ...selectedData,
+    //       // eslint-disable-next-line
+    //       _childs: selectedData?._childs
+    //         ? // eslint-disable-next-line
+    //           [...selectedData._childs, name]
+    //         : [name],
+    //     },
+    //     [name]: obj,
+    //   },
+    // });
     dispatch({
-      type: 'SET_METADATA',
+      type: 'POST_METADATA',
       payload: {
-        ...accordianData,
-        [accData.name]: {
-          ...selectedData,
-          // eslint-disable-next-line
-          _childs: selectedData?._childs
-            ? // eslint-disable-next-line
-              [...selectedData._childs, name]
-            : [name],
-        },
-        [name]: obj,
+        op: 'addField',
+        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        fieldName: `${accData.formattedName}.${name}`,
+        attributes: [],
       },
     });
     setSectionName({ label: '' });

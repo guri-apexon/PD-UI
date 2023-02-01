@@ -434,10 +434,9 @@ export function* PostMetaDataVariable(action) {
   const MetaData = yield call(httpCall, config);
   // const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
-    yield call(MetaDataVariable(action));
-    //  yield put(getMetaDataVariable(MetaData));
+    yield call(MetaDataVariable, action);
   } else {
-    yield put(getMetaDataVariable({ success: false, data: [] }));
+    // yield put(getMetaDataVariable({ success: false, data: [] }));
   }
 }
 
