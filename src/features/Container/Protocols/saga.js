@@ -402,6 +402,10 @@ export function* fetchFileStream(action) {
   }
 }
 
+export function* setMetadataApiCall(data) {
+  yield put(getMetadataApiCall(data));
+}
+
 export function* MetaDataVariable(action) {
   const {
     payload: { docId },
@@ -422,7 +426,7 @@ export function* MetaDataVariable(action) {
 
 export function* PostMetaDataVariable(action) {
   const {
-    payload: { op, docId, fieldName, attributes },
+    payload: { op, docId, fieldName, attributes, name },
   } = action;
   const config = {
     url: `http://ca2spdml101q:9001${Apis.METADATA}/add_meta_data`,
@@ -436,24 +440,23 @@ export function* PostMetaDataVariable(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  console.log('Saga Post Call', MetaData);
-  const metaDataSelector = yield select(setAccordianData);
-  console.log('postcall data', metaDataSelector);
-  if (MetaData.success) {
-    // metadata call
-    const metadataValue = {
-      ...metaDataSelector,
-      fieldName: attributes,
-    };
-    console.log('metadataValue And Postupdate', metadataValue);
+  console.log('MetaData', MetaData);
+  if (MetaData.data.isAdded) {
+    yield call(setMetadataApiCall, {
+      status: true,
+      name,
+    });
   } else {
-    // yield put(getMetaDataVariable({ success: false, data: [] }));
+    yield call(setMetadataApiCall, {
+      status: false,
+      name,
+    });
   }
 }
 
 export function* updateMetaDataVariable(action) {
   const {
-    payload: { docId, fieldName, attributes },
+    payload: { docId, fieldName, attributes, name },
   } = action;
   const config = {
     url: `http://ca2spdml101q:9001${Apis.METADATA}/update_meta_data`,
@@ -466,11 +469,16 @@ export function* updateMetaDataVariable(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  console.log('Saga Update Call', MetaData);
   if (MetaData.success) {
-    // calling accordian data
+    yield call(setMetadataApiCall, {
+      status: true,
+      name,
+    });
   } else {
-    // yield put(getMetaDataVariable({ success: false, data: [] }));
+    yield call(setMetadataApiCall, {
+      status: false,
+      name,
+    });
   }
 }
 
@@ -518,10 +526,6 @@ export function* setTOCActive(action) {
   yield put(getTOCActive(action.payload.data));
 }
 
-export function* setMetadataApiCall(action) {
-  yield put(getMetadataApiCall());
-}
-
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -542,6 +546,7 @@ function* watchProtocolViews() {
   yield takeEvery('POST_METADATA', PostMetaDataVariable);
   yield takeEvery('UPDATE_METADATA', updateMetaDataVariable);
   yield takeEvery('DELETE_METADATA', deleteAttribute);
+  yield takeEvery('UPDATE_METADATA_FLAG', setMetadataApiCall);
 }
 
 // notice how we now only export the rootSaga

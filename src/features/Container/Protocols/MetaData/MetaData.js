@@ -8,15 +8,19 @@ import { isEmpty, isObject } from 'lodash';
 import './MetaData.scss';
 import { toast } from 'react-toastify';
 import Accordian from './Accordian';
-import { accordianMetaData, metaDataVariable } from '../protocolSlice';
+import {
+  accordianMetaData,
+  metadataApiCallValue,
+  metaDataVariable,
+} from '../protocolSlice';
 import mockData from './mockData.json';
 import Loader from '../../../Components/Loader/Loader';
 
 function MetaData({ protocolId }) {
   const wrapperRef = useRef(null);
+  const apiResponse = useSelector(metadataApiCallValue);
   const metaDataSelector = useSelector(metaDataVariable);
   const accordianData = useSelector(accordianMetaData);
-  console.log('accordianData', accordianData);
   const dispatch = useDispatch();
   const [rows, setRows] = useState({});
   const [isOpen, setIsOpen] = useState(false);
@@ -135,37 +139,22 @@ function MetaData({ protocolId }) {
         docId: '0be44992-9573-4010-962c-de1a1b18b08d',
         fieldName: data.formattedName,
         attributes: updatedAttrList,
+        name: data.name,
       },
     });
   };
 
   const handleSave = (accData, e) => {
     e.stopPropagation();
-    // if (formValidation(rows?.[accData?.name])) {
-    const selectedData = accordianData[accData.name];
-    const accMetaData = rows[accData?.name];
-    dispatch({
-      type: 'SET_METADATA',
-      payload: {
-        ...accordianData,
-        [accData.name]: {
-          ...selectedData,
-          isEdit: false,
-          _meta_data: [...accMetaData],
-        },
-      },
-    });
-    if (deletedAttributes.length > 0) {
-      deleteCall(accordianData[accData.name], 'deleteAttribute');
+    if (formValidation(rows?.[accData?.name])) {
+      const accMetaData = rows[accData?.name];
+      if (deletedAttributes.length > 0) {
+        deleteCall(accordianData[accData.name], 'deleteAttribute');
+      }
+      postCall(accordianData[accData.name], accMetaData);
+    } else {
+      toast('Please fill all custom field values');
     }
-    postCall(accordianData[accData.name], accMetaData);
-    setRows({
-      ...rows,
-      [accData.name]: [],
-    });
-    // } else {
-    //   toast('Please fill all custom field values');
-    // }
   };
 
   const handleDelete = (accData, e) => {
@@ -283,6 +272,24 @@ function MetaData({ protocolId }) {
   //       document.removeEventListener('mousedown', handleClickOutside);
   //     };
   //   }, [wrapperRef]);
+
+  useEffect(() => {
+    if (apiResponse.status) {
+      const selectedData = accordianData[apiResponse.name];
+      const accMetaData = rows[apiResponse?.name];
+      dispatch({
+        type: 'SET_METADATA',
+        payload: {
+          ...accordianData,
+          [apiResponse.name]: {
+            ...selectedData,
+            isEdit: false,
+            _meta_data: [...accMetaData],
+          },
+        },
+      });
+    }
+  }, [apiResponse]);
 
   const accGenerator = (key, acc) => {
     return (

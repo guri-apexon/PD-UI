@@ -41,7 +41,10 @@ export const protocolSlice = createSlice({
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
     TOCActiveAccordian: [],
     accordianMetaData: {},
-    metadataApiCallValue: false,
+    metadataApiCallValue: {
+      status: false,
+      name: '',
+    },
   },
   reducers: {
     getSummary: (state, action) => {
@@ -138,6 +141,7 @@ export const metaDataVariable = (state) => state.protocol.metaDataVariable;
 export const rightBladeValue = (state) => state.protocol.rightBladeValue;
 export const TOCActive = (state) => state.protocol.TOCActiveAccordian;
 export const accordianMetaData = (state) => state.protocol.accordianMetaData;
-export const metadataApiCall = (state) => state.protocol.metadataApiCallValues;
+export const metadataApiCallValue = (state) =>
+  state.protocol.metadataApiCallValue;
 
 export default protocolSlice.reducer;
