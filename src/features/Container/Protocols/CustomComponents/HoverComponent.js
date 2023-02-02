@@ -51,6 +51,7 @@ function HoverComponent({ lineId, activeLineID }) {
             horizontal: 'left',
           }}
           size="small"
+          data-testId="addIcon"
         >
           <Plus className="plus-icon" size="small" />
         </IconMenuButton>
