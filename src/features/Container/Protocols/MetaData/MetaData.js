@@ -16,6 +16,7 @@ function MetaData({ protocolId }) {
   const wrapperRef = useRef(null);
   const metaDataSelector = useSelector(metaDataVariable);
   const accordianData = useSelector(accordianMetaData);
+  console.log('accordianData', accordianData);
   const dispatch = useDispatch();
   const [rows, setRows] = useState({});
   const [isOpen, setIsOpen] = useState(false);

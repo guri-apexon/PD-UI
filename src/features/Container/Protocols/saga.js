@@ -6,6 +6,7 @@ import {
   takeLatest,
   select,
 } from 'redux-saga/effects';
+
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 
@@ -23,6 +24,8 @@ import {
   getMetaDataVariable,
   getTOCActive,
   setAccordianData,
+  metaDataVariable,
+  getMetadataApiCall,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
@@ -410,6 +413,7 @@ export function* MetaDataVariable(action) {
   };
   const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
+    console.log('MetaData Get Call', MetaData);
     yield put(getMetaDataVariable(MetaData));
   } else {
     yield put(getMetaDataVariable({ success: false, data: [] }));
@@ -433,8 +437,15 @@ export function* PostMetaDataVariable(action) {
   };
   const MetaData = yield call(httpCall, config);
   console.log('Saga Post Call', MetaData);
+  const metaDataSelector = yield select(setAccordianData);
+  console.log('postcall data', metaDataSelector);
   if (MetaData.success) {
-    yield call(MetaDataVariable, action);
+    // metadata call
+    const metadataValue = {
+      ...metaDataSelector,
+      fieldName: attributes,
+    };
+    console.log('metadataValue And Postupdate', metadataValue);
   } else {
     // yield put(getMetaDataVariable({ success: false, data: [] }));
   }
@@ -505,6 +516,10 @@ export function* RightBladeValue(action) {
 
 export function* setTOCActive(action) {
   yield put(getTOCActive(action.payload.data));
+}
+
+export function* setMetadataApiCall(action) {
+  yield put(getMetadataApiCall());
 }
 
 function* watchProtocolAsync() {

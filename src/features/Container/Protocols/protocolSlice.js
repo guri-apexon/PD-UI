@@ -41,6 +41,7 @@ export const protocolSlice = createSlice({
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
     TOCActiveAccordian: [],
     accordianMetaData: {},
+    metadataApiCallValue: false,
   },
   reducers: {
     getSummary: (state, action) => {
@@ -94,6 +95,9 @@ export const protocolSlice = createSlice({
     setAccordianData: (state, action) => {
       state.accordianMetaData = action.payload;
     },
+    getMetadataApiCall: (state, action) => {
+      state.metadataApiCallValue = action.payload;
+    },
   },
 });
 
@@ -113,6 +117,7 @@ export const {
   getRightBladeValue,
   getTOCActive,
   setAccordianData,
+  getMetadataApiCall,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -133,5 +138,6 @@ export const metaDataVariable = (state) => state.protocol.metaDataVariable;
 export const rightBladeValue = (state) => state.protocol.rightBladeValue;
 export const TOCActive = (state) => state.protocol.TOCActiveAccordian;
 export const accordianMetaData = (state) => state.protocol.accordianMetaData;
+export const metadataApiCall = (state) => state.protocol.metadataApiCallValues;
 
 export default protocolSlice.reducer;
