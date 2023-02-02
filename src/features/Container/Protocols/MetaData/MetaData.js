@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import Accordian from './Accordian';
 import { accordianMetaData, metaDataVariable } from '../protocolSlice';
 import mockData from './mockData.json';
+import Loader from '../../../Components/Loader/Loader';
 
 function MetaData({ protocolId }) {
   const wrapperRef = useRef(null);
@@ -353,11 +354,17 @@ function MetaData({ protocolId }) {
           </div>
         )}
       </div>
-      <div className="_meta_data-boarder">
-        {Object.entries(accordianData).map(([key, value]) => {
-          return value.level === 1 && accGenerator(key, value);
-        })}
-      </div>
+      {!accordianData ? (
+        <div className="loader">
+          <Loader />
+        </div>
+      ) : (
+        <div className="_meta_data-boarder">
+          {Object.entries(accordianData).map(([key, value]) => {
+            return value.level === 1 && accGenerator(key, value);
+          })}
+        </div>
+      )}
     </Card>
   );
 }

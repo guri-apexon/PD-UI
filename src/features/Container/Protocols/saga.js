@@ -432,7 +432,7 @@ export function* PostMetaDataVariable(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  // const MetaData = yield call(httpCall, config);
+  console.log('Saga Post Call', MetaData);
   if (MetaData.success) {
     yield call(MetaDataVariable, action);
   } else {
@@ -455,9 +455,9 @@ export function* updateMetaDataVariable(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  // const MetaData = yield call(httpCall, config);
+  console.log('Saga Update Call', MetaData);
   if (MetaData.success) {
-    yield call(MetaDataVariable, action);
+    // calling accordian data
   } else {
     // yield put(getMetaDataVariable({ success: false, data: [] }));
   }
