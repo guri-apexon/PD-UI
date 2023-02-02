@@ -18,11 +18,11 @@ function Cell({ row, column }) {
 function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(row[key]);
   const [dateValue, setDateValue] = useState(moment(row[key]));
-  const [type, setType] = useState(row.attr_type || 'String');
+  const [type, setType] = useState(row.attr_type || 'string');
   const handleDataChange = (e) => {
     if (e?.target?.name === 'attr_type') {
       setType(e.target.value);
-    } else if (type === 'Date') {
+    } else if (type === 'date') {
       setVal(dateValue);
     } else {
       setVal(e.target.value);
@@ -77,7 +77,13 @@ function EditableCell({ row, column: { accessor: key } }) {
   return key === 'attr_name' ? renderKeyField() : renderValueField();
 }
 
-function MetaDataEditTable({ rows, setRows, data }) {
+function MetaDataEditTable({
+  data,
+  rows,
+  setRows,
+  deletedAttributes,
+  setDeletedAttributes,
+}) {
   const { name } = data;
   const [selectedId, setSelectedId] = useState(null);
   const [isModal, setIsModal] = useState(false);
@@ -171,7 +177,7 @@ function MetaDataEditTable({ rows, setRows, data }) {
           ? {
               ...list,
               [keyName]:
-                list?.type === 'Date' && keyName === 'attr_value'
+                list?.type === 'date' && keyName === 'attr_value'
                   ? moment(value).format('DD-MMM-YYYY')
                   : value,
             }
@@ -186,6 +192,8 @@ function MetaDataEditTable({ rows, setRows, data }) {
   };
 
   const removeData = () => {
+    const filterRows = rows[name].filter((list) => list.id === selectedId);
+    setDeletedAttributes([...deletedAttributes, filterRows[0].attr_name]);
     setRows((prevState) => ({
       ...prevState,
       [name]: rows[name].filter((list) => list?.id !== selectedId),
@@ -247,6 +255,7 @@ function MetaDataEditTable({ rows, setRows, data }) {
           // title="Header"
           title="Do you really want to delete?"
           buttonProps={[
+            { label: 'No' },
             {
               label: 'Yes',
               onClick: (e) => {
@@ -254,7 +263,6 @@ function MetaDataEditTable({ rows, setRows, data }) {
                 setIsModal(false);
               },
             },
-            { label: 'No' },
           ]}
           id="neutral"
         />
@@ -264,9 +272,11 @@ function MetaDataEditTable({ rows, setRows, data }) {
 }
 
 MetaDataEditTable.propTypes = {
-  rows: PropTypes.isRequired,
-  setRows: PropTypes.isRequired,
   data: PropTypes.isRequired,
+  rows: PropTypes.isRequired,
+  deletedAttributes: PropTypes.isRequired,
+  setDeletedAttributes: PropTypes.isRequired,
+  setRows: PropTypes.isRequired,
 };
 
 Cell.propTypes = {

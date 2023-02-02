@@ -65,11 +65,11 @@ export function ValueField({
         <>
           <Grid item xs={11} className="fieldContainer">
             <div className="valueText">
-              {(type === 'String' || type === 'Number') && (
+              {(type === 'string' || type === 'number') && (
                 <TextField
                   label=""
                   placeholder="Enter Value"
-                  type={type === 'String' ? 'text' : 'number'}
+                  type={type === 'string' ? 'text' : 'number'}
                   name={keyName}
                   fullWidth
                   value={inputValue}
@@ -79,7 +79,7 @@ export function ValueField({
                 />
               )}
 
-              {type === 'Date' && (
+              {type === 'date' && (
                 <DatePicker
                   name={keyName}
                   dateFormat="DD-MMM-YYYY"
@@ -91,7 +91,7 @@ export function ValueField({
                   // onInputChange={(inputValue) => setInputValue(inputValue)}
                 />
               )}
-              {type === 'Boolean' && (
+              {type === 'boolean' && (
                 <Select
                   placeholder="Select Value"
                   label=""
@@ -117,10 +117,10 @@ export function ValueField({
                 inputProps={{ 'data-testid': 'customeform-textField-checkbox' }}
                 className="selectBox"
               >
-                <MenuItem value="String">String</MenuItem>
-                <MenuItem value="Number">Number</MenuItem>
-                <MenuItem value="Boolean">Boolean</MenuItem>
-                <MenuItem value="Date">Date</MenuItem>
+                <MenuItem value="string">String</MenuItem>
+                <MenuItem value="number">Number</MenuItem>
+                <MenuItem value="boolean">Boolean</MenuItem>
+                <MenuItem value="date">Date</MenuItem>
               </Select>
             </div>
           </Grid>

@@ -21,6 +21,7 @@ function MetaData({ protocolId }) {
   const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
   const [standardList, setStandardList] = useState([]);
+  const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [suggestedList, setSuggestedList] = useState([
     { label: 'Objective and Endpoints' },
     { label: 'Adverse Events' },
@@ -41,21 +42,6 @@ function MetaData({ protocolId }) {
   };
 
   const addToAccordion = (name) => {
-    const obj = {
-      name,
-      isEdit: false,
-      isActive: false,
-      _meta_data: [],
-      level: 1,
-      _childs: [],
-    };
-    dispatch({
-      type: 'SET_METADATA',
-      payload: {
-        ...accordianData,
-        [name]: obj,
-      },
-    });
     dispatch({
       type: 'POST_METADATA',
       payload: {
@@ -120,11 +106,23 @@ function MetaData({ protocolId }) {
     return valid;
   };
 
+  const deleteCall = (data, opName) => {
+    dispatch({
+      type: 'DELETE_METADATA',
+      payload: {
+        op: opName,
+        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        fieldName: data.formattedName,
+        attributeNames: deletedAttributes,
+      },
+    });
+    setDeletedAttributes([]);
+  };
+
   const postCall = (data, metaData) => {
     dispatch({
-      type: 'POST_METADATA',
+      type: 'UPDATE_METADATA',
       payload: {
-        op: 'addAttributes',
         docId: '0be44992-9573-4010-962c-de1a1b18b08d',
         fieldName: data.formattedName,
         attributes: metaData,
@@ -134,7 +132,7 @@ function MetaData({ protocolId }) {
 
   const handleSave = (accData, e) => {
     e.stopPropagation();
-    // if (formValidation(metaDataList?.[accData?.name])) {
+    // if (formValidation(rows?.[accData?.name])) {
     const selectedData = accordianData[accData.name];
     const accMetaData = rows[accData?.name];
     dispatch({
@@ -148,6 +146,9 @@ function MetaData({ protocolId }) {
         },
       },
     });
+    if (deletedAttributes.length > 0) {
+      deleteCall(accordianData[accData.name], 'deleteAttribute');
+    }
     postCall(accordianData[accData.name], accMetaData);
     setRows({
       ...rows,
@@ -188,33 +189,10 @@ function MetaData({ protocolId }) {
         },
       });
     }
+    deleteCall(accordianData[accData.name], 'deleteField');
   };
 
   const addSubAccordion = (accData, name) => {
-    const obj = {
-      name,
-      isEdit: false,
-      isActive: false,
-      _meta_data: [],
-      level: accData.level + 1,
-      _childs: [],
-    };
-    const selectedData = accordianData[accData.name];
-    // dispatch({
-    //   type: 'SET_METADATA',
-    //   payload: {
-    //     ...accordianData,
-    //     [accData.name]: {
-    //       ...selectedData,
-    //       // eslint-disable-next-line
-    //       _childs: selectedData?._childs
-    //         ? // eslint-disable-next-line
-    //           [...selectedData._childs, name]
-    //         : [name],
-    //     },
-    //     [name]: obj,
-    //   },
-    // });
     dispatch({
       type: 'POST_METADATA',
       payload: {
@@ -241,6 +219,7 @@ function MetaData({ protocolId }) {
               _meta_data: keyValue?._meta_data?.map((attr, index) => {
                 return {
                   ...attr,
+                  isCustom: true,
                   id: index + 1,
                 };
               }),
@@ -267,6 +246,7 @@ function MetaData({ protocolId }) {
   };
 
   useEffect(() => {
+    // const result = flattenObject(mockData.data, 1, '');
     const result = flattenObject(metaDataSelector?.data?.data, 1, '');
     dispatch({
       type: 'SET_METADATA',
@@ -306,6 +286,7 @@ function MetaData({ protocolId }) {
           isOpenSubText={isOpenSubText}
           sectionName={sectionName}
           suggestedSubList={suggestedSubList}
+          deletedAttributes={deletedAttributes}
           setSuggestedSubList={setSuggestedSubList}
           setSectionName={setSectionName}
           setIsOpenSubText={setIsOpenSubText}
@@ -315,6 +296,7 @@ function MetaData({ protocolId }) {
           handleDelete={(e) => handleDelete(acc, e)}
           handleEdit={(e) => handleEdit(acc, e)}
           addSubAccordion={(name) => addSubAccordion(acc, name)}
+          setDeletedAttributes={setDeletedAttributes}
           // eslint-disable-next-line
           subAccComponent={acc?._childs?.map((subAcc) => {
             return accGenerator(subAcc, accordianData?.[subAcc]);

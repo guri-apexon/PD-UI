@@ -440,6 +440,53 @@ export function* PostMetaDataVariable(action) {
   }
 }
 
+export function* updateMetaDataVariable(action) {
+  const {
+    payload: { docId, fieldName, attributes },
+  } = action;
+  const config = {
+    url: `http://ca2spdml101q:9001${Apis.METADATA}/update_meta_data`,
+    method: 'POST',
+    isMetaData: true,
+    data: {
+      aidocId: docId,
+      fieldName,
+      attributes,
+    },
+  };
+  const MetaData = yield call(httpCall, config);
+  // const MetaData = yield call(httpCall, config);
+  if (MetaData.success) {
+    yield call(MetaDataVariable, action);
+  } else {
+    // yield put(getMetaDataVariable({ success: false, data: [] }));
+  }
+}
+
+export function* deleteAttribute(action) {
+  const {
+    payload: { op, docId, fieldName, attributeNames },
+  } = action;
+  const config = {
+    url: `http://ca2spdml101q:9001${Apis.METADATA}/delete_meta_data`,
+    method: 'DELETE',
+    isMetaData: true,
+    data: {
+      op,
+      aidocId: docId,
+      fieldName,
+      attributeNames,
+    },
+  };
+  const data = yield call(httpCall, config);
+  if (data.success) {
+    toast.info('attributes successfully deleted');
+    yield call(MetaDataVariable, action);
+  } else {
+    toast.error('attributes not deleted');
+  }
+}
+
 export function* fetchMetaData(action) {
   yield put(setAccordianData(action.payload));
 }
@@ -470,6 +517,8 @@ function* watchProtocolViews() {
   yield takeEvery('SET_TOC_Active', setTOCActive);
   yield takeEvery('SET_METADATA', fetchMetaData);
   yield takeEvery('POST_METADATA', PostMetaDataVariable);
+  yield takeEvery('UPDATE_METADATA', updateMetaDataVariable);
+  yield takeEvery('DELETE_METADATA', deleteAttribute);
 }
 
 // notice how we now only export the rootSaga

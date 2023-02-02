@@ -21,6 +21,7 @@ function Accordian({
   rows,
   suggestedSubList,
   isOpenSubText,
+  deletedAttributes,
   setSuggestedSubList,
   setIsOpenSubText,
   setRows,
@@ -30,6 +31,7 @@ function Accordian({
   handleEdit,
   addSubAccordion,
   subAccComponent,
+  setDeletedAttributes,
 }) {
   const wrapperRef = useRef(null);
   const [isModal, setisModal] = useState(false);
@@ -132,7 +134,13 @@ function Accordian({
         )}
         <AccordionDetails>
           {accData?.isEdit ? (
-            <MetaDataEditTable rows={rows} setRows={setRows} data={accData} />
+            <MetaDataEditTable
+              rows={rows}
+              setRows={setRows}
+              data={accData}
+              deletedAttributes={deletedAttributes}
+              setDeletedAttributes={setDeletedAttributes}
+            />
           ) : (
             // eslint-disable-next-line
             accData?._meta_data?.length > 0 && (
@@ -173,6 +181,7 @@ Accordian.propTypes = {
   rows: PropTypes.isRequired,
   suggestedSubList: PropTypes.isRequired,
   isOpenSubText: PropTypes.isRequired,
+  deletedAttributes: PropTypes.isRequired,
   setIsOpenSubText: PropTypes.isRequired,
   setSuggestedSubList: PropTypes.isRequired,
   setRows: PropTypes.isRequired,
@@ -182,6 +191,7 @@ Accordian.propTypes = {
   handleEdit: PropTypes.isRequired,
   addSubAccordion: PropTypes.isRequired,
   subAccComponent: PropTypes.isRequired,
+  setDeletedAttributes: PropTypes.isRequired,
 };
 
 export default Accordian;
