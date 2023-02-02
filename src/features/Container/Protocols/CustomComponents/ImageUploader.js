@@ -118,6 +118,7 @@ function ImageUploader({ lineID, content, edit }) {
             maxItems={1}
             onUpload={handleUpload}
             onFileDelete={handleDelete}
+            data-testId="file-upload"
           />
         ) : (
           <img src={img} alt="img" className="richTextImg" />
@@ -127,6 +128,7 @@ function ImageUploader({ lineID, content, edit }) {
       /* eslint-disable */
       <div
         className="img-container-read-mode"
+        data-testId="edit-readmode-img"
         onMouseOver={() => setShowEditBtn(true)}
         onMouseLeave={() => setShowEditBtn(false)}
       >
@@ -138,6 +140,7 @@ function ImageUploader({ lineID, content, edit }) {
               size="small"
               style={{ marginRight: 10 }}
               onClick={onImgEditBtnClick}
+              data-testId="edit_img"
             >
               Edit
             </Button>
@@ -148,7 +151,7 @@ function ImageUploader({ lineID, content, edit }) {
     )
   ) : (
     img && (
-      <div className="img-container-read-mode">
+      <div className="img-container-read-mode" data-testId="readmode-img">
         <img src={img} alt="img" className="richTextImg" />
       </div>
     )
