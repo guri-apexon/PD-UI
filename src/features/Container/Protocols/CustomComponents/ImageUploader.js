@@ -79,7 +79,7 @@ function ImageUploader({ lineID, content, edit }) {
   // eslint-disable-next-line no-nested-ternary
   return edit ? (
     isEdit ? (
-      <div className="img-container">
+      <div className="img-container" data-testId="file-upload">
         <div className="btn-container">
           <Button
             variant="secondary"
