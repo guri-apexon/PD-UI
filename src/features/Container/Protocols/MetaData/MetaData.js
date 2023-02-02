@@ -13,7 +13,6 @@ import {
   metadataApiCallValue,
   metaDataVariable,
 } from '../protocolSlice';
-import mockData from './mockData.json';
 import Loader from '../../../Components/Loader/Loader';
 
 function MetaData({ protocolId }) {
@@ -26,7 +25,7 @@ function MetaData({ protocolId }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
-  const [standardList, setStandardList] = useState([]);
+  const [standardList] = useState([]);
   const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [suggestedList, setSuggestedList] = useState([
     { label: 'Objective and Endpoints' },
@@ -250,6 +249,7 @@ function MetaData({ protocolId }) {
       type: 'SET_METADATA',
       payload: result,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [metaDataSelector?.data?.data]);
 
   useEffect(() => {
@@ -290,6 +290,7 @@ function MetaData({ protocolId }) {
         },
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiResponse]);
 
   const accGenerator = (key, acc) => {
@@ -331,7 +332,6 @@ function MetaData({ protocolId }) {
     }
     // eslint-disable-next-line
   }, [sectionName]);
-  console.log('empty', isEmpty(accordianData));
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
