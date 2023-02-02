@@ -441,12 +441,14 @@ export function* PostMetaDataVariable(action) {
   };
   const MetaData = yield call(httpCall, config);
   console.log('MetaData', MetaData);
-  if (MetaData.data.isAdded) {
+  if (MetaData?.data?.isAdded) {
+    toast.info('Accordian Added Successfully');
     yield call(setMetadataApiCall, {
       status: true,
       name,
     });
   } else {
+    toast.error('Accordian Already Added');
     yield call(setMetadataApiCall, {
       status: false,
       name,
@@ -469,12 +471,14 @@ export function* updateMetaDataVariable(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  if (MetaData.success) {
+  if (MetaData?.data?.isAdded) {
+    toast.info('Protocol Attributes Updated Successfully');
     yield call(setMetadataApiCall, {
       status: true,
       name,
     });
   } else {
+    toast.error('Duplicate Attributes');
     yield call(setMetadataApiCall, {
       status: false,
       name,

@@ -32,6 +32,7 @@ function MetaData({ protocolId }) {
     { label: 'Objective and Endpoints' },
     { label: 'Adverse Events' },
     { label: 'Adverse Effect' },
+    { label: 'Objective Events5' },
   ]);
 
   const [suggestedSubList, setSuggestedSubList] = useState([
@@ -330,7 +331,7 @@ function MetaData({ protocolId }) {
     }
     // eslint-disable-next-line
   }, [sectionName]);
-
+  console.log('empty', isEmpty(accordianData));
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -362,7 +363,7 @@ function MetaData({ protocolId }) {
           </div>
         )}
       </div>
-      {!accordianData ? (
+      {!metaDataSelector?.data ? (
         <div className="loader">
           <Loader />
         </div>
