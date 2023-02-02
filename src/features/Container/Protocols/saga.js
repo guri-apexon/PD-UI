@@ -446,7 +446,7 @@ export function* updateMetaDataVariable(action) {
   } = action;
   const config = {
     url: `http://ca2spdml101q:9001${Apis.METADATA}/update_meta_data`,
-    method: 'POST',
+    method: 'PUT',
     isMetaData: true,
     data: {
       aidocId: docId,
@@ -480,10 +480,18 @@ export function* deleteAttribute(action) {
   };
   const data = yield call(httpCall, config);
   if (data.success) {
-    toast.info('attributes successfully deleted');
+    if (op === 'deleteField') {
+      toast.info(`${fieldName} successfully deleted`);
+    } else {
+      toast.info('attributes successfully deleted');
+    }
     yield call(MetaDataVariable, action);
-  } else {
-    toast.error('attributes not deleted');
+  } else if (!data.success) {
+    if (op === 'deleteField') {
+      toast.info(`${fieldName} not deleted`);
+    } else {
+      toast.info('attributes not deleted');
+    }
   }
 }
 

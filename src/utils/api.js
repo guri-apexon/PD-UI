@@ -20,7 +20,11 @@ export const httpCall = async (config) => {
           'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
         },
       };
-    } else if (config.method === 'POST' || config.method === 'DELETE') {
+    } else if (
+      config.method === 'POST' ||
+      config.method === 'DELETE' ||
+      config.method === 'PUT'
+    ) {
       headerConfig = {
         data: config?.data,
         method: config.method,

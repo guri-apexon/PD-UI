@@ -120,12 +120,19 @@ function MetaData({ protocolId }) {
   };
 
   const postCall = (data, metaData) => {
+    const updatedAttrList = metaData.map((list) => {
+      return {
+        attr_name: list?.attr_name,
+        attr_type: list?.attr_type || 'string',
+        attr_value: list?.attr_value,
+      };
+    });
     dispatch({
       type: 'UPDATE_METADATA',
       payload: {
         docId: '0be44992-9573-4010-962c-de1a1b18b08d',
         fieldName: data.formattedName,
-        attributes: metaData,
+        attributes: updatedAttrList,
       },
     });
   };
