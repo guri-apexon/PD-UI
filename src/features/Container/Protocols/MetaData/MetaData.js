@@ -323,7 +323,7 @@ function MetaData({ protocolId }) {
     }
     // eslint-disable-next-line
   }, [sectionName]);
-
+  console.log('empty', isEmpty(accordianData));
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -355,7 +355,7 @@ function MetaData({ protocolId }) {
           </div>
         )}
       </div>
-      {!accordianData ? (
+      {!metaDataSelector?.data ? (
         <div className="loader">
           <Loader />
         </div>
