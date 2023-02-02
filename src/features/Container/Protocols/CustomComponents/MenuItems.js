@@ -4,7 +4,7 @@ import Paragraph from 'apollo-react-icons/Paragraph';
 
 export function TextHeader2() {
   return (
-    <div className="add-element">
+    <div className="add-element" data-testId="header">
       <Paragraph fontSize="extraSmall" />
       <span>Header</span>
     </div>
@@ -13,7 +13,7 @@ export function TextHeader2() {
 
 export function TextElement() {
   return (
-    <div className="add-element">
+    <div className="add-element" data-testId="text">
       <TextStyle fontSize="extraSmall" />
       <span>Text</span>
     </div>
