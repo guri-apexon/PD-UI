@@ -307,3 +307,7 @@ export const markContentForDelete = (origArray, lineId) => {
   arr[i].qc_change_type = 'delete';
   return arr;
 };
+
+export const isPrimaryUser = (protMetaData) => {
+  return protMetaData.redactProfile === 'profile_1';
+};
