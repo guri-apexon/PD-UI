@@ -219,7 +219,6 @@ function MetaData({ protocolId }) {
               _meta_data: keyValue?._meta_data?.map((attr, index) => {
                 return {
                   ...attr,
-                  isCustom: true,
                   id: index + 1,
                 };
               }),
