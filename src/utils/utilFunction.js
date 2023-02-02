@@ -1,7 +1,11 @@
 import Tooltip from 'apollo-react/components/Tooltip';
 import { cloneDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
-import { CONTENT_TYPE, redaction } from '../AppConstant/AppConstant';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+  redaction,
+} from '../AppConstant/AppConstant';
 import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 
 const replaceall = require('replaceall');
@@ -265,6 +269,7 @@ export const prepareContent = ({
           ...PROTOCOL_CONSTANT[contentType],
           line_id: uuidv4(),
           content: setContent(contentType),
+          qc_change_type: QC_CHANGE_TYPE.ADDED,
         };
         // eslint-disable-next-line
         const index =
@@ -277,8 +282,9 @@ export const prepareContent = ({
       if (clonedSection && currentLineId) {
         return clonedSection.map((x) => {
           if (x.line_id === currentLineId) {
-            x.qc_change_type = 'modify';
             x.content = content;
+            if (x.qc_change_type !== QC_CHANGE_TYPE.ADDED)
+              x.qc_change_type = QC_CHANGE_TYPE.UPDATED;
           }
           return x;
         });

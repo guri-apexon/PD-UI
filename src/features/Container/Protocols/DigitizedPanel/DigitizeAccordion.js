@@ -271,7 +271,7 @@ function DigitizeAccordion({
             />
           ) : (
             <div className="readable-content">
-              {[...tableJson, ...sectionDataArr].map((section) => {
+              {sectionDataArr.map((section) => {
                 if (section.type === 'table') {
                   return (
                     <DisplayTable
