@@ -53,11 +53,25 @@ function ImageUploader({ lineID, content, edit }) {
   const onImgEditBtnClick = () => {
     setIsEdit(true);
     setImgBkp(img);
+    const obj = {
+      currentLineId: lineID,
+      content: '',
+    };
+    dispatchSectionEvent('CONTENT_UPDATE', obj);
     setValue([]);
   };
 
   const handleCancel = () => {
-    setImg(imgBkp);
+    if (!imgBkp) {
+      dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
+    } else {
+      setImg(imgBkp);
+      const obj = {
+        currentLineId: lineID,
+        content: imgBkp,
+      };
+      dispatchSectionEvent('CONTENT_UPDATE', obj);
+    }
     setImgBkp(null);
     setIsEdit(false);
   };
