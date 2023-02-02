@@ -309,5 +309,5 @@ export const markContentForDelete = (origArray, lineId) => {
 };
 
 export const isPrimaryUser = (protMetaData) => {
-  return protMetaData.redactProfile === 'profile_1';
+  return protMetaData?.redactProfile === 'profile_1';
 };

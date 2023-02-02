@@ -9,14 +9,13 @@ import {
 } from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
-import { prepareContent } from '../../../utils/utilFunction';
+import { isPrimaryUser, prepareContent } from '../../../utils/utilFunction';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
   const summary = useSelector(headerResult);
   const dispatch = useDispatch();
   const [protData, setprotData] = useState(data);
-  const protassociateDocs = useSelector(associateDocs);
   const [selectedSection, setSelectedSection] = useState(null);
   const [sectionContent, setSectionContent] = useState(null);
 
@@ -139,14 +138,11 @@ function ProtocolView({ refs, data }) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
   useEffect(() => {
-    if (
-      protassociateDocs?.length &&
-      protassociateDocs[0]?.userRole === 'primary'
-    ) {
-      setprotData({ ...data, userPrimaryRoleFlag: true });
+    if (data) {
+      setprotData({ ...data, userPrimaryRoleFlag: isPrimaryUser(data) });
     }
     // eslint-disable-next-line
-  }, [protassociateDocs]);
+  }, [data]);
 
   return (
     <ProtocolContext.Provider value={ProtocolProviderValue}>
