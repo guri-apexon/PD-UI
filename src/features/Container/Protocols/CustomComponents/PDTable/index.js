@@ -70,6 +70,8 @@ const formattableData = (data) => {
   return cloneData;
 };
 
+const confirmText = 'Please confirm if you want to continue with deletion';
+
 function PDTable({
   data,
   edit,
@@ -131,9 +133,12 @@ function PDTable({
       setUpdatedData(newData);
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteRow) {
-      const newData = deleteRow(updatedData, index);
-      setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
+      // eslint-disable-next-line
+      if (confirm(confirmText)) {
+        const newData = deleteRow(updatedData, index);
+        setUpdatedData(newData);
+        setColumnLength(Object.keys(newData[0]).length);
+      }
     }
   };
   const handleSave = () => {
@@ -167,7 +172,7 @@ function PDTable({
     <section className="content-table-wrapper">
       {showconfirm && (
         <div className="confirmation-popup">
-          <p>Please confirm if you want to continue with deletion</p>
+          <p>{confirmText}</p>
           <ButtonGroup
             buttonProps={[
               {
