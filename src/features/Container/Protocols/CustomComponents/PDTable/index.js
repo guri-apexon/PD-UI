@@ -167,6 +167,7 @@ function PDTable({
     <section className="content-table-wrapper">
       {showconfirm && (
         <div className="confirmation-popup">
+          <p>Please confirm if you want to continue with deletion</p>
           <ButtonGroup
             buttonProps={[
               {

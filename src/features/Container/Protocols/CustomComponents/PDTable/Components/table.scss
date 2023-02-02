@@ -46,6 +46,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    p{
+      margin: 0 0 20px;
+    }
   }
 }
 /* .pd-table-inner {
