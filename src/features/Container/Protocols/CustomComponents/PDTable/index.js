@@ -84,6 +84,7 @@ function PDTable({
   const [columnLength, setColumnLength] = useState();
   const [colWidth, setColumnWidth] = useState(100);
   const [disabledBtn, setDisabledBtn] = useState(false);
+  const [showconfirm, setShowConfirm] = useState(false);
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -164,6 +165,25 @@ function PDTable({
   };
   return (
     <section className="content-table-wrapper">
+      {showconfirm && (
+        <div className="confirmation-popup">
+          <ButtonGroup
+            buttonProps={[
+              {
+                label: 'Cancel',
+                onClick: () => setShowConfirm(false),
+              },
+              {
+                label: 'Delete',
+                onClick: () =>
+                  dispatchSectionEvent('CONTENT_DELETED', {
+                    currentLineId: activeLineID,
+                  }),
+              },
+            ]}
+          />
+        </div>
+      )}
       {lineID === activeLineID && (
         <div className="button-container">
           <ButtonGroup
@@ -172,10 +192,7 @@ function PDTable({
                 size: 'small',
                 disabled: disabledBtn,
                 label: 'Delete',
-                onClick: () =>
-                  dispatchSectionEvent('CONTENT_DELETED', {
-                    currentLineId: activeLineID,
-                  }),
+                onClick: () => setShowConfirm(true),
               },
               {
                 size: 'small',
