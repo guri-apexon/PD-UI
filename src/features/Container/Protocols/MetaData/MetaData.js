@@ -28,6 +28,7 @@ function MetaData({ protocolId }) {
     { label: 'Objective and Endpoints' },
     { label: 'Adverse Events' },
     { label: 'Adverse Effect' },
+    { label: 'Objective Events5' },
   ]);
 
   const [suggestedSubList, setSuggestedSubList] = useState([

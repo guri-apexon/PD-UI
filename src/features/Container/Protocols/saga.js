@@ -436,16 +436,13 @@ export function* PostMetaDataVariable(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  console.log('Saga Post Call', MetaData);
-  const metaDataSelector = yield select(setAccordianData);
-  console.log('postcall data', metaDataSelector);
+  if (MetaData?.data?.isAdded) {
+    toast.info('Accordian Added Successfully');
+  } else if (!MetaData?.data?.isAdded) {
+    toast.error('Accordian Already Added');
+  }
   if (MetaData.success) {
-    // metadata call
-    const metadataValue = {
-      ...metaDataSelector,
-      fieldName: attributes,
-    };
-    console.log('metadataValue And Postupdate', metadataValue);
+    //
   } else {
     // yield put(getMetaDataVariable({ success: false, data: [] }));
   }
@@ -466,7 +463,11 @@ export function* updateMetaDataVariable(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  console.log('Saga Update Call', MetaData);
+  if (MetaData?.data?.isAdded) {
+    toast.info('Protocol Attributes Updated Successfully');
+  } else if (!MetaData?.data?.isAdded) {
+    toast.error('Duplicate Attributes');
+  }
   if (MetaData.success) {
     // calling accordian data
   } else {
