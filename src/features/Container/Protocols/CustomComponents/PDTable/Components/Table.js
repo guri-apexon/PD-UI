@@ -31,7 +31,8 @@ function DisplayTable({ data, onChange, handleRowOperation, edit, colWidth }) {
                   dangerouslySetInnerHTML={{ __html: row[key].content }}
                   contentEditable={edit}
                   onBlur={(e) => handleChange(key, rowIndex, e)}
-                />
+                ></span>
+                {/* <SanitizeHTML html={row[key]?.content} /> */}
               </div>
             ))}
           </div>

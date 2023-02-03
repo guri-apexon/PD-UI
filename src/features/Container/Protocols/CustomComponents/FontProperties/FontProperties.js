@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ListBullet from 'apollo-react-icons/ListBullet';
 import IconButton from 'apollo-react/components/IconButton';
@@ -6,7 +6,7 @@ import TrashIcon from 'apollo-react-icons/Trash';
 import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
-import { ProtocolContext, useProtContext } from '../../ProtocolContext';
+import { useProtContext } from '../../ProtocolContext';
 
 function FontProperties({ onHeaderSelect, activeLineID }) {
   const [enable, setEnable] = useState(activeLineID);
@@ -133,13 +133,6 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       >
         <ListBullet />
       </button>
-      {/* <Dropdown
-        list={symbolList}
-        onClick={onClick}
-        buttonName={'M'}
-        contentStyle={{ right: 0 }}
-        type="symbol"
-      /> */}
       <div className="right-menu">
         <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
         <IconButton

@@ -1,26 +1,44 @@
-import { render } from '@testing-library/react';
-import { TextHeader2, TextElement } from '../CustomComponents/MenuItems';
+import { render, cleanup } from '@testing-library/react';
+import {
+  TextHeader2,
+  TextElement,
+  ImageElement,
+} from '../CustomComponents/MenuItems';
 
-describe('TextHeader2', () => {
-  test('renders the correct text', () => {
+afterEach(cleanup);
+
+describe('TextHeader2 component', () => {
+  test('renders header text', () => {
     const { getByText } = render(<TextHeader2 />);
-    expect(getByText('Header')).toBeInTheDocument();
+    const header = getByText(/Header/i);
+    expect(header).toBeInTheDocument();
   });
 
-  test('has the correct class', () => {
-    const { container } = render(<TextHeader2 />);
-    expect(container.firstChild).toHaveClass('add-element');
+  test('has data-testId attribute', () => {
+    const { getByTestId } = render(<TextHeader2 />);
+    const header = getByTestId('header');
+    expect(header).toBeInTheDocument();
   });
 });
 
-describe('TextElement', () => {
-  test('renders the correct text', () => {
+describe('TextElement component', () => {
+  test('renders text element text', () => {
     const { getByText } = render(<TextElement />);
-    expect(getByText('Text')).toBeInTheDocument();
+    const text = getByText(/Text/i);
+    expect(text).toBeInTheDocument();
   });
 
-  test('has the correct class', () => {
-    const { container } = render(<TextElement />);
-    expect(container.firstChild).toHaveClass('add-element');
+  test('has data-testId attribute', () => {
+    const { getByTestId } = render(<TextElement />);
+    const text = getByTestId('text');
+    expect(text).toBeInTheDocument();
+  });
+});
+
+describe('ImageElement component', () => {
+  test('renders image element text', () => {
+    const { getByText } = render(<ImageElement />);
+    const image = getByText(/Image/i);
+    expect(image).toBeInTheDocument();
   });
 });

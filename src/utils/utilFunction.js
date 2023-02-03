@@ -199,8 +199,7 @@ export const uploadDateValidation = (uploadDate) => {
 
 export const updateContent = (origArray, obj) => {
   const arr = cloneDeep(origArray);
-
-  // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line
   arr.forEach((val) => {
     if (val.line_id === obj.lineId) {
       val.content = obj.content;
@@ -237,20 +236,23 @@ export const tableJSONByRowAndColumnLength = (row, column) => {
 };
 
 const setContent = (type) => {
-  if ([CONTENT_TYPE.TEXT, CONTENT_TYPE.HEADER].includes(type)) {
-    return 'Edit Your Text Here';
+  switch (type) {
+    case CONTENT_TYPE.TEXT:
+      return 'Edit Your Text Here';
+    case CONTENT_TYPE.HEADER:
+      return '<h2>Edit Your Text Here</h2>';
+    case CONTENT_TYPE.TABLE:
+      return {
+        Table: '',
+        TableProperties: tableJSONByRowAndColumnLength(2, 2),
+        SectionHeaderPrintPage: '0',
+        TableIndex: '1',
+        TableName: '',
+        Header: [],
+      };
+    default:
+      return '';
   }
-  if (type === CONTENT_TYPE.TABLE) {
-    return {
-      Table: '',
-      TableProperties: tableJSONByRowAndColumnLength(2, 2),
-      SectionHeaderPrintPage: '0',
-      TableIndex: '1',
-      TableName: '',
-      Header: [],
-    };
-  }
-  return '';
 };
 
 export const prepareContent = ({
@@ -271,10 +273,9 @@ export const prepareContent = ({
           content: setContent(contentType),
           qc_change_type: QC_CHANGE_TYPE.ADDED,
         };
-        // eslint-disable-next-line
         const index =
-          clonedSection.findIndex((val) => val.line_id === currentLineId) || 0;
-        clonedSection.splice(index + 1, 0, newObj);
+          clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
+        clonedSection?.splice(index + 1, 0, newObj);
         return clonedSection;
       }
       break;
@@ -311,3 +312,13 @@ export const markContentForDelete = (origArray, lineId) => {
 export const isPrimaryUser = (protMetaData) => {
   return protMetaData?.redactProfile === 'profile_1';
 };
+export const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => {
+      console.log(error);
+      return reject(error);
+    };
+  });

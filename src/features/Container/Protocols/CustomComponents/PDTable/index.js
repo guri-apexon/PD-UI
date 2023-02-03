@@ -2,43 +2,38 @@ import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
-import Save from 'apollo-react-icons/Save';
-import IconButton from 'apollo-react/components/IconButton';
 import EmptyColumnCells from './Components/EmptyColumns';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
 import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
-import FootNotes from './Components/Footnotes';
-import {
-  CONTENT_TYPE,
-  QC_CHANGE_TYPE,
-} from '../../../../../AppConstant/AppConstant';
+// import FootNotes from './Components/Footnotes';
+import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 
 const getColumnID = (data, key) => {
-  let column_roi_id = '';
+  let roiId = '';
   for (let i = 0; i < data.length; i++) {
     if (data[i][key]) {
-      column_roi_id = data[i][key].roi_id.column_roi_id;
+      roiId = data[i][key].roi_id.column_roi_id;
       break;
     }
   }
-  return column_roi_id;
+  return roiId;
 };
 const getIDs = (rows) => {
-  let row_roi_id = '';
-  let table_roi_id = '';
-  let datacell_roi_id = '';
+  let rowRoiId = '';
+  let tableRoiId = '';
+  let datacellRoiId = '';
   const keys = Object.keys(rows);
   for (let i = 0; i < keys.length; i++) {
     if (rows[keys[i]] && rows[keys[i]].roi_id.row_roi_id) {
-      row_roi_id = rows[keys[i]].roi_id.row_roi_id;
-      datacell_roi_id = uuidv4();
-      table_roi_id = rows[keys[i]].roi_id.table_roi_id;
+      rowRoiId = rows[keys[i]].roi_id.row_roi_id;
+      datacellRoiId = uuidv4();
+      tableRoiId = rows[keys[i]].roi_id.table_roi_id;
       break;
     }
   }
-  return { row_roi_id, table_roi_id, datacell_roi_id };
+  return { rowRoiId, tableRoiId, datacellRoiId };
 };
 const formattableData = (data) => {
   const cloneData = [...data];
@@ -72,15 +67,7 @@ const formattableData = (data) => {
 
 const confirmText = 'Please confirm if you want to continue with deletion';
 
-function PDTable({
-  data,
-  edit,
-  onChange,
-  index,
-  segment,
-  activeLineID,
-  lineID,
-}) {
+function PDTable({ data, segment, activeLineID, lineID }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
   const [columnLength, setColumnLength] = useState();
@@ -159,15 +146,15 @@ function PDTable({
     }, 1000);
     // onChange(content, segment.line_id);
   };
-  const handleFootnoteEdit = (editedText, index) => {
-    const attachmentArr = [...footNoteData];
-    attachmentArr[index] = {
-      ...attachmentArr[index],
-      Text: editedText,
-      qc_change_type: QC_CHANGE_TYPE.UPDATED,
-    };
-    setFootnoteData(attachmentArr);
-  };
+  // const handleFootnoteEdit = (editedText, index) => {
+  //   const attachmentArr = [...footNoteData];
+  //   attachmentArr[index] = {
+  //     ...attachmentArr[index],
+  //     Text: editedText,
+  //     qc_change_type: QC_CHANGE_TYPE.UPDATED,
+  //   };
+  //   setFootnoteData(attachmentArr);
+  // };
   return (
     <section className="content-table-wrapper">
       {showconfirm && (
@@ -246,9 +233,6 @@ export default PDTable;
 
 PDTable.propTypes = {
   data: PropTypes.isRequired,
-  edit: PropTypes.isRequired,
-  onChange: PropTypes.isRequired,
-  index: PropTypes.isRequired,
   segment: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   lineID: PropTypes.isRequired,

@@ -28,8 +28,16 @@ function EmptyRowCells({ rowIndex, handleOperation, index }) {
     setActiveIconIndex(null);
   };
   return (
-    <div className="pd-empty-row-cells" ref={rowHoverRef}>
-      <div key={uuidv4()} className="pd-empty-cell-row">
+    <div
+      className="pd-empty-row-cells"
+      ref={rowHoverRef}
+      data-testId="more-icon"
+    >
+      <div
+        key={uuidv4()}
+        className="pd-empty-cell-row"
+        data-testId="Table Operation"
+      >
         {/* eslint-disable-next-line */}
         <span
           className="pd-more-icon"

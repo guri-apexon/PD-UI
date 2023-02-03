@@ -1,7 +1,7 @@
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
-import { ProtocolContext, useProtContext } from '../ProtocolContext';
+import { useProtContext } from '../ProtocolContext';
 
 function ContentEdit({ type, lineID, content, deleteSection, edit }) {
   const [text, setText] = useState(content);
@@ -43,7 +43,6 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
         onChange={handleChange}
         onBlur={handleBlur}
         tagName="div"
-        // onClick={(e) => contentClick(lineID, e)}
         onKeyDown={handleKeyDown}
         data-placeholder
         data-testId="contentEdit"
