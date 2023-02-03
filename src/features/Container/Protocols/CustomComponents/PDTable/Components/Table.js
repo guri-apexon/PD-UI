@@ -26,12 +26,12 @@ function DisplayTable({ data, onChange, handleRowOperation, edit, colWidth }) {
                 className="pd-table-cell"
                 style={{ width: `${colWidth}%` }}
               >
-                {/* eslint-disable-next-line */}
                 <span
+                  // eslint-disable-next-line
                   dangerouslySetInnerHTML={{ __html: row[key].content }}
                   contentEditable={edit}
                   onBlur={(e) => handleChange(key, rowIndex, e)}
-                ></span>
+                />
               </div>
             ))}
           </div>
