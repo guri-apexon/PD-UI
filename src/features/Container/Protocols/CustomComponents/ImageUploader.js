@@ -62,7 +62,7 @@ function ImageUploader({ lineID, content, edit }) {
     setIsEdit(false);
   };
 
-  // eslint-disable-next-line no-nested-ternary
+  // eslint-disable-next-line
   return edit ? (
     isEdit ? (
       <div className="img-container" data-testId="file-upload">
