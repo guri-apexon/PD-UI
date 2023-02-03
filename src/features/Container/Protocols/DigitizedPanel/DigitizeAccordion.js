@@ -42,6 +42,8 @@ function DigitizeAccordion({
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
+  const [linkId, setLinkId] = useState();
+  const [docId, setDocId] = useState();
 
   const { data: sectionData } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
@@ -108,6 +110,8 @@ function DigitizeAccordion({
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
       if (arr.length === 0) {
         setShowLoader(true);
+        setLinkId(item.link_id);
+        setDocId(item.doc_id);
         dispatch({
           type: 'GET_SECTION_LIST',
           payload: {
@@ -318,6 +322,8 @@ function DigitizeAccordion({
         expanded={expanded}
         enrichedText={selectedEnrichedText}
         clinicalTerms={clinicalTerms}
+        linkId={linkId}
+        docId={docId}
       />
     </Accordion>
   );

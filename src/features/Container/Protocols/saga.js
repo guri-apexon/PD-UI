@@ -22,6 +22,7 @@ import {
   getRightBladeValue,
   getMetaDataVariable,
   getTOCActive,
+  getEnrichedApiValue,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 
@@ -422,26 +423,31 @@ export function* setTOCActive(action) {
 }
 
 export function* saveEnrichedAPI(action) {
+  const {
+    payload: { docId, linkId, data },
+  } = action;
   const config = {
-    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}`,
+    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}/?doc_id=${docId}&link_id=${linkId}`,
     method: 'POST',
+    data: {
+      data,
+    },
   };
-  const sectionDetails = yield call(httpCall, config);
-  yield put(setSectionLoader(false));
+  // const enrichedData = yield call(httpCall, config);
 
-  if (sectionDetails.success) {
-    yield put(
-      setSectionDetails({
-        protocol: action.payload.protocol,
-        data: sectionDetails.data,
-        linkId: action.payload.linkId,
-      }),
-    );
-  } else if (sectionDetails.message === 'No Access') {
-    console.log('No Access');
+  const enrichedData1 = { success: true };
+  if (enrichedData1?.success) {
+    toast.info('Enriched Data Updated');
+    //  yield put(getEnrichedApiValue(true));
+    yield call(getEnrichedApiValue, true);
   } else {
-    console.log('Error while loading');
+    yield call(getEnrichedApiValue, true);
+    toast.error('Error While Updation');
   }
+}
+
+export function* setEnrichedAPI(action) {
+  yield put(getEnrichedApiValue(action.payload.flag));
 }
 
 function* watchProtocolAsync() {
@@ -461,6 +467,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
   yield takeEvery('SET_TOC_Active', setTOCActive);
   yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
+  yield takeEvery('GET_ENRICHED_API', saveEnrichedAPI);
 }
 
 // notice how we now only export the rootSaga

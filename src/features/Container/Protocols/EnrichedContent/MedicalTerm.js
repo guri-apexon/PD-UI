@@ -7,14 +7,18 @@ import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
+import { useDispatch, useSelector } from 'react-redux';
 import enrichedTerms from './clinicalTerms.json';
 import './MedicalTerm.scss';
+import { EnrichedValue } from '../protocolSlice';
 
 function MedicalTerm({
   enrichedTarget,
   expanded,
   enrichedText,
   clinicalTerms: clinicalTermsArr,
+  linkId,
+  docId,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
@@ -28,17 +32,15 @@ function MedicalTerm({
   const [synonyms, setSynonyms] = useState();
   const [classification, setClassification] = useState();
   const [ontologyTemp, setOntologyTemp] = useState();
+  const dispatch = useDispatch();
+  const apiFlagselector = useSelector(EnrichedValue);
+  const [apiFlag, setApiFlag] = useState(false);
 
-  console.log('enrichedTarget', enrichedTarget);
-  console.log('enrichedText', enrichedText);
-  console.log('clinicalTermsArr', clinicalTermsArr);
+  useEffect(() => {
+    setApiFlag(apiFlagselector);
+  }, [apiFlagselector]);
 
   const restructingObject = () => {
-    console.log('teheye', Object.keys(clinicalTermsArr[enrichedText]));
-    // console.log(
-    //   'clinicalTermsArr baher',
-    //   Object.keys(clinicalTermsArr[enrichedText])[0],
-    // );
     for (
       let i = 0;
       i < Object.keys(clinicalTermsArr[enrichedText]).length;
@@ -104,8 +106,8 @@ function MedicalTerm({
       }
       return x;
     });
-    console.log('NewARR', newArr);
-    setChildArr(newArr);
+    console.log('apiFlag', apiFlag);
+    if (apiFlag) setChildArr(newArr);
     setChildTermValue(null);
     // const clinicalTermSave = [...clinicalTermsArr];
     // console.log('clinicalTermSave', clinicalTermSave);
@@ -123,6 +125,16 @@ function MedicalTerm({
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
     console.log('saveObj', saveObj);
+
+    dispatch({
+      type: 'SAVE_ENRICHED_DATA',
+      payload: {
+        docId,
+        linkId,
+        data: saveObj,
+      },
+    });
+
     return true;
   };
 
@@ -238,4 +250,6 @@ MedicalTerm.propTypes = {
   expanded: PropTypes.isRequired,
   enrichedText: PropTypes.isRequired,
   clinicalTerms: PropTypes.isRequired,
+  linkId: PropTypes.isRequired,
+  docId: PropTypes.isRequired,
 };
