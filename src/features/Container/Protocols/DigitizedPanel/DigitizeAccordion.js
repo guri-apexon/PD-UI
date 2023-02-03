@@ -186,8 +186,6 @@ function DigitizeAccordion({
   };
 
   useEffect(() => {
-    // console.log('sectionHeaderDetails', sectionHeaderDetails);
-    // eslint-disable-next-line
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
       if (arr.length > 0) {

@@ -9,6 +9,10 @@ import './hoverComponent.scss';
 import { TextElement, TextHeader2, ImageElement } from './MenuItems';
 import ProtocolContext from '../ProtocolContext';
 
+const anchorOrigin = {
+  vertical: 'bottom',
+  horizontal: 'left',
+};
 function HoverComponent({ lineId, activeLineID }) {
   const { dispatchSectionEvent } = useContext(ProtocolContext);
   const handleAddSegment = (type) => {
@@ -30,7 +34,6 @@ function HoverComponent({ lineId, activeLineID }) {
   ];
   return (
     <div
-      // className="no-option"
       data-testId="hover-component"
       className={
         lineId === activeLineID ? 'contentmenu show' : 'contentmenu hide'
@@ -46,10 +49,7 @@ function HoverComponent({ lineId, activeLineID }) {
           className="icon-buttons"
           id={uuidv4()}
           menuItems={menuItems}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
+          anchorOrigin={anchorOrigin}
           size="small"
           data-testId="addIcon"
         >

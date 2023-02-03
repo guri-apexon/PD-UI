@@ -133,13 +133,6 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       >
         <ListBullet />
       </button>
-      {/* <Dropdown
-        list={symbolList}
-        onClick={onClick}
-        buttonName={'M'}
-        contentStyle={{ right: 0 }}
-        type="symbol"
-      /> */}
       <div className="right-menu">
         <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
         <IconButton

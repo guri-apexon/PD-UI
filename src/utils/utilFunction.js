@@ -237,7 +237,6 @@ export const prepareContent = ({
           line_id: uuidv4(),
           content: setContent(contentType),
         };
-        // eslint-disable-next-line
         const index =
           clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
         clonedSection?.splice(index + 1, 0, newObj);

@@ -12,13 +12,13 @@ function RenderContent({
   deleteSection,
   edit,
 }) {
-  const { type, content, line_id: lineID } = sectionData;
+  const { type, content = '', line_id: lineID } = sectionData;
 
   if (type === 'header') {
     return (
       <EditContent
         type="header"
-        content={content || ''}
+        content={content}
         lineID={lineID}
         setActiveLineID={setActiveLineID}
         activeLineID={activeLineID}
@@ -32,7 +32,7 @@ function RenderContent({
     return (
       <EditContent
         type="text"
-        content={content || ''}
+        content={content}
         lineID={lineID}
         setActiveLineID={setActiveLineID}
         activeLineID={activeLineID}
@@ -45,7 +45,7 @@ function RenderContent({
   if (type === 'image') {
     return (
       <ImageUploader
-        content={content || ''}
+        content={content}
         lineID={lineID}
         setActiveLineID={setActiveLineID}
         activeLineID={activeLineID}

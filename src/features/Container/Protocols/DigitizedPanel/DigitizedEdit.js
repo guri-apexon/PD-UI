@@ -12,20 +12,9 @@ import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
 
 function MultilineEdit({ sectionDataArr, edit }) {
-  // const [value, setValue] = useState(null);
   const [sections, setSections] = useState([]);
   useEffect(() => {
     if (sectionDataArr?.length > 0) {
-      // const arr = sectionDataArr.map((val, index) => ({
-      //   key: index,
-      //   text: val.content,
-      //   type: 'LeftAlignedBlock',
-      //   depth: 0,
-      //   inlineStyleRanges: [],
-      //   entityRanges: [],
-      //   data: {},
-      // }));
-      // setValue({ blocks: arr, entityMap: {} });
       setSections(sectionDataArr);
     }
   }, [sectionDataArr]);
@@ -50,26 +39,9 @@ function MultilineEdit({ sectionDataArr, edit }) {
     const arr = markContentForDelete(sectionDataArr, lineId);
     dispatch(setSectionDetails(arr));
   };
-  const handleClickChild = (item, type) => {
-    console.log('handleClickChild::', item, type);
-    // if (type === 'symbol') {
-    //   if (currentEditData.current) {
-    //     const newText = `${currentEditData.current} ${item.name}`;
-    //     currentEditData.current = newText;
-    //   } else {
-    //     const newText = `${text} ${item.name}`;
-    //     setText(newText);
-    //   }
-    // }
-  };
   return (
     <div className="Richtextcontainer" data-testId="richTextEditor">
-      {edit && (
-        <FontProperties
-          activeLineID={activeLineID}
-          onHeaderSelect={handleClickChild}
-        />
-      )}
+      {edit && <FontProperties activeLineID={activeLineID} />}
       <section className="section-edited-list">
         {sections
           ?.filter((section) => section.qc_change_type !== 'delete')
