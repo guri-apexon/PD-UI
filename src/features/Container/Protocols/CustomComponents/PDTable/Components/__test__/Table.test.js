@@ -19,6 +19,28 @@ const tableData = [
 
 describe('PD table', () => {
   test('table renders without crashing', () => {
-    // const wrapper=render (<Table data=, onChange, handleRowOperation, edit, colWidth)
+    const wrapper = render(
+      <Table
+        data={tableData}
+        onChange={jest.fn()}
+        handleRowOperation={jest.fn()}
+        edit={false}
+        colWidth={30}
+      />,
+    );
+    expect(wrapper).toBeTruthy();
+  });
+
+  test('check', () => {
+    const { get } = render(
+      <Table
+        data={tableData}
+        onChange={jest.fn()}
+        handleRowOperation={jest.fn()}
+        edit={false}
+        colWidth={30}
+      />,
+    );
+    expect(wrapper).toBeTruthy();
   });
 });
