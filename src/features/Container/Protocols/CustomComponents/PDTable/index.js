@@ -155,10 +155,15 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   //   };
   //   setFootnoteData(attachmentArr);
   // };
+
+  useEffect(() => {
+    console.log({ updatedData: JSON.stringify(updatedData) });
+  }, [updatedData]);
+
   return (
     <section className="content-table-wrapper">
       {showconfirm && (
-        <div className="confirmation-popup">
+        <div className="confirmation-popup" data-testId="confirmPopup">
           <p>{confirmText}</p>
           <ButtonGroup
             buttonProps={[
@@ -178,7 +183,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         </div>
       )}
       {lineID === activeLineID && (
-        <div className="button-container">
+        <div className="button-container" data-testId="button-container">
           <ButtonGroup
             buttonProps={[
               {
