@@ -47,22 +47,23 @@ function MedicalTerm({
   }, [apiFlagselector]);
 
   const restructingObject = () => {
-    for (
-      let i = 0;
-      i < Object.keys(clinicalTermsArr[enrichedText]).length;
-      i++
-    ) {
-      if (Object.keys(clinicalTermsArr[enrichedText])[i] === 'preferred_term') {
-        setPreferredTerm(Object.values(clinicalTermsArr[enrichedText])[i]);
+    const object = Object.keys(clinicalTermsArr[enrichedText] || {});
+    for (let i = 0; i < object.length; i++) {
+      if (
+        Object?.keys(clinicalTermsArr[enrichedText])[i] === 'preferred_term'
+      ) {
+        setPreferredTerm(Object?.values(clinicalTermsArr[enrichedText])[i]);
       }
-      if (Object.keys(clinicalTermsArr[enrichedText])[i] === 'synonyms') {
-        setSynonyms(Object.values(clinicalTermsArr[enrichedText])[i]);
+      if (Object?.keys(clinicalTermsArr[enrichedText])[i] === 'synonyms') {
+        setSynonyms(Object?.values(clinicalTermsArr[enrichedText])[i]);
       }
-      if (Object.keys(clinicalTermsArr[enrichedText])[i] === 'classification') {
-        setClassification(Object.values(clinicalTermsArr[enrichedText])[i]);
+      if (
+        Object?.keys(clinicalTermsArr[enrichedText])[i] === 'classification'
+      ) {
+        setClassification(Object?.values(clinicalTermsArr[enrichedText])[i]);
       }
-      if (Object.keys(clinicalTermsArr[enrichedText])[i] === 'ontology') {
-        setOntologyTemp(Object.values(clinicalTermsArr[enrichedText])[i]);
+      if (Object?.keys(clinicalTermsArr[enrichedText])[i] === 'ontology') {
+        setOntologyTemp(Object?.values(clinicalTermsArr[enrichedText])[i]);
       }
     }
   };
