@@ -1,77 +1,22 @@
 [
     {
-        "value": "Synonyms",
-        "termLabel": "Synonyms",
-        "data": [
-            {
-                "label": "Euismod"
-            },
-            {
-                "label": "Molestie"
-            },
-            {
-                "label": "Luptatum"
-            }
-        ]
+        "key": "synonyms",
+        "value": "Synonyms"
     },
     {
-        "value": "Clinical Terms",
-        "termLabel": "Clinical Terms",
-        "data": [
-            {
-                "label": "Euismod"
-            },
-            {
-                "label": "Molestie"
-            },
-            {
-                "label": "Luptatum"
-            }
-        ]
+        "key": "medical_term",
+        "value": "Clinical Terms"
     },
     {
-        "value": "Ontology",
-        "termLabel": "Ontology",
-        "data": [
-            {
-                "label": "Euismod"
-            },
-            {
-                "label": "Molestie"
-            },
-            {
-                "label": "Luptatum"
-            }
-        ]
+        "key": "ontology",
+        "value": "Ontology"
     },
     {
-        "value": "Prefered Term",
-        "termLabel": "Preferred Term",
-        "data": [
-            {
-                "label": "Euismod"
-            },
-            {
-                "label": "Molestie"
-            },
-            {
-                "label": "Luptatum"
-            }
-        ]
+        "key": "preferred_term",
+        "value": "Preferred Term"
     },
     {
-        "value": "Classification",
-        "termLabel": "Classification",
-        "data": [
-            {
-                "label": "Euismod"
-            },
-            {
-                "label": "Molestie"
-            },
-            {
-                "label": "Luptatum"
-            }
-        ]
+        "key": "classification",
+        "value": "Classification"
     }
 ]
