@@ -6,7 +6,7 @@
     box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.08);
     border: 1px solid #e9e9e9;
   }
-  [class*='Blade-backdrop-'] {
+  .MuiBackdrop-root {
     top: 141px;
   }
   div [class*='MuiButton-textPrimary-'] :hover {

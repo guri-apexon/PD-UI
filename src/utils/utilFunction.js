@@ -153,6 +153,18 @@ export const createFullMarkup = (str) => {
   };
 };
 
+export const createEnrichedText = (content, terms) => {
+  let text = content;
+  if (terms) {
+    const arr = Object.keys(terms);
+    arr.forEach((term) => {
+      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, content);
+    });
+  }
+
+  return text;
+};
+
 export const handleProtocolTitle = (value, testID) => {
   return (
     <Tooltip

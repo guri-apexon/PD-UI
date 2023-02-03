@@ -7,38 +7,60 @@ import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
-import CLINICAL_TERMS_DATA from './clinicalTerms.json';
+import enrichedTerms from './clinicalTerms.json';
 import './MedicalTerm.scss';
 
-function MedicalTerm({ enrichedTarget, expanded }) {
-  const [clinicalTerms, setclinicalTerms] = useState(CLINICAL_TERMS_DATA);
+function MedicalTerm({
+  enrichedTarget,
+  expanded,
+  enrichedText,
+  clinicalTerms: clinicalTermsArr,
+}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
   const [selectedTerm, setSelectedTerm] = useState(null);
   const [childTermValue, setChildTermValue] = useState(false);
   const [newTermValue, setNewTermValue] = useState('');
+  const [clinicalTerms, setClinicalTerms] = useState([]);
+  const [childArr, setChildArr] = useState([]);
 
-  const childDataArr = () => {
-    return clinicalTerms.find((x) => x.termLabel === selectedTerm)?.data;
-  };
+  useEffect(() => {
+    if (enrichedText) {
+      setClinicalTerms([...enrichedTerms]);
+    } else {
+      setClinicalTerms([]);
+      setSAnchorEl(null);
+    }
+    // eslint-disable-next-line
+  }, [enrichedText, clinicalTermsArr]);
+
+  useEffect(() => {
+    if (selectedTerm) {
+      const arr = clinicalTermsArr[enrichedText][selectedTerm]?.split(',');
+      if (arr && arr.length === 1 && arr[0] === '') {
+        setChildArr([]);
+      } else {
+        setChildArr(arr);
+      }
+    }
+    // eslint-disable-next-line
+  }, [selectedTerm]);
+
   const handleSave = () => {
     if (newTermValue === '') {
       return false;
     }
     if (!childTermValue || !selectedTerm) return false;
-    setclinicalTerms((prevState) =>
-      prevState.map((prev) => {
-        if (prev.termLabel === selectedTerm) {
-          return {
-            ...prev,
-            data: prev.data.map((x) =>
-              x.label === childTermValue ? { ...x, label: newTermValue } : x,
-            ),
-          };
-        }
-        return prev;
-      }),
-    );
+    const temp = [...childArr];
+
+    const newArr = temp.map((x) => {
+      if (x === childTermValue) {
+        return newTermValue;
+      }
+      return x;
+    });
+
+    setChildArr(newArr);
     setChildTermValue(null);
     return true;
   };
@@ -47,14 +69,18 @@ function MedicalTerm({ enrichedTarget, expanded }) {
     setAnchorEl(enrichedTarget || null);
     if (!enrichedTarget) setSelectedTerm(null);
   }, [enrichedTarget]);
+
   useEffect(() => {
     setNewTermValue(childTermValue);
   }, [childTermValue]);
+
   useEffect(() => {
     if (!expanded) {
       setAnchorEl(null);
+      setSAnchorEl(null);
     }
   }, [expanded]);
+
   if (!expanded) {
     return null;
   }
@@ -65,20 +91,19 @@ function MedicalTerm({ enrichedTarget, expanded }) {
         <Card interactive className="main-popper">
           <div className="terms-list">
             {clinicalTerms.map((item) => {
-              const isActive =
-                selectedTerm === item.termLabel && item.data?.length;
+              const isActive = selectedTerm === item.key;
               return (
-                <li key={item.termLabel}>
+                <li key={item}>
                   <Button
                     data-testId="handleSave"
                     className="term-item"
                     onClick={(e) => {
-                      setSelectedTerm(item.termLabel);
+                      setSelectedTerm(item.key);
                       setSAnchorEl(!SanchorEl ? e.currentTarget : null);
                     }}
                   >
-                    {item.termLabel}
-                    {isActive && <ArrowRight />}
+                    {item.value}
+                    {isActive && childArr.length > 0 && <ArrowRight />}
                   </Button>
                 </li>
               );
@@ -93,23 +118,25 @@ function MedicalTerm({ enrichedTarget, expanded }) {
         transition
       >
         <Card interactive className="sub-popper">
-          <div className="terms-list">
-            {childDataArr()?.map((item) => {
-              return (
-                <li key={item.label}>
-                  <Button value={item.label} className="term-item">
-                    <span className="sub-term-text">{item.label}</span>
-                    <Pencil
-                      className="edit-Icon"
-                      onClick={() => {
-                        setChildTermValue(item.label);
-                      }}
-                    />
-                  </Button>
-                </li>
-              );
-            })}
-          </div>
+          {childArr.length > 0 && (
+            <div className="terms-list">
+              {childArr?.map((item) => {
+                return (
+                  <li key={item}>
+                    <Button value={item} className="term-item">
+                      <span className="sub-term-text">{item}</span>
+                      <Pencil
+                        className="edit-Icon"
+                        onClick={() => {
+                          setChildTermValue(item);
+                        }}
+                      />
+                    </Button>
+                  </li>
+                );
+              })}
+            </div>
+          )}
         </Card>
       </Popper>
       <Modal
@@ -146,4 +173,6 @@ export default MedicalTerm;
 MedicalTerm.propTypes = {
   enrichedTarget: PropTypes.isRequired,
   expanded: PropTypes.isRequired,
+  enrichedText: PropTypes.isRequired,
+  clinicalTerms: PropTypes.isRequired,
 };

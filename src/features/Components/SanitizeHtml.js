@@ -3,8 +3,8 @@ import DOMPurify from 'dompurify';
 
 function SanitizeHTML({ html, options }) {
   const defaultOptions = {
-    ALLOWED_TAGS: ['a', 'div', 'span', 'p'],
-    ALLOWED_ATTR: ['style'],
+    ALLOWED_TAGS: ['a', 'div', 'span', 'p', 'b'],
+    ALLOWED_ATTR: ['style', 'class'],
   };
 
   const sanitize = (dirty, options) => {
