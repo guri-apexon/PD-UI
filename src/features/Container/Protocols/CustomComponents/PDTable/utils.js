@@ -53,6 +53,7 @@ export const deleteRow = (rows, index) => {
 };
 
 export const addColumn = (tabledata, index) => {
+  console.log(JSON.stringify(tabledata));
   const data = cloneDeep(tabledata);
   for (let i = 0; i < data.length; i++) {
     Object.keys(data[i]).forEach((key, j) => {

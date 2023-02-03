@@ -41,7 +41,7 @@ describe('Dropdown', () => {
       />,
     );
     const list = screen.getAllByTestId('list');
-    expect(list.length).toBe(3);
+    expect(list.length).toBe(5);
   });
 
   test('Format content on button click', () => {
