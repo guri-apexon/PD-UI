@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Table from 'apollo-react/components/Table';
 import PropTypes from 'prop-types';
 import Modal from 'apollo-react/components/Modal';
@@ -115,18 +115,7 @@ function MetaDataEditTable({
   const removeIndex = (key) => {
     setColumn(column.filter((col) => col.accessor !== key));
   };
-  const reArrangeColumn = (data) => {
-    let index;
-    for (let i = 0; i < data.length; i++) {
-      if (Object.values(data[i])[1] === 'isCustom') {
-        index = i;
-      }
-    }
-    const obj = data[index];
-    data.splice(index, 1);
-    data.push(obj);
-    setColumn(data);
-  };
+
   const handleConfidence = (e, checked) => {
     setConfidence(checked);
     if (checked) {

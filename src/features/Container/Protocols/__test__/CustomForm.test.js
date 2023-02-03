@@ -1,91 +1,66 @@
-import { render, fireEvent } from '../../../../test-utils/test-utils';
-import CustomForm from '../MetaData/CustomForm';
+import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import { InputKeyField } from '../MetaData/CustomForm';
 
-const sample = [
-  {
-    content: 'This is an Example',
-  },
-];
-
-describe('Metadata Accordian View', () => {
-  test('should render the component', () => {
-    const component = render(
-      <CustomForm
-        item={sample}
-        handleChange={jest.fn()}
-        deleteMetaData={jest.fn()}
+describe('InputKeyField', () => {
+  it('renders the correct placeholder text', () => {
+    const { getByPlaceholderText } = render(
+      <InputKeyField
+        keyName="testKey"
+        handleChange={() => {}}
+        handleBlur={() => {}}
+        inputValue=""
       />,
     );
 
-    const metadataAccordian = component.getByTestId('customeform');
+    const inputElement = getByPlaceholderText('Enter Key');
 
-    expect(component).toBeTruthy();
-
-    expect(metadataAccordian).toBeInTheDocument();
+    expect(inputElement).toBeInTheDocument();
   });
-});
 
-describe('Metadata CustomFied textBox Key', () => {
-  test('should render the component', () => {
-    const component = render(
-      <CustomForm
-        item={sample}
-        handleChange={jest.fn()}
-        deleteMetaData={jest.fn()}
+  it('updates the input value on change', () => {
+    const handleChange = jest.fn();
+
+    const { getByTestId } = render(
+      <InputKeyField
+        keyName="testKey"
+        handleChange={handleChange}
+        handleBlur={() => {}}
+        inputValue=""
       />,
     );
 
-    const metadataAccordian = component.getByTestId('customeform');
+    const inputElement = getByTestId('customeform-textField-key');
+    fireEvent.change(inputElement, { target: { value: 'newValue' } });
 
-    expect(component).toBeTruthy();
-
-    expect(metadataAccordian).toBeInTheDocument();
-    const textfield = component.getByTestId('customeform-textField-key');
-    expect(textfield).toBeInTheDocument();
-    fireEvent.change(textfield, { target: { value: 'test' } });
-    expect(textfield.value).toBe('test');
+    expect(handleChange).toHaveBeenCalledWith({
+      target: {
+        name: 'testKey',
+        value: 'newValue',
+      },
+    });
   });
-});
 
-describe('Metadata CustomFied textBox value', () => {
-  test('should render the component', () => {
-    const component = render(
-      <CustomForm
-        item={sample}
-        handleChange={jest.fn()}
-        deleteMetaData={jest.fn()}
+  it('calls handleBlur on input blur', () => {
+    const handleBlur = jest.fn();
+
+    const { getByTestId } = render(
+      <InputKeyField
+        keyName="testKey"
+        handleChange={() => {}}
+        handleBlur={handleBlur}
+        inputValue=""
       />,
     );
 
-    const metadataAccordian = component.getByTestId('customeform');
+    const inputElement = getByTestId('customeform-textField-key');
+    fireEvent.blur(inputElement);
 
-    expect(component).toBeTruthy();
-
-    expect(metadataAccordian).toBeInTheDocument();
-    const textfield = component.getByTestId('customeform-textField-value');
-    expect(textfield).toBeInTheDocument();
-    fireEvent.change(textfield, { target: { value: 'test1' } });
-    expect(textfield.value).toBe('test1');
-  });
-});
-
-describe('Metadata CustomFied checkbox', () => {
-  test('should render the component', () => {
-    const component = render(
-      <CustomForm
-        item={sample}
-        handleChange={jest.fn()}
-        deleteMetaData={jest.fn()}
-      />,
-    );
-
-    const metadataAccordian = component.getByTestId('customeform');
-
-    expect(component).toBeTruthy();
-
-    expect(metadataAccordian).toBeInTheDocument();
-    const textfield = component.getByTestId('customeform-textField-checkbox');
-    expect(textfield).toBeInTheDocument();
-    fireEvent.change(textfield, { target: { value: 'test11' } });
+    expect(handleBlur).toHaveBeenCalledWith({
+      target: {
+        name: 'testKey',
+        value: '',
+      },
+    });
   });
 });

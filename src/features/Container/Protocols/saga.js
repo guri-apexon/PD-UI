@@ -24,7 +24,6 @@ import {
   getMetaDataVariable,
   getTOCActive,
   setAccordianData,
-  metaDataVariable,
   getMetadataApiCall,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
@@ -259,8 +258,6 @@ export function* getSectionList(action) {
     );
   } else if (sectionDetails.message === 'No Access') {
     console.log('No Access');
-  } else {
-    console.log('Error while loading');
   }
 }
 
@@ -473,7 +470,6 @@ export function* addMetaDataField(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  console.log('MetaData', reqData);
   if (MetaData?.data?.isAdded) {
     toast.info(`${reqData.name} added successfully`);
     yield call(MetaDataVariable, action);
