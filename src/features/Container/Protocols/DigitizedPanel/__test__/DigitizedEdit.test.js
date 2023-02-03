@@ -1,5 +1,5 @@
 import { render } from '../../../../../test-utils/test-utils';
-import ProtocolContext from '../../ProtocolContext';
+import * as ProtocolContext from '../../ProtocolContext';
 import DigitizedEdit from '../DigitizedEdit';
 
 const sectionData = [
@@ -44,15 +44,12 @@ const sectionData = [
 
 describe('DigitizedEdit', () => {
   test('render component without error', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <DigitizedEdit
-          sectionDataArr={sectionData}
-          edit={false}
-          pageRight={2}
-        />
-        ,
-      </ProtocolContext.Provider>,
+      <DigitizedEdit sectionDataArr={sectionData} edit={false} pageRight={2} />,
     );
     expect(screen).toBeTruthy();
   });
