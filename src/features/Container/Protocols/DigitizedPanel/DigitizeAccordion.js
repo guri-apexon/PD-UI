@@ -373,6 +373,5 @@ DigitizeAccordion.propTypes = {
   rightBladeValue: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
-  scrollToTop: PropTypes.isRequired,
   index: PropTypes.isRequired,
 };

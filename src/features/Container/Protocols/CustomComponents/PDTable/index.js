@@ -7,10 +7,7 @@ import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
 import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
 // import FootNotes from './Components/Footnotes';
-import {
-  CONTENT_TYPE,
-  QC_CHANGE_TYPE,
-} from '../../../../../AppConstant/AppConstant';
+import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 
 const getColumnID = (data, key) => {
