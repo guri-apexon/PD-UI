@@ -16,6 +16,7 @@ function MultilineEdit({ sectionDataArr, edit }) {
   const [sections, setSections] = useState([]);
   useEffect(() => {
     if (sectionDataArr?.length > 0) {
+      // console.log('sectionDataArr', sectionDataArr);
       // const arr = sectionDataArr.map((val, index) => ({
       //   key: index,
       //   text: val.content,

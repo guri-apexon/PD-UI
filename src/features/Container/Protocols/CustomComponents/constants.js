@@ -37,6 +37,7 @@ const text = {
 };
 
 const table = { ...text, type: 'table' };
+const header = { ...text, type: 'header' };
 
 // eslint-disable-next-line import/prefer-default-export
-export default { text, table };
+export default { text, table, header };
