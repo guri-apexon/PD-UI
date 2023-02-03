@@ -3,11 +3,13 @@ import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
 import EyeShow from 'apollo-react-icons/EyeShow';
+import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './DigitizedEdit';
 import Loader from '../../../Components/Loader/Loader';
@@ -17,8 +19,18 @@ import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import ProtocolContext from '../ProtocolContext';
+import ImageUploader from '../CustomComponents/ImageUploader';
 
 const enrichedDummyText = <b className="enriched-txt">Enriched Text</b>;
+
+const styles = {
+  modal: {
+    maxWidth: 500,
+  },
+};
+
+const useStyles = makeStyles(styles);
+
 function DigitizeAccordion({
   item,
   protocol,
@@ -29,6 +41,7 @@ function DigitizeAccordion({
   currentEditCard,
   setCurrentEditCard,
 }) {
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
@@ -37,6 +50,7 @@ function DigitizeAccordion({
   const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const [editedMode, setEditedMode] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
 
   const { data: sectionData } = sectionHeaderDetails;
@@ -109,19 +123,30 @@ function DigitizeAccordion({
       });
     }
   };
-  const onEditClick = (e) => {
-    e.stopPropagation();
+
+  const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
     setCurrentEditCard(item.link_id);
     setEditedMode(true);
     dispatchSectionData();
   };
+
+  const onEditClick = (e) => {
+    e.stopPropagation();
+    if (currentEditCard) {
+      setShowConfirm(true);
+    } else {
+      onShowEdit();
+    }
+  };
+
   const refreshContent = () => {
     console.log('refreshContent');
     setEditedMode(false);
     dispatchSectionData(true);
   };
+
   useEffect(() => {
     // console.log('sectionHeaderDetails', sectionHeaderDetails);
     // eslint-disable-next-line
@@ -215,6 +240,17 @@ function DigitizeAccordion({
             >
               {/* eslint-enable */}
               {sectionDataArr.map((section) => {
+                if (section.type === 'image') {
+                  console.log({ section });
+                  return (
+                    <ImageUploader
+                      key={React.key}
+                      lineID={section.line_id}
+                      content={section.content}
+                      edit={false}
+                    />
+                  );
+                }
                 const enrichedTxt =
                   rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
                     ? enrichedDummyText
@@ -268,6 +304,35 @@ function DigitizeAccordion({
           ))}
       </AccordionDetails>
       <MedicalTerm enrichedTarget={enrichedTarget} expanded={expanded} />
+      <Modal
+        disableBackdropClick
+        open={showConfirm}
+        variant="warning"
+        onClose={() => setShowConfirm(false)}
+        title="Confirm Actiom"
+        buttonProps={[
+          {
+            label: 'Cancel',
+            onClick: () => {
+              setShowEdit(false);
+              setShowConfirm(false);
+            },
+          },
+          {
+            label: 'Ok',
+            onClick: () => {
+              setCurrentEditCard(item.link_id);
+              onShowEdit();
+              setShowConfirm(false);
+            },
+          },
+        ]}
+        className={classes.modal}
+        id="custom"
+      >
+        There is already another section in edit mode. Do you want to continue
+        with editing the current section
+      </Modal>
     </Accordion>
   );
 }

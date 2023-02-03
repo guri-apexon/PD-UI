@@ -224,12 +224,12 @@ export const prepareContent = ({
         newObj = {
           ...PROTOCOL_CONSTANT[contentType],
           line_id: uuidv4(),
-          content: setContent('text'),
+          content: setContent(contentType),
         };
         // eslint-disable-next-line
         const index =
-          clonedSection.findIndex((val) => val.line_id === currentLineId) || 0;
-        clonedSection.splice(index + 1, 0, newObj);
+          clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
+        clonedSection?.splice(index + 1, 0, newObj);
         return clonedSection;
       }
       break;
@@ -261,3 +261,14 @@ export const markContentForDelete = (origArray, lineId) => {
   arr[i].qc_change_type = 'delete';
   return arr;
 };
+
+export const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => {
+      console.log(error);
+      return reject(error);
+    };
+  });
