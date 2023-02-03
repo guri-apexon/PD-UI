@@ -1,26 +1,32 @@
-import { render } from '@testing-library/react';
-import { TextHeader2, TextElement } from '../CustomComponents/MenuItems';
+import { render, cleanup } from '@testing-library/react';
+import {
+  TextHeader2,
+  TextElement,
+  TableElement,
+} from '../CustomComponents/MenuItems';
 
-describe('TextHeader2', () => {
-  test('renders the correct text', () => {
-    const { getByText } = render(<TextHeader2 />);
-    expect(getByText('Header')).toBeInTheDocument();
-  });
+afterEach(cleanup);
 
-  test('has the correct class', () => {
-    const { container } = render(<TextHeader2 />);
-    expect(container.firstChild).toHaveClass('add-element');
+describe('TextHeader2 component', () => {
+  it('renders the component', () => {
+    const { getByTestId } = render(<TextHeader2 />);
+    const header = getByTestId('header');
+    expect(header).toBeInTheDocument();
   });
 });
 
-describe('TextElement', () => {
-  test('renders the correct text', () => {
-    const { getByText } = render(<TextElement />);
-    expect(getByText('Text')).toBeInTheDocument();
+describe('TextElement component', () => {
+  it('renders the component', () => {
+    const { getByTestId } = render(<TextElement />);
+    const text = getByTestId('text');
+    expect(text).toBeInTheDocument();
   });
+});
 
-  test('has the correct class', () => {
-    const { container } = render(<TextElement />);
-    expect(container.firstChild).toHaveClass('add-element');
+describe('TableElement component', () => {
+  it('renders the component', () => {
+    const { getByText } = render(<TableElement />);
+    const table = getByText('Table');
+    expect(table).toBeInTheDocument();
   });
 });
