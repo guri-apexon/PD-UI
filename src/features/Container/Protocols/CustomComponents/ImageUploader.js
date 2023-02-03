@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import FileUpload from 'apollo-react/components/FileUpload';
-import Grid from 'apollo-react/components/Grid';
 import Button from 'apollo-react/components/Button';
 import TrashIcon from 'apollo-react-icons/Trash';
 import IconButton from 'apollo-react/components/IconButton';
