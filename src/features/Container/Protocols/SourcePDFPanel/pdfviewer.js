@@ -44,15 +44,8 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     }
   };
 
-  const removeMouseMove = (e) => {
-    if (e) {
-      const { className } = e.target;
-      if (
-        className.toString().includes('Panel-handle') ||
-        className.toString().includes('Panel-handleContainer')
-      )
-        document.removeEventListener('mousemove', changeScale, false);
-    }
+  const removeMouseMove = () => {
+    document.removeEventListener('mousemove', changeScale, false);
   };
 
   useEffect(() => {
