@@ -147,10 +147,15 @@ function MedicalTerm({
     }
   }, [expanded]);
 
+  useEffect(() => {
+    if (!anchorEl) {
+      setSAnchorEl(null);
+    }
+  }, [anchorEl]);
+
   if (!expanded) {
     return null;
   }
-
   return (
     <div className="enriched-menu-wrapper" data-testId="term-list">
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">

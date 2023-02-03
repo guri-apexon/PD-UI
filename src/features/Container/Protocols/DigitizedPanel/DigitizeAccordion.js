@@ -148,13 +148,19 @@ function DigitizeAccordion({
       setEnrichedTarget(e.target);
       setSelectedEnrichedText(e.target.innerText);
       setClinicalTerms(obj);
+      const modalOpened = document.createElement('div');
+      modalOpened.classList.add('modal-opened');
+      document.body.appendChild(modalOpened);
+      modalOpened.addEventListener('click', () => {
+        setEnrichedTarget(null);
+        document.body.removeChild(modalOpened);
+      });
     } else {
       setEnrichedTarget(null);
       setSelectedEnrichedText(null);
       setClinicalTerms(null);
     }
   };
-
   useEffect(() => {
     if (currentEditCard !== item.link_id) {
       setShowEdit(false);
