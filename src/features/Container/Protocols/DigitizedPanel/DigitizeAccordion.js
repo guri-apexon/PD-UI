@@ -136,6 +136,10 @@ function DigitizeAccordion({
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
       setExpanded(false);
     }
+    if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
+      setExpanded(true);
+    }
+
     // eslint-disable-next-line
   }, [tocActive]);
 
