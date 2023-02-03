@@ -199,8 +199,7 @@ export const uploadDateValidation = (uploadDate) => {
 
 export const updateContent = (origArray, obj) => {
   const arr = cloneDeep(origArray);
-
-  // eslint-disable-next-line consistent-return
+  // eslint-disable-next-line
   arr.forEach((val) => {
     if (val.line_id === obj.lineId) {
       val.content = obj.content;
@@ -274,10 +273,9 @@ export const prepareContent = ({
           content: setContent(contentType),
           qc_change_type: QC_CHANGE_TYPE.ADDED,
         };
-        // eslint-disable-next-line
         const index =
-          clonedSection.findIndex((val) => val.line_id === currentLineId) || 0;
-        clonedSection.splice(index + 1, 0, newObj);
+          clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
+        clonedSection?.splice(index + 1, 0, newObj);
         return clonedSection;
       }
       break;
@@ -314,3 +312,13 @@ export const markContentForDelete = (origArray, lineId) => {
 export const isPrimaryUser = (protMetaData) => {
   return protMetaData?.redactProfile === 'profile_1';
 };
+export const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => {
+      console.log(error);
+      return reject(error);
+    };
+  });

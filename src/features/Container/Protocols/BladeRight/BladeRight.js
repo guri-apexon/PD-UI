@@ -3,18 +3,20 @@ import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
 import Switch from 'apollo-react/components/Switch';
 import Button from 'apollo-react/components/Button';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   PROTOCOL_RIGHT_MENU,
   PROTOCOL_RIGHT_MENU_ARR,
 } from '../Constant/Constants';
 import './BladeRight.scss';
+import { rightBladeValue } from '../protocolSlice';
 
 function BladeRight({ dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const [value, setValue] = React.useState(false);
   const dispatch = useDispatch();
+  const BladeRightValue = useSelector(rightBladeValue);
 
   const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_ARR);
   const handleChange = (e, checked) => {
@@ -93,7 +95,9 @@ function BladeRight({ dataSummary }) {
                     <div className="Button-flex" key={React.key}>
                       <Button
                         className={
-                          item?.isActive ? 'link-text-clicked' : 'link-text'
+                          item?.name === BladeRightValue
+                            ? 'link-text-clicked'
+                            : 'link-text'
                         }
                         disabled={getDisable(
                           dataSummary?.userPrimaryRoleFlag,
