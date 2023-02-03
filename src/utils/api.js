@@ -23,7 +23,6 @@ export const httpCall = async (config) => {
     };
   } else {
     if (config.method === 'GET') {
-      console.log('GET DATA');
       headerConfig = {
         ...config,
         headers: {
