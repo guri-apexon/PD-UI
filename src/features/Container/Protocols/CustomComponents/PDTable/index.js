@@ -155,11 +155,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   //   };
   //   setFootnoteData(attachmentArr);
   // };
-
-  useEffect(() => {
-    console.log({ updatedData: JSON.stringify(updatedData) });
-  }, [updatedData]);
-
   return (
     <section className="content-table-wrapper">
       {showconfirm && (

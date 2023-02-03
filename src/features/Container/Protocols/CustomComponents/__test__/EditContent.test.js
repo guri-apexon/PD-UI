@@ -56,6 +56,7 @@ describe('DigitizedEdit', () => {
     );
 
     const element = screen.getByTestId('contentEdit');
+    element.focus();
     fireEvent.keyDown(element, {
       key: 'Backspace',
       code: 'Backspace',

@@ -16,78 +16,34 @@ describe('HoverComponent', () => {
     expect(
       getByTestId('hover-component').classList.contains('contentmenu'),
     ).toBe(true);
+    expect(getByTestId('addIcon')).toBeInTheDocument();
   });
 
-  // test('handleAddSegment function', () => {
-  //   const lineId = '123';
-  //   const activeLineID = '123';
-  //   const { getByTestId } = render(
-  //     <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-  //       <HoverComponent lineId={lineId} activeLineID={activeLineID} />
-  //     </ProtocolContext.Provider>,
-  //   );
-  //   const header = getByTestId('header');
-  //   fireEvent.click(header);
-  // });
+  test('handleAddSegment function', () => {
+    const lineId = '123';
+    const activeLineID = '123';
+    const { getByTestId } = render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <HoverComponent lineId={lineId} activeLineID={activeLineID} />
+      </ProtocolContext.Provider>,
+    );
+    const addIcon = getByTestId('addIcon');
+    fireEvent.click(addIcon);
+    const header = getByTestId('header');
+    fireEvent.click(header);
+  });
 
-  // test('handleAddSegment function on text', () => {
-  //   const lineId = '123';
-  //   const activeLineID = '123';
-  //   const { getByTestId } = render(
-  //     <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-  //       <HoverComponent lineId={lineId} activeLineID={activeLineID} />
-  //     </ProtocolContext.Provider>,
-  //   );
-  //   const text = getByTestId('text');
-  //   fireEvent.click(text);
-  // });
-
-  // test('handleAddSegment dispatches the correct action', () => {
-  //   const lineId = '123';
-  //   const activeLineID = '456';
-  //   const { getByTestId } = render(
-  //     <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-  //       <HoverComponent lineId={lineId} activeLineID={activeLineID} />{' '}
-  //     </ProtocolContext.Provider>,
-  //   );
-  //   const spy = jest.spyOn('dispatchSectionEvent');
-  //   fireEvent.click(getByTestId('text-element'));
-  //   expect(spy).toHaveBeenCalledWith('CONTENT_ADDED', { type: 'text', lineId });
-  // });
-
-  // test('Plus icon is rendered within HoverComponent', () => {
-  //   const lineId = '123';
-  //   const activeLineID = '456';
-  //   const { getByTestId } = render(
-  //     <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-  //       <HoverComponent lineId={lineId} activeLineID={activeLineID} />
-  //     </ProtocolContext.Provider>,
-  //   );
-  //   expect(getByTestId('plus-icon')).toBeInTheDocument();
-  // });
-
-  // test('menuItems are rendered correctly', () => {
-  //   const lineId = '123';
-  //   const activeLineID = '456';
-  //   const { getByTestId } = render(
-  //     <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-  //       <HoverComponent lineId={lineId} activeLineID={activeLineID} />
-  //     </ProtocolContext.Provider>,
-  //   );
-  //   expect(getByTestId('text-element')).toBeInTheDocument();
-  //   expect(getByTestId('text-header-2')).toBeInTheDocument();
-  // });
-
-  // test('classname of component changes when lineId is equal to activeLineID', () => {
-  //   const lineId = '123';
-  //   const activeLineID = '123';
-  //   const { getByTestId } = render(
-  //     <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-  //       <HoverComponent lineId={lineId} activeLineID={activeLineID} />
-  //     </ProtocolContext.Provider>,
-  //   );
-  //   expect(getByTestId('hover-component').classList.contains('show')).toBe(
-  //     true,
-  //   );
-  // });
+  test('handleAddSegment function on text', () => {
+    const lineId = '123';
+    const activeLineID = '123';
+    const { getByTestId } = render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <HoverComponent lineId={lineId} activeLineID={activeLineID} />
+      </ProtocolContext.Provider>,
+    );
+    const addIcon = getByTestId('addIcon');
+    fireEvent.click(addIcon);
+    const text = getByTestId('text');
+    fireEvent.click(text);
+  });
 });

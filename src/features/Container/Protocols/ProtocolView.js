@@ -16,12 +16,6 @@ function ProtocolView({ refs, data }) {
 
   // eslint-disable-next-line
   const dispatchSectionEvent = (actionType, payload) => {
-    console.log(
-      'dispatchSectionEvent::::',
-      actionType,
-      payload,
-      selectedSection,
-    );
     switch (actionType) {
       case 'ON_SECTION_SELECT': {
         if (!payload.sectionContent && sectionContent) {
@@ -55,7 +49,6 @@ function ProtocolView({ refs, data }) {
           type: 'DELETE',
           sectionContent,
         });
-        console.log('CONTENT_DELETED', content, sectionContent);
         setSectionContent(content);
         dispatch(
           updateSectionData({

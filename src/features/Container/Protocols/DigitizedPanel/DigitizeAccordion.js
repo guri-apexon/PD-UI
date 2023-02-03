@@ -3,11 +3,13 @@ import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
 import EyeShow from 'apollo-react-icons/EyeShow';
+import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
 import MultilineEdit from './DigitizedEdit';
 import Loader from '../../../Components/Loader/Loader';
@@ -21,7 +23,16 @@ import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
-// import tableJson from './table.json';
+import ImageUploader from '../CustomComponents/ImageUploader';
+import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
+
+const styles = {
+  modal: {
+    maxWidth: 500,
+  },
+};
+
+const useStyles = makeStyles(styles);
 
 function DigitizeAccordion({
   item,
@@ -34,6 +45,7 @@ function DigitizeAccordion({
   setCurrentEditCard,
   index,
 }) {
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
@@ -42,6 +54,7 @@ function DigitizeAccordion({
   const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
   const [editedMode, setEditedMode] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
@@ -109,6 +122,10 @@ function DigitizeAccordion({
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
       setExpanded(false);
     }
+    if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
+      setExpanded(true);
+    }
+
     // eslint-disable-next-line
   }, [tocActive]);
 
@@ -145,22 +162,31 @@ function DigitizeAccordion({
       });
     }
   };
-  const onEditClick = (e) => {
-    e.stopPropagation();
+
+  const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
     setCurrentEditCard(item.link_id);
     setEditedMode(true);
     dispatchSectionData();
   };
+
+  const onEditClick = (e) => {
+    e.stopPropagation();
+    if (currentEditCard) {
+      setShowConfirm(true);
+    } else {
+      onShowEdit();
+    }
+  };
+
   const refreshContent = () => {
     console.log('refreshContent');
     setEditedMode(false);
     dispatchSectionData(true);
   };
+
   useEffect(() => {
-    // console.log('sectionHeaderDetails', sectionHeaderDetails);
-    // eslint-disable-next-line
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
       if (arr.length > 0) {
@@ -191,7 +217,6 @@ function DigitizeAccordion({
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
-
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
@@ -271,12 +296,22 @@ function DigitizeAccordion({
           ) : (
             <div className="readable-content">
               {sectionDataArr.map((section) => {
-                if (section.type === 'table') {
+                if (section.type === CONTENT_TYPE.TABLE) {
                   return (
                     <DisplayTable
                       key={React.key}
                       data={JSON.parse(section.content.TableProperties)}
                       colWidth={100}
+                    />
+                  );
+                }
+                if (section.type === CONTENT_TYPE.IMAGE) {
+                  return (
+                    <ImageUploader
+                      key={React.key}
+                      lineID={section.line_id}
+                      content={section.content}
+                      edit={false}
                     />
                   );
                 }
@@ -358,6 +393,35 @@ function DigitizeAccordion({
         enrichedText={selectedEnrichedText}
         clinicalTerms={clinicalTerms}
       />
+      <Modal
+        disableBackdropClick
+        open={showConfirm}
+        variant="warning"
+        onClose={() => setShowConfirm(false)}
+        title="Confirm Actiom"
+        buttonProps={[
+          {
+            label: 'Cancel',
+            onClick: () => {
+              setShowEdit(false);
+              setShowConfirm(false);
+            },
+          },
+          {
+            label: 'Ok',
+            onClick: () => {
+              setCurrentEditCard(item.link_id);
+              onShowEdit();
+              setShowConfirm(false);
+            },
+          },
+        ]}
+        className={classes.modal}
+        id="custom"
+      >
+        There is already another section in edit mode. Do you want to continue
+        with editing the current section
+      </Modal>
     </Accordion>
   );
 }

@@ -1,6 +1,9 @@
+import { Provider } from 'react-redux';
 import { render } from '../../../../../test-utils/test-utils';
 import * as ProtocolContext from '../../ProtocolContext';
 import DigitizedEdit from '../DigitizedEdit';
+
+import store from '../../../../../store/store';
 
 const sectionData = [
   {
