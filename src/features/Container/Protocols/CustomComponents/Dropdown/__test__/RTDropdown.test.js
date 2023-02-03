@@ -7,27 +7,23 @@ document.execCommand = jest.fn();
 describe('Dropdown', () => {
   test('Render without error', () => {
     render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <Dropdown
-          disabled={false}
-          buttonName="H"
-          onHeaderSelect={jest.fn()}
-          type="header"
-        />
-      </ProtocolContext.Provider>,
+      <Dropdown
+        disabled={false}
+        buttonName="H"
+        onHeaderSelect={jest.fn()}
+        type="header"
+      />,
     );
   });
 
   test('check options in the document', () => {
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <Dropdown
-          disabled={false}
-          buttonName="H"
-          onHeaderSelect={jest.fn()}
-          type="header"
-        />
-      </ProtocolContext.Provider>,
+      <Dropdown
+        disabled={false}
+        buttonName="H"
+        onHeaderSelect={jest.fn()}
+        type="header"
+      />,
     );
     const btn = screen.getByTestId('btn');
     fireEvent.click(btn);
@@ -37,14 +33,12 @@ describe('Dropdown', () => {
 
   test('check list in the document', () => {
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <Dropdown
-          disabled={false}
-          buttonName="H"
-          onHeaderSelect={jest.fn()}
-          type="list"
-        />
-      </ProtocolContext.Provider>,
+      <Dropdown
+        disabled={false}
+        buttonName="H"
+        onHeaderSelect={jest.fn()}
+        type="list"
+      />,
     );
     const list = screen.getAllByTestId('list');
     expect(list.length).toBe(3);
@@ -52,14 +46,12 @@ describe('Dropdown', () => {
 
   test('Format content on button click', () => {
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <Dropdown
-          disabled={false}
-          buttonName="H"
-          onHeaderSelect={jest.fn()}
-          type="header"
-        />
-      </ProtocolContext.Provider>,
+      <Dropdown
+        disabled={false}
+        buttonName="H"
+        onHeaderSelect={jest.fn()}
+        type="header"
+      />,
     );
     const list = screen.getByText('H2');
     fireEvent.mouseDown(list);
@@ -68,14 +60,12 @@ describe('Dropdown', () => {
 
   test('headerSelect on button click', () => {
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <Dropdown
-          disabled={false}
-          buttonName="H"
-          onHeaderSelect={jest.fn()}
-          type="list"
-        />
-      </ProtocolContext.Provider>,
+      <Dropdown
+        disabled={false}
+        buttonName="H"
+        onHeaderSelect={jest.fn()}
+        type="list"
+      />,
     );
     const list = screen.getByText('H2');
     fireEvent.click(list);

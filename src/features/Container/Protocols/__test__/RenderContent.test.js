@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import RenderContent from '../CustomComponents/RenderContent';
-import ProtocolContext from '../ProtocolContext';
+
+import * as ProtocolContext from '../ProtocolContext';
 
 describe('RenderContent', () => {
   const handleContentEditMock = jest.fn();
@@ -13,17 +14,19 @@ describe('RenderContent', () => {
       content: 'Test content',
       line_id: 'line-1',
     };
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <RenderContent
-          sectionData={sectionData}
-          handleContentEdit={handleContentEditMock}
-          activeLineID="line-1"
-          setActiveLineID={setActiveLineIDMock}
-          deleteSection={deleteSectionMock}
-          edit={false}
-        />
-      </ProtocolContext.Provider>,
+      <RenderContent
+        sectionData={sectionData}
+        handleContentEdit={handleContentEditMock}
+        activeLineID="line-1"
+        setActiveLineID={setActiveLineIDMock}
+        deleteSection={deleteSectionMock}
+        edit={false}
+      />,
     );
     expect(getByText('Test content')).toBeInTheDocument();
   });
@@ -34,17 +37,19 @@ describe('RenderContent', () => {
       content: 'Test content',
       line_id: 'line-1',
     };
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <RenderContent
-          sectionData={sectionData}
-          handleContentEdit={handleContentEditMock}
-          activeLineID="line-1"
-          setActiveLineID={setActiveLineIDMock}
-          deleteSection={deleteSectionMock}
-          edit={false}
-        />
-      </ProtocolContext.Provider>,
+      <RenderContent
+        sectionData={sectionData}
+        handleContentEdit={handleContentEditMock}
+        activeLineID="line-1"
+        setActiveLineID={setActiveLineIDMock}
+        deleteSection={deleteSectionMock}
+        edit={false}
+      />,
     );
     expect(getByText('Test content')).toBeInTheDocument();
   });
@@ -55,17 +60,19 @@ describe('RenderContent', () => {
       content: null,
       line_id: 'line-1',
     };
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <RenderContent
-          sectionData={sectionData}
-          handleContentEdit={handleContentEditMock}
-          activeLineID="line-1"
-          setActiveLineID={setActiveLineIDMock}
-          deleteSection={deleteSectionMock}
-          edit={false}
-        />
-      </ProtocolContext.Provider>,
+      <RenderContent
+        sectionData={sectionData}
+        handleContentEdit={handleContentEditMock}
+        activeLineID="line-1"
+        setActiveLineID={setActiveLineIDMock}
+        deleteSection={deleteSectionMock}
+        edit={false}
+      />,
     );
   });
 });
