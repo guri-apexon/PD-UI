@@ -76,9 +76,8 @@ function MultilineEdit({ sectionDataArr, edit }) {
           .map((section) => (
             <div key={section.line_id}>
               <div className="content_container">
-                {/* eslint-disable */}
+                {/* eslint-disable-next-line */}
                 <div onClick={() => edit && setActiveLineID(section.line_id)}>
-                  {/* eslint-enable */}
                   <RenderContent
                     sectionData={section}
                     sectionName={sectionName}

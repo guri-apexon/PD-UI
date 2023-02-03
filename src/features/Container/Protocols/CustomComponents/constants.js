@@ -101,5 +101,5 @@ const image = {
   },
 };
 
-// eslint-disable-next-line import/prefer-default-export
+// eslint-disable-next-line
 export default { text, header, image };
