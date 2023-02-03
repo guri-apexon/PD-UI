@@ -1,6 +1,7 @@
 import Table from 'apollo-react-icons/Table';
 import TextStyle from 'apollo-react-icons/TextStyle';
 import Paragraph from 'apollo-react-icons/Paragraph';
+import Image from 'apollo-react-icons/Image';
 
 export function TextHeader2() {
   return (
@@ -22,6 +23,7 @@ export function TextElement() {
 export function ImageElement() {
   return (
     <div className="add-element">
+      <Image fontSize="extraSmall" />
       <span>Image</span>
     </div>
   );

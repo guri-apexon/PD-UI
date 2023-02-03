@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import HoverComponent from '../CustomComponents/HoverComponent';
 import ProtocolContext from '../ProtocolContext';
 

@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import FileUpload from 'apollo-react/components/FileUpload';
 import Button from 'apollo-react/components/Button';
