@@ -3,7 +3,6 @@ import './table.scss';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import EmptyRowCells from './EmptyRows';
-import SanitizeHTML from '../../../../../Components/SanitizeHtml';
 
 function DisplayTable({ data, onChange, handleRowOperation, edit, colWidth }) {
   const handleChange = (columnIndex, rowIndex, e) => {
@@ -29,11 +28,12 @@ function DisplayTable({ data, onChange, handleRowOperation, edit, colWidth }) {
               >
                 {/* eslint-disable-next-line */}
                 <span
+                  // eslint-disable-next-line
+                  dangerouslySetInnerHTML={{ __html: row[key].content }}
                   contentEditable={edit}
                   onBlur={(e) => handleChange(key, rowIndex, e)}
-                >
-                  <SanitizeHTML html={row[key].content} />
-                </span>
+                ></span>
+                {/* <SanitizeHTML html={row[key]?.content} /> */}
               </div>
             ))}
           </div>

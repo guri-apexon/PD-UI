@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import SanitizeHTML from '../../../../../Components/SanitizeHtml';
 
 function HoverList({ data, handleOperation, index }) {
   const handleClick = (operation) => {
@@ -12,9 +11,12 @@ function HoverList({ data, handleOperation, index }) {
           // eslint-disable-next-line
           <li key={item.id} onClick={() => handleClick(item.id)}>
             {/* eslint-disable-next-line */}
-            <div className="pd-arrow-icon">
-              <SanitizeHTML html={item.image} />
-            </div>
+            <div
+              className="pd-arrow-icon"
+              // eslint-disable-next-line
+              dangerouslySetInnerHTML={{ __html: item.image }}
+            ></div>
+            {/* <SanitizeHTML html={item?.image} /> */}
             <div className="sd-text">{item.text}</div>
           </li>
         ))}
