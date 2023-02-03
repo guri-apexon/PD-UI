@@ -421,6 +421,29 @@ export function* setTOCActive(action) {
   yield put(getTOCActive(action.payload.data));
 }
 
+export function* saveEnrichedAPI(action) {
+  const config = {
+    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}`,
+    method: 'POST',
+  };
+  const sectionDetails = yield call(httpCall, config);
+  yield put(setSectionLoader(false));
+
+  if (sectionDetails.success) {
+    yield put(
+      setSectionDetails({
+        protocol: action.payload.protocol,
+        data: sectionDetails.data,
+        linkId: action.payload.linkId,
+      }),
+    );
+  } else if (sectionDetails.message === 'No Access') {
+    console.log('No Access');
+  } else {
+    console.log('Error while loading');
+  }
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -437,6 +460,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_METADATA_VARIABLE', MetaDataVariable);
   yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
   yield takeEvery('SET_TOC_Active', setTOCActive);
+  yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
 }
 
 // notice how we now only export the rootSaga
