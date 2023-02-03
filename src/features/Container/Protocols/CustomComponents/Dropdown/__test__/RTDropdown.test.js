@@ -1,6 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
 import Dropdown from '../index';
-import ProtocolContext from '../../../ProtocolContext';
 
 document.execCommand = jest.fn();
 

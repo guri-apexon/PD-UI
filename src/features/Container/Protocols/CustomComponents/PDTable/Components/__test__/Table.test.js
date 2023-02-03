@@ -1,10 +1,5 @@
-import {
-  render,
-  fireEvent,
-  getAllByText,
-} from '../../../../../../../test-utils/test-utils';
+import { render } from '../../../../../../../test-utils/test-utils';
 import Table from '../Table';
-import ProtocolContext from '../../../../ProtocolContext';
 
 const tableData = [
   {

@@ -9,22 +9,6 @@ const testLineID = '1';
 const testContent = '';
 const testEdit = true;
 
-const mockedProtocolContextValue = {
-  dispatchSectionEvent,
-};
-
-const renderImageUploader = (
-  lineID = testLineID,
-  content = testContent,
-  edit = testEdit,
-) => {
-  return render(
-    <ProtocolContext.Provider value={mockedProtocolContextValue}>
-      <ImageUploader lineID={lineID} content={content} edit={edit} />
-    </ProtocolContext.Provider>,
-  );
-};
-
 jest.mock('../../../../../utils/utilFunction', () => ({
   toBase64: jest.fn(),
 }));
