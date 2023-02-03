@@ -16,7 +16,9 @@ function Cell({ row, column }) {
 }
 
 function EditableCell({ row, column: { accessor: key } }) {
-  const [val, setVal] = useState(row[key]);
+  const [val, setVal] = useState(
+    row.attr_type === 'boolean' ? row[key].toString() : row[key],
+  );
   const [type, setType] = useState(row.attr_type || 'string');
   const [dateValue, setDateValue] = useState(
     row.attr_type === 'date' && row.attr_value ? moment(row.attr_value) : null,
@@ -61,7 +63,9 @@ function EditableCell({ row, column: { accessor: key } }) {
   };
 
   const renderValueField = () => {
-    return key === 'attr_value' || key === 'note' || row.isCustom ? (
+    return key === 'attr_value' ||
+      (key === 'note' && row.fieldName !== 'summary') ||
+      row.isCustom ? (
       <ValueField
         item={row}
         keyName={key}
@@ -76,11 +80,10 @@ function EditableCell({ row, column: { accessor: key } }) {
         deleteMetaData={deleteMetaData}
       />
     ) : (
-      row[key]
+      row[key] || ''
     );
   };
 
-  console.log(key, row[key]);
   return key === 'attr_name' ? renderKeyField() : renderValueField();
 }
 
@@ -166,7 +169,6 @@ function MetaDataEditTable({
   };
 
   const handleChange = (id, value, keyName) => {
-    console.log('date check--->', value, keyName);
     setRows((prevState) => ({
       ...prevState,
       [name]: prevState[name].map((list) =>
@@ -208,6 +210,7 @@ function MetaDataEditTable({
           ...row,
           handleChange,
           handleDelete,
+          fieldName: name,
         }))}
         rowId="id"
         hidePagination
@@ -256,7 +259,7 @@ function MetaDataEditTable({
             {
               label: 'Delete',
               onClick: (e) => {
-                removeData();
+                removeData(e);
                 setIsModal(false);
               },
             },

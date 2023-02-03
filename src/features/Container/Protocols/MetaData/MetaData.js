@@ -134,10 +134,12 @@ function MetaData({ protocolId }) {
 
   const postCall = (data, metaData) => {
     const updatedAttrList = metaData.map((list) => {
+      const convertToBoolean = list?.attr_value === 'true';
       return {
         attr_name: list?.attr_name,
         attr_type: list?.attr_type || 'string',
-        attr_value: list?.attr_value,
+        attr_value:
+          list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
         note: list?.note || '',
         confidence: list?.confidence || '',
       };
@@ -165,7 +167,6 @@ function MetaData({ protocolId }) {
       const filterNonCustomData = rows[accData?.name].filter(
         (data) => !data?.isCustom,
       );
-      console.log(filterCustomData, filterNonCustomData);
       if (filterCustomData.length > 0) {
         postCall(
           {
@@ -262,6 +263,7 @@ function MetaData({ protocolId }) {
                 return {
                   ...attr,
                   id: index + 1,
+                  isCustom: key !== 'summary',
                 };
               }),
               // eslint-disable-next-line
@@ -314,20 +316,17 @@ function MetaData({ protocolId }) {
         delete finalResult.summary_extended;
       }
     });
-
-    console.log(finalResult);
     return finalResult;
   };
 
   useEffect(() => {
-    // const result = flattenObject(mockData.data, 1, '');
     const result = flattenObject(metaDataSelector?.data?.data, 1, '');
     const updateResultForSummary = mergeSummary(result);
     dispatch({
       type: 'SET_METADATA',
       payload: updateResultForSummary,
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [metaDataSelector?.data?.data]);
 
   useEffect(() => {
@@ -353,11 +352,14 @@ function MetaData({ protocolId }) {
   //   }, [wrapperRef]);
 
   useEffect(() => {
-    console.log(apiResponse);
+    // console.log(apiResponse);
     if (apiResponse.status) {
       if (apiResponse.op === 'addAttributes') {
         const selectedData = accordianData[apiResponse.reqData.name];
-        const accMetaData = rows[apiResponse?.reqData?.name];
+        const accMetaData =
+          apiResponse?.reqData?.name === 'summary_extended'
+            ? rows.summary
+            : rows[apiResponse?.reqData?.name];
         dispatch({
           type: 'SET_METADATA',
           payload: {

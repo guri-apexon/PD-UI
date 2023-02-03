@@ -32,7 +32,6 @@ export function ValueField({
   type,
   inputValue,
   dateValue,
-  setDateValue,
   handleChange,
   handleDateChange,
   handleBlur,
@@ -150,5 +149,4 @@ ValueField.propTypes = {
   handleBlur: PropTypes.isRequired,
   handleDateChange: PropTypes.isRequired,
   dateValue: PropTypes.isRequired,
-  setDateValue: PropTypes.isRequired,
 };
