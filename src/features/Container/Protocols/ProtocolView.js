@@ -1,12 +1,7 @@
 import { useState, createRef, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  viewResult,
-  associateDocs,
-  headerResult,
-  updateSectionData,
-} from './protocolSlice';
+import { viewResult, headerResult, updateSectionData } from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
 import { isPrimaryUser, prepareContent } from '../../../utils/utilFunction';

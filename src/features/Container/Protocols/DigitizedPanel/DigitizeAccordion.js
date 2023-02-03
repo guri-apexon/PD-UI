@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -19,9 +19,9 @@ import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
-import { ProtocolContext, useProtContext } from '../ProtocolContext';
+import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
-import tableJson from './table.json';
+// import tableJson from './table.json';
 
 function DigitizeAccordion({
   item,
@@ -32,7 +32,6 @@ function DigitizeAccordion({
   rightBladeValue,
   currentEditCard,
   setCurrentEditCard,
-  scrollToTop,
   index,
 }) {
   const dispatch = useDispatch();
