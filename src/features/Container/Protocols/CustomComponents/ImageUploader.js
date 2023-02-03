@@ -3,12 +3,16 @@ import PropTypes from 'prop-types';
 import FileUpload from 'apollo-react/components/FileUpload';
 import Grid from 'apollo-react/components/Grid';
 import Button from 'apollo-react/components/Button';
+import TrashIcon from 'apollo-react-icons/Trash';
+import IconButton from 'apollo-react/components/IconButton';
+import Pencil from 'apollo-react-icons/Pencil';
 import ProtocolContext from '../ProtocolContext';
 import { toBase64 } from '../../../../utils/utilFunction';
 import './ImageUploader.scss';
 
 function ImageUploader({ lineID, content, edit }) {
   const [img, setImg] = useState(null);
+  const [imgBkp, setImgBkp] = useState(null);
   const [value, setValue] = useState([]);
   const [isEdit, setIsEdit] = useState(true);
   const [showEditBtn, setShowEditBtn] = useState(false);
@@ -21,6 +25,9 @@ function ImageUploader({ lineID, content, edit }) {
 
   useEffect(() => {
     setImg(content);
+    if (content !== '') {
+      setIsEdit(false);
+    }
     // eslint-disable-next-line
   }, [content]);
 
@@ -51,15 +58,19 @@ function ImageUploader({ lineID, content, edit }) {
   }, [value]);
 
   const onImgEditBtnClick = () => {
+    setImgBkp(img);
+    setImg('');
     setIsEdit(true);
     setValue([]);
   };
 
   const handleCancel = () => {
-    if (!img || img === '') {
+    if (!imgBkp || imgBkp === '') {
       dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
     }
     setIsEdit(false);
+    setImg(imgBkp);
+    setImgBkp(null);
   };
 
   // eslint-disable-next-line
@@ -67,19 +78,9 @@ function ImageUploader({ lineID, content, edit }) {
     isEdit ? (
       <div className="img-container" data-testId="file-upload">
         <div className="btn-container">
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={() => setShowDltCnfrm(true)}
-          >
-            Delete
+          <Button variant="secondary" size="small" onClick={handleCancel}>
+            Cancel
           </Button>
-
-          {value.length === 0 && (
-            <Button variant="secondary" size="small" onClick={handleCancel}>
-              Cancel
-            </Button>
-          )}
 
           <Button
             variant="primary"
@@ -91,7 +92,7 @@ function ImageUploader({ lineID, content, edit }) {
           </Button>
         </div>
 
-        {value.length === 0 ? (
+        {img === '' && value.length === 0 ? (
           <FileUpload
             label=""
             required
@@ -106,26 +107,6 @@ function ImageUploader({ lineID, content, edit }) {
             <img src={img} alt="img" className="rich-text-img" />
           </div>
         )}
-        {showDltCnfrm && (
-          <Grid container className="delete-confirmation-box">
-            <Grid item xs={12}>
-              <p>Please confirm if you want to continue with deletion</p>
-            </Grid>
-
-            <Grid>
-              <Button
-                variant="secondary"
-                onClick={() => setShowDltCnfrm(false)}
-              >
-                Cancel
-              </Button>
-
-              <Button variant="primary" onClick={handleDelete}>
-                Delete
-              </Button>
-            </Grid>
-          </Grid>
-        )}
       </div>
     ) : (
       /* eslint-disable */
@@ -137,17 +118,50 @@ function ImageUploader({ lineID, content, edit }) {
       >
         {/* eslint-enable */}
         <img src={img} alt="img" className="rich-text-img" />
-        {showEditBtn && (
+        {showEditBtn && !showDltCnfrm && (
           <div className="img-edit-btn-container">
-            <Button
-              variant="primary"
-              size="small"
-              style={{ marginRight: 10 }}
+            <IconButton
+              darkMode
+              destructiveAction
+              onClick={() => setShowDltCnfrm(true)}
+              data-testId="delete_img"
+            >
+              <TrashIcon />
+            </IconButton>
+
+            <IconButton
+              darkMode
+              destructiveAction
               onClick={onImgEditBtnClick}
               data-testId="edit_img"
             >
-              Edit
-            </Button>
+              <Pencil />
+            </IconButton>
+          </div>
+        )}
+        {showDltCnfrm && (
+          <div
+            className="delete-confirmation-box"
+            data-testId="deleteConfirmBox"
+          >
+            <p>Please confirm if you want to continue with deletion</p>
+
+            <div>
+              <Button
+                variant="secondary"
+                onClick={() => setShowDltCnfrm(false)}
+              >
+                Cancel
+              </Button>
+
+              <Button
+                variant="primary"
+                onClick={handleDelete}
+                data-testID="confirmDelete"
+              >
+                Delete
+              </Button>
+            </div>
           </div>
         )}
       </div>

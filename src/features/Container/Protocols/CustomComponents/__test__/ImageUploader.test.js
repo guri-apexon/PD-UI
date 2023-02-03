@@ -46,7 +46,6 @@ describe('ImageUploader', () => {
     );
 
     expect(getByTestId('file-upload')).toBeInTheDocument();
-    expect(getByText('Delete')).toBeInTheDocument();
     expect(getByText('Cancel')).toBeInTheDocument();
     expect(getByText('Save')).toBeInTheDocument();
   });
@@ -62,14 +61,6 @@ describe('ImageUploader', () => {
 
     expect(getByTestId('readmode-img')).toBeInTheDocument();
   });
-
-  // it('should call handleDelete when Delete button is clicked', () => {
-  //   const { getByText } = renderImageUploader();
-  //   fireEvent.click(getByText('Delete'));
-  //   expect(dispatchSectionEvent).toHaveBeenCalledWith('CONTENT_DELETED', {
-  //     currentLineId: testLineID,
-  //   });
-  // });
 
   it('should call handleCancel when Cancel button is clicked', () => {
     const { getByText } = renderImageUploader();
@@ -123,5 +114,39 @@ describe('ImageUploader', () => {
     const editImg = getByTestId('edit_img');
     expect(editImg).toBeInTheDocument();
     fireEvent.click(editImg);
+  });
+
+  it('should handle the delete image', () => {
+    const { container, getByText, getByTestId } = render(
+      <ProtocolContext.Provider value={mockedProtocolContextValue}>
+        <ImageUploader lineID="1" content="" edit={testEdit} />
+      </ProtocolContext.Provider>,
+    );
+    const input = container.querySelector('input[type="file"]');
+    expect(input).toBeInTheDocument();
+    const file = new File(['file content'], 'file.jpeg', {
+      type: 'image/jpeg',
+    });
+    fireEvent.change(input, { target: { files: [file] } });
+    expect(input).toHaveProperty('files', [file]);
+    fireEvent.click(getByText('Save'));
+    expect(dispatchSectionEvent).toHaveBeenCalled();
+
+    const editReadModeImg = getByTestId('edit-readmode-img');
+    expect(editReadModeImg).toBeInTheDocument();
+    fireEvent.mouseEnter(editReadModeImg);
+    const dltImg = getByTestId('delete_img');
+    expect(dltImg).toBeInTheDocument();
+    fireEvent.click(dltImg);
+
+    const deleteConfirmBox = getByTestId('deleteConfirmBox');
+    expect(deleteConfirmBox).toBeInTheDocument();
+
+    const confirmDelete = getByTestId('confirmDelete');
+    expect(confirmDelete).toBeInTheDocument();
+    fireEvent.click(confirmDelete);
+    expect(dispatchSectionEvent).toHaveBeenCalledWith('CONTENT_DELETED', {
+      currentLineId: testLineID,
+    });
   });
 });
