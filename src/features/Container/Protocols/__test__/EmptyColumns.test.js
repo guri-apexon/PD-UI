@@ -19,7 +19,7 @@ describe('EmptyColumnCells', () => {
   });
 
   it('opens and closes the hover list when the more icon is clicked', () => {
-    const { getByTestId, queryByTestId } = render(
+    const { getByTestId } = render(
       <EmptyColumnCells
         columnLength={columnLength}
         handleOperation={mockHandleOperation}
