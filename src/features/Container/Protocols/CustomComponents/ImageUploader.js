@@ -108,14 +108,13 @@ function ImageUploader({ lineID, content, edit }) {
         )}
       </div>
     ) : (
-      /* eslint-disable */
+      // eslint-disable-next-line
       <div
         className="img-container-read-mode"
         data-testId="edit-readmode-img"
         onMouseOver={() => setShowEditBtn(true)}
         onMouseLeave={() => setShowEditBtn(false)}
       >
-        {/* eslint-enable */}
         <img src={img} alt="img" className="rich-text-img" />
         {showEditBtn && !showDltCnfrm && (
           <div className="img-edit-btn-container">
