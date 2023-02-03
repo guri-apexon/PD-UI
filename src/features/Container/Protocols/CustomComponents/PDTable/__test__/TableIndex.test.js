@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
-import { ProtocolContext } from '../ProtocolContext';
-import PDTable from '../CustomComponents/PDTable/index';
+import { ProtocolContext } from '../../../ProtocolContext';
+import PDTable from '../index';
 
 describe('PDTable component', () => {
   const data = {

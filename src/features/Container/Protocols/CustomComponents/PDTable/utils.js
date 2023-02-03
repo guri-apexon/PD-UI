@@ -68,6 +68,7 @@ export const addColumn = (tabledata, index) => {
   }
   return data;
 };
+
 export const deleteColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   for (let i = 0; i < data.length; i++) {
