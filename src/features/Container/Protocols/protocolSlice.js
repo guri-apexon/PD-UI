@@ -44,6 +44,7 @@ export const protocolSlice = createSlice({
     metadataApiCallValue: {
       status: false,
       name: '',
+      op: '',
     },
   },
   reducers: {

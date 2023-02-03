@@ -34,7 +34,8 @@ function Accordian({
   setDeletedAttributes,
 }) {
   const wrapperRef = useRef(null);
-  const [isModal, setisModal] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const [subSectionName, setSubSectionName] = useState(false);
 
   const handleChange = (event, newValue) => {
@@ -70,7 +71,7 @@ function Accordian({
           onClick={handleAccordian}
         >
           <div className="accordion_summary_container">
-            <Typography>{accData.name}</Typography>
+            <Typography>{accData?.name}</Typography>
             <div className="metadata-flex">
               {accData?.isEdit ? (
                 <>
@@ -90,13 +91,18 @@ function Accordian({
                     className="metadata-plus-size"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setisModal(true);
+                      setIsDelete(false);
+                      setIsModal(true);
                     }}
                   />
                   {!standardList?.includes(accData?.name) && (
                     <Trash
                       className="metadata-plus-size mL"
-                      onClick={handleDelete}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsDelete(true);
+                        setIsModal(true);
+                      }}
                     />
                   )}
                 </>
@@ -155,16 +161,23 @@ function Accordian({
         <Modal
           className="modal"
           open={isModal}
-          onClose={() => setisModal(false)}
-          // title="Header"
-          title="Do You Really want to save it now or continue editing?"
+          onClose={() => setIsModal(false)}
+          title={
+            isDelete
+              ? 'Please confirm if you want to continue with deletion'
+              : 'Do You Really want to save it now or continue editing?'
+          }
           buttonProps={[
-            { label: 'Continue Editing' },
+            { label: isDelete ? 'Cancel' : 'Continue Editing' },
             {
-              label: 'save',
+              label: isDelete ? 'Delete' : 'Save',
               onClick: (e) => {
-                handleSave(e);
-                setisModal(false);
+                if (isDelete) {
+                  handleDelete(e);
+                } else {
+                  handleSave(e);
+                }
+                setIsModal(false);
               },
             },
           ]}

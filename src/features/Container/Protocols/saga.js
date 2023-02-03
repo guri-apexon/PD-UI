@@ -417,20 +417,53 @@ export function* MetaDataVariable(action) {
   };
   const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
-    console.log('MetaData Get Call', MetaData);
     yield put(getMetaDataVariable(MetaData));
   } else {
     yield put(getMetaDataVariable({ success: false, data: [] }));
   }
 }
 
-export function* PostMetaDataVariable(action) {
+export function* addMetaDataAttributes(action) {
   const {
-    payload: { op, docId, fieldName, attributes, name },
+    payload: { reqData, docId, fieldName, attributes },
+  } = action;
+  const config = {
+    url: `http://ca2spdml101q:9001${Apis.METADATA}/add_update_meta_data`,
+    method: 'POST',
+    isMetaData: true,
+    data: {
+      aidocId: docId,
+      fieldName,
+      attributes,
+    },
+  };
+  console.log('MetaData', action);
+  const MetaData = yield call(httpCall, config);
+  if (MetaData?.data?.isAdded) {
+    toast.info('Protocol Attributes Updated Successfully');
+    yield call(MetaDataVariable, action);
+    yield call(setMetadataApiCall, {
+      status: true,
+      reqData,
+      op: 'addAttributes',
+    });
+  } else {
+    toast.error('Duplicate Attributes');
+    yield call(setMetadataApiCall, {
+      status: false,
+      reqData,
+      op: 'addAttributes',
+    });
+  }
+}
+
+export function* addMetaDataField(action) {
+  const {
+    payload: { op, docId, fieldName, attributes, reqData },
   } = action;
   const config = {
     url: `http://ca2spdml101q:9001${Apis.METADATA}/add_meta_data`,
-    method: 'POST',
+    method: 'PUT',
     isMetaData: true,
     data: {
       op,
@@ -440,55 +473,28 @@ export function* PostMetaDataVariable(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  console.log('MetaData', MetaData);
+  console.log('MetaData', reqData);
   if (MetaData?.data?.isAdded) {
-    toast.info('Accordian Added Successfully');
+    toast.info(`${reqData.name} added successfully`);
+    yield call(MetaDataVariable, action);
     yield call(setMetadataApiCall, {
       status: true,
-      name,
+      reqData,
+      op,
     });
   } else {
-    toast.error('Accordian Already Added');
+    toast.error(`${reqData.name} already added`);
     yield call(setMetadataApiCall, {
       status: false,
-      name,
-    });
-  }
-}
-
-export function* updateMetaDataVariable(action) {
-  const {
-    payload: { docId, fieldName, attributes, name },
-  } = action;
-  const config = {
-    url: `http://ca2spdml101q:9001${Apis.METADATA}/update_meta_data`,
-    method: 'PUT',
-    isMetaData: true,
-    data: {
-      aidocId: docId,
-      fieldName,
-      attributes,
-    },
-  };
-  const MetaData = yield call(httpCall, config);
-  if (MetaData?.data?.isAdded) {
-    toast.info('Protocol Attributes Updated Successfully');
-    yield call(setMetadataApiCall, {
-      status: true,
-      name,
-    });
-  } else {
-    toast.error('Duplicate Attributes');
-    yield call(setMetadataApiCall, {
-      status: false,
-      name,
+      reqData,
+      op,
     });
   }
 }
 
 export function* deleteAttribute(action) {
   const {
-    payload: { op, docId, fieldName, attributeNames },
+    payload: { op, docId, fieldName, attributeNames, reqData },
   } = action;
   const config = {
     url: `http://ca2spdml101q:9001${Apis.METADATA}/delete_meta_data`,
@@ -504,14 +510,14 @@ export function* deleteAttribute(action) {
   const data = yield call(httpCall, config);
   if (data.success) {
     if (op === 'deleteField') {
-      toast.info(`${fieldName} successfully deleted`);
+      toast.info(`${reqData.name} successfully deleted`);
     } else {
       toast.info('attributes successfully deleted');
     }
     yield call(MetaDataVariable, action);
   } else if (!data.success) {
     if (op === 'deleteField') {
-      toast.info(`${fieldName} not deleted`);
+      toast.info(`${reqData.name} not deleted`);
     } else {
       toast.info('attributes not deleted');
     }
@@ -547,8 +553,8 @@ function* watchProtocolViews() {
   yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
   yield takeEvery('SET_TOC_Active', setTOCActive);
   yield takeEvery('SET_METADATA', fetchMetaData);
-  yield takeEvery('POST_METADATA', PostMetaDataVariable);
-  yield takeEvery('UPDATE_METADATA', updateMetaDataVariable);
+  yield takeEvery('ADD_METADATA_ATTRIBUTES', addMetaDataAttributes);
+  yield takeEvery('ADD_METADATA_FIELD', addMetaDataField);
   yield takeEvery('DELETE_METADATA', deleteAttribute);
   yield takeEvery('UPDATE_METADATA_FLAG', setMetadataApiCall);
 }

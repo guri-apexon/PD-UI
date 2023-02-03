@@ -34,6 +34,7 @@ export function ValueField({
   dateValue,
   setDateValue,
   handleChange,
+  handleDateChange,
   handleBlur,
   deleteMetaData,
 }) {
@@ -65,7 +66,7 @@ export function ValueField({
         <>
           <Grid item xs={11} className="fieldContainer">
             <div className="valueText">
-              {(type === 'string' || type === 'number') && (
+              {(type === 'string' || type === 'integer') && (
                 <TextField
                   label=""
                   placeholder="Enter Value"
@@ -85,10 +86,10 @@ export function ValueField({
                   dateFormat="DD-MMM-YYYY"
                   placeholder="dd-mmm-yyyy"
                   value={dateValue}
-                  onChange={(dateValue) => setDateValue(dateValue)}
-                  inputValue={inputValue}
+                  onChange={(dateValue) => handleDateChange(dateValue)}
+                  // inputValue={inputValue}
                   onBlur={handleBlur}
-                  // onInputChange={(inputValue) => setInputValue(inputValue)}
+                  onInputChange={(inputValue) => handleChange(inputValue)}
                 />
               )}
               {type === 'boolean' && (
@@ -118,7 +119,7 @@ export function ValueField({
                 className="selectBox"
               >
                 <MenuItem value="string">String</MenuItem>
-                <MenuItem value="number">Number</MenuItem>
+                <MenuItem value="integer">Number</MenuItem>
                 <MenuItem value="boolean">Boolean</MenuItem>
                 <MenuItem value="date">Date</MenuItem>
               </Select>
@@ -147,6 +148,7 @@ ValueField.propTypes = {
   type: PropTypes.isRequired,
   inputValue: PropTypes.isRequired,
   handleBlur: PropTypes.isRequired,
+  handleDateChange: PropTypes.isRequired,
   dateValue: PropTypes.isRequired,
   setDateValue: PropTypes.isRequired,
 };

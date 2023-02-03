@@ -17,16 +17,21 @@ function Cell({ row, column }) {
 
 function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(row[key]);
-  const [dateValue, setDateValue] = useState(moment(row[key]));
   const [type, setType] = useState(row.attr_type || 'string');
+  const [dateValue, setDateValue] = useState(
+    row.attr_type === 'date' && row.attr_value ? moment(row.attr_value) : null,
+  );
   const handleDataChange = (e) => {
     if (e?.target?.name === 'attr_type') {
       setType(e.target.value);
-    } else if (type === 'date') {
-      setVal(dateValue);
-    } else {
+    } else if (type !== 'date') {
       setVal(e.target.value);
     }
+  };
+
+  const handleDateChange = (value) => {
+    setDateValue(value);
+    row.handleChange(row.id, 'attr_value', value);
   };
 
   const deleteMetaData = () => {
@@ -65,6 +70,7 @@ function EditableCell({ row, column: { accessor: key } }) {
         setDateValue={setDateValue}
         inputValue={val}
         setType={setType}
+        handleDateChange={handleDateChange}
         handleChange={(e) => handleDataChange(e)}
         handleBlur={(e) => handleBlur(e)}
         deleteMetaData={deleteMetaData}
@@ -74,6 +80,7 @@ function EditableCell({ row, column: { accessor: key } }) {
     );
   };
 
+  console.log(key, row[key]);
   return key === 'attr_name' ? renderKeyField() : renderValueField();
 }
 
@@ -170,6 +177,7 @@ function MetaDataEditTable({
   };
 
   const handleChange = (id, value, keyName) => {
+    console.log('date check--->', value, keyName);
     setRows((prevState) => ({
       ...prevState,
       [name]: prevState[name].map((list) =>
@@ -177,8 +185,9 @@ function MetaDataEditTable({
           ? {
               ...list,
               [keyName]:
-                list?.type === 'date' && keyName === 'attr_value'
-                  ? moment(value).format('DD-MMM-YYYY')
+                list?.attr_type === 'date' && keyName === 'attr_value'
+                  ? // eslint-disable-next-line
+                    moment(value?._d).format('DD-MMM-YYYY')
                   : value,
             }
           : list,
@@ -252,12 +261,11 @@ function MetaDataEditTable({
           className="modal"
           open={isModal}
           onClose={() => setIsModal(false)}
-          // title="Header"
-          title="Do you really want to delete?"
+          title="Please confirm if you want to continue with deletion?"
           buttonProps={[
-            { label: 'No' },
+            { label: 'Cancel' },
             {
-              label: 'Yes',
+              label: 'Delete',
               onClick: (e) => {
                 removeData();
                 setIsModal(false);
