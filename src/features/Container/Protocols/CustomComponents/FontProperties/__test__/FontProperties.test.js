@@ -138,7 +138,6 @@ describe('FontProperties', () => {
 
   test('deleteSegment is called when trash icon is clicked', () => {
     const deleteSegment = jest.fn();
-    const dispatchSectionEvent = jest.fn();
 
     const activeLineID = 'line1';
     const { getByTestId } = render(

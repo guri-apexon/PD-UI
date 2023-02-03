@@ -31,15 +31,24 @@ function EmptyColumnCells({ columnLength, handleOperation, colWidth }) {
     setActiveIconIndex(null);
   };
   return (
-    <div className="pd-empty-cells" ref={columnHoverRef}>
+    <div
+      className="pd-empty-cells"
+      ref={columnHoverRef}
+      data-testId="empty-cell-column"
+    >
       {[...Array(columnLength)].map((val, index) => (
         <div
           key={uuidv4()}
           className="pd-empty-cell-column"
           style={{ width: `${colWidth}%` }}
+          data-testId="hover-list"
         >
           {/* eslint-disable-next-line */}
-          <span className="pd-more-icon" onClick={() => handleIconClick(index)}>
+          <span
+            className="pd-more-icon"
+            onClick={() => handleIconClick(index)}
+            data-testId="more-icon"
+          >
             <Table />
           </span>
           {activeIconIndex === index && (
