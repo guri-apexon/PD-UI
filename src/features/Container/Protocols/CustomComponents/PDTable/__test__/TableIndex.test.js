@@ -40,7 +40,7 @@ describe('PDTable component', () => {
     fireEvent.click(saveBtn);
   });
 
-  it('handles the delete action', () => {
+  it('handles the delete cancel action', () => {
     const { getByText, getByTestId } = render(
       <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
         <PDTable
@@ -55,5 +55,28 @@ describe('PDTable component', () => {
     fireEvent.click(dltBtn);
     const confirmPopup = getByTestId('confirmPopup');
     expect(confirmPopup).toBeInTheDocument();
+
+    const cancelBtn = getByText('Cancel');
+    fireEvent.click(cancelBtn);
+  });
+
+  it('handles the delete success action', () => {
+    const { getByText, getByTestId, getAllByText } = render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <PDTable
+          data={data}
+          segment={segment}
+          activeLineID={activeLineID}
+          lineID={lineID}
+        />
+      </ProtocolContext.Provider>,
+    );
+    const dltBtn = getByText('Delete');
+    fireEvent.click(dltBtn);
+    const confirmPopup = getByTestId('confirmPopup');
+    expect(confirmPopup).toBeInTheDocument();
+
+    const dltOk = getAllByText('Delete')[0];
+    fireEvent.click(dltOk);
   });
 });
