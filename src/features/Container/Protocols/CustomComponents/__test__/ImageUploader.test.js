@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import ProtocolContext from '../../ProtocolContext';
+import * as ProtocolContext from '../../ProtocolContext';
 import ImageUploader from '../ImageUploader';
 
 const dispatchSectionEvent = jest.fn();
@@ -51,19 +51,29 @@ describe('ImageUploader', () => {
   });
 
   test('render image in readmode if image value is present ', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByTestId } = render(
-      <ProtocolContext.Provider
-        value={{ dispatchSectionEvent: mockDispatchSectionEvent }}
-      >
-        <ImageUploader lineID="1" content="sample.jpg" edit={false} />
-      </ProtocolContext.Provider>,
+      <ImageUploader lineID="1" content="sample.jpg" edit={false} />,
     );
 
     expect(getByTestId('readmode-img')).toBeInTheDocument();
   });
 
   it('should call handleCancel when Cancel button is clicked', () => {
-    const { getByText } = renderImageUploader();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const { getByText } = render(
+      <ImageUploader
+        lineID={testLineID}
+        content={testContent}
+        edit={testEdit}
+      />,
+    );
     fireEvent.click(getByText('Cancel'));
     expect(dispatchSectionEvent).toHaveBeenCalledWith('CONTENT_DELETED', {
       currentLineId: testLineID,
@@ -71,15 +81,27 @@ describe('ImageUploader', () => {
   });
 
   it('should render image uploader when edit prop is true', () => {
-    const { getByTestId } = renderImageUploader();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const { getByTestId } = render(
+      <ImageUploader
+        lineID={testLineID}
+        content={testContent}
+        edit={testEdit}
+      />,
+    );
     expect(getByTestId('file-upload')).toBeInTheDocument();
   });
 
   it('should call handleSave when Save button is clicked ', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { container, getByText } = render(
-      <ProtocolContext.Provider value={mockedProtocolContextValue}>
-        <ImageUploader lineID="1" content="" edit={testEdit} />
-      </ProtocolContext.Provider>,
+      <ImageUploader lineID="1" content="" edit={testEdit} />,
     );
     const input = container.querySelector('input[type="file"]');
     expect(input).toBeInTheDocument();
@@ -93,10 +115,12 @@ describe('ImageUploader', () => {
   });
 
   it('should handle the cancel save after file select', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { container, getByText, getByTestId } = render(
-      <ProtocolContext.Provider value={mockedProtocolContextValue}>
-        <ImageUploader lineID="1" content="" edit={testEdit} />
-      </ProtocolContext.Provider>,
+      <ImageUploader lineID="1" content="" edit={testEdit} />,
     );
     const input = container.querySelector('input[type="file"]');
     expect(input).toBeInTheDocument();
@@ -117,10 +141,12 @@ describe('ImageUploader', () => {
   });
 
   it('should handle the delete image', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { container, getByText, getByTestId } = render(
-      <ProtocolContext.Provider value={mockedProtocolContextValue}>
-        <ImageUploader lineID="1" content="" edit={testEdit} />
-      </ProtocolContext.Provider>,
+      <ImageUploader lineID="1" content="" edit={testEdit} />,
     );
     const input = container.querySelector('input[type="file"]');
     expect(input).toBeInTheDocument();
