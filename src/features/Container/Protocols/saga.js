@@ -25,6 +25,7 @@ import {
   getEnrichedValue,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
+import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 
 function* getUserId() {
   const state = yield select();
@@ -38,6 +39,7 @@ export function* getSummaryData(action) {
     success: false,
     data: null,
   };
+  yield put(getRightBladeValue(PROTOCOL_RIGHT_MENU.HOME));
   yield put(getSummary(obj));
 
   const userId = yield getUserId();
