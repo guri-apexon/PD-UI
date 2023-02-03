@@ -1,38 +1,44 @@
-.btn-container {
-  position: absolute;
-  top: 15px;
-  right: 25px;
-}
-
 .img-container {
   border: 1px solid #dadada;
-
-  //   padding: 65px 35px;
   border-radius: 5px;
   margin-bottom: 10px;
   margin-right: 20px;
   box-shadow: inset 0 0 2px 3px rgb(233 233 233 / 40%);
   display: flex;
+  flex-direction: column-reverse;
   width: 100%;
-  justify-content: center;
   align-items: center;
   height: 20vh;
-  min-height: 150px;
-}
+  min-height: 200px;
 
-.richTextImg {
-  height: 100%;
-  min-height: 150px;
+  .rich-text-img {
+    height: 125px;
+  }
+
+  .btn-container {
+    margin: 10px;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    button {
+      margin-right: 10px;
+    }
+  }
 }
 
 .img-container-read-mode {
   border-radius: 5px;
+  margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 20px;
-  width: max-content;
-  height: 20vh;
-  min-height: 150px;
+  width: 50%;
   position: relative;
+
+  .rich-text-img {
+    width: 100%;
+  }
 }
 
 .img-edit-btn-container {
@@ -45,4 +51,27 @@
   justify-content: center;
   align-items: center;
   background: rgb(0, 0, 0, 0.4);
+}
+
+.delete-confirmation-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  /* display: flex; */
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: rgb(256, 256, 256, 0.9);
+  margin: 2px;
+
+  p {
+    text-align: center;
+    font-size: 18px;
+  }
+
+  button:first-child {
+    margin-right: 10px;
+  }
 }

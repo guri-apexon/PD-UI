@@ -2,7 +2,7 @@
   position: relative;
   height: 500px;
   overflow-x: scroll;
-  .section-edited-list{
+  .section-edited-list {
     margin-top: 20px;
   }
   [class*='MuiInputBase-root'] {
@@ -55,6 +55,9 @@
 
 .content_container {
   min-height: 30px;
+  > div {
+    position: relative;
+  }
   > div > .format-container > .contentEditable {
     min-width: 300px;
     min-height: 24px;

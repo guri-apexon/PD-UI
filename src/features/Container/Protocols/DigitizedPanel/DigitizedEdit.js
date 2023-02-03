@@ -77,11 +77,8 @@ function MultilineEdit({ sectionDataArr, edit }) {
             <div key={section.line_id}>
               <div className="content_container">
                 {/* eslint-disable */}
-                <div
-                  /* eslint-enable */
-                  onClick={() => edit && setActiveLineID(section.line_id)}
-                  style={{ position: 'relative' }}
-                >
+                <div onClick={() => edit && setActiveLineID(section.line_id)}>
+                  {/* eslint-enable */}
                   <RenderContent
                     sectionData={section}
                     sectionName={sectionName}
