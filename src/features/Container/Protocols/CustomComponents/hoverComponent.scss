@@ -1,0 +1,14 @@
+.contentmenu {
+  &.hide {
+    display: none;
+  }
+  &.show {
+    button {
+      padding: 10px;
+      svg {
+        height: 15px;
+        width: 15px;
+      }
+    }
+  }
+}
