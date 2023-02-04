@@ -220,13 +220,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           colWidth={colWidth}
         />
       </div>
-      {/* <div className="footnotes-container">
-        <FootNotes
-          data={footNoteData}
-          edit={edit}
-          onChange={handleFootnoteEdit}
-        />
-      </div> */}
     </section>
   );
 }
