@@ -39,6 +39,7 @@ function MultilineEdit({ sectionDataArr, edit }) {
     const arr = markContentForDelete(sectionDataArr, lineId);
     dispatch(setSectionDetails(arr));
   };
+
   return (
     <div className="Richtextcontainer" data-testId="richTextEditor">
       {edit && <FontProperties activeLineID={activeLineID} />}

@@ -2,13 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
 
-const headerList = [
-  { id: 2, name: 'H2' },
-  { id: 3, name: 'H3' },
-  { id: 4, name: 'H4' },
-  { id: 5, name: 'H5' },
-  { id: 6, name: 'H6' },
-];
 const classNames = {
   active: 'dropdown-content active-show-list',
   notActive: 'dropdown-content',
@@ -17,9 +10,9 @@ function Dropdown({
   buttonName,
   contentStyle,
   headerStyle,
-  onHeaderSelect,
   type,
   disabled,
+  list,
 }) {
   const [showList, setShowList] = useState(false);
   const showMenu = () => {
@@ -30,6 +23,12 @@ function Dropdown({
     setShowList(false);
     document.execCommand('formatBlock', false, name);
   };
+
+  const onSymbolSelect = (e, symbol) => {
+    e.preventDefault();
+    document.execCommand('insertText', false, symbol);
+  };
+
   return (
     <div className="dropdown">
       <button
@@ -48,7 +47,7 @@ function Dropdown({
         data-testId="options"
       >
         <ul>
-          {headerList.map((item) => {
+          {list.map((item) => {
             if (type === 'header') {
               return (
                 // eslint-disable-next-line
@@ -65,7 +64,7 @@ function Dropdown({
               <li
                 data-testId="list"
                 key={React.key}
-                onClick={() => onHeaderSelect(item, type)}
+                onMouseDown={(e) => onSymbolSelect(e, item.name)}
               >
                 {item.name}
               </li>
@@ -82,7 +81,7 @@ Dropdown.propTypes = {
   buttonName: PropTypes.isRequired,
   contentStyle: PropTypes.isRequired,
   headerStyle: PropTypes.isRequired,
-  onHeaderSelect: PropTypes.isRequired,
   type: PropTypes.isRequired,
   disabled: PropTypes.isRequired,
+  list: PropTypes.isRequired,
 };

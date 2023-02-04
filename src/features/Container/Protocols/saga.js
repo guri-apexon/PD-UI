@@ -239,9 +239,10 @@ function* getState() {
   return id.substring(1);
 }
 export function* getSectionList(action) {
-  const userId = yield getState();
+  // const userId = yield getState();
   const config = {
-    url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
+    // url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
+    url: './body.json',
     method: 'GET',
   };
   const sectionDetails = yield call(httpCall, config);
@@ -306,13 +307,15 @@ export function* getCompareResult(action) {
 }
 
 export function* getProtocolTocDataResult(action) {
-  const {
-    payload: { docId },
-  } = action;
+  // const {
+  //   // payload: { docId },
+  // } = action;
   yield put(getHeaderList({}));
 
-  const linkLevel = action.payload.tocFlag ? 6 : 1;
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
+  // const linkLevel = action.payload.tocFlag ? 6 : 1;
+  // const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
+  const URL = './header.json';
+
   const config = {
     url: URL,
     method: 'GET',

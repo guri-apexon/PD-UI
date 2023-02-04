@@ -54,7 +54,7 @@ describe('RenderContent', () => {
     expect(getByText('Test content')).toBeInTheDocument();
   });
 
-  it('renders the correct content and edit button when type is text', () => {
+  it('renders the correct content  when type is table', () => {
     const sectionData = {
       type: 'table',
       content: null,
@@ -64,7 +64,7 @@ describe('RenderContent', () => {
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
-    const { getByText } = render(
+    render(
       <RenderContent
         sectionData={sectionData}
         handleContentEdit={handleContentEditMock}

@@ -7,8 +7,9 @@ import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
 import { useProtContext } from '../../ProtocolContext';
+import { headerList, mathSymbols } from './constants';
 
-function FontProperties({ onHeaderSelect, activeLineID }) {
+function FontProperties({ activeLineID }) {
   const [enable, setEnable] = useState(activeLineID);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -43,12 +44,15 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
         break;
     }
   };
+
   const deleteSegment = () => {
     dispatchSectionEvent('CONTENT_DELETED', { currentLineId: activeLineID });
   };
+
   useEffect(() => {
     setEnable(activeLineID);
   }, [activeLineID]);
+
   return (
     <div
       className={`${
@@ -61,8 +65,8 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
         buttonName="H"
         contentStyle={{ left: 0 }}
         headerStyle={{ fontWeight: 'bold' }}
-        onHeaderSelect={onHeaderSelect}
         type="header"
+        list={headerList}
       />
 
       <button
@@ -133,6 +137,15 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
       >
         <ListBullet />
       </button>
+
+      <Dropdown
+        disabled={!enable}
+        buttonName="M"
+        contentStyle={{ left: 0 }}
+        headerStyle={{ fontWeight: 'bold' }}
+        type="symbols"
+        list={mathSymbols}
+      />
       <div className="right-menu">
         <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
         <IconButton
@@ -150,6 +163,5 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
 export default FontProperties;
 
 FontProperties.propTypes = {
-  onHeaderSelect: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
 };
