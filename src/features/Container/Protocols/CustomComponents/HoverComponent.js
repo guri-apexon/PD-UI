@@ -1,31 +1,38 @@
-import { useContext } from 'react';
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import Plus from 'apollo-react-icons/Plus';
 import PropTypes from 'prop-types';
-
-import { v4 as uuidv4 } from 'uuid';
 import './hoverComponent.scss';
-import { TextElement, TextHeader2, ImageElement } from './MenuItems';
-import ProtocolContext from '../ProtocolContext';
+import {
+  TableElement,
+  TextElement,
+  TextHeader2,
+  ImageElement,
+} from './MenuItems';
+import { useProtContext } from '../ProtocolContext';
+import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
 
 const anchorOrigin = {
   vertical: 'bottom',
   horizontal: 'left',
 };
 function HoverComponent({ lineId, activeLineID }) {
-  const { dispatchSectionEvent } = useContext(ProtocolContext);
+  const { dispatchSectionEvent } = useProtContext();
   const handleAddSegment = (type) => {
     dispatchSectionEvent('CONTENT_ADDED', { type, lineId });
   };
   const menuItems = [
     {
       text: <TextElement />,
-      onClick: () => handleAddSegment('text'),
+      onClick: () => handleAddSegment(CONTENT_TYPE.TEXT),
     },
     {
       text: <TextHeader2 />,
-      onClick: () => handleAddSegment('header'),
+      onClick: () => handleAddSegment(CONTENT_TYPE.HEADER),
+    },
+    {
+      label: <TableElement />,
+      onClick: () => handleAddSegment(CONTENT_TYPE.TABLE),
     },
     {
       text: <ImageElement />,
@@ -47,7 +54,7 @@ function HoverComponent({ lineId, activeLineID }) {
       >
         <IconMenuButton
           className="icon-buttons"
-          id={uuidv4()}
+          id="addContentMenu"
           menuItems={menuItems}
           anchorOrigin={anchorOrigin}
           size="small"

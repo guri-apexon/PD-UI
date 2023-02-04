@@ -1,15 +1,17 @@
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import HoverComponent from '../CustomComponents/HoverComponent';
-import ProtocolContext from '../ProtocolContext';
+import * as ProtocolContext from '../ProtocolContext';
 
 describe('HoverComponent', () => {
   test('HoverComponent renders correctly with props', () => {
     const lineId = '123';
     const activeLineID = '456';
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByTestId } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <HoverComponent lineId={lineId} activeLineID={activeLineID} />
-      </ProtocolContext.Provider>,
+      <HoverComponent lineId={lineId} activeLineID={activeLineID} />,
     );
     expect(
       getByTestId('hover-component').classList.contains('contentmenu'),
@@ -20,10 +22,12 @@ describe('HoverComponent', () => {
   test('handleAddSegment function', () => {
     const lineId = '123';
     const activeLineID = '123';
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByTestId } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <HoverComponent lineId={lineId} activeLineID={activeLineID} />
-      </ProtocolContext.Provider>,
+      <HoverComponent lineId={lineId} activeLineID={activeLineID} />,
     );
     const addIcon = getByTestId('addIcon');
     fireEvent.click(addIcon);
@@ -34,10 +38,12 @@ describe('HoverComponent', () => {
   test('handleAddSegment function on text', () => {
     const lineId = '123';
     const activeLineID = '123';
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByTestId } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <HoverComponent lineId={lineId} activeLineID={activeLineID} />
-      </ProtocolContext.Provider>,
+      <HoverComponent lineId={lineId} activeLineID={activeLineID} />,
     );
     const addIcon = getByTestId('addIcon');
     fireEvent.click(addIcon);

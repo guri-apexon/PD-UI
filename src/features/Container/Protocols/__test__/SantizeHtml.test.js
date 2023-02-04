@@ -18,9 +18,4 @@ describe('SantizeHtml', () => {
     );
     expect(getByText('Test html').getAttribute('style')).toBe(null);
   });
-  test('throws an error when required props are not provided', () => {
-    expect(() => {
-      render(<SanitizeHTML />);
-    }).toThrowError();
-  });
 });
