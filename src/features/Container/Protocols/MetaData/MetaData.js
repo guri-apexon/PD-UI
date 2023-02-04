@@ -43,6 +43,8 @@ function MetaData({ protocolId }) {
     { label: 'Lab Data' },
   ]);
 
+  console.log('accordianData', accordianData);
+
   const handleChange = (event, newValue) => {
     setSectionName(newValue);
   };
@@ -470,7 +472,7 @@ function MetaData({ protocolId }) {
         </div>
       ) : (
         <div className="_meta_data-boarder">
-          {Object.entries(accordianData).map(([key, value]) => {
+          {Object?.entries(accordianData || {}).map(([key, value]) => {
             return value.level === 1 && accGenerator(key, value);
           })}
         </div>
