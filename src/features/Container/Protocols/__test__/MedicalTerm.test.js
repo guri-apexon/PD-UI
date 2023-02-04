@@ -1,13 +1,16 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import store from '../../../../store/store';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
+import { screen } from '../../../../test-utils/test-utils';
 
 describe('MedicalTerm component', () => {
   const mockEnrichedTarget = 'test-mock-target';
   const mockEnrichedText = 'test-mock-text';
-  const mockClinicalTerms = [{ key: 'key1', value: 'value1' }];
+  const mockClinicalTerms = {
+    'test-mock-text': { synonyms: 'value1, value2' },
+  };
   const linkId = '46bac1b7-9197-11ed-b507-005056ab6469';
   const docId = '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c';
 
@@ -46,7 +49,7 @@ describe('MedicalTerm component', () => {
   });
 
   it('renders main and sub popper cards', () => {
-    const { getByTestId } = render(
+    const { getByTestId, getAllByTestId, getByText } = render(
       <Provider store={store}>
         <MedicalTerm
           enrichedTarget={mockEnrichedTarget}
@@ -61,6 +64,14 @@ describe('MedicalTerm component', () => {
     );
 
     const termList = getByTestId('term-list');
+    const parentItem = getAllByTestId('handleSave')[0];
+    fireEvent.click(parentItem);
+    screen.debug();
+    const childTerm = getAllByTestId('update-term-trigger');
+    fireEvent.click(childTerm[0]);
+    const updateField = getByTestId('update-term-field');
+    fireEvent.change(updateField, { target: { value: 'new term' } });
+    fireEvent.click(getByText('Rename'));
     expect(termList).toBeInTheDocument();
   });
 });

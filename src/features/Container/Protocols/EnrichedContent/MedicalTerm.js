@@ -199,6 +199,7 @@ function MedicalTerm({
                       <span className="sub-term-text">{item}</span>
                       <Pencil
                         className="edit-Icon"
+                        data-testid="update-term-trigger"
                         onClick={() => {
                           setChildTermValue(item);
                         }}
@@ -230,6 +231,7 @@ function MedicalTerm({
           fullWidth
           value={newTermValue}
           allowBlank="none"
+          inputProps={{ 'data-testid': 'update-term-field' }}
           onChange={(e) => {
             setNewTermValue(e.target.value);
           }}
