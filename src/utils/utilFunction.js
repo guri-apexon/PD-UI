@@ -1,5 +1,8 @@
 import Tooltip from 'apollo-react/components/Tooltip';
+import { cloneDeep } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
 import { redaction } from '../AppConstant/AppConstant';
+import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 
 const replaceall = require('replaceall');
 
@@ -189,3 +192,93 @@ export const uploadDateValidation = (uploadDate) => {
   }
   return false;
 };
+
+export const updateContent = (origArray, obj) => {
+  const arr = cloneDeep(origArray);
+  // eslint-disable-next-line
+  arr.forEach((val) => {
+    if (val.line_id === obj.lineId) {
+      val.content = obj.content;
+      val.qc_change_type = obj.type;
+      return false;
+    }
+  });
+  return arr;
+};
+
+export const contentType = {
+  table: 'table',
+  text: 'text',
+  image: 'image',
+  header: 'header',
+};
+
+const setContent = (type) => {
+  if (type === contentType.text || type === contentType.header) {
+    return 'Edit Your Text Here';
+  }
+  return '';
+};
+
+export const prepareContent = ({
+  sectionContent,
+  type,
+  currentLineId,
+  contentType,
+  content,
+}) => {
+  const clonedSection = cloneDeep(sectionContent);
+  let newObj = {};
+  switch (type) {
+    case 'ADDED':
+      if (currentLineId && contentType) {
+        newObj = {
+          ...PROTOCOL_CONSTANT[contentType],
+          line_id: uuidv4(),
+          content: setContent(contentType),
+        };
+        const index =
+          clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
+        clonedSection?.splice(index + 1, 0, newObj);
+        return clonedSection;
+      }
+      break;
+    case 'MODIFY':
+      if (clonedSection && currentLineId) {
+        return clonedSection.map((x) => {
+          if (x.line_id === currentLineId) {
+            x.qc_change_type = 'modify';
+            x.content = content;
+          }
+          return x;
+        });
+      }
+      break;
+    case 'DELETE':
+      if (clonedSection && currentLineId) {
+        return clonedSection.filter((x) => x.line_id !== currentLineId);
+      }
+      break;
+    default:
+      return clonedSection;
+  }
+  return null;
+};
+
+export const markContentForDelete = (origArray, lineId) => {
+  const arr = cloneDeep(origArray);
+  const i = arr.findIndex((val) => val.line_id === lineId);
+  arr[i].qc_change_type = 'delete';
+  return arr;
+};
+
+export const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => {
+      console.log(error);
+      return reject(error);
+    };
+  });

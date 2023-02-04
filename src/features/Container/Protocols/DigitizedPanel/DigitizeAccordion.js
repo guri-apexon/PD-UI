@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
 import EyeShow from 'apollo-react-icons/EyeShow';
+import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
-import MultilineEdit from './Digitized_edit';
+import MultilineEdit from './DigitizedEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
@@ -19,6 +21,16 @@ import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import ProtocolContext from '../ProtocolContext';
+import ImageUploader from '../CustomComponents/ImageUploader';
+
+const styles = {
+  modal: {
+    maxWidth: 500,
+  },
+};
+
+const useStyles = makeStyles(styles);
 
 function DigitizeAccordion({
   item,
@@ -32,13 +44,16 @@ function DigitizeAccordion({
   scrollToTop,
   index,
 }) {
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
-  const [sections, setSections] = useState([]);
+  const [sectionDataArr, setSectionDataArr] = useState([]);
   const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
+  const [editedMode, setEditedMode] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
@@ -53,37 +68,7 @@ function DigitizeAccordion({
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  useEffect(() => {
-    if (sectionData?.length > 0) {
-      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (arr.length > 0) {
-        setShowLoader(false);
-        let updatedSectionsData = [];
-        let matchedIndex = null;
-        const sectionsData = arr[0].data;
-        if (Array.isArray(sectionsData)) {
-          updatedSectionsData = sectionsData?.map((sec, index) => {
-            if (sec?.font_info?.VertAlign === 'superscript') {
-              matchedIndex = index;
-              return {
-                ...sec,
-                content: `${sec?.content}_${sectionsData[index + 1].content}`,
-              };
-            }
-            return sec;
-          });
-          if (matchedIndex) {
-            updatedSectionsData.splice(matchedIndex + 1, 1);
-          }
-          setSections(updatedSectionsData);
-        }
-        if (currentActiveCard === item.link_id) {
-          scrollToTop(item.sequence);
-        }
-      }
-    }
-    // eslint-disable-next-line
-  }, [sectionHeaderDetails]);
+  const { dispatchSectionEvent } = useContext(ProtocolContext);
 
   const handleChange = () => {
     handlePageRight(item.page);
@@ -172,13 +157,78 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [currentEditCard]);
 
-  const onEditClick = (e) => {
-    e.stopPropagation();
+  const dispatchSectionData = (resetValues) => {
+    if (resetValues) {
+      dispatchSectionEvent('ON_SECTION_SELECT', {
+        selectedSection: null,
+        sectionContent: null,
+      });
+    }
+    if (item && sectionDataArr) {
+      dispatchSectionEvent('ON_SECTION_SELECT', {
+        selectedSection: item,
+        sectionContent: sectionDataArr,
+      });
+    }
+  };
+
+  const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
     setCurrentEditCard(item.link_id);
+    setEditedMode(true);
+    dispatchSectionData();
   };
 
+  const onEditClick = (e) => {
+    e.stopPropagation();
+    if (currentEditCard) {
+      setShowConfirm(true);
+    } else {
+      onShowEdit();
+    }
+  };
+
+  const refreshContent = () => {
+    console.log('refreshContent');
+    setEditedMode(false);
+    dispatchSectionData(true);
+  };
+
+  useEffect(() => {
+    if (sectionData?.length > 0) {
+      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
+      if (arr.length > 0) {
+        setShowLoader(false);
+        let updatedSectionsData = [];
+        let matchedIndex = null;
+        const sectionsData = arr[0].data;
+        if (Array.isArray(sectionsData)) {
+          updatedSectionsData = sectionsData?.map((sec, index) => {
+            if (sec?.font_info?.VertAlign === 'superscript') {
+              matchedIndex = index;
+              return {
+                ...sec,
+                content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
+              };
+            }
+            return sec;
+          });
+          if (matchedIndex) {
+            updatedSectionsData.splice(matchedIndex + 1, 1);
+          }
+        }
+        if (currentActiveCard === item.link_id) {
+          scrollToTop(item.sequence);
+        }
+        if (editedMode && !sectionDataArr?.length)
+          dispatchSectionData(updatedSectionsData);
+
+        setSectionDataArr(updatedSectionsData);
+      }
+    }
+    // eslint-disable-next-line
+  }, [sectionHeaderDetails]);
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
@@ -217,7 +267,6 @@ function DigitizeAccordion({
                 <Lock style={{ paddingRight: '10px' }} />
               </span>
             )}
-
             {primaryRole && (
               <>
                 <span data-testId="eyeIcon">
@@ -231,7 +280,7 @@ function DigitizeAccordion({
                 ) : (
                   // eslint-disable-next-line
                   <span data-testId="saveIcon" onClick={onSaveClick}>
-                    <Save />
+                    <Save onClick={() => refreshContent()} />
                   </span>
                 )}
               </>
@@ -249,12 +298,26 @@ function DigitizeAccordion({
             <Loader />
           </div>
         )}
-        {sections?.length > 0 &&
+        {sectionDataArr?.length > 0 &&
           (showedit ? (
-            <MultilineEdit data={sections} />
+            <MultilineEdit
+              linkId={item.link_id}
+              sectionDataArr={sectionDataArr}
+              edit={showedit}
+            />
           ) : (
             <div className="readable-content">
-              {sections.map((section) => {
+              {sectionDataArr.map((section) => {
+                if (section.type === 'image') {
+                  return (
+                    <ImageUploader
+                      key={React.key}
+                      lineID={section.line_id}
+                      content={section.content}
+                      edit={false}
+                    />
+                  );
+                }
                 return section?.font_info?.VertAlign === 'superscript' &&
                   section.content.length > 0 ? (
                   // eslint-disable-next-line
@@ -335,6 +398,35 @@ function DigitizeAccordion({
         linkId={linkId}
         docId={docId}
       />
+      <Modal
+        disableBackdropClick
+        open={showConfirm}
+        variant="warning"
+        onClose={() => setShowConfirm(false)}
+        title="Confirm Actiom"
+        buttonProps={[
+          {
+            label: 'Cancel',
+            onClick: () => {
+              setShowEdit(false);
+              setShowConfirm(false);
+            },
+          },
+          {
+            label: 'Ok',
+            onClick: () => {
+              setCurrentEditCard(item.link_id);
+              onShowEdit();
+              setShowConfirm(false);
+            },
+          },
+        ]}
+        className={classes.modal}
+        id="custom"
+      >
+        There is already another section in edit mode. Do you want to continue
+        with editing the current section
+      </Modal>
     </Accordion>
   );
 }

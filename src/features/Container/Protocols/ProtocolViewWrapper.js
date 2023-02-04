@@ -111,7 +111,7 @@ class ProtocolViewWrapper extends React.Component {
               </Panel>
             )}
             {data && (
-              <Panel width="auto" hideButton>
+              <Panel width={window.innerWidth / 2} hideButton>
                 <Digitize
                   sectionRef={sectionRef}
                   sectionNumber={sectionNumber}
