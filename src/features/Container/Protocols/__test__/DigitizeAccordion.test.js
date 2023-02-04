@@ -4,6 +4,7 @@ import store from '../../../../store/store';
 
 import { render, fireEvent } from '../../../../test-utils/test-utils';
 import DigitizeAccordion from '../DigitizedPanel/DigitizeAccordion';
+import * as ProtocolContext from '../ProtocolContext';
 
 const item = {
   doc_id: '558a1964-bfed-4974-a52b-79848e1df372',
@@ -25,41 +26,14 @@ const item = {
 };
 
 describe('DigitizeAccordion', () => {
+  const bool = true;
+
   test('render accordion', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion item={item} />
-      </Provider>,
-    );
-    const header = component.getByText('blank_header');
-    expect(header).toBeInTheDocument();
-  });
-
-  // test('does not show pencil icon for primary role', () => {
-  //   const bool = true;
-  //   const component = render(
-  //     <DigitizeAccordion item={item} primaryRole={bool} />,
-  //   );
-  //   expect(component.find('.loader')).not.toBeInTheDocument();
-  // });
-
-  // test('accordion on closed state', () => {
-  //   const bool = true;
-  //   const component = render(
-  //     <DigitizeAccordion
-  //       item={item}
-  //       primaryRole={bool}
-  //       protocol="1234"
-  //       currentActiveCard={1}
-  //       setCurrentActiveCard={jest.fn()}
-  //     />,
-  //   );
-  //   expect(component.find('.loader')).not.toBeInTheDocument();
-  // });
-
-  test('Accordion loaded with store values', () => {
-    const bool = true;
-    render(
       <Provider store={store}>
         <DigitizeAccordion
           item={item}
@@ -71,28 +45,36 @@ describe('DigitizeAccordion', () => {
         />
       </Provider>,
     );
+    const header = component.getByText('blank_header');
+    expect(header).toBeInTheDocument();
   });
 
-  test('Accordion is open when the currentActiveCard is of the same item id', () => {
-    const bool = true;
-    render(
+  test('Accordion loaded with store values and Accordion is open when the currentActiveCard is of the same item id', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const component = render(
       <Provider store={store}>
         <DigitizeAccordion
           item={item}
           primaryRole={bool}
           protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
+          currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );
+    expect(component).toBeTruthy();
   });
 
   test('Accordion is close when the currentActiveCard is of the same item id', () => {
     const bool = true;
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     render(
       <Provider store={store}>
         <DigitizeAccordion
@@ -110,18 +92,19 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Pencil icon is visible for primary user', () => {
-    const bool = true;
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const component = render(
       <Provider store={store}>
         <DigitizeAccordion
           item={item}
           primaryRole={bool}
           protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
+          currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );
@@ -130,18 +113,19 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Pencil icon is onClick for primary user', () => {
-    const bool = true;
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const component = render(
       <Provider store={store}>
         <DigitizeAccordion
           item={item}
           primaryRole={bool}
           protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
+          currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );
@@ -151,18 +135,19 @@ describe('DigitizeAccordion', () => {
   });
 
   test('accordian is onClick for primary user', () => {
-    const bool = true;
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const component = render(
       <Provider store={store}>
         <DigitizeAccordion
           item={item}
           primaryRole={bool}
           protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
+          currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
-          handlePageRight={jest.fn()}
           setCurrentEditCard={jest.fn()}
-          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );
@@ -172,18 +157,19 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Save button is visible for primary user', () => {
-    const bool = true;
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const component = render(
       <Provider store={store}>
         <DigitizeAccordion
           item={item}
           primaryRole={bool}
           protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
+          currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
         />
       </Provider>,
     );

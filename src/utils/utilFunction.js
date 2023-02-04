@@ -1,5 +1,12 @@
 import Tooltip from 'apollo-react/components/Tooltip';
-import { redaction } from '../AppConstant/AppConstant';
+import { cloneDeep } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+  redaction,
+} from '../AppConstant/AppConstant';
+import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 
 const replaceall = require('replaceall');
 
@@ -189,3 +196,129 @@ export const uploadDateValidation = (uploadDate) => {
   }
   return false;
 };
+
+export const updateContent = (origArray, obj) => {
+  const arr = cloneDeep(origArray);
+  // eslint-disable-next-line
+  arr.forEach((val) => {
+    if (val.line_id === obj.lineId) {
+      val.content = obj.content;
+      val.qc_change_type = obj.type;
+      return false;
+    }
+  });
+  return arr;
+};
+
+export const tableJSONByRowAndColumnLength = (row, column) => {
+  const json = [];
+  for (let i = 0; i < row; i++) {
+    const rowId = uuidv4();
+    const columnObj = {};
+    for (let j = 0; j < column; j++) {
+      const obj = {
+        entities: [],
+        content: '',
+        roi_id: {
+          table_roi_id: '',
+          row_roi_id: rowId,
+          column_roi_id: '',
+          datacell_roi_id: '',
+        },
+        table_index: uuidv4(),
+        qc_change_type: '',
+      };
+      columnObj[`${j + 1}.0`] = obj;
+    }
+    json.push(columnObj);
+  }
+  return JSON.stringify(json);
+};
+
+const setContent = (type) => {
+  switch (type) {
+    case CONTENT_TYPE.TEXT:
+      return 'Edit Your Text Here';
+    case CONTENT_TYPE.HEADER:
+      return '<h2>Edit Your Text Here</h2>';
+    case CONTENT_TYPE.TABLE:
+      return {
+        Table: '',
+        TableProperties: tableJSONByRowAndColumnLength(2, 2),
+        SectionHeaderPrintPage: '0',
+        TableIndex: '1',
+        TableName: '',
+        Header: [],
+      };
+    default:
+      return '';
+  }
+};
+
+export const prepareContent = ({
+  sectionContent,
+  type,
+  currentLineId,
+  contentType,
+  content,
+}) => {
+  const clonedSection = cloneDeep(sectionContent);
+  let newObj = {};
+  switch (type) {
+    case 'ADDED':
+      if (currentLineId && contentType) {
+        newObj = {
+          ...PROTOCOL_CONSTANT[contentType],
+          line_id: uuidv4(),
+          content: setContent(contentType),
+          qc_change_type: QC_CHANGE_TYPE.ADDED,
+        };
+        const index =
+          clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
+        clonedSection?.splice(index + 1, 0, newObj);
+        return clonedSection;
+      }
+      break;
+    case 'MODIFY':
+      if (clonedSection && currentLineId) {
+        return clonedSection.map((x) => {
+          if (x.line_id === currentLineId) {
+            x.content = content;
+            if (x.qc_change_type !== QC_CHANGE_TYPE.ADDED)
+              x.qc_change_type = QC_CHANGE_TYPE.UPDATED;
+          }
+          return x;
+        });
+      }
+      break;
+    case 'DELETE':
+      if (clonedSection && currentLineId) {
+        return clonedSection.filter((x) => x.line_id !== currentLineId);
+      }
+      break;
+    default:
+      return clonedSection;
+  }
+  return null;
+};
+
+export const markContentForDelete = (origArray, lineId) => {
+  const arr = cloneDeep(origArray);
+  const i = arr.findIndex((val) => val.line_id === lineId);
+  arr[i].qc_change_type = 'delete';
+  return arr;
+};
+
+export const isPrimaryUser = (protMetaData) => {
+  return protMetaData?.redactProfile === 'profile_1';
+};
+export const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => {
+      console.log(error);
+      return reject(error);
+    };
+  });

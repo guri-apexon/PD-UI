@@ -1,0 +1,25 @@
+.contentmenu {
+  &.hide {
+    display: none;
+  }
+  &.show {
+    button {
+      padding: 10px;
+      svg {
+        height: 15px;
+        width: 15px;
+      }
+    }
+  }
+}
+#addContentMenu{
+  .add-element {
+    display: flex;
+    align-items: center;
+    min-width: 84px;
+    svg{
+      width: 20px;
+      margin-right: 5px;
+    }
+  }
+}
