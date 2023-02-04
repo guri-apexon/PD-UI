@@ -32,7 +32,6 @@ function DisplayTable({ data, onChange, handleRowOperation, edit, colWidth }) {
                   contentEditable={edit}
                   onBlur={(e) => handleChange(key, rowIndex, e)}
                 />
-                {/* <SanitizeHTML html={row[key]?.content} /> */}
               </div>
             ))}
           </div>
