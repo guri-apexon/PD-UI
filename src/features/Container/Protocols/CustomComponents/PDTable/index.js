@@ -6,7 +6,6 @@ import EmptyColumnCells from './Components/EmptyColumns';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
 import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
-// import FootNotes from './Components/Footnotes';
 import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 
@@ -146,17 +145,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     setTimeout(() => {
       setDisabledBtn(false);
     }, 1000);
-    // onChange(content, segment.line_id);
   };
-  // const handleFootnoteEdit = (editedText, index) => {
-  //   const attachmentArr = [...footNoteData];
-  //   attachmentArr[index] = {
-  //     ...attachmentArr[index],
-  //     Text: editedText,
-  //     qc_change_type: QC_CHANGE_TYPE.UPDATED,
-  //   };
-  //   setFootnoteData(attachmentArr);
-  // };
   return (
     <section className="content-table-wrapper">
       {showconfirm && (
@@ -198,10 +187,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
               },
             ]}
           />
-          {/* Save Table
-          <IconButton onClick={handleSave}>
-            <Save />
-          </IconButton> */}
         </div>
       )}
       <div className="pd-table-container" ref={tableRef}>
