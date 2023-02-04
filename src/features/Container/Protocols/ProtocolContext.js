@@ -1,4 +1,7 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 const ProtocolContext = createContext();
-export default ProtocolContext;
+const useProtContext = () => {
+  return useContext(ProtocolContext);
+};
+export { useProtContext, ProtocolContext };

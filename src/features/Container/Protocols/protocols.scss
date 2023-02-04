@@ -419,17 +419,6 @@
   background: transparent !important;
 }
 
-.digitized_data_item [class*='MuiAccordionDetails-root-'] {
-  height: auto;
-  overflow: auto !important;
-  padding: 0 30px 20px 10px;
-  font-size: 16px;
-  line-height: 1.4;
-  text-align: justify;
-  display: flex;
-  flex-direction: column;
-}
-
 .digitized_data_item .edited-text {
   width: 100%;
 }

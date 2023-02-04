@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -21,8 +21,10 @@ import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
-import ProtocolContext from '../ProtocolContext';
+import { useProtContext } from '../ProtocolContext';
+import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
+import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
 
 const styles = {
   modal: {
@@ -41,7 +43,6 @@ function DigitizeAccordion({
   rightBladeValue,
   currentEditCard,
   setCurrentEditCard,
-  scrollToTop,
   index,
 }) {
   const classes = useStyles();
@@ -66,7 +67,7 @@ function DigitizeAccordion({
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const { dispatchSectionEvent } = useContext(ProtocolContext);
+  const { dispatchSectionEvent } = useProtContext();
 
   const handleChange = () => {
     handlePageRight(item.page);
@@ -208,9 +209,6 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-        if (currentActiveCard === item.link_id) {
-          scrollToTop(item.sequence);
-        }
         if (editedMode && !sectionDataArr?.length)
           dispatchSectionData(updatedSectionsData);
 
@@ -298,7 +296,16 @@ function DigitizeAccordion({
           ) : (
             <div className="readable-content">
               {sectionDataArr.map((section) => {
-                if (section.type === 'image') {
+                if (section.type === CONTENT_TYPE.TABLE) {
+                  return (
+                    <DisplayTable
+                      key={React.key}
+                      data={JSON.parse(section.content.TableProperties)}
+                      colWidth={100}
+                    />
+                  );
+                }
+                if (section.type === CONTENT_TYPE.IMAGE) {
                   return (
                     <ImageUploader
                       key={React.key}
@@ -430,6 +437,5 @@ DigitizeAccordion.propTypes = {
   rightBladeValue: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
-  scrollToTop: PropTypes.isRequired,
   index: PropTypes.isRequired,
 };

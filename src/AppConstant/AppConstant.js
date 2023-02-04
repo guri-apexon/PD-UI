@@ -176,6 +176,19 @@ const redaction = {
   hoverText: 'Redacted Information',
 };
 
+const CONTENT_TYPE = {
+  TABLE: 'table',
+  TEXT: 'text',
+  IMAGE: 'image',
+  HEADER: 'header',
+};
+
+const QC_CHANGE_TYPE = {
+  ADDED: 'add',
+  UPDATED: 'modify',
+  DELETED: 'delete',
+};
+
 export {
   SORT_DROPDOWN,
   USER_MENU,
@@ -185,4 +198,6 @@ export {
   redaction,
   messages,
   userRole,
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
 };

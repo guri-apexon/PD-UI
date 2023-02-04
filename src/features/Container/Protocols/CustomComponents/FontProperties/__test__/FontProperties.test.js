@@ -1,16 +1,18 @@
 import { render, fireEvent } from '@testing-library/react';
 import FontProperties from '../FontProperties';
-import ProtocolContext from '../../../ProtocolContext';
+import * as ProtocolContext from '../../../ProtocolContext';
 
 document.execCommand = jest.fn();
 
 describe('FontProperties', () => {
   test('Format content on bold button click', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
     const btn = getByText('B');
     fireEvent.mouseDown(btn);
@@ -19,10 +21,12 @@ describe('FontProperties', () => {
 
   test('Format content on italic button click', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
     const btn = getByText('I');
     fireEvent.mouseDown(btn);
@@ -31,10 +35,12 @@ describe('FontProperties', () => {
 
   test('Format content on underline button click', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
     const btn = getByText('U');
     fireEvent.mouseDown(btn);
@@ -43,10 +49,12 @@ describe('FontProperties', () => {
 
   test('Format content on removeformat button click', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
     const btn = screen.getByTestId('removeFormat');
     fireEvent.mouseDown(btn);
@@ -59,10 +67,12 @@ describe('FontProperties', () => {
 
   test('Format content on strikethrough button click', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
     const btn = getByText('S');
     fireEvent.mouseDown(btn);
@@ -75,10 +85,12 @@ describe('FontProperties', () => {
 
   test('Format content on strikethrough button click', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
     const btn = getByText('S');
     fireEvent.mouseDown(btn);
@@ -91,10 +103,12 @@ describe('FontProperties', () => {
 
   test('Format content on superscript button click', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
     const btn = screen.getByTestId('superScript');
     fireEvent.mouseDown(btn);
@@ -103,10 +117,12 @@ describe('FontProperties', () => {
 
   test('Format content on subScript button click', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
     const btn = screen.getByTestId('subScript');
     fireEvent.mouseDown(btn);
@@ -115,10 +131,12 @@ describe('FontProperties', () => {
 
   test('Format content on insertUnorderedList button click', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
     const btn = screen.getByTestId('list');
     fireEvent.mouseDown(btn);
@@ -127,10 +145,12 @@ describe('FontProperties', () => {
 
   test('Font properties are disabled if there is no active line id', () => {
     const onFormatSelect = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties onFormatSelect={onFormatSelect} activeLineID={null} />
-      </ProtocolContext.Provider>,
+      <FontProperties onFormatSelect={onFormatSelect} activeLineID={null} />,
     );
     const container = screen.getByTestId('container');
     expect(container.classList.contains('disabled-btns')).toBe(true);
@@ -140,13 +160,15 @@ describe('FontProperties', () => {
     const deleteSegment = jest.fn();
 
     const activeLineID = 'line1';
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const { getByTestId } = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <FontProperties
-          onFormatSelect={deleteSegment}
-          activeLineID={activeLineID}
-        />
-      </ProtocolContext.Provider>,
+      <FontProperties
+        onFormatSelect={deleteSegment}
+        activeLineID={activeLineID}
+      />,
     );
     const trashIcon = getByTestId('trash-icon');
     fireEvent.click(trashIcon);

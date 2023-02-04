@@ -6,6 +6,8 @@ const headerList = [
   { id: 2, name: 'H2' },
   { id: 3, name: 'H3' },
   { id: 4, name: 'H4' },
+  { id: 5, name: 'H5' },
+  { id: 6, name: 'H6' },
 ];
 const classNames = {
   active: 'dropdown-content active-show-list',
@@ -25,6 +27,7 @@ function Dropdown({
   };
   const formatHeading = (e, name) => {
     e.preventDefault();
+    setShowList(false);
     document.execCommand('formatBlock', false, name);
   };
   return (

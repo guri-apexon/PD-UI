@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import EditContent from './EditContent';
 import ImageUploader from './ImageUploader';
 import './renderContent.scss';
+import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
+import PDTable from './PDTable';
 
 function RenderContent({
   sectionData,
@@ -14,7 +16,7 @@ function RenderContent({
 }) {
   const { type, content = '', line_id: lineID } = sectionData;
 
-  if (type === 'header') {
+  if (type === CONTENT_TYPE.HEADER) {
     return (
       <EditContent
         type="header"
@@ -28,7 +30,7 @@ function RenderContent({
       />
     );
   }
-  if (type === 'text') {
+  if (type === CONTENT_TYPE.TEXT) {
     return (
       <EditContent
         type="text"
@@ -42,7 +44,23 @@ function RenderContent({
       />
     );
   }
-  if (type === 'image') {
+  if (type === CONTENT_TYPE.TABLE) {
+    return (
+      // eslint-disable-next-line
+      <div onClick={() => edit && setActiveLineID(lineID)}>
+        <PDTable
+          data={content}
+          edit={edit}
+          // onChange={handleContentEdit}
+          index="index"
+          segment={sectionData}
+          activeLineID={activeLineID}
+          lineID={lineID}
+        />
+      </div>
+    );
+  }
+  if (type === CONTENT_TYPE.IMAGE) {
     return (
       <ImageUploader
         content={content}
