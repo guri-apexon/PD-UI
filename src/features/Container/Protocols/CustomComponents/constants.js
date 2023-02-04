@@ -41,5 +41,5 @@ const header = { ...text, type: 'header' };
 const image = { ...text, type: 'image' };
 delete image.font_info;
 
-// eslint-disable-next-line import/prefer-default-export
+// eslint-disable-next-line
 export default { text, table, header, image };
