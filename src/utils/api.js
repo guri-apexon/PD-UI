@@ -22,23 +22,12 @@ export const httpCall = async (config) => {
       },
     };
   } else {
-    if (config.method === 'GET') {
       headerConfig = {
         ...config,
         headers: {
           Authorization: config.auth ? config.auth : `Bearer ${token}`,
         },
       };
-    } else if (config.method === 'POST') {
-      headerConfig = {
-        data: config?.data,
-        method: config?.method,
-        url: config?.url,
-        headers: {
-          Authorization: config.auth ? config.auth : `Bearer ${token}`,
-        },
-      };
-    }
   }
   try {
     const response = await axios(headerConfig);
