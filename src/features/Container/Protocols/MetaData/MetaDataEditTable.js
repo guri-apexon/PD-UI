@@ -17,7 +17,7 @@ function Cell({ row, column }) {
 
 function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(
-    row.attr_type === 'boolean' ? row[key].toString() : row[key],
+    row.attr_type === 'boolean' ? row[key]?.toString() : row[key],
   );
   const [type, setType] = useState(row.attr_type || 'string');
   const [dateValue, setDateValue] = useState(
@@ -33,7 +33,7 @@ function EditableCell({ row, column: { accessor: key } }) {
 
   const handleDateChange = (value) => {
     setDateValue(value);
-    row.handleChange(row.id, 'attr_value', value);
+    row.handleChange(row.id, value, 'attr_value');
   };
 
   const deleteMetaData = () => {

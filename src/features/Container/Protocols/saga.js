@@ -434,7 +434,6 @@ export function* addMetaDataAttributes(action) {
       attributes,
     },
   };
-  console.log('MetaData', action);
   const MetaData = yield call(httpCall, config);
   if (MetaData?.data?.isAdded) {
     toast.info('Protocol Attributes Updated Successfully');
@@ -504,15 +503,24 @@ export function* deleteAttribute(action) {
     },
   };
   const data = yield call(httpCall, config);
-  if (data.success) {
+  if (data?.data?.isDeleted) {
     if (op === 'deleteField') {
+      yield call(setMetadataApiCall, {
+        status: true,
+        reqData,
+        op,
+      });
       toast.info(`${reqData.name} successfully deleted`);
     } else {
       toast.info('attributes successfully deleted');
     }
-    yield call(MetaDataVariable, action);
   } else if (!data.success) {
     if (op === 'deleteField') {
+      yield call(setMetadataApiCall, {
+        status: false,
+        reqData,
+        op,
+      });
       toast.info(`${reqData.name} not deleted`);
     } else {
       toast.info('attributes not deleted');
