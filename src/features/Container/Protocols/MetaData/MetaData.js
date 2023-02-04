@@ -422,6 +422,7 @@ function MetaData({ protocolId }) {
   }, [apiResponse]);
 
   const accGenerator = (key, acc) => {
+    console.log('Hello_SHUBHAM');
     return (
       <div key={key} className="metadata_item" data-testid="metadataaccordian">
         <Accordian
@@ -492,7 +493,7 @@ function MetaData({ protocolId }) {
         )}
       </div>
       {!metaDataSelector?.data ? (
-        <div className="loader">
+        <div className="loader sasasas">
           <Loader />
         </div>
       ) : (
