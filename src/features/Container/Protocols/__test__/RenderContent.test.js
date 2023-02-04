@@ -1,60 +1,78 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import RenderContent from '../CustomComponents/RenderContent';
-import ProtocolContext from '../ProtocolContext';
 
-const handleContentEdit = jest.fn();
-const setActiveLineID = jest.fn();
-const deleteSection = jest.fn();
-describe('RenderContent component', () => {
-  it('should render header type correctly', () => {
-    const sectionData = { type: 'header', content: 'Header Content' };
-    render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <RenderContent
-          sectionData={sectionData}
-          handleContentEdit={handleContentEdit}
-          activeLineID=""
-          setActiveLineID={setActiveLineID}
-          deleteSection={deleteSection}
-          edit={false}
-        />
-      </ProtocolContext.Provider>,
+import * as ProtocolContext from '../ProtocolContext';
+
+describe('RenderContent', () => {
+  const handleContentEditMock = jest.fn();
+  const setActiveLineIDMock = jest.fn();
+  const deleteSectionMock = jest.fn();
+
+  it('renders the correct content and edit button when type is text', () => {
+    const sectionData = {
+      type: 'text',
+      content: 'Test content',
+      line_id: 'line-1',
+    };
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const { getByText } = render(
+      <RenderContent
+        sectionData={sectionData}
+        handleContentEdit={handleContentEditMock}
+        activeLineID="line-1"
+        setActiveLineID={setActiveLineIDMock}
+        deleteSection={deleteSectionMock}
+        edit={false}
+      />,
     );
-
-    expect(screen.getByText(/Header Content/)).toBeInTheDocument();
+    expect(getByText('Test content')).toBeInTheDocument();
   });
 
-  it('should render text type correctly', () => {
-    const sectionData = { type: 'text', content: 'Text Content' };
-    render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <RenderContent
-          sectionData={sectionData}
-          handleContentEdit={handleContentEdit}
-          activeLineID=""
-          setActiveLineID={setActiveLineID}
-          deleteSection={deleteSection}
-          edit={false}
-        />
-      </ProtocolContext.Provider>,
+  it('renders the correct content and edit button when type is text', () => {
+    const sectionData = {
+      type: 'header',
+      content: 'Test content',
+      line_id: 'line-1',
+    };
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const { getByText } = render(
+      <RenderContent
+        sectionData={sectionData}
+        handleContentEdit={handleContentEditMock}
+        activeLineID="line-1"
+        setActiveLineID={setActiveLineIDMock}
+        deleteSection={deleteSectionMock}
+        edit={false}
+      />,
     );
-
-    expect(screen.getByText(/Text Content/)).toBeInTheDocument();
+    expect(getByText('Test content')).toBeInTheDocument();
   });
 
-  it('should render image type correctly', () => {
-    const sectionData = { type: 'image', content: 'Image Content' };
+  it('renders the correct content and edit button when type is text', () => {
+    const sectionData = {
+      type: 'table',
+      content: null,
+      line_id: 'line-1',
+    };
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <RenderContent
-          sectionData={sectionData}
-          handleContentEdit={handleContentEdit}
-          activeLineID=""
-          setActiveLineID={setActiveLineID}
-          deleteSection={deleteSection}
-          edit={false}
-        />
-      </ProtocolContext.Provider>,
+      <RenderContent
+        sectionData={sectionData}
+        handleContentEdit={handleContentEditMock}
+        activeLineID="line-1"
+        setActiveLineID={setActiveLineIDMock}
+        deleteSection={deleteSectionMock}
+        edit={false}
+      />,
     );
   });
 });
