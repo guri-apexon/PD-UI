@@ -46,12 +46,12 @@ export const httpCall = async (config) => {
       },
     };
   } else {
-    headerConfig = {
-      ...config,
-      headers: {
-        Authorization: config.auth ? config.auth : `Bearer ${token}`,
-      },
-    };
+      headerConfig = {
+        ...config,
+        headers: {
+          Authorization: config.auth ? config.auth : `Bearer ${token}`,
+        },
+      };
   }
 
   try {
@@ -217,8 +217,8 @@ let UIhost;
 /* eslint-enable */
 const environment = process.env.REACT_APP_ENV;
 if (environment === 'local') {
-  // backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
-  backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
+  backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  // backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
@@ -272,6 +272,7 @@ export const Apis = {
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
   DOWNLOAD_API: '/api/download_file',
   METADATA: '/pd/api/v1/documents',
+  ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
 };
 
 export const SSO_ENABLED = environment !== 'local';

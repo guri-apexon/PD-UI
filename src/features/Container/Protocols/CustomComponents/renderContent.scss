@@ -1,0 +1,16 @@
+.format-container {
+  position: relative;
+  width: max-content;
+  min-width: 300px;
+  max-width: 100%;
+  margin-bottom: 5px;
+
+  .contentEditable {
+    outline: none;
+  }
+
+  .contentEditable.content_header {
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+}
