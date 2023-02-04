@@ -65,7 +65,7 @@ describe('DisplayTable component', () => {
       />,
     );
 
-    const rowOperationButton = getByText('Row Operation');
+    const rowOperationButton = getByText('value 1');
     fireEvent.click(rowOperationButton);
 
     // expect(mockHandleRowOperation).toHaveBeenCalledWith(0);

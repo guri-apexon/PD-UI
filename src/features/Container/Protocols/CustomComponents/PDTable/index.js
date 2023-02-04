@@ -78,14 +78,16 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const { dispatchSectionEvent } = useProtContext();
 
   useEffect(() => {
-    const parsedTable = JSON.parse(data.TableProperties);
-    const formatData = formattableData(parsedTable);
-    setUpdatedData(formatData);
-    const footnoteArr = data.AttachmentListProperties || [];
-    setFootnoteData(footnoteArr);
-    const colLength = Object.keys(formatData[0]).length;
-    setColumnLength(colLength);
-    setColumnWidth(98 / colLength);
+    if (data) {
+      const parsedTable = JSON.parse(data.TableProperties);
+      const formatData = formattableData(parsedTable);
+      setUpdatedData(formatData);
+      const footnoteArr = data.AttachmentListProperties || [];
+      setFootnoteData(footnoteArr);
+      const colLength = Object.keys(formatData[0]).length;
+      setColumnLength(colLength);
+      setColumnWidth(98 / colLength);
+    }
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {
