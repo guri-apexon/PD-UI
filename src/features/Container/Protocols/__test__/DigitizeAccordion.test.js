@@ -4,6 +4,7 @@ import store from '../../../../store/store';
 
 import { render, fireEvent } from '../../../../test-utils/test-utils';
 import DigitizeAccordion from '../DigitizedPanel/DigitizeAccordion';
+import ProtocolContext from '../ProtocolContext';
 
 const item = {
   doc_id: '558a1964-bfed-4974-a52b-79848e1df372',
@@ -25,41 +26,9 @@ const item = {
 };
 
 describe('DigitizeAccordion', () => {
-  test('render accordion', () => {
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion item={item} />
-      </Provider>,
-    );
-    const header = component.getByText('blank_header');
-    expect(header).toBeInTheDocument();
-  });
-
-  // test('does not show pencil icon for primary role', () => {
-  //   const bool = true;
-  //   const component = render(
-  //     <DigitizeAccordion item={item} primaryRole={bool} />,
-  //   );
-  //   expect(component.find('.loader')).not.toBeInTheDocument();
-  // });
-
-  // test('accordion on closed state', () => {
-  //   const bool = true;
-  //   const component = render(
-  //     <DigitizeAccordion
-  //       item={item}
-  //       primaryRole={bool}
-  //       protocol="1234"
-  //       currentActiveCard={1}
-  //       setCurrentActiveCard={jest.fn()}
-  //     />,
-  //   );
-  //   expect(component.find('.loader')).not.toBeInTheDocument();
-  // });
-
-  test('Accordion loaded with store values', () => {
-    const bool = true;
-    render(
+  const bool = true;
+  const DigitizeAccordionComp = (
+    <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
       <Provider store={store}>
         <DigitizeAccordion
           item={item}
@@ -69,124 +38,62 @@ describe('DigitizeAccordion', () => {
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
         />
-      </Provider>,
-    );
+      </Provider>
+    </ProtocolContext.Provider>
+  );
+  test('render accordion', () => {
+    const component = render(DigitizeAccordionComp);
+    const header = component.getByText('blank_header');
+    expect(header).toBeInTheDocument();
   });
 
-  test('Accordion is open when the currentActiveCard is of the same item id', () => {
-    const bool = true;
-    render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
-        />
-      </Provider>,
-    );
+  test('Accordion loaded with store values and Accordion is open when the currentActiveCard is of the same item id', () => {
+    const component = render(DigitizeAccordionComp);
+    expect(component).toBeTruthy();
   });
 
   test('Accordion is close when the currentActiveCard is of the same item id', () => {
     const bool = true;
     render(
       <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b"
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
-        />
+        <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+          <DigitizeAccordion
+            item={item}
+            primaryRole={bool}
+            protocol="1234"
+            currentActiveCard="8ccb22b1-0aa0-487a-a47b"
+            setCurrentActiveCard={jest.fn()}
+            setCurrentEditCard={jest.fn()}
+            handlePageRight={jest.fn()}
+            rightBladeValue={jest.fn()}
+          />
+        </ProtocolContext.Provider>
       </Provider>,
     );
   });
 
   test('Pencil icon is visible for primary user', () => {
-    const bool = true;
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
-        />
-      </Provider>,
-    );
+    const component = render(DigitizeAccordionComp);
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
   });
 
   test('Pencil icon is onClick for primary user', () => {
-    const bool = true;
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
-        />
-      </Provider>,
-    );
+    const component = render(DigitizeAccordionComp);
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
     pencil.click(pencil);
   });
 
   test('accordian is onClick for primary user', () => {
-    const bool = true;
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
-          setCurrentActiveCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          rightBladeValue={jest.fn()}
-        />
-      </Provider>,
-    );
+    const component = render(DigitizeAccordionComp);
     const accordian = component.getByTestId('accordion');
     expect(accordian).toBeInTheDocument();
     fireEvent.click(accordian);
   });
 
   test('Save button is visible for primary user', () => {
-    const bool = true;
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7"
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
-        />
-      </Provider>,
-    );
+    const component = render(DigitizeAccordionComp);
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
     fireEvent.click(pencil);

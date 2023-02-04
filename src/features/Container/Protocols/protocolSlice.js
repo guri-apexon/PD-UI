@@ -81,6 +81,29 @@ export const protocolSlice = createSlice({
     getFileStream: (state, action) => {
       state.fileStream = action.payload;
     },
+    updateSectionData: (state, action) => {
+      const { type, data, content, lineId, linkId } = action.payload;
+
+      if (type === 'REPLACE_CONTENT' && data && linkId) {
+        console.log('REPLACE_CONTENT UPDATED');
+        state.sectionDetails.data = state.sectionDetails.data.map((x) =>
+          x.linkId === linkId ? { ...x, data } : x,
+        );
+      } else if (content && lineId) {
+        state.sectionDetails.sections = state.sectionDetails.sections.map(
+          (x) => {
+            if (x.line_id === lineId) {
+              x.qc_change_type = 'modify';
+              x.content = content;
+            }
+            return x;
+          },
+        );
+      }
+    },
+    getMetaDataSummaryField: (state, action) => {
+      state.metaDataSummaryField = action.payload;
+    },
     getMetaDataVariable: (state, action) => {
       state.metaDataVariable = action.payload;
     },
@@ -105,6 +128,8 @@ export const {
   setSectionLoader,
   resetSectionData,
   getFileStream,
+  updateSectionData,
+  getMetaDataSummaryField,
   getMetaDataVariable,
   getRightBladeValue,
   getTOCActive,
