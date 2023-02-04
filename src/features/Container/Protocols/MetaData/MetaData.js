@@ -43,6 +43,8 @@ function MetaData({ protocolId }) {
     { label: 'Lab Data' },
   ]);
 
+  console.log('accordianData', accordianData);
+
   const handleChange = (event, newValue) => {
     setSectionName(newValue);
   };
