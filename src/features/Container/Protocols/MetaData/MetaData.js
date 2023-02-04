@@ -353,7 +353,7 @@ function MetaData({ protocolId }) {
 
   useEffect(() => {
     // console.log(apiResponse);
-    if (apiResponse.status) {
+    if (apiResponse?.status) {
       if (apiResponse.op === 'addAttributes') {
         const selectedData = accordianData[apiResponse.reqData.name];
         const accMetaData =
@@ -495,7 +495,7 @@ function MetaData({ protocolId }) {
         </div>
       ) : (
         <div className="_meta_data-boarder">
-          {Object.entries(accordianData).map(([key, value]) => {
+          {Object?.entries(accordianData || {}).map(([key, value]) => {
             return value.level === 1 && accGenerator(key, value);
           })}
         </div>
