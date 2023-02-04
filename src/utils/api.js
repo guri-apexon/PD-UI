@@ -22,12 +22,12 @@ export const httpCall = async (config) => {
       },
     };
   } else {
-    headerConfig = {
-      ...config,
-      headers: {
-        Authorization: config.auth ? config.auth : `Bearer ${token}`,
-      },
-    };
+      headerConfig = {
+        ...config,
+        headers: {
+          Authorization: config.auth ? config.auth : `Bearer ${token}`,
+        },
+      };
   }
   try {
     const response = await axios(headerConfig);
@@ -246,6 +246,7 @@ export const Apis = {
   HEADER_LIST: '/api/cpt_data',
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
   DOWNLOAD_API: '/api/download_file',
+  ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
 };
 
 export const SSO_ENABLED = environment !== 'local';
