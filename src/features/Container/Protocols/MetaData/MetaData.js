@@ -128,6 +128,7 @@ function MetaData({ protocolId }) {
         attributeNames: deletedAttributes,
         reqData: {
           name: data.name,
+          accData: data,
         },
       },
     });
@@ -202,34 +203,6 @@ function MetaData({ protocolId }) {
 
   const handleDelete = (accData, e) => {
     e.stopPropagation();
-    if (accData.level !== 1) {
-      const filterData = Object.entries(accordianData).find(([key, value]) =>
-        // eslint-disable-next-line
-        value?._childs?.includes(accData.name),
-      );
-      dispatch({
-        type: 'SET_METADATA',
-        payload: {
-          ...accordianData,
-          [filterData[0]]: {
-            ...accordianData[filterData[0]],
-            // eslint-disable-next-line
-            _childs: accordianData[filterData[0]]._childs.filter(
-              (list) => list !== accData.name,
-            ),
-          },
-        },
-      });
-    } else {
-      const copyOfObject = { ...accordianData };
-      delete copyOfObject[accData.name];
-      dispatch({
-        type: 'SET_METADATA',
-        payload: {
-          ...copyOfObject,
-        },
-      });
-    }
     deleteCall(accordianData[accData.name], 'deleteField');
   };
 
@@ -354,8 +327,7 @@ function MetaData({ protocolId }) {
   //   }, [wrapperRef]);
 
   useEffect(() => {
-    // console.log(apiResponse);
-    if (apiResponse?.status) {
+    if (apiResponse.status) {
       if (apiResponse.op === 'addAttributes') {
         const selectedData = accordianData[apiResponse.reqData.name];
         const accMetaData =
@@ -377,6 +349,7 @@ function MetaData({ protocolId }) {
         if (apiResponse.reqData.level === 1) {
           const obj = {
             name: apiResponse.reqData.name,
+            formattedName: apiResponse.reqData.name,
             isEdit: false,
             isActive: false,
             _meta_data: [],
@@ -393,6 +366,7 @@ function MetaData({ protocolId }) {
         } else {
           const obj = {
             name: apiResponse.reqData.name,
+            formattedName: `${apiResponse.reqData.accData.formattedName}.${apiResponse.reqData.name}`,
             isEdit: false,
             isActive: false,
             _meta_data: [],
@@ -461,6 +435,7 @@ function MetaData({ protocolId }) {
     }
     // eslint-disable-next-line
   }, [sectionName]);
+
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
