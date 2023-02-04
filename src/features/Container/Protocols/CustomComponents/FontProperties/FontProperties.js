@@ -131,7 +131,7 @@ function FontProperties({ activeLineID }) {
       <button
         disabled={!enable}
         type="button"
-        data-testId="list"
+        data-testId="bulletlist"
         className="button-exec-icon"
         onMouseDown={(e) => onFormatSelect(e, 'UL')}
       >

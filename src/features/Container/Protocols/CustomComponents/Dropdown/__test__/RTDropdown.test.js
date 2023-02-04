@@ -1,27 +1,30 @@
 import { render, fireEvent } from '@testing-library/react';
 import Dropdown from '../index';
+import { headerList, mathSymbols } from '../../FontProperties/constants';
 
 document.execCommand = jest.fn();
 
 describe('Dropdown', () => {
-  test('Render without error', () => {
+  test('Render without error  when type is header', () => {
     render(
       <Dropdown
         disabled={false}
         buttonName="H"
         onHeaderSelect={jest.fn()}
         type="header"
+        list={headerList}
       />,
     );
   });
 
-  test('check options in the document', () => {
+  test('check options in the document when type is header', () => {
     const screen = render(
       <Dropdown
         disabled={false}
         buttonName="H"
         onHeaderSelect={jest.fn()}
         type="header"
+        list={headerList}
       />,
     );
     const btn = screen.getByTestId('btn');
@@ -30,26 +33,28 @@ describe('Dropdown', () => {
     expect(options).toBeInTheDocument();
   });
 
-  test('check list in the document', () => {
-    const screen = render(
-      <Dropdown
-        disabled={false}
-        buttonName="H"
-        onHeaderSelect={jest.fn()}
-        type="list"
-      />,
-    );
-    const list = screen.getAllByTestId('list');
-    expect(list.length).toBe(5);
-  });
-
-  test('Format content on button click', () => {
+  test('check list in the document when type is header', () => {
     const screen = render(
       <Dropdown
         disabled={false}
         buttonName="H"
         onHeaderSelect={jest.fn()}
         type="header"
+        list={headerList}
+      />,
+    );
+    const list = screen.getAllByTestId('list');
+    expect(list.length).toBe(5);
+  });
+
+  test('Format content on button click when type is header', () => {
+    const screen = render(
+      <Dropdown
+        disabled={false}
+        buttonName="H"
+        onHeaderSelect={jest.fn()}
+        type="header"
+        list={headerList}
       />,
     );
     const list = screen.getByText('H2');
@@ -57,16 +62,18 @@ describe('Dropdown', () => {
     expect(document.execCommand).toHaveBeenCalled();
   });
 
-  test('headerSelect on button click', () => {
+  test('onSymbolSelect on click when type is symbols', () => {
     const screen = render(
       <Dropdown
         disabled={false}
-        buttonName="H"
+        buttonName="M"
         onHeaderSelect={jest.fn()}
-        type="list"
+        type="symbols"
+        list={mathSymbols}
       />,
     );
-    const list = screen.getByText('H2');
-    fireEvent.click(list);
+    const list = screen.getByText('∅');
+    fireEvent.mouseDown(list);
+    expect(document.execCommand).toHaveBeenCalledWith('insertText', false, '∅');
   });
 });

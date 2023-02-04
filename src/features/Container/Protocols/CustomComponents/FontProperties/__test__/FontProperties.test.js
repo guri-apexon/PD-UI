@@ -138,7 +138,7 @@ describe('FontProperties', () => {
     const screen = render(
       <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
     );
-    const btn = screen.getByTestId('list');
+    const btn = screen.getByTestId('bulletlist');
     fireEvent.mouseDown(btn);
     expect(document.execCommand).toHaveBeenCalledWith('insertUnorderedList');
   });

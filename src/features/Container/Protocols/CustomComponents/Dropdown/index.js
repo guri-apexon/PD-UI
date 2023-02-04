@@ -52,6 +52,7 @@ function Dropdown({
               return (
                 // eslint-disable-next-line
                 <li
+                  data-testId="list"
                   key={React.key}
                   onMouseDown={(e) => formatHeading(e, item.name)}
                 >
