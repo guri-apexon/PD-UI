@@ -64,7 +64,7 @@ describe('RenderContent', () => {
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
-    const { getByText } = render(
+    render(
       <RenderContent
         sectionData={sectionData}
         handleContentEdit={handleContentEditMock}
