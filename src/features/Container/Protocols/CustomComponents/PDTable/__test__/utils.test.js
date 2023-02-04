@@ -1,4 +1,10 @@
-import { updateTable } from '../utils';
+import {
+  updateTable,
+  addColumn,
+  addRow,
+  deleteColumn,
+  deleteRow,
+} from '../utils';
 
 describe('utils', () => {
   test('updateTable function', () => {
