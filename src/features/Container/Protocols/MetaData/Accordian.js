@@ -39,6 +39,7 @@ function Accordian({
   const [subSectionName, setSubSectionName] = useState(false);
 
   const handleChange = (event, newValue) => {
+    console.log('handleChange', newValue, event.target.value);
     setSubSectionName(newValue);
   };
 
@@ -67,7 +68,7 @@ function Accordian({
     <>
       <Accordion expanded={accData?.isActive}>
         <AccordionSummary
-          data-testId="metadataAccordian"
+          data-testId="meta-item-accordion"
           onClick={handleAccordian}
         >
           <div className="accordion_summary_container">
@@ -82,13 +83,9 @@ function Accordian({
                         e.stopPropagation();
                         setIsOpenSubText(!isOpenSubText);
                       }}
-                      onKeyDown
                       role="presentation"
                     >
-                      <Plus
-                        data-testId="metadataplus"
-                        className="metadata-plus-size mR"
-                      />
+                      <Plus className="metadata-plus-size mR" />
                     </span>
                   )}
                   <span
@@ -98,7 +95,6 @@ function Accordian({
                       setIsDelete(false);
                       setIsModal(true);
                     }}
-                    onKeyDown
                     role="presentation"
                   >
                     <Save className="metadata-plus-size" />
@@ -122,6 +118,7 @@ function Accordian({
                   <span data-testId="metadatapencil">
                     <Pencil
                       className="metadata-plus-size"
+                      data-testid="handle-edit"
                       onClick={handleEdit}
                     />
                   </span>
@@ -139,6 +136,7 @@ function Accordian({
               source={suggestedSubList}
               fullWidth
               forcePopupIcon
+              data-testid="suggestion-field"
               showClearIndicator
               value={subSectionName}
               onChange={handleChange}
@@ -178,9 +176,13 @@ function Accordian({
               : 'Do You Really want to save it now or continue editing?'
           }
           buttonProps={[
-            { label: isDelete ? 'Cancel' : 'Continue Editing' },
+            {
+              label: isDelete ? 'Cancel' : 'Continue Editing',
+              'data-testid': 'update-term-field',
+            },
             {
               label: isDelete ? 'Delete' : 'Save',
+              'data-testid': 'save-term-field',
               onClick: (e) => {
                 if (isDelete) {
                   handleDelete(e);

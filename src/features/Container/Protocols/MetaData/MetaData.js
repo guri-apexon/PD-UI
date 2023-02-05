@@ -72,6 +72,7 @@ function MetaData({ protocolId }) {
   };
 
   const handleAccordian = (accData) => {
+    console.log('Helo ACCORDION');
     const selectedData = accordianData[accData.name];
     dispatch({
       type: 'SET_METADATA',
@@ -169,13 +170,13 @@ function MetaData({ protocolId }) {
     e.stopPropagation();
     // if (formValidation(rows?.[accData?.name])) {
     if (accData.name === 'summary') {
-      const filterCustomData = rows[accData?.name].filter(
+      const filterCustomData = rows[accData?.name]?.filter(
         (data) => data?.isCustom,
       );
-      const filterNonCustomData = rows[accData?.name].filter(
+      const filterNonCustomData = rows[accData?.name]?.filter(
         (data) => !data?.isCustom,
       );
-      if (filterCustomData.length > 0) {
+      if (filterCustomData?.length > 0) {
         postCall(
           {
             formattedName: 'summary_extended',
@@ -463,7 +464,6 @@ function MetaData({ protocolId }) {
   }, [apiResponse]);
 
   const accGenerator = (key, acc) => {
-    console.log('Hello_SHUBHAM');
     return (
       <div key={key} className="metadata_item" data-testid="metadataaccordian">
         <Accordian
