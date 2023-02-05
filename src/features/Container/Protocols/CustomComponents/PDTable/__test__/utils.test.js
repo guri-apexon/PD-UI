@@ -1,9 +1,9 @@
 import {
-  updateTable,
   addColumn,
   addRow,
   deleteColumn,
   deleteRow,
+  updateTable,
 } from '../utils';
 
 describe('utils', () => {

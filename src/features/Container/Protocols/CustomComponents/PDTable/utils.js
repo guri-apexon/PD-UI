@@ -44,7 +44,6 @@ export const addRow = (rows, index) => {
 
 export const deleteRow = (rows, index) => {
   const data = cloneDeep(rows);
-  // data.splice(index, 1);
   Object.keys(data[index]).forEach((key) => {
     data[index][key].content = `<s>${data[index][key].content}</s>`;
     data[index][key].qc_change_type = QC_CHANGE_TYPE.DELETED;
@@ -80,6 +79,5 @@ export const deleteColumn = (tabledata, index) => {
       }
     });
   }
-  // console.log("data", data);
   return data;
 };

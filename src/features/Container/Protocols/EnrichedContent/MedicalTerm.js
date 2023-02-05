@@ -7,14 +7,18 @@ import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
+import { useDispatch, useSelector } from 'react-redux';
 import enrichedTerms from './clinicalTerms.json';
 import './MedicalTerm.scss';
+import { EnrichedValue } from '../protocolSlice';
 
 function MedicalTerm({
   enrichedTarget,
   expanded,
   enrichedText,
   clinicalTerms: clinicalTermsArr,
+  linkId,
+  docId,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
@@ -23,10 +27,51 @@ function MedicalTerm({
   const [newTermValue, setNewTermValue] = useState('');
   const [clinicalTerms, setClinicalTerms] = useState([]);
   const [childArr, setChildArr] = useState([]);
+  const [preferredTerm, setPreferredTerm] = useState();
+  const [synonyms, setSynonyms] = useState();
+  const [classification, setClassification] = useState();
+  const [ontologyTemp, setOntologyTemp] = useState();
+  const dispatch = useDispatch();
+  const apiFlagselector = useSelector(EnrichedValue);
+  const [tempChild, setTempChild] = useState();
+
+  useEffect(() => {
+    if (apiFlagselector) {
+      setChildArr(tempChild);
+      dispatch({
+        type: 'GET_ENRICHED_API',
+        payload: { flag: false },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [apiFlagselector]);
+
+  const restructingObject = () => {
+    const object = Object.keys(clinicalTermsArr[enrichedText] || {});
+    for (let i = 0; i < object.length; i++) {
+      if (
+        Object?.keys(clinicalTermsArr[enrichedText])[i] === 'preferred_term'
+      ) {
+        setPreferredTerm(Object?.values(clinicalTermsArr[enrichedText])[i]);
+      }
+      if (Object?.keys(clinicalTermsArr[enrichedText])[i] === 'synonyms') {
+        setSynonyms(Object?.values(clinicalTermsArr[enrichedText])[i]);
+      }
+      if (
+        Object?.keys(clinicalTermsArr[enrichedText])[i] === 'classification'
+      ) {
+        setClassification(Object?.values(clinicalTermsArr[enrichedText])[i]);
+      }
+      if (Object?.keys(clinicalTermsArr[enrichedText])[i] === 'ontology') {
+        setOntologyTemp(Object?.values(clinicalTermsArr[enrichedText])[i]);
+      }
+    }
+  };
 
   useEffect(() => {
     if (enrichedText) {
       setClinicalTerms([...enrichedTerms]);
+      restructingObject();
     } else {
       setClinicalTerms([]);
       setSAnchorEl(null);
@@ -50,6 +95,7 @@ function MedicalTerm({
     if (newTermValue === '') {
       return false;
     }
+
     if (!childTermValue || !selectedTerm) return false;
     const temp = [...childArr];
 
@@ -59,9 +105,30 @@ function MedicalTerm({
       }
       return x;
     });
-
-    setChildArr(newArr);
+    setTempChild(newArr);
     setChildTermValue(null);
+    let name;
+    if (selectedTerm === 'synonyms') name = 'entity_xref';
+    else if (selectedTerm === 'classification') name = 'entity_class';
+    else if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
+    const tempObj = {
+      standard_entity_name: enrichedText,
+      iqv_standard_term: preferredTerm,
+      entity_class: classification,
+      entity_xref: synonyms,
+      ontology: ontologyTemp,
+    };
+    const saveObj = { ...tempObj, [name]: newArr.toString() };
+
+    dispatch({
+      type: 'SAVE_ENRICHED_DATA',
+      payload: {
+        docId,
+        linkId,
+        data: saveObj,
+      },
+    });
+
     return true;
   };
 
@@ -81,10 +148,15 @@ function MedicalTerm({
     }
   }, [expanded]);
 
+  useEffect(() => {
+    if (!anchorEl) {
+      setSAnchorEl(null);
+    }
+  }, [anchorEl]);
+
   if (!expanded) {
     return null;
   }
-
   return (
     <div className="enriched-menu-wrapper" data-testId="term-list">
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
@@ -127,8 +199,8 @@ function MedicalTerm({
                       <span className="sub-term-text">{item}</span>
                       <Pencil
                         title="Edit"
-                        data-testId="editIcon"
                         className="edit-Icon"
+                        data-testid="update-term-trigger"
                         onClick={() => {
                           setChildTermValue(item);
                         }}
@@ -161,6 +233,7 @@ function MedicalTerm({
           value={newTermValue}
           data-testId="textbox"
           allowBlank="none"
+          inputProps={{ 'data-testid': 'update-term-field' }}
           onChange={(e) => {
             setNewTermValue(e.target.value);
           }}
@@ -178,4 +251,6 @@ MedicalTerm.propTypes = {
   expanded: PropTypes.isRequired,
   enrichedText: PropTypes.isRequired,
   clinicalTerms: PropTypes.isRequired,
+  linkId: PropTypes.isRequired,
+  docId: PropTypes.isRequired,
 };

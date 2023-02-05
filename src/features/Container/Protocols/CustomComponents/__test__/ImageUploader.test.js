@@ -6,12 +6,9 @@ import ImageUploader from '../ImageUploader';
 const dispatchSectionEvent = jest.fn();
 
 const testLineID = '1';
-const testContent = '';
 const testEdit = true;
-
-const mockedProtocolContextValue = {
-  dispatchSectionEvent,
-};
+const testContent = '';
+const mockedProtocolContextValue = { dispatchSectionEvent };
 
 const renderImageUploader = (
   lineID = testLineID,

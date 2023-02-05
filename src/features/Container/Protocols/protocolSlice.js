@@ -40,6 +40,7 @@ export const protocolSlice = createSlice({
     metaDataVariable: [],
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
     TOCActiveAccordian: [],
+    EnrichedApiValue: false,
   },
   reducers: {
     getSummary: (state, action) => {
@@ -113,6 +114,9 @@ export const protocolSlice = createSlice({
     getTOCActive: (state, action) => {
       state.TOCActiveAccordian = action.payload;
     },
+    getEnrichedValue: (state, action) => {
+      state.EnrichedApiValue = action.payload;
+    },
   },
 });
 
@@ -133,6 +137,7 @@ export const {
   getMetaDataVariable,
   getRightBladeValue,
   getTOCActive,
+  getEnrichedValue,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -152,5 +157,6 @@ export const getPdfData = (state) => state.protocol.fileStream;
 export const metaDataVariable = (state) => state.protocol.metaDataVariable;
 export const rightBladeValue = (state) => state.protocol.rightBladeValue;
 export const TOCActive = (state) => state.protocol.TOCActiveAccordian;
+export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
 
 export default protocolSlice.reducer;

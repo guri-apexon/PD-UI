@@ -16,7 +16,6 @@ function HoverList({ data, handleOperation, index }) {
               // eslint-disable-next-line
               dangerouslySetInnerHTML={{ __html: item.image }}
             ></div>
-            {/* <SanitizeHTML html={item?.image} /> */}
             <div className="sd-text">{item.text}</div>
           </li>
         ))}
