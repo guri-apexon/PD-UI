@@ -81,6 +81,23 @@
   }
 }
 
+.auditPopover {
+  padding: 10px;
+  display: flex;
+  width: max-content;
+  .textContainer {
+    padding: 0 5px;
+    p {
+      padding: 5px 0;
+    }
+  }
+}
+
+.eyeIcon {
+  cursor: pointer;
+  position: relative;
+}
+
 @media only screen and (max-width: 1366px) {
   .accordion_summary_container p {
     font-size: 14px;
