@@ -294,7 +294,6 @@ function MetaData({ protocolId }) {
 
   useEffect(() => {
     if (apiResponse?.status) {
-      // fetchMetaData();
       if (apiResponse.op === 'addAttributes') {
         const selectedData = accordianData[apiResponse.reqData.name];
         const accMetaData =
@@ -347,6 +346,8 @@ function MetaData({ protocolId }) {
             [apiResponse.reqData.name]: obj,
           });
         }
+      } else {
+        fetchMetaData();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
