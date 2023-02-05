@@ -15,6 +15,7 @@ function FontProperties({ activeLineID, setSaveEnabled }) {
 
   const onFormatSelect = (e, button) => {
     e.preventDefault();
+    setSaveEnabled(true);
     switch (button) {
       case 'B':
         document.execCommand('bold', false, 'strong');
@@ -46,6 +47,7 @@ function FontProperties({ activeLineID, setSaveEnabled }) {
   };
 
   const deleteSegment = () => {
+    setSaveEnabled(true);
     dispatchSectionEvent('CONTENT_DELETED', { currentLineId: activeLineID });
   };
 
@@ -67,6 +69,7 @@ function FontProperties({ activeLineID, setSaveEnabled }) {
         headerStyle={{ fontWeight: 'bold' }}
         type="header"
         list={headerList}
+        setSaveEnabled={setSaveEnabled}
       />
 
       <button
@@ -145,6 +148,7 @@ function FontProperties({ activeLineID, setSaveEnabled }) {
         headerStyle={{ fontWeight: 'bold' }}
         type="symbols"
         list={mathSymbols}
+        setSaveEnabled={setSaveEnabled}
       />
       <div className="right-menu">
         <HoverComponent

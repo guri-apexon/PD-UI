@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+
 import RenderContent from '../CustomComponents/RenderContent';
 import './DigitizedEdit.scss';
 import {

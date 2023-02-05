@@ -30,6 +30,7 @@ function Digitize({
   const [rightValue, setRightValue] = useState(BladeRightValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
   const [currentEditCard, setCurrentEditCard] = useState(null);
+  const [currentEditIndex, setCurrentEditIndex] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
 
@@ -166,6 +167,8 @@ function Digitize({
                         setCurrentEditCard={setCurrentEditCard}
                         sectionNumber={sectionNumber}
                         scrollToTop={scrollToTop}
+                        setCurrentEditIndex={setCurrentEditIndex}
+                        currentEditIndex={currentEditIndex}
                       />
                     </div>
                   </div>

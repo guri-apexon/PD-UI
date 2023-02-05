@@ -13,6 +13,7 @@ function Dropdown({
   type,
   disabled,
   list,
+  setSaveEnabled,
 }) {
   const [showList, setShowList] = useState(false);
   const showMenu = () => {
@@ -22,11 +23,13 @@ function Dropdown({
     e.preventDefault();
     setShowList(false);
     document.execCommand('formatBlock', false, name);
+    setSaveEnabled(true);
   };
 
   const onSymbolSelect = (e, symbol) => {
     e.preventDefault();
     document.execCommand('insertText', false, symbol);
+    setSaveEnabled(true);
   };
 
   return (
@@ -85,4 +88,5 @@ Dropdown.propTypes = {
   type: PropTypes.isRequired,
   disabled: PropTypes.isRequired,
   list: PropTypes.isRequired,
+  setSaveEnabled: PropTypes.isRequired,
 };

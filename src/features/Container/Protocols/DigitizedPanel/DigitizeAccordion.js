@@ -13,6 +13,7 @@ import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
+import { toast } from 'react-toastify';
 import MultilineEdit from './DigitizedEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
@@ -47,7 +48,8 @@ function DigitizeAccordion({
   setCurrentEditCard,
   index,
   scrollToTop,
-  sectionNumber,
+  currentEditIndex,
+  setCurrentEditIndex,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -95,6 +97,7 @@ function DigitizeAccordion({
     e.stopPropagation();
     setShowEdit(false);
     setCurrentEditCard(null);
+    setCurrentEditIndex(null);
     setSaveEnabled(false);
   };
 
@@ -184,6 +187,7 @@ function DigitizeAccordion({
     setExpanded(true);
     setShowEdit(true);
     setCurrentEditCard(item.link_id);
+    setCurrentEditIndex(index);
     setEditedMode(true);
     dispatchSectionData();
     setSectionDataBak([...sectionDataArr]);
@@ -202,6 +206,15 @@ function DigitizeAccordion({
     console.log('refreshContent');
     setEditedMode(false);
     dispatchSectionData(true);
+    toast.success('Saved successfully', {
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+      toastId: 'toast1',
+    });
   };
 
   useEffect(() => {
@@ -465,7 +478,7 @@ function DigitizeAccordion({
           {
             label: 'Cancel',
             onClick: () => {
-              scrollToTop(sectionNumber);
+              scrollToTop(currentEditIndex);
               setShowConfirm(false);
             },
           },
@@ -480,7 +493,7 @@ function DigitizeAccordion({
             label: 'Continue Editing',
             onClick: () => {
               setShowConfirm(false);
-              scrollToTop(sectionNumber);
+              scrollToTop(currentEditIndex);
             },
           },
         ]}
@@ -527,5 +540,6 @@ DigitizeAccordion.propTypes = {
   setCurrentEditCard: PropTypes.isRequired,
   index: PropTypes.isRequired,
   scrollToTop: PropTypes.isRequired,
-  sectionNumber: PropTypes.isRequired,
+  currentEditIndex: PropTypes.isRequired,
+  setCurrentEditIndex: PropTypes.isRequired,
 };
