@@ -13,6 +13,7 @@ function RenderContent({
   setActiveLineID,
   deleteSection,
   edit,
+  setSaveEnabled,
 }) {
   const { type, content = '', line_id: lineID } = sectionData;
 
@@ -70,6 +71,7 @@ function RenderContent({
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
         edit={edit}
+        setSaveEnabled={setSaveEnabled}
       />
     );
   }
@@ -83,5 +85,6 @@ RenderContent.propTypes = {
   activeLineID: PropTypes.isRequired,
   setActiveLineID: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
+  setSaveEnabled: PropTypes.isRequired,
   edit: PropTypes.isRequired,
 };

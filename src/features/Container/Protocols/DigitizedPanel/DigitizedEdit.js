@@ -11,7 +11,7 @@ import {
 import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
 
-function MultilineEdit({ sectionDataArr, edit }) {
+function MultilineEdit({ sectionDataArr, edit, setSaveEnabled }) {
   const [sections, setSections] = useState([]);
   useEffect(() => {
     if (sectionDataArr?.length > 0) {
@@ -41,7 +41,12 @@ function MultilineEdit({ sectionDataArr, edit }) {
   };
   return (
     <div className="Richtextcontainer" data-testId="richTextEditor">
-      {edit && <FontProperties activeLineID={activeLineID} />}
+      {edit && (
+        <FontProperties
+          activeLineID={activeLineID}
+          setSaveEnabled={setSaveEnabled}
+        />
+      )}
       <section className="section-edited-list">
         {sections?.map((section) => (
           // eslint-disable-next-line
@@ -57,6 +62,7 @@ function MultilineEdit({ sectionDataArr, edit }) {
               activeLineID={activeLineID}
               deleteSection={deleteSection}
               setActiveLineID={setActiveLineID}
+              setSaveEnabled={setSaveEnabled}
               edit={edit}
             />
           </div>
@@ -70,4 +76,5 @@ export default MultilineEdit;
 MultilineEdit.propTypes = {
   sectionDataArr: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  setSaveEnabled: PropTypes.isRequired,
 };

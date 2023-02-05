@@ -66,7 +66,7 @@ const formattableData = (data) => {
 
 const confirmText = 'Please confirm if you want to continue with deletion';
 
-function PDTable({ data, segment, activeLineID, lineID }) {
+function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
   const [columnLength, setColumnLength] = useState();
@@ -90,6 +90,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {
+    console.log('changed');
     const cloneData = [...updatedData];
     cloneData[rowIndex][columnIndex].content = content;
     setUpdatedData(cloneData);
@@ -216,4 +217,5 @@ PDTable.propTypes = {
   segment: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
+  setSaveEnabled: PropTypes.isRequired,
 };
