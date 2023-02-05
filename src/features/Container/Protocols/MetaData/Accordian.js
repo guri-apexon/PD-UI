@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Accordion from 'apollo-react/components/Accordion';
 import Modal from 'apollo-react/components/Modal';
@@ -33,7 +33,6 @@ function Accordian({
   subAccComponent,
   setDeletedAttributes,
 }) {
-  const wrapperRef = useRef(null);
   const [isModal, setIsModal] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [subSectionName, setSubSectionName] = useState(false);
@@ -42,18 +41,6 @@ function Accordian({
     console.log('handleChange', newValue, event.target.value);
     setSubSectionName(newValue);
   };
-
-  // useEffect(() => {
-  //   function handleClickOutside(event) {
-  //     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-  //       setIsOpenSubText(false);
-  //     }
-  //   }
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
-  // }, [setIsOpenSubText, wrapperRef]);
 
   useEffect(() => {
     if (subSectionName?.label) {

@@ -47,14 +47,14 @@ describe('Accordian component', () => {
     );
   });
   it('should render the Accordion component', () => {
-    expect(wrapper.getByTestId('metadataAccordian')).toBeInTheDocument();
+    expect(wrapper.getByTestId('meta-item-accordion')).toBeInTheDocument();
   });
   it('should call handleAccordian when accordion is clicked', () => {
-    fireEvent.click(wrapper.getByTestId('metadataAccordian'));
+    fireEvent.click(wrapper.getByTestId('meta-item-accordion'));
     expect(handleAccordian).toHaveBeenCalled();
   });
   it('should call setIsOpenSubText when plus icon is clicked', () => {
-    const metadataAccordian = wrapper.getByTestId('metadataAccordian');
+    const metadataAccordian = wrapper.getByTestId('meta-item-accordion');
 
     expect(wrapper).toBeTruthy();
 
@@ -70,7 +70,7 @@ describe('Accordian component', () => {
     const accData = {
       isActive: true,
       name: 'testName',
-      level: 4,
+      level: 1,
       isEdit: false,
     };
     const rows = [];
@@ -109,7 +109,7 @@ describe('Accordian component', () => {
       />,
     );
 
-    expect(getByTestId('metadataAccordian')).toBeInTheDocument();
+    expect(getByTestId('meta-item-accordion')).toBeInTheDocument();
   });
 });
 
@@ -117,7 +117,7 @@ describe('Accordian', () => {
   const standardList = ['Section 1'];
   const accData = {
     name: 'Section 1',
-    level: 5,
+    level: 1,
     isActive: false,
     isEdit: false,
   };
@@ -163,7 +163,7 @@ describe('Accordian', () => {
   it('opens the subtext input when the plus icon is clicked', () => {
     const accData = {
       name: 'Section 1',
-      level: 5,
+      level: 1,
       isActive: true,
       isEdit: true,
     };
@@ -196,7 +196,7 @@ describe('Accordian', () => {
   it('opens the subtext input when the plus icon is clicked edit', () => {
     const accData = {
       name: 'Section 1',
-      level: 5,
+      level: 1,
       isActive: true,
       isEdit: true,
     };

@@ -144,7 +144,7 @@ describe('MetaDataEditTable', () => {
     const deletedAttributes = [];
     const setDeletedAttributes = jest.fn();
 
-    const { getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <MetaDataEditTable
         data={data}
         rows={rows}
@@ -155,40 +155,5 @@ describe('MetaDataEditTable', () => {
     );
 
     expect(getByTestId('metadata-table')).toBeInTheDocument();
-    // const metaDataNotes = screen.getByTestId('metadata-notes');
-    // expect(metaDataNotes).toBeInTheDocument();
-    // expect(getByText('Value 1')).toBeInTheDocument();
   });
-
-  // it('handles toggle of Confidence Score column', () => {
-  //   const data = { name: 'Test Data' };
-  //   const rows = [
-  //     {
-  //       attr_name: 'Attribute 1',
-  //       attr_value: 'Value 1',
-  //       confidence: '80%',
-  //     },
-  //   ];
-  //   const setRows = jest.fn();
-  //   const deletedAttributes = [];
-  //   const setDeletedAttributes = jest.fn();
-
-  //   const { getByLabelText, queryByText, getByText } = render(
-  //     <MetaDataEditTable
-  //       data={data}
-  //       rows={rows}
-  //       setRows={setRows}
-  //       deletedAttributes={deletedAttributes}
-  //       setDeletedAttributes={setDeletedAttributes}
-  //     />,
-  //   );
-
-  //   fireEvent.click(getByLabelText('Confidence Score'));
-  //   expect(queryByText('Confidence Score')).toBeInTheDocument();
-  //   expect(queryByText('Confidence Score').textContent).toBeInTheDocument();
-
-  //   fireEvent.click(getByLabelText('Confidence Score'));
-  //   expect(queryByText('Confidence Score')).not.toBeInTheDocument();
-  //   expect(queryByText('80%')).not.toBeInTheDocument();
-  // });
 });

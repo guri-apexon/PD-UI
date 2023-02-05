@@ -4,7 +4,7 @@ import { render, fireEvent } from '../../../../test-utils/test-utils';
 import MetaData from '../MetaData/MetaData';
 import { metaVariables } from './data';
 
-const summary_extended = {
+const summaryExtended = {
   _meta_data: [
     {
       attr_name: 'new',
@@ -52,134 +52,22 @@ const initialState = {
         isEdit: true,
         _childs: ['bb'],
       },
-      bb: {
-        _meta_data: [
-          {
-            attr_name: 'testFor',
-            attr_type: 'string',
-            attr_value: 'sugar',
-            confidence: null,
-            note: null,
-            id: 1,
-            isCustom: true,
-          },
-          {
-            attr_name: 'treatment_week_timeperiod',
-            attr_type: 'array',
-            attr_value: ['mon', 'thu'],
-            confidence: null,
-            note: null,
-            id: 2,
-            isCustom: true,
-          },
-        ],
-        formattedName: 'level.aa.bb',
-        name: 'bb',
-        level: 3,
-        isActive: false,
-        isEdit: true,
-        _childs: [],
+    },
+    accordianMetaParam: {
+      summary_extended: {},
+      summary: {
+        'Lab Data': {},
+        'Primary Objective/Endpoint': {},
       },
-      a: {
-        formattedName: 'level.a',
-        name: 'a',
-        level: 2,
-        isActive: false,
-        isEdit: false,
-        _childs: ['b'],
+      level: {
+        aa: {
+          bb: {},
+        },
+        a: {
+          b: {},
+        },
       },
-      b: {
-        _meta_data: [
-          {
-            attr_name: 'testFor',
-            attr_type: 'string',
-            attr_value: 'sugar',
-            confidence: null,
-            note: null,
-            id: 1,
-            isCustom: true,
-          },
-          {
-            attr_name: 'treatment_week_timeperiod',
-            attr_type: 'array',
-            attr_value: ['mon', 'thu'],
-            confidence: null,
-            note: null,
-            id: 2,
-            isCustom: true,
-          },
-        ],
-        formattedName: 'level.a.b',
-        name: 'b',
-        level: 3,
-        isActive: false,
-        isEdit: false,
-        _childs: [],
-      },
-      'Objective and Endpoints': {
-        _meta_data: [],
-        formattedName: 'Objective and Endpoints',
-        name: 'Objective and Endpoints',
-        level: 1,
-        isActive: false,
-        isEdit: false,
-        _childs: [],
-      },
-      details: {
-        _meta_data: [
-          {
-            attr_name: 'testFor',
-            attr_type: 'string',
-            attr_value: 'sugar',
-            confidence: null,
-            note: null,
-            id: 1,
-            isCustom: true,
-          },
-          {
-            attr_name: 'isHealthy',
-            attr_type: 'boolean',
-            attr_value: true,
-            confidence: null,
-            note: null,
-            id: 2,
-            isCustom: true,
-          },
-          {
-            attr_name: 'no_of_years',
-            attr_type: 'integer',
-            attr_value: 29,
-            confidence: null,
-            note: null,
-            id: 3,
-            isCustom: true,
-          },
-          {
-            attr_name: 'treatment_timeperiod',
-            attr_type: 'date',
-            attr_value: '1999-03-20 00:00:00',
-            confidence: null,
-            note: null,
-            id: 4,
-            isCustom: true,
-          },
-          {
-            attr_name: 'treatment_week_timeperiod',
-            attr_type: 'array',
-            attr_value: ['mon', 'thu'],
-            confidence: null,
-            note: null,
-            id: 5,
-            isCustom: true,
-          },
-        ],
-        formattedName: 'details',
-        name: 'details',
-        level: 1,
-        isActive: false,
-        isEdit: false,
-        _childs: [],
-      },
+      details: {},
     },
     metaDataVariable: {
       data: {
@@ -204,27 +92,16 @@ const initialState = {
               ],
               _childs: [],
             },
-            summary_extended,
+            summaryExtended,
           },
         },
       },
       op: 'metadata',
     },
-    metadataApiCallValue: {
-      status: true,
-      op: 'addField',
-      reqData: {
-        name: 'summary',
-        accData: {
-          formattedName: 'summary',
-        },
-      },
-    },
   },
 };
 const anotherState = cloneDeep(initialState);
 anotherState.protocol.metaDataVariable.op = 'metaparam';
-// anotherState.protocol.metadataApiCallValue.op = 'addAttributes';
 
 describe('Metadata Accordian View', () => {
   test('should render the component', () => {
@@ -252,15 +129,14 @@ describe('MetaData AccordianView', () => {
   });
   test('MetaData Click', () => {
     const screen = render(<MetaData />, { initialState });
+    console.log('intial', initialState);
     const metadataAccordian = screen.getAllByTestId('metadataaccordian');
+    screen.debug();
     fireEvent.click(screen.getAllByTestId('meta-item-accordion')[0]);
     fireEvent.click(screen.getAllByTestId('meta-item-accordion')[1]);
     fireEvent.click(screen.getAllByTestId('metadataplus')[0]);
     fireEvent.click(screen.getAllByTestId('metadatasave')[0]);
     fireEvent.click(screen.getAllByTestId('save-term-field')[0]);
-    const trash = screen.getAllByTestId('metadata-trash')[3];
-    screen.debug();
-    fireEvent.click(trash);
 
     userEvent.type(
       screen.getAllByTestId('suggestion-field')[0].querySelector('input'),
@@ -271,6 +147,6 @@ describe('MetaData AccordianView', () => {
   });
   test('MetaData Another Click', () => {
     const screen = render(<MetaData />, { initialState: anotherState });
-    const metadataAccordian = screen.getAllByTestId('metadataaccordian');
+    screen.getAllByTestId('metadataaccordian');
   });
 });

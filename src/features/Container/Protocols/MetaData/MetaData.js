@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
 import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
-import { difference, isEmpty, isObject } from 'lodash';
+import { difference, isEmpty } from 'lodash';
 import './MetaData.scss';
-import { toast } from 'react-toastify';
 import Accordian from './Accordian';
 import {
   accordianMetaData,
@@ -16,7 +14,7 @@ import {
 import Loader from '../../../Components/Loader/Loader';
 import { flattenMetaParam } from './utilFunction';
 
-function MetaData({ protocolId }) {
+function MetaData() {
   const wrapperRef = useRef(null);
   const apiResponse = useSelector(metadataApiCallValue);
   const accordianResult = useSelector(accordianMetaData);
@@ -73,7 +71,6 @@ function MetaData({ protocolId }) {
   };
 
   const handleAccordian = (accData) => {
-    console.log('Helo ACCORDION');
     const selectedData = accordianData[accData.name];
     setAccordianData({
       ...accordianData,
@@ -103,21 +100,6 @@ function MetaData({ protocolId }) {
         isEdit: true,
       },
     });
-  };
-
-  console.log('metaParams', metaParams);
-  const formValidation = (list) => {
-    let valid = true;
-    const keys = Object.keys(list[0]);
-    list.forEach((data) => {
-      keys.forEach((key) => {
-        if (key !== 'id' && key !== 'isCustom' && isEmpty(data[key])) {
-          valid = false;
-        }
-        return valid;
-      });
-    });
-    return valid;
   };
 
   const deleteCall = (data, opName) => {
@@ -164,7 +146,6 @@ function MetaData({ protocolId }) {
 
   const handleSave = (accData, e) => {
     e.stopPropagation();
-    // if (formValidation(rows?.[accData?.name])) {
     if (accData.name === 'summary') {
       const filterCustomData = rows[accData?.name]?.filter(
         (data) => data?.isCustom,
@@ -198,9 +179,6 @@ function MetaData({ protocolId }) {
       }
       postCall(accordianData[accData.name], accMetaData);
     }
-    // } else {
-    //   toast('Please fill all custom field values');
-    // }
   };
 
   const handleDelete = (accData, e) => {
@@ -254,7 +232,7 @@ function MetaData({ protocolId }) {
         });
         setSuggestedList(metaList || []);
       }
-      console.log('result', result);
+
       setMetaParams(result);
     }
     // eslint-disable-next-line
@@ -282,18 +260,6 @@ function MetaData({ protocolId }) {
     // eslint-disable-next-line
   }, []);
 
-  //   useEffect(() => {
-  //     function handleClickOutside(event) {
-  //       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-  //         setIsOpen(false);
-  //       }
-  //     }
-  //     document.addEventListener('mousedown', handleClickOutside);
-  //     return () => {
-  //       document.removeEventListener('mousedown', handleClickOutside);
-  //     };
-  //   }, [wrapperRef]);
-
   useEffect(() => {
     if (apiResponse?.status) {
       if (apiResponse.op === 'addAttributes') {
@@ -311,10 +277,10 @@ function MetaData({ protocolId }) {
           },
         });
       } else if (apiResponse.op === 'addField') {
-        if (apiResponse.reqData.level === 1) {
+        if (apiResponse?.reqData?.level === 1) {
           const obj = {
-            name: apiResponse.reqData.name,
-            formattedName: apiResponse.reqData.name,
+            name: apiResponse?.reqData?.name,
+            formattedName: apiResponse?.reqData?.name,
             isEdit: false,
             isActive: false,
             _meta_data: [],
@@ -326,7 +292,7 @@ function MetaData({ protocolId }) {
           });
         } else {
           const obj = {
-            name: apiResponse.reqData.name,
+            name: apiResponse?.reqData?.name,
             formattedName: `${apiResponse.reqData.accData.formattedName}.${apiResponse.reqData.name}`,
             isEdit: false,
             isActive: false,
@@ -334,7 +300,8 @@ function MetaData({ protocolId }) {
             level: apiResponse.reqData.accData.level + 1,
             _childs: [],
           };
-          const selectedData = accordianData[apiResponse.reqData.accData.name];
+          const selectedData =
+            accordianData[apiResponse?.reqData?.accData?.name];
           setAccordianData({
             ...accordianData,
             [apiResponse.reqData.accData.name]: {
@@ -443,7 +410,3 @@ function MetaData({ protocolId }) {
 }
 
 export default MetaData;
-
-MetaData.propTypes = {
-  protocolId: PropTypes.isRequired,
-};
