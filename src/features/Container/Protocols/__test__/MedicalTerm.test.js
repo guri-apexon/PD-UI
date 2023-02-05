@@ -1,9 +1,4 @@
-import {
-  fireEvent,
-  getAllByTitle,
-  getByTestId,
-  render,
-} from '../../../../test-utils/test-utils';
+import { fireEvent, render } from '../../../../test-utils/test-utils';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 
 describe('Metadata Accordian View', () => {
@@ -70,6 +65,5 @@ describe('Metadata Accordian View', () => {
 
     const btnRename = getByText('Rename');
     fireEvent.click(btnRename);
-    // expect(editIcon.length).toEqual(3);
   });
 });
