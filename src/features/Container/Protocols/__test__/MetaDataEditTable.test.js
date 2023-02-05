@@ -18,11 +18,11 @@ describe('Metadata Accordian View', () => {
   test('should render the component', () => {
     const component = render(
       <MetaDataEditTable
-        updateRows={jest.fn()}
-        setMetaDataList={jest.fn()}
+        setRows={jest.fn()}
+        rows={data}
+        setDeletedAttributes={jest.fn()}
         data={data}
-        metaDataList={data}
-        deleteRows={jest.fn()}
+        deletedAttributes={data}
       />,
     );
     const metadataNote = component.getByTestId('metadata-notes');
@@ -35,11 +35,11 @@ describe('Metadata Accordian Checkbox confidence', () => {
   test('should render the component', () => {
     const component = render(
       <MetaDataEditTable
-        updateRows={jest.fn()}
-        setMetaDataList={jest.fn()}
+        setRows={jest.fn()}
+        rows={data}
+        setDeletedAttributes={jest.fn()}
         data={data}
-        metaDataList={data}
-        deleteRows={jest.fn()}
+        deletedAttributes={data}
       />,
     );
     const metadataNote = component.getByTestId('metadata-notes');
@@ -53,11 +53,11 @@ describe('Metadata Accordian Checkbox note', () => {
   test('should render the component', () => {
     const component = render(
       <MetaDataEditTable
-        updateRows={jest.fn()}
-        setMetaDataList={jest.fn()}
+        setRows={jest.fn()}
+        rows={data}
+        setDeletedAttributes={jest.fn()}
         data={data}
-        metaDataList={data}
-        deleteRows={jest.fn()}
+        deletedAttributes={data}
       />,
     );
     const metadataNote = component.getByTestId('metadata-confidence');
@@ -72,11 +72,11 @@ describe('MetaData CheckBox', () => {
   test('MetaData note', () => {
     const screen = render(
       <MetaDataEditTable
-        updateRows={jest.fn()}
-        setMetaDataList={jest.fn()}
+        setRows={jest.fn()}
+        rows={data}
+        setDeletedAttributes={jest.fn()}
         data={data}
-        metaDataList={data}
-        deleteRows={jest.fn()}
+        deletedAttributes={data}
       />,
     );
     const metaDataNotes = screen.getByTestId('metadata-notes');
@@ -88,11 +88,11 @@ describe('MetaData CheckBox', () => {
   test('MetaData note remove', () => {
     const screen = render(
       <MetaDataEditTable
-        updateRows={jest.fn()}
-        setMetaDataList={jest.fn()}
+        setRows={jest.fn()}
+        rows={data}
+        setDeletedAttributes={jest.fn()}
         data={data}
-        metaDataList={data}
-        deleteRows={jest.fn()}
+        deletedAttributes={data}
       />,
     );
     const metaDataNotes = screen.getByTestId('metadata-notes');
@@ -102,11 +102,11 @@ describe('MetaData CheckBox', () => {
   test('MetaData confidence', () => {
     const screen = render(
       <MetaDataEditTable
-        updateRows={jest.fn()}
-        setMetaDataList={jest.fn()}
+        setRows={jest.fn()}
+        rows={data}
+        setDeletedAttributes={jest.fn()}
         data={data}
-        metaDataList={data}
-        deleteRows={jest.fn()}
+        deletedAttributes={data}
       />,
     );
     const metaDataConfidence = screen.getByTestId('metadata-confidence');
@@ -116,11 +116,11 @@ describe('MetaData CheckBox', () => {
   test('MetaData confidence remove', () => {
     const screen = render(
       <MetaDataEditTable
-        updateRows={jest.fn()}
-        setMetaDataList={jest.fn()}
+        setRows={jest.fn()}
+        rows={data}
+        setDeletedAttributes={jest.fn()}
         data={data}
-        metaDataList={data}
-        deleteRows={jest.fn()}
+        deletedAttributes={data}
       />,
     );
     const metaDataConfidence = screen.getByTestId('metadata-confidence');
@@ -128,5 +128,32 @@ describe('MetaData CheckBox', () => {
     fireEvent.click(metaDataConfidence);
     fireEvent.click(metaDataConfidence);
     expect(metaDataConfidence).toBeInTheDocument();
+  });
+});
+
+describe('MetaDataEditTable', () => {
+  it('renders table with given rows', () => {
+    const data = { name: 'Test Data' };
+    const rows = [
+      {
+        attr_name: 'Attribute 1',
+        attr_value: 'Value 1',
+      },
+    ];
+    const setRows = jest.fn();
+    const deletedAttributes = [];
+    const setDeletedAttributes = jest.fn();
+
+    const { getByTestId } = render(
+      <MetaDataEditTable
+        data={data}
+        rows={rows}
+        setRows={setRows}
+        deletedAttributes={deletedAttributes}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+
+    expect(getByTestId('metadata-table')).toBeInTheDocument();
   });
 });

@@ -11,7 +11,31 @@ export const httpCall = async (config) => {
     token = cookiesServer.get('api_token');
   }
   let headerConfig;
-  if (config && config.headers) {
+  if (config && config?.isMetaData) {
+    if (config.method === 'GET') {
+      headerConfig = {
+        method: config.method,
+        url: config.url,
+        headers: {
+          'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
+        },
+      };
+    } else if (
+      config.method === 'POST' ||
+      config.method === 'DELETE' ||
+      config.method === 'PUT'
+    ) {
+      headerConfig = {
+        data: config?.data,
+        method: config.method,
+        url: config.url,
+        headers: {
+          'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
+        },
+        // body: config?.data,
+      };
+    }
+  } else if (config && config.headers) {
     headerConfig = {
       ...config,
       headers: {
@@ -29,6 +53,7 @@ export const httpCall = async (config) => {
         },
       };
   }
+
   try {
     const response = await axios(headerConfig);
     if (response.status === 200) {
@@ -246,6 +271,7 @@ export const Apis = {
   HEADER_LIST: '/api/cpt_data',
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
   DOWNLOAD_API: '/api/download_file',
+  METADATA: '/pd/api/v1/documents',
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
 };
 
