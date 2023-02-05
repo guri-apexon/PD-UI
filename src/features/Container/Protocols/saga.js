@@ -25,8 +25,10 @@ import {
   getTOCActive,
   setAccordianData,
   getMetadataApiCall,
+  getEnrichedValue,
 } from './protocolSlice';
 import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
+import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 
 function* getUserId() {
   const state = yield select();
@@ -40,6 +42,7 @@ export function* getSummaryData(action) {
     success: false,
     data: null,
   };
+  yield put(getRightBladeValue(PROTOCOL_RIGHT_MENU.HOME));
   yield put(getSummary(obj));
 
   const userId = yield getUserId();
@@ -543,6 +546,37 @@ export function* setTOCActive(action) {
   yield put(getTOCActive(action.payload.data));
 }
 
+export function* setEnrichedAPI(action) {
+  const {
+    payload: { flag },
+  } = action;
+  yield put(getEnrichedValue(flag));
+}
+
+export function* saveEnrichedAPI(action) {
+  const {
+    payload: { docId, linkId, data },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}/?doc_id=${docId}&link_id=${linkId}`,
+    method: 'POST',
+    data: {
+      data,
+    },
+  };
+  const enrichedData = yield call(httpCall, config);
+
+  if (enrichedData?.success) {
+    toast.info('Enriched Data Updated');
+    yield put({
+      type: 'GET_ENRICHED_API',
+      payload: { flag: true },
+    });
+  } else {
+    toast.error('Error While Updation');
+  }
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -564,6 +598,8 @@ function* watchProtocolViews() {
   yield takeEvery('ADD_METADATA_FIELD', addMetaDataField);
   yield takeEvery('DELETE_METADATA', deleteAttribute);
   yield takeEvery('UPDATE_METADATA_FLAG', setMetadataApiCall);
+  yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
+  yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
 }
 
 // notice how we now only export the rootSaga

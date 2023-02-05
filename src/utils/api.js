@@ -46,12 +46,12 @@ export const httpCall = async (config) => {
       },
     };
   } else {
-    headerConfig = {
-      ...config,
-      headers: {
-        Authorization: config.auth ? config.auth : `Bearer ${token}`,
-      },
-    };
+      headerConfig = {
+        ...config,
+        headers: {
+          Authorization: config.auth ? config.auth : `Bearer ${token}`,
+        },
+      };
   }
 
   try {
@@ -272,6 +272,7 @@ export const Apis = {
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
   DOWNLOAD_API: '/api/download_file',
   METADATA: '/pd/api/v1/documents',
+  ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
 };
 
 export const SSO_ENABLED = environment !== 'local';
