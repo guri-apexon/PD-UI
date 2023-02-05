@@ -145,7 +145,7 @@ function MetaData({ protocolId }) {
   };
 
   const postCall = (data, metaData) => {
-    const updatedAttrList = metaData.map((list) => {
+    const updatedAttrList = metaData?.map((list) => {
       const convertToBoolean = list?.attr_value === 'true';
       return {
         attr_name: list?.attr_name,

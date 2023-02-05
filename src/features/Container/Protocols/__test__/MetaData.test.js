@@ -49,7 +49,7 @@ const initialState = {
         name: 'aa',
         level: 2,
         isActive: false,
-        isEdit: false,
+        isEdit: true,
         _childs: ['bb'],
       },
       bb: {
@@ -77,7 +77,7 @@ const initialState = {
         name: 'bb',
         level: 3,
         isActive: false,
-        isEdit: false,
+        isEdit: true,
         _childs: [],
       },
       a: {
@@ -258,6 +258,10 @@ describe('MetaData AccordianView', () => {
     fireEvent.click(screen.getAllByTestId('metadataplus')[0]);
     fireEvent.click(screen.getAllByTestId('metadatasave')[0]);
     fireEvent.click(screen.getAllByTestId('save-term-field')[0]);
+    const trash = screen.getAllByTestId('metadata-trash')[3];
+    screen.debug();
+    fireEvent.click(trash);
+
     userEvent.type(
       screen.getAllByTestId('suggestion-field')[0].querySelector('input'),
       'new_label',

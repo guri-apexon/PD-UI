@@ -100,14 +100,18 @@ function Accordian({
                     <Save className="metadata-plus-size" />
                   </span>
                   {!standardList?.includes(accData?.name) && (
-                    <Trash
-                      className="metadata-plus-size mL"
+                    <span
+                      data-testId="metadata-trash"
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsDelete(true);
                         setIsModal(true);
                       }}
-                    />
+                      onKeyDown
+                      role="presentation"
+                    >
+                      <Trash className="metadata-plus-size mL" />
+                    </span>
                   )}
                 </>
               ) : (
