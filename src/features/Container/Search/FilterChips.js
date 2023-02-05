@@ -6,15 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { range } from './searchSlice';
 import { formatESDate } from '../../../utils/utilFunction';
 
-// const disableChip = (arr, value) => {
-//   let newArr = [...arr];
-//   for (let i = 0; i < newArr.length; i++) {
-//     if (newArr[i].id === value) {
-//       newArr[i].disabled = true;
-//     }
-//   }
-//   return newArr;
-// };
 const removeByAttr = function (arr, attr, value) {
   let i = arr.length;
   while (i--) {
@@ -29,6 +20,7 @@ const removeByAttr = function (arr, attr, value) {
   }
   return arr;
 };
+
 function FilterChip(props) {
   const { filters, onSearchQuery, setDateRangeValue } = props;
   const rangeDate = useSelector(range);

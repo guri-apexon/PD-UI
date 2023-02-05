@@ -46,9 +46,7 @@
       }
     }
   }
-  .searchPanel > div > button {
-    // display: none;
-  }
+
 
   .App {
     text-align: center;
@@ -121,20 +119,6 @@
     }
   }
 
-  // .Panel-toggleButton-246{
-  //   display: none;
-  // }
-
-  // button[class*="Panel-toggleButton-"] {
-  //   display: none;
-  // }
-  // [class^="Panel-toggleButton"] {
-  //   background: #ffff00;
-  // }
-
-  // [class^="Panel-toggleButton"] {
-  //   display: none;
-  // }
   .accordion-start > div {
     border: none;
     // border-bottom: none;
@@ -416,9 +400,6 @@
     margin-right: 10px !important;
   }
 
-  div.width70 span {
-  }
-
   span.font12 {
     font-size: 12px;
   }
@@ -496,11 +477,6 @@
   .Collapsible__contentOuter {
     max-height: 300px;
     overflow: auto !important;
-  }
-  .spon-container {
-    .Collapsible__contentOuter {
-      overflow-x: hidden !important;
-    }
   }
 
   .Collapsible__trigger {

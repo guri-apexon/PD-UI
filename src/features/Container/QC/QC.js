@@ -1,14 +1,10 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-
 import Breadcrumbs from 'apollo-react/components/Breadcrumbs';
 import Tab from 'apollo-react/components/Tab';
 import Tabs from 'apollo-react/components/Tabs';
-// import QCTable from './QCTable/QCTable';
 import QCProtocolTable from './QCTable/QCProtocolTable';
-
-// import QCProtocolView from "./QCProtocolView/QCProtocolView";
 import QCProtocolView from './QCProtocolView/QCProtocolView';
 import { userType } from '../../../store/userDetails';
 import './QC.scss';
@@ -56,7 +52,6 @@ function QCContainer() {
     });
   }
   useEffect(() => {
-    // dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
     dispatch({ type: 'GET_QC_PROTOCOL_TABLE_SAGA' });
     // eslint-disable-next-line
   }, []);
@@ -67,9 +62,6 @@ function QCContainer() {
       style={{ padding: 20 }}
       data-testid="qc-parent-component"
     >
-      {/* <h1>
-        {greet} {userDetails && userDetails.username}
-      </h1> */}
       <Breadcrumbs
         items={breadItems}
         style={{ paddingInlineStart: 0, marginBottom: 0 }}
@@ -90,7 +82,6 @@ function QCContainer() {
         {value === 0 && (
           <QCProtocolTable handleProtocolClick={handleProtocolClick} />
         )}
-        {/* {value === 1 && <QCProtocolView  />} */}
         {value === 1 && (
           <QCProtocolView
             protId={protocolId}

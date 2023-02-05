@@ -14,24 +14,9 @@ class Sidebar extends React.Component {
     expanded: false,
   };
 
-  // onChange = (e, expanded) => {
-  //   this.setState({ expanded });
-  //   expanded
-  //     ? console.log("Blade is now expanded")
-  //     : console.log("Blade is now collapsed");
-  // };
-
-  // onClose = () => {
-  //   this.setState({ open: true, expanded: false });
-  // };
-
-  // onOpen = () => {
-  //   this.setState({ open: true });
-  // };
   handleDownload = (type, data) => {
     /* istanbul ignore else */
     if (type === 'toc') {
-      // this.props.handleDownloadTOC(data);
       axios({
         url: 'http://localhost:4000/create-excel',
         method: 'POST',
@@ -44,13 +29,11 @@ class Sidebar extends React.Component {
   };
 
   render() {
-    // const { expanded, open } = this.state;
     const { open, setOpen, compare } = this.props;
     const { data } = compare.iqvdata;
 
     return (
       <>
-        {/* Protocol.scss */}
         <div className="sidebar">
           <Blade
             side="right"
@@ -89,22 +72,6 @@ class Sidebar extends React.Component {
                       )
                     );
                   })}
-                  {/* <li>
-                    <a href="#Synopsis">Synopsis</a>
-                  </li> */}
-                  {/* <li>Sponser, investigators and Trial Administative</li>
-                  <li>Background Information</li>
-                  <li>Trial Objectives</li>
-                  <li>Investigational Plan</li>
-                  <li>Investigational Medicinal Product and others</li>
-                  <li>Trial Procedure and Assessments</li> */}
-                  {/* <li>
-                    <a href="#Statistics">Statistics</a>
-                  </li> */}
-                  {/* <li>Ethical and Regulatory Aspects</li>
-                  <li>Trial Management</li>
-                  <li>References</li>
-                  <li>Appendices</li> */}
                 </ul>
               </div>
               <div className="SOA">

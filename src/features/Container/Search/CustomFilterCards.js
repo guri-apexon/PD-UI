@@ -6,14 +6,11 @@ import CardContent from 'apollo-react/components/CardContent';
 import Typography from 'apollo-react/components/Typography';
 import CheckboxGroup from 'apollo-react/components/CheckboxGroup';
 import Checkbox from 'apollo-react/components/Checkbox';
-
 import Radio from 'apollo-react/components/Radio';
 import RadioGroup from 'apollo-react/components/RadioGroup';
 import DateRangePicker from 'apollo-react/components/DateRangePickerV2';
-
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-
 import { CellMeasurerCache } from 'react-virtualized';
 import { FixedSizeList as List } from 'react-window';
 
@@ -28,15 +25,12 @@ const useStyles = makeStyles({
     fontWeight: 600,
   },
   card: {
-    // margin: '8px 24px',
     cursor: 'pointer',
   },
   cardHighlight: {
     backgroundColor: '#FFFFFF',
   },
-  // cardContainer:{
-  //   padding:'0 !important'
-  // },
+
   bold: {
     fontWeight: 600,
   },
@@ -98,9 +92,6 @@ export function CheckboxCard({
                   label={content.title}
                   size="small"
                   data-testid={content.value}
-                  // onChange= {(e)=> onCheckBoxClick(e)}
-                  // checked='true'
-                  // checked={value && value.includes(content.id)}
                 />
               ))}
             </CheckboxGroup>
@@ -124,17 +115,11 @@ export function DateRangeCard({
   const [value, setValue] = React.useState('0');
   const [value1, setValue1] = React.useState([]);
   const [disabled, setDisabled] = React.useState(false);
-  // const [dateRange, setDateRange] = React.useState({
-  //   fromDate: "",
-  //   toDate: "",
-  // });
   const [dateRange, setDateRange] = React.useState(dateRangeValue);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // setValue(listValue)
     if (value) {
-      // props.history.push(`/search?${resultQuery}`);
       dispatch({ type: 'FILTER_BY_RECENT_SAGA', payload: value });
     }
   }, [value, dispatch]);
@@ -233,20 +218,6 @@ export function DateRangeCard({
                     />
                   ))}
               </RadioGroup>
-              {/* <CheckboxGroup value={value1} onChange={handleChange1}>
-                {dateType.sectionContent.map((content, i) => (
-                  <Checkbox
-                    id={content.id}
-                    key={i}
-                    value={content.id}
-                    label={content.title}
-                    size="small"
-                    // onChange= {(e)=> onCheckBoxClick(e)}
-                    // checked='true'
-                    // checked={value && value.includes(content.id)}
-                  />
-                ))}
-              </CheckboxGroup> */}
             </div>
 
             <RadioGroup value={value} onChange={(e) => handleChange(e)}>
@@ -260,11 +231,7 @@ export function DateRangeCard({
                 />
               ))}
             </RadioGroup>
-            {/* {errorMessage ? (
-              <div className="errorMessage-dateRange">
-                <p>{errorMessage}</p>
-              </div>
-            ) : null} */}
+
             <div
               style={{ marginTop: 20 }}
               data-testid="range-date-wrapper"
@@ -283,23 +250,7 @@ export function DateRangeCard({
                 maxDate={new Date()}
                 error={false}
                 disabled={disabled}
-                // helperText="Please select event date"
               />
-              {/* <DateRangePicker
-                disableFuture={true}
-                maxDate={new Date()}
-                onChange={(e) => handleRange(e)}
-                fromDateProps={{
-                  label: "Start of Range",
-                  placeholder: "MM/DD/YYYY",
-                }}
-                toDateProps={{
-                  label: "End of Range",
-                  placeholder: "MM/DD/YYYY",
-                }}
-                fromLabel="hhhhh"
-                value={dateRange}
-              /> */}
             </div>
           </div>
         </Typography>

@@ -1,10 +1,7 @@
 import React from 'react';
-
 import { withRouter } from 'react-router-dom';
-
 import Button from 'apollo-react/components/Button';
 import Search from 'apollo-react/components/Search';
-// import MenuButton from "apollo-react/components/MenuButton";
 
 class ProtocolSearchButton extends React.Component {
   constructor(props) {
@@ -16,7 +13,6 @@ class ProtocolSearchButton extends React.Component {
   }
 
   handleSaveSearchProtocol = (e) => {
-    // let newArr = this.state.filters.concat("input")
     this.setState({ input: e.target.value });
   };
 
