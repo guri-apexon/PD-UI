@@ -304,7 +304,7 @@ function DigitizeAccordion({
             {primaryRole && (
               <>
                 {/* eslint-disable-next-line */}
-                <span
+                <IconButton
                   className="eyeIcon"
                   data-testId="eyeIcon"
                   onClick={(e) => {
@@ -313,7 +313,7 @@ function DigitizeAccordion({
                   }}
                 >
                   <EyeShow style={{ paddingRight: '10px' }} />
-                </span>
+                </IconButton>
                 {!showedit ? (
                   // eslint-disable-next-line
 
