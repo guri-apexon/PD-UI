@@ -111,6 +111,7 @@ function MetaData({ protocolId }) {
     });
   };
 
+  console.log('metaParams', metaParams);
   const formValidation = (list) => {
     let valid = true;
     const keys = Object.keys(list[0]);
@@ -356,6 +357,7 @@ function MetaData({ protocolId }) {
         });
         setSuggestedList(metaList || []);
       }
+      console.log('result', result);
       setMetaParams(result);
     }
     // eslint-disable-next-line

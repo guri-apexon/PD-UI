@@ -33,12 +33,7 @@ describe('InputKeyField', () => {
     const inputElement = getByTestId('customeform-textField-key');
     fireEvent.change(inputElement, { target: { value: 'newValue' } });
 
-    // expect(handleChange).toHaveBeenCalledWith({
-    //   target: {
-    //     name: 'testKey',
-    //     value: 'newValue',
-    //   },
-    // });
+    //  expect(handleChange).toBeInTheDocument('newValue');
     expect(inputElement).toBeTruthy();
   });
 
@@ -67,10 +62,6 @@ describe('InputKeyField', () => {
   });
 });
 
-// import React from 'react';
-// import { render, fireEvent } from '@testing-library/react';
-// import { ValueField } from './ValueField';
-
 describe('ValueField component', () => {
   it('renders textfield for keyName equal to attr_value or note', () => {
     const handleChange = jest.fn();
@@ -93,7 +84,6 @@ describe('ValueField component', () => {
     fireEvent.change(textField, { target: { value: 'Test' } });
     expect(handleChange).toHaveBeenCalled();
     fireEvent.blur(textField);
-    // expect(handleBlur).toHaveBeenCalled();
   });
 
   it('renders textfield for type equal to string or integer', () => {
@@ -152,40 +142,37 @@ describe('ValueField component', () => {
         type="boolean"
         inputValue=""
         dateValue=""
-        handleChange={() => {}}
+        handleChange={(e) => {
+          onTypeChange(e);
+        }}
         onTypeChange={onTypeChange}
         handleBlur={handleBlur}
         deleteMetaData={() => {}}
       />,
     );
-    const datepicker = getByTestId('customeform-textField-checkbox');
+    const datepicker = getByTestId('customeform-textField-checkbox1');
     expect(datepicker).toBeInTheDocument();
-    fireEvent.change(datepicker, { target: { value: 'String' } });
-    // expect(onTypeChange).toHaveBeenCalled();
-    fireEvent.blur(datepicker);
-    //  expect(handleBlur).toHaveBeenCalled();
+    fireEvent.change(datepicker, { target: { value: 'true' } });
+    expect(onTypeChange).toHaveBeenCalled();
   });
-  // it('renders datepicker for type equal to checkbox', () => {
-  //   const onChange = jest.fn();
-  //   const handleBlur = jest.fn();
-  //   const { getByTestId } = render(
-  //     <ValueField
-  //       item={{}}
-  //       keyName=""
-  //       type="boolean"
-  //       inputValue=""
-  //       dateValue=""
-  //       handleChange={() => {}}
-  //       onChange={onChange}
-  //       handleBlur={handleBlur}
-  //       deleteMetaData={() => {}}
-  //     />,
-  //   );
-  //   const datepicker = getByTestId('customeform-textField-checkbox1');
-  //   expect(datepicker).toBeInTheDocument();
-  //   fireEvent.change(datepicker, { target: { value: 'String1' } });
-  //   expect(onChange).toHaveBeenCalled();
-  //   fireEvent.blur(datepicker);
-  //   //  expect(handleBlur).toHaveBeenCalled();
-  // });
+  it('renders datepicker for type equal to checkbox', () => {
+    const onChange = jest.fn();
+    const handleBlur = jest.fn();
+    const { getByTestId } = render(
+      <ValueField
+        item={{}}
+        keyName=""
+        type="boolean"
+        inputValue=""
+        dateValue=""
+        handleChange={() => {}}
+        onChange={onChange}
+        handleBlur={handleBlur}
+        deleteMetaData={() => {}}
+      />,
+    );
+    const datepicker = getByTestId('customeform-textField-checkbox1');
+    expect(datepicker).toBeInTheDocument();
+    fireEvent.change(datepicker, { target: { value: 'String1' } });
+  });
 });
