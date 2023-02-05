@@ -42,6 +42,8 @@ describe('DigitizeAccordion', () => {
           currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
+          setCurrentEditIndex={jest.fn()}
+          handlePageRight={jest.fn()}
         />
       </Provider>,
     );
@@ -63,6 +65,8 @@ describe('DigitizeAccordion', () => {
           currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
+          setCurrentEditIndex={jest.fn()}
+          handlePageRight={jest.fn()}
         />
       </Provider>,
     );
@@ -86,6 +90,8 @@ describe('DigitizeAccordion', () => {
           setCurrentEditCard={jest.fn()}
           handlePageRight={jest.fn()}
           rightBladeValue={jest.fn()}
+          setCurrentEditIndex={jest.fn()}
+          handlePageRight={jest.fn()}
         />
       </Provider>,
     );
@@ -105,6 +111,8 @@ describe('DigitizeAccordion', () => {
           currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
+          setCurrentEditIndex={jest.fn()}
+          handlePageRight={jest.fn()}
         />
       </Provider>,
     );
@@ -126,6 +134,8 @@ describe('DigitizeAccordion', () => {
           currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
+          setCurrentEditIndex={jest.fn()}
+          handlePageRight={jest.fn()}
         />
       </Provider>,
     );
@@ -148,6 +158,8 @@ describe('DigitizeAccordion', () => {
           currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
+          setCurrentEditIndex={jest.fn()}
+          handlePageRight={jest.fn()}
         />
       </Provider>,
     );
@@ -170,6 +182,8 @@ describe('DigitizeAccordion', () => {
           currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
+          setCurrentEditIndex={jest.fn()}
+          handlePageRight={jest.fn()}
         />
       </Provider>,
     );

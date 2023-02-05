@@ -13,6 +13,7 @@ describe('Dropdown', () => {
         onHeaderSelect={jest.fn()}
         type="header"
         list={headerList}
+        setSaveEnabled={jest.fn()}
       />,
     );
   });
@@ -25,6 +26,7 @@ describe('Dropdown', () => {
         onHeaderSelect={jest.fn()}
         type="header"
         list={headerList}
+        setSaveEnabled={jest.fn()}
       />,
     );
     const btn = screen.getByTestId('btn');
@@ -41,6 +43,7 @@ describe('Dropdown', () => {
         onHeaderSelect={jest.fn()}
         type="header"
         list={headerList}
+        setSaveEnabled={jest.fn()}
       />,
     );
     const list = screen.getAllByTestId('list');
@@ -55,6 +58,7 @@ describe('Dropdown', () => {
         onHeaderSelect={jest.fn()}
         type="header"
         list={headerList}
+        setSaveEnabled={jest.fn()}
       />,
     );
     const list = screen.getByText('H2');
@@ -70,6 +74,7 @@ describe('Dropdown', () => {
         onHeaderSelect={jest.fn()}
         type="symbols"
         list={mathSymbols}
+        setSaveEnabled={jest.fn()}
       />,
     );
     const list = screen.getByText('∅');
