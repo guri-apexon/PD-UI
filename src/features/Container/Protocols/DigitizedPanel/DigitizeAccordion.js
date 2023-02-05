@@ -46,6 +46,8 @@ function DigitizeAccordion({
   currentEditCard,
   setCurrentEditCard,
   index,
+  scrollToTop,
+  sectionNumber,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -64,7 +66,7 @@ function DigitizeAccordion({
   const [docId, setDocId] = useState();
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
-
+  const [saveEnabled, setSaveEnabled] = useState(false);
   const { data: sectionData } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
 
@@ -93,6 +95,7 @@ function DigitizeAccordion({
     e.stopPropagation();
     setShowEdit(false);
     setCurrentEditCard(null);
+    setSaveEnabled(false);
   };
 
   useEffect(() => {
@@ -232,6 +235,7 @@ function DigitizeAccordion({
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
+
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
@@ -252,6 +256,7 @@ function DigitizeAccordion({
     setSectionDataArr([...sectionDataBak]);
     setShowDiscardConfirm(false);
     setShowEdit(false);
+    setSaveEnabled(false);
   };
 
   return (
@@ -272,40 +277,51 @@ function DigitizeAccordion({
             }}
           >
             {showedit && (
-              <span data-testId="lockIcon">
+              <IconButton data-testId="lockIcon">
                 <Lock style={{ paddingRight: '10px' }} />
-              </span>
+              </IconButton>
             )}
             {primaryRole && (
               <>
                 <span data-testId="eyeIcon">
-                  <EyeShow style={{ paddingRight: '10px' }} />
+                  <IconButton data-testId="eyeIcon">
+                    <EyeShow style={{ paddingRight: '10px' }} />
+                  </IconButton>
                 </span>
                 {!showedit ? (
                   // eslint-disable-next-line
-                  <span data-testId="pencilIcon" onClick={onEditClick}>
+
+                  <IconButton data-testId="pencilIcon" onClick={onEditClick}>
                     <Pencil />
-                  </span>
+                  </IconButton>
                 ) : (
                   <>
                     {/* eslint-disable-next-line */}
-                    <span data-testId="saveIcon" onClick={onSaveClick}>
-                      <Save onClick={() => refreshContent()} />
-                    </span>
+                    <IconButton
+                      onClick={(e) => {
+                        onSaveClick(e);
+                        refreshContent(e);
+                      }}
+                      data-testId="saveIcon"
+                      disabled={!saveEnabled}
+                    >
+                      <Save />
+                    </IconButton>
 
                     {/* eslint-disable-next-line */}
-                    <div
+
+                    <IconButton
                       data-testId="discardIcon"
                       title="Discard changes"
                       className="discard-icon"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowDiscardConfirm(true);
+                      }}
+                      disabled={!saveEnabled}
                     >
-                      <Undo
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowDiscardConfirm(true);
-                        }}
-                      />
-                    </div>
+                      <Undo />
+                    </IconButton>
                   </>
                 )}
               </>
@@ -316,6 +332,11 @@ function DigitizeAccordion({
 
       <AccordionDetails
         onScroll={(e) => handleEnrichedClick(e)}
+        onKeyPress={(e) => {
+          if (!saveEnabled) {
+            setSaveEnabled(true);
+          }
+        }}
         className="section-single-content"
       >
         {showLoader && (
@@ -329,6 +350,7 @@ function DigitizeAccordion({
               linkId={item.link_id}
               sectionDataArr={sectionDataArr}
               edit={showedit}
+              setSaveEnabled={setSaveEnabled}
             />
           ) : (
             <div className="readable-content">
@@ -349,6 +371,7 @@ function DigitizeAccordion({
                       lineID={section.line_id}
                       content={section.content}
                       edit={false}
+                      setSaveEnabled={setSaveEnabled}
                     />
                   );
                 }
@@ -437,29 +460,34 @@ function DigitizeAccordion({
         open={showConfirm}
         variant="warning"
         onClose={() => setShowConfirm(false)}
-        title="Confirm Actiom"
+        title="Confirm Action"
         buttonProps={[
           {
             label: 'Cancel',
             onClick: () => {
-              setShowEdit(false);
+              scrollToTop(sectionNumber);
               setShowConfirm(false);
             },
           },
           {
-            label: 'Ok',
-            onClick: () => {
-              setCurrentEditCard(item.link_id);
-              onShowEdit();
+            label: 'Save',
+            onClick: (e) => {
+              onSaveClick(e);
               setShowConfirm(false);
+            },
+          },
+          {
+            label: 'Continue Editing',
+            onClick: () => {
+              setShowConfirm(false);
+              scrollToTop(sectionNumber);
             },
           },
         ]}
         className={classes.modal}
         id="custom"
       >
-        There is already another section in edit mode. Do you want to continue
-        with editing the current section
+        The section is already in edit mode. Please confirm your action
       </Modal>
       <Modal
         disableBackdropClick
@@ -498,4 +526,6 @@ DigitizeAccordion.propTypes = {
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
   index: PropTypes.isRequired,
+  scrollToTop: PropTypes.isRequired,
+  sectionNumber: PropTypes.isRequired,
 };

@@ -9,7 +9,7 @@ import HoverComponent from '../HoverComponent';
 import { useProtContext } from '../../ProtocolContext';
 import { headerList, mathSymbols } from './constants';
 
-function FontProperties({ activeLineID }) {
+function FontProperties({ activeLineID, setSaveEnabled }) {
   const [enable, setEnable] = useState(activeLineID);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -147,7 +147,11 @@ function FontProperties({ activeLineID }) {
         list={mathSymbols}
       />
       <div className="right-menu">
-        <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
+        <HoverComponent
+          lineId={activeLineID}
+          activeLineID={activeLineID}
+          setSaveEnabled={setSaveEnabled}
+        />
         <IconButton
           size="small"
           data-testId="trash-icon"
@@ -164,4 +168,5 @@ export default FontProperties;
 
 FontProperties.propTypes = {
   activeLineID: PropTypes.isRequired,
+  setSaveEnabled: PropTypes.isRequired,
 };

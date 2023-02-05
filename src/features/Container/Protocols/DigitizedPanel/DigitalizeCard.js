@@ -164,6 +164,7 @@ function Digitize({
                         rightBladeValue={BladeRightValue}
                         currentEditCard={currentEditCard}
                         setCurrentEditCard={setCurrentEditCard}
+                        sectionNumber={sectionNumber}
                         scrollToTop={scrollToTop}
                       />
                     </div>

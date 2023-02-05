@@ -16,10 +16,13 @@ const anchorOrigin = {
   vertical: 'bottom',
   horizontal: 'left',
 };
-function HoverComponent({ lineId, activeLineID }) {
+function HoverComponent({ lineId, activeLineID, setSaveEnabled }) {
   const { dispatchSectionEvent } = useProtContext();
   const handleAddSegment = (type) => {
     dispatchSectionEvent('CONTENT_ADDED', { type, lineId });
+    if (type === CONTENT_TYPE.TABLE) {
+      setSaveEnabled(true);
+    }
   };
   const menuItems = [
     {
@@ -72,4 +75,5 @@ export default HoverComponent;
 HoverComponent.propTypes = {
   lineId: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
+  setSaveEnabled: PropTypes.isRequired,
 };

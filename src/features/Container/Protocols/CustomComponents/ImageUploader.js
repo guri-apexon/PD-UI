@@ -9,7 +9,7 @@ import { useProtContext } from '../ProtocolContext';
 import { toBase64 } from '../../../../utils/utilFunction';
 import './ImageUploader.scss';
 
-function ImageUploader({ lineID, content, edit }) {
+function ImageUploader({ lineID, content, edit, setSaveEnabled }) {
   const [img, setImg] = useState(null);
   const [imgBkp, setImgBkp] = useState(null);
   const [value, setValue] = useState([]);
@@ -52,6 +52,7 @@ function ImageUploader({ lineID, content, edit }) {
   useEffect(() => {
     if (value.length > 0) {
       getBase64image(value[0]);
+      setSaveEnabled(true);
     }
     // eslint-disable-next-line
   }, [value]);
@@ -179,4 +180,5 @@ ImageUploader.propTypes = {
   content: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  setSaveEnabled: PropTypes.isRequired,
 };

@@ -22,12 +22,12 @@ export const httpCall = async (config) => {
       },
     };
   } else {
-      headerConfig = {
-        ...config,
-        headers: {
-          Authorization: config.auth ? config.auth : `Bearer ${token}`,
-        },
-      };
+    headerConfig = {
+      ...config,
+      headers: {
+        Authorization: config.auth ? config.auth : `Bearer ${token}`,
+      },
+    };
   }
   try {
     const response = await axios(headerConfig);
