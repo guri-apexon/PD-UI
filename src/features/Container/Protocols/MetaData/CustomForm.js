@@ -84,6 +84,7 @@ export function ValueField({
                   name={keyName}
                   dateFormat="DD-MMM-YYYY"
                   placeholder="dd-mmm-yyyy"
+                  inputProps={{ 'data-testid': 'customeform-textField-date' }}
                   value={dateValue}
                   onChange={(dateValue) => handleDateChange(dateValue)}
                   // inputValue={inputValue}
@@ -100,6 +101,9 @@ export function ValueField({
                   value={inputValue}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  inputProps={{
+                    'data-testid': 'customeform-textField-checkbox1',
+                  }}
                 >
                   <MenuItem value="true">True</MenuItem>
                   <MenuItem value="false">False</MenuItem>

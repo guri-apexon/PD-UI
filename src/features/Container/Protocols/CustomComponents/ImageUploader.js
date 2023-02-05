@@ -1,11 +1,11 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import FileUpload from 'apollo-react/components/FileUpload';
 import Button from 'apollo-react/components/Button';
 import TrashIcon from 'apollo-react-icons/Trash';
 import IconButton from 'apollo-react/components/IconButton';
 import Pencil from 'apollo-react-icons/Pencil';
-import ProtocolContext from '../ProtocolContext';
+import { useProtContext } from '../ProtocolContext';
 import { toBase64 } from '../../../../utils/utilFunction';
 import './ImageUploader.scss';
 
@@ -16,7 +16,7 @@ function ImageUploader({ lineID, content, edit }) {
   const [isEdit, setIsEdit] = useState(true);
   const [showEditBtn, setShowEditBtn] = useState(false);
   const [showDltCnfrm, setShowDltCnfrm] = useState(false);
-  const { dispatchSectionEvent } = useContext(ProtocolContext);
+  const { dispatchSectionEvent } = useProtContext();
 
   const handleDelete = () => {
     dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });

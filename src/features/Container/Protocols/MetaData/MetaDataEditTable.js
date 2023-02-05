@@ -202,22 +202,23 @@ function MetaDataEditTable({
 
   const RenderTable = useMemo(() => {
     return (
-      <Table
-        data-testid="metadata-table"
-        className="table-panel"
-        columns={column}
-        rows={rows[name]?.map((row) => ({
-          ...row,
-          handleChange,
-          handleDelete,
-          fieldName: name,
-        }))}
-        rowId="id"
-        hidePagination
-        hasScroll
-        rowProps={{ hover: false }}
-        stripedRows
-      />
+      <span data-testid="metadata-table">
+        <Table
+          className="table-panel"
+          columns={column}
+          rows={rows[name]?.map((row) => ({
+            ...row,
+            handleChange,
+            handleDelete,
+            fieldName: name,
+          }))}
+          rowId="id"
+          hidePagination
+          hasScroll
+          rowProps={{ hover: false }}
+          stripedRows
+        />
+      </span>
     );
     // eslint-disable-next-line
   }, [column, rows[name]?.length]);

@@ -393,7 +393,7 @@ function MetaData({ protocolId }) {
   //   }, [wrapperRef]);
 
   useEffect(() => {
-    if (apiResponse.status) {
+    if (apiResponse?.status) {
       fetchMetaData();
       if (apiResponse.op === 'addAttributes') {
         const selectedData = accordianData[apiResponse.reqData.name];

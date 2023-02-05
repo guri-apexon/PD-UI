@@ -76,25 +76,33 @@ function Accordian({
               {accData?.isEdit ? (
                 <>
                   {accData?.level <= 5 && (
-                    <span data-testId="metadataplus">
+                    <span
+                      data-testId="metadataplus"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsOpenSubText(!isOpenSubText);
+                      }}
+                      onKeyDown
+                      role="presentation"
+                    >
                       <Plus
                         data-testId="metadataplus"
                         className="metadata-plus-size mR"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setIsOpenSubText(!isOpenSubText);
-                        }}
                       />
                     </span>
                   )}
-                  <Save
-                    className="metadata-plus-size"
+                  <span
+                    data-testId="metadatasave"
                     onClick={(e) => {
                       e.stopPropagation();
                       setIsDelete(false);
                       setIsModal(true);
                     }}
-                  />
+                    onKeyDown
+                    role="presentation"
+                  >
+                    <Save className="metadata-plus-size" />
+                  </span>
                   {!standardList?.includes(accData?.name) && (
                     <Trash
                       className="metadata-plus-size mL"
@@ -140,13 +148,15 @@ function Accordian({
         )}
         <AccordionDetails>
           {accData?.isEdit ? (
-            <MetaDataEditTable
-              rows={rows}
-              setRows={setRows}
-              data={accData}
-              deletedAttributes={deletedAttributes}
-              setDeletedAttributes={setDeletedAttributes}
-            />
+            <div data-testId="metadataEditTable">
+              <MetaDataEditTable
+                rows={rows}
+                setRows={setRows}
+                data={accData}
+                deletedAttributes={deletedAttributes}
+                setDeletedAttributes={setDeletedAttributes}
+              />
+            </div>
           ) : (
             // eslint-disable-next-line
             accData?._meta_data?.length > 0 && (
@@ -157,7 +167,7 @@ function Accordian({
           <div className="subAccContainer">{subAccComponent}</div>
         </AccordionDetails>
       </Accordion>
-      <div className="modal">
+      <div className="modal" data-testId="modal">
         <Modal
           className="modal"
           open={isModal}

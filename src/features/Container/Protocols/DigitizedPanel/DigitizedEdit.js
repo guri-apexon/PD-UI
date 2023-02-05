@@ -43,25 +43,24 @@ function MultilineEdit({ sectionDataArr, edit }) {
     <div className="Richtextcontainer" data-testId="richTextEditor">
       {edit && <FontProperties activeLineID={activeLineID} />}
       <section className="section-edited-list">
-        {sections
-          ?.filter((section) => section.qc_change_type !== 'delete')
-          .map((section) => (
-            <div key={section.line_id}>
-              <div className="content_container">
-                {/* eslint-disable-next-line */}
-                <div onClick={() => edit && setActiveLineID(section.line_id)}>
-                  <RenderContent
-                    sectionData={section}
-                    sectionName={sectionName}
-                    handleContentEdit={handleContentEdit}
-                    activeLineID={activeLineID}
-                    deleteSection={deleteSection}
-                    edit={edit}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
+        {sections?.map((section) => (
+          // eslint-disable-next-line
+          <div
+            className="content_container"
+            key={section.line_id}
+            onClick={() => edit && setActiveLineID(section.line_id)}
+          >
+            <RenderContent
+              sectionData={section}
+              sectionName={sectionName}
+              handleContentEdit={handleContentEdit}
+              activeLineID={activeLineID}
+              deleteSection={deleteSection}
+              setActiveLineID={setActiveLineID}
+              edit={edit}
+            />
+          </div>
+        ))}
       </section>
     </div>
   );

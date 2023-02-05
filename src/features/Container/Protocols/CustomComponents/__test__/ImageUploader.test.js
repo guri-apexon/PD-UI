@@ -1,17 +1,14 @@
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import ProtocolContext from '../../ProtocolContext';
+import { ProtocolContext } from '../../ProtocolContext';
 import ImageUploader from '../ImageUploader';
 
 const dispatchSectionEvent = jest.fn();
 
 const testLineID = '1';
-const testContent = '';
 const testEdit = true;
-
-const mockedProtocolContextValue = {
-  dispatchSectionEvent,
-};
+const testContent = '';
+const mockedProtocolContextValue = { dispatchSectionEvent };
 
 const renderImageUploader = (
   lineID = testLineID,
@@ -20,7 +17,7 @@ const renderImageUploader = (
 ) => {
   return render(
     <ProtocolContext.Provider value={mockedProtocolContextValue}>
-      <ImageUploader lineID={lineID} content={content} edit={edit} />
+      <ImageUploader lineID={lineID} content={content} edit={edit} />{' '}
     </ProtocolContext.Provider>,
   );
 };

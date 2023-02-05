@@ -1,4 +1,39 @@
 .section-single-content {
+  height: auto;
+  overflow: auto !important;
+  padding: 0 30px 20px 10px;
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: justify;
+  display: flex;
+  flex-direction: column;
+  .content_container, .readable-content{
+    h1, h2, h3, h4, h5, h6{
+      font-size: 30px;
+      width: auto;
+      margin: 0 0 10px;
+      padding: 4px 0;
+    }
+    h2{
+      font-size: 26px;
+    }
+    h3{
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    h4{
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    h5{
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+    h6{
+      font-size: 16px;
+      margin-bottom: 2px;
+    }
+  }
   .drag {
     color: 'grey';
     font-size: '1.2em';
