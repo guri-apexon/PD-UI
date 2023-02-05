@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
+import Undo from 'apollo-react-icons/Undo';
+import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
@@ -60,6 +62,8 @@ function DigitizeAccordion({
   const [clinicalTerms, setClinicalTerms] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
+  const [sectionDataBak, setSectionDataBak] = useState([]);
+  const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
 
   const { data: sectionData } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
@@ -179,11 +183,12 @@ function DigitizeAccordion({
     setCurrentEditCard(item.link_id);
     setEditedMode(true);
     dispatchSectionData();
+    setSectionDataBak([...sectionDataArr]);
   };
 
   const onEditClick = (e) => {
     e.stopPropagation();
-    if (currentEditCard) {
+    if (currentEditCard && currentEditCard !== item.link_id) {
       setShowConfirm(true);
     } else {
       onShowEdit();
@@ -243,6 +248,12 @@ function DigitizeAccordion({
     setClinicalTerms(null);
   }, [rightBladeValue]);
 
+  const onDiscardClick = () => {
+    setSectionDataArr([...sectionDataBak]);
+    setShowDiscardConfirm(false);
+    setShowEdit(false);
+  };
+
   return (
     <Accordion
       expanded={expanded}
@@ -276,10 +287,26 @@ function DigitizeAccordion({
                     <Pencil />
                   </span>
                 ) : (
-                  // eslint-disable-next-line
-                  <span data-testId="saveIcon" onClick={onSaveClick}>
-                    <Save onClick={() => refreshContent()} />
-                  </span>
+                  <>
+                    {/* eslint-disable-next-line */}
+                    <span data-testId="saveIcon" onClick={onSaveClick}>
+                      <Save onClick={() => refreshContent()} />
+                    </span>
+
+                    {/* eslint-disable-next-line */}
+                    <div
+                      data-testId="discardIcon"
+                      title="Discard changes"
+                      className="discard-icon"
+                    >
+                      <Undo
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowDiscardConfirm(true);
+                        }}
+                      />
+                    </div>
+                  </>
                 )}
               </>
             )}
@@ -433,6 +460,27 @@ function DigitizeAccordion({
       >
         There is already another section in edit mode. Do you want to continue
         with editing the current section
+      </Modal>
+      <Modal
+        disableBackdropClick
+        open={showDiscardConfirm}
+        variant="warning"
+        onClose={() => setShowDiscardConfirm(false)}
+        title="Confirm Actiom"
+        buttonProps={[
+          {
+            label: 'Cancel',
+            onClick: () => setShowDiscardConfirm(false),
+          },
+          {
+            label: 'Discard',
+            onClick: onDiscardClick,
+          },
+        ]}
+        className={classes.modal}
+        id="custom"
+      >
+        Are you sure you want to discard the changes?
       </Modal>
     </Accordion>
   );
