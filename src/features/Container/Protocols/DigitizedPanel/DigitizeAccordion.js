@@ -342,9 +342,12 @@ function DigitizeAccordion({
                       className="discard-icon"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setShowDiscardConfirm(true);
+                        if (saveEnabled) {
+                          setShowDiscardConfirm(true);
+                        } else {
+                          setShowEdit(false);
+                        }
                       }}
-                      disabled={!saveEnabled}
                     >
                       <Undo />
                     </IconButton>
