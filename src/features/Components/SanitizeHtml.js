@@ -3,7 +3,30 @@ import DOMPurify from 'dompurify';
 
 function SanitizeHTML({ html, options }) {
   const defaultOptions = {
-    ALLOWED_TAGS: ['a', 'div', 'span', 'p', 'b'],
+    ALLOWED_TAGS: [
+      'a',
+      'div',
+      'span',
+      'p',
+      'b',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'table',
+      'td',
+      'tr',
+      'tfoot',
+      'u',
+      'strike',
+      'i',
+      'sup',
+      'sub',
+      'li',
+      'ul',
+    ],
     ALLOWED_ATTR: ['style', 'class'],
   };
 
