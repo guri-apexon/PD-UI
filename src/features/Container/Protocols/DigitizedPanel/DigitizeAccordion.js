@@ -12,6 +12,7 @@ import Undo from 'apollo-react-icons/Undo';
 import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
+import Popover from 'apollo-react/components/Popover';
 import Save from 'apollo-react-icons/Save';
 import { toast } from 'react-toastify';
 import MultilineEdit from './DigitizedEdit';
@@ -54,6 +55,11 @@ function DigitizeAccordion({
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const auditList = [
+    'Last Reviewed Date',
+    'Last Reviewed By',
+    'Total Number of Reviews',
+  ];
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sectionDataArr, setSectionDataArr] = useState([]);
@@ -61,6 +67,7 @@ function DigitizeAccordion({
   const [showLoader, setShowLoader] = useState(false);
   const [editedMode, setEditedMode] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [openAudit, setOpenAudit] = useState(null);
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
@@ -296,10 +303,16 @@ function DigitizeAccordion({
             )}
             {primaryRole && (
               <>
-                <span data-testId="eyeIcon">
-                  <IconButton data-testId="eyeIcon">
-                    <EyeShow style={{ paddingRight: '10px' }} />
-                  </IconButton>
+                {/* eslint-disable-next-line */}
+                <span
+                  className="eyeIcon"
+                  data-testId="eyeIcon"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setOpenAudit(e.currentTarget);
+                  }}
+                >
+                  <EyeShow style={{ paddingRight: '10px' }} />
                 </span>
                 {!showedit ? (
                   // eslint-disable-next-line
@@ -468,6 +481,41 @@ function DigitizeAccordion({
         linkId={linkId}
         docId={docId}
       />
+      <Popover
+        open={!!openAudit}
+        anchorEl={openAudit}
+        onClose={() => setOpenAudit(null)}
+      >
+        <div className="auditPopover">
+          <div className="textContainer">
+            {auditList.map((names) => {
+              return (
+                <Typography variant="body1" key={names}>
+                  {names}
+                </Typography>
+              );
+            })}
+          </div>
+          <div className="textContainer">
+            {auditList.map((names) => {
+              return (
+                <Typography variant="body1" key={names}>
+                  :
+                </Typography>
+              );
+            })}
+          </div>
+          <div className="textContainer">
+            {Object.keys(item?.audit_info).map((names) => {
+              return (
+                <Typography variant="body1" key={names}>
+                  {item?.audit_info.names}
+                </Typography>
+              );
+            })}
+          </div>
+        </div>
+      </Popover>
       <Modal
         disableBackdropClick
         open={showConfirm}
