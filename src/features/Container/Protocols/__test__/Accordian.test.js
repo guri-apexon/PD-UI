@@ -258,4 +258,35 @@ describe('Accordian', () => {
 
     expect(getByTestId('metadataEditTable')).toBeInTheDocument();
   });
+  it('opens the subtext input when the plus icon is clicked edit', () => {
+    const accData = {
+      name: 'Section 1',
+      level: 1,
+      isActive: false,
+      isEdit: true,
+    };
+
+    const { getByTestId } = render(
+      <Accordian
+        standardList={standardList}
+        accData={accData}
+        rows={rows}
+        suggestedSubList={suggestedSubList}
+        isOpenSubText={false}
+        deletedAttributes={deletedAttributes}
+        setSuggestedSubList={setSuggestedSubList}
+        setIsOpenSubText={setIsOpenSubText}
+        setRows={setRows}
+        handleAccordian={handleAccordian}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        addSubAccordion={addSubAccordion}
+        subAccComponent={subAccComponent}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+    fireEvent.click(getByTestId('metadataplus'));
+    expect(setIsOpenSubText).toHaveBeenCalledWith(true);
+  });
 });

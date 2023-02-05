@@ -131,7 +131,7 @@ function Accordian({
           </div>
         </AccordionSummary>
         {isOpenSubText && (
-          <div style={{ maxWidth: 400 }} ref={wrapperRef}>
+          <div style={{ maxWidth: 400 }} data-testid="auto">
             <AutocompleteV2
               label=""
               className="nameField"
@@ -142,6 +142,7 @@ function Accordian({
               showClearIndicator
               value={subSectionName}
               onChange={handleChange}
+              inputProps={{ 'data-testid': 'customeform-AutoComplete' }}
               size="small"
             />
           </div>

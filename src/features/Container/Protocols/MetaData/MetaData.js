@@ -36,6 +36,8 @@ function MetaData({ protocolId }) {
     setSectionName(newValue);
   };
 
+  console.log('metaDataSelector', metaDataSelector);
+
   const setSubSuggestions = (data) => {
     // console.log('filterItems', metaParams?.[data.name]?.dropDownList);
     if (metaParams?.[data.name]?.dropDownList.length > 0) {
@@ -271,6 +273,7 @@ function MetaData({ protocolId }) {
   const updatedParam = {};
   const flattenMetaParam = (data, level) => {
     const objectKeys = data ? Object?.keys(data) : [];
+    console.log('objectKeys', objectKeys);
     objectKeys?.forEach((key) => {
       const keyValue = data?.[key];
       if (
