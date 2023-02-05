@@ -405,18 +405,23 @@ export function* setMetadataApiCall(data) {
 
 export function* MetaDataVariable(action) {
   const {
-    payload: { docId },
+    payload: { op, docId },
   } = action;
   const config = {
-    url: `http://ca2spdml101q:9001${Apis.METADATA}/meta_data_summary?op=metadata&aidocId=${docId}`,
+    url: `http://ca2spdml101q:9001${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
     method: 'GET',
     isMetaData: true,
   };
   const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
-    yield put(getMetaDataVariable(MetaData));
+    yield put(
+      getMetaDataVariable({
+        op,
+        data: MetaData,
+      }),
+    );
   } else {
-    yield put(getMetaDataVariable({ success: false, data: [] }));
+    yield put(getMetaDataVariable({ success: false, data: {} }));
   }
 }
 
@@ -437,7 +442,6 @@ export function* addMetaDataAttributes(action) {
   const MetaData = yield call(httpCall, config);
   if (MetaData?.data?.isAdded) {
     toast.info('Protocol Attributes Updated Successfully');
-    yield call(MetaDataVariable, action);
     yield call(setMetadataApiCall, {
       status: true,
       reqData,
@@ -471,7 +475,6 @@ export function* addMetaDataField(action) {
   const MetaData = yield call(httpCall, config);
   if (MetaData?.data?.isAdded) {
     toast.info(`${reqData.name} added successfully`);
-    yield call(MetaDataVariable, action);
     yield call(setMetadataApiCall, {
       status: true,
       reqData,

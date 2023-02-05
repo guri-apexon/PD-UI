@@ -4,7 +4,7 @@ import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty, isObject } from 'lodash';
+import { difference, isEmpty, isObject } from 'lodash';
 import './MetaData.scss';
 import { toast } from 'react-toastify';
 import Accordian from './Accordian';
@@ -20,33 +20,37 @@ function MetaData({ protocolId }) {
   const apiResponse = useSelector(metadataApiCallValue);
   const metaDataSelector = useSelector(metaDataVariable);
   const accordianData = useSelector(accordianMetaData);
+  const standardList = ['summary'];
   const dispatch = useDispatch();
   const [rows, setRows] = useState({});
+  const [metaParams, setMetaParams] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
-  const [standardList] = useState([]);
   const [deletedAttributes, setDeletedAttributes] = useState([]);
-  const [suggestedList, setSuggestedList] = useState([
-    { label: 'Objective and Endpoints' },
-    { label: 'Adverse Events' },
-    { label: 'Adverse Effect' },
-    { label: 'Objective Events5' },
-  ]);
+  const [suggestedList, setSuggestedList] = useState([]);
 
-  const [suggestedSubList, setSuggestedSubList] = useState([
-    { label: 'Primary Objective/Endpoint' },
-    { label: 'Secondary Objective/Endpoints' },
-    { label: 'Tertiary objectives/Endpoints' },
-    { label: 'Safety objectives/Endpoints' },
-    { label: 'Long Term Extension objectives' },
-    { label: 'Lab Data' },
-  ]);
-
-  console.log('accordianData', accordianData);
+  const [suggestedSubList, setSuggestedSubList] = useState([]);
 
   const handleChange = (event, newValue) => {
     setSectionName(newValue);
+  };
+
+  const setSubSuggestions = (data) => {
+    // console.log('filterItems', metaParams?.[data.name]?.dropDownList);
+    if (metaParams?.[data.name]?.dropDownList.length > 0) {
+      const filterItems = difference(
+        metaParams?.[data.name]?.dropDownList,
+        // eslint-disable-next-line
+        data?._childs,
+      );
+
+      setSuggestedSubList(
+        filterItems.map((names) => {
+          return { label: names };
+        }),
+      );
+    }
   };
 
   const addToAccordion = (name) => {
@@ -86,6 +90,7 @@ function MetaData({ protocolId }) {
   const handleEdit = (accData, e) => {
     e.stopPropagation();
     const selectedData = accordianData[accData.name];
+    setSubSuggestions(accData);
     setRows({
       ...rows,
       // eslint-disable-next-line
@@ -263,6 +268,31 @@ function MetaData({ protocolId }) {
     return updatedData;
   };
 
+  const updatedParam = {};
+  const flattenMetaParam = (data, level) => {
+    const objectKeys = data ? Object?.keys(data) : [];
+    objectKeys?.forEach((key) => {
+      const keyValue = data?.[key];
+      if (
+        isObject(keyValue) &&
+        key !== 'dropDownList' &&
+        key !== 'summary_extended'
+      ) {
+        updatedParam[key] = updatedParam[key]
+          ? updatedParam[key]
+          : {
+              dropDownList:
+                Object?.keys(keyValue).length > 0 ? Object?.keys(keyValue) : [],
+            };
+        // eslint-disable-next-line
+        if (Object?.keys(keyValue).length > 0) {
+          flattenMetaParam(keyValue, level + 1);
+        }
+      }
+    });
+    return updatedParam;
+  };
+
   const mergeSummary = (data) => {
     let finalResult = data;
     const objectKeys = data ? Object?.keys(data) : [];
@@ -295,22 +325,58 @@ function MetaData({ protocolId }) {
   };
 
   useEffect(() => {
-    const result = flattenObject(metaDataSelector?.data?.data, 1, '');
-    const updateResultForSummary = mergeSummary(result);
-    dispatch({
-      type: 'SET_METADATA',
-      payload: updateResultForSummary,
-    });
+    if (metaDataSelector?.op === 'metadata') {
+      const result = flattenObject(metaDataSelector?.data?.data?.data, 1, '');
+      const updateResultForSummary = mergeSummary(result);
+      dispatch({
+        type: 'SET_METADATA',
+        payload: updateResultForSummary,
+      });
+    }
     // eslint-disable-next-line
   }, [metaDataSelector?.data?.data]);
 
   useEffect(() => {
+    if (metaDataSelector?.op === 'metaparam' && !isEmpty(accordianData)) {
+      const result = flattenMetaParam(metaDataSelector?.data?.data?.data, 1);
+      let metaList = [];
+      const filterItems = difference(
+        Object.keys(metaDataSelector?.data?.data?.data),
+        Object.keys(accordianData),
+      );
+
+      if (filterItems.length > 0) {
+        filterItems.forEach((names) => {
+          if (names !== 'summary_extended') {
+            metaList = [...metaList, { label: names }];
+          }
+        });
+        setSuggestedList(metaList || []);
+      }
+      setMetaParams(result);
+    }
+    // eslint-disable-next-line
+  }, [metaDataSelector?.data?.data, accordianData]);
+
+  const fetchMetaData = () => {
     dispatch({
       type: 'GET_METADATA_VARIABLE',
       payload: {
+        op: 'metadata',
         docId: '0be44992-9573-4010-962c-de1a1b18b08d',
       },
     });
+    dispatch({
+      type: 'GET_METADATA_VARIABLE',
+      payload: {
+        op: 'metaparam',
+        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+      },
+    });
+  };
+
+  useEffect(() => {
+    fetchMetaData();
     // eslint-disable-next-line
   }, []);
 
@@ -328,6 +394,7 @@ function MetaData({ protocolId }) {
 
   useEffect(() => {
     if (apiResponse?.status) {
+      fetchMetaData();
       if (apiResponse.op === 'addAttributes') {
         const selectedData = accordianData[apiResponse.reqData.name];
         const accMetaData =
@@ -403,6 +470,7 @@ function MetaData({ protocolId }) {
           standardList={standardList}
           accData={acc}
           rows={rows}
+          metaParams={metaParams}
           isOpenSubText={isOpenSubText}
           sectionName={sectionName}
           suggestedSubList={suggestedSubList}

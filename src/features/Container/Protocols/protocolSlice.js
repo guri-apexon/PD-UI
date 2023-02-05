@@ -37,7 +37,10 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
-    metaDataVariable: [],
+    metaDataVariable: {
+      op: '',
+      data: {},
+    },
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
     TOCActiveAccordian: [],
     accordianMetaData: {},
@@ -88,6 +91,7 @@ export const protocolSlice = createSlice({
       state.fileStream = action.payload;
     },
     getMetaDataVariable: (state, action) => {
+      console.log(action);
       state.metaDataVariable = action.payload;
     },
     getRightBladeValue: (state, action) => {
