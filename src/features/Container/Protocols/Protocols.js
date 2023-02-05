@@ -95,7 +95,6 @@ function Protocols({ location }) {
                     title: 'Protocols',
                     className: 'br-cr-protocol',
                     disabled: true,
-                    // onClick: handleClick,
                   },
                   {
                     title: data.protocol,
@@ -137,11 +136,7 @@ function Protocols({ location }) {
       </>
     );
   }
-  return (
-    <div className="protocols">
-      {/* <ProtocolTable pageRows={[10, 20, 30, "All"]} maxHeight={600} /> */}
-    </div>
-  );
+  return <div className="protocols" />;
 }
 
 export default Protocols;

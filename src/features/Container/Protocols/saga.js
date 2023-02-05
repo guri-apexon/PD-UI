@@ -119,7 +119,6 @@ export function getTocSections(toc) {
 }
 /* eslint-enable */
 export function getSoaSections(soa) {
-  // const sectionList = [];
   const list = [];
   soa.map((item) => {
     const { TableIndex } = item;
@@ -201,7 +200,6 @@ export function* getProtocolToc(action) {
 export function* fetchAssociateProtocol(action) {
   const userId = yield getUserId();
   const URL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload}&userId=${userId}`;
-  //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   const config = {
     url: URL,
     method: 'GET',
@@ -274,7 +272,6 @@ export function* getCompareResult(action) {
         message: '',
       }),
     );
-    // const url = `${BASE_URL_8000}/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
     const url = '/compareWithSection.json';
     const resp = yield call(httpCall, { url, method: 'GET' });
 
@@ -371,7 +368,7 @@ export function* fetchFileStream(action) {
 
   const userId = yield getUserId();
   const { name, dfsPath } = action.payload;
-  const apiBaseUrl = BASE_URL_8000; // 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  const apiBaseUrl = BASE_URL_8000;
   const config = {
     url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
       dfsPath,
@@ -456,7 +453,6 @@ export function* saveEnrichedAPI(action) {
 }
 
 function* watchProtocolAsync() {
-  //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
   yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
   yield takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol);

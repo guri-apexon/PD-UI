@@ -481,9 +481,9 @@ function AddProtocol() {
                   fullWidth
                   fieldType="CustomDropdown"
                   fieldName="sponsor"
-                  formValue={
-                    formValues.sponsor ? formValues.sponsor : emptyAutoObj
-                  }
+                  formValue={(formValues.sponsor && formValues.sponsor)(
+                    !formValues.sponsor && emptyAutoObj,
+                  )}
                   helperText={formErrorValues.sponsor.errorMessage.trim()}
                   error={formErrorValues.sponsor.error}
                   required={formErrorValues.sponsor.isRequired}
@@ -539,9 +539,9 @@ function AddProtocol() {
                   fullWidth
                   fieldType="CustomDropdown"
                   fieldName="indication"
-                  formValue={
-                    formValues.indication ? formValues.indication : emptyAutoObj
-                  }
+                  formValue={(formValues.indication && formValues.indication)(
+                    !formValues.indication && emptyAutoObj,
+                  )}
                   helperText={formErrorValues.indication.errorMessage.trim()}
                   error={formErrorValues.indication.error}
                   required={formErrorValues.indication.isRequired}

@@ -1,6 +1,5 @@
 /* eslint-disable */
 import React from 'react';
-
 import Blade from 'apollo-react/components/Blade';
 import Download from 'apollo-react-icons/Download';
 import Plus from 'apollo-react-icons/Plus';
