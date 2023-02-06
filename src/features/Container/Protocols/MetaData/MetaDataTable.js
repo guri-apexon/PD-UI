@@ -8,16 +8,16 @@ function MetaDataTable({ metaData }) {
     header: 'Confidence Score',
     accessor: 'confidence',
   };
-  const METADATA_NOTE = { header: 'Note', accessor: 'note' };
+  const METADATA_NOTE = { header: 'Notes', accessor: 'note' };
 
   const columns = [
     {
       header: 'Key',
-      accessor: 'header',
+      accessor: 'attr_name',
     },
     {
       header: 'Value',
-      accessor: 'name',
+      accessor: 'attr_value',
     },
   ];
   const [column, setColumn] = useState(columns);
@@ -26,35 +26,23 @@ function MetaDataTable({ metaData }) {
   const [note, setNote] = React.useState(false);
 
   const removeIndex = (key) => {
-    const columnTemp = [...column];
-    let index;
-    for (let i = 0; i < columnTemp.length; i++) {
-      if (Object.values(columnTemp[i])[0] === key) {
-        index = i;
-      }
-    }
-
-    columnTemp.splice(index, 1);
-    setColumn(columnTemp);
+    setColumn(column.filter((col) => col.accessor !== key));
   };
   const handleConfidence = (e, checked) => {
     setConfidence(checked);
-    const columnTemp = [...column];
     if (checked) {
-      columnTemp.push(METADATA_CONFIDENCE);
-      setColumn(columnTemp);
+      setColumn([...column, METADATA_CONFIDENCE]);
     } else {
-      removeIndex('Confidence Score');
+      removeIndex('confidence');
     }
   };
 
   const handleNotes = (e, checked) => {
     setNote(checked);
     if (checked) {
-      column.push(METADATA_NOTE);
-      setColumn(column);
+      setColumn([...column, METADATA_NOTE]);
     } else {
-      removeIndex('Note');
+      removeIndex('note');
     }
   };
 

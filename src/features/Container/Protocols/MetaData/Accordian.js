@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Accordion from 'apollo-react/components/Accordion';
 import Modal from 'apollo-react/components/Modal';
@@ -10,6 +10,7 @@ import Pencil from 'apollo-react-icons/Pencil';
 import Plus from 'apollo-react-icons/Plus';
 import Save from 'apollo-react-icons/Save';
 import Trash from 'apollo-react-icons/Trash';
+import EyeShow from 'apollo-react-icons/EyeShow';
 import MetaDataEditTable from './MetaDataEditTable';
 import MetaDataTable from './MetaDataTable';
 import './MetaData.scss';
@@ -17,43 +18,32 @@ import './MetaData.scss';
 function Accordian({
   standardList,
   accData,
-  metaDataList,
+  rows,
   suggestedSubList,
   isOpenSubText,
+  deletedAttributes,
   setSuggestedSubList,
   setIsOpenSubText,
-  setMetaDataList,
+  setRows,
   handleAccordian,
   handleSave,
   handleDelete,
   handleEdit,
-  updateRows,
-  deleteRows,
   addSubAccordion,
   subAccComponent,
+  setDeletedAttributes,
 }) {
-  const wrapperRef = useRef(null);
-  const [isModal, setisModal] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const [subSectionName, setSubSectionName] = useState(false);
 
   const handleChange = (event, newValue) => {
+    console.log('handleChange', newValue, event.target.value);
     setSubSectionName(newValue);
   };
 
-  // useEffect(() => {
-  //   function handleClickOutside(event) {
-  //     if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-  //       setIsOpenSubText(false);
-  //     }
-  //   }
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
-  // }, [setIsOpenSubText, wrapperRef]);
-
   useEffect(() => {
-    if (subSectionName) {
+    if (subSectionName?.label) {
       addSubAccordion(subSectionName.label);
       setSuggestedSubList(
         suggestedSubList.filter((list) => list.label !== subSectionName.label),
@@ -63,52 +53,73 @@ function Accordian({
   }, [subSectionName]);
   return (
     <>
-      <Accordion expanded={accData.isActive}>
+      <Accordion expanded={accData?.isActive}>
         <AccordionSummary
-          data-testId="metadataAccordian"
+          data-testId="meta-item-accordion"
           onClick={handleAccordian}
         >
           <div className="accordion_summary_container">
-            <Typography>{accData.name}</Typography>
+            <Typography>{accData?.name}</Typography>
             <div className="metadata-flex">
               {accData?.isEdit ? (
                 <>
                   {accData?.level <= 5 && (
-                    <span data-testId="metadataplus">
-                      <Plus
-                        data-testId="metadataplus"
-                        className="metadata-plus-size mR"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setIsOpenSubText(!isOpenSubText);
-                        }}
-                      />
+                    <span
+                      data-testId="metadataplus"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsOpenSubText(!isOpenSubText);
+                      }}
+                      role="presentation"
+                    >
+                      <Plus className="metadata-plus-size mR" />
                     </span>
                   )}
-                  <Save
-                    className="metadata-plus-size"
+                  <span
+                    data-testId="metadatasave"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setisModal(true);
+                      setIsDelete(false);
+                      setIsModal(true);
                     }}
-                  />
+                    role="presentation"
+                  >
+                    <Save className="metadata-plus-size" />
+                  </span>
                   {!standardList?.includes(accData?.name) && (
-                    <Trash
-                      className="metadata-plus-size mL"
-                      onClick={handleDelete}
-                    />
+                    <span
+                      data-testId="metadata-trash"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsDelete(true);
+                        setIsModal(true);
+                      }}
+                      onKeyDown
+                      role="presentation"
+                    >
+                      <Trash className="metadata-plus-size mL" />
+                    </span>
                   )}
                 </>
               ) : (
-                <span data-testId="metadatapencil">
-                  <Pencil className="metadata-plus-size" onClick={handleEdit} />
-                </span>
+                <>
+                  <span data-testId="eyeIcon">
+                    <EyeShow style={{ paddingRight: '10px' }} />
+                  </span>
+                  <span data-testId="metadatapencil">
+                    <Pencil
+                      className="metadata-plus-size"
+                      data-testid="handle-edit"
+                      onClick={handleEdit}
+                    />
+                  </span>
+                </>
               )}
             </div>
           </div>
         </AccordionSummary>
         {isOpenSubText && (
-          <div style={{ maxWidth: 400 }} ref={wrapperRef}>
+          <div style={{ maxWidth: 400 }} data-testid="auto">
             <AutocompleteV2
               label=""
               className="nameField"
@@ -116,42 +127,61 @@ function Accordian({
               source={suggestedSubList}
               fullWidth
               forcePopupIcon
+              data-testid="suggestion-field"
               showClearIndicator
               value={subSectionName}
               onChange={handleChange}
+              inputProps={{ 'data-testid': 'customeform-AutoComplete' }}
               size="small"
             />
           </div>
         )}
         <AccordionDetails>
           {accData?.isEdit ? (
-            <MetaDataEditTable
-              updateRows={updateRows}
-              metaDataList={metaDataList}
-              setMetaDataList={setMetaDataList}
-              data={accData}
-              deleteRows={deleteRows}
-            />
+            <div data-testId="metadataEditTable">
+              <MetaDataEditTable
+                rows={rows}
+                setRows={setRows}
+                data={accData}
+                deletedAttributes={deletedAttributes}
+                setDeletedAttributes={setDeletedAttributes}
+              />
+            </div>
           ) : (
-            <MetaDataTable metaData={accData?.metaData} />
+            // eslint-disable-next-line
+            accData?._meta_data?.length > 0 && (
+              // eslint-disable-next-line
+              <MetaDataTable metaData={accData?._meta_data} />
+            )
           )}
           <div className="subAccContainer">{subAccComponent}</div>
         </AccordionDetails>
       </Accordion>
-      <div className="modal">
+      <div className="modal" data-testId="modal">
         <Modal
           className="modal"
           open={isModal}
-          onClose={() => setisModal(false)}
-          // title="Header"
-          title="Do You Really want to save it now or continue editing?"
+          onClose={() => setIsModal(false)}
+          title={
+            isDelete
+              ? 'Please confirm if you want to continue with deletion'
+              : 'Do You Really want to save it now or continue editing?'
+          }
           buttonProps={[
-            { label: 'Continue Editing' },
             {
-              label: 'save',
+              label: isDelete ? 'Cancel' : 'Continue Editing',
+              'data-testid': 'update-term-field',
+            },
+            {
+              label: isDelete ? 'Delete' : 'Save',
+              'data-testid': 'save-term-field',
               onClick: (e) => {
-                handleSave(e);
-                setisModal(false);
+                if (isDelete) {
+                  handleDelete(e);
+                } else {
+                  handleSave(e);
+                }
+                setIsModal(false);
               },
             },
           ]}
@@ -165,20 +195,20 @@ function Accordian({
 Accordian.propTypes = {
   standardList: PropTypes.isRequired,
   accData: PropTypes.isRequired,
-  metaDataList: PropTypes.isRequired,
+  rows: PropTypes.isRequired,
   suggestedSubList: PropTypes.isRequired,
   isOpenSubText: PropTypes.isRequired,
+  deletedAttributes: PropTypes.isRequired,
   setIsOpenSubText: PropTypes.isRequired,
   setSuggestedSubList: PropTypes.isRequired,
-  setMetaDataList: PropTypes.isRequired,
+  setRows: PropTypes.isRequired,
   handleAccordian: PropTypes.isRequired,
   handleSave: PropTypes.isRequired,
   handleDelete: PropTypes.isRequired,
   handleEdit: PropTypes.isRequired,
-  updateRows: PropTypes.isRequired,
-  deleteRows: PropTypes.isRequired,
   addSubAccordion: PropTypes.isRequired,
   subAccComponent: PropTypes.isRequired,
+  setDeletedAttributes: PropTypes.isRequired,
 };
 
 export default Accordian;
