@@ -43,11 +43,6 @@
   padding-left: 47px;
 }
 
-.Button-flex {
-  display: flex;
-  flex-direction: column;
-  margin-left: -40px;
-}
 
 [class*='IconComponent-icon-'] {
   margin-right: 25px;
@@ -84,6 +79,7 @@ button:hover {
 a:hover {
   border-bottom: none;
 }
+
 
 .Button-flex {
   display: flex;

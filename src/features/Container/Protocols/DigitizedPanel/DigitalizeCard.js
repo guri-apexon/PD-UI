@@ -34,11 +34,16 @@ function Digitize({
   const [tocActive, setTocActive] = useState([]);
 
   const tocActiveSelector = useSelector(TOCActive);
-  useEffect(() => {
+
+  const tocActiveSelectorFun = (tocActiveSelector) => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
-  }, [tocActiveSelector]);
+  };
 
   useEffect(() => {
+    tocActiveSelectorFun(tocActiveSelector);
+  }, [tocActiveSelector]);
+
+  const summaryFun = (summary) => {
     if (summary?.data?.length) {
       setHeaderList(
         summary.data.filter((x) => x.source_file_section !== 'blank_header'),
@@ -46,6 +51,10 @@ function Digitize({
     } else {
       setHeaderList([]);
     }
+  };
+
+  useEffect(() => {
+    summaryFun(summary);
   }, [summary]);
 
   const scrollToTop = (index) => {
@@ -54,7 +63,7 @@ function Digitize({
     }, 300);
   };
 
-  useEffect(() => {
+  const sectionSequenceFun = (sectionSequence) => {
     if (sectionSequence === 'undefined' || sectionSequence === undefined) {
       //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else if (
@@ -64,13 +73,21 @@ function Digitize({
       scrollToTop(sectionSequence);
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
+  };
+
+  useEffect(() => {
+    sectionSequenceFun(sectionSequence);
     // eslint-disable-next-line
   }, [sectionSequence]);
 
-  useEffect(() => {
+  const sectionNumberFun = (sectionNumber) => {
     if (sectionNumber >= 0) {
       setSectionSequence(sectionNumber);
     }
+  };
+
+  useEffect(() => {
+    sectionNumberFun(sectionNumber);
   }, [sectionNumber]);
 
   useEffect(() => {
@@ -89,7 +106,7 @@ function Digitize({
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
+  const paginationPageFun = (paginationPage) => {
     let sectionNo;
     let lastpage;
     const listLength = headerList.length - 1;
@@ -124,6 +141,10 @@ function Digitize({
         },
       });
     }
+  };
+
+  useEffect(() => {
+    paginationPageFun(paginationPage);
     // eslint-disable-next-line
   }, [paginationPage]);
 

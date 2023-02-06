@@ -60,13 +60,17 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
+  const pageFun = (page) => {
     if (page) {
       setPage(page - 1);
     }
-  }, [page]);
+  };
 
   useEffect(() => {
+    pageFun(page);
+  }, [page]);
+
+  const currentPageFun = (currentPage) => {
     if (refs[currentPage]?.current) {
       refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
     }
@@ -75,14 +79,21 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
         document.getElementById('pdfDocument').scrollTop = 0;
       }
     }, 100);
+  };
 
+  useEffect(() => {
+    currentPageFun(currentPage);
     // eslint-disable-next-line
   }, [currentPage]);
 
-  useEffect(() => {
+  const pageRightFun = (pageRight) => {
     if (pageRight) {
       setPage(pageRight - 1);
     }
+  };
+
+  useEffect(() => {
+    pageRightFun(pageRight);
   }, [pageRight]);
 
   const handleZoomIn = () => {
@@ -103,12 +114,16 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     // eslint-disable-next-line
   }, [documentFilePath]);
 
-  useEffect(() => {
+  const fileStreamFun = (fileStream) => {
     if (fileStream.success) {
       setPdfString(fileStream.data);
     } else {
       setPdfString(null);
     }
+  };
+
+  useEffect(() => {
+    fileStreamFun(fileStream);
   }, [fileStream]);
 
   if (!pdfString) {
