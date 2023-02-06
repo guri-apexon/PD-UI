@@ -59,22 +59,20 @@ function BulkMap() {
   };
 
   const AccordionFun = (bulkResponse) => {
-    return (
-      <Accordion defaultExpanded>
-        <AccordionSummary>
-          <Typography>Response with details are below</Typography>
-        </AccordionSummary>
-        <AccordionDetails style={{ display: 'block' }}>
-          {bulkResponse.map((item) => {
-            return <Typography style={{ color: '#2142a8' }}>{item}</Typography>;
-          })}
-        </AccordionDetails>
-      </Accordion>
-    );
+    <Accordion defaultExpanded>
+      <AccordionSummary>
+        <Typography>Response with details are below</Typography>
+      </AccordionSummary>
+      <AccordionDetails style={{ display: 'block' }}>
+        {bulkResponse.map((item) => {
+          return <Typography style={{ color: '#2142a8' }}>{item}</Typography>;
+        })}
+      </AccordionDetails>
+    </Accordion>;
   };
   const resposeObject = () => {
     if (!isEmpty(bulkResponse)) {
-      AccordionFun(bulkResponse);
+      return AccordionFun(bulkResponse);
     }
   };
 
