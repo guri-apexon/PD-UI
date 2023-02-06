@@ -17,7 +17,6 @@ export const flattenObject = (data, level, parentKey) => {
                 isCustom: key !== 'summary',
               };
             }),
-            // eslint-disable-next-line
             formattedName: level === 1 ? key : `${parentKey}.${key}`,
             name: key,
             level,
@@ -57,11 +56,8 @@ export const mergeSummary = (data) => {
         ...finalResult,
         summary: {
           ...finalResult.summary,
-          _meta_data: [
-            // eslint-disable-next-line
-            ...finalResult.summary._meta_data,
-            ...updateMetaData,
-          ],
+          // eslint-disable-next-line
+          _meta_data: [...finalResult.summary._meta_data, ...updateMetaData],
         },
       };
       delete finalResult.summary_extended;
@@ -86,7 +82,6 @@ export const flattenMetaParam = (data, level) => {
             dropDownList:
               Object?.keys(keyValue).length > 0 ? Object?.keys(keyValue) : [],
           };
-      // eslint-disable-next-line
       if (Object?.keys(keyValue).length > 0) {
         flattenMetaParam(keyValue, level + 1);
       }

@@ -114,12 +114,12 @@ describe('Accordian component', () => {
 });
 
 describe('Accordian', () => {
-  const standardList = ['Section 1'];
+  const standardList = ['Sectionsub 1'];
   const accData = {
     name: 'Section 1',
     level: 1,
     isActive: false,
-    isEdit: false,
+    isEdit: true,
   };
   const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
   const suggestedSubList = [{ label: 'Subsection 1' }];
@@ -136,7 +136,7 @@ describe('Accordian', () => {
   const setDeletedAttributes = jest.fn();
 
   it('renders the accordion with the given name', () => {
-    const { getByText } = render(
+    const { getByText, getByTestId } = render(
       <Accordian
         standardList={standardList}
         accData={accData}
@@ -156,7 +156,8 @@ describe('Accordian', () => {
         setDeletedAttributes={setDeletedAttributes}
       />,
     );
-
+    fireEvent.click(getByTestId('metadata-trash'));
+    expect(getByTestId('modal')).toBeInTheDocument();
     expect(getByText('Section 1')).toBeInTheDocument();
   });
 
@@ -262,7 +263,7 @@ describe('Accordian', () => {
     const accData = {
       name: 'Section 1',
       level: 1,
-      isActive: false,
+      isActive: true,
       isEdit: true,
     };
 
@@ -288,5 +289,53 @@ describe('Accordian', () => {
     );
     fireEvent.click(getByTestId('metadataplus'));
     expect(setIsOpenSubText).toHaveBeenCalledWith(true);
+  });
+});
+
+describe('Accordian', () => {
+  const standardList = ['Sectionsub 1'];
+  const accData = {
+    name: 'Section 1',
+    level: 1,
+    isActive: false,
+    isEdit: true,
+  };
+  const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
+  const suggestedSubList = [{ label: 'Subsection 1' }];
+  const deletedAttributes = [];
+  const flag = true;
+  const setSuggestedSubList = jest.fn();
+  const setIsOpenSubText = jest.fn();
+  const setRows = jest.fn();
+  const handleAccordian = jest.fn();
+  const handleSave = jest.fn();
+  const handleDelete = jest.fn();
+  const handleEdit = jest.fn();
+  const addSubAccordion = jest.fn();
+  const subAccComponent = [];
+  const setDeletedAttributes = jest.fn();
+
+  it('renders the accordion with the given name', () => {
+    const { getByTestId } = render(
+      <Accordian
+        standardList={standardList}
+        accData={accData}
+        rows={rows}
+        suggestedSubList={suggestedSubList}
+        isOpenSubText={flag}
+        deletedAttributes={deletedAttributes}
+        setSuggestedSubList={setSuggestedSubList}
+        setIsOpenSubText={setIsOpenSubText}
+        setRows={setRows}
+        handleAccordian={handleAccordian}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        addSubAccordion={addSubAccordion}
+        subAccComponent={subAccComponent}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+    fireEvent.click(getByTestId('suggestion-field'));
   });
 });
