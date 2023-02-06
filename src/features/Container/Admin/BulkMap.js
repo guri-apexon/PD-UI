@@ -74,7 +74,7 @@ function BulkMap() {
   };
   const resposeObject = () => {
     if (!isEmpty(bulkResponse)) {
-      AccordionFun(bulkResponse);
+      return AccordionFun(bulkResponse);
     }
   };
 
