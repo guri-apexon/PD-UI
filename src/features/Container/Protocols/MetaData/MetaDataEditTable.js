@@ -259,8 +259,8 @@ function MetaDataEditTable({
             { label: 'Cancel' },
             {
               label: 'Delete',
-              onClick: (e) => {
-                removeData(e);
+              onClick: () => {
+                removeData();
                 setIsModal(false);
               },
             },
