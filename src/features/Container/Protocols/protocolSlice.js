@@ -37,9 +37,15 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
-    metaDataVariable: [],
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
     TOCActiveAccordian: [],
+    accordianMetaData: {},
+    accordianMetaParam: {},
+    metadataApiCallValue: {
+      status: false,
+      name: '',
+      op: '',
+    },
     EnrichedApiValue: false,
   },
   reducers: {
@@ -104,14 +110,20 @@ export const protocolSlice = createSlice({
     getMetaDataSummaryField: (state, action) => {
       state.metaDataSummaryField = action.payload;
     },
-    getMetaDataVariable: (state, action) => {
-      state.metaDataVariable = action.payload;
-    },
     getRightBladeValue: (state, action) => {
       state.rightBladeValue = action.payload;
     },
     getTOCActive: (state, action) => {
       state.TOCActiveAccordian = action.payload;
+    },
+    setAccordianMetaData: (state, action) => {
+      state.accordianMetaData = action.payload;
+    },
+    setAccordianMetaParam: (state, action) => {
+      state.accordianMetaParam = action.payload;
+    },
+    getMetadataApiCall: (state, action) => {
+      state.metadataApiCallValue = action.payload;
     },
     getEnrichedValue: (state, action) => {
       state.EnrichedApiValue = action.payload;
@@ -133,9 +145,11 @@ export const {
   getFileStream,
   updateSectionData,
   getMetaDataSummaryField,
-  getMetaDataVariable,
   getRightBladeValue,
   getTOCActive,
+  setAccordianMetaData,
+  setAccordianMetaParam,
+  getMetadataApiCall,
   getEnrichedValue,
 } = protocolSlice.actions;
 
@@ -153,9 +167,12 @@ export const protocolTocData = (state) => state.protocol.protocolTocData;
 
 export const sectionLoader = (state) => state.protocol.sectionLoader;
 export const getPdfData = (state) => state.protocol.fileStream;
-export const metaDataVariable = (state) => state.protocol.metaDataVariable;
 export const rightBladeValue = (state) => state.protocol.rightBladeValue;
 export const TOCActive = (state) => state.protocol.TOCActiveAccordian;
+export const accordianMetaData = (state) => state.protocol.accordianMetaData;
+export const accordianMetaParam = (state) => state.protocol.accordianMetaParam;
+export const metadataApiCallValue = (state) =>
+  state.protocol.metadataApiCallValue;
 export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
 
 export default protocolSlice.reducer;
