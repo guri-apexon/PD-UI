@@ -51,6 +51,24 @@ function Accordian({
     }
     // eslint-disable-next-line
   }, [subSectionName]);
+
+  const handlePlus = (e) => {
+    e.stopPropagation();
+    setIsOpenSubText(!isOpenSubText);
+  };
+
+  const handleSaveData = (e) => {
+    e.stopPropagation();
+    setIsDelete(false);
+    setIsModal(true);
+  };
+
+  const handleTrash = (e) => {
+    e.stopPropagation();
+    setIsDelete(true);
+    setIsModal(true);
+  };
+
   return (
     <>
       <Accordion expanded={accData?.isActive}>
@@ -67,8 +85,7 @@ function Accordian({
                     <span
                       data-testId="metadataplus"
                       onClick={(e) => {
-                        e.stopPropagation();
-                        setIsOpenSubText(!isOpenSubText);
+                        handlePlus(e);
                       }}
                       role="presentation"
                     >
@@ -78,9 +95,7 @@ function Accordian({
                   <span
                     data-testId="metadatasave"
                     onClick={(e) => {
-                      e.stopPropagation();
-                      setIsDelete(false);
-                      setIsModal(true);
+                      handleSaveData(e);
                     }}
                     role="presentation"
                   >
@@ -90,9 +105,7 @@ function Accordian({
                     <span
                       data-testId="metadata-trash"
                       onClick={(e) => {
-                        e.stopPropagation();
-                        setIsDelete(true);
-                        setIsModal(true);
+                        handleTrash(e);
                       }}
                       onKeyDown
                       role="presentation"
@@ -119,7 +132,7 @@ function Accordian({
           </div>
         </AccordionSummary>
         {isOpenSubText && (
-          <div style={{ maxWidth: 400 }} data-testid="auto">
+          <div data-testid="auto">
             <AutocompleteV2
               label=""
               className="nameField"
