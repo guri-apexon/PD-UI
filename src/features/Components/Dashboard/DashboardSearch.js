@@ -12,6 +12,18 @@ function DashboardSearch({ recent, saved }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [viewMore, setViewMore] = useState(false);
+
+  const onKeyPress = (e) => {
+    /* istanbul ignore next */
+    if (e.key === 'Enter') {
+      dispatch({
+        type: 'POST_RECENT_SEARCH_DASHBOARD',
+        payload: e.target.value,
+      });
+      history.push(`/search?key=${e.target.value}`);
+    }
+  };
+
   return (
     <div
       className="dashboard-search-parent"
@@ -25,16 +37,7 @@ function DashboardSearch({ recent, saved }) {
             <Search
               placeholder="Protocol Number, Indication, Key word, etc"
               fullWidth
-              onKeyPress={(e) => {
-                /* istanbul ignore next */
-                if (e.key === 'Enter') {
-                  dispatch({
-                    type: 'POST_RECENT_SEARCH_DASHBOARD',
-                    payload: e.target.value,
-                  });
-                  history.push(`/search?key=${e.target.value}`);
-                }
-              }}
+              onKeyPress={(e) => onKeyPress(e)}
             />
           </span>
           <div>

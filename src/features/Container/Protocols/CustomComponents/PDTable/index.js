@@ -122,7 +122,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteRow) {
       // eslint-disable-next-line
-      if (confirm(confirmText)) {
+      if (confirm(confirmText) === true) {
         const newData = deleteRow(updatedData, index);
         setUpdatedData(newData);
         setColumnLength(Object.keys(newData[0]).length);

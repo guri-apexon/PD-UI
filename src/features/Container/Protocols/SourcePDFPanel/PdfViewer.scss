@@ -6,6 +6,7 @@
 }
 
 .pdf-pagination {
+  max-width: 230px;
   display: flex;
   align-items: center;
   bottom: 15px;
@@ -49,9 +50,9 @@
   }
 }
 
-.pdf-pagination  {
-  max-width: 230px;
-}
+// .pdf-pagination  {
+//   max-width: 230px;
+// }
 
 @media only screen and (max-width: 1366px) {
   .pdf-pagination {
