@@ -26,13 +26,9 @@ import {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  headerResult,
 } from './protocolSlice';
-import {
-  httpCall,
-  BASE_URL_8000,
-  Apis,
-  BASE_URL_TEST,
-} from '../../../utils/api';
+import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
 
@@ -237,6 +233,7 @@ export function* fetchSectionHeaderList(action) {
     if (!header.data?.length) {
       toast.error(header.message);
     }
+    console.log('Header', header);
     yield put(getHeaderList(header));
   } else {
     yield put(getHeaderList({ success: false, data: [] }));
@@ -256,7 +253,29 @@ export function* getSectionList(action) {
   };
   const sectionDetails = yield call(httpCall, config);
   yield put(setSectionLoader(false));
-
+  const headerResult12 = yield select(headerResult);
+  console.log('headerResult123', headerResult12);
+  const data = [...headerResult12.data];
+  console.log('data', data);
+  const ObjArray = [];
+  for (let i = 0; i < data.length; i++) {
+    console.log('headerResult12.data', data[i]);
+    if (data[i].link_id === action.payload.linkId) {
+      const temp = { ...data[i], SectionData: sectionDetails.data };
+      console.log('temp', temp);
+      ObjArray.push(temp);
+    } else {
+      ObjArray.push(data[i]);
+    }
+  }
+  console.log('Array', ObjArray);
+  yield put(getHeaderList({ ...headerResult12, data: ObjArray }));
+  const tempObj = {
+    ...headerResult12.data[0],
+    SectionData: sectionDetails.data,
+  };
+  console.log('tempObj', tempObj);
+  console.log('headerResult12', headerResult12.data[0]);
   if (sectionDetails.success) {
     yield put(
       setSectionDetails({
@@ -338,6 +357,7 @@ export function* getProtocolTocDataResult(action) {
       }
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
+      console.log('Header123', header);
     } else {
       yield put(getHeaderList(header));
     }
@@ -413,14 +433,15 @@ export function* MetaDataVariable(action) {
     payload: { op, docId },
   } = action;
   const config = {
-    url: `${BASE_URL_TEST}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
+    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
     method: 'GET',
     isMetaData: true,
   };
   const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
     if (op === 'metadata') {
-      const result = flattenObject(MetaData?.data?.data, 1, '');
+      const updatedData = {};
+      const result = flattenObject(updatedData, MetaData?.data?.data, 1, '');
       const updateResultForSummary = mergeSummary(result);
       yield put(setAccordianMetaData(updateResultForSummary));
     } else {
@@ -438,7 +459,7 @@ export function* addMetaDataAttributes(action) {
     payload: { reqData, docId, fieldName, attributes },
   } = action;
   const config = {
-    url: `${BASE_URL_TEST}${Apis.METADATA}/add_update_meta_data`,
+    url: `${BASE_URL}${Apis.METADATA}/add_update_meta_data`,
     method: 'POST',
     isMetaData: true,
     data: {
@@ -474,7 +495,7 @@ export function* addMetaDataField(action) {
     payload: { op, docId, fieldName, attributes, reqData },
   } = action;
   const config = {
-    url: `${BASE_URL_TEST}${Apis.METADATA}/add_meta_data`,
+    url: `${BASE_URL}${Apis.METADATA}/add_meta_data`,
     method: 'PUT',
     isMetaData: true,
     data: {
@@ -511,7 +532,7 @@ export function* deleteAttribute(action) {
     payload: { op, docId, fieldName, attributeNames, reqData },
   } = action;
   const config = {
-    url: `${BASE_URL_TEST}${Apis.METADATA}/delete_meta_data`,
+    url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
     method: 'DELETE',
     isMetaData: true,
     data: {

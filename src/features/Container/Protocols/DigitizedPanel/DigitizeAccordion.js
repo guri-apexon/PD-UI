@@ -17,7 +17,7 @@ import {
   createFullMarkup,
   createEnrichedText,
 } from '../../../../utils/utilFunction';
-import { sectionDetails, TOCActive } from '../protocolSlice';
+import { headerResult, sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
@@ -60,9 +60,13 @@ function DigitizeAccordion({
   const [clinicalTerms, setClinicalTerms] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
+  const summary = useSelector(headerResult);
 
-  const { data: sectionData } = sectionHeaderDetails;
+  const { data: sectionData } = summary;
   const [tocActive, setTocActive] = useState([]);
+  console.log('HeadersectionData', sectionData);
+  console.log('sectionHeaderDetails', sectionHeaderDetails);
+  console.log('sectionHeader', summary);
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -197,13 +201,17 @@ function DigitizeAccordion({
   };
 
   useEffect(() => {
+    console.log('shubhamusef', sectionData);
+    console.log('shubhamuiten', item);
     if (sectionData?.length > 0) {
-      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
+      const arr = sectionData.filter((obj) => obj.link_id === item.link_id);
+      console.log('shubham', arr);
       if (arr.length > 0) {
         setShowLoader(false);
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = arr[0].data;
+        console.log('sectionsDataHeaderin', sectionsData);
         if (Array.isArray(sectionsData)) {
           updatedSectionsData = sectionsData?.map((sec, index) => {
             if (sec?.font_info?.VertAlign === 'superscript') {
@@ -227,6 +235,7 @@ function DigitizeAccordion({
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
+
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
