@@ -11,31 +11,8 @@ export const httpCall = async (config) => {
     token = cookiesServer.get('api_token');
   }
   let headerConfig;
-  if (config && config?.isMetaData) {
-    if (config.method === 'GET') {
-      headerConfig = {
-        method: config.method,
-        url: config.url,
-        headers: {
-          'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
-        },
-      };
-    } else if (
-      config.method === 'POST' ||
-      config.method === 'DELETE' ||
-      config.method === 'PUT'
-    ) {
-      headerConfig = {
-        data: config?.data,
-        method: config.method,
-        url: config.url,
-        headers: {
-          'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr',
-        },
-        // body: config?.data,
-      };
-    }
-  } else if (config && config.headers) {
+
+  if (config && config.headers) {
     headerConfig = {
       ...config,
       headers: {
@@ -214,7 +191,6 @@ let backendPostHost;
 let baseUrlSSO;
 let UI_URL = '';
 let UIhost;
-let BASE_URL_TEST = '';
 
 /* eslint-enable */
 const environment = process.env.REACT_APP_ENV;
@@ -265,7 +241,7 @@ BASE_URL = `${backendPostHost}`;
 BASE_URL_8000 = `${backendHost}`;
 UI_URL = `${UIhost}`;
 export default BASE_URL;
-export { BASE_URL_8000, baseUrlSSO, UI_URL, BASE_URL_TEST };
+export { BASE_URL_8000, baseUrlSSO, UI_URL };
 
 export const Apis = {
   protocol: `${BASE_URL}/api/protocol`,
