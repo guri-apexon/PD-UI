@@ -55,18 +55,14 @@ function DigitizeAccordion({
   const [showLoader, setShowLoader] = useState(false);
   const [editedMode, setEditedMode] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
-  const summary = useSelector(headerResult);
 
-  const { data: sectionData } = summary;
   const [tocActive, setTocActive] = useState([]);
-  console.log('HeadersectionData', sectionData);
-  console.log('sectionHeaderDetails', sectionHeaderDetails);
-  console.log('sectionHeader', summary);
+
+  const [sectionData, setSectiondata] = useState(item.SectionData || []);
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -97,8 +93,8 @@ function DigitizeAccordion({
 
   useEffect(() => {
     if (expanded) {
-      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (arr.length === 0) {
+      const arr = sectionData?.filter((obj) => obj.linkId === item.link_id);
+      if (arr.length === 0 && !item?.SectionData) {
         setShowLoader(true);
         setLinkId(item.link_id);
         setDocId(item.doc_id);
@@ -195,47 +191,48 @@ function DigitizeAccordion({
   };
 
   const refreshContent = () => {
-    console.log('refreshContent');
     setEditedMode(false);
     dispatchSectionData(true);
   };
 
-  useEffect(() => {
-    console.log('shubhamusef', sectionData);
-    console.log('shubhamuiten', item);
-    if (sectionData?.length > 0) {
-      const arr = sectionData.filter((obj) => obj.link_id === item.link_id);
-      console.log('shubham', arr);
-      if (arr.length > 0) {
-        setShowLoader(false);
-        let updatedSectionsData = [];
-        let matchedIndex = null;
-        const sectionsData = arr[0].data;
-        console.log('sectionsDataHeaderin', sectionsData);
-        if (Array.isArray(sectionsData)) {
-          updatedSectionsData = sectionsData?.map((sec, index) => {
-            if (sec?.font_info?.VertAlign === 'superscript') {
-              matchedIndex = index;
-              return {
-                ...sec,
-                content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
-              };
-            }
-            return sec;
-          });
-          if (matchedIndex) {
-            updatedSectionsData.splice(matchedIndex + 1, 1);
-          }
-        }
-        if (editedMode && !sectionDataArr?.length)
-          dispatchSectionData(updatedSectionsData);
+  const handleSupeScript = () => {
+    if (sectionData.length > 0) {
+      setShowLoader(false);
+      let updatedSectionsData = [];
+      let matchedIndex = null;
+      const sectionsData = sectionData;
 
-        setSectionDataArr(updatedSectionsData);
+      if (Array.isArray(sectionsData)) {
+        updatedSectionsData = sectionsData?.map((sec, index) => {
+          if (sec?.font_info?.VertAlign === 'superscript') {
+            matchedIndex = index;
+            return {
+              ...sec,
+              content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
+            };
+          }
+          return sec;
+        });
+        if (matchedIndex) {
+          updatedSectionsData.splice(matchedIndex + 1, 1);
+        }
       }
+      if (editedMode && !sectionDataArr?.length)
+        dispatchSectionData(updatedSectionsData);
+
+      setSectionDataArr(updatedSectionsData);
+    }
+  };
+  useEffect(() => {
+    if (item?.SectionData) {
+      setSectiondata(item?.SectionData);
     }
     // eslint-disable-next-line
-  }, [sectionHeaderDetails]);
-
+  }, [item]);
+  useEffect(() => {
+    handleSupeScript();
+    // eslint-disable-next-line
+  }, [sectionData]);
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
