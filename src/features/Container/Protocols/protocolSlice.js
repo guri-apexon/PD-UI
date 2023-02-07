@@ -38,8 +38,8 @@ export const protocolSlice = createSlice({
       data: null,
     },
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
-    TOCActiveAccordian: [],
-    accordianMetaData: {},
+    TOCActiveAccordion: [],
+    accordionMetaData: {},
     accordianMetaParam: {},
     metadataApiCallValue: {
       status: false,
@@ -114,10 +114,10 @@ export const protocolSlice = createSlice({
       state.rightBladeValue = action.payload;
     },
     getTOCActive: (state, action) => {
-      state.TOCActiveAccordian = action.payload;
+      state.TOCActiveAccordion = action.payload;
     },
     setAccordianMetaData: (state, action) => {
-      state.accordianMetaData = action.payload;
+      state.accordionMetaData = action.payload;
     },
     setAccordianMetaParam: (state, action) => {
       state.accordianMetaParam = action.payload;
@@ -168,8 +168,8 @@ export const protocolTocData = (state) => state.protocol.protocolTocData;
 export const sectionLoader = (state) => state.protocol.sectionLoader;
 export const getPdfData = (state) => state.protocol.fileStream;
 export const rightBladeValue = (state) => state.protocol.rightBladeValue;
-export const TOCActive = (state) => state.protocol.TOCActiveAccordian;
-export const accordianMetaData = (state) => state.protocol.accordianMetaData;
+export const TOCActive = (state) => state.protocol.TOCActiveAccordion;
+export const accordionMetaData = (state) => state.protocol.accordionMetaData;
 export const accordianMetaParam = (state) => state.protocol.accordianMetaParam;
 export const metadataApiCallValue = (state) =>
   state.protocol.metadataApiCallValue;

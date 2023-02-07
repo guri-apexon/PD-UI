@@ -174,5 +174,7 @@ describe('ValueField component', () => {
     const datepicker = getByTestId('customeform-textField-checkbox1');
     expect(datepicker).toBeInTheDocument();
     fireEvent.change(datepicker, { target: { value: 'String1' } });
+    const select = getByTestId('customeform-textField-checkbox');
+    fireEvent.change(select, { target: { value: 'integer' } });
   });
 });

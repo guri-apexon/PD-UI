@@ -129,6 +129,57 @@ describe('MetaData CheckBox', () => {
     fireEvent.click(metaDataConfidence);
     expect(metaDataConfidence).toBeInTheDocument();
   });
+  test('MetaData confidence remove', () => {
+    const screen = render(
+      <MetaDataEditTable
+        setRows={jest.fn()}
+        rows={data}
+        setDeletedAttributes={jest.fn()}
+        data={data}
+        deletedAttributes={data}
+      />,
+    );
+    const metaDataConfidence = screen.getByTestId('metadata-confidence');
+    expect(metaDataConfidence).toBeInTheDocument();
+    fireEvent.click(metaDataConfidence);
+    fireEvent.click(metaDataConfidence);
+    expect(metaDataConfidence).toBeInTheDocument();
+    screen.debug();
+    const add = screen.getByTestId('metadata-add');
+    fireEvent.click(add);
+  });
+});
+
+describe('MetaDataEditTable', () => {
+  it('renders table with given rows', () => {
+    const data = { name: 'Test Data' };
+    const rows = [
+      {
+        attr_name: 'Attribute 1',
+        attr_value: 'Value 1',
+      },
+      {
+        attr_name: 'Attribute 1',
+        attr_value: 'Value 1',
+        isCustom: true,
+      },
+    ];
+    const setRows = jest.fn();
+    const deletedAttributes = [];
+    const setDeletedAttributes = jest.fn();
+
+    const { getByTestId } = render(
+      <MetaDataEditTable
+        data={data}
+        rows={rows}
+        setRows={setRows}
+        deletedAttributes={deletedAttributes}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+
+    expect(getByTestId('metadata-table')).toBeInTheDocument();
+  });
 });
 
 describe('MetaDataEditTable', () => {
