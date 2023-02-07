@@ -27,12 +27,7 @@ import {
   getMetadataApiCall,
   getEnrichedValue,
 } from './protocolSlice';
-import {
-  httpCall,
-  BASE_URL_8000,
-  Apis,
-  BASE_URL_TEST,
-} from '../../../utils/api';
+import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
 
@@ -413,14 +408,15 @@ export function* MetaDataVariable(action) {
     payload: { op, docId },
   } = action;
   const config = {
-    url: `${BASE_URL_TEST}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
+    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
     method: 'GET',
     isMetaData: true,
   };
   const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
     if (op === 'metadata') {
-      const result = flattenObject(MetaData?.data?.data, 1, '');
+      const updatedData = {};
+      const result = flattenObject(updatedData, MetaData?.data?.data, 1, '');
       const updateResultForSummary = mergeSummary(result);
       yield put(setAccordianMetaData(updateResultForSummary));
     } else {
@@ -438,7 +434,7 @@ export function* addMetaDataAttributes(action) {
     payload: { reqData, docId, fieldName, attributes },
   } = action;
   const config = {
-    url: `${BASE_URL_TEST}${Apis.METADATA}/add_update_meta_data`,
+    url: `${BASE_URL}${Apis.METADATA}/add_update_meta_data`,
     method: 'POST',
     isMetaData: true,
     data: {
@@ -474,7 +470,7 @@ export function* addMetaDataField(action) {
     payload: { op, docId, fieldName, attributes, reqData },
   } = action;
   const config = {
-    url: `${BASE_URL_TEST}${Apis.METADATA}/add_meta_data`,
+    url: `${BASE_URL}${Apis.METADATA}/add_meta_data`,
     method: 'PUT',
     isMetaData: true,
     data: {
@@ -511,7 +507,7 @@ export function* deleteAttribute(action) {
     payload: { op, docId, fieldName, attributeNames, reqData },
   } = action;
   const config = {
-    url: `${BASE_URL_TEST}${Apis.METADATA}/delete_meta_data`,
+    url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
     method: 'DELETE',
     isMetaData: true,
     data: {

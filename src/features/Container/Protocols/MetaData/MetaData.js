@@ -216,7 +216,8 @@ function MetaData() {
 
   useEffect(() => {
     if (!isEmpty(metaParamResult) && !isEmpty(accordianData)) {
-      const result = flattenMetaParam(metaParamResult, 1);
+      const updatedParam = {};
+      const result = flattenMetaParam(updatedParam, metaParamResult, 1);
       let metaList = [];
       const filterItems = difference(
         Object.keys(metaParamResult),
