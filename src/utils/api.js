@@ -215,7 +215,7 @@ let baseUrlSSO;
 let UI_URL = '';
 let UIhost;
 let BASE_URL_TEST = '';
-let backendHostTest;
+
 /* eslint-enable */
 const environment = process.env.REACT_APP_ENV;
 if (environment === 'local') {
@@ -224,13 +224,11 @@ if (environment === 'local') {
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
-  backendHostTest = 'http://ca2spdml101q:9001';
 } else if (environment === 'dev') {
   backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
-  backendHostTest = 'http://ca2spdml101q:9001';
 } else if (environment === 'test') {
   backendHost = 'https://test-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://test-protocoldigitalization-ai.work.iqvia.com';
@@ -265,7 +263,6 @@ if (environment === 'local') {
 
 BASE_URL = `${backendPostHost}`;
 BASE_URL_8000 = `${backendHost}`;
-BASE_URL_TEST = backendHostTest;
 UI_URL = `${UIhost}`;
 export default BASE_URL;
 export { BASE_URL_8000, baseUrlSSO, UI_URL, BASE_URL_TEST };
