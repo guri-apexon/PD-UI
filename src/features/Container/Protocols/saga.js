@@ -563,7 +563,7 @@ export function* saveEnrichedAPI(action) {
     payload: { docId, linkId, data },
   } = action;
   const config = {
-    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}/?doc_id=${docId}&link_id=${linkId}`,
+    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`,
     method: 'POST',
     data: {
       data,
