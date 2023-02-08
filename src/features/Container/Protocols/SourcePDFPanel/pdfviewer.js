@@ -8,7 +8,7 @@ import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { protocolSummary, getPdfData } from '../protocolSlice';
-import { panelHandle, pageFun } from './utilsPdfviewer';
+import { panelHandle, pageFun, currentPageFun } from './utilsPdfviewer';
 import './PdfViewer.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -58,19 +58,10 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     pageFun(page, setPage);
   }, [page]);
 
-  const currentPageFun = (currentPage) => {
-    if (refs[currentPage]?.current) {
-      refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
-    }
-    setTimeout(() => {
-      if (document.getElementById('pdfDocument')) {
-        document.getElementById('pdfDocument').scrollTop = 0;
-      }
-    }, 100);
-  };
+  currentPageFun(refs, currentPage);
 
   useEffect(() => {
-    currentPageFun(currentPage);
+    currentPageFun(refs, currentPage);
     // eslint-disable-next-line
   }, [currentPage]);
 

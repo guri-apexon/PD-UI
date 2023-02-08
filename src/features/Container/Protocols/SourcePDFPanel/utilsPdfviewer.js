@@ -14,3 +14,14 @@ export const pageFun = (page, setPage) => {
     setPage(page - 1);
   }
 };
+
+export const currentPageFun = (refs, currentPage) => {
+  if (refs[currentPage]?.current) {
+    refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
+  }
+  setTimeout(() => {
+    if (document.getElementById('pdfDocument')) {
+      document.getElementById('pdfDocument').scrollTop = 0;
+    }
+  }, 100);
+};
