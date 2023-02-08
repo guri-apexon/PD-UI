@@ -17,7 +17,7 @@ import {
   createFullMarkup,
   createEnrichedText,
 } from '../../../../utils/utilFunction';
-import { headerResult, sectionDetails, TOCActive } from '../protocolSlice';
+import { TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';

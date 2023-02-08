@@ -16,7 +16,6 @@ import {
   getAssociateDocuments,
   getCompare,
   getHeaderList,
-  setSectionDetails,
   getProtocolTocData,
   setSectionLoader,
   getFileStream,
@@ -252,38 +251,20 @@ export function* getSectionList(action) {
     method: 'GET',
   };
   const sectionDetails = yield call(httpCall, config);
-  yield put(setSectionLoader(false));
-  const headerResult12 = yield select(headerResult);
-  console.log('headerResult123', headerResult12);
-  const data = [...headerResult12.data];
-  console.log('data', data);
-  const ObjArray = [];
+  const headerList = yield select(headerResult);
+  const data = [...headerList.data];
+  const objSectionData = [];
   for (let i = 0; i < data.length; i++) {
-    console.log('headerResult12.data', data[i]);
     if (data[i].link_id === action.payload.linkId) {
       const temp = { ...data[i], SectionData: sectionDetails.data };
-      console.log('temp', temp);
-      ObjArray.push(temp);
+      objSectionData.push(temp);
     } else {
-      ObjArray.push(data[i]);
+      objSectionData.push(data[i]);
     }
   }
-  console.log('Array', ObjArray);
-  yield put(getHeaderList({ ...headerResult12, data: ObjArray }));
-  const tempObj = {
-    ...headerResult12.data[0],
-    SectionData: sectionDetails.data,
-  };
-  console.log('tempObj', tempObj);
-  console.log('headerResult12', headerResult12.data[0]);
+
   if (sectionDetails.success) {
-    yield put(
-      setSectionDetails({
-        protocol: action.payload.protocol,
-        data: sectionDetails.data,
-        linkId: action.payload.linkId,
-      }),
-    );
+    yield put(getHeaderList({ ...headerList, data: objSectionData }));
   } else if (sectionDetails.message === 'No Access') {
     console.log('No Access');
   }
@@ -346,6 +327,18 @@ export function* getProtocolTocDataResult(action) {
   };
 
   const header = yield call(httpCall, config);
+
+  const headerList = cloneDeep(header.data);
+  console.log('headerdata bEfore', headerList);
+  for (let i = 0; i < headerList.length; i++) {
+    console.log('head');
+    if (headerList[i]?.qc_change_type === '') {
+      delete headerList[i]?.qc_change_type;
+      console.log('headerdata Loop', headerList[i]);
+    }
+  }
+  console.log('headerdata after', headerList);
+  console.log('Header', header.data);
   if (header.success) {
     if (action.payload.tocFlag === 1) {
       if (header?.data?.status === 204) {
@@ -357,9 +350,13 @@ export function* getProtocolTocDataResult(action) {
       }
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
-      console.log('Header123', header);
     } else {
-      yield put(getHeaderList(header));
+      yield put(
+        getHeaderList({
+          success: false,
+          data: headerList,
+        }),
+      );
     }
   } else {
     // eslint-disable-next-line no-lonely-if
