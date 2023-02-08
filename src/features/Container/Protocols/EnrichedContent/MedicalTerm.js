@@ -61,21 +61,22 @@ function MedicalTerm({
 
   const restructingObject = () => {
     if (clinicalTermsArr) {
-      const object = clinicalTermsArr[enrichedText] || {};
-      Object.keys(object).forEach((item) => {
-        if (item === 'preferred_term') {
-          setPreferredTerm(object[item]);
-        }
-        if (item === 'synonyms') {
-          setSynonyms(object[item]);
-        }
-        if (item === 'classification') {
-          setClassification(object[item]);
-        }
-        if (item === 'ontology') {
-          setOntologyTemp(object[item]);
-        }
-      });
+      Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
+        (key, value) => {
+          if (key === 'preferred_term') {
+            setPreferredTerm(value);
+          }
+          if (key === 'synonyms') {
+            setSynonyms(value);
+          }
+          if (key === 'classification') {
+            setClassification(value);
+          }
+          if (key === 'ontology') {
+            setOntologyTemp(value);
+          }
+        },
+      );
     }
   };
 
