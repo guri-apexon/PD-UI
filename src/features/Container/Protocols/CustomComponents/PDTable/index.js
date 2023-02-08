@@ -187,6 +187,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
             buttonProps={[
               {
                 size: 'small',
+                variant: 'primary',
                 label: 'Add Footnote',
                 onClick: () => addFootNote(),
               },
