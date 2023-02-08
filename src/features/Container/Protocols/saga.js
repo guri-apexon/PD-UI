@@ -217,14 +217,14 @@ export function* updateSectionData(action) {
   const {
     payload: { reqBody },
   } = action;
+  console.log('updateSectionData::', reqBody);
   const config = {
     url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
     method: 'POST',
-    data: {
-      reqBody,
-    },
+    data: reqBody,
   };
   const sectionSaveRes = yield call(httpCall, config);
+  console.log('sectionSaveRes::', sectionSaveRes);
   if (sectionSaveRes.success) {
     // yield put(updateSection(header));
   } else {

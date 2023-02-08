@@ -25,15 +25,6 @@ const text = {
   synonyms_extracted_terms: '',
   semantic_extraction: '',
   section_locked: false,
-  audit_info: {
-    last_reviewed_date: '',
-    last_reviewed_by: '',
-    total_no_review: '',
-  },
-  audit: {
-    last_updated_user: '',
-    updated_time: '',
-  },
 };
 
 const table = { ...text, type: 'table' };

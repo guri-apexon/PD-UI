@@ -190,9 +190,16 @@ function DigitizeAccordion({
   };
 
   const handleSaveContent = () => {
-    console.log('handleSaveContent');
-    setEditedMode(false);
-    dispatchSectionData(true);
+    setShowLoader(true);
+    // setEditedMode(false);
+    // dispatchSectionData(true);
+    const reqBody = [...sectionDataArr].filter((x) => x.qc_change_type !== '');
+    console.log('reqBody', reqBody);
+    if (reqBody.length)
+      dispatch({
+        type: 'UPDATE_SECTION_DATA',
+        payload: { reqBody },
+      });
   };
 
   useEffect(() => {
@@ -289,12 +296,12 @@ function DigitizeAccordion({
         onScroll={(e) => handleEnrichedClick(e)}
         className="section-single-content"
       >
-        {showLoader && (
+        {showLoader ? (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
-        )}
-        {sectionDataArr?.length > 0 &&
+        ) : (
+          sectionDataArr?.length > 0 &&
           (showedit ? (
             <MultilineEdit
               linkId={item.link_id}
@@ -393,7 +400,8 @@ function DigitizeAccordion({
                 );
               })}
             </div>
-          ))}
+          ))
+        )}
       </AccordionDetails>
       <MedicalTerm
         enrichedTarget={enrichedTarget}

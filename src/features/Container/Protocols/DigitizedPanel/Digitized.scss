@@ -7,6 +7,9 @@
   text-align: justify;
   display: flex;
   flex-direction: column;
+  .accordion_details_loader {
+    height: 60vh;
+  }
   .content_container, .readable-content{
     h1, h2, h3, h4, h5, h6{
       font-size: 30px;
