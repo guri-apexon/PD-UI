@@ -52,6 +52,7 @@ function EditableCell({ row, column: { accessor: key } }) {
     return row.isCustom ? (
       <InputKeyField
         keyName={key}
+        inputProps={{ 'data-testid': 'customeform-textField-text' }}
         item={row}
         inputValue={val}
         handleChange={(e) => handleDataChange(e)}
@@ -129,7 +130,6 @@ function MetaDataEditTable({
           accessor: 'confidence',
         },
       ]);
-      // reArrangeColumn();
     } else {
       removeIndex('confidence');
     }
@@ -146,7 +146,6 @@ function MetaDataEditTable({
           customCell: EditableCell,
         },
       ]);
-      // reArrangeColumn();
     } else {
       removeIndex('note');
     }
@@ -245,8 +244,14 @@ function MetaDataEditTable({
       </div>
       <div>{RenderTable}</div>
       <div className="iconDiv">
-        <div className="iconContainer">
-          <Plus data-testid="metadata-add" onClick={() => addNewRow()} />
+        <div
+          className="iconContainer"
+          data-testid="metadata-add"
+          onClick={() => addNewRow()}
+          onKeyDown
+          role="presentation"
+        >
+          <Plus />
         </div>
       </div>
       <div className="modal">
@@ -259,8 +264,8 @@ function MetaDataEditTable({
             { label: 'Cancel' },
             {
               label: 'Delete',
-              onClick: (e) => {
-                removeData(e);
+              onClick: () => {
+                removeData();
                 setIsModal(false);
               },
             },
