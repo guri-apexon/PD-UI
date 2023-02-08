@@ -44,7 +44,7 @@
     "no-plusplus": "off",
     "no-shadow": "off",
     "no-unused-vars": "warn",
-    "no-console": "off",
+    // "no-console": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "camelcase": "warn",
     "no-debugger": "off"

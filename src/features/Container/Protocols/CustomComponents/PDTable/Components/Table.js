@@ -3,11 +3,21 @@ import './table.scss';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import EmptyRowCells from './EmptyRows';
+import FootNotes from './FootNotes/Footnotes';
 
-function DisplayTable({ data, onChange, handleRowOperation, edit, colWidth }) {
+function DisplayTable({
+  data,
+  onChange,
+  handleRowOperation,
+  edit,
+  colWidth,
+  footNoteData,
+  setFootnoteData,
+}) {
   const handleChange = (columnIndex, rowIndex, e) => {
     onChange(e.target.innerHTML, columnIndex, rowIndex);
   };
+
   return (
     <div className="pd-table-inner">
       {data.map((row, rowIndex) => (
@@ -37,6 +47,12 @@ function DisplayTable({ data, onChange, handleRowOperation, edit, colWidth }) {
           </div>
         </div>
       ))}
+      <FootNotes
+        tableProperties={data}
+        edit={edit}
+        footNoteData={footNoteData || []}
+        setFootnoteData={setFootnoteData}
+      />
     </div>
   );
 }
@@ -48,4 +64,6 @@ DisplayTable.propTypes = {
   handleRowOperation: PropTypes.isRequired,
   edit: PropTypes.isRequired,
   colWidth: PropTypes.isRequired,
+  footNoteData: PropTypes.isRequired,
+  setFootnoteData: PropTypes.isRequired,
 };

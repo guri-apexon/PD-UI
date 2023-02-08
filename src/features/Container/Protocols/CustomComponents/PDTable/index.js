@@ -203,6 +203,8 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           handleRowOperation={handleRowOperation}
           edit={lineID === activeLineID}
           colWidth={colWidth}
+          footNoteData={footNoteData}
+          setFootnoteData={setFootnoteData}
         />
       </div>
     </section>
