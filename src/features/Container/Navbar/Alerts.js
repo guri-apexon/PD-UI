@@ -14,22 +14,12 @@ import { navbarNotifications } from './navbarSlice';
 
 import './Alerts.scss';
 import { redaction } from '../../../AppConstant/AppConstant';
+import { createFullMarkupFun } from './utilsNavbar';
 
 const replaceall = require('replaceall');
 
 function createFullMarkup(str) {
-  if (str) {
-    return {
-      __html: replaceall(
-        redaction.text,
-        `<span class="blur">${redaction.text}</span>`,
-        str,
-      ),
-    };
-  }
-  return {
-    __html: str,
-  };
+  createFullMarkupFun(str, replaceall, redaction);
 }
 
 function Alerts() {
@@ -64,9 +54,10 @@ function Alerts() {
     (item) => item.read === false,
   );
   const getDayLabelText = (timestamp) => {
-    return moment().isSame(timestamp, 'day')
-      ? 'Today'
-      : moment().subtract(1, 'day').isSame(timestamp, 'day')
+    if (moment().isSame(timestamp, 'day')) {
+      return 'Today';
+    }
+    return moment().subtract(1, 'day').isSame(timestamp, 'day')
       ? 'Yesterday'
       : moment(timestamp).format('ddd MMM D');
   };

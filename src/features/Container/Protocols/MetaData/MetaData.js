@@ -13,7 +13,14 @@ import {
   metadataApiCallValue,
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
-import { flattenMetaParam } from './utilFunction';
+import {
+  sectionNameFun,
+  metaParamResultFun,
+  accordianResultFun,
+  metaParamResultAndAccordian,
+  apiResponseFun,
+  handleSaveFun,
+} from './utilFunction';
 
 function MetaData() {
   const wrapperRef = useRef(null);
@@ -52,14 +59,14 @@ function MetaData() {
       );
     }
   };
-
+  const docIdConst = '0be44992-9573-4010-962c-de1a1b18b08d';
   const addToAccordion = (name) => {
     const checkName = name === 'summary' ? 'summary_extended' : name;
     dispatch({
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId: docIdConst,
         fieldName: checkName,
         attributes: [],
         reqData: { name, level: 1 },
@@ -106,7 +113,7 @@ function MetaData() {
       type: 'DELETE_METADATA',
       payload: {
         op: opName,
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId: docIdConst,
         fieldName: data.formattedName,
         attributeNames: deletedAttributes,
         reqData: {
@@ -133,7 +140,7 @@ function MetaData() {
     dispatch({
       type: 'ADD_METADATA_ATTRIBUTES',
       payload: {
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId: docIdConst,
         fieldName: data.formattedName === 'summary' ? '' : data.formattedName,
         attributes: updatedAttrList,
         reqData: {
@@ -145,39 +152,14 @@ function MetaData() {
 
   const handleSave = (accData, e) => {
     e.stopPropagation();
-    if (accData.name === 'summary') {
-      const filterCustomData = rows[accData?.name]?.filter(
-        (data) => data?.isCustom,
-      );
-      const filterNonCustomData = rows[accData?.name]?.filter(
-        (data) => !data?.isCustom,
-      );
-      if (filterCustomData?.length > 0) {
-        postCall(
-          {
-            formattedName: 'summary_extended',
-            name: 'summary_extended',
-          },
-          filterCustomData,
-        );
-      }
-      if (deletedAttributes.length > 0) {
-        deleteCall(
-          {
-            formattedName: 'summary_extended',
-            name: 'summary_extended',
-          },
-          'deleteAttribute',
-        );
-      }
-      postCall(accordianData[accData.name], filterNonCustomData);
-    } else {
-      const accMetaData = rows[accData?.name] ? rows[accData?.name] : [];
-      if (deletedAttributes.length > 0) {
-        deleteCall(accordianData[accData.name], 'deleteAttribute');
-      }
-      postCall(accordianData[accData.name], accMetaData);
-    }
+    handleSaveFun(
+      accData,
+      rows,
+      postCall,
+      deletedAttributes,
+      deleteCall,
+      accordianData,
+    );
   };
 
   const handleDelete = (accData, e) => {
@@ -190,7 +172,7 @@ function MetaData() {
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId: docIdConst,
         fieldName: `${accData.formattedName}.${name}`,
         attributes: [],
         reqData: {
@@ -203,47 +185,21 @@ function MetaData() {
     setIsOpenSubText(false);
   };
 
-  const accordianResultFun = (accordianResult) => {
-    if (!isEmpty(accordianResult)) {
-      setAccordianData(accordianResult);
-    }
-  };
-
   useEffect(() => {
-    accordianResultFun(accordianResult);
+    accordianResultFun(accordianResult, setAccordianData);
   }, [accordianResult]);
 
-  const metaParamResultFun = (metaParamResult) => {
-    if (!isEmpty(metaParamResult)) {
-      setMetaParams(metaParamResult);
-    }
-  };
-
   useEffect(() => {
-    metaParamResultFun(metaParamResult);
+    metaParamResultFun(metaParamResult, setMetaParams);
   }, [metaParamResult]);
 
   useEffect(() => {
-    if (!isEmpty(metaParamResult) && !isEmpty(accordianData)) {
-      const updatedParam = {};
-      const result = flattenMetaParam(updatedParam, metaParamResult, 1);
-      let metaList = [];
-      const filterItems = difference(
-        Object.keys(metaParamResult),
-        Object.keys(accordianData),
-      );
-
-      if (filterItems.length > 0) {
-        filterItems.forEach((names) => {
-          if (names !== 'summary_extended') {
-            metaList = [...metaList, { label: names }];
-          }
-        });
-        setSuggestedList(metaList || []);
-      }
-
-      setMetaParams(result);
-    }
+    metaParamResultAndAccordian(
+      metaParamResult,
+      accordianData,
+      setSuggestedList,
+      setMetaParams,
+    );
     // eslint-disable-next-line
   }, [metaParamResult, accordianData]);
 
@@ -252,14 +208,14 @@ function MetaData() {
       type: 'GET_METADATA_VARIABLE',
       payload: {
         op: 'metadata',
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId: docIdConst,
       },
     });
     dispatch({
       type: 'GET_METADATA_VARIABLE',
       payload: {
         op: 'metaparam',
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId: docIdConst,
       },
     });
   };
@@ -270,64 +226,13 @@ function MetaData() {
   }, []);
 
   useEffect(() => {
-    if (apiResponse?.status) {
-      if (apiResponse.op === 'addAttributes') {
-        const selectedData = accordianData[apiResponse.reqData.name];
-        const accMetaData =
-          apiResponse?.reqData?.name === 'summary_extended'
-            ? rows.summary
-            : rows[apiResponse?.reqData?.name];
-        setAccordianData({
-          ...accordianData,
-          [apiResponse.reqData.name]: {
-            ...selectedData,
-            isEdit: false,
-            _meta_data: [...accMetaData],
-          },
-        });
-      } else if (apiResponse.op === 'addField') {
-        if (apiResponse?.reqData?.level === 1) {
-          const obj = {
-            name: apiResponse?.reqData?.name,
-            formattedName: apiResponse?.reqData?.name,
-            isEdit: false,
-            isActive: false,
-            _meta_data: [],
-            level: 1,
-            _childs: [],
-          };
-          setAccordianData({
-            [apiResponse.reqData.name]: obj,
-          });
-        } else {
-          const obj = {
-            name: apiResponse?.reqData?.name,
-            formattedName: `${apiResponse.reqData.accData.formattedName}.${apiResponse.reqData.name}`,
-            isEdit: false,
-            isActive: false,
-            _meta_data: [],
-            level: apiResponse.reqData.accData.level + 1,
-            _childs: [],
-          };
-          const selectedData =
-            accordianData[apiResponse?.reqData?.accData?.name];
-          setAccordianData({
-            ...accordianData,
-            [apiResponse.reqData.accData.name]: {
-              ...selectedData,
-              // eslint-disable-next-line
-              _childs: selectedData?._childs
-                ? // eslint-disable-next-line
-                  [...selectedData._childs, apiResponse.reqData.name]
-                : [apiResponse.reqData.name],
-            },
-            [apiResponse.reqData.name]: obj,
-          });
-        }
-      } else {
-        fetchMetaData();
-      }
-    }
+    apiResponseFun(
+      apiResponse,
+      accordianData,
+      rows,
+      setAccordianData,
+      fetchMetaData,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiResponse]);
 
@@ -363,12 +268,12 @@ function MetaData() {
   };
 
   useEffect(() => {
-    if (sectionName?.label) {
-      addToAccordion(sectionName.label);
-      setSuggestedList(
-        suggestedList.filter((list) => list.label !== sectionName.label),
-      );
-    }
+    sectionNameFun(
+      addToAccordion,
+      sectionName,
+      setSuggestedList,
+      suggestedList,
+    );
     // eslint-disable-next-line
   }, [sectionName]);
 

@@ -8,6 +8,7 @@ import Pencil from 'apollo-react-icons/Pencil';
 import { useProtContext } from '../ProtocolContext';
 import { toBase64 } from '../../../../utils/utilFunction';
 import './ImageUploader.scss';
+import { contentFun, valueFun } from './utilsCustomComFunction';
 
 function ImageUploader({ lineID, content, edit }) {
   const [img, setImg] = useState(null);
@@ -23,10 +24,7 @@ function ImageUploader({ lineID, content, edit }) {
   };
 
   useEffect(() => {
-    setImg(content);
-    if (content !== '') {
-      setIsEdit(false);
-    }
+    contentFun(setImg, content, setIsEdit);
     // eslint-disable-next-line
   }, [content]);
 
@@ -50,9 +48,7 @@ function ImageUploader({ lineID, content, edit }) {
   };
 
   useEffect(() => {
-    if (value.length > 0) {
-      getBase64image(value[0]);
-    }
+    valueFun(value, getBase64image);
     // eslint-disable-next-line
   }, [value]);
 
