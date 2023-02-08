@@ -49,6 +49,7 @@ function NewUser({ setIsOpen }) {
   const [userId, setUserId] = useState(formValue.id);
   const [role, setRole] = useState(formValue.userRole);
 
+  const userMessage = 'Enter valid user id'
   const handleSaveForm = () => {
     const err = cloneDeep(formErrValue);
     if (!formValue.firstName) {
@@ -87,7 +88,7 @@ function NewUser({ setIsOpen }) {
       err.userId.message = 'Required';
     } else if (userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
-      err.userId.message = 'Enter valid user id';
+      err.userId.message = userMessage;
     } else {
       err.userId.error = false;
       err.userId.message = '';
@@ -124,7 +125,7 @@ function NewUser({ setIsOpen }) {
     const err = cloneDeep(formErrValue);
     if (userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
-      err.userId.message = 'Enter valid user id';
+      err.userId.message = userMessage;
     } else if (userId) {
       err.userId.error = false;
       err.userId.message = '';
@@ -141,7 +142,7 @@ function NewUser({ setIsOpen }) {
 
     if (key === 'userId' && userId && !/^[0-9]*$/.test(userId)) {
       err.userId.error = true;
-      err.userId.message = 'Enter valid user id';
+      err.userId.message = userMessage;
     } else if (key === 'email' && trimValue && !emailReg.test(trimValue)) {
       err.email.error = true;
       err.email.message = 'Enter valid email';
