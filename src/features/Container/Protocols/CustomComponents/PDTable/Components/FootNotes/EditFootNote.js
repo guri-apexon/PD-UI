@@ -18,7 +18,6 @@ function EditFootNote({
   };
 
   const sendFooterText = (text, indexValue, id) => {
-    console.log('footnote', sendFooterText);
     const checkIfExist = footNoteData.find(
       (notes, index) => index === indexValue,
     );
@@ -64,7 +63,6 @@ function EditFootNote({
         className="contentEditable"
         html={footerText}
         disabled={!edit}
-        inputProps={{ 'data-testid': 'change-content' }}
         onChange={handleTextChange}
         onBlur={(e) =>
           sendFooterText(
