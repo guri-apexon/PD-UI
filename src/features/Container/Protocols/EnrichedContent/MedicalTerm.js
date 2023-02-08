@@ -63,7 +63,6 @@ function MedicalTerm({
     if (clinicalTermsArr) {
       const object = clinicalTermsArr[enrichedText] || {};
       Object.keys(object).forEach((item) => {
-        console.log(item, object[item]);
         if (item === 'preferred_term') {
           setPreferredTerm(object[item]);
         }
