@@ -139,3 +139,16 @@
   right: 12px;
   bottom: 11px;
 }
+.table-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  right: 12px;
+  bottom: 11px;
+  width: 95%;
+}
+
+.edit-container {
+  margin-top: 10px;
+}

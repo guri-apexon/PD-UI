@@ -18,7 +18,7 @@ function EditFootNote({ content, edit, sendFooterText }) {
         onChange={handleTextChange}
         onBlur={(e) => sendFooterText(e, footerText)}
         tagName="div"
-        data-placeholder
+        data-placeholder="Enter Your Text Here"
         data-testId="contentEdit"
       />
     </div>

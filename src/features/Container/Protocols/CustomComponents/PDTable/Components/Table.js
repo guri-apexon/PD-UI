@@ -48,7 +48,6 @@ function DisplayTable({
         </div>
       ))}
       <FootNotes
-        tableProperties={data}
         edit={edit}
         footNoteData={footNoteData || []}
         setFootnoteData={setFootnoteData}

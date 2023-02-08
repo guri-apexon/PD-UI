@@ -129,6 +129,18 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       }
     }
   };
+
+  const addFootNote = () => {
+    setFootnoteData([
+      ...footNoteData,
+      {
+        Text: 'Enter Your Text Here',
+        TableId: updatedData?.[0]?.['1.0']?.roi_id?.table_roi_id,
+        AttachmentId: '',
+        qc_change_type_footnote: 'add',
+      },
+    ]);
+  };
   const handleSave = () => {
     const content = {
       ...segment.content,
@@ -146,6 +158,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setDisabledBtn(false);
     }, 1000);
   };
+
   return (
     <section className="content-table-wrapper">
       {showconfirm && (
@@ -169,7 +182,16 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         </div>
       )}
       {lineID === activeLineID && (
-        <div className="button-container" data-testId="button-container">
+        <div className="table-button-container" data-testId="button-container">
+          <ButtonGroup
+            buttonProps={[
+              {
+                size: 'small',
+                label: 'Add Footnote',
+                onClick: () => addFootNote(),
+              },
+            ]}
+          />
           <ButtonGroup
             buttonProps={[
               {
