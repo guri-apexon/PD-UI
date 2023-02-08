@@ -7,46 +7,6 @@ import EditFootNote from './EditFootNote';
 function FootNotes({ footNoteData, edit, setFootnoteData }) {
   const [activeLineID, setActiveLineID] = useState('');
 
-  const sendFooterText = (text, indexValue, id) => {
-    const checkIfExist = footNoteData.find(
-      (notes, index) => index === indexValue,
-    );
-    if (checkIfExist.length !== 0 && isEmpty(text)) {
-      if (id) {
-        setFootnoteData((prevState) =>
-          prevState.map((item, i) => {
-            if (i === indexValue) {
-              return {
-                ...item,
-                Text: text,
-                qc_change_type_footnote: 'delete',
-              };
-            }
-            return item;
-          }),
-        );
-      } else {
-        setFootnoteData(
-          footNoteData.filter((notes, index) => index !== indexValue),
-        );
-      }
-    } else {
-      setFootnoteData((prevState) =>
-        prevState.map((item, i) => {
-          if (i === indexValue) {
-            return {
-              ...item,
-              Text: text,
-              AttachmentId: item?.AttachmentId || '',
-              qc_change_type_footnote: item?.AttachmentId ? 'modify' : 'add',
-            };
-          }
-          return item;
-        }),
-      );
-    }
-  };
-
   return (
     <div className="edit-container">
       {/* eslint-disable-next-line */}
@@ -57,17 +17,14 @@ function FootNotes({ footNoteData, edit, setFootnoteData }) {
             <div onClick={() => edit && setActiveLineID(index)}>
               <EditFootNote
                 key={uuidv4()}
+                item={item}
+                index={index}
                 content={item?.Text}
                 edit={edit}
+                footNoteData={footNoteData}
                 lineID={item?.AttachmentId}
                 activeLineID={activeLineID}
-                sendFooterText={(e, val) =>
-                  sendFooterText(
-                    val ? e.target.innerText : '',
-                    index,
-                    item?.AttachmentId,
-                  )
-                }
+                setFootnoteData={setFootnoteData}
                 className="line-content edit-text-con"
               />
             </div>
