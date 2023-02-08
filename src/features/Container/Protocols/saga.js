@@ -213,6 +213,25 @@ export function* fetchAssociateProtocol(action) {
     yield put(getAssociateDocuments([]));
   }
 }
+export function* updateSectionData(action) {
+  const {
+    payload: { reqBody },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
+    method: 'POST',
+    data: {
+      reqBody,
+    },
+  };
+  const sectionSaveRes = yield call(httpCall, config);
+  if (sectionSaveRes.success) {
+    // yield put(updateSection(header));
+  } else {
+    // yield put(getHeaderList({ success: false, data: [] }));
+    toast.error('Something Went Wrong');
+  }
+}
 export function* fetchSectionHeaderList(action) {
   const {
     payload: { docId },
@@ -473,6 +492,7 @@ function* watchProtocolViews() {
   yield takeEvery('SET_TOC_Active', setTOCActive);
   yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
   yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
+  yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
 }
 
 // notice how we now only export the rootSaga

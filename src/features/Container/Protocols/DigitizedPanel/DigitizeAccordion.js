@@ -164,8 +164,7 @@ function DigitizeAccordion({
         selectedSection: null,
         sectionContent: null,
       });
-    }
-    if (item && sectionDataArr) {
+    } else if (item && sectionDataArr) {
       dispatchSectionEvent('ON_SECTION_SELECT', {
         selectedSection: item,
         sectionContent: sectionDataArr,
@@ -190,8 +189,8 @@ function DigitizeAccordion({
     }
   };
 
-  const refreshContent = () => {
-    console.log('refreshContent');
+  const handleSaveContent = () => {
+    console.log('handleSaveContent');
     setEditedMode(false);
     dispatchSectionData(true);
   };
@@ -219,8 +218,7 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-        if (editedMode && !sectionDataArr?.length)
-          dispatchSectionData(updatedSectionsData);
+        if (editedMode && !sectionDataArr?.length) dispatchSectionData(true);
 
         setSectionDataArr(updatedSectionsData);
       }
@@ -278,7 +276,7 @@ function DigitizeAccordion({
                 ) : (
                   // eslint-disable-next-line
                   <span data-testId="saveIcon" onClick={onSaveClick}>
-                    <Save onClick={() => refreshContent()} />
+                    <Save onClick={() => handleSaveContent()} />
                   </span>
                 )}
               </>

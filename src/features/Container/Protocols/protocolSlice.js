@@ -86,7 +86,6 @@ export const protocolSlice = createSlice({
       const { actionType, data, content, lineId, linkId } = action.payload;
 
       if (actionType === 'REPLACE_CONTENT' && data && linkId) {
-        console.log('REPLACE_CONTENT UPDATED');
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
         );
