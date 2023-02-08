@@ -8,6 +8,7 @@ import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { protocolSummary, getPdfData } from '../protocolSlice';
+import { panelHandle } from './utilsPdfviewer';
 import './PdfViewer.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -33,17 +34,9 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     setPageScale(scale);
   }
 
-  const panelHandle = (e) => {
-    const { className } = e.target;
-    if (
-      className.toString().includes('Panel-handle') ||
-      className.toString().includes('Panel-handleContainer')
-    )
-      document.addEventListener('mousemove', changeScale, false);
-  };
   const addMouseMove = (e) => {
     if (e) {
-      panelHandle(e);
+      panelHandle(e, changeScale);
     }
   };
 
