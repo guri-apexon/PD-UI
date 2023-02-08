@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
+import { useProtContext } from '../../ProtocolContext';
 
 const headerList = [
-  { id: 2, name: 'H2' },
-  { id: 3, name: 'H3' },
-  { id: 4, name: 'H4' },
-  { id: 5, name: 'H5' },
-  { id: 6, name: 'H6' },
+  { level: 2, name: 'H2' },
+  { level: 3, name: 'H3' },
+  { level: 4, name: 'H4' },
+  { level: 5, name: 'H5' },
+  { level: 6, name: 'H6' },
 ];
 const classNames = {
   active: 'dropdown-content active-show-list',
@@ -20,14 +21,20 @@ function Dropdown({
   onHeaderSelect,
   type,
   disabled,
+  activeLineID,
 }) {
   const [showList, setShowList] = useState(false);
+  const { dispatchSectionEvent } = useProtContext();
   const showMenu = () => {
     setShowList(!showList);
   };
-  const formatHeading = (e, name) => {
+  const formatHeading = (e, name, level) => {
     e.preventDefault();
     setShowList(false);
+    dispatchSectionEvent('LINK_LEVEL_UPDATE', {
+      level,
+      currentLineId: activeLineID,
+    });
     document.execCommand('formatBlock', false, name);
   };
   return (
@@ -54,7 +61,7 @@ function Dropdown({
                 // eslint-disable-next-line
                 <li
                   key={React.key}
-                  onMouseDown={(e) => formatHeading(e, item.name)}
+                  onMouseDown={(e) => formatHeading(e, item.name, item.level)}
                 >
                   {item.name}
                 </li>
@@ -85,4 +92,5 @@ Dropdown.propTypes = {
   onHeaderSelect: PropTypes.isRequired,
   type: PropTypes.isRequired,
   disabled: PropTypes.isRequired,
+  activeLineID: PropTypes.isRequired,
 };
