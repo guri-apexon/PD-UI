@@ -79,17 +79,6 @@ function Digitize({
   }, [BladeRightValue]);
 
   useEffect(() => {
-    dispatch({
-      type: 'GET_PROTOCOL_SECTION',
-      payload: {
-        docId: data.id,
-        tocFlag: 0,
-      },
-    });
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     let sectionNo;
     let lastpage;
     const listLength = headerList.length - 1;

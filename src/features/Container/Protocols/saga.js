@@ -17,7 +17,6 @@ import {
   getCompare,
   getHeaderList,
   getProtocolTocData,
-  setSectionLoader,
   getFileStream,
   getRightBladeValue,
   getTOCActive,
@@ -327,60 +326,48 @@ export function* getProtocolTocDataResult(action) {
   };
 
   const header = yield call(httpCall, config);
-
   const headerList = cloneDeep(header.data);
-  console.log('headerdata bEfore', headerList);
   for (let i = 0; i < headerList.length; i++) {
-    console.log('head');
-    if (headerList[i]?.qc_change_type === '') {
-      delete headerList[i]?.qc_change_type;
-      console.log('headerdata Loop', headerList[i]);
+    if (headerList[i]?.childlevel) {
+      delete headerList[i]?.childlevel;
     }
   }
-  console.log('headerdata after', headerList);
-  console.log('Header', header.data);
+
   if (header.success) {
-    if (action.payload.tocFlag === 1) {
-      if (header?.data?.status === 204) {
-        header.data = [];
-      }
-      const tocIsactive = [];
-      for (let i = 0; i < header.data.length; i++) {
-        tocIsactive.push(false);
-      }
-      yield put(getTOCActive(tocIsactive));
-      yield put(getProtocolTocData(header));
-    } else {
-      yield put(
-        getHeaderList({
-          success: false,
-          data: headerList,
-        }),
-      );
+    if (header?.data?.status === 204) {
+      header.data = [];
     }
+    const tocIsactive = [];
+    for (let i = 0; i < header.data.length; i++) {
+      tocIsactive.push(false);
+    }
+    yield put(getTOCActive(tocIsactive));
+    yield put(getProtocolTocData(header));
+    yield put(
+      getHeaderList({
+        success: true,
+        data: headerList,
+      }),
+    );
   } else {
-    // eslint-disable-next-line no-lonely-if
-    if (!action.payload.tocFlag) {
-      yield put(
-        getProtocolTocData({
-          success: false,
-          data: [],
-          errorMsg:
-            header?.err?.data?.message ||
-            'This document is not available in our database',
-        }),
-      );
-    } else {
-      yield put(
-        getHeaderList({
-          success: false,
-          data: [],
-          errorMsg:
-            header?.err?.data?.message ||
-            'This document is not available in our database',
-        }),
-      );
-    }
+    yield put(
+      getHeaderList({
+        success: false,
+        data: [],
+        errorMsg:
+          header?.err?.data?.message ||
+          'This document is not available in our database',
+      }),
+    );
+    yield put(
+      getProtocolTocData({
+        success: false,
+        data: [],
+        errorMsg:
+          header?.err?.data?.message ||
+          'This document is not available in our database',
+      }),
+    );
   }
 }
 
