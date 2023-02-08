@@ -8,7 +8,7 @@ import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { protocolSummary, getPdfData } from '../protocolSlice';
-import { panelHandle } from './utilsPdfviewer';
+import { addMouseMove, pageFun } from './utilsPdfviewer';
 import './PdfViewer.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -34,11 +34,7 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     setPageScale(scale);
   }
 
-  const addMouseMove = (e) => {
-    if (e) {
-      panelHandle(e, changeScale);
-    }
-  };
+  addMouseMove(changeScale);
 
   const removeMouseMove = () => {
     document.removeEventListener('mousemove', changeScale, false);
@@ -56,14 +52,8 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     // eslint-disable-next-line
   }, []);
 
-  const pageFun = (page) => {
-    if (page) {
-      setPage(page - 1);
-    }
-  };
-
   useEffect(() => {
-    pageFun(page);
+    pageFun(page, setPage);
   }, [page]);
 
   const currentPageFun = (currentPage) => {
