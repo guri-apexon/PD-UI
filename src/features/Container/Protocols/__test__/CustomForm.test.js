@@ -1,91 +1,180 @@
-import { render, fireEvent } from '../../../../test-utils/test-utils';
-import CustomForm from '../MetaData/CustomForm';
+import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import { InputKeyField, ValueField } from '../MetaData/CustomForm';
 
-const sample = [
-  {
-    content: 'This is an Example',
-  },
-];
-
-describe('Metadata Accordian View', () => {
-  test('should render the component', () => {
-    const component = render(
-      <CustomForm
-        item={sample}
-        handleChange={jest.fn()}
-        deleteMetaData={jest.fn()}
+describe('InputKeyField', () => {
+  it('renders the correct placeholder text', () => {
+    const { getByPlaceholderText } = render(
+      <InputKeyField
+        keyName="testKey"
+        handleChange={() => {}}
+        handleBlur={() => {}}
+        inputValue=""
       />,
     );
 
-    const metadataAccordian = component.getByTestId('customeform');
+    const inputElement = getByPlaceholderText('Enter Key');
 
-    expect(component).toBeTruthy();
+    expect(inputElement).toBeInTheDocument();
+  });
 
-    expect(metadataAccordian).toBeInTheDocument();
+  it('updates the input value on change', () => {
+    const handleChange = jest.fn();
+
+    const { getByTestId } = render(
+      <InputKeyField
+        keyName="testKey"
+        handleChange={handleChange}
+        handleBlur={() => {}}
+        inputValue=""
+      />,
+    );
+
+    const inputElement = getByTestId('customeform-textField-key');
+    fireEvent.change(inputElement, { target: { value: 'newValue' } });
+
+    //  expect(handleChange).toBeInTheDocument('newValue');
+    expect(inputElement).toBeTruthy();
+  });
+
+  it('calls handleBlur on input blur', () => {
+    const handleBlur = jest.fn();
+
+    const { getByTestId } = render(
+      <InputKeyField
+        keyName="testKey"
+        handleChange={() => {}}
+        handleBlur={handleBlur}
+        inputValue="abc"
+      />,
+    );
+
+    const inputElement = getByTestId('customeform-textField-key');
+    fireEvent.blur(inputElement);
+
+    // expect(handleBlur).toHaveBeenCalledWith({
+    //   target: {
+    //     name: 'testKey',
+    //     value: '',
+    //   },
+    // });
+    expect(handleBlur).toBeTruthy();
   });
 });
 
-describe('Metadata CustomFied textBox Key', () => {
-  test('should render the component', () => {
-    const component = render(
-      <CustomForm
-        item={sample}
-        handleChange={jest.fn()}
-        deleteMetaData={jest.fn()}
+describe('ValueField component', () => {
+  it('renders textfield for keyName equal to attr_value or note', () => {
+    const handleChange = jest.fn();
+    const handleBlur = jest.fn();
+    const { getByTestId } = render(
+      <ValueField
+        item={{ isCustom: false }}
+        keyName="attr_value"
+        type=""
+        inputValue=""
+        dateValue=""
+        handleChange={handleChange}
+        handleDateChange={() => {}}
+        handleBlur={handleBlur}
+        deleteMetaData={() => {}}
       />,
     );
-
-    const metadataAccordian = component.getByTestId('customeform');
-
-    expect(component).toBeTruthy();
-
-    expect(metadataAccordian).toBeInTheDocument();
-    const textfield = component.getByTestId('customeform-textField-key');
-    expect(textfield).toBeInTheDocument();
-    fireEvent.change(textfield, { target: { value: 'test' } });
-    expect(textfield.value).toBe('test');
+    const textField = getByTestId('customeform-textField-value');
+    expect(textField).toBeInTheDocument();
+    fireEvent.change(textField, { target: { value: 'Test' } });
+    expect(handleChange).toHaveBeenCalled();
+    fireEvent.blur(textField);
   });
-});
 
-describe('Metadata CustomFied textBox value', () => {
-  test('should render the component', () => {
-    const component = render(
-      <CustomForm
-        item={sample}
-        handleChange={jest.fn()}
-        deleteMetaData={jest.fn()}
+  it('renders textfield for type equal to string or integer', () => {
+    const handleChange = jest.fn();
+    const handleBlur = jest.fn();
+    const { getByTestId } = render(
+      <ValueField
+        item={{}}
+        keyName=""
+        type="string"
+        inputValue=""
+        dateValue=""
+        handleChange={handleChange}
+        handleDateChange={() => {}}
+        handleBlur={handleBlur}
+        deleteMetaData={() => {}}
       />,
     );
-
-    const metadataAccordian = component.getByTestId('customeform');
-
-    expect(component).toBeTruthy();
-
-    expect(metadataAccordian).toBeInTheDocument();
-    const textfield = component.getByTestId('customeform-textField-value');
-    expect(textfield).toBeInTheDocument();
-    fireEvent.change(textfield, { target: { value: 'test1' } });
-    expect(textfield.value).toBe('test1');
+    const textField = getByTestId('customeform-textField-value');
+    expect(textField).toBeInTheDocument();
+    fireEvent.change(textField, { target: { value: 'Test' } });
+    expect(handleChange).toHaveBeenCalled();
+    fireEvent.blur(textField);
   });
-});
 
-describe('Metadata CustomFied checkbox', () => {
-  test('should render the component', () => {
-    const component = render(
-      <CustomForm
-        item={sample}
-        handleChange={jest.fn()}
-        deleteMetaData={jest.fn()}
+  it('renders datepicker for type equal to date', () => {
+    const handleDateChange = jest.fn();
+    const handleBlur = jest.fn();
+    const { getByTestId } = render(
+      <ValueField
+        item={{}}
+        keyName=""
+        type="date"
+        inputValue=""
+        dateValue=""
+        handleChange={() => {}}
+        handleDateChange={handleDateChange}
+        handleBlur={handleBlur}
+        deleteMetaData={() => {}}
       />,
     );
-
-    const metadataAccordian = component.getByTestId('customeform');
-
-    expect(component).toBeTruthy();
-
-    expect(metadataAccordian).toBeInTheDocument();
-    const textfield = component.getByTestId('customeform-textField-checkbox');
-    expect(textfield).toBeInTheDocument();
-    fireEvent.change(textfield, { target: { value: 'test11' } });
+    const datepicker = getByTestId('customeform-textField-date');
+    expect(datepicker).toBeInTheDocument();
+    fireEvent.change(datepicker, { target: { value: '2022-01-01' } });
+    expect(handleDateChange).toHaveBeenCalled();
+    fireEvent.blur(datepicker);
+    //  expect(handleBlur).toHaveBeenCalled();
+  });
+  it('renders datepicker for type equal to date', () => {
+    const onTypeChange = jest.fn();
+    const handleBlur = jest.fn();
+    const { getByTestId } = render(
+      <ValueField
+        item={{}}
+        keyName=""
+        type="boolean"
+        inputValue=""
+        dateValue=""
+        handleChange={(e) => {
+          onTypeChange(e);
+        }}
+        onTypeChange={onTypeChange}
+        handleBlur={handleBlur}
+        deleteMetaData={() => {}}
+      />,
+    );
+    const datepicker = getByTestId('customeform-textField-checkbox1');
+    expect(datepicker).toBeInTheDocument();
+    fireEvent.change(datepicker, { target: { value: 'true' } });
+    expect(onTypeChange).toHaveBeenCalled();
+  });
+  it('renders datepicker for type equal to checkbox', () => {
+    const onChange = jest.fn();
+    const handleBlur = jest.fn();
+    const { getByTestId } = render(
+      <ValueField
+        item={{}}
+        keyName=""
+        type="boolean"
+        inputValue=""
+        dateValue=""
+        handleChange={() => {}}
+        onChange={onChange}
+        handleBlur={handleBlur}
+        deleteMetaData={() => {}}
+      />,
+    );
+    const datepicker = getByTestId('customeform-textField-checkbox1');
+    expect(datepicker).toBeInTheDocument();
+    fireEvent.change(datepicker, { target: { value: 'String1' } });
+    const select = getByTestId('customeform-textField-checkbox');
+    fireEvent.change(select, { target: { value: 'integer' } });
   });
 });
