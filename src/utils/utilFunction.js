@@ -261,6 +261,7 @@ export const prepareContent = ({
   currentLineId,
   contentType,
   content,
+  level,
 }) => {
   const clonedSection = cloneDeep(sectionContent);
   let newObj = {};
@@ -294,6 +295,18 @@ export const prepareContent = ({
     case 'DELETE':
       if (clonedSection && currentLineId) {
         return clonedSection.filter((x) => x.line_id !== currentLineId);
+      }
+      break;
+    case 'LINK_LEVEL_UPDATE':
+      if (clonedSection && currentLineId && level) {
+        return clonedSection.map((x) => {
+          if (x.line_id === currentLineId) {
+            if (x.type === CONTENT_TYPE.HEADER) {
+              x.linkLevel = level;
+            }
+          }
+          return x;
+        });
       }
       break;
     default:

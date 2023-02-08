@@ -37,6 +37,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
         document.execCommand('insertUnorderedList');
         break;
       case 'removeFormat':
+        document.execCommand('formatBlock', false, 'p'); // To revert from H tag
         document.execCommand('removeFormat', false, 'p');
         break;
       default:
@@ -63,6 +64,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
         headerStyle={{ fontWeight: 'bold' }}
         onHeaderSelect={onHeaderSelect}
         type="header"
+        activeLineID={activeLineID}
       />
 
       <button
