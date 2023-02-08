@@ -161,7 +161,7 @@ function CustomDropdown({
           {list && list.length > 0 ? (
             list.map((item, index) => (
               <p
-                key={index}
+                key={item}
                 className="custom-list-item"
                 onClick={(e) => onListItemClick(e, item)}
                 data-testid={`custom-dropdown-list-exist-${index}`}

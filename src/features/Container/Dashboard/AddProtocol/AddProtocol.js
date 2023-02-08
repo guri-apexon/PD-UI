@@ -152,9 +152,47 @@ function AddProtocol() {
     }
   };
 
-  const onFieldBlur = (fieldName, e, fieldType) => {
+  const onFieldBlurDropdown = (fieldName, e, fieldType) => {
     const temp = cloneDeep(formErrorValues);
     const temp2 = cloneDeep(valueTemp);
+    if (fieldType === 'Dropdown') {
+      if (!dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
+        if (fieldName === 'amendmentNumber') {
+          temp.versionNumber.error = false;
+          temp.versionNumber.errorMessage = ' ';
+        }
+        temp[fieldName].error = true;
+        temp[fieldName].errorMessage = 'Required';
+        if (temp2[fieldName].label && temp2[fieldName].label.length > 0) {
+          temp[fieldName].error = false;
+          temp[fieldName].errorMessage = ' ';
+        }
+      } else {
+        temp[fieldName].error = false;
+        temp[fieldName].errorMessage = ' ';
+      }
+      dropdownFocus = '';
+      setFormErrorValues(temp);
+    }
+  };
+
+  const onFieldBlurCustomDropdown = (fieldName, e, fieldType) => {
+    const temp = cloneDeep(formErrorValues);
+    if (fieldType === 'CustomDropdown') {
+      if (!e.length > 0 && formErrorValues[fieldName].isRequired) {
+        temp[fieldName].error = true;
+        temp[fieldName].errorMessage = 'Select or Add';
+      } else {
+        temp[fieldName].error = false;
+        temp[fieldName].errorMessage = ' ';
+      }
+      dropdownFocus = '';
+      setFormErrorValues(temp);
+    }
+  };
+
+  const onFieldBlur = (fieldName, e, fieldType) => {
+    const temp = cloneDeep(formErrorValues);
     if (fieldType === 'Textbox') {
       if (
         !e.target.value.trim().length > 0 &&
@@ -183,36 +221,8 @@ function AddProtocol() {
       }
       setFormErrorValues(temp);
     }
-    if (fieldType === 'Dropdown') {
-      if (!dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
-        if (fieldName === 'amendmentNumber') {
-          temp.versionNumber.error = false;
-          temp.versionNumber.errorMessage = ' ';
-        }
-        temp[fieldName].error = true;
-        temp[fieldName].errorMessage = 'Required';
-        if (temp2[fieldName].label && temp2[fieldName].label.length > 0) {
-          temp[fieldName].error = false;
-          temp[fieldName].errorMessage = ' ';
-        }
-      } else {
-        temp[fieldName].error = false;
-        temp[fieldName].errorMessage = ' ';
-      }
-      dropdownFocus = '';
-      setFormErrorValues(temp);
-    }
-    if (fieldType === 'CustomDropdown') {
-      if (!e.length > 0 && formErrorValues[fieldName].isRequired) {
-        temp[fieldName].error = true;
-        temp[fieldName].errorMessage = 'Select or Add';
-      } else {
-        temp[fieldName].error = false;
-        temp[fieldName].errorMessage = ' ';
-      }
-      dropdownFocus = '';
-      setFormErrorValues(temp);
-    }
+    onFieldBlurDropdown(fieldName, e, fieldType);
+    onFieldBlurCustomDropdown(fieldName, e, fieldType);
   };
   const handleFileUploadError = (msg, err, fieldName) => {
     const tempError = cloneDeep(formErrorValues);
@@ -341,7 +351,7 @@ function AddProtocol() {
     return (
       <ul className="version-validation">
         {arr.map((item) => (
-          <li>{item}</li>
+          <li key={item}>{item}</li>
         ))}
       </ul>
     );
