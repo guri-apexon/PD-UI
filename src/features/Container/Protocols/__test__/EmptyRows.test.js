@@ -15,5 +15,8 @@ describe('EmptyRowCells component', () => {
     fireEvent.click(icon);
     const tableOperation = getByTestId('Table Operation');
     fireEvent.click(tableOperation);
+    const metaicon =
+      getByTestId('Table Operation').getElementsByClassName('pd-more-icon')[0];
+    fireEvent.click(metaicon);
   });
 });

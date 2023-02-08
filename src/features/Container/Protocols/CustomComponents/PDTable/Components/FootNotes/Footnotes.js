@@ -8,7 +8,7 @@ function FootNotes({ footNoteData, edit, setFootnoteData }) {
   const [activeLineID, setActiveLineID] = useState('');
 
   return (
-    <div className="edit-container">
+    <div className="edit-container" data-testId="footnote">
       {/* eslint-disable-next-line */}
       {footNoteData?.map((item, index) => {
         if (item?.qc_change_type_footnote !== 'delete') {
