@@ -39,7 +39,7 @@ function MedicalTerm({
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
-  }, clinicalTermsArray);
+  }, [clinicalTermsArray]);
 
   useEffect(() => {
     if (apiFlagselector && clinicalTermsArr) {
@@ -61,25 +61,22 @@ function MedicalTerm({
 
   const restructingObject = () => {
     if (clinicalTermsArr) {
-      const object = Object.keys(clinicalTermsArr[enrichedText] || {});
-      for (let i = 0; i < object.length; i++) {
-        if (
-          Object?.keys(clinicalTermsArr[enrichedText])[i] === 'preferred_term'
-        ) {
-          setPreferredTerm(Object?.values(clinicalTermsArr[enrichedText])[i]);
+      const object = clinicalTermsArr[enrichedText] || {};
+      Object.keys(object).forEach((item) => {
+        console.log(item, object[item]);
+        if (item === 'preferred_term') {
+          setPreferredTerm(object[item]);
         }
-        if (Object?.keys(clinicalTermsArr[enrichedText])[i] === 'synonyms') {
-          setSynonyms(Object?.values(clinicalTermsArr[enrichedText])[i]);
+        if (item === 'synonyms') {
+          setSynonyms(object[item]);
         }
-        if (
-          Object?.keys(clinicalTermsArr[enrichedText])[i] === 'classification'
-        ) {
-          setClassification(Object?.values(clinicalTermsArr[enrichedText])[i]);
+        if (item === 'classification') {
+          setClassification(object[item]);
         }
-        if (Object?.keys(clinicalTermsArr[enrichedText])[i] === 'ontology') {
-          setOntologyTemp(Object?.values(clinicalTermsArr[enrichedText])[i]);
+        if (item === 'ontology') {
+          setOntologyTemp(object[item]);
         }
-      }
+      });
     }
   };
 
