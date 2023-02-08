@@ -1,5 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
-import EmptyColumnCells from '../CustomComponents/PDTable/Components/EmptyColumns';
+import EmptyColumnCells from '../CustomComponents/PDTable/Components/EmptyColumnCells';
 
 describe('EmptyColumnCells', () => {
   const mockHandleOperation = jest.fn();

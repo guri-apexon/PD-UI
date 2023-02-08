@@ -1,5 +1,6 @@
 import { render, fireEvent } from '../../../../../test-utils/test-utils';
-import EditContent from '../EditContent';
+import ContentEdit from '../ContentEdit';
+
 import * as ProtocolContext from '../../ProtocolContext'; // note we're importing with a * to import all the exports
 
 describe('DigitizedEdit', () => {
@@ -9,7 +10,7 @@ describe('DigitizedEdit', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <EditContent
+      <ContentEdit
         type="text"
         lineID="6c0cf0d6-7d72-4199-ad8f-bc66b92cab12"
         content="test content"
@@ -27,7 +28,7 @@ describe('DigitizedEdit', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <EditContent
+      <ContentEdit
         type="text"
         lineID="6c0cf0d6-7d72-4199-ad8f-bc66b92cab12"
         content="test content"
@@ -46,7 +47,7 @@ describe('DigitizedEdit', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <EditContent
+      <ContentEdit
         type="text"
         lineID="6c0cf0d6-7d72-4199-ad8f-bc66b92cab12"
         content={null}
@@ -70,7 +71,7 @@ describe('DigitizedEdit', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <EditContent
+      <ContentEdit
         type="text"
         lineID="6c0cf0d6-7d72-4199-ad8f-bc66b92cab12"
         content=""

@@ -1,7 +1,6 @@
 import { isObject } from 'lodash';
 
-const updatedData = {};
-export const flattenObject = (data, level, parentKey) => {
+export const flattenObject = (updatedData, data, level, parentKey) => {
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys?.forEach((key) => {
     const keyValue = data?.[key];
@@ -28,6 +27,7 @@ export const flattenObject = (data, level, parentKey) => {
       // eslint-disable-next-line
       if (keyValue?._childs && keyValue?._childs.length > 0) {
         flattenObject(
+          updatedData,
           keyValue,
           level + 1,
           level === 1 ? key : updatedData[key]?.formattedName,
@@ -58,6 +58,12 @@ export const mergeSummary = (data) => {
           ...finalResult.summary,
           // eslint-disable-next-line
           _meta_data: [...finalResult.summary._meta_data, ...updateMetaData],
+          _childs: [
+            // eslint-disable-next-line
+            ...finalResult.summary._childs,
+            // eslint-disable-next-line
+            ...finalResult.summary_extended._childs,
+          ],
         },
       };
       delete finalResult.summary_extended;
@@ -66,8 +72,7 @@ export const mergeSummary = (data) => {
   return finalResult;
 };
 
-const updatedParam = {};
-export const flattenMetaParam = (data, level) => {
+export const flattenMetaParam = (updatedParam, data, level) => {
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys?.forEach((key) => {
     const keyValue = data?.[key];
@@ -83,7 +88,7 @@ export const flattenMetaParam = (data, level) => {
               Object?.keys(keyValue).length > 0 ? Object?.keys(keyValue) : [],
           };
       if (Object?.keys(keyValue).length > 0) {
-        flattenMetaParam(keyValue, level + 1);
+        flattenMetaParam(updatedParam, keyValue, level + 1);
       }
     }
   });

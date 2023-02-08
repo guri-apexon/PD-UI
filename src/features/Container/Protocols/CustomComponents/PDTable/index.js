@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
-import EmptyColumnCells from './Components/EmptyColumns';
+import EmptyColumnCells from './Components/EmptyColumnCells';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
 import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
