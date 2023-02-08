@@ -27,13 +27,16 @@ function Protocols({ location }) {
   const [idPresent, setIdPresent] = useState(false);
   const [pdfArray] = useState([]);
 
-  useEffect(() => {
+  const conditionBlock = () => {
     const params = location.search;
     const parsed = queryString.parse(params);
-
     if ('tab' in parsed) {
       setValue(parseInt(parsed.tab, 10));
     }
+  };
+
+  useEffect(() => {
+    conditionBlock();
     const viewData = {
       iqvdataSoa: [],
       iqvdataSummary: {},
@@ -43,7 +46,6 @@ function Protocols({ location }) {
       loader: true,
     };
     getProcotoclToc(viewData);
-    // setSectionIndex(new Array(Records.length));
     /* eslint-disable */
   }, []);
   /* eslint-enable */

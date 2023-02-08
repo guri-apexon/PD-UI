@@ -203,15 +203,24 @@ function MetaData() {
     setIsOpenSubText(false);
   };
 
-  useEffect(() => {
+  const accordianResultFun = (accordianResult) => {
     if (!isEmpty(accordianResult)) {
       setAccordianData(accordianResult);
     }
-  }, [accordianResult]);
+  };
+
   useEffect(() => {
+    accordianResultFun(accordianResult);
+  }, [accordianResult]);
+
+  const metaParamResultFun = (metaParamResult) => {
     if (!isEmpty(metaParamResult)) {
       setMetaParams(metaParamResult);
     }
+  };
+
+  useEffect(() => {
+    metaParamResultFun(metaParamResult);
   }, [metaParamResult]);
 
   useEffect(() => {

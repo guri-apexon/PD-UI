@@ -17,13 +17,6 @@
     padding: 0;
     // height: 100% !important;
   }
-  .protocol-column {
-    flex: 3 1;
-    display: flex;
-    flex-direction: column;
-    height: 50%;
-    // width: 50%;
-  }
 
   .metadata_item [class*='MuiAccordionSummary-root'] {
     background: #e9e9e9;
@@ -75,6 +68,7 @@
   .metadata_item [class*='MuiAccordionSummary-root'].Mui-expanded {
     background: transparent !important;
   }
+
   .protocol-column {
     flex: 3 1;
     display: flex;
@@ -138,10 +132,7 @@
   .metaData-boarder {
     border: 1px solid rgba(0, 0, 0, 0.08);
   }
-  .view-wrapper .MuiCard-root {
-    padding-right: 25px !important;
-    height: 100% !important;
-  }
+
   [class*='Table-scrollRoot-'] {
     width: 100% !important;
   }
