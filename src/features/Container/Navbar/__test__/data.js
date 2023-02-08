@@ -46,7 +46,7 @@ export const initialState = {
           aidocId: 'ccca752d-840b-429b-b53a-42262cf212bb',
           read: false,
           details:
-            'A Multicentre, Randomised, Double-blind, Parallel Group, Placebocontrolled, Phase 3 Efficacy and Safety Study of Benralizumab (MEDI-563) Added to Medium to High-dose Inhaled Corticosteroid Plus Long-acting ß2 Agonist in Patients with Uncontrolled Asthma',
+            'A Multicentre, Randomised, Double-blind, Parallel Group, Placebocontrolled',
           timestamp: '2021-06-24T07:50:04.747000',
         },
         {
@@ -56,7 +56,7 @@ export const initialState = {
           aidocId: 'ea39f739-a1a0-4994-a98b-08c298b662fd',
           read: false,
           details:
-            'PHASE 3, RANDOMIZED, OPEN-LABEL, ACTIVE-CONTROLLED STUDY EVALUATING THE EFFICACY AND SAFETY OF ORAL VADADUSTAT FOR THE CORRECTION OF ANEMIA IN SUBJECTS WITH NON-DIALYSIS-DEPENDENT CHRONIC KIDNEY DISEASE (NDD-CKD) (PRO2TECT - CORRECTION)',
+            'PHASE 3, RANDOMIZED, OPEN-LABEL',
           timestamp: '2021-06-24T11:22:10.017000',
         },
       ],
