@@ -6,6 +6,7 @@ import {
   takeLatest,
   select,
 } from 'redux-saga/effects';
+
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 
@@ -20,12 +21,15 @@ import {
   setSectionLoader,
   getFileStream,
   getRightBladeValue,
-  getMetaDataVariable,
   getTOCActive,
+  setAccordianMetaData,
+  setAccordianMetaParam,
+  getMetadataApiCall,
   getEnrichedValue,
 } from './protocolSlice';
-import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
+import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
+import { flattenObject, mergeSummary } from './MetaData/utilFunction';
 
 function* getUserId() {
   const state = yield select();
@@ -258,8 +262,6 @@ export function* getSectionList(action) {
     );
   } else if (sectionDetails.message === 'No Access') {
     console.log('No Access');
-  } else {
-    console.log('Error while loading');
   }
 }
 
@@ -401,18 +403,143 @@ export function* fetchFileStream(action) {
   }
 }
 
-export function* MetaDataVariable() {
+export function* MetaDataVariable(action) {
+  const {
+    payload: { op, docId },
+  } = action;
   const config = {
-    url: '/mockMetaData.json',
+    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
     method: 'GET',
   };
-
   const MetaData = yield call(httpCall, config);
-
   if (MetaData.success) {
-    yield put(getMetaDataVariable(MetaData));
+    if (op === 'metadata') {
+      const updatedData = {};
+      const result = flattenObject(updatedData, MetaData?.data?.data, 1, '');
+      const updateResultForSummary = mergeSummary(result);
+      yield put(setAccordianMetaData(updateResultForSummary));
+    } else {
+      yield put(setAccordianMetaParam(MetaData?.data?.data));
+    }
+  } else if (op === 'metadata') {
+    yield put(setAccordianMetaData({}));
   } else {
-    yield put(getMetaDataVariable({ success: false, data: [] }));
+    yield put(setAccordianMetaParam({}));
+  }
+}
+
+export function* addMetaDataAttributes(action) {
+  const {
+    payload: { reqData, docId, fieldName, attributes },
+  } = action;
+  const config = {
+    url: `${BASE_URL}${Apis.METADATA}/add_update_meta_data`,
+    method: 'POST',
+    data: {
+      aidocId: docId,
+      fieldName,
+      attributes,
+    },
+  };
+  const MetaData = yield call(httpCall, config);
+  if (MetaData?.data?.isAdded) {
+    toast.info('Protocol Attributes Updated Successfully');
+    yield put(
+      getMetadataApiCall({
+        status: true,
+        reqData,
+        op: 'addAttributes',
+      }),
+    );
+  } else {
+    toast.error('Duplicate Attributes');
+    yield put(
+      getMetadataApiCall({
+        status: false,
+        reqData,
+        op: 'addAttributes',
+      }),
+    );
+  }
+}
+
+export function* addMetaDataField(action) {
+  const {
+    payload: { op, docId, fieldName, attributes, reqData },
+  } = action;
+  const config = {
+    url: `${BASE_URL}${Apis.METADATA}/add_meta_data`,
+    method: 'PUT',
+    data: {
+      op,
+      aidocId: docId,
+      fieldName,
+      attributes,
+    },
+  };
+  const MetaData = yield call(httpCall, config);
+  if (MetaData?.data?.isAdded) {
+    toast.info(`${reqData.name} added successfully`);
+    yield put(
+      getMetadataApiCall({
+        status: true,
+        reqData,
+        op,
+      }),
+    );
+  } else {
+    toast.error(`${reqData.name} already added`);
+    yield put(
+      getMetadataApiCall({
+        status: false,
+        reqData,
+        op,
+      }),
+    );
+  }
+}
+
+export function* deleteAttribute(action) {
+  const {
+    payload: { op, docId, fieldName, attributeNames, reqData },
+  } = action;
+  const config = {
+    url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
+    method: 'DELETE',
+    data: {
+      op,
+      aidocId: docId,
+      fieldName,
+      attributeNames,
+    },
+  };
+  const data = yield call(httpCall, config);
+  if (data?.data?.isDeleted) {
+    if (op === 'deleteField') {
+      yield put(
+        getMetadataApiCall({
+          status: true,
+          reqData,
+          op,
+        }),
+      );
+      toast.info(`${reqData.name} successfully deleted`);
+    } else {
+      toast.info('attributes successfully deleted');
+    }
+  } else if (!data.success) {
+    if (op === 'deleteField') {
+      yield put(
+        getMetadataApiCall({
+          status: false,
+          reqData,
+          op,
+        }),
+      );
+      toast.info(`${reqData.name} not deleted`);
+    } else {
+      toast.info('attributes not deleted');
+    }
   }
 }
 
@@ -471,6 +598,9 @@ function* watchProtocolViews() {
   yield takeEvery('GET_METADATA_VARIABLE', MetaDataVariable);
   yield takeEvery('GET_RIGHT_BLADE', RightBladeValue);
   yield takeEvery('SET_TOC_Active', setTOCActive);
+  yield takeEvery('ADD_METADATA_ATTRIBUTES', addMetaDataAttributes);
+  yield takeEvery('ADD_METADATA_FIELD', addMetaDataField);
+  yield takeEvery('DELETE_METADATA', deleteAttribute);
   yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
   yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
 }
