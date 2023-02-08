@@ -37,7 +37,7 @@ const text = {
 };
 
 const table = { ...text, type: 'table' };
-const header = { ...text, type: 'header' };
+const header = { ...text, type: 'header', linkLevel: 2 };
 const image = { ...text, type: 'image' };
 delete image.font_info;
 

@@ -419,7 +419,6 @@ export function* MetaDataVariable(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
     method: 'GET',
-    isMetaData: true,
   };
   const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
@@ -445,7 +444,6 @@ export function* addMetaDataAttributes(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/add_update_meta_data`,
     method: 'POST',
-    isMetaData: true,
     data: {
       aidocId: docId,
       fieldName,
@@ -481,7 +479,6 @@ export function* addMetaDataField(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/add_meta_data`,
     method: 'PUT',
-    isMetaData: true,
     data: {
       op,
       aidocId: docId,
@@ -518,7 +515,6 @@ export function* deleteAttribute(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
     method: 'DELETE',
-    isMetaData: true,
     data: {
       op,
       aidocId: docId,
@@ -576,7 +572,7 @@ export function* saveEnrichedAPI(action) {
     payload: { docId, linkId, data },
   } = action;
   const config = {
-    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}/?doc_id=${docId}&link_id=${linkId}`,
+    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`,
     method: 'POST',
     data: {
       data,

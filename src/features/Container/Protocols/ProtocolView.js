@@ -40,7 +40,6 @@ function ProtocolView({ refs, data }) {
           sectionContent,
         });
         setSectionContent(content);
-        console.log('CONTENT_UPDATE', payload);
         break;
       }
       case 'CONTENT_DELETED': {
@@ -78,12 +77,25 @@ function ProtocolView({ refs, data }) {
         );
         break;
       }
+      case 'LINK_LEVEL_UPDATE': {
+        const content = prepareContent({
+          ...payload,
+          type: 'LINK_LEVEL_UPDATE',
+          sectionContent,
+        });
+        setSectionContent(content);
+        break;
+      }
       default:
         break;
     }
   };
   const ProtocolProviderValue = useMemo(
-    () => ({ selectedSection, sectionContent, dispatchSectionEvent }),
+    () => ({
+      selectedSection,
+      sectionContent,
+      dispatchSectionEvent,
+    }),
     [selectedSection, sectionContent, dispatchSectionEvent],
   );
 
