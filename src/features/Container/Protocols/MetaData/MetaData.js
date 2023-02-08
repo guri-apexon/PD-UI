@@ -3,11 +3,12 @@ import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
-import { difference, isEmpty } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import difference from 'lodash/difference';
 import './MetaData.scss';
 import Accordian from './Accordian';
 import {
-  accordianMetaData,
+  accordionMetaData,
   accordianMetaParam,
   metadataApiCallValue,
 } from '../protocolSlice';
@@ -17,7 +18,7 @@ import { flattenMetaParam } from './utilFunction';
 function MetaData() {
   const wrapperRef = useRef(null);
   const apiResponse = useSelector(metadataApiCallValue);
-  const accordianResult = useSelector(accordianMetaData);
+  const accordianResult = useSelector(accordionMetaData);
   const metaParamResult = useSelector(accordianMetaParam);
   const standardList = ['summary'];
   const dispatch = useDispatch();
@@ -53,17 +54,15 @@ function MetaData() {
   };
 
   const addToAccordion = (name) => {
+    const checkName = name === 'summary' ? 'summary_extended' : name;
     dispatch({
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
         docId: '0be44992-9573-4010-962c-de1a1b18b08d',
-        fieldName: name,
+        fieldName: checkName,
         attributes: [],
-        reqData: {
-          name,
-          level: 1,
-        },
+        reqData: { name, level: 1 },
       },
     });
     setSectionName({ label: '' });
@@ -217,7 +216,8 @@ function MetaData() {
 
   useEffect(() => {
     if (!isEmpty(metaParamResult) && !isEmpty(accordianData)) {
-      const result = flattenMetaParam(metaParamResult, 1);
+      const updatedParam = {};
+      const result = flattenMetaParam(updatedParam, metaParamResult, 1);
       let metaList = [];
       const filterItems = difference(
         Object.keys(metaParamResult),

@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
+import { useProtContext } from '../../ProtocolContext';
 
+const headerList = [
+  { level: 2, name: 'H2' },
+  { level: 3, name: 'H3' },
+  { level: 4, name: 'H4' },
+  { level: 5, name: 'H5' },
+  { level: 6, name: 'H6' },
+];
 const classNames = {
   active: 'dropdown-content active-show-list',
   notActive: 'dropdown-content',
@@ -10,28 +18,25 @@ function Dropdown({
   buttonName,
   contentStyle,
   headerStyle,
+  onHeaderSelect,
   type,
   disabled,
-  list,
-  setSaveEnabled,
+  activeLineID,
 }) {
   const [showList, setShowList] = useState(false);
+  const { dispatchSectionEvent } = useProtContext();
   const showMenu = () => {
     setShowList(!showList);
   };
-  const formatHeading = (e, name) => {
+  const formatHeading = (e, name, level) => {
     e.preventDefault();
     setShowList(false);
+    dispatchSectionEvent('LINK_LEVEL_UPDATE', {
+      level,
+      currentLineId: activeLineID,
+    });
     document.execCommand('formatBlock', false, name);
-    setSaveEnabled(true);
   };
-
-  const onSymbolSelect = (e, symbol) => {
-    e.preventDefault();
-    document.execCommand('insertText', false, symbol);
-    setSaveEnabled(true);
-  };
-
   return (
     <div className="dropdown">
       <button
@@ -50,14 +55,13 @@ function Dropdown({
         data-testId="options"
       >
         <ul>
-          {list.map((item) => {
+          {headerList.map((item) => {
             if (type === 'header') {
               return (
                 // eslint-disable-next-line
                 <li
-                  data-testId="list"
                   key={React.key}
-                  onMouseDown={(e) => formatHeading(e, item.name)}
+                  onMouseDown={(e) => formatHeading(e, item.name, item.level)}
                 >
                   {item.name}
                 </li>
@@ -68,7 +72,7 @@ function Dropdown({
               <li
                 data-testId="list"
                 key={React.key}
-                onMouseDown={(e) => onSymbolSelect(e, item.name)}
+                onClick={() => onHeaderSelect(item, type)}
               >
                 {item.name}
               </li>
@@ -85,8 +89,8 @@ Dropdown.propTypes = {
   buttonName: PropTypes.isRequired,
   contentStyle: PropTypes.isRequired,
   headerStyle: PropTypes.isRequired,
+  onHeaderSelect: PropTypes.isRequired,
   type: PropTypes.isRequired,
   disabled: PropTypes.isRequired,
-  list: PropTypes.isRequired,
-  setSaveEnabled: PropTypes.isRequired,
+  activeLineID: PropTypes.isRequired,
 };

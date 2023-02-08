@@ -7,15 +7,13 @@ import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
 import { useProtContext } from '../../ProtocolContext';
-import { headerList, mathSymbols } from './constants';
 
-function FontProperties({ activeLineID, setSaveEnabled }) {
+function FontProperties({ onHeaderSelect, activeLineID }) {
   const [enable, setEnable] = useState(activeLineID);
   const { dispatchSectionEvent } = useProtContext();
 
   const onFormatSelect = (e, button) => {
     e.preventDefault();
-    setSaveEnabled(true);
     switch (button) {
       case 'B':
         document.execCommand('bold', false, 'strong');
@@ -39,22 +37,19 @@ function FontProperties({ activeLineID, setSaveEnabled }) {
         document.execCommand('insertUnorderedList');
         break;
       case 'removeFormat':
+        document.execCommand('formatBlock', false, 'p'); // To revert from H tag
         document.execCommand('removeFormat', false, 'p');
         break;
       default:
         break;
     }
   };
-
   const deleteSegment = () => {
-    setSaveEnabled(true);
     dispatchSectionEvent('CONTENT_DELETED', { currentLineId: activeLineID });
   };
-
   useEffect(() => {
     setEnable(activeLineID);
   }, [activeLineID]);
-
   return (
     <div
       className={`${
@@ -67,9 +62,9 @@ function FontProperties({ activeLineID, setSaveEnabled }) {
         buttonName="H"
         contentStyle={{ left: 0 }}
         headerStyle={{ fontWeight: 'bold' }}
+        onHeaderSelect={onHeaderSelect}
         type="header"
-        list={headerList}
-        setSaveEnabled={setSaveEnabled}
+        activeLineID={activeLineID}
       />
 
       <button
@@ -134,28 +129,14 @@ function FontProperties({ activeLineID, setSaveEnabled }) {
       <button
         disabled={!enable}
         type="button"
-        data-testId="bulletlist"
+        data-testId="list"
         className="button-exec-icon"
         onMouseDown={(e) => onFormatSelect(e, 'UL')}
       >
         <ListBullet />
       </button>
-
-      <Dropdown
-        disabled={!enable}
-        buttonName="M"
-        contentStyle={{ left: 0 }}
-        headerStyle={{ fontWeight: 'bold' }}
-        type="symbols"
-        list={mathSymbols}
-        setSaveEnabled={setSaveEnabled}
-      />
       <div className="right-menu">
-        <HoverComponent
-          lineId={activeLineID}
-          activeLineID={activeLineID}
-          setSaveEnabled={setSaveEnabled}
-        />
+        <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
         <IconButton
           size="small"
           data-testId="trash-icon"
@@ -171,6 +152,6 @@ function FontProperties({ activeLineID, setSaveEnabled }) {
 export default FontProperties;
 
 FontProperties.propTypes = {
+  onHeaderSelect: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
-  setSaveEnabled: PropTypes.isRequired,
 };

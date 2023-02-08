@@ -19,13 +19,14 @@ const summaryExtended = {
       attr_value: true,
       confidence: null,
       note: null,
+      isCustom: true,
     },
   ],
   _childs: [],
 };
 const initialState = {
   protocol: {
-    accordianMetaData: {
+    accordionMetaData: {
       summary: {
         _meta_data: metaVariables,
         formattedName: 'summary',

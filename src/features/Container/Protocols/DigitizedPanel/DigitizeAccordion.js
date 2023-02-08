@@ -24,7 +24,7 @@ import {
 import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
-import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import { AUDIT_LIST, PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
@@ -55,11 +55,6 @@ function DigitizeAccordion({
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const auditList = [
-    'Last Reviewed Date',
-    'Last Reviewed By',
-    'Total Number of Reviews',
-  ];
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sectionDataArr, setSectionDataArr] = useState([]);
@@ -279,6 +274,11 @@ function DigitizeAccordion({
     setSaveEnabled(false);
   };
 
+  const clickAuditLog = (e) => {
+    e.stopPropagation();
+    setOpenAudit(e.currentTarget);
+  };
+
   return (
     <Accordion
       expanded={expanded}
@@ -307,10 +307,7 @@ function DigitizeAccordion({
                 <IconButton
                   className="eyeIcon"
                   data-testId="eyeIcon"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenAudit(e.currentTarget);
-                  }}
+                  onClick={clickAuditLog}
                 >
                   <EyeShow style={{ paddingRight: '10px' }} />
                 </IconButton>
@@ -491,7 +488,7 @@ function DigitizeAccordion({
       >
         <div className="auditPopover">
           <div className="textContainer">
-            {auditList.map((names) => {
+            {AUDIT_LIST.map((names) => {
               return (
                 <Typography variant="body1" key={names}>
                   {names}
@@ -500,7 +497,7 @@ function DigitizeAccordion({
             })}
           </div>
           <div className="textContainer">
-            {auditList.map((names) => {
+            {AUDIT_LIST.map((names) => {
               return (
                 <Typography variant="body1" key={names}>
                   :
@@ -511,9 +508,11 @@ function DigitizeAccordion({
           <div className="textContainer">
             {Object.keys(item?.audit_info).map((names) => {
               return (
-                <Typography variant="body1" key={names}>
-                  {item?.audit_info.names}
-                </Typography>
+                names !== 'total_no_review' && (
+                  <Typography variant="body1" key={names}>
+                    {item?.audit_info.names}
+                  </Typography>
+                )
               );
             })}
           </div>
