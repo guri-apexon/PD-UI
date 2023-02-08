@@ -2,6 +2,9 @@ import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
+import Tooltip from 'apollo-react/components/Tooltip';
+import IconButton from 'apollo-react/components/IconButton';
+import Plus from 'apollo-react-icons/Plus';
 import EmptyColumnCells from './Components/EmptyColumns';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
@@ -183,16 +186,11 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       )}
       {lineID === activeLineID && (
         <div className="table-button-container" data-testId="button-container">
-          <ButtonGroup
-            buttonProps={[
-              {
-                size: 'small',
-                variant: 'primary',
-                label: 'Add Footnote',
-                onClick: () => addFootNote(),
-              },
-            ]}
-          />
+          <Tooltip title="Add Footnote" placement="right">
+            <IconButton color="primary" size="small">
+              <Plus className="plus-icon" size="small" onClick={addFootNote} />
+            </IconButton>
+          </Tooltip>
           <ButtonGroup
             buttonProps={[
               {
