@@ -1,4 +1,4 @@
-export const addMouseMove = (e, changeScale) => {
+export const panelHandle = (e, changeScale) => {
   if (e) {
     const { className } = e.target;
     if (
