@@ -8,6 +8,7 @@ import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { protocolSummary, getPdfData } from '../protocolSlice';
+import { panelHandle, pageFun, currentPageFun } from './utilsPdfviewer';
 import './PdfViewer.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
@@ -33,15 +34,8 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     setPageScale(scale);
   }
 
-  const addMouseMove = (e) => {
-    if (e) {
-      const { className } = e.target;
-      if (
-        className.toString().includes('Panel-handle') ||
-        className.toString().includes('Panel-handleContainer')
-      )
-        document.addEventListener('mousemove', changeScale, false);
-    }
+  const addMouseMove = (e, changeScale) => {
+    panelHandle(e, changeScale);
   };
 
   const removeMouseMove = () => {
@@ -60,29 +54,14 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
     // eslint-disable-next-line
   }, []);
 
-  const pageFun = (page) => {
-    if (page) {
-      setPage(page - 1);
-    }
-  };
-
   useEffect(() => {
-    pageFun(page);
+    pageFun(page, setPage);
   }, [page]);
 
-  const currentPageFun = (currentPage) => {
-    if (refs[currentPage]?.current) {
-      refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
-    }
-    setTimeout(() => {
-      if (document.getElementById('pdfDocument')) {
-        document.getElementById('pdfDocument').scrollTop = 0;
-      }
-    }, 100);
-  };
+  currentPageFun(refs, currentPage);
 
   useEffect(() => {
-    currentPageFun(currentPage);
+    currentPageFun(refs, currentPage);
     // eslint-disable-next-line
   }, [currentPage]);
 
