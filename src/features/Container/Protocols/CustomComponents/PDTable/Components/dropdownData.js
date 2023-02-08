@@ -9,8 +9,7 @@ export const tableOperations = {
 export const columnHoverData = [
   {
     text: 'Add Column to left',
-    image: 'svg'
-                        `,
+    image: 'svg',
     id: tableOperations.addColumnLeft,
   },
   {
