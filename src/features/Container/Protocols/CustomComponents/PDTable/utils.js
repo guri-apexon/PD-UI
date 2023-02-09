@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { cloneDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -134,6 +135,9 @@ export const handleRowOperationUtilsFun = (
   setUpdatedData,
   setColumnLength,
 ) => {
+  // eslint-disable-next-line no-restricted-globals, no-alert
+  const conFirm = confirm(confirmText);
+
   if (operation === tableOperations.addRowAbove) {
     const newData = addRow(updatedData, index);
     setUpdatedData(newData);
@@ -145,7 +149,7 @@ export const handleRowOperationUtilsFun = (
     setColumnLength(Object.keys(newData[0]).length);
   } else if (operation === tableOperations.deleteRow) {
     // eslint-disable-next-line
-    if (confirm(confirmText)) {
+    if (conFirm) {
       const newData = deleteRow(updatedData, index);
       setUpdatedData(newData);
       setColumnLength(Object.keys(newData[0]).length);

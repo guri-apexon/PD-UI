@@ -6,11 +6,7 @@ import EmptyColumnCells from './Components/EmptyColumnCells';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
 import {
-  addColumn,
-  addRow,
   dataUtilsFun,
-  deleteColumn,
-  deleteRow,
   handleColumnOperationUtilsFun,
   handleRowOperationUtilsFun,
 } from './utils';
