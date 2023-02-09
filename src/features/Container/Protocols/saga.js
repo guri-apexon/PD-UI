@@ -253,14 +253,14 @@ export function* getSectionList(action) {
   const headerList = yield select(headerResult);
   const data = [...headerList.data];
   const objSectionData = [];
-  for (let i = 0; i < data.length; i++) {
-    if (data[i].link_id === action.payload.linkId) {
-      const temp = { ...data[i], SectionData: sectionDetails.data };
+  data?.forEach((item) => {
+    if (item.link_id === action.payload.linkId) {
+      const temp = { ...item, SectionData: sectionDetails.data };
       objSectionData.push(temp);
     } else {
-      objSectionData.push(data[i]);
+      objSectionData.push(item);
     }
-  }
+  });
 
   if (sectionDetails.success) {
     yield put(getHeaderList({ ...headerList, data: objSectionData }));
@@ -326,21 +326,22 @@ export function* getProtocolTocDataResult(action) {
   };
 
   const header = yield call(httpCall, config);
+
   const headerList = cloneDeep(header.data);
-  for (let i = 0; i < headerList.length; i++) {
-    if (headerList[i]?.childlevel) {
-      delete headerList[i]?.childlevel;
+  headerList.forEach((item) => {
+    if (item?.childlevel) {
+      delete item?.childlevel;
     }
-  }
+  });
 
   if (header.success) {
     if (header?.data?.status === 204) {
       header.data = [];
     }
     const tocIsactive = [];
-    for (let i = 0; i < header.data.length; i++) {
+    header?.data.forEach(() => {
       tocIsactive.push(false);
-    }
+    });
     yield put(getTOCActive(tocIsactive));
     yield put(getProtocolTocData(header));
     yield put(
