@@ -266,3 +266,10 @@ export const handleDataChangeFun = (e, setType, type, setVal) => {
     setVal(e.target.value);
   }
 };
+
+export const typeUtilsFunction = (type) => {
+  if (type === 'string') {
+    return 'text';
+  }
+  return 'number';
+};

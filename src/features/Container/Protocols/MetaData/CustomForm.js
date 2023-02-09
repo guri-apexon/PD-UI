@@ -5,6 +5,7 @@ import MenuItem from 'apollo-react/components/MenuItem';
 import Trash from 'apollo-react-icons/Trash';
 import DatePicker from 'apollo-react/components/DatePickerV2';
 import PropTypes from 'prop-types';
+import { typeUtilsFunction } from './utilFunction';
 
 export function InputKeyField({
   keyName,
@@ -69,7 +70,7 @@ export function ValueField({
                 <TextField
                   label=""
                   placeholder="Enter Value"
-                  type={type === 'string' ? 'text' : 'number'}
+                  type={typeUtilsFunction(type)}
                   name={keyName}
                   fullWidth
                   value={inputValue}
