@@ -10,20 +10,19 @@ function EditFootNote({
   edit,
   footNoteData,
   setFootnoteData,
+  unitTesting,
 }) {
   const [footerText, setFooterText] = useState(content);
-
-  const handleTextChange = (e) => {
-    setFooterText(e.target.value);
-  };
 
   const sendFooterText = (e) => {
     const checkIfExist = footNoteData.find((notes, i) => i === index);
     const textData = footerText ? e.target.innerHTML : '';
     if (checkIfExist.length !== 0 && isEmpty(textData)) {
       if (item?.AttachmentId) {
-        setFootnoteData((prevState) =>
-          prevState.map((item, i) => {
+        console.log('setFootnoteData');
+        setFootnoteData((prevState) => {
+          console.log('setFootnoteDataInner');
+          return prevState.map((item, i) => {
             if (i === index) {
               return {
                 ...item,
@@ -32,8 +31,8 @@ function EditFootNote({
               };
             }
             return item;
-          }),
-        );
+          });
+        });
       } else {
         setFootnoteData(footNoteData.filter((notes, i) => i !== index));
       }
@@ -52,6 +51,10 @@ function EditFootNote({
         }),
       );
     }
+  };
+  const handleTextChange = (e) => {
+    setFooterText(e.target.value);
+    if (unitTesting) sendFooterText(e);
   };
 
   return (
@@ -78,4 +81,5 @@ EditFootNote.propTypes = {
   edit: PropTypes.isRequired,
   footNoteData: PropTypes.isRequired,
   setFootnoteData: PropTypes.isRequired,
+  unitTesting: PropTypes.isRequired,
 };

@@ -13,7 +13,7 @@ function FootNotes({ footNoteData, edit, setFootnoteData }) {
         if (item?.qc_change_type_footnote !== 'delete') {
           return (
             // eslint-disable-next-line
-            <div onClick={() => edit && setActiveLineID(index)}>
+            <div onClick={() => edit && setActiveLineID(index)} data-testId="footnote-edit">
               <EditFootNote
                 key={uuidv4()}
                 item={item}

@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import FootNotes from '../Footnotes';
 
 const footNoteData = [
@@ -40,12 +40,11 @@ describe('FootNotes', () => {
       <FootNotes
         footNoteData={footNoteData}
         setFootnoteData={setFootnoteData}
-        // eslint-disable-next-line react/jsx-boolean-value
-        edit={true}
+        edit
       />,
     );
-
-    const lineDivs = getAllByTestId('footnote');
+    screen.debug();
+    const lineDivs = getAllByTestId('footnote-edit');
     fireEvent.click(lineDivs[0]);
   });
 });
