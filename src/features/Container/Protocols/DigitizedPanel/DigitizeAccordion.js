@@ -62,7 +62,7 @@ function DigitizeAccordion({
 
   const [tocActive, setTocActive] = useState([]);
 
-  const [sectionData, setSectiondata] = useState(item.SectionData || []);
+  const [sectionData, setSectiondata] = useState(item.sectionData || []);
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -94,7 +94,7 @@ function DigitizeAccordion({
   useEffect(() => {
     if (expanded) {
       const arr = sectionData?.filter((obj) => obj.linkId === item.link_id);
-      if (arr.length === 0 && !item?.SectionData) {
+      if (arr.length === 0 && !item?.sectionData) {
         setShowLoader(true);
         setLinkId(item.link_id);
         setDocId(item.doc_id);
@@ -224,8 +224,8 @@ function DigitizeAccordion({
     }
   };
   useEffect(() => {
-    if (item?.SectionData) {
-      setSectiondata(item?.SectionData);
+    if (item?.sectionData) {
+      setSectiondata(item?.sectionData);
     }
     // eslint-disable-next-line
   }, [item]);

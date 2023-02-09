@@ -255,7 +255,7 @@ export function* getSectionList(action) {
   const objSectionData = [];
   data?.forEach((item) => {
     if (item.link_id === action.payload.linkId) {
-      const temp = { ...item, SectionData: sectionDetails.data };
+      const temp = { ...item, sectionData: sectionDetails.data };
       objSectionData.push(temp);
     } else {
       objSectionData.push(item);

@@ -22,7 +22,7 @@ export const protocolSlice = createSlice({
       error: false,
       message: '',
     },
-    header: {},
+    headersList: {},
     loader: false,
     protocol: '',
     protocolTocData: [],
@@ -58,7 +58,7 @@ export const protocolSlice = createSlice({
       state.compare = action.payload;
     },
     getHeaderList: (state, action) => {
-      state.header = action.payload;
+      state.headersList = action.payload;
     },
     getSectionProtocol: (state, action) => {
       state.protocol = action.payload;
@@ -80,9 +80,8 @@ export const protocolSlice = createSlice({
       const { actionType, data, content, lineId, linkId } = action.payload;
 
       if (actionType === 'REPLACE_CONTENT' && data && linkId) {
-        console.log('REPLACE_CONTENT UPDATED');
-        state.sectionDetails.data = state.sectionDetails.data.map((x) =>
-          x.linkId === linkId ? { ...x, data } : x,
+        state.headersList.data = state.headersList.data.map((x) =>
+          x.link_id === linkId ? { ...x, sectionData: data } : x,
         );
       } else if (content && lineId) {
         state.sectionDetails.sections = state.sectionDetails.sections.map(
@@ -149,7 +148,7 @@ export const protocolSummary = (state) => state.protocol.summary;
 export const viewResult = (state) => state.protocol.view;
 export const associateDocs = (state) => state.protocol.associateDocs;
 export const compareResult = (state) => state.protocol.compare;
-export const headerResult = (state) => state.protocol.header;
+export const headerResult = (state) => state.protocol.headersList;
 export const protocolResult = (state) => state.protocol.protocol;
 export const protocolTocData = (state) => state.protocol.protocolTocData;
 
