@@ -66,7 +66,7 @@ function EditFootNote({
         onChange={handleTextChange}
         onBlur={(e) =>
           sendFooterText(
-            footerText ? e.target.innerText : '',
+            footerText ? e.target.innerHTML : '',
             index,
             item?.AttachmentId,
           )
