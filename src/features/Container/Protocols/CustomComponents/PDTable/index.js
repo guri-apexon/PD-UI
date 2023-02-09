@@ -5,7 +5,15 @@ import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import EmptyColumnCells from './Components/EmptyColumnCells';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
-import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
+import {
+  addColumn,
+  addRow,
+  dataUtilsFun,
+  deleteColumn,
+  deleteRow,
+  handleColumnOperationUtilsFun,
+  handleRowOperationUtilsFun,
+} from './utils';
 import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 
@@ -77,16 +85,14 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const { dispatchSectionEvent } = useProtContext();
 
   useEffect(() => {
-    if (data) {
-      const parsedTable = JSON.parse(data.TableProperties);
-      const formatData = formattableData(parsedTable);
-      setUpdatedData(formatData);
-      const footnoteArr = data.AttachmentListProperties || [];
-      setFootnoteData(footnoteArr);
-      const colLength = Object.keys(formatData[0]).length;
-      setColumnLength(colLength);
-      setColumnWidth(98 / colLength);
-    }
+    dataUtilsFun(
+      data,
+      formattableData,
+      setUpdatedData,
+      setFootnoteData,
+      setColumnLength,
+      setColumnWidth,
+    );
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {
@@ -95,39 +101,24 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     setUpdatedData(cloneData);
   };
   const handleColumnOperation = (operation, index) => {
-    if (operation === tableOperations.addColumnLeft) {
-      const newData = addColumn(updatedData, index);
-      setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
-    } else if (operation === tableOperations.addColumnRight) {
-      // eslint-disable-next-line
-      const newData = addColumn(updatedData, parseInt(index) + 1);
-      setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
-    } else if (operation === tableOperations.deleteColumn) {
-      const newData = deleteColumn(updatedData, index);
-      setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
-    }
+    handleColumnOperationUtilsFun(
+      operation,
+      tableOperations,
+      updatedData,
+      index,
+      setUpdatedData,
+      setColumnLength,
+    );
   };
   const handleRowOperation = (operation, index) => {
-    if (operation === tableOperations.addRowAbove) {
-      const newData = addRow(updatedData, index);
-      setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
-    } else if (operation === tableOperations.addRowBelow) {
-      // eslint-disable-next-line
-      const newData = addRow(updatedData, parseInt(index) + 1);
-      setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
-    } else if (operation === tableOperations.deleteRow) {
-      // eslint-disable-next-line
-      if (confirm(confirmText)) {
-        const newData = deleteRow(updatedData, index);
-        setUpdatedData(newData);
-        setColumnLength(Object.keys(newData[0]).length);
-      }
-    }
+    handleRowOperationUtilsFun(
+      operation,
+      tableOperations,
+      updatedData,
+      index,
+      setUpdatedData,
+      setColumnLength,
+    );
   };
   const handleSave = () => {
     const content = {

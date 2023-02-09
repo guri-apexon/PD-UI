@@ -81,3 +81,74 @@ export const deleteColumn = (tabledata, index) => {
   }
   return data;
 };
+
+export const dataUtilsFun = (
+  data,
+  formattableData,
+  setUpdatedData,
+  setFootnoteData,
+  setColumnLength,
+  setColumnWidth,
+) => {
+  if (data) {
+    const parsedTable = JSON.parse(data.TableProperties);
+    const formatData = formattableData(parsedTable);
+    setUpdatedData(formatData);
+    const footnoteArr = data.AttachmentListProperties || [];
+    setFootnoteData(footnoteArr);
+    const colLength = Object.keys(formatData[0]).length;
+    setColumnLength(colLength);
+    setColumnWidth(98 / colLength);
+  }
+};
+
+export const handleColumnOperationUtilsFun = (
+  operation,
+  tableOperations,
+  updatedData,
+  index,
+  setUpdatedData,
+  setColumnLength,
+) => {
+  if (operation === tableOperations.addColumnLeft) {
+    const newData = addColumn(updatedData, index);
+    setUpdatedData(newData);
+    setColumnLength(Object.keys(newData[0]).length);
+  } else if (operation === tableOperations.addColumnRight) {
+    // eslint-disable-next-line
+    const newData = addColumn(updatedData, parseInt(index) + 1);
+    setUpdatedData(newData);
+    setColumnLength(Object.keys(newData[0]).length);
+  } else if (operation === tableOperations.deleteColumn) {
+    const newData = deleteColumn(updatedData, index);
+    setUpdatedData(newData);
+    setColumnLength(Object.keys(newData[0]).length);
+  }
+};
+
+export const handleRowOperationUtilsFun = (
+  operation,
+  tableOperations,
+  updatedData,
+  index,
+  setUpdatedData,
+  setColumnLength,
+) => {
+  if (operation === tableOperations.addRowAbove) {
+    const newData = addRow(updatedData, index);
+    setUpdatedData(newData);
+    setColumnLength(Object.keys(newData[0]).length);
+  } else if (operation === tableOperations.addRowBelow) {
+    // eslint-disable-next-line
+    const newData = addRow(updatedData, parseInt(index) + 1);
+    setUpdatedData(newData);
+    setColumnLength(Object.keys(newData[0]).length);
+  } else if (operation === tableOperations.deleteRow) {
+    // eslint-disable-next-line
+    if (confirm(confirmText)) {
+      const newData = deleteRow(updatedData, index);
+      setUpdatedData(newData);
+      setColumnLength(Object.keys(newData[0]).length);
+    }
+  }
+};
