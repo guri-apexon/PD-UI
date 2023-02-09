@@ -263,6 +263,7 @@ export function* saveRecentSearch(action) {
   }
 }
 export function* sendQcReview() {
+  const errorMesaage = 'Something Went Wrong';
   const state = yield select();
   const ids = state.dashboard.selectedProtocols;
   const obj = {
@@ -294,10 +295,10 @@ export function* sendQcReview() {
       toast.info('Sent to QC Review Successfully');
     }
     if (failure.length) {
-      toast.error('Something Went Wrong');
+      toast.error(errorMesaage);
     }
   } catch (err) {
-    toast.error('Something Went Wrong');
+    toast.error(errorMesaage);
   }
 }
 
@@ -352,7 +353,7 @@ export function* handleFollow(action) {
       yield put({ type: 'GET_NOTIFICATION_SAGA', payload: id });
     }
   } catch (err) {
-    toast.error('Something Went Wrong');
+    toast.error(errorMesaage);
     console.log(err);
   }
 }
@@ -394,7 +395,7 @@ export function* fetchAssociateData(action) {
       );
     }
   } catch (e) {
-    toast.error('Something Went Wrong');
+    toast.error(errorMesaage);
   }
 }
 

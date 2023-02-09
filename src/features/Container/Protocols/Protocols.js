@@ -17,6 +17,7 @@ import ProtocolOverview from './ProtocolOverview';
 import ProtocolView from './ProtocolView';
 import Documents from './Documents';
 import NoResultFound from '../../Components/NoResultFound';
+import { conditionBlock, pdfPage } from './utilsProtocols';
 
 // ------------------- Third Party -----------
 
@@ -27,16 +28,9 @@ function Protocols({ location }) {
   const [idPresent, setIdPresent] = useState(false);
   const [pdfArray] = useState([]);
 
-  const conditionBlock = () => {
-    const params = location.search;
-    const parsed = queryString.parse(params);
-    if ('tab' in parsed) {
-      setValue(parseInt(parsed.tab, 10));
-    }
-  };
-
+  conditionBlock(location, setValue);
   useEffect(() => {
-    conditionBlock();
+    conditionBlock(location, setValue);
     const viewData = {
       iqvdataSoa: [],
       iqvdataSummary: {},
@@ -50,11 +44,7 @@ function Protocols({ location }) {
   }, []);
   /* eslint-enable */
 
-  const pdfPage = async () => {
-    for (let index = 0; index < 250; index++) {
-      pdfArray.push(index);
-    }
-  };
+  pdfPage(pdfArray);
 
   useEffect(() => {
     const params = location.search;
@@ -69,7 +59,7 @@ function Protocols({ location }) {
     if ('protocolId2' in parsed && 'value' in parsed) {
       setValue(2);
     }
-    pdfPage();
+    pdfPage(pdfArray);
     // eslint-disable-next-line
   }, [dispatch, location]);
   /* istanbul ignore next */
