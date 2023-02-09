@@ -1,4 +1,4 @@
-export const blurFun = (
+export const blurFun = ({
   blur,
   buttonRef,
   formValue,
@@ -8,7 +8,7 @@ export const blurFun = (
   onBlur,
   value,
   setBlur,
-) => {
+}) => {
   if (blur === true) {
     if (
       buttonRef.current !== null &&
