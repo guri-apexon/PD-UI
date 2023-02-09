@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import TextField from 'apollo-react/components/TextField';
 import cloneDeep from 'lodash/cloneDeep';
+import {blurFun} from './utilsCustomDropdown';
 import './CustomDropdown.scss';
 
 function CustomDropdown({
@@ -31,21 +32,15 @@ function CustomDropdown({
   const textInputRef = useRef(null);
 
   useEffect(() => {
-    if (blur === true) {
-      if (
-        buttonRef.current !== null &&
-        formValue &&
-        formValue.label !== buttonRef.current.innerText
-      ) {
-        onChange(fieldName, '', fieldType, { label: '' });
-        onBlur(fieldName, '', fieldType);
-      } else if (formValue && formValue.label !== value.label) {
-        onBlur(fieldName, '', fieldType);
-      } else {
-        onBlur(fieldName, value.label, fieldType);
-      }
-    }
-    setBlur(false);
+    blurFun(blur,
+      buttonRef,
+      formValue,
+      fieldName,
+      fieldType,
+      onChange,
+      onBlur,
+      value,
+      setBlur,)
     // eslint-disable-next-line
   }, [blur]);
 
