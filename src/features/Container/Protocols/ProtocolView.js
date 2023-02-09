@@ -5,6 +5,11 @@ import { viewResult, headerResult, updateSectionData } from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
 import { isPrimaryUser, prepareContent } from '../../../utils/utilFunction';
+import {
+  payloadsectionContent,
+  sectionloaddata,
+  sectionpayloaddata,
+} from './utils';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
@@ -117,31 +122,18 @@ function ProtocolView({ refs, data }) {
     SOA: viewData.soaSections,
   };
   /* istanbul ignore else */
-  if (subSections.TOC && subSections.TOC.length) {
-    listData.push({
-      section: 'Table of Contents',
-      id: 'TOC',
-      subSections: true,
-    });
-  }
+  payloadsectionContent(subSections, listData);
   /* istanbul ignore else */
-  if (subSections.SOA && subSections.SOA.length) {
-    listData.push({
-      section: 'Schedule of Assessments',
-      id: 'SOA',
-      subSections: true,
-    });
-  }
+  sectionpayloaddata(subSections, listData);
+
   /* istanbul ignore else */
-  if (viewData.iqvdataSummary) {
-    listData.push({ section: 'Summary', id: 'SUM', subSections: false });
-  }
+  sectionloaddata(viewData, listData);
 
   useEffect(() => {
     if (data) {
-      const isPrimary = isPrimaryUser(data);
-      setprotData({ ...data, userPrimaryRoleFlag: isPrimary });
+      setprotData({ ...data, userPrimaryRoleFlag: isPrimaryUser(data) });
     }
+    // eslint-disable-next-line
   }, [data]);
 
   return (

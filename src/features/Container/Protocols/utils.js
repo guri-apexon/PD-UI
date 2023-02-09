@@ -98,3 +98,27 @@ export const downloadCompareUtilsFun = async (
     }
   }
 };
+export const payloadsectionContent = (subSections, listData) => {
+  /* istanbul ignore else */
+  if (subSections.TOC && subSections.TOC.length) {
+    listData.push({
+      section: 'Table of Contents',
+      id: 'TOC',
+      subSections: true,
+    });
+  }
+};
+export const sectionpayloaddata = (subSections, listData) => {
+  if (subSections.SOA && subSections.SOA.length) {
+    listData.push({
+      section: 'Schedule of Assessments',
+      id: 'SOA',
+      subSections: true,
+    });
+  }
+};
+export const sectionloaddata = (viewData, listData) => {
+  if (viewData.iqvdataSummary) {
+    listData.push({ section: 'Summary', id: 'SUM', subSections: false });
+  }
+};
