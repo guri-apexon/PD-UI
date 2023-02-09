@@ -1,5 +1,5 @@
 import { render } from '../../../../test-utils/test-utils';
-import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
+import Digitize from '../DigitizedPanel/Digitize';
 import { headersList, summary } from './data';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
@@ -33,7 +33,7 @@ const home = PROTOCOL_RIGHT_MENU.HOME;
 describe('DigitizeCard', () => {
   test('Header Close', () => {
     const screen = render(
-      <DigitalizeCard
+      <Digitize
         sectionNumber={1}
         sectionRef={sectionRef}
         data={{ id: 123 }}

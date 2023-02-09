@@ -1,6 +1,6 @@
 import { render } from '../../../../../test-utils/test-utils';
 import * as ProtocolContext from '../../ProtocolContext';
-import DigitizedEdit from '../DigitizedEdit';
+import MultilineEdit from '../MultilineEdit';
 
 const sectionData = [
   {
@@ -49,7 +49,7 @@ describe('DigitizedEdit', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <DigitizedEdit sectionDataArr={sectionData} edit={false} pageRight={2} />,
+      <MultilineEdit sectionDataArr={sectionData} edit={false} pageRight={2} />,
     );
     expect(screen).toBeTruthy();
   });
