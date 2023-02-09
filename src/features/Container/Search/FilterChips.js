@@ -125,7 +125,7 @@ function FilterChip(props) {
     filters.qcStatus.length > 0 ||
     (filters.dateType.length > 0 &&
       filters.dateType[0].value !== 'approval_date') ||
-    (filters.dateSection.length > 0 && filters.dateSection[0].value !== '0') ||
+    (filters.dateSection.length > 0 && filters.dateSection[0].value?.filters.dateSection[0].value) ||
     (rangeDate.from && rangeDate.to)
   ) {
     return (
