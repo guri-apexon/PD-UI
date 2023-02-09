@@ -17,6 +17,7 @@ import ProtocolOverview from './ProtocolOverview';
 import ProtocolView from './ProtocolView';
 import Documents from './Documents';
 import NoResultFound from '../../Components/NoResultFound';
+import { conditionBlock } from './utilsProtocols';
 
 // ------------------- Third Party -----------
 
@@ -27,14 +28,7 @@ function Protocols({ location }) {
   const [idPresent, setIdPresent] = useState(false);
   const [pdfArray] = useState([]);
 
-  const conditionBlock = () => {
-    const params = location.search;
-    const parsed = queryString.parse(params);
-    if ('tab' in parsed) {
-      setValue(parseInt(parsed.tab, 10));
-    }
-  };
-
+  conditionBlock(location, setValue);
   useEffect(() => {
     conditionBlock();
     const viewData = {
