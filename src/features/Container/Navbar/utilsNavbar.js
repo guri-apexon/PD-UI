@@ -13,3 +13,12 @@ export const createFullMarkupFun = (str, replaceall, redaction) => {
     __html: str,
   };
 };
+
+export const getDayLabelTextUtilsFun = (moment, timestamp) => {
+  if (moment().isSame(timestamp, 'day')) {
+    return 'Today';
+  }
+  return moment().subtract(1, 'day').isSame(timestamp, 'day')
+    ? 'Yesterday'
+    : moment(timestamp).format('ddd MMM D');
+};

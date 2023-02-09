@@ -14,7 +14,7 @@ import { navbarNotifications } from './navbarSlice';
 
 import './Alerts.scss';
 import { redaction } from '../../../AppConstant/AppConstant';
-import { createFullMarkupFun } from './utilsNavbar';
+import { createFullMarkupFun, getDayLabelTextUtilsFun } from './utilsNavbar';
 
 const replaceall = require('replaceall');
 
@@ -54,12 +54,7 @@ function Alerts() {
     (item) => item.read === false,
   );
   const getDayLabelText = (timestamp) => {
-    if (moment().isSame(timestamp, 'day')) {
-      return 'Today';
-    }
-    return moment().subtract(1, 'day').isSame(timestamp, 'day')
-      ? 'Yesterday'
-      : moment(timestamp).format('ddd MMM D');
+    getDayLabelTextUtilsFun(moment, timestamp);
   };
   return (
     <>
@@ -109,7 +104,7 @@ function Alerts() {
                 'day',
               )
             ) {
-              header = getDayLabelText(item.timestamp);
+              return (header = getDayLabelText(item.timestamp));
             }
             return (
               <span key={item.id}>
