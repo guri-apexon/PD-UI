@@ -11,7 +11,7 @@ import Lock from 'apollo-react-icons/Lock';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
-import MultilineEdit from './DigitizedEdit';
+import MultilineEdit from './MultilineEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
