@@ -54,7 +54,7 @@ function Alerts() {
     (item) => item.read === false,
   );
   const getDayLabelText = (timestamp) => {
-    getDayLabelTextUtilsFun(moment, timestamp);
+    return getDayLabelTextUtilsFun(moment, timestamp);
   };
   return (
     <>
