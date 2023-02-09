@@ -11,6 +11,7 @@ import { tableOperations } from './Components/dropdownData';
 import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
 import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
+import PROTOCOL_CONSTANT from '../constants';
 
 const getColumnID = (data, key) => {
   let roiId = '';
@@ -76,6 +77,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const [colWidth, setColumnWidth] = useState(100);
   const [disabledBtn, setDisabledBtn] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
+  const [tableId, setTableId] = useState('');
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -83,6 +85,8 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     if (data) {
       const parsedTable = JSON.parse(data.TableProperties);
       const formatData = formattableData(parsedTable);
+      const tableIds = getIDs(parsedTable[0]);
+      setTableId(tableIds?.tableRoiId);
       setUpdatedData(formatData);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
@@ -137,10 +141,8 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     setFootnoteData([
       ...footNoteData,
       {
-        Text: 'Enter Your Text Here',
-        TableId: updatedData?.[0]?.['1.0']?.roi_id?.table_roi_id,
-        AttachmentId: '',
-        qc_change_type_footnote: 'add',
+        ...PROTOCOL_CONSTANT.footNote,
+        TableId: tableId,
       },
     ]);
   };

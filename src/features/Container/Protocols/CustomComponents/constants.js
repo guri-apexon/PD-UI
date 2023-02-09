@@ -39,7 +39,13 @@ const text = {
 const table = { ...text, type: 'table' };
 const header = { ...text, type: 'header', linkLevel: 2 };
 const image = { ...text, type: 'image' };
+const footNote = {
+  Text: 'Enter Your Text Here',
+  TableId: '',
+  AttachmentId: null,
+  qc_change_type_footnote: 'add',
+};
 delete image.font_info;
 
 // eslint-disable-next-line
-export default { text, table, header, image };
+export default { text, table, header, image, footNote };

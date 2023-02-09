@@ -12,9 +12,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-iframe {
-  z-index: unset !important;
-  height: unset !important;
-  position: unset !important;
-}

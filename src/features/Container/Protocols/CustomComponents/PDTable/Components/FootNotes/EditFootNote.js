@@ -17,18 +17,17 @@ function EditFootNote({
     setFooterText(e.target.value);
   };
 
-  const sendFooterText = (text, indexValue, id) => {
-    const checkIfExist = footNoteData.find(
-      (notes, index) => index === indexValue,
-    );
-    if (checkIfExist.length !== 0 && isEmpty(text)) {
-      if (id) {
+  const sendFooterText = (e) => {
+    const checkIfExist = footNoteData.find((notes, i) => i === index);
+    const textData = footerText ? e.target.innerHTML : '';
+    if (checkIfExist.length !== 0 && isEmpty(textData)) {
+      if (item?.AttachmentId) {
         setFootnoteData((prevState) =>
           prevState.map((item, i) => {
-            if (i === indexValue) {
+            if (i === index) {
               return {
                 ...item,
-                Text: text,
+                Text: textData,
                 qc_change_type_footnote: 'delete',
               };
             }
@@ -36,17 +35,15 @@ function EditFootNote({
           }),
         );
       } else {
-        setFootnoteData(
-          footNoteData.filter((notes, index) => index !== indexValue),
-        );
+        setFootnoteData(footNoteData.filter((notes, i) => i !== index));
       }
     } else {
       setFootnoteData((prevState) =>
         prevState.map((item, i) => {
-          if (i === indexValue) {
+          if (i === index) {
             return {
               ...item,
-              Text: text,
+              Text: textData,
               AttachmentId: item?.AttachmentId || '',
               qc_change_type_footnote: item?.AttachmentId ? 'modify' : 'add',
             };
@@ -65,13 +62,7 @@ function EditFootNote({
         html={footerText}
         disabled={!edit}
         onChange={handleTextChange}
-        onBlur={(e) =>
-          sendFooterText(
-            footerText ? e.target.innerHTML : '',
-            index,
-            item?.AttachmentId,
-          )
-        }
+        onBlur={sendFooterText}
         tagName="div"
         data-placeholder="Enter Your Text Here"
       />
