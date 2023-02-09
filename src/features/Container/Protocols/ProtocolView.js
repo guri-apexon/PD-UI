@@ -136,10 +136,14 @@ function ProtocolView({ refs, data }) {
   if (viewData.iqvdataSummary) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
-  useEffect(() => {
+
+  function checkPrimary() {
     if (data) {
       setprotData({ ...data, userPrimaryRoleFlag: isPrimaryUser(data) });
     }
+  }
+  useEffect(() => {
+    checkPrimary();
     // eslint-disable-next-line
   }, [data]);
 
