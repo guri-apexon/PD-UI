@@ -11,6 +11,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import enrichedTerms from './clinicalTerms.json';
 import './MedicalTerm.scss';
 import { EnrichedValue } from '../protocolSlice';
+import {
+  anchorElUtilsFun,
+  apiFlagselectorUtilsFun,
+  enrichedTextUtilsFun,
+  expandedUtilsFun,
+  handleSaveUtilsFun,
+  restructingObjecttilsFun,
+  selectedTermUtilsFun,
+} from './utils';
 
 function MedicalTerm({
   enrichedTarget,
@@ -42,108 +51,68 @@ function MedicalTerm({
   }, [clinicalTermsArray]);
 
   useEffect(() => {
-    if (apiFlagselector && clinicalTermsArr) {
-      setChildArr(tempChild);
-      const obj = {
-        [enrichedText]: {
-          ...clinicalTermsArr[enrichedText],
-          [selectedTerm]: tempChild.toString(),
-        },
-      };
-      setClinicalTermsArr(obj);
-      dispatch({
-        type: 'GET_ENRICHED_API',
-        payload: { flag: false },
-      });
-    }
+    apiFlagselectorUtilsFun(
+      apiFlagselector,
+      clinicalTermsArr,
+      setChildArr,
+      tempChild,
+      enrichedText,
+      selectedTerm,
+      setClinicalTermsArr,
+      dispatch,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiFlagselector]);
 
   const restructingObject = () => {
-    if (clinicalTermsArr) {
-      Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
-        (key, value) => {
-          if (key === 'preferred_term') {
-            setPreferredTerm(value);
-          }
-          if (key === 'synonyms') {
-            setSynonyms(value);
-          }
-          if (key === 'classification') {
-            setClassification(value);
-          }
-          if (key === 'ontology') {
-            setOntologyTemp(value);
-          }
-        },
-      );
-    }
+    restructingObjecttilsFun(
+      clinicalTermsArr,
+      enrichedText,
+      setPreferredTerm,
+      setSynonyms,
+      setClassification,
+      setOntologyTemp,
+    );
   };
 
   useEffect(() => {
-    if (enrichedText) {
-      setClinicalTerms([...enrichedTerms]);
-      restructingObject();
-    } else {
-      setClinicalTerms([]);
-      setSAnchorEl(null);
-    }
+    enrichedTextUtilsFun(
+      enrichedText,
+      setClinicalTerms,
+      enrichedTerms,
+      restructingObject,
+      setSAnchorEl,
+    );
     // eslint-disable-next-line
   }, [enrichedText, clinicalTermsArr]);
 
   useEffect(() => {
-    if (selectedTerm && clinicalTermsArr) {
-      const arr = clinicalTermsArr[enrichedText][selectedTerm]?.split(',');
-      if (arr && arr.length === 1 && arr[0] === '') {
-        setChildArr([]);
-      } else {
-        setChildArr(arr);
-      }
-    }
+    selectedTermUtilsFun(
+      selectedTerm,
+      clinicalTermsArr,
+      enrichedText,
+      setChildArr,
+    );
     // eslint-disable-next-line
   }, [selectedTerm]);
 
   const handleSave = () => {
-    if (newTermValue === '') {
-      return false;
-    }
-
-    if (!childTermValue || !selectedTerm) return false;
-    const temp = [...childArr];
-
-    const newArr = temp.map((x) => {
-      if (x === childTermValue) {
-        return newTermValue;
-      }
-      return x;
-    });
-    setTempChild(newArr);
-
-    setChildTermValue(null);
-    let name;
-    if (selectedTerm === 'synonyms') name = 'entity_xref';
-    else if (selectedTerm === 'classification') name = 'entity_class';
-    else if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
-    else if (selectedTerm === 'ontology') name = 'ontology';
-    const tempObj = {
-      standard_entity_name: enrichedText,
-      iqv_standard_term: preferredTerm,
-      entity_class: classification,
-      entity_xref: synonyms,
-      ontology: ontologyTemp,
-    };
-    const saveObj = { ...tempObj, [name]: newArr.toString() };
-
-    dispatch({
-      type: 'SAVE_ENRICHED_DATA',
-      payload: {
-        docId,
-        linkId,
-        data: saveObj,
-      },
-    });
-
-    return true;
+    handleSaveUtilsFun(
+      newTermValue,
+      childTermValue,
+      selectedTerm,
+      childArr,
+      setTempChild,
+      setChildTermValue,
+      enrichedText,
+      preferredTerm,
+      classification,
+      synonyms,
+      ontologyTemp,
+      dispatch,
+      docId,
+      linkId,
+    );
   };
 
   useEffect(() => {
@@ -156,16 +125,11 @@ function MedicalTerm({
   }, [childTermValue]);
 
   useEffect(() => {
-    if (!expanded) {
-      setAnchorEl(null);
-      setSAnchorEl(null);
-    }
+    expandedUtilsFun(expanded, setAnchorEl, setSAnchorEl);
   }, [expanded]);
 
   useEffect(() => {
-    if (!anchorEl) {
-      setSAnchorEl(null);
-    }
+    anchorElUtilsFun(anchorEl, setSAnchorEl);
   }, [anchorEl]);
 
   if (!expanded) {
