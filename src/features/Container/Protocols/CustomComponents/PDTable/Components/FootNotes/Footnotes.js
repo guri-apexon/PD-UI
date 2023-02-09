@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
-import isEmpty from 'lodash/isEmpty';
 import EditFootNote from './EditFootNote';
 
 function FootNotes({ footNoteData, edit, setFootnoteData }) {

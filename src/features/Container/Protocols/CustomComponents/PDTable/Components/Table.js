@@ -49,7 +49,7 @@ function DisplayTable({
       ))}
       <FootNotes
         edit={edit}
-        footNoteData={footNoteData || []}
+        footNoteData={footNoteData}
         setFootnoteData={setFootnoteData}
       />
     </div>
