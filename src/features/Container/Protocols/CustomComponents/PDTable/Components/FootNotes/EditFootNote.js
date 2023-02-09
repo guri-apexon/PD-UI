@@ -60,6 +60,7 @@ function EditFootNote({
   return (
     <div className="format-container" data-testId="content-edit">
       <ContentEditable
+        data-testId="content-editable"
         className="contentEditable"
         html={footerText}
         disabled={!edit}
