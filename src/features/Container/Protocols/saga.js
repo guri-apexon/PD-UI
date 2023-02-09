@@ -244,7 +244,6 @@ function* getState() {
 export function* getSectionList(action) {
   const userId = yield getState();
   const config = {
-    // eslint-disable-next-line max-len
     url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
     method: 'GET',
   };
