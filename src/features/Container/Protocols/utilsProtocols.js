@@ -8,6 +8,8 @@ export const conditionBlock = (location, setValue) => {
   }
 };
 
-export const abc = () => {
-  console.log('abc');
+export const pdfPage = async (pdfArray) => {
+  for (let index = 0; index < 250; index++) {
+    pdfArray.push(index);
+  }
 };
