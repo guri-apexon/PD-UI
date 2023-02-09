@@ -1,12 +1,12 @@
 /* eslint-disable import/prefer-default-export */
-export const restructingObjecttilsFun = (
+export const restructingObjecttilsFun = ({
   clinicalTermsArr,
   enrichedText,
   setPreferredTerm,
   setSynonyms,
   setClassification,
   setOntologyTemp,
-) => {
+}) => {
   if (clinicalTermsArr) {
     Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
       (key, value) => {
@@ -69,5 +69,38 @@ export const expandedUtilsFun = (expanded, setAnchorEl, setSAnchorEl) => {
 export const anchorElUtilsFun = (anchorEl, setSAnchorEl) => {
   if (!anchorEl) {
     setSAnchorEl(null);
+  }
+};
+
+export const apiFlagselectorUtilsFun = ({
+  apiFlagselector,
+  clinicalTermsArr,
+  setChildArr,
+  tempChild,
+  enrichedText,
+  selectedTerm,
+  setClinicalTermsArr,
+  dispatch,
+}) => {
+  if (apiFlagselector && clinicalTermsArr) {
+    setChildArr(tempChild);
+    const obj = {
+      [enrichedText]: {
+        ...clinicalTermsArr[enrichedText],
+        [selectedTerm]: tempChild.toString(),
+      },
+    };
+    setClinicalTermsArr(obj);
+    dispatch({
+      type: 'GET_ENRICHED_API',
+      payload: { flag: false },
+    });
+  }
+};
+
+// eslint-disable-next-line consistent-return
+export const exPandUtilsFun = ({ expanded }) => {
+  if (!expanded) {
+    return null;
   }
 };

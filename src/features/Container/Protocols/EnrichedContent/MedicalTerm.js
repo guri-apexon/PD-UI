@@ -16,7 +16,7 @@ import {
   apiFlagselectorUtilsFun,
   enrichedTextUtilsFun,
   expandedUtilsFun,
-  handleSaveUtilsFun,
+  exPandUtilsFun,
   restructingObjecttilsFun,
   selectedTermUtilsFun,
 } from './utils';
@@ -51,20 +51,16 @@ function MedicalTerm({
   }, [clinicalTermsArray]);
 
   useEffect(() => {
-    if (apiFlagselector && clinicalTermsArr) {
-      setChildArr(tempChild);
-      const obj = {
-        [enrichedText]: {
-          ...clinicalTermsArr[enrichedText],
-          [selectedTerm]: tempChild.toString(),
-        },
-      };
-      setClinicalTermsArr(obj);
-      dispatch({
-        type: 'GET_ENRICHED_API',
-        payload: { flag: false },
-      });
-    }
+    apiFlagselectorUtilsFun(
+      apiFlagselector,
+      clinicalTermsArr,
+      setChildArr,
+      tempChild,
+      enrichedText,
+      selectedTerm,
+      setClinicalTermsArr,
+      dispatch,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiFlagselector]);
 
@@ -159,9 +155,8 @@ function MedicalTerm({
     anchorElUtilsFun(anchorEl, setSAnchorEl);
   }, [anchorEl]);
 
-  if (!expanded) {
-    return null;
-  }
+  exPandUtilsFun(expanded);
+
   return (
     <div className="enriched-menu-wrapper" data-testId="term-list">
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
