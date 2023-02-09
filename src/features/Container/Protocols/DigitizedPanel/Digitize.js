@@ -14,6 +14,12 @@ import {
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import {
+  sectionNumberFun,
+  sectionSequenceUtilsFun,
+  summaryUtilsFun,
+  tocActiveSelectorUtilsFun,
+} from './utilsDigitizedPanel';
 
 function Digitize({
   sectionNumber,
@@ -36,25 +42,15 @@ function Digitize({
   const tocActiveSelector = useSelector(TOCActive);
 
   const tocActiveSelectorFun = (tocActiveSelector) => {
-    if (tocActiveSelector) setTocActive(tocActiveSelector);
+    tocActiveSelectorUtilsFun(tocActiveSelector, setTocActive);
   };
 
   useEffect(() => {
     tocActiveSelectorFun(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const summaryFun = (summary) => {
-    if (summary?.data?.length) {
-      setHeaderList(
-        summary.data.filter((x) => x.source_file_section !== 'blank_header'),
-      );
-    } else {
-      setHeaderList([]);
-    }
-  };
-
   useEffect(() => {
-    summaryFun(summary);
+    summaryUtilsFun(summary, setHeaderList);
   }, [summary]);
 
   const scrollToTop = (index) => {
@@ -64,16 +60,13 @@ function Digitize({
   };
 
   const sectionSequenceFun = (sectionSequence) => {
-    if (sectionSequence === 'undefined' || sectionSequence === undefined) {
-      // eslint-disable-next-line no-irregular-whitespace
-      //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
-    } else if (
-      sectionRef[sectionSequence] &&
-      sectionRef[sectionSequence].current
-    ) {
-      scrollToTop(sectionSequence);
-      setCurrentActiveCard(headerList[sectionSequence]?.link_id);
-    }
+    sectionSequenceUtilsFun(
+      sectionSequence,
+      sectionRef,
+      scrollToTop,
+      setCurrentActiveCard,
+      headerList,
+    );
   };
 
   useEffect(() => {
@@ -81,14 +74,8 @@ function Digitize({
     // eslint-disable-next-line
   }, [sectionSequence]);
 
-  const sectionNumberFun = (sectionNumber) => {
-    if (sectionNumber >= 0) {
-      setSectionSequence(sectionNumber);
-    }
-  };
-
   useEffect(() => {
-    sectionNumberFun(sectionNumber);
+    sectionNumberFun(sectionNumber, setSectionSequence);
   }, [sectionNumber]);
 
   useEffect(() => {
