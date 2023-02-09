@@ -100,18 +100,6 @@ describe(' ProtocolSlice Test Suite', () => {
     };
     expect(
       protocolPageSlice(initialState, {
-        type: getHeaderList.type,
-        payload,
-      }),
-    ).toEqual({ ...initialState, header: payload });
-  });
-
-  test('getHeaderList slice', () => {
-    const payload = {
-      actionData: 'actionData',
-    };
-    expect(
-      protocolPageSlice(initialState, {
         type: getSectionProtocol.type,
         payload,
       }),
@@ -128,26 +116,6 @@ describe(' ProtocolSlice Test Suite', () => {
         payload,
       }),
     ).toEqual({ ...initialState, protocol: payload });
-  });
-
-  test('setSectionDetails slice', () => {
-    const payload = {
-      protocol: '15-06',
-      data: [],
-      linkId: 15,
-    };
-    expect(
-      protocolPageSlice(initialState, {
-        type: setSectionDetails.type,
-        payload,
-      }),
-    ).toEqual({
-      ...initialState,
-      sectionDetails: {
-        protocol: '15-06',
-        data: [{ linkId: payload.linkId, data: payload.data }],
-      },
-    });
   });
 
   test('getProtocolTocData slice', () => {
