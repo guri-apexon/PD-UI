@@ -19,7 +19,7 @@ import { createFullMarkupFun } from './utilsNavbar';
 const replaceall = require('replaceall');
 
 function createFullMarkup(str) {
-  createFullMarkupFun(str, replaceall, redaction);
+  return createFullMarkupFun(str, replaceall, redaction);
 }
 
 function Alerts() {
