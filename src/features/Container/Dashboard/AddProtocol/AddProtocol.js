@@ -25,6 +25,7 @@ import CustomDropdown from '../../../Components/CustomDropdown/CustomDropdown';
 import Loader from '../../../Components/Loader/Loader';
 import CustomFileUpload from './CustomFileUpload';
 import { messages } from '../../../../AppConstant/AppConstant';
+import { formValuesUtilsFun } from './utilsAddProtocols';
 
 const versionRegx = /^[a-zA-Z0-9\s-._ ]*$/;
 const versionErrText = messages.versionMessage.validationMessage;
@@ -491,9 +492,7 @@ function AddProtocol() {
                   fullWidth
                   fieldType="CustomDropdown"
                   fieldName="sponsor"
-                  formValue={
-                    formValues.sponsor ? formValues.sponsor : emptyAutoObj
-                  }
+                  formValue={formValuesUtilsFun(formValues, emptyAutoObj)}
                   helperText={formErrorValues.sponsor.errorMessage.trim()}
                   error={formErrorValues.sponsor.error}
                   required={formErrorValues.sponsor.isRequired}
