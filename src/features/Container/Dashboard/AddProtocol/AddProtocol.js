@@ -25,7 +25,10 @@ import CustomDropdown from '../../../Components/CustomDropdown/CustomDropdown';
 import Loader from '../../../Components/Loader/Loader';
 import CustomFileUpload from './CustomFileUpload';
 import { messages } from '../../../../AppConstant/AppConstant';
-import { formValuesUtilsFun } from './utilsAddProtocols';
+import {
+  formValuesUtilsFun,
+  formValuesUtilsFunction,
+} from './utilsAddProtocols';
 
 const versionRegx = /^[a-zA-Z0-9\s-._ ]*$/;
 const versionErrText = messages.versionMessage.validationMessage;
@@ -548,9 +551,7 @@ function AddProtocol() {
                   fullWidth
                   fieldType="CustomDropdown"
                   fieldName="indication"
-                  formValue={
-                    formValues.indication ? formValues.indication : emptyAutoObj
-                  }
+                  formValue={formValuesUtilsFunction(formValues, emptyAutoObj)}
                   helperText={formErrorValues.indication.errorMessage.trim()}
                   error={formErrorValues.indication.error}
                   required={formErrorValues.indication.isRequired}
