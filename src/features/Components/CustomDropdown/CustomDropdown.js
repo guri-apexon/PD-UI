@@ -2,7 +2,11 @@
 import { useState, useEffect, useRef } from 'react';
 import TextField from 'apollo-react/components/TextField';
 import cloneDeep from 'lodash/cloneDeep';
-import {blurFun} from './utilsCustomDropdown';
+import {
+  blurFun,
+  getModifyString,
+  feildChangeFun,
+} from './utilsCustomDropdown';
 import './CustomDropdown.scss';
 
 function CustomDropdown({
@@ -32,7 +36,8 @@ function CustomDropdown({
   const textInputRef = useRef(null);
 
   useEffect(() => {
-    blurFun(blur,
+    blurFun(
+      blur,
       buttonRef,
       formValue,
       fieldName,
@@ -40,7 +45,8 @@ function CustomDropdown({
       onChange,
       onBlur,
       value,
-      setBlur,)
+      setBlur,
+    );
     // eslint-disable-next-line
   }, [blur]);
 
@@ -48,18 +54,7 @@ function CustomDropdown({
     setList(source);
   }, [source]);
 
-  const getModifyString = (value) => {
-    const regConstant = ['(', ')', '+', '[', ']', '*', '?', '|', '.', '$'];
-    return value
-      .split('')
-      .map((val) => {
-        if (regConstant.includes(val)) {
-          return `\\${val}`;
-        }
-        return val;
-      })
-      .join('');
-  };
+  getModifyString(value);
 
   const onTextFieldChange = (id, e, type) => {
     const customListTemp = cloneDeep(source);
@@ -72,22 +67,22 @@ function CustomDropdown({
     const substring = customListTemp.filter((item) => {
       return item.label.toLowerCase().match(subStr);
     });
-    if (substring.length === 0) {
-      SetSubStringExist(true);
-    } else {
-      SetSubStringExist(false);
-    }
+    feildChangeFun(substring, SetSubStringExist);
     const tempvalue = {
       label: e.target.value,
     };
     setValue(tempvalue);
     setList(filteredList);
-    if (e.target.value === '') {
-      // setting onblur to true when text is cut,so that error should display as field required
-      onChange(fieldName, e, fieldType, tempvalue);
-      setBlur(true);
-      setList(source);
-    }
+    targetValueFun(
+      e,
+      onChange,
+      fieldName,
+      fieldType,
+      tempvalue,
+      setBlur,
+      setList,
+      source,
+    );
   };
 
   const handleOutsideClick = (event) => {
