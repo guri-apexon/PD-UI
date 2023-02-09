@@ -74,6 +74,7 @@ function RenderContent({
       />
     );
   }
+  return false;
 }
 
 export default React.memo(RenderContent);
