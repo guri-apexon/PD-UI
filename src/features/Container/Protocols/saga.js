@@ -30,6 +30,7 @@ import {
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
+import { tocactiveUtils } from './utilsProtocols';
 
 function* getUserId() {
   const state = yield select();
@@ -325,9 +326,7 @@ export function* getProtocolTocDataResult(action) {
         header.data = [];
       }
       const tocIsactive = [];
-      for (let i = 0; i < header.data.length; i++) {
-        tocIsactive.push(false);
-      }
+      tocactiveUtils(tocIsactive, header);
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
     } else {

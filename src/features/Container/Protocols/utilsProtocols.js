@@ -13,3 +13,9 @@ export const pdfPage = async (pdfArray) => {
     pdfArray.push(index);
   }
 };
+
+export const tocactiveUtils = (tocIsactive, header) => {
+  for (let i = 0; i < header.data.length; i++) {
+    tocIsactive.push(false);
+  }
+};
