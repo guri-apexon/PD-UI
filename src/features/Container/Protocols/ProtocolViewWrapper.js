@@ -4,8 +4,8 @@ import Panel from 'apollo-react/components/Panel';
 import PropTypes from 'prop-types';
 
 import PanelGroup from 'apollo-react/components/PanelGroup';
-import Pdf from './SourcePDFPanel/pdfviewer';
-import Digitize from './DigitizedPanel/DigitalizeCard';
+import Pdf from './SourcePDFPanel/Pdf';
+import Digitize from './DigitizedPanel/Digitize';
 import BladeLeft from './BladeLeft/BladeLeft';
 import BladeRight from './BladeRight/BladeRight';
 

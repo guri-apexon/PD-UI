@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import MultilineEdit from '../DigitizedPanel/DigitizedEdit';
+import MultilineEdit from '../DigitizedPanel/MultilineEdit';
 import store from '../../../../store/store';
 
 const sample = [

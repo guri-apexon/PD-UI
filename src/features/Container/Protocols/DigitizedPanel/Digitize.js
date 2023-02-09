@@ -65,7 +65,6 @@ function Digitize({
 
   const sectionSequenceFun = (sectionSequence) => {
     if (sectionSequence === 'undefined' || sectionSequence === undefined) {
-      //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else if (
       sectionRef[sectionSequence] &&
       sectionRef[sectionSequence].current
