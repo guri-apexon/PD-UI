@@ -137,14 +137,11 @@ function ProtocolView({ refs, data }) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
 
-  function checkPrimary() {
-    if (data) {
-      setprotData({ ...data, userPrimaryRoleFlag: isPrimaryUser(data) });
-    }
-  }
   useEffect(() => {
-    checkPrimary();
-    // eslint-disable-next-line
+    if (data) {
+      const isPrimary = isPrimaryUser(data);
+      setprotData({ ...data, userPrimaryRoleFlag: isPrimary });
+    }
   }, [data]);
 
   return (
