@@ -51,16 +51,20 @@ function MedicalTerm({
   }, [clinicalTermsArray]);
 
   useEffect(() => {
-    apiFlagselectorUtilsFun(
-      apiFlagselector,
-      clinicalTermsArr,
-      setChildArr,
-      tempChild,
-      enrichedText,
-      selectedTerm,
-      setClinicalTermsArr,
-      dispatch,
-    );
+    if (apiFlagselector && clinicalTermsArr) {
+      setChildArr(tempChild);
+      const obj = {
+        [enrichedText]: {
+          ...clinicalTermsArr[enrichedText],
+          [selectedTerm]: tempChild.toString(),
+        },
+      };
+      setClinicalTermsArr(obj);
+      dispatch({
+        type: 'GET_ENRICHED_API',
+        payload: { flag: false },
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiFlagselector]);
 
@@ -97,22 +101,45 @@ function MedicalTerm({
   }, [selectedTerm]);
 
   const handleSave = () => {
-    handleSaveUtilsFun(
-      newTermValue,
-      childTermValue,
-      selectedTerm,
-      childArr,
-      setTempChild,
-      setChildTermValue,
-      enrichedText,
-      preferredTerm,
-      classification,
-      synonyms,
-      ontologyTemp,
-      dispatch,
-      docId,
-      linkId,
-    );
+    if (newTermValue === '') {
+      return false;
+    }
+
+    if (!childTermValue || !selectedTerm) return false;
+    const temp = [...childArr];
+
+    const newArr = temp.map((x) => {
+      if (x === childTermValue) {
+        return newTermValue;
+      }
+      return x;
+    });
+    setTempChild(newArr);
+
+    setChildTermValue(null);
+    let name;
+    if (selectedTerm === 'synonyms') name = 'entity_xref';
+    else if (selectedTerm === 'classification') name = 'entity_class';
+    else if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
+    else if (selectedTerm === 'ontology') name = 'ontology';
+    const tempObj = {
+      standard_entity_name: enrichedText,
+      iqv_standard_term: preferredTerm,
+      entity_class: classification,
+      entity_xref: synonyms,
+      ontology: ontologyTemp,
+    };
+    const saveObj = { ...tempObj, [name]: newArr.toString() };
+
+    dispatch({
+      type: 'SAVE_ENRICHED_DATA',
+      payload: {
+        docId,
+        linkId,
+        data: saveObj,
+      },
+    });
+    return true;
   };
 
   useEffect(() => {
