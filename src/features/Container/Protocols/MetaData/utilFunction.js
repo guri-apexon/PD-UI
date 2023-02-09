@@ -1,40 +1,56 @@
 import { isEmpty, isObject } from 'lodash';
 import difference from 'lodash/difference';
 
-export const flattenObject = (updatedData, data, level, parentKey) => {
+const metaDataFun = (
+  flattenObject,
+  updatedData,
+  key,
+  keyValue,
+  level,
+  parentKey,
+) => {
+  if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
+    updatedData[key] = updatedData[key]
+      ? updatedData[key]
+      : {
+          // eslint-disable-next-line
+          _meta_data: keyValue?._meta_data?.map((attr, index) => {
+            return {
+              ...attr,
+              id: index + 1,
+              isCustom: key !== 'summary',
+            };
+          }),
+          formattedName: level === 1 ? key : `${parentKey}.${key}`,
+          name: key,
+          level,
+          isActive: false,
+          isEdit: false,
+          // eslint-disable-next-line
+          _childs: keyValue?._childs ? keyValue?._childs : [],
+        };
+    // eslint-disable-next-line
+    if (keyValue?._childs && keyValue?._childs.length > 0) {
+      flattenObject(
+        updatedData,
+        keyValue,
+        level + 1,
+        level === 1 ? key : updatedData[key]?.formattedName,
+      );
+    }
+  }
+};
+export const flattenObject = (
+  flattenObject,
+  updatedData,
+  data,
+  level,
+  parentKey,
+) => {
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys?.forEach((key) => {
     const keyValue = data?.[key];
-    if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
-      updatedData[key] = updatedData[key]
-        ? updatedData[key]
-        : {
-            // eslint-disable-next-line
-            _meta_data: keyValue?._meta_data?.map((attr, index) => {
-              return {
-                ...attr,
-                id: index + 1,
-                isCustom: key !== 'summary',
-              };
-            }),
-            formattedName: level === 1 ? key : `${parentKey}.${key}`,
-            name: key,
-            level,
-            isActive: false,
-            isEdit: false,
-            // eslint-disable-next-line
-            _childs: keyValue?._childs ? keyValue?._childs : [],
-          };
-      // eslint-disable-next-line
-      if (keyValue?._childs && keyValue?._childs.length > 0) {
-        flattenObject(
-          updatedData,
-          keyValue,
-          level + 1,
-          level === 1 ? key : updatedData[key]?.formattedName,
-        );
-      }
-    }
+    metaDataFun(updatedData, key, keyValue, level, parentKey);
   });
   return updatedData;
 };
