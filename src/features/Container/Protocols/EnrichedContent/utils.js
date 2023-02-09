@@ -103,4 +103,5 @@ export const exPandUtilsFun = ({ expanded }) => {
   if (!expanded) {
     return null;
   }
+  return false;
 };
