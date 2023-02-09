@@ -2,7 +2,7 @@ import React from 'react';
 import './table.scss';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
-import EmptyRowCells from './EmptyRows';
+import EmptyRowCells from './EmptyRowCells';
 
 function DisplayTable({ data, onChange, handleRowOperation, edit, colWidth }) {
   const handleChange = (columnIndex, rowIndex, e) => {

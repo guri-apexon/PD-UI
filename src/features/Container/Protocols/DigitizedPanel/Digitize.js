@@ -65,6 +65,8 @@ function Digitize({
 
   const sectionSequenceFun = (sectionSequence) => {
     if (sectionSequence === 'undefined' || sectionSequence === undefined) {
+      // eslint-disable-next-line no-irregular-whitespace
+      //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
     } else if (
       sectionRef[sectionSequence] &&
       sectionRef[sectionSequence].current

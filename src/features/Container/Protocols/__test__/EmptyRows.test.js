@@ -1,5 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
-import EmptyRowCells from '../CustomComponents/PDTable/Components/EmptyRowsCells';
+import EmptyRowCells from '../CustomComponents/PDTable/Components/EmptyRowCells';
 
 describe('EmptyRowCells component', () => {
   it('renders correctly and calls handleOperation on icon click', () => {
