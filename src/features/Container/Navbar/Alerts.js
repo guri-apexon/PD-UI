@@ -104,7 +104,7 @@ function Alerts() {
                 'day',
               )
             ) {
-              return (header = getDayLabelText(item.timestamp));
+              header = getDayLabelText(item.timestamp);
             }
             return (
               <span key={item.id}>
