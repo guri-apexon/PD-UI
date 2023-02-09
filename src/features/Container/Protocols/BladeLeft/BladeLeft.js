@@ -105,13 +105,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
           {tocList?.map((item, index) => {
             const sectionIndex = index;
             return (
-              <Accordion
-                key={React.key}
-                style={{
-                  border: 'none',
-                }}
-                expanded={tocActive[index]}
-              >
+              <Accordion key={React.key} expanded={tocActive[index]}>
                 <AccordionSummary>
                   <Tooltip title={item.source_file_section} placement="right">
                     <Typography
@@ -127,12 +121,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
 
                 {item?.childlevel?.map((level1) => {
                   return (
-                    <Accordion
-                      key={React.key}
-                      style={{
-                        border: 'none',
-                      }}
-                    >
+                    <Accordion key={React.key}>
                       <AccordionSummary>
                         <Tooltip title={level1?.source_file_section}>
                           <Typography
@@ -149,12 +138,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                       {level1?.childlevel &&
                         level1?.childlevel.map((level2) => {
                           return (
-                            <Accordion
-                              key={React.key}
-                              style={{
-                                border: 'none',
-                              }}
-                            >
+                            <Accordion key={React.key}>
                               <AccordionSummary>
                                 <Tooltip title={level2.sub_Section}>
                                   <Typography
@@ -174,12 +158,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                               {level2?.childlevel &&
                                 level2?.childlevel.map((level3) => {
                                   return (
-                                    <Accordion
-                                      key={React.key}
-                                      style={{
-                                        border: 'none',
-                                      }}
-                                    >
+                                    <Accordion key={React.key}>
                                       <AccordionSummary>
                                         <Tooltip title={level3.sub_Section}>
                                           <Typography
@@ -199,12 +178,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                                       {level3.childlevel &&
                                         level3?.childlevel.map((level4) => {
                                           return (
-                                            <Accordion
-                                              key={React.key}
-                                              style={{
-                                                border: 'none',
-                                              }}
-                                            >
+                                            <Accordion key={React.key}>
                                               <AccordionSummary>
                                                 <Tooltip
                                                   title={level4.sub_Section}
