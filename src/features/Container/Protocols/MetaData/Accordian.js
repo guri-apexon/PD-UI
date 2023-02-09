@@ -38,6 +38,7 @@ function Accordian({
   const [subSectionName, setSubSectionName] = useState(false);
 
   const handleChange = (event, newValue) => {
+    console.log('handleChange', newValue, event.target.value);
     setSubSectionName(newValue);
   };
 
