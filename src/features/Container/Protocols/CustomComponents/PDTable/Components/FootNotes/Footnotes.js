@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import EditFootNote from './EditFootNote';
 
-function FootNotes({ footNoteData, edit, setFootnoteData }) {
+function FootNotes({ footNoteData, edit, setFootnoteData, unitTesting }) {
   const [activeLineID, setActiveLineID] = useState('');
 
   return (
@@ -25,6 +25,7 @@ function FootNotes({ footNoteData, edit, setFootnoteData }) {
                 activeLineID={activeLineID}
                 setFootnoteData={setFootnoteData}
                 className="line-content edit-text-con"
+                unitTesting={unitTesting}
               />
             </div>
           );
@@ -40,4 +41,5 @@ FootNotes.propTypes = {
   footNoteData: PropTypes.isRequired,
   setFootnoteData: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  unitTesting: PropTypes.isRequired,
 };

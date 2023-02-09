@@ -17,28 +17,26 @@ function EditFootNote({
   const sendFooterText = (e) => {
     const checkIfExist = footNoteData.find((notes, i) => i === index);
     const textData = footerText ? e.target.innerHTML : '';
-    if (checkIfExist.length !== 0 && isEmpty(textData)) {
+    if (checkIfExist && isEmpty(textData)) {
       if (item?.AttachmentId) {
-        console.log('setFootnoteData');
-        setFootnoteData((prevState) => {
-          console.log('setFootnoteDataInner');
-          return prevState.map((item, i) => {
+        setFootnoteData(
+          [...footNoteData].map((item, i) => {
             if (i === index) {
               return {
                 ...item,
-                Text: textData,
+                Text: textData || '',
                 qc_change_type_footnote: 'delete',
               };
             }
             return item;
-          });
-        });
+          }),
+        );
       } else {
         setFootnoteData(footNoteData.filter((notes, i) => i !== index));
       }
     } else {
-      setFootnoteData((prevState) =>
-        prevState.map((item, i) => {
+      setFootnoteData(
+        [...footNoteData].map((item, i) => {
           if (i === index) {
             return {
               ...item,
