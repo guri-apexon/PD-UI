@@ -1,4 +1,4 @@
-export function blurFun (
+export function blurFun(
   blur,
   buttonRef,
   formValue,
@@ -8,7 +8,7 @@ export function blurFun (
   onBlur,
   value,
   setBlur,
-){
+) {
   if (blur === true) {
     if (
       buttonRef.current !== null &&
@@ -24,7 +24,7 @@ export function blurFun (
     }
   }
   setBlur(false);
-};
+}
 
 export const getModifyString = (value) => {
   const regConstant = ['(', ')', '+', '[', ']', '*', '?', '|', '.', '$'];
@@ -47,7 +47,7 @@ export const feildChangeFun = (substring, SetSubStringExist) => {
   }
 };
 
-export function targetValueFun (
+export function targetValueFun(
   e,
   onChange,
   fieldName,
@@ -56,11 +56,11 @@ export function targetValueFun (
   setBlur,
   setList,
   source,
-){
+) {
   if (e.target.value === '') {
     // setting onblur to true when text is cut,so that error should display as field required
     onChange(fieldName, e, fieldType, tempvalue);
     setBlur(true);
     setList(source);
   }
-};
+}
