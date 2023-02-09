@@ -1,10 +1,15 @@
 import { render, fireEvent } from '@testing-library/react';
 import Dropdown from '../index';
+import * as ProtocolContext from '../../../ProtocolContext';
 
 document.execCommand = jest.fn();
 
 describe('Dropdown', () => {
   test('Render without error', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     render(
       <Dropdown
         disabled={false}
@@ -16,6 +21,10 @@ describe('Dropdown', () => {
   });
 
   test('check options in the document', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
       <Dropdown
         disabled={false}
@@ -31,6 +40,10 @@ describe('Dropdown', () => {
   });
 
   test('check list in the document', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
       <Dropdown
         disabled={false}
@@ -44,6 +57,10 @@ describe('Dropdown', () => {
   });
 
   test('Format content on button click', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
       <Dropdown
         disabled={false}
@@ -58,6 +75,10 @@ describe('Dropdown', () => {
   });
 
   test('headerSelect on button click', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
       <Dropdown
         disabled={false}
