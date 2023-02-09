@@ -7,6 +7,7 @@ import ChevronLeft from 'apollo-react-icons/ChevronLeft';
 import Button from 'apollo-react/components/Button';
 import Search from 'apollo-react/components/Search';
 import Grid from 'apollo-react/components/Grid';
+import { viewMoreUtilsFunction } from './utilsDashboard';
 
 function DashboardSearch({ recent, saved }) {
   const dispatch = useDispatch();
@@ -72,7 +73,8 @@ function DashboardSearch({ recent, saved }) {
                 style={{ width: '100%' }}
                 onClick={() => setViewMore(!viewMore)}
               >
-                <span>{viewMore ? 'View Less' : 'View More'}</span>
+                <span>{viewMoreUtilsFunction(viewMore)}</span>
+
                 {viewMore ? (
                   <ChevronLeft className="view-more-icon" />
                 ) : (
