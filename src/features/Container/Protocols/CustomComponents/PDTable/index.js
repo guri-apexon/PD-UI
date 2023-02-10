@@ -9,7 +9,6 @@ import EmptyColumnCells from './Components/EmptyColumnCells';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
 import {
-  dataUtilsFun,
   handleColumnOperationUtilsFun,
   handleRowOperationUtilsFun,
 } from './utils';
@@ -86,16 +85,18 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const { dispatchSectionEvent } = useProtContext();
 
   useEffect(() => {
-    dataUtilsFun(
-      data,
-      formattableData,
-      getIDs,
-      setTableId,
-      setUpdatedData,
-      setFootnoteData,
-      setColumnLength,
-      setColumnWidth,
-    );
+    if (data) {
+      const parsedTable = JSON.parse(data.TableProperties);
+      const formatData = formattableData(parsedTable);
+      const tableIds = getIDs(parsedTable[0]);
+      setTableId(tableIds?.tableRoiId);
+      setUpdatedData(formatData);
+      const footnoteArr = data.AttachmentListProperties || [];
+      setFootnoteData(footnoteArr);
+      const colLength = Object.keys(formatData[0]).length;
+      setColumnLength(colLength);
+      setColumnWidth(98 / colLength);
+    }
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {

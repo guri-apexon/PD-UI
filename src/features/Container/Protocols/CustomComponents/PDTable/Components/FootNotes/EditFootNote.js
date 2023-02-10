@@ -20,14 +20,22 @@ function EditFootNote({
     const checkIfExist = footNoteData.find((notes, i) => i === index);
     const textData = footerText ? e.target.innerHTML : '';
     if (checkIfExist && isEmpty(textData)) {
-      setFootnoteDataUtilsFun(
-        item,
-        setFootnoteData,
-        footNoteData,
-        index,
-        textData,
-        QC_CHANGE_TYPE,
-      );
+      if (item?.AttachmentId) {
+        setFootnoteData(
+          [...footNoteData].map((item, i) => {
+            if (i === index) {
+              return {
+                ...item,
+                Text: textData || '',
+                qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
+              };
+            }
+            return item;
+          }),
+        );
+      } else {
+        setFootnoteData(footNoteData.filter((notes, i) => i !== index));
+      }
     } else {
       setFootnoteData(
         [...footNoteData].map((item, i) => {

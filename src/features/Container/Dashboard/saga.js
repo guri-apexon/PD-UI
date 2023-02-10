@@ -263,7 +263,6 @@ export function* saveRecentSearch(action) {
   }
 }
 export function* sendQcReview() {
-  const errorMesaage = 'Something Went Wrong';
   const state = yield select();
   const ids = state.dashboard.selectedProtocols;
   const obj = {
@@ -295,10 +294,10 @@ export function* sendQcReview() {
       toast.info('Sent to QC Review Successfully');
     }
     if (failure.length) {
-      toast.error(errorMesaage);
+      toast.error('Something Went Wrong');
     }
   } catch (err) {
-    toast.error(errorMesaage);
+    toast.error('Something Went Wrong');
   }
 }
 
