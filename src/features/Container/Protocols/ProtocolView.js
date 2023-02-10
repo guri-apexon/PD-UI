@@ -16,6 +16,7 @@ function ProtocolView({ refs, data }) {
 
   // eslint-disable-next-line
   const dispatchSectionEvent = (actionType, payload) => {
+    console.log('dispatchSectionEvent', actionType, payload);
     switch (actionType) {
       case 'ON_SECTION_SELECT': {
         if (!payload.sectionContent && sectionContent) {
@@ -39,6 +40,7 @@ function ProtocolView({ refs, data }) {
           type: 'MODIFY',
           sectionContent,
         });
+        console.log('CONTENT_UPDATE', content);
         setSectionContent(content);
         break;
       }
@@ -95,8 +97,9 @@ function ProtocolView({ refs, data }) {
       selectedSection,
       sectionContent,
       dispatchSectionEvent,
+      setSectionContent,
     }),
-    [selectedSection, sectionContent, dispatchSectionEvent],
+    [selectedSection, sectionContent, dispatchSectionEvent, setSectionContent],
   );
 
   const panels = () => {

@@ -28,7 +28,7 @@ export const protocolSlice = createSlice({
     sectionDetails: {
       protocol: null,
       data: [],
-      loading: false,
+      sectionLoading: false,
     },
     protocolTocData: [],
     sectionLoader: false,
@@ -92,7 +92,8 @@ export const protocolSlice = createSlice({
     toggleSectionLoader: (state, action) => {
       state.sectionDetails = {
         ...state.sectionDetails,
-        loading: !state.sectionDetails.loading,
+        sectionLoading:
+          action?.payload?.loading || !state.sectionDetails.sectionLoading,
       };
     },
     updateSectionData: (state, action) => {
@@ -158,6 +159,7 @@ export const {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  toggleSectionLoader,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

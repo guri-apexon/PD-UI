@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -41,8 +42,6 @@ function DigitizeAccordion({
   currentActiveCard,
   handlePageRight,
   rightBladeValue,
-  currentEditCard,
-  setCurrentEditCard,
   index,
 }) {
   const classes = useStyles();
@@ -58,6 +57,7 @@ function DigitizeAccordion({
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
+  const [currentEditCard, setCurrentEditCard] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
 
@@ -69,7 +69,7 @@ function DigitizeAccordion({
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const { dispatchSectionEvent } = useProtContext();
+  const { dispatchSectionEvent, sectionContent } = useProtContext();
 
   const handleChange = () => {
     handlePageRight(item.page);
@@ -83,12 +83,6 @@ function DigitizeAccordion({
         data: tempTOCActive,
       },
     });
-  };
-
-  const onSaveClick = (e) => {
-    e.stopPropagation();
-    setShowEdit(false);
-    setCurrentEditCard(null);
   };
 
   useEffect(() => {
@@ -151,12 +145,12 @@ function DigitizeAccordion({
       setClinicalTerms(null);
     }
   };
-  useEffect(() => {
-    if (currentEditCard !== item.link_id) {
-      setShowEdit(false);
-    }
-    // eslint-disable-next-line
-  }, [currentEditCard]);
+  // useEffect(() => {
+  //   if (currentEditCard !== item.link_id) {
+  //     setShowEdit(false);
+  //   }
+  //   // eslint-disable-next-line
+  // }, [currentEditCard]);
 
   const dispatchSectionData = (resetValues) => {
     if (resetValues) {
@@ -189,24 +183,30 @@ function DigitizeAccordion({
     }
   };
 
-  const handleSaveContent = () => {
-    setShowLoader(true);
+  const handleSaveContent = (e) => {
+    e.stopPropagation();
     // setEditedMode(false);
     // dispatchSectionData(true);
-    const reqBody = [...sectionDataArr].filter((x) => x.qc_change_type !== '');
+    // setShowEdit(false);
+    // setCurrentEditCard(null);
+    const reqBody = [...sectionContent].filter((x) => x.qc_change_type !== ''); // sectionDataArr
     console.log('reqBody', reqBody);
-    if (reqBody.length)
-      dispatch({
-        type: 'UPDATE_SECTION_DATA',
-        payload: { reqBody },
-      });
+    if (!reqBody.length) {
+      toast.error('Please do changes before submit');
+    } else {
+      // dispatch({
+      //   type: 'UPDATE_SECTION_DATA',
+      //   payload: { reqBody },
+      // });
+    }
   };
 
   useEffect(() => {
+    setShowLoader(sectionHeaderDetails.sectionLoading);
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
       if (arr.length > 0) {
-        setShowLoader(false);
+        // setShowLoader(false);
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = arr[0].data;
@@ -282,8 +282,8 @@ function DigitizeAccordion({
                   </span>
                 ) : (
                   // eslint-disable-next-line
-                  <span data-testId="saveIcon" onClick={onSaveClick}>
-                    <Save onClick={() => handleSaveContent()} />
+                  <span data-testId="saveIcon" onClick={handleSaveContent}>
+                    <Save />
                   </span>
                 )}
               </>
@@ -454,7 +454,5 @@ DigitizeAccordion.propTypes = {
   currentActiveCard: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
   rightBladeValue: PropTypes.isRequired,
-  currentEditCard: PropTypes.isRequired,
-  setCurrentEditCard: PropTypes.isRequired,
   index: PropTypes.isRequired,
 };

@@ -26,6 +26,7 @@ import {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  toggleSectionLoader,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -227,9 +228,11 @@ export function* updateSectionData(action) {
     method: 'POST',
     data: reqBody,
   };
+  yield put(toggleSectionLoader());
   const sectionSaveRes = yield call(httpCall, config);
   console.log('sectionSaveRes::', sectionSaveRes);
   if (sectionSaveRes.data.success) {
+    yield put(toggleSectionLoader());
     // dispatch({
     //   type: 'GET_SECTION_LIST',
     //   payload: {
