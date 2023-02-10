@@ -237,15 +237,15 @@ export function* fetchSectionHeaderList(action) {
     toast.error('Something Went Wrong');
   }
 }
-function* getState() {
-  const state = yield select();
-  const id = state.user.userDetail.userId;
-  return id.substring(1);
-}
+
 export function* getSectionList(action) {
-  const userId = yield getState();
+  const userId = yield getUserId();
+  const api = `${Apis.GET_SECTION_CONTENT}`;
+  const actionId = `${action.payload.docId}`;
+  const protocol = `${action.payload.protocol}`;
+  const id = `${action.payload.linkId}`;
   const config = {
-    url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
+    url: `${BASE_URL_8000}${api}?aidoc_id=${actionId}&link_level=1&userId=${userId}&protocol=${protocol}&user=user&link_id=${id}`,
     method: 'GET',
   };
   const sectionDetails = yield call(httpCall, config);
