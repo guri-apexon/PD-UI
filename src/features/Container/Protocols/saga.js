@@ -225,11 +225,11 @@ export function* updateSectionData(action) {
   };
   const sectionSaveRes = yield call(httpCall, config);
   console.log('sectionSaveRes::', sectionSaveRes);
-  if (sectionSaveRes.success) {
+  if (sectionSaveRes.data.success) {
     // yield put(updateSection(header));
   } else {
     // yield put(getHeaderList({ success: false, data: [] }));
-    toast.error('Something Went Wrong');
+    toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
   }
 }
 export function* fetchSectionHeaderList(action) {

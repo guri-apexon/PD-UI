@@ -247,7 +247,7 @@ export const Apis = {
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
   DOWNLOAD_API: '/api/download_file',
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
-  SAVE_SECTION_CONTENT: '/api/qc_ingest/qc_ingest_text',
+  SAVE_SECTION_CONTENT: '/api/qc_ingest',
 };
 
 export const SSO_ENABLED = environment !== 'local';
