@@ -352,7 +352,7 @@ export function* handleFollow(action) {
       yield put({ type: 'GET_NOTIFICATION_SAGA', payload: id });
     }
   } catch (err) {
-    toast.error(errorMesaage);
+    toast.error('Something Went Wrong');
     console.log(err);
   }
 }
@@ -394,7 +394,7 @@ export function* fetchAssociateData(action) {
       );
     }
   } catch (e) {
-    toast.error(errorMesaage);
+    toast.error('Something Went Wrong');
   }
 }
 

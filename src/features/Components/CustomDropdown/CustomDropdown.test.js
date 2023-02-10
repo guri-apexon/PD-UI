@@ -8,6 +8,8 @@ describe('customDropdown test', () => {
     };
     const onChange = jest.fn();
     const onBlur = jest.fn();
+    const setBlur = jest.fn();
+
     const sponsor = [
       {
         sponsor_name: 'NVT AG',
@@ -22,9 +24,9 @@ describe('customDropdown test', () => {
         source={sponsor}
         onChange={onChange}
         onBlur={onBlur}
+        setBlur={setBlur}
       />,
     );
-    // debug();
   });
   test('customDropdown render test 2', async () => {
     const formValue = {
@@ -32,6 +34,7 @@ describe('customDropdown test', () => {
     };
     const onChange = jest.fn();
     const onBlur = jest.fn();
+    const setBlur = jest.fn();
     const sponsor = [
       {
         sponsor_name: 'NVT AG',
@@ -46,6 +49,7 @@ describe('customDropdown test', () => {
         source={sponsor}
         onChange={onChange}
         onBlur={onBlur}
+        setBlur={setBlur}
       />,
     );
     const dropdown = container.getByTestId('custom-dropdown-test-id')
@@ -60,6 +64,8 @@ describe('customDropdown test', () => {
     };
     const onChange = jest.fn();
     const onBlur = jest.fn();
+    const setBlur = jest.fn();
+
     const sponsor = [
       {
         sponsor_name: 'NVT AG',
@@ -74,6 +80,7 @@ describe('customDropdown test', () => {
         source={sponsor}
         onChange={onChange}
         onBlur={onBlur}
+        setBlur={setBlur}
       />,
     );
     const dropdown = container.getByTestId('custom-dropdown-test-id')
@@ -86,6 +93,8 @@ describe('customDropdown test', () => {
     };
     const onChange = jest.fn();
     const onBlur = jest.fn();
+    const setBlur = jest.fn();
+
     const sponsor = [
       {
         sponsor_name: 'NVT AG',
@@ -106,13 +115,13 @@ describe('customDropdown test', () => {
         source={sponsor}
         onChange={onChange}
         onBlur={onBlur}
+        setBlur={setBlur}
       />,
     );
     const dropdown = container.getByTestId('custom-dropdown-test-id')
       .children[0].children[0].children[1].children[0];
 
     fireEvent.change(dropdown, { target: { value: 'a' } });
-    // fireEvent.change(dropdown, { target: { value: "N)" } });
   });
   test('customDropdown render test 5', async () => {
     const formValue = {
@@ -120,6 +129,8 @@ describe('customDropdown test', () => {
     };
     const onChange = jest.fn();
     const onBlur = jest.fn();
+    const setBlur = jest.fn();
+
     const sponsor = [
       {
         sponsor_name: 'NVT AG',
@@ -134,6 +145,7 @@ describe('customDropdown test', () => {
         source={sponsor}
         onChange={onChange}
         onBlur={onBlur}
+        setBlur={setBlur}
       />,
     );
     const dropdown = container.getByTestId('custom-dropdown-test-id')
@@ -147,6 +159,8 @@ describe('customDropdown test', () => {
     };
     const onChange = jest.fn();
     const onBlur = jest.fn();
+    const setBlur = jest.fn();
+
     const sponsor = [
       {
         sponsor_name: 'NVT AG',
@@ -167,6 +181,7 @@ describe('customDropdown test', () => {
         source={sponsor}
         onChange={onChange}
         onBlur={onBlur}
+        setBlur={setBlur}
       />,
     );
     const dropdown = container.getByTestId('custom-dropdown-test-id')
@@ -182,6 +197,7 @@ describe('customDropdown test', () => {
     };
     const onChange = jest.fn();
     const onBlur = jest.fn();
+    const setBlur = jest.fn();
     const sponsor = [
       {
         sponsor_name: 'NVT AG',
@@ -202,6 +218,7 @@ describe('customDropdown test', () => {
         source={sponsor}
         onChange={onChange}
         onBlur={onBlur}
+        setBlur={setBlur}
       />,
     );
     const dropdown = container.getByTestId('custom-dropdown-test-id')
@@ -216,6 +233,8 @@ describe('customDropdown test', () => {
     };
     const onChange = jest.fn();
     const onBlur = jest.fn();
+    const setBlur = jest.fn();
+
     const sponsor = [
       {
         sponsor_name: 'NVT AG',
@@ -236,6 +255,7 @@ describe('customDropdown test', () => {
         source={sponsor}
         onChange={onChange}
         onBlur={onBlur}
+        setBlur={setBlur}
       />,
     );
     const dropdown = container.getByTestId('custom-dropdown-test-id')
