@@ -4,7 +4,6 @@ import TextField from 'apollo-react/components/TextField';
 import cloneDeep from 'lodash/cloneDeep';
 import {
   blurFun,
-  getModifyString,
   feildChangeFun,
 } from './utilsCustomDropdown';
 import './CustomDropdown.scss';
@@ -54,7 +53,16 @@ function CustomDropdown({
     setList(source);
   }, [source]);
 
-  getModifyString(value);
+ const regConstant = ['(', ')', '+', '[', ']', '*', '?', '|', '.', '$'];
+ return value
+   .split('')
+   .map((val) => {
+     if (regConstant.includes(val)) {
+       return `\\${val}`;
+     }
+     return val;
+   })
+   .join('');
 
   const onTextFieldChange = (id, e, type) => {
     const customListTemp = cloneDeep(source);

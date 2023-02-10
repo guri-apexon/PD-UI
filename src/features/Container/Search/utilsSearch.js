@@ -5,10 +5,3 @@ export const renderDateSectionUtilsFun = (data) => {
   }
   return false;
 };
-
-export const renderDateTypeUtilsFun = (data) => {
-  if (data[0].value === 'approval_date') {
-    return <div />;
-  }
-  return false;
-};

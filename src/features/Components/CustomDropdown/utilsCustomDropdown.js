@@ -26,19 +26,6 @@ export const blurFun = ({
   setBlur(false);
 };
 
-export const getModifyString = (value) => {
-  const regConstant = ['(', ')', '+', '[', ']', '*', '?', '|', '.', '$'];
-  return value
-    .split('')
-    .map((val) => {
-      if (regConstant.includes(val)) {
-        return `\\${val}`;
-      }
-      return val;
-    })
-    .join('');
-};
-
 export const feildChangeFun = (substring, SetSubStringExist) => {
   if (substring.length === 0) {
     SetSubStringExist(true);

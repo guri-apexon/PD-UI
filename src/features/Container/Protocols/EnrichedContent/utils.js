@@ -1,31 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-export const restructingObjecttilsFun = ({
-  clinicalTermsArr,
-  enrichedText,
-  setPreferredTerm,
-  setSynonyms,
-  setClassification,
-  setOntologyTemp,
-}) => {
-  if (clinicalTermsArr) {
-    Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
-      (key, value) => {
-        if (key === 'preferred_term') {
-          setPreferredTerm(value);
-        }
-        if (key === 'synonyms') {
-          setSynonyms(value);
-        }
-        if (key === 'classification') {
-          setClassification(value);
-        }
-        if (key === 'ontology') {
-          setOntologyTemp(value);
-        }
-      },
-    );
-  }
-};
 
 export const enrichedTextUtilsFun = (
   enrichedText,
