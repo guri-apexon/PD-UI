@@ -2,7 +2,6 @@
 import { useState, useEffect, useRef } from 'react';
 import TextField from 'apollo-react/components/TextField';
 import cloneDeep from 'lodash/cloneDeep';
-import { feildChangeFun } from './utilsCustomDropdown';
 import './CustomDropdown.scss';
 
 function CustomDropdown({
