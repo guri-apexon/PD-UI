@@ -28,6 +28,7 @@ export const protocolSlice = createSlice({
     sectionDetails: {
       protocol: null,
       data: [],
+      loading: false,
     },
     protocolTocData: [],
     sectionLoader: false,
@@ -81,6 +82,12 @@ export const protocolSlice = createSlice({
     },
     getFileStream: (state, action) => {
       state.fileStream = action.payload;
+    },
+    toggleSectionLoader: (state, action) => {
+      state.sectionDetails = {
+        ...state.sectionDetails,
+        loading: !state.sectionDetails.loading,
+      };
     },
     updateSectionData: (state, action) => {
       const { actionType, data, content, lineId, linkId } = action.payload;

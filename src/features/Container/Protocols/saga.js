@@ -226,6 +226,15 @@ export function* updateSectionData(action) {
   const sectionSaveRes = yield call(httpCall, config);
   console.log('sectionSaveRes::', sectionSaveRes);
   if (sectionSaveRes.data.success) {
+    // dispatch({
+    //   type: 'GET_SECTION_LIST',
+    //   payload: {
+    //     linkId: item.link_id,
+    //     docId: item.doc_id,
+    //     protocol,
+    //   },
+    // });
+    // getSectionList
     // yield put(updateSection(header));
   } else {
     // yield put(getHeaderList({ success: false, data: [] }));
