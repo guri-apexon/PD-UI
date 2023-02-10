@@ -16,13 +16,14 @@ function MedicalTerm({
   enrichedTarget,
   expanded,
   enrichedText,
-  clinicalTerms: clinicalTermsArr,
+  clinicalTerms: clinicalTermsArray,
   linkId,
   docId,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
   const [selectedTerm, setSelectedTerm] = useState(null);
+  const [clinicalTermsArr, setClinicalTermsArr] = useState();
   const [childTermValue, setChildTermValue] = useState(false);
   const [newTermValue, setNewTermValue] = useState('');
   const [clinicalTerms, setClinicalTerms] = useState([]);
@@ -36,8 +37,20 @@ function MedicalTerm({
   const [tempChild, setTempChild] = useState();
 
   useEffect(() => {
-    if (apiFlagselector) {
+    setClinicalTermsArr(clinicalTermsArray);
+    // eslint-disable-next-line
+  }, [clinicalTermsArray]);
+
+  useEffect(() => {
+    if (apiFlagselector && clinicalTermsArr) {
       setChildArr(tempChild);
+      const obj = {
+        [enrichedText]: {
+          ...clinicalTermsArr[enrichedText],
+          [selectedTerm]: tempChild.toString(),
+        },
+      };
+      setClinicalTermsArr(obj);
       dispatch({
         type: 'GET_ENRICHED_API',
         payload: { flag: false },
@@ -47,24 +60,23 @@ function MedicalTerm({
   }, [apiFlagselector]);
 
   const restructingObject = () => {
-    const object = Object.keys(clinicalTermsArr[enrichedText] || {});
-    for (let i = 0; i < object.length; i++) {
-      if (
-        Object?.keys(clinicalTermsArr[enrichedText])[i] === 'preferred_term'
-      ) {
-        setPreferredTerm(Object?.values(clinicalTermsArr[enrichedText])[i]);
-      }
-      if (Object?.keys(clinicalTermsArr[enrichedText])[i] === 'synonyms') {
-        setSynonyms(Object?.values(clinicalTermsArr[enrichedText])[i]);
-      }
-      if (
-        Object?.keys(clinicalTermsArr[enrichedText])[i] === 'classification'
-      ) {
-        setClassification(Object?.values(clinicalTermsArr[enrichedText])[i]);
-      }
-      if (Object?.keys(clinicalTermsArr[enrichedText])[i] === 'ontology') {
-        setOntologyTemp(Object?.values(clinicalTermsArr[enrichedText])[i]);
-      }
+    if (clinicalTermsArr) {
+      Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
+        (key, value) => {
+          if (key === 'preferred_term') {
+            setPreferredTerm(value);
+          }
+          if (key === 'synonyms') {
+            setSynonyms(value);
+          }
+          if (key === 'classification') {
+            setClassification(value);
+          }
+          if (key === 'ontology') {
+            setOntologyTemp(value);
+          }
+        },
+      );
     }
   };
 
@@ -80,7 +92,7 @@ function MedicalTerm({
   }, [enrichedText, clinicalTermsArr]);
 
   useEffect(() => {
-    if (selectedTerm) {
+    if (selectedTerm && clinicalTermsArr) {
       const arr = clinicalTermsArr[enrichedText][selectedTerm]?.split(',');
       if (arr && arr.length === 1 && arr[0] === '') {
         setChildArr([]);
@@ -106,11 +118,13 @@ function MedicalTerm({
       return x;
     });
     setTempChild(newArr);
+
     setChildTermValue(null);
     let name;
     if (selectedTerm === 'synonyms') name = 'entity_xref';
     else if (selectedTerm === 'classification') name = 'entity_class';
     else if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
+    else if (selectedTerm === 'ontology') name = 'ontology';
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: preferredTerm,

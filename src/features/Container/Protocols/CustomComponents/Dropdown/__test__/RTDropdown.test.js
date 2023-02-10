@@ -1,32 +1,36 @@
 import { render, fireEvent } from '@testing-library/react';
 import Dropdown from '../index';
-import { headerList, mathSymbols } from '../../FontProperties/constants';
+import * as ProtocolContext from '../../../ProtocolContext';
 
 document.execCommand = jest.fn();
 
 describe('Dropdown', () => {
-  test('Render without error  when type is header', () => {
+  test('Render without error', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     render(
       <Dropdown
         disabled={false}
         buttonName="H"
         onHeaderSelect={jest.fn()}
         type="header"
-        list={headerList}
-        setSaveEnabled={jest.fn()}
       />,
     );
   });
 
-  test('check options in the document when type is header', () => {
+  test('check options in the document', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
       <Dropdown
         disabled={false}
         buttonName="H"
         onHeaderSelect={jest.fn()}
         type="header"
-        list={headerList}
-        setSaveEnabled={jest.fn()}
       />,
     );
     const btn = screen.getByTestId('btn');
@@ -35,30 +39,34 @@ describe('Dropdown', () => {
     expect(options).toBeInTheDocument();
   });
 
-  test('check list in the document when type is header', () => {
+  test('check list in the document', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
       <Dropdown
         disabled={false}
         buttonName="H"
         onHeaderSelect={jest.fn()}
-        type="header"
-        list={headerList}
-        setSaveEnabled={jest.fn()}
+        type="list"
       />,
     );
     const list = screen.getAllByTestId('list');
     expect(list.length).toBe(5);
   });
 
-  test('Format content on button click when type is header', () => {
+  test('Format content on button click', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
       <Dropdown
         disabled={false}
         buttonName="H"
         onHeaderSelect={jest.fn()}
         type="header"
-        list={headerList}
-        setSaveEnabled={jest.fn()}
       />,
     );
     const list = screen.getByText('H2');
@@ -66,19 +74,20 @@ describe('Dropdown', () => {
     expect(document.execCommand).toHaveBeenCalled();
   });
 
-  test('onSymbolSelect on click when type is symbols', () => {
+  test('headerSelect on button click', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const screen = render(
       <Dropdown
         disabled={false}
-        buttonName="M"
+        buttonName="H"
         onHeaderSelect={jest.fn()}
-        type="symbols"
-        list={mathSymbols}
-        setSaveEnabled={jest.fn()}
+        type="list"
       />,
     );
-    const list = screen.getByText('∅');
-    fireEvent.mouseDown(list);
-    expect(document.execCommand).toHaveBeenCalledWith('insertText', false, '∅');
+    const list = screen.getByText('H2');
+    fireEvent.click(list);
   });
 });

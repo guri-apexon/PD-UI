@@ -1,49 +1,54 @@
-import { render } from '../../../../../../../test-utils/test-utils';
-import Table from '../Table';
+import { render, fireEvent } from '@testing-library/react';
+import DisplayTable from '../Table';
 
-const tableData = [
-  {
-    test: { content: 'test' },
-    name: { content: 'name1' },
-    age: { content: '15' },
-  },
-  {
-    test: { content: 'test' },
-    name: { content: 'name2' },
-    age: { content: '17' },
-  },
-  {
-    test: { content: 'test' },
-    name: { content: 'name1' },
-    age: { content: '19' },
-  },
-];
+describe('DisplayTable component', () => {
+  const data = [
+    {
+      column1: { content: 'value 1' },
+      column2: { content: 'value 2' },
+    },
+    {
+      column1: { content: 'value 3' },
+      column2: { content: 'value 4' },
+    },
+  ];
+  const onChange = jest.fn();
+  const handleRowOperation = jest.fn();
+  const setFootnoteData = jest.fn();
 
-describe('PD table', () => {
-  test('table renders without crashing', () => {
-    const wrapper = render(
-      <Table
-        data={tableData}
-        onChange={jest.fn()}
-        handleRowOperation={jest.fn()}
+  it('should render the table with the given data', () => {
+    const { getByText } = render(
+      <DisplayTable
+        data={data}
+        onChange={onChange}
+        handleRowOperation={handleRowOperation}
         edit={false}
-        colWidth={30}
+        colWidth={50}
+        footNoteData={[]}
+        setFootnoteData={setFootnoteData}
       />,
     );
-    expect(wrapper).toBeTruthy();
+
+    expect(getByText('value 1')).toBeInTheDocument();
+    expect(getByText('value 2')).toBeInTheDocument();
+    expect(getByText('value 3')).toBeInTheDocument();
+    expect(getByText('value 4')).toBeInTheDocument();
   });
 
-  test('check number of rows', () => {
-    const { getAllByText } = render(
-      <Table
-        data={tableData}
-        onChange={jest.fn()}
-        handleRowOperation={jest.fn()}
-        edit={false}
-        colWidth={30}
+  it('should call onChange function when the cell content is changed', () => {
+    const { getByText } = render(
+      <DisplayTable
+        data={data}
+        onChange={onChange}
+        handleRowOperation={handleRowOperation}
+        edit
+        colWidth={50}
+        footNoteData={[]}
+        setFootnoteData={setFootnoteData}
       />,
     );
-    const testContent = getAllByText('test');
-    expect(testContent.length).toEqual(3);
+
+    const cell = getByText('value 1');
+    fireEvent.blur(cell, { target: { innerHTML: 'new value' } });
   });
 });

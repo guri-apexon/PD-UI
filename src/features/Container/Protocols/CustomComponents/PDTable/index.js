@@ -2,12 +2,16 @@ import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
+import Tooltip from 'apollo-react/components/Tooltip';
+import IconButton from 'apollo-react/components/IconButton';
+import Plus from 'apollo-react-icons/Plus';
 import EmptyColumnCells from './Components/EmptyColumns';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
 import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
 import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
+import PROTOCOL_CONSTANT from '../constants';
 
 const getColumnID = (data, key) => {
   let roiId = '';
@@ -73,6 +77,7 @@ function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
   const [colWidth, setColumnWidth] = useState(100);
   const [disabledBtn, setDisabledBtn] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
+  const [tableId, setTableId] = useState('');
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -80,6 +85,8 @@ function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
     if (data) {
       const parsedTable = JSON.parse(data.TableProperties);
       const formatData = formattableData(parsedTable);
+      const tableIds = getIDs(parsedTable[0]);
+      setTableId(tableIds?.tableRoiId);
       setUpdatedData(formatData);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
@@ -130,6 +137,16 @@ function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
       }
     }
   };
+
+  const addFootNote = () => {
+    setFootnoteData([
+      ...footNoteData,
+      {
+        ...PROTOCOL_CONSTANT.footNote,
+        TableId: tableId,
+      },
+    ]);
+  };
   const handleSave = () => {
     const content = {
       ...segment.content,
@@ -147,6 +164,7 @@ function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
       setDisabledBtn(false);
     }, 1000);
   };
+
   return (
     <section className="content-table-wrapper">
       {showconfirm && (
@@ -170,7 +188,12 @@ function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
         </div>
       )}
       {lineID === activeLineID && (
-        <div className="button-container" data-testId="button-container">
+        <div className="table-button-container" data-testId="button-container">
+          <Tooltip title="Add Footnote" placement="right">
+            <IconButton color="primary" size="small">
+              <Plus className="plus-icon" size="small" onClick={addFootNote} />
+            </IconButton>
+          </Tooltip>
           <ButtonGroup
             buttonProps={[
               {
@@ -204,6 +227,8 @@ function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
           handleRowOperation={handleRowOperation}
           edit={lineID === activeLineID}
           colWidth={colWidth}
+          footNoteData={footNoteData}
+          setFootnoteData={setFootnoteData}
         />
       </div>
     </section>
