@@ -2,10 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import TextField from 'apollo-react/components/TextField';
 import cloneDeep from 'lodash/cloneDeep';
-import {
-  blurFun,
-  feildChangeFun,
-} from './utilsCustomDropdown';
+import { blurFun, feildChangeFun } from './utilsCustomDropdown';
 import './CustomDropdown.scss';
 
 function CustomDropdown({
@@ -53,17 +50,18 @@ function CustomDropdown({
     setList(source);
   }, [source]);
 
- const regConstant = ['(', ')', '+', '[', ']', '*', '?', '|', '.', '$'];
- return value
-   .split('')
-   .map((val) => {
-     if (regConstant.includes(val)) {
-       return `\\${val}`;
-     }
-     return val;
-   })
-   .join('');
-
+  const getModifyString = (value) => {
+    const regConstant = ['(', ')', '+', '[', ']', '*', '?', '|', '.', '$'];
+    return value
+      .split('')
+      .map((val) => {
+        if (regConstant.includes(val)) {
+          return `\\${val}`;
+        }
+        return val;
+      })
+      .join('');
+  };
   const onTextFieldChange = (id, e, type) => {
     const customListTemp = cloneDeep(source);
     const str = getModifyString(e.target.value);
