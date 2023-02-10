@@ -1,13 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import Table from 'apollo-react/components/Table';
-import Trash from 'apollo-react-icons/Trash';
 import PropTypes from 'prop-types';
-import TextField from 'apollo-react/components/TextField/TextField';
-import IconButton from 'apollo-react/components/IconButton';
+import Modal from 'apollo-react/components/Modal';
 import Checkbox from 'apollo-react/components/Checkbox';
 import Plus from 'apollo-react-icons/Plus';
 import moment from 'moment';
-import CustomForm from './CustomForm';
+import { ValueField, InputKeyField } from './CustomForm';
 
 function Cell({ row, column }) {
   return (
@@ -17,68 +15,100 @@ function Cell({ row, column }) {
   );
 }
 
-function DeleteCell({ row }) {
-  return row?.isCustom ? (
-    <IconButton
-      onClick={() => {
-        row.deleteRow(row?.id);
-      }}
-    >
-      <Trash />
-    </IconButton>
-  ) : null;
-}
-
-const confidenceCol = { header: 'Confidence Score', accessor: 'confidence' };
-
 function EditableCell({ row, column: { accessor: key } }) {
-  const [val, setVal] = useState(row[key]);
-  const handleDataChange = (id, key, e) => {
-    setVal(e.target.value);
-  };
-  return key === 'name' || row?.isCustom || key === 'note' ? (
-    <TextField
-      size="small"
-      fullWidth
-      value={val}
-      onChange={(e) => {
-        handleDataChange(row.id, key, e);
-      }}
-      onBlur={() => row.editRow(row?.id, key, val)}
-      // error={!row[key]}
-      // helperText={!row[key]}
-    />
-  ) : (
-    row[key]
+  const [val, setVal] = useState(
+    row.attr_type === 'boolean' ? row[key]?.toString() : row[key],
   );
+  const [type, setType] = useState(row.attr_type || 'string');
+  const [dateValue, setDateValue] = useState(
+    row.attr_type === 'date' && row.attr_value ? moment(row.attr_value) : null,
+  );
+  const handleDataChange = (e) => {
+    if (e?.target?.name === 'attr_type') {
+      setType(e.target.value);
+    } else if (type !== 'date') {
+      setVal(e.target.value);
+    }
+  };
+
+  const handleDateChange = (value) => {
+    setDateValue(value);
+    row.handleChange(row.id, value, 'attr_value');
+  };
+
+  const deleteMetaData = () => {
+    row.handleDelete(row.id);
+  };
+
+  const handleBlur = (e) => {
+    row.handleChange(
+      row.id,
+      e.target.name === 'attr_type' ? type : val,
+      e.target.name === 'attr_type' ? 'attr_type' : key,
+    );
+  };
+
+  const renderKeyField = () => {
+    return row.isCustom ? (
+      <InputKeyField
+        keyName={key}
+        inputProps={{ 'data-testid': 'customeform-textField-text' }}
+        item={row}
+        inputValue={val}
+        handleChange={(e) => handleDataChange(e)}
+        handleBlur={(e) => handleBlur(e)}
+      />
+    ) : (
+      row[key]
+    );
+  };
+
+  const renderValueField = () => {
+    return key === 'attr_value' ||
+      (key === 'note' && row.fieldName !== 'summary') ||
+      row.isCustom ? (
+      <ValueField
+        item={row}
+        keyName={key}
+        type={type}
+        dateValue={dateValue}
+        setDateValue={setDateValue}
+        inputValue={val}
+        setType={setType}
+        handleDateChange={handleDateChange}
+        handleChange={(e) => handleDataChange(e)}
+        handleBlur={(e) => handleBlur(e)}
+        deleteMetaData={deleteMetaData}
+      />
+    ) : (
+      row[key] || ''
+    );
+  };
+
+  return key === 'attr_name' ? renderKeyField() : renderValueField();
 }
 
 function MetaDataEditTable({
-  metaDataList,
-  setMetaDataList,
   data,
-  updateRows,
-  deleteRows,
+  rows,
+  setRows,
+  deletedAttributes,
+  setDeletedAttributes,
 }) {
-  const { metaData } = data;
-  const [editedRow, setEditedRow] = useState({});
-  const [deletedRow, setDeletedRow] = useState({});
+  const { name } = data;
+  const [selectedId, setSelectedId] = useState(null);
+  const [isModal, setIsModal] = useState(false);
 
   const columns = [
     {
       header: 'Key',
-      accessor: 'header',
+      accessor: 'attr_name',
       customCell: EditableCell,
     },
     {
       header: 'Value',
-      accessor: 'name',
+      accessor: 'attr_value',
       customCell: EditableCell,
-    },
-    {
-      header: 'Delete',
-      accessor: 'isCustom',
-      customCell: DeleteCell,
     },
   ];
   const [column, setColumn] = useState(columns);
@@ -87,156 +117,110 @@ function MetaDataEditTable({
   const [note, setNote] = React.useState(false);
 
   const removeIndex = (key) => {
-    const columnTemp = [...column];
-    let index;
-    for (let i = 0; i < columnTemp.length; i++) {
-      if (Object.values(columnTemp[i])[0] === key) {
-        index = i;
-      }
-    }
+    setColumn(column.filter((col) => col.accessor !== key));
+  };
 
-    columnTemp.splice(index, 1);
-    setColumn(columnTemp);
-  };
-  const reArrangeColumn = (data) => {
-    let index;
-    for (let i = 0; i < data.length; i++) {
-      if (Object.values(data[i])[1] === 'isCustom') {
-        index = i;
-      }
-    }
-    const obj = data[index];
-    data.splice(index, 1);
-    data.push(obj);
-    setColumn(data);
-  };
   const handleConfidence = (e, checked) => {
     setConfidence(checked);
-    const columnTemp = [...column];
     if (checked) {
-      columnTemp.push(confidenceCol);
-      reArrangeColumn(columnTemp);
+      setColumn([
+        ...column,
+        {
+          header: 'Confidence Score',
+          accessor: 'confidence',
+        },
+      ]);
     } else {
-      removeIndex('Confidence Score');
+      removeIndex('confidence');
     }
   };
 
   const handleNotes = (e, checked) => {
     setNote(checked);
-    const columnTemp = [...column];
     if (checked) {
-      columnTemp.push({
-        header: 'Note',
-        accessor: 'note',
-        customCell: EditableCell,
-      });
-      reArrangeColumn(columnTemp);
+      setColumn([
+        ...column,
+        {
+          header: 'Notes',
+          accessor: 'note',
+          customCell: EditableCell,
+        },
+      ]);
     } else {
-      removeIndex('Note');
+      removeIndex('note');
     }
   };
-  const editRow = (id, key, value) => {
-    const filterRow = metaData.filter((row) => row?.id === id);
-    setEditedRow({
-      ...filterRow[0],
-      [key]: value,
-    });
+
+  const addNewRow = () => {
+    setRows((prevState) => ({
+      ...prevState,
+      [name]: [
+        ...prevState[name],
+        {
+          id: prevState[name].length + 1,
+          isCustom: true,
+          attr_name: '',
+          attr_value: '',
+          attr_type: '',
+        },
+      ],
+    }));
   };
 
-  const deleteRow = (id) => {
-    let index;
-    for (let i = 0; i < metaData.length; i++) {
-      if (metaData[i]?.id === id) {
-        index = i;
-      }
-    }
-    metaData.splice(index, 1);
-    setDeletedRow(metaData);
-  };
-
-  useEffect(() => {
-    deleteRows(deletedRow, data?.name);
-    // eslint-disable-next-line
-  }, [deletedRow]);
-
-  const addNewRow = (rowLength) => {
-    setMetaDataList({
-      ...metaDataList,
-      [data.name]: metaDataList[data.name]
-        ? [
-            ...metaDataList[data.name],
-            {
-              id: metaDataList[data.name].length + rowLength + 1,
-              isCustom: true,
-              header: '',
-              name: '',
-              type: '',
-            },
-          ]
-        : [
-            {
-              id: rowLength + 1,
-              isCustom: true,
-              header: '',
-              name: '',
-              type: '',
-            },
-          ],
-    });
-  };
-
-  const handleChange = (e, id) => {
-    setMetaDataList({
-      ...metaDataList,
-      [data.name]: metaDataList[data.name].map((list) =>
+  const handleChange = (id, value, keyName) => {
+    setRows((prevState) => ({
+      ...prevState,
+      [name]: prevState[name].map((list) =>
         list?.id === id
           ? {
               ...list,
-              [e.target.name]:
-                list?.type === 'Date' && e.target.name === 'name'
-                  ? moment(e.target.value).format('DD-MMM-YYYY')
-                  : e.target.value,
+              [keyName]:
+                list?.attr_type === 'date' && keyName === 'attr_value'
+                  ? // eslint-disable-next-line
+                    moment(value?._d).format('DD-MMM-YYYY')
+                  : value,
             }
           : list,
       ),
-    });
+    }));
   };
 
-  const deleteMetaData = (id) => {
-    setMetaDataList({
-      ...metaDataList,
-      [data.name]: metaDataList[data.name].filter((list) => list?.id !== id),
-    });
+  const handleDelete = (id) => {
+    setSelectedId(id);
+    setIsModal(true);
   };
 
-  useEffect(() => {
-    updateRows(editedRow, data?.name);
-    // eslint-disable-next-line
-  }, [editedRow]);
+  const removeData = () => {
+    const filterRows = rows[name].filter((list) => list.id === selectedId);
+    setDeletedAttributes([...deletedAttributes, filterRows[0].attr_name]);
+    setRows((prevState) => ({
+      ...prevState,
+      [name]: rows[name].filter((list) => list?.id !== selectedId),
+    }));
+  };
 
   const RenderTable = useMemo(() => {
     return (
-      <Table
-        data-testid="metadata-table"
-        className="table-panel"
-        columns={column}
-        rows={metaData?.map((row) => ({
-          ...row,
-          editRow,
-          deleteRow,
-          editedRow: row,
-          deletedRow: row,
-          setEditedRow,
-        }))}
-        rowId="id"
-        hidePagination
-        hasScroll
-        rowProps={{ hover: false }}
-        stripedRows
-      />
+      <span data-testid="metadata-table">
+        <Table
+          className="table-panel"
+          columns={column}
+          rows={rows[name]?.map((row) => ({
+            ...row,
+            handleChange,
+            handleDelete,
+            fieldName: name,
+          }))}
+          rowId="id"
+          hidePagination
+          hasScroll
+          rowProps={{ hover: false }}
+          stripedRows
+        />
+      </span>
     );
     // eslint-disable-next-line
-  }, [column, metaData?.length]);
+  }, [column, rows[name]?.length]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
@@ -259,33 +243,46 @@ function MetaDataEditTable({
         />
       </div>
       <div>{RenderTable}</div>
-      {metaDataList[data.name]?.map((list) => (
-        <CustomForm
-          data-testid="metadata-form"
-          key={list?.id}
-          item={list}
-          deleteMetaData={() => deleteMetaData(list?.id)}
-          handleChange={(e) => handleChange(e, list?.id)}
-        />
-      ))}
       <div className="iconDiv">
-        <div className="iconContainer">
-          <Plus
-            data-testid="metadata-add"
-            onClick={() => addNewRow(metaData.length)}
-          />
+        <div
+          className="iconContainer"
+          data-testid="metadata-add"
+          onClick={() => addNewRow()}
+          onKeyDown
+          role="presentation"
+        >
+          <Plus />
         </div>
+      </div>
+      <div className="modal">
+        <Modal
+          className="modal"
+          open={isModal}
+          onClose={() => setIsModal(false)}
+          title="Please confirm if you want to continue with deletion?"
+          buttonProps={[
+            { label: 'Cancel' },
+            {
+              label: 'Delete',
+              onClick: (e) => {
+                removeData(e);
+                setIsModal(false);
+              },
+            },
+          ]}
+          id="neutral"
+        />
       </div>
     </div>
   );
 }
 
 MetaDataEditTable.propTypes = {
-  metaDataList: PropTypes.isRequired,
-  setMetaDataList: PropTypes.isRequired,
   data: PropTypes.isRequired,
-  updateRows: PropTypes.isRequired,
-  deleteRows: PropTypes.isRequired,
+  rows: PropTypes.isRequired,
+  deletedAttributes: PropTypes.isRequired,
+  setDeletedAttributes: PropTypes.isRequired,
+  setRows: PropTypes.isRequired,
 };
 
 Cell.propTypes = {
@@ -295,8 +292,5 @@ Cell.propTypes = {
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
-};
-DeleteCell.propTypes = {
-  row: PropTypes.isRequired,
 };
 export default MetaDataEditTable;

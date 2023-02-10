@@ -11,6 +11,7 @@ export const httpCall = async (config) => {
     token = cookiesServer.get('api_token');
   }
   let headerConfig;
+
   if (config && config.headers) {
     headerConfig = {
       ...config,
@@ -22,13 +23,14 @@ export const httpCall = async (config) => {
       },
     };
   } else {
-      headerConfig = {
-        ...config,
-        headers: {
-          Authorization: config.auth ? config.auth : `Bearer ${token}`,
-        },
-      };
+    headerConfig = {
+      ...config,
+      headers: {
+        Authorization: config.auth ? config.auth : `Bearer ${token}`,
+      },
+    };
   }
+
   try {
     const response = await axios(headerConfig);
     if (response.status === 200) {
@@ -189,6 +191,7 @@ let backendPostHost;
 let baseUrlSSO;
 let UI_URL = '';
 let UIhost;
+
 /* eslint-enable */
 const environment = process.env.REACT_APP_ENV;
 if (environment === 'local') {
@@ -246,6 +249,7 @@ export const Apis = {
   HEADER_LIST: '/api/cpt_data',
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
   DOWNLOAD_API: '/api/download_file',
+  METADATA: '/pd/api/v1/documents',
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
   SAVE_SECTION_CONTENT: '/api/qc_ingest',
 };
