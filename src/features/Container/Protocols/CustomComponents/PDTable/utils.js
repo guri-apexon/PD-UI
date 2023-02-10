@@ -83,17 +83,21 @@ export const deleteColumn = (tabledata, index) => {
   return data;
 };
 
-export const dataUtilsFun = (
+export const dataUtilsFun = ({
   data,
   formattableData,
+  getIDs,
+  setTableId,
   setUpdatedData,
   setFootnoteData,
   setColumnLength,
   setColumnWidth,
-) => {
+}) => {
   if (data) {
     const parsedTable = JSON.parse(data.TableProperties);
     const formatData = formattableData(parsedTable);
+    const tableIds = getIDs(parsedTable[0]);
+    setTableId(tableIds?.tableRoiId);
     setUpdatedData(formatData);
     const footnoteArr = data.AttachmentListProperties || [];
     setFootnoteData(footnoteArr);

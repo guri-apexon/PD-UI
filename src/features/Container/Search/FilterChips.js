@@ -67,9 +67,7 @@ function FilterChip(props) {
 
   const renderDateType = (data) => {
     console.log(data);
-    if (data[0].value === 'approval_date') {
-      return <div />;
-    }
+   renderDateTypeUtilsFun(data);
     return (
       <div className="section">
         <label>Date Type :</label>

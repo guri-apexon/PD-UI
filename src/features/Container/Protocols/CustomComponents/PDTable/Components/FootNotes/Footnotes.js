@@ -15,6 +15,7 @@ function FootNotes({ footNoteData, edit, setFootnoteData, unitTesting }) {
           return (
             // eslint-disable-next-line
             <div
+              key={item}
               onClick={() => edit && setActiveLineID(index)}
               data-testId="footnote-edit"
             >
@@ -34,6 +35,7 @@ function FootNotes({ footNoteData, edit, setFootnoteData, unitTesting }) {
             </div>
           );
         }
+        return false;
       })}
     </div>
   );
