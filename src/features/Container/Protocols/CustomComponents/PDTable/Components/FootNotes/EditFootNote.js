@@ -3,7 +3,6 @@ import ContentEditable from 'react-contenteditable';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { QC_CHANGE_TYPE } from '../../../../../../../AppConstant/AppConstant';
-import { setFootnoteDataUtilsFun } from './utilsFootNotes';
 
 function EditFootNote({
   item,

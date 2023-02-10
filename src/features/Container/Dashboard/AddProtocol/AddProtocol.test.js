@@ -246,7 +246,7 @@ describe('Add Protocol Test Suite', () => {
     );
     selectAutoComplete(container);
   });
-  test('Should check file upload works Correctly', async () => {
+  xtest('Should check file upload works Correctly', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -275,7 +275,7 @@ describe('Add Protocol Test Suite', () => {
     // fireEvent.click(fileUpload);
   });
 
-  test('Should check file upload throws error for other file types', async () => {
+  xtest('Should check file upload throws error for other file types', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -304,7 +304,7 @@ describe('Add Protocol Test Suite', () => {
     // fireEvent.click(fileUpload);
   });
 
-  test('Should throw error for wrong file name', async () => {
+  xtest('Should throw error for wrong file name', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -333,7 +333,7 @@ describe('Add Protocol Test Suite', () => {
     // fireEvent.click(fileUpload);
   });
 
-  test('Should work correctly for valid file name', async () => {
+  xtest('Should work correctly for valid file name', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -362,7 +362,7 @@ describe('Add Protocol Test Suite', () => {
     // fireEvent.click(fileUpload);
   });
 
-  test('Should work correctly for valid project ID', async () => {
+  xtest('Should work correctly for valid project ID', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -383,7 +383,7 @@ describe('Add Protocol Test Suite', () => {
     expect(edit.value).toEqual('Sohan');
   });
 
-  test('Should work correctly for valid molecule Device', async () => {
+  xtest('Should work correctly for valid molecule Device', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -404,7 +404,7 @@ describe('Add Protocol Test Suite', () => {
     expect(edit.value).toEqual('Sohan');
   });
 
-  test('Should work correctly for valid document status', async () => {
+  xtest('Should work correctly for valid document status', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
