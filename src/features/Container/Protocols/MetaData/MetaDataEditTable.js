@@ -6,7 +6,11 @@ import Checkbox from 'apollo-react/components/Checkbox';
 import Plus from 'apollo-react-icons/Plus';
 import moment from 'moment';
 import { ValueField, InputKeyField } from './CustomForm';
-import { handleDataChangeFun } from './utilFunction';
+import {
+  formatDateValue,
+  formatRowValue,
+  handleDataChangeFun,
+} from './utilFunction';
 
 function Cell({ row, column }) {
   return (
@@ -17,13 +21,11 @@ function Cell({ row, column }) {
 }
 
 function EditableCell({ row, column: { accessor: key } }) {
-  const rowCnst = row.attr_type === 'boolean' ? row[key]?.toString() : row[key];
-  const [val, setVal] = useState(rowCnst);
+  const [val, setVal] = useState(formatRowValue(row, key));
+  console.log('cal', val);
   const [type, setType] = useState(row.attr_type || 'string');
-  const dateCnst =
-    row.attr_type === 'date' && row.attr_value ? moment(row.attr_value) : null;
 
-  const [dateValue, setDateValue] = useState(dateCnst);
+  const [dateValue, setDateValue] = useState(formatDateValue(row, moment));
   const handleDataChange = (e) => {
     handleDataChangeFun(e, setType, type, setVal);
   };

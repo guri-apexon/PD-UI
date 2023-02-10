@@ -216,6 +216,18 @@ export const apiResponseFun = (
   }
 };
 
+export function formatRowValue(row, key) {
+  if (row.attr_type === 'boolean') {
+    return row[key] ? row[key].toString() : row[key];
+  }
+  return row[key];
+}
+export function formatDateValue(row, moment) {
+  if (row.attr_type === 'date' && row.attr_value) {
+    return moment(row.attr_value);
+  }
+  return null;
+}
 export const handleSaveFun = (
   accData,
   rows,
