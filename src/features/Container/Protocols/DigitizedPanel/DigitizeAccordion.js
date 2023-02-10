@@ -312,6 +312,7 @@ function DigitizeAccordion({
                     <DisplayTable
                       key={React.key}
                       data={JSON.parse(section.content.TableProperties)}
+                      footNoteData={section?.content?.AttachmentListProperties}
                       colWidth={100}
                     />
                   );

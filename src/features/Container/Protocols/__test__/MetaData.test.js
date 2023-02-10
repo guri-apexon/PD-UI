@@ -130,9 +130,7 @@ describe('MetaData AccordianView', () => {
   });
   test('MetaData Click', () => {
     const screen = render(<MetaData />, { initialState });
-    console.log('intial', initialState);
     const metadataAccordian = screen.getAllByTestId('metadataaccordian');
-    screen.debug();
     fireEvent.click(screen.getAllByTestId('meta-item-accordion')[0]);
     fireEvent.click(screen.getAllByTestId('meta-item-accordion')[1]);
     fireEvent.click(screen.getAllByTestId('metadataplus')[0]);
