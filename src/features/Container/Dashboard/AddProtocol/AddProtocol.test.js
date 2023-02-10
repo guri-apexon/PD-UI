@@ -30,7 +30,7 @@ const dashboardmockData = {
 };
 
 describe('Add Protocol Test Suite', () => {
-  xtest('Should render AddProtocol Component', async () => {
+  test('Should render AddProtocol Component', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const { getByTestId, getByText } = render(
@@ -52,7 +52,7 @@ describe('Add Protocol Test Suite', () => {
     getByText('Add Protocol to Library');
     fireEvent.click(getByTestId('add-protocol-button'));
   });
-  xtest('Should render AddProtocol Component without Modal', async () => {
+  test('Should render AddProtocol Component without Modal', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const { getByTestId } = render(
@@ -88,7 +88,7 @@ describe('Add Protocol Test Suite', () => {
     );
     fireEvent.click(getByTestId('add-protocol-button'));
   });
-  xtest('Should call onModalClose Function', async () => {
+  test('Should call onModalClose Function', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const { getByTestId } = render(
@@ -128,7 +128,7 @@ describe('Add Protocol Test Suite', () => {
     fireEvent.click(modal);
   });
 
-  xtest('Should render AddProtocol Component with Modal', async () => {
+  test('Should render AddProtocol Component with Modal', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -184,7 +184,7 @@ describe('Add Protocol Test Suite', () => {
     // fireEvent.focus(protcolNumber);
     // fireEvent.blur(protcolNumber, {target:{value:'aa'}});
   });
-  xtest('Should Save Post Correctly', async () => {
+  test('Should Save Post Correctly', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -207,7 +207,7 @@ describe('Add Protocol Test Suite', () => {
         .children[2].children[0].children[1];
     fireEvent.click(savemodal);
   });
-  xtest('Should render AutoComplete Correctly', async () => {
+  test('Should render AutoComplete Correctly', async () => {
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
     const mockDispatchFn = jest.fn();
     useDispatchSpy.mockReturnValue(mockDispatchFn);
@@ -246,7 +246,7 @@ describe('Add Protocol Test Suite', () => {
     );
     selectAutoComplete(container);
   });
-  xtest('Should check file upload works Correctly', async () => {
+  test('Should check file upload works Correctly', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -275,7 +275,7 @@ describe('Add Protocol Test Suite', () => {
     // fireEvent.click(fileUpload);
   });
 
-  xtest('Should check file upload throws error for other file types', async () => {
+  test('Should check file upload throws error for other file types', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -304,7 +304,7 @@ describe('Add Protocol Test Suite', () => {
     // fireEvent.click(fileUpload);
   });
 
-  xtest('Should throw error for wrong file name', async () => {
+  test('Should throw error for wrong file name', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -333,7 +333,7 @@ describe('Add Protocol Test Suite', () => {
     // fireEvent.click(fileUpload);
   });
 
-  xtest('Should work correctly for valid file name', async () => {
+  test('Should work correctly for valid file name', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -362,7 +362,7 @@ describe('Add Protocol Test Suite', () => {
     // fireEvent.click(fileUpload);
   });
 
-  xtest('Should work correctly for valid project ID', async () => {
+  test('Should work correctly for valid project ID', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -383,7 +383,7 @@ describe('Add Protocol Test Suite', () => {
     expect(edit.value).toEqual('Sohan');
   });
 
-  xtest('Should work correctly for valid molecule Device', async () => {
+  test('Should work correctly for valid molecule Device', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -404,7 +404,7 @@ describe('Add Protocol Test Suite', () => {
     expect(edit.value).toEqual('Sohan');
   });
 
-  xtest('Should work correctly for valid document status', async () => {
+  test('Should work correctly for valid document status', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
     const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
@@ -436,7 +436,6 @@ function selectAutoComplete(Container) {
   fireEvent.keyDown(autocompleteDocumentStatus, { key: 'ArrowDown' });
   fireEvent.keyDown(autocompleteDocumentStatus, { key: 'ArrowDown' });
   fireEvent.keyDown(autocomplete, { key: 'Enter' });
-  // console.log('inputDocStatus :', inputDocStatus);
   fireEvent.focusOut(inputDocStatus, { target: { value: 'Approved Final' } });
 
   fireEvent.change(input, { target: { value: 'y' } });

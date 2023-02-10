@@ -25,10 +25,6 @@ import CustomDropdown from '../../../Components/CustomDropdown/CustomDropdown';
 import Loader from '../../../Components/Loader/Loader';
 import CustomFileUpload from './CustomFileUpload';
 import { messages } from '../../../../AppConstant/AppConstant';
-import {
-  formValuesUtilsFun,
-  formValuesUtilsFunction,
-} from './utilsAddProtocols';
 
 const versionRegx = /^[a-zA-Z0-9\s-._ ]*$/;
 const versionErrText = messages.versionMessage.validationMessage;
@@ -80,6 +76,7 @@ function AddProtocol() {
   const onTextFieldChange = (fieldName, e, fieldType, dropdownValue) => {
     const tempError = cloneDeep(formErrorValues);
     const tempValues = cloneDeep(formValues);
+    //  console.log("dashboardData1 :", fieldName, 'e, fieldType', dropdownValue );
     if (fieldType === 'Textbox') {
       if (
         formErrorValues[fieldName].isRequired &&
@@ -93,6 +90,8 @@ function AddProtocol() {
       }
       if (formErrorValues[fieldName].regex && e.target.value.length > 0) {
         const reg = formErrorValues[fieldName].regex;
+        // let reg = new RegExp(formErrorValues[fieldName].regex);
+        // let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
         const isNumber = versionRegx.test(e.target.value);
         if (isNumber && reg.test(parseFloat(e.target.value))) {
           tempValues[fieldName] = e.target.value;
@@ -145,58 +144,26 @@ function AddProtocol() {
         tempError[fieldName].error = false;
         tempError[fieldName].errorMessage = '';
         tempValues[fieldName] = dropdownValue || { label: '' };
+        // console.log("valuessssss :", tempValues.amendmentNumber, "temppp");
         setFormValues(tempValues);
+        // DropDown logic changes start
         valueTemp[fieldName] = dropdownValue;
       } else {
-        if (!dropdownFocus.length > 0) {
+        if (
+          !dropdownFocus.length > 0
+          // && formValues[fieldName].label && formValues[fieldName].label.length
+        ) {
           valueTemp[fieldName] = { label: '' };
         }
+        // DropDown logic changes Ends
       }
       setFormErrorValues(tempError);
     }
   };
 
-  const onFieldBlurDropdown = (fieldName, e, fieldType) => {
-    const temp = cloneDeep(formErrorValues);
-    const temp2 = cloneDeep(valueTemp);
-    if (fieldType === 'Dropdown') {
-      if (!dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
-        if (fieldName === 'amendmentNumber') {
-          temp.versionNumber.error = false;
-          temp.versionNumber.errorMessage = ' ';
-        }
-        temp[fieldName].error = true;
-        temp[fieldName].errorMessage = 'Required';
-        if (temp2[fieldName].label && temp2[fieldName].label.length > 0) {
-          temp[fieldName].error = false;
-          temp[fieldName].errorMessage = ' ';
-        }
-      } else {
-        temp[fieldName].error = false;
-        temp[fieldName].errorMessage = ' ';
-      }
-      dropdownFocus = '';
-      setFormErrorValues(temp);
-    }
-  };
-
-  const onFieldBlurCustomDropdown = (fieldName, e, fieldType) => {
-    const temp = cloneDeep(formErrorValues);
-    if (fieldType === 'CustomDropdown') {
-      if (!e.length > 0 && formErrorValues[fieldName].isRequired) {
-        temp[fieldName].error = true;
-        temp[fieldName].errorMessage = 'Select or Add';
-      } else {
-        temp[fieldName].error = false;
-        temp[fieldName].errorMessage = ' ';
-      }
-      dropdownFocus = '';
-      setFormErrorValues(temp);
-    }
-  };
-
   const onFieldBlur = (fieldName, e, fieldType) => {
     const temp = cloneDeep(formErrorValues);
+    const temp2 = cloneDeep(valueTemp);
     if (fieldType === 'Textbox') {
       if (
         !e.target.value.trim().length > 0 &&
@@ -214,27 +181,63 @@ function AddProtocol() {
         e.target.value.trim().length > 0
       ) {
         const reg = formErrorValues[fieldName].regex;
+        // let reg = new RegExp(formErrorValues[fieldName].regex);
+        // let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
         const isNumber = versionRegx.test(e.target.value);
         if (isNumber && reg.test(parseFloat(e.target.value))) {
           temp[fieldName].error = false;
           temp[fieldName].errorMessage = ' ';
         } else {
           temp[fieldName].error = true;
+          // temp[fieldName].errorMessage =
+          //   "Does not Match, Positive and upto 2 Decimals only";
           temp[fieldName].errorMessage = versionErrText;
         }
       }
       setFormErrorValues(temp);
     }
-    onFieldBlurDropdown(fieldName, e, fieldType);
-    onFieldBlurCustomDropdown(fieldName, e, fieldType);
+    if (fieldType === 'Dropdown') {
+      if (!dropdownFocus.length > 0 && formErrorValues[fieldName].isRequired) {
+        if (fieldName === 'amendmentNumber') {
+          temp.versionNumber.error = false;
+          temp.versionNumber.errorMessage = ' ';
+        }
+        temp[fieldName].error = true;
+        temp[fieldName].errorMessage = 'Required';
+        // DropDown logic changes start
+        if (temp2[fieldName].label && temp2[fieldName].label.length > 0) {
+          temp[fieldName].error = false;
+          temp[fieldName].errorMessage = ' ';
+        }
+        // DropDown logic changes start
+      } else {
+        temp[fieldName].error = false;
+        temp[fieldName].errorMessage = ' ';
+      }
+      dropdownFocus = '';
+      setFormErrorValues(temp);
+    }
+    if (fieldType === 'CustomDropdown') {
+      if (!e.length > 0 && formErrorValues[fieldName].isRequired) {
+        temp[fieldName].error = true;
+        temp[fieldName].errorMessage = 'Select or Add';
+      } else {
+        temp[fieldName].error = false;
+        temp[fieldName].errorMessage = ' ';
+      }
+      dropdownFocus = '';
+      setFormErrorValues(temp);
+    }
   };
   const handleFileUploadError = (msg, err, fieldName) => {
+    // console.log("file uplaod called error");
     const tempError = cloneDeep(formErrorValues);
     tempError[fieldName].error = err;
     tempError[fieldName].errorMessage = msg;
     setFormErrorValues(tempError);
   };
   const setUploadFile = (file, fieldName) => {
+    // console.log("file uplaod called");
     const tempValue = cloneDeep(formValues);
     tempValue[fieldName] = file;
     setFormValues(tempValue);
@@ -355,7 +358,7 @@ function AddProtocol() {
     return (
       <ul className="version-validation">
         {arr.map((item) => (
-          <li key={item}>{item}</li>
+          <li>{item}</li>
         ))}
       </ul>
     );
@@ -429,6 +432,7 @@ function AddProtocol() {
                 }}
                 data-testid="amendment-number-texfield"
               />
+              {/* <Auto /> */}
             </div>
           </Grid>
           <Grid item xs={1} sm={1} />
@@ -473,7 +477,20 @@ function AddProtocol() {
               required={formErrorValues.versionNumber.isRequired}
               onChange={(e) => onTextFieldChange('versionNumber', e, 'Textbox')}
               onBlur={(e) => onFieldBlur('versionNumber', e, 'Textbox')}
+              // type="number"
               data-testid="version-number-texfield"
+              // icon={
+              //   <Tooltip
+              //     variant="light"
+              //     title={messages.versionMessage.heading}
+              //     subtitle={getSubTitle(messages.versionMessage.infoMessage)}
+              //     placement="left"
+              //   >
+              //     <IconButton color="grey" size="small">
+              //       <InfoIcon size="small" />
+              //     </IconButton>
+              //   </Tooltip>
+              // }
             />
           </Grid>
           <Grid item xs={1} sm={1} />
@@ -495,7 +512,9 @@ function AddProtocol() {
                   fullWidth
                   fieldType="CustomDropdown"
                   fieldName="sponsor"
-                  formValue={formValuesUtilsFun(formValues, emptyAutoObj)}
+                  formValue={
+                    formValues.sponsor ? formValues.sponsor : emptyAutoObj
+                  }
                   helperText={formErrorValues.sponsor.errorMessage.trim()}
                   error={formErrorValues.sponsor.error}
                   required={formErrorValues.sponsor.isRequired}
@@ -551,7 +570,9 @@ function AddProtocol() {
                   fullWidth
                   fieldType="CustomDropdown"
                   fieldName="indication"
-                  formValue={formValuesUtilsFunction(formValues, emptyAutoObj)}
+                  formValue={
+                    formValues.indication ? formValues.indication : emptyAutoObj
+                  }
                   helperText={formErrorValues.indication.errorMessage.trim()}
                   error={formErrorValues.indication.error}
                   required={formErrorValues.indication.isRequired}
