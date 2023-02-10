@@ -11,21 +11,6 @@ const SendFootnoteData = jest.fn();
 const content = 'Hello, Text!';
 
 describe('EditFootNote', () => {
-  // it('renders correctly', () => {
-  //   const { getByTestId } = render(
-  //     <EditFootNote
-  //       item={{ AttachmentId: '123' }}
-  //       index={0}
-  //       content="Sample 1"
-  //       edit
-  //       footNoteData={sampleFootNoteData}
-  //       setFootnoteData={SendFootnoteData}
-  //     />,
-  //   );
-
-  //   expect(getByTestId('content-edit')).toHaveTextContent('Sample 1');
-  // });
-
   it('Add new footnote and setFootnoteData on blur', async () => {
     const newContent = 'Hi, there!';
     const { getByText, queryByText } = render(
@@ -42,7 +27,6 @@ describe('EditFootNote', () => {
     const contentNode = getByText(content);
     fireEvent.click(contentNode);
     const contentEditable = contentNode.closest('[contenteditable]');
-    // fireEvent.focus(contentEditable);
     await fireEvent.input(contentEditable, {
       target: { innerHTML: newContent },
     });
@@ -71,7 +55,6 @@ describe('EditFootNote', () => {
     const contentNode = getByText(content);
     fireEvent.click(contentNode);
     const contentEditable = contentNode.closest('[contenteditable]');
-    // fireEvent.focus(contentEditable);
     fireEvent.input(contentEditable, {
       target: { innerHTML: newContent },
     });
@@ -104,7 +87,6 @@ describe('EditFootNote', () => {
     const contentNode = getByText(content);
     fireEvent.click(contentNode);
     const contentEditable = contentNode.closest('[contenteditable]');
-    // fireEvent.focus(contentEditable);
     await fireEvent.input(contentEditable, {
       target: { innerHTML: newContent },
     });
