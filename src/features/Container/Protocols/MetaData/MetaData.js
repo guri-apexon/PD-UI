@@ -20,6 +20,8 @@ import {
   metaParamResultAndAccordian,
   apiResponseFun,
   handleSaveFun,
+  handleLevelOne,
+  checkNameFunction,
 } from './utilFunction';
 
 function MetaData() {
@@ -61,12 +63,7 @@ function MetaData() {
   };
   const docIdConst = '0be44992-9573-4010-962c-de1a1b18b08d';
   const addToAccordion = (name) => {
-    const checkNameFunction = () => {
-      if (name === 'summary') {
-        return 'summary_extended';
-      }
-      return name;
-    };
+    checkNameFunction(name);
     const checkName = checkNameFunction();
     dispatch({
       type: 'ADD_METADATA_FIELD',
@@ -321,7 +318,7 @@ function MetaData() {
       ) : (
         <div className="_meta_data-boarder">
           {Object?.entries(accordianData || {}).map(([key, value]) => {
-            return value.level === 1 && accGenerator(key, value);
+            return handleLevelOne(key, value, accGenerator);
           })}
         </div>
       )}

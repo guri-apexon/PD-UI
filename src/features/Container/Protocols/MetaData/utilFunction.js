@@ -228,6 +228,13 @@ export function formatDateValue(row, moment) {
   }
   return null;
 }
+export function handleLevelOne(key, value, accGenerator) {
+  if (value.level === 1) {
+    accGenerator(key, value);
+  }
+}
+export const checkNameFunction = (name) =>
+  name === 'summary' ? 'summary_extended' : name;
 export const handleSaveFun = (
   accData,
   rows,
