@@ -1,10 +1,23 @@
 import { render, fireEvent, screen } from '@testing-library/react';
+import { QC_CHANGE_TYPE } from '../../../../../../../../AppConstant/AppConstant';
 import EditFootNote from '../EditFootNote';
 
 const sampleFootNoteData = [
-  { Text: 'Sample 1', AttachmentId: '123', qc_change_type_footnote: 'modify' },
-  { Text: 'Sample 2', AttachmentId: '456', qc_change_type_footnote: 'modify' },
-  { Text: 'Sample 1', AttachmentId: null, qc_change_type_footnote: 'add' },
+  {
+    Text: 'Sample 1',
+    AttachmentId: '123',
+    qc_change_type_footnote: QC_CHANGE_TYPE.UPDATED,
+  },
+  {
+    Text: 'Sample 2',
+    AttachmentId: '456',
+    qc_change_type_footnote: QC_CHANGE_TYPE.UPDATED,
+  },
+  {
+    Text: 'Sample 1',
+    AttachmentId: null,
+    qc_change_type_footnote: QC_CHANGE_TYPE.ADDED,
+  },
 ];
 
 const SendFootnoteData = jest.fn();
@@ -66,7 +79,7 @@ describe('EditFootNote', () => {
     result[0] = {
       Text: '',
       AttachmentId: '123',
-      qc_change_type_footnote: 'delete',
+      qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
     };
     expect(SendFootnoteData).toHaveBeenCalledWith(result);
   });

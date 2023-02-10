@@ -1,4 +1,5 @@
 import { render, fireEvent } from '@testing-library/react';
+import { QC_CHANGE_TYPE } from '../../../../../../../../AppConstant/AppConstant';
 import FootNotes from '../Footnotes';
 
 const footNoteData = [
@@ -10,7 +11,7 @@ const footNoteData = [
   {
     AttachmentId: '2',
     Text: 'Footnote 2',
-    qc_change_type_footnote: 'delete',
+    qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
   },
   {
     AttachmentId: '3',
