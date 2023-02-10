@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
+import { QC_CHANGE_TYPE } from '../../../../../../../AppConstant/AppConstant';
 
 function EditFootNote({
   item,
@@ -25,7 +26,7 @@ function EditFootNote({
               return {
                 ...item,
                 Text: textData || '',
-                qc_change_type_footnote: 'delete',
+                qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
               };
             }
             return item;
@@ -42,7 +43,9 @@ function EditFootNote({
               ...item,
               Text: textData,
               AttachmentId: item?.AttachmentId || '',
-              qc_change_type_footnote: item?.AttachmentId ? 'modify' : 'add',
+              qc_change_type_footnote: item?.AttachmentId
+                ? QC_CHANGE_TYPE.UPDATED
+                : QC_CHANGE_TYPE.ADDED,
             };
           }
           return item;
