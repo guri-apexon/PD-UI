@@ -1,4 +1,11 @@
-import { useState, createRef, useEffect, useMemo } from 'react';
+import {
+  useState,
+  createRef,
+  useEffect,
+  useMemo,
+  useReducer,
+  useCallback,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { viewResult, headerResult, updateSectionData } from './protocolSlice';
@@ -14,11 +21,10 @@ function ProtocolView({ refs, data }) {
   const [selectedSection, setSelectedSection] = useState(null);
   const [sectionContent, setSectionContent] = useState(null);
 
-  // eslint-disable-next-line
-  const dispatchSectionEvent = (actionType, payload) => {
-    console.log('dispatchSectionEvent', actionType, payload);
-    switch (actionType) {
-      case 'ON_SECTION_SELECT': {
+  const loadUsersReducer = (state, action) => {
+    const { payload, type } = action;
+    switch (type) {
+      case 'ON_SECTION_SELECT':
         if (!payload.sectionContent && sectionContent) {
           dispatch(
             updateSectionData({
@@ -33,17 +39,15 @@ function ProtocolView({ refs, data }) {
           payload.sectionContent ? [...payload.sectionContent] : null,
         );
         break;
-      }
-      case 'CONTENT_UPDATE': {
-        const content = prepareContent({
-          ...payload,
-          type: 'MODIFY',
-          sectionContent,
+      case 'CONTENT_UPDATE':
+        setSectionContent((prevState) => {
+          return prepareContent({
+            ...payload,
+            type: 'MODIFY',
+            sectionContent: prevState,
+          });
         });
-        console.log('CONTENT_UPDATE', content);
-        setSectionContent(content);
         break;
-      }
       case 'CONTENT_DELETED': {
         const content = prepareContent({
           ...payload,
@@ -89,17 +93,27 @@ function ProtocolView({ refs, data }) {
         break;
       }
       default:
-        break;
+        return state;
     }
+    return state;
   };
+  const mainReducer = (data, action) => ({
+    data: loadUsersReducer(data, action),
+  });
+
+  const [protocolState, dispatchState] = useReducer(mainReducer, null);
+
+  const dispatchSectionEvent = useCallback((actionType, payload) => {
+    dispatchState({ type: actionType, payload });
+  }, []);
   const ProtocolProviderValue = useMemo(
     () => ({
       selectedSection,
       sectionContent,
       dispatchSectionEvent,
-      setSectionContent,
+      protocolState,
     }),
-    [selectedSection, sectionContent, dispatchSectionEvent, setSectionContent],
+    [selectedSection, sectionContent, dispatchSectionEvent, protocolState],
   );
 
   const panels = () => {
