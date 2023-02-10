@@ -5,6 +5,7 @@ import './filterchips.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { range } from './searchSlice';
 import { formatESDate } from '../../../utils/utilFunction';
+import { renderDateSectionUtilsFun } from './utilsSearch';
 
 const removeByAttr = function (arr, attr, value) {
   let i = arr.length;
@@ -43,9 +44,7 @@ function FilterChip(props) {
   };
   const renderDateSection = (data) => {
     console.log(data);
-    if (data[0].value === '0') {
-      return <div />;
-    }
+    renderDateSectionUtilsFun(data);
     return (
       <div className="section">
         <label>Date Range :</label>
