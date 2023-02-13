@@ -194,14 +194,15 @@ function DigitizeAccordion({
     if (!reqBody.length) {
       toast.error('Please do changes before submit');
     } else {
-      // dispatch({
-      //   type: 'UPDATE_SECTION_DATA',
-      //   payload: { reqBody },
-      // });
+      dispatch({
+        type: 'UPDATE_SECTION_DATA',
+        payload: { reqBody },
+      });
     }
   };
 
   useEffect(() => {
+    console.log('sectionHeaderDetails::', sectionHeaderDetails);
     setShowLoader(sectionHeaderDetails.sectionLoading);
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);

@@ -26,7 +26,7 @@ import {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
-  toggleSectionLoader,
+  updateSectionResp,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -228,23 +228,11 @@ export function* updateSectionData(action) {
     method: 'POST',
     data: reqBody,
   };
-  yield put(toggleSectionLoader());
   const sectionSaveRes = yield call(httpCall, config);
   console.log('sectionSaveRes::', sectionSaveRes);
-  if (sectionSaveRes.data.success) {
-    yield put(toggleSectionLoader());
-    // dispatch({
-    //   type: 'GET_SECTION_LIST',
-    //   payload: {
-    //     linkId: item.link_id,
-    //     docId: item.doc_id,
-    //     protocol,
-    //   },
-    // });
-    // getSectionList
-    // yield put(updateSection(header));
+  if (sectionSaveRes?.data?.success) {
+    yield put(updateSectionResp({ response: sectionSaveRes.data }));
   } else {
-    // yield put(getHeaderList({ success: false, data: [] }));
     toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
   }
 }
