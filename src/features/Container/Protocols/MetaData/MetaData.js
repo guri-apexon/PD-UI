@@ -3,8 +3,7 @@ import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
 import { useDispatch, useSelector } from 'react-redux';
-import isEmpty from 'lodash/isEmpty';
-import difference from 'lodash/difference';
+import { isEmpty, difference } from 'lodash';
 import './MetaData.scss';
 import Accordian from './Accordian';
 import {
