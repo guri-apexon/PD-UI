@@ -68,42 +68,8 @@ function ImageUploader({ lineID, content, edit }) {
     setImgBkp(null);
   };
 
-  // eslint-disable-next-line
-  return edit ? (
-    isEdit ? (
-      <div className="img-container" data-testId="file-upload">
-        <div className="btn-container">
-          <Button variant="secondary" size="small" onClick={handleCancel}>
-            Cancel
-          </Button>
-
-          <Button
-            variant="primary"
-            size="small"
-            onClick={handleSave}
-            disabled={value.length === 0}
-          >
-            Save
-          </Button>
-        </div>
-
-        {img === '' && value.length === 0 ? (
-          <FileUpload
-            label=""
-            required
-            value={value}
-            maxItems={1}
-            onUpload={handleUpload}
-            onFileDelete={handleDelete}
-            data-testId="file-upload"
-          />
-        ) : (
-          <div>
-            <img src={img} alt="img" className="rich-text-img" />
-          </div>
-        )}
-      </div>
-    ) : (
+  const imgPreview = () => {
+    return (
       // eslint-disable-next-line
       <div
         className="img-container-read-mode"
@@ -159,14 +125,58 @@ function ImageUploader({ lineID, content, edit }) {
           </div>
         )}
       </div>
-    )
-  ) : (
-    img && (
-      <div className="img-container-read-mode" data-testId="readmode-img">
-        <img src={img} alt="img" className="rich-text-img" />
+    );
+  };
+
+  const uploadView = () => {
+    return (
+      <div className="img-container" data-testId="file-upload">
+        <div className="btn-container">
+          <Button variant="secondary" size="small" onClick={handleCancel}>
+            Cancel
+          </Button>
+
+          <Button
+            variant="primary"
+            size="small"
+            onClick={handleSave}
+            disabled={value.length === 0}
+          >
+            Save
+          </Button>
+        </div>
+
+        {img === '' && value.length === 0 ? (
+          <FileUpload
+            label=""
+            required
+            value={value}
+            maxItems={1}
+            onUpload={handleUpload}
+            onFileDelete={handleDelete}
+            data-testId="file-upload"
+          />
+        ) : (
+          <div>
+            <img src={img} alt="img" className="rich-text-img" />
+          </div>
+        )}
       </div>
-    )
-  );
+    );
+  };
+
+  const editView = () => {
+    return isEdit ? uploadView() : imgPreview();
+  };
+
+  // eslint-disable-next-line
+  return edit
+    ? editView()
+    : img && (
+        <div className="img-container-read-mode" data-testId="readmode-img">
+          <img src={img} alt="img" className="rich-text-img" />
+        </div>
+      );
 }
 
 export default ImageUploader;
