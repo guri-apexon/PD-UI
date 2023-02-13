@@ -109,10 +109,8 @@ function MedicalTerm({
     if (newTermValue === '') {
       return false;
     }
-
     if (!childTermValue || !selectedTerm) return false;
     const temp = [...childArr];
-
     const newArr = temp.map((x) => {
       if (x === childTermValue) {
         return newTermValue;
@@ -120,7 +118,6 @@ function MedicalTerm({
       return x;
     });
     setTempChild(newArr);
-
     setChildTermValue(null);
     let name;
     if (selectedTerm === 'synonyms') name = 'entity_xref';
@@ -135,7 +132,6 @@ function MedicalTerm({
       ontology: ontologyTemp,
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
-
     dispatch({
       type: 'SAVE_ENRICHED_DATA',
       payload: {
@@ -171,24 +167,23 @@ function MedicalTerm({
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
           <div className="terms-list">
-            {clinicalTerms.map((item) => {
-              const isActive = selectedTerm === item.key;
-              return (
-                <li key={item}>
-                  <Button
-                    data-testId="handleSave"
-                    className="term-item"
-                    onClick={(e) => {
-                      setSelectedTerm(item.key);
-                      setSAnchorEl(!SanchorEl ? e.currentTarget : null);
-                    }}
-                  >
-                    {item.value}
-                    {isActive && childArr.length > 0 && <ArrowRight />}
-                  </Button>
-                </li>
-              );
-            })}
+            {clinicalTerms.map((item) => (
+              <li key={item}>
+                <Button
+                  data-testId="handleSave"
+                  className="term-item"
+                  onClick={(e) => {
+                    setSelectedTerm(item.key);
+                    setSAnchorEl(!SanchorEl ? e.currentTarget : null);
+                  }}
+                >
+                  {item.value}
+                  {selectedTerm === item.key && childArr.length > 0 && (
+                    <ArrowRight />
+                  )}
+                </Button>
+              </li>
+            ))}
           </div>
         </Card>
       </Popper>
@@ -201,22 +196,20 @@ function MedicalTerm({
         <Card interactive className="sub-popper">
           {childArr.length > 0 && (
             <div className="terms-list">
-              {childArr?.map((item) => {
-                return (
-                  <li key={item}>
-                    <Button value={item} className="term-item">
-                      <span className="sub-term-text">{item}</span>
-                      <Pencil
-                        className="edit-Icon"
-                        data-testid="update-term-trigger"
-                        onClick={() => {
-                          setChildTermValue(item);
-                        }}
-                      />
-                    </Button>
-                  </li>
-                );
-              })}
+              {childArr?.map((item) => (
+                <li key={item}>
+                  <Button value={item} className="term-item">
+                    <span className="sub-term-text">{item}</span>
+                    <Pencil
+                      className="edit-Icon"
+                      data-testid="update-term-trigger"
+                      onClick={() => {
+                        setChildTermValue(item);
+                      }}
+                    />
+                  </Button>
+                </li>
+              ))}
             </div>
           )}
         </Card>
