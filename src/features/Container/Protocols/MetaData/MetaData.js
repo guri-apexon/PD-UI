@@ -13,7 +13,6 @@ import {
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
 import {
-  flattenMetaParam,
   apiResponseFun,
   handleSaveFun,
   metaParamResultAndAccordian,
@@ -42,19 +41,17 @@ function MetaData() {
   };
 
   const setSubSuggestions = (data) => {
-    if (metaParams?.[data.name]?.dropDownList.length > 0) {
-      const filterItems = difference(
-        metaParams?.[data.name]?.dropDownList,
-        // eslint-disable-next-line
-        data?._childs,
-      );
-
+    // eslint-disable-next-line
+    metaParams?.[data.name]?.dropDownList.length > 0 &&
       setSuggestedSubList(
-        filterItems.map((names) => {
+        difference(
+          metaParams?.[data.name]?.dropDownList,
+          // eslint-disable-next-line
+          data?._childs,
+        ).map((names) => {
           return { label: names };
         }),
       );
-    }
   };
 
   const addToAccordion = (name) => {
@@ -183,9 +180,8 @@ function MetaData() {
   };
 
   useEffect(() => {
-    if (!isEmpty(accordianResult)) {
-      setAccordianData(accordianResult);
-    }
+    // eslint-disable-next-line no-unused-expressions
+    !isEmpty(accordianResult) && setAccordianData(accordianResult);
   }, [accordianResult]);
   useEffect(() => {
     if (!isEmpty(metaParamResult)) {
@@ -268,12 +264,12 @@ function MetaData() {
   };
 
   useEffect(() => {
-    if (sectionName?.label) {
-      addToAccordion(sectionName.label);
+    // eslint-disable-next-line no-unused-expressions
+    sectionName?.label &&
+      addToAccordion(sectionName.label) &&
       setSuggestedList(
         suggestedList.filter((list) => list.label !== sectionName.label),
       );
-    }
     // eslint-disable-next-line
   }, [sectionName]);
 
