@@ -16,6 +16,7 @@ import {
   flattenMetaParam,
   apiResponseFun,
   handleSaveFun,
+  metaParamResultAndAccordian,
 } from './utilFunction';
 
 function MetaData() {
@@ -193,26 +194,12 @@ function MetaData() {
   }, [metaParamResult]);
 
   useEffect(() => {
-    if (!isEmpty(metaParamResult) && !isEmpty(accordianData)) {
-      const updatedParam = {};
-      const result = flattenMetaParam(updatedParam, metaParamResult, 1);
-      let metaList = [];
-      const filterItems = difference(
-        Object.keys(metaParamResult),
-        Object.keys(accordianData),
-      );
-
-      if (filterItems.length > 0) {
-        filterItems.forEach((names) => {
-          if (names !== 'summary_extended') {
-            metaList = [...metaList, { label: names }];
-          }
-        });
-        setSuggestedList(metaList || []);
-      }
-
-      setMetaParams(result);
-    }
+    metaParamResultAndAccordian(
+      metaParamResult,
+      accordianData,
+      setSuggestedList,
+      setMetaParams,
+    );
     // eslint-disable-next-line
   }, [metaParamResult, accordianData]);
 
