@@ -69,14 +69,11 @@ function MedicalTerm({
         (key, value) => {
           if (key === 'preferred_term') {
             setPreferredTerm(value);
-          }
-          if (key === 'synonyms') {
+          } else if (key === 'synonyms') {
             setSynonyms(value);
-          }
-          if (key === 'classification') {
+          } else if (key === 'classification') {
             setClassification(value);
-          }
-          if (key === 'ontology') {
+          } else if (key === 'ontology') {
             setOntologyTemp(value);
           }
         },
@@ -106,15 +103,11 @@ function MedicalTerm({
   }, [selectedTerm]);
 
   const handleSave = () => {
-    if (newTermValue === '') {
-      return false;
-    }
+    if (newTermValue === '') return false;
     if (!childTermValue || !selectedTerm) return false;
     const temp = [...childArr];
     const newArr = temp.map((x) => {
-      if (x === childTermValue) {
-        return newTermValue;
-      }
+      if (x === childTermValue) return newTermValue;
       return x;
     });
     setTempChild(newArr);
