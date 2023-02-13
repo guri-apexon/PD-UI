@@ -76,7 +76,6 @@ function AddProtocol() {
   const onTextFieldChange = (fieldName, e, fieldType, dropdownValue) => {
     const tempError = cloneDeep(formErrorValues);
     const tempValues = cloneDeep(formValues);
-    //  console.log("dashboardData1 :", fieldName, 'e, fieldType', dropdownValue );
     if (fieldType === 'Textbox') {
       if (
         formErrorValues[fieldName].isRequired &&
@@ -90,8 +89,6 @@ function AddProtocol() {
       }
       if (formErrorValues[fieldName].regex && e.target.value.length > 0) {
         const reg = formErrorValues[fieldName].regex;
-        // let reg = new RegExp(formErrorValues[fieldName].regex);
-        // let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
         const isNumber = versionRegx.test(e.target.value);
         if (isNumber && reg.test(parseFloat(e.target.value))) {
           tempValues[fieldName] = e.target.value;
@@ -144,18 +141,12 @@ function AddProtocol() {
         tempError[fieldName].error = false;
         tempError[fieldName].errorMessage = '';
         tempValues[fieldName] = dropdownValue || { label: '' };
-        // console.log("valuessssss :", tempValues.amendmentNumber, "temppp");
         setFormValues(tempValues);
-        // DropDown logic changes start
         valueTemp[fieldName] = dropdownValue;
       } else {
-        if (
-          !dropdownFocus.length > 0
-          // && formValues[fieldName].label && formValues[fieldName].label.length
-        ) {
+        if (!dropdownFocus.length > 0) {
           valueTemp[fieldName] = { label: '' };
         }
-        // DropDown logic changes Ends
       }
       setFormErrorValues(tempError);
     }
@@ -181,16 +172,12 @@ function AddProtocol() {
         e.target.value.trim().length > 0
       ) {
         const reg = formErrorValues[fieldName].regex;
-        // let reg = new RegExp(formErrorValues[fieldName].regex);
-        // let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
         const isNumber = versionRegx.test(e.target.value);
         if (isNumber && reg.test(parseFloat(e.target.value))) {
           temp[fieldName].error = false;
           temp[fieldName].errorMessage = ' ';
         } else {
           temp[fieldName].error = true;
-          // temp[fieldName].errorMessage =
-          //   "Does not Match, Positive and upto 2 Decimals only";
           temp[fieldName].errorMessage = versionErrText;
         }
       }
@@ -230,14 +217,12 @@ function AddProtocol() {
     }
   };
   const handleFileUploadError = (msg, err, fieldName) => {
-    // console.log("file uplaod called error");
     const tempError = cloneDeep(formErrorValues);
     tempError[fieldName].error = err;
     tempError[fieldName].errorMessage = msg;
     setFormErrorValues(tempError);
   };
   const setUploadFile = (file, fieldName) => {
-    // console.log("file uplaod called");
     const tempValue = cloneDeep(formValues);
     tempValue[fieldName] = file;
     setFormValues(tempValue);
@@ -432,7 +417,6 @@ function AddProtocol() {
                 }}
                 data-testid="amendment-number-texfield"
               />
-              {/* <Auto /> */}
             </div>
           </Grid>
           <Grid item xs={1} sm={1} />
@@ -477,20 +461,7 @@ function AddProtocol() {
               required={formErrorValues.versionNumber.isRequired}
               onChange={(e) => onTextFieldChange('versionNumber', e, 'Textbox')}
               onBlur={(e) => onFieldBlur('versionNumber', e, 'Textbox')}
-              // type="number"
               data-testid="version-number-texfield"
-              // icon={
-              //   <Tooltip
-              //     variant="light"
-              //     title={messages.versionMessage.heading}
-              //     subtitle={getSubTitle(messages.versionMessage.infoMessage)}
-              //     placement="left"
-              //   >
-              //     <IconButton color="grey" size="small">
-              //       <InfoIcon size="small" />
-              //     </IconButton>
-              //   </Tooltip>
-              // }
             />
           </Grid>
           <Grid item xs={1} sm={1} />
