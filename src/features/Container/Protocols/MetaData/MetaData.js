@@ -12,7 +12,11 @@ import {
   metadataApiCallValue,
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
-import { flattenMetaParam } from './utilFunction';
+import {
+  flattenMetaParam,
+  apiResponseFun,
+  handleSaveFun,
+} from './utilFunction';
 
 function MetaData() {
   const wrapperRef = useRef(null);
@@ -144,39 +148,14 @@ function MetaData() {
 
   const handleSave = (accData, e) => {
     e.stopPropagation();
-    if (accData.name === 'summary') {
-      const filterCustomData = rows[accData?.name]?.filter(
-        (data) => data?.isCustom,
-      );
-      const filterNonCustomData = rows[accData?.name]?.filter(
-        (data) => !data?.isCustom,
-      );
-      if (filterCustomData?.length > 0) {
-        postCall(
-          {
-            formattedName: 'summary_extended',
-            name: 'summary_extended',
-          },
-          filterCustomData,
-        );
-      }
-      if (deletedAttributes.length > 0) {
-        deleteCall(
-          {
-            formattedName: 'summary_extended',
-            name: 'summary_extended',
-          },
-          'deleteAttribute',
-        );
-      }
-      postCall(accordianData[accData.name], filterNonCustomData);
-    } else {
-      const accMetaData = rows[accData?.name] ? rows[accData?.name] : [];
-      if (deletedAttributes.length > 0) {
-        deleteCall(accordianData[accData.name], 'deleteAttribute');
-      }
-      postCall(accordianData[accData.name], accMetaData);
-    }
+    handleSaveFun(
+      accData,
+      rows,
+      postCall,
+      deletedAttributes,
+      deleteCall,
+      accordianData,
+    );
   };
 
   const handleDelete = (accData, e) => {
@@ -260,64 +239,13 @@ function MetaData() {
   }, []);
 
   useEffect(() => {
-    if (apiResponse?.status) {
-      if (apiResponse.op === 'addAttributes') {
-        const selectedData = accordianData[apiResponse.reqData.name];
-        const accMetaData =
-          apiResponse?.reqData?.name === 'summary_extended'
-            ? rows.summary
-            : rows[apiResponse?.reqData?.name];
-        setAccordianData({
-          ...accordianData,
-          [apiResponse.reqData.name]: {
-            ...selectedData,
-            isEdit: false,
-            _meta_data: [...accMetaData],
-          },
-        });
-      } else if (apiResponse.op === 'addField') {
-        if (apiResponse?.reqData?.level === 1) {
-          const obj = {
-            name: apiResponse?.reqData?.name,
-            formattedName: apiResponse?.reqData?.name,
-            isEdit: false,
-            isActive: false,
-            _meta_data: [],
-            level: 1,
-            _childs: [],
-          };
-          setAccordianData({
-            [apiResponse.reqData.name]: obj,
-          });
-        } else {
-          const obj = {
-            name: apiResponse?.reqData?.name,
-            formattedName: `${apiResponse.reqData.accData.formattedName}.${apiResponse.reqData.name}`,
-            isEdit: false,
-            isActive: false,
-            _meta_data: [],
-            level: apiResponse.reqData.accData.level + 1,
-            _childs: [],
-          };
-          const selectedData =
-            accordianData[apiResponse?.reqData?.accData?.name];
-          setAccordianData({
-            ...accordianData,
-            [apiResponse.reqData.accData.name]: {
-              ...selectedData,
-              // eslint-disable-next-line
-              _childs: selectedData?._childs
-                ? // eslint-disable-next-line
-                  [...selectedData._childs, apiResponse.reqData.name]
-                : [apiResponse.reqData.name],
-            },
-            [apiResponse.reqData.name]: obj,
-          });
-        }
-      } else {
-        fetchMetaData();
-      }
-    }
+    apiResponseFun(
+      apiResponse,
+      accordianData,
+      rows,
+      setAccordianData,
+      fetchMetaData,
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [apiResponse]);
 

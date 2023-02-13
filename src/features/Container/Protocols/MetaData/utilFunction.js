@@ -235,6 +235,7 @@ export function handleLevelOne(key, value, accGenerator) {
 }
 export const checkNameFunction = (name) =>
   name === 'summary' ? 'summary_extended' : name;
+
 export const handleSaveFun = (
   accData,
   rows,
