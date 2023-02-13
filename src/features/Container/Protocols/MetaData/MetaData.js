@@ -128,8 +128,8 @@ function MetaData() {
   const postCall = (data, metaData) => {
     const updatedAttrList = metaData?.map((list) => {
       const convertToBoolean = list?.attr_value === 'true';
-      let attrValue = list?.attr_value;
-      if (list?.attr_type === 'boolean') attrValue = convertToBoolean;
+      const attrValue =
+        list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value;
       return {
         attr_name: list?.attr_name,
         attr_type: list?.attr_type || 'string',
@@ -138,8 +138,8 @@ function MetaData() {
         confidence: list?.confidence || '',
       };
     });
-    let fieldName = data.formattedName;
-    if (data.formattedName === 'summary') fieldName = '';
+    const fieldName =
+      data.formattedName === 'summary' ? '' : data.formattedName;
     dispatch({
       type: 'ADD_METADATA_ATTRIBUTES',
       payload: {
@@ -190,12 +190,12 @@ function MetaData() {
 
   useEffect(() => {
     // eslint-disable-next-line
-    if (!isEmpty(accordianResult)) setAccordianData(accordianResult);
+    !isEmpty(accordianResult) && setAccordianData(accordianResult);
   }, [accordianResult]);
 
   useEffect(() => {
     // eslint-disable-next-line
-    if (!isEmpty(metaParamResult)) setMetaParams(metaParamResult);
+    !isEmpty(metaParamResult) && setMetaParams(metaParamResult);
   }, [metaParamResult]);
 
   useEffect(() => {
