@@ -57,7 +57,8 @@ function MetaData() {
   };
 
   const addToAccordion = (name) => {
-    const checkName = name === 'summary' ? 'summary_extended' : name;
+    let checkName = name;
+    if (name === 'summary') checkName = 'summary_extended';
     dispatch({
       type: 'ADD_METADATA_FIELD',
       payload: {
@@ -87,12 +88,15 @@ function MetaData() {
 
   const handleEdit = (accData, e) => {
     e.stopPropagation();
+    let name = [];
+    // eslint-disable-next-line
+    if (accData._meta_data) name = accData._meta_data;
     const selectedData = accordianData[accData.name];
     setSubSuggestions(accData);
     setRows({
       ...rows,
       // eslint-disable-next-line
-      [accData.name]: accData._meta_data ? accData._meta_data : [],
+      [accData.name]: name,
     });
     setAccordianData({
       ...accordianData,
@@ -124,20 +128,23 @@ function MetaData() {
   const postCall = (data, metaData) => {
     const updatedAttrList = metaData?.map((list) => {
       const convertToBoolean = list?.attr_value === 'true';
+      let attrValue = list?.attr_value;
+      if (list?.attr_type === 'boolean') attrValue = convertToBoolean;
       return {
         attr_name: list?.attr_name,
         attr_type: list?.attr_type || 'string',
-        attr_value:
-          list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
+        attr_value: attrValue,
         note: list?.note || '',
         confidence: list?.confidence || '',
       };
     });
+    let fieldName = data.formattedName;
+    if (data.formattedName === 'summary') fieldName = '';
     dispatch({
       type: 'ADD_METADATA_ATTRIBUTES',
       payload: {
         docId,
-        fieldName: data.formattedName === 'summary' ? '' : data.formattedName,
+        fieldName,
         attributes: updatedAttrList,
         reqData: {
           name: data.name,
@@ -182,13 +189,13 @@ function MetaData() {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line no-unused-expressions
-    !isEmpty(accordianResult) && setAccordianData(accordianResult);
+    // eslint-disable-next-line
+    if (!isEmpty(accordianResult)) setAccordianData(accordianResult);
   }, [accordianResult]);
+
   useEffect(() => {
-    if (!isEmpty(metaParamResult)) {
-      setMetaParams(metaParamResult);
-    }
+    // eslint-disable-next-line
+    if (!isEmpty(metaParamResult)) setMetaParams(metaParamResult);
   }, [metaParamResult]);
 
   useEffect(() => {
