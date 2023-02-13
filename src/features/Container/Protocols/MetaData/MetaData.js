@@ -18,6 +18,8 @@ import {
   metaParamResultAndAccordian,
 } from './utilFunction';
 
+const docId = '0be44992-9573-4010-962c-de1a1b18b08d';
+
 function MetaData() {
   const wrapperRef = useRef(null);
   const apiResponse = useSelector(metadataApiCallValue);
@@ -60,7 +62,7 @@ function MetaData() {
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId,
         fieldName: checkName,
         attributes: [],
         reqData: { name, level: 1 },
@@ -107,7 +109,7 @@ function MetaData() {
       type: 'DELETE_METADATA',
       payload: {
         op: opName,
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId,
         fieldName: data.formattedName,
         attributeNames: deletedAttributes,
         reqData: {
@@ -134,7 +136,7 @@ function MetaData() {
     dispatch({
       type: 'ADD_METADATA_ATTRIBUTES',
       payload: {
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId,
         fieldName: data.formattedName === 'summary' ? '' : data.formattedName,
         attributes: updatedAttrList,
         reqData: {
@@ -166,7 +168,7 @@ function MetaData() {
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId,
         fieldName: `${accData.formattedName}.${name}`,
         attributes: [],
         reqData: {
@@ -204,14 +206,14 @@ function MetaData() {
       type: 'GET_METADATA_VARIABLE',
       payload: {
         op: 'metadata',
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId,
       },
     });
     dispatch({
       type: 'GET_METADATA_VARIABLE',
       payload: {
         op: 'metaparam',
-        docId: '0be44992-9573-4010-962c-de1a1b18b08d',
+        docId,
       },
     });
   };
