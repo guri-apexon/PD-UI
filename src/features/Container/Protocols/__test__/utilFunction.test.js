@@ -1,55 +1,88 @@
-import { flattenObject, mergeSummary } from '../MetaData/utilFunction';
+import {
+  mergeSummary,
+  flattenMetaParam,
+  flattenObject,
+} from '../MetaData/utilFunction';
 
 describe('flattenObject', () => {
-  it('flattens an object', () => {
+  test('should flatten the object correctly', () => {
     const data = {
-      level1: {
-        _meta_data: [{ id: 1 }, { id: 2 }],
+      parent: {
+        _meta_data: [{ name: 'field1' }, { name: 'field2' }],
         _childs: [],
-        formattedName: 'level1',
-        name: 'level1',
-        level: 1,
-        isActive: false,
-        isEdit: false,
       },
     };
+
     const expectedResult = {
-      level1: {
+      parent: {
         _meta_data: [
-          { id: 1, isCustom: true },
-          { id: 2, isCustom: true },
+          { id: 1, isCustom: true, name: 'field1' },
+          { id: 2, isCustom: true, name: 'field2' },
         ],
-        formattedName: 'level1',
-        name: 'level1',
-        level: 1,
+        formattedName: 'parent',
         isActive: false,
         isEdit: false,
+        level: 1,
+        name: 'parent',
         _childs: [],
       },
     };
-    expect(flattenObject(data, 1, '')).toEqual(expectedResult);
+
+    expect(flattenObject({}, data, 1, '')).toEqual(expectedResult);
   });
 });
 
 describe('mergeSummary', () => {
-  it('merges summary with summary_extended', () => {
+  test('should merge summary_extended to summary correctly', () => {
     const data = {
       summary: {
-        _meta_data: [{ id: 1 }],
+        _meta_data: [{ name: 'field1' }, { name: 'field2' }],
+        _childs: [],
       },
       summary_extended: {
-        _meta_data: [{ id: 2 }, { id: 3 }],
+        _meta_data: [{ name: 'field3' }, { name: 'field4' }],
+        _childs: [],
       },
     };
+
     const expectedResult = {
       summary: {
         _meta_data: [
-          { id: 1 },
-          { id: 2, isCustom: true },
-          { id: 3, isCustom: true },
+          { name: 'field1' },
+          { name: 'field2' },
+          { isCustom: true, name: 'field3' },
+          { isCustom: true, name: 'field4' },
         ],
+        _childs: [],
       },
     };
+
     expect(mergeSummary(data)).toEqual(expectedResult);
+  });
+});
+
+describe('flattenMetaParam', () => {
+  test('should flatten meta param correctly', () => {
+    const data = {
+      parent: {
+        child: {
+          grandchild: {},
+        },
+      },
+    };
+
+    const expectedResult = {
+      parent: {
+        dropDownList: ['child'],
+      },
+      child: {
+        dropDownList: ['grandchild'],
+      },
+      grandchild: {
+        dropDownList: [],
+      },
+    };
+
+    expect(flattenMetaParam({}, data, 1)).toEqual(expectedResult);
   });
 });
