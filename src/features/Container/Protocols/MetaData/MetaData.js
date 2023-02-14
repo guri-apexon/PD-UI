@@ -57,10 +57,7 @@ function MetaData() {
   };
 
   const addToAccordion = (name) => {
-    let checkName = name;
-    if (name === 'summary') {
-      checkName = 'summary_extended';
-    }
+    const checkName = name === 'summary' ? 'summary_extended' : name;
     dispatch({
       type: 'ADD_METADATA_FIELD',
       payload: {
