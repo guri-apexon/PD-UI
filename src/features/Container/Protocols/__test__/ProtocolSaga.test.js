@@ -11,7 +11,6 @@ import {
   getTocSections,
   captalize,
   fetchSectionHeaderList,
-  getSectionList,
   getProtocolTocDataResult,
 } from '../saga';
 
