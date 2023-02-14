@@ -14,6 +14,17 @@ function ProtocolView({ refs, data }) {
   const [selectedSection, setSelectedSection] = useState(null);
   const [sectionContent, setSectionContent] = useState(null);
 
+  useEffect(() => {
+    dispatch({
+      type: 'GET_PROTOCOL_TOC_DATA',
+      payload: {
+        docId: data.id,
+        tocFlag: 1,
+      },
+    });
+    // eslint-disable-next-line
+  }, []);
+
   // eslint-disable-next-line
   const dispatchSectionEvent = (actionType, payload) => {
     switch (actionType) {

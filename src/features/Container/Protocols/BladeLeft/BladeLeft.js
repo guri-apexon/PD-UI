@@ -10,7 +10,7 @@ import './BladeLeft.scss';
 
 import { protocolTocData, TOCActive } from '../protocolSlice';
 
-function BladeLeft({ handlePageNo, dataSummary }) {
+function BladeLeft({ handlePageNo }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
@@ -29,16 +29,6 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     if (tocData.data?.length) setTocList(tocData.data);
   }, [tocData]);
 
-  useEffect(() => {
-    dispatch({
-      type: 'GET_PROTOCOL_TOC_DATA',
-      payload: {
-        docId: dataSummary.id,
-        tocFlag: 1,
-      },
-    });
-    // eslint-disable-next-line
-  }, []);
   const onClose = () => {
     setOpen(false);
   };
@@ -221,5 +211,4 @@ export default BladeLeft;
 BladeLeft.propTypes = {
   // eslint-disable-next-line react/require-default-props
   handlePageNo: PropTypes.func,
-  dataSummary: PropTypes.isRequired,
 };
