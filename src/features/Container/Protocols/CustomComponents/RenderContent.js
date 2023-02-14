@@ -40,6 +40,7 @@ function RenderContent({
         setActiveLineID={setActiveLineID}
         activeLineID={activeLineID}
         handleContentEdit={handleContentEdit}
+        setSaveEnabled={setSaveEnabled}
         deleteSection={deleteSection}
         edit={edit}
       />

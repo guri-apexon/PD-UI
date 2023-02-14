@@ -337,6 +337,7 @@ function DigitizeAccordion({
                       data-testId="discardIcon"
                       title="Discard changes"
                       className="discard-icon"
+                      disabled={!saveEnabled}
                       onClick={(e) => {
                         e.stopPropagation();
                         if (saveEnabled) {
