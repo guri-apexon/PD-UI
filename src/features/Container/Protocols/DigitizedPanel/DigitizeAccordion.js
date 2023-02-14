@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import IconButton from 'apollo-react/components/IconButton';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
@@ -174,8 +175,7 @@ function DigitizeAccordion({
     dispatchSectionData();
   };
 
-  const onEditClick = (e) => {
-    e.stopPropagation();
+  const onEditClick = () => {
     if (currentEditCard) {
       setShowConfirm(true);
     } else {
@@ -183,8 +183,7 @@ function DigitizeAccordion({
     }
   };
 
-  const handleSaveContent = (e) => {
-    e.stopPropagation();
+  const handleSaveContent = () => {
     // setEditedMode(false);
     // dispatchSectionData(true);
     // setShowEdit(false);
@@ -194,6 +193,7 @@ function DigitizeAccordion({
     if (!reqBody.length) {
       toast.error('Please do changes before submit');
     } else {
+      setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: { reqBody },
@@ -203,33 +203,36 @@ function DigitizeAccordion({
 
   useEffect(() => {
     console.log('sectionHeaderDetails::', sectionHeaderDetails);
-    setShowLoader(sectionHeaderDetails.sectionLoading);
-    if (sectionData?.length > 0) {
-      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (arr.length > 0) {
-        // setShowLoader(false);
-        let updatedSectionsData = [];
-        let matchedIndex = null;
-        const sectionsData = arr[0].data;
-        if (Array.isArray(sectionsData)) {
-          updatedSectionsData = sectionsData?.map((sec, index) => {
-            if (sec?.font_info?.VertAlign === 'superscript') {
-              matchedIndex = index;
-              return {
-                ...sec,
-                content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
-              };
-            }
-            return sec;
-          });
-          if (matchedIndex) {
-            updatedSectionsData.splice(matchedIndex + 1, 1);
-          }
-        }
-        if (editedMode && !sectionDataArr?.length) dispatchSectionData(true);
+    if (sectionHeaderDetails.sectionResponse) {
+      setShowEdit(false);
+    }
+    const sectionObj = sectionHeaderDetails?.data?.find(
+      (obj) => obj.linkId === item.link_id,
+    );
 
-        setSectionDataArr(updatedSectionsData);
+    if (sectionObj?.data?.length) {
+      setShowLoader(false);
+      let updatedSectionsData = [];
+      let matchedIndex = null;
+      const sectionsData = sectionObj.data;
+      if (Array.isArray(sectionsData)) {
+        updatedSectionsData = sectionsData?.map((sec, index) => {
+          if (sec?.font_info?.VertAlign === 'superscript') {
+            matchedIndex = index;
+            return {
+              ...sec,
+              content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
+            };
+          }
+          return sec;
+        });
+        if (matchedIndex) {
+          updatedSectionsData.splice(matchedIndex + 1, 1);
+        }
       }
+      if (editedMode && !sectionDataArr?.length) dispatchSectionData(true);
+
+      setSectionDataArr(updatedSectionsData);
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
@@ -260,32 +263,48 @@ function DigitizeAccordion({
           <Typography className="section-title" data-testid="accordion-header">
             {item.source_file_section}
           </Typography>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}
-          >
+          {/* eslint-disable-next-line */}
+          <div className="section-actions" onClick={(e) => e.stopPropagation()}>
             {showedit && (
-              <span data-testId="lockIcon">
-                <Lock style={{ paddingRight: '10px' }} />
-              </span>
+              // <span data-testId="lockIcon">
+              //   <Lock style={{ paddingRight: '10px' }} />
+              // </span>
+              <IconButton disabled={showLoader} data-testId="eyeIcon">
+                <Lock />
+              </IconButton>
             )}
             {primaryRole && (
               <>
-                <span data-testId="eyeIcon">
+                {/* <span data-testId="eyeIcon">
                   <EyeShow style={{ paddingRight: '10px' }} />
-                </span>
+                </span> */}
+                <IconButton disabled={showLoader} data-testId="eyeIcon">
+                  <EyeShow />
+                </IconButton>
                 {!showedit ? (
                   // eslint-disable-next-line
-                  <span data-testId="pencilIcon" onClick={onEditClick}>
+                  // <span data-testId="pencilIcon" onClick={onEditClick}>
+                  //   <Pencil />
+                  // </span>
+                  <IconButton
+                    disabled={showLoader}
+                    data-testId="pencilIcon"
+                    onClick={onEditClick}
+                  >
                     <Pencil />
-                  </span>
+                  </IconButton>
                 ) : (
                   // eslint-disable-next-line
-                  <span data-testId="saveIcon" onClick={handleSaveContent}>
+                  // <span data-testId="saveIcon" onClick={handleSaveContent}>
+                  //   <Save />
+                  // </span>
+                  <IconButton
+                    disabled={showLoader}
+                    data-testId="saveIcon"
+                    onClick={handleSaveContent}
+                  >
                     <Save />
-                  </span>
+                  </IconButton>
                 )}
               </>
             )}
