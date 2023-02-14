@@ -13,7 +13,6 @@ import Tooltip from 'apollo-react/components/Tooltip';
 import { navbarNotifications } from './navbarSlice';
 
 import './Alerts.scss';
-import { redaction } from '../../../AppConstant/AppConstant';
 import { createFullMarkup } from '../../../utils/utilFunction';
 
 const replaceall = require('replaceall');
