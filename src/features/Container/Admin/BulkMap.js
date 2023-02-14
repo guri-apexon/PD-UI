@@ -67,13 +67,14 @@ function BulkMap() {
           </AccordionSummary>
           <AccordionDetails style={{ display: 'block' }}>
             {bulkResponse.map((item) => {
-              return <Typography style={{ color: '#2142a8' }}>{item}</Typography>;
+              return (
+                <Typography style={{ color: '#2142a8' }}>{item}</Typography>
+              );
             })}
           </AccordionDetails>
         </Accordion>
       );
     }
-    return false
   };
 
   return (

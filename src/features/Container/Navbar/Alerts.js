@@ -14,13 +14,9 @@ import { navbarNotifications } from './navbarSlice';
 
 import './Alerts.scss';
 import { redaction } from '../../../AppConstant/AppConstant';
-import { createFullMarkupFun, getDayLabelTextUtilsFun } from './utilsNavbar';
+import { createFullMarkup } from '../../../utils/utilFunction';
 
 const replaceall = require('replaceall');
-
-function createFullMarkup(str) {
-  return createFullMarkupFun(str, replaceall, redaction);
-}
 
 function Alerts() {
   const dispatch = useDispatch();
@@ -54,7 +50,11 @@ function Alerts() {
     (item) => item.read === false,
   );
   const getDayLabelText = (timestamp) => {
-    return getDayLabelTextUtilsFun(moment, timestamp);
+    return moment().isSame(timestamp, 'day')
+      ? 'Today'
+      : moment().subtract(1, 'day').isSame(timestamp, 'day')
+      ? 'Yesterday'
+      : moment(timestamp).format('ddd MMM D');
   };
   return (
     <>
