@@ -213,13 +213,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         </div>
       )}
       <div className="pd-table-container" ref={tableRef}>
-        {lineID === activeLineID && (
-          <EmptyColumnCells
-            columnLength={columnLength}
-            handleOperation={handleColumnOperation}
-            colWidth={colWidth}
-          />
-        )}
         <DisplayTable
           data={updatedData}
           onChange={handleChange}
@@ -228,6 +221,8 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           colWidth={colWidth}
           footNoteData={footNoteData}
           setFootnoteData={setFootnoteData}
+          handleColumnOperation={handleColumnOperation}
+          columnLength={columnLength}
         />
       </div>
     </section>

@@ -73,7 +73,7 @@
 }
 .pd-empty-cells {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   position: absolute;
   width: 100%;
   top: 5px;
@@ -81,7 +81,7 @@
 .pd-empty-cell-column {
   width: 100px;
   text-align: center;
-  position: relative;
+  min-width:100px;
 }
 .pd-empty-cell-row {
   height: 50px;
