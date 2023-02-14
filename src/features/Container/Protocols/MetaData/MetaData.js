@@ -57,8 +57,7 @@ function MetaData() {
   };
 
   const addToAccordion = (name) => {
-    let checkName = name;
-    if (name === 'summary') checkName = 'summary_extended';
+    const checkName = name === 'summary' ? 'summary_extended' : name;
     dispatch({
       type: 'ADD_METADATA_FIELD',
       payload: {
@@ -88,9 +87,8 @@ function MetaData() {
 
   const handleEdit = (accData, e) => {
     e.stopPropagation();
-    let name = [];
     // eslint-disable-next-line
-    if (accData._meta_data) name = accData._meta_data;
+    const name = accData._meta_data || [];
     const selectedData = accordianData[accData.name];
     setSubSuggestions(accData);
     setRows({
@@ -128,8 +126,9 @@ function MetaData() {
   const postCall = (data, metaData) => {
     const updatedAttrList = metaData?.map((list) => {
       const convertToBoolean = list?.attr_value === 'true';
+      const bool = list?.attr_type;
       const attrValue =
-        list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value;
+        bool === 'boolean' ? convertToBoolean : list?.attr_value;
       return {
         attr_name: list?.attr_name,
         attr_type: list?.attr_type || 'string',
