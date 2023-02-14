@@ -86,12 +86,12 @@ function CustomDropdown({
     };
     setValue(tempvalue);
     setList(filteredList);
-  if (e.target.value === '') {
-    // setting onblur to true when text is cut,so that error should display as field required
-    onChange(fieldName, e, fieldType, tempvalue);
-    setBlur(true);
-    setList(source);
-  }
+    if (e.target.value === '') {
+      // setting onblur to true when text is cut,so that error should display as field required
+      onChange(fieldName, e, fieldType, tempvalue);
+      setBlur(true);
+      setList(source);
+    }
   };
 
   const handleOutsideClick = (event) => {
@@ -160,7 +160,7 @@ function CustomDropdown({
           {list && list.length > 0 ? (
             list.map((item, index) => (
               <p
-                key={item}
+                key={item.label}
                 className="custom-list-item"
                 onClick={(e) => onListItemClick(e, item)}
                 data-testid={`custom-dropdown-list-exist-${index}`}

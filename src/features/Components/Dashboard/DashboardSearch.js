@@ -7,17 +7,11 @@ import ChevronLeft from 'apollo-react-icons/ChevronLeft';
 import Button from 'apollo-react/components/Button';
 import Search from 'apollo-react/components/Search';
 import Grid from 'apollo-react/components/Grid';
-import {
-  onKeyPress,
-  viewMoreUtilsFun,
-  viewMoreUtilsFunction,
-} from './utilsDashboard';
 
 function DashboardSearch({ recent, saved }) {
   const dispatch = useDispatch();
   const history = useHistory();
   const [viewMore, setViewMore] = useState(false);
-
   return (
     <div
       className="dashboard-search-parent"
@@ -31,13 +25,26 @@ function DashboardSearch({ recent, saved }) {
             <Search
               placeholder="Protocol Number, Indication, Key word, etc"
               fullWidth
-              onKeyPress={(e) => onKeyPress(e, dispatch, history)}
+              onKeyPress={(e) => {
+                /* istanbul ignore next */
+                if (e.key === 'Enter') {
+                  dispatch({
+                    type: 'POST_RECENT_SEARCH_DASHBOARD',
+                    payload: e.target.value,
+                  });
+                  history.push(`/search?key=${e.target.value}`);
+                }
+              }}
             />
           </span>
           <div>
             <h3>Recent Searches</h3>
             {recent && recent.length > 0 ? (
-              <ul className={viewMoreUtilsFun(viewMore)}>
+              <ul
+                className={
+                  viewMore ? 'search-list-ul-scroll' : 'search-list-ul'
+                }
+              >
                 {recent.map((item, index) => {
                   if (item.keyword && (index <= 5 || viewMore)) {
                     return (
@@ -62,8 +69,7 @@ function DashboardSearch({ recent, saved }) {
                 style={{ width: '100%' }}
                 onClick={() => setViewMore(!viewMore)}
               >
-                <span>{viewMoreUtilsFunction(viewMore)}</span>
-
+                <span>{viewMore ? 'View Less' : 'View More'}</span>
                 {viewMore ? (
                   <ChevronLeft className="view-more-icon" />
                 ) : (
