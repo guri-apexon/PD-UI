@@ -27,7 +27,8 @@
   align-items: center;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  min-width: 100px;
+  min-width: 200px;
+  max-width: 200px;
 }
 .content-table-wrapper {
   border: 1px solid #dadada;
@@ -81,7 +82,8 @@
 .pd-empty-cell-column {
   width: 100px;
   text-align: center;
-  min-width:100px;
+  min-width:200px;
+  position: relative;
 }
 .pd-empty-cell-row {
   height: 50px;
