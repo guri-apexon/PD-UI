@@ -140,13 +140,11 @@ function MetaData() {
         confidence: list?.confidence || '',
       };
     });
-    const fieldName =
-      data.formattedName === 'summary' ? '' : data.formattedName;
     dispatch({
       type: 'ADD_METADATA_ATTRIBUTES',
       payload: {
         docId,
-        fieldName,
+        fieldName: data.formattedName === 'summary' ? '' : data.formattedName,
         attributes: updatedAttrList,
         reqData: {
           name: data.name,
@@ -240,7 +238,7 @@ function MetaData() {
       setAccordianData,
       fetchMetaData,
     );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [apiResponse]);
 
   const accGenerator = (key, acc) => {
@@ -275,7 +273,7 @@ function MetaData() {
   };
 
   useEffect(() => {
-    // eslint-disable-next-line no-unused-expressions
+    // eslint-disable-next-line
     sectionName?.label &&
       addToAccordion(sectionName.label) &&
       setSuggestedList(
