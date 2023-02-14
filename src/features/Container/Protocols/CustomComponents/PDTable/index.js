@@ -70,7 +70,7 @@ const formattableData = (data) => {
 
 const confirmText = 'Please confirm if you want to continue with deletion';
 
-function PDTable({ data, segment, activeLineID, lineID }) {
+function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
   const [columnLength, setColumnLength] = useState();
@@ -100,6 +100,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     const cloneData = [...updatedData];
     cloneData[rowIndex][columnIndex].content = content;
     setUpdatedData(cloneData);
+    setIsTableChanged(true);
   };
   const handleColumnOperation = (operation, index) => {
     if (operation === tableOperations.addColumnLeft) {
@@ -112,10 +113,14 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setUpdatedData(newData);
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteColumn) {
-      const newData = deleteColumn(updatedData, index);
-      setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
+      // eslint-disable-next-line
+      if (confirm(confirmText)) {
+        const newData = deleteColumn(updatedData, index);
+        setUpdatedData(newData);
+        setColumnLength(Object.keys(newData[0]).length);
+      }
     }
+    setIsTableChanged(true);
   };
   const handleRowOperation = (operation, index) => {
     if (operation === tableOperations.addRowAbove) {
@@ -135,6 +140,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         setColumnLength(Object.keys(newData[0]).length);
       }
     }
+    setIsTableChanged(true);
   };
 
   const addFootNote = () => {
@@ -159,6 +165,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       currentLineId: activeLineID,
       content,
     });
+    setIsTableChanged(false);
     setTimeout(() => {
       setDisabledBtn(false);
     }, 1000);
@@ -177,10 +184,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
               },
               {
                 label: 'Delete',
-                onClick: () =>
+                onClick: () => {
                   dispatchSectionEvent('CONTENT_DELETED', {
                     currentLineId: activeLineID,
-                  }),
+                  });
+                  setIsTableChanged(false);
+                },
               },
             ]}
           />
@@ -236,4 +245,5 @@ PDTable.propTypes = {
   segment: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
+  setIsTableChanged: PropTypes.isRequired,
 };
