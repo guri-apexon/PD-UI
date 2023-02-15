@@ -9,7 +9,7 @@ import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
-
+import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
@@ -108,6 +108,7 @@ function DigitizeAccordion({
       }
     } else {
       setEnrichedTarget(null);
+      setShowAlert(false);
     }
     // eslint-disable-next-line
   }, [expanded]);
@@ -150,6 +151,7 @@ function DigitizeAccordion({
       setClinicalTerms(null);
     }
   };
+
   useEffect(() => {
     if (currentEditCard !== item.link_id) {
       setShowEdit(false);
@@ -220,6 +222,7 @@ function DigitizeAccordion({
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
+
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
@@ -267,25 +270,29 @@ function DigitizeAccordion({
             }}
           >
             {showedit && (
-              <span data-testId="lockIcon">
+              <IconButton data-testId="lockIcon">
                 <Lock style={{ paddingRight: '10px' }} />
-              </span>
+              </IconButton>
             )}
             {primaryRole && (
               <>
-                <span data-testId="eyeIcon">
+                <IconButton className="eyeIcon" data-testId="eyeIcon">
                   <EyeShow style={{ paddingRight: '10px' }} />
-                </span>
+                </IconButton>
                 {!showedit ? (
                   // eslint-disable-next-line
-                  <span data-testId="pencilIcon" onClick={onEditClick}>
+                  <IconButton data-testId="pencilIcon" onClick={onEditClick}>
                     <Pencil />
-                  </span>
+                  </IconButton>
                 ) : (
                   // eslint-disable-next-line
-                  <span data-testId="saveIcon" onClick={onSaveClick}>
+                  <IconButton
+                    onClick={onSaveClick}
+                    data-testId="saveIcon"
+                    disabled={showAlert}
+                  >
                     <Save />
-                  </span>
+                  </IconButton>
                 )}
               </>
             )}
