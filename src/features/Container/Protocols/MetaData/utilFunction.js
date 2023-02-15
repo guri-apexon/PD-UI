@@ -145,6 +145,72 @@ export const metaParamResultAndAccordian = (
   }
 };
 
+// export const apiResponseFun = (
+//   apiResponse,
+//   accordianData,
+//   rows,
+//   setAccordianData,
+//   fetchMetaData,
+// ) => {
+//   if (apiResponse?.status) {
+//     if (apiResponse.op === 'addAttributes') {
+//       const selectedData = accordianData[apiResponse.reqData.name];
+//       const accMetaData =
+//         apiResponse?.reqData?.name === 'summary_extended'
+//           ? rows.summary
+//           : rows[apiResponse?.reqData?.name];
+//       setAccordianData({
+//         ...accordianData,
+//         [apiResponse.reqData.name]: {
+//           ...selectedData,
+//           isEdit: false,
+//           _meta_data: [...accMetaData],
+//         },
+//       });
+//     } else if (apiResponse.op === 'addField') {
+//       if (apiResponse?.reqData?.level === 1) {
+//         const obj = {
+//           name: apiResponse?.reqData?.name,
+//           formattedName: apiResponse?.reqData?.name,
+//           isEdit: false,
+//           isActive: false,
+//           _meta_data: [],
+//           level: 1,
+//           _childs: [],
+//         };
+//         setAccordianData({
+//           [apiResponse.reqData.name]: obj,
+//         });
+//       } else {
+//         const obj = {
+//           name: apiResponse?.reqData?.name,
+//           formattedName: `${apiResponse.reqData.accData.formattedName}.${apiResponse.reqData.name}`,
+//           isEdit: false,
+//           isActive: false,
+//           _meta_data: [],
+//           level: apiResponse.reqData.accData.level + 1,
+//           _childs: [],
+//         };
+//         const selectedData = accordianData[apiResponse?.reqData?.accData?.name];
+//         setAccordianData({
+//           ...accordianData,
+//           [apiResponse.reqData.accData.name]: {
+//             ...selectedData,
+//             // eslint-disable-next-line
+//             _childs: selectedData?._childs
+//               ? // eslint-disable-next-line
+//                 [...selectedData._childs, apiResponse.reqData.name]
+//               : [apiResponse.reqData.name],
+//           },
+//           [apiResponse.reqData.name]: obj,
+//         });
+//       }
+//     } else {
+//       fetchMetaData();
+//     }
+//   }
+// };
+
 export const apiResponseFun = (
   apiResponse,
   accordianData,
@@ -153,60 +219,69 @@ export const apiResponseFun = (
   fetchMetaData,
 ) => {
   if (apiResponse?.status) {
-    if (apiResponse.op === 'addAttributes') {
-      const selectedData = accordianData[apiResponse.reqData.name];
-      const accMetaData =
-        apiResponse?.reqData?.name === 'summary_extended'
-          ? rows.summary
-          : rows[apiResponse?.reqData?.name];
-      setAccordianData({
-        ...accordianData,
-        [apiResponse.reqData.name]: {
-          ...selectedData,
-          isEdit: false,
-          _meta_data: [...accMetaData],
-        },
-      });
-    } else if (apiResponse.op === 'addField') {
-      if (apiResponse?.reqData?.level === 1) {
-        const obj = {
-          name: apiResponse?.reqData?.name,
-          formattedName: apiResponse?.reqData?.name,
-          isEdit: false,
-          isActive: false,
-          _meta_data: [],
-          level: 1,
-          _childs: [],
-        };
-        setAccordianData({
-          [apiResponse.reqData.name]: obj,
-        });
-      } else {
-        const obj = {
-          name: apiResponse?.reqData?.name,
-          formattedName: `${apiResponse.reqData.accData.formattedName}.${apiResponse.reqData.name}`,
-          isEdit: false,
-          isActive: false,
-          _meta_data: [],
-          level: apiResponse.reqData.accData.level + 1,
-          _childs: [],
-        };
-        const selectedData = accordianData[apiResponse?.reqData?.accData?.name];
+    switch (apiResponse.op) {
+      case 'addAttributes':
+        // eslint-disable-next-line
+        const selectedData = accordianData[apiResponse.reqData.name];
+        // eslint-disable-next-line
+        const accMetaData =
+          apiResponse?.reqData?.name === 'summary_extended'
+            ? rows.summary
+            : rows[apiResponse?.reqData?.name];
         setAccordianData({
           ...accordianData,
-          [apiResponse.reqData.accData.name]: {
+          [apiResponse.reqData.name]: {
             ...selectedData,
-            // eslint-disable-next-line
-            _childs: selectedData?._childs
-              ? // eslint-disable-next-line
-                [...selectedData._childs, apiResponse.reqData.name]
-              : [apiResponse.reqData.name],
+            isEdit: false,
+            _meta_data: [...accMetaData],
           },
-          [apiResponse.reqData.name]: obj,
         });
-      }
-    } else {
-      fetchMetaData();
+        break;
+
+      case 'addField':
+        if (apiResponse?.reqData?.level === 1) {
+          const obj = {
+            name: apiResponse?.reqData?.name,
+            formattedName: apiResponse?.reqData?.name,
+            isEdit: false,
+            isActive: false,
+            _meta_data: [],
+            level: 1,
+            _childs: [],
+          };
+          setAccordianData({
+            [apiResponse.reqData.name]: obj,
+          });
+        } else {
+          const obj = {
+            name: apiResponse?.reqData?.name,
+            formattedName: `${apiResponse.reqData.accData.formattedName}.${apiResponse.reqData.name}`,
+            isEdit: false,
+            isActive: false,
+            _meta_data: [],
+            level: apiResponse.reqData.accData.level + 1,
+            _childs: [],
+          };
+          const selectedData =
+            accordianData[apiResponse?.reqData?.accData?.name];
+          setAccordianData({
+            ...accordianData,
+            [apiResponse.reqData.accData.name]: {
+              ...selectedData,
+              // eslint-disable-next-line
+              _childs: selectedData?._childs
+                ? // eslint-disable-next-line
+                  [...selectedData._childs, apiResponse.reqData.name]
+                : [apiResponse.reqData.name],
+            },
+            [apiResponse.reqData.name]: obj,
+          });
+        }
+        break;
+
+      default:
+        fetchMetaData();
+        break;
     }
   }
 };
