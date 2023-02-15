@@ -23,15 +23,15 @@ function DisplayTable({
 
   return (
     <div className="pd-table-inner">
+      {edit && (
+        <EmptyColumnCells
+          columnLength={columnLength}
+          handleOperation={handleColumnOperation}
+          colWidth={colWidth}
+        />
+      )}
       {data.map((row, rowIndex) => (
         <div key={uuidv4()} className="pd-table-empty-cell-row">
-          {edit && (
-            <EmptyColumnCells
-              columnLength={columnLength}
-              handleOperation={handleColumnOperation}
-              colWidth={colWidth}
-            />
-          )}
           {edit && (
             <EmptyRowCells
               rowIndex={rowIndex}

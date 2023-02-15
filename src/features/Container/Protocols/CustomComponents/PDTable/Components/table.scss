@@ -40,7 +40,7 @@
   position: relative;
   .confirmation-popup {
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -70,13 +70,12 @@
 }
 .pd-empty-row-cells {
   position: absolute;
-  left: 3px;
+  left: 0;
 }
 .pd-empty-cells {
   display: flex;
   justify-content: space-between;
   position: absolute;
-  width: 100%;
   top: 5px;
 }
 .pd-empty-cell-column {
