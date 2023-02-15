@@ -78,7 +78,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const [footNoteData, setFootnoteData] = useState([]);
   const [columnLength, setColumnLength] = useState();
   const [colWidth, setColumnWidth] = useState(100);
-  const [disabledBtn, setDisabledBtn] = useState(false);
+  const [tableSaved, setTableSaved] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
   const [tableId, setTableId] = useState('');
   const tableRef = useRef(null);
@@ -140,16 +140,16 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       TableProperties: JSON.stringify(updatedData),
       AttachmentListProperties: footNoteData,
     };
-    setDisabledBtn(true);
+    setTableSaved(true);
     dispatchSectionEvent('CONTENT_UPDATE', {
       type: CONTENT_TYPE.TABLE,
       lineID,
       currentLineId: activeLineID,
       content,
     });
-    setTimeout(() => {
-      setDisabledBtn(false);
-    }, 1000);
+  };
+  const isEditable = () => {
+    return lineID === activeLineID && !tableSaved;
   };
 
   return (
@@ -174,7 +174,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           />
         </div>
       )}
-      {lineID === activeLineID && (
+      {isEditable() && (
         <div className="table-button-container" data-testId="button-container">
           <Tooltip title="Add Footnote" placement="right">
             <IconButton color="primary" size="small">
@@ -185,14 +185,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
             buttonProps={[
               {
                 size: 'small',
-                disabled: disabledBtn,
                 label: 'Delete',
                 onClick: () => setShowConfirm(true),
               },
               {
                 size: 'small',
-                disabled: disabledBtn,
-                label: disabledBtn ? 'Please wait' : 'Save Table',
+                label: 'Save Table',
                 // icon: <Save />,
                 onClick: () => handleSave(),
               },
@@ -200,8 +198,13 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           />
         </div>
       )}
-      <div className="pd-table-container" ref={tableRef}>
-        {lineID === activeLineID && (
+      {/* eslint-disable-next-line */}
+      <div
+        className="pd-table-container"
+        ref={tableRef}
+        onClick={() => setTableSaved(false)}
+      >
+        {isEditable() && (
           <EmptyColumnCells
             columnLength={columnLength}
             handleOperation={handleColumnOperation}
@@ -212,7 +215,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           data={updatedData}
           onChange={handleChange}
           handleRowOperation={handleRowOperation}
-          edit={lineID === activeLineID}
+          edit={isEditable()}
           colWidth={colWidth}
           footNoteData={footNoteData}
           setFootnoteData={setFootnoteData}
