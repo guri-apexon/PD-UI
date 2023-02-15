@@ -52,34 +52,36 @@ function MultilineEdit({ sectionDataArr, edit, setIsTableChanged }) {
   };
 
   return (
-    <div className="Richtextcontainer" data-testId="richTextEditor">
-      {edit && (
-        <FontProperties
-          activeLineID={activeLineID}
-          onDeleteClick={() => setShowConfirm(true)}
-        />
-      )}
-      <section className="section-edited-list">
-        {sections?.map((section) => (
-          // eslint-disable-next-line
-          <div
-            className="content_container"
-            key={section.line_id}
-            onClick={() => edit && setActiveLineID(section.line_id)}
-          >
-            <RenderContent
-              sectionData={section}
-              sectionName={sectionName}
-              handleContentEdit={handleContentEdit}
-              activeLineID={activeLineID}
-              deleteSection={deleteSection}
-              setActiveLineID={setActiveLineID}
-              setIsTableChanged={setIsTableChanged}
-              edit={edit}
-            />
-          </div>
-        ))}
-      </section>
+    <>
+      <div className="Richtextcontainer" data-testId="richTextEditor">
+        {edit && (
+          <FontProperties
+            activeLineID={activeLineID}
+            onDeleteClick={() => setShowConfirm(true)}
+          />
+        )}
+        <section className="section-edited-list">
+          {sections?.map((section) => (
+            // eslint-disable-next-line
+            <div
+              className="content_container"
+              key={section.line_id}
+              onClick={() => edit && setActiveLineID(section.line_id)}
+            >
+              <RenderContent
+                sectionData={section}
+                sectionName={sectionName}
+                handleContentEdit={handleContentEdit}
+                activeLineID={activeLineID}
+                deleteSection={deleteSection}
+                setActiveLineID={setActiveLineID}
+                setIsTableChanged={setIsTableChanged}
+                edit={edit}
+              />
+            </div>
+          ))}
+        </section>
+      </div>
       {showconfirm && (
         <div className="confirmation-popup" data-testId="confirmPopup">
           <p>Please confirm if you want to continue with deletion</p>
@@ -97,7 +99,7 @@ function MultilineEdit({ sectionDataArr, edit, setIsTableChanged }) {
           />
         </div>
       )}
-    </div>
+    </>
   );
 }
 export default MultilineEdit;
