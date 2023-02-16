@@ -17,6 +17,7 @@
   display: flex;
   min-height: 50px;
   justify-content: center;
+  position: relative;
 }
 .pd-table-cell {
   text-align: left;
@@ -130,6 +131,30 @@
     height: 0.7em;
     width: 0.7em;
   }
+}
+
+.pd-drag-icon {
+  height: 0.7em;
+  width: 0.7em;
+  cursor: move;
+  svg {
+    height: 0.7em;
+    width: 0.7em;
+  }
+}
+.rowDrag {
+  position: absolute;
+  left: -0.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.columnDrag {
+  position: absolute;
+  top: -12.5px;
+  display: flex;
+  justify-content: center;
 }
 .button-container {
   display: flex;

@@ -2,6 +2,8 @@ import React from 'react';
 import './table.scss';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
+import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
+import EllipsisHorizontal from 'apollo-react-icons/EllipsisHorizontal';
 import EmptyRowCells from './EmptyRows';
 import FootNotes from './FootNotes/Footnotes';
 import { tableOperations } from './dropdownData';
@@ -27,17 +29,20 @@ function DisplayTable({
     e.preventDefault();
     const clone = e.target.cloneNode(true);
     const draggedId = e.dataTransfer.getData('selectedId');
-    const checkIfRowSwap = clone.id.split('-')[1] !== draggedId.split('-')[1];
-    if (clone.id !== draggedId) {
-      if (checkIfRowSwap) {
-        handleSwap(tableOperations.swapRow, {
-          sourceIndex: parseInt(draggedId.split('-')[1], 10),
-          targetIndex: parseInt(clone.id.split('-')[1], 10),
-        });
-      } else {
+    const checkIfColumnSwap =
+      draggedId.split('-').length === 3 &&
+      clone.id.split('-').length === 3 &&
+      clone.id.split('-')[2] !== draggedId.split('-')[2];
+    if (clone?.id && clone?.id !== draggedId) {
+      if (checkIfColumnSwap) {
         handleSwap(tableOperations.swapColumn, {
           sourceIndex: parseFloat(draggedId.split('-')[2]).toFixed(1),
           targetIndex: parseFloat(clone.id.split('-')[2]).toFixed(1),
+        });
+      } else {
+        handleSwap(tableOperations.swapRow, {
+          sourceIndex: parseInt(draggedId.split('-')[1], 10),
+          targetIndex: parseInt(clone.id.split('-')[1], 10),
         });
       }
     }
@@ -58,24 +63,34 @@ function DisplayTable({
             />
           )}
           <div
-            id={`divId-${rowIndex}`}
             className="pd-table-row"
+            id={`divId-${rowIndex}`}
             draggable
             onDragStart={handleDrag}
             onDrop={handleDrop}
             onDragOver={allowDrop}
           >
+            {rowIndex !== 0 && edit && (
+              <span className="pd-drag-icon rowDrag">
+                <EllipsisVertical />
+              </span>
+            )}
             {Object.keys(row).map((key) => (
               <div
+                key={uuidv4()}
                 id={`divId-${rowIndex}-${key}`}
                 draggable
                 onDragStart={handleDrag}
                 onDrop={handleDrop}
                 onDragOver={allowDrop}
-                key={uuidv4()}
                 className="pd-table-cell"
                 style={{ width: `${colWidth}%` }}
               >
+                {rowIndex === 0 && edit && (
+                  <span className="pd-drag-icon columnDrag">
+                    <EllipsisHorizontal />
+                  </span>
+                )}
                 <span
                   id={`divId-${rowIndex}-${key}`}
                   // eslint-disable-next-line
