@@ -327,7 +327,11 @@ export const prepareContent = ({
       break;
     case 'DELETE':
       if (clonedSection && currentLineId) {
-        return clonedSection.filter((x) => x.line_id !== currentLineId);
+        return clonedSection.map((x) =>
+          x.line_id === currentLineId
+            ? { ...x, qc_change_type: QC_CHANGE_TYPE.DELETED }
+            : x,
+        );
       }
       break;
     case 'LINK_LEVEL_UPDATE':

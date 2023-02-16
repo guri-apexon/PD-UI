@@ -229,10 +229,13 @@ export function* updateSectionData(action) {
     data: reqBody,
   };
   const sectionSaveRes = yield call(httpCall, config);
-  console.log('sectionSaveRes::', sectionSaveRes);
   if (sectionSaveRes?.data?.success) {
     yield put(updateSectionResp({ response: sectionSaveRes.data }));
+    toast.success(
+      sectionSaveRes.data.message || 'Section updated successfully',
+    );
   } else {
+    yield put(updateSectionResp({ response: sectionSaveRes.data }));
     toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
   }
 }
@@ -262,7 +265,7 @@ function* getState() {
   const id = state.user.userDetail.userId;
   return id.substring(1);
 }
-export function* getSectionList(action) {
+export function* getSectionContentList(action) {
   const userId = yield getState();
   const config = {
     url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
@@ -611,7 +614,7 @@ function* watchProtocolAsync() {
 
 function* watchProtocolViews() {
   yield takeEvery('GET_PROTOCOL_SECTION', getProtocolTocDataResult);
-  yield takeEvery('GET_SECTION_LIST', getSectionList);
+  yield takeEvery('GET_SECTION_LIST', getSectionContentList);
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
   yield takeEvery('GET_METADATA_VARIABLE', MetaDataVariable);

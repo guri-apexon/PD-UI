@@ -19,14 +19,17 @@ import {
   createFullMarkup,
   createEnrichedText,
 } from '../../../../utils/utilFunction';
-import { sectionDetails, TOCActive } from '../protocolSlice';
+import { sectionDetails, TOCActive, updateSectionData } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
-import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../AppConstant/AppConstant';
 
 const styles = {
   modal: {
@@ -53,7 +56,6 @@ function DigitizeAccordion({
   const [sectionDataArr, setSectionDataArr] = useState([]);
   const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
-  const [editedMode, setEditedMode] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
@@ -86,21 +88,24 @@ function DigitizeAccordion({
     });
   };
 
+  const fetchContent = () => {
+    dispatch({
+      type: 'GET_SECTION_LIST',
+      payload: {
+        linkId: item.link_id,
+        docId: item.doc_id,
+        protocol,
+      },
+    });
+  };
   useEffect(() => {
     if (expanded) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (arr.length === 0) {
+      if (!arr.length) {
         setShowLoader(true);
         setLinkId(item.link_id);
         setDocId(item.doc_id);
-        dispatch({
-          type: 'GET_SECTION_LIST',
-          payload: {
-            linkId: item.link_id,
-            docId: item.doc_id,
-            protocol,
-          },
-        });
+        fetchContent();
       }
     } else {
       setEnrichedTarget(null);
@@ -171,27 +176,26 @@ function DigitizeAccordion({
     setExpanded(true);
     setShowEdit(true);
     setCurrentEditCard(item.link_id);
-    setEditedMode(true);
     dispatchSectionData();
   };
 
   const onEditClick = () => {
+    setShowEdit(true);
     if (currentEditCard) {
-      setShowConfirm(true);
+      // setShowConfirm(true);
     } else {
       onShowEdit();
     }
   };
 
   const handleSaveContent = () => {
-    // setEditedMode(false);
     // dispatchSectionData(true);
     // setShowEdit(false);
     // setCurrentEditCard(null);
     const reqBody = [...sectionContent].filter((x) => x.qc_change_type !== ''); // sectionDataArr
     console.log('reqBody', reqBody);
     if (!reqBody.length) {
-      toast.error('Please do changes before submit');
+      toast.error('Please do some changes to update');
     } else {
       setShowLoader(true);
       dispatch({
@@ -202,37 +206,46 @@ function DigitizeAccordion({
   };
 
   useEffect(() => {
-    console.log('sectionHeaderDetails::', sectionHeaderDetails);
-    if (sectionHeaderDetails.sectionResponse) {
-      setShowEdit(false);
-    }
-    const sectionObj = sectionHeaderDetails?.data?.find(
-      (obj) => obj.linkId === item.link_id,
-    );
-
-    if (sectionObj?.data?.length) {
-      setShowLoader(false);
-      let updatedSectionsData = [];
-      let matchedIndex = null;
-      const sectionsData = sectionObj.data;
-      if (Array.isArray(sectionsData)) {
-        updatedSectionsData = sectionsData?.map((sec, index) => {
-          if (sec?.font_info?.VertAlign === 'superscript') {
-            matchedIndex = index;
-            return {
-              ...sec,
-              content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
-            };
-          }
-          return sec;
-        });
-        if (matchedIndex) {
-          updatedSectionsData.splice(matchedIndex + 1, 1);
+    if (expanded) {
+      console.log('sectionHeaderDetails::', sectionHeaderDetails);
+      const { sectionResponse, data } = sectionHeaderDetails;
+      if (sectionResponse) {
+        if (sectionResponse?.success && showedit) {
+          setShowEdit(false);
+          fetchContent();
         }
       }
-      if (editedMode && !sectionDataArr?.length) dispatchSectionData(true);
+      const sectionObj = data?.find((obj) => obj.linkId === item.link_id);
 
-      setSectionDataArr(updatedSectionsData);
+      if (sectionObj?.data?.length) {
+        setShowLoader(false);
+        let updatedSectionsData = [];
+        let matchedIndex = null;
+        const sectionsData = sectionObj.data;
+        if (Array.isArray(sectionsData)) {
+          updatedSectionsData = sectionsData
+            ?.map((sec, index) => {
+              if (sec?.font_info?.VertAlign === 'superscript') {
+                matchedIndex = index;
+                return {
+                  ...sec,
+                  content: `${sec?.content}_${
+                    sectionsData[index + 1]?.content
+                  }`,
+                };
+              }
+              return sec;
+            })
+            .filter((x) => x.qc_change_type !== QC_CHANGE_TYPE.DELETED);
+
+          if (matchedIndex) {
+            updatedSectionsData.splice(matchedIndex + 1, 1);
+          }
+        }
+        if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
+
+        setSectionDataArr(updatedSectionsData);
+      }
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
