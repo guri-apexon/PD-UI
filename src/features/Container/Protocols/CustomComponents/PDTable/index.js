@@ -8,7 +8,13 @@ import Plus from 'apollo-react-icons/Plus';
 import EmptyColumnCells from './Components/EmptyColumns';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
-import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
+import {
+  addColumn,
+  addRow,
+  deleteColumn,
+  deleteRow,
+  swapElements,
+} from './utils';
 import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 import PROTOCOL_CONSTANT from '../constants';
@@ -138,6 +144,17 @@ function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
     }
   };
 
+  const handleSwap = (operation, indexObj) => {
+    if (operation === tableOperations.swapRow) {
+      const newList = swapElements(
+        updatedData,
+        indexObj.sourceIndex,
+        indexObj.targetIndex,
+      );
+      setUpdatedData(newList);
+    }
+  };
+
   const addFootNote = () => {
     setFootnoteData([
       ...footNoteData,
@@ -225,6 +242,7 @@ function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
           data={updatedData}
           onChange={handleChange}
           handleRowOperation={handleRowOperation}
+          handleSwap={handleSwap}
           edit={lineID === activeLineID}
           colWidth={colWidth}
           footNoteData={footNoteData}
