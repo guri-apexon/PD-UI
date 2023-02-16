@@ -21,17 +21,25 @@ function DisplayTable({
   };
 
   const handleDrag = (e) => {
-    e.dataTransfer.setData('rowId', e.target.id);
+    e.dataTransfer.setData('selectedId', e.target.id);
   };
   const handleDrop = (e) => {
     e.preventDefault();
     const clone = e.target.cloneNode(true);
-    const draggedId = e.dataTransfer.getData('rowId');
+    const draggedId = e.dataTransfer.getData('selectedId');
+    const checkIfRowSwap = clone.id.split('-')[1] !== draggedId.split('-')[1];
     if (clone.id !== draggedId) {
-      handleSwap(tableOperations.swapRow, {
-        sourceIndex: parseInt(draggedId.split('-')[1], 10),
-        targetIndex: parseInt(clone.id.split('-')[1], 10),
-      });
+      if (checkIfRowSwap) {
+        handleSwap(tableOperations.swapRow, {
+          sourceIndex: parseInt(draggedId.split('-')[1], 10),
+          targetIndex: parseInt(clone.id.split('-')[1], 10),
+        });
+      } else {
+        handleSwap(tableOperations.swapColumn, {
+          sourceIndex: parseFloat(draggedId.split('-')[2]).toFixed(1),
+          targetIndex: parseFloat(clone.id.split('-')[2]).toFixed(1),
+        });
+      }
     }
   };
   const allowDrop = (e) => {
@@ -59,13 +67,17 @@ function DisplayTable({
           >
             {Object.keys(row).map((key) => (
               <div
-                id={`divId-${rowIndex}`}
+                id={`divId-${rowIndex}-${key}`}
+                draggable
+                onDragStart={handleDrag}
+                onDrop={handleDrop}
+                onDragOver={allowDrop}
                 key={uuidv4()}
                 className="pd-table-cell"
                 style={{ width: `${colWidth}%` }}
               >
                 <span
-                  id={`divId-${rowIndex}`}
+                  id={`divId-${rowIndex}-${key}`}
                   // eslint-disable-next-line
                   dangerouslySetInnerHTML={{ __html: row[key].content }}
                   contentEditable={edit}

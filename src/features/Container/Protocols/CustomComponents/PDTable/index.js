@@ -5,6 +5,7 @@ import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconButton from 'apollo-react/components/IconButton';
 import Plus from 'apollo-react-icons/Plus';
+import cloneDeep from 'lodash/cloneDeep';
 import EmptyColumnCells from './Components/EmptyColumns';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
@@ -152,6 +153,16 @@ function PDTable({ data, segment, activeLineID, lineID, setSaveEnabled }) {
         indexObj.targetIndex,
       );
       setUpdatedData(newList);
+    } else if (operation === tableOperations.swapColumn) {
+      const copyUpdatedList = cloneDeep(updatedData);
+      const newData = copyUpdatedList.map((ele) => {
+        const temp = ele[indexObj.sourceIndex];
+        ele[indexObj.sourceIndex] = ele[indexObj.targetIndex];
+        ele[indexObj.targetIndex] = temp;
+
+        return ele;
+      });
+      setUpdatedData(newData);
     }
   };
 
