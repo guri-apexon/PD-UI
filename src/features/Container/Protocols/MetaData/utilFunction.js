@@ -28,23 +28,6 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
     const keyValue = data?.[key];
     if (isObject(keyValue) && !['_meta_data', '_childs'].includes(key)) {
       updatedData[key] = getUpdatedKey(updatedData, key, level, parentKey);
-      // updatedData[key] = updatedData[key] || {
-      //   // eslint-disable-next-line
-      //   _meta_data: keyValue?._meta_data?.map((attr, index) => {
-      //     return {
-      //       ...attr,
-      //       id: index + 1,
-      //       isCustom: key !== 'summary',
-      //     };
-      //   }),
-      //   formattedName: level === 1 ? key : `${parentKey}.${key}`,
-      //   name: key,
-      //   level,
-      //   isActive: false,
-      //   isEdit: false,
-      //   // eslint-disable-next-line
-      //   _childs: keyValue?._childs ? keyValue?._childs : [],
-      // };
       // eslint-disable-next-line
       if (keyValue?._childs && keyValue?._childs.length > 0) {
         let val = updatedData[key]?.formattedName;
