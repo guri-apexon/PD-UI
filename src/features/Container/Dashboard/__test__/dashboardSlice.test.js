@@ -13,6 +13,10 @@ import dashboardslice, {
   setLoading,
   getSavedSearches,
   setApiError,
+  setTableLoader,
+  getDashboardSearchLoader,
+  setIndicationLoading,
+  setSponsorLoading,
 } from '../dashboardSlice';
 
 const initialState = {
@@ -140,6 +144,58 @@ describe(' DashboardSlice Test Suite', () => {
     ).toEqual({
       ...initialState,
       apiError: true,
+    });
+  });
+
+  test('Test setTableLoader', () => {
+    const tableLoadings = true;
+    expect(
+      dashboardslice(initialState, {
+        type: setTableLoader.type,
+        payload: tableLoadings,
+      }),
+    ).toEqual({
+      ...initialState,
+      tableLoading: tableLoadings,
+    });
+  });
+
+  test('Test getDashboardSearchLoader', () => {
+    const dashboardSearchLoaders = true;
+    expect(
+      dashboardslice(initialState, {
+        type: getDashboardSearchLoader.type,
+        payload: dashboardSearchLoaders,
+      }),
+    ).toEqual({
+      ...initialState,
+      dashboardSearchLoader: dashboardSearchLoaders,
+    });
+  });
+
+  test('Test setIndicationLoading', () => {
+    const indicationLoadings = true;
+    expect(
+      dashboardslice(initialState, {
+        type: setIndicationLoading.type,
+        payload: indicationLoadings,
+      }),
+    ).toEqual({
+      ...initialState,
+      indicationLoading: indicationLoadings,
+    });
+  });
+
+  test('Test setIndicationLoading', () => {
+    const sponsorLoadings = true;
+    expect(
+      dashboardslice(initialState, {
+        type: setSponsorLoading.type,
+        payload: sponsorLoadings,
+      }),
+    ).toEqual({
+      ...initialState,
+      sponsorLoading: sponsorLoadings,
     });
   });
 
