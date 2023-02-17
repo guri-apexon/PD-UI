@@ -101,6 +101,7 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
     setUpdatedData(cloneData);
     setIsTableChanged(true);
   };
+
   const handleColumnOperation = (operation, index) => {
     if (operation === tableOperations.addColumnLeft) {
       const newData = addColumn(updatedData, index);
@@ -121,6 +122,7 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
     }
     setIsTableChanged(true);
   };
+
   const handleRowOperation = (operation, index) => {
     if (operation === tableOperations.addRowAbove) {
       const newData = addRow(updatedData, index);
@@ -151,6 +153,7 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       },
     ]);
   };
+
   const handleSave = () => {
     const content = {
       ...segment.content,
@@ -165,6 +168,7 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       content,
     });
   };
+
   const isEditable = () => {
     return lineID === activeLineID && !tableSaved;
   };
