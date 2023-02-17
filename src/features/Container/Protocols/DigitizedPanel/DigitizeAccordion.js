@@ -279,26 +279,16 @@ function DigitizeAccordion({
           {/* eslint-disable-next-line */}
           <div className="section-actions" onClick={(e) => e.stopPropagation()}>
             {showedit && (
-              // <span data-testId="lockIcon">
-              //   <Lock style={{ paddingRight: '10px' }} />
-              // </span>
               <IconButton disabled={showLoader} data-testId="eyeIcon">
                 <Lock />
               </IconButton>
             )}
             {primaryRole && (
               <>
-                {/* <span data-testId="eyeIcon">
-                  <EyeShow style={{ paddingRight: '10px' }} />
-                </span> */}
                 <IconButton disabled={showLoader} data-testId="eyeIcon">
                   <EyeShow />
                 </IconButton>
                 {!showedit ? (
-                  // eslint-disable-next-line
-                  // <span data-testId="pencilIcon" onClick={onEditClick}>
-                  //   <Pencil />
-                  // </span>
                   <IconButton
                     disabled={showLoader}
                     data-testId="pencilIcon"
@@ -307,10 +297,6 @@ function DigitizeAccordion({
                     <Pencil />
                   </IconButton>
                 ) : (
-                  // eslint-disable-next-line
-                  // <span data-testId="saveIcon" onClick={handleSaveContent}>
-                  //   <Save />
-                  // </span>
                   <IconButton
                     disabled={showLoader}
                     data-testId="saveIcon"
