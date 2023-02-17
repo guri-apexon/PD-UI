@@ -79,7 +79,7 @@ describe('DigitizeCard', () => {
   });
 
   test('Display digitize panel content', () => {
-    const screen = renderWithProviders(
+    renderWithProviders(
       <DigitalizeCard
         sectionNumber={1}
         sectionRef={sectionRef}
