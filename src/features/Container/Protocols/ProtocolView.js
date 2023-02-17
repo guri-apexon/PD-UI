@@ -100,15 +100,11 @@ function ProtocolView({ refs, data }) {
   );
 
   const panels = () => {
-    const ex = [];
+    const result = {};
     for (let index = 0; index < 250; index++) {
-      ex.push(index);
+      result[index] = createRef();
     }
-    const refsection = ex.reduce((refsection, value) => {
-      refsection[value] = createRef();
-      return refsection;
-    }, {});
-    return refsection;
+    return result;
   };
   const [sectionRef] = useState(panels);
   const listData = [];
