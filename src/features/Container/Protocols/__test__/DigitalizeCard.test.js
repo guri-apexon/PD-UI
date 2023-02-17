@@ -87,7 +87,6 @@ describe('DigitizeCard', () => {
         paginationPage={2}
         rightValue={PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES}
       />,
-
       { preloadedState: { ...initialState, home } },
     );
   });
