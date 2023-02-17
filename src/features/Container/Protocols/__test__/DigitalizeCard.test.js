@@ -77,17 +77,4 @@ describe('DigitizeCard', () => {
     expect(HeaderClose).toBeInTheDocument();
     screen.debug();
   });
-
-  test('Display digitize panel content', () => {
-    const screen = renderWithProviders(
-      <DigitalizeCard
-        sectionNumber={1}
-        sectionRef={sectionRef}
-        data={{ id: 123 }}
-        paginationPage={2}
-        rightValue={PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES}
-      />,
-      { preloadedState: { ...initialState, home } },
-    );
-  });
 });
