@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">42.85% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>3/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>6/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">60% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>3/5</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -132,24 +132,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,8 +197,8 @@
 import { Suspense, lazy } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 &nbsp;
-const Dashboard = lazy(() =&gt;
-  import('../features/Container/Dashboard/Dashboard'),
+const Dashboard = lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt;
+<span class="cstat-no" title="statement not covered" >  import('../features/Container/Dashboard/Dashboard'),</span>
 );
 /* istanbul ignore next */
 const Search = lazy(() =&gt; import('../features/Container/Search/Search'));
@@ -210,11 +210,11 @@ const Protocols = lazy(() =&gt;
 const PageNotFound = lazy(() =&gt;
   import('../features/Container/PageNotFound/PageNotFound'),
 );
-const QC = lazy(() =&gt; import('../features/Container/QC/QC'));
+const QC = lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import('../features/Container/QC/QC'))</span>;
 const Admin = lazy(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >import('../features/Container/Admin/Admin'))</span>;
 &nbsp;
-function Routes({ userType }) {
-  return (
+function <span class="fstat-no" title="function not covered" >Routes(</span>{ userType }) {
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
       {userType === 'normal' &amp;&amp; (
         &lt;Switch&gt;
@@ -234,7 +234,7 @@ function Routes({ userType }) {
         &lt;/Switch&gt;
       )}
       {userType === 'QC2' &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >        &lt;Switch&gt;</span>
+        &lt;Switch&gt;
           &lt;Redirect exact from="/" to="/dashboard" /&gt;
           &lt;Route path="/dashboard" component={Dashboard} /&gt;
           &lt;Route path="/protocols" component={Protocols} /&gt;
@@ -244,7 +244,7 @@ function Routes({ userType }) {
         &lt;/Switch&gt;
       )}
       {userType === 'admin' &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >        &lt;Switch&gt;</span>
+        &lt;Switch&gt;
           &lt;Redirect exact from="/" to="/dashboard" /&gt;
           &lt;Route path="/admin" component={Admin} /&gt;
           &lt;Route path="/dashboard" component={Dashboard} /&gt;
@@ -265,7 +265,7 @@ export default Routes;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-17T13:13:58.708Z
+                at 2023-02-17T15:26:13.375Z
             </div>
         <script src="../prettify.js"></script>
         <script>
