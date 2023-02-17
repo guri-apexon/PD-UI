@@ -95,21 +95,14 @@ export function getTocSections(toc) {
     const section_num = item[7];
 
     if (
-      section_num &&
-      file_section_level === '1' &&
-      level_1_CPT_section !== 'Unmapped' &&
-      !sectionList.includes(level_1_CPT_section)
-    ) {
-      list.push({
-        section: `${section_num} ${level_1_CPT_section}`,
-        id: `TOC-${item[9]}`,
-      });
-      sectionList.push(level_1_CPT_section);
-    } else if (
-      type === 'header' &&
-      file_section_level === '1' &&
-      level_1_CPT_section !== 'Unmapped' &&
-      !sectionList.includes(level_1_CPT_section)
+      (section_num &&
+        file_section_level === '1' &&
+        level_1_CPT_section !== 'Unmapped' &&
+        !sectionList.includes(level_1_CPT_section)) ||
+      (type === 'header' &&
+        file_section_level === '1' &&
+        level_1_CPT_section !== 'Unmapped' &&
+        !sectionList.includes(level_1_CPT_section))
     ) {
       list.push({
         section: `${section_num} ${level_1_CPT_section}`,
