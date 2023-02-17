@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux';
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import store from '../../../../store/store';
 
 import { render, fireEvent } from '../../../../test-utils/test-utils';
@@ -290,6 +290,5 @@ describe('DigitizeAccordion', () => {
     );
     const enrText = screen.getByText('CONFIDENTIAL');
     fireEvent.click(enrText);
-    screen.debug();
   });
 });
