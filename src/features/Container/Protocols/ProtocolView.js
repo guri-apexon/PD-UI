@@ -18,7 +18,7 @@ function ProtocolView({ refs, data }) {
   const dispatchSectionEvent = (actionType, payload) => {
     switch (actionType) {
       case 'ON_SECTION_SELECT': {
-        if (!payload.sectionContent && sectionContent) {
+        if (!payload.sectionContent && sectionContent)
           dispatch(
             updateSectionData({
               data: sectionContent,
@@ -26,7 +26,6 @@ function ProtocolView({ refs, data }) {
               linkId: selectedSection.link_id,
             }),
           );
-        }
         setSelectedSection(payload.selectedSection);
         setSectionContent(
           payload.sectionContent ? [...payload.sectionContent] : null,
