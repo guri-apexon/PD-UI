@@ -7,6 +7,7 @@
 
 #sonar scan
 /.scannerwork
+/.vscode
 # testing
 #/coverage
 
