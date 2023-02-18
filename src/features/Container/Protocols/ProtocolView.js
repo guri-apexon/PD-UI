@@ -10,10 +10,10 @@ function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
   const summary = useSelector(headerResult);
   const dispatch = useDispatch();
-  const protData = useState({
+  const protData = {
     ...data,
     userPrimaryRoleFlag: isPrimaryUser(data),
-  });
+  };
   const [selectedSection, setSelectedSection] = useState(null);
   const [sectionContent, setSectionContent] = useState(null);
 
