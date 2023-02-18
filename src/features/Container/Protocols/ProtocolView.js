@@ -10,7 +10,10 @@ function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
   const summary = useSelector(headerResult);
   const dispatch = useDispatch();
-  const [protData, setprotData] = useState(data);
+  const protData = useState({
+    ...data,
+    userPrimaryRoleFlag: isPrimaryUser(data),
+  });
   const [selectedSection, setSelectedSection] = useState(null);
   const [sectionContent, setSectionContent] = useState(null);
 
@@ -147,12 +150,6 @@ function ProtocolView({ refs, data }) {
   if (viewData.iqvdataSummary) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
-  useEffect(() => {
-    if (data) {
-      setprotData({ ...data, userPrimaryRoleFlag: isPrimaryUser(data) });
-    }
-    // eslint-disable-next-line
-  }, [data]);
 
   return (
     <ProtocolContext.Provider value={ProtocolProviderValue}>
