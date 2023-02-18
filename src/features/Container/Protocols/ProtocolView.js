@@ -14,81 +14,98 @@ function ProtocolView({ refs, data }) {
   const [selectedSection, setSelectedSection] = useState(null);
   const [sectionContent, setSectionContent] = useState(null);
 
+  const handleSectionSelect = (payload) => {
+    if (!payload.sectionContent && sectionContent) {
+      dispatch(
+        updateSectionData({
+          data: sectionContent,
+          actionType: 'REPLACE_CONTENT',
+          linkId: selectedSection.link_id,
+        }),
+      );
+    }
+    setSelectedSection(payload.selectedSection);
+    setSectionContent(
+      payload.sectionContent ? [...payload.sectionContent] : null,
+    );
+  };
+
+  const handleContentUpdate = (payload) => {
+    const content = prepareContent({
+      ...payload,
+      type: 'MODIFY',
+      sectionContent,
+    });
+    setSectionContent(content);
+  };
+
+  const handleContentDelete = (payload) => {
+    const content = prepareContent({
+      ...payload,
+      type: 'DELETE',
+      sectionContent,
+    });
+    setSectionContent(content);
+    dispatch(
+      updateSectionData({
+        data: content,
+        actionType: 'REPLACE_CONTENT',
+        linkId: selectedSection.link_id,
+      }),
+    );
+  };
+
+  const handleContentAdd = (payload) => {
+    const { type, lineId } = payload;
+    const content = prepareContent({
+      ...payload,
+      type: 'ADDED',
+      contentType: type,
+      sectionContent,
+      currentLineId: lineId,
+    });
+    setSectionContent(content);
+    dispatch(
+      updateSectionData({
+        data: content,
+        actionType: 'REPLACE_CONTENT',
+        linkId: selectedSection.link_id,
+      }),
+    );
+  };
+
+  const handleLinkLevelUpdate = (payload) => {
+    const content = prepareContent({
+      ...payload,
+      type: 'LINK_LEVEL_UPDATE',
+      sectionContent,
+    });
+    setSectionContent(content);
+  };
+
   // eslint-disable-next-line
   const dispatchSectionEvent = (actionType, payload) => {
     switch (actionType) {
-      case 'ON_SECTION_SELECT': {
-        if (!payload.sectionContent && sectionContent)
-          dispatch(
-            updateSectionData({
-              data: sectionContent,
-              actionType: 'REPLACE_CONTENT',
-              linkId: selectedSection.link_id,
-            }),
-          );
-        setSelectedSection(payload.selectedSection);
-        setSectionContent(
-          payload.sectionContent ? [...payload.sectionContent] : null,
-        );
+      case 'ON_SECTION_SELECT':
+        handleSectionSelect(payload);
         break;
-      }
-      case 'CONTENT_UPDATE': {
-        const content = prepareContent({
-          ...payload,
-          type: 'MODIFY',
-          sectionContent,
-        });
-        setSectionContent(content);
+      case 'CONTENT_UPDATE':
+        handleContentUpdate(payload);
         break;
-      }
-      case 'CONTENT_DELETED': {
-        const content = prepareContent({
-          ...payload,
-          type: 'DELETE',
-          sectionContent,
-        });
-        setSectionContent(content);
-        dispatch(
-          updateSectionData({
-            data: content,
-            actionType: 'REPLACE_CONTENT',
-            linkId: selectedSection.link_id,
-          }),
-        );
+      case 'CONTENT_DELETED':
+        handleContentDelete(payload);
         break;
-      }
-      case 'CONTENT_ADDED': {
-        const { type, lineId } = payload;
-        const content = prepareContent({
-          ...payload,
-          type: 'ADDED',
-          contentType: type,
-          sectionContent,
-          currentLineId: lineId,
-        });
-        setSectionContent(content);
-        dispatch(
-          updateSectionData({
-            data: content,
-            actionType: 'REPLACE_CONTENT',
-            linkId: selectedSection.link_id,
-          }),
-        );
+      case 'CONTENT_ADDED':
+        handleContentAdd(payload);
         break;
-      }
-      case 'LINK_LEVEL_UPDATE': {
-        const content = prepareContent({
-          ...payload,
-          type: 'LINK_LEVEL_UPDATE',
-          sectionContent,
-        });
-        setSectionContent(content);
+      case 'LINK_LEVEL_UPDATE':
+        handleLinkLevelUpdate(payload);
         break;
-      }
       default:
         break;
     }
   };
+
   const ProtocolProviderValue = useMemo(
     () => ({
       selectedSection,
