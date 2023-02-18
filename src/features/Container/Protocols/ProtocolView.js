@@ -1,4 +1,4 @@
-import { useState, createRef, useEffect, useMemo } from 'react';
+import { useState, createRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { viewResult, headerResult, updateSectionData } from './protocolSlice';
