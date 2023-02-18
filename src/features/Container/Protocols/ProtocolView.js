@@ -25,9 +25,7 @@ function ProtocolView({ refs, data }) {
       );
     }
     setSelectedSection(payload.selectedSection);
-    setSectionContent(
-      payload.sectionContent ? [...payload.sectionContent] : null,
-    );
+    setSectionContent(payload.sectionContent || null);
   };
 
   const handleContentUpdate = (payload) => {
