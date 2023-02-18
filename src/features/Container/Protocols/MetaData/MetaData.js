@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
@@ -15,9 +16,7 @@ import {
 import Loader from '../../../Components/Loader/Loader';
 import { flattenMetaParam } from './utilFunction';
 
-const mockDocId = '0be44992-9573-4010-962c-de1a1b18b08d';
-
-function MetaData() {
+function MetaData({ docId }) {
   const wrapperRef = useRef(null);
   const apiResponse = useSelector(metadataApiCallValue);
   const accordianResult = useSelector(accordionMetaData);
@@ -61,7 +60,7 @@ function MetaData() {
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
-        docId: mockDocId,
+        docId,
         fieldName: checkName,
         attributes: [],
         reqData: { name, level: 1 },
@@ -108,7 +107,7 @@ function MetaData() {
       type: 'DELETE_METADATA',
       payload: {
         op: opName,
-        docId: mockDocId,
+        docId,
         fieldName: data.formattedName,
         attributeNames: deletedAttributes,
         reqData: {
@@ -135,7 +134,7 @@ function MetaData() {
     dispatch({
       type: 'ADD_METADATA_ATTRIBUTES',
       payload: {
-        docId: mockDocId,
+        docId,
         fieldName: data.formattedName === 'summary' ? '' : data.formattedName,
         attributes: updatedAttrList,
         reqData: {
@@ -192,7 +191,7 @@ function MetaData() {
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
-        docId: mockDocId,
+        docId,
         fieldName: `${accData.formattedName}.${name}`,
         attributes: [],
         reqData: {
@@ -245,14 +244,14 @@ function MetaData() {
       type: 'GET_METADATA_VARIABLE',
       payload: {
         op: 'metadata',
-        docId: mockDocId,
+        docId,
       },
     });
     dispatch({
       type: 'GET_METADATA_VARIABLE',
       payload: {
         op: 'metaparam',
-        docId: mockDocId,
+        docId,
       },
     });
   };
@@ -412,3 +411,7 @@ function MetaData() {
 }
 
 export default MetaData;
+
+MetaData.propTypes = {
+  docId: PropTypes.isRequired,
+};
