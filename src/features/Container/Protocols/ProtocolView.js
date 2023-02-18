@@ -16,68 +16,80 @@ function ProtocolView({ refs, data }) {
 
   // eslint-disable-next-line
   const dispatchSectionEvent = (actionType, payload) => {
-    if (actionType === 'ON_SECTION_SELECT') {
-      if (!payload.sectionContent && sectionContent) {
+    switch (actionType) {
+      case 'ON_SECTION_SELECT': {
+        if (!payload.sectionContent && sectionContent) {
+          dispatch(
+            updateSectionData({
+              data: sectionContent,
+              actionType: 'REPLACE_CONTENT',
+              linkId: selectedSection.link_id,
+            }),
+          );
+        }
+        setSelectedSection(payload.selectedSection);
+        setSectionContent(
+          payload.sectionContent ? [...payload.sectionContent] : null,
+        );
+        break;
+      }
+      case 'CONTENT_UPDATE': {
+        const content = prepareContent({
+          ...payload,
+          type: 'MODIFY',
+          sectionContent,
+        });
+        setSectionContent(content);
+        break;
+      }
+      case 'CONTENT_DELETED': {
+        const content = prepareContent({
+          ...payload,
+          type: 'DELETE',
+          sectionContent,
+        });
+        setSectionContent(content);
         dispatch(
           updateSectionData({
-            data: sectionContent,
+            data: content,
             actionType: 'REPLACE_CONTENT',
             linkId: selectedSection.link_id,
           }),
         );
+        break;
       }
-      setSelectedSection(payload.selectedSection);
-      setSectionContent(
-        payload.sectionContent ? [...payload.sectionContent] : null,
-      );
-    } else if (actionType === 'CONTENT_UPDATE') {
-      const content = prepareContent({
-        ...payload,
-        type: 'MODIFY',
-        sectionContent,
-      });
-      setSectionContent(content);
-    } else if (actionType === 'CONTENT_DELETED') {
-      const content = prepareContent({
-        ...payload,
-        type: 'DELETE',
-        sectionContent,
-      });
-      setSectionContent(content);
-      dispatch(
-        updateSectionData({
-          data: content,
-          actionType: 'REPLACE_CONTENT',
-          linkId: selectedSection.link_id,
-        }),
-      );
-    } else if (actionType === 'CONTENT_ADDED') {
-      const { type, lineId } = payload;
-      const content = prepareContent({
-        ...payload,
-        type: 'ADDED',
-        contentType: type,
-        sectionContent,
-        currentLineId: lineId,
-      });
-      setSectionContent(content);
-      dispatch(
-        updateSectionData({
-          data: content,
-          actionType: 'REPLACE_CONTENT',
-          linkId: selectedSection.link_id,
-        }),
-      );
-    } else if (actionType === 'LINK_LEVEL_UPDATE') {
-      const content = prepareContent({
-        ...payload,
-        type: 'LINK_LEVEL_UPDATE',
-        sectionContent,
-      });
-      setSectionContent(content);
+      case 'CONTENT_ADDED': {
+        const { type, lineId } = payload;
+        const content = prepareContent({
+          ...payload,
+          type: 'ADDED',
+          contentType: type,
+          sectionContent,
+          currentLineId: lineId,
+        });
+        setSectionContent(content);
+        dispatch(
+          updateSectionData({
+            data: content,
+            actionType: 'REPLACE_CONTENT',
+            linkId: selectedSection.link_id,
+          }),
+        );
+        break;
+      }
+      case 'LINK_LEVEL_UPDATE': {
+        const content = prepareContent({
+          ...payload,
+          type: 'LINK_LEVEL_UPDATE',
+          sectionContent,
+        });
+        setSectionContent(content);
+        break;
+      }
+      default:
+        break;
     }
   };
-
   const ProtocolProviderValue = useMemo(
     () => ({
       selectedSection,
