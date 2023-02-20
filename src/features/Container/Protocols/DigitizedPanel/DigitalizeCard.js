@@ -55,12 +55,7 @@ function Digitize({
   };
 
   useEffect(() => {
-    if (sectionSequence === 'undefined' || sectionSequence === undefined) {
-      //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
-    } else if (
-      sectionRef[sectionSequence] &&
-      sectionRef[sectionSequence].current
-    ) {
+    if (sectionRef[sectionSequence] && sectionRef[sectionSequence].current) {
       scrollToTop(sectionSequence);
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
@@ -138,7 +133,7 @@ function Digitize({
           </div>
           <div
             className="digitize-panel-content"
-            data-testid="protocol-column-wrapper"
+            data-testid="digitize-panel-content"
           >
             {!summary?.data ? (
               <div className="loader">
@@ -153,6 +148,7 @@ function Digitize({
                     className="digitized_data_item"
                   >
                     <Drag className="drag" />
+                    <span data-testId={headerList.page} />
                     <div>
                       <DigitizeAccordion
                         item={item}

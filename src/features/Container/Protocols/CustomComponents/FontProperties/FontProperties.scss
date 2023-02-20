@@ -1,46 +1,42 @@
-
-  .button-container.font-properties {
-    background: #fff;
-    box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
-    display: flex;
-    align-items: center;
-    position: sticky;
-    width: 100%;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    .button-exec-icon {
-      background-color: #fff;
-      border: navajowhite;
-      cursor: pointer;
-      padding: 5px;
-      background-color: #fff;
-      border: navajowhite;
-      cursor: pointer;
-      padding: 10px;
-      font-size: 14px;
-      svg{
-        width: 0.6em;
-        height: 0.6em;
-        vertical-align: middle;
-      }
-    }
-    .button-exec-icon:hover {
-      background-color: #eee;
-    }
-    &.disabled-btns{
-        >.dropdown,
-        button{
-            cursor: not-allowed;
-            pointer-events:none;
-        }
-    }
-    .right-menu{
-      margin-left: auto;
-      display: flex;
-      margin-right: 10px;
-      button{
-        margin-right: 5px;
-      }
+.button-container.font-properties {
+  background: #fff;
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  .button-exec-icon {
+    background-color: #fff;
+    border: navajowhite;
+    cursor: pointer;
+    padding: 5px;
+    padding: 10px;
+    font-size: 14px;
+    svg {
+      width: 0.6em;
+      height: 0.6em;
+      vertical-align: middle;
     }
   }
+  .button-exec-icon:hover {
+    background-color: #eee;
+  }
+  &.disabled-btns {
+    > .dropdown,
+    button {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+  .right-menu {
+    margin-left: auto;
+    display: flex;
+    margin-right: 10px;
+    button {
+      margin-right: 5px;
+    }
+  }
+}
