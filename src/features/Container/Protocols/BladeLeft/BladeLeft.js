@@ -39,13 +39,6 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     });
     // eslint-disable-next-line
   }, []);
-  const onClose = () => {
-    setOpen(false);
-  };
-
-  const onChange = (e, expanded) => {
-    setExpand(expanded);
-  };
 
   useEffect(() => {
     if (!open) {
@@ -81,10 +74,10 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     <div className="bladeContainer" ref={wrapperRef}>
       <Blade
         data-testid="toc-component"
-        onChange={onChange}
+        onChange={(e, expanded) => setExpand(expanded)}
         open={open}
         expanded={expand}
-        onClose={onClose}
+        onClose={() => setOpen(false)}
         title="Navigation"
         className="blade"
         width={263}
