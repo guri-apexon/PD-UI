@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">45.83% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/22</span>
+                <span class='fraction'>11/24</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">37.5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/9</span>
+                <span class='fraction'>3/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">54.54% </span>
+                <span class="strong">45.83% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/22</span>
+                <span class='fraction'>11/24</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -205,8 +205,7 @@
 <a name='L140'></a><a href='#L140'>140</a>
 <a name='L141'></a><a href='#L141'>141</a>
 <a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a>
-<a name='L144'></a><a href='#L144'>144</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L143'></a><a href='#L143'>143</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -234,25 +233,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -271,6 +268,7 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -377,25 +375,23 @@ class ProtocolViewWrapper extends React.Component {
 &nbsp;
   componentDidMount() {}
 &nbsp;
-  handlePageRight = <span class="fstat-no" title="function not covered" >(p</span>ageRight) =&gt; {
-    /* istanbul ignore next */
+  /* istanbul ignore next */
+  handlePageRight = (pageRight) =&gt; {
     this.setState({ pageRight });
   };
 &nbsp;
   handlePaginationPage = <span class="fstat-no" title="function not covered" >(p</span>aginationPage) =&gt; {
-    /* istanbul ignore next */
-    this.setState({ paginationPage });
+<span class="cstat-no" title="statement not covered" >    this.setState({ paginationPage });</span>
   };
 &nbsp;
   handlePageNo = <span class="fstat-no" title="function not covered" >(e</span>vent, page, sectionNo) =&gt; {
-    /* istanbul ignore next */
-    this.setState({ pageNo: page });
+<span class="cstat-no" title="statement not covered" >    this.setState({ pageNo: page });</span>
 <span class="cstat-no" title="statement not covered" >    this.setState({ sectionNumber: sectionNo });</span>
   };
 &nbsp;
+  /* istanbul ignore start */
 <span class="fstat-no" title="function not covered" >  ha</span>ndleClick() {
-    /* istanbul ignore next */
-    document.addEventListener('click', this.handleOutsideClick, false);
+<span class="cstat-no" title="statement not covered" >    document.addEventListener('click', this.handleOutsideClick, false);</span>
 <span class="cstat-no" title="statement not covered" >    this.setState({ popupVisible: true });</span>
   }
 &nbsp;
@@ -415,6 +411,7 @@ class ProtocolViewWrapper extends React.Component {
 <span class="cstat-no" title="statement not covered" >    document.removeEventListener('click', this.handleOutsideClick, false);</span>
 <span class="cstat-no" title="statement not covered" >    this.setState({ popupVisible: false });</span>
   };
+  /* istanbul ignore end */
 &nbsp;
   render() {
     const { data, refx, sectionRef, summaryData } = this.props;
@@ -499,7 +496,7 @@ ProtocolViewWrapper.propTypes = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-20T06:34:57.670Z
+                at 2023-02-20T08:13:09.190Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

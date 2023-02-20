@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1676874898532" clover="3.2.0">
-  <project timestamp="1676874898532" name="All files">
-    <metrics statements="3636" coveredstatements="3040" conditionals="1849" coveredconditionals="1399" methods="1049" coveredmethods="854" elements="6534" coveredelements="5293" complexity="0" loc="3636" ncloc="3636" packages="33" files="97" classes="97"/>
+<coverage generated="1676880790222" clover="3.2.0">
+  <project timestamp="1676880790222" name="All files">
+    <metrics statements="3638" coveredstatements="3039" conditionals="1849" coveredconditionals="1399" methods="1048" coveredmethods="854" elements="6535" coveredelements="5292" complexity="0" loc="3638" ncloc="3638" packages="33" files="97" classes="97"/>
     <package name="Routes">
       <metrics statements="5" coveredstatements="5" conditionals="8" coveredconditionals="6" methods="4" coveredmethods="3"/>
       <file name="routes.js" path="C:\Users\u1112428\Downloads\WorkSpace\ProtocolDigitization\pd-ui\src\Routes\routes.js">
@@ -1461,7 +1461,7 @@
       </file>
     </package>
     <package name="features.Container.Protocols">
-      <metrics statements="564" coveredstatements="464" conditionals="280" coveredconditionals="203" methods="145" coveredmethods="119"/>
+      <metrics statements="566" coveredstatements="463" conditionals="280" coveredconditionals="203" methods="144" coveredmethods="119"/>
       <file name="AmendmentCompare.js" path="C:\Users\u1112428\Downloads\WorkSpace\ProtocolDigitization\pd-ui\src\features\Container\Protocols\AmendmentCompare.js">
         <metrics statements="29" coveredstatements="27" conditionals="33" coveredconditionals="33" methods="9" coveredmethods="7"/>
         <line num="18" count="17" type="stmt"/>
@@ -1721,29 +1721,31 @@
         <line num="355" count="22" type="stmt"/>
       </file>
       <file name="ProtocolViewWrapper.js" path="C:\Users\u1112428\Downloads\WorkSpace\ProtocolDigitization\pd-ui\src\features\Container\Protocols\ProtocolViewWrapper.js">
-        <metrics statements="22" coveredstatements="12" conditionals="15" coveredconditionals="7" methods="9" coveredmethods="3"/>
+        <metrics statements="24" coveredstatements="11" conditionals="15" coveredconditionals="7" methods="8" coveredmethods="3"/>
         <line num="14" count="7" type="stmt"/>
         <line num="15" count="3" type="stmt"/>
         <line num="16" count="3" type="stmt"/>
         <line num="17" count="3" type="stmt"/>
-        <line num="29" count="3" type="stmt"/>
         <line num="34" count="3" type="stmt"/>
-        <line num="39" count="3" type="stmt"/>
-        <line num="42" count="0" type="stmt"/>
-        <line num="48" count="0" type="stmt"/>
-        <line num="52" count="0" type="cond" truecount="0" falsecount="5"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="38" count="3" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="50" count="0" type="cond" truecount="0" falsecount="5"/>
+        <line num="51" count="0" type="stmt"/>
         <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="55" count="0" type="stmt"/>
-        <line num="56" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="57" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="63" count="3" type="stmt"/>
-        <line num="64" count="0" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="69" count="3" type="stmt"/>
-        <line num="77" count="3" type="stmt"/>
-        <line num="79" count="3" type="stmt"/>
-        <line num="138" count="3" type="stmt"/>
+        <line num="61" count="3" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="68" count="3" type="stmt"/>
+        <line num="76" count="3" type="stmt"/>
+        <line num="78" count="3" type="stmt"/>
+        <line num="137" count="3" type="stmt"/>
       </file>
       <file name="Protocols.js" path="C:\Users\u1112428\Downloads\WorkSpace\ProtocolDigitization\pd-ui\src\features\Container\Protocols\Protocols.js">
         <metrics statements="32" coveredstatements="30" conditionals="22" coveredconditionals="17" methods="5" coveredmethods="5"/>
