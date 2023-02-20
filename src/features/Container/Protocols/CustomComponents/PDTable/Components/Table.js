@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import EmptyRowCells from './EmptyRows';
 import FootNotes from './FootNotes/Footnotes';
+import EmptyColumnCells from './EmptyColumns';
 
 function DisplayTable({
   data,
@@ -13,6 +14,8 @@ function DisplayTable({
   colWidth,
   footNoteData,
   setFootnoteData,
+  handleColumnOperation,
+  columnLength,
 }) {
   const handleChange = (columnIndex, rowIndex, e) => {
     onChange(e.target.innerHTML, columnIndex, rowIndex);
@@ -20,6 +23,13 @@ function DisplayTable({
 
   return (
     <div className="pd-table-inner">
+      {edit && (
+        <EmptyColumnCells
+          columnLength={columnLength}
+          handleOperation={handleColumnOperation}
+          colWidth={colWidth}
+        />
+      )}
       {data.map((row, rowIndex) => (
         <div key={uuidv4()} className="pd-table-empty-cell-row">
           {edit && (
@@ -65,4 +75,6 @@ DisplayTable.propTypes = {
   colWidth: PropTypes.isRequired,
   footNoteData: PropTypes.isRequired,
   setFootnoteData: PropTypes.isRequired,
+  handleColumnOperation: PropTypes.isRequired,
+  columnLength: PropTypes.isRequired,
 };
