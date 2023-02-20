@@ -40,13 +40,12 @@ class ProtocolViewWrapper extends React.Component {
     this.setState({ sectionNumber: sectionNo });
   };
 
-  /* istanbul ignore next */
+  /* istanbul ignore start */
   handleClick() {
     document.addEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: true });
   }
 
-  /* istanbul ignore function */
   handleOutsideClick(e) {
     if (e.target && this.node && this.node.contains(e.target)) {
       return;
@@ -59,11 +58,11 @@ class ProtocolViewWrapper extends React.Component {
     }
   }
 
-  /* istanbul ignore function */
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false });
   };
+  /* istanbul ignore end */
 
   render() {
     const { data, refx, sectionRef, summaryData } = this.props;
