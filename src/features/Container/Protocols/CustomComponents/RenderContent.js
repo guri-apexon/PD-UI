@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditContent from './EditContent';
+import EditContent from './ContentEdit';
 import ImageUploader from './ImageUploader';
 import './renderContent.scss';
 import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
