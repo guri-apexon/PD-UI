@@ -26,24 +26,21 @@ class ProtocolViewWrapper extends React.Component {
 
   componentDidMount() {}
 
+  /* istanbul ignore next */
   handlePageRight = (pageRight) => {
-    /* istanbul ignore next */
     this.setState({ pageRight });
   };
 
   handlePaginationPage = (paginationPage) => {
-    /* istanbul ignore next */
     this.setState({ paginationPage });
   };
 
   handlePageNo = (event, page, sectionNo) => {
-    /* istanbul ignore next */
     this.setState({ pageNo: page });
     this.setState({ sectionNumber: sectionNo });
   };
 
   handleClick() {
-    /* istanbul ignore next */
     document.addEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: true });
   }
