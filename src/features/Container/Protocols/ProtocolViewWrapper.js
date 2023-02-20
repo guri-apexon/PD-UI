@@ -40,7 +40,6 @@ class ProtocolViewWrapper extends React.Component {
     this.setState({ sectionNumber: sectionNo });
   };
 
-  /* istanbul ignore start */
   handleClick() {
     document.addEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: true });
@@ -62,7 +61,6 @@ class ProtocolViewWrapper extends React.Component {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false });
   };
-  /* istanbul ignore end */
 
   render() {
     const { data, refx, sectionRef, summaryData } = this.props;
