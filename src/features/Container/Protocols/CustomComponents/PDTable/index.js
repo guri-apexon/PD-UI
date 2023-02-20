@@ -1,11 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
+import Modal from 'apollo-react/components/Modal';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconButton from 'apollo-react/components/IconButton';
 import Plus from 'apollo-react-icons/Plus';
-import EmptyColumnCells from './Components/EmptyColumns';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
 import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
@@ -70,7 +70,7 @@ const formattableData = (data) => {
 
 const confirmText = 'Please confirm if you want to continue with deletion';
 
-function PDTable({ data, segment, activeLineID, lineID }) {
+function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
   const [columnLength, setColumnLength] = useState();
@@ -78,6 +78,8 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const [tableSaved, setTableSaved] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
   const [tableId, setTableId] = useState('');
+  const [isModal, setIsModal] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -100,7 +102,9 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     const cloneData = [...updatedData];
     cloneData[rowIndex][columnIndex].content = content;
     setUpdatedData(cloneData);
+    setIsTableChanged(true);
   };
+
   const handleColumnOperation = (operation, index) => {
     if (operation === tableOperations.addColumnLeft) {
       const newData = addColumn(updatedData, index);
@@ -112,11 +116,16 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setUpdatedData(newData);
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteColumn) {
-      const newData = deleteColumn(updatedData, index);
-      setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
+      // eslint-disable-next-line
+      if (confirm(confirmText)) {
+        const newData = deleteColumn(updatedData, index);
+        setUpdatedData(newData);
+        setColumnLength(Object.keys(newData[0]).length);
+      }
     }
+    setIsTableChanged(true);
   };
+
   const handleRowOperation = (operation, index) => {
     if (operation === tableOperations.addRowAbove) {
       const newData = addRow(updatedData, index);
@@ -128,13 +137,10 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setUpdatedData(newData);
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteRow) {
-      // eslint-disable-next-line
-      if (confirm(confirmText)) {
-        const newData = deleteRow(updatedData, index);
-        setUpdatedData(newData);
-        setColumnLength(Object.keys(newData[0]).length);
-      }
+      setIsModal(true);
+      setSelectedIndex(index);
     }
+    setIsTableChanged(true);
   };
 
   const addFootNote = () => {
@@ -146,6 +152,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       },
     ]);
   };
+
   const handleSave = () => {
     const content = {
       ...segment.content,
@@ -153,6 +160,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       AttachmentListProperties: footNoteData,
     };
     setTableSaved(true);
+    setIsTableChanged(false);
     dispatchSectionEvent('CONTENT_UPDATE', {
       type: CONTENT_TYPE.TABLE,
       lineID,
@@ -160,8 +168,16 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       content,
     });
   };
+
   const isEditable = () => {
     return lineID === activeLineID && !tableSaved;
+  };
+
+  const deleteTableData = () => {
+    const newData = deleteRow(updatedData, selectedIndex);
+    setUpdatedData(newData);
+    setColumnLength(Object.keys(newData[0]).length);
+    setIsModal(false);
   };
 
   return (
@@ -177,10 +193,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
               },
               {
                 label: 'Delete',
-                onClick: () =>
+                onClick: () => {
                   dispatchSectionEvent('CONTENT_DELETED', {
                     currentLineId: activeLineID,
-                  }),
+                  });
+                  setIsTableChanged(false);
+                },
               },
             ]}
           />
@@ -210,19 +228,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           />
         </div>
       )}
-      {/* eslint-disable-next-line */}
-      <div
-        className="pd-table-container"
-        ref={tableRef}
-        onClick={() => setTableSaved(false)}
-      >
-        {isEditable() && (
-          <EmptyColumnCells
-            columnLength={columnLength}
-            handleOperation={handleColumnOperation}
-            colWidth={colWidth}
-          />
-        )}
+      <div className="pd-table-container" ref={tableRef}>
         <DisplayTable
           data={updatedData}
           onChange={handleChange}
@@ -231,8 +237,29 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           colWidth={colWidth}
           footNoteData={footNoteData}
           setFootnoteData={setFootnoteData}
+          handleColumnOperation={handleColumnOperation}
+          columnLength={columnLength}
         />
       </div>
+      <Modal
+        className="modal delete-modal"
+        open={isModal}
+        variant="secondary"
+        onClose={() => setIsModal(false)}
+        title="Please confirm if you want to continue with deletion"
+        buttonProps={[
+          {
+            label: 'No',
+            size: 'small',
+          },
+          {
+            label: 'Yes',
+            size: 'small',
+            onClick: deleteTableData,
+          },
+        ]}
+        id="neutral"
+      />
     </section>
   );
 }
@@ -244,4 +271,5 @@ PDTable.propTypes = {
   segment: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
+  setIsTableChanged: PropTypes.isRequired,
 };

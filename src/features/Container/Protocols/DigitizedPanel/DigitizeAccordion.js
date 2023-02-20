@@ -10,6 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
+import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
@@ -19,7 +20,7 @@ import {
   createFullMarkup,
   createEnrichedText,
 } from '../../../../utils/utilFunction';
-import { sectionDetails, TOCActive, updateSectionData } from '../protocolSlice';
+import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
@@ -63,6 +64,9 @@ function DigitizeAccordion({
   const [currentEditCard, setCurrentEditCard] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
+  const [showAlert, setShowAlert] = useState(false);
+
+  const [isTableChanged, setIsTableChanged] = useState(false);
 
   const { data: sectionData } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
@@ -109,6 +113,7 @@ function DigitizeAccordion({
       }
     } else {
       setEnrichedTarget(null);
+      setShowAlert(false);
     }
     // eslint-disable-next-line
   }, [expanded]);
@@ -189,6 +194,10 @@ function DigitizeAccordion({
   };
 
   const handleSaveContent = () => {
+    if (isTableChanged) {
+      setShowAlert(true);
+      return;
+    }
     // dispatchSectionData(true);
     // setShowEdit(false);
     // setCurrentEditCard(null);
@@ -249,6 +258,7 @@ function DigitizeAccordion({
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
+
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
@@ -298,7 +308,7 @@ function DigitizeAccordion({
                   </IconButton>
                 ) : (
                   <IconButton
-                    disabled={showLoader}
+                    disabled={showAlert || showLoader}
                     data-testId="saveIcon"
                     onClick={handleSaveContent}
                   >
@@ -326,6 +336,7 @@ function DigitizeAccordion({
               linkId={item.link_id}
               sectionDataArr={sectionDataArr}
               edit={showedit}
+              setIsTableChanged={setIsTableChanged}
             />
           ) : (
             <div className="readable-content">
@@ -460,6 +471,19 @@ function DigitizeAccordion({
         There is already another section in edit mode. Do you want to continue
         with editing the current section
       </Modal>
+      {showAlert && (
+        <div className="confirmation-popup" data-testId="confirmPopup">
+          <p>Please save the table before saving the section</p>
+          <ButtonGroup
+            buttonProps={[
+              {
+                label: 'Ok',
+                onClick: () => setShowAlert(false),
+              },
+            ]}
+          />
+        </div>
+      )}
     </Accordion>
   );
 }
