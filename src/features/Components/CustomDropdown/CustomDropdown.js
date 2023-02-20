@@ -97,12 +97,13 @@ function CustomDropdown({
 
   const handleOutsideClick = (event) => {
     if (
-      event.target &&
-      textInputRef &&
-      textInputRef.current &&
-      textInputRef.current.contains(event.target)
+      !(
+        event.target &&
+        textInputRef &&
+        textInputRef.current &&
+        textInputRef.current.contains(event.target)
+      )
     ) {
-    } else {
       setExpandClass('');
       setBlur(true);
     }
