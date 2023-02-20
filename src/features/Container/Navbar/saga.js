@@ -1,7 +1,14 @@
 /* eslint-disable */
+import { CalendarCheck } from 'apollo-react-icons';
 import { takeEvery, all, call, put } from 'redux-saga/effects';
 import { httpCall, BASE_URL_8000 } from '../../../utils/api';
-import { getNotification, setError } from './navbarSlice';
+import {
+  getNotification,
+  setError,
+  deleteNotificationData,
+  readNotification,
+} from './navbarSlice';
+import data from './__test__/alertdata.json';
 
 export function* navbarNotificationData(action) {
   const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${action.payload}`;
@@ -13,14 +20,7 @@ export function* navbarNotificationData(action) {
     const notificationData = yield call(httpCall, notificationConfig);
 
     if (notificationData.success) {
-      const parseData = notificationData.data.map((item) => {
-        item.read = item.readFlag;
-        item.header = item.protocol;
-        item.details = item.protocolTitle;
-        item.timestamp = item.timeCreated;
-        item.protocolNumber = item.protocol;
-        return item;
-      });
+      const parseData = data;
       parseData.sort(function (a, b) {
         return new Date(b.timestamp) - new Date(a.timestamp);
       });
@@ -34,21 +34,25 @@ export function* navbarNotificationData(action) {
   }
 }
 
-export function* readNotification(action) {
+export function* handlereadNotification(action) {
   const data = action.payload;
-  const readConfig = {
-    url: `${BASE_URL_8000}/api/notification_read/`,
-    method: 'POST',
-    data: {
-      id: data.id,
-      protocol: data.protocol,
-      aidocId: data.aidocId,
-      readFlag: true,
-    },
-  };
+
   try {
-    const readResp = yield call(httpCall, readConfig);
-    if (readResp.success) {
+    const {
+      payload: { id, aidocId },
+    } = action;
+    const readConfig = {
+      // url: `${BASE_URL_8000}/api/notification_read/`,
+      method: 'POST',
+      data: {
+        id,
+        aidocId,
+      },
+    };
+    // const readResp = yield call(httpCall, readConfig);
+    yield put(readNotification(data));
+
+    if (data.success) {
       window.location.href = `/protocols?protocolId=${data.aidocId}&tab=1`;
     }
   } catch (err) {
@@ -57,49 +61,29 @@ export function* readNotification(action) {
   }
 }
 
-// export function* deleteAttribute(action) {
-//   const {
-//     payload: { op, docId, fieldName, attributeNames, reqData },
-//   } = action;
-//   const config = {
-//     url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
-//     method: 'DELETE',
-//     data: {
-//       id: data.id,
-//       protocol: data.protocol,
-//       aidocId: data.aidocId,
-//       readFlag: true,
-//     },
-//   };
-//   const data = yield call(httpCall, config);
-//   if (data?.data?.isDeleted) {
-//     if (op === 'deleteField') {
-//       yield put(
-//         getMetadataApiCall({
-//           status: true,
-//           reqData,
-//           op,
-//         }),
-//       );
-//       toast.info(`${reqData.name} successfully deleted`);
-//     } else {
-//       toast.info('attributes successfully deleted');
-//     }
-//   } else if (!data.success) {
-//     if (op === 'deleteField') {
-//       yield put(
-//         getMetadataApiCall({
-//           status: false,
-//           reqData,
-//           op,
-//         }),
-//       );
-//       toast.info(`${reqData.name} not deleted`);
-//     } else {
-//       toast.info('attributes not deleted');
-//     }
-//   }
-// }
+export function* handleDeleteNotification(action) {
+  try {
+    const {
+      payload: { id, protocol, aidocId, readFlag, details, header, timestamp },
+    } = action;
+    const config = {
+      // url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
+      method: 'DELETE',
+      data: {
+        id: id,
+        protocol: protocol,
+        aidocId: aidocId,
+        readFlag,
+        details,
+        header,
+        timestamp,
+      },
+    };
+    // const data = yield call(httpCall, config);
+    yield put(deleteNotificationData(id));
+    toast.info('Notification successfully deleted');
+  } catch (e) {}
+}
 
 // export function* setRead(action) {
 //   const notificationUrl = `${BASE_URL_8000}/api/notification_read`;
@@ -123,7 +107,8 @@ export function* readNotification(action) {
 
 export function* watchNavbar() {
   yield takeEvery('GET_NOTIFICATION_SAGA', navbarNotificationData);
-  yield takeEvery('READ_NOTIFICATION_SAGA', readNotification);
+  yield takeEvery('READ_NOTIFICATION_SAGA', handlereadNotification);
+  yield takeEvery('DELETE_NOTIFICATION', handleDeleteNotification);
 }
 
 export default function* qcSaga() {

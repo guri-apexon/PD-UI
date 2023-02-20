@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { useRef, useState } from 'react';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import BellIcon from 'apollo-react-icons/Bell';
 import Badge from 'apollo-react/components/Badge';
 
@@ -20,7 +20,7 @@ import './Alerts.scss';
 import { redaction } from '../../../AppConstant/AppConstant';
 import TrashIcon from 'apollo-react-icons/Trash';
 import IconButton from 'apollo-react/components/IconButton';
-
+import { navbarNotifications } from './navbarSlice';
 const replaceall = require('replaceall');
 
 function createFullMarkup(str) {
@@ -41,10 +41,11 @@ function createFullMarkup(str) {
 function Alerts() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const notificationsMenuProps = data;
-  const [notificationsMenuPropS, setNotificationsMenuPropS] = useState(
-    notificationsMenuProps,
-  );
+  const notificationsMenuPropS = useSelector(navbarNotifications);
+
+  // useEffect(() => {
+  //   dispatch({ type: 'GET_NOTIFICATION_SAGA' });
+  // }, []);
 
   const cache = useRef(
     new CellMeasurerCache({
@@ -53,7 +54,7 @@ function Alerts() {
     }),
   );
 
-  if (!notificationsMenuPropS.length) {
+  if (!notificationsMenuPropS?.length) {
     return (
       <button
         data-testid="alert-bell-icon"
@@ -70,18 +71,11 @@ function Alerts() {
   const onDelete = (event, id) => {
     event.preventDefault();
     event.stopPropagation();
-    const result = notificationsMenuPropS?.filter((item) => item?.id !== id);
-    setNotificationsMenuPropS(result);
+    dispatch({ type: 'DELETE_NOTIFICATION', payload: { id } });
   };
 
-  const checkForPrimary = async (data) => {
-    dispatch({ type: 'READ_NOTIFICATION_SAGA', payload: data });
-    // ---- Remove in local-----------
-    // const axiosResp = await axios.get("/session");
-    // const axiosUser = axiosResp.data;
-    // const userID = axiosUser.userId.substring(1);
-
-    // ------Uncomment in Local -------
+  const checkForPrimary = async (id) => {
+    dispatch({ type: 'READ_NOTIFICATION_SAGA', payload: { id } });
   };
 
   const newNotifications = notificationsMenuPropS.filter(
@@ -182,7 +176,7 @@ function Alerts() {
                    ListItem-button`}
                               role="button"
                               key={`${item.id}-${item.timestamp}`}
-                              onClick={() => checkForPrimary(item)}
+                              onClick={() => checkForPrimary(item.id)}
                             >
                               <div className="ListItemText-root listItemTextRoot ListItemText-multiline">
                                 {item.header && item.header.length > 30 ? (

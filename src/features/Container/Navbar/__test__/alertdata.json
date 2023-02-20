@@ -3,7 +3,7 @@
     "id": "1130",
     "protocolNumber": "Test_Proto_01",
     "aidocId": "64c3dd08-f885-49f7-a325-e72d8f221029",
-    "read": false,
+    "read": true,
     "details": "Capivasertib + Abiraterone as Treatment for Patients with Metastatic Hormone-Sensitive Prostate",
     "header": "Header",
     "timestamp": "2023-02-16T13:21:33.040000"
@@ -32,7 +32,7 @@
     "protocolNumber": "Bimal_patra_test_email_D361BC00001TC01",
     "header": "Header",
     "aidocId": "953e212b-6d25-4614-ab80-0160a1abe660",
-    "read": false,
+    "read": true,
     "details": "Capivasertib + Abiraterone as Treatment for Patients with Metastatic Hormone-Sensitive Prostate Cancer Characterised by PTEN deficiency.",
     "timestamp": "2021-06-18T09:38:59.113000"
   },
@@ -41,7 +41,7 @@
     "protocolNumber": "ARJ868TC23",
     "header": "Header",
     "aidocId": "ccca752d-840b-429b-b53a-42262cf212bb",
-    "read": false,
+    "read": true,
     "details": "A Multicentre, Randomised, Double-blind, Parallel Group, Placebocontrolled, Phase 3 Efficacy and Safety Study of Benralizumab (MEDI-563) Added to Medium to High-dose Inhaled Corticosteroid Plus Long-acting ß2 Agonist in Patients with Uncontrolled Asthma",
     "timestamp": "2021-06-24T07:50:04.747000"
   },
@@ -50,7 +50,7 @@
     "protocolNumber": "BRPROTO3",
     "header": "Header",
     "aidocId": "ea39f739-a1a0-4994-a98b-08c298b662fd",
-    "read": false,
+    "read": true,
     "details": "PHASE 3, RANDOMIZED, OPEN-LABEL, ACTIVE-CONTROLLED STUDY EVALUATING THE EFFICACY AND SAFETY OF ORAL VADADUSTAT FOR THE CORRECTION OF ANEMIA IN SUBJECTS WITH NON-DIALYSIS-DEPENDENT CHRONIC KIDNEY DISEASE (NDD-CKD) (PRO2TECT - CORRECTION)",
     "timestamp": "2021-01-24T11:22:10.017000"
   },
