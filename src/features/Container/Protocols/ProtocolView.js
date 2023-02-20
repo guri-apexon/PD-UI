@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { viewResult, headerResult, updateSectionData } from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
-import { CONTENT_TYPE } from '../../../AppConstant/AppConstant';
 import { isPrimaryUser, prepareContent } from '../../../utils/utilFunction';
 
 function ProtocolView({ refs, data }) {

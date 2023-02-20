@@ -239,16 +239,9 @@ function DigitizeAccordion({
     setClinicalTerms(null);
   }, [rightBladeValue]);
 
-  const checkUnsavedTable = () => {
-    const arr = sectionDataArr.filter(
-      (obj) => obj.type === CONTENT_TYPE.TABLE && !obj.isSaved,
-    );
-    return arr.length > 0;
-  };
-
   const onSaveClick = (e) => {
     e.stopPropagation();
-    if (checkUnsavedTable()) {
+    if (isTableChanged) {
       setShowAlert(true);
       return;
     }

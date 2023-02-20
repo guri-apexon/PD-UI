@@ -160,6 +160,7 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       AttachmentListProperties: footNoteData,
     };
     setTableSaved(true);
+    setIsTableChanged(false);
     dispatchSectionEvent('CONTENT_UPDATE', {
       type: CONTENT_TYPE.TABLE,
       lineID,
