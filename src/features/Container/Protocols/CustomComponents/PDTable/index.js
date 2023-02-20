@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
+import Modal from 'apollo-react/components/Modal';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconButton from 'apollo-react/components/IconButton';
@@ -77,6 +78,8 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
   const [tableSaved, setTableSaved] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
   const [tableId, setTableId] = useState('');
+  const [isModal, setIsModal] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -134,12 +137,8 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       setUpdatedData(newData);
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteRow) {
-      // eslint-disable-next-line
-      if (confirm(confirmText)) {
-        const newData = deleteRow(updatedData, index);
-        setUpdatedData(newData);
-        setColumnLength(Object.keys(newData[0]).length);
-      }
+      setIsModal(true);
+      setSelectedIndex(index);
     }
     setIsTableChanged(true);
   };
@@ -171,6 +170,13 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
 
   const isEditable = () => {
     return lineID === activeLineID && !tableSaved;
+  };
+
+  const deleteTableData = () => {
+    const newData = deleteRow(updatedData, selectedIndex);
+    setUpdatedData(newData);
+    setColumnLength(Object.keys(newData[0]).length);
+    setIsModal(false);
   };
 
   return (
@@ -234,6 +240,25 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
           columnLength={columnLength}
         />
       </div>
+      <Modal
+        className="modal delete-modal"
+        open={isModal}
+        variant="secondary"
+        onClose={() => setIsModal(false)}
+        title="Please confirm if you want to continue with deletion"
+        buttonProps={[
+          {
+            label: 'No',
+            size: 'small',
+          },
+          {
+            label: 'Yes',
+            size: 'small',
+            onClick: deleteTableData,
+          },
+        ]}
+        id="neutral"
+      />
     </section>
   );
 }
