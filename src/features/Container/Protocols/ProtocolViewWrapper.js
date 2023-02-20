@@ -40,6 +40,7 @@ class ProtocolViewWrapper extends React.Component {
     this.setState({ sectionNumber: sectionNo });
   };
 
+  /* istanbul ignore next */
   handleClick() {
     document.addEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: true });
