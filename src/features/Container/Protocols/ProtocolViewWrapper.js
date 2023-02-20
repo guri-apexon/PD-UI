@@ -46,7 +46,7 @@ class ProtocolViewWrapper extends React.Component {
     this.setState({ popupVisible: true });
   }
 
-  /* istanbul ignore next */
+  /* istanbul ignore function */
   handleOutsideClick(e) {
     if (e.target && this.node && this.node.contains(e.target)) {
       return;
@@ -59,7 +59,7 @@ class ProtocolViewWrapper extends React.Component {
     }
   }
 
-  /* istanbul ignore next */
+  /* istanbul ignore function */
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false });
