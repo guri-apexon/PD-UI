@@ -3,18 +3,24 @@ import { useState } from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import { render, fireEvent } from '../../../../test-utils/test-utils';
 import BladeLeft from '../BladeLeft/BladeLeft';
+import userEvent from '@testing-library/user-event';
 
-function Testing() {
-  const [open, setOpen] = useState(true);
-  const [expand, setExpand] = useState(false);
-  return (
-    <BladeLeft
-      value={(open, expand)}
-      setValue={(setOpen, setExpand)}
-      dataSummary={{ id: 1 }}
-    />
-  );
-}
+const initialState = {
+  protocol: {
+    protocolTocData: { tocData: { data: [{ source_file_section: '' }] } },
+  },
+};
+// function Testing() {
+//   const [open, setOpen] = useState(true);
+//   const [expand, setExpand] = useState(false);
+//   return (
+//     <BladeLeft
+//       value={(open, expand)}
+//       setValue={(setOpen, setExpand)}
+//       dataSummary={{ id: 1 }}
+//     />
+//   );
+// }
 
 // function Testing2() {
 //   const [expand, setExpand] = useState(false);
@@ -26,9 +32,17 @@ function Testing() {
 
 describe.only('leftBlade should Opne when Click', () => {
   test('Open LeftBlade', () => {
-    const screen = render(<Testing />, {
-      initialState: { protocolTocData: { tocData: { data: [] } } },
-    });
-    fireEvent.click(screen.getByTestId('toc-component'));
+    const screen = render(
+      <BladeLeft dataSummary={{ id: 1 }} handlePageNo={() => jest.fn()} />,
+      {
+        initialState,
+      },
+    );
+    const BladeEl = screen.getByTestId('toc-component');
+    userEvent.click(BladeEl.querySelector('svg'));
+    screen.debug();
+    userEvent.click(BladeEl.querySelector('svg'));
+    // userEvent.click(screen.getByClass('MuiBackdrop-root'));
+    // fireEvent.click(BladeEl.querySelector("button[class^='Blade-closeIcon-']"));
   });
 });
