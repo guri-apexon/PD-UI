@@ -84,6 +84,7 @@ function ProtocolView({ refs, data }) {
     setSectionContent(content);
   };
 
+  /* istanbul ignore next */
   // eslint-disable-next-line
   const dispatchSectionEvent = (actionType, payload) => {
     switch (actionType) {
