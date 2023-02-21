@@ -1,7 +1,7 @@
 variables:
   PACKAGE: "pd-ui-git"
 
-image: node:12.20
+image: node:16.14.0
 
 cache:
   paths:
@@ -159,7 +159,9 @@ svt-deploy:
       
   only:
     refs:
-      - release-1.4
+      - develop
+      - merge_requests
+      - /^release*/
     variables: 
       - $ENVIRONMENT== "svt"
 

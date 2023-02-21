@@ -52,7 +52,6 @@ export const deleteRow = (rows, index) => {
 };
 
 export const addColumn = (tabledata, index) => {
-  console.log(JSON.stringify(tabledata));
   const data = cloneDeep(tabledata);
   for (let i = 0; i < data.length; i++) {
     Object.keys(data[i]).forEach((key, j) => {
@@ -65,6 +64,10 @@ export const addColumn = (tabledata, index) => {
         data[i][newKey] = tabledata[i][key];
       }
     });
+    const maxLength = Object.keys(data[i]).length;
+    if (maxLength === index) {
+      data[i][`${parseInt(maxLength + 1, 10)}.0`] = getEmptyCell();
+    }
   }
   return data;
 };

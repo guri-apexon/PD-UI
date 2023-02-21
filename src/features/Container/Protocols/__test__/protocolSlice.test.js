@@ -9,6 +9,14 @@ import protocolPageSlice, {
   getProtocolTocData,
   setSectionLoader,
   resetSectionData,
+  getFileStream,
+  getMetaDataSummaryField,
+  getRightBladeValue,
+  getTOCActive,
+  setAccordianMetaData,
+  setAccordianMetaParam,
+  getMetadataApiCall,
+  getEnrichedValue,
 } from '../protocolSlice';
 
 const initialState = {
@@ -33,6 +41,7 @@ const initialState = {
     protocol: null,
     data: [],
   },
+  fileStream: null,
 };
 
 describe(' ProtocolSlice Test Suite', () => {
@@ -188,6 +197,102 @@ describe(' ProtocolSlice Test Suite', () => {
     ).toEqual({
       ...initialState,
       sectionDetails: { protocol: null, data: [] },
+    });
+  });
+
+  test('getFileStream', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getFileStream.type,
+        payload: 'samplePayload',
+      }),
+    ).toEqual({
+      ...initialState,
+      fileStream: 'samplePayload',
+    });
+  });
+
+  test('getMetaDataSummaryField', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getMetaDataSummaryField.type,
+        payload: 'samplePayload',
+      }),
+    ).toEqual({
+      ...initialState,
+      metaDataSummaryField: 'samplePayload',
+    });
+  });
+
+  test('getRightBladeValue', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getRightBladeValue.type,
+        payload: 'samplePayload',
+      }),
+    ).toEqual({
+      ...initialState,
+      rightBladeValue: 'samplePayload',
+    });
+  });
+
+  test('getTOCActive', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getTOCActive.type,
+        payload: 'samplePayload',
+      }),
+    ).toEqual({
+      ...initialState,
+      TOCActiveAccordion: 'samplePayload',
+    });
+  });
+
+  test('setAccordianMetaData', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setAccordianMetaData.type,
+        payload: 'samplePayload',
+      }),
+    ).toEqual({
+      ...initialState,
+      accordionMetaData: 'samplePayload',
+    });
+  });
+
+  test('setAccordianMetaParam', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setAccordianMetaParam.type,
+        payload: 'samplePayload',
+      }),
+    ).toEqual({
+      ...initialState,
+      accordianMetaParam: 'samplePayload',
+    });
+  });
+
+  test('getMetadataApiCall', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getMetadataApiCall.type,
+        payload: 'samplePayload',
+      }),
+    ).toEqual({
+      ...initialState,
+      metadataApiCallValue: 'samplePayload',
+    });
+  });
+
+  test('getEnrichedValue', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getEnrichedValue.type,
+        payload: 'samplePayload',
+      }),
+    ).toEqual({
+      ...initialState,
+      EnrichedApiValue: 'samplePayload',
     });
   });
 });
