@@ -116,18 +116,28 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
-    } else if (currentActiveCard === item.link_id && expanded) {
-      setExpanded(!expanded);
+    } else if (
+      currentActiveCard === item.link_id &&
+      expanded &&
+      !tocActive[index]
+    ) {
+      setExpanded(false);
     }
+
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
       setExpanded(false);
-    }
-    if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
+    } else if (
+      currentActiveCard === item.link_id &&
+      !expanded &&
+      tocActive[index]
+    ) {
       setExpanded(true);
+    } else if (!tocActive[index]) {
+      setExpanded(false);
     }
 
     // eslint-disable-next-line
@@ -245,7 +255,7 @@ function DigitizeAccordion({
       setShowAlert(true);
       return;
     }
-    console.log('save');
+
     setShowEdit(false);
     setCurrentEditCard(null);
     setEditedMode(false);

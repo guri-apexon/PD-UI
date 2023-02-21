@@ -79,7 +79,7 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
   const [showconfirm, setShowConfirm] = useState(false);
   const [tableId, setTableId] = useState('');
   const [isModal, setIsModal] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedData, setSelectedData] = useState({});
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -116,12 +116,11 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       setUpdatedData(newData);
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteColumn) {
-      // eslint-disable-next-line
-      if (confirm(confirmText)) {
-        const newData = deleteColumn(updatedData, index);
-        setUpdatedData(newData);
-        setColumnLength(Object.keys(newData[0]).length);
-      }
+      setIsModal(true);
+      setSelectedData({
+        operation,
+        index,
+      });
     }
     setIsTableChanged(true);
   };
@@ -138,7 +137,10 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteRow) {
       setIsModal(true);
-      setSelectedIndex(index);
+      setSelectedData({
+        operation,
+        index,
+      });
     }
     setIsTableChanged(true);
   };
@@ -174,9 +176,16 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
   };
 
   const deleteTableData = () => {
-    const newData = deleteRow(updatedData, selectedIndex);
+    let newData = [];
+    if (selectedData.operation === tableOperations.deleteRow) {
+      newData = deleteRow(updatedData, selectedData.index);
+      setUpdatedData(newData);
+    } else {
+      newData = deleteColumn(updatedData, selectedData.index);
+    }
     setUpdatedData(newData);
     setColumnLength(Object.keys(newData[0]).length);
+    setSelectedData({});
     setIsModal(false);
   };
 
