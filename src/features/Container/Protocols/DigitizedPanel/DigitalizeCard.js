@@ -93,7 +93,7 @@ function Digitize({
         sectionNo = headerList[i].sequence;
         setSectionSequence(sectionNo);
         const tempTOCActive = [...tocActive];
-        tempTOCActive[sectionNo] = !tempTOCActive[sectionNo];
+        tempTOCActive[sectionNo] = true;
         dispatch({
           type: 'SET_TOC_Active',
           payload: {
@@ -111,7 +111,7 @@ function Digitize({
       const sequence = headerList[listLength]?.sequence;
       setSectionSequence(sequence);
       const tempTOCActive = [...tocActive];
-      tempTOCActive[listLength] = !tempTOCActive[listLength];
+      tempTOCActive[listLength] = true;
       dispatch({
         type: 'SET_TOC_Active',
         payload: {

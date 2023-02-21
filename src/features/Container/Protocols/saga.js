@@ -26,6 +26,7 @@ import {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  TOCActive,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -545,6 +546,11 @@ export function* deleteAttribute(action) {
 }
 
 export function* RightBladeValue(action) {
+  if (action.payload.name === PROTOCOL_RIGHT_MENU.HOME) {
+    const TocActiveList = yield select(TOCActive);
+    const TocFalse = new Array(TocActiveList.length).fill(false);
+    yield put(getTOCActive(TocFalse));
+  }
   yield put(getRightBladeValue(action.payload.name));
 }
 
