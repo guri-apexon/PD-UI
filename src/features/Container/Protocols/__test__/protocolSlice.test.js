@@ -15,6 +15,7 @@ import protocolPageSlice, {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  getHeaderList,
 } from '../protocolSlice';
 
 const initialState = {
@@ -40,6 +41,7 @@ const initialState = {
     data: [],
   },
   fileStream: null,
+  headersList: {},
 };
 
 describe(' ProtocolSlice Test Suite', () => {
@@ -260,5 +262,15 @@ describe(' ProtocolSlice Test Suite', () => {
       ...initialState,
       EnrichedApiValue: 'samplePayload',
     });
+  });
+
+  test('getCompare test', () => {
+    const headersLists = {};
+    expect(
+      protocolPageSlice(initialState, {
+        type: getHeaderList.type,
+        payload: headersLists,
+      }),
+    ).toEqual({ ...initialState, headersList: headersLists });
   });
 });

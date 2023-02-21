@@ -3,12 +3,25 @@ import adminSlice, {
   getUsers,
   getUserRoles,
   getProtocolMap,
+  getRolesOptions,
+  setLoader,
+  setUserLoader,
+  setSearch,
+  setMapLoader,
 } from '../adminSlice';
 
 const initialState = {
   users: [],
   roles: [],
   map: [],
+  roleOptions: {
+    user: [],
+    protocol: [],
+  },
+  loader: false,
+  getUserLoader: false,
+  searchedData: {},
+  mapLoader: false,
 };
 
 const userData = [
@@ -57,5 +70,53 @@ describe(' adminSlice Test Suite', () => {
         payload: [],
       }),
     ).toEqual({ ...initialState, users: [] });
+  });
+  test('getProtocolMap', () => {
+    const roleOption = {
+      user: [],
+      protocol: [],
+    };
+    expect(
+      adminSlice(initialState, {
+        type: getRolesOptions.type,
+        payload: roleOption,
+      }),
+    ).toEqual({ ...initialState, roleOptions: roleOption });
+  });
+  test('setLoader', () => {
+    const loaders = false;
+    expect(
+      adminSlice(initialState, {
+        type: setLoader.type,
+        payload: loaders,
+      }),
+    ).toEqual({ ...initialState, loader: loaders });
+  });
+  test('setLoader', () => {
+    const getUserLoaders = false;
+    expect(
+      adminSlice(initialState, {
+        type: setUserLoader.type,
+        payload: getUserLoaders,
+      }),
+    ).toEqual({ ...initialState, getUserLoader: getUserLoaders });
+  });
+  test('setSearch', () => {
+    const searchedDat = {};
+    expect(
+      adminSlice(initialState, {
+        type: setSearch.type,
+        payload: searchedDat,
+      }),
+    ).toEqual({ ...initialState, searchedData: searchedDat });
+  });
+  test('setSearch', () => {
+    const mapLoaders = false;
+    expect(
+      adminSlice(initialState, {
+        type: setMapLoader.type,
+        payload: mapLoaders,
+      }),
+    ).toEqual({ ...initialState, mapLoader: mapLoaders });
   });
 });
