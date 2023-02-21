@@ -285,8 +285,10 @@ export const prepareContent = ({
         return clonedSection.map((x) => {
           if (x.line_id === currentLineId) {
             x.content = content;
-            if (x.qc_change_type !== QC_CHANGE_TYPE.ADDED)
+            if (x.qc_change_type !== QC_CHANGE_TYPE.ADDED) {
               x.qc_change_type = QC_CHANGE_TYPE.UPDATED;
+              x.isSaved = true;
+            }
           }
           return x;
         });

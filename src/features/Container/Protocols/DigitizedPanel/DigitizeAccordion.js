@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
+import ButtonGroup from 'apollo-react/components/ButtonGroup';
+import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
@@ -59,6 +61,9 @@ function DigitizeAccordion({
   const [clinicalTerms, setClinicalTerms] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
+  const [showAlert, setShowAlert] = useState(false);
+
+  const [isTableChanged, setIsTableChanged] = useState(false);
 
   const [tocActive, setTocActive] = useState([]);
 
@@ -85,12 +90,6 @@ function DigitizeAccordion({
     });
   };
 
-  const onSaveClick = (e) => {
-    e.stopPropagation();
-    setShowEdit(false);
-    setCurrentEditCard(null);
-  };
-
   useEffect(() => {
     if (expanded) {
       const arr = sectionData?.filter((obj) => obj.linkId === item.link_id);
@@ -109,6 +108,7 @@ function DigitizeAccordion({
       }
     } else {
       setEnrichedTarget(null);
+      setShowAlert(false);
     }
     // eslint-disable-next-line
   }, [expanded]);
@@ -151,6 +151,7 @@ function DigitizeAccordion({
       setClinicalTerms(null);
     }
   };
+
   useEffect(() => {
     if (currentEditCard !== item.link_id) {
       setShowEdit(false);
@@ -190,11 +191,6 @@ function DigitizeAccordion({
     }
   };
 
-  const refreshContent = () => {
-    setEditedMode(false);
-    dispatchSectionData(true);
-  };
-
   const handleSupeScript = () => {
     if (sectionData.length > 0) {
       setShowLoader(false);
@@ -229,10 +225,12 @@ function DigitizeAccordion({
     }
     // eslint-disable-next-line
   }, [item]);
+
   useEffect(() => {
     handleSupeScript();
     // eslint-disable-next-line
   }, [sectionData]);
+
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
@@ -248,6 +246,19 @@ function DigitizeAccordion({
     setSelectedEnrichedText(null);
     setClinicalTerms(null);
   }, [rightBladeValue]);
+
+  const onSaveClick = (e) => {
+    e.stopPropagation();
+    if (isTableChanged) {
+      setShowAlert(true);
+      return;
+    }
+    console.log('save');
+    setShowEdit(false);
+    setCurrentEditCard(null);
+    setEditedMode(false);
+    dispatchSectionData(true);
+  };
 
   return (
     <Accordion
@@ -267,25 +278,29 @@ function DigitizeAccordion({
             }}
           >
             {showedit && (
-              <span data-testId="lockIcon">
+              <IconButton data-testId="lockIcon">
                 <Lock style={{ paddingRight: '10px' }} />
-              </span>
+              </IconButton>
             )}
             {primaryRole && (
               <>
-                <span data-testId="eyeIcon">
+                <IconButton className="eyeIcon" data-testId="eyeIcon">
                   <EyeShow style={{ paddingRight: '10px' }} />
-                </span>
+                </IconButton>
                 {!showedit ? (
                   // eslint-disable-next-line
-                  <span data-testId="pencilIcon" onClick={onEditClick}>
+                  <IconButton data-testId="pencilIcon" onClick={onEditClick}>
                     <Pencil />
-                  </span>
+                  </IconButton>
                 ) : (
                   // eslint-disable-next-line
-                  <span data-testId="saveIcon" onClick={onSaveClick}>
-                    <Save onClick={() => refreshContent()} />
-                  </span>
+                  <IconButton
+                    onClick={onSaveClick}
+                    data-testId="saveIcon"
+                    disabled={showAlert}
+                  >
+                    <Save />
+                  </IconButton>
                 )}
               </>
             )}
@@ -308,6 +323,7 @@ function DigitizeAccordion({
               linkId={item.link_id}
               sectionDataArr={sectionDataArr}
               edit={showedit}
+              setIsTableChanged={setIsTableChanged}
             />
           ) : (
             <div className="readable-content">
@@ -441,6 +457,19 @@ function DigitizeAccordion({
         There is already another section in edit mode. Do you want to continue
         with editing the current section
       </Modal>
+      {showAlert && (
+        <div className="confirmation-popup" data-testId="confirmPopup">
+          <p>Please save the table before saving the section</p>
+          <ButtonGroup
+            buttonProps={[
+              {
+                label: 'Ok',
+                onClick: () => setShowAlert(false),
+              },
+            ]}
+          />
+        </div>
+      )}
     </Accordion>
   );
 }

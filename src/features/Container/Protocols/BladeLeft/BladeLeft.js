@@ -36,6 +36,16 @@ function BladeLeft({ handlePageNo }) {
   const onChange = (e, expanded) => {
     setExpand(expanded);
   };
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'GET_PROTOCOL_TOC_DATA',
+  //     payload: {
+  //       docId: dataSummary.id,
+  //       tocFlag: 1,
+  //     },
+  //   });
+  //   // eslint-disable-next-line
+  // }, []);
 
   useEffect(() => {
     if (!open) {
@@ -75,10 +85,10 @@ function BladeLeft({ handlePageNo }) {
     <div className="bladeContainer" ref={wrapperRef}>
       <Blade
         data-testid="toc-component"
-        onChange={onChange}
+        onChange={(e, expanded) => setExpand(expanded)}
         open={open}
         expanded={expand}
-        onClose={onClose}
+        onClose={() => setOpen(false)}
         title="Navigation"
         className="blade"
         width={263}
