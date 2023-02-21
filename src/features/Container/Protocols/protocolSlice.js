@@ -77,24 +77,13 @@ export const protocolSlice = createSlice({
       state.fileStream = action.payload;
     },
     updateSectionData: (state, action) => {
-      const { actionType, data, content, lineId, linkId } = action.payload;
+      const { actionType, data, linkId } = action.payload;
 
       if (actionType === 'REPLACE_CONTENT' && data && linkId) {
         state.headersList.data = state.headersList.data.map((x) =>
           x.link_id === linkId ? { ...x, sectionData: data } : x,
         );
       }
-      //  else if (content && lineId) {
-      //   state.sectionDetails.sections = state.sectionDetails.sections.map(
-      //     (x) => {
-      //       if (x.line_id === lineId) {
-      //         x.qc_change_type = 'modify';
-      //         x.content = content;
-      //       }
-      //       return x;
-      //     },
-      //   );
-      // }
     },
     getMetaDataSummaryField: (state, action) => {
       state.metaDataSummaryField = action.payload;

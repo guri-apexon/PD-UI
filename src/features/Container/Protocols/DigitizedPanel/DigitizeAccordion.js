@@ -90,6 +90,9 @@ function DigitizeAccordion({
     });
   };
 
+  console.log('item', item);
+  console.log('item data', item.sectionData);
+
   useEffect(() => {
     if (expanded) {
       const arr = sectionData?.filter((obj) => obj.linkId === item.link_id);

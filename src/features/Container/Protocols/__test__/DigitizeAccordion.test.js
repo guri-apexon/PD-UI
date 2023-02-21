@@ -236,6 +236,41 @@ describe('DigitizeAccordion', () => {
         last_reviewed_by: '',
         total_no_review: '',
       },
+      sectionData: [
+        {
+          section_level: '',
+          CPT_section: 'Unmapped',
+          type: 'text',
+          content: 'CONFIDENTIAL',
+          font_info: {
+            IsBold: false,
+            font_size: -1,
+            font_style: '',
+            entity: [],
+            roi_id: {
+              para: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+              childbox: '',
+              subtext: '',
+            },
+          },
+          level_1_CPT_section: 'Unmapped',
+          file_section: 'Unmapped',
+          file_section_num: '',
+          file_section_level: 1,
+          seq_num: 2,
+          qc_change_type: '',
+          line_id: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+          aidocid: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+          synonyms_extracted_terms: '',
+          semantic_extraction: '',
+          section_locked: false,
+          clinical_terms: {
+            CONFIDENTIAL: {
+              synonyms: 'value1, value2',
+            },
+          },
+        },
+      ],
     };
     const screen = renderWithProviders(
       <DigitizeAccordion
@@ -273,6 +308,41 @@ describe('DigitizeAccordion', () => {
         last_reviewed_by: '',
         total_no_review: '',
       },
+      sectionData: [
+        {
+          section_level: '',
+          CPT_section: 'Unmapped',
+          type: 'text',
+          content: 'CONFIDENTIAL',
+          font_info: {
+            IsBold: false,
+            font_size: -1,
+            font_style: '',
+            entity: [],
+            roi_id: {
+              para: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+              childbox: '',
+              subtext: '',
+            },
+          },
+          level_1_CPT_section: 'Unmapped',
+          file_section: 'Unmapped',
+          file_section_num: '',
+          file_section_level: 1,
+          seq_num: 2,
+          qc_change_type: '',
+          line_id: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+          aidocid: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+          synonyms_extracted_terms: '',
+          semantic_extraction: '',
+          section_locked: false,
+          clinical_terms: {
+            CONFIDENTIAL: {
+              synonyms: 'value1, value2',
+            },
+          },
+        },
+      ],
     };
     const screen = renderWithProviders(
       <DigitizeAccordion

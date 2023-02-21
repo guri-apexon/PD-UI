@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.36% </span>
+                <span class="strong">97.05% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>37/38</span>
+                <span class='fraction'>33/34</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>11/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">97.36% </span>
+                <span class="strong">97.05% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>37/38</span>
+                <span class='fraction'>33/34</span>
             </div>
         
             
@@ -217,10 +217,7 @@
 <a name='L152'></a><a href='#L152'>152</a>
 <a name='L153'></a><a href='#L153'>153</a>
 <a name='L154'></a><a href='#L154'>154</a>
-<a name='L155'></a><a href='#L155'>155</a>
-<a name='L156'></a><a href='#L156'>156</a>
-<a name='L157'></a><a href='#L157'>157</a>
-<a name='L158'></a><a href='#L158'>158</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L155'></a><a href='#L155'>155</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -230,8 +227,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
@@ -266,8 +261,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
@@ -362,7 +355,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -377,6 +370,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import ListBullet from 'apollo-react-icons/ListBullet';
@@ -385,11 +379,9 @@ import TrashIcon from 'apollo-react-icons/Trash';
 import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
-import { useProtContext } from '../../ProtocolContext';
 &nbsp;
-function FontProperties({ onHeaderSelect, activeLineID }) {
+function FontProperties({ onHeaderSelect, activeLineID, onDeleteClick }) {
   const [enable, setEnable] = useState(activeLineID);
-  const { dispatchSectionEvent } = useProtContext();
 &nbsp;
   const onFormatSelect = (e, button) =&gt; {
     e.preventDefault();
@@ -423,9 +415,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
 <span class="cstat-no" title="statement not covered" >        break;</span>
     }
   };
-  const deleteSegment = () =&gt; {
-    dispatchSectionEvent('CONTENT_DELETED', { currentLineId: activeLineID });
-  };
+&nbsp;
   useEffect(() =&gt; {
     setEnable(activeLineID);
   }, [activeLineID]);
@@ -519,7 +509,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
         &lt;IconButton
           size="small"
           data-testId="trash-icon"
-          onClick={() =&gt; deleteSegment()}
+          onClick={onDeleteClick}
         &gt;
           &lt;TrashIcon /&gt;
         &lt;/IconButton&gt;
@@ -533,6 +523,7 @@ export default FontProperties;
 FontProperties.propTypes = {
   onHeaderSelect: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
+  onDeleteClick: PropTypes.isRequired,
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -541,7 +532,7 @@ FontProperties.propTypes = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-20T11:34:41.781Z
+                at 2023-02-21T12:50:12.182Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

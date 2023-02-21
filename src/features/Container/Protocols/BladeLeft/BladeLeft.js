@@ -29,24 +29,6 @@ function BladeLeft({ handlePageNo }) {
     if (tocData.data?.length) setTocList(tocData.data);
   }, [tocData]);
 
-  const onClose = () => {
-    setOpen(false);
-  };
-
-  const onChange = (e, expanded) => {
-    setExpand(expanded);
-  };
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'GET_PROTOCOL_TOC_DATA',
-  //     payload: {
-  //       docId: dataSummary.id,
-  //       tocFlag: 1,
-  //     },
-  //   });
-  //   // eslint-disable-next-line
-  // }, []);
-
   useEffect(() => {
     if (!open) {
       setOpen(true);
