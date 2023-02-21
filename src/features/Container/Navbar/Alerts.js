@@ -4,7 +4,7 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import BellIcon from 'apollo-react-icons/Bell';
 import Badge from 'apollo-react/components/Badge';
-
+import { useHistory } from 'react-router-dom';
 import Popover from 'apollo-react/components/Popover';
 import Typography from 'apollo-react/components/Typography';
 import {
@@ -14,8 +14,6 @@ import {
   CellMeasurerCache,
 } from 'react-virtualized';
 import Tooltip from 'apollo-react/components/Tooltip';
-import data from './__test__/alertdata.json';
-
 import './Alerts.scss';
 import { redaction } from '../../../AppConstant/AppConstant';
 import TrashIcon from 'apollo-react-icons/Trash';
@@ -40,12 +38,9 @@ function createFullMarkup(str) {
 
 function Alerts() {
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const notificationsMenuPropS = useSelector(navbarNotifications);
-
-  // useEffect(() => {
-  //   dispatch({ type: 'GET_NOTIFICATION_SAGA' });
-  // }, []);
+  const history = useHistory();
 
   const cache = useRef(
     new CellMeasurerCache({
@@ -74,8 +69,9 @@ function Alerts() {
     dispatch({ type: 'DELETE_NOTIFICATION', payload: { id } });
   };
 
-  const checkForPrimary = async (id) => {
+  const checkForPrimary = async (id, aidocId) => {
     dispatch({ type: 'READ_NOTIFICATION_SAGA', payload: { id } });
+    history.push(`/protocols?protocolId=${aidocId}&tab=1`);
   };
 
   const newNotifications = notificationsMenuPropS.filter(
@@ -95,10 +91,18 @@ function Alerts() {
         className={`alert-icon ${!!anchorEl && 'alert-icon-active'}`}
         onClick={(e) => setAnchorEl(e.currentTarget)}
       >
-        <Badge badgeContent={newNotifications.length} max={99}>
+        <Badge
+          badgeContent={
+            newNotifications.length > 0
+              ? newNotifications.length
+              : 'No New Notifications'
+          }
+          max={99}
+        >
           <BellIcon />
         </Badge>
       </button>
+
       <Popover
         open={!!anchorEl}
         anchorEl={anchorEl}
@@ -123,6 +127,7 @@ function Alerts() {
           horizontal: 'right',
         }}
       >
+        <h4 className="Heading-main">Notification</h4>
         <AutoSizer>
           {({
             width,
@@ -154,9 +159,6 @@ function Alerts() {
                     rowIndex={index}
                   >
                     <div style={style}>
-                      <Typography className="notificationHeading">
-                        {'Notification'}
-                      </Typography>
                       {[notification]?.map((item, i) => {
                         let header = null;
                         if (
@@ -176,7 +178,9 @@ function Alerts() {
                    ListItem-button`}
                               role="button"
                               key={`${item.id}-${item.timestamp}`}
-                              onClick={() => checkForPrimary(item.id)}
+                              onClick={() =>
+                                checkForPrimary(item.id, item.aidocId)
+                              }
                             >
                               <div className="ListItemText-root listItemTextRoot ListItemText-multiline">
                                 {item.header && item.header.length > 30 ? (

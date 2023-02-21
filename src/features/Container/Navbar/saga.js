@@ -1,12 +1,12 @@
 /* eslint-disable */
 import { CalendarCheck } from 'apollo-react-icons';
-import { takeEvery, all, call, put } from 'redux-saga/effects';
+import { takeEvery, all, call, put, select } from 'redux-saga/effects';
 import { httpCall, BASE_URL_8000 } from '../../../utils/api';
 import {
   getNotification,
   setError,
   deleteNotificationData,
-  readNotification,
+  navbarNotifications,
 } from './navbarSlice';
 import data from './__test__/alertdata.json';
 
@@ -35,36 +35,31 @@ export function* navbarNotificationData(action) {
 }
 
 export function* handlereadNotification(action) {
-  const data = action.payload;
-
-  try {
-    const {
-      payload: { id, aidocId },
-    } = action;
-    const readConfig = {
-      // url: `${BASE_URL_8000}/api/notification_read/`,
-      method: 'POST',
-      data: {
-        id,
-        aidocId,
-      },
-    };
-    // const readResp = yield call(httpCall, readConfig);
-    yield put(readNotification(data));
-
-    if (data.success) {
-      window.location.href = `/protocols?protocolId=${data.aidocId}&tab=1`;
+  const {
+    payload: { id },
+  } = action;
+  const readConfig = {
+    // url: `${BASE_URL_8000}/api/notification_read/`,
+    method: 'POST',
+    data: {
+      id: id,
+    },
+  };
+  const readData = yield select(navbarNotifications);
+  const notificationResult = readData?.map((item) => {
+    if (item?.id === id) {
+      return { ...item, read: true };
     }
-  } catch (err) {
-    /* istanbul ignore next */
-    console.log(err);
-  }
+    return item;
+  });
+
+  yield put(getNotification(notificationResult));
 }
 
 export function* handleDeleteNotification(action) {
   try {
     const {
-      payload: { id, protocol, aidocId, readFlag, details, header, timestamp },
+      payload: { id, protocol, aidocId, read, details, header, timestamp },
     } = action;
     const config = {
       // url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
@@ -73,7 +68,7 @@ export function* handleDeleteNotification(action) {
         id: id,
         protocol: protocol,
         aidocId: aidocId,
-        readFlag,
+        read,
         details,
         header,
         timestamp,

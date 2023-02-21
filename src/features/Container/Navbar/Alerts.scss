@@ -117,6 +117,7 @@
   background-color: #ecf3ff;
 }
 .listItemTextRoot {
+  margin-top: 30px;
   padding-left: 0;
   white-space: nowrap;
 }
@@ -200,10 +201,19 @@
 
 .ReactVirtualized__Grid {
   & > div {
+    margin-top: 50px;
     overflow: visible !important;
   }
 }
 
 .MuiPopover-paper {
   overflow: visible !important;
+}
+
+.Heading-main {
+  position: absolute;
+  padding: 6px;
+  z-index: 9;
+  background-color: #fff;
+  width: 92%;
 }

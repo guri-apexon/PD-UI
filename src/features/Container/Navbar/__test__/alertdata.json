@@ -3,7 +3,7 @@
     "id": "1130",
     "protocolNumber": "Test_Proto_01",
     "aidocId": "64c3dd08-f885-49f7-a325-e72d8f221029",
-    "read": true,
+    "read": false,
     "details": "Capivasertib + Abiraterone as Treatment for Patients with Metastatic Hormone-Sensitive Prostate",
     "header": "Header",
     "timestamp": "2023-02-16T13:21:33.040000"
@@ -59,7 +59,7 @@
     "protocolNumber": "BRPROTO3",
     "header": "Header",
     "aidocId": "ea39f739-a1a0-4994-a98b-08c298b662fd",
-    "read": false,
+    "read": true,
     "details": "PHASE 3, RANDOMIZED, OPEN-LABEL, ACTIVE-CONTROLLED STUDY EVALUATING THE EFFICACY AND SAFETY OF ORAL VADADUSTAT FOR THE CORRECTION OF ANEMIA IN SUBJECTS WITH NON-DIALYSIS-DEPENDENT CHRONIC KIDNEY DISEASE (NDD-CKD) (PRO2TECT - CORRECTION)",
     "timestamp": "2023-02-15T11:22:10.017000"
   }

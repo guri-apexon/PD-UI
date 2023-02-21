@@ -26,24 +26,11 @@ export const navbarSlice = createSlice({
         console.log(error);
       }
     },
-    readNotification: (state, action) => {
-      state.notifications = state.notifications?.map((item) => {
-        if (item?.id === action?.notifications?.id) {
-          item.read = true;
-        }
-        return item;
-      });
-    },
   },
 });
 
-export const {
-  getNotification,
-  setError,
-  getLoader,
-  deleteNotificationData,
-  readNotification,
-} = navbarSlice.actions;
+export const { getNotification, setError, getLoader, deleteNotificationData } =
+  navbarSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
