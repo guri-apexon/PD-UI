@@ -174,7 +174,7 @@ describe('FontProperties', () => {
         setSaveEnabled={() => jest.fn()}
       />,
     );
-    const btn = screen.getByTestId('bulletlist');
+    const btn = screen.getByTestId('list');
     fireEvent.mouseDown(btn);
     expect(document.execCommand).toHaveBeenCalledWith('insertUnorderedList');
   });

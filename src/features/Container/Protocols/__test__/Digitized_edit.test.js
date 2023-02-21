@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import MultilineEdit from '../DigitizedPanel/DigitizedEdit';
 import store from '../../../../store/store';
+import * as ProtocolContext from '../ProtocolContext';
 
 const sample = [
   {
@@ -11,6 +12,10 @@ const sample = [
 
 describe('Digitize Edit', () => {
   test('should render the component', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
     const component = render(
       <Provider store={store}>
         <MultilineEdit data={sample} />
