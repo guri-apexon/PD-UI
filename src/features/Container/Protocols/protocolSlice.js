@@ -71,13 +71,14 @@ export const protocolSlice = createSlice({
     setSectionDetails: (state, action) => {
       const { protocol, linkId, data } = action.payload;
       if (protocol === state.sectionDetails.protocol) {
-        const existIndex = state.sectionDetails.findIndex(
+        const existIndex = state.sectionDetails?.data?.findIndex(
           (x) => x.linkId === linkId,
         );
-        if (existIndex) {
-          delete state.sectionDetails.data[existIndex];
+        if (existIndex >= 0) {
+          state.sectionDetails.data[existIndex].data = data;
+        } else {
+          state.sectionDetails.data.push({ linkId, data });
         }
-        state.sectionDetails.data.push({ linkId, data });
       } else {
         state.sectionDetails.protocol = protocol;
         state.sectionDetails.data = [{ linkId, data }];
