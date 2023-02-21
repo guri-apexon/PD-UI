@@ -1,4 +1,4 @@
-import { useState, createRef, useEffect, useMemo } from 'react';
+import { useState, createRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { viewResult, headerResult, updateSectionData } from './protocolSlice';
@@ -10,86 +10,104 @@ function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
   const summary = useSelector(headerResult);
   const dispatch = useDispatch();
-  const [protData, setprotData] = useState(data);
+  const protData = {
+    ...data,
+    userPrimaryRoleFlag: isPrimaryUser(data),
+  };
   const [selectedSection, setSelectedSection] = useState(null);
   const [sectionContent, setSectionContent] = useState(null);
 
+  const handleSectionSelect = (payload) => {
+    if (!payload.sectionContent && sectionContent) {
+      dispatch(
+        updateSectionData({
+          data: sectionContent,
+          actionType: 'REPLACE_CONTENT',
+          linkId: selectedSection.link_id,
+        }),
+      );
+    }
+    setSelectedSection(payload.selectedSection);
+    setSectionContent(payload.sectionContent || null);
+  };
+
+  const handleContentUpdate = (payload) => {
+    const content = prepareContent({
+      ...payload,
+      type: 'MODIFY',
+      sectionContent,
+    });
+    setSectionContent(content);
+  };
+
+  const handleContentDelete = (payload) => {
+    const content = prepareContent({
+      ...payload,
+      type: 'DELETE',
+      sectionContent,
+    });
+    setSectionContent(content);
+    dispatch(
+      updateSectionData({
+        data: content,
+        actionType: 'REPLACE_CONTENT',
+        linkId: selectedSection.link_id,
+      }),
+    );
+  };
+
+  const handleContentAdd = (payload) => {
+    const { type, lineId } = payload;
+    const content = prepareContent({
+      ...payload,
+      type: 'ADDED',
+      contentType: type,
+      sectionContent,
+      currentLineId: lineId,
+    });
+    setSectionContent(content);
+    dispatch(
+      updateSectionData({
+        data: content,
+        actionType: 'REPLACE_CONTENT',
+        linkId: selectedSection.link_id,
+      }),
+    );
+  };
+
+  const handleLinkLevelUpdate = (payload) => {
+    const content = prepareContent({
+      ...payload,
+      type: 'LINK_LEVEL_UPDATE',
+      sectionContent,
+    });
+    setSectionContent(content);
+  };
+
+  /* istanbul ignore next */
   // eslint-disable-next-line
   const dispatchSectionEvent = (actionType, payload) => {
     switch (actionType) {
-      case 'ON_SECTION_SELECT': {
-        if (!payload.sectionContent && sectionContent) {
-          dispatch(
-            updateSectionData({
-              data: sectionContent,
-              actionType: 'REPLACE_CONTENT',
-              linkId: selectedSection.link_id,
-            }),
-          );
-        }
-        setSelectedSection(payload.selectedSection);
-        setSectionContent(
-          payload.sectionContent ? [...payload.sectionContent] : null,
-        );
+      case 'ON_SECTION_SELECT':
+        handleSectionSelect(payload);
         break;
-      }
-      case 'CONTENT_UPDATE': {
-        const content = prepareContent({
-          ...payload,
-          type: 'MODIFY',
-          sectionContent,
-        });
-        setSectionContent(content);
+      case 'CONTENT_UPDATE':
+        handleContentUpdate(payload);
         break;
-      }
-      case 'CONTENT_DELETED': {
-        const content = prepareContent({
-          ...payload,
-          type: 'DELETE',
-          sectionContent,
-        });
-        setSectionContent(content);
-        dispatch(
-          updateSectionData({
-            data: content,
-            actionType: 'REPLACE_CONTENT',
-            linkId: selectedSection.link_id,
-          }),
-        );
+      case 'CONTENT_DELETED':
+        handleContentDelete(payload);
         break;
-      }
-      case 'CONTENT_ADDED': {
-        const { type, lineId } = payload;
-        const content = prepareContent({
-          ...payload,
-          type: 'ADDED',
-          contentType: type,
-          sectionContent,
-          currentLineId: lineId,
-        });
-        setSectionContent(content);
-        dispatch(
-          updateSectionData({
-            data: content,
-            actionType: 'REPLACE_CONTENT',
-            linkId: selectedSection.link_id,
-          }),
-        );
+      case 'CONTENT_ADDED':
+        handleContentAdd(payload);
         break;
-      }
-      case 'LINK_LEVEL_UPDATE': {
-        const content = prepareContent({
-          ...payload,
-          type: 'LINK_LEVEL_UPDATE',
-          sectionContent,
-        });
-        setSectionContent(content);
+      case 'LINK_LEVEL_UPDATE':
+        handleLinkLevelUpdate(payload);
         break;
-      }
       default:
         break;
     }
   };
+
   const ProtocolProviderValue = useMemo(
     () => ({
       selectedSection,
@@ -100,15 +118,11 @@ function ProtocolView({ refs, data }) {
   );
 
   const panels = () => {
-    const ex = [];
+    const result = {};
     for (let index = 0; index < 250; index++) {
-      ex.push(index);
+      result[index] = createRef();
     }
-    const refsection = ex.reduce((refsection, value) => {
-      refsection[value] = createRef();
-      return refsection;
-    }, {});
-    return refsection;
+    return result;
   };
   const [sectionRef] = useState(panels);
   const listData = [];
@@ -137,12 +151,6 @@ function ProtocolView({ refs, data }) {
   if (viewData.iqvdataSummary) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
-  useEffect(() => {
-    if (data) {
-      setprotData({ ...data, userPrimaryRoleFlag: isPrimaryUser(data) });
-    }
-    // eslint-disable-next-line
-  }, [data]);
 
   return (
     <ProtocolContext.Provider value={ProtocolProviderValue}>

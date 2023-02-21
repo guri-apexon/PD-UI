@@ -31,7 +31,7 @@ describe('RenderContent', () => {
     expect(getByText('Test content')).toBeInTheDocument();
   });
 
-  it('renders the correct content and edit button when type is text', () => {
+  it('renders the correct content and edit button when type is header', () => {
     const sectionData = {
       type: 'header',
       content: 'Test content',
@@ -54,9 +54,9 @@ describe('RenderContent', () => {
     expect(getByText('Test content')).toBeInTheDocument();
   });
 
-  it('renders the correct content  when type is table', () => {
+  it('renders the correct content and edit button when type is image', () => {
     const sectionData = {
-      type: 'table',
+      type: 'image',
       content: null,
       line_id: 'line-1',
     };
@@ -74,5 +74,28 @@ describe('RenderContent', () => {
         edit={false}
       />,
     );
+  });
+
+  it('renders the correct content and edit button when type is table', () => {
+    const sectionData = {
+      type: 'table',
+      content: null,
+      line_id: 'line-1',
+    };
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const screen = render(
+      <RenderContent
+        sectionData={sectionData}
+        handleContentEdit={handleContentEditMock}
+        activeLineID="line-1"
+        setActiveLineID={setActiveLineIDMock}
+        deleteSection={deleteSectionMock}
+        edit={false}
+      />,
+    );
+    screen.debug();
   });
 });

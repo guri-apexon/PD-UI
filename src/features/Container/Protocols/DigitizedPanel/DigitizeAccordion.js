@@ -8,13 +8,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
-import Undo from 'apollo-react-icons/Undo';
+import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
-import Popover from 'apollo-react/components/Popover';
 import Save from 'apollo-react-icons/Save';
-import { toast } from 'react-toastify';
 import MultilineEdit from './DigitizedEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
@@ -24,7 +22,7 @@ import {
 import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
-import { AUDIT_LIST, PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
@@ -48,9 +46,6 @@ function DigitizeAccordion({
   currentEditCard,
   setCurrentEditCard,
   index,
-  scrollToTop,
-  currentEditIndex,
-  setCurrentEditIndex,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -62,15 +57,15 @@ function DigitizeAccordion({
   const [showLoader, setShowLoader] = useState(false);
   const [editedMode, setEditedMode] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [openAudit, setOpenAudit] = useState(null);
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
-  const [sectionDataBak, setSectionDataBak] = useState([]);
-  const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
-  const [saveEnabled, setSaveEnabled] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
+  const [isTableChanged, setIsTableChanged] = useState(false);
+
   const { data: sectionData } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
 
@@ -95,14 +90,6 @@ function DigitizeAccordion({
     });
   };
 
-  const onSaveClick = (e) => {
-    e.stopPropagation();
-    setShowEdit(false);
-    setCurrentEditCard(null);
-    setCurrentEditIndex(null);
-    setSaveEnabled(false);
-  };
-
   useEffect(() => {
     if (expanded) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
@@ -121,6 +108,7 @@ function DigitizeAccordion({
       }
     } else {
       setEnrichedTarget(null);
+      setShowAlert(false);
     }
     // eslint-disable-next-line
   }, [expanded]);
@@ -128,18 +116,28 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
-    } else if (currentActiveCard === item.link_id && expanded) {
-      setExpanded(!expanded);
+    } else if (
+      currentActiveCard === item.link_id &&
+      expanded &&
+      !tocActive[index]
+    ) {
+      setExpanded(false);
     }
+
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
       setExpanded(false);
-    }
-    if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
+    } else if (
+      currentActiveCard === item.link_id &&
+      !expanded &&
+      tocActive[index]
+    ) {
       setExpanded(true);
+    } else if (!tocActive[index]) {
+      setExpanded(false);
     }
 
     // eslint-disable-next-line
@@ -163,6 +161,7 @@ function DigitizeAccordion({
       setClinicalTerms(null);
     }
   };
+
   useEffect(() => {
     if (currentEditCard !== item.link_id) {
       setShowEdit(false);
@@ -189,34 +188,17 @@ function DigitizeAccordion({
     setExpanded(true);
     setShowEdit(true);
     setCurrentEditCard(item.link_id);
-    setCurrentEditIndex(index);
     setEditedMode(true);
     dispatchSectionData();
-    setSectionDataBak([...sectionDataArr]);
   };
 
   const onEditClick = (e) => {
     e.stopPropagation();
-    if (currentEditCard && currentEditCard !== item.link_id) {
+    if (currentEditCard) {
       setShowConfirm(true);
     } else {
       onShowEdit();
     }
-  };
-
-  const refreshContent = () => {
-    console.log('refreshContent');
-    setEditedMode(false);
-    dispatchSectionData(true);
-    toast.success('Saved successfully', {
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'colored',
-      toastId: 'toast1',
-    });
   };
 
   useEffect(() => {
@@ -267,16 +249,17 @@ function DigitizeAccordion({
     setClinicalTerms(null);
   }, [rightBladeValue]);
 
-  const onDiscardClick = () => {
-    setSectionDataArr([...sectionDataBak]);
-    setShowDiscardConfirm(false);
-    setShowEdit(false);
-    setSaveEnabled(false);
-  };
-
-  const clickAuditLog = (e) => {
+  const onSaveClick = (e) => {
     e.stopPropagation();
-    setOpenAudit(e.currentTarget);
+    if (isTableChanged) {
+      setShowAlert(true);
+      return;
+    }
+
+    setShowEdit(false);
+    setCurrentEditCard(null);
+    setEditedMode(false);
+    dispatchSectionData(true);
   };
 
   return (
@@ -303,53 +286,23 @@ function DigitizeAccordion({
             )}
             {primaryRole && (
               <>
-                {/* eslint-disable-next-line */}
-                <IconButton
-                  className="eyeIcon"
-                  data-testId="eyeIcon"
-                  onClick={clickAuditLog}
-                >
+                <IconButton className="eyeIcon" data-testId="eyeIcon">
                   <EyeShow style={{ paddingRight: '10px' }} />
                 </IconButton>
                 {!showedit ? (
                   // eslint-disable-next-line
-
                   <IconButton data-testId="pencilIcon" onClick={onEditClick}>
                     <Pencil />
                   </IconButton>
                 ) : (
-                  <>
-                    {/* eslint-disable-next-line */}
-                    <IconButton
-                      onClick={(e) => {
-                        onSaveClick(e);
-                        refreshContent(e);
-                      }}
-                      data-testId="saveIcon"
-                      disabled={!saveEnabled}
-                    >
-                      <Save />
-                    </IconButton>
-
-                    {/* eslint-disable-next-line */}
-
-                    <IconButton
-                      data-testId="discardIcon"
-                      title="Discard changes"
-                      className="discard-icon"
-                      disabled={!saveEnabled}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (saveEnabled) {
-                          setShowDiscardConfirm(true);
-                        } else {
-                          setShowEdit(false);
-                        }
-                      }}
-                    >
-                      <Undo />
-                    </IconButton>
-                  </>
+                  // eslint-disable-next-line
+                  <IconButton
+                    onClick={onSaveClick}
+                    data-testId="saveIcon"
+                    disabled={showAlert}
+                  >
+                    <Save />
+                  </IconButton>
                 )}
               </>
             )}
@@ -359,11 +312,6 @@ function DigitizeAccordion({
 
       <AccordionDetails
         onScroll={(e) => handleEnrichedClick(e)}
-        onKeyPress={(e) => {
-          if (!saveEnabled) {
-            setSaveEnabled(true);
-          }
-        }}
         className="section-single-content"
       >
         {showLoader && (
@@ -377,7 +325,7 @@ function DigitizeAccordion({
               linkId={item.link_id}
               sectionDataArr={sectionDataArr}
               edit={showedit}
-              setSaveEnabled={setSaveEnabled}
+              setIsTableChanged={setIsTableChanged}
             />
           ) : (
             <div className="readable-content">
@@ -399,7 +347,6 @@ function DigitizeAccordion({
                       lineID={section.line_id}
                       content={section.content}
                       edit={false}
-                      setSaveEnabled={setSaveEnabled}
                     />
                   );
                 }
@@ -483,98 +430,48 @@ function DigitizeAccordion({
         linkId={linkId}
         docId={docId}
       />
-      <Popover
-        open={!!openAudit}
-        anchorEl={openAudit}
-        onClose={() => setOpenAudit(null)}
-      >
-        <div className="auditPopover">
-          <div className="textContainer">
-            {AUDIT_LIST.map((names) => {
-              return (
-                <Typography variant="body1" key={names}>
-                  {names}
-                </Typography>
-              );
-            })}
-          </div>
-          <div className="textContainer">
-            {AUDIT_LIST.map((names) => {
-              return (
-                <Typography variant="body1" key={names}>
-                  :
-                </Typography>
-              );
-            })}
-          </div>
-          <div className="textContainer">
-            {Object.keys(item?.audit_info).map((names) => {
-              return (
-                names !== 'total_no_review' && (
-                  <Typography variant="body1" key={names}>
-                    {item?.audit_info.names}
-                  </Typography>
-                )
-              );
-            })}
-          </div>
-        </div>
-      </Popover>
       <Modal
         disableBackdropClick
         open={showConfirm}
         variant="warning"
         onClose={() => setShowConfirm(false)}
-        title="Confirm Action"
-        buttonProps={[
-          {
-            label: 'Cancel',
-            onClick: () => {
-              scrollToTop(currentEditIndex);
-              setShowConfirm(false);
-            },
-          },
-          {
-            label: 'Save',
-            onClick: (e) => {
-              onSaveClick(e);
-              setShowConfirm(false);
-            },
-          },
-          {
-            label: 'Continue Editing',
-            onClick: () => {
-              setShowConfirm(false);
-              scrollToTop(currentEditIndex);
-            },
-          },
-        ]}
-        className={classes.modal}
-        id="custom"
-      >
-        The section is already in edit mode. Please confirm your action
-      </Modal>
-      <Modal
-        disableBackdropClick
-        open={showDiscardConfirm}
-        variant="warning"
-        onClose={() => setShowDiscardConfirm(false)}
         title="Confirm Actiom"
         buttonProps={[
           {
             label: 'Cancel',
-            onClick: () => setShowDiscardConfirm(false),
+            onClick: () => {
+              setShowEdit(false);
+              setShowConfirm(false);
+            },
           },
           {
-            label: 'Discard',
-            onClick: onDiscardClick,
+            label: 'Ok',
+            onClick: () => {
+              setCurrentEditCard(item.link_id);
+              onShowEdit();
+              setShowConfirm(false);
+            },
           },
         ]}
         className={classes.modal}
         id="custom"
       >
-        Are you sure you want to discard the changes?
+        There is already another section in edit mode. Do you want to continue
+        with editing the current section
       </Modal>
+      {showAlert && (
+        <div className="confirmation-popup" data-testId="confirmPopup">
+          <p>Please save the table before saving the section</p>
+          <ButtonGroup
+            buttonProps={[
+              {
+                label: 'Ok',
+                onClick: () => setShowAlert(false),
+              },
+            ]}
+          />
+        </div>
+      )}
     </Accordion>
   );
 }
@@ -591,7 +488,4 @@ DigitizeAccordion.propTypes = {
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
   index: PropTypes.isRequired,
-  scrollToTop: PropTypes.isRequired,
-  currentEditIndex: PropTypes.isRequired,
-  setCurrentEditIndex: PropTypes.isRequired,
 };

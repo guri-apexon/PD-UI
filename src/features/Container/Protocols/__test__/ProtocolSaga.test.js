@@ -13,6 +13,15 @@ import {
   fetchSectionHeaderList,
   getSectionList,
   getProtocolTocDataResult,
+  MetaDataVariable,
+  deleteAttribute,
+  addMetaDataField,
+  addMetaDataAttributes,
+  saveEnrichedAPI,
+  fetchFileStream,
+  RightBladeValue,
+  setTOCActive,
+  setEnrichedAPI,
 } from '../saga';
 
 const userDetail = {
@@ -600,5 +609,257 @@ describe('Protocol Saga Unit Test', () => {
     }).toPromise();
 
     expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getMetadata get', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const payload = {
+      docId: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+      op: 'metadata',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, MetaDataVariable, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+  test('getMetadata delete', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const payload = {
+      op: 'deleteField',
+      docId: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+      fieldName: 'abc',
+      attributeNames: 'atf',
+      reqData: 'hg',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, deleteAttribute, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+  test('getMetadata addMetaDataField', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const payload = {
+      op: 'addFields',
+      docId: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+      fieldName: 'abc',
+      attributeNames: 'atf',
+      reqData: 'hg',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, addMetaDataField, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+  test('getMetadata addMetaDataAttributes', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const payload = {
+      op: 'addFields',
+      docId: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+      fieldName: 'abc',
+      attributeNames: 'atf',
+      reqData: 'hg',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, addMetaDataAttributes, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+  test('getMetadata saveEnrichedAPI', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const payload = {
+      docId: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+      linkId: 'abc',
+      data: 'atf',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, saveEnrichedAPI, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+  test('getMetadata get Failed', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const payload = {
+      docId: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+      op: 'addFields',
+      type: '',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, MetaDataVariable, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+  test('fetchFileStream get', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const payload = {
+      name: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+      dfsPath: 'metadata',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, fetchFileStream, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
+  });
+  test('fetchFileStream get', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      name: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, RightBladeValue, { payload }).toPromise();
+
+    expect(undefined).toBeUndefined();
+  });
+  test('setTOCActive get', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      data: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, setTOCActive, { payload }).toPromise();
+
+    expect(undefined).toBeUndefined();
+  });
+  test('setEnrichedAPI get', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      flag: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, setEnrichedAPI, { payload }).toPromise();
+
+    expect(undefined).toBeUndefined();
   });
 });

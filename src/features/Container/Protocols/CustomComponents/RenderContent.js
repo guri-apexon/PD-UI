@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditContent from './EditContent';
+import ContentEdit from './ContentEdit';
 import ImageUploader from './ImageUploader';
 import './renderContent.scss';
 import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
@@ -13,13 +13,13 @@ function RenderContent({
   setActiveLineID,
   deleteSection,
   edit,
-  setSaveEnabled,
+  setIsTableChanged,
 }) {
   const { type, content = '', line_id: lineID } = sectionData;
 
   if (type === CONTENT_TYPE.HEADER) {
     return (
-      <EditContent
+      <ContentEdit
         type="header"
         content={content}
         lineID={lineID}
@@ -33,14 +33,13 @@ function RenderContent({
   }
   if (type === CONTENT_TYPE.TEXT) {
     return (
-      <EditContent
+      <ContentEdit
         type="text"
         content={content}
         lineID={lineID}
         setActiveLineID={setActiveLineID}
         activeLineID={activeLineID}
         handleContentEdit={handleContentEdit}
-        setSaveEnabled={setSaveEnabled}
         deleteSection={deleteSection}
         edit={edit}
       />
@@ -58,6 +57,7 @@ function RenderContent({
           segment={sectionData}
           activeLineID={activeLineID}
           lineID={lineID}
+          setIsTableChanged={setIsTableChanged}
         />
       </div>
     );
@@ -72,7 +72,6 @@ function RenderContent({
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
         edit={edit}
-        setSaveEnabled={setSaveEnabled}
       />
     );
   }
@@ -86,6 +85,6 @@ RenderContent.propTypes = {
   activeLineID: PropTypes.isRequired,
   setActiveLineID: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
-  setSaveEnabled: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  setIsTableChanged: PropTypes.isRequired,
 };
