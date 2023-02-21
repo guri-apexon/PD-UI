@@ -6,7 +6,6 @@ import BellIcon from 'apollo-react-icons/Bell';
 import Badge from 'apollo-react/components/Badge';
 import { useHistory } from 'react-router-dom';
 import Popover from 'apollo-react/components/Popover';
-import Typography from 'apollo-react/components/Typography';
 import {
   List,
   AutoSizer,
@@ -72,6 +71,7 @@ function Alerts() {
   const checkForPrimary = async (id, aidocId) => {
     dispatch({ type: 'READ_NOTIFICATION_SAGA', payload: { id } });
     history.push(`/protocols?protocolId=${aidocId}&tab=1`);
+    setAnchorEl(!anchorEl);
   };
 
   const newNotifications = notificationsMenuPropS.filter(
@@ -91,14 +91,7 @@ function Alerts() {
         className={`alert-icon ${!!anchorEl && 'alert-icon-active'}`}
         onClick={(e) => setAnchorEl(e.currentTarget)}
       >
-        <Badge
-          badgeContent={
-            newNotifications.length > 0
-              ? newNotifications.length
-              : 'No New Notifications'
-          }
-          max={99}
-        >
+        <Badge badgeContent={newNotifications.length} max={99}>
           <BellIcon />
         </Badge>
       </button>
@@ -128,6 +121,7 @@ function Alerts() {
         }}
       >
         <h4 className="Heading-main">Notification</h4>
+        {/* <Typography>{'Popover content'}</Typography> */}
         <AutoSizer>
           {({
             width,

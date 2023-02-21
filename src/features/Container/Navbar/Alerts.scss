@@ -201,7 +201,7 @@
 
 .ReactVirtualized__Grid {
   & > div {
-    margin-top: 50px;
+    margin-top: 25px;
     overflow: visible !important;
   }
 }
@@ -215,5 +215,7 @@
   padding: 6px;
   z-index: 9;
   background-color: #fff;
-  width: 92%;
+  width: 88%;
+  margin: 0;
+  padding-left: 23px;
 }
