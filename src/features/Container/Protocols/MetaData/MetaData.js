@@ -265,10 +265,16 @@ function MetaData({ docId }) {
     if (apiResponse?.status) {
       if (apiResponse.op === 'addAttributes') {
         const selectedData = accordianData[apiResponse.reqData.name];
-        const accMetaData =
-          apiResponse?.reqData?.name === 'summary_extended'
+        let accMetaData =
+          apiResponse?.reqData?.formattedName === 'summary_extended'
             ? rows.summary
-            : rows[apiResponse?.reqData?.name] || [];
+            : rows[apiResponse?.reqData?.formattedName] || [];
+        accMetaData = accMetaData.map((metaData) => {
+          return {
+            ...metaData,
+            display_name: metaData.attr_name,
+          };
+        });
         setAccordianData({
           ...accordianData,
           [apiResponse.reqData.name]: {
