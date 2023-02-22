@@ -413,6 +413,7 @@ export function* MetaDataVariable(action) {
       const updatedData = {};
       const result = flattenObject(updatedData, MetaData?.data?.data, 1, '');
       const updateResultForSummary = mergeSummary(result);
+
       yield put(setAccordianMetaData(updateResultForSummary));
     } else {
       yield put(setAccordianMetaParam(MetaData?.data?.data));
@@ -525,7 +526,7 @@ export function* deleteAttribute(action) {
           op,
         }),
       );
-      toast.info(`${reqData.name} successfully deleted`);
+      toast.info(`${reqData.accData.name} successfully deleted`);
     } else {
       toast.info('attributes successfully deleted');
     }
@@ -538,7 +539,7 @@ export function* deleteAttribute(action) {
           op,
         }),
       );
-      toast.info(`${reqData.name} not deleted`);
+      toast.info(`${reqData.accData.name} not deleted`);
     } else {
       toast.info('attributes not deleted');
     }

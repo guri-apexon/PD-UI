@@ -71,10 +71,10 @@ function MetaData({ docId }) {
   };
 
   const handleAccordian = (accData) => {
-    const selectedData = accordianData[accData.name];
+    const selectedData = accordianData[accData.formattedName];
     setAccordianData({
       ...accordianData,
-      [accData.name]: {
+      [accData.formattedName]: {
         ...selectedData,
         isActive: !selectedData.isActive,
         isEdit: false,
@@ -85,16 +85,16 @@ function MetaData({ docId }) {
 
   const handleEdit = (accData, e) => {
     e.stopPropagation();
-    const selectedData = accordianData[accData.name];
+    const selectedData = accordianData[accData.formattedName];
     setSubSuggestions(accData);
     setRows({
       ...rows,
       // eslint-disable-next-line
-      [accData.name]: accData._meta_data ? accData._meta_data : [],
+      [accData.formattedName]: accData._meta_data ? accData._meta_data : [],
     });
     setAccordianData({
       ...accordianData,
-      [accData.name]: {
+      [accData.formattedName]: {
         ...selectedData,
         isActive: true,
         isEdit: true,
@@ -111,7 +111,7 @@ function MetaData({ docId }) {
         fieldName: data.formattedName,
         attributeNames: deletedAttributes,
         reqData: {
-          name: data.name,
+          formattedName: data.formattedName,
           accData: data,
         },
       },
@@ -138,7 +138,7 @@ function MetaData({ docId }) {
         fieldName: data.formattedName === 'summary' ? '' : data.formattedName,
         attributes: updatedAttrList,
         reqData: {
-          name: data.name,
+          formattedName: data.formattedName,
         },
       },
     });
@@ -171,19 +171,21 @@ function MetaData({ docId }) {
           'deleteAttribute',
         );
       }
-      postCall(accordianData[accData.name], filterNonCustomData);
+      postCall(accordianData[accData.formattedName], filterNonCustomData);
     } else {
-      const accMetaData = rows[accData?.name] ? rows[accData?.name] : [];
+      const accMetaData = rows[accData?.formattedName]
+        ? rows[accData?.formattedName]
+        : [];
       if (deletedAttributes.length > 0) {
-        deleteCall(accordianData[accData.name], 'deleteAttribute');
+        deleteCall(accordianData[accData.formattedName], 'deleteAttribute');
       }
-      postCall(accordianData[accData.name], accMetaData);
+      postCall(accordianData[accData.formattedName], accMetaData);
     }
   };
 
   const handleDelete = (accData, e) => {
     e.stopPropagation();
-    deleteCall(accordianData[accData.name], 'deleteField');
+    deleteCall(accordianData[accData.formattedName], 'deleteField');
   };
 
   const addSubAccordion = (accData, name) => {
@@ -264,14 +266,20 @@ function MetaData({ docId }) {
   useEffect(() => {
     if (apiResponse?.status) {
       if (apiResponse.op === 'addAttributes') {
-        const selectedData = accordianData[apiResponse.reqData.name];
-        const accMetaData =
-          apiResponse?.reqData?.name === 'summary_extended'
+        const selectedData = accordianData[apiResponse.reqData.formattedName];
+        let accMetaData =
+          apiResponse?.reqData?.formattedName === 'summary_extended'
             ? rows.summary
-            : rows[apiResponse?.reqData?.name] || [];
+            : rows[apiResponse?.reqData?.formattedName] || [];
+        accMetaData = accMetaData.map((metaData) => {
+          return {
+            ...metaData,
+            display_name: metaData.attr_name,
+          };
+        });
         setAccordianData({
           ...accordianData,
-          [apiResponse.reqData.name]: {
+          [apiResponse.reqData.formattedName]: {
             ...selectedData,
             isEdit: false,
             _meta_data: [...accMetaData],
@@ -302,18 +310,18 @@ function MetaData({ docId }) {
             _childs: [],
           };
           const selectedData =
-            accordianData[apiResponse?.reqData?.accData?.name];
+            accordianData[apiResponse?.reqData?.accData?.formattedName];
           setAccordianData({
             ...accordianData,
-            [apiResponse.reqData.accData.name]: {
+            [apiResponse.reqData.accData.formattedName]: {
               ...selectedData,
               // eslint-disable-next-line
               _childs: selectedData?._childs
                 ? // eslint-disable-next-line
-                  [...selectedData._childs, apiResponse.reqData.name]
+                  [...selectedData._childs, apiResponse.reqData.formattedName]
                 : [apiResponse.reqData.name],
             },
-            [apiResponse.reqData.name]: obj,
+            [apiResponse.reqData.formattedName]: obj,
           });
         }
       } else {

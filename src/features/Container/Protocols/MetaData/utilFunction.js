@@ -3,10 +3,11 @@ import { isObject } from 'lodash';
 export const flattenObject = (updatedData, data, level, parentKey) => {
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys?.forEach((key) => {
+    const identifier = level === 1 ? key : `${parentKey}.${key}`;
     const keyValue = data?.[key];
     if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
-      updatedData[key] = updatedData[key]
-        ? updatedData[key]
+      updatedData[identifier] = updatedData[identifier]
+        ? updatedData[identifier]
         : {
             // eslint-disable-next-line
             _meta_data: keyValue?._meta_data?.map((attr, index) => {
@@ -21,13 +22,18 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
                 display_name: attr?.display_name || attr.attr_name,
               };
             }),
-            formattedName: level === 1 ? key : `${parentKey}.${key}`,
+            formattedName: identifier,
             name: key,
             level,
             isActive: false,
             isEdit: false,
             // eslint-disable-next-line
-            _childs: keyValue?._childs ? keyValue?._childs : [],
+            _childs: keyValue?._childs
+              ? // eslint-disable-next-line
+                keyValue?._childs?.map((childName) => {
+                  return `${identifier}.${childName}`;
+                })
+              : [],
           };
       // eslint-disable-next-line
       if (keyValue?._childs && keyValue?._childs.length > 0) {
@@ -35,7 +41,7 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
           updatedData,
           keyValue,
           level + 1,
-          level === 1 ? key : updatedData[key]?.formattedName,
+          level === 1 ? key : updatedData[identifier]?.formattedName,
         );
       }
     }
