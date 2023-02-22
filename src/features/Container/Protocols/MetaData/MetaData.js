@@ -268,7 +268,7 @@ function MetaData({ docId }) {
         const accMetaData =
           apiResponse?.reqData?.name === 'summary_extended'
             ? rows.summary
-            : rows[apiResponse?.reqData?.name];
+            : rows[apiResponse?.reqData?.name] || [];
         setAccordianData({
           ...accordianData,
           [apiResponse.reqData.name]: {

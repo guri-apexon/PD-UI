@@ -14,6 +14,10 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
                 ...attr,
                 id: index + 1,
                 isCustom: key !== 'summary',
+                attr_value:
+                  attr.attr_type === 'boolean'
+                    ? attr.attr_value.toString()
+                    : attr.attr_value,
               };
             }),
             formattedName: level === 1 ? key : `${parentKey}.${key}`,
