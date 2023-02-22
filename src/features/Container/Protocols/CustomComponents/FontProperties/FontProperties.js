@@ -6,11 +6,9 @@ import TrashIcon from 'apollo-react-icons/Trash';
 import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
-import { useProtContext } from '../../ProtocolContext';
 
-function FontProperties({ onHeaderSelect, activeLineID }) {
+function FontProperties({ onHeaderSelect, activeLineID, onDeleteClick }) {
   const [enable, setEnable] = useState(activeLineID);
-  const { dispatchSectionEvent } = useProtContext();
 
   const onFormatSelect = (e, button) => {
     e.preventDefault();
@@ -44,9 +42,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
         break;
     }
   };
-  const deleteSegment = () => {
-    dispatchSectionEvent('CONTENT_DELETED', { currentLineId: activeLineID });
-  };
+
   useEffect(() => {
     setEnable(activeLineID);
   }, [activeLineID]);
@@ -140,7 +136,7 @@ function FontProperties({ onHeaderSelect, activeLineID }) {
         <IconButton
           size="small"
           data-testId="trash-icon"
-          onClick={() => deleteSegment()}
+          onClick={onDeleteClick}
         >
           <TrashIcon />
         </IconButton>
@@ -154,4 +150,5 @@ export default FontProperties;
 FontProperties.propTypes = {
   onHeaderSelect: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
+  onDeleteClick: PropTypes.isRequired,
 };

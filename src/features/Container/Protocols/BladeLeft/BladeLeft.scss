@@ -1,7 +1,10 @@
 .bladeContainer {
   .toc-wrapper {
-    padding-left: 7px;
     height: 100%;
+    overflow-y: overlay;
+  }
+  .MuiPaper-root div:nth-last-child(2) {
+    padding-right: 0 !important;
   }
   hr {
     margin-bottom: 0;
@@ -10,7 +13,6 @@
   [class*='Blade-body-'] {
     background: #f6f7fb;
     height: 100%;
-    padding: 5px 0 0 0px !important;
   }
   [class*='Blade-left-'] {
     padding: 0;
@@ -20,7 +22,7 @@
     top: 141px;
   }
 
-  [class*='Blade-header-'] > h3 {
+  h3 {
     padding-left: 20px;
   }
   [class*='Blade-body-'] > div > div {
@@ -38,13 +40,8 @@
 
   [class*='MuiAccordionSummary-root-'] {
     height: 24px;
-    width: 100%;
     min-height: unset;
-    padding-left: 61px;
-  }
-  div[class*='Blade-body-'] {
-    overflow-x: hidden;
-    overflow-y: scroll;
+    padding: 0px;
   }
 
   [class*='MuiAccordionSummary-root-'] > div:first-child {
@@ -55,12 +52,12 @@
   [class*='MuiAccordionSummary-root-'] > div:first-child > p {
     height: 24px;
     margin: 0;
+    padding-left: 36px;
   }
 
   [class*='MuiAccordionSummary-root-'] > div:nth-child(2) {
     height: 14px;
     top: 10px;
-    left: 26px;
   }
 
   [class*='MuiAccordion-root'] {

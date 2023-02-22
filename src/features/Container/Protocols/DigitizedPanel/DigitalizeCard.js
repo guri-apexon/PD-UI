@@ -55,12 +55,7 @@ function Digitize({
   };
 
   useEffect(() => {
-    if (sectionSequence === 'undefined' || sectionSequence === undefined) {
-      //  refs[1].current.scrollIntoView({ behavior: 'smooth' });
-    } else if (
-      sectionRef[sectionSequence] &&
-      sectionRef[sectionSequence].current
-    ) {
+    if (sectionRef[sectionSequence] && sectionRef[sectionSequence].current) {
       scrollToTop(sectionSequence);
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }
@@ -98,7 +93,7 @@ function Digitize({
         sectionNo = headerList[i].sequence;
         setSectionSequence(sectionNo);
         const tempTOCActive = [...tocActive];
-        tempTOCActive[sectionNo] = !tempTOCActive[sectionNo];
+        tempTOCActive[sectionNo] = true;
         dispatch({
           type: 'SET_TOC_Active',
           payload: {
@@ -116,7 +111,7 @@ function Digitize({
       const sequence = headerList[listLength]?.sequence;
       setSectionSequence(sequence);
       const tempTOCActive = [...tocActive];
-      tempTOCActive[listLength] = !tempTOCActive[listLength];
+      tempTOCActive[listLength] = true;
       dispatch({
         type: 'SET_TOC_Active',
         payload: {
@@ -178,7 +173,9 @@ function Digitize({
           </div>
         </Card>
       )}
-      {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && <MetaData />}
+      {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
+        <MetaData docId={data.id} />
+      )}
     </div>
   );
 }
