@@ -82,7 +82,7 @@ function Alerts() {
       ? 'Today'
       : moment().subtract(1, 'day').isSame(timestamp, 'day')
       ? 'Yesterday'
-      : moment(timestamp).format('ddd MMM D');
+      : moment(timestamp).format(' MMM D');
   };
   return (
     <>
@@ -107,7 +107,7 @@ function Alerts() {
             borderColor: '#e9e9e9',
             boxShadow: '0 8px 20px 0 rgba(0, 0, 0, 0.08)',
             padding: 0,
-            height: '300px',
+            height: '360px',
             overflow: 'visible !important',
           },
         }}
@@ -121,7 +121,6 @@ function Alerts() {
         }}
       >
         <h4 className="Heading-main">Notification</h4>
-        {/* <Typography>{'Popover content'}</Typography> */}
         <AutoSizer>
           {({
             width,

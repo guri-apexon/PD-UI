@@ -4,7 +4,7 @@
     "protocolNumber": "Test_Proto_01",
     "aidocId": "64c3dd08-f885-49f7-a325-e72d8f221029",
     "read": false,
-    "details": "Capivasertib + Abiraterone as Treatment for Patients with Metastatic Hormone-Sensitive Prostate",
+    "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
     "header": "Header",
     "timestamp": "2023-02-16T13:21:33.040000"
   },
@@ -13,7 +13,7 @@
     "protocolNumber": "Test_Proto_01",
     "aidocId": "64c3dd08-f885-49f7-a325-e72d8f221029",
     "read": true,
-    "details": "Capivasertib + Abiraterone as Treatment for Patients with Metastatic Hormone-Sensitive Prostate",
+    "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
     "header": "Header",
     "timestamp": "2021-06-16T13:21:33.040000"
   },
@@ -51,7 +51,7 @@
     "header": "Header",
     "aidocId": "ea39f739-a1a0-4994-a98b-08c298b662fd",
     "read": true,
-    "details": "PHASE 3, RANDOMIZED, OPEN-LABEL, ACTIVE-CONTROLLED STUDY EVALUATING THE EFFICACY AND SAFETY OF ORAL VADADUSTAT FOR THE CORRECTION OF ANEMIA IN SUBJECTS WITH NON-DIALYSIS-DEPENDENT CHRONIC KIDNEY DISEASE (NDD-CKD) (PRO2TECT - CORRECTION)",
+    "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
     "timestamp": "2021-01-24T11:22:10.017000"
   },
   {
@@ -60,7 +60,7 @@
     "header": "Header",
     "aidocId": "ea39f739-a1a0-4994-a98b-08c298b662fd",
     "read": true,
-    "details": "PHASE 3, RANDOMIZED, OPEN-LABEL, ACTIVE-CONTROLLED STUDY EVALUATING THE EFFICACY AND SAFETY OF ORAL VADADUSTAT FOR THE CORRECTION OF ANEMIA IN SUBJECTS WITH NON-DIALYSIS-DEPENDENT CHRONIC KIDNEY DISEASE (NDD-CKD) (PRO2TECT - CORRECTION)",
+    "details": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation",
     "timestamp": "2023-02-15T11:22:10.017000"
   }
 ]

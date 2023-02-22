@@ -26,6 +26,9 @@
 .IconButton-delete {
   margin-bottom: 34px;
   display: none;
+  svg {
+    font-size: 16px;
+  }
 }
 .ListItem-root {
   width: 100%;
@@ -115,6 +118,12 @@
 
 .listItem:hover {
   background-color: #ecf3ff;
+  span {
+    font-weight: 700;
+  }
+  p {
+    font-weight: 600;
+  }
 }
 .listItemTextRoot {
   margin-top: 30px;
@@ -123,7 +132,7 @@
 }
 .listItemTextPrimary {
   font-size: 14px;
-  font-weight: 600;
+  // font-weight: 600;
   color: inherit;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -141,7 +150,9 @@
   padding-left: 24px;
   padding-right: 24px;
   // border-bottom: 0.5px solid rgb(128 128 128 / 15%);
-
+  span {
+    font-weight: 700;
+  }
   &:before {
     content: '';
     background: red;
@@ -156,6 +167,12 @@
 
 .listItemNotRead:hover {
   background-color: #ecf3ff;
+  span {
+    font-weight: 700;
+  }
+  p {
+    font-weight: 600;
+  }
 }
 
 .timestamp {
@@ -201,7 +218,7 @@
 
 .ReactVirtualized__Grid {
   & > div {
-    margin-top: 25px;
+    margin-top: 40px;
     overflow: visible !important;
   }
 }
@@ -212,10 +229,10 @@
 
 .Heading-main {
   position: absolute;
-  padding: 6px;
+  padding: 10px;
   z-index: 9;
   background-color: #fff;
-  width: 88%;
+  width: 87%;
   margin: 0;
   padding-left: 23px;
 }
