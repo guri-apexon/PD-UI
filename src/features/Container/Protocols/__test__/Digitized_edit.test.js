@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import MultilineEdit from '../DigitizedPanel/DigitizedEdit';
 import * as ProtocolContext from '../ProtocolContext';
 import store from '../../../../store/store';
-import * as ProtocolContext from '../ProtocolContext';
 
 const sample = [
   {
