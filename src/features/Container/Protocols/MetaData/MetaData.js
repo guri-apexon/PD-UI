@@ -15,6 +15,7 @@ import {
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
 import { flattenMetaParam } from './utilFunction';
+import { METADATA_LIST } from '../../../../AppConstant/AppConstant';
 
 function MetaData({ docId }) {
   const wrapperRef = useRef(null);
@@ -27,12 +28,11 @@ function MetaData({ docId }) {
   const [accordianData, setAccordianData] = useState({});
   const [metaParams, setMetaParams] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
   const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [suggestedList, setSuggestedList] = useState([]);
-
   const [suggestedSubList, setSuggestedSubList] = useState([]);
+  const [currentActiveLevels, setCurrentActiveLevels] = useState([]);
 
   const handleChange = (event, newValue) => {
     setSectionName(newValue);
@@ -80,7 +80,15 @@ function MetaData({ docId }) {
         isEdit: false,
       },
     });
-    setIsOpenSubText(false);
+    setCurrentActiveLevels(
+      currentActiveLevels.filter(
+        (curr) =>
+          !(
+            curr === accData.formattedName ||
+            curr.includes(accData.formattedName)
+          ),
+      ),
+    );
   };
 
   const handleEdit = (accData, e) => {
@@ -203,7 +211,9 @@ function MetaData({ docId }) {
       },
     });
     setSectionName({ label: '' });
-    setIsOpenSubText(false);
+    setCurrentActiveLevels(
+      currentActiveLevels.filter((curr) => curr !== accData.formattedName),
+    );
   };
 
   useEffect(() => {
@@ -221,7 +231,9 @@ function MetaData({ docId }) {
     if (!isEmpty(metaParamResult) && !isEmpty(accordianData)) {
       const updatedParam = {};
       const result = flattenMetaParam(updatedParam, metaParamResult, 1);
-      let metaList = [];
+      let metaList = METADATA_LIST.filter(
+        (ele) => !Object.keys(accordianData).includes(ele.label),
+      );
       const filterItems = difference(
         Object.keys(metaParamResult),
         Object.keys(accordianData),
@@ -229,12 +241,12 @@ function MetaData({ docId }) {
 
       if (filterItems.length > 0) {
         filterItems.forEach((names) => {
-          if (names !== 'summary_extended') {
+          if (names !== 'summary_extended' && !METADATA_LIST.includes(names)) {
             metaList = [...metaList, { label: names }];
           }
         });
-        setSuggestedList(metaList || []);
       }
+      setSuggestedList(metaList);
 
       setMetaParams(result);
     }
@@ -297,6 +309,7 @@ function MetaData({ docId }) {
             _childs: [],
           };
           setAccordianData({
+            ...accordianData,
             [apiResponse.reqData.name]: obj,
           });
         } else {
@@ -339,13 +352,13 @@ function MetaData({ docId }) {
           accData={acc}
           rows={rows}
           metaParams={metaParams}
-          isOpenSubText={isOpenSubText}
           sectionName={sectionName}
           suggestedSubList={suggestedSubList}
           deletedAttributes={deletedAttributes}
+          currentActiveLevels={currentActiveLevels}
+          setCurrentActiveLevels={setCurrentActiveLevels}
           setSuggestedSubList={setSuggestedSubList}
           setSectionName={setSectionName}
-          setIsOpenSubText={setIsOpenSubText}
           setRows={setRows}
           handleAccordian={() => handleAccordian(acc)}
           handleSave={(e) => handleSave(acc, e)}

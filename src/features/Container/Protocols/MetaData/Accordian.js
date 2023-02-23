@@ -20,10 +20,9 @@ function Accordian({
   accData,
   rows,
   suggestedSubList,
-  isOpenSubText,
   deletedAttributes,
+  currentActiveLevels,
   setSuggestedSubList,
-  setIsOpenSubText,
   setRows,
   handleAccordian,
   handleSave,
@@ -32,13 +31,13 @@ function Accordian({
   addSubAccordion,
   subAccComponent,
   setDeletedAttributes,
+  setCurrentActiveLevels,
 }) {
   const [isModal, setIsModal] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [subSectionName, setSubSectionName] = useState(false);
 
   const handleChange = (event, newValue) => {
-    console.log('handleChange', newValue, event.target.value);
     setSubSectionName(newValue);
   };
 
@@ -54,7 +53,7 @@ function Accordian({
 
   const handlePlus = (e) => {
     e.stopPropagation();
-    setIsOpenSubText(!isOpenSubText);
+    setCurrentActiveLevels([...currentActiveLevels, accData.formattedName]);
   };
 
   const handleSaveData = (e) => {
@@ -131,7 +130,7 @@ function Accordian({
             </div>
           </div>
         </AccordionSummary>
-        {isOpenSubText && (
+        {currentActiveLevels.includes(accData.formattedName) && (
           <div data-testid="auto">
             <AutocompleteV2
               label=""
@@ -210,9 +209,8 @@ Accordian.propTypes = {
   accData: PropTypes.isRequired,
   rows: PropTypes.isRequired,
   suggestedSubList: PropTypes.isRequired,
-  isOpenSubText: PropTypes.isRequired,
   deletedAttributes: PropTypes.isRequired,
-  setIsOpenSubText: PropTypes.isRequired,
+  currentActiveLevels: PropTypes.isRequired,
   setSuggestedSubList: PropTypes.isRequired,
   setRows: PropTypes.isRequired,
   handleAccordian: PropTypes.isRequired,
@@ -222,6 +220,7 @@ Accordian.propTypes = {
   addSubAccordion: PropTypes.isRequired,
   subAccComponent: PropTypes.isRequired,
   setDeletedAttributes: PropTypes.isRequired,
+  setCurrentActiveLevels: PropTypes.isRequired,
 };
 
 export default Accordian;

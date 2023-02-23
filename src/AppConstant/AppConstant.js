@@ -189,6 +189,13 @@ const QC_CHANGE_TYPE = {
   DELETED: 'delete',
 };
 
+const METADATA_LIST = [
+  { label: 'Patient Burden Variables' },
+  { label: 'Eligibility Criteria' },
+  { label: 'Study Assessment and Procedure' },
+  { label: 'Endpoint and Objectives' },
+];
+
 export {
   SORT_DROPDOWN,
   USER_MENU,
@@ -200,4 +207,5 @@ export {
   userRole,
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
+  METADATA_LIST,
 };
