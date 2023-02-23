@@ -82,4 +82,75 @@ describe('PDTable component', () => {
     const dltOk = getAllByText('Delete')[0];
     fireEvent.click(dltOk);
   });
+
+  test('Delete table data', () => {
+    const screen = render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <PDTable
+          data={data}
+          segment={segment}
+          activeLineID={activeLineID}
+          lineID={lineID}
+          setIsTableChanged={() => jest.fn()}
+        />
+      </ProtocolContext.Provider>,
+    );
+    const moreIcon = screen.getAllByTestId('more-icon');
+    fireEvent.click(moreIcon[0]);
+    const deleteColumn = screen.getByText('Delete Column');
+    fireEvent.click(deleteColumn);
+    const yesButton = screen.getByText('Yes');
+    fireEvent.click(yesButton);
+    const moreIconRow = screen.getAllByTestId('more-icon-row');
+    fireEvent.click(moreIconRow[0]);
+    const deleteRow = screen.getByText('Delete row');
+    fireEvent.click(deleteRow);
+    const yesButtonRow = screen.getByText('Yes');
+    fireEvent.click(yesButtonRow);
+  });
+
+  test('handleColumnOperation', () => {
+    const screen = render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <PDTable
+          data={data}
+          segment={segment}
+          activeLineID={activeLineID}
+          lineID={lineID}
+          setIsTableChanged={() => jest.fn()}
+        />
+      </ProtocolContext.Provider>,
+    );
+    let moreIcon = screen.getAllByTestId('more-icon');
+    fireEvent.click(moreIcon[0]);
+
+    const addColumnRight = screen.getByText('Add Column to Right');
+    fireEvent.click(addColumnRight);
+    moreIcon = screen.getAllByTestId('more-icon');
+    fireEvent.click(moreIcon[0]);
+    const addColumnLeft = screen.getByText('Add Column to left');
+    fireEvent.click(addColumnLeft);
+  });
+
+  test('handleRowOperation', () => {
+    const screen = render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <PDTable
+          data={data}
+          segment={segment}
+          activeLineID={activeLineID}
+          lineID={lineID}
+          setIsTableChanged={() => jest.fn()}
+        />
+      </ProtocolContext.Provider>,
+    );
+    let moreIcon = screen.getAllByTestId('more-icon-row');
+    fireEvent.click(moreIcon[0]);
+    const addRowBelow = screen.getByText('Add row below');
+    fireEvent.click(addRowBelow);
+    moreIcon = screen.getAllByTestId('more-icon-row');
+    fireEvent.click(moreIcon[1]);
+    const addRowAbove = screen.getByText('Add row above');
+    fireEvent.click(addRowAbove);
+  });
 });
