@@ -84,7 +84,6 @@ function ProtocolView({ refs, data }) {
     setSectionContent(content);
   };
 
-  /* istanbul ignore next */
   // eslint-disable-next-line
   const dispatchSectionEvent = (actionType, payload) => {
     switch (actionType) {
@@ -103,6 +102,7 @@ function ProtocolView({ refs, data }) {
       case 'LINK_LEVEL_UPDATE':
         handleLinkLevelUpdate(payload);
         break;
+
       default:
         break;
     }
