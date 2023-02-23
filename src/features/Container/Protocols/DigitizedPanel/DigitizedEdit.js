@@ -65,6 +65,7 @@ function MultilineEdit({ sectionDataArr, edit }) {
             // eslint-disable-next-line
             <div
               className="content_container"
+              data-testId="content_container"
               key={section.line_id}
               onClick={() => edit && setActiveLineID(section.line_id)}
             >
