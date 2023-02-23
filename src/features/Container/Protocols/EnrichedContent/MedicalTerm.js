@@ -56,7 +56,7 @@ function MedicalTerm({
         payload: { flag: false },
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [apiFlagselector]);
 
   const restructingObject = () => {
