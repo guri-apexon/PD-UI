@@ -13,10 +13,10 @@ describe('EmptyRowCells component', () => {
     );
     const icon = getByTestId('more-icon');
     fireEvent.click(icon);
-    const tableOperation = getByTestId('Table Operation');
+    const tableOperation = getByTestId('table-controls');
     fireEvent.click(tableOperation);
     const metaicon =
-      getByTestId('Table Operation').getElementsByClassName('pd-more-icon')[0];
+      getByTestId('table-controls').getElementsByClassName('pd-more-icon')[0];
     fireEvent.click(metaicon);
   });
 });
