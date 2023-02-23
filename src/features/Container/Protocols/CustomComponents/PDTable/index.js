@@ -106,7 +106,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {
-    console.log('changed');
     const cloneData = [...updatedData];
     cloneData[rowIndex][columnIndex].content = content;
     setUpdatedData(cloneData);
