@@ -1,46 +1,60 @@
 import '@testing-library/jest-dom/extend-expect';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
 import userEvent from '@testing-library/user-event';
 import { render } from '../../../../test-utils/test-utils';
 import BladeLeft from '../BladeLeft/BladeLeft';
+import ProtocolReducer from '../protocolSlice';
+import * as ProtocolContext from '../ProtocolContext';
+import initialState from './ProtocolReducer.json';
 
-const initialState = {
-  protocol: {
-    protocolTocData: { tocData: { data: [{ source_file_section: '' }] } },
-  },
-};
-// function Testing() {
-//   const [open, setOpen] = useState(true);
-//   const [expand, setExpand] = useState(false);
-//   return (
-//     <BladeLeft
-//       value={(open, expand)}
-//       setValue={(setOpen, setExpand)}
-//       dataSummary={{ id: 1 }}
-//     />
-//   );
-// }
+// eslint-disable-next-line
+export function renderWithProviders(
+  ui,
+  {
+    preloadedState = {},
+    store = configureStore({
+      reducer: { protocol: ProtocolReducer },
+      preloadedState,
+    }),
+    ...renderOptions
+  } = {},
+) {
+  // eslint-disable-next-line
+  function Wrapper({ children }) {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    return <Provider store={store}>{children}</Provider>;
+  }
 
-// function Testing2() {
-//   const [expand, setExpand] = useState(false);
-//   const onChange = ({ e, expanded }) => {
-//     setExpand(expanded);
-//   };
-//   return <BladeLeft onChange setExpand={expand} />;
-// }
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
+}
 
 describe.only('leftBlade should Opne when Click', () => {
   test('Open LeftBlade', () => {
-    const screen = render(
-      <BladeLeft dataSummary={{ id: 1 }} handlePageNo={() => jest.fn()} />,
+    const screen = renderWithProviders(
+      <BladeLeft
+        dataSummary={{
+          id: 1,
+        }}
+        handlePageNo={() => jest.fn()}
+      />,
       {
-        initialState,
+        preloadedState: initialState,
       },
     );
     const BladeEl = screen.getByTestId('toc-component');
     userEvent.click(BladeEl.querySelector('svg'));
-    screen.debug();
-    userEvent.click(BladeEl.querySelector('svg'));
-    // userEvent.click(screen.getByClass('MuiBackdrop-root'));
-    // fireEvent.click(BladeEl.querySelector("button[class^='Blade-closeIcon-']"));
+    const signatures = screen.getByText('Signatures');
+    userEvent.click(signatures);
+    const SignaturesChild = screen.getByText('Signatures_child');
+    expect(SignaturesChild).toBeInTheDocument();
+    userEvent.click(SignaturesChild);
+
+    const SignaturesSub = screen.getByText('Signatures_sub');
+    expect(SignaturesSub).toBeInTheDocument();
+    userEvent.click(SignaturesSub);
   });
 });
