@@ -9,7 +9,8 @@
 /.scannerwork
 /.vscode
 # testing
-#/coverage
+coverage
+junit.xml
 
 # production
 /build
