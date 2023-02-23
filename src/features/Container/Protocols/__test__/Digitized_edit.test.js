@@ -1,6 +1,7 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import MultilineEdit from '../DigitizedPanel/DigitizedEdit';
+import * as ProtocolContext from '../ProtocolContext';
 import store from '../../../../store/store';
 import * as ProtocolContext from '../ProtocolContext';
 
@@ -22,9 +23,7 @@ describe('Digitize Edit', () => {
       </Provider>,
     );
     const richTextEditor = component.getByTestId('richTextEditor');
-
     expect(component).toBeTruthy();
-
     expect(richTextEditor).toBeInTheDocument();
   });
 });
