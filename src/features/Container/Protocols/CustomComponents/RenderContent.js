@@ -13,7 +13,6 @@ function RenderContent({
   setActiveLineID,
   deleteSection,
   edit,
-  setIsTableChanged,
 }) {
   const { type, content = '', line_id: lineID } = sectionData;
 
@@ -48,7 +47,7 @@ function RenderContent({
   if (type === CONTENT_TYPE.TABLE) {
     return (
       // eslint-disable-next-line
-      <div onClick={() => edit && setActiveLineID(lineID)}>
+      <div>
         <PDTable
           data={content}
           edit={edit}
@@ -57,7 +56,6 @@ function RenderContent({
           segment={sectionData}
           activeLineID={activeLineID}
           lineID={lineID}
-          setIsTableChanged={setIsTableChanged}
         />
       </div>
     );
@@ -86,5 +84,4 @@ RenderContent.propTypes = {
   setActiveLineID: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
-  setIsTableChanged: PropTypes.isRequired,
 };

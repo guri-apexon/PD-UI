@@ -56,7 +56,8 @@
     "lint:fix": "eslint ./src --fix --ext .js,.jsx .",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "yarn:coverage": "yarn test -- --coverage --watchAll=false",
-    "yarn:single:coverage": "yarn test filterchip.test.js --coverage"
+    "yarn:single:coverage": "yarn test filterchip.test.js --coverage",
+    "test:ci": "npm run test -- --testResultsProcessor=\"jest-junit\" --watchAll=false --ci --coverage"
   },
   "browserslist": {
     "production": [
@@ -119,6 +120,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.31.8",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "jest-junit": "^15.0.0",
     "pm2": "^4.5.1",
     "prettier": "^2.7.1"
   }
