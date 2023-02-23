@@ -70,7 +70,7 @@ const formattableData = (data) => {
 
 const confirmText = 'Please confirm if you want to continue with deletion';
 
-function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
+function PDTable({ data, segment, activeLineID, lineID }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
   const [columnLength, setColumnLength] = useState();
@@ -102,7 +102,6 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
     const cloneData = [...updatedData];
     cloneData[rowIndex][columnIndex].content = content;
     setUpdatedData(cloneData);
-    setIsTableChanged(true);
   };
 
   const handleColumnOperation = (operation, index) => {
@@ -122,7 +121,6 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
         index,
       });
     }
-    setIsTableChanged(true);
   };
 
   const handleRowOperation = (operation, index) => {
@@ -142,7 +140,6 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
         index,
       });
     }
-    setIsTableChanged(true);
   };
 
   const addFootNote = () => {
@@ -162,12 +159,12 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       AttachmentListProperties: footNoteData,
     };
     setTableSaved(true);
-    setIsTableChanged(false);
     dispatchSectionEvent('CONTENT_UPDATE', {
       type: CONTENT_TYPE.TABLE,
       lineID,
       currentLineId: activeLineID,
       content,
+      isSaved: true,
     });
   };
 
@@ -189,8 +186,27 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
     setIsModal(false);
   };
 
+  const onContainerClick = () => {
+    if (activeLineID !== lineID && !tableSaved) {
+      const content = {
+        ...segment.content,
+      };
+      dispatchSectionEvent('CONTENT_UPDATE', {
+        type: CONTENT_TYPE.TABLE,
+        lineID,
+        currentLineId: lineID,
+        content,
+        isSaved: false,
+      });
+    }
+  };
+
   return (
-    <section className="content-table-wrapper">
+    // eslint-disable-next-line
+    <section
+      className="content-table-wrapper"
+      onClick={() => onContainerClick()}
+    >
       {showconfirm && (
         <div className="confirmation-popup" data-testId="confirmPopup">
           <p>{confirmText}</p>
@@ -206,7 +222,6 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
                   dispatchSectionEvent('CONTENT_DELETED', {
                     currentLineId: activeLineID,
                   });
-                  setIsTableChanged(false);
                 },
               },
             ]}
@@ -280,5 +295,4 @@ PDTable.propTypes = {
   segment: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
-  setIsTableChanged: PropTypes.isRequired,
 };
