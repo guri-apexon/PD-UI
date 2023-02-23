@@ -64,8 +64,6 @@ function DigitizeAccordion({
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
 
-  const [isTableChanged, setIsTableChanged] = useState(false);
-
   const { data: sectionData } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
 
@@ -74,7 +72,7 @@ function DigitizeAccordion({
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const { dispatchSectionEvent } = useProtContext();
+  const { dispatchSectionEvent, sectionContent } = useProtContext();
 
   const handleChange = () => {
     handlePageRight(item.page);
@@ -249,9 +247,19 @@ function DigitizeAccordion({
     setClinicalTerms(null);
   }, [rightBladeValue]);
 
+  const checkUnsavedTable = () => {
+    if (sectionContent && Array.isArray(sectionContent)) {
+      const arr = sectionContent.filter(
+        (obj) => obj.type === CONTENT_TYPE.TABLE && !obj.isSaved,
+      );
+      return arr.length > 0;
+    }
+    return true;
+  };
+
   const onSaveClick = (e) => {
     e.stopPropagation();
-    if (isTableChanged) {
+    if (checkUnsavedTable()) {
       setShowAlert(true);
       return;
     }
@@ -325,7 +333,6 @@ function DigitizeAccordion({
               linkId={item.link_id}
               sectionDataArr={sectionDataArr}
               edit={showedit}
-              setIsTableChanged={setIsTableChanged}
             />
           ) : (
             <div className="readable-content">
@@ -461,7 +468,7 @@ function DigitizeAccordion({
       </Modal>
       {showAlert && (
         <div className="confirmation-popup" data-testId="confirmPopup">
-          <p>Please save the table before saving the section</p>
+          <p>Please save the all the tables before saving the section</p>
           <ButtonGroup
             buttonProps={[
               {

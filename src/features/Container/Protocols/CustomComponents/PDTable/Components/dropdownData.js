@@ -5,6 +5,8 @@ export const tableOperations = {
   addColumnLeft: 'ADD_COLUMN_LEFT',
   deleteRow: 'DELETE_ROW',
   deleteColumn: 'DELETE_COLUMN',
+  swapRow: 'SWAP_ROW',
+  swapColumn: 'SWAP_COLUMN',
 };
 export const columnHoverData = [
   {

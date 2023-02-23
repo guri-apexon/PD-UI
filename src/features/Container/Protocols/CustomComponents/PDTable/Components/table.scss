@@ -4,7 +4,7 @@
   padding: 25px 20px;
   position: relative;
   margin-bottom: 45px;
-  overflow-x:auto;
+  overflow-x: auto;
 }
 .pd-table-inner {
   display: table;
@@ -13,11 +13,13 @@
   justify-content: center;
   overflow: auto;
   padding-bottom: 10px;
+  position: relative;
 }
 .pd-table-row {
   display: flex;
   min-height: 50px;
   justify-content: center;
+  position: relative;
 }
 .pd-table-cell {
   text-align: left;
@@ -28,7 +30,6 @@
   flex-wrap: nowrap;
   box-sizing: border-box;
   min-width: 200px;
-  max-width: 200px;
 }
 .content-table-wrapper {
   border: 1px solid #dadada;
@@ -70,23 +71,33 @@
 }
 .pd-empty-row-cells {
   position: absolute;
-  left: 0;
+  left: -20px;
 }
 .pd-empty-cells {
   display: flex;
   justify-content: space-between;
   position: absolute;
-  top: 5px;
+  top: -25px;
+  > div {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  .pd-dropdown {
+    top: 20px;
+  }
 }
 .pd-empty-cell-column {
   width: 100px;
   text-align: center;
-  min-width:200px;
+  min-width: 200px;
   position: relative;
 }
 .pd-empty-cell-row {
   height: 50px;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 .pd-dropdown {
   position: absolute;
@@ -129,13 +140,35 @@
   align-items: center;
 }
 .pd-more-icon {
-  height: 0.7em;
-  width: 0.7em;
   cursor: pointer;
   svg {
     height: 0.7em;
     width: 0.7em;
   }
+}
+
+.pd-drag-icon {
+  height: 0.7em;
+  width: 0.7em;
+  cursor: move;
+  svg {
+    height: 0.7em;
+    width: 0.7em;
+  }
+}
+.rowDrag {
+  position: absolute;
+  left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.columnDrag {
+  position: absolute;
+  top: -17px;
+  display: flex;
+  justify-content: center;
 }
 .button-container {
   display: flex;
