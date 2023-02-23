@@ -25,7 +25,5 @@ describe('Metadata Accordian View', () => {
 
     const home = component.getByText('Home');
     fireEvent.click(home);
-
-    component.debug();
   });
 });
