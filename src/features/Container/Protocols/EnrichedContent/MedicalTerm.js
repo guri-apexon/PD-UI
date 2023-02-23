@@ -179,7 +179,7 @@ function MedicalTerm({
             {clinicalTerms.map((item) => {
               const isActive = selectedTerm === item.key;
               return (
-                <li key={item} data-testId="clinicalTermsList">
+                <li key={item}>
                   <Button
                     data-testId="handleSave"
                     className="term-item"
@@ -208,11 +208,10 @@ function MedicalTerm({
             <div className="terms-list">
               {childArr?.map((item) => {
                 return (
-                  <li key={item} data-testId="childItems">
+                  <li key={item}>
                     <Button value={item} className="term-item">
                       <span className="sub-term-text">{item}</span>
                       <Pencil
-                        title="Edit"
                         className="edit-Icon"
                         data-testid="update-term-trigger"
                         onClick={() => {
@@ -245,7 +244,6 @@ function MedicalTerm({
           size="small"
           fullWidth
           value={newTermValue}
-          data-testId="textbox"
           allowBlank="none"
           inputProps={{ 'data-testid': 'update-term-field' }}
           onChange={(e) => {

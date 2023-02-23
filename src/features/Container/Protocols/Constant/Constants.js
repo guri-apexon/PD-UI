@@ -40,6 +40,4 @@ const PROTOCOL_RIGHT_MENU_ARR = [
   },
 ];
 
-const AUDIT_LIST = ['Last Reviewed Date', 'Last Reviewed By'];
-
-export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_ARR, AUDIT_LIST };
+export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_ARR };

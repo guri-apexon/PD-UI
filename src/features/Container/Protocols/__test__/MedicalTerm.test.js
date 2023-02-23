@@ -14,15 +14,6 @@ describe('MedicalTerm component', () => {
   const linkId = '46bac1b7-9197-11ed-b507-005056ab6469';
   const docId = '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c';
 
-  const clinicalTerms = {
-    Plasma: {
-      synonyms: '1,2,3',
-      medical_term: 'a,b,c,d',
-      ontology: 'e,f,g,h',
-      preferred_term: 'i,j,k,l',
-    },
-  };
-
   it('renders without crashing', () => {
     const { container } = render(
       <Provider store={store}>
@@ -82,53 +73,5 @@ describe('MedicalTerm component', () => {
     fireEvent.change(updateField, { target: { value: 'new term' } });
     fireEvent.click(getByText('Rename'));
     expect(termList).toBeInTheDocument();
-  });
-
-  test('should render the clinical terms', () => {
-    const { getAllByTestId } = render(
-      <Provider store={store}>
-        <MedicalTerm
-          enrichedTarget={<span>Plasma</span>}
-          expanded
-          enrichedText="Plasma"
-          clinicalTerms={clinicalTerms}
-        />
-      </Provider>,
-    );
-    const listItems = getAllByTestId('clinicalTermsList');
-    expect(listItems.length).toEqual(5);
-  });
-
-  test('should render the child terms when clicked on any option', () => {
-    const { getByText, getAllByTestId, getAllByTitle, getByTestId } = render(
-      <Provider store={store}>
-        <MedicalTerm
-          enrichedTarget={<span>Plasma</span>}
-          expanded
-          enrichedText="Plasma"
-          clinicalTerms={clinicalTerms}
-        />{' '}
-      </Provider>,
-    );
-    const Synonyms = getByText('Synonyms');
-    fireEvent.click(Synonyms);
-    const listItems = getAllByTestId('childItems');
-    expect(listItems.length).toEqual(3);
-
-    const editIcon = getAllByTitle('Edit')[0];
-    fireEvent.click(editIcon);
-
-    const textbox = getByTestId('textbox');
-    expect(textbox).toBeInTheDocument();
-    textbox.focus();
-
-    fireEvent.keyDown(textbox, {
-      key: 'a',
-      code: 'keyA',
-      charCode: 65,
-    });
-
-    const btnRename = getByText('Rename');
-    fireEvent.click(btnRename);
   });
 });

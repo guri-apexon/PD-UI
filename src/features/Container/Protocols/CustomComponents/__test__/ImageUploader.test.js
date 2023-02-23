@@ -17,12 +17,7 @@ const renderImageUploader = (
 ) => {
   return render(
     <ProtocolContext.Provider value={mockedProtocolContextValue}>
-      <ImageUploader
-        lineID={lineID}
-        content={content}
-        edit={edit}
-        setSaveEnabled={() => jest.fn()}
-      />
+      <ImageUploader lineID={lineID} content={content} edit={edit} />{' '}
     </ProtocolContext.Provider>,
   );
 };
@@ -43,12 +38,7 @@ describe('ImageUploader', () => {
       <ProtocolContext.Provider
         value={{ dispatchSectionEvent: mockDispatchSectionEvent }}
       >
-        <ImageUploader
-          lineID="1"
-          content=""
-          edit
-          setSaveEnabled={() => jest.fn()}
-        />
+        <ImageUploader lineID="1" content="" edit />
       </ProtocolContext.Provider>,
     );
 
@@ -62,12 +52,7 @@ describe('ImageUploader', () => {
       <ProtocolContext.Provider
         value={{ dispatchSectionEvent: mockDispatchSectionEvent }}
       >
-        <ImageUploader
-          lineID="1"
-          content="sample.jpg"
-          edit={false}
-          setSaveEnabled={() => jest.fn()}
-        />
+        <ImageUploader lineID="1" content="sample.jpg" edit={false} />
       </ProtocolContext.Provider>,
     );
 
@@ -90,12 +75,7 @@ describe('ImageUploader', () => {
   it('should call handleSave when Save button is clicked ', () => {
     const { container, getByText } = render(
       <ProtocolContext.Provider value={mockedProtocolContextValue}>
-        <ImageUploader
-          lineID="1"
-          content=""
-          edit={testEdit}
-          setSaveEnabled={() => jest.fn()}
-        />
+        <ImageUploader lineID="1" content="" edit={testEdit} />
       </ProtocolContext.Provider>,
     );
     const input = container.querySelector('input[type="file"]');
@@ -112,12 +92,7 @@ describe('ImageUploader', () => {
   it('should handle the cancel save after file select', () => {
     const { container, getByText, getByTestId } = render(
       <ProtocolContext.Provider value={mockedProtocolContextValue}>
-        <ImageUploader
-          lineID="1"
-          content=""
-          edit={testEdit}
-          setSaveEnabled={() => jest.fn()}
-        />
+        <ImageUploader lineID="1" content="" edit={testEdit} />
       </ProtocolContext.Provider>,
     );
     const input = container.querySelector('input[type="file"]');
@@ -141,12 +116,7 @@ describe('ImageUploader', () => {
   it('should handle the delete image', () => {
     const { container, getByText, getByTestId } = render(
       <ProtocolContext.Provider value={mockedProtocolContextValue}>
-        <ImageUploader
-          lineID="1"
-          content=""
-          edit={testEdit}
-          setSaveEnabled={() => jest.fn()}
-        />
+        <ImageUploader lineID="1" content="" edit={testEdit} />
       </ProtocolContext.Provider>,
     );
     const input = container.querySelector('input[type="file"]');

@@ -33,7 +33,6 @@ describe('PDTable component', () => {
           segment={segment}
           activeLineID={activeLineID}
           lineID={lineID}
-          setIsTableChanged={() => jest.fn()}
         />
       </ProtocolContext.Provider>,
     );
@@ -49,7 +48,6 @@ describe('PDTable component', () => {
           segment={segment}
           activeLineID={activeLineID}
           lineID={lineID}
-          setIsTableChanged={() => jest.fn()}
         />
       </ProtocolContext.Provider>,
     );
@@ -70,7 +68,6 @@ describe('PDTable component', () => {
           segment={segment}
           activeLineID={activeLineID}
           lineID={lineID}
-          setIsTableChanged={() => jest.fn()}
         />
       </ProtocolContext.Provider>,
     );

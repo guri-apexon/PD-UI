@@ -3,20 +3,12 @@ import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
 import { useProtContext } from '../ProtocolContext';
 
-function ContentEdit({
-  type,
-  lineID,
-  content,
-  deleteSection,
-  edit,
-  setSaveEnabled,
-}) {
+function ContentEdit({ type, lineID, content, deleteSection, edit }) {
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
   const { dispatchSectionEvent } = useProtContext();
 
   const handleChange = (e) => {
-    setSaveEnabled(true);
     setText(e.target.value);
   };
   const handleBlur = () => {
@@ -66,5 +58,4 @@ ContentEdit.propTypes = {
   content: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
-  setSaveEnabled: PropTypes.isRequired,
 };
