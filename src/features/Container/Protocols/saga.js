@@ -413,7 +413,6 @@ export function* MetaDataVariable(action) {
       const updatedData = {};
       const result = flattenObject(updatedData, MetaData?.data?.data, 1, '');
       const updateResultForSummary = mergeSummary(result);
-
       yield put(setAccordianMetaData(updateResultForSummary));
     } else {
       yield put(setAccordianMetaParam(MetaData?.data?.data));

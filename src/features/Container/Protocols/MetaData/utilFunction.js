@@ -16,10 +16,10 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
                 id: index + 1,
                 isCustom: key !== 'summary',
                 attr_value:
-                  attr.attr_type === 'boolean'
-                    ? attr.attr_value.toString()
-                    : attr.attr_value,
-                display_name: attr?.display_name || attr.attr_name,
+                  attr?.attr_type === 'boolean' && attr?.attr_value
+                    ? attr?.attr_value.toString()
+                    : attr?.attr_value,
+                display_name: attr?.display_name || attr?.attr_name,
               };
             }),
             formattedName: identifier,
@@ -67,8 +67,16 @@ export const mergeSummary = (data) => {
         ...finalResult,
         summary: {
           ...finalResult.summary,
-          // eslint-disable-next-line
-          _meta_data: [...finalResult.summary._meta_data, ...updateMetaData],
+          _meta_data: [
+            // eslint-disable-next-line
+            ...finalResult.summary._meta_data,
+            ...updateMetaData,
+          ].map((attr, index) => {
+            return {
+              ...attr,
+              id: index + 1,
+            };
+          }),
           _childs: [
             // eslint-disable-next-line
             ...finalResult.summary._childs,
