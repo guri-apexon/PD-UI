@@ -164,7 +164,7 @@ function MetaData({ docId }) {
       if (filterCustomData?.length > 0) {
         postCall(
           {
-            formattedName: 'summary',
+            formattedName: 'summary_extended',
             name: 'summary_extended',
           },
           filterCustomData,
