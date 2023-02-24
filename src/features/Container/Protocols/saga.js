@@ -589,6 +589,30 @@ export function* saveEnrichedAPI(action) {
   }
 }
 
+export function* addSection(action) {
+  const {
+    payload: { docId, linkId, data },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`,
+    method: 'POST',
+    data: {
+      data,
+    },
+  };
+  const enrichedData = { success: true }; // yield call(httpCall, config);
+
+  if (enrichedData?.success) {
+    window.location.href = `/protocols?protocolId=${docId}&tab=1`;
+  } else {
+    toast.error('Error While Updation');
+    yield put({
+      type: 'GET_ENRICHED_API',
+      payload: { flag: true },
+    });
+  }
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -610,6 +634,7 @@ function* watchProtocolViews() {
   yield takeEvery('DELETE_METADATA', deleteAttribute);
   yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
   yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
+  yield takeEvery('POST_ADD_SECTION', addSection);
 }
 
 // notice how we now only export the rootSaga

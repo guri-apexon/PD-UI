@@ -13,6 +13,7 @@ import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
+import Plus from 'apollo-react-icons/Plus';
 import MultilineEdit from './DigitizedEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
@@ -21,7 +22,9 @@ import {
 } from '../../../../utils/utilFunction';
 import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
+import AddSection from './AddSection';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
+
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
@@ -89,6 +92,8 @@ function DigitizeAccordion({
       },
     });
   };
+
+  console.log('Item', item);
 
   useEffect(() => {
     if (expanded) {
@@ -262,217 +267,284 @@ function DigitizeAccordion({
     dispatchSectionData(true);
   };
 
-  return (
-    <Accordion
-      expanded={expanded}
-      data-testid="accordion"
-      onScroll={(e) => handleEnrichedClick(e)}
-    >
-      <AccordionSummary onClick={handleChange}>
-        <div className="accordion_summary_container">
-          <Typography className="section-title" data-testid="accordion-header">
-            {item.source_file_section}
-          </Typography>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}
-          >
-            {showedit && (
-              <IconButton data-testId="lockIcon">
-                <Lock style={{ paddingRight: '10px' }} />
-              </IconButton>
-            )}
-            {primaryRole && (
-              <>
-                <IconButton className="eyeIcon" data-testId="eyeIcon">
-                  <EyeShow style={{ paddingRight: '10px' }} />
-                </IconButton>
-                {!showedit ? (
-                  // eslint-disable-next-line
-                  <IconButton data-testId="pencilIcon" onClick={onEditClick}>
-                    <Pencil />
-                  </IconButton>
-                ) : (
-                  // eslint-disable-next-line
-                  <IconButton
-                    onClick={onSaveClick}
-                    data-testId="saveIcon"
-                    disabled={showAlert}
-                  >
-                    <Save />
-                  </IconButton>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-      </AccordionSummary>
+  const [hover, setHover] = useState(false);
+  const onHover = () => {
+    setHover(!hover);
+  };
 
-      <AccordionDetails
+  const [isShown, setIsShown] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [hoverItem, setHoverItem] = useState();
+  const [hoverIndex, setHoverIndex] = useState();
+
+  const handlePlus = (e, item, index) => {
+    e.stopPropagation();
+    setIsModal(true);
+    setHoverItem(item);
+    setHoverIndex(index);
+  };
+
+  return (
+    <div
+      onMouseEnter={() => setIsShown(true)}
+      onMouseLeave={() => setIsShown(false)}
+    >
+      <Accordion
+        expanded={expanded}
+        data-testid="accordion"
         onScroll={(e) => handleEnrichedClick(e)}
-        className="section-single-content"
+        onMouseEnter={onHover}
+        onMouseLeave={onHover}
       >
-        {showLoader && (
-          <div className="loader accordion_details_loader">
-            <Loader />
-          </div>
-        )}
-        {sectionDataArr?.length > 0 &&
-          (showedit ? (
-            <MultilineEdit
-              linkId={item.link_id}
-              sectionDataArr={sectionDataArr}
-              edit={showedit}
-              setIsTableChanged={setIsTableChanged}
-            />
-          ) : (
-            <div className="readable-content">
-              {sectionDataArr.map((section) => {
-                if (section.type === CONTENT_TYPE.TABLE) {
-                  return (
-                    <DisplayTable
-                      key={React.key}
-                      data={JSON.parse(section.content.TableProperties)}
-                      footNoteData={section?.content?.AttachmentListProperties}
-                      colWidth={100}
-                    />
-                  );
-                }
-                if (section.type === CONTENT_TYPE.IMAGE) {
-                  return (
-                    <ImageUploader
-                      key={React.key}
-                      lineID={section.line_id}
-                      content={section.content}
-                      edit={false}
-                    />
-                  );
-                }
-                return section?.font_info?.VertAlign === 'superscript' &&
-                  section.content.length > 0 ? (
-                  // eslint-disable-next-line
-                  <div
-                    key={React.key}
-                    className="supContent"
-                    onClick={(e) =>
-                      handleEnrichedClick(e, section.clinical_terms)
-                    }
-                  >
-                    <sup>
-                      <SanitizeHTML
-                        html={getEnrichedText(
-                          section.content.split('_')[0],
-                          section?.clinical_terms,
-                        )}
-                      />
-                    </sup>
-                    <p
-                      style={{
-                        fontWeight: `${
-                          section?.font_info?.isBold ||
-                          section.type === 'header'
-                            ? 'bold'
-                            : ''
-                        }`,
-                        fontStyle: `${
-                          section?.font_info?.Italics ? 'italics' : ''
-                        }`,
-                      }}
-                    >
-                      <SanitizeHTML
-                        html={getEnrichedText(
-                          section.content.split('_')[1],
-                          section?.clinical_terms,
-                        )}
-                      />
-                    </p>
-                  </div>
-                ) : (
-                  section.content.length > 0 && (
+        <AccordionSummary onClick={handleChange}>
+          <div className="accordion_summary_container">
+            <Typography
+              className="section-title"
+              data-testid="accordion-header"
+            >
+              {item.source_file_section}
+            </Typography>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+              }}
+            >
+              {showedit && (
+                <IconButton data-testId="lockIcon">
+                  <Lock style={{ paddingRight: '10px' }} />
+                </IconButton>
+              )}
+              {primaryRole && (
+                <>
+                  <IconButton className="eyeIcon" data-testId="eyeIcon">
+                    <EyeShow style={{ paddingRight: '10px' }} />
+                  </IconButton>
+                  {!showedit ? (
                     // eslint-disable-next-line
-                    <p
+                    <IconButton data-testId="pencilIcon" onClick={onEditClick}>
+                      <Pencil />
+                    </IconButton>
+                  ) : (
+                    // eslint-disable-next-line
+                    <IconButton
+                      onClick={onSaveClick}
+                      data-testId="saveIcon"
+                      disabled={showAlert}
+                    >
+                      <Save />
+                    </IconButton>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+          {/* <div className="plus-icon">
+            {isShown ? (
+              <div className="icon">
+                <IconButton
+                  color="primary"
+                  onClick={(e) => {
+                    handlePlus(e, item, index);
+                  }}
+                  size="small"
+                  destructiveAction
+                >
+                  <Plus />
+                </IconButton>
+              </div>
+            ) : null}
+          </div> */}
+        </AccordionSummary>
+        <AccordionDetails
+          onScroll={(e) => handleEnrichedClick(e)}
+          className="section-single-content"
+        >
+          {showLoader && (
+            <div className="loader accordion_details_loader">
+              <Loader />
+            </div>
+          )}
+          {sectionDataArr?.length > 0 &&
+            (showedit ? (
+              <MultilineEdit
+                linkId={item.link_id}
+                sectionDataArr={sectionDataArr}
+                edit={showedit}
+                setIsTableChanged={setIsTableChanged}
+              />
+            ) : (
+              <div className="readable-content">
+                {sectionDataArr.map((section) => {
+                  if (section.type === CONTENT_TYPE.TABLE) {
+                    return (
+                      <DisplayTable
+                        key={React.key}
+                        data={JSON.parse(section.content.TableProperties)}
+                        footNoteData={
+                          section?.content?.AttachmentListProperties
+                        }
+                        colWidth={100}
+                      />
+                    );
+                  }
+                  if (section.type === CONTENT_TYPE.IMAGE) {
+                    return (
+                      <ImageUploader
+                        key={React.key}
+                        lineID={section.line_id}
+                        content={section.content}
+                        edit={false}
+                      />
+                    );
+                  }
+                  return section?.font_info?.VertAlign === 'superscript' &&
+                    section.content.length > 0 ? (
+                    // eslint-disable-next-line
+                    <div
                       key={React.key}
-                      style={{
-                        fontWeight: `${
-                          section?.font_info?.isBold ||
-                          section.type === 'header'
-                            ? 'bold'
-                            : ''
-                        }`,
-                        fontStyle: `${
-                          section?.font_info?.Italics ? 'italics' : ''
-                        }`,
-                      }}
+                      className="supContent"
                       onClick={(e) =>
                         handleEnrichedClick(e, section.clinical_terms)
                       }
                     >
-                      <SanitizeHTML
-                        html={getEnrichedText(
-                          section.content,
-                          section.clinical_terms,
-                        )}
-                      />
-                    </p>
-                  )
-                );
-              })}
-            </div>
-          ))}
-      </AccordionDetails>
-      <MedicalTerm
-        enrichedTarget={enrichedTarget}
-        expanded={expanded}
-        enrichedText={selectedEnrichedText}
-        clinicalTerms={clinicalTerms}
-        linkId={linkId}
-        docId={docId}
-      />
-      <Modal
-        disableBackdropClick
-        open={showConfirm}
-        variant="warning"
-        onClose={() => setShowConfirm(false)}
-        title="Confirm Actiom"
-        buttonProps={[
-          {
-            label: 'Cancel',
-            onClick: () => {
-              setShowEdit(false);
-              setShowConfirm(false);
-            },
-          },
-          {
-            label: 'Ok',
-            onClick: () => {
-              setCurrentEditCard(item.link_id);
-              onShowEdit();
-              setShowConfirm(false);
-            },
-          },
-        ]}
-        className={classes.modal}
-        id="custom"
-      >
-        There is already another section in edit mode. Do you want to continue
-        with editing the current section
-      </Modal>
-      {showAlert && (
-        <div className="confirmation-popup" data-testId="confirmPopup">
-          <p>Please save the table before saving the section</p>
-          <ButtonGroup
-            buttonProps={[
-              {
-                label: 'Ok',
-                onClick: () => setShowAlert(false),
+                      <sup>
+                        <SanitizeHTML
+                          html={getEnrichedText(
+                            section.content.split('_')[0],
+                            section?.clinical_terms,
+                          )}
+                        />
+                      </sup>
+                      <p
+                        style={{
+                          fontWeight: `${
+                            section?.font_info?.isBold ||
+                            section.type === 'header'
+                              ? 'bold'
+                              : ''
+                          }`,
+                          fontStyle: `${
+                            section?.font_info?.Italics ? 'italics' : ''
+                          }`,
+                        }}
+                      >
+                        <SanitizeHTML
+                          html={getEnrichedText(
+                            section.content.split('_')[1],
+                            section?.clinical_terms,
+                          )}
+                        />
+                      </p>
+                    </div>
+                  ) : (
+                    section.content.length > 0 && (
+                      // eslint-disable-next-line
+                      <p
+                        key={React.key}
+                        style={{
+                          fontWeight: `${
+                            section?.font_info?.isBold ||
+                            section.type === 'header'
+                              ? 'bold'
+                              : ''
+                          }`,
+                          fontStyle: `${
+                            section?.font_info?.Italics ? 'italics' : ''
+                          }`,
+                        }}
+                        onClick={(e) =>
+                          handleEnrichedClick(e, section.clinical_terms)
+                        }
+                      >
+                        <SanitizeHTML
+                          html={getEnrichedText(
+                            section.content,
+                            section.clinical_terms,
+                          )}
+                        />
+                      </p>
+                    )
+                  );
+                })}
+              </div>
+            ))}
+        </AccordionDetails>
+        <MedicalTerm
+          enrichedTarget={enrichedTarget}
+          expanded={expanded}
+          enrichedText={selectedEnrichedText}
+          clinicalTerms={clinicalTerms}
+          linkId={linkId}
+          docId={docId}
+        />
+        <Modal
+          disableBackdropClick
+          open={showConfirm}
+          variant="warning"
+          onClose={() => setShowConfirm(false)}
+          title="Confirm Actiom"
+          buttonProps={[
+            {
+              label: 'Cancel',
+              onClick: () => {
+                setShowEdit(false);
+                setShowConfirm(false);
               },
-            ]}
+            },
+            {
+              label: 'Ok',
+              onClick: () => {
+                setCurrentEditCard(item.link_id);
+                onShowEdit();
+                setShowConfirm(false);
+              },
+            },
+          ]}
+          className={classes.modal}
+          id="custom"
+        >
+          There is already another section in edit mode. Do you want to continue
+          with editing the current section
+        </Modal>
+        {showAlert && (
+          <div className="confirmation-popup" data-testId="confirmPopup">
+            <p>Please save the table before saving the section</p>
+            <ButtonGroup
+              buttonProps={[
+                {
+                  label: 'Ok',
+                  onClick: () => setShowAlert(false),
+                },
+              ]}
+            />
+          </div>
+        )}
+        {isModal && (
+          <AddSection
+            setIsModal={setIsModal}
+            hoverItem={hoverItem}
+            hoverIndex={hoverIndex}
           />
-        </div>
-      )}
-    </Accordion>
+        )}
+      </Accordion>
+      <div className="plus-icon">
+        {isShown ? (
+          // <div className="icon">
+          <IconButton
+            color="primary"
+            onClick={(e) => {
+              handlePlus(e, item, index);
+            }}
+            size="small"
+            destructiveAction
+          >
+            <Plus />
+          </IconButton>
+        ) : // </div>
+        null}
+      </div>
+    </div>
   );
 }
 
