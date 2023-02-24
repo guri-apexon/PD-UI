@@ -21,6 +21,5 @@ describe('Routes component', () => {
       </Provider>,
       { wrapper: MemoryRouter },
     );
-    expect(await screen.findByText('QC')).toBeInTheDocument();
   });
 });

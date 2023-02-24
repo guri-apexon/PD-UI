@@ -67,8 +67,8 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   }, [page]);
 
   useEffect(() => {
-    if (refs[currentPage]?.current) {
-      refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
+    if (refs && refs[currentPage]?.current) {
+      refs[currentPage].current.scrollIntoView({ behavior: 'instant' });
     }
     setTimeout(() => {
       if (document.getElementById('pdfDocument')) {

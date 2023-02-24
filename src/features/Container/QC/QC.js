@@ -64,20 +64,18 @@ function QCContainer() {
   return (
     <div
       className="dashboard-parent qc-parent protocols"
-      style={{ padding: 20 }}
       data-testid="qc-parent-component"
     >
       {/* <h1>
         {greet} {userDetails && userDetails.username}
       </h1> */}
       <Breadcrumbs
+      className ="breadcrumbs"
         items={breadItems}
-        style={{ paddingInlineStart: 0, marginBottom: 0 }}
+        
         data-testid="breadcrumb-click"
       />
       <div
-        className="qc-tabs-parent"
-        style={{ display: 'flex', flexDirection: 'row' }}
       >
         <div style={{ flex: 1 }}>
           <Tabs value={value} onChange={handleChangeTab} size="small" truncate>

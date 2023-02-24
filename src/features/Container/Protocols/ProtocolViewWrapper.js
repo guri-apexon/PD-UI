@@ -80,7 +80,7 @@ class ProtocolViewWrapper extends React.Component {
 
     return (
       <>
-        {data.userPrimaryRoleFlag && (
+        {data?.userPrimaryRoleFlag && (
           <div>
             <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
           </div>
@@ -91,7 +91,7 @@ class ProtocolViewWrapper extends React.Component {
 
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
-            {data.userPrimaryRoleFlag && (
+            {data?.userPrimaryRoleFlag && (
               <Panel
                 width={window.innerWidth / 2}
                 minWidth={window.innerWidth / 4}
