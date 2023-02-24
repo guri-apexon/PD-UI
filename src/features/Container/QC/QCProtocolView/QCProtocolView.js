@@ -1,21 +1,29 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import MenuItem from 'apollo-react/components/MenuItem';
-import SelectButton from 'apollo-react/components/SelectButton';
-
-import Upload from 'apollo-react-icons/Upload';
 import Button from 'apollo-react/components/Button';
 import Loader from '../../../Components/Loader/Loader';
-import { viewResult } from '../../Protocols/protocolSlice';
-import ProtocolViewClass from '../../Protocols/ProtocolViewClass';
+import {
+  protocolSummary,
+  rightBladeValue,
+  viewResult,
+} from '../../Protocols/protocolSlice';
 import { loader } from '../qcSlice';
+import ProtocolView from '../../Protocols/ProtocolView';
+import { PROTOCOL_RIGHT_MENU } from '../../Protocols/Constant/Constants';
+import Modal from 'apollo-react/components/Modal';
+import { isPrimaryUser } from '../../../../utils/utilFunction';
 
 function QCProtocolView({ protId, path, userType, protocolNumber }) {
   const dispatch = useDispatch();
   const viewData = useSelector(viewResult);
+  const [protData, setProtData] = useState();
   const qcLoader = useSelector(loader);
-  const [selectedFile, setSelectedFile] = useState({});
+  const [state, setState] = React.useState(false);
+  const summary = useSelector(protocolSummary);
+  const BladeRightValue = useSelector(rightBladeValue);
+  const { data } = summary ? summary : {};
+
   useEffect(() => {
     dispatch({
       type: 'GET_PROTOCOL_TOC_SAGA',
@@ -28,13 +36,26 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
     });
     // eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    if (protId) {
+      dispatch({ type: 'GET_PROTOCOL_SUMMARY', payload: protId });
+    }
+  }, [protId]);
+
+  useEffect(() => {
+    if (data) {
+      setProtData( {
+        ...data,
+        userPrimaryRoleFlag: isPrimaryUser(data),
+      });
+    }
+  }, [data]);
+  
   const listData = [];
-  // console.log("Path", path);
   const subSections = {
-    TOC: viewData.tocSections,
-    SOA: viewData.soaSections,
+    TOC:  viewData.tocSections,
+    SOA:  viewData.soaSections,
   };
-  // console.log("view", viewData);
   /* istanbul ignore else */
   if (subSections.TOC && subSections.TOC.length) {
     listData.push({
@@ -52,122 +73,17 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
     });
   }
   /* istanbul ignore else */
-  if (viewData.iqvdataSummary) {
+  if ( viewData.iqvdataSummary) {
     listData.push({ section: 'Summary', id: 'SUM', subSections: false });
   }
-  const onFileChange = (event) => {
-    // Update the state
-    // this.setState({ selectedFile: event.target.files[0] });
-    // console.log(event.target.files[0]);
-    setSelectedFile(event.target.files[0]);
+
+  const handleOpen = (variant) => {
+    setState({ ...state, [variant]: true });
   };
 
-  const onFileUpload = () => {
-    if (!selectedFile.name) {
-      return;
-    }
-    // Create an object of formData
-    // Details of the uploaded file
-    // console.log(selectedFile);
-    dispatch({
-      type: 'UPLOAD_PROTOCOL_QC_SAGA',
-      payload: { data: selectedFile, id: protId },
-    });
-    setSelectedFile({});
-    // Request made to the backend api
-    // Send formData object
-    // axios.post("/api/protocol_data/qc1_protocol_upload", formData);
+  const handleClose = (variant) => {
+    setState({ ...state, [variant]: false });
   };
-
-  const onApprove = () => {
-    const approve = window.confirm('Are you sure you want to Approve?');
-    if (approve) {
-      dispatch({ type: 'APPROVE_QC_SAGA', payload: protId });
-    } else {
-      // nothing
-    }
-  };
-
-  const sendQc2ForApproval = () => {
-    const qc2Approval = window.confirm(
-      'Are you sure you want to send Qc2 for approval?',
-    );
-    if (qc2Approval) {
-      dispatch({ type: 'SEND_QC2_APPROVAL_SAGA', payload: protId });
-    } else {
-      // nothing
-    }
-  };
-
-  const onReject = () => {
-    const reject = window.confirm('Are you sure you want to Reject?');
-    if (reject) {
-      dispatch({ type: 'REJECT_QC2_SAGA', payload: protId });
-    } else {
-      // nothing
-    }
-  };
-
-  const handleChange = (value) => {
-    // console.log(value);
-    // dispatch({ type: "DOWNLOAD_PROTOCOL_QC_SAGA", payload: value });
-    // handleDownload(value, protId);
-    downloadObjectAsJson(viewData.download, viewData.download.id);
-  };
-
-  function downloadObjectAsJson(exportObj, exportName) {
-    const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
-      JSON.stringify(exportObj),
-    )}`;
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute('href', dataStr);
-    downloadAnchorNode.setAttribute('download', `${exportName}.json`);
-    document.body.appendChild(downloadAnchorNode); // required for firefox
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
-  }
-
-  // const handleDownload = async (value, id) => {
-  //   let customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_json?aidoc_id=${id}`;
-  //   if (value === "2") {
-  //     customUrl = `${BASE_URL_8000}/api/protocol_data/qc1_protocol_review_xlsx?aidoc_id=${id}`;
-  //   }
-  //   const fileLocationName = await axios.get(customUrl).catch(() => {
-  //     toast.error("Something Went Wrong");
-  //   });
-  //   if (fileLocationName && fileLocationName.data) {
-  //     let splitFileName = fileLocationName.data.split("\\");
-  //     if (value === "1") {
-  //       //For Json
-  //       let url = `${UI_URL}/${splitFileName[1]}`;
-  //       let jsonres = await axios
-  //         .get(url)
-  //         .then((res) => res.data)
-  //         .catch(() => {
-  //           toast.error("Somethissssng Went Wrong");
-  //         });
-  //       let content = JSON.stringify(jsonres);
-  //       const a = document.createElement("a");
-  //       const file = new Blob([content], { type: "application/json" });
-  //       a.href = URL.createObjectURL(file);
-  //       a.download = splitFileName[1];
-  //       a.click();
-  //       a.remove();
-  //     }
-
-  // if (value === "2") {
-  //   // For Excel
-  //   let url = `${UI_URL}/${splitFileName[1]}`;
-  //   let encodeUrl = encodeURI(url);
-  //   let myWindow = window.open("about:blank", "_blank");
-  //   myWindow.document.write(
-  //     `<iframe src=${encodeUrl} name="fileName" frameborder="0" width="100%" height="100%"></iframe>`
-  //   );
-  // }
-  // }
-  // };
-  console.log(qcLoader);
-
   if (viewData.loader || qcLoader) {
     return (
       <div
@@ -211,84 +127,30 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
       </div>
     );
   }
-
   return (
-    <>
-      <div style={{ marginLeft: '26%', marginBottom: '5px' }}>
-        <input
-          type="file"
-          data-testid="choose-file-upload"
-          onChange={onFileChange}
-        />
-        <Button
-          variant="secondary"
-          icon={<Upload />}
-          size="small"
-          style={{ marginRight: 10 }}
-          onClick={() => onFileUpload()}
-          data-testid="upload-file-button"
-        >
-          Upload
-        </Button>
-        {/* <Button
+    <div>
+      {BladeRightValue &&
+        BladeRightValue.includes(PROTOCOL_RIGHT_MENU.HOME) && (
+          <Button
+            className="button-style"
             variant="secondary"
-            icon={<Download />}
-            size="small"
-            style={{ marginRight: 10, float: "right" }}
+            onClick={() => handleOpen('neutral')}
           >
-            Download
-          </Button> */}
-        <SelectButton
-          onChange={handleChange}
-          placeholder="Download"
-          style={{ marginRight: 10, float: 'right' }}
-          data-testid="download-button"
-        >
-          <MenuItem data-testid="download-json-button" value="1">
-            Download JSON
-          </MenuItem>
-          {/* <MenuItem value="2">{"Download XLSX"}</MenuItem> */}
-        </SelectButton>
-      </div>
-      <ProtocolViewClass
-        view={viewData}
-        data={subSections}
-        listData={listData}
+            Submit
+          </Button>
+        )}
+
+      <Modal
+        className="modal"
+        open={state.neutral}
+        onClose={() => handleClose('neutral')}
+        title=""
+        message="Do you want to submit ?"
+        buttonProps={[{}, { label: 'Submit' }]}
+        id="Submit"
       />
-      <div style={{ marginLeft: '26%', marginTop: '5px' }}>
-        <Button
-          variant="secondary"
-          size="small"
-          style={{ marginRight: 10 }}
-          onClick={() => onApprove()}
-          data-testid="approve-button"
-        >
-          Approve
-        </Button>
-        {userType === 'QC1' ? (
-          <Button
-            variant="secondary"
-            size="small"
-            style={{ marginRight: 10 }}
-            onClick={() => sendQc2ForApproval()}
-            data-testid="sendQC2-button"
-          >
-            Send QC2 Approval
-          </Button>
-        ) : null}
-        {userType === 'QC2' ? (
-          <Button
-            variant="secondary"
-            size="small"
-            style={{ marginRight: 10 }}
-            onClick={() => onReject()}
-            data-testid="reject-button"
-          >
-            Reject
-          </Button>
-        ) : null}
-      </div>
-    </>
+      {data &&( <ProtocolView protId={protId} data={protData} refs={null} />)}
+    </div>
   );
 }
 

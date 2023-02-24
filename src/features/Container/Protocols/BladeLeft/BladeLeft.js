@@ -33,7 +33,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     dispatch({
       type: 'GET_PROTOCOL_TOC_DATA',
       payload: {
-        docId: dataSummary.id,
+        docId: dataSummary?.id,
         tocFlag: 1,
       },
     });
