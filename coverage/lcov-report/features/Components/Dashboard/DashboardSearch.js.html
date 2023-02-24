@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>25/25</span>
+                <span class='fraction'>0/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -193,10 +193,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -230,8 +230,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">32x</span>
-<span class="cline-any cline-yes">21x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,7 +239,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -251,7 +251,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -278,8 +278,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -287,7 +287,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -311,11 +311,11 @@ import Button from 'apollo-react/components/Button';
 import Search from 'apollo-react/components/Search';
 import Grid from 'apollo-react/components/Grid';
 &nbsp;
-function DashboardSearch({ recent, saved }) {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const [viewMore, setViewMore] = useState(false);
-  return (
+function <span class="fstat-no" title="function not covered" >DashboardSearch(</span>{ recent, saved }) {
+  const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
+  const history = <span class="cstat-no" title="statement not covered" >useHistory();</span>
+  const [viewMore, setViewMore] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div
       className="dashboard-search-parent"
       data-testid="dashboard-search"
@@ -348,9 +348,9 @@ function DashboardSearch({ recent, saved }) {
                   viewMore ? 'search-list-ul-scroll' : 'search-list-ul'
                 }
               &gt;
-                {recent.map((item, index) =&gt; {
-                  if (item.keyword &amp;&amp; (index &lt;= 5 || viewMore)) {
-                    return (
+                {recent.map(<span class="fstat-no" title="function not covered" >(i</span>tem, index) =&gt; {
+<span class="cstat-no" title="statement not covered" >                  if (item.keyword &amp;&amp; (index &lt;= 5 || viewMore)) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (</span>
                       &lt;li key={item.sponsorId} className="search-list-li"&gt;
                         &lt;Link to={`/search?key=${item.keyword}`}&gt;
                           {item.keyword}
@@ -358,7 +358,7 @@ function DashboardSearch({ recent, saved }) {
                       &lt;/li&gt;
                     );
                   }
-                  return null;
+<span class="cstat-no" title="statement not covered" >                  return null;</span>
                 })}
               &lt;/ul&gt;
             ) : (
@@ -370,7 +370,7 @@ function DashboardSearch({ recent, saved }) {
               &lt;Button
                 variant="secondary"
                 style={{ width: '100%' }}
-                onClick={() =&gt; setViewMore(!viewMore)}
+                onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setViewMore(!viewMore)}</span>
               &gt;
                 &lt;span&gt;{viewMore ? 'View Less' : 'View More'}&lt;/span&gt;
                 {viewMore ? (
@@ -396,9 +396,9 @@ function DashboardSearch({ recent, saved }) {
             &lt;h3&gt;Saved Searches&lt;/h3&gt;
             {saved &amp;&amp; saved.length &gt; 0 ? (
               &lt;ul className="search-list-ul"&gt;
-                {saved.map((item) =&gt; {
-                  if (item.keyword) {
-                    return (
+                {saved.map(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; {
+<span class="cstat-no" title="statement not covered" >                  if (item.keyword) {</span>
+<span class="cstat-no" title="statement not covered" >                    return (</span>
                       &lt;li key={item.saveId} className="search-list-li"&gt;
                         &lt;Link to={`/search?key=${item.keyword}`}&gt;
                           {item.keyword}
@@ -406,7 +406,7 @@ function DashboardSearch({ recent, saved }) {
                       &lt;/li&gt;
                     );
                   }
-                  return null;
+<span class="cstat-no" title="statement not covered" >                  return null;</span>
                 })}
               &lt;/ul&gt;
             ) : (
@@ -427,7 +427,7 @@ export default memo(DashboardSearch);
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-04T07:03:19.846Z
+                at 2023-02-24T09:58:55.530Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

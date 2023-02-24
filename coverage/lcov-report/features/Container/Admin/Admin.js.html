@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.25% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/16</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">61.53% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>8/13</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.25% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/16</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -152,29 +152,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -219,30 +219,30 @@ import {
 } from './adminSlice';
 import ProtocolMap from './ProtocolMap';
 &nbsp;
-function Admin() {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(loader);
-  const users = useSelector(usersList);
-  const userRoles = useSelector(userRolesList);
-  const roleOptions = useSelector(rolesOptionsList);
-  const [value, setValue] = useState(0);
-  const [columns, setColumns] = useState([]);
+function <span class="fstat-no" title="function not covered" >Admin(</span>) {
+  const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
+  const isLoading = <span class="cstat-no" title="statement not covered" >useSelector(loader);</span>
+  const users = <span class="cstat-no" title="statement not covered" >useSelector(usersList);</span>
+  const userRoles = <span class="cstat-no" title="statement not covered" >useSelector(userRolesList);</span>
+  const roleOptions = <span class="cstat-no" title="statement not covered" >useSelector(rolesOptionsList);</span>
+  const [value, setValue] = <span class="cstat-no" title="statement not covered" >useState(0);</span>
+  const [columns, setColumns] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
 &nbsp;
-  useEffect(() =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if ('user' in roleOptions &amp;&amp; roleOptions.user.length &gt; 0) {
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if ('user' in roleOptions &amp;&amp; roleOptions.user.length &gt; 0) {</span>
       const columnList = <span class="cstat-no" title="statement not covered" >getColumns(roleOptions.user);</span>
 <span class="cstat-no" title="statement not covered" >      setColumns(columnList);</span>
     }
   }, [roleOptions]);
 &nbsp;
-  useEffect(() =&gt; {
-    dispatch({ type: 'GET_USERS_SAGA' });
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    dispatch({ type: 'GET_USERS_SAGA' });</span>
   }, []);
 &nbsp;
-  const handleChangeTab = <span class="fstat-no" title="function not covered" >(e</span>vent, value) =&gt; {
+  const handleChangeTab = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>vent, value) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setValue(value);</span>
   };
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div style={{ padding: 20, marginTop: 60 }}&gt;
       &lt;Card style={{ padding: 20 }}&gt;
         &lt;Tabs value={value} onChange={handleChangeTab} truncate&gt;
@@ -251,14 +251,14 @@ function Admin() {
           &lt;Tab label="Protocol Mapping" /&gt;
         &lt;/Tabs&gt;
         {isLoading ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >          &lt;Loader /&gt;</span>
+          &lt;Loader /&gt;
         ) : (
           &lt;div&gt;
             {value === 0 &amp;&amp; columns.length &amp;&amp; (
-<span class="branch-2 cbranch-no" title="branch not covered" >              &lt;UsersTable initialRows={users} columns={columns} /&gt;</span>
+              &lt;UsersTable initialRows={users} columns={columns} /&gt;
             )}
-            {value === 1 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;UsersRole initialRows={userRoles} /&gt;}</span>
-            {value === 2 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >&lt;ProtocolMap /&gt;}</span>
+            {value === 1 &amp;&amp; &lt;UsersRole initialRows={userRoles} /&gt;}
+            {value === 2 &amp;&amp; &lt;ProtocolMap /&gt;}
           &lt;/div&gt;
         )}
       &lt;/Card&gt;
@@ -274,7 +274,7 @@ export default Admin;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-01-04T07:03:19.846Z
+                at 2023-02-24T09:58:55.530Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
