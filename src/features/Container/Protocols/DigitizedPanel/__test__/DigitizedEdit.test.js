@@ -1,4 +1,4 @@
-import { render } from '../../../../../test-utils/test-utils';
+import { fireEvent, render } from '../../../../../test-utils/test-utils';
 import * as ProtocolContext from '../../ProtocolContext';
 import DigitizedEdit from '../DigitizedEdit';
 
@@ -52,5 +52,28 @@ describe('DigitizedEdit', () => {
       <DigitizedEdit sectionDataArr={sectionData} edit={false} pageRight={2} />,
     );
     expect(screen).toBeTruthy();
+  });
+
+  test('render component without error when edit is true', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const screen = render(
+      <DigitizedEdit sectionDataArr={sectionData} edit pageRight={2} />,
+    );
+    expect(screen).toBeTruthy();
+    const contentContainer = screen.getAllByTestId('content_container');
+    fireEvent.click(contentContainer[0]);
+    screen.debug();
+    const element = screen.getAllByTestId('contentEdit')[0];
+    element.focus();
+    fireEvent.keyDown(element, {
+      key: 'Backspace',
+      code: 'Backspace',
+      charCode: 48,
+    });
+    element.blur();
+    fireEvent.click(contentContainer[1]);
   });
 });
