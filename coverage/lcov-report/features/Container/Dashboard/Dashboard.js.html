@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/12</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.55% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/9</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">81.81% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -123,23 +123,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -174,26 +174,26 @@ import ProtocolTable from './ProtocolTable';
 import { dashboadAPIError } from './dashboardSlice';
 import ActionButtons from './ActionButtons';
 &nbsp;
-const today = new Date();
-const curHr = today.getHours();
+const today = <span class="cstat-no" title="statement not covered" >new Date();</span>
+const curHr = <span class="cstat-no" title="statement not covered" >today.getHours();</span>
 let greet;
 &nbsp;
-<span class="missing-if-branch" title="if path not taken" >I</span>if (curHr &lt; 12) {
+<span class="cstat-no" title="statement not covered" >if (curHr &lt; 12) {</span>
 <span class="cstat-no" title="statement not covered" >  greet = 'Good Morning, ';</span>
-} else if (curHr &lt; 18) {
-  greet = 'Good Afternoon, ';
-} else <span class="missing-if-branch" title="else path not taken" >E</span>{
+} else <span class="cstat-no" title="statement not covered" >if (curHr &lt; 18) {</span>
+<span class="cstat-no" title="statement not covered" >  greet = 'Good Afternoon, ';</span>
+} else {
 <span class="cstat-no" title="statement not covered" >  greet = 'Good Evening, ';</span>
 }
 &nbsp;
-function Dashboard() {
-  const userDetails = useSelector(loggedUser);
-  const memoizedPageRows = React.useMemo(() =&gt; [5, 20, 30, 'All'], []);
-  const dashboardError = useSelector(dashboadAPIError);
-  return (
+function <span class="fstat-no" title="function not covered" >Dashboard(</span>) {
+  const userDetails = <span class="cstat-no" title="statement not covered" >useSelector(loggedUser);</span>
+  const memoizedPageRows = <span class="cstat-no" title="statement not covered" >React.useMemo(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >[5, 20, 30, 'All'],</span> []);</span>
+  const dashboardError = <span class="cstat-no" title="statement not covered" >useSelector(dashboadAPIError);</span>
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div className="dashboard-parent" style={{ padding: 20 }}&gt;
-      {dashboardError &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >dashboardError.apiError </span>&amp;&amp; (
-<span class="branch-2 cbranch-no" title="branch not covered" >        &lt;span className="main-error-message" data-testid="API-Error"&gt;</span>
+      {dashboardError &amp;&amp; dashboardError.apiError &amp;&amp; (
+        &lt;span className="main-error-message" data-testid="API-Error"&gt;
           Something Went Wrong, API Failed
         &lt;/span&gt;
       )}
@@ -223,7 +223,7 @@ export default React.memo(Dashboard);
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-24T09:58:55.530Z
+                at 2023-02-27T08:40:31.224Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -1,3 +1,5 @@
+import { render, screen } from '@testing-library/react';
+import { text } from 'express';
 import protocolPageSlice, {
   getSummary,
   getProcotoclToc,
@@ -9,6 +11,31 @@ import protocolPageSlice, {
   getProtocolTocData,
   setSectionLoader,
   resetSectionData,
+  getFileStream,
+  updateSectionData,
+  getMetaDataSummaryField,
+  getRightBladeValue,
+  getTOCActive,
+  setAccordianMetaData,
+  setAccordianMetaParam,
+  getMetadataApiCall,
+  getEnrichedValue,
+  protocolSummary,
+  viewResult,
+  associateDocs,
+  compareResult,
+  headerResult,
+  protocolResult,
+  sectionDetails,
+  protocolTocData,
+  sectionLoader,
+  getPdfData,
+  rightBladeValue,
+  TOCActive,
+  accordionMetaData,
+  accordianMetaParam,
+  metadataApiCallValue,
+  EnrichedValue,
 } from '../protocolSlice';
 
 const initialState = {
@@ -35,6 +62,13 @@ const initialState = {
   },
 };
 
+const state = {
+  protocol: {
+    data: null,
+    loading: true,
+    success: false,
+  },
+};
 describe(' ProtocolSlice Test Suite', () => {
   test('getSummary test', () => {
     const obj = {
@@ -189,5 +223,114 @@ describe(' ProtocolSlice Test Suite', () => {
       ...initialState,
       sectionDetails: { protocol: null, data: [] },
     });
+  });
+
+  test('getFileStream', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getFileStream.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, fileStream: false });
+  });
+
+  test('updateSectionData', () => {
+    const payload = {
+      protocol: '15-06',
+      data: [],
+      linkId: 15,
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: updateSectionData.type,
+        payload,
+      }),
+    );
+  });
+
+  test('getMetaDataSummaryField', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getMetaDataSummaryField.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, metaDataSummaryField: false });
+  });
+
+  test('getRightBladeValue', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getRightBladeValue.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, rightBladeValue: false });
+  });
+
+  test('getTOCActive', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getTOCActive.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, TOCActiveAccordion: false });
+  });
+
+  test('setAccordianMetaData', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setAccordianMetaData.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, accordionMetaData: false });
+  });
+
+  test('setAccordianMetaParam', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setAccordianMetaParam.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, accordianMetaParam: false });
+  });
+
+  test('getMetadataApiCall', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getMetadataApiCall.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, metadataApiCallValue: false });
+  });
+
+  test('getEnrichedValue', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getEnrichedValue.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, EnrichedApiValue: false });
+  });
+
+  test('Test All selector', () => {
+    protocolPageSlice(initialState, {
+      type: getSectionProtocol.type,
+      payload: false,
+    });
+    protocolSummary(state);
+    viewResult(state);
+    associateDocs(state);
+    compareResult(state);
+    headerResult(state);
+    protocolResult(state);
+    sectionDetails(state);
+    protocolTocData(state);
+    sectionLoader(state);
+    getPdfData(state);
+    rightBladeValue(state);
+    TOCActive(state);
+    accordionMetaData(state);
+    accordianMetaParam(state);
+    metadataApiCallValue(state);
+    EnrichedValue(state);
   });
 });

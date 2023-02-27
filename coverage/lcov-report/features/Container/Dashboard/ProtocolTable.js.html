@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">62.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -152,27 +152,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -183,7 +181,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -223,25 +223,25 @@ import MyProtocols from './MyProtocols';
 import FollowedProtocols from './FollowedProtocols';
 import Loader from '../../Components/Loader/Loader';
 &nbsp;
-function ProtocolTable({ pageRows, maxHeight }) {
-  const dispatch = useDispatch();
-  const error = useSelector(prtocolsError);
-  const [value, setValue] = React.useState(0);
-  const loader = useSelector(tableLoader);
-  const handleChangeTab = <span class="fstat-no" title="function not covered" >(e</span>vent, value) =&gt; {
+function <span class="fstat-no" title="function not covered" >ProtocolTable(</span>{ pageRows, maxHeight }) {
+  const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
+  const error = <span class="cstat-no" title="statement not covered" >useSelector(prtocolsError);</span>
+  const [value, setValue] = <span class="cstat-no" title="statement not covered" >React.useState(0);</span>
+  const loader = <span class="cstat-no" title="statement not covered" >useSelector(tableLoader);</span>
+  const handleChangeTab = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>vent, value) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setValue(value);</span>
   };
-  useEffect(() =&gt; {
-    dispatch({ type: 'GET_PROTOCOL_TABLE_SAGA' });
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    dispatch({ type: 'GET_PROTOCOL_TABLE_SAGA' });</span>
   }, []);
-  useEffect(() =&gt; {
-    if (value === 0) {
-      dispatch(hideAddprotocol(true));
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>{
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (value === 0) {</span>
+<span class="cstat-no" title="statement not covered" >      dispatch(hideAddprotocol(true));</span>
+    } else {
 <span class="cstat-no" title="statement not covered" >      dispatch(hideAddprotocol(false));</span>
     }
   }, [value]);
-  <span class="missing-if-branch" title="if path not taken" >I</span>if (loader) {
+<span class="cstat-no" title="statement not covered" >  if (loader) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;div
         style={{
@@ -255,7 +255,7 @@ function ProtocolTable({ pageRows, maxHeight }) {
       &lt;/div&gt;
     );
   }
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;&gt;
       {error}
       &lt;Tabs value={value} onChange={handleChangeTab} truncate&gt;
@@ -271,7 +271,7 @@ function ProtocolTable({ pageRows, maxHeight }) {
           /&gt;
         )}
         {value === 1 &amp;&amp; (
-<span class="branch-1 cbranch-no" title="branch not covered" >          &lt;FollowedProtocols pageRows={pageRows} maxHeight={maxHeight} /&gt;</span>
+          &lt;FollowedProtocols pageRows={pageRows} maxHeight={maxHeight} /&gt;
         )}
       &lt;/div&gt;
     &lt;/&gt;
@@ -286,7 +286,7 @@ export default React.memo(ProtocolTable);
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-24T09:58:55.530Z
+                at 2023-02-27T08:40:31.224Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
