@@ -8,6 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
+import ButtonGroup from 'apollo-react/components/ButtonGroup';
+import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
@@ -60,6 +62,7 @@ function DigitizeAccordion({
   const [clinicalTerms, setClinicalTerms] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
+  const [showAlert, setShowAlert] = useState(false);
 
   const { data: sectionData } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
@@ -69,7 +72,7 @@ function DigitizeAccordion({
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const { dispatchSectionEvent } = useProtContext();
+  const { dispatchSectionEvent, sectionContent } = useProtContext();
 
   const handleChange = () => {
     handlePageRight(item.page);
@@ -83,12 +86,6 @@ function DigitizeAccordion({
         data: tempTOCActive,
       },
     });
-  };
-
-  const onSaveClick = (e) => {
-    e.stopPropagation();
-    setShowEdit(false);
-    setCurrentEditCard(null);
   };
 
   useEffect(() => {
@@ -109,6 +106,7 @@ function DigitizeAccordion({
       }
     } else {
       setEnrichedTarget(null);
+      setShowAlert(false);
     }
     // eslint-disable-next-line
   }, [expanded]);
@@ -116,18 +114,28 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
-    } else if (currentActiveCard === item.link_id && expanded) {
-      setExpanded(!expanded);
+    } else if (
+      currentActiveCard === item.link_id &&
+      expanded &&
+      !tocActive[index]
+    ) {
+      setExpanded(false);
     }
+
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
       setExpanded(false);
-    }
-    if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
+    } else if (
+      currentActiveCard === item.link_id &&
+      !expanded &&
+      tocActive[index]
+    ) {
       setExpanded(true);
+    } else if (!tocActive[index]) {
+      setExpanded(false);
     }
 
     // eslint-disable-next-line
@@ -151,6 +159,7 @@ function DigitizeAccordion({
       setClinicalTerms(null);
     }
   };
+
   useEffect(() => {
     if (currentEditCard !== item.link_id) {
       setShowEdit(false);
@@ -190,12 +199,6 @@ function DigitizeAccordion({
     }
   };
 
-  const refreshContent = () => {
-    console.log('refreshContent');
-    setEditedMode(false);
-    dispatchSectionData(true);
-  };
-
   useEffect(() => {
     if (sectionData?.length > 0) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
@@ -227,6 +230,7 @@ function DigitizeAccordion({
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
+
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
@@ -242,6 +246,29 @@ function DigitizeAccordion({
     setSelectedEnrichedText(null);
     setClinicalTerms(null);
   }, [rightBladeValue]);
+
+  const checkUnsavedTable = () => {
+    if (sectionContent && Array.isArray(sectionContent)) {
+      const arr = sectionContent.filter(
+        (obj) => obj.type === CONTENT_TYPE.TABLE && !obj.isSaved,
+      );
+      return arr.length > 0;
+    }
+    return true;
+  };
+
+  const onSaveClick = (e) => {
+    e.stopPropagation();
+    if (checkUnsavedTable()) {
+      setShowAlert(true);
+      return;
+    }
+
+    setShowEdit(false);
+    setCurrentEditCard(null);
+    setEditedMode(false);
+    dispatchSectionData(true);
+  };
 
   return (
     <Accordion
@@ -261,25 +288,29 @@ function DigitizeAccordion({
             }}
           >
             {showedit && (
-              <span data-testId="lockIcon">
+              <IconButton data-testId="lockIcon">
                 <Lock style={{ paddingRight: '10px' }} />
-              </span>
+              </IconButton>
             )}
             {primaryRole && (
               <>
-                <span data-testId="eyeIcon">
+                <IconButton className="eyeIcon" data-testId="eyeIcon">
                   <EyeShow style={{ paddingRight: '10px' }} />
-                </span>
+                </IconButton>
                 {!showedit ? (
                   // eslint-disable-next-line
-                  <span data-testId="pencilIcon" onClick={onEditClick}>
+                  <IconButton data-testId="pencilIcon" onClick={onEditClick}>
                     <Pencil />
-                  </span>
+                  </IconButton>
                 ) : (
                   // eslint-disable-next-line
-                  <span data-testId="saveIcon" onClick={onSaveClick}>
-                    <Save onClick={() => refreshContent()} />
-                  </span>
+                  <IconButton
+                    onClick={onSaveClick}
+                    data-testId="saveIcon"
+                    disabled={showAlert}
+                  >
+                    <Save />
+                  </IconButton>
                 )}
               </>
             )}
@@ -435,6 +466,19 @@ function DigitizeAccordion({
         There is already another section in edit mode. Do you want to continue
         with editing the current section
       </Modal>
+      {showAlert && (
+        <div className="confirmation-popup" data-testId="confirmPopup">
+          <p>Please save the all the tables before saving the section</p>
+          <ButtonGroup
+            buttonProps={[
+              {
+                label: 'Ok',
+                onClick: () => setShowAlert(false),
+              },
+            ]}
+          />
+        </div>
+      )}
     </Accordion>
   );
 }

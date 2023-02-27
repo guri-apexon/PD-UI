@@ -26,10 +26,13 @@ import {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  TOCActive,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
+
+const jsonContentHeader = { 'Content-Type': 'application/json' };
 
 function* getUserId() {
   const state = yield select();
@@ -95,21 +98,14 @@ export function getTocSections(toc) {
     const section_num = item[7];
 
     if (
-      section_num &&
-      file_section_level === '1' &&
-      level_1_CPT_section !== 'Unmapped' &&
-      !sectionList.includes(level_1_CPT_section)
-    ) {
-      list.push({
-        section: `${section_num} ${level_1_CPT_section}`,
-        id: `TOC-${item[9]}`,
-      });
-      sectionList.push(level_1_CPT_section);
-    } else if (
-      type === 'header' &&
-      file_section_level === '1' &&
-      level_1_CPT_section !== 'Unmapped' &&
-      !sectionList.includes(level_1_CPT_section)
+      (section_num &&
+        file_section_level === '1' &&
+        level_1_CPT_section !== 'Unmapped' &&
+        !sectionList.includes(level_1_CPT_section)) ||
+      (type === 'header' &&
+        file_section_level === '1' &&
+        level_1_CPT_section !== 'Unmapped' &&
+        !sectionList.includes(level_1_CPT_section))
     ) {
       list.push({
         section: `${section_num} ${level_1_CPT_section}`,
@@ -123,7 +119,6 @@ export function getTocSections(toc) {
 }
 /* eslint-enable */
 export function getSoaSections(soa) {
-  // const sectionList = [];
   const list = [];
   soa.map((item) => {
     const { TableIndex } = item;
@@ -205,7 +200,6 @@ export function* getProtocolToc(action) {
 export function* fetchAssociateProtocol(action) {
   const userId = yield getUserId();
   const URL = `${BASE_URL_8000}/api/Related_protocols/?protocol=${action.payload}&userId=${userId}`;
-  //  const URL=`http://ca2spdml01q:8000/api/Related_protocols/?Protocol=EMR 200095-004`;
   const config = {
     url: URL,
     method: 'GET',
@@ -338,7 +332,7 @@ export function* getProtocolTocDataResult(action) {
     }
   } else {
     // eslint-disable-next-line no-lonely-if
-    if (!action.payload.tocFlag) {
+    if (action.payload.tocFlag) {
       yield put(
         getProtocolTocData({
           success: false,
@@ -373,7 +367,7 @@ export function* fetchFileStream(action) {
 
   const userId = yield getUserId();
   const { name, dfsPath } = action.payload;
-  const apiBaseUrl = BASE_URL_8000; // 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  const apiBaseUrl = BASE_URL_8000;
   const config = {
     url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
       dfsPath,
@@ -410,6 +404,8 @@ export function* MetaDataVariable(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
     method: 'GET',
+    checkAuth: true,
+    headers: jsonContentHeader,
   };
   const MetaData = yield call(httpCall, config);
   if (MetaData.success) {
@@ -435,6 +431,8 @@ export function* addMetaDataAttributes(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/add_update_meta_data`,
     method: 'POST',
+    checkAuth: true,
+    headers: jsonContentHeader,
     data: {
       aidocId: docId,
       fieldName,
@@ -470,6 +468,8 @@ export function* addMetaDataField(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/add_meta_data`,
     method: 'PUT',
+    checkAuth: true,
+    headers: jsonContentHeader,
     data: {
       op,
       aidocId: docId,
@@ -506,6 +506,8 @@ export function* deleteAttribute(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
     method: 'DELETE',
+    checkAuth: true,
+    headers: jsonContentHeader,
     data: {
       op,
       aidocId: docId,
@@ -544,6 +546,11 @@ export function* deleteAttribute(action) {
 }
 
 export function* RightBladeValue(action) {
+  if (action.payload.name === PROTOCOL_RIGHT_MENU.HOME) {
+    const TocActiveList = yield select(TOCActive);
+    const TocFalse = new Array(TocActiveList.length).fill(false);
+    yield put(getTOCActive(TocFalse));
+  }
   yield put(getRightBladeValue(action.payload.name));
 }
 

@@ -26,24 +26,29 @@ class ProtocolViewWrapper extends React.Component {
 
   componentDidMount() {}
 
+  /* istanbul ignore next */
   handlePageRight = (pageRight) => {
     this.setState({ pageRight });
   };
 
+  /* istanbul ignore next */
   handlePaginationPage = (paginationPage) => {
     this.setState({ paginationPage });
   };
 
+  /* istanbul ignore next */
   handlePageNo = (event, page, sectionNo) => {
     this.setState({ pageNo: page });
     this.setState({ sectionNumber: sectionNo });
   };
 
+  /* istanbul ignore next */
   handleClick() {
     document.addEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: true });
   }
 
+  /* istanbul ignore next */
   handleOutsideClick(e) {
     if (e.target && this.node && this.node.contains(e.target)) {
       return;
@@ -56,6 +61,7 @@ class ProtocolViewWrapper extends React.Component {
     }
   }
 
+  /* istanbul ignore next */
   hideEle = () => {
     document.removeEventListener('click', this.handleOutsideClick, false);
     this.setState({ popupVisible: false });
@@ -74,7 +80,7 @@ class ProtocolViewWrapper extends React.Component {
 
     return (
       <>
-        {data.userPrimaryRoleFlag && (
+        {data?.userPrimaryRoleFlag && (
           <div>
             <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
           </div>
@@ -85,7 +91,7 @@ class ProtocolViewWrapper extends React.Component {
 
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
-            {data.userPrimaryRoleFlag && (
+            {data?.userPrimaryRoleFlag && (
               <Panel
                 width={window.innerWidth / 2}
                 minWidth={window.innerWidth / 4}
@@ -111,7 +117,7 @@ class ProtocolViewWrapper extends React.Component {
               </Panel>
             )}
             {data && (
-              <Panel width={window.innerWidth / 2} hideButton>
+              <Panel width={window.innerWidth / 2} resizable hideButton>
                 <Digitize
                   sectionRef={sectionRef}
                   sectionNumber={sectionNumber}

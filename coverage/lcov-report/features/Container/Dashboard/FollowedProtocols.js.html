@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">95.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>21/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">80% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>4/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">95.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>20/21</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -139,40 +139,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -200,41 +200,41 @@ import {
 } from './dashboardSlice';
 import ProtocolTableComp from '../../Components/Dashboard/FollowingTable';
 &nbsp;
-function <span class="fstat-no" title="function not covered" >FollowedProtocols(</span>{ pageRows, maxHeight }) {
-  const dispatch = <span class="cstat-no" title="statement not covered" >useDispatch();</span>
-  const protocolData = <span class="cstat-no" title="statement not covered" >useSelector(followedProtocolsList);</span>
-  const loader = <span class="cstat-no" title="statement not covered" >useSelector(tableLoader);</span>
+function FollowedProtocols({ pageRows, maxHeight }) {
+  const dispatch = useDispatch();
+  const protocolData = useSelector(followedProtocolsList);
+  const loader = useSelector(tableLoader);
 &nbsp;
-  const fetchAssociateData = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync (row) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    dispatch({</span>
+  const fetchAssociateData = async (row) =&gt; {
+    dispatch({
       type: 'FETCH_ASSOCIATE_DATA',
       payload: { protocol: row.protocol, id: row.id },
     });
   };
-  const handleUnfollow = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(r</span>ow) =&gt; {</span>
+  const handleUnfollow = <span class="fstat-no" title="function not covered" >(r</span>ow) =&gt; {
 <span class="cstat-no" title="statement not covered" >    dispatch({</span>
       type: 'HANDLE_FOLLOW_SAGA',
       payload: { data: row, follow: false },
     });
   };
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (protocolData.length &gt; 0) {</span>
-      const tempData = <span class="cstat-no" title="statement not covered" >cloneDeep(protocolData);</span>
-<span class="cstat-no" title="statement not covered" >      tempData.sort(<span class="fstat-no" title="function not covered" >(a</span>, b) =&gt; {</span>
-        const aDate = <span class="cstat-no" title="statement not covered" >new Date(a.approvalDate);</span>
-        const bDate = <span class="cstat-no" title="statement not covered" >new Date(b.approvalDate);</span>
-<span class="cstat-no" title="statement not covered" >        return bDate - aDate;</span>
+  useEffect(() =&gt; {
+    if (protocolData.length &gt; 0) {
+      const tempData = cloneDeep(protocolData);
+      tempData.sort((a, b) =&gt; {
+        const aDate = new Date(a.approvalDate);
+        const bDate = new Date(b.approvalDate);
+        return bDate - aDate;
       });
-      const temp = <span class="cstat-no" title="statement not covered" >uniqBy(tempData, 'protocol');</span>
-<span class="cstat-no" title="statement not covered" >      for (let i = <span class="cstat-no" title="statement not covered" >0;</span> i &lt; temp.length; i++) {</span>
-<span class="cstat-no" title="statement not covered" >        temp[i].associateddata = [];</span>
-<span class="cstat-no" title="statement not covered" >        temp[i].linkEnabled = true;</span>
+      const temp = uniqBy(tempData, 'protocol');
+      for (let i = 0; i &lt; temp.length; i++) {
+        temp[i].associateddata = [];
+        temp[i].linkEnabled = true;
       }
-<span class="cstat-no" title="statement not covered" >      console.log('check', temp);</span>
-<span class="cstat-no" title="statement not covered" >      dispatch(getFollowedProtocols(temp));</span>
+      console.log('check', temp);
+      dispatch(getFollowedProtocols(temp));
     }
   }, []);
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;ProtocolTableComp
       initialRows={protocolData &amp;&amp; protocolData.length &gt; 0 ? protocolData : []}
       isLoading={loader}
@@ -256,7 +256,7 @@ export default FollowedProtocols;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-27T08:40:31.224Z
+                at 2023-02-27T10:20:38.503Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -262,6 +262,7 @@ export const prepareContent = ({
   contentType,
   content,
   level,
+  isSaved,
 }) => {
   const clonedSection = cloneDeep(sectionContent);
   let newObj = {};
@@ -285,8 +286,12 @@ export const prepareContent = ({
         return clonedSection.map((x) => {
           if (x.line_id === currentLineId) {
             x.content = content;
-            if (x.qc_change_type !== QC_CHANGE_TYPE.ADDED)
+            if (x.qc_change_type !== QC_CHANGE_TYPE.ADDED) {
               x.qc_change_type = QC_CHANGE_TYPE.UPDATED;
+            }
+            if (x.type === CONTENT_TYPE.TABLE) {
+              x.isSaved = isSaved;
+            }
           }
           return x;
         });

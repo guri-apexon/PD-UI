@@ -1,5 +1,3 @@
-import { render, screen } from '@testing-library/react';
-import { text } from 'express';
 import protocolPageSlice, {
   getSummary,
   getProcotoclToc,
@@ -60,6 +58,7 @@ const initialState = {
     protocol: null,
     data: [],
   },
+  fileStream: null,
 };
 
 const state = {
