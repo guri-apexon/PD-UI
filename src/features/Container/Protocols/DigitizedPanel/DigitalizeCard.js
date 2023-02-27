@@ -3,6 +3,10 @@ import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
+import Button from 'apollo-react/components/Button';
+import Modal from 'apollo-react/components/Modal';
+import FieldGroup from 'apollo-react/components/FieldGroup';
+import TextField from 'apollo-react/components/TextField';
 import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../../Components/Loader/Loader';
 import {
@@ -32,6 +36,7 @@ function Digitize({
   const [currentEditCard, setCurrentEditCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
+  const [state, setState] = useState(false);
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -122,6 +127,27 @@ function Digitize({
     // eslint-disable-next-line
   }, [paginationPage]);
 
+  const handleOpen = (variant) => {
+    setState({ ...state, [variant]: true });
+  };
+
+  const handleClose = (variant) => {
+    setState({ ...state, [variant]: false });
+  };
+  // const selectedWord = document.getElementById('selected-word');
+  // const myButton = document.getElementById('my-button');
+
+  // document.addEventListener('selectionchange', function () {
+  //   const selection = window.getSelection().toString().trim();
+  //   if (selection !== '') {
+  //     selectedWord.textContent = selection;
+  //     myButton.style.display = 'inline-block';
+  //   } else {
+  //     selectedWord.textContent = '';
+  //     myButton.style.display = 'none';
+  //   }
+  // });
+
   return (
     <div data-testid="protocol-column-wrapper">
       {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
@@ -176,6 +202,44 @@ function Digitize({
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
       )}
+      <div>
+        {rightValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM && (
+          <Button
+            id="my-button"
+            className="button-style"
+            variant="primary"
+            onClick={() => handleOpen('neutral')}
+          >
+            Add tag
+          </Button>
+        )}
+      </div>
+
+      <Modal
+        open={state.neutral}
+        onClose={() => handleClose('neutral')}
+        buttonProps={[{}, { label: 'Add tag' }]}
+        id="neutral"
+      >
+        <FieldGroup
+          header="Add term to selected term/phrase"
+          style={{ maxWidth: 540 }}
+        >
+          <TextField label="synonyms" placeholder="synonyms" fullWidth />
+          <TextField
+            label="Clinical terms"
+            placeholder="Clinical terms"
+            fullWidth
+          />
+          <TextField label="Ontology" placeholder="Ontology" fullWidth />
+          <TextField
+            label="Preffered term"
+            placeholder="Preffered term"
+            fullWidth
+          />
+          <TextField label="Class" placeholder="Class" fullWidth />
+        </FieldGroup>
+      </Modal>
     </div>
   );
 }
