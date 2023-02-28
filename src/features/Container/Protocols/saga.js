@@ -332,7 +332,7 @@ export function* getProtocolTocDataResult(action) {
     }
   } else {
     // eslint-disable-next-line no-lonely-if
-    if (!action.payload.tocFlag) {
+    if (action.payload.tocFlag) {
       yield put(
         getProtocolTocData({
           success: false,

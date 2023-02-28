@@ -14,7 +14,7 @@ import {
 import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
 
-function MultilineEdit({ sectionDataArr, edit, setIsTableChanged }) {
+function MultilineEdit({ sectionDataArr, edit }) {
   const [sections, setSections] = useState([]);
   const { dispatchSectionEvent } = useProtContext();
   const [showconfirm, setShowConfirm] = useState(false);
@@ -65,6 +65,7 @@ function MultilineEdit({ sectionDataArr, edit, setIsTableChanged }) {
             // eslint-disable-next-line
             <div
               className="content_container"
+              data-testId="content_container"
               key={section.line_id}
               onClick={() => edit && setActiveLineID(section.line_id)}
             >
@@ -75,7 +76,6 @@ function MultilineEdit({ sectionDataArr, edit, setIsTableChanged }) {
                 activeLineID={activeLineID}
                 deleteSection={deleteSection}
                 setActiveLineID={setActiveLineID}
-                setIsTableChanged={setIsTableChanged}
                 edit={edit}
               />
             </div>
@@ -107,5 +107,4 @@ export default MultilineEdit;
 MultilineEdit.propTypes = {
   sectionDataArr: PropTypes.isRequired,
   edit: PropTypes.isRequired,
-  setIsTableChanged: PropTypes.isRequired,
 };

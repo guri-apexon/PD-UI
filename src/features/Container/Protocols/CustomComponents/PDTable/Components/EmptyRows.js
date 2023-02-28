@@ -36,12 +36,13 @@ function EmptyRowCells({ rowIndex, handleOperation, index }) {
       <div
         key={uuidv4()}
         className="pd-empty-cell-row"
-        data-testId="Table Operation"
+        data-testId="table-controls"
       >
         {/* eslint-disable-next-line */}
         <span
           className="pd-more-icon"
           onClick={() => handleIconClick(rowIndex)}
+          data-testId="more-icon-row"
         >
           <Table />
         </span>
