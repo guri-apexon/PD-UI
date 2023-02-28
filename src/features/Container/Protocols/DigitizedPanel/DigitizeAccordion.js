@@ -341,7 +341,11 @@ function DigitizeAccordion({
                   return (
                     <DisplayTable
                       key={React.key}
-                      data={JSON.parse(section.content.TableProperties)}
+                      data={
+                        section?.content
+                          ? JSON.parse(section?.content?.TableProperties)
+                          : []
+                      }
                       footNoteData={section?.content?.AttachmentListProperties}
                       colWidth={100}
                     />
