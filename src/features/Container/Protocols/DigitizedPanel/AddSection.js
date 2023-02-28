@@ -19,8 +19,11 @@ function AddSection({ setIsModal, hoverItem, hoverIndex }) {
         type: 'POST_ADD_SECTION',
         payload: {
           docId: hoverItem.doc_id,
+          index: hoverIndex,
+          sectionName,
         },
       });
+      setIsModal(false);
     }
   };
   const flag = true;
