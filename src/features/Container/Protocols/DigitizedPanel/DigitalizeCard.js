@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 import React, { useEffect, useState } from 'react';
 import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
@@ -7,6 +8,7 @@ import Button from 'apollo-react/components/Button';
 import Modal from 'apollo-react/components/Modal';
 import FieldGroup from 'apollo-react/components/FieldGroup';
 import TextField from 'apollo-react/components/TextField';
+import IconButton from 'apollo-react/components/IconButton';
 import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../../Components/Loader/Loader';
 import {
@@ -18,6 +20,7 @@ import {
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import InfoIcon from 'apollo-react-icons/Info';
 
 function Digitize({
   sectionNumber,
@@ -37,6 +40,7 @@ function Digitize({
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
   const [state, setState] = useState(false);
+  const [text, setText] = useState('');
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -134,19 +138,15 @@ function Digitize({
   const handleClose = (variant) => {
     setState({ ...state, [variant]: false });
   };
-  // const selectedWord = document.getElementById('selected-word');
-  // const myButton = document.getElementById('my-button');
+  const handleTextChange = (event) => {
+    setText(event.target.value);
+  };
 
-  // document.addEventListener('selectionchange', function () {
-  //   const selection = window.getSelection().toString().trim();
-  //   if (selection !== '') {
-  //     selectedWord.textContent = selection;
-  //     myButton.style.display = 'inline-block';
-  //   } else {
-  //     selectedWord.textContent = '';
-  //     myButton.style.display = 'none';
-  //   }
-  // });
+  // function handleSubmit(event) {
+  //   event.preventDefault();
+  //   // Handle form submission here
+  // }
+  const isTextAreaFilled = text.trim().length > 0;
 
   return (
     <div data-testid="protocol-column-wrapper">
@@ -218,26 +218,49 @@ function Digitize({
       <Modal
         open={state.neutral}
         onClose={() => handleClose('neutral')}
-        buttonProps={[{}, { label: 'Add tag' }]}
+        buttonProps={[{}, { label: 'Add tag', disabled: !isTextAreaFilled }]}
         id="neutral"
       >
         <FieldGroup
           header="Add term to selected term/phrase"
           style={{ maxWidth: 540 }}
         >
-          <TextField label="synonyms" placeholder="synonyms" fullWidth />
+          <div>
+            <IconButton color="primary">
+              <InfoIcon />
+            </IconButton>
+            Atleast one of these options are required to be filled to add tag
+          </div>
+          <TextField
+            label="Synonyms"
+            placeholder="Text area"
+            onChange={handleTextChange}
+            fullWidth
+          />
           <TextField
             label="Clinical terms"
-            placeholder="Clinical terms"
+            placeholder="Text area"
+            onChange={handleTextChange}
             fullWidth
           />
-          <TextField label="Ontology" placeholder="Ontology" fullWidth />
+          <TextField
+            label="Ontology"
+            placeholder="Text area"
+            onChange={handleTextChange}
+            fullWidth
+          />
           <TextField
             label="Preffered term"
-            placeholder="Preffered term"
+            placeholder="Text area"
+            onChange={handleTextChange}
             fullWidth
           />
-          <TextField label="Class" placeholder="Class" fullWidth />
+          <TextField
+            label="Class"
+            placeholder="Text area"
+            onChange={handleTextChange}
+            fullWidth
+          />
         </FieldGroup>
       </Modal>
     </div>
