@@ -13,7 +13,7 @@ function MetaDataTable({ metaData }) {
   const columns = [
     {
       header: 'Key',
-      accessor: 'attr_name',
+      accessor: 'display_name',
     },
     {
       header: 'Value',
