@@ -95,7 +95,7 @@ function MetaDataEditTable({
   deletedAttributes,
   setDeletedAttributes,
 }) {
-  const { name } = data;
+  const { formattedName } = data;
   const [selectedId, setSelectedId] = useState(null);
   const [isModal, setIsModal] = useState(false);
 
@@ -154,10 +154,10 @@ function MetaDataEditTable({
   const addNewRow = () => {
     setRows((prevState) => ({
       ...prevState,
-      [name]: [
-        ...prevState[name],
+      [formattedName]: [
+        ...prevState[formattedName],
         {
-          id: prevState[name].length + 1,
+          id: prevState[formattedName].length + 1,
           isCustom: true,
           attr_name: '',
           attr_value: '',
@@ -170,7 +170,7 @@ function MetaDataEditTable({
   const handleChange = (id, value, keyName) => {
     setRows((prevState) => ({
       ...prevState,
-      [name]: prevState[name].map((list) =>
+      [formattedName]: prevState[formattedName].map((list) =>
         list?.id === id
           ? {
               ...list,
@@ -191,11 +191,15 @@ function MetaDataEditTable({
   };
 
   const removeData = () => {
-    const filterRows = rows[name].filter((list) => list.id === selectedId);
+    const filterRows = rows[formattedName].filter(
+      (list) => list.id === selectedId,
+    );
     setDeletedAttributes([...deletedAttributes, filterRows[0].attr_name]);
     setRows((prevState) => ({
       ...prevState,
-      [name]: rows[name].filter((list) => list?.id !== selectedId),
+      [formattedName]: rows[formattedName].filter(
+        (list) => list?.id !== selectedId,
+      ),
     }));
   };
 
@@ -205,11 +209,11 @@ function MetaDataEditTable({
         <Table
           className="table-panel"
           columns={column}
-          rows={rows[name]?.map((row) => ({
+          rows={rows[formattedName]?.map((row) => ({
             ...row,
             handleChange,
             handleDelete,
-            fieldName: name,
+            fieldName: formattedName,
           }))}
           rowId="id"
           hidePagination
@@ -220,7 +224,7 @@ function MetaDataEditTable({
       </span>
     );
     // eslint-disable-next-line
-  }, [column, rows[name]?.length]);
+  }, [column, rows[formattedName]?.length]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
