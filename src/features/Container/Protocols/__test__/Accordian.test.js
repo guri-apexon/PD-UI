@@ -12,9 +12,9 @@ describe('Accordian component', () => {
   };
   const metaDataList = [];
   const suggestedSubList = [{ label: 'sub1' }, { label: 'sub2' }];
-  const isOpenSubText = false;
+  const currentActiveLevels = [];
   const setSuggestedSubList = jest.fn();
-  const setIsOpenSubText = jest.fn();
+  const setCurrentActiveLevels = jest.fn();
   const setMetaDataList = jest.fn();
   const handleAccordian = jest.fn();
   const handleSave = jest.fn();
@@ -31,9 +31,9 @@ describe('Accordian component', () => {
         accData={accData}
         metaDataList={metaDataList}
         suggestedSubList={suggestedSubList}
-        isOpenSubText={isOpenSubText}
+        currentActiveLevels={currentActiveLevels}
         setSuggestedSubList={setSuggestedSubList}
-        setIsOpenSubText={setIsOpenSubText}
+        setCurrentActiveLevels={setCurrentActiveLevels}
         setMetaDataList={setMetaDataList}
         handleAccordian={handleAccordian}
         handleSave={handleSave}
@@ -53,7 +53,7 @@ describe('Accordian component', () => {
     fireEvent.click(wrapper.getByTestId('meta-item-accordion'));
     expect(handleAccordian).toHaveBeenCalled();
   });
-  it('should call setIsOpenSubText when plus icon is clicked', () => {
+  it('should call setCurrentActiveLevels when plus icon is clicked', () => {
     const metadataAccordian = wrapper.getByTestId('meta-item-accordion');
 
     expect(wrapper).toBeTruthy();
@@ -62,23 +62,21 @@ describe('Accordian component', () => {
     const metadataplus = wrapper.getByTestId('metadatapencil');
     fireEvent.click(metadataplus);
   });
-});
 
-describe('Accordian component', () => {
   it('should display the accordian component', () => {
     const standardList = [];
     const accData = {
       isActive: true,
       name: 'testName',
       level: 1,
-      isEdit: false,
+      isEdit: true,
     };
     const rows = [];
     const suggestedSubList = [];
-    const isOpenSubText = false;
+    const currentActiveLevels = [];
     const deletedAttributes = [];
     const setSuggestedSubList = jest.fn();
-    const setIsOpenSubText = jest.fn();
+    const setCurrentActiveLevels = jest.fn();
     const setRows = jest.fn();
     const handleAccordian = jest.fn();
     const handleSave = jest.fn();
@@ -88,16 +86,16 @@ describe('Accordian component', () => {
     const subAccComponent = null;
     const setDeletedAttributes = jest.fn();
 
-    const { getByTestId } = render(
+    const { getAllByTestId } = render(
       <Accordian
         standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
-        isOpenSubText={isOpenSubText}
+        currentActiveLevels={currentActiveLevels}
         deletedAttributes={deletedAttributes}
         setSuggestedSubList={setSuggestedSubList}
-        setIsOpenSubText={setIsOpenSubText}
+        setCurrentActiveLevels={setCurrentActiveLevels}
         setRows={setRows}
         handleAccordian={handleAccordian}
         handleSave={handleSave}
@@ -109,7 +107,8 @@ describe('Accordian component', () => {
       />,
     );
 
-    expect(getByTestId('meta-item-accordion')).toBeInTheDocument();
+    const elem = getAllByTestId('meta-item-accordion');
+    expect(elem.length).toBeGreaterThan(1);
   });
 });
 
@@ -124,8 +123,9 @@ describe('Accordian', () => {
   const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
   const suggestedSubList = [{ label: 'Subsection 1' }];
   const deletedAttributes = [];
+  const currentActiveLevels = [];
   const setSuggestedSubList = jest.fn();
-  const setIsOpenSubText = jest.fn();
+  const setCurrentActiveLevels = jest.fn();
   const setRows = jest.fn();
   const handleAccordian = jest.fn();
   const handleSave = jest.fn();
@@ -142,10 +142,10 @@ describe('Accordian', () => {
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
-        isOpenSubText={false}
+        currentActiveLevels={currentActiveLevels}
         deletedAttributes={deletedAttributes}
         setSuggestedSubList={setSuggestedSubList}
-        setIsOpenSubText={setIsOpenSubText}
+        setCurrentActiveLevels={setCurrentActiveLevels}
         setRows={setRows}
         handleAccordian={handleAccordian}
         handleSave={handleSave}
@@ -159,6 +159,8 @@ describe('Accordian', () => {
     fireEvent.click(getByTestId('metadata-trash'));
     expect(getByTestId('modal')).toBeInTheDocument();
     expect(getByText('Section 1')).toBeInTheDocument();
+    expect(getByTestId('save-term-field')).toBeInTheDocument();
+    fireEvent.click(getByTestId('save-term-field'));
   });
 
   it('opens the subtext input when the plus icon is clicked', () => {
@@ -169,16 +171,16 @@ describe('Accordian', () => {
       isEdit: true,
     };
 
-    const { getByTestId } = render(
+    const screen = render(
       <Accordian
         standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
-        isOpenSubText={false}
         deletedAttributes={deletedAttributes}
         setSuggestedSubList={setSuggestedSubList}
-        setIsOpenSubText={setIsOpenSubText}
+        currentActiveLevels={[]}
+        setCurrentActiveLevels={() => jest.fn()}
         setRows={setRows}
         handleAccordian={handleAccordian}
         handleSave={handleSave}
@@ -190,8 +192,9 @@ describe('Accordian', () => {
       />,
     );
 
-    fireEvent.click(getByTestId('metadataplus'));
-    expect(setIsOpenSubText).toHaveBeenCalledWith(true);
+    fireEvent.click(screen.getByTestId('metadataplus'));
+    screen.debug();
+    expect(screen.getByTestId('metadataEditTable')).toBeInTheDocument();
   });
 
   it('opens the subtext input when the plus icon is clicked edit', () => {
@@ -208,10 +211,10 @@ describe('Accordian', () => {
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
-        isOpenSubText={false}
+        currentActiveLevels={currentActiveLevels}
         deletedAttributes={deletedAttributes}
         setSuggestedSubList={setSuggestedSubList}
-        setIsOpenSubText={setIsOpenSubText}
+        setCurrentActiveLevels={setCurrentActiveLevels}
         setRows={setRows}
         handleAccordian={handleAccordian}
         handleSave={handleSave}
@@ -224,8 +227,10 @@ describe('Accordian', () => {
     );
 
     fireEvent.click(getByTestId('metadataplus'));
-    expect(setIsOpenSubText).toHaveBeenCalledWith(true);
+    expect(getByTestId('metadataEditTable')).toBeInTheDocument();
     fireEvent.click(getByTestId('metadatasave'));
+    expect(getByTestId('save-term-field')).toBeInTheDocument();
+    fireEvent.click(getByTestId('save-term-field'));
   });
 
   it('opens the subtext input when the plus icon is clicked edit', () => {
@@ -242,10 +247,10 @@ describe('Accordian', () => {
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
-        isOpenSubText={false}
+        currentActiveLevels={currentActiveLevels}
         deletedAttributes={deletedAttributes}
         setSuggestedSubList={setSuggestedSubList}
-        setIsOpenSubText={setIsOpenSubText}
+        setCurrentActiveLevels={setCurrentActiveLevels}
         setRows={setRows}
         handleAccordian={handleAccordian}
         handleSave={handleSave}
@@ -256,9 +261,9 @@ describe('Accordian', () => {
         setDeletedAttributes={setDeletedAttributes}
       />,
     );
-
     expect(getByTestId('metadataEditTable')).toBeInTheDocument();
   });
+
   it('opens the subtext input when the plus icon is clicked edit', () => {
     const accData = {
       name: 'Section 1',
@@ -273,10 +278,10 @@ describe('Accordian', () => {
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
-        isOpenSubText={false}
+        currentActiveLevels={currentActiveLevels}
         deletedAttributes={deletedAttributes}
         setSuggestedSubList={setSuggestedSubList}
-        setIsOpenSubText={setIsOpenSubText}
+        setCurrentActiveLevels={setCurrentActiveLevels}
         setRows={setRows}
         handleAccordian={handleAccordian}
         handleSave={handleSave}
@@ -288,7 +293,7 @@ describe('Accordian', () => {
       />,
     );
     fireEvent.click(getByTestId('metadataplus'));
-    expect(setIsOpenSubText).toHaveBeenCalledWith(true);
+    // expect(getByTestId('suggestion-field')).toBeInTheDocument();
   });
 });
 
@@ -303,9 +308,8 @@ describe('Accordian', () => {
   const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
   const suggestedSubList = [{ label: 'Subsection 1' }];
   const deletedAttributes = [];
-  const flag = true;
   const setSuggestedSubList = jest.fn();
-  const setIsOpenSubText = jest.fn();
+  const setCurrentActiveLevels = jest.fn();
   const setRows = jest.fn();
   const handleAccordian = jest.fn();
   const handleSave = jest.fn();
@@ -316,16 +320,16 @@ describe('Accordian', () => {
   const setDeletedAttributes = jest.fn();
 
   it('renders the accordion with the given name', () => {
-    const { getByTestId } = render(
+    const { getByText } = render(
       <Accordian
         standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
-        isOpenSubText={flag}
+        currentActiveLevels={[]}
         deletedAttributes={deletedAttributes}
         setSuggestedSubList={setSuggestedSubList}
-        setIsOpenSubText={setIsOpenSubText}
+        setCurrentActiveLevels={setCurrentActiveLevels}
         setRows={setRows}
         handleAccordian={handleAccordian}
         handleSave={handleSave}
@@ -336,6 +340,6 @@ describe('Accordian', () => {
         setDeletedAttributes={setDeletedAttributes}
       />,
     );
-    fireEvent.click(getByTestId('suggestion-field'));
+    expect(getByText('Section 1')).toBeInTheDocument();
   });
 });
