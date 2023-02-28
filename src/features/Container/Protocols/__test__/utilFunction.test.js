@@ -47,13 +47,27 @@ describe('mergeSummary', () => {
 
     const expectedResult = {
       summary: {
-        _meta_data: [
-          { name: 'field1' },
-          { name: 'field2' },
-          { isCustom: true, name: 'field3' },
-          { isCustom: true, name: 'field4' },
-        ],
         _childs: [],
+        _meta_data: [
+          {
+            id: 1,
+            name: 'field1',
+          },
+          {
+            id: 2,
+            name: 'field2',
+          },
+          {
+            id: 3,
+            isCustom: true,
+            name: 'field3',
+          },
+          {
+            id: 4,
+            isCustom: true,
+            name: 'field4',
+          },
+        ],
       },
     };
 
