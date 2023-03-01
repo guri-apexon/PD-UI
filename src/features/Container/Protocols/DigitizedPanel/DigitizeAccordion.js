@@ -349,7 +349,7 @@ function DigitizeAccordion({
               <Loader />
             </div>
           )}
-          {sectionDataArr?.length >= 0 &&
+          {sectionDataArr?.length > 0 &&
             (showedit ? (
               <MultilineEdit
                 linkId={item.link_id}
@@ -363,7 +363,11 @@ function DigitizeAccordion({
                     return (
                       <DisplayTable
                         key={React.key}
-                        data={JSON.parse(section.content.TableProperties)}
+                        data={
+                          section?.content
+                            ? JSON.parse(section?.content?.TableProperties)
+                            : []
+                        }
                         footNoteData={
                           section?.content?.AttachmentListProperties
                         }
