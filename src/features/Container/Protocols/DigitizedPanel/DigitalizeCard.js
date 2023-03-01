@@ -4,11 +4,6 @@ import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
-import Button from 'apollo-react/components/Button';
-import Modal from 'apollo-react/components/Modal';
-import FieldGroup from 'apollo-react/components/FieldGroup';
-import TextField from 'apollo-react/components/TextField';
-import IconButton from 'apollo-react/components/IconButton';
 import DigitizeAccordion from './DigitizeAccordion';
 import Loader from '../../../Components/Loader/Loader';
 import {
@@ -20,7 +15,7 @@ import {
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
-import InfoIcon from 'apollo-react-icons/Info';
+import AddClinicalTerm from '../EnrichedContent/AddClinicalTerm';
 
 function Digitize({
   sectionNumber,
@@ -39,8 +34,6 @@ function Digitize({
   const [currentEditCard, setCurrentEditCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
-  const [state, setState] = useState(false);
-  const [text, setText] = useState('');
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -131,23 +124,6 @@ function Digitize({
     // eslint-disable-next-line
   }, [paginationPage]);
 
-  const handleOpen = (variant) => {
-    setState({ ...state, [variant]: true });
-  };
-
-  const handleClose = (variant) => {
-    setState({ ...state, [variant]: false });
-  };
-  const handleTextChange = (event) => {
-    setText(event.target.value);
-  };
-
-  // function handleSubmit(event) {
-  //   event.preventDefault();
-  //   // Handle form submission here
-  // }
-  const isTextAreaFilled = text.trim().length > 0;
-
   return (
     <div data-testid="protocol-column-wrapper">
       {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
@@ -204,65 +180,9 @@ function Digitize({
       )}
       <div>
         {rightValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM && (
-          <Button
-            id="my-button"
-            className="button-style"
-            variant="primary"
-            onClick={() => handleOpen('neutral')}
-          >
-            Add tag
-          </Button>
+          <AddClinicalTerm />
         )}
       </div>
-
-      <Modal
-        open={state.neutral}
-        onClose={() => handleClose('neutral')}
-        buttonProps={[{}, { label: 'Add tag', disabled: !isTextAreaFilled }]}
-        id="neutral"
-      >
-        <FieldGroup
-          header="Add term to selected term/phrase"
-          style={{ maxWidth: 540 }}
-        >
-          <div>
-            <IconButton color="primary">
-              <InfoIcon />
-            </IconButton>
-            Atleast one of these options are required to be filled to add tag
-          </div>
-          <TextField
-            label="Synonyms"
-            placeholder="Text area"
-            onChange={handleTextChange}
-            fullWidth
-          />
-          <TextField
-            label="Clinical terms"
-            placeholder="Text area"
-            onChange={handleTextChange}
-            fullWidth
-          />
-          <TextField
-            label="Ontology"
-            placeholder="Text area"
-            onChange={handleTextChange}
-            fullWidth
-          />
-          <TextField
-            label="Preffered term"
-            placeholder="Text area"
-            onChange={handleTextChange}
-            fullWidth
-          />
-          <TextField
-            label="Class"
-            placeholder="Text area"
-            onChange={handleTextChange}
-            fullWidth
-          />
-        </FieldGroup>
-      </Modal>
     </div>
   );
 }
