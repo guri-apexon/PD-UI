@@ -5,16 +5,13 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 
-function AddSection({ setIsModal, hoverItem, hoverIndex }) {
+function AddSection({ setIsModal, hoverItem, hoverIndex, setIsShown }) {
   const dispatch = useDispatch();
   const [sectionName, setSectionName] = useState('');
-  const [pageNumber, setPageNumber] = useState('');
   const handleSave = () => {
-    if (!sectionName && !pageNumber) {
-      console.log('shubham');
+    if (sectionName === '') {
       toast.info('Enter Required Field');
     } else {
-      console.log('data', sectionName + pageNumber);
       dispatch({
         type: 'POST_ADD_SECTION',
         payload: {
@@ -24,11 +21,11 @@ function AddSection({ setIsModal, hoverItem, hoverIndex }) {
         },
       });
       setIsModal(false);
+      setIsShown(false);
     }
   };
   const flag = true;
-  console.log('hover Item', hoverItem);
-  console.log('hover Index', hoverIndex);
+
   return (
     <Modal
       disableBackdropClick
@@ -48,26 +45,12 @@ function AddSection({ setIsModal, hoverItem, hoverIndex }) {
         fullWidth
         value={sectionName}
         allowBlank="none"
-        inputProps={{ 'data-testid': 'update-term-field' }}
+        inputProps={{ 'data-testid': 'update-term-field1' }}
         onChange={(e) => {
           setSectionName(e.target.value);
         }}
         required
         placeholder="Enter Section Name"
-      />
-      <TextField
-        size="small"
-        label="Page Number"
-        fullWidth
-        type="number"
-        value={pageNumber}
-        allowBlank="none"
-        inputProps={{ 'data-testid': 'update-term-field' }}
-        onChange={(e) => {
-          setPageNumber(e.target.value);
-        }}
-        required
-        placeholder="Enter Page Number"
       />
     </Modal>
   );
@@ -79,4 +62,5 @@ AddSection.propTypes = {
   setIsModal: PropTypes.isRequired,
   hoverItem: PropTypes.isRequired,
   hoverIndex: PropTypes.isRequired,
+  setIsShown: PropTypes.isRequired,
 };

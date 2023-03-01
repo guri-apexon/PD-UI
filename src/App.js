@@ -85,7 +85,7 @@ function App() {
         userId: process.env.REACT_APP_USERID,
         username: 'Test User',
         email: 'test@iqvia.com',
-        user_type: 'normal',
+        user_type: 'admin',
       };
       dispatch(setUserDetails(details));
     }

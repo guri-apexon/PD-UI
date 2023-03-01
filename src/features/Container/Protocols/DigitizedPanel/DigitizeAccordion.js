@@ -272,11 +272,6 @@ function DigitizeAccordion({
     dispatchSectionData(true);
   };
 
-  const [hover, setHover] = useState(false);
-  const onHover = () => {
-    setHover(!hover);
-  };
-
   const [isShown, setIsShown] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [hoverItem, setHoverItem] = useState();
@@ -293,6 +288,7 @@ function DigitizeAccordion({
     <div
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
+      className="Accordian-padding"
     >
       <Accordion
         expanded={expanded}
@@ -512,12 +508,12 @@ function DigitizeAccordion({
             setIsModal={setIsModal}
             hoverItem={hoverItem}
             hoverIndex={hoverIndex}
+            setIsShown={setIsShown}
           />
         )}
       </Accordion>
       <div className="plus-icon">
-        {isShown ? (
-          // <div className="icon">
+        {isShown && (
           <IconButton
             color="primary"
             onClick={(e) => {
@@ -528,8 +524,7 @@ function DigitizeAccordion({
           >
             <Plus />
           </IconButton>
-        ) : // </div>
-        null}
+        )}
       </div>
     </div>
   );

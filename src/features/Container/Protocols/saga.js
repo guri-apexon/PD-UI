@@ -621,15 +621,11 @@ export function* addSection(action) {
     },
   };
 
-  const headerList = yield select(headerResult);
-  console.log('headerList', headerList);
   const { data } = yield select(headerResult);
   const data1 = [...data];
 
   if (enrichedData?.success) {
     data1.splice(index + 1, 0, obj);
-    console.log('headerList123', data1);
-
     yield put(
       getHeaderList({
         success: true,
@@ -641,7 +637,6 @@ export function* addSection(action) {
     //   type: 'GET_PROTOCOL_TOC_DATA',
     //   payload: { docId: '36b2b7e8-0c8e-437e-9552-81db1f945799', tocFlag: 0 },
     // });
-    // window.location.href = `/protocols?protocolId=${docId}&tab=1`;
   } else {
     toast.error('Error While Updation');
     yield put({
