@@ -525,7 +525,7 @@ export function* deleteAttribute(action) {
           op,
         }),
       );
-      toast.info(`${reqData.name} successfully deleted`);
+      toast.info(`${reqData.accData.name} successfully deleted`);
     } else {
       toast.info('attributes successfully deleted');
     }
@@ -538,7 +538,7 @@ export function* deleteAttribute(action) {
           op,
         }),
       );
-      toast.info(`${reqData.name} not deleted`);
+      toast.info(`${reqData?.accData?.name} not deleted`);
     } else {
       toast.info('attributes not deleted');
     }
