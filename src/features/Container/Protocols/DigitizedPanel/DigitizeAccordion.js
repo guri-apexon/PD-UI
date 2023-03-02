@@ -289,6 +289,7 @@ function DigitizeAccordion({
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
       className="Accordian-padding"
+      data-testid="mouse-over"
     >
       <Accordion
         expanded={expanded}
@@ -519,6 +520,7 @@ function DigitizeAccordion({
       <div className="plus-icon">
         {isShown && (
           <IconButton
+            data-testId="plus-add"
             color="primary"
             onClick={(e) => {
               handlePlus(e, item, index);
