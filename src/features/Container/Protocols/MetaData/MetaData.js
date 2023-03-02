@@ -127,20 +127,23 @@ function MetaData({ docId }) {
   };
 
   const deleteCall = (data, opName) => {
-    dispatch({
-      type: 'DELETE_METADATA',
-      payload: {
-        op: opName,
-        docId,
-        fieldName: data.formattedName,
-        attributeNames: deletedAttributes,
-        reqData: {
-          formattedName: data.formattedName,
-          accData: data,
+    const filterDeletedAttributes = deletedAttributes.filter((attr) => attr);
+    if (filterDeletedAttributes.length > 0) {
+      dispatch({
+        type: 'DELETE_METADATA',
+        payload: {
+          op: opName,
+          docId,
+          fieldName: data.formattedName,
+          attributeNames: deletedAttributes,
+          reqData: {
+            formattedName: data.formattedName,
+            accData: data,
+          },
         },
-      },
-    });
-    setDeletedAttributes([]);
+      });
+      setDeletedAttributes([]);
+    }
   };
 
   const postCall = (data, metaData) => {
@@ -186,23 +189,19 @@ function MetaData({ docId }) {
           filterCustomData,
         );
       }
-      if (deletedAttributes.length > 0) {
-        deleteCall(
-          {
-            formattedName: 'summary_extended',
-            name: 'summary_extended',
-          },
-          'deleteAttribute',
-        );
-      }
+      deleteCall(
+        {
+          formattedName: 'summary_extended',
+          name: 'summary_extended',
+        },
+        'deleteAttribute',
+      );
       postCall(accordianData[accData?.formattedName], filterNonCustomData);
     } else {
       const accMetaData = rows[accData?.formattedName]
         ? rows[accData?.formattedName]
         : [];
-      if (deletedAttributes.length > 0) {
-        deleteCall(accordianData[accData?.formattedName], 'deleteAttribute');
-      }
+      deleteCall(accordianData[accData?.formattedName], 'deleteAttribute');
       postCall(accordianData[accData?.formattedName], accMetaData);
     }
   };

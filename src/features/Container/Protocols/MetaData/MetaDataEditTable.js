@@ -25,7 +25,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
   const handleDataChange = (e) => {
     if (e?.target?.name === 'attr_type') {
-      setType(e.target.value);
+      setType(e.target.value ? e.target.value : 'string');
     } else if (type !== 'date') {
       setVal(e.target.value);
     }
