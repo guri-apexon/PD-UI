@@ -9,6 +9,7 @@ import Loader from 'apollo-react/components/Loader';
 import Modal from 'apollo-react/components/Modal';
 import TextField from 'apollo-react/components/TextField';
 import Typography from 'apollo-react/components/Typography';
+import { cloneDeep } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +23,10 @@ import {
   setBulkMapResponse,
 } from './adminSlice';
 
+const errorValue = {
+  viaTicketNumber: { error: false, message: '' },
+};
+
 function BulkMap() {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
@@ -30,13 +35,21 @@ function BulkMap() {
   const bulkError = useSelector(bulkMapError);
   const bulkResponse = useSelector(bulkMapResponse);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [formErrValue, setFormErrValue] = useState(errorValue);
 
   const userId1 = useSelector(userId);
 
   const handleSaveForm = () => {
+    const err = cloneDeep(formErrValue);
     if (selectedFiles.length < 1) {
       dispatch(setBulkMapError('Atleast single file is required for upload'));
-    } else {
+    }
+    if (isEmpty(viaTicketNumber)) {
+      (err.viaTicketNumber.error = true),
+        (err.viaTicketNumber.message = 'Required');
+    }
+    setFormErrValue(err);
+    if (!isEmpty(viaTicketNumber)) {
       const requestPayload = {
         uploadedFile: selectedFiles[0],
         accessReason: viaTicketNumber,
@@ -68,6 +81,15 @@ function BulkMap() {
     setSelectedFiles([]);
     dispatch(setBulkMapError(''));
     dispatch(setBulkMapResponse(''));
+  };
+
+  const onFieldBlur = (key) => {
+    const err = cloneDeep(formErrValue);
+    if (key === 'viaTicketNumber') {
+      err.viaTicketNumber.error = false;
+      err.viaTicketNumber.message = '';
+    }
+    setFormErrValue(err);
   };
 
   const resposeObject = () => {
@@ -148,8 +170,12 @@ function BulkMap() {
             label="VIA Ticket #"
             placeholder="Enter VIA Ticket Number"
             fullWidth
+            helperText={formErrValue.viaTicketNumber.message}
+            error={formErrValue.viaTicketNumber.error}
             onChange={(event) => setViaTicketNumber(event.target.value)}
-            data-testid='viaTicketNumber-textField'
+            onBlur={(e) => onFieldBlur('viaTicketNumber')}
+            required
+            data-testid="viaTicketNumber-textField"
           />
         </Grid>
         {resposeObject()}
