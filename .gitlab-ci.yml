@@ -86,6 +86,7 @@ Perform Sonarqube Analysis and quality gate:
     refs:
       - merge_requests
       - develop
+      - development
     variables: 
       - $ENVIRONMENT== "dev"
       - $ENVIRONMENT== "test"
@@ -110,7 +111,7 @@ dev-deploy:
       
   only:
     refs:
-      - develop
+      - development
     variables: 
       - $ENVIRONMENT== "dev"
 
