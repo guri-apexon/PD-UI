@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>0/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -221,10 +221,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -278,7 +278,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -286,9 +286,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -347,7 +347,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -365,11 +365,11 @@ import BladeLeft from './BladeLeft/BladeLeft';
 import BladeRight from './BladeRight/BladeRight';
 &nbsp;
 class ProtocolViewWrapper extends React.Component {
-  constructor() {
-    super();
-    this.handleClick = this.handleClick.bind(this);
-    this.handleOutsideClick = this.handleOutsideClick.bind(this);
-    this.state = {
+<span class="fstat-no" title="function not covered" >  co</span>nstructor() {
+<span class="cstat-no" title="statement not covered" >    super();</span>
+<span class="cstat-no" title="statement not covered" >    this.handleClick = this.handleClick.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >    this.handleOutsideClick = this.handleOutsideClick.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >    this.state = {</span>
       popupVisible: false,
       headerDetails: '',
       pageRight: 0,
@@ -379,7 +379,7 @@ class ProtocolViewWrapper extends React.Component {
     };
   }
 &nbsp;
-  componentDidMount() {}
+<span class="fstat-no" title="function not covered" >  co</span>mponentDidMount() {}
 &nbsp;
   /* istanbul ignore next */
   handlePageRight = (pageRight) =&gt; {
@@ -422,8 +422,8 @@ class ProtocolViewWrapper extends React.Component {
     this.setState({ popupVisible: false });
   };
 &nbsp;
-  render() {
-    const { data, refx, sectionRef, summaryData } = this.props;
+<span class="fstat-no" title="function not covered" >  re</span>nder() {
+    const { data, refx, sectionRef, summaryData } = <span class="cstat-no" title="statement not covered" >this.props;</span>
     const {
       pageNo,
       pageRight,
@@ -431,9 +431,9 @@ class ProtocolViewWrapper extends React.Component {
       headerDetails,
       paginationPage,
       rightValue,
-    } = this.state;
+    } = <span class="cstat-no" title="statement not covered" >this.state;</span>
 &nbsp;
-    return (
+<span class="cstat-no" title="statement not covered" >    return (</span>
       &lt;&gt;
         {data?.userPrimaryRoleFlag &amp;&amp; (
           &lt;div&gt;
@@ -457,7 +457,7 @@ class ProtocolViewWrapper extends React.Component {
                 &lt;Card className="protocol-source-column"&gt;
                   &lt;div className="panel-heading"&gt;Source Document&lt;/div&gt;
                   {summaryData?.success ? (
-<span class="branch-0 cbranch-no" title="branch not covered" >                    &lt;Pdf</span>
+                    &lt;Pdf
                       page={pageNo}
                       refs={refx}
                       pageRight={pageRight}
@@ -492,7 +492,7 @@ class ProtocolViewWrapper extends React.Component {
 }
 export default ProtocolViewWrapper;
 &nbsp;
-ProtocolViewWrapper.propTypes = {
+<span class="cstat-no" title="statement not covered" >ProtocolViewWrapper.propTypes = {</span>
   data: PropTypes.isRequired,
   refx: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
@@ -505,7 +505,7 @@ ProtocolViewWrapper.propTypes = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-27T10:20:38.503Z
+                at 2023-03-02T04:42:47.958Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

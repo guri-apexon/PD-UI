@@ -1,7 +1,8 @@
-import { render, fireEvent } from '../../../../test-utils/test-utils';
+import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import Pdf from '../SourcePDFPanel/pdfviewer';
 import { summary } from './data';
+import { node } from 'prop-types';
 
 const initialState = {
   protocol: {
@@ -60,5 +61,26 @@ describe('PDF VIEWER', () => {
 
     const event2 = new KeyboardEvent('keydown', { key: 'PageUp' });
     document.dispatchEvent(event2);
+
+    expect(screen.getByTestId('protocol-column-wrapper')).toBeInTheDocument();
+    fireEvent.keyDown(screen.getByTestId('protocol-column-wrapper'));
+  });
+
+  test('PDF render', () => {
+    render(
+      <Pdf
+        page={1}
+        refs={jest.fn()}
+        pageRight={2}
+        handlePaginationPage={jest.fn()}
+      />,
+      {
+        initialState,
+      },
+    );
+    expect(
+      document.getElementsByClassName('document-pdf')[0],
+    ).toBeInTheDocument();
+    fireEvent.keyDown(document.getElementsByClassName('document-pdf')[0]);
   });
 });

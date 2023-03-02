@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">6.25% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/16</span>
+                <span class='fraction'>1/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/6</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">85.71% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/7</span>
+                <span class='fraction'>0/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">87.5% </span>
+                <span class="strong">6.25% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/16</span>
+                <span class='fraction'>1/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -137,31 +137,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">30x</span>
-<span class="cline-any cline-yes">30x</span>
-<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">34x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -172,10 +169,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -190,7 +187,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,29 +202,29 @@ import Table from 'apollo-react-icons/Table';
 import HoverList from './HoverList';
 import { rowHoverData } from './dropdownData';
 &nbsp;
-function EmptyRowCells({ rowIndex, handleOperation, index }) {
-  const rowHoverRef = useRef(null);
-  const [activeIconIndex, setActiveIconIndex] = useState(null);
+function <span class="fstat-no" title="function not covered" >EmptyRowCells(</span>{ rowIndex, handleOperation, index }) {
+  const rowHoverRef = <span class="cstat-no" title="statement not covered" >useRef(null);</span>
+  const [activeIconIndex, setActiveIconIndex] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
 &nbsp;
-  useEffect(() =&gt; {
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
     function <span class="fstat-no" title="function not covered" >handleClickOutside(</span>event) {
 <span class="cstat-no" title="statement not covered" >      if (rowHoverRef.current &amp;&amp; !rowHoverRef.current.contains(event.target)) {</span>
 <span class="cstat-no" title="statement not covered" >        setActiveIconIndex(null);</span>
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () =&gt; {
-      document.removeEventListener('mousedown', handleClickOutside);
+<span class="cstat-no" title="statement not covered" >    document.addEventListener('mousedown', handleClickOutside);</span>
+<span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      document.removeEventListener('mousedown', handleClickOutside);</span>
     };
   }, [rowHoverRef]);
-  const handleIconClick = (iconIndex) =&gt; {
-    setActiveIconIndex(iconIndex);
+  const handleIconClick = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>conIndex) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    setActiveIconIndex(iconIndex);</span>
   };
-  const handleTableOperation = (operation, index) =&gt; {
-    handleOperation(operation, index);
-    setActiveIconIndex(null);
+  const handleTableOperation = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(o</span>peration, index) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    handleOperation(operation, index);</span>
+<span class="cstat-no" title="statement not covered" >    setActiveIconIndex(null);</span>
   };
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div
       className="pd-empty-row-cells"
       ref={rowHoverRef}
@@ -238,7 +238,7 @@ function EmptyRowCells({ rowIndex, handleOperation, index }) {
         {/* eslint-disable-next-line */}
         &lt;span
           className="pd-more-icon"
-          onClick={() =&gt; handleIconClick(rowIndex)}
+          onClick={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleIconClick(rowIndex)}</span>
           data-testId="more-icon-row"
         &gt;
           &lt;Table /&gt;
@@ -268,7 +268,7 @@ EmptyRowCells.propTypes = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-27T10:20:38.503Z
+                at 2023-03-02T04:42:47.958Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

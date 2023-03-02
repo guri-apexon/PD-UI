@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.42% </span>
+                <span class="strong">7.14% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/14</span>
+                <span class='fraction'>1/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">55.55% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/9</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.42% </span>
+                <span class="strong">7.14% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/14</span>
+                <span class='fraction'>1/14</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -130,26 +130,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -157,7 +147,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">14x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -178,7 +178,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -190,16 +190,16 @@ import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
 import { useProtContext } from '../ProtocolContext';
 &nbsp;
-function ContentEdit({ type, lineID, content, deleteSection, edit }) {
-  const [text, setText] = useState(content);
-  const contentEditableRef = useRef();
-  const { dispatchSectionEvent } = useProtContext();
+function <span class="fstat-no" title="function not covered" >ContentEdit(</span>{ type, lineID, content, deleteSection, edit }) {
+  const [text, setText] = <span class="cstat-no" title="statement not covered" >useState(content);</span>
+  const contentEditableRef = <span class="cstat-no" title="statement not covered" >useRef();</span>
+  const { dispatchSectionEvent } = <span class="cstat-no" title="statement not covered" >useProtContext();</span>
 &nbsp;
-  const handleChange = <span class="fstat-no" title="function not covered" >(e</span>) =&gt; {
+  const handleChange = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setText(e.target.value);</span>
   };
-  const handleBlur = () =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (content !== contentEditableRef.current.innerHTML) {
+  const handleBlur = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (content !== contentEditableRef.current.innerHTML) {</span>
       const obj = <span class="cstat-no" title="statement not covered" >{</span>
         currentLineId: lineID,
         content: contentEditableRef.current.innerHTML,
@@ -208,17 +208,17 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
     }
   };
 &nbsp;
-  const handleKeyDown = (e) =&gt; {
-    <span class="missing-if-branch" title="if path not taken" >I</span>if (
+  const handleKeyDown = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    if (</span>
       [46, 8].includes(e.keyCode) &amp;&amp;
-      (<span class="branch-1 cbranch-no" title="branch not covered" >contentEditableRef.current.innerHTML === '' </span>||
-<span class="branch-2 cbranch-no" title="branch not covered" >        !contentEditableRef.current.innerHTML)</span>
+      (contentEditableRef.current.innerHTML === '' ||
+        !contentEditableRef.current.innerHTML)
     ) {
 <span class="cstat-no" title="statement not covered" >      deleteSection(lineID);</span>
     }
   };
 &nbsp;
-  return (
+<span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;div className="format-container"&gt;
       &lt;ContentEditable
         innerRef={contentEditableRef}
@@ -253,7 +253,7 @@ ContentEdit.propTypes = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-27T10:20:38.503Z
+                at 2023-03-02T04:42:47.958Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
