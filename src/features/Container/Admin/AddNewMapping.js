@@ -1,23 +1,23 @@
 /* eslint-disable */
-import { useState, memo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import trim from 'lodash/trim';
 import cloneDeep from 'lodash/cloneDeep';
+import trim from 'lodash/trim';
+import { memo, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Grid from 'apollo-react/components/Grid';
 import Button from 'apollo-react/components/Button';
-import Modal from 'apollo-react/components/Modal';
-import TextField from 'apollo-react/components/TextField';
+import Grid from 'apollo-react/components/Grid';
 import MenuItem from 'apollo-react/components/MenuItem';
+import Modal from 'apollo-react/components/Modal';
 import Select from 'apollo-react/components/Select';
+import TextField from 'apollo-react/components/TextField';
 import {
   modalToggle,
-  setModalToggle,
-  setNewMappingValues,
-  setNewMappingError,
   newMapping,
   newMappingError,
   rolesOptionsList,
+  setModalToggle,
+  setNewMappingError,
+  setNewMappingValues,
 } from './adminSlice';
 
 const mapValue = {
@@ -88,7 +88,8 @@ function AddNewMapping() {
       formValue.userId &&
       formValue.protocol &&
       formValue.role &&
-      formValue.following
+      formValue.following &&
+      formValue.viaTicketNumber
     ) {
       dispatch({ type: 'ADD_NEW_MAPPING_SAGA', payload: formValue });
     }
@@ -229,6 +230,14 @@ function AddNewMapping() {
               fullWidth
               onChange={(e) => handleChange('projectId', e.target.value)}
               data-testid="projectId-texfield"
+            />
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <TextField
+              label="VIA Ticket #"
+              placeholder="Enter VIA Ticket Number"
+              fullWidth
+              onChange={(e) => handleChange('viaTicketNumber', e.target.value)}
             />
           </Grid>
         </Grid>

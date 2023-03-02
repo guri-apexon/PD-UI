@@ -1,20 +1,23 @@
 /* eslint-disable */
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import isEmpty from 'lodash/isEmpty';
-import Button from 'apollo-react/components/Button';
-import Modal from 'apollo-react/components/Modal';
-import Loader from 'apollo-react/components/Loader';
-import FileUpload from 'apollo-react/components/FileUpload';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import Button from 'apollo-react/components/Button';
+import FileUpload from 'apollo-react/components/FileUpload';
+import Grid from 'apollo-react/components/Grid';
+import Loader from 'apollo-react/components/Loader';
+import Modal from 'apollo-react/components/Modal';
+import TextField from 'apollo-react/components/TextField';
 import Typography from 'apollo-react/components/Typography';
+import isEmpty from 'lodash/isEmpty';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { userId } from '../../../store/userDetails';
 import {
-  mappingLoader,
-  bulkMapResponse,
   bulkMapError,
+  bulkMapResponse,
+  mappingLoader,
   setBulkMapError,
   setBulkMapResponse,
 } from './adminSlice';
@@ -22,17 +25,26 @@ import {
 function BulkMap() {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [viaTicketNumber, setViaTicketNumber] = useState('');
   const mapLoader = useSelector(mappingLoader);
   const bulkError = useSelector(bulkMapError);
   const bulkResponse = useSelector(bulkMapResponse);
   const [selectedFiles, setSelectedFiles] = useState([]);
+
+  const userId1 = useSelector(userId);
+
   const handleSaveForm = () => {
     if (selectedFiles.length < 1) {
       dispatch(setBulkMapError('Atleast single file is required for upload'));
     } else {
+      const requestPayload = {
+        uploadedFile: selectedFiles[0],
+        accessReason: viaTicketNumber,
+        userUpdated: userId1,
+      };
       dispatch({
         type: 'BULK_UPLOAD_MAPPING_SAGA',
-        payload: selectedFiles[0],
+        payload: requestPayload,
       });
     }
   };
@@ -131,6 +143,14 @@ function BulkMap() {
             required
           />
         </div>
+        <Grid item xs={6} sm={6}>
+          <TextField
+            label="VIA Ticket #"
+            placeholder="Enter VIA Ticket Number"
+            fullWidth
+            onChange={(event) => setViaTicketNumber(event.target.value)}
+          />
+        </Grid>
         {resposeObject()}
       </Modal>
     </>
