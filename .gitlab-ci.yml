@@ -36,7 +36,7 @@ lint-check:
     refs:
       - merge_requests
       - develop
-      
+      - development
     variables: 
       - $ENVIRONMENT== "dev"
       - $ENVIRONMENT== "test"
@@ -59,6 +59,7 @@ unit-test-coverage:
     refs:
       - merge_requests
       - develop
+      - development
       
     variables: 
       - $ENVIRONMENT== "dev"
