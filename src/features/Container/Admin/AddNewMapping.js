@@ -26,12 +26,14 @@ const mapValue = {
   role: null,
   following: null,
   projectId: null,
+  viaTicketNumber: null,
 };
 const errorValue = {
   userId: { error: false, message: '' },
   protocol: { error: false, message: '' },
   role: { error: false, message: '' },
   following: { error: false, message: '' },
+  viaTicketNumber: { error: false, message: '' },
 };
 const followOptions = ['Yes', 'No'];
 
@@ -52,6 +54,7 @@ function AddNewMapping() {
         protocol: { error: false, message: '' },
         role: { error: false, message: '' },
         following: { error: false, message: '' },
+        viaTicketNumber: { error: false, message: '' },
       };
       dispatch(setNewMappingValues(mapValue));
       setFormErrValue(reset);
@@ -80,6 +83,10 @@ function AddNewMapping() {
     if (!formValue.following) {
       err.following.error = true;
       err.following.message = 'Required';
+    }
+    if (!formValue.viaTicketNumber) {
+      err.viaTicketNumber.error = true;
+      err.viaTicketNumber.message = 'Required';
     }
 
     setFormErrValue(err);
@@ -123,6 +130,10 @@ function AddNewMapping() {
     if (key === 'role' && trimValue === 'primary') {
       err.following.error = false;
       err.following.message = '';
+    }
+    if (key === 'viaTicketNumber') {
+      err.viaTicketNumber.error = false;
+      err.viaTicketNumber.message = '';
     }
     setFormErrValue(err);
   };
@@ -237,7 +248,11 @@ function AddNewMapping() {
               label="VIA Ticket #"
               placeholder="Enter VIA Ticket Number"
               fullWidth
+              helperText={formErrValue.viaTicketNumber.message}
+              error={formErrValue.viaTicketNumber.error}
               onChange={(e) => handleChange('viaTicketNumber', e.target.value)}
+              onBlur={(e) => onFieldBlur('viaTicketNumber', e.target.value)}
+              required
               data-testid="viaTicketNumber-textField"
             />
           </Grid>
