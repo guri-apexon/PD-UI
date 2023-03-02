@@ -238,6 +238,7 @@ function AddNewMapping() {
               placeholder="Enter VIA Ticket Number"
               fullWidth
               onChange={(e) => handleChange('viaTicketNumber', e.target.value)}
+              data-testid="viaTicketNumber-textField"
             />
           </Grid>
         </Grid>

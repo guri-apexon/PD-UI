@@ -149,6 +149,7 @@ function BulkMap() {
             placeholder="Enter VIA Ticket Number"
             fullWidth
             onChange={(event) => setViaTicketNumber(event.target.value)}
+            data-testid='viaTicketNumber-textField'
           />
         </Grid>
         {resposeObject()}
