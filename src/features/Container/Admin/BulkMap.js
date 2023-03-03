@@ -37,7 +37,7 @@ function BulkMap() {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [formErrValue, setFormErrValue] = useState(errorValue);
 
-  const userId1 = useSelector(userId);
+  const loggedInUserId = useSelector(userId);
 
   const handleSaveForm = () => {
     const err = cloneDeep(formErrValue);
@@ -53,7 +53,7 @@ function BulkMap() {
       const requestPayload = {
         uploadedFile: selectedFiles[0],
         accessReason: viaTicketNumber,
-        userUpdated: userId1,
+        userUpdated: loggedInUserId,
       };
       dispatch({
         type: 'BULK_UPLOAD_MAPPING_SAGA',
