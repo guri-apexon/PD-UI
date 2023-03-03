@@ -1,7 +1,7 @@
 .action-menu {
   position: absolute;
   right: 0px;
-  top: 0;
+  top: 45px;
   bottom: 0;
   z-index: 1000;
   background: #fff;
@@ -29,12 +29,16 @@
     width: 176px;
     height: 100%;
     overflow: auto;
+    button,
     p {
       font-size: 14px;
       cursor: pointer;
       align-items: center;
       display: flex;
       cursor: pointer;
+      color: #595959;
+      padding: 0;
+      min-width: unset;
       .ptIcon {
         color: #fff;
         background: #595959;
@@ -43,10 +47,19 @@
         font-weight: 600;
         margin-right: 10px;
         border-radius: 2px;
+        height: 17px;
+        display: flex;
+        align-items: center;
         &.active {
-          color: #0768fd;
+          background: #0768fd;
+          border: none;
         }
       }
+    }
+    fieldset {
+      margin: 0;
+      padding: 0;
+      border: none;
     }
     svg {
       padding-right: 10px !important;
@@ -61,6 +74,9 @@
       padding-left: 25px;
       p {
         font-size: 12px;
+      }
+      p.key {
+        font-weight: bold;
       }
     }
   }

@@ -4,6 +4,7 @@ import Pencil from 'apollo-react-icons/Pencil';
 import Save from 'apollo-react-icons/Save';
 import LinkIcon from 'apollo-react-icons/Link';
 import EyeShow from 'apollo-react-icons/EyeShow';
+import Button from 'apollo-react/components/Button';
 import ArrowLeft from 'apollo-react-icons/ArrowLeft';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
 import PropTypes from 'prop-types';
@@ -20,6 +21,7 @@ function ActionMenu({
   onSaveClick,
   onEditClick,
   setShowEnrichedContent,
+  disabled,
 }) {
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -29,7 +31,7 @@ function ActionMenu({
   const saveSection = (e) => {
     e.preventDefault();
     setSelected(null);
-    onSaveClick();
+    onSaveClick(e);
   };
 
   return (
@@ -43,74 +45,64 @@ function ActionMenu({
       </div>
 
       <div className="menu-items ">
-        <div>
-          {!showedit ? (
-            /* eslint-disable-next-line */
-            <p
-              onClick={(e) => {
-                onEditClick(e);
-                setSelected('edit');
-              }}
-            >
-              <Pencil /> {expanded && 'Edit'}
-            </p>
-          ) : (
-            /* eslint-disable-next-line */
-            <p onClick={(e) => saveSection(e)}>
-              <Save className={`${selected === 'edit' ? 'active' : ''}`} />{' '}
-              {expanded && 'Save'}
-            </p>
-          )}
-        </div>
-        <div key={React.key}>
-          {/* eslint-disable-next-line */}
-          <p
-            onClick={() => {
-              setSelected('PT');
+        {!showedit ? (
+          <Button
+            onClick={(e) => {
+              onEditClick(e);
+              setSelected('edit');
             }}
           >
-            {PTIcon(selected)} {expanded && 'Preferred Terms'}
-          </p>
-        </div>
-        <div key={React.key}>
+            <Pencil /> {expanded && 'Edit'}
+          </Button>
+        ) : (
+          <Button onClick={(e) => saveSection(e)} disabled={disabled}>
+            <Save className={`${selected === 'edit' ? 'active' : ''}`} />{' '}
+            {expanded && 'Save'}
+          </Button>
+        )}
+        <Button
+          onClick={() => {
+            setSelected('PT');
+          }}
+          disabled={selected === 'edit'}
+        >
+          {PTIcon(selected)} {expanded && 'Preferred Terms'}
+        </Button>
+        <Button
+          disabled={selected === 'edit'}
+          onClick={() => {
+            setSelected('link');
+          }}
+        >
+          <LinkIcon className={`${selected === 'link' ? 'active' : ''}`} />{' '}
+          {expanded && 'Links & References'}
+        </Button>
+        <Button
+          disabled={selected === 'edit'}
+          onClick={() => {
+            setSelected('CT');
+            setShowEnrichedContent(true);
+          }}
+        >
+          <Stethoscope className={`${selected === 'CT' ? 'active' : ''}`} />{' '}
+          {expanded && 'Clinical Terms'}
+        </Button>
+        <fieldset>
           {/* eslint-disable-next-line */}
-          <p
-            onClick={() => {
-              setSelected('link');
-            }}
-          >
-            <LinkIcon className={`${selected === 'link' ? 'active' : ''}`} />{' '}
-            {expanded && 'Links & References'}
-          </p>
-        </div>
-        <div key={React.key}>
-          {/* eslint-disable-next-line */}
-          <p
-            onClick={() => {
-              setSelected('CT');
-              setShowEnrichedContent(true);
-            }}
-          >
-            <Stethoscope className={`${selected === 'CT' ? 'active' : ''}`} />{' '}
-            {expanded && 'Clinical Terms'}
-          </p>
-        </div>
-        <div key={React.key}>
-          {/* eslint-disable-next-line */}
-          <p onClick={() => {}}>
+          <p>
             <EyeShow /> {expanded && 'Audit Information'}
           </p>
           {expanded && (
             <div className="audit-info">
-              <p>Last Edited Date</p>
+              <p className="key">Last Edited Date</p>
               <p>{auditInfo.last_reviewed_date}</p>
-              <p>Numer of Times Edited</p>
+              <p className="key">Numer of Times Edited</p>
               <p> {auditInfo.total_no_review}</p>
-              <p>Last Edited By</p>
+              <p className="key">Last Edited By</p>
               <p>{auditInfo.last_reviewed_by}</p>
             </div>
           )}
-        </div>
+        </fieldset>
       </div>
     </div>
   );
@@ -123,5 +115,6 @@ ActionMenu.propTypes = {
   showedit: PropTypes.isRequired,
   onSaveClick: PropTypes.isRequired,
   onEditClick: PropTypes.isRequired,
+  disabled: PropTypes.isRequired,
   setShowEnrichedContent: PropTypes.isRequired,
 };
