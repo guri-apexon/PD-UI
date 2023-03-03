@@ -180,7 +180,7 @@ function Digitize({
       )}
       <div>
         {rightValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM && (
-          <AddClinicalTerm />
+          <AddClinicalTerm docId={data.id} />
         )}
       </div>
     </div>

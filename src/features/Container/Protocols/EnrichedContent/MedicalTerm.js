@@ -195,6 +195,9 @@ function MedicalTerm({
               );
             })}
           </div>
+          <div className="delete-tag">
+            <Button>Delete tag</Button>
+          </div>
         </Card>
       </Popper>
       <Popper
