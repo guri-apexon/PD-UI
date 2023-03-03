@@ -518,7 +518,7 @@ function DigitizeAccordion({
         )}
       </Accordion>
       <div className="plus-icon">
-        {isShown && (
+        {isShown && primaryRole && (
           <IconButton
             data-testId="plus-add"
             color="primary"
