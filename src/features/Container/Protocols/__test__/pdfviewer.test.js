@@ -2,7 +2,6 @@ import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import Pdf from '../SourcePDFPanel/pdfviewer';
 import { summary } from './data';
-import { node } from 'prop-types';
 
 const initialState = {
   protocol: {
