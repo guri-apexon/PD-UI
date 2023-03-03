@@ -27,6 +27,7 @@ import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
 import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
+import ActionMenu from './ActionMenu';
 
 const styles = {
   modal: {
@@ -63,6 +64,7 @@ function DigitizeAccordion({
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
+  const [showEnrichedContent, setShowEnrichedContent] = useState(false);
 
   const { data: sectionData } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
@@ -234,7 +236,8 @@ function DigitizeAccordion({
   const getEnrichedText = (content, clinicalTerms) => {
     if (
       clinicalTerms &&
-      rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+      (rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM ||
+        showEnrichedContent)
     ) {
       return createFullMarkup(createEnrichedText(content, clinicalTerms));
     }
@@ -292,28 +295,6 @@ function DigitizeAccordion({
                 <Lock style={{ paddingRight: '10px' }} />
               </IconButton>
             )}
-            {primaryRole && (
-              <>
-                <IconButton className="eyeIcon" data-testId="eyeIcon">
-                  <EyeShow style={{ paddingRight: '10px' }} />
-                </IconButton>
-                {!showedit ? (
-                  // eslint-disable-next-line
-                  <IconButton data-testId="pencilIcon" onClick={onEditClick}>
-                    <Pencil />
-                  </IconButton>
-                ) : (
-                  // eslint-disable-next-line
-                  <IconButton
-                    onClick={onSaveClick}
-                    data-testId="saveIcon"
-                    disabled={showAlert}
-                  >
-                    <Save />
-                  </IconButton>
-                )}
-              </>
-            )}
           </div>
         </div>
       </AccordionSummary>
@@ -327,111 +308,127 @@ function DigitizeAccordion({
             <Loader />
           </div>
         )}
-        {sectionDataArr?.length > 0 &&
-          (showedit ? (
-            <MultilineEdit
-              linkId={item.link_id}
-              sectionDataArr={sectionDataArr}
-              edit={showedit}
-            />
-          ) : (
-            <div className="readable-content">
-              {sectionDataArr.map((section) => {
-                if (section.type === CONTENT_TYPE.TABLE) {
-                  return (
-                    <DisplayTable
-                      key={React.key}
-                      data={
-                        section?.content
-                          ? JSON.parse(section?.content?.TableProperties)
-                          : []
-                      }
-                      footNoteData={section?.content?.AttachmentListProperties}
-                      colWidth={100}
-                    />
-                  );
-                }
-                if (section.type === CONTENT_TYPE.IMAGE) {
-                  return (
-                    <ImageUploader
-                      key={React.key}
-                      lineID={section.line_id}
-                      content={section.content}
-                      edit={false}
-                    />
-                  );
-                }
-                return section?.font_info?.VertAlign === 'superscript' &&
-                  section.content.length > 0 ? (
-                  // eslint-disable-next-line
-                  <div
-                    key={React.key}
-                    className="supContent"
-                    onClick={(e) =>
-                      handleEnrichedClick(e, section.clinical_terms)
-                    }
-                  >
-                    <sup>
-                      <SanitizeHTML
-                        html={getEnrichedText(
-                          section.content.split('_')[0],
-                          section?.clinical_terms,
-                        )}
+        {sectionDataArr?.length > 0 && (
+          <>
+            {primaryRole && (
+              <ActionMenu
+                primaryRole={primaryRole}
+                showedit={showedit}
+                disabled={showAlert}
+                onSaveClick={onSaveClick}
+                onEditClick={onEditClick}
+                auditInfo={item.audit_info}
+                setShowEnrichedContent={setShowEnrichedContent}
+              />
+            )}
+            {showedit ? (
+              <MultilineEdit
+                linkId={item.link_id}
+                sectionDataArr={sectionDataArr}
+                edit={showedit}
+              />
+            ) : (
+              <div className="readable-content">
+                {sectionDataArr.map((section) => {
+                  if (section.type === CONTENT_TYPE.TABLE) {
+                    return (
+                      <DisplayTable
+                        key={React.key}
+                        data={
+                          section?.content
+                            ? JSON.parse(section?.content?.TableProperties)
+                            : []
+                        }
+                        footNoteData={
+                          section?.content?.AttachmentListProperties
+                        }
+                        colWidth={100}
                       />
-                    </sup>
-                    <p
-                      style={{
-                        fontWeight: `${
-                          section?.font_info?.isBold ||
-                          section.type === 'header'
-                            ? 'bold'
-                            : ''
-                        }`,
-                        fontStyle: `${
-                          section?.font_info?.Italics ? 'italics' : ''
-                        }`,
-                      }}
-                    >
-                      <SanitizeHTML
-                        html={getEnrichedText(
-                          section.content.split('_')[1],
-                          section?.clinical_terms,
-                        )}
+                    );
+                  }
+                  if (section.type === CONTENT_TYPE.IMAGE) {
+                    return (
+                      <ImageUploader
+                        key={React.key}
+                        lineID={section.line_id}
+                        content={section.content}
+                        edit={false}
                       />
-                    </p>
-                  </div>
-                ) : (
-                  section.content.length > 0 && (
+                    );
+                  }
+                  return section?.font_info?.VertAlign === 'superscript' &&
+                    section.content.length > 0 ? (
                     // eslint-disable-next-line
-                    <p
+                    <div
                       key={React.key}
-                      style={{
-                        fontWeight: `${
-                          section?.font_info?.isBold ||
-                          section.type === 'header'
-                            ? 'bold'
-                            : ''
-                        }`,
-                        fontStyle: `${
-                          section?.font_info?.Italics ? 'italics' : ''
-                        }`,
-                      }}
+                      className="supContent"
                       onClick={(e) =>
                         handleEnrichedClick(e, section.clinical_terms)
                       }
                     >
-                      <SanitizeHTML
-                        html={getEnrichedText(
-                          section.content,
-                          section.clinical_terms,
-                        )}
-                      />
-                    </p>
-                  )
-                );
-              })}
-            </div>
-          ))}
+                      <sup>
+                        <SanitizeHTML
+                          html={getEnrichedText(
+                            section.content.split('_')[0],
+                            section?.clinical_terms,
+                          )}
+                        />
+                      </sup>
+                      <p
+                        style={{
+                          fontWeight: `${
+                            section?.font_info?.isBold ||
+                            section.type === 'header'
+                              ? 'bold'
+                              : ''
+                          }`,
+                          fontStyle: `${
+                            section?.font_info?.Italics ? 'italics' : ''
+                          }`,
+                        }}
+                      >
+                        <SanitizeHTML
+                          html={getEnrichedText(
+                            section.content.split('_')[1],
+                            section?.clinical_terms,
+                          )}
+                        />
+                      </p>
+                    </div>
+                  ) : (
+                    section.content.length > 0 && (
+                      // eslint-disable-next-line
+                      <p
+                        key={React.key}
+                        style={{
+                          fontWeight: `${
+                            section?.font_info?.isBold ||
+                            section.type === 'header'
+                              ? 'bold'
+                              : ''
+                          }`,
+                          fontStyle: `${
+                            section?.font_info?.Italics ? 'italics' : ''
+                          }`,
+                        }}
+                        onClick={(e) =>
+                          handleEnrichedClick(e, section.clinical_terms)
+                        }
+                      >
+                        <SanitizeHTML
+                          html={getEnrichedText(
+                            section.content,
+                            section.clinical_terms,
+                          )}
+                        />
+                      </p>
+                    )
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
       </AccordionDetails>
       <MedicalTerm
         enrichedTarget={enrichedTarget}
