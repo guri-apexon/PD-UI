@@ -36,7 +36,7 @@ function ActionMenu({
 
   return (
     <div className={`action-menu ${expanded && 'expanded'}`}>
-      <div className="open-close">
+      <div className="open-close" data-testId="openClosePanel">
         {expanded ? (
           <ArrowRight onClick={() => setExpanded(false)} />
         ) : (
@@ -44,18 +44,24 @@ function ActionMenu({
         )}
       </div>
 
-      <div className="menu-items ">
+      <div className="menu-items">
         {!showedit ? (
           <Button
             onClick={(e) => {
               onEditClick(e);
               setSelected('edit');
             }}
+            data-testId="edit-button"
           >
-            <Pencil /> {expanded && 'Edit'}
+            {/* <Pencil />  */}
+            {expanded && 'Edit'}
           </Button>
         ) : (
-          <Button onClick={(e) => saveSection(e)} disabled={disabled}>
+          <Button
+            onClick={(e) => saveSection(e)}
+            disabled={disabled}
+            data-testId="save-button"
+          >
             <Save className={`${selected === 'edit' ? 'active' : ''}`} />{' '}
             {expanded && 'Save'}
           </Button>
@@ -74,7 +80,7 @@ function ActionMenu({
             setSelected('link');
           }}
         >
-          <LinkIcon className={`${selected === 'link' ? 'active' : ''}`} />{' '}
+          {/* <LinkIcon className={`${selected === 'link' ? 'active' : ''}`} />{' '} */}
           {expanded && 'Links & References'}
         </Button>
         <Button
@@ -84,13 +90,14 @@ function ActionMenu({
             setShowEnrichedContent(true);
           }}
         >
-          <Stethoscope className={`${selected === 'CT' ? 'active' : ''}`} />{' '}
+          {/* <Stethoscope className={`${selected === 'CT' ? 'active' : ''}`} />{' '} */}
           {expanded && 'Clinical Terms'}
         </Button>
         <fieldset>
           {/* eslint-disable-next-line */}
           <p>
-            <EyeShow /> {expanded && 'Audit Information'}
+            {/* <EyeShow /> */}
+            {expanded && 'Audit Information'}
           </p>
           {expanded && (
             <div className="audit-info">

@@ -118,49 +118,6 @@ describe('DigitizeAccordion', () => {
     );
   });
 
-  test('Pencil icon is visible for primary user', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
-    jest
-      .spyOn(ProtocolContext, 'useProtContext')
-      .mockImplementation(() => contextValues);
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard={1}
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-        />
-      </Provider>,
-    );
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-  });
-
-  test('Pencil icon is onClick for primary user', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
-    jest
-      .spyOn(ProtocolContext, 'useProtContext')
-      .mockImplementation(() => contextValues);
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard={1}
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-        />
-      </Provider>,
-    );
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-    pencil.click(pencil);
-  });
-
   test('accordian is onClick for primary user', () => {
     const contextValues = { dispatchSectionEvent: jest.fn() };
     jest
@@ -184,28 +141,53 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Save button is visible for primary user', () => {
+    const item1 = {
+      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+      group_type: 'DocumentLinks',
+      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      LinkLevel: 1,
+      page: 2,
+      sec_id: '',
+      source_file_section: 'Signatures',
+      LinkType: 'toc',
+      qc_change_type: '',
+      sequence: 0,
+      section_locked: false,
+      audit_info: {
+        last_reviewed_date: '',
+        last_reviewed_by: '',
+        total_no_review: '',
+      },
+    };
     const contextValues = { dispatchSectionEvent: jest.fn() };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard={1}
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-        />
-      </Provider>,
+    const component = renderWithProviders(
+      <DigitizeAccordion
+        item={item1}
+        primaryRole={bool}
+        protocol="1234"
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        setCurrentActiveCard={jest.fn()}
+        setCurrentEditCard={() => jest.fn()}
+        handlePageRight={() => jest.fn()}
+      />,
+      {
+        preloadedState: initialState,
+      },
     );
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-    fireEvent.click(pencil);
-    const saveIcon = component.getByTestId('saveIcon');
-    expect(saveIcon).toBeInTheDocument();
-    fireEvent.click(saveIcon);
+    const enrText = component.getByText('Signatures');
+    fireEvent.click(enrText);
+    const openPanel = component.getByTestId('openClosePanel').children[0];
+    expect(openPanel).toBeInTheDocument();
+    fireEvent.click(openPanel);
+
+    const editButton = component.getByText('Edit');
+    fireEvent.click(editButton);
+
+    const saveButton = component.getByText('Save');
+    fireEvent.click(saveButton);
   });
 
   test('Autosizer', () => {
@@ -242,7 +224,7 @@ describe('DigitizeAccordion', () => {
         item={item}
         primaryRole={bool}
         protocol="1234"
-        currentActiveCard="8ccb22b1-0aa0-487a-a47b"
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
         setCurrentActiveCard={jest.fn()}
         setCurrentEditCard={() => jest.fn()}
       />,
@@ -252,7 +234,6 @@ describe('DigitizeAccordion', () => {
     );
     const enrText = screen.getByText('CONFIDENTIAL');
     fireEvent.click(enrText);
-    screen.debug();
   });
 
   test('Digitized accordion clinical term view', () => {
