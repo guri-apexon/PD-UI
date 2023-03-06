@@ -176,6 +176,9 @@ function MetaData({ docId }) {
           },
         },
       });
+      setCurrentActiveLevels(
+        currentActiveLevels.filter((curr) => curr !== data?.formattedName),
+      );
     }
   };
 
