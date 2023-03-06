@@ -450,7 +450,7 @@ export function* addMetaDataAttributes(action) {
       }),
     );
   } else {
-    toast.error('Duplicate Attributes');
+    toast.error('Protocol Attributes Not Added');
     yield put(
       getMetadataApiCall({
         status: false,

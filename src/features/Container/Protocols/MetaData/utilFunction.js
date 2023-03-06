@@ -1,4 +1,4 @@
-import { isObject } from 'lodash';
+import isObject from 'lodash/isObject';
 
 export const flattenObject = (updatedData, data, level, parentKey) => {
   const objectKeys = data ? Object?.keys(data) : [];
@@ -112,4 +112,30 @@ export const flattenMetaParam = (updatedParam, data, level) => {
     }
   });
   return updatedParam;
+};
+
+export const checkDuplicates = (data) => {
+  const unique = data.filter(
+    (obj, index) =>
+      data.findIndex(
+        (attr) =>
+          attr?.attr_name?.toLowerCase() === obj?.attr_name?.toLowerCase(),
+      ) === index,
+  );
+
+  return unique.length === data.length;
+};
+
+export const validationCheck = (rowData) => {
+  const keys = Object.keys(rowData[0]);
+  let isValid = true;
+  keys.forEach((key) => {
+    rowData.forEach((data) => {
+      if ((key === 'attr_name' || key === 'attr_value') && !data[key]) {
+        isValid = false;
+      }
+    });
+  });
+
+  return isValid;
 };

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import difference from 'lodash/difference';
 import './MetaData.scss';
+import { toast } from 'react-toastify';
 import Accordian from './Accordian';
 import {
   accordionMetaData,
@@ -14,7 +15,11 @@ import {
   metadataApiCallValue,
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
-import { flattenMetaParam } from './utilFunction';
+import {
+  checkDuplicates,
+  flattenMetaParam,
+  validationCheck,
+} from './utilFunction';
 import { METADATA_LIST } from '../../../../AppConstant/AppConstant';
 
 function MetaData({ docId }) {
@@ -173,7 +178,11 @@ function MetaData({ docId }) {
 
   const handleSave = (accData, e) => {
     e.stopPropagation();
-    if (accData.name === 'summary') {
+    if (!checkDuplicates(rows[accData?.formattedName])) {
+      toast.error('Duplicate attribute');
+    } else if (!validationCheck(rows[accData?.formattedName])) {
+      toast.error('Please fill all fields');
+    } else if (accData.name === 'summary') {
       const filterCustomData = rows[accData?.name]?.filter(
         (data) => data?.isCustom,
       );
