@@ -1,12 +1,12 @@
 .section-single-content {
   height: auto;
   overflow: auto !important;
-  padding: 0 30px 20px 10px;
+  padding: 0 0px 20px 10px;
   font-size: 16px;
   line-height: 1.4;
   text-align: justify;
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
   .content_container,
   .readable-content {
     h1,
