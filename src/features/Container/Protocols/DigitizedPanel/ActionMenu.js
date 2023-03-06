@@ -53,7 +53,7 @@ function ActionMenu({
             }}
             data-testId="edit-button"
           >
-            {/* <Pencil />  */}
+            <Pencil />
             {expanded && 'Edit'}
           </Button>
         ) : (
@@ -80,7 +80,7 @@ function ActionMenu({
             setSelected('link');
           }}
         >
-          {/* <LinkIcon className={`${selected === 'link' ? 'active' : ''}`} />{' '} */}
+          <LinkIcon className={`${selected === 'link' ? 'active' : ''}`} />
           {expanded && 'Links & References'}
         </Button>
         <Button
@@ -90,13 +90,12 @@ function ActionMenu({
             setShowEnrichedContent(true);
           }}
         >
-          {/* <Stethoscope className={`${selected === 'CT' ? 'active' : ''}`} />{' '} */}
+          <Stethoscope className={`${selected === 'CT' ? 'active' : ''}`} />{' '}
           {expanded && 'Clinical Terms'}
         </Button>
         <fieldset>
-          {/* eslint-disable-next-line */}
           <p>
-            {/* <EyeShow /> */}
+            <EyeShow />
             {expanded && 'Audit Information'}
           </p>
           {expanded && (
