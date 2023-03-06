@@ -218,7 +218,10 @@
     display: flex;
     align-items: center;
   }
-  .delContainer {
+}
+.delContainer {
+  margin: unset;
+  svg {
     cursor: pointer;
   }
 }

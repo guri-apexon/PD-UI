@@ -154,7 +154,7 @@ function MetaData({ docId }) {
   const postCall = (data, metaData) => {
     if (metaData.length > 0) {
       const updatedAttrList = metaData?.map((list) => {
-        const convertToBoolean = list?.attr_value === 'True';
+        const convertToBoolean = list?.attr_value === 'true';
         return {
           attr_name: list?.attr_name,
           attr_type: list?.attr_type || 'string',

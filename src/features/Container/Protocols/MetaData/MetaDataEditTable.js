@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import Table from 'apollo-react/components/Table';
 import PropTypes from 'prop-types';
+import Grid from 'apollo-react/components/Grid';
 import Modal from 'apollo-react/components/Modal';
 import Checkbox from 'apollo-react/components/Checkbox';
 import Plus from 'apollo-react-icons/Plus';
@@ -90,7 +91,11 @@ function DeleteCell({ row, column: { accessor: key } }) {
     row.handleDelete(row.id);
   };
   return (
-    row.isCustom && <Trash className="delContainer" onClick={deleteMetaData} />
+    row.isCustom && (
+      <Grid className="delContainer">
+        <Trash onClick={deleteMetaData} />
+      </Grid>
+    )
   );
 }
 

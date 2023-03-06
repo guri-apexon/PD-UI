@@ -1,4 +1,5 @@
 import isObject from 'lodash/isObject';
+import moment from 'moment';
 
 export const flattenObject = (updatedData, data, level, parentKey) => {
   const objectKeys = data ? Object?.keys(data) : [];
@@ -11,14 +12,18 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
         : {
             // eslint-disable-next-line
             _meta_data: keyValue?._meta_data?.map((attr, index) => {
+              const attrValue =
+                attr?.attr_type === 'boolean' && attr?.attr_value
+                  ? attr?.attr_value.toString()
+                  : attr?.attr_value;
               return {
                 ...attr,
                 id: index + 1,
                 isCustom: key !== 'summary',
                 attr_value:
-                  attr?.attr_type === 'boolean' && attr?.attr_value
-                    ? attr?.attr_value.toString()
-                    : attr?.attr_value,
+                  attr?.attr_type === 'date' && attr?.attr_value
+                    ? moment(attrValue).format('DD-MMM-YYYY')
+                    : attrValue,
                 display_name: attr?.display_name || attr?.attr_name,
               };
             }),
@@ -135,7 +140,7 @@ export const validationCheck = (rowData) => {
         if (
           (key === 'attr_name' || key === 'attr_value') &&
           data.isCustom &&
-          !data[key]
+          (!data[key] || !data[key].trim())
         ) {
           isValid = false;
         }

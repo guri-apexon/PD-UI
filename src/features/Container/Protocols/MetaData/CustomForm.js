@@ -104,8 +104,8 @@ export function ValueField({
                   'data-testid': 'customeform-textField-checkbox1',
                 }}
               >
-                <MenuItem value="True">True</MenuItem>
-                <MenuItem value="False">False</MenuItem>
+                <MenuItem value="true">true</MenuItem>
+                <MenuItem value="false">false</MenuItem>
               </Select>
             )}
 
