@@ -46,7 +46,8 @@ function ActionMenu({
 
       <div className="menu-items">
         {!showedit ? (
-          <Button
+          <button
+            type="button"
             onClick={(e) => {
               onEditClick(e);
               setSelected('edit');
@@ -55,26 +56,29 @@ function ActionMenu({
           >
             <Pencil />
             {expanded && 'Edit'}
-          </Button>
+          </button>
         ) : (
-          <Button
+          <button
+            type="button"
             onClick={(e) => saveSection(e)}
             disabled={disabled}
             data-testId="save-button"
           >
             <Save className={`${selected === 'edit' ? 'active' : ''}`} />{' '}
             {expanded && 'Save'}
-          </Button>
+          </button>
         )}
-        <Button
+        <button
+          type="button"
           onClick={() => {
             setSelected('PT');
           }}
           disabled={selected === 'edit'}
         >
           {PTIcon(selected)} {expanded && 'Preferred Terms'}
-        </Button>
-        <Button
+        </button>
+        <button
+          type="button"
           disabled={selected === 'edit'}
           onClick={() => {
             setSelected('link');
@@ -82,8 +86,9 @@ function ActionMenu({
         >
           <LinkIcon className={`${selected === 'link' ? 'active' : ''}`} />
           {expanded && 'Links & References'}
-        </Button>
-        <Button
+        </button>
+        <button
+          type="button"
           disabled={selected === 'edit'}
           onClick={() => {
             setSelected('CT');
@@ -92,7 +97,7 @@ function ActionMenu({
         >
           <Stethoscope className={`${selected === 'CT' ? 'active' : ''}`} />{' '}
           {expanded && 'Clinical Terms'}
-        </Button>
+        </button>
         <fieldset>
           <p>
             <EyeShow />

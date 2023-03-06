@@ -29,15 +29,18 @@
     width: 176px;
     height: 100%;
     overflow: auto;
-    button,
-    p {
+    button {
+      background: transparent;
+      border: none;
+      line-height: 24px;
+      padding: 10px 0;
       font-size: 14px;
-      cursor: pointer;
       align-items: center;
+      outline: none;
       display: flex;
       cursor: pointer;
       color: #595959;
-      padding: 0;
+      margin: 0;
       min-width: unset;
       .ptIcon {
         color: #fff;
@@ -56,8 +59,21 @@
         }
       }
     }
-    fieldset {
+    p {
+      background: transparent;
+      border: none;
+      line-height: 24px;
+      font-size: 14px;
+      align-items: center;
+      outline: none;
+      display: flex;
+      cursor: pointer;
+      color: #595959;
       margin: 0;
+      min-width: unset;
+    }
+    fieldset {
+      margin: 10px 0;
       padding: 0;
       border: none;
     }
