@@ -152,28 +152,31 @@ function MetaData({ docId }) {
   };
 
   const postCall = (data, metaData) => {
-    const updatedAttrList = metaData?.map((list) => {
-      const convertToBoolean = list?.attr_value === 'true';
-      return {
-        attr_name: list?.attr_name,
-        attr_type: list?.attr_type || 'string',
-        attr_value:
-          list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
-        note: list?.note || '',
-        confidence: list?.confidence || '',
-      };
-    });
-    dispatch({
-      type: 'ADD_METADATA_ATTRIBUTES',
-      payload: {
-        docId,
-        fieldName: data?.formattedName === 'summary' ? '' : data?.formattedName,
-        attributes: updatedAttrList,
-        reqData: {
-          formattedName: data?.formattedName,
+    if (metaData.length > 0) {
+      const updatedAttrList = metaData?.map((list) => {
+        const convertToBoolean = list?.attr_value === 'True';
+        return {
+          attr_name: list?.attr_name,
+          attr_type: list?.attr_type || 'string',
+          attr_value:
+            list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
+          note: list?.note || '',
+          confidence: list?.confidence || '',
+        };
+      });
+      dispatch({
+        type: 'ADD_METADATA_ATTRIBUTES',
+        payload: {
+          docId,
+          fieldName:
+            data?.formattedName === 'summary' ? '' : data?.formattedName,
+          attributes: updatedAttrList,
+          reqData: {
+            formattedName: data?.formattedName,
+          },
         },
-      },
-    });
+      });
+    }
   };
 
   const handleSave = (accData, e) => {

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Modal from 'apollo-react/components/Modal';
 import Checkbox from 'apollo-react/components/Checkbox';
 import Plus from 'apollo-react-icons/Plus';
+import Trash from 'apollo-react-icons/Trash';
 import moment from 'moment';
 import { ValueField, InputKeyField } from './CustomForm';
 
@@ -26,7 +27,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   const handleDataChange = (e) => {
     if (e?.target?.name === 'attr_type') {
       setType(e.target.value ? e.target.value : 'string');
-    } else if (type !== 'date') {
+    } else {
       setVal(e.target.value);
     }
   };
@@ -34,10 +35,6 @@ function EditableCell({ row, column: { accessor: key } }) {
   const handleDateChange = (value) => {
     setDateValue(value);
     row.handleChange(row.id, value, 'attr_value');
-  };
-
-  const deleteMetaData = () => {
-    row.handleDelete(row.id);
   };
 
   const handleBlur = (e) => {
@@ -65,7 +62,8 @@ function EditableCell({ row, column: { accessor: key } }) {
 
   const renderValueField = () => {
     return key === 'attr_value' ||
-      (key === 'note' && row.fieldName !== 'summary') ||
+      ((key === 'note' || key === 'confidence') &&
+        row.fieldName !== 'summary') ||
       row.isCustom ? (
       <ValueField
         item={row}
@@ -78,7 +76,6 @@ function EditableCell({ row, column: { accessor: key } }) {
         handleDateChange={handleDateChange}
         handleChange={(e) => handleDataChange(e)}
         handleBlur={(e) => handleBlur(e)}
-        deleteMetaData={deleteMetaData}
       />
     ) : (
       row[key] || ''
@@ -86,6 +83,15 @@ function EditableCell({ row, column: { accessor: key } }) {
   };
 
   return key === 'attr_name' ? renderKeyField() : renderValueField();
+}
+
+function DeleteCell({ row, column: { accessor: key } }) {
+  const deleteMetaData = () => {
+    row.handleDelete(row.id);
+  };
+  return (
+    row.isCustom && <Trash className="delContainer" onClick={deleteMetaData} />
+  );
 }
 
 function MetaDataEditTable({
@@ -110,6 +116,11 @@ function MetaDataEditTable({
       accessor: 'attr_value',
       customCell: EditableCell,
     },
+    {
+      header: '',
+      accessor: 'delete',
+      customCell: DeleteCell,
+    },
   ];
   const [column, setColumn] = useState(columns);
 
@@ -123,13 +134,13 @@ function MetaDataEditTable({
   const handleConfidence = (e, checked) => {
     setConfidence(checked);
     if (checked) {
-      setColumn([
-        ...column,
-        {
-          header: 'Confidence Score',
-          accessor: 'confidence',
-        },
-      ]);
+      const copyColumn = [...column];
+      copyColumn.splice(column.length - 1, 0, {
+        header: 'Confidence Score',
+        accessor: 'confidence',
+        customCell: EditableCell,
+      });
+      setColumn(copyColumn);
     } else {
       removeIndex('confidence');
     }
@@ -138,14 +149,13 @@ function MetaDataEditTable({
   const handleNotes = (e, checked) => {
     setNote(checked);
     if (checked) {
-      setColumn([
-        ...column,
-        {
-          header: 'Notes',
-          accessor: 'note',
-          customCell: EditableCell,
-        },
-      ]);
+      const copyColumn = [...column];
+      copyColumn.splice(column.length - 1, 0, {
+        header: 'Notes',
+        accessor: 'note',
+        customCell: EditableCell,
+      });
+      setColumn(copyColumn);
     } else {
       removeIndex('note');
     }
@@ -195,11 +205,17 @@ function MetaDataEditTable({
       (list) => list.id === selectedId,
     );
     setDeletedAttributes([...deletedAttributes, filterRows[0].attr_name]);
+    rows[formattedName] = rows[formattedName].filter(
+      (list) => list?.id !== selectedId,
+    );
     setRows((prevState) => ({
       ...prevState,
-      [formattedName]: rows[formattedName].filter(
-        (list) => list?.id !== selectedId,
-      ),
+      [formattedName]: rows[formattedName]?.map((attr, index) => {
+        return {
+          ...attr,
+          id: index + 1,
+        };
+      }),
     }));
   };
 
@@ -294,6 +310,10 @@ Cell.propTypes = {
   column: PropTypes.isRequired,
 };
 EditableCell.propTypes = {
+  row: PropTypes.isRequired,
+  column: PropTypes.isRequired,
+};
+DeleteCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
 };

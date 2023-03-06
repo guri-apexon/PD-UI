@@ -127,15 +127,21 @@ export const checkDuplicates = (data) => {
 };
 
 export const validationCheck = (rowData) => {
-  const keys = Object.keys(rowData[0]);
   let isValid = true;
-  keys.forEach((key) => {
-    rowData.forEach((data) => {
-      if ((key === 'attr_name' || key === 'attr_value') && !data[key]) {
-        isValid = false;
-      }
+  if (rowData.length > 0) {
+    const keys = Object.keys(rowData[0]);
+    keys.forEach((key) => {
+      rowData.forEach((data) => {
+        if (
+          (key === 'attr_name' || key === 'attr_value') &&
+          data.isCustom &&
+          !data[key]
+        ) {
+          isValid = false;
+        }
+      });
     });
-  });
+  }
 
   return isValid;
 };
