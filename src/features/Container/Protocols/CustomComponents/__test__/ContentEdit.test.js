@@ -1,8 +1,32 @@
-import { render, fireEvent } from '../../../../../test-utils/test-utils';
+import {
+  render,
+  fireEvent,
+  screen,
+} from '../../../../../test-utils/test-utils';
 import ContentEdit from '../ContentEdit';
 import * as ProtocolContext from '../../ProtocolContext'; // note we're importing with a * to import all the exports
 
-describe('DigitizedEdit', () => {
+describe('ContentEdit', () => {
+  const mockDeleteSection = jest.fn();
+
+  const handleBlur = jest.fn();
+  const handleChange = jest.fn();
+  beforeEach(() => {
+    mockDeleteSection.mockClear();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  const defaultProps = {
+    type: 'header',
+    lineID: 1,
+    content: 'Hello World',
+    deleteSection: mockDeleteSection,
+    edit: true,
+  };
+
   test('render component without error', () => {
     const contextValues = { dispatchSectionEvent: jest.fn() };
     jest
@@ -13,7 +37,8 @@ describe('DigitizedEdit', () => {
         type="text"
         lineID="6c0cf0d6-7d72-4199-ad8f-bc66b92cab12"
         content="test content"
-        deleteSection={() => null}
+        deleteSection={mockDeleteSection}
+        handleBlur={handleBlur}
         edit="true"
       />,
     );
@@ -31,7 +56,8 @@ describe('DigitizedEdit', () => {
         type="text"
         lineID="6c0cf0d6-7d72-4199-ad8f-bc66b92cab12"
         content="test content"
-        deleteSection={() => null}
+        deleteSection={mockDeleteSection}
+        handleBlur={handleBlur}
         edit="true"
       />,
     );
@@ -50,7 +76,8 @@ describe('DigitizedEdit', () => {
         type="text"
         lineID="6c0cf0d6-7d72-4199-ad8f-bc66b92cab12"
         content={null}
-        deleteSection={() => null}
+        deleteSection={mockDeleteSection}
+        handleBlur={handleBlur}
         edit="true"
       />,
     );
@@ -74,7 +101,8 @@ describe('DigitizedEdit', () => {
         type="text"
         lineID="6c0cf0d6-7d72-4199-ad8f-bc66b92cab12"
         content=""
-        deleteSection={() => null}
+        deleteSection={mockDeleteSection}
+        handleBlur={handleBlur}
         edit="true"
       />,
     );
@@ -82,5 +110,102 @@ describe('DigitizedEdit', () => {
     const element = screen.getByTestId('contentEdit');
     element.focus();
     element.blur();
+  });
+
+  test('deletes section on delete/backspace key press if contentEditable is empty', () => {
+    const content = '';
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    render(
+      <ContentEdit
+        type="header"
+        lineID={1}
+        content={content}
+        deleteSection={mockDeleteSection}
+        handleBlur={handleBlur}
+        edit="true"
+      />,
+    );
+    const contentEditable = screen.getByTestId('contentEdit');
+    fireEvent.keyDown(contentEditable, { keyCode: 46 });
+    expect(mockDeleteSection).toHaveBeenCalledTimes(1);
+    expect(mockDeleteSection).toHaveBeenCalledWith(1);
+    fireEvent.keyDown(contentEditable, { keyCode: 8 });
+    expect(mockDeleteSection).toHaveBeenCalledTimes(2);
+    expect(mockDeleteSection).toHaveBeenCalledWith(1);
+  });
+
+  test('does not delete section on delete/backspace key press if contentEditable is not empty', () => {
+    const content = 'Hello, world!';
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+
+    render(
+      <ContentEdit
+        type="header"
+        lineID={1}
+        content={content}
+        deleteSection={mockDeleteSection}
+        handleBlur={handleBlur}
+        edit="true"
+      />,
+    );
+    screen.debug(undefined, Infinity);
+
+    const contentEditable = screen.getByTestId('contentEdit');
+    fireEvent.keyDown(contentEditable, { keyCode: 46 });
+    expect(mockDeleteSection).not.toHaveBeenCalled();
+    fireEvent.keyDown(contentEditable, { keyCode: 8 });
+    expect(mockDeleteSection).not.toHaveBeenCalled();
+  });
+
+  it('updates the state when content is changed', async () => {
+    const newContent = 'Hi, there!';
+
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const { getByTestId } = render(
+      <ContentEdit
+        type="header"
+        lineID={1}
+        content="Hello World"
+        deleteSection={mockDeleteSection}
+        edit="false"
+        onChange={handleChange}
+      />,
+    );
+    const contentNode = getByTestId('contentEdit');
+    fireEvent.click(contentNode);
+    const contentEditable = contentNode.closest('[contenteditable]');
+    await fireEvent.input(contentEditable, {
+      target: { innerHTML: newContent },
+    });
+    fireEvent.blur(contentEditable);
+    expect(contentEditable).toHaveTextContent('Hi, there!');
+  });
+
+  xit('calls dispatchSectionEvent when content is updated', () => {
+    const mockdispatchSectionEvent = jest.fn();
+    render(
+      <ProtocolContext.Provider
+        value={{ dispatchSectionEvent: mockdispatchSectionEvent }}
+      >
+        <ContentEdit {...defaultProps} />
+      </ProtocolContext.Provider>,
+    );
+
+    const contentEditable = screen.getByTestId('contentEdit');
+    screen.debug(undefined, Infinity);
+    fireEvent.blur(contentEditable);
+    expect(mockdispatchSectionEvent).toHaveBeenCalledWith('CONTENT_UPDATE', {
+      currentLineId: defaultProps.lineID,
+      content: defaultProps.content,
+    });
   });
 });

@@ -5,7 +5,7 @@ import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import { useProtContext } from '../ProtocolContext';
 
 import RenderContent from '../CustomComponents/RenderContent';
-import './DigitizedEdit.scss';
+import './MultilineEdit.scss';
 import {
   updateContent,
   markContentForDelete,

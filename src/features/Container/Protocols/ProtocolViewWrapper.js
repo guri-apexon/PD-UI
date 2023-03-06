@@ -4,7 +4,7 @@ import Panel from 'apollo-react/components/Panel';
 import PropTypes from 'prop-types';
 
 import PanelGroup from 'apollo-react/components/PanelGroup';
-import Pdf from './SourcePDFPanel/pdfviewer';
+import PDFViewer from './SourcePDFPanel/PdfViewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
 import BladeRight from './BladeRight/BladeRight';
@@ -102,7 +102,7 @@ class ProtocolViewWrapper extends React.Component {
                 <Card className="protocol-source-column">
                   <div className="panel-heading">Source Document</div>
                   {summaryData?.success ? (
-                    <Pdf
+                    <PDFViewer
                       page={pageNo}
                       refs={refx}
                       pageRight={pageRight}

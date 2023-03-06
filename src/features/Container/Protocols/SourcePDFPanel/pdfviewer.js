@@ -12,7 +12,7 @@ import './PdfViewer.scss';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-function Pdf({ page, refs, pageRight, handlePaginationPage }) {
+function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   const protocolAllItems = useSelector(protocolSummary);
   const dispatch = useDispatch();
   const fileStream = useSelector(getPdfData);
@@ -177,8 +177,8 @@ function Pdf({ page, refs, pageRight, handlePaginationPage }) {
   );
 }
 
-export default Pdf;
-Pdf.propTypes = {
+export default PDFViewer;
+PDFViewer.propTypes = {
   page: PropTypes.isRequired,
   refs: PropTypes.isRequired,
   pageRight: PropTypes.isRequired,
