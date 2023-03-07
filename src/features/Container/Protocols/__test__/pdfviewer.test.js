@@ -1,6 +1,6 @@
 import { render, fireEvent } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import PDFViewer from '../SourcePDFPanel/PdfViewer';
+import PDFViewer from '../SourcePdfPanel/PdfViewer';
 import { summary } from './data';
 
 const initialState = {
