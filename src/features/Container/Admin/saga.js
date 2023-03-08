@@ -241,6 +241,7 @@ export function* addNewUser() {
     data.email = item.email;
     data.country = item.country;
     data.user_type = item.userRole;
+    data.accessReason = item.viaTicketNumber;
     return data;
   });
   const Config = {
@@ -437,12 +438,14 @@ export function* getUserDetails(action) {
     country: { error: false, message: '' },
     userId: { error: false, message: '' },
     userRole: { error: false, message: '' },
+    viaTicketNumber: { error: false, message: '' },
   };
   const userValue = {
     firstName: null,
     lastName: null,
     email: null,
     country: null,
+    viaTicketNumber: null,
   };
   try {
     yield put(setUserLoader(true));
@@ -456,6 +459,7 @@ export function* getUserDetails(action) {
       data.email = userData.data.email;
       data.country = userData.data.country;
       data.userRole = userDetails.userRole;
+      data.viaTicketNumber = userData.accessReason
 
       yield put(setNewUserValues(data));
       yield put(setUserError(''));
