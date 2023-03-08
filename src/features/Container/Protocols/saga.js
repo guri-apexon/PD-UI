@@ -211,27 +211,33 @@ export function* fetchAssociateProtocol(action) {
     yield put(getAssociateDocuments([]));
   }
 }
+
 export function* updateSectionData(action) {
-  const {
-    payload: { reqBody },
-  } = action;
-  console.log('updateSectionData::', reqBody);
-  const config = {
-    url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
-    method: 'POST',
-    data: reqBody,
-  };
-  const sectionSaveRes = yield call(httpCall, config);
-  if (sectionSaveRes?.data?.success) {
-    yield put(updateSectionResp({ response: sectionSaveRes.data }));
-    toast.success(
-      sectionSaveRes.data.message || 'Section updated successfully',
-    );
-  } else {
-    yield put(updateSectionResp({ response: sectionSaveRes.data }));
-    toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
+  try {
+    const {
+      payload: { reqBody },
+    } = action;
+    console.log('updateSectionData::', reqBody);
+    const config = {
+      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
+      method: 'POST',
+      data: reqBody,
+    };
+    const sectionSaveRes = yield call(httpCall, config);
+    if (sectionSaveRes?.data?.success) {
+      yield put(updateSectionResp({ response: sectionSaveRes.data }));
+      toast.success(
+        sectionSaveRes.data.message || 'Section updated successfully',
+      );
+    } else {
+      yield put(updateSectionResp({ response: sectionSaveRes.data }));
+      toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
+    }
+  } catch (error) {
+    toast.error('Something Went Wrong');
   }
 }
+
 export function* fetchSectionHeaderList(action) {
   const {
     payload: { docId },

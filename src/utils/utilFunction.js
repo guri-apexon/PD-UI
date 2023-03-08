@@ -374,3 +374,108 @@ export const toBase64 = (file) =>
       return reject(error);
     };
   });
+
+export const createReturnObj = (obj) => {
+  if (obj.type === 'text') {
+    if (obj.qc_change_type === 'add') {
+      return {
+        type: obj.type,
+        content: obj.content,
+        qc_change_type: obj.qc_change_type,
+        prev_detail: {
+          line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
+        },
+      };
+    }
+    return {
+      type: obj.type,
+      content: obj.content,
+      qc_change_type: obj.qc_change_type,
+      line_id: obj.line_id?.slice(0, 36),
+    };
+  }
+  if (obj.type === 'header') {
+    if (obj.qc_change_type === 'add') {
+      return {
+        type: obj.type,
+        qc_change_type: obj.qc_change_type,
+        link_prefix: '',
+        link_text: '',
+        link_level: obj.linkLevel,
+        line_id: obj.line_id,
+        link_record_uid: '',
+        content: obj.content,
+        prev_detail: {
+          link_record_uid: obj.link_record_uid,
+          line_id: obj.line_id,
+        },
+      };
+    }
+    if (obj.qc_change_type === 'modify') {
+      return {
+        type: obj.type,
+        qc_change_type: 'modify',
+        link_prefix: '',
+        link_text: '',
+        content: obj.content,
+        link_level: obj.linkLevel,
+        link_record_uid: obj.link_record_uid,
+        line_id: obj.line_id,
+      };
+    }
+    return {
+      type: 'header',
+      qc_change_type: 'delete',
+      link_record_uid: obj.link_record_uid,
+      line_id: obj.line_id,
+    };
+  }
+  if (obj.type === 'image') {
+    if (obj.qc_change_type === 'add') {
+      return {
+        type: obj.type,
+        content: obj.content,
+        qc_change_type: obj.qc_change_type,
+        prev_detail: {
+          line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
+        },
+      };
+    }
+    if (['modify', 'delete'].includes(obj.qc_change_type)) {
+      return {
+        type: obj.type,
+        content: obj.content,
+        qc_change_type: obj.qc_change_type,
+        line_id: obj.line_id?.slice(0, 36),
+      };
+    }
+  }
+  if (obj.type === 'table') {
+    if (obj.qc_change_type === 'add') {
+      return {
+        type: obj.type,
+        content: obj.content,
+        qc_change_type: obj.qc_change_type,
+        prev_detail: {
+          line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
+        },
+      };
+    }
+    if (['modify', 'delete'].includes(obj.qc_change_type)) {
+      return {
+        type: obj.type,
+        content: obj.content,
+        qc_change_type: obj.qc_change_type,
+        line_id: obj.line_id?.slice(0, 36),
+      };
+    }
+  }
+  return obj;
+};
+
+export const getSaveSectionPayload = (sectionContent) => {
+  const req = [...sectionContent]
+    .filter((x) => x.qc_change_type !== '')
+    .map((obj) => createReturnObj(obj));
+  return req;
+};
