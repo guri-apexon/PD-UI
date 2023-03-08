@@ -1,4 +1,4 @@
-import { useState, createRef, useMemo } from 'react';
+import { useState, createRef, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { viewResult, headerResult, updateSectionData } from './protocolSlice';
@@ -14,8 +14,8 @@ function ProtocolView({ refs, data }) {
     ...data,
     userPrimaryRoleFlag: isPrimaryUser(data),
   };
-  const [selectedSection, setSelectedSection] = useState(null);
-  const [sectionContent, setSectionContent] = useState(null);
+  const [selectedSection, setSelectedSection] = useState({});
+  const [sectionContent, setSectionContent] = useState([]);
 
   const handleSectionSelect = (payload) => {
     if (!payload.sectionContent && sectionContent) {
@@ -32,12 +32,13 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleContentUpdate = (payload) => {
-    const content = prepareContent({
-      ...payload,
-      type: 'MODIFY',
-      sectionContent,
+    setSectionContent((prevState) => {
+      return prepareContent({
+        ...payload,
+        type: 'MODIFY',
+        sectionContent: prevState,
+      });
     });
-    setSectionContent(content);
   };
 
   const handleContentDelete = (payload) => {
@@ -85,36 +86,40 @@ function ProtocolView({ refs, data }) {
   };
 
   // eslint-disable-next-line
-  const dispatchSectionEvent = (actionType, payload) => {
-    switch (actionType) {
-      case 'ON_SECTION_SELECT':
-        handleSectionSelect(payload);
-        break;
-      case 'CONTENT_UPDATE':
-        handleContentUpdate(payload);
-        break;
-      case 'CONTENT_DELETED':
-        handleContentDelete(payload);
-        break;
-      case 'CONTENT_ADDED':
-        handleContentAdd(payload);
-        break;
-      case 'LINK_LEVEL_UPDATE':
-        handleLinkLevelUpdate(payload);
-        break;
-
-      default:
-        break;
-    }
-  };
+  const dispatchSectionEvent = useCallback(
+    (actionType, payload) => {
+      switch (actionType) {
+        case 'ON_SECTION_SELECT':
+          handleSectionSelect(payload);
+          break;
+        case 'CONTENT_UPDATE':
+          handleContentUpdate(payload);
+          break;
+        case 'CONTENT_DELETED':
+          handleContentDelete(payload);
+          break;
+        case 'CONTENT_ADDED':
+          handleContentAdd(payload);
+          break;
+        case 'LINK_LEVEL_UPDATE':
+          handleLinkLevelUpdate(payload);
+          break;
+        default:
+          break;
+      }
+    },
+    // eslint-disable-next-line
+    [sectionContent],
+  );
 
   const ProtocolProviderValue = useMemo(
     () => ({
       selectedSection,
       sectionContent,
       dispatchSectionEvent,
+      setSectionContent,
     }),
-    [selectedSection, sectionContent, dispatchSectionEvent],
+    [selectedSection, sectionContent, dispatchSectionEvent, setSectionContent],
   );
 
   const panels = () => {

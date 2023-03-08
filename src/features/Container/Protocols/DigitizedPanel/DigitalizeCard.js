@@ -29,7 +29,6 @@ function Digitize({
   const protocolAllItems = useSelector(protocolSummary);
   const [rightValue, setRightValue] = useState(BladeRightValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
-  const [currentEditCard, setCurrentEditCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
 
@@ -158,8 +157,6 @@ function Digitize({
                         index={index}
                         handlePageRight={handlePageRight}
                         rightBladeValue={BladeRightValue}
-                        currentEditCard={currentEditCard}
-                        setCurrentEditCard={setCurrentEditCard}
                         scrollToTop={scrollToTop}
                       />
                     </div>

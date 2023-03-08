@@ -269,15 +269,48 @@ export const prepareContent = ({
   switch (type) {
     case 'ADDED':
       if (currentLineId && contentType) {
+        const prevIndex =
+          clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
+        const prevObj = clonedSection[prevIndex] || null;
+        const {
+          font_info: fontInfo,
+          link_id: linkId,
+          type,
+          file_section_level: fileSectionLevel,
+          aidocid,
+        } = prevObj;
         newObj = {
           ...PROTOCOL_CONSTANT[contentType],
           line_id: uuidv4(),
           content: setContent(contentType),
           qc_change_type: QC_CHANGE_TYPE.ADDED,
+          prev_line_detail: {
+            type,
+            link_id: linkId,
+            line_id: currentLineId,
+            file_section_level: fileSectionLevel,
+          },
         };
-        const index =
-          clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
-        clonedSection?.splice(index + 1, 0, newObj);
+        if (fontInfo) {
+          newObj = {
+            ...newObj,
+            link_id: fontInfo.link_id,
+            aidocid,
+            prev_line_detail: {
+              ...newObj.prev_line_detail,
+              link_id: fontInfo.link_id,
+              link_id_level2: fontInfo.link_id_level2,
+              link_id_level3: fontInfo.link_id_level3,
+              link_id_level4: fontInfo.link_id_level4,
+              link_id_level5: fontInfo.link_id_level5,
+              link_id_level6: fontInfo.link_id_level6,
+              link_id_subsection1: fontInfo.link_id_subsection1,
+              link_id_subsection2: fontInfo.link_id_subsection2,
+              link_id_subsection3: fontInfo.link_id_subsection3,
+            },
+          };
+        }
+        clonedSection?.splice(prevIndex + 1, 0, newObj);
         return clonedSection;
       }
       break;
@@ -299,7 +332,11 @@ export const prepareContent = ({
       break;
     case 'DELETE':
       if (clonedSection && currentLineId) {
-        return clonedSection.filter((x) => x.line_id !== currentLineId);
+        return clonedSection.map((x) =>
+          x.line_id === currentLineId
+            ? { ...x, qc_change_type: QC_CHANGE_TYPE.DELETED }
+            : x,
+        );
       }
       break;
     case 'LINK_LEVEL_UPDATE':
