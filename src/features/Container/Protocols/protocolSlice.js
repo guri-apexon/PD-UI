@@ -29,6 +29,7 @@ export const protocolSlice = createSlice({
       protocol: null,
       data: [],
       sectionResponse: null,
+      updated: false,
     },
     protocolTocData: [],
     sectionLoader: false,
@@ -101,8 +102,17 @@ export const protocolSlice = createSlice({
       state.sectionDetails = {
         ...state.sectionDetails,
         sectionResponse: action?.payload?.response,
+        updated: true,
       };
     },
+
+    resetUpdateStatus: (state) => {
+      state.sectionDetails = {
+        ...state.sectionDetails,
+        updated: false,
+      };
+    },
+
     updateSectionData: (state, action) => {
       const { actionType, data, content, lineId, linkId } = action.payload;
 
@@ -167,6 +177,7 @@ export const {
   getMetadataApiCall,
   getEnrichedValue,
   updateSectionResp,
+  resetUpdateStatus,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

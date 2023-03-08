@@ -21,7 +21,7 @@ import {
   createEnrichedText,
   getSaveSectionPayload,
 } from '../../../../utils/utilFunction';
-import { sectionDetails, TOCActive } from '../protocolSlice';
+import { sectionDetails, TOCActive, resetUpdateStatus } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
@@ -69,7 +69,7 @@ function DigitizeAccordion({
 
   const [isTableChanged, setIsTableChanged] = useState(false);
 
-  const { data: sectionData } = sectionHeaderDetails;
+  const { data: sectionData, updated } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
 
   const tocActiveSelector = useSelector(TOCActive);
@@ -77,7 +77,8 @@ function DigitizeAccordion({
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const { dispatchSectionEvent, sectionContent } = useProtContext();
+  const { dispatchSectionEvent, sectionContent, selectedSection } =
+    useProtContext();
 
   const handleChange = () => {
     handlePageRight(item.page);
@@ -199,12 +200,8 @@ function DigitizeAccordion({
       setShowAlert(true);
       return;
     }
-    // dispatchSectionData(true);
-    // setShowEdit(false);
-    // setCurrentEditCard(null);
     const reqBody = getSaveSectionPayload(sectionContent);
-
-    console.log('reqBody', reqBody);
+    console.log({ reqBody });
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
     } else {
@@ -254,12 +251,24 @@ function DigitizeAccordion({
           }
         }
         if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
-
         setSectionDataArr(updatedSectionsData);
+        console.log({ sectionDataArr });
       }
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
+
+  useEffect(() => {
+    if (updated && item.link_id === selectedSection.link_id) {
+      console.log({ sectionDataArr, selectedSection });
+      dispatchSectionEvent('ON_SECTION_SELECT', {
+        selectedSection: item,
+        sectionContent: sectionDataArr,
+      });
+      dispatch(resetUpdateStatus());
+    }
+    // eslint-disable-next-line
+  }, [updated]);
 
   const getEnrichedText = (content, clinicalTerms) => {
     if (

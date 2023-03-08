@@ -340,6 +340,7 @@ export const prepareContent = ({
       if (clonedSection && currentLineId && level) {
         return clonedSection.map((x) => {
           if (x.line_id === currentLineId) {
+            if (contentType) x.type = contentType;
             if (x.type === CONTENT_TYPE.HEADER) {
               x.linkLevel = level;
             }
