@@ -194,6 +194,7 @@ function DigitizeAccordion({
       onShowEdit();
     }
   };
+  console.log('item', item);
 
   const handleSaveContent = () => {
     if (isTableChanged) {
