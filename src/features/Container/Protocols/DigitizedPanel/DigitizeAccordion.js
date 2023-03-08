@@ -20,6 +20,7 @@ import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
   createEnrichedText,
+  getSaveSectionPayload,
 } from '../../../../utils/utilFunction';
 import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
@@ -204,7 +205,8 @@ function DigitizeAccordion({
     // dispatchSectionData(true);
     // setShowEdit(false);
     // setCurrentEditCard(null);
-    const reqBody = [...sectionContent].filter((x) => x.qc_change_type !== ''); // sectionDataArr
+    const reqBody = getSaveSectionPayload(sectionContent);
+
     console.log('reqBody', reqBody);
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
