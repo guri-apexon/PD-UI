@@ -262,6 +262,7 @@ function DigitizeAccordion({
 
   useEffect(() => {
     if (updated && item.link_id === selectedSection.link_id) {
+      setShowLoader(true);
       console.log({ sectionDataArr, selectedSection });
       dispatchSectionEvent('ON_SECTION_SELECT', {
         selectedSection: item,
@@ -338,7 +339,7 @@ function DigitizeAccordion({
         onScroll={(e) => handleEnrichedClick(e)}
         className="section-single-content"
       >
-        {showLoader || sectionDataArr?.length === 0 ? (
+        {showLoader ? (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
