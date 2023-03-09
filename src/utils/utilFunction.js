@@ -343,6 +343,7 @@ export const prepareContent = ({
       if (clonedSection && currentLineId && level) {
         return clonedSection.map((x) => {
           if (x.line_id === currentLineId) {
+            if (contentType) x.type = contentType;
             if (x.type === CONTENT_TYPE.HEADER) {
               x.linkLevel = level;
             }
@@ -477,6 +478,7 @@ export const createReturnObj = (obj) => {
 };
 
 export const getSaveSectionPayload = (sectionContent) => {
+  console.log('sectionContent', sectionContent);
   const req = [...sectionContent]
     .filter((x) => x.qc_change_type !== '')
     .map((obj) => createReturnObj(obj));

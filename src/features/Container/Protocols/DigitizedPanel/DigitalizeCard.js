@@ -58,9 +58,7 @@ function Digitize({
   };
 
   useEffect(() => {
-    console.log('SHUBHAMINDEX Before', sectionIndex);
     if (sectionIndex >= 0) {
-      console.log('SHUBHAMINDEX After', sectionIndex);
       const tempTOCActive = [...tocActive];
       tempTOCActive[sectionIndex] = true;
       dispatch({
@@ -77,7 +75,6 @@ function Digitize({
 
   useEffect(() => {
     if (sectionRef[sectionSequence] && sectionRef[sectionSequence].current) {
-      console.log('shubham');
       scrollToTop(sectionSequence);
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     }

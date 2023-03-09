@@ -22,7 +22,12 @@ import {
   createEnrichedText,
   getSaveSectionPayload,
 } from '../../../../utils/utilFunction';
-import { sectionDetails, SectionIndex, TOCActive } from '../protocolSlice';
+import {
+  sectionDetails,
+  TOCActive,
+  resetUpdateStatus,
+  SectionIndex,
+} from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
@@ -72,7 +77,7 @@ function DigitizeAccordion({
 
   const [isTableChanged, setIsTableChanged] = useState(false);
 
-  const { data: sectionData } = sectionHeaderDetails;
+  const { data: sectionData, updated } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
 
   const tocActiveSelector = useSelector(TOCActive);
@@ -80,7 +85,8 @@ function DigitizeAccordion({
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const { dispatchSectionEvent, sectionContent } = useProtContext();
+  const { dispatchSectionEvent, sectionContent, selectedSection } =
+    useProtContext();
 
   const handleChange = () => {
     handlePageRight(item.page);
@@ -123,28 +129,9 @@ function DigitizeAccordion({
   }, [expanded]);
 
   useEffect(() => {
-    console.log('SHUBHAM1', sectionIndex);
-    // if (
-    //   currentActiveCard === item.link_id &&
-    //   !expanded &&
-    //   tocActive[index] &&
-    //   sectionIndex >= 0
-    // ) {
-    //   // setExpanded(true);
-    //   console.log('ACCORDIAN');
-    //   setShowEdit(true);
-    //   dispatch({
-    //     type: 'ADD_SECTION_INDEX',
-    //     payload: {
-    //       index: -1,
-    //     },
-    //   });
-    // } else
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
-      console.log('ACCORDIAN1');
       setExpanded(true);
     } else if (currentActiveCard === item.link_id && expanded) {
-      console.log('ACCORDIAN2');
       setExpanded(!expanded);
     }
     // eslint-disable-next-line
@@ -153,10 +140,8 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
       setExpanded(false);
-      console.log('ACCORDIAN3');
     }
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
-      console.log('ACCORDIAN4');
       setExpanded(true);
     }
     if (
@@ -165,8 +150,6 @@ function DigitizeAccordion({
       tocActive[index] &&
       sectionIndex >= 0
     ) {
-      // setExpanded(true);
-      console.log('ACCORDIAN');
       setShowEdit(true);
       dispatch({
         type: 'ADD_SECTION_INDEX',
@@ -239,12 +222,8 @@ function DigitizeAccordion({
       setShowAlert(true);
       return;
     }
-    // dispatchSectionData(true);
-    // setShowEdit(false);
-    // setCurrentEditCard(null);
     const reqBody = getSaveSectionPayload(sectionContent);
-
-    console.log('reqBody', reqBody);
+    console.log({ reqBody });
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
     } else {
@@ -294,12 +273,24 @@ function DigitizeAccordion({
           }
         }
         if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
-
         setSectionDataArr(updatedSectionsData);
+        console.log({ sectionDataArr });
       }
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
+
+  useEffect(() => {
+    if (updated && item.link_id === selectedSection.link_id) {
+      console.log({ sectionDataArr, selectedSection });
+      dispatchSectionEvent('ON_SECTION_SELECT', {
+        selectedSection: item,
+        sectionContent: sectionDataArr,
+      });
+      dispatch(resetUpdateStatus());
+    }
+    // eslint-disable-next-line
+  }, [updated]);
 
   const getEnrichedText = (content, clinicalTerms) => {
     if (
@@ -325,7 +316,6 @@ function DigitizeAccordion({
   const handlePlus = (e, item, index) => {
     e.stopPropagation();
     setIsModal(true);
-    console.log('item', item);
     setHoverItem(item);
     setHoverIndex(index);
   };
