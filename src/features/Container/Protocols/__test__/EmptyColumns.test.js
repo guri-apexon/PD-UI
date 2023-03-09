@@ -1,8 +1,8 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import EmptyColumnCells from '../CustomComponents/PDTable/Components/EmptyColumns';
 
 describe('EmptyColumnCells', () => {
-  const mockHandleOperation = jest.fn();
+  const handleOperation = jest.fn();
   const columnLength = 1;
   const colWidth = 33;
 
@@ -10,7 +10,7 @@ describe('EmptyColumnCells', () => {
     const { getByTestId, getAllByTestId } = render(
       <EmptyColumnCells
         columnLength={columnLength}
-        handleOperation={mockHandleOperation}
+        handleOperation={handleOperation}
         colWidth={colWidth}
       />,
     );
@@ -22,7 +22,7 @@ describe('EmptyColumnCells', () => {
     const { getByTestId } = render(
       <EmptyColumnCells
         columnLength={columnLength}
-        handleOperation={mockHandleOperation}
+        handleOperation={handleOperation}
         colWidth={colWidth}
       />,
     );
@@ -37,7 +37,7 @@ describe('EmptyColumnCells', () => {
     const { getByTestId, getAllByTestId } = render(
       <EmptyColumnCells
         columnLength={columnLength}
-        handleOperation={mockHandleOperation}
+        handleOperation={handleOperation}
         colWidth={colWidth}
       />,
     );
@@ -45,5 +45,8 @@ describe('EmptyColumnCells', () => {
     fireEvent.click(moreIcon);
     const hoverListItem = getAllByTestId('hover-list')[0];
     fireEvent.click(hoverListItem);
+    const hoverList = screen.getByText('Delete Column');
+    fireEvent.click(hoverList);
+    expect(handleOperation).toHaveBeenCalledWith('DELETE_COLUMN', 0);
   });
 });

@@ -15,7 +15,7 @@ import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 
-function Digitize({
+function DigitalizeCard({
   sectionNumber,
   sectionRef,
   data,
@@ -180,9 +180,9 @@ function Digitize({
   );
 }
 
-export default Digitize;
+export default DigitalizeCard;
 
-Digitize.propTypes = {
+DigitalizeCard.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
   data: PropTypes.isRequired,
