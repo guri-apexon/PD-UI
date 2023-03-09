@@ -73,7 +73,7 @@ describe('PDF VIEWER', () => {
 
   test('PDF render', () => {
     render(
-      <Pdf
+      <PDFViewer
         page={1}
         refs={jest.fn()}
         pageRight={2}
