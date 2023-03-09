@@ -15,42 +15,46 @@ function EditFootNote({
 }) {
   const [footerText, setFooterText] = useState(content);
 
+  const getFootNoteData = (textData) =>
+    [...footNoteData].map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          Text: textData || '',
+          qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
+        };
+      }
+      return item;
+    });
+
+  const getQCChangeFootnote = (item) => {
+    return item?.AttachmentId ? QC_CHANGE_TYPE.UPDATED : QC_CHANGE_TYPE.ADDED;
+  };
+
+  const getNotEmptyData = (textData) =>
+    [...footNoteData].map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          Text: textData,
+          AttachmentId: item?.AttachmentId || '',
+          qc_change_type_footnote: getQCChangeFootnote(item),
+        };
+      }
+      return item;
+    });
+
   const sendFooterText = (e) => {
     const checkIfExist = footNoteData.find((notes, i) => i === index);
     const textData = footerText ? e.target.innerHTML : '';
     if (checkIfExist && isEmpty(textData)) {
       if (item?.AttachmentId) {
-        setFootnoteData(
-          [...footNoteData].map((item, i) => {
-            if (i === index) {
-              return {
-                ...item,
-                Text: textData || '',
-                qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
-              };
-            }
-            return item;
-          }),
-        );
+        setFootnoteData(getFootNoteData(textData));
       } else {
         setFootnoteData(footNoteData.filter((notes, i) => i !== index));
       }
     } else {
-      setFootnoteData(
-        [...footNoteData].map((item, i) => {
-          if (i === index) {
-            return {
-              ...item,
-              Text: textData,
-              AttachmentId: item?.AttachmentId || '',
-              qc_change_type_footnote: item?.AttachmentId
-                ? QC_CHANGE_TYPE.UPDATED
-                : QC_CHANGE_TYPE.ADDED,
-            };
-          }
-          return item;
-        }),
-      );
+      setFootnoteData(getNotEmptyData(textData));
     }
   };
   const handleTextChange = (e) => {
