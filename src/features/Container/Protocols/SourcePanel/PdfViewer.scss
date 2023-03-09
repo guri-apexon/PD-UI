@@ -49,18 +49,10 @@
   }
 }
 
-.pdf-pagination div:first-child {
-  max-width: 230px;
-}
-
 @media only screen and (max-width: 1366px) {
   .pdf-pagination {
     height: 42px;
     width: 265px;
-
-    div:first-child {
-      max-width: 230px;
-    }
 
     button {
       height: 20px !important;
