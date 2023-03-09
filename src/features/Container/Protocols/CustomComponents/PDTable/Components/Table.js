@@ -4,9 +4,9 @@ import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import EllipsisHorizontal from 'apollo-react-icons/EllipsisHorizontal';
-import EmptyRowCells from './EmptyRows';
+import EmptyRows from './EmptyRows';
 import FootNotes from './FootNotes/Footnotes';
-import EmptyColumnCells from './EmptyColumns';
+import EmptyColumns from './EmptyColumns';
 import { tableOperations } from './dropdownData';
 
 function DisplayTable({
@@ -26,30 +26,34 @@ function DisplayTable({
   };
 
   const handleDrag = (e) => {
-    e.dataTransfer.setData('selectedId', e.target.id);
+    e.dataTransfer?.setData('selectedId', e.target.id);
   };
+
   const handleDrop = (e) => {
     e.preventDefault();
     const clone = e.target.cloneNode(true);
-    const draggedId = e.dataTransfer.getData('selectedId');
-    const checkIfColumnSwap =
-      draggedId.split('-').length === 3 &&
-      clone.id.split('-').length === 3 &&
-      clone.id.split('-')[2] !== draggedId.split('-')[2];
-    if (clone?.id && clone?.id !== draggedId) {
-      if (checkIfColumnSwap) {
-        handleSwap(tableOperations.swapColumn, {
-          sourceIndex: parseFloat(draggedId.split('-')[2]).toFixed(1),
-          targetIndex: parseFloat(clone.id.split('-')[2]).toFixed(1),
-        });
-      } else {
-        handleSwap(tableOperations.swapRow, {
-          sourceIndex: parseInt(draggedId.split('-')[1], 10),
-          targetIndex: parseInt(clone.id.split('-')[1], 10),
-        });
+    const draggedId = e.dataTransfer?.getData('selectedId');
+    if (draggedId) {
+      const checkIfColumnSwap =
+        draggedId.split('-').length === 3 &&
+        clone.id.split('-').length === 3 &&
+        clone.id.split('-')[2] !== draggedId.split('-')[2];
+      if (clone?.id && clone?.id !== draggedId) {
+        if (checkIfColumnSwap) {
+          handleSwap(tableOperations.swapColumn, {
+            sourceIndex: parseFloat(draggedId.split('-')[2]).toFixed(1),
+            targetIndex: parseFloat(clone.id.split('-')[2]).toFixed(1),
+          });
+        } else {
+          handleSwap(tableOperations.swapRow, {
+            sourceIndex: parseInt(draggedId.split('-')[1], 10),
+            targetIndex: parseInt(clone.id.split('-')[1], 10),
+          });
+        }
       }
     }
   };
+
   const allowDrop = (e) => {
     e.preventDefault();
   };
@@ -57,7 +61,7 @@ function DisplayTable({
   return (
     <div className="pd-table-inner">
       {edit && (
-        <EmptyColumnCells
+        <EmptyColumns
           columnLength={columnLength}
           handleOperation={handleColumnOperation}
           colWidth={colWidth}
@@ -66,7 +70,7 @@ function DisplayTable({
       {data.map((row, rowIndex) => (
         <div key={uuidv4()} className="pd-table-empty-cell-row">
           {edit && (
-            <EmptyRowCells
+            <EmptyRows
               rowIndex={rowIndex}
               handleOperation={handleRowOperation}
               index={rowIndex}
@@ -81,7 +85,7 @@ function DisplayTable({
             onDragOver={allowDrop}
           >
             {rowIndex !== 0 && edit && (
-              <span className="pd-drag-icon rowDrag">
+              <span className="pd-drag-icon rowDrag" data-testId="draggable">
                 <EllipsisVertical />
               </span>
             )}
@@ -97,7 +101,10 @@ function DisplayTable({
                 style={{ width: `${colWidth}%` }}
               >
                 {rowIndex === 0 && edit && (
-                  <span className="pd-drag-icon columnDrag">
+                  <span
+                    className="pd-drag-icon columnDrag"
+                    data-testId="draggable"
+                  >
                     <EllipsisHorizontal />
                   </span>
                 )}
