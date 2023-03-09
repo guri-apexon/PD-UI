@@ -100,11 +100,18 @@ export const protocolSlice = createSlice({
       state.fileStream = action.payload;
     },
     updateSectionResp: (state, action) => {
-      state.sectionDetails = {
-        ...state.sectionDetails,
-        sectionResponse: action?.payload?.response,
-        updated: true,
-      };
+      if (action?.payload?.response) {
+        state.sectionDetails = {
+          ...state.sectionDetails,
+          sectionResponse: action?.payload?.response,
+          updated: true,
+        };
+      } else {
+        state.sectionDetails = {
+          ...state.sectionDetails,
+          updated: true,
+        };
+      }
     },
 
     resetUpdateStatus: (state) => {

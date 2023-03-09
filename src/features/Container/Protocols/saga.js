@@ -245,19 +245,13 @@ export function* updateSectionData(action) {
         );
       }
     } else {
-      // yield put({
-      //   type: 'GET_PROTOCOL_TOC_DATA',
-      //   payload: {
-      //     docId: action?.payload?.docId,
-      //     index: action?.payload?.index,
-      //     tocFlag: 0,
-      //   },
-      // });
-
-      yield put(updateSectionResp({ response: sectionSaveRes.data }));
+      yield put(
+        updateSectionResp({ response: sectionSaveRes.data, error: true }),
+      );
       toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
     }
   } catch (error) {
+    updateSectionResp({ response: null, error: true });
     toast.error('Something Went Wrong');
   }
 }
@@ -294,6 +288,13 @@ export function* getSectionContentList(action) {
     url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
     method: 'GET',
   };
+  yield put(
+    setSectionDetails({
+      protocol: action.payload.protocol,
+      data: [],
+      linkId: action.payload.linkId,
+    }),
+  );
   const sectionDetails = yield call(httpCall, config);
   yield put(setSectionLoader(false));
 

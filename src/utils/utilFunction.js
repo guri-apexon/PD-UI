@@ -379,13 +379,14 @@ export const toBase64 = (file) =>
     };
   });
 
-export const createReturnObj = (obj) => {
+export const createReturnObj = (obj, link_id) => {
   if (obj.type === 'text') {
     if (obj.qc_change_type === 'add') {
       return {
         type: obj.type,
         content: obj.content,
         qc_change_type: obj.qc_change_type,
+        link_id,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
@@ -394,6 +395,7 @@ export const createReturnObj = (obj) => {
     return {
       type: obj.type,
       content: obj.content,
+      link_id,
       qc_change_type: obj.qc_change_type,
       line_id: obj.line_id?.slice(0, 36),
     };
@@ -440,19 +442,20 @@ export const createReturnObj = (obj) => {
         type: obj.type,
         content: obj.content,
         qc_change_type: obj.qc_change_type,
+        link_id,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
       };
     }
-    if (['modify', 'delete'].includes(obj.qc_change_type)) {
-      return {
-        type: obj.type,
-        content: obj.content,
-        qc_change_type: obj.qc_change_type,
-        line_id: obj.line_id?.slice(0, 36),
-      };
-    }
+
+    return {
+      type: obj.type,
+      content: obj.content,
+      link_id,
+      qc_change_type: obj.qc_change_type,
+      line_id: obj.line_id?.slice(0, 36),
+    };
   }
   if (obj.type === 'table') {
     if (obj.qc_change_type === 'add') {
@@ -460,6 +463,7 @@ export const createReturnObj = (obj) => {
         type: obj.type,
         content: obj.content,
         qc_change_type: obj.qc_change_type,
+        link_id,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
@@ -469,6 +473,7 @@ export const createReturnObj = (obj) => {
       return {
         type: obj.type,
         content: obj.content,
+        link_id,
         qc_change_type: obj.qc_change_type,
         line_id: obj.line_id?.slice(0, 36),
       };
@@ -477,10 +482,9 @@ export const createReturnObj = (obj) => {
   return obj;
 };
 
-export const getSaveSectionPayload = (sectionContent) => {
-  console.log('sectionContent', sectionContent);
+export const getSaveSectionPayload = (sectionContent, linkId) => {
   const req = [...sectionContent]
     .filter((x) => x.qc_change_type !== '')
-    .map((obj) => createReturnObj(obj));
+    .map((obj) => createReturnObj(obj, linkId));
   return req;
 };
