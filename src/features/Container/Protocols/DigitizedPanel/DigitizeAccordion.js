@@ -200,7 +200,7 @@ function DigitizeAccordion({
       setShowAlert(true);
       return;
     }
-    const reqBody = getSaveSectionPayload(sectionContent);
+    const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
     console.log({ reqBody });
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
@@ -253,6 +253,8 @@ function DigitizeAccordion({
         if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
         setSectionDataArr(updatedSectionsData);
         console.log({ sectionDataArr });
+      } else {
+        setSectionDataArr([]);
       }
     }
     // eslint-disable-next-line
@@ -336,7 +338,7 @@ function DigitizeAccordion({
         onScroll={(e) => handleEnrichedClick(e)}
         className="section-single-content"
       >
-        {showLoader ? (
+        {showLoader || sectionDataArr?.length === 0 ? (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
