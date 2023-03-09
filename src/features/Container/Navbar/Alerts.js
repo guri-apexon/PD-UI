@@ -62,14 +62,20 @@ function Alerts() {
     );
   }
 
-  const onDelete = (event, id) => {
+  const onDelete = (event, aidocId, id, protocol) => {
     event.preventDefault();
     event.stopPropagation();
-    dispatch({ type: 'DELETE_NOTIFICATION', payload: { id } });
+    dispatch({
+      type: 'DELETE_NOTIFICATION',
+      payload: { aidocId, id, protocol },
+    });
   };
 
-  const checkForPrimary = async (id, aidocId) => {
-    dispatch({ type: 'READ_NOTIFICATION_SAGA', payload: { id } });
+  const checkForPrimary = (aidocId, id, protocol) => {
+    dispatch({
+      type: 'READ_NOTIFICATION_SAGA',
+      payload: { aidocId, id, protocol },
+    });
     history.push(`/protocols?protocolId=${aidocId}&tab=1`);
     setAnchorEl(!anchorEl);
   };
@@ -172,7 +178,11 @@ function Alerts() {
                               role="button"
                               key={`${item.id}-${item.timestamp}`}
                               onClick={() =>
-                                checkForPrimary(item.id, item.aidocId)
+                                checkForPrimary(
+                                  item.aidocId,
+                                  item.id,
+                                  item.protocol,
+                                )
                               }
                             >
                               <div className="ListItemText-root listItemTextRoot ListItemText-multiline">
@@ -212,7 +222,14 @@ function Alerts() {
                                 <IconButton
                                   size="small"
                                   destructiveAction
-                                  onClick={(e) => onDelete(e, item.id)}
+                                  onClick={(e) =>
+                                    onDelete(
+                                      e,
+                                      item.aidocId,
+                                      item.id,
+                                      item.protocol,
+                                    )
+                                  }
                                 >
                                   <TrashIcon />
                                 </IconButton>

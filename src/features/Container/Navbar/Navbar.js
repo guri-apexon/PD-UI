@@ -42,8 +42,10 @@ function Navbar() {
   const [pathname, setPathname] = useState('/dashboard');
   useEffect(() => {
     if ('userId' in userData) {
-      const userID = userData.userId.substring(1);
-      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: userID });
+      // const userID = userData.userId.substring(1);
+      const userID = 'alert_test_user';
+
+      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: { userID: userID } });
     }
   }, [userData, dispatch]);
   useEffect(() => {

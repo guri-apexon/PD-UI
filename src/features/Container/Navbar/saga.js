@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { CalendarCheck } from 'apollo-react-icons';
+import { toast } from 'react-toastify';
 import { takeEvery, all, call, put, select } from 'redux-saga/effects';
-import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+import { httpCall, BASE_URL_8000, getToken } from '../../../utils/api';
 import {
   getNotification,
   setError,
@@ -9,19 +9,35 @@ import {
   navbarNotifications,
 } from './navbarSlice';
 import data from './__test__/alertdata.json';
+import Cookies from 'universal-cookie';
+
+const cookiesServer = new Cookies();
 
 export function* navbarNotificationData(action) {
-  const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${action.payload}`;
+  const {
+    payload: { userID },
+  } = action;
+
+  const notificationUrl = `${BASE_URL_8000}/api/pd_notification/?user_id=${userID}`;
+
   const notificationConfig = {
     url: notificationUrl,
     method: 'GET',
   };
   try {
     const notificationData = yield call(httpCall, notificationConfig);
-
-    if (notificationData.success) {
-      const parseData = data;
-      parseData.sort(function (a, b) {
+    console.log('notificationData', notificationData);
+    if (notificationData?.success) {
+      const parseData = notificationData.data.map((item) => {
+        item.protocolNumber = item.protocol;
+        item.aidocId = item.doc_id;
+        item.read = item.readFlag;
+        item.details = item.protocolTitle;
+        item.header = item.protocol;
+        item.timestamp = item.timeCreated;
+        return item;
+      });
+      parseData?.sort(function (a, b) {
         return new Date(b.timestamp) - new Date(a.timestamp);
       });
 
@@ -35,48 +51,67 @@ export function* navbarNotificationData(action) {
 }
 
 export function* handlereadNotification(action) {
+  console.log('action54', action);
+
   const {
-    payload: { id },
+    payload: { aidocId, id, protocol },
   } = action;
+
   const readConfig = {
-    // url: `${BASE_URL_8000}/api/notification_read/`,
+    url: `${BASE_URL_8000}/api/pd_notification/update?aidocId=${aidocId}&id=${id}&protocol=${protocol}&action=${action.type}`,
     method: 'POST',
     data: {
+      aidocId: aidocId,
       id: id,
+      protocol: protocol,
     },
   };
-  const readData = yield select(navbarNotifications);
-  const notificationResult = readData?.map((item) => {
-    if (item?.id === id) {
-      return { ...item, read: true };
-    }
-    return item;
-  });
 
-  yield put(getNotification(notificationResult));
+  const readResp = yield call(httpCall, readConfig);
+  console.log('readResp', readResp);
+  if (readResp?.success) {
+    const readData = yield select(navbarNotifications);
+    const notificationResult = readData?.map((item) => {
+      if (item?.id === id) {
+        return { ...item, read: true };
+      }
+      return item;
+    });
+
+    yield put(getNotification(notificationResult));
+  }
 }
 
 export function* handleDeleteNotification(action) {
+  let token = cookiesServer.get('api_token');
+  if (!token) {
+    getToken();
+    token = cookiesServer.get('api_token');
+  }
+  console.log('action81', action);
   try {
     const {
-      payload: { id, protocol, aidocId, read, details, header, timestamp },
+      payload: { aidocId, id, protocol },
     } = action;
     const config = {
-      // url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
+      url: `${BASE_URL_8000}/api/pd_notification/update?aidocId=${aidocId}&id=${id}&protocol=${protocol}&action=${action.type}`,
       method: 'DELETE',
       data: {
+        aidocId: aidocId,
         id: id,
         protocol: protocol,
-        aidocId: aidocId,
-        read,
-        details,
-        header,
-        timestamp,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        accept: 'application/json',
       },
     };
-    // const data = yield call(httpCall, config);
-    yield put(deleteNotificationData(id));
-    toast.info('Notification successfully deleted');
+    const data = yield call(httpCall, config);
+    console.log('data', data);
+    if (data?.success) {
+      yield put(deleteNotificationData(id));
+      toast.info('Notification successfully deleted');
+    }
   } catch (e) {}
 }
 
