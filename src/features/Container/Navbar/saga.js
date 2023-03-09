@@ -34,7 +34,7 @@ export function* navbarNotificationData(action) {
         item.read = item.readFlag;
         item.details = item.protocolTitle;
         item.header = item.protocol;
-        item.timestamp = item.timeCreated;
+
         return item;
       });
       parseData?.sort(function (a, b) {
