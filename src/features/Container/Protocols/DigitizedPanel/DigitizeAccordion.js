@@ -79,6 +79,7 @@ function DigitizeAccordion({
 
   const { data: sectionData, updated } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
+  console.log('sectionData', sectionData);
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -115,6 +116,7 @@ function DigitizeAccordion({
   useEffect(() => {
     if (expanded) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
+      console.log('ARRAY', arr);
       if (!arr.length) {
         setShowLoader(true);
         setLinkId(item.link_id);
@@ -246,9 +248,9 @@ function DigitizeAccordion({
         }
       }
       const sectionObj = data?.find((obj) => obj.linkId === item.link_id);
-
+      setShowLoader(false);
       if (sectionObj?.data?.length) {
-        setShowLoader(false);
+        //  setShowLoader(false);
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = sectionObj.data;
@@ -387,7 +389,7 @@ function DigitizeAccordion({
               <Loader />
             </div>
           ) : (
-            sectionDataArr?.length > 0 &&
+            sectionDataArr?.length >= 0 &&
             (showedit ? (
               <MultilineEdit
                 linkId={item.link_id}

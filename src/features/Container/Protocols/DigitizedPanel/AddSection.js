@@ -49,7 +49,7 @@ function AddSection({ setIsModal, hoverItem, hoverIndex, setIsShown }) {
         type: 'UPDATE_SECTION_DATA',
         payload: {
           docId: hoverItem.doc_id,
-          index: hoverIndex,
+          index: hoverIndex + 1,
           addFlag: true,
           reqBody: obj,
         },

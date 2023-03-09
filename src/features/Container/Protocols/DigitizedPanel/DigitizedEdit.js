@@ -18,13 +18,17 @@ function MultilineEdit({ sectionDataArr, edit }) {
   const [sections, setSections] = useState([]);
   const { dispatchSectionEvent } = useProtContext();
   const [showconfirm, setShowConfirm] = useState(false);
+  const [enableNewSection, setEnableNewSection] = useState(false);
 
   useEffect(() => {
+    console.log('sectionDataArr', sectionDataArr);
     if (sectionDataArr?.length > 0) {
       setSections(sectionDataArr);
     }
+    setEnableNewSection(true);
   }, [sectionDataArr]);
 
+  console.log('sectionDataArr123', sectionDataArr);
   const dispatch = useDispatch();
   const [activeLineID, setActiveLineID] = useState('');
 
@@ -58,6 +62,7 @@ function MultilineEdit({ sectionDataArr, edit }) {
           <FontProperties
             activeLineID={activeLineID}
             onDeleteClick={() => setShowConfirm(true)}
+            enableNewSection={enableNewSection}
           />
         )}
         <section className="section-edited-list">
@@ -77,6 +82,7 @@ function MultilineEdit({ sectionDataArr, edit }) {
                 deleteSection={deleteSection}
                 setActiveLineID={setActiveLineID}
                 edit={edit}
+                enableNewSection={enableNewSection}
               />
             </div>
           ))}

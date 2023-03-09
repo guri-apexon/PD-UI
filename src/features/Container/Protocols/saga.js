@@ -234,6 +234,7 @@ export function* updateSectionData(action) {
           type: 'GET_PROTOCOL_TOC_DATA',
           payload: {
             docId: action?.payload?.docId,
+            index: action?.payload?.index,
             tocFlag: 0,
           },
         });
@@ -244,14 +245,14 @@ export function* updateSectionData(action) {
         );
       }
     } else {
-      yield put({
-        type: 'GET_PROTOCOL_TOC_DATA',
-        payload: {
-          docId: action?.payload?.docId,
-          index: action?.payload?.index,
-          tocFlag: 0,
-        },
-      });
+      // yield put({
+      //   type: 'GET_PROTOCOL_TOC_DATA',
+      //   payload: {
+      //     docId: action?.payload?.docId,
+      //     index: action?.payload?.index,
+      //     tocFlag: 0,
+      //   },
+      // });
 
       yield put(updateSectionResp({ response: sectionSaveRes.data }));
       toast.error(sectionSaveRes.data.message || 'Something Went Wrong');

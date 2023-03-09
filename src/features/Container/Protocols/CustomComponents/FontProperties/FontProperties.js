@@ -7,7 +7,12 @@ import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
 
-function FontProperties({ onHeaderSelect, activeLineID, onDeleteClick }) {
+function FontProperties({
+  onHeaderSelect,
+  activeLineID,
+  onDeleteClick,
+  enableNewSection,
+}) {
   const [enable, setEnable] = useState(activeLineID);
 
   const onFormatSelect = (e, button) => {
@@ -46,6 +51,9 @@ function FontProperties({ onHeaderSelect, activeLineID, onDeleteClick }) {
   useEffect(() => {
     setEnable(activeLineID);
   }, [activeLineID]);
+  useEffect(() => {
+    setEnable(true);
+  }, [enableNewSection]);
   return (
     <div
       className={`${
@@ -151,4 +159,5 @@ FontProperties.propTypes = {
   onHeaderSelect: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   onDeleteClick: PropTypes.isRequired,
+  enableNewSection: PropTypes.isRequired,
 };

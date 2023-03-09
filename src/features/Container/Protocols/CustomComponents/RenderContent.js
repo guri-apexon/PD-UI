@@ -13,6 +13,7 @@ function RenderContent({
   setActiveLineID,
   deleteSection,
   edit,
+  enableNewSection,
 }) {
   const { type, content = '', line_id: lineID } = sectionData;
 
@@ -84,4 +85,5 @@ RenderContent.propTypes = {
   setActiveLineID: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  enableNewSection: PropTypes.isRequired,
 };
