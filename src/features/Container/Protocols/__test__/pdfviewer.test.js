@@ -1,6 +1,6 @@
 import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import Pdf from '../SourcePDFPanel/pdfviewer';
+import PDFViewer from '../SourcePanel/PdfViewer';
 import { summary } from './data';
 
 const initialState = {
@@ -33,25 +33,31 @@ describe('PDF VIEWER', () => {
   });
 
   test('Zoom Out Counter', () => {
-    const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />, {
-      initialState,
-    });
+    const screen = render(
+      <PDFViewer page={1} refs={jest.fn()} pageRight={2} />,
+      {
+        initialState,
+      },
+    );
     const zoomOut = screen.getByTestId('zoomOut');
     expect(zoomOut).toBeInTheDocument();
     fireEvent.click(zoomOut);
   });
 
   test('Zoom In Counter', () => {
-    const screen = render(<Pdf page={1} refs={jest.fn()} pageRight={2} />, {
-      initialState,
-    });
+    const screen = render(
+      <PDFViewer page={1} refs={jest.fn()} pageRight={2} />,
+      {
+        initialState,
+      },
+    );
     const zoomIn = screen.getByTestId('zoomIn');
     expect(zoomIn).toBeInTheDocument();
     fireEvent.click(zoomIn);
   });
 
   test('keydown function', () => {
-    render(<Pdf page={1} refs={jest.fn()} pageRight={2} />, {
+    render(<PDFViewer page={1} refs={jest.fn()} pageRight={2} />, {
       initialState,
     });
 
