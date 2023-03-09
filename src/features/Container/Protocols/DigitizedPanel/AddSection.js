@@ -35,16 +35,9 @@ function AddSection({ setIsModal, hoverItem, hoverIndex, setIsShown }) {
   ];
 
   const handleSave = () => {
-    console.log(' hoverItem.doc_id', hoverItem.doc_id);
     if (sectionName === '') {
       toast.info('Enter Required Field');
     } else {
-      // dispatch({
-      //   type: 'ADD_SECTION_INDEX',
-      //   payload: {
-      //     index: hoverIndex,
-      //   },
-      // });
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {

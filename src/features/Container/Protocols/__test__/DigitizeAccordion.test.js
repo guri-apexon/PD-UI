@@ -153,12 +153,20 @@ describe('DigitizeAccordion', () => {
           currentActiveCard={1}
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
+          currentEditCard={item.link_id}
         />
       </Provider>,
     );
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
     pencil.click(pencil);
+    fireEvent.click(component.getByTestId('accordion'));
+    pencil.click(pencil);
+    if (item.link_id === 'e2f98171-881e-11ed-a48f-005056ab6469')
+      expect(component.getByTestId('confirm-modal')).toBeInTheDocument();
+    fireEvent.click(component.getByRole('button', { name: 'Close' }));
+    fireEvent.click(component.getByRole('button', { name: 'Cancel' }));
+    fireEvent.click(component.getByRole('button', { name: 'Ok' }));
   });
 
   test('accordian is onClick for primary user', () => {
@@ -181,6 +189,8 @@ describe('DigitizeAccordion', () => {
     const accordian = component.getByTestId('accordion');
     expect(accordian).toBeInTheDocument();
     fireEvent.click(accordian);
+    expect(component.getByTestId('accordion-details')).toBeInTheDocument();
+    fireEvent.click(component.getByTestId('accordion-details'));
   });
 
   test('Save button is visible for primary user', () => {
@@ -205,7 +215,10 @@ describe('DigitizeAccordion', () => {
     fireEvent.click(pencil);
     const saveIcon = component.getByTestId('saveIcon');
     expect(saveIcon).toBeInTheDocument();
+    expect(component.getByTestId('lockIcon')).toBeInTheDocument();
     fireEvent.click(saveIcon);
+    expect(component.getByTestId('confirmPopup')).toBeInTheDocument();
+    fireEvent.click(component.getByRole('button', { name: 'Ok' }));
   });
 
   test('Autosizer', () => {
@@ -329,5 +342,27 @@ describe('DigitizeAccordion', () => {
     fireEvent.mouseOver(screen.getByTestId('mouse-over'));
     const plusicon = screen.getByTestId('plus-add');
     fireEvent.click(plusicon);
+  });
+
+  test('click on accordion_summary', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const component = render(
+      <Provider store={store}>
+        <DigitizeAccordion
+          item={item}
+          primaryRole={bool}
+          protocol="1234"
+          currentActiveCard={1}
+          setCurrentActiveCard={jest.fn()}
+          setCurrentEditCard={jest.fn()}
+          handlePageRight={jest.fn()}
+        />
+      </Provider>,
+    );
+    expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
+    fireEvent.click(component.getByTestId('accordion_summary'));
   });
 });

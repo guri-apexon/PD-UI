@@ -51,9 +51,11 @@ function FontProperties({
   useEffect(() => {
     setEnable(activeLineID);
   }, [activeLineID]);
+
   useEffect(() => {
     setEnable(true);
   }, [enableNewSection]);
+
   return (
     <div
       className={`${

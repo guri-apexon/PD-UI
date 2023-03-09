@@ -51,7 +51,6 @@ describe('AddSection', () => {
   });
 
   it('should render the component without errors', () => {
-    const setSectionName = jest.fn();
     const { getByText } = render(
       <Provider store={store}>
         <AddSection

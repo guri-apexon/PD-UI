@@ -5,7 +5,7 @@ import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import { useProtContext } from '../ProtocolContext';
 
 import RenderContent from '../CustomComponents/RenderContent';
-import './DigitizedEdit.scss';
+import './MultilineEdit.scss';
 import {
   updateContent,
   markContentForDelete,
@@ -21,14 +21,12 @@ function MultilineEdit({ sectionDataArr, edit }) {
   const [enableNewSection, setEnableNewSection] = useState(false);
 
   useEffect(() => {
-    console.log('sectionDataArr', sectionDataArr);
     if (sectionDataArr?.length > 0) {
       setSections(sectionDataArr);
     }
     setEnableNewSection(true);
   }, [sectionDataArr]);
 
-  console.log('sectionDataArr123', sectionDataArr);
   const dispatch = useDispatch();
   const [activeLineID, setActiveLineID] = useState('');
 

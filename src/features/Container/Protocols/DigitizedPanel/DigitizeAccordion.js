@@ -15,7 +15,7 @@ import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
-import MultilineEdit from './DigitizedEdit';
+import MultilineEdit from './MultilineEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
@@ -79,8 +79,6 @@ function DigitizeAccordion({
 
   const { data: sectionData, updated } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
-  console.log('sectionData', sectionData);
-
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
@@ -116,7 +114,6 @@ function DigitizeAccordion({
   useEffect(() => {
     if (expanded) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      console.log('ARRAY', arr);
       if (!arr.length) {
         setShowLoader(true);
         setLinkId(item.link_id);
@@ -219,7 +216,7 @@ function DigitizeAccordion({
     }
   };
 
-  const handleSaveContent = () => {
+  const onSaveClick = () => {
     if (isTableChanged) {
       setShowAlert(true);
       return;
@@ -250,7 +247,7 @@ function DigitizeAccordion({
       const sectionObj = data?.find((obj) => obj.linkId === item.link_id);
       setShowLoader(false);
       if (sectionObj?.data?.length) {
-        //  setShowLoader(false);
+        // setShowLoader(true);
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = sectionObj.data;
@@ -337,7 +334,10 @@ function DigitizeAccordion({
         data-testid="accordion"
         onScroll={(e) => handleEnrichedClick(e)}
       >
-        <AccordionSummary onClick={handleChange}>
+        <AccordionSummary
+          data-testid="accordion_summary"
+          onClick={handleChange}
+        >
           <div className="accordion_summary_container">
             <Typography
               className="section-title"
@@ -345,34 +345,33 @@ function DigitizeAccordion({
             >
               {item.source_file_section}
             </Typography>
-            {/* eslint-disable-next-line */}
             <div
-              className="section-actions"
-              onClick={(e) => e.stopPropagation()}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+              }}
             >
               {showedit && (
-                <IconButton disabled={showLoader} data-testId="eyeIcon">
-                  <Lock />
+                <IconButton data-testId="lockIcon">
+                  <Lock style={{ paddingRight: '10px' }} />
                 </IconButton>
               )}
               {primaryRole && (
                 <>
-                  <IconButton disabled={showLoader} data-testId="eyeIcon">
-                    <EyeShow />
+                  <IconButton className="eyeIcon" data-testId="eyeIcon">
+                    <EyeShow style={{ paddingRight: '10px' }} />
                   </IconButton>
                   {!showedit ? (
-                    <IconButton
-                      disabled={showLoader}
-                      data-testId="pencilIcon"
-                      onClick={onEditClick}
-                    >
+                    // eslint-disable-next-line
+                    <IconButton data-testId="pencilIcon" onClick={onEditClick}>
                       <Pencil />
                     </IconButton>
                   ) : (
+                    // eslint-disable-next-line
                     <IconButton
-                      disabled={showAlert || showLoader}
+                      onClick={onSaveClick}
                       data-testId="saveIcon"
-                      onClick={handleSaveContent}
+                      disabled={showAlert}
                     >
                       <Save />
                     </IconButton>
@@ -386,19 +385,19 @@ function DigitizeAccordion({
         <AccordionDetails
           onScroll={(e) => handleEnrichedClick(e)}
           className="section-single-content"
+          data-testid="accordion-details"
         >
-          {showLoader ? (
+          {showLoader && (
             <div className="loader accordion_details_loader">
               <Loader />
             </div>
-          ) : (
-            sectionDataArr?.length >= 0 &&
+          )}
+          {sectionDataArr?.length >= 0 &&
             (showedit ? (
               <MultilineEdit
                 linkId={item.link_id}
                 sectionDataArr={sectionDataArr}
                 edit={showedit}
-                setIsTableChanged={setIsTableChanged}
               />
             ) : (
               <div className="readable-content">
@@ -407,7 +406,11 @@ function DigitizeAccordion({
                     return (
                       <DisplayTable
                         key={React.key}
-                        data={JSON.parse(section.content.TableProperties)}
+                        data={
+                          section?.content
+                            ? JSON.parse(section?.content?.TableProperties)
+                            : []
+                        }
                         footNoteData={
                           section?.content?.AttachmentListProperties
                         }
@@ -426,7 +429,7 @@ function DigitizeAccordion({
                     );
                   }
                   return section?.font_info?.VertAlign === 'superscript' &&
-                    section.content.length > 0 ? (
+                    section.content.length >= 0 ? (
                     // eslint-disable-next-line
                     <div
                       key={React.key}
@@ -495,8 +498,7 @@ function DigitizeAccordion({
                   );
                 })}
               </div>
-            ))
-          )}
+            ))}
         </AccordionDetails>
         <MedicalTerm
           enrichedTarget={enrichedTarget}
@@ -507,6 +509,7 @@ function DigitizeAccordion({
           docId={docId}
         />
         <Modal
+          data-testid="confirm-modal"
           disableBackdropClick
           open={showConfirm}
           variant="warning"
@@ -537,7 +540,7 @@ function DigitizeAccordion({
         </Modal>
         {showAlert && (
           <div className="confirmation-popup" data-testId="confirmPopup">
-            <p>Please save the table before saving the section</p>
+            <p>Please save the all the tables before saving the section</p>
             <ButtonGroup
               buttonProps={[
                 {
