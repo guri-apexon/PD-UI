@@ -66,14 +66,14 @@ function Alerts() {
     event.preventDefault();
     event.stopPropagation();
     dispatch({
-      type: 'DELETE_NOTIFICATION',
+      type: 'delete',
       payload: { aidocId, id, protocol },
     });
   };
 
   const checkForPrimary = (aidocId, id, protocol) => {
     dispatch({
-      type: 'READ_NOTIFICATION_SAGA',
+      type: 'read',
       payload: { aidocId, id, protocol },
     });
     history.push(`/protocols?protocolId=${aidocId}&tab=1`);
@@ -83,6 +83,7 @@ function Alerts() {
   const newNotifications = notificationsMenuPropS.filter(
     (item) => item.read === false,
   );
+  
   const getDayLabelText = (timestamp) => {
     return moment().isSame(timestamp, 'day')
       ? 'Today'
