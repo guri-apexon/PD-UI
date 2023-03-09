@@ -22,7 +22,7 @@ import {
   createEnrichedText,
   getSaveSectionPayload,
 } from '../../../../utils/utilFunction';
-import { sectionDetails, TOCActive } from '../protocolSlice';
+import { sectionDetails, SectionIndex, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
@@ -68,6 +68,7 @@ function DigitizeAccordion({
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
+  const sectionIndex = useSelector(SectionIndex);
 
   const [isTableChanged, setIsTableChanged] = useState(false);
 
@@ -122,9 +123,28 @@ function DigitizeAccordion({
   }, [expanded]);
 
   useEffect(() => {
+    console.log('SHUBHAM1', sectionIndex);
+    // if (
+    //   currentActiveCard === item.link_id &&
+    //   !expanded &&
+    //   tocActive[index] &&
+    //   sectionIndex >= 0
+    // ) {
+    //   // setExpanded(true);
+    //   console.log('ACCORDIAN');
+    //   setShowEdit(true);
+    //   dispatch({
+    //     type: 'ADD_SECTION_INDEX',
+    //     payload: {
+    //       index: -1,
+    //     },
+    //   });
+    // } else
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
+      console.log('ACCORDIAN1');
       setExpanded(true);
     } else if (currentActiveCard === item.link_id && expanded) {
+      console.log('ACCORDIAN2');
       setExpanded(!expanded);
     }
     // eslint-disable-next-line
@@ -133,9 +153,27 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
       setExpanded(false);
+      console.log('ACCORDIAN3');
     }
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
+      console.log('ACCORDIAN4');
       setExpanded(true);
+    }
+    if (
+      currentActiveCard === item.link_id &&
+      !expanded &&
+      tocActive[index] &&
+      sectionIndex >= 0
+    ) {
+      // setExpanded(true);
+      console.log('ACCORDIAN');
+      setShowEdit(true);
+      dispatch({
+        type: 'ADD_SECTION_INDEX',
+        payload: {
+          index: -1,
+        },
+      });
     }
 
     // eslint-disable-next-line
@@ -195,7 +233,6 @@ function DigitizeAccordion({
       onShowEdit();
     }
   };
-  console.log('item', item);
 
   const handleSaveContent = () => {
     if (isTableChanged) {
@@ -288,6 +325,7 @@ function DigitizeAccordion({
   const handlePlus = (e, item, index) => {
     e.stopPropagation();
     setIsModal(true);
+    console.log('item', item);
     setHoverItem(item);
     setHoverIndex(index);
   };

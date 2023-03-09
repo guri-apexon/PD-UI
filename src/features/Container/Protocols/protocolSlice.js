@@ -48,6 +48,7 @@ export const protocolSlice = createSlice({
       op: '',
     },
     EnrichedApiValue: false,
+    sectionIndex: -1,
   },
   reducers: {
     getSummary: (state, action) => {
@@ -143,6 +144,9 @@ export const protocolSlice = createSlice({
     getEnrichedValue: (state, action) => {
       state.EnrichedApiValue = action.payload;
     },
+    getSectionIndex: (state, action) => {
+      state.sectionIndex = action.payload;
+    },
   },
 });
 
@@ -167,6 +171,7 @@ export const {
   getMetadataApiCall,
   getEnrichedValue,
   updateSectionResp,
+  getSectionIndex,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -190,5 +195,6 @@ export const accordianMetaParam = (state) => state.protocol.accordianMetaParam;
 export const metadataApiCallValue = (state) =>
   state.protocol.metadataApiCallValue;
 export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
+export const SectionIndex = (state) => state.protocol.sectionIndex;
 
 export default protocolSlice.reducer;

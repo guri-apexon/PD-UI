@@ -8,16 +8,42 @@ import { useDispatch } from 'react-redux';
 function AddSection({ setIsModal, hoverItem, hoverIndex, setIsShown }) {
   const dispatch = useDispatch();
   const [sectionName, setSectionName] = useState('');
+  const obj = [
+    {
+      type: 'header',
+      qc_change_type: 'add',
+      link_prefix: '',
+      link_text: sectionName,
+      link_level: '1',
+      line_id: '',
+      link_record_uid: '',
+      content: '',
+      prev_detail: {
+        link_record_uid: hoverItem.header_id,
+        line_id: '',
+      },
+      section_locked: false,
+    },
+  ];
+
   const handleSave = () => {
+    console.log(' hoverItem.doc_id', hoverItem.doc_id);
     if (sectionName === '') {
       toast.info('Enter Required Field');
     } else {
+      // dispatch({
+      //   type: 'ADD_SECTION_INDEX',
+      //   payload: {
+      //     index: hoverIndex,
+      //   },
+      // });
       dispatch({
-        type: 'POST_ADD_SECTION',
+        type: 'UPDATE_SECTION_DATA',
         payload: {
           docId: hoverItem.doc_id,
           index: hoverIndex,
-          sectionName,
+          addFlag: true,
+          reqBody: obj,
         },
       });
       setIsModal(false);

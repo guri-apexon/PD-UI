@@ -29,6 +29,7 @@ import {
   TOCActive,
   headerResult,
   updateSectionResp,
+  getSectionIndex,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -226,12 +227,32 @@ export function* updateSectionData(action) {
       data: reqBody,
     };
     const sectionSaveRes = yield call(httpCall, config);
+
     if (sectionSaveRes?.data?.success) {
-      yield put(updateSectionResp({ response: sectionSaveRes.data }));
-      toast.success(
-        sectionSaveRes.data.message || 'Section updated successfully',
-      );
+      if (action?.payload?.addFlag) {
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 0,
+          },
+        });
+      } else {
+        yield put(updateSectionResp({ response: sectionSaveRes.data }));
+        toast.success(
+          sectionSaveRes.data.message || 'Section updated successfully',
+        );
+      }
     } else {
+      yield put({
+        type: 'GET_PROTOCOL_TOC_DATA',
+        payload: {
+          docId: action?.payload?.docId,
+          index: action?.payload?.index,
+          tocFlag: 0,
+        },
+      });
+
       yield put(updateSectionResp({ response: sectionSaveRes.data }));
       toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
     }
@@ -358,6 +379,7 @@ export function* getProtocolTocDataResult(action) {
       yield put(getProtocolTocData(header));
     } else {
       yield put(getHeaderList(header));
+      yield put(getSectionIndex(action?.payload?.index));
     }
   } else {
     // eslint-disable-next-line no-lonely-if
@@ -674,6 +696,10 @@ export function* addSection(action) {
   }
 }
 
+export function* setSectionIndex(action) {
+  yield put(getSectionIndex(action.payload.index));
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -696,6 +722,7 @@ function* watchProtocolViews() {
   yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
   yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
   yield takeEvery('POST_ADD_SECTION', addSection);
+  yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
 }
 
