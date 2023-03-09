@@ -232,6 +232,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   return (
     // eslint-disable-next-line
     <section
+      data-testId="section"
       className="content-table-wrapper"
       onClick={() => onContainerClick()}
     >
@@ -257,10 +258,15 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         </div>
       )}
       {isEditable() && (
-        <div className="table-button-container" data-testId="button-container">
+        <div className="table-button-container">
           <Tooltip title="Add Footnote" placement="right">
-            <IconButton color="primary" size="small">
-              <Plus className="plus-icon" size="small" onClick={addFootNote} />
+            <IconButton
+              color="primary"
+              size="small"
+              data-testId="button-container"
+              onClick={addFootNote}
+            >
+              <Plus className="plus-icon" size="small" />
             </IconButton>
           </Tooltip>
           <ButtonGroup
@@ -296,6 +302,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       </div>
       <Modal
         className="modal delete-modal"
+        data-testId="modal-close-button"
         open={isModal}
         variant="secondary"
         onClose={() => setIsModal(false)}

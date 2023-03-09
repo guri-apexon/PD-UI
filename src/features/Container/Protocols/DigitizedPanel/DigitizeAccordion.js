@@ -13,7 +13,7 @@ import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
-import MultilineEdit from './DigitizedEdit';
+import MultilineEdit from './MultilineEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
@@ -276,7 +276,7 @@ function DigitizeAccordion({
       data-testid="accordion"
       onScroll={(e) => handleEnrichedClick(e)}
     >
-      <AccordionSummary onClick={handleChange}>
+      <AccordionSummary data-testid="accordion_summary" onClick={handleChange}>
         <div className="accordion_summary_container">
           <Typography className="section-title" data-testid="accordion-header">
             {item.source_file_section}
@@ -321,6 +321,7 @@ function DigitizeAccordion({
       <AccordionDetails
         onScroll={(e) => handleEnrichedClick(e)}
         className="section-single-content"
+        data-testid="accordion-details"
       >
         {showLoader && (
           <div className="loader accordion_details_loader">
@@ -442,6 +443,7 @@ function DigitizeAccordion({
         docId={docId}
       />
       <Modal
+        data-testid="confirm-modal"
         disableBackdropClick
         open={showConfirm}
         variant="warning"

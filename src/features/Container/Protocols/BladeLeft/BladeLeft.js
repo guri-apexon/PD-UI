@@ -15,7 +15,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const wrapperRef = useRef(null);
-  const [tocActive, setTocActive] = useState();
+  const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
@@ -70,6 +70,16 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     });
   };
 
+  const getValue = (index) => {
+    const data = tocActive || [];
+    if (data) {
+      if (data?.length >= index) {
+        return data[index];
+      }
+    }
+    return false;
+  };
+
   return (
     <div className="bladeContainer" ref={wrapperRef}>
       <Blade
@@ -92,13 +102,15 @@ function BladeLeft({ handlePageNo, dataSummary }) {
         <div className="toc-wrapper">
           {tocList?.map((item, index) => {
             const sectionIndex = index; // <= 0 ? 0 : index - 1;
+            const expanded = getValue(index);
+
             return (
               <Accordion
                 key={React.key}
                 style={{
                   border: 'none',
                 }}
-                expanded={tocActive[index]}
+                expanded={expanded}
                 onClick={() => handleChange(index)}
               >
                 <AccordionSummary>
