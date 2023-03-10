@@ -251,6 +251,7 @@ export const Apis = {
   DOWNLOAD_API: '/api/download_file',
   METADATA: '/pd/api/v1/documents',
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
+  SAVE_SECTION_CONTENT: '/api/qc_ingest',
 };
 
 export const SSO_ENABLED = environment !== 'local';
