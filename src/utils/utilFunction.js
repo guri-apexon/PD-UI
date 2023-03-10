@@ -263,7 +263,7 @@ export const prepareContent = ({
   content,
   level,
   isSaved,
-  linkId: selectedLinkId,
+  sectionLineId,
 }) => {
   const clonedSection = cloneDeep(sectionContent);
   let newObj = {};
@@ -273,6 +273,9 @@ export const prepareContent = ({
         const prevIndex =
           clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
         const prevObj = clonedSection[prevIndex] || null;
+        if (!prevObj) {
+          currentLineId = sectionLineId;
+        }
         const {
           font_info: fontInfo,
           link_id: linkId,
