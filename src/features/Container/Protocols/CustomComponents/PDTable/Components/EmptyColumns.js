@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import Grid from 'apollo-react/components/Grid';
 import Table from 'apollo-react-icons/Table';
 import { columnHoverData } from './dropdownData';
 import HoverList from './HoverList';
 
-function EmptyColumnCells({ columnLength, handleOperation, colWidth }) {
+function EmptyColumns({ columnLength, handleOperation }) {
   const columnHoverRef = useRef(null);
   const [activeIconIndex, setActiveIconIndex] = useState(null);
 
@@ -31,18 +32,14 @@ function EmptyColumnCells({ columnLength, handleOperation, colWidth }) {
     setActiveIconIndex(null);
   };
   return (
-    <div
+    <Grid
+      container
       className="pd-empty-cells"
       ref={columnHoverRef}
       data-testId="empty-cell-column"
     >
       {[...Array(columnLength)].map((val, index) => (
-        <div
-          key={uuidv4()}
-          className="pd-empty-cell-column"
-          style={{ width: `${colWidth}%` }}
-          data-testId="hover-list"
-        >
+        <Grid item xs key={uuidv4()} data-testId="hover-list">
           {/* eslint-disable-next-line */}
           <span
             className="pd-more-icon"
@@ -58,15 +55,14 @@ function EmptyColumnCells({ columnLength, handleOperation, colWidth }) {
               index={index}
             />
           )}
-        </div>
+        </Grid>
       ))}
-    </div>
+    </Grid>
   );
 }
 
-export default EmptyColumnCells;
-EmptyColumnCells.propTypes = {
+export default EmptyColumns;
+EmptyColumns.propTypes = {
   columnLength: PropTypes.isRequired,
   handleOperation: PropTypes.isRequired,
-  colWidth: PropTypes.isRequired,
 };

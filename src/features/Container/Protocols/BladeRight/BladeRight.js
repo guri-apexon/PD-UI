@@ -84,6 +84,7 @@ function BladeRight({ dataSummary }) {
                 label="Preferred Term"
                 checked={value}
                 onChange={handleChange}
+                data-testId="preferred-term-switch"
               />
             </div>
             <hr className="line" />

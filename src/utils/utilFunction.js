@@ -262,6 +262,7 @@ export const prepareContent = ({
   contentType,
   content,
   level,
+  isSaved,
 }) => {
   const clonedSection = cloneDeep(sectionContent);
   let newObj = {};
@@ -320,7 +321,9 @@ export const prepareContent = ({
             x.content = content;
             if (x.qc_change_type !== QC_CHANGE_TYPE.ADDED) {
               x.qc_change_type = QC_CHANGE_TYPE.UPDATED;
-              x.isSaved = true;
+            }
+            if (x.type === CONTENT_TYPE.TABLE) {
+              x.isSaved = isSaved;
             }
           }
           return x;

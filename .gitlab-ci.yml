@@ -1,14 +1,15 @@
 variables:
   PACKAGE: "pd-ui-git"
 
-image: node:12.20
+image: node:16.14
 
 cache:
   paths:
     - node_modules/
 
 stages:
-  - unit-test
+  - lint-check
+  - unit-test-coverage
   - sonar-scan
   - dev-deploy
   - test-deploy
@@ -17,27 +18,52 @@ stages:
   - uat-deploy
   - prod-deploy
 
-unit-test:
-  stage: unit-test
-
-  tags: 
-    - pd-ui-dev
-  
-  variables:
-    GIT_CLONE_PATH: "${CI_BUILDS_DIR}/${PACKAGE}"
-  
+lint-check:
+  stage: lint-check
   script:
-    - echo "Testing App"
-    - sh CI-scripts/unit-test.sh
-    - echo "Test successfully!"
+    - npm run pd:deps
+    - npm run lint 
+  cache:
+    paths:
+      - node_modules/
+  artifacts:
+    expire_in: 1 days
+    when: on_success
+    paths:
+      - node_modules/
   allow_failure: true
   only:
     refs:
       - merge_requests
       - develop
+      - development
+    variables: 
+      - $ENVIRONMENT== "dev"
+      - $ENVIRONMENT== "test"
+
+unit-test-coverage:
+  stage: unit-test-coverage
+  script:
+    - npm run test:ci 
+  
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    paths:
+      - coverage/
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  allow_failure: true
+  only:
+    refs:
+      - merge_requests
+      - develop
+      - development
       
     variables: 
       - $ENVIRONMENT== "dev"
+      - $ENVIRONMENT== "test"
 
 Perform Sonarqube Analysis and quality gate:
   image: sonarsource/sonar-scanner-cli
@@ -61,8 +87,10 @@ Perform Sonarqube Analysis and quality gate:
     refs:
       - merge_requests
       - develop
+      - development
     variables: 
       - $ENVIRONMENT== "dev"
+      - $ENVIRONMENT== "test"
 
 dev-deploy:
   stage: dev-deploy
@@ -84,7 +112,7 @@ dev-deploy:
       
   only:
     refs:
-      - develop
+      - development
     variables: 
       - $ENVIRONMENT== "dev"
 
@@ -159,7 +187,9 @@ svt-deploy:
       
   only:
     refs:
-      - release-1.4
+      - develop
+      - merge_requests
+      - /^release*/
     variables: 
       - $ENVIRONMENT== "svt"
 

@@ -27,6 +27,7 @@ import {
   getMetadataApiCall,
   getEnrichedValue,
   updateSectionResp,
+  TOCActive,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -369,7 +370,7 @@ export function* getProtocolTocDataResult(action) {
     }
   } else {
     // eslint-disable-next-line no-lonely-if
-    if (!action.payload.tocFlag) {
+    if (action.payload.tocFlag) {
       yield put(
         getProtocolTocData({
           success: false,
@@ -562,7 +563,7 @@ export function* deleteAttribute(action) {
           op,
         }),
       );
-      toast.info(`${reqData.name} successfully deleted`);
+      toast.info(`${reqData.accData.name} successfully deleted`);
     } else {
       toast.info('attributes successfully deleted');
     }
@@ -575,7 +576,7 @@ export function* deleteAttribute(action) {
           op,
         }),
       );
-      toast.info(`${reqData.name} not deleted`);
+      toast.info(`${reqData?.accData?.name} not deleted`);
     } else {
       toast.info('attributes not deleted');
     }
@@ -583,6 +584,11 @@ export function* deleteAttribute(action) {
 }
 
 export function* RightBladeValue(action) {
+  if (action.payload.name === PROTOCOL_RIGHT_MENU.HOME) {
+    const TocActiveList = yield select(TOCActive);
+    const TocFalse = new Array(TocActiveList.length).fill(false);
+    yield put(getTOCActive(TocFalse));
+  }
   yield put(getRightBladeValue(action.payload.name));
 }
 

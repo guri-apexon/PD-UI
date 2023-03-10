@@ -121,6 +121,7 @@ export const protocolSlice = createSlice({
     },
 
     updateSectionData: (state, action) => {
+      console.log(JSON.stringify(action.payload));
       const { actionType, data, content, lineId, linkId } = action.payload;
 
       if (actionType === 'REPLACE_CONTENT' && data && linkId) {

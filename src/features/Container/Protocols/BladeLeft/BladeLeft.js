@@ -10,12 +10,15 @@ import './BladeLeft.scss';
 
 import { protocolTocData, TOCActive } from '../protocolSlice';
 
+const noBorderStyle = {
+  border: 'none',
+};
 function BladeLeft({ handlePageNo, dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const wrapperRef = useRef(null);
-  const [tocActive, setTocActive] = useState();
+  const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
@@ -33,7 +36,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     dispatch({
       type: 'GET_PROTOCOL_TOC_DATA',
       payload: {
-        docId: dataSummary.id,
+        docId: dataSummary?.id,
         tocFlag: 1,
       },
     });
@@ -70,6 +73,16 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     });
   };
 
+  const getValue = (index) => {
+    const data = tocActive || [];
+    if (data) {
+      if (data?.length >= index) {
+        return data[index];
+      }
+    }
+    return false;
+  };
+
   return (
     <div className="bladeContainer" ref={wrapperRef}>
       <Blade
@@ -92,13 +105,13 @@ function BladeLeft({ handlePageNo, dataSummary }) {
         <div className="toc-wrapper">
           {tocList?.map((item, index) => {
             const sectionIndex = index; // <= 0 ? 0 : index - 1;
+            const expanded = getValue(index);
+
             return (
               <Accordion
                 key={React.key}
-                style={{
-                  border: 'none',
-                }}
-                expanded={tocActive[index]}
+                style={noBorderStyle}
+                expanded={expanded}
                 onClick={() => handleChange(index)}
               >
                 <AccordionSummary>
@@ -116,12 +129,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
 
                 {item?.childlevel?.map((level1) => {
                   return (
-                    <Accordion
-                      key={React.key}
-                      style={{
-                        border: 'none',
-                      }}
-                    >
+                    <Accordion key={React.key} style={noBorderStyle}>
                       <AccordionSummary>
                         <Tooltip title={level1?.source_file_section}>
                           <Typography
@@ -138,12 +146,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                       {level1?.subSection1 &&
                         level1?.subSection1.map((level2) => {
                           return (
-                            <Accordion
-                              key={React.key}
-                              style={{
-                                border: 'none',
-                              }}
-                            >
+                            <Accordion key={React.key} style={noBorderStyle}>
                               <AccordionSummary>
                                 <Tooltip title={level2.sub_Section}>
                                   <Typography

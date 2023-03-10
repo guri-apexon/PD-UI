@@ -4,7 +4,7 @@ import Panel from 'apollo-react/components/Panel';
 import PropTypes from 'prop-types';
 
 import PanelGroup from 'apollo-react/components/PanelGroup';
-import Pdf from './SourcePDFPanel/pdfviewer';
+import PDFViewer from './SourcePanel/PdfViewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
 import BladeRight from './BladeRight/BladeRight';
@@ -80,7 +80,7 @@ class ProtocolViewWrapper extends React.Component {
 
     return (
       <>
-        {data.userPrimaryRoleFlag && (
+        {data?.userPrimaryRoleFlag && (
           <div>
             <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
           </div>
@@ -91,7 +91,7 @@ class ProtocolViewWrapper extends React.Component {
 
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
-            {data.userPrimaryRoleFlag && (
+            {data?.userPrimaryRoleFlag && (
               <Panel
                 width={window.innerWidth / 2}
                 minWidth={window.innerWidth / 4}
@@ -102,7 +102,7 @@ class ProtocolViewWrapper extends React.Component {
                 <Card className="protocol-source-column">
                   <div className="panel-heading">Source Document</div>
                   {summaryData?.success ? (
-                    <Pdf
+                    <PDFViewer
                       page={pageNo}
                       refs={refx}
                       pageRight={pageRight}
@@ -117,7 +117,7 @@ class ProtocolViewWrapper extends React.Component {
               </Panel>
             )}
             {data && (
-              <Panel width={window.innerWidth / 2} hideButton>
+              <Panel width={window.innerWidth / 2} resizable hideButton>
                 <Digitize
                   sectionRef={sectionRef}
                   sectionNumber={sectionNumber}
