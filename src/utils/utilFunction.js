@@ -382,7 +382,7 @@ export const toBase64 = (file) =>
 
 export const createReturnObj = (obj, link_id) => {
   if (obj.type === CONTENT_TYPE.TEXT) {
-    if (obj.qc_change_type === 'add') {
+    if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
       return {
         type: obj.type,
         content: obj.content,
@@ -402,7 +402,7 @@ export const createReturnObj = (obj, link_id) => {
     };
   }
   if (obj.type === CONTENT_TYPE.HEADER) {
-    if (obj.qc_change_type === 'add') {
+    if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
       return {
         type: obj.type,
         qc_change_type: obj.qc_change_type,
@@ -418,10 +418,10 @@ export const createReturnObj = (obj, link_id) => {
         },
       };
     }
-    if (obj.qc_change_type === 'modify') {
+    if (obj.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
       return {
         type: obj.type,
-        qc_change_type: 'modify',
+        qc_change_type: QC_CHANGE_TYPE.UPDATED,
         link_prefix: '',
         link_text: '',
         content: obj.content,
@@ -431,14 +431,14 @@ export const createReturnObj = (obj, link_id) => {
       };
     }
     return {
-      type: 'header',
-      qc_change_type: 'delete',
+      type: obj.type,
+      qc_change_type: QC_CHANGE_TYPE.DELETED,
       link_record_uid: obj.link_record_uid,
       line_id: obj.line_id,
     };
   }
   if (obj.type === CONTENT_TYPE.IMAGE) {
-    if (obj.qc_change_type === 'add') {
+    if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
       return {
         type: obj.type,
         content: obj.content,
@@ -458,7 +458,7 @@ export const createReturnObj = (obj, link_id) => {
     };
   }
   if (obj.type === CONTENT_TYPE.TABLE) {
-    if (obj.qc_change_type === 'add') {
+    if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
       return {
         type: obj.type,
         content: obj.content,
