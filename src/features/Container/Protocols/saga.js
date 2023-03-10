@@ -26,9 +26,9 @@ import {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  updateSectionResp,
   TOCActive,
   headerResult,
-  updateSectionResp,
   getSectionIndex,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';

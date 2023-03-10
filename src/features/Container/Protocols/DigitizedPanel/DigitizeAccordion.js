@@ -218,7 +218,7 @@ function DigitizeAccordion({
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
     } else {
-      // setShowLoader(true);
+      setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: { reqBody },
