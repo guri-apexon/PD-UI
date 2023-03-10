@@ -226,4 +226,19 @@ describe('AddNewMapping Screen', () => {
     });
     fireEvent.click(screen.getByText('Cancel'));
   });
+
+  test('should focus the following show required message', () => {
+    render(<AddNewMapping />, {
+      initialState: {
+        admin: mockState,
+      },
+    });
+
+    const edit = screen.getByTestId('viaTicketNumber-textField');
+    fireEvent.change(edit.children[1].children[0], {
+      target: { value: 'viaTicketNumber-123' },
+    });
+    fireEvent.focusOut(edit.children[1].children[0]);
+    expect(edit.children[2]).toBeUndefined();
+  });
 });

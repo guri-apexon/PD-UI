@@ -1,26 +1,26 @@
 /* eslint-disable */
-import { all, call, takeLatest, put, select } from 'redux-saga/effects';
 import moment from 'moment';
 import { toast } from 'react-toastify';
-import { httpCall, BASE_URL_8000, httpCallSDA } from '../../../utils/api';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+import { BASE_URL_8000, httpCall, httpCallSDA } from '../../../utils/api';
 import {
-  getUsers,
-  getUserRoles,
-  getRolesOptions,
   getProtocolMap,
-  setUserRoleErr,
-  setModalToggle,
+  getRolesOptions,
+  getUserRoles,
+  getUsers,
+  setBulkMapError,
+  setBulkMapResponse,
+  setFormError,
   setLoader,
-  setNewUserError,
+  setMapLoader,
+  setModalToggle,
   setNewMappingError,
+  setNewUserError,
   setNewUserValues,
+  setSearch,
   setUserError,
   setUserLoader,
-  setFormError,
-  setBulkMapResponse,
-  setBulkMapError,
-  setSearch,
-  setMapLoader,
+  setUserRoleErr,
 } from './adminSlice';
 
 export function* usersFunction() {
@@ -241,6 +241,7 @@ export function* addNewUser() {
     data.email = item.email;
     data.country = item.country;
     data.user_type = item.userRole;
+    data.accessReason = item.viaTicketNumber;
     return data;
   });
   const Config = {
@@ -379,6 +380,7 @@ export function* newMapping(action) {
       data.userRole = item.role.toLowerCase();
       data.projectId = item.projectId;
       data.follow = item.following === '1';
+      data.accessReason = item.viaTicketNumber;
       return data;
     });
     const Config = {
@@ -436,12 +438,14 @@ export function* getUserDetails(action) {
     country: { error: false, message: '' },
     userId: { error: false, message: '' },
     userRole: { error: false, message: '' },
+    viaTicketNumber: { error: false, message: '' },
   };
   const userValue = {
     firstName: null,
     lastName: null,
     email: null,
     country: null,
+    viaTicketNumber: null,
   };
   try {
     yield put(setUserLoader(true));
@@ -455,6 +459,7 @@ export function* getUserDetails(action) {
       data.email = userData.data.email;
       data.country = userData.data.country;
       data.userRole = userDetails.userRole;
+      data.viaTicketNumber = userData.accessReason
 
       yield put(setNewUserValues(data));
       yield put(setUserError(''));
@@ -488,8 +493,8 @@ export function* getUserDetails(action) {
 export function* bulkUploadMapping(action) {
   yield put(setMapLoader(true));
   const bodyFormData = new FormData();
-  bodyFormData.append('user_protocol_xls_file', action.payload);
-  const Url = `${BASE_URL_8000}/api/user_protocol/user_protocol_many`;
+  bodyFormData.append('user_protocol_xls_file', action.payload.uploadedFile);
+  const Url = `${BASE_URL_8000}/api/user_protocol/user_protocol_many?user_updated=${action.payload.userUpdated}&access_reason=${action.payload.accessReason}`;
   const Config = {
     url: Url,
     method: 'POST',
