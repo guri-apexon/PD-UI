@@ -97,7 +97,7 @@ export function ValueField({
                 label=""
                 name={keyName}
                 fullWidth
-                value={inputValue}
+                value={inputValue || ''}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 inputProps={{
