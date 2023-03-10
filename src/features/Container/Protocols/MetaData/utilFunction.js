@@ -120,7 +120,7 @@ export const flattenMetaParam = (updatedParam, data, level) => {
 };
 
 export const checkDuplicates = (data) => {
-  const unique = data.filter(
+  const unique = data?.filter(
     (obj, index) =>
       data.findIndex(
         (attr) =>
@@ -128,12 +128,12 @@ export const checkDuplicates = (data) => {
       ) === index,
   );
 
-  return unique.length === data.length;
+  return unique?.length === data?.length;
 };
 
 export const validationCheck = (rowData) => {
   let isValid = true;
-  if (rowData.length > 0) {
+  if (rowData?.length > 0) {
     const keys = Object.keys(rowData[0]);
     keys.forEach((key) => {
       rowData.forEach((data) => {

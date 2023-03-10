@@ -186,7 +186,7 @@ function MetaData({ docId }) {
     e.stopPropagation();
     if (!checkDuplicates(rows[accData?.formattedName])) {
       toast.error('Duplicate attribute');
-    } else if (!validationCheck(rows[accData?.formattedName])) {
+    } else if (!validationCheck(rows?.[accData?.formattedName])) {
       toast.error('Please fill all fields');
     } else if (accData.name === 'summary') {
       const filterCustomData = rows[accData?.name]?.filter(
