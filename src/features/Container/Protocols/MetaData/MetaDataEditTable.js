@@ -29,7 +29,7 @@ function EditableCell({ row, column: { accessor: key } }) {
     if (e?.target?.name === 'attr_type') {
       setType(e.target.value ? e.target.value : 'string');
     } else {
-      setVal(e.target.value);
+      setVal(e?.target?.value);
     }
   };
 

@@ -140,7 +140,7 @@ export const validationCheck = (rowData) => {
         if (
           (key === 'attr_name' || key === 'attr_value') &&
           data.isCustom &&
-          (!data[key] || !data[key].trim())
+          (!data[key] || !data[key]?.toString().trim())
         ) {
           isValid = false;
         }
