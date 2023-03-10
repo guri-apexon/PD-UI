@@ -207,7 +207,8 @@ function DigitizeAccordion({
     dispatchSectionData();
   };
 
-  const onEditClick = () => {
+  const onEditClick = (e) => {
+    e.stopPropagation();
     setShowEdit(true);
     if (currentEditCard) {
       // setShowConfirm(true);
@@ -216,7 +217,8 @@ function DigitizeAccordion({
     }
   };
 
-  const onSaveClick = () => {
+  const onSaveClick = (e) => {
+    e.stopPropagation();
     if (isTableChanged) {
       setShowAlert(true);
       return;
@@ -226,7 +228,7 @@ function DigitizeAccordion({
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
     } else {
-      setShowLoader(true);
+      // setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: { reqBody },
