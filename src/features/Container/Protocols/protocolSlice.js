@@ -28,6 +28,8 @@ export const protocolSlice = createSlice({
     sectionDetails: {
       protocol: null,
       data: [],
+      sectionResponse: null,
+      updated: false,
     },
     protocolTocData: [],
     sectionLoader: false,
@@ -70,11 +72,19 @@ export const protocolSlice = createSlice({
     setSectionDetails: (state, action) => {
       const { protocol, linkId, data } = action.payload;
       if (protocol === state.sectionDetails.protocol) {
-        state.sectionDetails.data.push({ linkId, data });
+        const existIndex = state.sectionDetails?.data?.findIndex(
+          (x) => x.linkId === linkId,
+        );
+        if (existIndex >= 0) {
+          state.sectionDetails.data[existIndex].data = data;
+        } else {
+          state.sectionDetails.data.push({ linkId, data });
+        }
       } else {
         state.sectionDetails.protocol = protocol;
         state.sectionDetails.data = [{ linkId, data }];
       }
+      state.sectionDetails.sectionResponse = null;
     },
     getProtocolTocData: (state, action) => {
       state.protocolTocData = action.payload;
@@ -88,11 +98,32 @@ export const protocolSlice = createSlice({
     getFileStream: (state, action) => {
       state.fileStream = action.payload;
     },
+    updateSectionResp: (state, action) => {
+      if (action?.payload?.response) {
+        state.sectionDetails = {
+          ...state.sectionDetails,
+          sectionResponse: action?.payload?.response,
+          updated: true,
+        };
+      } else {
+        state.sectionDetails = {
+          ...state.sectionDetails,
+          updated: true,
+        };
+      }
+    },
+
+    resetUpdateStatus: (state) => {
+      state.sectionDetails = {
+        ...state.sectionDetails,
+        updated: false,
+      };
+    },
+
     updateSectionData: (state, action) => {
       const { actionType, data, content, lineId, linkId } = action.payload;
 
       if (actionType === 'REPLACE_CONTENT' && data && linkId) {
-        console.log('REPLACE_CONTENT UPDATED');
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
         );
@@ -152,6 +183,8 @@ export const {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  updateSectionResp,
+  resetUpdateStatus,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

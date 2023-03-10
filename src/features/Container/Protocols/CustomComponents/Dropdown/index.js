@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
+import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 
 const headerList = [
@@ -34,6 +35,7 @@ function Dropdown({
     dispatchSectionEvent('LINK_LEVEL_UPDATE', {
       level,
       currentLineId: activeLineID,
+      contentType: CONTENT_TYPE.HEADER,
     });
     document.execCommand('formatBlock', false, name);
   };
