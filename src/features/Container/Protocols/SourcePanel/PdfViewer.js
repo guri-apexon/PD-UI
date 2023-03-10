@@ -135,6 +135,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
     >
       {pdfString && (
         <Document
+          className="document-pdf"
           file={pdfString}
           onLoadSuccess={onDocumentLoadSuccess}
           onKeyDown={(e) => handleKeyDown(e)}
@@ -142,7 +143,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
           <Page pageNumber={currentPage + 1} scale={pageScale} />
         </Document>
       )}
-      <div className="sticky-bottom pdf-pagination">
+      <div className="sticky-bottom pdf-pagination" data-testid="paginaton_1">
         <Pagination
           count={numPages}
           rowsPerPage={1}
