@@ -376,12 +376,12 @@ function DigitizeAccordion({
           className="section-single-content"
           data-testid="accordion-details"
         >
-          {showLoader && (
+          {showLoader ? (
             <div className="loader accordion_details_loader">
               <Loader />
             </div>
-          )}
-          {sectionDataArr?.length >= 0 &&
+          ) : (
+            sectionDataArr?.length >= 0 &&
             (showedit ? (
               <MultilineEdit
                 linkId={item.link_id}
@@ -487,7 +487,8 @@ function DigitizeAccordion({
                   );
                 })}
               </div>
-            ))}
+            ))
+          )}
         </AccordionDetails>
         <MedicalTerm
           enrichedTarget={enrichedTarget}
