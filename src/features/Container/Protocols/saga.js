@@ -220,7 +220,6 @@ export function* updateSectionData(action) {
     const {
       payload: { reqBody },
     } = action;
-    console.log('updateSectionData::', reqBody);
     const config = {
       url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
       method: 'POST',

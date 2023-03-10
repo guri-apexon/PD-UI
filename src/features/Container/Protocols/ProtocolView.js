@@ -65,6 +65,7 @@ function ProtocolView({ refs, data }) {
       contentType: type,
       sectionContent,
       currentLineId: lineId,
+      linkId: selectedSection.link_id,
     });
     setSectionContent(content);
     dispatch(
