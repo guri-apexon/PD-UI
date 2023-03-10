@@ -380,7 +380,7 @@ export const toBase64 = (file) =>
   });
 
 export const createReturnObj = (obj, link_id) => {
-  if (obj.type === 'text') {
+  if (obj.type === CONTENT_TYPE.TEXT) {
     if (obj.qc_change_type === 'add') {
       return {
         type: obj.type,
@@ -400,7 +400,7 @@ export const createReturnObj = (obj, link_id) => {
       line_id: obj.line_id?.slice(0, 36),
     };
   }
-  if (obj.type === 'header') {
+  if (obj.type === CONTENT_TYPE.HEADER) {
     if (obj.qc_change_type === 'add') {
       return {
         type: obj.type,
@@ -436,7 +436,7 @@ export const createReturnObj = (obj, link_id) => {
       line_id: obj.line_id,
     };
   }
-  if (obj.type === 'image') {
+  if (obj.type === CONTENT_TYPE.IMAGE) {
     if (obj.qc_change_type === 'add') {
       return {
         type: obj.type,
@@ -457,7 +457,7 @@ export const createReturnObj = (obj, link_id) => {
       line_id: obj.line_id?.slice(0, 36),
     };
   }
-  if (obj.type === 'table') {
+  if (obj.type === CONTENT_TYPE.TABLE) {
     if (obj.qc_change_type === 'add') {
       return {
         type: obj.type,
@@ -469,15 +469,13 @@ export const createReturnObj = (obj, link_id) => {
         },
       };
     }
-    if (['modify', 'delete'].includes(obj.qc_change_type)) {
-      return {
-        type: obj.type,
-        content: obj.content,
-        link_id,
-        qc_change_type: obj.qc_change_type,
-        line_id: obj.line_id?.slice(0, 36),
-      };
-    }
+    return {
+      type: obj.type,
+      content: obj.content,
+      link_id,
+      qc_change_type: obj.qc_change_type,
+      line_id: obj.line_id?.slice(0, 36),
+    };
   }
   return obj;
 };

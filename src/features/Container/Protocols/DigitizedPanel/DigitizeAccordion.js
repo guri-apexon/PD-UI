@@ -146,7 +146,6 @@ function DigitizeAccordion({
     } else if (!tocActive[index]) {
       setExpanded(false);
     }
-
     // eslint-disable-next-line
   }, [tocActive]);
 
@@ -168,12 +167,6 @@ function DigitizeAccordion({
       setClinicalTerms(null);
     }
   };
-  // useEffect(() => {
-  //   if (currentEditCard !== item.link_id) {
-  //     setShowEdit(false);
-  //   }
-  //   // eslint-disable-next-line
-  // }, [currentEditCard]);
 
   const dispatchSectionData = (resetValues) => {
     if (resetValues) {
@@ -198,9 +191,7 @@ function DigitizeAccordion({
 
   const onEditClick = () => {
     setShowEdit(true);
-    if (currentEditCard) {
-      // setShowConfirm(true);
-    } else {
+    if (!currentEditCard) {
       onShowEdit();
     }
   };
@@ -211,7 +202,6 @@ function DigitizeAccordion({
       return;
     }
     const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
-    console.log({ reqBody });
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
     } else {
@@ -225,7 +215,6 @@ function DigitizeAccordion({
 
   useEffect(() => {
     if (expanded) {
-      console.log('sectionHeaderDetails::', sectionHeaderDetails);
       const { sectionResponse, data } = sectionHeaderDetails;
       if (sectionResponse) {
         if (sectionResponse?.success && showedit) {
@@ -262,7 +251,6 @@ function DigitizeAccordion({
         }
         if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
         setSectionDataArr(updatedSectionsData);
-        console.log({ sectionDataArr });
       } else {
         setSectionDataArr([]);
       }
@@ -273,7 +261,6 @@ function DigitizeAccordion({
   useEffect(() => {
     if (updated && item.link_id === selectedSection.link_id) {
       setShowLoader(true);
-      console.log({ sectionDataArr, selectedSection });
       dispatchSectionEvent('ON_SECTION_SELECT', {
         selectedSection: item,
         sectionContent: sectionDataArr,
