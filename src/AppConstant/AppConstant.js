@@ -196,30 +196,6 @@ const METADATA_LIST = [
   { label: 'Endpoint and Objectives' },
 ];
 
-export const POST_ADD_SECTION = {
-  type: 'header',
-  qc_change_type: 'add',
-  link_prefix: '',
-  link_text: '',
-  link_level: '1',
-  line_id: '',
-  content: '',
-  uuid: '',
-  prev_detail: {
-    line_id: '',
-    link_id: '',
-    link_id_level2: '',
-    link_id_level3: '',
-    link_id_level4: '',
-    link_id_level5: '',
-    link_id_level6: '',
-    link_id_subsection1: '',
-    link_id_subsection2: '',
-    link_id_subsection3: '',
-  },
-  section_locked: false,
-};
-
 export {
   SORT_DROPDOWN,
   USER_MENU,

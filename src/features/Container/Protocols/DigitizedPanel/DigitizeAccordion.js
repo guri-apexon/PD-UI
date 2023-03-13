@@ -74,7 +74,7 @@ function DigitizeAccordion({
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
-  const sectionIndex = useSelector(SectionIndex);
+  const NewSectionIndex = useSelector(SectionIndex);
 
   const isTableChanged = false;
 
@@ -147,7 +147,7 @@ function DigitizeAccordion({
       currentActiveCard === item.link_id &&
       !expanded &&
       tocActive[index] &&
-      sectionIndex >= 0
+      NewSectionIndex >= 0
     ) {
       setShowEdit(true);
       dispatch({

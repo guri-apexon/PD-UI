@@ -40,5 +40,31 @@ const footNote = {
 };
 delete image.font_info;
 
+const addHeader = {
+  type: '',
+  qc_change_type: 'add',
+  link_prefix: '',
+  link_text: '',
+  link_level: '1',
+  line_id: '',
+  content: '',
+  uuid: '',
+  prev_detail: {
+    line_id: '',
+    link_id: '',
+    link_id_level2: '',
+    link_id_level3: '',
+    link_id_level4: '',
+    link_id_level5: '',
+    link_id_level6: '',
+    link_id_subsection1: '',
+    link_id_subsection2: '',
+    link_id_subsection3: '',
+  },
+  section_locked: false,
+};
+
+const headerLevel1 = { ...addHeader, type: 'header', linkLevel: 1 };
+
 // eslint-disable-next-line
-export default { text, table, header, image, footNote };
+export default { text, table, header, image, footNote, headerLevel1 };
