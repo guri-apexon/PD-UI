@@ -383,14 +383,14 @@ export const toBase64 = (file) =>
     };
   });
 
-export const createReturnObj = (obj, link_id) => {
+export const createReturnObj = (obj, linkId) => {
   if (obj.type === CONTENT_TYPE.TEXT) {
     if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
       return {
         type: obj.type,
         content: obj.content,
         qc_change_type: obj.qc_change_type,
-        link_id,
+        link_id: linkId,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
@@ -399,7 +399,7 @@ export const createReturnObj = (obj, link_id) => {
     return {
       type: obj.type,
       content: obj.content,
-      link_id,
+      link_id: linkId,
       qc_change_type: obj.qc_change_type,
       line_id: obj.line_id?.slice(0, 36),
     };
@@ -446,7 +446,7 @@ export const createReturnObj = (obj, link_id) => {
         type: obj.type,
         content: obj.content,
         qc_change_type: obj.qc_change_type,
-        link_id,
+        link_id: linkId,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
@@ -455,7 +455,7 @@ export const createReturnObj = (obj, link_id) => {
     return {
       type: obj.type,
       content: obj.content,
-      link_id,
+      link_id: linkId,
       qc_change_type: obj.qc_change_type,
       line_id: obj.line_id?.slice(0, 36),
     };
@@ -466,7 +466,7 @@ export const createReturnObj = (obj, link_id) => {
         type: obj.type,
         content: obj.content,
         qc_change_type: obj.qc_change_type,
-        link_id,
+        link_id: linkId,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
@@ -475,7 +475,7 @@ export const createReturnObj = (obj, link_id) => {
     return {
       type: obj.type,
       content: obj.content,
-      link_id,
+      link_id: linkId,
       qc_change_type: obj.qc_change_type,
       line_id: obj.line_id?.slice(0, 36),
     };

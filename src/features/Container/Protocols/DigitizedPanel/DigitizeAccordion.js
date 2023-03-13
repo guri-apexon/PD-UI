@@ -75,7 +75,7 @@ function DigitizeAccordion({
   const [showAlert, setShowAlert] = useState(false);
   const sectionIndex = useSelector(SectionIndex);
 
-  const [isTableChanged, setIsTableChanged] = useState(false);
+  const isTableChanged = false;
 
   const { data: sectionData, updated } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
