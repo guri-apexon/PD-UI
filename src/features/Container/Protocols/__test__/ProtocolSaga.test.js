@@ -11,7 +11,7 @@ import {
   getTocSections,
   captalize,
   fetchSectionHeaderList,
-  getSectionList,
+  getSectionContentList,
   getProtocolTocDataResult,
   MetaDataVariable,
   deleteAttribute,
@@ -441,7 +441,7 @@ describe('Protocol Saga Unit Test', () => {
     expect(mockApi).toHaveBeenCalledTimes(1);
   });
 
-  test('getSectionList success', async () => {
+  test('getSectionContentList success', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
@@ -457,7 +457,7 @@ describe('Protocol Saga Unit Test', () => {
         },
       }),
     };
-    await runSaga(fakeStore, getSectionList, {
+    await runSaga(fakeStore, getSectionContentList, {
       payload: {
         docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
         protocol: '15-06',
@@ -467,7 +467,7 @@ describe('Protocol Saga Unit Test', () => {
     expect(mockApi).toHaveBeenCalledTimes(1);
   });
 
-  test('getSectionList with no message success', async () => {
+  test('getSectionContentList with no message success', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       message: 'No Access',
@@ -483,7 +483,7 @@ describe('Protocol Saga Unit Test', () => {
         },
       }),
     };
-    await runSaga(fakeStore, getSectionList, {
+    await runSaga(fakeStore, getSectionContentList, {
       payload: {
         docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
         protocol: '15-06',
@@ -493,7 +493,7 @@ describe('Protocol Saga Unit Test', () => {
     expect(mockApi).toHaveBeenCalledTimes(1);
   });
 
-  test('getSectionList failure', async () => {
+  test('getSectionContentList failure', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,
@@ -509,7 +509,7 @@ describe('Protocol Saga Unit Test', () => {
         },
       }),
     };
-    await runSaga(fakeStore, getSectionList, {
+    await runSaga(fakeStore, getSectionContentList, {
       payload: {
         docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
         protocol: '15-06',
