@@ -263,7 +263,7 @@ export const prepareContent = ({
   content,
   level,
   isSaved,
-  sectionLineId,
+  section,
 }) => {
   const clonedSection = cloneDeep(sectionContent);
   let newObj = {};
@@ -272,10 +272,18 @@ export const prepareContent = ({
       if (currentLineId && contentType) {
         const prevIndex =
           clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
-        const prevObj = clonedSection[prevIndex] || null;
+        let prevObj = clonedSection[prevIndex] || null;
         if (!prevObj) {
-          currentLineId = sectionLineId;
+          prevObj = {
+            font_info: null,
+            link_id: section.link_id,
+            type: CONTENT_TYPE.TEXT,
+            file_section_level: null,
+            aidocid: section.doc_id,
+          };
+          currentLineId = section.line_id;
         }
+
         const {
           font_info: fontInfo,
           link_id: linkId,

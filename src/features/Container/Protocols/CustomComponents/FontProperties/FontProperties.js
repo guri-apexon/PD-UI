@@ -52,9 +52,9 @@ function FontProperties({
     setEnable(activeLineID);
   }, [activeLineID]);
 
-  useEffect(() => {
-    setEnable(true);
-  }, [enableNewSection]);
+  // useEffect(() => {
+  //   setEnable(true);
+  // }, [enableNewSection]);
 
   return (
     <div

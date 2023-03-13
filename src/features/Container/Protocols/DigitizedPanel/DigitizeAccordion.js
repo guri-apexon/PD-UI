@@ -35,6 +35,7 @@ import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
 import AddSection from './AddSection';
+
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
@@ -215,7 +216,7 @@ function DigitizeAccordion({
       return;
     }
     const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
-    console.log('SHUBHAM3', reqBody);
+
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
     } else {
@@ -240,6 +241,7 @@ function DigitizeAccordion({
       setShowLoader(false);
       if (sectionObj?.data?.length) {
         // setShowLoader(true);
+
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = sectionObj.data;
@@ -265,131 +267,12 @@ function DigitizeAccordion({
         }
         if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
         setSectionDataArr(updatedSectionsData);
-      } else {
-        setSectionDataArr([
-          {
-            section_level: '',
-            CPT_section: 'Unmapped',
-            type: 'text',
-            content: 'Edit Your Text Here',
-            font_info: {
-              IsBold: false,
-              font_size: -1,
-              font_style: '',
-              entity: [],
-              roi_id: {
-                para: '84f1e221-336b-438b-8d47-5643db2be9de',
-                childbox: '',
-                subtext: '',
-              },
-              Bold: false,
-              Caps: false,
-              ColorRGB: 0,
-              doc_id: '36b2b7e8-0c8e-437e-9552-81db1f945799',
-              DStrike: false,
-              Emboss: false,
-              group_type: 'fontInfo',
-              hierarchy: 'paragraph',
-              Highlight: '',
-              id: '40f4bf56-8e9f-44ac-a0a9-979d598a0cc0',
-              Imprint: false,
-              iqv_standard_term: '',
-              Italics: false,
-              link_id: '9062b40b-874a-11ed-ac29-005056ab6469',
-              link_id_level2: '',
-              link_id_level3: '',
-              link_id_level4: '',
-              link_id_level5: '',
-              link_id_level6: '',
-              link_id_subsection1: '',
-              link_id_subsection2: '',
-              link_id_subsection3: '',
-              Outline: false,
-              parent_id: '2771cfd9-9246-4766-95b5-0964325a9cc2',
-              rFonts: '',
-              rStyle: '',
-              Shadow: false,
-              Size: -1,
-              SmallCaps: false,
-              Strike: false,
-              Underline: '',
-              Vanish: false,
-              VertAlign: '',
-            },
-            level_1_CPT_section: 'Unmapped',
-            file_section: 'Unmapped',
-            file_section_num: '',
-            file_section_level: 1,
-            seq_num: 2,
-            qc_change_type: '',
-            line_id: '84f1e221-336b-438b-8d47-5643db2be9de',
-            aidocid: '36b2b7e8-0c8e-437e-9552-81db1f945799',
-            synonyms_extracted_terms: '',
-            semantic_extraction: '',
-            section_locked: false,
-          },
-          {
-            section_level: '',
-            CPT_section: 'Unmapped',
-            type: 'text',
-            content: 'Edit Your Text Here',
-            font_info: {
-              IsBold: false,
-              font_size: -1,
-              font_style: '',
-              entity: [],
-              roi_id: {
-                para: '84f1e221-336b-438b-8d47-5643db2be9de',
-                childbox: '',
-                subtext: '',
-              },
-              Bold: false,
-              Caps: false,
-              ColorRGB: 0,
-              doc_id: '36b2b7e8-0c8e-437e-9552-81db1f945799',
-              DStrike: false,
-              Emboss: false,
-              group_type: 'fontInfo',
-              hierarchy: 'paragraph',
-              Highlight: '',
-              id: '40f4bf56-8e9f-44ac-a0a9-979d598a0cc0',
-              Imprint: false,
-              iqv_standard_term: '',
-              Italics: false,
-              link_id: '9062b40b-874a-11ed-ac29-005056ab6469',
-              link_id_level2: '',
-              link_id_level3: '',
-              link_id_level4: '',
-              link_id_level5: '',
-              link_id_level6: '',
-              link_id_subsection1: '',
-              link_id_subsection2: '',
-              link_id_subsection3: '',
-              Outline: false,
-              parent_id: '2771cfd9-9246-4766-95b5-0964325a9cc2',
-              rFonts: '',
-              rStyle: '',
-              Shadow: false,
-              Size: -1,
-              SmallCaps: false,
-              Strike: false,
-              Underline: '',
-              Vanish: false,
-              VertAlign: '',
-            },
-            level_1_CPT_section: 'Unmapped',
-            file_section: 'Unmapped',
-            file_section_num: '',
-            file_section_level: 1,
-            seq_num: 2,
-            qc_change_type: '',
-            line_id: '84f1e221-336b-438b-8d47-5643db2be9de',
-            aidocid: '36b2b7e8-0c8e-437e-9552-81db1f945799',
-            synonyms_extracted_terms: '',
-            semantic_extraction: '',
-            section_locked: false,
-          },
-        ]);
+      } else if (sectionObj?.data?.length === 0) {
+        dispatchSectionEvent('CONTENT_ADDED', {
+          type: CONTENT_TYPE.TEXT,
+          lineId: item.line_id,
+          section: item,
+        });
       }
     }
     // eslint-disable-next-line
@@ -514,7 +397,7 @@ function DigitizeAccordion({
               />
             ) : (
               <div className="readable-content">
-                {sectionDataArr.map((section) => {
+                {sectionDataArr?.map((section) => {
                   if (section.type === CONTENT_TYPE.TABLE) {
                     return (
                       <DisplayTable
@@ -542,7 +425,7 @@ function DigitizeAccordion({
                     );
                   }
                   return section?.font_info?.VertAlign === 'superscript' &&
-                    section.content.length >= 0 ? (
+                    section?.content?.length > 0 ? (
                     // eslint-disable-next-line
                     <div
                       key={React.key}
