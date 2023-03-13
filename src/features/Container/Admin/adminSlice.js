@@ -31,6 +31,7 @@ export const adminSlice = createSlice({
       role: null,
       following: null,
       viaTicketNumber: null,
+      updatedByUser: null,
     },
     newMappingError: '',
     getUserError: '',

@@ -241,7 +241,7 @@ export function* addNewUser() {
     data.email = item.email;
     data.country = item.country;
     data.user_type = item.userRole;
-    data.accessReason = item.viaTicketNumber;
+    data.reason_for_change = item.viaTicketNumber;
     return data;
   });
   const Config = {
@@ -381,6 +381,7 @@ export function* newMapping(action) {
       data.projectId = item.projectId;
       data.follow = item.following === '1';
       data.accessReason = item.viaTicketNumber;
+      data.userUpdated = item.updatedByUser
       return data;
     });
     const Config = {
