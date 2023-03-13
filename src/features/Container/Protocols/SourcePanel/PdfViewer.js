@@ -122,7 +122,6 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
       setPage(currentPage - 1);
     }
   }
-
   return (
     // eslint-disable-next-line
     <div

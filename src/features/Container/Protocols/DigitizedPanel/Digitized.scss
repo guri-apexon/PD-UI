@@ -7,6 +7,9 @@
   text-align: justify;
   display: flex;
   flex-direction: column;
+  .accordion_details_loader {
+    height: 60vh;
+  }
   .content_container,
   .readable-content {
     h1,
@@ -74,6 +77,10 @@
   p {
     line-height: 1.2;
     padding: 10px 0;
+  }
+  .section-actions {
+    display: flex;
+    flex-direction: row;
   }
 }
 

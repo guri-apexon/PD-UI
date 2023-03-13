@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import IconButton from 'apollo-react/components/IconButton';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
-import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
@@ -18,15 +19,19 @@ import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
   createEnrichedText,
+  getSaveSectionPayload,
 } from '../../../../utils/utilFunction';
-import { sectionDetails, TOCActive } from '../protocolSlice';
+import { sectionDetails, TOCActive, resetUpdateStatus } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
-import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../AppConstant/AppConstant';
 
 const styles = {
   modal: {
@@ -43,8 +48,6 @@ function DigitizeAccordion({
   currentActiveCard,
   handlePageRight,
   rightBladeValue,
-  currentEditCard,
-  setCurrentEditCard,
   index,
 }) {
   const classes = useStyles();
@@ -55,16 +58,18 @@ function DigitizeAccordion({
   const [sectionDataArr, setSectionDataArr] = useState([]);
   const [enrichedTarget, setEnrichedTarget] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
-  const [editedMode, setEditedMode] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
+  const [currentEditCard, setCurrentEditCard] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
 
-  const { data: sectionData } = sectionHeaderDetails;
+  const isTableChanged = false;
+
+  const { data: sectionData, updated } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
 
   const tocActiveSelector = useSelector(TOCActive);
@@ -72,7 +77,8 @@ function DigitizeAccordion({
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const { dispatchSectionEvent, sectionContent } = useProtContext();
+  const { dispatchSectionEvent, sectionContent, selectedSection } =
+    useProtContext();
 
   const handleChange = () => {
     handlePageRight(item.page);
@@ -88,21 +94,24 @@ function DigitizeAccordion({
     });
   };
 
+  const fetchContent = () => {
+    dispatch({
+      type: 'GET_SECTION_LIST',
+      payload: {
+        linkId: item.link_id,
+        docId: item.doc_id,
+        protocol,
+      },
+    });
+  };
   useEffect(() => {
     if (expanded) {
       const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (arr.length === 0) {
+      if (!arr.length) {
         setShowLoader(true);
         setLinkId(item.link_id);
         setDocId(item.doc_id);
-        dispatch({
-          type: 'GET_SECTION_LIST',
-          payload: {
-            linkId: item.link_id,
-            docId: item.doc_id,
-            protocol,
-          },
-        });
+        fetchContent();
       }
     } else {
       setEnrichedTarget(null);
@@ -137,7 +146,6 @@ function DigitizeAccordion({
     } else if (!tocActive[index]) {
       setExpanded(false);
     }
-
     // eslint-disable-next-line
   }, [tocActive]);
 
@@ -160,21 +168,13 @@ function DigitizeAccordion({
     }
   };
 
-  useEffect(() => {
-    if (currentEditCard !== item.link_id) {
-      setShowEdit(false);
-    }
-    // eslint-disable-next-line
-  }, [currentEditCard]);
-
   const dispatchSectionData = (resetValues) => {
     if (resetValues) {
       dispatchSectionEvent('ON_SECTION_SELECT', {
         selectedSection: null,
         sectionContent: null,
       });
-    }
-    if (item && sectionDataArr) {
+    } else if (item && sectionDataArr) {
       dispatchSectionEvent('ON_SECTION_SELECT', {
         selectedSection: item,
         sectionContent: sectionDataArr,
@@ -186,50 +186,89 @@ function DigitizeAccordion({
     setExpanded(true);
     setShowEdit(true);
     setCurrentEditCard(item.link_id);
-    setEditedMode(true);
     dispatchSectionData();
   };
 
-  const onEditClick = (e) => {
-    e.stopPropagation();
-    if (currentEditCard) {
-      setShowConfirm(true);
-    } else {
+  const onEditClick = () => {
+    setShowEdit(true);
+    if (!currentEditCard) {
       onShowEdit();
     }
   };
 
+  const handleSaveContent = () => {
+    if (isTableChanged) {
+      setShowAlert(true);
+      return;
+    }
+    const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
+    if (!reqBody.length) {
+      toast.error('Please do some changes to update');
+    } else {
+      setShowLoader(true);
+      dispatch({
+        type: 'UPDATE_SECTION_DATA',
+        payload: { reqBody },
+      });
+    }
+  };
+
   useEffect(() => {
-    if (sectionData?.length > 0) {
-      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (arr.length > 0) {
+    if (expanded) {
+      const { sectionResponse, data } = sectionHeaderDetails;
+      if (sectionResponse) {
+        if (sectionResponse?.success && showedit) {
+          setShowEdit(false);
+          fetchContent();
+        }
+      }
+      const sectionObj = data?.find((obj) => obj.linkId === item.link_id);
+
+      if (sectionObj?.data?.length) {
         setShowLoader(false);
         let updatedSectionsData = [];
         let matchedIndex = null;
-        const sectionsData = arr[0].data;
+        const sectionsData = sectionObj.data;
         if (Array.isArray(sectionsData)) {
-          updatedSectionsData = sectionsData?.map((sec, index) => {
-            if (sec?.font_info?.VertAlign === 'superscript') {
-              matchedIndex = index;
-              return {
-                ...sec,
-                content: `${sec?.content}_${sectionsData[index + 1]?.content}`,
-              };
-            }
-            return sec;
-          });
+          updatedSectionsData = sectionsData
+            ?.map((sec, index) => {
+              if (sec?.font_info?.VertAlign === 'superscript') {
+                matchedIndex = index;
+                return {
+                  ...sec,
+                  content: `${sec?.content}_${
+                    sectionsData[index + 1]?.content
+                  }`,
+                };
+              }
+              return sec;
+            })
+            .filter((x) => x.qc_change_type !== QC_CHANGE_TYPE.DELETED);
+
           if (matchedIndex) {
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-        if (editedMode && !sectionDataArr?.length)
-          dispatchSectionData(updatedSectionsData);
-
+        if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
         setSectionDataArr(updatedSectionsData);
+      } else {
+        setSectionDataArr([]);
       }
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
+
+  useEffect(() => {
+    if (updated && item.link_id === selectedSection.link_id) {
+      setShowLoader(true);
+      dispatchSectionEvent('ON_SECTION_SELECT', {
+        selectedSection: item,
+        sectionContent: sectionDataArr,
+      });
+      dispatch(resetUpdateStatus());
+    }
+    // eslint-disable-next-line
+  }, [updated]);
 
   const getEnrichedText = (content, clinicalTerms) => {
     if (
@@ -247,29 +286,6 @@ function DigitizeAccordion({
     setClinicalTerms(null);
   }, [rightBladeValue]);
 
-  const checkUnsavedTable = () => {
-    if (sectionContent && Array.isArray(sectionContent)) {
-      const arr = sectionContent.filter(
-        (obj) => obj.type === CONTENT_TYPE.TABLE && !obj.isSaved,
-      );
-      return arr.length > 0;
-    }
-    return true;
-  };
-
-  const onSaveClick = (e) => {
-    e.stopPropagation();
-    if (checkUnsavedTable()) {
-      setShowAlert(true);
-      return;
-    }
-
-    setShowEdit(false);
-    setCurrentEditCard(null);
-    setEditedMode(false);
-    dispatchSectionData(true);
-  };
-
   return (
     <Accordion
       expanded={expanded}
@@ -281,33 +297,31 @@ function DigitizeAccordion({
           <Typography className="section-title" data-testid="accordion-header">
             {item.source_file_section}
           </Typography>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-            }}
-          >
+          {/* eslint-disable-next-line */}
+          <div className="section-actions" onClick={(e) => e.stopPropagation()}>
             {showedit && (
-              <IconButton data-testId="lockIcon">
-                <Lock style={{ paddingRight: '10px' }} />
+              <IconButton disabled={showLoader} data-testId="eyeIcon">
+                <Lock />
               </IconButton>
             )}
             {primaryRole && (
               <>
-                <IconButton className="eyeIcon" data-testId="eyeIcon">
-                  <EyeShow style={{ paddingRight: '10px' }} />
+                <IconButton disabled={showLoader} data-testId="eyeIcon">
+                  <EyeShow />
                 </IconButton>
                 {!showedit ? (
-                  // eslint-disable-next-line
-                  <IconButton data-testId="pencilIcon" onClick={onEditClick}>
+                  <IconButton
+                    disabled={showLoader}
+                    data-testId="pencilIcon"
+                    onClick={onEditClick}
+                  >
                     <Pencil />
                   </IconButton>
                 ) : (
-                  // eslint-disable-next-line
                   <IconButton
-                    onClick={onSaveClick}
+                    disabled={showAlert || showLoader}
                     data-testId="saveIcon"
-                    disabled={showAlert}
+                    onClick={handleSaveContent}
                   >
                     <Save />
                   </IconButton>
@@ -323,12 +337,12 @@ function DigitizeAccordion({
         className="section-single-content"
         data-testid="accordion-details"
       >
-        {showLoader && (
+        {showLoader ? (
           <div className="loader accordion_details_loader">
             <Loader />
           </div>
-        )}
-        {sectionDataArr?.length > 0 &&
+        ) : (
+          sectionDataArr?.length > 0 &&
           (showedit ? (
             <MultilineEdit
               linkId={item.link_id}
@@ -432,7 +446,8 @@ function DigitizeAccordion({
                 );
               })}
             </div>
-          ))}
+          ))
+        )}
       </AccordionDetails>
       <MedicalTerm
         enrichedTarget={enrichedTarget}
@@ -498,7 +513,5 @@ DigitizeAccordion.propTypes = {
   currentActiveCard: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
   rightBladeValue: PropTypes.isRequired,
-  currentEditCard: PropTypes.isRequired,
-  setCurrentEditCard: PropTypes.isRequired,
   index: PropTypes.isRequired,
 };

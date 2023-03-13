@@ -1,6 +1,5 @@
-import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
-
+import { fireEvent, render, screen } from '../../../../test-utils/test-utils';
 import NewUser from '../NewUser';
 
 describe('NewUser Screen', () => {
@@ -17,6 +16,7 @@ describe('NewUser Screen', () => {
       email: null,
       country: null,
       userRole: '',
+      viaTicketNumber: null,
     },
     modalToggle: true,
     newUserError: '',
@@ -29,6 +29,7 @@ describe('NewUser Screen', () => {
       country: { error: false, message: '' },
       userId: { error: false, message: '' },
       userRole: { error: false, message: '' },
+      viaTicketNumber: { error: false, message: '' },
     },
     roleOptions: {
       user: ['normal', 'QC1', 'QC2', 'admin'],
@@ -311,5 +312,18 @@ describe('NewUser Screen', () => {
     });
     fireEvent.click(screen.getByText('Search'));
     fireEvent.click(screen.getByText('Create'));
+  });
+
+  test('should change the VIA Ticket Number', () => {
+    render(<NewUser setIsOpen={mockHandleOpen} />, {
+      initialState: {
+        admin: mockState,
+      },
+    });
+
+    const edit =
+      screen.getByTestId('viaTicket-texfield').children[1].children[0];
+    fireEvent.change(edit, { target: { value: 'viaTicketNum-123' } });
+    expect(edit.value).toEqual('viaTicketNum-123');
   });
 });
