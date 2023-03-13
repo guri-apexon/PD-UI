@@ -227,14 +227,14 @@ export function* updateSectionData(action) {
     const sectionSaveRes = yield call(httpCall, config);
 
     if (sectionSaveRes?.data?.success) {
-      if (action?.payload?.addFlag) {
-        yield put({
-          type: 'GET_PROTOCOL_TOC_DATA',
-          payload: {
-            docId: action?.payload?.docId,
-            tocFlag: 1,
-          },
-        });
+      if (action?.payload?.refreshToc) {
+        // yield put({
+        //   type: 'GET_PROTOCOL_TOC_DATA',
+        //   payload: {
+        //     docId: action?.payload?.docId,
+        //     tocFlag: 1,
+        //   },
+        // });
         yield put({
           type: 'GET_PROTOCOL_TOC_DATA',
           payload: {

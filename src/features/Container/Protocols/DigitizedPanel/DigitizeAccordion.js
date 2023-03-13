@@ -87,7 +87,7 @@ function DigitizeAccordion({
 
   const { dispatchSectionEvent, sectionContent, selectedSection } =
     useProtContext();
-
+  console.log('SHUBHAM123', sectionContent);
   const handleChange = () => {
     handlePageRight(item.page);
     setExpanded(!expanded);
@@ -182,6 +182,7 @@ function DigitizeAccordion({
 
   const dispatchSectionData = (resetValues) => {
     if (resetValues) {
+      console.log('SHUBHAM9');
       dispatchSectionEvent('ON_SECTION_SELECT', {
         selectedSection: null,
         sectionContent: null,
@@ -215,7 +216,12 @@ function DigitizeAccordion({
       setShowAlert(true);
       return;
     }
+    // let reqBody;
+    // if (!sectionContent) {
+    //   reqBody = getSaveSectionPayload(sectionDataArr, item.link_id);
+    // } else {
     const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
+    // }
 
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
@@ -265,7 +271,7 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-        if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
+        //  if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
         setSectionDataArr(updatedSectionsData);
       } else if (sectionObj?.data?.length === 0) {
         dispatchSectionEvent('CONTENT_ADDED', {
@@ -311,7 +317,7 @@ function DigitizeAccordion({
   const [hoverItem, setHoverItem] = useState();
   const [hoverIndex, setHoverIndex] = useState();
 
-  const handlePlus = (e, item, index) => {
+  const handleAddSection = (e, item, index) => {
     e.stopPropagation();
     setIsModal(true);
     setHoverItem(item);
@@ -563,7 +569,7 @@ function DigitizeAccordion({
             data-testId="plus-add"
             color="primary"
             onClick={(e) => {
-              handlePlus(e, item, index);
+              handleAddSection(e, item, index);
             }}
             size="small"
             destructiveAction

@@ -4,46 +4,58 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import { POST_ADD_SECTION } from '../../../../AppConstant/AppConstant';
 
 function AddSection({ setIsModal, hoverItem, hoverIndex, setIsShown }) {
   const dispatch = useDispatch();
   const [sectionName, setSectionName] = useState('');
-  const obj = [
-    {
-      type: 'header',
-      qc_change_type: 'add',
-      link_prefix: '',
-      link_text: sectionName,
-      link_level: '1',
-      line_id: '',
-      content: '',
-      uuid: '',
-      prev_detail: {
-        line_id: '',
-        link_id: hoverItem.link_id,
-        link_id_level2: '',
-        link_id_level3: '',
-        link_id_level4: '',
-        link_id_level5: '',
-        link_id_level6: '',
-        link_id_subsection1: '',
-        link_id_subsection2: '',
-        link_id_subsection3: '',
-      },
-      section_locked: false,
-    },
-  ];
+  // const obj = [
+  //   {
+  //     type: 'header',
+  //     qc_change_type: 'add',
+  //     link_prefix: '',
+  //     link_text: sectionName,
+  //     link_level: '1',
+  //     line_id: '',
+  //     content: '',
+  //     uuid: '',
+  //     prev_detail: {
+  //       line_id: '',
+  //       link_id: hoverItem.link_id,
+  //       link_id_level2: '',
+  //       link_id_level3: '',
+  //       link_id_level4: '',
+  //       link_id_level5: '',
+  //       link_id_level6: '',
+  //       link_id_subsection1: '',
+  //       link_id_subsection2: '',
+  //       link_id_subsection3: '',
+  //     },
+  //     section_locked: false,
+  //   },
+  // ];
 
   const handleSave = () => {
     if (sectionName === '') {
       toast.info('Enter Required Field');
     } else {
+      const obj = [
+        {
+          ...POST_ADD_SECTION,
+          link_text: sectionName,
+          prev_detail: {
+            ...POST_ADD_SECTION.prev_detail,
+            link_id: hoverItem.link_id,
+          },
+        },
+      ];
+
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
           docId: hoverItem.doc_id,
           index: hoverIndex + 1,
-          addFlag: true,
+          refreshToc: true,
           reqBody: obj,
         },
       });
@@ -51,12 +63,11 @@ function AddSection({ setIsModal, hoverItem, hoverIndex, setIsShown }) {
       setIsShown(false);
     }
   };
-  const flag = true;
 
   return (
     <Modal
       disableBackdropClick
-      open={flag}
+      open
       variant="default"
       onClose={() => setIsModal(false)}
       title="Add New Section "

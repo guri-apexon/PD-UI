@@ -267,6 +267,7 @@ export const prepareContent = ({
 }) => {
   const clonedSection = cloneDeep(sectionContent);
   let newObj = {};
+  console.log('currentLineId', currentLineId);
   switch (type) {
     case 'ADDED':
       if (currentLineId && contentType) {
