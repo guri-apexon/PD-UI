@@ -300,7 +300,7 @@ function DigitizeAccordion({
           {/* eslint-disable-next-line */}
           <div className="section-actions" onClick={(e) => e.stopPropagation()}>
             {showedit && (
-              <IconButton disabled={showLoader} data-testId="eyeIcon">
+              <IconButton disabled={showLoader} data-testId="lockIcon">
                 <Lock />
               </IconButton>
             )}

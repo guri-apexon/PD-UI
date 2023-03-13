@@ -180,6 +180,7 @@ describe(' ProtocolSlice Test Suite', () => {
       sectionDetails: {
         protocol: '15-06',
         data: [{ linkId: payload.linkId, data: payload.data }],
+        sectionResponse: null,
       },
     });
   });
