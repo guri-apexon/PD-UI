@@ -342,7 +342,12 @@
     }
     padding-right: 10px;
     float: right;
+    border-right: 0;
+    min-width:50%;
     //width: 100% !important;
+    & > div > div {
+      background-color: transparent;
+    }
   }
 
   .view-wrapper .digitize-panel-content {
