@@ -28,7 +28,6 @@ import {
   getEnrichedValue,
   updateSectionResp,
   TOCActive,
-  headerResult,
   getSectionIndex,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
@@ -647,62 +646,6 @@ export function* saveEnrichedAPI(action) {
   }
 }
 
-export function* addSection(action) {
-  const {
-    payload: { docId, index, sectionName },
-  } = action;
-  // const config = {
-  //   url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`,
-  //   method: 'POST',
-  //   data: {
-  //     data,
-  //   },
-  // };
-  const enrichedData = { success: true }; // yield call(httpCall, config);
-  const obj = {
-    doc_id: docId,
-    group_type: 'DocumentLinks',
-    link_id: 'eb1153d8-b20a-11ed-a291-005056ab646912',
-    LinkLevel: 1,
-    page: 18,
-    sec_id: '1.',
-    source_file_section: sectionName,
-    LinkType: 'toc',
-    qc_change_type: '',
-    sequence: 0,
-    section_locked: false,
-    audit_info: {
-      last_reviewed_date: '',
-      last_reviewed_by: '',
-      total_no_review: '',
-    },
-  };
-
-  const { data } = yield select(headerResult);
-  const data1 = [...data];
-
-  if (enrichedData?.success) {
-    data1.splice(index + 1, 0, obj);
-    yield put(
-      getHeaderList({
-        success: true,
-        data: data1,
-        message: 'Success',
-      }),
-    );
-    // yield put({
-    //   type: 'GET_PROTOCOL_TOC_DATA',
-    //   payload: { docId: '36b2b7e8-0c8e-437e-9552-81db1f945799', tocFlag: 0 },
-    // });
-  } else {
-    toast.error('Error While Updation');
-    yield put({
-      type: 'GET_PROTOCOL_TOC_DATA',
-      payload: { flag: true },
-    });
-  }
-}
-
 export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
@@ -728,7 +671,6 @@ function* watchProtocolViews() {
   yield takeEvery('DELETE_METADATA', deleteAttribute);
   yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
   yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
-  yield takeEvery('POST_ADD_SECTION', addSection);
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
 }

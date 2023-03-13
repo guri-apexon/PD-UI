@@ -47,10 +47,6 @@ function FontProperties({ onHeaderSelect, activeLineID, onDeleteClick }) {
     setEnable(activeLineID);
   }, [activeLineID]);
 
-  // useEffect(() => {
-  //   setEnable(true);
-  // }, [enableNewSection]);
-
   return (
     <div
       className={`${

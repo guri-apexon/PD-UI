@@ -3,7 +3,6 @@ import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
-// import DigitizeAccordion from './DigitizeAccordion';
 
 import Loader from '../../../Components/Loader/Loader';
 import {
