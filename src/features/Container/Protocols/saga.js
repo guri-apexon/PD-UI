@@ -228,13 +228,13 @@ export function* updateSectionData(action) {
 
     if (sectionSaveRes?.data?.success) {
       if (action?.payload?.refreshToc) {
-        // yield put({
-        //   type: 'GET_PROTOCOL_TOC_DATA',
-        //   payload: {
-        //     docId: action?.payload?.docId,
-        //     tocFlag: 1,
-        //   },
-        // });
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+          },
+        });
         yield put({
           type: 'GET_PROTOCOL_TOC_DATA',
           payload: {

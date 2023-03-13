@@ -87,7 +87,6 @@ function DigitizeAccordion({
 
   const { dispatchSectionEvent, sectionContent, selectedSection } =
     useProtContext();
-  console.log('SHUBHAM123', sectionContent);
   const handleChange = () => {
     handlePageRight(item.page);
     setExpanded(!expanded);
@@ -182,7 +181,6 @@ function DigitizeAccordion({
 
   const dispatchSectionData = (resetValues) => {
     if (resetValues) {
-      console.log('SHUBHAM9');
       dispatchSectionEvent('ON_SECTION_SELECT', {
         selectedSection: null,
         sectionContent: null,
@@ -216,12 +214,8 @@ function DigitizeAccordion({
       setShowAlert(true);
       return;
     }
-    // let reqBody;
-    // if (!sectionContent) {
-    //   reqBody = getSaveSectionPayload(sectionDataArr, item.link_id);
-    // } else {
+
     const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
-    // }
 
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
@@ -244,10 +238,8 @@ function DigitizeAccordion({
         }
       }
       const sectionObj = data?.find((obj) => obj.linkId === item.link_id);
-      setShowLoader(false);
       if (sectionObj?.data?.length) {
-        // setShowLoader(true);
-
+        setShowLoader(false);
         let updatedSectionsData = [];
         let matchedIndex = null;
         const sectionsData = sectionObj.data;
