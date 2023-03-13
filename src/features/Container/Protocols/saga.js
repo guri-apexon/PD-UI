@@ -233,6 +233,13 @@ export function* updateSectionData(action) {
           type: 'GET_PROTOCOL_TOC_DATA',
           payload: {
             docId: action?.payload?.docId,
+            tocFlag: 1,
+          },
+        });
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
             index: action?.payload?.index,
             tocFlag: 0,
           },
