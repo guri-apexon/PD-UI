@@ -6,6 +6,9 @@ import Modal from 'apollo-react/components/Modal';
 import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
+import CloseCircle from 'apollo-react-icons/CloseCircle';
+import CheckboxChecked from 'apollo-react-icons/CheckboxChecked';
+import Trash from 'apollo-react-icons/Trash';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
 import { useDispatch, useSelector } from 'react-redux';
 import enrichedTerms from './clinicalTerms.json';
@@ -35,11 +38,31 @@ function MedicalTerm({
   const dispatch = useDispatch();
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState();
+  const [showIcons, setShowIcons] = useState(false);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
   }, [clinicalTermsArray]);
+  function handlePencilClick(selectedItem) {
+    setShowIcons(true);
+    if (childTermValue !== selectedItem) {
+      setNewTermValue(selectedItem);
+      setEditMode(true); // Enable edit mode when the pencil is clicked
+    } else {
+      setChildTermValue(null);
+    }
+  }
+  function handleCancelClick() {
+    setShowIcons(false);
+    setChildTermValue(null);
+  }
+
+  const handleDeleteTag = (value) => {
+    const result = childArr.filter((item) => item !== value);
+    setChildArr(result);
+  };
 
   useEffect(() => {
     if (apiFlagselector && clinicalTermsArr) {
@@ -118,7 +141,7 @@ function MedicalTerm({
       return x;
     });
     setTempChild(newArr);
-
+    setShowIcons(false);
     setChildTermValue(null);
     let name;
     if (selectedTerm === 'synonyms') name = 'entity_xref';
@@ -185,7 +208,7 @@ function MedicalTerm({
                     className="term-item"
                     onClick={(e) => {
                       setSelectedTerm(item.key);
-                      setSAnchorEl(!SanchorEl ? e.currentTarget : null);
+                      setSAnchorEl(e.currentTarget);
                     }}
                   >
                     {item.value}
@@ -196,7 +219,7 @@ function MedicalTerm({
             })}
           </div>
           <div className="delete-tag">
-            <Button>Delete tag</Button>
+            <Button onClick={() => handleDeleteTag()}>Delete tag</Button>
           </div>
         </Card>
       </Popper>
@@ -214,13 +237,55 @@ function MedicalTerm({
                   <li key={item}>
                     <Button value={item} className="term-item">
                       <span className="sub-term-text">{item}</span>
-                      <Pencil
-                        className="edit-Icon"
-                        data-testid="update-term-trigger"
-                        onClick={() => {
-                          setChildTermValue(item);
-                        }}
-                      />
+                      {!showIcons && (
+                        <Pencil
+                          className="edit-Icon"
+                          data-testid="update-term-trigger"
+                          onClick={() => {
+                            handlePencilClick(item);
+                          }}
+                        />
+                      )}
+                      {showIcons && (
+                        <div>
+                          {editMode ? (
+                            <TextField
+                              value={newTermValue}
+                              onChange={(event) =>
+                                setNewTermValue(event.target.value)
+                              }
+                              onBlur={() => setEditMode(false)}
+                            />
+                          ) : (
+                            <div
+                              role="button"
+                              tabIndex={0}
+                              onClick={() => handlePencilClick(item)}
+                              onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                  handlePencilClick(item);
+                                }
+                              }}
+                            >
+                              {item}
+                            </div>
+                          )}
+
+                          <CloseCircle
+                            className="cancel"
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onClick={handleCancelClick}
+                          />
+                          <CheckboxChecked
+                            className="save"
+                            onClick={handleSave}
+                          />
+                          <Trash
+                            className="delete"
+                            onClick={() => setChildTermValue(item)}
+                          />
+                        </div>
+                      )}
                     </Button>
                   </li>
                 );
@@ -236,24 +301,20 @@ function MedicalTerm({
         onClose={() => {
           setChildTermValue(null);
         }}
-        title="Rename Clinical Term"
         buttonProps={[
           { size: 'small' },
-          { label: 'Rename', onClick: handleSave, size: 'small' },
+          {
+            label: 'Delete',
+            onClick: handleDeleteTag,
+
+            size: 'small',
+          },
         ]}
-        id="renameTermsModal"
+        id="deletetag"
       >
-        <TextField
-          size="small"
-          fullWidth
-          value={newTermValue}
-          allowBlank="none"
-          inputProps={{ 'data-testid': 'update-term-field' }}
-          onChange={(e) => {
-            setNewTermValue(e.target.value);
-          }}
-          placeholder="Enter clinical term name"
-        />
+        <div>
+          {`Are you sure you want to delete the tag " " from the term "${enrichedText}"`}
+        </div>
       </Modal>
     </div>
   );

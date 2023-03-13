@@ -36,7 +36,7 @@
 .sub-popper {
   padding: 8px 0;
   .terms-list {
-    width: 146px;
+    width: 100%;
     .sub-term-text {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -58,4 +58,13 @@
   flex-direction: row-reverse;
   color: rgb(16, 179, 243);
   height: 25px;
+}
+.cancel{
+  color:brown;
+}
+.save{
+  color: blue
+}
+.delete{
+  color: red;
 }

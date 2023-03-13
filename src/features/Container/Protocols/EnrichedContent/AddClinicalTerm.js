@@ -15,17 +15,9 @@ function AddClinicalTerm({ docId }) {
   const [text, setText] = useState('');
   const [selectedText, setSelectedText] = useState('');
   const [isTextSelected, setIsTextSelected] = useState(false);
-  //   const [synonyms, setSynonyms] = useState('');
   const [clinicalTerms, setClinicalTerms] = useState('');
-  const [ontology, setOntology] = useState('');
+  const [ontologyTerm, setOntologyTerm] = useState('');
   const [preferredTerm, setPreferredTerm] = useState('');
-  //   const [termClass, setTermClass] = useState('');
-
-  //   const handleSynonymsChange = (event) => {
-  //     setSynonyms(event.target.value);
-  //     setText(event.target.value);
-  //   };
-  //   console.log('Hari', synonyms);
 
   const handleClinicalTermsChange = (event) => {
     setClinicalTerms(event.target.value);
@@ -33,7 +25,7 @@ function AddClinicalTerm({ docId }) {
   };
 
   const handleOntologyChange = (event) => {
-    setOntology(event.target.value);
+    setOntologyTerm(event.target.value);
     setText(event.target.value);
   };
 
@@ -41,11 +33,6 @@ function AddClinicalTerm({ docId }) {
     setPreferredTerm(event.target.value);
     setText(event.target.value);
   };
-
-  //   const handleTermClassChange = (event) => {
-  //     setTermClass(event.target.value);
-  //     setText(event.target.value);
-  //   };
 
   const handleOpen = (variant, selectedText) => {
     setState({ ...state, [variant]: true });
@@ -55,10 +42,6 @@ function AddClinicalTerm({ docId }) {
   const handleClose = (variant) => {
     setState({ ...state, [variant]: false });
   };
-
-  //   const handleTextChange = (event) => {
-  //     setText(event.target.value);
-  //   };
 
   const handleTextSelection = () => {
     const selectedText = window.getSelection().toString();
@@ -79,9 +62,7 @@ function AddClinicalTerm({ docId }) {
     const tagData = {
       standard_entity_name: selectedText,
       iqv_standard_term: preferredTerm,
-      //   entity_xref: synonyms,
-      //   ontology: ontology,
-      //   entity_class: termClass,
+      ontology: ontologyTerm,
       clinical_terms: clinicalTerms,
     };
     dispatch({
@@ -132,13 +113,6 @@ function AddClinicalTerm({ docId }) {
             </IconButton>
             At least one of these options are required to be filled to add tag
           </div>
-          {/* <TextField
-            label="Synonyms"
-            placeholder="Text area"
-            onChange={handleSynonymsChange}
-            value={synonyms}
-            fullWidth
-          /> */}
           <TextField
             label="Clinical terms"
             placeholder="Text area"
@@ -150,7 +124,7 @@ function AddClinicalTerm({ docId }) {
             label="Ontology"
             placeholder="Text area"
             onChange={handleOntologyChange}
-            value={ontology}
+            value={ontologyTerm}
             fullWidth
           />
           <TextField
@@ -160,13 +134,6 @@ function AddClinicalTerm({ docId }) {
             value={preferredTerm}
             fullWidth
           />
-          {/* <TextField
-            label="Class"
-            placeholder="Text area"
-            onChange={handleTermClassChange}
-            value={termClass}
-            fullWidth
-          /> */}
         </FieldGroup>
       </Modal>
     </div>
