@@ -1,8 +1,12 @@
 import { render } from '@testing-library/react';
 import RenderContent from '../CustomComponents/RenderContent';
-
 import * as ProtocolContext from '../ProtocolContext';
 
+const mockDispatch = jest.fn();
+jest.mock('react-redux', () => ({
+  useSelector: jest.fn(),
+  useDispatch: () => mockDispatch,
+}));
 describe('RenderContent', () => {
   const handleContentEditMock = jest.fn();
   const setActiveLineIDMock = jest.fn();
@@ -96,6 +100,5 @@ describe('RenderContent', () => {
         edit={false}
       />,
     );
-    screen.debug();
   });
 });
