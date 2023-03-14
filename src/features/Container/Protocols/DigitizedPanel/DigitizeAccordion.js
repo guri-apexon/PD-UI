@@ -387,82 +387,92 @@ function DigitizeAccordion({
         data-testid="accordion"
         onScroll={(e) => handleEnrichedClick(e)}
       >
-      <AccordionSummary data-testid="accordion_summary" onClick={handleChange}>
-        <div className="accordion_summary_container">
-          <Typography className="section-title" data-testid="accordion-header">
-            {item.source_file_section}
-          </Typography>
-          {/* eslint-disable-next-line */}
-          <div className="section-actions" onClick={(e) => e.stopPropagation()}>
-            {showedit && (
-              <IconButton disabled={showLoader} data-testId="lockIcon">
-                <Lock />
-              </IconButton>
-            )}
-            {primaryRole && (
-              <>
-                <IconButton data-testId="eyeIcon" onClick={clickAuditLog}>
-                  <EyeShow />
+        <AccordionSummary
+          data-testid="accordion_summary"
+          onClick={handleChange}
+        >
+          <div className="accordion_summary_container">
+            <Typography
+              className="section-title"
+              data-testid="accordion-header"
+            >
+              {item.source_file_section}
+            </Typography>
+            {/* eslint-disable-next-line */}
+            <div
+              className="section-actions"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {showedit && (
+                <IconButton disabled={showLoader} data-testId="lockIcon">
+                  <Lock />
                 </IconButton>
-                {!showedit ? (
-                  <IconButton
-                    disabled={showLoader}
-                    data-testId="pencilIcon"
-                    onClick={onEditClick}
-                  >
-                    <Pencil />
+              )}
+              {primaryRole && (
+                <>
+                  <IconButton data-testId="eyeIcon" onClick={clickAuditLog}>
+                    <EyeShow />
                   </IconButton>
-                ) : (
-                  <>
+                  {!showedit ? (
                     <IconButton
-                      onClick={handleSaveContent}
-                      data-testId="saveIcon"
-                      disabled={!saveEnabled || showAlert || showLoader}
+                      disabled={showLoader}
+                      data-testId="pencilIcon"
+                      onClick={onEditClick}
                     >
-                      <Save />
+                      <Pencil />
                     </IconButton>
-                    <IconButton
-                      data-testId="discardIcon"
-                      title="Discard changes"
-                      className="discard-icon"
-                      disabled={!saveEnabled}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowDiscardConfirm(true);
-                      }}
-                    >
-                      <Undo />
-                    </IconButton>
-                  </>
-                )}
-              </>
-            )}
+                  ) : (
+                    <>
+                      <IconButton
+                        onClick={handleSaveContent}
+                        data-testId="saveIcon"
+                        disabled={!saveEnabled || showAlert || showLoader}
+                      >
+                        <Save />
+                      </IconButton>
+                      <IconButton
+                        data-testId="discardIcon"
+                        title="Discard changes"
+                        className="discard-icon"
+                        disabled={!saveEnabled}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowDiscardConfirm(true);
+                        }}
+                      >
+                        <Undo />
+                      </IconButton>
+                    </>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </AccordionSummary>
 
-      <AccordionDetails
-        onScroll={(e) => handleEnrichedClick(e)}
-        className="section-single-content"
-        onKeyDown={() => {
-          if (!saveEnabled) {
-            dispatch(setSaveEnabled(true));
-          }
-        }}
-        data-testid="accordion-details"
-      >
-        {showLoader ? (
-          <div className="loader accordion_details_loader">
-            <Loader />
-          </div>
-        ) : (
-          sectionDataArr?.length > 0 &&
-          (showedit ? (
-            <MultilineEdit
-              linkId={item.link_id}
-              sectionDataArr={sectionDataArr}
-              edit={showedit}
-            />
+        <AccordionDetails
+          onScroll={(e) => handleEnrichedClick(e)}
+          className="section-single-content"
+          onKeyDown={() => {
+            if (!saveEnabled) {
+              dispatch(setSaveEnabled(true));
+            }
+          }}
+          data-testid="accordion-details"
+        >
+          {showLoader ? (
+            <div className="loader accordion_details_loader">
+              <Loader />
+            </div>
           ) : (
+            sectionDataArr?.length > 0 &&
+            (showedit ? (
+              <MultilineEdit
+                linkId={item.link_id}
+                sectionDataArr={sectionDataArr}
+                edit={showedit}
+              />
+            ) : (
               <div className="readable-content">
                 {sectionDataArr?.map((section) => {
                   if (section.type === CONTENT_TYPE.TABLE) {
@@ -572,90 +582,90 @@ function DigitizeAccordion({
           linkId={linkId}
           docId={docId}
         />
-      <Popover
-        open={!!openAudit}
-        anchorEl={openAudit}
-        onClose={() => setOpenAudit(null)}
-      >
-        <div className="auditPopover">
-          <div className="textContainer">
-            {AUDIT_LIST.map((names) => {
-              return (
-                <Typography variant="body1" key={names}>
-                  {names}&nbsp;:
-                </Typography>
-              );
-            })}
-          </div>
-          <div className="textContainer">
-            {Object.keys(item?.audit_info).map((names) => {
-              return (
-                names !== 'total_no_review' && (
+        <Popover
+          open={!!openAudit}
+          anchorEl={openAudit}
+          onClose={() => setOpenAudit(null)}
+        >
+          <div className="auditPopover">
+            <div className="textContainer">
+              {AUDIT_LIST.map((names) => {
+                return (
                   <Typography variant="body1" key={names}>
-                    {item?.audit_info.names}
+                    {names}&nbsp;:
                   </Typography>
-                )
-              );
-            })}
+                );
+              })}
+            </div>
+            <div className="textContainer">
+              {Object.keys(item?.audit_info).map((names) => {
+                return (
+                  names !== 'total_no_review' && (
+                    <Typography variant="body1" key={names}>
+                      {item?.audit_info.names}
+                    </Typography>
+                  )
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </Popover>
-      <Modal
-        data-testid="confirm-modal"
-        disableBackdropClick
-        open={showConfirm}
-        variant="warning"
-        onClose={() => setShowConfirm(false)}
-        title="Confirm Action"
-        buttonProps={[
-          {
-            label: 'Cancel',
-            onClick: () => {
-              setShowEdit(false);
-              setShowConfirm(false);
+        </Popover>
+        <Modal
+          data-testid="confirm-modal"
+          disableBackdropClick
+          open={showConfirm}
+          variant="warning"
+          onClose={() => setShowConfirm(false)}
+          title="Confirm Action"
+          buttonProps={[
+            {
+              label: 'Cancel',
+              onClick: () => {
+                setShowEdit(false);
+                setShowConfirm(false);
+              },
             },
-          },
-          {
-            label: 'Save',
-            onClick: () => {
-              setShowEdit(false);
-              setShowConfirm(false);
+            {
+              label: 'Save',
+              onClick: () => {
+                setShowEdit(false);
+                setShowConfirm(false);
+              },
             },
-          },
-          {
-            label: 'Continue Editing',
-            onClick: () => {
-              setShowConfirm(false);
+            {
+              label: 'Continue Editing',
+              onClick: () => {
+                setShowConfirm(false);
+              },
             },
-          },
-        ]}
-        className={classes.modal}
-        id="custom"
-      >
-        There is already another section in edit mode. Please save the section
-        before continuing.
-      </Modal>
-      <Modal
-        disableBackdropClick
-        open={showDiscardConfirm}
-        variant="warning"
-        onClose={() => setShowDiscardConfirm(false)}
-        title="Confirm Action"
-        buttonProps={[
-          {
-            label: 'Cancel',
-            onClick: () => setShowDiscardConfirm(false),
-          },
-          {
-            label: 'Discard',
-            onClick: () => onDiscardClick(),
-          },
-        ]}
-        className={classes.modal}
-        id="custom"
-      >
-        Are you sure you want to discard the changes?
-      </Modal>
+          ]}
+          className={classes.modal}
+          id="custom"
+        >
+          There is already another section in edit mode. Please save the section
+          before continuing.
+        </Modal>
+        <Modal
+          disableBackdropClick
+          open={showDiscardConfirm}
+          variant="warning"
+          onClose={() => setShowDiscardConfirm(false)}
+          title="Confirm Action"
+          buttonProps={[
+            {
+              label: 'Cancel',
+              onClick: () => setShowDiscardConfirm(false),
+            },
+            {
+              label: 'Discard',
+              onClick: () => onDiscardClick(),
+            },
+          ]}
+          className={classes.modal}
+          id="custom"
+        >
+          Are you sure you want to discard the changes?
+        </Modal>
         {showAlert && (
           <div className="confirmation-popup" data-testId="confirmPopup">
             <p>Please save the all the tables before saving the section</p>
