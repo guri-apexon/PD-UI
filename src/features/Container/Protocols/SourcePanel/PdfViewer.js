@@ -122,7 +122,6 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
       setPage(currentPage - 1);
     }
   }
-
   return (
     // eslint-disable-next-line
     <div
@@ -135,6 +134,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
     >
       {pdfString && (
         <Document
+          className="document-pdf"
           file={pdfString}
           onLoadSuccess={onDocumentLoadSuccess}
           onKeyDown={(e) => handleKeyDown(e)}

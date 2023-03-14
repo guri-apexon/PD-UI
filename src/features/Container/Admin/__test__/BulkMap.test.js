@@ -117,4 +117,21 @@ describe('BulkMap Screen', () => {
     });
     fireEvent.click(screen.getByText('Bulk Map'));
   });
+
+  test('should focus the following show required message', () => {
+    render(<BulkMap />, {
+      initialState: {
+        admin: mockState,
+      },
+    });
+
+    fireEvent.click(screen.getByText('Bulk Map'));
+
+    const edit = screen.getByTestId('viaTicketNumber-textField');
+    fireEvent.change(edit.children[1].children[0], {
+      target: { value: 'viaTicketNumber-123' },
+    });
+    fireEvent.focusOut(edit.children[1].children[0]);
+    expect(edit.children[2]).toBeUndefined();
+  });
 });

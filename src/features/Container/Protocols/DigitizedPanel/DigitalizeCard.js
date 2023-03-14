@@ -29,9 +29,9 @@ function DigitalizeCard({
   const protocolAllItems = useSelector(protocolSummary);
   const [rightValue, setRightValue] = useState(BladeRightValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
-  const [currentEditCard, setCurrentEditCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
+  const [currentEditCard, setCurrentEditCard] = useState(null);
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -158,9 +158,9 @@ function DigitalizeCard({
                         index={index}
                         handlePageRight={handlePageRight}
                         rightBladeValue={BladeRightValue}
-                        currentEditCard={currentEditCard}
-                        setCurrentEditCard={setCurrentEditCard}
                         scrollToTop={scrollToTop}
+                        setCurrentEditCard={setCurrentEditCard}
+                        currentEditCard={currentEditCard}
                       />
                     </div>
                   </div>
