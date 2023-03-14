@@ -14,13 +14,21 @@ import { rightBladeValue } from '../protocolSlice';
 function BladeRight({ dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
-  const [value, setValue] = React.useState(false);
+  const [value, setValue] = React.useState();
   const dispatch = useDispatch();
   const BladeRightValue = useSelector(rightBladeValue);
 
   const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_ARR);
-  const handleChange = (e, checked) => {
-    setValue(checked);
+
+  console.log('accordianData', accordianData);
+  console.log('value', value);
+
+  const handleChange = () => {
+    const result = accordianData.filter(
+      (item) => item.name === 'preferred Term',
+    );
+    console.log('result', result);
+    setValue(result);
   };
 
   const onClose = () => {

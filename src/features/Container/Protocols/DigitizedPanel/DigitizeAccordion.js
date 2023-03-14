@@ -41,6 +41,9 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
+const preferredTermDummyText = (
+  <b className="enriched-txt">PreferredTermText</b>
+);
 function DigitizeAccordion({
   item,
   protocol,
@@ -351,7 +354,13 @@ function DigitizeAccordion({
             />
           ) : (
             <div className="readable-content">
+              {console.log('sectionDataArr', sectionDataArr)}
               {sectionDataArr.map((section) => {
+                const enrichedTxt =
+                  rightBladeValue === PROTOCOL_RIGHT_MENU.PREFERRED_TERM
+                    ? preferredTermDummyText
+                    : '';
+
                 if (section.type === CONTENT_TYPE.TABLE) {
                   return (
                     <DisplayTable
@@ -413,6 +422,7 @@ function DigitizeAccordion({
                           section?.clinical_terms,
                         )}
                       />
+                      {enrichedTxt}
                     </p>
                   </div>
                 ) : (
@@ -441,6 +451,7 @@ function DigitizeAccordion({
                           section.clinical_terms,
                         )}
                       />
+                      {enrichedTxt}
                     </p>
                   )
                 );

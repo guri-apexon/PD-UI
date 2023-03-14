@@ -10,6 +10,7 @@ const PROTOCOL_RIGHT_MENU = {
   DIPA_VIEW: 'DIPA View',
   SCHEDULE_OF_ACTIVITIES: 'Schedule of Activities',
   PROTOCOL_ATTRIBUTES: 'Protocol Attributes',
+  PREFERRED_TERM: 'preferred Term',
 };
 
 const PROTOCOL_RIGHT_MENU_ARR = [
@@ -37,6 +38,10 @@ const PROTOCOL_RIGHT_MENU_ARR = [
     name: PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES,
     isActive: false,
     icon: <List className="icon-padding" />,
+  },
+  {
+    name: PROTOCOL_RIGHT_MENU.PREFERRED_TERM,
+    isActive: false,
   },
 ];
 
