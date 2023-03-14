@@ -78,10 +78,25 @@
     line-height: 1.2;
     padding: 10px 0;
   }
-  .section-actions {
-    display: flex;
-    flex-direction: row;
+  .discard-icon {
+    margin-left: 6px;
   }
+}
+
+.auditPopover {
+  padding: 10px;
+  display: flex;
+  width: max-content;
+  .textContainer {
+    padding: 0 5px;
+    p {
+      padding: 5px 0;
+    }
+  }
+}
+.section-actions {
+  display: flex;
+  flex-direction: row;
 }
 
 @media only screen and (max-width: 1366px) {

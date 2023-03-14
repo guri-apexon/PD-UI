@@ -85,39 +85,56 @@ function DisplayTable({
               onDrop={handleDrop}
               onDragOver={allowDrop}
             >
-              {rowIndex !== 0 && edit && (
-                <span className="pd-drag-icon rowDrag" data-testId="draggable">
+              {edit && (
+                <span className="pd-drag-icon rowDrag">
                   <EllipsisVertical />
                 </span>
               )}
-              {Object.keys(row).map((key) => (
-                <div
-                  key={uuidv4()}
-                  id={`divId-${rowIndex}-${key}`}
-                  draggable
-                  onDragStart={handleDrag}
-                  onDrop={handleDrop}
-                  onDragOver={allowDrop}
-                  className="pd-table-cell"
-                  style={{ width: `${colWidth}%` }}
-                >
-                  {rowIndex === 0 && edit && (
-                    <span
-                      className="pd-drag-icon columnDrag"
-                      data-testId="draggable"
-                    >
-                      <EllipsisHorizontal />
-                    </span>
-                  )}
+              <div
+                className="pd-table-row"
+                id={`divId-${rowIndex}`}
+                draggable
+                onDragStart={handleDrag}
+                onDrop={handleDrop}
+                onDragOver={allowDrop}
+              >
+                {rowIndex !== 0 && edit && (
                   <span
+                    className="pd-drag-icon rowDrag"
+                    data-testId="draggable"
+                  >
+                    <EllipsisVertical />
+                  </span>
+                )}
+                {Object.keys(row).map((key) => (
+                  <div
+                    key={uuidv4()}
                     id={`divId-${rowIndex}-${key}`}
-                    // eslint-disable-next-line
-                    dangerouslySetInnerHTML={{ __html: row[key].content }}
-                    contentEditable={edit}
-                    onBlur={(e) => handleChange(key, rowIndex, e)}
-                  />
-                </div>
-              ))}
+                    draggable
+                    onDragStart={handleDrag}
+                    onDrop={handleDrop}
+                    onDragOver={allowDrop}
+                    className="pd-table-cell"
+                    style={{ width: `${colWidth}%` }}
+                  >
+                    {rowIndex === 0 && edit && (
+                      <span
+                        className="pd-drag-icon columnDrag"
+                        data-testId="draggable"
+                      >
+                        <EllipsisHorizontal />
+                      </span>
+                    )}
+                    <span
+                      id={`divId-${rowIndex}-${key}`}
+                      // eslint-disable-next-line
+                      dangerouslySetInnerHTML={{ __html: row[key].content }}
+                      contentEditable={edit}
+                      onBlur={(e) => handleChange(key, rowIndex, e)}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         ))}

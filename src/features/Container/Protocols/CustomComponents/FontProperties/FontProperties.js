@@ -6,8 +6,9 @@ import TrashIcon from 'apollo-react-icons/Trash';
 import Dropdown from '../Dropdown';
 import './FontProperties.scss';
 import HoverComponent from '../HoverComponent';
+import { headerList, mathSymbols } from './constants';
 
-function FontProperties({ onHeaderSelect, activeLineID, onDeleteClick }) {
+function FontProperties({ activeLineID, onDeleteClick }) {
   const [enable, setEnable] = useState(activeLineID);
 
   const onFormatSelect = (e, button) => {
@@ -58,7 +59,7 @@ function FontProperties({ onHeaderSelect, activeLineID, onDeleteClick }) {
         buttonName="H"
         contentStyle={{ left: 0 }}
         headerStyle={{ fontWeight: 'bold' }}
-        onHeaderSelect={onHeaderSelect}
+        list={headerList}
         type="header"
         activeLineID={activeLineID}
       />
@@ -125,12 +126,21 @@ function FontProperties({ onHeaderSelect, activeLineID, onDeleteClick }) {
       <button
         disabled={!enable}
         type="button"
-        data-testId="list"
+        data-testId="bulletlist"
         className="button-exec-icon"
         onMouseDown={(e) => onFormatSelect(e, 'UL')}
       >
         <ListBullet />
       </button>
+      <Dropdown
+        disabled={!enable}
+        buttonName="M"
+        contentStyle={{ left: 0 }}
+        headerStyle={{ fontWeight: 'bold' }}
+        type="symbols"
+        list={mathSymbols}
+      />
+
       <div className="right-menu">
         <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
         <IconButton
@@ -148,7 +158,6 @@ function FontProperties({ onHeaderSelect, activeLineID, onDeleteClick }) {
 export default FontProperties;
 
 FontProperties.propTypes = {
-  onHeaderSelect: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   onDeleteClick: PropTypes.isRequired,
 };
