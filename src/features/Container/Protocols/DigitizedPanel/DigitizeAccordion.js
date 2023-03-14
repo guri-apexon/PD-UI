@@ -106,21 +106,6 @@ function DigitizeAccordion({
     });
   };
 
-  useEffect(() => {
-    if (showedit) {
-      console.log('inside this');
-      if (saveEnabled) {
-        setExpanded(true);
-        setShowDiscardConfirm(true);
-      } else {
-        setCurrentEditCard(null);
-        setShowEdit(false);
-        setExpanded(false);
-      }
-    }
-    // eslint-disable-next-line
-  }, [saveEnabled, showedit]);
-
   const fetchContent = () => {
     dispatch({
       type: 'GET_SECTION_LIST',
@@ -216,11 +201,7 @@ function DigitizeAccordion({
   };
 
   const onEditClick = () => {
-    if (currentEditCard && currentEditCard !== item.link_id && saveEnabled) {
-      setShowConfirm(true);
-    } else {
-      onShowEdit();
-    }
+    onShowEdit();
   };
 
   const checkUnsavedTable = () => {
