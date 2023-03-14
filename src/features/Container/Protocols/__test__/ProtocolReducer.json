@@ -213,12 +213,7 @@
                                     "synonyms": "value1, value2"
                                 }
                             }
-                        }
-                    ]
-                },
-                {
-                    "linkId": "bc4dc374-8a78-11ed-af64-005056ab6469",
-                    "data": [
+                        },
                         {
                             "section_level": "",
                             "CPT_section": "Unmapped",
@@ -254,6 +249,45 @@
                             }
                         }
                     ]
+                },
+                {
+                    "linkId": "bc4dc375-8a78-11ed-946e-005056ab6469",
+                    "data": [
+                        {
+                            "section_level": "",
+                            "CPT_section": "Unmapped",
+                            "type": "text",
+                            "content": "PLASMA",
+                            "font_info": {
+                                "italics": true,
+                                "IsBold": true,
+                                "font_size": -1,
+                                "font_style": "",
+                                "entity": [],
+                                "roi_id": {
+                                    "para": "bc4dc375-8a78-11ed-946e-005056ab6469",
+                                    "childbox": "",
+                                    "subtext": ""
+                                }
+                            },
+                            "level_1_CPT_section": "Unmapped",
+                            "file_section": "Unmapped",
+                            "file_section_num": "",
+                            "file_section_level": 1,
+                            "seq_num": 2,
+                            "qc_change_type": "",
+                            "line_id": "bc5A80ba-8a78-11ed-8986-005056ab6469",
+                            "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+                            "synonyms_extracted_terms": "",
+                            "semantic_extraction": "",
+                            "section_locked": false,
+                            "clinical_terms": {
+                                "CONFIDENTIAL": {
+                                    "synonyms": "value1, value2"
+                                }
+                            }
+                        }
+                    ]
                 }
             ],
             "sections": [
@@ -268,7 +302,7 @@
                         "font_style": "",
                         "entity": [],
                         "roi_id": {
-                            "para": "bc5080ba-8a78-11ed-8986-005056ab6469",
+                            "para": "bc4dc375-8a78-11ed-946e-005056ab6469",
                             "childbox": "",
                             "subtext": ""
                         }
@@ -279,7 +313,7 @@
                     "file_section_level": 1,
                     "seq_num": 2,
                     "qc_change_type": "",
-                    "line_id": "bc5080ba-8a78-11ed-8986-005056ab6469",
+                    "line_id": "bc5C80ba-8a78-11ed-8986-005056ab6469",
                     "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
                     "synonyms_extracted_terms": "",
                     "semantic_extraction": "",
@@ -302,7 +336,7 @@
                         "font_style": "",
                         "entity": [],
                         "roi_id": {
-                            "para": "bc5080ba-8a78-11ed-8986-005056ab6469",
+                            "para": "bc4dc375-8a78-11ed-946e-005056ab6469",
                             "childbox": "",
                             "subtext": ""
                         }
@@ -313,7 +347,7 @@
                     "file_section_level": 1,
                     "seq_num": 2,
                     "qc_change_type": "",
-                    "line_id": "bc5080ba-8a78-11ed-8986-005056ab6469",
+                    "line_id": "bc5CA0ba-8a78-11ed-8986-005056ab6469",
                     "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
                     "synonyms_extracted_terms": "",
                     "semantic_extraction": "",
