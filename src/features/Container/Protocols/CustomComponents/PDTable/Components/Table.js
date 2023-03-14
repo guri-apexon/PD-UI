@@ -56,68 +56,70 @@ function DisplayTable({
 
   return (
     <div className="pd-table-inner">
-      {edit && (
-        <EmptyColumnCells
-          columnLength={columnLength}
-          handleOperation={handleColumnOperation}
-          colWidth={colWidth}
-        />
-      )}
-      {data.map((row, rowIndex) => (
-        <div key={uuidv4()} className="pd-table-empty-cell-row">
-          {edit && (
-            <EmptyRowCells
-              rowIndex={rowIndex}
-              handleOperation={handleRowOperation}
-              index={rowIndex}
-            />
-          )}
-          <div
-            className="pd-table-row"
-            id={`divId-${rowIndex}`}
-            draggable
-            onDragStart={handleDrag}
-            onDrop={handleDrop}
-            onDragOver={allowDrop}
-          >
-            {rowIndex !== 0 && edit && (
-              <span className="pd-drag-icon rowDrag">
-                <EllipsisVertical />
-              </span>
+      <div className="pd-table-responsive">
+        {edit && (
+          <EmptyColumnCells
+            columnLength={columnLength}
+            handleOperation={handleColumnOperation}
+            colWidth={colWidth}
+          />
+        )}
+        {data.map((row, rowIndex) => (
+          <div key={uuidv4()} className="pd-table-empty-cell-row">
+            {edit && (
+              <EmptyRowCells
+                rowIndex={rowIndex}
+                handleOperation={handleRowOperation}
+                index={rowIndex}
+              />
             )}
-            {Object.keys(row).map((key) => (
-              <div
-                key={uuidv4()}
-                id={`divId-${rowIndex}-${key}`}
-                draggable
-                onDragStart={handleDrag}
-                onDrop={handleDrop}
-                onDragOver={allowDrop}
-                className="pd-table-cell"
-                style={{ width: `${colWidth}%` }}
-              >
-                {rowIndex === 0 && edit && (
-                  <span className="pd-drag-icon columnDrag">
-                    <EllipsisHorizontal />
-                  </span>
-                )}
-                <span
+            <div
+              className="pd-table-row"
+              id={`divId-${rowIndex}`}
+              draggable
+              onDragStart={handleDrag}
+              onDrop={handleDrop}
+              onDragOver={allowDrop}
+            >
+              {rowIndex !== 0 && edit && (
+                <span className="pd-drag-icon rowDrag">
+                  <EllipsisVertical />
+                </span>
+              )}
+              {Object.keys(row).map((key) => (
+                <div
+                  key={uuidv4()}
                   id={`divId-${rowIndex}-${key}`}
-                  // eslint-disable-next-line
-                  dangerouslySetInnerHTML={{ __html: row[key].content }}
-                  contentEditable={edit}
-                  onBlur={(e) => handleChange(key, rowIndex, e)}
-                />
-              </div>
-            ))}
+                  draggable
+                  onDragStart={handleDrag}
+                  onDrop={handleDrop}
+                  onDragOver={allowDrop}
+                  className="pd-table-cell"
+                  style={{ width: `${colWidth}%` }}
+                >
+                  {rowIndex === 0 && edit && (
+                    <span className="pd-drag-icon columnDrag">
+                      <EllipsisHorizontal />
+                    </span>
+                  )}
+                  <span
+                    id={`divId-${rowIndex}-${key}`}
+                    // eslint-disable-next-line
+                    dangerouslySetInnerHTML={{ __html: row[key].content }}
+                    contentEditable={edit}
+                    onBlur={(e) => handleChange(key, rowIndex, e)}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
-      <FootNotes
-        edit={edit}
-        footNoteData={footNoteData}
-        setFootnoteData={setFootnoteData}
-      />
+        ))}
+        <FootNotes
+          edit={edit}
+          footNoteData={footNoteData}
+          setFootnoteData={setFootnoteData}
+        />
+      </div>
     </div>
   );
 }
