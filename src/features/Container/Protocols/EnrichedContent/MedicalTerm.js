@@ -39,7 +39,7 @@ function MedicalTerm({
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState();
   const [showIcons, setShowIcons] = useState(false);
-  const [showChildTermField, setShowChildTermField] = useState();
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
@@ -48,23 +48,22 @@ function MedicalTerm({
 
   function handlePencilClick(selectedItem) {
     setShowIcons(true);
-    if (childTermValue !== selectedItem) {
-      setNewTermValue(selectedItem);
-
-      setShowChildTermField(selectedItem);
-    } else {
-      setShowChildTermField(selectedItem);
-      setNewTermValue('');
-    }
+    setChildTermValue(selectedItem);
+    childArr.forEach((value) => {
+      if (value === selectedItem) {
+        setEditMode(value);
+      }
+    });
   }
+
   function handleCancelClick() {
     setShowIcons(false);
     setChildTermValue(null);
+    setEditMode(false);
   }
 
   const handleDeleteTag = () => {
     const updatedChildArr = childArr.filter((item) => item !== childTermValue);
-
     const updatedClinicalTermsArr = {
       ...clinicalTermsArr,
       [enrichedText]: {
@@ -77,6 +76,20 @@ function MedicalTerm({
     setChildArr(updatedChildArr);
     setChildTermValue(false);
   };
+
+  const handleDelete = () => {
+    const updatedClinicalTermsArr = {
+      ...clinicalTermsArr,
+      [enrichedText]: {
+        ...clinicalTermsArr[enrichedText],
+        [selectedTerm]: '',
+      },
+    };
+    setClinicalTermsArr(updatedClinicalTermsArr);
+    setChildArr();
+    setChildTermValue(false);
+  };
+  console.log('delete', handleDelete);
 
   useEffect(() => {
     if (apiFlagselector && clinicalTermsArr) {
@@ -144,7 +157,6 @@ function MedicalTerm({
     if (newTermValue === '') {
       return false;
     }
-
     if (!childTermValue || !selectedTerm) return false;
     const temp = [...childArr];
 
@@ -233,7 +245,7 @@ function MedicalTerm({
             })}
           </div>
           <div className="delete-tag">
-            <Button onClick={() => handleDeleteTag}>Delete tag</Button>
+            <Button onClick={() => handleDelete}>Delete tag</Button>
           </div>
         </Card>
       </Popper>
@@ -249,9 +261,37 @@ function MedicalTerm({
               {childArr?.map((item) => {
                 return (
                   <li key={item}>
-                    <Button value={item} className="term-item">
-                      <span className="sub-term-text">{item}</span>
-                      {!showIcons && (
+                    {editMode === item ? (
+                      <div className="text-area">
+                        <TextField
+                          inputProps={{ 'data-testid': 'update-term-field' }}
+                          value={newTermValue}
+                          onChange={(event) =>
+                            setNewTermValue(event.target.value)
+                          }
+                        />
+                        {showIcons && (
+                          <div className="icons">
+                            <CloseCircle
+                              className="cancel"
+                              // eslint-disable-next-line react/jsx-no-bind
+                              onClick={handleCancelClick}
+                            />
+                            <CheckboxChecked
+                              className="save"
+                              onClick={() => handleSave}
+                            />
+                            <Trash
+                              className="delete"
+                              onClick={() => setChildTermValue(item)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <Button value={item} className="term-item">
+                        <span className="sub-term-text">{item}</span>
+
                         <Pencil
                           className="edit-Icon"
                           data-testid="update-term-trigger"
@@ -259,31 +299,8 @@ function MedicalTerm({
                             handlePencilClick(item);
                           }}
                         />
-                      )}
-                      {showIcons && (
-                        <div className="icons">
-                          {showChildTermField && (
-                            <TextField
-                              value={childTermValue}
-                              onChange={(e) => setNewTermValue(e.target.value)}
-                            />
-                          )}
-                          <CloseCircle
-                            className="cancel"
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onClick={handleCancelClick}
-                          />
-                          <CheckboxChecked
-                            className="save"
-                            onClick={handleSave}
-                          />
-                          <Trash
-                            className="delete"
-                            onClick={() => setChildTermValue(item)}
-                          />
-                        </div>
-                      )}
-                    </Button>
+                      </Button>
+                    )}
                   </li>
                 );
               })}
@@ -296,7 +313,7 @@ function MedicalTerm({
         open={childTermValue}
         variant="default"
         onClose={() => {
-          setChildTermValue(false);
+          setChildTermValue(null);
         }}
         buttonProps={[
           { size: 'small' },
@@ -312,6 +329,27 @@ function MedicalTerm({
           {`Are you sure you want to delete the tag "${childTermValue}" from the term "${enrichedText}"`}
         </div>
       </Modal>
+      {/* <Modal
+        disableBackdropClick
+        open={childTermValue}
+        variant="default"
+        onClose={() => {
+          setChildTermValue(null);
+        }}
+        buttonProps={[
+          { size: 'small' },
+          {
+            label: 'Delete',
+            onClick: handleDeleteTag,
+            size: 'small',
+          },
+        ]}
+        id="deletetag"
+      >
+        <div>
+          {`Are you sure you want to delete the tag(s) from the term "${enrichedText}"`}
+        </div>
+      </Modal> */}
     </div>
   );
 }

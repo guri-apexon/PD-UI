@@ -62,13 +62,26 @@
 .cancel{
   color:brown;
   margin-left: 5px;
+  font-size: 18px;
 }
 .save{
   color: blue;
   margin-left: 5px;
+  font-size: 18px;
 }
 .delete{
   color: red;
   margin-left: 5px;
+  font-size: 18px;
+  
 }
-
+.text-area {
+  display: flex;
+  flex: 1; /* take up all available space */
+  align-items: center; /* center items vertically */
+  justify-content: space-between;
+  margin-left: 5px;
+}
+.icons{
+  margin-top: 10px
+}
