@@ -39,6 +39,7 @@ function MedicalTerm({
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState();
   const [showIcons, setShowIcons] = useState(false);
+  const [showChildTermField, setShowChildTermField] = useState();
 
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
@@ -49,9 +50,11 @@ function MedicalTerm({
     setShowIcons(true);
     if (childTermValue !== selectedItem) {
       setNewTermValue(selectedItem);
+
+      setShowChildTermField(selectedItem);
     } else {
-      setChildTermValue(null);
-      setNewTermValue(''); // Reset the newTermValue state
+      setShowChildTermField(selectedItem);
+      setNewTermValue('');
     }
   }
   function handleCancelClick() {
@@ -60,8 +63,18 @@ function MedicalTerm({
   }
 
   const handleDeleteTag = () => {
-    const result = childArr.filter((item) => item !== childTermValue);
-    setChildArr(result);
+    const updatedChildArr = childArr.filter((item) => item !== childTermValue);
+
+    const updatedClinicalTermsArr = {
+      ...clinicalTermsArr,
+      [enrichedText]: {
+        ...clinicalTermsArr[enrichedText],
+        [selectedTerm]:
+          updatedChildArr.length > 0 ? updatedChildArr.toString() : '',
+      },
+    };
+    setClinicalTermsArr(updatedClinicalTermsArr);
+    setChildArr(updatedChildArr);
     setChildTermValue(false);
   };
 
@@ -220,9 +233,7 @@ function MedicalTerm({
             })}
           </div>
           <div className="delete-tag">
-            <Button onClick={() => handleDeleteTag(childArr)}>
-              Delete tag
-            </Button>
+            <Button onClick={() => handleDeleteTag}>Delete tag</Button>
           </div>
         </Card>
       </Popper>
@@ -251,13 +262,12 @@ function MedicalTerm({
                       )}
                       {showIcons && (
                         <div className="icons">
-                          {/* {childTermValue && (
+                          {showChildTermField && (
                             <TextField
                               value={childTermValue}
-                              onChange={setChildTermValue}
-                              autoFocus
+                              onChange={(e) => setNewTermValue(e.target.value)}
                             />
-                          )} */}
+                          )}
                           <CloseCircle
                             className="cancel"
                             // eslint-disable-next-line react/jsx-no-bind
