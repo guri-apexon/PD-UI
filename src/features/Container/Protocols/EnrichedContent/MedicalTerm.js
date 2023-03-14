@@ -39,19 +39,19 @@ function MedicalTerm({
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState();
   const [showIcons, setShowIcons] = useState(false);
-  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
   }, [clinicalTermsArray]);
+
   function handlePencilClick(selectedItem) {
     setShowIcons(true);
     if (childTermValue !== selectedItem) {
       setNewTermValue(selectedItem);
-      setEditMode(true); // Enable edit mode when the pencil is clicked
     } else {
       setChildTermValue(null);
+      setNewTermValue(''); // Reset the newTermValue state
     }
   }
   function handleCancelClick() {
@@ -59,9 +59,10 @@ function MedicalTerm({
     setChildTermValue(null);
   }
 
-  const handleDeleteTag = (value) => {
-    const result = childArr.filter((item) => item !== value);
+  const handleDeleteTag = () => {
+    const result = childArr.filter((item) => item !== childTermValue);
     setChildArr(result);
+    setChildTermValue(false);
   };
 
   useEffect(() => {
@@ -219,7 +220,9 @@ function MedicalTerm({
             })}
           </div>
           <div className="delete-tag">
-            <Button onClick={() => handleDeleteTag()}>Delete tag</Button>
+            <Button onClick={() => handleDeleteTag(childArr)}>
+              Delete tag
+            </Button>
           </div>
         </Card>
       </Popper>
@@ -247,30 +250,14 @@ function MedicalTerm({
                         />
                       )}
                       {showIcons && (
-                        <div>
-                          {editMode ? (
+                        <div className="icons">
+                          {/* {childTermValue && (
                             <TextField
-                              value={newTermValue}
-                              onChange={(event) =>
-                                setNewTermValue(event.target.value)
-                              }
-                              onBlur={() => setEditMode(false)}
+                              value={childTermValue}
+                              onChange={setChildTermValue}
+                              autoFocus
                             />
-                          ) : (
-                            <div
-                              role="button"
-                              tabIndex={0}
-                              onClick={() => handlePencilClick(item)}
-                              onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                  handlePencilClick(item);
-                                }
-                              }}
-                            >
-                              {item}
-                            </div>
-                          )}
-
+                          )} */}
                           <CloseCircle
                             className="cancel"
                             // eslint-disable-next-line react/jsx-no-bind
@@ -299,21 +286,20 @@ function MedicalTerm({
         open={childTermValue}
         variant="default"
         onClose={() => {
-          setChildTermValue(null);
+          setChildTermValue(false);
         }}
         buttonProps={[
           { size: 'small' },
           {
             label: 'Delete',
             onClick: handleDeleteTag,
-
             size: 'small',
           },
         ]}
         id="deletetag"
       >
         <div>
-          {`Are you sure you want to delete the tag " " from the term "${enrichedText}"`}
+          {`Are you sure you want to delete the tag "${childTermValue}" from the term "${enrichedText}"`}
         </div>
       </Modal>
     </div>
