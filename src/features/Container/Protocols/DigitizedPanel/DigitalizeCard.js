@@ -14,6 +14,7 @@ import {
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import LabData from '../LabData/LabData';
 
 function DigitalizeCard({
   sectionNumber,
@@ -173,6 +174,7 @@ function DigitalizeCard({
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
       )}
+      {rightValue === PROTOCOL_RIGHT_MENU.LAB_DATA && <LabData />}
     </div>
   );
 }
