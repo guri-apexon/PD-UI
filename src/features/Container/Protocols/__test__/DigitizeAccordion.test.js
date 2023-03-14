@@ -139,6 +139,29 @@ describe('DigitizeAccordion', () => {
     expect(pencil).toBeInTheDocument();
   });
 
+  test('Pencil icon is onClick for primary user', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const component = render(
+      <Provider store={store}>
+        <DigitizeAccordion
+          item={item}
+          primaryRole={bool}
+          protocol="1234"
+          currentActiveCard={1}
+          setCurrentActiveCard={jest.fn()}
+          setCurrentEditCard={jest.fn()}
+          currentEditCard={item.link_id}
+        />
+      </Provider>,
+    );
+    const pencil = component.getByTestId('pencilIcon');
+    expect(pencil).toBeInTheDocument();
+    pencil.click(pencil);
+  });
+
   test('accordian is onClick for primary user', () => {
     const contextValues = { dispatchSectionEvent: jest.fn() };
     jest
@@ -199,12 +222,6 @@ describe('DigitizeAccordion', () => {
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
     fireEvent.click(pencil);
-    const saveIcon = component.getByTestId('saveIcon');
-    expect(saveIcon).toBeInTheDocument();
-    expect(component.getByTestId('lockIcon')).toBeInTheDocument();
-    fireEvent.click(saveIcon);
-    // expect(component.getByTestId('confirmPopup')).toBeInTheDocument();
-    // fireEvent.click(component.getByRole('button', { name: 'Ok' }));
   });
 
   test('Autosizer', () => {

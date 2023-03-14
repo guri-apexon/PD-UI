@@ -40,7 +40,7 @@ function EmptyRows({ rowIndex, handleOperation, index }) {
       >
         {/* eslint-disable-next-line */}
         <span
-          className="pd-more-icon"
+          className="pd-more-icon rowMoreIcon"
           onClick={() => handleIconClick(rowIndex)}
           data-testId="more-icon-row"
         >
