@@ -59,7 +59,6 @@ function ProtocolView({ refs, data }) {
 
   const handleContentAdd = (payload) => {
     const { type, lineId, section } = payload;
-
     const content = prepareContent({
       ...payload,
       type: 'ADDED',

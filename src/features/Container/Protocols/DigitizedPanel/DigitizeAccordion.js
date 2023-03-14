@@ -136,6 +136,21 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [currentActiveCard]);
 
+  const dispatchSectionData = (resetValues) => {
+    if (resetValues) {
+      dispatchSectionEvent('ON_SECTION_SELECT', {
+        selectedSection: null,
+        sectionContent: null,
+      });
+    } else if (item && sectionDataArr) {
+      console.log('sectionDataArr Item', sectionDataArr);
+      dispatchSectionEvent('ON_SECTION_SELECT', {
+        selectedSection: item,
+        sectionContent: sectionDataArr,
+      });
+    }
+  };
+
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
       setExpanded(false);
@@ -150,6 +165,7 @@ function DigitizeAccordion({
       NewSectionIndex >= 0
     ) {
       setShowEdit(true);
+      dispatchSectionData();
       dispatch({
         type: 'ADD_SECTION_INDEX',
         payload: {
@@ -176,20 +192,6 @@ function DigitizeAccordion({
       setEnrichedTarget(null);
       setSelectedEnrichedText(null);
       setClinicalTerms(null);
-    }
-  };
-
-  const dispatchSectionData = (resetValues) => {
-    if (resetValues) {
-      dispatchSectionEvent('ON_SECTION_SELECT', {
-        selectedSection: null,
-        sectionContent: null,
-      });
-    } else if (item && sectionDataArr) {
-      dispatchSectionEvent('ON_SECTION_SELECT', {
-        selectedSection: item,
-        sectionContent: sectionDataArr,
-      });
     }
   };
 
@@ -264,7 +266,9 @@ function DigitizeAccordion({
           }
         }
         //  if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
-        setSectionDataArr(updatedSectionsData);
+        if (updatedSectionsData) {
+          setSectionDataArr(updatedSectionsData);
+        }
       } else if (sectionObj?.data?.length === 0) {
         dispatchSectionEvent('CONTENT_ADDED', {
           type: CONTENT_TYPE.TEXT,
