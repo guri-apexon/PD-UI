@@ -49,6 +49,8 @@ function DigitizeAccordion({
   handlePageRight,
   rightBladeValue,
   index,
+  setCurrentEditCard,
+  currentEditCard,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -62,7 +64,6 @@ function DigitizeAccordion({
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
-  const [currentEditCard, setCurrentEditCard] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
@@ -81,7 +82,7 @@ function DigitizeAccordion({
     useProtContext();
 
   const handleChange = () => {
-    handlePageRight(item.page);
+    if (handlePageRight) handlePageRight(item.page);
     setExpanded(!expanded);
     const tempTOCActive = [...tocActive];
     tempTOCActive[index] = !tempTOCActive[index];
@@ -190,8 +191,9 @@ function DigitizeAccordion({
   };
 
   const onEditClick = () => {
-    setShowEdit(true);
-    if (!currentEditCard) {
+    if (currentEditCard && currentEditCard !== item.link_id) {
+      setShowConfirm(true);
+    } else {
       onShowEdit();
     }
   };
@@ -466,17 +468,9 @@ function DigitizeAccordion({
         title="Confirm Actiom"
         buttonProps={[
           {
-            label: 'Cancel',
-            onClick: () => {
-              setShowEdit(false);
-              setShowConfirm(false);
-            },
-          },
-          {
             label: 'Ok',
             onClick: () => {
-              setCurrentEditCard(item.link_id);
-              onShowEdit();
+              setShowEdit(false);
               setShowConfirm(false);
             },
           },
@@ -484,8 +478,8 @@ function DigitizeAccordion({
         className={classes.modal}
         id="custom"
       >
-        There is already another section in edit mode. Do you want to continue
-        with editing the current section
+        There is already another section in edit mode. Please save the section
+        before continuing.
       </Modal>
       {showAlert && (
         <div className="confirmation-popup" data-testId="confirmPopup">
@@ -514,4 +508,6 @@ DigitizeAccordion.propTypes = {
   handlePageRight: PropTypes.isRequired,
   rightBladeValue: PropTypes.isRequired,
   index: PropTypes.isRequired,
+  setCurrentEditCard: PropTypes.isRequired,
+  currentEditCard: PropTypes.isRequired,
 };
