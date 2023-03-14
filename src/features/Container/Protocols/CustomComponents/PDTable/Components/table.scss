@@ -7,7 +7,12 @@
   overflow-x: auto;
 }
 .pd-table-inner {
-  display: table;
+  max-width: 100%;	
+  width: 100%;	
+  display: table;	
+}
+.pd-table-wrapper{	
+  display: block;
   flex-direction: column;
   width: 100%;
   justify-content: center;
@@ -29,7 +34,7 @@
   align-items: center;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  min-width: 200px;
+  min-width: 100px;
 }
 .content-table-wrapper {
   border: 1px solid #dadada;
