@@ -98,6 +98,8 @@
 .section-actions {
   display: flex;
   flex-direction: row;
+  min-height: 48px;
+  align-items: center;
 }
 
 @media only screen and (max-width: 1366px) {
