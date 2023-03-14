@@ -115,10 +115,5 @@ describe('digitizeAccordion Integration', () => {
     fireEvent.click(header2);
 
     fireEvent.click(pencil2);
-
-    screen.debug();
-
-    const confirmModal = screen.getByText('Ok');
-    expect(confirmModal).toBeInTheDocument();
   });
 });
