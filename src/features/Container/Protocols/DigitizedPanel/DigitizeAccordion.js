@@ -57,6 +57,8 @@ function DigitizeAccordion({
   handlePageRight,
   rightBladeValue,
   index,
+  setCurrentEditCard,
+  currentEditCard,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -70,7 +72,6 @@ function DigitizeAccordion({
   const sectionHeaderDetails = useSelector(sectionDetails);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
-  const [currentEditCard, setCurrentEditCard] = useState(null);
   const [linkId, setLinkId] = useState();
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
@@ -88,7 +89,7 @@ function DigitizeAccordion({
   const { dispatchSectionEvent, sectionContent, selectedSection } =
     useProtContext();
   const handleChange = () => {
-    handlePageRight(item.page);
+    if (handlePageRight) handlePageRight(item.page);
     setExpanded(!expanded);
     const tempTOCActive = [...tocActive];
     tempTOCActive[index] = !tempTOCActive[index];
@@ -202,10 +203,10 @@ function DigitizeAccordion({
     dispatchSectionData();
   };
 
-  const onEditClick = (e) => {
-    e.stopPropagation();
-    setShowEdit(true);
-    if (!currentEditCard) {
+  const onEditClick = () => {
+    if (currentEditCard && currentEditCard !== item.link_id) {
+      setShowConfirm(true);
+    } else {
       onShowEdit();
     }
   };
@@ -352,6 +353,27 @@ function DigitizeAccordion({
               {showedit && (
                 <IconButton data-testId="lockIcon">
                   <Lock style={{ paddingRight: '10px' }} />
+    <Accordion
+      expanded={expanded}
+      data-testid="accordion"
+      onScroll={(e) => handleEnrichedClick(e)}
+    >
+      <AccordionSummary data-testid="accordion_summary" onClick={handleChange}>
+        <div className="accordion_summary_container">
+          <Typography className="section-title" data-testid="accordion-header">
+            {item.source_file_section}
+          </Typography>
+          {/* eslint-disable-next-line */}
+          <div className="section-actions" onClick={(e) => e.stopPropagation()}>
+            {showedit && (
+              <IconButton disabled={showLoader} data-testId="lockIcon">
+                <Lock />
+              </IconButton>
+            )}
+            {primaryRole && (
+              <>
+                <IconButton disabled={showLoader} data-testId="eyeIcon">
+                  <EyeShow />
                 </IconButton>
               )}
               {primaryRole && (
@@ -380,6 +402,167 @@ function DigitizeAccordion({
           </div>
         </AccordionSummary>
 
+      <AccordionDetails
+        onScroll={(e) => handleEnrichedClick(e)}
+        className="section-single-content"
+        data-testid="accordion-details"
+      >
+        {showLoader ? (
+          <div className="loader accordion_details_loader">
+            <Loader />
+          </div>
+        ) : (
+          sectionDataArr?.length > 0 &&
+          (showedit ? (
+            <MultilineEdit
+              linkId={item.link_id}
+              sectionDataArr={sectionDataArr}
+              edit={showedit}
+            />
+          ) : (
+            <div className="readable-content">
+              {sectionDataArr.map((section) => {
+                if (section.type === CONTENT_TYPE.TABLE) {
+                  return (
+                    <DisplayTable
+                      key={React.key}
+                      data={
+                        section?.content
+                          ? JSON.parse(section?.content?.TableProperties)
+                          : []
+                      }
+                      footNoteData={section?.content?.AttachmentListProperties}
+                      colWidth={100}
+                    />
+                  );
+                }
+                if (section.type === CONTENT_TYPE.IMAGE) {
+                  return (
+                    <ImageUploader
+                      key={React.key}
+                      lineID={section.line_id}
+                      content={section.content}
+                      edit={false}
+                    />
+                  );
+                }
+                return section?.font_info?.VertAlign === 'superscript' &&
+                  section.content.length > 0 ? (
+                  // eslint-disable-next-line
+                  <div
+                    key={React.key}
+                    className="supContent"
+                    onClick={(e) =>
+                      handleEnrichedClick(e, section.clinical_terms)
+                    }
+                  >
+                    <sup>
+                      <SanitizeHTML
+                        html={getEnrichedText(
+                          section.content.split('_')[0],
+                          section?.clinical_terms,
+                        )}
+                      />
+                    </sup>
+                    <p
+                      style={{
+                        fontWeight: `${
+                          section?.font_info?.isBold ||
+                          section.type === 'header'
+                            ? 'bold'
+                            : ''
+                        }`,
+                        fontStyle: `${
+                          section?.font_info?.Italics ? 'italics' : ''
+                        }`,
+                      }}
+                    >
+                      <SanitizeHTML
+                        html={getEnrichedText(
+                          section.content.split('_')[1],
+                          section?.clinical_terms,
+                        )}
+                      />
+                    </p>
+                  </div>
+                ) : (
+                  section.content.length > 0 && (
+                    // eslint-disable-next-line
+                    <p
+                      key={React.key}
+                      style={{
+                        fontWeight: `${
+                          section?.font_info?.isBold ||
+                          section.type === 'header'
+                            ? 'bold'
+                            : ''
+                        }`,
+                        fontStyle: `${
+                          section?.font_info?.Italics ? 'italics' : ''
+                        }`,
+                      }}
+                      onClick={(e) =>
+                        handleEnrichedClick(e, section.clinical_terms)
+                      }
+                    >
+                      <SanitizeHTML
+                        html={getEnrichedText(
+                          section.content,
+                          section.clinical_terms,
+                        )}
+                      />
+                    </p>
+                  )
+                );
+              })}
+            </div>
+          ))
+        )}
+      </AccordionDetails>
+      <MedicalTerm
+        enrichedTarget={enrichedTarget}
+        expanded={expanded}
+        enrichedText={selectedEnrichedText}
+        clinicalTerms={clinicalTerms}
+        linkId={linkId}
+        docId={docId}
+      />
+      <Modal
+        data-testid="confirm-modal"
+        disableBackdropClick
+        open={showConfirm}
+        variant="warning"
+        onClose={() => setShowConfirm(false)}
+        title="Confirm Actiom"
+        buttonProps={[
+          {
+            label: 'Ok',
+            onClick: () => {
+              setShowEdit(false);
+              setShowConfirm(false);
+            },
+          },
+        ]}
+        className={classes.modal}
+        id="custom"
+      >
+        There is already another section in edit mode. Please save the section
+        before continuing.
+      </Modal>
+      {showAlert && (
+        <div className="confirmation-popup" data-testId="confirmPopup">
+          <p>Please save the all the tables before saving the section</p>
+          <ButtonGroup
+            buttonProps={[
+              {
+                label: 'Ok',
+                onClick: () => setShowAlert(false),
+              },
+            ]}
+          />
+        </div>
+      )}
+    </Accordion>
         <AccordionDetails
           onScroll={(e) => handleEnrichedClick(e)}
           className="section-single-content"
@@ -588,4 +771,6 @@ DigitizeAccordion.propTypes = {
   handlePageRight: PropTypes.isRequired,
   rightBladeValue: PropTypes.isRequired,
   index: PropTypes.isRequired,
+  setCurrentEditCard: PropTypes.isRequired,
+  currentEditCard: PropTypes.isRequired,
 };

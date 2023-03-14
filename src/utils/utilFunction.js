@@ -419,34 +419,47 @@ export const createReturnObj = (obj, linkId) => {
         type: obj.type,
         qc_change_type: obj.qc_change_type,
         link_prefix: '',
-        link_text: '',
+        link_text: obj.content,
         link_level: obj.linkLevel,
-        line_id: obj.line_id,
-        link_record_uid: '',
+        line_id: '',
         content: obj.content,
+        uuid: '',
         prev_detail: {
-          link_record_uid: obj.link_record_uid,
-          line_id: obj.line_id,
+          line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
+          link_id: linkId,
+          link_id_level2: '',
+          link_id_level3: '',
+          link_id_level4: '',
+          link_id_level5: '',
+          link_id_level6: '',
+          link_id_subsection1: '',
+          link_id_subsection2: '',
+          link_id_subsection3: '',
         },
+        section_locked: false,
       };
     }
     if (obj.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
       return {
         type: obj.type,
-        qc_change_type: QC_CHANGE_TYPE.UPDATED,
+        qc_change_type: obj.qc_change_type,
         link_prefix: '',
-        link_text: '',
+        link_text: obj.content,
         content: obj.content,
+        link_id: linkId,
         link_level: obj.linkLevel,
-        link_record_uid: obj.link_record_uid,
-        line_id: obj.line_id,
+        line_id: obj.line_id?.slice(0, 36),
+        link_id_level2: '',
+        section_locked: false,
       };
     }
     return {
       type: obj.type,
-      qc_change_type: QC_CHANGE_TYPE.DELETED,
-      link_record_uid: obj.link_record_uid,
-      line_id: obj.line_id,
+      qc_change_type: obj.qc_change_type,
+      link_id: linkId,
+      link_id_level2: '',
+      line_id: obj.line_id?.slice(0, 36),
+      section_locked: false,
     };
   }
   if (obj.type === CONTENT_TYPE.IMAGE) {
