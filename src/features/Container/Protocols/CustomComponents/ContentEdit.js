@@ -21,16 +21,6 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (
-      [46, 8].includes(e.keyCode) &&
-      (contentEditableRef.current.innerHTML === '' ||
-        !contentEditableRef.current.innerHTML)
-    ) {
-      deleteSection(lineID);
-    }
-  };
-
   return (
     <div className="format-container">
       <ContentEditable
@@ -43,7 +33,6 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
         onChange={handleChange}
         onBlur={handleBlur}
         tagName="div"
-        onKeyDown={handleKeyDown}
         data-placeholder
         data-testId="contentEdit"
       />
