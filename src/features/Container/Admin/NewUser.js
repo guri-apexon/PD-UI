@@ -1,27 +1,27 @@
 /* eslint-disable */
-import { useState } from 'react';
-import trim from 'lodash/trim';
-import cloneDeep from 'lodash/cloneDeep';
-import { useSelector, useDispatch } from 'react-redux';
-import Modal from 'apollo-react/components/Modal';
 import Button from 'apollo-react/components/Button';
-import Loader from 'apollo-react/components/Loader';
 import Grid from 'apollo-react/components/Grid';
-import TextField from 'apollo-react/components/TextField';
+import Loader from 'apollo-react/components/Loader';
 import MenuItem from 'apollo-react/components/MenuItem';
+import Modal from 'apollo-react/components/Modal';
 import Select from 'apollo-react/components/Select';
+import TextField from 'apollo-react/components/TextField';
+import cloneDeep from 'lodash/cloneDeep';
+import trim from 'lodash/trim';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
-  modalToggle,
-  setNewUserValues,
-  newUser,
-  newUserError,
-  setNewUserError,
+  formErrorValues,
   getUserError,
   getUserLoader,
-  formErrorValues,
-  setFormError,
-  setUserError,
+  modalToggle,
+  newUser,
+  newUserError,
   rolesOptionsList,
+  setFormError,
+  setNewUserError,
+  setNewUserValues,
+  setUserError,
 } from './adminSlice';
 
 const userValue = {
@@ -32,6 +32,7 @@ const userValue = {
   email: null,
   country: null,
   userRole: '',
+  viaTicketNumber: null,
 };
 
 const emailReg =
@@ -99,6 +100,13 @@ function NewUser({ setIsOpen }) {
       err.userRole.error = false;
       err.userRole.message = '';
     }
+    if (!formValue.viaTicketNumber) {
+      err.viaTicketNumber.error = true;
+      err.viaTicketNumber.message = 'Required';
+    } else {
+      err.viaTicketNumber.error = false;
+      err.viaTicketNumber.message = '';
+    }
 
     dispatch(setFormError(err));
     if (
@@ -108,7 +116,8 @@ function NewUser({ setIsOpen }) {
       formValue.email &&
       formValue.country &&
       userId &&
-      role
+      role &&
+      formValue.viaTicketNumber
     ) {
       dispatch({ type: 'ADD_NEW_USER_SAGA' });
     }
@@ -166,6 +175,7 @@ function NewUser({ setIsOpen }) {
           country: { error: false, message: '' },
           userId: { error: false, message: '' },
           userRole: { error: false, message: '' },
+          viaTicketNumber: { error: false, message: '' },
         };
         setIsOpen(false);
         dispatch(setNewUserValues(userValue));
@@ -306,6 +316,20 @@ function NewUser({ setIsOpen }) {
             onBlur={(e) => onFieldBlur('country', e.target.value)}
             data-testid="Country-texfield"
             disabled
+          />
+        </Grid>
+        <Grid item xs={6} sm={6}>
+          <TextField
+            label="VIA Ticket #"
+            placeholder="Enter VIA Ticket Number"
+            fullWidth
+            required
+            helperText={formErrValue.viaTicketNumber?.message}
+            error={formErrValue.viaTicketNumber?.error}
+            value={!userIdError ? formValue.viaTicketNumber : ''}
+            onChange={(e) => handleChange('viaTicketNumber', e.target.value)}
+            onBlur={(e) => onFieldBlur('viaTicketNumber', e.target.value)}
+            data-testid="viaTicket-texfield"
           />
         </Grid>
       </Grid>

@@ -1,24 +1,25 @@
 /* eslint-disable */
-import { useState, memo, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import trim from 'lodash/trim';
 import cloneDeep from 'lodash/cloneDeep';
+import trim from 'lodash/trim';
+import { memo, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Grid from 'apollo-react/components/Grid';
 import Button from 'apollo-react/components/Button';
-import Modal from 'apollo-react/components/Modal';
-import TextField from 'apollo-react/components/TextField';
+import Grid from 'apollo-react/components/Grid';
 import MenuItem from 'apollo-react/components/MenuItem';
+import Modal from 'apollo-react/components/Modal';
 import Select from 'apollo-react/components/Select';
+import TextField from 'apollo-react/components/TextField';
 import {
   modalToggle,
-  setModalToggle,
-  setNewMappingValues,
-  setNewMappingError,
   newMapping,
   newMappingError,
   rolesOptionsList,
+  setModalToggle,
+  setNewMappingError,
+  setNewMappingValues,
 } from './adminSlice';
+import { userId as loggedInUserId} from '../../../store/userDetails';
 
 const mapValue = {
   userId: null,
@@ -26,12 +27,14 @@ const mapValue = {
   role: null,
   following: null,
   projectId: null,
+  viaTicketNumber: null,
 };
 const errorValue = {
   userId: { error: false, message: '' },
   protocol: { error: false, message: '' },
   role: { error: false, message: '' },
   following: { error: false, message: '' },
+  viaTicketNumber: { error: false, message: '' },
 };
 const followOptions = ['Yes', 'No'];
 
@@ -44,6 +47,7 @@ function AddNewMapping() {
   const [role, setRole] = useState('');
   const [formErrValue, setFormErrValue] = useState(errorValue);
   const [follow, setFollow] = useState('');
+  const updatedByUser = useSelector(loggedInUserId);
 
   useEffect(() => {
     if (!isOpen) {
@@ -52,6 +56,7 @@ function AddNewMapping() {
         protocol: { error: false, message: '' },
         role: { error: false, message: '' },
         following: { error: false, message: '' },
+        viaTicketNumber: { error: false, message: '' },
       };
       dispatch(setNewMappingValues(mapValue));
       setFormErrValue(reset);
@@ -81,6 +86,10 @@ function AddNewMapping() {
       err.following.error = true;
       err.following.message = 'Required';
     }
+    if (!formValue.viaTicketNumber) {
+      err.viaTicketNumber.error = true;
+      err.viaTicketNumber.message = 'Required';
+    }
 
     setFormErrValue(err);
     if (
@@ -88,9 +97,10 @@ function AddNewMapping() {
       formValue.userId &&
       formValue.protocol &&
       formValue.role &&
-      formValue.following
+      formValue.following &&
+      formValue.viaTicketNumber
     ) {
-      dispatch({ type: 'ADD_NEW_MAPPING_SAGA', payload: formValue });
+      dispatch({ type: 'ADD_NEW_MAPPING_SAGA', payload: {...formValue, updatedByUser:updatedByUser} });
     }
   };
 
@@ -122,6 +132,10 @@ function AddNewMapping() {
     if (key === 'role' && trimValue === 'primary') {
       err.following.error = false;
       err.following.message = '';
+    }
+    if (key === 'viaTicketNumber') {
+      err.viaTicketNumber.error = false;
+      err.viaTicketNumber.message = '';
     }
     setFormErrValue(err);
   };
@@ -229,6 +243,19 @@ function AddNewMapping() {
               fullWidth
               onChange={(e) => handleChange('projectId', e.target.value)}
               data-testid="projectId-texfield"
+            />
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <TextField
+              label="VIA Ticket #"
+              placeholder="Enter VIA Ticket Number"
+              fullWidth
+              helperText={formErrValue.viaTicketNumber.message}
+              error={formErrValue.viaTicketNumber.error}
+              onChange={(e) => handleChange('viaTicketNumber', e.target.value)}
+              onBlur={(e) => onFieldBlur('viaTicketNumber', e.target.value)}
+              required
+              data-testid="viaTicketNumber-textField"
             />
           </Grid>
         </Grid>
