@@ -12,26 +12,24 @@ import { useDispatch } from 'react-redux';
 function AddClinicalTerm({ docId }) {
   const [state, setState] = useState(false);
   const dispatch = useDispatch();
-  const [text, setText] = useState('');
+
   const [selectedText, setSelectedText] = useState('');
   const [isTextSelected, setIsTextSelected] = useState(false);
   const [clinicalTerms, setClinicalTerms] = useState('');
   const [ontologyTerm, setOntologyTerm] = useState('');
   const [preferredTerm, setPreferredTerm] = useState('');
+  const [isTextFieldEmpty, setIsTextFieldEmpty] = useState(true);
 
   const handleClinicalTermsChange = (event) => {
     setClinicalTerms(event.target.value);
-    setText(event.target.value);
   };
 
   const handleOntologyChange = (event) => {
     setOntologyTerm(event.target.value);
-    setText(event.target.value);
   };
 
   const handlePreferredTermChange = (event) => {
     setPreferredTerm(event.target.value);
-    setText(event.target.value);
   };
 
   const handleOpen = (variant, selectedText) => {
@@ -47,7 +45,9 @@ function AddClinicalTerm({ docId }) {
     const selectedText = window.getSelection().toString();
     setIsTextSelected(selectedText.length > 0);
   };
-
+  useEffect(() => {
+    setIsTextFieldEmpty(clinicalTerms.length === 0);
+  }, [clinicalTerms]);
   useEffect(() => {
     document.addEventListener('mouseup', handleTextSelection);
 
@@ -56,8 +56,6 @@ function AddClinicalTerm({ docId }) {
     };
   }, []);
 
-  const isTextAreaFilled = text.trim().length > 0;
-  const isAddTagButtonDisabled = !isTextAreaFilled;
   const handleAddTag = () => {
     const tagData = {
       standard_entity_name: selectedText,
@@ -97,15 +95,15 @@ function AddClinicalTerm({ docId }) {
           {},
           {
             label: 'Add tag',
-            disabled: isAddTagButtonDisabled,
             onClick: handleAddTag,
+            disabled: isTextFieldEmpty,
           },
         ]}
         id="neutral"
       >
         <FieldGroup
+          className="fieldgroup"
           header={`Add term to selected term/phrase: "${selectedText}"`}
-          style={{ maxWidth: 540 }}
         >
           <div>
             <IconButton color="primary">

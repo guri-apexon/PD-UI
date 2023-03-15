@@ -7,7 +7,7 @@ import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
 import Pencil from 'apollo-react-icons/Pencil';
 import CloseCircle from 'apollo-react-icons/CloseCircle';
-import CheckboxChecked from 'apollo-react-icons/CheckboxChecked';
+import StatusCheck from 'apollo-react-icons/StatusCheck';
 import Trash from 'apollo-react-icons/Trash';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,14 +32,14 @@ function MedicalTerm({
   const [clinicalTerms, setClinicalTerms] = useState([]);
   const [childArr, setChildArr] = useState([]);
   const [preferredTerm, setPreferredTerm] = useState();
-  const [synonyms, setSynonyms] = useState();
-  const [classification, setClassification] = useState();
   const [ontologyTemp, setOntologyTemp] = useState();
   const dispatch = useDispatch();
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState();
   const [showIcons, setShowIcons] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [deleteAll, setdeleteAll] = useState(false);
+  const [showModal, setshowModal] = useState(false);
 
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
@@ -78,18 +78,8 @@ function MedicalTerm({
   };
 
   const handleDelete = () => {
-    const updatedClinicalTermsArr = {
-      ...clinicalTermsArr,
-      [enrichedText]: {
-        ...clinicalTermsArr[enrichedText],
-        [selectedTerm]: '',
-      },
-    };
-    setClinicalTermsArr(updatedClinicalTermsArr);
-    setChildArr();
-    setChildTermValue(false);
+    setClinicalTermsArr(childArr.splice(0, childArr.length));
   };
-  console.log('delete', handleDelete);
 
   useEffect(() => {
     if (apiFlagselector && clinicalTermsArr) {
@@ -115,12 +105,6 @@ function MedicalTerm({
         (key, value) => {
           if (key === 'preferred_term') {
             setPreferredTerm(value);
-          }
-          if (key === 'synonyms') {
-            setSynonyms(value);
-          }
-          if (key === 'classification') {
-            setClassification(value);
           }
           if (key === 'ontology') {
             setOntologyTemp(value);
@@ -154,6 +138,7 @@ function MedicalTerm({
   }, [selectedTerm]);
 
   const handleSave = () => {
+    setEditMode(false);
     if (newTermValue === '') {
       return false;
     }
@@ -167,18 +152,14 @@ function MedicalTerm({
       return x;
     });
     setTempChild(newArr);
-    setShowIcons(false);
+    setEditMode(false);
     setChildTermValue(null);
     let name;
-    if (selectedTerm === 'synonyms') name = 'entity_xref';
-    else if (selectedTerm === 'classification') name = 'entity_class';
-    else if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
+    if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
     else if (selectedTerm === 'ontology') name = 'ontology';
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: preferredTerm,
-      entity_class: classification,
-      entity_xref: synonyms,
       ontology: ontologyTemp,
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
@@ -191,7 +172,6 @@ function MedicalTerm({
         data: saveObj,
       },
     });
-
     return true;
   };
 
@@ -230,7 +210,6 @@ function MedicalTerm({
               return (
                 <li key={item}>
                   <Button
-                    data-testId="handleSave"
                     className="term-item"
                     onClick={(e) => {
                       setSelectedTerm(item.key);
@@ -245,7 +224,7 @@ function MedicalTerm({
             })}
           </div>
           <div className="delete-tag">
-            <Button onClick={() => handleDelete}>Delete tag</Button>
+            <Button onClick={() => setdeleteAll(true)}>Delete tag</Button>
           </div>
         </Card>
       </Popper>
@@ -277,13 +256,13 @@ function MedicalTerm({
                               // eslint-disable-next-line react/jsx-no-bind
                               onClick={handleCancelClick}
                             />
-                            <CheckboxChecked
+                            <StatusCheck
                               className="save"
-                              onClick={() => handleSave}
+                              onClick={handleSave}
                             />
                             <Trash
                               className="delete"
-                              onClick={() => setChildTermValue(item)}
+                              onClick={() => setshowModal(true)}
                             />
                           </div>
                         )}
@@ -310,16 +289,19 @@ function MedicalTerm({
       </Popper>
       <Modal
         disableBackdropClick
-        open={childTermValue}
+        open={showModal}
         variant="default"
         onClose={() => {
-          setChildTermValue(null);
+          setshowModal(false);
         }}
         buttonProps={[
           { size: 'small' },
           {
             label: 'Delete',
-            onClick: handleDeleteTag,
+            onClick: () => {
+              handleDeleteTag();
+              setshowModal(false);
+            },
             size: 'small',
           },
         ]}
@@ -329,18 +311,22 @@ function MedicalTerm({
           {`Are you sure you want to delete the tag "${childTermValue}" from the term "${enrichedText}"`}
         </div>
       </Modal>
-      {/* <Modal
+      <Modal
         disableBackdropClick
-        open={childTermValue}
+        open={deleteAll}
         variant="default"
         onClose={() => {
-          setChildTermValue(null);
+          setdeleteAll(false);
         }}
         buttonProps={[
           { size: 'small' },
           {
             label: 'Delete',
-            onClick: handleDeleteTag,
+            onClick: () => {
+              // eslint-disable-next-line no-unused-expressions
+              handleDelete();
+              setdeleteAll(false);
+            },
             size: 'small',
           },
         ]}
@@ -349,7 +335,7 @@ function MedicalTerm({
         <div>
           {`Are you sure you want to delete the tag(s) from the term "${enrichedText}"`}
         </div>
-      </Modal> */}
+      </Modal>
     </div>
   );
 }
