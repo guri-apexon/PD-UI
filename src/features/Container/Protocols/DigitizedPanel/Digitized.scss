@@ -53,6 +53,10 @@
     height: auto;
     max-height: 60vh;
     flex: 1 1 auto;
+    .Preferred-txt {
+      color: #e20000;
+      cursor: pointer;
+    }
     .enriched-txt {
       color: #ff9300;
       cursor: pointer;
@@ -69,6 +73,7 @@
     }
   }
 }
+
 .accordion_summary_container {
   display: flex;
   justify-content: space-between;

@@ -14,12 +14,14 @@ import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
+import { isEmpty } from 'lodash';
 import MultilineEdit from './MultilineEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
   createEnrichedText,
   getSaveSectionPayload,
+  createPreferredText,
 } from '../../../../utils/utilFunction';
 import { sectionDetails, TOCActive, resetUpdateStatus } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
@@ -32,6 +34,7 @@ import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
 } from '../../../../AppConstant/AppConstant';
+import dataSection from './preferredTerms.json';
 
 const styles = {
   modal: {
@@ -41,9 +44,6 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-const preferredTermDummyText = (
-  <b className="enriched-txt">PreferredTermText</b>
-);
 function DigitizeAccordion({
   item,
   protocol,
@@ -52,6 +52,7 @@ function DigitizeAccordion({
   handlePageRight,
   rightBladeValue,
   index,
+  value,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -71,8 +72,8 @@ function DigitizeAccordion({
   const [showAlert, setShowAlert] = useState(false);
 
   const isTableChanged = false;
-
   const { data: sectionData, updated } = sectionHeaderDetails;
+
   const [tocActive, setTocActive] = useState([]);
 
   const tocActiveSelector = useSelector(TOCActive);
@@ -109,8 +110,8 @@ function DigitizeAccordion({
   };
   useEffect(() => {
     if (expanded) {
-      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (!arr.length) {
+      const arr = sectionData?.filter((obj) => obj.linkId === item.link_id);
+      if (!arr?.length) {
         setShowLoader(true);
         setLinkId(item.link_id);
         setDocId(item.doc_id);
@@ -219,6 +220,7 @@ function DigitizeAccordion({
   useEffect(() => {
     if (expanded) {
       const { sectionResponse, data } = sectionHeaderDetails;
+
       if (sectionResponse) {
         if (sectionResponse?.success && showedit) {
           setShowEdit(false);
@@ -273,14 +275,22 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content, clinicalTerms) => {
+  const getEnrichedText = (content, clinicalTerms, prefferedTerms) => {
+    let newContent = content;
+    if (value) {
+      if (!isEmpty(prefferedTerms)) {
+        newContent = createFullMarkup(
+          createPreferredText(content, prefferedTerms),
+        );
+      }
+    }
     if (
-      clinicalTerms &&
+      !isEmpty(clinicalTerms) &&
       rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
     ) {
-      return createFullMarkup(createEnrichedText(content, clinicalTerms));
+      newContent = createFullMarkup(createEnrichedText(content, clinicalTerms));
     }
-    return createFullMarkup(content);
+    return newContent;
   };
 
   useEffect(() => {
@@ -354,13 +364,7 @@ function DigitizeAccordion({
             />
           ) : (
             <div className="readable-content">
-              {console.log('sectionDataArr', sectionDataArr)}
-              {sectionDataArr.map((section) => {
-                const enrichedTxt =
-                  rightBladeValue === PROTOCOL_RIGHT_MENU.PREFERRED_TERM
-                    ? preferredTermDummyText
-                    : '';
-
+              {dataSection.map((section) => {
                 if (section.type === CONTENT_TYPE.TABLE) {
                   return (
                     <DisplayTable
@@ -400,6 +404,7 @@ function DigitizeAccordion({
                         html={getEnrichedText(
                           section.content.split('_')[0],
                           section?.clinical_terms,
+                          section?.preferred_term,
                         )}
                       />
                     </sup>
@@ -420,9 +425,9 @@ function DigitizeAccordion({
                         html={getEnrichedText(
                           section.content.split('_')[1],
                           section?.clinical_terms,
+                          section?.preferred_term,
                         )}
                       />
-                      {enrichedTxt}
                     </p>
                   </div>
                 ) : (
@@ -449,9 +454,9 @@ function DigitizeAccordion({
                         html={getEnrichedText(
                           section.content,
                           section.clinical_terms,
+                          section?.preferred_term,
                         )}
                       />
-                      {enrichedTxt}
                     </p>
                   )
                 );
@@ -525,4 +530,5 @@ DigitizeAccordion.propTypes = {
   handlePageRight: PropTypes.isRequired,
   rightBladeValue: PropTypes.isRequired,
   index: PropTypes.isRequired,
+  value: PropTypes.isRequired,
 };
