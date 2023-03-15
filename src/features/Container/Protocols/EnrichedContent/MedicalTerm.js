@@ -78,7 +78,17 @@ function MedicalTerm({
   };
 
   const handleDelete = () => {
-    setClinicalTermsArr(childArr.splice(0, childArr.length));
+    if (clinicalTermsArr && selectedTerm) {
+      const updatedClinicalTermsArr = {
+        ...clinicalTermsArr,
+        [enrichedText]: {
+          ...clinicalTermsArr[enrichedText],
+          [selectedTerm]: '',
+        },
+      };
+      setClinicalTermsArr(updatedClinicalTermsArr);
+      setChildArr([]);
+    }
   };
 
   useEffect(() => {
