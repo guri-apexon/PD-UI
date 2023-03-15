@@ -270,6 +270,46 @@ describe('DigitizeAccordion', () => {
     const enrText = screen.getByText('Signatures');
     fireEvent.click(enrText);
   });
+  test('Digitized accordion Plus Icon view', () => {
+    const item = {
+      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+      group_type: 'DocumentLinks',
+      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      LinkLevel: 1,
+      page: 1,
+      sec_id: '',
+      source_file_section: 'Signatures',
+      LinkType: 'toc',
+      qc_change_type: '',
+      sequence: 0,
+      section_locked: false,
+      audit_info: {
+        last_reviewed_date: '',
+        last_reviewed_by: '',
+        total_no_review: '',
+      },
+    };
+    const screen = renderWithProviders(
+      <DigitizeAccordion
+        item={item}
+        primaryRole={bool}
+        protocol="1234"
+        currentActiveCard="8ccb22b1-0aa0-487a-a47b"
+        setCurrentActiveCard={jest.fn()}
+        setCurrentEditCard={() => jest.fn()}
+        rightBladeValue="Clinical Terms"
+        headerList={[1, 2]}
+      />,
+      {
+        preloadedState: initialState,
+      },
+    );
+    fireEvent.mouseOver(screen.getByTestId('mouse-over'));
+    fireEvent.mouseLeave(screen.getByTestId('mouse-over'));
+    fireEvent.mouseOver(screen.getByTestId('mouse-over'));
+    const plusicon = screen.getByTestId('plus-add');
+    fireEvent.click(plusicon);
+  });
 
   test('click on accordion_summary', () => {
     const contextValues = { dispatchSectionEvent: jest.fn() };
