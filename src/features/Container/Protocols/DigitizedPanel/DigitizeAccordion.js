@@ -99,6 +99,10 @@ function DigitizeAccordion({
 
   const handleChange = (e) => {
     e.stopPropagation();
+    if (showedit) {
+      setShowDiscardConfirm(true);
+      return;
+    }
     if (handlePageRight) handlePageRight(item.page);
     setExpanded(!expanded);
     const tempTOCActive = [...tocActive];
@@ -132,8 +136,12 @@ function DigitizeAccordion({
         fetchContent();
       }
     } else {
-      setEnrichedTarget(null);
-      setShowAlert(false);
+      // eslint-disable-next-line
+      if (!showedit) {
+        setEnrichedTarget(null);
+        setShowAlert(false);
+        setShowEdit(false);
+      }
     }
     // eslint-disable-next-line
   }, [expanded]);
@@ -210,6 +218,7 @@ function DigitizeAccordion({
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
+    dispatch(setSaveEnabled(false));
     setCurrentEditCard(item.link_id);
     setSectionDataBak([...sectionDataArr]);
     dispatchSectionData();
@@ -344,11 +353,13 @@ function DigitizeAccordion({
     setHoverItem(item);
     setHoverIndex(index);
   };
+
   const onDiscardClick = () => {
     setSectionDataArr([...sectionDataBak]);
     setShowDiscardConfirm(false);
     setShowEdit(false);
     setSectionDataBak([]);
+    setCurrentEditCard(null);
     dispatch(setSaveEnabled(false));
     dispatch(
       updateSectionData({
