@@ -49,6 +49,5 @@ ContentEdit.propTypes = {
   type: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
   content: PropTypes.isRequired,
-  deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
 };
