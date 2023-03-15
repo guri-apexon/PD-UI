@@ -1,24 +1,40 @@
 import ProtocolReducer from './ProtocolReducer.json';
 import protocolPageSlice, {
-  getSummary,
-  getProcotoclToc,
+  accordianMetaParam,
+  accordionMetaData,
+  associateDocs,
+  compareResult,
+  EnrichedValue,
   getAssociateDocuments,
   getCompare,
-  getHeaderList,
-  getSectionProtocol,
-  setSectionDetails,
-  getProtocolTocData,
-  setSectionLoader,
-  resetSectionData,
+  getEnrichedValue,
   getFileStream,
+  getHeaderList,
+  getMetadataApiCall,
   getMetaDataSummaryField,
+  getPdfData,
+  getProcotoclToc,
+  getProtocolTocData,
   getRightBladeValue,
+  getSectionProtocol,
+  getSummary,
   getTOCActive,
+  headerResult,
+  metadataApiCallValue,
+  protocolResult,
+  protocolSummary,
+  protocolTocData,
+  resetSectionData,
+  rightBladeValue,
+  sectionDetails,
+  sectionLoader,
   setAccordianMetaData,
   setAccordianMetaParam,
-  getMetadataApiCall,
-  getEnrichedValue,
+  setSectionDetails,
+  setSectionLoader,
+  TOCActive,
   updateSectionData,
+  viewResult,
 } from '../protocolSlice';
 
 const initialState = {
@@ -46,6 +62,13 @@ const initialState = {
   fileStream: null,
 };
 
+const state = {
+  protocol: {
+    data: null,
+    loading: true,
+    success: false,
+  },
+};
 describe(' ProtocolSlice Test Suite', () => {
   test('getSummary test', () => {
     const obj = {
@@ -157,6 +180,7 @@ describe(' ProtocolSlice Test Suite', () => {
       sectionDetails: {
         protocol: '15-06',
         data: [{ linkId: payload.linkId, data: payload.data }],
+        sectionResponse: null,
       },
     });
   });
@@ -206,95 +230,218 @@ describe(' ProtocolSlice Test Suite', () => {
     expect(
       protocolPageSlice(initialState, {
         type: getFileStream.type,
-        payload: 'samplePayload',
+        payload: false,
       }),
-    ).toEqual({
-      ...initialState,
-      fileStream: 'samplePayload',
-    });
+    ).toEqual({ ...initialState, fileStream: false });
+  });
+
+  test('updateSectionData', () => {
+    const payload = {
+      protocol: '15-06',
+      data: [],
+      linkId: 15,
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: updateSectionData.type,
+        payload,
+      }),
+    );
   });
 
   test('getMetaDataSummaryField', () => {
     expect(
       protocolPageSlice(initialState, {
         type: getMetaDataSummaryField.type,
-        payload: 'samplePayload',
+        payload: false,
       }),
-    ).toEqual({
-      ...initialState,
-      metaDataSummaryField: 'samplePayload',
-    });
+    ).toEqual({ ...initialState, metaDataSummaryField: false });
   });
 
   test('getRightBladeValue', () => {
     expect(
       protocolPageSlice(initialState, {
         type: getRightBladeValue.type,
-        payload: 'samplePayload',
+        payload: false,
       }),
-    ).toEqual({
-      ...initialState,
-      rightBladeValue: 'samplePayload',
-    });
+    ).toEqual({ ...initialState, rightBladeValue: false });
   });
 
   test('getTOCActive', () => {
     expect(
       protocolPageSlice(initialState, {
         type: getTOCActive.type,
-        payload: 'samplePayload',
+        payload: false,
       }),
-    ).toEqual({
-      ...initialState,
-      TOCActiveAccordion: 'samplePayload',
-    });
+    ).toEqual({ ...initialState, TOCActiveAccordion: false });
   });
 
   test('setAccordianMetaData', () => {
     expect(
       protocolPageSlice(initialState, {
         type: setAccordianMetaData.type,
-        payload: 'samplePayload',
+        payload: false,
       }),
-    ).toEqual({
-      ...initialState,
-      accordionMetaData: 'samplePayload',
-    });
+    ).toEqual({ ...initialState, accordionMetaData: false });
   });
 
   test('setAccordianMetaParam', () => {
     expect(
       protocolPageSlice(initialState, {
         type: setAccordianMetaParam.type,
-        payload: 'samplePayload',
+        payload: false,
       }),
-    ).toEqual({
-      ...initialState,
-      accordianMetaParam: 'samplePayload',
-    });
+    ).toEqual({ ...initialState, accordianMetaParam: false });
   });
 
   test('getMetadataApiCall', () => {
     expect(
       protocolPageSlice(initialState, {
         type: getMetadataApiCall.type,
-        payload: 'samplePayload',
+        payload: false,
       }),
-    ).toEqual({
-      ...initialState,
-      metadataApiCallValue: 'samplePayload',
-    });
+    ).toEqual({ ...initialState, metadataApiCallValue: false });
   });
 
   test('getEnrichedValue', () => {
     expect(
       protocolPageSlice(initialState, {
         type: getEnrichedValue.type,
-        payload: 'samplePayload',
+        payload: false,
       }),
-    ).toEqual({
-      ...initialState,
-      EnrichedApiValue: 'samplePayload',
+    ).toEqual({ ...initialState, EnrichedApiValue: false });
+  });
+
+  test('Test All selector', () => {
+    protocolPageSlice(initialState, {
+      type: getSectionProtocol.type,
+      payload: false,
+    });
+    protocolSummary(state);
+    viewResult(state);
+    associateDocs(state);
+    compareResult(state);
+    headerResult(state);
+    protocolResult(state);
+    sectionDetails(state);
+    protocolTocData(state);
+    sectionLoader(state);
+    getPdfData(state);
+    rightBladeValue(state);
+    TOCActive(state);
+    accordionMetaData(state);
+    accordianMetaParam(state);
+    metadataApiCallValue(state);
+    EnrichedValue(state);
+  });
+
+  test('updateSectionData', () => {
+    let payload = {
+      data: [
+        {
+          section_level: '',
+          CPT_section: 'Unmapped',
+          type: 'text',
+          content: '\n',
+          font_info: {
+            IsBold: false,
+            font_size: -1,
+            font_style: '',
+            entity: [],
+            roi_id: {
+              para: 'bc52f1a8-8a78-11ed-8a8b-005056ab6469',
+              childbox: '',
+              subtext: '',
+            },
+          },
+          level_1_CPT_section: 'Unmapped',
+          file_section: 'Unmapped',
+          file_section_num: '',
+          file_section_level: 1,
+          seq_num: 1,
+          qc_change_type: '',
+          line_id: 'bc52f1a8-8a78-11ed-8a8b-005056ab6469',
+          aidocid: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+          synonyms_extracted_terms: '',
+          semantic_extraction: '',
+          section_locked: false,
+        },
+      ],
+      actionType: 'REPLACE_CONTENT',
+      linkId: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+    };
+    expect(
+      protocolPageSlice(ProtocolReducer.protocol, {
+        type: updateSectionData.type,
+        payload,
+      }),
+    ).not.toEqual({
+      ...ProtocolReducer.protocol,
+    });
+
+    payload = {
+      content: 'abcd',
+      lineId: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+    };
+
+    protocolPageSlice(ProtocolReducer.protocol, {
+      type: updateSectionData.type,
+      payload,
+    });
+  });
+
+  test('updateSectionData', () => {
+    let payload = {
+      data: [
+        {
+          section_level: '',
+          CPT_section: 'Unmapped',
+          type: 'text',
+          content: '\n',
+          font_info: {
+            IsBold: false,
+            font_size: -1,
+            font_style: '',
+            entity: [],
+            roi_id: {
+              para: 'bc52f1a8-8a78-11ed-8a8b-005056ab6469',
+              childbox: '',
+              subtext: '',
+            },
+          },
+          level_1_CPT_section: 'Unmapped',
+          file_section: 'Unmapped',
+          file_section_num: '',
+          file_section_level: 1,
+          seq_num: 1,
+          qc_change_type: '',
+          line_id: 'bc52f1a8-8a78-11ed-8a8b-005056ab6469',
+          aidocid: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+          synonyms_extracted_terms: '',
+          semantic_extraction: '',
+          section_locked: false,
+        },
+      ],
+      actionType: 'REPLACE_CONTENT',
+      linkId: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+    };
+    expect(
+      protocolPageSlice(ProtocolReducer.protocol, {
+        type: updateSectionData.type,
+        payload,
+      }),
+    ).not.toEqual({
+      ...ProtocolReducer.protocol,
+    });
+
+    payload = {
+      content: 'abcd',
+      lineId: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+    };
+
+    protocolPageSlice(ProtocolReducer.protocol, {
+      type: updateSectionData.type,
+      payload,
     });
   });
 
