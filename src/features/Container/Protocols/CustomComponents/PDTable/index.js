@@ -287,7 +287,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         </div>
       )}
       <div className="pd-table-container" ref={tableRef}>
-        <DisplayTable
+        {/* <DisplayTable
           data={updatedData}
           onChange={handleChange}
           handleRowOperation={handleRowOperation}
@@ -298,7 +298,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           setFootnoteData={setFootnoteData}
           handleColumnOperation={handleColumnOperation}
           columnLength={columnLength}
-        />
+        />*/}
       </div>
       <Modal
         className="modal delete-modal"

@@ -45,8 +45,9 @@ function RenderContent({
     );
   }
   if (type === CONTENT_TYPE.TABLE) {
+    console.log(content);
+
     return (
-      // eslint-disable-next-line
       <div>
         <PDTable
           data={content}
