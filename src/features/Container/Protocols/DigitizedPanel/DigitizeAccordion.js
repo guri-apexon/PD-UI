@@ -96,7 +96,9 @@ function DigitizeAccordion({
 
   const { dispatchSectionEvent, sectionContent, selectedSection } =
     useProtContext();
-  const handleChange = () => {
+
+  const handleChange = (e) => {
+    e.stopPropagation();
     if (handlePageRight) handlePageRight(item.page);
     setExpanded(!expanded);
     const tempTOCActive = [...tocActive];
@@ -113,14 +115,14 @@ function DigitizeAccordion({
   useEffect(() => {
     if (showedit) {
       console.log('inside this');
-      if (saveEnabled) {
-        setExpanded(true);
-        setShowDiscardConfirm(true);
-      } else {
-        setCurrentEditCard(null);
-        setShowEdit(false);
-        setExpanded(false);
-      }
+      // if (saveEnabled) {
+      //   setExpanded(true);
+      //   setShowDiscardConfirm(true);
+      // } else {
+      //   setCurrentEditCard(null);
+      //   setShowEdit(false);
+      //   setExpanded(false);
+      // }
     }
     // eslint-disable-next-line
   }, [saveEnabled, showedit]);
@@ -228,8 +230,9 @@ function DigitizeAccordion({
     dispatchSectionData();
   };
 
-  const onEditClick = () => {
-    if (currentEditCard && currentEditCard !== item.link_id && saveEnabled) {
+  const onEditClick = (e) => {
+    e.stopPropagation();
+    if (currentEditCard && currentEditCard !== item.link_id) {
       setShowConfirm(true);
     } else {
       onShowEdit();
@@ -324,6 +327,7 @@ function DigitizeAccordion({
         sectionContent: sectionDataArr,
       });
       dispatch(resetUpdateStatus());
+      setCurrentEditCard(null);
     }
     // eslint-disable-next-line
   }, [updated]);
