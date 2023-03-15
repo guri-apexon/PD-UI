@@ -4,6 +4,7 @@ import Select from 'apollo-react/components/Select';
 import MenuItem from 'apollo-react/components/MenuItem';
 import DatePicker from 'apollo-react/components/DatePickerV2';
 import PropTypes from 'prop-types';
+import METADATA_CONSTANTS from './constants';
 
 export function InputKeyField({
   keyName,
@@ -46,9 +47,8 @@ export function ValueField({
       className="gridContainer"
       data-testid="customeform"
     >
-      {(!item.isCustom && keyName === 'attr_value') ||
-      keyName === 'note' ||
-      keyName === 'confidence' ? (
+      {(!item.isCustom && ['attr_value'].includes(keyName)) ||
+      METADATA_CONSTANTS.COLUMN_KEYS.includes(keyName) ? (
         <TextField
           label=""
           className="keyText"
@@ -64,7 +64,7 @@ export function ValueField({
       ) : (
         <Grid item xs={11} className="fieldContainer">
           <div className="valueText">
-            {(type === 'string' || type === 'integer') && (
+            {METADATA_CONSTANTS.TYPES.includes(type) && (
               <TextField
                 label=""
                 placeholder="Enter Value"
@@ -78,7 +78,7 @@ export function ValueField({
               />
             )}
 
-            {type === 'date' && (
+            {['date'].includes(type) && (
               <DatePicker
                 name={keyName}
                 dateFormat="DD-MMM-YYYY"
@@ -91,7 +91,7 @@ export function ValueField({
                 onInputChange={(inputValue) => handleChange(inputValue)}
               />
             )}
-            {type === 'boolean' && (
+            {['boolean'].includes(type) && (
               <Select
                 placeholder="Select Value"
                 label=""
@@ -104,8 +104,11 @@ export function ValueField({
                   'data-testid': 'customeform-textField-checkbox1',
                 }}
               >
-                <MenuItem value="true">true</MenuItem>
-                <MenuItem value="false">false</MenuItem>
+                {METADATA_CONSTANTS.BOOLEAN_VALUES.map((each) => (
+                  <MenuItem key={each} value={each}>
+                    {each}
+                  </MenuItem>
+                ))}
               </Select>
             )}
 
@@ -120,10 +123,11 @@ export function ValueField({
               inputProps={{ 'data-testid': 'customeform-textField-checkbox' }}
               className="selectBox"
             >
-              <MenuItem value="string">String</MenuItem>
-              <MenuItem value="integer">Number</MenuItem>
-              <MenuItem value="boolean">Boolean</MenuItem>
-              <MenuItem value="date">Date</MenuItem>
+              {METADATA_CONSTANTS.DROPDOWN_LIST.map((list) => (
+                <MenuItem key={list.value} value={list.value}>
+                  {list.name}
+                </MenuItem>
+              ))}
             </Select>
           </div>
         </Grid>

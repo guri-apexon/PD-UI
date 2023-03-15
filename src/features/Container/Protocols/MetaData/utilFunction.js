@@ -1,6 +1,17 @@
 import isObject from 'lodash/isObject';
 import moment from 'moment';
 
+const formattedValue = (type, val) => {
+  let payloadData = val;
+  if (type === 'boolean') {
+    payloadData = payloadData.toString();
+  }
+  if (type === 'date') {
+    payloadData = moment(payloadData).format('DD-MMM-YYYY');
+  }
+  return payloadData;
+};
+
 export const flattenObject = (updatedData, data, level, parentKey) => {
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys?.forEach((key) => {
@@ -12,18 +23,15 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
         : {
             // eslint-disable-next-line
             _meta_data: keyValue?._meta_data?.map((attr, index) => {
-              const attrValue =
-                attr?.attr_type === 'boolean' && attr?.attr_value
-                  ? attr?.attr_value.toString()
-                  : attr?.attr_value;
+              const attrValue = formattedValue(
+                attr?.attr_type,
+                attr?.attr_value,
+              );
               return {
                 ...attr,
                 id: index + 1,
                 isCustom: key !== 'summary',
-                attr_value:
-                  attr?.attr_type === 'date' && attr?.attr_value
-                    ? moment(attrValue).format('DD-MMM-YYYY')
-                    : attrValue,
+                attr_value: formattedValue(attr?.attr_type, attrValue),
                 display_name: attr?.display_name || attr?.attr_name,
               };
             }),

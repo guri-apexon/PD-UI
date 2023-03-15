@@ -8,6 +8,7 @@ import Plus from 'apollo-react-icons/Plus';
 import Trash from 'apollo-react-icons/Trash';
 import moment from 'moment';
 import { ValueField, InputKeyField } from './CustomForm';
+import METADATA_CONSTANTS from './constants';
 
 function Cell({ row, column }) {
   return (
@@ -62,8 +63,8 @@ function EditableCell({ row, column: { accessor: key } }) {
   };
 
   const renderValueField = () => {
-    return key === 'attr_value' ||
-      ((key === 'note' || key === 'confidence') &&
+    return ['attr_value'].includes(key) ||
+      (METADATA_CONSTANTS.COLUMN_KEYS.includes(key) &&
         row.fieldName !== 'summary') ||
       row.isCustom ? (
       <ValueField
@@ -86,7 +87,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   return key === 'attr_name' ? renderKeyField() : renderValueField();
 }
 
-function DeleteCell({ row, column: { accessor: key } }) {
+function DeleteCell({ row }) {
   const deleteMetaData = () => {
     row.handleDelete(row.id);
   };
@@ -320,6 +321,5 @@ EditableCell.propTypes = {
 };
 DeleteCell.propTypes = {
   row: PropTypes.isRequired,
-  column: PropTypes.isRequired,
 };
 export default MetaDataEditTable;
