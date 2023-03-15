@@ -123,6 +123,7 @@ function ImageUploader({ lineID, content, edit }) {
 
             <div>
               <Button
+                size="small"
                 variant="secondary"
                 onClick={() => setShowDltCnfrm(false)}
               >
@@ -130,6 +131,7 @@ function ImageUploader({ lineID, content, edit }) {
               </Button>
 
               <Button
+                size="small"
                 variant="primary"
                 onClick={handleDelete}
                 data-testID="confirmDelete"

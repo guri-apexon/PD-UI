@@ -85,3 +85,9 @@
     margin-right: 10px;
   }
 }
+
+@media screen and (max-width: 1480px) {
+  .delete-confirmation-box p {
+    font-size: 14px;
+  }
+}
