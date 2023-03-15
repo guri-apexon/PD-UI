@@ -47,6 +47,7 @@ function FontProperties({ activeLineID, onDeleteClick }) {
   useEffect(() => {
     setEnable(activeLineID);
   }, [activeLineID]);
+
   return (
     <div
       className={`${
@@ -143,13 +144,15 @@ function FontProperties({ activeLineID, onDeleteClick }) {
 
       <div className="right-menu">
         <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
-        <IconButton
-          size="small"
-          data-testId="trash-icon"
-          onClick={onDeleteClick}
-        >
-          <TrashIcon />
-        </IconButton>
+        <div>
+          <IconButton
+            size="small"
+            data-testId="trash-icon"
+            onClick={onDeleteClick}
+          >
+            <TrashIcon />
+          </IconButton>
+        </div>
       </div>
     </div>
   );

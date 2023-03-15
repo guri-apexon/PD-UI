@@ -3,17 +3,19 @@ import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
-import DigitizeAccordion from './DigitizeAccordion';
+
 import Loader from '../../../Components/Loader/Loader';
 import {
   headerResult,
   protocolSummary,
   rightBladeValue,
+  SectionIndex,
   TOCActive,
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import DigitizeAccordion from './DigitizeAccordion';
 
 function DigitalizeCard({
   sectionNumber,
@@ -27,6 +29,7 @@ function DigitalizeCard({
   const BladeRightValue = useSelector(rightBladeValue);
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
+  const sectionIndex = useSelector(SectionIndex);
   const [rightValue, setRightValue] = useState(BladeRightValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
@@ -53,6 +56,22 @@ function DigitalizeCard({
       sectionRef[index]?.current?.scrollIntoView(true);
     }, 300);
   };
+
+  useEffect(() => {
+    if (sectionIndex >= 0) {
+      const tempTOCActive = [...tocActive];
+      tempTOCActive[sectionIndex] = true;
+      dispatch({
+        type: 'SET_TOC_Active',
+        payload: {
+          data: tempTOCActive,
+        },
+      });
+      setSectionSequence(sectionIndex);
+    }
+
+    // eslint-disable-next-line
+  }, [sectionIndex]);
 
   useEffect(() => {
     if (sectionRef[sectionSequence] && sectionRef[sectionSequence].current) {
@@ -159,6 +178,7 @@ function DigitalizeCard({
                         handlePageRight={handlePageRight}
                         rightBladeValue={BladeRightValue}
                         scrollToTop={scrollToTop}
+                        headerList={headerList}
                         setCurrentEditCard={setCurrentEditCard}
                         currentEditCard={currentEditCard}
                       />
