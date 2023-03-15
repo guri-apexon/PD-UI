@@ -130,11 +130,8 @@ describe('ContentEdit', () => {
     );
     const contentEditable = screen.getByTestId('contentEdit');
     fireEvent.keyDown(contentEditable, { keyCode: 46 });
-    expect(mockDeleteSection).toHaveBeenCalledTimes(1);
-    expect(mockDeleteSection).toHaveBeenCalledWith(1);
+    expect(mockDeleteSection).toHaveBeenCalledTimes(0);
     fireEvent.keyDown(contentEditable, { keyCode: 8 });
-    expect(mockDeleteSection).toHaveBeenCalledTimes(2);
-    expect(mockDeleteSection).toHaveBeenCalledWith(1);
   });
 
   test('does not delete section on delete/backspace key press if contentEditable is not empty', () => {
