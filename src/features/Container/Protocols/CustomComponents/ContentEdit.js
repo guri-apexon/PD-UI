@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useProtContext } from '../ProtocolContext';
 import { setSaveEnabled } from '../protocolSlice';
 
-function ContentEdit({ type, lineID, content, deleteSection, edit }) {
+function ContentEdit({ type, lineID, content, edit }) {
   const dispatch = useDispatch();
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
