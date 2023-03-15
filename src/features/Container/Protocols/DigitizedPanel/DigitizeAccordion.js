@@ -99,7 +99,7 @@ function DigitizeAccordion({
 
   const handleChange = (e) => {
     e.stopPropagation();
-    if (showedit) {
+    if (showedit && saveEnabled) {
       setShowDiscardConfirm(true);
       return;
     }
@@ -136,12 +136,10 @@ function DigitizeAccordion({
         fetchContent();
       }
     } else {
-      // eslint-disable-next-line
-      if (!showedit) {
-        setEnrichedTarget(null);
-        setShowAlert(false);
-        setShowEdit(false);
-      }
+      setEnrichedTarget(null);
+      setShowAlert(false);
+      setShowEdit(false);
+      setCurrentEditCard(null);
     }
     // eslint-disable-next-line
   }, [expanded]);
