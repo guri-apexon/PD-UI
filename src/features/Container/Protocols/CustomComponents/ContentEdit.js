@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useProtContext } from '../ProtocolContext';
 import { setSaveEnabled } from '../protocolSlice';
 
-function ContentEdit({ type, lineID, content, deleteSection, edit }) {
+function ContentEdit({ type, lineID, content, edit }) {
   const dispatch = useDispatch();
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
@@ -25,16 +25,6 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
     }
   };
 
-  const handleKeyDown = (e) => {
-    if (
-      [46, 8].includes(e.keyCode) &&
-      (contentEditableRef.current.innerHTML === '' ||
-        !contentEditableRef.current.innerHTML)
-    ) {
-      deleteSection(lineID);
-    }
-  };
-
   return (
     <div className="format-container">
       <ContentEditable
@@ -47,7 +37,6 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
         onChange={handleChange}
         onBlur={handleBlur}
         tagName="div"
-        onKeyDown={handleKeyDown}
         data-placeholder
         data-testId="contentEdit"
       />
@@ -60,6 +49,5 @@ ContentEdit.propTypes = {
   type: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
   content: PropTypes.isRequired,
-  deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
 };

@@ -64,7 +64,7 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleContentAdd = (payload) => {
-    const { type, lineId } = payload;
+    const { type, lineId, section } = payload;
     dispatch(setSaveEnabled(true));
     const content = prepareContent({
       ...payload,
@@ -74,11 +74,18 @@ function ProtocolView({ refs, data }) {
       currentLineId: lineId,
     });
     setSectionContent(content);
+
+    let linkID;
+    if (section) {
+      linkID = section.link_id;
+    } else {
+      linkID = selectedSection.link_id;
+    }
     dispatch(
       updateSectionData({
         data: content,
         actionType: 'REPLACE_CONTENT',
-        linkId: selectedSection.link_id,
+        linkId: linkID,
       }),
     );
   };
