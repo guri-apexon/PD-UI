@@ -1,0 +1,29 @@
+.lab-table-container {
+  padding: 10px;
+  border: 1px solid lightgrey;
+}
+.lab-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 1rem;
+}
+.mR {
+  margin-right: 10px;
+}
+.btn-filter {
+  span {
+    font-weight: 600;
+    svg {
+      margin: 0 10px 0 0;
+      color: #0768fd !important;
+    }
+  }
+}
+.btn-common span svg {
+  margin: 0;
+}
+.ellipsis-icon {
+  font-size: 15px !important;
+  cursor: pointer;
+}
