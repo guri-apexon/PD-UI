@@ -49,6 +49,8 @@ export const protocolSlice = createSlice({
       op: '',
     },
     EnrichedApiValue: false,
+    isSaveEnabled: false,
+    sectionIndex: -1,
   },
   reducers: {
     getSummary: (state, action) => {
@@ -122,7 +124,6 @@ export const protocolSlice = createSlice({
 
     updateSectionData: (state, action) => {
       const { actionType, data, content, lineId, linkId } = action.payload;
-
       if (actionType === 'REPLACE_CONTENT' && data && linkId) {
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
@@ -160,6 +161,12 @@ export const protocolSlice = createSlice({
     getEnrichedValue: (state, action) => {
       state.EnrichedApiValue = action.payload;
     },
+    setSaveEnabled: (state, action) => {
+      state.isSaveEnabled = action.payload;
+    },
+    getSectionIndex: (state, action) => {
+      state.sectionIndex = action.payload;
+    },
   },
 });
 
@@ -183,7 +190,9 @@ export const {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  setSaveEnabled,
   updateSectionResp,
+  getSectionIndex,
   resetUpdateStatus,
 } = protocolSlice.actions;
 
@@ -208,5 +217,7 @@ export const accordianMetaParam = (state) => state.protocol.accordianMetaParam;
 export const metadataApiCallValue = (state) =>
   state.protocol.metadataApiCallValue;
 export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
+export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
+export const SectionIndex = (state) => state.protocol.sectionIndex;
 
 export default protocolSlice.reducer;

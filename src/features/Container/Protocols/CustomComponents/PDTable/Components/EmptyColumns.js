@@ -42,7 +42,7 @@ function EmptyColumns({ columnLength, handleOperation }) {
         <Grid item xs key={uuidv4()} data-testId="hover-list">
           {/* eslint-disable-next-line */}
           <span
-            className="pd-more-icon"
+            className="pd-more-icon columnMoreIcon"
             onClick={() => handleIconClick(index)}
             data-testId="more-icon"
           >

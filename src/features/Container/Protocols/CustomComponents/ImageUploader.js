@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import FileUpload from 'apollo-react/components/FileUpload';
 import Button from 'apollo-react/components/Button';
@@ -7,9 +8,11 @@ import IconButton from 'apollo-react/components/IconButton';
 import Pencil from 'apollo-react-icons/Pencil';
 import { useProtContext } from '../ProtocolContext';
 import { toBase64 } from '../../../../utils/utilFunction';
+import { setSaveEnabled } from '../protocolSlice';
 import './ImageUploader.scss';
 
 function ImageUploader({ lineID, content, edit }) {
+  const dispatch = useDispatch();
   const [img, setImg] = useState(null);
   const [imgBkp, setImgBkp] = useState(null);
   const [value, setValue] = useState([]);
@@ -38,6 +41,7 @@ function ImageUploader({ lineID, content, edit }) {
     dispatchSectionEvent('CONTENT_UPDATE', obj);
     setShowEditBtn(false);
     setIsEdit(false);
+    dispatch(setSaveEnabled(true));
   };
 
   const getBase64image = async (file) => {
@@ -46,7 +50,14 @@ function ImageUploader({ lineID, content, edit }) {
   };
 
   const handleUpload = (newValue) => {
-    setValue(newValue);
+    if (newValue) {
+      const type = newValue[0].name
+        .split('.')
+        [newValue[0].name.split('.').length - 1].toLowerCase();
+      if (['jpeg', 'png', 'jpg', 'gif', 'bmp'].includes(type)) {
+        setValue(newValue);
+      }
+    }
   };
 
   useEffect(() => {
@@ -151,15 +162,18 @@ function ImageUploader({ lineID, content, edit }) {
         </div>
 
         {img === '' && value.length === 0 ? (
-          <FileUpload
-            label=""
-            required
-            value={value}
-            maxItems={1}
-            onUpload={handleUpload}
-            onFileDelete={handleDelete}
-            data-testId="file-upload"
-          />
+          <>
+            <p className="fileUpload-helper">Supports png,jpg,jpeg,gif,bmp</p>
+            <FileUpload
+              label=""
+              required
+              value={value}
+              maxItems={1}
+              onUpload={handleUpload}
+              onFileDelete={handleDelete}
+              data-testId="file-upload"
+            />
+          </>
         ) : (
           <div>
             <img src={img} alt="img" className="rich-text-img" />

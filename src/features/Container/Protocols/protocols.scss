@@ -111,6 +111,7 @@
       width: 100%;
       > [class*='Panel-container-'] {
         max-width: 100% !important;
+        flex-shrink: inherit;
       }
     }
 
@@ -342,7 +343,12 @@
     }
     padding-right: 10px;
     float: right;
-    width: 100% !important;
+    width: 100%;
+    border-right: 0;
+    flex-shrink: 100;
+    & > div > div {
+      background-color: transparent;
+    }
   }
 
   .view-wrapper .digitize-panel-content {
@@ -371,6 +377,19 @@
   flex-direction: row;
   padding: 2px 2px 0 15px;
   position: relative;
+  .plus-icon {
+    display: flex;
+    justify-content: end;
+    margin-right: -2px;
+  }
+
+  [class*='MuiIconButton-root-'] {
+    height: 0px;
+    z-index: 1;
+  }
+  [class*='MuiIconButton-label-'] {
+    padding-left: 1px;
+  }
 }
 
 .digitized_data_item > svg {
@@ -392,7 +411,12 @@
   border-left: none;
   border-right: 0;
   border-top: 0;
-  border-bottom: 1px solid #e9e9e9;
+}
+
+.Accordian-padding:hover {
+  border-bottom: 1px solid #0768fd;
+  border-image: linear-gradient(to right, #0768fd 96%, rgba(0, 0, 0, 0) 50%);
+  border-image-slice: 1;
 }
 
 .digitized_data_item .accordion_summary {
@@ -419,6 +443,9 @@
 
 .digitized_data_item .edited-text {
   width: 100%;
+}
+[class*='MuiAccordionSummary-content-'] {
+  display: flex;
 }
 
 .digitized_data_item .edited-text input {

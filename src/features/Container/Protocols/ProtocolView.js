@@ -1,7 +1,12 @@
 import { useState, createRef, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { viewResult, headerResult, updateSectionData } from './protocolSlice';
+import {
+  viewResult,
+  headerResult,
+  updateSectionData,
+  setSaveEnabled,
+} from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
 import { isPrimaryUser, prepareContent } from '../../../utils/utilFunction';
@@ -47,6 +52,7 @@ function ProtocolView({ refs, data }) {
       type: 'DELETE',
       sectionContent,
     });
+    dispatch(setSaveEnabled(true));
     setSectionContent(content);
     dispatch(
       updateSectionData({
@@ -58,7 +64,8 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleContentAdd = (payload) => {
-    const { type, lineId } = payload;
+    const { type, lineId, section } = payload;
+    dispatch(setSaveEnabled(true));
     const content = prepareContent({
       ...payload,
       type: 'ADDED',
@@ -67,11 +74,18 @@ function ProtocolView({ refs, data }) {
       currentLineId: lineId,
     });
     setSectionContent(content);
+
+    let linkID;
+    if (section) {
+      linkID = section.link_id;
+    } else {
+      linkID = selectedSection.link_id;
+    }
     dispatch(
       updateSectionData({
         data: content,
         actionType: 'REPLACE_CONTENT',
-        linkId: selectedSection.link_id,
+        linkId: linkID,
       }),
     );
   };
