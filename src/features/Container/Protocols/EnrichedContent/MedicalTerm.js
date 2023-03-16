@@ -26,7 +26,7 @@ function MedicalTerm({
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
   const [selectedTerm, setSelectedTerm] = useState(null);
-  const [clinicalTermsArr, setClinicalTermsArr] = useState();
+  const [clinicalTermsArr, setClinicalTermsArr] = useState({});
   const [childTermValue, setChildTermValue] = useState(false);
   const [newTermValue, setNewTermValue] = useState('');
   const [clinicalTerms, setClinicalTerms] = useState([]);
@@ -35,7 +35,7 @@ function MedicalTerm({
   const [ontologyTemp, setOntologyTemp] = useState();
   const dispatch = useDispatch();
   const apiFlagselector = useSelector(EnrichedValue);
-  const [tempChild, setTempChild] = useState();
+  const [tempChild, setTempChild] = useState([]);
   const [showIcons, setShowIcons] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [deleteAll, setdeleteAll] = useState(false);
@@ -98,7 +98,7 @@ function MedicalTerm({
       const obj = {
         [enrichedText]: {
           ...clinicalTermsArr[enrichedText],
-          [selectedTerm]: tempChild.toString(),
+          [selectedTerm]: tempChild?.toString(),
         },
       };
       setClinicalTermsArr(obj);
@@ -223,7 +223,7 @@ function MedicalTerm({
     return null;
   }
   return (
-    <div className="enriched-menu-wrapper" data-testId="term-list">
+    <div className="enriched-menu-wrapper" data-testId="medical-term">
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
           <div className="terms-list">
@@ -245,7 +245,7 @@ function MedicalTerm({
               );
             })}
           </div>
-          <div className="delete-tag">
+          <div className="delete-tag" data-testId="delete-tag-icon">
             <Button onClick={() => setdeleteAll(true)} disabled={!selectedTerm}>
               Delete tag
             </Button>
@@ -258,7 +258,7 @@ function MedicalTerm({
         placement="right-start"
         transition
       >
-        <Card interactive className="sub-popper">
+        <Card interactive className="sub-popper" data-testId="child-term">
           {childArr.length > 0 && (
             <div className="terms-list">
               {childArr?.map((item) => {
@@ -274,13 +274,15 @@ function MedicalTerm({
                           }
                         />
                         {showIcons && (
-                          <div className="icons">
+                          <div className="icons" data-testId="edit-icons">
                             <CloseCircle
                               className="cancel"
+                              data-testId="cancel-icon"
                               // eslint-disable-next-line react/jsx-no-bind
                               onClick={handleCancelClick}
                             />
                             <StatusCheck
+                              data-testId="save-icon"
                               className="save"
                               onClick={handleSave}
                             />
@@ -297,7 +299,7 @@ function MedicalTerm({
 
                         <Pencil
                           className="edit-Icon"
-                          data-testid="update-term-trigger"
+                          data-testid="pencil-icon"
                           onClick={() => {
                             handlePencilClick(item);
                           }}

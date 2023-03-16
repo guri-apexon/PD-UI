@@ -7,6 +7,9 @@
   text-align: justify;
   display: flex;
   flex-direction: column;
+  .accordion_details_loader {
+    height: 60vh;
+  }
   .content_container,
   .readable-content {
     h1,
@@ -71,10 +74,32 @@
   justify-content: space-between;
   align-items: center;
   min-height: 48px;
+  width: 100%;
   p {
     line-height: 1.2;
     padding: 10px 0;
   }
+  .discard-icon {
+    margin-left: 6px;
+  }
+}
+
+.auditPopover {
+  padding: 10px;
+  display: flex;
+  width: max-content;
+  .textContainer {
+    padding: 0 5px;
+    p {
+      padding: 5px 0;
+    }
+  }
+}
+.section-actions {
+  display: flex;
+  flex-direction: row;
+  min-height: 48px;
+  align-items: center;
 }
 
 @media only screen and (max-width: 1366px) {

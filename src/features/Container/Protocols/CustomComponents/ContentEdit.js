@@ -1,14 +1,18 @@
 import { useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { useProtContext } from '../ProtocolContext';
+import { setSaveEnabled } from '../protocolSlice';
 
-function ContentEdit({ type, lineID, content, deleteSection, edit }) {
+function ContentEdit({ type, lineID, content, edit }) {
+  const dispatch = useDispatch();
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
   const { dispatchSectionEvent } = useProtContext();
 
   const handleChange = (e) => {
+    dispatch(setSaveEnabled(true));
     setText(e.target.value);
   };
   const handleBlur = () => {
@@ -18,16 +22,6 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
         content: contentEditableRef.current.innerHTML,
       };
       dispatchSectionEvent('CONTENT_UPDATE', obj);
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (
-      [46, 8].includes(e.keyCode) &&
-      (contentEditableRef.current.innerHTML === '' ||
-        !contentEditableRef.current.innerHTML)
-    ) {
-      deleteSection(lineID);
     }
   };
 
@@ -43,7 +37,6 @@ function ContentEdit({ type, lineID, content, deleteSection, edit }) {
         onChange={handleChange}
         onBlur={handleBlur}
         tagName="div"
-        onKeyDown={handleKeyDown}
         data-placeholder
         data-testId="contentEdit"
       />
@@ -56,6 +49,5 @@ ContentEdit.propTypes = {
   type: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
   content: PropTypes.isRequired,
-  deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
 };
