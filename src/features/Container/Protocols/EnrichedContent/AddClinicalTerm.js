@@ -74,11 +74,11 @@ function AddClinicalTerm({ docId }) {
   };
 
   return (
-    <div>
+    <div data-testId="add-tag">
       {isTextSelected ? (
         <Button
           id="my-button"
-          className="button-style"
+          className="button"
           variant="primary"
           onClick={() =>
             handleOpen('neutral', window.getSelection().toString())
