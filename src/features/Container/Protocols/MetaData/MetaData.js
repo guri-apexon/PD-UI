@@ -14,7 +14,7 @@ import {
   metadataApiCallValue,
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
-import { flattenMetaParam } from './utilFunction';
+import { flattenMetaParam, autoCompleteClose } from './utilFunction';
 import { METADATA_LIST } from '../../../../AppConstant/AppConstant';
 
 function MetaData({ docId }) {
@@ -402,6 +402,13 @@ function MetaData({ docId }) {
     // eslint-disable-next-line
   }, [sectionName]);
 
+  const handleAutoComplete = () => {
+    setIsOpen(!isOpen);
+    autoCompleteClose(() => {
+      setIsOpen(false);
+    });
+  };
+
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -413,7 +420,7 @@ function MetaData({ docId }) {
           <Plus
             size="small"
             className="metadata-plus-size"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleAutoComplete}
           />
         </div>
         {isOpen && (
