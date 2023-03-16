@@ -179,9 +179,7 @@ function Digitize({
         <MetaData docId={data.id} />
       )}
       <div>
-        {rightValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM && (
-          <AddClinicalTerm docId={data.id} />
-        )}
+        {data.userPrimaryRoleFlag && <AddClinicalTerm docId={data.id} />}
       </div>
     </div>
   );
