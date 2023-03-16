@@ -70,6 +70,9 @@ function AddClinicalTerm({ docId }) {
         data: tagData,
       },
     });
+    setClinicalTerms('');
+    setOntologyTerm('');
+    setPreferredTerm('');
     handleClose('neutral');
   };
 
