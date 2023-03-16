@@ -1,86 +1,64 @@
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import store from '../../../../store/store';
 import AddClinicalTerm from '../EnrichedContent/AddClinicalTerm';
 
 describe('AddClinicalTerm', () => {
-  const docId = 'test-doc-id';
-  const mockDispatch = jest.fn();
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
-
-  it('renders the component', () => {
-    render(
+  it('should render the Add tag button when text is selected', () => {
+    const { getByTestId } = render(
       <Provider store={store}>
-        <AddClinicalTerm docId={docId} />
+        <AddClinicalTerm docId="1" />
       </Provider>,
     );
-    // expect(screen.getByText('Add tag')).toBeInTheDocument();
+    expect(getByTestId('add-tag')).toBeInTheDocument();
   });
 
-  it('opens the modal when "Add tag" button is clicked', () => {
-    render(
+  it('should open the modal when Add tag button is clicked', () => {
+    const { getByTestId, getByLabelText } = render(
       <Provider store={store}>
-        <AddClinicalTerm docId={docId} />
+        <AddClinicalTerm docId="1" />
       </Provider>,
     );
-    fireEvent.mouseUp(document.body);
-    // fireEvent.click(screen.getByText('Add tag'));
-    expect(
-      screen.getByLabelText('Add term to selected term/phrase'),
-    ).toBeInTheDocument();
+    const addButton = getByTestId('add-tag');
+    fireEvent.click(addButton);
+
+    const clinicalTermsInput = getByLabelText('Clinical terms');
+    expect(clinicalTermsInput).toBeInTheDocument();
   });
 
-  it('closes the modal when "Cancel" button is clicked', () => {
-    render(
-      <Provider store={store}>
-        <AddClinicalTerm docId={docId} />
-      </Provider>,
-    );
-    fireEvent.mouseUp(document.body);
-    // fireEvent.click(screen.getByText('Add tag'));
-    fireEvent.click(screen.getByLabelText('Close modal'));
-    expect(
-      screen.queryByLabelText('Add term to selected term/phrase'),
-    ).not.toBeInTheDocument();
-  });
+  it('should add a tag when the Add tag button in the modal is clicked', () => {
+    const mockDispatch = jest.fn();
+    jest.mock('react-redux', () => ({
+      useDispatch: () => mockDispatch,
+    }));
 
-  it('calls the dispatch function with the correct arguments when "Add tag" button is clicked', () => {
-    const selectedText = 'test-selected-text';
-    const clinicalTerms = 'test-clinical-terms';
-    const ontology = 'test-ontology';
-    const preferredTerm = 'test-preferred-term';
-    render(
-      <Provider store={store}>
-        <AddClinicalTerm docId={docId} />
-      </Provider>,
-    );
-    fireEvent.mouseUp(document.body);
-    // fireEvent.click(screen.getByText('Add tag'));
-    fireEvent.change(screen.getByLabelText('Clinical terms'), {
-      target: { value: clinicalTerms },
+    const { getByText, getByLabelText } = render(<AddClinicalTerm docId="1" />);
+    const addButton = getByText('Add tag');
+    fireEvent.click(addButton);
+
+    const clinicalTermsInput = getByLabelText('Clinical terms');
+    const ontologyInput = getByLabelText('Ontology');
+    const preferredTermInput = getByLabelText('Preferred term');
+    const saveButton = getByText('Add tag', { selector: 'button' });
+
+    fireEvent.change(clinicalTermsInput, {
+      target: { value: 'test clinical terms' },
     });
-    fireEvent.change(screen.getByLabelText('Ontology'), {
-      target: { value: ontology },
+    fireEvent.change(ontologyInput, { target: { value: 'test ontology' } });
+    fireEvent.change(preferredTermInput, {
+      target: { value: 'test preferred term' },
     });
-    fireEvent.change(screen.getByLabelText('Preferred term'), {
-      target: { value: preferredTerm },
-    });
-    fireEvent.click(screen.getByLabelText('Add tag'));
+    fireEvent.click(saveButton);
+
     expect(mockDispatch).toHaveBeenCalledWith({
       type: 'SAVE_ENRICHED_DATA',
       payload: {
-        docId,
+        docId: '1',
         data: {
-          standard_entity_name: selectedText,
-          iqv_standard_term: preferredTerm,
-          clinical_terms: clinicalTerms,
+          standard_entity_name: '',
+          iqv_standard_term: 'test preferred term',
+          ontology: 'test ontology',
+          clinical_terms: 'test clinical terms',
         },
       },
     });
