@@ -85,3 +85,16 @@
     margin-right: 10px;
   }
 }
+@media screen and (max-width: 1380px) {
+  .delete-confirmation-box {
+    p {
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 5px;
+      height: 25px;
+      font-size: 10px;
+    }
+  }
+}
