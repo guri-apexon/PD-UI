@@ -132,6 +132,7 @@ describe('ContentEdit', () => {
     fireEvent.keyDown(contentEditable, { keyCode: 46 });
     expect(mockDeleteSection).toHaveBeenCalledTimes(0);
     fireEvent.keyDown(contentEditable, { keyCode: 8 });
+    expect(contentEditable).toBeInTheDocument();
   });
 
   test('does not delete section on delete/backspace key press if contentEditable is not empty', () => {
