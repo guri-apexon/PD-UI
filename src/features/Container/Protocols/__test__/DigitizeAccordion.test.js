@@ -309,6 +309,7 @@ describe('DigitizeAccordion', () => {
     fireEvent.mouseOver(screen.getByTestId('mouse-over'));
     const plusicon = screen.getByTestId('plus-add');
     fireEvent.click(plusicon);
+    expect(plusicon).toBeInTheDocument();
   });
 
   test('click on accordion_summary', () => {
