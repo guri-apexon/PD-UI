@@ -78,6 +78,7 @@ function MedicalTerm({
   };
 
   const handleDelete = () => {
+    if (!selectedTerm) return;
     if (clinicalTermsArr && selectedTerm) {
       const updatedClinicalTermsArr = {
         ...clinicalTermsArr,
@@ -184,6 +185,17 @@ function MedicalTerm({
     });
     return true;
   };
+  // useEffect(() => {
+  //   function handleClickOutside(event) {
+  //     if (anchorEl && !anchorEl.contains(event.target)) {
+  //       setEditMode(false);
+  //     }
+  //   }
+  //   document.addEventListener('mousedown', handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, [anchorEl]);
 
   useEffect(() => {
     setAnchorEl(enrichedTarget || null);
@@ -234,7 +246,9 @@ function MedicalTerm({
             })}
           </div>
           <div className="delete-tag">
-            <Button onClick={() => setdeleteAll(true)}>Delete tag</Button>
+            <Button onClick={() => setdeleteAll(true)} disabled={!selectedTerm}>
+              Delete tag
+            </Button>
           </div>
         </Card>
       </Popper>
