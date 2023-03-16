@@ -143,16 +143,19 @@ function FontProperties({ activeLineID, onDeleteClick }) {
       />
 
       <div className="right-menu">
-        <HoverComponent lineId={activeLineID} activeLineID={activeLineID} />
-        <div>
-          <IconButton
-            size="small"
-            data-testId="trash-icon"
-            onClick={onDeleteClick}
-          >
-            <TrashIcon />
-          </IconButton>
-        </div>
+        <HoverComponent
+          disabled={!enable}
+          lineId={activeLineID}
+          activeLineID={activeLineID}
+        />
+        <IconButton
+          disabled={!enable}
+          size="small"
+          data-testId="trash-icon"
+          onClick={onDeleteClick}
+        >
+          <TrashIcon />
+        </IconButton>
       </div>
     </div>
   );
