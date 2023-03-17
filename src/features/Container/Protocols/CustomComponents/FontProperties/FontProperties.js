@@ -148,14 +148,16 @@ function FontProperties({ activeLineID, onDeleteClick }) {
           lineId={activeLineID}
           activeLineID={activeLineID}
         />
-        <IconButton
-          disabled={!enable}
-          size="small"
-          data-testId="trash-icon"
-          onClick={onDeleteClick}
-        >
-          <TrashIcon />
-        </IconButton>
+        <div>
+          <IconButton
+            disabled={!enable}
+            size="small"
+            data-testId="trash-icon"
+            onClick={onDeleteClick}
+          >
+            <TrashIcon />
+          </IconButton>
+        </div>
       </div>
     </div>
   );
