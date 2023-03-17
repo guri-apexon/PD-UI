@@ -186,7 +186,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const handleSave = () => {
     const content = {
       ...segment.content,
-      TableProperties: JSON.stringify(updatedData),
+      TableProperties: updatedData,
       AttachmentListProperties: footNoteData,
     };
     setTableSaved(true);
