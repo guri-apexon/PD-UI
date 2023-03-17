@@ -13,11 +13,13 @@ import IconButton from 'apollo-react/components/IconButton';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
+import { isEmpty } from 'lodash';
 import MultilineEdit from './DigitizedEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
   createEnrichedText,
+  createPreferredText,
 } from '../../../../utils/utilFunction';
 import { sectionDetails, TOCActive } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
@@ -28,6 +30,8 @@ import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
 import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
 import ActionMenu from './ActionMenu';
+import dataSection from './prefferedTerm.json';
+import LinkRef from './LinkRef';
 
 const styles = {
   modal: {
@@ -47,6 +51,7 @@ function DigitizeAccordion({
   currentEditCard,
   setCurrentEditCard,
   index,
+  value,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -65,6 +70,8 @@ function DigitizeAccordion({
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
   const [showEnrichedContent, setShowEnrichedContent] = useState(false);
+  const [showPrefferedTerm, setShowPrefferedTerm] = useState(false);
+  const [showLink, setShowLink] = useState(false);
 
   const { data: sectionData } = sectionHeaderDetails;
   const [tocActive, setTocActive] = useState([]);
@@ -233,15 +240,24 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
 
-  const getEnrichedText = (content, clinicalTerms) => {
+  const getEnrichedText = (content, clinicalTerms, prefferedTerms) => {
+    let newContent = content;
+    if (value || showPrefferedTerm) {
+      if (!isEmpty(prefferedTerms)) {
+        newContent = createFullMarkup(
+          createPreferredText(content, prefferedTerms),
+        );
+      }
+    }
+
     if (
-      clinicalTerms &&
+      !isEmpty(clinicalTerms) &&
       (rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM ||
         showEnrichedContent)
     ) {
-      return createFullMarkup(createEnrichedText(content, clinicalTerms));
+      newContent = createFullMarkup(createEnrichedText(content, clinicalTerms));
     }
-    return createFullMarkup(content);
+    return newContent;
   };
 
   useEffect(() => {
@@ -319,6 +335,12 @@ function DigitizeAccordion({
                 onEditClick={onEditClick}
                 auditInfo={item.audit_info}
                 setShowEnrichedContent={setShowEnrichedContent}
+                setShowPrefferedTerm={setShowPrefferedTerm}
+                showEnrichedContent={showEnrichedContent}
+                showPrefferedTerm={showPrefferedTerm}
+                showLink={showLink}
+                setShowLink={setShowLink}
+                setShowEdit={setShowEdit}
               />
             )}
             {showedit ? (
@@ -329,7 +351,7 @@ function DigitizeAccordion({
               />
             ) : (
               <div className="readable-content">
-                {sectionDataArr.map((section) => {
+                {dataSection.map((section) => {
                   if (section.type === CONTENT_TYPE.TABLE) {
                     return (
                       <DisplayTable
@@ -356,6 +378,13 @@ function DigitizeAccordion({
                       />
                     );
                   }
+
+                  if (showLink && section.type === CONTENT_TYPE.LINK) {
+                    return (
+                      <LinkRef key={React.key} content={section.content} />
+                    );
+                  }
+
                   return section?.font_info?.VertAlign === 'superscript' &&
                     section.content.length > 0 ? (
                     // eslint-disable-next-line
@@ -371,6 +400,7 @@ function DigitizeAccordion({
                           html={getEnrichedText(
                             section.content.split('_')[0],
                             section?.clinical_terms,
+                            section?.preferred_term,
                           )}
                         />
                       </sup>
@@ -391,6 +421,7 @@ function DigitizeAccordion({
                           html={getEnrichedText(
                             section.content.split('_')[1],
                             section?.clinical_terms,
+                            section?.preferred_term,
                           )}
                         />
                       </p>
@@ -419,6 +450,7 @@ function DigitizeAccordion({
                           html={getEnrichedText(
                             section.content,
                             section.clinical_terms,
+                            section?.preferred_term,
                           )}
                         />
                       </p>
@@ -496,4 +528,5 @@ DigitizeAccordion.propTypes = {
   currentEditCard: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
   index: PropTypes.isRequired,
+  value: PropTypes.isRequired,
 };

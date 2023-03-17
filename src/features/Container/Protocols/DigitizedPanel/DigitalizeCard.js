@@ -21,6 +21,7 @@ function Digitize({
   data,
   paginationPage,
   handlePageRight,
+  value,
 }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
@@ -161,6 +162,7 @@ function Digitize({
                         currentEditCard={currentEditCard}
                         setCurrentEditCard={setCurrentEditCard}
                         scrollToTop={scrollToTop}
+                        value={value}
                       />
                     </div>
                   </div>
@@ -188,4 +190,5 @@ Digitize.propTypes = {
   data: PropTypes.isRequired,
   paginationPage: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
+  value: PropTypes.isRequired,
 };

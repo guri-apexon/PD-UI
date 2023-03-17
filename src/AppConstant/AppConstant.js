@@ -181,6 +181,7 @@ const CONTENT_TYPE = {
   TEXT: 'text',
   IMAGE: 'image',
   HEADER: 'header',
+  LINK: 'link',
 };
 
 const QC_CHANGE_TYPE = {

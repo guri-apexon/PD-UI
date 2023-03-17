@@ -11,17 +11,13 @@ import {
 import './BladeRight.scss';
 import { rightBladeValue } from '../protocolSlice';
 
-function BladeRight({ dataSummary }) {
+function BladeRight({ dataSummary, value, handleChange }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
-  const [value, setValue] = React.useState(false);
   const dispatch = useDispatch();
   const BladeRightValue = useSelector(rightBladeValue);
 
   const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_ARR);
-  const handleChange = (e, checked) => {
-    setValue(checked);
-  };
 
   const onClose = () => {
     setOpen(false);
@@ -85,6 +81,7 @@ function BladeRight({ dataSummary }) {
                 checked={value}
                 onChange={handleChange}
                 data-testId="preferred-term-switch"
+                disabled={!dataSummary?.userPrimaryRoleFlag}
               />
             </div>
             <hr className="line" />
@@ -131,5 +128,7 @@ function BladeRight({ dataSummary }) {
 
 BladeRight.propTypes = {
   dataSummary: PropTypes.isRequired,
+  handleChange: PropTypes.isRequired,
+  value: PropTypes.isRequired,
 };
 export default BladeRight;
