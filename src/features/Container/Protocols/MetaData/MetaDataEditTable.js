@@ -30,6 +30,7 @@ function EditableCell({ row, column: { accessor: key } }) {
     if (e?.target?.name === 'attr_type') {
       setType(e.target.value ? e.target.value : 'string');
       setVal('');
+      setDateValue('');
     } else {
       setVal(e?.target?.value);
     }
