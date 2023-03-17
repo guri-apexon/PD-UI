@@ -62,6 +62,7 @@ describe('DigitizedEdit', () => {
     const wrapper = render(
       <MultilineEdit sectionDataArr={sectionData} edit pageRight={2} />,
     );
+    fireEvent.click(wrapper.getAllByTestId('content_container')[0]);
 
     fireEvent.click(wrapper.getByTestId('trash-icon'));
     expect(
@@ -77,6 +78,7 @@ describe('DigitizedEdit', () => {
     const wrapper = render(
       <MultilineEdit sectionDataArr={sectionData} edit pageRight={2} />,
     );
+    fireEvent.click(wrapper.getAllByTestId('content_container')[0]);
 
     fireEvent.click(wrapper.getByTestId('trash-icon'));
     const button = wrapper.getByText('Cancel');
@@ -91,6 +93,7 @@ describe('DigitizedEdit', () => {
     const wrapper = render(
       <MultilineEdit sectionDataArr={sectionData} edit pageRight={2} />,
     );
+    fireEvent.click(wrapper.getAllByTestId('content_container')[0]);
 
     fireEvent.click(wrapper.getByTestId('trash-icon'));
     const button = wrapper.getByText('Delete');

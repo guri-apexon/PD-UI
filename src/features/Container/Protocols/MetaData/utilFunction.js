@@ -113,3 +113,13 @@ export const flattenMetaParam = (updatedParam, data, level) => {
   });
   return updatedParam;
 };
+
+export const autoCompleteClose = (removeHook) => {
+  const modalOpened = document.createElement('div');
+  modalOpened.classList.add('modal-opened');
+  document.body.appendChild(modalOpened);
+  modalOpened.addEventListener('click', () => {
+    removeHook();
+    document.body.removeChild(modalOpened);
+  });
+};

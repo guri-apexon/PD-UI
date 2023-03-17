@@ -264,15 +264,21 @@ export const prepareContent = ({
   content,
   level,
   isSaved,
+  section,
 }) => {
   const clonedSection = cloneDeep(sectionContent);
   let newObj = {};
+
   switch (type) {
     case 'ADDED':
       if (currentLineId && contentType) {
         const prevIndex =
           clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
         const prevObj = clonedSection[prevIndex] || null;
+        if (!prevObj) {
+          currentLineId = section.line_id;
+        }
+
         const {
           font_info: fontInfo,
           link_id: linkId,
@@ -461,7 +467,6 @@ export const createReturnObj = (obj, linkId) => {
         },
       };
     }
-
     return {
       type: obj.type,
       content: obj.content,

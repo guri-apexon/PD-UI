@@ -25,6 +25,10 @@
       margin-right: 10px;
     }
   }
+
+  p.fileUpload-helper {
+    font-size: 14px;
+  }
 }
 
 .img-container-read-mode {
@@ -51,6 +55,9 @@
   justify-content: flex-end;
   align-items: flex-start;
   background: rgba(0, 0, 0, 0.4);
+  > button {
+    margin-top: 20px;
+  }
 }
 
 .delete-confirmation-box {

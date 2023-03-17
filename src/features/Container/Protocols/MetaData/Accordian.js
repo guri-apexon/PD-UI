@@ -13,6 +13,7 @@ import Trash from 'apollo-react-icons/Trash';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Undo from 'apollo-react-icons/Undo';
 import MetaDataEditTable from './MetaDataEditTable';
+import { autoCompleteClose } from './utilFunction';
 import MetaDataTable from './MetaDataTable';
 import './MetaData.scss';
 
@@ -57,6 +58,9 @@ function Accordian({
   const handlePlus = (e) => {
     e.stopPropagation();
     setCurrentActiveLevels([...currentActiveLevels, accData?.formattedName]);
+    autoCompleteClose(() => {
+      setCurrentActiveLevels([]);
+    });
   };
 
   const handleSaveData = (e) => {
