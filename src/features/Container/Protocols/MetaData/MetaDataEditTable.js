@@ -200,7 +200,7 @@ function MetaDataEditTable({
         list?.id === id
           ? {
               ...list,
-              attr_type: keyName === 'attr_type' && value,
+              attr_type: keyName === 'attr_type' ? value : list.attr_type,
               attr_value:
                 keyName === 'attr_type' ? '' : getValue(list, keyName, value),
             }
