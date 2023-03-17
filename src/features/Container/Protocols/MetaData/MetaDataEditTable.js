@@ -29,6 +29,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   const handleDataChange = (e) => {
     if (e?.target?.name === 'attr_type') {
       setType(e.target.value ? e.target.value : 'string');
+      setVal('');
     } else {
       setVal(e?.target?.value);
     }
@@ -183,6 +184,14 @@ function MetaDataEditTable({
     }));
   };
 
+  const getValue = (list, keyName, value) => {
+    console.log('value', value);
+    return list?.attr_type === 'date' && keyName === 'attr_value'
+      ? // eslint-disable-next-line
+        moment(value?._d).format('DD-MMM-YYYY')
+      : value;
+  };
+
   const handleChange = (id, value, keyName) => {
     setRows((prevState) => ({
       ...prevState,
@@ -190,11 +199,9 @@ function MetaDataEditTable({
         list?.id === id
           ? {
               ...list,
-              [keyName]:
-                list?.attr_type === 'date' && keyName === 'attr_value'
-                  ? // eslint-disable-next-line
-                    moment(value?._d).format('DD-MMM-YYYY')
-                  : value,
+              attr_type: keyName === 'attr_type' && value,
+              attr_value:
+                keyName === 'attr_type' ? '' : getValue(list, keyName, value),
             }
           : list,
       ),
