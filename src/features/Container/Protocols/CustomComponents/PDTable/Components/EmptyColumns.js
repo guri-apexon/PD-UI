@@ -31,6 +31,7 @@ function EmptyColumns({ columnLength, handleOperation }) {
     handleOperation(operation, index);
     setActiveIconIndex(null);
   };
+
   return (
     <Grid
       container

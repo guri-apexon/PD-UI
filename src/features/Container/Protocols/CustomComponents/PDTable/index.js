@@ -19,6 +19,7 @@ import {
 import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 import PROTOCOL_CONSTANT from '../constants';
+import { tableJSONByRowAndColumnLength } from '../../../../../utils/utilFunction';
 
 const getColumnID = (data, key) => {
   let roiId = '';
@@ -45,6 +46,7 @@ const getIDs = (rows) => {
   }
   return { rowRoiId, tableRoiId, datacellRoiId };
 };
+
 const formattableData = (data) => {
   const cloneData = [...data];
   for (let i = 0; i < cloneData.length; i++) {
@@ -92,14 +94,14 @@ function PDTable({ data, segment, activeLineID, lineID }) {
 
   useEffect(() => {
     if (data) {
-      const parsedTable = JSON.parse(data.TableProperties);
-      const formatData = formattableData(parsedTable);
-      const tableIds = getIDs(parsedTable[0]);
+      const parsedTable = JSON.parse(tableJSONByRowAndColumnLength(2, 2));
+      // const parsedTable = JSON.parse(data.TableProperties);
+      const tableIds = getIDs(parsedTable[0].row_props);
       setTableId(tableIds?.tableRoiId);
-      setUpdatedData(formatData);
+      setUpdatedData(parsedTable);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
-      const colLength = Object.keys(formatData[0]).length;
+      const colLength = Object.keys(parsedTable[0].row_props).length;
       setColumnLength(colLength);
       setColumnWidth(98 / colLength);
     }
@@ -107,7 +109,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
 
   const handleChange = (content, columnIndex, rowIndex) => {
     const cloneData = [...updatedData];
-    cloneData[rowIndex][columnIndex].content = content;
+    cloneData[rowIndex].row_props[columnIndex].content = content;
     setUpdatedData(cloneData);
   };
 
@@ -115,12 +117,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     if (operation === tableOperations.addColumnLeft) {
       const newData = addColumn(updatedData, index);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
+      setColumnLength(Object.keys(newData[0].row_props).length);
     } else if (operation === tableOperations.addColumnRight) {
       // eslint-disable-next-line
       const newData = addColumn(updatedData, parseInt(index) + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
+      setColumnLength(Object.keys(newData[0].row_props).length);
     } else if (operation === tableOperations.deleteColumn) {
       setIsModal(true);
       setSelectedData({
@@ -134,12 +136,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     if (operation === tableOperations.addRowAbove) {
       const newData = addRow(updatedData, index);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
+      setColumnLength(Object.keys(newData[0].row_props).length);
     } else if (operation === tableOperations.addRowBelow) {
       // eslint-disable-next-line
       const newData = addRow(updatedData, parseInt(index) + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
+      setColumnLength(Object.keys(newData[0].row_props).length);
     } else if (operation === tableOperations.deleteRow) {
       setIsModal(true);
       setSelectedData({
@@ -159,12 +161,13 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setUpdatedData(newList);
     } else if (operation === tableOperations.swapColumn) {
       const copyUpdatedList = cloneDeep(updatedData);
-      const newData = copyUpdatedList.map((ele) => {
-        const temp = ele[indexObj.sourceIndex];
-        ele[indexObj.sourceIndex] = ele[indexObj.targetIndex];
-        ele[indexObj.targetIndex] = temp;
+      const newData = copyUpdatedList.map((list) => {
+        const rowProp = list?.row_props;
+        const temp = rowProp[indexObj.sourceIndex];
+        rowProp[indexObj.sourceIndex] = rowProp[indexObj.targetIndex];
+        rowProp[indexObj.targetIndex] = temp;
 
-        return ele;
+        return list;
       });
       setUpdatedData(newData);
     }
@@ -287,7 +290,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         </div>
       )}
       <div className="pd-table-container" ref={tableRef}>
-        {/* <DisplayTable
+        <DisplayTable
           data={updatedData}
           onChange={handleChange}
           handleRowOperation={handleRowOperation}
@@ -298,7 +301,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           setFootnoteData={setFootnoteData}
           handleColumnOperation={handleColumnOperation}
           columnLength={columnLength}
-        />*/}
+        />
       </div>
       <Modal
         className="modal delete-modal"

@@ -410,20 +410,20 @@ function DigitizeAccordion({
           ) : (
             <div className="readable-content">
               {sectionDataArr.map((section) => {
-                if (section.type === CONTENT_TYPE.TABLE) {
-                  return (
-                    <DisplayTable
-                      key={React.key}
-                      data={
-                        section?.content
-                          ? JSON.parse(section?.content?.TableProperties)
-                          : []
-                      }
-                      footNoteData={section?.content?.AttachmentListProperties}
-                      colWidth={100}
-                    />
-                  );
-                }
+                // if (section.type === CONTENT_TYPE.TABLE) {
+                //   return (
+                //     <DisplayTable
+                //       key={React.key}
+                //       data={
+                //         section?.content
+                //           ? JSON.parse(section?.content?.TableProperties)
+                //           : []
+                //       }
+                //       footNoteData={section?.content?.AttachmentListProperties}
+                //       colWidth={100}
+                //     />
+                //   );
+                // }
                 if (section.type === CONTENT_TYPE.IMAGE) {
                   return (
                     <ImageUploader

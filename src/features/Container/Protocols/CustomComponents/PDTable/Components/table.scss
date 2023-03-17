@@ -1,7 +1,6 @@
 .pd-table-container {
   display: flex;
   flex-direction: column;
-  padding: 35px 30px;
   position: relative;
   margin-bottom: 45px;
   overflow-x: auto;
@@ -10,6 +9,7 @@
   max-width: 100%;
   width: 100%;
   display: table;
+  position: relative;
 }
 .pd-table-wrapper {
   display: block;
@@ -17,7 +17,7 @@
   width: 100%;
   justify-content: center;
   overflow: auto;
-  padding-bottom: 10px;
+  padding: 35px 30px;
   position: relative;
 }
 .pd-table-row {

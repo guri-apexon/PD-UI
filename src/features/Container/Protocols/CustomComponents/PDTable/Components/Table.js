@@ -41,13 +41,13 @@ function DisplayTable({
       if (clone?.id && clone?.id !== draggedId) {
         if (checkIfColumnSwap) {
           handleSwap(tableOperations.swapColumn, {
-            sourceIndex: parseFloat(draggedId.split('-')[2]).toFixed(1),
-            targetIndex: parseFloat(clone.id.split('-')[2]).toFixed(1),
+            sourceIndex: draggedId.split('-')[2],
+            targetIndex: clone.id.split('-')[2],
           });
         } else {
           handleSwap(tableOperations.swapRow, {
-            sourceIndex: parseInt(draggedId.split('-')[1], 10),
-            targetIndex: parseInt(clone.id.split('-')[1], 10),
+            sourceIndex: draggedId.split('-')[1],
+            targetIndex: clone.id.split('-')[1],
           });
         }
       }
@@ -68,7 +68,7 @@ function DisplayTable({
             colWidth={colWidth}
           />
         )}
-        {data.map((row, rowIndex) => (
+        {data?.map((row, rowIndex) => (
           <div key={uuidv4()} className="pd-table-empty-cell-row">
             {edit && (
               <EmptyRows
@@ -106,7 +106,7 @@ function DisplayTable({
                     <EllipsisVertical />
                   </span>
                 )}
-                {Object.keys(row).map((key) => (
+                {Object.keys(row.row_props).map((key) => (
                   <div
                     key={uuidv4()}
                     id={`divId-${rowIndex}-${key}`}
@@ -128,7 +128,9 @@ function DisplayTable({
                     <span
                       id={`divId-${rowIndex}-${key}`}
                       // eslint-disable-next-line
-                      dangerouslySetInnerHTML={{ __html: row[key].content }}
+                      dangerouslySetInnerHTML={{
+                        __html: row.row_props[key].content,
+                      }}
                       contentEditable={edit}
                       onBlur={(e) => handleChange(key, rowIndex, e)}
                     />

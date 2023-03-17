@@ -8,7 +8,6 @@ const QC_CHANGE_TYPE = {
 };
 const getEmptyCell = () => {
   return {
-    entities: [],
     content: '',
     roi_id: {
       table_roi_id: uuidv4(),
@@ -16,14 +15,12 @@ const getEmptyCell = () => {
       column_roi_id: uuidv4(),
       datacell_roi_id: uuidv4(),
     },
-    table_index: 2,
-    qc_change_type: QC_CHANGE_TYPE.ADDED,
   };
 };
 const createEmptyRow = (columnLength) => {
   const row = {};
   [...Array(columnLength)].forEach((_, i) => {
-    const index = `${parseInt(i + 1, 10)}.0`;
+    const index = `${parseInt(i, 10)}`;
     row[index] = getEmptyCell();
   });
   return row;
@@ -37,16 +34,23 @@ export const updateTable = (data, content, rowIndex, columnIndex) => {
 
 export const addRow = (rows, index) => {
   const data = cloneDeep(rows);
-  const emptyRow = createEmptyRow(Object.keys(rows[0]).length);
-  data.splice(index, 0, emptyRow);
+  const emptyRow = createEmptyRow(Object.keys(rows[0].row_props).length);
+  const newEmptyRow = {
+    row_roi_id: '',
+    row_idx: rows.length.toString(),
+    row_props: emptyRow,
+  };
+  data.splice(index, 0, newEmptyRow);
   return data;
 };
 
 export const deleteRow = (rows, index) => {
   const data = cloneDeep(rows);
-  Object.keys(data[index]).forEach((key) => {
-    data[index][key].content = `<s>${data[index][key].content}</s>`;
-    data[index][key].qc_change_type = QC_CHANGE_TYPE.DELETED;
+  Object.keys(data[index].row_props).forEach((key) => {
+    data[index].row_props[
+      key
+    ].content = `<s>${data[index].row_props[key].content}</s>`;
+    data[index].row_props[key].qc_change_type = QC_CHANGE_TYPE.DELETED;
   });
   return data;
 };
@@ -54,19 +58,20 @@ export const deleteRow = (rows, index) => {
 export const addColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   for (let i = 0; i < data.length; i++) {
-    Object.keys(data[i]).forEach((key, j) => {
+    const rowProps = data[i]?.row_props;
+    Object.keys(rowProps).forEach((key, j) => {
       if (j === index) {
-        data[i][key] = getEmptyCell();
-        const newKey = `${parseInt(j + 2, 10)}.0`;
-        data[i][newKey] = tabledata[i][key];
+        rowProps[key] = getEmptyCell();
+        const newKey = `${parseInt(j + 1, 10)}`;
+        rowProps[newKey] = tabledata[i]?.row_props[key];
       } else if (j > index) {
-        const newKey = `${parseInt(j + 2, 10)}.0`;
-        data[i][newKey] = tabledata[i][key];
+        const newKey = `${parseInt(j + 1, 10)}`;
+        rowProps[newKey] = tabledata[i]?.row_props[key];
       }
     });
-    const maxLength = Object.keys(data[i]).length;
+    const maxLength = Object.keys(data[i].row_props).length;
     if (maxLength === index) {
-      data[i][`${parseInt(maxLength + 1, 10)}.0`] = getEmptyCell();
+      data[i].row_props[maxLength] = getEmptyCell();
     }
   }
   return data;
@@ -75,10 +80,12 @@ export const addColumn = (tabledata, index) => {
 export const deleteColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   for (let i = 0; i < data.length; i++) {
-    Object.keys(data[i]).forEach((key, j) => {
+    Object.keys(data[i].row_props).forEach((key, j) => {
       if (j === index) {
-        data[i][key].content = `<s>${data[i][key].content}</s>`;
-        data[i][key].qc_change_type = QC_CHANGE_TYPE.DELETED;
+        data[i].row_props[
+          key
+        ].content = `<s>${data[i].row_props[key].content}</s>`;
+        data[i].row_props[key].qc_change_type = QC_CHANGE_TYPE.DELETED;
       }
     });
   }

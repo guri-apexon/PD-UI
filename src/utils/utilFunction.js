@@ -222,10 +222,10 @@ export const tableJSONByRowAndColumnLength = (row, column) => {
       const obj = {
         content: '',
         roi_id: {
-          table_roi_id: '',
-          row_roi_id: '',
-          column_roi_id: '',
-          datacell_roi_id: '',
+          table_roi_id: uuidv4(),
+          row_roi_id: uuidv4(),
+          column_roi_id: uuidv4(),
+          datacell_roi_id: uuidv4(),
         },
       };
       columnObj[`${j}`] = obj;
@@ -375,7 +375,6 @@ export const toBase64 = (file) =>
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => {
-      console.log(error);
       return reject(error);
     };
   });
