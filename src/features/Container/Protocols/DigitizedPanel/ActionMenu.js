@@ -11,9 +11,9 @@ import PropTypes from 'prop-types';
 
 import './ActionMenu.scss';
 
-function PTIcon(selected) {
-  return <span className={`ptIcon ${selected === 'PT' && 'active'}`}>PT</span>;
-}
+// function PTIcon(selected) {
+//   return <span className={`ptIcon ${selected === 'PT' && 'active'}`}>PT</span>;
+// }
 
 function ActionMenu({
   auditInfo,
@@ -21,10 +21,19 @@ function ActionMenu({
   onSaveClick,
   onEditClick,
   setShowEnrichedContent,
+  setShowPrefferedTerm,
+  showPrefferedTerm,
+  showEnrichedContent,
   disabled,
+  showLink,
+  setShowLink,
+  setShowEdit,
 }) {
   const [expanded, setExpanded] = useState(false);
   const [selected, setSelected] = useState(null);
+  const [toggle, setToggle] = useState(true);
+  const [clinicalTermstoggle, setClinicalTermsToggle] = useState(true);
+  const [linkReferencetoggle, setLinkReferenceToggle] = useState(true);
 
   useEffect(() => {}, []);
 
@@ -32,6 +41,63 @@ function ActionMenu({
     e.preventDefault();
     setSelected(null);
     onSaveClick(e);
+  };
+
+  // const handleToggle = (setfun) => {
+  //   setToggle(!toggle);
+  //   if (toggle) {
+  //     setfun(true);
+  //   } else {
+  //     setfun(false);
+  //   }
+  // };
+
+  const pTIcon = () => {
+    return (
+      <span className={`ptIcon ${showPrefferedTerm ? 'active' : ''}`}>PT</span>
+    );
+  };
+
+  const handlePrefferedTerm = () => {
+    setSelected('PT');
+    setToggle(!toggle);
+    if (toggle) {
+      setShowPrefferedTerm(true);
+    } else {
+      setShowPrefferedTerm(false);
+    }
+  };
+
+  const handleClinicalTerms = () => {
+    setSelected('CT');
+    setClinicalTermsToggle(!clinicalTermstoggle);
+    if (clinicalTermstoggle) {
+      setShowEnrichedContent(true);
+    } else {
+      setShowEnrichedContent(false);
+    }
+    // handleToggle(setShowEnrichedContent(true));
+  };
+
+  const handleLinkReference = () => {
+    setSelected('link');
+    setLinkReferenceToggle(!linkReferencetoggle);
+    if (linkReferencetoggle) {
+      setShowLink(true);
+    } else {
+      setShowLink(false);
+    }
+  };
+
+  const handleEdit = (e) => {
+    onEditClick(e);
+    setSelected('edit');
+    setToggle(!toggle);
+    if (toggle) {
+      setShowEdit(true);
+    } else {
+      setShowEdit(false);
+    }
   };
 
   return (
@@ -48,10 +114,7 @@ function ActionMenu({
         {!showedit ? (
           <button
             type="button"
-            onClick={(e) => {
-              onEditClick(e);
-              setSelected('edit');
-            }}
+            onClick={(e) => handleEdit(e)}
             data-testId="edit-button"
           >
             <Pencil />
@@ -59,43 +122,46 @@ function ActionMenu({
           </button>
         ) : (
           <button
+            className={`${showedit ? 'active_color' : ''}`}
             type="button"
             onClick={(e) => saveSection(e)}
             disabled={disabled}
             data-testId="save-button"
           >
-            <Save className={`${selected === 'edit' ? 'active' : ''}`} />{' '}
+            <Save className={`${showedit ? 'active' : ''}`} />{' '}
             {expanded && 'Save'}
           </button>
         )}
+
         <button
+          className={`${showPrefferedTerm ? 'active_color' : ''}`}
           type="button"
-          onClick={() => {
-            setSelected('PT');
-          }}
+          onClick={() => handlePrefferedTerm()}
           disabled={selected === 'edit'}
+          data-testId="preferred-button"
         >
-          {PTIcon(selected)} {expanded && 'Preferred Terms'}
+          {pTIcon()}
+          {expanded && 'Preferred Terms'}
         </button>
+
         <button
+          className={`${showLink ? 'active_color' : ''}`}
           type="button"
           disabled={selected === 'edit'}
-          onClick={() => {
-            setSelected('link');
-          }}
+          onClick={() => handleLinkReference()}
+          data-testId="links-button"
         >
-          <LinkIcon className={`${selected === 'link' ? 'active' : ''}`} />
+          <LinkIcon className={`${showLink ? 'active' : ''}`} />
           {expanded && 'Links & References'}
         </button>
         <button
+          className={`${showEnrichedContent ? 'active_color' : ''}`}
           type="button"
           disabled={selected === 'edit'}
-          onClick={() => {
-            setSelected('CT');
-            setShowEnrichedContent(true);
-          }}
+          onClick={() => handleClinicalTerms()}
+          data-testId="clinical-button"
         >
-          <Stethoscope className={`${selected === 'CT' ? 'active' : ''}`} />{' '}
+          <Stethoscope className={`${showEnrichedContent ? 'active' : ''}`} />{' '}
           {expanded && 'Clinical Terms'}
         </button>
         <fieldset>
@@ -128,4 +194,10 @@ ActionMenu.propTypes = {
   onEditClick: PropTypes.isRequired,
   disabled: PropTypes.isRequired,
   setShowEnrichedContent: PropTypes.isRequired,
+  setShowPrefferedTerm: PropTypes.isRequired,
+  showPrefferedTerm: PropTypes.isRequired,
+  showEnrichedContent: PropTypes.isRequired,
+  showLink: PropTypes.isRequired,
+  setShowLink: PropTypes.isRequired,
+  setShowEdit: PropTypes.isRequired,
 };

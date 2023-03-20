@@ -16,6 +16,11 @@ function ProtocolView({ refs, data }) {
   };
   const [selectedSection, setSelectedSection] = useState(null);
   const [sectionContent, setSectionContent] = useState(null);
+  const [value, setValue] = useState(false);
+
+  const handleChange = (e, checked) => {
+    setValue(checked);
+  };
 
   const handleSectionSelect = (payload) => {
     if (!payload.sectionContent && sectionContent) {
@@ -164,6 +169,8 @@ function ProtocolView({ refs, data }) {
             sectionRef={sectionRef}
             data={protData}
             summaryData={summary}
+            value={value}
+            handleChange={handleChange}
           />
         )}
       </div>
