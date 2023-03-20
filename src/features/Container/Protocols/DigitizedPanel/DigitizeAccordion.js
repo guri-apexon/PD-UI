@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
 import PropTypes from 'prop-types';
