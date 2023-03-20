@@ -50,28 +50,14 @@ const getIDs = (rows) => {
 const formattableData = (data) => {
   const cloneData = [...data];
   for (let i = 0; i < cloneData.length; i++) {
-    const rowCells = cloneData[i];
+    const rowCells = cloneData[i].row_props;
     const keys = Object.keys(rowCells);
     for (let j = 0; j < keys.length; j++) {
-      if (rowCells[keys[j]]) {
-        console.log('No Formating');
-      } else {
-        const IDs = getIDs(rowCells);
-        const columnID = getColumnID(data, keys[j]);
-        const emptyCell = {
-          entities: [],
-          content: '',
-          roi_id: {
-            table_roi_id: IDs.table_roi_id,
-            row_roi_id: IDs.row_roi_id,
-            column_roi_id: columnID,
-            datacell_roi_id: IDs.datacell_roi_id,
-          },
-          table_index: 2,
-          qc_change_type: '',
-        };
-        rowCells[keys[j]] = emptyCell;
-      }
+      const emptyCell = {
+        content: rowCells[keys[j]].content,
+        roi_id: rowCells[keys[j]].roi_id,
+      };
+      rowCells[keys[j]] = emptyCell;
     }
   }
   return cloneData;
@@ -94,14 +80,13 @@ function PDTable({ data, segment, activeLineID, lineID }) {
 
   useEffect(() => {
     if (data) {
-      const parsedTable = JSON.parse(tableJSONByRowAndColumnLength(2, 2));
-      // const parsedTable = JSON.parse(data.TableProperties);
-      const tableIds = getIDs(parsedTable[0].row_props);
+      const parsedTable = JSON.parse(data.TableProperties);
+      const tableIds = getIDs(parsedTable[0]?.row_props);
       setTableId(tableIds?.tableRoiId);
       setUpdatedData(parsedTable);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
-      const colLength = Object.keys(parsedTable[0].row_props).length;
+      const colLength = Object.keys(parsedTable[0]?.row_props).length;
       setColumnLength(colLength);
       setColumnWidth(98 / colLength);
     }
@@ -117,12 +102,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     if (operation === tableOperations.addColumnLeft) {
       const newData = addColumn(updatedData, index);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0].row_props).length);
+      setColumnLength(Object.keys(newData[0]?.row_props).length);
     } else if (operation === tableOperations.addColumnRight) {
       // eslint-disable-next-line
       const newData = addColumn(updatedData, parseInt(index) + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0].row_props).length);
+      setColumnLength(Object.keys(newData[0]?.row_props).length);
     } else if (operation === tableOperations.deleteColumn) {
       setIsModal(true);
       setSelectedData({
@@ -136,12 +121,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     if (operation === tableOperations.addRowAbove) {
       const newData = addRow(updatedData, index);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0].row_props).length);
+      setColumnLength(Object.keys(newData[0]?.row_props).length);
     } else if (operation === tableOperations.addRowBelow) {
       // eslint-disable-next-line
       const newData = addRow(updatedData, parseInt(index) + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0].row_props).length);
+      setColumnLength(Object.keys(newData[0]?.row_props).length);
     } else if (operation === tableOperations.deleteRow) {
       setIsModal(true);
       setSelectedData({

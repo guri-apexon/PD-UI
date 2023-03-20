@@ -119,6 +119,7 @@ function DisplayTable({
                   >
                     {rowIndex === 0 && edit && (
                       <span
+                        style={{ width: `${colWidth}%` }}
                         className="pd-drag-icon columnDrag"
                         data-testId="draggable"
                       >
