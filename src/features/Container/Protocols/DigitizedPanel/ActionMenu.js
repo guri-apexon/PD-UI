@@ -10,6 +10,7 @@ import ArrowRight from 'apollo-react-icons/ArrowRight';
 import PropTypes from 'prop-types';
 
 import './ActionMenu.scss';
+import auditData from './auditLog.json';
 
 // function PTIcon(selected) {
 //   return <span className={`ptIcon ${selected === 'PT' && 'active'}`}>PT</span>;
@@ -92,12 +93,12 @@ function ActionMenu({
   const handleEdit = (e) => {
     onEditClick(e);
     setSelected('edit');
-    setToggle(!toggle);
-    if (toggle) {
-      setShowEdit(true);
-    } else {
-      setShowEdit(false);
-    }
+    // setToggle(!toggle);
+    // if (toggle) {
+    //   setShowEdit(true);
+    // } else {
+    //   setShowEdit(false);
+    // }
   };
 
   return (
@@ -172,10 +173,20 @@ function ActionMenu({
           {expanded && (
             <div className="audit-info">
               <p className="key">Last Edited Date</p>
+              {auditData.map((data) => (
+                <p key={data}>{data.last_reviewed_date}</p>
+              ))}
               <p>{auditInfo.last_reviewed_date}</p>
+
               <p className="key">Numer of Times Edited</p>
+              {auditData.map((data) => (
+                <p key={data}>{data.total_no_review}</p>
+              ))}
               <p> {auditInfo.total_no_review}</p>
               <p className="key">Last Edited By</p>
+              {auditData.map((data) => (
+                <p key={data}>{data.last_reviewed_by}</p>
+              ))}
               <p>{auditInfo.last_reviewed_by}</p>
             </div>
           )}
