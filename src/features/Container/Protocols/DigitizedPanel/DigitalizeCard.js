@@ -15,6 +15,7 @@ import {
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
+import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import DigitizeAccordion from './DigitizeAccordion';
 
@@ -199,6 +200,9 @@ function DigitalizeCard({
       )}
       {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
         <SOA docId={data.id} />
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.DIPA_VIEW && (
+        <DipaView docId={data.id} />
       )}
     </div>
   );
