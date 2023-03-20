@@ -203,6 +203,7 @@ function MetaDataEditTable({
               attr_type: keyName === 'attr_type' ? value : list.attr_type,
               attr_value:
                 keyName === 'attr_type' ? '' : getValue(list, keyName, value),
+              attr_name: keyName === 'attr_name' ? value : list?.attr_name,
             }
           : list,
       ),
