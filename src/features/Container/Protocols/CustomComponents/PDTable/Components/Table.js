@@ -59,72 +59,91 @@ function DisplayTable({
   };
 
   return (
-    <div className="pd-table-inner">
-      {edit && (
-        <EmptyColumns
-          columnLength={columnLength}
-          handleOperation={handleColumnOperation}
-          colWidth={colWidth}
-        />
-      )}
-      {data.map((row, rowIndex) => (
-        <div key={uuidv4()} className="pd-table-empty-cell-row">
-          {edit && (
-            <EmptyRows
-              rowIndex={rowIndex}
-              handleOperation={handleRowOperation}
-              index={rowIndex}
-            />
-          )}
-          <div
-            className="pd-table-row"
-            id={`divId-${rowIndex}`}
-            draggable
-            onDragStart={handleDrag}
-            onDrop={handleDrop}
-            onDragOver={allowDrop}
-          >
-            {rowIndex !== 0 && edit && (
-              <span className="pd-drag-icon rowDrag" data-testId="draggable">
-                <EllipsisVertical />
-              </span>
+    <div className="pd-table-wrapper">
+      <div className="pd-table-inner">
+        {edit && (
+          <EmptyColumns
+            columnLength={columnLength}
+            handleOperation={handleColumnOperation}
+            colWidth={colWidth}
+          />
+        )}
+        {data.map((row, rowIndex) => (
+          <div key={uuidv4()} className="pd-table-empty-cell-row">
+            {edit && (
+              <EmptyRows
+                rowIndex={rowIndex}
+                handleOperation={handleRowOperation}
+                index={rowIndex}
+              />
             )}
-            {Object.keys(row).map((key) => (
+            <div
+              className="pd-table-row"
+              id={`divId-${rowIndex}`}
+              draggable
+              onDragStart={handleDrag}
+              onDrop={handleDrop}
+              onDragOver={allowDrop}
+            >
+              {edit && (
+                <span className="pd-drag-icon rowDrag">
+                  <EllipsisVertical />
+                </span>
+              )}
               <div
-                key={uuidv4()}
-                id={`divId-${rowIndex}-${key}`}
+                className="pd-table-row"
+                id={`divId-${rowIndex}`}
                 draggable
                 onDragStart={handleDrag}
                 onDrop={handleDrop}
                 onDragOver={allowDrop}
-                className="pd-table-cell"
-                style={{ width: `${colWidth}%` }}
               >
-                {rowIndex === 0 && edit && (
+                {rowIndex !== 0 && edit && (
                   <span
-                    className="pd-drag-icon columnDrag"
+                    className="pd-drag-icon rowDrag"
                     data-testId="draggable"
                   >
-                    <EllipsisHorizontal />
+                    <EllipsisVertical />
                   </span>
                 )}
-                <span
-                  id={`divId-${rowIndex}-${key}`}
-                  // eslint-disable-next-line
-                  dangerouslySetInnerHTML={{ __html: row[key].content }}
-                  contentEditable={edit}
-                  onBlur={(e) => handleChange(key, rowIndex, e)}
-                />
+                {Object.keys(row).map((key) => (
+                  <div
+                    key={uuidv4()}
+                    id={`divId-${rowIndex}-${key}`}
+                    draggable
+                    onDragStart={handleDrag}
+                    onDrop={handleDrop}
+                    onDragOver={allowDrop}
+                    className="pd-table-cell"
+                    style={{ width: `${colWidth}%` }}
+                  >
+                    {rowIndex === 0 && edit && (
+                      <span
+                        className="pd-drag-icon columnDrag"
+                        data-testId="draggable"
+                      >
+                        <EllipsisHorizontal />
+                      </span>
+                    )}
+                    <span
+                      id={`divId-${rowIndex}-${key}`}
+                      // eslint-disable-next-line
+                      dangerouslySetInnerHTML={{ __html: row[key].content }}
+                      contentEditable={edit}
+                      onBlur={(e) => handleChange(key, rowIndex, e)}
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      ))}
-      <FootNotes
-        edit={edit}
-        footNoteData={footNoteData}
-        setFootnoteData={setFootnoteData}
-      />
+        ))}
+        <FootNotes
+          edit={edit}
+          footNoteData={footNoteData}
+          setFootnoteData={setFootnoteData}
+        />
+      </div>
     </div>
   );
 }

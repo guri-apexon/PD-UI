@@ -122,7 +122,13 @@ class ProtocolViewWrapper extends React.Component {
               </Panel>
             )}
             {data && (
-              <Panel width={window.innerWidth / 2} resizable hideButton>
+              <Panel
+                width="auto"
+                minWidth={window.innerWidth / 4}
+                maxWidth={window.innerWidth / 1.5}
+                resizable
+                hideButton
+              >
                 <Digitize
                   sectionRef={sectionRef}
                   sectionNumber={sectionNumber}

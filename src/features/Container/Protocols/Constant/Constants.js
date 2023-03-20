@@ -30,7 +30,7 @@ const PROTOCOL_RIGHT_MENU_ARR = [
   },
   {
     name: PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES,
-    isActive: false,
+    isActive: true,
     icon: <Calendar className="icon-padding" />,
   },
   {
@@ -40,4 +40,6 @@ const PROTOCOL_RIGHT_MENU_ARR = [
   },
 ];
 
-export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_ARR };
+const AUDIT_LIST = ['Last Reviewed Date', 'Last Reviewed By'];
+
+export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_ARR, AUDIT_LIST };

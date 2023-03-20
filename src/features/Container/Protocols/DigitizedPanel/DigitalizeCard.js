@@ -3,17 +3,21 @@ import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
-import DigitizeAccordion from './DigitizeAccordion';
+
 import Loader from '../../../Components/Loader/Loader';
+import SOA from '../SOA/SOA';
 import {
   headerResult,
   protocolSummary,
   rightBladeValue,
+  SectionIndex,
   TOCActive,
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
+import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import DigitizeAccordion from './DigitizeAccordion';
 
 function DigitalizeCard({
   sectionNumber,
@@ -28,10 +32,12 @@ function DigitalizeCard({
   const BladeRightValue = useSelector(rightBladeValue);
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
+  const sectionIndex = useSelector(SectionIndex);
   const [rightValue, setRightValue] = useState(BladeRightValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
+  const [currentEditCard, setCurrentEditCard] = useState(null);
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -53,6 +59,22 @@ function DigitalizeCard({
       sectionRef[index]?.current?.scrollIntoView(true);
     }, 300);
   };
+
+  useEffect(() => {
+    if (sectionIndex >= 0) {
+      const tempTOCActive = [...tocActive];
+      tempTOCActive[sectionIndex] = true;
+      dispatch({
+        type: 'SET_TOC_Active',
+        payload: {
+          data: tempTOCActive,
+        },
+      });
+      setSectionSequence(sectionIndex);
+    }
+
+    // eslint-disable-next-line
+  }, [sectionIndex]);
 
   useEffect(() => {
     if (sectionRef[sectionSequence] && sectionRef[sectionSequence].current) {
@@ -160,6 +182,9 @@ function DigitalizeCard({
                         rightBladeValue={BladeRightValue}
                         scrollToTop={scrollToTop}
                         value={value}
+                        headerList={headerList}
+                        setCurrentEditCard={setCurrentEditCard}
+                        currentEditCard={currentEditCard}
                       />
                     </div>
                   </div>
@@ -174,6 +199,12 @@ function DigitalizeCard({
       )}
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
+        <SOA docId={data.id} />
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.DIPA_VIEW && (
+        <DipaView docId={data.id} />
       )}
     </div>
   );

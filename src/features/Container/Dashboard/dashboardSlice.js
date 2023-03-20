@@ -6,10 +6,6 @@ export const dashboardSlice = createSlice({
     protocols: [],
     tableError: false,
     recentSearches: [],
-    addProtocolData: {
-      sponsor: [],
-      indication: [],
-    },
     addProtocolModal: false,
     isLoading: false,
     savedSearches: [],
@@ -21,6 +17,20 @@ export const dashboardSlice = createSlice({
     dashboardSearchLoader: true,
     indicationLoading: true,
     sponsorLoading: true,
+    workflowData: {
+      loading: false,
+      error: null,
+      data: [],
+    },
+    workflowSubmit: {
+      loading: false,
+      error: null,
+      data: [],
+    },
+    addProtocolErrorState: {
+      type: '',
+      data: {},
+    },
   },
   reducers: {
     getProtocols: (state, action) => {
@@ -32,14 +42,11 @@ export const dashboardSlice = createSlice({
     getRecentSearches: (state, action) => {
       state.recentSearches = action.payload;
     },
-    getSponsor: (state, action) => {
-      state.addProtocolData.sponsor = action.payload;
-    },
-    getIndication: (state, action) => {
-      state.addProtocolData.indication = action.payload;
-    },
     setAddprotocolError: (state, action) => {
       state.addProtocolDataError = action.payload;
+    },
+    setAddProtocolErrorState: (state, action) => {
+      state.addProtocolErrorState = action.payload;
     },
     setAddProtocolModal: (state, action) => {
       state.addProtocolModal = action.payload;
@@ -74,6 +81,12 @@ export const dashboardSlice = createSlice({
     setSponsorLoading: (state, action) => {
       state.sponsorLoading = action.payload;
     },
+    setworkflowData: (state, action) => {
+      state.workflowData = action.payload;
+    },
+    setworkflowSubmit: (state, action) => {
+      state.workflowSubmit = action.payload;
+    },
   },
 });
 
@@ -81,9 +94,6 @@ export const {
   getProtocols,
   setError,
   getRecentSearches,
-  getSponsor,
-  getIndication,
-  getProtocolData,
   setAddprotocolError,
   setAddProtocolModal,
   setLoading,
@@ -96,6 +106,9 @@ export const {
   getDashboardSearchLoader,
   setIndicationLoading,
   setSponsorLoading,
+  setworkflowData,
+  setworkflowSubmit,
+  setAddProtocolErrorState,
 } = dashboardSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -115,5 +128,9 @@ export const tableLoader = (state) => state.dashboard.tableLoading;
 export const dashboadAPIError = (state) => state.dashboard.apiError;
 export const dashboadSearchLoader = (state) =>
   state.dashboard.dashboadSearchLoader;
+export const workflow = (state) => state.dashboard.workflowData;
+export const workflowSubmitData = (state) => state.dashboard.workflowSubmit;
+export const addProtocolErrorData = (state) =>
+  state.dashboard.addProtocolErrorState;
 
 export default dashboardSlice.reducer;
