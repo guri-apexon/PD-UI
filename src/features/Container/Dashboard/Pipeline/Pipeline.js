@@ -40,6 +40,7 @@ function PipelineComponent({
 
   useEffect(() => {
     setWorkflow(workflowData);
+    // eslint-disable-next-line
   }, [workflowData]);
 
   const isAllTrue = (arrObj) => {
