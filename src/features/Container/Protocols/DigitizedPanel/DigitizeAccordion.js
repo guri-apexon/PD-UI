@@ -368,11 +368,13 @@ function DigitizeAccordion({
     setOpenAudit(e.currentTarget);
   };
 
+  console.log('sectionDataArr', sectionDataArr);
+
   return (
     <div
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
-      className="Accordian-padding"
+      className={primaryRole && 'Accordian-padding'}
       data-testid="mouse-over"
     >
       <Accordion
