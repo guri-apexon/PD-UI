@@ -324,7 +324,7 @@ function DigitizeAccordion({
             <Loader />
           </div>
         )}
-        {sectionDataArr?.length > 0 && (
+        {dataSection?.length > 0 && (
           <>
             {primaryRole && (
               <ActionMenu

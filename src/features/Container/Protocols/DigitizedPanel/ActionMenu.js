@@ -11,9 +11,9 @@ import PropTypes from 'prop-types';
 
 import './ActionMenu.scss';
 
-function PTIcon(selected) {
-  return <span className={`ptIcon ${selected === 'PT' && 'active'}`}>PT</span>;
-}
+// function PTIcon(selected) {
+//   return <span className={`ptIcon ${selected === 'PT' && 'active'}`}>PT</span>;
+// }
 
 function ActionMenu({
   auditInfo,
@@ -51,6 +51,12 @@ function ActionMenu({
   //     setfun(false);
   //   }
   // };
+
+  const pTIcon = () => {
+    return (
+      <span className={`ptIcon ${showPrefferedTerm ? 'active' : ''}`}>PT</span>
+    );
+  };
 
   const handlePrefferedTerm = () => {
     setSelected('PT');
@@ -134,7 +140,7 @@ function ActionMenu({
           disabled={selected === 'edit'}
           data-testId="preferred-button"
         >
-          {PTIcon(selected)}
+          {pTIcon()}
           {expanded && 'Preferred Terms'}
         </button>
 
