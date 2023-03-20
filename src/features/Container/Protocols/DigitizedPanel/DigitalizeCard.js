@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
 
 import Loader from '../../../Components/Loader/Loader';
+import SOA from '../SOA/SOA';
 import {
   headerResult,
   protocolSummary,
@@ -195,6 +196,9 @@ function DigitalizeCard({
       )}
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
+        <SOA docId={data.id} />
       )}
     </div>
   );
