@@ -368,8 +368,6 @@ function DigitizeAccordion({
     setOpenAudit(e.currentTarget);
   };
 
-  console.log('sectionDataArr', sectionDataArr);
-
   return (
     <div
       onMouseEnter={() => setIsShown(true)}
