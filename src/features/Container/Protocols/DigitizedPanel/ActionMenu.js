@@ -35,6 +35,8 @@ function ActionMenu({
   const [toggle, setToggle] = useState(true);
   const [clinicalTermstoggle, setClinicalTermsToggle] = useState(true);
   const [linkReferencetoggle, setLinkReferenceToggle] = useState(true);
+  const [auditInfoToggle, setAuditInfoToggle] = useState(true);
+  const [auditInformation, setAuditInformation] = useState(false);
 
   useEffect(() => {}, []);
 
@@ -99,6 +101,15 @@ function ActionMenu({
     // } else {
     //   setShowEdit(false);
     // }
+  };
+
+  const handleAuditInformation = () => {
+    setAuditInfoToggle(!auditInfoToggle);
+    if (auditInfoToggle) {
+      setAuditInformation(true);
+    } else {
+      setAuditInformation(false);
+    }
   };
 
   return (
@@ -166,11 +177,16 @@ function ActionMenu({
           {expanded && 'Clinical Terms'}
         </button>
         <fieldset>
-          <p>
-            <EyeShow />
+          <p
+            className={`${auditInformation ? 'active_color' : ''}`}
+            onClick={() => handleAuditInformation()}
+            aria-hidden="true"
+          >
+            <EyeShow className={`${auditInformation ? 'active' : ''}`} />
             {expanded && 'Audit Information'}
           </p>
-          {expanded && (
+
+          {auditInformation && expanded && (
             <div className="audit-info">
               <p className="key">Last Edited Date</p>
               {auditData.map((data) => (
