@@ -7,8 +7,6 @@ import dashboardslice, {
   savedSearches,
   setError,
   getRecentSearches,
-  getSponsor,
-  getIndication,
   setAddprotocolError,
   setLoading,
   getSavedSearches,
@@ -73,33 +71,6 @@ describe(' DashboardSlice Test Suite', () => {
         payload: [{ keyword: 'Acute' }],
       }),
     ).toEqual({ ...initialState, recentSearches: [{ keyword: 'Acute' }] });
-  });
-  test('Test getSponsor', () => {
-    expect(
-      dashboardslice(initialState, {
-        type: getSponsor.type,
-        payload: [{ id: 1, sponsor_name: 'Astellas Pharma Inc' }],
-      }),
-    ).toEqual({
-      ...initialState,
-      addProtocolData: {
-        sponsor: [{ id: 1, sponsor_name: 'Astellas Pharma Inc' }],
-      },
-    });
-  });
-  test('Test getIndication', () => {
-    expect(
-      dashboardslice(initialState, {
-        type: getIndication.type,
-        payload: [{ id: 4, indication_name: 'ABCC6 deficiency' }],
-      }),
-    ).toEqual({
-      ...initialState,
-      addProtocolData: {
-        indication: [{ id: 4, indication_name: 'ABCC6 deficiency' }],
-        sponsor: [],
-      },
-    });
   });
   test('Test setAddprotocolError', () => {
     expect(
