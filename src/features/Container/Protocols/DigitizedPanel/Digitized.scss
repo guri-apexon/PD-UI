@@ -54,8 +54,7 @@
     max-height: 60vh;
     flex: 1 1 auto;
     .Preferred-txt {
-      color: #e20000;
-      cursor: pointer;
+      color: #0768fd;
     }
     .enriched-txt {
       color: #ff9300;
@@ -86,6 +85,9 @@
   }
   .discard-icon {
     margin-left: 6px;
+  }
+  .preferred-text {
+    color: #0768fd;
   }
 }
 

@@ -405,7 +405,7 @@ function DigitizeAccordion({
               data-testid="accordion-header"
             >
               {value && !isEmpty(item.preferred_term) ? (
-                <span style={{ color: '#e20000' }}>{item.preferred_term}</span>
+                <b className="preferred-text">{item.preferred_term}</b>
               ) : (
                 item.source_file_section
               )}
