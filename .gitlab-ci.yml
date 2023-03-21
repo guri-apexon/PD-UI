@@ -162,7 +162,9 @@ uat1-deploy:
       
   only:
     refs:
-      - release-1.4
+      - develop
+      - merge_requests
+      - /^release*/
     variables: 
       - $ENVIRONMENT== "uat1"
 
@@ -214,7 +216,9 @@ uat-deploy:
       
   only:
     refs:
-      - release-1.4
+      - develop
+      - merge_requests
+      - /^release*/
     variables: 
       - $ENVIRONMENT== "uat"
 
@@ -239,7 +243,7 @@ prod-deploy:
       
   only:
     refs:
-      - release-1.4
+      - /^release*/
     variables: 
       - $ENVIRONMENT== "prod"
 
