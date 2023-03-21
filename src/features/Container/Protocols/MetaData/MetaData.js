@@ -19,6 +19,7 @@ import {
   checkDuplicates,
   flattenMetaParam,
   validationCheck,
+  autoCompleteClose,
 } from './utilFunction';
 import { METADATA_LIST } from '../../../../AppConstant/AppConstant';
 
@@ -204,19 +205,23 @@ function MetaData({ docId }) {
           filterCustomData,
         );
       }
-      deleteCall(
-        {
-          formattedName: 'summary_extended',
-          name: 'summary_extended',
-        },
-        'deleteAttribute',
-      );
+      if (deletedAttributes.length > 0) {
+        deleteCall(
+          {
+            formattedName: 'summary_extended',
+            name: 'summary_extended',
+          },
+          'deleteAttribute',
+        );
+      }
       postCall(accordianData[accData?.formattedName], filterNonCustomData);
     } else {
       const accMetaData = rows[accData?.formattedName]
         ? rows[accData?.formattedName]
         : [];
-      deleteCall(accordianData[accData?.formattedName], 'deleteAttribute');
+      if (deletedAttributes.length > 0) {
+        deleteCall(accordianData[accData?.formattedName], 'deleteAttribute');
+      }
       postCall(accordianData[accData?.formattedName], accMetaData);
     }
   };
@@ -416,6 +421,13 @@ function MetaData({ docId }) {
     // eslint-disable-next-line
   }, [sectionName]);
 
+  const handleAutoComplete = () => {
+    setIsOpen(!isOpen);
+    autoCompleteClose(() => {
+      setIsOpen(false);
+    });
+  };
+
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -427,7 +439,7 @@ function MetaData({ docId }) {
           <Plus
             size="small"
             className="metadata-plus-size"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleAutoComplete}
           />
         </div>
         {isOpen && (

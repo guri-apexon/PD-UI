@@ -28,6 +28,7 @@ import {
   getEnrichedValue,
   updateSectionResp,
   TOCActive,
+  setSOAData,
   getSectionIndex,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
@@ -646,6 +647,26 @@ export function* saveEnrichedAPI(action) {
   }
 }
 
+export function* getSOAData(action) {
+  console.log(action);
+  const {
+    payload: { docId, operationValue },
+  } = action;
+
+  const params = `?operationValue=${operationValue}&id=${docId}`;
+  const config = {
+    url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa${params}`,
+    // url: './soa.json',
+    method: 'GET',
+    headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
+  };
+  const enrichedData = yield call(httpCall, config);
+  if (enrichedData?.success) {
+    yield put(setSOAData(enrichedData.data));
+  } else {
+    toast.error('Error While Updation');
+  }
+}
 export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
@@ -671,6 +692,7 @@ function* watchProtocolViews() {
   yield takeEvery('DELETE_METADATA', deleteAttribute);
   yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
   yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
+  yield takeLatest('GET_SOA_DATA', getSOAData);
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
 }

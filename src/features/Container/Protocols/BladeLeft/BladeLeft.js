@@ -10,6 +10,9 @@ import './BladeLeft.scss';
 
 import { protocolTocData, TOCActive } from '../protocolSlice';
 
+const noBorderStyle = {
+  border: 'none',
+};
 function BladeLeft({ handlePageNo, dataSummary }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
@@ -33,7 +36,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
     dispatch({
       type: 'GET_PROTOCOL_TOC_DATA',
       payload: {
-        docId: dataSummary.id,
+        docId: dataSummary?.id,
         tocFlag: 1,
       },
     });
@@ -107,9 +110,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
             return (
               <Accordion
                 key={React.key}
-                style={{
-                  border: 'none',
-                }}
+                style={noBorderStyle}
                 expanded={expanded}
                 onClick={() => handleChange(index)}
               >
@@ -128,12 +129,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
 
                 {item?.childlevel?.map((level1) => {
                   return (
-                    <Accordion
-                      key={React.key}
-                      style={{
-                        border: 'none',
-                      }}
-                    >
+                    <Accordion key={React.key} style={noBorderStyle}>
                       <AccordionSummary>
                         <Tooltip title={level1?.source_file_section}>
                           <Typography
@@ -150,12 +146,7 @@ function BladeLeft({ handlePageNo, dataSummary }) {
                       {level1?.subSection1 &&
                         level1?.subSection1.map((level2) => {
                           return (
-                            <Accordion
-                              key={React.key}
-                              style={{
-                                border: 'none',
-                              }}
-                            >
+                            <Accordion key={React.key} style={noBorderStyle}>
                               <AccordionSummary>
                                 <Tooltip title={level2.sub_Section}>
                                   <Typography

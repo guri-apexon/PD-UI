@@ -33,13 +33,28 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
     setPageScale(scale);
   }
 
+  const getResizerClassNames = () => {
+    const x = document.getElementsByClassName('react-resizable');
+    if (x && x.length === 2) {
+      const y = x[0].childNodes;
+      if (y && y.length === 2) {
+        const z = y[1].className;
+        const xy = y[1].childNodes;
+        if (xy) {
+          const xz = xy[0].className;
+          return [z, xz];
+        }
+        return [z];
+      }
+    }
+    return [];
+  };
+
   const addMouseMove = (e) => {
     if (e) {
       const { className } = e.target;
-      if (
-        className.toString().includes('Panel-handle') ||
-        className.toString().includes('Panel-handleContainer')
-      )
+      const elemClassnames = getResizerClassNames();
+      if (elemClassnames.includes(className.toString()))
         document.addEventListener('mousemove', changeScale, false);
     }
   };
@@ -67,8 +82,8 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   }, [page]);
 
   useEffect(() => {
-    if (refs[currentPage]?.current) {
-      refs[currentPage]?.current?.scrollIntoView({ behavior: 'instant' });
+    if (refs && refs[currentPage]?.current) {
+      refs[currentPage].current.scrollIntoView({ behavior: 'instant' });
     }
     setTimeout(() => {
       if (document.getElementById('pdfDocument')) {
@@ -122,7 +137,6 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
       setPage(currentPage - 1);
     }
   }
-
   return (
     // eslint-disable-next-line
     <div
@@ -135,6 +149,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
     >
       {pdfString && (
         <Document
+          className="document-pdf"
           file={pdfString}
           onLoadSuccess={onDocumentLoadSuccess}
           onKeyDown={(e) => handleKeyDown(e)}
