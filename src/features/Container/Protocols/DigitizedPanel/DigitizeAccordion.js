@@ -404,7 +404,11 @@ function DigitizeAccordion({
               className="section-title"
               data-testid="accordion-header"
             >
-              {item.source_file_section}
+              {value && !isEmpty(item.preferred_term) ? (
+                <span style={{ color: '#e20000' }}>{item.preferred_term}</span>
+              ) : (
+                item.source_file_section
+              )}
             </Typography>
             {/* eslint-disable-next-line */}
             <div
@@ -482,7 +486,7 @@ function DigitizeAccordion({
               />
             ) : (
               <div className="readable-content">
-                {sectionDataArr?.map((section) => {
+                {dataSection?.map((section) => {
                   if (section.type === CONTENT_TYPE.TABLE) {
                     return (
                       <DisplayTable
