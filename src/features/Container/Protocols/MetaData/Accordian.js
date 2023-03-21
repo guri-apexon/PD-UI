@@ -11,7 +11,9 @@ import Plus from 'apollo-react-icons/Plus';
 import Save from 'apollo-react-icons/Save';
 import Trash from 'apollo-react-icons/Trash';
 import EyeShow from 'apollo-react-icons/EyeShow';
+import Undo from 'apollo-react-icons/Undo';
 import MetaDataEditTable from './MetaDataEditTable';
+import { autoCompleteClose } from './utilFunction';
 import MetaDataTable from './MetaDataTable';
 import './MetaData.scss';
 
@@ -20,25 +22,26 @@ function Accordian({
   accData,
   rows,
   suggestedSubList,
-  isOpenSubText,
   deletedAttributes,
+  currentActiveLevels,
   setSuggestedSubList,
-  setIsOpenSubText,
   setRows,
   handleAccordian,
   handleSave,
   handleDelete,
   handleEdit,
+  handleDiscard,
   addSubAccordion,
   subAccComponent,
   setDeletedAttributes,
+  setCurrentActiveLevels,
 }) {
   const [isModal, setIsModal] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [subSectionName, setSubSectionName] = useState(false);
+  const [isDiscarded, setIsDiscarded] = useState(false);
 
   const handleChange = (event, newValue) => {
-    console.log('handleChange', newValue, event.target.value);
     setSubSectionName(newValue);
   };
 
@@ -54,7 +57,10 @@ function Accordian({
 
   const handlePlus = (e) => {
     e.stopPropagation();
-    setIsOpenSubText(!isOpenSubText);
+    setCurrentActiveLevels([...currentActiveLevels, accData?.formattedName]);
+    autoCompleteClose(() => {
+      setCurrentActiveLevels([]);
+    });
   };
 
   const handleSaveData = (e) => {
@@ -69,6 +75,11 @@ function Accordian({
     setIsModal(true);
   };
 
+  const handleUndo = (e) => {
+    e.stopPropagation();
+    setIsDiscarded(true);
+  };
+
   return (
     <>
       <Accordion expanded={accData?.isActive}>
@@ -79,6 +90,9 @@ function Accordian({
           <div className="accordion_summary_container">
             <Typography>{accData?.name}</Typography>
             <div className="metadata-flex">
+              <span data-testId="eyeIcon">
+                <EyeShow style={{ paddingRight: '10px' }} />
+              </span>
               {accData?.isEdit ? (
                 <>
                   {accData?.level <= 5 && (
@@ -99,7 +113,16 @@ function Accordian({
                     }}
                     role="presentation"
                   >
-                    <Save className="metadata-plus-size" />
+                    <Save className="metadata-plus-size mR" />
+                  </span>
+                  <span
+                    data-testId="metadatadiscard"
+                    onClick={(e) => {
+                      handleUndo(e);
+                    }}
+                    role="presentation"
+                  >
+                    <Undo className="metadata-plus-size" />
                   </span>
                   {!standardList?.includes(accData?.name) && (
                     <span
@@ -115,23 +138,18 @@ function Accordian({
                   )}
                 </>
               ) : (
-                <>
-                  <span data-testId="eyeIcon">
-                    <EyeShow style={{ paddingRight: '10px' }} />
-                  </span>
-                  <span data-testId="metadatapencil">
-                    <Pencil
-                      className="metadata-plus-size"
-                      data-testid="handle-edit"
-                      onClick={handleEdit}
-                    />
-                  </span>
-                </>
+                <span data-testId="metadatapencil">
+                  <Pencil
+                    className="metadata-plus-size"
+                    data-testid="handle-edit"
+                    onClick={handleEdit}
+                  />
+                </span>
               )}
             </div>
           </div>
         </AccordionSummary>
-        {isOpenSubText && (
+        {currentActiveLevels?.includes(accData?.formattedName) && (
           <div data-testid="auto">
             <AutocompleteV2
               label=""
@@ -178,7 +196,7 @@ function Accordian({
           title={
             isDelete
               ? 'Please confirm if you want to continue with deletion'
-              : 'Do You Really want to save it now or continue editing?'
+              : 'Do you really want to save it now or continue editing?'
           }
           buttonProps={[
             {
@@ -200,6 +218,27 @@ function Accordian({
           ]}
           id="neutral"
         />
+        <Modal
+          className="modal"
+          open={isDiscarded}
+          onClose={() => setIsDiscarded(false)}
+          title="Do you really want to discard the changes or continue editing?"
+          buttonProps={[
+            {
+              label: 'Continue Editing',
+              'data-testid': 'update-term-field',
+            },
+            {
+              label: 'Discard',
+              'data-testid': 'discard-term-field',
+              onClick: (e) => {
+                handleDiscard(e);
+                setIsDiscarded(false);
+              },
+            },
+          ]}
+          id="neutral"
+        />
       </div>
     </>
   );
@@ -210,18 +249,19 @@ Accordian.propTypes = {
   accData: PropTypes.isRequired,
   rows: PropTypes.isRequired,
   suggestedSubList: PropTypes.isRequired,
-  isOpenSubText: PropTypes.isRequired,
   deletedAttributes: PropTypes.isRequired,
-  setIsOpenSubText: PropTypes.isRequired,
+  currentActiveLevels: PropTypes.isRequired,
   setSuggestedSubList: PropTypes.isRequired,
   setRows: PropTypes.isRequired,
   handleAccordian: PropTypes.isRequired,
   handleSave: PropTypes.isRequired,
   handleDelete: PropTypes.isRequired,
   handleEdit: PropTypes.isRequired,
+  handleDiscard: PropTypes.isRequired,
   addSubAccordion: PropTypes.isRequired,
   subAccComponent: PropTypes.isRequired,
   setDeletedAttributes: PropTypes.isRequired,
+  setCurrentActiveLevels: PropTypes.isRequired,
 };
 
 export default Accordian;

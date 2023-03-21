@@ -1,6 +1,7 @@
 import { render, fireEvent } from '@testing-library/react';
 import Dropdown from '../index';
 import * as ProtocolContext from '../../../ProtocolContext';
+import { headerList } from '../../FontProperties/constants';
 
 document.execCommand = jest.fn();
 
@@ -50,6 +51,7 @@ describe('Dropdown', () => {
         buttonName="H"
         onHeaderSelect={jest.fn()}
         type="list"
+        list={headerList}
       />,
     );
     const list = screen.getAllByTestId('list');
@@ -67,6 +69,7 @@ describe('Dropdown', () => {
         buttonName="H"
         onHeaderSelect={jest.fn()}
         type="header"
+        list={headerList}
       />,
     );
     const list = screen.getByText('H2');
@@ -85,6 +88,7 @@ describe('Dropdown', () => {
         buttonName="H"
         onHeaderSelect={jest.fn()}
         type="list"
+        list={headerList}
       />,
     );
     const list = screen.getByText('H2');

@@ -1,23 +1,31 @@
 .pd-table-container {
   display: flex;
   flex-direction: column;
-  padding: 25px 20px;
+  padding: 35px 30px;
   position: relative;
   margin-bottom: 45px;
-  overflow-x:auto;
+  overflow-x: auto;
 }
 .pd-table-inner {
+  max-width: 100%;
+  width: 100%;
   display: table;
+}
+.pd-table-wrapper {
+  display: block;
   flex-direction: column;
   width: 100%;
   justify-content: center;
   overflow: auto;
   padding-bottom: 10px;
+  position: relative;
 }
 .pd-table-row {
   display: flex;
   min-height: 50px;
   justify-content: center;
+  position: relative;
+  width: 100%;
 }
 .pd-table-cell {
   text-align: left;
@@ -27,8 +35,7 @@
   align-items: center;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  min-width: 200px;
-  max-width: 200px;
+  min-width: 100px;
 }
 .content-table-wrapper {
   border: 1px solid #dadada;
@@ -58,9 +65,6 @@
 .pd-table-cell span {
   font-size: 12px;
   padding: 5px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  min-width: 40%;
   outline: none;
   color: #000;
 }
@@ -70,23 +74,33 @@
 }
 .pd-empty-row-cells {
   position: absolute;
-  left: 0;
+  left: -20px;
 }
 .pd-empty-cells {
   display: flex;
   justify-content: space-between;
   position: absolute;
-  top: 5px;
+  top: -25px;
+  > div {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  .pd-dropdown {
+    top: 20px;
+  }
 }
 .pd-empty-cell-column {
   width: 100px;
   text-align: center;
-  min-width:200px;
+  min-width: 200px;
   position: relative;
 }
 .pd-empty-cell-row {
   height: 50px;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 .pd-dropdown {
   position: absolute;
@@ -129,13 +143,42 @@
   align-items: center;
 }
 .pd-more-icon {
-  height: 0.7em;
-  width: 0.7em;
   cursor: pointer;
+  position: absolute;
   svg {
     height: 0.7em;
     width: 0.7em;
   }
+}
+.rowMoreIcon {
+  left: -10px;
+}
+.columnMoreIcon {
+  top: -10px;
+}
+
+.pd-drag-icon {
+  height: 0.7em;
+  width: 0.7em;
+  cursor: move;
+  svg {
+    height: 0.7em;
+    width: 0.7em;
+  }
+}
+.rowDrag {
+  position: absolute;
+  left: -10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.columnDrag {
+  position: absolute;
+  top: -17px;
+  display: flex;
+  justify-content: center;
 }
 .button-container {
   display: flex;

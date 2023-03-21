@@ -28,6 +28,8 @@ export const protocolSlice = createSlice({
     sectionDetails: {
       protocol: null,
       data: [],
+      sectionResponse: null,
+      updated: false,
     },
     protocolTocData: [],
     sectionLoader: false,
@@ -47,6 +49,9 @@ export const protocolSlice = createSlice({
       op: '',
     },
     EnrichedApiValue: false,
+    SOAData: {},
+    isSaveEnabled: false,
+    sectionIndex: -1,
   },
   reducers: {
     getSummary: (state, action) => {
@@ -70,11 +75,19 @@ export const protocolSlice = createSlice({
     setSectionDetails: (state, action) => {
       const { protocol, linkId, data } = action.payload;
       if (protocol === state.sectionDetails.protocol) {
-        state.sectionDetails.data.push({ linkId, data });
+        const existIndex = state.sectionDetails?.data?.findIndex(
+          (x) => x.linkId === linkId,
+        );
+        if (existIndex >= 0) {
+          state.sectionDetails.data[existIndex].data = data;
+        } else {
+          state.sectionDetails.data.push({ linkId, data });
+        }
       } else {
         state.sectionDetails.protocol = protocol;
         state.sectionDetails.data = [{ linkId, data }];
       }
+      state.sectionDetails.sectionResponse = null;
     },
     getProtocolTocData: (state, action) => {
       state.protocolTocData = action.payload;
@@ -88,11 +101,31 @@ export const protocolSlice = createSlice({
     getFileStream: (state, action) => {
       state.fileStream = action.payload;
     },
+    updateSectionResp: (state, action) => {
+      if (action?.payload?.response) {
+        state.sectionDetails = {
+          ...state.sectionDetails,
+          sectionResponse: action?.payload?.response,
+          updated: true,
+        };
+      } else {
+        state.sectionDetails = {
+          ...state.sectionDetails,
+          updated: true,
+        };
+      }
+    },
+
+    resetUpdateStatus: (state) => {
+      state.sectionDetails = {
+        ...state.sectionDetails,
+        updated: false,
+      };
+    },
+
     updateSectionData: (state, action) => {
       const { actionType, data, content, lineId, linkId } = action.payload;
-
       if (actionType === 'REPLACE_CONTENT' && data && linkId) {
-        console.log('REPLACE_CONTENT UPDATED');
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
         );
@@ -129,6 +162,15 @@ export const protocolSlice = createSlice({
     getEnrichedValue: (state, action) => {
       state.EnrichedApiValue = action.payload;
     },
+    setSOAData: (state, action) => {
+      state.SOAData = action.payload;
+    },
+    setSaveEnabled: (state, action) => {
+      state.isSaveEnabled = action.payload;
+    },
+    getSectionIndex: (state, action) => {
+      state.sectionIndex = action.payload;
+    },
   },
 });
 
@@ -152,6 +194,11 @@ export const {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  setSOAData,
+  setSaveEnabled,
+  updateSectionResp,
+  getSectionIndex,
+  resetUpdateStatus,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -175,5 +222,8 @@ export const accordianMetaParam = (state) => state.protocol.accordianMetaParam;
 export const metadataApiCallValue = (state) =>
   state.protocol.metadataApiCallValue;
 export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
+export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
+export const SectionIndex = (state) => state.protocol.sectionIndex;
+export const SOAData = (state) => state.protocol.SOAData;
 
 export default protocolSlice.reducer;

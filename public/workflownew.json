@@ -1,0 +1,37 @@
+{
+	"Status": 200,
+	"workflows": [
+		{
+			"workflow_name":"digitization",
+			"services":["triage","digitizer1","digitizer2","extraction"]
+		},
+		{
+			"workflow_name":"document_compare",
+			"services":["digitizer2_compare"]
+		},
+		{
+			"workflow_name":"full_flow",
+			"services":["triage","digitizer1","digitizer2","extraction","digitizer2_omopgenerate","i2e_omop_update","digitizer2_compare","meta_tagging","meta_extraction","analyzer"]
+		},
+		{
+			"workflow_name":"lm_flow",
+			"services":["digitizer2_omopgenerate","digitizer2_omopupdate","i2e_omop_update"]
+		},
+		{
+			"workflow_name":"meta_extraction",
+			"services":["digitizer2_omopgenerate","digitizer2_omopupdate","i2e_omop_update"]
+		},
+		{
+			"workflow_name":"norm_soa",
+			"services":["digitizer2_normsoa"]
+		},
+		{
+			"workflow_name":"omop_generate",
+			"services":["digitizer2_omopgenerate"]
+		},
+		{
+			"workflow_name":"pb_flow",
+			"services":["analyzer"]
+		}
+	]
+}

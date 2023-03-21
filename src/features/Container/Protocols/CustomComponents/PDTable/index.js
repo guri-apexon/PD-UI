@@ -6,9 +6,16 @@ import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconButton from 'apollo-react/components/IconButton';
 import Plus from 'apollo-react-icons/Plus';
+import cloneDeep from 'lodash/cloneDeep';
 import DisplayTable from './Components/Table';
 import { tableOperations } from './Components/dropdownData';
-import { addColumn, addRow, deleteColumn, deleteRow } from './utils';
+import {
+  addColumn,
+  addRow,
+  deleteColumn,
+  deleteRow,
+  swapElements,
+} from './utils';
 import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 import PROTOCOL_CONSTANT from '../constants';
@@ -70,7 +77,7 @@ const formattableData = (data) => {
 
 const confirmText = 'Please confirm if you want to continue with deletion';
 
-function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
+function PDTable({ data, segment, activeLineID, lineID }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
   const [columnLength, setColumnLength] = useState();
@@ -79,7 +86,7 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
   const [showconfirm, setShowConfirm] = useState(false);
   const [tableId, setTableId] = useState('');
   const [isModal, setIsModal] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [selectedData, setSelectedData] = useState({});
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
@@ -102,7 +109,6 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
     const cloneData = [...updatedData];
     cloneData[rowIndex][columnIndex].content = content;
     setUpdatedData(cloneData);
-    setIsTableChanged(true);
   };
 
   const handleColumnOperation = (operation, index) => {
@@ -116,14 +122,12 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       setUpdatedData(newData);
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteColumn) {
-      // eslint-disable-next-line
-      if (confirm(confirmText)) {
-        const newData = deleteColumn(updatedData, index);
-        setUpdatedData(newData);
-        setColumnLength(Object.keys(newData[0]).length);
-      }
+      setIsModal(true);
+      setSelectedData({
+        operation,
+        index,
+      });
     }
-    setIsTableChanged(true);
   };
 
   const handleRowOperation = (operation, index) => {
@@ -138,9 +142,32 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteRow) {
       setIsModal(true);
-      setSelectedIndex(index);
+      setSelectedData({
+        operation,
+        index,
+      });
     }
-    setIsTableChanged(true);
+  };
+
+  const handleSwap = (operation, indexObj) => {
+    if (operation === tableOperations.swapRow) {
+      const newList = swapElements(
+        updatedData,
+        indexObj.sourceIndex,
+        indexObj.targetIndex,
+      );
+      setUpdatedData(newList);
+    } else if (operation === tableOperations.swapColumn) {
+      const copyUpdatedList = cloneDeep(updatedData);
+      const newData = copyUpdatedList.map((ele) => {
+        const temp = ele[indexObj.sourceIndex];
+        ele[indexObj.sourceIndex] = ele[indexObj.targetIndex];
+        ele[indexObj.targetIndex] = temp;
+
+        return ele;
+      });
+      setUpdatedData(newData);
+    }
   };
 
   const addFootNote = () => {
@@ -160,12 +187,12 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       AttachmentListProperties: footNoteData,
     };
     setTableSaved(true);
-    setIsTableChanged(false);
     dispatchSectionEvent('CONTENT_UPDATE', {
       type: CONTENT_TYPE.TABLE,
       lineID,
       currentLineId: activeLineID,
       content,
+      isSaved: true,
     });
   };
 
@@ -174,14 +201,41 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
   };
 
   const deleteTableData = () => {
-    const newData = deleteRow(updatedData, selectedIndex);
+    let newData = [];
+    if (selectedData.operation === tableOperations.deleteRow) {
+      newData = deleteRow(updatedData, selectedData.index);
+      setUpdatedData(newData);
+    } else {
+      newData = deleteColumn(updatedData, selectedData.index);
+    }
     setUpdatedData(newData);
     setColumnLength(Object.keys(newData[0]).length);
+    setSelectedData({});
     setIsModal(false);
   };
 
+  const onContainerClick = () => {
+    if (activeLineID !== lineID && !tableSaved) {
+      const content = {
+        ...segment.content,
+      };
+      dispatchSectionEvent('CONTENT_UPDATE', {
+        type: CONTENT_TYPE.TABLE,
+        lineID,
+        currentLineId: lineID,
+        content,
+        isSaved: false,
+      });
+    }
+  };
+
   return (
-    <section className="content-table-wrapper">
+    // eslint-disable-next-line
+    <section
+      data-testId="section"
+      className="content-table-wrapper"
+      onClick={() => onContainerClick()}
+    >
       {showconfirm && (
         <div className="confirmation-popup" data-testId="confirmPopup">
           <p>{confirmText}</p>
@@ -197,7 +251,6 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
                   dispatchSectionEvent('CONTENT_DELETED', {
                     currentLineId: activeLineID,
                   });
-                  setIsTableChanged(false);
                 },
               },
             ]}
@@ -205,10 +258,15 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
         </div>
       )}
       {isEditable() && (
-        <div className="table-button-container" data-testId="button-container">
+        <div className="table-button-container">
           <Tooltip title="Add Footnote" placement="right">
-            <IconButton color="primary" size="small">
-              <Plus className="plus-icon" size="small" onClick={addFootNote} />
+            <IconButton
+              color="primary"
+              size="small"
+              data-testId="button-container"
+              onClick={addFootNote}
+            >
+              <Plus className="plus-icon" size="small" />
             </IconButton>
           </Tooltip>
           <ButtonGroup
@@ -233,6 +291,7 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
           data={updatedData}
           onChange={handleChange}
           handleRowOperation={handleRowOperation}
+          handleSwap={handleSwap}
           edit={isEditable()}
           colWidth={colWidth}
           footNoteData={footNoteData}
@@ -243,6 +302,7 @@ function PDTable({ data, segment, activeLineID, lineID, setIsTableChanged }) {
       </div>
       <Modal
         className="modal delete-modal"
+        data-testId="modal-close-button"
         open={isModal}
         variant="secondary"
         onClose={() => setIsModal(false)}
@@ -271,5 +331,4 @@ PDTable.propTypes = {
   segment: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
-  setIsTableChanged: PropTypes.isRequired,
 };

@@ -26,6 +26,10 @@ import {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  updateSectionResp,
+  TOCActive,
+  setSOAData,
+  getSectionIndex,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -210,6 +214,54 @@ export function* fetchAssociateProtocol(action) {
     yield put(getAssociateDocuments([]));
   }
 }
+
+export function* updateSectionData(action) {
+  try {
+    const {
+      payload: { reqBody },
+    } = action;
+    const config = {
+      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
+      method: 'POST',
+      data: reqBody,
+    };
+    const sectionSaveRes = yield call(httpCall, config);
+
+    if (sectionSaveRes?.data?.success) {
+      if (action?.payload?.refreshToc) {
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+          },
+        });
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            index: action?.payload?.index,
+            tocFlag: 0,
+          },
+        });
+      } else {
+        yield put(updateSectionResp({ response: sectionSaveRes.data }));
+        toast.success(
+          sectionSaveRes.data.message || 'Section updated successfully',
+        );
+      }
+    } else {
+      yield put(
+        updateSectionResp({ response: sectionSaveRes.data, error: true }),
+      );
+      toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
+    }
+  } catch (error) {
+    updateSectionResp({ response: null, error: true });
+    toast.error('Something Went Wrong');
+  }
+}
+
 export function* fetchSectionHeaderList(action) {
   const {
     payload: { docId },
@@ -236,12 +288,19 @@ function* getState() {
   const id = state.user.userDetail.userId;
   return id.substring(1);
 }
-export function* getSectionList(action) {
+export function* getSectionContentList(action) {
   const userId = yield getState();
   const config = {
     url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
     method: 'GET',
   };
+  yield put(
+    setSectionDetails({
+      protocol: action.payload.protocol,
+      data: [],
+      linkId: action.payload.linkId,
+    }),
+  );
   const sectionDetails = yield call(httpCall, config);
   yield put(setSectionLoader(false));
 
@@ -306,7 +365,6 @@ export function* getProtocolTocDataResult(action) {
     payload: { docId },
   } = action;
   yield put(getHeaderList({}));
-
   const linkLevel = action.payload.tocFlag ? 6 : 1;
   const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
   const config = {
@@ -328,10 +386,11 @@ export function* getProtocolTocDataResult(action) {
       yield put(getProtocolTocData(header));
     } else {
       yield put(getHeaderList(header));
+      yield put(getSectionIndex(action?.payload?.index));
     }
   } else {
     // eslint-disable-next-line no-lonely-if
-    if (!action.payload.tocFlag) {
+    if (action.payload.tocFlag) {
       yield put(
         getProtocolTocData({
           success: false,
@@ -524,7 +583,7 @@ export function* deleteAttribute(action) {
           op,
         }),
       );
-      toast.info(`${reqData.name} successfully deleted`);
+      toast.info(`${reqData.accData.name} successfully deleted`);
     } else {
       toast.info('attributes successfully deleted');
     }
@@ -537,7 +596,7 @@ export function* deleteAttribute(action) {
           op,
         }),
       );
-      toast.info(`${reqData.name} not deleted`);
+      toast.info(`${reqData?.accData?.name} not deleted`);
     } else {
       toast.info('attributes not deleted');
     }
@@ -545,6 +604,11 @@ export function* deleteAttribute(action) {
 }
 
 export function* RightBladeValue(action) {
+  if (action.payload.name === PROTOCOL_RIGHT_MENU.HOME) {
+    const TocActiveList = yield select(TOCActive);
+    const TocFalse = new Array(TocActiveList.length).fill(false);
+    yield put(getTOCActive(TocFalse));
+  }
   yield put(getRightBladeValue(action.payload.name));
 }
 
@@ -583,6 +647,30 @@ export function* saveEnrichedAPI(action) {
   }
 }
 
+export function* getSOAData(action) {
+  console.log(action);
+  const {
+    payload: { docId, operationValue },
+  } = action;
+
+  const params = `?operationValue=${operationValue}&id=${docId}`;
+  const config = {
+    url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa${params}`,
+    // url: './soa.json',
+    method: 'GET',
+    headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
+  };
+  const enrichedData = yield call(httpCall, config);
+  if (enrichedData?.success) {
+    yield put(setSOAData(enrichedData.data));
+  } else {
+    toast.error('Error While Updation');
+  }
+}
+export function* setSectionIndex(action) {
+  yield put(getSectionIndex(action.payload.index));
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -593,7 +681,7 @@ function* watchProtocolAsync() {
 
 function* watchProtocolViews() {
   yield takeEvery('GET_PROTOCOL_SECTION', getProtocolTocDataResult);
-  yield takeEvery('GET_SECTION_LIST', getSectionList);
+  yield takeEvery('GET_SECTION_LIST', getSectionContentList);
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
   yield takeEvery('GET_METADATA_VARIABLE', MetaDataVariable);
@@ -604,6 +692,9 @@ function* watchProtocolViews() {
   yield takeEvery('DELETE_METADATA', deleteAttribute);
   yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
   yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
+  yield takeLatest('GET_SOA_DATA', getSOAData);
+  yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
+  yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
 }
 
 // notice how we now only export the rootSaga

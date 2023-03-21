@@ -1,7 +1,10 @@
+import { Provider } from 'react-redux';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { ProtocolContext } from '../../ProtocolContext';
 import ImageUploader from '../ImageUploader';
+
+import store from '../../../../../store/store';
 
 const dispatchSectionEvent = jest.fn();
 
@@ -16,9 +19,11 @@ const renderImageUploader = (
   edit = testEdit,
 ) => {
   return render(
-    <ProtocolContext.Provider value={mockedProtocolContextValue}>
-      <ImageUploader lineID={lineID} content={content} edit={edit} />{' '}
-    </ProtocolContext.Provider>,
+    <Provider store={store}>
+      <ProtocolContext.Provider value={mockedProtocolContextValue}>
+        <ImageUploader lineID={lineID} content={content} edit={edit} />{' '}
+      </ProtocolContext.Provider>
+    </Provider>,
   );
 };
 
@@ -35,11 +40,13 @@ describe('ImageUploader', () => {
 
   test('render ImageUploader in edit mode', () => {
     const { getByTestId, getByText } = render(
-      <ProtocolContext.Provider
-        value={{ dispatchSectionEvent: mockDispatchSectionEvent }}
-      >
-        <ImageUploader lineID="1" content="" edit />
-      </ProtocolContext.Provider>,
+      <Provider store={store}>
+        <ProtocolContext.Provider
+          value={{ dispatchSectionEvent: mockDispatchSectionEvent }}
+        >
+          <ImageUploader lineID="1" content="" edit />
+        </ProtocolContext.Provider>
+      </Provider>,
     );
 
     expect(getByTestId('file-upload')).toBeInTheDocument();
@@ -49,11 +56,13 @@ describe('ImageUploader', () => {
 
   test('render image in readmode if image value is present ', () => {
     const { getByTestId } = render(
-      <ProtocolContext.Provider
-        value={{ dispatchSectionEvent: mockDispatchSectionEvent }}
-      >
-        <ImageUploader lineID="1" content="sample.jpg" edit={false} />
-      </ProtocolContext.Provider>,
+      <Provider store={store}>
+        <ProtocolContext.Provider
+          value={{ dispatchSectionEvent: mockDispatchSectionEvent }}
+        >
+          <ImageUploader lineID="1" content="sample.jpg" edit={false} />
+        </ProtocolContext.Provider>
+      </Provider>,
     );
 
     expect(getByTestId('readmode-img')).toBeInTheDocument();
@@ -74,9 +83,11 @@ describe('ImageUploader', () => {
 
   it('should call handleSave when Save button is clicked ', () => {
     const { container, getByText } = render(
-      <ProtocolContext.Provider value={mockedProtocolContextValue}>
-        <ImageUploader lineID="1" content="" edit={testEdit} />
-      </ProtocolContext.Provider>,
+      <Provider store={store}>
+        <ProtocolContext.Provider value={mockedProtocolContextValue}>
+          <ImageUploader lineID="1" content="" edit={testEdit} />
+        </ProtocolContext.Provider>
+      </Provider>,
     );
     const input = container.querySelector('input[type="file"]');
     expect(input).toBeInTheDocument();
@@ -91,9 +102,11 @@ describe('ImageUploader', () => {
 
   it('should handle the cancel save after file select', () => {
     const { container, getByText, getByTestId } = render(
-      <ProtocolContext.Provider value={mockedProtocolContextValue}>
-        <ImageUploader lineID="1" content="" edit={testEdit} />
-      </ProtocolContext.Provider>,
+      <Provider store={store}>
+        <ProtocolContext.Provider value={mockedProtocolContextValue}>
+          <ImageUploader lineID="1" content="" edit={testEdit} />
+        </ProtocolContext.Provider>
+      </Provider>,
     );
     const input = container.querySelector('input[type="file"]');
     expect(input).toBeInTheDocument();
@@ -115,9 +128,11 @@ describe('ImageUploader', () => {
 
   it('should handle the delete image', () => {
     const { container, getByText, getByTestId } = render(
-      <ProtocolContext.Provider value={mockedProtocolContextValue}>
-        <ImageUploader lineID="1" content="" edit={testEdit} />
-      </ProtocolContext.Provider>,
+      <Provider store={store}>
+        <ProtocolContext.Provider value={mockedProtocolContextValue}>
+          <ImageUploader lineID="1" content="" edit={testEdit} />
+        </ProtocolContext.Provider>
+      </Provider>,
     );
     const input = container.querySelector('input[type="file"]');
     expect(input).toBeInTheDocument();

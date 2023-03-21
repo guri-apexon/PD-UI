@@ -12,7 +12,11 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={1}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
     const btn = getByText('B');
     fireEvent.mouseDown(btn);
@@ -26,7 +30,11 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={1}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
     const btn = getByText('I');
     fireEvent.mouseDown(btn);
@@ -40,7 +48,11 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={1}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
     const btn = getByText('U');
     fireEvent.mouseDown(btn);
@@ -54,7 +66,11 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={1}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
     const btn = screen.getByTestId('removeFormat');
     fireEvent.mouseDown(btn);
@@ -72,7 +88,11 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={1}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
     const btn = getByText('S');
     fireEvent.mouseDown(btn);
@@ -90,7 +110,11 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const { getByText } = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={1}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
     const btn = getByText('S');
     fireEvent.mouseDown(btn);
@@ -108,7 +132,11 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={1}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
     const btn = screen.getByTestId('superScript');
     fireEvent.mouseDown(btn);
@@ -122,7 +150,11 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={1}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
     const btn = screen.getByTestId('subScript');
     fireEvent.mouseDown(btn);
@@ -136,9 +168,13 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={1} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={1}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
-    const btn = screen.getByTestId('list');
+    const btn = screen.getByTestId('bulletlist');
     fireEvent.mouseDown(btn);
     expect(document.execCommand).toHaveBeenCalledWith('insertUnorderedList');
   });
@@ -150,7 +186,11 @@ describe('FontProperties', () => {
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     const screen = render(
-      <FontProperties onFormatSelect={onFormatSelect} activeLineID={null} />,
+      <FontProperties
+        onFormatSelect={onFormatSelect}
+        activeLineID={null}
+        setSaveEnabled={() => jest.fn()}
+      />,
     );
     const container = screen.getByTestId('container');
     expect(container.classList.contains('disabled-btns')).toBe(true);
@@ -168,6 +208,7 @@ describe('FontProperties', () => {
       <FontProperties
         onFormatSelect={deleteSegment}
         activeLineID={activeLineID}
+        setSaveEnabled={() => jest.fn()}
       />,
     );
     const trashIcon = getByTestId('trash-icon');

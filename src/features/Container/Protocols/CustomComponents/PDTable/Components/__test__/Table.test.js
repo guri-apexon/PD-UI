@@ -49,6 +49,33 @@ describe('DisplayTable component', () => {
     );
 
     const cell = getByText('value 1');
+    fireEvent.click(cell);
+    const event = new KeyboardEvent('keypress', { key: 'a' });
+    cell.dispatchEvent(event);
     fireEvent.blur(cell, { target: { innerHTML: 'new value' } });
+  });
+
+  test('Drag and drop capabilities', () => {
+    const screen = render(
+      <DisplayTable
+        data={data}
+        onChange={onChange}
+        handleRowOperation={handleRowOperation}
+        edit
+        colWidth={50}
+        footNoteData={[]}
+        setFootnoteData={setFootnoteData}
+      />,
+    );
+
+    screen.debug();
+
+    const draggableElement = screen.getAllByTestId('draggable')[0];
+    const droppableElement = screen.getByText('value 2');
+
+    fireEvent.dragStart(draggableElement);
+    fireEvent.dragEnter(droppableElement);
+    fireEvent.dragOver(droppableElement);
+    fireEvent.drop(droppableElement);
   });
 });

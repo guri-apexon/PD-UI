@@ -3,19 +3,23 @@ import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
-import DigitizeAccordion from './DigitizeAccordion';
+
 import Loader from '../../../Components/Loader/Loader';
+import SOA from '../SOA/SOA';
 import {
   headerResult,
   protocolSummary,
   rightBladeValue,
+  SectionIndex,
   TOCActive,
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
+import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import DigitizeAccordion from './DigitizeAccordion';
 
-function Digitize({
+function DigitalizeCard({
   sectionNumber,
   sectionRef,
   data,
@@ -27,11 +31,12 @@ function Digitize({
   const BladeRightValue = useSelector(rightBladeValue);
   const summary = useSelector(headerResult);
   const protocolAllItems = useSelector(protocolSummary);
+  const sectionIndex = useSelector(SectionIndex);
   const [rightValue, setRightValue] = useState(BladeRightValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
-  const [currentEditCard, setCurrentEditCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
+  const [currentEditCard, setCurrentEditCard] = useState(null);
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -53,6 +58,22 @@ function Digitize({
       sectionRef[index]?.current?.scrollIntoView(true);
     }, 300);
   };
+
+  useEffect(() => {
+    if (sectionIndex >= 0) {
+      const tempTOCActive = [...tocActive];
+      tempTOCActive[sectionIndex] = true;
+      dispatch({
+        type: 'SET_TOC_Active',
+        payload: {
+          data: tempTOCActive,
+        },
+      });
+      setSectionSequence(sectionIndex);
+    }
+
+    // eslint-disable-next-line
+  }, [sectionIndex]);
 
   useEffect(() => {
     if (sectionRef[sectionSequence] && sectionRef[sectionSequence].current) {
@@ -93,7 +114,7 @@ function Digitize({
         sectionNo = headerList[i].sequence;
         setSectionSequence(sectionNo);
         const tempTOCActive = [...tocActive];
-        tempTOCActive[sectionNo] = !tempTOCActive[sectionNo];
+        tempTOCActive[sectionNo] = true;
         dispatch({
           type: 'SET_TOC_Active',
           payload: {
@@ -111,7 +132,7 @@ function Digitize({
       const sequence = headerList[listLength]?.sequence;
       setSectionSequence(sequence);
       const tempTOCActive = [...tocActive];
-      tempTOCActive[listLength] = !tempTOCActive[listLength];
+      tempTOCActive[listLength] = true;
       dispatch({
         type: 'SET_TOC_Active',
         payload: {
@@ -158,9 +179,10 @@ function Digitize({
                         index={index}
                         handlePageRight={handlePageRight}
                         rightBladeValue={BladeRightValue}
-                        currentEditCard={currentEditCard}
-                        setCurrentEditCard={setCurrentEditCard}
                         scrollToTop={scrollToTop}
+                        headerList={headerList}
+                        setCurrentEditCard={setCurrentEditCard}
+                        currentEditCard={currentEditCard}
                       />
                     </div>
                   </div>
@@ -176,13 +198,19 @@ function Digitize({
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
       )}
+      {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
+        <SOA docId={data.id} />
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.DIPA_VIEW && (
+        <DipaView docId={data.id} />
+      )}
     </div>
   );
 }
 
-export default Digitize;
+export default DigitalizeCard;
 
-Digitize.propTypes = {
+DigitalizeCard.propTypes = {
   sectionNumber: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
   data: PropTypes.isRequired,

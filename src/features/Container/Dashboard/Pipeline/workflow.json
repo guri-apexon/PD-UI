@@ -1,0 +1,62 @@
+[
+  {
+    "id": "omop_flow",
+    "workflow_name": "OMOP Flow",
+    "checked": false,
+    "services": [],
+    "dependencies": []
+  },
+  {
+    "id": "analytics_flow",
+    "workflow_name": "Analytics Flow",
+    "checked": false,
+    "services": [],
+    "dependencies": []
+  },
+  {
+    "id": "metadata_service",
+    "workflow_name": "Metadata Service",
+    "checked": false,
+    "services": [
+      {
+        "id": "tagging",
+        "service_name": "Tagging",
+        "checked": false,
+        "dependencies": []
+      },
+      {
+        "id": "extractor",
+        "service_name": "Extractor",
+        "checked": false,
+        "dependencies": ["extractor"]
+      }
+    ],
+    "dependencies": ["metadata_service", "analytics_flow"]
+  },
+  {
+    "id": "compare_flow",
+    "workflow_name": "Compare Flow",
+    "checked": false,
+    "services": [
+      {
+        "id": "full_document_compare",
+        "service_name": "Full Document Compare",
+        "checked": false,
+        "dependencies": []
+      },
+      {
+        "id": "normalized_soa_compare",
+        "service_name": "Normalized SOA Compare",
+        "checked": false,
+        "dependencies": []
+      }
+    ]
+  },
+  {
+    "id": "normalized_soa",
+    "workflow_name": "Normalized SOA",
+    "checked": false,
+    "services": [],
+    "dependencies": []
+  }
+]

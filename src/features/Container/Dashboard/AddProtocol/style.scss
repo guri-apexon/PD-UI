@@ -1,0 +1,76 @@
+.admin-add-protocol-modal {
+  height: 600px;
+  width: 800px;
+}
+.admin-add-protocol-modal > div:first-child {
+  display: none;
+}
+.add-protocol-tab-container {
+  margin-top: 20px;
+  margin-left: 8px;
+}
+.pipeline-component {
+  margin-top: 10px;
+  .docid-section {
+    width: 60%;
+    .docid-field {
+      min-width: 400px;
+    }
+  }
+  .workflow-section {
+    margin-top: 20px;
+    .workflow-text {
+      color: #444444;
+      display: block;
+      font-size: 14px;
+      line-height: 1.5;
+      font-family: Proxima Nova, Nunito Sans, sans-serif;
+      font-weight: 400;
+      span {
+        color: #e20000;
+      }
+    }
+    .workflow-render {
+      display: inline;
+    }
+    .workflow-services {
+      width: 49%;
+      float: left;
+      margin-bottom: 10px;
+      .checkbox-parent {
+        margin-bottom: 5px;
+        margin-top: 10px;
+        span {
+          font-size: 16px;
+        }
+      }
+      .checkbox-childs {
+        margin-left: 25px;
+      }
+    }
+  }
+}
+.protocol-duplicate-error {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #e53d45;
+  .line-two {
+    font-weight: 600;
+    margin-right: 10px;
+  }
+}
+.protocol-admin-feature {
+  font-size: 14px;
+  margin-top: 15px;
+  .line-one {
+    .link-click-here {
+      color: blue;
+      cursor: pointer;
+    }
+  }
+}
+
+.error-text-color {
+  color: #e53d45 !important;
+}

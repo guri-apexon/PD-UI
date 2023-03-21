@@ -14,7 +14,8 @@ import {
   metadataApiCallValue,
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
-import { flattenMetaParam } from './utilFunction';
+import { flattenMetaParam, autoCompleteClose } from './utilFunction';
+import { METADATA_LIST } from '../../../../AppConstant/AppConstant';
 
 function MetaData({ docId }) {
   const wrapperRef = useRef(null);
@@ -27,12 +28,11 @@ function MetaData({ docId }) {
   const [accordianData, setAccordianData] = useState({});
   const [metaParams, setMetaParams] = useState({});
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenSubText, setIsOpenSubText] = useState(false);
   const [sectionName, setSectionName] = useState(null);
   const [deletedAttributes, setDeletedAttributes] = useState([]);
   const [suggestedList, setSuggestedList] = useState([]);
-
   const [suggestedSubList, setSuggestedSubList] = useState([]);
+  const [currentActiveLevels, setCurrentActiveLevels] = useState([]);
 
   const handleChange = (event, newValue) => {
     setSectionName(newValue);
@@ -71,34 +71,58 @@ function MetaData({ docId }) {
   };
 
   const handleAccordian = (accData) => {
-    const selectedData = accordianData[accData.name];
+    const selectedData = accordianData[accData.formattedName];
     setAccordianData({
       ...accordianData,
-      [accData.name]: {
+      [accData.formattedName]: {
         ...selectedData,
         isActive: !selectedData.isActive,
         isEdit: false,
       },
     });
-    setIsOpenSubText(false);
+    setCurrentActiveLevels(
+      currentActiveLevels.filter(
+        (curr) =>
+          !(
+            curr === accData.formattedName ||
+            curr.includes(accData.formattedName)
+          ),
+      ),
+    );
   };
 
   const handleEdit = (accData, e) => {
     e.stopPropagation();
-    const selectedData = accordianData[accData.name];
+    const selectedData = accordianData[accData.formattedName];
     setSubSuggestions(accData);
     setRows({
       ...rows,
       // eslint-disable-next-line
-      [accData.name]: accData._meta_data ? accData._meta_data : [],
+      [accData.formattedName]: accData._meta_data ? accData._meta_data : [],
     });
     setAccordianData({
       ...accordianData,
-      [accData.name]: {
+      [accData.formattedName]: {
         ...selectedData,
         isActive: true,
         isEdit: true,
       },
+    });
+  };
+
+  const handleDiscard = (accData) => {
+    const selectedData = accordianData[accData.formattedName];
+    setAccordianData({
+      ...accordianData,
+      [accData.formattedName]: {
+        ...selectedData,
+        isEdit: false,
+      },
+    });
+    setRows({
+      ...rows,
+      // eslint-disable-next-line
+      [accData?.formattedName]: accData?._meta_data,
     });
   };
 
@@ -111,7 +135,7 @@ function MetaData({ docId }) {
         fieldName: data.formattedName,
         attributeNames: deletedAttributes,
         reqData: {
-          name: data.name,
+          formattedName: data.formattedName,
           accData: data,
         },
       },
@@ -135,10 +159,10 @@ function MetaData({ docId }) {
       type: 'ADD_METADATA_ATTRIBUTES',
       payload: {
         docId,
-        fieldName: data.formattedName === 'summary' ? '' : data.formattedName,
+        fieldName: data?.formattedName === 'summary' ? '' : data?.formattedName,
         attributes: updatedAttrList,
         reqData: {
-          name: data.name,
+          formattedName: data?.formattedName,
         },
       },
     });
@@ -171,19 +195,21 @@ function MetaData({ docId }) {
           'deleteAttribute',
         );
       }
-      postCall(accordianData[accData.name], filterNonCustomData);
+      postCall(accordianData[accData?.formattedName], filterNonCustomData);
     } else {
-      const accMetaData = rows[accData?.name] ? rows[accData?.name] : [];
+      const accMetaData = rows[accData?.formattedName]
+        ? rows[accData?.formattedName]
+        : [];
       if (deletedAttributes.length > 0) {
-        deleteCall(accordianData[accData.name], 'deleteAttribute');
+        deleteCall(accordianData[accData?.formattedName], 'deleteAttribute');
       }
-      postCall(accordianData[accData.name], accMetaData);
+      postCall(accordianData[accData?.formattedName], accMetaData);
     }
   };
 
   const handleDelete = (accData, e) => {
     e.stopPropagation();
-    deleteCall(accordianData[accData.name], 'deleteField');
+    deleteCall(accordianData[accData?.formattedName], 'deleteField');
   };
 
   const addSubAccordion = (accData, name) => {
@@ -192,7 +218,7 @@ function MetaData({ docId }) {
       payload: {
         op: 'addField',
         docId,
-        fieldName: `${accData.formattedName}.${name}`,
+        fieldName: `${accData?.formattedName}.${name}`,
         attributes: [],
         reqData: {
           accData,
@@ -201,7 +227,9 @@ function MetaData({ docId }) {
       },
     });
     setSectionName({ label: '' });
-    setIsOpenSubText(false);
+    setCurrentActiveLevels(
+      currentActiveLevels.filter((curr) => curr !== accData?.formattedName),
+    );
   };
 
   useEffect(() => {
@@ -219,7 +247,9 @@ function MetaData({ docId }) {
     if (!isEmpty(metaParamResult) && !isEmpty(accordianData)) {
       const updatedParam = {};
       const result = flattenMetaParam(updatedParam, metaParamResult, 1);
-      let metaList = [];
+      let metaList = METADATA_LIST.filter(
+        (ele) => !Object.keys(accordianData).includes(ele.label),
+      );
       const filterItems = difference(
         Object.keys(metaParamResult),
         Object.keys(accordianData),
@@ -227,12 +257,12 @@ function MetaData({ docId }) {
 
       if (filterItems.length > 0) {
         filterItems.forEach((names) => {
-          if (names !== 'summary_extended') {
+          if (names !== 'summary_extended' && !METADATA_LIST.includes(names)) {
             metaList = [...metaList, { label: names }];
           }
         });
-        setSuggestedList(metaList || []);
       }
+      setSuggestedList(metaList);
 
       setMetaParams(result);
     }
@@ -264,14 +294,20 @@ function MetaData({ docId }) {
   useEffect(() => {
     if (apiResponse?.status) {
       if (apiResponse.op === 'addAttributes') {
-        const selectedData = accordianData[apiResponse.reqData.name];
-        const accMetaData =
-          apiResponse?.reqData?.name === 'summary_extended'
+        const selectedData = accordianData[apiResponse?.reqData?.formattedName];
+        let accMetaData =
+          apiResponse?.reqData?.formattedName === 'summary_extended'
             ? rows.summary
-            : rows[apiResponse?.reqData?.name];
+            : rows[apiResponse?.reqData?.formattedName] || [];
+        accMetaData = accMetaData.map((metaData) => {
+          return {
+            ...metaData,
+            display_name: metaData.attr_name,
+          };
+        });
         setAccordianData({
           ...accordianData,
-          [apiResponse.reqData.name]: {
+          [apiResponse?.reqData?.formattedName]: {
             ...selectedData,
             isEdit: false,
             _meta_data: [...accMetaData],
@@ -289,12 +325,13 @@ function MetaData({ docId }) {
             _childs: [],
           };
           setAccordianData({
+            ...accordianData,
             [apiResponse.reqData.name]: obj,
           });
         } else {
           const obj = {
             name: apiResponse?.reqData?.name,
-            formattedName: `${apiResponse.reqData.accData.formattedName}.${apiResponse.reqData.name}`,
+            formattedName: `${apiResponse?.reqData?.accData?.formattedName}.${apiResponse?.reqData?.name}`,
             isEdit: false,
             isActive: false,
             _meta_data: [],
@@ -302,25 +339,25 @@ function MetaData({ docId }) {
             _childs: [],
           };
           const selectedData =
-            accordianData[apiResponse?.reqData?.accData?.name];
+            accordianData[apiResponse?.reqData?.accData?.formattedName];
           setAccordianData({
             ...accordianData,
-            [apiResponse.reqData.accData.name]: {
+            [apiResponse.reqData?.accData?.formattedName]: {
               ...selectedData,
               // eslint-disable-next-line
               _childs: selectedData?._childs
                 ? // eslint-disable-next-line
-                  [...selectedData._childs, apiResponse.reqData.name]
-                : [apiResponse.reqData.name],
+                  [...selectedData._childs, apiResponse?.reqData?.formattedName]
+                : [apiResponse?.reqData?.name],
             },
-            [apiResponse.reqData.name]: obj,
+            [apiResponse?.reqData?.formattedName]: obj,
           });
         }
       } else {
         fetchMetaData();
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [apiResponse]);
 
   const accGenerator = (key, acc) => {
@@ -331,18 +368,19 @@ function MetaData({ docId }) {
           accData={acc}
           rows={rows}
           metaParams={metaParams}
-          isOpenSubText={isOpenSubText}
           sectionName={sectionName}
           suggestedSubList={suggestedSubList}
           deletedAttributes={deletedAttributes}
+          currentActiveLevels={currentActiveLevels}
+          setCurrentActiveLevels={setCurrentActiveLevels}
           setSuggestedSubList={setSuggestedSubList}
           setSectionName={setSectionName}
-          setIsOpenSubText={setIsOpenSubText}
           setRows={setRows}
           handleAccordian={() => handleAccordian(acc)}
           handleSave={(e) => handleSave(acc, e)}
           handleDelete={(e) => handleDelete(acc, e)}
           handleEdit={(e) => handleEdit(acc, e)}
+          handleDiscard={() => handleDiscard(acc)}
           addSubAccordion={(name) => addSubAccordion(acc, name)}
           setDeletedAttributes={setDeletedAttributes}
           // eslint-disable-next-line
@@ -364,6 +402,13 @@ function MetaData({ docId }) {
     // eslint-disable-next-line
   }, [sectionName]);
 
+  const handleAutoComplete = () => {
+    setIsOpen(!isOpen);
+    autoCompleteClose(() => {
+      setIsOpen(false);
+    });
+  };
+
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -375,7 +420,7 @@ function MetaData({ docId }) {
           <Plus
             size="small"
             className="metadata-plus-size"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleAutoComplete}
           />
         </div>
         {isOpen && (

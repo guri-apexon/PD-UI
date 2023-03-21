@@ -23,7 +23,7 @@ function MedicalTerm({
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
   const [selectedTerm, setSelectedTerm] = useState(null);
-  const [clinicalTermsArr, setClinicalTermsArr] = useState();
+  const [clinicalTermsArr, setClinicalTermsArr] = useState({});
   const [childTermValue, setChildTermValue] = useState(false);
   const [newTermValue, setNewTermValue] = useState('');
   const [clinicalTerms, setClinicalTerms] = useState([]);
@@ -34,7 +34,7 @@ function MedicalTerm({
   const [ontologyTemp, setOntologyTemp] = useState();
   const dispatch = useDispatch();
   const apiFlagselector = useSelector(EnrichedValue);
-  const [tempChild, setTempChild] = useState();
+  const [tempChild, setTempChild] = useState([]);
 
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
@@ -47,7 +47,7 @@ function MedicalTerm({
       const obj = {
         [enrichedText]: {
           ...clinicalTermsArr[enrichedText],
-          [selectedTerm]: tempChild.toString(),
+          [selectedTerm]: tempChild?.toString(),
         },
       };
       setClinicalTermsArr(obj);
@@ -56,24 +56,28 @@ function MedicalTerm({
         payload: { flag: false },
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, [apiFlagselector]);
 
   const restructingObject = () => {
     if (clinicalTermsArr) {
       Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
         (key, value) => {
-          if (key === 'preferred_term') {
-            setPreferredTerm(value);
-          }
-          if (key === 'synonyms') {
-            setSynonyms(value);
-          }
-          if (key === 'classification') {
-            setClassification(value);
-          }
-          if (key === 'ontology') {
-            setOntologyTemp(value);
+          switch (key) {
+            case 'preferred_term':
+              setPreferredTerm(value);
+              break;
+            case 'synonyms':
+              setSynonyms(value);
+              break;
+            case 'classification':
+              setClassification(value);
+              break;
+            case 'ontology':
+              setOntologyTemp(value);
+              break;
+            default:
+              break;
           }
         },
       );

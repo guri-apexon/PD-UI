@@ -25,6 +25,10 @@
       margin-right: 10px;
     }
   }
+
+  p.fileUpload-helper {
+    font-size: 14px;
+  }
 }
 
 .img-container-read-mode {
@@ -45,12 +49,15 @@
   top: 0;
   right: 0;
   left: 0;
-  bottom: 0;
+  bottom: 5px;
   width: 50%;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
   background: rgba(0, 0, 0, 0.4);
+  > button {
+    margin-top: 20px;
+  }
 }
 
 .delete-confirmation-box {
@@ -76,5 +83,18 @@
 
   button:first-child {
     margin-right: 10px;
+  }
+}
+@media screen and (max-width: 1380px) {
+  .delete-confirmation-box {
+    p {
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 5px;
+      height: 25px;
+      font-size: 10px;
+    }
   }
 }

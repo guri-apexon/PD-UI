@@ -3,10 +3,11 @@ import { isObject } from 'lodash';
 export const flattenObject = (updatedData, data, level, parentKey) => {
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys?.forEach((key) => {
+    const identifier = level === 1 ? key : `${parentKey}.${key}`;
     const keyValue = data?.[key];
     if (isObject(keyValue) && key !== '_meta_data' && key !== '_childs') {
-      updatedData[key] = updatedData[key]
-        ? updatedData[key]
+      updatedData[identifier] = updatedData[identifier]
+        ? updatedData[identifier]
         : {
             // eslint-disable-next-line
             _meta_data: keyValue?._meta_data?.map((attr, index) => {
@@ -14,15 +15,25 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
                 ...attr,
                 id: index + 1,
                 isCustom: key !== 'summary',
+                attr_value:
+                  attr?.attr_type === 'boolean' && attr?.attr_value
+                    ? attr?.attr_value.toString()
+                    : attr?.attr_value,
+                display_name: attr?.display_name || attr?.attr_name,
               };
             }),
-            formattedName: level === 1 ? key : `${parentKey}.${key}`,
+            formattedName: identifier,
             name: key,
             level,
             isActive: false,
             isEdit: false,
             // eslint-disable-next-line
-            _childs: keyValue?._childs ? keyValue?._childs : [],
+            _childs: keyValue?._childs
+              ? // eslint-disable-next-line
+                keyValue?._childs?.map((childName) => {
+                  return `${identifier}.${childName}`;
+                })
+              : [],
           };
       // eslint-disable-next-line
       if (keyValue?._childs && keyValue?._childs.length > 0) {
@@ -30,7 +41,7 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
           updatedData,
           keyValue,
           level + 1,
-          level === 1 ? key : updatedData[key]?.formattedName,
+          level === 1 ? key : updatedData[identifier]?.formattedName,
         );
       }
     }
@@ -44,7 +55,7 @@ export const mergeSummary = (data) => {
   objectKeys.forEach((key) => {
     if (key === 'summary_extended') {
       // eslint-disable-next-line
-      const updateMetaData = finalResult.summary_extended._meta_data.map(
+      const updateMetaData = finalResult?.summary_extended?._meta_data?.map(
         (fields) => {
           return {
             ...fields,
@@ -55,9 +66,17 @@ export const mergeSummary = (data) => {
       finalResult = {
         ...finalResult,
         summary: {
-          ...finalResult.summary,
-          // eslint-disable-next-line
-          _meta_data: [...finalResult.summary._meta_data, ...updateMetaData],
+          ...finalResult?.summary,
+          _meta_data: [
+            // eslint-disable-next-line
+            ...finalResult.summary?._meta_data,
+            ...updateMetaData,
+          ]?.map((attr, index) => {
+            return {
+              ...attr,
+              id: index + 1,
+            };
+          }),
           _childs: [
             // eslint-disable-next-line
             ...finalResult.summary._childs,
@@ -93,4 +112,14 @@ export const flattenMetaParam = (updatedParam, data, level) => {
     }
   });
   return updatedParam;
+};
+
+export const autoCompleteClose = (removeHook) => {
+  const modalOpened = document.createElement('div');
+  modalOpened.classList.add('modal-opened');
+  document.body.appendChild(modalOpened);
+  modalOpened.addEventListener('click', () => {
+    removeHook();
+    document.body.removeChild(modalOpened);
+  });
 };

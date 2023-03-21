@@ -262,21 +262,61 @@ export const prepareContent = ({
   contentType,
   content,
   level,
+  isSaved,
+  section,
 }) => {
   const clonedSection = cloneDeep(sectionContent);
   let newObj = {};
+
   switch (type) {
     case 'ADDED':
       if (currentLineId && contentType) {
+        const prevIndex =
+          clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
+        const prevObj = clonedSection[prevIndex] || null;
+        if (!prevObj) {
+          currentLineId = section.line_id;
+        }
+
+        const {
+          font_info: fontInfo,
+          link_id: linkId,
+          type,
+          file_section_level: fileSectionLevel,
+          aidocid,
+        } = prevObj;
         newObj = {
           ...PROTOCOL_CONSTANT[contentType],
           line_id: uuidv4(),
           content: setContent(contentType),
           qc_change_type: QC_CHANGE_TYPE.ADDED,
+          prev_line_detail: {
+            type,
+            link_id: linkId,
+            line_id: currentLineId,
+            file_section_level: fileSectionLevel,
+          },
         };
-        const index =
-          clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
-        clonedSection?.splice(index + 1, 0, newObj);
+        if (fontInfo) {
+          newObj = {
+            ...newObj,
+            link_id: fontInfo.link_id,
+            aidocid,
+            prev_line_detail: {
+              ...newObj.prev_line_detail,
+              link_id: fontInfo.link_id,
+              link_id_level2: fontInfo.link_id_level2,
+              link_id_level3: fontInfo.link_id_level3,
+              link_id_level4: fontInfo.link_id_level4,
+              link_id_level5: fontInfo.link_id_level5,
+              link_id_level6: fontInfo.link_id_level6,
+              link_id_subsection1: fontInfo.link_id_subsection1,
+              link_id_subsection2: fontInfo.link_id_subsection2,
+              link_id_subsection3: fontInfo.link_id_subsection3,
+            },
+          };
+        }
+        clonedSection?.splice(prevIndex + 1, 0, newObj);
         return clonedSection;
       }
       break;
@@ -287,7 +327,9 @@ export const prepareContent = ({
             x.content = content;
             if (x.qc_change_type !== QC_CHANGE_TYPE.ADDED) {
               x.qc_change_type = QC_CHANGE_TYPE.UPDATED;
-              x.isSaved = true;
+            }
+            if (x.type === CONTENT_TYPE.TABLE) {
+              x.isSaved = isSaved;
             }
           }
           return x;
@@ -296,13 +338,18 @@ export const prepareContent = ({
       break;
     case 'DELETE':
       if (clonedSection && currentLineId) {
-        return clonedSection.filter((x) => x.line_id !== currentLineId);
+        return clonedSection.map((x) =>
+          x.line_id === currentLineId
+            ? { ...x, qc_change_type: QC_CHANGE_TYPE.DELETED }
+            : x,
+        );
       }
       break;
     case 'LINK_LEVEL_UPDATE':
       if (clonedSection && currentLineId && level) {
         return clonedSection.map((x) => {
           if (x.line_id === currentLineId) {
+            if (contentType) x.type = contentType;
             if (x.type === CONTENT_TYPE.HEADER) {
               x.linkLevel = level;
             }
@@ -337,3 +384,133 @@ export const toBase64 = (file) =>
       return reject(error);
     };
   });
+
+export const createReturnObj = (obj, linkId) => {
+  if (obj.type === CONTENT_TYPE.TEXT) {
+    if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
+      return {
+        type: obj.type,
+        content: obj.content,
+        qc_change_type: obj.qc_change_type,
+        link_id: linkId,
+        prev_detail: {
+          line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
+        },
+      };
+    }
+    if (obj.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
+      return {
+        type: obj.type,
+        content: obj.content,
+        link_id: linkId,
+        qc_change_type:
+          obj.content === '' ? QC_CHANGE_TYPE.DELETED : obj.qc_change_type,
+        line_id: obj.line_id?.slice(0, 36),
+      };
+    }
+    return {
+      type: obj.type,
+      content: obj.content,
+      link_id: linkId,
+      qc_change_type: obj.qc_change_type,
+      line_id: obj.line_id?.slice(0, 36),
+    };
+  }
+  if (obj.type === CONTENT_TYPE.HEADER) {
+    if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
+      return {
+        type: obj.type,
+        qc_change_type: obj.qc_change_type,
+        link_prefix: '',
+        link_text: obj.content,
+        link_level: obj.linkLevel,
+        line_id: '',
+        content: obj.content,
+        uuid: '',
+        prev_detail: {
+          line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
+          link_id: linkId,
+          link_id_level2: '',
+          link_id_level3: '',
+          link_id_level4: '',
+          link_id_level5: '',
+          link_id_level6: '',
+          link_id_subsection1: '',
+          link_id_subsection2: '',
+          link_id_subsection3: '',
+        },
+        section_locked: false,
+      };
+    }
+    if (obj.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
+      return {
+        type: obj.type,
+        qc_change_type: obj.qc_change_type,
+        link_prefix: '',
+        link_text: obj.content,
+        content: obj.content,
+        link_id: linkId,
+        link_level: obj.linkLevel,
+        line_id: obj.line_id?.slice(0, 36),
+        link_id_level2: '',
+        section_locked: false,
+      };
+    }
+    return {
+      type: obj.type,
+      qc_change_type: obj.qc_change_type,
+      link_id: linkId,
+      link_id_level2: '',
+      line_id: obj.line_id?.slice(0, 36),
+      section_locked: false,
+    };
+  }
+  if (obj.type === CONTENT_TYPE.IMAGE) {
+    if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
+      return {
+        type: obj.type,
+        content: obj.content,
+        qc_change_type: obj.qc_change_type,
+        link_id: linkId,
+        prev_detail: {
+          line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
+        },
+      };
+    }
+    return {
+      type: obj.type,
+      content: obj.content,
+      link_id: linkId,
+      qc_change_type: obj.qc_change_type,
+      line_id: obj.line_id?.slice(0, 36),
+    };
+  }
+  if (obj.type === CONTENT_TYPE.TABLE) {
+    if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
+      return {
+        type: obj.type,
+        content: obj.content,
+        qc_change_type: obj.qc_change_type,
+        link_id: linkId,
+        prev_detail: {
+          line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
+        },
+      };
+    }
+    return {
+      type: obj.type,
+      content: obj.content,
+      link_id: linkId,
+      qc_change_type: obj.qc_change_type,
+      line_id: obj.line_id?.slice(0, 36),
+    };
+  }
+  return obj;
+};
+
+export const getSaveSectionPayload = (sectionContent, linkId) => {
+  const req = [...sectionContent]
+    .filter((x) => x.qc_change_type !== '')
+    .map((obj) => createReturnObj(obj, linkId));
+  return req;
+};
