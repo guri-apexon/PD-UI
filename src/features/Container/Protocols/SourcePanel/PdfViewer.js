@@ -7,6 +7,7 @@ import PlusIcon from 'apollo-react-icons/Plus';
 import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
+import { isEqual } from 'lodash';
 import { protocolSummary, getPdfData } from '../protocolSlice';
 import './PdfViewer.scss';
 
@@ -21,7 +22,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   const [pageScale, setPageScale] = useState(1);
   const [pdfString, setPdfString] = useState(null);
 
-  const { documentFilePath, protocol } = protocolAllItems.data;
+  const { documentFilePath, protocol, fileName } = protocolAllItems.data;
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
@@ -93,11 +94,20 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   };
 
   useEffect(() => {
+    const fileTypeArr = fileName.split('.');
+    const fileType = fileTypeArr[fileTypeArr.length - 1];
+    let filePath = documentFilePath;
+    if (!isEqual(fileType, 'pdf')) {
+      filePath = documentFilePath.replace(
+        fileName,
+        `WorkingTempDirectory\\${fileName.replace(fileType, 'pdf')}`,
+      );
+    }
     dispatch({
       type: 'GET_FILE_STREAM',
       payload: {
         name: protocol,
-        dfsPath: documentFilePath,
+        dfsPath: filePath,
       },
     });
     // eslint-disable-next-line
