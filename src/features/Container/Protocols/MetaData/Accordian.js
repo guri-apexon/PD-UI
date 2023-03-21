@@ -80,6 +80,7 @@ function Accordian({
     setIsDiscarded(true);
   };
 
+  console.log('accData', accData);
   return (
     <>
       <Accordion expanded={accData?.isActive}>
