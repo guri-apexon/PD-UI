@@ -34,7 +34,6 @@ import {
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
-import { userType } from '../../../store/userDetails';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
 
