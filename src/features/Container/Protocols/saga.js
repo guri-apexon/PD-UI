@@ -34,6 +34,7 @@ import {
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
+import { userType } from '../../../store/userDetails';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
 
@@ -41,6 +42,12 @@ function* getUserId() {
   const state = yield select();
   const id = state.user.userDetail.userId;
   return id.substring(1);
+}
+
+function* getUserType() {
+  const state = yield select();
+  const userType = state.user.userDetail.user_type;
+  return userType;
 }
 
 export function* getSummaryData(action) {
@@ -422,8 +429,11 @@ export function* fetchFileStream(action) {
     data: null,
   };
   yield put(getFileStream(preLoadingState));
-
-  const userId = yield getUserId();
+  const userType = yield getUserType();
+  let userId = 'qc';
+  if (userType !== 'QC1') {
+    userId = yield getUserId();
+  }
   const { name, dfsPath } = action.payload;
   const apiBaseUrl = BASE_URL_8000;
   const config = {
