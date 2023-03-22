@@ -2,10 +2,43 @@
   border-top: 1px solid #d9d9d9;
   margin-top: 10px;
 }
-
-.overview-card {
-  margin-top: -12px;
+.protocol-overview {
+  display: flex;
+  width: 97%;
+  margin-top: 10px;
+  .overview-card {
+    margin-left: 44px;
+    width: 70%;
+  }
+  .confidence-metric {
+    border: 1px solid #e9e9e9;
+    margin-left: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.04);
+    .confidence-label {
+      display: flex;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+    .chart {
+      width: 200px;
+      height: auto;
+      .recharts-wrapper {
+        width: 200px !important;
+        height: auto !important;
+      }
+    }
+    svg {
+      height: 200px !important;
+      width: 200px !important;
+    }
+  }
 }
+
 .protocols {
   > div.p-rl-20:first-child {
     padding-left: 16px;
@@ -148,9 +181,6 @@
       padding-left: 45px;
     }
     .overview {
-      margin-left: 9px;
-      margin-top: 10px;
-      width: 100%;
       .MuiTab-root {
         font-size: 14px;
         margin-right: 0;
@@ -343,7 +373,8 @@
     }
     padding-right: 10px;
     float: right;
-    width: 100%;
+    min-width: 20%;
+    max-width: 80% !important;
     border-right: 0;
     flex-shrink: 100;
     & > div > div {
@@ -379,7 +410,7 @@
   position: relative;
   .plus-icon {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     margin-right: -2px;
   }
 

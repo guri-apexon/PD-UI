@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
 
 import Loader from '../../../Components/Loader/Loader';
+import SOA from '../SOA/SOA';
 import {
   headerResult,
   protocolSummary,
@@ -14,6 +15,7 @@ import {
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
+import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import LabData from '../LabData/LabData';
 import DigitizeAccordion from './DigitizeAccordion';
@@ -198,6 +200,12 @@ function DigitalizeCard({
         <MetaData docId={data.id} />
       )}
       {rightValue === PROTOCOL_RIGHT_MENU.LAB_DATA && <LabData />}
+      {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
+        <SOA docId={data.id} />
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.DIPA_VIEW && (
+        <DipaView docId={data.id} />
+      )}
     </div>
   );
 }

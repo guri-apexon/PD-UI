@@ -64,9 +64,24 @@ function ActionCell({ row }) {
     </div>
   ) : (
     <div>
-      <IconMenuButton menuItems={menuItems}>
-        <EllipsisVertical className="ellipsis-icon" />
-      </IconMenuButton>
+      {id === editedRow.id ? (
+        <ButtonGroup
+          buttonProps={[
+            {
+              onClick: () => row.handleCancel(id),
+              label: 'Cancel',
+            },
+            {
+              onClick: () => console.log('Save'),
+              label: 'save',
+            },
+          ]}
+        />
+      ) : (
+        <IconMenuButton menuItems={menuItems}>
+          <EllipsisVertical className="ellipsis-icon" />
+        </IconMenuButton>
+      )}
     </div>
   );
 }
@@ -227,7 +242,6 @@ TextFieldFilter.propTypes = {};
 ActionCell.propTypes = {
   row: PropTypes.isRequired,
 };
-
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,

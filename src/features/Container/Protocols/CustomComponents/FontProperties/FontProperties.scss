@@ -12,7 +12,6 @@
     background-color: #fff;
     border: navajowhite;
     cursor: pointer;
-    padding: 5px;
     padding: 10px;
     font-size: 14px;
     svg {
@@ -38,5 +37,29 @@
     button {
       margin-right: 5px;
     }
+  }
+}
+
+@media screen and (max-width: 1380px) {
+  .button-container.font-properties .button-exec-icon {
+    padding: 8px;
+    font-size: 10px;
+    svg {
+      width: 0.5em;
+    }
+  }
+
+  .dropdown .dropbtn {
+    font-size: 10px;
+    padding: 5px;
+    line-height: 1;
+  }
+
+  .right-menu button svg {
+    font-size: 12px;
+  }
+
+  .button-container.font-properties .right-menu {
+    margin-right: 0;
   }
 }
