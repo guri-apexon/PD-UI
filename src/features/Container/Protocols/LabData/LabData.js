@@ -8,6 +8,7 @@ import Pencil from 'apollo-react-icons/Pencil';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import Table, { createStringSearchFilter } from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
+import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
@@ -60,11 +61,33 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
+function SaveCancelButton({ row }) {
+  const { editMode } = row;
+  return editMode ? (
+    <ButtonGroup
+      buttonProps={[
+        {
+          onClick: () => row.handleCancelSaveButton,
+          label: 'Cancel',
+          size: 'small',
+        },
+        {
+          onClick: () => console.log('Save'),
+          label: 'save',
+          size: 'small',
+        },
+      ]}
+    />
+  ) : (
+    ''
+  );
+}
 function LabData() {
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState(LABDATA_CONSTANTS.records);
   const [editedRow, setEditedRow] = useState({});
   const [isEdit, setIsEdit] = useState(false);
+  const [cancelSaveButton, setCancelSaveButton] = useState(false);
 
   const handleSave = () => {
     setIsEdit(false);
@@ -73,12 +96,16 @@ function LabData() {
 
   const onRowEdit = (id) => {
     setEditedRow(rowData.find((row) => row.id === id));
+    setCancelSaveButton(true);
   };
 
   const onDelete = () => {};
 
   const handleChange = (key, value) => {
     setEditedRow({ ...editedRow, [key]: value });
+  };
+  const handleCancelSaveButton = () => {
+    setCancelSaveButton(false);
   };
 
   useEffect(() => {
@@ -103,14 +130,15 @@ function LabData() {
         {
           header: '',
           accessor: 'menu',
-          customCell: ActionCell,
+          customCell: cancelSaveButton ? SaveCancelButton : ActionCell,
         },
       ]);
     }
     // eslint-disable-next-line
-  }, [isEdit]);
+  }, [isEdit, cancelSaveButton]);
 
   // console.log('columns--->', columns);
+  console.log(cancelSaveButton, 'cancelSaveButton');
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -149,6 +177,8 @@ function LabData() {
             onRowEdit,
             onDelete,
             handleChange,
+            handleCancelSaveButton,
+            cancelSaveButton,
           }))}
           rowId="id"
           hidePagination
@@ -163,7 +193,9 @@ TextFieldFilter.propTypes = {};
 ActionCell.propTypes = {
   row: PropTypes.isRequired,
 };
-
+SaveCancelButton.propTypes = {
+  row: PropTypes.isRequired,
+};
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
