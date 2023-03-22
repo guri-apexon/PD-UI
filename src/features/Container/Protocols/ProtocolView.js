@@ -9,16 +9,13 @@ import {
 } from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
-import { isPrimaryUser, prepareContent } from '../../../utils/utilFunction';
+import { prepareContent } from '../../../utils/utilFunction';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
   const summary = useSelector(headerResult);
   const dispatch = useDispatch();
-  const protData = {
-    ...data,
-    userPrimaryRoleFlag: isPrimaryUser(data),
-  };
+
   const [selectedSection, setSelectedSection] = useState({});
   const [sectionContent, setSectionContent] = useState([]);
   const [saveSection, setSaveSection] = useState(null);
@@ -191,7 +188,7 @@ function ProtocolView({ refs, data }) {
             listData={listData}
             refx={refs}
             sectionRef={sectionRef}
-            data={protData}
+            data={data}
             summaryData={summary}
           />
         )}
