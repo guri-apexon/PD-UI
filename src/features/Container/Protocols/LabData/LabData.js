@@ -67,7 +67,7 @@ function SaveCancelButton({ row }) {
     <ButtonGroup
       buttonProps={[
         {
-          onClick: () => row.handleCancelSaveButton,
+          onClick: () => row.handleCancelSaveButton(),
           label: 'Cancel',
           size: 'small',
         },
@@ -106,6 +106,7 @@ function LabData() {
   };
   const handleCancelSaveButton = () => {
     setCancelSaveButton(false);
+    setEditedRow({});
   };
 
   useEffect(() => {
@@ -125,14 +126,29 @@ function LabData() {
 
   useEffect(() => {
     if (isEdit) {
-      setColumns([
-        ...columns,
-        {
-          header: '',
-          accessor: 'menu',
-          customCell: cancelSaveButton ? SaveCancelButton : ActionCell,
-        },
-      ]);
+      const isMatched = columns.find((colm) => colm.accessor === 'menu');
+      if (isMatched) {
+        let cloneColumn = [...columns];
+        cloneColumn = cloneColumn.map((col) => {
+          if (col.accessor === 'menu') {
+            return {
+              ...col,
+              customCell: cancelSaveButton ? SaveCancelButton : ActionCell,
+            };
+          }
+          return col;
+        });
+        setColumns(cloneColumn);
+      } else {
+        setColumns([
+          ...columns,
+          {
+            header: '',
+            accessor: 'menu',
+            customCell: cancelSaveButton ? SaveCancelButton : ActionCell,
+          },
+        ]);
+      }
     }
     // eslint-disable-next-line
   }, [isEdit, cancelSaveButton]);
