@@ -9,6 +9,7 @@ import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import Table, { createStringSearchFilter } from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
+import Modal from 'apollo-react/components/Modal';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
@@ -27,7 +28,7 @@ function TextFieldFilter() {
 }
 
 function ActionCell({ row }) {
-  const { id, onRowEdit, onDelete } = row;
+  const { id, onRowEdit, onDelete, editedRow } = row;
   const menuItems = [
     {
       text: 'Edit',
@@ -40,9 +41,24 @@ function ActionCell({ row }) {
   ];
   return (
     <div>
-      <IconMenuButton menuItems={menuItems}>
-        <EllipsisVertical className="ellipsis-icon" />
-      </IconMenuButton>
+      {id === editedRow.id ? (
+        <ButtonGroup
+          buttonProps={[
+            {
+              onClick: () => row.handleCancel(id),
+              label: 'Cancel',
+            },
+            {
+              onClick: () => console.log('Save'),
+              label: 'save',
+            },
+          ]}
+        />
+      ) : (
+        <IconMenuButton menuItems={menuItems}>
+          <EllipsisVertical className="ellipsis-icon" />
+        </IconMenuButton>
+      )}
     </div>
   );
 }
@@ -61,33 +77,13 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-function SaveCancelButton({ row }) {
-  const { editMode } = row;
-  return editMode ? (
-    <ButtonGroup
-      buttonProps={[
-        {
-          onClick: () => row.handleCancelSaveButton(),
-          label: 'Cancel',
-          size: 'small',
-        },
-        {
-          onClick: () => console.log('Save'),
-          label: 'save',
-          size: 'small',
-        },
-      ]}
-    />
-  ) : (
-    ''
-  );
-}
 function LabData() {
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState(LABDATA_CONSTANTS.records);
   const [editedRow, setEditedRow] = useState({});
   const [isEdit, setIsEdit] = useState(false);
-  const [cancelSaveButton, setCancelSaveButton] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [tableId, setTableId] = useState();
 
   const handleSave = () => {
     setIsEdit(false);
@@ -96,17 +92,22 @@ function LabData() {
 
   const onRowEdit = (id) => {
     setEditedRow(rowData.find((row) => row.id === id));
-    setCancelSaveButton(true);
   };
 
-  const onDelete = () => {};
+  const onDelete = (id) => {
+    setIsOpen(true);
+    setTableId(id);
+  };
 
   const handleChange = (key, value) => {
     setEditedRow({ ...editedRow, [key]: value });
   };
-  const handleCancelSaveButton = () => {
-    setCancelSaveButton(false);
+  const handleCancel = (id) => {
+    const result = rowData.filter((value) => value.id !== id);
+    setRowData(result);
+    setIsEdit(false);
     setEditedRow({});
+    console.log(rowData, setRowData);
   };
 
   useEffect(() => {
@@ -126,35 +127,26 @@ function LabData() {
 
   useEffect(() => {
     if (isEdit) {
-      const isMatched = columns.find((colm) => colm.accessor === 'menu');
-      if (isMatched) {
-        let cloneColumn = [...columns];
-        cloneColumn = cloneColumn.map((col) => {
-          if (col.accessor === 'menu') {
-            return {
-              ...col,
-              customCell: cancelSaveButton ? SaveCancelButton : ActionCell,
-            };
-          }
-          return col;
-        });
-        setColumns(cloneColumn);
-      } else {
-        setColumns([
-          ...columns,
-          {
-            header: '',
-            accessor: 'menu',
-            customCell: cancelSaveButton ? SaveCancelButton : ActionCell,
-          },
-        ]);
-      }
+      setColumns([
+        ...columns,
+        {
+          header: '',
+          accessor: 'menu',
+          customCell: ActionCell,
+        },
+      ]);
     }
     // eslint-disable-next-line
-  }, [isEdit, cancelSaveButton]);
+  }, [isEdit]);
 
   // console.log('columns--->', columns);
-  console.log(cancelSaveButton, 'cancelSaveButton');
+
+  const onDeleteRow = () => {
+    const result = rowData.filter((value) => value.id !== tableId);
+    setRowData(result);
+    setEditedRow({});
+    setIsOpen(false);
+  };
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -193,13 +185,23 @@ function LabData() {
             onRowEdit,
             onDelete,
             handleChange,
-            handleCancelSaveButton,
-            cancelSaveButton,
+            handleCancel,
           }))}
           rowId="id"
           hidePagination
         />
       </div>
+      <Modal
+        open={isOpen}
+        variant="warning"
+        onClose={() => setIsOpen(false)}
+        title="Alert"
+        message="Please confirm if you want to continue with the delete?"
+        buttonProps={[
+          { label: 'Cancel' },
+          { label: 'Yes', onClick: () => onDeleteRow() },
+        ]}
+      />
     </Card>
   );
 }
@@ -207,9 +209,6 @@ function LabData() {
 TextFieldFilter.propTypes = {};
 
 ActionCell.propTypes = {
-  row: PropTypes.isRequired,
-};
-SaveCancelButton.propTypes = {
   row: PropTypes.isRequired,
 };
 EditableCell.propTypes = {
