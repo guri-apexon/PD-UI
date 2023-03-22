@@ -28,7 +28,15 @@ function TextFieldFilter() {
 }
 
 function ActionCell({ row }) {
-  const { id, onRowEdit, onDelete } = row;
+  const {
+    id,
+    onRowEdit,
+    onDelete,
+    editMode,
+    handleCancel,
+    handleSaveRow,
+    editedRow,
+  } = row;
   const menuItems = [
     {
       text: 'Edit',
@@ -39,7 +47,22 @@ function ActionCell({ row }) {
       onClick: () => onDelete(id),
     },
   ];
-  return (
+  return editMode ? (
+    <div className="saveCancelButtonGroup">
+      <Button onClick={handleCancel}>Cancel</Button>
+      <Button
+        variant="primary"
+        onClick={handleSaveRow}
+        disabled={
+          Object.values(editedRow).some((item) => !item) ||
+          (editMode &&
+            !Object.keys(editedRow).some((key) => editedRow[key] !== row[key]))
+        }
+      >
+        Save
+      </Button>
+    </div>
+  ) : (
     <div>
       <IconMenuButton menuItems={menuItems}>
         <EllipsisVertical className="ellipsis-icon" />
@@ -49,12 +72,11 @@ function ActionCell({ row }) {
 }
 
 function EditableCell({ row, column: { accessor: key } }) {
-  const { editMode } = row;
-  return editMode ? (
+  return row.editMode ? (
     <TextField
       size="small"
       fullWidth
-      value={row[key]}
+      value={row.editedRow[key]}
       onChange={(e) => row.handleChange(key, e.target.value)}
     />
   ) : (
@@ -62,33 +84,14 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-function SaveCancelButton({ row }) {
-  const { id, editMode } = row;
-  return editMode ? (
-    <ButtonGroup
-      buttonProps={[
-        {
-          onClick: () => row.handleCancel(id),
-          label: 'Cancel',
-        },
-        {
-          onClick: () => console.log('Save'),
-          label: 'save',
-        },
-      ]}
-    />
-  ) : (
-    ''
-  );
-}
 function LabData() {
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState(LABDATA_CONSTANTS.records);
   const [editedRow, setEditedRow] = useState({});
   const [isEdit, setIsEdit] = useState(false);
-  const [cancelSaveButton, setCancelSaveButton] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [tableId, setTableId] = useState();
+  const [isShow, setIsShow] = useState(false);
 
   const handleSave = () => {
     setIsEdit(false);
@@ -97,7 +100,6 @@ function LabData() {
 
   const onRowEdit = (id) => {
     setEditedRow(rowData.find((row) => row.id === id));
-    setCancelSaveButton(true);
   };
 
   const onDelete = (id) => {
@@ -107,14 +109,17 @@ function LabData() {
 
   const handleChange = (key, value) => {
     setEditedRow({ ...editedRow, [key]: value });
+    setIsShow(true);
   };
-  const handleCancel = (id) => {
-    const result = rowData.filter((value) => value.id !== id);
-    setCancelSaveButton(false);
-    setRowData(result);
-    setIsEdit(false);
+  const handleCancel = () => {
     setEditedRow({});
-    console.log(rowData, setRowData);
+  };
+
+  const handleSaveRow = () => {
+    setRowData(
+      rowData.map((row) => (row.id === editedRow.id ? editedRow : row)),
+    );
+    setEditedRow({});
   };
 
   useEffect(() => {
@@ -139,12 +144,12 @@ function LabData() {
         {
           header: '',
           accessor: 'menu',
-          customCell: cancelSaveButton ? SaveCancelButton : ActionCell,
+          customCell: ActionCell,
         },
       ]);
     }
     // eslint-disable-next-line
-  }, [isEdit, cancelSaveButton]);
+  }, [isEdit]);
 
   // console.log('columns--->', columns);
 
@@ -163,6 +168,9 @@ function LabData() {
         <div className="metadat-flex-plus"> Lab Data </div>
       </div>
       <div className="lab-btn-container">
+        <Button disabled={!isShow} variant="text" className="btn-filter mR">
+          Clear Filter
+        </Button>
         <Button variant="secondary" icon={<Filter />} className="btn-filter mR">
           Filters
         </Button>
@@ -193,7 +201,7 @@ function LabData() {
             onDelete,
             handleChange,
             handleCancel,
-            cancelSaveButton,
+            handleSaveRow,
           }))}
           rowId="id"
           hidePagination
@@ -219,9 +227,7 @@ TextFieldFilter.propTypes = {};
 ActionCell.propTypes = {
   row: PropTypes.isRequired,
 };
-SaveCancelButton.propTypes = {
-  row: PropTypes.isRequired,
-};
+
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
