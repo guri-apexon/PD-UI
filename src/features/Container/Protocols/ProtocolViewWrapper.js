@@ -4,9 +4,11 @@ import Card from 'apollo-react/components/Card';
 import Panel from 'apollo-react/components/Panel';
 import PropTypes from 'prop-types';
 import { isEqual } from 'lodash';
-import PanelGroup from 'apollo-react/components/PanelGroup';
 import FileDownload from 'js-file-download';
 import { toast } from 'react-toastify';
+import Tooltip from 'apollo-react/components/Tooltip';
+import IconButton from 'apollo-react/components/IconButton';
+import FileDoc from 'apollo-react-icons/FileDoc';
 import PDFViewer from './SourcePanel/PdfViewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
@@ -101,6 +103,7 @@ class ProtocolViewWrapper extends React.Component {
 
   render() {
     const { data, refx, sectionRef, summaryData } = this.props;
+    console.log('refxx', refx);
     const {
       pageNo,
       pageRight,
@@ -123,7 +126,7 @@ class ProtocolViewWrapper extends React.Component {
         </div>
 
         <div className="view-wrapper">
-          <PanelGroup className="panel_group">
+          <div className="panel_group">
             {data.userPrimaryRoleFlag && (
               <Panel
                 width={window.innerWidth / 2}
@@ -134,12 +137,31 @@ class ProtocolViewWrapper extends React.Component {
               >
                 <Card className="protocol-source-column">
                   <div style={{ display: 'flex' }}>
-                    <div className="panel-heading">Source Document</div>
+                    <div className="panel-heading" style={{ width: '50%' }}>
+                      Source Document
+                    </div>
                     {!isEqual(fileType, 'pdf') && (
-                      <div style={{ marginTop: '15px' }}>
-                        <a href="#" onClick={this.handleDownload}>
-                          {data.fileName}
-                        </a>
+                      <div
+                        style={{
+                          marginTop: '15px',
+                          width: '50%',
+                          textAlign: 'right',
+                          marginRight: '30px',
+                        }}
+                      >
+                        <Tooltip
+                          title="Download Source document"
+                          placement="top"
+                        >
+                          <IconButton
+                            id="expand"
+                            color="primary"
+                            data-testid="download-doc"
+                            onClick={this.handleDownload}
+                          >
+                            <FileDoc />
+                          </IconButton>
+                        </Tooltip>
                       </div>
                     )}
                   </div>
@@ -177,7 +199,7 @@ class ProtocolViewWrapper extends React.Component {
                 />
               </Panel>
             )}
-          </PanelGroup>
+          </div>
         </div>
       </>
     );
