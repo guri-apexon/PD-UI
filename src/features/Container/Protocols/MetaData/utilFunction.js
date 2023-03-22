@@ -20,6 +20,7 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
                     ? attr?.attr_value.toString()
                     : attr?.attr_value,
                 display_name: attr?.display_name || attr?.attr_name,
+                attr_name: attr?.attr_name,
               };
             }),
             formattedName: identifier,

@@ -197,8 +197,8 @@ let UIhost;
 /* eslint-enable */
 const environment = process.env.REACT_APP_ENV;
 if (environment === 'local') {
-  backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
-  // backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
+  // backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
