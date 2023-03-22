@@ -4,17 +4,9 @@ export const initialFormValues = {
   amendmentNumber: {},
   projectID: '',
   versionNumber: '',
-  sponsor: {
-    label: '',
-  },
-  sponsor1: [],
   documentStatus: {
     label: '',
   },
-  indication: {
-    label: '',
-  },
-  moleculeDevice: '',
   uploadFile: [],
 };
 export const initialFormErrorValues = {
@@ -43,35 +35,11 @@ export const initialFormErrorValues = {
     regex: versionReg,
     type: 'Textbox',
   },
-  sponsor: {
-    isRequired: true,
-    error: false,
-    errorMessage: ' ',
-    type: 'CustomDropdown',
-  },
-  sponsor1: {
-    isRequired: false,
-    error: false,
-    errorMessage: ' ',
-    type: 'Dropdown',
-  },
   documentStatus: {
     isRequired: true,
     error: false,
     errorMessage: ' ',
     type: 'Dropdown',
-  },
-  indication: {
-    isRequired: true,
-    error: false,
-    errorMessage: ' ',
-    type: 'CustomDropdown',
-  },
-  moleculeDevice: {
-    isRequired: true,
-    error: false,
-    errorMessage: ' ',
-    type: 'Textbox',
   },
   uploadFile: {
     isRequired: true,

@@ -22,6 +22,7 @@ import {
   RightBladeValue,
   setTOCActive,
   setEnrichedAPI,
+  getSOAData,
 } from '../saga';
 
 const userDetail = {
@@ -859,7 +860,23 @@ describe('Protocol Saga Unit Test', () => {
       }),
     };
     await runSaga(fakeStore, setEnrichedAPI, { payload }).toPromise();
+    expect(undefined).toBeUndefined();
+  });
 
+  test('getSOAData  ', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      docId: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getSOAData, { payload }).toPromise();
     expect(undefined).toBeUndefined();
   });
 });

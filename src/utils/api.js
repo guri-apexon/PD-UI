@@ -82,12 +82,14 @@ export const httpCall = async (config) => {
         success: false,
         data: err.response.data.detail,
         code: 'DUPLICATE_ENTITY',
+        err: err.response,
       };
     }
     return {
       success: false,
       err: err.response,
       message: 'Not-Found',
+      err: err.response,
     };
   }
 };
