@@ -28,7 +28,7 @@ function TextFieldFilter() {
 }
 
 function ActionCell({ row }) {
-  const { id, onRowEdit, onDelete, editedRow } = row;
+  const { id, onRowEdit, onDelete } = row;
   const menuItems = [
     {
       text: 'Edit',
@@ -41,24 +41,9 @@ function ActionCell({ row }) {
   ];
   return (
     <div>
-      {id === editedRow.id ? (
-        <ButtonGroup
-          buttonProps={[
-            {
-              onClick: () => row.handleCancel(id),
-              label: 'Cancel',
-            },
-            {
-              onClick: () => console.log('Save'),
-              label: 'save',
-            },
-          ]}
-        />
-      ) : (
-        <IconMenuButton menuItems={menuItems}>
-          <EllipsisVertical className="ellipsis-icon" />
-        </IconMenuButton>
-      )}
+      <IconMenuButton menuItems={menuItems}>
+        <EllipsisVertical className="ellipsis-icon" />
+      </IconMenuButton>
     </div>
   );
 }
@@ -77,11 +62,31 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
+function SaveCancelButton({ row }) {
+  const { id, editMode } = row;
+  return editMode ? (
+    <ButtonGroup
+      buttonProps={[
+        {
+          onClick: () => row.handleCancel(id),
+          label: 'Cancel',
+        },
+        {
+          onClick: () => console.log('Save'),
+          label: 'save',
+        },
+      ]}
+    />
+  ) : (
+    ''
+  );
+}
 function LabData() {
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState(LABDATA_CONSTANTS.records);
   const [editedRow, setEditedRow] = useState({});
   const [isEdit, setIsEdit] = useState(false);
+  const [cancelSaveButton, setCancelSaveButton] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [tableId, setTableId] = useState();
 
@@ -92,6 +97,7 @@ function LabData() {
 
   const onRowEdit = (id) => {
     setEditedRow(rowData.find((row) => row.id === id));
+    setCancelSaveButton(true);
   };
 
   const onDelete = (id) => {
@@ -104,6 +110,7 @@ function LabData() {
   };
   const handleCancel = (id) => {
     const result = rowData.filter((value) => value.id !== id);
+    setCancelSaveButton(false);
     setRowData(result);
     setIsEdit(false);
     setEditedRow({});
@@ -132,12 +139,12 @@ function LabData() {
         {
           header: '',
           accessor: 'menu',
-          customCell: ActionCell,
+          customCell: cancelSaveButton ? SaveCancelButton : ActionCell,
         },
       ]);
     }
     // eslint-disable-next-line
-  }, [isEdit]);
+  }, [isEdit, cancelSaveButton]);
 
   // console.log('columns--->', columns);
 
@@ -186,6 +193,7 @@ function LabData() {
             onDelete,
             handleChange,
             handleCancel,
+            cancelSaveButton,
           }))}
           rowId="id"
           hidePagination
@@ -209,6 +217,9 @@ function LabData() {
 TextFieldFilter.propTypes = {};
 
 ActionCell.propTypes = {
+  row: PropTypes.isRequired,
+};
+SaveCancelButton.propTypes = {
   row: PropTypes.isRequired,
 };
 EditableCell.propTypes = {
