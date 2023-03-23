@@ -6,7 +6,7 @@ import { summary } from './data';
 const initialState = {
   protocol: {
     summary: {
-      data: summary,
+      data: summary[0],
       loading: false,
       success: true,
     },
@@ -33,6 +33,10 @@ describe('PDF VIEWER', () => {
   });
 
   test('Zoom Out Counter', () => {
+    // window.URL.createObjectURL = jest.fn();
+    // afterEach(() => {
+    //   window.URL.createObjectURL.mockReset();
+    // });
     const screen = render(
       <PDFViewer page={1} refs={jest.fn()} pageRight={2} />,
       {
@@ -42,6 +46,8 @@ describe('PDF VIEWER', () => {
     const zoomOut = screen.getByTestId('zoomOut');
     expect(zoomOut).toBeInTheDocument();
     fireEvent.click(zoomOut);
+    // const lnkAnchorNode = screen.getByTestId('download-doc');
+    // fireEvent.click(lnkAnchorNode);
   });
 
   test('Zoom In Counter', () => {

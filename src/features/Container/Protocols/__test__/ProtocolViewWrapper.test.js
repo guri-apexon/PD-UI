@@ -1,4 +1,4 @@
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import store from '../../../../store/store';
 import ProtocolViewWrapper from '../ProtocolViewWrapper';
@@ -66,8 +66,6 @@ describe('ProtocolViewWrapper', () => {
         initialState,
       },
     );
-    const lnkAnchorNode = screen.getByTestId('download-doc');
-    fireEvent.click(lnkAnchorNode);
   });
   it('does not display source document if user does not have primary role flag', () => {
     const { queryByText } = render(

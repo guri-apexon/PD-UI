@@ -154,6 +154,19 @@
       height: calc(100vh - 210px);
       outline: none;
       margin-left: 10px;
+      .panel-display{
+        display: flex;
+        .panel-heading {
+          margin-left: 15px;
+          width:50%;
+        }
+        .panel-download{
+          margin-top: 5px;
+          width: 50%;
+          text-align: right;
+          margin-right: 30px,
+        }
+      }
     }
   }
 
