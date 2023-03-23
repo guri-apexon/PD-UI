@@ -194,7 +194,6 @@ function MetaDataEditTable({
     const filterRows = rows[formattedName].filter(
       (list) => list.id === selectedId,
     );
-    console.log('filterRows[0].attr_name', filterRows, selectedId);
     setDeletedAttributes([...deletedAttributes, filterRows[0].attr_name]);
     setRows((prevState) => ({
       ...prevState,
