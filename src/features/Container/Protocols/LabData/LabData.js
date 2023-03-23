@@ -10,6 +10,8 @@ import Table from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
 import Modal from 'apollo-react/components/Modal';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
+import IconButton from 'apollo-react/components/IconButton';
+import Plus from 'apollo-react-icons/Plus';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
 
@@ -70,6 +72,18 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
+function PlusIcon() {
+  return (
+    <IconButton
+      data-testId="plus-add"
+      color="primary"
+      size="small"
+      destructiveAction
+    >
+      <Plus />
+    </IconButton>
+  );
+}
 function LabData() {
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState(LABDATA_CONSTANTS.records);
@@ -77,7 +91,6 @@ function LabData() {
   const [isEdit, setIsEdit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [tableId, setTableId] = useState();
-  const [isShow, setIsShow] = useState(false);
 
   const handleSave = () => {
     setIsEdit(false);
@@ -96,11 +109,9 @@ function LabData() {
 
   const handleChange = (key, value) => {
     setEditedRow({ ...editedRow, [key]: value });
-    setIsShow(true);
   };
   const handleCancel = () => {
     setEditedRow({});
-    setIsShow(false);
   };
 
   const handleSaveRow = () => {
@@ -172,7 +183,6 @@ function LabData() {
         </div>
         <Table
           title="Lab Data"
-          showClearFiltersButton
           columns={columns}
           rows={rowData?.map((row) => ({
             ...row,
@@ -195,6 +205,7 @@ function LabData() {
               } ${from}-${to} of ${count}`,
             truncate: true,
           }}
+          showClearFiltersButton
         />
       </div>
       <Modal
@@ -215,7 +226,6 @@ function LabData() {
 ActionCell.propTypes = {
   row: PropTypes.isRequired,
 };
-
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
