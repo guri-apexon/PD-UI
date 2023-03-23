@@ -31,7 +31,7 @@ function QCProtocolView({ protId, path, userType, protocolNumber }) {
     if (data) {
       setProtData({
         ...data,
-        userPrimaryRoleFlag: isPrimaryUser(data),
+        userPrimaryRoleFlag: true,
       });
     }
   }, [data]);
