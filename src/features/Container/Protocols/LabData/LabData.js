@@ -58,12 +58,19 @@ function ActionCell({ row }) {
 }
 
 function EditableCell({ row, column: { accessor: key } }) {
+  const { editedRow, updateRow } = row;
+  const [val, setVal] = useState(editedRow[key]);
+  const handleDataChange = (e) => {
+    setVal(e.target.value);
+  };
+
   return row.editMode ? (
     <TextField
       size="small"
       fullWidth
-      value={row.editedRow[key]}
-      onChange={(e) => row.handleChange(key, e.target.value)}
+      value={val}
+      onChange={handleDataChange}
+      onBlur={() => updateRow(key, val)}
     />
   ) : (
     row[key]
@@ -77,7 +84,6 @@ function LabData() {
   const [isEdit, setIsEdit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [tableId, setTableId] = useState();
-  const [isShow, setIsShow] = useState(false);
 
   const handleSave = () => {
     setIsEdit(false);
@@ -96,11 +102,9 @@ function LabData() {
 
   const handleChange = (key, value) => {
     setEditedRow({ ...editedRow, [key]: value });
-    setIsShow(true);
   };
   const handleCancel = () => {
     setEditedRow({});
-    setIsShow(false);
   };
 
   const handleSaveRow = () => {
@@ -108,6 +112,13 @@ function LabData() {
       rowData.map((row) => (row.id === editedRow.id ? editedRow : row)),
     );
     setEditedRow({});
+  };
+
+  const updateRow = (key, value) => {
+    setEditedRow({
+      ...editedRow,
+      [key]: value,
+    });
   };
 
   useEffect(() => {
@@ -138,8 +149,6 @@ function LabData() {
     }
     // eslint-disable-next-line
   }, [isEdit]);
-
-  // console.log('columns--->', columns);
 
   const onDeleteRow = () => {
     const result = rowData.filter((value) => value.id !== tableId);
@@ -178,6 +187,7 @@ function LabData() {
             ...row,
             editMode: editedRow.id === row.id,
             editedRow,
+            updateRow,
             onRowEdit,
             onDelete,
             handleChange,
