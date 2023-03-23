@@ -1,12 +1,38 @@
 .lab-table-container {
-  padding: 10px;
-  border: 1px solid lightgrey;
+  svg{
+    width: 1rem!important;
+    height: 1rem!important;
+    color: inherit !important;
+    margin-bottom: 0!important;
+    margin-right:5px;
+  }
+  position: relative;
+  & > div > div > div > div {
+    margin-right: 50px;
+    h3{
+      margin: 0 !important;
+      padding: 0 !important;
+      font-size: 16px !important;
+    }
+  & > button{
+    height: 40px;
+    font-size: inherit;
+    padding: 0 16px;
+  }
+}
 }
 .lab-btn-container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-bottom: 1rem;
+  position: absolute;
+    right: 0;
+    top: 21px;
+    z-index: 9;
+    button{
+      svg{
+        color: #000 !important;
+        height: 1.2em !important;
+        width: 1.3em !important;
+      }
+    }
 }
 .mR {
   margin-right: 10px;

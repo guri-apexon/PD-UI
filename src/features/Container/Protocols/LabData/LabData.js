@@ -6,26 +6,12 @@ import Filter from 'apollo-react-icons/Filter';
 import Save from 'apollo-react-icons/Save';
 import Pencil from 'apollo-react-icons/Pencil';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
-import Table, { createStringSearchFilter } from 'apollo-react/components/Table';
+import Table from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
-import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import Modal from 'apollo-react/components/Modal';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
-
-function TextFieldFilter() {
-  return (
-    <TextField
-      // value={filters[accessor]}
-      // name={accessor}
-      // onChange={updateFilterValue}
-      fullWidth
-      margin="none"
-      size="small"
-    />
-  );
-}
 
 function ActionCell({ row }) {
   const {
@@ -64,24 +50,9 @@ function ActionCell({ row }) {
     </div>
   ) : (
     <div>
-      {id === editedRow.id ? (
-        <ButtonGroup
-          buttonProps={[
-            {
-              onClick: () => row.handleCancel(id),
-              label: 'Cancel',
-            },
-            {
-              onClick: () => console.log('Save'),
-              label: 'save',
-            },
-          ]}
-        />
-      ) : (
-        <IconMenuButton menuItems={menuItems}>
-          <EllipsisVertical className="ellipsis-icon" />
-        </IconMenuButton>
-      )}
+      <IconMenuButton menuItems={menuItems}>
+        <EllipsisVertical className="ellipsis-icon" />
+      </IconMenuButton>
     </div>
   );
 }
@@ -115,6 +86,7 @@ function LabData() {
 
   const onRowEdit = (id) => {
     setEditedRow(rowData.find((row) => row.id === id));
+    setTableId(id);
   };
 
   const onDelete = (id) => {
@@ -128,6 +100,7 @@ function LabData() {
   };
   const handleCancel = () => {
     setEditedRow({});
+    setIsShow(false);
   };
 
   const handleSaveRow = () => {
@@ -179,34 +152,27 @@ function LabData() {
       className="protocol-column protocol-digitize-column metadata-card"
       data-testid="metadata-accordian"
     >
-      <div className="panel-heading ">
-        <div className="metadat-flex-plus"> Lab Data </div>
-      </div>
-      <div className="lab-btn-container">
-        <Button disabled={!isShow} variant="text" className="btn-filter mR">
-          Clear Filter
-        </Button>
-        <Button variant="secondary" icon={<Filter />} className="btn-filter mR">
-          Filters
-        </Button>
-        {isEdit ? (
-          <Button
-            variant="secondary"
-            icon={<Save />}
-            className="btn-common"
-            onClick={handleSave}
-          />
-        ) : (
-          <Button
-            variant="secondary"
-            icon={<Pencil />}
-            className="btn-common"
-            onClick={() => setIsEdit(true)}
-          />
-        )}
-      </div>
       <div className="lab-table-container">
+        <div className="lab-btn-container">
+          {isEdit ? (
+            <Button
+              variant="secondary"
+              icon={<Save />}
+              className="btn-common"
+              onClick={handleSave}
+            />
+          ) : (
+            <Button
+              variant="secondary"
+              icon={<Pencil />}
+              className="btn-common"
+              onClick={() => setIsEdit(true)}
+            />
+          )}
+        </div>
         <Table
+          title="Lab Data"
+          showClearFiltersButton
           columns={columns}
           rows={rowData?.map((row) => ({
             ...row,
@@ -218,8 +184,17 @@ function LabData() {
             handleCancel,
             handleSaveRow,
           }))}
+          initialSortedColumn="id"
+          initialSortOrder="asc"
           rowId="id"
-          hidePagination
+          rowsPerPageOptions={[5, 10, 15, 'All']}
+          tablePaginationProps={{
+            labelDisplayedRows: ({ from, to, count }) =>
+              `${
+                count === 1 ? 'Lab Data' : 'Lab Datas'
+              } ${from}-${to} of ${count}`,
+            truncate: true,
+          }}
         />
       </div>
       <Modal
@@ -237,11 +212,10 @@ function LabData() {
   );
 }
 
-TextFieldFilter.propTypes = {};
-
 ActionCell.propTypes = {
   row: PropTypes.isRequired,
 };
+
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
