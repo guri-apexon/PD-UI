@@ -118,13 +118,14 @@ function DisplayTable({
                     style={{ width: `${colWidth}%` }}
                   >
                     {rowIndex === 0 && edit && (
-                      <span
-                        style={{ width: `${colWidth}%` }}
-                        className="pd-drag-icon columnDrag"
-                        data-testId="draggable"
-                      >
-                        <EllipsisHorizontal />
-                      </span>
+                      <div className="drag-icon-wrapper">
+                        <span
+                          className="pd-drag-icon columnDrag"
+                          data-testId="draggable"
+                        >
+                          <EllipsisHorizontal />
+                        </span>
+                      </div>
                     )}
                     <span
                       id={`divId-${rowIndex}-${key}`}

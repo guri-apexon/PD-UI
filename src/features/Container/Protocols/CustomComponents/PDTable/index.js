@@ -82,8 +82,9 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     if (data) {
       const parsedTable = JSON.parse(data.TableProperties);
       const tableIds = getIDs(parsedTable[0]?.row_props);
+      const formattedData = formattableData(parsedTable);
       setTableId(tableIds?.tableRoiId);
-      setUpdatedData(parsedTable);
+      setUpdatedData(formattedData);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
       const colLength = Object.keys(parsedTable[0]?.row_props).length;
