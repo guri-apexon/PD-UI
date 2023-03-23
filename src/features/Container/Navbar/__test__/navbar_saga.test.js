@@ -1,7 +1,7 @@
 import { runSaga } from 'redux-saga';
 import * as api from '../../../../utils/api';
 
-import { navbarNotificationData, readNotification } from '../saga';
+import { navbarNotificationData, handlereadNotification } from '../saga';
 
 const userDetail = {
   userId: 'u1072231',
@@ -76,7 +76,7 @@ describe('Navbar Saga Unit Test', () => {
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  test('Should run give success data: readNotification', async () => {
+  test('Should run give success data: handlereadNotification', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       data: [],
@@ -94,7 +94,7 @@ describe('Navbar Saga Unit Test', () => {
         },
       }),
     };
-    await runSaga(fakeStore, readNotification, {
+    await runSaga(fakeStore, handlereadNotification, {
       payload: {
         aidocId: 'dfbb0964-616b-4ab3-bc31-13e252f44d8a',
         id: '7959',
@@ -105,7 +105,7 @@ describe('Navbar Saga Unit Test', () => {
     expect(mockCallApi).toHaveBeenCalledTimes(1);
     // navbarNotificationData(data);
   });
-  test('Should run give failure data: readNotification', async () => {
+  test('Should run give failure data: handlereadNotification', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       data: [],
@@ -123,7 +123,7 @@ describe('Navbar Saga Unit Test', () => {
         },
       }),
     };
-    await runSaga(fakeStore, readNotification, {
+    await runSaga(fakeStore, handlereadNotification, {
       payload: {
         aidocId: 'dfbb0964-616b-4ab3-bc31-13e252f44d8a',
         id: '7959',
