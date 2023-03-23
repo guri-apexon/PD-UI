@@ -253,6 +253,7 @@ export const Apis = {
   DOWNLOAD_API: '/api/download_file',
   METADATA: '/pd/api/v1/documents',
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
+  USER_ALERT_SETTING: '/api/user_alert_setting',
   SAVE_SECTION_CONTENT: '/api/qc_ingest',
 };
 

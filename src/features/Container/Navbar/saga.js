@@ -1,7 +1,9 @@
 /* eslint-disable */
+import { toast } from 'react-toastify';
 import { takeEvery, all, call, put } from 'redux-saga/effects';
-import { httpCall, BASE_URL_8000 } from '../../../utils/api';
-import { getNotification, setError } from './navbarSlice';
+import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
+import { settingOptInOut } from '../../../utils/utilFunction';
+import { getNotification, getOptInOutData, setError } from './navbarSlice';
 
 export function* navbarNotificationData(action) {
   const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${action.payload}`;
@@ -57,6 +59,42 @@ export function* readNotification(action) {
   }
 }
 
+export function* postOptInOut(action) {
+  const {
+    payload: { data },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.USER_ALERT_SETTING}/update_setting/`,
+    method: 'POST',
+    data: {
+      data,
+    },
+  };
+  const postData = yield call(httpCall, config);
+  if (postData?.success) {
+    yield put(getOptInOutData({ option: postData?.data?.options }));
+    toast.info('Opt In/Out Data Updated Successfully');
+  } else {
+    toast.error('Error While Updation');
+  }
+}
+
+export function* getOptInOut(action) {
+  const {
+    payload: { userID },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.USER_ALERT_SETTING}/?user_id=${userID}`,
+    method: 'GET',
+  };
+  const getData = yield call(httpCall, config);
+  if (getData?.success) {
+    yield put(getOptInOutData({ option: getData?.data?.options }));
+  } else {
+    toast.error('Error While Getting Data');
+  }
+}
+
 // export function* setRead(action) {
 //   const notificationUrl = `${BASE_URL_8000}/api/notification_read`;
 //   const notificationConfig = {
@@ -80,6 +118,8 @@ export function* readNotification(action) {
 export function* watchNavbar() {
   yield takeEvery('GET_NOTIFICATION_SAGA', navbarNotificationData);
   yield takeEvery('READ_NOTIFICATION_SAGA', readNotification);
+  yield takeEvery('POST_OPT_IN_OUT', postOptInOut);
+  yield takeEvery('GET_OPT_IN_OUT', getOptInOut);
 }
 
 export default function* qcSaga() {
