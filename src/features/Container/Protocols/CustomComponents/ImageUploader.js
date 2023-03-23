@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import FileUpload from 'apollo-react/components/FileUpload';
@@ -7,6 +8,7 @@ import TrashIcon from 'apollo-react-icons/Trash';
 import IconButton from 'apollo-react/components/IconButton';
 import Pencil from 'apollo-react-icons/Pencil';
 import { useProtContext } from '../ProtocolContext';
+
 import { toBase64 } from '../../../../utils/utilFunction';
 import { setSaveEnabled } from '../protocolSlice';
 import './ImageUploader.scss';
@@ -56,6 +58,8 @@ function ImageUploader({ lineID, content, edit }) {
         [newValue[0].name.split('.').length - 1].toLowerCase();
       if (['jpeg', 'png', 'jpg', 'gif', 'bmp'].includes(type)) {
         setValue(newValue);
+      } else {
+        toast.error('Please Upload Supported Image File');
       }
     }
   };

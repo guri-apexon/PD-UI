@@ -152,15 +152,12 @@ function DigitizeAccordion({
 
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
-      console.log('SHUBHAM1');
       setExpanded(true);
     } else if (currentActiveCard === item.link_id && expanded) {
       setExpanded(false);
-      console.log('SHUBHAM2');
     }
     if (currentActiveCard === item.link_id && expanded && tocActive[index]) {
       setExpanded(true);
-      console.log('SHUBHAM5');
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
@@ -200,11 +197,9 @@ function DigitizeAccordion({
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
       setExpanded(false);
-      console.log('SHUBHAM3');
     }
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
-      console.log('SHUBHAM4');
     }
     if (
       currentActiveCard === item.link_id &&
@@ -220,6 +215,9 @@ function DigitizeAccordion({
         },
       });
       setExpanded(true);
+    }
+    if (!tocActive[index]) {
+      setExpanded(false);
     }
     // eslint-disable-next-line
   }, [tocActive]);
