@@ -373,7 +373,8 @@
     }
     padding-right: 10px;
     float: right;
-    width: 100%;
+    min-width: 20%;
+    max-width: 80% !important;
     border-right: 0;
     flex-shrink: 100;
     & > div > div {
