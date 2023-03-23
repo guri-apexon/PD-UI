@@ -43,6 +43,12 @@ function* getUserId() {
   return id.substring(1);
 }
 
+function* getUserType() {
+  const state = yield select();
+  const userType = state.user.userDetail.user_type;
+  return userType;
+}
+
 export function* getSummaryData(action) {
   const obj = {
     loading: true,
@@ -423,7 +429,11 @@ export function* fetchFileStream(action) {
   };
   yield put(getFileStream(preLoadingState));
 
-  const userId = yield getUserId();
+  const userType = yield getUserType();
+  let userId = 'qc';
+  if (userType !== 'QC1') {
+    userId = yield getUserId();
+  }
   const { name, dfsPath } = action.payload;
   const apiBaseUrl = BASE_URL_8000;
   const config = {

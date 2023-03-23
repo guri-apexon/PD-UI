@@ -4,6 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import NavigationBar from 'apollo-react/components/NavigationBar';
 import Alerts from './Alerts';
+import SettingsIcon from 'apollo-react-icons/Cog';
 import {
   USER_MENU,
   QC1_MENU,
@@ -12,6 +13,7 @@ import {
 } from '../../../AppConstant/AppConstant';
 import { baseUrlSSO } from '../../../utils/api';
 import './Navbar.scss';
+import Setting from './Setting/Setting';
 
 const setMenuItems = (value) => {
   switch (value) {
@@ -40,14 +42,23 @@ function Navbar() {
   const [userData, setUserData] = useState({});
   const userDetail = useSelector((state) => state.user.userDetail);
   const [pathname, setPathname] = useState('/dashboard');
+  const [modal, setModal] = useState(false);
+  const [userId, setUserId] = useState();
   useEffect(() => {
     if ('userId' in userData) {
-      // const userID = userData.userId.substring(1);
-      const userID = 'alert_test_user';
+      const userID = userData.userId.substring(1);
+      setUserId(userID);
 
-      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: { userID: userID } });
+      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: { userID: 'alert_test_user' } });
+      dispatch({
+        type: 'GET_OPT_IN_OUT',
+        payload: {
+          userID,
+        },
+      });
     }
   }, [userData, dispatch]);
+
   useEffect(() => {
     setUserData(userDetail);
   }, [userDetail]);
@@ -66,11 +77,12 @@ function Navbar() {
   };
 
   const checknav = (item) => {
-    return item.pathname
-      ? item.pathname === pathname
-      : item.menuItems.some((item) => item.pathname === pathname);
+    return item.pathname === pathname;
   };
 
+  const handleSetting = () => {
+    setModal(true);
+  };
   const profileMenuProps = {
     name: userDetail.username,
     title: '',
@@ -78,7 +90,15 @@ function Navbar() {
     logoutButtonProps: {
       onClick: () => onLogoutClick(),
     },
-    menuItems: [],
+    menuItems: [
+      {
+        text: 'Settings',
+        icon: SettingsIcon,
+        onClick: () => {
+          handleSetting();
+        },
+      },
+    ],
   };
 
   return (
@@ -108,6 +128,7 @@ function Navbar() {
           waves
           otherButtons={<Alerts />}
         />
+        {modal && <Setting handleModal={setModal} userId={userId} />}
       </div>
     )
   );
