@@ -66,14 +66,14 @@ function Alerts() {
     event.preventDefault();
     event.stopPropagation();
     dispatch({
-      type: 'delete',
+      type: 'DELETE_NOTIFICATION',
       payload: { aidocId, id, protocol },
     });
   };
 
-  const checkForPrimary = (aidocId, id, protocol) => {
+  const handleRead = (aidocId, id, protocol) => {
     dispatch({
-      type: 'read',
+      type: 'READ_NOTIFICATION',
       payload: { aidocId, id, protocol },
     });
     history.push(`/protocols?protocolId=${aidocId}&tab=1`);
@@ -185,7 +185,7 @@ function Alerts() {
                                 role="button"
                                 key={`${item.id}-${item.timestamp}`}
                                 onClick={() =>
-                                  checkForPrimary(
+                                  handleRead(
                                     item.aidocId,
                                     item.id,
                                     item.protocol,

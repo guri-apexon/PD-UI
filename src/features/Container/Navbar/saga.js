@@ -149,11 +149,10 @@ export function* getOptInOut(action) {
 
 export function* watchNavbar() {
   yield takeEvery('GET_NOTIFICATION_SAGA', navbarNotificationData);
-  yield takeEvery('READ_NOTIFICATION_SAGA', readNotification);
   yield takeEvery('POST_OPT_IN_OUT', postOptInOut);
   yield takeEvery('GET_OPT_IN_OUT', getOptInOut);
-  yield takeEvery('read', handlereadNotification);
-  yield takeEvery('delete', handleDeleteNotification);
+  yield takeEvery('READ_NOTIFICATION', handlereadNotification);
+  yield takeEvery('DELETE_NOTIFICATION', handleDeleteNotification);
 }
 
 export default function* qcSaga() {

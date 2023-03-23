@@ -49,7 +49,7 @@ function Navbar() {
       const userID = userData.userId.substring(1);
       setUserId(userID);
 
-      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: { userID: 'alert_test_user' } });
+      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: { userID } });
       dispatch({
         type: 'GET_OPT_IN_OUT',
         payload: {
