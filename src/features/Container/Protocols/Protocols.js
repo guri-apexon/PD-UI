@@ -18,7 +18,6 @@ import ProtocolOverview from './ProtocolOverview';
 import ProtocolView from './ProtocolView';
 import Documents from './Documents';
 import NoResultFound from '../../Components/NoResultFound';
-import { isPrimaryUser } from '../../../utils/utilFunction';
 
 // ------------------- Third Party -----------
 

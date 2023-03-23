@@ -391,7 +391,7 @@ function DigitizeAccordion({
     <div
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
-      className={primaryRole && 'Accordian-padding'}
+      className={primaryRole && 'accordian-plusIcon-line'}
       data-testid="mouse-over"
     >
       <Accordion
