@@ -1,5 +1,6 @@
 import React from 'react';
 import Card from 'apollo-react/components/Card';
+import PanelGroup from 'apollo-react/components/PanelGroup';
 import Panel from 'apollo-react/components/Panel';
 import PropTypes from 'prop-types';
 import PDFViewer from './SourcePanel/PdfViewer';
@@ -89,7 +90,7 @@ class ProtocolViewWrapper extends React.Component {
         </div>
 
         <div className="view-wrapper">
-          <div className="panel_group">
+          <PanelGroup className="panel_group">
             {data.userPrimaryRoleFlag && (
               <Panel
                 width={window.innerWidth / 2}
@@ -133,7 +134,7 @@ class ProtocolViewWrapper extends React.Component {
                 />
               </Panel>
             )}
-          </div>
+          </PanelGroup>
         </div>
       </>
     );
