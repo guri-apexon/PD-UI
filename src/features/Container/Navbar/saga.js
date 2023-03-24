@@ -23,7 +23,6 @@ export function* navbarNotificationData(action) {
   };
   try {
     const notificationData = yield call(httpCall, notificationConfig);
-    console.log('notificationData', notificationData);
     if (notificationData?.success) {
       const parseData = notificationData.data.map((item) => {
         item.protocolNumber = item.protocol;
@@ -61,7 +60,6 @@ export function* handlereadNotification(action) {
 
   if (readResp?.success) {
     const readData = yield select(navbarNotifications);
-    console.log('readData', readData, readResp);
     const notificationResult = readData?.map((item) => {
       if (item?.id === id) {
         return { ...item, read: true };
@@ -127,26 +125,6 @@ export function* getOptInOut(action) {
     toast.error('Error While Getting Data');
   }
 }
-
-// export function* setRead(action) {
-//   const notificationUrl = `${BASE_URL_8000}/api/notification_read`;
-//   const notificationConfig = {
-//     url: notificationUrl,
-//     method: "POST",
-//     data: action.payload,
-//   };
-//   try {
-//     const notificationData = yield call(httpCall, notificationConfig);
-
-//     if (notificationData.success) {
-//       yield put(getNotification(notificationData.data));
-//     } else {
-//       yield put(setError(notificationData.err.statusText));
-//     }
-//   } catch (err) {
-//     yield put(setError("Something Went Wrong"));
-//   }
-// }
 
 export function* watchNavbar() {
   yield takeEvery('GET_NOTIFICATION_SAGA', navbarNotificationData);
