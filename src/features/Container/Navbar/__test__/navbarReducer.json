@@ -1,0 +1,11 @@
+{
+  "navbar": {
+    "OptInOut": {
+      "option": {
+        "New_Document/Version": true,
+        "QC_Complete": true,
+        "Edited": true
+      }
+    }
+  }
+}

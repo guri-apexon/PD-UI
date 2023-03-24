@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { render } from '../../../../test-utils/test-utils';
+import { render, fireEvent } from '../../../../test-utils/test-utils';
 import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
 import ProtocolReducer from '../protocolSlice';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
@@ -89,5 +89,34 @@ describe('DigitizeCard', () => {
       />,
       { preloadedState: { ...initialState, home } },
     );
+  });
+});
+
+describe('digitizeAccordion Integration', () => {
+  test('load all the accordions', () => {
+    const screen = renderWithProviders(
+      <DigitalizeCard
+        sectionNumber={1}
+        sectionRef={sectionRef}
+        data={{ id: 123, userPrimaryRoleFlag: true }}
+        paginationPage={2}
+        rightValue={PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES}
+      />,
+      { preloadedState: { ...initialState, home } },
+    );
+
+    const header1 = screen.getByText('Signatures');
+    fireEvent.click(header1);
+    const pencil1 = screen.getAllByTestId('pencilIcon')[0];
+    const pencil2 = screen.getAllByTestId('pencilIcon')[1];
+    fireEvent.click(pencil1);
+
+    const header2 = screen.getByText('GENERAL INFORMATION');
+    fireEvent.click(header2);
+
+    fireEvent.click(pencil2);
+
+    const confirmModal = screen.getByText('Save');
+    expect(confirmModal).toBeInTheDocument();
   });
 });

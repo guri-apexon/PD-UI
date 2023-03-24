@@ -1,0 +1,89 @@
+.Richtextcontainer {
+  position: relative;
+  height: 70vh;
+  overflow-x: scroll;
+  .section-edited-list {
+    margin-top: 20px;
+  }
+  [class*='MuiInputBase-root'] {
+    width: 85px !important;
+    padding-left: '2px';
+  }
+
+  [class*='RichTextEditor-root'] {
+    height: 60vh;
+    overflow: auto;
+    position: relative;
+  }
+
+  [class*='RichTextEditor-inlineControllersRoot-'] {
+    display: flex;
+    position: sticky;
+    top: -8px;
+    background: #fff;
+    left: -8px;
+    right: -8px;
+    padding-top: 8px;
+
+    [class*='MuiSelect-root'] {
+      font-size: x-small;
+    }
+    [class*='MuiFormControl-root'] {
+      width: 85px !important;
+    }
+    [class*='style-button-group'] {
+      font-size: x-small !important;
+      height: 29px !important;
+    }
+
+    .style-button-group .icon-button {
+      font-size: 12px;
+      padding: 9px 8px;
+    }
+
+    .style-button-group .icon-button.active {
+      border-left: unset;
+    }
+
+    .style-button-group div.icon-button {
+      height: 29px;
+      width: 25px;
+      box-sizing: border-box;
+    }
+  }
+}
+
+.confirmation-popup {
+  position: absolute;
+  z-index: 1000;
+  top: 0px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgb(256, 256, 256, 0.8);
+  p {
+    margin-bottom: 20px;
+  }
+}
+
+.content_container {
+  min-height: 30px;
+  > div {
+    position: relative;
+  }
+  > div > .format-container > .contentEditable {
+    min-width: 300px;
+    min-height: 24px;
+  }
+}
+
+.editable {
+  margin: 0;
+  height: 200px;
+  border: 1px solid #ccc;
+  overflow: auto;
+}

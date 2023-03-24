@@ -19,6 +19,7 @@ import {
   setNewMappingError,
   setNewMappingValues,
 } from './adminSlice';
+import { userId as loggedInUserId} from '../../../store/userDetails';
 
 const mapValue = {
   userId: null,
@@ -46,6 +47,7 @@ function AddNewMapping() {
   const [role, setRole] = useState('');
   const [formErrValue, setFormErrValue] = useState(errorValue);
   const [follow, setFollow] = useState('');
+  const updatedByUser = useSelector(loggedInUserId);
 
   useEffect(() => {
     if (!isOpen) {
@@ -98,7 +100,7 @@ function AddNewMapping() {
       formValue.following &&
       formValue.viaTicketNumber
     ) {
-      dispatch({ type: 'ADD_NEW_MAPPING_SAGA', payload: formValue });
+      dispatch({ type: 'ADD_NEW_MAPPING_SAGA', payload: {...formValue, updatedByUser:updatedByUser} });
     }
   };
 

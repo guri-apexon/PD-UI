@@ -1,13 +1,18 @@
 .pd-table-container {
   display: flex;
   flex-direction: column;
-  padding: 25px 20px;
+  padding: 35px 30px;
   position: relative;
   margin-bottom: 45px;
   overflow-x: auto;
 }
 .pd-table-inner {
+  max-width: 100%;
+  width: 100%;
   display: table;
+}
+.pd-table-wrapper {
+  display: block;
   flex-direction: column;
   width: 100%;
   justify-content: center;
@@ -20,6 +25,7 @@
   min-height: 50px;
   justify-content: center;
   position: relative;
+  width: 100%;
 }
 .pd-table-cell {
   text-align: left;
@@ -29,7 +35,7 @@
   align-items: center;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  min-width: 200px;
+  min-width: 100px;
 }
 .content-table-wrapper {
   border: 1px solid #dadada;
@@ -59,9 +65,6 @@
 .pd-table-cell span {
   font-size: 12px;
   padding: 5px;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  min-width: 40%;
   outline: none;
   color: #000;
 }
@@ -141,10 +144,17 @@
 }
 .pd-more-icon {
   cursor: pointer;
+  position: absolute;
   svg {
     height: 0.7em;
     width: 0.7em;
   }
+}
+.rowMoreIcon {
+  left: -10px;
+}
+.columnMoreIcon {
+  top: -10px;
 }
 
 .pd-drag-icon {
@@ -158,7 +168,7 @@
 }
 .rowDrag {
   position: absolute;
-  left: 10px;
+  left: -10px;
   display: flex;
   justify-content: center;
   align-items: center;

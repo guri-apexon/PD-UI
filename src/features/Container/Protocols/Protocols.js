@@ -17,6 +17,7 @@ import ProtocolOverview from './ProtocolOverview';
 import ProtocolView from './ProtocolView';
 import Documents from './Documents';
 import NoResultFound from '../../Components/NoResultFound';
+import { isPrimaryUser } from '../../../utils/utilFunction';
 
 // ------------------- Third Party -----------
 
@@ -26,6 +27,14 @@ function Protocols({ location }) {
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
   const [pdfArray] = useState([]);
+  const [summarydata, setSummaryData] = useState();
+
+  useEffect(() => {
+    setSummaryData({
+      ...summary.data,
+      userPrimaryRoleFlag: isPrimaryUser(summary.data),
+    });
+  }, [summary]);
 
   useEffect(() => {
     const params = location.search;
@@ -124,7 +133,11 @@ function Protocols({ location }) {
               <div className="tab-container">
                 {value === 0 && <ProtocolOverview data={data} />}
                 {value === 1 && (
-                  <ProtocolView protId={data.id} data={data} refs={refs} />
+                  <ProtocolView
+                    protId={data.id}
+                    data={summarydata}
+                    refs={refs}
+                  />
                 )}
                 {value === 2 && <Documents handleChangeTab={handleChangeTab} />}
               </div>

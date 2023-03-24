@@ -1,21 +1,24 @@
-import { useState, createRef, useMemo } from 'react';
+import { useState, createRef, useMemo, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { viewResult, headerResult, updateSectionData } from './protocolSlice';
+import {
+  viewResult,
+  headerResult,
+  updateSectionData,
+  setSaveEnabled,
+} from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
-import { isPrimaryUser, prepareContent } from '../../../utils/utilFunction';
+import { prepareContent } from '../../../utils/utilFunction';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
   const summary = useSelector(headerResult);
   const dispatch = useDispatch();
-  const protData = {
-    ...data,
-    userPrimaryRoleFlag: isPrimaryUser(data),
-  };
-  const [selectedSection, setSelectedSection] = useState(null);
-  const [sectionContent, setSectionContent] = useState(null);
+
+  const [selectedSection, setSelectedSection] = useState({});
+  const [sectionContent, setSectionContent] = useState([]);
+  const [saveSection, setSaveSection] = useState(null);
   const [value, setValue] = useState(false);
 
   const handleChange = (e, checked) => {
@@ -37,12 +40,13 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleContentUpdate = (payload) => {
-    const content = prepareContent({
-      ...payload,
-      type: 'MODIFY',
-      sectionContent,
+    setSectionContent((prevState) => {
+      return prepareContent({
+        ...payload,
+        type: 'MODIFY',
+        sectionContent: prevState,
+      });
     });
-    setSectionContent(content);
   };
 
   const handleContentDelete = (payload) => {
@@ -51,6 +55,7 @@ function ProtocolView({ refs, data }) {
       type: 'DELETE',
       sectionContent,
     });
+    dispatch(setSaveEnabled(true));
     setSectionContent(content);
     dispatch(
       updateSectionData({
@@ -62,7 +67,8 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleContentAdd = (payload) => {
-    const { type, lineId } = payload;
+    const { type, lineId, section } = payload;
+    dispatch(setSaveEnabled(true));
     const content = prepareContent({
       ...payload,
       type: 'ADDED',
@@ -71,11 +77,18 @@ function ProtocolView({ refs, data }) {
       currentLineId: lineId,
     });
     setSectionContent(content);
+
+    let linkID;
+    if (section) {
+      linkID = section.link_id;
+    } else {
+      linkID = selectedSection.link_id;
+    }
     dispatch(
       updateSectionData({
         data: content,
         actionType: 'REPLACE_CONTENT',
-        linkId: selectedSection.link_id,
+        linkId: linkID,
       }),
     );
   };
@@ -90,36 +103,49 @@ function ProtocolView({ refs, data }) {
   };
 
   // eslint-disable-next-line
-  const dispatchSectionEvent = (actionType, payload) => {
-    switch (actionType) {
-      case 'ON_SECTION_SELECT':
-        handleSectionSelect(payload);
-        break;
-      case 'CONTENT_UPDATE':
-        handleContentUpdate(payload);
-        break;
-      case 'CONTENT_DELETED':
-        handleContentDelete(payload);
-        break;
-      case 'CONTENT_ADDED':
-        handleContentAdd(payload);
-        break;
-      case 'LINK_LEVEL_UPDATE':
-        handleLinkLevelUpdate(payload);
-        break;
-
-      default:
-        break;
-    }
-  };
+  const dispatchSectionEvent = useCallback(
+    (actionType, payload) => {
+      switch (actionType) {
+        case 'ON_SECTION_SELECT':
+          handleSectionSelect(payload);
+          break;
+        case 'CONTENT_UPDATE':
+          handleContentUpdate(payload);
+          break;
+        case 'CONTENT_DELETED':
+          handleContentDelete(payload);
+          break;
+        case 'CONTENT_ADDED':
+          handleContentAdd(payload);
+          break;
+        case 'LINK_LEVEL_UPDATE':
+          handleLinkLevelUpdate(payload);
+          break;
+        default:
+          break;
+      }
+    },
+    // eslint-disable-next-line
+    [sectionContent],
+  );
 
   const ProtocolProviderValue = useMemo(
     () => ({
       selectedSection,
       sectionContent,
+      saveSection,
       dispatchSectionEvent,
+      setSectionContent,
+      setSaveSection,
     }),
-    [selectedSection, sectionContent, dispatchSectionEvent],
+    [
+      selectedSection,
+      sectionContent,
+      saveSection,
+      dispatchSectionEvent,
+      setSectionContent,
+      setSaveSection,
+    ],
   );
 
   const panels = () => {
@@ -167,7 +193,7 @@ function ProtocolView({ refs, data }) {
             listData={listData}
             refx={refs}
             sectionRef={sectionRef}
-            data={protData}
+            data={data}
             summaryData={summary}
             value={value}
             handleChange={handleChange}

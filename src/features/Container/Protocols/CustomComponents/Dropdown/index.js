@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
-import { useProtContext } from '../../ProtocolContext';
 
-const headerList = [
-  { level: 2, name: 'H2' },
-  { level: 3, name: 'H3' },
-  { level: 4, name: 'H4' },
-  { level: 5, name: 'H5' },
-  { level: 6, name: 'H6' },
-];
 const classNames = {
   active: 'dropdown-content active-show-list',
   notActive: 'dropdown-content',
@@ -18,25 +10,25 @@ function Dropdown({
   buttonName,
   contentStyle,
   headerStyle,
-  onHeaderSelect,
   type,
   disabled,
-  activeLineID,
+  list,
 }) {
   const [showList, setShowList] = useState(false);
-  const { dispatchSectionEvent } = useProtContext();
   const showMenu = () => {
     setShowList(!showList);
   };
-  const formatHeading = (e, name, level) => {
+  const formatHeading = (e, name) => {
     e.preventDefault();
     setShowList(false);
-    dispatchSectionEvent('LINK_LEVEL_UPDATE', {
-      level,
-      currentLineId: activeLineID,
-    });
     document.execCommand('formatBlock', false, name);
   };
+
+  const onSymbolSelect = (e, symbol) => {
+    e.preventDefault();
+    document.execCommand('insertText', false, symbol);
+  };
+
   return (
     <div className="dropdown">
       <button
@@ -55,13 +47,13 @@ function Dropdown({
         data-testId="options"
       >
         <ul>
-          {headerList.map((item) => {
+          {list?.map((item) => {
             if (type === 'header') {
               return (
                 // eslint-disable-next-line
                 <li
                   key={React.key}
-                  onMouseDown={(e) => formatHeading(e, item.name, item.level)}
+                  onMouseDown={(e) => formatHeading(e, item.name)}
                 >
                   {item.name}
                 </li>
@@ -72,7 +64,7 @@ function Dropdown({
               <li
                 data-testId="list"
                 key={React.key}
-                onClick={() => onHeaderSelect(item, type)}
+                onMouseDown={(e) => onSymbolSelect(e, item.name)}
               >
                 {item.name}
               </li>
@@ -89,8 +81,7 @@ Dropdown.propTypes = {
   buttonName: PropTypes.isRequired,
   contentStyle: PropTypes.isRequired,
   headerStyle: PropTypes.isRequired,
-  onHeaderSelect: PropTypes.isRequired,
   type: PropTypes.isRequired,
   disabled: PropTypes.isRequired,
-  activeLineID: PropTypes.isRequired,
+  list: PropTypes.isRequired,
 };

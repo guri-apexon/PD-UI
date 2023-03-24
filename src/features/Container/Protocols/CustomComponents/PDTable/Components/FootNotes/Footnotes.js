@@ -10,9 +10,9 @@ function FootNotes({ footNoteData, edit, setFootnoteData, unitTesting }) {
   return (
     <div className="edit-container" data-testId="footnote">
       {/* eslint-disable-next-line */}
-      {footNoteData?.map((item, index) => {
-        if (item?.qc_change_type_footnote !== QC_CHANGE_TYPE.DELETED) {
-          return (
+      {footNoteData?.map(
+        (item, index) =>
+          item?.qc_change_type_footnote !== QC_CHANGE_TYPE.DELETED && (
             // eslint-disable-next-line
             <div
               onClick={() => edit && setActiveLineID(index)}
@@ -32,9 +32,8 @@ function FootNotes({ footNoteData, edit, setFootnoteData, unitTesting }) {
                 unitTesting={unitTesting}
               />
             </div>
-          );
-        }
-      })}
+          ),
+      )}
     </div>
   );
 }
