@@ -21,11 +21,25 @@ export const navbarSlice = createSlice({
     getOptInOutData: (state, action) => {
       state.OptInOut = action.payload;
     },
+    deleteNotificationData: (state, action) => {
+      try {
+        state.notifications = state.notifications.filter(
+          (item) => item?.id !== action.payload,
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 });
 
-export const { getNotification, setError, getLoader, getOptInOutData } =
-  navbarSlice.actions;
+export const {
+  getNotification,
+  setError,
+  getLoader,
+  getOptInOutData,
+  deleteNotificationData,
+} = navbarSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
