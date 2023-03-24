@@ -428,7 +428,6 @@ export function* fetchFileStream(action) {
     data: null,
   };
   yield put(getFileStream(preLoadingState));
-
   const userType = yield getUserType();
   let userId = 'qc';
   if (userType !== 'QC1') {
@@ -518,7 +517,7 @@ export function* addMetaDataAttributes(action) {
       }),
     );
   } else {
-    toast.error('Duplicate Attributes');
+    toast.error('Protocol Attributes Not Added');
     yield put(
       getMetadataApiCall({
         status: false,
