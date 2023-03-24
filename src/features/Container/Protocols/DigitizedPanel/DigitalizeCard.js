@@ -37,6 +37,7 @@ function DigitalizeCard({
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
   const [currentEditCard, setCurrentEditCard] = useState(null);
+  const [linkId, setLinkId] = useState();
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -52,13 +53,15 @@ function DigitalizeCard({
       setHeaderList([]);
     }
   }, [summary]);
-
   const scrollToTop = (index) => {
     setTimeout(() => {
       sectionRef[index]?.current?.scrollIntoView(true);
     }, 300);
   };
 
+  const handleLinkId = (linkId) => {
+    setLinkId(linkId);
+  };
   useEffect(() => {
     if (sectionIndex >= 0) {
       const tempTOCActive = [...tocActive];
@@ -183,6 +186,7 @@ function DigitalizeCard({
                         headerList={headerList}
                         setCurrentEditCard={setCurrentEditCard}
                         currentEditCard={currentEditCard}
+                        handleLinkId={handleLinkId}
                       />
                     </div>
                   </div>
@@ -199,7 +203,9 @@ function DigitalizeCard({
         <MetaData docId={data.id} />
       )}
       <div>
-        {data.userPrimaryRoleFlag && <AddClinicalTerm docId={data.id} />}
+        {data.userPrimaryRoleFlag && (
+          <AddClinicalTerm docId={data.id} linkId={linkId} />
+        )}
       </div>
     </div>
   );

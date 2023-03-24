@@ -51,6 +51,7 @@ export const protocolSlice = createSlice({
     EnrichedApiValue: false,
     isSaveEnabled: false,
     sectionIndex: -1,
+    enrichedword: {},
   },
   reducers: {
     getSummary: (state, action) => {
@@ -167,6 +168,9 @@ export const protocolSlice = createSlice({
     getSectionIndex: (state, action) => {
       state.sectionIndex = action.payload;
     },
+    setenrichedword: (state, action) => {
+      state.enrichedword = action.payload;
+    },
   },
 });
 
@@ -194,6 +198,7 @@ export const {
   updateSectionResp,
   getSectionIndex,
   resetUpdateStatus,
+  setenrichedword,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -219,5 +224,6 @@ export const metadataApiCallValue = (state) =>
 export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
 export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
+export const Enrichedword = (state) => state.protocol.enrichedword;
 
 export default protocolSlice.reducer;

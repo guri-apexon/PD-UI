@@ -29,6 +29,7 @@ import {
   updateSectionResp,
   TOCActive,
   getSectionIndex,
+  setenrichedword,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -649,7 +650,11 @@ export function* saveEnrichedAPI(action) {
 export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
-
+export function* getenrichedword(action) {
+  yield put(
+    setenrichedword({ word: action.payload.word, modal: action.payload.modal }),
+  );
+}
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -673,6 +678,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
+  yield takeEvery('SET_ENRICHED_WORD', getenrichedword);
 }
 
 // notice how we now only export the rootSaga

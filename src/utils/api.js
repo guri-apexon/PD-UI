@@ -252,6 +252,7 @@ export const Apis = {
   METADATA: '/pd/api/v1/documents',
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
   SAVE_SECTION_CONTENT: '/api/qc_ingest',
+  DELETE_ENRICHED_CONTENT: '/api_cpt_data/delete_enrich_data',
 };
 
 export const SSO_ENABLED = environment !== 'local';

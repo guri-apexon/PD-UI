@@ -32,6 +32,7 @@ function MedicalTerm({
   const [clinicalTerms, setClinicalTerms] = useState([]);
   const [childArr, setChildArr] = useState([]);
   const [preferredTerm, setPreferredTerm] = useState();
+  const [clinicalTerm, setClinicalTerm] = useState();
   const [ontologyTemp, setOntologyTemp] = useState();
   const dispatch = useDispatch();
   const apiFlagselector = useSelector(EnrichedValue);
@@ -62,19 +63,31 @@ function MedicalTerm({
     setEditMode(false);
   }
 
-  const handleDeleteTag = () => {
-    const updatedChildArr = childArr.filter((item) => item !== childTermValue);
-    const updatedClinicalTermsArr = {
-      ...clinicalTermsArr,
-      [enrichedText]: {
-        ...clinicalTermsArr[enrichedText],
-        [selectedTerm]:
-          updatedChildArr.length > 0 ? updatedChildArr.toString() : '',
-      },
-    };
-    setClinicalTermsArr(updatedClinicalTermsArr);
+  const handleDeleteTag = (value) => {
+    const updatedChildArr = childArr.filter((item) => item !== value);
     setChildArr(updatedChildArr);
-    setChildTermValue(false);
+    // let name;
+    // if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
+    // if (selectedTerm === 'medical_term') name = 'clinical_terms';
+    // else if (selectedTerm === 'ontology') name = 'ontology';
+    const tempObj = {
+      standard_entity_name: enrichedText,
+      iqv_standard_term: preferredTerm,
+      clinical_terms: clinicalTerm,
+      ontology: ontologyTemp,
+    };
+    const saveObj = {
+      ...tempObj,
+      updatedChildArr,
+    };
+    dispatch({
+      type: 'SAVE_ENRICHED_DATA',
+      payload: {
+        docId,
+        linkId,
+        data: saveObj,
+      },
+    });
   };
 
   const handleDelete = () => {
@@ -89,6 +102,29 @@ function MedicalTerm({
       };
       setClinicalTermsArr(updatedClinicalTermsArr);
       setChildArr([]);
+      // let name;
+      // if (selectedTerm === 'ontology') name = 'ontology';
+      // if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
+      // if (selectedTerm === 'medical_term') name = 'clinical_terms';
+
+      const tempObj = {
+        standard_entity_name: enrichedText,
+        iqv_standard_term: preferredTerm,
+        clinical_terms: clinicalTerm,
+        ontology: ontologyTemp,
+      };
+      const saveObj = {
+        ...tempObj,
+        updatedClinicalTermsArr,
+      };
+      dispatch({
+        type: 'SAVE_ENRICHED_DATA',
+        payload: {
+          docId,
+          linkId,
+          data: saveObj,
+        },
+      });
     }
   };
 
@@ -114,6 +150,9 @@ function MedicalTerm({
     if (clinicalTermsArr) {
       Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
         (key, value) => {
+          if (key === 'medical_term') {
+            setClinicalTerm(value);
+          }
           if (key === 'preferred_term') {
             setPreferredTerm(value);
           }
@@ -137,8 +176,12 @@ function MedicalTerm({
   }, [enrichedText, clinicalTermsArr]);
 
   useEffect(() => {
-    if (selectedTerm && clinicalTermsArr) {
-      const arr = clinicalTermsArr[enrichedText][selectedTerm]?.split(',');
+    if (
+      clinicalTermsArr &&
+      clinicalTermsArr[enrichedText] &&
+      clinicalTermsArr[enrichedText][selectedTerm]
+    ) {
+      const arr = clinicalTermsArr[enrichedText][selectedTerm].split(',');
       if (arr && arr.length === 1 && arr[0] === '') {
         setChildArr([]);
       } else {
@@ -167,10 +210,12 @@ function MedicalTerm({
     setChildTermValue(null);
     let name;
     if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
+    if (selectedTerm === 'medical_term') name = 'clinical_terms';
     else if (selectedTerm === 'ontology') name = 'ontology';
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: preferredTerm,
+      clinical_terms: clinicalTerm,
       ontology: ontologyTemp,
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
@@ -185,17 +230,6 @@ function MedicalTerm({
     });
     return true;
   };
-  // useEffect(() => {
-  //   function handleClickOutside(event) {
-  //     if (anchorEl && !anchorEl.contains(event.target)) {
-  //       setEditMode(false);
-  //     }
-  //   }
-  //   document.addEventListener('mousedown', handleClickOutside);
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
-  // }, [anchorEl]);
 
   useEffect(() => {
     setAnchorEl(enrichedTarget || null);
@@ -226,12 +260,13 @@ function MedicalTerm({
     <div className="enriched-menu-wrapper" data-testId="medical-term">
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
-          <div className="terms-list">
+          <div className="terms-list" data-testId="term-list">
             {clinicalTerms.map((item) => {
               const isActive = selectedTerm === item.key;
               return (
                 <li key={item}>
                   <Button
+                    data-testId="listItem"
                     className="term-item"
                     onClick={(e) => {
                       setSelectedTerm(item.key);
@@ -253,21 +288,22 @@ function MedicalTerm({
         </Card>
       </Popper>
       <Popper
+        data-testId="childpopper"
         open={!!SanchorEl}
         anchorEl={SanchorEl}
         placement="right-start"
         transition
       >
-        <Card interactive className="sub-popper" data-testId="child-term">
+        <Card interactive className="sub-popper">
           {childArr.length > 0 && (
             <div className="terms-list">
               {childArr?.map((item) => {
                 return (
                   <li key={item}>
                     {editMode === item ? (
-                      <div className="text-area">
+                      <div className="text-area" data-testId="edit-btn-term1">
                         <TextField
-                          inputProps={{ 'data-testid': 'update-term-field' }}
+                          data-testId="input-term1"
                           value={newTermValue}
                           onChange={(event) =>
                             setNewTermValue(event.target.value)
@@ -282,11 +318,11 @@ function MedicalTerm({
                               onClick={handleCancelClick}
                             />
                             <StatusCheck
-                              data-testId="save-icon"
                               className="save"
                               onClick={handleSave}
                             />
                             <Trash
+                              data-testID="delete-icon"
                               className="delete"
                               onClick={() => setshowModal(true)}
                             />
@@ -296,10 +332,9 @@ function MedicalTerm({
                     ) : (
                       <Button value={item} className="term-item">
                         <span className="sub-term-text">{item}</span>
-
                         <Pencil
+                          data-testId="pencil-icon"
                           className="edit-Icon"
-                          data-testid="pencil-icon"
                           onClick={() => {
                             handlePencilClick(item);
                           }}
@@ -349,7 +384,7 @@ function MedicalTerm({
           {
             label: 'Delete',
             onClick: () => {
-              // eslint-disable-next-line no-unused-expressions
+              // eslint-disable-next-line
               handleDelete();
               setdeleteAll(false);
             },

@@ -1,78 +1,68 @@
-/* eslint-disable no-undef */
-import { fireEvent, render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import store from '../../../../store/store';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
-import { screen } from '../../../../test-utils/test-utils';
+import store from '../../../../store/store';
 
-describe('MedicalTerm component', () => {
-  const mockEnrichedTarget = 'test-mock-target';
-  const mockEnrichedText = 'test-mock-text';
-  const mockClinicalTerms = {
-    'test-mock-text': { synonyms: 'value1, value2' },
+describe('MedicalTerm', () => {
+  const props = {
+    enrichedTarget: 'enrichedTarget',
+    expanded: true,
+    enrichedText: 'enrichedText',
+    clinicalTerms: {},
+    linkId: 'linkId',
+    docId: 'docId',
   };
-  const linkId = '46bac1b7-9197-11ed-b507-005056ab6469';
-  const docId = '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c';
 
-  it('renders without crashing', () => {
-    const { container } = render(
+  it('renders the MedicalTerm component', () => {
+    render(
       <Provider store={store}>
-        <MedicalTerm
-          enrichedTarget={mockEnrichedTarget}
-          expanded
-          enrichedText={mockEnrichedText}
-          clinicalTerms={mockClinicalTerms}
-          linkId={linkId}
-          docId={docId}
-        />
-        ,
+        <MedicalTerm {...props} />
       </Provider>,
     );
-    expect(container).toBeInTheDocument();
+    expect(screen.getByTestId('medical-term')).toBeInTheDocument();
   });
 
-  it('does not render when expanded is false', () => {
-    const { container } = render(
+  it('handles the pencil click', () => {
+    render(
       <Provider store={store}>
-        <MedicalTerm
-          enrichedTarget={mockEnrichedTarget}
-          expanded={false}
-          enrichedText={mockEnrichedText}
-          clinicalTerms={mockClinicalTerms}
-          linkId={linkId}
-          docId={docId}
-        />
-        ,
+        <MedicalTerm {...props} />
       </Provider>,
     );
-    expect(container.firstChild).toBeTruthy();
+    fireEvent.click(screen.getByTestId('pencil-icon'));
+    expect(screen.getByTestId('show-icons')).toBeInTheDocument();
   });
 
-  it('renders main and sub popper cards', () => {
-    const { getByTestId, getAllByTestId, getByText } = render(
+  it('handles the cancel click', () => {
+    render(
       <Provider store={store}>
-        <MedicalTerm
-          enrichedTarget={mockEnrichedTarget}
-          expanded
-          enrichedText={mockEnrichedText}
-          clinicalTerms={mockClinicalTerms}
-          linkId={linkId}
-          docId={docId}
-        />
-        ,
+        <MedicalTerm {...props} />
       </Provider>,
     );
+    fireEvent.click(screen.getByTestId('pencil-icon'));
+    expect(screen.getByTestId('show-icons')).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('cancel-icon'));
+    expect(screen.queryByTestId('show-icons')).not.toBeInTheDocument();
+  });
 
-    const termList = getByTestId('term-list');
-    // const parentItem = getAllByTestId('save')[0];
-    // fireEvent.click(parentItem);
-    screen.debug();
-    // const childTerm = getAllByTestId('update-term-trigger');
-    // fireEvent.click(childTerm[0]);
-    // const updateField = getByTestId('update-term-field');
-    // fireEvent.change(updateField, { target: { value: 'new term' } });
-    // fireEvent.click(getByText('Delete'));
-    expect(termList).toBeInTheDocument();
+  it('handles the delete tag', () => {
+    render(
+      <Provider store={store}>
+        <MedicalTerm {...props} />
+      </Provider>,
+    );
+    fireEvent.click(screen.getByTestId('delete-icon'));
+    expect(screen.queryByTestId('child-arr')).not.toBeInTheDocument();
+  });
+
+  it('handles the delete', () => {
+    render(
+      <Provider store={store}>
+        <MedicalTerm {...props} />
+      </Provider>,
+    );
+    fireEvent.click(screen.getByTestId('delete-icon'));
+    expect(screen.queryByTestId('child-arr')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('delete-all-icon'));
+    expect(screen.queryByTestId('modal')).toBeInTheDocument();
   });
 });

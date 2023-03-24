@@ -7,18 +7,27 @@ import TextField from 'apollo-react/components/TextField';
 import IconButton from 'apollo-react/components/IconButton';
 import InfoIcon from 'apollo-react-icons/Info';
 import './MedicalTerm.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Enrichedword } from '../protocolSlice';
 
-function AddClinicalTerm({ docId }) {
-  const [state, setState] = useState(false);
+function AddClinicalTerm({ docId, linkId }) {
+  const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
-
   const [selectedText, setSelectedText] = useState('');
+  const wordSelector = useSelector(Enrichedword);
   const [isTextSelected, setIsTextSelected] = useState(false);
   const [clinicalTerms, setClinicalTerms] = useState('');
   const [ontologyTerm, setOntologyTerm] = useState('');
   const [preferredTerm, setPreferredTerm] = useState('');
   const [isTextFieldEmpty, setIsTextFieldEmpty] = useState(true);
+
+  useEffect(() => {
+    if (window.getSelection().toString()) {
+      setIsTextSelected(wordSelector.modal);
+    } else {
+      setIsTextSelected(false);
+    }
+  }, [wordSelector]);
 
   const handleClinicalTermsChange = (event) => {
     setClinicalTerms(event.target.value);
@@ -32,29 +41,21 @@ function AddClinicalTerm({ docId }) {
     setPreferredTerm(event.target.value);
   };
 
-  const handleOpen = (variant, selectedText) => {
-    setState({ ...state, [variant]: true });
+  const handleOpen = (selectedText) => {
+    setOpenModal(true);
     setSelectedText(selectedText);
   };
-
-  const handleClose = (variant) => {
-    setState({ ...state, [variant]: false });
+  const handleClose = () => {
+    setOpenModal(false);
   };
 
-  const handleTextSelection = () => {
-    const selectedText = window.getSelection().toString();
-    setIsTextSelected(selectedText.length > 0);
-  };
   useEffect(() => {
-    setIsTextFieldEmpty(clinicalTerms.length === 0);
-  }, [clinicalTerms]);
-  useEffect(() => {
-    document.addEventListener('mouseup', handleTextSelection);
-
-    return () => {
-      document.removeEventListener('mouseup', handleTextSelection);
-    };
-  }, []);
+    setIsTextFieldEmpty(
+      clinicalTerms.trim().length === 0 &&
+        ontologyTerm.trim().length === 0 &&
+        preferredTerm.trim().length === 0,
+    );
+  }, [clinicalTerms, ontologyTerm, preferredTerm]);
 
   const handleAddTag = () => {
     const tagData = {
@@ -62,18 +63,25 @@ function AddClinicalTerm({ docId }) {
       iqv_standard_term: preferredTerm,
       ontology: ontologyTerm,
       clinical_terms: clinicalTerms,
+      text_len: selectedText.length,
+      start: '0',
+      confidence: '100',
+      parent_id: wordSelector?.word?.font_info?.parent_id,
+      doc_id: docId,
+      link_id: linkId,
     };
     dispatch({
       type: 'SAVE_ENRICHED_DATA',
       payload: {
         docId,
+        linkId,
         data: tagData,
       },
     });
     setClinicalTerms('');
     setOntologyTerm('');
     setPreferredTerm('');
-    handleClose('neutral');
+    handleClose();
   };
 
   return (
@@ -83,17 +91,15 @@ function AddClinicalTerm({ docId }) {
           id="my-button"
           className="button"
           variant="primary"
-          onClick={() =>
-            handleOpen('neutral', window.getSelection().toString())
-          }
+          onClick={() => handleOpen(window.getSelection().toString())}
         >
           Add tag
         </Button>
       ) : null}
 
       <Modal
-        open={state.neutral}
-        onClose={() => handleClose('neutral')}
+        open={openModal}
+        onClose={() => handleClose()}
         buttonProps={[
           {},
           {
@@ -102,7 +108,6 @@ function AddClinicalTerm({ docId }) {
             disabled: isTextFieldEmpty,
           },
         ]}
-        id="neutral"
       >
         <FieldGroup
           className="fieldgroup"
@@ -144,4 +149,5 @@ function AddClinicalTerm({ docId }) {
 export default AddClinicalTerm;
 AddClinicalTerm.propTypes = {
   docId: PropTypes.isRequired,
+  linkId: PropTypes.isRequired,
 };
