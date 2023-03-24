@@ -53,8 +53,7 @@ function ImageUploader({ lineID, content, edit }) {
 
   const handleUpload = (newValue) => {
     if (newValue) {
-      const arrFile = newValue[0].name.split('.');
-      const type = arrFile.pop().toLowerCase();
+      const type = newValue[0].name.split('.').pop().toLowerCase();
       if (['jpeg', 'png', 'jpg', 'gif', 'bmp'].includes(type)) {
         setValue(newValue);
       } else {
