@@ -1,19 +1,19 @@
 import React from 'react';
 import Card from 'apollo-react/components/Card';
+import PanelGroup from 'apollo-react/components/PanelGroup';
 import Panel from 'apollo-react/components/Panel';
 import PropTypes from 'prop-types';
-
-import PanelGroup from 'apollo-react/components/PanelGroup';
 import PDFViewer from './SourcePanel/PdfViewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
 import BladeRight from './BladeRight/BladeRight';
 
 class ProtocolViewWrapper extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleClick = this.handleClick.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
+
     this.state = {
       popupVisible: false,
       headerDetails: '',
@@ -91,7 +91,7 @@ class ProtocolViewWrapper extends React.Component {
 
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
-            {data?.userPrimaryRoleFlag && (
+            {data.userPrimaryRoleFlag && (
               <Panel
                 width={window.innerWidth / 2}
                 minWidth={window.innerWidth / 4}
@@ -100,7 +100,6 @@ class ProtocolViewWrapper extends React.Component {
                 resizable
               >
                 <Card className="protocol-source-column">
-                  <div className="panel-heading">Source Document</div>
                   {summaryData?.success ? (
                     <PDFViewer
                       page={pageNo}
