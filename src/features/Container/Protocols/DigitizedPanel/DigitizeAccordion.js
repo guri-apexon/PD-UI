@@ -17,12 +17,15 @@ import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
+import { isEmpty } from 'lodash';
+
 import MultilineEdit from './MultilineEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
   createEnrichedText,
   getSaveSectionPayload,
+  createPreferredText,
 } from '../../../../utils/utilFunction';
 import {
   SectionIndex,
@@ -65,6 +68,7 @@ function DigitizeAccordion({
   headerList,
   setCurrentEditCard,
   currentEditCard,
+  value,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -89,6 +93,7 @@ function DigitizeAccordion({
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
 
   const { data: sectionData, updated } = sectionHeaderDetails;
+
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -134,8 +139,8 @@ function DigitizeAccordion({
   };
   useEffect(() => {
     if (expanded) {
-      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (!arr.length) {
+      const arr = sectionData?.filter((obj) => obj.linkId === item.link_id);
+      if (!arr?.length) {
         setShowLoader(true);
         setLinkId(item.link_id);
         setDocId(item.doc_id);
@@ -272,6 +277,7 @@ function DigitizeAccordion({
   useEffect(() => {
     if (expanded) {
       const { sectionResponse, data } = sectionHeaderDetails;
+
       if (sectionResponse) {
         if (sectionResponse?.success && showedit) {
           setShowEdit(false);
@@ -331,14 +337,22 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content, clinicalTerms) => {
+  const getEnrichedText = (content, clinicalTerms, preferredTerms) => {
+    let newContent = content;
+    if (value) {
+      if (!isEmpty(preferredTerms)) {
+        newContent = createFullMarkup(
+          createPreferredText(content, preferredTerms),
+        );
+      }
+    }
     if (
-      clinicalTerms &&
+      !isEmpty(clinicalTerms) &&
       rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
     ) {
-      return createFullMarkup(createEnrichedText(content, clinicalTerms));
+      newContent = createFullMarkup(createEnrichedText(content, clinicalTerms));
     }
-    return createFullMarkup(content);
+    return newContent;
   };
 
   useEffect(() => {
@@ -408,7 +422,11 @@ function DigitizeAccordion({
               className="section-title"
               data-testid="accordion-header"
             >
-              {item.source_file_section}
+              {value && !isEmpty(item.preferred_term) ? (
+                <b className="preferred-text">{item.preferred_term}</b>
+              ) : (
+                item.source_file_section
+              )}
             </Typography>
             {/* eslint-disable-next-line */}
             <div
@@ -528,6 +546,7 @@ function DigitizeAccordion({
                           html={getEnrichedText(
                             section.content.split('_')[0],
                             section?.clinical_terms,
+                            section?.preferred_terms,
                           )}
                         />
                       </sup>
@@ -548,6 +567,7 @@ function DigitizeAccordion({
                           html={getEnrichedText(
                             section.content.split('_')[1],
                             section?.clinical_terms,
+                            section?.preferred_terms,
                           )}
                         />
                       </p>
@@ -576,6 +596,7 @@ function DigitizeAccordion({
                           html={getEnrichedText(
                             section.content,
                             section.clinical_terms,
+                            section?.preferred_terms,
                           )}
                         />
                       </p>
@@ -733,4 +754,5 @@ DigitizeAccordion.propTypes = {
   headerList: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
+  value: PropTypes.isRequired,
 };
