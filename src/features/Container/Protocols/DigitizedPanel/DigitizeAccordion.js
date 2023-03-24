@@ -101,8 +101,13 @@ function DigitizeAccordion({
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const { dispatchSectionEvent, sectionContent, selectedSection } =
-    useProtContext();
+  const {
+    dispatchSectionEvent,
+    sectionContent,
+    selectedSection,
+    setSaveSection,
+    saveSection,
+  } = useProtContext();
 
   const handleChange = (e) => {
     e.stopPropagation();
@@ -322,6 +327,7 @@ function DigitizeAccordion({
       });
       dispatch(resetUpdateStatus());
       setCurrentEditCard(null);
+      setSaveSection(null);
     }
     // eslint-disable-next-line
   }, [updated]);
@@ -382,6 +388,13 @@ function DigitizeAccordion({
     e.stopPropagation();
     setOpenAudit(e.currentTarget);
   };
+
+  useEffect(() => {
+    if (saveSection === item.link_id) {
+      handleSaveContent();
+    }
+    // eslint-disable-next-line
+  }, [saveSection]);
 
   return (
     <div
@@ -643,6 +656,7 @@ function DigitizeAccordion({
             {
               label: 'Save',
               onClick: () => {
+                setSaveSection(currentEditCard);
                 setShowEdit(false);
                 setShowConfirm(false);
               },

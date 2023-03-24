@@ -410,6 +410,16 @@ export const createReturnObj = (obj, linkId) => {
         },
       };
     }
+    if (obj.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
+      return {
+        type: obj.type,
+        content: obj.content,
+        link_id: linkId,
+        qc_change_type:
+          obj.content === '' ? QC_CHANGE_TYPE.DELETED : obj.qc_change_type,
+        line_id: obj.line_id?.slice(0, 36),
+      };
+    }
     return {
       type: obj.type,
       content: obj.content,
