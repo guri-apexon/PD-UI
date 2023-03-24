@@ -144,7 +144,6 @@
       width: 100%;
       > [class*='Panel-container-'] {
         max-width: 100% !important;
-        flex-shrink: inherit;
         width: 100%;
       }
     }
@@ -386,11 +385,8 @@
       width: 100% !important;
     }
     padding-right: 10px;
-    float: right;
-    min-width: 20%;
-    max-width: 80% !important;
     border-right: 0;
-    flex-shrink: 100;
+    flex-grow: 1;
     & > div > div {
       background-color: transparent;
     }
