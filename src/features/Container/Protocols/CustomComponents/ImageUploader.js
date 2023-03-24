@@ -11,9 +11,11 @@ import { useProtContext } from '../ProtocolContext';
 
 import { toBase64 } from '../../../../utils/utilFunction';
 import { setSaveEnabled } from '../protocolSlice';
+import constant from './constants';
 import './ImageUploader.scss';
 
 function ImageUploader({ lineID, content, edit }) {
+  const { supportedFileType } = constant;
   const dispatch = useDispatch();
   const [img, setImg] = useState(null);
   const [imgBkp, setImgBkp] = useState(null);
@@ -22,7 +24,6 @@ function ImageUploader({ lineID, content, edit }) {
   const [showEditBtn, setShowEditBtn] = useState(false);
   const [showDltCnfrm, setShowDltCnfrm] = useState(false);
   const { dispatchSectionEvent } = useProtContext();
-  const fileType = ['jpeg', 'png', 'jpg', 'gif', 'bmp'];
 
   const handleDelete = () => {
     dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
@@ -55,7 +56,7 @@ function ImageUploader({ lineID, content, edit }) {
   const handleUpload = (newValue) => {
     if (newValue) {
       const type = newValue[0].name.split('.').pop().toLowerCase();
-      if (fileType.includes(type)) {
+      if (supportedFileType.includes(type)) {
         setValue(newValue);
       } else {
         toast.error('Please Upload Supported Image File');
