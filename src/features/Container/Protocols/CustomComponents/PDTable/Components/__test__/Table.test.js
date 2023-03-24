@@ -2,17 +2,6 @@ import { render, fireEvent } from '@testing-library/react';
 import DisplayTable from '../Table';
 
 describe('DisplayTable component', () => {
-  // const data = [
-  //   {
-  //     column1: { content: 'value 1' },
-  //     column2: { content: 'value 2' },
-  //   },
-  //   {
-  //     column1: { content: 'value 3' },
-  //     column2: { content: 'value 4' },
-  //   },
-  // ];
-
   const data = [
     {
       row_roi_id: '',

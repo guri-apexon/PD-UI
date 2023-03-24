@@ -239,7 +239,6 @@ describe('PDTable component', () => {
     );
     const moreIcon = screen.getAllByTestId('more-icon');
     fireEvent.click(moreIcon[0]);
-    screen.debug();
     const HeaderClose = screen.getByTestId('section');
     fireEvent.click(HeaderClose);
     expect(dispatch).not.toHaveBeenCalled();
