@@ -11,7 +11,7 @@ const handleSwap = jest.fn();
 describe('PDTable component', () => {
   const data = {
     TableProperties:
-      '[{"col_1": {"roi_id": {"row_roi_id": "row_1", "table_roi_id": "table_1", "column_roi_id": "col_1","content":"test11"}}}]',
+      '[{"row_roi_id":"","row_idx":"0","row_props":{"0":{"content":"10","roi_id":{"row_roi_id":"","datacell_roi_id":""}},"1":{"content":"11","roi_id":{"table_roi_id":"","row_roi_id":"","column_roi_id":"","datacell_roi_id":""}}}},{"row_roi_id":"","row_idx":"1","row_props":{"0":{"content":"12","roi_id":{"table_roi_id":"","row_roi_id":"","column_roi_id":"","datacell_roi_id":""}},"1":{"content":"13","roi_id":{"table_roi_id":"","row_roi_id":"","column_roi_id":"","datacell_roi_id":""}}}},{"row_roi_id":"","row_idx":"2","row_props":{"0":{"content":"14","roi_id":{"table_roi_id":"","row_roi_id":"","column_roi_id":"","datacell_roi_id":""}},"1":{"content":"15","roi_id":{"table_roi_id":"","row_roi_id":"","column_roi_id":"","datacell_roi_id":""}}}},{"row_roi_id":"","row_idx":"3","row_props":{"0":{"content":"16","roi_id":{"table_roi_id":"","row_roi_id":"","column_roi_id":"","datacell_roi_id":""}},"1":{"content":"17","roi_id":{"table_roi_id":"","row_roi_id":"","column_roi_id":"","datacell_roi_id":""}}}}]',
   };
   const segment = {};
   const activeLineID = 'line_1';

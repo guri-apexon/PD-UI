@@ -19,18 +19,7 @@ import {
 import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 import PROTOCOL_CONSTANT from '../constants';
-import { tableJSONByRowAndColumnLength } from '../../../../../utils/utilFunction';
 
-const getColumnID = (data, key) => {
-  let roiId = '';
-  for (let i = 0; i < data.length; i++) {
-    if (data[i][key]) {
-      roiId = data[i][key].roi_id.column_roi_id;
-      break;
-    }
-  }
-  return roiId;
-};
 const getIDs = (rows) => {
   let rowRoiId = '';
   let tableRoiId = '';
