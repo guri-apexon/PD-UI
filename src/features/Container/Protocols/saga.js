@@ -428,7 +428,6 @@ export function* fetchFileStream(action) {
     data: null,
   };
   yield put(getFileStream(preLoadingState));
-
   const userType = yield getUserType();
   let userId = 'qc';
   if (userType !== 'QC1') {

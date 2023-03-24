@@ -154,7 +154,10 @@ function DigitizeAccordion({
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
     } else if (currentActiveCard === item.link_id && expanded) {
-      setExpanded(!expanded);
+      setExpanded(false);
+    }
+    if (currentActiveCard === item.link_id && expanded && tocActive[index]) {
+      setExpanded(true);
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
@@ -212,6 +215,9 @@ function DigitizeAccordion({
         },
       });
       setExpanded(true);
+    }
+    if (!tocActive[index]) {
+      setExpanded(false);
     }
     // eslint-disable-next-line
   }, [tocActive]);
@@ -385,7 +391,7 @@ function DigitizeAccordion({
     <div
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
-      className="Accordian-padding"
+      className={primaryRole && 'accordian-plusIcon-line'}
       data-testid="mouse-over"
     >
       <Accordion

@@ -116,7 +116,7 @@ function MetaDataEditTable({
   const columns = [
     {
       header: 'Key',
-      accessor: 'attr_name',
+      accessor: 'display_name',
       customCell: EditableCell,
     },
     {

@@ -145,6 +145,7 @@
       > [class*='Panel-container-'] {
         max-width: 100% !important;
         flex-shrink: inherit;
+        width: 100%;
       }
     }
 
@@ -457,9 +458,9 @@
   border-top: 0;
 }
 
-.Accordian-padding:hover {
+.accordian-plusIcon-line:hover {
   border-bottom: 1px solid #0768fd;
-  border-image: linear-gradient(to right, #0768fd 96%, rgba(0, 0, 0, 0) 50%);
+  border-image: linear-gradient(to right, #0768fd 98%, rgba(0, 0, 0, 0) 50%);
   border-image-slice: 1;
 }
 

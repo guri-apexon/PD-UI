@@ -33,6 +33,7 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
                 isCustom: key !== 'summary',
                 attr_value: formattedValue(attr?.attr_type, attrValue),
                 display_name: attr?.display_name || attr?.attr_name,
+                attr_name: attr?.attr_name,
               };
             }),
             formattedName: identifier,

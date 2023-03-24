@@ -157,7 +157,7 @@ function MetaData({ docId }) {
       const updatedAttrList = metaData?.map((list) => {
         const convertToBoolean = list?.attr_value === 'true';
         return {
-          attr_name: list?.attr_name,
+          attr_name: list?.display_name,
           attr_type: list?.attr_type || 'string',
           attr_value:
             list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
@@ -321,7 +321,7 @@ function MetaData({ docId }) {
         accMetaData = accMetaData.map((metaData) => {
           return {
             ...metaData,
-            display_name: metaData.attr_name,
+            display_name: metaData.display_name,
           };
         });
         setAccordianData({
