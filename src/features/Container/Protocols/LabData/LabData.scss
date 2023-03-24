@@ -2,6 +2,19 @@
   table {
     tbody {
       tr {
+        position: relative;
+        // &::after {
+        //   content: '+';
+        //   font-size: 30px;
+        //   position: absolute;
+        //   top: 30px;
+        //   right: 0;
+        //   z-index: 9;
+        //   color: #0768fd;
+        //   cursor: pointer;
+        //   opacity: 0;
+        //   visibility: hidden;
+        // }
         &:hover {
           border-bottom: 2px solid #0768fd;
           border-image: linear-gradient(
@@ -10,11 +23,15 @@
             rgba(0, 0, 0, 0) 50%
           );
           border-image-slice: 1;
+          &:after{            
+            opacity: 1;
+            visibility: visible;
+          }
         }
-        td{
+        td {
           border: 0;
-          &:first-child{
-            &:before{
+          &:first-child {
+            &:before {
               display: none !important;
             }
           }

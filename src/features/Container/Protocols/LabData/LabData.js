@@ -36,15 +36,14 @@ function ActionCell({ row }) {
     },
   ];
   return editMode ? (
-    <div className="saveCancelButtonGroup">
+    <div className="saveCancelButtonGroup" data-testid="saveCancelButtonGroup">
       <Button onClick={handleCancel}>Cancel</Button>
       <Button
         variant="primary"
         onClick={handleSaveRow}
         disabled={
-          Object.values(editedRow).some((item) => !item) ||
-          (editMode &&
-            !Object.keys(editedRow).some((key) => editedRow[key] !== row[key]))
+          editMode &&
+          !Object.keys(editedRow).some((key) => editedRow[key] !== row[key])
         }
       >
         Save
@@ -52,7 +51,7 @@ function ActionCell({ row }) {
     </div>
   ) : (
     <div>
-      <IconMenuButton menuItems={menuItems}>
+      <IconMenuButton data-testid="ellipsis-icon" menuItems={menuItems}>
         <EllipsisVertical className="ellipsis-icon" />
       </IconMenuButton>
     </div>
@@ -70,6 +69,7 @@ function EditableCell({ row, column: { accessor: key } }) {
     <TextField
       size="small"
       fullWidth
+      name={val}
       value={val}
       onChange={handleDataChange}
       onBlur={() => updateRow(key, val)}
@@ -79,12 +79,15 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-function PlusIcon() {
+function PlusIcon({ row }) {
+  const { id, handlePlus } = row;
   return (
     <IconButton
+      id={id}
       data-testId="plus-add"
       color="primary"
       size="small"
+      onClick={handlePlus}
       destructiveAction
     >
       <Plus />
@@ -138,7 +141,7 @@ function LabData() {
   useEffect(() => {
     setColumns(
       columns.map((col) => {
-        const isIncluded = ['id', 'menu'].includes(col.accessor);
+        const isIncluded = ['id', 'menu', 'plus'].includes(col.accessor);
         if (!isIncluded) {
           return {
             ...col,
@@ -164,16 +167,62 @@ function LabData() {
     // eslint-disable-next-line
   }, [isEdit]);
 
+  // useEffect(() => {
+  //   setColumns([
+  //     ...columns,
+  //     {
+  //       header: '',
+  //       accessor: 'plus',
+  //       customCell: PlusIcon,
+  //     },
+  //   ]);
+  // }, []);
+
   const onDeleteRow = () => {
     const result = rowData.filter((value) => value.id !== tableId);
     setRowData(result);
     setEditedRow({});
     setIsOpen(false);
   };
+  // const handlePlus = (e) => {
+  //   const id = e.target.parentNode.parentNode.getAttribute('id');
+  //   // const getRow =
+  //   //   e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
+  //   rowData.map((value) => {
+  //     if (value.id === id) {
+  //       setRowData([
+  //         ...rowData,
+  //         {
+  //           id: 'Table 333',
+  //           name: 'Laboratory Safety Variables',
+  //           assName: 'Haematology',
+  //           prName: 'B-Haemoglobin',
+  //           assPrefName: 'Haematology',
+  //           prPrefName: 'NA',
+  //         },
+  //       ]);
+  //     }
+  //     return value;
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   const element = document.querySelectorAll(
+  //     '.lab-table-container table tbody tr',
+  //   );
+  //   const result = () => {
+  //     for (let i = 0; i < element.length; i++) {
+  //       const after = element[i].querySelector('::after');
+  //       console.log(after, 'after');
+  //     }
+  //   };
+  //   console.log(result, 'result');
+  //   console.log(element, 'element');
+  // });
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
-      data-testid="metadata-accordian"
+      data-testid="lab-data"
     >
       <div className="lab-table-container">
         <div className="lab-btn-container">
@@ -183,6 +232,7 @@ function LabData() {
               icon={<Save />}
               className="btn-common"
               onClick={handleSave}
+              data-testid="saveall"
             />
           ) : (
             <Button
@@ -190,6 +240,7 @@ function LabData() {
               icon={<Pencil />}
               className="btn-common"
               onClick={() => setIsEdit(true)}
+              data-testid="editall"
             />
           )}
         </div>
@@ -222,6 +273,7 @@ function LabData() {
         />
       </div>
       <Modal
+        data-testid="delete-row-modal"
         open={isOpen}
         variant="warning"
         onClose={() => setIsOpen(false)}
@@ -237,6 +289,9 @@ function LabData() {
 }
 
 ActionCell.propTypes = {
+  row: PropTypes.isRequired,
+};
+PlusIcon.propTypes = {
   row: PropTypes.isRequired,
 };
 EditableCell.propTypes = {
