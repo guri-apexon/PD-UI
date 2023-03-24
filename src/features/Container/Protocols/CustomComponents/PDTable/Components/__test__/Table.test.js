@@ -2,14 +2,63 @@ import { render, fireEvent } from '@testing-library/react';
 import DisplayTable from '../Table';
 
 describe('DisplayTable component', () => {
+  // const data = [
+  //   {
+  //     column1: { content: 'value 1' },
+  //     column2: { content: 'value 2' },
+  //   },
+  //   {
+  //     column1: { content: 'value 3' },
+  //     column2: { content: 'value 4' },
+  //   },
+  // ];
+
   const data = [
     {
-      column1: { content: 'value 1' },
-      column2: { content: 'value 2' },
+      row_roi_id: '',
+      row_idx: '0',
+      row_props: {
+        0: {
+          content: 'value 1',
+          roi_id: {
+            row_roi_id: '',
+            datacell_roi_id: '',
+          },
+        },
+        1: {
+          content: 'value 2',
+          roi_id: {
+            table_roi_id: '',
+            row_roi_id: '',
+            column_roi_id: '',
+            datacell_roi_id: '',
+          },
+        },
+      },
     },
     {
-      column1: { content: 'value 3' },
-      column2: { content: 'value 4' },
+      row_roi_id: '',
+      row_idx: '1',
+      row_props: {
+        0: {
+          content: 'value 3',
+          roi_id: {
+            table_roi_id: '',
+            row_roi_id: '',
+            column_roi_id: '',
+            datacell_roi_id: '',
+          },
+        },
+        1: {
+          content: 'value 4',
+          roi_id: {
+            table_roi_id: '',
+            row_roi_id: '',
+            column_roi_id: '',
+            datacell_roi_id: '',
+          },
+        },
+      },
     },
   ];
   const onChange = jest.fn();
@@ -67,8 +116,6 @@ describe('DisplayTable component', () => {
         setFootnoteData={setFootnoteData}
       />,
     );
-
-    screen.debug();
 
     const draggableElement = screen.getAllByTestId('draggable')[0];
     const droppableElement = screen.getByText('value 2');
