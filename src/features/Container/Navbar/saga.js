@@ -61,6 +61,7 @@ export function* handlereadNotification(action) {
 
   if (readResp?.success) {
     const readData = yield select(navbarNotifications);
+    console.log('readData', readData, readResp);
     const notificationResult = readData?.map((item) => {
       if (item?.id === id) {
         return { ...item, read: true };

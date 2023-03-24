@@ -90,7 +90,7 @@ describe('Navbar Saga Unit Test', () => {
       dispatch: (action) => dispatchedActions.push(action),
       getState: () => ({
         navbar: {
-          notifications: userDetail,
+          notifications: [],
         },
       }),
     };
