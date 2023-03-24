@@ -154,9 +154,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
       // eslint-disable-next-line no-lonely-if
       if (fileStream.success) {
         FileDownload(fileStream.data, fileName);
-      } else if (fileStream.message === 'No Access') {
-        toast.info('Access Provisioned to Primary Users only');
-      } else {
+      } else if (fileStream.error !== '') {
         toast.error('Download Failed');
       }
     }
