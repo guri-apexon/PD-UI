@@ -39,7 +39,7 @@ function EmptyColumns({ columnLength, handleOperation }) {
       ref={columnHoverRef}
       data-testId="empty-cell-column"
     >
-      {[...Array(columnLength)].map((val, index) => (
+      {columnLength.map((val, index) => (
         <Grid item xs key={uuidv4()} data-testId="hover-list">
           {/* eslint-disable-next-line */}
           <span

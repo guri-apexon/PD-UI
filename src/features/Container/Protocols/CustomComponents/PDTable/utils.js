@@ -59,20 +59,13 @@ export const addColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   for (let i = 0; i < data.length; i++) {
     const rowProps = data[i]?.row_props;
-    Object.keys(rowProps).forEach((key, j) => {
-      if (j === index) {
-        rowProps[key] = getEmptyCell();
-        const newKey = `${parseInt(j + 1, 10)}`;
-        rowProps[newKey] = tabledata[i]?.row_props[key];
-      } else if (j > index) {
-        const newKey = `${parseInt(j + 1, 10)}`;
-        rowProps[newKey] = tabledata[i]?.row_props[key];
-      }
-    });
-    const maxLength = Object.keys(data[i].row_props).length;
-    if (maxLength === index) {
-      data[i].row_props[maxLength] = getEmptyCell();
-    }
+    const flatArray = Object.keys(rowProps).map((key) => rowProps[key]);
+    flatArray.splice(index, 0, getEmptyCell());
+    const obj = flatArray.reduce((acc, cur, i) => {
+      acc[i + 1] = cur;
+      return acc;
+    }, {});
+    data[i].row_props = obj;
   }
   return data;
 };

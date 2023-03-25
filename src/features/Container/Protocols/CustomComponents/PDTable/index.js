@@ -19,18 +19,7 @@ import {
 import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 import PROTOCOL_CONSTANT from '../constants';
-import { tableJSONByRowAndColumnLength } from '../../../../../utils/utilFunction';
 
-const getColumnID = (data, key) => {
-  let roiId = '';
-  for (let i = 0; i < data.length; i++) {
-    if (data[i][key]) {
-      roiId = data[i][key].roi_id.column_roi_id;
-      break;
-    }
-  }
-  return roiId;
-};
 const getIDs = (rows) => {
   let rowRoiId = '';
   let tableRoiId = '';
@@ -52,13 +41,18 @@ const formattableData = (data) => {
   for (let i = 0; i < cloneData.length; i++) {
     const rowCells = cloneData[i].row_props;
     const keys = Object.keys(rowCells);
+    let rowProps = {};
     for (let j = 0; j < keys.length; j++) {
       const emptyCell = {
-        content: rowCells[keys[j]].content,
-        roi_id: rowCells[keys[j]].roi_id,
+        content: rowCells[keys[j]]?.content || '',
+        roi_id: rowCells[keys[j]]?.roi_id || {},
       };
-      rowCells[keys[j]] = emptyCell;
+      rowProps = {
+        ...rowProps,
+        [j + 1]: emptyCell,
+      };
     }
+    cloneData[i].row_props = rowProps;
   }
   return cloneData;
 };
@@ -87,9 +81,9 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setUpdatedData(formattedData);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
-      const colLength = Object.keys(parsedTable[0]?.row_props).length;
-      setColumnLength(colLength);
-      setColumnWidth(98 / colLength);
+      const colIndexes = Object.keys(parsedTable[0]?.row_props);
+      setColumnLength(colIndexes);
+      setColumnWidth(98 / colIndexes.length);
     }
   }, [data]);
 
@@ -101,14 +95,13 @@ function PDTable({ data, segment, activeLineID, lineID }) {
 
   const handleColumnOperation = (operation, index) => {
     if (operation === tableOperations.addColumnLeft) {
-      const newData = addColumn(updatedData, index);
+      const newData = addColumn(updatedData, index - 1 < 0 ? 0 : index);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]?.row_props).length);
+      setColumnLength(Object.keys(newData[0]?.row_props));
     } else if (operation === tableOperations.addColumnRight) {
-      // eslint-disable-next-line
-      const newData = addColumn(updatedData, parseInt(index) + 1);
+      const newData = addColumn(updatedData, index + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]?.row_props).length);
+      setColumnLength(Object.keys(newData[0]?.row_props));
     } else if (operation === tableOperations.deleteColumn) {
       setIsModal(true);
       setSelectedData({
@@ -122,12 +115,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     if (operation === tableOperations.addRowAbove) {
       const newData = addRow(updatedData, index);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]?.row_props).length);
+      setColumnLength(Object.keys(newData[0]?.row_props));
     } else if (operation === tableOperations.addRowBelow) {
       // eslint-disable-next-line
       const newData = addRow(updatedData, parseInt(index) + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]?.row_props).length);
+      setColumnLength(Object.keys(newData[0]?.row_props));
     } else if (operation === tableOperations.deleteRow) {
       setIsModal(true);
       setSelectedData({
@@ -198,7 +191,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       newData = deleteColumn(updatedData, selectedData.index);
     }
     setUpdatedData(newData);
-    setColumnLength(Object.keys(newData[0]).length);
+    setColumnLength(Object.keys(newData[0].row_props));
     setSelectedData({});
     setIsModal(false);
   };
