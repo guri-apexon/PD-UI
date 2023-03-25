@@ -25,6 +25,7 @@ function DigitalizeCard({
   data,
   paginationPage,
   handlePageRight,
+  value,
 }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
@@ -180,6 +181,7 @@ function DigitalizeCard({
                         handlePageRight={handlePageRight}
                         rightBladeValue={BladeRightValue}
                         scrollToTop={scrollToTop}
+                        value={value}
                         headerList={headerList}
                         setCurrentEditCard={setCurrentEditCard}
                         currentEditCard={currentEditCard}
@@ -216,4 +218,5 @@ DigitalizeCard.propTypes = {
   data: PropTypes.isRequired,
   paginationPage: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
+  value: PropTypes.isRequired,
 };

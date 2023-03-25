@@ -68,7 +68,8 @@ class ProtocolViewWrapper extends React.Component {
   };
 
   render() {
-    const { data, refx, sectionRef, summaryData } = this.props;
+    const { data, refx, sectionRef, summaryData, value, handleChange } =
+      this.props;
     const {
       pageNo,
       pageRight,
@@ -86,7 +87,11 @@ class ProtocolViewWrapper extends React.Component {
           </div>
         )}
         <div>
-          <BladeRight dataSummary={data} />
+          <BladeRight
+            dataSummary={data}
+            handleChange={handleChange}
+            value={value}
+          />
         </div>
 
         <div className="view-wrapper">
@@ -116,13 +121,7 @@ class ProtocolViewWrapper extends React.Component {
               </Panel>
             )}
             {data && (
-              <Panel
-                width="auto"
-                minWidth={window.innerWidth / 4}
-                maxWidth={window.innerWidth / 1.5}
-                resizable
-                hideButton
-              >
+              <Panel width="auto" resizable hideButton>
                 <Digitize
                   sectionRef={sectionRef}
                   sectionNumber={sectionNumber}
@@ -131,6 +130,8 @@ class ProtocolViewWrapper extends React.Component {
                   data={data}
                   paginationPage={paginationPage}
                   rightBladeValue={rightValue}
+                  handleChange={handleChange}
+                  value={value}
                 />
               </Panel>
             )}
@@ -147,4 +148,6 @@ ProtocolViewWrapper.propTypes = {
   refx: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
   summaryData: PropTypes.isRequired,
+  value: PropTypes.isRequired,
+  handleChange: PropTypes.isRequired,
 };
