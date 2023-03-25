@@ -22,7 +22,6 @@ describe('Search test suit', () => {
   test('Should Render Protocol Name Field', () => {
     const { getByText } = render(<SearchListing data={searchCardData} />);
     getByText('EMR 200095-004');
-    // screen.debug()
   });
   xtest('Should Render Protocol Name Value', () => {
     const { getByTestId } = render(<SearchListing data={searchCardData} />);

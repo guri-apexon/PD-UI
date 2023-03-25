@@ -75,7 +75,6 @@ describe('DigitizeCard', () => {
 
     const HeaderClose = screen.getByTestId('digitize-panel-content');
     expect(HeaderClose).toBeInTheDocument();
-    screen.debug();
   });
 
   test('Display digitize panel content', () => {
