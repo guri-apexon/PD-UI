@@ -1,5 +1,4 @@
 import { cloneDeep } from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
 
 const QC_CHANGE_TYPE = {
   ADDED: 'add',
@@ -10,10 +9,10 @@ const getEmptyCell = () => {
   return {
     content: '',
     roi_id: {
-      table_roi_id: uuidv4(),
-      row_roi_id: uuidv4(),
-      column_roi_id: uuidv4(),
-      datacell_roi_id: uuidv4(),
+      table_roi_id: '',
+      row_roi_id: '',
+      column_roi_id: '',
+      datacell_roi_id: '',
     },
   };
 };
