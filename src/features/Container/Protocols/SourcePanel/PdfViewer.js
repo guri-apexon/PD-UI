@@ -4,8 +4,6 @@ import Button from 'apollo-react/components/Button';
 import Pagination from 'apollo-react/components/Pagination';
 import PropTypes from 'prop-types';
 import PlusIcon from 'apollo-react-icons/Plus';
-import FileDownload from 'js-file-download';
-import { toast } from 'react-toastify';
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconButton from 'apollo-react/components/IconButton';
 import FileDoc from 'apollo-react-icons/FileDoc';
@@ -26,7 +24,6 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   const [pageScale, setPageScale] = useState(1);
   const [pdfString, setPdfString] = useState(null);
   const pdfDirectory = 'WorkingTempDirectory\\';
-  const [isDownlod, setIsDownload] = useState(false);
   const [fileType, setFileType] = useState('');
   const { documentFilePath, protocol, fileName } = protocolAllItems.data;
   const onDocumentLoadSuccess = ({ numPages }) => {
@@ -61,6 +58,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
     if (e) {
       const { className } = e.target;
       const elemClassnames = getResizerClassNames();
+
       if (elemClassnames.includes(className.toString()))
         document.addEventListener('mousemove', changeScale, false);
     }
@@ -138,27 +136,20 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
       payload: {
         name: protocol,
         dfsPath: filePath,
+        fileName,
+        isDownlod: false,
       },
     });
     // eslint-disable-next-line
   }, [documentFilePath]);
 
   useEffect(() => {
-    if (!isDownlod) {
-      if (fileStream.success) {
-        setPdfString(fileStream.data);
-      } else {
-        setPdfString(null);
-      }
-    } else {
-      // eslint-disable-next-line no-lonely-if
-      if (fileStream.success) {
-        FileDownload(fileStream.data, fileName);
-      } else if (fileStream.error !== '') {
-        toast.error('Download Failed');
-      }
+    if (fileStream.success) {
+      setPdfString(fileStream.data);
+    } else if (!pdfString) {
+      setPdfString(null);
     }
-  }, [fileStream, isDownlod, fileName]);
+  }, [fileStream]);
 
   if (!pdfString) {
     return <Loader />;
@@ -173,12 +164,13 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   }
   function handleDownload(e) {
     e.preventDefault();
-    setIsDownload(true);
     dispatch({
       type: 'GET_FILE_STREAM',
       payload: {
         name: protocol,
         dfsPath: documentFilePath,
+        fileName,
+        isDownlod: true,
       },
     });
   }
