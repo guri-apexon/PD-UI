@@ -149,7 +149,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
     } else if (!pdfString) {
       setPdfString(null);
     }
-  }, [fileStream]);
+  }, [fileStream, pdfString]);
 
   if (!pdfString) {
     return <Loader />;

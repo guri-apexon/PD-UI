@@ -1,4 +1,4 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { render } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import PDFViewer from '../SourcePanel/PdfViewer';
