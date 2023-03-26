@@ -9,18 +9,21 @@ import {
 } from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
-import { isPrimaryUser, prepareContent } from '../../../utils/utilFunction';
+import { prepareContent } from '../../../utils/utilFunction';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
   const summary = useSelector(headerResult);
   const dispatch = useDispatch();
-  const protData = {
-    ...data,
-    userPrimaryRoleFlag: isPrimaryUser(data),
-  };
+
   const [selectedSection, setSelectedSection] = useState({});
   const [sectionContent, setSectionContent] = useState([]);
+  const [value, setValue] = useState(false);
+
+  const handleChange = (e, checked) => {
+    setValue(checked);
+  };
+  const [saveSection, setSaveSection] = useState(null);
 
   const handleSectionSelect = (payload) => {
     if (!payload.sectionContent && sectionContent) {
@@ -130,10 +133,19 @@ function ProtocolView({ refs, data }) {
     () => ({
       selectedSection,
       sectionContent,
+      saveSection,
       dispatchSectionEvent,
       setSectionContent,
+      setSaveSection,
     }),
-    [selectedSection, sectionContent, dispatchSectionEvent, setSectionContent],
+    [
+      selectedSection,
+      sectionContent,
+      saveSection,
+      dispatchSectionEvent,
+      setSectionContent,
+      setSaveSection,
+    ],
   );
 
   const panels = () => {
@@ -181,8 +193,10 @@ function ProtocolView({ refs, data }) {
             listData={listData}
             refx={refs}
             sectionRef={sectionRef}
-            data={protData}
+            data={data}
             summaryData={summary}
+            value={value}
+            handleChange={handleChange}
           />
         )}
       </div>

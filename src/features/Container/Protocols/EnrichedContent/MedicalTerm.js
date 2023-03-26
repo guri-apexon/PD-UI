@@ -89,6 +89,9 @@ function MedicalTerm({
       },
     });
   };
+  console.log('clinical', clinicalTerms);
+  console.log('enrichedtarget', enrichedTarget);
+  console.log('child', childArr);
 
   const handleDelete = () => {
     if (!selectedTerm) return;

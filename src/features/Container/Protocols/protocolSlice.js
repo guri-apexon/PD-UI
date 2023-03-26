@@ -49,6 +49,7 @@ export const protocolSlice = createSlice({
       op: '',
     },
     EnrichedApiValue: false,
+    SOAData: {},
     isSaveEnabled: false,
     sectionIndex: -1,
     enrichedword: {},
@@ -162,6 +163,9 @@ export const protocolSlice = createSlice({
     getEnrichedValue: (state, action) => {
       state.EnrichedApiValue = action.payload;
     },
+    setSOAData: (state, action) => {
+      state.SOAData = action.payload;
+    },
     setSaveEnabled: (state, action) => {
       state.isSaveEnabled = action.payload;
     },
@@ -194,6 +198,7 @@ export const {
   setAccordianMetaParam,
   getMetadataApiCall,
   getEnrichedValue,
+  setSOAData,
   setSaveEnabled,
   updateSectionResp,
   getSectionIndex,
@@ -225,5 +230,6 @@ export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
 export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const Enrichedword = (state) => state.protocol.enrichedword;
+export const SOAData = (state) => state.protocol.SOAData;
 
 export default protocolSlice.reducer;

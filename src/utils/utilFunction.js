@@ -169,6 +169,18 @@ export const createEnrichedText = (content, terms) => {
   return text;
 };
 
+export const createPreferredText = (content, terms) => {
+  let text = content;
+  if (terms) {
+    const arr = Object.keys(terms);
+    arr.forEach((term) => {
+      text = replaceall(term, `<b class="Preferred-txt">${term}</b>`, content);
+    });
+  }
+
+  return text;
+};
+
 export const handleProtocolTitle = (value, testID) => {
   return (
     <Tooltip
@@ -396,6 +408,16 @@ export const createReturnObj = (obj, linkId) => {
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
+      };
+    }
+    if (obj.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
+      return {
+        type: obj.type,
+        content: obj.content,
+        link_id: linkId,
+        qc_change_type:
+          obj.content === '' ? QC_CHANGE_TYPE.DELETED : obj.qc_change_type,
+        line_id: obj.line_id?.slice(0, 36),
       };
     }
     return {

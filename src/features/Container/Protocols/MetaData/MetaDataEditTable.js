@@ -1,11 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import Table from 'apollo-react/components/Table';
 import PropTypes from 'prop-types';
+import Grid from 'apollo-react/components/Grid';
 import Modal from 'apollo-react/components/Modal';
 import Checkbox from 'apollo-react/components/Checkbox';
 import Plus from 'apollo-react-icons/Plus';
+import Trash from 'apollo-react-icons/Trash';
 import moment from 'moment';
 import { ValueField, InputKeyField } from './CustomForm';
+import METADATA_CONSTANTS from './constants';
 
 function Cell({ row, column }) {
   return (
@@ -25,19 +28,17 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
   const handleDataChange = (e) => {
     if (e?.target?.name === 'attr_type') {
-      setType(e.target.value);
-    } else if (type !== 'date') {
-      setVal(e.target.value);
+      setType(e.target.value ? e.target.value : 'string');
+      setVal('');
+      setDateValue('');
+    } else {
+      setVal(e?.target?.value);
     }
   };
 
   const handleDateChange = (value) => {
     setDateValue(value);
     row.handleChange(row.id, value, 'attr_value');
-  };
-
-  const deleteMetaData = () => {
-    row.handleDelete(row.id);
   };
 
   const handleBlur = (e) => {
@@ -64,8 +65,9 @@ function EditableCell({ row, column: { accessor: key } }) {
   };
 
   const renderValueField = () => {
-    return key === 'attr_value' ||
-      (key === 'note' && row.fieldName !== 'summary') ||
+    return ['attr_value'].includes(key) ||
+      (METADATA_CONSTANTS.COLUMN_KEYS.includes(key) &&
+        row.fieldName !== 'summary') ||
       row.isCustom ? (
       <ValueField
         item={row}
@@ -78,7 +80,6 @@ function EditableCell({ row, column: { accessor: key } }) {
         handleDateChange={handleDateChange}
         handleChange={(e) => handleDataChange(e)}
         handleBlur={(e) => handleBlur(e)}
-        deleteMetaData={deleteMetaData}
       />
     ) : (
       row[key] || ''
@@ -86,6 +87,19 @@ function EditableCell({ row, column: { accessor: key } }) {
   };
 
   return key === 'attr_name' ? renderKeyField() : renderValueField();
+}
+
+function DeleteCell({ row }) {
+  const deleteMetaData = () => {
+    row.handleDelete(row.id);
+  };
+  return (
+    row.isCustom && (
+      <Grid className="delContainer">
+        <Trash onClick={deleteMetaData} />
+      </Grid>
+    )
+  );
 }
 
 function MetaDataEditTable({
@@ -102,13 +116,18 @@ function MetaDataEditTable({
   const columns = [
     {
       header: 'Key',
-      accessor: 'attr_name',
+      accessor: 'display_name',
       customCell: EditableCell,
     },
     {
       header: 'Value',
       accessor: 'attr_value',
       customCell: EditableCell,
+    },
+    {
+      header: '',
+      accessor: 'delete',
+      customCell: DeleteCell,
     },
   ];
   const [column, setColumn] = useState(columns);
@@ -123,13 +142,13 @@ function MetaDataEditTable({
   const handleConfidence = (e, checked) => {
     setConfidence(checked);
     if (checked) {
-      setColumn([
-        ...column,
-        {
-          header: 'Confidence Score',
-          accessor: 'confidence',
-        },
-      ]);
+      const copyColumn = [...column];
+      copyColumn.splice(column.length - 1, 0, {
+        header: 'Confidence Score',
+        accessor: 'confidence',
+        customCell: EditableCell,
+      });
+      setColumn(copyColumn);
     } else {
       removeIndex('confidence');
     }
@@ -138,14 +157,13 @@ function MetaDataEditTable({
   const handleNotes = (e, checked) => {
     setNote(checked);
     if (checked) {
-      setColumn([
-        ...column,
-        {
-          header: 'Notes',
-          accessor: 'note',
-          customCell: EditableCell,
-        },
-      ]);
+      const copyColumn = [...column];
+      copyColumn.splice(column.length - 1, 0, {
+        header: 'Notes',
+        accessor: 'note',
+        customCell: EditableCell,
+      });
+      setColumn(copyColumn);
     } else {
       removeIndex('note');
     }
@@ -167,6 +185,14 @@ function MetaDataEditTable({
     }));
   };
 
+  const getValue = (list, keyName, value) => {
+    console.log('value', value);
+    return list?.attr_type === 'date' && keyName === 'attr_value'
+      ? // eslint-disable-next-line
+        moment(value?._d).format('DD-MMM-YYYY')
+      : value;
+  };
+
   const handleChange = (id, value, keyName) => {
     setRows((prevState) => ({
       ...prevState,
@@ -174,11 +200,10 @@ function MetaDataEditTable({
         list?.id === id
           ? {
               ...list,
-              [keyName]:
-                list?.attr_type === 'date' && keyName === 'attr_value'
-                  ? // eslint-disable-next-line
-                    moment(value?._d).format('DD-MMM-YYYY')
-                  : value,
+              attr_type: keyName === 'attr_type' ? value : list.attr_type,
+              attr_value:
+                keyName === 'attr_type' ? '' : getValue(list, keyName, value),
+              attr_name: keyName === 'attr_name' ? value : list?.attr_name,
             }
           : list,
       ),
@@ -195,11 +220,17 @@ function MetaDataEditTable({
       (list) => list.id === selectedId,
     );
     setDeletedAttributes([...deletedAttributes, filterRows[0].attr_name]);
+    rows[formattedName] = rows[formattedName].filter(
+      (list) => list?.id !== selectedId,
+    );
     setRows((prevState) => ({
       ...prevState,
-      [formattedName]: rows[formattedName].filter(
-        (list) => list?.id !== selectedId,
-      ),
+      [formattedName]: rows[formattedName]?.map((attr, index) => {
+        return {
+          ...attr,
+          id: index + 1,
+        };
+      }),
     }));
   };
 
@@ -296,5 +327,8 @@ Cell.propTypes = {
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
+};
+DeleteCell.propTypes = {
+  row: PropTypes.isRequired,
 };
 export default MetaDataEditTable;

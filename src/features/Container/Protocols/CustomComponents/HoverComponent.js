@@ -16,7 +16,7 @@ const anchorOrigin = {
   vertical: 'bottom',
   horizontal: 'left',
 };
-function HoverComponent({ lineId, activeLineID }) {
+function HoverComponent({ lineId, activeLineID, disabled }) {
   const { dispatchSectionEvent } = useProtContext();
   const handleAddSegment = (type) => {
     dispatchSectionEvent('CONTENT_ADDED', { type, lineId });
@@ -59,6 +59,7 @@ function HoverComponent({ lineId, activeLineID }) {
           anchorOrigin={anchorOrigin}
           size="small"
           data-testId="addIcon"
+          disabled={disabled}
         >
           <Plus className="plus-icon" size="small" />
         </IconMenuButton>
@@ -72,4 +73,5 @@ export default HoverComponent;
 HoverComponent.propTypes = {
   lineId: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
+  disabled: PropTypes.isRequired,
 };
