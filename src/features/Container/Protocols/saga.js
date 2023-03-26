@@ -273,7 +273,7 @@ export function* fetchSectionHeaderList(action) {
     payload: { docId },
   } = action;
   yield put(getHeaderList({}));
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
+  const URL = `${BASE_URL_8000}${Apis.GET_CPT_HEADERS}/?aidoc_id=${docId}&link_level=1&toc=0`;
   const config = {
     url: URL,
     method: 'GET',
