@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'apollo-react/components/Card/Card';
 import TextField from 'apollo-react/components/TextField';
-import Filter from 'apollo-react-icons/Filter';
 import Save from 'apollo-react-icons/Save';
 import Pencil from 'apollo-react-icons/Pencil';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';

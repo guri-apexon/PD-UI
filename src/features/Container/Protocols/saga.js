@@ -30,10 +30,12 @@ import {
   TOCActive,
   setSOAData,
   getSectionIndex,
+  getLabData,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
+import LABDATA_CONSTANTS from './LabData/constants';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
 
@@ -681,6 +683,21 @@ export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
 
+export function* LabData(action) {
+  const {
+    payload: { op, docId },
+  } = action;
+  const config = {
+    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
+    method: 'GET',
+    checkAuth: true,
+    headers: jsonContentHeader,
+  };
+  const MetaData = yield call(httpCall, config);
+  const labData = yield call(getLabData(LABDATA_CONSTANTS));
+  console.log('labData', labData);
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -705,6 +722,7 @@ function* watchProtocolViews() {
   yield takeLatest('GET_SOA_DATA', getSOAData);
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
+  yield takeEvery('GET_LAB_DATA', LabData);
 }
 
 // notice how we now only export the rootSaga
