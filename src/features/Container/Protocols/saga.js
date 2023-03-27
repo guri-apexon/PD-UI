@@ -9,7 +9,7 @@ import {
 
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
-
+import FileDownload from 'js-file-download';
 import {
   getSummary,
   getProcotoclToc,
@@ -433,7 +433,7 @@ export function* fetchFileStream(action) {
   if (userType !== 'QC1') {
     userId = yield getUserId();
   }
-  const { name, dfsPath } = action.payload;
+  const { name, dfsPath, fileName, isDownlod } = action.payload;
   const apiBaseUrl = BASE_URL_8000;
   const config = {
     url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
@@ -451,7 +451,11 @@ export function* fetchFileStream(action) {
       error: '',
       data: file,
     };
-    yield put(getFileStream(successState));
+    if (isDownlod) {
+      FileDownload(file, fileName);
+    } else {
+      yield put(getFileStream(successState));
+    }
   } catch (error) {
     const errorState = {
       loader: false,
