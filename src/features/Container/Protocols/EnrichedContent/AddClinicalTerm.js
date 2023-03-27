@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import Button from 'apollo-react/components/Button';
-import Modal from 'apollo-react/components/Modal';
-import FieldGroup from 'apollo-react/components/FieldGroup';
-import TextField from 'apollo-react/components/TextField';
-import IconButton from 'apollo-react/components/IconButton';
 import InfoIcon from 'apollo-react-icons/Info';
-import './MedicalTerm.scss';
+import Button from 'apollo-react/components/Button';
+import FieldGroup from 'apollo-react/components/FieldGroup';
+import IconButton from 'apollo-react/components/IconButton';
+import Modal from 'apollo-react/components/Modal';
+import TextField from 'apollo-react/components/TextField';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Enrichedword } from '../protocolSlice';
+import './MedicalTerm.scss';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -20,7 +20,7 @@ function AddClinicalTerm({ docId, linkId }) {
   const [ontologyTerm, setOntologyTerm] = useState('');
   const [preferredTerm, setPreferredTerm] = useState('');
   const [isTextFieldEmpty, setIsTextFieldEmpty] = useState(true);
-
+  
   useEffect(() => {
     if (window.getSelection().toString()) {
       setIsTextSelected(wordSelector.modal);
@@ -125,6 +125,7 @@ function AddClinicalTerm({ docId, linkId }) {
             onChange={handleClinicalTermsChange}
             value={clinicalTerms}
             fullWidth
+            data-testid="clinicalTerms-text"
           />
           <TextField
             label="Ontology"
@@ -132,6 +133,7 @@ function AddClinicalTerm({ docId, linkId }) {
             onChange={handleOntologyChange}
             value={ontologyTerm}
             fullWidth
+            data-testid="ontology-text"
           />
           <TextField
             label="Preferred term"
@@ -139,6 +141,7 @@ function AddClinicalTerm({ docId, linkId }) {
             onChange={handlePreferredTermChange}
             value={preferredTerm}
             fullWidth
+            data-testid="Preferred-term-text"
           />
         </FieldGroup>
       </Modal>

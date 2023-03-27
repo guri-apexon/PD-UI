@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import ArrowRight from 'apollo-react-icons/ArrowRight';
+import CloseCircle from 'apollo-react-icons/CloseCircle';
+import Pencil from 'apollo-react-icons/Pencil';
+import StatusCheck from 'apollo-react-icons/StatusCheck';
+import Trash from 'apollo-react-icons/Trash';
 import Button from 'apollo-react/components/Button';
 import Card from 'apollo-react/components/Card';
 import Modal from 'apollo-react/components/Modal';
 import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
-import Pencil from 'apollo-react-icons/Pencil';
-import CloseCircle from 'apollo-react-icons/CloseCircle';
-import StatusCheck from 'apollo-react-icons/StatusCheck';
-import Trash from 'apollo-react-icons/Trash';
-import ArrowRight from 'apollo-react-icons/ArrowRight';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { EnrichedValue } from '../protocolSlice';
 import enrichedTerms from './clinicalTerms.json';
 import './MedicalTerm.scss';
-import { EnrichedValue } from '../protocolSlice';
 
 function MedicalTerm({
   enrichedTarget,
@@ -280,7 +280,7 @@ function MedicalTerm({
               );
             })}
           </div>
-          <div className="delete-tag" data-testId="delete-tag-icon">
+          <div className="delete-tag" data-testid="delete-tag-icon">
             <Button onClick={() => setdeleteAll(true)} disabled={!selectedTerm}>
               Delete tag
             </Button>
@@ -303,7 +303,7 @@ function MedicalTerm({
                     {editMode === item ? (
                       <div className="text-area" data-testId="edit-btn-term1">
                         <TextField
-                          data-testId="input-term1"
+                          data-testid="input-term1"
                           value={newTermValue}
                           onChange={(event) =>
                             setNewTermValue(event.target.value)
@@ -313,16 +313,17 @@ function MedicalTerm({
                           <div className="icons" data-testId="edit-icons">
                             <CloseCircle
                               className="cancel"
-                              data-testId="cancel-icon"
+                              data-testid="cancel-icon"
                               // eslint-disable-next-line react/jsx-no-bind
                               onClick={handleCancelClick}
                             />
                             <StatusCheck
                               className="save"
                               onClick={handleSave}
+                              data-testid="save-icon"
                             />
                             <Trash
-                              data-testID="delete-icon"
+                              data-testid="delete-icon"
                               className="delete"
                               onClick={() => setshowModal(true)}
                             />
@@ -331,9 +332,14 @@ function MedicalTerm({
                       </div>
                     ) : (
                       <Button value={item} className="term-item">
-                        <span className="sub-term-text">{item}</span>
+                        <span
+                          className="sub-term-text"
+                          data-testid="selected-item"
+                        >
+                          {item}
+                        </span>
                         <Pencil
-                          data-testId="pencil-icon"
+                          data-testid="pencil-icon"
                           className="edit-Icon"
                           onClick={() => {
                             handlePencilClick(item);
