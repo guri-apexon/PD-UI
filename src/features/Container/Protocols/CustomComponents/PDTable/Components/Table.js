@@ -89,7 +89,7 @@ function DisplayTable({
               )}
               {Object.keys(row.row_props).map(
                 (key) =>
-                  row.row_props[key].qc_change_type !==
+                  row.row_props[key]?.qc_change_type !==
                     QC_CHANGE_TYPE.DELETED && (
                     <div
                       key={uuidv4()}

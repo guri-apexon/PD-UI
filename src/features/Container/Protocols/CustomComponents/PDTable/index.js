@@ -46,6 +46,7 @@ const formattableData = (data) => {
       const emptyCell = {
         content: rowCells[keys[j]]?.content || '',
         roi_id: rowCells[keys[j]]?.roi_id || {},
+        qc_change_type: '',
       };
       rowProps = {
         ...rowProps,
