@@ -18,7 +18,6 @@ function DisplayTable({
   footNoteData,
   setFootnoteData,
   handleColumnOperation,
-  columnLength,
   handleSwap,
 }) {
   const handleChange = (columnIndex, rowIndex, e) => {
@@ -63,7 +62,7 @@ function DisplayTable({
       <div className="pd-table-inner">
         {edit && (
           <EmptyColumns
-            columnLength={columnLength}
+            columnIndexes={Object.keys(data[0]?.row_props)}
             handleOperation={handleColumnOperation}
             colWidth={colWidth}
           />
@@ -90,55 +89,37 @@ function DisplayTable({
                   <EllipsisVertical />
                 </span>
               )}
-              <div
-                className="pd-table-row"
-                id={`divId-${rowIndex}`}
-                draggable
-                onDragStart={handleDrag}
-                onDrop={handleDrop}
-                onDragOver={allowDrop}
-              >
-                {rowIndex !== 0 && edit && (
-                  <span
-                    className="pd-drag-icon rowDrag"
-                    data-testId="draggable"
-                  >
-                    <EllipsisVertical />
-                  </span>
-                )}
-                {Object.keys(row.row_props).map((key) => (
-                  <div
-                    key={uuidv4()}
-                    id={`divId-${rowIndex}-${key}`}
-                    draggable
-                    onDragStart={handleDrag}
-                    onDrop={handleDrop}
-                    onDragOver={allowDrop}
-                    className="pd-table-cell"
-                    style={{ width: `${colWidth}%` }}
-                  >
-                    {rowIndex === 0 && edit && (
-                      <div className="drag-icon-wrapper">
-                        <span
-                          className="pd-drag-icon columnDrag"
-                          data-testId="draggable"
-                        >
-                          <EllipsisHorizontal />
-                        </span>
-                      </div>
-                    )}
+              {Object.keys(row.row_props).map((key) => (
+                <div
+                  key={uuidv4()}
+                  id={`divId-${rowIndex}-${key}`}
+                  draggable
+                  onDragStart={handleDrag}
+                  onDrop={handleDrop}
+                  onDragOver={allowDrop}
+                  className="pd-table-cell"
+                  style={{ width: `${colWidth}%` }}
+                >
+                  {rowIndex === 0 && edit && (
                     <span
-                      id={`divId-${rowIndex}-${key}`}
-                      // eslint-disable-next-line
-                      dangerouslySetInnerHTML={{
-                        __html: row.row_props[key].content,
-                      }}
-                      contentEditable={edit}
-                      onBlur={(e) => handleChange(key, rowIndex, e)}
-                    />
-                  </div>
-                ))}
-              </div>
+                      className="pd-drag-icon columnDrag"
+                      data-testId="draggable"
+                    >
+                      <EllipsisHorizontal />
+                    </span>
+                  )}
+                  <span
+                    id={`divId-${rowIndex}-${key}`}
+                    className="editable-span"
+                    // eslint-disable-next-line
+                    dangerouslySetInnerHTML={{
+                      __html: row.row_props[key].content,
+                    }}
+                    contentEditable={edit}
+                    onBlur={(e) => handleChange(key, rowIndex, e)}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         ))}
@@ -162,6 +143,5 @@ DisplayTable.propTypes = {
   footNoteData: PropTypes.isRequired,
   setFootnoteData: PropTypes.isRequired,
   handleColumnOperation: PropTypes.isRequired,
-  columnLength: PropTypes.isRequired,
   handleSwap: PropTypes.isRequired,
 };

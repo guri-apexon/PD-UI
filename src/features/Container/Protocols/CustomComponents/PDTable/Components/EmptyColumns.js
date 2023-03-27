@@ -6,7 +6,7 @@ import Table from 'apollo-react-icons/Table';
 import { columnHoverData } from './dropdownData';
 import HoverList from './HoverList';
 
-function EmptyColumns({ columnLength, handleOperation }) {
+function EmptyColumns({ columnIndexes, handleOperation }) {
   const columnHoverRef = useRef(null);
   const [activeIconIndex, setActiveIconIndex] = useState(null);
 
@@ -39,7 +39,7 @@ function EmptyColumns({ columnLength, handleOperation }) {
       ref={columnHoverRef}
       data-testId="empty-cell-column"
     >
-      {columnLength.map((val, index) => (
+      {columnIndexes.map((val, index) => (
         <Grid item xs key={uuidv4()} data-testId="hover-list">
           {/* eslint-disable-next-line */}
           <span
@@ -64,6 +64,6 @@ function EmptyColumns({ columnLength, handleOperation }) {
 
 export default EmptyColumns;
 EmptyColumns.propTypes = {
-  columnLength: PropTypes.isRequired,
+  columnIndexes: PropTypes.isRequired,
   handleOperation: PropTypes.isRequired,
 };

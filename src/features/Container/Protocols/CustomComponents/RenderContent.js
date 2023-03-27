@@ -45,8 +45,6 @@ function RenderContent({
     );
   }
   if (type === CONTENT_TYPE.TABLE) {
-    console.log(content);
-
     return (
       <div>
         <PDTable

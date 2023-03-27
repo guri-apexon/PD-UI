@@ -62,7 +62,6 @@ const confirmText = 'Please confirm if you want to continue with deletion';
 function PDTable({ data, segment, activeLineID, lineID }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
-  const [columnLength, setColumnLength] = useState();
   const [colWidth, setColumnWidth] = useState(100);
   const [tableSaved, setTableSaved] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
@@ -82,7 +81,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
       const colIndexes = Object.keys(parsedTable[0]?.row_props);
-      setColumnLength(colIndexes);
       setColumnWidth(98 / colIndexes.length);
     }
   }, [data]);
@@ -95,13 +93,11 @@ function PDTable({ data, segment, activeLineID, lineID }) {
 
   const handleColumnOperation = (operation, index) => {
     if (operation === tableOperations.addColumnLeft) {
-      const newData = addColumn(updatedData, index - 1 < 0 ? 0 : index);
+      const newData = addColumn(updatedData, Math.max(index, 0));
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]?.row_props));
     } else if (operation === tableOperations.addColumnRight) {
       const newData = addColumn(updatedData, index + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]?.row_props));
     } else if (operation === tableOperations.deleteColumn) {
       setIsModal(true);
       setSelectedData({
@@ -115,12 +111,10 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     if (operation === tableOperations.addRowAbove) {
       const newData = addRow(updatedData, index);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]?.row_props));
     } else if (operation === tableOperations.addRowBelow) {
       // eslint-disable-next-line
       const newData = addRow(updatedData, parseInt(index) + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]?.row_props));
     } else if (operation === tableOperations.deleteRow) {
       setIsModal(true);
       setSelectedData({
@@ -191,7 +185,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       newData = deleteColumn(updatedData, selectedData.index);
     }
     setUpdatedData(newData);
-    setColumnLength(Object.keys(newData[0].row_props));
     setSelectedData({});
     setIsModal(false);
   };
@@ -279,7 +272,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           footNoteData={footNoteData}
           setFootnoteData={setFootnoteData}
           handleColumnOperation={handleColumnOperation}
-          columnLength={columnLength}
         />
       </div>
       <Modal
