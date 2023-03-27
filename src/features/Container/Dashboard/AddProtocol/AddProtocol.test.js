@@ -1,32 +1,57 @@
-/* eslint-disable */
 import * as redux from 'react-redux';
 import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import AddProtocol from './AddProtocol';
 
+function selectAutoComplete(Container) {
+  const autocomplete = Container.getByTestId('amendment-number-texfield');
+  const input = autocomplete.querySelector('input');
+  const autocompleteDocumentStatus = Container.getByTestId(
+    'document-status-texfield',
+  );
+  const inputDocStatus = autocompleteDocumentStatus.querySelector('input');
+  fireEvent.change(inputDocStatus, { target: { value: '' } });
+  fireEvent.keyDown(autocompleteDocumentStatus, { key: 'ArrowDown' });
+  fireEvent.keyDown(autocompleteDocumentStatus, { key: 'ArrowDown' });
+  fireEvent.keyDown(autocomplete, { key: 'Enter' });
+  fireEvent.focusOut(inputDocStatus, { target: { value: 'Approved Final' } });
+
+  fireEvent.change(input, { target: { value: 'y' } });
+  fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+  fireEvent.keyDown(autocomplete, { key: 'Enter' });
+  fireEvent.focusOut(input, { target: { value: 'Y' } });
+  fireEvent.change(input, { target: { value: '' } });
+  expect(input.value).toBe('');
+  fireEvent.focusOut(input, { target: { value: '' } });
+}
+
 const dashboardmockData = {
   addProtocolData: {
-    sponsor: [
-      {
-        sponsor_name: 'NVT AG',
-        sponsor_abbreviation: 'NVT',
-        id: 2,
-        label: 'NVT AG',
-      },
-    ],
-    indication: [
-      {
-        indication_name: 'indication1',
-        indication_description: 'Indication1 Description',
-        id: 1,
-        label: 'Indication1 Description',
-      },
-    ],
     amendmentNumber: [{ label: 'Y', value: 'Yes' }],
     documentState: [{ label: 'Draft', value: 'draft' }],
+    workflowData: {
+      loading: false,
+      error: null,
+      data: [],
+    },
+    workflowSubmit: {
+      loading: false,
+      error: null,
+      data: [
+        {
+          workflow_name: 'document_compare',
+          services: ['digitizer2_compare'],
+        },
+      ],
+    },
+    addProtocolErrorState: {
+      type: '',
+      data: {},
+    },
   },
   addProtocolModal: true,
   isLoading: false,
+  displayAddProtocol: true,
 };
 
 describe('Add Protocol Test Suite', () => {
@@ -180,9 +205,6 @@ describe('Add Protocol Test Suite', () => {
     fireEvent.focusOut(versionNumber, { target: { value: '' } });
     fireEvent.change(versionNumber, { target: { value: 1.111 } });
     expect(versionNumber.value).toBe('1.111');
-    // console.log('onblur below with focus');
-    // fireEvent.focus(protcolNumber);
-    // fireEvent.blur(protcolNumber, {target:{value:'aa'}});
   });
   test('Should Save Post Correctly', async () => {
     const mockHandleOpen = jest.fn();
@@ -295,8 +317,6 @@ describe('Add Protocol Test Suite', () => {
     const fileUpload =
       container.getByTestId('custom-fileupload').children[0].children[0]
         .children[0];
-    // console.log('fileUpload :', fileUpload);
-    // fireEvent.change(fileUpload, {target:{value:'a'}});
     Object.defineProperty(fileUpload, 'files', {
       value: [file],
     });
@@ -324,8 +344,6 @@ describe('Add Protocol Test Suite', () => {
     const fileUpload =
       container.getByTestId('custom-fileupload').children[0].children[0]
         .children[0];
-    // console.log('fileUpload :', fileUpload);
-    // fireEvent.change(fileUpload, {target:{value:'a'}});
     Object.defineProperty(fileUpload, 'files', {
       value: [file],
     });
@@ -353,8 +371,6 @@ describe('Add Protocol Test Suite', () => {
     const fileUpload =
       container.getByTestId('custom-fileupload').children[0].children[0]
         .children[0];
-    // console.log('fileUpload :', fileUpload);
-    // fireEvent.change(fileUpload, {target:{value:'a'}});
     Object.defineProperty(fileUpload, 'files', {
       value: [file],
     });
@@ -383,27 +399,6 @@ describe('Add Protocol Test Suite', () => {
     expect(edit.value).toEqual('Sohan');
   });
 
-  test('Should work correctly for valid molecule Device', async () => {
-    const mockHandleOpen = jest.fn();
-    const mockHandleClose = jest.fn();
-    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
-    const mockDispatchFn = jest.fn();
-    useDispatchSpy.mockReturnValue(mockDispatchFn);
-    render(
-      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
-      {
-        initialState: {
-          dashboard: dashboardmockData,
-        },
-      },
-    );
-    const edit =
-      screen.getByTestId('molecule-texfield').children[1].children[0];
-    fireEvent.change(edit, { target: { value: 'Sohan' } });
-    fireEvent.focusOut(edit);
-    expect(edit.value).toEqual('Sohan');
-  });
-
   test('Should work correctly for valid document status', async () => {
     const mockHandleOpen = jest.fn();
     const mockHandleClose = jest.fn();
@@ -423,38 +418,26 @@ describe('Add Protocol Test Suite', () => {
     fireEvent.change(edit, { target: { value: 'Draft' } });
     expect(edit.value).toEqual('Draft');
   });
+  test('Should render workflow-orchestration Component', async () => {
+    render(<AddProtocol />, {
+      initialState: {
+        dashboard: dashboardmockData,
+        user: {
+          userDetail: {
+            userId: 'u1072234',
+            username: 'Test User',
+            email: 'test@iqvia.com',
+            user_type: 'admin',
+          },
+        },
+      },
+    });
+    const tab2 = screen.getByTestId('workflow-orchestration').children[0]
+      .children[0].children[0];
+    // console.log(JSON.stringify(tab2));
+    // screen.getByTestId('add-protocol-modal')[0].children[2].children[0]
+    //   .children[1].children[0].children[0].children[0].children[1];
+    screen.debug(tab2);
+    fireEvent.click(tab2);
+  });
 });
-
-function selectAutoComplete(Container) {
-  const autocomplete = Container.getByTestId('amendment-number-texfield');
-  const input = autocomplete.querySelector('input');
-  const autocompleteDocumentStatus = Container.getByTestId(
-    'document-status-texfield',
-  );
-  const inputDocStatus = autocompleteDocumentStatus.querySelector('input');
-  fireEvent.change(inputDocStatus, { target: { value: '' } });
-  fireEvent.keyDown(autocompleteDocumentStatus, { key: 'ArrowDown' });
-  fireEvent.keyDown(autocompleteDocumentStatus, { key: 'ArrowDown' });
-  fireEvent.keyDown(autocomplete, { key: 'Enter' });
-  // console.log('inputDocStatus :', inputDocStatus);
-  fireEvent.focusOut(inputDocStatus, { target: { value: 'Approved Final' } });
-
-  fireEvent.change(input, { target: { value: 'y' } });
-  fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
-  fireEvent.keyDown(autocomplete, { key: 'Enter' });
-  fireEvent.focusOut(input, { target: { value: 'Y' } });
-  // console.log('test input value', input.value)
-  fireEvent.change(input, { target: { value: '' } });
-  expect(input.value).toBe('');
-  fireEvent.focusOut(input, { target: { value: '' } });
-}
-// test('loads and displays greeting', async () => {
-//   render(<Fetch url="/greeting" />)
-
-//   fireEvent.click(screen.getByText('Load Greeting'))
-
-//   await waitFor(() => screen.getByRole('heading'))
-
-//   expect(screen.getByRole('heading')).toHaveTextContent('hello there')
-//   expect(screen.getByRole('button')).toHaveAttribute('disabled')
-// })

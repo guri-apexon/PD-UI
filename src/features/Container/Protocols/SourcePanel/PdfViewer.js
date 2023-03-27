@@ -4,6 +4,11 @@ import Button from 'apollo-react/components/Button';
 import Pagination from 'apollo-react/components/Pagination';
 import PropTypes from 'prop-types';
 import PlusIcon from 'apollo-react-icons/Plus';
+import FileDownload from 'js-file-download';
+import { toast } from 'react-toastify';
+import Tooltip from 'apollo-react/components/Tooltip';
+import IconButton from 'apollo-react/components/IconButton';
+import FileDoc from 'apollo-react-icons/FileDoc';
 import Minus from 'apollo-react-icons/Minus';
 import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,8 +25,10 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   const [currentPage, setPage] = useState(0);
   const [pageScale, setPageScale] = useState(1);
   const [pdfString, setPdfString] = useState(null);
-
-  const { documentFilePath, protocol } = protocolAllItems.data;
+  const pdfDirectory = 'WorkingTempDirectory\\';
+  const [isDownlod, setIsDownload] = useState(false);
+  const [fileType, setFileType] = useState('');
+  const { documentFilePath, protocol, fileName } = protocolAllItems.data;
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };
@@ -33,13 +40,28 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
     setPageScale(scale);
   }
 
+  const getResizerClassNames = () => {
+    const x = document.getElementsByClassName('react-resizable');
+    if (x && x.length === 2) {
+      const y = x[0].childNodes;
+      if (y && y.length === 2) {
+        const z = y[1].className;
+        const xy = y[1].childNodes;
+        if (xy) {
+          const xz = xy[0].className;
+          return [z, xz];
+        }
+        return [z];
+      }
+    }
+    return [];
+  };
+
   const addMouseMove = (e) => {
     if (e) {
       const { className } = e.target;
-      if (
-        className.toString().includes('Panel-handle') ||
-        className.toString().includes('Panel-handleContainer')
-      )
+      const elemClassnames = getResizerClassNames();
+      if (elemClassnames.includes(className.toString()))
         document.addEventListener('mousemove', changeScale, false);
     }
   };
@@ -85,6 +107,14 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
     }
   }, [pageRight]);
 
+  useEffect(() => {
+    if (fileName !== '') {
+      const fileTypeArr = fileName.split('.');
+      const fileType = fileTypeArr.pop();
+      setFileType(fileType);
+    }
+  }, [fileName]);
+
   const handleZoomIn = () => {
     setPageScale((parseFloat(pageScale) + 0.2).toFixed(2));
   };
@@ -93,23 +123,42 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   };
 
   useEffect(() => {
+    const fileTypeArr = fileName.split('.');
+    const fileType = fileTypeArr.pop();
+    const filePath =
+      fileType !== 'pdf' && fileType !== ''
+        ? documentFilePath.replace(
+            fileName,
+            `${pdfDirectory}${fileName.replace(fileType, 'pdf')}`,
+          )
+        : documentFilePath;
+
     dispatch({
       type: 'GET_FILE_STREAM',
       payload: {
         name: protocol,
-        dfsPath: documentFilePath,
+        dfsPath: filePath,
       },
     });
     // eslint-disable-next-line
   }, [documentFilePath]);
 
   useEffect(() => {
-    if (fileStream.success) {
-      setPdfString(fileStream.data);
+    if (!isDownlod) {
+      if (fileStream.success) {
+        setPdfString(fileStream.data);
+      } else {
+        setPdfString(null);
+      }
     } else {
-      setPdfString(null);
+      // eslint-disable-next-line no-lonely-if
+      if (fileStream.success) {
+        FileDownload(fileStream.data, fileName);
+      } else if (fileStream.error !== '') {
+        toast.error('Download Failed');
+      }
     }
-  }, [fileStream]);
+  }, [fileStream, isDownlod, fileName]);
 
   if (!pdfString) {
     return <Loader />;
@@ -122,6 +171,18 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
       setPage(currentPage - 1);
     }
   }
+  function handleDownload(e) {
+    e.preventDefault();
+    setIsDownload(true);
+    dispatch({
+      type: 'GET_FILE_STREAM',
+      payload: {
+        name: protocol,
+        dfsPath: documentFilePath,
+      },
+    });
+  }
+
   return (
     // eslint-disable-next-line
     <div
@@ -132,6 +193,23 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
       tabIndex={0}
       onKeyDown={handleKeyDown}
     >
+      <div className="panel-display">
+        <div className="panel-heading">Source Document</div>
+        {fileType !== 'pdf' && (
+          <div className="panel-download">
+            <Tooltip title="Download Source document" placement="top">
+              <IconButton
+                id="expand"
+                color="primary"
+                data-testid="download-doc"
+                onClick={(e) => handleDownload(e)}
+              >
+                <FileDoc />
+              </IconButton>
+            </Tooltip>
+          </div>
+        )}
+      </div>
       {pdfString && (
         <Document
           className="document-pdf"

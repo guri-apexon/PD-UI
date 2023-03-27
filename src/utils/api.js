@@ -82,12 +82,14 @@ export const httpCall = async (config) => {
         success: false,
         data: err.response.data.detail,
         code: 'DUPLICATE_ENTITY',
+        err: err.response,
       };
     }
     return {
       success: false,
       err: err.response,
       message: 'Not-Found',
+      err: err.response,
     };
   }
 };
@@ -251,6 +253,7 @@ export const Apis = {
   DOWNLOAD_API: '/api/download_file',
   METADATA: '/pd/api/v1/documents',
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
+  USER_ALERT_SETTING: '/api/user_alert_setting',
   SAVE_SECTION_CONTENT: '/api/qc_ingest',
   DELETE_ENRICHED_CONTENT: '/api_cpt_data/delete_enrich_data',
 };

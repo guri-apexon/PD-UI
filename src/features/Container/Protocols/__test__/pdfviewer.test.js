@@ -6,7 +6,7 @@ import { summary } from './data';
 const initialState = {
   protocol: {
     summary: {
-      data: summary,
+      data: summary[0],
       loading: false,
       success: true,
     },
