@@ -80,6 +80,7 @@ export function ValueField({
 
             {['date'].includes(type) && (
               <DatePicker
+                className="date-field"
                 name={keyName}
                 dateFormat="DD-MMM-YYYY"
                 placeholder="dd-mmm-yyyy"

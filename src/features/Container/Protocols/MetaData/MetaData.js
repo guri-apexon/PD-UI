@@ -157,7 +157,7 @@ function MetaData({ docId }) {
       const updatedAttrList = metaData?.map((list) => {
         const convertToBoolean = list?.attr_value === 'true';
         return {
-          attr_name: list?.display_name,
+          attr_name: list?.attr_name,
           attr_type: list?.attr_type || 'string',
           attr_value:
             list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
@@ -318,10 +318,10 @@ function MetaData({ docId }) {
           apiResponse?.reqData?.formattedName === 'summary_extended'
             ? rows.summary
             : rows[apiResponse?.reqData?.formattedName] || [];
-        accMetaData = accMetaData.map((metaData) => {
+        accMetaData = accMetaData?.map((metaData) => {
           return {
             ...metaData,
-            display_name: metaData.display_name,
+            display_name: metaData?.display_name || metaData?.attr_name,
           };
         });
         setAccordianData({
@@ -329,7 +329,7 @@ function MetaData({ docId }) {
           [apiResponse?.reqData?.formattedName]: {
             ...selectedData,
             isEdit: false,
-            _meta_data: [...accMetaData],
+            _meta_data: accMetaData?.length > 0 ? [...accMetaData] : [],
           },
         });
       } else if (apiResponse.op === 'addField') {

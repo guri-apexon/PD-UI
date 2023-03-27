@@ -26,10 +26,10 @@ const getIDs = (rows) => {
   let datacellRoiId = '';
   const keys = Object.keys(rows);
   for (let i = 0; i < keys.length; i++) {
-    if (rows[keys[i]] && rows[keys[i]].roi_id.row_roi_id) {
-      rowRoiId = rows[keys[i]].roi_id.row_roi_id;
+    if (rows[keys[i]] && rows[keys[i]].roi_id?.row_roi_id) {
+      rowRoiId = rows[keys[i]].roi_id?.row_roi_id;
       datacellRoiId = uuidv4();
-      tableRoiId = rows[keys[i]].roi_id.table_roi_id;
+      tableRoiId = rows[keys[i]].roi_id?.table_roi_id;
       break;
     }
   }
