@@ -24,7 +24,7 @@ const getColumnID = (data, key) => {
   let roiId = '';
   for (let i = 0; i < data.length; i++) {
     if (data[i][key]) {
-      roiId = data[i][key].roi_id.column_roi_id;
+      roiId = data[i][key].roi_id?.column_roi_id;
       break;
     }
   }
@@ -36,10 +36,10 @@ const getIDs = (rows) => {
   let datacellRoiId = '';
   const keys = Object.keys(rows);
   for (let i = 0; i < keys.length; i++) {
-    if (rows[keys[i]] && rows[keys[i]].roi_id.row_roi_id) {
-      rowRoiId = rows[keys[i]].roi_id.row_roi_id;
+    if (rows[keys[i]] && rows[keys[i]].roi_id?.row_roi_id) {
+      rowRoiId = rows[keys[i]].roi_id?.row_roi_id;
       datacellRoiId = uuidv4();
-      tableRoiId = rows[keys[i]].roi_id.table_roi_id;
+      tableRoiId = rows[keys[i]].roi_id?.table_roi_id;
       break;
     }
   }
@@ -61,9 +61,9 @@ const formattableData = (data) => {
           content: '',
           roi_id: {
             table_roi_id: IDs.table_roi_id,
-            row_roi_id: IDs.row_roi_id,
+            row_roi_id: IDs?.row_roi_id,
             column_roi_id: columnID,
-            datacell_roi_id: IDs.datacell_roi_id,
+            datacell_roi_id: IDs?.datacell_roi_id,
           },
           table_index: 2,
           qc_change_type: '',
