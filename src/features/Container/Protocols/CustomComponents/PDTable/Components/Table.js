@@ -33,20 +33,17 @@ function DisplayTable({
     const clone = e.target.cloneNode(true);
     const draggedId = e.dataTransfer?.getData('selectedId');
     if (draggedId) {
-      const checkIfColumnSwap =
-        draggedId.split('-').length === 3 &&
-        clone.id.split('-').length === 3 &&
-        clone.id.split('-')[2] !== draggedId.split('-')[2];
+      const checkIfRowSwap = clone.id.split('-')[0] !== draggedId.split('-')[0];
       if (clone?.id && clone?.id !== draggedId) {
-        if (checkIfColumnSwap) {
-          handleSwap(tableOperations.swapColumn, {
-            sourceIndex: draggedId.split('-')[2],
-            targetIndex: clone.id.split('-')[2],
-          });
-        } else {
+        if (checkIfRowSwap) {
           handleSwap(tableOperations.swapRow, {
             sourceIndex: draggedId.split('-')[1],
             targetIndex: clone.id.split('-')[1],
+          });
+        } else {
+          handleSwap(tableOperations.swapColumn, {
+            sourceIndex: draggedId.split('-')[2],
+            targetIndex: clone.id.split('-')[2],
           });
         }
       }
@@ -78,7 +75,7 @@ function DisplayTable({
             )}
             <div
               className="pd-table-row"
-              id={`divId-${rowIndex}`}
+              id={`rowID-${rowIndex}`}
               draggable
               onDragStart={handleDrag}
               onDrop={handleDrop}
@@ -92,7 +89,7 @@ function DisplayTable({
               {Object.keys(row.row_props).map((key) => (
                 <div
                   key={uuidv4()}
-                  id={`divId-${rowIndex}-${key}`}
+                  id={`columnID-${rowIndex}-${key}`}
                   draggable
                   onDragStart={handleDrag}
                   onDrop={handleDrop}
@@ -109,7 +106,7 @@ function DisplayTable({
                     </span>
                   )}
                   <span
-                    id={`divId-${rowIndex}-${key}`}
+                    id={`columnID-${rowIndex}-${key}`}
                     className="editable-span"
                     // eslint-disable-next-line
                     dangerouslySetInnerHTML={{
