@@ -20,7 +20,7 @@ function AddClinicalTerm({ docId, linkId }) {
   const [ontologyTerm, setOntologyTerm] = useState('');
   const [preferredTerm, setPreferredTerm] = useState('');
   const [isTextFieldEmpty, setIsTextFieldEmpty] = useState(true);
-  
+
   useEffect(() => {
     if (window.getSelection().toString()) {
       setIsTextSelected(wordSelector.modal);
