@@ -3,25 +3,27 @@ import EmptyColumnCells from '../CustomComponents/PDTable/Components/EmptyColumn
 
 describe('EmptyColumnCells', () => {
   const handleOperation = jest.fn();
-  const columnLength = 1;
+  const columnIndexes = [0];
   const colWidth = 33;
 
   it('renders correctly with the given props', () => {
     const { getByTestId, getAllByTestId } = render(
       <EmptyColumnCells
-        columnLength={columnLength}
+        columnIndexes={columnIndexes}
         handleOperation={handleOperation}
         colWidth={colWidth}
       />,
     );
-    expect(getAllByTestId('empty-cell-column').length).toBe(columnLength);
+    expect(getAllByTestId('empty-cell-column').length).toBe(
+      columnIndexes.length,
+    );
     expect(getByTestId('more-icon')).toBeInTheDocument();
   });
 
   it('opens and closes the hover list when the more icon is clicked', () => {
     const { getByTestId } = render(
       <EmptyColumnCells
-        columnLength={columnLength}
+        columnIndexes={columnIndexes}
         handleOperation={handleOperation}
         colWidth={colWidth}
       />,
@@ -36,7 +38,7 @@ describe('EmptyColumnCells', () => {
   it('calls handleOperation with the correct arguments when an item in the hover list is clicked', () => {
     const { getByTestId, getAllByTestId } = render(
       <EmptyColumnCells
-        columnLength={columnLength}
+        columnIndexes={columnIndexes}
         handleOperation={handleOperation}
         colWidth={colWidth}
       />,

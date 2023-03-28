@@ -66,7 +66,6 @@ describe('MedicalTerm component', () => {
     const termList = getByTestId('term-list');
     const parentItem = getAllByTestId('handleSave')[0];
     fireEvent.click(parentItem);
-    screen.debug();
     const childTerm = getAllByTestId('update-term-trigger');
     fireEvent.click(childTerm[0]);
     const updateField = getByTestId('update-term-field');
