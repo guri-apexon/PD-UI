@@ -101,3 +101,11 @@
 .metadata-card .lab-table-container tr:last-child td:first-child:nth-last-child(1) {
   display: table-cell;
 }
+.loader {
+  z-index: 1000;
+  position: relative;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
