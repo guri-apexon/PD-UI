@@ -96,6 +96,27 @@ function PlusIcon({ row }) {
     </IconButton>
   );
 }
+const data = [
+  {
+    parameter_text: 'B-Haemoglobin',
+    id: '0ea3f9c3-a06b-11ed-8a01-005056ab26e5',
+    run_id: '',
+    procedure_panel_text: 'Haematology/Haemostasis (whole blood)',
+    dts: '20230130065337',
+    ProcessMachineName: '',
+    roi_id: '2c367d6a-6b89-4d83-b717-a26656634ce8',
+    section: '',
+    table_roi_id: '6390ad37-2904-45c5-a1b7-a6313f8cbb6c',
+    parameter: '',
+    doc_id: '3b44c1d5-f5f7-44ab-901a-3f53c2ba751d',
+    procedure_panel: '',
+    assessment: 'Hematology ',
+    pname: '',
+    ProcessVersion: '',
+    table_link_text: 'Table 7 Laboratory Safety Variables',
+    table_sequence_index: -1,
+  },
+];
 function LabData({ docId }) {
   const dispatch = useDispatch();
   const labData = useSelector(labDataApiValue);
@@ -121,6 +142,14 @@ function LabData({ docId }) {
   }, [updateLabData]);
 
   const handleSave = () => {
+    const updatedData = rowData.filter((value) => value.isUpdated === true);
+    dispatch({
+      type: 'UPDATE_LAB_DATA',
+      payload: {
+        docId,
+        data: updatedData,
+      },
+    });
     setIsEdit(false);
     setColumns(columns.filter((col) => col.accessor !== 'menu'));
   };
@@ -143,16 +172,15 @@ function LabData({ docId }) {
   };
 
   const handleSaveRow = () => {
-    dispatch({
-      type: 'UPDATE_LAB_DATA',
-      payload: {
-        docId,
-        data: editedRow,
-      },
-    });
-    setRowData(
-      rowData.map((row) => (row.id === editedRow.id ? editedRow : row)),
+    const rowUpdated = rowData.map((row) =>
+      row.id === editedRow.id ? { ...row, isUpdated: true } : row,
     );
+    console.log(rowUpdated, 'rowUpdated');
+    console.log(
+      rowUpdated.filter((value) => value.isUpdated === true),
+      'filter updated',
+    );
+    setRowData(rowUpdated);
     setEditedRow({});
   };
 
@@ -270,8 +298,8 @@ function LabData({ docId }) {
   // });
 
   useEffect(() => {
-    if (labData.length > 0) {
-      setRowData(labData.filter((value) => value.soft_delete !== true));
+    if (labData.data.length > 0) {
+      setRowData(labData.data.filter((value) => value.soft_delete !== true));
     }
   }, [labData]);
   return (
@@ -279,7 +307,7 @@ function LabData({ docId }) {
       className="protocol-column protocol-digitize-column metadata-card"
       data-testid="lab-data"
     >
-      {labData.length > 0 ? (
+      {labData.data.length > 0 ? (
         <div className="lab-table-container">
           <div className="lab-btn-container">
             {isEdit ? (

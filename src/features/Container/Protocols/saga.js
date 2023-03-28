@@ -688,24 +688,32 @@ export function* LabData(action) {
   const {
     payload: { docId },
   } = action;
+
   const config = {
     url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
+
     method: 'GET',
   };
+
   const labData = yield call(httpCall, config);
+
+  const successState = {
+    data: labData.data,
+  };
+
   if (labData.success) {
-    yield put(getLabData(labData.data));
+    yield put(getLabData(successState));
   } else {
-    yield put(getLabData([]));
+    yield put(getLabData({ data: [] }));
   }
 }
 
 export function* UpdateLabData(action) {
   const {
-    payload: { docId, data },
+    payload: { data },
   } = action;
   const config = {
-    url: `${BASE_URL_8000}${Apis.UPDATE_LAB_DATA}/?aidoc_id=${docId}`,
+    url: `${BASE_URL_8000}${Apis.UPDATE_LAB_DATA}`,
     method: 'POST',
     data: {
       data,
