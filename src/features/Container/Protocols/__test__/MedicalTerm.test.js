@@ -3,7 +3,6 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import store from '../../../../store/store';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
-import { screen } from '../../../../test-utils/test-utils';
 
 describe('MedicalTerm component', () => {
   const mockEnrichedTarget = 'test-mock-target';
