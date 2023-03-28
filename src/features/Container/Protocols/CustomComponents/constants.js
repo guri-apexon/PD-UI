@@ -79,6 +79,15 @@ const addHeader = {
 };
 
 const headerLevel1 = { ...addHeader, type: 'header', link_level: '1' };
+const supportedFileType = ['jpeg', 'png', 'jpg', 'gif', 'bmp'];
 
 // eslint-disable-next-line
-export default { text, table, header, image, footNote, headerLevel1 };
+export default {
+  text,
+  table,
+  header,
+  image,
+  footNote,
+  headerLevel1,
+  supportedFileType,
+};

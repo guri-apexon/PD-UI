@@ -9,7 +9,7 @@ import {
 
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
-
+import FileDownload from 'js-file-download';
 import {
   getSummary,
   getProcotoclToc,
@@ -253,9 +253,7 @@ export function* updateSectionData(action) {
         });
       } else {
         yield put(updateSectionResp({ response: sectionSaveRes.data }));
-        toast.success(
-          sectionSaveRes.data.message || 'Section updated successfully',
-        );
+        toast.success('Section content updated successfully');
       }
     } else {
       yield put(
@@ -274,7 +272,7 @@ export function* fetchSectionHeaderList(action) {
     payload: { docId },
   } = action;
   yield put(getHeaderList({}));
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
+  const URL = `${BASE_URL_8000}${Apis.GET_CPT_HEADERS}/?aidoc_id=${docId}&link_level=1&toc=0`;
   const config = {
     url: URL,
     method: 'GET',
@@ -429,13 +427,12 @@ export function* fetchFileStream(action) {
     data: null,
   };
   yield put(getFileStream(preLoadingState));
-
   const userType = yield getUserType();
   let userId = 'qc';
   if (userType !== 'QC1') {
     userId = yield getUserId();
   }
-  const { name, dfsPath } = action.payload;
+  const { name, dfsPath, fileName, isDownlod } = action.payload;
   const apiBaseUrl = BASE_URL_8000;
   const config = {
     url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
@@ -453,7 +450,11 @@ export function* fetchFileStream(action) {
       error: '',
       data: file,
     };
-    yield put(getFileStream(successState));
+    if (isDownlod) {
+      FileDownload(file, fileName);
+    } else {
+      yield put(getFileStream(successState));
+    }
   } catch (error) {
     const errorState = {
       loader: false,
@@ -509,7 +510,7 @@ export function* addMetaDataAttributes(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  if (MetaData?.data?.isAdded) {
+  if (MetaData?.data?.is_added) {
     toast.info('Protocol Attributes Updated Successfully');
     yield put(
       getMetadataApiCall({
@@ -519,7 +520,7 @@ export function* addMetaDataAttributes(action) {
       }),
     );
   } else {
-    toast.error('Duplicate Attributes');
+    toast.error('Protocol Attributes Not Added');
     yield put(
       getMetadataApiCall({
         status: false,
@@ -547,7 +548,7 @@ export function* addMetaDataField(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  if (MetaData?.data?.isAdded) {
+  if (MetaData?.data?.is_added) {
     toast.info(`${reqData.name} added successfully`);
     yield put(
       getMetadataApiCall({
@@ -585,7 +586,7 @@ export function* deleteAttribute(action) {
     },
   };
   const data = yield call(httpCall, config);
-  if (data?.data?.isDeleted) {
+  if (data?.data?.is_deleted) {
     if (op === 'deleteField') {
       yield put(
         getMetadataApiCall({
