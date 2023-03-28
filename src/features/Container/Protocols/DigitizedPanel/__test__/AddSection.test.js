@@ -30,7 +30,6 @@ describe('AddSection', () => {
     const newSectionName = 'new value';
     userEvent.type(input, newSectionName);
     expect(setSectionName).toHaveBeenCalledTimes(0);
-    screen.debug();
     const addButton = getByText('Add Section');
     fireEvent.click(addButton);
   });

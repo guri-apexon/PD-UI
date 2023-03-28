@@ -252,9 +252,7 @@ export function* updateSectionData(action) {
         });
       } else {
         yield put(updateSectionResp({ response: sectionSaveRes.data }));
-        toast.success(
-          sectionSaveRes.data.message || 'Section updated successfully',
-        );
+        toast.success('Section content updated successfully');
       }
     } else {
       yield put(
