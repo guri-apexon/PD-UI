@@ -271,10 +271,6 @@ function LabData({ docId }) {
 
   useEffect(() => {
     if (labData.length > 0) {
-      console.log(
-        labData.filter((value) => value.soft_delete !== null),
-        'labData is fetch',
-      );
       setRowData(labData.filter((value) => value.soft_delete !== true));
     }
   }, [labData]);
@@ -333,7 +329,9 @@ function LabData({ docId }) {
           />
         </div>
       ) : (
-        <Loader />
+        <div className="loader">
+          <Loader />
+        </div>
       )}
       <Modal
         data-testid="delete-row-modal"
