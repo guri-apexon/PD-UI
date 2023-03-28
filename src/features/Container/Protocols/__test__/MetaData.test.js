@@ -120,7 +120,6 @@ describe('MetaData AccordianView', () => {
   test('MetaData edit', () => {
     const screen = render(<MetaData />, { initialState });
     const metadataAccordian = screen.getByTestId('metadata-accordian');
-    screen.debug();
     expect(screen).toBeTruthy();
     expect(metadataAccordian).toBeInTheDocument();
 

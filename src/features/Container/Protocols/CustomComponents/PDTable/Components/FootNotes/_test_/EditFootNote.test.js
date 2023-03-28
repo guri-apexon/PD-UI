@@ -73,8 +73,6 @@ describe('EditFootNote', () => {
     });
     fireEvent.blur(contentEditable);
 
-    screen.debug();
-
     const result = [...sampleFootNoteData];
     result[0] = {
       Text: '',

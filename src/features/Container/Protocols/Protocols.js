@@ -11,6 +11,7 @@ import Tab from 'apollo-react/components/Tab';
 import Tabs from 'apollo-react/components/Tabs';
 import Loader from 'apollo-react/components/Loader';
 import { protocolSummary, getProcotoclToc } from './protocolSlice';
+import { isPrimaryUser } from '../../../utils/utilFunction';
 
 // ------------------- Components ------------
 import ProtocolOverview from './ProtocolOverview';
@@ -26,6 +27,14 @@ function Protocols({ location }) {
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
   const [pdfArray] = useState([]);
+  const [summarydata, setSummaryData] = useState();
+
+  useEffect(() => {
+    setSummaryData({
+      ...summary.data,
+      userPrimaryRoleFlag: isPrimaryUser(summary.data),
+    });
+  }, [summary]);
 
   useEffect(() => {
     const params = location.search;
@@ -124,7 +133,11 @@ function Protocols({ location }) {
               <div className="tab-container">
                 {value === 0 && <ProtocolOverview data={data} />}
                 {value === 1 && (
-                  <ProtocolView protId={data.id} data={data} refs={refs} />
+                  <ProtocolView
+                    protId={data.id}
+                    data={summarydata}
+                    refs={refs}
+                  />
                 )}
                 {value === 2 && <Documents handleChangeTab={handleChangeTab} />}
               </div>

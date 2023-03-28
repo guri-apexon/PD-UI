@@ -9,6 +9,7 @@ import protocolPageSlice, {
   getCompare,
   getEnrichedValue,
   getFileStream,
+  updateSectionData,
   getHeaderList,
   getMetadataApiCall,
   getMetaDataSummaryField,
@@ -30,11 +31,10 @@ import protocolPageSlice, {
   sectionLoader,
   setAccordianMetaData,
   setAccordianMetaParam,
+  viewResult,
   setSectionDetails,
   setSectionLoader,
   TOCActive,
-  updateSectionData,
-  viewResult,
 } from '../protocolSlice';
 
 const initialState = {
@@ -498,5 +498,21 @@ describe(' ProtocolSlice Test Suite', () => {
       type: updateSectionData.type,
       payload,
     });
+    protocolSummary(state);
+    viewResult(state);
+    associateDocs(state);
+    compareResult(state);
+    headerResult(state);
+    protocolResult(state);
+    sectionDetails(state);
+    protocolTocData(state);
+    sectionLoader(state);
+    getPdfData(state);
+    rightBladeValue(state);
+    TOCActive(state);
+    accordionMetaData(state);
+    accordianMetaParam(state);
+    metadataApiCallValue(state);
+    EnrichedValue(state);
   });
 });
