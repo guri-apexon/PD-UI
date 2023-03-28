@@ -98,3 +98,6 @@
   display: flex;
   margin-top: 16px;
 }
+.metadata-card .lab-table-container tr:last-child td:first-child:nth-last-child(1) {
+  display: table-cell;
+}

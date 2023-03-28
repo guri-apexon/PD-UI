@@ -31,6 +31,7 @@ import {
   setSOAData,
   getSectionIndex,
   getLabData,
+  updateGetLabData,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -712,29 +713,27 @@ export function* UpdateLabData(action) {
   };
   const labData = yield call(httpCall, config);
   if (labData?.success) {
+    console.log(labData, 'labData updated');
     toast.info('Lab Data Updated');
-    yield put(getLabData(labData.data));
+    yield put(updateGetLabData(labData.data));
   } else {
     toast.error('Error While Updation');
   }
 }
 
 export function* DeleteLabData(action) {
-  const {
-    payload: { docId },
-  } = action;
   const config = {
-    url: `${BASE_URL_8000}${Apis.DELETE_LAB_DATA}/?aidoc_id=${docId}`,
+    url: `${BASE_URL_8000}${Apis.DELETE_LAB_DATA}`,
     method: 'POST',
-    params: {
-      docId: action.payload.docId,
-      id: action.payload.id,
+    data: {
+      data: action.payload,
     },
   };
   const labData = yield call(httpCall, config);
-  if (labData?.success) {
-    toast.info('Lab Data row deleted');
+  console.log(labData, 'labData saga');
+  if (labData?.data?.is_deleted) {
     yield put(getLabData(labData.data));
+    toast.info('Lab Data row deleted');
   } else {
     toast.error('Error While deleting');
   }

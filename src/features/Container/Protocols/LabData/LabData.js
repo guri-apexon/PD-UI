@@ -12,7 +12,7 @@ import Modal from 'apollo-react/components/Modal';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import IconButton from 'apollo-react/components/IconButton';
 import Plus from 'apollo-react-icons/Plus';
-import { labDataApi } from '../protocolSlice';
+import { labDataApiValue, updateGetLabData } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
@@ -98,7 +98,8 @@ function PlusIcon({ row }) {
 }
 function LabData({ docId }) {
   const dispatch = useDispatch();
-  const labData = useSelector(labDataApi);
+  const labData = useSelector(labDataApiValue);
+  const updateLabData = useSelector(updateGetLabData);
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState([]);
   const [editedRow, setEditedRow] = useState({});
@@ -114,6 +115,10 @@ function LabData({ docId }) {
       },
     });
   }, [docId]);
+
+  useEffect(() => {
+    console.log(updateLabData, 'updateLabData from UI');
+  }, [updateLabData]);
 
   const handleSave = () => {
     setIsEdit(false);
@@ -201,14 +206,29 @@ function LabData({ docId }) {
   // }, []);
 
   const onDeleteRow = () => {
+    const result = rowData.find((value) => value.id === tableId);
     dispatch({
       type: 'DELETE_LAB_DATA',
       payload: {
-        docId,
-        tableId,
+        id: result.id,
+        doc_id: result.doc_id,
+        run_id: result.run_id,
+        parameter: result.parameter,
+        parameter_text: result.parameter_text,
+        procedure_panel: result.procedure_panel,
+        procedure_panel_text: result.procedure_panel_text,
+        assessment: result.assessment,
+        dts: result.dts,
+        pname: result.pname,
+        ProcessMachineName: result.ProcessMachineName,
+        ProcessVersion: result.ProcessVersion,
+        roi_id: result.roi_id,
+        section: result.section,
+        table_link_text: result.table_link_text,
+        table_roi_id: result.table_roi_id,
+        table_sequence_index: -1,
       },
     });
-    const result = rowData.filter((value) => value.id !== tableId);
     setRowData(result);
     setEditedRow({});
     setIsOpen(false);
@@ -251,10 +271,13 @@ function LabData({ docId }) {
 
   useEffect(() => {
     if (labData.length > 0) {
-      setRowData(labData);
+      console.log(
+        labData.filter((value) => value.soft_delete !== null),
+        'labData is fetch',
+      );
+      setRowData(labData.filter((value) => value.soft_delete !== true));
     }
-  });
-  console.log(rowData, 'roData');
+  }, [labData]);
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"

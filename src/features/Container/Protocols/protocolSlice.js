@@ -52,7 +52,7 @@ export const protocolSlice = createSlice({
     SOAData: {},
     isSaveEnabled: false,
     sectionIndex: -1,
-    labDataApi: {
+    labDataApiValue: {
       data: [],
     },
   },
@@ -175,7 +175,10 @@ export const protocolSlice = createSlice({
       state.sectionIndex = action.payload;
     },
     getLabData: (state, action) => {
-      state.labDataApi = action.payload;
+      state.labDataApiValue = action.payload;
+    },
+    updateGetLabData: (state, action) => {
+      state.labDataUpdatedValue = action.payload;
     },
   },
 });
@@ -206,6 +209,7 @@ export const {
   getSectionIndex,
   resetUpdateStatus,
   getLabData,
+  updateGetLabData,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -232,6 +236,8 @@ export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
 export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const SOAData = (state) => state.protocol.SOAData;
-export const labDataApi = (state) => state.protocol.labDataApi;
+export const labDataApiValue = (state) => state.protocol.labDataApiValue;
+export const labDataUpdatedValue = (state) =>
+  state.protocol.labDataUpdatedValue;
 
 export default protocolSlice.reducer;
