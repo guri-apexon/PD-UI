@@ -18,6 +18,7 @@ function ProtocolView({ refs, data }) {
 
   const [selectedSection, setSelectedSection] = useState({});
   const [sectionContent, setSectionContent] = useState([]);
+  const [unsavedImgs, setUnsavedImgs] = useState([]);
   const [value, setValue] = useState(false);
 
   const handleChange = (e, checked) => {
@@ -137,6 +138,8 @@ function ProtocolView({ refs, data }) {
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
+      unsavedImgs,
+      setUnsavedImgs,
     }),
     [
       selectedSection,
@@ -145,6 +148,8 @@ function ProtocolView({ refs, data }) {
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
+      unsavedImgs,
+      setUnsavedImgs,
     ],
   );
 

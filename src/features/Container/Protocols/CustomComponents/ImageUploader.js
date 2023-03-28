@@ -23,7 +23,8 @@ function ImageUploader({ lineID, content, edit }) {
   const [isEdit, setIsEdit] = useState(true);
   const [showEditBtn, setShowEditBtn] = useState(false);
   const [showDltCnfrm, setShowDltCnfrm] = useState(false);
-  const { dispatchSectionEvent } = useProtContext();
+  const { dispatchSectionEvent, unsavedImgs, setUnsavedImgs } =
+    useProtContext();
 
   const handleDelete = () => {
     dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
@@ -43,6 +44,8 @@ function ImageUploader({ lineID, content, edit }) {
       content: img,
     };
     dispatchSectionEvent('CONTENT_UPDATE', obj);
+    const arr = unsavedImgs.filter((ele) => ele !== lineID);
+    setUnsavedImgs(arr);
     setShowEditBtn(false);
     setIsEdit(false);
     dispatch(setSaveEnabled(true));
@@ -58,6 +61,7 @@ function ImageUploader({ lineID, content, edit }) {
       const type = newValue[0].name.split('.').pop().toLowerCase();
       if (supportedFileType.includes(type)) {
         setValue(newValue);
+        setUnsavedImgs([...unsavedImgs, lineID]);
       } else {
         toast.error('Please Upload Supported Image File');
       }

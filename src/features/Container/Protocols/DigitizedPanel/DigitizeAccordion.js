@@ -91,6 +91,7 @@ function DigitizeAccordion({
   const [openAudit, setOpenAudit] = useState(null);
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
+  const [alertMsg, setAlertMsg] = useState(null);
 
   const { data: sectionData, updated } = sectionHeaderDetails;
 
@@ -106,6 +107,8 @@ function DigitizeAccordion({
     selectedSection,
     setSaveSection,
     saveSection,
+    unsavedImgs,
+    setUnsavedImgs,
   } = useProtContext();
 
   const handleChange = (e) => {
@@ -259,6 +262,13 @@ function DigitizeAccordion({
   const handleSaveContent = () => {
     if (checkUnsavedTable()) {
       setShowAlert(true);
+      setAlertMsg('Please save the all the tables before saving the section');
+      return;
+    }
+
+    if (unsavedImgs.length > 0) {
+      setShowAlert(true);
+      setAlertMsg('Please save all the images before saving the section');
       return;
     }
     const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
@@ -266,6 +276,7 @@ function DigitizeAccordion({
       toast.error('Please do some changes to update');
     } else {
       dispatch(setSaveEnabled(false));
+      setUnsavedImgs([]);
       setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
@@ -702,7 +713,7 @@ function DigitizeAccordion({
         </Modal>
         {showAlert && (
           <div className="confirmation-popup" data-testId="confirmPopup">
-            <p>Please save the all the tables before saving the section</p>
+            <p>{alertMsg}</p>
             <ButtonGroup
               buttonProps={[
                 {
