@@ -232,6 +232,6 @@ export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
 export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const SOAData = (state) => state.protocol.SOAData;
-export const labData = (state) => state.protocol.labDataApi;
+export const labDataApi = (state) => state.protocol.labDataApi;
 
 export default protocolSlice.reducer;

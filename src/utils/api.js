@@ -197,8 +197,8 @@ let UIhost;
 /* eslint-enable */
 const environment = process.env.REACT_APP_ENV;
 if (environment === 'local') {
-  backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
-  // backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
+  // backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
+  backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8001';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
@@ -254,6 +254,9 @@ export const Apis = {
   METADATA: '/pd/api/v1/documents',
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
   SAVE_SECTION_CONTENT: '/api/qc_ingest',
+  LAB_DATA: '/api/lab_data',
+  UPDATE_LAB_DATA: '/api/lab_data/update_labsparameter',
+  DELETE_LAB_DATA: '/api/lab_data/delete_labsparameter',
 };
 
 export const SSO_ENABLED = environment !== 'local';

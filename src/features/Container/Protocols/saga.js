@@ -35,7 +35,6 @@ import {
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
-import LABDATA_CONSTANTS from './LabData/constants';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
 
@@ -685,17 +684,59 @@ export function* setSectionIndex(action) {
 
 export function* LabData(action) {
   const {
-    payload: { op, docId },
+    payload: { docId },
   } = action;
   const config = {
-    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
+    url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
     method: 'GET',
-    checkAuth: true,
-    headers: jsonContentHeader,
   };
-  const MetaData = yield call(httpCall, config);
-  const labData = yield call(getLabData(LABDATA_CONSTANTS));
-  console.log('labData', labData);
+  const labData = yield call(httpCall, config);
+  if (labData.success) {
+    yield put(getLabData(labData.data));
+  } else {
+    yield put(getLabData([]));
+  }
+}
+
+export function* UpdateLabData(action) {
+  const {
+    payload: { docId, data },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.UPDATE_LAB_DATA}/?aidoc_id=${docId}`,
+    method: 'POST',
+    data: {
+      data,
+    },
+  };
+  const labData = yield call(httpCall, config);
+  if (labData?.success) {
+    toast.info('Lab Data Updated');
+    yield put(getLabData(labData.data));
+  } else {
+    toast.error('Error While Updation');
+  }
+}
+
+export function* DeleteLabData(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.DELETE_LAB_DATA}/?aidoc_id=${docId}`,
+    method: 'POST',
+    params: {
+      docId: action.payload.docId,
+      id: action.payload.id,
+    },
+  };
+  const labData = yield call(httpCall, config);
+  if (labData?.success) {
+    toast.info('Lab Data row deleted');
+    yield put(getLabData(labData.data));
+  } else {
+    toast.error('Error While deleting');
+  }
 }
 
 function* watchProtocolAsync() {
@@ -723,6 +764,8 @@ function* watchProtocolViews() {
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
   yield takeEvery('GET_LAB_DATA', LabData);
+  yield takeEvery('UPDATE_LAB_DATA', UpdateLabData);
+  yield takeEvery('DELETE_LAB_DATA', DeleteLabData);
 }
 
 // notice how we now only export the rootSaga

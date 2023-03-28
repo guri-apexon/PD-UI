@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Card from 'apollo-react/components/Card/Card';
 import TextField from 'apollo-react/components/TextField';
@@ -11,6 +12,8 @@ import Modal from 'apollo-react/components/Modal';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import IconButton from 'apollo-react/components/IconButton';
 import Plus from 'apollo-react-icons/Plus';
+import { labDataApi } from '../protocolSlice';
+import Loader from '../../../Components/Loader/Loader';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
 
@@ -93,13 +96,24 @@ function PlusIcon({ row }) {
     </IconButton>
   );
 }
-function LabData() {
+function LabData({ docId }) {
+  const dispatch = useDispatch();
+  const labData = useSelector(labDataApi);
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
-  const [rowData, setRowData] = useState(LABDATA_CONSTANTS.records);
+  const [rowData, setRowData] = useState([]);
   const [editedRow, setEditedRow] = useState({});
   const [isEdit, setIsEdit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [tableId, setTableId] = useState();
+
+  useEffect(() => {
+    dispatch({
+      type: 'GET_LAB_DATA',
+      payload: {
+        docId,
+      },
+    });
+  }, [docId]);
 
   const handleSave = () => {
     setIsEdit(false);
@@ -124,6 +138,13 @@ function LabData() {
   };
 
   const handleSaveRow = () => {
+    dispatch({
+      type: 'UPDATE_LAB_DATA',
+      payload: {
+        docId,
+        data: editedRow,
+      },
+    });
     setRowData(
       rowData.map((row) => (row.id === editedRow.id ? editedRow : row)),
     );
@@ -140,7 +161,9 @@ function LabData() {
   useEffect(() => {
     setColumns(
       columns.map((col) => {
-        const isIncluded = ['id', 'menu', 'plus'].includes(col.accessor);
+        const isIncluded = ['table_link_text', 'menu', 'plus'].includes(
+          col.accessor,
+        );
         if (!isIncluded) {
           return {
             ...col,
@@ -178,6 +201,13 @@ function LabData() {
   // }, []);
 
   const onDeleteRow = () => {
+    dispatch({
+      type: 'DELETE_LAB_DATA',
+      payload: {
+        docId,
+        tableId,
+      },
+    });
     const result = rowData.filter((value) => value.id !== tableId);
     setRowData(result);
     setEditedRow({});
@@ -218,59 +248,70 @@ function LabData() {
   //   console.log(result, 'result');
   //   console.log(element, 'element');
   // });
+
+  useEffect(() => {
+    if (labData.length > 0) {
+      setRowData(labData);
+    }
+  });
+  console.log(rowData, 'roData');
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
       data-testid="lab-data"
     >
-      <div className="lab-table-container">
-        <div className="lab-btn-container">
-          {isEdit ? (
-            <Button
-              variant="secondary"
-              icon={<Save />}
-              className="btn-common"
-              onClick={handleSave}
-              data-testid="saveall"
-            />
-          ) : (
-            <Button
-              variant="secondary"
-              icon={<Pencil />}
-              className="btn-common"
-              onClick={() => setIsEdit(true)}
-              data-testid="editall"
-            />
-          )}
+      {labData.length > 0 ? (
+        <div className="lab-table-container">
+          <div className="lab-btn-container">
+            {isEdit ? (
+              <Button
+                variant="secondary"
+                icon={<Save />}
+                className="btn-common"
+                onClick={handleSave}
+                data-testid="saveall"
+              />
+            ) : (
+              <Button
+                variant="secondary"
+                icon={<Pencil />}
+                className="btn-common"
+                onClick={() => setIsEdit(true)}
+                data-testid="editall"
+              />
+            )}
+          </div>
+          <Table
+            title="Lab Data"
+            columns={columns}
+            rows={rowData?.map((row) => ({
+              ...row,
+              editMode: editedRow.id === row.id,
+              editedRow,
+              updateRow,
+              onRowEdit,
+              onDelete,
+              handleChange,
+              handleCancel,
+              handleSaveRow,
+            }))}
+            initialSortedColumn="table_link_text"
+            initialSortOrder="asc"
+            rowId="table_link_text"
+            rowsPerPageOptions={[5, 10, 15, 'All']}
+            tablePaginationProps={{
+              labelDisplayedRows: ({ from, to, count }) =>
+                `${
+                  count === 1 ? 'Lab Data' : 'Lab Datas'
+                } ${from}-${to} of ${count}`,
+              truncate: true,
+            }}
+            showClearFiltersButton
+          />
         </div>
-        <Table
-          title="Lab Data"
-          columns={columns}
-          rows={rowData?.map((row) => ({
-            ...row,
-            editMode: editedRow.id === row.id,
-            editedRow,
-            updateRow,
-            onRowEdit,
-            onDelete,
-            handleChange,
-            handleCancel,
-            handleSaveRow,
-          }))}
-          initialSortedColumn="id"
-          initialSortOrder="asc"
-          rowId="id"
-          rowsPerPageOptions={[5, 10, 15, 'All']}
-          tablePaginationProps={{
-            labelDisplayedRows: ({ from, to, count }) =>
-              `${
-                count === 1 ? 'Lab Data' : 'Lab Datas'
-              } ${from}-${to} of ${count}`,
-            truncate: true,
-          }}
-          showClearFiltersButton
-        />
-      </div>
+      ) : (
+        <Loader />
+      )}
       <Modal
         data-testid="delete-row-modal"
         open={isOpen}
@@ -287,6 +328,8 @@ function LabData() {
   );
 }
 
+export default LabData;
+
 ActionCell.propTypes = {
   row: PropTypes.isRequired,
 };
@@ -297,5 +340,6 @@ EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
 };
-
-export default LabData;
+LabData.propTypes = {
+  docId: PropTypes.isRequired,
+};

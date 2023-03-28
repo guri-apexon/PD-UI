@@ -199,7 +199,9 @@ function DigitalizeCard({
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
       )}
-      {rightValue === PROTOCOL_RIGHT_MENU.LAB_DATA && <LabData />}
+      {rightValue === PROTOCOL_RIGHT_MENU.LAB_DATA && (
+        <LabData docId={data.id} />
+      )}
       {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
         <SOA docId={data.id} />
       )}

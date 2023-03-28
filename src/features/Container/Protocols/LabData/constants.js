@@ -4,62 +4,48 @@ import {
   compareStrings,
   createStringSearchFilter,
 } from 'apollo-react/components/Table';
-import PropTypes from 'prop-types';
-import TextField from 'apollo-react/components/TextField';
-
-function TextFieldFilter({ accessor, filters, updateFilterValue }) {
-  return (
-    <TextField
-      value={filters[accessor]}
-      name={accessor}
-      onChange={updateFilterValue}
-      fullWidth
-      margin="none"
-      size="small"
-    />
-  );
-}
+import TextFieldFilter from './utilFunction';
 
 const columnList = [
   {
     header: 'Table Index',
-    accessor: 'id',
-    sortFunction: compareNumbers,
-    filterFunction: numberSearchFilter('id'),
+    accessor: 'table_link_text',
+    sortFunction: compareStrings,
+    filterFunction: createStringSearchFilter('table_link_text'),
   },
   {
     header: 'Table Name',
-    accessor: 'name',
+    accessor: 'table_link_text',
     sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter('name'),
+    filterFunction: createStringSearchFilter('table_link_text'),
     filterComponent: TextFieldFilter,
   },
   {
     header: 'Assessment Name (From Document)',
-    accessor: 'assName',
+    accessor: 'procedure_panel_text',
     sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter('assName'),
+    filterFunction: createStringSearchFilter('procedure_panel_text'),
     filterComponent: TextFieldFilter,
   },
   {
     header: 'Procedure Name (From Document)',
-    accessor: 'prName',
+    accessor: 'parameter_text',
     sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter('prName'),
+    filterFunction: createStringSearchFilter('parameter_text'),
     filterComponent: TextFieldFilter,
   },
   {
     header: 'Assessment Preferred Name',
-    accessor: 'assPrefName',
+    accessor: 'assessment',
     sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter('assPrefName'),
+    filterFunction: createStringSearchFilter('assessment'),
     filterComponent: TextFieldFilter,
   },
   {
     header: 'Procedure Preferred Name',
-    accessor: 'prPrefName',
+    accessor: 'pname',
     sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter('prPrefName'),
+    filterFunction: createStringSearchFilter('pname'),
     filterComponent: TextFieldFilter,
   },
 ];
@@ -144,12 +130,6 @@ const evenMoreColumns = [
     filterFunction: numberSearchFilter('id'),
   })),
 ];
-
-TextFieldFilter.propTypes = {
-  accessor: PropTypes.isRequired,
-  filters: PropTypes.isRequired,
-  updateFilterValue: PropTypes.isRequired,
-};
 
 export {
   moreColumns,
