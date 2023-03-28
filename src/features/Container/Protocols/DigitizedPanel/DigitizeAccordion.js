@@ -187,6 +187,7 @@ function DigitizeAccordion({
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
+    setUnsavedImgs([]);
     dispatch(setSaveEnabled(false));
     setCurrentEditCard(item.link_id);
     setSectionDataBak([...sectionDataArr]);
@@ -391,6 +392,8 @@ function DigitizeAccordion({
     setSectionDataBak([]);
     setCurrentEditCard(null);
     dispatch(setSaveEnabled(false));
+    setAlertMsg(null);
+    setUnsavedImgs([]);
     dispatch(
       updateSectionData({
         data: sectionDataBak,
