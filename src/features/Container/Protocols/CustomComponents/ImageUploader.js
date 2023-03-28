@@ -86,6 +86,8 @@ function ImageUploader({ lineID, content, edit }) {
     if (!imgBkp || imgBkp === '') {
       dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
     }
+    const arr = unsavedImgs.filter((ele) => ele !== lineID);
+    setUnsavedImgs(arr);
     setIsEdit(false);
     setImg(imgBkp);
     setImgBkp(null);
