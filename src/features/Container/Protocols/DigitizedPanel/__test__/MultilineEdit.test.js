@@ -147,7 +147,6 @@ describe('DigitizedEdit', () => {
     expect(screen).toBeTruthy();
     const contentContainer = screen.getAllByTestId('content_container');
     fireEvent.click(contentContainer[0]);
-    screen.debug();
     const element = screen.getAllByTestId('contentEdit')[0];
     element.focus();
     fireEvent.keyDown(element, {

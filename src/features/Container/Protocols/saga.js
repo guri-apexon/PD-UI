@@ -30,6 +30,7 @@ import {
   TOCActive,
   setSOAData,
   getSectionIndex,
+  getLabData,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -252,9 +253,7 @@ export function* updateSectionData(action) {
         });
       } else {
         yield put(updateSectionResp({ response: sectionSaveRes.data }));
-        toast.success(
-          sectionSaveRes.data.message || 'Section updated successfully',
-        );
+        toast.success('Section content updated successfully');
       }
     } else {
       yield put(
@@ -511,7 +510,7 @@ export function* addMetaDataAttributes(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  if (MetaData?.data?.isAdded) {
+  if (MetaData?.data?.is_added) {
     toast.info('Protocol Attributes Updated Successfully');
     yield put(
       getMetadataApiCall({
@@ -549,7 +548,7 @@ export function* addMetaDataField(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  if (MetaData?.data?.isAdded) {
+  if (MetaData?.data?.is_added) {
     toast.info(`${reqData.name} added successfully`);
     yield put(
       getMetadataApiCall({
@@ -587,7 +586,7 @@ export function* deleteAttribute(action) {
     },
   };
   const data = yield call(httpCall, config);
-  if (data?.data?.isDeleted) {
+  if (data?.data?.is_deleted) {
     if (op === 'deleteField') {
       yield put(
         getMetadataApiCall({
@@ -684,6 +683,63 @@ export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
 
+export function* LabData(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
+    method: 'GET',
+  };
+  const labData = yield call(httpCall, config);
+  if (labData.success) {
+    yield put(getLabData(labData.data));
+  } else {
+    yield put(getLabData([]));
+  }
+}
+
+export function* UpdateLabData(action) {
+  const {
+    payload: { docId, data },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.UPDATE_LAB_DATA}/?aidoc_id=${docId}`,
+    method: 'POST',
+    data: {
+      data,
+    },
+  };
+  const labData = yield call(httpCall, config);
+  if (labData?.success) {
+    toast.info('Lab Data Updated');
+    yield put(getLabData(labData.data));
+  } else {
+    toast.error('Error While Updation');
+  }
+}
+
+export function* DeleteLabData(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.DELETE_LAB_DATA}/?aidoc_id=${docId}`,
+    method: 'POST',
+    params: {
+      docId: action.payload.docId,
+      id: action.payload.id,
+    },
+  };
+  const labData = yield call(httpCall, config);
+  if (labData?.success) {
+    toast.info('Lab Data row deleted');
+    yield put(getLabData(labData.data));
+  } else {
+    toast.error('Error While deleting');
+  }
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -708,6 +764,9 @@ function* watchProtocolViews() {
   yield takeLatest('GET_SOA_DATA', getSOAData);
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
+  yield takeEvery('GET_LAB_DATA', LabData);
+  yield takeEvery('UPDATE_LAB_DATA', UpdateLabData);
+  yield takeEvery('DELETE_LAB_DATA', DeleteLabData);
 }
 
 // notice how we now only export the rootSaga

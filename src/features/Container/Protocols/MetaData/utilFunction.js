@@ -4,7 +4,7 @@ import moment from 'moment';
 const formattedValue = (type, val) => {
   let payloadData = val;
   if (type === 'boolean') {
-    payloadData = payloadData.toString();
+    payloadData = payloadData?.toString();
   }
   if (type === 'date') {
     payloadData = moment(payloadData).format('DD-MMM-YYYY');

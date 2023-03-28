@@ -17,6 +17,7 @@ import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
 import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import LabData from '../LabData/LabData';
 import DigitizeAccordion from './DigitizeAccordion';
 
 function DigitalizeCard({
@@ -199,6 +200,9 @@ function DigitalizeCard({
       )}
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.LAB_DATA && (
+        <LabData docId={data.id} />
       )}
       {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
         <SOA docId={data.id} />

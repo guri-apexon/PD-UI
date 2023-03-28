@@ -6,7 +6,8 @@
   position: sticky;
   width: 100%;
   top: 0;
-  left: 0;
+  left: 0px;
+  justify-content: flex-start;
   z-index: 9;
   .button-exec-icon {
     background-color: #fff;

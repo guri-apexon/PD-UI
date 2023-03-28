@@ -50,7 +50,6 @@ function BladeRight({ dataSummary, value, handleChange }) {
     if (name === PROTOCOL_RIGHT_MENU.CLINICAL_TERM && !flag) {
       return true;
     }
-
     return false;
   };
   return (

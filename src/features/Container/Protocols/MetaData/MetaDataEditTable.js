@@ -116,7 +116,7 @@ function MetaDataEditTable({
   const columns = [
     {
       header: 'Key',
-      accessor: 'display_name',
+      accessor: 'attr_name',
       customCell: EditableCell,
     },
     {
@@ -186,7 +186,6 @@ function MetaDataEditTable({
   };
 
   const getValue = (list, keyName, value) => {
-    console.log('value', value);
     return list?.attr_type === 'date' && keyName === 'attr_value'
       ? // eslint-disable-next-line
         moment(value?._d).format('DD-MMM-YYYY')

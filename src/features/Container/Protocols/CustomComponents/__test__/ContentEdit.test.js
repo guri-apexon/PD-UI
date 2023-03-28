@@ -152,8 +152,6 @@ describe('ContentEdit', () => {
         edit="true"
       />,
     );
-    screen.debug(undefined, Infinity);
-
     const contentEditable = screen.getByTestId('contentEdit');
     fireEvent.keyDown(contentEditable, { keyCode: 46 });
     expect(mockDeleteSection).not.toHaveBeenCalled();
@@ -199,7 +197,6 @@ describe('ContentEdit', () => {
     );
 
     const contentEditable = screen.getByTestId('contentEdit');
-    screen.debug(undefined, Infinity);
     fireEvent.blur(contentEditable);
     expect(mockdispatchSectionEvent).toHaveBeenCalledWith('CONTENT_UPDATE', {
       currentLineId: defaultProps.lineID,
