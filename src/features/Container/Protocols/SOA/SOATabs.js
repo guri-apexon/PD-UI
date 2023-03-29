@@ -8,15 +8,14 @@ import { TableEvents } from './Constants';
 function SOATabs() {
   const { state, dispatch } = useContext(TabelContext);
   const { selectedTab, tables } = state;
-
+  const onChangeHandler = (value) =>
+    dispatch({ type: TableEvents.SET_SELECTED_TAB, payload: value });
   return (
     <div>
       <SegmentedControlGroup
         value={String(selectedTab)}
         exclusive
-        onChange={(event, value) => {
-          dispatch({ type: TableEvents.SET_SELECTED_TAB, payload: value });
-        }}
+        onChange={(event, value) => onChangeHandler(value)}
       >
         {tables.map((item, index) => {
           return (

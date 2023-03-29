@@ -333,4 +333,88 @@ describe('DigitizeAccordion', () => {
     expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
     fireEvent.click(component.getByTestId('accordion_summary'));
   });
+
+  test('Save button is visible for primary user', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const item1 = {
+      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+      group_type: 'DocumentLinks',
+      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      LinkLevel: 1,
+      page: 1,
+      sec_id: '',
+      source_file_section: 'Signatures',
+      LinkType: 'toc',
+      qc_change_type: '',
+      sequence: 0,
+      section_locked: false,
+      audit_info: {
+        last_reviewed_date: '',
+        last_reviewed_by: '',
+        total_no_review: '',
+      },
+    };
+    const component = renderWithProviders(
+      <DigitizeAccordion
+        item={item1}
+        primaryRole={bool}
+        protocol="1234"
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        setCurrentActiveCard={jest.fn()}
+        setCurrentEditCard={jest.fn()}
+      />,
+    );
+    const pencil = component.getByTestId('pencilIcon');
+    expect(pencil).toBeInTheDocument();
+    fireEvent.click(pencil);
+    const trash = component.getByTestId('trashIcon');
+    fireEvent.click(trash);
+    const deleteText = component.getByTestId('update-term-field');
+    fireEvent.click(deleteText);
+  });
+  test('Save button is visible for primary user', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const item1 = {
+      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+      group_type: 'DocumentLinks',
+      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      LinkLevel: 1,
+      page: 1,
+      sec_id: '',
+      source_file_section: 'Signatures',
+      LinkType: 'toc',
+      qc_change_type: '',
+      sequence: 0,
+      section_locked: false,
+      audit_info: {
+        last_reviewed_date: '',
+        last_reviewed_by: '',
+        total_no_review: '',
+      },
+    };
+    const component = renderWithProviders(
+      <DigitizeAccordion
+        item={item1}
+        primaryRole={bool}
+        protocol="1234"
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        setCurrentActiveCard={jest.fn()}
+        setCurrentEditCard={jest.fn()}
+      />,
+    );
+    const pencil = component.getByTestId('pencilIcon');
+    expect(pencil).toBeInTheDocument();
+    fireEvent.click(pencil);
+    const trash = component.getByTestId('trashIcon');
+    fireEvent.click(trash);
+    const deleteText = component.getByTestId('update-term-field-cancel');
+    component.debug();
+    fireEvent.click(deleteText);
+  });
 });

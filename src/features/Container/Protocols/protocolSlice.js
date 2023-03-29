@@ -176,6 +176,9 @@ export const protocolSlice = createSlice({
     setSOAData: (state, action) => {
       state.SOAData = action.payload;
     },
+    setLoader: (state, action) => {
+      state.loader = action.payload;
+    },
     setSaveEnabled: (state, action) => {
       state.isSaveEnabled = action.payload;
     },
@@ -222,6 +225,7 @@ export const {
   getLabData,
   updateGetLabData,
   deleteGetLabData,
+  setLoader,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

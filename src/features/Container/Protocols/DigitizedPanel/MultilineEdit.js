@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
@@ -47,6 +48,11 @@ function MultilineEdit({ sectionDataArr, edit }) {
   };
 
   const deleteSegment = () => {
+    if (sections?.length === 1) {
+      toast.error('Section should have atleast 1 paragraph');
+      setShowConfirm(false);
+      return;
+    }
     dispatchSectionEvent('CONTENT_DELETED', { currentLineId: activeLineID });
     setShowConfirm(false);
   };

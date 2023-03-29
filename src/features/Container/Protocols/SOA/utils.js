@@ -1,22 +1,11 @@
 import CellRenderer from './CellRenderers/CellRenderer';
 import { TableConst } from './Constants';
 import FirstColumn from './CellRenderers/FirstColumn';
-
-const checkAndPush = (arr, obj) => {
-  const found = arr.find(
-    (item) =>
-      Number(obj[TableConst.ROW_IDX]) === Number(item[TableConst.ROW_IDX]) &&
-      Number(obj[TableConst.COLUMN_IDX]) ===
-        Number(item[TableConst.COLUMN_IDX]),
-  );
-  if (!found) arr.push(obj);
-};
+import HeaderComponent from './CellRenderers/HeaderComponent';
 
 const addColumnDefs = (item) => {
   if (item[TableConst.ROW_IDX] === 0 && item[TableConst.COLUMN_IDX] === 0) {
-    item.headerClass = TableConst.headerClass;
     item.width = 150;
-    item.suppressSizeToFit = true;
     item.pinned = 'left';
     item.lockPosition = 'left';
     item.lockPinned = true;
@@ -25,10 +14,16 @@ const addColumnDefs = (item) => {
     item.cellClass = 'column1';
   } else {
     item.cellRenderer = CellRenderer;
-    item.suppressSizeToFit = true;
   }
+  item.headerClass = TableConst.headerClass;
+  item.suppressSizeToFit = true;
+  item.headerComponent = HeaderComponent;
   item.editable = true;
+  item.minWidth = 150;
+  item.maxWidth = 250;
   item.headerName = item[TableConst.VALUE_TEXT1];
+  item.suppressMovable = true;
+
   item.cellEditorSelector = (params) => {
     const { data, colDef } = params;
     const initialState = data[colDef.field]?.[TableConst.DATA_VALUE]
@@ -44,39 +39,41 @@ const addColumnDefs = (item) => {
       },
     };
   };
+
   item.valueSetter = (params) => {
-    const newValInt = parseInt(params.newValue, 10);
-    const {
-      colDef: { field },
-      node: { rowIndex },
-    } = params;
-    const valueChanged = params.data.b !== newValInt;
+    const { oldValue, newValue } = params;
 
-    if (valueChanged) {
-      if (!params.oldValue) {
-        params.data[field] = {
-          [TableConst.ROW_IDX]: rowIndex,
-          [TableConst.COLUMN_IDX]: field,
-          [TableConst.DATA_VALUE]: params.newValue,
-        };
-      } else {
-        params.data[field][TableConst.DATA_VALUE] = params.newValue;
-      }
-      params.data.b = params.data[field];
+    let obj;
+    if (oldValue) {
+      obj = {
+        [TableConst.COLUMN_IDX]: Number(oldValue[TableConst.COLUMN_IDX]),
+        [TableConst.ROW_IDX]: Number(oldValue[TableConst.ROW_IDX]),
+        [TableConst.VALUE_TEXT1]: newValue,
+        isNewRecord: false,
+      };
+    } else {
+      const {
+        data,
+        colDef: { field },
+      } = params;
+      const rowIndex = data[Object.keys(data)[0]][TableConst.ROW_IDX];
+
+      obj = {
+        [TableConst.COLUMN_IDX]: Number(field),
+        [TableConst.ROW_IDX]: Number(rowIndex),
+        [TableConst.VALUE_TEXT1]: newValue,
+        isNewRecord: true,
+      };
     }
-    return valueChanged;
-  };
-  // item.suppressMovable = true;
-  // item.field = item.data;
+    params.data.b = obj;
 
-  item.headerClass = TableConst.headerClass;
+    return true;
+  };
 };
 const getTableColumns = (data) => {
   data.forEach((item) => {
     addColumnDefs(item);
   });
-
-  // return res;
   return data;
 };
 const getValueFormRecord = (item) => {
@@ -87,4 +84,4 @@ const getValueFormRecord = (item) => {
   return item[TableConst.VALUE_TEXT1];
 };
 
-export { checkAndPush, getTableColumns, getValueFormRecord, addColumnDefs };
+export { getTableColumns, getValueFormRecord, addColumnDefs };

@@ -4,29 +4,35 @@ import ChevronLeft from 'apollo-react-icons/ChevronLeft';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
 import { TableEvents } from './Constants';
 import TabelContext from './Context';
-import './styles.css';
+import './SOA.scss';
 
+const style = {
+  white: {
+    color: 'white',
+  },
+};
 function ArrangePanel() {
   const { state, dispatch } = useContext(TabelContext);
   return (
-    <div className="arrange-panel-container" data-testid="settings-button">
+    <div className="arrange-panel-container">
       <Typography
+        data-testid="settings-button"
         className="arrange-panel-items-setting"
-        onClick={() =>
+        onClick={() => {
           dispatch({
             type: TableEvents.SET_SETTINGS_OPEN,
             payload: !state.openSettings,
-          })
-        }
+          });
+        }}
       >
         <div className="arrange-panel-items-setting-container">
           <Typography variant="title1" className="arrange-panel-items">
             Settings
           </Typography>
           {state.openSettings ? (
-            <ChevronLeft style={{ color: 'white' }} />
+            <ChevronLeft style={style.white} />
           ) : (
-            <ChevronRight style={{ color: 'white' }} />
+            <ChevronRight style={style.white} />
           )}
         </div>
       </Typography>
