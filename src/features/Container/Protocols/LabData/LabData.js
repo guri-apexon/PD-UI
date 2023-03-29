@@ -113,6 +113,8 @@ function LabData({ docId }) {
   const [tableId, setTableId] = useState();
   const [showData, setShowData] = useState(true);
 
+  console.log(labData, 'labData is unit test');
+
   useEffect(() => {
     if (showData) {
       dispatch({
@@ -155,7 +157,7 @@ function LabData({ docId }) {
 
   const handleSaveRow = () => {
     const rowUpdated = rowData.map((row) =>
-      row.id === editedRow.id ? { ...row, isUpdated: true } : row,
+      row.id === editedRow.id ? { ...editedRow, isUpdated: true } : row,
     );
     setRowData(rowUpdated);
     setEditedRow({});
@@ -336,7 +338,7 @@ function LabData({ docId }) {
           />
         </div>
       ) : (
-        <div className="loader">
+        <div className="loader" data-testid="loader">
           <Loader />
         </div>
       )}
