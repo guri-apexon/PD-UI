@@ -723,7 +723,6 @@ export function* UpdateLabData(action) {
   };
   const labData = yield call(httpCall, config);
   if (labData?.success) {
-    console.log(labData, 'labData updated');
     toast.info('Lab Data Updated');
     yield put(updateGetLabData(labData));
   } else {
@@ -740,7 +739,6 @@ export function* DeleteLabData(action) {
     },
   };
   const labData = yield call(httpCall, config);
-  console.log(labData, 'labData saga');
   if (labData.success) {
     yield put(deleteGetLabData(labData));
     toast.info('Lab Data row deleted');

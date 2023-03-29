@@ -157,11 +157,6 @@ function LabData({ docId }) {
     const rowUpdated = rowData.map((row) =>
       row.id === editedRow.id ? { ...row, isUpdated: true } : row,
     );
-    console.log(rowUpdated, 'rowUpdated');
-    console.log(
-      rowUpdated.filter((value) => value.isUpdated === true),
-      'filter updated',
-    );
     setRowData(rowUpdated);
     setEditedRow({});
   };
@@ -269,21 +264,18 @@ function LabData({ docId }) {
 
   useEffect(() => {
     if (labData.data.length > 0 && showData === true) {
-      console.log('labData.data dd', labData.data);
       setRowData(labData.data.filter((value) => value.soft_delete !== true));
       setShowData(false);
     }
   }, [labData]);
 
   useEffect(() => {
-    console.log('deleteLabData ui', deleteLabData);
     if (deleteLabData.success === true && showData === false) {
       setShowData(true);
     }
   }, [deleteLabData]);
 
   useEffect(() => {
-    console.log('updateLabData ui', updateLabData);
     if (updateLabData.success === true && showData === false) {
       setShowData(true);
     }
