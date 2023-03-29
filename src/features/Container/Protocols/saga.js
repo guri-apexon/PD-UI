@@ -30,6 +30,7 @@ import {
   TOCActive,
   setSOAData,
   getSectionIndex,
+  setLoader,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -659,7 +660,6 @@ export function* saveEnrichedAPI(action) {
 }
 
 export function* getSOAData(action) {
-  console.log(action);
   const {
     payload: { docId, operationValue },
   } = action;
@@ -667,17 +667,32 @@ export function* getSOAData(action) {
   const params = `?operationValue=${operationValue}&id=${docId}`;
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa${params}`,
-    // url: './soa.json',
     method: 'GET',
     headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
   };
+  yield put(setLoader(true));
   const enrichedData = yield call(httpCall, config);
   if (enrichedData?.success) {
+    yield put(setLoader(false));
     yield put(setSOAData(enrichedData.data));
   } else {
+    yield put(setLoader(false));
+    yield put(setSOAData({}));
     toast.error('Error While Updation');
   }
 }
+
+export function* soaUpdateDetails({ data, method }) {
+  const config = {
+    url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa`,
+    method,
+    headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
+    data,
+  };
+
+  yield call(httpCall, config);
+}
+
 export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
@@ -706,6 +721,7 @@ function* watchProtocolViews() {
   yield takeLatest('GET_SOA_DATA', getSOAData);
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
+  yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
 }
 
 // notice how we now only export the rootSaga

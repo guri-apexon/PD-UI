@@ -1,19 +1,16 @@
 import { createContext } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { TableConst, TableEvents, TIMPE_POINTS } from '../Constants';
-import {
-  addColumnDefs,
-  checkAndPush,
-  getTableColumns,
-  getValueFormRecord,
-} from '../utils';
+import { getTableColumns, getValueFormRecord } from '../utils';
 
 const tableGridData = {
-  apiData: {},
+  docId: '',
   tables: [],
-  soa_data: [],
   tableData: [],
+  columnRows: [],
   columnDefs: [],
   selectedTab: 0,
+  tableId: '',
   arrangeBy: '',
   showBy: '',
   openSettings: false,
@@ -32,66 +29,9 @@ const tableGridData = {
   },
 };
 const headRows = [TableConst.STUDYVISIT, TableConst.STUDYPROCEDURE];
-const getParentName = (myName, foreFathers, list) => {
-  if (!list.includes(myName) || !foreFathers.includes(myName)) return null;
-  const arr = [];
-  list.forEach((item) => {
-    if (foreFathers.includes(item)) arr.push(item);
-  });
-  let isFound = false;
-  let pName = '';
-  arr.reverse().every((item) => {
-    if (isFound) {
-      pName = item;
-      return false;
-    }
-    if (item === myName) isFound = true;
-    return 1;
-  });
-
-  return pName;
-};
-const getParentObject = (arr, child) => {
-  let pobj = null;
-
-  arr.every((a) => {
-    if (a.tagName === child.parentName) {
-      pobj = a;
-      return false;
-    }
-    return true;
-  });
-  return pobj;
-};
-const getGroupedObjects = (arr) => {
-  const objs = {};
-  arr.forEach((a) => {
-    const txt = a[TableConst.VALUE_TEXT1];
-    addColumnDefs(a);
-    if (!objs[txt]) {
-      objs[txt] = a;
-      a.cols = [];
-      a.cols.push(a[TableConst.COLUMN_IDX]);
-    } else {
-      objs[txt].cols.push(a[TableConst.COLUMN_IDX]);
-    }
-  });
-  return Object.values(objs);
-};
-const inArray = (arr, value) => {
-  let found = false;
-  arr.every((a) => {
-    if (String(a) === String(value)) {
-      found = true;
-      return false;
-    }
-    return true;
-  });
-  return found;
-};
 const getAvailableHeader = (tableData) => {
   const sv = tableData[TableConst.STUDYVISIT];
-  const avHeaders = new Set(); // available headers
+  const avHeaders = new Set();
   sv.forEach((svItem) => {
     svItem[Object.keys(svItem)[0]].forEach(() => {
       avHeaders.add(Object.keys(svItem)[0]);
@@ -100,194 +40,272 @@ const getAvailableHeader = (tableData) => {
   return Array.from(avHeaders);
 };
 
-const getGroupHeaders = (baseColumns, tableData, headers, result) => {
-  const sv = JSON.parse(JSON.stringify(tableData[TableConst.STUDYVISIT]));
-  const bc = JSON.parse(JSON.stringify(baseColumns));
+const getTableCells = (data, action) => {
+  const records = [];
+  const rows = new Set();
+  const columns = new Set();
 
-  const ftObjects = [];
-  let avHeaders = new Set(); // available headers
-  sv.forEach((svItem) => {
-    const fitem = Object.keys(svItem)[0];
-    if (headers.includes(fitem)) {
-      svItem[Object.keys(svItem)[0]].forEach((i) => {
-        avHeaders.add(Object.keys(svItem)[0]);
-        const field = String(i[TableConst.COLUMN_IDX]);
-        const headerName = i[TableConst.VALUE_TEXT1];
-        ftObjects.push({
-          ...i,
-          tagName: String(Object.keys(svItem)[0]).toLowerCase(),
-          field,
-          headerName,
-        });
-      });
-    }
-  });
+  const COL = TableConst.COLUMN_IDX;
+  const ROW = TableConst.ROW_IDX;
+  const cells = [
+    ...data[TableConst.STUDYPROCEDURE],
+    ...data[TableConst.NORMALIZED_SOA],
+  ];
 
-  avHeaders = Array.from(avHeaders);
+  cells.forEach((cell) => {
+    if (Number(cell[ROW]) !== 0 || Number(cell[COL]) !== 0) {
+      let canPush = true;
 
-  ftObjects.forEach((item) => {
-    const parentName = getParentName(item.tagName, avHeaders, headers);
-    item.parentName = parentName;
-  });
-
-  const pHeaders = [];
-  headers.forEach((item) => {
-    if (avHeaders.includes(item)) pHeaders.push(item);
-  });
-  const groupObjects = getGroupedObjects(ftObjects);
-  const rootObj = groupObjects.find((a) => a.tagName === pHeaders[0]);
-
-  groupObjects.forEach((a) => {
-    if (a.parentName) {
-      const p = getParentObject(groupObjects, a);
-      if (p) {
-        if (!p.children) p.children = [];
-        p.children.push(a);
-      }
-    }
-  });
-
-  result = [];
-  bc.forEach((a) => {
-    if (!inArray(rootObj.cols, a.field)) result.push(a);
-  });
-  result.push(rootObj);
-
-  return result;
-};
-const readReccursive = (data, records, cols, rows, action, colObject) => {
-  if (Array.isArray(data)) {
-    data.forEach((item) =>
-      readReccursive(item, records, cols, rows, action, colObject),
-    );
-  }
-  if (typeof data === 'object') {
-    if (
-      Number.isInteger(parseInt(data[TableConst.ROW_IDX], 10)) &&
-      Number.isInteger(parseInt(data[TableConst.COLUMN_IDX], 10))
-    ) {
-      if (Number(data[TableConst.ROW_IDX]) === 0) {
-        if (!cols.includes(Number(data[TableConst.COLUMN_IDX]))) {
-          cols.push(Number(data[TableConst.COLUMN_IDX]));
-          colObject[String(data[TableConst.COLUMN_IDX])] = data;
+      if (action) {
+        if (action.type === TableEvents.ADD_TABLE_COLUMN) {
+          if (Number(action.column) <= Number(cell[COL])) {
+            cell[COL] = Number(cell[COL]) + 1;
+          }
         }
-        // checkAndPush(cols, Number(data[TableConst.COLUMN_IDX]));
-      } else {
-        if (!action) {
-          rows.add(data[TableConst.ROW_IDX]);
-          checkAndPush(records, data);
+
+        if (action.type === TableEvents.DELETE_TABLE_COLUMN) {
+          if (Number(action.column) === Number(cell[COL])) {
+            canPush = false;
+            cell[TableConst.TO_BE_REMOVE] = true;
+          }
+
+          if (Number(action.column) <= Number(cell[COL])) {
+            const index = cell[COL];
+            cell[COL] = index - 1;
+          }
         }
-        if (action?.type) {
-          if (action.type === TableEvents.DELETE_TABLE_ROW) {
-            if (action.row !== Number(data[TableConst.ROW_IDX])) {
-              if (action.row < Number(data[TableConst.ROW_IDX])) {
-                rows.add(data[TableConst.ROW_IDX] - 1);
-                const index = data[TableConst.ROW_IDX] - 1;
-                checkAndPush(records, { ...data, [TableConst.ROW_IDX]: index });
-              } else {
-                rows.add(data[TableConst.ROW_IDX]);
-                checkAndPush(records, data);
-              }
-            }
-          } else if (action.type === TableEvents.ADD_TABLE_ROW) {
-            if (action.row <= Number(data[TableConst.ROW_IDX])) {
-              rows.add(data[TableConst.ROW_IDX] + 1);
-              const index = data[TableConst.ROW_IDX] + 1;
-              checkAndPush(records, { ...data, [TableConst.ROW_IDX]: index });
-            } else {
-              rows.add(data[TableConst.ROW_IDX]);
-              checkAndPush(records, data);
-            }
+
+        if (action.type === TableEvents.ADD_TABLE_ROW) {
+          if (Number(action.row) <= Number(cell[ROW])) {
+            const index = cell[ROW];
+            cell[ROW] = index + 1;
+          }
+        }
+
+        if (action.type === TableEvents.DELETE_TABLE_ROW) {
+          if (Number(action.row) === Number(cell[ROW])) {
+            canPush = false;
+            cell[TableConst.TO_BE_REMOVE] = true;
+          }
+
+          if (Number(action.row) <= Number(cell[ROW])) {
+            const index = cell[ROW];
+            cell[ROW] = index - 1;
           }
         }
       }
+
+      if (canPush) {
+        rows.add(cell[ROW]);
+        columns.add(cell[COL]);
+        records.push(cell);
+      }
     }
-    Object.keys(data).forEach((item) => {
-      readReccursive(data[item], records, cols, rows, action, colObject);
+  });
+
+  if (action) {
+    const { type, column, timePoint, id } = action;
+
+    const sv = data[TableConst.STUDYVISIT];
+    sv.forEach((svItem) => {
+      const key = Object.keys(svItem)[0];
+      if (type === TableEvents.DELETE_TABLE_COLUMN) {
+        const filtered = svItem[key].filter(
+          (item) => Number(item[COL]) !== Number(column),
+        );
+        svItem[key] = filtered;
+      } else if (type === TableEvents.ADD_TABLE_COLUMN) {
+        svItem[key].forEach((colItem) => {
+          if (Number(column) <= Number(colItem[TableConst.COLUMN_IDX])) {
+            const colIndex = colItem[TableConst.COLUMN_IDX] + 1;
+            colItem[TableConst.COLUMN_IDX] = colIndex;
+          }
+        });
+
+        if (key === timePoint) {
+          svItem[key].push({
+            table_row_index: 0,
+            table_column_index: column,
+            indicator_text: 'new Column',
+            table_roi_id: id,
+          });
+        }
+      }
     });
   }
+  return { records, rows, columns };
 };
-const getTableData = (data, action, tables, state) => {
-  let cols = [];
-  const records = [];
-  const rows = new Set();
-  const colObject = {};
 
-  readReccursive(data, records, cols, rows, action, colObject);
+const getTableData = (data, action) => {
+  const { records, rows, columns } = getTableCells(data, action);
+
+  let cols = Array.from(columns);
+  if (action) {
+    if (action.type === TableEvents.ADD_TABLE_ROW) {
+      records.push(action.newRow);
+      rows.add(action.row);
+      data[TableConst.NORMALIZED_SOA].push(action.newRow);
+    }
+
+    if (action.type === TableEvents.DELETE_TABLE_ROW) {
+      const ns = data[TableConst.NORMALIZED_SOA];
+      const sp = data[TableConst.STUDYPROCEDURE];
+      data[TableConst.NORMALIZED_SOA] = ns.filter(
+        (a) => a[TableConst.TO_BE_REMOVE] !== true,
+      );
+      data[TableConst.STUDYPROCEDURE] = sp.filter(
+        (a) => a[TableConst.TO_BE_REMOVE] !== true,
+      );
+    }
+  }
+
   cols = cols.sort((a, b) => a - b);
 
   const finRecords = [];
-  Array.from(rows)
-    .sort((a, b) => a - b)
-    .forEach((item) => {
-      const rowItems = records.filter(
-        (item2) => Number(item2[TableConst.ROW_IDX]) === Number(item),
-      );
-      const rowRecord = {};
-      cols.forEach((item3) => {
-        rowItems.forEach((item4) => {
-          if (String(item4[TableConst.COLUMN_IDX]) === String(item3)) {
-            item4[TableConst.DATA_VALUE] = getValueFormRecord(item4);
-            rowRecord[item3] = item4;
-          }
-        });
+  const sortedRows = Array.from(rows);
+  sortedRows.sort((a, b) => a - b);
+  sortedRows.forEach((sortedRowItem) => {
+    const rowItems = records.filter(
+      (recordItem) =>
+        Number(recordItem[TableConst.ROW_IDX]) === Number(sortedRowItem),
+    );
+    const rowRecord = {};
+    cols.forEach((col) => {
+      rowItems.forEach((rowItem) => {
+        if (String(rowItem[TableConst.COLUMN_IDX]) === String(col)) {
+          rowItem[TableConst.DATA_VALUE] = getValueFormRecord(rowItem);
+          rowRecord[col] = rowItem;
+        }
       });
-
-      finRecords.push(rowRecord);
     });
 
-  const baseColumns = cols.map((ci) => {
-    return {
-      field: String(ci),
-      [TableConst.COLUMN_IDX]: ci,
-      [TableConst.ROW_IDX]: 0,
-      [TableConst.VALUE_TEXT1]: colObject[ci][TableConst.VALUE_TEXT1],
-    };
-    //  return {...colObject[ci]}
+    finRecords.push(rowRecord);
   });
-  const filteredColumns = TIMPE_POINTS.filter(
-    (item) => !state.hideGroupsColumns.includes(item),
-  );
-  const headers = getGroupHeaders(baseColumns, tables, filteredColumns, []);
 
   return {
     tableData: finRecords,
-    columnDefs: getTableColumns(headers),
   };
 };
-const updateCellValues = (state) => {
-  return state.tableData;
-};
-const addTableRow = (cells, { rowIndex, newRow }, tables, state) => {
-  const { tableData, columnDefs } = getTableData(
-    cells,
-    {
-      type: TableEvents.ADD_TABLE_ROW,
-      row: rowIndex,
-    },
-    tables,
-    state,
-  );
+const updateCellValues = (state, payload) => {
+  const {
+    table_column_index: tableColumnIndex,
+    table_row_index: tableRowIndex,
+    indicator_text: indicatorText,
+  } = payload;
+  const data = state.tables[state.selectedTab];
+  let isFound = false;
+  let arr = data[TableConst.STUDYPROCEDURE];
 
-  const recs = getTableData(
-    [...tableData, ...columnDefs, newRow],
-    null,
-    tables,
-    state,
-  );
+  arr.every((item) => {
+    if (
+      Number(item[TableConst.COLUMN_IDX]) === Number(tableColumnIndex) &&
+      Number(item[TableConst.ROW_IDX]) === Number(tableRowIndex)
+    ) {
+      isFound = true;
+      item[TableConst.VALUE_TEXT1] = indicatorText;
+      item[TableConst.DATA_VALUE] = indicatorText;
+      return false;
+    }
+    return true;
+  });
 
-  return recs;
+  if (!isFound) {
+    arr = data[TableConst.NORMALIZED_SOA];
+    arr.every((item) => {
+      if (
+        Number(item[TableConst.COLUMN_IDX]) === Number(tableColumnIndex) &&
+        Number(item[TableConst.ROW_IDX]) === Number(tableRowIndex)
+      ) {
+        isFound = true;
+        item[TableConst.VALUE_TEXT1] = indicatorText;
+        item[TableConst.DATA_VALUE] = indicatorText;
+        return false;
+      }
+      return true;
+    });
+  }
+
+  const { tableData } = getTableData(state.tables[state.selectedTab]);
+  return tableData;
 };
-const deleteRow = (cells, deleteRow, tables, state) => {
-  return getTableData(
-    cells,
-    {
-      type: TableEvents.DELETE_TABLE_ROW,
-      row: deleteRow,
-    },
-    tables,
-    state,
-  );
+const addTableRow = (cells, { rowIndex, newRow }) => {
+  const { tableData } = getTableData(cells, {
+    type: TableEvents.ADD_TABLE_ROW,
+    row: rowIndex,
+    newRow,
+  });
+
+  return tableData;
+};
+
+const addTableColumn = (
+  cells,
+  { table_column_index: tableColumnIndex, timePoint, table_roi_id: tableRoiId },
+) => {
+  const { tableData } = getTableData(cells, {
+    type: TableEvents.ADD_TABLE_COLUMN,
+    column: tableColumnIndex,
+    timePoint,
+    id: tableRoiId,
+  });
+
+  return tableData;
+};
+const updateTableColumn = (
+  data,
+
+  { table_column_index: tableColumnIndex, timePoint, newValue },
+) => {
+  let isUpdated = false;
+  const sv = data[TableConst.STUDYVISIT];
+  sv.forEach((svItem) => {
+    const key = Object.keys(svItem)[0];
+    if (key === timePoint) {
+      svItem[key].forEach((svColumn) => {
+        if (Number(svColumn[TableConst.COLUMN_IDX]) === tableColumnIndex) {
+          svColumn[TableConst.VALUE_TEXT1] = newValue;
+          isUpdated = true;
+        }
+      });
+    }
+  });
+  if (!isUpdated) {
+    const sp = data[TableConst.STUDYPROCEDURE];
+    sp.forEach((spItem) => {
+      if (Number(spItem[TableConst.COLUMN_IDX]) === tableColumnIndex) {
+        spItem[TableConst.VALUE_TEXT1] = newValue;
+      }
+    });
+  }
+};
+
+const deleteTableColumn = (
+  cells,
+
+  { table_column_index: tableColumnIndex, timePoint, tableRoi_id: tableRoiId },
+) => {
+  const { tableData } = getTableData(cells, {
+    type: TableEvents.DELETE_TABLE_COLUMN,
+    timePoint,
+    column: tableColumnIndex,
+    id: tableRoiId,
+  });
+
+  return tableData;
+};
+
+const addTableCell = (data, { newCell }) => {
+  data[TableConst.NORMALIZED_SOA].push(newCell);
+  const { tableData } = getTableData(data);
+  return tableData;
+};
+
+const deleteRow = (state, deleteRow) => {
+  const { tableData } = getTableData(state.tables[state.selectedTab], {
+    type: TableEvents.DELETE_TABLE_ROW,
+    row: deleteRow,
+  });
+  return { tableData };
 };
 const toggleItemFromArray = (data, uid) => {
   if (data.includes(uid)) return data.filter((item) => item !== uid);
@@ -297,10 +315,11 @@ const toggleItemFromArray = (data, uid) => {
 const updateAvailableHeaders = (state) => {
   const ah = getAvailableHeader(state.tables[state.selectedTab]);
   const settings = state.settingItems[TableConst.STUDYVISIT];
-  settings.children.forEach((a) => {
-    a.enable = ah.includes(a.name);
+  settings.children.forEach((settingItem) => {
+    settingItem.enable = ah.includes(settingItem.name);
   });
 };
+
 const canUpdateGroupFilters = (state, actions) => {
   const filters = state.settingItems[TableConst.STUDYVISIT].children;
 
@@ -312,92 +331,248 @@ const canUpdateGroupFilters = (state, actions) => {
   if (counter < 2) canUncheck = false;
   return !actions.payload.push && !canUncheck;
 };
+const getTableId = (state, selectedTab) => {
+  return state.tables[selectedTab].tableId;
+};
+
+const getFlatCols = (list) => {
+  const uniq = [];
+  const duplicates = [];
+  list.forEach((mainItem) => {
+    let isFound = false;
+    list.forEach((loopItem) => {
+      if (
+        mainItem !== loopItem &&
+        mainItem[TableConst.COLUMN_IDX] === loopItem[TableConst.COLUMN_IDX]
+      ) {
+        isFound = true;
+      }
+    });
+    if (isFound) {
+      duplicates.push(mainItem);
+    } else {
+      mainItem.baseColumn = true;
+      uniq.push(mainItem);
+    }
+  });
+
+  const groupBy = duplicates.reduce((prev, current) => {
+    if (!prev[String(current[TableConst.COLUMN_IDX])])
+      prev[String(current[TableConst.COLUMN_IDX])] = [];
+    prev[String(current[TableConst.COLUMN_IDX])].push(current);
+    return prev;
+  }, {});
+
+  const tps = [...TIMPE_POINTS];
+
+  tps.reverse();
+  const baseCls = [];
+  Object.keys(groupBy).forEach((gpItem) => {
+    groupBy[gpItem].every((gpColumn) => {
+      let grpItemFound = true;
+
+      tps.every((tpItem) => {
+        let tpItemFound = true;
+        if (gpColumn.timePoint === tpItem) {
+          gpColumn.baseColumn = true;
+          baseCls.push(gpColumn);
+
+          tpItemFound = false;
+          grpItemFound = false;
+        }
+        return tpItemFound;
+      });
+      return grpItemFound;
+    });
+  });
+  const flatCols = [...uniq, ...baseCls];
+  return flatCols;
+};
+const getColumns = ({ state, selectedTab }) => {
+  const table = state.tables[selectedTab];
+
+  const filteredColumns = TIMPE_POINTS.filter(
+    (item) => !state.hideGroupsColumns.includes(item),
+  );
+
+  const timePoints = [TableConst.STUDYVISIT, TableConst.STUDYPROCEDURE];
+
+  const allColls = [];
+  timePoints.forEach((tpItem) => {
+    let vistArr = [];
+    if (tpItem === TableConst.STUDYPROCEDURE) {
+      vistArr = table[tpItem];
+      vistArr.forEach((visitItem) => {
+        if (Number(visitItem[TableConst.ROW_IDX]) === 0)
+          allColls.push({
+            ...visitItem,
+            timePoint: TableConst.STUDYPROCEDURE,
+            field: String(visitItem[TableConst.COLUMN_IDX]),
+            [TableConst.DATA_VALUE]: visitItem[TableConst.VALUE_TEXT1],
+          });
+      });
+    } else if (tpItem === TableConst.STUDYVISIT) {
+      vistArr = table[tpItem];
+
+      vistArr.forEach((vstItem) => {
+        const key = Object.keys(vstItem)[0];
+        if (filteredColumns.includes(key)) {
+          vstItem[key].forEach((vstSubItem) => {
+            if (Number(vstSubItem[TableConst.ROW_IDX]) === 0)
+              allColls.push({
+                ...vstSubItem,
+                timePoint: key,
+                field: String(vstSubItem[TableConst.COLUMN_IDX]),
+                [TableConst.DATA_VALUE]: vstSubItem[TableConst.VALUE_TEXT1],
+              });
+          });
+        }
+      });
+    }
+  });
+  allColls.sort((a, b) => a[TableConst.COLUMN_IDX] - b[TableConst.COLUMN_IDX]);
+  const flatCols = getFlatCols(allColls);
+  flatCols.sort((a, b) => a[TableConst.COLUMN_IDX] - b[TableConst.COLUMN_IDX]);
+
+  const baseCols = flatCols.filter((a) => a.baseColumn);
+  const tpRpws = {};
+  allColls.forEach((colItem) => {
+    TIMPE_POINTS.forEach((tpItem) => {
+      if (tpItem === colItem.timePoint && !colItem.baseColumn) {
+        if (!tpRpws[tpItem]) tpRpws[tpItem] = [];
+        tpRpws[tpItem].push(colItem);
+      }
+    });
+  });
+
+  const columnRows = [];
+  Object.keys(tpRpws).forEach((rowItem) => {
+    const cfilterItem = {};
+    tpRpws[rowItem].forEach((tpColumn) => {
+      cfilterItem[tpColumn[TableConst.COLUMN_IDX]] = tpColumn;
+    });
+    columnRows.push(cfilterItem);
+  });
+  const columnDefs = getTableColumns(baseCols);
+  return { columnDefs, columnRows };
+};
+
+const formatTables = (data) => {
+  const tables = data.map((tableItem) => {
+    const rtObj = {};
+    const keys = Object.keys(tableItem);
+    keys.forEach((tableKey) => {
+      if (tableKey !== TableConst.NORMALIZED_SOA) {
+        rtObj[tableKey] = tableItem[tableKey];
+
+        if (tableKey === TableConst.STUDYPROCEDURE) {
+          tableItem[tableKey].forEach((tableKeyItem) => {
+            tableKeyItem[TableConst.UID] = uuidv4();
+            tableKeyItem.timePoint = TableConst.STUDYPROCEDURE;
+          });
+        }
+        if (tableKey === TableConst.STUDYVISIT) {
+          tableItem[tableKey].forEach((svItem) => {
+            const key = Object.keys(svItem)[0];
+            svItem[key].forEach((svKey) => {
+              svKey[TableConst.UID] = uuidv4();
+              svKey.timePoint = TableConst.STUDYVISIT;
+            });
+          });
+        }
+      } else if (tableKey === TableConst.NORMALIZED_SOA) {
+        tableItem[tableKey].forEach((tableKeyItem) => {
+          if (!rtObj[tableKey]) rtObj[tableKey] = [];
+          const obj = {
+            [TableConst.COLUMN_IDX]: tableKeyItem[TableConst.COLUMN_IDX],
+            [TableConst.ROW_IDX]: tableKeyItem[TableConst.ROW_IDX],
+            [TableConst.VALUE_TEXT1]: tableKeyItem[TableConst.VALUE_TEXT1],
+            id: tableKeyItem.id,
+            [TableConst.UID]: uuidv4(),
+            timePoint: TableConst.NORMALIZED_SOA,
+          };
+          rtObj[tableKey].push(obj);
+        });
+      }
+    });
+    return rtObj;
+  });
+
+  return tables;
+};
 const tableReducer = (state, actions) => {
   switch (actions.type) {
-    case TableEvents.SET_API_DATA:
-      return { ...state, apiData: actions.payload };
+    case TableEvents.SET_DOC_ID:
+      return { ...state, docId: actions.docId };
     case TableEvents.SET_TABLES:
-      return { ...state, tables: actions.payload };
-    case TableEvents.UPDATE_TABLE_COLUMNS:
-      return {
-        ...state,
-        ...getTableData(
-          actions.payload,
-          null,
-          state.tables[state.selectedTab],
-          state,
-        ),
-      };
+      return { ...state, tables: formatTables(actions.payload) };
     case TableEvents.SET_SELECTED_TAB:
       updateAvailableHeaders(state);
 
       return {
         ...state,
-        ...getTableData(
-          state.tables[actions.payload],
-          null,
-          state.tables[state.selectedTab],
-          state,
-        ),
+        tableId: getTableId(state, actions.payload),
+
+        ...getTableData(state.tables[actions.payload], null),
         selectedTab: actions.payload,
+        ...getColumns({ state, selectedTab: actions.payload }),
       };
-    case TableEvents.UPDATE_TABLE_RECORDS:
-      return { ...state, columnDefs: actions.payload };
+
     case TableEvents.UPDATE_CELL_VALUES:
       return {
         ...state,
-        ...updateCellValues(state.tableData, actions.payload),
+        tableData: updateCellValues(state, actions.payload),
       };
     case TableEvents.DELETE_TABLE_ROW:
       return {
         ...state,
-        ...deleteRow(
-          [...state.tableData, ...state.columnDefs],
-          actions.payload,
-          state.tables[state.selectedTab],
-          state,
-        ),
+        ...deleteRow(state, actions.payload),
       };
     case TableEvents.ADD_TABLE_ROW:
       return {
         ...state,
-        ...addTableRow(
-          [...state.tableData, ...state.columnDefs],
-          {
-            rowIndex: actions.payload.rowIndex,
-            newRow: actions.payload.newRow,
-          },
-          state.tables[state.selectedTab],
-          state,
-        ),
+        tableData: addTableRow(state.tables[state.selectedTab], {
+          rowIndex: actions.payload.rowIndex,
+          newRow: actions.payload.newRow,
+        }),
       };
-    case TableEvents.SET_ARRANGE_BY:
-      return { ...state, arrangeBy: actions.payload };
-    case TableEvents.SET_SHOW_BY:
-      return { ...state, showBy: actions.payload };
+    case TableEvents.ADD_TABLE_COLUMN:
+      return {
+        ...state,
+        tableData: addTableColumn(
+          state.tables[state.selectedTab],
+          actions.payload,
+        ),
+        ...getColumns({ state, selectedTab: state.selectedTab }),
+      };
+    case TableEvents.UPDATE_TABLE_COLUMN_CELL:
+      updateTableColumn(state.tables[state.selectedTab], actions.payload);
+      return {
+        ...state,
+        ...getColumns({ state, selectedTab: state.selectedTab }),
+      };
+    case TableEvents.DELETE_TABLE_COLUMN:
+      return {
+        ...state,
+        tableData: deleteTableColumn(
+          state.tables[state.selectedTab],
+          actions.payload,
+        ),
+        ...getColumns({ state, selectedTab: state.selectedTab }),
+      };
+    case TableEvents.ADD_TABLE_CELL:
+      return {
+        ...state,
+        tableData: addTableCell(state.tables[state.selectedTab], {
+          newCell: actions.payload,
+        }),
+      };
     case TableEvents.SET_SETTINGS_OPEN:
       return { ...state, openSettings: actions.payload };
-    case TableEvents.ADD_GROUP_ID:
-      return {
-        ...state,
-        showGroupRows: toggleItemFromArray(
-          state.showGroupRows,
-          actions.payload,
-        ),
-      };
-    case TableEvents.REMOVE_GROUP_ID:
-      return {
-        ...state,
-        showGroupRows: toggleItemFromArray(
-          state.showGroupRows,
-          actions.payload,
-        ),
-      };
+
     case TableEvents.SET_GRID_REF:
       return { ...state, gridRef: actions.payload };
-    case TableEvents.GRID_REFRESH:
-      state.gridRef?.api.resetRowHeights();
-      return state;
+
     case TableEvents.FILTER_GROUP_COLUMN:
       if (canUpdateGroupFilters(state, actions)) return state;
 
@@ -407,13 +582,10 @@ const tableReducer = (state, actions) => {
           state.hideGroupsColumns,
           actions.payload.name,
         ),
-        ...getTableData(
-          state.tables[state.selectedTab],
-          null,
-          state.tables[state.selectedTab],
-          state,
-        ),
+        ...getTableData(state.tables[state.selectedTab], null),
+        ...getColumns({ state, selectedTab: state.selectedTab }),
       };
+
     default:
       return state;
   }
@@ -427,5 +599,4 @@ export {
   headRows,
   toggleItemFromArray,
   getTableData,
-  readReccursive,
 };
