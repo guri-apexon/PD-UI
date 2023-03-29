@@ -33,7 +33,6 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
                 isCustom: key !== 'summary',
                 attr_value: formattedValue(attr?.attr_type, attrValue),
                 display_name: attr?.display_name || attr?.attr_name,
-                attr_name: attr?.attr_name,
               };
             }),
             formattedName: identifier,
@@ -67,7 +66,7 @@ export const mergeSummary = (data) => {
   let finalResult = data;
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys.forEach((key) => {
-    if (key === 'summary_extended') {
+    if (key === 'summary_extended' && objectKeys?.summary_extended) {
       // eslint-disable-next-line
       const updateMetaData = finalResult?.summary_extended?._meta_data?.map(
         (fields) => {
@@ -91,16 +90,20 @@ export const mergeSummary = (data) => {
               id: index + 1,
             };
           }),
-          _childs: [
-            // eslint-disable-next-line
-            ...finalResult.summary._childs,
-            // eslint-disable-next-line
-            ...finalResult.summary_extended._childs,
-          ],
+          // eslint-disable-next-line
+          _childs: finalResult.summary_extended._childs
+            ? [
+                // eslint-disable-next-line
+                ...finalResult.summary._childs,
+                // eslint-disable-next-line
+                ...finalResult.summary_extended._childs,
+              ]
+            : // eslint-disable-next-line
+              [...finalResult.summary._childs],
         },
       };
-      delete finalResult.summary_extended;
     }
+    delete finalResult.summary_extended;
   });
   return finalResult;
 };
