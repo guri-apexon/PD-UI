@@ -510,7 +510,7 @@ export function* addMetaDataAttributes(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  if (MetaData?.data?.is_added) {
+  if (MetaData?.data?.isAdded) {
     toast.info('Protocol Attributes Updated Successfully');
     yield put(
       getMetadataApiCall({
@@ -548,7 +548,7 @@ export function* addMetaDataField(action) {
     },
   };
   const MetaData = yield call(httpCall, config);
-  if (MetaData?.data?.is_added) {
+  if (MetaData?.data?.isAdded) {
     toast.info(`${reqData.name} added successfully`);
     yield put(
       getMetadataApiCall({
@@ -586,7 +586,7 @@ export function* deleteAttribute(action) {
     },
   };
   const data = yield call(httpCall, config);
-  if (data?.data?.is_deleted) {
+  if (data?.data?.isDeleted) {
     if (op === 'deleteField') {
       yield put(
         getMetadataApiCall({
