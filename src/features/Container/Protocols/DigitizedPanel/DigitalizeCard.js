@@ -93,7 +93,6 @@ function DigitalizeCard({
   useEffect(() => {
     setCurrentActiveCard(0);
     setRightValue(BladeRightValue);
-    handlePageRight(BladeRightValue);
     // eslint-disable-next-line
   }, [BladeRightValue]);
 

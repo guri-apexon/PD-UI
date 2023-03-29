@@ -96,7 +96,7 @@ function DigitizeAccordion({
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteSection, setDeleteSection] = useState();
+  const [deleteSection, setDeleteSection] = useState({});
 
   const { data: sectionData, updated } = sectionHeaderDetails;
 
@@ -412,7 +412,7 @@ function DigitizeAccordion({
     const obj = [
       {
         ...headerLevel1,
-        link_id: deleteSection.link_id,
+        link_id: deleteSection?.link_id,
         qc_change_type: 'delete',
       },
     ];

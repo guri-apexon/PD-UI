@@ -40,6 +40,12 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
             level,
             isActive: false,
             isEdit: false,
+            audit_info:
+              // eslint-disable-next-line
+              keyValue?._meta_data.length > 0
+                ? // eslint-disable-next-line
+                  keyValue?._meta_data[0]?.audit_info
+                : {},
             // eslint-disable-next-line
             _childs: keyValue?._childs
               ? // eslint-disable-next-line
