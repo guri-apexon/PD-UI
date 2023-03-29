@@ -381,7 +381,7 @@ export function* newMapping(action) {
       data.projectId = item.projectId;
       data.follow = item.following === '1';
       data.accessReason = item.viaTicketNumber;
-      data.userUpdated = item.updatedByUser
+      data.userUpdated = item.updatedByUser;
       return data;
     });
     const Config = {
@@ -460,7 +460,7 @@ export function* getUserDetails(action) {
       data.email = userData.data.email;
       data.country = userData.data.country;
       data.userRole = userDetails.userRole;
-      data.viaTicketNumber = userData.accessReason
+      data.viaTicketNumber = userData.accessReason;
 
       yield put(setNewUserValues(data));
       yield put(setUserError(''));
@@ -504,7 +504,6 @@ export function* bulkUploadMapping(action) {
   };
   try {
     const data = yield call(httpCall, Config);
-    console.log(data);
     yield put(setMapLoader(false));
     if (data.success) {
       yield put(setBulkMapResponse(data.data));

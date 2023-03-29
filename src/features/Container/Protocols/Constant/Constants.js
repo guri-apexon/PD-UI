@@ -30,7 +30,7 @@ const PROTOCOL_RIGHT_MENU_ARR = [
   },
   {
     name: PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES,
-    isActive: false,
+    isActive: true,
     icon: <Calendar className="icon-padding" />,
   },
   {

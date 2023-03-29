@@ -20,57 +20,40 @@ import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 import PROTOCOL_CONSTANT from '../constants';
 
-const getColumnID = (data, key) => {
-  let roiId = '';
-  for (let i = 0; i < data.length; i++) {
-    if (data[i][key]) {
-      roiId = data[i][key].roi_id.column_roi_id;
-      break;
-    }
-  }
-  return roiId;
-};
 const getIDs = (rows) => {
   let rowRoiId = '';
   let tableRoiId = '';
   let datacellRoiId = '';
   const keys = Object.keys(rows);
   for (let i = 0; i < keys.length; i++) {
-    if (rows[keys[i]] && rows[keys[i]].roi_id.row_roi_id) {
-      rowRoiId = rows[keys[i]].roi_id.row_roi_id;
+    if (rows[keys[i]] && rows[keys[i]].roi_id?.row_roi_id) {
+      rowRoiId = rows[keys[i]].roi_id?.row_roi_id;
       datacellRoiId = uuidv4();
-      tableRoiId = rows[keys[i]].roi_id.table_roi_id;
+      tableRoiId = rows[keys[i]].roi_id?.table_roi_id;
       break;
     }
   }
   return { rowRoiId, tableRoiId, datacellRoiId };
 };
+
 const formattableData = (data) => {
   const cloneData = [...data];
   for (let i = 0; i < cloneData.length; i++) {
-    const rowCells = cloneData[i];
+    const rowCells = cloneData[i].row_props;
     const keys = Object.keys(rowCells);
+    let rowProps = {};
     for (let j = 0; j < keys.length; j++) {
-      if (rowCells[keys[j]]) {
-        console.log('No Formating');
-      } else {
-        const IDs = getIDs(rowCells);
-        const columnID = getColumnID(data, keys[j]);
-        const emptyCell = {
-          entities: [],
-          content: '',
-          roi_id: {
-            table_roi_id: IDs.table_roi_id,
-            row_roi_id: IDs.row_roi_id,
-            column_roi_id: columnID,
-            datacell_roi_id: IDs.datacell_roi_id,
-          },
-          table_index: 2,
-          qc_change_type: '',
-        };
-        rowCells[keys[j]] = emptyCell;
-      }
+      const emptyCell = {
+        content: rowCells[keys[j]]?.content || '',
+        roi_id: rowCells[keys[j]]?.roi_id || {},
+        qc_change_type: '',
+      };
+      rowProps = {
+        ...rowProps,
+        [j + 1]: emptyCell,
+      };
     }
+    cloneData[i].row_props = rowProps;
   }
   return cloneData;
 };
@@ -80,7 +63,6 @@ const confirmText = 'Please confirm if you want to continue with deletion';
 function PDTable({ data, segment, activeLineID, lineID }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
-  const [columnLength, setColumnLength] = useState();
   const [colWidth, setColumnWidth] = useState(100);
   const [tableSaved, setTableSaved] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
@@ -93,34 +75,30 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   useEffect(() => {
     if (data) {
       const parsedTable = JSON.parse(data.TableProperties);
-      const formatData = formattableData(parsedTable);
-      const tableIds = getIDs(parsedTable[0]);
+      const tableIds = getIDs(parsedTable[0]?.row_props);
+      const formattedData = formattableData(parsedTable);
       setTableId(tableIds?.tableRoiId);
-      setUpdatedData(formatData);
+      setUpdatedData(formattedData);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
-      const colLength = Object.keys(formatData[0]).length;
-      setColumnLength(colLength);
-      setColumnWidth(98 / colLength);
+      const colIndexes = Object.keys(parsedTable[0]?.row_props);
+      setColumnWidth(98 / colIndexes.length);
     }
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {
     const cloneData = [...updatedData];
-    cloneData[rowIndex][columnIndex].content = content;
+    cloneData[rowIndex].row_props[columnIndex].content = content;
     setUpdatedData(cloneData);
   };
 
   const handleColumnOperation = (operation, index) => {
     if (operation === tableOperations.addColumnLeft) {
-      const newData = addColumn(updatedData, index);
+      const newData = addColumn(updatedData, Math.max(index, 0));
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.addColumnRight) {
-      // eslint-disable-next-line
-      const newData = addColumn(updatedData, parseInt(index) + 1);
+      const newData = addColumn(updatedData, index + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteColumn) {
       setIsModal(true);
       setSelectedData({
@@ -134,12 +112,10 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     if (operation === tableOperations.addRowAbove) {
       const newData = addRow(updatedData, index);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.addRowBelow) {
       // eslint-disable-next-line
       const newData = addRow(updatedData, parseInt(index) + 1);
       setUpdatedData(newData);
-      setColumnLength(Object.keys(newData[0]).length);
     } else if (operation === tableOperations.deleteRow) {
       setIsModal(true);
       setSelectedData({
@@ -159,12 +135,13 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setUpdatedData(newList);
     } else if (operation === tableOperations.swapColumn) {
       const copyUpdatedList = cloneDeep(updatedData);
-      const newData = copyUpdatedList.map((ele) => {
-        const temp = ele[indexObj.sourceIndex];
-        ele[indexObj.sourceIndex] = ele[indexObj.targetIndex];
-        ele[indexObj.targetIndex] = temp;
+      const newData = copyUpdatedList.map((list) => {
+        const rowProp = list?.row_props;
+        const temp = rowProp[indexObj.sourceIndex];
+        rowProp[indexObj.sourceIndex] = rowProp[indexObj.targetIndex];
+        rowProp[indexObj.targetIndex] = temp;
 
-        return ele;
+        return list;
       });
       setUpdatedData(newData);
     }
@@ -183,7 +160,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const handleSave = () => {
     const content = {
       ...segment.content,
-      TableProperties: JSON.stringify(updatedData),
+      TableProperties: updatedData,
       AttachmentListProperties: footNoteData,
     };
     setTableSaved(true);
@@ -209,7 +186,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       newData = deleteColumn(updatedData, selectedData.index);
     }
     setUpdatedData(newData);
-    setColumnLength(Object.keys(newData[0]).length);
     setSelectedData({});
     setIsModal(false);
   };
@@ -297,7 +273,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           footNoteData={footNoteData}
           setFootnoteData={setFootnoteData}
           handleColumnOperation={handleColumnOperation}
-          columnLength={columnLength}
         />
       </div>
       <Modal

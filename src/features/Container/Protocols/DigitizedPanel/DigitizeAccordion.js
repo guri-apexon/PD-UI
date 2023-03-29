@@ -17,12 +17,16 @@ import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
+import Trash from 'apollo-react-icons/Trash';
+import { isEmpty } from 'lodash';
+
 import MultilineEdit from './MultilineEdit';
 import Loader from '../../../Components/Loader/Loader';
 import {
   createFullMarkup,
   createEnrichedText,
   getSaveSectionPayload,
+  createPreferredText,
 } from '../../../../utils/utilFunction';
 import {
   SectionIndex,
@@ -40,11 +44,13 @@ import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
 import AddSection from './AddSection';
+import HeaderConstant from '../CustomComponents/constants';
 
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
 } from '../../../../AppConstant/AppConstant';
+import DeleteModal from './DeleteModal';
 
 const styles = {
   modal: {
@@ -65,9 +71,11 @@ function DigitizeAccordion({
   headerList,
   setCurrentEditCard,
   currentEditCard,
+  value,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { headerLevel1 } = HeaderConstant;
 
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
@@ -87,16 +95,24 @@ function DigitizeAccordion({
   const [openAudit, setOpenAudit] = useState(null);
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteSection, setDeleteSection] = useState();
 
   const { data: sectionData, updated } = sectionHeaderDetails;
+
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
-  const { dispatchSectionEvent, sectionContent, selectedSection } =
-    useProtContext();
+  const {
+    dispatchSectionEvent,
+    sectionContent,
+    selectedSection,
+    setSaveSection,
+    saveSection,
+  } = useProtContext();
 
   const handleChange = (e) => {
     e.stopPropagation();
@@ -129,8 +145,8 @@ function DigitizeAccordion({
   };
   useEffect(() => {
     if (expanded) {
-      const arr = sectionData.filter((obj) => obj.linkId === item.link_id);
-      if (!arr.length) {
+      const arr = sectionData?.filter((obj) => obj.linkId === item.link_id);
+      if (!arr?.length) {
         setShowLoader(true);
         setLinkId(item.link_id);
         setDocId(item.doc_id);
@@ -149,7 +165,10 @@ function DigitizeAccordion({
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
     } else if (currentActiveCard === item.link_id && expanded) {
-      setExpanded(!expanded);
+      setExpanded(false);
+    }
+    if (currentActiveCard === item.link_id && expanded && tocActive[index]) {
+      setExpanded(true);
     }
     // eslint-disable-next-line
   }, [currentActiveCard]);
@@ -208,6 +227,9 @@ function DigitizeAccordion({
       });
       setExpanded(true);
     }
+    if (!tocActive[index]) {
+      setExpanded(false);
+    }
     // eslint-disable-next-line
   }, [tocActive]);
 
@@ -261,6 +283,7 @@ function DigitizeAccordion({
   useEffect(() => {
     if (expanded) {
       const { sectionResponse, data } = sectionHeaderDetails;
+
       if (sectionResponse) {
         if (sectionResponse?.success && showedit) {
           setShowEdit(false);
@@ -315,18 +338,27 @@ function DigitizeAccordion({
       });
       dispatch(resetUpdateStatus());
       setCurrentEditCard(null);
+      setSaveSection(null);
     }
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content, clinicalTerms) => {
+  const getEnrichedText = (content, clinicalTerms, preferredTerms) => {
+    let newContent = content;
+    if (value) {
+      if (!isEmpty(preferredTerms)) {
+        newContent = createFullMarkup(
+          createPreferredText(content, preferredTerms),
+        );
+      }
+    }
     if (
-      clinicalTerms &&
+      !isEmpty(clinicalTerms) &&
       rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
     ) {
-      return createFullMarkup(createEnrichedText(content, clinicalTerms));
+      newContent = createFullMarkup(createEnrichedText(content, clinicalTerms));
     }
-    return createFullMarkup(content);
+    return newContent;
   };
 
   useEffect(() => {
@@ -368,11 +400,38 @@ function DigitizeAccordion({
     setOpenAudit(e.currentTarget);
   };
 
+  useEffect(() => {
+    if (saveSection === item.link_id) {
+      handleSaveContent();
+    }
+    // eslint-disable-next-line
+  }, [saveSection]);
+
+  const handleDeleteSection = () => {
+    setShowDeleteConfirm(false);
+    const obj = [
+      {
+        ...headerLevel1,
+        link_id: deleteSection.link_id,
+        qc_change_type: 'delete',
+      },
+    ];
+    dispatch({
+      type: 'UPDATE_SECTION_DATA',
+      payload: {
+        docId: deleteSection.doc_id,
+        index: -1,
+        refreshToc: true,
+        reqBody: obj,
+      },
+    });
+  };
+
   return (
     <div
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
-      className="Accordian-padding"
+      className={primaryRole && 'accordian-plusIcon-line'}
       data-testid="mouse-over"
     >
       <Accordion
@@ -389,7 +448,11 @@ function DigitizeAccordion({
               className="section-title"
               data-testid="accordion-header"
             >
-              {item.source_file_section}
+              {value && !isEmpty(item.preferred_term) ? (
+                <b className="preferred-text">{item.preferred_term}</b>
+              ) : (
+                item.source_file_section
+              )}
             </Typography>
             {/* eslint-disable-next-line */}
             <div
@@ -397,9 +460,24 @@ function DigitizeAccordion({
               onClick={(e) => e.stopPropagation()}
             >
               {showedit && (
-                <IconButton disabled={showLoader} data-testId="lockIcon">
-                  <Lock />
-                </IconButton>
+                <>
+                  <IconButton disabled={showLoader} data-testId="lockIcon">
+                    <Lock />
+                  </IconButton>
+                  <span
+                    onClick={() => {
+                      setShowDeleteConfirm(true);
+                      setDeleteSection(item);
+                    }}
+                    data-testId="trashIcon"
+                    role="presentation"
+                    className="trash-icon"
+                  >
+                    <IconButton disabled={showLoader}>
+                      <Trash />
+                    </IconButton>
+                  </span>
+                </>
               )}
               {primaryRole && (
                 <>
@@ -509,6 +587,7 @@ function DigitizeAccordion({
                           html={getEnrichedText(
                             section.content.split('_')[0],
                             section?.clinical_terms,
+                            section?.preferred_terms,
                           )}
                         />
                       </sup>
@@ -529,6 +608,7 @@ function DigitizeAccordion({
                           html={getEnrichedText(
                             section.content.split('_')[1],
                             section?.clinical_terms,
+                            section?.preferred_terms,
                           )}
                         />
                       </p>
@@ -557,6 +637,7 @@ function DigitizeAccordion({
                           html={getEnrichedText(
                             section.content,
                             section.clinical_terms,
+                            section?.preferred_terms,
                           )}
                         />
                       </p>
@@ -621,6 +702,7 @@ function DigitizeAccordion({
             {
               label: 'Save',
               onClick: () => {
+                setSaveSection(currentEditCard);
                 setShowEdit(false);
                 setShowConfirm(false);
               },
@@ -672,14 +754,14 @@ function DigitizeAccordion({
             />
           </div>
         )}
-        {isModal && (
-          <AddSection
-            setIsModal={setIsModal}
-            hoverItem={hoverItem}
-            hoverIndex={hoverIndex}
-            setIsShown={setIsShown}
-          />
-        )}
+
+        <AddSection
+          setIsModal={setIsModal}
+          hoverItem={hoverItem}
+          hoverIndex={hoverIndex}
+          setIsShown={setIsShown}
+          isModal={isModal}
+        />
       </Accordion>
       <div className="plus-icon">
         {isShown && primaryRole && (
@@ -696,6 +778,11 @@ function DigitizeAccordion({
           </IconButton>
         )}
       </div>
+      <DeleteModal
+        handleDeleteSection={handleDeleteSection}
+        showDeleteConfirm={showDeleteConfirm}
+        setShowDeleteConfirm={setShowDeleteConfirm}
+      />
     </div>
   );
 }
@@ -713,4 +800,5 @@ DigitizeAccordion.propTypes = {
   headerList: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
+  value: PropTypes.isRequired,
 };

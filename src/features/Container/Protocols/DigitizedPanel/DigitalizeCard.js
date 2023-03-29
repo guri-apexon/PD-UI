@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
 
 import Loader from '../../../Components/Loader/Loader';
+import SOA from '../SOA/SOA';
 import {
   headerResult,
   protocolSummary,
@@ -14,6 +15,7 @@ import {
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
+import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import DigitizeAccordion from './DigitizeAccordion';
 
@@ -23,6 +25,7 @@ function DigitalizeCard({
   data,
   paginationPage,
   handlePageRight,
+  value,
 }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
@@ -90,6 +93,8 @@ function DigitalizeCard({
   useEffect(() => {
     setCurrentActiveCard(0);
     setRightValue(BladeRightValue);
+    handlePageRight(BladeRightValue);
+    // eslint-disable-next-line
   }, [BladeRightValue]);
 
   useEffect(() => {
@@ -178,6 +183,7 @@ function DigitalizeCard({
                         handlePageRight={handlePageRight}
                         rightBladeValue={BladeRightValue}
                         scrollToTop={scrollToTop}
+                        value={value}
                         headerList={headerList}
                         setCurrentEditCard={setCurrentEditCard}
                         currentEditCard={currentEditCard}
@@ -196,6 +202,12 @@ function DigitalizeCard({
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
       )}
+      {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
+        <SOA docId={data.id} />
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.DIPA_VIEW && (
+        <DipaView docId={data.id} />
+      )}
     </div>
   );
 }
@@ -208,4 +220,5 @@ DigitalizeCard.propTypes = {
   data: PropTypes.isRequired,
   paginationPage: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
+  value: PropTypes.isRequired,
 };

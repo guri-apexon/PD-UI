@@ -1,0 +1,114 @@
+.container {
+  height: auto !important;
+  padding-right: 20px !important;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  width: 95%;
+  margin-left: 10px;
+}
+
+.dipa-view-count {
+  display: flex;
+  .dipa-actualcount,
+  .dipa-derivedcount {
+    border-left: 1px solid #e8e8e8;
+    padding-left: 12px;
+    padding-top: 0px;
+  }
+}
+.segment-dc {
+  margin-top: 10px;
+  .segment-derived-count {
+    display: flex;
+    padding-left: 10px;
+    margin-right: 10px;
+    width: 110px;
+  }
+  border-left: 1px solid #e8e8e8;
+}
+.paragraph-icon {
+  display: inline-flex;
+  width: 50px;
+}
+.icon-eyeshow {
+  border-left: 1px solid #e8e8e8;
+  padding-left: 10px;
+}
+.icon-pencil {
+  margin-left: 25px;
+}
+.MuiSelect-select.MuiSelect-select {
+  position: absolute;
+}
+.segment-typography {
+  background-color: #f6f7fb;
+  margin: 2px;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+.segment-length {
+  margin-left: 10px;
+}
+
+.MuiGrid-spacing-xs-1 {
+  padding: 10px;
+}
+.dipa-actualcount {
+  margin-left: 30px;
+}
+.accordion-details {
+  display: flex;
+  flex-direction: column;
+}
+.accordion-details-grid {
+  float: right;
+  margin-left: auto;
+  padding: 4px;
+  width: 100%;
+}
+.add-group {
+  background: #ffffff;
+  padding: 5px 10px;
+}
+.add-group:hover,
+.add-group-grid:hover {
+  background: #f6f7fb;
+}
+.add-group-grid {
+  background: #ffffff;
+  padding: 5px 10px;
+}
+.trash-plus-grid {
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  padding: 5px 10px;
+  display: inline-flex;
+  .trash-icon {
+    margin-left: 25px;
+  }
+}
+.popover {
+  margin-top: 28px;
+}
+.MuiCard-root-16826 {
+  padding: 7px 0px;
+}
+.MuiCard-root {
+  padding: 0px;
+}
+
+.MuiAccordionSummary-root:hover {
+  background: none;
+}
+
+.MuiAccordionDetails-root {
+  padding: 0px;
+}
+.MuiAccordionSummary-root {
+  padding: 0 23px;
+}
+.structure-container {
+  height: 25rem;
+  overflow-y: auto;
+}

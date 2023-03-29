@@ -1,4 +1,16 @@
-import { isObject } from 'lodash';
+import isObject from 'lodash/isObject';
+import moment from 'moment';
+
+const formattedValue = (type, val) => {
+  let payloadData = val;
+  if (type === 'boolean') {
+    payloadData = payloadData?.toString();
+  }
+  if (type === 'date') {
+    payloadData = moment(payloadData).format('DD-MMM-YYYY');
+  }
+  return payloadData;
+};
 
 export const flattenObject = (updatedData, data, level, parentKey) => {
   const objectKeys = data ? Object?.keys(data) : [];
@@ -11,14 +23,15 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
         : {
             // eslint-disable-next-line
             _meta_data: keyValue?._meta_data?.map((attr, index) => {
+              const attrValue = formattedValue(
+                attr?.attr_type,
+                attr?.attr_value,
+              );
               return {
                 ...attr,
                 id: index + 1,
                 isCustom: key !== 'summary',
-                attr_value:
-                  attr?.attr_type === 'boolean' && attr?.attr_value
-                    ? attr?.attr_value.toString()
-                    : attr?.attr_value,
+                attr_value: formattedValue(attr?.attr_type, attrValue),
                 display_name: attr?.display_name || attr?.attr_name,
               };
             }),
@@ -53,7 +66,7 @@ export const mergeSummary = (data) => {
   let finalResult = data;
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys.forEach((key) => {
-    if (key === 'summary_extended') {
+    if (key === 'summary_extended' && objectKeys?.summary_extended) {
       // eslint-disable-next-line
       const updateMetaData = finalResult?.summary_extended?._meta_data?.map(
         (fields) => {
@@ -77,16 +90,20 @@ export const mergeSummary = (data) => {
               id: index + 1,
             };
           }),
-          _childs: [
-            // eslint-disable-next-line
-            ...finalResult.summary._childs,
-            // eslint-disable-next-line
-            ...finalResult.summary_extended._childs,
-          ],
+          // eslint-disable-next-line
+          _childs: finalResult.summary_extended._childs
+            ? [
+                // eslint-disable-next-line
+                ...finalResult.summary._childs,
+                // eslint-disable-next-line
+                ...finalResult.summary_extended._childs,
+              ]
+            : // eslint-disable-next-line
+              [...finalResult.summary._childs],
         },
       };
-      delete finalResult.summary_extended;
     }
+    delete finalResult.summary_extended;
   });
   return finalResult;
 };
@@ -112,4 +129,46 @@ export const flattenMetaParam = (updatedParam, data, level) => {
     }
   });
   return updatedParam;
+};
+
+export const autoCompleteClose = (removeHook) => {
+  const modalOpened = document.createElement('div');
+  modalOpened.classList.add('modal-opened');
+  document.body.appendChild(modalOpened);
+  modalOpened.addEventListener('click', () => {
+    removeHook();
+    document.body.removeChild(modalOpened);
+  });
+};
+
+export const checkDuplicates = (data) => {
+  const unique = data?.filter(
+    (obj, index) =>
+      data.findIndex(
+        (attr) =>
+          attr?.attr_name?.toLowerCase() === obj?.attr_name?.toLowerCase(),
+      ) === index,
+  );
+
+  return unique?.length === data?.length;
+};
+
+export const validationCheck = (rowData) => {
+  let isValid = true;
+  if (rowData?.length > 0) {
+    const keys = Object.keys(rowData[0]);
+    keys.forEach((key) => {
+      rowData.forEach((data) => {
+        if (
+          (key === 'attr_name' || key === 'attr_value') &&
+          data.isCustom &&
+          (!data[key] || !data[key]?.toString().trim())
+        ) {
+          isValid = false;
+        }
+      });
+    });
+  }
+
+  return isValid;
 };
