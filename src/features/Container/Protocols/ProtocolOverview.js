@@ -99,10 +99,7 @@ function ProtocolOverview({ data }) {
         <DonutChart
           dropshadow
           className="chart"
-          percent={
-            parseInt(data.digitizedConfidenceInterval, 10) ||
-            Math.floor(Math.random() * 100) + 1
-          }
+          percent={parseInt(data.digitizedConfidenceInterval, 10) || 60}
           subtitle="Confidence"
           tooltipTitle="Confidence Metrics"
           tooltipSubtitle="Based on historical performance"
