@@ -9,19 +9,26 @@ import Modal from 'apollo-react/components/Modal';
 import Drag from 'apollo-react-icons/Drag';
 import GridContext from '../Context/GridContext';
 import { TableConst, TableEvents } from '../Constants';
+import '../SOA.scss';
 
-import '../styles.css';
-
+const style = {
+  columnValue: {
+    alignItems: 'center',
+  },
+  arrowContainer: {
+    padding: 15,
+  },
+};
 function FirstColumn({ data, colDef }) {
   let { field } = colDef;
-  const { propDispatch } = useContext(GridContext);
+  const { propDispatch, apiDispatch, tableId, docId } = useContext(GridContext);
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [warning, setWarning] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
     const listener = (event) => {
-      // Do nothing if clicking ref's element or descendent elements
       if (!ref.current || ref.current.contains(event.target)) {
         return;
       }
@@ -46,15 +53,46 @@ function FirstColumn({ data, colDef }) {
     }
     let rowIndex = data[field][TableConst.ROW_IDX];
     if (type === TableEvents.DELETE_TABLE_ROW) {
+      const data = {
+        operation: 'delete',
+        sub_type: 'delete_row',
+        table_props: {
+          table_roi_id: String(tableId),
+
+          table_row_index: String(rowIndex),
+        },
+      };
+      apiDispatch({ type: 'SOA_UPDATE_DETAILS', data, method: 'post' });
       propDispatch({
         type: TableEvents.DELETE_TABLE_ROW,
         payload: rowIndex,
       });
+
       return;
     }
     if (type === TableConst.ADD_ROW_ABOVE) {
       rowIndex++;
     }
+
+    const rowObject = {
+      operation: 'add',
+      sub_type: 'add_row',
+      table_props: {
+        doc_id: docId,
+        table_roi_id: tableId,
+        table_row_index: String(rowIndex),
+        study_procedure: {
+          table_column_index: '0',
+          value: '',
+        },
+        row_props: [],
+      },
+    };
+    apiDispatch({
+      type: 'SOA_UPDATE_DETAILS',
+      data: rowObject,
+      method: 'post',
+    });
 
     propDispatch({
       type: TableEvents.ADD_TABLE_ROW,
@@ -81,7 +119,7 @@ function FirstColumn({ data, colDef }) {
           data-testid="drag-button"
           onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
         />
-        <span style={{ alignItems: 'center' }}>{fieldValue}</span>
+        <span style={style.columnValue}>{fieldValue}</span>
       </div>
       <Popper
         ref={ref}
@@ -89,7 +127,7 @@ function FirstColumn({ data, colDef }) {
         anchorEl={anchorEl}
         onClose={() => setAnchorEl(null)}
       >
-        <Card interactive style={{ padding: 5 }}>
+        <Card interactive style={style.arrowContainer}>
           <Arrow2Up
             data-testid="arrow2Up-button"
             className="hand-cursor"
