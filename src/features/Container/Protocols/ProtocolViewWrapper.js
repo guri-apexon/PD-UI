@@ -7,6 +7,7 @@ import PDFViewer from './SourcePanel/PdfViewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
 import BladeRight from './BladeRight/BladeRight';
+import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 
 class ProtocolViewWrapper extends React.Component {
   constructor(props) {
@@ -81,11 +82,12 @@ class ProtocolViewWrapper extends React.Component {
 
     return (
       <>
-        {data?.userPrimaryRoleFlag && (
-          <div>
-            <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
-          </div>
-        )}
+        {data?.userPrimaryRoleFlag &&
+          pageRight !== PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
+            <div>
+              <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
+            </div>
+          )}
         <div>
           <BladeRight
             dataSummary={data}
@@ -96,30 +98,32 @@ class ProtocolViewWrapper extends React.Component {
 
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
-            {data.userPrimaryRoleFlag && (
-              <Panel
-                width={window.innerWidth / 2}
-                minWidth={window.innerWidth / 4}
-                maxWidth={window.innerWidth / 1.5}
-                hideButton
-                resizable
-              >
-                <Card className="protocol-source-column">
-                  {summaryData?.success ? (
-                    <PDFViewer
-                      page={pageNo}
-                      refs={refx}
-                      pageRight={pageRight}
-                      handlePaginationPage={this.handlePaginationPage}
-                    />
-                  ) : (
-                    <div className="digitize-panel-content">
-                      <div className="loader">{summaryData?.errorMsg}</div>
-                    </div>
-                  )}
-                </Card>
-              </Panel>
-            )}
+            {data?.userPrimaryRoleFlag &&
+              pageRight !== PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
+                <Panel
+                  width={window.innerWidth / 2}
+                  minWidth={window.innerWidth / 4}
+                  maxWidth={window.innerWidth / 1.5}
+                  hideButton
+                  resizable
+                >
+                  <Card className="protocol-source-column">
+                    <div className="panel-heading">Source Document</div>
+                    {summaryData?.success ? (
+                      <PDFViewer
+                        page={pageNo}
+                        refs={refx}
+                        pageRight={pageRight}
+                        handlePaginationPage={this.handlePaginationPage}
+                      />
+                    ) : (
+                      <div className="digitize-panel-content">
+                        <div className="loader">{summaryData?.errorMsg}</div>
+                      </div>
+                    )}
+                  </Card>
+                </Panel>
+              )}
             {data && (
               <Panel width="auto" resizable hideButton>
                 <Digitize
