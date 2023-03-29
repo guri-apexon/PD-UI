@@ -83,7 +83,8 @@ class ProtocolViewWrapper extends React.Component {
     return (
       <>
         {data?.userPrimaryRoleFlag &&
-          pageRight !== PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
+          // eslint-disable-next-line
+          pageRight != PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
             <div>
               <BladeLeft handlePageNo={this.handlePageNo} dataSummary={data} />
             </div>
@@ -99,7 +100,8 @@ class ProtocolViewWrapper extends React.Component {
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
             {data?.userPrimaryRoleFlag &&
-              pageRight !== PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
+              // eslint-disable-next-line
+              pageRight != PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
                 <Panel
                   width={window.innerWidth / 2}
                   minWidth={window.innerWidth / 4}
