@@ -55,6 +55,14 @@ export const protocolSlice = createSlice({
     labDataApiValue: {
       data: [],
     },
+    labDataDeleteApiValue: {
+      data: '',
+      success: false,
+    },
+    labDataUpdateApiValue: {
+      data: '',
+      success: false,
+    },
   },
   reducers: {
     getSummary: (state, action) => {
@@ -177,8 +185,11 @@ export const protocolSlice = createSlice({
     getLabData: (state, action) => {
       state.labDataApiValue = action.payload;
     },
+    deleteGetLabData: (state, action) => {
+      state.labDataDeleteApiValue = action.payload;
+    },
     updateGetLabData: (state, action) => {
-      state.labDataUpdatedValue = action.payload;
+      state.labDataUpdateApiValue = action.payload;
     },
   },
 });
@@ -210,6 +221,7 @@ export const {
   resetUpdateStatus,
   getLabData,
   updateGetLabData,
+  deleteGetLabData,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -237,7 +249,9 @@ export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const SOAData = (state) => state.protocol.SOAData;
 export const labDataApiValue = (state) => state.protocol.labDataApiValue;
-export const labDataUpdatedValue = (state) =>
-  state.protocol.labDataUpdatedValue;
+export const labDataDeleteApiValue = (state) =>
+  state.protocol.labDataDeleteApiValue;
+export const labDataUpdateApiValue = (state) =>
+  state.protocol.labDataUpdateApiValue;
 
 export default protocolSlice.reducer;

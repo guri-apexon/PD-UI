@@ -32,6 +32,8 @@ import {
   getSectionIndex,
   getLabData,
   updateGetLabData,
+  // eslint-disable-next-line import/named
+  deleteGetLabData,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -723,7 +725,7 @@ export function* UpdateLabData(action) {
   if (labData?.success) {
     console.log(labData, 'labData updated');
     toast.info('Lab Data Updated');
-    yield put(updateGetLabData(labData.data));
+    yield put(updateGetLabData(labData));
   } else {
     toast.error('Error While Updation');
   }
@@ -739,8 +741,8 @@ export function* DeleteLabData(action) {
   };
   const labData = yield call(httpCall, config);
   console.log(labData, 'labData saga');
-  if (labData?.data?.is_deleted) {
-    yield put(getLabData(labData.data));
+  if (labData.success) {
+    yield put(deleteGetLabData(labData));
     toast.info('Lab Data row deleted');
   } else {
     toast.error('Error While deleting');
