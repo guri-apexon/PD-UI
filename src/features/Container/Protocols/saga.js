@@ -9,7 +9,7 @@ import {
 
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
-
+import FileDownload from 'js-file-download';
 import {
   getSummary,
   getProcotoclToc,
@@ -28,7 +28,9 @@ import {
   getEnrichedValue,
   updateSectionResp,
   TOCActive,
+  setSOAData,
   getSectionIndex,
+  setLoader,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -251,9 +253,7 @@ export function* updateSectionData(action) {
         });
       } else {
         yield put(updateSectionResp({ response: sectionSaveRes.data }));
-        toast.success(
-          sectionSaveRes.data.message || 'Section updated successfully',
-        );
+        toast.success('Section content updated successfully');
       }
     } else {
       yield put(
@@ -272,7 +272,7 @@ export function* fetchSectionHeaderList(action) {
     payload: { docId },
   } = action;
   yield put(getHeaderList({}));
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=1&toc=0`;
+  const URL = `${BASE_URL_8000}${Apis.GET_CPT_HEADERS}/?aidoc_id=${docId}&link_level=1&toc=0`;
   const config = {
     url: URL,
     method: 'GET',
@@ -427,13 +427,12 @@ export function* fetchFileStream(action) {
     data: null,
   };
   yield put(getFileStream(preLoadingState));
-
   const userType = yield getUserType();
   let userId = 'qc';
   if (userType !== 'QC1') {
     userId = yield getUserId();
   }
-  const { name, dfsPath } = action.payload;
+  const { name, dfsPath, fileName, isDownlod } = action.payload;
   const apiBaseUrl = BASE_URL_8000;
   const config = {
     url: `${apiBaseUrl}${Apis.DOWNLOAD_API}/?filePath=${encodeURIComponent(
@@ -451,7 +450,11 @@ export function* fetchFileStream(action) {
       error: '',
       data: file,
     };
-    yield put(getFileStream(successState));
+    if (isDownlod) {
+      FileDownload(file, fileName);
+    } else {
+      yield put(getFileStream(successState));
+    }
   } catch (error) {
     const errorState = {
       loader: false,
@@ -517,7 +520,7 @@ export function* addMetaDataAttributes(action) {
       }),
     );
   } else {
-    toast.error('Duplicate Attributes');
+    toast.error('Protocol Attributes Not Added');
     yield put(
       getMetadataApiCall({
         status: false,
@@ -656,6 +659,40 @@ export function* saveEnrichedAPI(action) {
   }
 }
 
+export function* getSOAData(action) {
+  const {
+    payload: { docId, operationValue },
+  } = action;
+
+  const params = `?operationValue=${operationValue}&id=${docId}`;
+  const config = {
+    url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa${params}`,
+    method: 'GET',
+    headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
+  };
+  yield put(setLoader(true));
+  const enrichedData = yield call(httpCall, config);
+  if (enrichedData?.success) {
+    yield put(setLoader(false));
+    yield put(setSOAData(enrichedData.data));
+  } else {
+    yield put(setLoader(false));
+    yield put(setSOAData({}));
+    toast.error('Error While Updation');
+  }
+}
+
+export function* soaUpdateDetails({ data, method }) {
+  const config = {
+    url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa`,
+    method,
+    headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
+    data,
+  };
+
+  yield call(httpCall, config);
+}
+
 export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
@@ -681,8 +718,10 @@ function* watchProtocolViews() {
   yield takeEvery('DELETE_METADATA', deleteAttribute);
   yield takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI);
   yield takeEvery('GET_ENRICHED_API', setEnrichedAPI);
+  yield takeLatest('GET_SOA_DATA', getSOAData);
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
+  yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
 }
 
 // notice how we now only export the rootSaga

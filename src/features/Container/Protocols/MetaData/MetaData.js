@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import difference from 'lodash/difference';
 import './MetaData.scss';
+import { toast } from 'react-toastify';
 import Accordian from './Accordian';
 import {
   accordionMetaData,
@@ -14,7 +15,12 @@ import {
   metadataApiCallValue,
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
-import { flattenMetaParam } from './utilFunction';
+import {
+  checkDuplicates,
+  flattenMetaParam,
+  validationCheck,
+  autoCompleteClose,
+} from './utilFunction';
 import { METADATA_LIST } from '../../../../AppConstant/AppConstant';
 
 function MetaData({ docId }) {
@@ -127,50 +133,63 @@ function MetaData({ docId }) {
   };
 
   const deleteCall = (data, opName) => {
-    dispatch({
-      type: 'DELETE_METADATA',
-      payload: {
-        op: opName,
-        docId,
-        fieldName: data.formattedName,
-        attributeNames: deletedAttributes,
-        reqData: {
-          formattedName: data.formattedName,
-          accData: data,
+    const filterDeletedAttributes = deletedAttributes.filter((attr) => attr);
+    if (filterDeletedAttributes.length > 0) {
+      dispatch({
+        type: 'DELETE_METADATA',
+        payload: {
+          op: opName,
+          docId,
+          fieldName: data.formattedName,
+          attributeNames: deletedAttributes,
+          reqData: {
+            formattedName: data.formattedName,
+            accData: data,
+          },
         },
-      },
-    });
-    setDeletedAttributes([]);
+      });
+      setDeletedAttributes([]);
+    }
   };
 
   const postCall = (data, metaData) => {
-    const updatedAttrList = metaData?.map((list) => {
-      const convertToBoolean = list?.attr_value === 'true';
-      return {
-        attr_name: list?.attr_name,
-        attr_type: list?.attr_type || 'string',
-        attr_value:
-          list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
-        note: list?.note || '',
-        confidence: list?.confidence || '',
-      };
-    });
-    dispatch({
-      type: 'ADD_METADATA_ATTRIBUTES',
-      payload: {
-        docId,
-        fieldName: data?.formattedName === 'summary' ? '' : data?.formattedName,
-        attributes: updatedAttrList,
-        reqData: {
-          formattedName: data?.formattedName,
+    if (metaData.length > 0) {
+      const updatedAttrList = metaData?.map((list) => {
+        const convertToBoolean = list?.attr_value === 'true';
+        return {
+          attr_name: list?.attr_name,
+          attr_type: list?.attr_type || 'string',
+          attr_value:
+            list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
+          note: list?.note || '',
+          confidence: list?.confidence || '',
+        };
+      });
+      dispatch({
+        type: 'ADD_METADATA_ATTRIBUTES',
+        payload: {
+          docId,
+          fieldName:
+            data?.formattedName === 'summary' ? '' : data?.formattedName,
+          attributes: updatedAttrList,
+          reqData: {
+            formattedName: data?.formattedName,
+          },
         },
-      },
-    });
+      });
+      setCurrentActiveLevels(
+        currentActiveLevels.filter((curr) => curr !== data?.formattedName),
+      );
+    }
   };
 
   const handleSave = (accData, e) => {
     e.stopPropagation();
-    if (accData.name === 'summary') {
+    if (!checkDuplicates(rows[accData?.formattedName])) {
+      toast.error('Duplicate attribute');
+    } else if (!validationCheck(rows?.[accData?.formattedName])) {
+      toast.error('Please fill proper data');
+    } else if (accData.name === 'summary') {
       const filterCustomData = rows[accData?.name]?.filter(
         (data) => data?.isCustom,
       );
@@ -299,10 +318,10 @@ function MetaData({ docId }) {
           apiResponse?.reqData?.formattedName === 'summary_extended'
             ? rows.summary
             : rows[apiResponse?.reqData?.formattedName] || [];
-        accMetaData = accMetaData.map((metaData) => {
+        accMetaData = accMetaData?.map((metaData) => {
           return {
             ...metaData,
-            display_name: metaData.attr_name,
+            display_name: metaData?.display_name || metaData?.attr_name,
           };
         });
         setAccordianData({
@@ -310,7 +329,7 @@ function MetaData({ docId }) {
           [apiResponse?.reqData?.formattedName]: {
             ...selectedData,
             isEdit: false,
-            _meta_data: [...accMetaData],
+            _meta_data: accMetaData?.length > 0 ? [...accMetaData] : [],
           },
         });
       } else if (apiResponse.op === 'addField') {
@@ -402,6 +421,13 @@ function MetaData({ docId }) {
     // eslint-disable-next-line
   }, [sectionName]);
 
+  const handleAutoComplete = () => {
+    setIsOpen(!isOpen);
+    autoCompleteClose(() => {
+      setIsOpen(false);
+    });
+  };
+
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -413,7 +439,7 @@ function MetaData({ docId }) {
           <Plus
             size="small"
             className="metadata-plus-size"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleAutoComplete}
           />
         </div>
         {isOpen && (

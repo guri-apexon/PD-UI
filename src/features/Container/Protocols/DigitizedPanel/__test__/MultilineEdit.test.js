@@ -62,6 +62,7 @@ describe('DigitizedEdit', () => {
     const wrapper = render(
       <MultilineEdit sectionDataArr={sectionData} edit pageRight={2} />,
     );
+    fireEvent.click(wrapper.getAllByTestId('content_container')[0]);
 
     fireEvent.click(wrapper.getByTestId('trash-icon'));
     expect(
@@ -77,6 +78,7 @@ describe('DigitizedEdit', () => {
     const wrapper = render(
       <MultilineEdit sectionDataArr={sectionData} edit pageRight={2} />,
     );
+    fireEvent.click(wrapper.getAllByTestId('content_container')[0]);
 
     fireEvent.click(wrapper.getByTestId('trash-icon'));
     const button = wrapper.getByText('Cancel');
@@ -91,6 +93,7 @@ describe('DigitizedEdit', () => {
     const wrapper = render(
       <MultilineEdit sectionDataArr={sectionData} edit pageRight={2} />,
     );
+    fireEvent.click(wrapper.getAllByTestId('content_container')[0]);
 
     fireEvent.click(wrapper.getByTestId('trash-icon'));
     const button = wrapper.getByText('Delete');
@@ -144,7 +147,6 @@ describe('DigitizedEdit', () => {
     expect(screen).toBeTruthy();
     const contentContainer = screen.getAllByTestId('content_container');
     fireEvent.click(contentContainer[0]);
-    screen.debug();
     const element = screen.getAllByTestId('contentEdit')[0];
     element.focus();
     fireEvent.keyDown(element, {

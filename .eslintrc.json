@@ -29,6 +29,10 @@
 
   "rules": {
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "import/no-unresolved": [
+      2, 
+      { "caseSensitive": false }
+   ],
     "quotes": [
       "error",
       "single",

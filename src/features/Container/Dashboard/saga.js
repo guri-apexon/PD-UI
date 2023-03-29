@@ -19,8 +19,6 @@ import {
   getProtocols,
   setError,
   getRecentSearches,
-  getSponsor,
-  getIndication,
   setAddprotocolError,
   setAddProtocolModal,
   setLoading,
@@ -29,9 +27,11 @@ import {
   getFollowedProtocols,
   setTableLoader,
   setSelectedProtocols,
-  setIndicationLoading,
-  setSponsorLoading,
+  setworkflowData,
+  setAddProtocolErrorState,
+  setworkflowSubmit,
 } from './dashboardSlice';
+import { errorMessage, dashboardErrorType } from './constant';
 
 function* getState() {
   const state = yield select();
@@ -133,65 +133,11 @@ export function* savedSearchAsyn() {
   }
 }
 
-export function* addProtocolSponsor() {
-  const sponsorUrl = `${BASE_URL_8000}/api/protocol_sponsor/?skip=0`;
-  yield put(setSponsorLoading(true));
-
-  try {
-    const sponsorList = yield call(httpCall, {
-      url: sponsorUrl,
-      method: 'GET',
-    });
-    if (sponsorList.success) {
-      const actualSponsorList = sponsorList.data.map((item) => {
-        const temp = { ...item };
-        temp.label = item.sponsorName;
-        return temp;
-      });
-      yield put(getSponsor(actualSponsorList));
-      yield put(setSponsorLoading(false));
-    } else {
-      yield put(setError(sponsorList.err.statusText));
-      yield put(setSponsorLoading(false));
-      yield put(setApiError(true));
-    }
-  } catch (err) {
-    yield put(setError(err.statusText));
-    yield put(setSponsorLoading(false));
-    yield put(setApiError(true));
-  }
-}
-export function* addProtocolIndication() {
-  const indicationUrl = `${BASE_URL_8000}/api/indications/?skip=0`;
-  yield put(setIndicationLoading(true));
-  try {
-    const indicationList = yield call(httpCall, {
-      url: indicationUrl,
-      method: 'GET',
-    });
-    if (indicationList.success) {
-      const actualIndicationList = indicationList.data.map((item) => {
-        const temp = { ...item };
-        temp.label = item.indicationName;
-        return temp;
-      });
-      yield put(getIndication(actualIndicationList));
-    } else {
-      yield put(setError(indicationList.err.statusText));
-      yield put(setApiError(true));
-    }
-    yield put(setIndicationLoading(false));
-  } catch (err) {
-    yield put(setError(err.statusText));
-    yield put(setIndicationLoading(false));
-    yield put(setApiError(true));
-  }
-}
 export function* postAddProtocol(postData) {
   const userId = yield getState();
   const { payload: data } = postData;
   yield put(setLoading(true));
-  const postUrl = `${BASE_URL}/pd/api/v1/documents/?sourceFileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&indication=${data.indication}&moleculeDevice=${data.moleculeDevice}&userId=${userId}`;
+  const postUrl = `${BASE_URL}/pd/api/v1/documents/?sourceFileName=${data.fileName}&versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&projectID=${data.projectID}&userId=${userId}&duplicateCheck=${data.duplicateCheck}`;
   const duplicateCheck = `${BASE_URL_8000}/api/duplicate_check/?versionNumber=${data.protocol_version}&protocolNumber=${data.protocol_number}&sponsor=${data.sponsor}&documentStatus=${data.documentStatus}&amendmentNumber=${data.amendmentNumber}&userId=${userId}`;
   const bodyFormData = new FormData();
   bodyFormData.append('file', data.uploadFile[0]);
@@ -210,9 +156,39 @@ export function* postAddProtocol(postData) {
       });
       if (postResponse.success) {
         yield put(setAddProtocolModal(false));
+        yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
+        yield put(
+          setAddProtocolErrorState({
+            type: '',
+            data: {},
+          }),
+        );
       } else {
         yield put(setAddProtocolModal(true));
         yield put(setAddprotocolError('Upload Failed'));
+        const { err } = postResponse;
+        if (err.status === 400) {
+          yield put(
+            setAddProtocolErrorState({
+              type: 'inputCheck',
+              data: {
+                message: err.data.message,
+              },
+            }),
+          );
+        } else {
+          const parsedMsgArr = JSON.parse(err.data.message);
+          yield put(
+            setAddProtocolErrorState({
+              type: 'protocolDuplicate',
+              data: {
+                message: errorMessage.protocolDuplicate,
+                protocolName: parsedMsgArr.duplicate_docs[0].protocol,
+                docid: parsedMsgArr.duplicate_docs[0].id,
+              },
+            }),
+          );
+        }
       }
     } else {
       yield put(setAddProtocolModal(true));
@@ -220,16 +196,15 @@ export function* postAddProtocol(postData) {
         setAddprotocolError(
           duplicateCheckRes && duplicateCheckRes.data.Duplicate
             ? duplicateCheckRes.data.Duplicate
-            : 'This protocol document cannot be added to the library because it already exists.',
+            : errorMessage.attributeDuplicate,
         ),
       );
     }
 
-    yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
     yield put(setLoading(false));
   } catch (err) {
     yield put(setAddprotocolError('Upload Failed'));
-    yield put(setAddProtocolModal(false));
+    // yield put(setAddProtocolModal(false));
     yield put(setLoading(false));
   }
 }
@@ -239,6 +214,14 @@ export function* toggleAddProtocol(data) {
 }
 export function* resetErrorAddProtocol() {
   yield put(setAddprotocolError(''));
+}
+export function* resetErrorAddProtocolNew() {
+  yield put(
+    setAddProtocolErrorState({
+      type: '',
+      data: {},
+    }),
+  );
 }
 
 export function* saveRecentSearch(action) {
@@ -398,20 +381,85 @@ export function* fetchAssociateData(action) {
   }
 }
 
+export function* fetchWorkflowData(action) {
+  const loadingData = {
+    loading: true,
+    error: null,
+    data: [],
+  };
+  yield put(setworkflowData(loadingData));
+  try {
+    const config = {
+      url: `/workflownew.json`,
+      method: 'GET',
+    };
+    const { data } = yield call(httpCall, config);
+    const successData = {
+      loading: false,
+      error: null,
+      data: data.workflows,
+    };
+    yield put(setworkflowData(successData));
+  } catch (e) {
+    const errorData = {
+      loading: true,
+      error: 'API ERROR',
+      data: [],
+    };
+    yield put(setworkflowData(errorData));
+  }
+}
+export function* submitWorkflowData(action) {
+  const loadingData = {
+    loading: true,
+    error: null,
+    data: [],
+  };
+  yield put(setworkflowSubmit(loadingData));
+  try {
+    console.log('payload', action.payload);
+    const { id, body } = action.payload;
+    const config = {
+      url: `/post?id=${id}`,
+      method: 'POST',
+      data: body,
+      headers: { 'Content-Type': 'application/json' },
+      checkAuth: true,
+    };
+    const { data } = yield call(httpCall, config);
+    const successData = {
+      loading: false,
+      error: null,
+      data: data.workflows,
+    };
+    yield put(setworkflowSubmit(successData));
+    yield put(setAddProtocolModal(false));
+    yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
+  } catch (e) {
+    const errorData = {
+      loading: true,
+      error: 'API ERROR',
+      data: [],
+    };
+    yield put(setworkflowSubmit(errorData));
+  }
+}
+
 export function* watchDashboard() {
   yield takeLatest('GET_PROTOCOL_TABLE_SAGA', protocolAsyn);
   yield takeEvery('GET_RECENT_SEARCH_DATA', recentSearchAsyn);
-  yield takeEvery('GET_SPONSOR_ADDPROTCOL_SAGA', addProtocolSponsor);
   yield takeEvery('POST_ADDPROTOCOL_DATA', postAddProtocol);
   yield takeEvery('TOGGLE_ADDPROTOCOL_MODAL', toggleAddProtocol);
   yield takeEvery('GET_SAVED_SEARCH_DATA', savedSearchAsyn);
   yield takeEvery('RESET_ERROR_ADD_PROTOCOL', resetErrorAddProtocol);
+  yield takeEvery('RESET_ERROR_ADD_PROTOCOL_NEW', resetErrorAddProtocolNew);
   yield takeEvery('POST_RECENT_SEARCH_DASHBOARD', saveRecentSearch);
   yield takeLatest('SEND_QC_REVIEW_SAGA', sendQcReview);
-  yield takeLatest('GET_INDICATION_ADDPROTCOL_SAGA', addProtocolIndication);
   yield takeLatest('HANDLE_DOWNLOAD_SAGA', handleDownload);
   yield takeLatest('HANDLE_FOLLOW_SAGA', handleFollow);
   yield takeLatest('FETCH_ASSOCIATE_DATA', fetchAssociateData);
+  yield takeLatest('FETCH_WORKFLOW_DATA', fetchWorkflowData);
+  yield takeLatest('SUBMIT_WORKFLOW_DATA', submitWorkflowData);
 }
 
 export default function* dashboardSaga() {

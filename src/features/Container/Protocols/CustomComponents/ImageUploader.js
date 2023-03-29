@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import FileUpload from 'apollo-react/components/FileUpload';
@@ -7,11 +8,14 @@ import TrashIcon from 'apollo-react-icons/Trash';
 import IconButton from 'apollo-react/components/IconButton';
 import Pencil from 'apollo-react-icons/Pencil';
 import { useProtContext } from '../ProtocolContext';
+
 import { toBase64 } from '../../../../utils/utilFunction';
 import { setSaveEnabled } from '../protocolSlice';
+import constant from './constants';
 import './ImageUploader.scss';
 
 function ImageUploader({ lineID, content, edit }) {
+  const { supportedFileType } = constant;
   const dispatch = useDispatch();
   const [img, setImg] = useState(null);
   const [imgBkp, setImgBkp] = useState(null);
@@ -51,11 +55,11 @@ function ImageUploader({ lineID, content, edit }) {
 
   const handleUpload = (newValue) => {
     if (newValue) {
-      const type = newValue[0].name
-        .split('.')
-        [newValue[0].name.split('.').length - 1].toLowerCase();
-      if (['jpeg', 'png', 'jpg', 'gif', 'bmp'].includes(type)) {
+      const type = newValue[0].name.split('.').pop().toLowerCase();
+      if (supportedFileType.includes(type)) {
         setValue(newValue);
+      } else {
+        toast.error('Please Upload Supported Image File');
       }
     }
   };

@@ -18,6 +18,12 @@ function ProtocolView({ refs, data }) {
 
   const [selectedSection, setSelectedSection] = useState({});
   const [sectionContent, setSectionContent] = useState([]);
+  const [value, setValue] = useState(false);
+
+  const handleChange = (e, checked) => {
+    setValue(checked);
+  };
+  const [saveSection, setSaveSection] = useState(null);
 
   const handleSectionSelect = (payload) => {
     if (!payload.sectionContent && sectionContent) {
@@ -127,10 +133,19 @@ function ProtocolView({ refs, data }) {
     () => ({
       selectedSection,
       sectionContent,
+      saveSection,
       dispatchSectionEvent,
       setSectionContent,
+      setSaveSection,
     }),
-    [selectedSection, sectionContent, dispatchSectionEvent, setSectionContent],
+    [
+      selectedSection,
+      sectionContent,
+      saveSection,
+      dispatchSectionEvent,
+      setSectionContent,
+      setSaveSection,
+    ],
   );
 
   const panels = () => {
@@ -180,6 +195,8 @@ function ProtocolView({ refs, data }) {
             sectionRef={sectionRef}
             data={data}
             summaryData={summary}
+            value={value}
+            handleChange={handleChange}
           />
         )}
       </div>

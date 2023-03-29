@@ -11,17 +11,13 @@ import {
 import './BladeRight.scss';
 import { rightBladeValue } from '../protocolSlice';
 
-function BladeRight({ dataSummary }) {
+function BladeRight({ dataSummary, value, handleChange }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
-  const [value, setValue] = React.useState(false);
   const dispatch = useDispatch();
   const BladeRightValue = useSelector(rightBladeValue);
 
   const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_ARR);
-  const handleChange = (e, checked) => {
-    setValue(checked);
-  };
 
   const onClose = () => {
     setOpen(false);
@@ -54,6 +50,7 @@ function BladeRight({ dataSummary }) {
     if (name === PROTOCOL_RIGHT_MENU.CLINICAL_TERM && !flag) {
       return true;
     }
+
     return false;
   };
   return (
@@ -85,8 +82,10 @@ function BladeRight({ dataSummary }) {
                 checked={value}
                 onChange={handleChange}
                 data-testId="preferred-term-switch"
+                disabled={!dataSummary?.userPrimaryRoleFlag}
               />
             </div>
+
             <hr className="line" />
             <div>
               <h3>Navigation Menu</h3>
@@ -131,5 +130,7 @@ function BladeRight({ dataSummary }) {
 
 BladeRight.propTypes = {
   dataSummary: PropTypes.isRequired,
+  value: PropTypes.isRequired,
+  handleChange: PropTypes.isRequired,
 };
 export default BladeRight;

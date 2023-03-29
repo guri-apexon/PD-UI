@@ -6,7 +6,13 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import headerLevel from '../CustomComponents/constants';
 
-function AddSection({ setIsModal, hoverItem, hoverIndex, setIsShown }) {
+function AddSection({
+  setIsModal,
+  hoverItem,
+  hoverIndex,
+  setIsShown,
+  isModal,
+}) {
   const dispatch = useDispatch();
   const { headerLevel1 } = headerLevel;
   const [sectionName, setSectionName] = useState('');
@@ -35,19 +41,23 @@ function AddSection({ setIsModal, hoverItem, hoverIndex, setIsShown }) {
         },
       });
       setIsModal(false);
-      setIsShown(false);
     }
+  };
+
+  const handleClose = () => {
+    setIsShown(false);
+    setIsModal(false);
   };
 
   return (
     <Modal
       disableBackdropClick
-      open
+      open={isModal}
       variant="default"
-      onClose={() => setIsModal(false)}
+      onClose={handleClose}
       title="Add New Section "
       buttonProps={[
-        { size: 'small' },
+        { label: 'Cancel', onClick: handleClose, size: 'small' },
         { label: 'Add Section', onClick: handleSave, size: 'small' },
       ]}
       id="renameTermsModal"
@@ -76,4 +86,5 @@ AddSection.propTypes = {
   hoverItem: PropTypes.isRequired,
   hoverIndex: PropTypes.isRequired,
   setIsShown: PropTypes.isRequired,
+  isModal: PropTypes.isRequired,
 };

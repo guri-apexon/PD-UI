@@ -11,13 +11,13 @@ import Tab from 'apollo-react/components/Tab';
 import Tabs from 'apollo-react/components/Tabs';
 import Loader from 'apollo-react/components/Loader';
 import { protocolSummary, getProcotoclToc } from './protocolSlice';
+import { isPrimaryUser } from '../../../utils/utilFunction';
 
 // ------------------- Components ------------
 import ProtocolOverview from './ProtocolOverview';
 import ProtocolView from './ProtocolView';
 import Documents from './Documents';
 import NoResultFound from '../../Components/NoResultFound';
-import { isPrimaryUser } from '../../../utils/utilFunction';
 
 // ------------------- Third Party -----------
 

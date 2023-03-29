@@ -134,6 +134,14 @@
   [class*='MuiTableRow-root-'] {
     height: auto !important;
   }
+  tr:last-child {
+    td:first-child:nth-last-child(1) {
+      display: none;
+    }
+  }
+  [class*='Table-scrollRoot-'] {
+    overflow-y: hidden;
+  }
 
   .metaData-boarder {
     border: 1px solid rgba(0, 0, 0, 0.08);
@@ -218,11 +226,11 @@
     display: flex;
     align-items: center;
   }
-  .delContainer {
-    margin: unset;
-    svg {
-      cursor: pointer;
-    }
+}
+.delContainer {
+  margin: unset;
+  svg {
+    cursor: pointer;
   }
 }
 .iconDiv {
@@ -244,6 +252,11 @@
 }
 .subAccContainer {
   padding: 15px;
+}
+
+.date-field {
+  height: 20rem;
+  overflow-y: auto;
 }
 
 .modal {
