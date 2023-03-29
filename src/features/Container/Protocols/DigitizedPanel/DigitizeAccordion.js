@@ -197,7 +197,6 @@ function DigitizeAccordion({
   };
 
   const onEditClick = () => {
-    // e.stopPropagation();
     if (currentEditCard && currentEditCard !== item.link_id) {
       setShowConfirm(true);
     } else {
