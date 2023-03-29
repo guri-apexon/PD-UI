@@ -28,7 +28,7 @@ function DipaViewStructure({
   handleUpdate,
   handleDelete,
 }) {
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [OpenPop, setOpenPop] = useState(null);
   const [tooltip, setTooltip] = useState(false);
 
   const openTooltip = () => {
@@ -109,9 +109,9 @@ function DipaViewStructure({
             <Grid className="trash-plus-grid">
               <Plus
                 data-testid="plus-icon"
-                onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
+                onClick={(e) => setOpenPop(!OpenPop ? e.currentTarget : null)}
               >
-                {`${!anchorEl ? 'Open' : 'Close'} popper`}
+                {`${!OpenPop ? 'Open' : 'Close'} popper`}
               </Plus>
               <Trash
                 className="trash-icon"
@@ -120,9 +120,9 @@ function DipaViewStructure({
               />
             </Grid>
             <Popover
-              open={!!anchorEl}
-              anchorEl={anchorEl}
-              onClose={() => setAnchorEl(null)}
+              open={!!OpenPop}
+              anchorEl={OpenPop}
+              onClose={() => setOpenPop(null)}
               className="popover"
               data-testid="popover-card"
             >
