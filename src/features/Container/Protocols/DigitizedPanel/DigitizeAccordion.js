@@ -665,8 +665,9 @@ function DigitizeAccordion({
             <div className="textContainer">
               {AUDIT_LIST.map((names) => {
                 return (
-                  <Typography variant="body1" key={names}>
-                    {names}&nbsp;:
+                  <Typography variant="body1" key={names?.title}>
+                    {names?.title}&nbsp;:&nbsp;
+                    {item?.audit_info[names.keyName] || '-----'}
                   </Typography>
                 );
               })}
