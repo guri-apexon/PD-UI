@@ -70,7 +70,7 @@ describe('Accordian component', () => {
     expect(wrapper).toBeTruthy();
 
     expect(metadataAccordian).toBeInTheDocument();
-    const metadataplus = wrapper.getByTestId('handle-edit');
+    const metadataplus = wrapper.getByTestId('metadatapencil');
     fireEvent.click(metadataplus);
   });
 

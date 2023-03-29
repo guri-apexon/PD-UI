@@ -5,7 +5,6 @@ import Modal from 'apollo-react/components/Modal';
 import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Typography from 'apollo-react/components/Typography';
 import Popover from 'apollo-react/components/Popover';
-import IconButton from 'apollo-react/components/IconButton';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import Pencil from 'apollo-react-icons/Pencil';
@@ -100,9 +99,13 @@ function Accordian({
           <div className="accordion_summary_container">
             <Typography>{accData?.name}</Typography>
             <div className="metadata-flex">
-              <IconButton data-testId="eyeIcon" onClick={clickAuditLog}>
-                <EyeShow />
-              </IconButton>
+              <span
+                data-testId="eyeIcon"
+                onClick={clickAuditLog}
+                role="presentation"
+              >
+                <EyeShow style={{ paddingRight: '10px' }} />
+              </span>
 
               {accData?.isEdit ? (
                 <>
@@ -149,9 +152,13 @@ function Accordian({
                   )}
                 </>
               ) : (
-                <IconButton data-testId="handle-edit" onClick={handleEdit}>
-                  <Pencil />
-                </IconButton>
+                <span data-testId="metadatapencil">
+                  <Pencil
+                    className="metadata-plus-size"
+                    data-testid="handle-edit"
+                    onClick={handleEdit}
+                  />
+                </span>
               )}
             </div>
           </div>
@@ -268,7 +275,7 @@ function Accordian({
               })}
             </div>
             <div className="textContainer">
-              {Object.keys(accData?.audit_info).map((names) => {
+              {Object.keys(accData?.audit_info || {}).map((names) => {
                 return (
                   names !== 'total_no_review' && (
                     <Typography variant="body1" key={names}>
