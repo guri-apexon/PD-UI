@@ -66,65 +66,72 @@ function MedicalTerm({
   const handleDeleteTag = (value) => {
     const updatedChildArr = childArr.filter((item) => item !== value);
     setChildArr(updatedChildArr);
-    // let name;
-    // if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
-    // if (selectedTerm === 'medical_term') name = 'clinical_terms';
-    // else if (selectedTerm === 'ontology') name = 'ontology';
+    let name;
+    if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
+    if (selectedTerm === 'medical_term') name = 'clinical_terms';
+    else if (selectedTerm === 'ontology') name = 'ontology';
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: preferredTerm,
       clinical_terms: clinicalTerm,
       ontology: ontologyTemp,
+      confidence: '0',
+      start: '0',
+      text_len: '0',
     };
     const saveObj = {
       ...tempObj,
-      updatedChildArr,
+      [name]: '',
     };
+    const operationType = 'delete';
     dispatch({
       type: 'SAVE_ENRICHED_DATA',
       payload: {
         docId,
         linkId,
+        operationType,
         data: saveObj,
       },
     });
   };
-  console.log('clinical', clinicalTerms);
-  console.log('enrichedtarget', enrichedTarget);
-  console.log('child', childArr);
 
   const handleDelete = () => {
     if (!selectedTerm) return;
     if (clinicalTermsArr && selectedTerm) {
-      const updatedClinicalTermsArr = {
+      const updatedClinicalTermsArrr = {
         ...clinicalTermsArr,
         [enrichedText]: {
           ...clinicalTermsArr[enrichedText],
           [selectedTerm]: '',
         },
       };
-      setClinicalTermsArr(updatedClinicalTermsArr);
+      setClinicalTermsArr(updatedClinicalTermsArrr);
       setChildArr([]);
-      // let name;
-      // if (selectedTerm === 'ontology') name = 'ontology';
-      // if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
-      // if (selectedTerm === 'medical_term') name = 'clinical_terms';
+      let name;
+      if (selectedTerm === 'ontology') name = 'ontology';
+      if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
+      if (selectedTerm === 'medical_term') name = 'clinical_terms';
 
       const tempObj = {
         standard_entity_name: enrichedText,
         iqv_standard_term: preferredTerm,
         clinical_terms: clinicalTerm,
         ontology: ontologyTemp,
+        confidence: '0',
+        start: '0',
+        text_len: '0',
       };
       const saveObj = {
         ...tempObj,
-        updatedClinicalTermsArr,
+        [name]: '',
       };
+      const operationType = 'delete';
       dispatch({
         type: 'SAVE_ENRICHED_DATA',
         payload: {
           docId,
           linkId,
+          operationType,
           data: saveObj,
         },
       });
@@ -190,6 +197,8 @@ function MedicalTerm({
       } else {
         setChildArr(arr);
       }
+    } else {
+      setChildArr([]);
     }
     // eslint-disable-next-line
   }, [selectedTerm]);

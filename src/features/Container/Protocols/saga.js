@@ -635,10 +635,16 @@ export function* setEnrichedAPI(action) {
 
 export function* saveEnrichedAPI(action) {
   const {
-    payload: { docId, linkId, data },
+    payload: { docId, linkId, data, operationType },
   } = action;
+  let url = '';
+  if (operationType) {
+    url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}&operation_type=delete`;
+  } else {
+    url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`;
+  }
   const config = {
-    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`,
+    url,
     method: 'POST',
     data: {
       data,
