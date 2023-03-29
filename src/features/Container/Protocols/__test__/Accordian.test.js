@@ -9,6 +9,11 @@ describe('Accordian component', () => {
     name: 'accordion',
     isEdit: false,
     level: 1,
+    audit_info: {
+      user_id: null,
+      last_updated: '2023-03-29 08:52:41.726047',
+      num_updates: 1,
+    },
   };
   const metaDataList = [];
   const suggestedSubList = [{ label: 'sub1' }, { label: 'sub2' }];
@@ -53,13 +58,19 @@ describe('Accordian component', () => {
     fireEvent.click(wrapper.getByTestId('meta-item-accordion'));
     expect(handleAccordian).toHaveBeenCalled();
   });
+  it('should open popover when eye icon is clicked', () => {
+    const eyeIcon = wrapper.getByTestId('eyeIcon');
+    fireEvent.click(eyeIcon);
+    const popover = wrapper.getByTestId('metadata-popover');
+    expect(popover).toBeInTheDocument();
+  });
   it('should call setCurrentActiveLevels when plus icon is clicked', () => {
     const metadataAccordian = wrapper.getByTestId('meta-item-accordion');
 
     expect(wrapper).toBeTruthy();
 
     expect(metadataAccordian).toBeInTheDocument();
-    const metadataplus = wrapper.getByTestId('metadatapencil');
+    const metadataplus = wrapper.getByTestId('handle-edit');
     fireEvent.click(metadataplus);
   });
 
@@ -70,6 +81,11 @@ describe('Accordian component', () => {
       name: 'testName',
       level: 1,
       isEdit: true,
+      audit_info: {
+        user_id: null,
+        last_updated: '2023-03-29 08:52:41.726047',
+        num_updates: 1,
+      },
     };
     const rows = [];
     const suggestedSubList = [];
@@ -119,6 +135,11 @@ describe('Accordian', () => {
     level: 1,
     isActive: false,
     isEdit: true,
+    audit_info: {
+      user_id: null,
+      last_updated: '2023-03-29 08:52:41.726047',
+      num_updates: 1,
+    },
   };
   const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
   const suggestedSubList = [{ label: 'Subsection 1' }];
@@ -169,6 +190,11 @@ describe('Accordian', () => {
       level: 1,
       isActive: true,
       isEdit: true,
+      audit_info: {
+        user_id: null,
+        last_updated: '2023-03-29 08:52:41.726047',
+        num_updates: 1,
+      },
     };
 
     const screen = render(
@@ -203,6 +229,11 @@ describe('Accordian', () => {
       level: 1,
       isActive: true,
       isEdit: true,
+      audit_info: {
+        user_id: null,
+        last_updated: '2023-03-29 08:52:41.726047',
+        num_updates: 1,
+      },
     };
 
     const { getByTestId } = render(
@@ -239,6 +270,11 @@ describe('Accordian', () => {
       level: 5,
       isActive: false,
       isEdit: true,
+      audit_info: {
+        user_id: null,
+        last_updated: '2023-03-29 08:52:41.726047',
+        num_updates: 1,
+      },
     };
 
     const { getByTestId } = render(
@@ -270,6 +306,11 @@ describe('Accordian', () => {
       level: 1,
       isActive: true,
       isEdit: true,
+      audit_info: {
+        user_id: null,
+        last_updated: '2023-03-29 08:52:41.726047',
+        num_updates: 1,
+      },
     };
 
     const { getByTestId } = render(
@@ -304,6 +345,11 @@ describe('Accordian', () => {
     level: 1,
     isActive: false,
     isEdit: true,
+    audit_info: {
+      user_id: null,
+      last_updated: '2023-03-29 08:52:41.726047',
+      num_updates: 1,
+    },
   };
   const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
   const suggestedSubList = [{ label: 'Subsection 1' }];

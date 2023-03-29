@@ -247,6 +247,7 @@ function Accordian({
           id="neutral"
         />
         <Popover
+          data-testId="metadata-popover"
           open={!!openAudit}
           anchorEl={openAudit}
           onClose={() => setOpenAudit(null)}
@@ -258,10 +259,10 @@ function Accordian({
                   <Typography variant="body1" key={names?.title}>
                     {names?.title}&nbsp;:&nbsp;
                     {(names?.keyName === 'last_updated'
-                      ? moment(accData?.audit_info[names?.keyName]).format(
+                      ? moment(accData?.audit_info?.[names?.keyName]).format(
                           'DD-MMM-YYYY HH:mm:ss',
                         )
-                      : accData?.audit_info[names?.keyName]) || '-----'}
+                      : accData?.audit_info?.[names?.keyName]) || '-----'}
                   </Typography>
                 );
               })}
@@ -271,7 +272,7 @@ function Accordian({
                 return (
                   names !== 'total_no_review' && (
                     <Typography variant="body1" key={names}>
-                      {accData?.audit_info.names}
+                      {accData?.audit_info?.names}
                     </Typography>
                   )
                 );
