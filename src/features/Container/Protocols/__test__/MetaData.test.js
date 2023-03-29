@@ -35,6 +35,11 @@ const initialState = {
         isActive: false,
         isEdit: true,
         _childs: [],
+        audit_info: {
+          user_id: null,
+          last_updated: '2023-03-29 08:52:41.726047',
+          num_updates: 1,
+        },
       },
       level: {
         _meta_data: metaVariables,
@@ -44,6 +49,11 @@ const initialState = {
         isActive: false,
         isEdit: false,
         _childs: ['aa', 'a'],
+        audit_info: {
+          user_id: null,
+          last_updated: '2023-03-29 08:52:41.726047',
+          num_updates: 1,
+        },
       },
       aa: {
         formattedName: 'level.aa',
@@ -52,6 +62,11 @@ const initialState = {
         isActive: false,
         isEdit: true,
         _childs: ['bb'],
+        audit_info: {
+          user_id: null,
+          last_updated: '2023-03-29 08:52:41.726047',
+          num_updates: 1,
+        },
       },
     },
     accordianMetaParam: {

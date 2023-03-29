@@ -43,7 +43,7 @@ function DipaView() {
         ...section,
         open: section?.ID === panelID ? !section.open : section.open,
         child: section.child?.length
-          ? updateOpenValue(section.child, true)
+          ? updateOpenValue(section.child)
           : section.child,
       }));
 
