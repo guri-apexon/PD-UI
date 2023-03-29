@@ -73,6 +73,7 @@ function EditableCell({ row, column: { accessor: key } }) {
 
   return row.editMode ? (
     <TextField
+      inputProps={{ 'aria-label': val }}
       size="small"
       fullWidth
       name={val}
@@ -112,8 +113,7 @@ function LabData({ docId }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tableId, setTableId] = useState();
   const [showData, setShowData] = useState(true);
-
-  console.log(labData, 'labData is unit test');
+  const [isShow, setIsShow] = useState(false);
 
   useEffect(() => {
     if (showData) {
@@ -128,14 +128,16 @@ function LabData({ docId }) {
 
   const handleSave = () => {
     const updatedData = rowData.filter((value) => value.isUpdated === true);
-    dispatch({
-      type: 'UPDATE_LAB_DATA',
-      payload: {
-        data: updatedData,
-      },
-    });
-    setIsEdit(false);
-    setColumns(columns.filter((col) => col.accessor !== 'menu'));
+    if (updatedData.length > 0) {
+      dispatch({
+        type: 'UPDATE_LAB_DATA',
+        payload: {
+          data: updatedData,
+        },
+      });
+      setIsEdit(false);
+      setColumns(columns.filter((col) => col.accessor !== 'menu'));
+    }
   };
 
   const onRowEdit = (id) => {
@@ -161,6 +163,7 @@ function LabData({ docId }) {
     );
     setRowData(rowUpdated);
     setEditedRow({});
+    setIsShow(true);
   };
 
   const updateRow = (key, value) => {
@@ -289,10 +292,11 @@ function LabData({ docId }) {
       data-testid="lab-data"
     >
       {rowData.length > 0 ? (
-        <div className="lab-table-container">
+        <div className="lab-table-container" data-testid="lab-table-container">
           <div className="lab-btn-container">
             {isEdit ? (
               <Button
+                disabled={!isShow}
                 variant="secondary"
                 icon={<Save />}
                 className="btn-common"
