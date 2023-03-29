@@ -471,6 +471,7 @@ export const createReturnObj = (obj, linkId) => {
     }
     return {
       type: obj.type,
+      link_level: obj.file_section_level,
       qc_change_type: obj.qc_change_type,
       link_id: linkId,
       link_id_level2: '',
