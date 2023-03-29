@@ -17,6 +17,7 @@ import EyeShow from 'apollo-react-icons/EyeShow';
 import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
+import Trash from 'apollo-react-icons/Trash';
 import { isEmpty } from 'lodash';
 
 import MultilineEdit from './MultilineEdit';
@@ -43,11 +44,13 @@ import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
 import AddSection from './AddSection';
+import HeaderConstant from '../CustomComponents/constants';
 
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
 } from '../../../../AppConstant/AppConstant';
+import DeleteModal from './DeleteModal';
 
 const styles = {
   modal: {
@@ -72,6 +75,7 @@ function DigitizeAccordion({
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { headerLevel1 } = HeaderConstant;
 
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
@@ -92,6 +96,8 @@ function DigitizeAccordion({
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteSection, setDeleteSection] = useState();
 
   const { data: sectionData, updated } = sectionHeaderDetails;
 
@@ -415,6 +421,26 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [saveSection]);
 
+  const handleDeleteSection = () => {
+    setShowDeleteConfirm(false);
+    const obj = [
+      {
+        ...headerLevel1,
+        link_id: deleteSection.link_id,
+        qc_change_type: 'delete',
+      },
+    ];
+    dispatch({
+      type: 'UPDATE_SECTION_DATA',
+      payload: {
+        docId: deleteSection.doc_id,
+        index: -1,
+        refreshToc: true,
+        reqBody: obj,
+      },
+    });
+  };
+
   return (
     <div
       onMouseEnter={() => setIsShown(true)}
@@ -448,9 +474,24 @@ function DigitizeAccordion({
               onClick={(e) => e.stopPropagation()}
             >
               {showedit && (
-                <IconButton disabled={showLoader} data-testId="lockIcon">
-                  <Lock />
-                </IconButton>
+                <>
+                  <IconButton disabled={showLoader} data-testId="lockIcon">
+                    <Lock />
+                  </IconButton>
+                  <span
+                    onClick={() => {
+                      setShowDeleteConfirm(true);
+                      setDeleteSection(item);
+                    }}
+                    data-testId="trashIcon"
+                    role="presentation"
+                    className="trash-icon"
+                  >
+                    <IconButton disabled={showLoader}>
+                      <Trash />
+                    </IconButton>
+                  </span>
+                </>
               )}
               {primaryRole && (
                 <>
@@ -727,14 +768,14 @@ function DigitizeAccordion({
             />
           </div>
         )}
-        {isModal && (
-          <AddSection
-            setIsModal={setIsModal}
-            hoverItem={hoverItem}
-            hoverIndex={hoverIndex}
-            setIsShown={setIsShown}
-          />
-        )}
+
+        <AddSection
+          setIsModal={setIsModal}
+          hoverItem={hoverItem}
+          hoverIndex={hoverIndex}
+          setIsShown={setIsShown}
+          isModal={isModal}
+        />
       </Accordion>
       <div className="plus-icon">
         {isShown && primaryRole && (
@@ -751,6 +792,11 @@ function DigitizeAccordion({
           </IconButton>
         )}
       </div>
+      <DeleteModal
+        handleDeleteSection={handleDeleteSection}
+        showDeleteConfirm={showDeleteConfirm}
+        setShowDeleteConfirm={setShowDeleteConfirm}
+      />
     </div>
   );
 }

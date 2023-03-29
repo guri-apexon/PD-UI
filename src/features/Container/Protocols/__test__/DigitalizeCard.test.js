@@ -15,6 +15,7 @@ const sectionRef = [
     },
   },
 ];
+const handlePageRight = jest.fn();
 
 const home = PROTOCOL_RIGHT_MENU.HOME;
 
@@ -51,6 +52,7 @@ describe('DigitizeCard', () => {
         data={{ id: 123 }}
         paginationPage={2}
         rightValue={PROTOCOL_RIGHT_MENU.HOME}
+        handlePageRight={handlePageRight}
       />,
       {
         preloadedState: initialState,
@@ -69,6 +71,7 @@ describe('DigitizeCard', () => {
         data={{ id: 123 }}
         paginationPage={2}
         rightValue={PROTOCOL_RIGHT_MENU.HOME}
+        handlePageRight={handlePageRight}
       />,
       { preloadedState: { ...initialState, home } },
     );
@@ -84,6 +87,7 @@ describe('DigitizeCard', () => {
         sectionRef={sectionRef}
         data={{ id: 123 }}
         paginationPage={2}
+        handlePageRight={handlePageRight}
         rightValue={PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES}
       />,
       { preloadedState: { ...initialState, home } },
@@ -95,6 +99,7 @@ describe('digitizeAccordion Integration', () => {
   test('load all the accordions', () => {
     const screen = renderWithProviders(
       <DigitalizeCard
+        handlePageRight={handlePageRight}
         sectionNumber={1}
         sectionRef={sectionRef}
         data={{ id: 123, userPrimaryRoleFlag: true }}

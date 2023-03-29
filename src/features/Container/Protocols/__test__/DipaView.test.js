@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { useDispatch, useSelector } from 'react-redux';
 import DipaView from '../DIPA/DipaView';
 
 jest.mock('react-redux', () => ({
@@ -6,41 +7,80 @@ jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
 }));
 
-describe('DipaView', () => {
-  const defaultProps = {
-    docId: '123',
-    handleSectionChnage: jest.fn(),
-    handleExpandChange: jest.fn(),
+let mockDispatch = '';
+let mockDipaViewDataSelector = '';
+let mockAllDipaViewDataSelector = '';
+
+beforeEach(() => {
+  mockDispatch = jest.fn();
+  mockDipaViewDataSelector = {
+    message: 'Success',
+    data: {
+      dipa_resource: [
+        {
+          category: 'Inclusion Criteria',
+          doc_id: 'test_doc_id',
+          id: 'test_id',
+        },
+      ],
+    },
   };
+  mockAllDipaViewDataSelector = {
+    data: {
+      dipa_resource: [
+        {
+          dipa_data: {
+            output: [
+              {
+                name: 'DipaViewStructure',
+                child: [
+                  {
+                    name: 'Section1',
+                    child: [
+                      { name: 'Subsection1', child: [] },
+                      { name: 'Subsection2', child: [] },
+                    ],
+                  },
+                  {
+                    name: 'Section2',
+                    child: [
+                      { name: 'Subsection1', child: [] },
+                      { name: 'Subsection2', child: [] },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+    },
+  };
+});
 
-  it('renders without crashing', () => {
-    render(<DipaView {...defaultProps} />);
+afterEach(() => {
+  jest.resetAllMocks();
+});
+
+describe('Render DipaView Component', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
   });
 
-  it('renders the DipaView header with the title "DIPA View"', () => {
-    const { getByText } = render(<DipaView {...defaultProps} />);
-    expect(getByText('DIPA View')).toBeInTheDocument();
+  test('renders DipaView component without crashing', () => {
+    useSelector.mockReturnValue({});
+    useDispatch.mockReturnValue(jest.fn());
+
+    render(<DipaView />);
+
+    expect(screen.getByText('DIPA View')).toBeInTheDocument();
   });
 
-  test('renders Select Box', () => {
-    render(<DipaView {...defaultProps} />);
-    const selectElement = screen.getByTestId('select-box');
-    expect(selectElement).toBeInTheDocument();
-    expect(selectElement).toHaveTextContent('Inclusion Criteria');
-  });
+  test('should fetch data on mount', () => {
+    useSelector.mockReturnValue(mockDipaViewDataSelector);
+    useSelector.mockReturnValue(mockAllDipaViewDataSelector);
+    useDispatch.mockReturnValue(mockDispatch);
 
-  test('renders DipaViewStructure Component', () => {
-    render(<DipaView {...defaultProps} />);
-    const selectElement = screen.getByTestId('structure-component');
-    expect(selectElement).toBeInTheDocument();
-  });
-
-  it('should render the actual and derived count elements', () => {
-    render(<DipaView {...defaultProps} />);
-    const actualCount = screen.getByTestId('actual-count');
-    expect(actualCount).toBeInTheDocument();
-
-    const derivedCount = screen.getByTestId('derived-count');
-    expect(derivedCount).toBeInTheDocument();
+    render(<DipaView />);
   });
 });

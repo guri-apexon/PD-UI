@@ -9,6 +9,7 @@ describe('AddSection', () => {
   const setIsShownMock = jest.fn();
   const hoverItemMock = { doc_id: '123' };
   const hoverIndexMock = 0;
+  const isModal = true;
 
   it('should render the component without errors', () => {
     const setSectionName = jest.fn();
@@ -19,6 +20,7 @@ describe('AddSection', () => {
           setIsShown={setIsShownMock}
           hoverItem={hoverItemMock}
           hoverIndex={hoverIndexMock}
+          isModal={isModal}
         />
       </Provider>,
     );
@@ -42,6 +44,7 @@ describe('AddSection', () => {
           setIsShown={setIsShownMock}
           hoverItem={hoverItemMock}
           hoverIndex={hoverIndexMock}
+          isModal={isModal}
         />
       </Provider>,
     );
@@ -57,6 +60,7 @@ describe('AddSection', () => {
           setIsShown={setIsShownMock}
           hoverItem={hoverItemMock}
           hoverIndex={hoverIndexMock}
+          isModal={isModal}
         />
       </Provider>,
     );

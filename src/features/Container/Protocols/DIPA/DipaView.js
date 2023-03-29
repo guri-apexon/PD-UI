@@ -66,28 +66,28 @@ function DipaView() {
 
   const derivedlength = [];
   metadata?.map((item) => derivedlength.push(item.derive_seg));
-  const dl = derivedlength.flat(1);
-  const lenghthdc = dl.map((item) => item?.derive_seg);
+  derivedlength.flat(1);
+  const totalDerivedCout = derivedlength.map((item) => item?.derive_seg);
 
-  const arr = [];
+  const SegmentSection = [];
   metadata?.map((section) =>
-    section.child.length !== 0 ? arr.push(section.child) : '',
+    section.child.length !== 0 ? SegmentSection.push(section.child) : '',
   );
 
-  const childarr = arr.flat(1);
-  const arr2 = [];
+  const childarr = SegmentSection.flat(1);
+  const Segment = [];
   childarr?.map((item) =>
-    item.child.length !== 0 ? arr2.push(item?.child) : '',
+    item.child.length !== 0 ? Segment.push(item?.child) : '',
   );
 
   const childderivedseg = childarr?.map((item) => item?.derive_seg?.length);
 
-  let sum = 0;
+  let SegCount = 0;
   for (let i = 0; i < childderivedseg.length; i++) {
-    sum += childderivedseg[i];
+    SegCount += childderivedseg[i];
   }
 
-  const paraDerivedcount = lenghthdc.length + sum + arr2.length;
+  const paraDerivedcount = totalDerivedCout.length + SegCount + Segment.length;
 
   return (
     <div>
@@ -95,21 +95,23 @@ function DipaView() {
         <Grid container spacing={1} className="dipa-view-table">
           <h3>DIPA View</h3>
           <Grid container item xs={5} data-testid="select">
-            <Grid item xs={12} className="drop-down" data-testid="select">
-              <Select
-                value={selectedSection}
-                defaultValue={dropDownData[0]}
-                onChange={handleSectionChnage}
-                placeholder="Select item..."
-                fullWidth
-                data-testid="select-box"
-              >
-                {sections.map((item) => (
-                  <MenuItem key={item} value={item} data-testid="menu-item">
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
+            <Grid item xs={12} className="drop-down" data-testid="select-box">
+              <div>
+                <Select
+                  value={selectedSection}
+                  defaultValue={dropDownData[0]}
+                  onChange={handleSectionChnage}
+                  placeholder="Select item..."
+                  fullWidth
+                  data-testid="select-box"
+                >
+                  {sections.map((item) => (
+                    <MenuItem key={item} value={item} data-testid="menu-item">
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
             </Grid>
           </Grid>
           <Grid item xs={7} container spacing={1} className="dipa-view-count">

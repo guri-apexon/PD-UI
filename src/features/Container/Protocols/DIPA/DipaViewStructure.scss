@@ -1,8 +1,10 @@
 .container {
   height: auto !important;
+  padding-right: 20px !important;
   overflow-y: auto;
-  overflow-y: hidden;
+  margin-bottom: 10px;
   margin-top: 15px;
+  width: 95%;
   margin-left: 10px;
 }
 
@@ -12,18 +14,18 @@
   .dipa-derivedcount {
     border-left: 1px solid #e8e8e8;
     padding-left: 12px;
-    height: 8vh;
     padding-top: 0px;
   }
 }
 .segment-dc {
+  margin-top: 10px;
   .segment-derived-count {
-    display: inline-flex;
-    width: 110px;
+    display: flex;
     padding-left: 10px;
+    margin-right: 10px;
+    width: 110px;
   }
   border-left: 1px solid #e8e8e8;
-  height: 7vh;
 }
 .paragraph-icon {
   display: inline-flex;
@@ -48,9 +50,7 @@
 .segment-length {
   margin-left: 10px;
 }
-.MuiAccordion-root.Mui-expanded:last-child {
-  margin-top: 35px;
-}
+
 .MuiGrid-spacing-xs-1 {
   padding: 10px;
 }
@@ -65,10 +65,11 @@
   float: right;
   margin-left: auto;
   padding: 4px;
+  width: 100%;
 }
 .add-group {
   background: #ffffff;
-  padding: 5px 10px 5px 10px;
+  padding: 5px 10px;
 }
 .add-group:hover,
 .add-group-grid:hover {
@@ -76,14 +77,13 @@
 }
 .add-group-grid {
   background: #ffffff;
-  padding: 5px 10px 5px 10px;
+  padding: 5px 10px;
 }
 .trash-plus-grid {
   border: 1px solid #e8e8e8;
   border-radius: 5px;
-  padding: 5px 10px 5px 10px;
+  padding: 5px 10px;
   display: inline-flex;
-  float: right;
   .trash-icon {
     margin-left: 25px;
   }
@@ -94,10 +94,21 @@
 .MuiCard-root-16826 {
   padding: 7px 0px;
 }
-
 .MuiCard-root {
   padding: 0px;
 }
-.accordian-summary-container {
-  align-items: 'center';
+
+.MuiAccordionSummary-root:hover {
+  background: none;
+}
+
+.MuiAccordionDetails-root {
+  padding: 0px;
+}
+.MuiAccordionSummary-root {
+  padding: 0 23px;
+}
+.structure-container {
+  height: 25rem;
+  overflow-y: auto;
 }
