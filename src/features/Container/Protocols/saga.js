@@ -35,6 +35,7 @@ import {
   setSOAData,
   TOCActive,
   updateSectionResp,
+  resetSectionData,
 } from './protocolSlice';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
@@ -708,6 +709,11 @@ export function* getenrichedword(action) {
     setenrichedword({ word: action.payload.word, modal: action.payload.modal }),
   );
 }
+
+export function* setResetSectionData() {
+  yield put(resetSectionData());
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -734,6 +740,7 @@ function* watchProtocolViews() {
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
   yield takeEvery('SET_ENRICHED_WORD', getenrichedword);
   yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
+  yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
 }
 
 // notice how we now only export the rootSaga
