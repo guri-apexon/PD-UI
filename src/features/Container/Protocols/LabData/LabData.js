@@ -86,21 +86,21 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-function PlusIcon({ row }) {
-  const { id, handlePlus } = row;
-  return (
-    <IconButton
-      id={id}
-      data-testId="plus-add"
-      color="primary"
-      size="small"
-      onClick={handlePlus}
-      destructiveAction
-    >
-      <Plus />
-    </IconButton>
-  );
-}
+// function PlusIcon({ row }) {
+//   const { id, handlePlus } = row;
+//   return (
+//     <IconButton
+//       id={id}
+//       data-testId="plus-add"
+//       color="primary"
+//       size="small"
+//       onClick={handlePlus}
+//       destructiveAction
+//     >
+//       <Plus />
+//     </IconButton>
+//   );
+// }
 function LabData({ docId }) {
   const dispatch = useDispatch();
   const labData = useSelector(labDataApiValue);
@@ -367,9 +367,9 @@ export default LabData;
 ActionCell.propTypes = {
   row: PropTypes.isRequired,
 };
-PlusIcon.propTypes = {
-  row: PropTypes.isRequired,
-};
+// PlusIcon.propTypes = {
+//   row: PropTypes.isRequired,
+// };
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,

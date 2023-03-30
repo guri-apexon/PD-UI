@@ -1,4 +1,4 @@
-import { fireEvent, within } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '../../../../../test-utils/test-utils';
 import LabData from '../LabData';
@@ -111,6 +111,11 @@ describe('LabData', () => {
     expect(screen.getByText('Edit')).toBeInTheDocument();
     expect(screen.getByText('Delete')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Edit'));
+    fireEvent.change(screen.getAllByRole('textbox')[0]);
+    userEvent.type(screen.getAllByRole('textbox')[0], 'abc');
+    userEvent.tab();
+    fireEvent.click(screen.getByText('Save'));
+    fireEvent.click(screen.getByTestId('saveall'));
   });
   test('should render to click on ellipsis and delete button', () => {
     const screen = render(<LabData docId={docId} />, {
@@ -122,6 +127,7 @@ describe('LabData', () => {
     expect(screen.getByText('Delete')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete'));
     expect(screen.getByTestId('delete-row-modal')).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText('Close'));
     fireEvent.click(screen.getByText('Yes'));
   });
 });
