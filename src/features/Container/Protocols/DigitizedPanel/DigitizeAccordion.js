@@ -97,7 +97,7 @@ function DigitizeAccordion({
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [deleteSection, setDeleteSection] = useState();
+  const [deleteSection, setDeleteSection] = useState({});
 
   const { data: sectionData, updated } = sectionHeaderDetails;
 
@@ -201,7 +201,6 @@ function DigitizeAccordion({
   };
 
   const onEditClick = () => {
-    // e.stopPropagation();
     if (currentEditCard && currentEditCard !== item.link_id) {
       setShowConfirm(true);
     } else {
@@ -426,7 +425,7 @@ function DigitizeAccordion({
     const obj = [
       {
         ...headerLevel1,
-        link_id: deleteSection.link_id,
+        link_id: deleteSection?.link_id,
         qc_change_type: 'delete',
       },
     ];
@@ -679,8 +678,9 @@ function DigitizeAccordion({
             <div className="textContainer">
               {AUDIT_LIST.map((names) => {
                 return (
-                  <Typography variant="body1" key={names}>
-                    {names}&nbsp;:
+                  <Typography variant="body1" key={names?.title}>
+                    {names?.title}&nbsp;:&nbsp;
+                    {item?.audit_info[names.keyName] || '-----'}
                   </Typography>
                 );
               })}
