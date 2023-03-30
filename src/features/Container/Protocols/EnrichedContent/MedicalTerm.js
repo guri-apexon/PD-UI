@@ -31,9 +31,9 @@ function MedicalTerm({
   const [newTermValue, setNewTermValue] = useState('');
   const [clinicalTerms, setClinicalTerms] = useState([]);
   const [childArr, setChildArr] = useState([]);
-  const [preferredTerm, setPreferredTerm] = useState();
-  const [clinicalTerm, setClinicalTerm] = useState();
-  const [ontologyTemp, setOntologyTemp] = useState();
+  const [preferredTerm, setPreferredTerm] = useState('');
+  const [clinicalTerm, setClinicalTerm] = useState('');
+  const [ontologyTemp, setOntologyTemp] = useState('');
   const dispatch = useDispatch();
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState([]);
@@ -72,12 +72,17 @@ function MedicalTerm({
     else if (selectedTerm === 'ontology') name = 'ontology';
     const tempObj = {
       standard_entity_name: enrichedText,
-      iqv_standard_term: preferredTerm,
+      iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
       clinical_terms: clinicalTerm,
-      ontology: ontologyTemp,
+      ontology: clinicalTermsArr[enrichedText]?.ontology,
       confidence: '0',
       start: '0',
       text_len: '0',
+      synonyms: clinicalTermsArr[enrichedText]?.synonyms,
+      classification: clinicalTermsArr[enrichedText]?.classification,
+      preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
+      entity_class: '',
+      entity_xref: '',
     };
     const saveObj = {
       ...tempObj,
@@ -114,12 +119,17 @@ function MedicalTerm({
 
       const tempObj = {
         standard_entity_name: enrichedText,
-        iqv_standard_term: preferredTerm,
+        iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
         clinical_terms: clinicalTerm,
-        ontology: ontologyTemp,
+        ontology: clinicalTermsArr[enrichedText]?.ontology,
         confidence: '0',
         start: '0',
         text_len: '0',
+        synonyms: clinicalTermsArr[enrichedText]?.synonyms,
+        classification: clinicalTermsArr[enrichedText]?.classification,
+        preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
+        entity_class: '',
+        entity_xref: '',
       };
       const saveObj = {
         ...tempObj,
@@ -226,9 +236,17 @@ function MedicalTerm({
     else if (selectedTerm === 'ontology') name = 'ontology';
     const tempObj = {
       standard_entity_name: enrichedText,
-      iqv_standard_term: preferredTerm,
+      iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
       clinical_terms: clinicalTerm,
-      ontology: ontologyTemp,
+      ontology: clinicalTermsArr[enrichedText]?.ontology,
+      confidence: '0',
+      start: '0',
+      text_len: '0',
+      synonyms: clinicalTermsArr[enrichedText]?.synonyms,
+      classification: clinicalTermsArr[enrichedText]?.classification,
+      preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
+      entity_class: '',
+      entity_xref: '',
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
 
