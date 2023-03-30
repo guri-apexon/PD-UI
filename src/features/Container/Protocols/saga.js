@@ -31,6 +31,7 @@ import {
   setSOAData,
   getSectionIndex,
   setLoader,
+  resetSectionData,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -697,6 +698,10 @@ export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
 
+export function* setResetSectionData() {
+  yield put(resetSectionData());
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -722,6 +727,7 @@ function* watchProtocolViews() {
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
   yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
+  yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
 }
 
 // notice how we now only export the rootSaga
