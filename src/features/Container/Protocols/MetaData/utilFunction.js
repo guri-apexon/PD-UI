@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import isObject from 'lodash/isObject';
 import moment from 'moment';
 
@@ -69,10 +70,10 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
 };
 
 export const mergeSummary = (data) => {
-  let finalResult = data;
+  let finalResult = cloneDeep(data);
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys.forEach((key) => {
-    if (key === 'summary_extended' && objectKeys?.summary_extended) {
+    if (key === 'summary_extended' && finalResult?.summary_extended) {
       // eslint-disable-next-line
       const updateMetaData = finalResult?.summary_extended?._meta_data?.map(
         (fields) => {
@@ -109,8 +110,8 @@ export const mergeSummary = (data) => {
         },
       };
     }
-    delete finalResult.summary_extended;
   });
+  delete finalResult.summary_extended;
   return finalResult;
 };
 
