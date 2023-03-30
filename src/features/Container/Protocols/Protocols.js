@@ -83,6 +83,9 @@ function Protocols({ location }) {
 
   const handleChangeTab = (event, value) => {
     setValue(value);
+    dispatch({
+      type: 'RESET_SECTION_DATA',
+    });
   };
 
   const refs = pdfArray.reduce((refs, value) => {
