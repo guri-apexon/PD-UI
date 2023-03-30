@@ -1,8 +1,10 @@
-.soa-content-holder{
-  margin:  1rem 3rem 0rem 3rem;
+.soa-content-holder {
+  margin: 16px 48px 0px 48px;
+  width: 1150px;
 }
 .side-nav {
   width: 200px;
+  margin-left: 20px;
 }
 .soa-container {
   display: flex;
@@ -13,12 +15,11 @@
 }
 .arrange-panel {
   display: flex;
-  height: 2.5rem;
-
+  height: 40px;
   align-items: center;
 }
 .arrange-panel-items {
-  margin-left: 1rem !important;
+  margin-left: 16px !important;
   color: white !important;
   margin-top: auto !important;
 }
@@ -31,47 +32,39 @@
   align-items: center;
   margin-left: auto !important;
   cursor: pointer;
- 
 }
 
-.arrange-panel-items-setting-container{
+.arrange-panel-items-setting-container {
   display: flex;
   margin: inherit;
 }
-.row-full-width{
+.row-full-width {
   background: rgb(16 85 135);
   display: flex;
-  height: 2.5rem;
+  height: 40px;
   align-items: center;
 }
- 
-.setting-item{
-  display:flex;
-  margin-left: 2rem;
-  margin-top: 0.5rem;
-  cursor: pointer;
-}
-.cursor-pointer{
-  cursor: pointer;
 
+.setting-item {
+  display: flex;
+  margin-left: 512px;
+  margin-top: 6px;
+  cursor: pointer;
 }
- 
+.cursor-pointer {
+  cursor: pointer;
+}
 
 .column1 {
   background-color: #9fbbd0;
-  
 }
 
 .first-header-column {
   background-color: #9fbbd0;
-  
 }
 .rag-amber {
   background-color: lightsalmon;
 }
-
-
-
 
 .example-wrapper {
   display: flex;
@@ -93,19 +86,21 @@
 }
 
 .button-bar {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
-.grid-header{
-
+.grid-header {
   background-color: #b5cbdb !important;
- 
 }
-.hand-cursor{
+.hand-cursor {
   cursor: pointer;
 }
-.firstColumn{
-    display: flex;
-     align-items: center  ;
-
+.firstColumn {
+  display: flex;
+  align-items: center;
+}
+.header-editing-Item {
+  width: 200px;
+  height: 25px;
+  position: absolute;
 }

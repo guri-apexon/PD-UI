@@ -144,7 +144,6 @@ describe('MetaData CheckBox', () => {
     fireEvent.click(metaDataConfidence);
     fireEvent.click(metaDataConfidence);
     expect(metaDataConfidence).toBeInTheDocument();
-    screen.debug();
     const add = screen.getByTestId('metadata-add');
     fireEvent.click(add);
   });

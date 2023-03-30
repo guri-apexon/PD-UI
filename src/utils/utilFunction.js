@@ -225,24 +225,25 @@ export const updateContent = (origArray, obj) => {
 export const tableJSONByRowAndColumnLength = (row, column) => {
   const json = [];
   for (let i = 0; i < row; i++) {
-    const rowId = uuidv4();
+    const rowObj = {};
+    rowObj.row_roi_id = '';
+    rowObj.row_idx = `${i}`;
+
     const columnObj = {};
     for (let j = 0; j < column; j++) {
       const obj = {
-        entities: [],
         content: '',
         roi_id: {
-          table_roi_id: '',
-          row_roi_id: rowId,
-          column_roi_id: '',
-          datacell_roi_id: '',
+          table_roi_id: uuidv4(),
+          row_roi_id: uuidv4(),
+          column_roi_id: uuidv4(),
+          datacell_roi_id: uuidv4(),
         },
-        table_index: uuidv4(),
-        qc_change_type: '',
       };
-      columnObj[`${j + 1}.0`] = obj;
+      columnObj[`${j}`] = obj;
     }
-    json.push(columnObj);
+    rowObj.row_props = columnObj;
+    json.push(rowObj);
   }
   return JSON.stringify(json);
 };
@@ -392,7 +393,6 @@ export const toBase64 = (file) =>
     reader.readAsDataURL(file);
     reader.onload = () => resolve(reader.result);
     reader.onerror = (error) => {
-      console.log(error);
       return reject(error);
     };
   });
@@ -435,7 +435,7 @@ export const createReturnObj = (obj, linkId) => {
         qc_change_type: obj.qc_change_type,
         link_prefix: '',
         link_text: obj.content,
-        link_level: obj.linkLevel,
+        link_level: obj?.linkLevel?.toString() || '',
         line_id: '',
         content: obj.content,
         uuid: '',
@@ -450,6 +450,7 @@ export const createReturnObj = (obj, linkId) => {
           link_id_subsection1: '',
           link_id_subsection2: '',
           link_id_subsection3: '',
+          link_level: obj?.prev_line_detail?.file_section_level,
         },
         section_locked: false,
       };
@@ -470,6 +471,7 @@ export const createReturnObj = (obj, linkId) => {
     }
     return {
       type: obj.type,
+      link_level: obj.file_section_level,
       qc_change_type: obj.qc_change_type,
       link_id: linkId,
       link_id_level2: '',

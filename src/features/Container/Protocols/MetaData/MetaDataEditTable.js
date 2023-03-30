@@ -86,7 +86,7 @@ function EditableCell({ row, column: { accessor: key } }) {
     );
   };
 
-  return key === 'attr_name' ? renderKeyField() : renderValueField();
+  return key === 'display_name' ? renderKeyField() : renderValueField();
 }
 
 function DeleteCell({ row }) {
@@ -186,11 +186,15 @@ function MetaDataEditTable({
   };
 
   const getValue = (list, keyName, value) => {
-    console.log('value', value);
-    return list?.attr_type === 'date' && keyName === 'attr_value'
-      ? // eslint-disable-next-line
-        moment(value?._d).format('DD-MMM-YYYY')
-      : value;
+    let attrValue = null;
+    if (keyName === 'attr_value') {
+      attrValue =
+        list?.attr_type === 'date'
+          ? // eslint-disable-next-line
+            moment(value?._d).format('DD-MMM-YYYY')
+          : value;
+    }
+    return attrValue;
   };
 
   const handleChange = (id, value, keyName) => {
@@ -203,7 +207,9 @@ function MetaDataEditTable({
               attr_type: keyName === 'attr_type' ? value : list.attr_type,
               attr_value:
                 keyName === 'attr_type' ? '' : getValue(list, keyName, value),
-              attr_name: keyName === 'attr_name' ? value : list?.attr_name,
+              attr_name: keyName === 'display_name' ? value : list?.attr_name,
+              display_name:
+                keyName === 'display_name' ? value : list?.display_name,
             }
           : list,
       ),

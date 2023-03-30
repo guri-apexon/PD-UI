@@ -1,11 +1,15 @@
 const TableEvents = {
+  SET_DOC_ID: 'SET_DOC_ID',
   SET_TABLES: 'SET_TABLES',
   UPDATE_TABLE_DATA: 'UPDATE_TABLE_DATA',
   UPDATE_TABLE_RECORDS: 'UPDATE_TABLE_RECORDS',
   UPDATE_CELL_VALUES: 'UPDATE_CELL_VALUES',
-  UPDATE_TABLE_COLUMNS: 'UPDATE_TABLE_COLUMNS',
+  UPDATE_TABLE_COLUMN_CELL: 'UPDATE_TABLE_COLUMN_CELL',
   DELETE_TABLE_ROW: 'DELETE_TABLE_ROW',
+  DELETE_TABLE_COLUMN: 'DELETE_TABLE_COLUMN',
   ADD_TABLE_ROW: 'ADD_TABLE_ROW',
+  ADD_TABLE_CELL: 'ADD_TABLE_CELL',
+  ADD_TABLE_COLUMN: 'ADD_TABLE_COLUMN',
   SET_SELECTED_TAB: 'SET_SELECTED_TAB',
   SET_ARRANGE_BY: 'SET_ARRANGE_BY',
   SET_SHOW_BY: 'SET_SHOW_BY',
@@ -28,6 +32,8 @@ const TableConst = {
   SOA_DATA: 'soa_data',
   STUDYVISIT: 'studyVisit',
   STUDYPROCEDURE: 'studyProcedure',
+  NORMALIZED_SOA: 'normalized_SOA',
+  TO_BE_REMOVE: 'to_be_remove',
   COLUMN_IDX: 'table_column_index',
   ROW_IDX: 'table_row_index',
   headerClass: 'grid-header',
@@ -39,6 +45,7 @@ const TableConst = {
   VALUE_TEXT2: 'assessment_text',
   DATA_VALUE: 'value',
   DATA_NEW_VALUE: 'data_new_value',
+  UID: 'uid',
 };
 const TIMPE_POINTS = [
   TableEvents.TIMEPOINT1,

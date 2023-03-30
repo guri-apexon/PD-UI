@@ -4,6 +4,7 @@ import Accordion from 'apollo-react/components/Accordion';
 import Modal from 'apollo-react/components/Modal';
 import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Typography from 'apollo-react/components/Typography';
+import Popover from 'apollo-react/components/Popover';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import Pencil from 'apollo-react-icons/Pencil';
@@ -12,10 +13,12 @@ import Save from 'apollo-react-icons/Save';
 import Trash from 'apollo-react-icons/Trash';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Undo from 'apollo-react-icons/Undo';
+import moment from 'moment';
 import MetaDataEditTable from './MetaDataEditTable';
 import { autoCompleteClose } from './utilFunction';
 import MetaDataTable from './MetaDataTable';
 import './MetaData.scss';
+import { METADATA_AUDIT_LIST } from '../Constant/Constants';
 
 function Accordian({
   standardList,
@@ -40,6 +43,7 @@ function Accordian({
   const [isDelete, setIsDelete] = useState(false);
   const [subSectionName, setSubSectionName] = useState(false);
   const [isDiscarded, setIsDiscarded] = useState(false);
+  const [openAudit, setOpenAudit] = useState(null);
 
   const handleChange = (event, newValue) => {
     setSubSectionName(newValue);
@@ -80,6 +84,11 @@ function Accordian({
     setIsDiscarded(true);
   };
 
+  const clickAuditLog = (e) => {
+    e.stopPropagation();
+    setOpenAudit(e.currentTarget);
+  };
+
   return (
     <>
       <Accordion expanded={accData?.isActive}>
@@ -90,9 +99,14 @@ function Accordian({
           <div className="accordion_summary_container">
             <Typography>{accData?.name}</Typography>
             <div className="metadata-flex">
-              <span data-testId="eyeIcon">
+              <span
+                data-testId="eyeIcon"
+                onClick={clickAuditLog}
+                role="presentation"
+              >
                 <EyeShow style={{ paddingRight: '10px' }} />
               </span>
+
               {accData?.isEdit ? (
                 <>
                   {accData?.level <= 5 && (
@@ -239,6 +253,40 @@ function Accordian({
           ]}
           id="neutral"
         />
+        <Popover
+          data-testId="metadata-popover"
+          open={!!openAudit}
+          anchorEl={openAudit}
+          onClose={() => setOpenAudit(null)}
+        >
+          <div className="auditPopover">
+            <div className="textContainer">
+              {METADATA_AUDIT_LIST.map((names) => {
+                return (
+                  <Typography variant="body1" key={names?.title}>
+                    {names?.title}&nbsp;:&nbsp;
+                    {(names?.keyName === 'last_updated'
+                      ? moment(accData?.audit_info?.[names?.keyName]).format(
+                          'DD-MMM-YYYY HH:mm:ss',
+                        )
+                      : accData?.audit_info?.[names?.keyName]) || '-----'}
+                  </Typography>
+                );
+              })}
+            </div>
+            <div className="textContainer">
+              {Object.keys(accData?.audit_info || {}).map((names) => {
+                return (
+                  names !== 'total_no_review' && (
+                    <Typography variant="body1" key={names}>
+                      {accData?.audit_info?.names}
+                    </Typography>
+                  )
+                );
+              })}
+            </div>
+          </div>
+        </Popover>
       </div>
     </>
   );
