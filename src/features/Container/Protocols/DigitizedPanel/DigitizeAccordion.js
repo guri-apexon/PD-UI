@@ -71,7 +71,7 @@ function DigitizeAccordion({
   headerList,
   setCurrentEditCard,
   currentEditCard,
-  value,
+  globalPreferredTerm,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -344,7 +344,7 @@ function DigitizeAccordion({
 
   const getEnrichedText = (content, clinicalTerms, preferredTerms) => {
     let newContent = content;
-    if (value) {
+    if (globalPreferredTerm) {
       if (!isEmpty(preferredTerms)) {
         newContent = createFullMarkup(
           createPreferredText(content, preferredTerms),
@@ -447,7 +447,7 @@ function DigitizeAccordion({
               className="section-title"
               data-testid="accordion-header"
             >
-              {value && !isEmpty(item.preferred_term) ? (
+              {globalPreferredTerm && !isEmpty(item.preferred_term) ? (
                 <b className="preferred-text">{item.preferred_term}</b>
               ) : (
                 item.source_file_section
@@ -800,5 +800,5 @@ DigitizeAccordion.propTypes = {
   headerList: PropTypes.isRequired,
   setCurrentEditCard: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
-  value: PropTypes.isRequired,
+  globalPreferredTerm: PropTypes.isRequired,
 };
