@@ -86,6 +86,23 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
+const customCell = ({ row, column }) => (
+  <div
+    style={{
+      paddingTop: row.editMode ? 12 : 0,
+    }}
+  >
+    {row[column.accessor]}
+    <button
+      type="button"
+      className="hoverButton"
+      onClick={() => console.log('abcd')}
+    >
+      +
+    </button>
+  </div>
+);
+
 // function PlusIcon({ row }) {
 //   const { id, handlePlus } = row;
 //   return (
@@ -174,8 +191,8 @@ function LabData({ docId }) {
   };
 
   useEffect(() => {
-    setColumns(
-      columns.map((col) => {
+    if (isEdit) {
+      const newColumns = columns.map((col) => {
         const isIncluded = ['table_link_text', 'menu', 'plus'].includes(
           col.accessor,
         );
@@ -186,20 +203,28 @@ function LabData({ docId }) {
           };
         }
         return col;
-      }),
-    );
-  }, []);
+      });
 
-  useEffect(() => {
-    if (isEdit) {
       setColumns([
-        ...columns,
+        ...newColumns,
         {
           header: '',
           accessor: 'menu',
           customCell: ActionCell,
         },
       ]);
+    } else {
+      const newColumns = columns.map((col) => {
+        if (col.accessor === 'pname') {
+          return {
+            ...col,
+            customCell,
+          };
+        }
+        return col;
+      });
+
+      setColumns([...newColumns]);
     }
     // eslint-disable-next-line
   }, [isEdit]);
@@ -214,6 +239,10 @@ function LabData({ docId }) {
   //     },
   //   ]);
   // }, []);
+
+  useEffect(() => {
+    console.log(columns);
+  }, [columns]);
 
   const onDeleteRow = () => {
     const result = rowData.find((value) => value.id === tableId);

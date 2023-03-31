@@ -3,18 +3,23 @@
     tbody {
       tr {
         position: relative;
-        // &::after {
-        //   content: '+';
-        //   font-size: 30px;
-        //   position: absolute;
-        //   top: 30px;
-        //   right: 0;
-        //   z-index: 9;
-        //   color: #0768fd;
-        //   cursor: pointer;
-        //   opacity: 0;
-        //   visibility: hidden;
-        // }
+        &::after {
+          content: '+';
+          font-size: 26px;
+          position: absolute;
+          bottom: -11px;
+          right: 20px;
+          z-index: 9;
+          color: #0768fd;
+          cursor: pointer;
+          opacity: 0;
+          background: #fff;
+          height: 20px;
+          width: 20px;
+          line-height: 15px;
+          border-radius: 50%;
+          text-align: center;
+        }
         &:hover {
           border-bottom: 2px solid #0768fd;
           border-image: linear-gradient(
@@ -23,7 +28,7 @@
             rgba(0, 0, 0, 0) 50%
           );
           border-image-slice: 1;
-          &:after{            
+          &:after {
             opacity: 1;
             visibility: visible;
           }
@@ -34,6 +39,20 @@
             &:before {
               display: none !important;
             }
+          }
+          .hoverButton {
+            position: absolute;
+            right: 24px;
+            background: transparent;
+            border: none;
+            z-index: 100;
+            font-size: 24px;
+            bottom: -6px;
+            height: 20px;
+            width: 20px;
+            color: #0768fd;
+            text-align: center;
+            cursor: pointer;
           }
         }
       }
@@ -98,7 +117,10 @@
   display: flex;
   margin-top: 16px;
 }
-.metadata-card .lab-table-container tr:last-child td:first-child:nth-last-child(1) {
+.metadata-card
+  .lab-table-container
+  tr:last-child
+  td:first-child:nth-last-child(1) {
   display: table-cell;
 }
 .loader {

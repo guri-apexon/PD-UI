@@ -6,6 +6,23 @@ import {
 } from 'apollo-react/components/Table';
 import TextFieldFilter from './utilFunction';
 
+const customCell = ({ row, column }) => (
+  <div
+    style={{
+      paddingTop: row.editMode ? 12 : 0,
+    }}
+  >
+    {row[column.accessor]}
+    <button
+      type="button"
+      className="hoverButton"
+      onClick={() => console.log('abcd')}
+    >
+      +
+    </button>
+  </div>
+);
+
 const columnList = [
   {
     header: 'Table Index',
@@ -47,6 +64,7 @@ const columnList = [
     sortFunction: compareStrings,
     filterFunction: createStringSearchFilter('pname'),
     filterComponent: TextFieldFilter,
+    customCell,
   },
 ];
 
