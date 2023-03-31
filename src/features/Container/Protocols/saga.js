@@ -1,10 +1,10 @@
 import {
-  put,
-  takeEvery,
   all,
   call,
-  takeLatest,
+  put,
   select,
+  takeEvery,
+  takeLatest,
 } from 'redux-saga/effects';
 
 import cloneDeep from 'lodash/cloneDeep';
@@ -32,6 +32,7 @@ import {
   getSectionIndex,
   setLoader,
   resetSectionData,
+  setEnrichedWord,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -638,10 +639,12 @@ export function* setEnrichedAPI(action) {
 
 export function* saveEnrichedAPI(action) {
   const {
-    payload: { docId, linkId, data },
+    payload: { docId, linkId, data, opType },
   } = action;
+  let url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`;
+  if (opType) url = `${url}&operation_type=${opType}`;
   const config = {
-    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`,
+    url,
     method: 'POST',
     data: {
       data,
@@ -697,6 +700,11 @@ export function* soaUpdateDetails({ data, method }) {
 export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
+export function* getenrichedword(action) {
+  yield put(
+    setEnrichedWord({ word: action.payload.word, modal: action.payload.modal }),
+  );
+}
 
 export function* setResetSectionData() {
   yield put(resetSectionData());
@@ -733,6 +741,7 @@ function* watchProtocolViews() {
   yield takeLatest('GET_SOA_DATA', getSOAData);
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
+  yield takeEvery('SET_ENRICHED_WORD', getenrichedword);
   yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
   yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
   yield takeLatest('RESET_QC_DATA', setResetQCData);

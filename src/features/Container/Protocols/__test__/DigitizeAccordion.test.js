@@ -1,11 +1,11 @@
-import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 import store from '../../../../store/store';
 
-import { render, fireEvent } from '../../../../test-utils/test-utils';
+import { fireEvent, render } from '../../../../test-utils/test-utils';
 import DigitizeAccordion from '../DigitizedPanel/DigitizeAccordion';
-import ProtocolReducer from '../protocolSlice';
 import * as ProtocolContext from '../ProtocolContext';
+import ProtocolReducer from '../protocolSlice';
 
 import initialState from './ProtocolReducer.json';
 
@@ -261,7 +261,9 @@ describe('DigitizeAccordion', () => {
         currentActiveCard="8ccb22b1-0aa0-487a-a47b"
         setCurrentActiveCard={jest.fn()}
         setCurrentEditCard={() => jest.fn()}
-        handlePageRight={() => jest.fn()}
+        handleLinkId={jest.fn()}
+        handlePageRight={jest.fn()}
+        rightBladeValue={jest.fn()}
       />,
       {
         preloadedState: initialState,
@@ -327,6 +329,7 @@ describe('DigitizeAccordion', () => {
           setCurrentActiveCard={jest.fn()}
           setCurrentEditCard={jest.fn()}
           handlePageRight={jest.fn()}
+          handleLinkId={jest.fn()}
         />
       </Provider>,
     );

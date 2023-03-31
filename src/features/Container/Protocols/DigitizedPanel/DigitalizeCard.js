@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 import React, { useEffect, useState } from 'react';
 import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
@@ -17,6 +18,7 @@ import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
 import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import AddClinicalTerm from '../EnrichedContent/AddClinicalTerm';
 import DigitizeAccordion from './DigitizeAccordion';
 
 function DigitalizeCard({
@@ -38,6 +40,7 @@ function DigitalizeCard({
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
   const [currentEditCard, setCurrentEditCard] = useState(null);
+  const [linkId, setLinkId] = useState();
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -53,13 +56,15 @@ function DigitalizeCard({
       setHeaderList([]);
     }
   }, [summary]);
-
   const scrollToTop = (index) => {
     setTimeout(() => {
       sectionRef[index]?.current?.scrollIntoView(true);
     }, 300);
   };
 
+  const handleLinkId = (linkId) => {
+    setLinkId(linkId);
+  };
   useEffect(() => {
     if (sectionIndex >= 0) {
       const tempTOCActive = [...tocActive];
@@ -186,6 +191,7 @@ function DigitalizeCard({
                         headerList={headerList}
                         setCurrentEditCard={setCurrentEditCard}
                         currentEditCard={currentEditCard}
+                        handleLinkId={handleLinkId}
                       />
                     </div>
                   </div>
@@ -201,6 +207,11 @@ function DigitalizeCard({
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
       )}
+      <div>
+        {data.userPrimaryRoleFlag && (
+          <AddClinicalTerm docId={data.id} linkId={linkId} />
+        )}
+      </div>
       {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
         <SOA docId={data.id} />
       )}
