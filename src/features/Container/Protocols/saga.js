@@ -11,28 +11,28 @@ import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 import FileDownload from 'js-file-download';
 import {
+  getSummary,
+  getProcotoclToc,
   getAssociateDocuments,
   getCompare,
-  getEnrichedValue,
-  getFileStream,
   getHeaderList,
-  getMetadataApiCall,
-  getProcotoclToc,
+  setSectionDetails,
   getProtocolTocData,
+  setSectionLoader,
+  getFileStream,
   getRightBladeValue,
-  getSectionIndex,
-  getSummary,
   getTOCActive,
   setAccordianMetaData,
   setAccordianMetaParam,
-  setenrichedword,
-  setLoader,
-  setSectionDetails,
-  setSectionLoader,
-  setSOAData,
-  TOCActive,
+  getMetadataApiCall,
+  getEnrichedValue,
   updateSectionResp,
+  TOCActive,
+  setSOAData,
+  getSectionIndex,
+  setLoader,
   resetSectionData,
+  setEnrichedWord,
 } from './protocolSlice';
 import BASE_URL, { Apis, BASE_URL_8000, httpCall } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -702,7 +702,7 @@ export function* setSectionIndex(action) {
 }
 export function* getenrichedword(action) {
   yield put(
-    setenrichedword({ word: action.payload.word, modal: action.payload.modal }),
+    setEnrichedWord({ word: action.payload.word, modal: action.payload.modal }),
   );
 }
 

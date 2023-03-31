@@ -72,7 +72,6 @@ function DigitizeAccordion({
   setCurrentEditCard,
   currentEditCard,
   handleLinkId,
-  value,
   globalPreferredTerm,
 }) {
   const classes = useStyles();

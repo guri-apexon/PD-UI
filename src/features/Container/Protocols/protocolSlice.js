@@ -175,7 +175,7 @@ export const protocolSlice = createSlice({
     getSectionIndex: (state, action) => {
       state.sectionIndex = action.payload;
     },
-    setenrichedword: (state, action) => {
+    setEnrichedWord: (state, action) => {
       state.enrichedword = action.payload;
     },
   },
@@ -206,7 +206,7 @@ export const {
   updateSectionResp,
   getSectionIndex,
   resetUpdateStatus,
-  setenrichedword,
+  setEnrichedWord,
   setLoader,
 } = protocolSlice.actions;
 
