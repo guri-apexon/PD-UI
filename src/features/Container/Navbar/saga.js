@@ -15,7 +15,7 @@ export function* navbarNotificationData(action) {
     payload: { userID },
   } = action;
 
-  const notificationUrl = `${BASE_URL_8000}/api/pd_notification/?user_id=${userID}`;
+  const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${userID}`;
 
   const notificationConfig = {
     url: notificationUrl,
@@ -26,7 +26,7 @@ export function* navbarNotificationData(action) {
     if (notificationData?.success) {
       const parseData = notificationData.data.map((item) => {
         item.protocolNumber = item.protocol;
-        item.aidocId = item.doc_id;
+        item.aidocId = item.aidocId;
         item.read = item.readFlag;
         item.details = item.protocolTitle;
         item.header = item.protocol;
@@ -52,8 +52,15 @@ export function* handlereadNotification(action) {
   } = action;
 
   const readConfig = {
-    url: `${BASE_URL_8000}/api/pd_notification/update?aidocId=${aidocId}&id=${id}&protocol=${protocol}&action=${action.type}`,
-    method: 'GET',
+    url: `${BASE_URL_8000}/api/notification_read/`,
+    method: 'POST',
+    data: {
+      id: id,
+      protocol: protocol,
+      aidocId: aidocId,
+      readFlag: true,
+      notification_delete: false,
+    },
   };
 
   const readResp = yield call(httpCall, readConfig);
@@ -78,8 +85,15 @@ export function* handleDeleteNotification(action) {
     } = action;
 
     const config = {
-      url: `${BASE_URL_8000}/api/pd_notification/update?aidocId=${aidocId}&id=${id}&protocol=${protocol}&action=${action.type}`,
-      method: 'GET',
+      url: `${BASE_URL_8000}/api/notification_read/`,
+      method: 'POST',
+      data: {
+        id: id,
+        protocol: protocol,
+        aidocId: aidocId,
+        readFlag: true,
+        notification_delete: true,
+      },
     };
 
     const data = yield call(httpCall, config);

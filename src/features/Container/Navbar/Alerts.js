@@ -102,7 +102,7 @@ function Alerts() {
           <BellIcon />
         </Badge>
       </button>
-      {(
+      {
         <div data-testid="showPopover">
           {' '}
           <Popover
@@ -258,7 +258,7 @@ function Alerts() {
             </AutoSizer>
           </Popover>
         </div>
-      )}
+      }
     </>
   );
 }
