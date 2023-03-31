@@ -68,7 +68,7 @@ const addColumnDefs = (item) => {
 };
 const getTableColumns = (data) => {
   let isFirstColumn = true;
-  data.forEach((item, index) => {
+  data.forEach((item) => {
     item.isFirstColumn = isFirstColumn;
     isFirstColumn = false;
     addColumnDefs(item);
