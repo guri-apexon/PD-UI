@@ -705,6 +705,7 @@ export function* setResetSectionData() {
 export function* setResetQCData() {
   yield put(getSummary({}));
   yield put(getHeaderList({}));
+  yield put(getProtocolTocData({}));
   yield put(resetSectionData());
 }
 
