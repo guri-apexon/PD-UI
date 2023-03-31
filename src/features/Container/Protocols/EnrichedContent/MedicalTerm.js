@@ -33,9 +33,7 @@ function MedicalTerm({
   const [newTermValue, setNewTermValue] = useState('');
   const [clinicalTerms, setClinicalTerms] = useState([]);
   const [childArr, setChildArr] = useState([]);
-  const [preferredTerm, setPreferredTerm] = useState('');
   const [clinicalTerm, setClinicalTerm] = useState('');
-  const [ontologyTemp, setOntologyTemp] = useState('');
   const dispatch = useDispatch();
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState([]);
@@ -165,10 +163,6 @@ function MedicalTerm({
         (key, value) => {
           if (key === 'medical_term') {
             setClinicalTerm(value);
-          } else if (key === 'preferred_term') {
-            setPreferredTerm(value);
-          } else if (key === 'ontology') {
-            setOntologyTemp(value);
           }
         },
       );
