@@ -388,6 +388,125 @@ const getFlatCols = (list) => {
   const flatCols = [...uniq, ...baseCls];
   return flatCols;
 };
+const isObjectIn = (arr, object) => {
+  return !!arr.find((item) => item === object);
+};
+
+const predictEmptyHeaders = ({
+  baseColumns,
+  groupObjectToRemove,
+  availableTimePoints,
+  availableHeaders,
+}) => {
+  const finalgroups = [];
+  baseColumns.forEach((baseCol) => {
+    delete baseCol.children;
+    const colIndex = Number(baseCol[TableConst.COLUMN_IDX]);
+    let grpObj;
+    availableTimePoints.forEach((avlTP) => {
+      const grpsArr = availableHeaders[avlTP];
+      let colItem = grpsArr.find(
+        (grpItem) => Number(grpItem[TableConst.COLUMN_IDX]) === colIndex,
+      );
+      if (!colItem || colItem.baseColumn)
+        colItem = {
+          [TableConst.COLUMN_IDX]: colIndex,
+          field: '',
+          timePoint: avlTP,
+          [TableConst.ROW_IDX]: 0,
+          [TableConst.VALUE_TEXT1]: '',
+        };
+      if (!colItem.children) colItem.children = [];
+
+      if (colItem.field) groupObjectToRemove[avlTP] = true;
+      if (!grpObj) grpObj = colItem;
+    });
+  });
+  return finalgroups;
+};
+const reFormatMultiHeader = ({
+  baseColumns,
+  groupObjectToRemove,
+  availableTimePoints,
+  availableHeaders,
+}) => {
+  const finalgroups = [];
+  baseColumns.forEach((baseCol) => {
+    delete baseCol.children;
+    const colIndex = Number(baseCol[TableConst.COLUMN_IDX]);
+    let grpObj;
+    let prevObject;
+    availableTimePoints.forEach((avlTP) => {
+      const grpsArr = availableHeaders[avlTP];
+      let colItem = grpsArr.find(
+        (grpItem) => Number(grpItem[TableConst.COLUMN_IDX]) === colIndex,
+      );
+
+      if (!colItem || colItem.baseColumn)
+        colItem = {
+          [TableConst.COLUMN_IDX]: colIndex,
+          field: '',
+          timePoint: avlTP,
+          [TableConst.ROW_IDX]: 0,
+          [TableConst.VALUE_TEXT1]: '',
+        };
+      if (!colItem.children) colItem.children = [];
+      if (colItem.field) groupObjectToRemove[avlTP] = true;
+      if (prevObject && !isObjectIn(prevObject.children, colItem))
+        prevObject.children.push(colItem);
+      prevObject = colItem;
+      if (!grpObj) grpObj = colItem;
+    });
+    if (prevObject && !isObjectIn(prevObject.children, baseCol))
+      prevObject.children.push(baseCol);
+    finalgroups.push(grpObj);
+  });
+  return finalgroups;
+};
+const genereateMultiHeader = (baseColumns, allColumns, timePoints) => {
+  const availableHeaders = {};
+
+  timePoints.forEach((tp) => {
+    allColumns.forEach((col) => {
+      if (col.timePoint === tp) {
+        if (!availableHeaders[tp]) availableHeaders[tp] = [];
+        availableHeaders[tp].push(col);
+      }
+    });
+  });
+  const availableTimePoints = Object.keys(availableHeaders);
+  const groupObjectToRemove = {};
+  availableTimePoints.forEach((avTP) => {
+    groupObjectToRemove[avTP] = false;
+  });
+  let finalgroups = predictEmptyHeaders({
+    baseColumns,
+    groupObjectToRemove,
+    availableTimePoints,
+    availableHeaders,
+  });
+
+  const toRemove = [];
+  Object.keys(groupObjectToRemove).forEach((item) => {
+    if (!groupObjectToRemove[item]) toRemove.push(item);
+  });
+  const avTimePoints = availableTimePoints.filter(
+    (item) => !toRemove.includes(item),
+  );
+  if (avTimePoints.length > 0) {
+    finalgroups = reFormatMultiHeader({
+      baseColumns,
+      groupObjectToRemove,
+      availableTimePoints: avTimePoints,
+      availableHeaders,
+    });
+  } else {
+    finalgroups = baseColumns;
+  }
+
+  return finalgroups;
+};
+
 const getColumns = ({ state, selectedTab }) => {
   const table = state.tables[selectedTab];
 
@@ -453,8 +572,14 @@ const getColumns = ({ state, selectedTab }) => {
     });
     columnRows.push(cfilterItem);
   });
-  const columnDefs = getTableColumns(baseCols);
-  return { columnDefs, columnRows };
+
+  const multiHeader = genereateMultiHeader(
+    baseCols,
+    getTableColumns(allColls),
+    [...filteredColumns],
+  );
+
+  return { columnDefs: multiHeader, columnRows: allColls };
 };
 
 const formatTables = (data) => {
