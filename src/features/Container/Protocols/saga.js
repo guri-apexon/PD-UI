@@ -34,7 +34,7 @@ import {
   resetSectionData,
   setEnrichedWord,
 } from './protocolSlice';
-import BASE_URL, { Apis, BASE_URL_8000, httpCall } from '../../../utils/api';
+import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
 
