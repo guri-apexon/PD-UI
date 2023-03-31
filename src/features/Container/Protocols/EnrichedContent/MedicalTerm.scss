@@ -32,15 +32,56 @@
 .sub-popper {
   padding: 8px 0;
   .terms-list {
-    width: 146px;
+    width: 100%;
     .sub-term-text {
       overflow: hidden;
       text-overflow: ellipsis;
       // display: block;
       // width: 80%;
     }
+    .edit-Icon {
+      padding-left: 10px;
+    }
+    .save{
+      color: rgb(43, 43, 228);
+      margin-left: 5px;
+      font-size: 18px;
+    }
+    .delete{
+      color: red;
+      margin-left: 5px;
+      font-size: 18px; 
+    }
+    .cancel{
+      color:brown;
+      margin-left: 5px;
+      font-size: 18px;
+    }
+    .text-area {
+      display: flex;
+      align-items: center; 
+      justify-content: space-between;
+      margin-left: 5px;
+      margin-top: -12px;
+    }
   }
 }
-.edit-Icon {
-  padding-left: 10px;
+
+.button {
+  position: fixed;
+  top: 159px;
+  left: 90%;
+  z-index: 999;
+}
+.delete-tag {
+  display: flex;
+  flex-direction: row-reverse;
+  color: rgb(16, 179, 243);
+  height: 25px;
+}
+.icons{
+  margin-top: 12px
+}
+.fieldgroup{
+  max-width: 540px;
 }
