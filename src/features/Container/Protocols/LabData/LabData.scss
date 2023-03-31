@@ -40,6 +40,10 @@
               display: none !important;
             }
           }
+          .customCell {
+            min-height: 20px;
+            margin: -5px;
+          }
           .hoverButton {
             position: absolute;
             right: 24px;

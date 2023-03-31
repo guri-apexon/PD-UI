@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -86,38 +87,29 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-const customCell = ({ row, column }) => (
-  <div
-    style={{
-      paddingTop: row.editMode ? 12 : 0,
-    }}
-  >
-    {row[column.accessor]}
-    <button
-      type="button"
-      className="hoverButton"
-      onClick={() => console.log('abcd')}
+function CustomCell({ row, column }) {
+  const [show, setShow] = useState(false);
+  // eslint-disable-next-line
+  return (
+    <div
+      className="customCell"
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
     >
-      +
-    </button>
-  </div>
-);
+      sdasfaff {row[column.accessor]}
+      {show && (
+        <button
+          type="button"
+          className="hoverButton"
+          onClick={() => console.log('abcd')}
+        >
+          +
+        </button>
+      )}
+    </div>
+  );
+}
 
-// function PlusIcon({ row }) {
-//   const { id, handlePlus } = row;
-//   return (
-//     <IconButton
-//       id={id}
-//       data-testId="plus-add"
-//       color="primary"
-//       size="small"
-//       onClick={handlePlus}
-//       destructiveAction
-//     >
-//       <Plus />
-//     </IconButton>
-//   );
-// }
 function LabData({ docId }) {
   const dispatch = useDispatch();
   const labData = useSelector(labDataApiValue);
@@ -218,7 +210,7 @@ function LabData({ docId }) {
         if (col.accessor === 'pname') {
           return {
             ...col,
-            customCell,
+            customCell: CustomCell,
           };
         }
         return col;
@@ -400,6 +392,11 @@ ActionCell.propTypes = {
 //   row: PropTypes.isRequired,
 // };
 EditableCell.propTypes = {
+  row: PropTypes.isRequired,
+  column: PropTypes.isRequired,
+};
+
+CustomCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
 };
