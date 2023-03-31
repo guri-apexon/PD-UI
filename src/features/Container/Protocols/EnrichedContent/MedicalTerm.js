@@ -38,7 +38,7 @@ function MedicalTerm({
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState([]);
   const [showIcons, setShowIcons] = useState(false);
-  const [editMode, setEditMode] = useState(false);
+  const [selectedChild, setSelectedChild] = useState(false);
   const [deleteAll, setdeleteAll] = useState(false);
   const [showModal, setshowModal] = useState(false);
 
@@ -52,7 +52,7 @@ function MedicalTerm({
     setChildTermValue(selectedItem);
     childArr.forEach((value) => {
       if (value === selectedItem) {
-        setEditMode(value);
+        setSelectedChild(value);
       }
     });
   }
@@ -60,7 +60,7 @@ function MedicalTerm({
   function handleCancelClick() {
     setShowIcons(false);
     setChildTermValue(null);
-    setEditMode(false);
+    setSelectedChild(false);
   }
 
   const handleDeleteTag = (value) => {
@@ -201,7 +201,7 @@ function MedicalTerm({
   }, [selectedTerm]);
 
   const handleSave = () => {
-    setEditMode(false);
+    setSelectedChild(false);
     if (newTermValue === '') {
       return false;
     }
@@ -215,7 +215,7 @@ function MedicalTerm({
       return x;
     });
     setTempChild(newArr);
-    setEditMode(false);
+    setSelectedChild(false);
     setChildTermValue(null);
     const name = getKeyFromEnrichText(selectedTerm);
     const tempObj = {
@@ -317,7 +317,7 @@ function MedicalTerm({
               {childArr?.map((item) => {
                 return (
                   <li key={item}>
-                    {editMode === item ? (
+                    {selectedChild === item ? (
                       <div className="text-area" data-testId="edit-btn-term1">
                         <TextField
                           data-testid="input-term1"
