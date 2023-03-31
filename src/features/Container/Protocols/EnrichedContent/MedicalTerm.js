@@ -8,6 +8,7 @@ import Card from 'apollo-react/components/Card';
 import Modal from 'apollo-react/components/Modal';
 import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
+import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -302,7 +303,10 @@ function MedicalTerm({
             })}
           </div>
           <div className="delete-tag" data-testid="delete-tag-icon">
-            <Button onClick={() => setdeleteAll(true)} disabled={!selectedTerm}>
+            <Button
+              onClick={() => setdeleteAll(true)}
+              disabled={isEmpty(childArr)}
+            >
               Delete tag
             </Button>
           </div>
