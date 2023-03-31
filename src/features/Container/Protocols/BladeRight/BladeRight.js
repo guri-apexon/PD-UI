@@ -11,13 +11,22 @@ import {
 import './BladeRight.scss';
 import { rightBladeValue } from '../protocolSlice';
 
-function BladeRight({ dataSummary, value, handleChange }) {
+function BladeRight({
+  dataSummary,
+  globalPreferredTerm,
+  setGlobalPreferredTerm,
+}) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const BladeRightValue = useSelector(rightBladeValue);
 
   const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_ARR);
+
+  const handleChangeGlobalPreferredTerm = (e, checked) => {
+    setGlobalPreferredTerm(checked);
+    setOpen(false);
+  };
 
   const onClose = () => {
     setOpen(false);
@@ -79,8 +88,8 @@ function BladeRight({ dataSummary, value, handleChange }) {
               <Switch
                 size="small"
                 label="Preferred Term"
-                checked={value}
-                onChange={handleChange}
+                checked={globalPreferredTerm}
+                onChange={handleChangeGlobalPreferredTerm}
                 data-testId="preferred-term-switch"
                 disabled={!dataSummary?.userPrimaryRoleFlag}
               />
@@ -130,7 +139,7 @@ function BladeRight({ dataSummary, value, handleChange }) {
 
 BladeRight.propTypes = {
   dataSummary: PropTypes.isRequired,
-  value: PropTypes.isRequired,
-  handleChange: PropTypes.isRequired,
+  globalPreferredTerm: PropTypes.isRequired,
+  setGlobalPreferredTerm: PropTypes.isRequired,
 };
 export default BladeRight;
