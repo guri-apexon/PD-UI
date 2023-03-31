@@ -27,6 +27,9 @@ function QCContainer() {
   };
   /* istanbul ignore next */
   const handleChangeTab = (event, value) => {
+    dispatch({
+      type: 'RESET_QC_DATA',
+    });
     if (value !== 1) setValue(value);
     if (value === 0) {
       setprotocolId('');
@@ -70,13 +73,11 @@ function QCContainer() {
         {greet} {userDetails && userDetails.username}
       </h1> */}
       <Breadcrumbs
-      className ="breadcrumbs"
+        className="breadcrumbs"
         items={breadItems}
-        
         data-testid="breadcrumb-click"
       />
-      <div
-      >
+      <div>
         <div style={{ flex: 1 }}>
           <Tabs value={value} onChange={handleChangeTab} size="small" truncate>
             <Tab label="QC Protocols" />
