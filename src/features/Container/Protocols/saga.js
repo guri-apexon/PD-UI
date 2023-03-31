@@ -7,12 +7,9 @@ import {
   takeLatest,
 } from 'redux-saga/effects';
 
-import FileDownload from 'js-file-download';
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
-import BASE_URL, { Apis, BASE_URL_8000, httpCall } from '../../../utils/api';
-import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
-import { flattenObject, mergeSummary } from './MetaData/utilFunction';
+import FileDownload from 'js-file-download';
 import {
   getAssociateDocuments,
   getCompare,
@@ -37,6 +34,9 @@ import {
   updateSectionResp,
   resetSectionData,
 } from './protocolSlice';
+import BASE_URL, { Apis, BASE_URL_8000, httpCall } from '../../../utils/api';
+import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
+import { flattenObject, mergeSummary } from './MetaData/utilFunction';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
 
