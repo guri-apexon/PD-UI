@@ -11,6 +11,7 @@ import TextField from 'apollo-react/components/TextField';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getKeyFromEnrichText } from '../../../../utils/utilFunction';
 import { EnrichedValue } from '../protocolSlice';
 import enrichedTerms from './clinicalTerms.json';
 import './MedicalTerm.scss';
@@ -66,10 +67,7 @@ function MedicalTerm({
   const handleDeleteTag = (value) => {
     const updatedChildArr = childArr.filter((item) => item !== value);
     setChildArr(updatedChildArr);
-    let name;
-    if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
-    if (selectedTerm === 'medical_term') name = 'clinical_terms';
-    else if (selectedTerm === 'ontology') name = 'ontology';
+    const name = getKeyFromEnrichText(selectedTerm);
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
@@ -112,11 +110,7 @@ function MedicalTerm({
       };
       setClinicalTermsArr(updatedClinicalTermsArrr);
       setChildArr([]);
-      let name;
-      if (selectedTerm === 'ontology') name = 'ontology';
-      if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
-      if (selectedTerm === 'medical_term') name = 'clinical_terms';
-
+      const name = getKeyFromEnrichText(selectedTerm);
       const tempObj = {
         standard_entity_name: enrichedText,
         iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
@@ -172,11 +166,9 @@ function MedicalTerm({
         (key, value) => {
           if (key === 'medical_term') {
             setClinicalTerm(value);
-          }
-          if (key === 'preferred_term') {
+          } else if (key === 'preferred_term') {
             setPreferredTerm(value);
-          }
-          if (key === 'ontology') {
+          } else if (key === 'ontology') {
             setOntologyTemp(value);
           }
         },
@@ -198,6 +190,8 @@ function MedicalTerm({
   useEffect(() => {
     if (
       clinicalTermsArr &&
+      enrichedText &&
+      selectedTerm &&
       clinicalTermsArr[enrichedText] &&
       clinicalTermsArr[enrichedText][selectedTerm]
     ) {
@@ -230,10 +224,7 @@ function MedicalTerm({
     setTempChild(newArr);
     setEditMode(false);
     setChildTermValue(null);
-    let name;
-    if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
-    if (selectedTerm === 'medical_term') name = 'clinical_terms';
-    else if (selectedTerm === 'ontology') name = 'ontology';
+    const name = getKeyFromEnrichText(selectedTerm);
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,

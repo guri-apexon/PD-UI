@@ -39,11 +39,34 @@
       // display: block;
       // width: 80%;
     }
+    .edit-Icon {
+      padding-left: 10px;
+    }
+    .save{
+      color: rgb(43, 43, 228);
+      margin-left: 5px;
+      font-size: 18px;
+    }
+    .delete{
+      color: red;
+      margin-left: 5px;
+      font-size: 18px; 
+    }
+    .cancel{
+      color:brown;
+      margin-left: 5px;
+      font-size: 18px;
+    }
+    .text-area {
+      display: flex;
+      align-items: center; 
+      justify-content: space-between;
+      margin-left: 5px;
+      margin-top: -12px;
+    }
   }
 }
-.edit-Icon {
-  padding-left: 10px;
-}
+
 .button {
   position: fixed;
   top: 159px;
@@ -55,29 +78,6 @@
   flex-direction: row-reverse;
   color: rgb(16, 179, 243);
   height: 25px;
-}
-.cancel{
-  color:brown;
-  margin-left: 5px;
-  font-size: 18px;
-}
-.save{
-  color: rgb(43, 43, 228);
-  margin-left: 5px;
-  font-size: 18px;
-}
-.delete{
-  color: red;
-  margin-left: 5px;
-  font-size: 18px;
-  
-}
-.text-area {
-  display: flex;
-  align-items: center; 
-  justify-content: space-between;
-  margin-left: 5px;
-  margin-top: -12px;
 }
 .icons{
   margin-top: 12px

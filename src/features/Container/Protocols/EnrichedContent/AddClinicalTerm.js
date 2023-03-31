@@ -51,9 +51,7 @@ function AddClinicalTerm({ docId, linkId }) {
 
   useEffect(() => {
     setIsTextFieldEmpty(
-      clinicalTerms.trim().length === 0 &&
-        ontologyTerm.trim().length === 0 &&
-        preferredTerm.trim().length === 0,
+      !clinicalTerms.trim() && !ontologyTerm.trim() && !preferredTerm.trim(),
     );
   }, [clinicalTerms, ontologyTerm, preferredTerm]);
 
