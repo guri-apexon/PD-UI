@@ -529,10 +529,9 @@ export const getSaveSectionPayload = (sectionContent, linkId) => {
   return req;
 };
 
-export const getKeyFromEnrichText = (selectedTerm) => {
-  let name;
-  if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
-  if (selectedTerm === 'medical_term') name = 'clinical_terms';
-  else if (selectedTerm === 'ontology') name = 'ontology';
-  return name;
+export const getKeyFromEnrichText = (term) => {
+  if (term === 'preferred_term') return 'iqv_standard_term';
+  if (term === 'medical_term') return 'clinical_terms';
+  if (term === 'ontology') return 'ontology';
+  return '';
 };
