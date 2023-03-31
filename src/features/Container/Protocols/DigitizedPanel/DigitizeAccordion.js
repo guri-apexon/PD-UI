@@ -820,6 +820,5 @@ DigitizeAccordion.propTypes = {
   setCurrentEditCard: PropTypes.isRequired,
   currentEditCard: PropTypes.isRequired,
   handleLinkId: PropTypes.isRequired,
-  value: PropTypes.isRequired,
   globalPreferredTerm: PropTypes.isRequired,
 };
