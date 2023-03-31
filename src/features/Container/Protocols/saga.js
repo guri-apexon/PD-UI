@@ -639,14 +639,10 @@ export function* setEnrichedAPI(action) {
 
 export function* saveEnrichedAPI(action) {
   const {
-    payload: { docId, linkId, data, operationType },
+    payload: { docId, linkId, data, opType },
   } = action;
-  let url = '';
-  if (operationType) {
-    url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}&operation_type=delete`;
-  } else {
-    url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`;
-  }
+  let url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`;
+  if (opType) url = `${url}&operation_type=${opType}`;
   const config = {
     url,
     method: 'POST',

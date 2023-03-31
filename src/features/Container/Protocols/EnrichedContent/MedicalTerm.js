@@ -87,13 +87,12 @@ function MedicalTerm({
       ...tempObj,
       [name]: '',
     };
-    const operationType = 'delete';
     dispatch({
       type: 'SAVE_ENRICHED_DATA',
       payload: {
         docId,
         linkId,
-        operationType,
+        opType: 'delete',
         data: saveObj,
       },
     });
@@ -130,13 +129,12 @@ function MedicalTerm({
         ...tempObj,
         [name]: '',
       };
-      const operationType = 'delete';
       dispatch({
         type: 'SAVE_ENRICHED_DATA',
         payload: {
           docId,
           linkId,
-          operationType,
+          opType: 'delete',
           data: saveObj,
         },
       });
