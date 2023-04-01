@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -87,21 +88,29 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-// function PlusIcon({ row }) {
-//   const { id, handlePlus } = row;
-//   return (
-//     <IconButton
-//       id={id}
-//       data-testId="plus-add"
-//       color="primary"
-//       size="small"
-//       onClick={handlePlus}
-//       destructiveAction
-//     >
-//       <Plus />
-//     </IconButton>
-//   );
-// }
+function CustomCell({ row, column }) {
+  const [show, setShow] = useState(false);
+  // eslint-disable-next-line
+  return (
+    <div
+      className="customCell"
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      sdasfaff {row[column.accessor]}
+      {show && (
+        <button
+          type="button"
+          className="hoverButton"
+          onClick={() => console.log('abcd')}
+        >
+          +
+        </button>
+      )}
+    </div>
+  );
+}
+
 function LabData({ docId }) {
   const dispatch = useDispatch();
   const labData = useSelector(labDataApiValue);
@@ -182,8 +191,8 @@ function LabData({ docId }) {
   };
 
   useEffect(() => {
-    setColumns(
-      columns.map((col) => {
+    if (isEdit) {
+      const newColumns = columns.map((col) => {
         const isIncluded = ['table_link_text', 'menu', 'plus'].includes(
           col.accessor,
         );
@@ -194,20 +203,28 @@ function LabData({ docId }) {
           };
         }
         return col;
-      }),
-    );
-  }, []);
+      });
 
-  useEffect(() => {
-    if (isEdit) {
       setColumns([
-        ...columns,
+        ...newColumns,
         {
           header: '',
           accessor: 'menu',
           customCell: ActionCell,
         },
       ]);
+    } else {
+      const newColumns = columns.map((col) => {
+        if (col.accessor === 'pname') {
+          return {
+            ...col,
+            customCell: CustomCell,
+          };
+        }
+        return col;
+      });
+
+      setColumns([...newColumns]);
     }
     // eslint-disable-next-line
   }, [isEdit]);
@@ -222,6 +239,10 @@ function LabData({ docId }) {
   //     },
   //   ]);
   // }, []);
+
+  useEffect(() => {
+    console.log(columns);
+  }, [columns]);
 
   const onDeleteRow = () => {
     const result = rowData.find((value) => value.id === tableId);
@@ -484,6 +505,11 @@ ActionCell.propTypes = {
 //   row: PropTypes.isRequired,
 // };
 EditableCell.propTypes = {
+  row: PropTypes.isRequired,
+  column: PropTypes.isRequired,
+};
+
+CustomCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
 };
