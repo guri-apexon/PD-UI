@@ -9,7 +9,7 @@
           position: absolute;
           bottom: -11px;
           right: 20px;
-          z-index: 9;
+          z-index: 1;
           color: #fff;
           cursor: pointer;
           opacity: 0;
@@ -41,7 +41,7 @@
             }
           }
           .customCell {
-            min-height: 20px;
+            min-height: 30px;
             height: 100%;
             width: 100%;
             display: flex;
@@ -52,7 +52,7 @@
             right: 24px;
             background: transparent;
             border: none;
-            z-index: 100;
+            z-index: 99;
             font-size: 24px;
             bottom: -6px;
             height: 20px;

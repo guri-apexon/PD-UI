@@ -89,25 +89,18 @@ function EditableCell({ row, column: { accessor: key } }) {
 
 function AddRowCell({ row, column }) {
   const { handleAdd } = row;
-  const [show, setShow] = useState(false);
   // eslint-disable-next-line
   return (
-    <div
-      className="customCell"
-      onMouseEnter={() => setShow(true)}
-      onMouseLeave={() => setShow(false)}
-    >
+    <div className="customCell">
       {row[column.accessor]}
-      {show && (
-        <button
-          data-testid="add-item"
-          type="button"
-          className="hoverButton"
-          onClick={() => handleAdd()}
-        >
-          +
-        </button>
-      )}
+      <button
+        data-testid="add-item"
+        type="button"
+        className="hoverButton"
+        onClick={() => handleAdd()}
+      >
+        +
+      </button>
     </div>
   );
 }
