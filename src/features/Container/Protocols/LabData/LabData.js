@@ -11,8 +11,7 @@ import Table from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
 import Modal from 'apollo-react/components/Modal';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
-import IconButton from 'apollo-react/components/IconButton';
-import Plus from 'apollo-react-icons/Plus';
+import Grid from 'apollo-react/components/Grid';
 import {
   labDataApiValue,
   labDataDeleteApiValue,
@@ -88,7 +87,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-function CustomCell({ row, column }) {
+function AddRowCell({ row, column }) {
   const [show, setShow] = useState(false);
   // eslint-disable-next-line
   return (
@@ -193,9 +192,7 @@ function LabData({ docId }) {
   useEffect(() => {
     if (isEdit) {
       const newColumns = columns.map((col) => {
-        const isIncluded = ['table_link_text', 'menu', 'plus'].includes(
-          col.accessor,
-        );
+        const isIncluded = ['menu'].includes(col.accessor);
         if (!isIncluded) {
           return {
             ...col,
@@ -218,7 +215,7 @@ function LabData({ docId }) {
         if (col.accessor === 'pname') {
           return {
             ...col,
-            customCell: CustomCell,
+            customCell: AddRowCell,
           };
         }
         return col;
@@ -228,21 +225,6 @@ function LabData({ docId }) {
     }
     // eslint-disable-next-line
   }, [isEdit]);
-
-  // useEffect(() => {
-  //   setColumns([
-  //     ...columns,
-  //     {
-  //       header: '',
-  //       accessor: 'plus',
-  //       customCell: PlusIcon,
-  //     },
-  //   ]);
-  // }, []);
-
-  useEffect(() => {
-    console.log(columns);
-  }, [columns]);
 
   const onDeleteRow = () => {
     const result = rowData.find((value) => value.id === tableId);
@@ -303,41 +285,6 @@ function LabData({ docId }) {
     setAssessmentPreferred('');
     setProcedurePreferred('');
   };
-  // const handlePlus = (e) => {
-  //   const id = e.target.parentNode.parentNode.getAttribute('id');
-  //   // const getRow =
-  //   //   e.target.parentNode.parentNode.parentNode.parentNode.parentNode;
-  //   rowData.map((value) => {
-  //     if (value.id === id) {
-  //       setRowData([
-  //         ...rowData,
-  //         {
-  //           id: 'Table 333',
-  //           name: 'Laboratory Safety Variables',
-  //           assName: 'Haematology',
-  //           prName: 'B-Haemoglobin',
-  //           assPrefName: 'Haematology',
-  //           prPrefName: 'NA',
-  //         },
-  //       ]);
-  //     }
-  //     return value;
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   const element = document.querySelectorAll(
-  //     '.lab-table-container table tbody tr',
-  //   );
-  //   const result = () => {
-  //     for (let i = 0; i < element.length; i++) {
-  //       const after = element[i].querySelector('::after');
-  //       console.log(after, 'after');
-  //     }
-  //   };
-  //   console.log(result, 'result');
-  //   console.log(element, 'element');
-  // });
 
   useEffect(() => {
     if (labData.data.length > 0 && showData === true) {
@@ -447,50 +394,69 @@ function LabData({ docId }) {
       <Modal
         data-testid="add-row-modal"
         open={isAdd}
-        variant="warning"
         onClose={() => setIsAdd(false)}
-        title="PLease add Item"
+        title="Add New Lab data"
         buttonProps={[
-          { label: 'Close' },
+          { label: 'Cancel' },
           { label: 'Create', onClick: () => handleCreate() },
         ]}
       >
-        <TextField
-          value={tableIndex}
-          onChange={(e) => setTableIndex(e.target.value)}
-          fullWidth
-          placeholder="Table index"
-        />
-        <TextField
-          value={tableIndex}
-          onChange={(e) => setTableIndex(e.target.value)}
-          fullWidth
-          placeholder="Table name"
-        />
-        <TextField
-          value={assessmentName}
-          onChange={(e) => setAssessmentName(e.target.value)}
-          fullWidth
-          placeholder="Assessment name"
-        />
-        <TextField
-          value={procedureName}
-          onChange={(e) => setProcedureName(e.target.value)}
-          fullWidth
-          placeholder="Procedure name"
-        />
-        <TextField
-          value={assessmentPreferred}
-          onChange={(e) => setAssessmentPreferred(e.target.value)}
-          fullWidth
-          placeholder="Assessment preferred name"
-        />
-        <TextField
-          value={procedurePreferred}
-          onChange={(e) => setProcedurePreferred(e.target.value)}
-          fullWidth
-          placeholder="Procedure preferred name"
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              label="Table Index"
+              value={tableIndex}
+              onChange={(e) => setTableIndex(e.target.value)}
+              fullWidth
+              placeholder="Table Index"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Table Name"
+              value={tableIndex}
+              onChange={(e) => setTableIndex(e.target.value)}
+              fullWidth
+              placeholder="Table Name"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Assessment Name"
+              value={assessmentName}
+              onChange={(e) => setAssessmentName(e.target.value)}
+              fullWidth
+              placeholder="Assessment Name"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Procedure name"
+              value={procedureName}
+              onChange={(e) => setProcedureName(e.target.value)}
+              fullWidth
+              placeholder="Procedure Name"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Assessment Preferred Name"
+              value={assessmentPreferred}
+              onChange={(e) => setAssessmentPreferred(e.target.value)}
+              fullWidth
+              placeholder="Assessment Preferred Name"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              label="Procedure Preferred Name"
+              value={procedurePreferred}
+              onChange={(e) => setProcedurePreferred(e.target.value)}
+              fullWidth
+              placeholder="Procedure Preferred Name"
+            />
+          </Grid>
+        </Grid>
       </Modal>
     </Card>
   );
@@ -501,15 +467,12 @@ export default LabData;
 ActionCell.propTypes = {
   row: PropTypes.isRequired,
 };
-// PlusIcon.propTypes = {
-//   row: PropTypes.isRequired,
-// };
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
 };
 
-CustomCell.propTypes = {
+AddRowCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
 };
