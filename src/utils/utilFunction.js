@@ -162,7 +162,7 @@ export const createEnrichedText = (content, terms) => {
   if (terms) {
     const arr = Object.keys(terms);
     arr.forEach((term) => {
-      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, content);
+      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, text);
     });
   }
 
@@ -527,4 +527,11 @@ export const getSaveSectionPayload = (sectionContent, linkId) => {
     .filter((x) => x.qc_change_type !== '')
     .map((obj) => createReturnObj(obj, linkId));
   return req;
+};
+
+export const getKeyFromEnrichText = (term) => {
+  if (term === 'preferred_term') return 'iqv_standard_term';
+  if (term === 'medical_term') return 'clinical_terms';
+  if (term === 'ontology') return 'ontology';
+  return '';
 };
