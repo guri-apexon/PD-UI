@@ -18,6 +18,7 @@ import MetaData from '../MetaData/MetaData';
 import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import LabData from '../LabData/LabData';
+import AddClinicalTerm from '../EnrichedContent/AddClinicalTerm';
 import DigitizeAccordion from './DigitizeAccordion';
 
 function DigitalizeCard({
@@ -26,7 +27,7 @@ function DigitalizeCard({
   data,
   paginationPage,
   handlePageRight,
-  value,
+  globalPreferredTerm,
 }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
@@ -39,6 +40,7 @@ function DigitalizeCard({
   const [sectionSequence, setSectionSequence] = useState(-1);
   const [tocActive, setTocActive] = useState([]);
   const [currentEditCard, setCurrentEditCard] = useState(null);
+  const [linkId, setLinkId] = useState();
 
   const tocActiveSelector = useSelector(TOCActive);
   useEffect(() => {
@@ -54,13 +56,15 @@ function DigitalizeCard({
       setHeaderList([]);
     }
   }, [summary]);
-
   const scrollToTop = (index) => {
     setTimeout(() => {
       sectionRef[index]?.current?.scrollIntoView(true);
     }, 300);
   };
 
+  const handleLinkId = (linkId) => {
+    setLinkId(linkId);
+  };
   useEffect(() => {
     if (sectionIndex >= 0) {
       const tempTOCActive = [...tocActive];
@@ -183,10 +187,11 @@ function DigitalizeCard({
                         handlePageRight={handlePageRight}
                         rightBladeValue={BladeRightValue}
                         scrollToTop={scrollToTop}
-                        value={value}
+                        globalPreferredTerm={globalPreferredTerm}
                         headerList={headerList}
                         setCurrentEditCard={setCurrentEditCard}
                         currentEditCard={currentEditCard}
+                        handleLinkId={handleLinkId}
                       />
                     </div>
                   </div>
@@ -202,9 +207,17 @@ function DigitalizeCard({
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
       )}
+<<<<<<< HEAD
       {rightValue === PROTOCOL_RIGHT_MENU.LAB_DATA && (
         <LabData docId={data.id} />
       )}
+=======
+      <div>
+        {data.userPrimaryRoleFlag && (
+          <AddClinicalTerm docId={data.id} linkId={linkId} />
+        )}
+      </div>
+>>>>>>> d373a6b0927adf6aca72cc24df136435a594c72d
       {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
         <SOA docId={data.id} />
       )}
@@ -223,5 +236,5 @@ DigitalizeCard.propTypes = {
   data: PropTypes.isRequired,
   paginationPage: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
-  value: PropTypes.isRequired,
+  globalPreferredTerm: PropTypes.isRequired,
 };

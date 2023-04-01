@@ -162,7 +162,7 @@ export const createEnrichedText = (content, terms) => {
   if (terms) {
     const arr = Object.keys(terms);
     arr.forEach((term) => {
-      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, content);
+      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, text);
     });
   }
 
@@ -435,7 +435,7 @@ export const createReturnObj = (obj, linkId) => {
         qc_change_type: obj.qc_change_type,
         link_prefix: '',
         link_text: obj.content,
-        link_level: obj.linkLevel,
+        link_level: obj?.linkLevel?.toString() || '',
         line_id: '',
         content: obj.content,
         uuid: '',
@@ -450,6 +450,7 @@ export const createReturnObj = (obj, linkId) => {
           link_id_subsection1: '',
           link_id_subsection2: '',
           link_id_subsection3: '',
+          link_level: obj?.prev_line_detail?.file_section_level,
         },
         section_locked: false,
       };
@@ -470,6 +471,7 @@ export const createReturnObj = (obj, linkId) => {
     }
     return {
       type: obj.type,
+      link_level: obj.file_section_level,
       qc_change_type: obj.qc_change_type,
       link_id: linkId,
       link_id_level2: '',
@@ -525,4 +527,11 @@ export const getSaveSectionPayload = (sectionContent, linkId) => {
     .filter((x) => x.qc_change_type !== '')
     .map((obj) => createReturnObj(obj, linkId));
   return req;
+};
+
+export const getKeyFromEnrichText = (term) => {
+  if (term === 'preferred_term') return 'iqv_standard_term';
+  if (term === 'medical_term') return 'clinical_terms';
+  if (term === 'ontology') return 'ontology';
+  return '';
 };

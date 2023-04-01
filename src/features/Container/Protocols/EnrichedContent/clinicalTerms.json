@@ -1,8 +1,5 @@
 [
-    {
-        "key": "synonyms",
-        "value": "Synonyms"
-    },
+    
     {
         "key": "medical_term",
         "value": "Clinical Terms"
@@ -14,9 +11,6 @@
     {
         "key": "preferred_term",
         "value": "Preferred Term"
-    },
-    {
-        "key": "classification",
-        "value": "Classification"
     }
+    
 ]

@@ -47,6 +47,20 @@ const PROTOCOL_RIGHT_MENU_ARR = [
   },
 ];
 
-const AUDIT_LIST = ['Last Reviewed Date', 'Last Reviewed By'];
+const AUDIT_LIST = [
+  { title: 'Last Reviewed Date', keyName: 'last_reviewed_date' },
+  { title: 'Last Reviewed By', keyName: 'last_reviewed_by ' },
+  { title: 'Total No Reviews', keyName: 'total_no_review' },
+];
 
-export { PROTOCOL_RIGHT_MENU, PROTOCOL_RIGHT_MENU_ARR, AUDIT_LIST };
+const METADATA_AUDIT_LIST = [
+  { title: 'Last Updated Date', keyName: 'last_updated' },
+  { title: 'User ID', keyName: 'user_id' },
+];
+
+export {
+  PROTOCOL_RIGHT_MENU,
+  PROTOCOL_RIGHT_MENU_ARR,
+  AUDIT_LIST,
+  METADATA_AUDIT_LIST,
+};

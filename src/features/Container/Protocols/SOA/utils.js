@@ -4,13 +4,9 @@ import FirstColumn from './CellRenderers/FirstColumn';
 import HeaderComponent from './CellRenderers/HeaderComponent';
 
 const addColumnDefs = (item) => {
-  if (item[TableConst.ROW_IDX] === 0 && item[TableConst.COLUMN_IDX] === 0) {
+  if (item.isFirstColumn) {
     item.width = 150;
-    item.pinned = 'left';
-    item.lockPosition = 'left';
-    item.lockPinned = true;
     item.cellRenderer = FirstColumn;
-    item.lockPinned = true;
     item.cellClass = 'column1';
   } else {
     item.cellRenderer = CellRenderer;
@@ -71,7 +67,10 @@ const addColumnDefs = (item) => {
   };
 };
 const getTableColumns = (data) => {
+  let isFirstColumn = true;
   data.forEach((item) => {
+    item.isFirstColumn = isFirstColumn;
+    isFirstColumn = false;
     addColumnDefs(item);
   });
   return data;

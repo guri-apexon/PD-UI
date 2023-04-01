@@ -1,10 +1,10 @@
 import {
-  put,
-  takeEvery,
   all,
   call,
-  takeLatest,
+  put,
   select,
+  takeEvery,
+  takeLatest,
 } from 'redux-saga/effects';
 
 import cloneDeep from 'lodash/cloneDeep';
@@ -36,6 +36,8 @@ import {
   deleteGetLabData,
   createGetLabData,
   setLoader,
+  resetSectionData,
+  setEnrichedWord,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -642,10 +644,12 @@ export function* setEnrichedAPI(action) {
 
 export function* saveEnrichedAPI(action) {
   const {
-    payload: { docId, linkId, data },
+    payload: { docId, linkId, data, opType },
   } = action;
+  let url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`;
+  if (opType) url = `${url}&operation_type=${opType}`;
   const config = {
-    url: `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`,
+    url,
     method: 'POST',
     data: {
       data,
@@ -700,6 +704,22 @@ export function* soaUpdateDetails({ data, method }) {
 
 export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
+}
+export function* getenrichedword(action) {
+  yield put(
+    setEnrichedWord({ word: action.payload.word, modal: action.payload.modal }),
+  );
+}
+
+export function* setResetSectionData() {
+  yield put(resetSectionData());
+}
+
+export function* setResetQCData() {
+  yield put(getSummary({}));
+  yield put(getHeaderList({}));
+  yield put(getProtocolTocData({}));
+  yield put(resetSectionData());
 }
 
 export function* LabData(action) {
@@ -814,7 +834,10 @@ function* watchProtocolViews() {
   yield takeEvery('UPDATE_LAB_DATA', UpdateLabData);
   yield takeEvery('DELETE_LAB_DATA', DeleteLabData);
   yield takeEvery('CREATE_LAB_DATA', CreateLabData);
+  yield takeEvery('SET_ENRICHED_WORD', getenrichedword);
   yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
+  yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
+  yield takeLatest('RESET_QC_DATA', setResetQCData);
 }
 
 // notice how we now only export the rootSaga

@@ -67,6 +67,7 @@ export const protocolSlice = createSlice({
       data: '',
       success: false,
     },
+    enrichedword: {},
   },
   reducers: {
     getSummary: (state, action) => {
@@ -201,6 +202,9 @@ export const protocolSlice = createSlice({
     createGetLabData: (state, action) => {
       state.labDataCreateApiValue = action.payload;
     },
+    setEnrichedWord: (state, action) => {
+      state.enrichedword = action.payload;
+    },
   },
 });
 
@@ -233,6 +237,7 @@ export const {
   updateGetLabData,
   deleteGetLabData,
   createGetLabData,
+  setEnrichedWord,
   setLoader,
 } = protocolSlice.actions;
 
@@ -259,6 +264,7 @@ export const metadataApiCallValue = (state) =>
 export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
 export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
+export const Enrichedword = (state) => state.protocol.enrichedword;
 export const SOAData = (state) => state.protocol.SOAData;
 export const labDataApiValue = (state) => state.protocol.labDataApiValue;
 export const labDataDeleteApiValue = (state) =>
