@@ -10,10 +10,10 @@
           bottom: -11px;
           right: 20px;
           z-index: 9;
-          color: #0768fd;
+          color: #fff;
           cursor: pointer;
           opacity: 0;
-          background: #fff;
+          background: #0768fd;
           height: 20px;
           width: 20px;
           line-height: 15px;
@@ -42,7 +42,10 @@
           }
           .customCell {
             min-height: 20px;
-            margin: -5px;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
           }
           .hoverButton {
             position: absolute;
@@ -54,7 +57,7 @@
             bottom: -6px;
             height: 20px;
             width: 20px;
-            color: #0768fd;
+            color: #fff;
             text-align: center;
             cursor: pointer;
           }

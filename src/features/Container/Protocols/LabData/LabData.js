@@ -87,7 +87,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
-function CustomCell({ row, column }) {
+function AddRowCell({ row, column }) {
   const { handleAdd } = row;
   const [show, setShow] = useState(false);
   // eslint-disable-next-line
@@ -217,7 +217,7 @@ function LabData({ docId }) {
         if (col.accessor === 'pname') {
           return {
             ...col,
-            customCell: CustomCell,
+            customCell: AddRowCell,
           };
         }
         return col;
@@ -468,7 +468,7 @@ EditableCell.propTypes = {
   column: PropTypes.isRequired,
 };
 
-CustomCell.propTypes = {
+AddRowCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
 };
