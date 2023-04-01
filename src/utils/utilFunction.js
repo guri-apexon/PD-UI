@@ -226,23 +226,21 @@ export const tableJSONByRowAndColumnLength = (row, column) => {
   const json = [];
   for (let i = 0; i < row; i++) {
     const rowObj = {};
-    rowObj.row_roi_id = '';
-    rowObj.row_idx = `${i}`;
+    rowObj.row_indx = `${i}`.toString();
+    rowObj.op_type = '';
+    rowObj.roi_id = '';
 
-    const columnObj = {};
+    let columnObj = [];
     for (let j = 0; j < column; j++) {
       const obj = {
-        content: '',
-        roi_id: {
-          table_roi_id: uuidv4(),
-          row_roi_id: uuidv4(),
-          column_roi_id: uuidv4(),
-          datacell_roi_id: uuidv4(),
-        },
+        col_indx: j.toString(),
+        op_type: null,
+        cell_id: '',
+        value: '',
       };
-      columnObj[`${j}`] = obj;
+      columnObj = [...columnObj, obj];
     }
-    rowObj.row_props = columnObj;
+    rowObj.columns = columnObj;
     json.push(rowObj);
   }
   return JSON.stringify(json);
@@ -300,6 +298,7 @@ export const prepareContent = ({
         } = prevObj;
         newObj = {
           ...PROTOCOL_CONSTANT[contentType],
+          uuid: uuidv4(),
           line_id: uuidv4(),
           content: setContent(contentType),
           qc_change_type: QC_CHANGE_TYPE.ADDED,
@@ -503,12 +502,14 @@ export const createReturnObj = (obj, linkId) => {
     if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
       return {
         type: obj.type,
+        table_roi_id: '',
         content: obj.content,
         qc_change_type: obj.qc_change_type,
-        link_id: linkId,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
+        uuid: obj?.uuid,
+        line_id: obj?.line_id,
       };
     }
     return {

@@ -5,22 +5,18 @@ const QC_CHANGE_TYPE = {
   UPDATED: 'modify',
   DELETED: 'delete',
 };
-const getEmptyCell = () => {
+const getEmptyCell = (colIndex) => {
   return {
-    content: '',
-    roi_id: {
-      table_roi_id: '',
-      row_roi_id: '',
-      column_roi_id: '',
-      datacell_roi_id: '',
-    },
+    col_indx: colIndex.toString(),
+    op_type: null,
+    cell_id: '',
+    value: '',
   };
 };
 const createEmptyRow = (columnLength) => {
-  const row = {};
+  const row = [];
   [...Array(columnLength)].forEach((_, i) => {
-    const index = `${parseInt(i, 10)}`;
-    row[index] = getEmptyCell();
+    row[i] = getEmptyCell(i);
   });
   return row;
 };
@@ -33,11 +29,12 @@ export const updateTable = (data, content, rowIndex, columnIndex) => {
 
 export const addRow = (rows, index) => {
   const data = cloneDeep(rows);
-  const emptyRow = createEmptyRow(Object.keys(rows[0].row_props).length);
+  const emptyRow = createEmptyRow(data[0].columns.length);
   const newEmptyRow = {
-    row_roi_id: '',
-    row_idx: rows.length.toString(),
-    row_props: emptyRow,
+    roi_id: '',
+    row_indx: rows.length.toString(),
+    op_type: QC_CHANGE_TYPE.ADDED,
+    columns: emptyRow,
   };
   data.splice(index, 0, newEmptyRow);
   return data;
@@ -45,12 +42,7 @@ export const addRow = (rows, index) => {
 
 export const deleteRow = (rows, index) => {
   const data = cloneDeep(rows);
-  Object.keys(data[index].row_props).forEach((key) => {
-    data[index].row_props[
-      key
-    ].content = `<s>${data[index].row_props[key].content}</s>`;
-    data[index].row_props[key].qc_change_type = QC_CHANGE_TYPE.DELETED;
-  });
+  data[index].op_type = QC_CHANGE_TYPE.DELETED;
   return data;
 };
 
@@ -71,16 +63,10 @@ export const addColumn = (tabledata, index) => {
 
 export const deleteColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
-  for (let i = 0; i < data.length; i++) {
-    Object.keys(data[i].row_props).forEach((key, j) => {
-      if (j === index) {
-        data[i].row_props[
-          key
-        ].content = `<s>${data[i].row_props[key].content}</s>`;
-        data[i].row_props[key].qc_change_type = QC_CHANGE_TYPE.DELETED;
-      }
-    });
-  }
+  data.forEach((record) => {
+    record.columns[index].value = `<s>${record.columns[index].value}</s>`;
+    record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
+  });
   return data;
 };
 

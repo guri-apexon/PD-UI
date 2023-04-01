@@ -72,23 +72,74 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
+  const tableProp = [
+    {
+      row_indx: '0',
+      op_type: 'add',
+      columns: [
+        {
+          col_indx: '0',
+          op_type: null,
+          cell_id: 'dbfbefbehbf',
+          value: 'row1 column1',
+        },
+        {
+          col_indx: '1',
+          op_type: null,
+          cell_id: 'efejrhfjer',
+          value: 'row1 column2',
+        },
+      ],
+    },
+    {
+      row_indx: '1',
+      op_type: 'add',
+      columns: [
+        {
+          col_indx: '0',
+          op_type: null,
+          cell_id: 'fefefe',
+          value: 'row2 column1',
+        },
+        {
+          col_indx: '1',
+          op_type: null,
+          cell_id: 'ffhrhfjr',
+          value: 'row2 column2',
+        },
+      ],
+    },
+  ];
+
   useEffect(() => {
     if (data) {
-      const parsedTable = JSON.parse(data.TableProperties);
-      const tableIds = getIDs(parsedTable[0]?.row_props);
-      const formattedData = formattableData(parsedTable);
-      setTableId(tableIds?.tableRoiId);
-      setUpdatedData(formattedData);
+      const parsedTable = tableProp;
+      // const parsedTable = JSON.parse(data.TableProperties);
+      // const tableIds = getIDs(parsedTable[0]?.row_props);
+      // const formattedData = formattableData(parsedTable);
+      // setTableId(tableIds?.tableRoiId);
+      setUpdatedData(parsedTable);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
-      const colIndexes = Object.keys(parsedTable[0]?.row_props);
+      const colIndexes = parsedTable[0]?.columns;
       setColumnWidth(98 / colIndexes.length);
     }
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {
     const cloneData = [...updatedData];
-    cloneData[rowIndex].row_props[columnIndex].content = content;
+    cloneData.forEach((record, i) => {
+      if (i === rowIndex) {
+        record.columns.forEach((col, j) => {
+          if (j === columnIndex && col?.cell_id !== '') {
+            record.columns[j].value = content;
+            record.columns[j].op_type = 'modify';
+          }
+          cloneData[i].op_type = 'modify';
+        });
+      }
+      return record;
+    });
     setUpdatedData(cloneData);
   };
 
@@ -205,6 +256,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     }
   };
 
+  console.log('updatedData', updatedData);
   return (
     // eslint-disable-next-line
     <section
