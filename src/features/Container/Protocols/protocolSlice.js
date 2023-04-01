@@ -54,17 +54,6 @@ export const protocolSlice = createSlice({
     sectionIndex: -1,
     labDataApiValue: {
       data: [],
-    },
-    labDataDeleteApiValue: {
-      data: '',
-      success: false,
-    },
-    labDataUpdateApiValue: {
-      data: '',
-      success: false,
-    },
-    labDataCreateApiValue: {
-      data: '',
       success: false,
     },
     enrichedword: {},
@@ -194,13 +183,13 @@ export const protocolSlice = createSlice({
       state.labDataApiValue = action.payload;
     },
     deleteGetLabData: (state, action) => {
-      state.labDataDeleteApiValue = action.payload;
+      state.labDataApiValue = action.payload;
     },
     updateGetLabData: (state, action) => {
-      state.labDataUpdateApiValue = action.payload;
+      state.labDataApiValue = action.payload;
     },
     createGetLabData: (state, action) => {
-      state.labDataCreateApiValue = action.payload;
+      state.labDataApiValue = action.payload;
     },
     setEnrichedWord: (state, action) => {
       state.enrichedword = action.payload;
@@ -267,11 +256,5 @@ export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const Enrichedword = (state) => state.protocol.enrichedword;
 export const SOAData = (state) => state.protocol.SOAData;
 export const labDataApiValue = (state) => state.protocol.labDataApiValue;
-export const labDataDeleteApiValue = (state) =>
-  state.protocol.labDataDeleteApiValue;
-export const labDataUpdateApiValue = (state) =>
-  state.protocol.labDataUpdateApiValue;
-export const labDataCreateApiValue = (state) =>
-  state.protocol.labDataCreateApiValue;
 
 export default protocolSlice.reducer;

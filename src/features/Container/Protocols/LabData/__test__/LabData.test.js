@@ -70,18 +70,6 @@ const initialState = {
         },
       ],
     },
-    labDataDeleteApiValue: {
-      data: '',
-      success: false,
-    },
-    labDataUpdateApiValue: {
-      data: '',
-      success: false,
-    },
-    labDataCreateApiValue: {
-      data: '',
-      success: false,
-    },
   },
 };
 describe('LabData', () => {

@@ -11,12 +11,7 @@ import Button from 'apollo-react/components/Button';
 import Modal from 'apollo-react/components/Modal';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import Grid from 'apollo-react/components/Grid';
-import {
-  labDataApiValue,
-  labDataDeleteApiValue,
-  labDataUpdateApiValue,
-  labDataCreateApiValue,
-} from '../protocolSlice';
+import { labDataApiValue } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
@@ -107,9 +102,6 @@ function AddRowCell({ row, column }) {
 function LabData({ docId }) {
   const dispatch = useDispatch();
   const labData = useSelector(labDataApiValue);
-  const deleteLabData = useSelector(labDataDeleteApiValue);
-  const updateLabData = useSelector(labDataUpdateApiValue);
-  const createLabData = useSelector(labDataCreateApiValue);
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState([]);
   const [editedRow, setEditedRow] = useState({});
@@ -288,21 +280,10 @@ function LabData({ docId }) {
   }, [labData]);
 
   useEffect(() => {
-    if (deleteLabData.success === true && showData === false) {
+    if (labData.success === true && showData === false) {
       setShowData(true);
     }
-  }, [deleteLabData]);
-
-  useEffect(() => {
-    if (updateLabData.success === true && showData === false) {
-      setShowData(true);
-    }
-  }, [updateLabData]);
-  useEffect(() => {
-    if (createLabData.success === true && showData === false) {
-      setShowData(true);
-    }
-  }, [createLabData]);
+  }, [labData]);
   const handleAdd = () => {
     setIsAdd(true);
   };
