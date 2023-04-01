@@ -372,8 +372,9 @@ export function* getProtocolTocDataResult(action) {
     payload: { docId },
   } = action;
   yield put(getHeaderList({}));
+  const userId = yield getState();
   const linkLevel = action.payload.tocFlag ? 6 : 1;
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}&user_id=${userId}`;
   const config = {
     url: URL,
     method: 'GET',
