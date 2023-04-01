@@ -747,11 +747,14 @@ export function* UpdateLabData(action) {
 }
 
 export function* DeleteLabData(action) {
+  const {
+    payload: { data },
+  } = action;
   const config = {
     url: `${BASE_URL_8000}${Apis.DELETE_LAB_DATA}`,
     method: 'POST',
     data: {
-      data: action.payload,
+      data,
     },
   };
   const labData = yield call(httpCall, config);

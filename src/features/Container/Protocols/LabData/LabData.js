@@ -241,32 +241,46 @@ function LabData({ docId }) {
   };
 
   const handleCreate = () => {
-    dispatch({
-      type: 'CREATE_LAB_DATA',
-      payload: {
-        data: {
-          parameter_text: procedureName,
-          id: '',
-          run_id: '',
-          procedure_panel_text: assessmentName,
-          dts: '',
-          ProcessMachineName: '',
-          roi_id: '',
-          section: '',
-          table_roi_id: '',
-          parameter: '',
-          doc_id: docId,
-          procedure_panel: '',
-          assessment: assessmentPreferred,
-          pname: procedurePreferred,
-          ProcessVersion: '',
-          table_link_text: tableIndex,
-          table_sequence_index: -1,
+    const result = rowData.find((value) => value.table_roi_id);
+    if (
+      procedureName.length > 0 ||
+      assessmentName.length > 0 ||
+      assessmentPreferred.length > 0 ||
+      procedurePreferred.length > 0 ||
+      tableIndex.length > 0
+    ) {
+      dispatch({
+        type: 'CREATE_LAB_DATA',
+        payload: {
+          data: {
+            parameter_text: procedureName,
+            id: '',
+            run_id: '',
+            procedure_panel_text: assessmentName,
+            dts: '',
+            ProcessMachineName: '',
+            roi_id: '',
+            section: '',
+            table_roi_id: result.table_roi_id,
+            parameter: '',
+            doc_id: docId,
+            procedure_panel: '',
+            assessment: assessmentPreferred,
+            pname: procedurePreferred,
+            ProcessVersion: '',
+            table_link_text: tableIndex,
+            table_sequence_index: -1,
+          },
         },
-      },
-    });
+      });
+    }
     setRowData(rowData);
     setIsAdd(false);
+    setTableIndex('');
+    setAssessmentName('');
+    setProcedureName('');
+    setAssessmentPreferred('');
+    setProcedurePreferred('');
   };
   // const handlePlus = (e) => {
   //   const id = e.target.parentNode.parentNode.getAttribute('id');
@@ -337,7 +351,11 @@ function LabData({ docId }) {
     >
       {rowData.length > 0 ? (
         <div className="lab-table-container" data-testid="lab-table-container">
-          <Button variant="secondary" onClick={handleAdd}>
+          <Button
+            data-testid="add-item"
+            variant="secondary"
+            onClick={handleAdd}
+          >
             Add Item
           </Button>
           <div className="lab-btn-container">
@@ -406,12 +424,13 @@ function LabData({ docId }) {
         ]}
       />
       <Modal
+        data-testid="add-row-modal"
         open={isAdd}
         variant="warning"
         onClose={() => setIsAdd(false)}
         title="PLease add Item"
         buttonProps={[
-          { label: 'Cancel' },
+          { label: 'Close' },
           { label: 'Create', onClick: () => handleCreate() },
         ]}
       >
