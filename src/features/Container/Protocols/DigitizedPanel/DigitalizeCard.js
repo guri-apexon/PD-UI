@@ -1,4 +1,3 @@
-/* eslint-disable import/order */
 import React, { useEffect, useState } from 'react';
 import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
