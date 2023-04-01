@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -86,6 +87,31 @@ function EditableCell({ row, column: { accessor: key } }) {
   );
 }
 
+function CustomCell({ row, column }) {
+  const { handleAdd } = row;
+  const [show, setShow] = useState(false);
+  // eslint-disable-next-line
+  return (
+    <div
+      className="customCell"
+      onMouseEnter={() => setShow(true)}
+      onMouseLeave={() => setShow(false)}
+    >
+      {row[column.accessor]}
+      {show && (
+        <button
+          data-testid="add-item"
+          type="button"
+          className="hoverButton"
+          onClick={() => handleAdd()}
+        >
+          +
+        </button>
+      )}
+    </div>
+  );
+}
+
 function LabData({ docId }) {
   const dispatch = useDispatch();
   const labData = useSelector(labDataApiValue);
@@ -166,8 +192,8 @@ function LabData({ docId }) {
   };
 
   useEffect(() => {
-    setColumns(
-      columns.map((col) => {
+    if (isEdit) {
+      const newColumns = columns.map((col) => {
         const isIncluded = ['menu'].includes(col.accessor);
         if (!isIncluded) {
           return {
@@ -176,20 +202,28 @@ function LabData({ docId }) {
           };
         }
         return col;
-      }),
-    );
-  }, []);
+      });
 
-  useEffect(() => {
-    if (isEdit) {
       setColumns([
-        ...columns,
+        ...newColumns,
         {
           header: '',
           accessor: 'menu',
           customCell: ActionCell,
         },
       ]);
+    } else {
+      const newColumns = columns.map((col) => {
+        if (col.accessor === 'pname') {
+          return {
+            ...col,
+            customCell: CustomCell,
+          };
+        }
+        return col;
+      });
+
+      setColumns([...newColumns]);
     }
     // eslint-disable-next-line
   }, [isEdit]);
@@ -287,13 +321,6 @@ function LabData({ docId }) {
     >
       {rowData.length > 0 ? (
         <div className="lab-table-container" data-testid="lab-table-container">
-          <Button
-            data-testid="add-item"
-            variant="secondary"
-            onClick={handleAdd}
-          >
-            Add Item
-          </Button>
           <div className="lab-btn-container">
             {isEdit ? (
               <Button
@@ -327,6 +354,7 @@ function LabData({ docId }) {
               handleChange,
               handleCancel,
               handleSaveRow,
+              handleAdd,
             }))}
             initialSortedColumn="table_link_text"
             initialSortOrder="asc"
@@ -436,6 +464,11 @@ ActionCell.propTypes = {
   row: PropTypes.isRequired,
 };
 EditableCell.propTypes = {
+  row: PropTypes.isRequired,
+  column: PropTypes.isRequired,
+};
+
+CustomCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
 };
