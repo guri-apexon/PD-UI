@@ -16,6 +16,7 @@ import {
   labDataApiValue,
   labDataDeleteApiValue,
   labDataUpdateApiValue,
+  labDataCreateApiValue,
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
 import LABDATA_CONSTANTS from './constants';
@@ -106,6 +107,7 @@ function LabData({ docId }) {
   const labData = useSelector(labDataApiValue);
   const deleteLabData = useSelector(labDataDeleteApiValue);
   const updateLabData = useSelector(labDataUpdateApiValue);
+  const createLabData = useSelector(labDataCreateApiValue);
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState([]);
   const [editedRow, setEditedRow] = useState({});
@@ -114,6 +116,12 @@ function LabData({ docId }) {
   const [tableId, setTableId] = useState();
   const [showData, setShowData] = useState(true);
   const [isShow, setIsShow] = useState(false);
+  const [isAdd, setIsAdd] = useState(false);
+  const [tableIndex, setTableIndex] = useState('');
+  const [assessmentName, setAssessmentName] = useState('');
+  const [procedureName, setProcedureName] = useState('');
+  const [assessmentPreferred, setAssessmentPreferred] = useState('');
+  const [procedurePreferred, setProcedurePreferred] = useState('');
 
   useEffect(() => {
     if (showData) {
@@ -231,6 +239,35 @@ function LabData({ docId }) {
     setEditedRow({});
     setIsOpen(false);
   };
+
+  const handleCreate = () => {
+    dispatch({
+      type: 'CREATE_LAB_DATA',
+      payload: {
+        data: {
+          parameter_text: procedureName,
+          id: '',
+          run_id: '',
+          procedure_panel_text: assessmentName,
+          dts: '',
+          ProcessMachineName: '',
+          roi_id: '',
+          section: '',
+          table_roi_id: '',
+          parameter: '',
+          doc_id: docId,
+          procedure_panel: '',
+          assessment: assessmentPreferred,
+          pname: procedurePreferred,
+          ProcessVersion: '',
+          table_link_text: tableIndex,
+          table_sequence_index: -1,
+        },
+      },
+    });
+    setRowData(rowData);
+    setIsAdd(false);
+  };
   // const handlePlus = (e) => {
   //   const id = e.target.parentNode.parentNode.getAttribute('id');
   //   // const getRow =
@@ -285,7 +322,14 @@ function LabData({ docId }) {
       setShowData(true);
     }
   }, [updateLabData]);
-
+  useEffect(() => {
+    if (createLabData.success === true && showData === false) {
+      setShowData(true);
+    }
+  }, [createLabData]);
+  const handleAdd = () => {
+    setIsAdd(true);
+  };
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -293,6 +337,9 @@ function LabData({ docId }) {
     >
       {rowData.length > 0 ? (
         <div className="lab-table-container" data-testid="lab-table-container">
+          <Button variant="secondary" onClick={handleAdd}>
+            Add Item
+          </Button>
           <div className="lab-btn-container">
             {isEdit ? (
               <Button
@@ -358,6 +405,53 @@ function LabData({ docId }) {
           { label: 'Yes', onClick: () => onDeleteRow() },
         ]}
       />
+      <Modal
+        open={isAdd}
+        variant="warning"
+        onClose={() => setIsAdd(false)}
+        title="PLease add Item"
+        buttonProps={[
+          { label: 'Cancel' },
+          { label: 'Create', onClick: () => handleCreate() },
+        ]}
+      >
+        <TextField
+          value={tableIndex}
+          onChange={(e) => setTableIndex(e.target.value)}
+          fullWidth
+          placeholder="Table index"
+        />
+        <TextField
+          value={tableIndex}
+          onChange={(e) => setTableIndex(e.target.value)}
+          fullWidth
+          placeholder="Table name"
+        />
+        <TextField
+          value={assessmentName}
+          onChange={(e) => setAssessmentName(e.target.value)}
+          fullWidth
+          placeholder="Assessment name"
+        />
+        <TextField
+          value={procedureName}
+          onChange={(e) => setProcedureName(e.target.value)}
+          fullWidth
+          placeholder="Procedure name"
+        />
+        <TextField
+          value={assessmentPreferred}
+          onChange={(e) => setAssessmentPreferred(e.target.value)}
+          fullWidth
+          placeholder="Assessment preferred name"
+        />
+        <TextField
+          value={procedurePreferred}
+          onChange={(e) => setProcedurePreferred(e.target.value)}
+          fullWidth
+          placeholder="Procedure preferred name"
+        />
+      </Modal>
     </Card>
   );
 }

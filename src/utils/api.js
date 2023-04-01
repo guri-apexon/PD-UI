@@ -258,6 +258,7 @@ export const Apis = {
   LAB_DATA: '/api/lab_data',
   UPDATE_LAB_DATA: '/api/lab_data/update_labsparameter',
   DELETE_LAB_DATA: '/api/lab_data/delete_labsparameter',
+  CREATE_LAB_DATA: '/api/lab_data/create_labsparameter',
 };
 
 export const SSO_ENABLED = environment !== 'local';

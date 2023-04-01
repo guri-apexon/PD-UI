@@ -34,6 +34,7 @@ import {
   updateGetLabData,
   // eslint-disable-next-line import/named
   deleteGetLabData,
+  createGetLabData,
   setLoader,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
@@ -762,6 +763,26 @@ export function* DeleteLabData(action) {
   }
 }
 
+export function* CreateLabData(action) {
+  const {
+    payload: { data },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.CREATE_LAB_DATA}`,
+    method: 'POST',
+    data: {
+      data,
+    },
+  };
+  const labData = yield call(httpCall, config);
+  if (labData?.success) {
+    yield put(createGetLabData(labData));
+    toast.info('Lab Data row created');
+  } else {
+    toast.error('Error While creating');
+  }
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -789,6 +810,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_LAB_DATA', LabData);
   yield takeEvery('UPDATE_LAB_DATA', UpdateLabData);
   yield takeEvery('DELETE_LAB_DATA', DeleteLabData);
+  yield takeEvery('CREATE_LAB_DATA', CreateLabData);
   yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
 }
 

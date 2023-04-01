@@ -63,6 +63,10 @@ export const protocolSlice = createSlice({
       data: '',
       success: false,
     },
+    labDataCreateApiValue: {
+      data: '',
+      success: false,
+    },
   },
   reducers: {
     getSummary: (state, action) => {
@@ -194,6 +198,9 @@ export const protocolSlice = createSlice({
     updateGetLabData: (state, action) => {
       state.labDataUpdateApiValue = action.payload;
     },
+    createGetLabData: (state, action) => {
+      state.labDataCreateApiValue = action.payload;
+    },
   },
 });
 
@@ -225,6 +232,7 @@ export const {
   getLabData,
   updateGetLabData,
   deleteGetLabData,
+  createGetLabData,
   setLoader,
 } = protocolSlice.actions;
 
@@ -257,5 +265,7 @@ export const labDataDeleteApiValue = (state) =>
   state.protocol.labDataDeleteApiValue;
 export const labDataUpdateApiValue = (state) =>
   state.protocol.labDataUpdateApiValue;
+export const labDataCreateApiValue = (state) =>
+  state.protocol.labDataCreateApiValue;
 
 export default protocolSlice.reducer;
