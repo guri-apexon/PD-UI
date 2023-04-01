@@ -69,8 +69,14 @@ class ProtocolViewWrapper extends React.Component {
   };
 
   render() {
-    const { data, refx, sectionRef, summaryData, value, handleChange } =
-      this.props;
+    const {
+      data,
+      refx,
+      sectionRef,
+      summaryData,
+      globalPreferredTerm,
+      setGlobalPreferredTerm,
+    } = this.props;
     const {
       pageNo,
       pageRight,
@@ -92,8 +98,8 @@ class ProtocolViewWrapper extends React.Component {
         <div>
           <BladeRight
             dataSummary={data}
-            handleChange={handleChange}
-            value={value}
+            globalPreferredTerm={globalPreferredTerm}
+            setGlobalPreferredTerm={setGlobalPreferredTerm}
           />
         </div>
 
@@ -136,8 +142,7 @@ class ProtocolViewWrapper extends React.Component {
                   data={data}
                   paginationPage={paginationPage}
                   rightBladeValue={rightValue}
-                  handleChange={handleChange}
-                  value={value}
+                  globalPreferredTerm={globalPreferredTerm}
                 />
               </Panel>
             )}
@@ -154,6 +159,6 @@ ProtocolViewWrapper.propTypes = {
   refx: PropTypes.isRequired,
   sectionRef: PropTypes.isRequired,
   summaryData: PropTypes.isRequired,
-  value: PropTypes.isRequired,
-  handleChange: PropTypes.isRequired,
+  globalPreferredTerm: PropTypes.isRequired,
+  setGlobalPreferredTerm: PropTypes.isRequired,
 };
