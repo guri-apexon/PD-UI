@@ -29,18 +29,6 @@ function AddClinicalTerm({ docId, linkId }) {
     }
   }, [wordSelector]);
 
-  const handleClinicalTermsChange = (event) => {
-    setClinicalTerms(event.target.value);
-  };
-
-  const handleOntologyChange = (event) => {
-    setOntologyTerm(event.target.value);
-  };
-
-  const handlePreferredTermChange = (event) => {
-    setPreferredTerm(event.target.value);
-  };
-
   const handleOpen = (selectedText) => {
     setOpenModal(true);
     setSelectedText(selectedText);
@@ -97,7 +85,7 @@ function AddClinicalTerm({ docId, linkId }) {
 
       <Modal
         open={openModal}
-        onClose={() => handleClose()}
+        onClose={handleClose}
         buttonProps={[
           {},
           {
@@ -120,7 +108,7 @@ function AddClinicalTerm({ docId, linkId }) {
           <TextField
             label="Clinical terms"
             placeholder="Text area"
-            onChange={handleClinicalTermsChange}
+            onChange={(e) => setClinicalTerms(e.target.value)}
             value={clinicalTerms}
             fullWidth
             data-testid="clinicalTerms-text"
@@ -128,7 +116,7 @@ function AddClinicalTerm({ docId, linkId }) {
           <TextField
             label="Ontology"
             placeholder="Text area"
-            onChange={handleOntologyChange}
+            onChange={(e) => setOntologyTerm(e.target.value)}
             value={ontologyTerm}
             fullWidth
             data-testid="ontology-text"
@@ -136,7 +124,7 @@ function AddClinicalTerm({ docId, linkId }) {
           <TextField
             label="Preferred term"
             placeholder="Text area"
-            onChange={handlePreferredTermChange}
+            onChange={(e) => setPreferredTerm(e.target.value)}
             value={preferredTerm}
             fullWidth
             data-testid="Preferred-term-text"
