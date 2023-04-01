@@ -207,17 +207,14 @@ function DigitalizeCard({
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
       )}
-<<<<<<< HEAD
       {rightValue === PROTOCOL_RIGHT_MENU.LAB_DATA && (
         <LabData docId={data.id} />
       )}
-=======
       <div>
         {data.userPrimaryRoleFlag && (
           <AddClinicalTerm docId={data.id} linkId={linkId} />
         )}
       </div>
->>>>>>> d373a6b0927adf6aca72cc24df136435a594c72d
       {rightValue === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
         <SOA docId={data.id} />
       )}
