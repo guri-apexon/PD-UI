@@ -213,7 +213,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     }
   };
 
-  console.log('updatedData', updatedData);
   return (
     // eslint-disable-next-line
     <section
