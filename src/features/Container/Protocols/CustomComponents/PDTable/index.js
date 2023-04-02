@@ -58,7 +58,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const [colWidth, setColumnWidth] = useState(100);
   const [tableSaved, setTableSaved] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
-  const [tableId, setTableId] = useState('');
   const [isModal, setIsModal] = useState(false);
   const [selectedData, setSelectedData] = useState({});
   const tableRef = useRef(null);
@@ -66,11 +65,8 @@ function PDTable({ data, segment, activeLineID, lineID }) {
 
   useEffect(() => {
     if (data) {
-      // const parsedTable = tableProp;
       const parsedTable = JSON.parse(data.TableProperties);
-      // const tableIds = getIDs(parsedTable[0]?.row_props);
       const formattedData = formattableData(parsedTable);
-      // setTableId(tableIds?.tableRoiId);
       setUpdatedData(formattedData);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
@@ -158,17 +154,18 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       ...footNoteData,
       {
         ...PROTOCOL_CONSTANT.footNote,
-        TableId: tableId,
       },
     ]);
   };
 
   const handleSave = () => {
-    const cloneData = cloneDeep(updatedData);
-    const filterUpdatedData = cloneData.filter((list) => list?.op_type);
-    filterUpdatedData.forEach((record) => {
-      record.columns = record.columns.filter((op) => op?.op_type);
-    });
+    let filterUpdatedData = cloneDeep(updatedData);
+    if (filterUpdatedData.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
+      filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
+      filterUpdatedData.forEach((record) => {
+        record.columns = record.columns.filter((op) => op?.op_type);
+      });
+    }
     const content = {
       ...segment.content,
       TableProperties: filterUpdatedData,
