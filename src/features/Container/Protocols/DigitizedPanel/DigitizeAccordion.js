@@ -47,6 +47,7 @@ import HeaderConstant from '../CustomComponents/constants';
 import DiscardModal from './modals/DiscardModal';
 import SaveSectionModal from './modals/SaveSectionModal';
 import DeleteModal from './modals/DeleteModal';
+import AuditLog from './modals/AuditLog';
 
 import {
   CONTENT_TYPE,
@@ -675,35 +676,13 @@ function DigitizeAccordion({
           linkId={linkId}
           docId={docId}
         />
-        <Popover
-          open={!!openAudit}
-          anchorEl={openAudit}
-          onClose={() => setOpenAudit(null)}
-        >
-          <div className="auditPopover">
-            <div className="textContainer">
-              {AUDIT_LIST.map((names) => {
-                return (
-                  <Typography variant="body1" key={names?.title}>
-                    {names?.title}&nbsp;:&nbsp;
-                    {item?.audit_info[names.keyName] || '-----'}
-                  </Typography>
-                );
-              })}
-            </div>
-            <div className="textContainer">
-              {Object.keys(item?.audit_info).map((names) => {
-                return (
-                  names !== 'total_no_review' && (
-                    <Typography variant="body1" key={names}>
-                      {item?.audit_info.names}
-                    </Typography>
-                  )
-                );
-              })}
-            </div>
-          </div>
-        </Popover>
+
+        <AuditLog
+          openAudit={openAudit}
+          setOpenAudit={setOpenAudit}
+          AUDIT_LIST={AUDIT_LIST}
+          item={item}
+        />
 
         <SaveSectionModal
           classes={classes}
