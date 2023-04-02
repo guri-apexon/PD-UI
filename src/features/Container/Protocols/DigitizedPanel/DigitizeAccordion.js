@@ -14,7 +14,6 @@ import Lock from 'apollo-react-icons/Lock';
 import Undo from 'apollo-react-icons/Undo';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import EyeShow from 'apollo-react-icons/EyeShow';
-import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
 import Trash from 'apollo-react-icons/Trash';
@@ -45,12 +44,14 @@ import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
 import AddSection from './AddSection';
 import HeaderConstant from '../CustomComponents/constants';
+import DiscardModal from './modals/DiscardModal';
+import SaveSectionModal from './modals/SaveSectionModal';
+import DeleteModal from './modals/DeleteModal';
 
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
 } from '../../../../AppConstant/AppConstant';
-import DeleteModal from './DeleteModal';
 
 const styles = {
   modal: {
@@ -379,7 +380,7 @@ function DigitizeAccordion({
     setHoverItem(headerList[index + 1]);
     setHoverIndex(index);
   };
-  const handleSegmentMouseUp = (section) => {
+  const handleSegmentMouseUp = (e, section) => {
     dispatch({
       type: 'SET_ENRICHED_WORD',
       payload: { word: section, modal: true },
@@ -703,63 +704,23 @@ function DigitizeAccordion({
             </div>
           </div>
         </Popover>
-        <Modal
-          data-testid="confirm-modal"
-          disableBackdropClick
-          open={showConfirm}
-          variant="warning"
-          onClose={() => setShowConfirm(false)}
-          title="Confirm Action"
-          buttonProps={[
-            {
-              label: 'Cancel',
-              onClick: () => {
-                setShowEdit(false);
-                setShowConfirm(false);
-              },
-            },
-            {
-              label: 'Save',
-              onClick: () => {
-                setSaveSection(currentEditCard);
-                setShowEdit(false);
-                setShowConfirm(false);
-              },
-            },
-            {
-              label: 'Continue Editing',
-              onClick: () => {
-                setShowConfirm(false);
-              },
-            },
-          ]}
-          className={classes.modal}
-          id="custom"
-        >
-          There is already another section in edit mode. Please save the section
-          before continuing.
-        </Modal>
-        <Modal
-          disableBackdropClick
-          open={showDiscardConfirm}
-          variant="warning"
-          onClose={() => setShowDiscardConfirm(false)}
-          title="Confirm Action"
-          buttonProps={[
-            {
-              label: 'Cancel',
-              onClick: () => setShowDiscardConfirm(false),
-            },
-            {
-              label: 'Discard',
-              onClick: () => onDiscardClick(),
-            },
-          ]}
-          className={classes.modal}
-          id="custom"
-        >
-          Are you sure you want to discard the changes?
-        </Modal>
+
+        <SaveSectionModal
+          classes={classes}
+          currentEditCard={currentEditCard}
+          showConfirm={showConfirm}
+          setShowConfirm={setShowConfirm}
+          setShowEdit={setShowEdit}
+          setSaveSection={setSaveSection}
+        />
+
+        <DiscardModal
+          classes={classes}
+          showDiscardConfirm={showDiscardConfirm}
+          setShowDiscardConfirm={setShowDiscardConfirm}
+          onDiscardClick={onDiscardClick}
+        />
+
         {showAlert && (
           <div className="confirmation-popup" data-testId="confirmPopup">
             <p>Please save the all the tables before saving the section</p>
