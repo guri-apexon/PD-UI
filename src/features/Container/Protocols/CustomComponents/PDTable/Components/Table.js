@@ -87,7 +87,7 @@ function DisplayTable({
                   <EllipsisVertical />
                 </span>
               )}
-              {row.columns.map(
+              {row?.columns?.map(
                 (col, colIndex) =>
                   col?.op_type !== QC_CHANGE_TYPE.DELETED && (
                     <div

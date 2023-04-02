@@ -16,7 +16,10 @@ import {
   deleteRow,
   swapElements,
 } from './utils';
-import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 import PROTOCOL_CONSTANT from '../constants';
 
@@ -38,23 +41,12 @@ const getIDs = (rows) => {
 
 const formattableData = (data) => {
   const cloneData = [...data];
-  for (let i = 0; i < cloneData.length; i++) {
-    const rowCells = cloneData[i].row_props;
-    const keys = Object.keys(rowCells);
-    let rowProps = {};
-    for (let j = 0; j < keys.length; j++) {
-      const emptyCell = {
-        content: rowCells[keys[j]]?.content || '',
-        roi_id: rowCells[keys[j]]?.roi_id || {},
-        qc_change_type: '',
-      };
-      rowProps = {
-        ...rowProps,
-        [j + 1]: emptyCell,
-      };
-    }
-    cloneData[i].row_props = rowProps;
-  }
+  cloneData.forEach((record, i) => {
+    cloneData[i].row_indx = cloneData[i].row_indx.toString();
+    record.columns.forEach((col, j) => {
+      record.columns[j].col_indx = record.columns[j].col_indx.toString();
+    });
+  });
   return cloneData;
 };
 
@@ -72,53 +64,14 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
 
-  const tableProp = [
-    {
-      row_indx: '0',
-      op_type: 'add',
-      columns: [
-        {
-          col_indx: '0',
-          op_type: null,
-          cell_id: 'dbfbefbehbf',
-          value: 'row1 column1',
-        },
-        {
-          col_indx: '1',
-          op_type: null,
-          cell_id: 'efejrhfjer',
-          value: 'row1 column2',
-        },
-      ],
-    },
-    {
-      row_indx: '1',
-      op_type: 'add',
-      columns: [
-        {
-          col_indx: '0',
-          op_type: null,
-          cell_id: 'fefefe',
-          value: 'row2 column1',
-        },
-        {
-          col_indx: '1',
-          op_type: null,
-          cell_id: 'ffhrhfjr',
-          value: 'row2 column2',
-        },
-      ],
-    },
-  ];
-
   useEffect(() => {
     if (data) {
-      const parsedTable = tableProp;
-      // const parsedTable = JSON.parse(data.TableProperties);
+      // const parsedTable = tableProp;
+      const parsedTable = JSON.parse(data.TableProperties);
       // const tableIds = getIDs(parsedTable[0]?.row_props);
-      // const formattedData = formattableData(parsedTable);
+      const formattedData = formattableData(parsedTable);
       // setTableId(tableIds?.tableRoiId);
-      setUpdatedData(parsedTable);
+      setUpdatedData(formattedData);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
       const colIndexes = parsedTable[0]?.columns;
@@ -131,12 +84,16 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     cloneData.forEach((record, i) => {
       if (i === rowIndex) {
         record.columns.forEach((col, j) => {
-          if (j === columnIndex && col?.cell_id !== '') {
+          if (j === columnIndex) {
             record.columns[j].value = content;
-            record.columns[j].op_type = 'modify';
+            if (col?.cell_id) {
+              record.columns[columnIndex].op_type = QC_CHANGE_TYPE.UPDATED;
+            }
           }
-          cloneData[i].op_type = 'modify';
         });
+        if (record?.roi_id) {
+          cloneData[i].op_type = QC_CHANGE_TYPE.UPDATED;
+        }
       }
       return record;
     });
@@ -186,15 +143,13 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setUpdatedData(newList);
     } else if (operation === tableOperations.swapColumn) {
       const copyUpdatedList = cloneDeep(updatedData);
-      const newData = copyUpdatedList.map((list) => {
-        const rowProp = list?.row_props;
-        const temp = rowProp[indexObj.sourceIndex];
-        rowProp[indexObj.sourceIndex] = rowProp[indexObj.targetIndex];
-        rowProp[indexObj.targetIndex] = temp;
-
-        return list;
+      copyUpdatedList.forEach((list) => {
+        const temp = list.columns[indexObj.sourceIndex];
+        list.columns[indexObj.sourceIndex] =
+          list?.columns[indexObj.targetIndex];
+        list.columns[indexObj.targetIndex] = temp;
       });
-      setUpdatedData(newData);
+      setUpdatedData(copyUpdatedList);
     }
   };
 
@@ -209,9 +164,14 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   };
 
   const handleSave = () => {
+    const cloneData = cloneDeep(updatedData);
+    const filterUpdatedData = cloneData.filter((list) => list?.op_type);
+    filterUpdatedData.forEach((record) => {
+      record.columns = record.columns.filter((op) => op?.op_type);
+    });
     const content = {
       ...segment.content,
-      TableProperties: updatedData,
+      TableProperties: filterUpdatedData,
       AttachmentListProperties: footNoteData,
     };
     setTableSaved(true);

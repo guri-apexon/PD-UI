@@ -8,7 +8,7 @@ const QC_CHANGE_TYPE = {
 const getEmptyCell = (colIndex) => {
   return {
     col_indx: colIndex.toString(),
-    op_type: null,
+    op_type: QC_CHANGE_TYPE.ADDED,
     cell_id: '',
     value: '',
   };
@@ -48,16 +48,15 @@ export const deleteRow = (rows, index) => {
 
 export const addColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
-  for (let i = 0; i < data.length; i++) {
-    const rowProps = data[i]?.row_props;
-    const flatArray = Object.keys(rowProps).map((key) => rowProps[key]);
-    flatArray.splice(index, 0, getEmptyCell());
-    const obj = flatArray.reduce((acc, cur, i) => {
-      acc[i + 1] = cur;
-      return acc;
-    }, {});
-    data[i].row_props = obj;
-  }
+  data.forEach((record) => {
+    record.columns.splice(index, 0, getEmptyCell(index));
+  });
+  data.forEach((record, i) => {
+    data[i].op_type = QC_CHANGE_TYPE.UPDATED;
+    record.columns.forEach((col, j) => {
+      record.columns[j].col_indx = j.toString();
+    });
+  });
   return data;
 };
 
