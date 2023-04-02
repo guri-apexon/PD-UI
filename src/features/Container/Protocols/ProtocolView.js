@@ -19,11 +19,8 @@ function ProtocolView({ refs, data }) {
   const [selectedSection, setSelectedSection] = useState({});
   const [sectionContent, setSectionContent] = useState([]);
   const [unsavedImgs, setUnsavedImgs] = useState([]);
-  const [value, setValue] = useState(false);
+  const [globalPreferredTerm, setGlobalPreferredTerm] = useState(false);
 
-  const handleChange = (e, checked) => {
-    setValue(checked);
-  };
   const [saveSection, setSaveSection] = useState(null);
 
   const handleSectionSelect = (payload) => {
@@ -200,8 +197,8 @@ function ProtocolView({ refs, data }) {
             sectionRef={sectionRef}
             data={data}
             summaryData={summary}
-            value={value}
-            handleChange={handleChange}
+            globalPreferredTerm={globalPreferredTerm}
+            setGlobalPreferredTerm={setGlobalPreferredTerm}
           />
         )}
       </div>

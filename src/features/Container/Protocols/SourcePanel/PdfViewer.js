@@ -185,7 +185,6 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
       onKeyDown={handleKeyDown}
     >
       <div className="panel-display">
-        <div className="panel-heading">Source Document</div>
         {fileType !== 'pdf' && (
           <div className="panel-download">
             <Tooltip title="Download Source document" placement="top">

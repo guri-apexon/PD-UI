@@ -22,16 +22,12 @@ function SOATable() {
       flex: 1,
 
       onCellValueChanged: (params) => {
-        console.log('onCellValueChanged');
         const {
           data: {
             b: {
               isNewRecord,
-
               indicator_text: indicatorText,
-
               table_column_index: tableColumnIndex,
-
               table_row_index: tableRowIndex,
             },
           },

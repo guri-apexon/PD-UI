@@ -1,16 +1,21 @@
-import { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import ArrowRight from 'apollo-react-icons/ArrowRight';
+import CloseCircle from 'apollo-react-icons/CloseCircle';
+import Pencil from 'apollo-react-icons/Pencil';
+import StatusCheck from 'apollo-react-icons/StatusCheck';
+import Trash from 'apollo-react-icons/Trash';
 import Button from 'apollo-react/components/Button';
 import Card from 'apollo-react/components/Card';
 import Modal from 'apollo-react/components/Modal';
 import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
-import Pencil from 'apollo-react-icons/Pencil';
-import ArrowRight from 'apollo-react-icons/ArrowRight';
+import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getKeyFromEnrichText } from '../../../../utils/utilFunction';
+import { EnrichedValue } from '../protocolSlice';
 import enrichedTerms from './clinicalTerms.json';
 import './MedicalTerm.scss';
-import { EnrichedValue } from '../protocolSlice';
 
 function MedicalTerm({
   enrichedTarget,
@@ -28,18 +33,111 @@ function MedicalTerm({
   const [newTermValue, setNewTermValue] = useState('');
   const [clinicalTerms, setClinicalTerms] = useState([]);
   const [childArr, setChildArr] = useState([]);
-  const [preferredTerm, setPreferredTerm] = useState();
-  const [synonyms, setSynonyms] = useState();
-  const [classification, setClassification] = useState();
-  const [ontologyTemp, setOntologyTemp] = useState();
+  const [clinicalTerm, setClinicalTerm] = useState('');
   const dispatch = useDispatch();
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState([]);
+  const [showIcons, setShowIcons] = useState(false);
+  const [selectedChild, setSelectedChild] = useState(false);
+  const [deleteAll, setdeleteAll] = useState(false);
+  const [showModal, setshowModal] = useState(false);
 
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
   }, [clinicalTermsArray]);
+
+  function handlePencilClick(selectedItem) {
+    setShowIcons(true);
+    setChildTermValue(selectedItem);
+    childArr.forEach((value) => {
+      if (value === selectedItem) {
+        setSelectedChild(value);
+      }
+    });
+  }
+
+  function handleCancelClick() {
+    setShowIcons(false);
+    setChildTermValue(null);
+    setSelectedChild(false);
+  }
+
+  const handleDeleteTag = (value) => {
+    const updatedChildArr = childArr.filter((item) => item !== value);
+    setChildArr(updatedChildArr);
+    const name = getKeyFromEnrichText(selectedTerm);
+    const tempObj = {
+      standard_entity_name: enrichedText,
+      iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
+      clinical_terms: clinicalTerm,
+      ontology: clinicalTermsArr[enrichedText]?.ontology,
+      confidence: '0',
+      start: '0',
+      text_len: '0',
+      synonyms: clinicalTermsArr[enrichedText]?.synonyms,
+      classification: clinicalTermsArr[enrichedText]?.classification,
+      preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
+      entity_class: '',
+      entity_xref: '',
+    };
+    const saveObj = {
+      ...tempObj,
+      [name]: '',
+    };
+    dispatch({
+      type: 'SAVE_ENRICHED_DATA',
+      payload: {
+        docId,
+        linkId,
+        opType: 'delete',
+        data: saveObj,
+      },
+    });
+  };
+
+  const handleDelete = () => {
+    if (!selectedTerm) return;
+    if (clinicalTermsArr && selectedTerm) {
+      const updatedClinicalTermsArrr = {
+        ...clinicalTermsArr,
+        [enrichedText]: {
+          ...clinicalTermsArr[enrichedText],
+          [selectedTerm]: '',
+        },
+      };
+      setClinicalTermsArr(updatedClinicalTermsArrr);
+      setChildArr([]);
+      const name = getKeyFromEnrichText(selectedTerm);
+      const tempObj = {
+        standard_entity_name: enrichedText,
+        iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
+        clinical_terms: clinicalTerm,
+        ontology: clinicalTermsArr[enrichedText]?.ontology,
+        confidence: '0',
+        start: '0',
+        text_len: '0',
+        synonyms: clinicalTermsArr[enrichedText]?.synonyms,
+        classification: clinicalTermsArr[enrichedText]?.classification,
+        preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
+        entity_class: '',
+        entity_xref: '',
+      };
+      const saveObj = {
+        ...tempObj,
+        [name]: '',
+      };
+      dispatch({
+        type: 'SAVE_ENRICHED_DATA',
+        payload: {
+          docId,
+          linkId,
+          opType: 'delete',
+          data: saveObj,
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     if (apiFlagselector && clinicalTermsArr) {
@@ -63,21 +161,8 @@ function MedicalTerm({
     if (clinicalTermsArr) {
       Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
         (key, value) => {
-          switch (key) {
-            case 'preferred_term':
-              setPreferredTerm(value);
-              break;
-            case 'synonyms':
-              setSynonyms(value);
-              break;
-            case 'classification':
-              setClassification(value);
-              break;
-            case 'ontology':
-              setOntologyTemp(value);
-              break;
-            default:
-              break;
+          if (key === 'medical_term') {
+            setClinicalTerm(value);
           }
         },
       );
@@ -96,22 +181,30 @@ function MedicalTerm({
   }, [enrichedText, clinicalTermsArr]);
 
   useEffect(() => {
-    if (selectedTerm && clinicalTermsArr) {
-      const arr = clinicalTermsArr[enrichedText][selectedTerm]?.split(',');
+    if (
+      clinicalTermsArr &&
+      enrichedText &&
+      selectedTerm &&
+      clinicalTermsArr[enrichedText] &&
+      clinicalTermsArr[enrichedText][selectedTerm]
+    ) {
+      const arr = clinicalTermsArr[enrichedText][selectedTerm].split(',');
       if (arr && arr.length === 1 && arr[0] === '') {
         setChildArr([]);
       } else {
         setChildArr(arr);
       }
+    } else {
+      setChildArr([]);
     }
     // eslint-disable-next-line
   }, [selectedTerm]);
 
   const handleSave = () => {
+    setSelectedChild(false);
     if (newTermValue === '') {
       return false;
     }
-
     if (!childTermValue || !selectedTerm) return false;
     const temp = [...childArr];
 
@@ -122,19 +215,22 @@ function MedicalTerm({
       return x;
     });
     setTempChild(newArr);
-
+    setSelectedChild(false);
     setChildTermValue(null);
-    let name;
-    if (selectedTerm === 'synonyms') name = 'entity_xref';
-    else if (selectedTerm === 'classification') name = 'entity_class';
-    else if (selectedTerm === 'preferred_term') name = 'iqv_standard_term';
-    else if (selectedTerm === 'ontology') name = 'ontology';
+    const name = getKeyFromEnrichText(selectedTerm);
     const tempObj = {
       standard_entity_name: enrichedText,
-      iqv_standard_term: preferredTerm,
-      entity_class: classification,
-      entity_xref: synonyms,
-      ontology: ontologyTemp,
+      iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
+      clinical_terms: clinicalTerm,
+      ontology: clinicalTermsArr[enrichedText]?.ontology,
+      confidence: '0',
+      start: '0',
+      text_len: '0',
+      synonyms: clinicalTermsArr[enrichedText]?.synonyms,
+      classification: clinicalTermsArr[enrichedText]?.classification,
+      preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
+      entity_class: '',
+      entity_xref: '',
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
 
@@ -146,7 +242,6 @@ function MedicalTerm({
         data: saveObj,
       },
     });
-
     return true;
   };
 
@@ -176,20 +271,20 @@ function MedicalTerm({
     return null;
   }
   return (
-    <div className="enriched-menu-wrapper" data-testId="term-list">
+    <div className="enriched-menu-wrapper" data-testId="medical-term">
       <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
         <Card interactive className="main-popper">
-          <div className="terms-list">
+          <div className="terms-list" data-testId="term-list">
             {clinicalTerms.map((item) => {
               const isActive = selectedTerm === item.key;
               return (
                 <li key={item}>
                   <Button
-                    data-testId="handleSave"
+                    data-testId="listItem"
                     className="term-item"
                     onClick={(e) => {
                       setSelectedTerm(item.key);
-                      setSAnchorEl(!SanchorEl ? e.currentTarget : null);
+                      setSAnchorEl(e.currentTarget);
                     }}
                   >
                     {item.value}
@@ -199,9 +294,18 @@ function MedicalTerm({
               );
             })}
           </div>
+          <div className="delete-tag" data-testid="delete-tag-icon">
+            <Button
+              onClick={() => setdeleteAll(true)}
+              disabled={isEmpty(childArr)}
+            >
+              Delete tag
+            </Button>
+          </div>
         </Card>
       </Popper>
       <Popper
+        data-testId="childpopper"
         open={!!SanchorEl}
         anchorEl={SanchorEl}
         placement="right-start"
@@ -213,16 +317,53 @@ function MedicalTerm({
               {childArr?.map((item) => {
                 return (
                   <li key={item}>
-                    <Button value={item} className="term-item">
-                      <span className="sub-term-text">{item}</span>
-                      <Pencil
-                        className="edit-Icon"
-                        data-testid="update-term-trigger"
-                        onClick={() => {
-                          setChildTermValue(item);
-                        }}
-                      />
-                    </Button>
+                    {selectedChild === item ? (
+                      <div className="text-area" data-testId="edit-btn-term1">
+                        <TextField
+                          data-testid="input-term1"
+                          value={newTermValue}
+                          onChange={(event) =>
+                            setNewTermValue(event.target.value)
+                          }
+                        />
+                        {showIcons && (
+                          <div className="icons" data-testId="edit-icons">
+                            <CloseCircle
+                              className="cancel"
+                              data-testid="cancel-icon"
+                              // eslint-disable-next-line react/jsx-no-bind
+                              onClick={handleCancelClick}
+                            />
+                            <StatusCheck
+                              className="save"
+                              onClick={handleSave}
+                              data-testid="save-icon"
+                            />
+                            <Trash
+                              data-testid="delete-icon"
+                              className="delete"
+                              onClick={() => setshowModal(true)}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <Button value={item} className="term-item">
+                        <span
+                          className="sub-term-text"
+                          data-testid="selected-item"
+                        >
+                          {item}
+                        </span>
+                        <Pencil
+                          data-testid="pencil-icon"
+                          className="edit-Icon"
+                          onClick={() => {
+                            handlePencilClick(item);
+                          }}
+                        />
+                      </Button>
+                    )}
                   </li>
                 );
               })}
@@ -232,29 +373,52 @@ function MedicalTerm({
       </Popper>
       <Modal
         disableBackdropClick
-        open={childTermValue}
+        open={showModal}
         variant="default"
         onClose={() => {
-          setChildTermValue(null);
+          setshowModal(false);
         }}
-        title="Rename Clinical Term"
         buttonProps={[
           { size: 'small' },
-          { label: 'Rename', onClick: handleSave, size: 'small' },
+          {
+            label: 'Delete',
+            onClick: () => {
+              handleDeleteTag();
+              setshowModal(false);
+            },
+            size: 'small',
+          },
         ]}
-        id="renameTermsModal"
+        id="deletetag"
       >
-        <TextField
-          size="small"
-          fullWidth
-          value={newTermValue}
-          allowBlank="none"
-          inputProps={{ 'data-testid': 'update-term-field' }}
-          onChange={(e) => {
-            setNewTermValue(e.target.value);
-          }}
-          placeholder="Enter clinical term name"
-        />
+        <div>
+          {`Are you sure you want to delete the tag "${childTermValue}" from the term "${enrichedText}"`}
+        </div>
+      </Modal>
+      <Modal
+        disableBackdropClick
+        open={deleteAll}
+        variant="default"
+        onClose={() => {
+          setdeleteAll(false);
+        }}
+        buttonProps={[
+          { size: 'small' },
+          {
+            label: 'Delete',
+            onClick: () => {
+              // eslint-disable-next-line
+              handleDelete();
+              setdeleteAll(false);
+            },
+            size: 'small',
+          },
+        ]}
+        id="deletetag"
+      >
+        <div>
+          {`Are you sure you want to delete the tag(s) from the term "${enrichedText}"`}
+        </div>
       </Modal>
     </div>
   );

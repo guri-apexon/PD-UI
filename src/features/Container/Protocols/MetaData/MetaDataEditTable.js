@@ -186,7 +186,7 @@ function MetaDataEditTable({
   };
 
   const getValue = (list, keyName, value) => {
-    let attrValue = null;
+    let attrValue = list?.attr_value;
     if (keyName === 'attr_value') {
       attrValue =
         list?.attr_type === 'date'
@@ -210,6 +210,8 @@ function MetaDataEditTable({
               attr_name: keyName === 'display_name' ? value : list?.attr_name,
               display_name:
                 keyName === 'display_name' ? value : list?.display_name,
+              note: keyName === 'note' ? value : list?.note,
+              confidence: keyName === 'confidence' ? value : list?.confidence,
             }
           : list,
       ),
