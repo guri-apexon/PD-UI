@@ -60,7 +60,7 @@ function DisplayTable({
       <div className="pd-table-inner">
         {edit && (
           <EmptyColumns
-            columnIndexes={data[0].columns}
+            columnIndexes={data[0]?.columns}
             handleOperation={handleColumnOperation}
             colWidth={colWidth}
           />
