@@ -10,6 +10,40 @@ import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/
 
 const replaceall = require('replaceall');
 
+const nextChar = (c) => {
+  const i = (parseInt(c, 36) + 1) % 36;
+  return (!i * 10 + i).toString(36);
+};
+
+const updateFootNotePayload = (data) => {
+  const updateFootNoteData = cloneDeep(data);
+  if (updateFootNoteData.length > 0) {
+    updateFootNoteData.forEach((notes, index) => {
+      const indicatorValue =
+        index !== 0
+          ? nextChar(updateFootNoteData[index - 1].footnote_indicator)
+          : 'a';
+      updateFootNoteData[index].previous_sequnce_index =
+        index === 0 ? null : index - 1;
+      updateFootNoteData[index].footnote_indicator = indicatorValue;
+      updateFootNoteData[
+        index
+      ].footnote_text = `${indicatorValue}. ${updateFootNoteData[index].footnote_text}`;
+    });
+  }
+
+  return updateFootNoteData;
+};
+
+const filterTableProperties = (data) => {
+  let filterUpdatedData = cloneDeep(data);
+  filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
+  filterUpdatedData.forEach((record) => {
+    record.columns = record.columns.filter((op) => op?.op_type);
+  });
+  return filterUpdatedData;
+};
+
 export const covertMMDDYYYY = (date) => {
   const onlyDate = date.split('T')[0];
   const dateFormat = new Date(onlyDate);
@@ -503,13 +537,30 @@ export const createReturnObj = (obj, linkId) => {
       return {
         type: obj.type,
         table_roi_id: '',
-        content: obj.content,
+        content: {
+          ...obj.content,
+          AttachmentListProperties: updateFootNotePayload(
+            obj?.content?.AttachmentListProperties,
+          ),
+        },
         qc_change_type: obj.qc_change_type,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
         uuid: obj?.uuid,
         line_id: obj?.line_id,
+      };
+    }
+    if (obj.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
+      return {
+        ...obj,
+        content: {
+          ...obj.content,
+          TableProperties: filterTableProperties(obj?.content?.TableProperties),
+          AttachmentListProperties: updateFootNotePayload(
+            obj?.content?.AttachmentListProperties,
+          ),
+        },
       };
     }
     return {

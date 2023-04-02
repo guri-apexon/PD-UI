@@ -159,18 +159,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   };
 
   const handleSave = () => {
-    let filterUpdatedData = cloneDeep(updatedData);
-    if (filterUpdatedData.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
-      filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
-      filterUpdatedData.forEach((record) => {
-        record.columns = record.columns.filter((op) => op?.op_type);
-      });
-    }
     const content = {
       ...segment.content,
-      TableProperties: filterUpdatedData,
+      TableProperties: updatedData,
       AttachmentListProperties: footNoteData,
     };
+
     setTableSaved(true);
     dispatchSectionEvent('CONTENT_UPDATE', {
       type: CONTENT_TYPE.TABLE,
