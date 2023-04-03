@@ -368,11 +368,14 @@ describe('DigitizeAccordion', () => {
         currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
         setCurrentActiveCard={jest.fn()}
         setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        index={0}
       />,
+      {
+        preloadedState: initialState,
+      },
     );
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-    fireEvent.click(pencil);
+
     const trash = component.getByTestId('trashIcon');
     fireEvent.click(trash);
     const deleteText = component.getByTestId('update-term-field');
@@ -409,11 +412,13 @@ describe('DigitizeAccordion', () => {
         currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
         setCurrentActiveCard={jest.fn()}
         setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        index={0}
       />,
+      {
+        preloadedState: initialState,
+      },
     );
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-    fireEvent.click(pencil);
     const trash = component.getByTestId('trashIcon');
     fireEvent.click(trash);
     const deleteText = component.getByTestId('update-term-field-cancel');
