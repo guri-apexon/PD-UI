@@ -58,7 +58,7 @@ function DisplayTable({
   return (
     <div className="pd-table-wrapper">
       <div className="pd-table-inner">
-        {edit && (
+        {edit && data.length && (
           <EmptyColumns
             columnIndexes={data[0]?.columns}
             handleOperation={handleColumnOperation}

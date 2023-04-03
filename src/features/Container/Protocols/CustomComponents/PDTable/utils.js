@@ -75,3 +75,37 @@ export const swapElements = (array, index1, index2) => {
 
   return arr;
 };
+
+const nextChar = (c) => {
+  const i = (parseInt(c, 36) + 1) % 36;
+  return (!i * 10 + i).toString(36);
+};
+
+export const updateFootNotePayload = (data) => {
+  const updateFootNoteData = cloneDeep(data);
+  if (updateFootNoteData.length > 0) {
+    updateFootNoteData.forEach((notes, index) => {
+      const indicatorValue =
+        index !== 0
+          ? nextChar(updateFootNoteData[index - 1].footnote_indicator)
+          : 'a';
+      updateFootNoteData[index].previous_sequnce_index =
+        index === 0 ? null : index - 1;
+      updateFootNoteData[index].footnote_indicator = indicatorValue;
+      updateFootNoteData[
+        index
+      ].footnote_text = `${indicatorValue}. ${updateFootNoteData[index].footnote_text}`;
+    });
+  }
+
+  return updateFootNoteData;
+};
+
+export const filterTableProperties = (data) => {
+  let filterUpdatedData = cloneDeep(data);
+  filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
+  filterUpdatedData.forEach((record) => {
+    record.columns = record.columns.filter((op) => op?.op_type);
+  });
+  return filterUpdatedData;
+};

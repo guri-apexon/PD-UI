@@ -237,20 +237,21 @@ export function* updateSectionData(action) {
       payload: { reqBody },
     } = action;
     const userID = yield getState();
+    const updatedReq = reqBody.map((ele) => {
+      if (ele.type === 'table') {
+        return {
+          ...ele,
+          audit: {
+            last_updated_user: userID,
+          },
+        };
+      }
+      return ele;
+    });
     const config = {
       url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
       method: 'POST',
-      data: reqBody.map((ele) => {
-        if (ele.type === 'table') {
-          return {
-            ...ele,
-            audit: {
-              last_updated_user: userID,
-            },
-          };
-        }
-        return ele;
-      }),
+      data: updatedReq,
     };
     const sectionSaveRes = yield call(httpCall, config);
 
