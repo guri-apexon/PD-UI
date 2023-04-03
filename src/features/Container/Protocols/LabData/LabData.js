@@ -8,11 +8,11 @@ import Pencil from 'apollo-react-icons/Pencil';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import Table from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
-import Modal from 'apollo-react/components/Modal';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
-import Grid from 'apollo-react/components/Grid';
 import { labDataApiValue } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
+import DeleteRow from './Modal/DeleteRow';
+import AddRow from './Modal/AddRow';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
 
@@ -273,14 +273,14 @@ function LabData({ docId }) {
   };
 
   useEffect(() => {
-    if (labData.data.length > 0 && showData === true) {
+    if (labData.data.length && showData) {
       setRowData(labData.data.filter((value) => value.soft_delete !== true));
       setShowData(false);
     }
   }, [labData]);
 
   useEffect(() => {
-    if (labData.success === true && showData === false) {
+    if (labData.success && !showData) {
       setShowData(true);
     }
   }, [labData]);
@@ -292,8 +292,8 @@ function LabData({ docId }) {
       className="protocol-column protocol-digitize-column metadata-card"
       data-testid="lab-data"
     >
-      {rowData.length > 0 ? (
-        <div className="lab-table-container" data-testid="lab-table-container">
+      <div className="lab-table-container" data-testid="lab-table-container">
+        {rowData.length > 0 && (
           <div className="lab-btn-container">
             {isEdit ? (
               <Button
@@ -314,119 +314,61 @@ function LabData({ docId }) {
               />
             )}
           </div>
-          <Table
-            title="Lab Data"
-            columns={columns}
-            rows={rowData?.map((row) => ({
-              ...row,
-              editMode: editedRow.id === row.id,
-              editedRow,
-              updateRow,
-              onRowEdit,
-              onDelete,
-              handleChange,
-              handleCancel,
-              handleSaveRow,
-              handleAdd,
-            }))}
-            initialSortedColumn="table_link_text"
-            initialSortOrder="asc"
-            rowId="table_link_text"
-            rowsPerPageOptions={[5, 10, 15, 'All']}
-            tablePaginationProps={{
-              labelDisplayedRows: ({ from, to, count }) =>
-                `${
-                  count === 1 ? 'Lab Data' : 'Lab Datas'
-                } ${from}-${to} of ${count}`,
-              truncate: true,
-            }}
-            showClearFiltersButton
-          />
-        </div>
-      ) : (
-        <div className="loader" data-testid="loader">
-          <Loader />
-        </div>
+        )}
+        <Table
+          isLoading={rowData.length === 0}
+          title="Lab Data"
+          columns={columns}
+          rows={rowData?.map((row) => ({
+            ...row,
+            editMode: editedRow.id === row.id,
+            editedRow,
+            updateRow,
+            onRowEdit,
+            onDelete,
+            handleChange,
+            handleCancel,
+            handleSaveRow,
+            handleAdd,
+          }))}
+          initialSortedColumn="table_link_text"
+          initialSortOrder="asc"
+          rowId="table_link_text"
+          rowsPerPageOptions={[5, 10, 15, 'All']}
+          tablePaginationProps={{
+            labelDisplayedRows: ({ from, to, count }) =>
+              `${
+                count === 1 ? 'Lab Data' : 'Lab Datas'
+              } ${from}-${to} of ${count}`,
+            truncate: true,
+          }}
+          showClearFiltersButton
+        />
+      </div>
+      {isOpen && (
+        <DeleteRow
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          onDeleteRow={onDeleteRow}
+        />
       )}
-      <Modal
-        data-testid="delete-row-modal"
-        open={isOpen}
-        variant="warning"
-        onClose={() => setIsOpen(false)}
-        title="Alert"
-        message="Please confirm if you want to continue with the delete?"
-        buttonProps={[
-          { label: 'Cancel' },
-          { label: 'Yes', onClick: () => onDeleteRow() },
-        ]}
-      />
-      <Modal
-        data-testid="add-row-modal"
-        open={isAdd}
-        onClose={() => setIsAdd(false)}
-        title="Add New Lab data"
-        buttonProps={[
-          { label: 'Cancel' },
-          { label: 'Create', onClick: () => handleCreate() },
-        ]}
-      >
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <TextField
-              label="Table Index"
-              value={tableIndex}
-              onChange={(e) => setTableIndex(e.target.value)}
-              fullWidth
-              placeholder="Table Index"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Table Name"
-              value={tableIndex}
-              onChange={(e) => setTableIndex(e.target.value)}
-              fullWidth
-              placeholder="Table Name"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Assessment Name"
-              value={assessmentName}
-              onChange={(e) => setAssessmentName(e.target.value)}
-              fullWidth
-              placeholder="Assessment Name"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Procedure name"
-              value={procedureName}
-              onChange={(e) => setProcedureName(e.target.value)}
-              fullWidth
-              placeholder="Procedure Name"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Assessment Preferred Name"
-              value={assessmentPreferred}
-              onChange={(e) => setAssessmentPreferred(e.target.value)}
-              fullWidth
-              placeholder="Assessment Preferred Name"
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              label="Procedure Preferred Name"
-              value={procedurePreferred}
-              onChange={(e) => setProcedurePreferred(e.target.value)}
-              fullWidth
-              placeholder="Procedure Preferred Name"
-            />
-          </Grid>
-        </Grid>
-      </Modal>
+      {isAdd && (
+        <AddRow
+          isAdd={isAdd}
+          setIsAdd={setIsAdd}
+          handleCreate={handleCreate}
+          tableIndex={tableIndex}
+          setTableIndex={setTableIndex}
+          assessmentName={assessmentName}
+          setAssessmentName={setAssessmentName}
+          procedureName={procedureName}
+          setProcedureName={setProcedureName}
+          assessmentPreferred={assessmentPreferred}
+          setAssessmentPreferred={setAssessmentPreferred}
+          procedurePreferred={procedurePreferred}
+          setProcedurePreferred={setProcedurePreferred}
+        />
+      )}
     </Card>
   );
 }

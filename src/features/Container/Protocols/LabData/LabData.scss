@@ -73,7 +73,7 @@
     margin-right: 5px;
   }
   position: relative;
-  & > div > div > div > div {
+  & > div:last-child > div:first-child > div:first-child > div:last-child {
     margin-right: 50px;
     h3 {
       margin: 0 !important;
