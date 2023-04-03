@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import Popover from 'apollo-react/components/Popover';
 import IconButton from 'apollo-react/components/IconButton';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
