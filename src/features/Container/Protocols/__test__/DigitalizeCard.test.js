@@ -35,8 +35,6 @@ export function renderWithProviders(
   function Wrapper({ children }) {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')

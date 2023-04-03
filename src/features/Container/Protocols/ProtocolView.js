@@ -18,7 +18,6 @@ function ProtocolView({ refs, data }) {
 
   const [selectedSection, setSelectedSection] = useState({});
   const [sectionContent, setSectionContent] = useState([]);
-  const [unsavedImgs, setUnsavedImgs] = useState([]);
   const [globalPreferredTerm, setGlobalPreferredTerm] = useState(false);
 
   const [saveSection, setSaveSection] = useState(null);
@@ -135,8 +134,6 @@ function ProtocolView({ refs, data }) {
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
-      // unsavedImgs,
-      // setUnsavedImgs,
     }),
     [
       selectedSection,
@@ -145,8 +142,6 @@ function ProtocolView({ refs, data }) {
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
-      // unsavedImgs,
-      // setUnsavedImgs,
     ],
   );
 

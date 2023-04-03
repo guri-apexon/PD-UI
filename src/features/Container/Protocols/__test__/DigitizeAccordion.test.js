@@ -44,8 +44,6 @@ export function renderWithProviders(
   function Wrapper({ children }) {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -62,8 +60,6 @@ describe('DigitizeAccordion', () => {
   test('render accordion', () => {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -87,8 +83,6 @@ describe('DigitizeAccordion', () => {
   test('Accordion loaded with store values and Accordion is open when the currentActiveCard is of the same item id', () => {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -112,8 +106,6 @@ describe('DigitizeAccordion', () => {
     const bool = true;
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -137,8 +129,6 @@ describe('DigitizeAccordion', () => {
   test('Pencil icon is visible for primary user', () => {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -162,8 +152,6 @@ describe('DigitizeAccordion', () => {
   test('Pencil icon is onClick for primary user', () => {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -189,8 +177,6 @@ describe('DigitizeAccordion', () => {
   test('accordian is onClick for primary user', () => {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -217,8 +203,6 @@ describe('DigitizeAccordion', () => {
   test('Save button is visible for primary user', () => {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -349,8 +333,6 @@ describe('DigitizeAccordion', () => {
   test('click on accordion_summary', () => {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -376,8 +358,6 @@ describe('DigitizeAccordion', () => {
   test('Save button is visible for primary user', () => {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -421,8 +401,6 @@ describe('DigitizeAccordion', () => {
   test('Save button is visible for primary user', () => {
     const contextValues = {
       dispatchSectionEvent: jest.fn(),
-      unsavedImgs: [],
-      setUnsavedImgs: jest.fn(),
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')

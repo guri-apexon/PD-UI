@@ -13,8 +13,6 @@ const testEdit = true;
 const testContent = '';
 const mockedProtocolContextValue = {
   dispatchSectionEvent,
-  unsavedImgs: [],
-  setUnsavedImgs: jest.fn(),
 };
 
 const renderImageUploader = (
@@ -48,8 +46,6 @@ describe('ImageUploader', () => {
         <ProtocolContext.Provider
           value={{
             dispatchSectionEvent: mockDispatchSectionEvent,
-            unsavedImgs: [],
-            setUnsavedImgs: jest.fn(),
           }}
         >
           <ImageUploader lineID="1" content="" edit />
@@ -68,8 +64,6 @@ describe('ImageUploader', () => {
         <ProtocolContext.Provider
           value={{
             dispatchSectionEvent: mockDispatchSectionEvent,
-            unsavedImgs: [],
-            setUnsavedImgs: jest.fn(),
           }}
         >
           <ImageUploader lineID="1" content="sample.jpg" edit={false} />
