@@ -135,8 +135,8 @@ function ProtocolView({ refs, data }) {
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
-      unsavedImgs,
-      setUnsavedImgs,
+      // unsavedImgs,
+      // setUnsavedImgs,
     }),
     [
       selectedSection,
@@ -145,8 +145,8 @@ function ProtocolView({ refs, data }) {
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
-      unsavedImgs,
-      setUnsavedImgs,
+      // unsavedImgs,
+      // setUnsavedImgs,
     ],
   );
 

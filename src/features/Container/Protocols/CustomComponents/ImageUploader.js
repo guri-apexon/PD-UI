@@ -10,6 +10,7 @@ import Pencil from 'apollo-react-icons/Pencil';
 import { useProtContext } from '../ProtocolContext';
 
 import { toBase64 } from '../../../../utils/utilFunction';
+import { QC_CHANGE_TYPE } from '../../../../AppConstant/AppConstant';
 import { setSaveEnabled } from '../protocolSlice';
 import constant from './constants';
 import './ImageUploader.scss';
@@ -23,8 +24,7 @@ function ImageUploader({ lineID, content, edit }) {
   const [isEdit, setIsEdit] = useState(true);
   const [showEditBtn, setShowEditBtn] = useState(false);
   const [showDltCnfrm, setShowDltCnfrm] = useState(false);
-  const { dispatchSectionEvent, unsavedImgs, setUnsavedImgs } =
-    useProtContext();
+  const { dispatchSectionEvent, sectionContent } = useProtContext();
 
   const handleDelete = () => {
     dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
@@ -38,14 +38,17 @@ function ImageUploader({ lineID, content, edit }) {
     // eslint-disable-next-line
   }, [content]);
 
-  const handleSave = () => {
+  const updateImageInContext = (isSaved, image) => {
     const obj = {
       currentLineId: lineID,
-      content: img,
+      content: image,
+      isSaved,
     };
     dispatchSectionEvent('CONTENT_UPDATE', obj);
-    const arr = unsavedImgs.filter((ele) => ele !== lineID);
-    setUnsavedImgs(arr);
+  };
+
+  const handleSave = () => {
+    updateImageInContext(true, img);
     setShowEditBtn(false);
     setIsEdit(false);
     dispatch(setSaveEnabled(true));
@@ -61,7 +64,6 @@ function ImageUploader({ lineID, content, edit }) {
       const type = newValue[0].name.split('.').pop().toLowerCase();
       if (supportedFileType.includes(type)) {
         setValue(newValue);
-        setUnsavedImgs([...unsavedImgs, lineID]);
       } else {
         toast.error('Please Upload Supported Image File');
       }
@@ -76,6 +78,7 @@ function ImageUploader({ lineID, content, edit }) {
   }, [value]);
 
   const onImgEditBtnClick = () => {
+    updateImageInContext(false, img);
     setImgBkp(img);
     setImg('');
     setIsEdit(true);
@@ -85,13 +88,22 @@ function ImageUploader({ lineID, content, edit }) {
   const handleCancel = () => {
     if (!imgBkp || imgBkp === '') {
       dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
+    } else {
+      const obj = sectionContent.filter((x) => x.line_id === lineID)?.pop();
+      const arr = [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED];
+      if (arr.includes(obj?.qc_change_type)) {
+        updateImageInContext(true, imgBkp);
+      }
     }
-    const arr = unsavedImgs.filter((ele) => ele !== lineID);
-    setUnsavedImgs(arr);
     setIsEdit(false);
     setImg(imgBkp);
     setImgBkp(null);
   };
+
+  useEffect(() => {
+    console.clear();
+    console.log({ sectionContent });
+  }, [sectionContent]);
 
   const imgPreview = () => {
     return (
