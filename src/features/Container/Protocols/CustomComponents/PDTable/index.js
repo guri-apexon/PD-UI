@@ -23,22 +23,6 @@ import {
 import { useProtContext } from '../../ProtocolContext';
 import PROTOCOL_CONSTANT from '../constants';
 
-const getIDs = (rows) => {
-  let rowRoiId = '';
-  let tableRoiId = '';
-  let datacellRoiId = '';
-  const keys = Object.keys(rows);
-  for (let i = 0; i < keys.length; i++) {
-    if (rows[keys[i]] && rows[keys[i]].roi_id?.row_roi_id) {
-      rowRoiId = rows[keys[i]].roi_id?.row_roi_id;
-      datacellRoiId = uuidv4();
-      tableRoiId = rows[keys[i]].roi_id?.table_roi_id;
-      break;
-    }
-  }
-  return { rowRoiId, tableRoiId, datacellRoiId };
-};
-
 const formattableData = (data) => {
   const cloneData = [...data];
   return cloneData.map((record) => {

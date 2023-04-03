@@ -1,4 +1,4 @@
-import { render, fireEvent, screen, getByTestId } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { QC_CHANGE_TYPE } from '../../../../../../../../AppConstant/AppConstant';
 import EditFootNote from '../EditFootNote';
 
