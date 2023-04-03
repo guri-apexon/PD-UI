@@ -41,13 +41,18 @@ const getIDs = (rows) => {
 
 const formattableData = (data) => {
   const cloneData = [...data];
-  cloneData.forEach((record, i) => {
-    cloneData[i].row_indx = cloneData[i].row_indx.toString();
-    record.columns.forEach((col, j) => {
-      record.columns[j].col_indx = record.columns[j].col_indx.toString();
-    });
+  return cloneData.map((record) => {
+    return {
+      ...record,
+      row_indx: record.row_indx?.toString() || '',
+      columns: record.columns.map((col) => {
+        return {
+          ...col,
+          col_indx: col.col_indx?.toString() || '',
+        };
+      }),
+    };
   });
-  return cloneData;
 };
 
 const confirmText = 'Please confirm if you want to continue with deletion';
@@ -130,22 +135,24 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   };
 
   const handleSwap = (operation, indexObj) => {
-    if (operation === tableOperations.swapRow) {
-      const newList = swapElements(
-        updatedData,
-        indexObj.sourceIndex,
-        indexObj.targetIndex,
-      );
-      setUpdatedData(newList);
-    } else if (operation === tableOperations.swapColumn) {
-      const copyUpdatedList = cloneDeep(updatedData);
-      copyUpdatedList.forEach((list) => {
-        const temp = list.columns[indexObj.sourceIndex];
-        list.columns[indexObj.sourceIndex] =
-          list?.columns[indexObj.targetIndex];
-        list.columns[indexObj.targetIndex] = temp;
-      });
-      setUpdatedData(copyUpdatedList);
+    if (indexObj.sourceIndex) {
+      if (operation === tableOperations.swapRow) {
+        const newList = swapElements(
+          updatedData,
+          indexObj.sourceIndex,
+          indexObj.targetIndex,
+        );
+        setUpdatedData(newList);
+      } else if (operation === tableOperations.swapColumn) {
+        const copyUpdatedList = cloneDeep(updatedData);
+        copyUpdatedList.forEach((list) => {
+          const temp = list.columns[indexObj.sourceIndex];
+          list.columns[indexObj.sourceIndex] =
+            list?.columns[indexObj.targetIndex];
+          list.columns[indexObj.targetIndex] = temp;
+        });
+        setUpdatedData(copyUpdatedList);
+      }
     }
   };
 

@@ -51,13 +51,18 @@ export const addColumn = (tabledata, index) => {
   data.forEach((record) => {
     record.columns.splice(index, 0, getEmptyCell(index));
   });
-  data.forEach((record, i) => {
-    data[i].op_type = QC_CHANGE_TYPE.UPDATED;
-    record.columns.forEach((col, j) => {
-      record.columns[j].col_indx = j.toString();
-    });
+  return data.map((record) => {
+    return {
+      ...record,
+      op_type: QC_CHANGE_TYPE.UPDATED,
+      columns: record.columns.map((col, j) => {
+        return {
+          ...col,
+          col_indx: j.toString(),
+        };
+      }),
+    };
   });
-  return data;
 };
 
 export const deleteColumn = (tabledata, index) => {
