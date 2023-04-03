@@ -110,7 +110,6 @@ describe('LabData', () => {
     userEvent.type(screen.getAllByRole('textbox')[0], 'abc');
     userEvent.tab();
     fireEvent.click(screen.getByText('Save'));
-    // expect(initialState).toHaveProperty('protocol.labDataApiValue.data');
     fireEvent.click(screen.getByTestId('saveall'));
   });
   test('should render to click on ellipsis and delete button', () => {
