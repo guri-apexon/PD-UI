@@ -7,7 +7,7 @@ describe('Add Row Modal', () => {
   test('should render to add row', () => {
     const screen = render(
       <AddRow
-        isAdd={true}
+        isAdd
         setIsAdd={jest.fn()}
         handleCreate={jest.fn()}
         tableIndex="Abc"

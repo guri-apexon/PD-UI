@@ -10,7 +10,6 @@ import Table from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import { labDataApiValue } from '../protocolSlice';
-import Loader from '../../../Components/Loader/Loader';
 import DeleteRow from './Modal/DeleteRow';
 import AddRow from './Modal/AddRow';
 import LABDATA_CONSTANTS from './constants';

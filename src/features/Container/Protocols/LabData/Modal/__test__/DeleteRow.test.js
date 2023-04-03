@@ -5,7 +5,7 @@ import DeleteRow from '../DeleteRow';
 describe('Delete Row Modal', () => {
   test('should render to delete row', () => {
     const screen = render(
-      <DeleteRow isOpen={true} setIsOpen={jest.fn()} onDeleteRow={jest.fn()} />,
+      <DeleteRow isOpen setIsOpen={jest.fn()} onDeleteRow={jest.fn()} />,
     );
 
     expect(screen.getByTestId('delete-row-modal')).toBeInTheDocument();
