@@ -225,15 +225,33 @@ export function* fetchAssociateProtocol(action) {
   }
 }
 
+function* getState() {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  return id.substring(1);
+}
+
 export function* updateSectionData(action) {
   try {
     const {
       payload: { reqBody },
     } = action;
+    const userID = yield getState();
+    const updatedReq = reqBody.map((ele) => {
+      if (ele.type === 'table') {
+        return {
+          ...ele,
+          audit: {
+            last_updated_user: userID,
+          },
+        };
+      }
+      return ele;
+    });
     const config = {
       url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
       method: 'POST',
-      data: reqBody,
+      data: updatedReq,
     };
     const sectionSaveRes = yield call(httpCall, config);
 
@@ -290,11 +308,6 @@ export function* fetchSectionHeaderList(action) {
     yield put(getHeaderList({ success: false, data: [] }));
     toast.error('Something Went Wrong');
   }
-}
-function* getState() {
-  const state = yield select();
-  const id = state.user.userDetail.userId;
-  return id.substring(1);
 }
 export function* getSectionContentList(action) {
   const userId = yield getState();
