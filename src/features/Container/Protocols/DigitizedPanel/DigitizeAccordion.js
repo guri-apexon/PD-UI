@@ -36,8 +36,10 @@ import {
   TOCActive,
   updateSectionData,
   resetUpdateStatus,
+  sectionLockDetails,
 } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
+import SectionLockTimer from './SectionLockTimer';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU, AUDIT_LIST } from '../Constant/Constants';
 import { useProtContext } from '../ProtocolContext';
@@ -103,7 +105,7 @@ function DigitizeAccordion({
 
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
-
+  const lockDetails = useSelector(sectionLockDetails);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
@@ -116,16 +118,22 @@ function DigitizeAccordion({
     saveSection,
   } = useProtContext();
 
-  const handleChange = (e) => {
-    e.stopPropagation();
-    if (showedit && saveEnabled) {
-      setShowDiscardConfirm(true);
-      return;
-    }
-    if (handlePageRight) handlePageRight(item.page);
-    setExpanded(!expanded);
+  const updateSectionLock = (status, refreshPage) => {
+    dispatch({
+      type: 'SET_SECTION_LOCK',
+      payload: {
+        docId: item?.doc_id,
+        linkId: item?.link_id,
+        sectionLock: status,
+        userId: '',
+        refreshPage,
+      },
+    });
+  };
+
+  const handleTocsection = (flag) => {
     const tempTOCActive = [...tocActive];
-    tempTOCActive[index] = !tempTOCActive[index];
+    tempTOCActive[index] = !flag ? true : !tempTOCActive[index];
     setTocActive(tempTOCActive);
     dispatch({
       type: 'SET_TOC_Active',
@@ -133,6 +141,20 @@ function DigitizeAccordion({
         data: tempTOCActive,
       },
     });
+  };
+
+  const handleChange = (e) => {
+    e.stopPropagation();
+    if (showedit && saveEnabled) {
+      setShowDiscardConfirm(true);
+      return;
+    }
+    if (showedit) {
+      updateSectionLock(true);
+    }
+    if (handlePageRight) handlePageRight(item.page);
+    setExpanded(!expanded);
+    handleTocsection(true);
     handleLinkId(item.link_id);
   };
 
@@ -189,12 +211,14 @@ function DigitizeAccordion({
       });
     }
   };
+
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
     dispatch(setSaveEnabled(false));
     setCurrentEditCard(item.link_id);
     setSectionDataBak([...sectionDataArr]);
+    updateSectionLock(false);
     dispatchSectionData();
   };
 
@@ -202,9 +226,32 @@ function DigitizeAccordion({
     if (currentEditCard && currentEditCard !== item.link_id) {
       setShowConfirm(true);
     } else {
-      onShowEdit();
+      handleTocsection();
+      setCurrentEditCard(item.link_id);
+      dispatch({
+        type: 'GET_SECTION_LOCK',
+        payload: {
+          doc_id: item?.doc_id,
+          link_id: item?.link_id,
+        },
+      });
     }
   };
+
+  useEffect(() => {
+    if (
+      Object.keys(lockDetails || {}).length > 0 &&
+      tocActiveSelector[index] &&
+      currentEditCard === item.link_id
+    ) {
+      if (lockDetails?.section_lock) {
+        onShowEdit();
+      } else {
+        toast.error(`Section is in use by user ${lockDetails?.user_name}`);
+      }
+    }
+    // eslint-disable-next-line
+  }, [lockDetails, currentEditCard]);
 
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
@@ -272,6 +319,7 @@ function DigitizeAccordion({
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
     } else {
+      updateSectionLock(true);
       dispatch(setSaveEnabled(false));
       setShowLoader(true);
       dispatch({
@@ -324,7 +372,6 @@ function DigitizeAccordion({
 
         setSectionDataArr(updatedSectionsData);
       }
-
       if (!sectionContent) dispatchSectionData();
     }
     // eslint-disable-next-line
@@ -392,6 +439,7 @@ function DigitizeAccordion({
     setShowEdit(false);
     setSectionDataBak([]);
     setCurrentEditCard(null);
+    updateSectionLock(true);
     dispatch(setSaveEnabled(false));
     dispatch(
       updateSectionData({
@@ -441,6 +489,14 @@ function DigitizeAccordion({
       className={primaryRole && 'accordian-plusIcon-line'}
       data-testid="mouse-over"
     >
+      {showedit && (
+        <SectionLockTimer
+          item={item}
+          updateSectionLock={updateSectionLock}
+          onDiscardClick={onDiscardClick}
+        />
+      )}
+
       <Accordion
         expanded={expanded}
         data-testid="accordion"
