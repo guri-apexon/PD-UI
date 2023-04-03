@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import Popover from 'apollo-react/components/Popover';
 import IconButton from 'apollo-react/components/IconButton';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,7 +13,6 @@ import Lock from 'apollo-react-icons/Lock';
 import Undo from 'apollo-react-icons/Undo';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import EyeShow from 'apollo-react-icons/EyeShow';
-import Modal from 'apollo-react/components/Modal';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
 import Trash from 'apollo-react-icons/Trash';
@@ -45,12 +43,15 @@ import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
 import AddSection from './AddSection';
 import HeaderConstant from '../CustomComponents/constants';
+import DiscardModal from './Modals/DiscardModal';
+import SaveSectionModal from './Modals/SaveSectionModal';
+import DeleteModal from './Modals/DeleteModal';
+import AuditLog from './Modals/AuditLog';
 
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
 } from '../../../../AppConstant/AppConstant';
-import DeleteModal from './DeleteModal';
 
 const styles = {
   modal: {
@@ -379,7 +380,7 @@ function DigitizeAccordion({
     setHoverItem(headerList[index + 1]);
     setHoverIndex(index);
   };
-  const handleSegmentMouseUp = (section) => {
+  const handleSegmentMouseUp = (e, section) => {
     dispatch({
       type: 'SET_ENRICHED_WORD',
       payload: { word: section, modal: true },
@@ -674,92 +675,30 @@ function DigitizeAccordion({
           linkId={linkId}
           docId={docId}
         />
-        <Popover
-          open={!!openAudit}
-          anchorEl={openAudit}
-          onClose={() => setOpenAudit(null)}
-        >
-          <div className="auditPopover">
-            <div className="textContainer">
-              {AUDIT_LIST.map((names) => {
-                return (
-                  <Typography variant="body1" key={names?.title}>
-                    {names?.title}&nbsp;:&nbsp;
-                    {item?.audit_info[names.keyName] || '-----'}
-                  </Typography>
-                );
-              })}
-            </div>
-            <div className="textContainer">
-              {Object.keys(item?.audit_info).map((names) => {
-                return (
-                  names !== 'total_no_review' && (
-                    <Typography variant="body1" key={names}>
-                      {item?.audit_info.names}
-                    </Typography>
-                  )
-                );
-              })}
-            </div>
-          </div>
-        </Popover>
-        <Modal
-          data-testid="confirm-modal"
-          disableBackdropClick
-          open={showConfirm}
-          variant="warning"
-          onClose={() => setShowConfirm(false)}
-          title="Confirm Action"
-          buttonProps={[
-            {
-              label: 'Cancel',
-              onClick: () => {
-                setShowEdit(false);
-                setShowConfirm(false);
-              },
-            },
-            {
-              label: 'Save',
-              onClick: () => {
-                setSaveSection(currentEditCard);
-                setShowEdit(false);
-                setShowConfirm(false);
-              },
-            },
-            {
-              label: 'Continue Editing',
-              onClick: () => {
-                setShowConfirm(false);
-              },
-            },
-          ]}
-          className={classes.modal}
-          id="custom"
-        >
-          There is already another section in edit mode. Please save the section
-          before continuing.
-        </Modal>
-        <Modal
-          disableBackdropClick
-          open={showDiscardConfirm}
-          variant="warning"
-          onClose={() => setShowDiscardConfirm(false)}
-          title="Confirm Action"
-          buttonProps={[
-            {
-              label: 'Cancel',
-              onClick: () => setShowDiscardConfirm(false),
-            },
-            {
-              label: 'Discard',
-              onClick: () => onDiscardClick(),
-            },
-          ]}
-          className={classes.modal}
-          id="custom"
-        >
-          Are you sure you want to discard the changes?
-        </Modal>
+
+        <AuditLog
+          openAudit={openAudit}
+          setOpenAudit={setOpenAudit}
+          AUDIT_LIST={AUDIT_LIST}
+          item={item}
+        />
+
+        <SaveSectionModal
+          classes={classes}
+          currentEditCard={currentEditCard}
+          showConfirm={showConfirm}
+          setShowConfirm={setShowConfirm}
+          setShowEdit={setShowEdit}
+          setSaveSection={setSaveSection}
+        />
+
+        <DiscardModal
+          classes={classes}
+          showDiscardConfirm={showDiscardConfirm}
+          setShowDiscardConfirm={setShowDiscardConfirm}
+          onDiscardClick={onDiscardClick}
+        />
+
         {showAlert && (
           <div className="confirmation-popup" data-testId="confirmPopup">
             <p>Please save the all the tables before saving the section</p>
