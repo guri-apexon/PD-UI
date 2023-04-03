@@ -33,9 +33,10 @@ const table = { ...text, type: 'table' };
 const header = { ...text, type: 'header', linkLevel: 2 };
 const image = { ...text, type: 'image' };
 const footNote = {
-  Text: 'Enter Your Text Here',
-  TableId: '',
-  AttachmentId: null,
+  footnote_line_id: '',
+  footnote_indicator: '',
+  footnote_text: 'Enter Your Text Here',
+  previous_sequnce_index: null,
   qc_change_type_footnote: QC_CHANGE_TYPE.ADDED,
 };
 delete image.font_info;

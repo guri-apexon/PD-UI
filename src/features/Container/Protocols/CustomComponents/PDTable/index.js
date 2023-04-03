@@ -16,46 +16,27 @@ import {
   deleteRow,
   swapElements,
 } from './utils';
-import { CONTENT_TYPE } from '../../../../../AppConstant/AppConstant';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../../AppConstant/AppConstant';
 import { useProtContext } from '../../ProtocolContext';
 import PROTOCOL_CONSTANT from '../constants';
 
-const getIDs = (rows) => {
-  let rowRoiId = '';
-  let tableRoiId = '';
-  let datacellRoiId = '';
-  const keys = Object.keys(rows);
-  for (let i = 0; i < keys.length; i++) {
-    if (rows[keys[i]] && rows[keys[i]].roi_id?.row_roi_id) {
-      rowRoiId = rows[keys[i]].roi_id?.row_roi_id;
-      datacellRoiId = uuidv4();
-      tableRoiId = rows[keys[i]].roi_id?.table_roi_id;
-      break;
-    }
-  }
-  return { rowRoiId, tableRoiId, datacellRoiId };
-};
-
 const formattableData = (data) => {
   const cloneData = [...data];
-  for (let i = 0; i < cloneData.length; i++) {
-    const rowCells = cloneData[i].row_props;
-    const keys = Object.keys(rowCells);
-    let rowProps = {};
-    for (let j = 0; j < keys.length; j++) {
-      const emptyCell = {
-        content: rowCells[keys[j]]?.content || '',
-        roi_id: rowCells[keys[j]]?.roi_id || {},
-        qc_change_type: '',
-      };
-      rowProps = {
-        ...rowProps,
-        [j + 1]: emptyCell,
-      };
-    }
-    cloneData[i].row_props = rowProps;
-  }
-  return cloneData;
+  return cloneData.map((record) => {
+    return {
+      ...record,
+      row_indx: record.row_indx?.toString() || '',
+      columns: record.columns.map((col) => {
+        return {
+          ...col,
+          col_indx: col.col_indx?.toString() || '',
+        };
+      }),
+    };
+  });
 };
 
 const confirmText = 'Please confirm if you want to continue with deletion';
@@ -66,7 +47,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const [colWidth, setColumnWidth] = useState(100);
   const [tableSaved, setTableSaved] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
-  const [tableId, setTableId] = useState('');
   const [isModal, setIsModal] = useState(false);
   const [selectedData, setSelectedData] = useState({});
   const tableRef = useRef(null);
@@ -75,20 +55,33 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   useEffect(() => {
     if (data) {
       const parsedTable = JSON.parse(data.TableProperties);
-      const tableIds = getIDs(parsedTable[0]?.row_props);
       const formattedData = formattableData(parsedTable);
-      setTableId(tableIds?.tableRoiId);
       setUpdatedData(formattedData);
       const footnoteArr = data.AttachmentListProperties || [];
       setFootnoteData(footnoteArr);
-      const colIndexes = Object.keys(parsedTable[0]?.row_props);
+      const colIndexes = parsedTable[0]?.columns;
       setColumnWidth(98 / colIndexes.length);
     }
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {
     const cloneData = [...updatedData];
-    cloneData[rowIndex].row_props[columnIndex].content = content;
+    cloneData.forEach((record, i) => {
+      if (i === rowIndex) {
+        record.columns.forEach((col, j) => {
+          if (j === columnIndex) {
+            record.columns[j].value = content;
+            if (col?.cell_id) {
+              record.columns[columnIndex].op_type = QC_CHANGE_TYPE.UPDATED;
+            }
+          }
+        });
+        if (record?.roi_id) {
+          cloneData[i].op_type = QC_CHANGE_TYPE.UPDATED;
+        }
+      }
+      return record;
+    });
     setUpdatedData(cloneData);
   };
 
@@ -126,24 +119,24 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   };
 
   const handleSwap = (operation, indexObj) => {
-    if (operation === tableOperations.swapRow) {
-      const newList = swapElements(
-        updatedData,
-        indexObj.sourceIndex,
-        indexObj.targetIndex,
-      );
-      setUpdatedData(newList);
-    } else if (operation === tableOperations.swapColumn) {
-      const copyUpdatedList = cloneDeep(updatedData);
-      const newData = copyUpdatedList.map((list) => {
-        const rowProp = list?.row_props;
-        const temp = rowProp[indexObj.sourceIndex];
-        rowProp[indexObj.sourceIndex] = rowProp[indexObj.targetIndex];
-        rowProp[indexObj.targetIndex] = temp;
-
-        return list;
-      });
-      setUpdatedData(newData);
+    if (indexObj.sourceIndex) {
+      if (operation === tableOperations.swapRow) {
+        const newList = swapElements(
+          updatedData,
+          indexObj.sourceIndex,
+          indexObj.targetIndex,
+        );
+        setUpdatedData(newList);
+      } else if (operation === tableOperations.swapColumn) {
+        const copyUpdatedList = cloneDeep(updatedData);
+        copyUpdatedList.forEach((list) => {
+          const temp = list.columns[indexObj.sourceIndex];
+          list.columns[indexObj.sourceIndex] =
+            list?.columns[indexObj.targetIndex];
+          list.columns[indexObj.targetIndex] = temp;
+        });
+        setUpdatedData(copyUpdatedList);
+      }
     }
   };
 
@@ -152,7 +145,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       ...footNoteData,
       {
         ...PROTOCOL_CONSTANT.footNote,
-        TableId: tableId,
       },
     ]);
   };
@@ -163,6 +155,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       TableProperties: updatedData,
       AttachmentListProperties: footNoteData,
     };
+
     setTableSaved(true);
     dispatchSectionEvent('CONTENT_UPDATE', {
       type: CONTENT_TYPE.TABLE,
