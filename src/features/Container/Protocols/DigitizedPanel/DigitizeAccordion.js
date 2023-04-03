@@ -115,8 +115,8 @@ function DigitizeAccordion({
     selectedSection,
     setSaveSection,
     saveSection,
-    unsavedImgs,
-    setUnsavedImgs,
+    // unsavedImgs,
+    // setUnsavedImgs,
   } = useProtContext();
 
   const handleChange = (e) => {
@@ -195,7 +195,7 @@ function DigitizeAccordion({
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
-    setUnsavedImgs([]);
+    // setUnsavedImgs([]);
     dispatch(setSaveEnabled(false));
     setCurrentEditCard(item.link_id);
     setSectionDataBak([...sectionDataArr]);
@@ -284,7 +284,7 @@ function DigitizeAccordion({
       toast.error('Please do some changes to update');
     } else {
       dispatch(setSaveEnabled(false));
-      setUnsavedImgs([]);
+      // setUnsavedImgs([]);
       setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
@@ -406,7 +406,7 @@ function DigitizeAccordion({
     setCurrentEditCard(null);
     dispatch(setSaveEnabled(false));
     setAlertMsg(null);
-    setUnsavedImgs([]);
+    // setUnsavedImgs([]);
     dispatch(
       updateSectionData({
         data: sectionDataBak,

@@ -336,12 +336,20 @@ export const prepareContent = ({
     case 'MODIFY':
       if (clonedSection && currentLineId) {
         return clonedSection.map((x) => {
+          if (
+            typeof isSaved !== 'undefined' &&
+            isSaved === false &&
+            CONTENT_TYPE.IMAGE
+          ) {
+            x.isSaved = isSaved;
+            return x;
+          }
           if (x.line_id === currentLineId) {
             x.content = content;
             if (x.qc_change_type !== QC_CHANGE_TYPE.ADDED) {
               x.qc_change_type = QC_CHANGE_TYPE.UPDATED;
             }
-            if (x.type === CONTENT_TYPE.TABLE) {
+            if ([CONTENT_TYPE.TABLE, CONTENT_TYPE.IMAGE].includes(x.type)) {
               x.isSaved = isSaved;
             }
           }
