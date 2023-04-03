@@ -44,10 +44,10 @@ import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
 import AddSection from './AddSection';
 import HeaderConstant from '../CustomComponents/constants';
-import DiscardModal from './modals/DiscardModal';
-import SaveSectionModal from './modals/SaveSectionModal';
-import DeleteModal from './modals/DeleteModal';
-import AuditLog from './modals/AuditLog';
+import DiscardModal from './Modals/DiscardModal';
+import SaveSectionModal from './Modals/SaveSectionModal';
+import DeleteModal from './Modals/DeleteModal';
+import AuditLog from './Modals/AuditLog';
 
 import {
   CONTENT_TYPE,
