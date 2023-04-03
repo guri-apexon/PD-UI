@@ -267,6 +267,22 @@ function DigitizeAccordion({
     return true;
   };
 
+  const checkUnsavedImages = () => {
+    if (sectionContent && Array.isArray(sectionContent)) {
+      const arr = sectionContent.filter(
+        (obj) =>
+          obj.type === CONTENT_TYPE.IMAGE &&
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
+            ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
+              [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
+                obj.qc_change_type,
+              ))),
+      );
+      return arr.length > 0;
+    }
+    return true;
+  };
+
   const handleSaveContent = () => {
     if (checkUnsavedTable()) {
       setShowAlert(true);
@@ -274,17 +290,17 @@ function DigitizeAccordion({
       return;
     }
 
-    if (unsavedImgs.length > 0) {
+    if (checkUnsavedImages()) {
       setShowAlert(true);
       setAlertMsg('Please save all the images before saving the section');
       return;
     }
+
     const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
     } else {
       dispatch(setSaveEnabled(false));
-      // setUnsavedImgs([]);
       setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
