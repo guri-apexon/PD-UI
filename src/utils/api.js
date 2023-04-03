@@ -255,6 +255,7 @@ export const Apis = {
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
   USER_ALERT_SETTING: '/api/user_alert_setting',
   SAVE_SECTION_CONTENT: '/api/qc_ingest',
+  SECTION_LOCK: '/api/section_lock',
 };
 
 export const SSO_ENABLED = environment !== 'local';
