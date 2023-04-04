@@ -100,11 +100,6 @@ function ImageUploader({ lineID, content, edit }) {
     setImgBkp(null);
   };
 
-  useEffect(() => {
-    console.clear();
-    console.log({ sectionContent });
-  }, [sectionContent]);
-
   const imgPreview = () => {
     return (
       // eslint-disable-next-line
