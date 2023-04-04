@@ -225,10 +225,10 @@ export function* fetchAssociateProtocol(action) {
   }
 }
 
-function* getState(flag) {
+function* getState(withPrefix) {
   const state = yield select();
   const id = state.user.userDetail.userId;
-  return flag ? id : id.substring(1);
+  return withPrefix ? id : id.substring(1);
 }
 
 export function* updateSectionData(action) {
