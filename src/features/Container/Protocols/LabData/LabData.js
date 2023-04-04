@@ -16,15 +16,8 @@ import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
 
 function ActionCell({ row }) {
-  const {
-    id,
-    onRowEdit,
-    onDelete,
-    editMode,
-    handleCancel,
-    handleSaveRow,
-    editedRow,
-  } = row;
+  const { id, onRowEdit, onDelete, editMode, handleCancel, handleSaveRow } =
+    row;
   const menuItems = [
     {
       text: 'Edit',
@@ -38,14 +31,7 @@ function ActionCell({ row }) {
   return editMode ? (
     <div className="saveCancelButtonGroup" data-testid="saveCancelButtonGroup">
       <Button onClick={handleCancel}>Cancel</Button>
-      <Button
-        variant="primary"
-        onClick={handleSaveRow}
-        disabled={
-          editMode &&
-          !Object.keys(editedRow).some((key) => editedRow[key] !== row[key])
-        }
-      >
+      <Button variant="primary" onClick={handleSaveRow}>
         Save
       </Button>
     </div>
