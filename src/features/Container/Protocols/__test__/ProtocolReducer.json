@@ -1,449 +1,424 @@
 {
-    "protocol": {
-        "userName": "",
-        "summary": {
-            "loading": false,
-            "success": true,
-            "data": {
-                "id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                "userId": "1073092",
-                "fileName": "Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf",
-                "documentFilePath": "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\78808eb2-6b1b-445f-bc89-4560ca66dd1c\\Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf",
-                "protocol": "15-07",
-                "projectId": "",
-                "sponsor": "Pfizer Inc",
-                "indication": "ABCC6 deficiency",
-                "moleculeDevice": "DEvice",
-                "amendment": "Y",
-                "isProcessing": false,
-                "percentComplete": "100",
-                "compareStatus": null,
-                "iqvXmlPathProc": null,
-                "iqvXmlPathComp": null,
-                "shortTitle": "",
-                "versionNumber": "1",
-                "documentStatus": "final",
-                "draftVersion": null,
-                "errorCode": null,
-                "errorReason": null,
-                "status": "PROCESS_COMPLETED",
-                "qcStatus": "QC_NOT_STARTED",
-                "phase": "III",
-                "digitizedConfidenceInterval": null,
-                "completenessOfDigitization": null,
-                "protocolTitle": "",
-                "studyStatus": null,
-                "sourceSystem": null,
-                "environment": null,
-                "uploadDate": "2023-01-02T08: 37: 47.770000",
-                "timeCreated": "2023-01-02T08: 37: 47.770000",
-                "lastUpdated": "2023-01-02T08: 59: 23.657000",
-                "userCreated": null,
-                "userUpdated": null,
-                "approvalDate": null,
-                "isActive": true,
-                "nctId": null,
-                "amendmentNumber": null,
-                "redactProfile": "profile_1",
-                "userUploadedFlag": false,
-                "userPrimaryRoleFlag": false,
-                "userFollowingFlag": false
-            }
+  "protocol": {
+    "userName": "",
+    "summary": {
+      "loading": false,
+      "success": true,
+      "data": {
+        "id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+        "userId": "1073092",
+        "fileName": "Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf",
+        "documentFilePath": "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\78808eb2-6b1b-445f-bc89-4560ca66dd1c\\Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf",
+        "protocol": "15-07",
+        "projectId": "",
+        "sponsor": "Pfizer Inc",
+        "indication": "ABCC6 deficiency",
+        "moleculeDevice": "DEvice",
+        "amendment": "Y",
+        "isProcessing": false,
+        "percentComplete": "100",
+        "compareStatus": null,
+        "iqvXmlPathProc": null,
+        "iqvXmlPathComp": null,
+        "shortTitle": "",
+        "versionNumber": "1",
+        "documentStatus": "final",
+        "draftVersion": null,
+        "errorCode": null,
+        "errorReason": null,
+        "status": "PROCESS_COMPLETED",
+        "qcStatus": "QC_NOT_STARTED",
+        "phase": "III",
+        "digitizedConfidenceInterval": null,
+        "completenessOfDigitization": null,
+        "protocolTitle": "",
+        "studyStatus": null,
+        "sourceSystem": null,
+        "environment": null,
+        "uploadDate": "2023-01-02T08: 37: 47.770000",
+        "timeCreated": "2023-01-02T08: 37: 47.770000",
+        "lastUpdated": "2023-01-02T08: 59: 23.657000",
+        "userCreated": null,
+        "userUpdated": null,
+        "approvalDate": null,
+        "isActive": true,
+        "nctId": null,
+        "amendmentNumber": null,
+        "redactProfile": "profile_1",
+        "userUploadedFlag": false,
+        "userPrimaryRoleFlag": false,
+        "userFollowingFlag": false
+      }
+    },
+    "view": {
+      "iqvdataSoa": [
+        {
+          "Table": "<table> sss</table>"
+        }
+      ],
+      "iqvdataSummary": {
+        "index": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+        "columns": ["field_name", "field_value", "field_header"],
+        "data": [["protocol_name", "", "<b>Protocol Name</b>"]]
+      },
+      "iqvdataToc": {
+        "data": []
+      },
+      "loader": true,
+      "tocSections": [
+        {
+          "section": " Version History",
+          "id": "TOC-24"
+        }
+      ],
+      "soaSections": [
+        {
+          "section": "Study of Assessments(Schedule of Assessment)",
+          "id": "SOA-4"
+        }
+      ]
+    },
+    "associateDocs": [
+      {
+        "id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+        "userId": "1073092",
+        "fileName": "Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf",
+        "documentFilePath": "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\78808eb2-6b1b-445f-bc89-4560ca66dd1c\\Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf",
+        "protocol": "15-07",
+        "versionNumber": "1",
+        "documentStatus": "final",
+        "status": "PROCESS_COMPLETED",
+        "qcStatus": "QC_NOT_STARTED",
+        "uploadDate": "2023-01-02T08: 37: 47.770000",
+        "approvalDate": null,
+        "isActive": true,
+        "uploadedBy": "Anil Kumar Muraleedharan",
+        "userRole": "primary"
+      }
+    ],
+    "compare": {
+      "loading": false,
+      "called": false,
+      "iqvdata": "",
+      "error": false,
+      "message": ""
+    },
+    "header": {
+      "success": true,
+      "data": [
+        {
+          "doc_id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+          "group_type": "DocumentLinks",
+          "link_id": "bc4dc374-8a78-11ed-af64-005056ab6469",
+          "LinkLevel": 1,
+          "page": 2,
+          "sec_id": "",
+          "source_file_section": "Signatures",
+          "LinkType": "toc",
+          "qc_change_type": "",
+          "sequence": 0,
+          "section_locked": false,
+          "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+          }
         },
-        "view": {
-            "iqvdataSoa": [
-                {
-                    "Table": "<table> sss</table>"
-                }
-            ],
-            "iqvdataSummary": {
-                "index": [
-                    0,
-                    1,
-                    2,
-                    3,
-                    4,
-                    5,
-                    6,
-                    7,
-                    8,
-                    9,
-                    10,
-                    11,
-                    12,
-                    13,
-                    14,
-                    15,
-                    16
-                ],
-                "columns": [
-                    "field_name",
-                    "field_value",
-                    "field_header"
-                ],
-                "data": [
-                    [
-                        "protocol_name",
-                        "",
-                        "<b>Protocol Name</b>"
-                    ]
-                ]
-            },
-            "iqvdataToc": {
-                "data": []
-            },
-            "loader": true,
-            "tocSections": [
-                {
-                    "section": " Version History",
-                    "id": "TOC-24"
-                }
-            ],
-            "soaSections": [
-                {
-                    "section": "Study of Assessments(Schedule of Assessment)",
-                    "id": "SOA-4"
-                }
-            ]
-        },
-        "associateDocs": [
+        {
+          "doc_id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+          "group_type": "DocumentLinks",
+          "link_id": "bc4dc375-8a78-11ed-946e-005056ab6469",
+          "LinkLevel": 1,
+          "page": 3,
+          "sec_id": "",
+          "source_file_section": "GENERAL INFORMATION",
+          "LinkType": "toc",
+          "qc_change_type": "",
+          "sequence": 1,
+          "section_locked": false,
+          "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+          }
+        }
+      ],
+      "message": "Success"
+    },
+    "loader": false,
+    "protocol": "",
+    "sectionDetails": {
+      "protocol": "15-07",
+      "data": [
+        {
+          "linkId": "bc4dc374-8a78-11ed-af64-005056ab6469",
+          "data": [
             {
-                "id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                "userId": "1073092",
-                "fileName": "Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf",
-                "documentFilePath": "\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\78808eb2-6b1b-445f-bc89-4560ca66dd1c\\Protocol-2019-0.d4b7a02b-55b0-4eb8-b231-5f9939ed9720.pdf",
-                "protocol": "15-07",
-                "versionNumber": "1",
-                "documentStatus": "final",
-                "status": "PROCESS_COMPLETED",
-                "qcStatus": "QC_NOT_STARTED",
-                "uploadDate": "2023-01-02T08: 37: 47.770000",
-                "approvalDate": null,
-                "isActive": true,
-                "uploadedBy": "Anil Kumar Muraleedharan",
-                "userRole": "primary"
+              "section_level": "",
+              "CPT_section": "Unmapped",
+              "type": "text",
+              "content": "CONFIDENTIAL",
+              "font_info": {
+                "IsBold": false,
+                "font_size": -1,
+                "font_style": "",
+                "entity": [],
+                "roi_id": {
+                  "para": "bc5080ba-8a78-11ed-8986-005056ab6469",
+                  "childbox": "",
+                  "subtext": ""
+                }
+              },
+              "level_1_CPT_section": "Unmapped",
+              "file_section": "Unmapped",
+              "file_section_num": "",
+              "file_section_level": 1,
+              "seq_num": 2,
+              "qc_change_type": "",
+              "line_id": "bc5080ba-8a78-11ed-8986-005056ab6469",
+              "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+              "synonyms_extracted_terms": "",
+              "semantic_extraction": "",
+              "section_locked": false,
+              "clinical_terms": {
+                "CONFIDENTIAL": {
+                  "synonyms": "value1, value2"
+                }
+              }
+            },
+            {
+              "section_level": "",
+              "CPT_section": "Unmapped",
+              "type": "text",
+              "content": "PLASMA",
+              "font_info": {
+                "italics": true,
+                "IsBold": true,
+                "font_size": -1,
+                "font_style": "",
+                "entity": [],
+                "roi_id": {
+                  "para": "bc5080ba-8a78-11ed-8986-005056ab6469",
+                  "childbox": "",
+                  "subtext": ""
+                }
+              },
+              "level_1_CPT_section": "Unmapped",
+              "file_section": "Unmapped",
+              "file_section_num": "",
+              "file_section_level": 1,
+              "seq_num": 2,
+              "qc_change_type": "",
+              "line_id": "bc5080ba-8a78-11ed-8986-005056ab6469",
+              "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+              "synonyms_extracted_terms": "",
+              "semantic_extraction": "",
+              "section_locked": false,
+              "clinical_terms": {
+                "CONFIDENTIAL": {
+                  "synonyms": "value1, value2"
+                }
+              }
             }
-        ],
-        "compare": {
-            "loading": false,
-            "called": false,
-            "iqvdata": "",
-            "error": false,
-            "message": ""
+          ]
         },
-        "header": {
-            "success": true,
-            "data": [
-                {
-                    "doc_id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                    "group_type": "DocumentLinks",
-                    "link_id": "bc4dc374-8a78-11ed-af64-005056ab6469",
-                    "LinkLevel": 1,
-                    "page": 2,
-                    "sec_id": "",
-                    "source_file_section": "Signatures",
-                    "LinkType": "toc",
-                    "qc_change_type": "",
-                    "sequence": 0,
-                    "section_locked": false,
-                    "audit_info": {
-                        "last_reviewed_date": "",
-                        "last_reviewed_by": "",
-                        "total_no_review": ""
-                    }
-                },
-                {
-                    "doc_id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                    "group_type": "DocumentLinks",
-                    "link_id": "bc4dc375-8a78-11ed-946e-005056ab6469",
-                    "LinkLevel": 1,
-                    "page": 3,
-                    "sec_id": "",
-                    "source_file_section": "GENERAL INFORMATION",
-                    "LinkType": "toc",
-                    "qc_change_type": "",
-                    "sequence": 1,
-                    "section_locked": false,
-                    "audit_info": {
-                        "last_reviewed_date": "",
-                        "last_reviewed_by": "",
-                        "total_no_review": ""
-                    }
+        {
+          "linkId": "bc4dc375-8a78-11ed-946e-005056ab6469",
+          "data": [
+            {
+              "section_level": "",
+              "CPT_section": "Unmapped",
+              "type": "text",
+              "content": "PLASMA",
+              "font_info": {
+                "italics": true,
+                "IsBold": true,
+                "font_size": -1,
+                "font_style": "",
+                "entity": [],
+                "roi_id": {
+                  "para": "bc4dc375-8a78-11ed-946e-005056ab6469",
+                  "childbox": "",
+                  "subtext": ""
                 }
-            ],
-            "message": "Success"
-        },
-        "loader": false,
-        "protocol": "",
-        "sectionDetails": {
-            "protocol": "15-07",
-            "data": [
-                {
-                    "linkId": "bc4dc374-8a78-11ed-af64-005056ab6469",
-                    "data": [
-                        {
-                            "section_level": "",
-                            "CPT_section": "Unmapped",
-                            "type": "text",
-                            "content": "CONFIDENTIAL",
-                            "font_info": {
-                                "IsBold": false,
-                                "font_size": -1,
-                                "font_style": "",
-                                "entity": [],
-                                "roi_id": {
-                                    "para": "bc5080ba-8a78-11ed-8986-005056ab6469",
-                                    "childbox": "",
-                                    "subtext": ""
-                                }
-                            },
-                            "level_1_CPT_section": "Unmapped",
-                            "file_section": "Unmapped",
-                            "file_section_num": "",
-                            "file_section_level": 1,
-                            "seq_num": 2,
-                            "qc_change_type": "",
-                            "line_id": "bc5080ba-8a78-11ed-8986-005056ab6469",
-                            "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                            "synonyms_extracted_terms": "",
-                            "semantic_extraction": "",
-                            "section_locked": false,
-                            "clinical_terms": {
-                                "CONFIDENTIAL": {
-                                    "synonyms": "value1, value2"
-                                }
-                            }
-                        },
-                        {
-                            "section_level": "",
-                            "CPT_section": "Unmapped",
-                            "type": "text",
-                            "content": "PLASMA",
-                            "font_info": {
-                                "italics": true,
-                                "IsBold": true,
-                                "font_size": -1,
-                                "font_style": "",
-                                "entity": [],
-                                "roi_id": {
-                                    "para": "bc5080ba-8a78-11ed-8986-005056ab6469",
-                                    "childbox": "",
-                                    "subtext": ""
-                                }
-                            },
-                            "level_1_CPT_section": "Unmapped",
-                            "file_section": "Unmapped",
-                            "file_section_num": "",
-                            "file_section_level": 1,
-                            "seq_num": 2,
-                            "qc_change_type": "",
-                            "line_id": "bc5080ba-8a78-11ed-8986-005056ab6469",
-                            "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                            "synonyms_extracted_terms": "",
-                            "semantic_extraction": "",
-                            "section_locked": false,
-                            "clinical_terms": {
-                                "CONFIDENTIAL": {
-                                    "synonyms": "value1, value2"
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    "linkId": "bc4dc375-8a78-11ed-946e-005056ab6469",
-                    "data": [
-                        {
-                            "section_level": "",
-                            "CPT_section": "Unmapped",
-                            "type": "text",
-                            "content": "PLASMA",
-                            "font_info": {
-                                "italics": true,
-                                "IsBold": true,
-                                "font_size": -1,
-                                "font_style": "",
-                                "entity": [],
-                                "roi_id": {
-                                    "para": "bc4dc375-8a78-11ed-946e-005056ab6469",
-                                    "childbox": "",
-                                    "subtext": ""
-                                }
-                            },
-                            "level_1_CPT_section": "Unmapped",
-                            "file_section": "Unmapped",
-                            "file_section_num": "",
-                            "file_section_level": 1,
-                            "seq_num": 2,
-                            "qc_change_type": "",
-                            "line_id": "bc5A80ba-8a78-11ed-8986-005056ab6469",
-                            "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                            "synonyms_extracted_terms": "",
-                            "semantic_extraction": "",
-                            "section_locked": false,
-                            "clinical_terms": {
-                                "CONFIDENTIAL": {
-                                    "synonyms": "value1, value2"
-                                }
-                            }
-                        }
-                    ]
+              },
+              "level_1_CPT_section": "Unmapped",
+              "file_section": "Unmapped",
+              "file_section_num": "",
+              "file_section_level": 1,
+              "seq_num": 2,
+              "qc_change_type": "",
+              "line_id": "bc5A80ba-8a78-11ed-8986-005056ab6469",
+              "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+              "synonyms_extracted_terms": "",
+              "semantic_extraction": "",
+              "section_locked": false,
+              "clinical_terms": {
+                "CONFIDENTIAL": {
+                  "synonyms": "value1, value2"
                 }
-            ],
-            "sections": [
+              }
+            }
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "section_level": "",
+          "CPT_section": "Unmapped",
+          "type": "text",
+          "content": "CONFIDENTIAL",
+          "font_info": {
+            "IsBold": false,
+            "font_size": -1,
+            "font_style": "",
+            "entity": [],
+            "roi_id": {
+              "para": "bc4dc375-8a78-11ed-946e-005056ab6469",
+              "childbox": "",
+              "subtext": ""
+            }
+          },
+          "level_1_CPT_section": "Unmapped",
+          "file_section": "Unmapped",
+          "file_section_num": "",
+          "file_section_level": 1,
+          "seq_num": 2,
+          "qc_change_type": "",
+          "line_id": "bc5C80ba-8a78-11ed-8986-005056ab6469",
+          "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+          "synonyms_extracted_terms": "",
+          "semantic_extraction": "",
+          "section_locked": false,
+          "clinical_terms": {
+            "CONFIDENTIAL": {
+              "synonyms": "value1, value2"
+            }
+          }
+        },
+        {
+          "section_level": "",
+          "CPT_section": "Unmapped",
+          "type": "text",
+          "content": "PLASMA",
+          "font_info": {
+            "italics": true,
+            "IsBold": true,
+            "font_size": -1,
+            "font_style": "",
+            "entity": [],
+            "roi_id": {
+              "para": "bc4dc375-8a78-11ed-946e-005056ab6469",
+              "childbox": "",
+              "subtext": ""
+            }
+          },
+          "level_1_CPT_section": "Unmapped",
+          "file_section": "Unmapped",
+          "file_section_num": "",
+          "file_section_level": 1,
+          "seq_num": 2,
+          "qc_change_type": "",
+          "line_id": "bc5CA0ba-8a78-11ed-8986-005056ab6469",
+          "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+          "synonyms_extracted_terms": "",
+          "semantic_extraction": "",
+          "section_locked": false,
+          "clinical_terms": {
+            "CONFIDENTIAL": {
+              "synonyms": "value1, value2"
+            }
+          }
+        }
+      ]
+    },
+    "protocolTocData": {
+      "success": true,
+      "data": [
+        {
+          "doc_id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
+          "group_type": "DocumentLinks",
+          "link_id": "bc4dc374-8a78-11ed-af64-005056ab6469",
+          "LinkLevel": 1,
+          "page": 1,
+          "sec_id": "",
+          "source_file_section": "Signatures",
+          "LinkType": "toc",
+          "qc_change_type": "",
+          "sequence": 0,
+          "section_locked": false,
+          "audit_info": {
+            "last_reviewed_date": "",
+            "last_reviewed_by": "",
+            "total_no_review": ""
+          },
+          "childlevel": [
+            {
+              "source_file_section": "Signatures_child",
+              "page": 2,
+              "subSection1": [
                 {
-                    "section_level": "",
-                    "CPT_section": "Unmapped",
-                    "type": "text",
-                    "content": "CONFIDENTIAL",
-                    "font_info": {
-                        "IsBold": false,
-                        "font_size": -1,
-                        "font_style": "",
-                        "entity": [],
-                        "roi_id": {
-                            "para": "bc4dc375-8a78-11ed-946e-005056ab6469",
-                            "childbox": "",
-                            "subtext": ""
-                        }
-                    },
-                    "level_1_CPT_section": "Unmapped",
-                    "file_section": "Unmapped",
-                    "file_section_num": "",
-                    "file_section_level": 1,
-                    "seq_num": 2,
-                    "qc_change_type": "",
-                    "line_id": "bc5C80ba-8a78-11ed-8986-005056ab6469",
-                    "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                    "synonyms_extracted_terms": "",
-                    "semantic_extraction": "",
-                    "section_locked": false,
-                    "clinical_terms": {
-                        "CONFIDENTIAL": {
-                            "synonyms": "value1, value2"
-                        }
-                    }
-                },
-                {
-                    "section_level": "",
-                    "CPT_section": "Unmapped",
-                    "type": "text",
-                    "content": "PLASMA",
-                    "font_info": {
-                        "italics": true,
-                        "IsBold": true,
-                        "font_size": -1,
-                        "font_style": "",
-                        "entity": [],
-                        "roi_id": {
-                            "para": "bc4dc375-8a78-11ed-946e-005056ab6469",
-                            "childbox": "",
-                            "subtext": ""
-                        }
-                    },
-                    "level_1_CPT_section": "Unmapped",
-                    "file_section": "Unmapped",
-                    "file_section_num": "",
-                    "file_section_level": 1,
-                    "seq_num": 2,
-                    "qc_change_type": "",
-                    "line_id": "bc5CA0ba-8a78-11ed-8986-005056ab6469",
-                    "aidocid": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                    "synonyms_extracted_terms": "",
-                    "semantic_extraction": "",
-                    "section_locked": false,
-                    "clinical_terms": {
-                        "CONFIDENTIAL": {
-                            "synonyms": "value1, value2"
-                        }
-                    }
+                  "sub_Section": "Signatures_sub",
+                  "page": 3
                 }
-            ]
-        },
-        "protocolTocData": {
-            "success": true,
-            "data": [
-                {
-                    "doc_id": "78808eb2-6b1b-445f-bc89-4560ca66dd1c",
-                    "group_type": "DocumentLinks",
-                    "link_id": "bc4dc374-8a78-11ed-af64-005056ab6469",
-                    "LinkLevel": 1,
-                    "page": 1,
-                    "sec_id": "",
-                    "source_file_section": "Signatures",
-                    "LinkType": "toc",
-                    "qc_change_type": "",
-                    "sequence": 0,
-                    "section_locked": false,
-                    "audit_info": {
-                        "last_reviewed_date": "",
-                        "last_reviewed_by": "",
-                        "total_no_review": ""
-                    },
-                    "childlevel": [
-                        {
-                            "source_file_section": "Signatures_child",
-                            "page": 2,
-                            "subSection1": [
-                                {
-                                    "sub_Section": "Signatures_sub",
-                                    "page": 3
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ],
-            "message": "Success"
-        },
-        "sectionLoader": false,
-        "fileStream": {
-            "loader": false,
-            "success": true,
-            "error": "",
-            "data": {}
-        },
-        "rightBladeValue": "Home",
-        "TOCActiveAccordion": [
-            true,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-        ],
-        "accordionMetaData": {},
-        "accordianMetaParam": {},
-        "metadataApiCallValue": {
-            "status": false,
-            "name": "",
-            "op": ""
-        },
-        "EnrichedApiValue": false
+              ]
+            }
+          ]
+        }
+      ],
+      "message": "Success"
+    },
+    "sectionLoader": false,
+    "fileStream": {
+      "loader": false,
+      "success": true,
+      "error": "",
+      "data": {}
+    },
+    "rightBladeValue": "Home",
+    "TOCActiveAccordion": [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "accordionMetaData": {},
+    "accordianMetaParam": {},
+    "metadataApiCallValue": {
+      "status": false,
+      "name": "",
+      "op": ""
+    },
+    "EnrichedApiValue": false,
+    "sectionLockDetails": {
+      "section_lock": true
     }
+  }
 }

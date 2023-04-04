@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import EditFootNote from './EditFootNote';
 import { QC_CHANGE_TYPE } from '../../../../../../../AppConstant/AppConstant';
 
-function FootNotes({ footNoteData, edit, setFootnoteData, unitTesting }) {
+function FootNotes({ footNoteData, edit, setFootnoteData }) {
   const [activeLineID, setActiveLineID] = useState('');
 
   return (
@@ -22,14 +22,12 @@ function FootNotes({ footNoteData, edit, setFootnoteData, unitTesting }) {
                 key={uuidv4()}
                 item={item}
                 index={index}
-                content={item?.Text}
+                content={item?.footnote_text}
                 edit={edit}
                 footNoteData={footNoteData}
-                lineID={item?.AttachmentId}
                 activeLineID={activeLineID}
                 setFootnoteData={setFootnoteData}
                 className="line-content edit-text-con"
-                unitTesting={unitTesting}
               />
             </div>
           ),
@@ -44,5 +42,4 @@ FootNotes.propTypes = {
   footNoteData: PropTypes.isRequired,
   setFootnoteData: PropTypes.isRequired,
   edit: PropTypes.isRequired,
-  unitTesting: PropTypes.isRequired,
 };
