@@ -128,7 +128,7 @@ function LabData({ docId }) {
   }, [dispatch, docId, showData]);
 
   const handleSave = () => {
-    const updatedData = rowData.filter((value) => value.isUpdated === true);
+    const updatedData = rowData?.filter((value) => value.isUpdated === true);
     if (updatedData.length > 0) {
       dispatch({
         type: 'UPDATE_LAB_DATA',
@@ -142,7 +142,7 @@ function LabData({ docId }) {
   };
 
   const onRowEdit = (id) => {
-    setEditedRow(rowData.find((row) => row.id === id));
+    setEditedRow(rowData?.find((row) => row.id === id));
     setTableId(id);
   };
 
@@ -159,7 +159,7 @@ function LabData({ docId }) {
   };
 
   const handleSaveRow = () => {
-    const rowUpdated = rowData.map((row) =>
+    const rowUpdated = rowData?.map((row) =>
       row.id === editedRow.id ? { ...editedRow, isUpdated: true } : row,
     );
     setRowData(rowUpdated);
@@ -212,7 +212,7 @@ function LabData({ docId }) {
   }, [isEdit]);
 
   const onDeleteRow = () => {
-    const result = rowData.find((value) => value.id === tableId);
+    const result = rowData?.find((value) => value.id === tableId);
     dispatch({
       type: 'DELETE_LAB_DATA',
       payload: {
@@ -229,7 +229,7 @@ function LabData({ docId }) {
   };
 
   const handleCreate = () => {
-    const result = rowData.find((value) => value.table_roi_id);
+    const result = rowData?.find((value) => value.table_roi_id);
     if (
       procedureName.length > 0 ||
       assessmentName.length > 0 ||
@@ -286,13 +286,16 @@ function LabData({ docId }) {
   const handleAdd = () => {
     setIsAdd(true);
   };
+
+  const dataRow = Array.from(rowData);
+
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
       data-testid="lab-data"
     >
       <div className="lab-table-container" data-testid="lab-table-container">
-        {rowData.length > 0 && (
+        {rowData?.length > 0 && (
           <div className="lab-btn-container">
             {isEdit ? (
               <Button
@@ -315,10 +318,10 @@ function LabData({ docId }) {
           </div>
         )}
         <Table
-          isLoading={rowData.length === 0}
+          isLoading={rowData?.length === 0}
           title="Lab Data"
           columns={columns}
-          rows={rowData?.map((row) => ({
+          rows={dataRow?.map((row) => ({
             ...row,
             editMode: editedRow.id === row.id,
             editedRow,
