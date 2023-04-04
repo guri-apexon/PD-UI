@@ -123,11 +123,13 @@ describe('LabData', () => {
     fireEvent.click(screen.getAllByTestId('ellipsis-icon')[0]);
     expect(screen.getByText('Delete')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete'));
+    fireEvent.click(screen.getByText('Yes'));
   });
   test('should render to add row', () => {
     const screen = render(<LabData docId={docId} />, {
       initialState,
     });
     fireEvent.click(screen.getByTestId('add-item'));
+    fireEvent.click(screen.getByText('Create'));
   });
 });
