@@ -4,7 +4,7 @@ import Modal from 'apollo-react/components/Modal';
 import { ToastContainer } from 'react-toastify';
 import PropTypes from 'prop-types';
 
-function SectionLockTimer({ updateSectionLock, onDiscardClick }) {
+function SectionLockTimer({ onDiscardClick }) {
   const idleTimer = useRef(null);
   const [isModal, setIsModal] = useState(false);
   const [isSessionOut, setIsSessionOut] = useState(false);
@@ -12,7 +12,7 @@ function SectionLockTimer({ updateSectionLock, onDiscardClick }) {
   const handleOnIdle = () => {
     setIsModal(true);
     if (isSessionOut) {
-      updateSectionLock(true, true);
+      onDiscardClick();
     }
     setIsSessionOut(true);
     idleTimer.current.reset();
@@ -64,6 +64,5 @@ function SectionLockTimer({ updateSectionLock, onDiscardClick }) {
 export default SectionLockTimer;
 
 SectionLockTimer.propTypes = {
-  updateSectionLock: PropTypes.isRequired,
   onDiscardClick: PropTypes.isRequired,
 };

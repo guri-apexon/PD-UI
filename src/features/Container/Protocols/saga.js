@@ -225,15 +225,33 @@ export function* fetchAssociateProtocol(action) {
   }
 }
 
+function* getState(withPrefix) {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  return withPrefix ? id : id.substring(1);
+}
+
 export function* updateSectionData(action) {
   try {
     const {
       payload: { reqBody },
     } = action;
+    const userID = yield getState();
+    const updatedReq = reqBody.map((ele) => {
+      if (ele.type === 'table') {
+        return {
+          ...ele,
+          audit: {
+            last_updated_user: userID,
+          },
+        };
+      }
+      return ele;
+    });
     const config = {
       url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
       method: 'POST',
-      data: reqBody,
+      data: updatedReq,
     };
     const sectionSaveRes = yield call(httpCall, config);
 
@@ -291,11 +309,7 @@ export function* fetchSectionHeaderList(action) {
     toast.error('Something Went Wrong');
   }
 }
-function* getState() {
-  const state = yield select();
-  const id = state.user.userDetail.userId;
-  return id.substring(1);
-}
+
 export function* getSectionContentList(action) {
   const userId = yield getState();
   const config = {
@@ -375,10 +389,12 @@ export function* getProtocolTocDataResult(action) {
   yield put(getHeaderList({}));
   const userId = yield getState();
   const linkLevel = action.payload.tocFlag ? 6 : 1;
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}&user_id=${userId}`;
+  const URL = `${BASE_URL}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}&user_id=${userId}`;
   const config = {
     url: URL,
     method: 'GET',
+    checkAuth: true,
+    headers: jsonContentHeader,
   };
 
   const header = yield call(httpCall, config);
@@ -713,7 +729,7 @@ export function* setResetSectionData() {
 }
 
 export function* getSectionLockDetails(action) {
-  const userId = yield getState();
+  const userId = yield getState(true);
   const config = {
     url: `${BASE_URL_8000}${Apis.SECTION_LOCK}/get_section_lock?doc_id=${action.payload.doc_id}&userId=${userId}&link_id=${action.payload.link_id}`,
     method: 'GET',
@@ -728,7 +744,7 @@ export function* updateSectionLockDetails(action) {
   const {
     payload: { docId, linkId, sectionLock },
   } = action;
-  const userId = yield getState();
+  const userId = yield getState(true);
   const config = {
     url: `${BASE_URL_8000}${Apis.SECTION_LOCK}/put_section_lock`,
     method: 'PUT',
@@ -743,9 +759,6 @@ export function* updateSectionLockDetails(action) {
 
   if (sectionLockDetails.success) {
     yield put(setSectionLockDetails({}));
-    if (action.payload.refreshPage) {
-      window.location.reload();
-    }
   }
 }
 export function* setResetQCData() {

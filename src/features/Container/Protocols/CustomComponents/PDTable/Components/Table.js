@@ -58,9 +58,9 @@ function DisplayTable({
   return (
     <div className="pd-table-wrapper">
       <div className="pd-table-inner">
-        {edit && (
+        {edit && data.length && (
           <EmptyColumns
-            columnIndexes={Object.keys(data[0]?.row_props || {})}
+            columnIndexes={data[0]?.columns}
             handleOperation={handleColumnOperation}
             colWidth={colWidth}
           />
@@ -87,13 +87,12 @@ function DisplayTable({
                   <EllipsisVertical />
                 </span>
               )}
-              {Object.keys(row.row_props).map(
-                (key) =>
-                  row.row_props[key]?.qc_change_type !==
-                    QC_CHANGE_TYPE.DELETED && (
+              {row?.columns?.map(
+                (col, colIndex) =>
+                  col?.op_type !== QC_CHANGE_TYPE.DELETED && (
                     <div
                       key={uuidv4()}
-                      id={`columnID-${rowIndex}-${key}`}
+                      id={`columnID-${rowIndex}-${colIndex}`}
                       draggable
                       onDragStart={handleDrag}
                       onDrop={handleDrop}
@@ -110,14 +109,14 @@ function DisplayTable({
                         </span>
                       )}
                       <span
-                        id={`columnID-${rowIndex}-${key}`}
+                        id={`columnID-${rowIndex}-${colIndex}`}
                         className="editable-span"
                         // eslint-disable-next-line
                         dangerouslySetInnerHTML={{
-                          __html: row.row_props[key].content,
+                          __html: col.value,
                         }}
                         contentEditable={edit}
-                        onBlur={(e) => handleChange(key, rowIndex, e)}
+                        onBlur={(e) => handleChange(colIndex, rowIndex, e)}
                       />
                     </div>
                   ),

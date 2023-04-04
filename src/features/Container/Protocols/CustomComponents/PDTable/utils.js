@@ -5,22 +5,18 @@ const QC_CHANGE_TYPE = {
   UPDATED: 'modify',
   DELETED: 'delete',
 };
-const getEmptyCell = () => {
+const getEmptyCell = (colIndex) => {
   return {
-    content: '',
-    roi_id: {
-      table_roi_id: '',
-      row_roi_id: '',
-      column_roi_id: '',
-      datacell_roi_id: '',
-    },
+    col_indx: colIndex.toString(),
+    op_type: QC_CHANGE_TYPE.ADDED,
+    cell_id: '',
+    value: '',
   };
 };
 const createEmptyRow = (columnLength) => {
-  const row = {};
+  const row = [];
   [...Array(columnLength)].forEach((_, i) => {
-    const index = `${parseInt(i, 10)}`;
-    row[index] = getEmptyCell();
+    row[i] = getEmptyCell(i);
   });
   return row;
 };
@@ -33,11 +29,12 @@ export const updateTable = (data, content, rowIndex, columnIndex) => {
 
 export const addRow = (rows, index) => {
   const data = cloneDeep(rows);
-  const emptyRow = createEmptyRow(Object.keys(rows[0].row_props).length);
+  const emptyRow = createEmptyRow(data[0].columns.length);
   const newEmptyRow = {
-    row_roi_id: '',
-    row_idx: rows.length.toString(),
-    row_props: emptyRow,
+    roi_id: '',
+    row_indx: rows.length.toString(),
+    op_type: QC_CHANGE_TYPE.ADDED,
+    columns: emptyRow,
   };
   data.splice(index, 0, newEmptyRow);
   return data;
@@ -45,42 +42,35 @@ export const addRow = (rows, index) => {
 
 export const deleteRow = (rows, index) => {
   const data = cloneDeep(rows);
-  Object.keys(data[index].row_props).forEach((key) => {
-    data[index].row_props[
-      key
-    ].content = `<s>${data[index].row_props[key].content}</s>`;
-    data[index].row_props[key].qc_change_type = QC_CHANGE_TYPE.DELETED;
-  });
+  data[index].op_type = QC_CHANGE_TYPE.DELETED;
   return data;
 };
 
 export const addColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
-  for (let i = 0; i < data.length; i++) {
-    const rowProps = data[i]?.row_props;
-    const flatArray = Object.keys(rowProps).map((key) => rowProps[key]);
-    flatArray.splice(index, 0, getEmptyCell());
-    const obj = flatArray.reduce((acc, cur, i) => {
-      acc[i + 1] = cur;
-      return acc;
-    }, {});
-    data[i].row_props = obj;
-  }
-  return data;
+  data.forEach((record) => {
+    record.columns.splice(index, 0, getEmptyCell(index));
+  });
+  return data.map((record) => {
+    return {
+      ...record,
+      op_type: QC_CHANGE_TYPE.UPDATED,
+      columns: record.columns.map((col, j) => {
+        return {
+          ...col,
+          col_indx: j.toString(),
+        };
+      }),
+    };
+  });
 };
 
 export const deleteColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
-  for (let i = 0; i < data.length; i++) {
-    Object.keys(data[i].row_props).forEach((key, j) => {
-      if (j === index) {
-        data[i].row_props[
-          key
-        ].content = `<s>${data[i].row_props[key].content}</s>`;
-        data[i].row_props[key].qc_change_type = QC_CHANGE_TYPE.DELETED;
-      }
-    });
-  }
+  data.forEach((record) => {
+    record.columns[index].value = `<s>${record.columns[index].value}</s>`;
+    record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
+  });
   return data;
 };
 
@@ -89,4 +79,38 @@ export const swapElements = (array, index1, index2) => {
   [arr[index1], arr[index2]] = [arr[index2], arr[index1]];
 
   return arr;
+};
+
+const nextChar = (c) => {
+  const i = (parseInt(c, 36) + 1) % 36;
+  return (!i * 10 + i).toString(36);
+};
+
+export const updateFootNotePayload = (data) => {
+  const updateFootNoteData = cloneDeep(data);
+  if (updateFootNoteData.length > 0) {
+    updateFootNoteData.forEach((notes, index) => {
+      const indicatorValue =
+        index !== 0
+          ? nextChar(updateFootNoteData[index - 1].footnote_indicator)
+          : 'a';
+      updateFootNoteData[index].previous_sequnce_index =
+        index === 0 ? null : index - 1;
+      updateFootNoteData[index].footnote_indicator = indicatorValue;
+      updateFootNoteData[
+        index
+      ].footnote_text = `${indicatorValue}. ${updateFootNoteData[index].footnote_text}`;
+    });
+  }
+
+  return updateFootNoteData;
+};
+
+export const filterTableProperties = (data) => {
+  let filterUpdatedData = cloneDeep(data);
+  filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
+  filterUpdatedData.forEach((record) => {
+    record.columns = record.columns.filter((op) => op?.op_type);
+  });
+  return filterUpdatedData;
 };
