@@ -309,6 +309,7 @@ export function* fetchSectionHeaderList(action) {
     toast.error('Something Went Wrong');
   }
 }
+
 export function* getSectionContentList(action) {
   const userId = yield getState();
   const config = {
@@ -388,10 +389,12 @@ export function* getProtocolTocDataResult(action) {
   yield put(getHeaderList({}));
   const userId = yield getState();
   const linkLevel = action.payload.tocFlag ? 6 : 1;
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}&user_id=${userId}`;
+  const URL = `${BASE_URL}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}&user_id=${userId}`;
   const config = {
     url: URL,
     method: 'GET',
+    checkAuth: true,
+    headers: jsonContentHeader,
   };
 
   const header = yield call(httpCall, config);
