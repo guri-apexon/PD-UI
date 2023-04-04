@@ -99,6 +99,7 @@ function DigitizeAccordion({
   const [openAudit, setOpenAudit] = useState(null);
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
+  const [alertMsg, setAlertMsg] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteSection, setDeleteSection] = useState({});
 
@@ -220,6 +221,7 @@ function DigitizeAccordion({
     setCurrentEditCard(null);
     updateSectionLock(true);
     dispatch(setSaveEnabled(false));
+    setAlertMsg(null);
     dispatch(
       updateSectionData({
         data: sectionDataBak,
@@ -326,11 +328,35 @@ function DigitizeAccordion({
     return true;
   };
 
+  const checkUnsavedImages = () => {
+    if (sectionContent && Array.isArray(sectionContent)) {
+      const arr = sectionContent.filter(
+        (obj) =>
+          obj.type === CONTENT_TYPE.IMAGE &&
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
+            ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
+              [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
+                obj.qc_change_type,
+              ))),
+      );
+      return arr.length > 0;
+    }
+    return true;
+  };
+
   const handleSaveContent = () => {
     if (checkUnsavedTable()) {
       setShowAlert(true);
+      setAlertMsg('Please save the all the tables before saving the section');
       return;
     }
+
+    if (checkUnsavedImages()) {
+      setShowAlert(true);
+      setAlertMsg('Please save all the images before saving the section');
+      return;
+    }
+
     const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
@@ -755,7 +781,7 @@ function DigitizeAccordion({
 
         {showAlert && (
           <div className="confirmation-popup" data-testId="confirmPopup">
-            <p>Please save the all the tables before saving the section</p>
+            <p>{alertMsg}</p>
             <ButtonGroup
               buttonProps={[
                 {

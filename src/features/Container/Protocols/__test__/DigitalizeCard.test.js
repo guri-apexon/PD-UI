@@ -33,7 +33,9 @@ export function renderWithProviders(
 ) {
   // eslint-disable-next-line
   function Wrapper({ children }) {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
