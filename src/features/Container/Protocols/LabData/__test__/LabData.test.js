@@ -108,8 +108,14 @@ describe('LabData', () => {
     fireEvent.click(screen.getByText('Edit'));
     fireEvent.change(screen.getAllByRole('textbox')[0]);
     userEvent.type(screen.getAllByRole('textbox')[0], 'abc');
-    userEvent.tab();
+    fireEvent.keyDown(screen.getAllByRole('textbox')[0], {
+      key: 'Tab',
+      code: 9,
+      charCode: 9,
+    });
     fireEvent.click(screen.getByText('Save'));
+    screen.debug(undefined, Infinity);
+    // expect(initialState).toHaveProperty('protocol.labDataApiValue.data');
     fireEvent.click(screen.getByTestId('saveall'));
   });
   test('should render to click on ellipsis and delete button', () => {
