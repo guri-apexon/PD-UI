@@ -31,7 +31,7 @@ function DownloadLink({ row, column: { accessor: key } }) {
 
     const resp = await httpCall(config);
     /* istanbul ignore next */
-    if (resp.success) {
+    if (resp?.success) {
       FileDownload(resp.data, fileName);
     } else if (resp.message === 'No Access') {
       toast.info('Access Provisioned to Primary Users only');
