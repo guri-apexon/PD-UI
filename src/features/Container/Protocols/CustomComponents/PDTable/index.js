@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
 import Modal from 'apollo-react/components/Modal';

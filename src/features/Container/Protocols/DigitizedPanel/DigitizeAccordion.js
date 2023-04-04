@@ -119,7 +119,7 @@ function DigitizeAccordion({
     saveSection,
   } = useProtContext();
 
-  const updateSectionLock = (status, refreshPage) => {
+  const updateSectionLock = (status) => {
     dispatch({
       type: 'SET_SECTION_LOCK',
       payload: {
@@ -127,7 +127,6 @@ function DigitizeAccordion({
         linkId: item?.link_id,
         sectionLock: status,
         userId: '',
-        refreshPage,
       },
     });
   };
@@ -213,6 +212,22 @@ function DigitizeAccordion({
     }
   };
 
+  const onDiscardClick = () => {
+    setSectionDataArr([...sectionDataBak]);
+    setShowDiscardConfirm(false);
+    setShowEdit(false);
+    setSectionDataBak([]);
+    setCurrentEditCard(null);
+    updateSectionLock(true);
+    dispatch(setSaveEnabled(false));
+    dispatch(
+      updateSectionData({
+        data: sectionDataBak,
+        actionType: 'REPLACE_CONTENT',
+        linkId: item.link_id,
+      }),
+    );
+  };
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
@@ -432,23 +447,6 @@ function DigitizeAccordion({
       type: 'SET_ENRICHED_WORD',
       payload: { word: section, modal: true },
     });
-  };
-
-  const onDiscardClick = () => {
-    setSectionDataArr([...sectionDataBak]);
-    setShowDiscardConfirm(false);
-    setShowEdit(false);
-    setSectionDataBak([]);
-    setCurrentEditCard(null);
-    updateSectionLock(true);
-    dispatch(setSaveEnabled(false));
-    dispatch(
-      updateSectionData({
-        data: sectionDataBak,
-        actionType: 'REPLACE_CONTENT',
-        linkId: item.link_id,
-      }),
-    );
   };
 
   const clickAuditLog = (e) => {

@@ -756,9 +756,6 @@ export function* updateSectionLockDetails(action) {
 
   if (sectionLockDetails.success) {
     yield put(setSectionLockDetails({}));
-    if (action.payload.refreshPage) {
-      window.location.reload();
-    }
   }
 }
 export function* setResetQCData() {
