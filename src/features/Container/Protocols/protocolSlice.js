@@ -52,6 +52,7 @@ export const protocolSlice = createSlice({
     SOAData: {},
     isSaveEnabled: false,
     sectionIndex: -1,
+    sectionLockDetails: {},
     enrichedword: {},
   },
   reducers: {
@@ -175,6 +176,9 @@ export const protocolSlice = createSlice({
     getSectionIndex: (state, action) => {
       state.sectionIndex = action.payload;
     },
+    setSectionLockDetails: (state, action) => {
+      state.sectionLockDetails = action.payload;
+    },
     setEnrichedWord: (state, action) => {
       state.enrichedword = action.payload;
     },
@@ -208,6 +212,7 @@ export const {
   resetUpdateStatus,
   setEnrichedWord,
   setLoader,
+  setSectionLockDetails,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -235,5 +240,6 @@ export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const Enrichedword = (state) => state.protocol.enrichedword;
 export const SOAData = (state) => state.protocol.SOAData;
+export const sectionLockDetails = (state) => state.protocol.sectionLockDetails;
 
 export default protocolSlice.reducer;

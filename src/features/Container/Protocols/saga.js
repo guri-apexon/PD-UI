@@ -32,6 +32,7 @@ import {
   getSectionIndex,
   setLoader,
   resetSectionData,
+  setSectionLockDetails,
   setEnrichedWord,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
@@ -224,15 +225,33 @@ export function* fetchAssociateProtocol(action) {
   }
 }
 
+function* getState(withPrefix) {
+  const state = yield select();
+  const id = state.user.userDetail.userId;
+  return withPrefix ? id : id.substring(1);
+}
+
 export function* updateSectionData(action) {
   try {
     const {
       payload: { reqBody },
     } = action;
+    const userID = yield getState();
+    const updatedReq = reqBody.map((ele) => {
+      if (ele.type === 'table') {
+        return {
+          ...ele,
+          audit: {
+            last_updated_user: userID,
+          },
+        };
+      }
+      return ele;
+    });
     const config = {
       url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
       method: 'POST',
-      data: reqBody,
+      data: updatedReq,
     };
     const sectionSaveRes = yield call(httpCall, config);
 
@@ -289,11 +308,6 @@ export function* fetchSectionHeaderList(action) {
     yield put(getHeaderList({ success: false, data: [] }));
     toast.error('Something Went Wrong');
   }
-}
-function* getState() {
-  const state = yield select();
-  const id = state.user.userDetail.userId;
-  return id.substring(1);
 }
 export function* getSectionContentList(action) {
   const userId = yield getState();
@@ -372,8 +386,9 @@ export function* getProtocolTocDataResult(action) {
     payload: { docId },
   } = action;
   yield put(getHeaderList({}));
+  const userId = yield getState();
   const linkLevel = action.payload.tocFlag ? 6 : 1;
-  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}`;
+  const URL = `${BASE_URL_8000}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}&user_id=${userId}`;
   const config = {
     url: URL,
     method: 'GET',
@@ -710,6 +725,39 @@ export function* setResetSectionData() {
   yield put(resetSectionData());
 }
 
+export function* getSectionLockDetails(action) {
+  const userId = yield getState(true);
+  const config = {
+    url: `${BASE_URL_8000}${Apis.SECTION_LOCK}/get_section_lock?doc_id=${action.payload.doc_id}&userId=${userId}&link_id=${action.payload.link_id}`,
+    method: 'GET',
+  };
+  const sectionLockDetails = yield call(httpCall, config);
+
+  if (sectionLockDetails.success) {
+    yield put(setSectionLockDetails(sectionLockDetails?.data?.info));
+  }
+}
+export function* updateSectionLockDetails(action) {
+  const {
+    payload: { docId, linkId, sectionLock },
+  } = action;
+  const userId = yield getState(true);
+  const config = {
+    url: `${BASE_URL_8000}${Apis.SECTION_LOCK}/put_section_lock`,
+    method: 'PUT',
+    data: {
+      doc_id: docId,
+      link_id: linkId,
+      section_lock: sectionLock,
+      userId,
+    },
+  };
+  const sectionLockDetails = yield call(httpCall, config);
+
+  if (sectionLockDetails.success) {
+    yield put(setSectionLockDetails({}));
+  }
+}
 export function* setResetQCData() {
   yield put(getSummary({}));
   yield put(getHeaderList({}));
@@ -744,6 +792,8 @@ function* watchProtocolViews() {
   yield takeEvery('SET_ENRICHED_WORD', getenrichedword);
   yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
   yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
+  yield takeLatest('GET_SECTION_LOCK', getSectionLockDetails);
+  yield takeLatest('SET_SECTION_LOCK', updateSectionLockDetails);
   yield takeLatest('RESET_QC_DATA', setResetQCData);
 }
 
