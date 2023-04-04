@@ -280,7 +280,12 @@ function LabData({ docId }) {
       className="protocol-column protocol-digitize-column metadata-card"
       data-testid="lab-data"
     >
-      <div className="lab-table-container" data-testid="lab-table-container">
+      <div
+        className={`${
+          isEdit ? 'table-hover lab-table-container' : 'lab-table-container'
+        }`}
+        data-testid="lab-table-container"
+      >
         {rowData?.length > 0 && (
           <div className="lab-btn-container">
             {isEdit ? (

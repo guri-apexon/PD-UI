@@ -87,6 +87,20 @@
       padding: 0 16px;
     }
   }
+  &.table-hover{
+    table {
+      tbody {
+        tr {
+          &::after {
+            display: none;
+          }
+          &:hover {
+            border-bottom:0;
+          }
+        }
+      }
+    }
+  }
 }
 .lab-btn-container {
   position: absolute;
