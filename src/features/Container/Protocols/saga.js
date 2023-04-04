@@ -225,10 +225,10 @@ export function* fetchAssociateProtocol(action) {
   }
 }
 
-function* getState() {
+function* getState(flag) {
   const state = yield select();
   const id = state.user.userDetail.userId;
-  return id.substring(1);
+  return flag ? id : id.substring(1);
 }
 
 export function* updateSectionData(action) {
@@ -726,7 +726,7 @@ export function* setResetSectionData() {
 }
 
 export function* getSectionLockDetails(action) {
-  const userId = yield getState();
+  const userId = yield getState(true);
   const config = {
     url: `${BASE_URL_8000}${Apis.SECTION_LOCK}/get_section_lock?doc_id=${action.payload.doc_id}&userId=${userId}&link_id=${action.payload.link_id}`,
     method: 'GET',
@@ -741,7 +741,7 @@ export function* updateSectionLockDetails(action) {
   const {
     payload: { docId, linkId, sectionLock },
   } = action;
-  const userId = yield getState();
+  const userId = yield getState(true);
   const config = {
     url: `${BASE_URL_8000}${Apis.SECTION_LOCK}/put_section_lock`,
     method: 'PUT',
