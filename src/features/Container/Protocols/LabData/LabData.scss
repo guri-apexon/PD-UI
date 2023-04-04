@@ -35,6 +35,7 @@
         }
         td {
           border: 0;
+          position: static;
           &:first-child {
             &:before {
               display: none !important;
