@@ -728,6 +728,7 @@ export function* setResetSectionData() {
 }
 
 export function* getSectionLockDetails(action) {
+  yield put(setSectionLockDetails({}));
   const userId = yield getState(true);
   const config = {
     url: `${BASE_URL_8000}${Apis.SECTION_LOCK}/get_section_lock?doc_id=${action.payload.doc_id}&userId=${userId}&link_id=${action.payload.link_id}`,
