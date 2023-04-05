@@ -1,4 +1,4 @@
-import { useContext, useRef, useMemo, useLayoutEffect } from 'react';
+import { useContext, useRef, useMemo } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -89,49 +89,6 @@ function SOATable() {
     }),
     [dispatch, tableId, docId, apiDispatch],
   );
-
-  const mergeColumns = () => {
-    const container = document.getElementsByClassName('ag-header-container')[0]
-      ?.childNodes;
-    if (!container) return;
-    const len = container.length;
-    for (let i = 0; i < len; i++) {
-      const row = container[i];
-      const cells = row.childNodes;
-      let preveText = '';
-      let combineArr = [];
-      for (let c = 0; c < cells.length; c++) {
-        const cell = cells[c];
-        const textContainer = cell.querySelector('.header-cell');
-        let text = '';
-        if (textContainer) text = textContainer.innerHTML;
-        if (text !== preveText) {
-          if (combineArr.length > 1) {
-            let totWidth = 0;
-            combineArr.forEach((item, index) => {
-              let {
-                style: { width },
-              } = item;
-              width = width.substring(0, width.length - 2);
-              totWidth = Number(totWidth) + Number(width);
-              if (index > 0) {
-                item.style.display = 'none';
-              }
-            });
-            combineArr[0].style.minWidth = `${totWidth}px`;
-            combineArr[0].style.justifyContent = 'center';
-          }
-          combineArr = [];
-        }
-        combineArr.push(cell);
-        preveText = text;
-      }
-    }
-  };
-  useLayoutEffect(() => {
-    setTimeout(mergeColumns, 1);
-  });
-
   return (
     <div className="ag-theme-alpine" style={style.tableContainer}>
       <GridContext.Provider value={propDispatch}>

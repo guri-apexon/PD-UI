@@ -101,7 +101,7 @@ function FirstColumn({ data, colDef }) {
           [TableConst.ROW_IDX]: rowIndex,
           [TableConst.COLUMN_IDX]: 0,
           data: '',
-          value: '',
+          value: 'New Row',
         },
         rowIndex,
       },
@@ -110,7 +110,7 @@ function FirstColumn({ data, colDef }) {
   const fieldValue =
     data && data[field] && data[field][TableConst.DATA_VALUE]
       ? data[field][TableConst.DATA_VALUE]
-      : '';
+      : 'New Row';
 
   return (
     <>
