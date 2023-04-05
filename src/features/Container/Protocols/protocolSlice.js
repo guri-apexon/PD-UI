@@ -22,7 +22,6 @@ export const protocolSlice = createSlice({
       error: false,
       message: '',
     },
-    header: {},
     loader: false,
     protocol: '',
     sectionDetails: {
@@ -67,9 +66,6 @@ export const protocolSlice = createSlice({
     },
     getCompare: (state, action) => {
       state.compare = action.payload;
-    },
-    getHeaderList: (state, action) => {
-      state.header = action.payload;
     },
     getSectionProtocol: (state, action) => {
       state.protocol = action.payload;
@@ -190,7 +186,6 @@ export const {
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
-  getHeaderList,
   setSectionDetails,
   getSectionProtocol,
   getProtocolTocData,
@@ -222,7 +217,6 @@ export const protocolSummary = (state) => state.protocol.summary;
 export const viewResult = (state) => state.protocol.view;
 export const associateDocs = (state) => state.protocol.associateDocs;
 export const compareResult = (state) => state.protocol.compare;
-export const headerResult = (state) => state.protocol.header;
 export const protocolResult = (state) => state.protocol.protocol;
 export const sectionDetails = (state) => state.protocol.sectionDetails;
 export const protocolTocData = (state) => state.protocol.protocolTocData;
