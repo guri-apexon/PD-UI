@@ -15,7 +15,6 @@ import {
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
-  getHeaderList,
   setSectionDetails,
   getProtocolTocData,
   setSectionLoader,
@@ -264,14 +263,6 @@ export function* updateSectionData(action) {
             tocFlag: 1,
           },
         });
-        yield put({
-          type: 'GET_PROTOCOL_TOC_DATA',
-          payload: {
-            docId: action?.payload?.docId,
-            index: action?.payload?.index,
-            tocFlag: 0,
-          },
-        });
       } else {
         yield put(updateSectionResp({ response: sectionSaveRes.data }));
         toast.success('Section content updated successfully');
@@ -288,52 +279,58 @@ export function* updateSectionData(action) {
   }
 }
 
-export function* fetchSectionHeaderList(action) {
-  const {
-    payload: { docId },
-  } = action;
-  yield put(getHeaderList({}));
-  const URL = `${BASE_URL_8000}${Apis.GET_CPT_HEADERS}/?aidoc_id=${docId}&link_level=1&toc=0`;
-  const config = {
-    url: URL,
-    method: 'GET',
-  };
-  const header = yield call(httpCall, config);
-  if (header.success) {
-    if (!header.data?.length) {
-      toast.error(header.message);
-    }
-    yield put(getHeaderList(header));
-  } else {
-    yield put(getHeaderList({ success: false, data: [] }));
-    toast.error('Something Went Wrong');
+export function* handleConfigurableAPI(action) {
+  const { docId, protocol, linkId, linkLevel, sectionText, configVariable } =
+    action.payload;
+  let apiURL = `${BASE_URL}${Apis.API_CONFIGURABLE}?aidoc_id=${docId}`;
+  if (protocol) {
+    apiURL += `&protocol=${protocol}`;
   }
-}
-export function* getSectionContentList(action) {
-  const userId = yield getState();
-  const config = {
-    url: `${BASE_URL_8000}${Apis.GET_SECTION_CONTENT}?aidoc_id=${action.payload.docId}&link_level=1&userId=${userId}&protocol=${action.payload.protocol}&user=user&link_id=${action.payload.linkId}`,
-    method: 'GET',
-  };
-  yield put(
-    setSectionDetails({
-      protocol: action.payload.protocol,
-      data: [],
-      linkId: action.payload.linkId,
-    }),
-  );
-  const sectionDetails = yield call(httpCall, config);
-  yield put(setSectionLoader(false));
+  if (linkId) {
+    apiURL += `&link_id=${linkId}`;
+  }
+  if (linkLevel) {
+    apiURL += `&link_level=${linkLevel}`;
+  } else {
+    apiURL += '&link_level=1';
+  }
 
-  if (sectionDetails.success) {
+  if (sectionText) {
+    apiURL += `&section_text=${sectionText}`;
+  }
+
+  if (configVariable) {
+    apiURL += `&config_variable=${configVariable.toString()}`;
+  }
+
+  const userId = yield getUserId();
+  apiURL += `&user_id=${userId}`;
+
+  const config = {
+    url: apiURL,
+    method: 'GET',
+    checkAuth: true,
+    headers: jsonContentHeader,
+  };
+
+  try {
+    yield put(
+      setSectionDetails({
+        protocol,
+        data: [],
+        linkId,
+      }),
+    );
+    const sectionDetails = yield call(httpCall, config);
+    yield put(setSectionLoader(false));
     yield put(
       setSectionDetails({
         protocol: action.payload.protocol,
-        data: sectionDetails.data,
+        data: sectionDetails.data[0],
         linkId: action.payload.linkId,
       }),
     );
-  } else if (sectionDetails.message === 'No Access') {
+  } catch (error) {
     console.log('No Access');
   }
 }
@@ -385,10 +382,8 @@ export function* getProtocolTocDataResult(action) {
   const {
     payload: { docId },
   } = action;
-  yield put(getHeaderList({}));
   const userId = yield getState();
-  const linkLevel = action.payload.tocFlag ? 6 : 1;
-  const URL = `${BASE_URL}${Apis.HEADER_LIST}/?aidoc_id=${docId}&link_level=${linkLevel}&toc=${action.payload.tocFlag}&user_id=${userId}`;
+  const URL = `${BASE_URL}${Apis.API_CONFIGURABLE}?aidoc_id=${docId}&user_id=${userId}&link_level=6&toc=1`;
   const config = {
     url: URL,
     method: 'GET',
@@ -396,45 +391,37 @@ export function* getProtocolTocDataResult(action) {
     headers: jsonContentHeader,
   };
 
-  const header = yield call(httpCall, config);
-  if (header.success) {
-    if (action.payload.tocFlag === 1) {
-      if (header?.data?.status === 204) {
-        header.data = [];
-      }
-      const tocIsactive = [];
-      for (let i = 0; i < header.data.length; i++) {
-        tocIsactive.push(false);
-      }
+  try {
+    const result = yield call(httpCall, config);
+
+    if (result.success) {
+      const header = {
+        success: true,
+        data: result.data[0],
+      };
+      const tocIsactive = Array(header.data.length).fill(false);
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
     } else {
-      yield put(getHeaderList(header));
-      yield put(getSectionIndex(action?.payload?.index));
-    }
-  } else {
-    // eslint-disable-next-line no-lonely-if
-    if (action.payload.tocFlag) {
+      // eslint-disable-next-line no-lonely-if
       yield put(
         getProtocolTocData({
           success: false,
           data: [],
           errorMsg:
-            header?.err?.data?.message ||
-            'This document is not available in our database',
-        }),
-      );
-    } else {
-      yield put(
-        getHeaderList({
-          success: false,
-          data: [],
-          errorMsg:
-            header?.err?.data?.message ||
+            result?.err?.data?.message ||
             'This document is not available in our database',
         }),
       );
     }
+  } catch (error) {
+    yield put(
+      getProtocolTocData({
+        success: false,
+        data: [],
+        errorMsg: 'This document is not available in our database',
+      }),
+    );
   }
 }
 
@@ -717,6 +704,7 @@ export function* soaUpdateDetails({ data, method }) {
 export function* setSectionIndex(action) {
   yield put(getSectionIndex(action.payload.index));
 }
+
 export function* getenrichedword(action) {
   yield put(
     setEnrichedWord({ word: action.payload.word, modal: action.payload.modal }),
@@ -763,7 +751,6 @@ export function* updateSectionLockDetails(action) {
 }
 export function* setResetQCData() {
   yield put(getSummary({}));
-  yield put(getHeaderList({}));
   yield put(getProtocolTocData({}));
   yield put(resetSectionData());
 }
@@ -777,8 +764,7 @@ function* watchProtocolAsync() {
 }
 
 function* watchProtocolViews() {
-  yield takeEvery('GET_PROTOCOL_SECTION', getProtocolTocDataResult);
-  yield takeEvery('GET_SECTION_LIST', getSectionContentList);
+  yield takeEvery('GET_SECTION_LIST', handleConfigurableAPI);
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);
   yield takeEvery('GET_METADATA_VARIABLE', MetaDataVariable);
