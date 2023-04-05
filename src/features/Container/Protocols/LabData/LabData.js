@@ -94,7 +94,6 @@ function LabData({ docId }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tableId, setTableId] = useState();
   const [showData, setShowData] = useState(true);
-  const [isShow, setIsShow] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const [tableIndex, setTableIndex] = useState('');
   const [assessmentName, setAssessmentName] = useState('');
