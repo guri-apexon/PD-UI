@@ -33,17 +33,6 @@ function BladeLeft({ handlePageNo, dataSummary }) {
   }, [tocData]);
 
   useEffect(() => {
-    dispatch({
-      type: 'GET_PROTOCOL_TOC_DATA',
-      payload: {
-        docId: dataSummary?.id,
-        tocFlag: 1,
-      },
-    });
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
     if (!open) {
       setOpen(true);
       setExpand(false);

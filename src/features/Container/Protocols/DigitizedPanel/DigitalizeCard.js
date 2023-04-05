@@ -7,11 +7,11 @@ import Drag from 'apollo-react-icons/Drag';
 import Loader from '../../../Components/Loader/Loader';
 import SOA from '../SOA/SOA';
 import {
-  headerResult,
   protocolSummary,
   rightBladeValue,
   SectionIndex,
   TOCActive,
+  protocolTocData,
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
@@ -31,7 +31,7 @@ function DigitalizeCard({
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
   const BladeRightValue = useSelector(rightBladeValue);
-  const summary = useSelector(headerResult);
+  const summary = useSelector(protocolTocData);
   const protocolAllItems = useSelector(protocolSummary);
   const sectionIndex = useSelector(SectionIndex);
   const [rightValue, setRightValue] = useState(BladeRightValue);
@@ -42,6 +42,18 @@ function DigitalizeCard({
   const [linkId, setLinkId] = useState();
 
   const tocActiveSelector = useSelector(TOCActive);
+
+  useEffect(() => {
+    dispatch({
+      type: 'GET_PROTOCOL_TOC_DATA',
+      payload: {
+        docId: data?.id,
+        tocFlag: 1,
+      },
+    });
+    // eslint-disable-next-line
+  }, []);
+
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
@@ -76,7 +88,6 @@ function DigitalizeCard({
       });
       setSectionSequence(sectionIndex);
     }
-
     // eslint-disable-next-line
   }, [sectionIndex]);
 
@@ -99,17 +110,6 @@ function DigitalizeCard({
     setRightValue(BladeRightValue);
     // eslint-disable-next-line
   }, [BladeRightValue]);
-
-  useEffect(() => {
-    dispatch({
-      type: 'GET_PROTOCOL_SECTION',
-      payload: {
-        docId: data.id,
-        tocFlag: 0,
-      },
-    });
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     let sectionNo;
