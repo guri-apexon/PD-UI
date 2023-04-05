@@ -309,7 +309,6 @@ export function* fetchSectionHeaderList(action) {
     toast.error('Something Went Wrong');
   }
 }
-
 export function* getSectionContentList(action) {
   const userId = yield getState();
   const config = {
