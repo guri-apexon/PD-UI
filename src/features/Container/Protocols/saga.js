@@ -33,6 +33,8 @@ import {
   resetSectionData,
   setSectionLockDetails,
   setEnrichedWord,
+  getDipaViewData,
+  getAllDipaViewData,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -755,6 +757,75 @@ export function* setResetQCData() {
   yield put(resetSectionData());
 }
 
+export function* getDipaViewDataById(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const params = `?doc_id=${docId}`;
+  const config = {
+    method: 'get',
+    url: `${BASE_URL}${Apis.METADATA}/get_dipadata_by_doc_id${params}`,
+    checkAuth: true,
+    headers: { 'Content-Type': 'application/json' },
+  };
+
+  const DipaView = yield call(httpCall, config);
+
+  if (DipaView.success) {
+    yield put(getDipaViewData(DipaView));
+  } else {
+    yield put(getDipaViewData({ success: false, data: [] }));
+  }
+
+  yield call(httpCall, config);
+}
+
+export function* getAllDipaViewDataByCategory(action) {
+  const {
+    payload: { data },
+  } = action;
+
+  const config = {
+    method: 'get',
+    url: `${BASE_URL}${Apis.METADATA}/get_dipadata_by_category`,
+    params: data,
+    checkAuth: true,
+    headers: { 'Content-Type': 'application/json' },
+  };
+
+  const DipaView = yield call(httpCall, config);
+
+  if (DipaView.success) {
+    yield put(getAllDipaViewData(DipaView));
+  } else {
+    yield put(getAllDipaViewData({ success: false, data: [] }));
+  }
+
+  yield call(httpCall, config);
+}
+
+export function* updateDipaData(action) {
+  const {
+    payload: { data },
+  } = action;
+  const config = {
+    method: 'PUT',
+    url: `${BASE_URL}${Apis.METADATA}/update_dipa_data`,
+    data,
+    checkAuth: true,
+    headers: { 'Content-Type': 'application/json' },
+  };
+  const DipaData = yield call(httpCall, config);
+
+  if (DipaData?.success) {
+    toast.info(' Data Updated');
+    yield put({
+      type: 'GET_ALL_DIPA_VIEW',
+    });
+  } else {
+    toast.error('Error While Updation');
+  }
+}
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -784,6 +855,9 @@ function* watchProtocolViews() {
   yield takeLatest('GET_SECTION_LOCK', getSectionLockDetails);
   yield takeLatest('SET_SECTION_LOCK', updateSectionLockDetails);
   yield takeLatest('RESET_QC_DATA', setResetQCData);
+  yield takeEvery('GET_DIPA_VIEW', getDipaViewDataById);
+  yield takeEvery('GET_ALL_DIPA_VIEW', getAllDipaViewDataByCategory);
+  yield takeEvery('UPDATE_DIPA_VIEW', updateDipaData);
 }
 
 // notice how we now only export the rootSaga
