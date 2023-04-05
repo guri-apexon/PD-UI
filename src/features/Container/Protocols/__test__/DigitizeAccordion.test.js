@@ -42,7 +42,9 @@ export function renderWithProviders(
 ) {
   // eslint-disable-next-line
   function Wrapper({ children }) {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -56,7 +58,9 @@ describe('DigitizeAccordion', () => {
   const bool = true;
 
   test('render accordion', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -77,7 +81,9 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Accordion loaded with store values and Accordion is open when the currentActiveCard is of the same item id', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -98,7 +104,9 @@ describe('DigitizeAccordion', () => {
 
   test('Accordion is close when the currentActiveCard is of the same item id', () => {
     const bool = true;
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -119,7 +127,9 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Pencil icon is visible for primary user', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -140,7 +150,9 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Pencil icon is onClick for primary user', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -163,7 +175,9 @@ describe('DigitizeAccordion', () => {
   });
 
   test('accordian is onClick for primary user', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -187,7 +201,9 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Save button is visible for primary user', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -315,7 +331,9 @@ describe('DigitizeAccordion', () => {
   });
 
   test('click on accordion_summary', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -338,7 +356,9 @@ describe('DigitizeAccordion', () => {
   });
 
   test('Save button is visible for primary user', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -382,7 +402,9 @@ describe('DigitizeAccordion', () => {
     fireEvent.click(deleteText);
   });
   test('Save button is visible for primary user', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);

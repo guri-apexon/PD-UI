@@ -343,7 +343,8 @@ const getFlatCols = (list) => {
     list.forEach((loopItem) => {
       if (
         mainItem !== loopItem &&
-        mainItem[TableConst.COLUMN_IDX] === loopItem[TableConst.COLUMN_IDX]
+        mainItem[TableConst.COLUMN_IDX] === loopItem[TableConst.COLUMN_IDX] &&
+        Number(loopItem[TableConst.ROW_IDX]) === 0
       ) {
         isFound = true;
       }
