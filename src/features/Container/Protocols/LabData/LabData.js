@@ -210,7 +210,6 @@ function LabData({ docId }) {
     );
     setRowData(rowUpdated);
     setEditedRow({});
-    setIsShow(true);
   };
 
   const updateRow = (key, value) => {
@@ -259,14 +258,13 @@ function LabData({ docId }) {
 
   const onDeleteRow = () => {
     setIsDeleteRow(true);
-    setIsShow(true);
+    setIsEdit(true);
     setIsOpen(false);
   };
 
   const handleCreate = () => {
     setIsCreateRow(true);
     setIsEdit(true);
-    setIsShow(true);
     setIsAdd(false);
   };
 
@@ -303,7 +301,6 @@ function LabData({ docId }) {
           <div className="lab-btn-container">
             {isEdit ? (
               <Button
-                disabled={!isShow}
                 variant="secondary"
                 icon={<Save />}
                 className="btn-common"

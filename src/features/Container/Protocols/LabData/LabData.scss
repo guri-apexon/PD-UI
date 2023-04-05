@@ -19,15 +19,10 @@
           line-height: 15px;
           border-radius: 50%;
           text-align: center;
+          display: none;
         }
         &:hover {
-          border-bottom: 2px solid #0768fd;
-          border-image: linear-gradient(
-            to right,
-            #0768fd 96%,
-            rgba(0, 0, 0, 0) 50%
-          );
-          border-image-slice: 1;
+          border-bottom: 0;
           &:after {
             opacity: 1;
             visibility: visible;
@@ -95,10 +90,16 @@
       tbody {
         tr {
           &::after {
-            display: none;
+            display: block;
           }
           &:hover {
-            border-bottom:0;
+            border-bottom: 2px solid #0768fd;
+            border-image: linear-gradient(
+              to right,
+              #0768fd 96%,
+              rgba(0, 0, 0, 0) 50%
+            );
+            border-image-slice: 1;
           }
         }
       }
