@@ -36,6 +36,9 @@
         td {
           border: 0;
           position: static;
+          &:last-child{
+            text-align: right;
+          }
           &:first-child {
             &:before {
               display: none !important;
@@ -75,7 +78,7 @@
   }
   position: relative;
   & > div:last-child > div:first-child > div:first-child > div:last-child {
-    margin-right: 50px;
+    margin-right: 55px;
     h3 {
       margin: 0 !important;
       padding: 0 !important;
@@ -107,7 +110,8 @@
   right: 0;
   top: 21px;
   z-index: 9;
-  button {
+  .btn-common {
+    margin:0 5px;
     svg {
       color: #000 !important;
       height: 1.2em !important;
@@ -152,4 +156,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.lab-table-container table + div svg{
+  width: auto !important;
+  height: auto !important;
+  color: inherit !important;
+  margin-bottom: 0 !important;
+  margin-right: 0;
 }

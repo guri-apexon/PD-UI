@@ -101,6 +101,8 @@ function LabData({ docId }) {
   const [procedureName, setProcedureName] = useState('');
   const [assessmentPreferred, setAssessmentPreferred] = useState('');
   const [procedurePreferred, setProcedurePreferred] = useState('');
+  const [isDeleteRow, setIsDeleteRow] = useState(false);
+  const [isCreateRow, setIsCreateRow] = useState(false);
 
   useEffect(() => {
     if (showData) {
@@ -125,6 +127,64 @@ function LabData({ docId }) {
       setIsEdit(false);
       setColumns(columns.filter((col) => col.accessor !== 'menu'));
     }
+    if (isDeleteRow) {
+      const result = rowData?.find((value) => value.id === tableId);
+      dispatch({
+        type: 'DELETE_LAB_DATA',
+        payload: {
+          data: {
+            doc_id: result.doc_id,
+            roi_id: result.roi_id,
+            table_roi_id: result.table_roi_id,
+          },
+        },
+      });
+      setRowData(rowData);
+      setRowData(result);
+      setEditedRow({});
+    }
+    if (isCreateRow) {
+      const result = rowData?.find((value) => value.table_roi_id);
+      if (
+        procedureName.length > 0 ||
+        assessmentName.length > 0 ||
+        assessmentPreferred.length > 0 ||
+        procedurePreferred.length > 0 ||
+        tableIndex.length > 0
+      ) {
+        dispatch({
+          type: 'CREATE_LAB_DATA',
+          payload: {
+            data: {
+              parameter_text: procedureName,
+              id: '',
+              run_id: '',
+              procedure_panel_text: assessmentName,
+              dts: '',
+              ProcessMachineName: '',
+              roi_id: '',
+              section: '',
+              table_roi_id: result.table_roi_id,
+              parameter: '',
+              doc_id: docId,
+              procedure_panel: '',
+              assessment: assessmentPreferred,
+              pname: procedurePreferred,
+              ProcessVersion: '',
+              table_link_text: tableIndex,
+              table_sequence_index: -1,
+            },
+          },
+        });
+      }
+      setRowData(rowData);
+      setTableIndex('');
+      setAssessmentName('');
+      setProcedureName('');
+      setAssessmentPreferred('');
+      setProcedurePreferred('');
+    }
+    setIsEdit(false);
   };
 
   const onRowEdit = (id) => {
@@ -198,63 +258,16 @@ function LabData({ docId }) {
   }, [isEdit]);
 
   const onDeleteRow = () => {
-    const result = rowData?.find((value) => value.id === tableId);
-    dispatch({
-      type: 'DELETE_LAB_DATA',
-      payload: {
-        data: {
-          doc_id: result.doc_id,
-          roi_id: result.roi_id,
-          table_roi_id: result.table_roi_id,
-        },
-      },
-    });
-    setRowData(result);
-    setEditedRow({});
+    setIsDeleteRow(true);
+    setIsShow(true);
     setIsOpen(false);
   };
 
   const handleCreate = () => {
-    const result = rowData?.find((value) => value.table_roi_id);
-    if (
-      procedureName.length > 0 ||
-      assessmentName.length > 0 ||
-      assessmentPreferred.length > 0 ||
-      procedurePreferred.length > 0 ||
-      tableIndex.length > 0
-    ) {
-      dispatch({
-        type: 'CREATE_LAB_DATA',
-        payload: {
-          data: {
-            parameter_text: procedureName,
-            id: '',
-            run_id: '',
-            procedure_panel_text: assessmentName,
-            dts: '',
-            ProcessMachineName: '',
-            roi_id: '',
-            section: '',
-            table_roi_id: result.table_roi_id,
-            parameter: '',
-            doc_id: docId,
-            procedure_panel: '',
-            assessment: assessmentPreferred,
-            pname: procedurePreferred,
-            ProcessVersion: '',
-            table_link_text: tableIndex,
-            table_sequence_index: -1,
-          },
-        },
-      });
-    }
-    setRowData(rowData);
+    setIsCreateRow(true);
+    setIsEdit(true);
+    setIsShow(true);
     setIsAdd(false);
-    setTableIndex('');
-    setAssessmentName('');
-    setProcedureName('');
-    setAssessmentPreferred('');
-    setProcedurePreferred('');
   };
 
   useEffect(() => {
