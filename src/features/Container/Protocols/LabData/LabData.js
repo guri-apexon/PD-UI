@@ -16,8 +16,15 @@ import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
 
 function ActionCell({ row }) {
-  const { id, onRowEdit, onDelete, editMode, handleCancel, handleSaveRow } =
-    row;
+  const {
+    id,
+    onRowEdit,
+    onDelete,
+    editMode,
+    handleCancel,
+    handleSaveRow,
+    handleAdd,
+  } = row;
   const menuItems = [
     {
       text: 'Edit',
@@ -36,11 +43,23 @@ function ActionCell({ row }) {
       </Button>
     </div>
   ) : (
-    <div>
-      <IconMenuButton data-testid="ellipsis-icon" menuItems={menuItems}>
-        <EllipsisVertical className="ellipsis-icon" />
-      </IconMenuButton>
-    </div>
+    <>
+      <div>
+        <IconMenuButton data-testid="ellipsis-icon" menuItems={menuItems}>
+          <EllipsisVertical className="ellipsis-icon" />
+        </IconMenuButton>
+      </div>
+      <div className="customCell">
+        <button
+          data-testid="add-item"
+          type="button"
+          className="hoverButton"
+          onClick={() => handleAdd(row.id)}
+        >
+          +
+        </button>
+      </div>
+    </>
   );
 }
 
@@ -63,24 +82,6 @@ function EditableCell({ row, column: { accessor: key } }) {
     />
   ) : (
     row[key]
-  );
-}
-
-function AddRowCell({ row, column }) {
-  const { handleAdd } = row;
-  // eslint-disable-next-line
-  return (
-    <div className="customCell">
-      {row[column.accessor]}
-      <button
-        data-testid="add-item"
-        type="button"
-        className="hoverButton"
-        onClick={() => handleAdd()}
-      >
-        +
-      </button>
-    </div>
   );
 }
 
@@ -124,66 +125,41 @@ function LabData({ docId }) {
           data: updatedData,
         },
       });
-      setIsEdit(false);
-      setColumns(columns.filter((col) => col.accessor !== 'menu'));
     }
-    if (isDeleteRow) {
-      const result = rowData?.find((value) => value.id === tableId);
+
+    let result = rowData?.filter((value) => value.soft_delete);
+    dispatch({
+      type: 'DELETE_LAB_DATA',
+      payload: {
+        data: {
+          doc_id: result[0].doc_id,
+          roi_id: result[0].roi_id,
+          table_roi_id: result[0].table_roi_id,
+        },
+      },
+    });
+
+    result = rowData?.filter((value) => value.isCreated);
+    if (
+      rowData[0].parameter_text.length > 0 ||
+      rowData[0].procedure_panel_text.length > 0 ||
+      rowData[0].assessment.length > 0 ||
+      rowData[0].pname.length > 0 ||
+      rowData[0].table_link_text.length > 0
+    ) {
       dispatch({
-        type: 'DELETE_LAB_DATA',
+        type: 'CREATE_LAB_DATA',
         payload: {
-          data: {
-            doc_id: result.doc_id,
-            roi_id: result.roi_id,
-            table_roi_id: result.table_roi_id,
-          },
+          data: result[0],
         },
       });
-      setRowData(rowData);
-      setRowData(result);
-      setEditedRow({});
     }
-    if (isCreateRow) {
-      const result = rowData?.find((value) => value.table_roi_id);
-      if (
-        procedureName.length > 0 ||
-        assessmentName.length > 0 ||
-        assessmentPreferred.length > 0 ||
-        procedurePreferred.length > 0 ||
-        tableIndex.length > 0
-      ) {
-        dispatch({
-          type: 'CREATE_LAB_DATA',
-          payload: {
-            data: {
-              parameter_text: procedureName,
-              id: '',
-              run_id: '',
-              procedure_panel_text: assessmentName,
-              dts: '',
-              ProcessMachineName: '',
-              roi_id: '',
-              section: '',
-              table_roi_id: result.table_roi_id,
-              parameter: '',
-              doc_id: docId,
-              procedure_panel: '',
-              assessment: assessmentPreferred,
-              pname: procedurePreferred,
-              ProcessVersion: '',
-              table_link_text: tableIndex,
-              table_sequence_index: -1,
-            },
-          },
-        });
-      }
-      setRowData(rowData);
-      setTableIndex('');
-      setAssessmentName('');
-      setProcedureName('');
-      setAssessmentPreferred('');
-      setProcedurePreferred('');
-    }
+    setTableIndex('');
+    setAssessmentName('');
+    setProcedureName('');
+    setAssessmentPreferred('');
+    setProcedurePreferred('');
+    setEditedRow({});
     setIsEdit(false);
   };
 
@@ -205,9 +181,15 @@ function LabData({ docId }) {
   };
 
   const handleSaveRow = () => {
-    const rowUpdated = rowData?.map((row) =>
-      row.id === editedRow.id ? { ...editedRow, isUpdated: true } : row,
-    );
+    const rowUpdated = rowData?.map((row) => {
+      if (row.id !== editedRow.id) {
+        return row;
+      }
+      if (editedRow.id === '') {
+        return { ...editedRow, isCreated: true };
+      }
+      return { ...editedRow, isUpdated: true };
+    });
     setRowData(rowUpdated);
     setEditedRow({});
   };
@@ -221,8 +203,9 @@ function LabData({ docId }) {
 
   useEffect(() => {
     if (isEdit) {
+      let isIncluded = true;
       const newColumns = columns.map((col) => {
-        const isIncluded = ['menu'].includes(col.accessor);
+        isIncluded = ['menu'].includes(col.accessor);
         if (!isIncluded) {
           return {
             ...col,
@@ -231,27 +214,16 @@ function LabData({ docId }) {
         }
         return col;
       });
-
-      setColumns([
-        ...newColumns,
-        {
-          header: '',
-          accessor: 'menu',
-          customCell: ActionCell,
-        },
-      ]);
-    } else {
-      const newColumns = columns.map((col) => {
-        if (col.accessor === 'pname') {
-          return {
-            ...col,
-            customCell: AddRowCell,
-          };
-        }
-        return col;
-      });
-
-      setColumns([...newColumns]);
+      if (!isIncluded) {
+        setColumns([
+          ...newColumns,
+          {
+            header: '',
+            accessor: 'menu',
+            customCell: ActionCell,
+          },
+        ]);
+      }
     }
     // eslint-disable-next-line
   }, [isEdit]);
@@ -260,6 +232,10 @@ function LabData({ docId }) {
     setIsDeleteRow(true);
     setIsEdit(true);
     setIsOpen(false);
+    const rowUpdated = rowData?.map((row) =>
+      row.id === tableId ? { ...row, soft_delete: true } : row,
+    );
+    setRowData(rowUpdated);
   };
 
   const handleCreate = () => {
@@ -273,18 +249,44 @@ function LabData({ docId }) {
       setRowData(labData.data.filter((value) => value.soft_delete !== true));
       setShowData(false);
     }
-  }, [labData]);
-
-  useEffect(() => {
     if (labData.success && !showData) {
       setShowData(true);
     }
+    // eslint-disable-next-line
   }, [labData]);
-  const handleAdd = () => {
-    setIsAdd(true);
+
+  const handleAdd = (id) => {
+    const index = rowData.findIndex((ele) => ele.id === id);
+    console.log({ index });
+
+    const newData = [...rowData];
+    const obj = {
+      parameter_text: '',
+      id: '',
+      run_id: '',
+      procedure_panel_text: '',
+      dts: '',
+      ProcessMachineName: '',
+      roi_id: '',
+      section: '',
+      table_roi_id: rowData[0].table_roi_id,
+      parameter: '',
+      doc_id: docId,
+      procedure_panel: '',
+      assessment: '',
+      pname: '',
+      ProcessVersion: '',
+      table_link_text: '',
+      table_sequence_index: -1,
+    };
+    newData.splice(index + 1, 0, obj);
+    setRowData(newData);
+    setEditedRow(obj);
   };
 
   const dataRow = Array.from(rowData);
+
+  console.log({ dataRow });
 
   return (
     <Card
@@ -322,18 +324,20 @@ function LabData({ docId }) {
           isLoading={rowData?.length === 0}
           title="Lab Data"
           columns={columns}
-          rows={dataRow?.map((row) => ({
-            ...row,
-            editMode: editedRow.id === row.id,
-            editedRow,
-            updateRow,
-            onRowEdit,
-            onDelete,
-            handleChange,
-            handleCancel,
-            handleSaveRow,
-            handleAdd,
-          }))}
+          rows={dataRow
+            ?.filter((obj) => !obj.soft_delete)
+            ?.map((row) => ({
+              ...row,
+              editMode: editedRow.id === row.id,
+              editedRow,
+              updateRow,
+              onRowEdit,
+              onDelete,
+              handleChange,
+              handleCancel,
+              handleSaveRow,
+              handleAdd,
+            }))}
           initialSortedColumn="table_link_text"
           initialSortOrder="asc"
           rowId="table_link_text"
@@ -386,10 +390,6 @@ EditableCell.propTypes = {
   column: PropTypes.isRequired,
 };
 
-AddRowCell.propTypes = {
-  row: PropTypes.isRequired,
-  column: PropTypes.isRequired,
-};
 LabData.propTypes = {
   docId: PropTypes.isRequired,
 };
