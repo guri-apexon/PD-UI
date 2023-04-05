@@ -26,6 +26,7 @@
     }
   }
 }
+
 .main-popper {
   padding: 8px 0;
 }
@@ -42,24 +43,24 @@
     .edit-Icon {
       padding-left: 10px;
     }
-    .save{
+    .save {
       color: rgb(43, 43, 228);
       margin-left: 5px;
       font-size: 18px;
     }
-    .delete{
+    .delete {
       color: red;
       margin-left: 5px;
-      font-size: 18px; 
+      font-size: 18px;
     }
-    .cancel{
-      color:brown;
+    .cancel {
+      color: brown;
       margin-left: 5px;
       font-size: 18px;
     }
     .text-area {
       display: flex;
-      align-items: center; 
+      align-items: center;
       justify-content: space-between;
       margin-left: 5px;
       margin-top: -12px;
@@ -71,7 +72,7 @@
   position: fixed;
   top: 159px;
   left: 90%;
-  z-index: 999;
+  z-index: 1;
 }
 .delete-tag {
   display: flex;
@@ -79,9 +80,14 @@
   color: rgb(16, 179, 243);
   height: 25px;
 }
-.icons{
-  margin-top: 12px
+.icons {
+  margin-top: 12px;
 }
-.fieldgroup{
+.fieldgroup {
   max-width: 540px;
 }
+  .enriched-menu-wrapper {
+    .popper {
+      z-index: 1;
+    }
+  }
