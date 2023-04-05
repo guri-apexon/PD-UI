@@ -263,6 +263,7 @@ function DigitizeAccordion({
       if (lockDetails?.section_lock) {
         onShowEdit();
       } else {
+        setCurrentEditCard(null);
         toast.error(`Section is in use by user ${lockDetails?.user_name}`);
       }
     }
