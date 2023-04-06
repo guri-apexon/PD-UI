@@ -513,7 +513,6 @@ function DigitizeAccordion({
     ) {
       newContent = createFullMarkup(createEnrichedText(content, clinicalTerms));
     }
-    newContent = createFullMarkup(content);
     return newContent;
   };
 
