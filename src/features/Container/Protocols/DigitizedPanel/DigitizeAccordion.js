@@ -8,12 +8,9 @@ import IconButton from 'apollo-react/components/IconButton';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import Typography from 'apollo-react/components/Typography';
-import Pencil from 'apollo-react-icons/Pencil';
 import Lock from 'apollo-react-icons/Lock';
 import Undo from 'apollo-react-icons/Undo';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
-import EyeShow from 'apollo-react-icons/EyeShow';
-import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
 import Trash from 'apollo-react-icons/Trash';
 import { isEmpty } from 'lodash';
@@ -39,7 +36,7 @@ import {
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SectionLockTimer from './SectionLockTimer';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
-import { PROTOCOL_RIGHT_MENU, AUDIT_LIST } from '../Constant/Constants';
+import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import { useProtContext } from '../ProtocolContext';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
@@ -48,13 +45,15 @@ import HeaderConstant from '../CustomComponents/constants';
 import DiscardModal from './Modals/DiscardModal';
 import SaveSectionModal from './Modals/SaveSectionModal';
 import DeleteModal from './Modals/DeleteModal';
-import AuditLog from './Modals/AuditLog';
 
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
   CONFIG_API_VARIABLES,
 } from '../../../../AppConstant/AppConstant';
+import ActionMenu from './ActionMenu';
+import { scrollToLinkandReference } from './utils';
+import { userId } from '../../../../store/userDetails';
 
 const styles = {
   modal: {
@@ -77,6 +76,9 @@ function DigitizeAccordion({
   currentEditCard,
   handleLinkId,
   globalPreferredTerm,
+  scrollToTop,
+  handleOpenAccordion,
+  dataExist,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -96,22 +98,37 @@ function DigitizeAccordion({
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
   const NewSectionIndex = useSelector(SectionIndex);
+  const userIdSelector = useSelector(userId);
 
-  const [openAudit, setOpenAudit] = useState(null);
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteSection, setDeleteSection] = useState({});
+  const [tocclose, setTocclose] = useState();
 
+  const [showEnrichedContent, setShowEnrichedContent] = useState(false);
+  const [showPrefferedTerm, setShowPrefferedTerm] = useState(false);
+  const [showLink, setShowLink] = useState(false);
   const { data: sectionData, updated } = sectionHeaderDetails;
-
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
   const lockDetails = useSelector(sectionLockDetails);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
+
+  useEffect(() => {
+    if (item.linkandReference) {
+      setExpanded(true);
+      scrollToTop(index);
+      if (sectionDataArr?.length) {
+        scrollToLinkandReference(index, item.linkandReference);
+        handleOpenAccordion();
+      }
+    }
+    // eslint-disable-next-line
+  }, [item.linkandReference]);
 
   const {
     dispatchSectionEvent,
@@ -189,11 +206,45 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [expanded]);
 
+  const onDiscardClick = () => {
+    setSectionDataArr([...sectionDataBak]);
+    setShowDiscardConfirm(false);
+    setShowEdit(false);
+    setSectionDataBak([]);
+    setCurrentEditCard(null);
+    updateSectionLock(true);
+    dispatch(setSaveEnabled(false));
+    dispatch(
+      updateSectionData({
+        data: sectionDataBak,
+        actionType: 'REPLACE_CONTENT',
+        linkId: item.link_id,
+      }),
+    );
+    if (tocclose) {
+      handleTocsection(true);
+      setTocclose(false);
+    }
+  };
+
+  const handleDiscardToc = () => {
+    if (showedit && saveEnabled) {
+      setTocclose(true);
+      setShowDiscardConfirm(true);
+      handleTocsection();
+    } else if (showedit && lockDetails?.section_lock) {
+      updateSectionLock(true);
+      setExpanded(false);
+    } else {
+      setExpanded(false);
+    }
+  };
+
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
     } else if (currentActiveCard === item.link_id && expanded) {
-      setExpanded(false);
+      handleDiscardToc();
     }
     if (currentActiveCard === item.link_id && expanded && tocActive[index]) {
       setExpanded(true);
@@ -215,23 +266,6 @@ function DigitizeAccordion({
     }
   };
 
-  const onDiscardClick = () => {
-    setSectionDataArr([...sectionDataBak]);
-    setShowDiscardConfirm(false);
-    setShowEdit(false);
-    setSectionDataBak([]);
-    setCurrentEditCard(null);
-    updateSectionLock(true);
-    dispatch(setSaveEnabled(false));
-    setAlertMsg(null);
-    dispatch(
-      updateSectionData({
-        data: sectionDataBak,
-        actionType: 'REPLACE_CONTENT',
-        linkId: item.link_id,
-      }),
-    );
-  };
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
@@ -246,6 +280,7 @@ function DigitizeAccordion({
     if (currentEditCard && currentEditCard !== item.link_id) {
       setShowConfirm(true);
     } else {
+      setTocclose(true);
       handleTocsection();
       setCurrentEditCard(item.link_id);
       dispatch({
@@ -264,7 +299,10 @@ function DigitizeAccordion({
       tocActiveSelector[index] &&
       currentEditCard === item.link_id
     ) {
-      if (lockDetails?.section_lock) {
+      if (
+        lockDetails?.section_lock ||
+        lockDetails?.userId === userIdSelector?.toString()
+      ) {
         onShowEdit();
       } else {
         setCurrentEditCard(null);
@@ -276,7 +314,7 @@ function DigitizeAccordion({
 
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
-      setExpanded(false);
+      handleDiscardToc();
     }
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
@@ -297,7 +335,7 @@ function DigitizeAccordion({
       setExpanded(true);
     }
     if (!tocActive[index]) {
-      setExpanded(false);
+      handleDiscardToc();
     }
     // eslint-disable-next-line
   }, [tocActive]);
@@ -324,7 +362,13 @@ function DigitizeAccordion({
   const checkUnsavedTable = () => {
     if (sectionContent && Array.isArray(sectionContent)) {
       const arr = sectionContent.filter(
-        (obj) => obj.type === CONTENT_TYPE.TABLE && !obj.isSaved,
+        (obj) =>
+          obj.type === CONTENT_TYPE.TABLE &&
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
+            ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
+              [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
+                obj.qc_change_type,
+              ))),
       );
       return arr.length > 0;
     }
@@ -374,8 +418,47 @@ function DigitizeAccordion({
     }
   };
 
+  const handleLinkReferenceClick = (e, obj) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (item.link_id === obj.link_id) {
+      scrollToTop(index);
+      scrollToLinkandReference(index, obj.destination_link_text);
+    } else {
+      handleOpenAccordion(obj);
+    }
+  };
+
+  const getLinkReference = (section) => {
+    if (section?.link_and_reference) {
+      const linkArr = Object.entries(section?.link_and_reference);
+
+      if (linkArr.length > 0) {
+        return (
+          <div>
+            {linkArr.map((term) => {
+              return showLink ? (
+                // eslint-disable-next-line
+                <a
+                  key={React.key}
+                  href="#"
+                  onClick={(e) => handleLinkReferenceClick(e, term[1])}
+                >
+                  <b> [{term[1]?.source_text?.toString()}]</b>
+                </a>
+              ) : (
+                <span> [{term[1]?.source_text?.toString()}]</span>
+              );
+            })}
+          </div>
+        );
+      }
+    }
+    return '';
+  };
+
   useEffect(() => {
-    if (expanded) {
+    if (expanded || dataExist) {
       const { sectionResponse, data } = sectionHeaderDetails;
 
       if (sectionResponse) {
@@ -415,6 +498,10 @@ function DigitizeAccordion({
         if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
 
         setSectionDataArr(updatedSectionsData);
+        if (item.linkandReference && updatedSectionsData.length) {
+          scrollToLinkandReference(index, item.linkandReference);
+          handleOpenAccordion();
+        }
       }
       if (!sectionContent) dispatchSectionData();
     }
@@ -437,12 +524,17 @@ function DigitizeAccordion({
 
   const getEnrichedText = (content, clinicalTerms, preferredTerms) => {
     let newContent = content;
-    if (globalPreferredTerm && !isEmpty(preferredTerms)) {
-      newContent = createPreferredText(content, preferredTerms);
+    if (globalPreferredTerm || showPrefferedTerm) {
+      if (!isEmpty(preferredTerms)) {
+        newContent = createFullMarkup(
+          createPreferredText(content, preferredTerms),
+        );
+      }
     }
     if (
-      !isEmpty(clinicalTerms) &&
-      rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+      (!isEmpty(clinicalTerms) &&
+        rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM) ||
+      showEnrichedContent
     ) {
       newContent = createEnrichedText(content, clinicalTerms);
     }
@@ -455,6 +547,25 @@ function DigitizeAccordion({
     setSelectedEnrichedText(null);
     setClinicalTerms(null);
   }, [rightBladeValue]);
+
+  const getActionMenu = () => {
+    return (
+      <ActionMenu
+        showedit={showedit}
+        onEditClick={onEditClick}
+        setShowEnrichedContent={setShowEnrichedContent}
+        setShowPrefferedTerm={setShowPrefferedTerm}
+        showPrefferedTerm={showPrefferedTerm}
+        showEnrichedContent={showEnrichedContent}
+        showLink={showLink}
+        setShowLink={setShowLink}
+        handleSaveContent={handleSaveContent}
+        disabledSaveIcon={!saveEnabled || showAlert || showLoader}
+        disabledPencilIcon={showLoader}
+        item={item}
+      />
+    );
+  };
 
   const [isShown, setIsShown] = useState(false);
   const [isModal, setIsModal] = useState(false);
@@ -472,11 +583,6 @@ function DigitizeAccordion({
       type: 'SET_ENRICHED_WORD',
       payload: { word: section, modal: true },
     });
-  };
-
-  const clickAuditLog = (e) => {
-    e.stopPropagation();
-    setOpenAudit(e.currentTarget);
   };
 
   useEffect(() => {
@@ -505,7 +611,6 @@ function DigitizeAccordion({
       },
     });
   };
-
   return (
     <div
       onMouseEnter={() => setIsShown(true)}
@@ -556,52 +661,24 @@ function DigitizeAccordion({
                       setShowDeleteConfirm(true);
                       setDeleteSection(item);
                     }}
-                    data-testId="trashIcon"
                     role="presentation"
                     className="trash-icon"
                   >
-                    <IconButton disabled={showLoader}>
+                    <IconButton disabled={showLoader} data-testId="trashIcon">
                       <Trash />
                     </IconButton>
                   </span>
-                </>
-              )}
-              {primaryRole && (
-                <>
-                  <IconButton data-testId="eyeIcon" onClick={clickAuditLog}>
-                    <EyeShow />
+                  <IconButton
+                    data-testId="discardIcon"
+                    title="Discard changes"
+                    className="discard-icon"
+                    disabled={!saveEnabled || !primaryRole}
+                    onClick={() => {
+                      setShowDiscardConfirm(true);
+                    }}
+                  >
+                    <Undo />
                   </IconButton>
-                  {!showedit ? (
-                    <IconButton
-                      disabled={showLoader}
-                      data-testId="pencilIcon"
-                      onClick={onEditClick}
-                    >
-                      <Pencil />
-                    </IconButton>
-                  ) : (
-                    <>
-                      <IconButton
-                        onClick={handleSaveContent}
-                        data-testId="saveIcon"
-                        disabled={!saveEnabled || showAlert || showLoader}
-                      >
-                        <Save />
-                      </IconButton>
-                      <IconButton
-                        data-testId="discardIcon"
-                        title="Discard changes"
-                        className="discard-icon"
-                        disabled={!saveEnabled}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setShowDiscardConfirm(true);
-                        }}
-                      >
-                        <Undo />
-                      </IconButton>
-                    </>
-                  )}
                 </>
               )}
             </div>
@@ -629,119 +706,129 @@ function DigitizeAccordion({
                 linkId={item.link_id}
                 sectionDataArr={sectionDataArr}
                 edit={showedit}
+                child={getActionMenu()}
               />
             ) : (
-              <div className="readable-content">
-                {sectionDataArr?.map((section) => {
-                  let content = '';
-                  if (section.type === CONTENT_TYPE.TABLE) {
-                    content = (
-                      <DisplayTable
-                        key={React.key}
-                        data={
-                          section?.content
-                            ? JSON.parse(section?.content?.TableProperties)
-                            : []
-                        }
-                        footNoteData={
-                          section?.content?.AttachmentListProperties
-                        }
-                        colWidth={100}
-                      />
-                    );
-                  } else if (section.type === CONTENT_TYPE.IMAGE) {
-                    content = (
-                      <ImageUploader
-                        key={React.key}
-                        lineID={section.line_id}
-                        content={section.content}
-                        edit={false}
-                      />
-                    );
-                  } else {
-                    content =
-                      section?.font_info?.VertAlign === 'superscript' &&
-                      section?.content?.length > 0 ? (
-                        // eslint-disable-next-line
-                        <div
+              <div className="readable-content-wrapper">
+                <div className="readable-content">
+                  {sectionDataArr?.map((section) => {
+                    let content = '';
+                    if (section.type === CONTENT_TYPE.TABLE) {
+                      content = (
+                        <DisplayTable
                           key={React.key}
-                          className="supContent"
-                          onClick={(e) =>
-                            handleEnrichedClick(e, section.clinical_terms)
+                          data={
+                            section?.content
+                              ? JSON.parse(section?.content?.TableProperties)
+                              : []
                           }
-                        >
-                          <sup>
-                            <SanitizeHTML
-                              html={getEnrichedText(
-                                section.content.split('_')[0],
-                                section?.clinical_terms,
-                                section?.preferred_terms,
-                              )}
-                            />
-                          </sup>
-                          <p
-                            style={{
-                              fontWeight: `${
-                                section?.font_info?.isBold ||
-                                section.type === 'header'
-                                  ? 'bold'
-                                  : ''
-                              }`,
-                              fontStyle: `${
-                                section?.font_info?.Italics ? 'italics' : ''
-                              }`,
-                            }}
-                          >
-                            <SanitizeHTML
-                              html={getEnrichedText(
-                                section.content.split('_')[1],
-                                section?.clinical_terms,
-                                section?.preferred_terms,
-                              )}
-                            />
-                          </p>
-                        </div>
-                      ) : (
-                        section.content.length > 0 && (
+                          footNoteData={
+                            section?.content?.AttachmentListProperties
+                          }
+                          colWidth={100}
+                        />
+                      );
+                    } else if (section.type === CONTENT_TYPE.IMAGE) {
+                      content = (
+                        <ImageUploader
+                          key={React.key}
+                          lineID={section.line_id}
+                          content={section.content}
+                          edit={false}
+                        />
+                      );
+                    } else {
+                      content =
+                        section?.font_info?.VertAlign === 'superscript' &&
+                        section?.content?.length > 0 ? (
                           // eslint-disable-next-line
-                          <p
+                          <div
                             key={React.key}
-                            style={{
-                              fontWeight: `${
-                                section?.font_info?.isBold ||
-                                section.type === 'header'
-                                  ? 'bold'
-                                  : ''
-                              }`,
-                              fontStyle: `${
-                                section?.font_info?.Italics ? 'italics' : ''
-                              }`,
-                            }}
+                            className="supContent"
                             onClick={(e) =>
                               handleEnrichedClick(e, section.clinical_terms)
                             }
                           >
-                            <SanitizeHTML
-                              html={getEnrichedText(
-                                section.content,
-                                section.clinical_terms,
-                                section?.preferred_terms,
-                              )}
-                            />
-                          </p>
-                        )
-                      );
-                  }
-                  return (
-                    // eslint-disable-next-line
-                    <div
-                      key={React.key}
-                      onMouseUp={(e) => handleSegmentMouseUp(e, section)}
-                    >
-                      {content}
-                    </div>
-                  );
-                })}
+                            <sup>
+                              <SanitizeHTML
+                                html={getEnrichedText(
+                                  section.content.split('_')[0],
+                                  section?.clinical_terms,
+                                  section?.preferred_terms,
+                                )}
+                              />
+                            </sup>
+                            <p
+                              style={{
+                                fontWeight: `${
+                                  section?.font_info?.isBold ||
+                                  section.type === 'header'
+                                    ? 'bold'
+                                    : ''
+                                }`,
+                                fontStyle: `${
+                                  section?.font_info?.Italics ? 'italics' : ''
+                                }`,
+                              }}
+                            >
+                              <SanitizeHTML
+                                html={getEnrichedText(
+                                  section.content.split('_')[1],
+                                  section?.clinical_terms,
+                                  section?.preferred_terms,
+                                )}
+                              />
+                            </p>
+                            {getLinkReference(section)}
+                          </div>
+                        ) : (
+                          section.content.length > 0 && (
+                            <div key={React.key} className="link-data">
+                              <p
+                                role="presentation"
+                                key={React.key}
+                                style={{
+                                  fontWeight: `${
+                                    section?.font_info?.isBold ||
+                                    section.type === 'header'
+                                      ? 'bold'
+                                      : ''
+                                  }`,
+                                  fontStyle: `${
+                                    section?.font_info?.Italics ? 'italics' : ''
+                                  }`,
+                                }}
+                                onClick={(e) =>
+                                  handleEnrichedClick(e, section.clinical_terms)
+                                }
+                              >
+                                <SanitizeHTML
+                                  html={getEnrichedText(
+                                    section.content,
+                                    section.clinical_terms,
+                                    section?.preferred_terms,
+                                  )}
+                                />
+                              </p>
+                              {getLinkReference(section)}
+                            </div>
+                          )
+                        );
+                    }
+                    return (
+                      // eslint-disable-next-line
+                      <div
+                        key={React.key}
+                        onMouseUp={(e) => handleSegmentMouseUp(e, section)}
+                      >
+                        {content}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="menu-wrapper">
+                  {primaryRole && getActionMenu()}
+                </div>
               </div>
             ))
           )}
@@ -753,13 +840,6 @@ function DigitizeAccordion({
           clinicalTerms={clinicalTerms}
           linkId={linkId}
           docId={docId}
-        />
-
-        <AuditLog
-          openAudit={openAudit}
-          setOpenAudit={setOpenAudit}
-          AUDIT_LIST={AUDIT_LIST}
-          item={item}
         />
 
         <SaveSectionModal
@@ -839,4 +919,7 @@ DigitizeAccordion.propTypes = {
   currentEditCard: PropTypes.isRequired,
   handleLinkId: PropTypes.isRequired,
   globalPreferredTerm: PropTypes.isRequired,
+  handleOpenAccordion: PropTypes.isRequired,
+  scrollToTop: PropTypes.isRequired,
+  dataExist: PropTypes.isRequired,
 };

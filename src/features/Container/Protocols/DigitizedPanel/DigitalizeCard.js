@@ -20,6 +20,7 @@ import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import LabData from '../LabData/LabData';
 import AddClinicalTerm from '../EnrichedContent/AddClinicalTerm';
 import DigitizeAccordion from './DigitizeAccordion';
+import { replaceHtmlTags } from './utils';
 
 function DigitalizeCard({
   sectionNumber,
@@ -62,12 +63,21 @@ function DigitalizeCard({
   useEffect(() => {
     if (summary?.data?.length) {
       setHeaderList(
-        summary.data.filter((x) => x.source_file_section !== 'blank_header'),
+        summary.data.map((x) => {
+          if (x.source_file_section !== 'blank_header') {
+            return {
+              ...x,
+              source_file_section: replaceHtmlTags(x.source_file_section),
+            };
+          }
+          return x;
+        }),
       );
     } else {
       setHeaderList([]);
     }
   }, [summary]);
+
   const scrollToTop = (index) => {
     setTimeout(() => {
       sectionRef[index]?.current?.scrollIntoView(true);
@@ -150,6 +160,20 @@ function DigitalizeCard({
     // eslint-disable-next-line
   }, [paginationPage]);
 
+  const handleOpenAccordion = (refObj) => {
+    setHeaderList(
+      headerList.map((x) => {
+        if (!refObj && x.linkandReference) {
+          return { ...x, linkandReference: null };
+        }
+        if (refObj?.link_id === x.link_id) {
+          return { ...x, linkandReference: refObj.destination_link_text };
+        }
+        return x;
+      }),
+    );
+  };
+
   return (
     <div data-testid="protocol-column-wrapper">
       {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
@@ -192,6 +216,7 @@ function DigitalizeCard({
                         setCurrentEditCard={setCurrentEditCard}
                         currentEditCard={currentEditCard}
                         handleLinkId={handleLinkId}
+                        handleOpenAccordion={handleOpenAccordion}
                       />
                     </div>
                   </div>

@@ -1,9 +1,11 @@
 .Richtextcontainer {
   position: relative;
   height: 70vh;
-  overflow-x: scroll;
+  overflow-x: hidden;
   .section-edited-list {
     margin-top: 20px;
+    width: 90%;
+    padding: 0 2px;
   }
   [class*='MuiInputBase-root'] {
     width: 85px !important;
@@ -86,4 +88,8 @@
   height: 200px;
   border: 1px solid #ccc;
   overflow: auto;
+}
+
+.section-menu-container {
+  display: flex;
 }

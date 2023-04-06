@@ -8,7 +8,7 @@
   top: 0;
   left: 0px;
   justify-content: flex-start;
-  z-index: 9;
+  z-index: 1;
   .button-exec-icon {
     background-color: #fff;
     border: navajowhite;
@@ -61,6 +61,6 @@
   }
 
   .button-container.font-properties .right-menu {
-    margin-right: 0;
+    margin-right: 50px;
   }
 }

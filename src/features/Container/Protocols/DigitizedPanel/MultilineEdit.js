@@ -15,7 +15,7 @@ import {
 import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
 
-function MultilineEdit({ sectionDataArr, edit }) {
+function MultilineEdit({ sectionDataArr, edit, child }) {
   const [sections, setSections] = useState([]);
   const { dispatchSectionEvent } = useProtContext();
   const [showconfirm, setShowConfirm] = useState(false);
@@ -66,27 +66,30 @@ function MultilineEdit({ sectionDataArr, edit }) {
             onDeleteClick={() => setShowConfirm(true)}
           />
         )}
-        <section className="section-edited-list">
-          {sections?.map((section) => (
-            // eslint-disable-next-line
-            <div
-              className="content_container"
-              data-testId="content_container"
-              key={section.line_id}
-              onClick={() => edit && setActiveLineID(section.line_id)}
-            >
-              <RenderContent
-                sectionData={section}
-                sectionName={sectionName}
-                handleContentEdit={handleContentEdit}
-                activeLineID={activeLineID}
-                deleteSection={deleteSection}
-                setActiveLineID={setActiveLineID}
-                edit={edit}
-              />
-            </div>
-          ))}
-        </section>
+        <div className="section-menu-container">
+          <section className="section-edited-list">
+            {sections?.map((section) => (
+              // eslint-disable-next-line
+              <div
+                className="content_container"
+                data-testId="content_container"
+                key={section.line_id}
+                onClick={() => edit && setActiveLineID(section.line_id)}
+              >
+                <RenderContent
+                  sectionData={section}
+                  sectionName={sectionName}
+                  handleContentEdit={handleContentEdit}
+                  activeLineID={activeLineID}
+                  deleteSection={deleteSection}
+                  setActiveLineID={setActiveLineID}
+                  edit={edit}
+                />
+              </div>
+            ))}
+          </section>
+          {child}
+        </div>
       </div>
       {showconfirm && (
         <div className="confirmation-popup" data-testId="confirmPopup">
@@ -113,4 +116,5 @@ export default MultilineEdit;
 MultilineEdit.propTypes = {
   sectionDataArr: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  child: PropTypes.isRequired,
 };

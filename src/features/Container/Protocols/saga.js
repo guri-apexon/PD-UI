@@ -600,14 +600,15 @@ export function* deleteAttribute(action) {
   };
   const data = yield call(httpCall, config);
   if (data?.data?.isDeleted) {
+    yield put(
+      getMetadataApiCall({
+        status: true,
+        reqData,
+        op,
+        attributeNames,
+      }),
+    );
     if (op === 'deleteField') {
-      yield put(
-        getMetadataApiCall({
-          status: true,
-          reqData,
-          op,
-        }),
-      );
       toast.info(`${reqData.accData.name} successfully deleted`);
     } else {
       toast.info('attributes successfully deleted');
