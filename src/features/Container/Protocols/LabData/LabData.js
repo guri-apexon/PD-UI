@@ -11,7 +11,6 @@ import Button from 'apollo-react/components/Button';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import { labDataApiValue } from '../protocolSlice';
 import DeleteRow from './Modal/DeleteRow';
-import AddRow from './Modal/AddRow';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
 
@@ -95,25 +94,21 @@ function LabData({ docId }) {
   const [isOpen, setIsOpen] = useState(false);
   const [tableId, setTableId] = useState();
   const [showData, setShowData] = useState(true);
-  const [isShow, setIsShow] = useState(false);
-  const [isAdd, setIsAdd] = useState(false);
-  const [tableIndex, setTableIndex] = useState('');
-  const [assessmentName, setAssessmentName] = useState('');
-  const [procedureName, setProcedureName] = useState('');
-  const [assessmentPreferred, setAssessmentPreferred] = useState('');
-  const [procedurePreferred, setProcedurePreferred] = useState('');
-  const [isDeleteRow, setIsDeleteRow] = useState(false);
-  const [isCreateRow, setIsCreateRow] = useState(false);
+
+  const getLabData = () => {
+    dispatch({
+      type: 'GET_LAB_DATA',
+      payload: {
+        docId,
+      },
+    });
+  };
 
   useEffect(() => {
     if (showData) {
-      dispatch({
-        type: 'GET_LAB_DATA',
-        payload: {
-          docId,
-        },
-      });
+      getLabData();
     }
+    // eslint-disable-next-line
   }, [dispatch, docId, showData]);
 
   const handleSave = () => {
@@ -128,24 +123,26 @@ function LabData({ docId }) {
     }
 
     let result = rowData?.filter((value) => value.soft_delete);
-    dispatch({
-      type: 'DELETE_LAB_DATA',
-      payload: {
-        data: {
-          doc_id: result[0].doc_id,
-          roi_id: result[0].roi_id,
-          table_roi_id: result[0].table_roi_id,
+    if (result.length > 0) {
+      dispatch({
+        type: 'DELETE_LAB_DATA',
+        payload: {
+          data: {
+            doc_id: result[0].doc_id,
+            roi_id: result[0].roi_id,
+            table_roi_id: result[0].table_roi_id,
+          },
         },
-      },
-    });
-
+      });
+    }
     result = rowData?.filter((value) => value.isCreated);
+
     if (
-      rowData[0].parameter_text.length > 0 ||
-      rowData[0].procedure_panel_text.length > 0 ||
-      rowData[0].assessment.length > 0 ||
-      rowData[0].pname.length > 0 ||
-      rowData[0].table_link_text.length > 0
+      result[0].parameter_text.length > 0 ||
+      result[0].procedure_panel_text.length > 0 ||
+      result[0].assessment.length > 0 ||
+      result[0].pname.length > 0 ||
+      result[0].table_link_text.length > 0
     ) {
       dispatch({
         type: 'CREATE_LAB_DATA',
@@ -154,11 +151,8 @@ function LabData({ docId }) {
         },
       });
     }
-    setTableIndex('');
-    setAssessmentName('');
-    setProcedureName('');
-    setAssessmentPreferred('');
-    setProcedurePreferred('');
+    getLabData();
+
     setEditedRow({});
     setIsEdit(false);
   };
@@ -229,19 +223,12 @@ function LabData({ docId }) {
   }, [isEdit]);
 
   const onDeleteRow = () => {
-    setIsDeleteRow(true);
     setIsEdit(true);
     setIsOpen(false);
     const rowUpdated = rowData?.map((row) =>
       row.id === tableId ? { ...row, soft_delete: true } : row,
     );
     setRowData(rowUpdated);
-  };
-
-  const handleCreate = () => {
-    setIsCreateRow(true);
-    setIsEdit(true);
-    setIsAdd(false);
   };
 
   useEffect(() => {
@@ -357,23 +344,6 @@ function LabData({ docId }) {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           onDeleteRow={onDeleteRow}
-        />
-      )}
-      {isAdd && (
-        <AddRow
-          isAdd={isAdd}
-          setIsAdd={setIsAdd}
-          handleCreate={handleCreate}
-          tableIndex={tableIndex}
-          setTableIndex={setTableIndex}
-          assessmentName={assessmentName}
-          setAssessmentName={setAssessmentName}
-          procedureName={procedureName}
-          setProcedureName={setProcedureName}
-          assessmentPreferred={assessmentPreferred}
-          setAssessmentPreferred={setAssessmentPreferred}
-          procedurePreferred={procedurePreferred}
-          setProcedurePreferred={setProcedurePreferred}
         />
       )}
     </Card>
