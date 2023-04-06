@@ -128,9 +128,9 @@ function LabData({ docId }) {
         type: 'DELETE_LAB_DATA',
         payload: {
           data: {
-            doc_id: softDeleteResult[0].doc_id,
-            roi_id: softDeleteResult[0].roi_id,
-            table_roi_id: softDeleteResult[0].table_roi_id,
+            doc_id: softDeleteResult.doc_id,
+            roi_id: softDeleteResult.roi_id,
+            table_roi_id: softDeleteResult.table_roi_id,
           },
         },
       });
