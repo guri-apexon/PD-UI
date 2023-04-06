@@ -1,5 +1,14 @@
 .lab-table-container {
   table {
+    tfoot{
+      tr{
+        td{
+          & > div{
+            width: 100% !important;
+          }
+        }
+      }
+    }
     tbody {
       tr {
         position: relative;
@@ -29,6 +38,7 @@
           }
         }
         td {
+          overflow-wrap: anywhere;
           border: 0;
           position: static;
           &:last-child {

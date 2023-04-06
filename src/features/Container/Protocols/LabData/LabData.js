@@ -336,6 +336,7 @@ function LabData({ docId }) {
             truncate: true,
           }}
           showClearFiltersButton
+          rowProps={{ hover: false }}
         />
       </div>
       {isOpen && (
