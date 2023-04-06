@@ -122,32 +122,32 @@ function LabData({ docId }) {
       });
     }
 
-    let result = rowData?.filter((value) => value.soft_delete);
-    if (result.length > 0) {
+    const softDeleteResult = rowData?.find((value) => value.soft_delete);
+    if (softDeleteResult) {
       dispatch({
         type: 'DELETE_LAB_DATA',
         payload: {
           data: {
-            doc_id: result[0].doc_id,
-            roi_id: result[0].roi_id,
-            table_roi_id: result[0].table_roi_id,
+            doc_id: softDeleteResult[0].doc_id,
+            roi_id: softDeleteResult[0].roi_id,
+            table_roi_id: softDeleteResult[0].table_roi_id,
           },
         },
       });
     }
-    result = rowData?.filter((value) => value.isCreated);
-    if (result.length > 0) {
+    const createdResult = rowData?.filter((value) => value.isCreated);
+    if (createdResult) {
       if (
-        result[0].parameter_text.length > 0 ||
-        result[0].procedure_panel_text.length > 0 ||
-        result[0].assessment.length > 0 ||
-        result[0].pname.length > 0 ||
-        result[0].table_link_text.length > 0
+        createdResult[0].parameter_text.length > 0 ||
+        createdResult[0].procedure_panel_text.length > 0 ||
+        createdResult[0].assessment.length > 0 ||
+        createdResult[0].pname.length > 0 ||
+        createdResult[0].table_link_text.length > 0
       ) {
         dispatch({
           type: 'CREATE_LAB_DATA',
           payload: {
-            data: result[0],
+            data: createdResult[0],
           },
         });
       }
@@ -179,7 +179,7 @@ function LabData({ docId }) {
   };
 
   const handleSaveRow = () => {
-    const rowUpdated = rowData?.map((row) => {
+    const updatedRows = rowData?.map((row) => {
       if (row.id !== editedRow.id) {
         return row;
       }
@@ -188,7 +188,7 @@ function LabData({ docId }) {
       }
       return { ...editedRow, isUpdated: true };
     });
-    setRowData(rowUpdated);
+    setRowData(updatedRows);
     setEditedRow({});
   };
 
@@ -229,10 +229,10 @@ function LabData({ docId }) {
   const onDeleteRow = () => {
     setIsEdit(true);
     setIsOpen(false);
-    const rowUpdated = rowData?.map((row) =>
+    const updatedRows = rowData?.map((row) =>
       row.id === tableId ? { ...row, soft_delete: true } : row,
     );
-    setRowData(rowUpdated);
+    setRowData(updatedRows);
   };
 
   useEffect(() => {
@@ -250,28 +250,17 @@ function LabData({ docId }) {
     const newArr = [...rowData];
     const index = rowData.findIndex((ele) => ele.id === id);
 
-    const obj = {
-      parameter_text: '',
-      id: '',
-      run_id: '',
-      procedure_panel_text: '',
-      dts: '',
-      ProcessMachineName: '',
-      roi_id: '',
-      section: '',
-      table_roi_id: rowData[0].table_roi_id,
-      parameter: '',
-      doc_id: docId,
-      procedure_panel: '',
-      assessment: '',
-      pname: '',
-      ProcessVersion: '',
-      table_link_text: '',
-      table_sequence_index: -1,
-    };
-    newArr.splice(index + 1, 0, obj);
+    const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
+
+    if (addRow.doc_id === 'docId') {
+      addRow.doc_id = docId;
+    } else if (addRow.table_roi_id === 'table_roi_id') {
+      addRow.table_roi_id = rowData[0].table_roi_id;
+    }
+
+    newArr.splice(index + 1, 0, addRow);
     setRowData(newArr);
-    setEditedRow(obj);
+    setEditedRow(addRow);
   };
 
   const dataRow = Array.from(rowData);

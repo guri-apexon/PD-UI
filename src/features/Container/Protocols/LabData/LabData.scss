@@ -41,16 +41,12 @@
           overflow-wrap: anywhere;
           border: 0;
           position: static;
-          &:last-child {
-            display: flex;
-          }
           &:first-child {
             &:before {
               display: none !important;
             }
           }
           .customCell {
-            min-height: 30px;
             height: 100%;
             width: 100%;
             display: flex;

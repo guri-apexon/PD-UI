@@ -7,17 +7,9 @@ import {
 import TextFieldFilter from './utilFunction';
 
 const customCell = ({ row, column }) => (
-  <div
-    style={{
-      paddingTop: row.editMode ? 12 : 0,
-    }}
-  >
+  <div>
     {row[column.accessor]}
-    <button
-      type="button"
-      className="hoverButton"
-      onClick={() => console.log('abcd')}
-    >
+    <button type="button" className="hoverButton">
       +
     </button>
   </div>
@@ -68,49 +60,6 @@ const columnList = [
   },
 ];
 
-const records = [
-  {
-    id: 'Table 1',
-    name: 'Laboratory Safety Variables',
-    assName: 'Haematology',
-    prName: 'B-Haemoglobin',
-    assPrefName: 'Haematology',
-    prPrefName: 'NA',
-  },
-  {
-    id: 'Table 2',
-    name: 'Laboratory Safety Variables',
-    assName: 'Haematology',
-    prName: 'B-Leukocyte',
-    assPrefName: 'Haematology',
-    prPrefName: 'NA',
-  },
-  {
-    id: 'Table 3',
-    name: 'Laboratory Safety Variables',
-    assName: 'Haematology',
-    prName: 'Neutrophils',
-    assPrefName: 'Haematology',
-    prPrefName: 'NA',
-  },
-  {
-    id: 'Table 4',
-    name: 'Laboratory Safety Variables',
-    assName: 'Haematology',
-    prName: 'Lymphocytes',
-    assPrefName: 'Haematology',
-    prPrefName: 'NA',
-  },
-  {
-    id: 'Table 5',
-    name: 'Laboratory Safety Variables',
-    assName: 'Haematology',
-    prName: 'U-Glucose',
-    assPrefName: 'Haematology',
-    prPrefName: 'NA',
-  },
-];
-
 const columnsToAdd = [
   {
     header: 'id',
@@ -149,6 +98,26 @@ const evenMoreColumns = [
   })),
 ];
 
+const ADD_ROW_LAB_DATA = {
+  parameter_text: '',
+  id: '',
+  run_id: '',
+  procedure_panel_text: '',
+  dts: '',
+  ProcessMachineName: '',
+  roi_id: '',
+  section: '',
+  table_roi_id: 'table_roi_id',
+  parameter: '',
+  doc_id: 'docId',
+  procedure_panel: '',
+  assessment: '',
+  pname: '',
+  ProcessVersion: '',
+  table_link_text: '',
+  table_sequence_index: -1,
+};
+
 export {
   moreColumns,
   moreColumnsWithFrozen,
@@ -156,4 +125,4 @@ export {
   evenMoreColumns,
 };
 
-export default { columnList, records };
+export default { columnList, ADD_ROW_LAB_DATA };
