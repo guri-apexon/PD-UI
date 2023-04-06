@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Card from 'apollo-react/components/Card/Card';
+import _ from 'lodash';
 import TextField from 'apollo-react/components/TextField';
 import Save from 'apollo-react-icons/Save';
 import Pencil from 'apollo-react-icons/Pencil';
@@ -171,6 +172,9 @@ function LabData({ docId }) {
     setEditedRow({ ...editedRow, [key]: value });
   };
   const handleCancel = () => {
+    if (editedRow.id === '') {
+      setRowData(rowData?.filter((value) => value.id !== ''));
+    }
     setEditedRow({});
   };
 
@@ -243,10 +247,9 @@ function LabData({ docId }) {
   }, [labData]);
 
   const handleAdd = (id) => {
+    const newArr = [...rowData];
     const index = rowData.findIndex((ele) => ele.id === id);
-    console.log({ index });
 
-    const newData = [...rowData];
     const obj = {
       parameter_text: '',
       id: '',
@@ -266,14 +269,12 @@ function LabData({ docId }) {
       table_link_text: '',
       table_sequence_index: -1,
     };
-    newData.splice(index + 1, 0, obj);
-    setRowData(newData);
+    newArr.splice(index + 1, 0, obj);
+    setRowData(newArr);
     setEditedRow(obj);
   };
 
   const dataRow = Array.from(rowData);
-
-  console.log({ dataRow });
 
   return (
     <Card
@@ -325,8 +326,6 @@ function LabData({ docId }) {
               handleSaveRow,
               handleAdd,
             }))}
-          initialSortedColumn="table_link_text"
-          initialSortOrder="asc"
           rowId="table_link_text"
           rowsPerPageOptions={[5, 10, 15, 'All']}
           tablePaginationProps={{
