@@ -32,7 +32,6 @@
           border: 0;
           position: static;
           &:last-child {
-            text-align: right;
             display: flex;
           }
           &:first-child {
@@ -165,4 +164,7 @@
   color: inherit !important;
   margin-bottom: 0 !important;
   margin-right: 0;
+}
+.table-hover table tbody td:last-child {
+  flex-direction: row-reverse;
 }
