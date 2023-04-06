@@ -53,6 +53,7 @@ import AuditLog from './Modals/AuditLog';
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
+  CONFIG_API_VARIABLES,
 } from '../../../../AppConstant/AppConstant';
 
 const styles = {
@@ -166,6 +167,7 @@ function DigitizeAccordion({
         linkId: item.link_id,
         docId: item.doc_id,
         protocol,
+        configVariable: CONFIG_API_VARIABLES,
       },
     });
   };
@@ -265,6 +267,7 @@ function DigitizeAccordion({
       if (lockDetails?.section_lock) {
         onShowEdit();
       } else {
+        setCurrentEditCard(null);
         toast.error(`Section is in use by user ${lockDetails?.user_name}`);
       }
     }
@@ -304,7 +307,7 @@ function DigitizeAccordion({
       setEnrichedTarget(e.target);
       setSelectedEnrichedText(e.target.innerText);
       setClinicalTerms(obj);
-      const modalOpened = document.createElement('div');
+      const modalOpened = document.createElement('span');
       modalOpened.classList.add('modal-opened');
       document.body.appendChild(modalOpened);
       modalOpened.addEventListener('click', () => {
@@ -409,7 +412,6 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-
         if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
 
         setSectionDataArr(updatedSectionsData);
@@ -435,19 +437,16 @@ function DigitizeAccordion({
 
   const getEnrichedText = (content, clinicalTerms, preferredTerms) => {
     let newContent = content;
-    if (globalPreferredTerm) {
-      if (!isEmpty(preferredTerms)) {
-        newContent = createFullMarkup(
-          createPreferredText(content, preferredTerms),
-        );
-      }
+    if (globalPreferredTerm && !isEmpty(preferredTerms)) {
+      newContent = createPreferredText(content, preferredTerms);
     }
     if (
       !isEmpty(clinicalTerms) &&
       rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
     ) {
-      newContent = createFullMarkup(createEnrichedText(content, clinicalTerms));
+      newContent = createEnrichedText(content, clinicalTerms);
     }
+    newContent = createFullMarkup(content);
     return newContent;
   };
 

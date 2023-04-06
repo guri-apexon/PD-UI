@@ -9,13 +9,14 @@ import Card from 'apollo-react/components/Card';
 import Save from 'apollo-react-icons/Save';
 import Plus from 'apollo-react-icons/Plus';
 import Trash from 'apollo-react-icons/Trash';
+import TextField from 'apollo-react/components/TextField';
+import PropTypes from 'prop-types';
+import debounce from 'lodash/debounce';
 import './DipaViewStructure.scss';
 import Grid from 'apollo-react/components/Grid/Grid';
 import Pencil from 'apollo-react-icons/Pencil';
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconButton from 'apollo-react/components/IconButton';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import PropTypes from 'prop-types';
 
 function DipaViewStructure({
   ID,
@@ -25,86 +26,102 @@ function DipaViewStructure({
   open = false,
   handleExpandChange,
   handleAdd,
+  handleAddGroup,
   handleUpdate,
-  handleDelete,
+  setOpenModal,
+  onChangeSegment,
+  onChangeSegmentGroup,
+  editingIDList,
+  setEditingIDList,
+  toggleEditingIDs,
+  tooltipValue,
 }) {
   const [OpenPop, setOpenPop] = useState(null);
   const [tooltip, setTooltip] = useState(false);
 
-  const openTooltip = () => {
-    setTooltip(true);
-  };
-
-  const closeTooltip = () => {
-    setTooltip(false);
+  const onPencilIconClick = (e) => {
+    toggleEditingIDs(segments.map((seg) => seg.ID));
+    e.preventDefault();
   };
 
   return (
-    <Grid item xs={11}>
+    <div>
       <Accordion
         key={ID}
         expanded={open}
-        onChange={() => handleExpandChange(ID)}
         className="container"
         data-testid="accordion-expand"
       >
-        <AccordionSummary data-testid="summary-expand">
-          <Grid container spacing={1} className="accordian-summary-container">
-            <Grid item xs={6}>
-              <Typography>{actualText}</Typography>
-            </Grid>
-            <Grid className="paragraph-icon">
-              <Typography className="segment-dc">
+        <AccordionSummary
+          data-testid="summary-expand"
+          className="dipaview-summary-expand"
+        >
+          <Grid item xs={12} className="actual-text">
+            {editingIDList?.includes(ID) ? (
+              <TextField
+                placeholder="Actual text.."
+                data-testid="addgroup-textfield"
+                onChange={debounce((e) => onChangeSegmentGroup(ID, e), 200)}
+              />
+            ) : (
+              <Typography
+                onClick={() => handleExpandChange(ID)}
+                className="actual-text-details"
+                data-testid="paragraph-text"
+              >
+                {actualText}
+              </Typography>
+            )}
+            <div className="segment">
+              <div className="segment-dc">
                 <span className="segment-derived-count">Derived Count</span>
                 <b className="segment-length">{segments.length}</b>
-              </Typography>
-              {handleAdd && open ? (
-                <>
-                  <span className="icon-eyeshow">
-                    <EyeShow />
-                  </span>
-                  <span className="icon-pencil">
-                    <Save onClick={handleUpdate} data-testid="save" />
-                  </span>
-                </>
-              ) : (
-                <>
-                  <ClickAwayListener onClickAway={closeTooltip}>
-                    <div>
-                      <Tooltip
-                        title={`Last updated on 
-                        2/16/2023.`}
-                        placement="right"
-                        disableFocusListener
-                        disableHoverListener
-                        disableTouchListener
-                        onClose={closeTooltip}
-                        open={tooltip}
-                      >
-                        <IconButton data-testid="tooltip-icon">
-                          <span className="icon-eyeshow">
-                            <EyeShow
-                              data-testid="show-icon"
-                              onClick={openTooltip}
-                            />
-                          </span>
-                        </IconButton>
-                      </Tooltip>
-                    </div>
-                  </ClickAwayListener>
-                  <span className="icon-pencil">
-                    <Pencil data-testid="edit-button" />
-                  </span>
-                </>
-              )}
-            </Grid>
+              </div>
+            </div>
+            {open ? (
+              <div className="dipaview-icons">
+                <span className="icon-eyeshow">
+                  <EyeShow />
+                </span>
+                <span className="icon-pencil">
+                  {editingIDList?.length ? (
+                    <Save onClick={() => handleUpdate()} data-testid="save" />
+                  ) : (
+                    <Pencil
+                      data-testid="edit-button"
+                      onClick={onPencilIconClick}
+                    />
+                  )}
+                </span>
+              </div>
+            ) : (
+              <div className="dipaview-icons">
+                <Tooltip
+                  title={`Created On:${tooltipValue}`}
+                  placement="right"
+                  disableFocusListener
+                  disableHoverListener
+                  disableTouchListener
+                  open={tooltip}
+                >
+                  <IconButton data-testid="tooltip-icon">
+                    <span className="icon-eyeshow">
+                      <EyeShow
+                        data-testid="show-icon"
+                        onClick={() => setTooltip(!tooltip)}
+                      />
+                    </span>
+                  </IconButton>
+                </Tooltip>
+                <span className="icon-pencil">
+                  <Pencil data-testid="edit-button-icon" />
+                </span>
+              </div>
+            )}
           </Grid>
         </AccordionSummary>
 
-        <AccordionDetails
-          className="accordion-details"
-          data-testid="accordion-segment"
-        >
+        <AccordionDetails className="accordion-details">
           <Grid item xs={2} className="accordion-details-grid">
             <Grid className="trash-plus-grid">
               <Plus
@@ -116,7 +133,7 @@ function DipaViewStructure({
               <Trash
                 className="trash-icon"
                 data-testid="delete-icon"
-                onClick={() => handleDelete(ID)}
+                onClick={() => setOpenModal(ID)}
               />
             </Grid>
             <Popover
@@ -127,46 +144,70 @@ function DipaViewStructure({
               data-testid="popover-card"
             >
               <Card interactive>
-                <div className="add-group">Add Group</div>
-                <div data-testid="add-segment">
-                  <Grid
-                    className="add-group-grid"
-                    onClick={() => handleAdd(ID)}
-                  >
-                    Add Segment
-                  </Grid>
-                </div>
+                <Grid
+                  className="add-group-grid"
+                  data-testid="add-group"
+                  onClick={() => handleAddGroup(ID)}
+                >
+                  Add Group
+                </Grid>
+
+                <Grid
+                  className="add-group-grid"
+                  data-testid="add-segment"
+                  onClick={() => handleAdd(ID)}
+                >
+                  Add Segment
+                </Grid>
               </Card>
             </Popover>
           </Grid>
-          {segments.map((segment) => (
-            <div className="segment-typography" key={segment.ID}>
-              <Typography>{segment.derive_seg}</Typography>
-            </div>
-          ))}
-
-          <div data-testid="accord-summary">
+          <Grid item xs={12} className="accordion-details-grid">
+            {segments.map((segment) => (
+              <div className="segment-typography" key={segment.ID}>
+                {editingIDList.includes(segment.ID) ? (
+                  <TextField
+                    placeholder="Segment.."
+                    onChange={(e) => onChangeSegment(segment.ID, e)}
+                    className="segment-text"
+                    defaultValue={segment?.derive_seg || ''}
+                    data-testid="segment-textfield"
+                  />
+                ) : (
+                  <Typography>{segment.derive_seg}</Typography>
+                )}
+              </div>
+            ))}
+          </Grid>
+          <div data-testid="accord-summary" className="dipaview-summary">
             {childs.map((seg, i) => (
               <AccordionSummary key={ID}>
-                <Typography>
-                  <DipaViewStructure
-                    key={seg.actual_text}
-                    ID={seg.ID}
-                    actualText={seg.actual_text}
-                    level={seg.level}
-                    segments={seg.derive_seg}
-                    childs={seg.child}
-                    open={seg.open}
-                    index={i}
-                    handleExpandChange={handleExpandChange}
-                  />
-                </Typography>
+                <DipaViewStructure
+                  key={seg.ID}
+                  ID={seg.ID}
+                  actualText={seg.actual_text}
+                  level={seg.level}
+                  segments={seg.derive_segemnt}
+                  childs={seg.child}
+                  open={seg.open}
+                  index={i}
+                  handleExpandChange={handleExpandChange}
+                  handleUpdate={handleUpdate}
+                  handleAdd={handleAdd}
+                  handleAddGroup={handleAddGroup}
+                  setOpenModal={setOpenModal}
+                  onChangeSegment={onChangeSegment}
+                  onChangeSegmentGroup={onChangeSegmentGroup}
+                  editingIDList={editingIDList}
+                  setEditingIDList={setEditingIDList}
+                  toggleEditingIDs={toggleEditingIDs}
+                />
               </AccordionSummary>
             ))}
           </div>
         </AccordionDetails>
       </Accordion>
-    </Grid>
+    </div>
   );
 }
 
@@ -179,6 +220,13 @@ DipaViewStructure.propTypes = {
   open: PropTypes.isRequired,
   handleExpandChange: PropTypes.isRequired,
   handleAdd: PropTypes.isRequired,
+  handleAddGroup: PropTypes.isRequired,
   handleUpdate: PropTypes.isRequired,
-  handleDelete: PropTypes.isRequired,
+  setOpenModal: PropTypes.isRequired,
+  onChangeSegment: PropTypes.isRequired,
+  onChangeSegmentGroup: PropTypes.isRequired,
+  editingIDList: PropTypes.isRequired,
+  setEditingIDList: PropTypes.isRequired,
+  toggleEditingIDs: PropTypes.isRequired,
+  tooltipValue: PropTypes.isRequired,
 };

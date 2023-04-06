@@ -35,6 +35,9 @@ function HeaderComponent(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [warning, setWarning] = useState(false);
   const [value, setValue] = useState(displayName);
+  useEffect(() => {
+    setValue(displayName);
+  }, [displayName]);
   const ref = useRef(null);
   const inpRef = useRef(null);
   const cellAction = ({ type, newValue }) => {
@@ -114,7 +117,7 @@ function HeaderComponent(props) {
           {
             table_row_index: '0',
             timepoint: timePoint,
-            value: 'new Column',
+            value: 'New Column',
           },
         ],
         row_props: [],
@@ -167,7 +170,7 @@ function HeaderComponent(props) {
       document.removeEventListener('touchstart', onBlur);
     };
     // eslint-disable-next-line
-  }, [inpRef]);
+  }, [inpRef,timePoint]);
 
   return (
     <>

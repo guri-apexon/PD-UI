@@ -10,8 +10,6 @@ import {
   getSoaSections,
   getTocSections,
   captalize,
-  fetchSectionHeaderList,
-  getSectionContentList,
   getProtocolTocDataResult,
   MetaDataVariable,
   deleteAttribute,
@@ -31,7 +29,7 @@ const userDetail = {
   userId: 'u1021402',
   email: 'test@iqvia.com',
 };
-describe('Protocol Saga Unit Test', () => {
+describe('Protocol Saga', () => {
   test('should run parsedData function', () => {
     const obj = {
       id: '1',
@@ -39,6 +37,7 @@ describe('Protocol Saga Unit Test', () => {
     parsedData(JSON.stringify(JSON.stringify(obj)));
   });
   // getSoaSections Starts
+
   test('should run getSoaSections function', () => {
     const obj = [
       {
@@ -399,146 +398,14 @@ describe('Protocol Saga Unit Test', () => {
     expect(mockCallApi).toHaveBeenCalledTimes(0);
   });
 
-  test('fetchSectionHeaderList success', async () => {
-    const dispatchedActions = [];
-    const mockOutput = {
-      success: true,
-    };
-    const mockApi = jest
-      .spyOn(api, 'httpCall')
-      .mockImplementation(() => Promise.resolve(mockOutput));
-    const fakeStore = {
-      dispatch: (action) => dispatchedActions.push(action),
-      getState: () => ({
-        user: {
-          userDetail,
-        },
-      }),
-    };
-    await runSaga(fakeStore, fetchSectionHeaderList, {
-      payload: { docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc' },
-    }).toPromise();
-    expect(mockApi).toHaveBeenCalledTimes(1);
-  });
-
-  test('fetchSectionHeaderList failure', async () => {
-    const dispatchedActions = [];
-    const mockOutput = {
-      success: false,
-    };
-    const mockApi = jest
-      .spyOn(api, 'httpCall')
-      .mockImplementation(() => Promise.resolve(mockOutput));
-    const fakeStore = {
-      dispatch: (action) => dispatchedActions.push(action),
-      getState: () => ({
-        user: {
-          userDetail,
-        },
-      }),
-    };
-    await runSaga(fakeStore, fetchSectionHeaderList, {
-      payload: { docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc' },
-    }).toPromise();
-    expect(mockApi).toHaveBeenCalledTimes(1);
-  });
-
-  test('getSectionContentList success', async () => {
-    const dispatchedActions = [];
-    const mockOutput = {
-      success: true,
-    };
-    const mockApi = jest
-      .spyOn(api, 'httpCall')
-      .mockImplementation(() => Promise.resolve(mockOutput));
-    const fakeStore = {
-      dispatch: (action) => dispatchedActions.push(action),
-      getState: () => ({
-        user: {
-          userDetail,
-        },
-      }),
-    };
-    await runSaga(fakeStore, getSectionContentList, {
-      payload: {
-        docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
-        protocol: '15-06',
-        linkId: 'linkId',
-      },
-    }).toPromise();
-    expect(mockApi).toHaveBeenCalledTimes(1);
-  });
-
-  test('getSectionContentList with no message success', async () => {
-    const dispatchedActions = [];
-    const mockOutput = {
-      message: 'No Access',
-    };
-    const mockApi = jest
-      .spyOn(api, 'httpCall')
-      .mockImplementation(() => Promise.resolve(mockOutput));
-    const fakeStore = {
-      dispatch: (action) => dispatchedActions.push(action),
-      getState: () => ({
-        user: {
-          userDetail,
-        },
-      }),
-    };
-    await runSaga(fakeStore, getSectionContentList, {
-      payload: {
-        docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
-        protocol: '15-06',
-        linkId: 'linkId',
-      },
-    }).toPromise();
-    expect(mockApi).toHaveBeenCalledTimes(1);
-  });
-
-  test('getSectionContentList failure', async () => {
-    const dispatchedActions = [];
-    const mockOutput = {
-      success: false,
-    };
-    const mockApi = jest
-      .spyOn(api, 'httpCall')
-      .mockImplementation(() => Promise.resolve(mockOutput));
-    const fakeStore = {
-      dispatch: (action) => dispatchedActions.push(action),
-      getState: () => ({
-        user: {
-          userDetail,
-        },
-      }),
-    };
-    await runSaga(fakeStore, getSectionContentList, {
-      payload: {
-        docId: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
-        protocol: '15-06',
-        linkId: 'linkId',
-      },
-    }).toPromise();
-    expect(mockApi).toHaveBeenCalledTimes(1);
-  });
-
   test('getProtocolTocDataResult without user try success', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
-      data: {
-        iqvdataToc: JSON.stringify({
-          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-        }),
-        iqvdataSoa: JSON.stringify({
-          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-        }),
-        iqvdataSummary: JSON.stringify({
-          data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-        }),
-      },
+      data: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]],
     };
     const payload = {
-      id: 'afsdwe',
+      docId: '1234',
     };
     const mockApi = jest
       .spyOn(api, 'httpCall')
@@ -786,6 +653,7 @@ describe('Protocol Saga Unit Test', () => {
 
     expect(mockApi).toHaveBeenCalledTimes(1);
   });
+
   test('fetchFileStream get', async () => {
     const dispatchedActions = [];
     const mockOutput = {
@@ -813,6 +681,7 @@ describe('Protocol Saga Unit Test', () => {
 
     expect(mockApi).toHaveBeenCalledTimes(1);
   });
+
   test('fetchFileStream get', async () => {
     const dispatchedActions = [];
     const payload = {
@@ -830,6 +699,7 @@ describe('Protocol Saga Unit Test', () => {
 
     expect(undefined).toBeUndefined();
   });
+
   test('setTOCActive get', async () => {
     const dispatchedActions = [];
     const payload = {
@@ -847,6 +717,7 @@ describe('Protocol Saga Unit Test', () => {
 
     expect(undefined).toBeUndefined();
   });
+
   test('setEnrichedAPI get', async () => {
     const dispatchedActions = [];
     const payload = {
@@ -880,6 +751,7 @@ describe('Protocol Saga Unit Test', () => {
     await runSaga(fakeStore, getSOAData, { payload }).toPromise();
     expect(undefined).toBeUndefined();
   });
+
   test('SOA_UPDATE_DETAILS  ', async () => {
     const dispatchedActions = [];
     const payload = {

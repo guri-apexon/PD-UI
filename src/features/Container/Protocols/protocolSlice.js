@@ -22,7 +22,6 @@ export const protocolSlice = createSlice({
       error: false,
       message: '',
     },
-    header: {},
     loader: false,
     protocol: '',
     sectionDetails: {
@@ -55,6 +54,8 @@ export const protocolSlice = createSlice({
     sectionLockDetails: {},
     enrichedword: {},
   },
+  dipaViewData: [],
+  allDipaViewData: [],
   reducers: {
     getSummary: (state, action) => {
       state.summary = action.payload;
@@ -67,9 +68,6 @@ export const protocolSlice = createSlice({
     },
     getCompare: (state, action) => {
       state.compare = action.payload;
-    },
-    getHeaderList: (state, action) => {
-      state.header = action.payload;
     },
     getSectionProtocol: (state, action) => {
       state.protocol = action.payload;
@@ -182,6 +180,12 @@ export const protocolSlice = createSlice({
     setEnrichedWord: (state, action) => {
       state.enrichedword = action.payload;
     },
+    getDipaViewData: (state, action) => {
+      state.dipaViewData = action.payload;
+    },
+    getAllDipaViewData: (state, action) => {
+      state.allDipaViewData = action.payload;
+    },
   },
 });
 
@@ -190,7 +194,6 @@ export const {
   getProcotoclToc,
   getAssociateDocuments,
   getCompare,
-  getHeaderList,
   setSectionDetails,
   getSectionProtocol,
   getProtocolTocData,
@@ -213,6 +216,8 @@ export const {
   setEnrichedWord,
   setLoader,
   setSectionLockDetails,
+  getDipaViewData,
+  getAllDipaViewData,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -222,7 +227,6 @@ export const protocolSummary = (state) => state.protocol.summary;
 export const viewResult = (state) => state.protocol.view;
 export const associateDocs = (state) => state.protocol.associateDocs;
 export const compareResult = (state) => state.protocol.compare;
-export const headerResult = (state) => state.protocol.header;
 export const protocolResult = (state) => state.protocol.protocol;
 export const sectionDetails = (state) => state.protocol.sectionDetails;
 export const protocolTocData = (state) => state.protocol.protocolTocData;
@@ -241,5 +245,6 @@ export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const Enrichedword = (state) => state.protocol.enrichedword;
 export const SOAData = (state) => state.protocol.SOAData;
 export const sectionLockDetails = (state) => state.protocol.sectionLockDetails;
-
+export const dipaViewData = (state) => state.protocol.dipaViewData;
+export const allDipaViewData = (state) => state.protocol.allDipaViewData;
 export default protocolSlice.reducer;
