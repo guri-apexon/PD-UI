@@ -19,6 +19,7 @@ import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import AddClinicalTerm from '../EnrichedContent/AddClinicalTerm';
 import DigitizeAccordion from './DigitizeAccordion';
+import { replaceHtmlTags } from './utils';
 
 function DigitalizeCard({
   sectionNumber,
@@ -61,7 +62,15 @@ function DigitalizeCard({
   useEffect(() => {
     if (summary?.data?.length) {
       setHeaderList(
-        summary.data.filter((x) => x.source_file_section !== 'blank_header'),
+        summary.data.map((x) => {
+          if (x.source_file_section !== 'blank_header') {
+            return {
+              ...x,
+              source_file_section: replaceHtmlTags(x.source_file_section),
+            };
+          }
+          return x;
+        }),
       );
     } else {
       setHeaderList([]);

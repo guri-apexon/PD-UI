@@ -13,11 +13,11 @@ export const mathSymbols = [
   },
   {
     id: '004',
-    name: '⋜',
+    name: '≥',
   },
   {
     id: '005',
-    name: '⋝',
+    name: '≤',
   },
   {
     id: '006',
