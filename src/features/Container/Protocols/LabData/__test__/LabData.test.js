@@ -186,7 +186,6 @@ describe('LabData', () => {
     const screen = render(<LabData docId={docId} />, {
       initialState,
     });
-    screen.debug();
     const editAll = screen.getByTestId('editall');
     expect(editAll).toBeInTheDocument();
     fireEvent.click(editAll);
