@@ -22,7 +22,7 @@ const initialState = {
           parameter: '',
           doc_id: '3b44c1d5-f5f7-44ab-901a-3f53c2ba751d',
           procedure_panel: '',
-          assessment: 'Hematology ',
+          assessment: 'Hematology',
           pname: '',
           ProcessVersion: '',
           table_link_text: 'Table 7 Laboratory Safety Variables',
@@ -92,6 +92,27 @@ const initialState = {
           table_sequence_index: -1,
           isUpdate: true,
         },
+        {
+          parameter_text: 'B-Absolute leukocyte differential count:',
+          id: '0eae8180-a06b-11ed-8ba8-005056ab26e5',
+          run_id: '',
+          procedure_panel_text: 'Haematology/Haemostasis (whole blood)',
+          dts: '20230130065337',
+          ProcessMachineName: '',
+          roi_id: '840ee3b5-5447-4f1c-9a6a-2af6fa3ce6fc',
+          section: '',
+          isVreated: true,
+          table_roi_id: '6390ad37-2904-45c5-a1b7-a6313f8cbb6c',
+          parameter: '',
+          doc_id: '3b44c1d5-f5f7-44ab-901a-3f53c2ba751d',
+          procedure_panel: '',
+          assessment: 'Hematology ',
+          pname: 'ddfsdfs',
+          ProcessVersion: '',
+          table_link_text: 'Table 7 Laboratory Safety Variables',
+          table_sequence_index: -1,
+          isCreated: true,
+        },
       ],
     },
   },
@@ -136,6 +157,7 @@ describe('LabData', () => {
     userEvent.type(screen.getAllByRole('textbox')[0], 'abc');
     fireEvent.click(screen.getByText('Save'));
   });
+
   test('should render to click on ellipsis and delete button', () => {
     const screen = render(<LabData docId={docId} />, {
       initialState,
@@ -146,5 +168,30 @@ describe('LabData', () => {
     expect(screen.getByText('Delete')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete'));
     fireEvent.click(screen.getByText('Yes'));
+  });
+
+  test('edit and save action', () => {
+    const screen = render(<LabData docId={docId} />, {
+      initialState,
+    });
+    const editAll = screen.getByTestId('editall');
+    expect(editAll).toBeInTheDocument();
+    fireEvent.click(editAll);
+    const saveall = screen.getByTestId('saveall');
+    expect(saveall).toBeInTheDocument();
+    fireEvent.click(saveall);
+  });
+
+  test('handleAdd function', () => {
+    const screen = render(<LabData docId={docId} />, {
+      initialState,
+    });
+    const editAll = screen.getByTestId('editall');
+    expect(editAll).toBeInTheDocument();
+    fireEvent.click(editAll);
+    fireEvent.mouseEnter(screen.getAllByText('Hematology')[0]);
+    const addItem = screen.getAllByTestId('add-item')[0];
+    expect(addItem).toBeInTheDocument();
+    fireEvent.click(addItem);
   });
 });
