@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Card from 'apollo-react/components/Card/Card';
-import _ from 'lodash';
 import TextField from 'apollo-react/components/TextField';
 import Save from 'apollo-react-icons/Save';
 import Pencil from 'apollo-react-icons/Pencil';
