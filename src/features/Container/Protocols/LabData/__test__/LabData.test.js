@@ -88,7 +88,6 @@ describe('LabData', () => {
     });
     fireEvent.click(screen.getByTestId('editall'));
     expect(screen.getByTestId('saveall')).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId('saveall'));
   });
   test('should render to click on filter button', () => {
     const screen = render(<LabData docId={docId} />, {
@@ -112,7 +111,6 @@ describe('LabData', () => {
     fireEvent.change(screen.getAllByRole('textbox')[0]);
     userEvent.type(screen.getAllByRole('textbox')[0], 'abc');
     fireEvent.click(screen.getByText('Save'));
-    fireEvent.click(screen.getByTestId('saveall'));
   });
   test('should render to click on ellipsis and delete button', () => {
     const screen = render(<LabData docId={docId} />, {
@@ -129,7 +127,7 @@ describe('LabData', () => {
     const screen = render(<LabData docId={docId} />, {
       initialState,
     });
+    fireEvent.click(screen.getByTestId('editall'));
     fireEvent.click(screen.getByTestId('add-item'));
-    fireEvent.click(screen.getByText('Create'));
   });
 });
