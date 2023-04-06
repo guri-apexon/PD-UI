@@ -497,22 +497,30 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
+  // globalPreferredTerm;
+
   const getEnrichedText = (content, clinicalTerms, preferredTerms) => {
     let newContent = content;
-    if (globalPreferredTerm || showPrefferedTerm) {
-      if (!isEmpty(preferredTerms)) {
+
+    if (clinicalTerms && preferredTerms) {
+      if (
+        showEnrichedContent ||
+        rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+      ) {
+        newContent = createFullMarkup(
+          createEnrichedText(content, clinicalTerms),
+        );
+      }
+    }
+
+    if (clinicalTerms && preferredTerms) {
+      if (globalPreferredTerm || showPrefferedTerm) {
         newContent = createFullMarkup(
           createPreferredText(content, preferredTerms),
         );
       }
     }
-    if (
-      (!isEmpty(clinicalTerms) &&
-        rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM) ||
-      showEnrichedContent
-    ) {
-      newContent = createFullMarkup(createEnrichedText(content, clinicalTerms));
-    }
+
     return newContent;
   };
 
@@ -779,7 +787,7 @@ function DigitizeAccordion({
                                 <SanitizeHTML
                                   html={getEnrichedText(
                                     section.content,
-                                    section.clinical_terms,
+                                    section?.clinical_terms,
                                     section?.preferred_terms,
                                   )}
                                 />

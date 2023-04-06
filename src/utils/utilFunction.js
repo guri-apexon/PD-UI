@@ -161,24 +161,23 @@ export const createFullMarkup = (str) => {
   };
 };
 
-export const createEnrichedText = (content, terms) => {
-  let text = content;
-  if (terms) {
-    const arr = Object.keys(terms);
-    arr.forEach((term) => {
-      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, text);
-    });
-  }
-
-  return text;
-};
-
 export const createPreferredText = (content, terms) => {
   let text = content;
   if (terms) {
     const arr = Object.keys(terms);
-    arr.forEach((term) => {
-      text = replaceall(term, `<b class="Preferred-txt">${term}</b>`, content);
+    arr?.forEach((term) => {
+      text = replaceall(term, `<b class="Preferred-txt">${term}</b>`, text);
+    });
+  }
+  return text;
+};
+
+export const createEnrichedText = (content, terms) => {
+  let text = content;
+  if (terms) {
+    const arr = Object.keys(terms);
+    arr?.forEach((term) => {
+      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, text);
     });
   }
 
