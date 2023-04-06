@@ -336,7 +336,13 @@ function DigitizeAccordion({
   const checkUnsavedTable = () => {
     if (sectionContent && Array.isArray(sectionContent)) {
       const arr = sectionContent.filter(
-        (obj) => obj.type === CONTENT_TYPE.TABLE && !obj.isSaved,
+        (obj) =>
+          obj.type === CONTENT_TYPE.TABLE &&
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
+            ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
+              [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
+                obj.qc_change_type,
+              ))),
       );
       return arr.length > 0;
     }
