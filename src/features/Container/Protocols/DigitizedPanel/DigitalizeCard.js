@@ -67,6 +67,7 @@ function DigitalizeCard({
       setHeaderList([]);
     }
   }, [summary]);
+
   const scrollToTop = (index) => {
     setTimeout(() => {
       sectionRef[index]?.current?.scrollIntoView(true);
@@ -149,6 +150,20 @@ function DigitalizeCard({
     // eslint-disable-next-line
   }, [paginationPage]);
 
+  const handleOpenAccordion = (refObj) => {
+    setHeaderList(
+      headerList.map((x) => {
+        if (!refObj && x.linkandReference) {
+          return { ...x, linkandReference: null };
+        }
+        if (refObj?.link_id === x.link_id) {
+          return { ...x, linkandReference: refObj.destination_link_text };
+        }
+        return x;
+      }),
+    );
+  };
+
   return (
     <div data-testid="protocol-column-wrapper">
       {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
@@ -191,6 +206,7 @@ function DigitalizeCard({
                         setCurrentEditCard={setCurrentEditCard}
                         currentEditCard={currentEditCard}
                         handleLinkId={handleLinkId}
+                        handleOpenAccordion={handleOpenAccordion}
                       />
                     </div>
                   </div>
