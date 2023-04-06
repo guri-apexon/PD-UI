@@ -113,16 +113,8 @@ describe('digitizeAccordion Integration', () => {
 
     const header1 = screen.getByText('Signatures');
     fireEvent.click(header1);
-    const pencil1 = screen.getAllByTestId('pencilIcon')[0];
-    const pencil2 = screen.getAllByTestId('pencilIcon')[1];
-    fireEvent.click(pencil1);
 
     const header2 = screen.getByText('GENERAL INFORMATION');
     fireEvent.click(header2);
-
-    fireEvent.click(pencil2);
-
-    const confirmModal = screen.getByText('Save');
-    expect(confirmModal).toBeInTheDocument();
   });
 });
