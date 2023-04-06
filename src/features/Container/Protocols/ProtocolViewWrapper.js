@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 import PDFViewer from './SourcePanel/PdfViewer';
 import Digitize from './DigitizedPanel/DigitalizeCard';
 import BladeLeft from './BladeLeft/BladeLeft';
-import BladeRight from './BladeRight/BladeRight';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
+import BladeRight from './BladeRight/BladeRight';
 
 class ProtocolViewWrapper extends React.Component {
   constructor(props) {

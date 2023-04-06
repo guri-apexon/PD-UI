@@ -48,7 +48,7 @@ function createFullMarkup(str) {
 function Alerts() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
-  const notificationsMenuPropS = useSelector(navbarNotifications);
+  const notificationData = useSelector(navbarNotifications);
   const history = useHistory();
 
   const cache = useRef(
@@ -76,12 +76,13 @@ function Alerts() {
     setAnchorEl(!anchorEl);
   };
 
-  const newNotifications = notificationsMenuPropS.filter(
+  const newNotifications = notificationData.filter(
     (item) => item.read === false,
   );
+
   const getDayLabelText = (timestamp) => {
     return moment().isSame(timestamp, 'day')
-      ? 'Today'
+      ? moment(timestamp).local().format('HH:mm A')
       : moment().subtract(1, 'day').isSame(timestamp, 'day')
       ? 'Yesterday'
       : moment(timestamp).format(' MMM D');
@@ -125,80 +126,81 @@ function Alerts() {
             <h4 className="Heading-main" data-testid="heading">
               Notification
             </h4>
-            <AutoSizer data-testId="list-item">
-              {({
-                width,
-                maxWidth,
-                borderColor,
-                boxShadow,
-                padding,
-                height,
-                overflow,
-              }) => (
-                <List
-                  data-testId="list-item-2"
-                  width={width}
-                  maxWidth={maxWidth}
-                  borderColor={borderColor}
-                  boxShadow={boxShadow}
-                  padding={padding}
-                  height={height}
-                  overflow={overflow}
-                  rowHeight={cache.current.rowHeight}
-                  deferredMeasurementCache={cache.current}
-                  rowCount={notificationsMenuPropS.length}
-                  rowRenderer={({ key, index, style, parent }) => {
-                    const notification = notificationsMenuPropS[index];
-                    return (
-                      <CellMeasurer
-                        key={key}
-                        cache={cache.current}
-                        parent={parent}
-                        rowIndex={index}
-                        data-testId="cell-measurer"
-                      >
-                        <div style={style}>
-                          {[notification]?.map((item, i) => {
-                            let header = null;
-                            if (
-                              i === 0 ||
-                              !moment(notification[i - 1]?.timestamp).isSame(
-                                item.timestamp,
-                                'day',
-                              )
-                            ) {
-                              header = getDayLabelText(item.timestamp);
-                            }
-                            return (
-                              <span key={item.id}>
+            {notificationData?.length > 0 ? (
+              <AutoSizer data-testId="list-item">
+                {({
+                  width,
+                  maxWidth,
+                  borderColor,
+                  boxShadow,
+                  padding,
+                  height,
+                  overflow,
+                }) => (
+                  <List
+                    data-testId="list-item-2"
+                    width={width}
+                    maxWidth={maxWidth}
+                    borderColor={borderColor}
+                    boxShadow={boxShadow}
+                    padding={padding}
+                    height={height}
+                    overflow={overflow}
+                    rowHeight={cache.current.rowHeight}
+                    deferredMeasurementCache={cache.current}
+                    rowCount={notificationData.length}
+                    rowRenderer={({ key, index, style, parent }) => {
+                      const notification = notificationData[index];
+                      let header = null;
+                      if (
+                        index === 0 ||
+                        !moment(notificationData[index - 1]?.timestamp).isSame(
+                          notification.timestamp,
+                          'day',
+                        )
+                      ) {
+                        header = getDayLabelText(notification.timestamp);
+                      }
+                      return (
+                        <CellMeasurer
+                          key={key}
+                          cache={cache.current}
+                          parent={parent}
+                          rowIndex={index}
+                          data-testId="cell-measurer"
+                        >
+                          {
+                            <div style={style}>
+                              <span key={notification.id}>
                                 <div
                                   data-testId="list-Item"
                                   className={`ButtonBase-root ListItem-root 
-                    ${item.read ? 'listItem' : 'listItemNotRead'}
+                    ${notification.read ? 'listItem' : 'listItemNotRead'}
                    ListItem-button`}
                                   role="button"
-                                  key={`${item.id}-${item.timestamp}`}
+                                  key={`${notification.id}-${notification.timestamp}`}
                                   onClick={() =>
                                     handleRead(
-                                      item.aidocId,
-                                      item.id,
-                                      item.protocol,
+                                      notification.aidocId,
+                                      notification.id,
+                                      notification.protocol,
                                     )
                                   }
                                 >
                                   <div className="ListItemText-root listItemTextRoot ListItemText-multiline">
-                                    {item.header && item.header.length > 30 ? (
+                                    {notification.header &&
+                                    notification.header.length > 30 ? (
                                       <Tooltip
-                                        title={item.header}
+                                        title={notification.header}
                                         placement="top"
                                       >
                                         <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1 Typography-displayBlock">
-                                          {item.header}
+                                          {notification.header}
                                         </span>
                                       </Tooltip>
                                     ) : (
                                       <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1 Typography-displayBlock">
-                                        {item.header}
+                                        {notification.header}
                                       </span>
                                     )}
                                     <Tooltip
@@ -206,7 +208,7 @@ function Alerts() {
                                       subtitle={
                                         <div
                                           dangerouslySetInnerHTML={createFullMarkup(
-                                            item.details,
+                                            notification.details,
                                           )}
                                         />
                                       }
@@ -215,7 +217,7 @@ function Alerts() {
                                       <p
                                         className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock"
                                         dangerouslySetInnerHTML={createFullMarkup(
-                                          item.details,
+                                          notification.details,
                                         )}
                                       />
                                     </Tooltip>
@@ -230,9 +232,9 @@ function Alerts() {
                                       onClick={(e) =>
                                         onDelete(
                                           e,
-                                          item.aidocId,
-                                          item.id,
-                                          item.protocol,
+                                          notification.aidocId,
+                                          notification.id,
+                                          notification.protocol,
                                         )
                                       }
                                     >
@@ -240,22 +242,23 @@ function Alerts() {
                                     </IconButton>
                                   </div>
                                   <p className="Typography-root timestamp Typography-body2 Typography-gutterBottom">
-                                    {/* {moment(item.timestamp).format(' MMM D')} */}
                                     {header && <div>{header}</div>}
                                   </p>
 
                                   <span className="TouchRipple-root" />
                                 </div>
                               </span>
-                            );
-                          })}
-                        </div>
-                      </CellMeasurer>
-                    );
-                  }}
-                />
-              )}
-            </AutoSizer>
+                            </div>
+                          }
+                        </CellMeasurer>
+                      );
+                    }}
+                  />
+                )}
+              </AutoSizer>
+            ) : (
+              <h4 className="error-message">No New Notifications</h4>
+            )}
           </Popover>
         </div>
       }
