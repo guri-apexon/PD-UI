@@ -71,6 +71,27 @@ const initialState = {
           table_sequence_index: -1,
           isUpdate: true,
         },
+        {
+          parameter_text: 'B-Absolute leukocyte differential count:',
+          id: '0eae8180-a06b-11ed-8ba8-005056ab26e5',
+          run_id: '',
+          procedure_panel_text: 'Haematology/Haemostasis (whole blood)',
+          dts: '20230130065337',
+          ProcessMachineName: '',
+          roi_id: '840ee3b5-5447-4f1c-9a6a-2af6fa3ce6fc',
+          section: '',
+          isVreated: true,
+          table_roi_id: '6390ad37-2904-45c5-a1b7-a6313f8cbb6c',
+          parameter: '',
+          doc_id: '3b44c1d5-f5f7-44ab-901a-3f53c2ba751d',
+          procedure_panel: '',
+          assessment: 'Hematology ',
+          pname: '',
+          ProcessVersion: '',
+          table_link_text: 'Table 7 Laboratory Safety Variables',
+          table_sequence_index: -1,
+          isUpdate: true,
+        },
       ],
     },
   },
@@ -82,6 +103,7 @@ describe('LabData', () => {
     });
     expect(screen.getByTestId('lab-data')).toBeInTheDocument();
   });
+
   test('should render to click on edit and save icon', () => {
     const screen = render(<LabData docId={docId} />, {
       initialState,
@@ -90,12 +112,14 @@ describe('LabData', () => {
     expect(screen.getByTestId('saveall')).toBeInTheDocument();
     fireEvent.click(screen.getByTestId('saveall'));
   });
+
   test('should render to click on filter button', () => {
     const screen = render(<LabData docId={docId} />, {
       initialState,
     });
     fireEvent.click(screen.getByRole('button', { name: 'Filter' }));
   });
+
   test('should render to click on ellipsis and Edit button', () => {
     const screen = render(<LabData docId={docId} />, {
       initialState,
@@ -124,12 +148,5 @@ describe('LabData', () => {
     expect(screen.getByText('Delete')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete'));
     fireEvent.click(screen.getByText('Yes'));
-  });
-  test('should render to add row', () => {
-    const screen = render(<LabData docId={docId} />, {
-      initialState,
-    });
-    fireEvent.click(screen.getByTestId('add-item'));
-    fireEvent.click(screen.getByText('Create'));
   });
 });

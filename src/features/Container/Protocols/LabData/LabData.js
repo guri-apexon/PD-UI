@@ -136,20 +136,21 @@ function LabData({ docId }) {
       });
     }
     result = rowData?.filter((value) => value.isCreated);
-
-    if (
-      result[0].parameter_text.length > 0 ||
-      result[0].procedure_panel_text.length > 0 ||
-      result[0].assessment.length > 0 ||
-      result[0].pname.length > 0 ||
-      result[0].table_link_text.length > 0
-    ) {
-      dispatch({
-        type: 'CREATE_LAB_DATA',
-        payload: {
-          data: result[0],
-        },
-      });
+    if (result.length > 0) {
+      if (
+        result[0].parameter_text.length > 0 ||
+        result[0].procedure_panel_text.length > 0 ||
+        result[0].assessment.length > 0 ||
+        result[0].pname.length > 0 ||
+        result[0].table_link_text.length > 0
+      ) {
+        dispatch({
+          type: 'CREATE_LAB_DATA',
+          payload: {
+            data: result[0],
+          },
+        });
+      }
     }
     getLabData();
 
