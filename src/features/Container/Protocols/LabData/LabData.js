@@ -135,19 +135,19 @@ function LabData({ docId }) {
         },
       });
     }
-    const createdResult = rowData?.filter((value) => value.isCreated);
+    const createdResult = rowData?.find((value) => value.isCreated);
     if (createdResult) {
       if (
-        createdResult[0].parameter_text.length > 0 ||
-        createdResult[0].procedure_panel_text.length > 0 ||
-        createdResult[0].assessment.length > 0 ||
-        createdResult[0].pname.length > 0 ||
-        createdResult[0].table_link_text.length > 0
+        createdResult.parameter_text.length > 0 ||
+        createdResult.procedure_panel_text.length > 0 ||
+        createdResult.assessment.length > 0 ||
+        createdResult.pname.length > 0 ||
+        createdResult.table_link_text.length > 0
       ) {
         dispatch({
           type: 'CREATE_LAB_DATA',
           payload: {
-            data: createdResult[0],
+            data: createdResult,
           },
         });
       }
