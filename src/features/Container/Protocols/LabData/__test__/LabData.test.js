@@ -22,7 +22,7 @@ const initialState = {
           parameter: '',
           doc_id: '3b44c1d5-f5f7-44ab-901a-3f53c2ba751d',
           procedure_panel: '',
-          assessment: 'Hematology ',
+          assessment: 'Hematology',
           pname: '',
           ProcessVersion: '',
           table_link_text: 'Table 7 Laboratory Safety Variables',
@@ -136,6 +136,7 @@ describe('LabData', () => {
     userEvent.type(screen.getAllByRole('textbox')[0], 'abc');
     fireEvent.click(screen.getByText('Save'));
   });
+
   test('should render to click on ellipsis and delete button', () => {
     const screen = render(<LabData docId={docId} />, {
       initialState,
@@ -146,5 +147,31 @@ describe('LabData', () => {
     expect(screen.getByText('Delete')).toBeInTheDocument();
     fireEvent.click(screen.getByText('Delete'));
     fireEvent.click(screen.getByText('Yes'));
+  });
+
+  test('edit and save action', () => {
+    const screen = render(<LabData docId={docId} />, {
+      initialState,
+    });
+    const editAll = screen.getByTestId('editall');
+    expect(editAll).toBeInTheDocument();
+    fireEvent.click(editAll);
+    const saveall = screen.getByTestId('saveall');
+    expect(saveall).toBeInTheDocument();
+    fireEvent.click(saveall);
+  });
+
+  test('handleAdd function', () => {
+    const screen = render(<LabData docId={docId} />, {
+      initialState,
+    });
+    screen.debug();
+    const editAll = screen.getByTestId('editall');
+    expect(editAll).toBeInTheDocument();
+    fireEvent.click(editAll);
+    fireEvent.mouseEnter(screen.getAllByText('Hematology')[0]);
+    const addItem = screen.getAllByTestId('add-item')[0];
+    expect(addItem).toBeInTheDocument();
+    fireEvent.click(addItem);
   });
 });
