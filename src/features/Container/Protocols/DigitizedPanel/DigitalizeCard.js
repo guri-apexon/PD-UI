@@ -17,6 +17,7 @@ import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
 import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import LabData from '../LabData/LabData';
 import AddClinicalTerm from '../EnrichedContent/AddClinicalTerm';
 import DigitizeAccordion from './DigitizeAccordion';
 import { replaceHtmlTags } from './utils';
@@ -230,6 +231,9 @@ function DigitalizeCard({
       )}
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
+      )}
+      {rightValue === PROTOCOL_RIGHT_MENU.LAB_DATA && (
+        <LabData docId={data.id} />
       )}
       <div>
         {data.userPrimaryRoleFlag && (
