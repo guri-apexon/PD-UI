@@ -53,7 +53,7 @@ describe.only('leftBlade should Opne when Click', () => {
     expect(SignaturesChild).toBeInTheDocument();
     userEvent.click(SignaturesChild);
 
-    const SignaturesSub = screen.getByText('Signatures_sub');
+    const SignaturesSub = screen.getByText('Signatures');
     expect(SignaturesSub).toBeInTheDocument();
     userEvent.click(SignaturesSub);
   });
