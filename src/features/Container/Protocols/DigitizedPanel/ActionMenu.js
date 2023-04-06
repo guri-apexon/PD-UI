@@ -99,8 +99,10 @@ function ActionMenu({
               disabled={disabledSaveIcon}
               className="btn-icons"
             >
-              <Save />
-              <span className="save-name">{expanded && 'Save Content'}</span>
+              <Save className={`${!disabledSaveIcon ? 'active_color' : ''}`} />
+              <span className={`${!disabledSaveIcon ? 'active_color' : ''}`}>
+                {expanded && 'Save Content'}
+              </span>
             </Button>
           </span>
         )}
