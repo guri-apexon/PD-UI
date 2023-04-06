@@ -123,6 +123,7 @@ function DigitizeAccordion({
         handleOpenAccordion();
       }
     }
+    // eslint-disable-next-line
   }, [item.linkandReference]);
 
   const {
@@ -512,6 +513,7 @@ function DigitizeAccordion({
     ) {
       newContent = createEnrichedText(content, clinicalTerms);
     }
+    newContent = createFullMarkup(content);
     return newContent;
   };
 

@@ -13,7 +13,7 @@ import { protocolTocData, TOCActive } from '../protocolSlice';
 const noBorderStyle = {
   border: 'none',
 };
-function BladeLeft({ handlePageNo, dataSummary }) {
+function BladeLeft({ handlePageNo }) {
   const [open, setOpen] = useState(true);
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
@@ -171,5 +171,4 @@ export default BladeLeft;
 BladeLeft.propTypes = {
   // eslint-disable-next-line react/require-default-props
   handlePageNo: PropTypes.func,
-  dataSummary: PropTypes.isRequired,
 };

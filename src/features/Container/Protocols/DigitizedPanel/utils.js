@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 const scrollToLinkandReference = (index, linkandReference) => {
   const dvParent = document.getElementsByClassName('section-single-content')[
     index
@@ -18,7 +20,7 @@ const scrollToLinkandReference = (index, linkandReference) => {
           .getBoundingClientRect().top,
       );
     } catch (error) {
-      console.log(error, 'scroll error');
+      toast.error('Error while finding refrence');
     }
   }
 };

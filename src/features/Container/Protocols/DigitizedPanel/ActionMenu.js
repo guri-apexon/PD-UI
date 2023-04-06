@@ -62,6 +62,7 @@ function ActionMenu({
       const auditData = Object.keys(item?.audit_info);
       setAuditInformation(auditData);
     }
+    // eslint-disable-next-line
   }, []);
 
   return (
