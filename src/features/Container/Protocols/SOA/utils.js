@@ -2,6 +2,7 @@ import CellRenderer from './CellRenderers/CellRenderer';
 import { TableConst } from './Constants';
 import FirstColumn from './CellRenderers/FirstColumn';
 import HeaderComponent from './CellRenderers/HeaderComponent';
+import HeaderGroupComponent from './CellRenderers/HeaderGroupComponent';
 
 const addColumnDefs = (item) => {
   if (item.isFirstColumn) {
@@ -14,6 +15,7 @@ const addColumnDefs = (item) => {
   item.headerClass = TableConst.headerClass;
   item.suppressSizeToFit = true;
   item.headerComponent = HeaderComponent;
+  item.headerGroupComponent = HeaderGroupComponent;
   item.editable = true;
   item.minWidth = 150;
   item.maxWidth = 250;

@@ -196,6 +196,15 @@ const METADATA_LIST = [
   { label: 'Endpoint and Objectives' },
 ];
 
+const CONFIG_API_VARIABLES = [
+  'clinical_terms',
+  'time_points',
+  'preferred_terms',
+  'redaction_attributes',
+  'references',
+  'properties',
+];
+
 export {
   SORT_DROPDOWN,
   USER_MENU,
@@ -208,4 +217,5 @@ export {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
   METADATA_LIST,
+  CONFIG_API_VARIABLES,
 };

@@ -11,7 +11,9 @@ const dispatchSectionEvent = jest.fn();
 const testLineID = '1';
 const testEdit = true;
 const testContent = '';
-const mockedProtocolContextValue = { dispatchSectionEvent };
+const mockedProtocolContextValue = {
+  dispatchSectionEvent,
+};
 
 const renderImageUploader = (
   lineID = testLineID,
@@ -42,7 +44,9 @@ describe('ImageUploader', () => {
     const { getByTestId, getByText } = render(
       <Provider store={store}>
         <ProtocolContext.Provider
-          value={{ dispatchSectionEvent: mockDispatchSectionEvent }}
+          value={{
+            dispatchSectionEvent: mockDispatchSectionEvent,
+          }}
         >
           <ImageUploader lineID="1" content="" edit />
         </ProtocolContext.Provider>
@@ -58,7 +62,9 @@ describe('ImageUploader', () => {
     const { getByTestId } = render(
       <Provider store={store}>
         <ProtocolContext.Provider
-          value={{ dispatchSectionEvent: mockDispatchSectionEvent }}
+          value={{
+            dispatchSectionEvent: mockDispatchSectionEvent,
+          }}
         >
           <ImageUploader lineID="1" content="sample.jpg" edit={false} />
         </ProtocolContext.Provider>

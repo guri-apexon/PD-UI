@@ -10,7 +10,6 @@ import protocolPageSlice, {
   getEnrichedValue,
   getFileStream,
   updateSectionData,
-  getHeaderList,
   getMetadataApiCall,
   getMetaDataSummaryField,
   getPdfData,
@@ -20,7 +19,6 @@ import protocolPageSlice, {
   getSectionProtocol,
   getSummary,
   getTOCActive,
-  headerResult,
   metadataApiCallValue,
   protocolResult,
   protocolSummary,
@@ -128,19 +126,7 @@ describe(' ProtocolSlice Test Suite', () => {
     ).toEqual({ ...initialState, compare: compData });
   });
 
-  test('getHeaderList slice', () => {
-    const payload = {
-      actionData: 'actionData',
-    };
-    expect(
-      protocolPageSlice(initialState, {
-        type: getHeaderList.type,
-        payload,
-      }),
-    ).toEqual({ ...initialState, header: payload });
-  });
-
-  test('getHeaderList slice', () => {
+  test('getSectionProtocol slice', () => {
     const payload = {
       actionData: 'actionData',
     };
@@ -321,7 +307,6 @@ describe(' ProtocolSlice Test Suite', () => {
     viewResult(state);
     associateDocs(state);
     compareResult(state);
-    headerResult(state);
     protocolResult(state);
     sectionDetails(state);
     protocolTocData(state);
@@ -502,7 +487,6 @@ describe(' ProtocolSlice Test Suite', () => {
     viewResult(state);
     associateDocs(state);
     compareResult(state);
-    headerResult(state);
     protocolResult(state);
     sectionDetails(state);
     protocolTocData(state);

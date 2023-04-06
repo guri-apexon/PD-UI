@@ -58,7 +58,6 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
     if (e) {
       const { className } = e.target;
       const elemClassnames = getResizerClassNames();
-
       if (elemClassnames.includes(className.toString()))
         document.addEventListener('mousemove', changeScale, false);
     }
