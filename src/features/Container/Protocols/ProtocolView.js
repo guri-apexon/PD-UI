@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   viewResult,
-  headerResult,
+  protocolTocData,
   updateSectionData,
   setSaveEnabled,
 } from './protocolSlice';
@@ -13,7 +13,7 @@ import { prepareContent } from '../../../utils/utilFunction';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
-  const summary = useSelector(headerResult);
+  const summary = useSelector(protocolTocData);
   const dispatch = useDispatch();
 
   const [selectedSection, setSelectedSection] = useState({});

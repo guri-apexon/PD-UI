@@ -10,7 +10,7 @@ import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getKeyFromEnrichText } from '../../../../utils/utilFunction';
 import { EnrichedValue } from '../protocolSlice';
@@ -25,6 +25,7 @@ function MedicalTerm({
   linkId,
   docId,
 }) {
+  const wrapperRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [SanchorEl, setSAnchorEl] = useState(null);
   const [selectedTerm, setSelectedTerm] = useState(null);
@@ -46,6 +47,19 @@ function MedicalTerm({
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
   }, [clinicalTermsArray]);
+
+  const handleClickOutside = (event) => {
+    if (wrapperRef?.current && !wrapperRef?.current?.contains(event.target)) {
+      setSelectedChild(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, []);
 
   function handlePencilClick(selectedItem) {
     setShowIcons(true);
@@ -272,7 +286,12 @@ function MedicalTerm({
   }
   return (
     <div className="enriched-menu-wrapper" data-testId="medical-term">
-      <Popper open={!!anchorEl} anchorEl={anchorEl} placement="bottom-start">
+      <Popper
+        open={!!anchorEl}
+        anchorEl={anchorEl}
+        placement="bottom-start"
+        className="popper"
+      >
         <Card interactive className="main-popper">
           <div className="terms-list" data-testId="term-list">
             {clinicalTerms.map((item) => {
@@ -284,11 +303,17 @@ function MedicalTerm({
                     className="term-item"
                     onClick={(e) => {
                       setSelectedTerm(item.key);
-                      setSAnchorEl(e.currentTarget);
+                      setSAnchorEl(!SanchorEl ? e.currentTarget : null);
+                      setNewTermValue(childTermValue);
                     }}
+                    disabled={isEmpty(
+                      clinicalTermsArr?.[enrichedText]?.[item.key],
+                    )}
                   >
                     {item.value}
-                    {isActive && childArr.length > 0 && <ArrowRight />}
+                    {isActive && childArr.length > 0 && SanchorEl && (
+                      <ArrowRight />
+                    )}
                   </Button>
                 </li>
               );
@@ -308,12 +333,13 @@ function MedicalTerm({
         data-testId="childpopper"
         open={!!SanchorEl}
         anchorEl={SanchorEl}
+        className="popper"
         placement="right-start"
         transition
       >
         <Card interactive className="sub-popper">
           {childArr.length > 0 && (
-            <div className="terms-list">
+            <div className="terms-list" ref={wrapperRef}>
               {childArr?.map((item) => {
                 return (
                   <li key={item}>
