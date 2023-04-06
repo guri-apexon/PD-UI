@@ -29,6 +29,11 @@ import {
   TOCActive,
   setSOAData,
   getSectionIndex,
+  getLabData,
+  updateGetLabData,
+  // eslint-disable-next-line import/named
+  deleteGetLabData,
+  createGetLabData,
   setLoader,
   resetSectionData,
   setSectionLockDetails,
@@ -758,6 +763,90 @@ export function* setResetQCData() {
   yield put(resetSectionData());
 }
 
+export function* LabData(action) {
+  const {
+    payload: { docId },
+  } = action;
+
+  const config = {
+    url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
+
+    method: 'GET',
+  };
+
+  const labData = yield call(httpCall, config);
+
+  const successState = {
+    data: labData.data,
+  };
+
+  if (labData.success) {
+    yield put(getLabData(successState));
+  } else {
+    yield put(getLabData({ data: [] }));
+  }
+}
+
+export function* UpdateLabData(action) {
+  const {
+    payload: { data },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.UPDATE_LAB_DATA}`,
+    method: 'POST',
+    data: {
+      data,
+    },
+  };
+  const labData = yield call(httpCall, config);
+  if (labData?.success) {
+    toast.info('Lab Data Updated');
+    yield put(updateGetLabData(labData));
+  } else {
+    toast.error('Error While Updation');
+  }
+}
+
+export function* DeleteLabData(action) {
+  const {
+    payload: { data },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.DELETE_LAB_DATA}`,
+    method: 'POST',
+    data: {
+      data,
+    },
+  };
+  const labData = yield call(httpCall, config);
+  if (labData.success) {
+    yield put(deleteGetLabData(labData));
+    toast.info('Lab Data row deleted');
+  } else {
+    toast.error('Error While deleting');
+  }
+}
+
+export function* CreateLabData(action) {
+  const {
+    payload: { data },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.CREATE_LAB_DATA}`,
+    method: 'POST',
+    data: {
+      data,
+    },
+  };
+  const labData = yield call(httpCall, config);
+  if (labData?.success) {
+    yield put(createGetLabData(labData));
+    toast.info('Lab Data row created');
+  } else {
+    toast.error('Error While creating');
+  }
+}
+
 export function* getDipaViewDataById(action) {
   const {
     payload: { docId },
@@ -827,6 +916,7 @@ export function* updateDipaData(action) {
     toast.error('Error While Updation');
   }
 }
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -850,6 +940,10 @@ function* watchProtocolViews() {
   yield takeLatest('GET_SOA_DATA', getSOAData);
   yield takeEvery('ADD_SECTION_INDEX', setSectionIndex);
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
+  yield takeEvery('GET_LAB_DATA', LabData);
+  yield takeEvery('UPDATE_LAB_DATA', UpdateLabData);
+  yield takeEvery('DELETE_LAB_DATA', DeleteLabData);
+  yield takeEvery('CREATE_LAB_DATA', CreateLabData);
   yield takeEvery('SET_ENRICHED_WORD', getenrichedword);
   yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
   yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
