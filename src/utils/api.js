@@ -248,8 +248,9 @@ export { BASE_URL_8000, baseUrlSSO, UI_URL };
 export const Apis = {
   protocol: `${BASE_URL}/api/protocol`,
   search: 'http://ca2spdml04q:9200/pd-index/_search',
-  HEADER_LIST: '/api/cpt_data',
+  HEADER_LIST: '/pd/api/cpt_data',
   GET_SECTION_CONTENT: '/api/cpt_data/get_section_data',
+  API_CONFIGURABLE: '/pd/api/cpt_data/get_section_data_configurable_parameter',
   DOWNLOAD_API: '/api/download_file',
   METADATA: '/pd/api/v1/documents',
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',

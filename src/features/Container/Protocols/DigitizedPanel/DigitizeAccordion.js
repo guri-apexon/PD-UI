@@ -53,6 +53,7 @@ import AuditLog from './Modals/AuditLog';
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
+  CONFIG_API_VARIABLES,
 } from '../../../../AppConstant/AppConstant';
 
 const styles = {
@@ -99,6 +100,7 @@ function DigitizeAccordion({
   const [openAudit, setOpenAudit] = useState(null);
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
+  const [alertMsg, setAlertMsg] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteSection, setDeleteSection] = useState({});
 
@@ -119,7 +121,7 @@ function DigitizeAccordion({
     saveSection,
   } = useProtContext();
 
-  const updateSectionLock = (status, refreshPage) => {
+  const updateSectionLock = (status) => {
     dispatch({
       type: 'SET_SECTION_LOCK',
       payload: {
@@ -127,7 +129,6 @@ function DigitizeAccordion({
         linkId: item?.link_id,
         sectionLock: status,
         userId: '',
-        refreshPage,
       },
     });
   };
@@ -166,6 +167,7 @@ function DigitizeAccordion({
         linkId: item.link_id,
         docId: item.doc_id,
         protocol,
+        configVariable: CONFIG_API_VARIABLES,
       },
     });
   };
@@ -213,6 +215,23 @@ function DigitizeAccordion({
     }
   };
 
+  const onDiscardClick = () => {
+    setSectionDataArr([...sectionDataBak]);
+    setShowDiscardConfirm(false);
+    setShowEdit(false);
+    setSectionDataBak([]);
+    setCurrentEditCard(null);
+    updateSectionLock(true);
+    dispatch(setSaveEnabled(false));
+    setAlertMsg(null);
+    dispatch(
+      updateSectionData({
+        data: sectionDataBak,
+        actionType: 'REPLACE_CONTENT',
+        linkId: item.link_id,
+      }),
+    );
+  };
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
@@ -248,6 +267,7 @@ function DigitizeAccordion({
       if (lockDetails?.section_lock) {
         onShowEdit();
       } else {
+        setCurrentEditCard(null);
         toast.error(`Section is in use by user ${lockDetails?.user_name}`);
       }
     }
@@ -287,7 +307,7 @@ function DigitizeAccordion({
       setEnrichedTarget(e.target);
       setSelectedEnrichedText(e.target.innerText);
       setClinicalTerms(obj);
-      const modalOpened = document.createElement('div');
+      const modalOpened = document.createElement('span');
       modalOpened.classList.add('modal-opened');
       document.body.appendChild(modalOpened);
       modalOpened.addEventListener('click', () => {
@@ -311,11 +331,35 @@ function DigitizeAccordion({
     return true;
   };
 
+  const checkUnsavedImages = () => {
+    if (sectionContent && Array.isArray(sectionContent)) {
+      const arr = sectionContent.filter(
+        (obj) =>
+          obj.type === CONTENT_TYPE.IMAGE &&
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
+            ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
+              [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
+                obj.qc_change_type,
+              ))),
+      );
+      return arr.length > 0;
+    }
+    return true;
+  };
+
   const handleSaveContent = () => {
     if (checkUnsavedTable()) {
       setShowAlert(true);
+      setAlertMsg('Please save the all the tables before saving the section');
       return;
     }
+
+    if (checkUnsavedImages()) {
+      setShowAlert(true);
+      setAlertMsg('Please save all the images before saving the section');
+      return;
+    }
+
     const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
     if (!reqBody.length) {
       toast.error('Please do some changes to update');
@@ -368,7 +412,6 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-
         if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
 
         setSectionDataArr(updatedSectionsData);
@@ -394,19 +437,16 @@ function DigitizeAccordion({
 
   const getEnrichedText = (content, clinicalTerms, preferredTerms) => {
     let newContent = content;
-    if (globalPreferredTerm) {
-      if (!isEmpty(preferredTerms)) {
-        newContent = createFullMarkup(
-          createPreferredText(content, preferredTerms),
-        );
-      }
+    if (globalPreferredTerm && !isEmpty(preferredTerms)) {
+      newContent = createPreferredText(content, preferredTerms);
     }
     if (
       !isEmpty(clinicalTerms) &&
       rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM
     ) {
-      newContent = createFullMarkup(createEnrichedText(content, clinicalTerms));
+      newContent = createEnrichedText(content, clinicalTerms);
     }
+    newContent = createFullMarkup(content);
     return newContent;
   };
 
@@ -432,23 +472,6 @@ function DigitizeAccordion({
       type: 'SET_ENRICHED_WORD',
       payload: { word: section, modal: true },
     });
-  };
-
-  const onDiscardClick = () => {
-    setSectionDataArr([...sectionDataBak]);
-    setShowDiscardConfirm(false);
-    setShowEdit(false);
-    setSectionDataBak([]);
-    setCurrentEditCard(null);
-    updateSectionLock(true);
-    dispatch(setSaveEnabled(false));
-    dispatch(
-      updateSectionData({
-        data: sectionDataBak,
-        actionType: 'REPLACE_CONTENT',
-        linkId: item.link_id,
-      }),
-    );
   };
 
   const clickAuditLog = (e) => {
@@ -757,7 +780,7 @@ function DigitizeAccordion({
 
         {showAlert && (
           <div className="confirmation-popup" data-testId="confirmPopup">
-            <p>Please save the all the tables before saving the section</p>
+            <p>{alertMsg}</p>
             <ButtonGroup
               buttonProps={[
                 {

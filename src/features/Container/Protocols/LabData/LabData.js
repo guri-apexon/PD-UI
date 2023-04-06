@@ -171,6 +171,9 @@ function LabData({ docId }) {
     setEditedRow({ ...editedRow, [key]: value });
   };
   const handleCancel = () => {
+    if (editedRow.id === '') {
+      setRowData(rowData?.filter((value) => value.id !== ''));
+    }
     setEditedRow({});
   };
 
@@ -243,9 +246,9 @@ function LabData({ docId }) {
   }, [labData]);
 
   const handleAdd = (id) => {
+    const newArr = [...rowData];
     const index = rowData.findIndex((ele) => ele.id === id);
 
-    const newData = [...rowData];
     const obj = {
       parameter_text: '',
       id: '',
@@ -265,8 +268,8 @@ function LabData({ docId }) {
       table_link_text: '',
       table_sequence_index: -1,
     };
-    newData.splice(index + 1, 0, obj);
-    setRowData(newData);
+    newArr.splice(index + 1, 0, obj);
+    setRowData(newArr);
     setEditedRow(obj);
   };
 
@@ -322,8 +325,6 @@ function LabData({ docId }) {
               handleSaveRow,
               handleAdd,
             }))}
-          initialSortedColumn="table_link_text"
-          initialSortOrder="asc"
           rowId="table_link_text"
           rowsPerPageOptions={[5, 10, 15, 'All']}
           tablePaginationProps={{

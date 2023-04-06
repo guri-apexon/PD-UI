@@ -125,9 +125,11 @@ const getTableCells = (data, action) => {
         if (key === timePoint) {
           svItem[key].push({
             table_row_index: 0,
+            [TableConst.UID]: uuidv4(),
             table_column_index: column,
-            indicator_text: 'new Column',
+            indicator_text: 'New Column',
             table_roi_id: id,
+            timePoint,
           });
         }
       }
@@ -172,7 +174,7 @@ const getTableData = (data, action) => {
     const rowRecord = {};
     cols.forEach((col) => {
       rowItems.forEach((rowItem) => {
-        if (String(rowItem[TableConst.COLUMN_IDX]) === String(col)) {
+        if (Number(rowItem[TableConst.COLUMN_IDX]) === Number(col)) {
           rowItem[TableConst.DATA_VALUE] = getValueFormRecord(rowItem);
           rowRecord[col] = rowItem;
         }
@@ -204,7 +206,6 @@ const updateCellValues = (state, payload) => {
       isFound = true;
       item[TableConst.VALUE_TEXT1] = indicatorText;
       item[TableConst.DATA_VALUE] = indicatorText;
-      return false;
     }
     return true;
   });
@@ -219,7 +220,6 @@ const updateCellValues = (state, payload) => {
         isFound = true;
         item[TableConst.VALUE_TEXT1] = indicatorText;
         item[TableConst.DATA_VALUE] = indicatorText;
-        return false;
       }
       return true;
     });
@@ -343,7 +343,8 @@ const getFlatCols = (list) => {
     list.forEach((loopItem) => {
       if (
         mainItem !== loopItem &&
-        mainItem[TableConst.COLUMN_IDX] === loopItem[TableConst.COLUMN_IDX]
+        mainItem[TableConst.COLUMN_IDX] === loopItem[TableConst.COLUMN_IDX] &&
+        Number(loopItem[TableConst.ROW_IDX]) === 0
       ) {
         isFound = true;
       }
@@ -581,9 +582,16 @@ const getColumns = ({ state, selectedTab }) => {
 
   return { columnDefs: multiHeader, columnRows: allColls };
 };
+const isColumn = (cell) => Number(cell[TableConst.ROW_IDX]) === 0;
 
 const formatTables = (data) => {
+  const actualColumns = [];
+  const cellColumns = [];
   const tables = data.map((tableItem) => {
+    const actualColSet = new Set();
+    const cellColumnsSet = new Set();
+    actualColumns.push(actualColSet);
+    cellColumns.push(cellColumnsSet);
     const rtObj = {};
     const keys = Object.keys(tableItem);
     keys.forEach((tableKey) => {
@@ -592,6 +600,12 @@ const formatTables = (data) => {
 
         if (tableKey === TableConst.STUDYPROCEDURE) {
           tableItem[tableKey].forEach((tableKeyItem) => {
+            if (isColumn(tableKeyItem)) {
+              actualColSet.add(Number(tableKeyItem[TableConst.COLUMN_IDX]));
+            } else {
+              cellColumnsSet.add(Number(tableKeyItem[TableConst.COLUMN_IDX]));
+            }
+
             tableKeyItem[TableConst.UID] = uuidv4();
             tableKeyItem.timePoint = TableConst.STUDYPROCEDURE;
           });
@@ -600,8 +614,13 @@ const formatTables = (data) => {
           tableItem[tableKey].forEach((svItem) => {
             const key = Object.keys(svItem)[0];
             svItem[key].forEach((svKey) => {
+              if (isColumn(svKey)) {
+                actualColSet.add(Number(svKey[TableConst.COLUMN_IDX]));
+              } else {
+                cellColumnsSet.add(Number(svKey[TableConst.COLUMN_IDX]));
+              }
               svKey[TableConst.UID] = uuidv4();
-              svKey.timePoint = TableConst.STUDYVISIT;
+              svKey.timePoint = key;
             });
           });
         }
@@ -616,13 +635,30 @@ const formatTables = (data) => {
             [TableConst.UID]: uuidv4(),
             timePoint: TableConst.NORMALIZED_SOA,
           };
+          if (isColumn(obj)) {
+            actualColSet.add(Number(obj[TableConst.COLUMN_IDX]));
+          } else {
+            cellColumnsSet.add(Number(obj[TableConst.COLUMN_IDX]));
+          }
           rtObj[tableKey].push(obj);
         });
       }
     });
     return rtObj;
   });
-
+  cellColumns.forEach((item, index) => {
+    const cellCols = Array.from(item);
+    const actCols = Array.from(actualColumns[index]);
+    cellCols.forEach((cell) => {
+      if (!actCols.includes(cell)) {
+        tables[index][TableConst.STUDYPROCEDURE].push({
+          [TableConst.COLUMN_IDX]: cell,
+          [TableConst.ROW_IDX]: 0,
+          [TableConst.VALUE_TEXT1]: '',
+        });
+      }
+    });
+  });
   return tables;
 };
 const tableReducer = (state, actions) => {

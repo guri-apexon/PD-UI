@@ -36,7 +36,7 @@ function HoverComponent({ lineId, activeLineID, disabled }) {
     },
     {
       text: <ImageElement />,
-      onClick: () => handleAddSegment('image'),
+      onClick: () => handleAddSegment(CONTENT_TYPE.IMAGE),
     },
   ];
   return (
