@@ -504,7 +504,7 @@ function DigitizeAccordion({
         rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM) ||
       showEnrichedContent
     ) {
-      newContent = createEnrichedText(content, clinicalTerms);
+      newContent = createFullMarkup(createEnrichedText(content, clinicalTerms));
     }
     return newContent;
   };
