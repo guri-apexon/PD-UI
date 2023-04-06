@@ -821,6 +821,13 @@ export function* updateDipaData(action) {
     toast.info(' Data Updated');
     yield put({
       type: 'GET_ALL_DIPA_VIEW',
+      payload: {
+        data: {
+          category: data.category,
+          doc_id: data.doc_id,
+          id: data.id,
+        },
+      },
     });
   } else {
     toast.error('Error While Updation');
