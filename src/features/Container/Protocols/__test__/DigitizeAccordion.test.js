@@ -7,6 +7,7 @@ import store from '../../../../store/store';
 import { render, screen } from '../../../../test-utils/test-utils';
 import DigitizeAccordion from '../DigitizedPanel/DigitizeAccordion';
 import ProtocolReducer from '../protocolSlice';
+import UserReducer from '../../../../store/userDetails';
 import * as ProtocolContext from '../ProtocolContext';
 
 import initialState from './ProtocolReducer.json';
@@ -36,7 +37,7 @@ export function renderWithProviders(
   {
     preloadedState = {},
     store = configureStore({
-      reducer: { protocol: ProtocolReducer },
+      reducer: { protocol: ProtocolReducer, user: UserReducer },
       preloadedState,
     }),
     ...renderOptions

@@ -153,7 +153,6 @@ function LabData({ docId }) {
       }
     }
     getLabData();
-
     setEditedRow({});
     setIsEdit(false);
   };
@@ -222,6 +221,8 @@ function LabData({ docId }) {
           },
         ]);
       }
+    } else {
+      setColumns(LABDATA_CONSTANTS.columnList);
     }
     // eslint-disable-next-line
   }, [isEdit]);

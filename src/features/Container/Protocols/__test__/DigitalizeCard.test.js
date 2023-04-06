@@ -3,6 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { render, fireEvent } from '../../../../test-utils/test-utils';
 import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
 import ProtocolReducer from '../protocolSlice';
+import UserReducer from '../../../../store/userDetails';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import * as ProtocolContext from '../ProtocolContext';
 
@@ -25,7 +26,7 @@ export function renderWithProviders(
   {
     preloadedState = {},
     store = configureStore({
-      reducer: { protocol: ProtocolReducer },
+      reducer: { protocol: ProtocolReducer, user: UserReducer },
       preloadedState,
     }),
     ...renderOptions
