@@ -1,4 +1,12 @@
 {
+  "user": {
+    "userDetail": {
+      "userId": "u123456",
+      "username": "test",
+      "email": "test@iqvia.com",
+      "user_type": "normal"
+    }
+  },
   "protocol": {
     "userName": "",
     "summary": {
