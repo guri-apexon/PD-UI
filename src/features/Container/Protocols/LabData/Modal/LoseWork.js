@@ -6,7 +6,7 @@ function LoseWork(props) {
   return (
     <Modal
       disableBackdropClick
-      data-testid="delete-row-modal"
+      data-testid="losework-row-modal"
       open={unSaved}
       variant="warning"
       onClose={() => setUnSaved(false)}
