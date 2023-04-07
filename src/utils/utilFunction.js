@@ -474,7 +474,7 @@ export const createReturnObj = (obj, linkId) => {
         link_text: obj.content,
         content: obj.content,
         link_id: linkId,
-        link_level: obj.linkLevel,
+        link_level: obj?.file_section_level?.toString() || '',
         line_id: obj.line_id?.slice(0, 36),
         link_id_level2: '',
         section_locked: false,

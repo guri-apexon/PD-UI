@@ -1,6 +1,6 @@
 import { toast } from 'react-toastify';
 
-const scrollToLinkandReference = (index, linkandReference) => {
+export const scrollToLinkandReference = (index, linkandReference) => {
   const dvParent = document.getElementsByClassName('section-single-content')[
     index
   ];
@@ -25,4 +25,6 @@ const scrollToLinkandReference = (index, linkandReference) => {
   }
 };
 
-export default scrollToLinkandReference;
+export const replaceHtmlTags = (sectionHeader) => {
+  return sectionHeader.replace(/<[^>]+>/g, '');
+};

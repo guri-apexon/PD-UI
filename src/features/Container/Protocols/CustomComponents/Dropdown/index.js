@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
 
@@ -15,6 +15,7 @@ function Dropdown({
   list,
 }) {
   const [showList, setShowList] = useState(false);
+  const wrapperRef = useRef(null);
   const showMenu = () => {
     setShowList(!showList);
   };
@@ -28,6 +29,18 @@ function Dropdown({
     e.preventDefault();
     document.execCommand('insertText', false, symbol);
   };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setShowList(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
 
   return (
     <div className="dropdown">
@@ -45,6 +58,7 @@ function Dropdown({
         className={showList ? classNames.active : classNames.notActive}
         style={contentStyle}
         data-testId="options"
+        ref={wrapperRef}
       >
         <ul>
           {list?.map((item) => {
