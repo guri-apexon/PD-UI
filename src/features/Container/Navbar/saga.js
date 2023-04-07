@@ -26,7 +26,6 @@ export function* navbarNotificationData(action) {
     if (notificationData?.success) {
       const parseData = notificationData.data.map((item) => {
         item.protocolNumber = item.protocol;
-        item.aidocId = item.aidocId;
         item.read = item.readFlag;
         item.details = item.protocolTitle;
         item.header = item.protocol;
