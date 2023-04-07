@@ -24,7 +24,7 @@
 }
 
 .IconButton-delete {
-  margin-bottom: 34px;
+  margin-bottom: 64px;
   display: none;
   svg {
     font-size: 16px;
@@ -109,7 +109,7 @@
 }
 .listItem {
   color: #444444;
-  height: 72px;
+  height: 100px;
   outline: none;
   padding-left: 24px;
   // border-bottom: 0.5px solid rgb(128 128 128 / 15%);
@@ -177,7 +177,7 @@
 
 .timestamp {
   color: #595959;
-  bottom: 18px;
+  bottom: 30px;
   position: relative;
   white-space: nowrap;
   line-height: 1.71;

@@ -1,22 +1,23 @@
 /* eslint-disable */
-import React, { useEffect, useRef, useState } from 'react';
-import moment from 'moment';
-import { useDispatch, useSelector } from 'react-redux';
 import BellIcon from 'apollo-react-icons/Bell';
+import TrashIcon from 'apollo-react-icons/Trash';
 import Badge from 'apollo-react/components/Badge';
-import { useHistory } from 'react-router-dom';
+import IconButton from 'apollo-react/components/IconButton';
 import Popover from 'apollo-react/components/Popover';
+import Tag from 'apollo-react/components/Tag';
+import Tooltip from 'apollo-react/components/Tooltip';
+import moment from 'moment';
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
-  List,
   AutoSizer,
   CellMeasurer,
   CellMeasurerCache,
+  List,
 } from 'react-virtualized';
-import Tooltip from 'apollo-react/components/Tooltip';
-import './Alerts.scss';
 import { redaction } from '../../../AppConstant/AppConstant';
-import TrashIcon from 'apollo-react-icons/Trash';
-import IconButton from 'apollo-react/components/IconButton';
+import './Alerts.scss';
 import { navbarNotifications } from './navbarSlice';
 const replaceall = require('replaceall');
 
@@ -221,6 +222,10 @@ function Alerts() {
                                         )}
                                       />
                                     </Tooltip>
+                                    <Tag
+                                      label={notification.event}
+                                      variant="primary"
+                                    />
                                     <hr className="horizontal-line" />
                                   </div>
 

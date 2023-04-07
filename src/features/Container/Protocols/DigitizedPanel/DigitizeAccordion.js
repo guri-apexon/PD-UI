@@ -1,59 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import Accordion from 'apollo-react/components/Accordion';
-import PropTypes from 'prop-types';
-import { toast } from 'react-toastify';
-import AccordionDetails from 'apollo-react/components/AccordionDetails';
-import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import IconButton from 'apollo-react/components/IconButton';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { useSelector, useDispatch } from 'react-redux';
-import Typography from 'apollo-react/components/Typography';
 import Lock from 'apollo-react-icons/Lock';
-import Undo from 'apollo-react-icons/Undo';
-import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import Plus from 'apollo-react-icons/Plus';
 import Trash from 'apollo-react-icons/Trash';
+import Undo from 'apollo-react-icons/Undo';
+import Accordion from 'apollo-react/components/Accordion';
+import AccordionDetails from 'apollo-react/components/AccordionDetails';
+import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import ButtonGroup from 'apollo-react/components/ButtonGroup';
+import IconButton from 'apollo-react/components/IconButton';
+import Typography from 'apollo-react/components/Typography';
 import { isEmpty } from 'lodash';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-import MultilineEdit from './MultilineEdit';
-import Loader from '../../../Components/Loader/Loader';
 import {
-  createFullMarkup,
   createEnrichedText,
-  getSaveSectionPayload,
+  createFullMarkup,
   createPreferredText,
+  getSaveSectionPayload,
 } from '../../../../utils/utilFunction';
-import {
-  SectionIndex,
-  isSaveEnabled,
-  sectionDetails,
-  setSaveEnabled,
-  TOCActive,
-  updateSectionData,
-  resetUpdateStatus,
-  sectionLockDetails,
-} from '../protocolSlice';
-import MedicalTerm from '../EnrichedContent/MedicalTerm';
-import SectionLockTimer from './SectionLockTimer';
+import Loader from '../../../Components/Loader/Loader';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
-import { useProtContext } from '../ProtocolContext';
-import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import ImageUploader from '../CustomComponents/ImageUploader';
-import AddSection from './AddSection';
+import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import HeaderConstant from '../CustomComponents/constants';
+import MedicalTerm from '../EnrichedContent/MedicalTerm';
+import { useProtContext } from '../ProtocolContext';
+import {
+  SectionIndex,
+  TOCActive,
+  isSaveEnabled,
+  resetUpdateStatus,
+  sectionDetails,
+  sectionLockDetails,
+  setSaveEnabled,
+  updateSectionData,
+} from '../protocolSlice';
+import AddSection from './AddSection';
+import DeleteModal from './Modals/DeleteModal';
 import DiscardModal from './Modals/DiscardModal';
 import SaveSectionModal from './Modals/SaveSectionModal';
-import DeleteModal from './Modals/DeleteModal';
+import MultilineEdit from './MultilineEdit';
+import SectionLockTimer from './SectionLockTimer';
 
 import {
+  CONFIG_API_VARIABLES,
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
-  CONFIG_API_VARIABLES,
 } from '../../../../AppConstant/AppConstant';
+import { userId } from '../../../../store/userDetails';
 import ActionMenu from './ActionMenu';
 import { scrollToLinkandReference } from './utils';
-import { userId } from '../../../../store/userDetails';
 
 const styles = {
   modal: {
@@ -532,13 +532,13 @@ function DigitizeAccordion({
       }
     }
     if (
-      (!isEmpty(clinicalTerms) &&
-        rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM) ||
-      showEnrichedContent
+      !isEmpty(clinicalTerms) &&
+      (rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM ||
+        showEnrichedContent)
     ) {
       newContent = createEnrichedText(content, clinicalTerms);
     }
-    newContent = createFullMarkup(content);
+
     return newContent;
   };
 
