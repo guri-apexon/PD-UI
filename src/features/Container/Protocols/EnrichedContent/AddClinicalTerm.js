@@ -4,10 +4,10 @@ import FieldGroup from 'apollo-react/components/FieldGroup';
 import IconButton from 'apollo-react/components/IconButton';
 import Modal from 'apollo-react/components/Modal';
 import TextField from 'apollo-react/components/TextField';
+import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { isEmpty } from 'lodash';
 import { Enrichedword, sectionDetails } from '../protocolSlice';
 import './MedicalTerm.scss';
 
@@ -78,49 +78,53 @@ function AddClinicalTerm({ docId, linkId }) {
   };
 
   const handleAddTag = () => {
-    const dataLength = sectionData?.[0]?.data.length;
-    const clinicalTermsData =
-      sectionData?.[0].data?.[dataLength - 1]?.clinical_terms;
+    const result = sectionData?.[0]?.data?.filter(
+      (item) =>
+        item?.font_info?.roi_id?.para ===
+        wordSelector?.word?.font_info?.roi_id?.para,
+    );
+
+    const clinicalTermsData = result[0]?.clinical_terms;
     let tagData;
-    if (clinicalTermsData) {
+    if (clinicalTermsData && selectedText) {
       const keys = Object.keys(clinicalTermsData);
       if (keys.includes(selectedText)) {
         tagData = {
-          standard_entity_name: selectedText,
+          standard_entity_name: selectedText.trim(),
           iqv_standard_term: getPreferredTermValue(clinicalTermsData),
           ontology: getOntologyValue(clinicalTermsData),
           clinical_terms: clinicalTerms,
           text_len: selectedText.length,
           start: '0',
           confidence: '100',
-          parent_id: wordSelector?.word?.font_info?.parent_id,
+          parent_id: wordSelector?.word?.font_info?.roi_id?.para,
           doc_id: docId,
           link_id: linkId,
         };
       } else {
         tagData = {
-          standard_entity_name: selectedText,
+          standard_entity_name: selectedText.trim(),
           iqv_standard_term: preferredTerm,
           ontology: ontologyTerm,
           clinical_terms: clinicalTerms,
           text_len: selectedText.length,
           start: '0',
           confidence: '100',
-          parent_id: wordSelector?.word?.font_info?.parent_id,
+          parent_id: wordSelector?.word?.font_info?.roi_id?.para,
           doc_id: docId,
           link_id: linkId,
         };
       }
     } else {
       tagData = {
-        standard_entity_name: selectedText,
+        standard_entity_name: selectedText.trim(),
         iqv_standard_term: preferredTerm,
         ontology: ontologyTerm,
         clinical_terms: clinicalTerms,
         text_len: selectedText.length,
         start: '0',
         confidence: '100',
-        parent_id: wordSelector?.word?.font_info?.parent_id,
+        parent_id: wordSelector?.word?.font_info?.roi_id?.para,
         doc_id: docId,
         link_id: linkId,
       };
