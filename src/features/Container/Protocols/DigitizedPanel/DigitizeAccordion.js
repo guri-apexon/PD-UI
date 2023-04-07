@@ -105,7 +105,7 @@ function DigitizeAccordion({
   const [alertMsg, setAlertMsg] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteSection, setDeleteSection] = useState({});
-  const [tocclose, setTocclose] = useState();
+  const [tocClose, setTocClose] = useState();
 
   const [showEnrichedContent, setShowEnrichedContent] = useState(false);
   const [showPrefferedTerm, setShowPrefferedTerm] = useState(false);
@@ -221,15 +221,15 @@ function DigitizeAccordion({
         linkId: item.link_id,
       }),
     );
-    if (tocclose) {
+    if (tocClose) {
       handleTocsection(true);
-      setTocclose(false);
+      setTocClose(false);
     }
   };
 
   const handleDiscardToc = () => {
     if (showedit && saveEnabled) {
-      setTocclose(true);
+      setTocClose(true);
       setShowDiscardConfirm(true);
       handleTocsection();
     } else if (showedit && lockDetails?.section_lock) {
@@ -280,7 +280,7 @@ function DigitizeAccordion({
     if (currentEditCard && currentEditCard !== item.link_id) {
       setShowConfirm(true);
     } else {
-      setTocclose(true);
+      setTocClose(true);
       handleTocsection();
       setCurrentEditCard(item.link_id);
       dispatch({
