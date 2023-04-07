@@ -1,0 +1,176 @@
+.lab-table-container {
+  table {
+    tfoot{
+      tr{
+        td{
+          & > div{
+            width: 100% !important;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        position: relative;
+        &::after {
+          content: '+';
+          font-size: 26px;
+          position: absolute;
+          bottom: -11px;
+          right: 20px;
+          z-index: 1;
+          color: #fff;
+          cursor: pointer;
+          opacity: 0;
+          background: #0768fd;
+          height: 20px;
+          width: 20px;
+          line-height: 15px;
+          border-radius: 50%;
+          text-align: center;
+          display: none;
+        }
+        &:hover {
+          border-bottom: 0;
+          &:after {
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+        td {
+          overflow-wrap: anywhere;
+          border: 0;
+          position: static;
+          &:first-child {
+            &:before {
+              display: none !important;
+            }
+          }
+          .customCell {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+          }
+          .hoverButton {
+            position: absolute;
+            right: 24px;
+            background: transparent;
+            border: none;
+            z-index: 99;
+            font-size: 24px;
+            bottom: -6px;
+            height: 20px;
+            width: 20px;
+            color: #fff;
+            text-align: center;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+  svg {
+    width: 1rem !important;
+    height: 1rem !important;
+    color: inherit !important;
+    margin-bottom: 0 !important;
+    margin-right: 5px;
+  }
+  position: relative;
+  & > div:last-child > div:first-child > div:first-child > div:last-child {
+    margin-right: 55px;
+    h3 {
+      margin: 0 !important;
+      padding: 0 !important;
+      font-size: 16px !important;
+    }
+    & > button {
+      height: 40px;
+      font-size: inherit;
+      padding: 0 16px;
+    }
+  }
+  &.table-hover {
+    table {
+      tbody {
+        tr {
+          &::after {
+            display: block;
+          }
+          &:hover {
+            border-bottom: 2px solid #0768fd;
+            border-image: linear-gradient(
+              to right,
+              #0768fd 96%,
+              rgba(0, 0, 0, 0) 50%
+            );
+            border-image-slice: 1;
+          }
+        }
+      }
+    }
+  }
+}
+.lab-btn-container {
+  position: absolute;
+  right: 0;
+  top: 21px;
+  z-index: 9;
+  .btn-common {
+    margin: 0 5px;
+    svg {
+      color: #000 !important;
+      height: 1.2em !important;
+      width: 1.3em !important;
+    }
+  }
+}
+.mR {
+  margin-right: 10px;
+}
+.btn-filter {
+  span {
+    font-weight: 600;
+    svg {
+      margin: 0 10px 0 0;
+      color: #0768fd !important;
+    }
+  }
+}
+.btn-common span svg {
+  margin: 0;
+}
+.ellipsis-icon {
+  font-size: 15px !important;
+  cursor: pointer;
+}
+
+.saveCancelButtonGroup {
+  display: flex;
+  margin-top: 16px;
+}
+.metadata-card
+  .lab-table-container
+  tr:last-child
+  td:first-child:nth-last-child(1) {
+  display: table-cell;
+}
+.loader {
+  z-index: 1000;
+  position: relative;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.lab-table-container table + div svg {
+  width: auto !important;
+  height: auto !important;
+  color: inherit !important;
+  margin-bottom: 0 !important;
+  margin-right: 0;
+}
+.table-hover table tbody td:last-child {
+  flex-direction: row-reverse;
+}

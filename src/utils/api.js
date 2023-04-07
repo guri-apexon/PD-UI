@@ -256,6 +256,10 @@ export const Apis = {
   ENRICHED_CONTENT: '/api/cpt_data/update_enriched_data',
   USER_ALERT_SETTING: '/api/user_alert_setting',
   SAVE_SECTION_CONTENT: '/api/qc_ingest',
+  LAB_DATA: '/api/lab_data',
+  UPDATE_LAB_DATA: '/api/lab_data/update_labsparameter',
+  DELETE_LAB_DATA: '/api/lab_data/delete_labsparameter',
+  CREATE_LAB_DATA: '/api/lab_data/create_labsparameter',
   SECTION_LOCK: '/api/section_lock',
 };
 

@@ -51,6 +51,10 @@ export const protocolSlice = createSlice({
     SOAData: {},
     isSaveEnabled: false,
     sectionIndex: -1,
+    labDataApiValue: {
+      data: [],
+      success: false,
+    },
     sectionLockDetails: {},
     enrichedword: {},
   },
@@ -174,6 +178,18 @@ export const protocolSlice = createSlice({
     getSectionIndex: (state, action) => {
       state.sectionIndex = action.payload;
     },
+    getLabData: (state, action) => {
+      state.labDataApiValue = action.payload;
+    },
+    deleteGetLabData: (state, action) => {
+      state.labDataApiValue = action.payload;
+    },
+    updateGetLabData: (state, action) => {
+      state.labDataApiValue = action.payload;
+    },
+    createGetLabData: (state, action) => {
+      state.labDataApiValue = action.payload;
+    },
     setSectionLockDetails: (state, action) => {
       state.sectionLockDetails = action.payload;
     },
@@ -213,6 +229,10 @@ export const {
   updateSectionResp,
   getSectionIndex,
   resetUpdateStatus,
+  getLabData,
+  updateGetLabData,
+  deleteGetLabData,
+  createGetLabData,
   setEnrichedWord,
   setLoader,
   setSectionLockDetails,
@@ -244,6 +264,7 @@ export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const Enrichedword = (state) => state.protocol.enrichedword;
 export const SOAData = (state) => state.protocol.SOAData;
+export const labDataApiValue = (state) => state.protocol.labDataApiValue;
 export const sectionLockDetails = (state) => state.protocol.sectionLockDetails;
 export const dipaViewData = (state) => state.protocol.dipaViewData;
 export const allDipaViewData = (state) => state.protocol.allDipaViewData;

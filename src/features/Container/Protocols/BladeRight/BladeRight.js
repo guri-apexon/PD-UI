@@ -59,7 +59,9 @@ function BladeRight({
     if (name === PROTOCOL_RIGHT_MENU.CLINICAL_TERM && !flag) {
       return true;
     }
-
+    if (name === PROTOCOL_RIGHT_MENU.LAB_DATA && !flag) {
+      return true;
+    }
     return false;
   };
   return (

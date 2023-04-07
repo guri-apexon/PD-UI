@@ -52,7 +52,8 @@ import {
   CONFIG_API_VARIABLES,
 } from '../../../../AppConstant/AppConstant';
 import ActionMenu from './ActionMenu';
-import scrollToLinkandReference from './utils';
+import { scrollToLinkandReference } from './utils';
+import { userId } from '../../../../store/userDetails';
 
 const styles = {
   modal: {
@@ -97,12 +98,15 @@ function DigitizeAccordion({
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
   const NewSectionIndex = useSelector(SectionIndex);
+  const userIdSelector = useSelector(userId);
 
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
   const [alertMsg, setAlertMsg] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteSection, setDeleteSection] = useState({});
+  const [tocClose, setTocClose] = useState();
+
   const [showEnrichedContent, setShowEnrichedContent] = useState(false);
   const [showPrefferedTerm, setShowPrefferedTerm] = useState(false);
   const [showLink, setShowLink] = useState(false);
@@ -202,11 +206,45 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [expanded]);
 
+  const onDiscardClick = () => {
+    setSectionDataArr([...sectionDataBak]);
+    setShowDiscardConfirm(false);
+    setShowEdit(false);
+    setSectionDataBak([]);
+    setCurrentEditCard(null);
+    updateSectionLock(true);
+    dispatch(setSaveEnabled(false));
+    dispatch(
+      updateSectionData({
+        data: sectionDataBak,
+        actionType: 'REPLACE_CONTENT',
+        linkId: item.link_id,
+      }),
+    );
+    if (tocClose) {
+      handleTocsection(true);
+      setTocClose(false);
+    }
+  };
+
+  const handleDiscardToc = () => {
+    if (showedit && saveEnabled) {
+      setTocClose(true);
+      setShowDiscardConfirm(true);
+      handleTocsection();
+    } else if (showedit && lockDetails?.section_lock) {
+      updateSectionLock(true);
+      setExpanded(false);
+    } else {
+      setExpanded(false);
+    }
+  };
+
   useEffect(() => {
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
     } else if (currentActiveCard === item.link_id && expanded) {
-      setExpanded(false);
+      handleDiscardToc();
     }
     if (currentActiveCard === item.link_id && expanded && tocActive[index]) {
       setExpanded(true);
@@ -228,23 +266,6 @@ function DigitizeAccordion({
     }
   };
 
-  const onDiscardClick = () => {
-    setSectionDataArr([...sectionDataBak]);
-    setShowDiscardConfirm(false);
-    setShowEdit(false);
-    setSectionDataBak([]);
-    setCurrentEditCard(null);
-    updateSectionLock(true);
-    dispatch(setSaveEnabled(false));
-    setAlertMsg(null);
-    dispatch(
-      updateSectionData({
-        data: sectionDataBak,
-        actionType: 'REPLACE_CONTENT',
-        linkId: item.link_id,
-      }),
-    );
-  };
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
@@ -259,6 +280,7 @@ function DigitizeAccordion({
     if (currentEditCard && currentEditCard !== item.link_id) {
       setShowConfirm(true);
     } else {
+      setTocClose(true);
       handleTocsection();
       setCurrentEditCard(item.link_id);
       dispatch({
@@ -277,7 +299,10 @@ function DigitizeAccordion({
       tocActiveSelector[index] &&
       currentEditCard === item.link_id
     ) {
-      if (lockDetails?.section_lock) {
+      if (
+        lockDetails?.section_lock ||
+        lockDetails?.userId === userIdSelector?.toString()
+      ) {
         onShowEdit();
       } else {
         setCurrentEditCard(null);
@@ -289,7 +314,7 @@ function DigitizeAccordion({
 
   useEffect(() => {
     if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
-      setExpanded(false);
+      handleDiscardToc();
     }
     if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
       setExpanded(true);
@@ -310,7 +335,7 @@ function DigitizeAccordion({
       setExpanded(true);
     }
     if (!tocActive[index]) {
-      setExpanded(false);
+      handleDiscardToc();
     }
     // eslint-disable-next-line
   }, [tocActive]);
@@ -337,7 +362,13 @@ function DigitizeAccordion({
   const checkUnsavedTable = () => {
     if (sectionContent && Array.isArray(sectionContent)) {
       const arr = sectionContent.filter(
-        (obj) => obj.type === CONTENT_TYPE.TABLE && !obj.isSaved,
+        (obj) =>
+          obj.type === CONTENT_TYPE.TABLE &&
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
+            ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
+              [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
+                obj.qc_change_type,
+              ))),
       );
       return arr.length > 0;
     }
