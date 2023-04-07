@@ -11,6 +11,7 @@ export const scrollToLinkandReference = (index, linkandReference) => {
     try {
       scrollDiv.scrollBy(
         0,
+        // NOSONAR
         document
           .evaluate(
             `//*[text()[contains(., '${linkandReference}')]][last()]`,

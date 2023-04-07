@@ -31,7 +31,6 @@ import {
   getSectionIndex,
   getLabData,
   updateGetLabData,
-  // eslint-disable-next-line import/named
   deleteGetLabData,
   createGetLabData,
   setLoader,

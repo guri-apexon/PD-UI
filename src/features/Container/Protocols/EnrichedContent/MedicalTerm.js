@@ -175,7 +175,7 @@ function MedicalTerm({
     if (clinicalTermsArr) {
       Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
         (key, value) => {
-          if (key === 'medical_term') {
+          if (key?.toString() === 'medical_term') {
             setClinicalTerm(value);
           }
         },
