@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
+import Modal from 'apollo-react/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from 'apollo-react/components/Grid/Grid';
 import Select from 'apollo-react/components/Select';
 import MenuItem from 'apollo-react/components/MenuItem';
 import { v4 as uuidv4 } from 'uuid';
 import startCase from 'lodash/startCase';
-import Modal from 'apollo-react/components/Modal';
-import DipaViewStructure from './DipaViewStructure';
 import { allDipaViewData, dipaViewData } from '../protocolSlice';
+import DipaViewStructure from './DipaViewStructure';
 
 const getFormattedCategoryName = (category) => {
   return startCase(category.replace('cpt_', ''));
@@ -262,7 +261,7 @@ function DipaView({ docId }) {
     <div>
       <div className="container" data-testid="dipaview-data">
         <Grid container spacing={1} className="dipa-view-table">
-          <h3>DIPA View</h3>
+          <h3>Derived Count</h3>
           <Grid container item xs={5}>
             <Grid item xs={12} className="drop-down">
               <Select
@@ -343,7 +342,7 @@ function DipaView({ docId }) {
             onClick: () => setOpenModal(false),
           },
           {
-            label: 'Save',
+            label: 'Ok',
             'data-testid': 'save-modal-button',
             onClick: () => deleteSegment(openModal),
           },

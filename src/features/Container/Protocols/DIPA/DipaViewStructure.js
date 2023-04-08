@@ -38,12 +38,34 @@ function DipaViewStructure({
 }) {
   const [OpenPop, setOpenPop] = useState(null);
   const [tooltip, setTooltip] = useState(false);
+  const [penciltooltip, setPencilTooltip] = useState(false);
 
   const onPencilIconClick = (e) => {
     toggleEditingIDs(segments.map((seg) => seg.ID));
     e.preventDefault();
   };
 
+  function pencilTooltip() {
+    return (
+      <Tooltip
+        title="Edit Segment"
+        placement="right"
+        disableFocusListener
+        disableHoverListener
+        disableTouchListener
+        open={penciltooltip}
+      >
+        <IconButton data-testid="pencil-tooltip">
+          <Pencil
+            data-testid="edit-button"
+            onMouseEnter={() => setPencilTooltip(true)}
+            onMouseLeave={() => setPencilTooltip(false)}
+            onClick={onPencilIconClick}
+          />
+        </IconButton>
+      </Tooltip>
+    );
+  }
   return (
     <div>
       <Accordion
@@ -80,17 +102,33 @@ function DipaViewStructure({
             </div>
             {open ? (
               <div className="dipaview-icons">
-                <span className="icon-eyeshow">
-                  <EyeShow />
-                </span>
+                <Tooltip
+                  title={`Created On:${tooltipValue}`}
+                  placement="right"
+                  disableFocusListener
+                  disableHoverListener
+                  disableTouchListener
+                  open={tooltip}
+                >
+                  <IconButton data-testid="eyeshow-tooltip">
+                    <EyeShow
+                      data-testid="eyeshow-tooltip-icon"
+                      onMouseEnter={() => setTooltip(true)}
+                      onMouseLeave={() => setTooltip(false)}
+                      className="icon-eyeshow"
+                    />
+                  </IconButton>
+                </Tooltip>
+
                 <span className="icon-pencil">
                   {editingIDList?.length ? (
-                    <Save onClick={() => handleUpdate()} data-testid="save" />
-                  ) : (
-                    <Pencil
-                      data-testid="edit-button"
-                      onClick={onPencilIconClick}
+                    <Save
+                      onClick={() => handleUpdate()}
+                      data-testid="save"
+                      className="save-button"
                     />
+                  ) : (
+                    pencilTooltip()
                   )}
                 </span>
               </div>
@@ -105,17 +143,15 @@ function DipaViewStructure({
                   open={tooltip}
                 >
                   <IconButton data-testid="tooltip-icon">
-                    <span className="icon-eyeshow">
-                      <EyeShow
-                        data-testid="show-icon"
-                        onClick={() => setTooltip(!tooltip)}
-                      />
-                    </span>
+                    <EyeShow
+                      data-testid="show-icon"
+                      onMouseEnter={() => setTooltip(true)}
+                      onMouseLeave={() => setTooltip(false)}
+                      className="icon-eyeshow"
+                    />
                   </IconButton>
                 </Tooltip>
-                <span className="icon-pencil">
-                  <Pencil data-testid="edit-button-icon" />
-                </span>
+                <div className="icon-pencil">{pencilTooltip()}</div>
               </div>
             )}
           </Grid>
