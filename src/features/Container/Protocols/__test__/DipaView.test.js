@@ -46,13 +46,22 @@ describe.only('DipaView Component testing', () => {
     fireEvent.click(addGroupButton);
   });
 
-  it('opens the tooltip when the eye icon is clicked', () => {
+  it('opens the tooltip when the eye icon is hovered', () => {
     const screen = renderWithProviders(<DipaView />, {
       preloadedState: { ...initialState },
     });
 
-    fireEvent.click(screen.getAllByTestId('show-icon')[0]);
+    fireEvent.mouseEnter(screen.getAllByTestId('show-icon')[0]);
     expect(screen.getAllByTestId('tooltip-icon')[0]).toBeInTheDocument();
+  });
+
+  it('opens the tooltip when the pencil icon is hovered', () => {
+    const screen = renderWithProviders(<DipaView />, {
+      preloadedState: { ...initialState },
+    });
+
+    fireEvent.mouseEnter(screen.getAllByTestId('edit-button')[0]);
+    expect(screen.getAllByTestId('pencil-tooltip')[0]).toBeInTheDocument();
   });
 
   it('should open popover when Plus icon is clicked', () => {
@@ -134,7 +143,7 @@ describe.only('DipaView Component testing', () => {
     });
 
     fireEvent.click(screen.getAllByTestId('paragraph-text')[0]);
-    const pencilIcon = screen.getByTestId('edit-button');
+    const pencilIcon = screen.getAllByTestId('edit-button')[0];
     expect(pencilIcon).toBeInTheDocument();
     fireEvent.click(pencilIcon);
   });
