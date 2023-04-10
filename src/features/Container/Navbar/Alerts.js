@@ -204,7 +204,7 @@ function Alerts() {
                                     ) : (
                                       <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1">
                                         {isEqual(getNotificationStatus(notification), 'Edited') && "Your protocol has had some changes made, Protocol Number: "+ notification.header}
-                                        {"Protocol Number: "+ notification.header}
+                                        {!isEqual(getNotificationStatus(notification), 'Edited') && "Protocol Number: "+ notification.header}
                                       </span>
                                     )}                                   
                                       <p
