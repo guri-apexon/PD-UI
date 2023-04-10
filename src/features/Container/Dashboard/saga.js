@@ -311,6 +311,7 @@ export function* handleFollow(action) {
     const { data, follow } = action.payload;
     const id = yield getState();
     const state = yield select();
+    console.log('SHUBHAM', id);
     const protocolData = state.dashboard.followedProtocols;
     const temp = cloneDeep(protocolData);
     const lists = temp.filter((item) => {
@@ -327,10 +328,12 @@ export function* handleFollow(action) {
       },
     };
     const res = yield call(httpCall, config);
+
     if (res && res.data) {
       toast.info('Protocol Successfully Unfollowed');
       yield put(getFollowedProtocols(lists));
       yield put({ type: 'GET_PROTOCOL_TABLE_SAGA', payload: lists });
+      yield put({ type: 'GET_OPT_IN_OUT', payload: { userID: id } });
 
       yield put({ type: 'GET_NOTIFICATION_SAGA', payload: id });
     }
