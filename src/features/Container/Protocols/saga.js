@@ -270,6 +270,7 @@ export function* updateSectionData(action) {
           payload: {
             docId: action?.payload?.docId,
             tocFlag: 1,
+            index: action?.payload?.index,
           },
         });
       } else {
@@ -422,6 +423,7 @@ export function* getProtocolTocDataResult(action) {
       const tocIsactive = Array(header.data.length).fill(false);
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
+      yield put(getSectionIndex(action.payload.index));
     } else {
       // eslint-disable-next-line no-lonely-if
       yield put(
