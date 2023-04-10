@@ -241,6 +241,9 @@ export function* updateSectionData(action) {
     const {
       payload: { reqBody },
     } = action;
+    if (action?.payload?.refreshToc) {
+      yield put(getProtocolTocData({}));
+    }
     const userID = yield getState();
     const updatedReq = reqBody.map((ele) => {
       if (ele.type === 'table') {
@@ -274,10 +277,21 @@ export function* updateSectionData(action) {
         toast.success('Section content updated successfully');
       }
     } else {
-      yield put(
-        updateSectionResp({ response: sectionSaveRes.data, error: true }),
-      );
-      toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
+      // eslint-disable-next-line
+      if (action?.payload?.refreshToc) {
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+          },
+        });
+      } else {
+        yield put(
+          updateSectionResp({ response: sectionSaveRes.data, error: true }),
+        );
+        toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
+      }
     }
   } catch (error) {
     updateSectionResp({ response: null, error: true });
