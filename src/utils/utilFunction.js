@@ -1,6 +1,7 @@
 import Tooltip from 'apollo-react/components/Tooltip';
 import { cloneDeep } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
+import isEqual from 'lodash/isEqual';
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
@@ -11,6 +12,10 @@ import {
   filterTableProperties,
   updateFootNotePayload,
 } from '../features/Container/Protocols/CustomComponents/PDTable/utils';
+import {
+  notificationConstant,
+  notificationValues,
+} from '../features/Container/Navbar/constant';
 
 const replaceall = require('replaceall');
 
@@ -563,5 +568,18 @@ export const getKeyFromEnrichText = (term) => {
   if (term === 'preferred_term') return 'iqv_standard_term';
   if (term === 'medical_term') return 'clinical_terms';
   if (term === 'ontology') return 'ontology';
+  return '';
+};
+
+export const getNotificationStatus = (notification) => {
+  if (isEqual(notification.event, notificationConstant.NEW_DOCUMENT_VERSION)) {
+    return notificationValues.NEW_DOCUMENT_VERSION;
+  }
+  if (isEqual(notification.event, notificationConstant.QC_COMPLETED)) {
+    return notificationValues.QC_COMPLETED;
+  }
+  if (isEqual(notification.event, notificationConstant.EDITED)) {
+    return notificationValues.EDITED;
+  }
   return '';
 };

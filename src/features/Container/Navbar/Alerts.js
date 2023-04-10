@@ -19,6 +19,8 @@ import {
 import { redaction } from '../../../AppConstant/AppConstant';
 import './Alerts.scss';
 import { navbarNotifications } from './navbarSlice';
+import { getNotificationStatus } from '../../../utils/utilFunction';
+import isEqual from 'lodash/isEqual';
 const replaceall = require('replaceall');
 
 const notificationStyle = {
@@ -200,32 +202,23 @@ function Alerts() {
                                         </span>
                                       </Tooltip>
                                     ) : (
-                                      <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1 Typography-displayBlock">
-                                        {notification.header}
+                                      <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1">
+                                        {isEqual(getNotificationStatus(notification), 'Edited') && "Your protocol has had some changes made, Protocol Number: "+ notification.header}
+                                        {"Protocol Number: "+ notification.header}
                                       </span>
-                                    )}
-                                    <Tooltip
-                                      title="Protocol Title"
-                                      subtitle={
-                                        <div
-                                          dangerouslySetInnerHTML={createFullMarkup(
-                                            notification.details,
-                                          )}
-                                        />
-                                      }
-                                      placement="right"
-                                    >
+                                    )}                                   
                                       <p
                                         className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock"
-                                        dangerouslySetInnerHTML={createFullMarkup(
-                                          notification.details,
-                                        )}
-                                      />
-                                    </Tooltip>
+                                        
+                                      >
+                                        {"Status: "+ notification.status}
+                                      </p>
+                                    {!isEqual(getNotificationStatus(notification), 'Edited') &&
                                     <Tag
-                                      label={notification.event}
+                                      label={getNotificationStatus(notification)}
                                       variant="primary"
                                     />
+                    }
                                     <hr className="horizontal-line" />
                                   </div>
 
