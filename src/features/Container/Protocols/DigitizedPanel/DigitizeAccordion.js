@@ -526,19 +526,17 @@ function DigitizeAccordion({
     let newContent = content;
     if (globalPreferredTerm || showPrefferedTerm) {
       if (!isEmpty(preferredTerms)) {
-        newContent = createFullMarkup(
-          createPreferredText(content, preferredTerms),
-        );
+        newContent = createPreferredText(content, preferredTerms);
       }
     }
     if (
-      (!isEmpty(clinicalTerms) &&
-        rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM) ||
-      showEnrichedContent
+      !isEmpty(clinicalTerms) &&
+      (rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM ||
+        showEnrichedContent)
     ) {
       newContent = createEnrichedText(content, clinicalTerms);
     }
-    newContent = createFullMarkup(content);
+    newContent = createFullMarkup(newContent);
     return newContent;
   };
 
@@ -641,7 +639,12 @@ function DigitizeAccordion({
               data-testid="accordion-header"
             >
               {globalPreferredTerm && !isEmpty(item.preferred_term) ? (
-                <b className="preferred-text">{item.preferred_term}</b>
+                <b className="preferred-text">
+                  {item.preferred_term
+                    .replace(/[_]/g, ' ')
+                    .replace('cpt', '')
+                    .trim()}
+                </b>
               ) : (
                 item.source_file_section
               )}
