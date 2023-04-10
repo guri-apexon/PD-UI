@@ -526,19 +526,17 @@ function DigitizeAccordion({
     let newContent = content;
     if (globalPreferredTerm || showPrefferedTerm) {
       if (!isEmpty(preferredTerms)) {
-        newContent = createFullMarkup(
-          createPreferredText(content, preferredTerms),
-        );
+        newContent = createPreferredText(content, preferredTerms);
       }
     }
     if (
-      (!isEmpty(clinicalTerms) &&
-        rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM) ||
-      showEnrichedContent
+      !isEmpty(clinicalTerms) &&
+      (rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM ||
+        showEnrichedContent)
     ) {
       newContent = createEnrichedText(content, clinicalTerms);
     }
-    newContent = createFullMarkup(content);
+    newContent = createFullMarkup(newContent);
     return newContent;
   };
 
