@@ -95,6 +95,7 @@ function Setting({ handleModal, userId }) {
                     key={React.key}
                     value={item?.keyName}
                     label={item?.optionName}
+                    disabled={item?.keyName === 'New_Document/Version'}
                   />
                 );
               })}
