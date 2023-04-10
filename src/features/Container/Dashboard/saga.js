@@ -311,7 +311,6 @@ export function* handleFollow(action) {
     const { data, follow } = action.payload;
     const id = yield getState();
     const state = yield select();
-    console.log('SHUBHAM', id);
     const protocolData = state.dashboard.followedProtocols;
     const temp = cloneDeep(protocolData);
     const lists = temp.filter((item) => {
