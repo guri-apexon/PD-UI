@@ -413,7 +413,7 @@ function DigitizeAccordion({
       setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
-        payload: { reqBody },
+        payload: { reqBody, docId: item?.doc_id },
       });
     }
   };
