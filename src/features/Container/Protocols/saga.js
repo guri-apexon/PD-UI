@@ -922,7 +922,6 @@ export function* updateDipaData(action) {
     toast.error('Error While Updation');
   }
 }
-
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
