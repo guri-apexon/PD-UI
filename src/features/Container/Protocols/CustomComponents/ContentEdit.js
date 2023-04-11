@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useProtContext } from '../ProtocolContext';
 import { setSaveEnabled } from '../protocolSlice';
 
-function ContentEdit({ type, lineID, content, edit }) {
+function ContentEdit({ type, lineID, content, edit, activeLineID }) {
   const dispatch = useDispatch();
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
@@ -30,14 +30,14 @@ function ContentEdit({ type, lineID, content, edit }) {
       <ContentEditable
         innerRef={contentEditableRef}
         className={`contentEditable ${
-          type === 'header' ? 'content_header' : null
+          type === 'header' ? 'content_header' : 'editable'
         }`}
         html={text}
         disabled={!edit}
         onChange={handleChange}
         onBlur={handleBlur}
         tagName="div"
-        data-placeholder
+        data-placeholder={activeLineID ? 'Edit Your Text Here' : ''}
         data-testId="contentEdit"
       />
     </div>
@@ -50,4 +50,5 @@ ContentEdit.propTypes = {
   lineID: PropTypes.isRequired,
   content: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  activeLineID: PropTypes.isRequired,
 };

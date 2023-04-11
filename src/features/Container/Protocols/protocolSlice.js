@@ -61,6 +61,11 @@ export const protocolSlice = createSlice({
   },
   dipaViewData: [],
   allDipaViewData: [],
+  discardValue: {
+    isEdited: false,
+    isDiscarded: false,
+    protocolTab: -1,
+  },
   reducers: {
     getSummary: (state, action) => {
       state.summary = action.payload;
@@ -200,6 +205,9 @@ export const protocolSlice = createSlice({
     getAllDipaViewData: (state, action) => {
       state.allDipaViewData = action.payload;
     },
+    getDiscardDeatils: (state, action) => {
+      state.discardValue = action.payload;
+    },
   },
 });
 
@@ -235,6 +243,7 @@ export const {
   setSectionLockDetails,
   getDipaViewData,
   getAllDipaViewData,
+  getDiscardDeatils,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -265,4 +274,5 @@ export const labDataSelector = (state) => state.protocol.labData;
 export const sectionLockDetails = (state) => state.protocol.sectionLockDetails;
 export const dipaViewData = (state) => state.protocol.dipaViewData;
 export const allDipaViewData = (state) => state.protocol.allDipaViewData;
+export const discardDetails = (state) => state.protocol.discardValue;
 export default protocolSlice.reducer;
