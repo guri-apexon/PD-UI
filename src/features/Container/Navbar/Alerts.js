@@ -207,9 +207,9 @@ function Alerts() {
                                           notification.header}
                                       </span>
                                     )}
-                                    <p className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock">
+                                    <span className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock">
                                       {'Status: ' + notification.status}
-                                    </p>
+                                    </span>
                                     {!isEqual(
                                       getNotificationStatus(notification),
                                       'Edited',
