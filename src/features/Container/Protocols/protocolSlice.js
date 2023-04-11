@@ -51,9 +51,10 @@ export const protocolSlice = createSlice({
     SOAData: {},
     isSaveEnabled: false,
     sectionIndex: -1,
-    labDataApiValue: {
+    labData: {
       data: [],
       success: false,
+      loading: false,
     },
     sectionLockDetails: {},
     enrichedword: {},
@@ -179,16 +180,13 @@ export const protocolSlice = createSlice({
       state.sectionIndex = action.payload;
     },
     getLabData: (state, action) => {
-      state.labDataApiValue = action.payload;
+      state.labData.data = action.payload;
     },
-    deleteGetLabData: (state, action) => {
-      state.labDataApiValue = action.payload;
+    setLabDataLoader: (state, action) => {
+      state.labData.loading = action.payload;
     },
-    updateGetLabData: (state, action) => {
-      state.labDataApiValue = action.payload;
-    },
-    createGetLabData: (state, action) => {
-      state.labDataApiValue = action.payload;
+    setLabDataSuccess: (state, action) => {
+      state.labData.success = action.payload;
     },
     setSectionLockDetails: (state, action) => {
       state.sectionLockDetails = action.payload;
@@ -230,9 +228,8 @@ export const {
   getSectionIndex,
   resetUpdateStatus,
   getLabData,
-  updateGetLabData,
-  deleteGetLabData,
-  createGetLabData,
+  setLabDataLoader,
+  setLabDataSuccess,
   setEnrichedWord,
   setLoader,
   setSectionLockDetails,
@@ -264,7 +261,7 @@ export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const Enrichedword = (state) => state.protocol.enrichedword;
 export const SOAData = (state) => state.protocol.SOAData;
-export const labDataApiValue = (state) => state.protocol.labDataApiValue;
+export const labDataSelector = (state) => state.protocol.labData;
 export const sectionLockDetails = (state) => state.protocol.sectionLockDetails;
 export const dipaViewData = (state) => state.protocol.dipaViewData;
 export const allDipaViewData = (state) => state.protocol.allDipaViewData;
