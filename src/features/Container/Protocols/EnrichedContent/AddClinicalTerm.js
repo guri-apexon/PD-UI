@@ -63,6 +63,18 @@ function AddClinicalTerm({ docId, linkId }) {
     return '';
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('.modal') && !event.target.closest('.button')) {
+        setIsTextSelected(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const getPreferredTermValue = (clinicalTermsData) => {
     if (selectedText) {
       if (isEmpty(clinicalTermsData[selectedText]?.preferred_term)) {
@@ -145,7 +157,7 @@ function AddClinicalTerm({ docId, linkId }) {
 
   return (
     <div data-testId="add-tag">
-      {isTextSelected && selectedText?.trim() !== '' ? (
+      {isTextSelected && selectedText?.trim() !== '' && (
         <Button
           id="my-button"
           className="button"
@@ -154,7 +166,7 @@ function AddClinicalTerm({ docId, linkId }) {
         >
           Add tag
         </Button>
-      ) : null}
+      )}
       {openModal && selectedText?.trim() !== '' && (
         <Modal
           open={openModal}
