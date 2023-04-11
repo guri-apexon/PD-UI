@@ -6,7 +6,7 @@ import LabData from '../LabData';
 const docId = '3b44c1d5-f5f7-44ab-901a-3f53c2ba751d';
 const initialState = {
   protocol: {
-    labDataApiValue: {
+    labData: {
       data: [
         {
           parameter_text: 'B-Haemoglobin',
@@ -114,6 +114,8 @@ const initialState = {
           isCreated: true,
         },
       ],
+      success: false,
+      loading: false,
     },
   },
 };
@@ -138,6 +140,7 @@ describe('LabData', () => {
       initialState,
     });
     fireEvent.click(screen.getByRole('button', { name: 'Filter' }));
+    fireEvent.click(screen.getByTestId('clearFilter'));
   });
 
   test('should render to click on ellipsis and Edit button', () => {
