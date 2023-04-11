@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import ButtonGroup from 'apollo-react/components/ButtonGroup';
@@ -15,10 +17,30 @@ import {
 import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
 
-function MultilineEdit({ sectionDataArr, edit, child }) {
+function MultilineEdit({
+  sectionDataArr,
+  edit,
+  child,
+  setShowDiscardConfirm,
+  setRequestedRoute,
+}) {
   const [sections, setSections] = useState([]);
   const { dispatchSectionEvent } = useProtContext();
   const [showconfirm, setShowConfirm] = useState(false);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const blockRedireting = history.block((requestUrl) => {
+      setRequestedRoute(requestUrl.pathname);
+      setShowDiscardConfirm(true);
+      return false;
+    });
+    return () => {
+      blockRedireting();
+    };
+    // eslint-disable-next-line
+  }, [history]);
 
   useEffect(() => {
     if (sectionDataArr?.length > 0) {
@@ -26,7 +48,6 @@ function MultilineEdit({ sectionDataArr, edit, child }) {
     }
   }, [sectionDataArr]);
 
-  const dispatch = useDispatch();
   const [activeLineID, setActiveLineID] = useState('');
 
   const sectionName = null;
@@ -116,5 +137,7 @@ export default MultilineEdit;
 MultilineEdit.propTypes = {
   sectionDataArr: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  setShowDiscardConfirm: PropTypes.isRequired,
   child: PropTypes.isRequired,
+  setRequestedRoute: PropTypes.isRequired,
 };
