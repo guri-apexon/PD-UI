@@ -239,7 +239,7 @@ function* getState(withPrefix) {
 export function* updateSectionData(action) {
   try {
     const {
-      payload: { reqBody },
+      payload: { reqBody, docId },
     } = action;
     const userID = yield getState();
     const updatedReq = reqBody.map((ele) => {
@@ -254,7 +254,7 @@ export function* updateSectionData(action) {
       return ele;
     });
     const config = {
-      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
+      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}?doc_id=${docId}`,
       method: 'POST',
       data: updatedReq,
     };
