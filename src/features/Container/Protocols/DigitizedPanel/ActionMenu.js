@@ -9,7 +9,7 @@ import ArrowLeft from 'apollo-react-icons/ArrowLeft';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
 import PropTypes from 'prop-types';
 import './ActionMenu.scss';
-import { Typography } from 'apollo-react';
+import Typography from 'apollo-react/components/Typography';
 import { AUDIT_LIST } from '../Constant/Constants';
 
 function ActionMenu({
