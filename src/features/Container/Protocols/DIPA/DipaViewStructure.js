@@ -12,6 +12,7 @@ import Trash from 'apollo-react-icons/Trash';
 import TextField from 'apollo-react/components/TextField';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
+import difference from 'lodash/difference';
 import './DipaViewStructure.scss';
 import Grid from 'apollo-react/components/Grid/Grid';
 import Pencil from 'apollo-react-icons/Pencil';
@@ -41,6 +42,7 @@ function DipaViewStructure({
   const [penciltooltip, setPencilTooltip] = useState(false);
 
   const onPencilIconClick = (e) => {
+    e.stopPropagation();
     toggleEditingIDs(segments.map((seg) => seg.ID));
     e.preventDefault();
   };
@@ -66,13 +68,20 @@ function DipaViewStructure({
       </Tooltip>
     );
   }
+
+  const handleAccordianClick = (e, expanded) => {
+    if (expanded) {
+      handleExpandChange(ID);
+    }
+  };
+
   return (
     <div>
       <Accordion
         key={ID}
-        expanded={open}
         className="container"
         data-testid="accordion-expand"
+        onClick={handleAccordianClick}
       >
         <AccordionSummary
           data-testid="summary-expand"
@@ -83,7 +92,10 @@ function DipaViewStructure({
               <TextField
                 placeholder="Actual text.."
                 data-testid="addgroup-textfield"
-                onChange={debounce((e) => onChangeSegmentGroup(ID, e), 200)}
+                onChange={debounce((e) => {
+                  e.stopPropagation();
+                  onChangeSegmentGroup(ID, e);
+                }, 200)}
               />
             ) : (
               <Typography
@@ -121,7 +133,11 @@ function DipaViewStructure({
                 </Tooltip>
 
                 <span className="icon-pencil">
-                  {editingIDList?.length ? (
+                  {editingIDList.length > 0 &&
+                  difference(
+                    segments.map((seg) => seg.ID),
+                    editingIDList,
+                  ).length === 0 ? (
                     <Save
                       onClick={() => handleUpdate()}
                       data-testid="save"
@@ -133,7 +149,13 @@ function DipaViewStructure({
                 </span>
               </div>
             ) : (
-              <div className="dipaview-icons">
+              <div
+                className="dipaview-icons"
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                role="presentation"
+              >
                 <Tooltip
                   title={`Created On:${tooltipValue}`}
                   placement="right"
@@ -207,7 +229,9 @@ function DipaViewStructure({
                     onChange={(e) => onChangeSegment(segment.ID, e)}
                     className="segment-text"
                     defaultValue={segment?.derive_seg || ''}
-                    data-testid="segment-textfield"
+                    inputProps={{
+                      'data-testid': 'segment-textfield',
+                    }}
                   />
                 ) : (
                   <Typography>{segment.derive_seg}</Typography>

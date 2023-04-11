@@ -92,6 +92,7 @@ function DipaView({ docId }) {
       doc_id: selectedSection.doc_id,
       id: selectedSection.id,
     };
+    setEditingIDList([]);
     setSelectedSection(selectedSection.id);
     setUserData(newValue);
     getAllCategory(newValue);
@@ -269,7 +270,9 @@ function DipaView({ docId }) {
                 onChange={handleSectionChange}
                 placeholder="Select item..."
                 fullWidth
-                data-testid="select-box"
+                inputProps={{
+                  'data-testid': 'select-box',
+                }}
               >
                 {sections.map((item) => (
                   <MenuItem key={item} value={item.id}>

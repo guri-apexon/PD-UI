@@ -639,7 +639,12 @@ function DigitizeAccordion({
               data-testid="accordion-header"
             >
               {globalPreferredTerm && !isEmpty(item.preferred_term) ? (
-                <b className="preferred-text">{item.preferred_term}</b>
+                <b className="preferred-text">
+                  {item.preferred_term
+                    .replace(/[_]/g, ' ')
+                    .replace('cpt', '')
+                    .trim()}
+                </b>
               ) : (
                 item.source_file_section
               )}
