@@ -93,29 +93,42 @@ function Protocols({ location }) {
     return refs;
   }, {});
   if (idPresent) {
-    const { data } = summary;
+    const { data, success } = summary;
+    const showQcMessage = data?.qcStatus === 'QC1';
     return (
       <>
-        {summary.success && summary.data ? (
+        {success && data ? (
           <div className="protocols" data-testid="protocols-component-test">
-            <div className="breadcrumb-wrapper ">
-              <Breadcrumbs
-                className="protocol-breadcrumb"
-                items={[
-                  { href: '/dashboard' },
-                  {
-                    title: 'Protocols',
-                    className: 'br-cr-protocol',
-                    disabled: true,
-                    // onClick: handleClick,
-                  },
-                  {
-                    title: data.protocol,
-                  },
-                ]}
-              />
-              <h2 className="header">{data.Protocol}</h2>
+            <div className="protocol-header">
+              <div className="breadcrumb-wrapper ">
+                <Breadcrumbs
+                  className="protocol-breadcrumb"
+                  items={[
+                    { href: '/dashboard' },
+                    {
+                      title: 'Protocols',
+                      className: 'br-cr-protocol',
+                      disabled: true,
+                      // onClick: handleClick,
+                    },
+                    {
+                      title: data.protocol,
+                    },
+                  ]}
+                />
+                <h2 className="header">{data.Protocol}</h2>
+              </div>
+              <div className="protocol-qc-message">
+                {showQcMessage && (
+                  <div className="message-blue">
+                    <p className="message-content">
+                      This Protocol currently is under Quality Review
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
+
             <div className="tab-column">
               <div className="d-flex-row">
                 <div className="p-rl-20 tabs-wrapper">

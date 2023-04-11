@@ -51,6 +51,40 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [
+          {
+            id: '02cb4d51-273c-4d85-b2d4-495454133b36',
+            wfId: '0013956f-b5cb-40ed-af22-47b6b9af29a3',
+            wfStatus: 'COMPLETED',
+            wfAllServices: [
+              'triage',
+              'digitizer1',
+              'digitizer2',
+              'extraction',
+              'digitizer2_omopgenerate',
+              'i2e_omop_update',
+              'digitizer2_omopupdate',
+              'digitizer2_compare',
+            ],
+            wfName: 'full_flow',
+            wfRunningServices: [],
+            wfErrorMessageDetails: '',
+            wfFinishedServices: [
+              'triage',
+              'digitizer1',
+              'digitizer2',
+              'extraction',
+              'digitizer2_omopgenerate',
+              'i2e_omop_update',
+              'digitizer2_omopupdate',
+              'digitizer2_compare',
+            ],
+            wfPercentComplete: 100,
+            timeCreated: '05-Jan-2023',
+          },
+        ],
+        showMoreCalling: false,
+        showMore: false,
       },
       {
         id: 'abcd123456',
@@ -91,6 +125,40 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [
+          {
+            id: '02cb4d51-273c-4d85-b2d4-495454133b36',
+            wfId: '0013956f-b5cb-40ed-af22-47b6b9af29a3',
+            wfStatus: 'COMPLETED',
+            wfAllServices: [
+              'triage',
+              'digitizer1',
+              'digitizer2',
+              'extraction',
+              'digitizer2_omopgenerate',
+              'i2e_omop_update',
+              'digitizer2_omopupdate',
+              'digitizer2_compare',
+            ],
+            wfName: 'full_flow',
+            wfRunningServices: [],
+            wfErrorMessageDetails: '',
+            wfFinishedServices: [
+              'triage',
+              'digitizer1',
+              'digitizer2',
+              'extraction',
+              'digitizer2_omopgenerate',
+              'i2e_omop_update',
+              'digitizer2_omopupdate',
+              'digitizer2_compare',
+            ],
+            wfPercentComplete: 100,
+            timeCreated: '05-Jan-2023',
+          },
+        ],
+        showMoreCalling: false,
+        showMore: true,
       },
     ];
     render(
@@ -154,6 +222,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: true,
+        showMore: false,
       },
       {
         id: 'abcd123456',
@@ -194,6 +265,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
       {
         amendment: 'N',
@@ -237,6 +311,9 @@ describe('Dashboard table component', () => {
         userUpdated: null,
         versionNumber: '1',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     render(
@@ -288,6 +365,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
       {
         id: 'abcd123456',
@@ -328,6 +408,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     render(
@@ -380,6 +463,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
       {
         id: 'abcd123456',
@@ -420,6 +506,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     const fakeFn = jest.fn();
@@ -476,6 +565,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     const container = render(
@@ -532,6 +624,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     const container = render(
@@ -589,6 +684,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     const container = render(
@@ -644,6 +742,9 @@ describe('Dashboard table component', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     const container = render(
@@ -688,6 +789,9 @@ describe('Dashboard table component', () => {
         userId: '1020640',
         versionNumber: '10.1',
         qcActivity: 'QC Completed',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     render(
@@ -733,6 +837,9 @@ describe('Dashboard table component', () => {
         userId: '1020640',
         versionNumber: '10.1',
         qcActivity: 'QC In Progress',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     render(
@@ -778,6 +885,9 @@ describe('Dashboard table component', () => {
         userId: '1020640',
         versionNumber: '10.1',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     render(
@@ -829,6 +939,9 @@ describe('Dashboard table component', () => {
         userId: '1020640',
         versionNumber: '10.1',
         qcActivity: 'QC In Progress',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     render(
@@ -890,6 +1003,9 @@ describe('Dashboard table component Redaction', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
       {
         id: 'abcd123456',
@@ -930,6 +1046,9 @@ describe('Dashboard table component Redaction', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     render(
@@ -983,6 +1102,9 @@ describe('Dashboard table component Redaction', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
       {
         id: 'abcd123456',
@@ -1023,6 +1145,9 @@ describe('Dashboard table component Redaction', () => {
         iqvxmlpath: 'string',
         nctId: '0',
         qcActivity: 'QC Not Started',
+        wfData: [],
+        showMoreCalling: false,
+        showMore: false,
       },
     ];
     render(

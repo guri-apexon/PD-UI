@@ -30,9 +30,8 @@ import {
   setSOAData,
   getSectionIndex,
   getLabData,
-  updateGetLabData,
-  deleteGetLabData,
-  createGetLabData,
+  setLabDataLoader,
+  setLabDataSuccess,
   setLoader,
   resetSectionData,
   setSectionLockDetails,
@@ -239,7 +238,7 @@ function* getState(withPrefix) {
 export function* updateSectionData(action) {
   try {
     const {
-      payload: { reqBody },
+      payload: { reqBody, docId },
     } = action;
     if (action?.payload?.refreshToc) {
       yield put(getProtocolTocData({}));
@@ -257,7 +256,7 @@ export function* updateSectionData(action) {
       return ele;
     });
     const config = {
-      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
+      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}?doc_id=${docId}`,
       method: 'POST',
       data: updatedReq,
     };
@@ -785,20 +784,16 @@ export function* LabData(action) {
 
   const config = {
     url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
-
     method: 'GET',
   };
-
-  const labData = yield call(httpCall, config);
-
-  const successState = {
-    data: labData.data,
-  };
-
-  if (labData.success) {
-    yield put(getLabData(successState));
-  } else {
+  yield put(setLabDataLoader(true));
+  try {
+    const response = yield call(httpCall, config);
+    yield put(getLabData(response.data));
+    yield put(setLabDataLoader(false));
+  } catch (error) {
     yield put(getLabData({ data: [] }));
+    yield put(setLabDataLoader(false));
   }
 }
 
@@ -813,52 +808,16 @@ export function* UpdateLabData(action) {
       data,
     },
   };
-  const labData = yield call(httpCall, config);
-  if (labData?.success) {
-    toast.info('Lab Data Updated');
-    yield put(updateGetLabData(labData));
-  } else {
+  yield put(setLabDataLoader(true));
+  try {
+    const response = yield call(httpCall, config);
+    toast.success(response.data.message);
+    yield put(setLabDataSuccess(true));
+    yield put(setLabDataLoader(false));
+  } catch (err) {
     toast.error('Error While Updation');
-  }
-}
-
-export function* DeleteLabData(action) {
-  const {
-    payload: { data },
-  } = action;
-  const config = {
-    url: `${BASE_URL_8000}${Apis.DELETE_LAB_DATA}`,
-    method: 'POST',
-    data: {
-      data,
-    },
-  };
-  const labData = yield call(httpCall, config);
-  if (labData.success) {
-    yield put(deleteGetLabData(labData));
-    toast.info('Lab Data row deleted');
-  } else {
-    toast.error('Error While deleting');
-  }
-}
-
-export function* CreateLabData(action) {
-  const {
-    payload: { data },
-  } = action;
-  const config = {
-    url: `${BASE_URL_8000}${Apis.CREATE_LAB_DATA}`,
-    method: 'POST',
-    data: {
-      data,
-    },
-  };
-  const labData = yield call(httpCall, config);
-  if (labData?.success) {
-    yield put(createGetLabData(labData));
-    toast.info('Lab Data row created');
-  } else {
-    toast.error('Error While creating');
+    yield put(setLabDataSuccess(false));
+    yield put(setLabDataLoader(false));
   }
 }
 
@@ -963,8 +922,6 @@ function* watchProtocolViews() {
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
   yield takeEvery('GET_LAB_DATA', LabData);
   yield takeEvery('UPDATE_LAB_DATA', UpdateLabData);
-  yield takeEvery('DELETE_LAB_DATA', DeleteLabData);
-  yield takeEvery('CREATE_LAB_DATA', CreateLabData);
   yield takeEvery('SET_ENRICHED_WORD', getenrichedword);
   yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
   yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
