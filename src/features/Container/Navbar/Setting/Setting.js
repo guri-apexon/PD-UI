@@ -7,6 +7,7 @@ import SettingsIcon from 'apollo-react-icons/Cog';
 import './Setting.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { OptInOutData } from '../navbarSlice';
+import { SETTING_OPTION } from '../../../../AppConstant/AppConstant';
 
 function Setting({ handleModal, userId }) {
   const handleClose = () => {
@@ -27,7 +28,12 @@ function Setting({ handleModal, userId }) {
           if (value) {
             truevalue.push(key);
           }
-          return { optionName: key.replaceAll('_', ' '), value, keyName: key };
+          return {
+            optionName: key.replaceAll('_', ' '),
+            value,
+            keyName: key,
+            disabled: key === 'New_Document/Version',
+          };
         },
       );
       setCheckBoxValue(optionArr);
@@ -95,7 +101,6 @@ function Setting({ handleModal, userId }) {
                     key={React.key}
                     value={item?.keyName}
                     label={item?.optionName}
-                    disabled={item?.keyName === 'New_Document/Version'}
                   />
                 );
               })}

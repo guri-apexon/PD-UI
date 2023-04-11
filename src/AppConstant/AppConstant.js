@@ -205,6 +205,24 @@ const CONFIG_API_VARIABLES = [
   'properties',
 ];
 
+const SETTING_OPTION = [
+  {
+    optionName: 'QC Complete',
+    value: 'QC_Complete',
+    disabled: false,
+  },
+  {
+    optionName: 'New Document/Version',
+    value: 'New_Document/Version',
+    disabled: false,
+  },
+  {
+    optionName: 'Edited',
+    value: 'Edited',
+    disabled: false,
+  },
+];
+
 export {
   SORT_DROPDOWN,
   USER_MENU,
@@ -218,4 +236,5 @@ export {
   QC_CHANGE_TYPE,
   METADATA_LIST,
   CONFIG_API_VARIABLES,
+  SETTING_OPTION,
 };
