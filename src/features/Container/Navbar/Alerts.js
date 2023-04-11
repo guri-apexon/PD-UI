@@ -6,6 +6,7 @@ import IconButton from 'apollo-react/components/IconButton';
 import Popover from 'apollo-react/components/Popover';
 import Tag from 'apollo-react/components/Tag';
 import Tooltip from 'apollo-react/components/Tooltip';
+import isEqual from 'lodash/isEqual';
 import moment from 'moment';
 import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,10 +18,9 @@ import {
   List,
 } from 'react-virtualized';
 import { redaction } from '../../../AppConstant/AppConstant';
+import { getNotificationStatus } from '../../../utils/utilFunction';
 import './Alerts.scss';
 import { navbarNotifications } from './navbarSlice';
-import { getNotificationStatus } from '../../../utils/utilFunction';
-import isEqual from 'lodash/isEqual';
 const replaceall = require('replaceall');
 
 const notificationStyle = {
@@ -203,23 +203,31 @@ function Alerts() {
                                       </Tooltip>
                                     ) : (
                                       <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1">
-                                        {isEqual(getNotificationStatus(notification), 'Edited') && "Your protocol has had some changes made, Protocol Number: "+ notification.header}
-                                        {!isEqual(getNotificationStatus(notification), 'Edited') && "Protocol Number: "+ notification.header}
+                                        {'Protocol Number: ' +
+                                          notification.header}
                                       </span>
-                                    )}                                   
-                                      <p
-                                        className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock"
-                                        
-                                      >
-                                        {"Status: "+ notification.status}
-                                      </p>
-                                    {!isEqual(getNotificationStatus(notification), 'Edited') &&
-                                    <Tag
-                                      label={getNotificationStatus(notification)}
-                                      variant="primary"
-                                    />
-                    }
-                                    <hr className="horizontal-line" />
+                                    )}
+                                    <p className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock">
+                                      {'Status: ' + notification.status}
+                                    </p>
+                                    {!isEqual(
+                                      getNotificationStatus(notification),
+                                      'Edited',
+                                    ) ? (
+                                      <Tag
+                                        label={getNotificationStatus(
+                                          notification,
+                                        )}
+                                        variant="primary"
+                                      />
+                                    ) : (
+                                      <span >
+                                        {
+                                          'Your protocol has had some changes made'
+                                        }
+                                      </span>
+                                    )}
+
                                   </div>
 
                                   <div className="IconButton-delete">
@@ -240,7 +248,13 @@ function Alerts() {
                                     </IconButton>
                                   </div>
                                   <p className="Typography-root timestamp Typography-body2 Typography-gutterBottom">
-                                    {header && <div>{header}</div>}
+                                    {notification.timeCreated && (
+                                      <div>
+                                        {getDayLabelText(
+                                          notification.timeCreated,
+                                        )}
+                                      </div>
+                                    )}
                                   </p>
 
                                   <span className="TouchRipple-root" />

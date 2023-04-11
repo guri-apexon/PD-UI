@@ -24,7 +24,7 @@
 }
 
 .IconButton-delete {
-  margin-bottom: 64px;
+  margin-bottom: 30px;
   display: none;
   svg {
     font-size: 16px;
@@ -37,7 +37,6 @@
   box-sizing: border-box;
   text-align: left;
   align-items: center;
-  padding-top: 11px;
   padding-bottom: 11px;
   justify-content: flex-start;
   text-decoration: none;
@@ -109,7 +108,7 @@
 }
 .listItem {
   color: #444444;
-  height: 100px;
+  height: auto;
   outline: none;
   padding-left: 24px;
   // border-bottom: 0.5px solid rgb(128 128 128 / 15%);
@@ -118,12 +117,6 @@
 
 .listItem:hover {
   background-color: #ecf3ff;
-  span {
-    font-weight: 700;
-  }
-  p {
-    font-weight: 600;
-  }
 }
 .listItemTextRoot {
   margin-top: 30px;
@@ -131,7 +124,7 @@
   white-space: wrap;
 }
 .listItemTextPrimary {
-  font-size: 14px;
+  font-size: 16px;
   // font-weight: 600;
   color: inherit;
   overflow: hidden;
@@ -146,7 +139,7 @@
   line-height: 1.71;
 }
 .listItemNotRead {
-  height: 72px;
+  height: auto;
   padding-left: 24px;
   padding-right: 24px;
   // border-bottom: 0.5px solid rgb(128 128 128 / 15%);
@@ -167,12 +160,6 @@
 
 .listItemNotRead:hover {
   background-color: #ecf3ff;
-  span {
-    font-weight: 700;
-  }
-  p {
-    font-weight: 600;
-  }
 }
 
 .timestamp {
