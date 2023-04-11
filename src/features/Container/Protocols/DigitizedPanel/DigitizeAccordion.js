@@ -102,7 +102,7 @@ function DigitizeAccordion({
   const [showAlert, setShowAlert] = useState(false);
   const NewSectionIndex = useSelector(SectionIndex);
   const discardSelector = useSelector(discardDetails);
-  const [discardData, setDiscardData] = useState();
+  const [discardData, setDiscardData] = useState({});
   const userIdSelector = useSelector(userId);
 
   const [sectionDataBak, setSectionDataBak] = useState([]);
