@@ -278,7 +278,7 @@ const workFlowStatus = ({ row, column: { accessor: key } }) => {
   const fetchMoreData = () => {
     dispatch({ type: 'FETCH_MORE_WORKFLOW', payload: row.id });
   };
-  if (row.wfData.length) {
+  if (row.wfData?.length) {
     return (
       <div>
         <IconButton size="small" color="primary" onClick={handleOpen}>
