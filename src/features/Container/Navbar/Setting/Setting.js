@@ -26,7 +26,6 @@ function Setting({ handleModal, userId }) {
           truevalue.push(key);
         }
       });
-
       setOption(truevalue);
     }
   }, [getSelectorValue]);
