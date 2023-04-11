@@ -19,14 +19,14 @@ function Setting({ handleModal, userId }) {
   const [enableSubmit, setEnableSubmit] = useState(true);
   const dispatch = useDispatch();
   useEffect(() => {
-    const truevalue = [];
+    const selectedValue = [];
     if (getSelectorValue?.option) {
       Object.entries(getSelectorValue?.option).forEach(([key, value]) => {
         if (value) {
-          truevalue.push(key);
+          selectedValue.push(key);
         }
       });
-      setOption(truevalue);
+      setOption(selectedValue);
     }
   }, [getSelectorValue]);
 
