@@ -254,7 +254,7 @@ function LabData({ docId }) {
 
   const clearFilter = () => {
     if (tableRef?.current) {
-      LABDATA_CONSTANTS.FILTER_COLUMNS.map((val) =>
+      LABDATA_CONSTANTS.FILTER_COLUMNS.forEach((val) =>
         tableRef?.current?.updateFilterValue({
           target: {
             name: val,

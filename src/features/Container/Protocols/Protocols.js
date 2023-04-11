@@ -33,7 +33,7 @@ function Protocols({ location }) {
   const [idPresent, setIdPresent] = useState(false);
   const [pdfArray] = useState([]);
   const [summarydata, setSummaryData] = useState();
-  const [discardData, setDiscardData] = useState();
+  const [discardData, setDiscardData] = useState({});
 
   useEffect(() => {
     setSummaryData({
