@@ -1,0 +1,58 @@
+.show-running-status {
+  display: flex;
+  flex-direction: column;
+  .running-see-more {
+    font-size: 12px;
+    color: blue;
+    align-self: flex-end;
+    cursor: pointer;
+  }
+  .running-see-more:hover {
+    text-decoration: underline;
+  }
+  .pipeline-container {
+    display: flex;
+    border: 1px solid #eee;
+    padding: 10px;
+    padding-left: 30px;
+    margin-top: 10px;
+    border-radius: 20px;
+    justify-content: space-between;
+    overflow: auto;
+    .overall-status {
+      font-size: 12px;
+      margin-right: 10px;
+      align-self: center;
+      .status-percent {
+        margin-bottom: 5px;
+        width: 100px;
+      }
+    }
+    .pipelines {
+      display: flex;
+      align-items: center;
+    }
+    .service-icons {
+      width: 50px;
+    }
+    .COMPLETED {
+      color: green;
+    }
+    .RUNNING {
+      color: blue;
+    }
+    .PENDING {
+      color: orange;
+    }
+  }
+  .pipeline-COMPLETED {
+    border: 1px solid #eee;
+  }
+  .pipeline-RUNNING {
+    border: 2px solid blue;
+  }
+  .pipeline-ERROR,
+  .pipeline-ERROR_TIMEOUT {
+    border: 1px solid #eee;
+  }
+}

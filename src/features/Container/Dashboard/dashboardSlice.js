@@ -20,12 +20,19 @@ export const dashboardSlice = createSlice({
     workflowData: {
       loading: false,
       error: null,
-      data: [],
+      data: {},
     },
     workflowSubmit: {
       loading: false,
       error: null,
       data: [],
+      success: false,
+    },
+    wfData: {
+      loading: false,
+      error: null,
+      data: [],
+      success: false,
     },
     addProtocolErrorState: {
       type: '',
@@ -87,6 +94,9 @@ export const dashboardSlice = createSlice({
     setworkflowSubmit: (state, action) => {
       state.workflowSubmit = action.payload;
     },
+    setWFData: (state, action) => {
+      state.wfData = action.payload;
+    },
   },
 });
 
@@ -109,6 +119,7 @@ export const {
   setworkflowData,
   setworkflowSubmit,
   setAddProtocolErrorState,
+  setWFData,
 } = dashboardSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -129,6 +140,7 @@ export const dashboadAPIError = (state) => state.dashboard.apiError;
 export const dashboadSearchLoader = (state) =>
   state.dashboard.dashboadSearchLoader;
 export const workflow = (state) => state.dashboard.workflowData;
+export const wfData = (state) => state.dashboard.wfData;
 export const workflowSubmitData = (state) => state.dashboard.workflowSubmit;
 export const addProtocolErrorData = (state) =>
   state.dashboard.addProtocolErrorState;
