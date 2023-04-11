@@ -214,7 +214,7 @@ const SETTING_OPTION = [
   {
     optionName: 'New Document/Version',
     value: 'New_Document/Version',
-    disabled: false,
+    disabled: true,
   },
   {
     optionName: 'Edited',

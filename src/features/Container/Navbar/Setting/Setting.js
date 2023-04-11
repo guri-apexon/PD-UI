@@ -16,27 +16,23 @@ function Setting({ handleModal, userId }) {
 
   const getSelectorValue = useSelector(OptInOutData);
   const [option, setOption] = useState([]);
-  const [checkBoxValue, setCheckBoxValue] = useState([]);
   const [enableSubmit, setEnableSubmit] = useState(true);
   const dispatch = useDispatch();
-
   useEffect(() => {
     const truevalue = [];
     if (getSelectorValue?.option) {
-      const optionArr = Object.entries(getSelectorValue?.option).map(
-        ([key, value]) => {
-          if (value) {
-            truevalue.push(key);
-          }
-          return {
-            optionName: key.replaceAll('_', ' '),
-            value,
-            keyName: key,
-            disabled: key === 'New_Document/Version',
-          };
-        },
-      );
-      setCheckBoxValue(optionArr);
+      Object.entries(getSelectorValue?.option).map(([key, value]) => {
+        if (value) {
+          truevalue.push(key);
+        }
+        return {
+          optionName: key.replaceAll('_', ' '),
+          value,
+          keyName: key,
+          disabled: key === 'New_Document/Version',
+        };
+      });
+
       setOption(truevalue);
     }
   }, [getSelectorValue]);
@@ -95,12 +91,13 @@ function Setting({ handleModal, userId }) {
               onChange={handleChange}
               className="checkboxFinal"
             >
-              {checkBoxValue?.map((item) => {
+              {SETTING_OPTION?.map((item) => {
                 return (
                   <Checkbox
                     key={React.key}
-                    value={item?.keyName}
+                    value={item?.value}
                     label={item?.optionName}
+                    disabled={item?.disabled}
                   />
                 );
               })}
