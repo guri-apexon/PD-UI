@@ -59,7 +59,6 @@ function QCContainer() {
     });
   }
   useEffect(() => {
-    // dispatch({ type: "GET_PROTOCOL_TABLE_SAGA" });
     dispatch({ type: 'GET_QC_PROTOCOL_TABLE_SAGA' });
     // eslint-disable-next-line
   }, []);
@@ -69,9 +68,6 @@ function QCContainer() {
       className="dashboard-parent qc-parent protocols"
       data-testid="qc-parent-component"
     >
-      {/* <h1>
-        {greet} {userDetails && userDetails.username}
-      </h1> */}
       <Breadcrumbs
         className="breadcrumbs"
         items={breadItems}
@@ -96,6 +92,7 @@ function QCContainer() {
             path={filePath}
             userType={type}
             protocolNumber={protocolNumber}
+            handleChangeTab={handleChangeTab}
           />
         )}
       </div>

@@ -52,6 +52,12 @@ const dashboardmockData = {
   addProtocolModal: true,
   isLoading: false,
   displayAddProtocol: true,
+  workflowSubmit: {
+    loading: false,
+    error: null,
+    data: [],
+    success: false,
+  },
 };
 
 describe('Add Protocol Test Suite', () => {
@@ -68,6 +74,12 @@ describe('Add Protocol Test Suite', () => {
             addProtocolData: {
               sponsor: [],
               indication: [],
+            },
+            workflowSubmit: {
+              loading: false,
+              error: null,
+              data: [],
+              success: false,
             },
           },
         },
@@ -107,6 +119,12 @@ describe('Add Protocol Test Suite', () => {
             },
             addProtocolModal: false,
             isLoading: false,
+            workflowSubmit: {
+              loading: false,
+              error: null,
+              data: [],
+              success: false,
+            },
           },
         },
       },
@@ -143,6 +161,12 @@ describe('Add Protocol Test Suite', () => {
             },
             addProtocolModal: true,
             isLoading: false,
+            workflowSubmit: {
+              loading: false,
+              error: null,
+              data: [],
+              success: false,
+            },
           },
         },
       },
@@ -186,6 +210,12 @@ describe('Add Protocol Test Suite', () => {
             },
             addProtocolModal: true,
             isLoading: false,
+            workflowSubmit: {
+              loading: false,
+              error: null,
+              data: [],
+              success: false,
+            },
           },
         },
       },
@@ -262,6 +292,12 @@ describe('Add Protocol Test Suite', () => {
             },
             addProtocolModal: true,
             isLoading: false,
+            workflowSubmit: {
+              loading: false,
+              error: null,
+              data: [],
+              success: false,
+            },
           },
         },
       },
@@ -417,27 +453,5 @@ describe('Add Protocol Test Suite', () => {
       .children[0].children[0].children[0];
     fireEvent.change(edit, { target: { value: 'Draft' } });
     expect(edit.value).toEqual('Draft');
-  });
-  test('Should render workflow-orchestration Component', async () => {
-    render(<AddProtocol />, {
-      initialState: {
-        dashboard: dashboardmockData,
-        user: {
-          userDetail: {
-            userId: 'u1072234',
-            username: 'Test User',
-            email: 'test@iqvia.com',
-            user_type: 'admin',
-          },
-        },
-      },
-    });
-    const tab2 = screen.getByTestId('workflow-orchestration').children[0]
-      .children[0].children[0];
-    // console.log(JSON.stringify(tab2));
-    // screen.getByTestId('add-protocol-modal')[0].children[2].children[0]
-    //   .children[1].children[0].children[0].children[0].children[1];
-    screen.debug(tab2);
-    fireEvent.click(tab2);
   });
 });

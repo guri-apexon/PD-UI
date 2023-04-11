@@ -16,6 +16,7 @@ import Plus from 'apollo-react-icons/Plus';
 import InfoIcon from 'apollo-react-icons/Info';
 import IconButton from 'apollo-react/components/IconButton';
 import Tooltip from 'apollo-react/components/Tooltip';
+import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 import {
   initialFormErrorValues,
@@ -61,14 +62,30 @@ function AddProtocol() {
   const [docIdEntered, setDocIdEntered] = React.useState('');
   const [workFlow, setWorkflow] = React.useState('');
   const [docIdError, setDocIdError] = React.useState(false);
+  const [workFlowName, setWorkflowName] = React.useState('');
+  const [workFlowNameError, setWorkflowNameError] = React.useState('');
   const [workflowError, setworkflowError] = React.useState(false);
+  const workflowSubmitData = useSelector(
+    (state) => state.dashboard.workflowSubmit,
+  );
   const history = useHistory();
-  console.log('admin__________', showAdminModal);
+
   useEffect(() => {
     if (userDetail.user_type === 'admin') {
       setShowAdminModal(true);
     }
   }, [userDetail]);
+
+  useEffect(() => {
+    if (workflowSubmitData.success) {
+      setDocIdEntered('');
+    setWorkflowName('');
+      toast.success(
+        'Workflows execution were submitted successfully for the protocol',
+      );
+      dispatch({ type: 'RESET_SUBMIT_WORKFLOW_DATA' });
+    }
+  }, [workflowSubmitData]);
   const handleChangeTab = (event, value) => {
     setTabSelected(value);
   };
@@ -96,7 +113,6 @@ function AddProtocol() {
   const onTextFieldChange = (fieldName, e, fieldType, dropdownValue) => {
     const tempError = cloneDeep(formErrorValues);
     const tempValues = cloneDeep(formValues);
-    //  console.log("dashboardData1 :", fieldName, 'e, fieldType', dropdownValue );
     if (fieldType === 'Textbox') {
       if (
         formErrorValues[fieldName].isRequired &&
@@ -164,15 +180,10 @@ function AddProtocol() {
         tempError[fieldName].error = false;
         tempError[fieldName].errorMessage = '';
         tempValues[fieldName] = dropdownValue || { label: '' };
-        // console.log("valuessssss :", tempValues.amendmentNumber, "temppp");
         setFormValues(tempValues);
-        // DropDown logic changes start
         valueTemp[fieldName] = dropdownValue;
       } else {
-        if (
-          !dropdownFocus.length > 0
-          // && formValues[fieldName].label && formValues[fieldName].label.length
-        ) {
+        if (!dropdownFocus.length > 0) {
           valueTemp[fieldName] = { label: '' };
         }
         // DropDown logic changes Ends
@@ -250,14 +261,12 @@ function AddProtocol() {
     }
   };
   const handleFileUploadError = (msg, err, fieldName) => {
-    // console.log("file uplaod called error");
     const tempError = cloneDeep(formErrorValues);
     tempError[fieldName].error = err;
     tempError[fieldName].errorMessage = msg;
     setFormErrorValues(tempError);
   };
   const setUploadFile = (file, fieldName) => {
-    // console.log("file uplaod called");
     const tempValue = cloneDeep(formValues);
     tempValue[fieldName] = file;
     setFormValues(tempValue);
@@ -572,13 +581,17 @@ function AddProtocol() {
   const handlePipelineSubmit = () => {
     let finalWorkflow = [];
     workFlow.forEach((item) => {
-      let obj = { workflow_name: item.workflow_name, services: [] };
+      let obj = { work_flow_name: item.work_flow_name, dependency_graph: [] };
       item.services.map((service) => {
         if (service.checked) {
-          obj.services.push(service.service_name);
+          const serviceObj = {
+            service_name: service.service_name,
+            depends: service.depends,
+          };
+          obj.dependency_graph.push(serviceObj);
         }
       });
-      if (obj.services.length) {
+      if (obj.dependency_graph.length) {
         finalWorkflow.push(obj);
       }
     });
@@ -587,15 +600,25 @@ function AddProtocol() {
     } else {
       setDocIdError(false);
     }
+    if (!workFlowName) {
+      setWorkflowNameError(true);
+    } else {
+      setWorkflowNameError(false);
+    }
     if (!finalWorkflow.length) {
       setworkflowError(true);
     } else {
       setworkflowError(false);
     }
     if (docIdEntered && finalWorkflow.length) {
+      const body = {
+        docId: docIdEntered,
+        workFlowName,
+        workFlowList: finalWorkflow,
+      };
       dispatch({
         type: 'SUBMIT_WORKFLOW_DATA',
-        payload: { body: finalWorkflow, id: docIdEntered },
+        payload: body,
       });
     }
   };
@@ -655,6 +678,9 @@ function AddProtocol() {
                 setWorkflow={setWorkflow}
                 docIdError={docIdError}
                 workflowError={workflowError}
+                setWorkflowName={setWorkflowName}
+                workflowNameError={workFlowNameError}
+                docId={docIdEntered}
               />
             )}
           </div>
