@@ -5,6 +5,7 @@
   &.show {
     button {
       padding: 10px;
+
       svg {
         height: 15px;
         width: 15px;
@@ -22,6 +23,10 @@
       margin-right: 5px;
     }
   }
+}
+
+#addContentMenu div:nth-child(3) {
+  margin-left: -20px;
 }
 
 @media screen and (max-width: 1380px) {

@@ -1,23 +1,24 @@
 .action-menu {
   background: #fff;
-  width: 10%;
+  width: 60px;
   display: flex;
-  margin-right:50px;
   &.expanded {
     width: 200px;
-    margin-right:0;
+    margin-right: 0;
   }
-  &.action-edit-menu{
-    margin-top: -35px;
-        position: relative;
-        z-index: 9999;
-        margin-right: 0;
-    }
+  &.action-edit-menu {
+    position: relative;
+    z-index: 9999;
+    margin-right: 0;
+    bottom: 30px;
+  }
   .open-close {
     display: flex;
     align-items: center;
     background: #d6eaff;
     width: 12px;
+    height: calc(100% + 30px);
+
     svg {
       cursor: pointer;
       font-size: 1.2rem;
@@ -28,7 +29,7 @@
     padding-left: 10px;
     background: #e7f2ff;
     width: 176px;
-    height: 100%;
+    height: calc(100% + 30px);
 
     .btn-icons {
       background: transparent;
@@ -97,6 +98,21 @@
     }
     .eye-icon {
       font-size: 14px;
+    }
+
+    .active_save_color {
+      color: #0768fd;
+      background: transparent;
+      border: none;
+      line-height: 24px;
+      padding: 12px 0;
+      font-size: 14px;
+      align-items: center;
+      outline: none;
+      display: flex;
+      cursor: pointer;
+      margin: 0;
+      min-width: unset;
     }
   }
 }
