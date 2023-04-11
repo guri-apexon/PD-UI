@@ -38,6 +38,7 @@ import {
   setEnrichedWord,
   getDipaViewData,
   getAllDipaViewData,
+  getDiscardDeatils,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -256,7 +257,7 @@ export function* updateSectionData(action) {
       return ele;
     });
     const config = {
-      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}?doc_id=${docId}`,
+      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}/?doc_id=${docId}`,
       method: 'POST',
       data: updatedReq,
     };
@@ -897,6 +898,14 @@ export function* updateDipaData(action) {
     toast.error('Error While Updation');
   }
 }
+
+export function* setDiscardDetails(action) {
+  const {
+    payload: { isEdited, isDiscarded, protocolTab },
+  } = action;
+  yield put(getDiscardDeatils({ isEdited, isDiscarded, protocolTab }));
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -931,6 +940,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_DIPA_VIEW', getDipaViewDataById);
   yield takeEvery('GET_ALL_DIPA_VIEW', getAllDipaViewDataByCategory);
   yield takeEvery('UPDATE_DIPA_VIEW', updateDipaData);
+  yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
 }
 
 // notice how we now only export the rootSaga

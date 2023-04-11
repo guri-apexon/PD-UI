@@ -10,7 +10,11 @@ import Breadcrumbs from 'apollo-react/components/Breadcrumbs';
 import Tab from 'apollo-react/components/Tab';
 import Tabs from 'apollo-react/components/Tabs';
 import Loader from 'apollo-react/components/Loader';
-import { protocolSummary, getProcotoclToc } from './protocolSlice';
+import {
+  protocolSummary,
+  getProcotoclToc,
+  discardDetails,
+} from './protocolSlice';
 import { isPrimaryUser } from '../../../utils/utilFunction';
 
 // ------------------- Components ------------
@@ -23,11 +27,13 @@ import NoResultFound from '../../Components/NoResultFound';
 
 function Protocols({ location }) {
   const summary = useSelector(protocolSummary);
+  const discardSelector = useSelector(discardDetails);
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [idPresent, setIdPresent] = useState(false);
   const [pdfArray] = useState([]);
   const [summarydata, setSummaryData] = useState();
+  const [discardData, setDiscardData] = useState();
 
   useEffect(() => {
     setSummaryData({
@@ -35,6 +41,25 @@ function Protocols({ location }) {
       userPrimaryRoleFlag: isPrimaryUser(summary.data),
     });
   }, [summary]);
+
+  useEffect(() => {
+    setDiscardData(discardSelector);
+  }, [discardSelector]);
+
+  useEffect(() => {
+    if (!discardData?.isEdited && discardData?.protocolTab >= 0) {
+      setValue(discardData?.protocolTab);
+      dispatch({
+        type: 'DISCARD_DETAILS',
+        payload: {
+          isEdited: false,
+          isDiscarded: false,
+          protocolTab: -1,
+        },
+      });
+    }
+    // eslint-disable-next-line
+  }, [discardData]);
 
   useEffect(() => {
     const params = location.search;
@@ -82,10 +107,22 @@ function Protocols({ location }) {
   /* istanbul ignore next */
 
   const handleChangeTab = (event, value) => {
-    setValue(value);
-    dispatch({
-      type: 'RESET_SECTION_DATA',
-    });
+    if (discardData?.isEdited) {
+      dispatch({
+        type: 'DISCARD_DETAILS',
+        payload: {
+          isEdited: true,
+          isDiscarded: true,
+          protocolTab: value,
+        },
+      });
+      // setValue(value);
+    } else {
+      setValue(value);
+      dispatch({
+        type: 'RESET_SECTION_DATA',
+      });
+    }
   };
 
   const refs = pdfArray.reduce((refs, value) => {

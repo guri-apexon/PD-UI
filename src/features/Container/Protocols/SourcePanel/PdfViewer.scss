@@ -5,6 +5,18 @@
   width: unset !important;
 }
 
+.react-pdf__Page__textContent span {
+  opacity: 0.5;
+}
+
+.react-pdf__Page__textContent span::selection {
+  background-color: #3297fd;
+}
+
+.react-pdf__Document {
+  line-height: initial;
+}
+
 .pdf-pagination {
   display: flex;
   align-items: center;
