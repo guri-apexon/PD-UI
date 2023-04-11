@@ -201,6 +201,7 @@ class SearchPanel extends React.Component {
         this.setState({ accordionObj: newObj });
         const id = userDetails.userId;
         this.props.updateAlerts(id.substring(1));
+        this.props.updateSetting(id.substring(1));
       }
     } catch (err) {
       toast.error('Something Went Wrong');
@@ -510,6 +511,13 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: 'UPDATE_SEARCH_RESULT', payload: obj }),
     updateAlerts: (id) =>
       dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: id }),
+    updateSetting: (id) =>
+      dispatch({
+        type: 'GET_OPT_IN_OUT',
+        payload: {
+          userID: id,
+        },
+      }),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);
