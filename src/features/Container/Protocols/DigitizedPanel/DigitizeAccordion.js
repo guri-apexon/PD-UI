@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Accordion from 'apollo-react/components/Accordion';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -32,6 +33,7 @@ import {
   updateSectionData,
   resetUpdateStatus,
   sectionLockDetails,
+  discardDetails,
 } from '../protocolSlice';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
 import SectionLockTimer from './SectionLockTimer';
@@ -83,6 +85,7 @@ function DigitizeAccordion({
   const classes = useStyles();
   const dispatch = useDispatch();
   const { headerLevel1 } = HeaderConstant;
+  const history = useHistory();
 
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
@@ -98,6 +101,8 @@ function DigitizeAccordion({
   const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
   const NewSectionIndex = useSelector(SectionIndex);
+  const discardSelector = useSelector(discardDetails);
+  const [discardData, setDiscardData] = useState();
   const userIdSelector = useSelector(userId);
 
   const [sectionDataBak, setSectionDataBak] = useState([]);
@@ -114,9 +119,16 @@ function DigitizeAccordion({
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
   const lockDetails = useSelector(sectionLockDetails);
+  const [requestedRoute, setRequestedRoute] = useState('');
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
+
+  useEffect(() => {
+    if (discardSelector) {
+      setDiscardData(discardSelector);
+    }
+  }, [discardSelector]);
 
   useEffect(() => {
     if (item.linkandReference) {
@@ -168,7 +180,7 @@ function DigitizeAccordion({
       setShowDiscardConfirm(true);
       return;
     }
-    if (showedit) {
+    if (showedit && lockDetails?.section_lock) {
       updateSectionLock(true);
     }
     if (handlePageRight) handlePageRight(item.page);
@@ -214,6 +226,7 @@ function DigitizeAccordion({
     setCurrentEditCard(null);
     updateSectionLock(true);
     dispatch(setSaveEnabled(false));
+    setAlertMsg(null);
     dispatch(
       updateSectionData({
         data: sectionDataBak,
@@ -221,6 +234,15 @@ function DigitizeAccordion({
         linkId: item.link_id,
       }),
     );
+
+    dispatch({
+      type: 'DISCARD_DETAILS',
+      payload: {
+        isEdited: false,
+        isDiscarded: false,
+        protocolTab: discardSelector?.protocolTab,
+      },
+    });
     if (tocClose) {
       handleTocsection(true);
       setTocClose(false);
@@ -234,7 +256,8 @@ function DigitizeAccordion({
       handleTocsection();
     } else if (showedit && lockDetails?.section_lock) {
       updateSectionLock(true);
-      setExpanded(false);
+    } else if (showedit) {
+      onDiscardClick();
     } else {
       setExpanded(false);
     }
@@ -266,6 +289,17 @@ function DigitizeAccordion({
     }
   };
 
+  useEffect(() => {
+    if (
+      discardData?.isDiscarded &&
+      tocActiveSelector[index] &&
+      currentEditCard === item.link_id
+    ) {
+      setShowDiscardConfirm(true);
+    }
+    // eslint-disable-next-line
+  }, [discardData]);
+
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
@@ -280,7 +314,6 @@ function DigitizeAccordion({
     if (currentEditCard && currentEditCard !== item.link_id) {
       setShowConfirm(true);
     } else {
-      setTocClose(true);
       handleTocsection();
       setCurrentEditCard(item.link_id);
       dispatch({
@@ -288,6 +321,14 @@ function DigitizeAccordion({
         payload: {
           doc_id: item?.doc_id,
           link_id: item?.link_id,
+        },
+      });
+      dispatch({
+        type: 'DISCARD_DETAILS',
+        payload: {
+          isEdited: true,
+          isDiscarded: false,
+          protocolTab: -1,
         },
       });
     }
@@ -308,6 +349,10 @@ function DigitizeAccordion({
         setCurrentEditCard(null);
         toast.error(`Section is in use by user ${lockDetails?.user_name}`);
       }
+    }
+    if (Object.keys(lockDetails || {}).length === 0 && requestedRoute) {
+      history.push(requestedRoute);
+      setRequestedRoute('');
     }
     // eslint-disable-next-line
   }, [lockDetails, currentEditCard]);
@@ -709,7 +754,9 @@ function DigitizeAccordion({
                 linkId={item.link_id}
                 sectionDataArr={sectionDataArr}
                 edit={showedit}
+                setShowDiscardConfirm={setShowDiscardConfirm}
                 child={getActionMenu()}
+                setRequestedRoute={setRequestedRoute}
               />
             ) : (
               <div className="readable-content-wrapper">
