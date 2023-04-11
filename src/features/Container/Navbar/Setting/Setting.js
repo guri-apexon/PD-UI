@@ -21,16 +21,10 @@ function Setting({ handleModal, userId }) {
   useEffect(() => {
     const truevalue = [];
     if (getSelectorValue?.option) {
-      Object.entries(getSelectorValue?.option).map(([key, value]) => {
+      Object.entries(getSelectorValue?.option).forEach(([key, value]) => {
         if (value) {
           truevalue.push(key);
         }
-        return {
-          optionName: key.replaceAll('_', ' '),
-          value,
-          keyName: key,
-          disabled: key === 'New_Document/Version',
-        };
       });
 
       setOption(truevalue);
