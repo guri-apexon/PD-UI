@@ -9,17 +9,11 @@ export const scrollToLinkandReference = (index, linkandReference) => {
   )[0];
   if (scrollDiv) {
     try {
-      scrollDiv.scrollBy(
-        0,
-        // NOSONAR
-        document
-          .evaluate(
-            `//*[text()[contains(., '${linkandReference}')]][last()]`,
-            document.body,
-          )
-          .iterateNext()
-          .getBoundingClientRect().top,
-      );
+      const textDiv = scrollDiv.textContent;
+      const indexTxt = textDiv.indexOf(linkandReference);
+      if (indexTxt) {
+        scrollDiv.scrollBy(0, indexTxt);
+      }
     } catch (error) {
       toast.error('Error while finding refrence');
     }
