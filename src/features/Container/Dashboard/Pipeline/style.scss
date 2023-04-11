@@ -1,0 +1,58 @@
+.pipeline-component {
+  margin-top: 10px;
+  .docid-section {
+    width: 60%;
+    margin-top: 20px;
+    .docid-field {
+      min-width: 400px;
+    }
+    p {
+      font-size: 12px;
+    }
+  }
+  .workflow-section {
+    margin-top: 20px;
+    .workflow-text {
+      color: #444444;
+      display: block;
+      font-size: 14px;
+      line-height: 1.5;
+      font-family: Proxima Nova, Nunito Sans, sans-serif;
+      font-weight: 400;
+      span {
+        color: #e20000;
+      }
+    }
+    .workflow-render {
+      display: inline;
+    }
+    .workflow-services {
+      width: 49%;
+      float: left;
+      margin-bottom: 10px;
+      .checkbox-parent {
+        margin-bottom: 5px;
+        margin-top: 10px;
+        span {
+          font-size: 16px;
+        }
+      }
+      .checkbox-childs {
+        margin-left: 25px;
+      }
+    }
+    .custom-workflow {
+      display: flex;
+      flex-direction: column;
+      .custom-label {
+        font-size: 14px;
+        font-weight: 500;
+        margin-top: 10px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+.error-text-color {
+  color: #e53d45 !important;
+}

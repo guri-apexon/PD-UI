@@ -27,7 +27,6 @@ function App() {
   const [jwt, setJwt] = useState(null);
   // ---------Revert-----------
   useEffect(() => {
-    console.log('Date Before', process.env.REACT_APP_DATE_BEFORE);
     cookiesServer.remove('api_token');
     getToken().then((data) => {
       if (data.token) {
@@ -52,7 +51,6 @@ function App() {
       const expDate = cookiesServer.get('exp') * 1000;
       if (!expDate) {
         window.location.href = `${baseUrlSSO}/logout_session`;
-        console.log('App Session');
       } else {
         if (curDate >= expDate) {
           console.log('exp', true);
@@ -128,17 +126,13 @@ function App() {
           },
         })
         .then((res) => {
-          console.log(res.data.code);
           if (res.data.code === 102) {
-            console.log('idle pop up');
             setIsTimeOut(true);
           } else if (res.data.code === 101) {
-            console.log('Logged out from UI');
             window.location.href = `${baseUrlSSO}/logout_session`;
           }
         })
         .catch((err) => {
-          console.log(err);
           window.location.href = `${baseUrlSSO}/logout_session`;
         });
     }

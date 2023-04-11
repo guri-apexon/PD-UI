@@ -1,50 +1,38 @@
 import {
   compareNumbers,
   numberSearchFilter,
-  compareStrings,
   createStringSearchFilter,
 } from 'apollo-react/components/Table';
 import TextFieldFilter from './utilFunction';
 
 const columnList = [
   {
-    header: 'Table Index',
-    accessor: 'table_link_text',
-    sortFunction: compareStrings,
-    filterFunction: createStringSearchFilter('table_link_text'),
-  },
-  {
     header: 'Table Name',
     accessor: 'table_link_text',
-    sortFunction: compareStrings,
     filterFunction: createStringSearchFilter('table_link_text'),
     filterComponent: TextFieldFilter,
   },
   {
     header: 'Assessment Name (From Document)',
     accessor: 'procedure_panel_text',
-    sortFunction: compareStrings,
     filterFunction: createStringSearchFilter('procedure_panel_text'),
     filterComponent: TextFieldFilter,
   },
   {
     header: 'Procedure Name (From Document)',
     accessor: 'parameter_text',
-    sortFunction: compareStrings,
     filterFunction: createStringSearchFilter('parameter_text'),
     filterComponent: TextFieldFilter,
   },
   {
     header: 'Assessment Preferred Name',
     accessor: 'assessment',
-    sortFunction: compareStrings,
     filterFunction: createStringSearchFilter('assessment'),
     filterComponent: TextFieldFilter,
   },
   {
     header: 'Procedure Preferred Name',
     accessor: 'pname',
-    sortFunction: compareStrings,
     filterFunction: createStringSearchFilter('pname'),
     filterComponent: TextFieldFilter,
   },
@@ -106,6 +94,21 @@ const ADD_ROW_LAB_DATA = {
   ProcessVersion: '',
   table_link_text: '',
   table_sequence_index: -1,
+  request_type: 'create',
+};
+
+const FILTER_COLUMNS = [
+  'table_link_text',
+  'procedure_panel_text',
+  'parameter_text',
+  'assessment',
+  'pname',
+];
+
+const REQUEST_TYPE = {
+  CREATE: 'create',
+  UPDATE: 'update',
+  DELETE: 'delete',
 };
 
 export {
@@ -115,4 +118,4 @@ export {
   evenMoreColumns,
 };
 
-export default { columnList, ADD_ROW_LAB_DATA };
+export default { columnList, ADD_ROW_LAB_DATA, FILTER_COLUMNS, REQUEST_TYPE };
