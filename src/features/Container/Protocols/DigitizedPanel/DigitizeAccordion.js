@@ -748,101 +748,70 @@ function DigitizeAccordion({
               <Loader />
             </div>
           ) : (
-            sectionDataArr?.length > 0 &&
-            (showedit ? (
-              <>
-                <MultilineEdit
-                  linkId={item.link_id}
-                  sectionDataArr={sectionDataArr}
-                  edit={showedit}
-                  setShowDiscardConfirm={setShowDiscardConfirm}
-                  child={getActionMenu()}
-                  setRequestedRoute={setRequestedRoute}
-                />
-                <div className="menu-wrapper">
-                  {primaryRole && getActionMenu()}
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="readable-content-wrapper">
-                  <div className="readable-content">
-                    {sectionDataArr?.map((section) => {
-                      let content = '';
-                      if (section.type === CONTENT_TYPE.TABLE) {
-                        content = (
-                          <DisplayTable
-                            key={React.key}
-                            data={
-                              section?.content
-                                ? JSON.parse(section?.content?.TableProperties)
-                                : []
-                            }
-                            footNoteData={
-                              section?.content?.AttachmentListProperties
-                            }
-                            colWidth={100}
-                          />
-                        );
-                      } else if (section.type === CONTENT_TYPE.IMAGE) {
-                        content = (
-                          <ImageUploader
-                            key={React.key}
-                            lineID={section.line_id}
-                            content={section.content}
-                            edit={false}
-                          />
-                        );
-                      } else {
-                        content =
-                          section?.font_info?.VertAlign === 'superscript' &&
-                          section?.content?.length > 0 ? (
-                            // eslint-disable-next-line
-                            <div
+            <>
+              {sectionDataArr?.length > 0 &&
+                (showedit ? (
+                  <MultilineEdit
+                    linkId={item.link_id}
+                    sectionDataArr={sectionDataArr}
+                    edit={showedit}
+                    setShowDiscardConfirm={setShowDiscardConfirm}
+                    child={getActionMenu()}
+                    setRequestedRoute={setRequestedRoute}
+                  />
+                ) : (
+                  <div className="readable-content-wrapper">
+                    <div className="readable-content">
+                      {sectionDataArr?.map((section) => {
+                        let content = '';
+                        if (section.type === CONTENT_TYPE.TABLE) {
+                          content = (
+                            <DisplayTable
                               key={React.key}
-                              className="supContent"
-                              onClick={(e) =>
-                                handleEnrichedClick(e, section.clinical_terms)
+                              data={
+                                section?.content
+                                  ? JSON.parse(
+                                      section?.content?.TableProperties,
+                                    )
+                                  : []
                               }
-                            >
-                              <sup>
-                                <SanitizeHTML
-                                  html={getEnrichedText(
-                                    section.content.split('_')[0],
-                                    section?.clinical_terms,
-                                    section?.preferred_terms,
-                                  )}
-                                />
-                              </sup>
-                              <p
-                                style={{
-                                  fontWeight: `${
-                                    section?.font_info?.isBold ||
-                                    section.type === 'header'
-                                      ? 'bold'
-                                      : ''
-                                  }`,
-                                  fontStyle: `${
-                                    section?.font_info?.Italics ? 'italics' : ''
-                                  }`,
-                                }}
+                              footNoteData={
+                                section?.content?.AttachmentListProperties
+                              }
+                              colWidth={100}
+                            />
+                          );
+                        } else if (section.type === CONTENT_TYPE.IMAGE) {
+                          content = (
+                            <ImageUploader
+                              key={React.key}
+                              lineID={section.line_id}
+                              content={section.content}
+                              edit={false}
+                            />
+                          );
+                        } else {
+                          content =
+                            section?.font_info?.VertAlign === 'superscript' &&
+                            section?.content?.length > 0 ? (
+                              // eslint-disable-next-line
+                              <div
+                                key={React.key}
+                                className="supContent"
+                                onClick={(e) =>
+                                  handleEnrichedClick(e, section.clinical_terms)
+                                }
                               >
-                                <SanitizeHTML
-                                  html={getEnrichedText(
-                                    section.content.split('_')[1],
-                                    section?.clinical_terms,
-                                    section?.preferred_terms,
-                                  )}
-                                />
-                              </p>
-                              {getLinkReference(section)}
-                            </div>
-                          ) : (
-                            section.content.length > 0 && (
-                              <div key={React.key} className="link-data">
+                                <sup>
+                                  <SanitizeHTML
+                                    html={getEnrichedText(
+                                      section.content.split('_')[0],
+                                      section?.clinical_terms,
+                                      section?.preferred_terms,
+                                    )}
+                                  />
+                                </sup>
                                 <p
-                                  role="presentation"
-                                  key={React.key}
                                   style={{
                                     fontWeight: `${
                                       section?.font_info?.isBold ||
@@ -856,43 +825,73 @@ function DigitizeAccordion({
                                         : ''
                                     }`,
                                   }}
-                                  onClick={(e) =>
-                                    handleEnrichedClick(
-                                      e,
-                                      section.clinical_terms,
-                                    )
-                                  }
                                 >
                                   <SanitizeHTML
                                     html={getEnrichedText(
-                                      section.content,
-                                      section.clinical_terms,
+                                      section.content.split('_')[1],
+                                      section?.clinical_terms,
                                       section?.preferred_terms,
                                     )}
                                   />
                                 </p>
                                 {getLinkReference(section)}
                               </div>
-                            )
-                          );
-                      }
-                      return (
-                        // eslint-disable-next-line
-                        <div
-                          key={React.key}
-                          onMouseUp={(e) => handleSegmentMouseUp(e, section)}
-                        >
-                          {content}
-                        </div>
-                      );
-                    })}
+                            ) : (
+                              section.content.length > 0 && (
+                                <div key={React.key} className="link-data">
+                                  <p
+                                    role="presentation"
+                                    key={React.key}
+                                    style={{
+                                      fontWeight: `${
+                                        section?.font_info?.isBold ||
+                                        section.type === 'header'
+                                          ? 'bold'
+                                          : ''
+                                      }`,
+                                      fontStyle: `${
+                                        section?.font_info?.Italics
+                                          ? 'italics'
+                                          : ''
+                                      }`,
+                                    }}
+                                    onClick={(e) =>
+                                      handleEnrichedClick(
+                                        e,
+                                        section.clinical_terms,
+                                      )
+                                    }
+                                  >
+                                    <SanitizeHTML
+                                      html={getEnrichedText(
+                                        section.content,
+                                        section.clinical_terms,
+                                        section?.preferred_terms,
+                                      )}
+                                    />
+                                  </p>
+                                  {getLinkReference(section)}
+                                </div>
+                              )
+                            );
+                        }
+                        return (
+                          // eslint-disable-next-line
+                          <div
+                            key={React.key}
+                            onMouseUp={(e) => handleSegmentMouseUp(e, section)}
+                          >
+                            {content}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-                <div className="menu-wrapper">
-                  {primaryRole && getActionMenu()}
-                </div>
-              </>
-            ))
+                ))}
+              <div className="menu-wrapper">
+                {primaryRole && getActionMenu()}
+              </div>
+            </>
           )}
         </AccordionDetails>
         <MedicalTerm
