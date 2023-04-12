@@ -41,15 +41,9 @@ describe('<AddProtocol/>', () => {
     setup(initialStateSuccess);
   });
   it.only('Should render workflow-orchestration Component', async () => {
-    const container = setup(initialStateSuccess);
+    setup(initialStateSuccess);
     const modalOpen = screen.getByText(/Add Protocol to Library/i);
     fireEvent.click(modalOpen);
-
-    const tab2 = screen.queryByText(/Workflow Orchestration/i);
-    // console.log(JSON.stringify(tab2));
-    // screen.getByTestId('add-protocol-modal')[0].children[2].children[0]
-    //   .children[1].children[0].children[0].children[0].children[1];
-    // fireEvent.click(tab2);
   });
   it('Should render input error', async () => {
     setup(errorInputState);

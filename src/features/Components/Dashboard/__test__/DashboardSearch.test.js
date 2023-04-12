@@ -37,7 +37,6 @@ describe('Dashboard Search component', () => {
     );
     const searchbar = container.getByTestId('dashboard-search-bar').children[0]
       .children[1].children[1];
-    console.log('-----------------searchbar------------', searchbar);
     // fireEvent.change(searchbar);
     // fireEvent.change(searchbar);
     fireEvent.change(searchbar);
@@ -163,7 +162,6 @@ describe('Dashboard Search component', () => {
       state,
     );
     const viewMoreBtn = container.getByTestId('view-more').children[0];
-    console.log('-----------------viewMoreBtn------------', viewMoreBtn);
     fireEvent.click(viewMoreBtn);
   });
 });

@@ -64,7 +64,6 @@ describe('ActionManu', () => {
     const openPanel = screen.getByTestId('openClosePanel').children[0];
     expect(openPanel).toBeInTheDocument();
     fireEvent.click(openPanel);
-    screen.debug();
     const editButton = screen.getByText('Edit Content');
     fireEvent.click(editButton);
     expect(editButton).toBeInTheDocument();

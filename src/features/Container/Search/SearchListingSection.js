@@ -107,7 +107,6 @@ function SearchListingSection({
     setModalOpen(!openModal);
   };
   const handleReprocess = () => {
-    console.log('Document Selected', documentSelected);
     toast.success('API not Integrated.');
     setModalOpen(!openModal);
   };
