@@ -126,6 +126,17 @@ function DigitalizeCard({
     // eslint-disable-next-line
   }, [BladeRightValue]);
 
+  const handleTocSection = (index) => {
+    const tempTOCActive = [...tocActive];
+    tempTOCActive[index] = true;
+    dispatch({
+      type: 'SET_TOC_Active',
+      payload: {
+        data: tempTOCActive,
+      },
+    });
+  };
+
   useEffect(() => {
     let sectionNo;
     let lastpage;
@@ -134,25 +145,11 @@ function DigitalizeCard({
       if (headerList[i].page === paginationPage) {
         sectionNo = i;
         setSectionSequence(sectionNo);
-        const tempTOCActive = [...tocActive];
-        tempTOCActive[sectionNo] = true;
-        dispatch({
-          type: 'SET_TOC_Active',
-          payload: {
-            data: tempTOCActive,
-          },
-        });
+        handleTocSection(sectionNo);
         break;
       } else if (headerList[i].page > paginationPage) {
         setSectionSequence(lastpage);
-        const tempTOCActive = [...tocActive];
-        tempTOCActive[lastpage] = true;
-        dispatch({
-          type: 'SET_TOC_Active',
-          payload: {
-            data: tempTOCActive,
-          },
-        });
+        handleTocSection(lastpage);
         break;
       }
       lastpage = i;
@@ -160,14 +157,7 @@ function DigitalizeCard({
     if (headerList[listLength]?.page < paginationPage) {
       const sequence = listLength;
       setSectionSequence(sequence);
-      const tempTOCActive = [...tocActive];
-      tempTOCActive[listLength] = true;
-      dispatch({
-        type: 'SET_TOC_Active',
-        payload: {
-          data: tempTOCActive,
-        },
-      });
+      handleTocSection(sequence);
     }
     // eslint-disable-next-line
   }, [paginationPage]);
