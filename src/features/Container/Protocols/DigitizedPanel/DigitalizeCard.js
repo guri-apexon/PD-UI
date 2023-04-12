@@ -155,9 +155,8 @@ function DigitalizeCard({
       lastpage = i;
     }
     if (headerList[listLength]?.page < paginationPage) {
-      const sequence = listLength;
-      setSectionSequence(sequence);
-      handleTocSection(sequence);
+      setSectionSequence(listLength);
+      handleTocSection(listLength);
     }
     // eslint-disable-next-line
   }, [paginationPage]);
