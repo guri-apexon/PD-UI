@@ -1,18 +1,18 @@
 import Tooltip from 'apollo-react/components/Tooltip';
 import { cloneDeep } from 'lodash';
-import { v4 as uuidv4 } from 'uuid';
 import isEqual from 'lodash/isEqual';
+import { v4 as uuidv4 } from 'uuid';
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
   redaction,
 } from '../AppConstant/AppConstant';
-import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
+import notificationValues from '../features/Container/Navbar/constant';
 import {
   filterTableProperties,
   updateFootNotePayload,
 } from '../features/Container/Protocols/CustomComponents/PDTable/utils';
-import { notificationValues } from '../features/Container/Navbar/constant';
+import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 
 const replaceall = require('replaceall');
 
