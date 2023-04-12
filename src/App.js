@@ -27,7 +27,6 @@ function App() {
   const [jwt, setJwt] = useState(null);
   // ---------Revert-----------
   useEffect(() => {
-    console.log('Date Before', process.env.REACT_APP_DATE_BEFORE);
     cookiesServer.remove('api_token');
     getToken().then((data) => {
       if (data.token) {
@@ -52,7 +51,6 @@ function App() {
       const expDate = cookiesServer.get('exp') * 1000;
       if (!expDate) {
         window.location.href = `${baseUrlSSO}/logout_session`;
-        console.log('App Session');
       } else {
         if (curDate >= expDate) {
           console.log('exp', true);
@@ -61,7 +59,6 @@ function App() {
         dif = Math.abs(dif / 1000 / 60);
         dif = Math.round(dif * 10) / 10;
         dif -= 1;
-        console.log('mins - ', dif);
         const testInterval = setTimeout(function () {
           axios
             .get('/refresh', {
@@ -70,7 +67,6 @@ function App() {
               },
             })
             .then((res) => {
-              console.log(res.data.code);
               if (res.data.code === 102) {
                 window.location.href = `${baseUrlSSO}/refresh_tokens?callback=${window.location.href}`;
               }
@@ -92,16 +88,12 @@ function App() {
 
   useEffect(() => {
     if (isTimedOut) {
-      console.log('timerId', timerId);
       clearInterval(timerId);
-      console.log('timer set to log out');
       const id = setTimeout(function () {
-        console.log('logout');
         window.location.href = `${baseUrlSSO}/logout_session`;
       }, 60 * 5 * 1000);
       setIdleid(id);
       return () => {
-        console.log('Interval cleared');
         clearInterval(id);
       };
     }
@@ -119,7 +111,6 @@ function App() {
   };
 
   const handleOnIdle = (event) => {
-    console.log('user is idle', event);
     if (!isTimedOut) {
       axios
         .get('/refresh', {
@@ -128,17 +119,13 @@ function App() {
           },
         })
         .then((res) => {
-          console.log(res.data.code);
           if (res.data.code === 102) {
-            console.log('idle pop up');
             setIsTimeOut(true);
           } else if (res.data.code === 101) {
-            console.log('Logged out from UI');
             window.location.href = `${baseUrlSSO}/logout_session`;
           }
         })
         .catch((err) => {
-          console.log(err);
           window.location.href = `${baseUrlSSO}/logout_session`;
         });
     }

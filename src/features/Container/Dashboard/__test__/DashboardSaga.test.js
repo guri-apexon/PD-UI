@@ -15,6 +15,10 @@ import {
   addProtocolIndication,
   handleFollow,
   fetchAssociateData,
+  fetchWorkflowData,
+  resetWorkflowSubmitData,
+  submitWorkflowData,
+  fetchMoreWorkflow,
 } from '../saga';
 
 import * as api from '../../../../utils/api';
@@ -1252,6 +1256,223 @@ describe('Dashboard Saga Unit Test', () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
+
+  test('fetchWorkflowData Saga Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      loading: false,
+      error: null,
+      success: true,
+      data: {
+        Status: 200,
+        default_workflows: {
+          document_compare: [
+            {
+              depends: [],
+              service_name: 'digitizer2_compare',
+            },
+          ],
+        },
+        custom_workflows: {
+          dipa_client: [
+            {
+              depends: [],
+              service_name: 'meta_tagging',
+            },
+            {
+              depends: ['meta_tagging'],
+              service_name: 'meta_extraction',
+            },
+            {
+              depends: [],
+              service_name: 'digitizer2_compare',
+            },
+            {
+              depends: [],
+              service_name: 'digitizer2_normsoa',
+            },
+          ],
+        },
+      },
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+        dashboard: {
+          sponsorLoading: false,
+          addProtocolData: {
+            sponsor: [],
+            indication: [],
+          },
+          followedProtocols: [],
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, fetchWorkflowData, {
+      type: '',
+      payload: {
+        protocol: 'covid',
+        id: '01a8d886-1018-404b-b496-9555f7712a21',
+      },
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+  test('submitWorkflowData Saga Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      loading: false,
+      error: null,
+      data: {},
+      success: true,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+        dashboard: {
+          sponsorLoading: false,
+          addProtocolData: {
+            sponsor: [],
+            indication: [],
+          },
+          followedProtocols: [],
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, submitWorkflowData, {
+      type: '',
+      payload: {
+        protocol: 'covid',
+        id: '01a8d886-1018-404b-b496-9555f7712a21',
+      },
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+  test('submitWorkflowData Saga Error', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      loading: false,
+      error: null,
+      data: {},
+      success: false,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+        dashboard: {
+          sponsorLoading: false,
+          addProtocolData: {
+            sponsor: [],
+            indication: [],
+          },
+          followedProtocols: [],
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, submitWorkflowData, {
+      type: '',
+      payload: {
+        protocol: 'covid',
+        id: '01a8d886-1018-404b-b496-9555f7712a21',
+      },
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+  test('resetWorkflowSubmitData Saga Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      loading: false,
+      error: null,
+      data: [],
+      success: false,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+        dashboard: {
+          sponsorLoading: false,
+          addProtocolData: {
+            sponsor: [],
+            indication: [],
+          },
+          followedProtocols: [],
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, resetWorkflowSubmitData, {
+      type: '',
+      payload: {
+        protocol: 'covid',
+        id: '01a8d886-1018-404b-b496-9555f7712a21',
+      },
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(0);
+  });
+  test('fetchMoreWorkflow Saga Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      loading: false,
+      error: null,
+      data: [],
+      success: false,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+        dashboard: {
+          sponsorLoading: false,
+          addProtocolData: {
+            sponsor: [],
+            indication: [],
+          },
+          protocols: [],
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, fetchMoreWorkflow, {
+      type: '',
+      payload: {
+        protocol: 'covid',
+        id: '01a8d886-1018-404b-b496-9555f7712a21',
+      },
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
   // Test SEND_QC_REVIEW_SAGA function Ends
 
   // watch All Sagas

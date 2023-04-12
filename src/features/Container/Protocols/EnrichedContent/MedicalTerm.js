@@ -95,9 +95,17 @@ function MedicalTerm({
       entity_class: '',
       entity_xref: '',
     };
+
+    let updatedStringArr = tempObj[name]?.split(',');
+    updatedStringArr = updatedStringArr?.filter((e) => e !== childTermValue);
+    const saveValue = updatedStringArr?.toString();
+
+    setTempChild(updatedStringArr);
+    setSAnchorEl(null);
+
     const saveObj = {
       ...tempObj,
-      [name]: '',
+      [name]: saveValue,
     };
     dispatch({
       type: 'SAVE_ENRICHED_DATA',
@@ -137,6 +145,8 @@ function MedicalTerm({
         entity_class: '',
         entity_xref: '',
       };
+
+      setTempChild([]);
       const saveObj = {
         ...tempObj,
         [name]: '',
@@ -203,6 +213,7 @@ function MedicalTerm({
       clinicalTermsArr[enrichedText][selectedTerm]
     ) {
       const arr = clinicalTermsArr[enrichedText][selectedTerm].split(',');
+
       if (arr && arr.length === 1 && arr[0] === '') {
         setChildArr([]);
       } else {

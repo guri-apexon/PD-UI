@@ -1,6 +1,7 @@
-import { useState, createRef, useMemo, useCallback } from 'react';
+import { useState, createRef, useMemo, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 import {
   viewResult,
   protocolTocData,
@@ -21,7 +22,19 @@ function ProtocolView({ refs, data }) {
   const [globalPreferredTerm, setGlobalPreferredTerm] = useState(false);
 
   const [saveSection, setSaveSection] = useState(null);
+  const workflowSubmitData = useSelector(
+    (state) => state.dashboard.workflowSubmit,
+  );
 
+  useEffect(() => {
+    if (workflowSubmitData.success) {
+      toast.success(
+        'Workflows execution were submitted successfully for the protocol',
+      );
+      dispatch({ type: 'RESET_SUBMIT_WORKFLOW_DATA' });
+    }
+    // eslint-disable-next-line
+  }, [workflowSubmitData]);
   const handleSectionSelect = (payload) => {
     if (!payload.sectionContent && sectionContent) {
       dispatch(

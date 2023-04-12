@@ -65,7 +65,6 @@ export function* qcApprove(action) {
   try {
     yield put(getLoader(true));
     const data = yield call(httpCall, config);
-    console.log(data);
     if (data.success) {
       toast.info('Approved Successfully');
       wait();
@@ -74,7 +73,6 @@ export function* qcApprove(action) {
     }
     yield put(getLoader(false));
   } catch (err) {
-    console.log(err);
     yield put(getLoader(false));
     toast.error('Something Went Wrong');
   }
@@ -102,10 +100,8 @@ export function* sendQc2Approval(action) {
       toast.error('Error While Sending');
     }
     yield put(getLoader(false));
-    console.log(data);
   } catch (err) {
     yield put(getLoader(false));
-    console.log(err);
     toast.error('Something Went Wrong');
   }
 }
@@ -124,7 +120,6 @@ export function* qc2Reject(action) {
   try {
     yield put(getLoader(true));
     const data = yield call(httpCall, config);
-    console.log(data);
     if (data.success) {
       toast.info('Rejected Successfully');
       // window.location.href = "/qc";
@@ -135,7 +130,6 @@ export function* qc2Reject(action) {
     yield put(getLoader(false));
   } catch (err) {
     yield put(getLoader(false));
-    console.log(err);
     toast.error('Something Went Wrong');
   }
 }
@@ -236,20 +230,11 @@ export function* uploadQc(action) {
         };
         yield put(getProcotoclToc(viewData));
       }
-      // yield put({
-      //   type: "GET_PROTOCOL_TOC_SAGA",
-      //   payload: {
-      //     endPoint: "protocol_data/",
-      //     id: action.payload.id,
-      //     user: "qc",
-      //   },
-      // });
     } else {
       toast.error('Something Went Wrong');
     }
     yield put(getLoader(false));
   } catch (err) {
-    console.log(err);
     yield put(getLoader(false));
     toast.error('Something Went Wrong');
   }

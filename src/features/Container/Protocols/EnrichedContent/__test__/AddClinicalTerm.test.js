@@ -6,6 +6,13 @@ import AddClinicalTerm from '../AddClinicalTerm';
 
 const selectionHeaderList = {
   protocol: 'NCT02614287',
+  word: {
+    font_info: {
+      roi_id: {
+        para: '31fbea8a-1204-4105-ad33-f414d1816045',
+      },
+    },
+  },
   data: [
     {
       linkId: '95b10aff-b771-11ed-845f-005056ab6469',
@@ -22,7 +29,7 @@ const selectionHeaderList = {
             font_style: 'Heading1',
             entity: [],
             roi_id: {
-              para: '3a42ca72-8f0d-498f-be93-a5b9d6e10470',
+              para: '31fbea8a-1204-4105-ad33-f414d1816045',
               childbox: '',
               subtext: '',
             },
@@ -140,10 +147,19 @@ describe('rendering the Add Clinical Term Component', () => {
   test('enter the clinicalTerms, Ontology and Preferred-Terms TextFields and click on AddTag button', () => {
     const state = {
       modal: true,
+      word: {
+        font_info: {
+          roi_id: {
+            para: '31fbea8a-1204-4105-ad33-f414d1816045',
+          },
+        },
+      },
     };
     useSelector.mockImplementation(() => state);
     useSelector.mockImplementation(() => selectionHeaderList);
-    render(<AddClinicalTerm docId={1} linkId={2} />);
+    render(<AddClinicalTerm docId={1} linkId={2} />, {
+      wordSelector: state,
+    });
     userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
     const field1 = screen
       .getByTestId('clinicalTerms-text')

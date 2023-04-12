@@ -10,6 +10,12 @@ describe('Protocol Table container component with empty and default values', () 
         protocols: [],
         selectedProtocols: [],
         displayAddProtocol: false,
+        workflowSubmit: {
+          loading: false,
+          error: null,
+          data: [],
+          success: false,
+        },
       },
     },
   };
@@ -23,6 +29,12 @@ describe('Protocol Table container component with empty and default values', () 
       initialState: {
         dashboard: {
           apiError: false,
+          workflowSubmit: {
+            loading: false,
+            error: null,
+            data: [],
+            success: false,
+          },
         },
       },
     };
@@ -69,10 +81,19 @@ describe('Protocol Table container component with Protocol data', () => {
             userId: '1020640',
             versionNumber: '10.1',
             qcActivity: 'QC_NOT_STARTED',
+            wfData: [],
+            showMoreCalling: false,
+            showMore: false,
           },
         ],
         selectedProtocols: [],
         displayAddProtocol: false,
+        workflowSubmit: {
+          loading: false,
+          error: null,
+          data: [],
+          success: false,
+        },
       },
     },
   };

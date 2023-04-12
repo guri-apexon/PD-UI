@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
@@ -23,7 +24,6 @@ function DipaViewStructure({
   actualText,
   segments = [],
   childs = [],
-  open = false,
   handleExpandChange,
   handleAdd,
   handleAddGroup,
@@ -35,22 +35,58 @@ function DipaViewStructure({
   setEditingIDList,
   toggleEditingIDs,
   tooltipValue,
+  lockDetails,
+  userId,
 }) {
   const [OpenPop, setOpenPop] = useState(null);
   const [tooltip, setTooltip] = useState(false);
+  const [isAccordianExpanded, setIsAccordianExpanded] = useState(false);
 
   const onPencilIconClick = (e) => {
-    toggleEditingIDs(segments.map((seg) => seg.ID));
+    e.stopPropagation();
     e.preventDefault();
+    /**
+     * Need to check if the section is locked by any other primary user or not
+     *
+     * - if yes then only allow editing segments.
+     * - if no, then we need to show who has locked the segment.
+     */
+    if (Object.keys(lockDetails).length > 0) {
+      if (lockDetails?.section_lock || lockDetails?.userId === userId) {
+        toggleEditingIDs(segments.map((seg) => seg.ID));
+      } else {
+        toast.error(`Section is in use by user ${lockDetails?.user_name}`);
+      }
+    }
+  };
+
+  function pencilTooltip() {
+    return (
+      <Tooltip title="Edit Segment" placement="right">
+        <IconButton
+          data-testid="pencil-tooltip"
+          disabled={!isAccordianExpanded}
+        >
+          <Pencil data-testid="edit-button" onClick={onPencilIconClick} />
+        </IconButton>
+      </Tooltip>
+    );
+  }
+
+  const handleAccordianClick = (e, expanded) => {
+    setIsAccordianExpanded(expanded);
+    if (expanded) {
+      handleExpandChange(ID);
+    }
   };
 
   return (
     <div>
       <Accordion
         key={ID}
-        expanded={open}
         className="container"
         data-testid="accordion-expand"
+        onChange={handleAccordianClick}
       >
         <AccordionSummary
           data-testid="summary-expand"
@@ -61,7 +97,10 @@ function DipaViewStructure({
               <TextField
                 placeholder="Actual text.."
                 data-testid="addgroup-textfield"
-                onChange={debounce((e) => onChangeSegmentGroup(ID, e), 200)}
+                onChange={debounce((e) => {
+                  e.stopPropagation();
+                  onChangeSegmentGroup(ID, e);
+                }, 200)}
               />
             ) : (
               <Typography
@@ -78,46 +117,41 @@ function DipaViewStructure({
                 <b className="segment-length">{segments.length}</b>
               </div>
             </div>
-            {open ? (
-              <div className="dipaview-icons">
-                <span className="icon-eyeshow">
-                  <EyeShow />
-                </span>
-                <span className="icon-pencil">
-                  {editingIDList?.length ? (
-                    <Save onClick={() => handleUpdate()} data-testid="save" />
-                  ) : (
-                    <Pencil
-                      data-testid="edit-button"
-                      onClick={onPencilIconClick}
-                    />
-                  )}
-                </span>
-              </div>
-            ) : (
-              <div className="dipaview-icons">
-                <Tooltip
-                  title={`Created On:${tooltipValue}`}
-                  placement="right"
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  open={tooltip}
-                >
-                  <IconButton data-testid="tooltip-icon">
-                    <span className="icon-eyeshow">
-                      <EyeShow
-                        data-testid="show-icon"
-                        onClick={() => setTooltip(!tooltip)}
-                      />
-                    </span>
-                  </IconButton>
-                </Tooltip>
-                <span className="icon-pencil">
-                  <Pencil data-testid="edit-button-icon" />
-                </span>
-              </div>
-            )}
+
+            <div className="dipaview-icons">
+              <Tooltip
+                title={`Created On:${tooltipValue}`}
+                placement="right"
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                open={tooltip}
+              >
+                <IconButton data-testid="eyeshow-tooltip">
+                  <EyeShow
+                    data-testid="eyeshow-tooltip-icon"
+                    onMouseEnter={() => setTooltip(true)}
+                    onMouseLeave={() => setTooltip(false)}
+                    className="icon-eyeshow"
+                  />
+                </IconButton>
+              </Tooltip>
+
+              <span className="icon-pencil">
+                {editingIDList.length > 0 &&
+                editingIDList.some((listItem) =>
+                  segments.map((seg) => seg.ID).includes(listItem),
+                ) ? (
+                  <Save
+                    onClick={() => handleUpdate()}
+                    data-testid="save"
+                    className="save-button"
+                  />
+                ) : (
+                  pencilTooltip()
+                )}
+              </span>
+            </div>
           </Grid>
         </AccordionSummary>
 
@@ -171,7 +205,9 @@ function DipaViewStructure({
                     onChange={(e) => onChangeSegment(segment.ID, e)}
                     className="segment-text"
                     defaultValue={segment?.derive_seg || ''}
-                    data-testid="segment-textfield"
+                    inputProps={{
+                      'data-testid': 'segment-textfield',
+                    }}
                   />
                 ) : (
                   <Typography>{segment.derive_seg}</Typography>
@@ -189,7 +225,6 @@ function DipaViewStructure({
                   level={seg.level}
                   segments={seg.derive_segemnt}
                   childs={seg.child}
-                  open={seg.open}
                   index={i}
                   handleExpandChange={handleExpandChange}
                   handleUpdate={handleUpdate}
@@ -201,6 +236,8 @@ function DipaViewStructure({
                   editingIDList={editingIDList}
                   setEditingIDList={setEditingIDList}
                   toggleEditingIDs={toggleEditingIDs}
+                  lockDetails={lockDetails}
+                  userId={userId}
                 />
               </AccordionSummary>
             ))}
@@ -217,7 +254,6 @@ DipaViewStructure.propTypes = {
   actualText: PropTypes.isRequired,
   segments: PropTypes.isRequired,
   childs: PropTypes.isRequired,
-  open: PropTypes.isRequired,
   handleExpandChange: PropTypes.isRequired,
   handleAdd: PropTypes.isRequired,
   handleAddGroup: PropTypes.isRequired,
@@ -229,4 +265,15 @@ DipaViewStructure.propTypes = {
   setEditingIDList: PropTypes.isRequired,
   toggleEditingIDs: PropTypes.isRequired,
   tooltipValue: PropTypes.isRequired,
+  lockDetails: PropTypes.objectOf(
+    PropTypes.shape({
+      doc_id: PropTypes.string,
+      last_updated: PropTypes.string,
+      link_id: PropTypes.string,
+      section_lock: PropTypes.bool,
+      userId: PropTypes.string,
+      user_name: PropTypes.string,
+    }),
+  ).isRequired,
+  userId: PropTypes.string.isRequired,
 };

@@ -2,7 +2,7 @@ import CellRenderer from './CellRenderers/CellRenderer';
 import { TableConst } from './Constants';
 import FirstColumn from './CellRenderers/FirstColumn';
 import HeaderComponent from './CellRenderers/HeaderComponent';
-import HeaderGroupComponent from './CellRenderers/HeaderGroupComponent';
+import TextEditor from './CellRenderers/TextEditor';
 
 const addColumnDefs = (item) => {
   if (item.isFirstColumn) {
@@ -15,29 +15,26 @@ const addColumnDefs = (item) => {
   item.headerClass = TableConst.headerClass;
   item.suppressSizeToFit = true;
   item.headerComponent = HeaderComponent;
-  item.headerGroupComponent = HeaderGroupComponent;
+  item.headerGroupComponent = HeaderComponent;
   item.editable = true;
   item.minWidth = 150;
   item.maxWidth = 250;
-  item.headerName = item[TableConst.VALUE_TEXT1];
+  item.headerName = item[TableConst.UID];
   item.suppressMovable = true;
-
+  item.cellEditor = TextEditor;
   item.cellEditorSelector = (params) => {
     const { data, colDef } = params;
     const initialState = data[colDef.field]?.[TableConst.DATA_VALUE]
       ? data[colDef.field]?.[TableConst.DATA_VALUE]
       : '';
-
     return {
-      component: 'agTextCellEditor',
+      component: TextEditor,
       popup: true,
-
       params: {
         value: initialState,
       },
     };
   };
-
   item.valueSetter = (params) => {
     const { oldValue, newValue } = params;
 
@@ -78,11 +75,18 @@ const getTableColumns = (data) => {
   return data;
 };
 const getValueFormRecord = (item) => {
-  if (item[TableConst.DATA_NEW_VALUE]) return item[TableConst.DATA_NEW_VALUE];
   if (Number(item[TableConst.COLUMN_IDX]) === 0) {
     return item[TableConst.VALUE_TEXT1];
   }
   return item[TableConst.VALUE_TEXT1];
 };
+const stringReadable = (str) => {
+  let i;
+  const frags = str.split('_');
+  for (i = 0; i < frags.length; i++) {
+    frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+  }
+  return frags.join(' ');
+};
 
-export { getTableColumns, getValueFormRecord, addColumnDefs };
+export { getTableColumns, getValueFormRecord, addColumnDefs, stringReadable };

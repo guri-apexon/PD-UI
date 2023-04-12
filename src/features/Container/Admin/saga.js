@@ -318,7 +318,6 @@ export function* addNewUserSDA(userId) {
   };
   try {
     const data = yield call(httpCallSDA, Config);
-    console.log(data);
     if (data.success) {
       return true;
     }

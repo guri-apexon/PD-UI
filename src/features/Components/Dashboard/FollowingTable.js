@@ -18,6 +18,7 @@ import columns from './columns';
 import Tag from 'apollo-react/components/Tag';
 import { redaction } from '../../../AppConstant/AppConstant';
 import { uploadDateValidation } from '../../../utils/utilFunction';
+import Button from 'apollo-react/components/Button';
 
 const replaceall = require('replaceall');
 
@@ -175,12 +176,12 @@ function ProtocolLink({ row, column: { accessor: key } }) {
 }
 function HandleUnFollow({ row }) {
   return (
-    <Link
+    <Button
       onClick={() => row.handleUnfollow(row)}
       data-testid={`unfollow-button-test-${row.protocol}`}
     >
       <Tag label="Unfollow" color="#0076ae" />
-    </Link>
+    </Button>
   );
 }
 

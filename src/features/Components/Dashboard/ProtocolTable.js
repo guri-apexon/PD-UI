@@ -29,6 +29,9 @@ import './ProtocolTable.scss';
 import Loader from 'apollo-react/components/Loader';
 import { toast } from 'react-toastify';
 import { userId } from '../../../store/userDetails';
+import PipelineModal from '../../Container/Dashboard/Pipeline/PipelineModal';
+import Modal from 'apollo-react/components/Modal';
+import InfoIcon from 'apollo-react/icons/Info';
 
 import { redaction } from '../../../AppConstant/AppConstant';
 
@@ -262,6 +265,50 @@ const qcActivityCell = ({ row, column: { accessor: key } }) => {
   );
 };
 
+const workFlowStatus = ({ row, column: { accessor: key } }) => {
+  const [state, setState] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleOpen = () => {
+    setState(true);
+  };
+  const handleClose = () => {
+    setState(false);
+  };
+  const fetchMoreData = () => {
+    dispatch({ type: 'FETCH_MORE_WORKFLOW', payload: row.id });
+  };
+  if (row.wfData?.length) {
+    return (
+      <div>
+        <IconButton size="small" color="primary" onClick={handleOpen}>
+          <InfoIcon fontSize="small" />
+        </IconButton>
+        {
+          <Modal
+            open={state}
+            onClose={handleClose}
+            title="Workflow Status"
+            subtitle="List of all workflows ran for this protocol"
+            message="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor"
+            buttonProps={[{}]}
+            id="neutral"
+          >
+            <div>
+              {row.showMoreCalling && <Loader />}
+              <PipelineModal
+                wfData={row.wfData}
+                fetchMoreData={fetchMoreData}
+                showMore={row.showMore}
+              />
+            </div>
+          </Modal>
+        }
+      </div>
+    );
+  }
+  return '-';
+};
 function getColumns(screen) {
   const columns = [
     {
@@ -294,6 +341,14 @@ function getColumns(screen) {
       accessor: 'qcActivity',
       sortFunction: compareStrings,
       customCell: qcActivityCell,
+      hidden: screen === 'QC' ? true : false,
+      width: '8%',
+    },
+    {
+      header: 'Workflow Status',
+      accessor: 'wfStatus',
+      sortFunction: compareStrings,
+      customCell: workFlowStatus,
       hidden: screen === 'QC' ? true : false,
       width: '8%',
     },

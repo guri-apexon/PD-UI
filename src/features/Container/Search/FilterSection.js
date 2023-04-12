@@ -52,16 +52,12 @@ function HandleSearch(props) {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (typed) {
-        console.log('typed if', typed);
         const newArr = searchWords(typed, sectiondata.sectionContent);
-        console.log('Array length', newArr, newArr.length);
         if (newArr.length !== 0) {
-          console.log('typed length if', typed);
           setData({ success: true, sectionContent: newArr });
           setIndex(index + 1);
           setNoResult(false);
         } else {
-          console.log('typed length else', typed);
           setData({ success: true, sectionContent: newArr });
           setIndex(index + 1);
           setNoResult(true);

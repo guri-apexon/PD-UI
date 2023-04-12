@@ -11,12 +11,12 @@ import { userId } from '../../../store/userDetails';
 function DownloadLink({ row, column: { accessor: key } }) {
   const [loader, setLoader] = useState(false);
   const userId1 = useSelector(userId);
-  console.log('UserID Required', userId1);
+
   const handleDownload = async (row) => {
     setLoader(true);
     const splitArr = row.documentFilePath.split('\\');
     const fileName = splitArr[splitArr.length - 1];
-    console.log(fileName);
+    
     const config = {
       url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
         row.documentFilePath,

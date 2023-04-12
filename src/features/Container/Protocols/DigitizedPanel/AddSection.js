@@ -25,8 +25,8 @@ function AddSection({
           ...headerLevel1,
           link_text: sectionName,
           next_detail: {
-            ...headerLevel1.next_detail,
-            link_id: hoverItem.link_id,
+            ...headerLevel1?.next_detail,
+            link_id: hoverItem?.link_id,
           },
         },
       ];
@@ -34,7 +34,7 @@ function AddSection({
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
-          docId: hoverItem.doc_id,
+          docId: hoverItem?.doc_id,
           index: hoverIndex + 1,
           refreshToc: true,
           reqBody: obj,

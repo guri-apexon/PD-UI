@@ -2,10 +2,12 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import ProtocolReducer from '../protocolSlice';
+
 import * as ProtocolContext from '../ProtocolContext';
 import { fireEvent, render, cleanup } from '../../../../test-utils/test-utils';
 import initialState from './mockDipadata';
 import DipaView from '../DIPA/DipaView';
+import UserReducer from '../../../../store/userDetails';
 
 afterEach(cleanup);
 beforeEach(() => {
@@ -18,7 +20,7 @@ export function renderWithProviders(
   {
     preloadedState = {},
     store = configureStore({
-      reducer: { protocol: ProtocolReducer },
+      reducer: { protocol: ProtocolReducer, user: UserReducer },
       preloadedState,
     }),
     ...renderOptions
@@ -46,13 +48,24 @@ describe.only('DipaView Component testing', () => {
     fireEvent.click(addGroupButton);
   });
 
-  it('opens the tooltip when the eye icon is clicked', () => {
+  it('opens the tooltip when the eye icon is hovered', () => {
     const screen = renderWithProviders(<DipaView />, {
       preloadedState: { ...initialState },
     });
 
-    fireEvent.click(screen.getAllByTestId('show-icon')[0]);
-    expect(screen.getAllByTestId('tooltip-icon')[0]).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getAllByTestId('eyeshow-tooltip-icon')[0]);
+    expect(
+      screen.getAllByTestId('eyeshow-tooltip-icon')[0],
+    ).toBeInTheDocument();
+  });
+
+  it('opens the tooltip when the pencil icon is hovered', () => {
+    const screen = renderWithProviders(<DipaView />, {
+      preloadedState: { ...initialState },
+    });
+
+    fireEvent.mouseEnter(screen.getAllByTestId('edit-button')[0]);
+    expect(screen.getAllByTestId('pencil-tooltip')[0]).toBeInTheDocument();
   });
 
   it('should open popover when Plus icon is clicked', () => {
@@ -69,11 +82,25 @@ describe.only('DipaView Component testing', () => {
     const screen = renderWithProviders(<DipaView />, {
       preloadedState: { ...initialState },
     });
+
+    fireEvent.click(screen.getAllByTestId('paragraph-text')[0]);
+    const pencilIcon = screen.getAllByTestId('edit-button')[0];
+    fireEvent.click(pencilIcon);
     const plusIcon = screen.getAllByTestId('plus-icon')[0];
     fireEvent.click(plusIcon);
     const addSegmentButton = screen.getAllByTestId('add-segment')[0];
     expect(addSegmentButton).toBeInTheDocument();
     fireEvent.click(addSegmentButton);
+    // add new segment text and validate
+    const textFields = screen.getAllByTestId('segment-textfield');
+    fireEvent.change(textFields[0], { target: { value: 'New segment' } });
+    expect(textFields[0].value).toBe('New segment');
+
+    // save segment and validate
+    const saveButton = screen.getByTestId('save');
+    fireEvent.click(saveButton);
+
+    expect(screen.getByText('New segment')).toBeInTheDocument();
   });
 
   it('should expand the accordion when clicked', () => {
@@ -134,8 +161,25 @@ describe.only('DipaView Component testing', () => {
     });
 
     fireEvent.click(screen.getAllByTestId('paragraph-text')[0]);
-    const pencilIcon = screen.getByTestId('edit-button');
+    const pencilIcon = screen.getAllByTestId('edit-button')[0];
     expect(pencilIcon).toBeInTheDocument();
     fireEvent.click(pencilIcon);
+  });
+
+  it('Should render different segments when category changes', () => {
+    const screen = renderWithProviders(<DipaView />, {
+      preloadedState: { ...initialState },
+    });
+
+    const select = screen.getByTestId('select-box');
+    expect(select).toBeInTheDocument();
+    fireEvent.change(select, {
+      target: { value: 'cpt_secondary_endpoints_estimands_analysis' },
+    });
+    expect(
+      screen.getByText(
+        'The percentage of subjects whexperience at least 1 treatment-emergent AE (TEAor SAE.',
+      ),
+    ).toBeInTheDocument();
   });
 });

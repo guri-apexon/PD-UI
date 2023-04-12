@@ -1,15 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { v4 as uuidv4 } from 'uuid';
 import Card from 'apollo-react/components/Card/Card';
 import TextField from 'apollo-react/components/TextField';
 import Save from 'apollo-react-icons/Save';
 import Pencil from 'apollo-react-icons/Pencil';
+import FilterIcon from 'apollo-react-icons/Filter';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import Table from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
-import { labDataApiValue } from '../protocolSlice';
+import { labDataSelector, setLabDataSuccess } from '../protocolSlice';
 import DeleteRow from './Modal/DeleteRow';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
@@ -62,6 +64,57 @@ function ActionCell({ row }) {
   );
 }
 
+function CustomHeader({
+  isEdit,
+  clearFilter,
+  setIsEdit,
+  handleSave,
+  toggleFilters,
+  noOfUsers,
+}) {
+  return (
+    <div className="btn-container">
+      {noOfUsers && (
+        <>
+          <Button
+            variant="text"
+            className="btn-common clear-button"
+            onClick={clearFilter}
+            data-testid="clearFilter"
+          >
+            Clear Filters
+          </Button>
+          <Button
+            // size="small"
+            variant="secondary"
+            icon={FilterIcon}
+            onClick={toggleFilters}
+          >
+            Filter
+          </Button>
+          {isEdit ? (
+            <Button
+              variant="secondary"
+              icon={<Save />}
+              className="btn-common"
+              onClick={handleSave}
+              data-testid="saveall"
+            />
+          ) : (
+            <Button
+              variant="secondary"
+              icon={<Pencil />}
+              className="btn-common"
+              onClick={() => setIsEdit(true)}
+              data-testid="editall"
+            />
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
 function EditableCell({ row, column: { accessor: key } }) {
   const { editedRow, updateRow } = row;
   const [val, setVal] = useState(editedRow[key]);
@@ -86,14 +139,15 @@ function EditableCell({ row, column: { accessor: key } }) {
 
 function LabData({ docId }) {
   const dispatch = useDispatch();
-  const labData = useSelector(labDataApiValue);
+  const tableRef = useRef();
+
+  const labData = useSelector(labDataSelector);
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState([]);
   const [editedRow, setEditedRow] = useState({});
   const [isEdit, setIsEdit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [tableId, setTableId] = useState();
-  const [showData, setShowData] = useState(true);
+  const [rowId, setRowId] = useState();
 
   const getLabData = () => {
     dispatch({
@@ -105,14 +159,12 @@ function LabData({ docId }) {
   };
 
   useEffect(() => {
-    if (showData) {
-      getLabData();
-    }
+    getLabData();
     // eslint-disable-next-line
-  }, [dispatch, docId, showData]);
+  }, []);
 
   const handleSave = () => {
-    const updatedData = rowData?.filter((value) => value.isUpdated === true);
+    const updatedData = rowData?.filter((value) => value.request_type);
     if (updatedData.length > 0) {
       dispatch({
         type: 'UPDATE_LAB_DATA',
@@ -121,58 +173,29 @@ function LabData({ docId }) {
         },
       });
     }
-
-    const softDeleteResult = rowData?.find((value) => value.soft_delete);
-    if (softDeleteResult) {
-      dispatch({
-        type: 'DELETE_LAB_DATA',
-        payload: {
-          data: {
-            doc_id: softDeleteResult.doc_id,
-            roi_id: softDeleteResult.roi_id,
-            table_roi_id: softDeleteResult.table_roi_id,
-          },
-        },
-      });
-    }
-    const createdResult = rowData?.find((value) => value.isCreated);
-    if (createdResult) {
-      if (
-        createdResult.parameter_text.length > 0 ||
-        createdResult.procedure_panel_text.length > 0 ||
-        createdResult.assessment.length > 0 ||
-        createdResult.pname.length > 0 ||
-        createdResult.table_link_text.length > 0
-      ) {
-        dispatch({
-          type: 'CREATE_LAB_DATA',
-          payload: {
-            data: createdResult,
-          },
-        });
-      }
-    }
-    getLabData();
     setEditedRow({});
     setIsEdit(false);
   };
 
   const onRowEdit = (id) => {
-    setEditedRow(rowData?.find((row) => row.id === id));
-    setTableId(id);
+    if (Object.keys(editedRow).length === 0) {
+      setEditedRow(rowData?.find((row) => row.id === id));
+      setRowId(id);
+    }
   };
 
   const onDelete = (id) => {
     setIsOpen(true);
-    setTableId(id);
+    setRowId(id);
   };
 
   const handleChange = (key, value) => {
     setEditedRow({ ...editedRow, [key]: value });
   };
+
   const handleCancel = () => {
-    if (editedRow.id === '') {
-      setRowData(rowData?.filter((value) => value.id !== ''));
+    if (editedRow.isSaved === false) {
+      setRowData(rowData?.filter((value) => value.id !== editedRow.id));
     }
     setEditedRow({});
   };
@@ -182,10 +205,13 @@ function LabData({ docId }) {
       if (row.id !== editedRow.id) {
         return row;
       }
-      if (editedRow.id === '') {
-        return { ...editedRow, isCreated: true };
+      if (editedRow.isSaved === false) {
+        return { ...editedRow, isSaved: true };
       }
-      return { ...editedRow, isUpdated: true };
+      return {
+        ...editedRow,
+        request_type: LABDATA_CONSTANTS.REQUEST_TYPE.UPDATE,
+      };
     });
     setRowData(updatedRows);
     setEditedRow({});
@@ -230,19 +256,34 @@ function LabData({ docId }) {
   const onDeleteRow = () => {
     setIsEdit(true);
     setIsOpen(false);
-    const updatedRows = rowData?.map((row) =>
-      row.id === tableId ? { ...row, soft_delete: true } : row,
-    );
+    const index = rowData.findIndex((row) => row.id === rowId);
+    let updatedRows;
+    if (rowData[index].request_type === LABDATA_CONSTANTS.REQUEST_TYPE.CREATE) {
+      updatedRows = rowData.filter((row) => row.id !== rowId);
+    } else {
+      updatedRows = rowData.map((row) =>
+        row.id === rowId
+          ? { ...row, request_type: LABDATA_CONSTANTS.REQUEST_TYPE.DELETE }
+          : row,
+      );
+    }
     setRowData(updatedRows);
   };
 
   useEffect(() => {
-    if (labData.data.length && showData) {
-      setRowData(labData.data.filter((value) => value.soft_delete !== true));
-      setShowData(false);
+    if (labData.data.length > 0) {
+      setRowData(
+        labData.data.filter(
+          (value) =>
+            value.request_type !== LABDATA_CONSTANTS.REQUEST_TYPE.DELETE,
+        ),
+      );
+    } else {
+      setRowData([]);
     }
-    if (labData.success && !showData) {
-      setShowData(true);
+    if (labData.success) {
+      getLabData();
+      dispatch(setLabDataSuccess(false));
     }
     // eslint-disable-next-line
   }, [labData]);
@@ -251,22 +292,29 @@ function LabData({ docId }) {
     if (Object.keys(editedRow).length === 0) {
       const newArr = [...rowData];
       const index = rowData.findIndex((ele) => ele.id === id);
-
       const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
-
-      if (addRow.doc_id === 'docId') {
-        addRow.doc_id = docId;
-      } else if (addRow.table_roi_id === 'table_roi_id') {
-        addRow.table_roi_id = rowData[0].table_roi_id;
-      }
-
+      addRow.doc_id = docId;
+      addRow.table_roi_id = rowData[0].table_roi_id;
+      addRow.id = uuidv4();
+      addRow.isSaved = false;
       newArr.splice(index + 1, 0, addRow);
       setRowData(newArr);
       setEditedRow(addRow);
     }
   };
 
-  const dataRow = Array.from(rowData);
+  const clearFilter = () => {
+    if (tableRef?.current) {
+      LABDATA_CONSTANTS.FILTER_COLUMNS.forEach((val) =>
+        tableRef?.current?.updateFilterValue({
+          target: {
+            name: val,
+            value: '',
+          },
+        }),
+      );
+    }
+  };
 
   return (
     <Card
@@ -279,57 +327,52 @@ function LabData({ docId }) {
         }`}
         data-testid="lab-table-container"
       >
-        {rowData?.length > 0 && (
-          <div className="lab-btn-container">
-            {isEdit ? (
-              <Button
-                variant="secondary"
-                icon={<Save />}
-                className="btn-common"
-                onClick={handleSave}
-                data-testid="saveall"
-              />
-            ) : (
-              <Button
-                variant="secondary"
-                icon={<Pencil />}
-                className="btn-common"
-                onClick={() => setIsEdit(true)}
-                data-testid="editall"
+        <div className="panel-heading">Lab Data</div>
+        <div>
+          <Table
+            isLoading={labData.loading}
+            ref={tableRef}
+            title=" "
+            columns={columns}
+            rows={rowData
+              ?.filter(
+                (obj) =>
+                  obj.request_type !== LABDATA_CONSTANTS.REQUEST_TYPE.DELETE,
+              )
+              ?.map((row) => ({
+                ...row,
+                editMode: editedRow.id === row.id,
+                editedRow,
+                updateRow,
+                onRowEdit,
+                onDelete,
+                handleChange,
+                handleCancel,
+                handleSaveRow,
+                handleAdd,
+              }))}
+            rowId="table_link_text"
+            rowsPerPageOptions={[5, 10, 15, 'All']}
+            tablePaginationProps={{
+              labelDisplayedRows: ({ from, to, count }) =>
+                `${
+                  count === 1 ? 'Lab Data' : 'Lab Datas'
+                } ${from}-${to} of ${count}`,
+              truncate: true,
+            }}
+            // eslint-disable-next-line
+            CustomHeader={(props) => (
+              <CustomHeader
+                isEdit={isEdit}
+                clearFilter={clearFilter}
+                setIsEdit={setIsEdit}
+                handleSave={handleSave}
+                noOfUsers={rowData?.length}
+                {...props}
               />
             )}
-          </div>
-        )}
-        <Table
-          isLoading={rowData?.length === 0}
-          title="Lab Data"
-          columns={columns}
-          rows={dataRow
-            ?.filter((obj) => !obj.soft_delete)
-            ?.map((row) => ({
-              ...row,
-              editMode: editedRow.id === row.id,
-              editedRow,
-              updateRow,
-              onRowEdit,
-              onDelete,
-              handleChange,
-              handleCancel,
-              handleSaveRow,
-              handleAdd,
-            }))}
-          rowId="table_link_text"
-          rowsPerPageOptions={[5, 10, 15, 'All']}
-          tablePaginationProps={{
-            labelDisplayedRows: ({ from, to, count }) =>
-              `${
-                count === 1 ? 'Lab Data' : 'Lab Datas'
-              } ${from}-${to} of ${count}`,
-            truncate: true,
-          }}
-          showClearFiltersButton
-          rowProps={{ hover: false }}
-        />
+          />
+        </div>
       </div>
       {isOpen && (
         <DeleteRow
@@ -350,6 +393,15 @@ ActionCell.propTypes = {
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
+};
+
+CustomHeader.propTypes = {
+  isEdit: PropTypes.isRequired,
+  clearFilter: PropTypes.isRequired,
+  setIsEdit: PropTypes.isRequired,
+  handleSave: PropTypes.isRequired,
+  toggleFilters: PropTypes.isRequired,
+  noOfUsers: PropTypes.isRequired,
 };
 
 LabData.propTypes = {
