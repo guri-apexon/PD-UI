@@ -48,7 +48,16 @@
         font-size: 14px;
         font-weight: 500;
         margin-top: 10px;
-        margin-bottom: 5px;
+        margin-bottom: 10px;
+      }
+      input[type='checkbox'] {
+        height: 18px;
+        width: 18px;
+        margin-right: 8px;
+        vertical-align: top;
+      }
+      .input-label{
+        font-size: 14px;
       }
     }
   }
