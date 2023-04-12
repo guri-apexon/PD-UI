@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import isEmpty from 'lodash/isEmpty';
 import TextField from 'apollo-react/components/TextField';
-import Checkbox from 'apollo-react/components/Checkbox';
-import CheckboxGroup from 'apollo-react/components/CheckboxGroup';
 import Loader from '../../../Components/Loader/Loader';
 import { workflow } from '../dashboardSlice';
 import './style.scss';
@@ -25,7 +23,10 @@ function PipelineComponent({
   const workFlowStoreData = useSelector(workflow);
 
   useEffect(() => {
-    dispatch({ type: 'FETCH_WORKFLOW_DATA' });
+    if (workFlowStoreData.data.Status !== 200) {
+      dispatch({ type: 'FETCH_WORKFLOW_DATA' });
+    }
+    // eslint-disable-next-line
   }, [dispatch]);
 
   const formatData = (workflow) => {
@@ -152,30 +153,29 @@ function PipelineComponent({
   };
   const renderWorkflow = (data, type) => {
     return data.map((item, i) => (
-      <div className="workflow-services" key={React.key}>
+      <div className="workflow-services" key={item.work_flow_name}>
         <div className="checkbox-parent">
-          <Checkbox
-            label={item.work_flow_name}
-            checked={item.checked}
+          <input
+            type="checkbox"
             onChange={() => handleWorkflowSelected(i, type)}
-            size="small"
-            required
+            checked={item.checked}
             data-testid={item.work_flow_name}
           />
+          <label className="input-label">{item.work_flow_name}</label>
         </div>
         <div className="checkbox-childs">
-          <CheckboxGroup size="small">
-            {item.services.map((service, j) => (
-              <Checkbox
-                checked={service.checked}
-                label={service.service_name}
-                key={React.key}
+          {item.services.map((service, j) => (
+            <div key={service.service_name + item.work_flow_name}>
+              <input
+                type="checkbox"
                 onChange={() => handleServiceClick(i, j, type)}
+                checked={service.checked}
                 data-testid={service.service_name}
                 disabled={service.disabled}
               />
-            ))}
-          </CheckboxGroup>
+              <label className="input-label">{service.service_name}</label>
+            </div>
+          ))}
         </div>
       </div>
     ));
@@ -185,24 +185,17 @@ function PipelineComponent({
     const newArr = workflowData.map((item) => {
       if (allChecked) {
         const newServiceArr = item.services.map((service) => {
-          return { ...service, checked: false };
+          return { ...service, checked: false, disabled: false };
         });
         return { ...item, services: newServiceArr, checked: false };
       }
       const newServiceArrTrue = item.services.map((service) => {
-        return { ...service, checked: true };
+        return { ...service, checked: true, disabled: false };
       });
       return { ...item, services: newServiceArrTrue, checked: true };
     });
     setWorkflowData(newArr);
   };
-  if (workFlowStoreData.loading) {
-    return (
-      <div className="custom-loader-container">
-        <Loader />
-      </div>
-    );
-  }
   return (
     <div className="pipeline-component">
       <div className="docid-section">
@@ -222,6 +215,11 @@ function PipelineComponent({
           disabled={userType !== 'admin'}
         />
       </div>
+      {workFlowStoreData.loading && (
+        <div className="custom-loader-container">
+          <Loader />
+        </div>
+      )}
       <div className="workflow-section">
         <label
           className={
@@ -233,12 +231,13 @@ function PipelineComponent({
         <div className="custom-workflow">
           <label className="custom-label">Default workflows:</label>
           <div className="all-workflow">
-            <Checkbox
-              checked={allChecked}
-              label="All"
+            <input
+              type="checkbox"
               onChange={() => handleAllClick()}
+              checked={allChecked}
               data-testid="all-checkbox"
             />
+            <label className="input-label">All</label>
           </div>
           <div className="workflow-render">
             {renderWorkflow(workflowData, 'default')}
@@ -283,4 +282,4 @@ PipelineComponent.defaultProps = {
   docId: '',
   userType: 'admin',
 };
-export default PipelineComponent;
+export default React.memo(PipelineComponent);

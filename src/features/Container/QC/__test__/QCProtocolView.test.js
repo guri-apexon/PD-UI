@@ -27,6 +27,21 @@ describe('QC Protocol View container component', () => {
           ],
         },
       },
+      dashboard: {
+        workflowData: {
+          loading: false,
+          error: null,
+          data: {
+            Status: '',
+          },
+        },
+        workflowSubmit: {
+          loading: false,
+          error: null,
+          data: [],
+          success: true,
+        },
+      },
     },
   };
   test('should render QC Loader', () => {
@@ -35,7 +50,12 @@ describe('QC Protocol View container component', () => {
     const type = 'QC1';
 
     render(
-      <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
+      <QCProtocolView
+        protId={protocolId}
+        path={filePath}
+        userType={type}
+        handleChangeTab={jest.fn()}
+      />,
       state,
     );
   });
@@ -45,7 +65,12 @@ describe('QC Protocol View container component', () => {
     const type = 'QC2';
 
     render(
-      <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
+      <QCProtocolView
+        protId={protocolId}
+        path={filePath}
+        userType={type}
+        handleChangeTab={jest.fn()}
+      />,
       state,
     );
   });
@@ -74,7 +99,12 @@ describe('QC Protocol View container component Error', () => {
     const type = 'QC1';
 
     render(
-      <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
+      <QCProtocolView
+        protId={protocolId}
+        path={filePath}
+        userType={type}
+        handleChangeTab={jest.fn()}
+      />,
       state,
     );
   });
@@ -83,7 +113,12 @@ describe('QC Protocol View container component Error', () => {
     const filePath = '//path';
     const type = 'QC2';
     render(
-      <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
+      <QCProtocolView
+        protId={protocolId}
+        path={filePath}
+        userType={type}
+        handleChangeTab={jest.fn()}
+      />,
       state,
     );
   });

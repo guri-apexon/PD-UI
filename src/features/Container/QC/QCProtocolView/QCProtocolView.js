@@ -51,9 +51,6 @@ function QCProtocolView({ protId, handleChangeTab }) {
       dispatch({ type: 'APPROVE_QC_SAGA', payload: protId });
       setShowPipelineModal(false);
       handleChangeTab(null, 0);
-      toast.success(
-        'Workflows execution were submitted successfully for the protocol',
-      );
       dispatch({ type: 'RESET_SUBMIT_WORKFLOW_DATA' });
     }
   }, [workflowSubmitData]);

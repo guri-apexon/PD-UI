@@ -386,7 +386,7 @@ export function* fetchAssociateData(action) {
   }
 }
 
-export function* fetchWorkflowData(action) {
+export function* fetchWorkflowData() {
   const loadingData = {
     loading: true,
     error: null,

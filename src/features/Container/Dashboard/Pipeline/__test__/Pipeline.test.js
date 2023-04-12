@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 
 import PipelineComponent from '../Pipeline';
-import initialStateSuccess from './mock__data__';
+import initialStateSuccess, { pipeLoadingState } from './mock__data__';
 import dashboardReducer from '../../dashboardSlice';
 
 function renderWithProviders(
@@ -50,6 +50,11 @@ describe('<Pipeline/>', () => {
     const allText = screen.queryByTestId('all-checkbox');
     expect(allText).toBeInTheDocument();
   });
+  test('Render loader screen', async () => {
+    setup(pipeLoadingState);
+    const text = screen.queryByTestId(/Default workflows:/i);
+    expect(text).not.toBeInTheDocument();
+  });
   test('Should able to select all the workflow', () => {
     setup(initialStateSuccess);
     const allText = screen.queryByTestId('all-checkbox');
@@ -62,10 +67,16 @@ describe('<Pipeline/>', () => {
     fireEvent.click(service);
     // fireEvent.click(allText);
   });
+  test('Should able to select one service which has dependency', () => {
+    setup(initialStateSuccess);
+    const service = screen.queryByTestId('digitizer2_omopupdate');
+    fireEvent.click(service);
+    // fireEvent.click(allText);
+  });
   test('Should able to select one workflow', () => {
     setup(initialStateSuccess);
-    const workFlow = screen.queryByTestId('document_compare');
-    fireEvent.click(workFlow);
+    const workFlow = screen.queryAllByTestId('document_compare');
+    fireEvent.click(workFlow[0]);
     // fireEvent.click(allText);
   });
 });

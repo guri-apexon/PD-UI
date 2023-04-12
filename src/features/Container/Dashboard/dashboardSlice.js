@@ -20,7 +20,9 @@ export const dashboardSlice = createSlice({
     workflowData: {
       loading: false,
       error: null,
-      data: {},
+      data: {
+        Status: '',
+      },
     },
     workflowSubmit: {
       loading: false,
