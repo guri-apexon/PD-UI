@@ -1,4 +1,4 @@
-import { render } from '../../../../test-utils/test-utils';
+import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import QCProtocolView from '../QCProtocolView/QCProtocolView';
 
@@ -148,5 +148,19 @@ describe('QC Protocol View container component Error', () => {
     setProdData(updatedProdData);
 
     expect(setProdData).toHaveBeenCalledWith({ userPrimaryRoleFlag: false });
+  });
+  test('handleOpen function should open the modal', () => {
+    render(<QCProtocolView />);
+    const submitButton = screen.getByText('Submit');
+    fireEvent.click(submitButton);
+    const modal = screen.getByRole('dialog');
+    expect(modal).toBeInTheDocument();
+  });
+  test('handleOpen function should open the modal', () => {
+    render(<QCProtocolView />);
+    const submitButton = screen.getByText('Submit');
+    fireEvent.click(submitButton);
+    const modal = screen.getByRole('dialog');
+    expect(modal).toBeInTheDocument();
   });
 });
