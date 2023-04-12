@@ -544,6 +544,7 @@ export const createReturnObj = (obj, linkId) => {
       };
     }
     return {
+      TableIndex: obj.content.TableIndex,
       type: obj.type,
       content: obj.content,
       link_id: linkId,
