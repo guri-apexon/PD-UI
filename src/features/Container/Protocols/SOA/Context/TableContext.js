@@ -1,9 +1,11 @@
 import { createContext } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { TableConst, TableEvents, TIMPE_POINTS } from '../Constants';
-import { getTableColumns, getValueFormRecord } from '../utils';
+import { getTableColumns, getValueFormRecord, stringReadable } from '../utils';
 
 const tableGridData = {
+  refreshValue: 0,
+  footNotes: [],
   docId: '',
   tables: [],
   tableData: [],
@@ -21,9 +23,9 @@ const tableGridData = {
     legend: { name: 'Legend' },
     studyVisit: {
       name: 'Study Period',
-      children: TIMPE_POINTS.map((a) => ({ enable: false, name: a })),
+      children: TIMPE_POINTS.map((a) => ({ name: a })),
     },
-    mappings: { name: 'mappings' },
+    mappings: { name: 'Mappings' },
     display: { name: 'Display' },
     references: { name: 'References' },
   },
@@ -41,10 +43,10 @@ const getAvailableHeader = (tableData) => {
 };
 
 const getTableCells = (data, action) => {
+  const { tableId } = data;
   const records = [];
   const rows = new Set();
   const columns = new Set();
-
   const COL = TableConst.COLUMN_IDX;
   const ROW = TableConst.ROW_IDX;
   const cells = [
@@ -113,6 +115,12 @@ const getTableCells = (data, action) => {
         const filtered = svItem[key].filter(
           (item) => Number(item[COL]) !== Number(column),
         );
+        filtered.forEach((filterItem) => {
+          if (Number(action.column) <= Number(filterItem[COL])) {
+            const index = filterItem[COL];
+            filterItem[COL] = index - 1;
+          }
+        });
         svItem[key] = filtered;
       } else if (type === TableEvents.ADD_TABLE_COLUMN) {
         svItem[key].forEach((colItem) => {
@@ -123,14 +131,18 @@ const getTableCells = (data, action) => {
         });
 
         if (key === timePoint) {
-          svItem[key].push({
+          const uid = uuidv4();
+          const newColumn = {
             table_row_index: 0,
-            [TableConst.UID]: uuidv4(),
+            [TableConst.UID]: uid,
             table_column_index: column,
             indicator_text: 'New Column',
             table_roi_id: id,
             timePoint,
-          });
+          };
+
+          svItem[key].push(newColumn);
+          data[tableId][uid] = newColumn;
         }
       }
     });
@@ -248,6 +260,22 @@ const addTableColumn = (
     timePoint,
     id: tableRoiId,
   });
+  cells[TableConst.STUDYVISIT].forEach((item) => {
+    const key = Object.keys(item)[0];
+    if (key !== timePoint) {
+      const missingObject = {
+        [TableConst.ROW_IDX]: 0,
+        [TableConst.COLUMN_IDX]: tableColumnIndex,
+        [TableConst.UID]: uuidv4(),
+        [TableConst.TIME_POINT]: key,
+        [TableConst.VALUE_TEXT1]: '',
+        [TableConst.TABLE_ROI_ID]: tableRoiId,
+        isMissing: true,
+      };
+      item[key].push(missingObject);
+      cells[tableRoiId][missingObject[TableConst.UID]] = missingObject;
+    }
+  });
 
   return tableData;
 };
@@ -312,224 +340,63 @@ const toggleItemFromArray = (data, uid) => {
   data.push(uid);
   return data;
 };
-const updateAvailableHeaders = (state) => {
-  const ah = getAvailableHeader(state.tables[state.selectedTab]);
-  const settings = state.settingItems[TableConst.STUDYVISIT];
-  settings.children.forEach((settingItem) => {
-    settingItem.enable = ah.includes(settingItem.name);
+const updateAvailableHeaders = (state, selectedTab) => {
+  const hideColumns = [];
+
+  state.tables[selectedTab][TableConst.STUDYVISIT].forEach((item) => {
+    const key = Object.keys(item)[0];
+    let canPush = true;
+    item[key].every((record) => {
+      if (
+        record[TableConst.VALUE_TEXT1].length > 0 &&
+        Number(record[TableConst.COLUMN_IDX]) > 0
+      ) {
+        canPush = false;
+        return false;
+      }
+      return true;
+    });
+    if (canPush) hideColumns.push(key);
   });
+
+  return hideColumns;
 };
 
-const canUpdateGroupFilters = (state, actions) => {
-  const filters = state.settingItems[TableConst.STUDYVISIT].children;
-
-  let canUncheck = true;
-  let counter = 0;
-  filters.forEach((item) => {
-    if (!state.hideGroupsColumns.includes(item.name) && item.enable) counter++;
-  });
-  if (counter < 2) canUncheck = false;
-  return !actions.payload.push && !canUncheck;
-};
 const getTableId = (state, selectedTab) => {
   return state.tables[selectedTab].tableId;
 };
 
-const getFlatCols = (list) => {
-  const uniq = [];
-  const duplicates = [];
-  list.forEach((mainItem) => {
-    let isFound = false;
-    list.forEach((loopItem) => {
-      if (
-        mainItem !== loopItem &&
-        mainItem[TableConst.COLUMN_IDX] === loopItem[TableConst.COLUMN_IDX] &&
-        Number(loopItem[TableConst.ROW_IDX]) === 0
-      ) {
-        isFound = true;
-      }
-    });
-    if (isFound) {
-      duplicates.push(mainItem);
-    } else {
-      mainItem.baseColumn = true;
-      uniq.push(mainItem);
-    }
-  });
-
-  const groupBy = duplicates.reduce((prev, current) => {
-    if (!prev[String(current[TableConst.COLUMN_IDX])])
-      prev[String(current[TableConst.COLUMN_IDX])] = [];
-    prev[String(current[TableConst.COLUMN_IDX])].push(current);
-    return prev;
-  }, {});
-
-  const tps = [...TIMPE_POINTS];
-
-  tps.reverse();
-  const baseCls = [];
-  Object.keys(groupBy).forEach((gpItem) => {
-    groupBy[gpItem].every((gpColumn) => {
-      let grpItemFound = true;
-
-      tps.every((tpItem) => {
-        let tpItemFound = true;
-        if (gpColumn.timePoint === tpItem) {
-          gpColumn.baseColumn = true;
-          baseCls.push(gpColumn);
-
-          tpItemFound = false;
-          grpItemFound = false;
-        }
-        return tpItemFound;
-      });
-      return grpItemFound;
-    });
-  });
-  const flatCols = [...uniq, ...baseCls];
-  return flatCols;
-};
 const isObjectIn = (arr, object) => {
   return !!arr.find((item) => item === object);
 };
 
-const predictEmptyHeaders = ({
-  baseColumns,
-  groupObjectToRemove,
-  availableTimePoints,
-  availableHeaders,
-}) => {
-  const finalgroups = [];
-  baseColumns.forEach((baseCol) => {
-    delete baseCol.children;
-    const colIndex = Number(baseCol[TableConst.COLUMN_IDX]);
-    let grpObj;
-    availableTimePoints.forEach((avlTP) => {
-      const grpsArr = availableHeaders[avlTP];
-      let colItem = grpsArr.find(
-        (grpItem) => Number(grpItem[TableConst.COLUMN_IDX]) === colIndex,
-      );
-      if (!colItem || colItem.baseColumn)
-        colItem = {
-          [TableConst.COLUMN_IDX]: colIndex,
-          field: '',
-          timePoint: avlTP,
-          [TableConst.ROW_IDX]: 0,
-          [TableConst.VALUE_TEXT1]: '',
-        };
-      if (!colItem.children) colItem.children = [];
-
-      if (colItem.field) groupObjectToRemove[avlTP] = true;
-      if (!grpObj) grpObj = colItem;
-    });
-  });
-  return finalgroups;
-};
-const reFormatMultiHeader = ({
-  baseColumns,
-  groupObjectToRemove,
-  availableTimePoints,
-  availableHeaders,
-}) => {
-  const finalgroups = [];
-  baseColumns.forEach((baseCol) => {
-    delete baseCol.children;
-    const colIndex = Number(baseCol[TableConst.COLUMN_IDX]);
-    let grpObj;
-    let prevObject;
-    availableTimePoints.forEach((avlTP) => {
-      const grpsArr = availableHeaders[avlTP];
-      let colItem = grpsArr.find(
-        (grpItem) => Number(grpItem[TableConst.COLUMN_IDX]) === colIndex,
-      );
-
-      if (!colItem || colItem.baseColumn)
-        colItem = {
-          [TableConst.COLUMN_IDX]: colIndex,
-          field: '',
-          timePoint: avlTP,
-          [TableConst.ROW_IDX]: 0,
-          [TableConst.VALUE_TEXT1]: '',
-        };
-      if (!colItem.children) colItem.children = [];
-      if (colItem.field) groupObjectToRemove[avlTP] = true;
-      if (prevObject && !isObjectIn(prevObject.children, colItem))
-        prevObject.children.push(colItem);
-      prevObject = colItem;
-      if (!grpObj) grpObj = colItem;
-    });
-    if (prevObject && !isObjectIn(prevObject.children, baseCol))
-      prevObject.children.push(baseCol);
-    finalgroups.push(grpObj);
-  });
-  return finalgroups;
-};
-const genereateMultiHeader = (baseColumns, allColumns, timePoints) => {
-  const availableHeaders = {};
-
-  timePoints.forEach((tp) => {
-    allColumns.forEach((col) => {
-      if (col.timePoint === tp) {
-        if (!availableHeaders[tp]) availableHeaders[tp] = [];
-        availableHeaders[tp].push(col);
-      }
-    });
-  });
-  const availableTimePoints = Object.keys(availableHeaders);
-  const groupObjectToRemove = {};
-  availableTimePoints.forEach((avTP) => {
-    groupObjectToRemove[avTP] = false;
-  });
-  let finalgroups = predictEmptyHeaders({
-    baseColumns,
-    groupObjectToRemove,
-    availableTimePoints,
-    availableHeaders,
-  });
-
-  const toRemove = [];
-  Object.keys(groupObjectToRemove).forEach((item) => {
-    if (!groupObjectToRemove[item]) toRemove.push(item);
-  });
-  const avTimePoints = availableTimePoints.filter(
-    (item) => !toRemove.includes(item),
-  );
-  if (avTimePoints.length > 0) {
-    finalgroups = reFormatMultiHeader({
-      baseColumns,
-      groupObjectToRemove,
-      availableTimePoints: avTimePoints,
-      availableHeaders,
-    });
-  } else {
-    finalgroups = baseColumns;
-  }
-
-  return finalgroups;
-};
-
-const getColumns = ({ state, selectedTab }) => {
+const getColumns = ({ state, selectedTab, hideColumns }) => {
   const table = state.tables[selectedTab];
+  let horizontalCols = new Set();
+  const hideGroupsColumns = hideColumns ?? state.hideGroupsColumns;
 
+  const avlblTimePoints = getAvailableHeader(state.tables[selectedTab]);
   const filteredColumns = TIMPE_POINTS.filter(
-    (item) => !state.hideGroupsColumns.includes(item),
+    (item) =>
+      avlblTimePoints.includes(item) && !hideGroupsColumns.includes(item),
   );
 
   const timePoints = [TableConst.STUDYVISIT, TableConst.STUDYPROCEDURE];
-
   const allColls = [];
   timePoints.forEach((tpItem) => {
     let vistArr = [];
-    if (tpItem === TableConst.STUDYPROCEDURE) {
+    if (tpItem === TableConst.NO_COLUMN) {
       vistArr = table[tpItem];
       vistArr.forEach((visitItem) => {
-        if (Number(visitItem[TableConst.ROW_IDX]) === 0)
+        if (Number(visitItem[TableConst.ROW_IDX]) === 0) {
           allColls.push({
             ...visitItem,
-            timePoint: TableConst.STUDYPROCEDURE,
+            [TableConst.TIME_POINT]: TableConst.STUDYPROCEDURE,
             field: String(visitItem[TableConst.COLUMN_IDX]),
             [TableConst.DATA_VALUE]: visitItem[TableConst.VALUE_TEXT1],
           });
+          horizontalCols.add(Number(visitItem[TableConst.COLUMN_IDX]));
+        }
       });
     } else if (tpItem === TableConst.STUDYVISIT) {
       vistArr = table[tpItem];
@@ -538,61 +405,96 @@ const getColumns = ({ state, selectedTab }) => {
         const key = Object.keys(vstItem)[0];
         if (filteredColumns.includes(key)) {
           vstItem[key].forEach((vstSubItem) => {
-            if (Number(vstSubItem[TableConst.ROW_IDX]) === 0)
+            if (Number(vstSubItem[TableConst.ROW_IDX]) === 0) {
               allColls.push({
                 ...vstSubItem,
-                timePoint: key,
+                [TableConst.TIME_POINT]: key,
                 field: String(vstSubItem[TableConst.COLUMN_IDX]),
                 [TableConst.DATA_VALUE]: vstSubItem[TableConst.VALUE_TEXT1],
               });
+              horizontalCols.add(Number(vstSubItem[TableConst.COLUMN_IDX]));
+            }
           });
         }
       });
     }
   });
-  allColls.sort((a, b) => a[TableConst.COLUMN_IDX] - b[TableConst.COLUMN_IDX]);
-  const flatCols = getFlatCols(allColls);
-  flatCols.sort((a, b) => a[TableConst.COLUMN_IDX] - b[TableConst.COLUMN_IDX]);
 
-  const baseCols = flatCols.filter((a) => a.baseColumn);
-  const tpRpws = {};
-  allColls.forEach((colItem) => {
-    TIMPE_POINTS.forEach((tpItem) => {
-      if (tpItem === colItem.timePoint && !colItem.baseColumn) {
-        if (!tpRpws[tpItem]) tpRpws[tpItem] = [];
-        tpRpws[tpItem].push(colItem);
+  horizontalCols = Array.from(horizontalCols)
+    .sort((a, b) => a - b)
+    .map((item) => ({
+      field: String(item),
+      baseColumn: true,
+      [TableConst.COLUMN_IDX]: Number(item),
+      [TableConst.ROW_IDX]: 0,
+    }));
+
+  const timePointsArr = filteredColumns;
+  const finalgroups = [];
+  horizontalCols.forEach((col) => {
+    let prevObject;
+    let grpObj;
+    timePointsArr.forEach((tp) => {
+      let colItem = allColls.find(
+        (arecord) =>
+          Number(arecord[TableConst.COLUMN_IDX]) ===
+            Number(col[TableConst.COLUMN_IDX]) &&
+          arecord[TableConst.TIME_POINT] === tp,
+      );
+      if (!colItem) {
+        colItem = {
+          [TableConst.COLUMN_IDX]: col,
+          field: '',
+          [TableConst.TIME_POINT]: tp,
+          [TableConst.ROW_IDX]: 0,
+          [TableConst.VALUE_TEXT1]: '',
+        };
       }
+      if (!colItem.children) colItem.children = [];
+
+      if (prevObject && !isObjectIn(prevObject.children, colItem))
+        prevObject.children.push(colItem);
+      prevObject = colItem;
+      if (!grpObj) grpObj = colItem;
     });
+    if (prevObject && !isObjectIn(prevObject.children, col))
+      prevObject.children.push(col);
+
+    finalgroups.push(grpObj);
   });
 
-  const columnRows = [];
-  Object.keys(tpRpws).forEach((rowItem) => {
-    const cfilterItem = {};
-    tpRpws[rowItem].forEach((tpColumn) => {
-      cfilterItem[tpColumn[TableConst.COLUMN_IDX]] = tpColumn;
-    });
-    columnRows.push(cfilterItem);
-  });
-
-  const multiHeader = genereateMultiHeader(
-    baseCols,
-    getTableColumns(allColls),
-    [...filteredColumns],
-  );
-
-  return { columnDefs: multiHeader, columnRows: allColls };
+  getTableColumns(allColls);
+  getTableColumns(horizontalCols);
+  return { columnDefs: getTableColumns(finalgroups) };
 };
 const isColumn = (cell) => Number(cell[TableConst.ROW_IDX]) === 0;
+const getFootNotesFromObject = (record) => {
+  const regexp = new RegExp(`^${TableConst.FOOT_NOTE_KEY}`, 'i');
+  const footNoteKeys = Object.keys(record).filter(
+    (key) => regexp.test(key) && record[key],
+  );
+  const notes = footNoteKeys.map((item) => {
+    return { key: item, value: record[item] };
+  });
 
+  return notes;
+};
 const formatTables = (data) => {
+  const footNotes = [];
   const actualColumns = [];
   const cellColumns = [];
   const tables = data.map((tableItem) => {
+    const footes = [];
+    footNotes.push(footes);
     const actualColSet = new Set();
     const cellColumnsSet = new Set();
     actualColumns.push(actualColSet);
     cellColumns.push(cellColumnsSet);
     const rtObj = {};
+    const groupObject = {};
+    rtObj[tableItem.tableId] = groupObject;
+    const defaultTimePoints = [];
+    rtObj[TableConst.DEFAULT_TIME_POINTS] = defaultTimePoints;
     const keys = Object.keys(tableItem);
     keys.forEach((tableKey) => {
       if (tableKey !== TableConst.NORMALIZED_SOA) {
@@ -607,25 +509,35 @@ const formatTables = (data) => {
             }
 
             tableKeyItem[TableConst.UID] = uuidv4();
-            tableKeyItem.timePoint = TableConst.STUDYPROCEDURE;
+            tableKeyItem[TableConst.TIME_POINT] = TableConst.STUDYPROCEDURE;
           });
         }
         if (tableKey === TableConst.STUDYVISIT) {
           tableItem[tableKey].forEach((svItem) => {
             const key = Object.keys(svItem)[0];
+
             svItem[key].forEach((svKey) => {
               if (isColumn(svKey)) {
                 actualColSet.add(Number(svKey[TableConst.COLUMN_IDX]));
               } else {
                 cellColumnsSet.add(Number(svKey[TableConst.COLUMN_IDX]));
               }
+
               svKey[TableConst.UID] = uuidv4();
-              svKey.timePoint = key;
+              svKey[TableConst.TIME_POINT] = key;
+              groupObject[svKey[TableConst.UID]] = svKey;
             });
+            if (svItem[key].length > 0) {
+              defaultTimePoints.push(key);
+            }
           });
         }
       } else if (tableKey === TableConst.NORMALIZED_SOA) {
         tableItem[tableKey].forEach((tableKeyItem) => {
+          const notesResult = getFootNotesFromObject(tableKeyItem);
+
+          if (notesResult.length > 0) footes.push(...notesResult);
+
           if (!rtObj[tableKey]) rtObj[tableKey] = [];
           const obj = {
             [TableConst.COLUMN_IDX]: tableKeyItem[TableConst.COLUMN_IDX],
@@ -633,7 +545,7 @@ const formatTables = (data) => {
             [TableConst.VALUE_TEXT1]: tableKeyItem[TableConst.VALUE_TEXT1],
             id: tableKeyItem.id,
             [TableConst.UID]: uuidv4(),
-            timePoint: TableConst.NORMALIZED_SOA,
+            [TableConst.TIME_POINT]: TableConst.NORMALIZED_SOA,
           };
           if (isColumn(obj)) {
             actualColSet.add(Number(obj[TableConst.COLUMN_IDX]));
@@ -647,9 +559,28 @@ const formatTables = (data) => {
     return rtObj;
   });
   cellColumns.forEach((item, index) => {
-    const cellCols = Array.from(item);
     const actCols = Array.from(actualColumns[index]);
-    cellCols.forEach((cell) => {
+
+    actCols.forEach((cell) => {
+      tables[index][TableConst.STUDYVISIT].forEach((itemTimePoint) => {
+        const tpName = Object.keys(itemTimePoint)[0];
+        const isMissing = itemTimePoint[tpName].find(
+          (item) => item[TableConst.COLUMN_IDX] === cell,
+        );
+        if (!isMissing) {
+          const missingObject = {
+            [TableConst.ROW_IDX]: 0,
+            [TableConst.COLUMN_IDX]: cell,
+            [TableConst.UID]: uuidv4(),
+            [TableConst.TIME_POINT]: tpName,
+            [TableConst.VALUE_TEXT1]: '',
+            [TableConst.TABLE_ROI_ID]: tables[index].tableId,
+            isMissing: true,
+          };
+          itemTimePoint[tpName].push(missingObject);
+        }
+      });
+
       if (!actCols.includes(cell)) {
         tables[index][TableConst.STUDYPROCEDURE].push({
           [TableConst.COLUMN_IDX]: cell,
@@ -659,35 +590,78 @@ const formatTables = (data) => {
       }
     });
   });
-  return tables;
+  // add time points
+  tables.forEach((table) => {
+    table[TableConst.STUDYVISIT].forEach((item) => {
+      const key = Object.keys(item)[0];
+      let tpRecord = item[key].find(
+        (record) =>
+          record[TableConst.COLUMN_IDX] === 0 &&
+          record[TableConst.ROW_IDX] === 0,
+      );
+      if (tpRecord) {
+        tpRecord[TableConst.VALUE_TEXT1] = stringReadable(key);
+      } else {
+        tpRecord = {
+          [TableConst.COLUMN_IDX]: 0,
+          [TableConst.ROW_IDX]: 0,
+          [TableConst.TIME_POINT]: key,
+          [TableConst.VALUE_TEXT1]: stringReadable(key),
+          [TableConst.UID]: uuidv4(),
+        };
+        item[key].push(tpRecord);
+      }
+      table[table.tableId][tpRecord[TableConst.UID]] = tpRecord;
+    });
+  });
+
+  // end of time points
+  const fNootes = [];
+
+  footNotes.forEach((notes) => {
+    const fNote = [];
+    fNootes.push(fNote);
+    notes.forEach((note) => {
+      const isFound = fNote.find((item) => item.key === note.key);
+      if (!isFound) fNote.push(note);
+    });
+  });
+  return { tables, footNotes: fNootes };
 };
 const tableReducer = (state, actions) => {
   switch (actions.type) {
     case TableEvents.SET_DOC_ID:
       return { ...state, docId: actions.docId };
     case TableEvents.SET_TABLES:
-      return { ...state, tables: formatTables(actions.payload) };
+      return { ...state, ...formatTables(actions.payload) };
     case TableEvents.SET_SELECTED_TAB:
-      updateAvailableHeaders(state);
+      // updateAvailableHeaders(state, actions.payload);
 
       return {
         ...state,
+        hideGroupsColumns: updateAvailableHeaders(state, actions.payload),
         tableId: getTableId(state, actions.payload),
-
+        refreshValue: state.refreshValue + 1,
         ...getTableData(state.tables[actions.payload], null),
         selectedTab: actions.payload,
-        ...getColumns({ state, selectedTab: actions.payload }),
+        ...getColumns({
+          state,
+          selectedTab: actions.payload,
+          hideColumns: updateAvailableHeaders(state, actions.payload),
+        }),
       };
 
     case TableEvents.UPDATE_CELL_VALUES:
       return {
         ...state,
         tableData: updateCellValues(state, actions.payload),
+        refreshValue: state.refreshValue + 1,
       };
     case TableEvents.DELETE_TABLE_ROW:
       return {
         ...state,
         ...deleteRow(state, actions.payload),
+        refreshValue: state.refreshValue + 1,
       };
     case TableEvents.ADD_TABLE_ROW:
       return {
@@ -696,10 +670,12 @@ const tableReducer = (state, actions) => {
           rowIndex: actions.payload.rowIndex,
           newRow: actions.payload.newRow,
         }),
+        refreshValue: state.refreshValue + 1,
       };
     case TableEvents.ADD_TABLE_COLUMN:
       return {
         ...state,
+        refreshValue: state.refreshValue + 1,
         tableData: addTableColumn(
           state.tables[state.selectedTab],
           actions.payload,
@@ -710,11 +686,13 @@ const tableReducer = (state, actions) => {
       updateTableColumn(state.tables[state.selectedTab], actions.payload);
       return {
         ...state,
+        refreshValue: state.refreshValue + 1,
         ...getColumns({ state, selectedTab: state.selectedTab }),
       };
     case TableEvents.DELETE_TABLE_COLUMN:
       return {
         ...state,
+        refreshValue: state.refreshValue + 1,
         tableData: deleteTableColumn(
           state.tables[state.selectedTab],
           actions.payload,
@@ -724,29 +702,40 @@ const tableReducer = (state, actions) => {
     case TableEvents.ADD_TABLE_CELL:
       return {
         ...state,
+        refreshValue: state.refreshValue + 1,
         tableData: addTableCell(state.tables[state.selectedTab], {
           newCell: actions.payload,
         }),
       };
     case TableEvents.SET_SETTINGS_OPEN:
-      return { ...state, openSettings: actions.payload };
+      return {
+        ...state,
+        refreshValue: state.refreshValue + 1,
+        openSettings: actions.payload,
+      };
 
     case TableEvents.SET_GRID_REF:
       return { ...state, gridRef: actions.payload };
 
     case TableEvents.FILTER_GROUP_COLUMN:
-      if (canUpdateGroupFilters(state, actions)) return state;
+      // if (canUpdateGroupFilters(state, actions)) return state;
 
       return {
         ...state,
+        refreshValue: state.refreshValue + 1,
         hideGroupsColumns: toggleItemFromArray(
           state.hideGroupsColumns,
           actions.payload.name,
         ),
+      };
+    case TableEvents.REFRESH_TABLE:
+      // if (canUpdateGroupFilters(state, actions)) return state;
+
+      return {
+        ...state,
         ...getTableData(state.tables[state.selectedTab], null),
         ...getColumns({ state, selectedTab: state.selectedTab }),
       };
-
     default:
       return state;
   }
