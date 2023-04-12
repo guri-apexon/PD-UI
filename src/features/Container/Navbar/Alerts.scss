@@ -60,7 +60,6 @@
   white-space: wrap;
   padding: 20px;
   overflow: hidden;
-  max-width: 360px;
 
   .notification-content {
     display: flex;
@@ -101,6 +100,7 @@
   color: inherit;
   overflow: hidden;
   text-overflow: ellipsis;
+  width: 260px;
 }
 .listItemTextSecondary {
   width: 310px;
@@ -125,7 +125,7 @@
     height: 10px;
     position: absolute;
     left: 7px;
-    top: 10px;
+    top: 30px;
     border-radius: 20px;
   }
 }
@@ -163,12 +163,7 @@
 .ReactVirtualized__Grid {
   & > div {
     margin-top: 40px;
-    overflow: visible !important;
   }
-}
-
-.MuiPopover-paper {
-  overflow: visible !important;
 }
 
 .Heading-main {
