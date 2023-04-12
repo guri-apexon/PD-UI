@@ -65,65 +65,68 @@ function DisplayTable({
             colWidth={colWidth}
           />
         )}
-        {data?.map((row, rowIndex) => (
-          <div key={uuidv4()} className="pd-table-empty-cell-row">
-            {edit && (
-              <EmptyRows
-                rowIndex={rowIndex}
-                handleOperation={handleRowOperation}
-                index={rowIndex}
-              />
-            )}
-            <div
-              className="pd-table-row"
-              id={`rowID-${rowIndex}`}
-              draggable
-              onDragStart={handleDrag}
-              onDrop={handleDrop}
-              onDragOver={allowDrop}
-            >
-              {edit && (
-                <span className="pd-drag-icon rowDrag">
-                  <EllipsisVertical />
-                </span>
-              )}
-              {row?.columns?.map(
-                (col, colIndex) =>
-                  col?.op_type !== QC_CHANGE_TYPE.DELETED && (
-                    <div
-                      key={uuidv4()}
-                      id={`columnID-${rowIndex}-${colIndex}`}
-                      draggable
-                      onDragStart={handleDrag}
-                      onDrop={handleDrop}
-                      onDragOver={allowDrop}
-                      className="pd-table-cell"
-                      style={{ width: `${colWidth}%` }}
-                    >
-                      {rowIndex === 0 && edit && (
-                        <span
-                          className="pd-drag-icon columnDrag"
-                          data-testId="draggable"
+        {data?.map(
+          (row, rowIndex) =>
+            row?.op_type !== QC_CHANGE_TYPE.DELETED && (
+              <div key={uuidv4()} className="pd-table-empty-cell-row">
+                {edit && (
+                  <EmptyRows
+                    rowIndex={rowIndex}
+                    handleOperation={handleRowOperation}
+                    index={rowIndex}
+                  />
+                )}
+                <div
+                  className="pd-table-row"
+                  id={`rowID-${rowIndex}`}
+                  draggable
+                  onDragStart={handleDrag}
+                  onDrop={handleDrop}
+                  onDragOver={allowDrop}
+                >
+                  {edit && (
+                    <span className="pd-drag-icon rowDrag">
+                      <EllipsisVertical />
+                    </span>
+                  )}
+                  {row?.columns?.map(
+                    (col, colIndex) =>
+                      col?.op_type !== QC_CHANGE_TYPE.DELETED && (
+                        <div
+                          key={uuidv4()}
+                          id={`columnID-${rowIndex}-${colIndex}`}
+                          draggable
+                          onDragStart={handleDrag}
+                          onDrop={handleDrop}
+                          onDragOver={allowDrop}
+                          className="pd-table-cell"
+                          style={{ width: `${colWidth}%` }}
                         >
-                          <EllipsisHorizontal />
-                        </span>
-                      )}
-                      <span
-                        id={`columnID-${rowIndex}-${colIndex}`}
-                        className="editable-span"
-                        // eslint-disable-next-line
-                        dangerouslySetInnerHTML={{
-                          __html: col.value,
-                        }}
-                        contentEditable={edit}
-                        onBlur={(e) => handleChange(colIndex, rowIndex, e)}
-                      />
-                    </div>
-                  ),
-              )}
-            </div>
-          </div>
-        ))}
+                          {rowIndex === 0 && edit && (
+                            <span
+                              className="pd-drag-icon columnDrag"
+                              data-testId="draggable"
+                            >
+                              <EllipsisHorizontal />
+                            </span>
+                          )}
+                          <span
+                            id={`columnID-${rowIndex}-${colIndex}`}
+                            className="editable-span"
+                            // eslint-disable-next-line
+                            dangerouslySetInnerHTML={{
+                              __html: col.value,
+                            }}
+                            contentEditable={edit}
+                            onBlur={(e) => handleChange(colIndex, rowIndex, e)}
+                          />
+                        </div>
+                      ),
+                  )}
+                </div>
+              </div>
+            ),
+        )}
         <FootNotes
           edit={edit}
           footNoteData={footNoteData}
