@@ -1,4 +1,4 @@
-import { useContext, useRef, useMemo } from 'react';
+import { useContext, useRef, useMemo, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -14,7 +14,16 @@ function SOATable() {
   const gridRef = useRef();
   const { state, dispatch, apiDispatch } = useContext(TabelContext);
 
-  const { tableData, columnDefs, tableId, docId } = state;
+  const {
+    tableData,
+    columnDefs,
+    tableId,
+    docId,
+    tables,
+    selectedTab,
+    refreshValue,
+    footNotes,
+  } = state;
 
   const defaultColDef = useMemo(() => {
     return {
@@ -77,8 +86,11 @@ function SOATable() {
         }
       },
     };
-    // eslint-disable-next-line
-  }, [tableId, docId]);
+  }, [tableId, docId, dispatch, apiDispatch]);
+  useEffect(() => {
+    gridRef.current?.api?.setHeaderHeight(0);
+    gridRef.current?.api?.setGroupHeaderHeight(50);
+  });
 
   const propDispatch = useMemo(
     () => ({
@@ -86,8 +98,10 @@ function SOATable() {
       apiDispatch,
       tableId,
       docId,
+      table: tables[selectedTab],
+      refreshValue,
     }),
-    [dispatch, tableId, docId, apiDispatch],
+    [dispatch, tableId, docId, apiDispatch, tables, selectedTab, refreshValue],
   );
   return (
     <div className="ag-theme-alpine" style={style.tableContainer}>
@@ -101,6 +115,13 @@ function SOATable() {
           rowDragManaged="true"
           suppressDragLeaveHidesColumns="true"
           stopEditingWhenGridLosesFocus="true"
+        />
+        <AgGridReact
+          rowData={footNotes[selectedTab]}
+          columnDefs={[
+            { field: 'key', headerName: 'Footer Name' },
+            { field: 'value', headerName: 'Footer Value' },
+          ]}
         />
       </GridContext.Provider>
     </div>

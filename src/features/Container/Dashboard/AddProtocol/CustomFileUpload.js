@@ -37,7 +37,6 @@ class CustomFileUpload extends Component {
         setTimeout(() => {
           // custom validations
           const files = selectedFiles.map((file) => {
-            console.log(file);
             file.loading = false;
             if (
               allowedTypes.length &&

@@ -62,7 +62,6 @@ describe('DocumentsTable Test Suite', () => {
     const mockCallApi = jest
       .spyOn(axios, 'get')
       .mockImplementation(() => Promise.resolve('protocol'));
-    console.log(mockCallApi);
     jest.mock('react-router-dom', () => ({
       ...jest.requireActual('react-router-dom'),
       useHistory: () => ({
@@ -75,7 +74,6 @@ describe('DocumentsTable Test Suite', () => {
       </MemoryRouter>,
     );
     const link = screen.getByTestId('documentTable-sourcefile');
-    console.log('link :', link);
 
     fireEvent.click(link);
 

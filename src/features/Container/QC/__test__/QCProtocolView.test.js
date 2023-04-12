@@ -1,4 +1,4 @@
-import { render } from '../../../../test-utils/test-utils';
+import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import QCProtocolView from '../QCProtocolView/QCProtocolView';
 
@@ -27,6 +27,21 @@ describe('QC Protocol View container component', () => {
           ],
         },
       },
+      dashboard: {
+        workflowData: {
+          loading: false,
+          error: null,
+          data: {
+            Status: '',
+          },
+        },
+        workflowSubmit: {
+          loading: false,
+          error: null,
+          data: [],
+          success: true,
+        },
+      },
     },
   };
   test('should render QC Loader', () => {
@@ -35,7 +50,12 @@ describe('QC Protocol View container component', () => {
     const type = 'QC1';
 
     render(
-      <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
+      <QCProtocolView
+        protId={protocolId}
+        path={filePath}
+        userType={type}
+        handleChangeTab={jest.fn()}
+      />,
       state,
     );
   });
@@ -45,7 +65,12 @@ describe('QC Protocol View container component', () => {
     const type = 'QC2';
 
     render(
-      <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
+      <QCProtocolView
+        protId={protocolId}
+        path={filePath}
+        userType={type}
+        handleChangeTab={jest.fn()}
+      />,
       state,
     );
   });
@@ -74,7 +99,12 @@ describe('QC Protocol View container component Error', () => {
     const type = 'QC1';
 
     render(
-      <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
+      <QCProtocolView
+        protId={protocolId}
+        path={filePath}
+        userType={type}
+        handleChangeTab={jest.fn()}
+      />,
       state,
     );
   });
@@ -83,7 +113,12 @@ describe('QC Protocol View container component Error', () => {
     const filePath = '//path';
     const type = 'QC2';
     render(
-      <QCProtocolView protId={protocolId} path={filePath} userType={type} />,
+      <QCProtocolView
+        protId={protocolId}
+        path={filePath}
+        userType={type}
+        handleChangeTab={jest.fn()}
+      />,
       state,
     );
   });
@@ -113,5 +148,19 @@ describe('QC Protocol View container component Error', () => {
     setProdData(updatedProdData);
 
     expect(setProdData).toHaveBeenCalledWith({ userPrimaryRoleFlag: false });
+  });
+  test('handleOpen function should open the modal', () => {
+    render(<QCProtocolView />);
+    const submitButton = screen.getByText('Submit');
+    fireEvent.click(submitButton);
+    const modal = screen.getByRole('dialog');
+    expect(modal).toBeInTheDocument();
+  });
+  test('handleOpen function should open the modal', () => {
+    render(<QCProtocolView />);
+    const submitButton = screen.getByText('Submit');
+    fireEvent.click(submitButton);
+    const modal = screen.getByRole('dialog');
+    expect(modal).toBeInTheDocument();
   });
 });

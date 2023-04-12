@@ -13,19 +13,9 @@ const compareColorCode = {
   edited: 2,
 };
 
-// const codeMeanings = {
-//   0: "No Change",
-//   1: "Deleted",
-//   2: "Updated",
-//   3: "Inserted",
-// };
-
 function CompareTable(props) {
-  //   const iqvdata = JSON.parse(props.compare.iqvdata);
   const iqvdata = props.compare;
   const { data } = iqvdata.iqvdata;
-  // const diff =
-  // console.log("Compare Section Data", iqvdata);
   const handleHighlight = (item) => {
     const str = item[5];
     const arr = item[6];

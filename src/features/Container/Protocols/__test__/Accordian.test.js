@@ -219,7 +219,6 @@ describe('Accordian', () => {
     );
 
     fireEvent.click(screen.getByTestId('metadataplus'));
-    screen.debug();
     expect(screen.getByTestId('metadataEditTable')).toBeInTheDocument();
   });
 

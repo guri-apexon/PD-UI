@@ -83,7 +83,7 @@ function FirstColumn({ data, colDef }) {
         table_row_index: String(rowIndex),
         study_procedure: {
           table_column_index: '0',
-          value: '',
+          value: 'New Row',
         },
         row_props: [],
       },
@@ -93,15 +93,16 @@ function FirstColumn({ data, colDef }) {
       data: rowObject,
       method: 'post',
     });
-
+    const newRowText = 'New Row';
     propDispatch({
       type: TableEvents.ADD_TABLE_ROW,
       payload: {
         newRow: {
           [TableConst.ROW_IDX]: rowIndex,
           [TableConst.COLUMN_IDX]: 0,
-          data: '',
-          value: 'New Row',
+          data: newRowText,
+          value: newRowText,
+          [TableConst.VALUE_TEXT1]: newRowText,
         },
         rowIndex,
       },
@@ -110,7 +111,7 @@ function FirstColumn({ data, colDef }) {
   const fieldValue =
     data && data[field] && data[field][TableConst.DATA_VALUE]
       ? data[field][TableConst.DATA_VALUE]
-      : 'New Row';
+      : '';
 
   return (
     <>

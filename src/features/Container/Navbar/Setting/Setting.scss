@@ -50,6 +50,9 @@
   [class*='MuiFormControlLabel-label-']:not(:hover) {
     color: #000000;
   }
+  [class*='Mui-disabled'] > span:last-child {
+    opacity: 1 !important;
+  }
   .header-padding {
     padding-left: 14px;
   }

@@ -7,6 +7,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  padding-right: 60px;
   .accordion_details_loader {
     height: 60vh;
     // right: 260px;
@@ -65,13 +66,14 @@
   .readable-content-wrapper {
     display: flex;
     overflow-x: hidden;
+    overflow-y: unset;
   }
   .readable-content {
     height: auto;
     max-height: 60vh;
     flex: 1 1 auto;
     width: 90%;
-    padding-right: 16%;
+    padding-right: 15px;
     min-height: 376px;
     .Preferred-txt {
       color: #0768fd;
@@ -144,7 +146,7 @@
   display: flex;
   position: absolute;
   right: 0;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 @media only screen and (max-width: 1366px) {

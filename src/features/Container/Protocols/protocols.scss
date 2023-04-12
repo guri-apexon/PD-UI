@@ -40,6 +40,56 @@
 }
 
 .protocols {
+  .protocol-header {
+    display: flex;
+    justify-content: space-between;
+
+    .protocol-qc-message {
+      color: #fff;
+      align-self: flex-end;
+      .message-blue {
+        position: relative;
+        margin-left: 20px;
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #ff9300;
+        width: 400px;
+        height: 15px;
+        text-align: left;
+        font: 400 0.9em 'Open Sans', sans-serif;
+        border-radius: 10px;
+        .message-content {
+          padding: 0;
+          margin: 0;
+          text-align: center;
+        }
+      }
+      .message-blue:after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 15px solid #ff9300;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        top: 0;
+        left: -15px;
+      }
+
+      .message-blue:before {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 17px solid #ff9300;
+        border-left: 16px solid transparent;
+        border-right: 16px solid transparent;
+        top: -1px;
+        left: -17px;
+      }
+    }
+  }
+
   > div.p-rl-20:first-child {
     padding-left: 16px;
   }
@@ -68,6 +118,11 @@
     .panel-heading {
       padding: 15px 15px 15px 20px !important;
       font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      .submit-protocol {
+        margin-right: 10px;
+      }
     }
   }
   .protocol-source-column {
@@ -389,6 +444,7 @@
     padding-right: 10px;
     border-right: 0;
     flex-grow: 1;
+    min-width: 30%;
     & > div > div {
       background-color: transparent;
     }

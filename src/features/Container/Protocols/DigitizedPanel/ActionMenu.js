@@ -98,10 +98,14 @@ function ActionMenu({
               onClick={handleSaveContent}
               data-testId="saveIcon"
               disabled={disabledSaveIcon}
-              className="btn-icons"
+              className={`${
+                !disabledSaveIcon ? 'active_save_color' : 'btn-icons'
+              }`}
             >
               <Save />
-              <span className="save-name">{expanded && 'Save Content'}</span>
+              <span className={`${!disabledSaveIcon ? 'active_color' : ''}`}>
+                {expanded && 'Save Content'}
+              </span>
             </Button>
           </span>
         )}

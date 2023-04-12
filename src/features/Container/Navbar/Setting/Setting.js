@@ -7,6 +7,7 @@ import SettingsIcon from 'apollo-react-icons/Cog';
 import './Setting.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { OptInOutData } from '../navbarSlice';
+import { SETTING_OPTION } from '../../../../AppConstant/AppConstant';
 
 function Setting({ handleModal, userId }) {
   const handleClose = () => {
@@ -15,23 +16,17 @@ function Setting({ handleModal, userId }) {
 
   const getSelectorValue = useSelector(OptInOutData);
   const [option, setOption] = useState([]);
-  const [checkBoxValue, setCheckBoxValue] = useState([]);
   const [enableSubmit, setEnableSubmit] = useState(true);
   const dispatch = useDispatch();
-
   useEffect(() => {
-    const truevalue = [];
+    const selectedValue = [];
     if (getSelectorValue?.option) {
-      const optionArr = Object.entries(getSelectorValue?.option).map(
-        ([key, value]) => {
-          if (value) {
-            truevalue.push(key);
-          }
-          return { optionName: key.replaceAll('_', ' '), value, keyName: key };
-        },
-      );
-      setCheckBoxValue(optionArr);
-      setOption(truevalue);
+      Object.entries(getSelectorValue?.option).forEach(([key, value]) => {
+        if (value) {
+          selectedValue.push(key);
+        }
+      });
+      setOption(selectedValue);
     }
   }, [getSelectorValue]);
 
@@ -89,12 +84,13 @@ function Setting({ handleModal, userId }) {
               onChange={handleChange}
               className="checkboxFinal"
             >
-              {checkBoxValue?.map((item) => {
+              {SETTING_OPTION?.map((item) => {
                 return (
                   <Checkbox
                     key={React.key}
-                    value={item?.keyName}
+                    value={item?.value}
                     label={item?.optionName}
+                    disabled={item?.disabled}
                   />
                 );
               })}

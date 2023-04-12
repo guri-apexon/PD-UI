@@ -30,6 +30,7 @@ import {
   setworkflowData,
   setAddProtocolErrorState,
   setworkflowSubmit,
+  setWFData,
 } from './dashboardSlice';
 import { errorMessage, dashboardErrorType } from './constant';
 
@@ -66,6 +67,8 @@ export function* protocolAsyn(action) {
           item.uploadDate = !item.uploadDate ? '' : new Date(item.uploadDate);
           item.qcActivity = qcIconStatus(item.qcStatus, item.status);
           item.status = iconStatus(item.status, item.qcStatus);
+          item.showMoreCalling = false;
+          item.showMore = false;
           if (item.userUploadedFlag || item.userPrimaryRoleFlag) {
             myPorotocolsData.push(item);
           }
@@ -327,16 +330,17 @@ export function* handleFollow(action) {
       },
     };
     const res = yield call(httpCall, config);
+
     if (res && res.data) {
       toast.info('Protocol Successfully Unfollowed');
       yield put(getFollowedProtocols(lists));
       yield put({ type: 'GET_PROTOCOL_TABLE_SAGA', payload: lists });
+      yield put({ type: 'GET_OPT_IN_OUT', payload: { userID: id } });
 
       yield put({ type: 'GET_NOTIFICATION_SAGA', payload: id });
     }
   } catch (err) {
     toast.error('Something Went Wrong');
-    console.log(err);
   }
 }
 
@@ -381,7 +385,7 @@ export function* fetchAssociateData(action) {
   }
 }
 
-export function* fetchWorkflowData(action) {
+export function* fetchWorkflowData() {
   const loadingData = {
     loading: true,
     error: null,
@@ -390,58 +394,140 @@ export function* fetchWorkflowData(action) {
   yield put(setworkflowData(loadingData));
   try {
     const config = {
-      url: `/workflownew.json`,
+      url: `${BASE_URL}/pd/api/v1/documents/get_all_workflows`,
       method: 'GET',
+      checkAuth: true,
+      headers: { 'Content-Type': 'application/json' },
     };
     const { data } = yield call(httpCall, config);
     const successData = {
       loading: false,
       error: null,
-      data: data.workflows,
+      data,
     };
     yield put(setworkflowData(successData));
   } catch (e) {
     const errorData = {
-      loading: true,
+      loading: false,
       error: 'API ERROR',
       data: [],
     };
     yield put(setworkflowData(errorData));
   }
 }
+export function* resetWorkflowSubmitData() {
+  const loadingData = {
+    loading: false,
+    error: null,
+    data: [],
+    success: false,
+  };
+  yield put(setworkflowSubmit(loadingData));
+}
 export function* submitWorkflowData(action) {
   const loadingData = {
     loading: true,
     error: null,
     data: [],
+    success: false,
   };
   yield put(setworkflowSubmit(loadingData));
   try {
-    console.log('payload', action.payload);
-    const { id, body } = action.payload;
     const config = {
-      url: `/post?id=${id}`,
+      url: `${BASE_URL}/pd/api/v1/documents/run_work_flow`,
       method: 'POST',
-      data: body,
+      data: action.payload,
       headers: { 'Content-Type': 'application/json' },
       checkAuth: true,
     };
-    const { data } = yield call(httpCall, config);
-    const successData = {
-      loading: false,
-      error: null,
-      data: data.workflows,
-    };
-    yield put(setworkflowSubmit(successData));
-    yield put(setAddProtocolModal(false));
-    yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
+    const resp = yield call(httpCall, config);
+    if (resp.success) {
+      const successData = {
+        loading: false,
+        error: null,
+        data: resp.data,
+        success: true,
+      };
+      yield put(setworkflowSubmit(successData));
+      yield put(setAddProtocolModal(false));
+      const state = yield select();
+      const userType = state.user.userDetail.user_type;
+      if (userType !== 'QC1') {
+        yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
+      }
+    } else {
+      const errorData = {
+        loading: false,
+        error: 'API ERROR',
+        data: [],
+        success: false,
+      };
+      yield put(setworkflowSubmit(errorData));
+      yield put(setAddProtocolModal(true));
+      toast.error(
+        'Error occured during workflow submission for this protocol/docid',
+      );
+    }
   } catch (e) {
     const errorData = {
-      loading: true,
+      loading: false,
       error: 'API ERROR',
       data: [],
+      success: false,
     };
     yield put(setworkflowSubmit(errorData));
+    yield put(setAddProtocolModal(true));
+    toast.error(
+      'Error occured during workflow submission for this protocol/docid',
+    );
+  }
+}
+
+export function* fetchMoreWorkflow(action) {
+  const state = yield select();
+  const docId = action.payload;
+  let protocols = [...state.dashboard.protocols];
+
+  const newArr = protocols.map((item) => {
+    if (item.id === docId) {
+      return { ...item, showMoreCalling: true };
+    }
+    return item;
+  });
+  yield put(getProtocols(newArr));
+  try {
+    const config = {
+      url: `${BASE_URL}/pd/api/v1/documents/get_workflows_by_doc_id?doc_id=${docId}`,
+      method: 'GET',
+      checkAuth: true,
+      headers: { 'Content-Type': 'application/json' },
+    };
+    const { data } = yield call(httpCall, config);
+
+    const newArr = protocols.map((item) => {
+      if (item.id === docId) {
+        return {
+          ...item,
+          showMoreCalling: false,
+          showMore: true,
+          wfData: data.wfData,
+        };
+      }
+      return item;
+    });
+    yield put(getProtocols(newArr));
+  } catch (e) {
+    const newArr = protocols.map((item) => {
+      if (item.id === docId) {
+        return {
+          ...item,
+          showMoreCalling: false,
+          showMore: false,
+        };
+      }
+      return item;
+    });
+    yield put(getProtocols(newArr));
   }
 }
 
@@ -460,6 +546,8 @@ export function* watchDashboard() {
   yield takeLatest('FETCH_ASSOCIATE_DATA', fetchAssociateData);
   yield takeLatest('FETCH_WORKFLOW_DATA', fetchWorkflowData);
   yield takeLatest('SUBMIT_WORKFLOW_DATA', submitWorkflowData);
+  yield takeLatest('RESET_SUBMIT_WORKFLOW_DATA', resetWorkflowSubmitData);
+  yield takeLatest('FETCH_MORE_WORKFLOW', fetchMoreWorkflow);
 }
 
 export default function* dashboardSaga() {

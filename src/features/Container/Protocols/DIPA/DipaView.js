@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
+import Modal from 'apollo-react/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from 'apollo-react/components/Grid/Grid';
 import Select from 'apollo-react/components/Select';
 import MenuItem from 'apollo-react/components/MenuItem';
 import { v4 as uuidv4 } from 'uuid';
 import startCase from 'lodash/startCase';
-import Modal from 'apollo-react/components/Modal';
+import {
+  allDipaViewData,
+  dipaViewData,
+  sectionLockDetails,
+} from '../protocolSlice';
 import DipaViewStructure from './DipaViewStructure';
-import { allDipaViewData, dipaViewData } from '../protocolSlice';
+import { userId } from '../../../../store/userDetails';
 
 const getFormattedCategoryName = (category) => {
   return startCase(category.replace('cpt_', ''));
@@ -24,6 +28,8 @@ function DipaView({ docId }) {
   const [userData, setUserData] = useState();
   const dipaViewSelector = useSelector(dipaViewData);
   const dipaDataSelector = useSelector(allDipaViewData);
+  const lockDetails = useSelector(sectionLockDetails);
+  const userIdSelector = useSelector(userId);
   const [editingIDList, setEditingIDList] = useState([]);
   const [tooltipValue, setTooltipValue] = useState({});
 
@@ -84,7 +90,42 @@ function DipaView({ docId }) {
     });
   };
 
+  const getSectionLock = (usrData) => {
+    dispatch({
+      type: 'GET_SECTION_LOCK',
+      payload: {
+        doc_id: usrData?.doc_id,
+        link_id: usrData?.id,
+      },
+    });
+  };
+
+  const updateSectionLock = (usrData, status) => {
+    dispatch({
+      type: 'SET_SECTION_LOCK',
+      payload: {
+        docId: usrData?.doc_id,
+        linkId: usrData?.id,
+        sectionLock: status,
+        userId: '',
+      },
+    });
+  };
+
+  const resetLock = (usrData, status) => {
+    /**
+     * Check if there is a lock, if yes then only release it.
+     */
+    if (lockDetails?.section_lock === false && status) {
+      updateSectionLock(usrData, status);
+    }
+  };
+
   const handleSectionChange = (e) => {
+    /**
+     * Release the lock if category has changed
+     */
+    resetLock(userData, true);
     const selectedSection = sections.find(
       (section) => section.id === e.target.value,
     );
@@ -93,9 +134,11 @@ function DipaView({ docId }) {
       doc_id: selectedSection.doc_id,
       id: selectedSection.id,
     };
+    setEditingIDList([]);
     setSelectedSection(selectedSection.id);
     setUserData(newValue);
     getAllCategory(newValue);
+    getSectionLock(newValue);
   };
 
   const handleExpandChange = (panelID) => {
@@ -129,6 +172,12 @@ function DipaView({ docId }) {
       list = toggle(list, id);
     });
     setEditingIDList(list);
+    /**
+     * Add lock if we are doing any changes
+     */
+    if (lockDetails?.section_lock === false) {
+      updateSectionLock(userData, false);
+    }
   };
 
   const addSegment = (parentId) => {
@@ -236,6 +285,10 @@ function DipaView({ docId }) {
       },
     });
     setEditingIDList([]);
+    /**
+     * After save, release lock
+     */
+    resetLock(userData, true);
   };
 
   function calculateNestedDeriveSegmentsLength(obj) {
@@ -262,7 +315,7 @@ function DipaView({ docId }) {
     <div>
       <div className="container" data-testid="dipaview-data">
         <Grid container spacing={1} className="dipa-view-table">
-          <h3>DIPA View</h3>
+          <h3>Derived Count</h3>
           <Grid container item xs={5}>
             <Grid item xs={12} className="drop-down">
               <Select
@@ -270,7 +323,9 @@ function DipaView({ docId }) {
                 onChange={handleSectionChange}
                 placeholder="Select item..."
                 fullWidth
-                data-testid="select-box"
+                inputProps={{
+                  'data-testid': 'select-box',
+                }}
               >
                 {sections.map((item) => (
                   <MenuItem key={item} value={item.id}>
@@ -312,7 +367,6 @@ function DipaView({ docId }) {
                 level={section.level}
                 segments={section.derive_segemnt}
                 childs={section.child}
-                open={section.open}
                 index={index}
                 handleExpandChange={handleExpandChange}
                 handleUpdate={saveData}
@@ -325,6 +379,8 @@ function DipaView({ docId }) {
                 setEditingIDList={setEditingIDList}
                 toggleEditingIDs={toggleEditingIDs}
                 tooltipValue={tooltipValue}
+                lockDetails={lockDetails}
+                userId={userIdSelector?.toString()}
               />
             ))}
           </div>
@@ -343,7 +399,7 @@ function DipaView({ docId }) {
             onClick: () => setOpenModal(false),
           },
           {
-            label: 'Save',
+            label: 'Ok',
             'data-testid': 'save-modal-button',
             onClick: () => deleteSegment(openModal),
           },

@@ -37,7 +37,6 @@ describe('Search test suit', () => {
   });
   test('Should Render Search Card', () => {
     render(<SearchCard data={searchCardData} selection />);
-    // screen.debug();
   });
   test('Should Render Indication Field', () => {
     const { getByText } = render(

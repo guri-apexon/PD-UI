@@ -41,7 +41,6 @@ function FollowedProtocols({ pageRows, maxHeight }) {
         temp[i].associateddata = [];
         temp[i].linkEnabled = true;
       }
-      console.log('check', temp);
       dispatch(getFollowedProtocols(temp));
     }
   }, []);

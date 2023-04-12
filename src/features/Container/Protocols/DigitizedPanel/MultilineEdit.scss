@@ -4,7 +4,7 @@
   overflow-x: hidden;
   .section-edited-list {
     margin-top: 20px;
-    width: 90%;
+    width: 95%;
     padding: 0 2px;
   }
   [class*='MuiInputBase-root'] {
@@ -92,4 +92,5 @@
 
 .section-menu-container {
   display: flex;
+  justify-content: space-between;
 }

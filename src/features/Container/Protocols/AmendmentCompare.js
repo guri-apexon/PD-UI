@@ -26,7 +26,6 @@ function AmendmentCompare({ prot11, prot22 }) {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     dispatch({ type: 'POST_COMPARE_PROTOCOL', payload: null });
-    console.log('sif', compare);
   }, []);
   useEffect(() => {
     setVersion1(prot11);

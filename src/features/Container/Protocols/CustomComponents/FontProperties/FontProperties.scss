@@ -4,7 +4,6 @@
   display: flex;
   align-items: center;
   position: sticky;
-  width: 100%;
   top: 0;
   left: 0px;
   justify-content: flex-start;
@@ -58,9 +57,5 @@
 
   .right-menu button svg {
     font-size: 12px;
-  }
-
-  .button-container.font-properties .right-menu {
-    margin-right: 50px;
   }
 }

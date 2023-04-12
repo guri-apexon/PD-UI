@@ -30,15 +30,15 @@ import {
   setSOAData,
   getSectionIndex,
   getLabData,
-  updateGetLabData,
-  deleteGetLabData,
-  createGetLabData,
+  setLabDataLoader,
+  setLabDataSuccess,
   setLoader,
   resetSectionData,
   setSectionLockDetails,
   setEnrichedWord,
   getDipaViewData,
   getAllDipaViewData,
+  getDiscardDeatils,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -239,8 +239,11 @@ function* getState(withPrefix) {
 export function* updateSectionData(action) {
   try {
     const {
-      payload: { reqBody },
+      payload: { reqBody, docId },
     } = action;
+    if (action?.payload?.refreshToc) {
+      yield put(getProtocolTocData({}));
+    }
     const userID = yield getState();
     const updatedReq = reqBody.map((ele) => {
       if (ele.type === 'table') {
@@ -254,7 +257,7 @@ export function* updateSectionData(action) {
       return ele;
     });
     const config = {
-      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}`,
+      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}/?doc_id=${docId}`,
       method: 'POST',
       data: updatedReq,
     };
@@ -267,6 +270,7 @@ export function* updateSectionData(action) {
           payload: {
             docId: action?.payload?.docId,
             tocFlag: 1,
+            index: action?.payload?.index,
           },
         });
       } else {
@@ -274,10 +278,21 @@ export function* updateSectionData(action) {
         toast.success('Section content updated successfully');
       }
     } else {
-      yield put(
-        updateSectionResp({ response: sectionSaveRes.data, error: true }),
-      );
-      toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
+      // eslint-disable-next-line
+      if (action?.payload?.refreshToc) {
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+          },
+        });
+      } else {
+        yield put(
+          updateSectionResp({ response: sectionSaveRes.data, error: true }),
+        );
+        toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
+      }
     }
   } catch (error) {
     updateSectionResp({ response: null, error: true });
@@ -408,6 +423,7 @@ export function* getProtocolTocDataResult(action) {
       const tocIsactive = Array(header.data.length).fill(false);
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
+      yield put(getSectionIndex(action.payload.index));
     } else {
       // eslint-disable-next-line no-lonely-if
       yield put(
@@ -510,6 +526,7 @@ export function* addMetaDataAttributes(action) {
   const {
     payload: { reqData, docId, fieldName, attributes },
   } = action;
+  const userID = yield getState(true);
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/add_update_meta_data`,
     method: 'POST',
@@ -518,7 +535,12 @@ export function* addMetaDataAttributes(action) {
     data: {
       aidocId: docId,
       fieldName,
-      attributes,
+      attributes: attributes.map((ele) => {
+        return {
+          ...ele,
+          user_id: userID,
+        };
+      }),
     },
   };
   const MetaData = yield call(httpCall, config);
@@ -769,20 +791,16 @@ export function* LabData(action) {
 
   const config = {
     url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
-
     method: 'GET',
   };
-
-  const labData = yield call(httpCall, config);
-
-  const successState = {
-    data: labData.data,
-  };
-
-  if (labData.success) {
-    yield put(getLabData(successState));
-  } else {
+  yield put(setLabDataLoader(true));
+  try {
+    const response = yield call(httpCall, config);
+    yield put(getLabData(response.data));
+    yield put(setLabDataLoader(false));
+  } catch (error) {
     yield put(getLabData({ data: [] }));
+    yield put(setLabDataLoader(false));
   }
 }
 
@@ -797,52 +815,16 @@ export function* UpdateLabData(action) {
       data,
     },
   };
-  const labData = yield call(httpCall, config);
-  if (labData?.success) {
-    toast.info('Lab Data Updated');
-    yield put(updateGetLabData(labData));
-  } else {
+  yield put(setLabDataLoader(true));
+  try {
+    const response = yield call(httpCall, config);
+    toast.success(response.data.message);
+    yield put(setLabDataSuccess(true));
+    yield put(setLabDataLoader(false));
+  } catch (err) {
     toast.error('Error While Updation');
-  }
-}
-
-export function* DeleteLabData(action) {
-  const {
-    payload: { data },
-  } = action;
-  const config = {
-    url: `${BASE_URL_8000}${Apis.DELETE_LAB_DATA}`,
-    method: 'POST',
-    data: {
-      data,
-    },
-  };
-  const labData = yield call(httpCall, config);
-  if (labData.success) {
-    yield put(deleteGetLabData(labData));
-    toast.info('Lab Data row deleted');
-  } else {
-    toast.error('Error While deleting');
-  }
-}
-
-export function* CreateLabData(action) {
-  const {
-    payload: { data },
-  } = action;
-  const config = {
-    url: `${BASE_URL_8000}${Apis.CREATE_LAB_DATA}`,
-    method: 'POST',
-    data: {
-      data,
-    },
-  };
-  const labData = yield call(httpCall, config);
-  if (labData?.success) {
-    yield put(createGetLabData(labData));
-    toast.info('Lab Data row created');
-  } else {
-    toast.error('Error While creating');
+    yield put(setLabDataSuccess(false));
+    yield put(setLabDataLoader(false));
   }
 }
 
@@ -910,10 +892,24 @@ export function* updateDipaData(action) {
     toast.info(' Data Updated');
     yield put({
       type: 'GET_ALL_DIPA_VIEW',
+      payload: {
+        data: {
+          category: data.category,
+          doc_id: data.doc_id,
+          id: data.id,
+        },
+      },
     });
   } else {
     toast.error('Error While Updation');
   }
+}
+
+export function* setDiscardDetails(action) {
+  const {
+    payload: { isEdited, isDiscarded, protocolTab },
+  } = action;
+  yield put(getDiscardDeatils({ isEdited, isDiscarded, protocolTab }));
 }
 
 function* watchProtocolAsync() {
@@ -941,8 +937,6 @@ function* watchProtocolViews() {
   yield takeEvery('UPDATE_SECTION_DATA', updateSectionData);
   yield takeEvery('GET_LAB_DATA', LabData);
   yield takeEvery('UPDATE_LAB_DATA', UpdateLabData);
-  yield takeEvery('DELETE_LAB_DATA', DeleteLabData);
-  yield takeEvery('CREATE_LAB_DATA', CreateLabData);
   yield takeEvery('SET_ENRICHED_WORD', getenrichedword);
   yield takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails);
   yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
@@ -952,6 +946,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_DIPA_VIEW', getDipaViewDataById);
   yield takeEvery('GET_ALL_DIPA_VIEW', getAllDipaViewDataByCategory);
   yield takeEvery('UPDATE_DIPA_VIEW', updateDipaData);
+  yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
 }
 
 // notice how we now only export the rootSaga
