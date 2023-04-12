@@ -2,10 +2,12 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import ProtocolReducer from '../protocolSlice';
+
 import * as ProtocolContext from '../ProtocolContext';
 import { fireEvent, render, cleanup } from '../../../../test-utils/test-utils';
 import initialState from './mockDipadata';
 import DipaView from '../DIPA/DipaView';
+import UserReducer from '../../../../store/userDetails';
 
 afterEach(cleanup);
 beforeEach(() => {
@@ -18,7 +20,7 @@ export function renderWithProviders(
   {
     preloadedState = {},
     store = configureStore({
-      reducer: { protocol: ProtocolReducer },
+      reducer: { protocol: ProtocolReducer, user: UserReducer },
       preloadedState,
     }),
     ...renderOptions
@@ -51,8 +53,10 @@ describe.only('DipaView Component testing', () => {
       preloadedState: { ...initialState },
     });
 
-    fireEvent.mouseEnter(screen.getAllByTestId('show-icon')[0]);
-    expect(screen.getAllByTestId('tooltip-icon')[0]).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getAllByTestId('eyeshow-tooltip-icon')[0]);
+    expect(
+      screen.getAllByTestId('eyeshow-tooltip-icon')[0],
+    ).toBeInTheDocument();
   });
 
   it('opens the tooltip when the pencil icon is hovered', () => {
