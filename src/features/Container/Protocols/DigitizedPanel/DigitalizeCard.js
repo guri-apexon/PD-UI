@@ -132,7 +132,7 @@ function DigitalizeCard({
     const listLength = headerList.length - 1;
     for (let i = 0; i < headerList.length; i++) {
       if (headerList[i].page === paginationPage) {
-        sectionNo = headerList[i].sequence;
+        sectionNo = i;
         setSectionSequence(sectionNo);
         const tempTOCActive = [...tocActive];
         tempTOCActive[sectionNo] = true;
@@ -145,12 +145,20 @@ function DigitalizeCard({
         break;
       } else if (headerList[i].page > paginationPage) {
         setSectionSequence(lastpage);
+        const tempTOCActive = [...tocActive];
+        tempTOCActive[lastpage] = true;
+        dispatch({
+          type: 'SET_TOC_Active',
+          payload: {
+            data: tempTOCActive,
+          },
+        });
         break;
       }
-      lastpage = headerList[i].sequence;
+      lastpage = i;
     }
     if (headerList[listLength]?.page < paginationPage) {
-      const sequence = headerList[listLength]?.sequence;
+      const sequence = listLength;
       setSectionSequence(sequence);
       const tempTOCActive = [...tocActive];
       tempTOCActive[listLength] = true;
