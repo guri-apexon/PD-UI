@@ -1,23 +1,26 @@
 /* eslint-disable */
-import React, { useEffect, useRef, useState } from 'react';
-import moment from 'moment';
-import { useDispatch, useSelector } from 'react-redux';
 import BellIcon from 'apollo-react-icons/Bell';
+import TrashIcon from 'apollo-react-icons/Trash';
 import Badge from 'apollo-react/components/Badge';
-import { useHistory } from 'react-router-dom';
+import IconButton from 'apollo-react/components/IconButton';
 import Popover from 'apollo-react/components/Popover';
+import Tag from 'apollo-react/components/Tag';
+import Tooltip from 'apollo-react/components/Tooltip';
+import isEqual from 'lodash/isEqual';
+import moment from 'moment';
+import React, { useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
-  List,
   AutoSizer,
   CellMeasurer,
   CellMeasurerCache,
+  List,
 } from 'react-virtualized';
-import Tooltip from 'apollo-react/components/Tooltip';
-import './Alerts.scss';
 import { redaction } from '../../../AppConstant/AppConstant';
-import TrashIcon from 'apollo-react-icons/Trash';
-import IconButton from 'apollo-react/components/IconButton';
+import './Alerts.scss';
 import { navbarNotifications } from './navbarSlice';
+import notificationValues from './constant';
 const replaceall = require('replaceall');
 
 const notificationStyle = {
@@ -171,83 +174,85 @@ function Alerts() {
                         >
                           {
                             <div style={style}>
-                              <span key={notification.id}>
-                                <div
-                                  data-testId="list-Item"
-                                  className={`ButtonBase-root ListItem-root 
+                              <div
+                                data-testId="list-Item"
+                                className={`ButtonBase-root notification-item
                     ${notification.read ? 'listItem' : 'listItemNotRead'}
                    ListItem-button`}
-                                  role="button"
-                                  key={`${notification.id}-${notification.timestamp}`}
-                                  onClick={() =>
-                                    handleRead(
-                                      notification.aidocId,
-                                      notification.id,
-                                      notification.protocol,
-                                    )
-                                  }
-                                >
-                                  <div className="ListItemText-root listItemTextRoot ListItemText-multiline">
-                                    {notification.header &&
-                                    notification.header.length > 30 ? (
-                                      <Tooltip
-                                        title={notification.header}
-                                        placement="top"
-                                      >
-                                        <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1 Typography-displayBlock">
-                                          {notification.header}
-                                        </span>
-                                      </Tooltip>
-                                    ) : (
-                                      <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1 Typography-displayBlock">
+                                role="button"
+                                key={`${notification.id}-${notification.timestamp}`}
+                                onClick={() =>
+                                  handleRead(
+                                    notification.aidocId,
+                                    notification.id,
+                                    notification.protocol,
+                                  )
+                                }
+                              >
+                                <div className="notification-content">
+                                  {notification.header &&
+                                  notification.header.length > 30 ? (
+                                    <Tooltip
+                                      title={notification.header}
+                                      placement="top"
+                                    >
+                                      <span className="listItemTextPrimary">
                                         {notification.header}
                                       </span>
-                                    )}
-                                    <Tooltip
-                                      title="Protocol Title"
-                                      subtitle={
-                                        <div
-                                          dangerouslySetInnerHTML={createFullMarkup(
-                                            notification.details,
-                                          )}
-                                        />
-                                      }
-                                      placement="right"
-                                    >
-                                      <p
-                                        className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock"
-                                        dangerouslySetInnerHTML={createFullMarkup(
-                                          notification.details,
-                                        )}
-                                      />
                                     </Tooltip>
-                                    <hr className="horizontal-line" />
-                                  </div>
-
-                                  <div className="IconButton-delete">
-                                    <IconButton
-                                      data-testId="trash-icon-1"
-                                      size="small"
-                                      destructiveAction
-                                      onClick={(e) =>
-                                        onDelete(
-                                          e,
-                                          notification.aidocId,
-                                          notification.id,
-                                          notification.protocol,
-                                        )
+                                  ) : (
+                                    <span className="listItemTextPrimary">
+                                      {'Protocol Number: ' +
+                                        notification.header}
+                                    </span>
+                                  )}
+                                  <span className="listItemTextSecondary">
+                                    {'Status: ' + notification.status}
+                                  </span>
+                                  {!isEqual(
+                                    notificationValues[notification.event],
+                                    'Edited',
+                                  ) ? (
+                                    <Tag
+                                      label={notificationValues[notification.event]}
+                                      variant="primary"
+                                    />
+                                  ) : (
+                                    <span>
+                                      {
+                                        'Your protocol has had some changes made'
                                       }
-                                    >
-                                      <TrashIcon />
-                                    </IconButton>
-                                  </div>
-                                  <p className="Typography-root timestamp Typography-body2 Typography-gutterBottom">
-                                    {header && <div>{header}</div>}
-                                  </p>
-
-                                  <span className="TouchRipple-root" />
+                                    </span>
+                                  )}
                                 </div>
-                              </span>
+
+                                <div className="IconButton-delete">
+                                  <IconButton
+                                    data-testId="trash-icon-1"
+                                    size="small"
+                                    destructiveAction
+                                    onClick={(e) =>
+                                      onDelete(
+                                        e,
+                                        notification.aidocId,
+                                        notification.id,
+                                        notification.protocol,
+                                      )
+                                    }
+                                  >
+                                    <TrashIcon />
+                                  </IconButton>
+                                </div>
+                                <p className="timestamp">
+                                  {notification.timeCreated && (
+                                    <div>
+                                      {getDayLabelText(
+                                        notification.timeCreated,
+                                      )}
+                                    </div>
+                                  )}
+                                </p>
+                              </div>
                             </div>
                           }
                         </CellMeasurer>

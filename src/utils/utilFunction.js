@@ -6,11 +6,11 @@ import {
   QC_CHANGE_TYPE,
   redaction,
 } from '../AppConstant/AppConstant';
-import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 import {
   filterTableProperties,
   updateFootNotePayload,
 } from '../features/Container/Protocols/CustomComponents/PDTable/utils';
+import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 
 const replaceall = require('replaceall');
 
