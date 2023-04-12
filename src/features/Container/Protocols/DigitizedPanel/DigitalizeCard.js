@@ -138,21 +138,17 @@ function DigitalizeCard({
   };
 
   useEffect(() => {
-    let sectionNo;
-    let lastpage;
     const listLength = headerList.length - 1;
     for (let i = 0; i < headerList.length; i++) {
       if (headerList[i].page === paginationPage) {
-        sectionNo = i;
-        setSectionSequence(sectionNo);
-        handleTocSection(sectionNo);
+        setSectionSequence(i);
+        handleTocSection(i);
         break;
       } else if (headerList[i].page > paginationPage) {
-        setSectionSequence(lastpage);
-        handleTocSection(lastpage);
+        setSectionSequence(i - 1);
+        handleTocSection(i - 1);
         break;
       }
-      lastpage = i;
     }
     if (headerList[listLength]?.page < paginationPage) {
       setSectionSequence(listLength);
