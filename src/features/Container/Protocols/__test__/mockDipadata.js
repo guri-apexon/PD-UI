@@ -1,5 +1,8 @@
 const initialState = {
   protocol: {
+    sectionLockDetails: {
+      section_lock: true,
+    },
     dipaViewData: {
       success: true,
       data: {
@@ -199,6 +202,14 @@ const initialState = {
         ],
       },
       message: 'Success',
+    },
+  },
+  user: {
+    userDetail: {
+      userId: 'u123456',
+      username: 'test',
+      email: 'test@iqvia.com',
+      user_type: 'normal',
     },
   },
 };

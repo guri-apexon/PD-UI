@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
@@ -12,7 +13,6 @@ import Trash from 'apollo-react-icons/Trash';
 import TextField from 'apollo-react/components/TextField';
 import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
-import difference from 'lodash/difference';
 import './DipaViewStructure.scss';
 import Grid from 'apollo-react/components/Grid/Grid';
 import Pencil from 'apollo-react-icons/Pencil';
@@ -24,7 +24,6 @@ function DipaViewStructure({
   actualText,
   segments = [],
   childs = [],
-  open = false,
   handleExpandChange,
   handleAdd,
   handleAddGroup,
@@ -36,40 +35,46 @@ function DipaViewStructure({
   setEditingIDList,
   toggleEditingIDs,
   tooltipValue,
+  lockDetails,
+  userId,
 }) {
   const [OpenPop, setOpenPop] = useState(null);
   const [tooltip, setTooltip] = useState(false);
-  const [penciltooltip, setPencilTooltip] = useState(false);
+  const [isAccordianExpanded, setIsAccordianExpanded] = useState(false);
 
   const onPencilIconClick = (e) => {
     e.stopPropagation();
-    toggleEditingIDs(segments.map((seg) => seg.ID));
     e.preventDefault();
+    /**
+     * Need to check if the section is locked by any other primary user or not
+     *
+     * - if yes then only allow editing segments.
+     * - if no, then we need to show who has locked the segment.
+     */
+    if (Object.keys(lockDetails).length > 0) {
+      if (lockDetails?.section_lock || lockDetails?.userId === userId) {
+        toggleEditingIDs(segments.map((seg) => seg.ID));
+      } else {
+        toast.error(`Section is in use by user ${lockDetails?.user_name}`);
+      }
+    }
   };
 
   function pencilTooltip() {
     return (
-      <Tooltip
-        title="Edit Segment"
-        placement="right"
-        disableFocusListener
-        disableHoverListener
-        disableTouchListener
-        open={penciltooltip}
-      >
-        <IconButton data-testid="pencil-tooltip">
-          <Pencil
-            data-testid="edit-button"
-            onMouseEnter={() => setPencilTooltip(true)}
-            onMouseLeave={() => setPencilTooltip(false)}
-            onClick={onPencilIconClick}
-          />
+      <Tooltip title="Edit Segment" placement="right">
+        <IconButton
+          data-testid="pencil-tooltip"
+          disabled={!isAccordianExpanded}
+        >
+          <Pencil data-testid="edit-button" onClick={onPencilIconClick} />
         </IconButton>
       </Tooltip>
     );
   }
 
   const handleAccordianClick = (e, expanded) => {
+    setIsAccordianExpanded(expanded);
     if (expanded) {
       handleExpandChange(ID);
     }
@@ -81,7 +86,7 @@ function DipaViewStructure({
         key={ID}
         className="container"
         data-testid="accordion-expand"
-        onClick={handleAccordianClick}
+        onChange={handleAccordianClick}
       >
         <AccordionSummary
           data-testid="summary-expand"
@@ -112,70 +117,41 @@ function DipaViewStructure({
                 <b className="segment-length">{segments.length}</b>
               </div>
             </div>
-            {open ? (
-              <div className="dipaview-icons">
-                <Tooltip
-                  title={`Created On:${tooltipValue}`}
-                  placement="right"
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  open={tooltip}
-                >
-                  <IconButton data-testid="eyeshow-tooltip">
-                    <EyeShow
-                      data-testid="eyeshow-tooltip-icon"
-                      onMouseEnter={() => setTooltip(true)}
-                      onMouseLeave={() => setTooltip(false)}
-                      className="icon-eyeshow"
-                    />
-                  </IconButton>
-                </Tooltip>
 
-                <span className="icon-pencil">
-                  {editingIDList.length > 0 &&
-                  difference(
-                    segments.map((seg) => seg.ID),
-                    editingIDList,
-                  ).length === 0 ? (
-                    <Save
-                      onClick={() => handleUpdate()}
-                      data-testid="save"
-                      className="save-button"
-                    />
-                  ) : (
-                    pencilTooltip()
-                  )}
-                </span>
-              </div>
-            ) : (
-              <div
-                className="dipaview-icons"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-                role="presentation"
+            <div className="dipaview-icons">
+              <Tooltip
+                title={`Created On:${tooltipValue}`}
+                placement="right"
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                open={tooltip}
               >
-                <Tooltip
-                  title={`Created On:${tooltipValue}`}
-                  placement="right"
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  open={tooltip}
-                >
-                  <IconButton data-testid="tooltip-icon">
-                    <EyeShow
-                      data-testid="show-icon"
-                      onMouseEnter={() => setTooltip(true)}
-                      onMouseLeave={() => setTooltip(false)}
-                      className="icon-eyeshow"
-                    />
-                  </IconButton>
-                </Tooltip>
-                <div className="icon-pencil">{pencilTooltip()}</div>
-              </div>
-            )}
+                <IconButton data-testid="eyeshow-tooltip">
+                  <EyeShow
+                    data-testid="eyeshow-tooltip-icon"
+                    onMouseEnter={() => setTooltip(true)}
+                    onMouseLeave={() => setTooltip(false)}
+                    className="icon-eyeshow"
+                  />
+                </IconButton>
+              </Tooltip>
+
+              <span className="icon-pencil">
+                {editingIDList.length > 0 &&
+                editingIDList.some((listItem) =>
+                  segments.map((seg) => seg.ID).includes(listItem),
+                ) ? (
+                  <Save
+                    onClick={() => handleUpdate()}
+                    data-testid="save"
+                    className="save-button"
+                  />
+                ) : (
+                  pencilTooltip()
+                )}
+              </span>
+            </div>
           </Grid>
         </AccordionSummary>
 
@@ -249,7 +225,6 @@ function DipaViewStructure({
                   level={seg.level}
                   segments={seg.derive_segemnt}
                   childs={seg.child}
-                  open={seg.open}
                   index={i}
                   handleExpandChange={handleExpandChange}
                   handleUpdate={handleUpdate}
@@ -261,6 +236,8 @@ function DipaViewStructure({
                   editingIDList={editingIDList}
                   setEditingIDList={setEditingIDList}
                   toggleEditingIDs={toggleEditingIDs}
+                  lockDetails={lockDetails}
+                  userId={userId}
                 />
               </AccordionSummary>
             ))}
@@ -277,7 +254,6 @@ DipaViewStructure.propTypes = {
   actualText: PropTypes.isRequired,
   segments: PropTypes.isRequired,
   childs: PropTypes.isRequired,
-  open: PropTypes.isRequired,
   handleExpandChange: PropTypes.isRequired,
   handleAdd: PropTypes.isRequired,
   handleAddGroup: PropTypes.isRequired,
@@ -289,4 +265,15 @@ DipaViewStructure.propTypes = {
   setEditingIDList: PropTypes.isRequired,
   toggleEditingIDs: PropTypes.isRequired,
   tooltipValue: PropTypes.isRequired,
+  lockDetails: PropTypes.objectOf(
+    PropTypes.shape({
+      doc_id: PropTypes.string,
+      last_updated: PropTypes.string,
+      link_id: PropTypes.string,
+      section_lock: PropTypes.bool,
+      userId: PropTypes.string,
+      user_name: PropTypes.string,
+    }),
+  ).isRequired,
+  userId: PropTypes.string.isRequired,
 };
