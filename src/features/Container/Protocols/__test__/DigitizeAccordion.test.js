@@ -4,7 +4,7 @@ import { fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { cloneDeep } from 'lodash';
 import store from '../../../../store/store';
-import { render, screen } from '../../../../test-utils/test-utils';
+import { render } from '../../../../test-utils/test-utils';
 import DigitizeAccordion from '../DigitizedPanel/DigitizeAccordion';
 import ProtocolReducer from '../protocolSlice';
 import UserReducer from '../../../../store/userDetails';
@@ -177,7 +177,6 @@ describe('DigitizeAccordion', () => {
     expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
     expect(component.getByTestId('accordion-header')).toBeInTheDocument();
     fireEvent.click(component.getByTestId('accordion-header'));
-    screen.debug(component.getByTestId('pencilIcon'));
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
     fireEvent.click(pencil);
@@ -376,7 +375,7 @@ describe('DigitizeAccordion', () => {
     expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
     expect(component.getByTestId('accordion-header')).toBeInTheDocument();
     fireEvent.click(component.getByTestId('accordion-header'));
-    screen.debug(component.getByTestId('pencilIcon'));
+
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
     fireEvent.click(pencil);
@@ -384,7 +383,6 @@ describe('DigitizeAccordion', () => {
     // // container.instance().setTimeoutFn();
     // jest.advanceTimersByTime(1000);
     // jest.runAllTimers();
-    // screen.debug(undefined, Infinity);
 
     // const trash = await component.findByTestId('trashIcon');
     // fireEvent.click(trash);
@@ -442,7 +440,6 @@ describe('DigitizeAccordion', () => {
     expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
     expect(component.getByTestId('accordion-header')).toBeInTheDocument();
     fireEvent.click(component.getByTestId('accordion-header'));
-    screen.debug(component.getByTestId('pencilIcon'));
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
     fireEvent.click(pencil);
@@ -503,14 +500,13 @@ describe('DigitizeAccordion', () => {
     expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
     expect(component.getByTestId('accordion-header')).toBeInTheDocument();
     fireEvent.click(component.getByTestId('accordion-header'));
-    screen.debug(component.getByTestId('pencilIcon'));
+
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
     fireEvent.click(pencil);
     const undo = component.getByTestId('discard-icon');
     expect(undo).toBeInTheDocument();
     fireEvent.click(undo);
-    screen.debug();
     // const undoText = fireEvent.click(
     //   component.getAllByRole('button', /Undo/i)[0],
     // );
@@ -575,7 +571,6 @@ describe('DigitizeAccordion', () => {
     expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
     expect(component.getByTestId('accordion-header')).toBeInTheDocument();
     fireEvent.click(component.getByTestId('accordion-header'));
-    screen.debug(component.getByTestId('pencilIcon'));
     const pencil = component.getByTestId('pencilIcon');
     expect(pencil).toBeInTheDocument();
     fireEvent.click(pencil);

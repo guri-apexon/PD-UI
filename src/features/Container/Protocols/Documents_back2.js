@@ -52,7 +52,6 @@ function Documents({ handleChangeTab }) {
       method: 'GET',
     };
     const userDetailResp = await httpCall(config);
-    console.log(userDetailResp);
     if (userDetailResp.success) {
       const userName = `${userDetailResp.data.first_name} ${userDetailResp.data.last_name}`;
       setUserName(userName);
@@ -174,7 +173,6 @@ function Documents({ handleChangeTab }) {
       setProtocolSelected([]);
     } catch (e) {
       setLoader(false);
-      console.log('Compare Resp', e.response);
       /* istanbul ignore next */
       if (e.response && e.response.data) {
         toast.error(e.response.data.detail);
@@ -184,7 +182,6 @@ function Documents({ handleChangeTab }) {
     }
   };
   const fileContent = (arr) => {
-    console.log('TOOLTIP', arr);
     return (
       <div>
         <h3>{arr.header}</h3>

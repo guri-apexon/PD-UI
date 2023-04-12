@@ -826,9 +826,6 @@ function Search(props) {
   };
   /* istanbul ignore next */
   useEffect(() => {
-    console.log('Date Range', rangeDate);
-    console.log('Date Range recent', recentDate);
-
     let obj = { dateRange: { from: '', to: '' } };
     if (
       recentDate &&
@@ -847,15 +844,8 @@ function Search(props) {
         };
       }
     }
-    console.log('Date Range Objects', obj, dateTemp);
     const searchQueryObj = { ...searchQuery, range: obj.dateRange };
-    console.log('Compare range', searchQueryObj);
     setSearchQuery(searchQueryObj);
-    // if (compareObjs(obj, dateTemp)) {
-    //   setEnableFilter(true);
-    // } else {
-    //   setEnableFilter(false);
-    // }
   }, [rangeDate, recentDate]);
   const onSortChange = (data, value) => {
     setPage(0);
@@ -865,26 +855,10 @@ function Search(props) {
     dispatch({ type: 'GET_SEARCH_RESULT', payload: postObj });
     setPostQueryObj(postObj);
   };
-  // const constructDataFromSearchQuery = (key, value) => {
-  //   let filterChip = cloneDeep(filterChipObject);
-  //   if (key === "toc") {
-  //     let extractValues = TOC.sectionContent.filter((item) =>
-  //       value.includes(item.id)
-  //     );
-  //     filterChip.toc = extractValues;
-  //     setFilterChipObject(filterChip);
-  //   } else if (key === "sponsor") {
-  //     let extractValues = sponsorData.sectionContent.filter((item) =>
-  //       value.includes(item.id)
-  //     );
-  //     filterChip.sponsor = extractValues;
-  //     setFilterChipObject(filterChip);
-  //   }
-  // };
+
   /* istanbul ignore next */
   useEffect(() => {
     const filterChip = cloneDeep(filterChipObject);
-    console.log('Search Query', searchQuery);
     for (const [key, value] of Object.entries(searchQuery)) {
       // eslint-disable-next-line no-debugger
       // debugger;
@@ -947,7 +921,7 @@ function Search(props) {
 
     const prevFilterObj = cloneDeep(searchQueryTemp);
     const tempQuery = cloneDeep(searchQuery);
-    console.log('Compare', prevFilterObj, tempQuery);
+
     if (compareObjs(prevFilterObj, tempQuery)) {
       setEnableFilter(true);
     } else {

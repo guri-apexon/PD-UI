@@ -578,7 +578,6 @@ describe('Dashboard table component', () => {
       state,
     );
     const arrowButton = container.getByTestId('expandable-row');
-    // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
     fireEvent.click(screen.getByTestId('handle-download').children[0]);
   });
@@ -638,7 +637,6 @@ describe('Dashboard table component', () => {
     );
     const arrowButton = container.getByTestId('expandable-row');
 
-    // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
     const download = container.getByTestId('handle-download');
     fireEvent.click(download);
@@ -697,7 +695,6 @@ describe('Dashboard table component', () => {
       state,
     );
     const arrowButton = container.getByTestId('expandable-row');
-    // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
     fireEvent.click(arrowButton);
   });
@@ -755,7 +752,6 @@ describe('Dashboard table component', () => {
       state,
     );
     const arrowButton = container.getByTestId('expandable-row');
-    // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
   });
 

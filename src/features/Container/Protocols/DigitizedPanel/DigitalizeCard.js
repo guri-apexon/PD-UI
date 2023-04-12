@@ -184,7 +184,6 @@ function DigitalizeCard({
       }),
     );
   };
-
   return (
     <div data-testid="protocol-column-wrapper">
       {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
