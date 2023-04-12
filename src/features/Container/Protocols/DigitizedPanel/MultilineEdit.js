@@ -20,7 +20,6 @@ import FontProperties from '../CustomComponents/FontProperties/FontProperties';
 function MultilineEdit({
   sectionDataArr,
   edit,
-  child,
   setShowDiscardConfirm,
   setRequestedRoute,
 }) {
@@ -109,7 +108,6 @@ function MultilineEdit({
               </div>
             ))}
           </section>
-          {child}
         </div>
       </div>
       {showconfirm && (
@@ -138,6 +136,5 @@ MultilineEdit.propTypes = {
   sectionDataArr: PropTypes.isRequired,
   edit: PropTypes.isRequired,
   setShowDiscardConfirm: PropTypes.isRequired,
-  child: PropTypes.isRequired,
   setRequestedRoute: PropTypes.isRequired,
 };
