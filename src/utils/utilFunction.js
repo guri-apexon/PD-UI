@@ -12,10 +12,7 @@ import {
   filterTableProperties,
   updateFootNotePayload,
 } from '../features/Container/Protocols/CustomComponents/PDTable/utils';
-import {
-  notificationConstant,
-  notificationValues,
-} from '../features/Container/Navbar/constant';
+import { notificationValues } from '../features/Container/Navbar/constant';
 
 const replaceall = require('replaceall');
 
@@ -572,13 +569,14 @@ export const getKeyFromEnrichText = (term) => {
 };
 
 export const getNotificationStatus = (notification) => {
-  if (isEqual(notification.event, notificationConstant.NEW_DOCUMENT_VERSION)) {
+  const notificationKeys = Object.keys(notificationValues);
+  if (isEqual(notification.event, notificationKeys[0])) {
     return notificationValues.NEW_DOCUMENT_VERSION;
   }
-  if (isEqual(notification.event, notificationConstant.QC_COMPLETED)) {
+  if (isEqual(notification.event, notificationKeys[1])) {
     return notificationValues.QC_COMPLETED;
   }
-  if (isEqual(notification.event, notificationConstant.EDITED)) {
+  if (isEqual(notification.event, notificationKeys[2])) {
     return notificationValues.EDITED;
   }
   return '';

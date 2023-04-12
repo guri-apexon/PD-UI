@@ -23,35 +23,6 @@
   width: 301px;
 }
 
-.IconButton-delete {
-  position: absolute;
-  right: 17px;
-  top: 8px;
-  display: none;
-  svg {
-    font-size: 16px;
-  }
-}
-.ListItem-root {
-  width: 100%;
-  display: flex;
-  position: relative;
-  box-sizing: border-box;
-  text-align: left;
-  align-items: center;
-  padding-bottom: 11px;
-  justify-content: flex-start;
-  text-decoration: none;
-  &:hover {
-    .IconButton-delete {
-      display: block;
-    }
-    .timestamp {
-      display: none;
-    }
-  }
-}
-
 .ListItem-button {
   transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 }
@@ -63,43 +34,7 @@
   margin-bottom: 0;
   max-width: 260px;
 }
-.Typography-root {
-  margin: 0;
-}
 
-.Typography-body2 {
-  color: #000000;
-  font-size: 14px;
-  font-family: Proxima Nova, Nunito Sans, sans-serif;
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-.Typography-body1 {
-  color: #000000;
-  font-size: 16px;
-  font-family: Proxima Nova, Nunito Sans, sans-serif;
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-.Typography-displayBlock {
-  display: block;
-}
-.Typography-gutterBottom {
-  margin-bottom: 0.35em;
-}
-.TouchRipple-root {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 0;
-  overflow: hidden;
-  position: absolute;
-  border-radius: inherit;
-  pointer-events: none;
-}
 .root {
   width: '100%';
   max-width: 360px;
@@ -121,10 +56,44 @@
 .listItem:hover {
   background-color: #ecf3ff;
 }
-.listItemTextRoot {
-  margin-top: 30px;
-  padding-left: 0;
+.notification-item {
   white-space: wrap;
+  padding: 20px;
+  overflow: hidden;
+  max-width: 360px;
+
+  .notification-content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  .IconButton-delete {
+    position: absolute;
+    right: 17px;
+    top: 8px;
+    display: none;
+    svg {
+      font-size: 16px;
+    }
+  }
+  
+  .timestamp {
+    color: #595959;
+    top: 8px;
+    position: absolute;
+    white-space: nowrap;
+    line-height: 1.71;
+    font-size: 13px;
+    right: 17px;
+  }
+  &:hover {
+    .IconButton-delete {
+      display: block;
+    }
+    .timestamp {
+      display: none;
+    }
+  }
 }
 .listItemTextPrimary {
   font-size: 16px;
@@ -165,18 +134,7 @@
   background-color: #ecf3ff;
 }
 
-.timestamp {
-  color: #595959;
-  bottom: 30px;
-  position: relative;
-  white-space: nowrap;
-  line-height: 1.71;
-  font-size: 13px;
-  // IE11-specific selector
-  // @media all and (-ms-high-contrast: none) (-ms-high-contrast: active) {
-  //   right: 48;
-  // }
-}
+
 .icon {
   color: #0557d5;
   min-width: 0;
@@ -194,10 +152,6 @@
 }
 .dayLabelText {
   font-weight: 600;
-}
-.ListItemText-multiline {
-  margin-top: 6px;
-  margin-bottom: 6px;
 }
 
 .notificationHeading {

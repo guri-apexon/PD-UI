@@ -174,92 +174,87 @@ function Alerts() {
                         >
                           {
                             <div style={style}>
-                              <span key={notification.id}>
-                                <div
-                                  data-testId="list-Item"
-                                  className={`ButtonBase-root ListItem-root 
+                              <div
+                                data-testId="list-Item"
+                                className={`ButtonBase-root notification-item
                     ${notification.read ? 'listItem' : 'listItemNotRead'}
                    ListItem-button`}
-                                  role="button"
-                                  key={`${notification.id}-${notification.timestamp}`}
-                                  onClick={() =>
-                                    handleRead(
-                                      notification.aidocId,
-                                      notification.id,
-                                      notification.protocol,
-                                    )
-                                  }
-                                >
-                                  <div className="ListItemText-root listItemTextRoot ListItemText-multiline">
-                                    {notification.header &&
-                                    notification.header.length > 30 ? (
-                                      <Tooltip
-                                        title={notification.header}
-                                        placement="top"
-                                      >
-                                        <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1 Typography-displayBlock">
-                                          {notification.header}
-                                        </span>
-                                      </Tooltip>
-                                    ) : (
-                                      <span className="Typography-root ListItemText-primary listItemTextPrimary Typography-body1">
-                                        {'Protocol Number: ' +
-                                          notification.header}
-                                      </span>
-                                    )}
-                                    <span className="Typography-root ListItemText-secondary listItemTextSecondary Typography-body2 Typography-colorTextSecondary Typography-displayBlock">
-                                      {'Status: ' + notification.status}
-                                    </span>
-                                    {!isEqual(
-                                      getNotificationStatus(notification),
-                                      'Edited',
-                                    ) ? (
-                                      <Tag
-                                        label={getNotificationStatus(
-                                          notification,
-                                        )}
-                                        variant="primary"
-                                      />
-                                    ) : (
-                                      <span >
-                                        {
-                                          'Your protocol has had some changes made'
-                                        }
-                                      </span>
-                                    )}
-
-                                  </div>
-
-                                  <div className="IconButton-delete">
-                                    <IconButton
-                                      data-testId="trash-icon-1"
-                                      size="small"
-                                      destructiveAction
-                                      onClick={(e) =>
-                                        onDelete(
-                                          e,
-                                          notification.aidocId,
-                                          notification.id,
-                                          notification.protocol,
-                                        )
-                                      }
+                                role="button"
+                                key={`${notification.id}-${notification.timestamp}`}
+                                onClick={() =>
+                                  handleRead(
+                                    notification.aidocId,
+                                    notification.id,
+                                    notification.protocol,
+                                  )
+                                }
+                              >
+                                <div className="notification-content">
+                                  {notification.header &&
+                                  notification.header.length > 30 ? (
+                                    <Tooltip
+                                      title={notification.header}
+                                      placement="top"
                                     >
-                                      <TrashIcon />
-                                    </IconButton>
-                                  </div>
-                                  <p className="Typography-root timestamp Typography-body2 Typography-gutterBottom">
-                                    {notification.timeCreated && (
-                                      <div>
-                                        {getDayLabelText(
-                                          notification.timeCreated,
-                                        )}
-                                      </div>
-                                    )}
-                                  </p>
-
-                                  <span className="TouchRipple-root" />
+                                      <span className="listItemTextPrimary">
+                                        {notification.header}
+                                      </span>
+                                    </Tooltip>
+                                  ) : (
+                                    <span className="listItemTextPrimary">
+                                      {'Protocol Number: ' +
+                                        notification.header}
+                                    </span>
+                                  )}
+                                  <span className="listItemTextSecondary">
+                                    {'Status: ' + notification.status}
+                                  </span>
+                                  {!isEqual(
+                                    getNotificationStatus(notification),
+                                    'Edited',
+                                  ) ? (
+                                    <Tag
+                                      label={getNotificationStatus(
+                                        notification,
+                                      )}
+                                      variant="primary"
+                                    />
+                                  ) : (
+                                    <span>
+                                      {
+                                        'Your protocol has had some changes made'
+                                      }
+                                    </span>
+                                  )}
                                 </div>
-                              </span>
+
+                                <div className="IconButton-delete">
+                                  <IconButton
+                                    data-testId="trash-icon-1"
+                                    size="small"
+                                    destructiveAction
+                                    onClick={(e) =>
+                                      onDelete(
+                                        e,
+                                        notification.aidocId,
+                                        notification.id,
+                                        notification.protocol,
+                                      )
+                                    }
+                                  >
+                                    <TrashIcon />
+                                  </IconButton>
+                                </div>
+                                <p className="timestamp">
+                                  {notification.timeCreated && (
+                                    <div>
+                                      {getDayLabelText(
+                                        notification.timeCreated,
+                                      )}
+                                    </div>
+                                  )}
+                                </p>
+                              </div>
                             </div>
                           }
                         </CellMeasurer>
