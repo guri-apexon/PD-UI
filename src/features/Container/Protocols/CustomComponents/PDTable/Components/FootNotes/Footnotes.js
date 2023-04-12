@@ -22,7 +22,7 @@ function FootNotes({ footNoteData, edit, setFootnoteData }) {
                 key={uuidv4()}
                 item={item}
                 index={index}
-                content={item?.footnote_text}
+                content={item?.Text}
                 edit={edit}
                 footNoteData={footNoteData}
                 activeLineID={activeLineID}

@@ -19,7 +19,7 @@ function EditFootNote({
       if (i === index) {
         return {
           ...item,
-          footnote_text: textData || '',
+          Text: textData || '',
           qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
         };
       }
@@ -27,9 +27,7 @@ function EditFootNote({
     });
 
   const getQCChangeFootnote = (item) => {
-    return item?.footnote_line_id
-      ? QC_CHANGE_TYPE.UPDATED
-      : QC_CHANGE_TYPE.ADDED;
+    return item?.AttachmentId ? QC_CHANGE_TYPE.UPDATED : QC_CHANGE_TYPE.ADDED;
   };
 
   const getNotEmptyData = (textData) =>
@@ -37,8 +35,8 @@ function EditFootNote({
       if (i === index) {
         return {
           ...item,
-          footnote_text: textData,
-          footnote_line_id: item?.footnote_line_id || '',
+          Text: textData,
+          AttachmentId: item?.AttachmentId || '',
           qc_change_type_footnote: getQCChangeFootnote(item),
         };
       }
@@ -49,7 +47,7 @@ function EditFootNote({
     const checkIfExist = footNoteData.find((notes, i) => i === index);
     const textData = footerText ? e.target.innerHTML : '';
     if (checkIfExist && isEmpty(textData)) {
-      if (item?.footnote_line_id) {
+      if (item?.AttachmentId) {
         setFootnoteData(getFootNoteData(textData));
       } else {
         setFootnoteData(footNoteData.filter((notes, i) => i !== index));
