@@ -156,12 +156,15 @@ function PipelineComponent({
       <div className="workflow-services" key={item.work_flow_name}>
         <div className="checkbox-parent">
           <input
+            id={`wf-${item.work_flow_name}`}
             type="checkbox"
             onChange={() => handleWorkflowSelected(i, type)}
             checked={item.checked}
             data-testid={item.work_flow_name}
           />
-          <label className="input-label">{item.work_flow_name}</label>
+          <label className="input-label" htmlFor={`wf-${item.work_flow_name}`}>
+            {item.work_flow_name}
+          </label>
         </div>
         <div className="checkbox-childs">
           {item.services.map((service, j) => (
@@ -172,8 +175,16 @@ function PipelineComponent({
                 checked={service.checked}
                 data-testid={service.service_name}
                 disabled={service.disabled}
+                id={`service-${service.service_name + item.work_flow_name}`}
               />
-              <label className="input-label">{service.service_name}</label>
+              <label
+                className="input-label"
+                htmlFor={`service-${
+                  service.service_name + item.work_flow_name
+                }`}
+              >
+                {service.service_name}
+              </label>
             </div>
           ))}
         </div>

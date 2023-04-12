@@ -185,7 +185,8 @@ function DigitalizeCard({
         <Card className="protocol-column protocol-digitize-column card-boarder">
           <div className="panel-heading" data-testid="header">
             Digitized Data
-            {rightValue === PROTOCOL_RIGHT_MENU.HOME &&
+            {protocolAllItems.data.redactProfile === 'profile_1' &&
+              rightValue === PROTOCOL_RIGHT_MENU.HOME &&
               userDetail.user_type !== 'QC1' && (
                 <div className="submit-protocol">
                   <Button
