@@ -8,6 +8,7 @@ import CheckboxUnchecked from 'apollo-react-icons/CheckboxUnchecked';
 import TabelContext from './Context';
 import './SOA.scss';
 import { TableEvents } from './Constants';
+import { stringReadable } from './utils';
 
 const style = {
   disable: {
@@ -33,25 +34,26 @@ function SideNav() {
         <Typography
           key={uuid()}
           data-testid={item.name}
-          style={item.enable ? style.enable : style.disable}
+          style={style.enable}
           className="setting-item"
           onClick={() => {
-            if (item.enable) {
-              const type = hideGroupsColumns.includes(item.name);
-              dispatch({
-                type: TableEvents.FILTER_GROUP_COLUMN,
-                payload: { name: item.name, push: type },
-              });
-            }
+            const type = hideGroupsColumns.includes(item.name);
+            dispatch({
+              type: TableEvents.FILTER_GROUP_COLUMN,
+              payload: { name: item.name, push: type },
+            });
+            dispatch({
+              type: TableEvents.REFRESH_TABLE,
+            });
           }}
         >
-          {hideGroupsColumns.includes(item.name) || !item.enable ? (
+          {hideGroupsColumns.includes(item.name) ? (
             <CheckboxUnchecked />
           ) : (
             <CheckboxChecked />
           )}
 
-          <Typography> {item.name}</Typography>
+          <Typography> {stringReadable(item.name)}</Typography>
         </Typography>
       );
     });

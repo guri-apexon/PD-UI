@@ -11,9 +11,6 @@ import {
 import initialState from './mockdata';
 import SOA from '../SOA';
 
-const CELL1 = 'test-cell1';
-const CELL2 = 'test-cell2';
-
 afterEach(cleanup);
 beforeEach(() => {
   jest.spyOn(console, 'warn').mockImplementation(() => {});
@@ -49,10 +46,17 @@ describe.only('SOA Component testing', () => {
       preloadedState: { ...initialState },
     });
     let dragElement;
+
     dragElement = screen.getAllByTestId('drag-button');
     fireEvent.click(dragElement[0]);
     const downButton = screen.getByTestId('arrow2Down-button');
     fireEvent.click(downButton);
+
+    dragElement = screen.getAllByTestId('drag-button');
+    fireEvent.click(dragElement[0]);
+    const upButton = screen.getByTestId('arrow2Up-button');
+    fireEvent.click(upButton);
+
     dragElement = screen.getAllByTestId('drag-button');
     fireEvent.click(dragElement[0]);
 
@@ -65,29 +69,25 @@ describe.only('SOA Component testing', () => {
     fireEvent.click(trashButton);
     const deleteYesButton = screen.getByTestId('delete-yes-button');
     fireEvent.click(deleteYesButton);
-
     const tab1Button = screen.getByTestId('tab1');
     fireEvent.click(tab1Button);
-
-    dragElement = screen.getAllByTestId('drag-button');
-    fireEvent.click(dragElement[0]);
-    const upButton = screen.getByTestId('arrow2Up-button');
-    fireEvent.click(upButton);
+    fireEvent.click(screen.getByTestId('tab0'));
   });
 
-  it('test Columns', () => {
+  it('test   Columns ', () => {
     const screen = renderWithProviders(<SOA docId="test" />, {
       preloadedState: { ...initialState },
     });
+
+    fireEvent.click(screen.getAllByTestId('header-drag-button')[0]);
+    const upButton1 = screen.getByTestId('arrowLeft-button');
+    fireEvent.click(upButton1);
+
+    fireEvent.click(screen.getAllByTestId('header-drag-button')[0]);
+    const downButtonLeft1 = screen.getByTestId('arrowRight-button');
+    fireEvent.click(downButtonLeft1);
+
     let dragElement = screen.getAllByTestId('header-drag-button');
-    fireEvent.click(dragElement[0]);
-    const upButton = screen.getByTestId('arrowLeft-button');
-    fireEvent.click(upButton);
-    dragElement = screen.getAllByTestId('header-drag-button');
-    fireEvent.click(dragElement[0]);
-    const downButton = screen.getByTestId('arrowRight-button');
-    fireEvent.click(downButton);
-    dragElement = screen.getAllByTestId('header-drag-button');
     fireEvent.click(dragElement[0]);
 
     let trashButton = screen.getAllByTestId('trash-button')[0];
@@ -101,6 +101,43 @@ describe.only('SOA Component testing', () => {
     fireEvent.click(deleteYesButton);
   });
 
+  it('test   input fields ', () => {
+    const screen = renderWithProviders(<SOA docId="test" />, {
+      preloadedState: { ...initialState },
+    });
+    fireEvent.doubleClick(screen.getByText('E28'));
+    const newColumnEl = screen.getByTestId('editing-ref');
+    fireEvent.change(newColumnEl, { target: { value: 'NVT' } });
+    fireEvent.click(screen.getAllByTestId('cellRenderer')[0]);
+  });
+  it('test   empty cell  fields ', () => {
+    const screen = renderWithProviders(<SOA docId="test" />, {
+      preloadedState: { ...initialState },
+    });
+
+    const element = Array.from(
+      document.querySelectorAll('span[data-testid="cellRenderer"]'),
+    ).find((item) => item.innerHTML === '');
+    fireEvent.doubleClick(element);
+    const elementCell = screen.getByTestId('editing-cell');
+    fireEvent.change(elementCell, { target: { value: 'NVT' } });
+    fireEvent.click(screen.getAllByText('test-cell1')[0]);
+  });
+
+  it('test   non empty cell  fields ', () => {
+    const screen = renderWithProviders(<SOA docId="test" />, {
+      preloadedState: { ...initialState },
+    });
+
+    const element = screen.getAllByText('X')[0];
+    fireEvent.doubleClick(element);
+    const elementCell = screen.getByTestId('editing-cell');
+
+    fireEvent.change(elementCell, { target: { value: 'NVT' } });
+
+    fireEvent.click(screen.getAllByText('test-cell1')[0]);
+  });
+
   it('test   Arrange Pannel ', () => {
     const screen = renderWithProviders(<SOA docId="test" />, {
       preloadedState: { ...initialState },
@@ -111,21 +148,9 @@ describe.only('SOA Component testing', () => {
     expect(sideNav).toBeInTheDocument();
     let studyVisit = screen.getByTestId('studyVisit');
     fireEvent.click(studyVisit);
-    const epochTimepoint = screen.getByTestId('epoch_timepoint');
+    const epochTimepoint = screen.getByTestId('visit_timepoint');
     fireEvent.click(epochTimepoint);
-    const cycleTimepoint = screen.getByTestId('cycle_timepoint');
-    fireEvent.click(cycleTimepoint);
-    const visitTimepoint = screen.getByTestId('visit_timepoint');
-    fireEvent.click(visitTimepoint);
-    const testCell = screen.getAllByText(CELL1);
 
-    fireEvent.dblClick(testCell[0]);
-
-    const testCell2 = screen.getAllByText(CELL2)[0];
-
-    fireEvent.input(testCell2, { target: { innerHTML: 'NVT' } });
-    const testCell3 = screen.getAllByText(CELL1);
-    fireEvent.click(testCell3[0]);
     settingsButton = screen.getByTestId('settings-button');
     fireEvent.click(settingsButton);
     settingsButton = screen.getByTestId('settings-button');
@@ -134,17 +159,5 @@ describe.only('SOA Component testing', () => {
     expect(sideNav).toBeInTheDocument();
     studyVisit = screen.getByTestId('studyVisit');
     fireEvent.click(studyVisit);
-  });
-
-  it('test   cell values update ', () => {
-    const screen = renderWithProviders(<SOA docId="test" />, {
-      preloadedState: { ...initialState },
-    });
-    const testCell = screen.getAllByTestId('cellRenderer');
-
-    fireEvent.doubleClick(testCell[0]);
-    const container = document.querySelector('[ref="eInput"]');
-
-    fireEvent.input(container, { target: { value: 'NVT' } });
   });
 });

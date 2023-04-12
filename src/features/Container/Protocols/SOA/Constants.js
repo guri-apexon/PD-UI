@@ -19,6 +19,7 @@ const TableEvents = {
   SET_GRID_REF: 'SET_GRID_REF',
   GRID_REFRESH: 'GRID_REFRESH',
   FILTER_GROUP_COLUMN: 'FILTER_GROUP_COLUMN',
+  REFRESH_TABLE: 'REFRESH_TABLE',
   TIMEPOINT1: 'epoch_timepoint',
   TIMEPOINT2: 'cycle_timepoint',
   TIMEPOINT3: 'visit_timepoint',
@@ -29,6 +30,7 @@ const TableEvents = {
   TIMEPOINT8: 'window_timepoint',
 };
 const TableConst = {
+  NO_COLUMN: 'no_column',
   SOA_DATA: 'soa_data',
   STUDYVISIT: 'studyVisit',
   STUDYPROCEDURE: 'studyProcedure',
@@ -46,6 +48,10 @@ const TableConst = {
   DATA_VALUE: 'value',
   DATA_NEW_VALUE: 'data_new_value',
   UID: 'uid',
+  TABLE_ROI_ID: 'table_roi_id',
+  DEFAULT_TIME_POINTS: 'default_time_points',
+  TIME_POINT: 'timePoint',
+  FOOT_NOTE_KEY: 'footnote',
 };
 const TIMPE_POINTS = [
   TableEvents.TIMEPOINT1,
