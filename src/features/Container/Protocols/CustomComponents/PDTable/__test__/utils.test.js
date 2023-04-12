@@ -3,8 +3,8 @@ import {
   deleteRow,
   addColumn,
   deleteColumn,
-  swapElements,
   updateFootNotePayload,
+  swapRowElements,
 } from '../utils';
 
 describe('addRow function', () => {
@@ -78,7 +78,7 @@ describe('deleteColumn function', () => {
   describe('swapElements', () => {
     it('should swap the elements in the array', () => {
       const arr = [1, 2, 3, 4];
-      const updatedArr = swapElements(arr, 1, 2);
+      const updatedArr = swapRowElements(arr, 1, 2);
       expect(updatedArr[1]).toBe(3);
       expect(updatedArr[2]).toBe(2);
     });
