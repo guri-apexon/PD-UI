@@ -103,14 +103,11 @@ export const updateFootNotePayload = (data) => {
     updateFootNoteData.forEach((notes, index) => {
       const indicatorValue =
         index !== 0
-          ? nextChar(updateFootNoteData[index - 1].footnote_indicator)
+          ? nextChar(updateFootNoteData[index - 1]?.Text?.split('.')[0]) || ''
           : 'a';
-      updateFootNoteData[index].previous_sequnce_index =
-        index === 0 ? null : index - 1;
-      updateFootNoteData[index].footnote_indicator = indicatorValue;
       updateFootNoteData[
         index
-      ].footnote_text = `${indicatorValue}. ${updateFootNoteData[index].footnote_text}`;
+      ].Text = `${indicatorValue}. ${updateFootNoteData[index].Text}`;
     });
   }
 
@@ -121,8 +118,5 @@ export const filterTableProperties = (data) => {
   let filterUpdatedData =
     typeof data === 'string' ? cloneDeep(JSON.parse(data)) : cloneDeep(data);
   filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
-  filterUpdatedData.forEach((record) => {
-    record.columns = record.columns.filter((op) => op?.op_type);
-  });
   return filterUpdatedData;
 };

@@ -87,26 +87,20 @@ describe('deleteColumn function', () => {
   describe('updateFootNotePayload', () => {
     it('should update the footnotes in the payload', () => {
       const footnotes = [
-        { footnote_indicator: '', footnote_text: 'note1' },
-        { footnote_indicator: '', footnote_text: 'note2' },
-        { footnote_indicator: '', footnote_text: 'note3' },
+        { Text: 'note1' },
+        { Text: 'note2' },
+        { Text: 'note3' },
       ];
       const updatedFootnotes = updateFootNotePayload(footnotes);
       expect(updatedFootnotes).toEqual([
         {
-          previous_sequnce_index: null,
-          footnote_indicator: 'a',
-          footnote_text: 'a. note1',
+          Text: 'a. note1',
         },
         {
-          previous_sequnce_index: 0,
-          footnote_indicator: 'b',
-          footnote_text: 'b. note2',
+          Text: 'b. note2',
         },
         {
-          previous_sequnce_index: 1,
-          footnote_indicator: 'c',
-          footnote_text: 'c. note3',
+          Text: 'c. note3',
         },
       ]);
     });

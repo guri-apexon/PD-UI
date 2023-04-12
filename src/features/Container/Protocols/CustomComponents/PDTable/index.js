@@ -54,7 +54,9 @@ function PDTable({ data, segment, activeLineID, lineID }) {
 
   useEffect(() => {
     if (data) {
-      const parsedTable = JSON.parse(data?.TableProperties);
+      const parsedTable = Array.isArray(data?.TableProperties)
+        ? data?.TableProperties
+        : JSON.parse(data?.TableProperties);
       const formattedData = formattableData(parsedTable);
       setUpdatedData(formattedData);
       const footnoteArr = data.AttachmentListProperties || [];
@@ -246,7 +248,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
               {
                 size: 'small',
                 label: 'Save Table',
-                // icon: <Save />,
                 onClick: () => handleSave(),
               },
             ]}
