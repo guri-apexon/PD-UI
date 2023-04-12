@@ -324,8 +324,6 @@ describe('Add Protocol Test Suite', () => {
     const fileUpload =
       container.getByTestId('custom-fileupload').children[0].children[0]
         .children[0];
-    // console.log('fileUpload :', fileUpload);
-    // fireEvent.change(fileUpload, {target:{value:'a'}});
     Object.defineProperty(fileUpload, 'files', {
       value: [file],
     });

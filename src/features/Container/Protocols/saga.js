@@ -526,6 +526,7 @@ export function* addMetaDataAttributes(action) {
   const {
     payload: { reqData, docId, fieldName, attributes },
   } = action;
+  const userID = yield getState(true);
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/add_update_meta_data`,
     method: 'POST',
@@ -534,7 +535,12 @@ export function* addMetaDataAttributes(action) {
     data: {
       aidocId: docId,
       fieldName,
-      attributes,
+      attributes: attributes.map((ele) => {
+        return {
+          ...ele,
+          user_id: userID,
+        };
+      }),
     },
   };
   const MetaData = yield call(httpCall, config);

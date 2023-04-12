@@ -526,7 +526,6 @@ describe('Dashboard table component', () => {
     const mockCallApi = jest
       .spyOn(axios, 'get')
       .mockImplementation(() => Promise.resolve(mockOutput));
-    console.log(mockCallApi);
     const container = render(
       <ProtocolTable
         initialRows={protocolData}
@@ -540,7 +539,6 @@ describe('Dashboard table component', () => {
       state,
     );
     const arrowButton = container.getByTestId('expandable-row-EMR');
-    // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
 
     const link = screen.getByRole('link', {
@@ -683,7 +681,6 @@ describe('Dashboard table component', () => {
     );
     const arrowButton = container.getByTestId('expandable-row-EMR 200095-004');
 
-    // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
     // let viewAssociated = container.getByTestId("dashboard_view_associated_protocol");
     // fireEvent.click(viewAssociated);
@@ -738,7 +735,6 @@ describe('Dashboard table component', () => {
       state,
     );
     const arrowButton = container.getByTestId('expandable-row-EMR 200095-004');
-    // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
     fireEvent.click(arrowButton);
   });
@@ -793,7 +789,6 @@ describe('Dashboard table component', () => {
       state,
     );
     const arrowButton = container.getByTestId('expandable-row-EMR 200095-004');
-    // console.log("-----------------arrow------------", arrowButton);
     fireEvent.click(arrowButton);
     // fireEvent.click(screen.getByTestId("download-EMR 200095-004"));
   });

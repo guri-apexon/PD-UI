@@ -43,14 +43,11 @@ function FilterChip(props) {
   };
 
   const handleDelete = (item, list, identifier) => {
-    console.log('You clicked the delete icon.', item, list, identifier);
     const newList = removeByAttr([...list], 'id', item.id);
     const finalList = newList.map((item) => item.id);
-    console.log('final List', finalList);
     onSearchQuery(finalList, identifier);
   };
   const renderDateSection = (data) => {
-    console.log(data);
     if (data[0].value === '0') {
       return <div />;
     }
@@ -75,7 +72,6 @@ function FilterChip(props) {
   };
 
   const renderDateType = (data) => {
-    console.log(data);
     if (data[0].value === 'approval_date') {
       return <div />;
     }

@@ -341,7 +341,6 @@ export function* handleFollow(action) {
     }
   } catch (err) {
     toast.error('Something Went Wrong');
-    console.log(err);
   }
 }
 
@@ -516,7 +515,6 @@ export function* fetchMoreWorkflow(action) {
       }
       return item;
     });
-    console.log('new ARR', newArr);
     yield put(getProtocols(newArr));
   } catch (e) {
     const newArr = protocols.map((item) => {

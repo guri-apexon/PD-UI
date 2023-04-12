@@ -13,7 +13,8 @@ import {
   addRow,
   deleteColumn,
   deleteRow,
-  swapElements,
+  swapRowElements,
+  swapColumnElements,
 } from './utils';
 import {
   CONTENT_TYPE,
@@ -53,7 +54,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
 
   useEffect(() => {
     if (data) {
-      const parsedTable = JSON.parse(data.TableProperties);
+      const parsedTable = JSON.parse(data?.TableProperties);
       const formattedData = formattableData(parsedTable);
       setUpdatedData(formattedData);
       const footnoteArr = data.AttachmentListProperties || [];
@@ -120,21 +121,19 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   const handleSwap = (operation, indexObj) => {
     if (indexObj.sourceIndex) {
       if (operation === tableOperations.swapRow) {
-        const newList = swapElements(
+        const newList = swapRowElements(
           updatedData,
           indexObj.sourceIndex,
           indexObj.targetIndex,
         );
         setUpdatedData(newList);
       } else if (operation === tableOperations.swapColumn) {
-        const copyUpdatedList = cloneDeep(updatedData);
-        copyUpdatedList.forEach((list) => {
-          const temp = list.columns[indexObj.sourceIndex];
-          list.columns[indexObj.sourceIndex] =
-            list?.columns[indexObj.targetIndex];
-          list.columns[indexObj.targetIndex] = temp;
-        });
-        setUpdatedData(copyUpdatedList);
+        const newList = swapColumnElements(
+          cloneDeep(updatedData),
+          indexObj.sourceIndex,
+          indexObj.targetIndex,
+        );
+        setUpdatedData(newList);
       }
     }
   };

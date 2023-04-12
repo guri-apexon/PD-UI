@@ -115,7 +115,6 @@ describe('UsersTable Screen Edit and Delete user', () => {
     fireEvent.click(screen.getByTestId('edit-u1072231'));
     const edit = screen.getByTestId('editablecell-select-u1072231').children[1]
       .children[1];
-    console.log(edit);
     fireEvent.change(edit, { target: { value: 'normal' } });
     fireEvent.click(screen.getByTestId('edit-save'));
   });

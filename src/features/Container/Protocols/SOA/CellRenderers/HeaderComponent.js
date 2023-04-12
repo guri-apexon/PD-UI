@@ -21,16 +21,17 @@ const style = {
   },
 };
 function HeaderComponent(props) {
-  const {
-    displayName,
-    column: {
-      lastLeftPinned,
+  const { propDispatch, apiDispatch, tableId, docId, table } =
+    useContext(GridContext);
+  const { displayName: colUID } = props;
 
-      // eslint-disable-next-line
-      colDef: { baseColumn, table_column_index, uid, timePoint, table_roi_id },
-    },
-  } = props;
-  const { propDispatch, apiDispatch, tableId, docId } = useContext(GridContext);
+  const {
+    uid = '',
+    timePoint = '',
+    table_roi_id: tableRoiId = '',
+    indicator_text: displayName = '',
+  } = table[tableId][colUID] || {};
+  let { table_column_index: columnIndex = '' } = table[tableId][colUID] || {};
   const [isEditing, setEditing] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [warning, setWarning] = useState(false);
@@ -41,22 +42,19 @@ function HeaderComponent(props) {
   const ref = useRef(null);
   const inpRef = useRef(null);
   const cellAction = ({ type, newValue }) => {
-    // eslint-disable-next-line
-    let columnIndex = table_column_index;
     if (type === TableEvents.UPDATE_TABLE_COLUMN_CELL) {
-      // eslint-disable-next-line
-      const sub_type =
-        Number(table_column_index) === 0
+      const subType =
+        Number(columnIndex) === 0
           ? 'update_study_procedure'
           : 'update_study_visit';
       const colObj = {
         operation: 'update',
-        sub_type,
+        sub_type: subType,
         table_props: {
           doc_id: docId,
           table_roi_id: tableId,
           table_row_index: '0',
-          table_column_index: String(table_column_index),
+          table_column_index: String(columnIndex),
           timepoint: timePoint,
           value: newValue,
         },
@@ -68,7 +66,7 @@ function HeaderComponent(props) {
           [TableConst.COLUMN_IDX]: Number(columnIndex),
           uid,
           timePoint,
-          table_roi_id,
+          table_roi_id: tableRoiId,
           newValue,
         },
       });
@@ -85,7 +83,7 @@ function HeaderComponent(props) {
         sub_type: 'delete_column',
         table_props: {
           table_roi_id: tableId,
-          table_column_index: String(table_column_index),
+          table_column_index: String(columnIndex),
         },
       };
       apiDispatch({ type: 'SOA_UPDATE_DETAILS', data: colObj, method: 'post' });
@@ -95,7 +93,7 @@ function HeaderComponent(props) {
           [TableConst.COLUMN_IDX]: Number(columnIndex),
           uid,
           timePoint,
-          table_roi_id,
+          table_roi_id: tableId,
         },
       });
 
@@ -103,7 +101,7 @@ function HeaderComponent(props) {
     }
 
     if (type === TableConst.ADD_ROW_ABOVE) {
-      columnIndex = Number(table_column_index) + 1;
+      columnIndex = Number(columnIndex) + 1;
     }
 
     const colObj = {
@@ -131,9 +129,10 @@ function HeaderComponent(props) {
         [TableConst.COLUMN_IDX]: Number(columnIndex),
         uid,
         timePoint,
-        table_roi_id,
+        table_roi_id: tableId,
         data: '',
-        value: 'new Column',
+        value: 'New Column',
+        [TableConst.VALUE_TEXT1]: 'New Column',
       },
     });
   };
@@ -170,8 +169,7 @@ function HeaderComponent(props) {
       document.removeEventListener('touchstart', onBlur);
     };
     // eslint-disable-next-line
-  }, [inpRef,timePoint]);
-
+  }, [inpRef, timePoint]);
   return (
     <>
       {isEditing ? (
@@ -187,7 +185,7 @@ function HeaderComponent(props) {
         ''
       )}
       <div className="firstColumn">
-        {!lastLeftPinned ? (
+        {Number(columnIndex) > 0 ? (
           <Drag
             data-testid="header-drag-button"
             onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
@@ -198,13 +196,17 @@ function HeaderComponent(props) {
 
         <div>
           <span
-            data-testid={baseColumn ? 'header-cell' : 'group-cell'}
+            data-testid="header-cell"
             onDoubleClick={() => {
               setEditing(!isEditing);
             }}
             style={style.columnValue}
           >
-            {displayName}
+            {displayName.trim() === '' ? (
+              <>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</>
+            ) : (
+              displayName
+            )}
           </span>
         </div>
       </div>
@@ -255,6 +257,5 @@ function HeaderComponent(props) {
 
 HeaderComponent.propTypes = {
   displayName: PropTypes.isRequired,
-  column: PropTypes.isRequired,
 };
 export default HeaderComponent;
