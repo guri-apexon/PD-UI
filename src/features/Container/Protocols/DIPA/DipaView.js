@@ -277,8 +277,8 @@ function DipaView({ docId }) {
       id: userData?.id,
       doc_id: userData?.doc_id,
       category: userData?.category,
-      userId: userloggedSelector.username,
-      userName: userloggedSelector.userId,
+      userId: userloggedSelector.userId,
+      userName: userloggedSelector.username,
       dipa_data: {
         actual_count: newData.length,
         doc_id: userData?.id,
