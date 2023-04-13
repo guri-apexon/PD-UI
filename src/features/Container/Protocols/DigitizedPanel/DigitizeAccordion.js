@@ -620,7 +620,7 @@ function DigitizeAccordion({
   const [isShown, setIsShown] = useState(false);
   const [isModal, setIsModal] = useState(false);
 
-  const handleAddSection = (e, item, index) => {
+  const handleAddSection = (e) => {
     e.stopPropagation();
     setIsModal(true);
   };
@@ -950,7 +950,7 @@ function DigitizeAccordion({
             data-testId="plus-add"
             color="primary"
             onClick={(e) => {
-              handleAddSection(e, item, index);
+              handleAddSection(e);
             }}
             size="small"
             destructiveAction
