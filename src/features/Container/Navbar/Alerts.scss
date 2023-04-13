@@ -64,7 +64,7 @@
   .notification-content {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
   }
   .IconButton-delete {
     position: absolute;
@@ -75,7 +75,7 @@
       font-size: 16px;
     }
   }
-  
+
   .timestamp {
     color: #595959;
     top: 8px;
@@ -133,7 +133,6 @@
 .listItemNotRead:hover {
   background-color: #ecf3ff;
 }
-
 
 .icon {
   color: #0557d5;
