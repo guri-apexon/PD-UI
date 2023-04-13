@@ -69,9 +69,10 @@
 }
 
 .button {
-  position: fixed;
-  top: 159px;
-  left: 90%;
+  position: absolute;
+  top: 16px;
+  right: 123px;
+  height: 38px;
   z-index: 1;
 }
 .delete-tag {
