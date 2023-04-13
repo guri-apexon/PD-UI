@@ -7,6 +7,10 @@
   table thead tr th {
     white-space: nowrap;
   }
+  .indication-style {
+    text-transform: none;
+    width: '30%';
+  }
 
   a:-webkit-any-link {
     text-decoration: none;

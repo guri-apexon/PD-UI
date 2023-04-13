@@ -424,7 +424,7 @@ const ExpandableComponent = ({ row }) => {
             {row.phase}
           </Typography>
         </div>
-        <div className="extended-data" style={{ width: '30%' }}>
+        <div className="extended-data indication-style">
           <Typography
             style={{
               fontWeight: 500,

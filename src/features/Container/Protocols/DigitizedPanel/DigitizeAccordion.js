@@ -510,6 +510,13 @@ function DigitizeAccordion({
         if (sectionResponse?.success && showedit) {
           setShowEdit(false);
           fetchContent();
+          dispatch({
+            type: 'GET_PROTOCOL_TOC_DATA',
+            payload: {
+              docId,
+              tocFlag: 1,
+            },
+          });
         }
       }
 
@@ -612,14 +619,10 @@ function DigitizeAccordion({
 
   const [isShown, setIsShown] = useState(false);
   const [isModal, setIsModal] = useState(false);
-  const [hoverItem, setHoverItem] = useState();
-  const [hoverIndex, setHoverIndex] = useState();
 
   const handleAddSection = (e, item, index) => {
     e.stopPropagation();
     setIsModal(true);
-    setHoverItem(headerList[index + 1]);
-    setHoverIndex(index);
   };
   const handleSegmentMouseUp = (e, section) => {
     dispatch({
@@ -935,8 +938,8 @@ function DigitizeAccordion({
 
         <AddSection
           setIsModal={setIsModal}
-          hoverItem={hoverItem}
-          hoverIndex={hoverIndex}
+          headerList={headerList}
+          index={index}
           setIsShown={setIsShown}
           isModal={isModal}
         />

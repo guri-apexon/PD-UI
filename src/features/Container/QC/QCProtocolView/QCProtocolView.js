@@ -23,7 +23,6 @@ function QCProtocolView({ protId, handleChangeTab }) {
   const [workFlowName, setWorkflowName] = React.useState('');
   const [workflowError, setworkflowError] = React.useState(false);
   const [showPipelineModal, setShowPipelineModal] = React.useState(false);
-  const [modalOpen, setModalOpen] = React.useState(false);
   const summary = useSelector(protocolSummary);
   const BladeRightValue = useSelector(rightBladeValue);
   const workflowSubmitData = useSelector(
@@ -95,10 +94,6 @@ function QCProtocolView({ protId, handleChangeTab }) {
     }
   };
 
-  const handleQCApprove = () => {
-    dispatch({ type: 'APPROVE_QC_SAGA', payload: protId });
-    setModalOpen(false);
-  };
   if (workflowSubmitData.loading) {
     return <Loader />;
   }
@@ -109,32 +104,11 @@ function QCProtocolView({ protId, handleChangeTab }) {
           <Button
             className="button-style"
             variant="secondary"
-            onClick={() => setModalOpen(true)}
+            onClick={() => setShowPipelineModal(true)}
           >
             Submit
           </Button>
         )}
-      <Modal
-        className="modal"
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title=""
-        message="Please select what action you need to perform ?"
-        buttonProps={[
-          {
-            label: 'QC Approve',
-            onClick: () => handleQCApprove(),
-          },
-          {
-            label: 'Workflow Orchestration',
-            onClick: () => {
-              setShowPipelineModal(true);
-              setModalOpen(false);
-            },
-          },
-        ]}
-        id="Submit"
-      />
       <Modal
         className="admin-add-protocol-modal"
         variant="default"
@@ -144,7 +118,7 @@ function QCProtocolView({ protId, handleChangeTab }) {
         buttonProps={[
           {},
           {
-            label: 'Submit',
+            label: 'QC Approve & Submit',
             onClick: handlePipelineSubmit,
           },
         ]}

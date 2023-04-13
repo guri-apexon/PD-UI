@@ -14,6 +14,7 @@ import {
   protocolSummary,
   getProcotoclToc,
   discardDetails,
+  resetProtocolTocData,
 } from './protocolSlice';
 import { isPrimaryUser } from '../../../utils/utilFunction';
 
@@ -119,6 +120,7 @@ function Protocols({ location }) {
       // setValue(value);
     } else {
       setValue(value);
+      dispatch(resetProtocolTocData());
       dispatch({
         type: 'RESET_SECTION_DATA',
       });

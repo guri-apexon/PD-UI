@@ -443,7 +443,7 @@ function MetaData({ docId }) {
       className="protocol-column protocol-digitize-column metadata-card"
       data-testid="metadata-accordian"
     >
-      <div className="panel-heading " ref={wrapperRef}>
+      <div className="metadata-panel-heading" ref={wrapperRef}>
         <div className="metadat-flex-plus"> Metadata </div>
         <div className="metadata-flex metadata-plus-icon">
           <Plus

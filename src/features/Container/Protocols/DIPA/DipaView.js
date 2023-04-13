@@ -13,7 +13,7 @@ import {
   sectionLockDetails,
 } from '../protocolSlice';
 import DipaViewStructure from './DipaViewStructure';
-import { userId } from '../../../../store/userDetails';
+import { userId, loggedUser } from '../../../../store/userDetails';
 
 const getFormattedCategoryName = (category) => {
   return startCase(category.replace('cpt_', ''));
@@ -30,8 +30,11 @@ function DipaView({ docId }) {
   const dipaDataSelector = useSelector(allDipaViewData);
   const lockDetails = useSelector(sectionLockDetails);
   const userIdSelector = useSelector(userId);
+  const userloggedSelector = useSelector(loggedUser);
   const [editingIDList, setEditingIDList] = useState([]);
   const [tooltipValue, setTooltipValue] = useState({});
+  const [countTooltip, setCountTooltip] = useState({});
+  const [editedByTooltip, setEditedByTooltip] = useState({});
 
   const dispatch = useDispatch();
 
@@ -57,8 +60,12 @@ function DipaView({ docId }) {
 
   useEffect(() => {
     let receivedData = dipaDataSelector?.data?.dipa_resource[0]?.dipa_data;
-    const timeCreated = dipaDataSelector?.data?.dipa_resource[0].timeCreated;
-    setTooltipValue(timeCreated);
+    const timeUpdated = dipaDataSelector?.data?.dipa_resource[0].timeUpdated;
+    const editCount = dipaDataSelector?.data?.dipa_resource[0].editCount;
+    const lastEdited = dipaDataSelector?.data?.dipa_resource[0].editorUserId;
+    setTooltipValue(timeUpdated);
+    setCountTooltip(editCount);
+    setEditedByTooltip(lastEdited);
 
     if (typeof receivedData === 'string') {
       try {
@@ -270,6 +277,8 @@ function DipaView({ docId }) {
       id: userData?.id,
       doc_id: userData?.doc_id,
       category: userData?.category,
+      userId: userloggedSelector.userId,
+      userName: userloggedSelector.username,
       dipa_data: {
         actual_count: newData.length,
         doc_id: userData?.id,
@@ -379,6 +388,8 @@ function DipaView({ docId }) {
                 setEditingIDList={setEditingIDList}
                 toggleEditingIDs={toggleEditingIDs}
                 tooltipValue={tooltipValue}
+                countTooltip={countTooltip}
+                editedByTooltip={editedByTooltip}
                 lockDetails={lockDetails}
                 userId={userIdSelector?.toString()}
               />
