@@ -5,6 +5,7 @@ import {
   deleteColumn,
   updateFootNotePayload,
   swapRowElements,
+  swapColumnElements,
 } from '../utils';
 
 describe('addRow function', () => {
@@ -109,6 +110,108 @@ describe('deleteColumn function', () => {
       const emptyArr = [];
       const updatedFootnotes = updateFootNotePayload(emptyArr);
       expect(updatedFootnotes).toEqual([]);
+    });
+  });
+
+  describe('swapColumnElements function', () => {
+    it('should swap two columns in an array of objects', () => {
+      const data = [
+        {
+          columns: [
+            {
+              col_indx: '0',
+              op_type: 'add',
+              cell_id: '',
+              value: 'A',
+            },
+            {
+              col_indx: '1',
+              op_type: 'add',
+              cell_id: '',
+              value: 'B',
+            },
+            {
+              col_indx: '2',
+              op_type: 'add',
+              cell_id: '',
+              value: 'C',
+            },
+          ],
+        },
+        {
+          columns: [
+            {
+              col_indx: '0',
+              op_type: 'add',
+              cell_id: '',
+              value: 'D',
+            },
+            {
+              col_indx: '1',
+              op_type: 'add',
+              cell_id: '',
+              value: 'E',
+            },
+            {
+              col_indx: '2',
+              op_type: 'add',
+              cell_id: '',
+              value: 'F',
+            },
+          ],
+        },
+      ];
+
+      const expectedData = [
+        {
+          columns: [
+            {
+              col_indx: '1',
+              op_type: 'add',
+              cell_id: '',
+              value: 'B',
+            },
+            {
+              col_indx: '0',
+              op_type: 'add',
+              cell_id: '',
+              value: 'A',
+            },
+            {
+              col_indx: '2',
+              op_type: 'add',
+              cell_id: '',
+              value: 'C',
+            },
+          ],
+        },
+        {
+          columns: [
+            {
+              col_indx: '1',
+              op_type: 'add',
+              cell_id: '',
+              value: 'E',
+            },
+            {
+              col_indx: '0',
+              op_type: 'add',
+              cell_id: '',
+              value: 'D',
+            },
+            {
+              col_indx: '2',
+              op_type: 'add',
+              cell_id: '',
+              value: 'F',
+            },
+          ],
+        },
+      ];
+
+      const actualData = swapColumnElements(data, 0, 1);
+
+      expect(actualData).toEqual(expectedData);
     });
   });
 });

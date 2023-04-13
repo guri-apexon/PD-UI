@@ -2,6 +2,8 @@ import {
   mergeSummary,
   flattenMetaParam,
   flattenObject,
+  autoCompleteClose,
+  checkDuplicates,
 } from '../MetaData/utilFunction';
 
 describe('flattenObject', () => {
@@ -102,5 +104,50 @@ describe('flattenMetaParam', () => {
     };
 
     expect(flattenMetaParam({}, data, 1)).toEqual(expectedResult);
+  });
+});
+
+describe('Utils', () => {
+  describe('autoCompleteClose', () => {
+    it('should add modal-opened class to document body and remove it when clicked', () => {
+      const modalOpened = document.createElement('div');
+      modalOpened.classList.add('modal-opened');
+      const removeHook = jest.fn();
+      document.body.appendChild(modalOpened);
+
+      autoCompleteClose(removeHook);
+
+      modalOpened.click();
+
+      expect(document.body).not.toHaveClass('modal-opened');
+      document.body.removeChild(modalOpened);
+    });
+  });
+
+  describe('checkDuplicates', () => {
+    it('should return true when the array has no duplicates', () => {
+      const data = [
+        { attr_name: 'name', attr_value: 'John' },
+        { attr_name: 'age', attr_value: '30' },
+        { attr_name: 'gender', attr_value: 'male' },
+      ];
+
+      const result = checkDuplicates(data);
+
+      expect(result).toBe(true);
+    });
+
+    it('should return false when the array has duplicates', () => {
+      const data = [
+        { attr_name: 'name', attr_value: 'John' },
+        { attr_name: 'age', attr_value: '30' },
+        { attr_name: 'name', attr_value: 'Doe' },
+        { attr_name: 'gender', attr_value: 'male' },
+      ];
+
+      const result = checkDuplicates(data);
+
+      expect(result).toBe(false);
+    });
   });
 });
