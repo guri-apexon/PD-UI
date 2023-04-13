@@ -18,6 +18,7 @@ import Grid from 'apollo-react/components/Grid/Grid';
 import Pencil from 'apollo-react-icons/Pencil';
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconButton from 'apollo-react/components/IconButton';
+import moment from 'moment';
 
 function DipaViewStructure({
   ID,
@@ -35,6 +36,8 @@ function DipaViewStructure({
   setEditingIDList,
   toggleEditingIDs,
   tooltipValue,
+  countTooltip,
+  editedByTooltip,
   lockDetails,
   userId,
 }) {
@@ -101,6 +104,12 @@ function DipaViewStructure({
                   e.stopPropagation();
                   onChangeSegmentGroup(ID, e);
                 }, 200)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                onFocus={(e) => {
+                  e.stopPropagation();
+                }}
               />
             ) : (
               <Typography
@@ -120,7 +129,20 @@ function DipaViewStructure({
 
             <div className="dipaview-icons">
               <Tooltip
-                title={`Created On:${tooltipValue}`}
+                extraLabels={[
+                  {
+                    title: 'Last Edited Date',
+                    subtitle: moment(tooltipValue).format('DD-MMM-YYYY'),
+                  },
+                  {
+                    title: 'No. of times Edited',
+                    subtitle: countTooltip,
+                  },
+                  {
+                    title: 'Last Edited By',
+                    subtitle: editedByTooltip || 'NA',
+                  },
+                ]}
                 placement="right"
                 disableFocusListener
                 disableHoverListener
@@ -138,10 +160,11 @@ function DipaViewStructure({
               </Tooltip>
 
               <span className="icon-pencil">
-                {editingIDList.length > 0 &&
-                editingIDList.some((listItem) =>
-                  segments.map((seg) => seg.ID).includes(listItem),
-                ) ? (
+                {(editingIDList.length > 0 &&
+                  editingIDList.some((listItem) =>
+                    segments.map((seg) => seg.ID).includes(listItem),
+                  )) ||
+                (editingIDList.length > 0 && editingIDList?.includes(ID)) ? (
                   <Save
                     onClick={() => handleUpdate()}
                     data-testid="save"
@@ -196,25 +219,7 @@ function DipaViewStructure({
               </Card>
             </Popover>
           </Grid>
-          <Grid item xs={12} className="accordion-details-grid">
-            {segments.map((segment) => (
-              <div className="segment-typography" key={segment.ID}>
-                {editingIDList.includes(segment.ID) ? (
-                  <TextField
-                    placeholder="Segment.."
-                    onChange={(e) => onChangeSegment(segment.ID, e)}
-                    className="segment-text"
-                    defaultValue={segment?.derive_seg || ''}
-                    inputProps={{
-                      'data-testid': 'segment-textfield',
-                    }}
-                  />
-                ) : (
-                  <Typography>{segment.derive_seg}</Typography>
-                )}
-              </div>
-            ))}
-          </Grid>
+
           <div data-testid="accord-summary" className="dipaview-summary">
             {childs.map((seg, i) => (
               <AccordionSummary key={ID}>
@@ -242,6 +247,25 @@ function DipaViewStructure({
               </AccordionSummary>
             ))}
           </div>
+          <Grid item xs={12} className="accordion-details-grid">
+            {segments.map((segment) => (
+              <div className="segment-typography" key={segment.ID}>
+                {editingIDList.includes(segment.ID) ? (
+                  <TextField
+                    placeholder="Segment.."
+                    onChange={(e) => onChangeSegment(segment.ID, e)}
+                    className="segment-text"
+                    defaultValue={segment?.derive_seg || ''}
+                    inputProps={{
+                      'data-testid': 'segment-textfield',
+                    }}
+                  />
+                ) : (
+                  <Typography>{segment.derive_seg}</Typography>
+                )}
+              </div>
+            ))}
+          </Grid>
         </AccordionDetails>
       </Accordion>
     </div>
@@ -265,6 +289,8 @@ DipaViewStructure.propTypes = {
   setEditingIDList: PropTypes.isRequired,
   toggleEditingIDs: PropTypes.isRequired,
   tooltipValue: PropTypes.isRequired,
+  countTooltip: PropTypes.isRequired,
+  editedByTooltip: PropTypes.isRequired,
   lockDetails: PropTypes.objectOf(
     PropTypes.shape({
       doc_id: PropTypes.string,
