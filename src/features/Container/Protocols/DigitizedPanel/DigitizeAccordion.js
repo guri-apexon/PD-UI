@@ -510,6 +510,13 @@ function DigitizeAccordion({
         if (sectionResponse?.success && showedit) {
           setShowEdit(false);
           fetchContent();
+          dispatch({
+            type: 'GET_PROTOCOL_TOC_DATA',
+            payload: {
+              docId,
+              tocFlag: 1,
+            },
+          });
         }
       }
 
