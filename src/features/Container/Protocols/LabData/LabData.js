@@ -70,46 +70,41 @@ function CustomHeader({
   setIsEdit,
   handleSave,
   toggleFilters,
-  noOfUsers,
 }) {
   return (
     <div className="btn-container">
-      {noOfUsers && (
-        <>
-          <Button
-            variant="text"
-            className="btn-common clear-button"
-            onClick={clearFilter}
-            data-testid="clearFilter"
-          >
-            Clear Filters
-          </Button>
-          <Button
-            // size="small"
-            variant="secondary"
-            icon={FilterIcon}
-            onClick={toggleFilters}
-          >
-            Filter
-          </Button>
-          {isEdit ? (
-            <Button
-              variant="secondary"
-              icon={<Save />}
-              className="btn-common"
-              onClick={handleSave}
-              data-testid="saveall"
-            />
-          ) : (
-            <Button
-              variant="secondary"
-              icon={<Pencil />}
-              className="btn-common"
-              onClick={() => setIsEdit(true)}
-              data-testid="editall"
-            />
-          )}
-        </>
+      <Button
+        variant="text"
+        className="btn-common clear-button"
+        onClick={clearFilter}
+        data-testid="clearFilter"
+      >
+        Clear Filter
+      </Button>
+      <Button
+        // size="small"
+        variant="secondary"
+        icon={FilterIcon}
+        onClick={toggleFilters}
+      >
+        Filter
+      </Button>
+      {isEdit ? (
+        <Button
+          variant="secondary"
+          icon={<Save />}
+          className="btn-common"
+          onClick={handleSave}
+          data-testid="saveall"
+        />
+      ) : (
+        <Button
+          variant="secondary"
+          icon={<Pencil />}
+          className="btn-common"
+          onClick={() => setIsEdit(true)}
+          data-testid="editall"
+        />
       )}
     </div>
   );
@@ -367,7 +362,6 @@ function LabData({ docId }) {
                 clearFilter={clearFilter}
                 setIsEdit={setIsEdit}
                 handleSave={handleSave}
-                noOfUsers={rowData?.length}
                 {...props}
               />
             )}
@@ -401,7 +395,6 @@ CustomHeader.propTypes = {
   setIsEdit: PropTypes.isRequired,
   handleSave: PropTypes.isRequired,
   toggleFilters: PropTypes.isRequired,
-  noOfUsers: PropTypes.isRequired,
 };
 
 LabData.propTypes = {

@@ -6,13 +6,7 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import headerLevel from '../CustomComponents/constants';
 
-function AddSection({
-  setIsModal,
-  hoverItem,
-  hoverIndex,
-  setIsShown,
-  isModal,
-}) {
+function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
   const dispatch = useDispatch();
   const { headerLevel1 } = headerLevel;
   const [sectionName, setSectionName] = useState('');
@@ -20,24 +14,26 @@ function AddSection({
     if (sectionName === '') {
       toast.info('Enter Required Field');
     } else {
-      const obj = [
-        {
-          ...headerLevel1,
-          link_text: sectionName,
-          next_detail: {
-            ...headerLevel1?.next_detail,
-            link_id: hoverItem?.link_id,
-          },
-        },
-      ];
+      const headerObj = {
+        ...headerLevel1,
+        link_text: sectionName,
+      };
+
+      if (headerList[index + 1]) {
+        headerObj.next_detail.link_id = headerList[index + 1]?.link_id;
+      } else {
+        headerObj.prev_detail.link_id = headerList[index]?.link_id;
+        headerObj.prev_detail.link_level = '1';
+        headerObj.next_detail = null;
+      }
 
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
-          docId: hoverItem?.doc_id,
-          index: hoverIndex + 1,
+          docId: headerList[index]?.doc_id,
+          index: index + 1,
           refreshToc: true,
-          reqBody: obj,
+          reqBody: [headerObj],
         },
       });
       setIsModal(false);
@@ -83,8 +79,8 @@ export default AddSection;
 
 AddSection.propTypes = {
   setIsModal: PropTypes.isRequired,
-  hoverItem: PropTypes.isRequired,
-  hoverIndex: PropTypes.isRequired,
+  headerList: PropTypes.isRequired,
+  index: PropTypes.isRequired,
   setIsShown: PropTypes.isRequired,
   isModal: PropTypes.isRequired,
 };
