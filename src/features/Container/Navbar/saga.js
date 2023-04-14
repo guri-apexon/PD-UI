@@ -84,7 +84,7 @@ export function* handlereadNotification(action) {
 export function* handleDeleteNotification(action) {
   try {
     const {
-      payload: { aidocId, id, protocol },
+      payload: { aidocId, id, protocol, alert_id },
     } = action;
 
     const actions = {
@@ -100,6 +100,7 @@ export function* handleDeleteNotification(action) {
         aidocId: aidocId,
         readFlag: true,
         notification_delete: true,
+        alert_id: alert_id
       },
     };
 
