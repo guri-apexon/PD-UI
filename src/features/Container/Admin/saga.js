@@ -270,6 +270,8 @@ export function* addNewUser() {
         yield put(setModalToggle(false));
         yield put(setNewUserError(''));
         yield put({ type: 'GET_USERS_SAGA' });
+      } else {
+        toast.error(USER_ERROR);
       }
       // else if (data.code === "DUPLICATE_ENTITY") {
       //   toast.error("User profile already exist");
@@ -282,7 +284,7 @@ export function* addNewUser() {
       //   );
 
       // }
-      toast.error(USER_ERROR);
+      // toast.error(USER_ERROR);
     } else {
       yield put(setLoader(false));
       yield put(setNewUserError(USER_ERROR));
@@ -318,7 +320,6 @@ export function* addNewUserSDA(userId) {
   };
   try {
     const data = yield call(httpCallSDA, Config);
-    console.log(data);
     if (data.success) {
       return true;
     }

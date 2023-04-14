@@ -208,6 +208,9 @@ export const protocolSlice = createSlice({
     getDiscardDeatils: (state, action) => {
       state.discardValue = action.payload;
     },
+    resetProtocolTocData: (state) => {
+      state.protocolTocData = [];
+    },
   },
 });
 
@@ -244,6 +247,7 @@ export const {
   getDipaViewData,
   getAllDipaViewData,
   getDiscardDeatils,
+  resetProtocolTocData,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from

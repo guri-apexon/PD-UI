@@ -7,8 +7,13 @@ import Select from 'apollo-react/components/Select';
 import MenuItem from 'apollo-react/components/MenuItem';
 import { v4 as uuidv4 } from 'uuid';
 import startCase from 'lodash/startCase';
-import { allDipaViewData, dipaViewData } from '../protocolSlice';
+import {
+  allDipaViewData,
+  dipaViewData,
+  sectionLockDetails,
+} from '../protocolSlice';
 import DipaViewStructure from './DipaViewStructure';
+import { userId, loggedUser } from '../../../../store/userDetails';
 
 const getFormattedCategoryName = (category) => {
   return startCase(category.replace('cpt_', ''));
@@ -23,8 +28,13 @@ function DipaView({ docId }) {
   const [userData, setUserData] = useState();
   const dipaViewSelector = useSelector(dipaViewData);
   const dipaDataSelector = useSelector(allDipaViewData);
+  const lockDetails = useSelector(sectionLockDetails);
+  const userIdSelector = useSelector(userId);
+  const userloggedSelector = useSelector(loggedUser);
   const [editingIDList, setEditingIDList] = useState([]);
   const [tooltipValue, setTooltipValue] = useState({});
+  const [countTooltip, setCountTooltip] = useState({});
+  const [editedByTooltip, setEditedByTooltip] = useState({});
 
   const dispatch = useDispatch();
 
@@ -50,8 +60,12 @@ function DipaView({ docId }) {
 
   useEffect(() => {
     let receivedData = dipaDataSelector?.data?.dipa_resource[0]?.dipa_data;
-    const timeCreated = dipaDataSelector?.data?.dipa_resource[0].timeCreated;
-    setTooltipValue(timeCreated);
+    const timeUpdated = dipaDataSelector?.data?.dipa_resource[0].timeUpdated;
+    const editCount = dipaDataSelector?.data?.dipa_resource[0].editCount;
+    const lastEdited = dipaDataSelector?.data?.dipa_resource[0].editorUserId;
+    setTooltipValue(timeUpdated);
+    setCountTooltip(editCount);
+    setEditedByTooltip(lastEdited);
 
     if (typeof receivedData === 'string') {
       try {
@@ -83,7 +97,42 @@ function DipaView({ docId }) {
     });
   };
 
+  const getSectionLock = (usrData) => {
+    dispatch({
+      type: 'GET_SECTION_LOCK',
+      payload: {
+        doc_id: usrData?.doc_id,
+        link_id: usrData?.id,
+      },
+    });
+  };
+
+  const updateSectionLock = (usrData, status) => {
+    dispatch({
+      type: 'SET_SECTION_LOCK',
+      payload: {
+        docId: usrData?.doc_id,
+        linkId: usrData?.id,
+        sectionLock: status,
+        userId: '',
+      },
+    });
+  };
+
+  const resetLock = (usrData, status) => {
+    /**
+     * Check if there is a lock, if yes then only release it.
+     */
+    if (lockDetails?.section_lock === false && status) {
+      updateSectionLock(usrData, status);
+    }
+  };
+
   const handleSectionChange = (e) => {
+    /**
+     * Release the lock if category has changed
+     */
+    resetLock(userData, true);
     const selectedSection = sections.find(
       (section) => section.id === e.target.value,
     );
@@ -96,6 +145,7 @@ function DipaView({ docId }) {
     setSelectedSection(selectedSection.id);
     setUserData(newValue);
     getAllCategory(newValue);
+    getSectionLock(newValue);
   };
 
   const handleExpandChange = (panelID) => {
@@ -129,6 +179,12 @@ function DipaView({ docId }) {
       list = toggle(list, id);
     });
     setEditingIDList(list);
+    /**
+     * Add lock if we are doing any changes
+     */
+    if (lockDetails?.section_lock === false) {
+      updateSectionLock(userData, false);
+    }
   };
 
   const addSegment = (parentId) => {
@@ -221,6 +277,8 @@ function DipaView({ docId }) {
       id: userData?.id,
       doc_id: userData?.doc_id,
       category: userData?.category,
+      userId: userloggedSelector.userId,
+      userName: userloggedSelector.username,
       dipa_data: {
         actual_count: newData.length,
         doc_id: userData?.id,
@@ -236,6 +294,10 @@ function DipaView({ docId }) {
       },
     });
     setEditingIDList([]);
+    /**
+     * After save, release lock
+     */
+    resetLock(userData, true);
   };
 
   function calculateNestedDeriveSegmentsLength(obj) {
@@ -314,7 +376,6 @@ function DipaView({ docId }) {
                 level={section.level}
                 segments={section.derive_segemnt}
                 childs={section.child}
-                open={section.open}
                 index={index}
                 handleExpandChange={handleExpandChange}
                 handleUpdate={saveData}
@@ -327,6 +388,10 @@ function DipaView({ docId }) {
                 setEditingIDList={setEditingIDList}
                 toggleEditingIDs={toggleEditingIDs}
                 tooltipValue={tooltipValue}
+                countTooltip={countTooltip}
+                editedByTooltip={editedByTooltip}
+                lockDetails={lockDetails}
+                userId={userIdSelector?.toString()}
               />
             ))}
           </div>

@@ -126,48 +126,33 @@ function DigitalizeCard({
     // eslint-disable-next-line
   }, [BladeRightValue]);
 
+  const handleTocSection = (index) => {
+    const tempTOCActive = [...tocActive];
+    tempTOCActive[index] = true;
+    dispatch({
+      type: 'SET_TOC_Active',
+      payload: {
+        data: tempTOCActive,
+      },
+    });
+  };
+
   useEffect(() => {
-    let sectionNo;
-    let lastpage;
     const listLength = headerList.length - 1;
     for (let i = 0; i < headerList.length; i++) {
       if (headerList[i].page === paginationPage) {
-        sectionNo = i;
-        setSectionSequence(sectionNo);
-        const tempTOCActive = [...tocActive];
-        tempTOCActive[sectionNo] = true;
-        dispatch({
-          type: 'SET_TOC_Active',
-          payload: {
-            data: tempTOCActive,
-          },
-        });
+        setSectionSequence(i);
+        handleTocSection(i);
         break;
       } else if (headerList[i].page > paginationPage) {
-        setSectionSequence(lastpage);
-        const tempTOCActive = [...tocActive];
-        tempTOCActive[lastpage] = true;
-        dispatch({
-          type: 'SET_TOC_Active',
-          payload: {
-            data: tempTOCActive,
-          },
-        });
+        setSectionSequence(i - 1);
+        handleTocSection(i - 1);
         break;
       }
-      lastpage = i;
     }
     if (headerList[listLength]?.page < paginationPage) {
-      const sequence = listLength;
-      setSectionSequence(sequence);
-      const tempTOCActive = [...tocActive];
-      tempTOCActive[listLength] = true;
-      dispatch({
-        type: 'SET_TOC_Active',
-        payload: {
-          data: tempTOCActive,
-        },
-      });
+      setSectionSequence(listLength);
+      handleTocSection(listLength);
     }
     // eslint-disable-next-line
   }, [paginationPage]);
@@ -192,7 +177,6 @@ function DigitalizeCard({
       }),
     );
   };
-
   return (
     <div data-testid="protocol-column-wrapper">
       {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
@@ -201,7 +185,8 @@ function DigitalizeCard({
         <Card className="protocol-column protocol-digitize-column card-boarder">
           <div className="panel-heading" data-testid="header">
             Digitized Data
-            {rightValue === PROTOCOL_RIGHT_MENU.HOME &&
+            {protocolAllItems.data.redactProfile === 'profile_1' &&
+              rightValue === PROTOCOL_RIGHT_MENU.HOME &&
               userDetail.user_type !== 'QC1' && (
                 <div className="submit-protocol">
                   <Button

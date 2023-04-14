@@ -74,11 +74,22 @@ export const deleteColumn = (tabledata, index) => {
   return data;
 };
 
-export const swapElements = (array, index1, index2) => {
+export const swapRowElements = (array, index1, index2) => {
   const arr = cloneDeep(array);
   [arr[index1], arr[index2]] = [arr[index2], arr[index1]];
 
   return arr;
+};
+
+export const swapColumnElements = (array, index1, index2) => {
+  array.forEach((list) => {
+    const temp = list.columns[index1];
+    temp.col_indx = index1.toString();
+    list.columns[index1] = list?.columns[index2];
+    list.columns[index1].col_indx = index2.toString();
+    list.columns[index2] = temp;
+  });
+  return array;
 };
 
 const nextChar = (c) => {
@@ -92,14 +103,11 @@ export const updateFootNotePayload = (data) => {
     updateFootNoteData.forEach((notes, index) => {
       const indicatorValue =
         index !== 0
-          ? nextChar(updateFootNoteData[index - 1].footnote_indicator)
+          ? nextChar(updateFootNoteData[index - 1]?.Text?.split('.')[0]) || ''
           : 'a';
-      updateFootNoteData[index].previous_sequnce_index =
-        index === 0 ? null : index - 1;
-      updateFootNoteData[index].footnote_indicator = indicatorValue;
       updateFootNoteData[
         index
-      ].footnote_text = `${indicatorValue}. ${updateFootNoteData[index].footnote_text}`;
+      ].Text = `${indicatorValue}. ${updateFootNoteData[index].Text}`;
     });
   }
 
@@ -107,10 +115,8 @@ export const updateFootNotePayload = (data) => {
 };
 
 export const filterTableProperties = (data) => {
-  let filterUpdatedData = cloneDeep(data);
+  let filterUpdatedData =
+    typeof data === 'string' ? cloneDeep(JSON.parse(data)) : cloneDeep(data);
   filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
-  filterUpdatedData.forEach((record) => {
-    record.columns = record.columns.filter((op) => op?.op_type);
-  });
   return filterUpdatedData;
 };

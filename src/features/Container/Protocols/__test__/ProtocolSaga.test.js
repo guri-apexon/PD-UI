@@ -579,6 +579,7 @@ describe('Protocol Saga', () => {
       fieldName: 'abc',
       attributeNames: 'atf',
       reqData: 'hg',
+      attributes: [{ A: 1, B: 2 }],
     };
     const mockApi = jest
       .spyOn(api, 'httpCall')

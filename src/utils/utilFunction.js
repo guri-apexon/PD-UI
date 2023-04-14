@@ -6,11 +6,11 @@ import {
   QC_CHANGE_TYPE,
   redaction,
 } from '../AppConstant/AppConstant';
-import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 import {
   filterTableProperties,
   updateFootNotePayload,
 } from '../features/Container/Protocols/CustomComponents/PDTable/utils';
+import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 
 const replaceall = require('replaceall');
 
@@ -518,7 +518,7 @@ export const createReturnObj = (obj, linkId) => {
         content: {
           ...obj.content,
           AttachmentListProperties: updateFootNotePayload(
-            obj?.content?.AttachmentListProperties,
+            obj?.content?.AttachmentListProperties || [],
           ),
         },
         qc_change_type: obj.qc_change_type,
@@ -534,14 +534,17 @@ export const createReturnObj = (obj, linkId) => {
         ...obj,
         content: {
           ...obj.content,
-          TableProperties: filterTableProperties(obj?.content?.TableProperties),
+          TableProperties: filterTableProperties(
+            obj?.content?.TableProperties || [],
+          ),
           AttachmentListProperties: updateFootNotePayload(
-            obj?.content?.AttachmentListProperties,
+            obj?.content?.AttachmentListProperties || [],
           ),
         },
       };
     }
     return {
+      TableIndex: obj.content.TableIndex,
       type: obj.type,
       content: obj.content,
       link_id: linkId,

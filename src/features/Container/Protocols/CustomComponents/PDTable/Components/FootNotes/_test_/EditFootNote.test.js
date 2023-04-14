@@ -1,27 +1,21 @@
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { QC_CHANGE_TYPE } from '../../../../../../../../AppConstant/AppConstant';
 import EditFootNote from '../EditFootNote';
 
 const sampleFootNoteData = [
   {
-    footnote_line_id: '123',
-    footnote_indicator: '',
-    footnote_text: 'Sample 1',
-    previous_sequnce_index: null,
+    AttachmentId: '123',
+    Text: 'Sample 1',
     qc_change_type_footnote: QC_CHANGE_TYPE.UPDATED,
   },
   {
-    footnote_line_id: '456',
-    footnote_indicator: '',
-    footnote_text: 'Sample 2',
-    previous_sequnce_index: null,
+    AttachmentId: '456',
+    Text: 'Sample 2',
     qc_change_type_footnote: QC_CHANGE_TYPE.UPDATED,
   },
   {
-    footnote_line_id: 'null',
-    footnote_indicator: '',
-    footnote_text: 'Sample 1',
-    previous_sequnce_index: null,
+    AttachmentId: 'null',
+    Text: 'Sample 1',
     qc_change_type_footnote: QC_CHANGE_TYPE.ADDED,
   },
 ];
@@ -34,7 +28,7 @@ describe('EditFootNote', () => {
     const newContent = 'Hi, there!';
     const { getByText, queryByText, getByTestId } = render(
       <EditFootNote
-        item={{ footnote_line_id: '123' }}
+        item={{ AttachmentId: '123' }}
         index={3}
         content={content}
         edit
@@ -50,7 +44,6 @@ describe('EditFootNote', () => {
       target: { innerHTML: newContent },
     });
     contentEditable.blur();
-    screen.debug();
     expect(queryByText(content)).not.toBeInTheDocument();
     expect(getByText(newContent)).toBeInTheDocument();
 
@@ -62,7 +55,7 @@ describe('EditFootNote', () => {
     const newContent = 'Hi, there!';
     const { getByText, getByTestId } = render(
       <EditFootNote
-        item={{ footnote_line_id: '123' }}
+        item={{ AttachmentId: '123' }}
         index={0}
         content={content}
         edit
@@ -82,11 +75,9 @@ describe('EditFootNote', () => {
 
     const result = [...sampleFootNoteData];
     result[0] = {
-      footnote_indicator: '',
-      footnote_text: '',
-      previous_sequnce_index: null,
+      Text: '',
       qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
-      footnote_line_id: '123',
+      AttachmentId: '123',
     };
     expect(setFootnoteData).toHaveBeenCalled();
   });
@@ -95,7 +86,7 @@ describe('EditFootNote', () => {
     const newContent = 'Hi, there!';
     const { getByText, queryByText } = render(
       <EditFootNote
-        item={{ footnote_line_id: null }}
+        item={{ AttachmentId: null }}
         index={2}
         content={content}
         edit

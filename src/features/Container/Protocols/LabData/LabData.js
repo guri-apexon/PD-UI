@@ -6,7 +6,7 @@ import Card from 'apollo-react/components/Card/Card';
 import TextField from 'apollo-react/components/TextField';
 import Save from 'apollo-react-icons/Save';
 import Pencil from 'apollo-react-icons/Pencil';
-
+import FilterIcon from 'apollo-react-icons/Filter';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import Table from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
@@ -61,6 +61,52 @@ function ActionCell({ row }) {
         </button>
       </div>
     </>
+  );
+}
+
+function CustomHeader({
+  isEdit,
+  clearFilter,
+  setIsEdit,
+  handleSave,
+  toggleFilters,
+}) {
+  return (
+    <div className="btn-container">
+      <Button
+        variant="text"
+        className="btn-common clear-button"
+        onClick={clearFilter}
+        data-testid="clearFilter"
+      >
+        Clear Filter
+      </Button>
+      <Button
+        // size="small"
+        variant="secondary"
+        icon={FilterIcon}
+        onClick={toggleFilters}
+      >
+        Filter
+      </Button>
+      {isEdit ? (
+        <Button
+          variant="secondary"
+          icon={<Save />}
+          className="btn-common"
+          onClick={handleSave}
+          data-testid="saveall"
+        />
+      ) : (
+        <Button
+          variant="secondary"
+          icon={<Pencil />}
+          className="btn-common"
+          onClick={() => setIsEdit(true)}
+          data-testid="editall"
+        />
+      )}
+    </div>
   );
 }
 
@@ -276,69 +322,51 @@ function LabData({ docId }) {
         }`}
         data-testid="lab-table-container"
       >
-        {rowData?.length > 0 && (
-          <div className="lab-btn-container">
-            <Button
-              variant="text"
-              className="btn-common clear-button"
-              onClick={clearFilter}
-              data-testid="clearFilter"
-            >
-              Clear Filters
-            </Button>
-            {isEdit ? (
-              <Button
-                variant="secondary"
-                icon={<Save />}
-                className="btn-common"
-                onClick={handleSave}
-                data-testid="saveall"
-              />
-            ) : (
-              <Button
-                variant="secondary"
-                icon={<Pencil />}
-                className="btn-common"
-                onClick={() => setIsEdit(true)}
-                data-testid="editall"
+        <div className="panel-heading">Lab Data</div>
+        <div>
+          <Table
+            isLoading={labData.loading}
+            ref={tableRef}
+            title=" "
+            columns={columns}
+            rows={rowData
+              ?.filter(
+                (obj) =>
+                  obj.request_type !== LABDATA_CONSTANTS.REQUEST_TYPE.DELETE,
+              )
+              ?.map((row) => ({
+                ...row,
+                editMode: editedRow.id === row.id,
+                editedRow,
+                updateRow,
+                onRowEdit,
+                onDelete,
+                handleChange,
+                handleCancel,
+                handleSaveRow,
+                handleAdd,
+              }))}
+            rowId="table_link_text"
+            rowsPerPageOptions={[5, 10, 15, 'All']}
+            tablePaginationProps={{
+              labelDisplayedRows: ({ from, to, count }) =>
+                `${
+                  count === 1 ? 'Lab Data' : 'Lab Datas'
+                } ${from}-${to} of ${count}`,
+              truncate: true,
+            }}
+            // eslint-disable-next-line
+            CustomHeader={(props) => (
+              <CustomHeader
+                isEdit={isEdit}
+                clearFilter={clearFilter}
+                setIsEdit={setIsEdit}
+                handleSave={handleSave}
+                {...props}
               />
             )}
-          </div>
-        )}
-        <Table
-          isLoading={labData.loading}
-          ref={tableRef}
-          title="Lab Data"
-          columns={columns}
-          rows={rowData
-            ?.filter(
-              (obj) =>
-                obj.request_type !== LABDATA_CONSTANTS.REQUEST_TYPE.DELETE,
-            )
-            ?.map((row) => ({
-              ...row,
-              editMode: editedRow.id === row.id,
-              editedRow,
-              updateRow,
-              onRowEdit,
-              onDelete,
-              handleChange,
-              handleCancel,
-              handleSaveRow,
-              handleAdd,
-            }))}
-          rowId="table_link_text"
-          rowsPerPageOptions={[5, 10, 15, 'All']}
-          tablePaginationProps={{
-            labelDisplayedRows: ({ from, to, count }) =>
-              `${
-                count === 1 ? 'Lab Data' : 'Lab Datas'
-              } ${from}-${to} of ${count}`,
-            truncate: true,
-          }}
-          showClearFiltersButton
-          // rowProps={{ hover: false }}
-        />
+          />
+        </div>
       </div>
       {isOpen && (
         <DeleteRow
@@ -359,6 +387,14 @@ ActionCell.propTypes = {
 EditableCell.propTypes = {
   row: PropTypes.isRequired,
   column: PropTypes.isRequired,
+};
+
+CustomHeader.propTypes = {
+  isEdit: PropTypes.isRequired,
+  clearFilter: PropTypes.isRequired,
+  setIsEdit: PropTypes.isRequired,
+  handleSave: PropTypes.isRequired,
+  toggleFilters: PropTypes.isRequired,
 };
 
 LabData.propTypes = {

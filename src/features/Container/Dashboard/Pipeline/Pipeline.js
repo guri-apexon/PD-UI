@@ -31,7 +31,17 @@ function PipelineComponent({
 
   const formatData = (workflow) => {
     const newArr = Object.keys(workflow)?.map((key) => {
-      const obj = { work_flow_name: key, checked: false, services: [] };
+      const obj = {
+        work_flow_name: key,
+        checked: false,
+        services: [],
+        disabled: false,
+      };
+      if (userType === 'QC1' && key === 'es_ingestion') {
+        obj.checked = true;
+        obj.disabled = true;
+      }
+      // const obj = { work_flow_name: key, checked: false, services: [] };
       workflow[key].forEach((service) => {
         const inObj = {
           service_name: service.service_name,
@@ -39,6 +49,10 @@ function PipelineComponent({
           depends: service.depends,
           disabled: false,
         };
+        if (userType === 'QC1' && key === 'es_ingestion') {
+          inObj.checked = true;
+          inObj.disabled = true;
+        }
         obj.services.push(inObj);
       });
       return obj;
@@ -53,6 +67,7 @@ function PipelineComponent({
       setWorkflowData(workflow);
       setCustomWorkflowData(custom);
     }
+    // eslint-disable-next-line
   }, [workFlowStoreData]);
 
   useEffect(() => {
@@ -156,12 +171,16 @@ function PipelineComponent({
       <div className="workflow-services" key={item.work_flow_name}>
         <div className="checkbox-parent">
           <input
+            id={`wf-${item.work_flow_name}`}
             type="checkbox"
             onChange={() => handleWorkflowSelected(i, type)}
             checked={item.checked}
             data-testid={item.work_flow_name}
+            disabled={item.disabled}
           />
-          <label className="input-label">{item.work_flow_name}</label>
+          <label className="input-label" htmlFor={`wf-${item.work_flow_name}`}>
+            {item.work_flow_name}
+          </label>
         </div>
         <div className="checkbox-childs">
           {item.services.map((service, j) => (
@@ -172,8 +191,16 @@ function PipelineComponent({
                 checked={service.checked}
                 data-testid={service.service_name}
                 disabled={service.disabled}
+                id={`service-${service.service_name + item.work_flow_name}`}
               />
-              <label className="input-label">{service.service_name}</label>
+              <label
+                className="input-label"
+                htmlFor={`service-${
+                  service.service_name + item.work_flow_name
+                }`}
+              >
+                {service.service_name}
+              </label>
             </div>
           ))}
         </div>
@@ -236,8 +263,11 @@ function PipelineComponent({
               onChange={() => handleAllClick()}
               checked={allChecked}
               data-testid="all-checkbox"
+              id="all-checked-wf"
             />
-            <label className="input-label">All</label>
+            <label className="input-label" htmlFor="all-checked-wf">
+              All
+            </label>
           </div>
           <div className="workflow-render">
             {renderWorkflow(workflowData, 'default')}

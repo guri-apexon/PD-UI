@@ -189,7 +189,6 @@ describe('AssociateDocumentsTable Test Suite', () => {
     const mockCallApi = jest
       .spyOn(axios, 'get')
       .mockImplementation(() => Promise.resolve('protocol'));
-    console.log(mockCallApi);
     jest.mock('react-router-dom', () => ({
       ...jest.requireActual('react-router-dom'),
       useHistory: () => ({
@@ -205,11 +204,7 @@ describe('AssociateDocumentsTable Test Suite', () => {
         />
       </MemoryRouter>,
     );
-    // console.log(
-    //   "container :",
-    //   container.getByTestId("associate-document-tab").children[0].children[0]
-    //     .children[1].children[0].children[1].children[0].children[0].children[0]
-    // );
+
     const link = container.getByTestId('associate-document-tab').children[0]
       .children[0].children[1].children[0].children[1].children[0].children[0]
       .children[0];

@@ -403,7 +403,6 @@ describe('Qc Saga Unit Test', () => {
       success: false,
       data: QC,
     };
-    console.log(QC.iqvdataSoa);
     const mockCallApi = jest
       .spyOn(api, 'httpCall')
       .mockImplementation(() => Promise.resolve(mockOutput));
