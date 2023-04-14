@@ -116,7 +116,7 @@ function Protocols({ location }) {
           protocolTab: value,
         },
       });
-      // setValue(value);
+      setValue(value);
     } else {
       setValue(value);
       dispatch({
