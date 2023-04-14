@@ -193,6 +193,7 @@ function DigitalizeCard({
                     className="button-style"
                     variant="secondary"
                     onClick={() => setModalOpen(true)}
+                    size="small"
                   >
                     Submit
                   </Button>
