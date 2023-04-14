@@ -121,7 +121,13 @@
       display: flex;
       justify-content: space-between;
       .submit-protocol {
-        margin-right: 10px;
+        margin-right: 38px;
+      }
+      [class*='MuiButton-sizeSmall-'] {
+        padding: 1px 13px 1px 13px;
+      }
+      [class*='MuiButton-outlinedSizeSmall-'] {
+        padding: auto;
       }
     }
   }
@@ -454,6 +460,7 @@
     overflow-y: auto;
     height: calc(100vh - 210px);
     width: calc(100% - 22px);
+    margin-top: -10px;
   }
 
   .view-wrapper .MuiCard-root {
