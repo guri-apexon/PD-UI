@@ -162,6 +162,7 @@ function AddClinicalTerm({ docId, linkId }) {
           id="my-button"
           className="button"
           variant="primary"
+          size="small"
           onClick={() => handleOpen(selectedText)}
         >
           Add tag

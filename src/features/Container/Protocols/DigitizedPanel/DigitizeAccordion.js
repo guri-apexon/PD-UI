@@ -451,6 +451,7 @@ function DigitizeAccordion({
 
     const reqBody = getSaveSectionPayload(sectionContent, item.link_id);
     if (!reqBody.length) {
+      setSaveSection(null);
       toast.error('Please do some changes to update');
     } else {
       updateSectionLock(true);
