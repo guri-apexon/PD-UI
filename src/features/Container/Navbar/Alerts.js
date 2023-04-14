@@ -61,12 +61,12 @@ function Alerts() {
     }),
   );
 
-  const onDelete = (event, aidocId, id, protocol) => {
+  const onDelete = (event, aidocId, id, protocol, alert_id) => {
     event.preventDefault();
     event.stopPropagation();
     dispatch({
       type: 'DELETE_NOTIFICATION',
-      payload: { aidocId, id, protocol },
+      payload: { aidocId, id, protocol, alert_id },
     });
   };
 
@@ -125,6 +125,7 @@ function Alerts() {
               vertical: 'top',
               horizontal: 'right',
             }}
+            className="pop-over"
           >
             <h4 className="Heading-main" data-testid="heading">
               Notification
@@ -214,7 +215,9 @@ function Alerts() {
                                     'Edited',
                                   ) ? (
                                     <Tag
-                                      label={notificationValues[notification.event]}
+                                      label={
+                                        notificationValues[notification.event]
+                                      }
                                       variant="primary"
                                     />
                                   ) : (
@@ -237,6 +240,7 @@ function Alerts() {
                                         notification.aidocId,
                                         notification.id,
                                         notification.protocol,
+                                        notification.alert_id,
                                       )
                                     }
                                   >
@@ -244,10 +248,10 @@ function Alerts() {
                                   </IconButton>
                                 </div>
                                 <p className="timestamp">
-                                  {notification.timeCreated && (
+                                  {notification.timeUpdated && (
                                     <div>
                                       {getDayLabelText(
-                                        notification.timeCreated,
+                                        notification.timeUpdated,
                                       )}
                                     </div>
                                   )}
