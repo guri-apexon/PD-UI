@@ -451,16 +451,17 @@ const getColumns = ({ state, selectedTab, hideColumns }) => {
         };
       }
       if (!colItem.children) colItem.children = [];
-
       if (prevObject && !isObjectIn(prevObject.children, colItem))
         prevObject.children.push(colItem);
       prevObject = colItem;
       if (!grpObj) grpObj = colItem;
     });
-    if (prevObject && !isObjectIn(prevObject.children, col))
+    if (prevObject && !isObjectIn(prevObject.children, col)) {
       prevObject.children.push(col);
-
-    finalgroups.push(grpObj);
+    }
+    if (grpObj) {
+      finalgroups.push(grpObj);
+    }
   });
 
   getTableColumns(allColls);
