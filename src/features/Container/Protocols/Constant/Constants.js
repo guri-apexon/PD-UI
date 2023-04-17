@@ -8,7 +8,7 @@ import Lab from 'apollo-react-icons/Lab';
 const PROTOCOL_RIGHT_MENU = {
   HOME: 'Home',
   CLINICAL_TERM: 'Clinical Terms',
-  DIPA_VIEW: 'DIPA View',
+  DIPA_VIEW: 'Derived Counts',
   LAB_DATA: 'Lab Data',
   SCHEDULE_OF_ACTIVITIES: 'Schedule of Activities',
   PROTOCOL_ATTRIBUTES: 'Protocol Attributes',

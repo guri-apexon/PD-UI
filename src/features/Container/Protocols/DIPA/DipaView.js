@@ -50,12 +50,16 @@ function DipaView({
 
   useEffect(() => {
     dispatch({
-      type: 'GET_DIPA_VIEW',
+      type: 'GET_DERIVED_SECTIONS',
       payload: {
         docId,
       },
     });
-  }, [dispatch, docId]);
+    dispatch({
+      type: 'RESET_ALL_DIPA_VIEW',
+    });
+    // eslint-disable-next-line
+  }, [docId]);
 
   useEffect(() => {
     if (dipaViewSelector?.message === 'Success') {
@@ -70,9 +74,9 @@ function DipaView({
 
   useEffect(() => {
     let receivedData = dipaDataSelector?.data?.dipa_resource[0]?.dipa_data;
-    const timeUpdated = dipaDataSelector?.data?.dipa_resource[0].timeUpdated;
-    const editCount = dipaDataSelector?.data?.dipa_resource[0].editCount;
-    const lastEdited = dipaDataSelector?.data?.dipa_resource[0].editorUserId;
+    const timeUpdated = dipaDataSelector?.data?.dipa_resource[0]?.timeUpdated;
+    const editCount = dipaDataSelector?.data?.dipa_resource[0]?.editCount;
+    const lastEdited = dipaDataSelector?.data?.dipa_resource[0]?.lastEditedBy;
     setTooltipValue(timeUpdated);
     setCountTooltip(editCount);
     setEditedByTooltip(lastEdited);
@@ -389,7 +393,7 @@ function DipaView({
         </div>
 
         <Grid container spacing={1} className="dipa-view-table">
-          <h3 className="subtitle">Derived Count</h3>
+          <h3 className="subtitle">Derived Counts</h3>
           <Grid container item xs={5}>
             <Grid item xs={12} className="drop-down">
               <Select
