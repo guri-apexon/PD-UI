@@ -235,14 +235,25 @@ function DigitizeAccordion({
       }),
     );
 
+    if (discardData?.bladeRight?.name) {
+      dispatch({
+        type: 'GET_RIGHT_BLADE',
+        payload: {
+          name: discardData?.bladeRight?.name,
+        },
+      });
+    }
     dispatch({
       type: 'DISCARD_DETAILS',
       payload: {
         isEdited: false,
         isDiscarded: false,
         protocolTab: discardSelector?.protocolTab,
+        bladeRight: {},
+        labEdited: false,
       },
     });
+
     if (tocClose) {
       handleTocsection(true);
       setTocClose(false);
@@ -291,9 +302,13 @@ function DigitizeAccordion({
 
   useEffect(() => {
     if (
-      discardData?.isDiscarded &&
-      tocActiveSelector[index] &&
-      currentEditCard === item.link_id
+      (discardData?.isDiscarded &&
+        tocActiveSelector[index] &&
+        currentEditCard === item.link_id) ||
+      (discardData?.bladeRight?.name &&
+        discardData?.isEdited &&
+        tocActiveSelector[index] &&
+        currentEditCard === item.link_id)
     ) {
       setShowDiscardConfirm(true);
     }
@@ -329,6 +344,8 @@ function DigitizeAccordion({
           isEdited: true,
           isDiscarded: false,
           protocolTab: -1,
+          bladeRight: {},
+          labEdited: false,
         },
       });
     }
@@ -461,6 +478,17 @@ function DigitizeAccordion({
         type: 'UPDATE_SECTION_DATA',
         payload: { reqBody, docId: item?.doc_id },
       });
+      dispatch({
+        type: 'DISCARD_DETAILS',
+        payload: {
+          isEdited: false,
+          isDiscarded: false,
+          protocolTab: -1,
+          bladeRight: {},
+          labEdited: false,
+        },
+      });
+      setRequestedRoute('');
     }
   };
 

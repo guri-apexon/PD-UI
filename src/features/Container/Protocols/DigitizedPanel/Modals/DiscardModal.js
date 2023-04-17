@@ -7,17 +7,21 @@ function DiscardModal({
   setShowDiscardConfirm,
   onDiscardClick,
 }) {
+  const handleClose = () => {
+    setShowDiscardConfirm(false);
+  };
+
   return (
     <Modal
       disableBackdropClick
       open={showDiscardConfirm}
       variant="warning"
-      onClose={() => setShowDiscardConfirm(false)}
+      onClose={handleClose}
       title="Confirm Action"
       buttonProps={[
         {
           label: 'Cancel',
-          onClick: () => setShowDiscardConfirm(false),
+          onClick: handleClose,
         },
         {
           label: 'Discard',
