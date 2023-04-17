@@ -852,7 +852,14 @@ export function* getDipaViewDataById(action) {
   if (DipaView.success) {
     yield put(getDipaViewData(DipaView));
   } else {
-    yield put(getDipaViewData({ success: false, data: [] }));
+    yield put(
+      getDipaViewData({
+        success: false,
+        data: {
+          dipa_resource: [],
+        },
+      }),
+    );
   }
 
   yield call(httpCall, config);
@@ -882,6 +889,16 @@ export function* getAllDipaViewDataByCategory(action) {
   yield call(httpCall, config);
 }
 
+export function* resetAllDipaViewDataByCategory() {
+  yield put(
+    getAllDipaViewData({
+      success: false,
+      data: {
+        dipa_resource: [],
+      },
+    }),
+  );
+}
 export function* updateDipaData(action) {
   const {
     payload: { data },
@@ -954,10 +971,11 @@ function* watchProtocolViews() {
     updateAndSetSectionLockDetails,
   );
   yield takeLatest('RESET_QC_DATA', setResetQCData);
-  yield takeEvery('GET_DIPA_VIEW', getDipaViewDataById);
+  yield takeEvery('GET_DERIVED_SECTIONS', getDipaViewDataById);
   yield takeEvery('GET_ALL_DIPA_VIEW', getAllDipaViewDataByCategory);
   yield takeEvery('UPDATE_DIPA_VIEW', updateDipaData);
   yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
+  yield takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory);
 }
 
 // notice how we now only export the rootSaga
