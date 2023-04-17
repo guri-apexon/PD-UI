@@ -160,9 +160,21 @@ function DipaView({ docId }) {
           : section.child,
       }));
 
-    const tempMetadata = updateOpenValue(metadata);
+    const removedDerived = (array) =>
+      array.filter((item) => {
+        if (item.child.length) {
+          item.child = removedDerived(item.child);
+        }
+        item.derive_segemnt = item.derive_segemnt.filter(
+          (item) => item.derive_seg !== '',
+        );
+        return item;
+      });
 
-    setMetadata([...tempMetadata]);
+    const tempMetadata = updateOpenValue(metadata);
+    const removedDeriveSeg = removedDerived(tempMetadata);
+
+    setMetadata([...removedDeriveSeg]);
   };
 
   const toggleEditingIDs = (ids = []) => {
