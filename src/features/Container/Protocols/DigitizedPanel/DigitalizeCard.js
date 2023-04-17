@@ -60,6 +60,14 @@ function DigitalizeCard({
         tocFlag: 1,
       },
     });
+
+    dispatch({
+      type: 'GET_DOC_SECTION_LOCK',
+      payload: {
+        docId: data?.id,
+      },
+    });
+
     // eslint-disable-next-line
   }, []);
 
@@ -197,6 +205,7 @@ function DigitalizeCard({
                     className="button-style"
                     variant="secondary"
                     onClick={() => setModalOpen(true)}
+                    disabled={!protocolAllItems.isWorkflowDone}
                     size="small"
                   >
                     Submit

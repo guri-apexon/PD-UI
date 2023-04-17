@@ -39,6 +39,7 @@ import {
   getDipaViewData,
   getAllDipaViewData,
   getDiscardDeatils,
+  setWorkFlowSubmitButton,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -274,6 +275,7 @@ export function* updateSectionData(action) {
         yield put(updateSectionResp({ response: sectionSaveRes.data }));
         toast.success('Section content updated successfully');
       }
+      yield put(setWorkFlowSubmitButton(true));
     } else {
       // eslint-disable-next-line
       if (action?.payload?.refreshToc) {
@@ -754,6 +756,7 @@ export function* getSectionLockDetails(action) {
     yield put(setSectionLockDetails(sectionLockDetails?.data?.info));
   }
 }
+
 export function* updateSectionLockDetails(action) {
   const {
     payload: { docId, linkId, sectionLock },
@@ -944,6 +947,23 @@ export function* setDiscardDetails(action) {
   );
 }
 
+export function* getDocumentSectionLock(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const userId = yield getState();
+  try {
+    const config = {
+      method: 'GET',
+      url: `${BASE_URL_8000}${Apis.DOCUMENT_SECTION_LOCK}?doc_id=${docId}&user_id=${userId}`,
+    };
+    const response = yield call(httpCall, config);
+    yield put(setWorkFlowSubmitButton(response.data.document_lock_status));
+  } catch (error) {
+    yield put(setWorkFlowSubmitButton(false));
+  }
+}
+
 function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
@@ -983,6 +1003,7 @@ function* watchProtocolViews() {
   yield takeEvery('GET_ALL_DIPA_VIEW', getAllDipaViewDataByCategory);
   yield takeEvery('UPDATE_DIPA_VIEW', updateDipaData);
   yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
+  yield takeEvery('GET_DOC_SECTION_LOCK', getDocumentSectionLock);
   yield takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory);
 }
 
