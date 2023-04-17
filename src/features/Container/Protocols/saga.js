@@ -775,6 +775,16 @@ export function* updateSectionLockDetails(action) {
     yield put(setSectionLockDetails({}));
   }
 }
+
+export function* updateAndSetSectionLockDetails(action) {
+  yield call(updateSectionLockDetails, action);
+  yield call(getSectionLockDetails, {
+    payload: {
+      doc_id: action.payload.docId,
+      link_id: action.payload.linkId,
+    },
+  });
+}
 export function* setResetQCData() {
   yield put(getSummary({}));
   yield put(getProtocolTocData({}));
@@ -939,6 +949,10 @@ function* watchProtocolViews() {
   yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
   yield takeLatest('GET_SECTION_LOCK', getSectionLockDetails);
   yield takeLatest('SET_SECTION_LOCK', updateSectionLockDetails);
+  yield takeLatest(
+    'UPDATE_AND_SET_SECTION_LOCk',
+    updateAndSetSectionLockDetails,
+  );
   yield takeLatest('RESET_QC_DATA', setResetQCData);
   yield takeEvery('GET_DIPA_VIEW', getDipaViewDataById);
   yield takeEvery('GET_ALL_DIPA_VIEW', getAllDipaViewDataByCategory);
