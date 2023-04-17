@@ -210,14 +210,16 @@ function PipelineComponent({
   const handleAllClick = () => {
     setAllChecked(!allChecked);
     const newArr = workflowData.map((item) => {
+      const esIngestion =
+        userType === 'QC1' && item.work_flow_name === 'es_ingestion';
       if (allChecked) {
         const newServiceArr = item.services.map((service) => {
-          return { ...service, checked: false, disabled: false };
+          return { ...service, checked: esIngestion, disabled: esIngestion };
         });
-        return { ...item, services: newServiceArr, checked: false };
+        return { ...item, services: newServiceArr, checked: esIngestion };
       }
       const newServiceArrTrue = item.services.map((service) => {
-        return { ...service, checked: true, disabled: false };
+        return { ...service, checked: true, disabled: esIngestion };
       });
       return { ...item, services: newServiceArrTrue, checked: true };
     });
@@ -283,7 +285,7 @@ function PipelineComponent({
         )}
       </div>
       {userType === 'admin' && (
-        <div className="docid-section">
+        <div className="docid-section wf-name">
           <TextField
             label="Please enter workflow name"
             placeholder="Workflow name"
