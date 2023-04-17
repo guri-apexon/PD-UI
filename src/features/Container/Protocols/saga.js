@@ -914,9 +914,17 @@ export function* updateDipaData(action) {
 
 export function* setDiscardDetails(action) {
   const {
-    payload: { isEdited, isDiscarded, protocolTab },
+    payload: { isEdited, isDiscarded, protocolTab, bladeRight, labEdited },
   } = action;
-  yield put(getDiscardDeatils({ isEdited, isDiscarded, protocolTab }));
+  yield put(
+    getDiscardDeatils({
+      isEdited,
+      isDiscarded,
+      protocolTab,
+      bladeRight,
+      labEdited,
+    }),
+  );
 }
 
 function* watchProtocolAsync() {
