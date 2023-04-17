@@ -435,21 +435,12 @@ const getColumns = ({ state, selectedTab, hideColumns }) => {
     let prevObject;
     let grpObj;
     timePointsArr.forEach((tp) => {
-      let colItem = allColls.find(
+      const colItem = allColls.find(
         (arecord) =>
           Number(arecord[TableConst.COLUMN_IDX]) ===
             Number(col[TableConst.COLUMN_IDX]) &&
           arecord[TableConst.TIME_POINT] === tp,
       );
-      if (!colItem) {
-        colItem = {
-          [TableConst.COLUMN_IDX]: col,
-          field: '',
-          [TableConst.TIME_POINT]: tp,
-          [TableConst.ROW_IDX]: 0,
-          [TableConst.VALUE_TEXT1]: '',
-        };
-      }
       if (!colItem.children) colItem.children = [];
       if (prevObject && !isObjectIn(prevObject.children, colItem))
         prevObject.children.push(colItem);
@@ -579,6 +570,8 @@ const formatTables = (data) => {
             isMissing: true,
           };
           itemTimePoint[tpName].push(missingObject);
+          tables[index][tables[index].tableId][missingObject[TableConst.UID]] =
+            missingObject;
         }
       });
 
