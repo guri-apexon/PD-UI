@@ -1,14 +1,14 @@
 /* eslint-disable */
-import { takeEvery, all, call, put, select } from 'redux-saga/effects';
-import {
-  getNotification,
-  setError,
-  deleteNotificationData,
-  navbarNotifications,
-  getOptInOutData,
-} from './navbarSlice';
 import { toast } from 'react-toastify';
-import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
+import { all, call, put, select, takeEvery } from 'redux-saga/effects';
+import { Apis, BASE_URL_8000, httpCall } from '../../../utils/api';
+import {
+  deleteNotificationData,
+  getNotification,
+  getOptInOutData,
+  navbarNotifications,
+  setError,
+} from './navbarSlice';
 
 export function* navbarNotificationData(action) {
   const {
@@ -47,7 +47,7 @@ export function* navbarNotificationData(action) {
 
 export function* handlereadNotification(action) {
   const {
-    payload: { aidocId, id, protocol },
+    payload: { aidocId, id, protocol, alert_id },
   } = action;
 
   const actions = {
@@ -63,6 +63,7 @@ export function* handlereadNotification(action) {
       aidocId: aidocId,
       readFlag: true,
       notification_delete: false,
+      alert_id: alert_id,
     },
   };
 
@@ -100,7 +101,7 @@ export function* handleDeleteNotification(action) {
         aidocId: aidocId,
         readFlag: true,
         notification_delete: true,
-        alert_id: alert_id
+        alert_id: alert_id,
       },
     };
 
