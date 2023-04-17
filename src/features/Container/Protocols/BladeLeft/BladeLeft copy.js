@@ -1,10 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Blade from 'apollo-react/components/Blade';
-import ChevronLeft from 'apollo-react-icons/ChevronLeft';
-import ChevronRight from 'apollo-react-icons/ChevronRight';
-import IconButton from 'apollo-react/components/IconButton';
-import Close from 'apollo-react-icons/Close';
 import { useSelector, useDispatch } from 'react-redux';
 import './BladeLeft.scss';
 
@@ -96,11 +92,8 @@ function BladeLeft({ handlePageNo }) {
   };
 
   return (
-    <div
-      className={`bladeContainer ${expand ? 'expand' : ''}`}
-      ref={wrapperRef}
-    >
-      {/* <Blade
+    <div className="bladeContainer" ref={wrapperRef}>
+      <Blade
         data-testid="toc-component"
         onChange={(e, expanded) => setExpand(expanded)}
         open={open}
@@ -116,27 +109,13 @@ function BladeLeft({ handlePageNo }) {
             setOpen(false);
           },
         }}
-      > */}
-      {expand && (
-        <>
-          <div className="blade-header">
-            <h3>Navigation</h3>
-            <IconButton>
-              <Close />
-            </IconButton>
-          </div>
-          <hr />
-          <div className="toc-wrapper">
-            {tocList?.map((item, index) => {
-              return accGenerator(item, index, getValue(index));
-            })}
-          </div>
-        </>
-      )}
-      <IconButton className="expand-button" onClick={() => setExpand(!expand)}>
-        {expand ? <ChevronLeft /> : <ChevronRight />}
-      </IconButton>
-      {/* </Blade> */}
+      >
+        <div className="toc-wrapper">
+          {tocList?.map((item, index) => {
+            return accGenerator(item, index, getValue(index));
+          })}
+        </div>
+      </Blade>
     </div>
   );
 }
