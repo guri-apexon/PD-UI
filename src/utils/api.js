@@ -259,6 +259,7 @@ export const Apis = {
   LAB_DATA: '/api/lab_data',
   UPDATE_LAB_DATA: '/api/lab_data/lab_data_operations',
   SECTION_LOCK: '/api/section_lock',
+  DOCUMENT_SECTION_LOCK: '/api/section_lock/document_lock_status',
 };
 
 export const SSO_ENABLED = environment !== 'local';
