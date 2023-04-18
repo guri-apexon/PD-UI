@@ -20,6 +20,17 @@
   }
 }
 
+.dipa-view-table {
+  padding: 15px 15px 15px 20px !important;
+  .subtitle {
+    margin: 0px !important;
+  }
+}
+
+.panel-heading-container {
+  padding: 0px;
+}
+
 .dipa-view-count {
   display: flex;
   .dipa-actualcount,
@@ -138,4 +149,26 @@
 .structure-container {
   height: 350px;
   overflow-y: auto;
+}
+
+.minimize-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 39px;
+  width: 39px;
+  border: 1px solid #0768fd;
+  cursor: pointer;
+  margin-right: 16px;
+
+  img {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.expand-icon {
+  border: 1px solid;
+  margin-right: 16px;
+  border-radius: 0px;
 }

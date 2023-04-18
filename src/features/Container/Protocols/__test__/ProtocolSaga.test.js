@@ -22,6 +22,7 @@ import {
   setEnrichedAPI,
   getSOAData,
   soaUpdateDetails,
+  getDocumentSectionLock,
 } from '../saga';
 
 const userDetail = {
@@ -768,5 +769,31 @@ describe('Protocol Saga', () => {
     };
     await runSaga(fakeStore, soaUpdateDetails, { payload }).toPromise();
     expect(undefined).toBeUndefined();
+  });
+
+  test.only('getDocumentSectionLock saga', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      document_lock_status: false,
+    };
+    const payload = {
+      docId: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const mockApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getDocumentSectionLock, {
+      payload,
+    }).toPromise();
+
+    expect(mockApi).toHaveBeenCalledTimes(1);
   });
 });

@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 import Modal from 'apollo-react/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from 'apollo-react/components/Grid/Grid';
+import Card from 'apollo-react/components/Card';
 import Select from 'apollo-react/components/Select';
 import MenuItem from 'apollo-react/components/MenuItem';
+import Expand from 'apollo-react-icons/Expand';
+import IconButton from 'apollo-react/components/IconButton';
+import Tooltip from 'apollo-react/components/Tooltip';
+
 import { v4 as uuidv4 } from 'uuid';
 import startCase from 'lodash/startCase';
 import {
@@ -19,7 +24,12 @@ const getFormattedCategoryName = (category) => {
   return startCase(category.replace('cpt_', ''));
 };
 
-function DipaView({ docId }) {
+function DipaView({
+  docId,
+  handleRightFullScreen,
+  fullRightScreen,
+  showExpandIcon,
+}) {
   const [selectedSection, setSelectedSection] = useState('');
   const [metadata, setMetadata] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -40,12 +50,16 @@ function DipaView({ docId }) {
 
   useEffect(() => {
     dispatch({
-      type: 'GET_DIPA_VIEW',
+      type: 'GET_DERIVED_SECTIONS',
       payload: {
         docId,
       },
     });
-  }, [dispatch, docId]);
+    dispatch({
+      type: 'RESET_ALL_DIPA_VIEW',
+    });
+    // eslint-disable-next-line
+  }, [docId]);
 
   useEffect(() => {
     if (dipaViewSelector?.message === 'Success') {
@@ -60,9 +74,9 @@ function DipaView({ docId }) {
 
   useEffect(() => {
     let receivedData = dipaDataSelector?.data?.dipa_resource[0]?.dipa_data;
-    const timeUpdated = dipaDataSelector?.data?.dipa_resource[0].timeUpdated;
-    const editCount = dipaDataSelector?.data?.dipa_resource[0].editCount;
-    const lastEdited = dipaDataSelector?.data?.dipa_resource[0].editorUserId;
+    const timeUpdated = dipaDataSelector?.data?.dipa_resource[0]?.timeUpdated;
+    const editCount = dipaDataSelector?.data?.dipa_resource[0]?.editCount;
+    const lastEdited = dipaDataSelector?.data?.dipa_resource[0]?.lastEditedBy;
     setTooltipValue(timeUpdated);
     setCountTooltip(editCount);
     setEditedByTooltip(lastEdited);
@@ -109,7 +123,7 @@ function DipaView({ docId }) {
 
   const updateSectionLock = (usrData, status) => {
     dispatch({
-      type: 'SET_SECTION_LOCK',
+      type: 'UPDATE_AND_SET_SECTION_LOCk',
       payload: {
         docId: usrData?.doc_id,
         linkId: usrData?.id,
@@ -121,9 +135,13 @@ function DipaView({ docId }) {
 
   const resetLock = (usrData, status) => {
     /**
-     * Check if there is a lock, if yes then only release it.
+     * Check if there is a lock and same user, if yes then only release it.
      */
-    if (lockDetails?.section_lock === false && status) {
+    if (
+      lockDetails?.section_lock === false &&
+      status &&
+      lockDetails?.userId === userIdSelector?.toString()
+    ) {
       updateSectionLock(usrData, status);
     }
   };
@@ -191,10 +209,11 @@ function DipaView({ docId }) {
       list = toggle(list, id);
     });
     setEditingIDList(list);
+
     /**
      * Add lock if we are doing any changes
      */
-    if (lockDetails?.section_lock === false) {
+    if (lockDetails?.section_lock === true) {
       updateSectionLock(userData, false);
     }
   };
@@ -334,9 +353,47 @@ function DipaView({ docId }) {
 
   return (
     <div>
-      <div className="container" data-testid="dipaview-data">
+      <Card className="protocol-column protocol-digitize-column card-boarder">
+        <div className="panel-heading" data-testid="header">
+          DIPA view
+          {showExpandIcon && fullRightScreen && (
+            <Tooltip
+              variant="dark"
+              title="Default View"
+              placement="left"
+              onClick={() => handleRightFullScreen(null)}
+              data-testid="minimize-view-tooltip"
+            >
+              <div
+                role="button"
+                data-testid="minimize-btn"
+                className="minimize-icon"
+              >
+                <img src="./images/minimize.png" alt="minimize icon" />
+              </div>
+            </Tooltip>
+          )}
+          {showExpandIcon && !fullRightScreen && (
+            <Tooltip
+              data-testid="expand-view-tooltip"
+              variant="dark"
+              title="Expand View"
+              placement="left"
+            >
+              <IconButton
+                onClick={() => handleRightFullScreen(null)}
+                className="expand-icon"
+                color="primary"
+                data-testid="expand-btn"
+              >
+                <Expand />
+              </IconButton>
+            </Tooltip>
+          )}
+        </div>
+
         <Grid container spacing={1} className="dipa-view-table">
-          <h3>Derived Count</h3>
+          <h3 className="subtitle">Derived Counts</h3>
           <Grid container item xs={5}>
             <Grid item xs={12} className="drop-down">
               <Select
@@ -408,7 +465,7 @@ function DipaView({ docId }) {
             ))}
           </div>
         </div>
-      </div>
+      </Card>
       <Modal
         disableBackdropClick
         open={openModal}
@@ -437,4 +494,7 @@ export default DipaView;
 
 DipaView.propTypes = {
   docId: PropTypes.isRequired,
+  handleRightFullScreen: PropTypes.func.isRequired,
+  fullRightScreen: PropTypes.bool.isRequired,
+  showExpandIcon: PropTypes.bool.isRequired,
 };
