@@ -4,6 +4,7 @@ import TextField from 'apollo-react/components/TextField';
 function TextFieldFilter({ accessor, filters, updateFilterValue }) {
   return (
     <TextField
+      inputProps={{ 'data-testid': 'update-lab-data' }}
       value={filters[accessor]}
       name={accessor}
       onChange={updateFilterValue}
