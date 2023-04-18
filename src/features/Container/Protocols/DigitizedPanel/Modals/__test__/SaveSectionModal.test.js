@@ -88,3 +88,30 @@ describe('SaveSectionModal', () => {
     expect(setShowConfirm).toHaveBeenCalled();
   });
 });
+
+describe('SaveSectionModal', () => {
+  const classes = { modal: 'test-modal' };
+  const currentEditCard = 'test-card';
+  const setSaveSection = jest.fn();
+  const setShowConfirm = jest.fn();
+  const setShowEdit = jest.fn();
+
+  it('should call onClose function when modal is closed', () => {
+    const { getByTestId } = render(
+      <SaveSectionModal
+        classes={classes}
+        currentEditCard={currentEditCard}
+        // eslint-disable-next-line react/jsx-boolean-value
+        showConfirm={true}
+        setShowConfirm={setShowConfirm}
+        setShowEdit={setShowEdit}
+        setSaveSection={setSaveSection}
+      />,
+    );
+
+    const modal = getByTestId('confirm-modal');
+    fireEvent.click(modal.querySelector('button[aria-label="Close"]'));
+
+    expect(setShowConfirm).toHaveBeenCalledWith(false);
+  });
+});

@@ -10,7 +10,7 @@ function AuditLog({ openAudit, setOpenAudit, AUDIT_LIST, item }) {
       onClose={() => setOpenAudit(null)}
     >
       <div className="auditPopover">
-        <div className="textContainer">
+        <div className="textContainer" data-testId="openaudit">
           {AUDIT_LIST.map((names) => {
             return (
               <Typography variant="body1" key={names?.title}>
