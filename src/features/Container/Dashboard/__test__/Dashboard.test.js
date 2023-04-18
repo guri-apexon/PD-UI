@@ -132,4 +132,20 @@ describe('Protocol Table container component with Protocol data', () => {
     expect(screen.getByTestId('send-qc-review')).toBeEnabled();
     fireEvent.click(screen.getByTestId('send-qc-review'));
   });
+  test('should render the greet', () => {
+    render(<Dashboard />, state);
+    const today = new Date();
+    const curHr = today.getHours();
+    if (curHr < 12) {
+      const spy = jest.spyOn(global, 'Date').mockImplementation(() => curHr);
+      spy.mockRestore();
+      expect(screen.getByText('Good Morning,')).toBeInTheDocument();
+    } else if (curHr < 18) {
+      const spy = jest.spyOn(global, 'Date').mockImplementation(() => curHr);
+      spy.mockRestore();
+      expect(screen.getByText('Good Afternoon,')).toBeInTheDocument();
+    } else {
+      expect(screen.getByText('Good Evening,')).toBeInTheDocument();
+    }
+  });
 });
