@@ -27,9 +27,7 @@ function BladeLeft({ handlePageNo }) {
   const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
-    if (tocActiveSelector) {
-      setTocActive(tocActiveSelector);
-    }
+    if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
   useEffect(() => {

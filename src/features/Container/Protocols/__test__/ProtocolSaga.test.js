@@ -22,6 +22,19 @@ import {
   setEnrichedAPI,
   getSOAData,
   soaUpdateDetails,
+  getDipaViewDataById,
+  getAllDipaViewDataByCategory,
+  updateDipaData,
+  LabData,
+  updateSectionLockDetails,
+  getSectionLockDetails,
+  handleConfigurableAPI,
+  updateSectionData,
+  setSectionIndex,
+  getenrichedword,
+  setResetQCData,
+  UpdateLabData,
+  setDiscardDetails,
 } from '../saga';
 
 const userDetail = {
@@ -767,6 +780,510 @@ describe('Protocol Saga', () => {
       }),
     };
     await runSaga(fakeStore, soaUpdateDetails, { payload }).toPromise();
+    expect(undefined).toBeUndefined();
+  });
+
+  test('getDipaViewDataById should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getDipaViewDataById, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
+
+  test('getDipaViewDataById should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getDipaViewDataById, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
+
+  test('getAllDipaViewDataByCategory should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getAllDipaViewDataByCategory, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
+
+  test('getAllDipaViewDataByCategory should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getAllDipaViewDataByCategory, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
+  });
+
+  test('updateDipaData should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, updateDipaData, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('updateDipaData should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, updateDipaData, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('LabData should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, LabData, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('LabData should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, LabData, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('updateSectionLockDetails should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, updateSectionLockDetails, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('updateSectionLockDetails should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, updateSectionLockDetails, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getSectionLockDetails should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getSectionLockDetails, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getSectionLockDetails should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getSectionLockDetails, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('handleConfigurableAPI should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, handleConfigurableAPI, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('handleConfigurableAPI should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, handleConfigurableAPI, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('updateSectionData should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, updateSectionData, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(0);
+  });
+
+  test('updateSectionData should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, updateSectionData, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(0);
+  });
+
+  test('setSectionIndex get', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      data: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, setSectionIndex, { payload }).toPromise();
+
+    expect(undefined).toBeUndefined();
+  });
+
+  test('getenrichedword get', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      data: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getenrichedword, { payload }).toPromise();
+
+    expect(undefined).toBeUndefined();
+  });
+
+  test('setResetQCData get', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      data: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, setResetQCData, { payload }).toPromise();
+
+    expect(undefined).toBeUndefined();
+  });
+
+  test('UpdateLabData should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, UpdateLabData, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('UpdateLabData should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, UpdateLabData, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('setDiscardDetails get', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      data: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, setDiscardDetails, { payload }).toPromise();
+
     expect(undefined).toBeUndefined();
   });
 });

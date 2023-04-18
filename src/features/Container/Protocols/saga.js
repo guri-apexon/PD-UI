@@ -39,6 +39,7 @@ import {
   getDipaViewData,
   getAllDipaViewData,
   getDiscardDeatils,
+  setWorkFlowSubmitButton,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -274,6 +275,7 @@ export function* updateSectionData(action) {
         yield put(updateSectionResp({ response: sectionSaveRes.data }));
         toast.success('Section content updated successfully');
       }
+      yield put(setWorkFlowSubmitButton(true));
     } else {
       // eslint-disable-next-line
       if (action?.payload?.refreshToc) {
@@ -754,6 +756,7 @@ export function* getSectionLockDetails(action) {
     yield put(setSectionLockDetails(sectionLockDetails?.data?.info));
   }
 }
+
 export function* updateSectionLockDetails(action) {
   const {
     payload: { docId, linkId, sectionLock },
@@ -774,6 +777,16 @@ export function* updateSectionLockDetails(action) {
   if (sectionLockDetails.success) {
     yield put(setSectionLockDetails({}));
   }
+}
+
+export function* updateAndSetSectionLockDetails(action) {
+  yield call(updateSectionLockDetails, action);
+  yield call(getSectionLockDetails, {
+    payload: {
+      doc_id: action.payload.docId,
+      link_id: action.payload.linkId,
+    },
+  });
 }
 export function* setResetQCData() {
   yield put(getSummary({}));
@@ -842,7 +855,14 @@ export function* getDipaViewDataById(action) {
   if (DipaView.success) {
     yield put(getDipaViewData(DipaView));
   } else {
-    yield put(getDipaViewData({ success: false, data: [] }));
+    yield put(
+      getDipaViewData({
+        success: false,
+        data: {
+          dipa_resource: [],
+        },
+      }),
+    );
   }
 
   yield call(httpCall, config);
@@ -872,6 +892,16 @@ export function* getAllDipaViewDataByCategory(action) {
   yield call(httpCall, config);
 }
 
+export function* resetAllDipaViewDataByCategory() {
+  yield put(
+    getAllDipaViewData({
+      success: false,
+      data: {
+        dipa_resource: [],
+      },
+    }),
+  );
+}
 export function* updateDipaData(action) {
   const {
     payload: { data },
@@ -891,9 +921,9 @@ export function* updateDipaData(action) {
       type: 'GET_ALL_DIPA_VIEW',
       payload: {
         data: {
-          category: data.category,
-          doc_id: data.doc_id,
-          id: data.id,
+          category: data?.category,
+          doc_id: data?.doc_id,
+          id: data?.id,
         },
       },
     });
@@ -904,9 +934,34 @@ export function* updateDipaData(action) {
 
 export function* setDiscardDetails(action) {
   const {
-    payload: { isEdited, isDiscarded, protocolTab },
+    payload: { isEdited, isDiscarded, protocolTab, bladeRight, labEdited },
   } = action;
-  yield put(getDiscardDeatils({ isEdited, isDiscarded, protocolTab }));
+  yield put(
+    getDiscardDeatils({
+      isEdited,
+      isDiscarded,
+      protocolTab,
+      bladeRight,
+      labEdited,
+    }),
+  );
+}
+
+export function* getDocumentSectionLock(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const userId = yield getState();
+  try {
+    const config = {
+      method: 'GET',
+      url: `${BASE_URL_8000}${Apis.DOCUMENT_SECTION_LOCK}?doc_id=${docId}&user_id=${userId}`,
+    };
+    const response = yield call(httpCall, config);
+    yield put(setWorkFlowSubmitButton(response.data.document_lock_status));
+  } catch (error) {
+    yield put(setWorkFlowSubmitButton(false));
+  }
 }
 
 function* watchProtocolAsync() {
@@ -939,11 +994,17 @@ function* watchProtocolViews() {
   yield takeLatest('RESET_SECTION_DATA', setResetSectionData);
   yield takeLatest('GET_SECTION_LOCK', getSectionLockDetails);
   yield takeLatest('SET_SECTION_LOCK', updateSectionLockDetails);
+  yield takeLatest(
+    'UPDATE_AND_SET_SECTION_LOCk',
+    updateAndSetSectionLockDetails,
+  );
   yield takeLatest('RESET_QC_DATA', setResetQCData);
-  yield takeEvery('GET_DIPA_VIEW', getDipaViewDataById);
+  yield takeEvery('GET_DERIVED_SECTIONS', getDipaViewDataById);
   yield takeEvery('GET_ALL_DIPA_VIEW', getAllDipaViewDataByCategory);
   yield takeEvery('UPDATE_DIPA_VIEW', updateDipaData);
   yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
+  yield takeEvery('GET_DOC_SECTION_LOCK', getDocumentSectionLock);
+  yield takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory);
 }
 
 // notice how we now only export the rootSaga

@@ -212,6 +212,9 @@ export const protocolSlice = createSlice({
     getDiscardDeatils: (state, action) => {
       state.discardValue = action.payload;
     },
+    setWorkFlowSubmitButton: (state, action) => {
+      state.summary.isWorkflowDone = action.payload;
+    },
     resetProtocolTocData: (state) => {
       state.protocolTocData = [];
     },
@@ -251,6 +254,7 @@ export const {
   getDipaViewData,
   getAllDipaViewData,
   getDiscardDeatils,
+  setWorkFlowSubmitButton,
   resetProtocolTocData,
   setActiveTOC,
 } = protocolSlice.actions;

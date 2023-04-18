@@ -1,6 +1,7 @@
 import { useEffect, useState, createRef } from 'react';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 // ------------------- CSS -------------------
 import './protocols.scss';
 
@@ -35,6 +36,7 @@ function Protocols({ location }) {
   const [pdfArray] = useState([]);
   const [summarydata, setSummaryData] = useState();
   const [discardData, setDiscardData] = useState({});
+  const history = useHistory();
 
   useEffect(() => {
     setSummaryData({
@@ -56,6 +58,8 @@ function Protocols({ location }) {
           isEdited: false,
           isDiscarded: false,
           protocolTab: -1,
+          bladeRight: {},
+          labEdited: false,
         },
       });
     }
@@ -108,16 +112,17 @@ function Protocols({ location }) {
   /* istanbul ignore next */
 
   const handleChangeTab = (event, value) => {
-    if (discardData?.isEdited) {
+    if (discardData?.isEdited || discardData?.labEdited) {
       dispatch({
         type: 'DISCARD_DETAILS',
         payload: {
           isEdited: true,
           isDiscarded: true,
           protocolTab: value,
+          bladeRight: {},
+          labEdited: true,
         },
       });
-      setValue(value);
     } else {
       setValue(value);
       dispatch(resetProtocolTocData());
@@ -143,7 +148,9 @@ function Protocols({ location }) {
                 <Breadcrumbs
                   className="protocol-breadcrumb"
                   items={[
-                    { href: '/dashboard' },
+                    {
+                      onClick: () => history.push('/dashboard'),
+                    },
                     {
                       title: 'Protocols',
                       className: 'br-cr-protocol',

@@ -6,6 +6,7 @@ describe('Discard Modal', () => {
     const showDiscardConfirm = true;
     const setShowDiscardConfirm = jest.fn();
     const onDiscardClick = jest.fn();
+    const setRequestedRoute = jest.fn();
     const component = render(
       <DiscardModal
         classes={{ modal: '' }}
@@ -14,6 +15,7 @@ describe('Discard Modal', () => {
         showDiscardConfirm={showDiscardConfirm}
         setShowDiscardConfirm={setShowDiscardConfirm}
         onDiscardClick={onDiscardClick}
+        setRequestedRoute={setRequestedRoute}
       />,
     );
     expect(component).toBeTruthy();
@@ -25,7 +27,7 @@ describe('Discard Modal', () => {
     const showDiscardConfirm = true;
     const setShowDiscardConfirm = jest.fn();
     const onDiscardClick = jest.fn();
-
+    const setRequestedRoute = jest.fn();
     const component = render(
       <DiscardModal
         classes={{ modal: '' }}
@@ -34,6 +36,7 @@ describe('Discard Modal', () => {
         showDiscardConfirm={showDiscardConfirm}
         setShowDiscardConfirm={setShowDiscardConfirm}
         onDiscardClick={onDiscardClick}
+        setRequestedRoute={setRequestedRoute}
       />,
     );
 
@@ -49,6 +52,7 @@ describe('Discard Modal', () => {
     const showDiscardConfirm = true;
     const setShowDiscardConfirm = jest.fn();
     const onDiscardClick = jest.fn();
+    const setRequestedRoute = jest.fn();
 
     const component = render(
       <DiscardModal
@@ -58,6 +62,7 @@ describe('Discard Modal', () => {
         showDiscardConfirm={showDiscardConfirm}
         setShowDiscardConfirm={setShowDiscardConfirm}
         onDiscardClick={onDiscardClick}
+        setRequestedRoute={setRequestedRoute}
       />,
     );
 
@@ -67,5 +72,24 @@ describe('Discard Modal', () => {
     expect(discardBtn).toBeInTheDocument();
     fireEvent.click(discardBtn);
     expect(onDiscardClick).toHaveBeenCalled();
+  });
+});
+
+describe('DiscardModal', () => {
+  it('calls setShowDiscardConfirm(false) when modal is closed', () => {
+    const setShowDiscardConfirm = jest.fn();
+    const { getByLabelText } = render(
+      <DiscardModal
+        classes={{ modal: 'test-modal' }}
+        // eslint-disable-next-line react/jsx-boolean-value
+        showDiscardConfirm={true}
+        setShowDiscardConfirm={setShowDiscardConfirm}
+        onDiscardClick={() => {}}
+      />,
+    );
+
+    fireEvent.click(getByLabelText('Close'));
+
+    expect(setShowDiscardConfirm).toHaveBeenCalledWith(false);
   });
 });

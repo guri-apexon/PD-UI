@@ -31,6 +31,9 @@ function DigitalizeCard({
   paginationPage,
   handlePageRight,
   globalPreferredTerm,
+  handleRightFullScreen,
+  fullRightScreen,
+  showExpandIcon,
 }) {
   const dispatch = useDispatch();
   const [headerList, setHeaderList] = useState([]);
@@ -57,6 +60,14 @@ function DigitalizeCard({
         tocFlag: 1,
       },
     });
+
+    dispatch({
+      type: 'GET_DOC_SECTION_LOCK',
+      payload: {
+        docId: data?.id,
+      },
+    });
+
     // eslint-disable-next-line
   }, []);
 
@@ -122,6 +133,7 @@ function DigitalizeCard({
 
   useEffect(() => {
     setCurrentActiveCard(0);
+    handleRightFullScreen(false);
     setRightValue(BladeRightValue);
     // eslint-disable-next-line
   }, [BladeRightValue]);
@@ -276,7 +288,12 @@ function DigitalizeCard({
         <SOA docId={data.id} />
       )}
       {rightValue === PROTOCOL_RIGHT_MENU.DIPA_VIEW && (
-        <DipaView docId={data.id} />
+        <DipaView
+          docId={data.id}
+          handleRightFullScreen={handleRightFullScreen}
+          fullRightScreen={fullRightScreen}
+          showExpandIcon={showExpandIcon}
+        />
       )}
     </div>
   );
@@ -291,4 +308,7 @@ DigitalizeCard.propTypes = {
   paginationPage: PropTypes.isRequired,
   handlePageRight: PropTypes.isRequired,
   globalPreferredTerm: PropTypes.isRequired,
+  handleRightFullScreen: PropTypes.func.isRequired,
+  fullRightScreen: PropTypes.bool.isRequired,
+  showExpandIcon: PropTypes.bool.isRequired,
 };
