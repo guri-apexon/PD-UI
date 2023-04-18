@@ -921,9 +921,9 @@ export function* updateDipaData(action) {
       type: 'GET_ALL_DIPA_VIEW',
       payload: {
         data: {
-          category: data.category,
-          doc_id: data.doc_id,
-          id: data.id,
+          category: data?.category,
+          doc_id: data?.doc_id,
+          id: data?.id,
         },
       },
     });
