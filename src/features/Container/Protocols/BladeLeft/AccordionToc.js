@@ -6,6 +6,7 @@ import Accordion from 'apollo-react/components/Accordion/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import TreeItem from 'apollo-react/components/TreeItem';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
+import ChevronDown from 'apollo-react-icons/ChevronDown';
 
 const noBorderStyle = {
   border: 'none',
@@ -27,7 +28,9 @@ function AccordionToc({
         handlePageNo(e, level.page, sectionIndex);
       }}
       nodeId={sectionIndex}
-      icon={<ChevronRight />}
+      icon={
+        expanded.includes(sectionIndex) ? <ChevronDown /> : <ChevronRight />
+      }
     >
       {subAccComponent}
     </TreeItem>

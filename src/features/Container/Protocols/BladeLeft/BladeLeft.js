@@ -77,26 +77,16 @@ function BladeLeft({ handlePageNo }) {
     });
   };
 
-  const getValue = (index) => {
-    const data = tocActive || [];
-    if (data) {
-      if (data?.length >= index) {
-        return data[index];
-      }
-    }
-    return false;
-  };
-
-  const accGenerator = (item, sectionIndex, handleGetValue) => {
+  const accGenerator = (item, sectionIndex) => {
     return (
       <AccordionToc
         level={item}
         sectionIndex={sectionIndex}
         handlePageNo={handlePageNo}
-        handleGetValue={handleGetValue}
+        expanded={expanded}
         handleChange={handleChange}
         subAccComponent={item?.childlevel?.map((level) => {
-          return accGenerator(level, sectionIndex, handleGetValue);
+          return accGenerator(level, sectionIndex);
         })}
       />
     );
@@ -126,9 +116,9 @@ function BladeLeft({ handlePageNo }) {
       >
         {expand && (
           <div className="toc-wrapper">
-            <TreeView style={{ maxWidth: 276 }} multiSelect expaned={expanded}>
+            <TreeView style={{ maxWidth: 276 }} multiSelect expanded={expanded}>
               {tocList?.map((item, index) => {
-                return accGenerator(item, index, getValue(index));
+                return accGenerator(item, index);
               })}
             </TreeView>
           </div>
