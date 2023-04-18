@@ -23,14 +23,12 @@ import {
   setAddProtocolModal,
   setLoading,
   getSavedSearches,
-  setApiError,
   getFollowedProtocols,
   setTableLoader,
   setSelectedProtocols,
   setworkflowData,
   setAddProtocolErrorState,
   setworkflowSubmit,
-  setWFData,
 } from './dashboardSlice';
 import { setWorkFlowSubmitButton } from '../Protocols/protocolSlice';
 import { errorMessage, dashboardErrorType } from './constant';
@@ -288,7 +286,7 @@ export function* sendQcReview() {
   }
 }
 
-function* handleDownload(action) {
+export function* handleDownload(action) {
   try {
     const config = {
       url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
