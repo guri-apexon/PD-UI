@@ -7,7 +7,12 @@ import Close from 'apollo-react-icons/Close';
 import { useSelector, useDispatch } from 'react-redux';
 import './BladeLeft.scss';
 
-import { protocolTocData, TOCActive } from '../protocolSlice';
+import {
+  protocolTocData,
+  TOCActive,
+  setActiveTOC,
+  activeTOC,
+} from '../protocolSlice';
 import AccordionToc from './AccordionToc';
 
 function BladeLeft({ handlePageNo }) {
@@ -15,27 +20,17 @@ function BladeLeft({ handlePageNo }) {
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const wrapperRef = useRef(null);
+  const activeTree = useSelector(activeTOC);
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
-  const [expanded, setExpanded] = useState([]);
+  const [tocList, setTocList] = useState([]);
+  const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
     if (tocActiveSelector) {
       setTocActive(tocActiveSelector);
-      const arr = [];
-      tocActiveSelector.forEach((element, idx) => {
-        if (element) {
-          arr.push(idx);
-        }
-      });
-      setExpanded(arr);
-      console.log({ arr });
     }
   }, [tocActiveSelector]);
-
-  const [tocList, setTocList] = useState([]);
-
-  const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
     if (tocData.data?.length) {
@@ -66,7 +61,7 @@ function BladeLeft({ handlePageNo }) {
     };
   }, [wrapperRef]);
 
-  const handleChange = (index) => {
+  const handleChange = (index, linkId) => {
     const tempTOCActive = [...tocActive];
     tempTOCActive[index] = !tempTOCActive[index];
     dispatch({
@@ -75,6 +70,14 @@ function BladeLeft({ handlePageNo }) {
         data: tempTOCActive,
       },
     });
+    let arr = [];
+    const idx = activeTree.findIndex((x) => x === linkId);
+    if (idx > -1) {
+      arr = activeTree.filter((x) => x !== linkId);
+    } else {
+      arr = [...activeTree, linkId];
+    }
+    dispatch(setActiveTOC(arr));
   };
 
   const accGenerator = (item, sectionIndex) => {
@@ -83,7 +86,7 @@ function BladeLeft({ handlePageNo }) {
         level={item}
         sectionIndex={sectionIndex}
         handlePageNo={handlePageNo}
-        expanded={expanded}
+        expanded={activeTree}
         handleChange={handleChange}
         subAccComponent={item?.childlevel?.map((level) => {
           return accGenerator(level, sectionIndex);
@@ -116,7 +119,11 @@ function BladeLeft({ handlePageNo }) {
       >
         {expand && (
           <div className="toc-wrapper">
-            <TreeView style={{ maxWidth: 276 }} multiSelect expanded={expanded}>
+            <TreeView
+              style={{ maxWidth: 276 }}
+              multiSelect
+              expanded={activeTree}
+            >
               {tocList?.map((item, index) => {
                 return accGenerator(item, index);
               })}

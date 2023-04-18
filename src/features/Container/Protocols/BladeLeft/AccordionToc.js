@@ -21,15 +21,15 @@ function AccordionToc({
 }) {
   return (
     <TreeItem
-      key={sectionIndex}
+      key={level.link_id}
       label={level?.source_file_section}
       onClick={(e) => {
-        if (level.levelNumber) handleChange(sectionIndex);
+        if (level.levelNumber) handleChange(sectionIndex, level.link_id);
         handlePageNo(e, level.page, sectionIndex);
       }}
-      nodeId={sectionIndex}
+      nodeId={level.link_id}
       icon={
-        expanded.includes(sectionIndex) ? <ChevronDown /> : <ChevronRight />
+        expanded.includes(level.link_id) ? <ChevronDown /> : <ChevronRight />
       }
     >
       {subAccComponent}

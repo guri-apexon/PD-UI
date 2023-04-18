@@ -40,6 +40,8 @@ import {
   sectionLockDetails,
   setSaveEnabled,
   updateSectionData,
+  setActiveTOC,
+  activeTOC,
 } from '../protocolSlice';
 import AddSection from './AddSection';
 import DeleteModal from './Modals/DeleteModal';
@@ -104,6 +106,7 @@ function DigitizeAccordion({
   const discardSelector = useSelector(discardDetails);
   const [discardData, setDiscardData] = useState({});
   const userIdSelector = useSelector(userId);
+  const activeTree = useSelector(activeTOC);
 
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
@@ -185,6 +188,14 @@ function DigitizeAccordion({
     }
     if (handlePageRight) handlePageRight(item.page);
     setExpanded(!expanded);
+    let arr = [];
+    const idx = activeTree.findIndex((x) => x === item.link_id);
+    if (idx > -1) {
+      arr = activeTree.filter((x) => x !== item.link_id);
+    } else {
+      arr = [...activeTree, item.link_id];
+    }
+    dispatch(setActiveTOC(arr));
     handleTocsection(true);
     handleLinkId(item.link_id);
   };

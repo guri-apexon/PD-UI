@@ -161,7 +161,7 @@ export const protocolSlice = createSlice({
     getTOCActive: (state, action) => {
       state.TOCActiveAccordion = action.payload;
     },
-    setTOCActive: (state, action) => {
+    setActiveTOC: (state, action) => {
       state.activeTOC = action.payload;
     },
     setAccordianMetaData: (state, action) => {
@@ -252,7 +252,7 @@ export const {
   getAllDipaViewData,
   getDiscardDeatils,
   resetProtocolTocData,
-  setTOCActive,
+  setActiveTOC,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
