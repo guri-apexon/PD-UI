@@ -83,6 +83,7 @@ function AddProtocol() {
       toast.success(
         'Workflows execution were submitted successfully for the protocol',
       );
+      dispatch({ type: 'FETCH_WORKFLOW_DATA' });
       dispatch({ type: 'RESET_SUBMIT_WORKFLOW_DATA' });
     }
   }, [workflowSubmitData]);

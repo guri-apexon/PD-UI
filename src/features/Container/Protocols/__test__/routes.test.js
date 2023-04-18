@@ -22,4 +22,20 @@ describe('Routes component', () => {
       { wrapper: MemoryRouter },
     );
   });
+  test('renders qc component for QC2 user', async () => {
+    render(
+      <Provider store={store}>
+        <Routes userType="QC2" />
+      </Provider>,
+      { wrapper: MemoryRouter },
+    );
+  });
+  test('renders qc component for admin user', async () => {
+    render(
+      <Provider store={store}>
+        <Routes userType="admin" />
+      </Provider>,
+      { wrapper: MemoryRouter },
+    );
+  });
 });

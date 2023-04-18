@@ -22,10 +22,21 @@ class ProtocolViewWrapper extends React.Component {
       pageNo: 0,
       sectionNumber: -1,
       paginationPage: 0,
+      fullRightScreen: false,
     };
   }
 
   componentDidMount() {}
+
+  handleRightFullScreen = (fullRightScreen) => {
+    if (fullRightScreen === null) {
+      this.setState((state) => ({
+        fullRightScreen: !state.fullRightScreen,
+      }));
+    } else {
+      this.setState({ fullRightScreen });
+    }
+  };
 
   /* istanbul ignore next */
   handlePageRight = (pageRight) => {
@@ -84,6 +95,7 @@ class ProtocolViewWrapper extends React.Component {
       headerDetails,
       paginationPage,
       rightValue,
+      fullRightScreen,
     } = this.state;
 
     return (
@@ -106,6 +118,7 @@ class ProtocolViewWrapper extends React.Component {
         <div className="view-wrapper">
           <PanelGroup className="panel_group">
             {data?.userPrimaryRoleFlag &&
+              !fullRightScreen &&
               // eslint-disable-next-line
               pageRight != PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && (
                 <Panel
@@ -143,6 +156,9 @@ class ProtocolViewWrapper extends React.Component {
                   paginationPage={paginationPage}
                   rightBladeValue={rightValue}
                   globalPreferredTerm={globalPreferredTerm}
+                  handleRightFullScreen={this.handleRightFullScreen}
+                  fullRightScreen={fullRightScreen}
+                  showExpandIcon={!!data?.userPrimaryRoleFlag}
                 />
               </Panel>
             )}

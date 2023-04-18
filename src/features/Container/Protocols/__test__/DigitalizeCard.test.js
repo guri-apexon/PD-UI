@@ -17,6 +17,7 @@ const sectionRef = [
   },
 ];
 const handlePageRight = jest.fn();
+const mockHandleRightFullScreen = jest.fn();
 
 const home = PROTOCOL_RIGHT_MENU.HOME;
 
@@ -56,6 +57,9 @@ describe('DigitizeCard', () => {
         paginationPage={2}
         rightValue={PROTOCOL_RIGHT_MENU.HOME}
         handlePageRight={handlePageRight}
+        handleRightFullScreen={mockHandleRightFullScreen}
+        showExpandIcon={false}
+        fullRightScreen={false}
       />,
       {
         preloadedState: initialState,
@@ -75,6 +79,9 @@ describe('DigitizeCard', () => {
         paginationPage={2}
         rightValue={PROTOCOL_RIGHT_MENU.HOME}
         handlePageRight={handlePageRight}
+        handleRightFullScreen={mockHandleRightFullScreen}
+        showExpandIcon={false}
+        fullRightScreen={false}
       />,
       { preloadedState: { ...initialState, home } },
     );
@@ -92,6 +99,9 @@ describe('DigitizeCard', () => {
         paginationPage={2}
         handlePageRight={handlePageRight}
         rightValue={PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES}
+        handleRightFullScreen={mockHandleRightFullScreen}
+        showExpandIcon={false}
+        fullRightScreen={false}
       />,
       { preloadedState: { ...initialState, home } },
     );
@@ -108,6 +118,9 @@ describe('digitizeAccordion Integration', () => {
         data={{ id: 123, userPrimaryRoleFlag: true }}
         paginationPage={2}
         rightValue={PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES}
+        handleRightFullScreen={mockHandleRightFullScreen}
+        showExpandIcon={false}
+        fullRightScreen={false}
       />,
       { preloadedState: { ...initialState, home } },
     );
