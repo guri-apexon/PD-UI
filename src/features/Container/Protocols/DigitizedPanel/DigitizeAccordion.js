@@ -188,14 +188,6 @@ function DigitizeAccordion({
     }
     if (handlePageRight) handlePageRight(item.page);
     setExpanded(!expanded);
-    let arr = [];
-    const idx = activeTree.findIndex((x) => x === item.link_id);
-    if (idx > -1) {
-      arr = activeTree.filter((x) => x !== item.link_id);
-    } else {
-      arr = [...activeTree, item.link_id];
-    }
-    dispatch(setActiveTOC(arr));
     handleTocsection(true);
     handleLinkId(item.link_id);
   };
@@ -220,11 +212,14 @@ function DigitizeAccordion({
         setDocId(item.doc_id);
         fetchContent();
       }
+      dispatch(setActiveTOC([...activeTree, item.link_id]));
     } else {
       setEnrichedTarget(null);
       setShowAlert(false);
       setShowEdit(false);
       setCurrentEditCard(null);
+      let arr = activeTree.filter((x) => x !== item.link_id);
+      dispatch(setActiveTOC(arr));
     }
     // eslint-disable-next-line
   }, [expanded]);
