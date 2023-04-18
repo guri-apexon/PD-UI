@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import TreeView from 'apollo-react/components/TreeView';
 import Blade from 'apollo-react/components/Blade';
-import IconButton from 'apollo-react/components/IconButton';
-import Close from 'apollo-react-icons/Close';
 import { useSelector, useDispatch } from 'react-redux';
 import './BladeLeft.scss';
 

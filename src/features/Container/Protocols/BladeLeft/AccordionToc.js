@@ -1,16 +1,8 @@
-import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import Typography from 'apollo-react/components/Typography';
 import PropTypes from 'prop-types';
-import React from 'react';
-import Accordion from 'apollo-react/components/Accordion/Accordion';
-import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import TreeItem from 'apollo-react/components/TreeItem';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
 import ChevronDown from 'apollo-react-icons/ChevronDown';
 
-const noBorderStyle = {
-  border: 'none',
-};
 function AccordionToc({
   level,
   sectionIndex,
@@ -34,28 +26,6 @@ function AccordionToc({
     >
       {subAccComponent}
     </TreeItem>
-    // <Accordion
-    //   key={React.key}
-    //   style={noBorderStyle}
-    //   expanded={level.levelNumber && expanded}
-    // >
-    //   <AccordionSummary
-    //     onClick={(e) => {
-    //       if (level.levelNumber) handleChange(sectionIndex);
-    //       handlePageNo(e, level.page, sectionIndex);
-    //     }}
-    //   >
-    //     <Typography
-    //       className="header-unselect"
-    //       title={level?.source_file_section}
-    //     >
-    //       {level?.source_file_section}
-    //     </Typography>
-    //   </AccordionSummary>
-    //   <AccordionDetails>
-    //     <div>{subAccComponent}</div>
-    //   </AccordionDetails>
-    // </Accordion>
   );
 }
 

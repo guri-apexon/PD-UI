@@ -218,7 +218,7 @@ function DigitizeAccordion({
       setShowAlert(false);
       setShowEdit(false);
       setCurrentEditCard(null);
-      let arr = activeTree.filter((x) => x !== item.link_id);
+      const arr = activeTree.filter((x) => x !== item.link_id);
       dispatch(setActiveTOC(arr));
     }
     // eslint-disable-next-line
