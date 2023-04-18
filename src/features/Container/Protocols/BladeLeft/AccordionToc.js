@@ -1,7 +1,6 @@
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import Typography from 'apollo-react/components/Typography';
 import PropTypes from 'prop-types';
-import Tooltip from 'apollo-react/components/Tooltip';
 import React from 'react';
 import Accordion from 'apollo-react/components/Accordion/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
@@ -29,11 +28,12 @@ function AccordionToc({
           handlePageNo(e, level.page, sectionIndex);
         }}
       >
-        <Tooltip title={level?.source_file_section}>
-          <Typography className="header-unselect">
-            {level?.source_file_section}
-          </Typography>
-        </Tooltip>
+        <Typography
+          className="header-unselect"
+          title={level?.source_file_section}
+        >
+          {level?.source_file_section}
+        </Typography>
       </AccordionSummary>
       <AccordionDetails>
         <div>{subAccComponent}</div>

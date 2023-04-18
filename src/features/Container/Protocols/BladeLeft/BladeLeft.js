@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import Blade from 'apollo-react/components/Blade';
 import ChevronLeft from 'apollo-react-icons/ChevronLeft';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
 import IconButton from 'apollo-react/components/IconButton';
@@ -96,48 +95,39 @@ function BladeLeft({ handlePageNo }) {
   };
 
   return (
-    <div
-      className={`bladeContainer ${expand ? 'expand' : ''}`}
-      ref={wrapperRef}
-    >
-      {/* <Blade
-        data-testid="toc-component"
-        onChange={(e, expanded) => setExpand(expanded)}
-        open={open}
-        expanded={expand}
-        onClose={() => setOpen(false)}
-        title="Navigation"
-        className="blade"
-        width={263}
-        marginTop={141}
-        hasBackdrop
-        BackdropProps={{
-          onClick: () => {
-            setOpen(false);
-          },
-        }}
-      > */}
-      {expand && (
-        <>
-          <div className="blade-header">
-            <h3>Navigation</h3>
-            <IconButton>
-              <Close />
-            </IconButton>
-          </div>
-          <hr />
-          <div className="toc-wrapper">
-            {tocList?.map((item, index) => {
-              return accGenerator(item, index, getValue(index));
-            })}
-          </div>
-        </>
-      )}
-      <IconButton className="expand-button" onClick={() => setExpand(!expand)}>
-        {expand ? <ChevronLeft /> : <ChevronRight />}
-      </IconButton>
-      {/* </Blade> */}
-    </div>
+    <>
+      {expand && <div className="blade-backdrop" />}
+      <div
+        className={`bladeContainer ${expand ? 'expand' : ''}`}
+        ref={wrapperRef}
+      >
+        {expand && (
+          <>
+            <div className="blade-header">
+              <h3>Navigation</h3>
+              <IconButton
+                className="close-button"
+                onClick={() => setExpand(false)}
+              >
+                <Close />
+              </IconButton>
+            </div>
+            <hr />
+            <div className="toc-wrapper">
+              {tocList?.map((item, index) => {
+                return accGenerator(item, index, getValue(index));
+              })}
+            </div>
+          </>
+        )}
+        <IconButton
+          className="expand-button"
+          onClick={() => setExpand(!expand)}
+        >
+          {expand ? <ChevronLeft /> : <ChevronRight />}
+        </IconButton>
+      </div>
+    </>
   );
 }
 export default BladeLeft;
