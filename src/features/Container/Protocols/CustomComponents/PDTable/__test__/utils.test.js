@@ -6,6 +6,7 @@ import {
   updateFootNotePayload,
   swapRowElements,
   swapColumnElements,
+  filterTableProperties,
 } from '../utils';
 
 describe('addRow function', () => {
@@ -213,5 +214,18 @@ describe('deleteColumn function', () => {
 
       expect(actualData).toEqual(expectedData);
     });
+  });
+});
+
+describe('filterTableProperties', () => {
+  const data = [
+    { id: 1, name: 'John', age: 25 },
+    { id: 2, name: 'Jane', age: 30 },
+    { id: 3, name: 'Bob', age: 35 },
+  ];
+
+  it('should not filter data if searchValue is not found', () => {
+    const filteredData = filterTableProperties(data, '50');
+    expect(filteredData).toEqual([]);
   });
 });
