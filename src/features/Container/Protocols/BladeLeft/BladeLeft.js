@@ -24,7 +24,7 @@ function BladeLeft({ handlePageNo }) {
   const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
-    if (tocData.data?.length) {
+    if (tocData?.data?.length) {
       const temptoc = tocData?.data?.map((item) => ({
         ...item,
         levelNumber: 1,
