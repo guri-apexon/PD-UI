@@ -6,9 +6,11 @@ function DiscardModal({
   showDiscardConfirm,
   setShowDiscardConfirm,
   onDiscardClick,
+  setRequestedRoute,
 }) {
   const handleClose = () => {
     setShowDiscardConfirm(false);
+    setRequestedRoute('');
   };
 
   return (
@@ -43,4 +45,5 @@ DiscardModal.propTypes = {
   showDiscardConfirm: PropTypes.isRequired,
   setShowDiscardConfirm: PropTypes.isRequired,
   onDiscardClick: PropTypes.isRequired,
+  setRequestedRoute: PropTypes.isRequired,
 };

@@ -186,6 +186,16 @@ function LabData({ docId }) {
   useEffect(() => {
     if (isDiscard) {
       history.push(requestedRoute);
+      dispatch({
+        type: 'DISCARD_DETAILS',
+        payload: {
+          isEdited: false,
+          isDiscarded: false,
+          protocolTab: -1,
+          bladeRight: {},
+          labEdited: false,
+        },
+      });
     }
     // eslint-disable-next-line
   }, [isDiscard, requestedRoute]);
@@ -481,6 +491,7 @@ function LabData({ docId }) {
           showDiscardConfirm={showDiscardConfirm}
           setShowDiscardConfirm={setShowDiscardConfirm}
           onDiscardClick={onDiscardClick}
+          setRequestedRoute={setRequestedRoute}
         />
       </div>
       {isOpen && (
