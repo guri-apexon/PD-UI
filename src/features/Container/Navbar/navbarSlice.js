@@ -24,7 +24,7 @@ export const navbarSlice = createSlice({
     deleteNotificationData: (state, action) => {
       try {
         state.notifications = state.notifications.filter(
-          (item) => item?.id !== action.payload,
+          (item) => item?.alert_id !== action.payload,
         );
       } catch (error) {
         console.log(error);
