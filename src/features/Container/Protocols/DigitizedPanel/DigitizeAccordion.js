@@ -368,6 +368,16 @@ function DigitizeAccordion({
       }
     }
     if (Object.keys(lockDetails || {}).length === 0 && requestedRoute) {
+      dispatch({
+        type: 'DISCARD_DETAILS',
+        payload: {
+          isEdited: false,
+          isDiscarded: false,
+          protocolTab: -1,
+          bladeRight: {},
+          labEdited: false,
+        },
+      });
       history.push(requestedRoute);
       setRequestedRoute('');
     }
