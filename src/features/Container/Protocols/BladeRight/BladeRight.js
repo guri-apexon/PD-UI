@@ -34,14 +34,15 @@ function BladeRight({
   };
 
   const handleDiscard = (item) => {
+    const { isEdited, labEdited } = discardData;
     dispatch({
       type: 'DISCARD_DETAILS',
       payload: {
-        isEdited: discardData?.isEdited,
+        isEdited,
         isDiscarded: false,
         protocolTab: -1,
         bladeRight: item,
-        labEdited: discardData?.labEdited,
+        labEdited,
       },
     });
   };

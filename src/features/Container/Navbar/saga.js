@@ -58,12 +58,12 @@ export function* handlereadNotification(action) {
     url: `${BASE_URL_8000}/api/notification_read/`,
     method: 'POST',
     data: {
-      id: id,
-      protocol: protocol,
-      aidocId: aidocId,
+      id,
+      protocol,
+      aidocId,
       readFlag: true,
       notification_delete: false,
-      alert_id: alert_id,
+      alert_id,
     },
   };
 
@@ -101,7 +101,7 @@ export function* handleDeleteNotification(action) {
         aidocId: aidocId,
         readFlag: true,
         notification_delete: true,
-        alert_id: alert_id,
+        alert_id,
       },
     };
 
