@@ -17,20 +17,9 @@ function BladeLeft({ handlePageNo }) {
   const wrapperRef = useRef(null);
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
-  const [expanded, setExpanded] = useState([]);
 
   useEffect(() => {
-    if (tocActiveSelector) {
-      setTocActive(tocActiveSelector);
-      const arr = [];
-      tocActiveSelector.forEach((element, idx) => {
-        if (element) {
-          arr.push(idx);
-        }
-      });
-      setExpanded(arr);
-      console.log({ arr });
-    }
+    if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
   const [tocList, setTocList] = useState([]);
@@ -87,16 +76,20 @@ function BladeLeft({ handlePageNo }) {
     return false;
   };
 
-  const accGenerator = (item, sectionIndex, handleGetValue) => {
+  useEffect(() => {
+    console.log(expand);
+  }, [expand]);
+
+  const accGenerator = (item, sectionIndex, expanded) => {
     return (
       <AccordionToc
         level={item}
         sectionIndex={sectionIndex}
         handlePageNo={handlePageNo}
-        handleGetValue={handleGetValue}
+        expanded={expanded}
         handleChange={handleChange}
         subAccComponent={item?.childlevel?.map((level) => {
-          return accGenerator(level, sectionIndex, handleGetValue);
+          return accGenerator(level, sectionIndex, expanded);
         })}
       />
     );
@@ -109,7 +102,7 @@ function BladeLeft({ handlePageNo }) {
     >
       <Blade
         data-testid="toc-component"
-        onChange={(e, val) => setExpand(val)}
+        onChange={(e, expanded) => setExpand(expanded)}
         open={open}
         expanded={expand}
         onClose={() => setOpen(false)}
@@ -126,7 +119,7 @@ function BladeLeft({ handlePageNo }) {
       >
         {expand && (
           <div className="toc-wrapper">
-            <TreeView style={{ maxWidth: 276 }} multiSelect expaned={expanded}>
+            <TreeView style={{ maxWidth: 276 }} multiSelect>
               {tocList?.map((item, index) => {
                 return accGenerator(item, index, getValue(index));
               })}

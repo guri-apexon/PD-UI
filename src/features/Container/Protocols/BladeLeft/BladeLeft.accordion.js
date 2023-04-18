@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import TreeView from 'apollo-react/components/TreeView';
-import Blade from 'apollo-react/components/Blade';
+import ChevronLeft from 'apollo-react-icons/ChevronLeft';
+import ChevronRight from 'apollo-react-icons/ChevronRight';
 import IconButton from 'apollo-react/components/IconButton';
 import Close from 'apollo-react-icons/Close';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,20 +18,8 @@ function BladeLeft({ handlePageNo }) {
   const wrapperRef = useRef(null);
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
-  const [expanded, setExpanded] = useState([]);
-
   useEffect(() => {
-    if (tocActiveSelector) {
-      setTocActive(tocActiveSelector);
-      const arr = [];
-      tocActiveSelector.forEach((element, idx) => {
-        if (element) {
-          arr.push(idx);
-        }
-      });
-      setExpanded(arr);
-      console.log({ arr });
-    }
+    if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
   const [tocList, setTocList] = useState([]);
@@ -87,54 +76,61 @@ function BladeLeft({ handlePageNo }) {
     return false;
   };
 
-  const accGenerator = (item, sectionIndex, handleGetValue) => {
+  useEffect(() => {
+    console.log(expand);
+  }, [expand]);
+
+  const accGenerator = (item, sectionIndex, expanded) => {
     return (
       <AccordionToc
         level={item}
         sectionIndex={sectionIndex}
         handlePageNo={handlePageNo}
-        handleGetValue={handleGetValue}
+        expanded={expanded}
         handleChange={handleChange}
         subAccComponent={item?.childlevel?.map((level) => {
-          return accGenerator(level, sectionIndex, handleGetValue);
+          return accGenerator(level, sectionIndex, expanded);
         })}
       />
     );
   };
 
   return (
-    <div
-      className={`bladeContainer ${expand ? 'expand' : ''}`}
-      ref={wrapperRef}
-    >
-      <Blade
-        data-testid="toc-component"
-        onChange={(e, val) => setExpand(val)}
-        open={open}
-        expanded={expand}
-        onClose={() => setOpen(false)}
-        title="Navigation"
-        className="blade"
-        width={263}
-        marginTop={141}
-        hasBackdrop
-        BackdropProps={{
-          onClick: () => {
-            setOpen(false);
-          },
-        }}
+    <>
+      {expand && <div className="blade-backdrop" />}
+      <div
+        className={`bladeContainer ${expand ? 'expand' : ''}`}
+        ref={wrapperRef}
       >
         {expand && (
-          <div className="toc-wrapper">
-            <TreeView style={{ maxWidth: 276 }} multiSelect expaned={expanded}>
-              {tocList?.map((item, index) => {
-                return accGenerator(item, index, getValue(index));
-              })}
-            </TreeView>
-          </div>
+          <>
+            <div className="blade-header">
+              <h3>Navigation</h3>
+              <IconButton
+                className="close-button"
+                onClick={() => setExpand(false)}
+              >
+                <Close />
+              </IconButton>
+            </div>
+            <hr />
+            <div className="toc-wrapper">
+              <TreeView style={{ maxWidth: 276 }} multiSelect hideArrows>
+                {tocList?.map((item, index) => {
+                  return accGenerator(item, index, getValue(index));
+                })}
+              </TreeView>
+            </div>
+          </>
         )}
-      </Blade>
-    </div>
+        <IconButton
+          className="expand-button"
+          onClick={() => setExpand(!expand)}
+        >
+          {expand ? <ChevronLeft /> : <ChevronRight />}
+        </IconButton>
+      </div>
+    </>
   );
 }
 export default BladeLeft;
