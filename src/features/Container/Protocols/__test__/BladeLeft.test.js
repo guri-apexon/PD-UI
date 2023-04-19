@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import userEvent from '@testing-library/user-event';
-import { render } from '../../../../test-utils/test-utils';
+import { render, fireEvent } from '../../../../test-utils/test-utils';
 import BladeLeft from '../BladeLeft/BladeLeft';
 import ProtocolReducer from '../protocolSlice';
 import * as ProtocolContext from '../ProtocolContext';
@@ -56,5 +56,57 @@ describe.only('leftBlade should Opne when Click', () => {
     const SignaturesSub = screen.getByText('Signatures');
     expect(SignaturesSub).toBeInTheDocument();
     userEvent.click(SignaturesSub);
+  });
+  test('Close LeftBlade', () => {
+    const screen = renderWithProviders(
+      <BladeLeft
+        dataSummary={{
+          id: 1,
+        }}
+        handlePageNo={() => jest.fn()}
+      />,
+      {
+        preloadedState: initialState,
+      },
+    );
+    const BladeEl = screen.getByTestId('toc-component');
+    userEvent.click(BladeEl.querySelector('svg'));
+    userEvent.click(BladeEl.querySelector('button'));
+    expect(screen.getByTestId('toc-component')).toBeVisible(false);
+  });
+  test('should render to hide left blade', () => {
+    const screen = renderWithProviders(
+      <BladeLeft
+        dataSummary={{
+          id: 1,
+        }}
+        handlePageNo={() => jest.fn()}
+      />,
+      {
+        preloadedState: initialState,
+      },
+    );
+    const BladeEl = screen.getByTestId('toc-component');
+    userEvent.click(BladeEl.querySelector('svg'));
+    const backDrop = document.getElementsByClassName('MuiBackdrop-root')[0];
+    userEvent.click(backDrop);
+    expect(screen.getByTestId('toc-component')).toBeVisible(false);
+  });
+  test('should render to click outside', () => {
+    const screen = renderWithProviders(
+      <BladeLeft
+        dataSummary={{
+          id: 1,
+        }}
+        handlePageNo={() => jest.fn()}
+      />,
+      {
+        preloadedState: initialState,
+      },
+    );
+    const BladeEl = screen.getByTestId('toc-component');
+    userEvent.click(BladeEl.querySelector('svg'));
+    fireEvent.mouseDown(document.body);
+    expect(screen.getByTestId('toc-component')).toBeVisible(false);
   });
 });
