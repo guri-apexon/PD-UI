@@ -9,7 +9,7 @@ import {
   PROTOCOL_RIGHT_MENU_ARR,
 } from '../Constant/Constants';
 import './BladeRight.scss';
-import { rightBladeValue } from '../protocolSlice';
+import { discardDetails, rightBladeValue } from '../protocolSlice';
 
 function BladeRight({
   dataSummary,
@@ -22,10 +22,29 @@ function BladeRight({
   const BladeRightValue = useSelector(rightBladeValue);
 
   const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_ARR);
+  const discardSelector = useSelector(discardDetails);
+  const [discardData, setDiscardData] = useState({});
+  useEffect(() => {
+    setDiscardData(discardSelector);
+  }, [discardSelector]);
 
   const handleChangeGlobalPreferredTerm = (e, checked) => {
     setGlobalPreferredTerm(checked);
     setOpen(false);
+  };
+
+  const handleDiscard = (item) => {
+    const { isEdited, labEdited } = discardData;
+    dispatch({
+      type: 'DISCARD_DETAILS',
+      payload: {
+        isEdited,
+        isDiscarded: false,
+        protocolTab: -1,
+        bladeRight: item,
+        labEdited,
+      },
+    });
   };
 
   const onClose = () => {
@@ -43,6 +62,21 @@ function BladeRight({
     });
     setAccordianData(panelValue);
     onClose();
+  };
+
+  const handleChangeTab = (index, item) => {
+    if (discardData?.labEdited || discardData?.isEdited) {
+      handleDiscard({ ...item, index });
+      onClose();
+    } else {
+      dispatch({
+        type: 'GET_RIGHT_BLADE',
+        payload: {
+          name: item?.name,
+        },
+      });
+      handleClick(index);
+    }
   };
 
   useEffect(() => {
@@ -115,13 +149,7 @@ function BladeRight({
                           item?.name,
                         )}
                         onClick={() => {
-                          dispatch({
-                            type: 'GET_RIGHT_BLADE',
-                            payload: {
-                              name: item?.name,
-                            },
-                          });
-                          handleClick(index);
+                          handleChangeTab(index, item);
                         }}
                         data-testId="rightbladeclick"
                       >

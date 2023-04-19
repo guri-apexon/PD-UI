@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import Card from 'apollo-react/components/Card/Card';
@@ -11,10 +12,16 @@ import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import Table from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
-import { labDataSelector, setLabDataSuccess } from '../protocolSlice';
+import { useHistory } from 'react-router-dom';
+import {
+  labDataSelector,
+  setLabDataSuccess,
+  discardDetails,
+} from '../protocolSlice';
 import DeleteRow from './Modal/DeleteRow';
 import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
+import DiscardModal from '../DigitizedPanel/Modals/DiscardModal';
 
 function ActionCell({ row }) {
   const {
@@ -67,8 +74,8 @@ function ActionCell({ row }) {
 function CustomHeader({
   isEdit,
   clearFilter,
-  setIsEdit,
   handleSave,
+  onEditClick,
   toggleFilters,
 }) {
   return (
@@ -102,7 +109,7 @@ function CustomHeader({
           variant="secondary"
           icon={<Pencil />}
           className="btn-common"
-          onClick={() => setIsEdit(true)}
+          onClick={onEditClick}
           data-testid="editall"
         />
       )}
@@ -131,18 +138,30 @@ function EditableCell({ row, column: { accessor: key } }) {
     row[key]
   );
 }
+const styles = {
+  modal: {
+    maxWidth: 500,
+  },
+};
 
+const useStyles = makeStyles(styles);
 function LabData({ docId }) {
   const dispatch = useDispatch();
   const tableRef = useRef();
-
+  const classes = useStyles();
   const labData = useSelector(labDataSelector);
+  const discardSelector = useSelector(discardDetails);
+  const [discardData, setDiscardData] = useState({});
   const [columns, setColumns] = useState(LABDATA_CONSTANTS.columnList);
   const [rowData, setRowData] = useState([]);
   const [editedRow, setEditedRow] = useState({});
   const [isEdit, setIsEdit] = useState(false);
+  const [isDiscard, setIsDiscard] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [rowId, setRowId] = useState();
+  const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
+  const history = useHistory();
+  const [requestedRoute, setRequestedRoute] = useState('');
 
   const getLabData = () => {
     dispatch({
@@ -158,6 +177,54 @@ function LabData({ docId }) {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (discardSelector) {
+      setDiscardData(discardSelector);
+    }
+  }, [discardSelector]);
+
+  useEffect(() => {
+    if (isDiscard) {
+      history.push(requestedRoute);
+      dispatch({
+        type: 'DISCARD_DETAILS',
+        payload: {
+          isEdited: false,
+          isDiscarded: false,
+          protocolTab: -1,
+          bladeRight: {},
+          labEdited: false,
+        },
+      });
+    }
+    // eslint-disable-next-line
+  }, [isDiscard, requestedRoute]);
+
+  useEffect(() => {
+    if (
+      (discardData?.isDiscarded && discardData?.isEdited) ||
+      (discardData?.bladeRight?.name && discardData?.labEdited)
+    ) {
+      setShowDiscardConfirm(true);
+    }
+    // eslint-disable-next-line
+  }, [discardData]);
+
+  useEffect(() => {
+    const blockRedireting = history.block((requestUrl) => {
+      if (isEdit && !isDiscard) {
+        setShowDiscardConfirm(true);
+        setRequestedRoute(requestUrl.pathname);
+        setIsDiscard(false);
+        return false;
+      }
+      return true;
+    });
+    return () => {
+      blockRedireting();
+    };
+  }, [isEdit, isDiscard, history]);
+
   const handleSave = () => {
     const updatedData = rowData?.filter((value) => value.request_type);
     if (updatedData.length > 0) {
@@ -168,6 +235,16 @@ function LabData({ docId }) {
         },
       });
     }
+    dispatch({
+      type: 'DISCARD_DETAILS',
+      payload: {
+        isEdited: false,
+        isDiscarded: false,
+        protocolTab: -1,
+        bladeRight: {},
+        labEdited: false,
+      },
+    });
     setEditedRow({});
     setIsEdit(false);
   };
@@ -310,6 +387,47 @@ function LabData({ docId }) {
       );
     }
   };
+  const onDiscardClick = () => {
+    if (requestedRoute !== '') {
+      setShowDiscardConfirm(false);
+      setIsDiscard(true);
+    } else {
+      setShowDiscardConfirm(false);
+      setIsEdit(false);
+      if (discardData?.bladeRight?.name) {
+        dispatch({
+          type: 'GET_RIGHT_BLADE',
+          payload: {
+            name: discardData?.bladeRight?.name,
+          },
+        });
+      }
+      dispatch({
+        type: 'DISCARD_DETAILS',
+        payload: {
+          isEdited: false,
+          isDiscarded: false,
+          protocolTab: discardSelector?.protocolTab,
+          bladeRight: {},
+          labEdited: false,
+        },
+      });
+    }
+  };
+
+  const onEditClick = () => {
+    setIsEdit(true);
+    dispatch({
+      type: 'DISCARD_DETAILS',
+      payload: {
+        isEdited: false,
+        isDiscarded: false,
+        protocolTab: -1,
+        bladeRight: {},
+        labEdited: true,
+      },
+    });
+  };
 
   return (
     <Card
@@ -362,11 +480,19 @@ function LabData({ docId }) {
                 clearFilter={clearFilter}
                 setIsEdit={setIsEdit}
                 handleSave={handleSave}
+                onEditClick={onEditClick}
                 {...props}
               />
             )}
           />
         </div>
+        <DiscardModal
+          classes={classes}
+          showDiscardConfirm={showDiscardConfirm}
+          setShowDiscardConfirm={setShowDiscardConfirm}
+          onDiscardClick={onDiscardClick}
+          setRequestedRoute={setRequestedRoute}
+        />
       </div>
       {isOpen && (
         <DeleteRow
@@ -392,8 +518,8 @@ EditableCell.propTypes = {
 CustomHeader.propTypes = {
   isEdit: PropTypes.isRequired,
   clearFilter: PropTypes.isRequired,
-  setIsEdit: PropTypes.isRequired,
   handleSave: PropTypes.isRequired,
+  onEditClick: PropTypes.isRequired,
   toggleFilters: PropTypes.isRequired,
 };
 

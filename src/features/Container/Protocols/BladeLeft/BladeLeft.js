@@ -14,6 +14,7 @@ function BladeLeft({ handlePageNo }) {
   const wrapperRef = useRef(null);
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
+
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
@@ -23,7 +24,7 @@ function BladeLeft({ handlePageNo }) {
   const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
-    if (tocData.data?.length) {
+    if (tocData?.data?.length) {
       const temptoc = tocData?.data?.map((item) => ({
         ...item,
         levelNumber: 1,
@@ -91,7 +92,9 @@ function BladeLeft({ handlePageNo }) {
     <div className="bladeContainer" ref={wrapperRef}>
       <Blade
         data-testid="toc-component"
-        onChange={(e, expanded) => setExpand(expanded)}
+        onChange={(e, expanded) => {
+          setExpand(expanded);
+        }}
         open={open}
         expanded={expand}
         onClose={() => setOpen(false)}

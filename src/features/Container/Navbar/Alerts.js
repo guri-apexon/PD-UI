@@ -19,8 +19,8 @@ import {
 } from 'react-virtualized';
 import { redaction } from '../../../AppConstant/AppConstant';
 import './Alerts.scss';
-import { navbarNotifications } from './navbarSlice';
 import notificationValues from './constant';
+import { navbarNotifications } from './navbarSlice';
 const replaceall = require('replaceall');
 
 const notificationStyle = {
@@ -70,16 +70,16 @@ function Alerts() {
     });
   };
 
-  const handleRead = (aidocId, id, protocol) => {
+  const handleRead = (aidocId, id, protocol, alert_id) => {
     dispatch({
       type: 'READ_NOTIFICATION',
-      payload: { aidocId, id, protocol },
+      payload: { aidocId, id, protocol, alert_id },
     });
     history.push(`/protocols?protocolId=${aidocId}&tab=1`);
     setAnchorEl(!anchorEl);
   };
 
-  const newNotifications = notificationData.filter(
+  const newNotifications = notificationData?.filter(
     (item) => item.read === false,
   );
 
@@ -102,7 +102,7 @@ function Alerts() {
         className={`alert-icon ${!!anchorEl && 'alert-icon-active'}`}
         onClick={openNotifications}
       >
-        <Badge badgeContent={newNotifications.length || 0} max={99}>
+        <Badge badgeContent={newNotifications?.length || 0} max={99}>
           <BellIcon />
         </Badge>
       </button>
@@ -187,6 +187,7 @@ function Alerts() {
                                     notification.aidocId,
                                     notification.id,
                                     notification.protocol,
+                                    notification.alert_id,
                                   )
                                 }
                               >

@@ -1,8 +1,13 @@
 .pipeline-component {
-  margin-top: 10px;
+  margin-top: 5px;
+  .wf-name {
+    margin-top: 20px;
+  }
   .docid-section {
     width: 60%;
-    margin-top: 20px;
+    label {
+      opacity: 1;
+    }
     .docid-field {
       min-width: 400px;
     }
@@ -55,9 +60,11 @@
         width: 18px;
         margin-right: 8px;
         vertical-align: top;
+        cursor: pointer;
       }
-      .input-label{
+      .input-label {
         font-size: 14px;
+        cursor: pointer;
       }
     }
   }

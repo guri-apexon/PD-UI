@@ -77,6 +77,7 @@ function DisplayTable({
                   />
                 )}
                 <div
+                  data-testid="table-row"
                   className="pd-table-row"
                   id={`rowID-${rowIndex}`}
                   draggable
@@ -112,6 +113,7 @@ function DisplayTable({
                           )}
                           <span
                             id={`columnID-${rowIndex}-${colIndex}`}
+                            data-testid="span-edit"
                             className="editable-span"
                             // eslint-disable-next-line
                             dangerouslySetInnerHTML={{

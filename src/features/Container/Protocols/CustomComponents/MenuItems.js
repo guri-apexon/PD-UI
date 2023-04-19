@@ -22,7 +22,7 @@ export function TextElement() {
 }
 export function ImageElement() {
   return (
-    <div className="add-element">
+    <div className="add-element" data-testId="image">
       <Image fontSize="extraSmall" />
       <span>Image</span>
     </div>
@@ -31,7 +31,7 @@ export function ImageElement() {
 
 export function TableElement() {
   return (
-    <div className="add-element">
+    <div className="add-element" data-testId="table">
       <Table fontSize="extraSmall" />
       <span>Table</span>
     </div>

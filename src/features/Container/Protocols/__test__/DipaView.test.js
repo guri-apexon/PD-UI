@@ -182,4 +182,74 @@ describe.only('DipaView Component testing', () => {
       ),
     ).toBeInTheDocument();
   });
+
+  test('Should not render the expand view button if `showExpandIcon` option is undefined', () => {
+    const screen = renderWithProviders(<DipaView />, {
+      preloadedState: { ...initialState },
+    });
+
+    const minimizeBtn = screen.queryByTestId('minimize-btn');
+    expect(minimizeBtn).toBe(null);
+    const expandBtn = screen.queryByTestId('expand-btn');
+    expect(expandBtn).toBe(null);
+  });
+
+  test('Should render the expand view button if `showExpandIcon` is true', () => {
+    const screen = renderWithProviders(<DipaView showExpandIcon />, {
+      preloadedState: { ...initialState },
+    });
+
+    const minimizeBtn = screen.queryByTestId('minimize-btn');
+    expect(minimizeBtn).toBe(null);
+    const expandBtn = screen.queryByTestId('expand-btn');
+    expect(expandBtn).toBeInTheDocument();
+  });
+
+  test('Should call handleRightFullScreen when clicked on expand button', () => {
+    const mockHandleRightFullScreen = jest.fn();
+
+    const screen = renderWithProviders(
+      <DipaView
+        showExpandIcon
+        fullRightScreen={false}
+        handleRightFullScreen={mockHandleRightFullScreen}
+      />,
+      {
+        preloadedState: { ...initialState },
+      },
+    );
+
+    const minimizeBtn = screen.queryByTestId('minimize-btn');
+    expect(minimizeBtn).toBe(null);
+
+    const expandBtn = screen.queryByTestId('expand-btn');
+    expect(expandBtn).toBeInTheDocument();
+
+    fireEvent.click(expandBtn);
+    expect(mockHandleRightFullScreen).toHaveBeenCalledWith(null);
+  });
+
+  test('Should call handleRightFullScreen when clicked on minimize button', () => {
+    const mockHandleRightFullScreen = jest.fn();
+
+    const screen = renderWithProviders(
+      <DipaView
+        showExpandIcon
+        fullRightScreen
+        handleRightFullScreen={mockHandleRightFullScreen}
+      />,
+      {
+        preloadedState: { ...initialState },
+      },
+    );
+
+    const minimizeBtn = screen.queryByTestId('minimize-btn');
+    expect(minimizeBtn).toBeInTheDocument(null);
+
+    const expandBtn = screen.queryByTestId('expand-btn');
+    expect(expandBtn).toBe(null);
+
+    fireEvent.click(minimizeBtn);
+    expect(mockHandleRightFullScreen).toHaveBeenCalledWith(null);
+  });
 });
