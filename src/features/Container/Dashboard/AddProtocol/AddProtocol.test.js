@@ -24,16 +24,36 @@ function selectAutoComplete(Container) {
   expect(input.value).toBe('');
   fireEvent.focusOut(input, { target: { value: '' } });
 }
+const workFlowData = {
+  loading: false,
 
+  error: null,
+
+  data: {
+    Status: 200,
+
+    default_workflows: {
+      meta_extraction: [
+        { depends: [], service_name: 'meta_tagging' },
+
+        { depends: ['meta_tagging'], service_name: 'meta_extraction' },
+      ],
+    },
+
+    custom_workflows: {
+      test678: [
+        { depends: [], service_name: 'meta_tagging' },
+
+        { depends: ['meta_tagging'], service_name: 'terminate_node' },
+      ],
+    },
+  },
+};
 const dashboardmockData = {
   addProtocolData: {
     amendmentNumber: [{ label: 'Y', value: 'Yes' }],
     documentState: [{ label: 'Draft', value: 'draft' }],
-    workflowData: {
-      loading: false,
-      error: null,
-      data: [],
-    },
+    workflowData: workFlowData,
     workflowSubmit: {
       loading: false,
       error: null,

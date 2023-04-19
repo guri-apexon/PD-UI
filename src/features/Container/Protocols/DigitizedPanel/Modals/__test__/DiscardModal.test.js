@@ -74,22 +74,3 @@ describe('Discard Modal', () => {
     expect(onDiscardClick).toHaveBeenCalled();
   });
 });
-
-describe('DiscardModal', () => {
-  xit('calls setShowDiscardConfirm(false) when modal is closed', () => {
-    const setShowDiscardConfirm = jest.fn();
-    const { getByLabelText } = render(
-      <DiscardModal
-        classes={{ modal: 'test-modal' }}
-        // eslint-disable-next-line react/jsx-boolean-value
-        showDiscardConfirm={true}
-        setShowDiscardConfirm={setShowDiscardConfirm}
-        onDiscardClick={() => {}}
-      />,
-    );
-
-    fireEvent.click(getByLabelText('Close'));
-
-    expect(setShowDiscardConfirm).toHaveBeenCalledWith(false);
-  });
-});
