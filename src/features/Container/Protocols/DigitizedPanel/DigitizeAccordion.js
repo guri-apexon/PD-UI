@@ -965,6 +965,7 @@ function DigitizeAccordion({
           showDiscardConfirm={showDiscardConfirm}
           setShowDiscardConfirm={setShowDiscardConfirm}
           onDiscardClick={onDiscardClick}
+          setRequestedRoute={setRequestedRoute}
         />
 
         {showAlert && (

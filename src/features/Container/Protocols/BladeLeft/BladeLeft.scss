@@ -71,6 +71,10 @@
     // padding: 0 0 0 10px;
   }
 
+  TreeView-width {
+    max-width: 276;
+  }
+
   [class*='MuiAccordionSummary-expandIcon'] {
     padding-top: 0 !important;
     * {

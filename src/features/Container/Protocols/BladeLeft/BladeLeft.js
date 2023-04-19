@@ -116,7 +116,7 @@ function BladeLeft({ handlePageNo }) {
         {expand && (
           <div className="toc-wrapper">
             <TreeView
-              style={{ maxWidth: 276 }}
+              className="TreeView-width"
               multiSelect
               expanded={activeTree}
             >
