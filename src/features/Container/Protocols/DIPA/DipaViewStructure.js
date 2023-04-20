@@ -99,7 +99,9 @@ function DipaViewStructure({
             {editingIDList?.includes(ID) ? (
               <TextField
                 placeholder="Actual text.."
-                data-testid="addgroup-textfield"
+                inputProps={{
+                  'data-testid': 'addgroup-textfield',
+                }}
                 onChange={debounce((e) => {
                   e.stopPropagation();
                   onChangeSegmentGroup(ID, e);

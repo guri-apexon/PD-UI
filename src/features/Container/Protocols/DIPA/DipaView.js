@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import Loader from 'apollo-react/components/Loader';
 import Modal from 'apollo-react/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from 'apollo-react/components/Grid/Grid';
@@ -45,6 +46,7 @@ function DipaView({
   const [tooltipValue, setTooltipValue] = useState({});
   const [countTooltip, setCountTooltip] = useState({});
   const [editedByTooltip, setEditedByTooltip] = useState({});
+  const loader = useSelector(dipaViewData);
 
   const dispatch = useDispatch();
 
@@ -73,21 +75,13 @@ function DipaView({
   }, [dipaViewSelector]);
 
   useEffect(() => {
-    let receivedData = dipaDataSelector?.data?.dipa_resource[0]?.dipa_data;
+    const receivedData = dipaDataSelector?.data?.dipa_resource[0]?.dipa_data;
     const timeUpdated = dipaDataSelector?.data?.dipa_resource[0]?.timeUpdated;
     const editCount = dipaDataSelector?.data?.dipa_resource[0]?.editCount;
     const lastEdited = dipaDataSelector?.data?.dipa_resource[0]?.lastEditedBy;
     setTooltipValue(timeUpdated);
     setCountTooltip(editCount);
     setEditedByTooltip(lastEdited);
-
-    if (typeof receivedData === 'string') {
-      try {
-        receivedData = JSON.parse(receivedData);
-      } catch (e) {
-        receivedData = {};
-      }
-    }
     setDataResponse(receivedData?.output);
   }, [dipaDataSelector]);
 
@@ -355,7 +349,7 @@ function DipaView({
     <div>
       <Card className="protocol-column protocol-digitize-column card-boarder">
         <div className="panel-heading" data-testid="header">
-          DIPA view
+          <b>Derived Counts</b>
           {showExpandIcon && fullRightScreen && (
             <Tooltip
               variant="dark"
@@ -393,7 +387,6 @@ function DipaView({
         </div>
 
         <Grid container spacing={1} className="dipa-view-table">
-          <h3 className="subtitle">Derived Counts</h3>
           <Grid container item xs={5}>
             <Grid item xs={12} className="drop-down">
               <Select
@@ -413,6 +406,7 @@ function DipaView({
               </Select>
             </Grid>
           </Grid>
+          {loader.loading ? <Loader isInner /> : ''}
           {dipaDataSelector?.success && (
             <Grid item xs={7} container spacing={1} className="dipa-view-count">
               <Grid item xs={5} className="dipa-actualcount">
@@ -437,32 +431,39 @@ function DipaView({
             data-testid="structure-component"
             className="structure-container"
           >
-            {metadata?.map((section, index) => (
-              <DipaViewStructure
-                key={section.ID}
-                ID={section.ID}
-                actualText={section.actual_text}
-                level={section.level}
-                segments={section.derive_segemnt}
-                childs={section.child}
-                index={index}
-                handleExpandChange={handleExpandChange}
-                handleUpdate={saveData}
-                handleAdd={addSegment}
-                handleAddGroup={addGroup}
-                setOpenModal={setOpenModal}
-                onChangeSegment={addSegmentText}
-                onChangeSegmentGroup={addSegmentGroupText}
-                editingIDList={editingIDList}
-                setEditingIDList={setEditingIDList}
-                toggleEditingIDs={toggleEditingIDs}
-                tooltipValue={tooltipValue}
-                countTooltip={countTooltip}
-                editedByTooltip={editedByTooltip}
-                lockDetails={lockDetails}
-                userId={userIdSelector?.toString()}
-              />
-            ))}
+            {metadata.length > 0 ? (
+              <>
+                {' '}
+                {metadata?.map((section, index) => (
+                  <DipaViewStructure
+                    key={section.ID}
+                    ID={section.ID}
+                    actualText={section.actual_text}
+                    level={section.level}
+                    segments={section.derive_segemnt}
+                    childs={section.child}
+                    index={index}
+                    handleExpandChange={handleExpandChange}
+                    handleUpdate={saveData}
+                    handleAdd={addSegment}
+                    handleAddGroup={addGroup}
+                    setOpenModal={setOpenModal}
+                    onChangeSegment={addSegmentText}
+                    onChangeSegmentGroup={addSegmentGroupText}
+                    editingIDList={editingIDList}
+                    setEditingIDList={setEditingIDList}
+                    toggleEditingIDs={toggleEditingIDs}
+                    tooltipValue={tooltipValue}
+                    countTooltip={countTooltip}
+                    editedByTooltip={editedByTooltip}
+                    lockDetails={lockDetails}
+                    userId={userIdSelector?.toString()}
+                  />
+                ))}
+              </>
+            ) : (
+              <div className="no-data-container">No Data </div>
+            )}
           </div>
         </div>
       </Card>
