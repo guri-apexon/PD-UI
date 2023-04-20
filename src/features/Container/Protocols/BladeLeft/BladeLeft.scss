@@ -25,6 +25,7 @@
   h3 {
     padding-left: 20px;
   }
+
   [class*='Blade-body-'] > div > div {
     background: #f6f7fb;
   }
@@ -67,8 +68,9 @@
   [class*='MuiAccordionDetails-root-'] {
     padding: 0 0 0px 10px;
   }
-  .Mui-expanded [class*='MuiAccordionDetails-root'] {
-    // padding: 0 0 0 10px;
+
+  .tree-view {
+    max-width: 276px;
   }
 
   [class*='MuiAccordionSummary-expandIcon'] {
@@ -93,6 +95,7 @@
 
   [class*='Blade-expandPanel-'] {
     width: 0;
+    z-index: 1;
   }
 }
 

@@ -40,6 +40,8 @@ import {
   sectionLockDetails,
   setSaveEnabled,
   updateSectionData,
+  setActiveTOC,
+  activeTOC,
 } from '../protocolSlice';
 import AddSection from './AddSection';
 import DeleteModal from './Modals/DeleteModal';
@@ -104,6 +106,7 @@ function DigitizeAccordion({
   const discardSelector = useSelector(discardDetails);
   const [discardData, setDiscardData] = useState({});
   const userIdSelector = useSelector(userId);
+  const activeTree = useSelector(activeTOC);
 
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
@@ -209,11 +212,14 @@ function DigitizeAccordion({
         setDocId(item.doc_id);
         fetchContent();
       }
+      dispatch(setActiveTOC([...activeTree, item.link_id]));
     } else {
       setEnrichedTarget(null);
       setShowAlert(false);
       setShowEdit(false);
       setCurrentEditCard(null);
+      const arr = activeTree.filter((x) => x !== item.link_id);
+      dispatch(setActiveTOC(arr));
     }
     // eslint-disable-next-line
   }, [expanded]);
@@ -959,6 +965,7 @@ function DigitizeAccordion({
           showDiscardConfirm={showDiscardConfirm}
           setShowDiscardConfirm={setShowDiscardConfirm}
           onDiscardClick={onDiscardClick}
+          setRequestedRoute={setRequestedRoute}
         />
 
         {showAlert && (
