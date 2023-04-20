@@ -59,3 +59,22 @@ describe('EmptyRowCells component', () => {
     expect(handleOperationMock).toHaveBeenCalledWith('DELETE_ROW', 0);
   });
 });
+describe('handleClickOutside', () => {
+  it('should close the dropdown when a click occurs outside the dropdown container', () => {
+    const handleOperationMock = jest.fn();
+    const { container } = render(
+      <EmptyRowCells
+        columnIndexes={[0, 1]}
+        handleOperation={handleOperationMock}
+      />,
+    );
+    const moreIcon = container.querySelector('[data-testId="more-icon"]');
+    const hoverList = container.querySelector('[data-testId="more-icon-row"]');
+
+    fireEvent.click(moreIcon);
+
+    fireEvent.mouseDown(document);
+
+    expect(hoverList).not.toHaveClass('open');
+  });
+});

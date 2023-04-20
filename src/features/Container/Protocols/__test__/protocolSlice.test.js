@@ -33,6 +33,19 @@ import protocolPageSlice, {
   setSectionDetails,
   setSectionLoader,
   TOCActive,
+  setLoader,
+  getSectionIndex,
+  getLabData,
+  setLabDataLoader,
+  setSOAData,
+  setLabDataSuccess,
+  getDiscardDeatils,
+  resetProtocolTocData,
+  setSectionLockDetails,
+  setEnrichedWord,
+  getDipaViewData,
+  getAllDipaViewData,
+  updateSectionResp,
 } from '../protocolSlice';
 
 const initialState = {
@@ -58,6 +71,21 @@ const initialState = {
     data: [],
   },
   fileStream: null,
+  loader: false,
+  sectionIndex: -1,
+  labData: {
+    data: [1, 2],
+    success: false,
+    loading: false,
+  },
+  discardValue: {
+    isEdited: false,
+    isDiscarded: false,
+    protocolTab: -1,
+  },
+  protocolTocData: [],
+  sectionLockDetails: {},
+  enrichedword: {},
 };
 
 const state = {
@@ -66,6 +94,9 @@ const state = {
     loading: true,
     success: false,
   },
+  SOAData: {},
+  dipaViewData: [],
+  allDipaViewData: [],
 };
 describe(' ProtocolSlice Test Suite', () => {
   test('getSummary test', () => {
@@ -234,6 +265,20 @@ describe(' ProtocolSlice Test Suite', () => {
       }),
     );
   });
+  test('updateSectionResp', () => {
+    const payload = {
+      protocol: '15-06',
+      data: [],
+      linkId: 15,
+      sectionResponse: null,
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: updateSectionResp.type,
+        payload,
+      }),
+    );
+  });
 
   test('getMetaDataSummaryField', () => {
     expect(
@@ -271,6 +316,24 @@ describe(' ProtocolSlice Test Suite', () => {
     ).toEqual({ ...initialState, accordionMetaData: false });
   });
 
+  test('getAllDipaViewData', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getAllDipaViewData.type,
+        payload: [],
+      }),
+    ).toEqual({ ...initialState, allDipaViewData: [] });
+  });
+
+  test('getDipaViewData', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getDipaViewData.type,
+        payload: [],
+      }),
+    ).toEqual({ ...initialState, dipaViewData: [] });
+  });
+
   test('setAccordianMetaParam', () => {
     expect(
       protocolPageSlice(initialState, {
@@ -289,6 +352,119 @@ describe(' ProtocolSlice Test Suite', () => {
     ).toEqual({ ...initialState, metadataApiCallValue: false });
   });
 
+  test('setLoader', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setLoader.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, loader: false });
+  });
+
+  test('getSectionIndex', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: getSectionIndex.type,
+        payload: -1,
+      }),
+    ).toEqual({ ...initialState, sectionIndex: -1 });
+  });
+
+  test('getDiscardDeatils', () => {
+    const discard = {
+      isEdited: false,
+      isDiscarded: false,
+      protocolTab: -1,
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: getDiscardDeatils.type,
+        payload: discard,
+      }),
+    ).toEqual({ ...initialState, discardValue: discard });
+  });
+
+  test('resetProtocolTocData', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: resetProtocolTocData.type,
+        payload: [],
+      }),
+    ).toEqual({ ...initialState, protocolTocData: [] });
+  });
+
+  test('setSectionLockDetails', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setSectionLockDetails.type,
+        payload: {},
+      }),
+    ).toEqual({ ...initialState, sectionLockDetails: {} });
+  });
+
+  test('setEnrichedWord', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setEnrichedWord.type,
+        payload: {},
+      }),
+    ).toEqual({ ...initialState, enrichedword: {} });
+  });
+
+  test('getLabData', () => {
+    const labDataTemp = {
+      data: [1, 2],
+      success: false,
+      loading: false,
+    };
+
+    expect(
+      protocolPageSlice(initialState, {
+        type: getLabData.type,
+        payload: labDataTemp.data,
+      }),
+    ).toEqual({
+      ...initialState,
+      labData: labDataTemp,
+    });
+  });
+
+  test('setLabDataLoader', () => {
+    const labDataTemp = {
+      data: [1, 2],
+      success: false,
+      loading: false,
+    };
+
+    expect(
+      protocolPageSlice(initialState, {
+        type: setLabDataLoader.type,
+        payload: labDataTemp.loading,
+      }),
+    ).toEqual({
+      ...initialState,
+      labData: labDataTemp,
+    });
+  });
+
+  test('setLabDataSuccess', () => {
+    const labDataTemp = {
+      data: [1, 2],
+      success: false,
+      loading: false,
+    };
+
+    expect(
+      protocolPageSlice(initialState, {
+        type: setLabDataSuccess.type,
+        payload: labDataTemp.success,
+      }),
+    ).toEqual({
+      ...initialState,
+      labData: labDataTemp,
+    });
+  });
+
   test('getEnrichedValue', () => {
     expect(
       protocolPageSlice(initialState, {
@@ -296,6 +472,15 @@ describe(' ProtocolSlice Test Suite', () => {
         payload: false,
       }),
     ).toEqual({ ...initialState, EnrichedApiValue: false });
+  });
+
+  test('setSOAData', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setSOAData.type,
+        payload: {},
+      }),
+    ).toEqual({ ...initialState, SOAData: {} });
   });
 
   test('Test All selector', () => {
