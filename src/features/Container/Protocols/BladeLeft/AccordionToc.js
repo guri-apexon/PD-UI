@@ -1,14 +1,8 @@
-import AccordionSummary from 'apollo-react/components/AccordionSummary';
-import Typography from 'apollo-react/components/Typography';
 import PropTypes from 'prop-types';
-import Tooltip from 'apollo-react/components/Tooltip';
-import React from 'react';
-import Accordion from 'apollo-react/components/Accordion/Accordion';
-import AccordionDetails from 'apollo-react/components/AccordionDetails';
+import TreeItem from 'apollo-react/components/TreeItem';
+import ChevronRight from 'apollo-react-icons/ChevronRight';
+import ChevronDown from 'apollo-react-icons/ChevronDown';
 
-const noBorderStyle = {
-  border: 'none',
-};
 function AccordionToc({
   level,
   sectionIndex,
@@ -18,27 +12,20 @@ function AccordionToc({
   handleChange,
 }) {
   return (
-    <Accordion
-      key={React.key}
-      style={noBorderStyle}
-      expanded={level.levelNumber && expanded}
+    <TreeItem
+      key={level.link_id}
+      label={level?.source_file_section}
+      onClick={(e) => {
+        if (level.levelNumber) handleChange(sectionIndex, level.link_id);
+        handlePageNo(e, level.page, sectionIndex);
+      }}
+      nodeId={level.link_id}
+      icon={
+        expanded.includes(level.link_id) ? <ChevronDown /> : <ChevronRight />
+      }
     >
-      <AccordionSummary
-        onClick={(e) => {
-          if (level.levelNumber) handleChange(sectionIndex);
-          handlePageNo(e, level.page, sectionIndex);
-        }}
-      >
-        <Tooltip title={level?.source_file_section}>
-          <Typography className="header-unselect">
-            {level?.source_file_section}
-          </Typography>
-        </Tooltip>
-      </AccordionSummary>
-      <AccordionDetails>
-        <div>{subAccComponent}</div>
-      </AccordionDetails>
-    </Accordion>
+      {subAccComponent}
+    </TreeItem>
   );
 }
 

@@ -1,10 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import TreeView from 'apollo-react/components/TreeView';
 import Blade from 'apollo-react/components/Blade';
 import { useSelector, useDispatch } from 'react-redux';
 import './BladeLeft.scss';
 
-import { protocolTocData, TOCActive } from '../protocolSlice';
+import {
+  protocolTocData,
+  TOCActive,
+  setActiveTOC,
+  activeTOC,
+} from '../protocolSlice';
 import AccordionToc from './AccordionToc';
 
 function BladeLeft({ handlePageNo }) {
@@ -12,16 +18,15 @@ function BladeLeft({ handlePageNo }) {
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const wrapperRef = useRef(null);
+  const activeTree = useSelector(activeTOC);
   const [tocActive, setTocActive] = useState([]);
   const tocActiveSelector = useSelector(TOCActive);
+  const [tocList, setTocList] = useState([]);
+  const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
-
-  const [tocList, setTocList] = useState([]);
-
-  const tocData = useSelector(protocolTocData);
 
   useEffect(() => {
     if (tocData?.data?.length) {
@@ -52,7 +57,7 @@ function BladeLeft({ handlePageNo }) {
     };
   }, [wrapperRef]);
 
-  const handleChange = (index) => {
+  const handleChange = (index, linkId) => {
     const tempTOCActive = [...tocActive];
     tempTOCActive[index] = !tempTOCActive[index];
     dispatch({
@@ -61,40 +66,39 @@ function BladeLeft({ handlePageNo }) {
         data: tempTOCActive,
       },
     });
-  };
-
-  const getValue = (index) => {
-    const data = tocActive || [];
-    if (data) {
-      if (data?.length >= index) {
-        return data[index];
-      }
+    let arr = [];
+    const idx = activeTree.findIndex((x) => x === linkId);
+    if (idx > -1) {
+      arr = activeTree.filter((x) => x !== linkId);
+    } else {
+      arr = [...activeTree, linkId];
     }
-    return false;
+    dispatch(setActiveTOC(arr));
   };
 
-  const accGenerator = (item, sectionIndex, expanded) => {
+  const accGenerator = (item, sectionIndex) => {
     return (
       <AccordionToc
         level={item}
         sectionIndex={sectionIndex}
         handlePageNo={handlePageNo}
-        expanded={expanded}
+        expanded={activeTree}
         handleChange={handleChange}
         subAccComponent={item?.childlevel?.map((level) => {
-          return accGenerator(level, sectionIndex, expanded);
+          return accGenerator(level, sectionIndex);
         })}
       />
     );
   };
 
   return (
-    <div className="bladeContainer" ref={wrapperRef}>
+    <div
+      className={`bladeContainer ${expand ? 'expand' : ''}`}
+      ref={wrapperRef}
+    >
       <Blade
         data-testid="toc-component"
-        onChange={(e, expanded) => {
-          setExpand(expanded);
-        }}
+        onChange={(e, val) => setExpand(val)}
         open={open}
         expanded={expand}
         onClose={() => setOpen(false)}
@@ -109,11 +113,15 @@ function BladeLeft({ handlePageNo }) {
           },
         }}
       >
-        <div className="toc-wrapper">
-          {tocList?.map((item, index) => {
-            return accGenerator(item, index, getValue(index));
-          })}
-        </div>
+        {expand && (
+          <div className="toc-wrapper">
+            <TreeView className="tree-view" multiSelect expanded={activeTree}>
+              {tocList?.map((item, index) => {
+                return accGenerator(item, index);
+              })}
+            </TreeView>
+          </div>
+        )}
       </Blade>
     </div>
   );

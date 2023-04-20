@@ -9,7 +9,12 @@ import {
 } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
-import BASE_URL, { httpCall, BASE_URL_8000, UI_URL } from '../../../utils/api';
+import BASE_URL, {
+  httpCall,
+  BASE_URL_8000,
+  UI_URL,
+  Apis,
+} from '../../../utils/api';
 import {
   localISOTime,
   qcIconStatus,
@@ -424,6 +429,7 @@ export function* resetWorkflowSubmitData() {
   yield put(setworkflowSubmit(loadingData));
 }
 export function* submitWorkflowData(action) {
+  const userId = yield getState();
   const loadingData = {
     loading: true,
     error: null,
@@ -433,14 +439,12 @@ export function* submitWorkflowData(action) {
   yield put(setworkflowSubmit(loadingData));
   try {
     const config = {
-      url: `${BASE_URL}/pd/api/v1/documents/run_work_flow`,
+      url: `${BASE_URL_8000}${Apis.SECTION_LOCK}/submit_protocol_workflow`,
       method: 'POST',
-      data: action.payload,
-      headers: { 'Content-Type': 'application/json' },
-      checkAuth: true,
+      data: { ...action.payload, userId },
     };
     const resp = yield call(httpCall, config);
-    if (resp.success) {
+    if (resp?.data?.success) {
       const successData = {
         loading: false,
         error: null,
@@ -465,7 +469,8 @@ export function* submitWorkflowData(action) {
       yield put(setworkflowSubmit(errorData));
       yield put(setAddProtocolModal(true));
       toast.error(
-        'Error occured during workflow submission for this protocol/docid',
+        resp?.data?.info ||
+          'Error occured during workflow submission for this protocol/docid',
       );
     }
   } catch (e) {

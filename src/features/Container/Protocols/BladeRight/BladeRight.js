@@ -96,6 +96,12 @@ function BladeRight({
     if (name === PROTOCOL_RIGHT_MENU.LAB_DATA && !flag) {
       return true;
     }
+    if (name === PROTOCOL_RIGHT_MENU.DIPA_VIEW && !flag) {
+      return true;
+    }
+    if (name === PROTOCOL_RIGHT_MENU.SCHEDULE_OF_ACTIVITIES && !flag) {
+      return true;
+    }
     return false;
   };
   return (

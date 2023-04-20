@@ -32,7 +32,7 @@ export function renderWithProviders(
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }
 
-describe.only('leftBlade should Opne when Click', () => {
+describe('Left sidebar', () => {
   test('Open LeftBlade', () => {
     const screen = renderWithProviders(
       <BladeLeft
