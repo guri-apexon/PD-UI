@@ -64,6 +64,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       const colIndexes = parsedTable[0]?.columns;
       setColumnWidth(98 / colIndexes.length);
     }
+    // eslint-disable-next-line
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {
