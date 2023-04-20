@@ -246,17 +246,18 @@ export function* updateSectionData(action) {
     if (action?.payload?.refreshToc) {
       yield put(getProtocolTocData({}));
     }
-    const userID = yield getState(true);
+    const userIdPrefix = yield getState(true);
+    const UserId = yield getState();
     const updatedReq = reqBody.map((ele) => {
       return {
         ...ele,
         audit: {
-          last_updated_user: userID,
+          last_updated_user: userIdPrefix,
         },
       };
     });
     const config = {
-      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}/?doc_id=${docId}`,
+      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}/?doc_id=${docId}&user_id=${UserId}`,
       method: 'POST',
       data: updatedReq,
     };

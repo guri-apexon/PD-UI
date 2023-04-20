@@ -13,6 +13,14 @@
   background-color: #3297fd;
 }
 
+.react-pdf__Page__textContent {
+  color: transparent;
+  opacity: 0.5;
+}
+.react-pdf__Page__textContent ::selection {
+  background: #3297fd;
+}
+
 .react-pdf__Document {
   line-height: initial;
 }
