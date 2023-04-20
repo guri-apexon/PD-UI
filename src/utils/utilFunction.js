@@ -14,6 +14,11 @@ import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/
 
 const replaceall = require('replaceall');
 
+export const removeHtmlTags = (html) => {
+  const regex = /<[^>]*>/g;
+  return html.replace(regex, '');
+};
+
 export const covertMMDDYYYY = (date) => {
   const onlyDate = date.split('T')[0];
   const dateFormat = new Date(onlyDate);
@@ -177,9 +182,17 @@ export const createPreferredText = (content, terms) => {
   let text = content;
   if (terms) {
     const arr = Object.keys(terms);
-    arr.forEach((term) => {
-      text = replaceall(term, `<b class="Preferred-txt">${term}</b>`, content);
-    });
+    if (arr.length) {
+      const match = arr.find((x) => {
+        return x
+          .toLowerCase()
+          .trim()
+          .includes(removeHtmlTags(text).toLowerCase().trim());
+      });
+      if (match) {
+        text = `<b class="Preferred-txt">${match}</b>`;
+      }
+    }
   }
 
   return text;
