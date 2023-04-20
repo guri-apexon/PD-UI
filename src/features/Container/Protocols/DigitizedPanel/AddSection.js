@@ -24,7 +24,7 @@ function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
       } else {
         headerObj.prev_detail.link_id = headerList[index]?.link_id;
         headerObj.prev_detail.link_level = '1';
-        headerObj.next_detail = null;
+        headerObj.next_detail.link_level = '';
       }
 
       dispatch({

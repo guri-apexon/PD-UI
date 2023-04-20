@@ -679,6 +679,7 @@ function DigitizeAccordion({
 
   const handleDeleteSection = () => {
     setShowDeleteConfirm(false);
+    console.log('SHUBHAM', headerLevel1);
     const obj = [
       {
         ...headerLevel1,
