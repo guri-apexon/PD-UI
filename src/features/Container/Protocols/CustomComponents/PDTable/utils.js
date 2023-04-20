@@ -120,3 +120,23 @@ export const filterTableProperties = (data) => {
   filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
   return filterUpdatedData;
 };
+
+export const getHtmlString = (str, isPreTerm) => {
+  return {
+    __html: isPreTerm ? `<b class="Preferred-txt">${str}</b>` : `${str}`,
+  };
+};
+
+export const getPreferredTerms = (val, isPreferredTerm, preferredTerms) => {
+  if (isPreferredTerm) {
+    const preArr = Object.entries(preferredTerms);
+    const arrVal = preArr.find(
+      (x) => x[0].trim().toLowerCase() === val.trim().toLowerCase(),
+    );
+
+    if (arrVal) {
+      return getHtmlString(val, true);
+    }
+  }
+  return getHtmlString(val, false);
+};
