@@ -274,7 +274,8 @@ function DigitizeAccordion({
     } else if (showedit && lockDetails?.section_lock) {
       updateSectionLock(true);
     } else if (showedit) {
-      onDiscardClick();
+      updateSectionLock(true);
+      setExpanded(false);
     } else {
       setExpanded(false);
     }
@@ -592,7 +593,6 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-        if (showedit && !sectionDataArr?.length) dispatchSectionData(true);
 
         setSectionDataArr(updatedSectionsData);
         if (item.linkandReference && updatedSectionsData.length) {

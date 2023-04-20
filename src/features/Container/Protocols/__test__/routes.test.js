@@ -30,7 +30,7 @@ describe('Routes component', () => {
       { wrapper: MemoryRouter },
     );
   });
-  test('renders qc component for admin user', async () => {
+  test('renders admin component for Admin user', async () => {
     render(
       <Provider store={store}>
         <Routes userType="admin" />

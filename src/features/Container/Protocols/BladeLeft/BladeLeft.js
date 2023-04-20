@@ -29,7 +29,7 @@ function BladeLeft({ handlePageNo }) {
   }, [tocActiveSelector]);
 
   useEffect(() => {
-    if (tocData.data?.length) {
+    if (tocData?.data?.length) {
       const temptoc = tocData?.data?.map((item) => ({
         ...item,
         levelNumber: 1,

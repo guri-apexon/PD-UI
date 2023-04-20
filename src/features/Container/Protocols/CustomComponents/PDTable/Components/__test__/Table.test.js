@@ -370,4 +370,52 @@ describe('DisplayTable component', () => {
     fireEvent.dragOver(droppableElement);
     fireEvent.drop(droppableElement);
   });
+
+  xit('should call onChange when a table cell is edited', () => {
+    const { getAllByTestId } = render(
+      <DisplayTable
+        data={data}
+        onChange={onChange}
+        handleRowOperation={handleRowOperation}
+        edit
+        colWidth={33}
+        footNoteData={[]}
+        setFootnoteData={() => {}}
+      />,
+    );
+
+    const cellToEdit = getAllByTestId('span-edit')[0];
+    fireEvent.blur(cellToEdit, { target: { innerHTML: 'new value' } });
+
+    expect(onChange).toHaveBeenCalledWith('new value', 0);
+  });
+
+  xtest('should render table rows with correct column values', () => {
+    const handleColumnOperation = jest.fn();
+    const handleSwap = jest.fn();
+
+    const { getByTestId } = render(
+      <DisplayTable
+        data={data}
+        onChange={onChange}
+        handleRowOperation={handleRowOperation}
+        edit
+        colWidth={33}
+        footNoteData={[]}
+        setFootnoteData={() => {}}
+        handleColumnOperation={handleColumnOperation}
+        handleSwap={handleSwap}
+      />,
+    );
+
+    const tableRows = getByTestId('table-row');
+
+    expect(tableRows.children[0]).toHaveTextContent('Col 1');
+    expect(tableRows.children[1]).toHaveTextContent('Col 2');
+    expect(tableRows.children[2]).toHaveTextContent('Col 3');
+
+    expect(tableRows.nextSibling.children[0]).toHaveTextContent('Row 2 Col 1');
+    expect(tableRows.nextSibling.children[1]).toHaveTextContent('Row 2 Col 2');
+    expect(tableRows.nextSibling.children[2]).toHaveTextContent('Row 2 Col 3');
+  });
 });

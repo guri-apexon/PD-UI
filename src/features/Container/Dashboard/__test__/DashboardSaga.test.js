@@ -19,6 +19,8 @@ import {
   resetWorkflowSubmitData,
   submitWorkflowData,
   fetchMoreWorkflow,
+  handleDownload,
+  resetErrorAddProtocolNew,
 } from '../saga';
 
 import * as api from '../../../../utils/api';
@@ -462,6 +464,7 @@ describe('Dashboard Saga Unit Test', () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
+
   test('protocolAsyn Saga Error out', async () => {
     const dispatchedActions = [];
     const mockOutput = {
@@ -489,6 +492,24 @@ describe('Dashboard Saga Unit Test', () => {
   });
 
   // Test protocolAsyn function Ends
+
+  test('resetErrorAddProtocolNew Success', async () => {
+    const dispatchedActions = [];
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, resetErrorAddProtocolNew, {
+      data: {
+        payload: 'test',
+      },
+      type: '',
+    });
+  });
 
   // Test toggleAddProtocol function Start
   test('toggleAddProtocol Success', async () => {
@@ -838,6 +859,131 @@ describe('Dashboard Saga Unit Test', () => {
     };
 
     await runSaga(fakeStore, sendQcReview, {
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('handleDownload Saga Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: true,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+        dashboard: {
+          sponsorLoading: false,
+          addProtocolData: {
+            sponsor: [],
+            indication: [],
+          },
+          followedProtocols: [
+            {
+              id: '2a5111a6-5465-46f5-b133-a85724bae4ef',
+              amendment: 'Y',
+              amendmentNumber: null,
+              approvalDate: null,
+              completenessOfDigitization: null,
+              digitizedConfidenceInterval: null,
+              documentFilePath:
+                '\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\2a5111a6-5465-46f5-b133-a85724bae4ef\\Protocol-2020-04-09-VER-000001.pdf',
+              documentStatus: 'final',
+              draftVersion: null,
+              errorCode: null,
+              errorReason: null,
+              fileName: 'Protocol-2020-04-09-VER-000001.pdf',
+              indication: 'ABCC6 deficiency',
+              moleculeDevice: 'test',
+              percentComplete: '100',
+              phase: 'I',
+              projectId: '',
+              protocol: 'JBT101-RIS-001',
+              protocolTitle:
+                'A Phase 1, 2-part, Single-dose, Non-Randomized, Open-label, Parallel-group Study to Assess the Pharmacokinetics and Safety of Lenabasum in Subjects with Renal Impairment Compared with Matched Controls',
+              sponsor: 'Corbus Pharmaceuticals',
+              status: 'PROCESS_COMPLETED',
+              uploadDate: '2021-04-08T09:51:34.077000',
+              userId: '1020640',
+              versionNumber: '10.1',
+              qcActivity: 'QC_IN_PROGRESS',
+            },
+            {
+              id: '01a8d886-1018-404b-b496-9555f7712a21',
+              amendment: 'Y',
+              amendmentNumber: null,
+              approvalDate: null,
+              completenessOfDigitization: null,
+              digitizedConfidenceInterval: null,
+              documentFilePath:
+                '\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\2a5111a6-5465-46f5-b133-a85724bae4ef\\Protocol-2020-04-09-VER-000001.pdf',
+              documentStatus: 'final',
+              draftVersion: null,
+              errorCode: null,
+              errorReason: null,
+              fileName: 'Protocol-2020-04-09-VER-000001.pdf',
+              indication: 'ABCC6 deficiency',
+              moleculeDevice: 'test',
+              percentComplete: '100',
+              phase: 'I',
+              projectId: '',
+              protocol: 'covid',
+              protocolTitle:
+                'A Phase 1, 2-part, Single-dose, Non-Randomized, Open-label, Parallel-group Study to Assess the Pharmacokinetics and Safety of Lenabasum in Subjects with Renal Impairment Compared with Matched Controls',
+              sponsor: 'Corbus Pharmaceuticals',
+              status: 'PROCESS_COMPLETED',
+              uploadDate: '2021-04-08T09:51:34.077000',
+              userId: '1020640',
+              versionNumber: '10.1',
+              qcActivity: 'QC_IN_PROGRESS',
+            },
+          ],
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, handleDownload, {
+      type: '',
+      payload: {
+        data: {
+          protocol: 'covid',
+          UserRole: 'normal',
+        },
+        follow: false,
+      },
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('handleDownload Saga fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+        dashboard: {
+          selectedProtocols: ['id1'],
+        },
+      }),
+    };
+
+    await runSaga(fakeStore, handleDownload, {
       type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);

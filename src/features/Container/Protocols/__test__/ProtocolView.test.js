@@ -1,11 +1,11 @@
 import { Provider } from 'react-redux';
-import userEvent from '@testing-library/user-event';
 import { fireEvent, render, screen } from '../../../../test-utils/test-utils';
 import store from '../../../../store/store';
 import ProtocolView from '../ProtocolView';
 import { summary } from './data';
 import { ProtocolContext } from '../ProtocolContext';
 
+// eslint-disable-next-line
 const initialState = {
   protocol: {
     protocolTocData: { tocData: { data: [] } },
@@ -128,16 +128,6 @@ describe('ProtocolView', () => {
         </ProtocolContext.Provider>
       </Provider>,
     );
-
-    const section = {
-      id: 'test-section',
-      link_id: 'test-link-id',
-      title: 'Test Section',
-    };
-    const payload = {
-      selectedSection: section,
-      sectionContent: [{ id: 'test-content', content: 'Test Content' }],
-    };
 
     fireEvent.click(screen.getByText('Test Section'));
     expect(dispatch).toHaveBeenCalledWith({

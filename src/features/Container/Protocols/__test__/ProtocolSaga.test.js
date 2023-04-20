@@ -35,6 +35,7 @@ import {
   setResetQCData,
   UpdateLabData,
   setDiscardDetails,
+  getDocumentSectionLock,
 } from '../saga';
 
 const userDetail = {
@@ -1285,5 +1286,53 @@ describe('Protocol Saga', () => {
     await runSaga(fakeStore, setDiscardDetails, { payload }).toPromise();
 
     expect(undefined).toBeUndefined();
+  });
+
+  test('getDocumentSectionLock should be Success', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: true,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getDocumentSectionLock, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('getDocumentSectionLock should be Fails', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      success: false,
+      data: [],
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getDocumentSectionLock, {
+      payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 });
