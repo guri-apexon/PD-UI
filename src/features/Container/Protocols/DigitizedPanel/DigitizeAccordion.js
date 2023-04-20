@@ -1,6 +1,7 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Lock from 'apollo-react-icons/Lock';
 import Plus from 'apollo-react-icons/Plus';
+import moment from 'moment';
 import Trash from 'apollo-react-icons/Trash';
 import Undo from 'apollo-react-icons/Undo';
 import Accordion from 'apollo-react/components/Accordion';
@@ -364,6 +365,18 @@ function DigitizeAccordion({
       tocActiveSelector[index] &&
       currentEditCard === item.link_id
     ) {
+      const updatedTime = lockDetails?.last_updated?.split('.')[0];
+      console.log('SHUBHAM', moment(updatedTime).format('MM/DD/YYYY HH:mm:ss'));
+      console.log(
+        'SHUBHAM2',
+        moment(moment.utc().format()).format('MM/DD/YYYY HH:mm:ss'),
+      );
+      const a = moment.utc(updatedTime).local();
+
+      const b = moment();
+      console.log('SHUBHAM123', a.format(), 'abv', b.format());
+      console.log('abc', a?.diff(b, 'hours'));
+      console.log('SHUBHAM UTC', moment.utc().format());
       if (
         lockDetails?.section_lock ||
         lockDetails?.userId === userIdSelector?.toString()
