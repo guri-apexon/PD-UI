@@ -115,11 +115,7 @@ function BladeLeft({ handlePageNo }) {
       >
         {expand && (
           <div className="toc-wrapper">
-            <TreeView
-              className="TreeView-width"
-              multiSelect
-              expanded={activeTree}
-            >
+            <TreeView className="tree-view" multiSelect expanded={activeTree}>
               {tocList?.map((item, index) => {
                 return accGenerator(item, index);
               })}

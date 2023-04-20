@@ -25,6 +25,7 @@
   h3 {
     padding-left: 20px;
   }
+
   [class*='Blade-body-'] > div > div {
     background: #f6f7fb;
   }
@@ -71,8 +72,8 @@
     // padding: 0 0 0 10px;
   }
 
-  TreeView-width {
-    max-width: 276;
+  .tree-view {
+    max-width: 276px;
   }
 
   [class*='MuiAccordionSummary-expandIcon'] {
