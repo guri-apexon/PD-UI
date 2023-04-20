@@ -40,6 +40,7 @@ import {
   getAllDipaViewData,
   getDiscardDeatils,
   setWorkFlowSubmitButton,
+  setDipaDataLoader,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -880,13 +881,16 @@ export function* getAllDipaViewDataByCategory(action) {
     checkAuth: true,
     headers: { 'Content-Type': 'application/json' },
   };
+  yield put(setDipaDataLoader(true));
 
   const DipaView = yield call(httpCall, config);
 
   if (DipaView.success) {
     yield put(getAllDipaViewData(DipaView));
+    yield put(setDipaDataLoader(false));
   } else {
     yield put(getAllDipaViewData({ success: false, data: [] }));
+    yield put(setDipaDataLoader(false));
   }
 
   yield call(httpCall, config);

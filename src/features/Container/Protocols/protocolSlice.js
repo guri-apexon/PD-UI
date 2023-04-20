@@ -38,6 +38,11 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
+    dipaViewData: {
+      data: {},
+      success: false,
+      loading: false,
+    },
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
     TOCActiveAccordion: [],
     accordionMetaData: {},
@@ -206,6 +211,9 @@ export const protocolSlice = createSlice({
     getDipaViewData: (state, action) => {
       state.dipaViewData = action.payload;
     },
+    setDipaDataLoader: (state, action) => {
+      state.dipaViewData.loading = action.payload;
+    },
     getAllDipaViewData: (state, action) => {
       state.allDipaViewData = action.payload;
     },
@@ -257,6 +265,7 @@ export const {
   setWorkFlowSubmitButton,
   resetProtocolTocData,
   setActiveTOC,
+  setDipaDataLoader,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
