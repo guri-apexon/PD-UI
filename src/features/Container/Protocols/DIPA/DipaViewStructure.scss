@@ -5,7 +5,7 @@
   margin-bottom: 10px;
   margin-top: 15px;
   width: 95%;
-  margin-left: 10px;
+  margin-left: 20px;
   border: transparent;
   .dipaview-summary-expand {
     border: 1px solid #e8e8e8;
@@ -21,6 +21,7 @@
 }
 
 .dipa-view-table {
+  align-items: center;
   padding: 15px 15px 15px 20px !important;
   .subtitle {
     margin: 0px !important;
@@ -171,4 +172,10 @@
   border: 1px solid;
   margin-right: 16px;
   border-radius: 0px;
+}
+.no-data-container {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 50%;
+  margin-top: 15%;
 }

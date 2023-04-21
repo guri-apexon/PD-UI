@@ -108,7 +108,7 @@ export function* handleDeleteNotification(action) {
     const data = yield call(httpCall, config);
 
     if (data?.success) {
-      yield put(deleteNotificationData(id));
+      yield put(deleteNotificationData(alert_id));
     }
   } catch (e) {}
 }

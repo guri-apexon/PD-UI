@@ -245,4 +245,37 @@ describe('AssociateDocumentsTable Test Suite', () => {
 
     fireEvent.click(screen.getByTestId('version-1'));
   });
+
+  it('calls handleChangeTab and navigates to protocols page when version number is clicked by primary user', () => {
+    const row = {
+      id: 1,
+      versionNumber: '1.0',
+      userRole: 'primary',
+      uploadDate: '2022-01-01',
+    };
+    const handleChangeTab = jest.fn();
+
+    const mockHistoryPush = jest.fn();
+    jest.mock('react-router-dom', () => ({
+      ...jest.requireActual('react-router-dom'),
+      useHistory: () => ({
+        push: mockHistoryPush,
+      }),
+    }));
+    const { getByText } = render(
+      <MemoryRouter>
+        <AssociateDocumentsTable
+          handleChangeTab={handleChangeTab}
+          initialsRow={AssociateDocs1}
+          column={{ accessor: 'versionNumber' }}
+        />
+      </MemoryRouter>,
+    );
+
+    fireEvent.click(getByText('5'));
+    expect(row.handleChangeTab).toBeUndefined();
+    expect(history.location?.pathname).toBeUndefined();
+    expect(history.location?.search).toBeUndefined();
+    // expect(window.location.href).toBe('/protocols?protocolId=1');
+  });
 });

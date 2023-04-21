@@ -74,14 +74,17 @@ function QCContainer() {
         data-testid="breadcrumb-click"
       />
       <div>
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1 }} data-testid="qc-child-component">
           <Tabs value={value} onChange={handleChangeTab} size="small" truncate>
             <Tab label="QC Protocols" />
-            <Tab label="QC Protocol View" />
+            <Tab label="QC Protocol View" disabled={value !== 1} />
           </Tabs>
         </div>
       </div>
-      <div className="tab-container">
+      <div
+        className="tab-container"
+        data-testid="qcprotocolView-child-component"
+      >
         {value === 0 && (
           <QCProtocolTable handleProtocolClick={handleProtocolClick} />
         )}

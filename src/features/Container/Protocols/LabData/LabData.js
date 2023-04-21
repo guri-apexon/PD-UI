@@ -23,6 +23,7 @@ import LABDATA_CONSTANTS from './constants';
 import './LabData.scss';
 import DiscardModal from '../DigitizedPanel/Modals/DiscardModal';
 
+let globalEditedRow = {};
 function ActionCell({ row }) {
   const {
     id,
@@ -118,22 +119,15 @@ function CustomHeader({
 }
 
 function EditableCell({ row, column: { accessor: key } }) {
-  const { editedRow, updateRow } = row;
-  const [val, setVal] = useState(editedRow[key]);
-  const handleDataChange = (e) => {
+  const [val, setVal] = useState(row.editedRow[key]);
+  const handleChange = (e) => {
     setVal(e.target.value);
+    const obj = { ...globalEditedRow, [key]: e.target.value };
+    globalEditedRow = obj;
   };
 
   return row.editMode ? (
-    <TextField
-      inputProps={{ 'aria-label': val }}
-      size="small"
-      fullWidth
-      name={val}
-      value={val}
-      onChange={handleDataChange}
-      onBlur={() => updateRow(key, val)}
-    />
+    <TextField size="small" fullWidth value={val} onChange={handleChange} />
   ) : (
     row[key]
   );
@@ -173,6 +167,7 @@ function LabData({ docId }) {
   };
 
   useEffect(() => {
+    globalEditedRow = {};
     getLabData();
     // eslint-disable-next-line
   }, []);
@@ -186,6 +181,16 @@ function LabData({ docId }) {
   useEffect(() => {
     if (isDiscard) {
       history.push(requestedRoute);
+      dispatch({
+        type: 'DISCARD_DETAILS',
+        payload: {
+          isEdited: false,
+          isDiscarded: false,
+          protocolTab: -1,
+          bladeRight: {},
+          labEdited: false,
+        },
+      });
     }
     // eslint-disable-next-line
   }, [isDiscard, requestedRoute]);
@@ -242,6 +247,7 @@ function LabData({ docId }) {
   const onRowEdit = (id) => {
     if (Object.keys(editedRow).length === 0) {
       setEditedRow(rowData?.find((row) => row.id === id));
+      globalEditedRow = rowData?.find((row) => row.id === id);
       setRowId(id);
     }
   };
@@ -256,26 +262,28 @@ function LabData({ docId }) {
   };
 
   const handleCancel = () => {
-    if (editedRow.isSaved === false) {
-      setRowData(rowData?.filter((value) => value.id !== editedRow.id));
+    if (globalEditedRow.isSaved === false) {
+      setRowData(rowData?.filter((value) => value.id !== globalEditedRow.id));
     }
+    globalEditedRow = {};
     setEditedRow({});
   };
 
   const handleSaveRow = () => {
     const updatedRows = rowData?.map((row) => {
-      if (row.id !== editedRow.id) {
+      if (row.id !== globalEditedRow.id) {
         return row;
       }
-      if (editedRow.isSaved === false) {
-        return { ...editedRow, isSaved: true };
+      if (globalEditedRow.isSaved === false) {
+        return { ...globalEditedRow, isSaved: true };
       }
       return {
-        ...editedRow,
+        ...globalEditedRow,
         request_type: LABDATA_CONSTANTS.REQUEST_TYPE.UPDATE,
       };
     });
     setRowData(updatedRows);
+    globalEditedRow = {};
     setEditedRow({});
   };
 
@@ -362,6 +370,7 @@ function LabData({ docId }) {
       newArr.splice(index + 1, 0, addRow);
       setRowData(newArr);
       setEditedRow(addRow);
+      globalEditedRow = { ...addRow };
     }
   };
 
@@ -431,7 +440,9 @@ function LabData({ docId }) {
         data-testid="lab-table-container"
       >
         <div className="panel-heading">Lab Data</div>
-        <div>
+        <div
+          className={`${isEdit && rowData.length === 0 ? 'no-data-table' : ''}`}
+        >
           <Table
             isLoading={labData.loading}
             ref={tableRef}
@@ -481,6 +492,7 @@ function LabData({ docId }) {
           showDiscardConfirm={showDiscardConfirm}
           setShowDiscardConfirm={setShowDiscardConfirm}
           onDiscardClick={onDiscardClick}
+          setRequestedRoute={setRequestedRoute}
         />
       </div>
       {isOpen && (

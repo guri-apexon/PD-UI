@@ -9,6 +9,7 @@ import FootNotes from './FootNotes/Footnotes';
 import EmptyColumns from './EmptyColumns';
 import { tableOperations } from './dropdownData';
 import { QC_CHANGE_TYPE } from '../../../../../../AppConstant/AppConstant';
+import { getPreferredTerms } from '../utils';
 
 function DisplayTable({
   data,
@@ -20,6 +21,8 @@ function DisplayTable({
   setFootnoteData,
   handleColumnOperation,
   handleSwap,
+  preferredTerms,
+  isPreferredTerm,
 }) {
   const handleChange = (columnIndex, rowIndex, e) => {
     onChange(e.target.innerHTML, columnIndex, rowIndex);
@@ -77,6 +80,7 @@ function DisplayTable({
                   />
                 )}
                 <div
+                  data-testid="table-row"
                   className="pd-table-row"
                   id={`rowID-${rowIndex}`}
                   draggable
@@ -112,11 +116,14 @@ function DisplayTable({
                           )}
                           <span
                             id={`columnID-${rowIndex}-${colIndex}`}
+                            data-testid="span-edit"
                             className="editable-span"
                             // eslint-disable-next-line
-                            dangerouslySetInnerHTML={{
-                              __html: col.value,
-                            }}
+                            dangerouslySetInnerHTML={getPreferredTerms(
+                              col.value,
+                              isPreferredTerm,
+                              preferredTerms,
+                            )}
                             contentEditable={edit}
                             onBlur={(e) => handleChange(colIndex, rowIndex, e)}
                           />
@@ -148,4 +155,6 @@ DisplayTable.propTypes = {
   setFootnoteData: PropTypes.isRequired,
   handleColumnOperation: PropTypes.isRequired,
   handleSwap: PropTypes.isRequired,
+  preferredTerms: PropTypes.isRequired,
+  isPreferredTerm: PropTypes.isRequired,
 };

@@ -1,7 +1,10 @@
-import { render } from '../../../../test-utils/test-utils';
+import { Provider } from 'react-redux';
+import { render, screen } from '../../../../test-utils/test-utils';
+import store from '../../../../store/store';
 import ProtocolView from '../ProtocolView';
 import { summary } from './data';
 
+// eslint-disable-next-line
 const initialState = {
   protocol: {
     protocolTocData: { tocData: { data: [] } },
@@ -32,6 +35,26 @@ const initialState = {
   },
 };
 describe('ProtocolView', () => {
+  let initialState;
+  let props;
+
+  beforeEach(() => {
+    props = {
+      refs: {},
+      data: {},
+    };
+
+    initialState = {
+      dashboard: {
+        workflowSubmit: { success: false },
+      },
+    };
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   test('ProtocolView Component', () => {
     render(
       <ProtocolView
@@ -42,5 +65,20 @@ describe('ProtocolView', () => {
         initialState,
       },
     );
+  });
+
+  it('should not show "Summary" section when viewData.iqvdataSummary is not present', () => {
+    const viewData = {
+      tocSections: [],
+      soaSections: [],
+    };
+    props.data = { viewData };
+    render(
+      <Provider store={store}>
+        <ProtocolView {...props} />
+      </Provider>,
+    );
+
+    expect(screen.queryByText('Summary')).not.toBeInTheDocument();
   });
 });

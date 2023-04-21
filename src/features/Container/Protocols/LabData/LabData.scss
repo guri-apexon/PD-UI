@@ -6,8 +6,8 @@
           & > div {
             width: 100% !important;
             padding: 0;
-            & > div{
-              svg{
+            & > div {
+              svg {
                 width: 1em;
                 height: 1em;
                 top: 0;
@@ -106,7 +106,7 @@
       font-size: inherit;
       padding: 0 16px;
       z-index: 100;
-      svg{
+      svg {
         width: 1em;
         height: 1em;
         margin-bottom: 0;
@@ -203,6 +203,28 @@
 .lab-table-container > div:last-child > div > div:last-child {
   overflow-x: unset;
 }
-.lab-table-container table tbody tr[class^="EmptyRow"] td{
+.lab-table-container table tbody tr[class^='EmptyRow'] td {
   display: table-cell !important;
+}
+
+.no-data-table {
+  position: relative;
+  table {
+    tbody {
+      tr {
+        &::after {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  button.addrow-button {
+    width: 100px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

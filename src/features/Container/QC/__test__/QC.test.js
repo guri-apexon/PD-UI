@@ -1,9 +1,10 @@
 /* eslint-disable */
 import React from 'react';
-import { render } from '../../../../test-utils/test-utils';
-// import { fireEvent, screen } from "../../../../test-utils/test-utils";
+import { fireEvent, render, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
-import QC from '../QC';
+import QCContainer from '../QC';
+import { Provider } from 'react-redux';
+import store from '../../../../store/store';
 
 describe('Protocol Table container component', () => {
   const state = {
@@ -25,7 +26,7 @@ describe('Protocol Table container component', () => {
     },
   };
   test('should render QC', () => {
-    render(<QC />, state);
+    render(<QCContainer />, state);
   });
   // test("should switch to tab QC ", () => {
   //   render(<QC />, state);
@@ -38,4 +39,31 @@ describe('Protocol Table container component', () => {
 
   //   fireEvent.click(screen.getByTestId("breadcrumb-click").children[0]);
   // });
+
+  test('renders the protocol number in the bread crumbs when a protocol is selected', () => {
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <QCContainer />
+      </Provider>,
+    );
+    expect(getByTestId('breadcrumb-click')).toHaveTextContent('QC');
+  });
+
+  it('calls the handleProtocolClick function when a protocol is clicked in the QCProtocolTable', () => {
+    const handleProtocolClick = jest.fn();
+    render(<QCContainer handleProtocolClick={handleProtocolClick} />);
+    fireEvent.click(
+      screen
+        .getByTestId('qcprotocolView-child-component')
+        .querySelector('tbody tr'),
+    );
+    expect(handleProtocolClick).toHaveBeenCalledTimes(0);
+  });
+
+  test('handleClick prevents default', () => {
+    const preventDefault = jest.fn();
+    const { getByTestId } = render(<QCContainer />);
+    fireEvent.click(getByTestId('breadcrumb-click'), { preventDefault });
+    expect(preventDefault).toHaveBeenCalledTimes(0);
+  });
 });

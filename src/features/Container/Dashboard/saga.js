@@ -9,7 +9,12 @@ import {
 } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
-import BASE_URL, { httpCall, BASE_URL_8000, UI_URL } from '../../../utils/api';
+import BASE_URL, {
+  httpCall,
+  BASE_URL_8000,
+  UI_URL,
+  Apis,
+} from '../../../utils/api';
 import {
   localISOTime,
   qcIconStatus,
@@ -23,14 +28,12 @@ import {
   setAddProtocolModal,
   setLoading,
   getSavedSearches,
-  setApiError,
   getFollowedProtocols,
   setTableLoader,
   setSelectedProtocols,
   setworkflowData,
   setAddProtocolErrorState,
   setworkflowSubmit,
-  setWFData,
 } from './dashboardSlice';
 import { setWorkFlowSubmitButton } from '../Protocols/protocolSlice';
 import { errorMessage, dashboardErrorType } from './constant';
@@ -39,6 +42,11 @@ function* getState() {
   const state = yield select();
   const id = state.user.userDetail.userId;
   return id.substring(1);
+}
+
+function* getUserType() {
+  const state = yield select();
+  return state.user.userDetail.user_type;
 }
 
 export function* protocolAsyn(action) {
@@ -288,7 +296,7 @@ export function* sendQcReview() {
   }
 }
 
-function* handleDownload(action) {
+export function* handleDownload(action) {
   try {
     const config = {
       url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
@@ -426,6 +434,8 @@ export function* resetWorkflowSubmitData() {
   yield put(setworkflowSubmit(loadingData));
 }
 export function* submitWorkflowData(action) {
+  const userId = yield getState();
+  const userType = yield getUserType();
   const loadingData = {
     loading: true,
     error: null,
@@ -435,13 +445,23 @@ export function* submitWorkflowData(action) {
   yield put(setworkflowSubmit(loadingData));
   try {
     const config = {
-      url: `${BASE_URL}/pd/api/v1/documents/run_work_flow`,
+      url: `${BASE_URL_8000}${Apis.SECTION_LOCK}/submit_protocol_workflow`,
       method: 'POST',
-      data: action.payload,
-      headers: { 'Content-Type': 'application/json' },
-      checkAuth: true,
+      data: { ...action.payload, userId },
     };
+    if (userType === 'admin') {
+      config.url = `${BASE_URL}/pd/api/v1/documents/run_work_flow`;
+      config.checkAuth = true;
+      config.headers = { 'Content-Type': 'application/json' };
+    }
     const resp = yield call(httpCall, config);
+    if (resp.data.success === false) {
+      toast.error(
+        resp.data.info ||
+          'Error occured during workflow submission for this protocol/docid',
+      );
+      return;
+    }
     if (resp.success) {
       const successData = {
         loading: false,
@@ -451,8 +471,6 @@ export function* submitWorkflowData(action) {
       };
       yield put(setworkflowSubmit(successData));
       yield put(setAddProtocolModal(false));
-      const state = yield select();
-      const userType = state.user.userDetail.user_type;
       if (userType !== 'QC1') {
         yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
       }

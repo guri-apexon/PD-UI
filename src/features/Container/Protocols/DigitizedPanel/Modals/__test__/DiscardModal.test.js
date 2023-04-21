@@ -6,6 +6,7 @@ describe('Discard Modal', () => {
     const showDiscardConfirm = true;
     const setShowDiscardConfirm = jest.fn();
     const onDiscardClick = jest.fn();
+    const setRequestedRoute = jest.fn();
     const component = render(
       <DiscardModal
         classes={{ modal: '' }}
@@ -14,6 +15,7 @@ describe('Discard Modal', () => {
         showDiscardConfirm={showDiscardConfirm}
         setShowDiscardConfirm={setShowDiscardConfirm}
         onDiscardClick={onDiscardClick}
+        setRequestedRoute={setRequestedRoute}
       />,
     );
     expect(component).toBeTruthy();
@@ -25,7 +27,7 @@ describe('Discard Modal', () => {
     const showDiscardConfirm = true;
     const setShowDiscardConfirm = jest.fn();
     const onDiscardClick = jest.fn();
-
+    const setRequestedRoute = jest.fn();
     const component = render(
       <DiscardModal
         classes={{ modal: '' }}
@@ -34,6 +36,7 @@ describe('Discard Modal', () => {
         showDiscardConfirm={showDiscardConfirm}
         setShowDiscardConfirm={setShowDiscardConfirm}
         onDiscardClick={onDiscardClick}
+        setRequestedRoute={setRequestedRoute}
       />,
     );
 
@@ -49,6 +52,7 @@ describe('Discard Modal', () => {
     const showDiscardConfirm = true;
     const setShowDiscardConfirm = jest.fn();
     const onDiscardClick = jest.fn();
+    const setRequestedRoute = jest.fn();
 
     const component = render(
       <DiscardModal
@@ -58,6 +62,7 @@ describe('Discard Modal', () => {
         showDiscardConfirm={showDiscardConfirm}
         setShowDiscardConfirm={setShowDiscardConfirm}
         onDiscardClick={onDiscardClick}
+        setRequestedRoute={setRequestedRoute}
       />,
     );
 
@@ -73,6 +78,7 @@ describe('Discard Modal', () => {
 describe('DiscardModal', () => {
   it('calls setShowDiscardConfirm(false) when modal is closed', () => {
     const setShowDiscardConfirm = jest.fn();
+    const setRequestedRoute = jest.fn();
     const { getByLabelText } = render(
       <DiscardModal
         classes={{ modal: 'test-modal' }}
@@ -80,6 +86,7 @@ describe('DiscardModal', () => {
         showDiscardConfirm={true}
         setShowDiscardConfirm={setShowDiscardConfirm}
         onDiscardClick={() => {}}
+        setRequestedRoute={setRequestedRoute}
       />,
     );
 

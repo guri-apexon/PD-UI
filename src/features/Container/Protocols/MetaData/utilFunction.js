@@ -13,6 +13,16 @@ const formattedValue = (type, val) => {
   return payloadData;
 };
 
+const findLatestTimestamp = (data) => {
+  const sortedList = data?.sort((a, b) => {
+    return (
+      new Date(b.audit_info?.last_updated) -
+      new Date(a.audit_info?.last_updated)
+    );
+  });
+  return sortedList?.[0]?.audit_info || {};
+};
+
 export const flattenObject = (updatedData, data, level, parentKey) => {
   const objectKeys = data ? Object?.keys(data) : [];
   objectKeys?.forEach((key) => {
@@ -43,10 +53,7 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
             isEdit: false,
             audit_info:
               // eslint-disable-next-line
-              keyValue?._meta_data.length > 0
-                ? // eslint-disable-next-line
-                  keyValue?._meta_data[0]?.audit_info
-                : {},
+              findLatestTimestamp(keyValue?._meta_data) || {},
             // eslint-disable-next-line
             _childs: keyValue?._childs
               ? // eslint-disable-next-line

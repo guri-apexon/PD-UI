@@ -151,7 +151,8 @@ function MetaData({ docId }) {
 
   const postCall = (data, metaData) => {
     if (metaData.length > 0) {
-      const updatedAttrList = metaData?.map((list) => {
+      const filterMetaList = metaData.filter((list) => list?.attr_status);
+      const updatedAttrList = filterMetaList?.map((list) => {
         const convertToBoolean = list?.attr_value === 'true';
         return {
           attr_name: list?.attr_name,
@@ -160,6 +161,7 @@ function MetaData({ docId }) {
             list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
           note: list?.note || '',
           confidence: list?.confidence || '',
+          attr_id: list?.attr_id,
         };
       });
       dispatch({
@@ -310,25 +312,7 @@ function MetaData({ docId }) {
   useEffect(() => {
     if (apiResponse?.status) {
       if (apiResponse.op === 'addAttributes') {
-        const selectedData = accordianData[apiResponse?.reqData?.formattedName];
-        let accMetaData =
-          apiResponse?.reqData?.formattedName === 'summary_extended'
-            ? rows.summary
-            : rows[apiResponse?.reqData?.formattedName] || [];
-        accMetaData = accMetaData?.map((metaData) => {
-          return {
-            ...metaData,
-            display_name: metaData?.display_name || metaData?.attr_name,
-          };
-        });
-        setAccordianData({
-          ...accordianData,
-          [apiResponse?.reqData?.formattedName]: {
-            ...selectedData,
-            isEdit: false,
-            _meta_data: accMetaData?.length > 0 ? [...accMetaData] : [],
-          },
-        });
+        fetchMetaData();
       } else if (apiResponse.op === 'addField') {
         if (apiResponse?.reqData?.level === 1) {
           const obj = {

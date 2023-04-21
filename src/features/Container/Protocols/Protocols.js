@@ -120,7 +120,7 @@ function Protocols({ location }) {
           isDiscarded: true,
           protocolTab: value,
           bladeRight: {},
-          labEdited: false,
+          labEdited: true,
         },
       });
     } else {
