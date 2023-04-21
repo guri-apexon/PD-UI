@@ -81,8 +81,10 @@ function QCContainer() {
           </Tabs>
         </div>
       </div>
-      <div className="tab-container"
-      data-testid="qcprotocolView-child-component">
+      <div
+        className="tab-container"
+        data-testid="qcprotocolView-child-component"
+      >
         {value === 0 && (
           <QCProtocolTable handleProtocolClick={handleProtocolClick} />
         )}

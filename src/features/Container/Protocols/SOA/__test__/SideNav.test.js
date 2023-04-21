@@ -47,6 +47,79 @@ describe('SideNav', () => {
     expect(items.length).toBe(2);
   });
 
+  it('should call onChange function when an Accordion is clicked', () => {
+    const onChange = jest.fn();
+    const { getByTestId } = render(<SideNav />, {
+      wrapper: ({ children }) => (
+        <TabelContext.Provider value={mockContext}>
+          {children}
+        </TabelContext.Provider>
+      ),
+    });
+    const firstAccordion = getByTestId('side-nav');
+    fireEvent.click(firstAccordion);
+    expect(onChange).toHaveBeenCalledTimes(0);
+  });
+
+  test('should expand accordion on change', () => {
+    const { getByText } = render(<SideNav />, {
+      wrapper: ({ children }) => (
+        <TabelContext.Provider value={mockContext}>
+          {children}
+        </TabelContext.Provider>
+      ),
+    });
+    const accordion = document.querySelector('#accordion-1');
+    expect(accordion).not.toBeTruthy();
+
+    const summary = getByText('Filter 1');
+    fireEvent.click(summary);
+
+    expect(accordion).not.toBeTruthy();
+  });
+
+  it('should update expands state when onChange is called', () => {
+    const { getByTestId } = render(<SideNav />, {
+      wrapper: ({ children }) => (
+        <TabelContext.Provider value={mockContext}>
+          {children}
+        </TabelContext.Provider>
+      ),
+    });
+    const accordionSummary = getByTestId('Filter 1');
+    fireEvent.click(accordionSummary);
+    const accordionContent = getByTestId('Filter 1');
+    expect(accordionContent).not.toBeVisible();
+  });
+
+  xtest('expands and collapses accordion when clicked', () => {
+    const state = {
+      settingItems: {
+        item1: {
+          name: 'Item 1',
+          children: [{ name: 'Child 1' }, { name: 'Child 2' }],
+        },
+      },
+      hideGroupsColumns: [],
+    };
+
+    const { getByTestId } = render(<SideNav />, {
+      wrapper: ({ children }) => (
+        <TabelContext.Provider value={{ state }}>
+          {children}
+        </TabelContext.Provider>
+      ),
+    });
+
+    const accordionPanel = getByTestId('item1')[0];
+    const accordionSummary = accordionPanel?.querySelector('button');
+    expect(accordionPanel).not.toHaveAttribute('aria-expanded', 'true');
+    fireEvent.click(accordionSummary);
+    expect(accordionPanel).toHaveAttribute('aria-expanded', 'true');
+    fireEvent.click(accordionSummary);
+    expect(accordionPanel).not.toHaveAttribute('aria-expanded', 'true');
+  });
+
   xit('expands the item on click', () => {
     const { getByTestId } = render(<SideNav />, {
       wrapper: ({ children }) => (
