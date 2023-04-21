@@ -195,7 +195,7 @@ function ProtocolView({ refs, data }) {
 
   return (
     <ProtocolContext.Provider value={ProtocolProviderValue}>
-      <div className="protocol_data_container">
+      <div className="protocol_data_container" data-testid="protocol-container">
         {viewData && (
           <ProtocolViewWrapper
             view={viewData}

@@ -9,10 +9,19 @@ export const scrollToLinkandReference = (index, linkandReference) => {
   )[0];
   if (scrollDiv) {
     try {
-      const textDiv = scrollDiv.textContent;
-      const indexTxt = textDiv.indexOf(linkandReference);
-      if (indexTxt) {
-        scrollDiv.scrollBy(0, indexTxt);
+      const elements = Array.from(
+        scrollDiv.querySelectorAll('.single-segment'),
+      );
+
+      const match = elements.find((el) => {
+        return el.textContent
+          .toLowerCase()
+          .includes(linkandReference.toLowerCase());
+      });
+      if (match) {
+        match.scrollIntoView();
+      } else {
+        toast.error('Error while finding refrence');
       }
     } catch (error) {
       toast.error('Error while finding refrence');
@@ -22,4 +31,18 @@ export const scrollToLinkandReference = (index, linkandReference) => {
 
 export const replaceHtmlTags = (sectionHeader) => {
   return sectionHeader.replace(/<[^>]+>/g, '');
+};
+
+const beforeUnLoad = (e, cb) => {
+  e.preventDefault();
+  cb(true);
+};
+
+export const onBeforeUnload = (updateSectionLock) => {
+  window.addEventListener('beforeunload', (e) =>
+    beforeUnLoad(e, updateSectionLock),
+  );
+  return () => {
+    window.removeEventListener('beforeunload', beforeUnLoad);
+  };
 };

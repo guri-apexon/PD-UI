@@ -262,7 +262,7 @@ function AssociateDocumentsTable({
     >
       <Table
         title="Associated Documents"
-        rows={initialsRow.map((row) => {
+        rows={initialsRow?.map((row) => {
           const temp = cloneDeep(row);
           const details = {
             key: row.id,

@@ -115,7 +115,7 @@ class ProtocolViewWrapper extends React.Component {
           />
         </div>
 
-        <div className="view-wrapper">
+        <div className="view-wrapper" data-testid="panel-group">
           <PanelGroup className="panel_group">
             {data?.userPrimaryRoleFlag &&
               !fullRightScreen &&
@@ -146,7 +146,7 @@ class ProtocolViewWrapper extends React.Component {
                 </Panel>
               )}
             {data && (
-              <Panel width="auto" resizable hideButton>
+              <Panel width="auto" resizable hideButton data-testid="panel">
                 <Digitize
                   sectionRef={sectionRef}
                   sectionNumber={sectionNumber}

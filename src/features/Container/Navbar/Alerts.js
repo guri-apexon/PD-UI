@@ -79,7 +79,7 @@ function Alerts() {
     setAnchorEl(!anchorEl);
   };
 
-  const newNotifications = notificationData.filter(
+  const newNotifications = notificationData?.filter(
     (item) => item.read === false,
   );
 
@@ -102,7 +102,7 @@ function Alerts() {
         className={`alert-icon ${!!anchorEl && 'alert-icon-active'}`}
         onClick={openNotifications}
       >
-        <Badge badgeContent={newNotifications.length || 0} max={99}>
+        <Badge badgeContent={newNotifications?.length || 0} max={99}>
           <BellIcon />
         </Badge>
       </button>

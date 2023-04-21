@@ -40,6 +40,7 @@ import {
   getAllDipaViewData,
   getDiscardDeatils,
   setWorkFlowSubmitButton,
+  setDipaDataLoader,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -245,17 +246,18 @@ export function* updateSectionData(action) {
     if (action?.payload?.refreshToc) {
       yield put(getProtocolTocData({}));
     }
-    const userID = yield getState(true);
+    const userIdPrefix = yield getState(true);
+    const UserId = yield getState();
     const updatedReq = reqBody.map((ele) => {
       return {
         ...ele,
         audit: {
-          last_updated_user: userID,
+          last_updated_user: userIdPrefix,
         },
       };
     });
     const config = {
-      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}/?doc_id=${docId}`,
+      url: `${BASE_URL_8000}${Apis.SAVE_SECTION_CONTENT}/?doc_id=${docId}&user_id=${UserId}`,
       method: 'POST',
       data: updatedReq,
     };
@@ -880,13 +882,16 @@ export function* getAllDipaViewDataByCategory(action) {
     checkAuth: true,
     headers: { 'Content-Type': 'application/json' },
   };
+  yield put(setDipaDataLoader(true));
 
   const DipaView = yield call(httpCall, config);
 
   if (DipaView.success) {
     yield put(getAllDipaViewData(DipaView));
+    yield put(setDipaDataLoader(false));
   } else {
     yield put(getAllDipaViewData({ success: false, data: [] }));
+    yield put(setDipaDataLoader(false));
   }
 
   yield call(httpCall, config);
@@ -921,9 +926,9 @@ export function* updateDipaData(action) {
       type: 'GET_ALL_DIPA_VIEW',
       payload: {
         data: {
-          category: data.category,
-          doc_id: data.doc_id,
-          id: data.id,
+          category: data?.category,
+          doc_id: data?.doc_id,
+          id: data?.id,
         },
       },
     });

@@ -1,7 +1,13 @@
 import { runSaga } from 'redux-saga';
 import * as api from '../../../../utils/api';
 
-import { navbarNotificationData, handlereadNotification } from '../saga';
+import {
+  navbarNotificationData,
+  handlereadNotification,
+  postOptInOut,
+  getOptInOut,
+  handleDeleteNotification,
+} from '../saga';
 
 const userDetail = {
   userId: 'u1072231',
@@ -105,6 +111,7 @@ describe('Navbar Saga Unit Test', () => {
     expect(mockCallApi).toHaveBeenCalledTimes(1);
     // navbarNotificationData(data);
   });
+
   test('Should run give failure data: handlereadNotification', async () => {
     const dispatchedActions = [];
     const mockOutput = {
@@ -133,5 +140,179 @@ describe('Navbar Saga Unit Test', () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
     // navbarNotificationData(data);
+  });
+
+  test('Should run give success data: postOptInOut', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      data: [],
+      success: true,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        navbar: {
+          notifications: [],
+        },
+      }),
+    };
+    await runSaga(fakeStore, postOptInOut, {
+      payload: {
+        aidocId: 'dfbb0964-616b-4ab3-bc31-13e252f44d8a',
+        id: '7959',
+        protocol: 'Excel-CSV-Prot',
+      },
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('Should run give failure data: postOptInOut', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      data: [],
+      success: false,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        navbar: {
+          notifications: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, postOptInOut, {
+      payload: {
+        aidocId: 'dfbb0964-616b-4ab3-bc31-13e252f44d8a',
+        id: '7959',
+        protocol: 'Excel-CSV-Prot',
+      },
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('Should run give success data: getOptInOut', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      data: [],
+      success: true,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        navbar: {
+          notifications: [],
+        },
+      }),
+    };
+    await runSaga(fakeStore, getOptInOut, {
+      payload: {
+        aidocId: 'dfbb0964-616b-4ab3-bc31-13e252f44d8a',
+        id: '7959',
+        protocol: 'Excel-CSV-Prot',
+      },
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('Should run give failure data: getOptInOut', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      data: [],
+      success: false,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        navbar: {
+          notifications: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, getOptInOut, {
+      payload: {
+        aidocId: 'dfbb0964-616b-4ab3-bc31-13e252f44d8a',
+        id: '7959',
+        protocol: 'Excel-CSV-Prot',
+      },
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('Should run give success data: handleDeleteNotification', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      data: [],
+      success: true,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        navbar: {
+          notifications: [],
+        },
+      }),
+    };
+    await runSaga(fakeStore, handleDeleteNotification, {
+      payload: {
+        aidocId: 'dfbb0964-616b-4ab3-bc31-13e252f44d8a',
+        id: '7959',
+        protocol: 'Excel-CSV-Prot',
+      },
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
+  });
+
+  test('Should run give failure data: handleDeleteNotification', async () => {
+    const dispatchedActions = [];
+    const mockOutput = {
+      data: [],
+      success: false,
+    };
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(mockOutput));
+
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        navbar: {
+          notifications: userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, handleDeleteNotification, {
+      payload: {
+        aidocId: 'dfbb0964-616b-4ab3-bc31-13e252f44d8a',
+        id: '7959',
+        protocol: 'Excel-CSV-Prot',
+      },
+      type: '',
+    }).toPromise();
+    expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 });

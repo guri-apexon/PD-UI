@@ -1,6 +1,6 @@
-import * as redux from 'react-redux';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import * as redux from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import Alerts from '../Alerts';
 
@@ -50,7 +50,10 @@ describe('Alerts', () => {
       aidocId: '64c3dd08-f885-49f7-a325-e72d8f221029',
       readFlag: false,
       protocolTitle: '',
-      timeCreated: '2021-06-16T13:21:33.040000',
+      timeUpdated: '2021-06-16T13:21:33.040000',
+      read: false,
+      header: 'Testing_protocol_document_NC12345678',
+      event: 'EDITED',
     },
     {
       id: '1190',
@@ -58,7 +61,8 @@ describe('Alerts', () => {
       aidocId: 'bf7a0ddf-ff3a-4015-99e0-dc1800a4915c',
       readFlag: true,
       protocolTitle: '',
-      timeCreated: '2021-06-17T08:05:56.897000',
+      timeUpdated: '2021-06-17T08:05:56.897000',
+      read: true,
     },
     {
       id: '1649',
@@ -66,7 +70,8 @@ describe('Alerts', () => {
       aidocId: '61232fdd-26d5-4e7c-8e86-624341910038',
       readFlag: false,
       protocolTitle: '',
-      timeCreated: '2021-06-18T11:05:54.950000',
+      timeUpdated: '2021-06-18T11:05:54.950000',
+      read: false,
     },
     {
       id: '1649',
@@ -75,7 +80,8 @@ describe('Alerts', () => {
       readFlag: false,
       protocolTitle:
         'Capivasertib + Abiraterone as Treatment for Patients with Metastatic Hormone-Sensitive Prostate Cancer Characterised by PTEN deficiency.',
-      timeCreated: '2021-06-18T09:38:59.113000',
+      timeUpdated: '2021-06-18T09:38:59.113000',
+      read: false,
     },
     {
       id: '1807',
@@ -84,7 +90,8 @@ describe('Alerts', () => {
       readFlag: false,
       protocolTitle:
         'A Multicentre, Randomised, Double-blind, Parallel Group, Placebocontrolled, Phase 3 Efficacy and Safety Study of Benralizumab (MEDI-563) Added to Medium to High-dose Inhaled Corticosteroid Plus Long-acting ß2 Agonist in Patients with Uncontrolled Asthma',
-      timeCreated: '2021-06-24T07:50:04.747000',
+      timeUpdated: '2021-06-24T07:50:04.747000',
+      read: false,
     },
     {
       id: '1808',
@@ -93,7 +100,8 @@ describe('Alerts', () => {
       readFlag: false,
       protocolTitle:
         'PHASE 3, RANDOMIZED, OPEN-LABEL, ACTIVE-CONTROLLED STUDY EVALUATING THE EFFICACY AND SAFETY OF ORAL VADADUSTAT FOR THE CORRECTION OF ANEMIA IN SUBJECTS WITH NON-DIALYSIS-DEPENDENT CHRONIC KIDNEY DISEASE (NDD-CKD) (PRO2TECT - CORRECTION)',
-      timeCreated: new Date(),
+      timeUpdated: new Date(),
+      read: false,
     },
   ];
 
@@ -120,17 +128,7 @@ describe('Alerts', () => {
     const alertIcon = screen.getByTestId('alert-bell-icon');
     fireEvent.click(alertIcon);
 
-    expect(screen.getByText('0')).toBeInTheDocument();
-  });
-
-  xtest('Should click on the list item', () => {
-    useSelectorMock.mockReturnValue(mockNotifications);
-    render(<Alerts list={mockNotifications} />);
-    const alertIcon = screen.getByTestId('alert-bell-icon');
-    fireEvent.click(alertIcon);
-    fireEvent.click(
-      screen.getByTestId('sentinelStart').children[0].children[1],
-    );
+    expect(screen.getByText('5')).toBeInTheDocument();
   });
 
   test('Should click on the read and unread list item', async () => {
@@ -205,29 +203,8 @@ describe('Alerts', () => {
     expect(popover).not.toBeInTheDocument();
   });
 
-  xit('should mark the notification as read and navigate to the correct route when clicking on a notification', () => {
-    useSelectorMock.mockReturnValue(mockNotifications);
-    const dispatchMock = jest.fn();
-    useDispatchMock.mockReturnValue(dispatchMock);
-    const mockHistoryPush = jest.fn();
-    jest.mock('react-router-dom', () => ({
-      ...jest.requireActual('react-router-dom'),
-      useHistory: () => ({
-        push: mockHistoryPush,
-      }),
-    }));
-    render(<Alerts list={mockNotifications} />);
-    fireEvent.click(screen.getByTestId('alert-bell-icon'));
-    const element = screen.getByTestId('popover');
-    expect(element).toBeInTheDocument();
-    fireEvent.click(element);
-
-    expect(dispatchMock).toHaveBeenCalledWith({
-      type: 'READ_NOTIFICATION_SAGA',
-      payload: { id: '2' },
-    });
-    expect(mockHistoryPush.push).toHaveBeenCalledWith(
-      '/protocols?protocolId=2&tab=1',
-    );
+  it('when the notification empty', () => {
+    const mockNotification = [];
+    render(<Alerts list={mockNotification} />);
   });
 });

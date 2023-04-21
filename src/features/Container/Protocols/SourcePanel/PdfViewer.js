@@ -12,6 +12,7 @@ import Loader from 'apollo-react/components/Loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { protocolSummary, getPdfData } from '../protocolSlice';
 import './PdfViewer.scss';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
