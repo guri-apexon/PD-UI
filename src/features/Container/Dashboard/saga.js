@@ -44,6 +44,11 @@ function* getState() {
   return id.substring(1);
 }
 
+function* getUserType() {
+  const state = yield select();
+  return state.user.userDetail.user_type;
+}
+
 export function* protocolAsyn(action) {
   if (action.payload && action.payload.length > 0) {
     yield put(getFollowedProtocols(action.payload));
@@ -430,6 +435,7 @@ export function* resetWorkflowSubmitData() {
 }
 export function* submitWorkflowData(action) {
   const userId = yield getState();
+  const userType = yield getUserType();
   const loadingData = {
     loading: true,
     error: null,
@@ -443,8 +449,20 @@ export function* submitWorkflowData(action) {
       method: 'POST',
       data: { ...action.payload, userId },
     };
+    if (userType === 'admin') {
+      config.url = `${BASE_URL}/pd/api/v1/documents/run_work_flow`;
+      config.checkAuth = true;
+      config.headers = { 'Content-Type': 'application/json' };
+    }
     const resp = yield call(httpCall, config);
-    if (resp?.data?.success) {
+    if (resp.data.success === false) {
+      toast.error(
+        resp.data.info ||
+          'Error occured during workflow submission for this protocol/docid',
+      );
+      return;
+    }
+    if (resp.success) {
       const successData = {
         loading: false,
         error: null,
@@ -453,8 +471,6 @@ export function* submitWorkflowData(action) {
       };
       yield put(setworkflowSubmit(successData));
       yield put(setAddProtocolModal(false));
-      const state = yield select();
-      const userType = state.user.userDetail.user_type;
       if (userType !== 'QC1') {
         yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
       }
@@ -469,8 +485,7 @@ export function* submitWorkflowData(action) {
       yield put(setworkflowSubmit(errorData));
       yield put(setAddProtocolModal(true));
       toast.error(
-        resp?.data?.info ||
-          'Error occured during workflow submission for this protocol/docid',
+        'Error occured during workflow submission for this protocol/docid',
       );
     }
   } catch (e) {
