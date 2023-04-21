@@ -57,7 +57,7 @@ import {
 } from '../../../../AppConstant/AppConstant';
 import { userId } from '../../../../store/userDetails';
 import ActionMenu from './ActionMenu';
-import { scrollToLinkandReference } from './utils';
+import { scrollToLinkandReference, onBeforeUnload } from './utils';
 
 const styles = {
   modal: {
@@ -164,6 +164,11 @@ function DigitizeAccordion({
       },
     });
   };
+
+  useEffect(() => {
+    onBeforeUnload(updateSectionLock);
+    // eslint-disable-next-line
+  }, []);
 
   const handleTocsection = (flag) => {
     const tempTOCActive = [...tocActive];

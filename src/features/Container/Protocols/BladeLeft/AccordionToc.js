@@ -11,14 +11,16 @@ function AccordionToc({
   expanded,
   handleChange,
 }) {
+  const handleClick = (e) => {
+    if (level.levelNumber) handleChange(sectionIndex, level.link_id);
+    handlePageNo(e, level.page, sectionIndex);
+  };
+
   return (
     <TreeItem
       key={level.link_id}
       label={level?.source_file_section}
-      onClick={(e) => {
-        if (level.levelNumber) handleChange(sectionIndex, level.link_id);
-        handlePageNo(e, level.page, sectionIndex);
-      }}
+      onClick={handleClick}
       nodeId={level.link_id}
       icon={
         expanded.includes(level.link_id) ? <ChevronDown /> : <ChevronRight />

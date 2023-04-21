@@ -176,6 +176,7 @@ function DigitalizeCard({
     });
     setModalOpen(false);
   };
+
   const handleOpenAccordion = (refObj) => {
     setHeaderList(
       headerList.map((x) => {
@@ -265,6 +266,7 @@ function DigitalizeCard({
         open={modalOpen}
         variant="warning"
         onClose={() => setModalOpen(false)}
+        message="Do you want to submit this document ?"
         title="Confirm Action"
         buttonProps={[
           {},
@@ -276,9 +278,7 @@ function DigitalizeCard({
           },
         ]}
         id="Submit"
-      >
-        Do you want to submit this document ?
-      </Modal>
+      />
       {rightValue === PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES && (
         <MetaData docId={data.id} />
       )}
