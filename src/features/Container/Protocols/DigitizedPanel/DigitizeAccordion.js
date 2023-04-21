@@ -742,8 +742,9 @@ function DigitizeAccordion({
   };
 
   return (
+    // eslint-disable-next-line
     <div
-      onMouseEnter={() => setIsShown(true)}
+      onMouseOver={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
       className={
         // eslint-disable-next-line
