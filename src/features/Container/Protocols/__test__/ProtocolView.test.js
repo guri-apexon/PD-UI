@@ -1,9 +1,8 @@
 import { Provider } from 'react-redux';
-import { fireEvent, render, screen } from '../../../../test-utils/test-utils';
+import { render, screen } from '../../../../test-utils/test-utils';
 import store from '../../../../store/store';
 import ProtocolView from '../ProtocolView';
 import { summary } from './data';
-import { ProtocolContext } from '../ProtocolContext';
 
 // eslint-disable-next-line
 const initialState = {
@@ -37,17 +36,9 @@ const initialState = {
 };
 describe('ProtocolView', () => {
   let initialState;
-  let dispatch;
-  let selectedSection;
-  let sectionContent;
-  let setSaveSection;
   let props;
 
   beforeEach(() => {
-    dispatch = jest.fn();
-    selectedSection = {};
-    sectionContent = [];
-    setSaveSection = jest.fn();
     props = {
       refs: {},
       data: {},
@@ -89,55 +80,5 @@ describe('ProtocolView', () => {
     );
 
     expect(screen.queryByText('Summary')).not.toBeInTheDocument();
-  });
-
-  xit('should display the table of contents when TOC is present in the data', () => {
-    const refs = {
-      sectionRef: {
-        0: {
-          current: { scrollIntoView: jest.fn() },
-        },
-      },
-    };
-    const data = {};
-    render(
-      <Provider store={store}>
-        <ProtocolContext.Provider value={{}}>
-          <ProtocolView refs={refs} data={data} />
-        </ProtocolContext.Provider>
-      </Provider>,
-    );
-    const tocHeading = screen.getByText('Table of Contents');
-    expect(tocHeading).toBeInTheDocument();
-  });
-
-  xit('handles section select', () => {
-    render(
-      <Provider store={store}>
-        <ProtocolContext.Provider
-          value={{
-            selectedSection,
-            sectionContent,
-            saveSection: null,
-            dispatchSectionEvent: jest.fn(),
-            setSectionContent: jest.fn(),
-            setSaveSection,
-          }}
-        >
-          <ProtocolView refs={{}} data={{}} />
-        </ProtocolContext.Provider>
-      </Provider>,
-    );
-
-    fireEvent.click(screen.getByText('Test Section'));
-    expect(dispatch).toHaveBeenCalledWith({
-      type: 'UPDATE_SECTION_DATA',
-      payload: {
-        data: [{ id: 'test-content', content: 'Test Content' }],
-        actionType: 'REPLACE_CONTENT',
-        linkId: 'test-link-id',
-      },
-    });
-    expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
 });

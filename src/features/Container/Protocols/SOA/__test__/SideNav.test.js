@@ -2,8 +2,6 @@ import { render, fireEvent } from '@testing-library/react';
 import SideNav from '../SideNav';
 import TabelContext from '../Context';
 
-import { TableEvents } from '../Constants';
-
 const mockDispatch = jest.fn();
 const mockState = {
   settingItems: {
@@ -90,53 +88,6 @@ describe('SideNav', () => {
     fireEvent.click(accordionSummary);
     const accordionContent = getByTestId('Filter 1');
     expect(accordionContent).not.toBeVisible();
-  });
-
-  xtest('expands and collapses accordion when clicked', () => {
-    const state = {
-      settingItems: {
-        item1: {
-          name: 'Item 1',
-          children: [{ name: 'Child 1' }, { name: 'Child 2' }],
-        },
-      },
-      hideGroupsColumns: [],
-    };
-
-    const { getByTestId } = render(<SideNav />, {
-      wrapper: ({ children }) => (
-        <TabelContext.Provider value={{ state }}>
-          {children}
-        </TabelContext.Provider>
-      ),
-    });
-
-    const accordionPanel = getByTestId('item1')[0];
-    const accordionSummary = accordionPanel?.querySelector('button');
-    expect(accordionPanel).not.toHaveAttribute('aria-expanded', 'true');
-    fireEvent.click(accordionSummary);
-    expect(accordionPanel).toHaveAttribute('aria-expanded', 'true');
-    fireEvent.click(accordionSummary);
-    expect(accordionPanel).not.toHaveAttribute('aria-expanded', 'true');
-  });
-
-  xit('expands the item on click', () => {
-    const { getByTestId } = render(<SideNav />, {
-      wrapper: ({ children }) => (
-        <TabelContext.Provider value={mockContext}>
-          {children}
-        </TabelContext.Provider>
-      ),
-    });
-    const item = getByTestId('item1');
-    fireEvent.click(item);
-    expect(mockDispatch).toHaveBeenCalledWith({
-      type: TableEvents.FILTER_GROUP_COLUMN,
-      payload: { name: 'Filter 1', push: true },
-    });
-    expect(mockDispatch).toHaveBeenCalledWith({
-      type: TableEvents.REFRESH_TABLE,
-    });
   });
 
   it('collapses the item on click', () => {
