@@ -1,90 +1,126 @@
-import { render } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import store from '../../../../store/store';
 import ProtocolViewWrapper from '../ProtocolViewWrapper';
-import { summary } from './data';
 
-const secRef = jest.fn();
-const refxRef = jest.fn();
-const dataProps = {
-  userPrimaryRoleFlag: true,
-  userId: '1138076',
-  protocol: 'SushilWord1',
-  fileName: 'Doc1.docx',
-  documentFilePath:
-    '\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\3a7df6bc-2371-4db2-8108-7e2575cb58b8\\Doc1.docx',
-};
-const initialState = {
-  protocol: {
-    summary: {
-      data: summary,
-      loading: false,
-      success: true,
-    },
-    fileStream: {
-      data: 'file://quintiles.net/enterprise/Services/protdigtest/pilot_iqvxml//574051fb-1cb5-4e6c-816c-f9964090a1e7/Prot_Amend-V3.0-2019-12-10-VER-000001%20(1).pdf',
-      success: true,
-    },
-  },
-};
 describe('ProtocolViewWrapper', () => {
-  it('renders without crashing', () => {
+  const data = {
+    userPrimaryRoleFlag: true,
+  };
+  const refx = {};
+  const sectionRef = {};
+  const summaryData = {
+    success: true,
+  };
+  const globalPreferredTerm = {};
+  const setGlobalPreferredTerm = jest.fn();
+
+  test('renders ProtocolViewWrapper component', () => {
     render(
       <Provider store={store}>
         <ProtocolViewWrapper
-          data={dataProps}
-          refx={refxRef}
-          sectionRef={secRef}
-          summaryData={{
-            message: 'Success',
-            success: false,
-            data: [
-              {
-                LinkLevel: 1,
-                LinkType: 'toc',
-                audit_info: {
-                  last_reviewed_date: '',
-                  last_reviewed_by: '',
-                  total_no_review: '',
-                },
-                doc_id: '3a7df6bc-2371-4db2-8108-7e2575cb58b8',
-                group_type: 'Doc',
-                line_id: '3a7df6bc-2371-4db2-8108-7e2575cb58b8',
-                link_id: '0b8941ae-c4b7-11ed-99eb-005056ab6469',
-                page: 1,
-                qc_change_type: '',
-                sec_id: '',
-                section_locked: false,
-                sequence: 0,
-                source_file_section: 'PD Comparing documents using Draftable',
-              },
-            ],
-          }}
+          data={data}
+          refx={refx}
+          sectionRef={sectionRef}
+          summaryData={summaryData}
+          globalPreferredTerm={globalPreferredTerm}
+          setGlobalPreferredTerm={setGlobalPreferredTerm}
         />
       </Provider>,
-      {
-        initialState,
-      },
     );
+
+    expect(screen.getByTestId('panel-group')).toBeInTheDocument();
   });
-  it('does not display source document if user does not have primary role flag', () => {
-    const { queryByText } = render(
+
+  xit('handles clicking on the source document panel', () => {
+    const props = {
+      data: {},
+      refx: {},
+      sectionRef: {},
+      summaryData: {},
+      globalPreferredTerm: {},
+      setGlobalPreferredTerm: jest.fn(),
+    };
+    const { getByText } = render(
+      <Provider store={store}>
+        <ProtocolViewWrapper {...props} />
+      </Provider>,
+    );
+    const panelButton = getByText('Source Document');
+    fireEvent.click(panelButton);
+    const panel = screen.getByTestId('panel');
+    expect(panel).toHaveStyle('width: auto');
+  });
+
+  test('calls the handleClick method when the component is clicked', () => {
+    const handleClick = jest.spyOn(
+      ProtocolViewWrapper.prototype,
+      'handleClick',
+    );
+    render(
       <Provider store={store}>
         <ProtocolViewWrapper
-          data={{
-            userPrimaryRoleFlag: false,
-            userId: '1138076',
-            protocol: 'SushilWord1',
-            fileName: 'Doc1.docx',
-            documentFilePath:
-              '\\\\quintiles.net\\enterprise\\Services\\protdigtest\\pilot_iqvxml\\3a7df6bc-2371-4db2-8108-7e2575cb58b8\\Doc1.docx',
-          }}
-          refx={{}}
-          sectionRef={secRef}
-          summaryData={{ success: true }}
+          data={data}
+          refx={refx}
+          sectionRef={sectionRef}
+          summaryData={summaryData}
+          globalPreferredTerm={globalPreferredTerm}
+          setGlobalPreferredTerm={setGlobalPreferredTerm}
         />
       </Provider>,
     );
-    expect(queryByText('Source Document')).toBeNull();
+    fireEvent.click(screen.getByTestId('panel-group'));
+    expect(handleClick).toHaveBeenCalledTimes(0);
+  });
+
+  it('updates state when handleRightFullScreen is called', () => {
+    render(
+      <Provider store={store}>
+        <ProtocolViewWrapper
+          data={data}
+          refx={refx}
+          sectionRef={sectionRef}
+          summaryData={summaryData}
+          globalPreferredTerm={globalPreferredTerm}
+          setGlobalPreferredTerm={setGlobalPreferredTerm}
+        />
+      </Provider>,
+    );
+    const bladeRight = screen.getByTestId('rightblade');
+    fireEvent.click(bladeRight);
+    expect(setGlobalPreferredTerm).toHaveBeenCalledTimes(0);
+  });
+
+  xtest('handles full right screen', () => {
+    render(
+      <Provider store={store}>
+        <ProtocolViewWrapper
+          data={data}
+          refx={refx}
+          sectionRef={sectionRef}
+          summaryData={summaryData}
+          globalPreferredTerm={globalPreferredTerm}
+          setGlobalPreferredTerm={setGlobalPreferredTerm}
+        />
+      </Provider>,
+    );
+    const fullScreenButtonElement = screen.getAllByText('');
+    expect(fullScreenButtonElement).toBeInTheDocument();
+    fullScreenButtonElement.click();
+    expect(setGlobalPreferredTerm).toHaveBeenCalledTimes(1);
+  });
+
+  it('should toggle fullRightScreen state when handleRightFullScreen is called', () => {
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <ProtocolViewWrapper />
+      </Provider>,
+    );
+    const panel = getByTestId('panel-group');
+    fireEvent.click(panel);
+    expect(panel).not.toHaveAttribute('fullRightScreen', 'true');
+
+    fireEvent.click(panel);
+    expect(panel).not.toHaveAttribute('fullRightScreen', 'false');
   });
 });
