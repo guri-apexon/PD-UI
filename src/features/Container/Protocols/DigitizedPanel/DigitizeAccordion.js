@@ -491,9 +491,19 @@ function DigitizeAccordion({
       updateSectionLock(true);
       dispatch(setSaveEnabled(false));
       setShowLoader(true);
+      const checkIfMainHeader = reqBody.filter(
+        (req) =>
+          req?.type === CONTENT_TYPE.HEADER &&
+          req?.qc_change_type === QC_CHANGE_TYPE.UPDATED &&
+          req?.link_level === '1',
+      );
       dispatch({
         type: 'UPDATE_SECTION_DATA',
-        payload: { reqBody, docId: item?.doc_id },
+        payload: {
+          reqBody,
+          docId: item?.doc_id,
+          refreshToc: checkIfMainHeader.length,
+        },
       });
       dispatch({
         type: 'DISCARD_DETAILS',
@@ -562,13 +572,6 @@ function DigitizeAccordion({
         if (sectionResponse?.success && showedit) {
           setShowEdit(false);
           fetchContent();
-          dispatch({
-            type: 'GET_PROTOCOL_TOC_DATA',
-            payload: {
-              docId,
-              tocFlag: 1,
-            },
-          });
         }
       }
 
@@ -694,6 +697,8 @@ function DigitizeAccordion({
     const obj = [
       {
         ...headerLevel1,
+        is_section_header: true,
+        delete_section_header: true,
         link_id: deleteSection?.link_id,
         qc_change_type: 'delete',
       },
