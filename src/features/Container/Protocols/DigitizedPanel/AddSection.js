@@ -6,7 +6,14 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import headerLevel from '../CustomComponents/constants';
 
-function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
+function AddSection({
+  setIsModal,
+  headerList,
+  setIsShown,
+  isModal,
+  index,
+  beforeAddSectionFlag,
+}) {
   const dispatch = useDispatch();
   const { headerLevel1 } = headerLevel;
   const [sectionName, setSectionName] = useState('');
@@ -19,19 +26,24 @@ function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
         link_text: sectionName,
       };
 
-      if (headerList[index + 1]) {
-        headerObj.next_detail.link_id = headerList[index + 1]?.link_id;
+      if (headerList[index] && beforeAddSectionFlag) {
+        headerObj.next_detail.link_id = headerList[index]?.link_id;
       } else {
-        headerObj.prev_detail.link_id = headerList[index]?.link_id;
-        headerObj.prev_detail.link_level = '1';
-        headerObj.next_detail.link_level = '';
+        // eslint-disable-next-line
+        if (headerList[index + 1]) {
+          headerObj.next_detail.link_id = headerList[index + 1]?.link_id;
+        } else {
+          headerObj.prev_detail.link_id = headerList[index]?.link_id;
+          headerObj.prev_detail.link_level = '1';
+          headerObj.next_detail.link_level = '';
+        }
       }
 
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
           docId: headerList[index]?.doc_id,
-          index: index + 1,
+          index: beforeAddSectionFlag ? index : index + 1,
           refreshToc: true,
           reqBody: [headerObj],
         },
@@ -83,4 +95,5 @@ AddSection.propTypes = {
   index: PropTypes.isRequired,
   setIsShown: PropTypes.isRequired,
   isModal: PropTypes.isRequired,
+  beforeAddSectionFlag: PropTypes.isRequired,
 };

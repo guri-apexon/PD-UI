@@ -527,6 +527,12 @@
   border-image-slice: 1;
 }
 
+.accordian-plusIcon-line-top:hover {
+  border-top: 1px solid #0768fd;
+  border-image: linear-gradient(to right, #0768fd 98%, rgba(0, 0, 0, 0) 50%);
+  border-image-slice: 1;
+}
+
 .digitized_data_item .accordion_summary {
   display: flex;
   justify-content: space-between;

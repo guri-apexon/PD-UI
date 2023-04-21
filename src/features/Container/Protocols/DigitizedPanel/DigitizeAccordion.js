@@ -124,6 +124,7 @@ function DigitizeAccordion({
   const tocActiveSelector = useSelector(TOCActive);
   const lockDetails = useSelector(sectionLockDetails);
   const [requestedRoute, setRequestedRoute] = useState('');
+  const [beforeAddSectionFlag, setBeforeAddSectionFlag] = useState(false);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
@@ -366,20 +367,10 @@ function DigitizeAccordion({
       currentEditCard === item.link_id
     ) {
       const updatedTime = lockDetails?.last_updated?.split('.')[0];
-      console.log('SHUBHAM', moment(updatedTime).format('MM/DD/YYYY HH:mm:ss'));
-      console.log(
-        'SHUBHAM2',
-        moment(moment.utc().format()).format('MM/DD/YYYY HH:mm:ss'),
-      );
-      const a = moment.utc(updatedTime).local();
-
-      const b = moment();
-      console.log('SHUBHAM123', a.format(), 'abv', b.format());
-      console.log('abc', a?.diff(b, 'hours'));
-      console.log('SHUBHAM UTC', moment.utc().format());
       if (
         lockDetails?.section_lock ||
-        lockDetails?.userId === userIdSelector?.toString()
+        lockDetails?.userId === userIdSelector?.toString() ||
+        moment.utc(updatedTime).local()?.diff(moment(), 'hours') > 23
       ) {
         onShowEdit();
       } else {
@@ -678,8 +669,9 @@ function DigitizeAccordion({
   const [isShown, setIsShown] = useState(false);
   const [isModal, setIsModal] = useState(false);
 
-  const handleAddSection = (e) => {
+  const handleAddSection = (e, flag) => {
     e.stopPropagation();
+    setBeforeAddSectionFlag(flag);
     setIsModal(true);
   };
   const handleSegmentMouseUp = (e, section) => {
@@ -716,11 +708,35 @@ function DigitizeAccordion({
       },
     });
   };
+
+  const renderAddSection = (flag) => {
+    return (
+      <IconButton
+        data-testId="plus-add"
+        color="primary"
+        onClick={(e) => {
+          handleAddSection(e, flag);
+        }}
+        size="small"
+        destructiveAction
+      >
+        <Plus />
+      </IconButton>
+    );
+  };
+
   return (
     <div
       onMouseEnter={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
-      className={primaryRole && 'accordian-plusIcon-line'}
+      className={
+        // eslint-disable-next-line
+        primaryRole && index === 0
+          ? 'accordian-plusIcon-line-top accordian-plusIcon-line'
+          : primaryRole
+          ? 'accordian-plusIcon-line'
+          : ''
+      }
       data-testid="mouse-over"
     >
       {showedit && (
@@ -730,6 +746,10 @@ function DigitizeAccordion({
           onDiscardClick={onDiscardClick}
         />
       )}
+
+      <div className="plus-icon">
+        {isShown && primaryRole && index === 0 && renderAddSection(true)}
+      </div>
 
       <Accordion
         expanded={expanded}
@@ -1002,22 +1022,11 @@ function DigitizeAccordion({
           index={index}
           setIsShown={setIsShown}
           isModal={isModal}
+          beforeAddSectionFlag={beforeAddSectionFlag}
         />
       </Accordion>
       <div className="plus-icon">
-        {isShown && primaryRole && (
-          <IconButton
-            data-testId="plus-add"
-            color="primary"
-            onClick={(e) => {
-              handleAddSection(e);
-            }}
-            size="small"
-            destructiveAction
-          >
-            <Plus />
-          </IconButton>
-        )}
+        {isShown && primaryRole && renderAddSection(false)}
       </div>
       <DeleteModal
         handleDeleteSection={handleDeleteSection}
