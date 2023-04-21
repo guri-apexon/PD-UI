@@ -185,7 +185,7 @@ export function DateRangeCard({
   useEffect(() => {
     if (listValue2 !== undefined) {
       const obj = section.sectionContent.find((item) => item.id === listValue2);
-      if (obj.value) {
+      if (obj?.value) {
         setValue(obj.value);
         if (obj.value === '0') {
           setDisabled(false);
@@ -376,6 +376,7 @@ export class CheckboxTest extends React.Component {
                 >
                   <input
                     type="checkbox"
+                    data-testid="new-checkbox"
                     id={data[index].id}
                     value={data[index].id}
                     onChange={this.handleChange}

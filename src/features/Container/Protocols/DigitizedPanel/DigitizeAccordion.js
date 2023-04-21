@@ -495,9 +495,19 @@ function DigitizeAccordion({
       updateSectionLock(true);
       dispatch(setSaveEnabled(false));
       setShowLoader(true);
+      const checkIfMainHeader = reqBody.filter(
+        (req) =>
+          req?.type === CONTENT_TYPE.HEADER &&
+          req?.qc_change_type === QC_CHANGE_TYPE.UPDATED &&
+          req?.link_level === '1',
+      );
       dispatch({
         type: 'UPDATE_SECTION_DATA',
-        payload: { reqBody, docId: item?.doc_id },
+        payload: {
+          reqBody,
+          docId: item?.doc_id,
+          refreshToc: checkIfMainHeader.length,
+        },
       });
       dispatch({
         type: 'DISCARD_DETAILS',
@@ -527,7 +537,6 @@ function DigitizeAccordion({
   const getLinkReference = (section) => {
     if (section?.link_and_reference) {
       const linkArr = Object.entries(section?.link_and_reference);
-
       if (linkArr.length > 0) {
         return (
           <div>
@@ -542,7 +551,7 @@ function DigitizeAccordion({
                   <b> [{term[1]?.source_text?.toString()}]</b>
                 </a>
               ) : (
-                <span> [{term[1]?.source_text?.toString()}]</span>
+                <span>[{term[1]?.source_text?.toString()}]</span>
               );
             })}
           </div>
@@ -550,6 +559,13 @@ function DigitizeAccordion({
       }
     }
     return '';
+  };
+
+  const getPreferredTerms = (item) => {
+    if (globalPreferredTerm && !isEmpty(item?.preferred_term)) {
+      return <b className="preferred-text">{item.source_file_section}</b>;
+    }
+    return item.source_file_section;
   };
 
   useEffect(() => {
@@ -560,13 +576,6 @@ function DigitizeAccordion({
         if (sectionResponse?.success && showedit) {
           setShowEdit(false);
           fetchContent();
-          dispatch({
-            type: 'GET_PROTOCOL_TOC_DATA',
-            payload: {
-              docId,
-              tocFlag: 1,
-            },
-          });
         }
       }
 
@@ -694,6 +703,8 @@ function DigitizeAccordion({
     const obj = [
       {
         ...headerLevel1,
+        is_section_header: true,
+        delete_section_header: true,
         link_id: deleteSection?.link_id,
         qc_change_type: 'delete',
       },
@@ -765,16 +776,7 @@ function DigitizeAccordion({
               className="section-title"
               data-testid="accordion-header"
             >
-              {globalPreferredTerm && !isEmpty(item.preferred_term) ? (
-                <b className="preferred-text">
-                  {item.preferred_term
-                    .replace(/[_]/g, ' ')
-                    .replace('cpt', '')
-                    .trim()}
-                </b>
-              ) : (
-                item.source_file_section
-              )}
+              {getPreferredTerms(item)}
             </Typography>
             {/* eslint-disable-next-line */}
             <div
@@ -861,6 +863,10 @@ function DigitizeAccordion({
                                 section?.content?.AttachmentListProperties
                               }
                               colWidth={100}
+                              preferredTerms={section?.preferred_terms}
+                              isPreferredTerm={
+                                globalPreferredTerm || showPrefferedTerm
+                              }
                             />
                           );
                         } else if (section.type === CONTENT_TYPE.IMAGE) {
@@ -894,6 +900,7 @@ function DigitizeAccordion({
                                   />
                                 </sup>
                                 <p
+                                  className="single-segment"
                                   style={{
                                     fontWeight: `${
                                       section?.font_info?.isBold ||
@@ -916,12 +923,12 @@ function DigitizeAccordion({
                                     )}
                                   />
                                 </p>
-                                {getLinkReference(section)}
                               </div>
                             ) : (
                               section.content.length > 0 && (
                                 <div key={React.key} className="link-data">
                                   <p
+                                    className="single-segment"
                                     role="presentation"
                                     key={React.key}
                                     style={{
@@ -952,7 +959,6 @@ function DigitizeAccordion({
                                       )}
                                     />
                                   </p>
-                                  {getLinkReference(section)}
                                 </div>
                               )
                             );
@@ -962,8 +968,10 @@ function DigitizeAccordion({
                           <div
                             key={React.key}
                             onMouseUp={(e) => handleSegmentMouseUp(e, section)}
+                            className="content-linkref"
                           >
                             {content}
+                            {getLinkReference(section)}
                           </div>
                         );
                       })}

@@ -32,6 +32,7 @@ export function ValueField({
   type,
   inputValue,
   dateValue,
+  isDisabled,
   handleChange,
   handleDateChange,
   handleBlur,
@@ -116,6 +117,7 @@ export function ValueField({
             <Select
               label=""
               name="attr_type"
+              disabled={isDisabled}
               value={type}
               onChange={(e) => onTypeChange(e)}
               onBlur={handleBlur}
@@ -149,6 +151,7 @@ ValueField.propTypes = {
   item: PropTypes.isRequired,
   type: PropTypes.isRequired,
   inputValue: PropTypes.isRequired,
+  isDisabled: PropTypes.isRequired,
   handleBlur: PropTypes.isRequired,
   handleDateChange: PropTypes.isRequired,
   dateValue: PropTypes.isRequired,

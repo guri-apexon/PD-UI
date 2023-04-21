@@ -4,6 +4,7 @@ import {
   flattenObject,
   autoCompleteClose,
   checkDuplicates,
+  validationCheck,
 } from '../MetaData/utilFunction';
 
 describe('flattenObject', () => {
@@ -18,9 +19,22 @@ describe('flattenObject', () => {
     const expectedResult = {
       parent: {
         _meta_data: [
-          { id: 1, isCustom: true, name: 'field1' },
-          { id: 2, isCustom: true, name: 'field2' },
+          {
+            id: 1,
+            isCustom: true,
+            name: 'field1',
+            attr_value: undefined,
+            display_name: undefined,
+          },
+          {
+            id: 2,
+            isCustom: true,
+            name: 'field2',
+            attr_value: undefined,
+            display_name: undefined,
+          },
         ],
+        audit_info: {},
         formattedName: 'parent',
         isActive: false,
         isEdit: false,
@@ -146,6 +160,32 @@ describe('Utils', () => {
       ];
 
       const result = checkDuplicates(data);
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('validationCheck', () => {
+    it('should return true for valid attributes - name and value', () => {
+      const data = [
+        { attr_name: 'name', attr_value: 'John' },
+        { attr_name: 'age', attr_value: '30' },
+        { attr_name: 'gender', attr_value: 'male' },
+      ];
+
+      const result = validationCheck(data);
+
+      expect(result).toBe(true);
+    });
+
+    it('should return false if attributes dont have valid data - name and value', () => {
+      const data = [
+        { attr_name: 'name', attr_value: 'John', isCustom: true },
+        { attr_name: '', attr_value: '30', isCustom: true },
+        { attr_name: 'gender', attr_value: '', isCustom: true },
+      ];
+
+      const result = validationCheck(data);
 
       expect(result).toBe(false);
     });
