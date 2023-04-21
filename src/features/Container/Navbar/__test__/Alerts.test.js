@@ -131,16 +131,6 @@ describe('Alerts', () => {
     expect(screen.getByText('5')).toBeInTheDocument();
   });
 
-  xtest('Should click on the list item', () => {
-    useSelectorMock.mockReturnValue(mockNotifications);
-    render(<Alerts list={mockNotifications} />);
-    const alertIcon = screen.getByTestId('alert-bell-icon');
-    fireEvent.click(alertIcon);
-    fireEvent.click(
-      screen.getByTestId('sentinelStart').children[0].children[1],
-    );
-  });
-
   test('Should click on the read and unread list item', async () => {
     const dispatchMock = jest.fn();
     useDispatchMock.mockReturnValue(dispatchMock);
@@ -211,32 +201,6 @@ describe('Alerts', () => {
     // expect(popover).toBeInTheDocument();
     fireEvent.click(document.body);
     expect(popover).not.toBeInTheDocument();
-  });
-
-  xit('should mark the notification as read and navigate to the correct route when clicking on a notification', () => {
-    useSelectorMock.mockReturnValue(mockNotifications);
-    const dispatchMock = jest.fn();
-    useDispatchMock.mockReturnValue(dispatchMock);
-    const mockHistoryPush = jest.fn();
-    jest.mock('react-router-dom', () => ({
-      ...jest.requireActual('react-router-dom'),
-      useHistory: () => ({
-        push: mockHistoryPush,
-      }),
-    }));
-    render(<Alerts list={mockNotifications} />);
-    fireEvent.click(screen.getByTestId('alert-bell-icon'));
-    const element = screen.getByTestId('popover');
-    expect(element).toBeInTheDocument();
-    fireEvent.click(element);
-
-    expect(dispatchMock).toHaveBeenCalledWith({
-      type: 'READ_NOTIFICATION_SAGA',
-      payload: { id: '2' },
-    });
-    expect(mockHistoryPush.push).toHaveBeenCalledWith(
-      '/protocols?protocolId=2&tab=1',
-    );
   });
 
   it('when the notification empty', () => {

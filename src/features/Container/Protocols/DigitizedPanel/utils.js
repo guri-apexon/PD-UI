@@ -32,3 +32,17 @@ export const scrollToLinkandReference = (index, linkandReference) => {
 export const replaceHtmlTags = (sectionHeader) => {
   return sectionHeader.replace(/<[^>]+>/g, '');
 };
+
+const beforeUnLoad = (e, cb) => {
+  e.preventDefault();
+  cb(true);
+};
+
+export const onBeforeUnload = (updateSectionLock) => {
+  window.addEventListener('beforeunload', (e) =>
+    beforeUnLoad(e, updateSectionLock),
+  );
+  return () => {
+    window.removeEventListener('beforeunload', beforeUnLoad);
+  };
+};
