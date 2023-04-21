@@ -16,7 +16,8 @@ const formattedValue = (type, val) => {
 const findLatestTimestamp = (data) => {
   const sortedList = data?.sort((a, b) => {
     return (
-      new Date(b.audit_info.last_updated) - new Date(a.audit_info.last_updated)
+      new Date(b.audit_info?.last_updated) -
+      new Date(a.audit_info?.last_updated)
     );
   });
   return sortedList?.[0]?.audit_info || {};

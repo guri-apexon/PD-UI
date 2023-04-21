@@ -18,9 +18,22 @@ describe('flattenObject', () => {
     const expectedResult = {
       parent: {
         _meta_data: [
-          { id: 1, isCustom: true, name: 'field1' },
-          { id: 2, isCustom: true, name: 'field2' },
+          {
+            id: 1,
+            isCustom: true,
+            name: 'field1',
+            attr_value: undefined,
+            display_name: undefined,
+          },
+          {
+            id: 2,
+            isCustom: true,
+            name: 'field2',
+            attr_value: undefined,
+            display_name: undefined,
+          },
         ],
+        audit_info: {},
         formattedName: 'parent',
         isActive: false,
         isEdit: false,
