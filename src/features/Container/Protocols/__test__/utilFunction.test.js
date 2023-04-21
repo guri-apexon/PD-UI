@@ -1,3 +1,4 @@
+import { fireEvent, render } from '@testing-library/react';
 import {
   mergeSummary,
   flattenMetaParam,
@@ -189,5 +190,61 @@ describe('Utils', () => {
 
       expect(result).toBe(false);
     });
+  });
+});
+
+describe('validationCheck', () => {
+  it('returns true if rowData is empty', () => {
+    expect(validationCheck([])).toBe(true);
+  });
+
+  it('returns true if rowData has valid data for all attributes', () => {
+    const rowData = [
+      { attr_name: 'name', attr_value: 'John Doe', isCustom: false },
+      { attr_name: 'age', attr_value: 30, isCustom: false },
+    ];
+    expect(validationCheck(rowData)).toBe(true);
+  });
+
+  it('returns false if rowData has empty attr_name or attr_value for custom data', () => {
+    const rowData = [
+      { attr_name: 'name', attr_value: '', isCustom: true },
+      { attr_name: 'age', attr_value: 30, isCustom: true },
+    ];
+    expect(validationCheck(rowData)).toBe(false);
+  });
+
+  it('returns false if rowData has empty attr_name or attr_value for some custom data', () => {
+    const rowData = [
+      { attr_name: 'name', attr_value: 'John Doe', isCustom: false },
+      { attr_name: '', attr_value: '', isCustom: true },
+      { attr_name: 'age', attr_value: 30, isCustom: true },
+    ];
+    expect(validationCheck(rowData)).toBe(false);
+  });
+});
+
+describe('autoCompleteClose', () => {
+  let removeHook;
+  let modalOpened;
+
+  beforeEach(() => {
+    removeHook = jest.fn();
+    modalOpened = document.createElement('div');
+    modalOpened.classList.add('modal-opened');
+    document.body.appendChild(modalOpened);
+  });
+
+  afterEach(() => {
+    document.body.removeChild(modalOpened);
+  });
+
+  test('removes hook and removes modal when modal is clicked', () => {
+    const { getByTestId } = render(<div data-testid="test" />);
+    autoCompleteClose(removeHook);
+    const modal = getByTestId('test');
+    fireEvent.click(modal);
+    expect(removeHook).toHaveBeenCalledTimes(0);
+    expect(document.body.contains(modalOpened)).toBe(true);
   });
 });

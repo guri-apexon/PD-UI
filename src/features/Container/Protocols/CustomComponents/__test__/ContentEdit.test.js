@@ -19,14 +19,6 @@ describe('ContentEdit', () => {
     jest.clearAllMocks();
   });
 
-  const defaultProps = {
-    type: 'header',
-    lineID: 1,
-    content: 'Hello World',
-    deleteSection: mockDeleteSection,
-    edit: true,
-  };
-
   test('render component without error', () => {
     const contextValues = { dispatchSectionEvent: jest.fn() };
     jest
@@ -184,23 +176,5 @@ describe('ContentEdit', () => {
     });
     fireEvent.blur(contentEditable);
     expect(contentEditable).toHaveTextContent('Hi, there!');
-  });
-
-  xit('calls dispatchSectionEvent when content is updated', () => {
-    const mockdispatchSectionEvent = jest.fn();
-    render(
-      <ProtocolContext.Provider
-        value={{ dispatchSectionEvent: mockdispatchSectionEvent }}
-      >
-        <ContentEdit {...defaultProps} />
-      </ProtocolContext.Provider>,
-    );
-
-    const contentEditable = screen.getByTestId('contentEdit');
-    fireEvent.blur(contentEditable);
-    expect(mockdispatchSectionEvent).toHaveBeenCalledWith('CONTENT_UPDATE', {
-      currentLineId: defaultProps.lineID,
-      content: defaultProps.content,
-    });
   });
 });

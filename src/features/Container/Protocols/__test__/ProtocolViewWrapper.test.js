@@ -32,26 +32,6 @@ describe('ProtocolViewWrapper', () => {
     expect(screen.getByTestId('panel-group')).toBeInTheDocument();
   });
 
-  xit('handles clicking on the source document panel', () => {
-    const props = {
-      data: {},
-      refx: {},
-      sectionRef: {},
-      summaryData: {},
-      globalPreferredTerm: {},
-      setGlobalPreferredTerm: jest.fn(),
-    };
-    const { getByText } = render(
-      <Provider store={store}>
-        <ProtocolViewWrapper {...props} />
-      </Provider>,
-    );
-    const panelButton = getByText('Source Document');
-    fireEvent.click(panelButton);
-    const panel = screen.getByTestId('panel');
-    expect(panel).toHaveStyle('width: auto');
-  });
-
   test('calls the handleClick method when the component is clicked', () => {
     const handleClick = jest.spyOn(
       ProtocolViewWrapper.prototype,
@@ -89,25 +69,6 @@ describe('ProtocolViewWrapper', () => {
     const bladeRight = screen.getByTestId('rightblade');
     fireEvent.click(bladeRight);
     expect(setGlobalPreferredTerm).toHaveBeenCalledTimes(0);
-  });
-
-  xtest('handles full right screen', () => {
-    render(
-      <Provider store={store}>
-        <ProtocolViewWrapper
-          data={data}
-          refx={refx}
-          sectionRef={sectionRef}
-          summaryData={summaryData}
-          globalPreferredTerm={globalPreferredTerm}
-          setGlobalPreferredTerm={setGlobalPreferredTerm}
-        />
-      </Provider>,
-    );
-    const fullScreenButtonElement = screen.getAllByText('');
-    expect(fullScreenButtonElement).toBeInTheDocument();
-    fullScreenButtonElement.click();
-    expect(setGlobalPreferredTerm).toHaveBeenCalledTimes(1);
   });
 
   it('should toggle fullRightScreen state when handleRightFullScreen is called', () => {
