@@ -101,17 +101,28 @@ export const updateFootNotePayload = (data) => {
   const updateFootNoteData = cloneDeep(data);
   if (updateFootNoteData.length > 0) {
     updateFootNoteData.forEach((notes, index) => {
-      const indicatorValue =
-        index !== 0
-          ? nextChar(updateFootNoteData[index - 1]?.Text?.split('.')[0]) || ''
-          : 'a';
-      updateFootNoteData[
-        index
-      ].Text = `${indicatorValue}. ${updateFootNoteData[index].Text}`;
+      if (!notes?.Text.includes('.')) {
+        const indicatorValue =
+          index > 0
+            ? nextChar(updateFootNoteData[index - 1]?.Text?.split('.')[0]) || ''
+            : 'a';
+        updateFootNoteData[
+          index
+        ].Text = `${indicatorValue}. ${updateFootNoteData[index].Text}`;
+        if (!updateFootNoteData?.[index]?.PrevousAttachmentIndex) {
+          updateFootNoteData[index].PrevousAttachmentIndex =
+            index > 0 ? index - 1 : null;
+        }
+      }
     });
   }
 
   return updateFootNoteData;
+};
+
+export const filterFootNotes = (data) => {
+  const updatedFootNoteData = updateFootNotePayload(data);
+  return updatedFootNoteData.filter((notes) => notes?.qc_change_type_footnote);
 };
 
 export const filterTableProperties = (data) => {

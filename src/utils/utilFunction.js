@@ -7,6 +7,7 @@ import {
   redaction,
 } from '../AppConstant/AppConstant';
 import {
+  filterFootNotes,
   filterTableProperties,
   updateFootNotePayload,
 } from '../features/Container/Protocols/CustomComponents/PDTable/utils';
@@ -493,7 +494,7 @@ export const createReturnObj = (obj, linkId) => {
         section_locked: false,
       };
     }
-    return {
+    const returnObj = {
       type: obj.type,
       link_level: obj.file_section_level,
       qc_change_type: obj.qc_change_type,
@@ -502,6 +503,13 @@ export const createReturnObj = (obj, linkId) => {
       line_id: obj.line_id?.slice(0, 36),
       section_locked: false,
     };
+    return obj.file_section_level === '1'
+      ? {
+          ...returnObj,
+          is_section_header: true,
+          delete_section_header: false,
+        }
+      : returnObj;
   }
   if (obj.type === CONTENT_TYPE.IMAGE) {
     if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
@@ -550,7 +558,7 @@ export const createReturnObj = (obj, linkId) => {
           TableProperties: filterTableProperties(
             obj?.content?.TableProperties || [],
           ),
-          AttachmentListProperties: updateFootNotePayload(
+          AttachmentListProperties: filterFootNotes(
             obj?.content?.AttachmentListProperties || [],
           ),
         },

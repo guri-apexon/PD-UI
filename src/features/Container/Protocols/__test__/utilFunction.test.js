@@ -4,6 +4,7 @@ import {
   flattenObject,
   autoCompleteClose,
   checkDuplicates,
+  validationCheck,
 } from '../MetaData/utilFunction';
 
 describe('flattenObject', () => {
@@ -159,6 +160,32 @@ describe('Utils', () => {
       ];
 
       const result = checkDuplicates(data);
+
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('validationCheck', () => {
+    it('should return true for valid attributes - name and value', () => {
+      const data = [
+        { attr_name: 'name', attr_value: 'John' },
+        { attr_name: 'age', attr_value: '30' },
+        { attr_name: 'gender', attr_value: 'male' },
+      ];
+
+      const result = validationCheck(data);
+
+      expect(result).toBe(true);
+    });
+
+    it('should return false if attributes dont have valid data - name and value', () => {
+      const data = [
+        { attr_name: 'name', attr_value: 'John', isCustom: true },
+        { attr_name: '', attr_value: '30', isCustom: true },
+        { attr_name: 'gender', attr_value: '', isCustom: true },
+      ];
+
+      const result = validationCheck(data);
 
       expect(result).toBe(false);
     });
