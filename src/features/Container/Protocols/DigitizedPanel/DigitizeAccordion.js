@@ -124,7 +124,7 @@ function DigitizeAccordion({
   const tocActiveSelector = useSelector(TOCActive);
   const lockDetails = useSelector(sectionLockDetails);
   const [requestedRoute, setRequestedRoute] = useState('');
-  const [beforeAddSectionFlag, setBeforeAddSectionFlag] = useState(false);
+  const [addSectionIndex, setAddSectionIndex] = useState(-1);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
@@ -687,9 +687,10 @@ function DigitizeAccordion({
   const [isShown, setIsShown] = useState(false);
   const [isModal, setIsModal] = useState(false);
 
-  const handleAddSection = (e, flag) => {
+  const handleAddSection = (e, flag, index) => {
     e.stopPropagation();
-    setBeforeAddSectionFlag(flag);
+    const sectionIndex = flag ? index : index + 1;
+    setAddSectionIndex(sectionIndex);
     setIsModal(true);
   };
   const handleSegmentMouseUp = (e, section) => {
@@ -735,7 +736,7 @@ function DigitizeAccordion({
         data-testId="plus-add"
         color="primary"
         onClick={(e) => {
-          handleAddSection(e, flag);
+          handleAddSection(e, flag, index);
         }}
         size="small"
         destructiveAction
@@ -1037,10 +1038,9 @@ function DigitizeAccordion({
         <AddSection
           setIsModal={setIsModal}
           headerList={headerList}
-          index={index}
+          index={addSectionIndex}
           setIsShown={setIsShown}
           isModal={isModal}
-          beforeAddSectionFlag={beforeAddSectionFlag}
         />
       </Accordion>
       <div className="plus-icon">
