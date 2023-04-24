@@ -39,10 +39,10 @@ const beforeUnLoad = (e, cb) => {
 };
 
 export const onBeforeUnload = (updateSectionLock) => {
-  window.addEventListener('beforeunload', (e) =>
+  document.addEventListener('beforeunload', (e) =>
     beforeUnLoad(e, updateSectionLock),
   );
   return () => {
-    window.removeEventListener('beforeunload', beforeUnLoad);
+    document.removeEventListener('beforeunload', beforeUnLoad);
   };
 };

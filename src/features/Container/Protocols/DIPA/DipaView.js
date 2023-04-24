@@ -10,6 +10,7 @@ import MenuItem from 'apollo-react/components/MenuItem';
 import Expand from 'apollo-react-icons/Expand';
 import IconButton from 'apollo-react/components/IconButton';
 import Tooltip from 'apollo-react/components/Tooltip';
+import Plus from 'apollo-react-icons/Plus';
 
 import { v4 as uuidv4 } from 'uuid';
 import startCase from 'lodash/startCase';
@@ -85,15 +86,19 @@ function DipaView({
     setDataResponse(receivedData?.output);
   }, [dipaDataSelector]);
 
-  useEffect(() => {
+  const updateWithOriginalData = (response) => {
     const getChildElements = (elements = []) =>
       elements.map((d) => ({
         ...d,
         open: false,
         child: getChildElements(d?.child || []),
       }));
-    const newValue = getChildElements(dataResponse);
+    const newValue = getChildElements(response);
     setMetadata(newValue);
+  };
+
+  useEffect(() => {
+    updateWithOriginalData(dataResponse);
   }, [dataResponse]);
 
   const getAllCategory = (userDataUpdated) => {
@@ -160,33 +165,28 @@ function DipaView({
     getSectionLock(newValue);
   };
 
-  const handleExpandChange = (panelID) => {
-    setEditingIDList([]);
+  const clearUnSavedText = (array) =>
+    array
+      .map((section) => {
+        return section?.actual_text === '' || section?.derive_seg === ''
+          ? false
+          : {
+              ...section,
+              ...(section?.derive_segemnt?.length > 0 && {
+                derive_segemnt: clearUnSavedText(section.derive_segemnt),
+              }),
+              ...(section?.child?.length > 0 && {
+                child: clearUnSavedText(section.child),
+              }),
+            };
+      })
+      .filter(Boolean);
 
-    const updateOpenValue = (array) =>
-      array.map((section) => ({
-        ...section,
-        open: section?.ID === panelID ? !section.open : section.open,
-        child: section.child?.length
-          ? updateOpenValue(section.child)
-          : section.child,
-      }));
-
-    const removedDerived = (array) =>
-      array.filter((item) => {
-        if (item.child.length) {
-          item.child = removedDerived(item.child);
-        }
-        item.derive_segemnt = item.derive_segemnt.filter(
-          (item) => item.derive_seg !== '',
-        );
-        return item;
-      });
-
-    const tempMetadata = updateOpenValue(metadata);
-    const removedDeriveSeg = removedDerived(tempMetadata);
-
-    setMetadata([...removedDeriveSeg]);
+  const handleExpandChange = (clearAll) => {
+    if (clearAll) {
+      setEditingIDList([]);
+      updateWithOriginalData(dataResponse);
+    }
   };
 
   const toggleEditingIDs = (ids = []) => {
@@ -230,12 +230,21 @@ function DipaView({
 
   const deleteSegment = (parentId) => {
     const getUpdatedMetadata = (array) =>
-      array.map((section) => ({
-        ...section,
-        derive_segemnt:
-          section?.ID === parentId ? [] : section?.derive_segemnt || [],
-        child: getUpdatedMetadata(section.child),
-      }));
+      array
+        .map((section) => {
+          return section?.ID === parentId
+            ? false
+            : {
+                ...section,
+                ...(section?.derive_segemnt?.length > 0 && {
+                  derive_segemnt: getUpdatedMetadata(section.derive_segemnt),
+                }),
+                ...(section?.child?.length > 0 && {
+                  child: getUpdatedMetadata(section.child),
+                }),
+              };
+        })
+        .filter(Boolean);
     const getUpdate = getUpdatedMetadata(metadata);
     setMetadata([...getUpdate]);
     setOpenModal(false);
@@ -275,29 +284,44 @@ function DipaView({
 
   const addGroup = (groupId) => {
     const Id = uuidv4();
-    const getUpdatedMetadata = (array) =>
-      array.map((section) => ({
-        ...section,
-        child:
-          section?.ID === groupId
-            ? [
-                {
-                  ID: Id,
-                  actual_text: '',
-                  derive_segemnt: [],
-                  child: [],
-                },
-                ...(section?.child || []),
-              ]
-            : getUpdatedMetadata(section.child) || [],
-      }));
-    const getUpdate = getUpdatedMetadata(metadata);
-    setMetadata([...getUpdate]);
+    let updatedData = [];
+
+    if (groupId) {
+      const getUpdatedMetadata = (array) =>
+        array.map((section) => ({
+          ...section,
+          child:
+            section?.ID === groupId
+              ? [
+                  {
+                    ID: Id,
+                    actual_text: '',
+                    derive_segemnt: [],
+                    child: [],
+                  },
+                  ...(section?.child || []),
+                ]
+              : getUpdatedMetadata(section.child) || [],
+        }));
+      updatedData = getUpdatedMetadata(metadata);
+    } else {
+      updatedData = [
+        ...metadata,
+        {
+          ID: Id,
+          actual_text: '',
+          derive_segemnt: [],
+          child: [],
+        },
+      ];
+    }
+
+    setMetadata([...updatedData]);
     toggleEditingIDs([Id]);
   };
 
   const saveData = (deleteData) => {
-    const newData = deleteData || metadata;
+    const newData = clearUnSavedText(deleteData || metadata);
     const data = {
       id: userData?.id,
       doc_id: userData?.doc_id,
@@ -416,12 +440,19 @@ function DipaView({
                   <b>{metadata?.length}</b>
                 </span>
               </Grid>
-              <Grid item xs={5} className="dipa-derivedcount">
+              <Grid item xs={4} className="dipa-derivedcount">
                 Derived Count
                 <br />
                 <span data-testid="derived-count">
                   <b>{deriveSegmentsLength}</b>
                 </span>
+              </Grid>
+              <Grid item xs={2} className="section-delete-btn">
+                <Tooltip title="Add Section" disableFocusListener>
+                  <IconButton onClick={() => addGroup()}>
+                    <Plus />
+                  </IconButton>
+                </Tooltip>
               </Grid>
             </Grid>
           )}

@@ -71,7 +71,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         : JSON.parse(data?.TableProperties);
       const formattedData = formattableData(parsedTable);
       setUpdatedData(formattedData);
-      const footnoteArr = formatFootNote(data.AttachmentListProperties) || [];
+      const footnoteArr = formatFootNote(data?.AttachmentListProperties || []);
       setFootnoteData(footnoteArr);
       const colIndexes = parsedTable[0]?.columns;
       setColumnWidth(98 / colIndexes.length);

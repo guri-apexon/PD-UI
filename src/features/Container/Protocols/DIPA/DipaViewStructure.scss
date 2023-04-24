@@ -5,11 +5,14 @@
   margin-bottom: 10px;
   margin-top: 15px;
   width: 95%;
-  margin-left: 20px;
   border: transparent;
   .dipaview-summary-expand {
+    margin-left: 20px;
     border: 1px solid #e8e8e8;
   }
+}
+.dipaview-accordion {
+  width: 100%;
 }
 .actual-text {
   display: flex;
@@ -123,10 +126,12 @@
 .trash-plus-grid {
   border: 1px solid #e8e8e8;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 0px 10px;
   display: inline-flex;
+  align-items: center;
   .trash-icon {
-    margin-left: 25px;
+    margin-left: 15px;
+    margin-top: 5px;
   }
 }
 .popover {
@@ -178,4 +183,8 @@
   flex-direction: row-reverse;
   width: 50%;
   margin-top: 15%;
+}
+
+.section-delete-btn {
+  text-align: center;
 }
