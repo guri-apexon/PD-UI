@@ -413,13 +413,6 @@ function DigitizeAccordion({
       tocActive[index] &&
       NewSectionIndex >= 0
     ) {
-      onEditClick();
-      dispatch({
-        type: 'ADD_SECTION_INDEX',
-        payload: {
-          index: -1,
-        },
-      });
       setExpanded(true);
     }
     if (!tocActive[index]) {
@@ -617,8 +610,19 @@ function DigitizeAccordion({
           scrollToLinkandReference(index, item.linkandReference);
           handleOpenAccordion();
         }
+        if (NewSectionIndex >= 0) {
+          onEditClick();
+          dispatch({
+            type: 'ADD_SECTION_INDEX',
+            payload: {
+              index: -1,
+            },
+          });
+        }
       }
-      if (!sectionContent) dispatchSectionData();
+      if (!sectionContent) {
+        dispatchSectionData();
+      }
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
