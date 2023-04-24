@@ -150,8 +150,8 @@ function MetaData({ docId }) {
   };
 
   const postCall = (data, metaData) => {
-    if (metaData.length > 0) {
-      const filterMetaList = metaData.filter((list) => list?.attr_status);
+    const filterMetaList = metaData.filter((list) => list?.attr_status);
+    if (filterMetaList?.length) {
       const updatedAttrList = filterMetaList?.map((list) => {
         const convertToBoolean = list?.attr_value === 'true';
         return {
