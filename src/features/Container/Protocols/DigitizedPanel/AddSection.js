@@ -32,6 +32,8 @@ function AddSection({
         // eslint-disable-next-line
         if (headerList[index + 1]) {
           headerObj.next_detail.link_id = headerList[index + 1]?.link_id;
+          headerObj.prev_detail.link_id = '';
+          headerObj.next_detail.link_level = '1';
         } else {
           headerObj.prev_detail.link_id = headerList[index]?.link_id;
           headerObj.prev_detail.link_level = '1';
