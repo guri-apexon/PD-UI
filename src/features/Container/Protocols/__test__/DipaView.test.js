@@ -69,16 +69,6 @@ describe.only('DipaView Component testing', () => {
     expect(screen.getAllByTestId('pencil-tooltip')[0]).toBeInTheDocument();
   });
 
-  it('should open popover when Plus icon is clicked', () => {
-    const screen = renderWithProviders(<DipaView />, {
-      preloadedState: { ...initialState },
-    });
-    const plusIcon = screen.getAllByTestId('plus-icon')[0];
-    fireEvent.click(plusIcon);
-    const popover = screen.getByTestId('popover-card');
-    expect(popover).toBeInTheDocument();
-  });
-
   it('should AddSegment when the Add Segment button is clicked', () => {
     const screen = renderWithProviders(<DipaView />, {
       preloadedState: { ...initialState },
@@ -281,7 +271,6 @@ describe.only('DipaView Component testing', () => {
     const addGroupButton = screen.getByTestId('add-group');
     fireEvent.click(addGroupButton);
     const groupTextfield = screen.getAllByTestId('addgroup-textfield')[0];
-    console.log(groupTextfield);
     const textFieldSpy = jest.spyOn(Event.prototype, 'stopPropagation');
 
     act(() => groupTextfield.focus());

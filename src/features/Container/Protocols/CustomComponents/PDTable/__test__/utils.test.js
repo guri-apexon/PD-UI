@@ -101,12 +101,15 @@ describe('deleteColumn function', () => {
       const updatedFootnotes = updateFootNotePayload(footnotes);
       expect(updatedFootnotes).toEqual([
         {
+          PrevousAttachmentIndex: null,
           Text: 'a. note1',
         },
         {
+          PrevousAttachmentIndex: 0,
           Text: 'b. note2',
         },
         {
+          PrevousAttachmentIndex: 1,
           Text: 'c. note3',
         },
       ]);

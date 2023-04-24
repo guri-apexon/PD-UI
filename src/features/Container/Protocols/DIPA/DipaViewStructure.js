@@ -1,14 +1,14 @@
 import { useState } from 'react';
+import moment from 'moment';
+
 import { toast } from 'react-toastify';
+import Modal from 'apollo-react/components/Modal';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
 import Typography from 'apollo-react/components/Typography/Typography';
 import EyeShow from 'apollo-react-icons/EyeShow';
-import Popover from 'apollo-react/components/Popover';
-import Card from 'apollo-react/components/Card';
 import Save from 'apollo-react-icons/Save';
-import Plus from 'apollo-react-icons/Plus';
 import Trash from 'apollo-react-icons/Trash';
 import TextField from 'apollo-react/components/TextField';
 import PropTypes from 'prop-types';
@@ -18,7 +18,8 @@ import Grid from 'apollo-react/components/Grid/Grid';
 import Pencil from 'apollo-react-icons/Pencil';
 import Tooltip from 'apollo-react/components/Tooltip';
 import IconButton from 'apollo-react/components/IconButton';
-import moment from 'moment';
+import IconMenuButton from 'apollo-react/components/IconMenuButton';
+import Plus from 'apollo-react-icons/Plus';
 
 function DipaViewStructure({
   ID,
@@ -41,9 +42,9 @@ function DipaViewStructure({
   lockDetails,
   userId,
 }) {
-  const [OpenPop, setOpenPop] = useState(null);
   const [tooltip, setTooltip] = useState(false);
   const [isAccordianExpanded, setIsAccordianExpanded] = useState(false);
+  const [unSaved, setUnSaved] = useState(false);
 
   const onPencilIconClick = (e) => {
     e.stopPropagation();
@@ -63,6 +64,19 @@ function DipaViewStructure({
     }
   };
 
+  const menuItems = [
+    {
+      text: 'Add Group',
+      onClick: () => handleAddGroup(ID),
+      'data-testid': 'add-group',
+    },
+    {
+      text: 'Add Segment',
+      onClick: () => handleAdd(ID),
+      'data-testid': 'add-segment',
+    },
+  ];
+
   function pencilTooltip() {
     return (
       <Tooltip title="Edit Segment" placement="right">
@@ -77,19 +91,24 @@ function DipaViewStructure({
   }
 
   const handleAccordianClick = (e, expanded) => {
-    setIsAccordianExpanded(expanded);
-    if (expanded) {
-      handleExpandChange(ID);
+    if (editingIDList.length > 0) {
+      setUnSaved(true);
+    } else {
+      setIsAccordianExpanded(expanded);
+      if (expanded) {
+        handleExpandChange(true);
+      }
     }
   };
 
   return (
-    <div>
+    <div className="dipaview-accordion">
       <Accordion
         key={ID}
         className="container"
         data-testid="accordion-expand"
         onChange={handleAccordianClick}
+        expanded={isAccordianExpanded}
       >
         <AccordionSummary
           data-testid="summary-expand"
@@ -115,7 +134,7 @@ function DipaViewStructure({
               />
             ) : (
               <Typography
-                onClick={() => handleExpandChange(ID)}
+                onClick={() => handleExpandChange()}
                 className="actual-text-details"
                 data-testid="paragraph-text"
               >
@@ -168,7 +187,10 @@ function DipaViewStructure({
                   )) ||
                 (editingIDList.length > 0 && editingIDList?.includes(ID)) ? (
                   <Save
-                    onClick={() => handleUpdate()}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleUpdate();
+                    }}
                     data-testid="save"
                     className="save-button"
                   />
@@ -183,43 +205,17 @@ function DipaViewStructure({
         <AccordionDetails className="accordion-details">
           <Grid item xs={2} className="accordion-details-grid">
             <Grid className="trash-plus-grid">
-              <Plus
-                data-testid="plus-icon"
-                onClick={(e) => setOpenPop(!OpenPop ? e.currentTarget : null)}
-              >
-                {`${!OpenPop ? 'Open' : 'Close'} popper`}
-              </Plus>
-              <Trash
+              <IconMenuButton id="actions" menuItems={menuItems}>
+                <Plus data-testid="plus-icon" />
+              </IconMenuButton>
+              <IconButton
                 className="trash-icon"
                 data-testid="delete-icon"
                 onClick={() => setOpenModal(ID)}
-              />
+              >
+                <Trash />
+              </IconButton>
             </Grid>
-            <Popover
-              open={!!OpenPop}
-              anchorEl={OpenPop}
-              onClose={() => setOpenPop(null)}
-              className="popover"
-              data-testid="popover-card"
-            >
-              <Card interactive>
-                <Grid
-                  className="add-group-grid"
-                  data-testid="add-group"
-                  onClick={() => handleAddGroup(ID)}
-                >
-                  Add Group
-                </Grid>
-
-                <Grid
-                  className="add-group-grid"
-                  data-testid="add-segment"
-                  onClick={() => handleAdd(ID)}
-                >
-                  Add Segment
-                </Grid>
-              </Card>
-            </Popover>
           </Grid>
 
           <div data-testid="accord-summary" className="dipaview-summary">
@@ -263,13 +259,45 @@ function DipaViewStructure({
                     }}
                   />
                 ) : (
-                  <Typography>{segment.derive_seg}</Typography>
+                  <Grid container alignItems="center">
+                    <Grid item xs={11}>
+                      <Typography>{segment.derive_seg}</Typography>
+                    </Grid>
+                    <Grid item xs={1} className="section-delete-btn">
+                      <IconButton
+                        size="small"
+                        onClick={() => setOpenModal(segment.ID)}
+                      >
+                        <Trash />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
                 )}
               </div>
             ))}
           </Grid>
         </AccordionDetails>
       </Accordion>
+      <Modal
+        disableBackdropClick
+        data-testid="losework-dipa-modal"
+        open={unSaved}
+        variant="warning"
+        onClose={() => setUnSaved(false)}
+        title="Lose your work?"
+        message="All unsaved changes will be lost"
+        buttonProps={[
+          { label: 'Keep editing', onClick: () => setUnSaved(false) },
+          {
+            label: 'Leave without saving',
+            onClick: () => {
+              setIsAccordianExpanded(true);
+              setUnSaved(false);
+              handleExpandChange(true);
+            },
+          },
+        ]}
+      />
     </div>
   );
 }
