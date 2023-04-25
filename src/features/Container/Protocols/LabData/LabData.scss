@@ -203,7 +203,8 @@
 .lab-table-container > div:last-child > div > div:last-child {
   overflow-x: unset;
 }
-.lab-table-container table tbody tr[class^='EmptyRow'] td {
+.lab-table-container table tbody tr[class^='EmptyRow'] td,
+.lab-table-container table tbody tr[class^='jss'] td {
   display: table-cell !important;
 }
 

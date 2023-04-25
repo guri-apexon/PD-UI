@@ -40,7 +40,9 @@ export function ValueField({
   const onTypeChange = (e) => {
     handleChange(e);
   };
-
+  const metaDataType = (type) => {
+    return type === 'string' ? 'text' : 'number';
+  };
   return (
     <Grid
       container
@@ -69,7 +71,7 @@ export function ValueField({
               <TextField
                 label=""
                 placeholder="Enter Value"
-                type={type === 'string' ? 'text' : 'number'}
+                type={metaDataType(type)}
                 name={keyName}
                 fullWidth
                 value={inputValue}

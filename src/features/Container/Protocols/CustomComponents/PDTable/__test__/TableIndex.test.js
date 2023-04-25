@@ -351,4 +351,23 @@ describe('PDTable component', () => {
     const plusIconButton = screen.getByTestId('section');
     fireEvent.click(plusIconButton);
   });
+  test('mouse down', () => {
+    const tableSaved = false;
+    const screen = render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <PDTable
+          data={data}
+          segment={segment}
+          activeLineID={activeLineID}
+          lineID={lineID}
+          tableSaved={tableSaved}
+          setIsTableChanged={() => jest.fn()}
+        />
+      </ProtocolContext.Provider>,
+    );
+    const moreIcon = screen.getAllByTestId('more-icon');
+    fireEvent.click(moreIcon[0]);
+    const HeaderClose = screen.getByTestId('section');
+    fireEvent.mouseDown(HeaderClose);
+  });
 });
