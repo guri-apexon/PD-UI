@@ -44,10 +44,18 @@ const sectionData = [
 
 describe('DigitizedEdit', () => {
   test('render component without error', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setActiveLineID: jest.fn(),
+      activeLineID: 'DFGH134',
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
+    const setActiveLineID = { setActiveLineID: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => setActiveLineID);
     const screen = render(
       <MultilineEdit sectionDataArr={sectionData} edit={false} pageRight={2} />,
     );
@@ -55,10 +63,15 @@ describe('DigitizedEdit', () => {
   });
 
   test('render component without error when edit is true', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setActiveLineID: jest.fn(),
+      activeLineID: 'DFGH134',
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
+
     const wrapper = render(
       <MultilineEdit sectionDataArr={sectionData} edit pageRight={2} />,
     );
@@ -71,7 +84,11 @@ describe('DigitizedEdit', () => {
   });
 
   test('Cancel Button', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setActiveLineID: jest.fn(),
+      activeLineID: 'DFGH134',
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -86,7 +103,11 @@ describe('DigitizedEdit', () => {
   });
 
   test('Delete Button', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setActiveLineID: jest.fn(),
+      activeLineID: 'DFGH134',
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -101,7 +122,11 @@ describe('DigitizedEdit', () => {
   });
 
   test('section Button', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setActiveLineID: jest.fn(),
+      activeLineID: 'DFGH134',
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -119,7 +144,11 @@ describe('DigitizedEdit', () => {
   });
 
   test('section INVESTIGATOR', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setActiveLineID: jest.fn(),
+      activeLineID: 'DFGH134',
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -137,7 +166,11 @@ describe('DigitizedEdit', () => {
   });
 
   test('render component without error when edit is true', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setActiveLineID: jest.fn(),
+      activeLineID: 'DFGH134',
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
