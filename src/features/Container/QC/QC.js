@@ -54,7 +54,6 @@ function QCContainer() {
       setFilePath('');
     }
   };
-  useEffect(() => {}, []);
 
   const handleProtocolClick = ({ id, path, protocol }) => {
     setValue(1);
