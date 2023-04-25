@@ -14,7 +14,6 @@ import { userType } from '../../../store/userDetails';
 
 import './QC.scss';
 import '../Protocols/protocols.scss';
-import { isEmpty } from 'lodash';
 
 function QCContainer() {
   const dispatch = useDispatch();
