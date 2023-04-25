@@ -313,38 +313,45 @@ export const prepareContent = ({
           type,
           file_section_level: fileSectionLevel,
           aidocid,
+          uuid: prevUuid,
         } = prevObj;
         newObj = {
           ...PROTOCOL_CONSTANT[contentType],
           uuid: uuidv4(),
-          line_id: uuidv4(),
           content: setContent(contentType),
           qc_change_type: QC_CHANGE_TYPE.ADDED,
           prev_line_detail: {
             type,
             link_id: linkId,
-            line_id: currentLineId,
+            line_id: currentLineId || prevUuid,
             file_section_level: fileSectionLevel,
           },
         };
+        newObj.line_id = newObj?.uuid;
         if (fontInfo) {
           newObj = {
             ...newObj,
             link_id: fontInfo.link_id,
+            doc_id: newObj?.aidocid,
             aidocid,
             prev_line_detail: {
               ...newObj.prev_line_detail,
-              link_id: fontInfo.link_id,
-              link_id_level2: fontInfo.link_id_level2,
-              link_id_level3: fontInfo.link_id_level3,
-              link_id_level4: fontInfo.link_id_level4,
-              link_id_level5: fontInfo.link_id_level5,
-              link_id_level6: fontInfo.link_id_level6,
-              link_id_subsection1: fontInfo.link_id_subsection1,
-              link_id_subsection2: fontInfo.link_id_subsection2,
-              link_id_subsection3: fontInfo.link_id_subsection3,
+              link_id: fontInfo.link_id || '',
+              link_id_level2: fontInfo.link_id_level2 || '',
+              link_id_level3: fontInfo.link_id_level3 || '',
+              link_id_level4: fontInfo.link_id_level4 || '',
+              link_id_level5: fontInfo.link_id_level5 || '',
+              link_id_level6: fontInfo.link_id_level6 || '',
+              link_id_subsection1: fontInfo.link_id_subsection1 || '',
+              link_id_subsection2: fontInfo.link_id_subsection2 || '',
+              link_id_subsection3: fontInfo.link_id_subsection3 || '',
             },
           };
+        }
+        const nextIndex =
+          clonedSection[prevIndex + 1]?.qc_change_type === QC_CHANGE_TYPE.ADDED;
+        if (nextIndex) {
+          clonedSection[prevIndex + 1].prev_line_detail.line_id = newObj?.uuid;
         }
         clonedSection?.splice(prevIndex + 1, 0, newObj);
         return clonedSection;
@@ -436,6 +443,8 @@ export const createReturnObj = (obj, linkId) => {
         content: obj.content,
         qc_change_type: obj.qc_change_type,
         link_id: linkId,
+        uuid: obj?.uuid,
+        line_id: obj?.line_id,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
@@ -467,9 +476,9 @@ export const createReturnObj = (obj, linkId) => {
         link_prefix: '',
         link_text: obj.content,
         link_level: obj?.linkLevel?.toString() || '',
-        line_id: '',
         content: obj.content,
-        uuid: '',
+        uuid: obj?.uuid,
+        line_id: obj?.line_id,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
           link_id: linkId,
@@ -524,6 +533,8 @@ export const createReturnObj = (obj, linkId) => {
         content: obj.content,
         qc_change_type: obj.qc_change_type,
         link_id: linkId,
+        uuid: obj?.uuid,
+        line_id: obj?.line_id,
         prev_detail: {
           line_id: obj?.prev_line_detail?.line_id?.slice(0, 36),
         },
@@ -559,8 +570,10 @@ export const createReturnObj = (obj, linkId) => {
     if (obj.qc_change_type === QC_CHANGE_TYPE.UPDATED) {
       return {
         ...obj,
+        doc_id: obj?.aidocid,
         content: {
           ...obj.content,
+          TableIndex: parseInt(obj?.content?.TableIndex, 10),
           TableProperties: filterTableProperties(
             obj?.content?.TableProperties || [],
           ),
