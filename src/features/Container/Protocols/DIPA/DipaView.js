@@ -433,7 +433,7 @@ function DipaView({
           {loader.loading ? <Loader isInner /> : ''}
           {dipaDataSelector?.success && (
             <Grid item xs={7} container spacing={1} className="dipa-view-count">
-              <Grid item xs={5} className="dipa-actualcount">
+              <Grid item xs={4} className="dipa-actualcount">
                 Actual Count
                 <br />
                 <span data-testid="actual-count">
@@ -447,7 +447,7 @@ function DipaView({
                   <b>{deriveSegmentsLength}</b>
                 </span>
               </Grid>
-              <Grid item xs={2} className="section-delete-btn">
+              <Grid item xs={1} className="section-delete-btn">
                 <Tooltip title="Add Section" disableFocusListener>
                   <IconButton onClick={() => addGroup()}>
                     <Plus />
