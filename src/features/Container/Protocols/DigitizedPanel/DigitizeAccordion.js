@@ -730,7 +730,7 @@ function DigitizeAccordion({
     });
   };
 
-  const renderAddSection = (flag) => {
+  const addNewSection = (flag) => {
     return (
       <IconButton
         data-testId="plus-add"
@@ -752,12 +752,10 @@ function DigitizeAccordion({
       onMouseOver={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
       className={
+        primaryRole &&
         // eslint-disable-next-line
-        primaryRole && index === 0
-          ? 'accordian-plusIcon-line-top accordian-plusIcon-line'
-          : primaryRole
-          ? 'accordian-plusIcon-line'
-          : ''
+        (index === 0 ? 'accordian-plusIcon-line-top ' : '') +
+          'accordian-plusIcon-line'
       }
       data-testid="mouse-over"
     >
@@ -770,7 +768,7 @@ function DigitizeAccordion({
       )}
 
       <div className="plus-icon">
-        {isShown && primaryRole && index === 0 && renderAddSection(true)}
+        {isShown && primaryRole && index === 0 && addNewSection(true)}
       </div>
 
       <Accordion
@@ -1044,7 +1042,7 @@ function DigitizeAccordion({
         />
       </Accordion>
       <div className="plus-icon">
-        {isShown && primaryRole && renderAddSection(false)}
+        {isShown && primaryRole && addNewSection(false)}
       </div>
       <DeleteModal
         handleDeleteSection={handleDeleteSection}
