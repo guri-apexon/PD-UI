@@ -18,6 +18,7 @@ import {
   List,
 } from 'react-virtualized';
 import { redaction } from '../../../AppConstant/AppConstant';
+import { userType } from '../../../store/userDetails';
 import './Alerts.scss';
 import notificationValues from './constant';
 import { navbarNotifications } from './navbarSlice';
@@ -52,6 +53,7 @@ function Alerts() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const notificationData = useSelector(navbarNotifications);
+  const usertype = useSelector(userType);
   const history = useHistory();
 
   const cache = useRef(
@@ -71,12 +73,24 @@ function Alerts() {
   };
 
   const handleRead = (aidocId, id, protocol, alert_id) => {
-    dispatch({
-      type: 'READ_NOTIFICATION',
-      payload: { aidocId, id, protocol, alert_id },
-    });
-    history.push(`/protocols?protocolId=${aidocId}&tab=1`);
-    setAnchorEl(!anchorEl);
+    if (usertype === 'QC1') {
+      dispatch({
+        type: 'NOTIFICATION_QC_SAGA',
+        payload: { aidocId, protocol },
+      });
+      dispatch({
+        type: 'READ_NOTIFICATION',
+        payload: { aidocId, id, protocol, alert_id },
+      });
+      setAnchorEl(!anchorEl);
+    } else {
+      dispatch({
+        type: 'READ_NOTIFICATION',
+        payload: { aidocId, id, protocol, alert_id },
+      });
+      history.push(`/protocols?protocolId=${aidocId}&tab=1`);
+      setAnchorEl(!anchorEl);
+    }
   };
 
   const newNotifications = notificationData?.filter(

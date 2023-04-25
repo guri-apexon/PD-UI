@@ -7,20 +7,25 @@ import Tab from 'apollo-react/components/Tab';
 import Tabs from 'apollo-react/components/Tabs';
 // import QCTable from './QCTable/QCTable';
 import QCProtocolTable from './QCTable/QCProtocolTable';
-
+import { qcNotification } from './qcSlice';
 // import QCProtocolView from "./QCProtocolView/QCProtocolView";
 import QCProtocolView from './QCProtocolView/QCProtocolView';
 import { userType } from '../../../store/userDetails';
+
 import './QC.scss';
 import '../Protocols/protocols.scss';
 
 function QCContainer() {
   const dispatch = useDispatch();
   const type = useSelector(userType);
+  const notificationSelector = useSelector(qcNotification);
   const [value, setValue] = useState(0);
   const [protocolId, setprotocolId] = useState('');
   const [protocolNumber, setProtocolNumber] = useState('');
   const [filePath, setFilePath] = useState('');
+  useEffect(() => {
+    console.log('SHUBHAM1', notificationSelector);
+  }, [notificationSelector]);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -37,11 +42,14 @@ function QCContainer() {
       setFilePath('');
     }
   };
+  useEffect(() => {}, []);
+
   const handleProtocolClick = ({ id, path, protocol }) => {
+    console.log('SHUBHAM', id, 'PRO', protocol);
     setValue(1);
     setprotocolId(id);
     setProtocolNumber(protocol);
-    setFilePath(path);
+    // setFilePath(path);
   };
 
   const breadItems = [
