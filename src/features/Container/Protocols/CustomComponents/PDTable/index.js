@@ -88,6 +88,15 @@ function PDTable({ data, segment, activeLineID, lineID }) {
             record.columns[j].value = content;
             if (col?.cell_id) {
               record.columns[columnIndex].op_type = QC_CHANGE_TYPE.UPDATED;
+            } else if (record?.roi_id) {
+              // have to send the complete row for existing tables, which don't have cell id.
+              record.columns.forEach((selectedCol, colIndex) => {
+                if (colIndex === columnIndex) {
+                  record.columns[columnIndex].op_type = QC_CHANGE_TYPE.ADDED;
+                } else {
+                  record.columns[colIndex].op_type = QC_CHANGE_TYPE.UPDATED;
+                }
+              });
             }
           }
         });
@@ -230,7 +239,8 @@ function PDTable({ data, segment, activeLineID, lineID }) {
               },
               {
                 label: 'Delete',
-                onClick: () => {
+                onClick: (e) => {
+                  e.stopPropagation();
                   dispatchSectionEvent('CONTENT_DELETED', {
                     currentLineId: activeLineID,
                   });

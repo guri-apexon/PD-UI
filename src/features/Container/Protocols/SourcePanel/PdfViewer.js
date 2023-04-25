@@ -27,6 +27,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   const pdfDirectory = 'WorkingTempDirectory\\';
   const [fileType, setFileType] = useState('');
   const { documentFilePath, protocol, fileName } = protocolAllItems.data;
+
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
   };

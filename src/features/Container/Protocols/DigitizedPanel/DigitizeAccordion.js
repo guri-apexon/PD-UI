@@ -1,6 +1,7 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Lock from 'apollo-react-icons/Lock';
 import Plus from 'apollo-react-icons/Plus';
+import moment from 'moment';
 import Trash from 'apollo-react-icons/Trash';
 import Undo from 'apollo-react-icons/Undo';
 import Accordion from 'apollo-react/components/Accordion';
@@ -123,6 +124,7 @@ function DigitizeAccordion({
   const tocActiveSelector = useSelector(TOCActive);
   const lockDetails = useSelector(sectionLockDetails);
   const [requestedRoute, setRequestedRoute] = useState('');
+  const [addSectionIndex, setAddSectionIndex] = useState(-1);
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
@@ -369,9 +371,11 @@ function DigitizeAccordion({
       tocActiveSelector[index] &&
       currentEditCard === item.link_id
     ) {
+      const updatedTime = lockDetails?.last_updated?.split('.')[0];
       if (
         lockDetails?.section_lock ||
-        lockDetails?.userId === userIdSelector?.toString()
+        lockDetails?.userId === userIdSelector?.toString() ||
+        moment.utc(updatedTime).local()?.diff(moment(), 'hours') > 23
       ) {
         onShowEdit();
       } else {
@@ -409,13 +413,6 @@ function DigitizeAccordion({
       tocActive[index] &&
       NewSectionIndex >= 0
     ) {
-      onEditClick();
-      dispatch({
-        type: 'ADD_SECTION_INDEX',
-        payload: {
-          index: -1,
-        },
-      });
       setExpanded(true);
     }
     if (!tocActive[index]) {
@@ -448,7 +445,7 @@ function DigitizeAccordion({
       const arr = sectionContent.filter(
         (obj) =>
           obj.type === CONTENT_TYPE.TABLE &&
-          ((obj.isSaved === false && obj.qc_change_type === '') ||
+          ((obj.isSaved === false && obj.qc_change_type !== '') ||
             ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
               [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
                 obj.qc_change_type,
@@ -456,7 +453,7 @@ function DigitizeAccordion({
       );
       return arr.length > 0;
     }
-    return true;
+    return false;
   };
 
   const checkUnsavedImages = () => {
@@ -464,7 +461,7 @@ function DigitizeAccordion({
       const arr = sectionContent.filter(
         (obj) =>
           obj.type === CONTENT_TYPE.IMAGE &&
-          ((obj.isSaved === false && obj.qc_change_type === '') ||
+          ((obj.isSaved === false && obj.qc_change_type !== '') ||
             ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
               [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
                 obj.qc_change_type,
@@ -472,7 +469,7 @@ function DigitizeAccordion({
       );
       return arr.length > 0;
     }
-    return true;
+    return false;
   };
 
   const handleSaveContent = () => {
@@ -493,15 +490,16 @@ function DigitizeAccordion({
       setSaveSection(null);
       toast.error('Please do some changes to update');
     } else {
-      updateSectionLock(true);
-      dispatch(setSaveEnabled(false));
-      setShowLoader(true);
       const checkIfMainHeader = reqBody.filter(
         (req) =>
           req?.type === CONTENT_TYPE.HEADER &&
           req?.qc_change_type === QC_CHANGE_TYPE.UPDATED &&
           req?.link_level === '1',
       );
+
+      updateSectionLock(true);
+      dispatch(setSaveEnabled(false));
+      setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
@@ -562,11 +560,13 @@ function DigitizeAccordion({
     return '';
   };
 
-  const getPreferredTerms = (item) => {
-    if (globalPreferredTerm && !isEmpty(item?.preferred_term)) {
-      return <b className="preferred-text">{item.source_file_section}</b>;
+  const getPreferredTerms = (header) => {
+    if (globalPreferredTerm && !isEmpty(header?.preferred_term)) {
+      return createFullMarkup(
+        `<b class="Preferred-txt">${header.source_file_section}</b>`,
+      );
     }
-    return item.source_file_section;
+    return header.source_file_section;
   };
 
   useEffect(() => {
@@ -607,14 +607,24 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-
         setSectionDataArr(updatedSectionsData);
         if (item.linkandReference && updatedSectionsData.length) {
           scrollToLinkandReference(index, item.linkandReference);
           handleOpenAccordion();
         }
+        if (NewSectionIndex >= 0) {
+          onEditClick();
+          dispatch({
+            type: 'ADD_SECTION_INDEX',
+            payload: {
+              index: -1,
+            },
+          });
+        }
       }
-      if (!sectionContent) dispatchSectionData();
+      if (!sectionContent) {
+        dispatchSectionData();
+      }
     }
     // eslint-disable-next-line
   }, [sectionHeaderDetails]);
@@ -679,8 +689,10 @@ function DigitizeAccordion({
   const [isShown, setIsShown] = useState(false);
   const [isModal, setIsModal] = useState(false);
 
-  const handleAddSection = (e) => {
+  const handleAddSection = (e, flag, index) => {
     e.stopPropagation();
+    const sectionIndex = flag ? index : index + 1;
+    setAddSectionIndex(sectionIndex);
     setIsModal(true);
   };
   const handleSegmentMouseUp = (e, section) => {
@@ -699,6 +711,7 @@ function DigitizeAccordion({
 
   const handleDeleteSection = () => {
     setShowDeleteConfirm(false);
+    updateSectionLock(true);
     const obj = [
       {
         ...headerLevel1,
@@ -718,11 +731,34 @@ function DigitizeAccordion({
       },
     });
   };
+
+  const addNewSection = (flag) => {
+    return (
+      <IconButton
+        data-testId="plus-add"
+        color="primary"
+        onClick={(e) => {
+          handleAddSection(e, flag, index);
+        }}
+        size="small"
+        destructiveAction
+      >
+        <Plus />
+      </IconButton>
+    );
+  };
+
   return (
+    // eslint-disable-next-line
     <div
-      onMouseEnter={() => setIsShown(true)}
+      onMouseOver={() => setIsShown(true)}
       onMouseLeave={() => setIsShown(false)}
-      className={primaryRole && 'accordian-plusIcon-line'}
+      className={
+        primaryRole &&
+        // eslint-disable-next-line
+        (index === 0 ? 'accordian-plusIcon-line-top ' : '') +
+          'accordian-plusIcon-line'
+      }
       data-testid="mouse-over"
     >
       {showedit && (
@@ -732,6 +768,10 @@ function DigitizeAccordion({
           onDiscardClick={onDiscardClick}
         />
       )}
+
+      <div className="plus-icon">
+        {isShown && primaryRole && index === 0 && addNewSection(true)}
+      </div>
 
       <Accordion
         expanded={expanded}
@@ -747,7 +787,7 @@ function DigitizeAccordion({
               className="section-title"
               data-testid="accordion-header"
             >
-              {getPreferredTerms(item)}
+              <SanitizeHTML html={getPreferredTerms(item)} />
             </Typography>
             {/* eslint-disable-next-line */}
             <div
@@ -998,25 +1038,13 @@ function DigitizeAccordion({
         <AddSection
           setIsModal={setIsModal}
           headerList={headerList}
-          index={index}
+          index={addSectionIndex}
           setIsShown={setIsShown}
           isModal={isModal}
         />
       </Accordion>
       <div className="plus-icon">
-        {isShown && primaryRole && (
-          <IconButton
-            data-testId="plus-add"
-            color="primary"
-            onClick={(e) => {
-              handleAddSection(e);
-            }}
-            size="small"
-            destructiveAction
-          >
-            <Plus />
-          </IconButton>
-        )}
+        {isShown && primaryRole && addNewSection(false)}
       </div>
       <DeleteModal
         handleDeleteSection={handleDeleteSection}
