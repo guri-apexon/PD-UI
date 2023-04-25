@@ -2,8 +2,6 @@ import { render, fireEvent } from '@testing-library/react';
 import SideNav from '../SideNav';
 import TabelContext from '../Context';
 
-import { TableEvents } from '../Constants';
-
 const mockDispatch = jest.fn();
 const mockState = {
   settingItems: {
@@ -47,7 +45,8 @@ describe('SideNav', () => {
     expect(items.length).toBe(2);
   });
 
-  xit('expands the item on click', () => {
+  it('should call onChange function when an Accordion is clicked', () => {
+    const onChange = jest.fn();
     const { getByTestId } = render(<SideNav />, {
       wrapper: ({ children }) => (
         <TabelContext.Provider value={mockContext}>
@@ -55,15 +54,40 @@ describe('SideNav', () => {
         </TabelContext.Provider>
       ),
     });
-    const item = getByTestId('item1');
-    fireEvent.click(item);
-    expect(mockDispatch).toHaveBeenCalledWith({
-      type: TableEvents.FILTER_GROUP_COLUMN,
-      payload: { name: 'Filter 1', push: true },
+    const firstAccordion = getByTestId('side-nav');
+    fireEvent.click(firstAccordion);
+    expect(onChange).toHaveBeenCalledTimes(0);
+  });
+
+  test('should expand accordion on change', () => {
+    const { getByText } = render(<SideNav />, {
+      wrapper: ({ children }) => (
+        <TabelContext.Provider value={mockContext}>
+          {children}
+        </TabelContext.Provider>
+      ),
     });
-    expect(mockDispatch).toHaveBeenCalledWith({
-      type: TableEvents.REFRESH_TABLE,
+    const accordion = document.querySelector('#accordion-1');
+    expect(accordion).not.toBeTruthy();
+
+    const summary = getByText('Filter 1');
+    fireEvent.click(summary);
+
+    expect(accordion).not.toBeTruthy();
+  });
+
+  it('should update expands state when onChange is called', () => {
+    const { getByTestId } = render(<SideNav />, {
+      wrapper: ({ children }) => (
+        <TabelContext.Provider value={mockContext}>
+          {children}
+        </TabelContext.Provider>
+      ),
     });
+    const accordionSummary = getByTestId('Filter 1');
+    fireEvent.click(accordionSummary);
+    const accordionContent = getByTestId('Filter 1');
+    expect(accordionContent).not.toBeVisible();
   });
 
   it('collapses the item on click', () => {

@@ -39,6 +39,18 @@ const formattableData = (data) => {
   });
 };
 
+const formatFootNote = (data) => {
+  const cloneFootNotes = [...data];
+  return cloneFootNotes.map((eachNotes) => {
+    return {
+      AttachmentId: eachNotes.AttachmentId,
+      Text: eachNotes.Text,
+      PrevousAttachmentIndex:
+        eachNotes.AttachmentIndex > 0 ? eachNotes.AttachmentIndex - 1 : null,
+    };
+  });
+};
+
 const confirmText = 'Please confirm if you want to continue with deletion';
 
 function PDTable({ data, segment, activeLineID, lineID }) {
@@ -59,11 +71,12 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         : JSON.parse(data?.TableProperties);
       const formattedData = formattableData(parsedTable);
       setUpdatedData(formattedData);
-      const footnoteArr = data.AttachmentListProperties || [];
+      const footnoteArr = formatFootNote(data?.AttachmentListProperties || []);
       setFootnoteData(footnoteArr);
       const colIndexes = parsedTable[0]?.columns;
       setColumnWidth(98 / colIndexes.length);
     }
+    // eslint-disable-next-line
   }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {

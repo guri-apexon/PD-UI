@@ -38,6 +38,11 @@ export const protocolSlice = createSlice({
       error: '',
       data: null,
     },
+    dipaViewData: {
+      data: {},
+      success: false,
+      loading: false,
+    },
     rightBladeValue: PROTOCOL_RIGHT_MENU.HOME,
     TOCActiveAccordion: [],
     accordionMetaData: {},
@@ -58,6 +63,7 @@ export const protocolSlice = createSlice({
     },
     sectionLockDetails: {},
     enrichedword: {},
+    activeTOC: [],
   },
   dipaViewData: [],
   allDipaViewData: [],
@@ -160,6 +166,9 @@ export const protocolSlice = createSlice({
     getTOCActive: (state, action) => {
       state.TOCActiveAccordion = action.payload;
     },
+    setActiveTOC: (state, action) => {
+      state.activeTOC = action.payload;
+    },
     setAccordianMetaData: (state, action) => {
       state.accordionMetaData = action.payload;
     },
@@ -201,6 +210,9 @@ export const protocolSlice = createSlice({
     },
     getDipaViewData: (state, action) => {
       state.dipaViewData = action.payload;
+    },
+    setDipaDataLoader: (state, action) => {
+      state.dipaViewData.loading = action.payload;
     },
     getAllDipaViewData: (state, action) => {
       state.allDipaViewData = action.payload;
@@ -252,6 +264,8 @@ export const {
   getDiscardDeatils,
   setWorkFlowSubmitButton,
   resetProtocolTocData,
+  setActiveTOC,
+  setDipaDataLoader,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -283,4 +297,5 @@ export const sectionLockDetails = (state) => state.protocol.sectionLockDetails;
 export const dipaViewData = (state) => state.protocol.dipaViewData;
 export const allDipaViewData = (state) => state.protocol.allDipaViewData;
 export const discardDetails = (state) => state.protocol.discardValue;
+export const activeTOC = (state) => state.protocol.activeTOC;
 export default protocolSlice.reducer;

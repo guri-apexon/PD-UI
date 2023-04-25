@@ -1,3 +1,6 @@
+/* eslint-disable react/no-danger */
+import { render } from '@testing-library/react';
+
 import {
   addRow,
   deleteRow,
@@ -7,6 +10,8 @@ import {
   swapRowElements,
   swapColumnElements,
   filterTableProperties,
+  getPreferredTerms,
+  updateTable,
 } from '../utils';
 
 describe('addRow function', () => {
@@ -96,12 +101,15 @@ describe('deleteColumn function', () => {
       const updatedFootnotes = updateFootNotePayload(footnotes);
       expect(updatedFootnotes).toEqual([
         {
+          PrevousAttachmentIndex: null,
           Text: 'a. note1',
         },
         {
+          PrevousAttachmentIndex: 0,
           Text: 'b. note2',
         },
         {
+          PrevousAttachmentIndex: 1,
           Text: 'c. note3',
         },
       ]);
@@ -227,5 +235,67 @@ describe('filterTableProperties', () => {
   it('should not filter data if searchValue is not found', () => {
     const filteredData = filterTableProperties(data, '50');
     expect(filteredData).toEqual([]);
+  });
+});
+
+describe('getPreferredTerms function', () => {
+  const preferredTerms = {
+    apple: 'fruit',
+    potato: 'vegetable',
+  };
+
+  test('should return plain HTML if isPreferredTerm is false', () => {
+    const result = getPreferredTerms('test', false, preferredTerms);
+    const { container } = render(<span dangerouslySetInnerHTML={result} />);
+    expect(container.querySelector('b')).not.toBeInTheDocument();
+  });
+
+  test('should return bold HTML if isPreferredTerm is true and the value is a preferred term', () => {
+    const result = getPreferredTerms('apple', true, preferredTerms);
+    const { container } = render(<span dangerouslySetInnerHTML={result} />);
+    expect(container.querySelector('b')).toBeInTheDocument();
+  });
+
+  test('should return plain HTML if isPreferredTerm is true but the value is not a preferred term', () => {
+    const result = getPreferredTerms('banana', true, preferredTerms);
+    const { container } = render(<span dangerouslySetInnerHTML={result} />);
+    expect(container.querySelector('b')).not.toBeInTheDocument();
+  });
+});
+
+describe('updateTable', () => {
+  const data = [
+    [{ content: 'A' }, { content: 'B' }],
+    [{ content: 'C' }, { content: 'D' }],
+  ];
+
+  it('should update a cell content in the table data', () => {
+    const rowIndex = 1;
+    const columnIndex = 0;
+    const content = 'E';
+
+    const updatedData = updateTable(data, content, rowIndex, columnIndex);
+
+    expect(updatedData[rowIndex][columnIndex].content).toEqual(content);
+  });
+
+  it('should return a new copy of the table data', () => {
+    const rowIndex = 0;
+    const columnIndex = 1;
+    const content = 'F';
+
+    const updatedData = updateTable(data, content, rowIndex, columnIndex);
+
+    expect(updatedData).not.toBe(data);
+  });
+
+  it('should not mutate the original table data', () => {
+    const rowIndex = 0;
+    const columnIndex = 0;
+    const content = 'G';
+
+    updateTable(data, content, rowIndex, columnIndex);
+
+    expect(data[rowIndex][columnIndex].content).not.toEqual(content);
   });
 });

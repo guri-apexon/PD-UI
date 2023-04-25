@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import Loader from 'apollo-react/components/Loader';
 import Modal from 'apollo-react/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import Grid from 'apollo-react/components/Grid/Grid';
@@ -9,6 +10,7 @@ import MenuItem from 'apollo-react/components/MenuItem';
 import Expand from 'apollo-react-icons/Expand';
 import IconButton from 'apollo-react/components/IconButton';
 import Tooltip from 'apollo-react/components/Tooltip';
+import Plus from 'apollo-react-icons/Plus';
 
 import { v4 as uuidv4 } from 'uuid';
 import startCase from 'lodash/startCase';
@@ -45,6 +47,7 @@ function DipaView({
   const [tooltipValue, setTooltipValue] = useState({});
   const [countTooltip, setCountTooltip] = useState({});
   const [editedByTooltip, setEditedByTooltip] = useState({});
+  const loader = useSelector(dipaViewData);
 
   const dispatch = useDispatch();
 
@@ -73,33 +76,29 @@ function DipaView({
   }, [dipaViewSelector]);
 
   useEffect(() => {
-    let receivedData = dipaDataSelector?.data?.dipa_resource[0]?.dipa_data;
+    const receivedData = dipaDataSelector?.data?.dipa_resource[0]?.dipa_data;
     const timeUpdated = dipaDataSelector?.data?.dipa_resource[0]?.timeUpdated;
     const editCount = dipaDataSelector?.data?.dipa_resource[0]?.editCount;
     const lastEdited = dipaDataSelector?.data?.dipa_resource[0]?.lastEditedBy;
     setTooltipValue(timeUpdated);
     setCountTooltip(editCount);
     setEditedByTooltip(lastEdited);
-
-    if (typeof receivedData === 'string') {
-      try {
-        receivedData = JSON.parse(receivedData);
-      } catch (e) {
-        receivedData = {};
-      }
-    }
     setDataResponse(receivedData?.output);
   }, [dipaDataSelector]);
 
-  useEffect(() => {
+  const updateWithOriginalData = (response) => {
     const getChildElements = (elements = []) =>
       elements.map((d) => ({
         ...d,
         open: false,
         child: getChildElements(d?.child || []),
       }));
-    const newValue = getChildElements(dataResponse);
+    const newValue = getChildElements(response);
     setMetadata(newValue);
+  };
+
+  useEffect(() => {
+    updateWithOriginalData(dataResponse);
   }, [dataResponse]);
 
   const getAllCategory = (userDataUpdated) => {
@@ -166,33 +165,28 @@ function DipaView({
     getSectionLock(newValue);
   };
 
-  const handleExpandChange = (panelID) => {
-    setEditingIDList([]);
+  const clearUnSavedText = (array) =>
+    array
+      .map((section) => {
+        return section?.actual_text === '' || section?.derive_seg === ''
+          ? false
+          : {
+              ...section,
+              ...(section?.derive_segemnt?.length > 0 && {
+                derive_segemnt: clearUnSavedText(section.derive_segemnt),
+              }),
+              ...(section?.child?.length > 0 && {
+                child: clearUnSavedText(section.child),
+              }),
+            };
+      })
+      .filter(Boolean);
 
-    const updateOpenValue = (array) =>
-      array.map((section) => ({
-        ...section,
-        open: section?.ID === panelID ? !section.open : section.open,
-        child: section.child?.length
-          ? updateOpenValue(section.child)
-          : section.child,
-      }));
-
-    const removedDerived = (array) =>
-      array.filter((item) => {
-        if (item.child.length) {
-          item.child = removedDerived(item.child);
-        }
-        item.derive_segemnt = item.derive_segemnt.filter(
-          (item) => item.derive_seg !== '',
-        );
-        return item;
-      });
-
-    const tempMetadata = updateOpenValue(metadata);
-    const removedDeriveSeg = removedDerived(tempMetadata);
-
-    setMetadata([...removedDeriveSeg]);
+  const handleExpandChange = (clearAll) => {
+    if (clearAll) {
+      setEditingIDList([]);
+      updateWithOriginalData(dataResponse);
+    }
   };
 
   const toggleEditingIDs = (ids = []) => {
@@ -236,12 +230,21 @@ function DipaView({
 
   const deleteSegment = (parentId) => {
     const getUpdatedMetadata = (array) =>
-      array.map((section) => ({
-        ...section,
-        derive_segemnt:
-          section?.ID === parentId ? [] : section?.derive_segemnt || [],
-        child: getUpdatedMetadata(section.child),
-      }));
+      array
+        .map((section) => {
+          return section?.ID === parentId
+            ? false
+            : {
+                ...section,
+                ...(section?.derive_segemnt?.length > 0 && {
+                  derive_segemnt: getUpdatedMetadata(section.derive_segemnt),
+                }),
+                ...(section?.child?.length > 0 && {
+                  child: getUpdatedMetadata(section.child),
+                }),
+              };
+        })
+        .filter(Boolean);
     const getUpdate = getUpdatedMetadata(metadata);
     setMetadata([...getUpdate]);
     setOpenModal(false);
@@ -281,29 +284,44 @@ function DipaView({
 
   const addGroup = (groupId) => {
     const Id = uuidv4();
-    const getUpdatedMetadata = (array) =>
-      array.map((section) => ({
-        ...section,
-        child:
-          section?.ID === groupId
-            ? [
-                {
-                  ID: Id,
-                  actual_text: '',
-                  derive_segemnt: [],
-                  child: [],
-                },
-                ...(section?.child || []),
-              ]
-            : getUpdatedMetadata(section.child) || [],
-      }));
-    const getUpdate = getUpdatedMetadata(metadata);
-    setMetadata([...getUpdate]);
+    let updatedData = [];
+
+    if (groupId) {
+      const getUpdatedMetadata = (array) =>
+        array.map((section) => ({
+          ...section,
+          child:
+            section?.ID === groupId
+              ? [
+                  {
+                    ID: Id,
+                    actual_text: '',
+                    derive_segemnt: [],
+                    child: [],
+                  },
+                  ...(section?.child || []),
+                ]
+              : getUpdatedMetadata(section.child) || [],
+        }));
+      updatedData = getUpdatedMetadata(metadata);
+    } else {
+      updatedData = [
+        ...metadata,
+        {
+          ID: Id,
+          actual_text: '',
+          derive_segemnt: [],
+          child: [],
+        },
+      ];
+    }
+
+    setMetadata([...updatedData]);
     toggleEditingIDs([Id]);
   };
 
   const saveData = (deleteData) => {
-    const newData = deleteData || metadata;
+    const newData = clearUnSavedText(deleteData || metadata);
     const data = {
       id: userData?.id,
       doc_id: userData?.doc_id,
@@ -355,7 +373,7 @@ function DipaView({
     <div>
       <Card className="protocol-column protocol-digitize-column card-boarder">
         <div className="panel-heading" data-testid="header">
-          DIPA view
+          <b>Derived Counts</b>
           {showExpandIcon && fullRightScreen && (
             <Tooltip
               variant="dark"
@@ -393,7 +411,6 @@ function DipaView({
         </div>
 
         <Grid container spacing={1} className="dipa-view-table">
-          <h3 className="subtitle">Derived Counts</h3>
           <Grid container item xs={5}>
             <Grid item xs={12} className="drop-down">
               <Select
@@ -413,6 +430,7 @@ function DipaView({
               </Select>
             </Grid>
           </Grid>
+          {loader.loading ? <Loader isInner /> : ''}
           {dipaDataSelector?.success && (
             <Grid item xs={7} container spacing={1} className="dipa-view-count">
               <Grid item xs={5} className="dipa-actualcount">
@@ -422,12 +440,19 @@ function DipaView({
                   <b>{metadata?.length}</b>
                 </span>
               </Grid>
-              <Grid item xs={5} className="dipa-derivedcount">
+              <Grid item xs={4} className="dipa-derivedcount">
                 Derived Count
                 <br />
                 <span data-testid="derived-count">
                   <b>{deriveSegmentsLength}</b>
                 </span>
+              </Grid>
+              <Grid item xs={2} className="section-delete-btn">
+                <Tooltip title="Add Section" disableFocusListener>
+                  <IconButton onClick={() => addGroup()}>
+                    <Plus />
+                  </IconButton>
+                </Tooltip>
               </Grid>
             </Grid>
           )}
@@ -437,32 +462,39 @@ function DipaView({
             data-testid="structure-component"
             className="structure-container"
           >
-            {metadata?.map((section, index) => (
-              <DipaViewStructure
-                key={section.ID}
-                ID={section.ID}
-                actualText={section.actual_text}
-                level={section.level}
-                segments={section.derive_segemnt}
-                childs={section.child}
-                index={index}
-                handleExpandChange={handleExpandChange}
-                handleUpdate={saveData}
-                handleAdd={addSegment}
-                handleAddGroup={addGroup}
-                setOpenModal={setOpenModal}
-                onChangeSegment={addSegmentText}
-                onChangeSegmentGroup={addSegmentGroupText}
-                editingIDList={editingIDList}
-                setEditingIDList={setEditingIDList}
-                toggleEditingIDs={toggleEditingIDs}
-                tooltipValue={tooltipValue}
-                countTooltip={countTooltip}
-                editedByTooltip={editedByTooltip}
-                lockDetails={lockDetails}
-                userId={userIdSelector?.toString()}
-              />
-            ))}
+            {metadata.length > 0 ? (
+              <>
+                {' '}
+                {metadata?.map((section, index) => (
+                  <DipaViewStructure
+                    key={section.ID}
+                    ID={section.ID}
+                    actualText={section.actual_text}
+                    level={section.level}
+                    segments={section.derive_segemnt}
+                    childs={section.child}
+                    index={index}
+                    handleExpandChange={handleExpandChange}
+                    handleUpdate={saveData}
+                    handleAdd={addSegment}
+                    handleAddGroup={addGroup}
+                    setOpenModal={setOpenModal}
+                    onChangeSegment={addSegmentText}
+                    onChangeSegmentGroup={addSegmentGroupText}
+                    editingIDList={editingIDList}
+                    setEditingIDList={setEditingIDList}
+                    toggleEditingIDs={toggleEditingIDs}
+                    tooltipValue={tooltipValue}
+                    countTooltip={countTooltip}
+                    editedByTooltip={editedByTooltip}
+                    lockDetails={lockDetails}
+                    userId={userIdSelector?.toString()}
+                  />
+                ))}
+              </>
+            ) : (
+              <div className="no-data-container">No Data </div>
+            )}
           </div>
         </div>
       </Card>

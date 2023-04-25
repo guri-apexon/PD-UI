@@ -74,8 +74,9 @@ function EditableCell({ row, column: { accessor: key } }) {
         keyName={key}
         type={type}
         dateValue={dateValue}
-        setDateValue={setDateValue}
         inputValue={val}
+        isDisabled={row?.attr_id}
+        setDateValue={setDateValue}
         setType={setType}
         handleDateChange={handleDateChange}
         handleChange={(e) => handleDataChange(e)}
@@ -180,6 +181,7 @@ function MetaDataEditTable({
           attr_name: '',
           attr_value: '',
           attr_type: '',
+          attr_status: 'add',
         },
       ],
     }));
@@ -212,6 +214,7 @@ function MetaDataEditTable({
                 keyName === 'display_name' ? value : list?.display_name,
               note: keyName === 'note' ? value : list?.note,
               confidence: keyName === 'confidence' ? value : list?.confidence,
+              attr_status: list?.attr_id ? 'edit' : list?.attr_status,
             }
           : list,
       ),

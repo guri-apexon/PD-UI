@@ -176,6 +176,7 @@ function DigitalizeCard({
     });
     setModalOpen(false);
   };
+
   const handleOpenAccordion = (refObj) => {
     setHeaderList(
       headerList.map((x) => {
@@ -199,7 +200,8 @@ function DigitalizeCard({
             Digitized Data
             {protocolAllItems.data.redactProfile === 'profile_1' &&
               rightValue === PROTOCOL_RIGHT_MENU.HOME &&
-              userDetail.user_type !== 'QC1' && (
+              userDetail.user_type !== 'QC1' &&
+              headerList.length > 0 && (
                 <div className="submit-protocol">
                   <Button
                     className="button-style"
@@ -260,15 +262,18 @@ function DigitalizeCard({
         </Card>
       )}
       <Modal
-        className="modal"
+        disableBackdropClick
         open={modalOpen}
+        variant="warning"
         onClose={() => setModalOpen(false)}
-        title=""
-        message="Do you want to submit ?"
+        message="Do you want to submit this document ?"
+        title="Confirm Action"
         buttonProps={[
           {},
+
           {
             label: 'Submit',
+
             onClick: () => handleFinalSubmit(),
           },
         ]}

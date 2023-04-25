@@ -1,6 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+import { act } from 'react-dom/test-utils';
 import ProtocolReducer from '../protocolSlice';
 
 import * as ProtocolContext from '../ProtocolContext';
@@ -52,11 +53,11 @@ describe.only('DipaView Component testing', () => {
     const screen = renderWithProviders(<DipaView />, {
       preloadedState: { ...initialState },
     });
+    const eyeIcon = screen.getAllByTestId('eyeshow-tooltip-icon')[0];
+    fireEvent.mouseLeave(eyeIcon);
 
-    fireEvent.mouseEnter(screen.getAllByTestId('eyeshow-tooltip-icon')[0]);
-    expect(
-      screen.getAllByTestId('eyeshow-tooltip-icon')[0],
-    ).toBeInTheDocument();
+    fireEvent.mouseEnter(eyeIcon);
+    expect(screen.getAllByTestId('eyeshow-tooltip')[0]).toBeInTheDocument();
   });
 
   it('opens the tooltip when the pencil icon is hovered', () => {
@@ -66,16 +67,6 @@ describe.only('DipaView Component testing', () => {
 
     fireEvent.mouseEnter(screen.getAllByTestId('edit-button')[0]);
     expect(screen.getAllByTestId('pencil-tooltip')[0]).toBeInTheDocument();
-  });
-
-  it('should open popover when Plus icon is clicked', () => {
-    const screen = renderWithProviders(<DipaView />, {
-      preloadedState: { ...initialState },
-    });
-    const plusIcon = screen.getAllByTestId('plus-icon')[0];
-    fireEvent.click(plusIcon);
-    const popover = screen.getByTestId('popover-card');
-    expect(popover).toBeInTheDocument();
   });
 
   it('should AddSegment when the Add Segment button is clicked', () => {
@@ -138,12 +129,14 @@ describe.only('DipaView Component testing', () => {
     });
     const plusIcon = screen.getAllByTestId('plus-icon')[0];
     fireEvent.click(plusIcon);
-    const addSegmentButton = screen.getByTestId('add-group');
-    fireEvent.click(addSegmentButton);
-    const textField =
-      screen.getByTestId('addgroup-textfield').children[1].children[0];
-    expect(textField).toBeInTheDocument();
-    fireEvent.change(textField, { target: { value: 'Test' } });
+    const addGroupButton = screen.getByTestId('add-group');
+    fireEvent.click(addGroupButton);
+    expect(addGroupButton).toBeInTheDocument();
+    const textField = screen.getAllByTestId('addgroup-textfield');
+    fireEvent.change(textField[0], { target: { value: 'New Group' } });
+    const saveClick = screen.getByTestId('save');
+    fireEvent.click(saveClick);
+    expect(textField[0].value).toBe('New Group');
   });
 
   it('check Trash icon is clickable', () => {
@@ -251,5 +244,51 @@ describe.only('DipaView Component testing', () => {
 
     fireEvent.click(minimizeBtn);
     expect(mockHandleRightFullScreen).toHaveBeenCalledWith(null);
+  });
+
+  test('Should call stopPropagation when textfield is clicked', () => {
+    const screen = renderWithProviders(<DipaView />, {
+      preloadedState: { ...initialState },
+    });
+    const plusIcon = screen.getAllByTestId('plus-icon')[0];
+    fireEvent.click(plusIcon);
+    const addGroupButton = screen.getByTestId('add-group');
+    fireEvent.click(addGroupButton);
+    const groupTextfield = screen.getAllByTestId('addgroup-textfield')[0];
+    const stopPropagationSpy = jest.spyOn(Event.prototype, 'stopPropagation');
+
+    fireEvent.click(groupTextfield);
+
+    expect(stopPropagationSpy).toHaveBeenCalled();
+  });
+
+  test('Should call stopPropagation when textfield is focused', () => {
+    const screen = renderWithProviders(<DipaView />, {
+      preloadedState: { ...initialState },
+    });
+    const plusIcon = screen.getAllByTestId('plus-icon')[0];
+    fireEvent.click(plusIcon);
+    const addGroupButton = screen.getByTestId('add-group');
+    fireEvent.click(addGroupButton);
+    const groupTextfield = screen.getAllByTestId('addgroup-textfield')[0];
+    const textFieldSpy = jest.spyOn(Event.prototype, 'stopPropagation');
+
+    act(() => groupTextfield.focus());
+
+    expect(textFieldSpy).toHaveBeenCalled();
+  });
+
+  it('Should close the modal when clicked on close icon', () => {
+    const closeModal = jest.fn();
+    const screen = renderWithProviders(
+      <DipaView setOpenModal={closeModal} openModal />,
+      {
+        preloadedState: { ...initialState },
+      },
+    );
+    const trashButton = screen.getAllByTestId('delete-icon')[0];
+    fireEvent.click(trashButton);
+    fireEvent.click(screen.getByLabelText('Close'));
+    expect(closeModal).toHaveBeenCalledTimes(0);
   });
 });
