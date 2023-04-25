@@ -560,11 +560,13 @@ function DigitizeAccordion({
     return '';
   };
 
-  const getPreferredTerms = (item) => {
-    if (globalPreferredTerm && !isEmpty(item?.preferred_term)) {
-      return <b className="preferred-text">{item.source_file_section}</b>;
+  const getPreferredTerms = (header) => {
+    if (globalPreferredTerm && !isEmpty(header?.preferred_term)) {
+      return createFullMarkup(
+        `<b class="Preferred-txt">${header.source_file_section}</b>`,
+      );
     }
-    return item.source_file_section;
+    return header.source_file_section;
   };
 
   useEffect(() => {
@@ -785,7 +787,7 @@ function DigitizeAccordion({
               className="section-title"
               data-testid="accordion-header"
             >
-              {getPreferredTerms(item)}
+              <SanitizeHTML html={getPreferredTerms(item)} />
             </Typography>
             {/* eslint-disable-next-line */}
             <div
