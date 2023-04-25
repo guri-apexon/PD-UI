@@ -453,7 +453,7 @@ function DigitizeAccordion({
       );
       return arr.length > 0;
     }
-    return true;
+    return false;
   };
 
   const checkUnsavedImages = () => {
@@ -469,7 +469,7 @@ function DigitizeAccordion({
       );
       return arr.length > 0;
     }
-    return true;
+    return false;
   };
 
   const handleSaveContent = () => {
@@ -490,15 +490,16 @@ function DigitizeAccordion({
       setSaveSection(null);
       toast.error('Please do some changes to update');
     } else {
-      updateSectionLock(true);
-      dispatch(setSaveEnabled(false));
-      setShowLoader(true);
       const checkIfMainHeader = reqBody.filter(
         (req) =>
           req?.type === CONTENT_TYPE.HEADER &&
           req?.qc_change_type === QC_CHANGE_TYPE.UPDATED &&
           req?.link_level === '1',
       );
+
+      updateSectionLock(true);
+      dispatch(setSaveEnabled(false));
+      setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
@@ -604,7 +605,6 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-
         setSectionDataArr(updatedSectionsData);
         if (item.linkandReference && updatedSectionsData.length) {
           scrollToLinkandReference(index, item.linkandReference);

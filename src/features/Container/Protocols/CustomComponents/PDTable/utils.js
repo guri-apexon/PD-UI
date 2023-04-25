@@ -129,6 +129,9 @@ export const filterTableProperties = (data) => {
   let filterUpdatedData =
     typeof data === 'string' ? cloneDeep(JSON.parse(data)) : cloneDeep(data);
   filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
+  filterUpdatedData.forEach((record) => {
+    record.columns = record.columns.filter((op) => op?.op_type);
+  });
   return filterUpdatedData;
 };
 
