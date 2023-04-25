@@ -19,19 +19,24 @@ function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
         link_text: sectionName,
       };
 
-      if (headerList[index + 1]) {
-        headerObj.next_detail.link_id = headerList[index + 1]?.link_id;
+      if (headerList[index]) {
+        headerObj.next_detail.link_id = headerList[index]?.link_id;
+        headerObj.prev_detail.link_id = '';
+        headerObj.next_detail.link_level = '1';
       } else {
-        headerObj.prev_detail.link_id = headerList[index]?.link_id;
+        headerObj.prev_detail.link_id = headerList[index - 1]?.link_id;
         headerObj.prev_detail.link_level = '1';
-        headerObj.next_detail = null;
+        headerObj.next_detail.link_level = '';
+        headerObj.next_detail.link_id = '';
       }
 
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
-          docId: headerList[index]?.doc_id,
-          index: index + 1,
+          docId: headerList[index]
+            ? headerList[index]?.doc_id
+            : headerList[index - 1]?.doc_id,
+          index,
           refreshToc: true,
           reqBody: [headerObj],
         },
