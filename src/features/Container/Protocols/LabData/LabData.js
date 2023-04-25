@@ -427,7 +427,6 @@ function LabData({ docId }) {
       },
     });
   };
-
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"

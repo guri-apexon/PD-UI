@@ -230,7 +230,8 @@ function PDTable({ data, segment, activeLineID, lineID }) {
               },
               {
                 label: 'Delete',
-                onClick: () => {
+                onClick: (e) => {
+                  e.stopPropagation();
                   dispatchSectionEvent('CONTENT_DELETED', {
                     currentLineId: activeLineID,
                   });

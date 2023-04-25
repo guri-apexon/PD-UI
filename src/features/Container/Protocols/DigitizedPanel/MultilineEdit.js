@@ -24,7 +24,8 @@ function MultilineEdit({
   setRequestedRoute,
 }) {
   const [sections, setSections] = useState([]);
-  const { dispatchSectionEvent } = useProtContext();
+  const { dispatchSectionEvent, activeLineID, setActiveLineID } =
+    useProtContext();
   const [showconfirm, setShowConfirm] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -46,8 +47,6 @@ function MultilineEdit({
       setSections(sectionDataArr);
     }
   }, [sectionDataArr]);
-
-  const [activeLineID, setActiveLineID] = useState('');
 
   const sectionName = null;
 
@@ -77,6 +76,10 @@ function MultilineEdit({
     setShowConfirm(false);
   };
 
+  const onContentClick = (id) => {
+    if (edit) setActiveLineID(id);
+  };
+
   return (
     <>
       <div className="Richtextcontainer" data-testId="richTextEditor">
@@ -94,7 +97,7 @@ function MultilineEdit({
                 className="content_container"
                 data-testId="content_container"
                 key={section.line_id}
-                onClick={() => edit && setActiveLineID(section.line_id)}
+                onClick={() => onContentClick(section.line_id)}
               >
                 <RenderContent
                   sectionData={section}
