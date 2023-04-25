@@ -14,6 +14,7 @@ import { userType } from '../../../store/userDetails';
 
 import './QC.scss';
 import '../Protocols/protocols.scss';
+import { isEmpty } from 'lodash';
 
 function QCContainer() {
   const dispatch = useDispatch();
@@ -23,8 +24,20 @@ function QCContainer() {
   const [protocolId, setprotocolId] = useState('');
   const [protocolNumber, setProtocolNumber] = useState('');
   const [filePath, setFilePath] = useState('');
+
   useEffect(() => {
-    console.log('SHUBHAM1', notificationSelector);
+    if (notificationSelector?.id) {
+      dispatch({
+        type: 'RESET_QC_DATA',
+      });
+      setprotocolId(notificationSelector?.id);
+      setProtocolNumber(notificationSelector?.protocol);
+      setValue(1);
+      dispatch({
+        type: 'NOTIFICATION_QC_SAGA',
+        payload: { aidocId: '', protocol: '' },
+      });
+    }
   }, [notificationSelector]);
 
   const handleClick = (e) => {
@@ -45,11 +58,10 @@ function QCContainer() {
   useEffect(() => {}, []);
 
   const handleProtocolClick = ({ id, path, protocol }) => {
-    console.log('SHUBHAM', id, 'PRO', protocol);
     setValue(1);
     setprotocolId(id);
     setProtocolNumber(protocol);
-    // setFilePath(path);
+    setFilePath(path);
   };
 
   const breadItems = [
