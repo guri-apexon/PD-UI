@@ -26,7 +26,8 @@ function ImageUploader({ lineID, content, edit }) {
   const [showDltCnfrm, setShowDltCnfrm] = useState(false);
   const { dispatchSectionEvent, sectionContent } = useProtContext();
 
-  const handleDelete = () => {
+  const handleDelete = (e) => {
+    e.stopPropagation();
     dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
   };
 
@@ -85,8 +86,9 @@ function ImageUploader({ lineID, content, edit }) {
     setValue([]);
   };
 
-  const handleCancel = () => {
-    if (!imgBkp || imgBkp === '') {
+  const handleCancel = (e) => {
+    if (!imgBkp) {
+      e.stopPropagation();
       dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
     } else {
       const obj = sectionContent.filter((x) => x.line_id === lineID)?.pop();

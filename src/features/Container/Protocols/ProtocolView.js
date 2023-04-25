@@ -20,6 +20,7 @@ function ProtocolView({ refs, data }) {
   const [selectedSection, setSelectedSection] = useState({});
   const [sectionContent, setSectionContent] = useState([]);
   const [globalPreferredTerm, setGlobalPreferredTerm] = useState(false);
+  const [activeLineID, setActiveLineID] = useState('');
 
   const [saveSection, setSaveSection] = useState(null);
   const workflowSubmitData = useSelector(
@@ -60,6 +61,12 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleContentDelete = (payload) => {
+    const index = sectionContent.findIndex((x) => x.line_id === activeLineID);
+    let newActiveLineId = sectionContent[0].line_id;
+    if (index > 0) {
+      newActiveLineId = sectionContent[index - 1].line_id;
+    }
+    setActiveLineID(newActiveLineId);
     const content = prepareContent({
       ...payload,
       type: 'DELETE',
@@ -144,17 +151,21 @@ function ProtocolView({ refs, data }) {
       selectedSection,
       sectionContent,
       saveSection,
+      activeLineID,
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
+      setActiveLineID,
     }),
     [
       selectedSection,
       sectionContent,
       saveSection,
+      activeLineID,
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
+      setActiveLineID,
     ],
   );
 
