@@ -453,7 +453,7 @@ function DigitizeAccordion({
       );
       return arr.length > 0;
     }
-    return true;
+    return false;
   };
 
   const checkUnsavedImages = () => {
@@ -469,7 +469,7 @@ function DigitizeAccordion({
       );
       return arr.length > 0;
     }
-    return true;
+    return false;
   };
 
   const handleSaveContent = () => {
@@ -490,15 +490,16 @@ function DigitizeAccordion({
       setSaveSection(null);
       toast.error('Please do some changes to update');
     } else {
-      updateSectionLock(true);
-      dispatch(setSaveEnabled(false));
-      setShowLoader(true);
       const checkIfMainHeader = reqBody.filter(
         (req) =>
           req?.type === CONTENT_TYPE.HEADER &&
           req?.qc_change_type === QC_CHANGE_TYPE.UPDATED &&
           req?.link_level === '1',
       );
+
+      updateSectionLock(true);
+      dispatch(setSaveEnabled(false));
+      setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
@@ -559,11 +560,13 @@ function DigitizeAccordion({
     return '';
   };
 
-  const getPreferredTerms = (item) => {
-    if (globalPreferredTerm && !isEmpty(item?.preferred_term)) {
-      return <b className="preferred-text">{item.source_file_section}</b>;
+  const getPreferredTerms = (header) => {
+    if (globalPreferredTerm && !isEmpty(header?.preferred_term)) {
+      return createFullMarkup(
+        `<b class="Preferred-txt">${header.source_file_section}</b>`,
+      );
     }
-    return item.source_file_section;
+    return header.source_file_section;
   };
 
   useEffect(() => {
@@ -604,7 +607,6 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-
         setSectionDataArr(updatedSectionsData);
         if (item.linkandReference && updatedSectionsData.length) {
           scrollToLinkandReference(index, item.linkandReference);
@@ -785,7 +787,7 @@ function DigitizeAccordion({
               className="section-title"
               data-testid="accordion-header"
             >
-              {getPreferredTerms(item)}
+              <SanitizeHTML html={getPreferredTerms(item)} />
             </Typography>
             {/* eslint-disable-next-line */}
             <div

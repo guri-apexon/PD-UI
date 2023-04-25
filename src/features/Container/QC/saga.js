@@ -54,13 +54,6 @@ export function* qcProtocolsData() {
   }
 }
 
-function wait() {
-  /* istanbul ignore next */
-  setTimeout(function () {
-    window.location.href = '/qc';
-  }, 3000);
-}
-
 export function* qcApprove(action) {
   const user = yield getState();
   const url = `${BASE_URL_8000}/api/protocol_metadata/qc_approve?aidoc_id=${
@@ -75,7 +68,6 @@ export function* qcApprove(action) {
     const data = yield call(httpCall, config);
     if (data.success) {
       toast.info('Approved Successfully');
-      wait();
     } else {
       toast.error('Error While Approving');
     }
