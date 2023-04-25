@@ -94,6 +94,46 @@ describe('Dropdown', () => {
     const list = screen.getByText('H2');
     fireEvent.click(list);
   });
+  test('shoud render mouse event on list', () => {
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const screen = render(
+      <Dropdown
+        disabled={false}
+        buttonName="H"
+        onHeaderSelect={jest.fn()}
+        type="list"
+        list={headerList}
+      />,
+    );
+    const list = screen.getAllByTestId('list')[0];
+    fireEvent.mouseDown(list);
+  });
+});
+describe('handleClickOutside', () => {
+  it('should close the dropdown when a click occurs outside the dropdown container', () => {
+    const handleOperationMock = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const screen = render(
+      <Dropdown
+        disabled={false}
+        buttonName="H"
+        onHeaderSelect={jest.fn()}
+        type="list"
+        list={headerList}
+        handleOperation={handleOperationMock}
+      />,
+    );
+
+    fireEvent.mouseDown(document);
+
+    expect(screen.getByTestId('options')).toHaveClass('dropdown-content');
+  });
 
   it('executes onSymbolSelect function on symbol item click', () => {
     const mockList = [

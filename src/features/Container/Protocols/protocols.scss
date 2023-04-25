@@ -458,6 +458,7 @@
   }
 
   .view-wrapper .digitize-panel-content {
+    padding-top: 5px;
     overflow-y: auto;
     overflow-x: hidden;
     height: calc(100vh - 210px);
@@ -523,6 +524,12 @@
 
 .accordian-plusIcon-line:hover {
   border-bottom: 1px solid #0768fd;
+  border-image: linear-gradient(to right, #0768fd 98%, rgba(0, 0, 0, 0) 50%);
+  border-image-slice: 1;
+}
+
+.accordian-plusIcon-line-top:hover {
+  border-top: 1px solid #0768fd;
   border-image: linear-gradient(to right, #0768fd 98%, rgba(0, 0, 0, 0) 50%);
   border-image-slice: 1;
 }

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+
 import Loader from 'apollo-react/components/Loader';
 import Modal from 'apollo-react/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
@@ -322,26 +324,44 @@ function DipaView({
 
   const saveData = (deleteData) => {
     const newData = clearUnSavedText(deleteData || metadata);
-    const data = {
-      id: userData?.id,
-      doc_id: userData?.doc_id,
-      category: userData?.category,
-      userId: userloggedSelector.userId,
-      userName: userloggedSelector.username,
-      dipa_data: {
-        actual_count: newData.length,
-        doc_id: userData?.id,
-        header: userData?.category,
-        output: newData,
-        subheader: userData?.category,
-      },
-    };
-    dispatch({
-      type: 'UPDATE_DIPA_VIEW',
-      payload: {
-        data,
-      },
-    });
+
+    /**
+     * Check if object and not null
+     */
+    if (
+      typeof userData === 'object' &&
+      userData !== null &&
+      Object.keys(userData).length > 0
+    ) {
+      const data = {
+        id: userData?.id,
+        doc_id: userData?.doc_id,
+        category: userData?.category,
+        userId: userloggedSelector.userId,
+        userName: userloggedSelector.username,
+        dipa_data: {
+          actual_count: newData.length,
+          doc_id: userData?.id,
+          header: userData?.category,
+          output: newData,
+          subheader: userData?.category,
+        },
+      };
+      dispatch({
+        type: 'UPDATE_DIPA_VIEW',
+        payload: {
+          data,
+        },
+      });
+    } else {
+      /**
+       * Rare scenario. Its just to inform user that its not going correctly else user will try to click save button multiple times.
+       */
+      toast.error(
+        'Error in saving the changes. Please try again after sometime.',
+      );
+    }
+
     setEditingIDList([]);
     /**
      * After save, release lock
@@ -433,7 +453,7 @@ function DipaView({
           {loader.loading ? <Loader isInner /> : ''}
           {dipaDataSelector?.success && (
             <Grid item xs={7} container spacing={1} className="dipa-view-count">
-              <Grid item xs={5} className="dipa-actualcount">
+              <Grid item xs={4} className="dipa-actualcount">
                 Actual Count
                 <br />
                 <span data-testid="actual-count">
@@ -447,7 +467,7 @@ function DipaView({
                   <b>{deriveSegmentsLength}</b>
                 </span>
               </Grid>
-              <Grid item xs={2} className="section-delete-btn">
+              <Grid item xs={1} className="section-delete-btn">
                 <Tooltip title="Add Section" disableFocusListener>
                   <IconButton onClick={() => addGroup()}>
                     <Plus />
