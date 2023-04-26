@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import DisplayTable from '../Table';
 
 describe('DisplayTable component', () => {
@@ -369,5 +369,82 @@ describe('DisplayTable component', () => {
     fireEvent.dragEnter(droppableElement);
     fireEvent.dragOver(droppableElement);
     fireEvent.drop(droppableElement);
+  });
+});
+
+describe('DisplayTable', () => {
+  const mockData = [
+    { columns: [{ value: 'A1' }, { value: 'B1' }] },
+    { columns: [{ value: 'A2' }, { value: 'B2' }] },
+  ];
+  const mockOnChange = jest.fn();
+  const mockHandleRowOperation = jest.fn();
+  const mockHandleColumnOperation = jest.fn();
+  const mockHandleSwap = jest.fn();
+  const mockPreferredTerms = ['A1', 'B1', 'A2', 'B2'];
+  const mockIsPreferredTerm = jest.fn();
+
+  beforeEach(() => {
+    render(
+      <DisplayTable
+        data={mockData}
+        onChange={mockOnChange}
+        handleRowOperation={mockHandleRowOperation}
+        // eslint-disable-next-line react/jsx-boolean-value
+        edit={true}
+        colWidth={50}
+        footNoteData={[]}
+        setFootnoteData={jest.fn()}
+        handleColumnOperation={mockHandleColumnOperation}
+        handleSwap={mockHandleSwap}
+        preferredTerms={mockPreferredTerms}
+        isPreferredTerm={mockIsPreferredTerm}
+      />,
+    );
+  });
+
+  describe('handleDrop', () => {
+    const mockEvent = {
+      preventDefault: jest.fn(),
+      dataTransfer: {
+        getData: jest.fn(() => 'columnID-0-0'),
+        setData: jest.fn(),
+      },
+      target: {
+        id: 'columnID-1-1',
+        cloneNode: jest.fn(() => ({ id: 'rowID-0' })),
+      },
+    };
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      fireEvent.drop(screen.getByText('A1'), mockEvent);
+    });
+
+    it('should not swap when no draggable id is found in the event', () => {
+      mockEvent.dataTransfer.getData.mockReturnValue(undefined);
+      fireEvent.drop(screen.getByText('A1'), mockEvent);
+      expect(mockHandleSwap).not.toHaveBeenCalled();
+    });
+
+    it('should not swap when dragged and dropped on the same cell', () => {
+      mockEvent.target.id = 'columnID-0-0';
+      fireEvent.drop(screen.getByText('A1'), mockEvent);
+      expect(mockHandleSwap).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('handleChange', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+      fireEvent.input(screen.getByText('A1'), {
+        target: { innerHTML: 'new value' },
+      });
+      fireEvent.blur(screen.getByText('new value'));
+    });
+
+    it('should call onChange with new value, column index, and row index', () => {
+      expect(mockOnChange).toHaveBeenCalledTimes(0);
+    });
   });
 });

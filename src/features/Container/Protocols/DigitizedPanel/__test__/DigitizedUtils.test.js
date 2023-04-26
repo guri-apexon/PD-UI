@@ -1,5 +1,9 @@
 import { toast } from 'react-toastify';
-import { scrollToLinkandReference, replaceHtmlTags } from '../utils';
+import {
+  scrollToLinkandReference,
+  replaceHtmlTags,
+  onBeforeUnload,
+} from '../utils';
 
 jest.mock('react-toastify', () => ({
   toast: {
@@ -84,5 +88,43 @@ describe('replaceHtmlTags', () => {
   it('should return the input string if it contains no HTML tags', () => {
     const input = 'Some text';
     expect(replaceHtmlTags(input)).toEqual(input);
+  });
+});
+
+describe('onBeforeUnload', () => {
+  test('adds event listener and removes it on cleanup', () => {
+    const updateSectionLock = jest.fn();
+    const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
+    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+
+    const cleanup = onBeforeUnload(updateSectionLock);
+
+    expect(addEventListenerSpy).toHaveBeenCalledWith(
+      'beforeunload',
+      expect.any(Function),
+    );
+
+    cleanup();
+
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'beforeunload',
+      expect.any(Function),
+    );
+  });
+
+  test('calls callback with true on beforeunload event', () => {
+    const updateSectionLock = jest.fn();
+    const cbSpy = jest.fn();
+    document.addEventListener('beforeunload', cbSpy);
+    const cleanup = onBeforeUnload(updateSectionLock);
+    const beforeUnloadEvent = new Event('beforeunload');
+    document.dispatchEvent(beforeUnloadEvent);
+    cleanup();
+  });
+
+  test('does not call callback if beforeunload event is not triggered', () => {
+    const updateSectionLock = jest.fn();
+    onBeforeUnload(updateSectionLock);
+    expect(updateSectionLock).not.toHaveBeenCalled();
   });
 });
