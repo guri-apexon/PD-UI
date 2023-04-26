@@ -7,20 +7,37 @@ import Tab from 'apollo-react/components/Tab';
 import Tabs from 'apollo-react/components/Tabs';
 // import QCTable from './QCTable/QCTable';
 import QCProtocolTable from './QCTable/QCProtocolTable';
-
+import { qcNotification } from './qcSlice';
 // import QCProtocolView from "./QCProtocolView/QCProtocolView";
 import QCProtocolView from './QCProtocolView/QCProtocolView';
 import { userType } from '../../../store/userDetails';
+
 import './QC.scss';
 import '../Protocols/protocols.scss';
 
 function QCContainer() {
   const dispatch = useDispatch();
   const type = useSelector(userType);
+  const notificationSelector = useSelector(qcNotification);
   const [value, setValue] = useState(0);
   const [protocolId, setprotocolId] = useState('');
   const [protocolNumber, setProtocolNumber] = useState('');
   const [filePath, setFilePath] = useState('');
+
+  useEffect(() => {
+    if (notificationSelector?.id) {
+      dispatch({
+        type: 'RESET_QC_DATA',
+      });
+      setprotocolId(notificationSelector?.id);
+      setProtocolNumber(notificationSelector?.protocol);
+      setValue(1);
+      dispatch({
+        type: 'NOTIFICATION_QC_SAGA',
+        payload: { aidocId: '', protocol: '' },
+      });
+    }
+  }, [notificationSelector]);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -37,6 +54,7 @@ function QCContainer() {
       setFilePath('');
     }
   };
+
   const handleProtocolClick = ({ id, path, protocol }) => {
     setValue(1);
     setprotocolId(id);

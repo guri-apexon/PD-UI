@@ -17,10 +17,12 @@ import {
   CellMeasurerCache,
   List,
 } from 'react-virtualized';
-import { redaction } from '../../../AppConstant/AppConstant';
+import { redaction, USERTYPE } from '../../../AppConstant/AppConstant';
+import { userType } from '../../../store/userDetails';
 import './Alerts.scss';
 import notificationValues from './constant';
 import { navbarNotifications } from './navbarSlice';
+import { isUserType } from '../../../utils/utilFunction';
 const replaceall = require('replaceall');
 
 const notificationStyle = {
@@ -52,6 +54,7 @@ function Alerts() {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const notificationData = useSelector(navbarNotifications);
+  const usertype = useSelector(userType);
   const history = useHistory();
 
   const cache = useRef(
@@ -75,8 +78,15 @@ function Alerts() {
       type: 'READ_NOTIFICATION',
       payload: { aidocId, id, protocol, alert_id },
     });
-    history.push(`/protocols?protocolId=${aidocId}&tab=1`);
     setAnchorEl(!anchorEl);
+    if (usertype === USERTYPE.QC) {
+      dispatch({
+        type: 'NOTIFICATION_QC_SAGA',
+        payload: { aidocId, protocol },
+      });
+      return false;
+    }
+    history.push(`/protocols?protocolId=${aidocId}&tab=1`);
   };
 
   const newNotifications = notificationData?.filter(

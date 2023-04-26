@@ -14,6 +14,7 @@ import {
 import { baseUrlSSO } from '../../../utils/api';
 import './Navbar.scss';
 import Setting from './Setting/Setting';
+import { discardDetails } from '../Protocols/protocolSlice';
 
 const setMenuItems = (value) => {
   switch (value) {
@@ -44,6 +45,12 @@ function Navbar() {
   const [pathname, setPathname] = useState('/dashboard');
   const [modal, setModal] = useState(false);
   const [userId, setUserId] = useState();
+  const discardSelector = useSelector(discardDetails);
+  const [discardData, setDiscardData] = useState({});
+  useEffect(() => {
+    setDiscardData(discardSelector);
+  }, [discardSelector]);
+
   useEffect(() => {
     if ('userId' in userData) {
       const userID = userData.userId.substring(1);
@@ -81,7 +88,7 @@ function Navbar() {
   };
 
   const handleSetting = () => {
-    setModal(true);
+    if (!discardData?.isEdited && !discardData?.labEdited) setModal(true);
   };
   const profileMenuProps = {
     name: userDetail.username,

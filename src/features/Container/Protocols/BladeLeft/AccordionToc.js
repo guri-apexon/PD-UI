@@ -22,6 +22,9 @@ function AccordionToc({
       label={level?.source_file_section}
       onClick={handleClick}
       nodeId={level.link_id}
+      className={
+        expanded.includes(level.link_id) ? 'label-bold' : 'label-lighter'
+      }
       icon={
         expanded.includes(level.link_id) ? <ChevronDown /> : <ChevronRight />
       }
