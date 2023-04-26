@@ -19,6 +19,7 @@ import protocolPageSlice, {
   getSectionProtocol,
   getSummary,
   getTOCActive,
+  setActiveTOC,
   metadataApiCallValue,
   protocolResult,
   protocolSummary,
@@ -34,22 +35,73 @@ import protocolPageSlice, {
   setSectionLoader,
   TOCActive,
   setLoader,
+  setSaveEnabled,
   getSectionIndex,
   getLabData,
   setLabDataLoader,
   setSOAData,
   setLabDataSuccess,
   getDiscardDeatils,
+  setWorkFlowSubmitButton,
   resetProtocolTocData,
   setSectionLockDetails,
   setEnrichedWord,
   getDipaViewData,
   getAllDipaViewData,
   updateSectionResp,
+  resetUpdateStatus,
 } from '../protocolSlice';
+
+import resetUpdateStatusinitialState from './initialState.json';
 
 const initialState = {
   summary: {},
+  view: {
+    iqvdataSoa: [],
+    iqvdataSummary: {},
+    iqvdataToc: {
+      data: [],
+    },
+    loader: true,
+  },
+  associateDocs: [],
+  compare: {
+    loading: false,
+    called: false,
+    iqvdata: '',
+    error: false,
+    message: '',
+  },
+  sectionDetails: {
+    protocol: null,
+    data: [],
+  },
+  fileStream: null,
+  loader: false,
+  sectionIndex: -1,
+  labData: {
+    data: [1, 2],
+    success: false,
+    loading: false,
+  },
+  discardValue: {
+    isEdited: false,
+    isDiscarded: false,
+    protocolTab: -1,
+  },
+  protocolTocData: [],
+  sectionLockDetails: {},
+  enrichedword: {},
+};
+
+const initialStaTe = {
+  summary: {
+    isWorkflowDone: {
+      isDiscarded: false,
+      isEdited: false,
+      protocolTab: -1,
+    },
+  },
   view: {
     iqvdataSoa: [],
     iqvdataSummary: {},
@@ -243,6 +295,15 @@ describe(' ProtocolSlice Test Suite', () => {
     });
   });
 
+  test('resetUpdateStatus', () => {
+    expect(
+      protocolPageSlice(resetUpdateStatusinitialState, {
+        type: resetUpdateStatus.type,
+        payload: false,
+      }),
+    ).toEqual({ ...resetUpdateStatusinitialState });
+  });
+
   test('getFileStream', () => {
     expect(
       protocolPageSlice(initialState, {
@@ -265,19 +326,25 @@ describe(' ProtocolSlice Test Suite', () => {
       }),
     );
   });
-  test('updateSectionResp', () => {
+  test('updateSectionResp slice', () => {
     const payload = {
       protocol: '15-06',
       data: [],
       linkId: 15,
-      sectionResponse: null,
     };
     expect(
       protocolPageSlice(initialState, {
         type: updateSectionResp.type,
         payload,
       }),
-    );
+    ).toEqual({
+      ...initialState,
+      sectionDetails: {
+        protocol: null,
+        data: [],
+        updated: true,
+      },
+    });
   });
 
   test('getMetaDataSummaryField', () => {
@@ -305,6 +372,15 @@ describe(' ProtocolSlice Test Suite', () => {
         payload: false,
       }),
     ).toEqual({ ...initialState, TOCActiveAccordion: false });
+  });
+
+  test('setActiveTOC', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setActiveTOC.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, activeTOC: false });
   });
 
   test('setAccordianMetaData', () => {
@@ -361,6 +437,15 @@ describe(' ProtocolSlice Test Suite', () => {
     ).toEqual({ ...initialState, loader: false });
   });
 
+  test('setSaveEnabled', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setSaveEnabled.type,
+        payload: false,
+      }),
+    ).toEqual({ ...initialState, isSaveEnabled: false });
+  });
+
   test('getSectionIndex', () => {
     expect(
       protocolPageSlice(initialState, {
@@ -382,6 +467,20 @@ describe(' ProtocolSlice Test Suite', () => {
         payload: discard,
       }),
     ).toEqual({ ...initialState, discardValue: discard });
+  });
+
+  test('setWorkFlowSubmitButton', () => {
+    const discard = {
+      isEdited: false,
+      isDiscarded: false,
+      protocolTab: -1,
+    };
+    expect(
+      protocolPageSlice(initialStaTe, {
+        type: setWorkFlowSubmitButton.type,
+        payload: discard,
+      }),
+    ).toEqual({ ...initialStaTe, discardValue: discard });
   });
 
   test('resetProtocolTocData', () => {

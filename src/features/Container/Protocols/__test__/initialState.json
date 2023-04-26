@@ -1,0 +1,40 @@
+{
+  "summary": {},
+  "view": {
+    "iqvdataSoa": [],
+    "iqvdataSummary": {},
+    "iqvdataToc": {
+      "data": []
+    },
+    "loader": true
+  },
+  "associateDocs": [],
+  "compare": {
+    "loading": false,
+    "called": false,
+    "iqvdata": "",
+    "error": false,
+    "message": ""
+  },
+  "sectionDetails": {
+    "protocol": null,
+    "data": [],
+    "updated": false
+  },
+  "fileStream": false,
+  "loader": false,
+  "sectionIndex": -1,
+  "labData": {
+    "data": [1, 2],
+    "success": false,
+    "loading": false
+  },
+  "discardValue": {
+    "isEdited": false,
+    "isDiscarded": false,
+    "protocolTab": -1
+  },
+  "protocolTocData": [],
+  "sectionLockDetails": {},
+  "enrichedword": {}
+}

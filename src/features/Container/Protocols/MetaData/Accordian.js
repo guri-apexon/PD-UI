@@ -205,6 +205,7 @@ function Accordian({
       <div className="modal" data-testId="modal">
         <Modal
           className="modal"
+          data-testid="meta-modal"
           open={isModal}
           onClose={() => setIsModal(false)}
           title={
@@ -234,6 +235,7 @@ function Accordian({
         />
         <Modal
           className="modal"
+          data-testid="meta-modal-popover"
           open={isDiscarded}
           onClose={() => setIsDiscarded(false)}
           title="Do you really want to discard the changes or continue editing?"

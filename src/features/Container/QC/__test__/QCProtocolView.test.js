@@ -28,7 +28,9 @@ describe('QC Protocol View container component', () => {
     initialState: {
       protocol: {
         rightBladeValue: ['Home'],
+        protocolTocData: { data: ['testing'] },
         summary: {
+          isWorkflowDone: true,
           data: {
             userPrimaryRoleFlag: false,
           },
@@ -60,11 +62,12 @@ describe('QC Protocol View container component', () => {
           loading: false,
           error: null,
           data: [],
-          success: true,
+          success: false,
         },
       },
     },
   };
+
   test('should render QC Loader', () => {
     const protocolId = '212121';
     const filePath = '//path';
@@ -154,6 +157,14 @@ describe('QC Protocol View container component Error', () => {
   const state = {
     initialState: {
       protocol: {
+        rightBladeValue: ['Home'],
+        protocolTocData: { data: ['testing'] },
+        summary: {
+          isWorkflowDone: true,
+          data: {
+            userPrimaryRoleFlag: false,
+          },
+        },
         view: {
           iqvdataSoa: [],
           iqvdataSummary: {},
@@ -224,14 +235,14 @@ describe('QC Protocol View container component Error', () => {
     expect(setProdData).toHaveBeenCalledWith({ userPrimaryRoleFlag: false });
   });
   test('handleOpen function should open the modal', () => {
-    render(<QCProtocolView />);
+    render(<QCProtocolView />, state);
     const submitButton = screen.getByText('Submit');
     fireEvent.click(submitButton);
     const modal = screen.getByRole('dialog');
     expect(modal).toBeInTheDocument();
   });
   test('handleOpen function should open the modal', () => {
-    render(<QCProtocolView />);
+    render(<QCProtocolView />, state);
     const submitButton = screen.getByText('Submit');
     fireEvent.click(submitButton);
     const modal = screen.getByRole('dialog');

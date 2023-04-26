@@ -5,6 +5,7 @@ import IconButton from 'apollo-react/components/IconButton';
 import Modal from 'apollo-react/components/Modal';
 import TextField from 'apollo-react/components/TextField';
 import { isEmpty } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -89,13 +90,25 @@ function AddClinicalTerm({ docId, linkId }) {
     return '';
   };
 
+  const getHierarchyName = (type) => {
+    if (isEqual(type, 'text')) {
+      return 'paragraph';
+    }
+    if (isEqual(type, 'header')) {
+      return 'header';
+    }
+    if (isEqual(type, 'table')) {
+      return 'table';
+    }
+    return '';
+  };
+
   const handleAddTag = () => {
     const result = sectionData?.[0]?.data?.filter(
       (item) =>
         item?.font_info?.roi_id?.para ===
         wordSelector?.word?.font_info?.roi_id?.para,
     );
-
     const clinicalTermsData = result[0]?.clinical_terms;
     let tagData;
     if (clinicalTermsData && selectedText) {
@@ -112,6 +125,7 @@ function AddClinicalTerm({ docId, linkId }) {
           parent_id: wordSelector?.word?.font_info?.roi_id?.para,
           doc_id: docId,
           link_id: linkId,
+          hierarchy: getHierarchyName(result[0]?.type),
         };
       } else {
         tagData = {
@@ -125,6 +139,7 @@ function AddClinicalTerm({ docId, linkId }) {
           parent_id: wordSelector?.word?.font_info?.roi_id?.para,
           doc_id: docId,
           link_id: linkId,
+          hierarchy: getHierarchyName(result[0]?.type),
         };
       }
     } else {
@@ -139,6 +154,7 @@ function AddClinicalTerm({ docId, linkId }) {
         parent_id: wordSelector?.word?.font_info?.roi_id?.para,
         doc_id: docId,
         link_id: linkId,
+        hierarchy: getHierarchyName(result[0]?.type),
       };
     }
     dispatch({
