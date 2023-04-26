@@ -12,6 +12,25 @@
   hr {
     margin-bottom: 0;
   }
+  .label-bold {
+    font-weight: 600;
+    [class*='MuiSvgIcon-root-'] {
+      color: #111111 !important;
+    }
+  }
+  .label-lighter {
+    font-weight: 400;
+  }
+  [class*='MuiTreeItem-label-'] {
+    font-weight: unset !important;
+    color: unset;
+  }
+  [class*='MuiTreeItem-content-']::before {
+    background-color: #f6f7fb !important;
+  }
+  [class*='MuiSvgIcon-root-'] {
+    color: #5e5c5c !important;
+  }
 
   [class*='Blade-body-'] {
     background: #f6f7fb;
