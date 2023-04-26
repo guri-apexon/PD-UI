@@ -9,7 +9,11 @@ import {
   PROTOCOL_RIGHT_MENU_ARR,
 } from '../Constant/Constants';
 import './BladeRight.scss';
-import { discardDetails, rightBladeValue } from '../protocolSlice';
+import {
+  discardDetails,
+  rightBladeValue,
+  protocolTocData,
+} from '../protocolSlice';
 
 function BladeRight({
   dataSummary,
@@ -20,10 +24,12 @@ function BladeRight({
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const BladeRightValue = useSelector(rightBladeValue);
+  const tocSelector = useSelector(protocolTocData);
 
   const [accordianData, setAccordianData] = useState(PROTOCOL_RIGHT_MENU_ARR);
   const discardSelector = useSelector(discardDetails);
   const [discardData, setDiscardData] = useState({});
+
   useEffect(() => {
     setDiscardData(discardSelector);
   }, [discardSelector]);
@@ -133,7 +139,9 @@ function BladeRight({
                 checked={globalPreferredTerm}
                 onChange={handleChangeGlobalPreferredTerm}
                 data-testId="preferred-term-switch"
-                disabled={!dataSummary?.userPrimaryRoleFlag}
+                disabled={
+                  !dataSummary?.userPrimaryRoleFlag || tocSelector.errorMsg
+                }
               />
             </div>
 
@@ -150,10 +158,12 @@ function BladeRight({
                             ? 'link-text-clicked'
                             : 'link-text'
                         }
-                        disabled={getDisable(
-                          dataSummary?.userPrimaryRoleFlag,
-                          item?.name,
-                        )}
+                        disabled={
+                          getDisable(
+                            dataSummary?.userPrimaryRoleFlag,
+                            item?.name,
+                          ) || tocSelector.errorMsg
+                        }
                         onClick={() => {
                           handleChangeTab(index, item);
                         }}
