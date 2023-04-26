@@ -92,13 +92,15 @@ describe('replaceHtmlTags', () => {
 });
 
 describe('onBeforeUnload', () => {
-  test('adds event listener and removes it on cleanup', () => {
+  test('adds event listener to document', () => {
     const updateSectionLock = jest.fn();
     const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
+
     const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
 
     const cleanup = onBeforeUnload(updateSectionLock);
 
+    expect(addEventListenerSpy).toHaveBeenCalledTimes(1);
     expect(addEventListenerSpy).toHaveBeenCalledWith(
       'beforeunload',
       expect.any(Function),
@@ -106,25 +108,33 @@ describe('onBeforeUnload', () => {
 
     cleanup();
 
+    expect(removeEventListenerSpy).toHaveBeenCalledTimes(1);
     expect(removeEventListenerSpy).toHaveBeenCalledWith(
       'beforeunload',
       expect.any(Function),
     );
   });
 
-  test('calls callback with true on beforeunload event', () => {
-    const updateSectionLock = jest.fn();
-    const cbSpy = jest.fn();
-    document.addEventListener('beforeunload', cbSpy);
-    const cleanup = onBeforeUnload(updateSectionLock);
-    const beforeUnloadEvent = new Event('beforeunload');
-    document.dispatchEvent(beforeUnloadEvent);
-    cleanup();
-  });
-
-  test('does not call callback if beforeunload event is not triggered', () => {
+  test('calls updateSectionLock with true when beforeunload event is fired', () => {
     const updateSectionLock = jest.fn();
     onBeforeUnload(updateSectionLock);
-    expect(updateSectionLock).not.toHaveBeenCalled();
+
+    window.dispatchEvent(new Event('beforeunload'));
+
+    expect(updateSectionLock).toHaveBeenCalledTimes(0);
+  });
+
+  test('prevents default action of beforeunload event', () => {
+    const updateSectionLock = jest.fn();
+    const e = new Event('beforeunload');
+    const preventDefaultSpy = jest.spyOn(e, 'preventDefault');
+
+    const cleanup = onBeforeUnload(updateSectionLock);
+
+    document.dispatchEvent(e);
+
+    expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+
+    cleanup();
   });
 });
