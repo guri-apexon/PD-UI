@@ -22,6 +22,7 @@ import { userType } from '../../../store/userDetails';
 import './Alerts.scss';
 import notificationValues from './constant';
 import { navbarNotifications } from './navbarSlice';
+import { getUserType } from '../../../utils/utilFunction';
 const replaceall = require('replaceall');
 
 const notificationStyle = {
@@ -72,24 +73,24 @@ function Alerts() {
     });
   };
 
+  const updateReadNotification = (aidocId, id, protocol, alert_id) => {
+    dispatch({
+      type: 'READ_NOTIFICATION',
+      payload: { aidocId, id, protocol, alert_id },
+    });
+    setAnchorEl(!anchorEl);
+  };
+
   const handleRead = (aidocId, id, protocol, alert_id) => {
-    if (usertype === 'QC1') {
+    if (getUserType(usertype)) {
       dispatch({
         type: 'NOTIFICATION_QC_SAGA',
         payload: { aidocId, protocol },
       });
-      dispatch({
-        type: 'READ_NOTIFICATION',
-        payload: { aidocId, id, protocol, alert_id },
-      });
-      setAnchorEl(!anchorEl);
+      updateReadNotification(aidocId, id, protocol, alert_id);
     } else {
-      dispatch({
-        type: 'READ_NOTIFICATION',
-        payload: { aidocId, id, protocol, alert_id },
-      });
       history.push(`/protocols?protocolId=${aidocId}&tab=1`);
-      setAnchorEl(!anchorEl);
+      updateReadNotification(aidocId, id, protocol, alert_id);
     }
   };
 

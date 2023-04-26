@@ -5,6 +5,7 @@ import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
   redaction,
+  USERTYPE,
 } from '../AppConstant/AppConstant';
 import {
   filterFootNotes,
@@ -607,4 +608,8 @@ export const getKeyFromEnrichText = (term) => {
   if (term === 'medical_term') return 'clinical_terms';
   if (term === 'ontology') return 'ontology';
   return '';
+};
+
+export const getUserType = (userType) => {
+  return USERTYPE.includes(userType.toUpperCase());
 };

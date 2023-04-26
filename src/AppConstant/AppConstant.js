@@ -223,6 +223,8 @@ const SETTING_OPTION = [
   },
 ];
 
+const USERTYPE = ['ADMIN', 'NORMAL', 'QC1'];
+
 export {
   SORT_DROPDOWN,
   USER_MENU,
@@ -237,4 +239,5 @@ export {
   METADATA_LIST,
   CONFIG_API_VARIABLES,
   SETTING_OPTION,
+  USERTYPE,
 };
