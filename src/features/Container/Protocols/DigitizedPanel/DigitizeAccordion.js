@@ -696,6 +696,7 @@ function DigitizeAccordion({
     setAddSectionIndex(sectionIndex);
     setIsModal(true);
   };
+
   const handleSegmentMouseUp = (e, section) => {
     dispatch({
       type: 'SET_ENRICHED_WORD',
