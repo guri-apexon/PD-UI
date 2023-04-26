@@ -17,12 +17,12 @@ import {
   CellMeasurerCache,
   List,
 } from 'react-virtualized';
-import { redaction } from '../../../AppConstant/AppConstant';
+import { redaction, USERTYPE } from '../../../AppConstant/AppConstant';
 import { userType } from '../../../store/userDetails';
 import './Alerts.scss';
 import notificationValues from './constant';
 import { navbarNotifications } from './navbarSlice';
-import { getUserType } from '../../../utils/utilFunction';
+import { isUserType } from '../../../utils/utilFunction';
 const replaceall = require('replaceall');
 
 const notificationStyle = {
@@ -73,25 +73,20 @@ function Alerts() {
     });
   };
 
-  const updateReadNotification = (aidocId, id, protocol, alert_id) => {
+  const handleRead = (aidocId, id, protocol, alert_id) => {
     dispatch({
       type: 'READ_NOTIFICATION',
       payload: { aidocId, id, protocol, alert_id },
     });
     setAnchorEl(!anchorEl);
-  };
-
-  const handleRead = (aidocId, id, protocol, alert_id) => {
-    if (getUserType(usertype)) {
+    if (usertype === USERTYPE.QC) {
       dispatch({
         type: 'NOTIFICATION_QC_SAGA',
         payload: { aidocId, protocol },
       });
-      updateReadNotification(aidocId, id, protocol, alert_id);
-    } else {
-      history.push(`/protocols?protocolId=${aidocId}&tab=1`);
-      updateReadNotification(aidocId, id, protocol, alert_id);
+      return false;
     }
+    history.push(`/protocols?protocolId=${aidocId}&tab=1`);
   };
 
   const newNotifications = notificationData?.filter(

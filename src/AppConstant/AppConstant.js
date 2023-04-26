@@ -223,7 +223,7 @@ const SETTING_OPTION = [
   },
 ];
 
-const USERTYPE = ['ADMIN', 'NORMAL', 'QC1'];
+const USERTYPE = { ADMIN: 'admin', NORMAL: 'normal', QC: 'QC1' };
 
 export {
   SORT_DROPDOWN,
