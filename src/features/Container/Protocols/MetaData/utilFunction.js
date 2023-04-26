@@ -90,20 +90,24 @@ export const mergeSummary = (data) => {
           };
         },
       );
+      const mergedMetaData = [
+        // eslint-disable-next-line
+        ...finalResult.summary?._meta_data,
+        ...updateMetaData,
+      ]?.map((attr, index) => {
+        return {
+          ...attr,
+          id: index + 1,
+        };
+      });
       finalResult = {
         ...finalResult,
         summary: {
           ...finalResult?.summary,
-          _meta_data: [
+          audit_info:
             // eslint-disable-next-line
-            ...finalResult.summary?._meta_data,
-            ...updateMetaData,
-          ]?.map((attr, index) => {
-            return {
-              ...attr,
-              id: index + 1,
-            };
-          }),
+            findLatestTimestamp(mergedMetaData) || {},
+          _meta_data: mergedMetaData,
           // eslint-disable-next-line
           _childs: finalResult.summary_extended._childs
             ? [
