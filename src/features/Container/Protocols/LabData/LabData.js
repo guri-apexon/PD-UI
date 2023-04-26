@@ -7,6 +7,7 @@ import Card from 'apollo-react/components/Card/Card';
 import TextField from 'apollo-react/components/TextField';
 import Save from 'apollo-react-icons/Save';
 import Pencil from 'apollo-react-icons/Pencil';
+import Plus from 'apollo-react-icons/Plus';
 import FilterIcon from 'apollo-react-icons/Filter';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import Table from 'apollo-react/components/Table';
@@ -340,6 +341,31 @@ function LabData({ docId }) {
     setRowData(updatedRows);
   };
 
+  const handleAdd = (id) => {
+    if (rowData.length === 0) {
+      const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
+      addRow.doc_id = docId;
+      addRow.table_roi_id = labDataSelector.createdTable.table_roi_id;
+      addRow.id = uuidv4();
+      addRow.isSaved = false;
+      setRowData([addRow]);
+      setEditedRow(addRow);
+      globalEditedRow = { ...addRow };
+    } else if (Object.keys(editedRow).length === 0) {
+      const newArr = [...rowData];
+      const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
+      addRow.doc_id = docId;
+      addRow.table_roi_id = rowData[0].table_roi_id;
+      addRow.id = uuidv4();
+      addRow.isSaved = false;
+      const index = rowData.findIndex((ele) => ele.id === id);
+      newArr.splice(index + 1, 0, addRow);
+      setRowData(newArr);
+      setEditedRow(addRow);
+      globalEditedRow = { ...addRow };
+    }
+  };
+
   useEffect(() => {
     if (labData.data.length > 0) {
       setRowData(
@@ -355,24 +381,12 @@ function LabData({ docId }) {
       getLabData();
       dispatch(setLabDataSuccess(false));
     }
+
+    if (labData.createdTable) {
+      handleAdd();
+    }
     // eslint-disable-next-line
   }, [labData]);
-
-  const handleAdd = (id) => {
-    if (Object.keys(editedRow).length === 0) {
-      const newArr = [...rowData];
-      const index = rowData.findIndex((ele) => ele.id === id);
-      const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
-      addRow.doc_id = docId;
-      addRow.table_roi_id = rowData[0].table_roi_id;
-      addRow.id = uuidv4();
-      addRow.isSaved = false;
-      newArr.splice(index + 1, 0, addRow);
-      setRowData(newArr);
-      setEditedRow(addRow);
-      globalEditedRow = { ...addRow };
-    }
-  };
 
   const clearFilter = () => {
     if (tableRef?.current) {
@@ -427,6 +441,16 @@ function LabData({ docId }) {
       },
     });
   };
+
+  const createLabDataTable = () => {
+    dispatch({
+      type: 'CREATE_LABDATA_TABLE',
+      payload: {
+        docId,
+      },
+    });
+  };
+
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -485,6 +509,15 @@ function LabData({ docId }) {
               />
             )}
           />
+          {isEdit && rowData.length === 0 && (
+            <Button
+              icon={<Plus />}
+              className="addrow-button"
+              onClick={createLabDataTable}
+            >
+              Add Row
+            </Button>
+          )}
         </div>
         <DiscardModal
           classes={classes}

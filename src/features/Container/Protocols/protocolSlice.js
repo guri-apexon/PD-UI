@@ -60,6 +60,7 @@ export const protocolSlice = createSlice({
       data: [],
       success: false,
       loading: false,
+      createdTable: null,
     },
     sectionLockDetails: {},
     enrichedword: {},
@@ -202,6 +203,9 @@ export const protocolSlice = createSlice({
     setLabDataSuccess: (state, action) => {
       state.labData.success = action.payload;
     },
+    setLabDataCreated: (state, action) => {
+      state.labData.createdTable = action.payload;
+    },
     setSectionLockDetails: (state, action) => {
       state.sectionLockDetails = action.payload;
     },
@@ -256,6 +260,7 @@ export const {
   getLabData,
   setLabDataLoader,
   setLabDataSuccess,
+  setLabDataCreated,
   setEnrichedWord,
   setLoader,
   setSectionLockDetails,
