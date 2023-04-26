@@ -275,6 +275,7 @@ function DigitizeAccordion({
 
   const handleDiscardToc = () => {
     if (showedit && saveEnabled) {
+      dispatch(setActiveTOC([...activeTree, item.link_id]));
       setTocClose(true);
       setShowDiscardConfirm(true);
       handleTocsection();

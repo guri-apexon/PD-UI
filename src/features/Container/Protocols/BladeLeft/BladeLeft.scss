@@ -6,6 +6,9 @@
   .MuiPaper-root div:nth-last-child(2) {
     padding-right: 0 !important;
   }
+  .MuiPaper-root div:nth-last-child(1) {
+    z-index: 1;
+  }
   hr {
     margin-bottom: 0;
   }
