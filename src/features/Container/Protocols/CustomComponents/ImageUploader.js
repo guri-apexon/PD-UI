@@ -24,7 +24,7 @@ function ImageUploader({ lineID, content, edit }) {
   const [isEdit, setIsEdit] = useState(true);
   const [showEditBtn, setShowEditBtn] = useState(false);
   const [showDltCnfrm, setShowDltCnfrm] = useState(false);
-  const { dispatchSectionEvent, sectionContent } = useProtContext();
+  const { dispatchSectionEvent } = useProtContext();
 
   const handleDelete = (e) => {
     e.stopPropagation();
@@ -91,11 +91,7 @@ function ImageUploader({ lineID, content, edit }) {
       e.stopPropagation();
       dispatchSectionEvent('CONTENT_DELETED', { currentLineId: lineID });
     } else {
-      const obj = sectionContent.filter((x) => x.line_id === lineID)?.pop();
-      const arr = [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED];
-      if (arr.includes(obj?.qc_change_type)) {
-        updateImageInContext(true, imgBkp);
-      }
+      updateImageInContext(true, imgBkp);
     }
     setIsEdit(false);
     setImg(imgBkp);

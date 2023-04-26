@@ -432,8 +432,9 @@ export function* getProtocolTocDataResult(action) {
           success: false,
           data: [],
           errorMsg:
-            result?.err?.data?.message ||
-            'This document is not available in our database',
+            result?.err?.status === 500
+              ? 'Digitization in progress'
+              : 'This document is not available in our database',
         }),
       );
     }

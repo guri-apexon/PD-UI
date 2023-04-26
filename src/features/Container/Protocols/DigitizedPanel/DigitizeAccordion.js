@@ -446,7 +446,7 @@ function DigitizeAccordion({
       const arr = sectionContent.filter(
         (obj) =>
           obj.type === CONTENT_TYPE.TABLE &&
-          ((obj.isSaved === false && obj.qc_change_type !== '') ||
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
             ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
               [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
                 obj.qc_change_type,
@@ -462,7 +462,7 @@ function DigitizeAccordion({
       const arr = sectionContent.filter(
         (obj) =>
           obj.type === CONTENT_TYPE.IMAGE &&
-          ((obj.isSaved === false && obj.qc_change_type !== '') ||
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
             ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
               [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
                 obj.qc_change_type,
