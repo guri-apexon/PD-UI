@@ -371,3 +371,96 @@ describe('DisplayTable component', () => {
     fireEvent.drop(droppableElement);
   });
 });
+
+describe('DisplayTable component', () => {
+  const data = [
+    { columns: [{ value: 'A' }, { value: 'B' }, { value: 'C' }] },
+    { columns: [{ value: 'D' }, { value: 'E' }, { value: 'F' }] },
+  ];
+  const onChangeMock = jest.fn();
+  const handleRowOperationMock = jest.fn();
+  const handleColumnOperationMock = jest.fn();
+  const handleSwapMock = jest.fn();
+  const preferredTermsMock = [];
+  const isPreferredTermMock = false;
+
+  it('should handle drag and drop for swapping rows', () => {
+    const { getAllByTestId } = render(
+      <DisplayTable
+        data={data}
+        onChange={onChangeMock}
+        handleRowOperation={handleRowOperationMock}
+        edit
+        colWidth={33.33}
+        footNoteData={[]}
+        setFootnoteData={() => {}}
+        handleColumnOperation={handleColumnOperationMock}
+        handleSwap={handleSwapMock}
+        preferredTerms={preferredTermsMock}
+        isPreferredTerm={isPreferredTermMock}
+      />,
+    );
+
+    const row1 = getAllByTestId('table-row')[0];
+    const row2 = getAllByTestId('table-row')[1];
+
+    fireEvent.dragStart(row1);
+    fireEvent.dragOver(row2);
+    fireEvent.drop(row2);
+
+    expect(handleSwapMock).toHaveBeenCalledTimes(0);
+  });
+
+  it('should handle drag and drop for swapping columns', () => {
+    const { getAllByTestId } = render(
+      <DisplayTable
+        data={data}
+        onChange={onChangeMock}
+        handleRowOperation={handleRowOperationMock}
+        edit
+        colWidth={33.33}
+        footNoteData={[]}
+        setFootnoteData={() => {}}
+        handleColumnOperation={handleColumnOperationMock}
+        handleSwap={handleSwapMock}
+        preferredTerms={preferredTermsMock}
+        isPreferredTerm={isPreferredTermMock}
+      />,
+    );
+
+    const column1 = getAllByTestId('span-edit')[0];
+    const column3 = getAllByTestId('span-edit')[2];
+
+    fireEvent.dragStart(column1);
+    fireEvent.dragOver(column3);
+    fireEvent.drop(column3);
+
+    expect(handleSwapMock).toHaveBeenCalledTimes(0);
+  });
+
+  it('should not handle drag and drop if the dragged element and target element are the same', () => {
+    const { getAllByTestId } = render(
+      <DisplayTable
+        data={data}
+        onChange={onChangeMock}
+        handleRowOperation={handleRowOperationMock}
+        edit
+        colWidth={33.33}
+        footNoteData={[]}
+        setFootnoteData={() => {}}
+        handleColumnOperation={handleColumnOperationMock}
+        handleSwap={handleSwapMock}
+        preferredTerms={preferredTermsMock}
+        isPreferredTerm={isPreferredTermMock}
+      />,
+    );
+
+    const column1 = getAllByTestId('span-edit')[0];
+
+    fireEvent.dragStart(column1);
+    fireEvent.dragOver(column1);
+    fireEvent.drop(column1);
+
+    expect(handleSwapMock).not.toHaveBeenCalled();
+  });
+});

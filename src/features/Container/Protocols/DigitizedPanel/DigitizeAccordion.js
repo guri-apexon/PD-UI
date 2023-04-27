@@ -275,6 +275,7 @@ function DigitizeAccordion({
 
   const handleDiscardToc = () => {
     if (showedit && saveEnabled) {
+      dispatch(setActiveTOC([...activeTree, item.link_id]));
       setTocClose(true);
       setShowDiscardConfirm(true);
       handleTocsection();
@@ -445,7 +446,7 @@ function DigitizeAccordion({
       const arr = sectionContent.filter(
         (obj) =>
           obj.type === CONTENT_TYPE.TABLE &&
-          ((obj.isSaved === false && obj.qc_change_type !== '') ||
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
             ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
               [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
                 obj.qc_change_type,
@@ -453,7 +454,7 @@ function DigitizeAccordion({
       );
       return arr.length > 0;
     }
-    return true;
+    return false;
   };
 
   const checkUnsavedImages = () => {
@@ -461,7 +462,7 @@ function DigitizeAccordion({
       const arr = sectionContent.filter(
         (obj) =>
           obj.type === CONTENT_TYPE.IMAGE &&
-          ((obj.isSaved === false && obj.qc_change_type !== '') ||
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
             ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
               [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
                 obj.qc_change_type,
@@ -469,7 +470,7 @@ function DigitizeAccordion({
       );
       return arr.length > 0;
     }
-    return true;
+    return false;
   };
 
   const handleSaveContent = () => {
@@ -490,15 +491,16 @@ function DigitizeAccordion({
       setSaveSection(null);
       toast.error('Please do some changes to update');
     } else {
-      updateSectionLock(true);
-      dispatch(setSaveEnabled(false));
-      setShowLoader(true);
       const checkIfMainHeader = reqBody.filter(
         (req) =>
           req?.type === CONTENT_TYPE.HEADER &&
           req?.qc_change_type === QC_CHANGE_TYPE.UPDATED &&
           req?.link_level === '1',
       );
+
+      updateSectionLock(true);
+      dispatch(setSaveEnabled(false));
+      setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
@@ -559,11 +561,13 @@ function DigitizeAccordion({
     return '';
   };
 
-  const getPreferredTerms = (item) => {
-    if (globalPreferredTerm && !isEmpty(item?.preferred_term)) {
-      return <b className="preferred-text">{item.source_file_section}</b>;
+  const getPreferredTerms = (header) => {
+    if (globalPreferredTerm && !isEmpty(header?.preferred_term)) {
+      return createFullMarkup(
+        `<b class="Preferred-txt">${header.source_file_section}</b>`,
+      );
     }
-    return item.source_file_section;
+    return header.source_file_section;
   };
 
   useEffect(() => {
@@ -604,7 +608,6 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
-
         setSectionDataArr(updatedSectionsData);
         if (item.linkandReference && updatedSectionsData.length) {
           scrollToLinkandReference(index, item.linkandReference);
@@ -693,6 +696,7 @@ function DigitizeAccordion({
     setAddSectionIndex(sectionIndex);
     setIsModal(true);
   };
+
   const handleSegmentMouseUp = (e, section) => {
     dispatch({
       type: 'SET_ENRICHED_WORD',
@@ -785,7 +789,7 @@ function DigitizeAccordion({
               className="section-title"
               data-testid="accordion-header"
             >
-              {getPreferredTerms(item)}
+              <SanitizeHTML html={getPreferredTerms(item)} />
             </Typography>
             {/* eslint-disable-next-line */}
             <div

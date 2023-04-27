@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import TreeItem from 'apollo-react/components/TreeItem';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
 import ChevronDown from 'apollo-react-icons/ChevronDown';
+import SanitizeHTML from '../../../Components/SanitizeHtml';
+import { createFullMarkup } from '../../../../utils/utilFunction';
 
 function AccordionToc({
   level,
@@ -19,9 +21,14 @@ function AccordionToc({
   return (
     <TreeItem
       key={level.link_id}
-      label={level?.source_file_section}
+      label={
+        <SanitizeHTML html={createFullMarkup(level?.source_file_section)} />
+      }
       onClick={handleClick}
       nodeId={level.link_id}
+      className={
+        expanded.includes(level.link_id) ? 'label-bold' : 'label-lighter'
+      }
       icon={
         expanded.includes(level.link_id) ? <ChevronDown /> : <ChevronRight />
       }

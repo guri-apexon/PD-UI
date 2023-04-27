@@ -6,13 +6,12 @@ import Loader from 'apollo-react/components/Loader';
 import {
   protocolSummary,
   rightBladeValue,
-  viewResult,
+  protocolTocData,
 } from '../../Protocols/protocolSlice';
 import ProtocolView from '../../Protocols/ProtocolView';
 import { PROTOCOL_RIGHT_MENU } from '../../Protocols/Constant/Constants';
 import Modal from 'apollo-react/components/Modal';
 import PipelineComponent from '../../Dashboard/Pipeline/Pipeline';
-import { toast } from 'react-toastify';
 
 function QCProtocolView({ protId, handleChangeTab }) {
   const dispatch = useDispatch();
@@ -24,6 +23,7 @@ function QCProtocolView({ protId, handleChangeTab }) {
   const [workflowError, setworkflowError] = React.useState(false);
   const [showPipelineModal, setShowPipelineModal] = React.useState(false);
   const summary = useSelector(protocolSummary);
+  const toc = useSelector(protocolTocData);
   const BladeRightValue = useSelector(rightBladeValue);
   const workflowSubmitData = useSelector(
     (state) => state.dashboard.workflowSubmit,
@@ -100,11 +100,13 @@ function QCProtocolView({ protId, handleChangeTab }) {
   return (
     <div>
       {BladeRightValue &&
-        BladeRightValue.includes(PROTOCOL_RIGHT_MENU.HOME) && (
+        BladeRightValue.includes(PROTOCOL_RIGHT_MENU.HOME) &&
+        toc?.data?.length > 0 && (
           <Button
             className="button-style"
             variant="secondary"
             onClick={() => setShowPipelineModal(true)}
+            disabled={!summary.isWorkflowDone}
           >
             Submit
           </Button>

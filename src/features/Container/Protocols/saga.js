@@ -41,6 +41,7 @@ import {
   getDiscardDeatils,
   setWorkFlowSubmitButton,
   setDipaDataLoader,
+  updateSectionHeader,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -243,11 +244,9 @@ export function* updateSectionData(action) {
     const {
       payload: { reqBody, docId },
     } = action;
-    if (action?.payload?.refreshToc) {
-      yield put(getProtocolTocData({}));
-    }
     const userIdPrefix = yield getState(true);
     const UserId = yield getState();
+    const linkId = reqBody[0].link_id;
     const updatedReq = reqBody.map((ele) => {
       return {
         ...ele,
@@ -265,35 +264,30 @@ export function* updateSectionData(action) {
 
     if (sectionSaveRes?.data?.success) {
       if (action?.payload?.refreshToc) {
-        yield put({
-          type: 'GET_PROTOCOL_TOC_DATA',
-          payload: {
-            docId: action?.payload?.docId,
-            tocFlag: 1,
-            index: action?.payload?.index,
-          },
-        });
-      } else {
-        yield put(updateSectionResp({ response: sectionSaveRes.data }));
-        toast.success('Section content updated successfully');
+        yield put(
+          updateSectionHeader({
+            linkId,
+            content: reqBody.filter((x) => x.link_level === '1'),
+          }),
+        );
       }
+      yield put(updateSectionResp({ response: sectionSaveRes.data }));
+      toast.success('Section content updated successfully');
       yield put(setWorkFlowSubmitButton(true));
     } else {
       // eslint-disable-next-line
       if (action?.payload?.refreshToc) {
-        yield put({
-          type: 'GET_PROTOCOL_TOC_DATA',
-          payload: {
-            docId: action?.payload?.docId,
-            tocFlag: 1,
-          },
-        });
-      } else {
         yield put(
-          updateSectionResp({ response: sectionSaveRes.data, error: true }),
+          updateSectionHeader({
+            linkId,
+            content: reqBody.filter((x) => x.link_level === '1'),
+          }),
         );
-        toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
       }
+      yield put(
+        updateSectionResp({ response: sectionSaveRes.data, error: true }),
+      );
+      toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
     }
   } catch (error) {
     updateSectionResp({ response: null, error: true });
@@ -432,8 +426,9 @@ export function* getProtocolTocDataResult(action) {
           success: false,
           data: [],
           errorMsg:
-            result?.err?.data?.message ||
-            'This document is not available in our database',
+            result?.err?.status === 500
+              ? 'Digitization in progress'
+              : 'This document is not available in our database',
         }),
       );
     }

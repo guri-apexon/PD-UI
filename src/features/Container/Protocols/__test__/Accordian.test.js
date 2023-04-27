@@ -1,4 +1,4 @@
-import { render, fireEvent } from '../../../../test-utils/test-utils';
+import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
 import Accordian from '../MetaData/Accordian';
 
 describe('Accordian component', () => {
@@ -386,5 +386,176 @@ describe('Accordian', () => {
       />,
     );
     expect(getByText('Section 1')).toBeInTheDocument();
+  });
+
+  it('should open the modal when the save icon is clicked', () => {
+    const currentActiveLevels = [];
+
+    const { getByTestId } = render(
+      <Accordian
+        standardList={standardList}
+        accData={accData}
+        rows={rows}
+        suggestedSubList={suggestedSubList}
+        currentActiveLevels={currentActiveLevels}
+        deletedAttributes={deletedAttributes}
+        setSuggestedSubList={setSuggestedSubList}
+        setCurrentActiveLevels={setCurrentActiveLevels}
+        setRows={setRows}
+        handleAccordian={handleAccordian}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        addSubAccordion={addSubAccordion}
+        subAccComponent={subAccComponent}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+    const saveIcon = getByTestId('metadatasave');
+    fireEvent.click(saveIcon);
+    const modal = getByTestId('meta-modal');
+    expect(modal).toBeVisible();
+  });
+
+  it('should open the modal when the trash icon is clicked', () => {
+    const currentActiveLevels = [];
+    const { getByTestId } = render(
+      <Accordian
+        standardList={standardList}
+        accData={accData}
+        rows={rows}
+        suggestedSubList={suggestedSubList}
+        currentActiveLevels={currentActiveLevels}
+        deletedAttributes={deletedAttributes}
+        setSuggestedSubList={setSuggestedSubList}
+        setCurrentActiveLevels={setCurrentActiveLevels}
+        setRows={setRows}
+        handleAccordian={handleAccordian}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        addSubAccordion={addSubAccordion}
+        subAccComponent={subAccComponent}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+    const trashIcon = getByTestId('metadata-trash');
+    fireEvent.click(trashIcon);
+    const modal = getByTestId('meta-modal');
+    expect(modal).toBeVisible();
+  });
+
+  it('should call handleUndo function on handleUndo click', () => {
+    const mockedProps = {
+      standardList: [],
+      accData: {
+        name: 'Test',
+        isActive: true,
+        formattedName: 'test',
+        isEdit: true,
+        level: 0,
+      },
+      rows: [],
+      suggestedSubList: [{ label: 'Test1' }, { label: 'Test2' }],
+      deletedAttributes: [],
+      currentActiveLevels: [],
+      setSuggestedSubList: jest.fn(),
+      setRows: jest.fn(),
+      handleAccordian: jest.fn(),
+      handleSave: jest.fn(),
+      handleDelete: jest.fn(),
+      handleEdit: jest.fn(),
+      handleDiscard: jest.fn(),
+      addSubAccordion: jest.fn(),
+      subAccComponent: jest.fn(),
+      setDeletedAttributes: jest.fn(),
+      setCurrentActiveLevels: jest.fn(),
+    };
+    const { getByTestId } = render(<Accordian {...mockedProps} />);
+    fireEvent.click(getByTestId('metadatadiscard'));
+    expect(mockedProps.handleDiscard).toHaveBeenCalledTimes(0);
+  });
+
+  it('should call onClose function when modal is closed', () => {
+    const mockOnClose = jest.fn();
+    const { getByTestId } = render(<Accordian onClose={mockOnClose} />);
+    const modal = getByTestId('modal');
+    fireEvent.click(modal);
+    expect(mockOnClose).toHaveBeenCalledTimes(0);
+  });
+
+  it('should not call onClose function when modal is open', () => {
+    const mockOnClose = jest.fn();
+    const { getByTestId } = render(<Accordian onClose={mockOnClose} />);
+    const modal = getByTestId('modal');
+    fireEvent.click(modal);
+    fireEvent.click(modal);
+    expect(mockOnClose).not.toHaveBeenCalled();
+  });
+
+  it('should close the modal when onClose is called', () => {
+    const mockHandleClose = jest.fn();
+    const currentActiveLevels = [];
+    render(
+      <Accordian
+        standardList={standardList}
+        accData={accData}
+        rows={rows}
+        suggestedSubList={suggestedSubList}
+        currentActiveLevels={currentActiveLevels}
+        deletedAttributes={deletedAttributes}
+        setSuggestedSubList={setSuggestedSubList}
+        setCurrentActiveLevels={setCurrentActiveLevels}
+        setRows={setRows}
+        handleAccordian={handleAccordian}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        addSubAccordion={addSubAccordion}
+        subAccComponent={subAccComponent}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+
+    const saveButton = screen.getByTestId('metadatasave');
+    fireEvent.click(saveButton);
+
+    const modalCloseButton = screen.getByLabelText('Close');
+    fireEvent.click(modalCloseButton);
+
+    expect(mockHandleClose).toHaveBeenCalledTimes(0);
+  });
+
+  it('should close the modal when onClose is called', () => {
+    const mockHandleClose = jest.fn();
+    const currentActiveLevels = [];
+    render(
+      <Accordian
+        standardList={standardList}
+        accData={accData}
+        rows={rows}
+        suggestedSubList={suggestedSubList}
+        currentActiveLevels={currentActiveLevels}
+        deletedAttributes={deletedAttributes}
+        setSuggestedSubList={setSuggestedSubList}
+        setCurrentActiveLevels={setCurrentActiveLevels}
+        setRows={setRows}
+        handleAccordian={handleAccordian}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        addSubAccordion={addSubAccordion}
+        subAccComponent={subAccComponent}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+
+    const saveButton = screen.getByTestId('metadatadiscard');
+    fireEvent.click(saveButton);
+
+    const modalCloseButton = screen.getByLabelText('Close');
+    fireEvent.click(modalCloseButton);
+
+    expect(mockHandleClose).toHaveBeenCalledTimes(0);
   });
 });

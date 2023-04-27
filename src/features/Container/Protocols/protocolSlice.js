@@ -226,6 +226,13 @@ export const protocolSlice = createSlice({
     resetProtocolTocData: (state) => {
       state.protocolTocData = [];
     },
+    updateSectionHeader: (state, action) => {
+      const index = state.protocolTocData.data.findIndex(
+        (x) => x.link_id === action.payload.linkId,
+      );
+      state.protocolTocData.data[index].source_file_section =
+        action.payload.content[0].link_text;
+    },
   },
 });
 
@@ -266,6 +273,7 @@ export const {
   resetProtocolTocData,
   setActiveTOC,
   setDipaDataLoader,
+  updateSectionHeader,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
