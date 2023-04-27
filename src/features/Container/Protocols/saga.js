@@ -797,14 +797,14 @@ export function* LabData(action) {
     payload: { docId },
   } = action;
 
-  const config = {
-    url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
-    method: 'GET',
-  };
+  // const config = {
+  //   url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
+  //   method: 'GET',
+  // };
   yield put(setLabDataLoader(true));
   try {
-    const response = yield call(httpCall, config);
-    yield put(getLabData(response.data));
+    // const response = yield call(httpCall, config);
+    yield put(getLabData({ data: [] }));
     yield put(setLabDataLoader(false));
   } catch (error) {
     yield put(getLabData({ data: [] }));
@@ -849,11 +849,11 @@ export function* handleCreateLabDataTable(action) {
   };
   try {
     const response = yield call(httpCall, config);
-    yield put(setLabDataCreated(response.data));
+    yield put(setLabDataCreated({ data: response.data, status: true }));
     yield put(setLabDataLoader(false));
   } catch (err) {
     toast.error('Table creation failed');
-    yield put(setLabDataCreated(null));
+    yield put(setLabDataCreated({ data: [], status: true }));
     yield put(setLabDataLoader(false));
   }
 }

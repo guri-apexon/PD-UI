@@ -247,8 +247,9 @@ function LabData({ docId }) {
 
   const onRowEdit = (id) => {
     if (Object.keys(editedRow).length === 0) {
-      setEditedRow(rowData?.find((row) => row.id === id));
-      globalEditedRow = rowData?.find((row) => row.id === id);
+      const obj = rowData?.find((row) => row.id === id);
+      setEditedRow(obj);
+      globalEditedRow = obj;
       setRowId(id);
     }
   };
@@ -342,16 +343,7 @@ function LabData({ docId }) {
   };
 
   const handleAdd = (id) => {
-    if (rowData.length === 0) {
-      const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
-      addRow.doc_id = docId;
-      addRow.table_roi_id = labDataSelector.createdTable.table_roi_id;
-      addRow.id = uuidv4();
-      addRow.isSaved = false;
-      setRowData([addRow]);
-      setEditedRow(addRow);
-      globalEditedRow = { ...addRow };
-    } else if (Object.keys(editedRow).length === 0) {
+    if (Object.keys(editedRow).length === 0) {
       const newArr = [...rowData];
       const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
       addRow.doc_id = docId;
@@ -382,8 +374,12 @@ function LabData({ docId }) {
       dispatch(setLabDataSuccess(false));
     }
 
-    if (labData.createdTable) {
-      handleAdd();
+    if (labData.created && labData.data.length > 0) {
+      const obj = labData.data[0];
+      obj.isSaved = false;
+      setEditedRow(obj);
+      globalEditedRow = obj;
+      setRowId(obj.id);
     }
     // eslint-disable-next-line
   }, [labData]);
