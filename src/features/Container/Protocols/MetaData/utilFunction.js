@@ -79,6 +79,7 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
 export const mergeSummary = (data) => {
   let finalResult = cloneDeep(data);
   const objectKeys = data ? Object?.keys(data) : [];
+
   objectKeys.forEach((key) => {
     if (key === 'summary_extended' && finalResult?.summary_extended) {
       // eslint-disable-next-line
@@ -100,6 +101,7 @@ export const mergeSummary = (data) => {
           id: index + 1,
         };
       });
+
       finalResult = {
         ...finalResult,
         summary: {
@@ -107,7 +109,7 @@ export const mergeSummary = (data) => {
           audit_info:
             // eslint-disable-next-line
             findLatestTimestamp(mergedMetaData) || {},
-          _meta_data: mergedMetaData,
+          _meta_data: mergedMetaData.sort((a, b) => a.id - b.id),
           // eslint-disable-next-line
           _childs: finalResult.summary_extended._childs
             ? [
