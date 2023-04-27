@@ -4,7 +4,13 @@ import { toast } from 'react-toastify';
 
 import { httpCall, BASE_URL_8000 } from '../../../utils/api';
 import { iconStatus } from '../../../utils/utilFunction';
-import { getProtocols, setError, getLoader, setTableLoader } from './qcSlice';
+import {
+  getProtocols,
+  setError,
+  getLoader,
+  setTableLoader,
+  setNotification,
+} from './qcSlice';
 import { getProcotoclToc } from '../Protocols/protocolSlice';
 
 function* getState() {
@@ -48,13 +54,6 @@ export function* qcProtocolsData() {
   }
 }
 
-function wait() {
-  /* istanbul ignore next */
-  setTimeout(function () {
-    window.location.href = '/qc';
-  }, 3000);
-}
-
 export function* qcApprove(action) {
   const user = yield getState();
   const url = `${BASE_URL_8000}/api/protocol_metadata/qc_approve?aidoc_id=${
@@ -69,7 +68,6 @@ export function* qcApprove(action) {
     const data = yield call(httpCall, config);
     if (data.success) {
       toast.info('Approved Successfully');
-      wait();
     } else {
       toast.error('Error While Approving');
     }
@@ -242,12 +240,20 @@ export function* uploadQc(action) {
   }
 }
 
+export function* setNotificationData(action) {
+  const {
+    payload: { aidocId, protocol },
+  } = action;
+  yield put(setNotification({ id: aidocId, protocol }));
+}
+
 export function* watchqc() {
   yield takeEvery('GET_QC_PROTOCOL_TABLE_SAGA', qcProtocolsData);
   yield takeEvery('APPROVE_QC_SAGA', qcApprove);
   yield takeEvery('SEND_QC2_APPROVAL_SAGA', sendQc2Approval);
   yield takeEvery('REJECT_QC2_SAGA', qc2Reject);
   yield takeEvery('UPLOAD_PROTOCOL_QC_SAGA', uploadQc);
+  yield takeEvery('NOTIFICATION_QC_SAGA', setNotificationData);
 }
 
 export default function* qcSaga() {

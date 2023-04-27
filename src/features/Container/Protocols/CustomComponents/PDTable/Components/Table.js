@@ -83,7 +83,7 @@ function DisplayTable({
                   data-testid="table-row"
                   className="pd-table-row"
                   id={`rowID-${rowIndex}`}
-                  draggable
+                  draggable={edit}
                   onDragStart={handleDrag}
                   onDrop={handleDrop}
                   onDragOver={allowDrop}
@@ -99,7 +99,7 @@ function DisplayTable({
                         <div
                           key={uuidv4()}
                           id={`columnID-${rowIndex}-${colIndex}`}
-                          draggable
+                          draggable={edit}
                           onDragStart={handleDrag}
                           onDrop={handleDrop}
                           onDragOver={allowDrop}

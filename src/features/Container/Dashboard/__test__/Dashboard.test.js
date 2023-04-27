@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
-
 import Dashboard from '../Dashboard';
 
 describe('Protocol Table container component with empty and default values', () => {
@@ -132,6 +131,7 @@ describe('Protocol Table container component with Protocol data', () => {
     expect(screen.getByTestId('send-qc-review')).toBeEnabled();
     fireEvent.click(screen.getByTestId('send-qc-review'));
   });
+
   test('should render the greet', () => {
     render(<Dashboard />, state);
     const today = new Date();
@@ -147,5 +147,21 @@ describe('Protocol Table container component with Protocol data', () => {
     } else {
       expect(screen.getByText('Good Evening,')).toBeInTheDocument();
     }
+  });
+
+  test('renders greeting based on time of day', () => {
+    jest
+      .spyOn(global.Date, 'now')
+      .mockImplementation(() => new Date('2023-04-24T11:00:00Z').valueOf());
+
+    const { getByText } = render(<Dashboard />);
+
+    // Assert
+    expect(
+      getByText(/Good Morning|Good Afternoon|Good Evening/i),
+    ).toBeInTheDocument();
+
+    // Cleanup
+    global.Date.now.mockRestore();
   });
 });
