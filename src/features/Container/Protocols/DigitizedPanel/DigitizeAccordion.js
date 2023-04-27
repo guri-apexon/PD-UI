@@ -506,7 +506,7 @@ function DigitizeAccordion({
         payload: {
           reqBody,
           docId: item?.doc_id,
-          refreshToc: checkIfMainHeader.length,
+          headerEdited: checkIfMainHeader.length,
         },
       });
       dispatch({

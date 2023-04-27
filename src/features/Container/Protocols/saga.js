@@ -244,6 +244,9 @@ export function* updateSectionData(action) {
     const {
       payload: { reqBody, docId },
     } = action;
+    if (action?.payload?.refreshToc) {
+      yield put(getProtocolTocData({}));
+    }
     const userIdPrefix = yield getState(true);
     const UserId = yield getState();
     const linkId = reqBody[0].link_id;
@@ -264,30 +267,52 @@ export function* updateSectionData(action) {
 
     if (sectionSaveRes?.data?.success) {
       if (action?.payload?.refreshToc) {
-        yield put(
-          updateSectionHeader({
-            linkId,
-            content: reqBody.filter((x) => x.link_level === '1'),
-          }),
-        );
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+            index: action?.payload?.index,
+          },
+        });
+      } else {
+        if (action?.payload?.headerEdited) {
+          yield put(
+            updateSectionHeader({
+              linkId,
+              content: reqBody.filter((x) => x.link_level === '1'),
+            }),
+          );
+        }
+        yield put(updateSectionResp({ response: sectionSaveRes.data }));
+        toast.success('Section content updated successfully');
       }
-      yield put(updateSectionResp({ response: sectionSaveRes.data }));
-      toast.success('Section content updated successfully');
       yield put(setWorkFlowSubmitButton(true));
     } else {
       // eslint-disable-next-line
       if (action?.payload?.refreshToc) {
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+            index: action?.payload?.index,
+          },
+        });
+      } else {
+        if (action?.payload?.headerEdited) {
+          yield put(
+            updateSectionHeader({
+              linkId,
+              content: reqBody.filter((x) => x.link_level === '1'),
+            }),
+          );
+        }
         yield put(
-          updateSectionHeader({
-            linkId,
-            content: reqBody.filter((x) => x.link_level === '1'),
-          }),
+          updateSectionResp({ response: sectionSaveRes.data, error: true }),
         );
+        toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
       }
-      yield put(
-        updateSectionResp({ response: sectionSaveRes.data, error: true }),
-      );
-      toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
     }
   } catch (error) {
     updateSectionResp({ response: null, error: true });
