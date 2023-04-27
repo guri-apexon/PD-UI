@@ -275,6 +275,7 @@ function DigitizeAccordion({
 
   const handleDiscardToc = () => {
     if (showedit && saveEnabled) {
+      dispatch(setActiveTOC([...activeTree, item.link_id]));
       setTocClose(true);
       setShowDiscardConfirm(true);
       handleTocsection();
@@ -445,7 +446,7 @@ function DigitizeAccordion({
       const arr = sectionContent.filter(
         (obj) =>
           obj.type === CONTENT_TYPE.TABLE &&
-          ((obj.isSaved === false && obj.qc_change_type !== '') ||
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
             ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
               [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
                 obj.qc_change_type,
@@ -461,7 +462,7 @@ function DigitizeAccordion({
       const arr = sectionContent.filter(
         (obj) =>
           obj.type === CONTENT_TYPE.IMAGE &&
-          ((obj.isSaved === false && obj.qc_change_type !== '') ||
+          ((obj.isSaved === false && obj.qc_change_type === '') ||
             ((typeof obj.isSaved === 'undefined' || obj.isSaved === false) &&
               [QC_CHANGE_TYPE.ADDED, QC_CHANGE_TYPE.UPDATED].includes(
                 obj.qc_change_type,
@@ -695,6 +696,7 @@ function DigitizeAccordion({
     setAddSectionIndex(sectionIndex);
     setIsModal(true);
   };
+
   const handleSegmentMouseUp = (e, section) => {
     dispatch({
       type: 'SET_ENRICHED_WORD',

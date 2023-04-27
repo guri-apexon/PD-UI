@@ -1,5 +1,9 @@
 import { toast } from 'react-toastify';
-import { scrollToLinkandReference, replaceHtmlTags } from '../utils';
+import {
+  scrollToLinkandReference,
+  replaceHtmlTags,
+  onBeforeUnload,
+} from '../utils';
 
 jest.mock('react-toastify', () => ({
   toast: {
@@ -84,5 +88,53 @@ describe('replaceHtmlTags', () => {
   it('should return the input string if it contains no HTML tags', () => {
     const input = 'Some text';
     expect(replaceHtmlTags(input)).toEqual(input);
+  });
+});
+
+describe('onBeforeUnload', () => {
+  test('adds event listener to document', () => {
+    const updateSectionLock = jest.fn();
+    const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
+
+    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+
+    const cleanup = onBeforeUnload(updateSectionLock);
+
+    expect(addEventListenerSpy).toHaveBeenCalledTimes(1);
+    expect(addEventListenerSpy).toHaveBeenCalledWith(
+      'beforeunload',
+      expect.any(Function),
+    );
+
+    cleanup();
+
+    expect(removeEventListenerSpy).toHaveBeenCalledTimes(1);
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      'beforeunload',
+      expect.any(Function),
+    );
+  });
+
+  test('calls updateSectionLock with true when beforeunload event is fired', () => {
+    const updateSectionLock = jest.fn();
+    onBeforeUnload(updateSectionLock);
+
+    window.dispatchEvent(new Event('beforeunload'));
+
+    expect(updateSectionLock).toHaveBeenCalledTimes(0);
+  });
+
+  test('prevents default action of beforeunload event', () => {
+    const updateSectionLock = jest.fn();
+    const e = new Event('beforeunload');
+    const preventDefaultSpy = jest.spyOn(e, 'preventDefault');
+
+    const cleanup = onBeforeUnload(updateSectionLock);
+
+    document.dispatchEvent(e);
+
+    expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
+
+    cleanup();
   });
 });
