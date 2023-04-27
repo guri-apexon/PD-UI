@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Drag from 'apollo-react-icons/Drag';
 import Button from 'apollo-react/components/Button';
 import Modal from 'apollo-react/components/Modal';
-import Loader from '../../../Components/Loader/Loader';
+import Loader from 'apollo-react/components/Loader';
 import SOA from '../SOA/SOA';
 import {
   protocolSummary,
@@ -13,6 +13,7 @@ import {
   SectionIndex,
   TOCActive,
   protocolTocData,
+  getLoader,
 } from '../protocolSlice';
 import './Digitized.scss';
 import MetaData from '../MetaData/MetaData';
@@ -41,6 +42,7 @@ function DigitalizeCard({
   const summary = useSelector(protocolTocData);
   const protocolAllItems = useSelector(protocolSummary);
   const sectionIndex = useSelector(SectionIndex);
+  const loaderSelector = useSelector(getLoader);
   const [rightValue, setRightValue] = useState(BladeRightValue);
   const [currentActiveCard, setCurrentActiveCard] = useState(null);
   const [sectionSequence, setSectionSequence] = useState(-1);
@@ -190,6 +192,11 @@ function DigitalizeCard({
       }),
     );
   };
+
+  if (loaderSelector) {
+    return <Loader />;
+  }
+
   return (
     <div data-testid="protocol-column-wrapper">
       {[PROTOCOL_RIGHT_MENU.HOME, PROTOCOL_RIGHT_MENU.CLINICAL_TERM].includes(
