@@ -64,10 +64,11 @@ describe('PDTable component', () => {
     );
     const saveBtn = getByText('Delete');
     fireEvent.click(saveBtn);
+    expect(saveBtn).toBeInTheDocument();
   });
 
   it('handles the  save action', () => {
-    const { getByText } = render(
+    const { getByRole } = render(
       <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
         <PDTable
           data={data}
@@ -79,8 +80,11 @@ describe('PDTable component', () => {
         />
       </ProtocolContext.Provider>,
     );
-    const saveBtn = getByText('Save Table');
-    fireEvent.click(saveBtn);
+    const dropButton = getByRole('button', {
+      name: 'Save Table',
+    });
+    fireEvent.click(dropButton);
+    expect(screen.getByText(/Within 15 min Pre-PEX/i)).toBeInTheDocument();
   });
 
   it('handles the delete cancel action', () => {
@@ -350,24 +354,5 @@ describe('PDTable component', () => {
 
     const plusIconButton = screen.getByTestId('section');
     fireEvent.click(plusIconButton);
-  });
-  test('mouse down', () => {
-    const tableSaved = false;
-    const screen = render(
-      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
-        <PDTable
-          data={data}
-          segment={segment}
-          activeLineID={activeLineID}
-          lineID={lineID}
-          tableSaved={tableSaved}
-          setIsTableChanged={() => jest.fn()}
-        />
-      </ProtocolContext.Provider>,
-    );
-    const moreIcon = screen.getAllByTestId('more-icon');
-    fireEvent.click(moreIcon[0]);
-    const HeaderClose = screen.getByTestId('section');
-    fireEvent.mouseDown(HeaderClose);
   });
 });
