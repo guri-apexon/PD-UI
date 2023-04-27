@@ -14,6 +14,8 @@ import Table from 'apollo-react/components/Table';
 import Button from 'apollo-react/components/Button';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import {
   labDataSelector,
   setLabDataSuccess,
@@ -222,6 +224,10 @@ function LabData({ docId }) {
   }, [isEdit, isDiscard, history]);
 
   const handleSave = () => {
+    if (Object.keys(editedRow).length > 0) {
+      toast.error('Please save the row');
+      return;
+    }
     const updatedData = rowData?.filter((value) => value.request_type);
     if (updatedData.length > 0) {
       dispatch({
@@ -242,14 +248,14 @@ function LabData({ docId }) {
       },
     });
     setEditedRow({});
+    globalEditedRow = {};
     setIsEdit(false);
   };
 
   const onRowEdit = (id) => {
     if (Object.keys(editedRow).length === 0) {
-      const obj = rowData?.find((row) => row.id === id);
-      setEditedRow(obj);
-      globalEditedRow = obj;
+      setEditedRow(rowData?.find((row) => row.id === id));
+      globalEditedRow = rowData?.find((row) => row.id === id);
       setRowId(id);
     }
   };
@@ -375,7 +381,7 @@ function LabData({ docId }) {
     }
 
     if (labData.created && labData.data.length > 0) {
-      const obj = labData.data[0];
+      const obj = { ...labData.data[0] };
       obj.isSaved = false;
       setEditedRow(obj);
       globalEditedRow = obj;
@@ -396,6 +402,7 @@ function LabData({ docId }) {
       );
     }
   };
+
   const onDiscardClick = () => {
     if (requestedRoute !== '') {
       setShowDiscardConfirm(false);

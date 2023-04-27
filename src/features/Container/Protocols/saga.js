@@ -797,14 +797,14 @@ export function* LabData(action) {
     payload: { docId },
   } = action;
 
-  // const config = {
-  //   url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
-  //   method: 'GET',
-  // };
+  const config = {
+    url: `${BASE_URL_8000}${Apis.LAB_DATA}/?aidoc_id=${docId}`,
+    method: 'GET',
+  };
   yield put(setLabDataLoader(true));
   try {
-    // const response = yield call(httpCall, config);
-    yield put(getLabData({ data: [] }));
+    const response = yield call(httpCall, config);
+    yield put(getLabData(response.data));
     yield put(setLabDataLoader(false));
   } catch (error) {
     yield put(getLabData({ data: [] }));
