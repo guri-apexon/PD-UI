@@ -832,7 +832,9 @@ function DigitizeAccordion({
 
         <AccordionDetails
           onScroll={(e) => handleEnrichedClick(e)}
-          className="section-single-content"
+          className={`section-single-content ${
+            !primaryRole ? 'no-padding' : ''
+          }`}
           onKeyDown={() => {
             if (!saveEnabled) {
               dispatch(setSaveEnabled(true));
@@ -991,9 +993,9 @@ function DigitizeAccordion({
                     </div>
                   </div>
                 ))}
-              <div className="menu-wrapper">
-                {primaryRole && getActionMenu()}
-              </div>
+              {primaryRole && (
+                <div className="menu-wrapper">{getActionMenu()}</div>
+              )}
             </>
           )}
         </AccordionDetails>
