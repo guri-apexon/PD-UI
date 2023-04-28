@@ -13,6 +13,7 @@ function Dropdown({
   type,
   disabled,
   list,
+  className = '',
 }) {
   const [showList, setShowList] = useState(false);
   const wrapperRef = useRef(null);
@@ -43,7 +44,7 @@ function Dropdown({
   }, [wrapperRef]);
 
   return (
-    <div className="dropdown">
+    <div className={`dropdown ${className}`}>
       <button
         disabled={disabled}
         type="button"
@@ -98,4 +99,5 @@ Dropdown.propTypes = {
   type: PropTypes.isRequired,
   disabled: PropTypes.isRequired,
   list: PropTypes.isRequired,
+  className: PropTypes.isRequired,
 };
