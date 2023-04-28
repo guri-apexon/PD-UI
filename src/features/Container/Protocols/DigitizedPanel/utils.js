@@ -49,10 +49,12 @@ export const onBeforeUnload = (updateSectionLock) => {
 };
 
 export const renderAuditInfo = (item, names) => {
+  const itemVal = item?.audit_info[names.keyName] || '-----';
+
   // eslint-disable-next-line
   return names?.keyName === 'last_reviewed_date'
-    ? moment(item?.audit_info[names.keyName] || '-----', 'DD-MM-YYYY h:m:s A')
+    ? moment(itemVal, 'DD-MM-YYYY h:m:s A')
         .local()
         .format('DD-MMM-YYYY HH:mm A')
-    : item?.audit_info[names.keyName] || '-----';
+    : itemVal;
 };
