@@ -842,9 +842,7 @@ function DigitizeAccordion({
 
         <AccordionDetails
           onScroll={(e) => handleEnrichedClick(e)}
-          className={`section-single-content ${
-            !primaryRole ? 'no-padding' : ''
-          }`}
+          className={`section-single-content ${!primaryRole && 'no-padding'}`}
           onKeyDown={() => {
             if (!saveEnabled) {
               dispatch(setSaveEnabled(true));
