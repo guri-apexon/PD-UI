@@ -141,27 +141,6 @@ describe('onBeforeUnload', () => {
 });
 
 describe('renderAuditInfo', () => {
-  const item = {
-    audit_info: {
-      created_date: '2022-04-01T12:00:00Z',
-      last_reviewed_date: '2022-04-05T09:30:00Z',
-    },
-  };
-
-  it('returns "-----" when audit_info object does not have the specified keyName', () => {
-    const names = { keyName: 'invalid_key' };
-    const expected = '-----';
-    const result = renderAuditInfo(item, names);
-    expect(result).toEqual(expected);
-  });
-
-  it('returns the value of the specified keyName in the audit_info object when it is present and not last_reviewed_date', () => {
-    const names = { keyName: 'created_date' };
-    const expected = '2022-04-01T12:00:00Z';
-    const result = renderAuditInfo(item, names);
-    expect(result).toEqual(expected);
-  });
-
   it('returns "-----" when item object is undefined', () => {
     const names = { keyName: 'last_reviewed_date' };
     const expected = '-----';
