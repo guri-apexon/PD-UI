@@ -245,7 +245,7 @@ export function* updateSectionData(action) {
       payload: { reqBody, docId },
     } = action;
     if (action?.payload?.refreshToc) {
-      yield put(getProtocolTocData({}));
+      yield put(setLoader(true));
     }
     const userIdPrefix = yield getState(true);
     const UserId = yield getState();
@@ -444,6 +444,7 @@ export function* getProtocolTocDataResult(action) {
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
       yield put(getSectionIndex(action.payload.index));
+      yield put(setLoader(false));
     } else {
       // eslint-disable-next-line no-lonely-if
       yield put(

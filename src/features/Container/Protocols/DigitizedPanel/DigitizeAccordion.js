@@ -197,6 +197,16 @@ function DigitizeAccordion({
     setExpanded(!expanded);
     handleTocsection(true);
     handleLinkId(item.link_id);
+    dispatch({
+      type: 'DISCARD_DETAILS',
+      payload: {
+        isEdited: false,
+        isDiscarded: false,
+        protocolTab: -1,
+        bladeRight: {},
+        labEdited: false,
+      },
+    });
   };
 
   const fetchContent = () => {
