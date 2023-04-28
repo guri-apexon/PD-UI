@@ -221,8 +221,8 @@ export function* postAddProtocol(postData) {
   }
 }
 
-export function* toggleAddProtocol(data) {
-  yield put(setAddProtocolModal(data.payload));
+export function* toggleAddProtocol(action) {
+  yield put(setAddProtocolModal(action.payload));
 }
 export function* resetErrorAddProtocol() {
   yield put(setAddprotocolError(''));
