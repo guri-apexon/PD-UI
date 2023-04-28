@@ -181,7 +181,12 @@ function ActionMenu({
                     >
                       <b>{names?.title}</b>
 
-                      <span>{renderAuditInfo(item, names)}</span>
+                      <span>
+                        {renderAuditInfo(
+                          item?.audit_info[names.keyName],
+                          names?.keyName,
+                        )}
+                      </span>
                     </Typography>
                   );
                 })}
