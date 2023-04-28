@@ -16,7 +16,7 @@ function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
     } else {
       const headerObj = {
         ...headerLevel1,
-        link_text: <h1> {sectionName}</h1>,
+        link_text: `<h1> ${sectionName}</h1>`,
       };
 
       if (headerList[index]) {
