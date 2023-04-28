@@ -3,6 +3,7 @@ import {
   scrollToLinkandReference,
   replaceHtmlTags,
   onBeforeUnload,
+  renderAuditInfo,
 } from '../utils';
 
 jest.mock('react-toastify', () => ({
@@ -136,5 +137,14 @@ describe('onBeforeUnload', () => {
     expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
 
     cleanup();
+  });
+});
+
+describe('renderAuditInfo', () => {
+  it('returns "-----" when item object is undefined', () => {
+    const names = { keyName: 'last_reviewed_date' };
+    const expected = '-----';
+    const result = renderAuditInfo(undefined, names);
+    expect(result).toEqual(expected);
   });
 });
