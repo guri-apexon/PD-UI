@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import { useState, useEffect } from 'react';
 import Stethoscope from 'apollo-react-icons/Stethoscope';
 import Pencil from 'apollo-react-icons/Pencil';
@@ -13,6 +11,7 @@ import PropTypes from 'prop-types';
 import './ActionMenu.scss';
 import Typography from 'apollo-react/components/Typography';
 import { AUDIT_LIST } from '../Constant/Constants';
+import { renderAuditInfo } from './utils';
 
 function ActionMenu({
   showedit,
@@ -58,9 +57,6 @@ function ActionMenu({
     setLinkReferenceToggle(!linkReferencetoggle);
     setShowLink(linkReferencetoggle);
   };
-
-  const timeStamp = (time) =>
-    moment(time, 'DD-MM-YYYY h:m:s A').local().format('DD-MMM-YYYY HH:mm A');
 
   useEffect(() => {
     if (item) {
@@ -185,13 +181,7 @@ function ActionMenu({
                     >
                       <b>{names?.title}</b>
 
-                      <span>
-                        {names?.title === 'Last Edited Date'
-                          ? timeStamp(
-                              item?.audit_info[names.keyName] || '-----',
-                            )
-                          : item?.audit_info[names.keyName] || '-----'}
-                      </span>
+                      <span>{renderAuditInfo(item, names)}</span>
                     </Typography>
                   );
                 })}
