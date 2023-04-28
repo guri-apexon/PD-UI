@@ -244,6 +244,9 @@ export function* updateSectionData(action) {
     const {
       payload: { reqBody, docId },
     } = action;
+    if (action?.payload?.refreshToc) {
+      yield put(setLoader(true));
+    }
     const userIdPrefix = yield getState(true);
     const UserId = yield getState();
     const linkId = reqBody[0].link_id;
@@ -264,12 +267,25 @@ export function* updateSectionData(action) {
 
     if (sectionSaveRes?.data?.success) {
       if (action?.payload?.refreshToc) {
-        yield put(
-          updateSectionHeader({
-            linkId,
-            content: reqBody.filter((x) => x.link_level === '1'),
-          }),
-        );
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+            index: action?.payload?.index,
+          },
+        });
+      } else {
+        if (action?.payload?.headerEdited) {
+          yield put(
+            updateSectionHeader({
+              linkId,
+              content: reqBody.filter((x) => x.link_level === '1'),
+            }),
+          );
+        }
+        yield put(updateSectionResp({ response: sectionSaveRes.data }));
+        toast.success('Section content updated successfully');
       }
       yield put(updateSectionResp({ response: sectionSaveRes.data }));
       toast.success('Section content updated successfully');
@@ -277,6 +293,23 @@ export function* updateSectionData(action) {
     } else {
       // eslint-disable-next-line
       if (action?.payload?.refreshToc) {
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+            index: action?.payload?.index,
+          },
+        });
+      } else {
+        if (action?.payload?.headerEdited) {
+          yield put(
+            updateSectionHeader({
+              linkId,
+              content: reqBody.filter((x) => x.link_level === '1'),
+            }),
+          );
+        }
         yield put(
           updateSectionHeader({
             linkId,
@@ -419,6 +452,7 @@ export function* getProtocolTocDataResult(action) {
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
       yield put(getSectionIndex(action.payload.index));
+      yield put(setLoader(false));
     } else {
       // eslint-disable-next-line no-lonely-if
       yield put(

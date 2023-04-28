@@ -10,7 +10,6 @@ import Pencil from 'apollo-react-icons/Pencil';
 import { useProtContext } from '../ProtocolContext';
 
 import { toBase64 } from '../../../../utils/utilFunction';
-import { QC_CHANGE_TYPE } from '../../../../AppConstant/AppConstant';
 import { setSaveEnabled } from '../protocolSlice';
 import constant from './constants';
 import './ImageUploader.scss';
