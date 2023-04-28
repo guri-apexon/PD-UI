@@ -22,9 +22,9 @@ import {
   setEnrichedAPI,
   getSOAData,
   soaUpdateDetails,
-  getDipaViewDataById,
-  getAllDipaViewDataByCategory,
-  updateDipaData,
+  getDerivedDataById,
+  getAllDerivedDataByCategory,
+  updateDerivedData,
   LabData,
   updateSectionLockDetails,
   getSectionLockDetails,
@@ -784,7 +784,7 @@ describe('Protocol Saga', () => {
     expect(undefined).toBeUndefined();
   });
 
-  test('getDipaViewDataById should be Success', async () => {
+  test('getDerivedDataById should be Success', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
@@ -801,14 +801,14 @@ describe('Protocol Saga', () => {
         },
       }),
     };
-    await runSaga(fakeStore, getDipaViewDataById, {
+    await runSaga(fakeStore, getDerivedDataById, {
       payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
       type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
 
-  test('getDipaViewDataById should be Fails', async () => {
+  test('getDerivedDataById should be Fails', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,
@@ -825,14 +825,14 @@ describe('Protocol Saga', () => {
         },
       }),
     };
-    await runSaga(fakeStore, getDipaViewDataById, {
+    await runSaga(fakeStore, getDerivedDataById, {
       payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
       type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
 
-  test('getAllDipaViewDataByCategory should be Success', async () => {
+  test('getAllDerivedDataByCategory should be Success', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
@@ -849,14 +849,14 @@ describe('Protocol Saga', () => {
         },
       }),
     };
-    await runSaga(fakeStore, getAllDipaViewDataByCategory, {
+    await runSaga(fakeStore, getAllDerivedDataByCategory, {
       payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
       type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
 
-  test('getAllDipaViewDataByCategory should be Fails', async () => {
+  test('getAllDerivedDataByCategory should be Fails', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,
@@ -873,14 +873,14 @@ describe('Protocol Saga', () => {
         },
       }),
     };
-    await runSaga(fakeStore, getAllDipaViewDataByCategory, {
+    await runSaga(fakeStore, getAllDerivedDataByCategory, {
       payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
       type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
 
-  test('updateDipaData should be Success', async () => {
+  test('updateDerivedData should be Success', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: true,
@@ -897,14 +897,14 @@ describe('Protocol Saga', () => {
         },
       }),
     };
-    await runSaga(fakeStore, updateDipaData, {
+    await runSaga(fakeStore, updateDerivedData, {
       payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
       type: '',
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
-  test('updateDipaData should be Fails', async () => {
+  test('updateDerivedData should be Fails', async () => {
     const dispatchedActions = [];
     const mockOutput = {
       success: false,
@@ -921,7 +921,7 @@ describe('Protocol Saga', () => {
         },
       }),
     };
-    await runSaga(fakeStore, updateDipaData, {
+    await runSaga(fakeStore, updateDerivedData, {
       payload: '51c63c56-d3f0-4d8a-8a1c-c5bb39f802dc',
       type: '',
     }).toPromise();

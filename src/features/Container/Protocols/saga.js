@@ -311,8 +311,8 @@ export function* updateSectionData(action) {
         yield put(
           updateSectionResp({ response: sectionSaveRes.data, error: true }),
         );
-        toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
       }
+      toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
     }
   } catch (error) {
     updateSectionResp({ response: null, error: true });
@@ -861,7 +861,7 @@ export function* UpdateLabData(action) {
   }
 }
 
-export function* getDipaViewDataById(action) {
+export function* getDerivedDataById(action) {
   const {
     payload: { docId },
   } = action;
@@ -874,24 +874,28 @@ export function* getDipaViewDataById(action) {
   };
 
   const DipaView = yield call(httpCall, config);
+  try {
+    if (DipaView.success) {
+      yield put(getDipaViewData(DipaView));
+    } else {
+      yield put(
+        getDipaViewData({
+          success: false,
+          data: {
+            dipa_resource: [],
+          },
+        }),
+      );
+      toast.error(DipaView.message || 'Something Went Wrong');
+    }
 
-  if (DipaView.success) {
-    yield put(getDipaViewData(DipaView));
-  } else {
-    yield put(
-      getDipaViewData({
-        success: false,
-        data: {
-          dipa_resource: [],
-        },
-      }),
-    );
+    yield call(httpCall, config);
+  } catch (error) {
+    toast.error(error);
   }
-
-  yield call(httpCall, config);
 }
 
-export function* getAllDipaViewDataByCategory(action) {
+export function* getAllDerivedDataByCategory(action) {
   const {
     payload: { data },
   } = action;
@@ -906,13 +910,15 @@ export function* getAllDipaViewDataByCategory(action) {
   yield put(setDipaDataLoader(true));
 
   const DipaView = yield call(httpCall, config);
-
-  if (DipaView.success) {
-    yield put(getAllDipaViewData(DipaView));
-    yield put(setDipaDataLoader(false));
-  } else {
+  try {
+    if (DipaView.success) {
+      yield put(getAllDipaViewData(DipaView));
+      yield put(setDipaDataLoader(false));
+    }
+  } catch (error) {
     yield put(getAllDipaViewData({ success: false, data: [] }));
     yield put(setDipaDataLoader(false));
+    toast.error(DipaView.message || 'Something Went Wrong');
   }
 
   yield call(httpCall, config);
@@ -928,7 +934,7 @@ export function* resetAllDipaViewDataByCategory() {
     }),
   );
 }
-export function* updateDipaData(action) {
+export function* updateDerivedData(action) {
   const {
     payload: { data },
   } = action;
@@ -940,21 +946,22 @@ export function* updateDipaData(action) {
     headers: { 'Content-Type': 'application/json' },
   };
   const DipaData = yield call(httpCall, config);
-
-  if (DipaData?.success) {
-    toast.info(' Data Updated');
-    yield put({
-      type: 'GET_ALL_DIPA_VIEW',
-      payload: {
-        data: {
-          category: data?.category,
-          doc_id: data?.doc_id,
-          id: data?.id,
+  try {
+    if (DipaData?.success) {
+      toast.info(' Data Updated');
+      yield put({
+        type: 'GET_ALL_DIPA_VIEW',
+        payload: {
+          data: {
+            category: data?.category,
+            doc_id: data?.doc_id,
+            id: data?.id,
+          },
         },
-      },
-    });
-  } else {
-    toast.error('Error While Updation');
+      });
+    }
+  } catch (error) {
+    toast.error(DipaData.data.message || 'Error While Updation');
   }
 }
 
@@ -1025,9 +1032,9 @@ function* watchProtocolViews() {
     updateAndSetSectionLockDetails,
   );
   yield takeLatest('RESET_QC_DATA', setResetQCData);
-  yield takeEvery('GET_DERIVED_SECTIONS', getDipaViewDataById);
-  yield takeEvery('GET_ALL_DIPA_VIEW', getAllDipaViewDataByCategory);
-  yield takeEvery('UPDATE_DIPA_VIEW', updateDipaData);
+  yield takeEvery('GET_DERIVED_SECTIONS', getDerivedDataById);
+  yield takeEvery('GET_ALL_DIPA_VIEW', getAllDerivedDataByCategory);
+  yield takeEvery('UPDATE_DIPA_VIEW', updateDerivedData);
   yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
   yield takeEvery('GET_DOC_SECTION_LOCK', getDocumentSectionLock);
   yield takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory);
