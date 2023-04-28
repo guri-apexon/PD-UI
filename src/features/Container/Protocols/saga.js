@@ -287,6 +287,8 @@ export function* updateSectionData(action) {
         yield put(updateSectionResp({ response: sectionSaveRes.data }));
         toast.success('Section content updated successfully');
       }
+      yield put(updateSectionResp({ response: sectionSaveRes.data }));
+      toast.success('Section content updated successfully');
       yield put(setWorkFlowSubmitButton(true));
     } else {
       // eslint-disable-next-line
@@ -309,10 +311,16 @@ export function* updateSectionData(action) {
           );
         }
         yield put(
-          updateSectionResp({ response: sectionSaveRes.data, error: true }),
+          updateSectionHeader({
+            linkId,
+            content: reqBody.filter((x) => x.link_level === '1'),
+          }),
         );
-        toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
       }
+      yield put(
+        updateSectionResp({ response: sectionSaveRes.data, error: true }),
+      );
+      toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
     }
   } catch (error) {
     updateSectionResp({ response: null, error: true });
