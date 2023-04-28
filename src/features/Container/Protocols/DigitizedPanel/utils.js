@@ -50,9 +50,7 @@ export const onBeforeUnload = (updateSectionLock) => {
 
 export const renderAuditInfo = (itemVal, keyName) => {
   if (keyName === 'last_reviewed_date' && itemVal) {
-    itemVal = moment(itemVal, 'DD-MM-YYYY h:m:s A')
-      .local()
-      .format('DD-MMM-YYYY HH:mm A');
+    itemVal = moment(itemVal).local().format('DD-MMM-YYYY HH:mm A');
   }
   return itemVal || '-----';
 };
