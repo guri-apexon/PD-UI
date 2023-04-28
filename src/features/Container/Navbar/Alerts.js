@@ -86,7 +86,7 @@ function Alerts() {
       });
       return false;
     }
-    history.push(`/protocols?protocolId=${aidocId}&tab=1`);
+    history.push(`/protocols?protocolId=${aidocId}`);
   };
 
   const newNotifications = notificationData?.filter(

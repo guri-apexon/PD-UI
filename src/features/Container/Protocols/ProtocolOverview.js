@@ -30,6 +30,34 @@ function ProtocolOverview({ data }) {
       </span>
     );
   };
+  const renderConfidence = () => {
+    if (iconStatus(data.status, data.qcStatus) === 'Digitization Complete') {
+      if (data?.digitizedConfidenceScore) {
+        return (
+          <DonutChart
+            dropshadow
+            className="chart"
+            percent={parseInt(data.digitizedConfidenceScore, 10)}
+            subtitle="Confidence"
+            tooltipTitle="Confidence Metrics"
+            tooltipSubtitle="Based on historical performance"
+            stroke="#0768fd"
+          />
+        );
+      }
+      return (
+        <div className="digitization-progress">
+          Confidence score not available for Protocols uploaded before
+          {` ${process.env.REACT_APP_DATE_BEFORE_CONF}`}.
+        </div>
+      );
+    }
+    return (
+      <div className="digitization-progress">
+        Will be available once Protocol digitalization Process is Completed.
+      </div>
+    );
+  };
   return (
     <div className="protocol-overview">
       <div className="tab-card overview overview-card">
@@ -93,18 +121,8 @@ function ProtocolOverview({ data }) {
         </Card>
       </div>
       <div className="confidence-metric">
-        <label className="confidence-label">
-          Digitized Confidence Interval
-        </label>
-        <DonutChart
-          dropshadow
-          className="chart"
-          percent={parseInt(data.digitizedConfidenceInterval, 10) || 60}
-          subtitle="Confidence"
-          tooltipTitle="Confidence Metrics"
-          tooltipSubtitle="Based on historical performance"
-          stroke="#0768fd"
-        />
+        <label className="confidence-label">Digitized Confidence Score</label>
+        {renderConfidence()}
       </div>
     </div>
   );

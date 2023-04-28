@@ -306,4 +306,5 @@ export const dipaViewData = (state) => state.protocol.dipaViewData;
 export const allDipaViewData = (state) => state.protocol.allDipaViewData;
 export const discardDetails = (state) => state.protocol.discardValue;
 export const activeTOC = (state) => state.protocol.activeTOC;
+export const getLoader = (state) => state.protocol.loader;
 export default protocolSlice.reducer;

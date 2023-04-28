@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 export const scrollToLinkandReference = (index, linkandReference) => {
   const dvParent = document.getElementsByClassName('section-single-content')[
@@ -45,4 +46,13 @@ export const onBeforeUnload = (updateSectionLock) => {
   return () => {
     document.removeEventListener('beforeunload', beforeUnLoad);
   };
+};
+
+export const renderAuditInfo = (itemVal, keyName) => {
+  if (keyName === 'last_reviewed_date' && itemVal) {
+    itemVal = moment(itemVal).isValid()
+      ? moment(itemVal).local().format('DD-MMM-YYYY HH:mm')
+      : '-----';
+  }
+  return itemVal || '-----';
 };
