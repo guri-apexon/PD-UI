@@ -134,6 +134,7 @@ function FontProperties({ activeLineID, onDeleteClick }) {
         <ListBullet />
       </button>
       <Dropdown
+        className="symbol-dropdown"
         disabled={!enable}
         buttonName="M"
         contentStyle={{ left: 0 }}

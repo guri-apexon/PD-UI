@@ -11,6 +11,15 @@
     border: 1px solid #e8e8e8;
   }
 }
+.actual-textfield {
+  width: 100%;
+  margin-right: 15px;
+}
+.dipaview-summary-expand:hover,
+.dipaview-container:hover {
+  background-color: transparent;
+}
+
 .dipaview-accordion {
   width: 100%;
 }

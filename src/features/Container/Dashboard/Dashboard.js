@@ -1,5 +1,5 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Grid from 'apollo-react/components/Grid';
 import { loggedUser } from '../../../store/userDetails';
 
@@ -23,6 +23,11 @@ function Dashboard() {
   const userDetails = useSelector(loggedUser);
   const memoizedPageRows = React.useMemo(() => [5, 20, 30, 'All'], []);
   const dashboardError = useSelector(dashboadAPIError);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: 'TOGGLE_ADDPROTOCOL_MODAL', payload: false });
+  }, []);
   return (
     <div className="dashboard-parent" style={{ padding: 20 }}>
       {dashboardError && dashboardError.apiError && (

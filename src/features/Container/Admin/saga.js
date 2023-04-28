@@ -271,7 +271,11 @@ export function* addNewUser() {
         yield put(setNewUserError(''));
         yield put({ type: 'GET_USERS_SAGA' });
       } else {
-        toast.error(USER_ERROR);
+        if (data.code === 'DUPLICATE_ENTITY') {
+          toast.error('User profile already exist');
+        } else {
+          toast.error(USER_ERROR);
+        }
       }
       // else if (data.code === "DUPLICATE_ENTITY") {
       //   toast.error("User profile already exist");

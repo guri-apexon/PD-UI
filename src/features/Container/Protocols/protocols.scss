@@ -17,6 +17,15 @@
     padding-right: 20px;
     padding-bottom: 20px;
     box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.04);
+    width: 210px;
+    .digitization-progress {
+      display: flex;
+      align-items: center;
+      height: 243px;
+      font-size: 14px;
+      text-align: center;
+      color: #0273ac;
+    }
     .confidence-label {
       display: flex;
       justify-content: center;
