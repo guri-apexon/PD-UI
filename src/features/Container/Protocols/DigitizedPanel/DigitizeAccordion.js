@@ -197,6 +197,16 @@ function DigitizeAccordion({
     setExpanded(!expanded);
     handleTocsection(true);
     handleLinkId(item.link_id);
+    dispatch({
+      type: 'DISCARD_DETAILS',
+      payload: {
+        isEdited: false,
+        isDiscarded: false,
+        protocolTab: -1,
+        bladeRight: {},
+        labEdited: false,
+      },
+    });
   };
 
   const fetchContent = () => {
@@ -506,7 +516,7 @@ function DigitizeAccordion({
         payload: {
           reqBody,
           docId: item?.doc_id,
-          refreshToc: checkIfMainHeader.length,
+          headerEdited: checkIfMainHeader.length,
         },
       });
       dispatch({
@@ -832,7 +842,7 @@ function DigitizeAccordion({
 
         <AccordionDetails
           onScroll={(e) => handleEnrichedClick(e)}
-          className="section-single-content"
+          className={`section-single-content ${!primaryRole && 'no-padding'}`}
           onKeyDown={() => {
             if (!saveEnabled) {
               dispatch(setSaveEnabled(true));
@@ -991,9 +1001,9 @@ function DigitizeAccordion({
                     </div>
                   </div>
                 ))}
-              <div className="menu-wrapper">
-                {primaryRole && getActionMenu()}
-              </div>
+              {primaryRole && (
+                <div className="menu-wrapper">{getActionMenu()}</div>
+              )}
             </>
           )}
         </AccordionDetails>

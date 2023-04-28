@@ -131,6 +131,7 @@ function DipaViewStructure({
                 onFocus={(e) => {
                   e.stopPropagation();
                 }}
+                className="actual-textfield"
               />
             ) : (
               <Typography
@@ -220,7 +221,7 @@ function DipaViewStructure({
 
           <div data-testid="accord-summary" className="dipaview-summary">
             {childs.map((seg, i) => (
-              <AccordionSummary key={ID}>
+              <AccordionSummary key={ID} className="dipaview-container">
                 <DipaViewStructure
                   key={seg.ID}
                   ID={seg.ID}
