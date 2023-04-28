@@ -54,7 +54,7 @@ export const renderAuditInfo = (itemVal, keyName) => {
     itemVal &&
     moment(itemVal).isValid()
   ) {
-    itemVal = moment(itemVal).local().format('DD-MMM-YYYY HH:mm A');
+    itemVal = moment(itemVal).local().format('DD-MMM-YYYY HH:mm');
   }
   return itemVal || '-----';
 };

@@ -40,6 +40,8 @@ function ActionMenu({
     );
   };
 
+  console.log('item', item);
+
   const handlePrefferedTerm = () => {
     setSelectedTerm('PT');
     setToggle(!toggle);
