@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { useState, useEffect } from 'react';
 import Stethoscope from 'apollo-react-icons/Stethoscope';
 import Pencil from 'apollo-react-icons/Pencil';
@@ -57,6 +59,9 @@ function ActionMenu({
     setShowLink(linkReferencetoggle);
   };
 
+  const timeStamp = (time) =>
+    moment(time, 'DD-MM-YYYY h:m:s A').local().format('DD-MMM-YYYY HH:mm A');
+
   useEffect(() => {
     if (item) {
       const auditData = Object.keys(item?.audit_info);
@@ -64,7 +69,6 @@ function ActionMenu({
     }
     // eslint-disable-next-line
   }, []);
-
   return (
     <div
       className={`action-menu ${expanded && 'expanded'} ${
@@ -180,7 +184,14 @@ function ActionMenu({
                       className="audit-names"
                     >
                       <b>{names?.title}</b>
-                      <span>{item?.audit_info[names.keyName] || '-----'}</span>
+
+                      <span>
+                        {names?.title === 'Last Edited Date'
+                          ? timeStamp(
+                              item?.audit_info[names.keyName] || '-----',
+                            )
+                          : item?.audit_info[names.keyName] || '-----'}
+                      </span>
                     </Typography>
                   );
                 })}
