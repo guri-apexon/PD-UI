@@ -734,6 +734,16 @@ function DigitizeAccordion({
       },
     ];
     dispatch({
+      type: 'DISCARD_DETAILS',
+      payload: {
+        isEdited: false,
+        isDiscarded: false,
+        protocolTab: -1,
+        bladeRight: {},
+        labEdited: false,
+      },
+    });
+    dispatch({
       type: 'UPDATE_SECTION_DATA',
       payload: {
         docId: deleteSection.doc_id,
