@@ -61,6 +61,7 @@
         }
       }
     }
+
     .audit-names {
       background: transparent;
       border: none;
@@ -74,7 +75,11 @@
       color: #595959;
       margin: 0;
       min-width: unset;
+      &:first-child span {
+        font-size: 11px;
+      }
     }
+
     fieldset {
       margin: 10px 0;
       padding-left: 15px;

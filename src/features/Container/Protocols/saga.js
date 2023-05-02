@@ -245,6 +245,9 @@ export function* updateSectionData(action) {
     const {
       payload: { reqBody, docId },
     } = action;
+    if (action?.payload?.refreshToc) {
+      yield put(setLoader(true));
+    }
     const userIdPrefix = yield getState(true);
     const UserId = yield getState();
     const linkId = reqBody[0].link_id;
@@ -265,29 +268,51 @@ export function* updateSectionData(action) {
 
     if (sectionSaveRes?.data?.success) {
       if (action?.payload?.refreshToc) {
-        yield put(
-          updateSectionHeader({
-            linkId,
-            content: reqBody.filter((x) => x.link_level === '1'),
-          }),
-        );
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+            index: action?.payload?.index,
+          },
+        });
+      } else {
+        if (action?.payload?.headerEdited) {
+          yield put(
+            updateSectionHeader({
+              linkId,
+              content: reqBody.filter((x) => x.link_level === '1'),
+            }),
+          );
+        }
+        yield put(updateSectionResp({ response: sectionSaveRes.data }));
+        toast.success('Section content updated successfully');
       }
-      yield put(updateSectionResp({ response: sectionSaveRes.data }));
-      toast.success('Section content updated successfully');
       yield put(setWorkFlowSubmitButton(true));
     } else {
       // eslint-disable-next-line
       if (action?.payload?.refreshToc) {
+        yield put({
+          type: 'GET_PROTOCOL_TOC_DATA',
+          payload: {
+            docId: action?.payload?.docId,
+            tocFlag: 1,
+            index: action?.payload?.index,
+          },
+        });
+      } else {
+        if (action?.payload?.headerEdited) {
+          yield put(
+            updateSectionHeader({
+              linkId,
+              content: reqBody.filter((x) => x.link_level === '1'),
+            }),
+          );
+        }
         yield put(
-          updateSectionHeader({
-            linkId,
-            content: reqBody.filter((x) => x.link_level === '1'),
-          }),
+          updateSectionResp({ response: sectionSaveRes.data, error: true }),
         );
       }
-      yield put(
-        updateSectionResp({ response: sectionSaveRes.data, error: true }),
-      );
       toast.error(sectionSaveRes.data.message || 'Something Went Wrong');
     }
   } catch (error) {
@@ -420,6 +445,7 @@ export function* getProtocolTocDataResult(action) {
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
       yield put(getSectionIndex(action.payload.index));
+      yield put(setLoader(false));
     } else {
       // eslint-disable-next-line no-lonely-if
       yield put(
@@ -858,7 +884,7 @@ export function* handleCreateLabDataTable(action) {
   }
 }
 
-export function* getDipaViewDataById(action) {
+export function* getDerivedDataById(action) {
   const {
     payload: { docId },
   } = action;
@@ -871,24 +897,28 @@ export function* getDipaViewDataById(action) {
   };
 
   const DipaView = yield call(httpCall, config);
+  try {
+    if (DipaView.success) {
+      yield put(getDipaViewData(DipaView));
+    } else {
+      yield put(
+        getDipaViewData({
+          success: false,
+          data: {
+            dipa_resource: [],
+          },
+        }),
+      );
+      toast.error(DipaView.message || 'Something Went Wrong');
+    }
 
-  if (DipaView.success) {
-    yield put(getDipaViewData(DipaView));
-  } else {
-    yield put(
-      getDipaViewData({
-        success: false,
-        data: {
-          dipa_resource: [],
-        },
-      }),
-    );
+    yield call(httpCall, config);
+  } catch (error) {
+    toast.error(error);
   }
-
-  yield call(httpCall, config);
 }
 
-export function* getAllDipaViewDataByCategory(action) {
+export function* getAllDerivedDataByCategory(action) {
   const {
     payload: { data },
   } = action;
@@ -903,13 +933,15 @@ export function* getAllDipaViewDataByCategory(action) {
   yield put(setDipaDataLoader(true));
 
   const DipaView = yield call(httpCall, config);
-
-  if (DipaView.success) {
-    yield put(getAllDipaViewData(DipaView));
-    yield put(setDipaDataLoader(false));
-  } else {
+  try {
+    if (DipaView.success) {
+      yield put(getAllDipaViewData(DipaView));
+      yield put(setDipaDataLoader(false));
+    }
+  } catch (error) {
     yield put(getAllDipaViewData({ success: false, data: [] }));
     yield put(setDipaDataLoader(false));
+    toast.error(DipaView.message || 'Something Went Wrong');
   }
 
   yield call(httpCall, config);
@@ -925,7 +957,7 @@ export function* resetAllDipaViewDataByCategory() {
     }),
   );
 }
-export function* updateDipaData(action) {
+export function* updateDerivedData(action) {
   const {
     payload: { data },
   } = action;
@@ -937,21 +969,22 @@ export function* updateDipaData(action) {
     headers: { 'Content-Type': 'application/json' },
   };
   const DipaData = yield call(httpCall, config);
-
-  if (DipaData?.success) {
-    toast.info(' Data Updated');
-    yield put({
-      type: 'GET_ALL_DIPA_VIEW',
-      payload: {
-        data: {
-          category: data?.category,
-          doc_id: data?.doc_id,
-          id: data?.id,
+  try {
+    if (DipaData?.success) {
+      toast.info(' Data Updated');
+      yield put({
+        type: 'GET_ALL_DIPA_VIEW',
+        payload: {
+          data: {
+            category: data?.category,
+            doc_id: data?.doc_id,
+            id: data?.id,
+          },
         },
-      },
-    });
-  } else {
-    toast.error('Error While Updation');
+      });
+    }
+  } catch (error) {
+    toast.error(DipaData.data.message || 'Error While Updation');
   }
 }
 
@@ -1022,9 +1055,9 @@ function* watchProtocolViews() {
     updateAndSetSectionLockDetails,
   );
   yield takeLatest('RESET_QC_DATA', setResetQCData);
-  yield takeEvery('GET_DERIVED_SECTIONS', getDipaViewDataById);
-  yield takeEvery('GET_ALL_DIPA_VIEW', getAllDipaViewDataByCategory);
-  yield takeEvery('UPDATE_DIPA_VIEW', updateDipaData);
+  yield takeEvery('GET_DERIVED_SECTIONS', getDerivedDataById);
+  yield takeEvery('GET_ALL_DIPA_VIEW', getAllDerivedDataByCategory);
+  yield takeEvery('UPDATE_DIPA_VIEW', updateDerivedData);
   yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
   yield takeEvery('GET_DOC_SECTION_LOCK', getDocumentSectionLock);
   yield takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory);

@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import './ActionMenu.scss';
 import Typography from 'apollo-react/components/Typography';
 import { AUDIT_LIST } from '../Constant/Constants';
+import { renderAuditInfo } from './utils';
 
 function ActionMenu({
   showedit,
@@ -64,7 +65,6 @@ function ActionMenu({
     }
     // eslint-disable-next-line
   }, []);
-
   return (
     <div
       className={`action-menu ${expanded && 'expanded'} ${
@@ -180,7 +180,13 @@ function ActionMenu({
                       className="audit-names"
                     >
                       <b>{names?.title}</b>
-                      <span>{item?.audit_info[names.keyName] || '-----'}</span>
+
+                      <span>
+                        {renderAuditInfo(
+                          item?.audit_info[names.keyName],
+                          names?.keyName,
+                        )}
+                      </span>
                     </Typography>
                   );
                 })}

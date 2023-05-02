@@ -1,6 +1,9 @@
 .dropdown {
   position: relative;
   display: inline-block;
+  &.symbol-dropdown{
+    position: initial;
+  }
   .dropbtn {
     background-color: #fff;
     &:not(:disabled){

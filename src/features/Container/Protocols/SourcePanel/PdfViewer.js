@@ -209,7 +209,11 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
           onLoadSuccess={onDocumentLoadSuccess}
           onKeyDown={(e) => handleKeyDown(e)}
         >
-          <Page pageNumber={currentPage + 1} scale={pageScale} />
+          <Page
+            pageNumber={currentPage + 1}
+            scale={pageScale}
+            renderAnnotationLayer={false}
+          />
         </Document>
       )}
       <div className="sticky-bottom pdf-pagination">
