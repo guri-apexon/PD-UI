@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 export const scrollToLinkandReference = (index, linkandReference) => {
   const dvParent = document.getElementsByClassName('section-single-content')[
@@ -51,7 +51,7 @@ export const onBeforeUnload = (updateSectionLock) => {
 export const renderAuditInfo = (itemVal, keyName) => {
   if (keyName === 'last_reviewed_date' && itemVal) {
     itemVal = moment(itemVal).isValid()
-      ? moment.utc(itemVal).local().format('DD-MMM-YYYY HH:mm')
+      ? moment.utc(itemVal).tz('America/New_York').format('DD-MMM-YYYY HH:mm')
       : '-----';
   }
   return itemVal || '-----';
