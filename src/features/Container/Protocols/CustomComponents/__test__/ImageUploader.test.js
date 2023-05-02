@@ -13,6 +13,7 @@ const testEdit = true;
 const testContent = '';
 const mockedProtocolContextValue = {
   dispatchSectionEvent,
+  setSaveEnabled: jest.fn(),
 };
 
 const renderImageUploader = (

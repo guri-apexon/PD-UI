@@ -54,7 +54,6 @@ export const protocolSlice = createSlice({
     },
     EnrichedApiValue: false,
     SOAData: {},
-    isSaveEnabled: false,
     sectionIndex: -1,
     labData: {
       data: [],
@@ -187,9 +186,7 @@ export const protocolSlice = createSlice({
     setLoader: (state, action) => {
       state.loader = action.payload;
     },
-    setSaveEnabled: (state, action) => {
-      state.isSaveEnabled = action.payload;
-    },
+
     getSectionIndex: (state, action) => {
       state.sectionIndex = action.payload;
     },
@@ -256,7 +253,6 @@ export const {
   getMetadataApiCall,
   getEnrichedValue,
   setSOAData,
-  setSaveEnabled,
   updateSectionResp,
   getSectionIndex,
   resetUpdateStatus,
@@ -296,7 +292,6 @@ export const accordianMetaParam = (state) => state.protocol.accordianMetaParam;
 export const metadataApiCallValue = (state) =>
   state.protocol.metadataApiCallValue;
 export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
-export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const Enrichedword = (state) => state.protocol.enrichedword;
 export const SOAData = (state) => state.protocol.SOAData;

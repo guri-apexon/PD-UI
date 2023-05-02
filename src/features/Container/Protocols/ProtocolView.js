@@ -6,7 +6,6 @@ import {
   viewResult,
   protocolTocData,
   updateSectionData,
-  setSaveEnabled,
 } from './protocolSlice';
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
@@ -22,6 +21,8 @@ function ProtocolView({ refs, data }) {
   const [globalPreferredTerm, setGlobalPreferredTerm] = useState(false);
   const [activeLineID, setActiveLineID] = useState('');
 
+  const [saveEnabled, setSaveEnabled] = useState(false);
+
   const [saveSection, setSaveSection] = useState(null);
   const workflowSubmitData = useSelector(
     (state) => state.dashboard.workflowSubmit,
@@ -36,6 +37,7 @@ function ProtocolView({ refs, data }) {
     }
     // eslint-disable-next-line
   }, [workflowSubmitData]);
+
   const handleSectionSelect = (payload) => {
     if (!payload.sectionContent && sectionContent) {
       dispatch(
@@ -72,7 +74,7 @@ function ProtocolView({ refs, data }) {
       type: 'DELETE',
       sectionContent,
     });
-    dispatch(setSaveEnabled(true));
+    if (!saveEnabled) setSaveEnabled(true);
     setSectionContent(content);
     dispatch(
       updateSectionData({
@@ -85,7 +87,7 @@ function ProtocolView({ refs, data }) {
 
   const handleContentAdd = (payload) => {
     const { type, lineId, section } = payload;
-    dispatch(setSaveEnabled(true));
+    if (!saveEnabled) setSaveEnabled(true);
     const content = prepareContent({
       ...payload,
       type: 'ADDED',
@@ -152,20 +154,24 @@ function ProtocolView({ refs, data }) {
       sectionContent,
       saveSection,
       activeLineID,
+      saveEnabled,
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
       setActiveLineID,
+      setSaveEnabled,
     }),
     [
       selectedSection,
       sectionContent,
       saveSection,
       activeLineID,
+      saveEnabled,
       dispatchSectionEvent,
       setSectionContent,
       setSaveSection,
       setActiveLineID,
+      setSaveEnabled,
     ],
   );
 

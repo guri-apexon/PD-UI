@@ -59,7 +59,10 @@ describe('ContentEdit', () => {
   });
 
   test('delete event on content editable', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setSaveEnabled: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -154,7 +157,10 @@ describe('ContentEdit', () => {
   it('updates the state when content is changed', async () => {
     const newContent = 'Hi, there!';
 
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setSaveEnabled: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
