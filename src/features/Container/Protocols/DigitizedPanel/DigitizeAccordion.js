@@ -35,11 +35,9 @@ import {
   SectionIndex,
   TOCActive,
   discardDetails,
-  isSaveEnabled,
   resetUpdateStatus,
   sectionDetails,
   sectionLockDetails,
-  setSaveEnabled,
   updateSectionData,
   setActiveTOC,
   activeTOC,
@@ -97,7 +95,6 @@ function DigitizeAccordion({
   const [showLoader, setShowLoader] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const sectionHeaderDetails = useSelector(sectionDetails);
-  const saveEnabled = useSelector(isSaveEnabled);
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
   const [linkId, setLinkId] = useState();
@@ -153,6 +150,8 @@ function DigitizeAccordion({
     selectedSection,
     setSaveSection,
     saveSection,
+    saveEnabled,
+    setSaveEnabled,
   } = useProtContext();
 
   const updateSectionLock = (status) => {
@@ -248,7 +247,7 @@ function DigitizeAccordion({
     setSectionDataBak([]);
     setCurrentEditCard(null);
     updateSectionLock(true);
-    dispatch(setSaveEnabled(false));
+    setSaveEnabled(false);
     setAlertMsg(null);
     dispatch(
       updateSectionData({
@@ -343,7 +342,7 @@ function DigitizeAccordion({
   const onShowEdit = () => {
     setExpanded(true);
     setShowEdit(true);
-    dispatch(setSaveEnabled(false));
+    setSaveEnabled(false);
     setCurrentEditCard(item.link_id);
     setSectionDataBak([...sectionDataArr]);
     updateSectionLock(false);
@@ -509,7 +508,7 @@ function DigitizeAccordion({
       );
 
       updateSectionLock(true);
-      dispatch(setSaveEnabled(false));
+      setSaveEnabled(false);
       setShowLoader(true);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
@@ -853,11 +852,6 @@ function DigitizeAccordion({
         <AccordionDetails
           onScroll={(e) => handleEnrichedClick(e)}
           className={`section-single-content ${!primaryRole && 'no-padding'}`}
-          onKeyDown={() => {
-            if (!saveEnabled) {
-              dispatch(setSaveEnabled(true));
-            }
-          }}
           data-testid="accordion-details"
         >
           {showLoader ? (

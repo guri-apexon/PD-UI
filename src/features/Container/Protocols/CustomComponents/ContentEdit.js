@@ -1,18 +1,15 @@
 import { useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import { useProtContext } from '../ProtocolContext';
-import { setSaveEnabled } from '../protocolSlice';
 
 function ContentEdit({ type, lineID, content, edit, activeLineID }) {
-  const dispatch = useDispatch();
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
-  const { dispatchSectionEvent } = useProtContext();
+  const { dispatchSectionEvent, setSaveEnabled } = useProtContext();
 
   const handleChange = (e) => {
-    dispatch(setSaveEnabled(true));
+    setSaveEnabled(true);
     setText(e.target.value);
   };
   const handleBlur = () => {
