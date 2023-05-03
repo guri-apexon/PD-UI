@@ -89,11 +89,12 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   }, [page]);
 
   useEffect(() => {
-    setShowPagination(false);
-    setTimeout(() => {
-      setShowPagination(true);
-    });
-
+    if (pageRight - 1 === currentPage) {
+      setShowPagination(false);
+      setTimeout(() => {
+        setShowPagination(true);
+      });
+    }
     if (refs && refs[currentPage]?.current) {
       refs[currentPage].current.scrollIntoView({ behavior: 'instant' });
     }
@@ -219,6 +220,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
             pageNumber={currentPage + 1}
             scale={pageScale}
             renderAnnotationLayer={false}
+            renderTextLayer={false}
           />
         </Document>
       )}

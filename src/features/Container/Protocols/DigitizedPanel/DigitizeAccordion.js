@@ -41,6 +41,7 @@ import {
   updateSectionData,
   setActiveTOC,
   activeTOC,
+  enrichedData,
 } from '../protocolSlice';
 import AddSection from './AddSection';
 import DeleteModal from './Modals/DeleteModal';
@@ -105,6 +106,7 @@ function DigitizeAccordion({
   const [discardData, setDiscardData] = useState({});
   const userIdSelector = useSelector(userId);
   const activeTree = useSelector(activeTOC);
+  const enrichedContent = useSelector(enrichedData);
 
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
@@ -653,7 +655,7 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content, clinicalTerms, preferredTerms) => {
+  const getEnrichedText = (content, preferredTerms) => {
     let newContent = content;
     if (globalPreferredTerm || showPrefferedTerm) {
       if (!isEmpty(preferredTerms)) {
@@ -661,11 +663,11 @@ function DigitizeAccordion({
       }
     }
     if (
-      !isEmpty(clinicalTerms) &&
+      !isEmpty(enrichedContent?.data) &&
       (rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM ||
         showEnrichedContent)
     ) {
-      newContent = createEnrichedText(content, clinicalTerms);
+      newContent = createEnrichedText(content, enrichedContent?.data);
     }
     newContent = createFullMarkup(newContent);
     return newContent;
@@ -914,14 +916,13 @@ function DigitizeAccordion({
                                 key={React.key}
                                 className="supContent"
                                 onClick={(e) =>
-                                  handleEnrichedClick(e, section.clinical_terms)
+                                  handleEnrichedClick(e, enrichedContent?.data)
                                 }
                               >
                                 <sup>
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[0],
-                                      section?.clinical_terms,
                                       section?.preferred_terms,
                                     )}
                                   />
@@ -945,7 +946,6 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[1],
-                                      section?.clinical_terms,
                                       section?.preferred_terms,
                                     )}
                                   />
@@ -974,14 +974,13 @@ function DigitizeAccordion({
                                     onClick={(e) =>
                                       handleEnrichedClick(
                                         e,
-                                        section.clinical_terms,
+                                        enrichedContent?.data,
                                       )
                                     }
                                   >
                                     <SanitizeHTML
                                       html={getEnrichedText(
                                         section.content,
-                                        section.clinical_terms,
                                         section?.preferred_terms,
                                       )}
                                     />

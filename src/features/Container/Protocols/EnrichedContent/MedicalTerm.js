@@ -167,6 +167,7 @@ function MedicalTerm({
     if (apiFlagselector && clinicalTermsArr) {
       setChildArr(tempChild);
       const obj = {
+        ...clinicalTermsArr,
         [enrichedText]: {
           ...clinicalTermsArr[enrichedText],
           [selectedTerm]: tempChild?.toString(),
