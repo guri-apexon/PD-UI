@@ -35,8 +35,8 @@ const setMenuItems = (value) => {
 };
 
 const onLogoutClick = () => {
-  const accessToken = `access_token_${REACT_APP_ENV}`;
-  const refreshToken = `refresh_token_${REACT_APP_ENV}`;
+  const accessToken = `access_token_${process.env.REACT_APP_ENV}`;
+  const refreshToken = `refresh_token_${process.env.REACT_APP_ENV}`;
   cookies.remove('api_token');
   cookies.remove(accessToken);
   cookies.remove(refreshToken);
