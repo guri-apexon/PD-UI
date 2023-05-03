@@ -16,7 +16,7 @@ import './Navbar.scss';
 import Setting from './Setting/Setting';
 import { discardDetails } from '../Protocols/protocolSlice';
 import Cookies from 'universal-cookie';
- 
+
 const cookies = new Cookies();
 
 const setMenuItems = (value) => {
@@ -35,7 +35,11 @@ const setMenuItems = (value) => {
 };
 
 const onLogoutClick = () => {
-  cookies.remove("api_token");
+  const accessToken = `access_token_${REACT_APP_ENV}`;
+  const refreshToken = `refresh_token_${REACT_APP_ENV}`;
+  cookies.remove('api_token');
+  cookies.remove(accessToken);
+  cookies.remove(refreshToken);
   window.location.href = `${baseUrlSSO}/logout_session`;
 };
 
