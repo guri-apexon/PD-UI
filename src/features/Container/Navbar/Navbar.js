@@ -15,6 +15,9 @@ import { baseUrlSSO } from '../../../utils/api';
 import './Navbar.scss';
 import Setting from './Setting/Setting';
 import { discardDetails } from '../Protocols/protocolSlice';
+import Cookies from 'universal-cookie';
+ 
+const cookies = new Cookies();
 
 const setMenuItems = (value) => {
   switch (value) {
@@ -32,7 +35,7 @@ const setMenuItems = (value) => {
 };
 
 const onLogoutClick = () => {
-  document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  cookies.remove("api_token");
   window.location.href = `${baseUrlSSO}/logout_session`;
 };
 
