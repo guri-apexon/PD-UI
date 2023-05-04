@@ -79,7 +79,7 @@ function QCContainer() {
   useEffect(() => {
     dispatch({ type: 'GET_QC_PROTOCOL_TABLE_SAGA' });
     // eslint-disable-next-line
-  }, []);
+  }, [protocolId]);
 
   return (
     <div
