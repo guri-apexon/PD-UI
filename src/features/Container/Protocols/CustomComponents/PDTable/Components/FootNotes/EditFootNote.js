@@ -56,6 +56,7 @@ function EditFootNote({
       setFootnoteData(getNotEmptyData(textData));
     }
   };
+
   const handleTextChange = (e) => {
     setFooterText(e.target.value);
   };
