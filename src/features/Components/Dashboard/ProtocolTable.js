@@ -300,6 +300,7 @@ const workFlowStatus = ({ row, column: { accessor: key } }) => {
                 wfData={row.wfData}
                 fetchMoreData={fetchMoreData}
                 showMore={row.showMore}
+                error={row.wfMoreDataError}
               />
             </div>
           </Modal>
