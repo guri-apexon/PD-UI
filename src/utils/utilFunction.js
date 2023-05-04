@@ -601,10 +601,3 @@ export const getSaveSectionPayload = (sectionContent, linkId) => {
     .map((obj) => createReturnObj(obj, linkId));
   return req;
 };
-
-export const getKeyFromEnrichText = (term) => {
-  if (term === 'preferred_term') return 'iqv_standard_term';
-  if (term === 'medical_term') return 'clinical_terms';
-  if (term === 'ontology') return 'ontology';
-  return '';
-};

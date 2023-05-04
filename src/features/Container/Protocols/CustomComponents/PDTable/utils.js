@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 
 const QC_CHANGE_TYPE = {
   ADDED: 'add',
@@ -141,7 +141,13 @@ export const getHtmlString = (str, isPreTerm) => {
   };
 };
 
-export const getPreferredTerms = (val, isPreferredTerm, preferredTerms) => {
+export const getPreferredTerms = (
+  val,
+  isPreferredTerm,
+  preferredTerms,
+  clinicalTerms,
+  isClinicalTerms,
+) => {
   if (isPreferredTerm) {
     const preArr = Object.entries(preferredTerms);
     const arrVal = preArr.find(
@@ -152,5 +158,28 @@ export const getPreferredTerms = (val, isPreferredTerm, preferredTerms) => {
       return getHtmlString(val, true);
     }
   }
+
+  if (isClinicalTerms) {
+    const clinicalArr = Object.keys(clinicalTerms);
+    let text = val;
+    clinicalArr.forEach((term) => {
+      text = text.replaceAll(term, `<b class="enriched-txt">${term}</b>`, text);
+    });
+    return { __html: `${text}` };
+  }
+
   return getHtmlString(val, false);
+};
+
+export const getHierarchyName = (type) => {
+  if (isEqual(type, 'text')) {
+    return 'paragraph';
+  }
+  if (isEqual(type, 'header')) {
+    return 'header';
+  }
+  if (isEqual(type, 'table')) {
+    return 'table';
+  }
+  return '';
 };
