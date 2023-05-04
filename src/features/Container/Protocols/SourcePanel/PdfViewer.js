@@ -220,7 +220,6 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
             pageNumber={currentPage + 1}
             scale={pageScale}
             renderAnnotationLayer={false}
-            renderTextLayer={false}
           />
         </Document>
       )}

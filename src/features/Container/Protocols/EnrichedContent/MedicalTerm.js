@@ -24,6 +24,7 @@ function MedicalTerm({
   clinicalTerms: clinicalTermsArray,
   linkId,
   docId,
+  type,
 }) {
   const wrapperRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -107,15 +108,19 @@ function MedicalTerm({
       ...tempObj,
       [name]: saveValue,
     };
-    dispatch({
-      type: 'SAVE_ENRICHED_DATA',
-      payload: {
-        docId,
-        linkId,
-        opType: 'delete',
-        data: saveObj,
-      },
-    });
+    if (type === 'EnrichedText')
+      dispatch({
+        type: 'SAVE_ENRICHED_DATA',
+        payload: {
+          docId,
+          linkId,
+          opType: 'delete',
+          data: saveObj,
+        },
+      });
+    else if (type === 'PreferredTerm') {
+      console.log('SHUBHAM ');
+    }
   };
 
   const handleDelete = () => {
@@ -151,15 +156,19 @@ function MedicalTerm({
         ...tempObj,
         [name]: '',
       };
-      dispatch({
-        type: 'SAVE_ENRICHED_DATA',
-        payload: {
-          docId,
-          linkId,
-          opType: 'delete',
-          data: saveObj,
-        },
-      });
+      if (type === 'EnrichedText')
+        dispatch({
+          type: 'SAVE_ENRICHED_DATA',
+          payload: {
+            docId,
+            linkId,
+            opType: 'delete',
+            data: saveObj,
+          },
+        });
+      else if (type === 'PreferredTerm') {
+        console.log('SHUBHAM ');
+      }
     }
   };
 
@@ -260,14 +269,18 @@ function MedicalTerm({
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
 
-    dispatch({
-      type: 'SAVE_ENRICHED_DATA',
-      payload: {
-        docId,
-        linkId,
-        data: saveObj,
-      },
-    });
+    if (type === 'EnrichedText')
+      dispatch({
+        type: 'SAVE_ENRICHED_DATA',
+        payload: {
+          docId,
+          linkId,
+          data: saveObj,
+        },
+      });
+    else if (type === 'PreferredTerm') {
+      console.log('SHUBHAM ');
+    }
     return true;
   };
 
@@ -471,4 +484,5 @@ MedicalTerm.propTypes = {
   clinicalTerms: PropTypes.isRequired,
   linkId: PropTypes.isRequired,
   docId: PropTypes.isRequired,
+  type: PropTypes.isRequired,
 };

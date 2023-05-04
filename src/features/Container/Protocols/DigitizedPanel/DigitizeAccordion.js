@@ -30,6 +30,7 @@ import ImageUploader from '../CustomComponents/ImageUploader';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import HeaderConstant from '../CustomComponents/constants';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
+import Preferredterm from '../EnrichedContent/PreferredTerm';
 import { useProtContext } from '../ProtocolContext';
 import {
   SectionIndex,
@@ -114,6 +115,7 @@ function DigitizeAccordion({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteSection, setDeleteSection] = useState({});
   const [tocClose, setTocClose] = useState();
+  const [type, setType] = useState('');
 
   const [showEnrichedContent, setShowEnrichedContent] = useState(false);
   const [showPrefferedTerm, setShowPrefferedTerm] = useState(false);
@@ -124,6 +126,9 @@ function DigitizeAccordion({
   const lockDetails = useSelector(sectionLockDetails);
   const [requestedRoute, setRequestedRoute] = useState('');
   const [addSectionIndex, setAddSectionIndex] = useState(-1);
+  const [preferredTarget, setPreferredTarget] = useState();
+  const [selectedPreferredTerm, setSelectedPreferredTerm] = useState();
+  const [preferredTerms, setPreferredTerms] = useState();
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
@@ -433,9 +438,24 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [tocActive]);
 
-  const handleEnrichedClick = (e, obj) => {
+  const handleEnrichedClick = (e, obj, abc) => {
+    console.log('SHUBHAM', selectedPreferredTerm);
+    const preferredTermsObj = {
+      '4. STUDY DESIGN': {
+        id: '1d17b8bd-de90-11ed-b85f-005056ab6469',
+        preferred_term: 'SHUBHAM',
+      },
+      '4.1 Overall Design': {
+        id: '1d17b8be-de90-11ed-b3cc-005056ab6469',
+        preferred_term: 'ABC123',
+      },
+    };
     if (e.target.className === 'enriched-txt') {
+      setPreferredTarget(null);
+      setSelectedPreferredTerm(null);
+      setPreferredTerms(null);
       setEnrichedTarget(e.target);
+      setType('EnrichedText');
       setSelectedEnrichedText(e.target.innerText);
       setClinicalTerms(obj);
       const modalOpened = document.createElement('span');
@@ -445,10 +465,29 @@ function DigitizeAccordion({
         setEnrichedTarget(null);
         document.body.removeChild(modalOpened);
       });
+    } else if (e.target.className === 'Preferred-txt') {
+      setEnrichedTarget(null);
+      setSelectedEnrichedText(null);
+      setClinicalTerms(null);
+      setPreferredTarget(e.target);
+      setType('PreferredTerm');
+      setSelectedPreferredTerm(e.target.innerText);
+      setPreferredTerms(preferredTermsObj);
+      console.log('SHUBHAM1', e.target.innerText);
+      const modalOpened = document.createElement('span');
+      modalOpened.classList.add('modal-opened');
+      document.body.appendChild(modalOpened);
+      modalOpened.addEventListener('click', () => {
+        setPreferredTarget(null);
+        document.body.removeChild(modalOpened);
+      });
     } else {
       setEnrichedTarget(null);
       setSelectedEnrichedText(null);
       setClinicalTerms(null);
+      setPreferredTarget(null);
+      setSelectedPreferredTerm(null);
+      setPreferredTerms(null);
     }
   };
 
@@ -915,9 +954,14 @@ function DigitizeAccordion({
                               <div
                                 key={React.key}
                                 className="supContent"
-                                onClick={(e) =>
-                                  handleEnrichedClick(e, enrichedContent?.data)
-                                }
+                                onClick={(e) => {
+                                  handleEnrichedClick(
+                                    e,
+                                    enrichedContent?.data,
+                                    section?.preferred_terms,
+                                  );
+                                  console.log('SHUBHMA');
+                                }}
                               >
                                 <sup>
                                   <SanitizeHTML
@@ -975,6 +1019,7 @@ function DigitizeAccordion({
                                       handleEnrichedClick(
                                         e,
                                         enrichedContent?.data,
+                                        section?.preferred_terms,
                                       )
                                     }
                                   >
@@ -1010,14 +1055,32 @@ function DigitizeAccordion({
             </>
           )}
         </AccordionDetails>
-        <MedicalTerm
+        {/* <MedicalTerm
           enrichedTarget={enrichedTarget}
           expanded={expanded}
           enrichedText={selectedEnrichedText}
           clinicalTerms={clinicalTerms}
           linkId={linkId}
           docId={docId}
+        /> */}
+        <MedicalTerm
+          enrichedTarget={preferredTarget || enrichedTarget}
+          expanded={expanded}
+          enrichedText={selectedPreferredTerm || selectedEnrichedText}
+          clinicalTerms={preferredTerms || clinicalTerms}
+          linkId={linkId}
+          docId={docId}
+          type={type}
         />
+
+        {/* <Preferredterm
+          preferredTarget={preferredTarget}
+          expanded={expanded}
+          preferredText={selectedPreferredTerm}
+          preferredTerms={preferredTerms}
+          linkId={linkId}
+          docId={docId}
+        /> */}
 
         <SaveSectionModal
           classes={classes}
