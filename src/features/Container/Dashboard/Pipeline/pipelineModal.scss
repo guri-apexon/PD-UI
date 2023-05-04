@@ -1,6 +1,13 @@
 .show-running-status {
   display: flex;
   flex-direction: column;
+  .wf-more-error {
+    display: flex;
+    justify-content: flex-end;
+    color: #00487a;
+    font-size: 14px;
+    margin-top: 10px;
+  }
   .running-see-more {
     font-size: 12px;
     color: blue;

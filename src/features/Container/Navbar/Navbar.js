@@ -19,6 +19,22 @@ import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
+const deleteAllCookie = () => {
+  cookies.remove('api_token');
+  cookies.remove('access_token_dev');
+  cookies.remove('refresh_token_dev');
+  cookies.remove('access_token_test');
+  cookies.remove('refresh_token_test');
+  cookies.remove('access_token_svt');
+  cookies.remove('refresh_token_svt');
+  cookies.remove('access_token_uat');
+  cookies.remove('refresh_token_uat');
+  cookies.remove('access_token_uat1');
+  cookies.remove('refresh_token_uat1');
+  cookies.remove('access_token');
+  cookies.remove('refresh_token');
+};
+
 const setMenuItems = (value) => {
   switch (value) {
     case 'normal':
@@ -35,11 +51,7 @@ const setMenuItems = (value) => {
 };
 
 const onLogoutClick = () => {
-  const accessToken = `access_token_${process.env.REACT_APP_ENV}`;
-  const refreshToken = `refresh_token_${process.env.REACT_APP_ENV}`;
-  cookies.remove('api_token');
-  cookies.remove(accessToken);
-  cookies.remove(refreshToken);
+  deleteAllCookie();
   window.location.href = `${baseUrlSSO}/logout_session`;
 };
 
