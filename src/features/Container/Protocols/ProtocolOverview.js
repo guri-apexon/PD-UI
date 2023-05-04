@@ -47,8 +47,7 @@ function ProtocolOverview({ data }) {
       }
       return (
         <div className="digitization-progress">
-          Confidence score not available for Protocols uploaded before
-          {` ${process.env.REACT_APP_DATE_BEFORE_CONF}`}.
+          Confidence score is not available for this protocol.
         </div>
       );
     }
