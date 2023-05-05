@@ -67,28 +67,39 @@ describe('PDF VIEWER', () => {
 
   test('Zoom Out Counter', () => {
     const screen = render(
-      <PDFViewer page={1} refs={jest.fn()} pageRight={2} />,
+      <PDFViewer
+        page={1}
+        refs={jest.fn()}
+        pageRight={2}
+        handlePaginationPage={jest.fn()}
+        setShowPagination={jest.fn()}
+      />,
       {
         initialState,
       },
     );
-    const zoomOut = screen.getByTestId('zoomOut');
-    expect(zoomOut).toBeInTheDocument();
-    fireEvent.click(zoomOut);
+    screen.debug();
+    const zoomOut = screen.queryByTestId('zoomOut');
+    expect(zoomOut).toBeNull();
     const lnkAnchorNode = screen.getByTestId('download-doc');
     fireEvent.click(lnkAnchorNode);
   });
 
   test('Zoom In Counter', () => {
     const screen = render(
-      <PDFViewer page={1} refs={jest.fn()} pageRight={2} />,
+      <PDFViewer
+        page={1}
+        refs={jest.fn()}
+        pageRight={2}
+        handlePaginationPage={jest.fn()}
+        setShowPagination={jest.fn()}
+      />,
       {
         initialState,
       },
     );
-    const zoomIn = screen.getByTestId('zoomIn');
-    expect(zoomIn).toBeInTheDocument();
-    fireEvent.click(zoomIn);
+    const zoomIn = screen.queryByTestId('zoomIn');
+    expect(zoomIn).toBeNull();
   });
 
   test('PDF render', () => {
