@@ -30,7 +30,9 @@ function AccordionToc({
       <TreeItem
         key={level.link_id}
         label={
-          <SanitizeHTML html={createFullMarkup(level?.source_file_section)} />
+          <SanitizeHTML
+            html={createFullMarkup(removeHtmlTags(level.source_file_section))}
+          />
         }
         onClick={handleClick}
         nodeId={level.link_id}
