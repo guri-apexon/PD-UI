@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import FileUpload from 'apollo-react/components/FileUpload';
 import Button from 'apollo-react/components/Button';
@@ -10,20 +9,18 @@ import Pencil from 'apollo-react-icons/Pencil';
 import { useProtContext } from '../ProtocolContext';
 
 import { toBase64 } from '../../../../utils/utilFunction';
-import { setSaveEnabled } from '../protocolSlice';
 import constant from './constants';
 import './ImageUploader.scss';
 
 function ImageUploader({ lineID, content, edit }) {
   const { supportedFileType } = constant;
-  const dispatch = useDispatch();
   const [img, setImg] = useState(null);
   const [imgBkp, setImgBkp] = useState(null);
   const [value, setValue] = useState([]);
   const [isEdit, setIsEdit] = useState(true);
   const [showEditBtn, setShowEditBtn] = useState(false);
   const [showDltCnfrm, setShowDltCnfrm] = useState(false);
-  const { dispatchSectionEvent } = useProtContext();
+  const { dispatchSectionEvent, setSaveEnabled } = useProtContext();
 
   const handleDelete = (e) => {
     e.stopPropagation();
@@ -51,7 +48,7 @@ function ImageUploader({ lineID, content, edit }) {
     updateImageInContext(true, img);
     setShowEditBtn(false);
     setIsEdit(false);
-    dispatch(setSaveEnabled(true));
+    setSaveEnabled(true);
   };
 
   const getBase64image = async (file) => {

@@ -54,7 +54,6 @@ export const protocolSlice = createSlice({
     },
     EnrichedApiValue: false,
     SOAData: {},
-    isSaveEnabled: false,
     sectionIndex: -1,
     labData: {
       data: [],
@@ -67,6 +66,7 @@ export const protocolSlice = createSlice({
   },
   dipaViewData: [],
   allDipaViewData: [],
+  enrichedData: {},
   discardValue: {
     isEdited: false,
     isDiscarded: false,
@@ -187,9 +187,7 @@ export const protocolSlice = createSlice({
     setLoader: (state, action) => {
       state.loader = action.payload;
     },
-    setSaveEnabled: (state, action) => {
-      state.isSaveEnabled = action.payload;
-    },
+
     getSectionIndex: (state, action) => {
       state.sectionIndex = action.payload;
     },
@@ -226,6 +224,9 @@ export const protocolSlice = createSlice({
     resetProtocolTocData: (state) => {
       state.protocolTocData = [];
     },
+    getEnrichedData: (state, action) => {
+      state.enrichedData = action.payload;
+    },
     updateSectionHeader: (state, action) => {
       const index = state.protocolTocData.data.findIndex(
         (x) => x.link_id === action.payload.linkId,
@@ -256,7 +257,6 @@ export const {
   getMetadataApiCall,
   getEnrichedValue,
   setSOAData,
-  setSaveEnabled,
   updateSectionResp,
   getSectionIndex,
   resetUpdateStatus,
@@ -274,6 +274,7 @@ export const {
   setActiveTOC,
   setDipaDataLoader,
   updateSectionHeader,
+  getEnrichedData,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -296,7 +297,6 @@ export const accordianMetaParam = (state) => state.protocol.accordianMetaParam;
 export const metadataApiCallValue = (state) =>
   state.protocol.metadataApiCallValue;
 export const EnrichedValue = (state) => state.protocol.EnrichedApiValue;
-export const isSaveEnabled = (state) => state.protocol.isSaveEnabled;
 export const SectionIndex = (state) => state.protocol.sectionIndex;
 export const Enrichedword = (state) => state.protocol.enrichedword;
 export const SOAData = (state) => state.protocol.SOAData;
@@ -307,4 +307,5 @@ export const allDipaViewData = (state) => state.protocol.allDipaViewData;
 export const discardDetails = (state) => state.protocol.discardValue;
 export const activeTOC = (state) => state.protocol.activeTOC;
 export const getLoader = (state) => state.protocol.loader;
+export const enrichedData = (state) => state.protocol.enrichedData;
 export default protocolSlice.reducer;

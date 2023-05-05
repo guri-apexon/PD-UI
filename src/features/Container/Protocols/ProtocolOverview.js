@@ -32,12 +32,12 @@ function ProtocolOverview({ data }) {
   };
   const renderConfidence = () => {
     if (iconStatus(data.status, data.qcStatus) === 'Digitization Complete') {
-      if (data?.digitizedConfidenceScore) {
+      if (data?.digitizedConfidenceInterval) {
         return (
           <DonutChart
             dropshadow
             className="chart"
-            percent={parseInt(data.digitizedConfidenceScore, 10)}
+            percent={parseInt(data.digitizedConfidenceInterval, 10)}
             subtitle="Confidence"
             tooltipTitle="Confidence Metrics"
             tooltipSubtitle="Based on historical performance"
@@ -47,8 +47,7 @@ function ProtocolOverview({ data }) {
       }
       return (
         <div className="digitization-progress">
-          Confidence score not available for Protocols uploaded before
-          {` ${process.env.REACT_APP_DATE_BEFORE_CONF}`}.
+          Confidence score is not available for this protocol.
         </div>
       );
     }

@@ -78,6 +78,7 @@ export function* protocolAsyn(action) {
           item.status = iconStatus(item.status, item.qcStatus);
           item.showMoreCalling = false;
           item.showMore = false;
+          item.wfMoreDataError = '';
           if (item.userUploadedFlag || item.userPrimaryRoleFlag) {
             myPorotocolsData.push(item);
           }
@@ -526,12 +527,23 @@ export function* fetchMoreWorkflow(action) {
 
     const newArr = protocols.map((item) => {
       if (item.id === docId) {
-        return {
-          ...item,
-          showMoreCalling: false,
-          showMore: true,
-          wfData: data.wfData,
-        };
+        if (data.wfData.length > 1) {
+          return {
+            ...item,
+            showMoreCalling: false,
+            showMore: true,
+            wfData: data.wfData,
+            wfMoreDataError: '',
+          };
+        } else {
+          return {
+            ...item,
+            showMoreCalling: false,
+            showMore: true,
+            wfData: data.wfData,
+            wfMoreDataError: 'No more data to display',
+          };
+        }
       }
       return item;
     });
