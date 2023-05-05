@@ -35,7 +35,6 @@ import protocolPageSlice, {
   setSectionLoader,
   TOCActive,
   setLoader,
-  setSaveEnabled,
   getSectionIndex,
   getLabData,
   setLabDataLoader,
@@ -435,15 +434,6 @@ describe(' ProtocolSlice Test Suite', () => {
         payload: false,
       }),
     ).toEqual({ ...initialState, loader: false });
-  });
-
-  test('setSaveEnabled', () => {
-    expect(
-      protocolPageSlice(initialState, {
-        type: setSaveEnabled.type,
-        payload: false,
-      }),
-    ).toEqual({ ...initialState, isSaveEnabled: false });
   });
 
   test('getSectionIndex', () => {

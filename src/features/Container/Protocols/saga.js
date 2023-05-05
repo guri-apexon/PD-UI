@@ -42,6 +42,7 @@ import {
   setWorkFlowSubmitButton,
   setDipaDataLoader,
   updateSectionHeader,
+  getEnrichedData,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -440,11 +441,22 @@ export function* getProtocolTocDataResult(action) {
         success: true,
         data: result.data[0],
       };
+      let enrichedData = {};
+      result?.data[2]?.forEach((item) => {
+        if (Object.keys(item)[0] !== '')
+          enrichedData = { ...enrichedData, ...item };
+      });
+
+      const enrichedContent = {
+        success: true,
+        data: enrichedData,
+      };
       const tocIsactive = Array(header.data.length).fill(false);
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
       yield put(getSectionIndex(action.payload.index));
       yield put(setLoader(false));
+      yield put(getEnrichedData(enrichedContent));
     } else {
       // eslint-disable-next-line no-lonely-if
       yield put(

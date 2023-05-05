@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import Button from 'apollo-react/components/Button';
-import Pagination from 'apollo-react/components/Pagination';
+import Pagination from 'apollo-react/components/Pagination/Pagination';
 import PropTypes from 'prop-types';
 import PlusIcon from 'apollo-react-icons/Plus';
 import Tooltip from 'apollo-react/components/Tooltip';
@@ -27,6 +27,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   const pdfDirectory = 'WorkingTempDirectory\\';
   const [fileType, setFileType] = useState('');
   const { documentFilePath, protocol, fileName } = protocolAllItems.data;
+  const [showPagination, setShowPagination] = useState(true);
 
   const onDocumentLoadSuccess = ({ numPages }) => {
     setNumPages(numPages);
@@ -88,6 +89,12 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   }, [page]);
 
   useEffect(() => {
+    if (pageRight - 1 === currentPage) {
+      setShowPagination(false);
+      setTimeout(() => {
+        setShowPagination(true);
+      });
+    }
     if (refs && refs[currentPage]?.current) {
       refs[currentPage].current.scrollIntoView({ behavior: 'instant' });
     }
@@ -209,40 +216,46 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
           onLoadSuccess={onDocumentLoadSuccess}
           onKeyDown={(e) => handleKeyDown(e)}
         >
-          <Page pageNumber={currentPage + 1} scale={pageScale} />
+          <Page
+            pageNumber={currentPage + 1}
+            scale={pageScale}
+            renderAnnotationLayer={false}
+          />
         </Document>
       )}
-      <div className="sticky-bottom pdf-pagination">
-        <Pagination
-          count={numPages}
-          rowsPerPage={1}
-          page={currentPage}
-          onChangePage={(pg) => {
-            setPage(pg);
-            handlePaginationPage(pg + 1);
-          }}
-        />
-        <div className="zoom-controls">
-          <Button
-            size="small"
-            className="buttonStyles"
-            data-testId="zoomIn"
-            disabled={pageScale >= 3.0}
-            onClick={handleZoomIn}
-          >
-            <PlusIcon />
-          </Button>
-          <Button
-            size="small"
-            className="buttonStyles"
-            data-testId="zoomOut"
-            disabled={pageScale <= 0.7}
-            onClick={handleZoomOut}
-          >
-            <Minus />
-          </Button>
+      {showPagination && (
+        <div className="sticky-bottom pdf-pagination">
+          <Pagination
+            count={numPages}
+            rowsPerPage={1}
+            page={currentPage}
+            onChangePage={(pg) => {
+              setPage(pg);
+              handlePaginationPage(pg + 1);
+            }}
+          />
+          <div className="zoom-controls">
+            <Button
+              size="small"
+              className="buttonStyles"
+              data-testId="zoomIn"
+              disabled={pageScale >= 3.0}
+              onClick={handleZoomIn}
+            >
+              <PlusIcon />
+            </Button>
+            <Button
+              size="small"
+              className="buttonStyles"
+              data-testId="zoomOut"
+              disabled={pageScale <= 0.7}
+              onClick={handleZoomOut}
+            >
+              <Minus />
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

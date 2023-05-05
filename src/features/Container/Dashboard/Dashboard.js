@@ -27,6 +27,7 @@ function Dashboard() {
 
   useEffect(() => {
     dispatch({ type: 'TOGGLE_ADDPROTOCOL_MODAL', payload: false });
+    // eslint-disable-next-line
   }, []);
   return (
     <div className="dashboard-parent" style={{ padding: 20 }}>
