@@ -7,6 +7,7 @@ import Card from 'apollo-react/components/Card/Card';
 import TextField from 'apollo-react/components/TextField';
 import Save from 'apollo-react-icons/Save';
 import Pencil from 'apollo-react-icons/Pencil';
+import Plus from 'apollo-react-icons/Plus';
 import FilterIcon from 'apollo-react-icons/Filter';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import Table from 'apollo-react/components/Table';
@@ -19,6 +20,7 @@ import {
   labDataSelector,
   setLabDataSuccess,
   discardDetails,
+  resetLabDataCreated,
 } from '../protocolSlice';
 import DeleteRow from './Modal/DeleteRow';
 import LABDATA_CONSTANTS from './constants';
@@ -347,6 +349,26 @@ function LabData({ docId }) {
     setRowData(updatedRows);
   };
 
+  const handleAdd = (id, bool) => {
+    if (Object.keys(editedRow).length === 0) {
+      const newArr = [...rowData];
+      const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
+      addRow.doc_id = docId;
+      addRow.table_roi_id = rowData[0].table_roi_id;
+      addRow.id = uuidv4();
+      addRow.isSaved = false;
+      if (bool) {
+        const index = rowData.findIndex((ele) => ele.id === id);
+        newArr.splice(index + 1, 0, addRow);
+      } else {
+        newArr.push(addRow);
+      }
+      setRowData(newArr);
+      setEditedRow(addRow);
+      globalEditedRow = { ...addRow };
+    }
+  };
+
   useEffect(() => {
     if (labData.data.length > 0) {
       setRowData(
@@ -362,24 +384,18 @@ function LabData({ docId }) {
       getLabData();
       dispatch(setLabDataSuccess(false));
     }
+
+    if (labData.created && labData.data.length > 0) {
+      const obj = { ...labData.data[0] };
+      obj.isSaved = false;
+      obj.request_type = LABDATA_CONSTANTS.REQUEST_TYPE.UPDATE;
+      setEditedRow(obj);
+      globalEditedRow = obj;
+      setRowId(obj.id);
+      dispatch(resetLabDataCreated(false));
+    }
     // eslint-disable-next-line
   }, [labData]);
-
-  const handleAdd = (id) => {
-    if (Object.keys(editedRow).length === 0) {
-      const newArr = [...rowData];
-      const index = rowData.findIndex((ele) => ele.id === id);
-      const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
-      addRow.doc_id = docId;
-      addRow.table_roi_id = rowData[0].table_roi_id;
-      addRow.id = uuidv4();
-      addRow.isSaved = false;
-      newArr.splice(index + 1, 0, addRow);
-      setRowData(newArr);
-      setEditedRow(addRow);
-      globalEditedRow = { ...addRow };
-    }
-  };
 
   const clearFilter = () => {
     if (tableRef?.current) {
@@ -393,6 +409,7 @@ function LabData({ docId }) {
       );
     }
   };
+
   const onDiscardClick = () => {
     if (requestedRoute !== '') {
       setShowDiscardConfirm(false);
@@ -434,6 +451,24 @@ function LabData({ docId }) {
       },
     });
   };
+
+  const createLabDataTable = () => {
+    if (rowData.length === 0) {
+      dispatch({
+        type: 'CREATE_LABDATA_TABLE',
+        payload: {
+          docId,
+        },
+      });
+    } else {
+      handleAdd(null, true);
+    }
+  };
+
+  const len = rowData.filter(
+    (obj) => obj.request_type !== LABDATA_CONSTANTS.REQUEST_TYPE.DELETE,
+  ).length;
+
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -446,9 +481,7 @@ function LabData({ docId }) {
         data-testid="lab-table-container"
       >
         <div className="panel-heading">Lab Data</div>
-        <div
-          className={`${isEdit && rowData.length === 0 ? 'no-data-table' : ''}`}
-        >
+        <div className={`${isEdit && len === 0 ? 'no-data-table' : ''}`}>
           <Table
             isLoading={labData.loading}
             ref={tableRef}
@@ -475,9 +508,7 @@ function LabData({ docId }) {
             rowsPerPageOptions={[5, 10, 15, 'All']}
             tablePaginationProps={{
               labelDisplayedRows: ({ from, to, count }) =>
-                `${
-                  count === 1 ? 'Lab Data' : 'Lab Datas'
-                } ${from}-${to} of ${count}`,
+                `Lab Data ${from}-${to} of ${count}`,
               truncate: true,
             }}
             // eslint-disable-next-line
@@ -492,6 +523,15 @@ function LabData({ docId }) {
               />
             )}
           />
+          {isEdit && len === 0 && (
+            <Button
+              icon={<Plus />}
+              className="addrow-button"
+              onClick={createLabDataTable}
+            >
+              Add Row
+            </Button>
+          )}
         </div>
         <DiscardModal
           classes={classes}
