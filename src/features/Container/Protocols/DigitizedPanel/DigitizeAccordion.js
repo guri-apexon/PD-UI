@@ -30,7 +30,6 @@ import ImageUploader from '../CustomComponents/ImageUploader';
 import DisplayTable from '../CustomComponents/PDTable/Components/Table';
 import HeaderConstant from '../CustomComponents/constants';
 import MedicalTerm from '../EnrichedContent/MedicalTerm';
-import Preferredterm from '../EnrichedContent/PreferredTerm';
 import { useProtContext } from '../ProtocolContext';
 import {
   SectionIndex,
@@ -450,34 +449,32 @@ function DigitizeAccordion({
         preferred_term: 'ABC123',
       },
     };
-    if (e.target.className === 'enriched-txt') {
-      setPreferredTarget(null);
-      setSelectedPreferredTerm(null);
-      setPreferredTerms(null);
-      setEnrichedTarget(e.target);
-      setType('EnrichedText');
-      setSelectedEnrichedText(e.target.innerText);
-      setClinicalTerms(obj);
+    if (
+      e.target.className === 'enriched-txt' ||
+      e.target.className === 'Preferred-txt'
+    ) {
+      if (e.target.className === 'enriched-txt') {
+        setPreferredTarget(null);
+        setSelectedPreferredTerm(null);
+        setPreferredTerms(null);
+        setEnrichedTarget(e.target);
+        setType('EnrichedText');
+        setSelectedEnrichedText(e.target.innerText);
+        setClinicalTerms(obj);
+      } else if (e.target.className === 'Preferred-txt') {
+        setEnrichedTarget(null);
+        setSelectedEnrichedText(null);
+        setClinicalTerms(null);
+        setPreferredTarget(e.target);
+        setType('PreferredTerm');
+        setSelectedPreferredTerm(e.target.innerText);
+        setPreferredTerms(preferredTermsObj);
+      }
       const modalOpened = document.createElement('span');
       modalOpened.classList.add('modal-opened');
       document.body.appendChild(modalOpened);
       modalOpened.addEventListener('click', () => {
         setEnrichedTarget(null);
-        document.body.removeChild(modalOpened);
-      });
-    } else if (e.target.className === 'Preferred-txt') {
-      setEnrichedTarget(null);
-      setSelectedEnrichedText(null);
-      setClinicalTerms(null);
-      setPreferredTarget(e.target);
-      setType('PreferredTerm');
-      setSelectedPreferredTerm(e.target.innerText);
-      setPreferredTerms(preferredTermsObj);
-      console.log('SHUBHAM1', e.target.innerText);
-      const modalOpened = document.createElement('span');
-      modalOpened.classList.add('modal-opened');
-      document.body.appendChild(modalOpened);
-      modalOpened.addEventListener('click', () => {
         setPreferredTarget(null);
         document.body.removeChild(modalOpened);
       });
@@ -698,7 +695,8 @@ function DigitizeAccordion({
     let newContent = content;
     if (globalPreferredTerm || showPrefferedTerm) {
       if (!isEmpty(preferredTerms)) {
-        newContent = createPreferredText(content, preferredTerms);
+        console.log('SHUBHAM1');
+        newContent = createPreferredText(newContent, preferredTerms);
       }
     }
     if (
@@ -706,8 +704,10 @@ function DigitizeAccordion({
       (rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM ||
         showEnrichedContent)
     ) {
-      newContent = createEnrichedText(content, enrichedContent?.data);
+      newContent = createEnrichedText(newContent, enrichedContent?.data);
     }
+
+    console.log('SHUBHAM', newContent);
     newContent = createFullMarkup(newContent);
     return newContent;
   };

@@ -13,6 +13,7 @@ import { Enrichedword, sectionDetails } from '../protocolSlice';
 import './MedicalTerm.scss';
 
 function AddClinicalTerm({ docId, linkId }) {
+  // header_link_id
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const [selectedText, setSelectedText] = useState('');
@@ -24,11 +25,26 @@ function AddClinicalTerm({ docId, linkId }) {
   const [isTextFieldEmpty, setIsTextFieldEmpty] = useState(true);
   const sectionHeaderDetails = useSelector(sectionDetails);
   const { data: sectionData } = sectionHeaderDetails;
+  let headerLinkId;
 
   useEffect(() => {
     const selected = window.getSelection().toString();
     setSelectedText(selected);
     setIsTextSelected(selected.trim() !== '');
+    if (wordSelector?.word) {
+      let level;
+      if (wordSelector?.word.file_section_level === 1) {
+        level = 'link_id';
+      } else {
+        // eslint-disable-next-line
+        level = 'link_id_level' + wordSelector?.word.file_section_level;
+      }
+
+      headerLinkId = wordSelector?.word?.font_info[level];
+      // console.log('SHUBHAM1234', wordSelector?.word?.font_info[level]);
+      // console.log('SHUBHAM1234', wordSelector?.word);
+      // console.log('SHUBHAM123', wordSelector?.word.file_section_level);
+    }
   }, [wordSelector]);
 
   const handleOpen = (selectedText) => {
@@ -111,6 +127,18 @@ function AddClinicalTerm({ docId, linkId }) {
     );
     const clinicalTermsData = result[0]?.clinical_terms;
     let tagData;
+
+    if (wordSelector?.word) {
+      let level;
+      if (wordSelector?.word.file_section_level === 1) {
+        level = 'link_id';
+      } else {
+        // eslint-disable-next-line
+        level = 'link_id_level' + wordSelector?.word.file_section_level;
+      }
+
+      headerLinkId = wordSelector?.word?.font_info[level];
+    }
     if (clinicalTermsData && selectedText) {
       const keys = Object.keys(clinicalTermsData);
       if (keys.includes(selectedText)) {
@@ -163,6 +191,7 @@ function AddClinicalTerm({ docId, linkId }) {
         docId,
         linkId,
         data: tagData,
+        headerLinkId,
       },
     });
     setClinicalTerms('');

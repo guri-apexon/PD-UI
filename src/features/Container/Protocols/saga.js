@@ -425,7 +425,7 @@ export function* getProtocolTocDataResult(action) {
     payload: { docId },
   } = action;
   const userId = yield getState();
-  const URL = `${BASE_URL}${Apis.API_CONFIGURABLE}?aidoc_id=${docId}&user_id=${userId}&link_level=6&toc=1`;
+  const URL = `${BASE_URL}${Apis.API_CONFIGURABLE}?aidoc_id=${docId}&user_id=${userId}&link_level=6&toc=1&config_variables=preferred_terms`;
   const config = {
     url: URL,
     method: 'GET',
@@ -706,9 +706,9 @@ export function* setEnrichedAPI(action) {
 
 export function* saveEnrichedAPI(action) {
   const {
-    payload: { docId, linkId, data, opType },
+    payload: { docId, linkId, data, opType, headerLinkId },
   } = action;
-  let url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`;
+  let url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}&header_link_id=${headerLinkId}`;
   if (opType) url = `${url}&operation_type=${opType}`;
   const config = {
     url,
