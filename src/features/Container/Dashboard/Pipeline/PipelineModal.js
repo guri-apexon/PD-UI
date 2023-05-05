@@ -9,7 +9,7 @@ import { serviceStatus } from './data';
 
 import './pipelineModal.scss';
 
-function PipelineModal({ wfData = [], fetchMoreData, showMore }) {
+function PipelineModal({ wfData = [], fetchMoreData, showMore, error }) {
   const [workflowArray, setWorkflowArr] = useState([]);
 
   const covertToFormat = (data) => {
@@ -83,6 +83,7 @@ function PipelineModal({ wfData = [], fetchMoreData, showMore }) {
   return (
     <div className="show-running-status">
       <div>{workflowArray.length && handlePipeline()}</div>
+      <div className="wf-more-error">{error}</div>
       {!showMore && (
         <Button
           className="running-see-more"
@@ -99,5 +100,6 @@ PipelineModal.propTypes = {
   wfData: PropTypes.isRequired,
   fetchMoreData: PropTypes.isRequired,
   showMore: PropTypes.isRequired,
+  error: PropTypes.isRequired,
 };
 export default PipelineModal;

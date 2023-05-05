@@ -1,7 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Lock from 'apollo-react-icons/Lock';
 import Plus from 'apollo-react-icons/Plus';
-import moment from 'moment';
 import Trash from 'apollo-react-icons/Trash';
 import Undo from 'apollo-react-icons/Undo';
 import Accordion from 'apollo-react/components/Accordion';
@@ -11,6 +10,7 @@ import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import IconButton from 'apollo-react/components/IconButton';
 import Typography from 'apollo-react/components/Typography';
 import { isEmpty } from 'lodash';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,13 +34,14 @@ import { useProtContext } from '../ProtocolContext';
 import {
   SectionIndex,
   TOCActive,
+  activeTOC,
   discardDetails,
   resetUpdateStatus,
   sectionDetails,
   sectionLockDetails,
   updateSectionData,
   setActiveTOC,
-  activeTOC,
+  enrichedData,
 } from '../protocolSlice';
 import AddSection from './AddSection';
 import DeleteModal from './Modals/DeleteModal';
@@ -56,7 +57,7 @@ import {
 } from '../../../../AppConstant/AppConstant';
 import { userId } from '../../../../store/userDetails';
 import ActionMenu from './ActionMenu';
-import { scrollToLinkandReference, onBeforeUnload } from './utils';
+import { onBeforeUnload, scrollToLinkandReference } from './utils';
 
 const styles = {
   modal: {
@@ -87,7 +88,6 @@ function DigitizeAccordion({
   const dispatch = useDispatch();
   const { headerLevel1 } = HeaderConstant;
   const history = useHistory();
-
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sectionDataArr, setSectionDataArr] = useState([]);
@@ -105,6 +105,7 @@ function DigitizeAccordion({
   const [discardData, setDiscardData] = useState({});
   const userIdSelector = useSelector(userId);
   const activeTree = useSelector(activeTOC);
+  const enrichedContent = useSelector(enrichedData);
 
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
@@ -122,6 +123,8 @@ function DigitizeAccordion({
   const lockDetails = useSelector(sectionLockDetails);
   const [requestedRoute, setRequestedRoute] = useState('');
   const [addSectionIndex, setAddSectionIndex] = useState(-1);
+  const [isShown, setIsShown] = useState(false);
+
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
@@ -581,6 +584,7 @@ function DigitizeAccordion({
 
   useEffect(() => {
     if (expanded || dataExist) {
+      setIsShown(false);
       const { sectionResponse, data } = sectionHeaderDetails;
 
       if (sectionResponse) {
@@ -653,7 +657,7 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content, clinicalTerms, preferredTerms) => {
+  const getEnrichedText = (content, preferredTerms) => {
     let newContent = content;
     if (globalPreferredTerm || showPrefferedTerm) {
       if (!isEmpty(preferredTerms)) {
@@ -661,11 +665,11 @@ function DigitizeAccordion({
       }
     }
     if (
-      !isEmpty(clinicalTerms) &&
+      !isEmpty(enrichedContent?.data) &&
       (rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM ||
         showEnrichedContent)
     ) {
-      newContent = createEnrichedText(content, clinicalTerms);
+      newContent = createEnrichedText(content, enrichedContent?.data);
     }
     newContent = createFullMarkup(newContent);
     return newContent;
@@ -696,7 +700,6 @@ function DigitizeAccordion({
     );
   };
 
-  const [isShown, setIsShown] = useState(false);
   const [isModal, setIsModal] = useState(false);
 
   const handleAddSection = (e, flag, index) => {
@@ -772,8 +775,8 @@ function DigitizeAccordion({
   return (
     // eslint-disable-next-line
     <div
-      onMouseOver={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
+      onMouseEnter={() => !expanded && setIsShown(true)}
+      onMouseLeave={() => !expanded && setIsShown(false)}
       className={
         primaryRole &&
         // eslint-disable-next-line
@@ -871,6 +874,7 @@ function DigitizeAccordion({
                     setRequestedRoute={setRequestedRoute}
                   />
                 ) : (
+                  // eslint-disable-next-line
                   <div className="readable-content-wrapper">
                     <div className="readable-content">
                       {sectionDataArr?.map((section) => {
@@ -894,6 +898,13 @@ function DigitizeAccordion({
                               isPreferredTerm={
                                 globalPreferredTerm || showPrefferedTerm
                               }
+                              clinicalTerms={section?.clinical_terms}
+                              isClinicalTerms={
+                                showEnrichedContent ||
+                                rightBladeValue ===
+                                  PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+                              }
+                              handleEnrichedClick={handleEnrichedClick}
                             />
                           );
                         } else if (section.type === CONTENT_TYPE.IMAGE) {
@@ -914,14 +925,13 @@ function DigitizeAccordion({
                                 key={React.key}
                                 className="supContent"
                                 onClick={(e) =>
-                                  handleEnrichedClick(e, section.clinical_terms)
+                                  handleEnrichedClick(e, enrichedContent?.data)
                                 }
                               >
                                 <sup>
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[0],
-                                      section?.clinical_terms,
                                       section?.preferred_terms,
                                     )}
                                   />
@@ -945,7 +955,6 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[1],
-                                      section?.clinical_terms,
                                       section?.preferred_terms,
                                     )}
                                   />
@@ -974,14 +983,13 @@ function DigitizeAccordion({
                                     onClick={(e) =>
                                       handleEnrichedClick(
                                         e,
-                                        section.clinical_terms,
+                                        enrichedContent?.data,
                                       )
                                     }
                                   >
                                     <SanitizeHTML
                                       html={getEnrichedText(
                                         section.content,
-                                        section.clinical_terms,
                                         section?.preferred_terms,
                                       )}
                                     />

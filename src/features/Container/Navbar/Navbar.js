@@ -15,6 +15,25 @@ import { baseUrlSSO } from '../../../utils/api';
 import './Navbar.scss';
 import Setting from './Setting/Setting';
 import { discardDetails } from '../Protocols/protocolSlice';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
+
+const deleteAllCookie = () => {
+  cookies.remove('api_token');
+  cookies.remove('access_token_dev');
+  cookies.remove('refresh_token_dev');
+  cookies.remove('access_token_test');
+  cookies.remove('refresh_token_test');
+  cookies.remove('access_token_svt');
+  cookies.remove('refresh_token_svt');
+  cookies.remove('access_token_uat');
+  cookies.remove('refresh_token_uat');
+  cookies.remove('access_token_uat1');
+  cookies.remove('refresh_token_uat1');
+  cookies.remove('access_token');
+  cookies.remove('refresh_token');
+};
 
 const setMenuItems = (value) => {
   switch (value) {
@@ -32,7 +51,7 @@ const setMenuItems = (value) => {
 };
 
 const onLogoutClick = () => {
-  document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  deleteAllCookie();
   window.location.href = `${baseUrlSSO}/logout_session`;
 };
 
