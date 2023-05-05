@@ -531,10 +531,10 @@ export function* fetchFileStream(action) {
 
 export function* MetaDataVariable(action) {
   const {
-    payload: { op, docId },
+    payload: { op, docId, fieldName },
   } = action;
   const config = {
-    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
+    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}&fieldName=${fieldName}`,
     method: 'GET',
     checkAuth: true,
     headers: jsonContentHeader,
