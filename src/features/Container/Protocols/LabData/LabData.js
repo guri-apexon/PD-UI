@@ -505,9 +505,7 @@ function LabData({ docId }) {
             rowsPerPageOptions={[5, 10, 15, 'All']}
             tablePaginationProps={{
               labelDisplayedRows: ({ from, to, count }) =>
-                `${
-                  count === 1 ? 'Lab Data' : 'Lab Datas'
-                } ${from}-${to} of ${count}`,
+                `Lab Data ${from}-${to} of ${count}`,
               truncate: true,
             }}
             // eslint-disable-next-line
