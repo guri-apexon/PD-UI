@@ -43,6 +43,7 @@ import {
   setDipaDataLoader,
   updateSectionHeader,
   getEnrichedData,
+  setActiveTOC,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -689,6 +690,7 @@ export function* RightBladeValue(action) {
     const TocActiveList = yield select(TOCActive);
     const TocFalse = new Array(TocActiveList.length).fill(false);
     yield put(getTOCActive(TocFalse));
+    yield put(setActiveTOC([]));
   }
   yield put(getRightBladeValue(action.payload.name));
 }

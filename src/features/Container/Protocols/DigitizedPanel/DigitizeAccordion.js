@@ -818,7 +818,7 @@ function DigitizeAccordion({
               className="section-actions"
               onClick={(e) => e.stopPropagation()}
             >
-              {showedit && (
+              {showedit && !showLoader && (
                 <>
                   <IconButton disabled={showLoader} data-testId="lockIcon">
                     <Lock />

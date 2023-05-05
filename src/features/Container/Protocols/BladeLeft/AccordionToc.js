@@ -2,8 +2,12 @@ import PropTypes from 'prop-types';
 import TreeItem from 'apollo-react/components/TreeItem';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
 import ChevronDown from 'apollo-react-icons/ChevronDown';
+import Tooltip from 'apollo-react/components/Tooltip';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
-import { createFullMarkup } from '../../../../utils/utilFunction';
+import {
+  createFullMarkup,
+  removeHtmlTags,
+} from '../../../../utils/utilFunction';
 
 function AccordionToc({
   level,
@@ -19,22 +23,27 @@ function AccordionToc({
   };
 
   return (
-    <TreeItem
-      key={level.link_id}
-      label={
-        <SanitizeHTML html={createFullMarkup(level?.source_file_section)} />
-      }
-      onClick={handleClick}
-      nodeId={level.link_id}
-      className={
-        expanded.includes(level.link_id) ? 'label-bold' : 'label-lighter'
-      }
-      icon={
-        expanded.includes(level.link_id) ? <ChevronDown /> : <ChevronRight />
-      }
+    <Tooltip
+      className="tooltip"
+      title={removeHtmlTags(level.source_file_section)}
     >
-      {subAccComponent}
-    </TreeItem>
+      <TreeItem
+        key={level.link_id}
+        label={
+          <SanitizeHTML html={createFullMarkup(level?.source_file_section)} />
+        }
+        onClick={handleClick}
+        nodeId={level.link_id}
+        className={
+          expanded.includes(level.link_id) ? 'label-bold' : 'label-lighter'
+        }
+        icon={
+          expanded.includes(level.link_id) ? <ChevronDown /> : <ChevronRight />
+        }
+      >
+        {subAccComponent}
+      </TreeItem>
+    </Tooltip>
   );
 }
 
