@@ -20,6 +20,7 @@ import {
   labDataSelector,
   setLabDataSuccess,
   discardDetails,
+  resetLabDataCreated,
 } from '../protocolSlice';
 import DeleteRow from './Modal/DeleteRow';
 import LABDATA_CONSTANTS from './constants';
@@ -387,9 +388,11 @@ function LabData({ docId }) {
     if (labData.created && labData.data.length > 0) {
       const obj = { ...labData.data[0] };
       obj.isSaved = false;
+      obj.request_type = LABDATA_CONSTANTS.REQUEST_TYPE.UPDATE;
       setEditedRow(obj);
       globalEditedRow = obj;
       setRowId(obj.id);
+      dispatch(resetLabDataCreated(false));
     }
     // eslint-disable-next-line
   }, [labData]);
