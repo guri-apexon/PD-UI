@@ -351,6 +351,7 @@ describe('DisplayTable component', () => {
   });
 
   test('Drag and drop capabilities', () => {
+    const handleEnrichedClick = jest.fn();
     const screen = render(
       <DisplayTable
         data={data}
@@ -360,6 +361,7 @@ describe('DisplayTable component', () => {
         colWidth={50}
         footNoteData={[]}
         setFootnoteData={setFootnoteData}
+        handleEnrichedClick={handleEnrichedClick}
       />,
     );
 

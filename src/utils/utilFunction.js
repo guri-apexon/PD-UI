@@ -601,3 +601,10 @@ export const getSaveSectionPayload = (sectionContent, linkId) => {
     .map((obj) => createReturnObj(obj, linkId));
   return req;
 };
+
+export const removeDomElement = (className) => {
+  const elementsToRemove = document.querySelectorAll(className);
+  elementsToRemove.forEach((element) => {
+    element.remove();
+  });
+};
