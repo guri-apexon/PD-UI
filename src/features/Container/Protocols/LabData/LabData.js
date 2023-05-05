@@ -348,7 +348,7 @@ function LabData({ docId }) {
     setRowData(updatedRows);
   };
 
-  const handleAdd = (id) => {
+  const handleAdd = (id, bool) => {
     if (Object.keys(editedRow).length === 0) {
       const newArr = [...rowData];
       const addRow = LABDATA_CONSTANTS.ADD_ROW_LAB_DATA;
@@ -356,8 +356,12 @@ function LabData({ docId }) {
       addRow.table_roi_id = rowData[0].table_roi_id;
       addRow.id = uuidv4();
       addRow.isSaved = false;
-      const index = rowData.findIndex((ele) => ele.id === id);
-      newArr.splice(index + 1, 0, addRow);
+      if (bool) {
+        const index = rowData.findIndex((ele) => ele.id === id);
+        newArr.splice(index + 1, 0, addRow);
+      } else {
+        newArr.push(addRow);
+      }
       setRowData(newArr);
       setEditedRow(addRow);
       globalEditedRow = { ...addRow };
@@ -446,13 +450,21 @@ function LabData({ docId }) {
   };
 
   const createLabDataTable = () => {
-    dispatch({
-      type: 'CREATE_LABDATA_TABLE',
-      payload: {
-        docId,
-      },
-    });
+    if (rowData.length === 0) {
+      dispatch({
+        type: 'CREATE_LABDATA_TABLE',
+        payload: {
+          docId,
+        },
+      });
+    } else {
+      handleAdd(null, true);
+    }
   };
+
+  const len = rowData.filter(
+    (obj) => obj.request_type !== LABDATA_CONSTANTS.REQUEST_TYPE.DELETE,
+  ).length;
 
   return (
     <Card
@@ -466,9 +478,7 @@ function LabData({ docId }) {
         data-testid="lab-table-container"
       >
         <div className="panel-heading">Lab Data</div>
-        <div
-          className={`${isEdit && rowData.length === 0 ? 'no-data-table' : ''}`}
-        >
+        <div className={`${isEdit && len === 0 ? 'no-data-table' : ''}`}>
           <Table
             isLoading={labData.loading}
             ref={tableRef}
@@ -512,7 +522,7 @@ function LabData({ docId }) {
               />
             )}
           />
-          {isEdit && rowData.length === 0 && (
+          {isEdit && len === 0 && (
             <Button
               icon={<Plus />}
               className="addrow-button"
