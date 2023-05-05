@@ -32,6 +32,7 @@ import {
   getLabData,
   setLabDataLoader,
   setLabDataSuccess,
+  setLabDataCreated,
   setLoader,
   resetSectionData,
   setSectionLockDetails,
@@ -875,6 +876,28 @@ export function* UpdateLabData(action) {
   }
 }
 
+export function* handleCreateLabDataTable(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.CREATE_LABDATA_TABLE}`,
+    method: 'POST',
+    data: {
+      data: { doc_id: docId },
+    },
+  };
+  try {
+    const response = yield call(httpCall, config);
+    yield put(setLabDataCreated({ data: response.data, status: true }));
+    yield put(setLabDataLoader(false));
+  } catch (err) {
+    toast.error('Table creation failed');
+    yield put(setLabDataCreated({ data: [], status: true }));
+    yield put(setLabDataLoader(false));
+  }
+}
+
 export function* getDerivedDataById(action) {
   const {
     payload: { docId },
@@ -1052,6 +1075,7 @@ function* watchProtocolViews() {
   yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
   yield takeEvery('GET_DOC_SECTION_LOCK', getDocumentSectionLock);
   yield takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory);
+  yield takeEvery('CREATE_LABDATA_TABLE', handleCreateLabDataTable);
 }
 
 // notice how we now only export the rootSaga
