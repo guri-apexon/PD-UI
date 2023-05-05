@@ -293,6 +293,7 @@ function MetaData({ docId }) {
       payload: {
         op: 'metadata',
         docId,
+        fieldName: '',
       },
     });
     dispatch({
@@ -300,6 +301,7 @@ function MetaData({ docId }) {
       payload: {
         op: 'metaparam',
         docId,
+        fieldName: '',
       },
     });
   };
