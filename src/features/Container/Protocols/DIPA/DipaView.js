@@ -39,7 +39,7 @@ function DipaView({
   const [openModal, setOpenModal] = useState(false);
   const [sections, setSections] = useState([]);
   const [dataResponse, setDataResponse] = useState([]);
-  const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState({});
   const dipaViewSelector = useSelector(dipaViewData);
   const dipaDataSelector = useSelector(allDipaViewData);
   const lockDetails = useSelector(sectionLockDetails);
