@@ -4,4 +4,4 @@ const getKeyFromEnrichText = (term) => {
   if (term === 'ontology') return 'ontology';
   return '';
 };
-export default { getKeyFromEnrichText };
+export default getKeyFromEnrichText;
