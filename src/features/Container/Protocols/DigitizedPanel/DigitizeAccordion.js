@@ -22,6 +22,7 @@ import {
   createFullMarkup,
   createPreferredText,
   getSaveSectionPayload,
+  removeDomElement,
 } from '../../../../utils/utilFunction';
 import Loader from '../../../Components/Loader/Loader';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
@@ -57,7 +58,7 @@ import {
 } from '../../../../AppConstant/AppConstant';
 import { userId } from '../../../../store/userDetails';
 import ActionMenu from './ActionMenu';
-import { onBeforeUnload, scrollToLinkandReference } from './utils';
+import { onBeforeUnload, scrollToLinkandReference, tablePopup } from './utils';
 
 const styles = {
   modal: {
@@ -434,9 +435,15 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [tocActive]);
 
-  const handleEnrichedClick = (e, obj) => {
+  const handleEnrichedClick = (e, obj, type) => {
     if (e.target.className === 'enriched-txt') {
-      setEnrichedTarget(e.target);
+      if (type === CONTENT_TYPE.TABLE) {
+        tablePopup(e, (event) => {
+          setEnrichedTarget(event.target);
+        });
+      } else {
+        setEnrichedTarget(e.target);
+      }
       setSelectedEnrichedText(e.target.innerText);
       setClinicalTerms(obj);
       const modalOpened = document.createElement('span');
@@ -445,6 +452,7 @@ function DigitizeAccordion({
       modalOpened.addEventListener('click', () => {
         setEnrichedTarget(null);
         document.body.removeChild(modalOpened);
+        removeDomElement('.table-enriched-place-holder');
       });
     } else {
       setEnrichedTarget(null);
@@ -641,7 +649,7 @@ function DigitizeAccordion({
       }
     }
     // eslint-disable-next-line
-  }, [sectionHeaderDetails]);
+  }, [sectionHeaderDetails, expanded]);
 
   useEffect(() => {
     if (updated && item.link_id === selectedSection.link_id) {
@@ -818,7 +826,7 @@ function DigitizeAccordion({
               className="section-actions"
               onClick={(e) => e.stopPropagation()}
             >
-              {showedit && (
+              {showedit && !showLoader && (
                 <>
                   <IconButton disabled={showLoader} data-testId="lockIcon">
                     <Lock />

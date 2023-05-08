@@ -168,7 +168,7 @@ function App() {
         buttonProps={[{}, { label: 'OK', onClick: refreshTokens }]}
       >
         <p>
-          Applicaiton is about to timeout due to inactivity. Press OK to
+          Application is about to timeout due to inactivity. Press OK to
           continue.
         </p>
       </Modal>

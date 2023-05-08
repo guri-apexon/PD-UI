@@ -1,6 +1,7 @@
 /* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import '../Protocols/protocols.scss';
 
 import Breadcrumbs from 'apollo-react/components/Breadcrumbs';
 import Tab from 'apollo-react/components/Tab';
@@ -13,7 +14,6 @@ import QCProtocolView from './QCProtocolView/QCProtocolView';
 import { userType } from '../../../store/userDetails';
 
 import './QC.scss';
-import '../Protocols/protocols.scss';
 
 function QCContainer() {
   const dispatch = useDispatch();
@@ -43,16 +43,16 @@ function QCContainer() {
     e.preventDefault();
   };
   /* istanbul ignore next */
-  const handleChangeTab = (event, value) => {
-    dispatch({
-      type: 'RESET_QC_DATA',
-    });
-    if (value !== 1) setValue(value);
-    if (value === 0) {
+  const handleChangeTab = (event, val) => {
+    if (val === 0) {
+      dispatch({
+        type: 'RESET_QC_DATA',
+      });
       setprotocolId('');
       setProtocolNumber('');
       setFilePath('');
     }
+    setValue(val);
   };
 
   const handleProtocolClick = ({ id, path, protocol }) => {
