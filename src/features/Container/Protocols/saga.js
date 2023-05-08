@@ -749,6 +749,9 @@ export function* saveEnrichedAPI(action) {
   }
 }
 
+export function* resetSOAData() {
+  yield put(setSOAData({}));
+}
 export function* getSOAData(action) {
   const {
     payload: { docId, operationValue },
@@ -760,13 +763,10 @@ export function* getSOAData(action) {
     method: 'GET',
     headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
   };
-  yield put(setLoader(true));
   const enrichedData = yield call(httpCall, config);
   if (enrichedData?.success) {
-    yield put(setLoader(false));
     yield put(setSOAData(enrichedData.data));
   } else {
-    yield put(setLoader(false));
     yield put(setSOAData({}));
     toast.error('Error While Updation');
   }
@@ -1091,6 +1091,7 @@ function* watchProtocolViews() {
   yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
   yield takeEvery('GET_DOC_SECTION_LOCK', getDocumentSectionLock);
   yield takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory);
+  yield takeLatest('RESET_SOA_DATA', resetSOAData);
   yield takeEvery('CREATE_LABDATA_TABLE', handleCreateLabDataTable);
 }
 
