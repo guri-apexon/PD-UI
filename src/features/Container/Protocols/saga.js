@@ -32,6 +32,7 @@ import {
   getLabData,
   setLabDataLoader,
   setLabDataSuccess,
+  setLabDataCreated,
   setLoader,
   resetSectionData,
   setSectionLockDetails,
@@ -43,6 +44,7 @@ import {
   setDipaDataLoader,
   updateSectionHeader,
   getEnrichedData,
+  setActiveTOC,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -531,10 +533,10 @@ export function* fetchFileStream(action) {
 
 export function* MetaDataVariable(action) {
   const {
-    payload: { op, docId },
+    payload: { op, docId, fieldName },
   } = action;
   const config = {
-    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}`,
+    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}&fieldName=${fieldName}`,
     method: 'GET',
     checkAuth: true,
     headers: jsonContentHeader,
@@ -689,6 +691,7 @@ export function* RightBladeValue(action) {
     const TocActiveList = yield select(TOCActive);
     const TocFalse = new Array(TocActiveList.length).fill(false);
     yield put(getTOCActive(TocFalse));
+    yield put(setActiveTOC([]));
   }
   yield put(getRightBladeValue(action.payload.name));
 }
@@ -873,6 +876,28 @@ export function* UpdateLabData(action) {
   }
 }
 
+export function* handleCreateLabDataTable(action) {
+  const {
+    payload: { docId },
+  } = action;
+  const config = {
+    url: `${BASE_URL_8000}${Apis.CREATE_LABDATA_TABLE}`,
+    method: 'POST',
+    data: {
+      data: { doc_id: docId },
+    },
+  };
+  try {
+    const response = yield call(httpCall, config);
+    yield put(setLabDataCreated({ data: response.data, status: true }));
+    yield put(setLabDataLoader(false));
+  } catch (err) {
+    toast.error('Table creation failed');
+    yield put(setLabDataCreated({ data: [], status: true }));
+    yield put(setLabDataLoader(false));
+  }
+}
+
 export function* getDerivedDataById(action) {
   const {
     payload: { docId },
@@ -1050,6 +1075,7 @@ function* watchProtocolViews() {
   yield takeEvery('DISCARD_DETAILS', setDiscardDetails);
   yield takeEvery('GET_DOC_SECTION_LOCK', getDocumentSectionLock);
   yield takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory);
+  yield takeEvery('CREATE_LABDATA_TABLE', handleCreateLabDataTable);
 }
 
 // notice how we now only export the rootSaga

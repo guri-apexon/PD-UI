@@ -60,6 +60,7 @@ function ProtocolView({ refs, data }) {
         sectionContent: prevState,
       });
     });
+    if (payload.isSaved && !saveEnabled) setSaveEnabled(true);
   };
 
   const handleContentDelete = (payload) => {

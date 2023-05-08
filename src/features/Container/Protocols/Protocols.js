@@ -16,6 +16,7 @@ import {
   getProcotoclToc,
   discardDetails,
   resetProtocolTocData,
+  setActiveTOC,
 } from './protocolSlice';
 import { isPrimaryUser } from '../../../utils/utilFunction';
 
@@ -126,6 +127,7 @@ function Protocols({ location }) {
     } else {
       setValue(value);
       dispatch(resetProtocolTocData());
+      dispatch(setActiveTOC([]));
       dispatch({
         type: 'RESET_SECTION_DATA',
       });

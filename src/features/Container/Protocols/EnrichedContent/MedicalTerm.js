@@ -12,8 +12,8 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getKeyFromEnrichText } from '../../../../utils/utilFunction';
-import { EnrichedValue } from '../protocolSlice';
+import getKeyFromEnrichText from './utilFunction';
+import { EnrichedValue, Enrichedword } from '../protocolSlice';
 import enrichedTerms from './clinicalTerms.json';
 import './MedicalTerm.scss';
 
@@ -43,7 +43,7 @@ function MedicalTerm({
   const [selectedChild, setSelectedChild] = useState(false);
   const [deleteAll, setdeleteAll] = useState(false);
   const [showModal, setshowModal] = useState(false);
-
+  const wordSelector = useSelector(Enrichedword);
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
@@ -85,11 +85,12 @@ function MedicalTerm({
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
-      clinical_terms: clinicalTerm,
+      clinical_terms: childArr?.toString(),
       ontology: clinicalTermsArr[enrichedText]?.ontology,
       confidence: '0',
       start: '0',
       text_len: '0',
+      parent_id: wordSelector?.word?.font_info?.roi_id?.para,
       synonyms: clinicalTermsArr[enrichedText]?.synonyms,
       classification: clinicalTermsArr[enrichedText]?.classification,
       preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
@@ -136,6 +137,7 @@ function MedicalTerm({
       setClinicalTermsArr(updatedClinicalTermsArrr);
       setChildArr([]);
       const name = getKeyFromEnrichText(selectedTerm);
+
       const tempObj = {
         standard_entity_name: enrichedText,
         iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
@@ -145,8 +147,9 @@ function MedicalTerm({
         start: '0',
         text_len: '0',
         synonyms: clinicalTermsArr[enrichedText]?.synonyms,
+        parent_id: wordSelector?.word?.font_info?.roi_id?.para,
         classification: clinicalTermsArr[enrichedText]?.classification,
-        preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
+        preferred_term: '',
         entity_class: '',
         entity_xref: '',
       };
@@ -195,7 +198,7 @@ function MedicalTerm({
     if (clinicalTermsArr) {
       Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
         (key, value) => {
-          if (key?.toString() === 'medical_term') {
+          if (key?.toString() === 'clinical_terms') {
             setClinicalTerm(value);
           }
         },
@@ -262,6 +265,7 @@ function MedicalTerm({
       start: '0',
       text_len: '0',
       synonyms: clinicalTermsArr[enrichedText]?.synonyms,
+      parent_id: wordSelector?.word?.font_info?.roi_id?.para,
       classification: clinicalTermsArr[enrichedText]?.classification,
       preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
       entity_class: '',
@@ -434,7 +438,7 @@ function MedicalTerm({
           {
             label: 'Delete',
             onClick: () => {
-              handleDeleteTag();
+              handleDeleteTag(childTermValue);
               setshowModal(false);
             },
             size: 'small',

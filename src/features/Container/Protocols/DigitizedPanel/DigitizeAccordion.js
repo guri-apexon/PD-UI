@@ -1,7 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Lock from 'apollo-react-icons/Lock';
 import Plus from 'apollo-react-icons/Plus';
-import moment from 'moment';
 import Trash from 'apollo-react-icons/Trash';
 import Undo from 'apollo-react-icons/Undo';
 import Accordion from 'apollo-react/components/Accordion';
@@ -11,6 +10,7 @@ import ButtonGroup from 'apollo-react/components/ButtonGroup';
 import IconButton from 'apollo-react/components/IconButton';
 import Typography from 'apollo-react/components/Typography';
 import { isEmpty } from 'lodash';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,6 +22,7 @@ import {
   createFullMarkup,
   createPreferredText,
   getSaveSectionPayload,
+  removeDomElement,
 } from '../../../../utils/utilFunction';
 import Loader from '../../../Components/Loader/Loader';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
@@ -34,13 +35,13 @@ import { useProtContext } from '../ProtocolContext';
 import {
   SectionIndex,
   TOCActive,
+  activeTOC,
   discardDetails,
   resetUpdateStatus,
   sectionDetails,
   sectionLockDetails,
   updateSectionData,
   setActiveTOC,
-  activeTOC,
   enrichedData,
 } from '../protocolSlice';
 import AddSection from './AddSection';
@@ -57,7 +58,7 @@ import {
 } from '../../../../AppConstant/AppConstant';
 import { userId } from '../../../../store/userDetails';
 import ActionMenu from './ActionMenu';
-import { scrollToLinkandReference, onBeforeUnload } from './utils';
+import { onBeforeUnload, scrollToLinkandReference, tablePopup } from './utils';
 
 const styles = {
   modal: {
@@ -88,7 +89,6 @@ function DigitizeAccordion({
   const dispatch = useDispatch();
   const { headerLevel1 } = HeaderConstant;
   const history = useHistory();
-
   const [expanded, setExpanded] = useState(false);
   const [showedit, setShowEdit] = useState(false);
   const [sectionDataArr, setSectionDataArr] = useState([]);
@@ -128,6 +128,8 @@ function DigitizeAccordion({
   const [preferredTarget, setPreferredTarget] = useState();
   const [selectedPreferredTerm, setSelectedPreferredTerm] = useState();
   const [preferredTerms, setPreferredTerms] = useState();
+  const [isShown, setIsShown] = useState(false);
+
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
@@ -437,7 +439,7 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [tocActive]);
 
-  const handleEnrichedClick = (e, obj, abc) => {
+  const handleEnrichedClick = (e, obj, type, abc) => {
     console.log('SHUBHAM', selectedPreferredTerm);
     const preferredTermsObj = {
       '4. STUDY DESIGN': {
@@ -457,7 +459,14 @@ function DigitizeAccordion({
         setPreferredTarget(null);
         setSelectedPreferredTerm(null);
         setPreferredTerms(null);
-        setEnrichedTarget(e.target);
+        // setEnrichedTarget(e.target);
+        if (type === CONTENT_TYPE.TABLE) {
+          tablePopup(e, (event) => {
+            setEnrichedTarget(event.target);
+          });
+        } else {
+          setEnrichedTarget(e.target);
+        }
         setType('EnrichedText');
         setSelectedEnrichedText(e.target.innerText);
         setClinicalTerms(obj);
@@ -477,6 +486,7 @@ function DigitizeAccordion({
         setEnrichedTarget(null);
         setPreferredTarget(null);
         document.body.removeChild(modalOpened);
+        removeDomElement('.table-enriched-place-holder');
       });
     } else {
       setEnrichedTarget(null);
@@ -619,6 +629,7 @@ function DigitizeAccordion({
 
   useEffect(() => {
     if (expanded || dataExist) {
+      setIsShown(false);
       const { sectionResponse, data } = sectionHeaderDetails;
 
       if (sectionResponse) {
@@ -737,7 +748,6 @@ function DigitizeAccordion({
     );
   };
 
-  const [isShown, setIsShown] = useState(false);
   const [isModal, setIsModal] = useState(false);
 
   const handleAddSection = (e, flag, index) => {
@@ -813,8 +823,8 @@ function DigitizeAccordion({
   return (
     // eslint-disable-next-line
     <div
-      onMouseOver={() => setIsShown(true)}
-      onMouseLeave={() => setIsShown(false)}
+      onMouseEnter={() => !expanded && setIsShown(true)}
+      onMouseLeave={() => !expanded && setIsShown(false)}
       className={
         primaryRole &&
         // eslint-disable-next-line
@@ -856,7 +866,7 @@ function DigitizeAccordion({
               className="section-actions"
               onClick={(e) => e.stopPropagation()}
             >
-              {showedit && (
+              {showedit && !showLoader && (
                 <>
                   <IconButton disabled={showLoader} data-testId="lockIcon">
                     <Lock />
@@ -912,6 +922,7 @@ function DigitizeAccordion({
                     setRequestedRoute={setRequestedRoute}
                   />
                 ) : (
+                  // eslint-disable-next-line
                   <div className="readable-content-wrapper">
                     <div className="readable-content">
                       {sectionDataArr?.map((section) => {
@@ -935,6 +946,13 @@ function DigitizeAccordion({
                               isPreferredTerm={
                                 globalPreferredTerm || showPrefferedTerm
                               }
+                              clinicalTerms={section?.clinical_terms}
+                              isClinicalTerms={
+                                showEnrichedContent ||
+                                rightBladeValue ===
+                                  PROTOCOL_RIGHT_MENU.CLINICAL_TERM
+                              }
+                              handleEnrichedClick={handleEnrichedClick}
                             />
                           );
                         } else if (section.type === CONTENT_TYPE.IMAGE) {

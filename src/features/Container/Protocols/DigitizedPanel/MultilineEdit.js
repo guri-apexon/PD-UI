@@ -91,25 +91,27 @@ function MultilineEdit({
         )}
         <div className="section-menu-container">
           <section className="section-edited-list">
-            {sections?.map((section) => (
-              // eslint-disable-next-line
-              <div
-                className="content_container"
-                data-testId="content_container"
-                key={section.line_id}
-                onClick={() => onContentClick(section.line_id)}
-              >
-                <RenderContent
-                  sectionData={section}
-                  sectionName={sectionName}
-                  handleContentEdit={handleContentEdit}
-                  activeLineID={activeLineID}
-                  deleteSection={deleteSection}
-                  setActiveLineID={setActiveLineID}
-                  edit={edit}
-                />
-              </div>
-            ))}
+            {sections
+              ?.filter((obj) => !(obj.type === 'table' && !obj.content))
+              .map((section) => (
+                // eslint-disable-next-line
+                <div
+                  className="content_container"
+                  data-testId="content_container"
+                  key={section.line_id}
+                  onClick={() => onContentClick(section.line_id)}
+                >
+                  <RenderContent
+                    sectionData={section}
+                    sectionName={sectionName}
+                    handleContentEdit={handleContentEdit}
+                    activeLineID={activeLineID}
+                    deleteSection={deleteSection}
+                    setActiveLineID={setActiveLineID}
+                    edit={edit}
+                  />
+                </div>
+              ))}
           </section>
         </div>
       </div>

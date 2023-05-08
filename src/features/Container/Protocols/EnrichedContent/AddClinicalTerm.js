@@ -5,12 +5,12 @@ import IconButton from 'apollo-react/components/IconButton';
 import Modal from 'apollo-react/components/Modal';
 import TextField from 'apollo-react/components/TextField';
 import { isEmpty } from 'lodash';
-import isEqual from 'lodash/isEqual';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Enrichedword, sectionDetails } from '../protocolSlice';
 import './MedicalTerm.scss';
+import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 
 function AddClinicalTerm({ docId, linkId }) {
   // header_link_id
@@ -106,19 +106,6 @@ function AddClinicalTerm({ docId, linkId }) {
     return '';
   };
 
-  const getHierarchyName = (type) => {
-    if (isEqual(type, 'text')) {
-      return 'paragraph';
-    }
-    if (isEqual(type, 'header')) {
-      return 'header';
-    }
-    if (isEqual(type, 'table')) {
-      return 'table';
-    }
-    return '';
-  };
-
   const handleAddTag = () => {
     const result = sectionData?.[0]?.data?.filter(
       (item) =>
@@ -126,6 +113,7 @@ function AddClinicalTerm({ docId, linkId }) {
         wordSelector?.word?.font_info?.roi_id?.para,
     );
     const clinicalTermsData = result[0]?.clinical_terms;
+    const { type } = result[0];
     let tagData;
 
     if (wordSelector?.word) {
@@ -139,7 +127,7 @@ function AddClinicalTerm({ docId, linkId }) {
 
       headerLinkId = wordSelector?.word?.font_info[level];
     }
-    if (clinicalTermsData && selectedText) {
+    if (clinicalTermsData && selectedText && type) {
       const keys = Object.keys(clinicalTermsData);
       if (keys.includes(selectedText)) {
         tagData = {
@@ -153,7 +141,7 @@ function AddClinicalTerm({ docId, linkId }) {
           parent_id: wordSelector?.word?.font_info?.roi_id?.para,
           doc_id: docId,
           link_id: linkId,
-          hierarchy: getHierarchyName(result[0]?.type),
+          hierarchy: getHierarchyName(type),
         };
       } else {
         tagData = {
@@ -167,7 +155,7 @@ function AddClinicalTerm({ docId, linkId }) {
           parent_id: wordSelector?.word?.font_info?.roi_id?.para,
           doc_id: docId,
           link_id: linkId,
-          hierarchy: getHierarchyName(result[0]?.type),
+          hierarchy: getHierarchyName(type),
         };
       }
     } else {
@@ -182,7 +170,7 @@ function AddClinicalTerm({ docId, linkId }) {
         parent_id: wordSelector?.word?.font_info?.roi_id?.para,
         doc_id: docId,
         link_id: linkId,
-        hierarchy: getHierarchyName(result[0]?.type),
+        hierarchy: getHierarchyName(type),
       };
     }
     dispatch({

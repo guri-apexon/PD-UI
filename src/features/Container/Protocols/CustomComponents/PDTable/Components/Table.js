@@ -1,15 +1,18 @@
-import React from 'react';
-import './table.scss';
-import { v4 as uuidv4 } from 'uuid';
-import PropTypes from 'prop-types';
-import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import EllipsisHorizontal from 'apollo-react-icons/EllipsisHorizontal';
+import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../../../AppConstant/AppConstant';
+import { getPreferredTerms } from '../utils';
+import EmptyColumns from './EmptyColumns';
 import EmptyRows from './EmptyRows';
 import FootNotes from './FootNotes/Footnotes';
-import EmptyColumns from './EmptyColumns';
 import { tableOperations } from './dropdownData';
-import { QC_CHANGE_TYPE } from '../../../../../../AppConstant/AppConstant';
-import { getPreferredTerms } from '../utils';
+import './table.scss';
 
 function DisplayTable({
   data,
@@ -23,6 +26,9 @@ function DisplayTable({
   handleSwap,
   preferredTerms,
   isPreferredTerm,
+  clinicalTerms,
+  isClinicalTerms,
+  handleEnrichedClick,
 }) {
   const handleChange = (columnIndex, rowIndex, e) => {
     onChange(e.target.innerHTML, columnIndex, rowIndex);
@@ -114,15 +120,25 @@ function DisplayTable({
                               <EllipsisHorizontal />
                             </span>
                           )}
+                          {/* eslint-disable-next-line */}
                           <span
                             id={`columnID-${rowIndex}-${colIndex}`}
                             data-testid="span-edit"
                             className="editable-span"
+                            onClick={(e) =>
+                              handleEnrichedClick(
+                                e,
+                                clinicalTerms,
+                                CONTENT_TYPE.TABLE,
+                              )
+                            }
                             // eslint-disable-next-line
                             dangerouslySetInnerHTML={getPreferredTerms(
                               col.value,
                               isPreferredTerm,
                               preferredTerms,
+                              clinicalTerms,
+                              isClinicalTerms,
                             )}
                             contentEditable={edit}
                             onBlur={(e) => handleChange(colIndex, rowIndex, e)}
@@ -157,4 +173,7 @@ DisplayTable.propTypes = {
   handleSwap: PropTypes.isRequired,
   preferredTerms: PropTypes.isRequired,
   isPreferredTerm: PropTypes.isRequired,
+  clinicalTerms: PropTypes.isRequired,
+  isClinicalTerms: PropTypes.isRequired,
+  handleEnrichedClick: PropTypes.isRequired,
 };

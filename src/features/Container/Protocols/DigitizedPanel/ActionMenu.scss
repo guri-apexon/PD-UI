@@ -12,13 +12,14 @@
     margin-right: 0;
     bottom: 30px;
     margin-top: 30px;
+    height: 100%
   }
   .open-close {
     display: flex;
     align-items: center;
     background: #d6eaff;
     width: 12px;
-    height: calc(100% + 30px);
+    height: 100%;
 
     svg {
       cursor: pointer;
@@ -29,7 +30,7 @@
   .menu-items {
     background: #e7f2ff;
     width: 176px;
-    height: calc(100% + 30px);
+    height: 100%;
 
     .btn-icons {
       background: transparent;

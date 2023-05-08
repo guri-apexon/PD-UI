@@ -56,3 +56,19 @@ export const renderAuditInfo = (itemVal, keyName) => {
   }
   return itemVal || '-----';
 };
+
+export const tablePopup = (e, callback) => {
+  const { left, top } = e.currentTarget.getBoundingClientRect();
+  const tableEnrichedPopup = document.createElement('div');
+  tableEnrichedPopup.className = 'table-enriched-place-holder';
+  tableEnrichedPopup.style.position = 'absolute';
+  tableEnrichedPopup.style.left = `${left}px`;
+  tableEnrichedPopup.style.top = `${top}px`;
+
+  document.body.appendChild(tableEnrichedPopup);
+
+  tableEnrichedPopup.addEventListener('click', (event) => {
+    callback(event);
+  });
+  tableEnrichedPopup.click();
+};
