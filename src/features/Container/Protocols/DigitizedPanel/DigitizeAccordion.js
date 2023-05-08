@@ -649,7 +649,7 @@ function DigitizeAccordion({
       }
     }
     // eslint-disable-next-line
-  }, [sectionHeaderDetails]);
+  }, [sectionHeaderDetails, expanded]);
 
   useEffect(() => {
     if (updated && item.link_id === selectedSection.link_id) {
