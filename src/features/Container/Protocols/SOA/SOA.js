@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer } from 'react';
+import { useEffect, useMemo, useReducer, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from 'apollo-react/components/Loader';
 import PropTypes from 'prop-types';
@@ -24,7 +24,7 @@ const style = {
 };
 function SOA({ docId }) {
   const apiState = useSelector((state) => state.protocol.SOAData);
-  const loader = useSelector((state) => state.protocol.loader);
+  const [loader, setLoader] = useState(true);
   const apiDispatch = useDispatch();
   const [state, dispatch] = useReducer(tableReducer, tableGridData);
   useEffect(() => {
@@ -34,6 +34,7 @@ function SOA({ docId }) {
         payload: JSON.parse(JSON.stringify(apiState.soa_data)),
       });
       dispatch({ type: TableEvents.SET_SELECTED_TAB, payload: 0 });
+      setLoader(false);
     }
     // eslint-disable-next-line
   }, [apiState]);
@@ -44,6 +45,11 @@ function SOA({ docId }) {
       payload: { operationValue: 'SOATable', docId },
     });
     dispatch({ type: TableEvents.SET_DOC_ID, docId });
+    return () => {
+      apiDispatch({
+        type: 'RESET_SOA_DATA',
+      });
+    };
     // eslint-disable-next-line
   }, []);
   const provider = useMemo(
