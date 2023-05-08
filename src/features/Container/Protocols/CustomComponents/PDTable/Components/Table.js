@@ -3,7 +3,10 @@ import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { QC_CHANGE_TYPE } from '../../../../../../AppConstant/AppConstant';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../../../AppConstant/AppConstant';
 import { getPreferredTerms } from '../utils';
 import EmptyColumns from './EmptyColumns';
 import EmptyRows from './EmptyRows';
@@ -123,7 +126,11 @@ function DisplayTable({
                             data-testid="span-edit"
                             className="editable-span"
                             onClick={(e) =>
-                              handleEnrichedClick(e, clinicalTerms)
+                              handleEnrichedClick(
+                                e,
+                                clinicalTerms,
+                                CONTENT_TYPE.TABLE,
+                              )
                             }
                             // eslint-disable-next-line
                             dangerouslySetInnerHTML={getPreferredTerms(

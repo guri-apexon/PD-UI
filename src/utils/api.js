@@ -199,6 +199,7 @@ const environment = process.env.REACT_APP_ENV;
 if (environment === 'local') {
   backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
   // backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
+
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
@@ -260,6 +261,7 @@ export const Apis = {
   UPDATE_LAB_DATA: '/api/lab_data/lab_data_operations',
   SECTION_LOCK: '/api/section_lock',
   DOCUMENT_SECTION_LOCK: '/api/section_lock/document_lock_status',
+  CREATE_LABDATA_TABLE: '/api/lab_data/lab_data_table_create',
 };
 
 export const SSO_ENABLED = environment !== 'local';
