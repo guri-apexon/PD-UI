@@ -45,10 +45,12 @@ import {
   updateSectionHeader,
   getEnrichedData,
   setActiveTOC,
+  getPreferredTerm,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
+import { getPreferredTerms } from './CustomComponents/PDTable/utils';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
 
@@ -453,13 +455,26 @@ export function* getProtocolTocDataResult(action) {
         success: true,
         data: enrichedData,
       };
+      let preferredTerm = {};
+      // const PTData = result?.data[1][0]?.preferred_terms;
+      console.log('SHUBHAM1234', result?.data[1][0]?.preferred_terms);
+      result?.data[1][0]?.preferred_terms?.forEach((item) => {
+        preferredTerm = { ...preferredTerm, [item?.text]: item };
+      });
+      const preferredTermContent = {
+        success: true,
+        data: preferredTerm,
+      };
       const tocIsactive = Array(header.data.length).fill(false);
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
       yield put(getSectionIndex(action.payload.index));
       yield put(setLoader(false));
       yield put(getEnrichedData(enrichedContent));
+      console.log('SHUBHAM123', preferredTermContent);
+      yield put(getPreferredTerm(preferredTermContent));
     } else {
+      console.log('SHUBHAM VR', result);
       // eslint-disable-next-line no-lonely-if
       yield put(
         getProtocolTocData({
@@ -473,6 +488,7 @@ export function* getProtocolTocDataResult(action) {
       );
     }
   } catch (error) {
+    console.log('SHUBHAM VR', error);
     yield put(
       getProtocolTocData({
         success: false,

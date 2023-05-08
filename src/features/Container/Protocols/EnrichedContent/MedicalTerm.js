@@ -24,7 +24,6 @@ function MedicalTerm({
   clinicalTerms: clinicalTermsArray,
   linkId,
   docId,
-  type,
 }) {
   const wrapperRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -109,19 +108,17 @@ function MedicalTerm({
       ...tempObj,
       [name]: saveValue,
     };
-    if (type === 'EnrichedText')
-      dispatch({
-        type: 'SAVE_ENRICHED_DATA',
-        payload: {
-          docId,
-          linkId,
-          opType: 'delete',
-          data: saveObj,
-        },
-      });
-    else if (type === 'PreferredTerm') {
-      console.log('SHUBHAM ');
-    }
+
+    dispatch({
+      type: 'SAVE_ENRICHED_DATA',
+      payload: {
+        docId,
+        linkId,
+        opType: 'delete',
+        data: saveObj,
+        headerLinkId: clinicalTermsArr[enrichedText]?.id,
+      },
+    });
   };
 
   const handleDelete = () => {
@@ -159,19 +156,17 @@ function MedicalTerm({
         ...tempObj,
         [name]: '',
       };
-      if (type === 'EnrichedText')
-        dispatch({
-          type: 'SAVE_ENRICHED_DATA',
-          payload: {
-            docId,
-            linkId,
-            opType: 'delete',
-            data: saveObj,
-          },
-        });
-      else if (type === 'PreferredTerm') {
-        console.log('SHUBHAM ');
-      }
+
+      dispatch({
+        type: 'SAVE_ENRICHED_DATA',
+        payload: {
+          docId,
+          linkId,
+          opType: 'delete',
+          data: saveObj,
+          headerLinkId: clinicalTermsArr[enrichedText]?.id,
+        },
+      });
     }
   };
 
@@ -272,19 +267,16 @@ function MedicalTerm({
       entity_xref: '',
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
+    dispatch({
+      type: 'SAVE_ENRICHED_DATA',
+      payload: {
+        docId,
+        linkId,
+        data: saveObj,
+        headerLinkId: clinicalTermsArr[enrichedText]?.id,
+      },
+    });
 
-    if (type === 'EnrichedText')
-      dispatch({
-        type: 'SAVE_ENRICHED_DATA',
-        payload: {
-          docId,
-          linkId,
-          data: saveObj,
-        },
-      });
-    else if (type === 'PreferredTerm') {
-      console.log('SHUBHAM ');
-    }
     return true;
   };
 
@@ -488,5 +480,4 @@ MedicalTerm.propTypes = {
   clinicalTerms: PropTypes.isRequired,
   linkId: PropTypes.isRequired,
   docId: PropTypes.isRequired,
-  type: PropTypes.isRequired,
 };

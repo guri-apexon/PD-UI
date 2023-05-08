@@ -43,6 +43,7 @@ import {
   updateSectionData,
   setActiveTOC,
   enrichedData,
+  preferredData,
 } from '../protocolSlice';
 import AddSection from './AddSection';
 import DeleteModal from './Modals/DeleteModal';
@@ -107,6 +108,7 @@ function DigitizeAccordion({
   const userIdSelector = useSelector(userId);
   const activeTree = useSelector(activeTOC);
   const enrichedContent = useSelector(enrichedData);
+  const preferredContent = useSelector(preferredData);
 
   const [sectionDataBak, setSectionDataBak] = useState([]);
   const [showDiscardConfirm, setShowDiscardConfirm] = useState(false);
@@ -439,18 +441,18 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [tocActive]);
 
-  const handleEnrichedClick = (e, obj, type, abc) => {
-    console.log('SHUBHAM', selectedPreferredTerm);
-    const preferredTermsObj = {
-      '4. STUDY DESIGN': {
-        id: '1d17b8bd-de90-11ed-b85f-005056ab6469',
-        preferred_term: 'SHUBHAM',
-      },
-      '4.1 Overall Design': {
-        id: '1d17b8be-de90-11ed-b3cc-005056ab6469',
-        preferred_term: 'ABC123',
-      },
-    };
+  const handleEnrichedClick = (e, obj, type) => {
+    // console.log('SHUBHAM', selectedPreferredTerm);
+    // const preferredTermsObj = {
+    //   '4. STUDY DESIGN': {
+    //     id: '1d17b8bd-de90-11ed-b85f-005056ab6469',
+    //     preferred_term: 'SHUBHAM',
+    //   },
+    //   '4.1 Overall Design': {
+    //     id: '1d17b8be-de90-11ed-b3cc-005056ab6469',
+    //     preferred_term: 'ABC123',
+    //   },
+    // };
     if (
       e.target.className === 'enriched-txt' ||
       e.target.className === 'Preferred-txt'
@@ -477,7 +479,7 @@ function DigitizeAccordion({
         setPreferredTarget(e.target);
         setType('PreferredTerm');
         setSelectedPreferredTerm(e.target.innerText);
-        setPreferredTerms(preferredTermsObj);
+        setPreferredTerms(preferredContent?.data);
       }
       const modalOpened = document.createElement('span');
       modalOpened.classList.add('modal-opened');
@@ -705,9 +707,9 @@ function DigitizeAccordion({
   const getEnrichedText = (content, preferredTerms) => {
     let newContent = content;
     if (globalPreferredTerm || showPrefferedTerm) {
-      if (!isEmpty(preferredTerms)) {
+      if (!isEmpty(preferredContent?.data)) {
         console.log('SHUBHAM1');
-        newContent = createPreferredText(newContent, preferredTerms);
+        newContent = createPreferredText(newContent, preferredContent?.data);
       }
     }
     if (
@@ -976,7 +978,7 @@ function DigitizeAccordion({
                                   handleEnrichedClick(
                                     e,
                                     enrichedContent?.data,
-                                    section?.preferred_terms,
+                                    // section?.preferred_terms,
                                   );
                                   console.log('SHUBHMA');
                                 }}
@@ -1037,7 +1039,7 @@ function DigitizeAccordion({
                                       handleEnrichedClick(
                                         e,
                                         enrichedContent?.data,
-                                        section?.preferred_terms,
+                                        // section?.preferred_terms,
                                       )
                                     }
                                   >
@@ -1088,7 +1090,6 @@ function DigitizeAccordion({
           clinicalTerms={preferredTerms || clinicalTerms}
           linkId={linkId}
           docId={docId}
-          type={type}
         />
 
         {/* <Preferredterm
