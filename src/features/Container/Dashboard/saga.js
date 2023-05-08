@@ -471,6 +471,9 @@ export function* submitWorkflowData(action) {
         success: true,
       };
       yield put(setworkflowSubmit(successData));
+      if (userType == 'QC1') {
+        yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
+      }
       yield put(setAddProtocolModal(false));
       if (userType !== 'QC1') {
         yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
