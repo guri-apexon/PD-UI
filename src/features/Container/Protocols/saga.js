@@ -456,8 +456,6 @@ export function* getProtocolTocDataResult(action) {
         data: enrichedData,
       };
       let preferredTerm = {};
-      // const PTData = result?.data[1][0]?.preferred_terms;
-      console.log('SHUBHAM1234', result?.data[1][0]?.preferred_terms);
       result?.data[1][0]?.preferred_terms?.forEach((item) => {
         preferredTerm = { ...preferredTerm, [item?.text]: item };
       });
@@ -471,10 +469,8 @@ export function* getProtocolTocDataResult(action) {
       yield put(getSectionIndex(action.payload.index));
       yield put(setLoader(false));
       yield put(getEnrichedData(enrichedContent));
-      console.log('SHUBHAM123', preferredTermContent);
       yield put(getPreferredTerm(preferredTermContent));
     } else {
-      console.log('SHUBHAM VR', result);
       // eslint-disable-next-line no-lonely-if
       yield put(
         getProtocolTocData({
@@ -488,7 +484,6 @@ export function* getProtocolTocDataResult(action) {
       );
     }
   } catch (error) {
-    console.log('SHUBHAM VR', error);
     yield put(
       getProtocolTocData({
         success: false,

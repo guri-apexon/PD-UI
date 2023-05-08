@@ -13,7 +13,6 @@ import './MedicalTerm.scss';
 import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 
 function AddClinicalTerm({ docId, linkId }) {
-  // header_link_id
   const [openModal, setOpenModal] = useState(false);
   const dispatch = useDispatch();
   const [selectedText, setSelectedText] = useState('');
@@ -40,10 +39,8 @@ function AddClinicalTerm({ docId, linkId }) {
         level = 'link_id_level' + wordSelector?.word.file_section_level;
       }
 
+      // eslint-disable-next-line
       headerLinkId = wordSelector?.word?.font_info[level];
-      // console.log('SHUBHAM1234', wordSelector?.word?.font_info[level]);
-      // console.log('SHUBHAM1234', wordSelector?.word);
-      // console.log('SHUBHAM123', wordSelector?.word.file_section_level);
     }
   }, [wordSelector]);
 
