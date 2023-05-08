@@ -1052,14 +1052,7 @@ function DigitizeAccordion({
             </>
           )}
         </AccordionDetails>
-        {/* <MedicalTerm
-          enrichedTarget={enrichedTarget}
-          expanded={expanded}
-          enrichedText={selectedEnrichedText}
-          clinicalTerms={clinicalTerms}
-          linkId={linkId}
-          docId={docId}
-        /> */}
+
         <MedicalTerm
           enrichedTarget={preferredTarget || enrichedTarget}
           expanded={expanded}
@@ -1068,15 +1061,6 @@ function DigitizeAccordion({
           linkId={linkId}
           docId={docId}
         />
-
-        {/* <Preferredterm
-          preferredTarget={preferredTarget}
-          expanded={expanded}
-          preferredText={selectedPreferredTerm}
-          preferredTerms={preferredTerms}
-          linkId={linkId}
-          docId={docId}
-        /> */}
 
         <SaveSectionModal
           classes={classes}
