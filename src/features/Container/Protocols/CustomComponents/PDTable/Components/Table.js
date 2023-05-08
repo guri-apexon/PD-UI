@@ -126,11 +126,6 @@ function DisplayTable({
                             data-testid="span-edit"
                             className="editable-span"
                             onClick={(e) =>
-                              // handleEnrichedClick(
-                              //   e,
-                              //   clinicalTerms,
-                              //   CONTENT_TYPE.TABLE,
-                              // )
                               handleEnrichedClick(
                                 e,
                                 clinicalTerms,
