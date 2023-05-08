@@ -64,6 +64,10 @@ function DisplayTable({
     e.preventDefault();
   };
 
+  const handleClick = (e) =>
+    handleEnrichedClick &&
+    handleEnrichedClick(e, clinicalTerms, CONTENT_TYPE.TABLE);
+
   return (
     <div className="pd-table-wrapper">
       <div className="pd-table-inner">
@@ -125,13 +129,7 @@ function DisplayTable({
                             id={`columnID-${rowIndex}-${colIndex}`}
                             data-testid="span-edit"
                             className="editable-span"
-                            onClick={(e) =>
-                              handleEnrichedClick(
-                                e,
-                                clinicalTerms,
-                                CONTENT_TYPE.TABLE,
-                              )
-                            }
+                            onClick={handleClick}
                             // eslint-disable-next-line
                             dangerouslySetInnerHTML={getPreferredTerms(
                               col.value,

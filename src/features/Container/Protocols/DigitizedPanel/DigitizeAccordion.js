@@ -116,7 +116,6 @@ function DigitizeAccordion({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteSection, setDeleteSection] = useState({});
   const [tocClose, setTocClose] = useState();
-  const [type, setType] = useState('');
 
   const [showEnrichedContent, setShowEnrichedContent] = useState(false);
   const [showPrefferedTerm, setShowPrefferedTerm] = useState(false);
@@ -442,17 +441,6 @@ function DigitizeAccordion({
   }, [tocActive]);
 
   const handleEnrichedClick = (e, obj, type) => {
-    // console.log('SHUBHAM', selectedPreferredTerm);
-    // const preferredTermsObj = {
-    //   '4. STUDY DESIGN': {
-    //     id: '1d17b8bd-de90-11ed-b85f-005056ab6469',
-    //     preferred_term: 'SHUBHAM',
-    //   },
-    //   '4.1 Overall Design': {
-    //     id: '1d17b8be-de90-11ed-b3cc-005056ab6469',
-    //     preferred_term: 'ABC123',
-    //   },
-    // };
     if (
       e.target.className === 'enriched-txt' ||
       e.target.className === 'Preferred-txt'
@@ -461,7 +449,6 @@ function DigitizeAccordion({
         setPreferredTarget(null);
         setSelectedPreferredTerm(null);
         setPreferredTerms(null);
-        // setEnrichedTarget(e.target);
         if (type === CONTENT_TYPE.TABLE) {
           tablePopup(e, (event) => {
             setEnrichedTarget(event.target);
@@ -469,7 +456,6 @@ function DigitizeAccordion({
         } else {
           setEnrichedTarget(e.target);
         }
-        setType('EnrichedText');
         setSelectedEnrichedText(e.target.innerText);
         setClinicalTerms(obj);
       } else if (e.target.className === 'Preferred-txt') {
@@ -477,7 +463,6 @@ function DigitizeAccordion({
         setSelectedEnrichedText(null);
         setClinicalTerms(null);
         setPreferredTarget(e.target);
-        setType('PreferredTerm');
         setSelectedPreferredTerm(e.target.innerText);
         setPreferredTerms(preferredContent?.data);
       }
@@ -704,11 +689,10 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content, preferredTerms) => {
+  const getEnrichedText = (content) => {
     let newContent = content;
     if (globalPreferredTerm || showPrefferedTerm) {
       if (!isEmpty(preferredContent?.data)) {
-        console.log('SHUBHAM1');
         newContent = createPreferredText(newContent, preferredContent?.data);
       }
     }
@@ -720,7 +704,6 @@ function DigitizeAccordion({
       newContent = createEnrichedText(newContent, enrichedContent?.data);
     }
 
-    console.log('SHUBHAM', newContent);
     newContent = createFullMarkup(newContent);
     return newContent;
   };
@@ -933,6 +916,7 @@ function DigitizeAccordion({
                           content = (
                             <DisplayTable
                               key={React.key}
+                              handleEnrichedClick={handleEnrichedClick}
                               data={
                                 section?.content
                                   ? JSON.parse(
@@ -954,7 +938,6 @@ function DigitizeAccordion({
                                 rightBladeValue ===
                                   PROTOCOL_RIGHT_MENU.CLINICAL_TERM
                               }
-                              handleEnrichedClick={handleEnrichedClick}
                             />
                           );
                         } else if (section.type === CONTENT_TYPE.IMAGE) {
@@ -975,12 +958,7 @@ function DigitizeAccordion({
                                 key={React.key}
                                 className="supContent"
                                 onClick={(e) => {
-                                  handleEnrichedClick(
-                                    e,
-                                    enrichedContent?.data,
-                                    // section?.preferred_terms,
-                                  );
-                                  console.log('SHUBHMA');
+                                  handleEnrichedClick(e, enrichedContent?.data);
                                 }}
                               >
                                 <sup>
@@ -1039,7 +1017,6 @@ function DigitizeAccordion({
                                       handleEnrichedClick(
                                         e,
                                         enrichedContent?.data,
-                                        // section?.preferred_terms,
                                       )
                                     }
                                   >
