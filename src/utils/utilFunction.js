@@ -191,7 +191,10 @@ export const createPreferredText = (content, terms) => {
           .includes(removeHtmlTags(text).toLowerCase().trim());
       });
       if (match) {
-        text = `<b class="Preferred-txt">${match}</b>`;
+        text = `<b class="Preferred-txt">${removeHtmlTags(match)
+          .replace(/[_]/g, ' ')
+          .replace('cpt', '')
+          .trim()}</b>`;
       }
     }
   }

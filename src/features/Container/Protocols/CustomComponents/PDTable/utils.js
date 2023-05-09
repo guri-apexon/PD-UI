@@ -1,4 +1,6 @@
 import { cloneDeep, isEqual } from 'lodash';
+// eslint-disable-next-line import/no-cycle
+import { removeHtmlTags } from '../../../../../utils/utilFunction';
 
 const QC_CHANGE_TYPE = {
   ADDED: 'add',
@@ -137,7 +139,12 @@ export const filterTableProperties = (data) => {
 
 export const getHtmlString = (str, isPreTerm) => {
   return {
-    __html: isPreTerm ? `<b class="Preferred-txt">${str}</b>` : `${str}`,
+    __html: isPreTerm
+      ? `<b class="Preferred-txt">${removeHtmlTags(str)
+          .replace(/[_]/g, ' ')
+          .replace('cpt', '')
+          .trim()}</b>`
+      : `${str}`,
   };
 };
 

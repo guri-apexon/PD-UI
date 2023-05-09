@@ -23,6 +23,7 @@ import {
   createPreferredText,
   getSaveSectionPayload,
   removeDomElement,
+  removeHtmlTags,
 } from '../../../../utils/utilFunction';
 import Loader from '../../../Components/Loader/Loader';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
@@ -608,7 +609,10 @@ function DigitizeAccordion({
   const getPreferredTerms = (header) => {
     if (globalPreferredTerm && !isEmpty(header?.preferred_term)) {
       return createFullMarkup(
-        `<b class="Preferred-txt">${header.source_file_section}</b>`,
+        `<b class="Preferred-txt">${removeHtmlTags(header.preferred_term)
+          .replace(/[_]/g, ' ')
+          .replace('cpt', '')
+          .trim()}</b>`,
       );
     }
     return header.source_file_section;
