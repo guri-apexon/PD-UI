@@ -890,7 +890,7 @@ function DigitizeAccordion({
             <>
               {sectionDataArr?.length > 0 &&
                 (showedit ? (
-                  <>{getMultilineEdit}</>
+                  getMultilineEdit
                 ) : (
                   // eslint-disable-next-line
                   <div className="readable-content-wrapper">
