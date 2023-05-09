@@ -124,17 +124,12 @@ export function DateRangeCard({
   const [value, setValue] = React.useState('0');
   const [value1, setValue1] = React.useState([]);
   const [disabled, setDisabled] = React.useState(false);
-  // const [dateRange, setDateRange] = React.useState({
-  //   fromDate: "",
-  //   toDate: "",
-  // });
   const [dateRange, setDateRange] = React.useState(dateRangeValue);
   const dispatch = useDispatch();
 
   useEffect(() => {
     // setValue(listValue)
     if (value) {
-      // props.history.push(`/search?${resultQuery}`);
       dispatch({ type: 'FILTER_BY_RECENT_SAGA', payload: value });
     }
   }, [value, dispatch]);
@@ -260,11 +255,6 @@ export function DateRangeCard({
                 />
               ))}
             </RadioGroup>
-            {/* {errorMessage ? (
-              <div className="errorMessage-dateRange">
-                <p>{errorMessage}</p>
-              </div>
-            ) : null} */}
             <div
               style={{ marginTop: 20 }}
               data-testid="range-date-wrapper"

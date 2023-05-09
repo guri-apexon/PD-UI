@@ -629,8 +629,6 @@ const tableReducer = (state, actions) => {
     case TableEvents.SET_TABLES:
       return { ...state, ...formatTables(actions.payload) };
     case TableEvents.SET_SELECTED_TAB:
-      // updateAvailableHeaders(state, actions.payload);
-
       return {
         ...state,
         hideGroupsColumns: updateAvailableHeaders(state, actions.payload),
@@ -712,8 +710,6 @@ const tableReducer = (state, actions) => {
       return { ...state, gridRef: actions.payload };
 
     case TableEvents.FILTER_GROUP_COLUMN:
-      // if (canUpdateGroupFilters(state, actions)) return state;
-
       return {
         ...state,
         refreshValue: state.refreshValue + 1,
@@ -723,8 +719,6 @@ const tableReducer = (state, actions) => {
         ),
       };
     case TableEvents.REFRESH_TABLE:
-      // if (canUpdateGroupFilters(state, actions)) return state;
-
       return {
         ...state,
         ...getTableData(state.tables[state.selectedTab], null),

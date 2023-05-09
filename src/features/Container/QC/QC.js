@@ -6,10 +6,8 @@ import '../Protocols/protocols.scss';
 import Breadcrumbs from 'apollo-react/components/Breadcrumbs';
 import Tab from 'apollo-react/components/Tab';
 import Tabs from 'apollo-react/components/Tabs';
-// import QCTable from './QCTable/QCTable';
 import QCProtocolTable from './QCTable/QCProtocolTable';
 import { qcNotification } from './qcSlice';
-// import QCProtocolView from "./QCProtocolView/QCProtocolView";
 import QCProtocolView from './QCProtocolView/QCProtocolView';
 import { userType } from '../../../store/userDetails';
 
@@ -106,7 +104,6 @@ function QCContainer() {
         {value === 0 && (
           <QCProtocolTable handleProtocolClick={handleProtocolClick} />
         )}
-        {/* {value === 1 && <QCProtocolView  />} */}
         {value === 1 && (
           <QCProtocolView
             protId={protocolId}

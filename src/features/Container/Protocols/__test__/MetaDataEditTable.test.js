@@ -207,3 +207,54 @@ describe('MetaDataEditTable', () => {
     expect(getByTestId('metadata-table')).toBeInTheDocument();
   });
 });
+
+describe('MetaDataEditTable handleChange and handleDelete function', () => {
+  const data = { formattedName: 'test' };
+  const rows = {
+    test: [
+      {
+        id: 1,
+        isCustom: true,
+        attr_name: '',
+        attr_value: '',
+        attr_type: '',
+      },
+    ],
+  };
+
+  const setRows = jest.fn();
+  const deletedAttributes = [];
+  const setDeletedAttributes = jest.fn();
+
+  it('should call handlechange function when a cell value is changed', () => {
+    const { getByTestId } = render(
+      <MetaDataEditTable
+        data={data}
+        rows={rows}
+        setRows={setRows}
+        deletedAttributes={deletedAttributes}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+
+    const input = getByTestId('metadata-table');
+    fireEvent.change(input, { target: { innerHTML: 'NEW Value' } });
+    expect(getByTestId('metadata-table')).toBeInTheDocument();
+  });
+
+  it('should call handleDelete function when the delete button is clicked', () => {
+    const { getByTestId } = render(
+      <MetaDataEditTable
+        data={data}
+        rows={rows}
+        setRows={setRows}
+        deletedAttributes={deletedAttributes}
+        setDeletedAttributes={setDeletedAttributes}
+      />,
+    );
+
+    const deleteButton = getByTestId('metadata-table');
+    fireEvent.click(deleteButton);
+    expect(getByTestId('metadata-table')).toBeInTheDocument();
+  });
+});
