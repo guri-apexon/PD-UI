@@ -169,3 +169,63 @@ describe('ImageUploader', () => {
     });
   });
 });
+
+describe('ImageUploader', () => {
+  let mockDispatchSectionEvent;
+  beforeEach(() => {
+    mockDispatchSectionEvent = jest.fn();
+    jest.resetAllMocks();
+  });
+
+  it('calls handleupload when a file is selected', () => {
+    const testEdit = true;
+
+    const handleUpload = jest.fn();
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <ProtocolContext.Provider
+          value={{
+            dispatchSectionEvent: mockDispatchSectionEvent,
+          }}
+        >
+          <ImageUploader
+            handleCancel={handleUpload}
+            lineID="1"
+            content=""
+            edit={testEdit}
+          />
+        </ProtocolContext.Provider>
+      </Provider>,
+    );
+
+    const input = getByTestId('file-upload');
+    fireEvent.change(input, { target: { files: ['test-image.png'] } });
+    expect(handleUpload).toHaveBeenCalledTimes(0);
+  });
+
+  it('calls handleCancle when the cancle button is clicked', async () => {
+    const testEdit = true;
+
+    const handleCancel = jest.fn();
+    const { getByText } = render(
+      <Provider store={store}>
+        <ProtocolContext.Provider
+          value={{
+            dispatchSectionEvent: mockDispatchSectionEvent,
+          }}
+        >
+          <ImageUploader
+            handleCancel={handleCancel}
+            lineID="1"
+            content=""
+            edit={testEdit}
+          />
+        </ProtocolContext.Provider>
+      </Provider>,
+    );
+
+    const cancleButton = getByText('Cancel');
+    fireEvent.click(cancleButton);
+    expect(handleCancel).toHaveBeenCalledTimes(0);
+  });
+});

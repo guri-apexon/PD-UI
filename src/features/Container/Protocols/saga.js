@@ -390,7 +390,6 @@ export function* getCompareResult(action) {
         message: '',
       }),
     );
-    // const url = `${BASE_URL_8000}/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
     const url = '/compareWithSection.json';
     const resp = yield call(httpCall, { url, method: 'GET' });
 

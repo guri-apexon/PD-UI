@@ -65,11 +65,6 @@ class SearchPanel extends React.Component {
         const obj = cloneDeep(result[i]);
         obj.expanded = result[i].expanded ? result[i].expanded : false;
         obj.id = result[i].AiDocId;
-        // let obj = {
-        //   expanded: result[i].expanded ? result[i].expanded : false,
-        //   id: result[i].protocolNumber,
-        //   ...result[i],
-        // };
         arr.push(obj);
       }
       return {
@@ -105,7 +100,6 @@ class SearchPanel extends React.Component {
     const { onSortChange } = this.props;
     const filterValue = SORT_DROPDOWN.filter((item) => item.id === value);
     value && onSortChange(filterValue[0], value);
-    // this.setState({ sortValue: value.id });
   };
 
   onExpandAllClick = () => {
@@ -146,23 +140,13 @@ class SearchPanel extends React.Component {
   };
 
   clearAllCheckbox = () => {
-    // this.state["searchValue"] = [];
-    // this.setState({ searchValue: [] });
     if (this.props.searchInput) {
       this.props.hancleClearAll(true, this.props.searchInput);
-      // this.props.history.push(`/search?key=${this.props.searchInput}`);
     } else {
       this.props.hancleClearAll(false);
-      // this.props.history.push(`/search`);
     }
-
-    // window.location.reload();
   };
 
-  // onPageChange= (data, value)=>{
-  //   const {onSetPage}= this.props;
-  //   onSetPage(data, value)
-  // }
   onPageChange = (value) => {
     const { onSetPage } = this.props;
     onSetPage(value);
@@ -179,7 +163,6 @@ class SearchPanel extends React.Component {
         obj.protocolNumber.toLowerCase() ===
           protocol.protocolNumber.toLowerCase()
       ) {
-        // if (obj.protocolNumber && (obj.protocolNumber === protocol.protocolNumber)) {
         return { ...obj, followed: !obj.followed };
       }
       return obj;
@@ -197,7 +180,6 @@ class SearchPanel extends React.Component {
     try {
       const res = await httpCall(Config);
       if (res.success) {
-        // toast.info(`Protocol Successfully ${checked ? 'Followed' : 'Unfollowed'}`);
         this.setState({ accordionObj: newObj });
         const id = userDetails.userId;
         this.props.updateAlerts(id.substring(1));
@@ -227,15 +209,6 @@ class SearchPanel extends React.Component {
       enableFilter,
     } = this.props;
     const { accordionObj, defaultExpand } = this.state;
-
-    // let protocols = resultList.data && resultList.data.length;
-    // let maxRecordsPerPage = 10;
-    // let noOfProtocolsPerPages =
-    //   protocols > 0
-    //     ? protocols > maxRecordsPerPage
-    //       ? protocols / maxRecordsPerPage
-    //       : protocols
-    //     : 0;
 
     return (
       <div id="searchPanel" className="searchPanel">
@@ -333,27 +306,6 @@ class SearchPanel extends React.Component {
                 dateRangeValue={dateRangeValue}
                 clearAll={clearAll}
               />
-              {/* {filterList.length > 0 &&
-                filterList.map((section, index) => (
-                  <FilterSection
-                    state={this.state}
-                    key={section.sectionId}
-                    section={section}
-                    index={index}
-                  />
-                ))} */}
-              {/* {filterList.length === 0 && (
-                <div
-                  style={{
-                    height: 400,
-                    justifyContent: "center",
-                    alignItems: "center",
-                    display: "flex",
-                  }}
-                >
-                  <Loader />
-                </div>
-              )} */}
             </div>
           </Grid>
 
@@ -467,7 +419,6 @@ class SearchPanel extends React.Component {
                       )}
                     </div>
                   )}
-              {/* {resultList.loader && <Loader />} */}
               {!resultList.loader &&
                 resultList.success &&
                 accordionObj.length !== 0 && (
@@ -485,9 +436,6 @@ class SearchPanel extends React.Component {
                     />
                   </div>
                 )}
-              {/* { !resultList.loader &&
-              resultList.success &&
-              accordionObj.length !== 0 && <div> <Pagination count={totalSearchResult &&Math.ceil(totalSearchResult.length/10)} rowsPerPage={10} page={page} onChange={this.onPageChange} /></div>} */}
             </div>
           </Grid>
         </Grid>

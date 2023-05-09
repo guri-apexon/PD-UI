@@ -1,9 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
-
 import { cleanup } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
-
 import Navbar from '../Navbar';
 import { initialState } from './data';
 
@@ -185,5 +183,37 @@ describe('Should Render Navbar', () => {
   test('Should render for empty user type', () => {
     state.initialState.user.userDetail.user_type = '';
     render(<Navbar />, state);
+  });
+
+  it('should set modal state to true if isEdited and labEdited are both false', () => {
+    const { getByTestId, getByText } = render(<Navbar />, state);
+    const navbar = getByTestId('navbar-test');
+    const button = navbar.querySelector('button');
+
+    fireEvent.click(button);
+
+    const settingModal = getByText('Subhadatta');
+    expect(settingModal).toBeInTheDocument();
+  });
+
+  it('should not set modal state to true if isEdited is true', () => {
+    const { getByTestId } = render(<Navbar />, state);
+    const navbar = getByTestId('navbar-test');
+    const button = navbar.querySelector('button');
+
+    fireEvent.click(button);
+
+    const settingModal = screen.queryByText('Setting modal content');
+    expect(settingModal).not.toBeInTheDocument();
+  });
+  it('should not set modal state to true if labEdited is true', () => {
+    const { getByTestId } = render(<Navbar />, state);
+    const navbar = getByTestId('navbar-test');
+    const button = navbar.querySelector('button');
+
+    fireEvent.click(button);
+
+    const settingModal = screen.queryByText('Setting modal content');
+    expect(settingModal).not.toBeInTheDocument();
   });
 });

@@ -49,6 +49,7 @@ import protocolPageSlice, {
   getAllDipaViewData,
   updateSectionResp,
   resetUpdateStatus,
+  setDipaDataLoader,
 } from '../protocolSlice';
 
 import resetUpdateStatusinitialState from './initialState.json';
@@ -91,6 +92,7 @@ const initialState = {
   protocolTocData: [],
   sectionLockDetails: {},
   enrichedword: {},
+  dipaViewData: { loading: true },
 };
 
 const initialStaTe = {
@@ -407,6 +409,15 @@ describe(' ProtocolSlice Test Suite', () => {
         payload: [],
       }),
     ).toEqual({ ...initialState, dipaViewData: [] });
+  });
+
+  test('setDipaDataLoader', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setDipaDataLoader.type,
+        payload: true,
+      }),
+    ).toEqual({ ...initialState });
   });
 
   test('setAccordianMetaParam', () => {

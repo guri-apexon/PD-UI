@@ -83,7 +83,6 @@ function Protocols({ location }) {
       loader: true,
     };
     getProcotoclToc(viewData);
-    // setSectionIndex(new Array(Records.length));
     /* eslint-disable */
   }, []);
   /* eslint-enable */

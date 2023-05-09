@@ -63,9 +63,7 @@ class ProtocolViewClass extends React.Component {
                 marginBottom: '20px',
               }}
               dangerouslySetInnerHTML={this.createFullMarkup(item.TableName)}
-            >
-              {/* {item.TableName} */}
-            </h2>
+            ></h2>
           ) : null}
         </div>
         <div
@@ -84,9 +82,7 @@ class ProtocolViewClass extends React.Component {
                 <p
                   style={{ fontSize: '12px' }}
                   dangerouslySetInnerHTML={this.createFullMarkup(notes)}
-                >
-                  {/* {notes} */}
-                </p>
+                ></p>
               )
             );
           })}
@@ -96,20 +92,13 @@ class ProtocolViewClass extends React.Component {
   }
 
   getTocElement = (data) => {
-    // let section_level = data[0];
     const CPT_section = data[1];
     const type = data[2];
     const content = data[3];
-    // let font_info = data[4];
-    // let level_1_CPT_section = data[5];
-    // let file_section = data[6];
-    // let file_section_num = data[7];
-    // let file_section_level = data[8];
     const seq_num = data[9];
     if (!content) {
       return null;
     }
-    // const isBold = getStyle(font_info);
     if (type === 'table') {
       if (CPT_section === 'Unmapped') {
         return this.getTable(content, 'TOC-TABLE', true);
@@ -210,7 +199,6 @@ class ProtocolViewClass extends React.Component {
         popupVisible: false,
         subSectionData: [],
       });
-      // this.hideEle();
     };
 
     this.refs = refs;
@@ -282,9 +270,7 @@ class ProtocolViewClass extends React.Component {
                   <span
                     style={{ marginLeft: '16px' }}
                     dangerouslySetInnerHTML={{ __html: item.section }}
-                  >
-                    {/* {item.section}{" "} */}
-                  </span>
+                  ></span>
                   {item.subSections && (
                     <span style={{ float: 'right', fontSize: '1em' }}>
                       <ChevronRight
@@ -316,9 +302,7 @@ class ProtocolViewClass extends React.Component {
                       <p
                         style={{ margin: 0, marginLeft: '16px' }}
                         dangerouslySetInnerHTML={{ __html: data.section }}
-                      >
-                        {/* {`${data.section}`} */}
-                      </p>
+                      ></p>
                     </a>
                   </span>
                 ))}
@@ -376,16 +360,6 @@ class ProtocolViewClass extends React.Component {
                           </td>
                         </tr>
                       );
-
-                      // return (
-                      //   <>
-                      //     <div dangerouslySetInnerHTML={{ __html: item[2] }}></div>
-                      //     <p
-                      //       style={{ marginTop: 0, marginBottom: "10px" }}
-                      //       dangerouslySetInnerHTML={{ __html: item[1] }}
-                      //     ></p>
-                      //   </>
-                      // );
                     })}
                   </tbody>
                 </table>
