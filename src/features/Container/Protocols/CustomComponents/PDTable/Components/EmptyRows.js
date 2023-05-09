@@ -20,13 +20,16 @@ function EmptyRows({ rowIndex, handleOperation, index }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [rowHoverRef]);
+
   const handleIconClick = (iconIndex) => {
     setActiveIconIndex(iconIndex);
   };
+
   const handleTableOperation = (operation, index) => {
     handleOperation(operation, index);
     setActiveIconIndex(null);
   };
+
   return (
     <div
       className="pd-empty-row-cells"

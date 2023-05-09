@@ -69,7 +69,9 @@ function DisplayTable({
       <div className="pd-table-inner">
         {edit && data.length && (
           <EmptyColumns
-            columnIndexes={data[0]?.columns}
+            columnIndexes={data[0]?.columns.filter(
+              (x) => x.op_type !== QC_CHANGE_TYPE.DELETED,
+            )}
             handleOperation={handleColumnOperation}
             colWidth={colWidth}
           />

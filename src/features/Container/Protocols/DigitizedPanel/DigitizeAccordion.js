@@ -12,7 +12,7 @@ import Typography from 'apollo-react/components/Typography';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -496,12 +496,14 @@ function DigitizeAccordion({
   const handleSaveContent = () => {
     if (checkUnsavedTable()) {
       setShowAlert(true);
+      setSaveSection(null);
       setAlertMsg('Please save the all the tables before saving the section');
       return;
     }
 
     if (checkUnsavedImages()) {
       setShowAlert(true);
+      setSaveSection(null);
       setAlertMsg('Please save all the images before saving the section');
       return;
     }
@@ -780,6 +782,21 @@ function DigitizeAccordion({
     );
   };
 
+  const getMultilineEdit = useMemo(
+    () => (
+      <MultilineEdit
+        linkId={item.link_id}
+        sectionDataArr={sectionDataArr}
+        edit={showedit}
+        setShowDiscardConfirm={setShowDiscardConfirm}
+        child={getActionMenu()}
+        setRequestedRoute={setRequestedRoute}
+      />
+    ),
+    // eslint-disable-next-line
+    [showedit, sectionDataArr],
+  );
+
   return (
     // eslint-disable-next-line
     <div
@@ -873,14 +890,7 @@ function DigitizeAccordion({
             <>
               {sectionDataArr?.length > 0 &&
                 (showedit ? (
-                  <MultilineEdit
-                    linkId={item.link_id}
-                    sectionDataArr={sectionDataArr}
-                    edit={showedit}
-                    setShowDiscardConfirm={setShowDiscardConfirm}
-                    child={getActionMenu()}
-                    setRequestedRoute={setRequestedRoute}
-                  />
+                  <>{getMultilineEdit}</>
                 ) : (
                   // eslint-disable-next-line
                   <div className="readable-content-wrapper">

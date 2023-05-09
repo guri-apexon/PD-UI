@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 import EditFootNote from './EditFootNote';
 import { QC_CHANGE_TYPE } from '../../../../../../../AppConstant/AppConstant';
 
 function FootNotes({ footNoteData, edit, setFootnoteData }) {
-  const [activeLineID, setActiveLineID] = useState('');
-
   return (
     <div className="edit-container" data-testId="footnote">
       {/* eslint-disable-next-line */}
@@ -14,10 +11,7 @@ function FootNotes({ footNoteData, edit, setFootnoteData }) {
         (item, index) =>
           item?.qc_change_type_footnote !== QC_CHANGE_TYPE.DELETED && (
             // eslint-disable-next-line
-            <div
-              onClick={() => edit && setActiveLineID(index)}
-              data-testId="footnote-edit"
-            >
+            <div data-testId="footnote-edit">
               <EditFootNote
                 key={uuidv4()}
                 item={item}
@@ -25,7 +19,6 @@ function FootNotes({ footNoteData, edit, setFootnoteData }) {
                 content={item?.Text}
                 edit={edit}
                 footNoteData={footNoteData}
-                activeLineID={activeLineID}
                 setFootnoteData={setFootnoteData}
                 className="line-content edit-text-con"
               />
