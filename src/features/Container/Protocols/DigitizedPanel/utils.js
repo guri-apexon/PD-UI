@@ -40,11 +40,11 @@ const beforeUnLoad = (e, cb) => {
 };
 
 export const onBeforeUnload = (updateSectionLock) => {
-  document.addEventListener('beforeunload', (e) =>
+  window.addEventListener('beforeunload', (e) =>
     beforeUnLoad(e, updateSectionLock),
   );
   return () => {
-    document.removeEventListener('beforeunload', beforeUnLoad);
+    window.removeEventListener('beforeunload', beforeUnLoad);
   };
 };
 
