@@ -889,11 +889,17 @@ export function* handleCreateLabDataTable(action) {
   };
   try {
     const response = yield call(httpCall, config);
-    yield put(setLabDataCreated({ data: response.data, status: true }));
-    yield put(setLabDataLoader(false));
+    if (response.success) {
+      yield put(setLabDataCreated({ data: response.data, status: true }));
+      yield put(setLabDataLoader(false));
+    } else {
+      toast.error('Table creation failed');
+      yield put(setLabDataCreated({ data: [], status: false }));
+      yield put(setLabDataLoader(false));
+    }
   } catch (err) {
     toast.error('Table creation failed');
-    yield put(setLabDataCreated({ data: [], status: true }));
+    yield put(setLabDataCreated({ data: [], status: false }));
     yield put(setLabDataLoader(false));
   }
 }
