@@ -16,6 +16,15 @@ import Navbar from './features/Container/Navbar/Navbar';
 import './App.scss';
 import 'react-toastify/dist/ReactToastify.css';
 
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) {
+    console.log('This page was restored from the bfcache.');
+    window.location.reload();
+  } else {
+    console.log('This page was loaded normally.');
+  }
+});
+
 function App() {
   const cookiesServer = new Cookies();
   const userDetails = useSelector(loggedUser);
