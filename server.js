@@ -99,6 +99,11 @@ app.get('/health', function (req, res) {
 });
 
 app.get('/session', function (req, res) {
+  const getCookies = req.cookies;
+  if (!getCookies[access_token] || !getCookies[refresh_token]) {
+    console.log('No Tokens');
+    res.redirect(`${baseUrlSSO}/logout_session`);
+  }
   console.log('session', req.session.user);
   res.send(req.session.user);
 });
