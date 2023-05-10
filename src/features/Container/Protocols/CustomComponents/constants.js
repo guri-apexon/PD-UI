@@ -34,7 +34,6 @@ const header = { ...text, type: 'header', linkLevel: 2 };
 const image = { ...text, type: 'image' };
 const footNote = {
   AttachmentId: '',
-  Text: 'Enter Your Text Here',
   qc_change_type_footnote: QC_CHANGE_TYPE.ADDED,
 };
 delete image.font_info;

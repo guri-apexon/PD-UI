@@ -3,6 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { QC_CHANGE_TYPE } from '../../../../../../../AppConstant/AppConstant';
+import '../../../renderContent.scss';
 
 function EditFootNote({
   item,
@@ -64,8 +65,8 @@ function EditFootNote({
   return (
     <div className="format-container" data-testId="content-edit">
       <ContentEditable
+        className="contentEditable editable"
         data-testId="content-editable"
-        className="contentEditable"
         html={footerText}
         disabled={!edit}
         onChange={handleTextChange}
