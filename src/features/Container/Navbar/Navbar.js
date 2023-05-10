@@ -53,6 +53,7 @@ const setMenuItems = (value) => {
 
 const onLogoutClick = () => {
   deleteAllCookie();
+  window.location.reload();
   window.location.href = `${baseUrlSSO}/logout_session`;
 };
 
