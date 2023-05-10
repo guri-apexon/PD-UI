@@ -22,7 +22,7 @@ const style = {
 function FirstColumn({ data, colDef }) {
   let { field } = colDef;
   const { propDispatch, apiDispatch, tableId, docId } = useContext(GridContext);
-
+  const rowIdx = data[Object.keys(data)[0]][TableConst.ROW_IDX];
   const [anchorEl, setAnchorEl] = useState(null);
   const [warning, setWarning] = useState(false);
   const ref = useRef(null);
@@ -129,11 +129,14 @@ function FirstColumn({ data, colDef }) {
         onClose={() => setAnchorEl(null)}
       >
         <Card interactive style={style.arrowContainer}>
-          <Arrow2Up
-            data-testid="arrow2Up-button"
-            className="hand-cursor"
-            onClick={() => cellAction(TableConst.ADD_ROW_BELOW)}
-          />
+          {rowIdx > 0 ? (
+            <Arrow2Up
+              data-testid="arrow2Up-button"
+              className="hand-cursor"
+              onClick={() => cellAction(TableConst.ADD_ROW_BELOW)}
+            />
+          ) : null}
+
           <Trash
             data-testid="trash-button"
             className="hand-cursor"

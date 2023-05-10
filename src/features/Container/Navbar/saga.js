@@ -50,10 +50,6 @@ export function* handlereadNotification(action) {
     payload: { aidocId, id, protocol, alert_id },
   } = action;
 
-  const actions = {
-    READ_NOTIFICATION: 'read',
-  };
-
   const readConfig = {
     url: `${BASE_URL_8000}/api/notification_read/`,
     method: 'POST',
@@ -87,10 +83,6 @@ export function* handleDeleteNotification(action) {
     const {
       payload: { aidocId, id, protocol, alert_id },
     } = action;
-
-    const actions = {
-      DELETE_NOTIFICATION: 'delete',
-    };
 
     const config = {
       url: `${BASE_URL_8000}/api/notification_read/`,

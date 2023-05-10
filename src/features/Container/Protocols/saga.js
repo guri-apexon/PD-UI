@@ -390,7 +390,6 @@ export function* getCompareResult(action) {
         message: '',
       }),
     );
-    // const url = `${BASE_URL_8000}/api/document_compare/?id1=${action.payload.docID}&id2=${action.payload.docID2}`;
     const url = '/compareWithSection.json';
     const resp = yield call(httpCall, { url, method: 'GET' });
 
@@ -889,11 +888,17 @@ export function* handleCreateLabDataTable(action) {
   };
   try {
     const response = yield call(httpCall, config);
-    yield put(setLabDataCreated({ data: response.data, status: true }));
-    yield put(setLabDataLoader(false));
+    if (response.success) {
+      yield put(setLabDataCreated({ data: response.data, status: true }));
+      yield put(setLabDataLoader(false));
+    } else {
+      toast.error('Table creation failed');
+      yield put(setLabDataCreated({ data: [], status: false }));
+      yield put(setLabDataLoader(false));
+    }
   } catch (err) {
     toast.error('Table creation failed');
-    yield put(setLabDataCreated({ data: [], status: true }));
+    yield put(setLabDataCreated({ data: [], status: false }));
     yield put(setLabDataLoader(false));
   }
 }

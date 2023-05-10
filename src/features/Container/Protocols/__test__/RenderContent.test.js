@@ -83,9 +83,18 @@ describe('RenderContent', () => {
   });
 
   it('renders the correct content and edit button when type is table', () => {
-    const sectionData = {
+    const sectionTableData = {
       type: 'table',
-      content: null,
+      content: {
+        Table:
+          '<table border="1" class="dataframe">\n  <thead>\n    <tr style="text-align: right;">\n      <th>ColIndex</th>\n      <th>1.0</th>\n      <th>2.0</th>\n      <th>3.0</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>3</td>\n      <td>1</td>\n      <td>1</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>3</td>\n      <td>2</td>\n      <td>2</td>\n    </tr>\n  </tbody>\n</table>',
+        TableProperties:
+          '[{"row_indx": 0, "roi_id": "4d6bf3cc-b5e8-4dbe-b65d-e6e5c81a68be", "op_type": null, "columns": [{"col_indx": 0, "op_type": null, "cell_id": "bc8eaf44-5b77-4e8a-b4db-22e00c56873d", "value": "3"}, {"col_indx": 1, "op_type": null, "cell_id": "48678342-7924-4d5e-b514-d11e2723723c", "value": "1"}, {"col_indx": 2, "op_type": null, "cell_id": "0ae22bb5-0afe-4682-8ced-d95fb6799d44", "value": "1"}]}, {"row_indx": 1, "roi_id": "c36c8423-b6a8-4e17-b09c-6913bea3bf4f", "op_type": null, "columns": [{"col_indx": 0, "op_type": null, "cell_id": "520714cf-e6d1-48a7-8291-8a3b0129f99e", "value": "3"}, {"col_indx": 1, "op_type": null, "cell_id": "8f187714-a6fa-497f-a7dc-38155f9e49a6", "value": "2"}, {"col_indx": 2, "op_type": null, "cell_id": "4106bd2d-0255-492c-bf62-84de4c8189c2", "value": "2"}]}]',
+        AttachmentListProperties: [],
+        TableIndex: '5',
+        TableName: '',
+        Header: [0],
+      },
       line_id: 'line-1',
     };
     const contextValues = { dispatchSectionEvent: jest.fn() };
@@ -94,7 +103,7 @@ describe('RenderContent', () => {
       .mockImplementation(() => contextValues);
     render(
       <RenderContent
-        sectionData={sectionData}
+        sectionData={sectionTableData}
         handleContentEdit={handleContentEditMock}
         activeLineID="line-1"
         setActiveLineID={setActiveLineIDMock}

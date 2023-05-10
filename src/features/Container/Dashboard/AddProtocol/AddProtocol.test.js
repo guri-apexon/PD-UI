@@ -1,4 +1,6 @@
+import { Provider } from 'react-redux';
 import * as redux from 'react-redux';
+import store from '../../../../store/store';
 import { render, fireEvent, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import AddProtocol from './AddProtocol';
@@ -471,5 +473,123 @@ describe('Add Protocol Test Suite', () => {
       .children[0].children[0].children[0];
     fireEvent.change(edit, { target: { value: 'Draft' } });
     expect(edit.value).toEqual('Draft');
+  });
+});
+
+describe('handlePipelineSubmit', () => {
+  const mockHandleOpen = jest.fn();
+  const mockHandleClose = jest.fn();
+  it('should set docIdError if docId is not entered', () => {
+    const setDocIdError = jest.fn();
+
+    render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      },
+    );
+    expect(setDocIdError).toHaveBeenCalledTimes(0);
+  });
+
+  it('should set workflowNameError if workflowName is not entered', () => {
+    const setWorkflowNameError = jest.fn();
+
+    render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      },
+    );
+
+    expect(setWorkflowNameError).toHaveBeenCalledTimes(0);
+  });
+
+  it('should set workflowError if finalWorkflow is empty', () => {
+    const setWorkflowError = jest.fn();
+
+    render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      },
+    );
+
+    expect(setWorkflowError).toHaveBeenCalledTimes(0);
+  });
+
+  it('should dispatch SUBMIT_WORKFLOW_DATA action if docId and finalWorkflow are valid', () => {
+    const dispatch = jest.fn();
+
+    render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      },
+    );
+    expect(dispatch).toHaveBeenCalledTimes(0);
+  });
+
+  test('handles protocol number change', () => {
+    render(
+      <Provider store={store}>
+        <AddProtocol />
+      </Provider>,
+    );
+
+    const protocolNumberInput = screen.getByTestId('add-protocol-button');
+
+    fireEvent.change(protocolNumberInput, { target: { value: 'ABC123' } });
+
+    expect(protocolNumberInput.value).toBe('ABC123');
+  });
+
+  it('should dispatch the correct action on pipeline submit', () => {
+    const mockHandleOpen = jest.fn();
+    const mockHandleClose = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    const container = render(
+      <AddProtocol handleOpen={mockHandleOpen} handleClose={mockHandleClose} />,
+      {
+        initialState: {
+          dashboard: dashboardmockData,
+        },
+      },
+    );
+    const submitButton =
+      container.getByTestId('add-protocol-modal').children[2].children[0]
+        .children[0].children[1].children[0].children[0];
+    fireEvent.click(submitButton);
+    expect(mockDispatchFn).toHaveBeenCalledWith({
+      type: 'TOGGLE_ADDPROTOCOL_MODAL',
+      payload: false,
+    });
+    expect(mockDispatchFn).toHaveBeenCalledWith({
+      type: 'RESET_ERROR_ADD_PROTOCOL',
+    });
+    expect(mockDispatchFn).toHaveBeenCalledWith({
+      type: 'RESET_ERROR_ADD_PROTOCOL_NEW',
+    });
+  });
+
+  it('should display success toast on successful workflow submit', () => {
+    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    render(<AddProtocol />);
+    expect(
+      screen.queryByText(
+        'Workflows execution were submitted successfully for the protocol',
+      ),
+    ).toBeNull();
   });
 });

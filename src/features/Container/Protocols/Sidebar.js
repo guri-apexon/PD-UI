@@ -14,24 +14,9 @@ class Sidebar extends React.Component {
     expanded: false,
   };
 
-  // onChange = (e, expanded) => {
-  //   this.setState({ expanded });
-  //   expanded
-  //     ? console.log("Blade is now expanded")
-  //     : console.log("Blade is now collapsed");
-  // };
-
-  // onClose = () => {
-  //   this.setState({ open: true, expanded: false });
-  // };
-
-  // onOpen = () => {
-  //   this.setState({ open: true });
-  // };
   handleDownload = (type, data) => {
     /* istanbul ignore else */
     if (type === 'toc') {
-      // this.props.handleDownloadTOC(data);
       axios({
         url: 'http://localhost:4000/create-excel',
         method: 'POST',
@@ -44,7 +29,6 @@ class Sidebar extends React.Component {
   };
 
   render() {
-    // const { expanded, open } = this.state;
     const { open, setOpen, compare } = this.props;
     const { data } = compare.iqvdata;
 
