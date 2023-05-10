@@ -84,7 +84,7 @@ function MedicalTerm({
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
-      clinical_terms: childArr?.toString(),
+      clinical_terms: clinicalTermsArr[enrichedText]?.clinical_terms,
       ontology: clinicalTermsArr[enrichedText]?.ontology,
       confidence: '0',
       start: '0',
@@ -136,7 +136,7 @@ function MedicalTerm({
       const tempObj = {
         standard_entity_name: enrichedText,
         iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
-        clinical_terms: clinicalTerm,
+        clinical_terms: clinicalTermsArr[enrichedText]?.clinical_terms,
         ontology: clinicalTermsArr[enrichedText]?.ontology,
         confidence: '0',
         start: '0',
@@ -250,7 +250,7 @@ function MedicalTerm({
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
-      clinical_terms: clinicalTerm,
+      clinical_terms: clinicalTermsArr[enrichedText]?.clinical_terms,
       ontology: clinicalTermsArr[enrichedText]?.ontology,
       confidence: '0',
       start: '0',
