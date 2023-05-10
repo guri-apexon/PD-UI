@@ -69,11 +69,12 @@ export function* protocolAsyn(action) {
         const followedProtocolData = [];
         const myPorotocolsData = [];
         protocolData.data.map((item) => {
-          item.protocolTitle = !item.protocolTitle ? '' : item.protocolTitle;
-          item.protocol = !item.protocol ? '' : item.protocol;
-          item.projectId = !item.projectId ? '' : item.projectId;
-          item.sponsor = !item.sponsor ? '' : item.sponsor;
-          item.uploadDate = !item.uploadDate ? '' : new Date(item.uploadDate);
+          item.protocolTitle = !item.protocolTitle ? '-' : item.protocolTitle;
+          item.protocol = !item.protocol ? '-' : item.protocol;
+          item.projectId = !item.projectId ? '-' : item.projectId;
+          item.sponsor = !item.sponsor ? '-' : item.sponsor;
+          item.indication = !item.indication ? '-' : item.indication;
+          item.uploadDate = !item.uploadDate ? '-' : new Date(item.uploadDate);
           item.qcActivity = qcIconStatus(item.qcStatus, item.status);
           item.status = iconStatus(item.status, item.qcStatus);
           item.showMoreCalling = false;

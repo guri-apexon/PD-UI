@@ -422,7 +422,7 @@ const ExpandableComponent = ({ row }) => {
             {'Phase'}
           </Typography>
           <Typography className="fw-8" variant="body2">
-            {row.phase}
+            {row.phase || '-'}
           </Typography>
         </div>
         <div className="extended-data indication-style">

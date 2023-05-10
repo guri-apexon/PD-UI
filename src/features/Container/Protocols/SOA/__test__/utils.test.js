@@ -31,7 +31,6 @@ describe('addColumnDefs', () => {
     addColumnDefs(item);
     expect(item).toEqual({
       isFirstColumn: true,
-      width: 150,
       cellRenderer: FirstColumn,
       cellClass: 'column1',
       headerClass: 'grid-header',
@@ -39,8 +38,7 @@ describe('addColumnDefs', () => {
       headerComponent: HeaderComponent,
       headerGroupComponent: HeaderComponent,
       editable: true,
-      minWidth: 150,
-      maxWidth: 250,
+      minWidth: 200,
       suppressMovable: true,
       cellEditor: TextEditor,
       cellEditorSelector: expect.any(Function),
