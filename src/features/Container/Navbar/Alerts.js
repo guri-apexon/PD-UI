@@ -22,7 +22,6 @@ import { userType } from '../../../store/userDetails';
 import './Alerts.scss';
 import notificationValues from './constant';
 import { navbarNotifications } from './navbarSlice';
-import { isUserType } from '../../../utils/utilFunction';
 const replaceall = require('replaceall');
 
 const notificationStyle = {

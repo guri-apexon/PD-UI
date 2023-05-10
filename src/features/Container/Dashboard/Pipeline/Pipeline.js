@@ -41,7 +41,6 @@ function PipelineComponent({
         obj.checked = true;
         obj.disabled = true;
       }
-      // const obj = { work_flow_name: key, checked: false, services: [] };
       workflow[key].forEach((service) => {
         const inObj = {
           service_name: service.service_name,

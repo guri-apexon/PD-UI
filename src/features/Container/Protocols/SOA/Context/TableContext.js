@@ -460,6 +460,8 @@ const getColumns = ({ state, selectedTab, hideColumns }) => {
   return { columnDefs: getTableColumns(finalgroups) };
 };
 const isColumn = (cell) => Number(cell[TableConst.ROW_IDX]) === 0;
+const isValidColumn = (cell) => Number(cell[TableConst.COLUMN_IDX]) > 0;
+
 const getFootNotesFromObject = (record) => {
   const regexp = new RegExp(`^${TableConst.FOOT_NOTE_KEY}`, 'i');
   const footNoteKeys = Object.keys(record).filter(
@@ -494,14 +496,16 @@ const formatTables = (data) => {
 
         if (tableKey === TableConst.STUDYPROCEDURE) {
           tableItem[tableKey].forEach((tableKeyItem) => {
-            if (isColumn(tableKeyItem)) {
-              actualColSet.add(Number(tableKeyItem[TableConst.COLUMN_IDX]));
-            } else {
-              cellColumnsSet.add(Number(tableKeyItem[TableConst.COLUMN_IDX]));
-            }
+            if (isValidColumn(tableKeyItem)) {
+              if (isColumn(tableKeyItem)) {
+                actualColSet.add(Number(tableKeyItem[TableConst.COLUMN_IDX]));
+              } else {
+                cellColumnsSet.add(Number(tableKeyItem[TableConst.COLUMN_IDX]));
+              }
 
-            tableKeyItem[TableConst.UID] = uuidv4();
-            tableKeyItem[TableConst.TIME_POINT] = TableConst.STUDYPROCEDURE;
+              tableKeyItem[TableConst.UID] = uuidv4();
+              tableKeyItem[TableConst.TIME_POINT] = TableConst.STUDYPROCEDURE;
+            }
           });
         }
         if (tableKey === TableConst.STUDYVISIT) {
@@ -509,15 +513,17 @@ const formatTables = (data) => {
             const key = Object.keys(svItem)[0];
 
             svItem[key].forEach((svKey) => {
-              if (isColumn(svKey)) {
-                actualColSet.add(Number(svKey[TableConst.COLUMN_IDX]));
-              } else {
-                cellColumnsSet.add(Number(svKey[TableConst.COLUMN_IDX]));
-              }
+              if (isValidColumn(svKey)) {
+                if (isColumn(svKey)) {
+                  actualColSet.add(Number(svKey[TableConst.COLUMN_IDX]));
+                } else {
+                  cellColumnsSet.add(Number(svKey[TableConst.COLUMN_IDX]));
+                }
 
-              svKey[TableConst.UID] = uuidv4();
-              svKey[TableConst.TIME_POINT] = key;
-              groupObject[svKey[TableConst.UID]] = svKey;
+                svKey[TableConst.UID] = uuidv4();
+                svKey[TableConst.TIME_POINT] = key;
+                groupObject[svKey[TableConst.UID]] = svKey;
+              }
             });
             if (svItem[key].length > 0) {
               defaultTimePoints.push(key);
@@ -539,12 +545,14 @@ const formatTables = (data) => {
             [TableConst.UID]: uuidv4(),
             [TableConst.TIME_POINT]: TableConst.NORMALIZED_SOA,
           };
-          if (isColumn(obj)) {
-            actualColSet.add(Number(obj[TableConst.COLUMN_IDX]));
-          } else {
-            cellColumnsSet.add(Number(obj[TableConst.COLUMN_IDX]));
+          if (isValidColumn(obj)) {
+            if (isColumn(obj)) {
+              actualColSet.add(Number(obj[TableConst.COLUMN_IDX]));
+            } else {
+              cellColumnsSet.add(Number(obj[TableConst.COLUMN_IDX]));
+            }
+            rtObj[tableKey].push(obj);
           }
-          rtObj[tableKey].push(obj);
         });
       }
     });
@@ -629,8 +637,6 @@ const tableReducer = (state, actions) => {
     case TableEvents.SET_TABLES:
       return { ...state, ...formatTables(actions.payload) };
     case TableEvents.SET_SELECTED_TAB:
-      // updateAvailableHeaders(state, actions.payload);
-
       return {
         ...state,
         hideGroupsColumns: updateAvailableHeaders(state, actions.payload),
@@ -712,8 +718,6 @@ const tableReducer = (state, actions) => {
       return { ...state, gridRef: actions.payload };
 
     case TableEvents.FILTER_GROUP_COLUMN:
-      // if (canUpdateGroupFilters(state, actions)) return state;
-
       return {
         ...state,
         refreshValue: state.refreshValue + 1,
@@ -723,8 +727,6 @@ const tableReducer = (state, actions) => {
         ),
       };
     case TableEvents.REFRESH_TABLE:
-      // if (canUpdateGroupFilters(state, actions)) return state;
-
       return {
         ...state,
         ...getTableData(state.tables[state.selectedTab], null),

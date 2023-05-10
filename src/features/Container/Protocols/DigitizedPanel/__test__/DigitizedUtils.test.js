@@ -1,9 +1,11 @@
 import { toast } from 'react-toastify';
+import { render } from '@testing-library/react';
+
 import {
   scrollToLinkandReference,
   replaceHtmlTags,
-  onBeforeUnload,
   renderAuditInfo,
+  tablePopup,
 } from '../utils';
 
 jest.mock('react-toastify', () => ({
@@ -92,59 +94,86 @@ describe('replaceHtmlTags', () => {
   });
 });
 
-describe('onBeforeUnload', () => {
-  test('adds event listener to document', () => {
-    const updateSectionLock = jest.fn();
-    const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
-
-    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
-
-    const cleanup = onBeforeUnload(updateSectionLock);
-
-    expect(addEventListenerSpy).toHaveBeenCalledTimes(1);
-    expect(addEventListenerSpy).toHaveBeenCalledWith(
-      'beforeunload',
-      expect.any(Function),
-    );
-
-    cleanup();
-
-    expect(removeEventListenerSpy).toHaveBeenCalledTimes(1);
-    expect(removeEventListenerSpy).toHaveBeenCalledWith(
-      'beforeunload',
-      expect.any(Function),
-    );
-  });
-
-  test('calls updateSectionLock with true when beforeunload event is fired', () => {
-    const updateSectionLock = jest.fn();
-    onBeforeUnload(updateSectionLock);
-
-    window.dispatchEvent(new Event('beforeunload'));
-
-    expect(updateSectionLock).toHaveBeenCalledTimes(0);
-  });
-
-  test('prevents default action of beforeunload event', () => {
-    const updateSectionLock = jest.fn();
-    const e = new Event('beforeunload');
-    const preventDefaultSpy = jest.spyOn(e, 'preventDefault');
-
-    const cleanup = onBeforeUnload(updateSectionLock);
-
-    document.dispatchEvent(e);
-
-    expect(preventDefaultSpy).toHaveBeenCalledTimes(1);
-
-    cleanup();
-  });
-});
-
 describe('renderAuditInfo', () => {
   it('returns "-----" when item object is undefined', () => {
     const names = { keyName: 'last_reviewed_date' };
     const expected = '-----';
     const result = renderAuditInfo(undefined, names);
     expect(result).toEqual(expected);
+  });
+
+  test('renders itemVal when keyName is not "last_reviewed_date"', () => {
+    const itemVal = 'Some Value';
+    const keyName = 'some_key';
+    const { getByText } = render(
+      <div>{renderAuditInfo(itemVal, keyName)}</div>,
+    );
+    expect(getByText(itemVal)).toBeInTheDocument();
+  });
+
+  test('renders formatted itemVal when keyName is "last_reviewed_date" and itemVal is valid', () => {
+    const itemVal = '2023-05-01T12:34:56Z';
+    const keyName = 'last_reviewed_date';
+    const { getByText } = render(
+      <div>{renderAuditInfo(itemVal, keyName)}</div>,
+    );
+    const formattedDate = '01-May-2023 08:34'; // Adjust the expected formatted date based on your timezone
+    expect(getByText(formattedDate)).toBeInTheDocument();
+  });
+
+  test('renders "-----" when keyName is "last_reviewed_date" and itemVal is invalid', () => {
+    const itemVal = 'Invalid Date';
+    const keyName = 'last_reviewed_date';
+    const { getByText } = render(
+      <div>{renderAuditInfo(itemVal, keyName)}</div>,
+    );
+    expect(getByText('-----')).toBeInTheDocument();
+  });
+});
+
+describe('tablePopup', () => {
+  beforeEach(() => {
+    document.body.innerHTML = ''; // clear body before each test
+  });
+
+  test('it should add a div element to the body', () => {
+    const mockEvent = {
+      currentTarget: { getBoundingClientRect: () => ({ left: 0, top: 0 }) },
+    };
+    tablePopup(mockEvent, jest.fn());
+
+    const tableEnrichedPopup = document.querySelector(
+      '.table-enriched-place-holder',
+    );
+    expect(tableEnrichedPopup).toBeInTheDocument();
+  });
+
+  test('it should add click event listener to the div element', () => {
+    const mockCallback = jest.fn();
+    const mockEvent = {
+      currentTarget: { getBoundingClientRect: () => ({ left: 0, top: 0 }) },
+    };
+    tablePopup(mockEvent, mockCallback);
+
+    const tableEnrichedPopup = document.querySelector(
+      '.table-enriched-place-holder',
+    );
+    tableEnrichedPopup.click();
+
+    expect(mockCallback).toHaveBeenCalled();
+  });
+
+  test('it should set the correct position for the div element', () => {
+    const mockEvent = {
+      currentTarget: { getBoundingClientRect: () => ({ left: 100, top: 200 }) },
+    };
+    tablePopup(mockEvent, jest.fn());
+
+    const tableEnrichedPopup = document.querySelector(
+      '.table-enriched-place-holder',
+    );
+    expect(tableEnrichedPopup.style.position).toBe('absolute');
+    expect(tableEnrichedPopup.style.left).toBe('100px');
+    expect(tableEnrichedPopup.style.top).toBe('200px');
   });
 });

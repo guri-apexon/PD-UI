@@ -63,13 +63,18 @@ function DisplayTable({
   const allowDrop = (e) => {
     e.preventDefault();
   };
+  const handleClick = (e) =>
+    handleEnrichedClick &&
+    handleEnrichedClick(e, clinicalTerms, CONTENT_TYPE.TABLE);
 
   return (
     <div className="pd-table-wrapper">
       <div className="pd-table-inner">
         {edit && data.length && (
           <EmptyColumns
-            columnIndexes={data[0]?.columns}
+            columnIndexes={data[0]?.columns.filter(
+              (x) => x.op_type !== QC_CHANGE_TYPE.DELETED,
+            )}
             handleOperation={handleColumnOperation}
             colWidth={colWidth}
           />
@@ -125,13 +130,7 @@ function DisplayTable({
                             id={`columnID-${rowIndex}-${colIndex}`}
                             data-testid="span-edit"
                             className="editable-span"
-                            onClick={(e) =>
-                              handleEnrichedClick(
-                                e,
-                                clinicalTerms,
-                                CONTENT_TYPE.TABLE,
-                              )
-                            }
+                            onClick={handleClick}
                             // eslint-disable-next-line
                             dangerouslySetInnerHTML={getPreferredTerms(
                               col.value,

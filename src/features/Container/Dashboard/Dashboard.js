@@ -29,6 +29,7 @@ function Dashboard() {
     dispatch({ type: 'TOGGLE_ADDPROTOCOL_MODAL', payload: false });
     // eslint-disable-next-line
   }, []);
+
   return (
     <div className="dashboard-parent" style={{ padding: 20 }}>
       {dashboardError && dashboardError.apiError && (
