@@ -46,12 +46,14 @@ class ProtocolViewWrapper extends React.Component {
   /* istanbul ignore next */
   handlePaginationPage = (paginationPage) => {
     this.setState({ paginationPage });
+    this.setState({ pageRight: 0 });
   };
 
   /* istanbul ignore next */
   handlePageNo = (event, page, sectionNo) => {
     this.setState({ pageNo: page });
     this.setState({ sectionNumber: sectionNo });
+    this.setState({ pageRight: 0 });
   };
 
   /* istanbul ignore next */

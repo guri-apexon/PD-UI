@@ -23,17 +23,14 @@ import {
   initialFormValues,
   documentStatusList,
   amendmentNumber,
-  emptyAutoObj,
 } from './constants';
 import { dashboard, addProtocolErrorData } from '../dashboardSlice';
-import CustomDropdown from '../../../Components/CustomDropdown/CustomDropdown';
-import Loader from '../../../Components/Loader/Loader';
 import CustomFileUpload from './CustomFileUpload';
 import { messages } from '../../../../AppConstant/AppConstant';
 import PipelineComponent from '../Pipeline/Pipeline';
 import Tab from 'apollo-react/components/Tab';
 import Tabs from 'apollo-react/components/Tabs';
-import { errorMessage, dashboardErrorType } from '../constant';
+import { errorMessage } from '../constant';
 
 const versionRegx = /^[a-zA-Z0-9\s-._ ]*$/;
 const versionErrText = messages.versionMessage.validationMessage;
@@ -79,7 +76,7 @@ function AddProtocol() {
   useEffect(() => {
     if (workflowSubmitData.success) {
       setDocIdEntered('');
-    setWorkflowName('');
+      setWorkflowName('');
       toast.success(
         'Workflows execution were submitted successfully for the protocol',
       );
@@ -127,8 +124,6 @@ function AddProtocol() {
       }
       if (formErrorValues[fieldName].regex && e.target.value.length > 0) {
         const reg = formErrorValues[fieldName].regex;
-        // let reg = new RegExp(formErrorValues[fieldName].regex);
-        // let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
         const isNumber = versionRegx.test(e.target.value);
         if (isNumber && reg.test(parseFloat(e.target.value))) {
           tempValues[fieldName] = e.target.value;
@@ -213,16 +208,12 @@ function AddProtocol() {
         e.target.value.trim().length > 0
       ) {
         const reg = formErrorValues[fieldName].regex;
-        // let reg = new RegExp(formErrorValues[fieldName].regex);
-        // let isNumber = /^[0-9]+(\.[0-9]{1,2})?$/.test(e.target.value);
         const isNumber = versionRegx.test(e.target.value);
         if (isNumber && reg.test(parseFloat(e.target.value))) {
           temp[fieldName].error = false;
           temp[fieldName].errorMessage = ' ';
         } else {
           temp[fieldName].error = true;
-          // temp[fieldName].errorMessage =
-          //   "Does not Match, Positive and upto 2 Decimals only";
           temp[fieldName].errorMessage = versionErrText;
         }
       }

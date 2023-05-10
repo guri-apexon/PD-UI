@@ -15,6 +15,17 @@ import dashboardslice, {
   getDashboardSearchLoader,
   setIndicationLoading,
   setSponsorLoading,
+  setAddProtocolErrorState,
+  setworkflowData,
+  dashboadSearchLoader,
+  setworkflowSubmit,
+  setWFData,
+  addProtocolErrorData,
+  selectedProtocolsList,
+  followedProtocolsList,
+  getFollowedProtocols,
+  setSelectedProtocols,
+  hideAddprotocol,
 } from '../dashboardSlice';
 
 const initialState = {
@@ -28,6 +39,28 @@ const initialState = {
   isLoading: true,
   savedSearches: [],
   apiError: false,
+  followedProtocols: [],
+  selectedProtocols: [],
+  displayAddProtocol: true,
+  workflowData: {
+    loading: false,
+    error: null,
+    data: {
+      Status: '',
+    },
+  },
+  workflowSubmit: {
+    loading: false,
+    error: null,
+    data: [],
+    success: false,
+  },
+  wfData: {
+    loading: false,
+    error: null,
+    data: [],
+    success: false,
+  },
 };
 const state = {
   dashboard: {
@@ -84,6 +117,54 @@ describe(' DashboardSlice Test Suite', () => {
     });
   });
 
+  test('Test setAddProtocolErrorState', () => {
+    expect(
+      dashboardslice(initialState, {
+        type: setAddProtocolErrorState.type,
+        payload: true,
+      }),
+    ).toEqual({
+      ...initialState,
+      addProtocolErrorState: true,
+    });
+  });
+
+  test('Test setworkflowData', () => {
+    expect(
+      dashboardslice(initialState, {
+        type: setworkflowData.type,
+        payload: true,
+      }),
+    ).toEqual({
+      ...initialState,
+      workflowData: true,
+    });
+  });
+
+  test('Test setworkflowSubmit', () => {
+    expect(
+      dashboardslice(initialState, {
+        type: setworkflowSubmit.type,
+        payload: true,
+      }),
+    ).toEqual({
+      ...initialState,
+      workflowSubmit: true,
+    });
+  });
+
+  test('Test setWFData', () => {
+    expect(
+      dashboardslice(initialState, {
+        type: setWFData.type,
+        payload: true,
+      }),
+    ).toEqual({
+      ...initialState,
+      wfData: true,
+    });
+  });
+
   test('Test setLoading', () => {
     expect(
       dashboardslice(initialState, {
@@ -115,6 +196,42 @@ describe(' DashboardSlice Test Suite', () => {
     ).toEqual({
       ...initialState,
       apiError: true,
+    });
+  });
+
+  test('Test getFollowedProtocols', () => {
+    expect(
+      dashboardslice(initialState, {
+        type: getFollowedProtocols.type,
+        payload: true,
+      }),
+    ).toEqual({
+      ...initialState,
+      followedProtocols: true,
+    });
+  });
+
+  test('Test setSelectedProtocols', () => {
+    expect(
+      dashboardslice(initialState, {
+        type: setSelectedProtocols.type,
+        payload: true,
+      }),
+    ).toEqual({
+      ...initialState,
+      selectedProtocols: true,
+    });
+  });
+
+  test('Test hideAddprotocol', () => {
+    expect(
+      dashboardslice(initialState, {
+        type: hideAddprotocol.type,
+        payload: true,
+      }),
+    ).toEqual({
+      ...initialState,
+      displayAddProtocol: true,
     });
   });
 
@@ -179,5 +296,9 @@ describe(' DashboardSlice Test Suite', () => {
     prtocolsError(state);
     recentSearches(state);
     savedSearches(state);
+    dashboadSearchLoader(state);
+    followedProtocolsList(state);
+    selectedProtocolsList(state);
+    addProtocolErrorData(state);
   });
 });

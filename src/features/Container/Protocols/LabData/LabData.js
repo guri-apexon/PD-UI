@@ -67,7 +67,7 @@ function ActionCell({ row }) {
           data-testid="add-item"
           type="button"
           className="hoverButton"
-          onClick={() => handleAdd(row.id)}
+          onClick={() => handleAdd(row.id, true)}
         >
           +
         </button>
@@ -370,7 +370,7 @@ function LabData({ docId }) {
   };
 
   useEffect(() => {
-    if (labData.data.length > 0) {
+    if (labData?.data?.length > 0) {
       setRowData(
         labData.data.filter(
           (value) =>

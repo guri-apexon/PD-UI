@@ -23,29 +23,28 @@ function AccordionToc({
   };
 
   return (
-    <Tooltip
-      className="tooltip"
-      title={removeHtmlTags(level.source_file_section)}
+    <TreeItem
+      key={level.link_id}
+      label={
+        <Tooltip title={removeHtmlTags(level.source_file_section)}>
+          <div>
+            <SanitizeHTML
+              html={createFullMarkup(removeHtmlTags(level.source_file_section))}
+            />
+          </div>
+        </Tooltip>
+      }
+      onClick={handleClick}
+      nodeId={level.link_id}
+      className={
+        expanded.includes(level.link_id) ? 'label-bold' : 'label-lighter'
+      }
+      icon={
+        expanded.includes(level.link_id) ? <ChevronDown /> : <ChevronRight />
+      }
     >
-      <TreeItem
-        key={level.link_id}
-        label={
-          <SanitizeHTML
-            html={createFullMarkup(removeHtmlTags(level.source_file_section))}
-          />
-        }
-        onClick={handleClick}
-        nodeId={level.link_id}
-        className={
-          expanded.includes(level.link_id) ? 'label-bold' : 'label-lighter'
-        }
-        icon={
-          expanded.includes(level.link_id) ? <ChevronDown /> : <ChevronRight />
-        }
-      >
-        {subAccComponent}
-      </TreeItem>
-    </Tooltip>
+      {subAccComponent}
+    </TreeItem>
   );
 }
 
