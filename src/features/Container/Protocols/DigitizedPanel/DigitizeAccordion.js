@@ -446,7 +446,6 @@ function DigitizeAccordion({
 
   const handleEnrichedClick = (e, obj, type) => {
     if (e.target.className === 'enriched-txt') {
-      console.log('SHUBHAM123', enrichedContent?.data);
       if (type === CONTENT_TYPE.TABLE) {
         tablePopup(e, (event) => {
           setEnrichedTarget(event.target);
@@ -455,7 +454,7 @@ function DigitizeAccordion({
         setEnrichedTarget(e.target);
       }
       setSelectedEnrichedText(e.target.innerText);
-      setClinicalTerms(enrichedContent?.data);
+      setClinicalTerms(obj);
       const modalOpened = document.createElement('span');
       modalOpened.classList.add('modal-opened');
       document.body.appendChild(modalOpened);
