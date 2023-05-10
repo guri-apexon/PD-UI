@@ -21,6 +21,7 @@ const cookies = new Cookies();
 
 const deleteAllCookie = () => {
   cookies.remove('api_token');
+  cookies.remove('exp');
   cookies.remove('access_token_dev');
   cookies.remove('refresh_token_dev');
   cookies.remove('access_token_test');

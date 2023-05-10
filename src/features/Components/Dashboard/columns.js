@@ -85,34 +85,42 @@ function ProtocolVersion({ row, column: { accessor: key } }) {
     if (row.userRole === userRole.primary) {
       return (
         <div>
-          <Link
-            className="title-link-protocol"
-            to={`/protocols?protocolId=${row.id}`}
-          >
-            {row[key].length > 18
-              ? `${row[key].substring(0, 18)}...`
-              : row[key]}
-          </Link>
+          {row[key] ? (
+            <Link
+              className="title-link-protocol"
+              to={`/protocols?protocolId=${row.id}`}
+            >
+              {row[key]?.length > 18
+                ? `${row[key]?.substring(0, 18)}...`
+                : row[key]}
+            </Link>
+          ) : (
+            '-'
+          )}
         </div>
       );
     }
     if (uploadDateValidation(row.uploadDate)) {
       return (
         <div>
-          <Link
-            className="title-link-protocol"
-            to={`/protocols?protocolId=${row.id}`}
-          >
-            {row[key].length > 18
-              ? `${row[key].substring(0, 18)}...`
-              : row[key]}
-          </Link>
+          {row[key] ? (
+            <Link
+              className="title-link-protocol"
+              to={`/protocols?protocolId=${row.id}`}
+            >
+              {row[key]?.length > 18
+                ? `${row[key]?.substring(0, 18)}...`
+                : row[key]}
+            </Link>
+          ) : (
+            '-'
+          )}
         </div>
       );
     }
+
     return (
       <div>
-        {/* <span className="title-no-link-protocol">{row[key]}</span> */}
         <span>
           {row[key].length > 18 ? `${row[key].substring(0, 18)}...` : row[key]}
         </span>
