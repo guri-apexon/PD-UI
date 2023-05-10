@@ -58,7 +58,7 @@ import {
 } from '../../../../AppConstant/AppConstant';
 import { userId } from '../../../../store/userDetails';
 import ActionMenu from './ActionMenu';
-import { onBeforeUnload, scrollToLinkandReference, tablePopup } from './utils';
+import { scrollToLinkandReference, tablePopup } from './utils';
 
 const styles = {
   modal: {
@@ -170,8 +170,17 @@ function DigitizeAccordion({
     });
   };
 
+  const beforeUnLoad = (e) => {
+    e.preventDefault();
+    updateSectionLock(true);
+  };
+
   useEffect(() => {
-    onBeforeUnload(updateSectionLock);
+    window.addEventListener('beforeunload', beforeUnLoad);
+
+    return () => {
+      window.removeEventListener('beforeunload', beforeUnLoad);
+    };
     // eslint-disable-next-line
   }, []);
 
