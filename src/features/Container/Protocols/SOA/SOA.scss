@@ -10,8 +10,13 @@
   display: flex;
 }
 
-.soa-container .ag-theme-alpine {
-  height: 180px !important;
+.soa-container {
+  .ag-theme-alpine {
+    height: 800px;
+  }
+}
+.footer-ontainer {
+  height: 300px !important;
 }
 .arrange-panel-container {
   display: flex;
