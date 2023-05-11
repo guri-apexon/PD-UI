@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Enrichedword, sectionDetails } from '../protocolSlice';
 import './MedicalTerm.scss';
 import { getHierarchyName } from '../CustomComponents/PDTable/utils';
+import { userId } from '../../../../store/userDetails';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -24,6 +25,7 @@ function AddClinicalTerm({ docId, linkId }) {
   const [isTextFieldEmpty, setIsTextFieldEmpty] = useState(true);
   const sectionHeaderDetails = useSelector(sectionDetails);
   const { data: sectionData } = sectionHeaderDetails;
+  const loggedInUserId = useSelector(userId);
 
   useEffect(() => {
     const selected = window.getSelection().toString();
@@ -114,6 +116,7 @@ function AddClinicalTerm({ docId, linkId }) {
           doc_id: docId,
           link_id: linkId,
           hierarchy: getHierarchyName(type),
+          user_id: loggedInUserId,
         };
       } else {
         tagData = {
@@ -128,6 +131,7 @@ function AddClinicalTerm({ docId, linkId }) {
           doc_id: docId,
           link_id: linkId,
           hierarchy: getHierarchyName(type),
+          user_id: loggedInUserId,
         };
       }
     } else {
@@ -143,6 +147,7 @@ function AddClinicalTerm({ docId, linkId }) {
         doc_id: docId,
         link_id: linkId,
         hierarchy: getHierarchyName(type),
+        user_id: loggedInUserId,
       };
     }
     dispatch({
