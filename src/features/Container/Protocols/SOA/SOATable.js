@@ -119,8 +119,20 @@ function SOATable() {
         <AgGridReact
           rowData={footNotes[selectedTab]}
           columnDefs={[
-            { field: 'key', headerName: 'Footer Name' },
-            { field: 'value', headerName: 'Footer Value' },
+            {
+              field: 'key',
+              headerName: 'Footer Name',
+              resizable: true,
+              suppressMovable: true,
+              flex: 1,
+            },
+            {
+              field: 'value',
+              headerName: 'Footer Value',
+              resizable: true,
+              suppressMovable: true,
+              flex: 1,
+            },
           ]}
         />
       </GridContext.Provider>

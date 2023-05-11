@@ -84,7 +84,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
 
   useEffect(() => {
     if (page) {
-      setPage(page - 1);
+      setPage(Math.abs(page - 1));
     }
   }, [page]);
 
@@ -109,7 +109,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
 
   useEffect(() => {
     if (pageRight) {
-      setPage(pageRight - 1);
+      setPage(Math.abs(pageRight - 1));
     }
   }, [pageRight]);
 
