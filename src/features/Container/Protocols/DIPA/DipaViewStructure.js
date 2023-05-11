@@ -288,9 +288,14 @@ function DipaViewStructure({
         title="Lose your work?"
         message="All unsaved changes will be lost"
         buttonProps={[
-          { label: 'Keep editing', onClick: () => setUnSaved(false) },
+          {
+            label: 'Keep editing',
+            'data-testid': 'editing-modal-button',
+            onClick: () => setUnSaved(false),
+          },
           {
             label: 'Leave without saving',
+            'data-testid': 'leave-modal-button',
             onClick: () => {
               setIsAccordianExpanded(true);
               setUnSaved(false);
