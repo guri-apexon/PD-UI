@@ -37,6 +37,7 @@
   flex-wrap: nowrap;
   box-sizing: border-box;
   min-width: 100px;
+  width: 100%;
 }
 .content-table-wrapper {
   border: 1px solid #dadada;
@@ -213,4 +214,8 @@
 
 .delete-modal h3 {
   font-weight: 400;
+}
+
+.invisible {
+  display: none !important;
 }

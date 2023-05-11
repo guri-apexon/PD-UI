@@ -10,6 +10,7 @@ import {
   filterFootNotes,
   filterTableProperties,
   updateFootNotePayload,
+  updateRowIndex,
 } from '../features/Container/Protocols/CustomComponents/PDTable/utils';
 import PROTOCOL_CONSTANT from '../features/Container/Protocols/CustomComponents/constants';
 
@@ -244,15 +245,15 @@ export const tableJSONByRowAndColumnLength = (row, column) => {
   const json = [];
   for (let i = 0; i < row; i++) {
     const rowObj = {};
-    rowObj.row_indx = `${i}`.toString();
-    rowObj.op_type = '';
     rowObj.roi_id = '';
+    rowObj.row_indx = `${i}`.toString();
+    rowObj.op_type = QC_CHANGE_TYPE.ADDED;
 
     let columnObj = [];
     for (let j = 0; j < column; j++) {
       const obj = {
         col_indx: j.toString(),
-        op_type: null,
+        op_type: QC_CHANGE_TYPE.ADDED,
         cell_id: '',
         value: '',
       };
@@ -558,6 +559,7 @@ export const createReturnObj = (obj, linkId) => {
           AttachmentListProperties: updateFootNotePayload(
             obj?.content?.AttachmentListProperties || [],
           ),
+          TableProperties: updateRowIndex(obj?.content?.TableProperties),
         },
         qc_change_type: obj.qc_change_type,
         prev_detail: {
@@ -596,9 +598,17 @@ export const createReturnObj = (obj, linkId) => {
 };
 
 export const getSaveSectionPayload = (sectionContent, linkId) => {
-  const req = [...sectionContent]
+  let req = [...sectionContent]
     .filter((x) => x.qc_change_type !== '' && x.content !== '')
     .map((obj) => createReturnObj(obj, linkId));
+  req = req.filter(
+    (x) =>
+      !(
+        x.type === CONTENT_TYPE.TABLE &&
+        x.content.AttachmentListProperties?.length === 0 &&
+        x.content.TableProperties?.length === 0
+      ),
+  );
   return req;
 };
 
