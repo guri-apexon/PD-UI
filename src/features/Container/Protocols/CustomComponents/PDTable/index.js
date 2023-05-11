@@ -56,7 +56,6 @@ const confirmText = 'Please confirm if you want to continue with deletion';
 function PDTable({ data, segment, activeLineID, lineID }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
-  const [colWidth, setColumnWidth] = useState(100);
   const [tableSaved, setTableSaved] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
   const [isModal, setIsModal] = useState(false);
@@ -73,8 +72,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setUpdatedData(formattedData);
       const footnoteArr = formatFootNote(data?.AttachmentListProperties || []);
       setFootnoteData(footnoteArr);
-      const colIndexes = parsedTable[0]?.columns;
-      setColumnWidth(98 / colIndexes.length);
     }
     // eslint-disable-next-line
   }, [data]);
@@ -86,18 +83,8 @@ function PDTable({ data, segment, activeLineID, lineID }) {
         record.columns.forEach((col, j) => {
           if (j === columnIndex) {
             record.columns[j].value = content;
-            if (col?.cell_id) {
-              record.columns[columnIndex].op_type = QC_CHANGE_TYPE.UPDATED;
-            } else if (record?.roi_id) {
-              // have to send the complete row for existing tables, which don't have cell id.
-              record.columns.forEach((selectedCol, colIndex) => {
-                if (colIndex === columnIndex) {
-                  record.columns[columnIndex].op_type = QC_CHANGE_TYPE.ADDED;
-                } else {
-                  record.columns[colIndex].op_type = QC_CHANGE_TYPE.UPDATED;
-                }
-              });
-            }
+            record.columns[columnIndex].op_type =
+              record.columns[columnIndex].op_type || QC_CHANGE_TYPE.UPDATED;
           }
         });
         if (record?.roi_id) {
@@ -285,7 +272,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           handleRowOperation={handleRowOperation}
           handleSwap={handleSwap}
           edit={isEditable()}
-          colWidth={colWidth}
+          // colWidth={colWidth}
           footNoteData={footNoteData}
           setFootnoteData={setFootnoteData}
           handleColumnOperation={handleColumnOperation}
