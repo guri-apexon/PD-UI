@@ -9,18 +9,10 @@
 .soa-container {
   display: flex;
 }
-
-.soa-container {
-  .ag-theme-alpine {
-    height: 800px;
-  }
-}
-.footer-ontainer {
-  height: 300px !important;
-}
 .arrange-panel-container {
   display: flex;
   background: rgb(16 85 135);
+  margin-right: 25px;
 }
 .arrange-panel {
   display: flex;
@@ -107,11 +99,13 @@
   display: flex;
   align-items: center;
 }
-.header-editing-Item {
-  width: 200px;
-  height: 25px;
-  position: absolute;
+.ag-cell-inline-editing {
+  input {
+    width: 95%;
+    height: 95%;
+  }
 }
+
 .base-column {
   background-color: red;
 }
