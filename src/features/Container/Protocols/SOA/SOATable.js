@@ -8,8 +8,9 @@ import GridContext from './Context/GridContext';
 import './SOA.scss';
 
 const style = {
-  tableContainer: { height: '500px', width: '100%' },
-  footerContainer: { height: '300px', width: '95%' },
+  mainContainer: { height: '100%', width: '100%' },
+  tableContainer: { height: '800px', width: '100%' },
+  footerContainer: { height: '300px !important', width: '100%' },
 };
 function SOATable() {
   const gridRef = useRef();
@@ -105,19 +106,24 @@ function SOATable() {
     [dispatch, tableId, docId, apiDispatch, tables, selectedTab, refreshValue],
   );
   return (
-    <div className="ag-theme-alpine" style={style.tableContainer}>
+    <div id="tableMaincontainer" style={style.mainContainer}>
       <GridContext.Provider value={propDispatch}>
-        <AgGridReact
-          ref={gridRef}
-          rowData={[...tableData]}
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          animateRows="true"
-          rowDragManaged="true"
-          suppressDragLeaveHidesColumns="true"
-          stopEditingWhenGridLosesFocus="true"
-        />
-        <div style={style.footerContainer}>
+        <div className="ag-theme-alpine" style={style.tableContainer}>
+          <AgGridReact
+            ref={gridRef}
+            rowData={[...tableData]}
+            columnDefs={columnDefs}
+            defaultColDef={defaultColDef}
+            animateRows="true"
+            rowDragManaged="true"
+            suppressDragLeaveHidesColumns="true"
+            stopEditingWhenGridLosesFocus="true"
+          />
+        </div>
+        <div
+          className="ag-theme-alpine footer-ontainer"
+          style={style.footerContainer}
+        >
           <AgGridReact
             rowData={footNotes[selectedTab]}
             columnDefs={[
