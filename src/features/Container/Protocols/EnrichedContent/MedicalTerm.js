@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import getKeyFromEnrichText from './utilFunction';
 import { EnrichedValue, Enrichedword } from '../protocolSlice';
 import enrichedTerms from './clinicalTerms.json';
+import { userId } from '../../../../store/userDetails';
 import './MedicalTerm.scss';
 
 function MedicalTerm({
@@ -43,6 +44,7 @@ function MedicalTerm({
   const [deleteAll, setdeleteAll] = useState(false);
   const [showModal, setshowModal] = useState(false);
   const wordSelector = useSelector(Enrichedword);
+  const loggedInUserId = useSelector(userId);
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
@@ -84,7 +86,7 @@ function MedicalTerm({
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
-      clinical_terms: childArr?.toString(),
+      clinical_terms: clinicalTermsArr[enrichedText]?.clinical_terms,
       ontology: clinicalTermsArr[enrichedText]?.ontology,
       confidence: '0',
       start: '0',
@@ -95,6 +97,7 @@ function MedicalTerm({
       preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
       entity_class: '',
       entity_xref: '',
+      user_id: loggedInUserId,
     };
 
     let updatedStringArr = tempObj[name]?.split(',');
@@ -136,7 +139,7 @@ function MedicalTerm({
       const tempObj = {
         standard_entity_name: enrichedText,
         iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
-        clinical_terms: clinicalTerm,
+        clinical_terms: clinicalTermsArr[enrichedText]?.clinical_terms,
         ontology: clinicalTermsArr[enrichedText]?.ontology,
         confidence: '0',
         start: '0',
@@ -147,6 +150,7 @@ function MedicalTerm({
         preferred_term: '',
         entity_class: '',
         entity_xref: '',
+        user_id: loggedInUserId,
       };
 
       setTempChild([]);
@@ -250,7 +254,7 @@ function MedicalTerm({
     const tempObj = {
       standard_entity_name: enrichedText,
       iqv_standard_term: clinicalTermsArr[enrichedText]?.preferred_term,
-      clinical_terms: clinicalTerm,
+      clinical_terms: clinicalTermsArr[enrichedText]?.clinical_terms,
       ontology: clinicalTermsArr[enrichedText]?.ontology,
       confidence: '0',
       start: '0',
@@ -261,6 +265,7 @@ function MedicalTerm({
       preferred_term: clinicalTermsArr[enrichedText]?.preferred_term,
       entity_class: '',
       entity_xref: '',
+      user_id: loggedInUserId,
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
 
