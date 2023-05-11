@@ -506,7 +506,7 @@ function DigitizeAccordion({
     if (checkUnsavedTable()) {
       setShowAlert(true);
       setSaveSection(null);
-      setAlertMsg('Please save the all the tables before saving the section');
+      setAlertMsg('Please save the table before saving the section');
       return;
     }
 

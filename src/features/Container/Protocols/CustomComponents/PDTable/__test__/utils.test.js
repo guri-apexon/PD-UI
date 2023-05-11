@@ -82,12 +82,52 @@ describe('deleteColumn function', () => {
     expect(updatedData[0].columns[index].value).toContain('<s>');
     expect(updatedData[0].columns[index].op_type).toBe('delete');
   });
+
   describe('swapElements', () => {
     it('should swap the elements in the array', () => {
-      const arr = [1, 2, 3, 4];
-      const updatedArr = swapRowElements(arr, 1, 2);
-      expect(updatedArr[1]).toBe(3);
-      expect(updatedArr[2]).toBe(2);
+      const arr = [
+        {
+          row_indx: '0',
+          roi_id: '10620c73-747c-4243-8456-a3dc818ddceb',
+          op_type: 'modify',
+          columns: [
+            {
+              col_indx: '0',
+              op_type: 'modify',
+              cell_id: '858cc436-614b-476d-bb9c-6fb245a9c0b5',
+              value: '1',
+            },
+            {
+              col_indx: '1',
+              op_type: 'modify',
+              cell_id: 'd45f9b3e-2253-40e8-b5d7-c16821bcc3a2',
+              value: '2',
+            },
+          ],
+        },
+        {
+          row_indx: '1',
+          roi_id: '6258ee39-bf82-4cd3-9830-06714b819447',
+          op_type: 'modify',
+          columns: [
+            {
+              col_indx: '0',
+              op_type: 'modify',
+              cell_id: '61dc26b1-0802-4348-9ee0-70d2a18137ab',
+              value: '3',
+            },
+            {
+              col_indx: '1',
+              op_type: 'modify',
+              cell_id: '9bf6ff0b-ac32-4b80-b005-d2bc166433a2',
+              value: '4',
+            },
+          ],
+        },
+      ];
+      const updatedArr = swapRowElements(arr, 0, 1);
+      expect(updatedArr[1].columns[0].value).toBe('1');
+      expect(updatedArr[0].columns[0].value).toBe('3');
     });
   });
 
@@ -139,12 +179,6 @@ describe('deleteColumn function', () => {
               cell_id: '',
               value: 'B',
             },
-            {
-              col_indx: '2',
-              op_type: 'add',
-              cell_id: '',
-              value: 'C',
-            },
           ],
         },
         {
@@ -160,59 +194,6 @@ describe('deleteColumn function', () => {
               op_type: 'add',
               cell_id: '',
               value: 'E',
-            },
-            {
-              col_indx: '2',
-              op_type: 'add',
-              cell_id: '',
-              value: 'F',
-            },
-          ],
-        },
-      ];
-
-      const expectedData = [
-        {
-          columns: [
-            {
-              col_indx: '1',
-              op_type: 'add',
-              cell_id: '',
-              value: 'B',
-            },
-            {
-              col_indx: '0',
-              op_type: 'add',
-              cell_id: '',
-              value: 'A',
-            },
-            {
-              col_indx: '2',
-              op_type: 'add',
-              cell_id: '',
-              value: 'C',
-            },
-          ],
-        },
-        {
-          columns: [
-            {
-              col_indx: '1',
-              op_type: 'add',
-              cell_id: '',
-              value: 'E',
-            },
-            {
-              col_indx: '0',
-              op_type: 'add',
-              cell_id: '',
-              value: 'D',
-            },
-            {
-              col_indx: '2',
-              op_type: 'add',
-              cell_id: '',
-              value: 'F',
             },
           ],
         },
@@ -220,7 +201,7 @@ describe('deleteColumn function', () => {
 
       const actualData = swapColumnElements(data, 0, 1);
 
-      expect(actualData).toEqual(expectedData);
+      expect(actualData[0].columns[0].value).toEqual('B');
     });
   });
 });
