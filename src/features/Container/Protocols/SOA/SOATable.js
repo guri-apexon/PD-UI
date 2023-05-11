@@ -9,6 +9,7 @@ import './SOA.scss';
 
 const style = {
   tableContainer: { height: '500px', width: '100%' },
+  footerContainer: { height: '300px', width: '95%' },
 };
 function SOATable() {
   const gridRef = useRef();
@@ -116,25 +117,27 @@ function SOATable() {
           suppressDragLeaveHidesColumns="true"
           stopEditingWhenGridLosesFocus="true"
         />
-        <AgGridReact
-          rowData={footNotes[selectedTab]}
-          columnDefs={[
-            {
-              field: 'key',
-              headerName: 'Footer Name',
-              resizable: true,
-              suppressMovable: true,
-              flex: 1,
-            },
-            {
-              field: 'value',
-              headerName: 'Footer Value',
-              resizable: true,
-              suppressMovable: true,
-              flex: 1,
-            },
-          ]}
-        />
+        <div style={style.footerContainer}>
+          <AgGridReact
+            rowData={footNotes[selectedTab]}
+            columnDefs={[
+              {
+                field: 'key',
+                headerName: 'Footer Name',
+                resizable: true,
+                suppressMovable: true,
+                width: 150,
+              },
+              {
+                field: 'value',
+                headerName: 'Footer Value',
+                resizable: true,
+                suppressMovable: true,
+                width: 4048,
+              },
+            ]}
+          />
+        </div>
       </GridContext.Provider>
     </div>
   );
