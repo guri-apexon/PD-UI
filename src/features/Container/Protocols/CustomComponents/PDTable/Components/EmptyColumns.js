@@ -5,6 +5,7 @@ import Grid from 'apollo-react/components/Grid';
 import Table from 'apollo-react-icons/Table';
 import { columnHoverData } from './dropdownData';
 import HoverList from './HoverList';
+import { QC_CHANGE_TYPE } from '../../../../../../AppConstant/AppConstant';
 
 function EmptyColumns({ columnIndexes, handleOperation }) {
   const columnHoverRef = useRef(null);
@@ -24,6 +25,7 @@ function EmptyColumns({ columnIndexes, handleOperation }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [columnHoverRef]);
+
   const handleIconClick = (iconIndex) => {
     setActiveIconIndex(iconIndex);
   };
@@ -40,7 +42,15 @@ function EmptyColumns({ columnIndexes, handleOperation }) {
       data-testId="empty-cell-column"
     >
       {columnIndexes?.map((val, index) => (
-        <Grid item xs key={uuidv4()} data-testId="hover-list">
+        <Grid
+          item
+          xs
+          key={uuidv4()}
+          data-testId="hover-list"
+          className={`${
+            val?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
+          }`}
+        >
           {/* eslint-disable-next-line */}
           <span
             className="pd-more-icon columnMoreIcon"

@@ -19,7 +19,6 @@ function DisplayTable({
   onChange,
   handleRowOperation,
   edit,
-  colWidth,
   footNoteData,
   setFootnoteData,
   handleColumnOperation,
@@ -63,6 +62,7 @@ function DisplayTable({
   const allowDrop = (e) => {
     e.preventDefault();
   };
+
   const handleClick = (e) =>
     handleEnrichedClick &&
     handleEnrichedClick(e, clinicalTerms, CONTENT_TYPE.TABLE);
@@ -72,83 +72,81 @@ function DisplayTable({
       <div className="pd-table-inner">
         {edit && data.length && (
           <EmptyColumns
-            columnIndexes={data[0]?.columns.filter(
-              (x) => x.op_type !== QC_CHANGE_TYPE.DELETED,
-            )}
+            columnIndexes={data[0]?.columns}
             handleOperation={handleColumnOperation}
-            colWidth={colWidth}
           />
         )}
-        {data?.map(
-          (row, rowIndex) =>
-            row?.op_type !== QC_CHANGE_TYPE.DELETED && (
-              <div key={uuidv4()} className="pd-table-empty-cell-row">
-                {edit && (
-                  <EmptyRows
-                    rowIndex={rowIndex}
-                    handleOperation={handleRowOperation}
-                    index={rowIndex}
-                  />
-                )}
+        {data?.map((row, rowIndex) => (
+          <div
+            key={uuidv4()}
+            className={`pd-table-empty-cell-row ${
+              row?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
+            }`}
+          >
+            {edit && (
+              <EmptyRows
+                rowIndex={rowIndex}
+                handleOperation={handleRowOperation}
+                index={rowIndex}
+              />
+            )}
+            <div
+              data-testid="table-row"
+              className="pd-table-row"
+              id={`rowID-${rowIndex}`}
+              draggable={edit}
+              onDragStart={handleDrag}
+              onDrop={handleDrop}
+              onDragOver={allowDrop}
+            >
+              {edit && (
+                <span className="pd-drag-icon rowDrag">
+                  <EllipsisVertical />
+                </span>
+              )}
+              {row?.columns?.map((col, colIndex) => (
                 <div
-                  data-testid="table-row"
-                  className="pd-table-row"
-                  id={`rowID-${rowIndex}`}
+                  key={uuidv4()}
+                  id={`columnID-${rowIndex}-${colIndex}`}
                   draggable={edit}
                   onDragStart={handleDrag}
                   onDrop={handleDrop}
                   onDragOver={allowDrop}
+                  className={` pd-table-cell ${
+                    col?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
+                  }`}
                 >
-                  {edit && (
-                    <span className="pd-drag-icon rowDrag">
-                      <EllipsisVertical />
+                  {rowIndex === 0 && edit && (
+                    <span
+                      className="pd-drag-icon columnDrag"
+                      data-testId="draggable"
+                    >
+                      <EllipsisHorizontal />
                     </span>
                   )}
-                  {row?.columns?.map(
-                    (col, colIndex) =>
-                      col?.op_type !== QC_CHANGE_TYPE.DELETED && (
-                        <div
-                          key={uuidv4()}
-                          id={`columnID-${rowIndex}-${colIndex}`}
-                          draggable={edit}
-                          onDragStart={handleDrag}
-                          onDrop={handleDrop}
-                          onDragOver={allowDrop}
-                          className="pd-table-cell"
-                          style={{ width: `${colWidth}%` }}
-                        >
-                          {rowIndex === 0 && edit && (
-                            <span
-                              className="pd-drag-icon columnDrag"
-                              data-testId="draggable"
-                            >
-                              <EllipsisHorizontal />
-                            </span>
-                          )}
-                          {/* eslint-disable-next-line */}
-                          <span
-                            id={`columnID-${rowIndex}-${colIndex}`}
-                            data-testid="span-edit"
-                            className="editable-span"
-                            onClick={handleClick}
-                            // eslint-disable-next-line
-                            dangerouslySetInnerHTML={getPreferredTerms(
-                              col.value,
-                              isPreferredTerm,
-                              preferredTerms,
-                              clinicalTerms,
-                              isClinicalTerms,
-                            )}
-                            contentEditable={edit}
-                            onBlur={(e) => handleChange(colIndex, rowIndex, e)}
-                          />
-                        </div>
-                      ),
-                  )}
+                  {/* eslint-disable-next-line */}
+                  <span
+                    id={`columnID-${rowIndex}-${colIndex}`}
+                    data-testid="span-edit"
+                    className="editable-span"
+                    onClick={handleClick}
+                    // eslint-disable-next-line
+                    dangerouslySetInnerHTML={getPreferredTerms(
+                      col.value,
+                      isPreferredTerm,
+                      preferredTerms,
+                      clinicalTerms,
+                      isClinicalTerms,
+                    )}
+                    role="textbox"
+                    contentEditable={edit}
+                    onBlur={(e) => handleChange(colIndex, rowIndex, e)}
+                  />
                 </div>
-              </div>
-            ),
-        )}
+              ))}
+            </div>
+          </div>
+        ))}
         <FootNotes
           edit={edit}
           footNoteData={footNoteData}
@@ -165,7 +163,6 @@ DisplayTable.propTypes = {
   onChange: PropTypes.isRequired,
   handleRowOperation: PropTypes.isRequired,
   edit: PropTypes.isRequired,
-  colWidth: PropTypes.isRequired,
   footNoteData: PropTypes.isRequired,
   setFootnoteData: PropTypes.isRequired,
   handleColumnOperation: PropTypes.isRequired,

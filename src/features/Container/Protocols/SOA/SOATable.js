@@ -8,7 +8,9 @@ import GridContext from './Context/GridContext';
 import './SOA.scss';
 
 const style = {
-  tableContainer: { height: '500px', width: '100%' },
+  mainContainer: { height: '100%', width: '100%' },
+  tableContainer: { height: '800px', width: '100%' },
+  footerContainer: { height: '300px !important', width: '100%' },
 };
 function SOATable() {
   const gridRef = useRef();
@@ -104,37 +106,44 @@ function SOATable() {
     [dispatch, tableId, docId, apiDispatch, tables, selectedTab, refreshValue],
   );
   return (
-    <div className="ag-theme-alpine" style={style.tableContainer}>
+    <div id="tableMaincontainer" style={style.mainContainer}>
       <GridContext.Provider value={propDispatch}>
-        <AgGridReact
-          ref={gridRef}
-          rowData={[...tableData]}
-          columnDefs={columnDefs}
-          defaultColDef={defaultColDef}
-          animateRows="true"
-          rowDragManaged="true"
-          suppressDragLeaveHidesColumns="true"
-          stopEditingWhenGridLosesFocus="true"
-        />
-        <AgGridReact
-          rowData={footNotes[selectedTab]}
-          columnDefs={[
-            {
-              field: 'key',
-              headerName: 'Footer Name',
-              resizable: true,
-              suppressMovable: true,
-              flex: 1,
-            },
-            {
-              field: 'value',
-              headerName: 'Footer Value',
-              resizable: true,
-              suppressMovable: true,
-              flex: 1,
-            },
-          ]}
-        />
+        <div className="ag-theme-alpine" style={style.tableContainer}>
+          <AgGridReact
+            ref={gridRef}
+            rowData={[...tableData]}
+            columnDefs={columnDefs}
+            defaultColDef={defaultColDef}
+            animateRows="true"
+            rowDragManaged="true"
+            suppressDragLeaveHidesColumns="true"
+            stopEditingWhenGridLosesFocus="true"
+          />
+        </div>
+        <div
+          className="ag-theme-alpine footer-ontainer"
+          style={style.footerContainer}
+        >
+          <AgGridReact
+            rowData={footNotes[selectedTab]}
+            columnDefs={[
+              {
+                field: 'key',
+                headerName: 'Footer Name',
+                resizable: true,
+                suppressMovable: true,
+                width: 150,
+              },
+              {
+                field: 'value',
+                headerName: 'Footer Value',
+                resizable: true,
+                suppressMovable: true,
+                width: 4048,
+              },
+            ]}
+          />
+        </div>
       </GridContext.Provider>
     </div>
   );
