@@ -35,7 +35,6 @@ function MedicalTerm({
   const [newTermValue, setNewTermValue] = useState('');
   const [clinicalTerms, setClinicalTerms] = useState([]);
   const [childArr, setChildArr] = useState([]);
-  const [clinicalTerm, setClinicalTerm] = useState('');
   const dispatch = useDispatch();
   const apiFlagselector = useSelector(EnrichedValue);
   const [tempChild, setTempChild] = useState([]);
@@ -189,22 +188,9 @@ function MedicalTerm({
     // eslint-disable-next-line
   }, [apiFlagselector]);
 
-  const restructingObject = () => {
-    if (clinicalTermsArr) {
-      Object.entries(clinicalTermsArr[enrichedText] || {}).forEach(
-        (key, value) => {
-          if (key?.toString() === 'clinical_terms') {
-            setClinicalTerm(value);
-          }
-        },
-      );
-    }
-  };
-
   useEffect(() => {
     if (enrichedText) {
       setClinicalTerms([...enrichedTerms]);
-      restructingObject();
     } else {
       setClinicalTerms([]);
       setSAnchorEl(null);

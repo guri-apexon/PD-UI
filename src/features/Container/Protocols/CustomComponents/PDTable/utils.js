@@ -159,7 +159,7 @@ export const getPreferredTerms = (
     }
   }
 
-  if (isClinicalTerms) {
+  if (isClinicalTerms && clinicalTerms) {
     const clinicalArr = Object.keys(clinicalTerms);
     let text = val;
     clinicalArr.forEach((term) => {
