@@ -291,4 +291,45 @@ describe.only('DipaView Component testing', () => {
     fireEvent.click(screen.getByLabelText('Close'));
     expect(closeModal).toHaveBeenCalledTimes(0);
   });
+
+  it('should render keep editing button when clicked on edit modal', () => {
+    const screen = renderWithProviders(<DipaView />, {
+      preloadedState: { ...initialState },
+    });
+    const pencilIcon = screen.getAllByTestId('edit-button')[0];
+    fireEvent.click(pencilIcon);
+    fireEvent.click(screen.getAllByTestId('paragraph-text')[0]);
+    const editingButton = screen.getByTestId('editing-modal-button');
+    expect(editingButton).toBeInTheDocument();
+    fireEvent.click(editingButton);
+    expect(screen.getByText('Keep editing')).toBeInTheDocument();
+  });
+
+  it('should render leave without saving button when clicked on edit modal', () => {
+    const screen = renderWithProviders(<DipaView />, {
+      preloadedState: { ...initialState },
+    });
+    const pencilIcon = screen.getAllByTestId('edit-button')[0];
+    fireEvent.click(pencilIcon);
+    fireEvent.click(screen.getAllByTestId('paragraph-text')[0]);
+    const leaveButton = screen.getByTestId('leave-modal-button');
+    expect(leaveButton).toBeInTheDocument();
+    fireEvent.click(leaveButton);
+    expect(screen.getByText('Leave without saving')).toBeInTheDocument();
+  });
+
+  it('Should close the editing modal when clicked on close icon', () => {
+    const closeModal = jest.fn();
+    const screen = renderWithProviders(
+      <DipaView setUnSaved={closeModal} unSaved />,
+      {
+        preloadedState: { ...initialState },
+      },
+    );
+    const editButton = screen.getAllByTestId('edit-button')[0];
+    fireEvent.click(editButton);
+    fireEvent.click(screen.getAllByTestId('paragraph-text')[0]);
+    fireEvent.click(screen.getByLabelText('Close'));
+    expect(closeModal).toHaveBeenCalledTimes(0);
+  });
 });
