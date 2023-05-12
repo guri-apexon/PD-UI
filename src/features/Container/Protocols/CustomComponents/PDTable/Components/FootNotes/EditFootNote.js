@@ -44,7 +44,7 @@ function EditFootNote({
       return item;
     });
 
-  const sendFooterText = (e) => {
+  const sendFooterText = () => {
     const checkIfExist = footNoteData.find((notes, i) => i === index);
     const textData = contentEditableRef.current.innerHTML || footerText;
     if (checkIfExist && isEmpty(textData)) {
