@@ -193,6 +193,9 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   };
 
   const onContainerClick = () => {
+    console.log('SHUBHAM90', activeLineID !== lineID, !tableSaved);
+    console.log('SHUBHAM901', activeLineID !== lineID && !tableSaved);
+    console.log('SHUBHAM902', activeLineID, ' AB', lineID);
     if (activeLineID !== lineID && !tableSaved) {
       const content = {
         ...segment.content,
@@ -212,8 +215,13 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     <section
       data-testId="section"
       className="content-table-wrapper"
-      onClick={() => onContainerClick()}
-      onMouseDown={() => setTableSaved(false)}
+      onClick={() => {
+        onContainerClick();
+      }}
+      onMouseEnter={(e) => {
+        e.stopPropagation();
+        setTableSaved(false);
+      }}
     >
       {showconfirm && (
         <div className="confirmation-popup" data-testId="confirmPopup">

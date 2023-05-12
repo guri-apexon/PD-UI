@@ -57,6 +57,7 @@ function MultilineEdit({
       sectionName,
       content: value,
     };
+    // setActiveLineID('');
     const arr = updateContent(sectionDataArr, obj);
     dispatch(setSectionDetails(arr));
   };

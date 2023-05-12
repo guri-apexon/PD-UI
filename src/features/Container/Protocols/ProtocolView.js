@@ -20,6 +20,7 @@ function ProtocolView({ refs, data }) {
   const [sectionContent, setSectionContent] = useState([]);
   const [globalPreferredTerm, setGlobalPreferredTerm] = useState(false);
   const [activeLineID, setActiveLineID] = useState('');
+  const [undoStack, setUndoStack] = useState([]);
 
   const [saveEnabled, setSaveEnabled] = useState(false);
 
@@ -51,15 +52,25 @@ function ProtocolView({ refs, data }) {
     setSelectedSection(payload.selectedSection);
     setSectionContent(payload.sectionContent || null);
   };
-
+  console.log('SHUBHAM1', undoStack);
   const handleContentUpdate = (payload) => {
+    console.log('SHUBHAM123', payload);
+    const undoarr = undoStack;
     setSectionContent((prevState) => {
+      const data = prepareContent({
+        ...payload,
+        type: 'MODIFY',
+        sectionContent: prevState,
+      });
+      undoarr.push(data);
+      setUndoStack(undoarr);
       return prepareContent({
         ...payload,
         type: 'MODIFY',
         sectionContent: prevState,
       });
     });
+
     if (payload.isSaved && !saveEnabled) setSaveEnabled(true);
   };
 
@@ -75,6 +86,9 @@ function ProtocolView({ refs, data }) {
       type: 'DELETE',
       sectionContent,
     });
+    const undoarr = undoStack;
+    undoarr.push(content);
+    setUndoStack(undoarr);
     if (!saveEnabled) setSaveEnabled(true);
     setSectionContent(content);
     dispatch(
@@ -96,6 +110,7 @@ function ProtocolView({ refs, data }) {
       sectionContent,
       currentLineId: lineId,
     });
+
     setSectionContent(content);
 
     let linkID;
@@ -119,6 +134,9 @@ function ProtocolView({ refs, data }) {
       type: 'LINK_LEVEL_UPDATE',
       sectionContent,
     });
+    const undoarr = undoStack;
+    undoarr.push(content);
+    setUndoStack(undoarr);
     setSectionContent(content);
   };
 
