@@ -86,6 +86,7 @@ function ProtocolView({ refs, data }) {
       type: 'DELETE',
       sectionContent,
     });
+    console.log('Jii', content);
     const undoarr = undoStack;
     undoarr.push(content);
     setUndoStack(undoarr);
