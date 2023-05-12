@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
@@ -14,7 +14,7 @@ function EditFootNote({
   setFootnoteData,
 }) {
   const [footerText, setFooterText] = useState(content);
-
+  const contentEditableRef = useRef();
   const getFootNoteData = (textData) =>
     [...footNoteData].map((item, i) => {
       if (i === index) {
@@ -46,7 +46,7 @@ function EditFootNote({
 
   const sendFooterText = (e) => {
     const checkIfExist = footNoteData.find((notes, i) => i === index);
-    const textData = footerText ? e.target.innerHTML : '';
+    const textData = contentEditableRef.current.innerHTML || footerText;
     if (checkIfExist && isEmpty(textData)) {
       if (item?.AttachmentId) {
         setFootnoteData(getFootNoteData(textData));
@@ -65,6 +65,7 @@ function EditFootNote({
   return (
     <div className="format-container" data-testId="content-edit">
       <ContentEditable
+        innerRef={contentEditableRef}
         className="contentEditable editable"
         data-testId="content-editable"
         html={footerText}
