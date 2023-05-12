@@ -8,16 +8,15 @@ const addColumnDefs = (item) => {
   if (item.isFirstColumn) {
     item.cellRenderer = FirstColumn;
     item.cellClass = 'column1';
-    item.minWidth = 200;
   } else {
     item.cellRenderer = CellRenderer;
-    item.minWidth = 150;
   }
   item.headerClass = TableConst.headerClass;
   item.suppressSizeToFit = true;
   item.headerComponent = HeaderComponent;
   item.headerGroupComponent = HeaderComponent;
   item.editable = true;
+  item.minWidth = 200;
   item.headerName = item[TableConst.UID];
   item.suppressMovable = true;
   item.cellEditor = TextEditor;
@@ -28,7 +27,6 @@ const addColumnDefs = (item) => {
       : '';
     return {
       component: TextEditor,
-      popup: true,
       params: {
         value: initialState,
       },

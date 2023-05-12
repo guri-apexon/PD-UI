@@ -435,7 +435,7 @@ const ExpandableComponent = ({ row }) => {
           >
             {'Indication'}
           </Typography>
-          {row.indication && row.indication.length > 40 ? (
+          {row.indication && row.indication.length > 20 ? (
             <Tooltip
               variant="light"
               title={row.indication && row.indication}

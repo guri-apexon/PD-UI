@@ -8,7 +8,7 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Enrichedword, sectionDetails } from '../protocolSlice';
+import { enrichedData, Enrichedword, sectionDetails } from '../protocolSlice';
 import './MedicalTerm.scss';
 import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { userId } from '../../../../store/userDetails';
@@ -26,6 +26,7 @@ function AddClinicalTerm({ docId, linkId }) {
   const sectionHeaderDetails = useSelector(sectionDetails);
   const { data: sectionData } = sectionHeaderDetails;
   const loggedInUserId = useSelector(userId);
+  const enrichedContent = useSelector(enrichedData);
 
   useEffect(() => {
     const selected = window.getSelection().toString();
@@ -54,13 +55,13 @@ function AddClinicalTerm({ docId, linkId }) {
 
   const getOntologyValue = (clinicalTermsData) => {
     if (selectedText) {
-      if (isEmpty(clinicalTermsData[selectedText]?.ontology)) {
+      if (isEmpty(clinicalTermsData?.ontology)) {
         return ontologyTerm;
       }
       if (isEmpty(ontologyTerm)) {
-        return clinicalTermsData[selectedText]?.ontology;
+        return clinicalTermsData?.ontology;
       }
-      return `${clinicalTermsData[selectedText]?.ontology},${ontologyTerm}`;
+      return `${clinicalTermsData?.ontology},${ontologyTerm}`;
     }
 
     return '';
@@ -80,13 +81,27 @@ function AddClinicalTerm({ docId, linkId }) {
 
   const getPreferredTermValue = (clinicalTermsData) => {
     if (selectedText) {
-      if (isEmpty(clinicalTermsData[selectedText]?.preferred_term)) {
+      if (isEmpty(clinicalTermsData?.preferred_term)) {
         return preferredTerm;
       }
       if (isEmpty(preferredTerm)) {
-        return clinicalTermsData[selectedText]?.preferred_term;
+        return clinicalTermsData?.preferred_term;
       }
-      return `${clinicalTermsData[selectedText]?.preferred_term},${preferredTerm}`;
+      return `${clinicalTermsData?.preferred_term},${preferredTerm}`;
+    }
+
+    return '';
+  };
+
+  const getClinicalTermValues = (clinicalTermsData) => {
+    if (selectedText) {
+      if (isEmpty(clinicalTermsData?.clinical_terms)) {
+        return clinicalTerms;
+      }
+      if (isEmpty(clinicalTerms)) {
+        return clinicalTermsData?.clinical_terms;
+      }
+      return `${clinicalTermsData?.clinical_terms},${clinicalTerms}`;
     }
 
     return '';
@@ -98,42 +113,24 @@ function AddClinicalTerm({ docId, linkId }) {
         item?.font_info?.roi_id?.para ===
         wordSelector?.word?.font_info?.roi_id?.para,
     );
-    const clinicalTermsData = result[0]?.clinical_terms;
+    const clinicalTermsData = enrichedContent?.data[selectedText];
     const { type } = result[0];
     let tagData;
     if (clinicalTermsData && selectedText && type) {
-      const keys = Object.keys(clinicalTermsData);
-      if (keys.includes(selectedText)) {
-        tagData = {
-          standard_entity_name: selectedText.trim(),
-          iqv_standard_term: getPreferredTermValue(clinicalTermsData),
-          ontology: getOntologyValue(clinicalTermsData),
-          clinical_terms: clinicalTerms,
-          text_len: selectedText.length,
-          start: '0',
-          confidence: '100',
-          parent_id: wordSelector?.word?.font_info?.roi_id?.para,
-          doc_id: docId,
-          link_id: linkId,
-          hierarchy: getHierarchyName(type),
-          user_id: loggedInUserId,
-        };
-      } else {
-        tagData = {
-          standard_entity_name: selectedText.trim(),
-          iqv_standard_term: preferredTerm,
-          ontology: ontologyTerm,
-          clinical_terms: clinicalTerms,
-          text_len: selectedText.length,
-          start: '0',
-          confidence: '100',
-          parent_id: wordSelector?.word?.font_info?.roi_id?.para,
-          doc_id: docId,
-          link_id: linkId,
-          hierarchy: getHierarchyName(type),
-          user_id: loggedInUserId,
-        };
-      }
+      tagData = {
+        standard_entity_name: selectedText.trim(),
+        iqv_standard_term: getPreferredTermValue(clinicalTermsData),
+        ontology: getOntologyValue(clinicalTermsData),
+        clinical_terms: getClinicalTermValues(clinicalTermsData),
+        text_len: selectedText.length,
+        start: '0',
+        confidence: '100',
+        parent_id: wordSelector?.word?.font_info?.roi_id?.para,
+        doc_id: docId,
+        link_id: linkId,
+        hierarchy: getHierarchyName(type),
+        user_id: loggedInUserId,
+      };
     } else {
       tagData = {
         standard_entity_name: selectedText.trim(),
@@ -150,6 +147,7 @@ function AddClinicalTerm({ docId, linkId }) {
         user_id: loggedInUserId,
       };
     }
+
     dispatch({
       type: 'SAVE_ENRICHED_DATA',
       payload: {
