@@ -300,7 +300,7 @@ function DipaViewStructure({
                     <Grid item xs={1} className="section-delete-btn">
                       <IconButton
                         size="small"
-                        onClick={() => setOpenModal(segment.ID)}
+                        onClick={() => onHandleDelete(segment.ID)}
                       >
                         <Trash />
                       </IconButton>
