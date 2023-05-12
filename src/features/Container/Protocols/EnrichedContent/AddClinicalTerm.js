@@ -8,10 +8,11 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { userId } from '../../../../store/userDetails';
-import { getHierarchyName } from '../CustomComponents/PDTable/utils';
-import { Enrichedword, enrichedData, sectionDetails } from '../protocolSlice';
+import { enrichedData, Enrichedword, sectionDetails } from '../protocolSlice';
 import './MedicalTerm.scss';
+import { getHierarchyName } from '../CustomComponents/PDTable/utils';
+import { preferredTermsValidation } from './utilFunction';
+import { userId } from '../../../../store/userDetails';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -23,8 +24,10 @@ function AddClinicalTerm({ docId, linkId }) {
   const [ontologyTerm, setOntologyTerm] = useState('');
   const [preferredTerm, setPreferredTerm] = useState('');
   const [isTextFieldEmpty, setIsTextFieldEmpty] = useState(true);
+  const [ptErrorMsg, setPtErrorMsg] = useState('');
   const sectionHeaderDetails = useSelector(sectionDetails);
   const { data: sectionData } = sectionHeaderDetails;
+  let headerLinkId;
   const loggedInUserId = useSelector(userId);
   const enrichedContent = useSelector(enrichedData);
 
@@ -52,6 +55,12 @@ function AddClinicalTerm({ docId, linkId }) {
       setPreferredTerm('');
     }
   }, [clinicalTerms, ontologyTerm, preferredTerm, openModal, selectedText]);
+
+  const handlePreferredTerm = (e) => {
+    const msg = preferredTermsValidation(e.target.value);
+    setPtErrorMsg(msg);
+    setPreferredTerm(e.target.value);
+  };
 
   const getOntologyValue = (clinicalTermsData) => {
     if (selectedText) {
@@ -116,6 +125,18 @@ function AddClinicalTerm({ docId, linkId }) {
     const clinicalTermsData = enrichedContent?.data[selectedText];
     const { type } = result[0];
     let tagData;
+
+    if (wordSelector?.word) {
+      let level;
+      if (wordSelector?.word.file_section_level === 1) {
+        level = 'link_id';
+      } else {
+        // eslint-disable-next-line
+        level = 'link_id_level' + wordSelector?.word.file_section_level;
+      }
+
+      headerLinkId = wordSelector?.word?.font_info[level];
+    }
     if (clinicalTermsData && selectedText && type) {
       tagData = {
         standard_entity_name: selectedText.trim(),
@@ -154,6 +175,7 @@ function AddClinicalTerm({ docId, linkId }) {
         docId,
         linkId,
         data: tagData,
+        headerLinkId: wordSelector?.word?.type === 'header' ? headerLinkId : '',
       },
     });
     setClinicalTerms('');
@@ -184,7 +206,7 @@ function AddClinicalTerm({ docId, linkId }) {
             {
               label: 'Add tag',
               onClick: handleAddTag,
-              disabled: isTextFieldEmpty,
+              disabled: isTextFieldEmpty || ptErrorMsg,
             },
           ]}
         >
@@ -197,6 +219,10 @@ function AddClinicalTerm({ docId, linkId }) {
                 <InfoIcon />
               </IconButton>
               At least one of these options are required to be filled to add tag
+              <IconButton color="primary">
+                <InfoIcon />
+              </IconButton>
+              Select header including index for Preferred Term tagging
             </div>
             <TextField
               label="Clinical terms"
@@ -217,11 +243,15 @@ function AddClinicalTerm({ docId, linkId }) {
             <TextField
               label="Preferred term"
               placeholder="Text area"
-              onChange={(e) => setPreferredTerm(e.target.value)}
+              onChange={handlePreferredTerm}
               value={preferredTerm}
               fullWidth
               data-testid="Preferred-term-text"
+              helperText="Ex: cpt_primary_objective"
             />
+            {ptErrorMsg && (
+              <div className="iconbutton-warning">{ptErrorMsg}</div>
+            )}
           </FieldGroup>
         </Modal>
       )}
