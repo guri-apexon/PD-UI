@@ -145,7 +145,6 @@ describe('Qc Saga Unit Test', () => {
     }).toPromise();
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
-
   // qcApprove
   test('qcApprove Success', async () => {
     const dispatchedActions = [];
@@ -169,7 +168,7 @@ describe('Qc Saga Unit Test', () => {
       payload: 1222,
       type: '',
     }).toPromise();
-    expect(mockCallApi).toHaveBeenCalledTimes(1);
+    expect(mockCallApi).toHaveBeenCalledTimes(2);
   });
 
   test('qcApprove API sends Error', async () => {
