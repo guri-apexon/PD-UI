@@ -67,7 +67,7 @@ export function* qcApprove(action) {
     yield put(getLoader(true));
     const data = yield call(httpCall, config);
     if (data.success) {
-      yield put({ type: 'GET_PROTOCOL_TABLE_SAGA' });
+      yield call(qcProtocolsData);
       toast.info('Approved Successfully');
     } else {
       toast.error('Error While Approving');
