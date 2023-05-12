@@ -133,7 +133,7 @@ export const updateFootNotePayload = (data) => {
   const updateFootNoteData = cloneDeep(data);
   if (updateFootNoteData.length > 0) {
     updateFootNoteData.forEach((notes, index) => {
-      if (!notes?.Text.includes('.')) {
+      if (!notes?.Text?.includes('.')) {
         const indicatorValue =
           index > 0
             ? nextChar(updateFootNoteData[index - 1]?.Text?.split('.')[0]) || ''
