@@ -8,11 +8,13 @@ import Card from 'apollo-react/components/Card';
 import Modal from 'apollo-react/components/Modal';
 import Popper from 'apollo-react/components/Popper';
 import TextField from 'apollo-react/components/TextField';
+import Tooltip from 'apollo-react/components/Tooltip/Tooltip';
 import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState, useRef } from 'react';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
-import getKeyFromEnrichText from './utilFunction';
+import { getKeyFromEnrichText, preferredTermsValidation } from './utilFunction';
 import { EnrichedValue, Enrichedword } from '../protocolSlice';
 import enrichedTerms from './clinicalTerms.json';
 import { userId } from '../../../../store/userDetails';
@@ -43,7 +45,9 @@ function MedicalTerm({
   const [deleteAll, setdeleteAll] = useState(false);
   const [showModal, setshowModal] = useState(false);
   const wordSelector = useSelector(Enrichedword);
+  const [errorMsg, setErrorMsg] = useState('');
   const loggedInUserId = useSelector(userId);
+  enrichedText = enrichedText?.trim();
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
@@ -110,6 +114,7 @@ function MedicalTerm({
       ...tempObj,
       [name]: saveValue,
     };
+
     dispatch({
       type: 'SAVE_ENRICHED_DATA',
       payload: {
@@ -117,6 +122,7 @@ function MedicalTerm({
         linkId,
         opType: 'delete',
         data: saveObj,
+        headerLinkId: clinicalTermsArr[enrichedText]?.id,
       },
     });
   };
@@ -157,6 +163,7 @@ function MedicalTerm({
         ...tempObj,
         [name]: '',
       };
+
       dispatch({
         type: 'SAVE_ENRICHED_DATA',
         payload: {
@@ -164,6 +171,7 @@ function MedicalTerm({
           linkId,
           opType: 'delete',
           data: saveObj,
+          headerLinkId: clinicalTermsArr[enrichedText]?.id,
         },
       });
     }
@@ -220,13 +228,13 @@ function MedicalTerm({
   }, [selectedTerm]);
 
   const handleSave = () => {
-    setSelectedChild(false);
-    if (newTermValue === '') {
+    if (newTermValue === '' || errorMsg) {
+      toast.error(errorMsg || 'Please enter Preferred Term');
       return false;
     }
     if (!childTermValue || !selectedTerm) return false;
     const temp = [...childArr];
-
+    setSelectedChild(false);
     const newArr = temp.map((x) => {
       if (x === childTermValue) {
         return newTermValue;
@@ -254,15 +262,16 @@ function MedicalTerm({
       user_id: loggedInUserId,
     };
     const saveObj = { ...tempObj, [name]: newArr.toString() };
-
     dispatch({
       type: 'SAVE_ENRICHED_DATA',
       payload: {
         docId,
         linkId,
         data: saveObj,
+        headerLinkId: clinicalTermsArr[enrichedText]?.id,
       },
     });
+
     return true;
   };
 
@@ -291,6 +300,14 @@ function MedicalTerm({
   if (!expanded) {
     return null;
   }
+  const handleTextField = (e) => {
+    const msg = preferredTermsValidation(e.target.value);
+    if (selectedTerm === 'preferred_term') {
+      setErrorMsg(msg);
+    }
+    setNewTermValue(e.target.value);
+  };
+
   return (
     <div className="enriched-menu-wrapper" data-testId="medical-term">
       <Popper
@@ -355,28 +372,34 @@ function MedicalTerm({
                         <TextField
                           data-testid="input-term1"
                           value={newTermValue}
-                          onChange={(event) =>
-                            setNewTermValue(event.target.value)
-                          }
+                          onChange={handleTextField}
+                          helperText="Ex: cpt_primary_objective"
                         />
                         {showIcons && (
                           <div className="icons" data-testId="edit-icons">
-                            <CloseCircle
-                              className="cancel"
-                              data-testid="cancel-icon"
-                              // eslint-disable-next-line react/jsx-no-bind
-                              onClick={handleCancelClick}
-                            />
-                            <StatusCheck
-                              className="save"
-                              onClick={handleSave}
-                              data-testid="save-icon"
-                            />
-                            <Trash
-                              data-testid="delete-icon"
-                              className="delete"
-                              onClick={() => setshowModal(true)}
-                            />
+                            <Tooltip title="Cancel" placement="bottom">
+                              <CloseCircle
+                                className="cancel"
+                                data-testid="cancel-icon"
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onClick={handleCancelClick}
+                              />
+                            </Tooltip>
+                            <Tooltip title="Save" placement="bottom">
+                              <StatusCheck
+                                className="save"
+                                onClick={handleSave}
+                                data-testid="save-icon"
+                                disabled={!newTermValue}
+                              />
+                            </Tooltip>
+                            <Tooltip title="Delete" placement="bottom">
+                              <Trash
+                                data-testid="delete-icon"
+                                className="delete"
+                                onClick={() => setshowModal(true)}
+                              />
+                            </Tooltip>
                           </div>
                         )}
                       </div>
