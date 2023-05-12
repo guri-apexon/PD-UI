@@ -125,6 +125,7 @@ function DigitizeAccordion({
   const [requestedRoute, setRequestedRoute] = useState('');
   const [addSectionIndex, setAddSectionIndex] = useState(-1);
   const [isShown, setIsShown] = useState(false);
+  const { setActiveLineID } = useProtContext();
 
   useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
@@ -532,6 +533,7 @@ function DigitizeAccordion({
       updateSectionLock(true);
       setSaveEnabled(false);
       setShowLoader(true);
+      setActiveLineID('');
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
