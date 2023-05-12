@@ -29,10 +29,12 @@ export const updateTable = (data, content, rowIndex, columnIndex) => {
 
 export const addRow = (rows, index) => {
   const data = cloneDeep(rows);
-  const emptyRow = createEmptyRow(data[0].columns.length);
+  const emptyRow = createEmptyRow(
+    data[0].columns.filter((x) => x.op_type !== QC_CHANGE_TYPE.DELETED).length,
+  );
   const newEmptyRow = {
     roi_id: '',
-    row_indx: rows.length.toString(),
+    row_indx: index,
     op_type: QC_CHANGE_TYPE.ADDED,
     columns: emptyRow,
   };
@@ -42,54 +44,84 @@ export const addRow = (rows, index) => {
 
 export const deleteRow = (rows, index) => {
   const data = cloneDeep(rows);
-  data[index].op_type = QC_CHANGE_TYPE.DELETED;
+  if (data[index].op_type === QC_CHANGE_TYPE.ADDED) {
+    data.splice(index, 1);
+  } else {
+    data[index].op_type = QC_CHANGE_TYPE.DELETED;
+  }
+
   return data;
 };
 
 export const addColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   data.forEach((record) => {
-    record.columns.splice(index, 0, getEmptyCell(index));
+    if (record.op_type !== QC_CHANGE_TYPE.DELETED) {
+      record.op_type = record.op_type || QC_CHANGE_TYPE.UPDATED;
+      record.columns.splice(index, 0, getEmptyCell(index));
+      if (record.op_type === QC_CHANGE_TYPE.ADDED) {
+        record.columns = record.columns.map((col, j) => {
+          return {
+            ...col,
+            col_indx: j.toString(),
+          };
+        });
+      }
+    }
   });
-  return data.map((record) => {
-    return {
-      ...record,
-      op_type: QC_CHANGE_TYPE.UPDATED,
-      columns: record.columns.map((col, j) => {
-        return {
-          ...col,
-          col_indx: j.toString(),
-        };
-      }),
-    };
-  });
+  return data;
 };
 
 export const deleteColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   data.forEach((record) => {
-    record.columns[index].value = `<s>${record.columns[index].value}</s>`;
-    record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
+    if (record.columns[index].op_type === QC_CHANGE_TYPE.ADDED) {
+      record.columns.splice(index, 1);
+    } else {
+      record.op_type = record.op_type || QC_CHANGE_TYPE.UPDATED;
+      record.columns[index].value = `<s>${record.columns[index].value}</s>`;
+      record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
+    }
   });
   return data;
 };
 
 export const swapRowElements = (array, index1, index2) => {
   const arr = cloneDeep(array);
-  [arr[index1], arr[index2]] = [arr[index2], arr[index1]];
-
-  return arr;
+  const len = arr[index1].columns.length;
+  const x = [...Array(len).keys()];
+  try {
+    x.forEach((i) => {
+      const temp1 = arr[index1].columns[i].value;
+      arr[index1].columns[i].value = arr[index2].columns[i].value;
+      arr[index2].columns[i].value = temp1;
+      arr[index1].columns[i].op_type =
+        arr[index1].columns[i].op_type || QC_CHANGE_TYPE.UPDATED;
+      arr[index2].columns[i].op_type =
+        arr[index2].columns[i].op_type || QC_CHANGE_TYPE.UPDATED;
+    });
+    arr[index1].op_type = arr[index1].op_type || QC_CHANGE_TYPE.UPDATED;
+    arr[index2].op_type = arr[index2].op_type || QC_CHANGE_TYPE.UPDATED;
+    return arr;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };
 
 export const swapColumnElements = (array, index1, index2) => {
-  array.forEach((list) => {
-    const temp = list.columns[index1];
-    temp.col_indx = index1.toString();
-    list.columns[index1] = list?.columns[index2];
-    list.columns[index1].col_indx = index2.toString();
-    list.columns[index2] = temp;
+  const arr = cloneDeep(array);
+  arr.forEach((list) => {
+    const temp = list.columns[index1].value;
+    list.columns[index1].value = list.columns[index2].value;
+    list.columns[index2].value = temp;
+    list.columns[index1].op_type =
+      list.columns[index1].op_type || QC_CHANGE_TYPE.UPDATED;
+    list.columns[index2].op_type =
+      list.columns[index2].op_type || QC_CHANGE_TYPE.UPDATED;
+    list.op_type = list.op_type || QC_CHANGE_TYPE.UPDATED;
   });
-  return array;
+  return arr;
 };
 
 const nextChar = (c) => {
@@ -118,6 +150,17 @@ export const updateFootNotePayload = (data) => {
   }
 
   return updateFootNoteData;
+};
+
+export const updateRowIndex = (data) => {
+  const updatedRows = cloneDeep(data);
+  updatedRows.forEach((row, idx) => {
+    row.row_indx = idx.toString();
+    row.columns.forEach((col, indx) => {
+      col.col_indx = indx.toString();
+    });
+  });
+  return updatedRows;
 };
 
 export const filterFootNotes = (data) => {
@@ -159,7 +202,7 @@ export const getPreferredTerms = (
     }
   }
 
-  if (isClinicalTerms) {
+  if (isClinicalTerms && clinicalTerms) {
     const clinicalArr = Object.keys(clinicalTerms);
     let text = val;
     clinicalArr.forEach((term) => {
