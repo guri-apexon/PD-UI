@@ -1,4 +1,4 @@
-import { useContext, useRef, useMemo, useEffect, useState } from 'react';
+import { useContext, useRef, useMemo, useEffect, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -7,13 +7,9 @@ import { TableConst, TableEvents } from './Constants';
 import GridContext from './Context/GridContext';
 import './SOA.scss';
 
-const style = {
-  tableContainer: { height: '500px', width: '100%' },
-};
 function SOATable() {
   const gridRef = useRef();
   const { state, dispatch, apiDispatch } = useContext(TabelContext);
-  const [footerWidth, setFooterWidth] = useState(800);
 
   const {
     tableData,
@@ -25,19 +21,7 @@ function SOATable() {
     refreshValue,
     footNotes,
   } = state;
-  useEffect(() => {
-    if (footNotes[selectedTab] && footNotes[selectedTab].length > 0) {
-      const footValues = Object.values(footNotes[selectedTab]);
 
-      footValues.sort((a, b) => a.value.length - b.value.length);
-
-      const width =
-        footValues[0].value.length * 10 < 400
-          ? 400
-          : footValues[0].value.length * 20;
-      setFooterWidth(width + 600);
-    }
-  }, [footNotes, footNotes.length, selectedTab]);
   const defaultColDef = useMemo(() => {
     return {
       resizable: true,
@@ -116,8 +100,36 @@ function SOATable() {
     }),
     [dispatch, tableId, docId, apiDispatch, tables, selectedTab, refreshValue],
   );
+
+  const footerGridRef = useRef();
+
+  const footerColumnDefs = useMemo(() => {
+    return [
+      {
+        field: 'key',
+        headerName: 'Footer Name',
+        resizable: true,
+        suppressMovable: true,
+      },
+      {
+        field: 'value',
+        headerName: 'Footer Value',
+        resizable: true,
+        suppressMovable: true,
+      },
+    ];
+  }, []);
+
+  const onFirstDataRendered = useCallback(() => {
+    const allColumnIds = [];
+    footerGridRef.current.columnApi.getColumns().forEach((column) => {
+      allColumnIds.push(column.getId());
+    });
+    footerGridRef.current.columnApi.autoSizeColumns(allColumnIds, false);
+  }, []);
+
   return (
-    <div className="ag-theme-alpine" style={style.tableContainer}>
+    <div className="ag-theme-alpine soa-maingrid-container">
       <GridContext.Provider value={propDispatch}>
         <AgGridReact
           ref={gridRef}
@@ -129,24 +141,16 @@ function SOATable() {
           suppressDragLeaveHidesColumns="true"
           stopEditingWhenGridLosesFocus="true"
         />
-        <div id="footNotes" style={{ width: '100%', height: 300 }}>
-          <AgGridReact
-            rowData={footNotes[selectedTab]}
-            columnDefs={[
-              {
-                field: 'key',
-                headerName: 'Footer Name',
-                resizable: true,
-                width: 200,
-              },
-              {
-                field: 'value',
-                headerName: 'Footer Value',
-                resizable: true,
-                width: footerWidth,
-              },
-            ]}
-          />
+
+        <div className="soa-footergrid-container">
+          <div className="ag-theme-alpine soa-footergrid-container">
+            <AgGridReact
+              ref={footerGridRef}
+              rowData={footNotes[selectedTab]}
+              columnDefs={footerColumnDefs}
+              onRowDataUpdated={onFirstDataRendered}
+            />
+          </div>
         </div>
       </GridContext.Provider>
     </div>

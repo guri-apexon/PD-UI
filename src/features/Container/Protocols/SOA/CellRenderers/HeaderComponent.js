@@ -203,9 +203,7 @@ function HeaderComponent(props) {
             style={style.columnValue}
           >
             {displayName.trim() === '' ? (
-              <>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </>
+              <div className="header-empty-cell">&nbsp;</div>
             ) : (
               displayName
             )}
