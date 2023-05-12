@@ -20,14 +20,10 @@ const tableGridData = {
   hideGroupsColumns: [],
   gridRef: null,
   settingItems: {
-    legend: { name: 'Legend' },
     studyVisit: {
       name: 'Study Period',
       children: TIMPE_POINTS.map((a) => ({ name: a })),
     },
-    mappings: { name: 'Mappings' },
-    display: { name: 'Display' },
-    references: { name: 'References' },
   },
 };
 const headRows = [TableConst.STUDYVISIT, TableConst.STUDYPROCEDURE];

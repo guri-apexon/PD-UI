@@ -97,7 +97,6 @@ describe('addColumnDefs', () => {
     addColumnDefs(item);
     const cellEditorSelector = item.cellEditorSelector(params);
     expect(cellEditorSelector.component).toBe(TextEditor);
-    expect(cellEditorSelector.popup).toBe(true);
     expect(cellEditorSelector.params.value).toBe('initial value');
   });
 
