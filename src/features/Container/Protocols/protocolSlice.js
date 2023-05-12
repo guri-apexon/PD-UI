@@ -68,6 +68,7 @@ export const protocolSlice = createSlice({
   dipaViewData: [],
   allDipaViewData: [],
   enrichedData: {},
+  preferredTerms: {},
   discardValue: {
     isEdited: false,
     isDiscarded: false,
@@ -235,6 +236,9 @@ export const protocolSlice = createSlice({
     getEnrichedData: (state, action) => {
       state.enrichedData = action.payload;
     },
+    getPreferredTerm: (state, action) => {
+      state.preferredTerms = action.payload;
+    },
     updateSectionHeader: (state, action) => {
       const index = state.protocolTocData.data.findIndex(
         (x) => x.link_id === action.payload.linkId,
@@ -285,6 +289,7 @@ export const {
   setDipaDataLoader,
   updateSectionHeader,
   getEnrichedData,
+  getPreferredTerm,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -318,4 +323,5 @@ export const discardDetails = (state) => state.protocol.discardValue;
 export const activeTOC = (state) => state.protocol.activeTOC;
 export const getLoader = (state) => state.protocol.loader;
 export const enrichedData = (state) => state.protocol.enrichedData;
+export const preferredData = (state) => state.protocol.preferredTerms;
 export default protocolSlice.reducer;
