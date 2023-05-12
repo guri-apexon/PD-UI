@@ -8,10 +8,10 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { enrichedData, Enrichedword, sectionDetails } from '../protocolSlice';
-import './MedicalTerm.scss';
-import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { userId } from '../../../../store/userDetails';
+import { getHierarchyName } from '../CustomComponents/PDTable/utils';
+import { Enrichedword, enrichedData, sectionDetails } from '../protocolSlice';
+import './MedicalTerm.scss';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -164,7 +164,7 @@ function AddClinicalTerm({ docId, linkId }) {
 
   return (
     <div data-testId="add-tag">
-      {isTextSelected && selectedText?.trim() !== '' && (
+      {isTextSelected && selectedText?.trim()?.length > 1 && (
         <Button
           id="my-button"
           className="button"
