@@ -206,7 +206,12 @@ export const getPreferredTerms = (
     const clinicalArr = Object.keys(clinicalTerms);
     let text = val;
     clinicalArr.forEach((term) => {
-      text = text.replaceAll(term, `<b class="enriched-txt">${term}</b>`, text);
+      const pattern = new RegExp(`\\b${term}\\b`, 'g');
+      text = text.replaceAll(
+        pattern,
+        `<b class="enriched-txt">${term}</b>`,
+        text,
+      );
     });
     return { __html: `${text}` };
   }

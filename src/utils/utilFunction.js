@@ -173,7 +173,12 @@ export const createEnrichedText = (content, terms) => {
   if (terms) {
     const arr = Object.keys(terms);
     arr.forEach((term) => {
-      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, text);
+      const pattern = new RegExp(`\\b${term}\\b`, 'g');
+      text = text.replaceAll(
+        pattern,
+        `<b class="enriched-txt">${term}</b>`,
+        text,
+      );
     });
   }
 
