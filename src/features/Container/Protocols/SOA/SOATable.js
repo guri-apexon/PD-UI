@@ -1,4 +1,4 @@
-import { useContext, useRef, useMemo, useEffect } from 'react';
+import { useContext, useRef, useMemo, useEffect, useCallback } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -7,11 +7,6 @@ import { TableConst, TableEvents } from './Constants';
 import GridContext from './Context/GridContext';
 import './SOA.scss';
 
-const style = {
-  mainContainer: { height: '100%', width: '100%' },
-  tableContainer: { height: '800px', width: '100%' },
-  footerContainer: { height: '300px !important', width: '100%' },
-};
 function SOATable() {
   const gridRef = useRef();
   const { state, dispatch, apiDispatch } = useContext(TabelContext);
@@ -105,44 +100,57 @@ function SOATable() {
     }),
     [dispatch, tableId, docId, apiDispatch, tables, selectedTab, refreshValue],
   );
+
+  const footerGridRef = useRef();
+
+  const footerColumnDefs = useMemo(() => {
+    return [
+      {
+        field: 'key',
+        headerName: 'Footer Name',
+        resizable: true,
+        suppressMovable: true,
+      },
+      {
+        field: 'value',
+        headerName: 'Footer Value',
+        resizable: true,
+        suppressMovable: true,
+      },
+    ];
+  }, []);
+
+  const onFirstDataRendered = useCallback(() => {
+    const allColumnIds = [];
+    footerGridRef.current.columnApi.getColumns().forEach((column) => {
+      allColumnIds.push(column.getId());
+    });
+    footerGridRef.current.columnApi.autoSizeColumns(allColumnIds, false);
+  }, []);
+
   return (
-    <div id="tableMaincontainer" style={style.mainContainer}>
+    <div className="ag-theme-alpine soa-maingrid-container">
       <GridContext.Provider value={propDispatch}>
-        <div className="ag-theme-alpine" style={style.tableContainer}>
-          <AgGridReact
-            ref={gridRef}
-            rowData={[...tableData]}
-            columnDefs={columnDefs}
-            defaultColDef={defaultColDef}
-            animateRows="true"
-            rowDragManaged="true"
-            suppressDragLeaveHidesColumns="true"
-            stopEditingWhenGridLosesFocus="true"
-          />
-        </div>
-        <div
-          className="ag-theme-alpine footer-ontainer"
-          style={style.footerContainer}
-        >
-          <AgGridReact
-            rowData={footNotes[selectedTab]}
-            columnDefs={[
-              {
-                field: 'key',
-                headerName: 'Footer Name',
-                resizable: true,
-                suppressMovable: true,
-                width: 150,
-              },
-              {
-                field: 'value',
-                headerName: 'Footer Value',
-                resizable: true,
-                suppressMovable: true,
-                width: 4048,
-              },
-            ]}
-          />
+        <AgGridReact
+          ref={gridRef}
+          rowData={[...tableData]}
+          columnDefs={columnDefs}
+          defaultColDef={defaultColDef}
+          animateRows="true"
+          rowDragManaged="true"
+          suppressDragLeaveHidesColumns="true"
+          stopEditingWhenGridLosesFocus="true"
+        />
+
+        <div className="soa-footergrid-container">
+          <div className="ag-theme-alpine soa-footergrid-container">
+            <AgGridReact
+              ref={footerGridRef}
+              rowData={footNotes[selectedTab]}
+              columnDefs={footerColumnDefs}
+              onRowDataUpdated={onFirstDataRendered}
+            />
+          </div>
         </div>
       </GridContext.Provider>
     </div>
