@@ -39,7 +39,7 @@ const TextEditor = memo(
         ref={refInput}
         value={value}
         onChange={(event) => setValue(event.target.value)}
-        className="header-editing-Item"
+        className="content-cell-editing-Item"
       />
     );
   }),

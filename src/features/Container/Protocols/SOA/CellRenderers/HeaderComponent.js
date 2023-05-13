@@ -179,37 +179,34 @@ function HeaderComponent(props) {
           ref={inpRef}
           value={value}
           onChange={(event) => setValue(event.target.value)}
-          className="header-editing-Item"
+          className="header-editing-input-Item"
         />
       ) : (
-        ''
-      )}
-      <div className="firstColumn">
-        {Number(columnIndex) > 0 ? (
-          <Drag
-            data-testid="header-drag-button"
-            onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
-          />
-        ) : (
-          '                  '
-        )}
+        <div className="firstColumn">
+          {Number(columnIndex) > 0 ? (
+            <Drag
+              data-testid="header-drag-button"
+              onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
+            />
+          ) : (
+            '                  '
+          )}
 
-        <div>
-          <span
-            data-testid="header-cell"
-            onDoubleClick={() => {
-              setEditing(!isEditing);
-            }}
-            style={style.columnValue}
-          >
-            {displayName.trim() === '' ? (
-              <div className="header-empty-cell">&nbsp;</div>
-            ) : (
-              displayName
-            )}
-          </span>
+          <div>
+            <div
+              className="column-name-container"
+              data-testid="header-cell"
+              onDoubleClick={() => {
+                setEditing(!isEditing);
+              }}
+              style={style.columnValue}
+            >
+              {displayName.trim() === '' ? <div>&nbsp;</div> : displayName}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
+
       <Popper
         ref={ref}
         open={!!anchorEl}

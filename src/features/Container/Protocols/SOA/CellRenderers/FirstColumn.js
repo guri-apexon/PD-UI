@@ -19,6 +19,20 @@ const style = {
     padding: 15,
   },
 };
+
+function getPosition(element, pos) {
+  return (callBack) => {
+    const interval = setInterval(() => {
+      const now = element.getBoundingClientRect().top;
+      // eslint-disable-next-line
+      if (Number(now) != Number(pos)) {
+        clearInterval(interval);
+        callBack(false);
+      }
+    }, 100);
+  };
+}
+
 function FirstColumn({ data, colDef }) {
   let { field } = colDef;
   const { propDispatch, apiDispatch, tableId, docId } = useContext(GridContext);
@@ -113,12 +127,18 @@ function FirstColumn({ data, colDef }) {
       ? data[field][TableConst.DATA_VALUE]
       : '';
 
+  const onDragClick = (event) => {
+    const element = event.target.parentElement;
+    const position = element.getBoundingClientRect().top;
+    getPosition(element, position)(setAnchorEl);
+    setAnchorEl(!anchorEl ? event.currentTarget : null);
+  };
   return (
     <>
       <div className="firstColumn">
         <Drag
           data-testid="drag-button"
-          onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
+          onClick={(event) => onDragClick(event)}
         />
         <span style={style.columnValue}>{fieldValue}</span>
       </div>
