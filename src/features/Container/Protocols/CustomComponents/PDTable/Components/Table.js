@@ -106,6 +106,8 @@ function DisplayTable({
               )}
               {row?.columns?.map((col, colIndex) => (
                 <div
+                  // eslint-disable-next-line
+                  tabIndex={edit && '1'}
                   key={uuidv4()}
                   id={`columnID-${rowIndex}-${colIndex}`}
                   draggable={edit}
