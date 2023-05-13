@@ -762,7 +762,7 @@ export function* getSOAData(action) {
   if (enrichedData?.success) {
     yield put(setSOAData(enrichedData.data));
   } else {
-    yield put(setSOAData({}));
+    yield put(setSOAData({ error: true }));
     toast.error('Error While Updation');
   }
 }
