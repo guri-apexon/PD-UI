@@ -177,7 +177,7 @@ describe('rendering the Add Clinical Term Component', () => {
     expect(field3).toBeInTheDocument();
     fireEvent.change(field3, { target: { value: 'some text' } });
     expect(field3.value).toBe('some text');
-    expect(screen.getByRole('button', { name: 'Add tag' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Add tag' })).toBeDisabled();
     userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
   });
 });
