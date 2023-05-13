@@ -756,7 +756,8 @@ export function* getSOAData(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa${params}`,
     method: 'GET',
-    headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
+    checkAuth: true,
+    headers: { 'Content-Type': 'application/json' },
   };
   const enrichedData = yield call(httpCall, config);
   if (enrichedData?.success) {
