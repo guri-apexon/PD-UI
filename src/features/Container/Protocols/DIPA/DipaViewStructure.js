@@ -273,6 +273,9 @@ function DipaViewStructure({
                   editingIDList={editingIDList}
                   setEditingIDList={setEditingIDList}
                   toggleEditingIDs={toggleEditingIDs}
+                  tooltipValue={tooltipValue}
+                  countTooltip={countTooltip}
+                  editedByTooltip={editedByTooltip}
                   lockDetails={lockDetails}
                   userId={userId}
                 />

@@ -990,7 +990,6 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[0],
-                                      section?.preferred_terms,
                                     )}
                                   />
                                 </sup>
@@ -1013,7 +1012,6 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[1],
-                                      section?.preferred_terms,
                                     )}
                                   />
                                 </p>
@@ -1048,10 +1046,7 @@ function DigitizeAccordion({
                                     }}
                                   >
                                     <SanitizeHTML
-                                      html={getEnrichedText(
-                                        section.content,
-                                        section?.preferred_terms,
-                                      )}
+                                      html={getEnrichedText(section.content)}
                                     />
                                   </p>
                                 </div>

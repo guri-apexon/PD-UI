@@ -27,7 +27,11 @@ function SOA({ docId }) {
   const [loader, setLoader] = useState(true);
   const apiDispatch = useDispatch();
   const [state, dispatch] = useReducer(tableReducer, tableGridData);
+
   useEffect(() => {
+    if (apiState?.error) {
+      setLoader(false);
+    }
     if (apiState?.soa_data) {
       dispatch({
         type: TableEvents.SET_TABLES,
@@ -61,7 +65,8 @@ function SOA({ docId }) {
       <TabelContext.Provider value={provider}>
         {loader ? <Loader isInner /> : ''}
         <SOATabs />
-        <ArrangePanel />
+        {!apiState?.error ? <ArrangePanel /> : null}
+
         <div className="soa-container">
           {state.openSettings ? (
             <>
