@@ -1,6 +1,6 @@
 .soa-content-holder {
   margin: 16px 48px 0px 5px;
-  width: 100%;
+  width: 95%;
   .side-nav {
     width: 200px;
     margin-left: 20px;
@@ -11,7 +11,6 @@
   .arrange-panel-container {
     display: flex;
     background: rgb(16 85 135);
-    margin-right: 25px;
   }
   .arrange-panel {
     display: flex;
@@ -101,10 +100,14 @@
   .ag-cell-inline-editing {
     input {
       width: 95%;
-      height: 95%;
     }
   }
-
+  .header-editing-input-Item {
+    height: 40px;
+  }
+  .content-cell-editing-Item {
+    height: 40px;
+  }
   .base-column {
     background-color: red;
   }
@@ -116,12 +119,22 @@
     height: 50px;
     display: inline-block;
   }
+  .column-name-container {
+    width: 200px;
+
+    height: 50px;
+    padding-top: 30px;
+  }
   .soa-footergrid-container {
     width: 100%;
-    height: 100%;
+    height: 300px;
+    margin-bottom: 100px;
   }
   .soa-maingrid-container {
     height: 500px;
     width: 100%;
+  }
+  .ag-overlay-wrapper {
+    display: none;
   }
 }

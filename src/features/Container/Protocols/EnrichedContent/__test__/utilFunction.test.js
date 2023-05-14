@@ -1,23 +1,50 @@
-import getKeyFromEnrichText from '../utilFunction';
+import {
+  getKeyFromEnrichText,
+  preferredTermsValidation,
+} from '../utilFunction';
 
 describe('getKeyFromEnrichText', () => {
-  it('should return the correct key for "preferred_term"', () => {
-    const result = getKeyFromEnrichText('preferred_term');
-    expect(result).toEqual('iqv_standard_term');
+  it('should return "iqv_standard_term" when the input is "preferred_term"', () => {
+    expect(getKeyFromEnrichText('preferred_term')).toBe('iqv_standard_term');
   });
 
-  it('should return the correct key for "clinical_terms"', () => {
-    const result = getKeyFromEnrichText('clinical_terms');
-    expect(result).toEqual('clinical_terms');
+  it('should return "clinical_terms" when the input is "clinical_terms"', () => {
+    expect(getKeyFromEnrichText('clinical_terms')).toBe('clinical_terms');
   });
 
-  it('should return the correct key for "ontology"', () => {
-    const result = getKeyFromEnrichText('ontology');
-    expect(result).toEqual('ontology');
+  it('should return "ontology" when the input is "ontology"', () => {
+    expect(getKeyFromEnrichText('ontology')).toBe('ontology');
   });
 
-  it('should return an empty string for other terms', () => {
-    const result = getKeyFromEnrichText('unknown_term');
-    expect(result).toEqual('');
+  it('should return an empty string when the input is not matched with any condition', () => {
+    expect(getKeyFromEnrichText('other_term')).toBe('');
+  });
+});
+
+describe('preferredTermsValidation', () => {
+  it('should return an empty string when the value is an empty string', () => {
+    expect(preferredTermsValidation('')).toBe('');
+  });
+
+  it('should return the correct error message when the value contains a comma', () => {
+    expect(preferredTermsValidation('term1, term2')).toBe(
+      'Please tag only one Preferred Term',
+    );
+  });
+
+  it('should return the correct error message when the value contains multiple words', () => {
+    expect(preferredTermsValidation('term1 term2')).toBe(
+      'Please tag only one Preferred Term',
+    );
+  });
+
+  it('should return the correct error message when the value does not contain "cpt_" prefix', () => {
+    expect(preferredTermsValidation('term')).toBe(
+      'Please prefix Preferred Term with "cpt_"',
+    );
+  });
+
+  it('should return an empty string when the value is valid', () => {
+    expect(preferredTermsValidation('cpt_term')).toBe('');
   });
 });
