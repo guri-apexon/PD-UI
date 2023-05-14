@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import Card from 'apollo-react/components/Card';
-import Popper from 'apollo-react/components/Popper';
+import Popover from 'apollo-react/components/Popover';
 import PropTypes from 'prop-types';
 import Arrow2Down from 'apollo-react-icons/Arrow2Down';
 import Arrow2Up from 'apollo-react-icons/Arrow2Up';
@@ -142,7 +142,7 @@ function FirstColumn({ data, colDef }) {
         />
         <span style={style.columnValue}>{fieldValue}</span>
       </div>
-      <Popper
+      <Popover
         ref={ref}
         open={!!anchorEl}
         anchorEl={anchorEl}
@@ -168,7 +168,7 @@ function FirstColumn({ data, colDef }) {
             onClick={() => cellAction(TableConst.ADD_ROW_ABOVE)}
           />
         </Card>
-      </Popper>
+      </Popover>
       <Modal
         open={warning}
         variant="warning"

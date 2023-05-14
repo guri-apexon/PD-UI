@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import Card from 'apollo-react/components/Card';
-import Popper from 'apollo-react/components/Popper';
+import Popover from 'apollo-react/components/Popover';
 import PropTypes from 'prop-types';
 import ArrowLeft from 'apollo-react-icons/ArrowLeft';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
@@ -207,7 +207,7 @@ function HeaderComponent(props) {
         </div>
       )}
 
-      <Popper
+      <Popover
         ref={ref}
         open={!!anchorEl}
         anchorEl={anchorEl}
@@ -230,7 +230,7 @@ function HeaderComponent(props) {
             onClick={() => cellAction({ type: TableConst.ADD_ROW_ABOVE })}
           />
         </Card>
-      </Popper>
+      </Popover>
       <Modal
         open={warning}
         variant="warning"
