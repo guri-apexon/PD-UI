@@ -8,7 +8,7 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { enrichedData, Enrichedword, sectionDetails } from '../protocolSlice';
+import { enrichedData, Enrichedword } from '../protocolSlice';
 import './MedicalTerm.scss';
 import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { preferredTermsValidation } from './utilFunction';
@@ -25,8 +25,6 @@ function AddClinicalTerm({ docId, linkId }) {
   const [preferredTerm, setPreferredTerm] = useState('');
   const [isTextFieldEmpty, setIsTextFieldEmpty] = useState(true);
   const [ptErrorMsg, setPtErrorMsg] = useState('');
-  const sectionHeaderDetails = useSelector(sectionDetails);
-  const { data: sectionData } = sectionHeaderDetails;
   let headerLinkId;
   const loggedInUserId = useSelector(userId);
   const enrichedContent = useSelector(enrichedData);
@@ -57,7 +55,10 @@ function AddClinicalTerm({ docId, linkId }) {
   }, [clinicalTerms, ontologyTerm, preferredTerm, openModal, selectedText]);
 
   const handlePreferredTerm = (e) => {
-    const msg = preferredTermsValidation(e.target.value);
+    const msg = preferredTermsValidation(
+      e.target.value,
+      enrichedContent?.data[selectedText]?.preferred_term,
+    );
     setPtErrorMsg(msg);
     setPreferredTerm(e.target.value);
   };
@@ -117,15 +118,9 @@ function AddClinicalTerm({ docId, linkId }) {
   };
 
   const handleAddTag = () => {
-    const result = sectionData?.[0]?.data?.filter(
-      (item) =>
-        item?.font_info?.roi_id?.para ===
-        wordSelector?.word?.font_info?.roi_id?.para,
-    );
     const clinicalTermsData = enrichedContent?.data[selectedText];
-    const { type } = result[0];
+    const type = wordSelector?.word?.type;
     let tagData;
-
     if (wordSelector?.word) {
       let level;
       if (wordSelector?.word.file_section_level === 1) {

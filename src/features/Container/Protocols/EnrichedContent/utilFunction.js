@@ -5,14 +5,16 @@ const getKeyFromEnrichText = (term) => {
   return '';
 };
 
-const preferredTermsValidation = (value) => {
+const preferredTermsValidation = (value, preferredTerm) => {
   let msg = '';
   const pTLowerCase = value.toLowerCase();
   const arr = value.split(' ');
   if (value === '') {
     msg = '';
-  } else if (value.includes(',') || arr.length > 1) {
-    msg = 'Please tag only one Preferred Term';
+  } else if (value.includes(',') || arr.length > 1 || preferredTerm) {
+    msg = 'Please tag only one Preferred Term. ';
+    const msgadd = preferredTerm && `${preferredTerm} is already tagged Term`;
+    msg += msgadd;
   } else if (!pTLowerCase.includes('cpt_')) {
     msg = 'Please prefix Preferred Term with "cpt_"';
   }

@@ -627,6 +627,7 @@ function DigitizeAccordion({
       return createPreferredText(
         header?.source_file_section,
         preferredContent?.data,
+        true,
       );
     }
     return header.source_file_section;
@@ -711,7 +712,11 @@ function DigitizeAccordion({
     let newContent = content;
     if (globalPreferredTerm || showPrefferedTerm) {
       if (!isEmpty(preferredContent?.data)) {
-        newContent = createPreferredText(content, preferredContent?.data);
+        newContent = createPreferredText(
+          content,
+          preferredContent?.data,
+          false,
+        );
       }
     }
     if (

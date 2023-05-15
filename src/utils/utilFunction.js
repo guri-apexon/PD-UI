@@ -173,29 +173,29 @@ export const createEnrichedText = (content, terms) => {
   if (terms) {
     const arr = Object.keys(terms);
     arr.forEach((term) => {
-      const pattern = new RegExp(`\\b${term}\\b`, 'g');
-      text = text.replaceAll(
-        pattern,
-        `<b class="enriched-txt">${term}</b>`,
-        text,
-      );
+      text = text.replaceAll(term, `<b class="enriched-txt">${term}</b>`, text);
     });
   }
 
   return text;
 };
 
-export const createPreferredText = (content, terms) => {
+export const createPreferredText = (content, terms, isToc) => {
   let text = content;
   if (terms) {
     const arr = Object.keys(terms);
     if (arr.length) {
-      const match = arr.find((x) => {
+      let match = arr.find((x) => {
         return x
           .toLowerCase()
           .trim()
           .includes(removeHtmlTags(text).toLowerCase().trim());
       });
+
+      if (isToc && arr.length) {
+        match = match?.replace(/(<([^>]+)>)/gi, '');
+      }
+
       if (match) {
         text = text
           .replace(match, `<b class="Preferred-txt"> ${match} </b>`)
