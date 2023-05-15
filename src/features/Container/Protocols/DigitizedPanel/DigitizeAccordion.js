@@ -238,6 +238,7 @@ function DigitizeAccordion({
       },
     });
   };
+
   useEffect(() => {
     if (expanded) {
       const arr = sectionData?.filter((obj) => obj.linkId === item.link_id);
