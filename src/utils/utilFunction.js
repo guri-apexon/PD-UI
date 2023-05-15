@@ -198,9 +198,7 @@ export const createPreferredText = (content, terms, isToc) => {
           .includes(removeHtmlTags(text).toLowerCase().trim());
       });
 
-      if (isToc && arr.length) {
-        match = match?.replace(/(<([^>]+)>)/gi, '');
-      }
+      match = match?.replace(/(<([^>]+)>)/gi, '');
 
       if (match) {
         text = text
