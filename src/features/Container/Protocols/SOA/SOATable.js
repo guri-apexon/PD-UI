@@ -1,4 +1,4 @@
-import { useContext, useRef, useMemo, useEffect, useCallback } from 'react';
+import { useContext, useRef, useMemo, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -110,28 +110,34 @@ function SOATable() {
         headerName: 'Footer Name',
         resizable: true,
         suppressMovable: true,
+        minWidth: 100,
+        maxWidth: 150,
       },
       {
         field: 'value',
         headerName: 'Footer Value',
         resizable: true,
         suppressMovable: true,
+        cellStyle: {
+          'line-height': '24px',
+        },
       },
     ];
   }, []);
-
-  const onFirstDataRendered = useCallback(() => {
-    const allColumnIds = [];
-    footerGridRef.current.columnApi.getColumns().forEach((column) => {
-      allColumnIds.push(column.getId());
-    });
-    footerGridRef.current.columnApi.autoSizeColumns(allColumnIds, false);
+  const defaultFooterColDef = useMemo(() => {
+    return {
+      flex: 1,
+      resizable: true,
+      wrapText: true,
+      autoHeight: true,
+    };
   }, []);
 
   return (
     <div className="ag-theme-alpine soa-maingrid-container">
       <GridContext.Provider value={propDispatch}>
         <AgGridReact
+          suppressScrollOnNewData
           ref={gridRef}
           rowData={[...tableData]}
           columnDefs={columnDefs}
@@ -141,14 +147,13 @@ function SOATable() {
           suppressDragLeaveHidesColumns="true"
           stopEditingWhenGridLosesFocus="true"
         />
-
-        <div className="soa-footergrid-container">
-          <div className="ag-theme-alpine soa-footergrid-container">
+        <div>
+          <div className="soa-footergrid-container">
             <AgGridReact
               ref={footerGridRef}
               rowData={footNotes[selectedTab]}
               columnDefs={footerColumnDefs}
-              onRowDataUpdated={onFirstDataRendered}
+              defaultColDef={defaultFooterColDef}
             />
           </div>
         </div>

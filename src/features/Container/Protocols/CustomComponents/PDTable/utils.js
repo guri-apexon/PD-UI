@@ -133,7 +133,7 @@ export const updateFootNotePayload = (data) => {
   const updateFootNoteData = cloneDeep(data);
   if (updateFootNoteData.length > 0) {
     updateFootNoteData.forEach((notes, index) => {
-      if (!notes?.Text.includes('.')) {
+      if (!notes?.Text?.includes('.')) {
         const indicatorValue =
           index > 0
             ? nextChar(updateFootNoteData[index - 1]?.Text?.split('.')[0]) || ''
@@ -180,7 +180,13 @@ export const filterTableProperties = (data) => {
 
 export const getHtmlString = (str, isPreTerm) => {
   return {
-    __html: isPreTerm ? `<b class="Preferred-txt">${str}</b>` : `${str}`,
+    __html:
+      isPreTerm && str
+        ? `<b class="Preferred-txt">${str
+            .replace(/[_]/g, ' ')
+            .replace('cpt', '')
+            .trim()}</b>`
+        : `${str}`,
   };
 };
 
@@ -206,7 +212,12 @@ export const getPreferredTerms = (
     const clinicalArr = Object.keys(clinicalTerms);
     let text = val;
     clinicalArr.forEach((term) => {
-      text = text.replaceAll(term, `<b class="enriched-txt">${term}</b>`, text);
+      const pattern = new RegExp(`\\b${term}\\b`, 'g');
+      text = text.replaceAll(
+        pattern,
+        `<b class="enriched-txt">${term}</b>`,
+        text,
+      );
     });
     return { __html: `${text}` };
   }

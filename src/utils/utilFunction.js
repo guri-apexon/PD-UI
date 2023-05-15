@@ -173,7 +173,12 @@ export const createEnrichedText = (content, terms) => {
   if (terms) {
     const arr = Object.keys(terms);
     arr.forEach((term) => {
-      text = replaceall(term, `<b class="enriched-txt">${term}</b>`, text);
+      const pattern = new RegExp(`\\b${term}\\b`, 'g');
+      text = text.replaceAll(
+        pattern,
+        `<b class="enriched-txt">${term}</b>`,
+        text,
+      );
     });
   }
 
@@ -192,7 +197,11 @@ export const createPreferredText = (content, terms) => {
           .includes(removeHtmlTags(text).toLowerCase().trim());
       });
       if (match) {
-        text = `<b class="Preferred-txt">${match}</b>`;
+        text = text
+          .replace(match, `<b class="Preferred-txt"> ${match} </b>`)
+          .replace(/[_]/g, ' ')
+          .replace('cpt', '')
+          .trim();
       }
     }
   }
@@ -599,7 +608,7 @@ export const createReturnObj = (obj, linkId) => {
 
 export const getSaveSectionPayload = (sectionContent, linkId) => {
   let req = [...sectionContent]
-    .filter((x) => x.qc_change_type !== '' && x.content !== '')
+    .filter((x) => x.qc_change_type !== '')
     .map((obj) => createReturnObj(obj, linkId));
   req = req.filter(
     (x) =>

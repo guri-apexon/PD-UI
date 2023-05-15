@@ -45,6 +45,7 @@ import {
   updateSectionHeader,
   getEnrichedData,
   setActiveTOC,
+  getPreferredTerm,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -426,7 +427,7 @@ export function* getProtocolTocDataResult(action) {
     payload: { docId },
   } = action;
   const userId = yield getState();
-  const URL = `${BASE_URL}${Apis.API_CONFIGURABLE}?aidoc_id=${docId}&user_id=${userId}&link_level=6&toc=1`;
+  const URL = `${BASE_URL}${Apis.API_CONFIGURABLE}?aidoc_id=${docId}&user_id=${userId}&link_level=6&toc=1&config_variables=preferred_terms`;
   const config = {
     url: URL,
     method: 'GET',
@@ -452,12 +453,23 @@ export function* getProtocolTocDataResult(action) {
         success: true,
         data: enrichedData,
       };
+      let preferredTerm = {};
+      result?.data[1][0]?.preferred_terms?.forEach((item) => {
+        if (item?.preferred_term !== '' && item?.text) {
+          preferredTerm = { ...preferredTerm, [item?.text]: item };
+        }
+      });
+      const preferredTermContent = {
+        success: true,
+        data: preferredTerm,
+      };
       const tocIsactive = Array(header.data.length).fill(false);
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
       yield put(getSectionIndex(action.payload.index));
       yield put(setLoader(false));
       yield put(getEnrichedData(enrichedContent));
+      yield put(getPreferredTerm(preferredTermContent));
     } else {
       // eslint-disable-next-line no-lonely-if
       yield put(
@@ -708,9 +720,9 @@ export function* setEnrichedAPI(action) {
 
 export function* saveEnrichedAPI(action) {
   const {
-    payload: { docId, linkId, data, opType },
+    payload: { docId, linkId, data, opType, headerLinkId },
   } = action;
-  let url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`;
+  let url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}&header_link_id=${headerLinkId}`;
   if (opType) url = `${url}&operation_type=${opType}`;
   const config = {
     url,
@@ -744,13 +756,14 @@ export function* getSOAData(action) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa${params}`,
     method: 'GET',
-    headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
+    checkAuth: true,
+    headers: { 'Content-Type': 'application/json' },
   };
   const enrichedData = yield call(httpCall, config);
   if (enrichedData?.success) {
     yield put(setSOAData(enrichedData.data));
   } else {
-    yield put(setSOAData({}));
+    yield put(setSOAData({ error: true }));
     toast.error('Error While Updation');
   }
 }

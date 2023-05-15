@@ -46,17 +46,17 @@
     .save {
       color: rgb(43, 43, 228);
       margin-left: 5px;
-      font-size: 18px;
+      font-size: 22px;
     }
     .delete {
       color: red;
       margin-left: 5px;
-      font-size: 18px;
+      font-size: 22px;
     }
     .cancel {
       color: brown;
       margin-left: 5px;
-      font-size: 18px;
+      font-size: 22px;
     }
     .text-area {
       display: flex;
@@ -75,6 +75,10 @@
   height: 32px;
   z-index: 1;
 }
+.iconbutton-warning {
+  color: red !important;
+  font-size: 13px;
+}
 .delete-tag {
   display: flex;
   flex-direction: row-reverse;
@@ -83,6 +87,7 @@
 }
 .icons {
   margin-top: 12px;
+  padding-right: 5px;
 }
 .fieldgroup {
   max-width: 540px;

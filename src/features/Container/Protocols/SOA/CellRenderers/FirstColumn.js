@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import Card from 'apollo-react/components/Card';
-import Popper from 'apollo-react/components/Popper';
+import Popover from 'apollo-react/components/Popover';
 import PropTypes from 'prop-types';
 import Arrow2Down from 'apollo-react-icons/Arrow2Down';
 import Arrow2Up from 'apollo-react-icons/Arrow2Up';
@@ -19,6 +19,20 @@ const style = {
     padding: 15,
   },
 };
+
+function getPosition(element, pos) {
+  return (callBack) => {
+    const interval = setInterval(() => {
+      const now = element.getBoundingClientRect().top;
+      // eslint-disable-next-line
+      if (Number(now) != Number(pos)) {
+        clearInterval(interval);
+        callBack(false);
+      }
+    }, 100);
+  };
+}
+
 function FirstColumn({ data, colDef }) {
   let { field } = colDef;
   const { propDispatch, apiDispatch, tableId, docId } = useContext(GridContext);
@@ -113,16 +127,22 @@ function FirstColumn({ data, colDef }) {
       ? data[field][TableConst.DATA_VALUE]
       : '';
 
+  const onDragClick = (event) => {
+    const element = event.target.parentElement;
+    const position = element.getBoundingClientRect().top;
+    getPosition(element, position)(setAnchorEl);
+    setAnchorEl(!anchorEl ? event.currentTarget : null);
+  };
   return (
     <>
       <div className="firstColumn">
         <Drag
           data-testid="drag-button"
-          onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
+          onClick={(event) => onDragClick(event)}
         />
         <span style={style.columnValue}>{fieldValue}</span>
       </div>
-      <Popper
+      <Popover
         ref={ref}
         open={!!anchorEl}
         anchorEl={anchorEl}
@@ -148,7 +168,7 @@ function FirstColumn({ data, colDef }) {
             onClick={() => cellAction(TableConst.ADD_ROW_ABOVE)}
           />
         </Card>
-      </Popper>
+      </Popover>
       <Modal
         open={warning}
         variant="warning"
