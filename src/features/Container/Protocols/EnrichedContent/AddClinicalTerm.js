@@ -8,7 +8,7 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { enrichedData, Enrichedword } from '../protocolSlice';
+import { enrichedData, Enrichedword, preferredData } from '../protocolSlice';
 import './MedicalTerm.scss';
 import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { preferredTermsValidation } from './utilFunction';
@@ -28,6 +28,7 @@ function AddClinicalTerm({ docId, linkId }) {
   let headerLinkId;
   const loggedInUserId = useSelector(userId);
   const enrichedContent = useSelector(enrichedData);
+  const preferredContent = useSelector(preferredData);
 
   useEffect(() => {
     const selected = window.getSelection().toString();
@@ -55,9 +56,10 @@ function AddClinicalTerm({ docId, linkId }) {
   }, [clinicalTerms, ontologyTerm, preferredTerm, openModal, selectedText]);
 
   const handlePreferredTerm = (e) => {
+    const preferedText = selectedText?.trim();
     const msg = preferredTermsValidation(
       e.target.value,
-      enrichedContent?.data[selectedText]?.preferred_term,
+      preferredContent?.data[preferedText]?.preferred_term,
     );
     setPtErrorMsg(msg);
     setPreferredTerm(e.target.value);
