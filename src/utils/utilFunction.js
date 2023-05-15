@@ -608,7 +608,7 @@ export const createReturnObj = (obj, linkId) => {
 
 export const getSaveSectionPayload = (sectionContent, linkId) => {
   let req = [...sectionContent]
-    .filter((x) => x.qc_change_type !== '' && x.content !== '')
+    .filter((x) => x.qc_change_type !== '')
     .map((obj) => createReturnObj(obj, linkId));
   req = req.filter(
     (x) =>
