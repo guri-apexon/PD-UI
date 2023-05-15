@@ -173,7 +173,8 @@ export const createEnrichedText = (content, terms) => {
   if (terms) {
     const arr = Object.keys(terms);
     arr.forEach((term) => {
-      const pattern = new RegExp(`\\b${term}\\b`, 'g');
+      const replacingSplChar = term.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+      const pattern = new RegExp(`\\b${replacingSplChar}\\b`, 'g');
       text = text.replaceAll(
         pattern,
         `<b class="enriched-txt">${term}</b>`,
