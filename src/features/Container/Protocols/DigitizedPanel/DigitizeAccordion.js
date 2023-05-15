@@ -640,6 +640,7 @@ function DigitizeAccordion({
             updatedSectionsData.splice(matchedIndex + 1, 1);
           }
         }
+        console.log('SHUBHAM000', updatedSectionsData);
         setSectionDataArr(updatedSectionsData);
         if (item.linkandReference && updatedSectionsData.length) {
           scrollToLinkandReference(index, item.linkandReference);
@@ -659,6 +660,7 @@ function DigitizeAccordion({
         dispatchSectionData();
       }
     }
+    console.log('SHUBHAM3456', sectionHeaderDetails);
     // eslint-disable-next-line
   }, [sectionHeaderDetails, expanded]);
 

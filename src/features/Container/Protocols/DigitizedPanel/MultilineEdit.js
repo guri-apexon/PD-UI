@@ -43,6 +43,24 @@ function MultilineEdit({
   }, [history]);
 
   useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.code === 'KeyZ') {
+        event.preventDefault();
+        // const code = event.which || event.keyCode;
+
+        // const charCode = String.fromCharCode(code).toLowerCase();
+        // if ((event.ctrlKey || event.metaKey) && charCode === 'z') {
+        console.log('CTR+z');
+        dispatchSectionEvent('CONTENT_UNDO');
+        // }
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
     if (sectionDataArr?.length > 0) {
       setSections(sectionDataArr);
     }

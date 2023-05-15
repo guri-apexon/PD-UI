@@ -54,16 +54,19 @@ function ProtocolView({ refs, data }) {
   };
   console.log('SHUBHAM1', undoStack);
   const handleContentUpdate = (payload) => {
-    console.log('SHUBHAM123', payload);
-    const undoarr = undoStack;
+    const undoObjIndex = sectionContent?.findIndex(
+      (x) => x.line_id === payload.currentLineId,
+    );
+    console.log('undo1', undoObjIndex);
+    const undoObj = {
+      ...sectionContent[undoObjIndex],
+      next_line_id: sectionContent[undoObjIndex + 1].line_id,
+      prev_line_id: sectionContent[undoObjIndex - 1].line_id,
+      prev_index: undoObjIndex - 1,
+    };
+    undoStack.push(undoObj);
+    setUndoStack(undoStack);
     setSectionContent((prevState) => {
-      const data = prepareContent({
-        ...payload,
-        type: 'MODIFY',
-        sectionContent: prevState,
-      });
-      undoarr.push(data);
-      setUndoStack(undoarr);
       return prepareContent({
         ...payload,
         type: 'MODIFY',
@@ -86,7 +89,7 @@ function ProtocolView({ refs, data }) {
       type: 'DELETE',
       sectionContent,
     });
-    console.log('Jii', content);
+
     const undoarr = undoStack;
     undoarr.push(content);
     setUndoStack(undoarr);
@@ -141,6 +144,29 @@ function ProtocolView({ refs, data }) {
     setSectionContent(content);
   };
 
+  const handleContentUndo = () => {
+    if (undoStack.length > 0) {
+      console.log('SHUBHAM123456', undoStack);
+      const lastobj = undoStack.pop();
+      // if (lastobj.qc_change_type) {
+      console.log('SHUBHAM789', lastobj);
+      const undoObj = sectionContent.map((x) => {
+        if (x.line_id === lastobj?.currentLineId) return lastobj;
+        return x;
+      });
+      console.log('SHUBHAM78', undoObj);
+      dispatch(
+        updateSectionData({
+          data: undoObj,
+          actionType: 'REPLACE_CONTENT',
+          linkId: selectedSection.link_id,
+          undo: true,
+        }),
+      );
+      // }
+    }
+  };
+
   // eslint-disable-next-line
   const dispatchSectionEvent = useCallback(
     (actionType, payload) => {
@@ -159,6 +185,9 @@ function ProtocolView({ refs, data }) {
           break;
         case 'LINK_LEVEL_UPDATE':
           handleLinkLevelUpdate(payload);
+          break;
+        case 'CONTENT_UNDO':
+          handleContentUndo();
           break;
         default:
           break;

@@ -29,6 +29,7 @@ export const protocolSlice = createSlice({
       data: [],
       sectionResponse: null,
       updated: false,
+      undoupdated: [],
     },
     protocolTocData: [],
     sectionLoader: false,
@@ -141,11 +142,20 @@ export const protocolSlice = createSlice({
     },
 
     updateSectionData: (state, action) => {
-      const { actionType, data, content, lineId, linkId } = action.payload;
+      const { actionType, data, content, lineId, linkId, undo } =
+        action.payload;
       if (actionType === 'REPLACE_CONTENT' && data && linkId) {
+        console.log('SHUBHAM001', data, linkId);
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
         );
+        // if (undo) {
+        //   state.sectionDetails = {
+        //     ...state.sectionDetails,
+        //     sectionResponse: action?.payload?.response,
+        //     undoupdated: [...state.sectionDetails.undoupdated, 1],
+        //   };
+        // }
       } else if (content && lineId) {
         state.sectionDetails.sections = state.sectionDetails.sections.map(
           (x) => {
