@@ -8,6 +8,7 @@
   }
   .MuiBackdrop-root {
     top: 141px;
+    z-index: 4;
   }
   div [class*='MuiButton-textPrimary-'] :hover {
     background-color: #f6f7fb !important;

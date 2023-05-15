@@ -562,6 +562,7 @@ export const createReturnObj = (obj, linkId) => {
     if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
       return {
         type: obj.type,
+        doc_id: obj?.aidocid,
         table_roi_id: '',
         content: {
           ...obj.content,
