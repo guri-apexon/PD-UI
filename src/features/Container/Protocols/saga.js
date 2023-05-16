@@ -803,7 +803,7 @@ export function* getSectionLockDetails(action) {
   };
   const sectionLockDetails = yield call(httpCall, config);
 
-  if (sectionLockDetails.success) {
+  if (sectionLockDetails?.success) {
     yield put(setSectionLockDetails(sectionLockDetails?.data?.info));
   }
 }
@@ -825,7 +825,7 @@ export function* updateSectionLockDetails(action) {
   };
   const sectionLockDetails = yield call(httpCall, config);
 
-  if (sectionLockDetails.success) {
+  if (sectionLockDetails?.success) {
     yield put(setSectionLockDetails({}));
   }
 }
@@ -1053,7 +1053,7 @@ export function* getDocumentSectionLock(action) {
   }
 }
 
-function* watchProtocolAsync() {
+export function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
   yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
@@ -1061,7 +1061,7 @@ function* watchProtocolAsync() {
   yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
 }
 
-function* watchProtocolViews() {
+export function* watchProtocolViews() {
   yield takeEvery('GET_SECTION_LIST', handleConfigurableAPI);
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);

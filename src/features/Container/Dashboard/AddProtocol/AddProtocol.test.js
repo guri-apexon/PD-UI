@@ -592,4 +592,18 @@ describe('handlePipelineSubmit', () => {
       ),
     ).toBeNull();
   });
+
+  test('handles modal close', () => {
+    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    render(<AddProtocol />, {
+      initialState: {
+        dashboard: dashboardmockData,
+      },
+    });
+    const closeButton = screen.getByLabelText('Close');
+    fireEvent.click(closeButton);
+    expect(closeButton).toBeInTheDocument();
+  });
 });

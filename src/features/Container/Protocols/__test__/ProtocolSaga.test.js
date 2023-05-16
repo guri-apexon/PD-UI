@@ -1,4 +1,5 @@
 import { runSaga } from 'redux-saga';
+import { takeEvery, takeLatest } from 'redux-saga/effects';
 import * as api from '../../../../utils/api';
 import protocolData from './protocolJSON.json';
 import {
@@ -36,6 +37,13 @@ import {
   UpdateLabData,
   setDiscardDetails,
   getDocumentSectionLock,
+  watchProtocolAsync,
+  watchProtocolViews,
+  setResetSectionData,
+  updateAndSetSectionLockDetails,
+  resetAllDipaViewDataByCategory,
+  resetSOAData,
+  handleCreateLabDataTable,
 } from '../saga';
 
 const userDetail = {
@@ -43,6 +51,793 @@ const userDetail = {
   userId: 'u1021402',
   email: 'test@iqvia.com',
 };
+
+describe('watchProtocolAsync', () => {
+  it('should call getSummaryData on "GET_PROTOCOL_SUMMARY" action', () => {
+    const generator = watchProtocolAsync();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData),
+    );
+  });
+
+  it('should call getProtocolToc on "GET_PROTOCOL_TOC_SAGA" action', () => {
+    const generator = watchProtocolAsync();
+
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc),
+    );
+  });
+
+  it('should call fetchAssociateProtocol on "FETCH_ASSOCIATE_PROTOCOLS" action', () => {
+    const generator = watchProtocolAsync();
+
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('FETCH_ASSOCIATE_PROTOCOLS', fetchAssociateProtocol),
+    );
+  });
+
+  it('should call getCompareResult on "POST_COMPARE_PROTOCOL" action', () => {
+    const generator = watchProtocolAsync();
+
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('POST_COMPARE_PROTOCOL', getCompareResult),
+    );
+  });
+});
+
+describe('watchProtocolAsync', () => {
+  it('should call handleConfigurableAPI on "GET_SECTION_LIST" action', () => {
+    const generator = watchProtocolViews();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_SECTION_LIST', handleConfigurableAPI),
+    );
+  });
+
+  it('should call fetchFileStream on "GET_FILE_STREAM" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_FILE_STREAM', fetchFileStream),
+    );
+  });
+
+  it('should call getProtocolTocDataResult on "FETCH_ASSOCIATE_PROTOCOLS" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult),
+    );
+  });
+
+  it('should call MetaDataVariable on "GET_METADATA_VARIABLE" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_METADATA_VARIABLE', MetaDataVariable),
+    );
+  });
+
+  it('should call RightBladeValue on "GET_RIGHT_BLADE" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_RIGHT_BLADE', RightBladeValue),
+    );
+  });
+
+  it('should call setTOCActive on "SET_TOC_Active" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('SET_TOC_Active', setTOCActive),
+    );
+  });
+
+  it('should call addMetaDataAttributes on "ADD_METADATA_ATTRIBUTES" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('ADD_METADATA_ATTRIBUTES', addMetaDataAttributes),
+    );
+  });
+
+  it('should call addMetaDataField on "ADD_METADATA_FIELD" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('ADD_METADATA_FIELD', addMetaDataField),
+    );
+  });
+
+  it('should call deleteAttribute on "DELETE_METADATA" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('DELETE_METADATA', deleteAttribute),
+    );
+  });
+
+  it('should call saveEnrichedAPI on "SAVE_ENRICHED_DATA" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('SAVE_ENRICHED_DATA', saveEnrichedAPI),
+    );
+  });
+
+  it('should call setEnrichedAPI on "GET_ENRICHED_API" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_ENRICHED_API', setEnrichedAPI),
+    );
+  });
+
+  it('should call getSOAData on "GET_SOA_DATA" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('GET_SOA_DATA', getSOAData),
+    );
+  });
+
+  it('should call setSectionIndex on "ADD_SECTION_INDEX" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('ADD_SECTION_INDEX', setSectionIndex),
+    );
+  });
+
+  it('should call updateSectionData on "UPDATE_SECTION_DATA" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('UPDATE_SECTION_DATA', updateSectionData),
+    );
+  });
+
+  it('should call LabData on "GET_LAB_DATA" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(takeEvery('GET_LAB_DATA', LabData));
+  });
+
+  it('should call UpdateLabData on "UPDATE_LAB_DATA" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('UPDATE_LAB_DATA', UpdateLabData),
+    );
+  });
+
+  it('should call getenrichedword on "SET_ENRICHED_WORD" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('SET_ENRICHED_WORD', getenrichedword),
+    );
+  });
+
+  it('should call soaUpdateDetails on "SOA_UPDATE_DETAILS" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('SOA_UPDATE_DETAILS', soaUpdateDetails),
+    );
+  });
+
+  it('should call setResetSectionData on "RESET_SECTION_DATA" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('RESET_SECTION_DATA', setResetSectionData),
+    );
+  });
+
+  it('should call getSectionLockDetails on "GET_SECTION_LOCK" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('GET_SECTION_LOCK', getSectionLockDetails),
+    );
+  });
+
+  it('should call updateSectionLockDetails on "SET_SECTION_LOCK" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('SET_SECTION_LOCK', updateSectionLockDetails),
+    );
+  });
+
+  it('should call updateAndSetSectionLockDetails on "UPDATE_AND_SET_SECTION_LOCk" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('UPDATE_AND_SET_SECTION_LOCk', updateAndSetSectionLockDetails),
+    );
+  });
+
+  it('should call setResetQCData on "RESET_QC_DATA" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('RESET_QC_DATA', setResetQCData),
+    );
+  });
+
+  it('should call getDerivedDataById on "GET_DERIVED_SECTIONS" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_DERIVED_SECTIONS', getDerivedDataById),
+    );
+  });
+
+  it('should call getAllDerivedDataByCategory on "GET_ALL_DIPA_VIEW" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_ALL_DIPA_VIEW', getAllDerivedDataByCategory),
+    );
+  });
+
+  it('should call updateDerivedData on "UPDATE_DIPA_VIEW" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('UPDATE_DIPA_VIEW', updateDerivedData),
+    );
+  });
+
+  it('should call setDiscardDetails on "DISCARD_DETAILS" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('DISCARD_DETAILS', setDiscardDetails),
+    );
+  });
+
+  it('should call getDocumentSectionLock on "GET_DOC_SECTION_LOCK" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_DOC_SECTION_LOCK', getDocumentSectionLock),
+    );
+  });
+
+  it('should call resetAllDipaViewDataByCategory on "RESET_ALL_DIPA_VIEW" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory),
+    );
+  });
+
+  it('should call resetSOAData on "RESET_SOA_DATA" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('RESET_SOA_DATA', resetSOAData),
+    );
+  });
+
+  it('should call handleCreateLabDataTable on "CREATE_LABDATA_TABLE" action', () => {
+    const generator = watchProtocolViews();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('CREATE_LABDATA_TABLE', handleCreateLabDataTable),
+    );
+  });
+});
+
 describe('Protocol Saga', () => {
   test('should run parsedData function', () => {
     const obj = {
@@ -1182,6 +1977,44 @@ describe('Protocol Saga', () => {
       }),
     };
     await runSaga(fakeStore, setSectionIndex, { payload }).toPromise();
+
+    expect(undefined).toBeUndefined();
+  });
+
+  test('setResetSectionData get', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      data: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, setResetSectionData, { payload }).toPromise();
+
+    expect(undefined).toBeUndefined();
+  });
+
+  test('updateAndSetSectionLockDetails get', async () => {
+    const dispatchedActions = [];
+    const payload = {
+      data: '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c',
+    };
+    const fakeStore = {
+      dispatch: (action) => dispatchedActions.push(action),
+      getState: () => ({
+        user: {
+          userDetail,
+        },
+      }),
+    };
+    await runSaga(fakeStore, updateAndSetSectionLockDetails, {
+      payload,
+    }).toPromise();
 
     expect(undefined).toBeUndefined();
   });

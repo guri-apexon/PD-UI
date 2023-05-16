@@ -48,3 +48,25 @@ describe('preferredTermsValidation', () => {
     expect(preferredTermsValidation('cpt_term')).toBe('');
   });
 });
+
+describe('preferredTermsValidation', () => {
+  test('returns an empty string when the value is empty', () => {
+    const result = preferredTermsValidation('');
+    expect(result).toBe('');
+  });
+
+  test('returns an error message when multiple terms are tagged', () => {
+    const result = preferredTermsValidation('cpt_123, cpt_456');
+    expect(result).toBe('Please tag only one Preferred Term');
+  });
+
+  test('returns an error message when the term is not prefixed with "cpt_"', () => {
+    const result = preferredTermsValidation('invalid_term');
+    expect(result).toBe('Please prefix Preferred Term with "cpt_"');
+  });
+
+  test('returns an empty string when a single term is tagged and prefixed with "cpt_"', () => {
+    const result = preferredTermsValidation('cpt_123');
+    expect(result).toBe('');
+  });
+});
