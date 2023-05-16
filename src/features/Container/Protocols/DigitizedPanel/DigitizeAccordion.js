@@ -712,7 +712,10 @@ function DigitizeAccordion({
     let newContent = content;
 
     if (globalPreferredTerm || showPrefferedTerm) {
-      if (!isEmpty(preferredContent?.data) && contentType === 'header') {
+      if (
+        !isEmpty(preferredContent?.data) &&
+        contentType === CONTENT_TYPE?.HEADER
+      ) {
         newContent = createPreferredText(content, preferredContent?.data);
       }
     }

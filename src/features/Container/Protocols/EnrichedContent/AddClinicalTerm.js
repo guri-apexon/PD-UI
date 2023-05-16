@@ -13,6 +13,7 @@ import './MedicalTerm.scss';
 import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { preferredTermsValidation } from './utilFunction';
 import { userId } from '../../../../store/userDetails';
+import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -237,7 +238,7 @@ function AddClinicalTerm({ docId, linkId }) {
               fullWidth
               data-testid="ontology-text"
             />
-            {wordSelector?.word?.type === 'header' && (
+            {wordSelector?.word?.type === CONTENT_TYPE?.HEADER && (
               <TextField
                 label="Preferred term"
                 placeholder="Text area"
