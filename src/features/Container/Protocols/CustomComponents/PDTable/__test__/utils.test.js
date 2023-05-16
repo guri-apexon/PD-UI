@@ -12,6 +12,7 @@ import {
   filterTableProperties,
   getPreferredTerms,
   updateTable,
+  getHierarchyName,
 } from '../utils';
 
 describe('addRow function', () => {
@@ -278,5 +279,31 @@ describe('updateTable', () => {
     updateTable(data, content, rowIndex, columnIndex);
 
     expect(data[rowIndex][columnIndex].content).not.toEqual(content);
+  });
+});
+
+describe('getHierarchyName', () => {
+  test('should return "paragraph" when type is "text"', () => {
+    const type = 'text';
+    const result = getHierarchyName(type);
+    expect(result).toBe('paragraph');
+  });
+
+  test('should return "header" when type is "header"', () => {
+    const type = 'header';
+    const result = getHierarchyName(type);
+    expect(result).toBe('header');
+  });
+
+  test('should return "table" when type is "table"', () => {
+    const type = 'table';
+    const result = getHierarchyName(type);
+    expect(result).toBe('table');
+  });
+
+  test('should return an empty string when type is not recognized', () => {
+    const type = 'unknown';
+    const result = getHierarchyName(type);
+    expect(result).toBe('');
   });
 });
