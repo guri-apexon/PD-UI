@@ -127,6 +127,8 @@ function DigitalizeCard({
     if (sectionRef[sectionSequence] && sectionRef[sectionSequence].current) {
       scrollToTop(sectionSequence);
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
+    } else if (sectionSequence === 0) {
+      setCurrentActiveCard(headerList[0]?.link_id);
     }
     // eslint-disable-next-line
   }, [sectionSequence]);
