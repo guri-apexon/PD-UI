@@ -708,15 +708,12 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content) => {
+  const getEnrichedText = (content, contentType) => {
     let newContent = content;
+
     if (globalPreferredTerm || showPrefferedTerm) {
-      if (!isEmpty(preferredContent?.data)) {
-        newContent = createPreferredText(
-          content,
-          preferredContent?.data,
-          false,
-        );
+      if (!isEmpty(preferredContent?.data) && contentType === 'header') {
+        newContent = createPreferredText(content, preferredContent?.data);
       }
     }
     if (
@@ -996,6 +993,7 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[0],
+                                      section?.type,
                                     )}
                                   />
                                 </sup>
@@ -1018,6 +1016,7 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[1],
+                                      section?.type,
                                     )}
                                   />
                                 </p>
@@ -1052,7 +1051,10 @@ function DigitizeAccordion({
                                     }}
                                   >
                                     <SanitizeHTML
-                                      html={getEnrichedText(section.content)}
+                                      html={getEnrichedText(
+                                        section?.content,
+                                        section?.type,
+                                      )}
                                     />
                                   </p>
                                 </div>

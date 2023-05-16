@@ -186,8 +186,8 @@ export const createEnrichedText = (content, terms) => {
   return text;
 };
 
-export const createPreferredText = (content, terms, isToc) => {
-  let text = content;
+export const createPreferredText = (text, terms) => {
+  text = text.replace(/\s\s+/g, ' ');
   if (terms) {
     const arr = Object.keys(terms);
     if (arr.length) {
