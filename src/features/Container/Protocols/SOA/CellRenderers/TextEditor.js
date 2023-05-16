@@ -21,6 +21,20 @@ const TextEditor = memo(
 
     const [value, setValue] = useState(displayName);
     const refInput = useRef(null);
+    useEffect(() => {
+      const listener = (event) => {
+        if (!refInput.current || refInput.current.contains(event.target)) {
+          return;
+        }
+        props.api.stopEditing();
+      };
+      document.addEventListener('mousedown', listener);
+      document.addEventListener('touchstart', listener);
+      return () => {
+        document.removeEventListener('mousedown', listener);
+        document.removeEventListener('touchstart', listener);
+      };
+    }, [refInput]);
     useImperativeHandle(ref, () => {
       return {
         // the final value to send to the grid, on completion of editing
@@ -47,5 +61,6 @@ const TextEditor = memo(
 TextEditor.propTypes = {
   data: PropTypes.isRequired,
   colDef: PropTypes.isRequired,
+  api: PropTypes.isRequired,
 };
 export default TextEditor;
