@@ -14,6 +14,7 @@ import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { preferredTermsValidation } from './utilFunction';
 import { userId } from '../../../../store/userDetails';
 import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
+import { removeHtmlTags } from '../../../../utils/utilFunction';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -183,12 +184,11 @@ function AddClinicalTerm({ docId, linkId }) {
   };
 
   const showPreferredTermText = () => {
-    const content = wordSelector?.word?.content
-      .replace(/(<([^>]+)>)/gi, '')
-      .trim();
+    const content = removeHtmlTags(wordSelector?.word?.content);
+
     if (
       wordSelector?.word?.type === CONTENT_TYPE?.HEADER &&
-      content === selectedText.trim()
+      content?.trim() === selectedText.trim()
     )
       return true;
     return false;
