@@ -128,7 +128,7 @@ function DisplayTable({
                     </span>
                   )}
                   {/* eslint-disable-next-line */}
-                  <span
+                  <div
                     id={`columnID-${rowIndex}-${colIndex}`}
                     data-testid="span-edit"
                     className="editable-span"
@@ -148,7 +148,7 @@ function DisplayTable({
                         )}
                       />
                     </p>
-                  </span>
+                  </div>
                 </div>
               ))}
             </div>
