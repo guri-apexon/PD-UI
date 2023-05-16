@@ -748,6 +748,7 @@ export function* saveEnrichedAPI(action) {
 export function* resetSOAData() {
   yield put(setSOAData({}));
 }
+
 export function* getSOAData(action) {
   const {
     payload: { docId, operationValue },
@@ -839,6 +840,7 @@ export function* updateAndSetSectionLockDetails(action) {
     },
   });
 }
+
 export function* setResetQCData() {
   yield put(getSummary({}));
   yield put(getProtocolTocData({}));
@@ -990,6 +992,7 @@ export function* resetAllDipaViewDataByCategory() {
     }),
   );
 }
+
 export function* updateDerivedData(action) {
   const {
     payload: { data },
