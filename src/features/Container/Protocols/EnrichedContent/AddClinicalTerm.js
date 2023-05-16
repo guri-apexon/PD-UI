@@ -182,6 +182,18 @@ function AddClinicalTerm({ docId, linkId }) {
     handleClose();
   };
 
+  const showPreferredTermText = () => {
+    const content = wordSelector?.word?.content
+      .replace(/(<([^>]+)>)/gi, '')
+      .trim();
+    if (
+      wordSelector?.word?.type === CONTENT_TYPE?.HEADER &&
+      content === selectedText.trim()
+    )
+      return true;
+    return false;
+  };
+
   return (
     <div data-testId="add-tag">
       {isTextSelected && selectedText?.trim()?.length > 1 && (
@@ -238,7 +250,7 @@ function AddClinicalTerm({ docId, linkId }) {
               fullWidth
               data-testid="ontology-text"
             />
-            {wordSelector?.word?.type === CONTENT_TYPE?.HEADER && (
+            {showPreferredTermText() && (
               <TextField
                 label="Preferred term"
                 placeholder="Text area"
