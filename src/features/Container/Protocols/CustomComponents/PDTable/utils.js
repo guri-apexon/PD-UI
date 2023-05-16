@@ -179,6 +179,7 @@ export const filterTableProperties = (data) => {
 };
 
 export const getHtmlString = (str, isPreTerm) => {
+  if (!str) return str;
   return {
     __html:
       isPreTerm && str
@@ -211,6 +212,7 @@ export const getPreferredTerms = (
   if (isClinicalTerms && clinicalTerms) {
     const clinicalArr = Object.keys(clinicalTerms);
     let text = val;
+    if (!text) return text;
     clinicalArr.forEach((term) => {
       const pattern = new RegExp(`\\b${term}\\b`, 'g');
       text = text.replaceAll(
