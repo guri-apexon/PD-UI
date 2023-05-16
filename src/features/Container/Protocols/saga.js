@@ -456,7 +456,8 @@ export function* getProtocolTocDataResult(action) {
       let preferredTerm = {};
       result?.data[1][0]?.preferred_terms?.forEach((item) => {
         if (item?.preferred_term !== '' && item?.text) {
-          preferredTerm = { ...preferredTerm, [item?.text]: item };
+          const preferredText = item?.text?.replace(/(<([^>]+)>)/gi, '');
+          preferredTerm = { ...preferredTerm, [preferredText]: item };
         }
       });
       const preferredTermContent = {
@@ -747,6 +748,7 @@ export function* saveEnrichedAPI(action) {
 export function* resetSOAData() {
   yield put(setSOAData({}));
 }
+
 export function* getSOAData(action) {
   const {
     payload: { docId, operationValue },
@@ -802,7 +804,7 @@ export function* getSectionLockDetails(action) {
   };
   const sectionLockDetails = yield call(httpCall, config);
 
-  if (sectionLockDetails.success) {
+  if (sectionLockDetails?.success) {
     yield put(setSectionLockDetails(sectionLockDetails?.data?.info));
   }
 }
@@ -824,7 +826,7 @@ export function* updateSectionLockDetails(action) {
   };
   const sectionLockDetails = yield call(httpCall, config);
 
-  if (sectionLockDetails.success) {
+  if (sectionLockDetails?.success) {
     yield put(setSectionLockDetails({}));
   }
 }
@@ -838,6 +840,7 @@ export function* updateAndSetSectionLockDetails(action) {
     },
   });
 }
+
 export function* setResetQCData() {
   yield put(getSummary({}));
   yield put(getProtocolTocData({}));
@@ -989,6 +992,7 @@ export function* resetAllDipaViewDataByCategory() {
     }),
   );
 }
+
 export function* updateDerivedData(action) {
   const {
     payload: { data },
@@ -1052,7 +1056,7 @@ export function* getDocumentSectionLock(action) {
   }
 }
 
-function* watchProtocolAsync() {
+export function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
   yield takeEvery('GET_PROTOCOL_SUMMARY', getSummaryData);
   yield takeLatest('GET_PROTOCOL_TOC_SAGA', getProtocolToc);
@@ -1060,7 +1064,7 @@ function* watchProtocolAsync() {
   yield takeEvery('POST_COMPARE_PROTOCOL', getCompareResult);
 }
 
-function* watchProtocolViews() {
+export function* watchProtocolViews() {
   yield takeEvery('GET_SECTION_LIST', handleConfigurableAPI);
   yield takeEvery('GET_FILE_STREAM', fetchFileStream);
   yield takeEvery('GET_PROTOCOL_TOC_DATA', getProtocolTocDataResult);

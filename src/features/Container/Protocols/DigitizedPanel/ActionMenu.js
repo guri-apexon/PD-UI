@@ -185,6 +185,7 @@ function ActionMenu({
                         {renderAuditInfo(
                           item?.audit_info[names.keyName],
                           names?.keyName,
+                          item?.audit_info.total_no_review,
                         )}
                       </span>
                     </Typography>

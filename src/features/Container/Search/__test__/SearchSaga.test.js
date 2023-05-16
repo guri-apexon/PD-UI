@@ -1,5 +1,5 @@
 import { runSaga } from 'redux-saga';
-
+import { takeEvery } from 'redux-saga/effects';
 import * as api from '../../../../utils/api';
 import {
   getIndicationData,
@@ -11,6 +11,8 @@ import {
   updateSearchResult,
   getRecentData,
   getDataByRange,
+  watchIncrementAsync,
+  getPhaseData,
 } from '../saga';
 
 const userDetail = {
@@ -18,6 +20,115 @@ const userDetail = {
   userId: 'u1021402',
   email: 'test@iqvia.com',
 };
+
+describe('watchNavbar', () => {
+  it('should call getFilterData on "GET_SEARCH_FILTER" action', () => {
+    const generator = watchIncrementAsync();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_SEARCH_FILTER', getFilterData),
+    );
+  });
+
+  it('should call getSearchData on "GET_SEARCH_RESULT" action', () => {
+    const generator = watchIncrementAsync();
+
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_SEARCH_RESULT', getSearchData),
+    );
+  });
+
+  it('should call updateSearchResult on "UPDATE_SEARCH_RESULT" action', () => {
+    const generator = watchIncrementAsync();
+
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('UPDATE_SEARCH_RESULT', updateSearchResult),
+    );
+  });
+
+  it('should call getIndicationData on "GET_INDICATIONS" action', () => {
+    const generator = watchIncrementAsync();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_INDICATIONS', getIndicationData),
+    );
+  });
+
+  it('should call getSponsorData on "GET_SPONSORS" action', () => {
+    const generator = watchIncrementAsync();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_SPONSORS', getSponsorData),
+    );
+  });
+
+  it('should call getPhaseData on "GET_PHASES" action', () => {
+    const generator = watchIncrementAsync();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_PHASES', getPhaseData),
+    );
+  });
+
+  it('should call getRecentData on "FILTER_BY_RECENT_SAGA" action', () => {
+    const generator = watchIncrementAsync();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('FILTER_BY_RECENT_SAGA', getRecentData),
+    );
+  });
+
+  it('should call getDataByRange on "FILTER_BY_DATE_RANGE_SAGA" action', () => {
+    const generator = watchIncrementAsync();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('FILTER_BY_DATE_RANGE_SAGA', getDataByRange),
+    );
+  });
+});
+
 describe('Search Saga Unit Test', () => {
   // getIndicationData Starts
   test('getIndicationData success', async () => {

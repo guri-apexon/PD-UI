@@ -34,12 +34,17 @@ export const replaceHtmlTags = (sectionHeader) => {
   return sectionHeader.replace(/<[^>]+>/g, '');
 };
 
-export const renderAuditInfo = (itemVal, keyName) => {
+export const renderAuditInfo = (itemVal, keyName, reviewCount) => {
+  if (reviewCount === 0 || reviewCount === null || reviewCount === '0') {
+    if (keyName === 'total_no_review') return '0';
+    return '-----';
+  }
   if (keyName === 'last_reviewed_date' && itemVal) {
     itemVal = moment(itemVal).isValid()
       ? moment.utc(itemVal).tz('America/New_York').format('DD-MMM-YYYY HH:mm')
       : '-----';
   }
+
   return itemVal || '-----';
 };
 
