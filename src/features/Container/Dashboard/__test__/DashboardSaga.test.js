@@ -1,5 +1,6 @@
 /* eslint-disable */
 import { runSaga } from 'redux-saga';
+import { takeEvery, takeLatest } from 'redux-saga/effects';
 import {
   recentSearchAsyn,
   addProtocolSponsor,
@@ -46,6 +47,272 @@ const addProtocolData = {
   moleculeDevice: 'Mol',
   userId: '1222',
 };
+
+describe('watchDashboard', () => {
+  it('should call protocolAsyn on "GET_PROTOCOL_TABLE_SAGA" action', () => {
+    const generator = watchDashboard();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('GET_PROTOCOL_TABLE_SAGA', protocolAsyn),
+    );
+  });
+
+  it('should call recentSearchAsyn on "GET_RECENT_SEARCH_DATA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_RECENT_SEARCH_DATA', recentSearchAsyn),
+    );
+  });
+
+  it('should call postAddProtocol on "POST_ADDPROTOCOL_DATA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('POST_ADDPROTOCOL_DATA', postAddProtocol),
+    );
+  });
+
+  it('should call toggleAddProtocol on "TOGGLE_ADDPROTOCOL_MODAL" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('TOGGLE_ADDPROTOCOL_MODAL', toggleAddProtocol),
+    );
+  });
+
+  it('should call savedSearchAsyn on "GET_SAVED_SEARCH_DATA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_SAVED_SEARCH_DATA', savedSearchAsyn),
+    );
+  });
+
+  it('should call resetErrorAddProtocol on "RESET_ERROR_ADD_PROTOCOL" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('RESET_ERROR_ADD_PROTOCOL', resetErrorAddProtocol),
+    );
+  });
+
+  it('should call resetErrorAddProtocolNew on "RESET_ERROR_ADD_PROTOCOL_NEW" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('RESET_ERROR_ADD_PROTOCOL_NEW', resetErrorAddProtocolNew),
+    );
+  });
+
+  it('should call saveRecentSearch on "POST_RECENT_SEARCH_DASHBOARD" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('POST_RECENT_SEARCH_DASHBOARD', saveRecentSearch),
+    );
+  });
+
+  it('should call sendQcReview on "SEND_QC_REVIEW_SAGA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('SEND_QC_REVIEW_SAGA', sendQcReview),
+    );
+  });
+
+  it('should call handleDownload on "HANDLE_DOWNLOAD_SAGA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('HANDLE_DOWNLOAD_SAGA', handleDownload),
+    );
+  });
+
+  it('should call handleFollow on "HANDLE_FOLLOW_SAGA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('HANDLE_FOLLOW_SAGA', handleFollow),
+    );
+  });
+
+  it('should call fetchAssociateData on "FETCH_ASSOCIATE_DATA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('FETCH_ASSOCIATE_DATA', fetchAssociateData),
+    );
+  });
+
+  it('should call fetchWorkflowData on "FETCH_WORKFLOW_DATA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('FETCH_WORKFLOW_DATA', fetchWorkflowData),
+    );
+  });
+
+  it('should call submitWorkflowData on "SUBMIT_WORKFLOW_DATA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('SUBMIT_WORKFLOW_DATA', submitWorkflowData),
+    );
+  });
+
+  it('should call resetWorkflowSubmitData on "RESET_SUBMIT_WORKFLOW_DATA" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('RESET_SUBMIT_WORKFLOW_DATA', resetWorkflowSubmitData),
+    );
+  });
+
+  it('should call fetchMoreWorkflow on "FETCH_MORE_WORKFLOW" action', () => {
+    const generator = watchDashboard();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeLatest('FETCH_MORE_WORKFLOW', fetchMoreWorkflow),
+    );
+  });
+});
+
 describe('Dashboard Saga Unit Test', () => {
   // recentSearchAsyn Test Cases Start
   test('recentSearchAsyn Saga Success', async () => {
@@ -89,9 +356,7 @@ describe('Dashboard Saga Unit Test', () => {
 
   test('Recent Search Asyn else logic', async () => {
     const dispatchedActions = [];
-    // const mockOutput = {
-    //   message: "Successful",
-    // };
+
     const mockOutput = {
       success: false,
       err: {

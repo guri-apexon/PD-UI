@@ -1,4 +1,5 @@
 import { runSaga } from 'redux-saga';
+import { takeEvery } from 'redux-saga/effects';
 import * as api from '../../../../utils/api';
 
 import {
@@ -7,6 +8,7 @@ import {
   postOptInOut,
   getOptInOut,
   handleDeleteNotification,
+  watchNavbar,
 } from '../saga';
 
 const userDetail = {
@@ -15,6 +17,63 @@ const userDetail = {
   email: 'subhadatta@iqvia.com',
   user_type: 'QC2',
 };
+
+describe('watchNavbar', () => {
+  it('should call GET_NOTIFICATION_SAGA on "GET_PROTOCOL_SUMMARY" action', () => {
+    const generator = watchNavbar();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_NOTIFICATION_SAGA', navbarNotificationData),
+    );
+  });
+
+  it('should call postOptInOut on "POST_OPT_IN_OUT" action', () => {
+    const generator = watchNavbar();
+
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('POST_OPT_IN_OUT', postOptInOut),
+    );
+  });
+
+  it('should call getOptInOut on "GET_OPT_IN_OUT" action', () => {
+    const generator = watchNavbar();
+
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('GET_OPT_IN_OUT', getOptInOut),
+    );
+  });
+
+  it('should call handlereadNotification on "READ_NOTIFICATION" action', () => {
+    const generator = watchNavbar();
+
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('READ_NOTIFICATION', handlereadNotification),
+    );
+  });
+
+  it('should call handleDeleteNotification on "DELETE_NOTIFICATION" action', () => {
+    const generator = watchNavbar();
+
+    generator.next();
+    generator.next();
+    generator.next();
+    generator.next();
+
+    expect(generator.next().value).toEqual(
+      takeEvery('DELETE_NOTIFICATION', handleDeleteNotification),
+    );
+  });
+});
+
 describe('Navbar Saga Unit Test', () => {
   test('Should run give success data: navbarNotificationData', async () => {
     const dispatchedActions = [];

@@ -716,7 +716,7 @@ function* getALLISP() {
   }
 }
 
-function* watchIncrementAsync() {
+export function* watchIncrementAsync() {
   yield takeEvery('GET_SEARCH_FILTER', getFilterData);
   yield takeEvery('GET_SEARCH_RESULT', getSearchData);
   yield takeEvery('UPDATE_SEARCH_RESULT', updateSearchResult);
