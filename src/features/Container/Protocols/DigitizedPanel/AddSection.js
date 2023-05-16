@@ -1,4 +1,5 @@
 import Modal from 'apollo-react/components/Modal/Modal';
+import { v4 as uuidv4 } from 'uuid';
 import TextField from 'apollo-react/components/TextField';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
@@ -6,10 +7,18 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import headerLevel from '../CustomComponents/constants';
 
-function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
+function AddSection({
+  setIsModal,
+  headerList,
+  setIsShown,
+  isModal,
+  index,
+  docId,
+}) {
   const dispatch = useDispatch();
   const { headerLevel1 } = headerLevel;
   const [sectionName, setSectionName] = useState('');
+
   const handleSave = () => {
     if (sectionName === '') {
       toast.info('Enter Required Field');
@@ -19,7 +28,14 @@ function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
         link_text: `<h1> ${sectionName}</h1>`,
       };
 
-      if (headerList[index]) {
+      if (index === -1) {
+        headerObj.is_section_completely_new = true;
+        headerObj.doc_id = docId;
+        headerObj.iqv_standard_term = '';
+        headerObj.uuid = uuidv4();
+        delete headerObj.next_detail;
+        delete headerObj.prev_detail;
+      } else if (headerList[index]) {
         headerObj.next_detail.link_id = headerList[index]?.link_id;
         headerObj.prev_detail.link_id = '';
         headerObj.next_detail.link_level = '1';
@@ -33,10 +49,8 @@ function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {
-          docId: headerList[index]
-            ? headerList[index]?.doc_id
-            : headerList[index - 1]?.doc_id,
-          index,
+          docId,
+          index: index === -1 ? 0 : index,
           refreshToc: true,
           reqBody: [headerObj],
         },
@@ -46,7 +60,7 @@ function AddSection({ setIsModal, headerList, setIsShown, isModal, index }) {
   };
 
   const handleClose = () => {
-    setIsShown(false);
+    if (setIsShown) setIsShown(false);
     setIsModal(false);
   };
 
@@ -88,4 +102,5 @@ AddSection.propTypes = {
   index: PropTypes.isRequired,
   setIsShown: PropTypes.isRequired,
   isModal: PropTypes.isRequired,
+  docId: PropTypes.isRequired,
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Card from 'apollo-react/components/Card';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import Plus from 'apollo-react-icons/Plus';
 import Drag from 'apollo-react-icons/Drag';
 import Button from 'apollo-react/components/Button';
 import Modal from 'apollo-react/components/Modal';
@@ -20,6 +21,7 @@ import MetaData from '../MetaData/MetaData';
 import DipaView from '../DIPA/DipaView';
 import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
 import LabData from '../LabData/LabData';
+import AddSection from './AddSection';
 import AddClinicalTerm from '../EnrichedContent/AddClinicalTerm';
 import DigitizeAccordion from './DigitizeAccordion';
 import { primaryUserFinalSubmit } from '../../Dashboard/constant';
@@ -49,6 +51,8 @@ function DigitalizeCard({
   const [tocActive, setTocActive] = useState([]);
   const [currentEditCard, setCurrentEditCard] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [isModal, setIsModal] = useState(false);
 
   const tocActiveSelector = useSelector(TOCActive);
   const userDetail = useSelector((state) => state.user.userDetail);
@@ -221,11 +225,29 @@ function DigitalizeCard({
                   </Button>
                 </div>
               )}
+            {summary.success && headerList?.length === 0 && !isModal && (
+              <div className="add-section">
+                <Button
+                  variant="secondary"
+                  size="small"
+                  onClick={() => setIsModal(true)}
+                >
+                  <Plus /> Add Section
+                </Button>
+              </div>
+            )}
           </div>
           <div
             className="digitize-panel-content"
             data-testid="digitize-panel-content"
           >
+            <AddSection
+              setIsModal={setIsModal}
+              headerList={[]}
+              index={-1}
+              isModal={isModal}
+              docId={protocolAllItems.data.id}
+            />
             {!summary?.data ? (
               <div className="loader">
                 <Loader />
@@ -256,6 +278,7 @@ function DigitalizeCard({
                         currentEditCard={currentEditCard}
                         handleLinkId={handleLinkId}
                         handleOpenAccordion={handleOpenAccordion}
+                        docId={protocolAllItems.data.id}
                       />
                     </div>
                   </div>
@@ -277,10 +300,8 @@ function DigitalizeCard({
         title="Confirm Action"
         buttonProps={[
           {},
-
           {
             label: 'Submit',
-
             onClick: () => handleFinalSubmit(),
           },
         ]}

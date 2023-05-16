@@ -7,10 +7,12 @@ import AddClinicalTerm from '../AddClinicalTerm';
 const selectionHeaderList = {
   protocol: 'NCT02614287',
   word: {
+    type: 'header',
     font_info: {
       roi_id: {
         para: '31fbea8a-1204-4105-ad33-f414d1816045',
       },
+      content: 'ABC',
     },
   },
   data: [
@@ -148,10 +150,12 @@ describe('rendering the Add Clinical Term Component', () => {
     const state = {
       modal: true,
       word: {
+        type: 'header',
         font_info: {
           roi_id: {
             para: '31fbea8a-1204-4105-ad33-f414d1816045',
           },
+          content: 'ABC',
         },
       },
     };

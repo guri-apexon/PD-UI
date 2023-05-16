@@ -50,6 +50,8 @@ import protocolPageSlice, {
   updateSectionResp,
   resetUpdateStatus,
   setDipaDataLoader,
+  getEnrichedData,
+  getPreferredTerm,
 } from '../protocolSlice';
 
 import resetUpdateStatusinitialState from './initialState.json';
@@ -89,7 +91,7 @@ const initialState = {
     isDiscarded: false,
     protocolTab: -1,
   },
-  protocolTocData: [],
+  protocolTocData: { data: [] },
   sectionLockDetails: {},
   enrichedword: {},
   dipaViewData: { loading: true },
@@ -468,6 +470,34 @@ describe(' ProtocolSlice Test Suite', () => {
         payload: discard,
       }),
     ).toEqual({ ...initialState, discardValue: discard });
+  });
+
+  test('getEnrichedData', () => {
+    const discard = {
+      isDiscarded: false,
+      isEdited: false,
+      protocolTab: -1,
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: getEnrichedData.type,
+        payload: discard,
+      }),
+    ).toEqual({ ...initialState, enrichedData: discard });
+  });
+
+  test('getPreferredTerm', () => {
+    const discard = {
+      isDiscarded: false,
+      isEdited: false,
+      protocolTab: -1,
+    };
+    expect(
+      protocolPageSlice(initialState, {
+        type: getPreferredTerm.type,
+        payload: discard,
+      }),
+    ).toEqual({ ...initialState, preferredTerms: discard });
   });
 
   test('setWorkFlowSubmitButton', () => {
