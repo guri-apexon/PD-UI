@@ -229,7 +229,7 @@ function AddClinicalTerm({ docId, linkId }) {
                 <InfoIcon />
               </IconButton>
               At least one of these options are required to be filled to add tag
-              {showPreferredTermText() && (
+              {wordSelector?.word?.type === CONTENT_TYPE?.HEADER && (
                 <>
                   <IconButton color="primary">
                     <InfoIcon />
