@@ -229,10 +229,14 @@ function AddClinicalTerm({ docId, linkId }) {
                 <InfoIcon />
               </IconButton>
               At least one of these options are required to be filled to add tag
-              <IconButton color="primary">
-                <InfoIcon />
-              </IconButton>
-              Select header including index for Preferred Term tagging
+              {showPreferredTermText() && (
+                <>
+                  <IconButton color="primary">
+                    <InfoIcon />
+                  </IconButton>
+                  Select header including index for Preferred Term tagging
+                </>
+              )}
             </div>
             <TextField
               label="Clinical terms"
