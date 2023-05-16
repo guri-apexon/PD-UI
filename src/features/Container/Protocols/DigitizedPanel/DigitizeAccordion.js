@@ -627,6 +627,7 @@ function DigitizeAccordion({
       return createPreferredText(
         header?.source_file_section,
         preferredContent?.data,
+        true,
       );
     }
     return header.source_file_section;
@@ -707,10 +708,14 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content) => {
+  const getEnrichedText = (content, contentType) => {
     let newContent = content;
+
     if (globalPreferredTerm || showPrefferedTerm) {
-      if (!isEmpty(preferredContent?.data)) {
+      if (
+        !isEmpty(preferredContent?.data) &&
+        contentType === CONTENT_TYPE?.HEADER
+      ) {
         newContent = createPreferredText(content, preferredContent?.data);
       }
     }
@@ -991,6 +996,7 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[0],
+                                      section?.type,
                                     )}
                                   />
                                 </sup>
@@ -1013,6 +1019,7 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[1],
+                                      section?.type,
                                     )}
                                   />
                                 </p>
@@ -1047,7 +1054,10 @@ function DigitizeAccordion({
                                     }}
                                   >
                                     <SanitizeHTML
-                                      html={getEnrichedText(section.content)}
+                                      html={getEnrichedText(
+                                        section?.content,
+                                        section?.type,
+                                      )}
                                     />
                                   </p>
                                 </div>

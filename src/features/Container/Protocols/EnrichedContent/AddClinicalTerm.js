@@ -8,11 +8,12 @@ import { isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { enrichedData, Enrichedword, sectionDetails } from '../protocolSlice';
+import { enrichedData, Enrichedword, preferredData } from '../protocolSlice';
 import './MedicalTerm.scss';
 import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { preferredTermsValidation } from './utilFunction';
 import { userId } from '../../../../store/userDetails';
+import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -25,11 +26,10 @@ function AddClinicalTerm({ docId, linkId }) {
   const [preferredTerm, setPreferredTerm] = useState('');
   const [isTextFieldEmpty, setIsTextFieldEmpty] = useState(true);
   const [ptErrorMsg, setPtErrorMsg] = useState('');
-  const sectionHeaderDetails = useSelector(sectionDetails);
-  const { data: sectionData } = sectionHeaderDetails;
   let headerLinkId;
   const loggedInUserId = useSelector(userId);
   const enrichedContent = useSelector(enrichedData);
+  const preferredContent = useSelector(preferredData);
 
   useEffect(() => {
     const selected = window.getSelection().toString();
@@ -57,7 +57,11 @@ function AddClinicalTerm({ docId, linkId }) {
   }, [clinicalTerms, ontologyTerm, preferredTerm, openModal, selectedText]);
 
   const handlePreferredTerm = (e) => {
-    const msg = preferredTermsValidation(e.target.value);
+    const preferedText = selectedText?.trim();
+    const msg = preferredTermsValidation(
+      e.target.value,
+      preferredContent?.data[preferedText]?.preferred_term,
+    );
     setPtErrorMsg(msg);
     setPreferredTerm(e.target.value);
   };
@@ -117,15 +121,9 @@ function AddClinicalTerm({ docId, linkId }) {
   };
 
   const handleAddTag = () => {
-    const result = sectionData?.[0]?.data?.filter(
-      (item) =>
-        item?.font_info?.roi_id?.para ===
-        wordSelector?.word?.font_info?.roi_id?.para,
-    );
     const clinicalTermsData = enrichedContent?.data[selectedText];
-    const { type } = result[0];
+    const type = wordSelector?.word?.type;
     let tagData;
-
     if (wordSelector?.word) {
       let level;
       if (wordSelector?.word.file_section_level === 1) {
@@ -240,15 +238,17 @@ function AddClinicalTerm({ docId, linkId }) {
               fullWidth
               data-testid="ontology-text"
             />
-            <TextField
-              label="Preferred term"
-              placeholder="Text area"
-              onChange={handlePreferredTerm}
-              value={preferredTerm}
-              fullWidth
-              data-testid="Preferred-term-text"
-              helperText="Ex: cpt_primary_objective"
-            />
+            {wordSelector?.word?.type === CONTENT_TYPE?.HEADER && (
+              <TextField
+                label="Preferred term"
+                placeholder="Text area"
+                onChange={handlePreferredTerm}
+                value={preferredTerm}
+                fullWidth
+                data-testid="Preferred-term-text"
+                helperText="Ex: cpt_primary_objective"
+              />
+            )}
             {ptErrorMsg && (
               <div className="iconbutton-warning">{ptErrorMsg}</div>
             )}
