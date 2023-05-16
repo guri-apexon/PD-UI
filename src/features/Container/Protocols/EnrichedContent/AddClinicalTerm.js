@@ -237,15 +237,17 @@ function AddClinicalTerm({ docId, linkId }) {
               fullWidth
               data-testid="ontology-text"
             />
-            <TextField
-              label="Preferred term"
-              placeholder="Text area"
-              onChange={handlePreferredTerm}
-              value={preferredTerm}
-              fullWidth
-              data-testid="Preferred-term-text"
-              helperText="Ex: cpt_primary_objective"
-            />
+            {wordSelector?.word?.type === 'header' && (
+              <TextField
+                label="Preferred term"
+                placeholder="Text area"
+                onChange={handlePreferredTerm}
+                value={preferredTerm}
+                fullWidth
+                data-testid="Preferred-term-text"
+                helperText="Ex: cpt_primary_objective"
+              />
+            )}
             {ptErrorMsg && (
               <div className="iconbutton-warning">{ptErrorMsg}</div>
             )}
