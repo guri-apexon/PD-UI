@@ -456,7 +456,8 @@ export function* getProtocolTocDataResult(action) {
       let preferredTerm = {};
       result?.data[1][0]?.preferred_terms?.forEach((item) => {
         if (item?.preferred_term !== '' && item?.text) {
-          preferredTerm = { ...preferredTerm, [item?.text]: item };
+          const preferredText = item?.text?.replace(/(<([^>]+)>)/gi, '');
+          preferredTerm = { ...preferredTerm, [preferredText]: item };
         }
       });
       const preferredTermContent = {
@@ -747,6 +748,7 @@ export function* saveEnrichedAPI(action) {
 export function* resetSOAData() {
   yield put(setSOAData({}));
 }
+
 export function* getSOAData(action) {
   const {
     payload: { docId, operationValue },
@@ -838,6 +840,7 @@ export function* updateAndSetSectionLockDetails(action) {
     },
   });
 }
+
 export function* setResetQCData() {
   yield put(getSummary({}));
   yield put(getProtocolTocData({}));
@@ -989,6 +992,7 @@ export function* resetAllDipaViewDataByCategory() {
     }),
   );
 }
+
 export function* updateDerivedData(action) {
   const {
     payload: { data },

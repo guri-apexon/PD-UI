@@ -198,7 +198,7 @@ export const getPreferredTerms = (
   clinicalTerms,
   isClinicalTerms,
 ) => {
-  if (isPreferredTerm) {
+  if (isPreferredTerm && preferredTerms) {
     const preArr = Object.entries(preferredTerms);
     const arrVal = preArr.find(
       (x) => x[0].trim().toLowerCase() === val.trim().toLowerCase(),

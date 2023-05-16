@@ -85,6 +85,7 @@ function DigitizeAccordion({
   scrollToTop,
   handleOpenAccordion,
   dataExist,
+  docId,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -100,7 +101,6 @@ function DigitizeAccordion({
   const [selectedEnrichedText, setSelectedEnrichedText] = useState(null);
   const [clinicalTerms, setClinicalTerms] = useState(null);
   const [linkId, setLinkId] = useState();
-  const [docId, setDocId] = useState();
   const [showAlert, setShowAlert] = useState(false);
   const NewSectionIndex = useSelector(SectionIndex);
   const discardSelector = useSelector(discardDetails);
@@ -245,7 +245,6 @@ function DigitizeAccordion({
       if (!arr?.length) {
         setShowLoader(true);
         setLinkId(item.link_id);
-        setDocId(item.doc_id);
         fetchContent();
       }
       dispatch(setActiveTOC([...activeTree, item.link_id]));
@@ -627,6 +626,7 @@ function DigitizeAccordion({
       return createPreferredText(
         header?.source_file_section,
         preferredContent?.data,
+        true,
       );
     }
     return header.source_file_section;
@@ -707,10 +707,14 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content) => {
+  const getEnrichedText = (content, contentType) => {
     let newContent = content;
+
     if (globalPreferredTerm || showPrefferedTerm) {
-      if (!isEmpty(preferredContent?.data)) {
+      if (
+        !isEmpty(preferredContent?.data) &&
+        contentType === CONTENT_TYPE?.HEADER
+      ) {
         newContent = createPreferredText(content, preferredContent?.data);
       }
     }
@@ -755,9 +759,14 @@ function DigitizeAccordion({
 
   const handleAddSection = (e, flag, index) => {
     e.stopPropagation();
-    const sectionIndex = flag ? index : index + 1;
-    setAddSectionIndex(sectionIndex);
-    setIsModal(true);
+
+    if (currentEditCard) {
+      setShowConfirm(true);
+    } else {
+      const sectionIndex = flag ? index : index + 1;
+      setAddSectionIndex(sectionIndex);
+      setIsModal(true);
+    }
   };
 
   const handleSegmentMouseUp = (e, section) => {
@@ -991,6 +1000,7 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[0],
+                                      section?.type,
                                     )}
                                   />
                                 </sup>
@@ -1013,6 +1023,7 @@ function DigitizeAccordion({
                                   <SanitizeHTML
                                     html={getEnrichedText(
                                       section.content.split('_')[1],
+                                      section?.type,
                                     )}
                                   />
                                 </p>
@@ -1047,7 +1058,10 @@ function DigitizeAccordion({
                                     }}
                                   >
                                     <SanitizeHTML
-                                      html={getEnrichedText(section.content)}
+                                      html={getEnrichedText(
+                                        section?.content,
+                                        section?.type,
+                                      )}
                                     />
                                   </p>
                                 </div>
@@ -1122,6 +1136,7 @@ function DigitizeAccordion({
           index={addSectionIndex}
           setIsShown={setIsShown}
           isModal={isModal}
+          docId={docId}
         />
       </Accordion>
       <div className="plus-icon">
@@ -1154,4 +1169,5 @@ DigitizeAccordion.propTypes = {
   handleOpenAccordion: PropTypes.isRequired,
   scrollToTop: PropTypes.isRequired,
   dataExist: PropTypes.isRequired,
+  docId: PropTypes.isRequired,
 };
