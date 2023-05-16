@@ -186,17 +186,20 @@ export const createEnrichedText = (content, terms) => {
   return text;
 };
 
-export const createPreferredText = (content, terms) => {
-  let text = content;
+export const createPreferredText = (text, terms) => {
+  text = text.replace(/\s\s+/g, ' ');
   if (terms) {
     const arr = Object.keys(terms);
     if (arr.length) {
-      const match = arr.find((x) => {
+      let match = arr.find((x) => {
         return x
           .toLowerCase()
           .trim()
           .includes(removeHtmlTags(text).toLowerCase().trim());
       });
+
+      match = match?.replace(/(<([^>]+)>)/gi, '');
+
       if (match) {
         text = text
           .replace(match, `<b class="Preferred-txt"> ${match} </b>`)

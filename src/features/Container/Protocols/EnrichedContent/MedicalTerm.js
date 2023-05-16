@@ -47,7 +47,7 @@ function MedicalTerm({
   const wordSelector = useSelector(Enrichedword);
   const [errorMsg, setErrorMsg] = useState('');
   const loggedInUserId = useSelector(userId);
-  enrichedText = enrichedText?.trim();
+  enrichedText = enrichedText?.replace(/\s\s+/g, ' ').trim();
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line

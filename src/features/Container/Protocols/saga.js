@@ -456,7 +456,8 @@ export function* getProtocolTocDataResult(action) {
       let preferredTerm = {};
       result?.data[1][0]?.preferred_terms?.forEach((item) => {
         if (item?.preferred_term !== '' && item?.text) {
-          preferredTerm = { ...preferredTerm, [item?.text]: item };
+          const preferredText = item?.text?.replace(/(<([^>]+)>)/gi, '');
+          preferredTerm = { ...preferredTerm, [preferredText]: item };
         }
       });
       const preferredTermContent = {
