@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Loader from 'apollo-react/components/Loader';
 import Modal from 'apollo-react/components/Modal';
-import { useDispatch, useSelector } from 'react-redux';
 import Grid from 'apollo-react/components/Grid/Grid';
 import Card from 'apollo-react/components/Card';
 import Select from 'apollo-react/components/Select';
@@ -16,6 +16,7 @@ import Plus from 'apollo-react-icons/Plus';
 
 import { v4 as uuidv4 } from 'uuid';
 import startCase from 'lodash/startCase';
+import isEqual from 'lodash/isEqual';
 import {
   allDipaViewData,
   dipaViewData,
@@ -88,14 +89,15 @@ function DipaView({
     setDataResponse(receivedData?.output);
   }, [dipaDataSelector]);
 
+  const processOriginalData = (elements = []) =>
+    elements.map((d) => ({
+      ...d,
+      open: false,
+      child: processOriginalData(d?.child || []),
+    }));
+
   const updateWithOriginalData = (response) => {
-    const getChildElements = (elements = []) =>
-      elements.map((d) => ({
-        ...d,
-        open: false,
-        child: getChildElements(d?.child || []),
-      }));
-    const newValue = getChildElements(response);
+    const newValue = processOriginalData(response);
     setMetadata(newValue);
   };
 
@@ -324,6 +326,15 @@ function DipaView({
 
   const saveData = (deleteData) => {
     const newData = clearUnSavedText(deleteData || metadata);
+    const originalData = processOriginalData(dataResponse);
+
+    /**
+     * If there is nothing added then dont make call
+     */
+    if (isEqual(originalData, newData)) {
+      handleExpandChange(true);
+      return;
+    }
 
     /**
      * Check if object and not null
