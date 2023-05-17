@@ -14,6 +14,7 @@ import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { preferredTermsValidation } from './utilFunction';
 import { userId } from '../../../../store/userDetails';
 import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
+import { removeHtmlTags } from '../../../../utils/utilFunction';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -182,6 +183,17 @@ function AddClinicalTerm({ docId, linkId }) {
     handleClose();
   };
 
+  const showPreferredTermText = () => {
+    const content = removeHtmlTags(wordSelector?.word?.content);
+
+    if (
+      wordSelector?.word?.type === CONTENT_TYPE?.HEADER &&
+      content?.trim() === selectedText.trim()
+    )
+      return true;
+    return false;
+  };
+
   return (
     <div data-testId="add-tag">
       {isTextSelected && selectedText?.trim()?.length > 1 && (
@@ -217,10 +229,14 @@ function AddClinicalTerm({ docId, linkId }) {
                 <InfoIcon />
               </IconButton>
               At least one of these options are required to be filled to add tag
-              <IconButton color="primary">
-                <InfoIcon />
-              </IconButton>
-              Select header including index for Preferred Term tagging
+              {wordSelector?.word?.type === CONTENT_TYPE?.HEADER && (
+                <>
+                  <IconButton color="primary">
+                    <InfoIcon />
+                  </IconButton>
+                  Select header including index for Preferred Term tagging
+                </>
+              )}
             </div>
             <TextField
               label="Clinical terms"
@@ -238,7 +254,7 @@ function AddClinicalTerm({ docId, linkId }) {
               fullWidth
               data-testid="ontology-text"
             />
-            {wordSelector?.word?.type === CONTENT_TYPE?.HEADER && (
+            {showPreferredTermText() && (
               <TextField
                 label="Preferred term"
                 placeholder="Text area"
