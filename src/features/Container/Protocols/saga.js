@@ -50,6 +50,7 @@ import {
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
+import ptData from './DigitizedPanel/ptData.json';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
 
@@ -455,8 +456,15 @@ export function* getProtocolTocDataResult(action) {
       };
       let preferredTerm = {};
       result?.data[1][0]?.preferred_terms?.forEach((item) => {
+        // ptData?.forEach((item) => {
         if (item?.preferred_term !== '' && item?.text) {
-          const preferredText = item?.text?.replace(/(<([^>]+)>)/gi, '');
+          const preferredText = item?.text
+            .replaceAll(/(<([^>]+)>)/gi, '')
+            .replaceAll('&nbsp;', ' ')
+            .replace(/\s\s+/g, ' ')
+            .replace(/[^a-zA-Z0-9 ]/g, '')
+            .trim();
+
           preferredTerm = { ...preferredTerm, [preferredText]: item };
         }
       });

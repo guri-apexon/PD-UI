@@ -1,0 +1,356 @@
+[
+  {
+    "id": "68f342e4-d4eb-4a3a-b7cf-0096c039b3bf",
+    "preferred_term": "cpt_blankheader",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "blank_header"
+  },
+  {
+    "id": "69f6ea5b-f3c2-11ed-8b19-005056ab4424",
+    "preferred_term": "cpt_of_contents",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "2 TABLE OF CONTENTS"
+  },
+  {
+    "id": "3481eff8-5c2a-4eeb-acde-2cb00e6a1531",
+    "preferred_term": "cpt_study_assessments_and_procedures",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "Study Assessments: Screening Period:"
+  },
+  {
+    "id": "69f6ea5e-f3c2-11ed-b788-005056ab4424",
+    "preferred_term": "cpt_introduction",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "5 INTRODUCTION"
+  },
+  {
+    "id": "69f6ea5f-f3c2-11ed-9ea7-005056ab4424",
+    "preferred_term": "cpt_background",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "5.1 Background"
+  },
+  {
+    "id": "69f6ea62-f3c2-11ed-8576-005056ab4424",
+    "preferred_term": "cpt_data_protection",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "5.2.1 Dose Selection"
+  },
+  {
+    "id": "69f6ea5c-f3c2-11ed-8e04-005056ab4424",
+    "preferred_term": "cpt_synopsis",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "3 SYNOPSIS"
+  },
+  {
+    "id": "69f6ea69-f3c2-11ed-92b2-005056ab4424",
+    "preferred_term": "cpt_overall_design",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "7.1 Overall Study Design and Plan"
+  },
+  {
+    "id": "69f6ea6e-f3c2-11ed-9d94-005056ab4424",
+    "preferred_term": "cpt_immunogenicity_assessments",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "7.1.1.4 Dose Limiting Toxicity Assessment"
+  },
+  {
+    "id": "69f6ea72-f3c2-11ed-bce6-005056ab4424",
+    "preferred_term": "cpt_other_restrictions",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "7.4.1 Dose Reductions"
+  },
+  {
+    "id": "69f6ea76-f3c2-11ed-adc3-005056ab4424",
+    "preferred_term": "cpt_endofstudy_definition",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "7.4.2.1 MTD Definition"
+  },
+  {
+    "id": "69f6ea7b-f3c2-11ed-bc9f-005056ab4424",
+    "preferred_term": "cpt_study_population",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "8 STUDY POPULATION"
+  },
+  {
+    "id": "69f6ea7c-f3c2-11ed-9a25-005056ab4424",
+    "preferred_term": "cpt_inclusion_criteria",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "8.1 Patient Inclusion Criteria"
+  },
+  {
+    "id": "69f6ea85-f3c2-11ed-8edf-005056ab4424",
+    "preferred_term": "cpt_exclusion_criteria",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "8.2 Patient Exclusion Criteria"
+  },
+  {
+    "id": "69f6ea8d-f3c2-11ed-b5a7-005056ab4424",
+    "preferred_term": "cpt_participant_discontinuation_withdrawal_from_the_study",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "8.3 Patient Discontinuation and Replacement Criteria"
+  },
+  {
+    "id": "69f6ea8e-f3c2-11ed-a1e1-005056ab4424",
+    "preferred_term": "cpt_discontinuation_of_study_intervention",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "8.3.1 Discontinuation from Study Treatment"
+  },
+  {
+    "id": "69f6ea92-f3c2-11ed-bf91-005056ab4424",
+    "preferred_term": "cpt_patient_input_into_design",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "8.4.1 Patient Identification"
+  },
+  {
+    "id": "69f6ea9c-f3c2-11ed-be43-005056ab4424",
+    "preferred_term": "cpt_dose_modification",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "9.3 Dose Modifications"
+  },
+  {
+    "id": "69f6ea93-f3c2-11ed-a1e0-005056ab4424",
+    "preferred_term": "cpt_test",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "<h2>8.4.1.1 Enrollment Number for Replacement Patients</h2>"
+  },
+  {
+    "id": "69f6eaa1-f3c2-11ed-b11b-005056ab4424",
+    "preferred_term": "cpt_prior_and_concomitant_therapy",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "9.7 Previous and Concomitant Medications"
+  },
+  {
+    "id": "69f6eaa5-f3c2-11ed-a310-005056ab4424",
+    "preferred_term": "cpt_contraception_guidance",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "9.7.3 Contraception"
+  },
+  {
+    "id": "69f6eaa9-f3c2-11ed-b153-005056ab4424",
+    "preferred_term": "cpt_study_intervention_compliance",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "9.8 Treatment Compliance"
+  },
+  {
+    "id": "69f6eaab-f3c2-11ed-a93f-005056ab4424",
+    "preferred_term": "cpt_safety_assessments",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.1 Safety Endpoints"
+  },
+  {
+    "id": "69f6eaac-f3c2-11ed-9648-005056ab4424",
+    "preferred_term": "cpt_definitions",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.1.1 Definitions"
+  },
+  {
+    "id": "69f6eab0-f3c2-11ed-a000-005056ab4424",
+    "preferred_term": "cpt_reporting_of_saes",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.2 Reporting of Adverse Events"
+  },
+  {
+    "id": "69f6eab8-f3c2-11ed-a7d4-005056ab4424",
+    "preferred_term": "cpt_reporting_of_sades",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.2.6 Reporting Overdose"
+  },
+  {
+    "id": "69f6eab9-f3c2-11ed-99c1-005056ab4424",
+    "preferred_term": "cpt_appendix_clinical_laboratory_tests",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.2.7 Clinical Laboratory Assessments"
+  },
+  {
+    "id": "69f6eabb-f3c2-11ed-a0a4-005056ab4424",
+    "preferred_term": "cpt_electrocardiograms",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.2.9 Audiograms"
+  },
+  {
+    "id": "69f6eabc-f3c2-11ed-9d23-005056ab4424",
+    "preferred_term": "cpt_physical_examinations",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.2.10 Physical Examination and Vital Signs"
+  },
+  {
+    "id": "69f6eabe-f3c2-11ed-a20d-005056ab4424",
+    "preferred_term": "cpt_pharmacokinetics",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.3 Pharmacokinetic Assessments"
+  },
+  {
+    "id": "69f6eabf-f3c2-11ed-bf8d-005056ab4424",
+    "preferred_term": "cpt_pharmacodynamics",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.4 Pharmacodynamic Assessments"
+  },
+  {
+    "id": "69f6eac2-f3c2-11ed-9f30-005056ab4424",
+    "preferred_term": "cpt_schedule_of_activities_soa",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "11.1 Schedule of Events"
+  },
+  {
+    "id": "69f6eac3-f3c2-11ed-af75-005056ab4424",
+    "preferred_term": "cpt_statistical_analyses",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "12 STATISTICAL METHODS"
+  },
+  {
+    "id": "69f6eab7-f3c2-11ed-91a0-005056ab4424",
+    "preferred_term": "cpt_assessments_pregnancy_report",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.2.5 Pregnancy Reporting and Follow-Up"
+  },
+  {
+    "id": "69f6eac1-f3c2-11ed-8d99-005056ab4424",
+    "preferred_term": "cpt_study_assessments_and_procedures",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "11 STUDY CONDUCT"
+  },
+  {
+    "id": "69f6eac6-f3c2-11ed-a968-005056ab4424",
+    "preferred_term": "cpt_other_safety_analyses",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "12.3 Safety Analyses"
+  },
+  {
+    "id": "69f6eac9-f3c2-11ed-ab81-005056ab4424",
+    "preferred_term": "cpt_definition_of_sae",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "12.6 Determination of Sample Size"
+  },
+  {
+    "id": "69f6eaca-f3c2-11ed-9446-005056ab4424",
+    "preferred_term": "cpt_regulatory_and_ethical_considerations",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "13 REGULATORY AND ETHICAL ISSUES"
+  },
+  {
+    "id": "69f6eacd-f3c2-11ed-a253-005056ab4424",
+    "preferred_term": "cpt_informed_consent_process",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "13.3 Informed Consent"
+  },
+  {
+    "id": "69f6ead1-f3c2-11ed-aa0b-005056ab4424",
+    "preferred_term": "cpt_general_considerations",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "14.2.1 COVID-19 Pandemic Considerations"
+  },
+  {
+    "id": "69f6ead5-f3c2-11ed-8d1b-005056ab4424",
+    "preferred_term": "cpt_publication_policy",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "14.6 Publication Policy"
+  },
+  {
+    "id": "69f6ead6-f3c2-11ed-97d0-005056ab4424",
+    "preferred_term": "cpt_study_design",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "14.7 Study Report"
+  },
+  {
+    "id": "69f6ead7-f3c2-11ed-a8e5-005056ab4424",
+    "preferred_term": "cpt_references",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "15 REFERENCES"
+  },
+  {
+    "id": "69f6eac7-f3c2-11ed-a563-005056ab4424",
+    "preferred_term": "cpt_pharmacokinetics",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "12.4 Pharmacokinetic Analysis"
+  },
+  {
+    "id": "69f6eac8-f3c2-11ed-9610-005056ab4424",
+    "preferred_term": "cpt_pharmacodynamics",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "12.5 Pharmacodynamic Analysis"
+  },
+  {
+    "id": "948a8da1-e778-4c17-ab21-17de024a5a88",
+    "preferred_term": "cpt_exclusion_criteria",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "Exclusion Criteria:"
+  },
+  {
+    "id": "e5455c3e-ec90-44bd-b880-35b4c53ab0c3",
+    "preferred_term": "cpt_inclusion_criteria",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "Inclusion Criteria:"
+  },
+  {
+    "id": "b86f9488-d3b9-4703-9770-23357b84bbe2",
+    "preferred_term": "cpt_assessments_study_continuation",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "Patient Discontinuation:"
+  },
+  {
+    "id": "69f6ea64-f3c2-11ed-85aa-005056ab4424",
+    "preferred_term": "cpt_objectives_endpoints_and_estimands",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "6 STUDY OBJECTIVES> AND PURPOSE"
+  },
+  {
+    "id": "69f6ea67-f3c2-11ed-a650-005056ab4424",
+    "preferred_term": "cpt_exploratory_objective",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "6.3 Exploratory Objectives"
+  },
+  {
+    "id": "69f6ea9f-f3c2-11ed-ae5c-005056ab4424",
+    "preferred_term": "cpt_assessments_drug_accountability",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "9.5 Study Drug Accountability"
+  },
+  {
+    "id": "69f6eaaa-f3c2-11ed-9cbc-005056ab4424",
+    "preferred_term": "cpt_objectives_endpoints_and_estimands",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10 ENDPOINTS AND METHODS OF ASSESSMENT"
+  },
+  {
+    "id": "69f6eaad-f3c2-11ed-a113-005056ab4424",
+    "preferred_term": "cpt_adverse_event",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.1.2 Assessment of Adverse Events"
+  },
+  {
+    "id": "69f6eaaf-f3c2-11ed-be54-005056ab4424",
+    "preferred_term": "cpt_ae_causality",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.1.2.2 Causality"
+  },
+  {
+    "id": "69f6eab1-f3c2-11ed-927c-005056ab4424",
+    "preferred_term": "cpt_adverse_event",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.2.1 Collecting and Recording Adverse Events"
+  },
+  {
+    "id": "69f6eab6-f3c2-11ed-a2a5-005056ab4424",
+    "preferred_term": "cpt_serious_adverse_event",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "10.2.4 Suspected Unexpected Serious Adverse Reactions"
+  },
+  {
+    "id": "69f6ea66-f3c2-11ed-a36b-005056ab4424",
+    "preferred_term": "CPT_OBJECTIVE",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "6.2 Secondary Objectives"
+  },
+  {
+    "id": "69f6ea91-f3c2-11ed-bc76-005056ab4424",
+    "preferred_term": "cpt_new_tag_by_sumit",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "8.4 Patient Identification and Randomization"
+  },
+  {
+    "id": "69f6ea65-f3c2-11ed-85d4-005056ab4424",
+    "preferred_term": "CPT_Test123",
+    "parent_id": "7588abe9-9a6a-4cca-bd50-dc617c30ead2",
+    "text": "<b>6.1&nbsp;</b><b>Primary Objectives&nbsp;</b>"
+  }
+]

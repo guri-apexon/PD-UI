@@ -48,11 +48,22 @@ function MedicalTerm({
   const [errorMsg, setErrorMsg] = useState('');
   const loggedInUserId = useSelector(userId);
 
-  enrichedText = enrichedText?.replace(/\s\s+/g, ' ').trim();
+  enrichedText = enrichedText
+    ?.replaceAll(/(<([^>]+)>)/gi, '')
+    .replaceAll('&nbsp;', ' ')
+    .replace(/\s\s+/g, ' ')
+    .replace(/[^a-zA-Z0-9 ]/g, '')
+    .trim();
+
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
   }, [clinicalTermsArray]);
+  if (clinicalTermsArray) {
+    console.log('manu', clinicalTermsArray);
+    console.log('manu1', clinicalTermsArray[enrichedText]);
+    console.log('MAnu2', enrichedText);
+  }
 
   const handleClickOutside = (event) => {
     if (wrapperRef?.current && !wrapperRef?.current?.contains(event.target)) {
