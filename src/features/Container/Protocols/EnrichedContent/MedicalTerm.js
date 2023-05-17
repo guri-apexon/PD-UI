@@ -47,6 +47,7 @@ function MedicalTerm({
   const wordSelector = useSelector(Enrichedword);
   const [errorMsg, setErrorMsg] = useState('');
   const loggedInUserId = useSelector(userId);
+
   enrichedText = enrichedText?.replace(/\s\s+/g, ' ').trim();
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
@@ -229,7 +230,7 @@ function MedicalTerm({
 
   const handleSave = () => {
     if (newTermValue === '' || errorMsg) {
-      toast.error(errorMsg || 'Please enter Preferred Term');
+      toast.error(errorMsg || 'Please input some value');
       return false;
     }
     if (!childTermValue || !selectedTerm) return false;
@@ -373,7 +374,10 @@ function MedicalTerm({
                           data-testid="input-term1"
                           value={newTermValue}
                           onChange={handleTextField}
-                          helperText="Ex: cpt_primary_objective"
+                          helperText={
+                            selectedTerm === 'preferred_term' &&
+                            'Ex: cpt_primary_objective'
+                          }
                         />
                         {showIcons && (
                           <div className="icons" data-testId="edit-icons">

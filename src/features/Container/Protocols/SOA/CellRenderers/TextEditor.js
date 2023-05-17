@@ -14,6 +14,7 @@ import { TableConst } from '../Constants';
 const TextEditor = memo(
   forwardRef((props, ref) => {
     const {
+      api,
       data,
       colDef: { field },
     } = props;
@@ -26,7 +27,7 @@ const TextEditor = memo(
         if (!refInput.current || refInput.current.contains(event.target)) {
           return;
         }
-        props.api.stopEditing();
+        api.stopEditing();
       };
       document.addEventListener('mousedown', listener);
       document.addEventListener('touchstart', listener);
@@ -34,7 +35,7 @@ const TextEditor = memo(
         document.removeEventListener('mousedown', listener);
         document.removeEventListener('touchstart', listener);
       };
-    }, [refInput]);
+    }, [refInput, api]);
     useImperativeHandle(ref, () => {
       return {
         // the final value to send to the grid, on completion of editing

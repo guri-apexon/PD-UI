@@ -102,7 +102,14 @@ function DipaView({
   };
 
   useEffect(() => {
-    updateWithOriginalData(dataResponse);
+    const processData = (elements = []) =>
+      elements.map((d) => ({
+        ...d,
+        open: false,
+        child: processData(d?.child || []),
+      }));
+    const newValue = processData(dataResponse);
+    setMetadata(newValue);
   }, [dataResponse]);
 
   const getAllCategory = (userDataUpdated) => {
