@@ -380,12 +380,12 @@ function LabData({ docId }) {
     } else {
       setRowData([]);
     }
-    if (labData.success) {
+    if (labData?.success) {
       getLabData();
       dispatch(setLabDataSuccess(false));
     }
 
-    if (labData.created && labData.data.length > 0) {
+    if (labData?.created && labData?.data.length > 0) {
       const obj = { ...labData.data[0] };
       obj.isSaved = false;
       obj.request_type = LABDATA_CONSTANTS.REQUEST_TYPE.UPDATE;
@@ -483,7 +483,7 @@ function LabData({ docId }) {
         <div className="panel-heading">Lab Data</div>
         <div className={`${isEdit && len === 0 ? 'no-data-table' : ''}`}>
           <Table
-            isLoading={labData.loading}
+            isLoading={labData?.loading}
             ref={tableRef}
             title=" "
             columns={columns}
