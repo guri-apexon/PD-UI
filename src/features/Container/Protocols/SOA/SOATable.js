@@ -137,6 +137,7 @@ function SOATable() {
     <div className="ag-theme-alpine soa-maingrid-container">
       <GridContext.Provider value={propDispatch}>
         <AgGridReact
+          suppressColumnVirtualisation
           suppressScrollOnNewData
           ref={gridRef}
           rowData={[...tableData]}
