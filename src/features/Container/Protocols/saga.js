@@ -774,7 +774,8 @@ export function* soaUpdateDetails({ data, method }) {
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa`,
     method,
-    headers: { 'X-API-KEY': 'ypd_unit_test:!53*URTa$k1j4t^h2~uSseatnai@nr' },
+    checkAuth: true,
+    headers: { 'Content-Type': 'application/json' },
     data,
   };
 
