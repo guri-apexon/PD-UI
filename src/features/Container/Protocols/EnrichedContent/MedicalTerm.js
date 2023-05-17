@@ -47,7 +47,7 @@ function MedicalTerm({
   const wordSelector = useSelector(Enrichedword);
   const [errorMsg, setErrorMsg] = useState('');
   const loggedInUserId = useSelector(userId);
-  const preferredTerm = 'preferred_term';
+
   enrichedText = enrichedText?.replace(/\s\s+/g, ' ').trim();
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
@@ -375,7 +375,7 @@ function MedicalTerm({
                           value={newTermValue}
                           onChange={handleTextField}
                           helperText={
-                            selectedTerm === preferredTerm &&
+                            selectedTerm === 'preferred_term' &&
                             'Ex: cpt_primary_objective'
                           }
                         />
