@@ -229,8 +229,8 @@ function MedicalTerm({
   }, [selectedTerm]);
 
   const handleSave = () => {
-    if ((newTermValue === '' || errorMsg) && selectedTerm === preferredTerm) {
-      toast.error(errorMsg || 'Please enter Preferred Term');
+    if (newTermValue === '' || errorMsg) {
+      toast.error(errorMsg || 'Please input some value');
       return false;
     }
     if (!childTermValue || !selectedTerm) return false;
