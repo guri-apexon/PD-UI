@@ -50,6 +50,7 @@ import {
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
+import { createPlainText } from '../../../utils/utilFunction';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
 
@@ -456,7 +457,8 @@ export function* getProtocolTocDataResult(action) {
       let preferredTerm = {};
       result?.data[1][0]?.preferred_terms?.forEach((item) => {
         if (item?.preferred_term !== '' && item?.text) {
-          const preferredText = item?.text?.replace(/(<([^>]+)>)/gi, '');
+          const preferredText = createPlainText(item?.text);
+
           preferredTerm = { ...preferredTerm, [preferredText]: item };
         }
       });
