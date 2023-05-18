@@ -1,26 +1,19 @@
-import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { render, fireEvent } from '../../../../test-utils/test-utils';
-import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
-import ProtocolReducer from '../protocolSlice';
+import userEvent from '@testing-library/user-event';
+import { Provider } from 'react-redux';
 import UserReducer from '../../../../store/userDetails';
-import { PROTOCOL_RIGHT_MENU } from '../Constant/Constants';
+import { fireEvent, render, screen } from '../../../../test-utils/test-utils';
+import DigitalizeCard from '../DigitizedPanel/DigitalizeCard';
 import * as ProtocolContext from '../ProtocolContext';
-
-import initialState from './ProtocolReducer.json';
-
-const sectionRef = [
-  {
-    current: {
-      scrollIntoView: jest.fn(),
-    },
-  },
-];
-const handlePageRight = jest.fn();
-const mockHandleRightFullScreen = jest.fn();
-
-const home = PROTOCOL_RIGHT_MENU.HOME;
-
+import ProtocolReducer from '../protocolSlice';
+import {
+  preloadedDataForSchedule,
+  dataValues,
+  preloadedData,
+  preloadedDataForLab,
+  preloadedDataForDipaView,
+} from './data';
+import preloadedStateData from './tableData';
 // eslint-disable-next-line
 export function renderWithProviders(
   ui,
@@ -47,88 +40,127 @@ export function renderWithProviders(
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }
 
-describe('DigitizeCard', () => {
-  test('Display digitize panel content', () => {
-    const screen = renderWithProviders(
-      <DigitalizeCard
-        sectionNumber={1}
-        sectionRef={sectionRef}
-        data={{ id: 123 }}
-        paginationPage={2}
-        rightValue={PROTOCOL_RIGHT_MENU.HOME}
-        handlePageRight={handlePageRight}
-        handleRightFullScreen={mockHandleRightFullScreen}
-        showExpandIcon={false}
-        fullRightScreen={false}
-      />,
-      {
-        preloadedState: initialState,
+describe('Digitalize Card Component', () => {
+  const preloadedState = preloadedStateData;
+  const sectionRefValue = [
+    {
+      current: {
+        scrollIntoView: jest.fn(),
       },
+    },
+    {
+      current: {
+        scrollIntoView: jest.fn(),
+      },
+    },
+  ];
+  const dataValue = dataValues;
+  const dataValueTest = {
+    amendment: 'Y',
+    id: 'f2571c30-a39f-4d58-a092-09edaac5b814',
+  };
+  test('when rightBlade value is home and click on submit button', () => {
+    const { rerender } = render(
+      <DigitalizeCard
+        sectionNumber={0}
+        sectionRef={sectionRefValue}
+        data={dataValueTest}
+        paginationPage={0}
+        handlePageRight={jest.fn()}
+        globalPreferredTerm={false}
+        handleRightFullScreen={jest.fn()}
+        dataExist
+      />,
+      preloadedState,
     );
+    expect(screen.getByTestId('submit-button')).toBeInTheDocument();
+    expect(screen.getByTestId('submit-button')).toBeEnabled();
+    fireEvent.click(screen.getByTestId('submit-button'));
+    expect(screen.getByText(/Do you want to submit ?/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
+    userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    expect(screen.getByRole('button', { name: 'Close' })).toBeInTheDocument();
+    userEvent.click(screen.getByRole('button', { name: 'Close' }));
 
-    const HeaderClose = screen.getByTestId('digitize-panel-content');
-    expect(HeaderClose).toBeInTheDocument();
+    rerender(
+      <DigitalizeCard
+        sectionNumber={0}
+        sectionRef={sectionRefValue}
+        data={dataValueTest}
+        paginationPage={1}
+        handlePageRight={jest.fn()}
+        globalPreferredTerm={false}
+        handleRightFullScreen={jest.fn()}
+        dataExist
+      />,
+    );
   });
 
-  test('paginationpage useEffect', () => {
-    const screen = renderWithProviders(
+  test('when righBlade Value as Protocol Attributes', () => {
+    const preloadedStateForProtocolAttributes = preloadedData;
+    render(
       <DigitalizeCard
-        sectionNumber={1}
-        sectionRef={sectionRef}
-        data={{ id: 123 }}
-        paginationPage={2}
-        rightValue={PROTOCOL_RIGHT_MENU.HOME}
-        handlePageRight={handlePageRight}
-        handleRightFullScreen={mockHandleRightFullScreen}
-        showExpandIcon={false}
-        fullRightScreen={false}
+        sectionNumber={0}
+        sectionRef={sectionRefValue}
+        data={dataValue}
+        paginationPage={0}
+        handlePageRight={jest.fn()}
+        globalPreferredTerm={false}
+        handleRightFullScreen={jest.fn()}
+        dataExist
       />,
-      { preloadedState: { ...initialState, home } },
-    );
-
-    const HeaderClose = screen.getByTestId('digitize-panel-content');
-    expect(HeaderClose).toBeInTheDocument();
-  });
-
-  test('Display digitize panel content', () => {
-    renderWithProviders(
-      <DigitalizeCard
-        sectionNumber={1}
-        sectionRef={sectionRef}
-        data={{ id: 123 }}
-        paginationPage={2}
-        handlePageRight={handlePageRight}
-        rightValue={PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES}
-        handleRightFullScreen={mockHandleRightFullScreen}
-        showExpandIcon={false}
-        fullRightScreen={false}
-      />,
-      { preloadedState: { ...initialState, home } },
+      preloadedStateForProtocolAttributes,
     );
   });
-});
 
-describe('digitizeAccordion Integration', () => {
-  test('load all the accordions', () => {
-    const screen = renderWithProviders(
+  test('when right Blade value as lab Data', () => {
+    const preloadedStateForLabData = preloadedDataForLab;
+    render(
       <DigitalizeCard
-        handlePageRight={handlePageRight}
-        sectionNumber={1}
-        sectionRef={sectionRef}
-        data={{ id: 123, userPrimaryRoleFlag: true }}
-        paginationPage={2}
-        rightValue={PROTOCOL_RIGHT_MENU.PROTOCOL_ATTRIBUTES}
-        handleRightFullScreen={mockHandleRightFullScreen}
-        showExpandIcon={false}
-        fullRightScreen={false}
+        sectionNumber={0}
+        sectionRef={sectionRefValue}
+        data={dataValue}
+        paginationPage={0}
+        handlePageRight={jest.fn()}
+        globalPreferredTerm={false}
+        handleRightFullScreen={jest.fn()}
+        dataExist
       />,
-      { preloadedState: { ...initialState, home } },
+      preloadedStateForLabData,
     );
+  });
 
-    const header1 = screen.getByText('Signatures');
-    fireEvent.click(header1);
+  test('when right Blade value as Schedule of ACTIVITIES ', () => {
+    const preloadedStateForSchedule = preloadedDataForSchedule;
+    render(
+      <DigitalizeCard
+        sectionNumber={0}
+        sectionRef={sectionRefValue}
+        data={dataValue}
+        paginationPage={0}
+        handlePageRight={jest.fn()}
+        globalPreferredTerm={false}
+        handleRightFullScreen={jest.fn()}
+        dataExist
+      />,
+      preloadedStateForSchedule,
+    );
+  });
 
-    const header2 = screen.getByText('GENERAL INFORMATION');
-    fireEvent.click(header2);
+  test('when right Blade value as DIPA_VIEW ', () => {
+    const preloadedStateDipaView = preloadedDataForDipaView;
+    render(
+      <DigitalizeCard
+        sectionNumber={0}
+        sectionRef={sectionRefValue}
+        data={dataValue}
+        paginationPage={0}
+        handlePageRight={jest.fn()}
+        globalPreferredTerm={false}
+        handleRightFullScreen={jest.fn()}
+        dataExist
+      />,
+      preloadedStateDipaView,
+    );
   });
 });
