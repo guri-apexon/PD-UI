@@ -139,6 +139,13 @@
       [class*='MuiButton-outlinedSizeSmall-'] {
         padding: auto;
       }
+      .add-section {
+        margin-right: 20px;
+        margin-top: -8px;
+        button > span > svg {
+          height: 16px;
+        }
+      }
     }
   }
   .protocol-source-column {

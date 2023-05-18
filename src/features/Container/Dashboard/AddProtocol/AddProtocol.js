@@ -571,47 +571,49 @@ function AddProtocol() {
     return <></>;
   };
   const handlePipelineSubmit = () => {
-    let finalWorkflow = [];
-    workFlow.forEach((item) => {
-      let obj = { work_flow_name: item.work_flow_name, dependency_graph: [] };
-      item.services.map((service) => {
-        if (service.checked) {
-          const serviceObj = {
-            service_name: service.service_name,
-            depends: service.depends,
-          };
-          obj.dependency_graph.push(serviceObj);
+    if (!workflowSubmitData.loading) {
+      let finalWorkflow = [];
+      workFlow.forEach((item) => {
+        let obj = { work_flow_name: item.work_flow_name, dependency_graph: [] };
+        item.services.map((service) => {
+          if (service.checked) {
+            const serviceObj = {
+              service_name: service.service_name,
+              depends: service.depends,
+            };
+            obj.dependency_graph.push(serviceObj);
+          }
+        });
+        if (obj.dependency_graph.length) {
+          finalWorkflow.push(obj);
         }
       });
-      if (obj.dependency_graph.length) {
-        finalWorkflow.push(obj);
+      if (!docIdEntered) {
+        setDocIdError(true);
+      } else {
+        setDocIdError(false);
       }
-    });
-    if (!docIdEntered) {
-      setDocIdError(true);
-    } else {
-      setDocIdError(false);
-    }
-    if (!workFlowName) {
-      setWorkflowNameError(true);
-    } else {
-      setWorkflowNameError(false);
-    }
-    if (!finalWorkflow.length) {
-      setworkflowError(true);
-    } else {
-      setworkflowError(false);
-    }
-    if (docIdEntered && finalWorkflow.length) {
-      const body = {
-        docId: docIdEntered,
-        workFlowName,
-        workFlowList: finalWorkflow,
-      };
-      dispatch({
-        type: 'SUBMIT_WORKFLOW_DATA',
-        payload: body,
-      });
+      if (!workFlowName) {
+        setWorkflowNameError(true);
+      } else {
+        setWorkflowNameError(false);
+      }
+      if (!finalWorkflow.length) {
+        setworkflowError(true);
+      } else {
+        setworkflowError(false);
+      }
+      if (docIdEntered && finalWorkflow.length) {
+        const body = {
+          docId: docIdEntered,
+          workFlowName,
+          workFlowList: finalWorkflow,
+        };
+        dispatch({
+          type: 'SUBMIT_WORKFLOW_DATA',
+          payload: body,
+        });
+      }
     }
   };
   return (

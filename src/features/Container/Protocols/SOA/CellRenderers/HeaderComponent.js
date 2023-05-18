@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import Card from 'apollo-react/components/Card';
-import Popper from 'apollo-react/components/Popper';
+import Popover from 'apollo-react/components/Popover';
 import PropTypes from 'prop-types';
 import ArrowLeft from 'apollo-react-icons/ArrowLeft';
 import ArrowRight from 'apollo-react-icons/ArrowRight';
@@ -179,38 +179,35 @@ function HeaderComponent(props) {
           ref={inpRef}
           value={value}
           onChange={(event) => setValue(event.target.value)}
-          className="header-editing-Item"
+          className="header-editing-input-Item"
         />
       ) : (
-        ''
-      )}
-      <div className="firstColumn">
-        {Number(columnIndex) > 0 ? (
-          <Drag
-            data-testid="header-drag-button"
-            onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
-          />
-        ) : (
-          '                  '
-        )}
+        <div className="firstColumn">
+          {Number(columnIndex) > 0 ? (
+            <Drag
+              data-testid="header-drag-button"
+              onClick={(e) => setAnchorEl(!anchorEl ? e.currentTarget : null)}
+            />
+          ) : (
+            '                  '
+          )}
 
-        <div>
-          <span
-            data-testid="header-cell"
-            onDoubleClick={() => {
-              setEditing(!isEditing);
-            }}
-            style={style.columnValue}
-          >
-            {displayName.trim() === '' ? (
-              <div className="header-empty-cell">&nbsp;</div>
-            ) : (
-              displayName
-            )}
-          </span>
+          <div>
+            <div
+              className="column-name-container"
+              data-testid="header-cell"
+              onDoubleClick={() => {
+                setEditing(!isEditing);
+              }}
+              style={style.columnValue}
+            >
+              {displayName.trim() === '' ? <div>&nbsp;</div> : displayName}
+            </div>
+          </div>
         </div>
-      </div>
-      <Popper
+      )}
+
+      <Popover
         ref={ref}
         open={!!anchorEl}
         anchorEl={anchorEl}
@@ -233,7 +230,7 @@ function HeaderComponent(props) {
             onClick={() => cellAction({ type: TableConst.ADD_ROW_ABOVE })}
           />
         </Card>
-      </Popper>
+      </Popover>
       <Modal
         open={warning}
         variant="warning"

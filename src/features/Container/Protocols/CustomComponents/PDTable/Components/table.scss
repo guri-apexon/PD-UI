@@ -38,6 +38,7 @@
   box-sizing: border-box;
   min-width: 100px;
   width: 100%;
+  position: relative;
 }
 .content-table-wrapper {
   border: 1px solid #dadada;
@@ -72,6 +73,12 @@
 }
 .editable-span {
   width: 90%;
+  font-size: 12px;
+  padding: 5px;
+  outline: none;
+  ul{
+    padding-left: 17px;
+  }
 }
 .Preferred-txt {
   color: #0768fd;
@@ -188,7 +195,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 30px;
+  margin-left: calc(50% - 9px);
 }
 .button-container {
   display: flex;

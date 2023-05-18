@@ -46,6 +46,41 @@ function DipaViewStructure({
   const [isAccordianExpanded, setIsAccordianExpanded] = useState(false);
   const [unSaved, setUnSaved] = useState(false);
 
+  const showSectionLockError = () => {
+    toast.error(`Section is in use by user ${lockDetails?.user_name}`);
+  };
+
+  const isSectionUnLocked = () => {
+    return (
+      Object.keys(lockDetails).length > 0 &&
+      (lockDetails?.section_lock || lockDetails?.userId === userId)
+    );
+  };
+
+  const onHandleAddGroup = (ID) => {
+    if (isSectionUnLocked()) {
+      handleAddGroup(ID);
+    } else {
+      showSectionLockError();
+    }
+  };
+
+  const onHandleAdd = (ID) => {
+    if (isSectionUnLocked()) {
+      handleAdd(ID);
+    } else {
+      showSectionLockError();
+    }
+  };
+
+  const onHandleDelete = (ID) => {
+    if (isSectionUnLocked()) {
+      setOpenModal(ID);
+    } else {
+      showSectionLockError();
+    }
+  };
+
   const onPencilIconClick = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -55,24 +90,22 @@ function DipaViewStructure({
      * - if yes then only allow editing segments.
      * - if no, then we need to show who has locked the segment.
      */
-    if (Object.keys(lockDetails).length > 0) {
-      if (lockDetails?.section_lock || lockDetails?.userId === userId) {
-        toggleEditingIDs(segments.map((seg) => seg.ID));
-      } else {
-        toast.error(`Section is in use by user ${lockDetails?.user_name}`);
-      }
+    if (isSectionUnLocked()) {
+      toggleEditingIDs(segments.map((seg) => seg.ID));
+    } else {
+      showSectionLockError();
     }
   };
 
   const menuItems = [
     {
       text: 'Add Group',
-      onClick: () => handleAddGroup(ID),
+      onClick: () => onHandleAddGroup(ID),
       'data-testid': 'add-group',
     },
     {
       text: 'Add Segment',
-      onClick: () => handleAdd(ID),
+      onClick: () => onHandleAdd(ID),
       'data-testid': 'add-segment',
     },
   ];
@@ -212,7 +245,7 @@ function DipaViewStructure({
               <IconButton
                 className="trash-icon"
                 data-testid="delete-icon"
-                onClick={() => setOpenModal(ID)}
+                onClick={() => onHandleDelete(ID)}
               >
                 <Trash />
               </IconButton>
@@ -240,6 +273,9 @@ function DipaViewStructure({
                   editingIDList={editingIDList}
                   setEditingIDList={setEditingIDList}
                   toggleEditingIDs={toggleEditingIDs}
+                  tooltipValue={tooltipValue}
+                  countTooltip={countTooltip}
+                  editedByTooltip={editedByTooltip}
                   lockDetails={lockDetails}
                   userId={userId}
                 />
@@ -267,7 +303,7 @@ function DipaViewStructure({
                     <Grid item xs={1} className="section-delete-btn">
                       <IconButton
                         size="small"
-                        onClick={() => setOpenModal(segment.ID)}
+                        onClick={() => onHandleDelete(segment.ID)}
                       >
                         <Trash />
                       </IconButton>

@@ -42,6 +42,28 @@ const sectionData = [
   },
 ];
 
+const tempSectionData = [
+  {
+    section_level: '',
+    CPT_section: 'Unmapped',
+    type: 'text',
+    content: 'CHIEF INVESTIGATOR:',
+
+    level_1_CPT_section: 'Unmapped',
+    file_section: 'STUDY CONTACTS',
+    file_section_num: '1',
+    file_section_level: '1',
+    seq_num: 2,
+    qc_change_type: '',
+    line_id:
+      '5608887c-774d-4d10-ba9f-ed4604f134bf42c52766-d0c2-4524-befa-401c9311c9b71ced360a-6478-4853-9428-9776ddb0a0a9',
+    aidocid: '54e4ad00-cc29-42e6-a208-09c7ef663f31',
+    synonyms_extracted_terms: '',
+    semantic_extraction: '',
+    section_locked: false,
+  },
+];
+
 describe('DigitizedEdit', () => {
   test('render component without error', () => {
     const contextValues = {
@@ -189,5 +211,24 @@ describe('DigitizedEdit', () => {
     });
     element.blur();
     fireEvent.click(contentContainer[1]);
+  });
+
+  test('Delete Button when section data length is 1', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      setActiveLineID: jest.fn(),
+      activeLineID: 'DFGH134',
+    };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const wrapper = render(
+      <MultilineEdit sectionDataArr={tempSectionData} edit pageRight={2} />,
+    );
+    fireEvent.click(wrapper.getAllByTestId('content_container')[0]);
+
+    fireEvent.click(wrapper.getByTestId('trash-icon'));
+    const button = wrapper.getByText('Delete');
+    fireEvent.click(button);
   });
 });

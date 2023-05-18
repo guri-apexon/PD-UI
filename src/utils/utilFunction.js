@@ -18,7 +18,7 @@ const replaceall = require('replaceall');
 
 export const removeHtmlTags = (html) => {
   const regex = /<[^>]*>/g;
-  return html.replace(regex, '');
+  return html?.replace(regex, '');
 };
 
 export const covertMMDDYYYY = (date) => {
@@ -173,10 +173,10 @@ export const createEnrichedText = (content, terms) => {
   if (terms) {
     const arr = Object.keys(terms);
     arr.forEach((term) => {
-      const regex4 = new RegExp(`//${term}/`, 'g');
-      // var match4 = str1.replace(regex4, replace);
-      text = replaceall(
-        regex4.toString(),
+      const replacingSplChar = term.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+      const pattern = new RegExp(`\\b${replacingSplChar}\\b`, 'g');
+      text = text.replaceAll(
+        pattern,
         `<b class="enriched-txt">${term}</b>`,
         text,
       );
@@ -186,19 +186,26 @@ export const createEnrichedText = (content, terms) => {
   return text;
 };
 
-export const createPreferredText = (content, terms) => {
-  let text = content;
+export const createPreferredText = (text, terms) => {
+  text = text.replace(/\s\s+/g, ' ');
   if (terms) {
     const arr = Object.keys(terms);
     if (arr.length) {
-      const match = arr.find((x) => {
+      let match = arr.find((x) => {
         return x
           .toLowerCase()
           .trim()
           .includes(removeHtmlTags(text).toLowerCase().trim());
       });
+
+      match = match?.replace(/(<([^>]+)>)/gi, '');
+
       if (match) {
-        text = `<b class="Preferred-txt">${match}</b>`;
+        text = text
+          .replace(match, `<b class="Preferred-txt"> ${match} </b>`)
+          .replace(/[_]/g, ' ')
+          .replace('cpt', '')
+          .trim();
       }
     }
   }
@@ -559,6 +566,7 @@ export const createReturnObj = (obj, linkId) => {
     if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
       return {
         type: obj.type,
+        doc_id: obj?.aidocid,
         table_roi_id: '',
         content: {
           ...obj.content,
@@ -605,7 +613,7 @@ export const createReturnObj = (obj, linkId) => {
 
 export const getSaveSectionPayload = (sectionContent, linkId) => {
   let req = [...sectionContent]
-    .filter((x) => x.qc_change_type !== '' && x.content !== '')
+    .filter((x) => x.qc_change_type !== '')
     .map((obj) => createReturnObj(obj, linkId));
   req = req.filter(
     (x) =>

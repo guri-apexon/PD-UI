@@ -7,10 +7,12 @@ import AddClinicalTerm from '../AddClinicalTerm';
 const selectionHeaderList = {
   protocol: 'NCT02614287',
   word: {
+    type: 'header',
     font_info: {
       roi_id: {
         para: '31fbea8a-1204-4105-ad33-f414d1816045',
       },
+      content: 'ABC',
     },
   },
   data: [
@@ -148,10 +150,12 @@ describe('rendering the Add Clinical Term Component', () => {
     const state = {
       modal: true,
       word: {
+        type: 'header',
         font_info: {
           roi_id: {
             para: '31fbea8a-1204-4105-ad33-f414d1816045',
           },
+          content: 'ABC',
         },
       },
     };
@@ -171,12 +175,6 @@ describe('rendering the Add Clinical Term Component', () => {
     expect(field2).toBeInTheDocument();
     fireEvent.change(field2, { target: { value: 'some text' } });
     expect(field2.value).toBe('some text');
-    const field3 = screen
-      .getByTestId('Preferred-term-text')
-      .querySelector('input');
-    expect(field3).toBeInTheDocument();
-    fireEvent.change(field3, { target: { value: 'some text' } });
-    expect(field3.value).toBe('some text');
     expect(screen.getByRole('button', { name: 'Add tag' })).toBeEnabled();
     userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
   });
