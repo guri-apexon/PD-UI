@@ -28,13 +28,13 @@ describe('preferredTermsValidation', () => {
 
   it('should return the correct error message when the value contains a comma', () => {
     expect(preferredTermsValidation('term1, term2')).toBe(
-      'Please tag only one Preferred Term. undefined',
+      'Please tag only one Preferred Term. ',
     );
   });
 
   it('should return the correct error message when the value contains multiple words', () => {
     expect(preferredTermsValidation('term1 term2')).toBe(
-      'Please tag only one Preferred Term. undefined',
+      'Please tag only one Preferred Term. ',
     );
   });
 
@@ -57,7 +57,7 @@ describe('preferredTermsValidation', () => {
 
   test('returns an error message when multiple terms are tagged', () => {
     const result = preferredTermsValidation('cpt_123, cpt_456');
-    expect(result).toBe('Please tag only one Preferred Term. undefined');
+    expect(result).toBe('Please tag only one Preferred Term. ');
   });
 
   test('returns an error message when the term is not prefixed with "cpt_"', () => {

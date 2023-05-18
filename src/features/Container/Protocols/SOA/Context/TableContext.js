@@ -157,7 +157,10 @@ const getTableData = (data, action) => {
       data[TableConst.NORMALIZED_SOA].push(action.newRow);
     }
 
-    if (action.type === TableEvents.DELETE_TABLE_ROW) {
+    if (
+      action.type === TableEvents.DELETE_TABLE_ROW ||
+      action.type === TableEvents.DELETE_TABLE_COLUMN
+    ) {
       const ns = data[TableConst.NORMALIZED_SOA];
       const sp = data[TableConst.STUDYPROCEDURE];
       data[TableConst.NORMALIZED_SOA] = ns.filter(
