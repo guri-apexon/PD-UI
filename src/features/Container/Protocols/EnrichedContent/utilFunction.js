@@ -7,15 +7,17 @@ const getKeyFromEnrichText = (term) => {
 
 const preferredTermsValidation = (value, preferredTerm) => {
   let msg = '';
+  let extendMsg = '';
   const pTLowerCase = value.toLowerCase();
   const arr = value.split(' ');
   if (value === '') {
     msg = '';
   } else if (value.includes(',') || arr.length > 1 || preferredTerm) {
     msg = 'Please tag only one Preferred Term. ';
-    const extendMsg =
-      preferredTerm && `${preferredTerm} is already tagged Term`;
-    msg += extendMsg;
+    extendMsg = preferredTerm && `${preferredTerm} is already tagged Term`;
+    if (extendMsg) {
+      msg += extendMsg;
+    }
   } else if (!pTLowerCase.includes('cpt_')) {
     msg = 'Please prefix Preferred Term with "cpt_"';
   }
