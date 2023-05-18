@@ -60,7 +60,6 @@ import {
 import { userId } from '../../../../store/userDetails';
 import ActionMenu from './ActionMenu';
 import { scrollToLinkandReference, tablePopup } from './utils';
-import data1 from './data.json';
 
 const styles = {
   modal: {
@@ -673,7 +672,6 @@ function DigitizeAccordion({
           }
         }
         setSectionDataArr(updatedSectionsData);
-        // setSectionDataArr(data1);
         if (item.linkandReference && updatedSectionsData.length) {
           scrollToLinkandReference(index, item.linkandReference);
           handleOpenAccordion();
