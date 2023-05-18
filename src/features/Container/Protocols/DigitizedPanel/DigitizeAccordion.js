@@ -452,7 +452,6 @@ function DigitizeAccordion({
   }, [tocActive]);
 
   const handleEnrichedClick = (e, obj, type, content) => {
-    console.log('Manu4', e.target);
     if (
       e.target.className.includes('enriched-txt') ||
       e.target.className.includes('Preferred-txt')

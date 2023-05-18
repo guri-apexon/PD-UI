@@ -186,58 +186,54 @@ export const createEnrichedText = (content, terms) => {
   return text;
 };
 
-export const createPreferredText = (text, terms) => {
-  // eslint-disable-next-line
-  let regexForHTML = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
-  const openTag = '';
-  const closeTag = '';
-  text = text.trim();
-  // if (regexForHTML.test(text)) {
-  //   const length = text?.length;
-  //   openTag = text[0] + text[1] + text[2] + text[3];
-  //   closeTag =
-  //     text[length - 5] +
-  //     text[length - 4] +
-  //     text[length - 3] +
-  //     text[length - 2] +
-  //     text[length - 1];
-  // }
-  console.log('SHUBHAM78', openTag);
-  console.log('SHUBHAM78', closeTag);
-  text = text
-    .replaceAll(/(<([^>]+)>)/gi, '')
+export const htmlCheck = (content) => {
+  const regexForHTML = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
+  return regexForHTML.test(content);
+};
+export const createHtmlTag = (content, start, end) => {
+  let tag = '';
+  for (let i = start; i < end; i++) {
+    tag += content[i];
+  }
+  return tag;
+};
+
+export const createPlainText = (content) => {
+  return content
+    ?.replaceAll(/(<([^>]+)>)/gi, '')
     .replaceAll('&nbsp;', ' ')
     .replace(/\s\s+/g, ' ')
-    .replace(/[^a-zA-Z0-9 ]/g, '')
     .trim();
-  console.log('SHUBHAM90', terms);
-  console.log('SHUBHAM99', text);
+};
+
+export const createPreferredText = (text, terms) => {
+  let openTag = '';
+  let closeTag = '';
+  text = text.trim();
+  const index = text.indexOf('>');
+  const indexstart = text.indexOf('<');
+  if (htmlCheck && index <= 3 && indexstart === 0) {
+    const textLength = text.length;
+    openTag = createHtmlTag(text, 0, index + 1);
+    closeTag = createHtmlTag(text, textLength - index - 2, textLength);
+  }
+  text = createPlainText(text);
 
   if (terms) {
     const arr = Object.keys(terms);
     if (arr.length) {
       const match = arr.find((x) => {
-        console.log('SHUBHAM00', x);
         return x === text;
       });
 
-      console.log('SHUBHAM1', match);
-      console.log('SHUBHAM12', text);
-
       if (match) {
-        // const word = match.split(' ');
-        // word?.forEach((item) => {
-        //   text.replaceAll(text, item);
-        // });
         text = text
           .replace(match, `<b class="Preferred-txt"> ${match} </b>`)
           .replace(/[_]/g, ' ')
           .replace('cpt', '')
           .trim();
 
-        console.log('SHUBHAM134', text);
         text = `<b class="Preferred-txt">${text}</b>`;
-        console.log('manu6', text);
       }
     }
   }

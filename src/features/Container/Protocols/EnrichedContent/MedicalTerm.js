@@ -19,6 +19,7 @@ import { EnrichedValue, Enrichedword } from '../protocolSlice';
 import enrichedTerms from './clinicalTerms.json';
 import { userId } from '../../../../store/userDetails';
 import './MedicalTerm.scss';
+import { createPlainText } from '../../../../utils/utilFunction';
 
 function MedicalTerm({
   enrichedTarget,
@@ -48,13 +49,14 @@ function MedicalTerm({
   const [errorMsg, setErrorMsg] = useState('');
   const loggedInUserId = useSelector(userId);
 
-  enrichedText = enrichedText
-    ?.replaceAll(/(<([^>]+)>)/gi, '')
-    .replaceAll('&nbsp;', ' ')
-    .replace(/\s\s+/g, ' ')
-    .replace(/[^a-zA-Z0-9 ]/g, '')
-    .trim();
-
+  // enrichedText = enrichedText
+  //   ?.replaceAll(/(<([^>]+)>)/gi, '')
+  //   .replaceAll('&nbsp;', ' ')
+  //   .replace(/\s\s+/g, ' ')
+  //   .trim();
+  if (enrichedText) {
+    enrichedText = createPlainText(enrichedText);
+  }
   useEffect(() => {
     setClinicalTermsArr(clinicalTermsArray);
     // eslint-disable-next-line
