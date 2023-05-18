@@ -186,19 +186,45 @@ export const createEnrichedText = (content, terms) => {
   return text;
 };
 
+export const htmlCheck = (content) => {
+  const regexForHTML = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
+  return regexForHTML.test(content);
+};
+export const createHtmlTag = (content, start, end) => {
+  let tag = '';
+  for (let i = start; i < end; i++) {
+    tag += content[i];
+  }
+  return tag;
+};
+
+export const createPlainText = (content) => {
+  return content
+    ?.replaceAll(/(<([^>]+)>)/gi, '')
+    .replaceAll('&nbsp;', ' ')
+    .replace(/\s\s+/g, ' ')
+    .trim();
+};
+
 export const createPreferredText = (text, terms) => {
-  text = text.replace(/\s\s+/g, ' ');
+  let openTag = '';
+  let closeTag = '';
+  text = text.trim();
+  const index = text.indexOf('>');
+  const indexstart = text.indexOf('<');
+  if (htmlCheck && index <= 3 && indexstart === 0) {
+    const textLength = text.length;
+    openTag = createHtmlTag(text, 0, index + 1);
+    closeTag = createHtmlTag(text, textLength - index - 2, textLength);
+  }
+  text = createPlainText(text);
+
   if (terms) {
     const arr = Object.keys(terms);
     if (arr.length) {
-      let match = arr.find((x) => {
-        return x
-          .toLowerCase()
-          .trim()
-          .includes(removeHtmlTags(text).toLowerCase().trim());
+      const match = arr.find((x) => {
+        return x === text;
       });
-
-      match = match?.replace(/(<([^>]+)>)/gi, '');
 
       if (match) {
         text = text
@@ -206,11 +232,13 @@ export const createPreferredText = (text, terms) => {
           .replace(/[_]/g, ' ')
           .replace('cpt', '')
           .trim();
+
+        text = `<b class="Preferred-txt">${text}</b>`;
       }
     }
   }
 
-  return text;
+  return `${openTag}${text}${closeTag}`;
 };
 
 export const handleProtocolTitle = (value, testID) => {
