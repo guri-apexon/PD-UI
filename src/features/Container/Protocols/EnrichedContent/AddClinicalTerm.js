@@ -44,6 +44,7 @@ function AddClinicalTerm({ docId, linkId }) {
   };
   const handleClose = () => {
     setOpenModal(false);
+    setPtErrorMsg('');
   };
 
   useEffect(() => {
@@ -265,7 +266,7 @@ function AddClinicalTerm({ docId, linkId }) {
                 helperText="Ex: cpt_primary_objective"
               />
             )}
-            {ptErrorMsg && (
+            {ptErrorMsg && showPreferredTermText() && (
               <div className="iconbutton-warning">{ptErrorMsg}</div>
             )}
           </FieldGroup>
