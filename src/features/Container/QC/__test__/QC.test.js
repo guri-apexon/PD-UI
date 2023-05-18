@@ -66,4 +66,18 @@ describe('Protocol Table container component', () => {
     fireEvent.click(getByTestId('breadcrumb-click'), { preventDefault });
     expect(preventDefault).toHaveBeenCalledTimes(0);
   });
+
+  test('rendering the QC Component with notification Data', () => {
+    const reduxData = {
+      initialState: {
+        qc: {
+          notificationData: {
+            id: '1',
+            protocol: 'test123',
+          },
+        },
+      },
+    };
+    render(<QCContainer />, reduxData);
+  });
 });

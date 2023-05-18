@@ -44,6 +44,7 @@ function AddClinicalTerm({ docId, linkId }) {
   };
   const handleClose = () => {
     setOpenModal(false);
+    setPtErrorMsg('');
   };
 
   useEffect(() => {
@@ -184,13 +185,7 @@ function AddClinicalTerm({ docId, linkId }) {
   };
 
   const showPreferredTermText = () => {
-    const content = removeHtmlTags(wordSelector?.word?.content);
-
-    if (
-      wordSelector?.word?.type === CONTENT_TYPE?.HEADER &&
-      content?.trim() === selectedText.trim()
-    )
-      return true;
+    if (wordSelector?.word?.type === CONTENT_TYPE?.HEADER) return true;
     return false;
   };
 
@@ -265,7 +260,7 @@ function AddClinicalTerm({ docId, linkId }) {
                 helperText="Ex: cpt_primary_objective"
               />
             )}
-            {ptErrorMsg && (
+            {ptErrorMsg && showPreferredTermText() && (
               <div className="iconbutton-warning">{ptErrorMsg}</div>
             )}
           </FieldGroup>
