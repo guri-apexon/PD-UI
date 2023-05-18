@@ -185,13 +185,7 @@ function AddClinicalTerm({ docId, linkId }) {
   };
 
   const showPreferredTermText = () => {
-    const content = removeHtmlTags(wordSelector?.word?.content);
-
-    if (
-      wordSelector?.word?.type === CONTENT_TYPE?.HEADER &&
-      content?.trim() === selectedText.trim()
-    )
-      return true;
+    if (wordSelector?.word?.type === CONTENT_TYPE?.HEADER) return true;
     return false;
   };
 
