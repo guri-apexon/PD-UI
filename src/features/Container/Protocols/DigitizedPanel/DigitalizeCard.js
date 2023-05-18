@@ -222,6 +222,7 @@ function DigitalizeCard({
                     onClick={() => setModalOpen(true)}
                     disabled={!protocolAllItems.isWorkflowDone}
                     size="small"
+                    data-testid="submit-button"
                   >
                     Submit
                   </Button>

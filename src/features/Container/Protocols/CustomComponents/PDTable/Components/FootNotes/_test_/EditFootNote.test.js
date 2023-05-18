@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import { QC_CHANGE_TYPE } from '../../../../../../../../AppConstant/AppConstant';
 import EditFootNote from '../EditFootNote';
 
@@ -51,24 +51,22 @@ describe('EditFootNote', () => {
     expect(setFootnoteData).toHaveBeenCalled();
   });
 
-  it('deletes the item and updates setFootnoteData if text is empty on blur', () => {
+  it('deletes the item and updates setFootnoteData if text is empty on blur', async () => {
     const newContent = 'Hi, there!';
-    const { getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <EditFootNote
         item={{ AttachmentId: '123' }}
         index={0}
-        content={content}
+        content=""
         edit
         footNoteData={sampleFootNoteData}
         setFootnoteData={setFootnoteData}
       />,
     );
-    const contentNode = getByText(content);
-    fireEvent.click(contentNode);
     const contentEditable = getByTestId('content-editable');
     contentEditable.focus();
     contentEditable.blur();
-    fireEvent.input(contentEditable, {
+    await fireEvent.input(contentEditable, {
       target: { innerHTML: newContent },
     });
     contentEditable.blur(contentEditable);
@@ -105,5 +103,96 @@ describe('EditFootNote', () => {
 
     expect(queryByText(content)).not.toBeInTheDocument();
     expect(getByText(newContent)).toBeInTheDocument();
+  });
+
+  it('deletes the item and updates setFootnoteData if text is non-empty on blur', async () => {
+    const newContent = 'Hi, there!';
+    const { getByText, getByTestId } = render(
+      <EditFootNote
+        item={{ AttachmentId: '123' }}
+        index={0}
+        content={content}
+        edit
+        footNoteData={sampleFootNoteData}
+        setFootnoteData={setFootnoteData}
+      />,
+    );
+    const contentNode = getByText(content);
+    fireEvent.click(contentNode);
+    const contentEditable = getByTestId('content-editable');
+    contentEditable.focus();
+    contentEditable.blur();
+    await fireEvent.input(contentEditable, {
+      target: { innerHTML: newContent },
+    });
+    contentEditable.blur(contentEditable);
+
+    const result = [...sampleFootNoteData];
+    result[0] = {
+      Text: '',
+      qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
+      AttachmentId: '123',
+    };
+    expect(setFootnoteData).toHaveBeenCalled();
+  });
+
+  it('item does not contain the attachmentId', async () => {
+    const sampleFootNoteDataValues = [
+      {
+        AttachmentId: null,
+        Text: 'Sample 1',
+        qc_change_type_footnote: QC_CHANGE_TYPE.ADDED,
+      },
+    ];
+    const newContent = 'Hi, there!';
+    const { getByText, getByTestId } = render(
+      <EditFootNote
+        item={{ AttachmentId: null }}
+        index={0}
+        content={content}
+        edit
+        footNoteData={sampleFootNoteDataValues}
+        setFootnoteData={setFootnoteData}
+      />,
+    );
+    const contentNode = getByText(content);
+    fireEvent.click(contentNode);
+    const contentEditable = getByTestId('content-editable');
+    contentEditable.focus();
+    contentEditable.blur();
+    await fireEvent.input(contentEditable, {
+      target: { innerHTML: newContent },
+    });
+    contentEditable.blur(contentEditable);
+    expect(setFootnoteData).toHaveBeenCalled();
+  });
+
+  it('deletes the item and updates setFootnoteData if text and attachmentId is empty and null on blur', async () => {
+    const newContent = 'Hi, there!';
+    const { getByTestId } = render(
+      <EditFootNote
+        item={{ AttachmentId: null }}
+        index={0}
+        content=""
+        edit
+        footNoteData={sampleFootNoteData}
+        setFootnoteData={setFootnoteData}
+      />,
+    );
+    const contentEditable = getByTestId('content-editable');
+    contentEditable.focus();
+    contentEditable.blur();
+    await fireEvent.input(contentEditable, {
+      target: { innerHTML: newContent },
+    });
+    contentEditable.blur(contentEditable);
+
+    const result = [...sampleFootNoteData];
+    result[0] = {
+      Text: '',
+      qc_change_type_footnote: QC_CHANGE_TYPE.DELETED,
+      AttachmentId: null,
+    };
+    expect(setFootnoteData).toHaveBeenCalled();
   });
 });

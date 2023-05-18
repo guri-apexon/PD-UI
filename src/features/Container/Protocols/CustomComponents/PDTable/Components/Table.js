@@ -13,6 +13,7 @@ import EmptyRows from './EmptyRows';
 import FootNotes from './FootNotes/Footnotes';
 import { tableOperations } from './dropdownData';
 import './table.scss';
+import SanitizeHTML from '../../../../../Components/SanitizeHtml';
 
 function DisplayTable({
   data,
@@ -127,23 +128,27 @@ function DisplayTable({
                     </span>
                   )}
                   {/* eslint-disable-next-line */}
-                  <span
+                  <div
                     id={`columnID-${rowIndex}-${colIndex}`}
                     data-testid="span-edit"
                     className="editable-span"
                     onClick={handleClick}
-                    // eslint-disable-next-line
-                    dangerouslySetInnerHTML={getPreferredTerms(
-                      col.value,
-                      isPreferredTerm,
-                      preferredTerms,
-                      clinicalTerms,
-                      isClinicalTerms,
-                    )}
                     role="textbox"
                     contentEditable={edit}
                     onBlur={(e) => handleChange(colIndex, rowIndex, e)}
-                  />
+                  >
+                    <p>
+                      <SanitizeHTML
+                        html={getPreferredTerms(
+                          col.value,
+                          isPreferredTerm,
+                          preferredTerms,
+                          clinicalTerms,
+                          isClinicalTerms,
+                        )}
+                      />
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>

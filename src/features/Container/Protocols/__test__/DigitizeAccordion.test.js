@@ -1,21 +1,25 @@
-import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { cloneDeep } from 'lodash';
-import store from '../../../../store/store';
-import { render } from '../../../../test-utils/test-utils';
-import DigitizeAccordion from '../DigitizedPanel/DigitizeAccordion';
-import ProtocolReducer from '../protocolSlice';
+import { fireEvent } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import UserReducer from '../../../../store/userDetails';
+import { render, screen } from '../../../../test-utils/test-utils';
+import DigitizeAccordion from '../DigitizedPanel/DigitizeAccordion';
 import * as ProtocolContext from '../ProtocolContext';
-
-import initialState from './ProtocolReducer.json';
+import ProtocolReducer from '../protocolSlice';
+import {
+  headerListData,
+  headerListDataForDiffLinkId,
+  headerListWithoutLinkAndReference,
+  mockDataForDiscard,
+  mockDataForLockDetails,
+  mockStateDataForEmptyLockDetails,
+} from './data';
 
 const item = {
   doc_id: '558a1964-bfed-4974-a52b-79848e1df372',
   group_type: 'DocumentLinks',
-  link_id: '8ccb22b1-0aa0-487a-a47b-26a0b71bd4b7',
+  link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
   LinkLevel: 1,
   page: 1,
   sec_id: '',
@@ -29,6 +33,8 @@ const item = {
     last_reviewed_by: '',
     total_no_review: '',
   },
+  linkandReference: 'testing',
+  preferred_term: 'test',
 };
 
 // eslint-disable-next-line
@@ -54,542 +60,645 @@ export function renderWithProviders(
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }
-// jest.setTimeout(1500000);
-describe('DigitizeAccordion', () => {
-  const bool = true;
 
-  test('render accordion', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
-    jest
-      .spyOn(ProtocolContext, 'useProtContext')
-      .mockImplementation(() => contextValues);
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard={1}
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handleLinkId={jest.fn()}
-          handleOpenAccordion={jest.fn()}
-        />
-      </Provider>,
-    );
-    const header = component.getByText('blank_header');
-    expect(header).toBeInTheDocument();
-  });
+const mockState = {
+  initialState: {
+    protocol: {
+      discardValue: {
+        bladeRight: {
+          name: 'clinical Terms',
+        },
+        isDiscarded: true,
+        isEdited: true,
+      },
+      // discardValue: true,
+      isSaveEnabled: true,
+      sectionIndex: 0,
+      sectionLockDetails: {
+        section_lock: true,
+      },
+      TOCActiveAccordion: [true, false],
+      activeTOC: ['bc4dc374-8a78-11ed-af64-005056ab646'],
+      sectionDetails: {
+        protocol: '15-07',
+        sectionResponse: {
+          success: true,
+        },
+        data: [
+          {
+            linkId: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+            data: [
+              {
+                section_level: '',
+                CPT_section: 'Unmapped',
+                type: 'text',
+                content: 'CONFIDENTIAL',
+                link_and_reference: { 0: 'source_text' },
+                font_info: {
+                  IsBold: false,
+                  font_size: -1,
+                  font_style: '',
+                  entity: [],
+                  roi_id: {
+                    para: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+                    childbox: '',
+                    subtext: '',
+                  },
+                },
+                level_1_CPT_section: 'Unmapped',
+                file_section: 'Unmapped',
+                file_section_num: '',
+                file_section_level: 1,
+                seq_num: 2,
+                qc_change_type: '',
+                line_id: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+                aidocid: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+                synonyms_extracted_terms: '',
+                semantic_extraction: '',
+                section_locked: false,
+                clinical_terms: {
+                  CONFIDENTIAL: {
+                    synonyms: 'value1, value2',
+                  },
+                },
+              },
+              {
+                section_level: '',
+                CPT_section: 'Unmapped',
+                type: 'text',
+                content: 'PLASMA',
+                link_and_reference: { 0: 'source_text' },
+                font_info: {
+                  italics: true,
+                  IsBold: true,
+                  font_size: -1,
+                  font_style: '',
+                  entity: [],
+                  roi_id: {
+                    para: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+                    childbox: '',
+                    subtext: '',
+                  },
+                },
+                level_1_CPT_section: 'Unmapped',
+                file_section: 'Unmapped',
+                file_section_num: '',
+                file_section_level: 1,
+                seq_num: 2,
+                qc_change_type: '',
+                line_id: 'bc5080ba-8a78-11ed-8986-005056ab6469',
+                aidocid: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+                synonyms_extracted_terms: '',
+                semantic_extraction: '',
+                section_locked: false,
+                clinical_terms: {
+                  CONFIDENTIAL: {
+                    synonyms: 'value1, value2',
+                  },
+                },
+              },
+            ],
+          },
+        ],
+        sections: [
+          {
+            section_level: '',
+            CPT_section: 'Unmapped',
+            type: 'text',
+            content: 'CONFIDENTIAL',
+            font_info: {
+              IsBold: false,
+              font_size: -1,
+              font_style: '',
+              entity: [],
+              roi_id: {
+                para: 'bc4dc375-8a78-11ed-946e-005056ab6469',
+                childbox: '',
+                subtext: '',
+              },
+            },
+            level_1_CPT_section: 'Unmapped',
+            file_section: 'Unmapped',
+            file_section_num: '',
+            file_section_level: 1,
+            seq_num: 2,
+            qc_change_type: '',
+            line_id: 'bc5C80ba-8a78-11ed-8986-005056ab6469',
+            aidocid: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+            synonyms_extracted_terms: '',
+            semantic_extraction: '',
+            section_locked: false,
+            clinical_terms: {
+              CONFIDENTIAL: {
+                synonyms: 'value1, value2',
+              },
+            },
+          },
+          {
+            section_level: '',
+            CPT_section: 'Unmapped',
+            type: 'text',
+            content: 'PLASMA',
+            font_info: {
+              italics: true,
+              IsBold: true,
+              font_size: -1,
+              font_style: '',
+              entity: [],
+              roi_id: {
+                para: 'bc4dc375-8a78-11ed-946e-005056ab6469',
+                childbox: '',
+                subtext: '',
+              },
+            },
+            level_1_CPT_section: 'Unmapped',
+            file_section: 'Unmapped',
+            file_section_num: '',
+            file_section_level: 1,
+            seq_num: 2,
+            qc_change_type: '',
+            line_id: 'bc5CA0ba-8a78-11ed-8986-005056ab6469',
+            aidocid: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
+            synonyms_extracted_terms: '',
+            semantic_extraction: '',
+            section_locked: false,
+            clinical_terms: {
+              CONFIDENTIAL: {
+                synonyms: 'value1, value2',
+              },
+            },
+          },
+        ],
+      },
+    },
+  },
+};
 
-  test('Accordion loaded with store values and Accordion is open when the currentActiveCard is of the same item id', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
-    jest
-      .spyOn(ProtocolContext, 'useProtContext')
-      .mockImplementation(() => contextValues);
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard={1}
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handleLinkId={jest.fn()}
-          handleOpenAccordion={jest.fn()}
-        />
-      </Provider>,
-    );
-    expect(component).toBeTruthy();
-  });
-
-  test('Accordion is close when the currentActiveCard is of the same item id', () => {
-    const bool = true;
-    const contextValues = { dispatchSectionEvent: jest.fn() };
+describe('rendering the Digitize Accordion file', () => {
+  test('when showEdit and saveEnabled is true', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'modify',
+          content: 'test',
+          isSaved: false,
+          type: 'table',
+          link_level: '1',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setSaveSection: jest.fn(),
+      setActiveLineID: jest.fn(),
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
     render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard="8ccb22b1-0aa0-487a-a47b"
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          rightBladeValue={jest.fn()}
-          handleLinkId={jest.fn()}
-          handleOpenAccordion={jest.fn()}
-        />
-      </Provider>,
-    );
-  });
-
-  test('Pencil icon is onClick for primary user', async () => {
-    const item1 = {
-      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
-      group_type: 'DocumentLinks',
-      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
-      LinkLevel: 1,
-      page: 2,
-      sec_id: '',
-      source_file_section: 'Signatures',
-      LinkType: 'toc',
-      qc_change_type: '',
-      sequence: 0,
-      section_locked: false,
-      audit_info: {
-        last_reviewed_date: '',
-        last_reviewed_by: '',
-        total_no_review: '',
-      },
-    };
-
-    const obj = cloneDeep(initialState);
-    delete obj.protocol.sectionDetails.data;
-    const contextValues = { dispatchSectionEvent: jest.fn() };
-    jest
-      .spyOn(ProtocolContext, 'useProtContext')
-      .mockImplementation(() => contextValues);
-    const component = render(
-      <DigitizeAccordion
-        item={item1}
-        primaryRole={bool}
-        protocol="15-07"
-        index={1}
-        currentActiveCard={null}
-        setCurrentActiveCard={jest.fn()}
-        setCurrentEditCard={jest.fn()}
-        handlePageRight={jest.fn()}
-        handleLinkId={jest.fn()}
-        handleOpenAccordion={jest.fn()}
-        dataExist
-      />,
-      {
-        initialState,
-      },
-    );
-
-    const accordian = component.getByTestId('accordion');
-    expect(accordian).toBeInTheDocument();
-    expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
-    expect(component.getByTestId('accordion-header')).toBeInTheDocument();
-    fireEvent.click(component.getByTestId('accordion-header'));
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-    fireEvent.click(pencil);
-  });
-
-  test('accordian is onClick for primary user', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
-    jest
-      .spyOn(ProtocolContext, 'useProtContext')
-      .mockImplementation(() => contextValues);
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard={1}
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handleLinkId={jest.fn()}
-          handleOpenAccordion={jest.fn()}
-        />
-      </Provider>,
-    );
-    const accordian = component.getByTestId('accordion');
-    expect(accordian).toBeInTheDocument();
-    fireEvent.click(accordian);
-    expect(component.getByTestId('accordion-details')).toBeInTheDocument();
-    fireEvent.click(component.getByTestId('accordion-details'));
-  });
-
-  test('Autosizer', () => {
-    jest.mock('react-virtualized', () => {
-      const ReactVirtualized = jest.requireActual('react-virtualized');
-      return {
-        ...ReactVirtualized,
-        AutoSizer: ({ children }) => children({ height: 1000, width: 1000 }),
-      };
-    });
-  });
-
-  test('Digitized accordion normal view', () => {
-    const item1 = {
-      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
-      group_type: 'DocumentLinks',
-      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
-      LinkLevel: 1,
-      page: 1,
-      sec_id: '',
-      source_file_section: 'Signatures',
-      LinkType: 'toc',
-      qc_change_type: '',
-      sequence: 0,
-      section_locked: false,
-      audit_info: {
-        last_reviewed_date: '',
-        last_reviewed_by: '',
-        total_no_review: '',
-      },
-    };
-    const screen = renderWithProviders(
-      <DigitizeAccordion
-        item={item1}
-        primaryRole={bool}
-        protocol="1234"
-        currentActiveCard="8ccb22b1-0aa0-487a-a47b"
-        setCurrentActiveCard={jest.fn()}
-        setCurrentEditCard={() => jest.fn()}
-        handlePageRight={() => jest.fn()}
-        handleLinkId={jest.fn()}
-        handleOpenAccordion={jest.fn()}
-      />,
-      {
-        preloadedState: initialState,
-      },
-    );
-    const enrText = screen.getByText('Signatures');
-    fireEvent.click(enrText);
-  });
-
-  test('Digitized accordion Plus Icon view', () => {
-    const item = {
-      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
-      group_type: 'DocumentLinks',
-      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
-      LinkLevel: 1,
-      page: 1,
-      sec_id: '',
-      source_file_section: 'Signatures',
-      LinkType: 'toc',
-      qc_change_type: '',
-      sequence: 0,
-      section_locked: false,
-      audit_info: {
-        last_reviewed_date: '',
-        last_reviewed_by: '',
-        total_no_review: '',
-      },
-    };
-    const screen = renderWithProviders(
       <DigitizeAccordion
         item={item}
-        primaryRole={bool}
-        protocol="1234"
-        currentActiveCard="8ccb22b1-0aa0-487a-a47b"
-        setCurrentActiveCard={jest.fn()}
-        setCurrentEditCard={() => jest.fn()}
-        rightBladeValue="Clinical Terms"
-        headerList={[1, 2]}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handlePageRight={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListWithoutLinkAndReference}
+        setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
         handleLinkId={jest.fn()}
+        globalPreferredTerm
+        scrollToTop={jest.fn()}
         handleOpenAccordion={jest.fn()}
+        dataExist
       />,
-      {
-        preloadedState: initialState,
-      },
+      mockState,
     );
-    fireEvent.mouseOver(screen.getByTestId('mouse-over'));
+    expect(screen.getByTestId('accordion')).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByTestId('mouse-over'));
+    fireEvent.scroll(screen.getByTestId('accordion'), {
+      target: { className: 'enriched-txt' },
+    });
+    expect(screen.getAllByRole('button')[0]).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole('button')[0]);
+    fireEvent.scroll(screen.getByTestId('accordion-details'));
+    fireEvent.keyDown(screen.getByTestId('accordion-details'));
+    fireEvent.click(screen.getByTestId('accordion_summary'));
+    expect(screen.getByText(/Confirm Action/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Discard' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Discard' }));
     fireEvent.mouseLeave(screen.getByTestId('mouse-over'));
-    fireEvent.mouseOver(screen.getByTestId('mouse-over'));
-    const plusicon = screen.getByTestId('plus-add');
-    fireEvent.click(plusicon);
-    expect(plusicon).toBeInTheDocument();
   });
 
-  test('click on accordion_summary', () => {
-    const contextValues = { dispatchSectionEvent: jest.fn() };
-    jest
-      .spyOn(ProtocolContext, 'useProtContext')
-      .mockImplementation(() => contextValues);
-    const component = render(
-      <Provider store={store}>
-        <DigitizeAccordion
-          item={item}
-          primaryRole={bool}
-          protocol="1234"
-          currentActiveCard={1}
-          setCurrentActiveCard={jest.fn()}
-          setCurrentEditCard={jest.fn()}
-          handlePageRight={jest.fn()}
-          handleLinkId={jest.fn()}
-          handleOpenAccordion={jest.fn()}
-        />
-      </Provider>,
-    );
-    expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
-    fireEvent.click(component.getByTestId('accordion_summary'));
-  });
-
-  test('Save button is visible for primary user', async () => {
-    const item1 = {
-      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
-      group_type: 'DocumentLinks',
-      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
-      LinkLevel: 1,
-      page: 2,
-      sec_id: '',
-      source_file_section: 'Signatures',
-      LinkType: 'toc',
-      qc_change_type: '',
-      sequence: 0,
-      section_locked: false,
-      audit_info: {
-        last_reviewed_date: '',
-        last_reviewed_by: '',
-        total_no_review: '',
-      },
+  test('when showEdit and saveEnabled is true and when type is header', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'modify',
+          content: 'test',
+          isSaved: false,
+          type: 'header',
+          link_level: '1',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setActiveLineID: jest.fn(),
     };
-
-    const obj = cloneDeep(initialState);
-    delete obj.protocol.sectionDetails.data;
-    const contextValues = { dispatchSectionEvent: jest.fn() };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
-    const component = render(
+    render(
       <DigitizeAccordion
-        item={item1}
-        primaryRole={bool}
-        protocol="15-07"
-        index={1}
-        currentActiveCard={null}
-        setCurrentActiveCard={jest.fn()}
-        setCurrentEditCard={jest.fn()}
+        item={item}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
         handlePageRight={jest.fn()}
-        dataExist
-        handleLinkId={jest.fn()}
-        handleOpenAccordion={jest.fn()}
-      />,
-      {
-        initialState,
-      },
-    );
-
-    const accordian = component.getByTestId('accordion');
-    expect(accordian).toBeInTheDocument();
-    expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
-    expect(component.getByTestId('accordion-header')).toBeInTheDocument();
-    fireEvent.click(component.getByTestId('accordion-header'));
-
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-    fireEvent.click(pencil);
-    // jest.useFakeTimers();
-    // // container.instance().setTimeoutFn();
-    // jest.advanceTimersByTime(1000);
-    // jest.runAllTimers();
-
-    // const trash = await component.findByTestId('trashIcon');
-    // fireEvent.click(trash);
-    // const deleteText = component.getByTestId('update-term-field');
-    // fireEvent.click(deleteText);
-  });
-
-  test('Save button is visible for primary user', () => {
-    const item1 = {
-      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
-      group_type: 'DocumentLinks',
-      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
-      LinkLevel: 1,
-      page: 2,
-      sec_id: '',
-      source_file_section: 'Signatures',
-      LinkType: 'toc',
-      qc_change_type: '',
-      sequence: 0,
-      section_locked: false,
-      audit_info: {
-        last_reviewed_date: '',
-        last_reviewed_by: '',
-        total_no_review: '',
-      },
-    };
-
-    const obj = cloneDeep(initialState);
-    delete obj.protocol.sectionDetails.data;
-    const contextValues = { dispatchSectionEvent: jest.fn() };
-    jest
-      .spyOn(ProtocolContext, 'useProtContext')
-      .mockImplementation(() => contextValues);
-    const component = render(
-      <DigitizeAccordion
-        item={item1}
-        primaryRole={bool}
-        protocol="15-07"
-        index={1}
-        currentActiveCard={null}
-        setCurrentActiveCard={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListData}
         setCurrentEditCard={jest.fn()}
-        handlePageRight={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
         handleLinkId={jest.fn()}
+        globalPreferredTerm
+        scrollToTop={jest.fn()}
         handleOpenAccordion={jest.fn()}
         dataExist
       />,
-      {
-        initialState,
-      },
+      mockState,
     );
-
-    const accordian = component.getByTestId('accordion');
-    expect(accordian).toBeInTheDocument();
-    expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
-    expect(component.getByTestId('accordion-header')).toBeInTheDocument();
-    fireEvent.click(component.getByTestId('accordion-header'));
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-    fireEvent.click(pencil);
-    // const trash = component.getByTestId('trashIcon');
-    // fireEvent.click(trash);
-    // const deleteText = component.getByTestId('update-term-field-cancel');
-    // component.debug();
-    // fireEvent.click(deleteText);
+    expect(screen.getByTestId('accordion')).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByTestId('mouse-over'));
+    fireEvent.scroll(screen.getByTestId('accordion'), {
+      target: { className: 'enriched-txt' },
+    });
+    expect(screen.getAllByRole('button')[0]).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole('button')[0]);
+    fireEvent.scroll(screen.getByTestId('accordion-details'));
+    fireEvent.keyDown(screen.getByTestId('accordion-details'));
+    fireEvent.click(screen.getByTestId('accordion_summary'));
+    // expect(screen.getByTestId('trashIcon')).toBeInTheDocument();
+    // fireEvent.click(screen.getByTestId('discardIcon'));
+    expect(screen.getByText(/Confirm Action/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Discard' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Discard' }));
   });
 
-  xtest('Should render the undo button and its modal', () => {
-    const item1 = {
-      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
-      group_type: 'DocumentLinks',
-      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
-      LinkLevel: 1,
-      page: 2,
-      sec_id: '',
-      source_file_section: 'Signatures',
-      LinkType: 'toc',
-      qc_change_type: '',
-      sequence: 0,
-      section_locked: false,
-      audit_info: {
-        last_reviewed_date: '',
-        last_reviewed_by: '',
-        total_no_review: '',
-      },
+  test('when showEdit and saveEnabled is true, and has type as image in section content', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'add',
+          content: 'test',
+          isSaved: false,
+          type: 'image',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setSaveSection: jest.fn(),
+      setActiveLineID: jest.fn(),
     };
-
-    const obj = cloneDeep(initialState);
-    delete obj.protocol.sectionDetails.data;
-    const contextValues = { dispatchSectionEvent: jest.fn() };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
-    const component = render(
+    render(
       <DigitizeAccordion
-        item={item1}
-        primaryRole={bool}
-        protocol="15-07"
-        index={1}
-        currentActiveCard={null}
-        setCurrentActiveCard={jest.fn()}
-        setCurrentEditCard={jest.fn()}
+        item={item}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
         handlePageRight={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListData}
+        setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
         handleLinkId={jest.fn()}
+        globalPreferredTerm
+        scrollToTop={jest.fn()}
         handleOpenAccordion={jest.fn()}
         dataExist
       />,
-      {
-        initialState,
-      },
+      mockState,
     );
-
-    const accordian = component.getByTestId('accordion');
-    expect(accordian).toBeInTheDocument();
-    expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
-    expect(component.getByTestId('accordion-header')).toBeInTheDocument();
-    fireEvent.click(component.getByTestId('accordion-header'));
-
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-    fireEvent.click(pencil);
-    const undo = component.getByTestId('discard-icon');
-    expect(undo).toBeInTheDocument();
-    fireEvent.click(undo);
-    // const undoText = fireEvent.click(
-    //   component.getAllByRole('button', /Undo/i)[0],
-    // );
-    // expect(undoText).toBeTruthy();
-    expect(component.getByTestId('discard-modal')).toBeInTheDocument();
-    expect(
-      component.getByText(/Are you sure you want to discard the changes?/i),
-    ).toBeInTheDocument();
-    // const discardModal = component.getByTestId('discard-modal');
-
-    expect(component.getByText('Cancel')).toBeInTheDocument();
-    const button = component.getByText('Cancel');
-    fireEvent.click(button);
+    expect(screen.getByTestId('accordion')).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByTestId('mouse-over'));
+    fireEvent.scroll(screen.getByTestId('accordion'), {
+      target: { className: 'enriched-txt' },
+    });
+    expect(screen.getAllByRole('button')[0]).toBeInTheDocument();
+    fireEvent.click(screen.getAllByRole('button')[0]);
+    fireEvent.scroll(screen.getByTestId('accordion-details'));
+    fireEvent.keyDown(screen.getByTestId('accordion-details'));
+    fireEvent.click(screen.getByTestId('accordion_summary'));
+    // expect(screen.getByTestId('trashIcon')).toBeInTheDocument();
+    // fireEvent.click(screen.getByTestId('discardIcon'));
+    expect(screen.getByText(/Confirm Action/i)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Discard' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Discard' }));
   });
 
-  xtest('Should render save the all the tables before saving the section', () => {
-    const item1 = {
-      doc_id: '78808eb2-6b1b-445f-bc89-4560ca66dd1c',
-      group_type: 'DocumentLinks',
-      link_id: 'bc4dc374-8a78-11ed-af64-005056ab6469',
-      LinkLevel: 1,
-      page: 2,
-      sec_id: '',
-      source_file_section: 'Signatures',
-      LinkType: 'toc',
-      qc_change_type: '',
-      sequence: 0,
-      section_locked: false,
-      audit_info: {
-        last_reviewed_date: '',
-        last_reviewed_by: '',
-        total_no_review: '',
-      },
+  test('when showEdit is false', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'test',
+          content: 'test',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setActiveLineID: jest.fn(),
     };
-
-    const obj = cloneDeep(initialState);
-    delete obj.protocol.sectionDetails.data;
-    const contextValues = { dispatchSectionEvent: jest.fn() };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
-    const component = render(
+    render(
       <DigitizeAccordion
-        item={item1}
-        primaryRole={bool}
-        protocol="15-07"
-        index={1}
-        currentActiveCard={null}
-        setCurrentActiveCard={jest.fn()}
-        setCurrentEditCard={jest.fn()}
+        item={item}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
         handlePageRight={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListData}
+        setCurrentEditCard={jest.fn()}
+        currentEditCard={null}
         handleLinkId={jest.fn()}
+        globalPreferredTerm={false}
+        scrollToTop={jest.fn()}
         handleOpenAccordion={jest.fn()}
         dataExist
       />,
-      {
-        initialState,
-      },
+      mockState,
     );
-    const accordian = component.getByTestId('accordion');
-    expect(accordian).toBeInTheDocument();
-    expect(component.getByTestId('accordion_summary')).toBeInTheDocument();
-    expect(component.getByTestId('accordion-header')).toBeInTheDocument();
-    fireEvent.click(component.getByTestId('accordion-header'));
-    const pencil = component.getByTestId('pencilIcon');
-    expect(pencil).toBeInTheDocument();
-    fireEvent.click(pencil);
-    const richTextEditor = component.getByTestId('richTextEditor');
-    expect(richTextEditor).toBeInTheDocument();
-    fireEvent.click(richTextEditor);
-    const container = component.getByTestId('container');
-    expect(container).toBeInTheDocument();
-    fireEvent.click(container);
-    const hoverComponent = component.getByTestId('hover-component');
-    expect(hoverComponent).toBeInTheDocument();
-    const addIcon = component.getByTestId('addIcon');
-    expect(addIcon).toBeInTheDocument();
-    fireEvent.click(addIcon);
-    expect(component.getByText('Table')).toBeInTheDocument();
-    const saveIcon = component.getByTestId('saveIcon');
-    expect(saveIcon).toBeInTheDocument();
-    fireEvent.click(saveIcon);
-    const confirmPopup = component.getByTestId('confirmPopup');
-    expect(confirmPopup).toBeInTheDocument();
+    expect(screen.getByTestId('accordion')).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByTestId('mouse-over'));
+    fireEvent.scroll(screen.getByTestId('accordion'));
+    fireEvent.scroll(screen.getByTestId('accordion-details'));
+    fireEvent.keyDown(screen.getByTestId('accordion-details'));
+    fireEvent.click(screen.getByTestId('accordion_summary'));
+  });
+
+  test('calling handleChange function and covering when there is no if condition satisfy', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'test',
+          content: 'test',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setActiveLineID: jest.fn(),
+    };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    render(
+      <DigitizeAccordion
+        item={item}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handlePageRight={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListDataForDiffLinkId}
+        setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handleLinkId={jest.fn()}
+        globalPreferredTerm={false}
+        scrollToTop={jest.fn()}
+        handleOpenAccordion={jest.fn()}
+        dataExist
+      />,
+      mockState,
+    );
+    expect(screen.getByTestId('accordion')).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByTestId('mouse-over'));
+    // fireEvent.click(screen.getByTestId('plus-add'));
+    // fireEvent.mouseLeave(screen.getByTestId('mouse-over'));
+    fireEvent.scroll(screen.getByTestId('accordion'));
+    fireEvent.scroll(screen.getByTestId('accordion-details'));
+    fireEvent.keyDown(screen.getByTestId('accordion-details'));
+    fireEvent.click(screen.getByTestId('accordion_summary'));
+  });
+
+  test('when sectionData obj link_id and item link_id different', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'test',
+          content: 'test',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setActiveLineID: jest.fn(),
+    };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    render(
+      <DigitizeAccordion
+        item={item}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handlePageRight={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListDataForDiffLinkId}
+        setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab64"
+        handleLinkId={jest.fn()}
+        globalPreferredTerm={false}
+        scrollToTop={jest.fn()}
+        handleOpenAccordion={jest.fn()}
+        dataExist
+      />,
+      mockState,
+    );
+    expect(screen.getByTestId('accordion')).toBeInTheDocument();
+    fireEvent.mouseEnter(screen.getByTestId('mouse-over'));
+    fireEvent.scroll(screen.getByTestId('accordion'));
+    fireEvent.scroll(screen.getByTestId('accordion-details'));
+    fireEvent.keyDown(screen.getByTestId('accordion-details'));
+  });
+
+  test('when discardData has true values', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'test',
+          content: 'test',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setActiveLineID: jest.fn(),
+    };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const mockStateForDiscardData = mockDataForDiscard;
+    render(
+      <DigitizeAccordion
+        item={item}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handlePageRight={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListData}
+        setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handleLinkId={jest.fn()}
+        globalPreferredTerm={false}
+        scrollToTop={jest.fn()}
+        handleOpenAccordion={jest.fn()}
+        dataExist
+      />,
+      mockStateForDiscardData,
+    );
+  });
+
+  test('when showEdit and saveEnabled is false and lockDetails are true', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'test',
+          content: 'test',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setActiveLineID: jest.fn(),
+    };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const mockStateTest = mockDataForLockDetails;
+
+    render(
+      <DigitizeAccordion
+        item={item}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handlePageRight={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListData}
+        setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handleLinkId={jest.fn()}
+        globalPreferredTerm
+        scrollToTop={jest.fn()}
+        handleOpenAccordion={jest.fn()}
+        dataExist
+      />,
+      mockStateTest,
+    );
+    fireEvent.click(screen.getByTestId('accordion_summary'));
+  });
+
+  test('when expanded true and object linkid and item link id not matching', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'test',
+          content: 'test',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setActiveLineID: jest.fn(),
+    };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    const mockStateForEmptyLockDetails = mockStateDataForEmptyLockDetails;
+
+    render(
+      <DigitizeAccordion
+        item={item}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handlePageRight={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListData}
+        setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handleLinkId={jest.fn()}
+        globalPreferredTerm
+        scrollToTop={jest.fn()}
+        handleOpenAccordion={jest.fn()}
+        dataExist
+      />,
+      mockStateForEmptyLockDetails,
+    );
+    fireEvent.click(screen.getByTestId('accordion_summary'));
+  });
+
+  test('checking and click on accordion summary', () => {
+    const contextValues = {
+      dispatchSectionEvent: jest.fn(),
+      saveSection: 'bc4dc374-8a78-11ed-af64-005056ab6469',
+      sectionContent: [
+        {
+          qc_change_type: 'test',
+          content: 'test',
+        },
+      ],
+      setSaveEnabled: jest.fn(),
+      setActiveLineID: jest.fn(),
+    };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+    render(
+      <DigitizeAccordion
+        item={item}
+        protocol="Test"
+        primaryRole
+        currentActiveCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handlePageRight={jest.fn()}
+        rightBladeValue="Home"
+        index={0}
+        headerList={headerListData}
+        setCurrentEditCard={jest.fn()}
+        currentEditCard="bc4dc374-8a78-11ed-af64-005056ab6469"
+        handleLinkId={jest.fn()}
+        globalPreferredTerm
+        scrollToTop={jest.fn()}
+        handleOpenAccordion={jest.fn()}
+        dataExist
+      />,
+      mockState,
+    );
+    fireEvent.mouseEnter(screen.getByTestId('mouse-over'));
+    fireEvent.scroll(screen.getByTestId('accordion'), {
+      target: { className: 'enriched-txt' },
+    });
+    fireEvent.scroll(screen.getByTestId('accordion-details'));
+    fireEvent.keyDown(screen.getByTestId('accordion-details'));
+    fireEvent.click(screen.getByTestId('accordion_summary'));
   });
 });

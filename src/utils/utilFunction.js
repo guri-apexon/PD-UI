@@ -18,7 +18,7 @@ const replaceall = require('replaceall');
 
 export const removeHtmlTags = (html) => {
   const regex = /<[^>]*>/g;
-  return html.replace(regex, '');
+  return html?.replace(regex, '');
 };
 
 export const covertMMDDYYYY = (date) => {
