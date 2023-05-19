@@ -259,6 +259,8 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [expanded]);
 
+  console.log('Sushil', sectionData);
+
   const onDiscardClick = () => {
     setSectionDataArr([...sectionDataBak]);
     setShowDiscardConfirm(false);

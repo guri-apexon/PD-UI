@@ -52,17 +52,32 @@ function ProtocolView({ refs, data }) {
     setSelectedSection(payload.selectedSection);
     setSectionContent(payload.sectionContent || null);
   };
-  console.log('SHUBHAM1', undoStack);
+
+  useEffect(() => {
+    console.log(sectionContent, 'sectionContent');
+
+    console.log('SHUBHAM1', undoStack); // eslint-disable-next-line
+  }, [sectionContent]);
+
   const handleContentUpdate = (payload) => {
-    const undoObjIndex = sectionContent?.findIndex(
-      (x) => x.line_id === payload.currentLineId,
-    );
-    console.log('undo1', undoObjIndex);
+    // const undoObjIndex = sectionContent?.findIndex(
+    //   (x) => x.line_id === payload.currentLineId,
+    // );
+    // console.log('undo1', undoObjIndex);
+
+    // const undoObj = {
+    //   ...sectionContent[undoObjIndex],
+    //   next_line_id: sectionContent[undoObjIndex + 1].line_id,
+    //   prev_line_id: sectionContent[undoObjIndex - 1].line_id,
+    //   prev_index: undoObjIndex - 1,
+    // };
+    // undoStack.push(undoObj);
+    // setUndoStack(undoStack);
     const undoObj = {
-      ...sectionContent[undoObjIndex],
-      next_line_id: sectionContent[undoObjIndex + 1].line_id,
-      prev_line_id: sectionContent[undoObjIndex - 1].line_id,
-      prev_index: undoObjIndex - 1,
+      lineId: payload.currentLineId,
+      type: 'Modify',
+      content: payload?.content,
+      contentType: '',
     };
     undoStack.push(undoObj);
     setUndoStack(undoStack);
@@ -83,6 +98,14 @@ function ProtocolView({ refs, data }) {
     if (index > 0) {
       newActiveLineId = sectionContent[index - 1].line_id;
     }
+    const undoObj = {
+      lineId: payload.currentLineId,
+      type: 'Delete',
+      content: '',
+      contentType: '',
+    };
+    undoStack.push(undoObj);
+    setUndoStack(undoStack);
     setActiveLineID(newActiveLineId);
     const content = prepareContent({
       ...payload,
@@ -90,9 +113,6 @@ function ProtocolView({ refs, data }) {
       sectionContent,
     });
 
-    const undoarr = undoStack;
-    undoarr.push(content);
-    setUndoStack(undoarr);
     if (!saveEnabled) setSaveEnabled(true);
     setSectionContent(content);
     dispatch(
@@ -115,6 +135,14 @@ function ProtocolView({ refs, data }) {
       currentLineId: lineId,
     });
 
+    const undoObj = {
+      lineId,
+      type: 'Add',
+      content: '',
+      contentType: type,
+    };
+    undoStack.push(undoObj);
+    setUndoStack(undoStack);
     setSectionContent(content);
 
     let linkID;
@@ -148,17 +176,17 @@ function ProtocolView({ refs, data }) {
     if (undoStack.length > 0) {
       console.log('SHUBHAM123456', undoStack);
       const lastobj = undoStack.pop();
-      // if (lastobj.qc_change_type) {
-      console.log('SHUBHAM789', lastobj);
-      const undoObj = sectionContent.map((x) => {
-        if (x.line_id === lastobj?.currentLineId) return lastobj;
-        return x;
-      });
-      console.log('SHUBHAM78', undoObj);
+      // // if (lastobj.qc_change_type) {
+      // console.log('SHUBHAM789', lastobj); //
+      // // const undoObj = sectionContent.map((x) => {
+      // //   if (x.line_id === lastobj?.currentLineId) return lastobj;
+      // //   return x;
+      // // });
+      // // console.log('SHUBHAM78', undoObj);
       dispatch(
         updateSectionData({
-          data: undoObj,
-          actionType: 'REPLACE_CONTENT',
+          data: lastobj,
+          actionType: 'UNDO',
           linkId: selectedSection.link_id,
           undo: true,
         }),
