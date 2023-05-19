@@ -73,13 +73,13 @@ function ProtocolView({ refs, data }) {
     // };
     // undoStack.push(undoObj);
     // setUndoStack(undoStack);
-    const undoObj = {
-      lineId: payload.currentLineId,
-      type: 'Modify',
-      content: payload?.content,
-      contentType: '',
-    };
-    undoStack.push(undoObj);
+    // const undoObj = {
+    //   lineId: payload.currentLineId,
+    //   type: 'Modify',
+    //   content: payload?.content,
+    //   contentType: '',
+    // };
+    // undoStack.push(undoObj);
     setUndoStack(undoStack);
     setSectionContent((prevState) => {
       return prepareContent({

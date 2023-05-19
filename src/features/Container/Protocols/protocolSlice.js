@@ -153,9 +153,18 @@ export const protocolSlice = createSlice({
         const sectionData = state.sectionDetails?.data?.filter(
           (x) => x.linkId === linkId,
         );
-        const index = sectionData?.data?.findIndex(
+        const ind = state.sectionDetails?.data?.findIndex(
+          (x) => x.linkId === linkId,
+        );
+        const index = sectionData[0]?.data?.findIndex(
           (x) => x.line_id === data.lineId,
         );
+        if (data.type === 'Add') {
+          state.sectionDetails.data[ind].data = state.sectionDetails.data[
+            ind
+          ].data?.splice(index, 1);
+        }
+
         console.log('abc', index);
         // sectionData?.data.map((x) => (x.line_id === data.lineId ? { ...x, data } : x));
         console.log('SHUBHAM12345', data);
