@@ -120,6 +120,7 @@ function SOATable() {
         suppressMovable: true,
         cellStyle: {
           'line-height': '24px',
+          wordBreak: 'normal',
         },
       },
     ];
