@@ -186,7 +186,7 @@ function ProtocolView({ refs, data }) {
       dispatch(
         updateSectionData({
           data: lastobj,
-          actionType: 'REPLACE_CONTENT',
+          actionType: 'UNDO',
           linkId: selectedSection.link_id,
           undo: true,
         }),

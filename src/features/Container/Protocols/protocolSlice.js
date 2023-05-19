@@ -148,6 +148,11 @@ export const protocolSlice = createSlice({
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
         );
+      } else if (actionType === 'UNDO') {
+        const data = state.sectionDetails.data.filter(
+          (x) => x.linkId === linkId,
+        );
+        console.log('SHUBHAM12345', data);
       } else if (content && lineId) {
         state.sectionDetails.sections = state.sectionDetails.sections.map(
           (x) => {
