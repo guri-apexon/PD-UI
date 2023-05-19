@@ -127,11 +127,11 @@ function AddClinicalTerm({ docId, linkId }) {
     let tagData;
     if (wordSelector?.word) {
       let level;
-      if (wordSelector?.word.file_section_level === 1) {
+      if (wordSelector?.word?.file_section_level?.toString() === '1') {
         level = 'link_id';
       } else {
         // eslint-disable-next-line
-        level = 'link_id_level' + wordSelector?.word.file_section_level;
+        level = 'link_id_level' + wordSelector?.word?.file_section_level;
       }
 
       headerLinkId = wordSelector?.word?.font_info[level];
