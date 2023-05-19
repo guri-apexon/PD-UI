@@ -14,7 +14,6 @@ import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { preferredTermsValidation } from './utilFunction';
 import { userId } from '../../../../store/userDetails';
 import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
-import { removeHtmlTags } from '../../../../utils/utilFunction';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
