@@ -177,22 +177,22 @@ function ProtocolView({ refs, data }) {
   const handleContentUndo = () => {
     if (undoStack.length > 0) {
       console.log('SHUBHAM123456', undoStack);
-      const lastobj = undoStack.pop();
-      // // if (lastobj.qc_change_type) {
-      // console.log('SHUBHAM789', lastobj); //
-      // // const undoObj = sectionContent.map((x) => {
-      // //   if (x.line_id === lastobj?.currentLineId) return lastobj;
-      // //   return x;
-      // // });
-      // // console.log('SHUBHAM78', undoObj);
-      dispatch(
-        updateSectionData({
-          data: lastobj,
-          actionType: 'UNDO',
-          linkId: selectedSection.link_id,
-          undo: true,
-        }),
-      );
+      if (undoStack.length > 0) {
+        const lastobj = undoStack.pop();
+        const secContent = sectionContent.filter(
+          (x) => x.lineId !== lastobj.line_id,
+        );
+        setSectionContent(secContent);
+        dispatch(
+          updateSectionData({
+            data: lastobj,
+            actionType: 'UNDO',
+            linkId: selectedSection.link_id,
+            undo: true,
+          }),
+        );
+      }
+
       // }
     }
   };

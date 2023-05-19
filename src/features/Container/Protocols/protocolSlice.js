@@ -160,9 +160,10 @@ export const protocolSlice = createSlice({
           (x) => x.line_id === data.lineId,
         );
         if (data.type === 'Add') {
-          state.sectionDetails.data[ind].data = state.sectionDetails.data[
-            ind
-          ].data?.splice(index, 1);
+          // state.sectionDetails.data[ind].data = state.sectionDetails.data[
+          //   ind
+          // ].data?.splice(index, 1);
+          state.sectionDetails.data[ind].data?.splice(index, 1);
         }
 
         console.log('abc', index);
