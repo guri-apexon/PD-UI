@@ -135,10 +135,12 @@ function ProtocolView({ refs, data }) {
       currentLineId: lineId,
     });
 
+    const newIndex = content.findIndex((x) => x.line_id === lineId);
+    // const newObj =
     const undoObj = {
-      lineId,
+      lineId: content[newIndex + 1].line_id,
       type: 'Add',
-      content: '',
+      content: content[newIndex + 1].content,
       contentType: type,
     };
     undoStack.push(undoObj);

@@ -149,10 +149,15 @@ export const protocolSlice = createSlice({
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
         );
-      } else if (actionType === 'UNDO') {
-        const data = state.sectionDetails.data.filter(
+      } else if (actionType === 'UNDO' && data) {
+        const sectionData = state.sectionDetails?.data?.filter(
           (x) => x.linkId === linkId,
         );
+        const index = sectionData?.data?.findIndex(
+          (x) => x.line_id === data.lineId,
+        );
+        console.log('abc', index);
+        // sectionData?.data.map((x) => (x.line_id === data.lineId ? { ...x, data } : x));
         console.log('SHUBHAM12345', data);
       } else if (content && lineId) {
         state.sectionDetails.sections = state.sectionDetails.sections.map(
