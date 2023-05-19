@@ -13,9 +13,9 @@ const preferredTermsValidation = (value, preferredTerm) => {
     msg = '';
   } else if (value.includes(',') || arr.length > 1 || preferredTerm) {
     msg = 'Please tag only one Preferred Term. ';
-    const extendMsg =
-      preferredTerm && `${preferredTerm} is already tagged Term`;
-    msg += extendMsg;
+    if (preferredTerm) {
+      msg += `${preferredTerm} is already tagged Term`;
+    }
   } else if (!pTLowerCase.includes('cpt_')) {
     msg = 'Please prefix Preferred Term with "cpt_"';
   }
