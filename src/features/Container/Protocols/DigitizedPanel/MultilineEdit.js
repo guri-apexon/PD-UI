@@ -18,14 +18,18 @@ import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
 
 function MultilineEdit({
-  sectionDataArr,
+  // sectionDataArr,
   edit,
   setShowDiscardConfirm,
   setRequestedRoute,
 }) {
   const [sections, setSections] = useState([]);
-  const { dispatchSectionEvent, activeLineID, setActiveLineID } =
-    useProtContext();
+  const {
+    dispatchSectionEvent,
+    activeLineID,
+    setActiveLineID,
+    sectionContent: sectionDataArr,
+  } = useProtContext();
   const [showconfirm, setShowConfirm] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -63,6 +67,7 @@ function MultilineEdit({
   useEffect(() => {
     if (sectionDataArr?.length > 0) {
       setSections(sectionDataArr);
+      console.log('ANIL', sectionDataArr);
     }
   }, [sectionDataArr]);
 
@@ -157,7 +162,7 @@ function MultilineEdit({
 export default MultilineEdit;
 
 MultilineEdit.propTypes = {
-  sectionDataArr: PropTypes.isRequired,
+  // sectionDataArr: PropTypes.isRequired,
   edit: PropTypes.isRequired,
   setShowDiscardConfirm: PropTypes.isRequired,
   setRequestedRoute: PropTypes.isRequired,

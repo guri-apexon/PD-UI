@@ -60,27 +60,6 @@ function ProtocolView({ refs, data }) {
   }, [sectionContent]);
 
   const handleContentUpdate = (payload) => {
-    // const undoObjIndex = sectionContent?.findIndex(
-    //   (x) => x.line_id === payload.currentLineId,
-    // );
-    // console.log('undo1', undoObjIndex);
-
-    // const undoObj = {
-    //   ...sectionContent[undoObjIndex],
-    //   next_line_id: sectionContent[undoObjIndex + 1].line_id,
-    //   prev_line_id: sectionContent[undoObjIndex - 1].line_id,
-    //   prev_index: undoObjIndex - 1,
-    // };
-    // undoStack.push(undoObj);
-    // setUndoStack(undoStack);
-    // const undoObj = {
-    //   lineId: payload.currentLineId,
-    //   type: 'Modify',
-    //   content: payload?.content,
-    //   contentType: '',
-    // };
-    // undoStack.push(undoObj);
-    // setUndoStack(undoStack);
     const index = sectionContent.findIndex(
       (x) => x.line_id === payload.currentLineId,
     );
@@ -187,6 +166,10 @@ function ProtocolView({ refs, data }) {
     setSectionContent(content);
   };
 
+  useEffect(() => {
+    console.log('Anil123', sectionContent);
+  }, [sectionContent]);
+
   const handleContentUndo = () => {
     if (undoStack.length > 0) {
       console.log('SHUBHAM123456', undoStack);
@@ -198,16 +181,28 @@ function ProtocolView({ refs, data }) {
             (x) => x.line_id !== lastobj.lineId,
           );
         }
-        console.log('MAnu123', secContent);
-        setSectionContent(secContent);
-        dispatch(
-          updateSectionData({
-            data: lastobj,
-            actionType: 'UNDO',
-            linkId: selectedSection.link_id,
-            undo: true,
-          }),
-        );
+        if (lastobj.type === 'Modify') {
+          console.log('SHUBHAM2919', secContent);
+          secContent = secContent.map((x) => {
+            if (x.link_id === lastobj.lineId) {
+              x = lastobj.content;
+            }
+            return x;
+          });
+          setSectionContent(secContent);
+        }
+
+        if (lastobj.type === 'Add' || lastobj.type === 'Delete') {
+          setSectionContent(secContent);
+          dispatch(
+            updateSectionData({
+              data: lastobj,
+              actionType: 'UNDO',
+              linkId: selectedSection.link_id,
+              undo: true,
+            }),
+          );
+        }
       }
     }
   };
