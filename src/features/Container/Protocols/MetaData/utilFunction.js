@@ -1,5 +1,6 @@
 import { cloneDeep } from 'lodash';
 import isObject from 'lodash/isObject';
+import isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 
 const formattedValue = (type, val) => {
@@ -81,7 +82,7 @@ export const mergeSummary = (data) => {
   const objectKeys = data ? Object?.keys(data) : [];
 
   objectKeys.forEach((key) => {
-    if (key === 'summary_extended' && finalResult?.summary_extended) {
+    if (key === 'summary_extended' && !isEmpty(finalResult?.summary_extended)) {
       // eslint-disable-next-line
       const updateMetaData = finalResult?.summary_extended?._meta_data?.map(
         (fields) => {
@@ -91,37 +92,42 @@ export const mergeSummary = (data) => {
           };
         },
       );
-      const mergedMetaData = [
-        // eslint-disable-next-line
-        ...finalResult.summary?._meta_data,
-        ...updateMetaData,
-      ]?.map((attr, index) => {
-        return {
-          ...attr,
-          id: index + 1,
-        };
-      });
 
-      finalResult = {
-        ...finalResult,
-        summary: {
-          ...finalResult?.summary,
-          audit_info:
-            // eslint-disable-next-line
-            findLatestTimestamp(mergedMetaData) || {},
-          _meta_data: mergedMetaData.sort((a, b) => a.id - b.id),
+      let mergedMetaData;
+      // eslint-disable-next-line
+      if (finalResult.summary?._meta_data) {
+        mergedMetaData = [
           // eslint-disable-next-line
-          _childs: finalResult.summary_extended._childs
-            ? [
-                // eslint-disable-next-line
-                ...finalResult.summary._childs,
-                // eslint-disable-next-line
-                ...finalResult.summary_extended._childs,
-              ]
-            : // eslint-disable-next-line
-              [...finalResult.summary._childs],
-        },
-      };
+          ...finalResult.summary?._meta_data,
+          ...updateMetaData,
+        ]?.map((attr, index) => {
+          return {
+            ...attr,
+            id: index + 1,
+          };
+        });
+
+        finalResult = {
+          ...finalResult,
+          summary: {
+            ...finalResult?.summary,
+            audit_info:
+              // eslint-disable-next-line
+              findLatestTimestamp(mergedMetaData) || {},
+            _meta_data: mergedMetaData.sort((a, b) => a.id - b.id),
+            // eslint-disable-next-line
+            _childs: finalResult.summary_extended._childs
+              ? [
+                  // eslint-disable-next-line
+                  ...finalResult.summary._childs,
+                  // eslint-disable-next-line
+                  ...finalResult.summary_extended._childs,
+                ]
+              : // eslint-disable-next-line
+                [...finalResult.summary._childs],
+          },
+        };
+      }
     }
   });
   delete finalResult.summary_extended;
