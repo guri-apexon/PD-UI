@@ -160,14 +160,32 @@ export const protocolSlice = createSlice({
           (x) => x.line_id === data.lineId,
         );
         if (data.type === 'Add') {
-          // state.sectionDetails.data[ind].data = state.sectionDetails.data[
-          //   ind
-          // ].data?.splice(index, 1);
           state.sectionDetails.data[ind].data?.splice(index, 1);
+        } else if (data.type === 'Delete') {
+          const prevIndex = state.sectionDetails.data[ind].data?.findIndex(
+            (x) => x.line_id === data.prevLineId,
+          );
+          state.sectionDetails.data[ind].data?.splice(
+            prevIndex + 1,
+            0,
+            data?.content,
+          );
+        } else if (data.type === 'Modify') {
+          // state.sectionDetails.data[ind].data
+          const modifyData = state.sectionDetails.data[ind].data?.map((x) => {
+            if (x.line_id === data.lineId) {
+              x = data?.content;
+            }
+            return x;
+          });
+          state.sectionDetails.data = state.sectionDetails.data.map((x) => {
+            if (x.linkId === linkId) {
+              x.data = modifyData;
+            }
+            return x;
+          });
         }
-
         console.log('abc', index);
-        // sectionData?.data.map((x) => (x.line_id === data.lineId ? { ...x, data } : x));
         console.log('SHUBHAM12345', data);
       } else if (content && lineId) {
         state.sectionDetails.sections = state.sectionDetails.sections.map(

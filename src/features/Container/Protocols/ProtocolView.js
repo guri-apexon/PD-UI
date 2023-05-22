@@ -80,6 +80,17 @@ function ProtocolView({ refs, data }) {
     //   contentType: '',
     // };
     // undoStack.push(undoObj);
+    // setUndoStack(undoStack);
+    const index = sectionContent.findIndex(
+      (x) => x.line_id === payload.currentLineId,
+    );
+    const undoObj = {
+      lineId: payload?.currentLineId,
+      type: 'Modify',
+      content: sectionContent[index],
+      contentType: '',
+    };
+    undoStack.push(undoObj);
     setUndoStack(undoStack);
     setSectionContent((prevState) => {
       return prepareContent({
@@ -93,15 +104,18 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleContentDelete = (payload) => {
-    const index = sectionContent.findIndex((x) => x.line_id === activeLineID);
+    const index = sectionContent.findIndex(
+      (x) => x.line_id === payload.currentLineId,
+    );
     let newActiveLineId = sectionContent[0].line_id;
     if (index > 0) {
       newActiveLineId = sectionContent[index - 1].line_id;
     }
     const undoObj = {
+      prevLineId: newActiveLineId,
       lineId: payload.currentLineId,
       type: 'Delete',
-      content: '',
+      content: sectionContent[index],
       contentType: '',
     };
     undoStack.push(undoObj);
@@ -136,7 +150,6 @@ function ProtocolView({ refs, data }) {
     });
 
     const newIndex = content.findIndex((x) => x.line_id === lineId);
-    // const newObj =
     const undoObj = {
       lineId: content[newIndex + 1].line_id,
       type: 'Add',
@@ -179,9 +192,13 @@ function ProtocolView({ refs, data }) {
       console.log('SHUBHAM123456', undoStack);
       if (undoStack.length > 0) {
         const lastobj = undoStack.pop();
-        const secContent = sectionContent.filter(
-          (x) => x.lineId !== lastobj.line_id,
-        );
+        let secContent = sectionContent;
+        if (lastobj.type === 'Add') {
+          secContent = sectionContent.filter(
+            (x) => x.line_id !== lastobj.lineId,
+          );
+        }
+        console.log('MAnu123', secContent);
         setSectionContent(secContent);
         dispatch(
           updateSectionData({
@@ -192,8 +209,6 @@ function ProtocolView({ refs, data }) {
           }),
         );
       }
-
-      // }
     }
   };
 
