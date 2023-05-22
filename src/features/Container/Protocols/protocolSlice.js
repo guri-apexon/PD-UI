@@ -171,7 +171,6 @@ export const protocolSlice = createSlice({
             data?.content,
           );
         } else if (data.type === 'Modify') {
-          // state.sectionDetails.data[ind].data
           const modifyData = state.sectionDetails.data[ind].data?.map((x) => {
             if (x.line_id === data.lineId) {
               x = data?.content;
