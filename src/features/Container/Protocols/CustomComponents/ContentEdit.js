@@ -23,7 +23,6 @@ function ContentEdit({ type, lineID, content, edit, activeLineID }) {
   };
 
   useEffect(() => {
-    console.log('Anil1', content);
     setText(content);
   }, [content]);
 

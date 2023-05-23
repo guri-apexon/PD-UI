@@ -56,7 +56,6 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
   useEffect(() => {
     if (sectionDataArr?.length > 0) {
       setSections(sectionDataArr);
-      console.log('ANIL', sectionDataArr);
     }
   }, [sectionDataArr]);
 
