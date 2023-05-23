@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from 'apollo-react/components/Loader';
+import cloneDeep from 'lodash/cloneDeep';
 import PropTypes from 'prop-types';
 import ArrangePanel from './ArrangePanel';
 import SideNav from './SideNav';
@@ -9,7 +10,7 @@ import SOATabs from './SOATabs';
 import './SOA.scss';
 import TabelContext, { tableReducer, tableGridData } from './Context';
 
-import { TableEvents } from './Constants';
+import { TableConst, TableEvents } from './Constants';
 
 const style = {
   openSideNav: {
@@ -33,13 +34,20 @@ function SOA({ docId }) {
       setLoader(false);
     }
     if (apiState?.soa_data) {
-      dispatch({
-        type: TableEvents.SET_TABLES,
-        payload: JSON.parse(JSON.stringify(apiState.soa_data)),
+      const tabs = [];
+      apiState.soa_data.forEach((item) => {
+        if (item[TableConst.NORMALIZED_SOA].length > 0) tabs.push(item);
       });
-      dispatch({ type: TableEvents.SET_SELECTED_TAB, payload: 0 });
+      if (tabs.length > 0) {
+        dispatch({
+          type: TableEvents.SET_TABLES,
+          payload: cloneDeep(tabs),
+        });
+        dispatch({ type: TableEvents.SET_SELECTED_TAB, payload: 0 });
+      }
       setLoader(false);
     }
+
     // eslint-disable-next-line
   }, [apiState]);
 
