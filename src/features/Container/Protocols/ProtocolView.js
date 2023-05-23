@@ -53,12 +53,6 @@ function ProtocolView({ refs, data }) {
     setSectionContent(payload.sectionContent || null);
   };
 
-  useEffect(() => {
-    console.log(sectionContent, 'sectionContent');
-
-    console.log('SHUBHAM1', undoStack); // eslint-disable-next-line
-  }, [sectionContent]);
-
   const handleContentUpdate = (payload) => {
     const index = sectionContent.findIndex(
       (x) => x.line_id === payload.currentLineId,
@@ -84,7 +78,7 @@ function ProtocolView({ refs, data }) {
 
   const handleContentDelete = (payload) => {
     const index = sectionContent.findIndex(
-      (x) => x.line_id === payload.currentLineId,
+      (x) => x.line_id === payload?.currentLineId,
     );
     let newActiveLineId = sectionContent[0].line_id;
     if (index > 0) {
@@ -160,49 +154,52 @@ function ProtocolView({ refs, data }) {
       type: 'LINK_LEVEL_UPDATE',
       sectionContent,
     });
-    const undoarr = undoStack;
-    undoarr.push(content);
-    setUndoStack(undoarr);
     setSectionContent(content);
   };
 
-  useEffect(() => {
-    console.log('Anil123', sectionContent);
-  }, [sectionContent]);
-
   const handleContentUndo = () => {
     if (undoStack.length > 0) {
-      console.log('SHUBHAM123456', undoStack);
-      if (undoStack.length > 0) {
-        const lastobj = undoStack.pop();
-        let secContent = sectionContent;
-        if (lastobj.type === 'Add') {
-          secContent = sectionContent.filter(
-            (x) => x.line_id !== lastobj.lineId,
-          );
-        }
-        if (lastobj.type === 'Modify') {
-          console.log('SHUBHAM2919', secContent);
-          secContent = secContent.map((x) => {
-            if (x.link_id === lastobj.lineId) {
+      const lastobj = undoStack.pop();
+      if (lastobj.type === 'Add') {
+        setSectionContent((prevState) => {
+          return prevState.filter((x) => {
+            return x.line_id !== lastobj.lineId;
+          });
+        });
+        dispatch(
+          updateSectionData({
+            data: lastobj,
+            actionType: 'UNDO',
+            linkId: selectedSection.link_id,
+            undo: true,
+          }),
+        );
+      } else if (lastobj.type === 'Modify') {
+        setSectionContent((prevState) => {
+          return prevState.map((x) => {
+            if (x.line_id === lastobj.lineId) {
               x = lastobj.content;
             }
             return x;
           });
-          setSectionContent(secContent);
-        }
-
-        if (lastobj.type === 'Add' || lastobj.type === 'Delete') {
-          setSectionContent(secContent);
-          dispatch(
-            updateSectionData({
-              data: lastobj,
-              actionType: 'UNDO',
-              linkId: selectedSection.link_id,
-              undo: true,
-            }),
-          );
-        }
+        });
+      } else if (lastobj.type === 'Delete') {
+        setSectionContent((prevState) => {
+          return prevState.map((x) => {
+            if (x.line_id === lastobj.lineId) {
+              x = lastobj.content;
+            }
+            return x;
+          });
+        });
+        dispatch(
+          updateSectionData({
+            data: lastobj,
+            actionType: 'UNDO',
+            linkId: selectedSection.link_id,
+            undo: true,
+          }),
+        );
       }
     }
   };

@@ -17,12 +17,7 @@ import {
 import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
 
-function MultilineEdit({
-  // sectionDataArr,
-  edit,
-  setShowDiscardConfirm,
-  setRequestedRoute,
-}) {
+function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
   const [sections, setSections] = useState([]);
   const {
     dispatchSectionEvent,
@@ -50,18 +45,12 @@ function MultilineEdit({
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.code === 'KeyZ') {
         event.preventDefault();
-        // const code = event.which || event.keyCode;
-
-        // const charCode = String.fromCharCode(code).toLowerCase();
-        // if ((event.ctrlKey || event.metaKey) && charCode === 'z') {
-        console.log('CTR+z');
         dispatchSectionEvent('CONTENT_UNDO');
-        // }
       }
     };
     document.addEventListener('keydown', handleKeyDown);
-
     return () => document.removeEventListener('keydown', handleKeyDown);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -80,7 +69,6 @@ function MultilineEdit({
       sectionName,
       content: value,
     };
-    // setActiveLineID('');
     const arr = updateContent(sectionDataArr, obj);
     dispatch(setSectionDetails(arr));
   };
@@ -116,7 +104,11 @@ function MultilineEdit({
         <div className="section-menu-container">
           <section className="section-edited-list">
             {sections
-              ?.filter((obj) => !(obj.type === 'table' && !obj.content))
+              ?.filter(
+                (obj) =>
+                  !(obj.type === 'table' && !obj.content) &&
+                  obj.qc_change_type !== 'delete',
+              )
               .map((section) => (
                 // eslint-disable-next-line
                 <div

@@ -145,7 +145,6 @@ export const protocolSlice = createSlice({
     updateSectionData: (state, action) => {
       const { actionType, data, content, lineId, linkId } = action.payload;
       if (actionType === 'REPLACE_CONTENT' && data && linkId) {
-        console.log('SHUBHAM001', data, linkId);
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
         );
@@ -170,22 +169,7 @@ export const protocolSlice = createSlice({
             0,
             data?.content,
           );
-        } else if (data.type === 'Modify') {
-          const modifyData = state.sectionDetails.data[ind].data?.map((x) => {
-            if (x.line_id === data.lineId) {
-              x = data?.content;
-            }
-            return x;
-          });
-          state.sectionDetails.data = state.sectionDetails.data.map((x) => {
-            if (x.linkId === linkId) {
-              x.data = modifyData;
-            }
-            return x;
-          });
         }
-        console.log('abc', index);
-        console.log('SHUBHAM12345', data);
       } else if (content && lineId) {
         state.sectionDetails.sections = state.sectionDetails.sections.map(
           (x) => {
