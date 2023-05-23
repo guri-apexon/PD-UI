@@ -1,5 +1,5 @@
 import Tooltip from 'apollo-react/components/Tooltip';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import {
   CONTENT_TYPE,
@@ -168,6 +168,12 @@ export const createFullMarkup = (str) => {
   };
 };
 
+export const clinicalTermHasValues = (item, terms) => {
+  return !(
+    isEmpty(terms[item]?.clinical_terms) && isEmpty(terms[item]?.ontology)
+  );
+};
+
 export const createEnrichedText = (content, terms) => {
   let text = content;
   if (terms) {
@@ -175,11 +181,13 @@ export const createEnrichedText = (content, terms) => {
     arr.forEach((term) => {
       const replacingSplChar = term.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
       const pattern = new RegExp(`\\b${replacingSplChar}\\b`, 'g');
-      text = text.replaceAll(
-        pattern,
-        `<b class="enriched-txt">${term}</b>`,
-        text,
-      );
+      if (clinicalTermHasValues(term, terms)) {
+        text = text.replaceAll(
+          pattern,
+          `<b class="enriched-txt">${term}</b>`,
+          text,
+        );
+      }
     });
   }
 
