@@ -13,6 +13,7 @@ function RenderContent({
   setActiveLineID,
   deleteSection,
   edit,
+  handleCurrentContent,
 }) {
   const { type, content = '', line_id: lineID } = sectionData;
 
@@ -27,6 +28,7 @@ function RenderContent({
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
         edit={edit}
+        handleCurrentContent={handleCurrentContent}
       />
     );
   }
@@ -41,6 +43,7 @@ function RenderContent({
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
         edit={edit}
+        handleCurrentContent={handleCurrentContent}
       />
     );
   }
@@ -83,4 +86,5 @@ RenderContent.propTypes = {
   setActiveLineID: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  handleCurrentContent: PropTypes.isRequired,
 };

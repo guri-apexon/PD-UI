@@ -157,9 +157,11 @@ function ProtocolView({ refs, data }) {
     setSectionContent(content);
   };
 
+  console.log('MANU123', undoStack);
   const handleContentUndo = () => {
     if (undoStack.length > 0) {
       const lastobj = undoStack.pop();
+
       if (lastobj.type === 'Add') {
         setSectionContent((prevState) => {
           return prevState.filter((x) => {
