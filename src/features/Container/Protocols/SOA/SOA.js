@@ -28,10 +28,11 @@ function SOA({ docId }) {
   const [loader, setLoader] = useState(true);
   const apiDispatch = useDispatch();
   const [state, dispatch] = useReducer(tableReducer, tableGridData);
-
+  const [showMessage, setMessage] = useState(false);
   useEffect(() => {
     if (apiState?.error) {
       setLoader(false);
+      setMessage(true);
     }
     if (apiState?.soa_data) {
       const tabs = [];
@@ -44,6 +45,8 @@ function SOA({ docId }) {
           payload: cloneDeep(tabs),
         });
         dispatch({ type: TableEvents.SET_SELECTED_TAB, payload: 0 });
+      } else {
+        setMessage(true);
       }
       setLoader(false);
     }
@@ -70,22 +73,25 @@ function SOA({ docId }) {
   );
   return (
     <div className="soa-content-holder" data-testid="soaTable">
-      <TabelContext.Provider value={provider}>
-        {loader ? <Loader isInner /> : ''}
-        <SOATabs />
-        {!apiState?.error ? <ArrangePanel /> : null}
+      {showMessage && <h2 className="message">No Results Found</h2>}
 
-        <div className="soa-container">
-          {state.openSettings ? (
-            <>
-              <SOATable style={style.openSideNav} />
-              <SideNav style={style.closeSideNav} />
-            </>
-          ) : (
-            <SOATable style={style.default} />
-          )}
-        </div>
-      </TabelContext.Provider>
+      {loader && <Loader isInner />}
+      {!loader && !showMessage && (
+        <TabelContext.Provider value={provider}>
+          <SOATabs />
+          {!apiState?.error ? <ArrangePanel /> : null}
+          <div className="soa-container">
+            {state.openSettings ? (
+              <>
+                <SOATable style={style.openSideNav} />
+                <SideNav style={style.closeSideNav} />
+              </>
+            ) : (
+              <SOATable style={style.default} />
+            )}
+          </div>
+        </TabelContext.Provider>
+      )}
     </div>
   );
 }
