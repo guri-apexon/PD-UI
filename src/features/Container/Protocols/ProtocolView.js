@@ -63,7 +63,9 @@ function ProtocolView({ refs, data }) {
       content: sectionContent[index],
       contentType: '',
     };
-    undoStack.push(undoObj);
+    if (sectionContent[index].qc_change_type !== 'add') {
+      undoStack.push(undoObj);
+    }
     setUndoStack(undoStack);
     setSectionContent((prevState) => {
       return prepareContent({
