@@ -1023,7 +1023,7 @@ export function* updateDerivedData(action) {
       });
     }
   } catch (error) {
-    toast.error(DipaData.data.message || 'Error While Updation');
+    toast.error(DipaData?.data?.message || 'Error While Updation');
   }
 }
 

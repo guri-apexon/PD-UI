@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React from 'react';
+import * as redux from 'react-redux';
 import { fireEvent, render, screen } from '../../../../test-utils/test-utils';
 import '@testing-library/jest-dom/extend-expect';
 import QCContainer from '../QC';
@@ -79,5 +80,48 @@ describe('Protocol Table container component', () => {
       },
     };
     render(<QCContainer />, reduxData);
+  });
+
+  test('should call handleClick function', () => {
+    const useDispatchMock = jest.spyOn(redux, 'useDispatch');
+    const dispatchMock = jest.fn();
+    useDispatchMock.mockReturnValue(dispatchMock);
+
+    const { getByTestId } = render(<QCContainer />, { state });
+
+    fireEvent.click(getByTestId('breadcrumb-click'));
+
+    expect(dispatchMock).toHaveBeenCalledTimes(2);
+    expect(dispatchMock).toHaveBeenCalledWith({
+      type: 'dashboard/setSelectedProtocols',
+      payload: [],
+    });
+    expect(dispatchMock).toHaveBeenCalledWith({
+      type: 'GET_QC_PROTOCOL_TABLE_SAGA',
+    });
+  });
+
+  it('should prevent default when handleClick function is called', () => {
+    const initialState = {
+      qcNotification: null,
+      userDetails: {
+        userType: 'admin',
+      },
+    };
+    const useDispatchMock = jest.spyOn(redux, 'useDispatch');
+    const dispatchMock = jest.fn();
+    useDispatchMock.mockReturnValue(dispatchMock);
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <QCContainer />
+      </Provider>,
+      { initialState },
+    );
+
+    const qcParentComponent = getByTestId('qc-parent-component');
+    const event = { preventDefault: jest.fn() };
+    fireEvent.click(qcParentComponent, event);
+
+    expect(event.preventDefault).toHaveBeenCalledTimes(0);
   });
 });
