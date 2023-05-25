@@ -16,7 +16,7 @@ const preferredTermsValidation = (value, preferredTerm) => {
     if (preferredTerm) {
       msg += `${preferredTerm} is already tagged Term`;
     }
-  } else if (!pTLowerCase.includes('cpt_')) {
+  } else if (!pTLowerCase.startsWith('cpt_')) {
     msg = 'Please prefix Preferred Term with "cpt_"';
   }
 
