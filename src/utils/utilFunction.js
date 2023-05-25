@@ -1,5 +1,6 @@
 import Tooltip from 'apollo-react/components/Tooltip';
-import { cloneDeep, isEmpty } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
 import { v4 as uuidv4 } from 'uuid';
 import {
   CONTENT_TYPE,
