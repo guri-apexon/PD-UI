@@ -29,6 +29,7 @@ function MedicalTerm({
   clinicalTerms: clinicalTermsArray,
   linkId,
   docId,
+  preferredTerms,
 }) {
   const wrapperRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -127,7 +128,7 @@ function MedicalTerm({
         linkId,
         opType: 'delete',
         data: saveObj,
-        headerLinkId: clinicalTermsArr[enrichedText]?.id,
+        headerLinkId: preferredTerms[enrichedText]?.id,
       },
     });
   };
@@ -176,7 +177,7 @@ function MedicalTerm({
           linkId,
           opType: 'delete',
           data: saveObj,
-          headerLinkId: clinicalTermsArr[enrichedText]?.id,
+          headerLinkId: preferredTerms[enrichedText]?.id,
         },
       });
     }
@@ -273,7 +274,7 @@ function MedicalTerm({
         docId,
         linkId,
         data: saveObj,
-        headerLinkId: clinicalTermsArr[enrichedText]?.id,
+        headerLinkId: preferredTerms[enrichedText]?.id,
       },
     });
 
@@ -499,4 +500,5 @@ MedicalTerm.propTypes = {
   clinicalTerms: PropTypes.isRequired,
   linkId: PropTypes.isRequired,
   docId: PropTypes.isRequired,
+  preferredTerms: PropTypes.isRequired,
 };
