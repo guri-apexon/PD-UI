@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
+import * as redux from 'react-redux';
 import userEvent from '@testing-library/user-event';
 import { fireEvent, render, screen } from '../../../../test-utils/test-utils';
 import QCProtocolView from '../QCProtocolView/QCProtocolView';
@@ -247,5 +248,73 @@ describe('QC Protocol View container component Error', () => {
     fireEvent.click(submitButton);
     const modal = screen.getByRole('dialog');
     expect(modal).toBeInTheDocument();
+  });
+
+  test('click on submit and click on QC Approve & Submit button and close buttons', () => {
+    const state = {
+      initialState: {
+        protocol: {
+          rightBladeValue: ['Home'],
+          protocolTocData: { data: ['testing'] },
+          summary: {
+            isWorkflowDone: true,
+            data: {
+              userPrimaryRoleFlag: true,
+            },
+          },
+          view: {
+            iqvdataSoa: [],
+            iqvdataSummary: {},
+            iqvdataToc: {
+              data: [],
+            },
+            loader: true,
+            tocSections: [
+              {
+                section: 'section',
+                id: 'TOC-24',
+              },
+            ],
+            soaSections: [
+              {
+                section: 'Study of Assessments(Schedule of Assessment)',
+                id: 'SOA-4',
+              },
+            ],
+          },
+        },
+        dashboard: {
+          workflowData: workFlowData,
+          workflowSubmit: {
+            loading: false,
+            error: null,
+            data: [],
+            success: true,
+          },
+        },
+      },
+    };
+    const useDispatchMock = jest.spyOn(redux, 'useDispatch');
+    const dispatchMock = jest.fn();
+    useDispatchMock.mockReturnValue(dispatchMock);
+    const protocolId = '212121';
+    render(
+      <QCProtocolView protId={protocolId} handleChangeTab={jest.fn()} />,
+      state,
+    );
+    screen.debug();
+    expect(screen.getByRole('button', { name: /Submit/i })).toBeInTheDocument();
+    userEvent.click(screen.getByRole('button', { name: /Submit/i }));
+    expect(
+      screen.getByRole('button', { name: /QC Approve & Submit/i }),
+    ).toBeInTheDocument();
+    userEvent.click(
+      screen.getByRole('button', { name: /QC Approve & Submit/i }),
+    );
+    expect(dispatchMock).toHaveBeenCalledTimes(4);
+    expect(dispatchMock).toHaveBeenCalledWith({
+      type: 'GET_PROTOCOL_SUMMARY',
+      payload: '212121',
+    });
   });
 });

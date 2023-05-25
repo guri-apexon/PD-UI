@@ -1,5 +1,6 @@
 import Tooltip from 'apollo-react/components/Tooltip';
-import { cloneDeep } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import isEmpty from 'lodash/isEmpty';
 import { v4 as uuidv4 } from 'uuid';
 import {
   CONTENT_TYPE,
@@ -168,18 +169,30 @@ export const createFullMarkup = (str) => {
   };
 };
 
+export const clinicalTermHasValues = (item, terms) => {
+  return !(
+    isEmpty(terms[item]?.clinical_terms) && isEmpty(terms[item]?.ontology)
+  );
+};
+
 export const createEnrichedText = (content, terms) => {
   let text = content;
   if (terms) {
     const arr = Object.keys(terms);
     arr.forEach((term) => {
-      const replacingSplChar = term.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
-      const pattern = new RegExp(`\\b${replacingSplChar}\\b`, 'g');
-      text = text.replaceAll(
-        pattern,
-        `<b class="enriched-txt">${term}</b>`,
-        text,
+      const regex = /[^.a-zA-Z0-9:\s]/g;
+      const cleanedText = term.replace(regex, '');
+      const pattern = new RegExp(
+        `(?<![.a-zA-Z0-9])${cleanedText}(?![.a-zA-Z0-9])`,
+        'g',
       );
+      if (clinicalTermHasValues(term, terms)) {
+        text = text.replaceAll(
+          pattern,
+          `<b class="enriched-txt">${term}</b>`,
+          text,
+        );
+      }
     });
   }
 
@@ -206,10 +219,10 @@ export const createPlainText = (content) => {
     .trim();
 };
 
-export const createPreferredText = (text, terms) => {
+export const createPreferredText = (content, terms, enriched) => {
   let openTag = '';
   let closeTag = '';
-  text = text.trim();
+  let text = content.trim();
   const index = text.indexOf('>');
   const indexstart = text.indexOf('<');
   if (htmlCheck && index <= 3 && indexstart === 0) {
@@ -218,7 +231,14 @@ export const createPreferredText = (text, terms) => {
     closeTag = createHtmlTag(text, textLength - index - 2, textLength);
   }
   text = createPlainText(text);
-
+  let className = 'Preferred-txt';
+  if (enriched) {
+    if (clinicalTermHasValues(text, terms)) {
+      className = 'enriched-txt';
+    } else {
+      return content;
+    }
+  }
   if (terms) {
     const arr = Object.keys(terms);
     if (arr.length) {
@@ -228,12 +248,12 @@ export const createPreferredText = (text, terms) => {
 
       if (match) {
         text = text
-          .replace(match, `<b class="Preferred-txt"> ${match} </b>`)
+          .replace(match, `<b class="${className}"> ${match} </b>`)
           .replace(/[_]/g, ' ')
           .replace('cpt', '')
           .trim();
 
-        text = `<b class="Preferred-txt">${text}</b>`;
+        text = `<b class="${className}">${text}</b>`;
       }
     }
   }

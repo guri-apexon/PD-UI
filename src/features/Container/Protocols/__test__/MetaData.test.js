@@ -1,5 +1,6 @@
 import userEvent from '@testing-library/user-event';
 import { cloneDeep } from 'lodash';
+import * as redux from 'react-redux';
 import { render, fireEvent } from '../../../../test-utils/test-utils';
 import MetaData from '../MetaData/MetaData';
 import { metaVariables } from './data';
@@ -161,5 +162,52 @@ describe('MetaData AccordianView', () => {
   test('MetaData Another Click', () => {
     const screen = render(<MetaData />, { initialState: anotherState });
     screen.getAllByTestId('metadataaccordian');
+  });
+
+  test('handles add button click', () => {
+    const screen = render(<MetaData />, { initialState: anotherState });
+    const addButton = screen.getByTestId('metadata-accordian-plus');
+    fireEvent.click(addButton);
+    expect(
+      screen.getByPlaceholderText('Select or type section name'),
+    ).toBeInTheDocument();
+  });
+
+  test('fetchMetaData', () => {
+    const useDispatchMock = jest.spyOn(redux, 'useDispatch');
+    const dispatchMock = jest.fn();
+    useDispatchMock.mockReturnValue(dispatchMock);
+
+    const { getByPlaceholderText, getByTestId } = render(
+      <MetaData docId="123" />,
+      { initialState: anotherState },
+    );
+
+    const plusIcon = getByTestId('metadata-accordian-plus');
+
+    fireEvent.click(plusIcon);
+    const sectionNameInput = getByPlaceholderText(
+      'Select or type section name',
+    );
+    fireEvent.change(sectionNameInput, { target: { value: 'summary' } });
+
+    expect(sectionNameInput.value).toBe('summary');
+    expect(dispatchMock).toHaveBeenCalledWith({
+      type: 'GET_METADATA_VARIABLE',
+      payload: {
+        docId: '123',
+        fieldName: '',
+        op: 'metadata',
+      },
+    });
+    expect(dispatchMock).toHaveBeenCalledWith({
+      type: 'GET_METADATA_VARIABLE',
+      payload: {
+        docId: '123',
+        fieldName: '',
+        op: 'metaparam',
+      },
+    });
+    expect(dispatchMock).toHaveBeenCalledTimes(2);
   });
 });
