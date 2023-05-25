@@ -1,7 +1,10 @@
 import { fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { render } from '../../../../../test-utils/test-utils';
+import * as redux from 'react-redux';
+import { render, screen } from '../../../../../test-utils/test-utils';
 import LabData from '../LabData';
+import DiscardModal from '../../DigitizedPanel/Modals/DiscardModal';
+import * as ProtocolContext from '../../ProtocolContext';
 
 const docId = '3b44c1d5-f5f7-44ab-901a-3f53c2ba751d';
 const initialState = {
@@ -119,6 +122,7 @@ const initialState = {
     },
   },
 };
+
 describe('LabData', () => {
   test('should render the component', () => {
     const screen = render(<LabData docId={docId} />, {
@@ -196,5 +200,72 @@ describe('LabData', () => {
     const addItem = screen.getAllByTestId('add-item')[0];
     expect(addItem).toBeInTheDocument();
     fireEvent.click(addItem);
+  });
+
+  test('should dispatch CREATE_LABDATA_TABLE action when createLabDataTable is called', () => {
+    render(<LabData docId={123} />);
+
+    const editAll = screen.getByTestId('editall');
+    expect(editAll).toBeInTheDocument();
+    fireEvent.click(editAll);
+
+    const addRow = screen.getByTestId('add-row');
+    fireEvent.click(addRow);
+    expect(addRow).toBeInTheDocument();
+  });
+
+  it('should call handleAdd when rowData is not empty', () => {
+    const useDispatchMock = jest.spyOn(redux, 'useDispatch');
+    const dispatchMock = jest.fn();
+    useDispatchMock.mockReturnValue(dispatchMock);
+    const handleAdd = jest.fn();
+    render(<LabData docId="doc123" />);
+
+    const editAll = screen.getByTestId('editall');
+    expect(editAll).toBeInTheDocument();
+    fireEvent.click(editAll);
+
+    const addRowButton = screen.getByTestId('add-row');
+    fireEvent.click(addRowButton);
+
+    expect(dispatchMock).toHaveBeenCalledWith({
+      type: 'CREATE_LABDATA_TABLE',
+      payload: {
+        docId: 'doc123',
+      },
+    });
+    expect(handleAdd).toHaveBeenCalledTimes(0);
+  });
+});
+
+describe('handleClickOutside', () => {
+  it('should close the dropdown when a click occurs outside the dropdown container', () => {
+    const showDiscardConfirm = true;
+    const setShowDiscardConfirm = jest.fn();
+    const onDiscardClick = jest.fn();
+    const setRequestedRoute = jest.fn();
+    const contextValues = { dispatchSectionEvent: jest.fn() };
+    jest
+      .spyOn(ProtocolContext, 'useProtContext')
+      .mockImplementation(() => contextValues);
+
+    const screen = render(
+      <DiscardModal
+        classes={{ modal: '' }}
+        currentEditCard="123"
+        showConfirm
+        showDiscardConfirm={showDiscardConfirm}
+        setShowDiscardConfirm={setShowDiscardConfirm}
+        onDiscardClick={onDiscardClick}
+        setRequestedRoute={setRequestedRoute}
+      />,
+    );
+
+    fireEvent.mouseDown(document);
+
+    const discardBtn = screen.getByText('Discard');
+    expect(discardBtn).toBeInTheDocument();
+    fireEvent.click(discardBtn);
+    expect(onDiscardClick).toHaveBeenCalled();
   });
 });

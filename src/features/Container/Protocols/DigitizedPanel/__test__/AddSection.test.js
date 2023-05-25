@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import * as redux from 'react-redux';
+import { toast } from 'react-toastify';
 import store from '../../../../../store/store';
 import AddSection from '../AddSection';
 
@@ -145,5 +147,52 @@ describe('AddSection', () => {
     fireEvent.change(input, { target: { value: 'newValue' } });
     const addButton = getByText('Add Section');
     fireEvent.click(addButton);
+  });
+
+  test('dispatches UPDATE_SECTION_DATA action and closes the modal on save', () => {
+    const setIsModalMock = jest.fn();
+    const useDispatchSpy = jest.spyOn(redux, 'useDispatch');
+    const mockDispatchFn = jest.fn();
+    useDispatchSpy.mockReturnValue(mockDispatchFn);
+    render(
+      <AddSection
+        setIsModal={setIsModalMock}
+        headerList={[]}
+        index={-1}
+        setIsShown={() => {}}
+        isModal={isModal}
+        docId="123"
+      />,
+    );
+
+    const sectionNameInput = screen.getByPlaceholderText('Enter Section Name');
+    fireEvent.change(sectionNameInput, { target: { value: 'Test Section' } });
+    expect(sectionNameInput.value).toBe('Test Section');
+
+    const saveButton = screen.getByRole('button', { name: 'Add Section' });
+    fireEvent.click(saveButton);
+
+    expect(mockDispatchFn).toHaveBeenCalledTimes(1);
+
+    expect(setIsModalMock).toHaveBeenCalledWith(false);
+  });
+
+  test('should call toast.info when sectionName is empty', () => {
+    const toastInfo = jest.spyOn(toast, 'info');
+    const { getByText } = render(
+      <AddSection
+        setIsModal={() => {}}
+        headerList={[]}
+        index={0}
+        setIsShown={() => {}}
+        isModal={isModal}
+        docId="doc-id"
+      />,
+    );
+
+    const saveButton = getByText('Add Section');
+    fireEvent.click(saveButton);
+
+    expect(toastInfo).toHaveBeenCalledWith('Enter Required Field');
   });
 });

@@ -434,6 +434,7 @@ function MetaData({ docId }) {
         <div className="metadata-flex metadata-plus-icon">
           <Plus
             size="small"
+            data-testid="metadata-accordian-plus"
             className="metadata-plus-size"
             onClick={handleAutoComplete}
           />

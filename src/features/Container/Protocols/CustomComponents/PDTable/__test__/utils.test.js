@@ -13,6 +13,8 @@ import {
   getPreferredTerms,
   updateTable,
   getHierarchyName,
+  filterFootNotes,
+  updateRowIndex,
 } from '../utils';
 
 describe('addRow function', () => {
@@ -129,6 +131,31 @@ describe('deleteColumn function', () => {
       const updatedArr = swapRowElements(arr, 0, 1);
       expect(updatedArr[1].columns[0].value).toBe('1');
       expect(updatedArr[0].columns[0].value).toBe('3');
+    });
+
+    it('should return an empty array when an error occurs', () => {
+      const consoleSpy = jest
+        .spyOn(console, 'log')
+        .mockImplementation(() => {});
+
+      const array = [
+        {
+          columns: [{ value: 'A' }, { value: 'B' }],
+        },
+        {
+          columns: [{ value: 'X' }, { value: 'Y' }],
+        },
+      ];
+
+      const index1 = 0;
+      const index2 = 2;
+
+      const result = swapRowElements(array, index1, index2);
+
+      expect(result).toEqual([]);
+      expect(consoleSpy).toHaveBeenCalled();
+
+      consoleSpy.mockRestore();
     });
   });
 
@@ -305,5 +332,475 @@ describe('getHierarchyName', () => {
     const type = 'unknown';
     const result = getHierarchyName(type);
     expect(result).toBe('');
+  });
+});
+
+describe('getPreferredTerms', () => {
+  const preferredTerms = {
+    term1: 'replacement1',
+    term2: 'replacement2',
+  };
+
+  const clinicalTerms = {
+    term3: 'replacement3',
+    term4: 'replacement4',
+  };
+
+  test('should return input value wrapped in <b> tag if it exists in preferredTerms and isPreferredTerm is true', () => {
+    const inputValue = 'term1';
+    const isPreferredTerm = true;
+    const isClinicalTerms = false;
+    const expectedHtmlString = '<b class="Preferred-txt">term1</b>';
+
+    const result = getPreferredTerms(
+      inputValue,
+      isPreferredTerm,
+      preferredTerms,
+      clinicalTerms,
+      isClinicalTerms,
+    );
+    // eslint-disable-next-line
+    expect(result.__html).toBe(expectedHtmlString);
+  });
+
+  test('should return input value without <b> tag if it does not exist in preferredTerms and isPreferredTerm is true', () => {
+    const inputValue = 'term5';
+    const isPreferredTerm = true;
+    const isClinicalTerms = false;
+
+    const result = getPreferredTerms(
+      inputValue,
+      isPreferredTerm,
+      preferredTerms,
+      clinicalTerms,
+      isClinicalTerms,
+    );
+
+    // eslint-disable-next-line
+    expect(result.__html).toBe(inputValue);
+  });
+
+  test('should return input value without <b> tag if isPreferredTerm is false', () => {
+    const inputValue = 'term1';
+    const isPreferredTerm = false;
+    const isClinicalTerms = false;
+
+    const result = getPreferredTerms(
+      inputValue,
+      isPreferredTerm,
+      preferredTerms,
+      clinicalTerms,
+      isClinicalTerms,
+    );
+
+    // eslint-disable-next-line
+    expect(result.__html).toBe(inputValue);
+  });
+
+  test('should return input value with clinical terms highlighted if isClinicalTerms is true', () => {
+    const inputValue = 'term3 example term4';
+    const isPreferredTerm = false;
+    const isClinicalTerms = true;
+    const expectedHtmlString =
+      '<b class="enriched-txt">term3</b> example <b class="enriched-txt">term4</b>';
+
+    const result = getPreferredTerms(
+      inputValue,
+      isPreferredTerm,
+      preferredTerms,
+      clinicalTerms,
+      isClinicalTerms,
+    );
+
+    // eslint-disable-next-line
+    expect(result.__html).toBe(expectedHtmlString);
+  });
+
+  test('should return input value without clinical terms highlighted if isClinicalTerms is false', () => {
+    const inputValue = 'term3 example term4';
+    const isPreferredTerm = false;
+    const isClinicalTerms = false;
+
+    const result = getPreferredTerms(
+      inputValue,
+      isPreferredTerm,
+      preferredTerms,
+      clinicalTerms,
+      isClinicalTerms,
+    );
+
+    // eslint-disable-next-line
+    expect(result.__html).toBe(inputValue);
+  });
+});
+
+describe('filterFootNotes', () => {
+  it('should filter footnotes based on qc_change_type_footnote property', () => {
+    const data = [
+      { Text: 'First footnote', qc_change_type_footnote: true },
+      { Text: 'Second footnote', qc_change_type_footnote: false },
+      { Text: 'Third footnote', qc_change_type_footnote: true },
+    ];
+    const expectedFilteredData = [
+      {
+        Text: 'a. First footnote',
+        PrevousAttachmentIndex: null,
+        qc_change_type_footnote: true,
+      },
+      {
+        Text: 'c. Third footnote',
+        PrevousAttachmentIndex: 1,
+        qc_change_type_footnote: true,
+      },
+    ];
+
+    const filteredData = filterFootNotes(data);
+
+    expect(filteredData).toEqual(expectedFilteredData);
+  });
+
+  it('should return an empty array if no footnotes have qc_change_type_footnote property', () => {
+    const data = [
+      { Text: 'First footnote' },
+      { Text: 'Second footnote' },
+      { Text: 'Third footnote' },
+    ];
+
+    const filteredData = filterFootNotes(data);
+
+    expect(filteredData).toEqual([]);
+  });
+
+  it('should return an empty array if input data is empty', () => {
+    const data = [];
+
+    const filteredData = filterFootNotes(data);
+
+    expect(filteredData).toEqual([]);
+  });
+});
+
+describe('updateRowIndex', () => {
+  test('should update row indices and column indices correctly', () => {
+    const data = [
+      {
+        row_indx: '0',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+      {
+        row_indx: '1',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+    ];
+
+    const updatedRows = updateRowIndex(data);
+
+    expect(updatedRows).toEqual([
+      {
+        row_indx: '0',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+      {
+        row_indx: '1',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+    ]);
+  });
+
+  test('should update row indices and column indices correctly for an empty data array', () => {
+    const data = [];
+
+    const updatedRows = updateRowIndex(data);
+
+    expect(updatedRows).toEqual([]);
+  });
+
+  test('should update row indices and column indices correctly for a single row with a single column', () => {
+    const data = [
+      {
+        row_indx: '0',
+        columns: [{ col_indx: '0' }],
+      },
+    ];
+
+    const updatedRows = updateRowIndex(data);
+
+    expect(updatedRows).toEqual([
+      {
+        row_indx: '0',
+        columns: [{ col_indx: '0' }],
+      },
+    ]);
+  });
+
+  test('should update row indices and column indices correctly for a single row with multiple columns', () => {
+    const data = [
+      {
+        row_indx: '0',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }, { col_indx: '2' }],
+      },
+    ];
+
+    const updatedRows = updateRowIndex(data);
+
+    expect(updatedRows).toEqual([
+      {
+        row_indx: '0',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }, { col_indx: '2' }],
+      },
+    ]);
+  });
+
+  test('should update row indices and column indices correctly for multiple rows and columns', () => {
+    const data = [
+      {
+        row_indx: '0',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+      {
+        row_indx: '1',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+      {
+        row_indx: '2',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+    ];
+
+    const updatedRows = updateRowIndex(data);
+
+    expect(updatedRows).toEqual([
+      {
+        row_indx: '0',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+      {
+        row_indx: '1',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+      {
+        row_indx: '2',
+        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+      },
+    ]);
+  });
+});
+
+describe('filterTableProperties', () => {
+  test('should filter data with op_type property', () => {
+    const data = [
+      { op_type: 'add', columns: [{ op_type: 'edit' }, { op_type: 'delete' }] },
+      {
+        op_type: 'delete',
+        columns: [{ op_type: 'edit' }, { op_type: 'delete' }],
+      },
+      { columns: [{ op_type: 'edit' }, { op_type: 'delete' }] },
+    ];
+
+    const filteredData = filterTableProperties(data);
+
+    expect(filteredData).toHaveLength(2);
+    expect(filteredData[0].op_type).toBe('add');
+    expect(filteredData[0].columns).toHaveLength(2);
+    expect(filteredData[0].columns[0].op_type).toBe('edit');
+    expect(filteredData[0].columns[1].op_type).toBe('delete');
+    expect(filteredData[1].op_type).toBe('delete');
+    expect(filteredData[1].columns).toHaveLength(2);
+    expect(filteredData[1].columns[0].op_type).toBe('edit');
+    expect(filteredData[1].columns[1].op_type).toBe('delete');
+  });
+
+  test('should return an empty array if data is an empty array', () => {
+    const data = [];
+
+    const filteredData = filterTableProperties(data);
+
+    expect(filteredData).toHaveLength(0);
+  });
+});
+
+describe('deleteRow', () => {
+  const QC_CHANGE_TYPE = {
+    ADDED: 'add',
+    UPDATED: 'modify',
+    DELETED: 'delete',
+  };
+  it('should delete the row if the op_type is ADDED', () => {
+    const rows = [
+      { op_type: QC_CHANGE_TYPE.ADDED, data: 'Row 1' },
+      { op_type: QC_CHANGE_TYPE.UPDATED, data: 'Row 2' },
+    ];
+    const indexToDelete = 0;
+
+    const result = deleteRow(rows, indexToDelete);
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      op_type: QC_CHANGE_TYPE.UPDATED,
+      data: 'Row 2',
+    });
+  });
+
+  it('should mark the op_type as DELETED if the op_type is not ADDED', () => {
+    const rows = [
+      { op_type: QC_CHANGE_TYPE.UPDATED, data: 'Row 1' },
+      { op_type: QC_CHANGE_TYPE.REMOVED, data: 'Row 2' },
+    ];
+    const indexToDelete = 1;
+
+    const result = deleteRow(rows, indexToDelete);
+
+    expect(result).toHaveLength(2);
+    expect(result[0]).toEqual({
+      op_type: QC_CHANGE_TYPE.UPDATED,
+      data: 'Row 1',
+    });
+    expect(result[1]).toEqual({
+      op_type: QC_CHANGE_TYPE.DELETED,
+      data: 'Row 2',
+    });
+  });
+
+  it('should return a new array and not modify the original rows array', () => {
+    const rows = [
+      { op_type: QC_CHANGE_TYPE.ADDED, data: 'Row 1' },
+      { op_type: QC_CHANGE_TYPE.UPDATED, data: 'Row 2' },
+    ];
+    const indexToDelete = 0;
+
+    const result = deleteRow(rows, indexToDelete);
+
+    // Check that the original rows array is not modified
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toEqual({ op_type: QC_CHANGE_TYPE.ADDED, data: 'Row 1' });
+    expect(rows[1]).toEqual({ op_type: QC_CHANGE_TYPE.UPDATED, data: 'Row 2' });
+
+    // Check the modified result array
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      op_type: QC_CHANGE_TYPE.UPDATED,
+      data: 'Row 2',
+    });
+  });
+});
+
+describe('addColumn', () => {
+  test('adds an empty cell at the specified index for each record', () => {
+    const tabledata = [
+      { op_type: 'UPDATED', columns: [{}, {}] },
+      { op_type: 'ADDED', columns: [{}, {}] },
+      { op_type: 'DELETED', columns: [{}, {}] },
+    ];
+    const index = 1;
+    const expectedData = [
+      {
+        op_type: 'UPDATED',
+        columns: [
+          {},
+
+          { cell_id: '', col_indx: '1', op_type: 'add', value: '' },
+          {},
+        ],
+      },
+      {
+        op_type: 'ADDED',
+        columns: [
+          {},
+          { cell_id: '', col_indx: '1', op_type: 'add', value: '' },
+          {},
+        ],
+      },
+      {
+        op_type: 'DELETED',
+        columns: [
+          {},
+          { cell_id: '', col_indx: '1', op_type: 'add', value: '' },
+          {},
+        ],
+      },
+    ];
+
+    const result = addColumn(tabledata, index);
+
+    expect(result).toEqual(expectedData);
+  });
+
+  test('updates op_type to UPDATED if not DELETED', () => {
+    const tabledata = [
+      { op_type: 'UPDATED', columns: [{}, {}] },
+      { op_type: 'ADDED', columns: [{}, {}] },
+      { op_type: 'DELETED', columns: [{}, {}] },
+    ];
+    const index = 0;
+    const expectedData = [
+      {
+        op_type: 'UPDATED',
+        columns: [
+          { cell_id: '', col_indx: '0', op_type: 'add', value: '' },
+          {},
+          {},
+        ],
+      },
+      {
+        op_type: 'ADDED',
+        columns: [
+          { cell_id: '', col_indx: '0', op_type: 'add', value: '' },
+          {},
+          {},
+        ],
+      },
+      {
+        op_type: 'DELETED',
+        columns: [
+          { cell_id: '', col_indx: '0', op_type: 'add', value: '' },
+          {},
+          {},
+        ],
+      },
+    ];
+
+    const result = addColumn(tabledata, index);
+
+    expect(result).toEqual(expectedData);
+  });
+
+  test('updates col_indx for added records', () => {
+    const tabledata = [
+      { op_type: 'UPDATED', columns: [{}, {}] },
+      { op_type: 'ADDED', columns: [{}, {}] },
+      { op_type: 'DELETED', columns: [{}, {}] },
+    ];
+    const index = 1;
+    const expectedData = [
+      {
+        op_type: 'UPDATED',
+        columns: [
+          {},
+          { cell_id: '', col_indx: '1', op_type: 'add', value: '' },
+          {},
+        ],
+      },
+      {
+        op_type: 'ADDED',
+        columns: [
+          {},
+          { cell_id: '', col_indx: '1', op_type: 'add', value: '' },
+          {},
+        ],
+      },
+      {
+        op_type: 'DELETED',
+        columns: [
+          {},
+          { cell_id: '', col_indx: '1', op_type: 'add', value: '' },
+
+          {},
+        ],
+      },
+    ];
+
+    const result = addColumn(tabledata, index);
+
+    expect(result).toEqual(expectedData);
   });
 });

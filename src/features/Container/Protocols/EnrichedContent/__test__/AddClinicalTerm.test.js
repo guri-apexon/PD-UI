@@ -178,4 +178,65 @@ describe('rendering the Add Clinical Term Component', () => {
     expect(screen.getByRole('button', { name: 'Add tag' })).toBeEnabled();
     userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
   });
+  test('updates clinical terms input value', () => {
+    const state = {
+      modal: true,
+      word: {
+        type: 'header',
+        font_info: {
+          roi_id: {
+            para: '31fbea8a-1204-4105-ad33-f414d1816045',
+          },
+          content: 'ABC',
+        },
+      },
+    };
+    useSelector.mockImplementation(() => state);
+    useSelector.mockImplementation(() => selectionHeaderList);
+    render(<AddClinicalTerm docId={1} linkId={2} />, {
+      selectionHeaderList,
+    });
+    userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
+
+    screen.debug();
+    const addButton = screen
+      .getByTestId('clinicalTerms-text')
+      .querySelector('input');
+    fireEvent.change(addButton, {
+      target: { value: 'Clinical Terms Value' },
+    });
+    expect(screen.getByRole('button', { name: 'Add tag' })).toBeEnabled();
+    userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
+    expect(addButton.value).toBe('Clinical Terms Value');
+  });
+
+  test('updates ontology input value', () => {
+    const state = {
+      modal: true,
+      word: {
+        type: 'header',
+        font_info: {
+          roi_id: {
+            para: '31fbea8a-1204-4105-ad33-f414d1816045',
+          },
+          content: 'ABC',
+        },
+      },
+    };
+    useSelector.mockImplementation(() => state);
+    useSelector.mockImplementation(() => selectionHeaderList);
+    render(<AddClinicalTerm docId={1} linkId={2} />, {
+      selectionHeaderList,
+    });
+    userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
+    const addButtonclinical = screen.getByTestId('add-tag');
+    fireEvent.click(addButtonclinical);
+    const ontologyInput = screen
+      .getByTestId('ontology-text')
+      .querySelector('input');
+    fireEvent.change(ontologyInput, { target: { value: 'Ontology Value' } });
+    expect(screen.getByRole('button', { name: 'Add tag' })).toBeEnabled();
+    userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
+    expect(ontologyInput.value).toBe('Ontology Value');
+  });
 });
