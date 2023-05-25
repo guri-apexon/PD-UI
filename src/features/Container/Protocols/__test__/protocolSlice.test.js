@@ -52,6 +52,8 @@ import protocolPageSlice, {
   setDipaDataLoader,
   getEnrichedData,
   getPreferredTerm,
+  updateSectionHeader,
+  resetLabDataCreated,
 } from '../protocolSlice';
 
 import resetUpdateStatusinitialState from './initialState.json';
@@ -532,6 +534,22 @@ describe(' ProtocolSlice Test Suite', () => {
     ).toEqual({ ...initialState, sectionLockDetails: {} });
   });
 
+  test('resetLabDataCreated', () => {
+    const labDataTemp = {
+      data: [1, 2],
+      success: false,
+      loading: false,
+      created: false,
+    };
+
+    expect(
+      protocolPageSlice(initialState, {
+        type: resetLabDataCreated.type,
+        payload: labDataTemp.created,
+      }),
+    ).toEqual({ ...initialState, labData: labDataTemp });
+  });
+
   test('setEnrichedWord', () => {
     expect(
       protocolPageSlice(initialState, {
@@ -813,5 +831,55 @@ describe(' ProtocolSlice Test Suite', () => {
     accordianMetaParam(state);
     metadataApiCallValue(state);
     EnrichedValue(state);
+  });
+});
+
+describe('updateSectionHeader', () => {
+  test('updates section header correctly when link ID is found', () => {
+    const state = {
+      protocolTocData: {
+        data: [
+          { link_id: '1', source_file_section: 'Section 1' },
+          { link_id: '2', source_file_section: 'Section 2' },
+          { link_id: '3', source_file_section: 'Section 3' },
+        ],
+      },
+    };
+
+    const action = {
+      payload: {
+        linkId: '2',
+        content: [{ link_text: 'New Section 2' }],
+      },
+    };
+
+    updateSectionHeader(state, action);
+
+    expect(state.protocolTocData.data[1].source_file_section).toBe('Section 2');
+  });
+
+  test('does not update section header when link ID is not found', () => {
+    const state = {
+      protocolTocData: {
+        data: [
+          { link_id: '1', source_file_section: 'Section 1' },
+          { link_id: '2', source_file_section: 'Section 2' },
+          { link_id: '3', source_file_section: 'Section 3' },
+        ],
+      },
+    };
+
+    const action = {
+      payload: {
+        linkId: '4', // Link ID not present in state
+        content: [{ link_text: 'New Section' }],
+      },
+    };
+
+    updateSectionHeader(state, action);
+
+    expect(state.protocolTocData.data[0].source_file_section).toBe('Section 1');
+    expect(state.protocolTocData.data[1].source_file_section).toBe('Section 2');
+    expect(state.protocolTocData.data[2].source_file_section).toBe('Section 3');
   });
 });
