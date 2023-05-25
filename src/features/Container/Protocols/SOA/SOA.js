@@ -76,22 +76,21 @@ function SOA({ docId }) {
       {showMessage && <h2 className="message">No Results Found</h2>}
 
       {loader && <Loader isInner />}
-      {!loader && !showMessage && (
-        <TabelContext.Provider value={provider}>
-          <SOATabs />
-          {!apiState?.error ? <ArrangePanel /> : null}
-          <div className="soa-container">
-            {state.openSettings ? (
-              <>
-                <SOATable style={style.openSideNav} />
-                <SideNav style={style.closeSideNav} />
-              </>
-            ) : (
-              <SOATable style={style.default} />
-            )}
-          </div>
-        </TabelContext.Provider>
-      )}
+
+      <TabelContext.Provider value={provider}>
+        <SOATabs />
+        {!apiState?.error ? <ArrangePanel /> : null}
+        <div className="soa-container">
+          {state.openSettings ? (
+            <>
+              <SOATable style={style.openSideNav} />
+              <SideNav style={style.closeSideNav} />
+            </>
+          ) : (
+            <SOATable style={style.default} />
+          )}
+        </div>
+      </TabelContext.Provider>
     </div>
   );
 }
