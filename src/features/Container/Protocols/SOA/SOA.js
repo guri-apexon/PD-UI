@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from 'apollo-react/components/Loader';
+import cloneDeep from 'lodash/cloneDeep';
 import PropTypes from 'prop-types';
 import ArrangePanel from './ArrangePanel';
 import SideNav from './SideNav';
@@ -9,7 +10,7 @@ import SOATabs from './SOATabs';
 import './SOA.scss';
 import TabelContext, { tableReducer, tableGridData } from './Context';
 
-import { TableEvents } from './Constants';
+import { TableConst, TableEvents } from './Constants';
 
 const style = {
   openSideNav: {
@@ -27,19 +28,29 @@ function SOA({ docId }) {
   const [loader, setLoader] = useState(true);
   const apiDispatch = useDispatch();
   const [state, dispatch] = useReducer(tableReducer, tableGridData);
-
+  const [showMessage, setMessage] = useState(false);
   useEffect(() => {
     if (apiState?.error) {
       setLoader(false);
+      setMessage(true);
     }
     if (apiState?.soa_data) {
-      dispatch({
-        type: TableEvents.SET_TABLES,
-        payload: JSON.parse(JSON.stringify(apiState.soa_data)),
+      const tabs = [];
+      apiState.soa_data.forEach((item) => {
+        if (item[TableConst.NORMALIZED_SOA].length > 0) tabs.push(item);
       });
-      dispatch({ type: TableEvents.SET_SELECTED_TAB, payload: 0 });
+      if (tabs.length > 0) {
+        dispatch({
+          type: TableEvents.SET_TABLES,
+          payload: cloneDeep(tabs),
+        });
+        dispatch({ type: TableEvents.SET_SELECTED_TAB, payload: 0 });
+      } else {
+        setMessage(true);
+      }
       setLoader(false);
     }
+
     // eslint-disable-next-line
   }, [apiState]);
 
@@ -62,11 +73,13 @@ function SOA({ docId }) {
   );
   return (
     <div className="soa-content-holder" data-testid="soaTable">
+      {showMessage && <h2 className="message">No Results Found</h2>}
+
+      {loader && <Loader isInner />}
+
       <TabelContext.Provider value={provider}>
-        {loader ? <Loader isInner /> : ''}
         <SOATabs />
         {!apiState?.error ? <ArrangePanel /> : null}
-
         <div className="soa-container">
           {state.openSettings ? (
             <>

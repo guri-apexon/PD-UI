@@ -768,7 +768,7 @@ export function* getSOAData(action) {
     yield put(setSOAData(enrichedData.data));
   } else {
     yield put(setSOAData({ error: true }));
-    toast.error('Error While Updation');
+    toast.error('No data found..');
   }
 }
 
@@ -1023,7 +1023,7 @@ export function* updateDerivedData(action) {
       });
     }
   } catch (error) {
-    toast.error(DipaData.data.message || 'Error While Updation');
+    toast.error(DipaData?.data?.message || 'Error While Updation');
   }
 }
 

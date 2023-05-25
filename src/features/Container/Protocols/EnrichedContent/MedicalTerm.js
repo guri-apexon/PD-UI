@@ -20,6 +20,7 @@ import enrichedTerms from './clinicalTerms.json';
 import { userId } from '../../../../store/userDetails';
 import './MedicalTerm.scss';
 import { createPlainText } from '../../../../utils/utilFunction';
+import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
 
 function MedicalTerm({
   enrichedTarget,
@@ -28,6 +29,7 @@ function MedicalTerm({
   clinicalTerms: clinicalTermsArray,
   linkId,
   docId,
+  preferredTerms,
 }) {
   const wrapperRef = useRef(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -126,7 +128,7 @@ function MedicalTerm({
         linkId,
         opType: 'delete',
         data: saveObj,
-        headerLinkId: clinicalTermsArr[enrichedText]?.id,
+        headerLinkId: preferredTerms[enrichedText]?.id,
       },
     });
   };
@@ -175,7 +177,7 @@ function MedicalTerm({
           linkId,
           opType: 'delete',
           data: saveObj,
-          headerLinkId: clinicalTermsArr[enrichedText]?.id,
+          headerLinkId: preferredTerms[enrichedText]?.id,
         },
       });
     }
@@ -272,7 +274,7 @@ function MedicalTerm({
         docId,
         linkId,
         data: saveObj,
-        headerLinkId: clinicalTermsArr[enrichedText]?.id,
+        headerLinkId: preferredTerms[enrichedText]?.id,
       },
     });
 
@@ -334,9 +336,11 @@ function MedicalTerm({
                       setSAnchorEl(!SanchorEl ? e.currentTarget : null);
                       setNewTermValue(childTermValue);
                     }}
-                    disabled={isEmpty(
-                      clinicalTermsArr?.[enrichedText]?.[item.key],
-                    )}
+                    disabled={
+                      (wordSelector?.word?.type !== CONTENT_TYPE?.HEADER &&
+                        item.value === 'Preferred Term') ||
+                      isEmpty(clinicalTermsArr?.[enrichedText]?.[item.key])
+                    }
                   >
                     {item.value}
                     {isActive && childArr.length > 0 && SanchorEl && (
@@ -496,4 +500,5 @@ MedicalTerm.propTypes = {
   clinicalTerms: PropTypes.isRequired,
   linkId: PropTypes.isRequired,
   docId: PropTypes.isRequired,
+  preferredTerms: PropTypes.isRequired,
 };

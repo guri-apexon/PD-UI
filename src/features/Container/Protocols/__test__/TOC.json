@@ -1,0 +1,466 @@
+[
+    [
+        {
+            "doc_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+            "group_type": "DocumentLinks",
+            "link_id": "c92cfdd2-d907-11ed-ad59-005056ab6469",
+            "LinkLevel": 1,
+            "page": 15,
+            "sec_id": "1",
+            "source_file_section": "1 Background and rationale",
+            "LinkType": "toc",
+            "line_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+            "preferred_term": "",
+            "qc_change_type": "",
+            "sequence": 1,
+            "section_locked": false,
+            "audit_info": {
+                "last_reviewed_date": "2023-05-15 06:14:50.623851",
+                "last_reviewed_by": "u1089679",
+                "total_no_review": 5
+            },
+            "childlevel": [
+                {
+                    "doc_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+                    "group_type": "DocumentLinks",
+                    "link_id": "c92cfdd3-d907-11ed-9d2b-005056ab6469",
+                    "LinkLevel": 2,
+                    "page": 15,
+                    "sec_id": "1.1",
+                    "source_file_section": "1.1 Management of sick children",
+                    "LinkType": "toc",
+                    "line_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+                    "preferred_term": "",
+                    "qc_change_type": "",
+                    "sequence": 2,
+                    "section_locked": false,
+                    "audit_info": {
+                        "last_reviewed_date": "2023-04-12 17:44:26.400839",
+                        "last_reviewed_by": "",
+                        "total_no_review": 1
+                    }
+                }
+            ]
+        }
+    ],
+    [
+        {
+            "preferred_terms": [
+                {
+                    "id": "c92cfdda-d907-11ed-abf3-005056ab6469",
+                    "preferred_term": "cpt_objectives_endpoints_and_estimands",
+                    "parent_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+                    "text": "2 Study objectives and theory of change"
+                },
+                {
+                    "id": "c92cfdd9-d907-11ed-b870-005056ab6469",
+                    "preferred_term": "<h2>1.1  Management of sick childrenAdding dummy value here to testAdding dummy value here to test.</h2>",
+                    "parent_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+                    "text": "<h2>1.1  Management of sick childrenAdding dummy value here to testAdding dummy value here to test.</h2>"
+                },
+                {
+                    "id": "c92cfdf4-d907-11ed-81d2-005056ab6469",
+                    "preferred_term": "<h2>6.1 Sick children attending PHC facilities:</h2>",
+                    "parent_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+                    "text": "<h2>6.1 Sick children attending PHC facilities:</h2>"
+                },
+                {
+                    "id": "c92cfdf2-d907-11ed-b39d-005056ab6469",
+                    "preferred_term": "cpt_objectives_endpoints_and_estimands",
+                    "parent_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+                    "text": "6 Study population"
+                },
+                {
+                    "id": "c92cfdfa-d907-11ed-bd02-005056ab6469",
+                    "preferred_term": "cpt_study_assessments_and_procedures",
+                    "parent_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+                    "text": "8 Study procedures"
+                },
+                {
+                    "id": "c92d24ca-d907-11ed-b30b-005056ab6469",
+                    "preferred_term": "cpt_objectives_endpoints_and_estimands",
+                    "parent_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+                    "text": "9 Statistical methods"
+                },
+                {
+                    "id": "c92d24cc-d907-11ed-95e4-005056ab6469",
+                    "preferred_term": "cpt_primary_endpoints_estimands_analysis",
+                    "parent_id": "8c3b8c8b-370a-4bf7-8e14-3f1473251906",
+                    "text": "9.2 Statistical analysis for the primary outcome measure in the parallel cluster study"
+                }
+            ]
+        }
+    ],
+    [
+        {
+            "INVESTIGATOR: Person Title": {
+                "preferred_term": "",
+                "ontology": "word",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Dr."
+            }
+        },
+        {
+            "Sponsor Name": {
+                "preferred_term": "",
+                "ontology": "",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "National Institute of Statistics"
+            }
+        },
+        {
+            "Sponsor Address": {
+                "preferred_term": "",
+                "ontology": "",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Switzerland"
+            }
+        },
+        {
+            "PRIMARY INVESTIGATOR: Person Name": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Val\u00e9rie D\u2019Acremont"
+            }
+        },
+        {
+            "PRIMARY INVESTIGATOR: Person Title": {
+                "preferred_term": "",
+                "ontology": "word",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Prof."
+            }
+        },
+        {
+            "OTHER: Person Name": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "USAID"
+            }
+        },
+        {
+            "OTHER: Person Title": {
+                "preferred_term": "",
+                "ontology": "word",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Dr."
+            }
+        },
+        {
+            "OTHER: Affiliation": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Swiss Tropical and Public Health Institute"
+            }
+        },
+        {
+            "INVESTIGATOR: Person Name": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Sabin Nsanzimana"
+            }
+        },
+        {
+            "Paragraph": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "- Number of medical experts able to modify a clinical algorithm using medAL-creator"
+            }
+        },
+        {
+            "Fever (finding)": {
+                "preferred_term": "",
+                "ontology": "snomed",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Tanzanian "
+            }
+        },
+        {
+            "Professor Val\u00e9rie": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Prof. Val\u00e9rie"
+            }
+        },
+        {
+            "Dr. Sabin Nsanzimana": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Dr. Sabin Nsanzimana"
+            }
+        },
+        {
+            "[0h, 5y)": {
+                "preferred_term": "",
+                "ontology": "age",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "aged less than 5 years"
+            }
+        },
+        {
+            "National Data Centre": {
+                "preferred_term": "",
+                "ontology": "organizations",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "National Data Centre"
+            }
+        },
+        {
+            "ANY: Address": {
+                "preferred_term": "",
+                "ontology": "",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "44 - 1011 Lausanne Switzerland"
+            }
+        },
+        {
+            "ANY: Organization": {
+                "preferred_term": "",
+                "ontology": "",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Centre for Primary Care and Public Health"
+            }
+        },
+        {
+            "ANY: Telephone/Fax": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "+41 79 556 25 51"
+            }
+        },
+        {
+            "[0h, 14y]": {
+                "preferred_term": "",
+                "ontology": "age",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "aged 0-14 years"
+            }
+        },
+        {
+            "Male": {
+                "preferred_term": "",
+                "ontology": "",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Switzerland NN Med. \\_ solution National D Data "
+            }
+        },
+        {
+            "Death": {
+                "preferred_term": "",
+                "ontology": "nlm_plus",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "deaths"
+            }
+        },
+        {
+            "Meningitis, CTCAE": {
+                "preferred_term": "",
+                "ontology": "nci",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "meningitis"
+            }
+        },
+        {
+            "Pyrexia": {
+                "preferred_term": "",
+                "ontology": "meddra",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "fever"
+            }
+        },
+        {
+            "Fever": {
+                "preferred_term": "",
+                "ontology": "nlm",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "fever"
+            }
+        },
+        {
+            "Respiratory rate (observable entity)": {
+                "preferred_term": "",
+                "ontology": "snomed",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "respiratory rate"
+            }
+        },
+        {
+            "Respiratory rate": {
+                "preferred_term": "",
+                "ontology": "meddra",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "respiratory rate"
+            }
+        },
+        {
+            "Respiratory Rate": {
+                "preferred_term": "",
+                "ontology": "nci",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "respiratory rate"
+            }
+        },
+        {
+            "Tachypnea (finding)": {
+                "preferred_term": "",
+                "ontology": "snomed",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "rapid breathing"
+            }
+        },
+        {
+            "Apnea (finding)": {
+                "preferred_term": "",
+                "ontology": "snomed",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "apnea"
+            }
+        },
+        {
+            "Heart rate": {
+                "preferred_term": "",
+                "ontology": "meddra",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "heart rate"
+            }
+        },
+        {
+            "Heart Rate": {
+                "preferred_term": "",
+                "ontology": "nlm",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "heart rate"
+            }
+        },
+        {
+            "Adverse Event, Adver..": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "anemia"
+            }
+        },
+        {
+            "Adverse Event, Adver.. assessment": {
+                "preferred_term": "",
+                "ontology": "phrase",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "diarrhea"
+            }
+        },
+        {
+            "Yes": {
+                "preferred_term": "",
+                "ontology": "",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "severe"
+            }
+        },
+        {
+            "severe": {
+                "preferred_term": "",
+                "ontology": "word",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "severe"
+            }
+        },
+        {
+            "major": {
+                "preferred_term": "",
+                "ontology": "word",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "Major"
+            }
+        },
+        {
+            "serious": {
+                "preferred_term": "",
+                "ontology": "word",
+                "synonyms": "",
+                "medical_term": "",
+                "classification": "",
+                "clinical_terms": "serious"
+            }
+        }
+    ]
+]

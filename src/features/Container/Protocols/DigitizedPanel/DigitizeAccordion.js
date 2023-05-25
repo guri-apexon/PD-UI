@@ -626,7 +626,7 @@ function DigitizeAccordion({
       return createPreferredText(
         header?.source_file_section,
         preferredContent?.data,
-        true,
+        false,
       );
     }
     return header.source_file_section;
@@ -723,7 +723,14 @@ function DigitizeAccordion({
       (rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM ||
         showEnrichedContent)
     ) {
-      newContent = createEnrichedText(newContent, enrichedContent?.data);
+      if (
+        contentType === CONTENT_TYPE?.HEADER &&
+        !(globalPreferredTerm || showPrefferedTerm)
+      ) {
+        newContent = createPreferredText(content, enrichedContent?.data, true);
+      } else {
+        newContent = createEnrichedText(newContent, enrichedContent?.data);
+      }
     }
 
     newContent = createFullMarkup(newContent);
@@ -1097,6 +1104,7 @@ function DigitizeAccordion({
           clinicalTerms={preferredTerms || clinicalTerms}
           linkId={linkId}
           docId={docId}
+          preferredTerms={preferredContent?.data}
         />
 
         <SaveSectionModal
