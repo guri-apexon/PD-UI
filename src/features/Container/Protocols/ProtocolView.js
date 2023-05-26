@@ -63,10 +63,16 @@ function ProtocolView({ refs, data }) {
       content: sectionContent[index],
       contentType: '',
     };
-    if (sectionContent[index].qc_change_type !== 'add') {
+    const lastobj = undoStack.slice(-1)[0];
+    if (
+      (lastobj &&
+        sectionContent[index].qc_change_type !== 'add' &&
+        lastobj.lineId !== payload.currentLineId) ||
+      !lastobj
+    ) {
       undoStack.push(undoObj);
+      setUndoStack(undoStack);
     }
-    setUndoStack(undoStack);
     setSectionContent((prevState) => {
       return prepareContent({
         ...payload,
