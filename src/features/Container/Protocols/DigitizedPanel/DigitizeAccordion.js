@@ -133,6 +133,13 @@ function DigitizeAccordion({
   const { setActiveLineID } = useProtContext();
 
   useEffect(() => {
+    if (!globalPreferredTerm) {
+      setPreferredTarget(null);
+    }
+    setEnrichedTarget(null);
+  }, [globalPreferredTerm]);
+
+  useEffect(() => {
     if (tocActiveSelector) setTocActive(tocActiveSelector);
   }, [tocActiveSelector]);
 
