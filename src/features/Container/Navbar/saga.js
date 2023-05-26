@@ -13,9 +13,9 @@ import {
 function* getUserId() {
   const state = yield select();
 
-  const id = state.user.userDetail.userId;
+  const id = state.user?.userDetail.userId;
 
-  return id.substring(1);
+  return id?.substring(1);
 }
 
 export function* navbarNotificationData(action) {
