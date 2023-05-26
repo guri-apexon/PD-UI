@@ -66,7 +66,7 @@ function ProtocolView({ refs, data }) {
     const lastobj = undoStack.slice(-1)[0];
     if (
       (lastobj &&
-        sectionContent[index].qc_change_type !== 'add' &&
+        // sectionContent[index].qc_change_type !== 'add' &&
         lastobj.lineId !== payload.currentLineId) ||
       !lastobj
     ) {
