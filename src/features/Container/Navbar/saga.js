@@ -10,18 +10,12 @@ import {
   setError,
 } from './navbarSlice';
 
-function* getUserId() {
-  const state = yield select();
-
-  const id = state.user?.userDetail.userId;
-
-  return id?.substring(1);
-}
-
 export function* navbarNotificationData(action) {
-  const userId = yield getUserId();
+  const {
+    payload: { userID },
+  } = action;
 
-  const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${userId}`;
+  const notificationUrl = `${BASE_URL_8000}/api/user_alert/?userId=${userID}`;
 
   const notificationConfig = {
     url: notificationUrl,
