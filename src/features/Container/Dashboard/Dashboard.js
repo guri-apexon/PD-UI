@@ -21,7 +21,7 @@ if (curHr < 12) {
 
 function Dashboard() {
   const userDetails = useSelector(loggedUser);
-  const memoizedPageRows = React.useMemo(() => [5, 20, 30, 'All'], []);
+  const memoizedPageRows = React.useMemo(() => [5, 20, 30], []);
   const dashboardError = useSelector(dashboadAPIError);
   const dispatch = useDispatch();
 
