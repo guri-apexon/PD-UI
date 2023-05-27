@@ -182,6 +182,7 @@ class SearchPanel extends React.Component {
       if (res.success) {
         this.setState({ accordionObj: newObj });
         const id = userDetails.userId;
+
         this.props.updateAlerts(id.substring(1));
         this.props.updateSetting(id.substring(1));
       }
@@ -458,7 +459,7 @@ const mapDispatchToProps = (dispatch) => {
     updateSearchResult: (obj) =>
       dispatch({ type: 'UPDATE_SEARCH_RESULT', payload: obj }),
     updateAlerts: (id) =>
-      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: id }),
+      dispatch({ type: 'GET_NOTIFICATION_SAGA', payload: { userID: id } }),
     updateSetting: (id) =>
       dispatch({
         type: 'GET_OPT_IN_OUT',
