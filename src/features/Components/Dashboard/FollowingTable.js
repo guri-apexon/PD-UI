@@ -64,7 +64,7 @@ function ProtocolTitle({ row, column: { accessor: key } }) {
             to={`/protocols?protocolId=${row.id}`}
             dangerouslySetInnerHTML={createMarkup(row[key])}
           />
-          <span>{row[key].length > 40 ? '...' : ''}</span>
+          <span>{row[key] ? (row[key].length > 40 ? '...' : '') : '-'}</span>
         </div>
       );
     }
@@ -76,7 +76,7 @@ function ProtocolTitle({ row, column: { accessor: key } }) {
             to={`/protocols?protocolId=${row.id}`}
             dangerouslySetInnerHTML={createMarkup(row[key])}
           />
-          <span>{row[key].length > 40 ? '...' : ''}</span>
+          <span>{row[key] ? (row[key].length > 40 ? '...' : '') : '-'}</span>
         </div>
       );
     }
@@ -86,7 +86,7 @@ function ProtocolTitle({ row, column: { accessor: key } }) {
           className="title-no-link-protocol"
           dangerouslySetInnerHTML={createMarkup(row[key])}
         />
-        <span>{row[key].length > 40 ? '...' : ''}</span>
+        <span>{row[key] ? (row[key].length > 40 ? '...' : '') : '-'}</span>
       </div>
     );
   };
@@ -121,7 +121,11 @@ function Cell({ row, column }) {
       </Tooltip>
     );
   }
-  return <div style={{ fontWeight: 800 }}>{row[column.accessor]}</div>;
+  return (
+    <div style={{ fontWeight: 800 }}>
+      {row[column.accessor] ? row[column.accessor] : '-'}
+    </div>
+  );
 }
 
 function ProtocolLink({ row, column: { accessor: key } }) {
@@ -133,9 +137,11 @@ function ProtocolLink({ row, column: { accessor: key } }) {
             className="title-link-protocol"
             to={`/protocols?protocolId=${row.id}`}
           >
-            {row[key].length > 18
-              ? `${row[key].substring(0, 18)}...`
-              : row[key]}
+            {row[key]
+              ? row[key].length > 18
+                ? `${row[key].substring(0, 18)}...`
+                : row[key]
+              : '-'}
           </Link>
         </div>
       );
@@ -147,9 +153,11 @@ function ProtocolLink({ row, column: { accessor: key } }) {
             className="title-link-protocol"
             to={`/protocols?protocolId=${row.id}`}
           >
-            {row[key].length > 18
-              ? `${row[key].substring(0, 18)}...`
-              : row[key]}
+            {row[key]
+              ? row[key].length > 18
+                ? `${row[key].substring(0, 18)}...`
+                : row[key]
+              : '-'}
           </Link>
         </div>
       );
@@ -158,7 +166,11 @@ function ProtocolLink({ row, column: { accessor: key } }) {
       <div>
         {/* <span className="title-no-link-protocol">{row[key]}</span> */}
         <span>
-          {row[key].length > 18 ? `${row[key].substring(0, 18)}...` : row[key]}
+          {row[key]
+            ? row[key].length > 18
+              ? `${row[key].substring(0, 18)}...`
+              : row[key]
+            : '-'}
         </span>
       </div>
     );
