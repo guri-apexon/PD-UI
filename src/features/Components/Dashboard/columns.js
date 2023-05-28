@@ -56,9 +56,11 @@ function DownloadLink({ row, column: { accessor: key } }) {
               data-testid="download-follow-asso"
               onClick={() => handleDownload(row)}
             >
-              {row[key].length > 50
-                ? `${row[key].substring(0, 50)}...`
-                : row[key]}
+              {row[key]
+                ? row[key].length > 50
+                  ? `${row[key].substring(0, 50)}...`
+                  : row[key]
+                : '-'}
             </a>
           </span>
         </span>
@@ -67,10 +69,10 @@ function DownloadLink({ row, column: { accessor: key } }) {
   );
 }
 const dateFormat = ({ row }) => {
-  return <>{covertMMDDYYYY(row.uploadDate)}</>;
+  return <>{row?.uploadDate ? covertMMDDYYYY(row.uploadDate) : '-'}</>;
 };
 const dateFormatApp = ({ row }) => {
-  return <>{row.approvalDate ? covertMMDDYYYY(row.approvalDate) : '-'}</>;
+  return <>{row?.approvalDate ? covertMMDDYYYY(row.approvalDate) : '-'}</>;
 };
 
 function Cell({ row, column: { accessor: key } }) {
@@ -122,7 +124,11 @@ function ProtocolVersion({ row, column: { accessor: key } }) {
     return (
       <div>
         <span>
-          {row[key].length > 18 ? `${row[key].substring(0, 18)}...` : row[key]}
+          {row[key]
+            ? row[key].length > 18
+              ? `${row[key].substring(0, 18)}...`
+              : row[key]
+            : '-'}
         </span>
       </div>
     );

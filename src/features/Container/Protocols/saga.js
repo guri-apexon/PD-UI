@@ -725,7 +725,10 @@ export function* saveEnrichedAPI(action) {
   const {
     payload: { docId, linkId, data, opType, headerLinkId },
   } = action;
-  let url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}&header_link_id=${headerLinkId}`;
+  let url = `${BASE_URL_8000}${Apis.ENRICHED_CONTENT}?doc_id=${docId}&link_id=${linkId}`;
+  if (headerLinkId) {
+    url += `&header_link_id=${headerLinkId}`;
+  }
   if (opType) url = `${url}&operation_type=${opType}`;
   const config = {
     url,
@@ -768,7 +771,7 @@ export function* getSOAData(action) {
     yield put(setSOAData(enrichedData.data));
   } else {
     yield put(setSOAData({ error: true }));
-    toast.error('Error While Updation');
+    toast.error('No data found..');
   }
 }
 
@@ -1023,7 +1026,7 @@ export function* updateDerivedData(action) {
       });
     }
   } catch (error) {
-    toast.error(DipaData.data.message || 'Error While Updation');
+    toast.error(DipaData?.data?.message || 'Error While Updation');
   }
 }
 

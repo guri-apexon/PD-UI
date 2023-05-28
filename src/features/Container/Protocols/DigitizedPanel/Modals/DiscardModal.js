@@ -30,8 +30,9 @@ function DiscardModal({
           onClick: () => onDiscardClick(),
         },
       ]}
-      className={classes.modal}
+      className={classes?.modal}
       id="custom"
+      data-testid="discard-modal"
     >
       Are you sure you want to discard the changes?
     </Modal>

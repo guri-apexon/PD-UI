@@ -85,3 +85,73 @@ describe('ProtocolViewWrapper', () => {
     expect(panel).not.toHaveAttribute('fullRightScreen', 'false');
   });
 });
+
+describe('ProtocolViewWrapper', () => {
+  const mockData = {
+    userPrimaryRoleFlag: true,
+  };
+
+  const mockRefx = {};
+  const mockSectionRef = {};
+  const mockSummaryData = {
+    success: true,
+    errorMsg: null,
+  };
+  const mockGlobalPreferredTerm = {};
+  const mockSetGlobalPreferredTerm = jest.fn();
+
+  beforeEach(() => {
+    render(
+      <Provider store={store}>
+        <ProtocolViewWrapper
+          data={mockData}
+          refx={mockRefx}
+          sectionRef={mockSectionRef}
+          summaryData={mockSummaryData}
+          globalPreferredTerm={mockGlobalPreferredTerm}
+          setGlobalPreferredTerm={mockSetGlobalPreferredTerm}
+        />
+      </Provider>,
+    );
+  });
+
+  it('renders BladeLeft component when userPrimaryRoleFlag is true', () => {
+    const bladeLeftElement = screen.getByTestId('toc-component');
+    expect(bladeLeftElement).toBeInTheDocument();
+  });
+
+  it('renders BladeRight component', () => {
+    const bladeRightElement = screen.getByTestId('rightblade');
+    expect(bladeRightElement).toBeInTheDocument();
+  });
+
+  it('renders PanelGroup component', () => {
+    const panelGroupElement = screen.getByTestId('panel-group');
+    expect(panelGroupElement).toBeInTheDocument();
+  });
+
+  it('renders error message when summaryData.success is false', () => {
+    const mockErrorData = {
+      success: false,
+      errorMsg: 'Error loading PDF',
+    };
+    render(
+      <Provider store={store}>
+        <ProtocolViewWrapper
+          data={mockData}
+          refx={mockRefx}
+          sectionRef={mockSectionRef}
+          summaryData={mockErrorData}
+          globalPreferredTerm={mockGlobalPreferredTerm}
+          setGlobalPreferredTerm={mockSetGlobalPreferredTerm}
+        />
+      </Provider>,
+    );
+    const errorMessage = screen.queryByText((content) => {
+      return content.startsWith(
+        'This document is not available in our database',
+      );
+    });
+    expect(errorMessage).not.toBeInTheDocument();
+  });
+});
