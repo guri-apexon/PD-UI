@@ -560,7 +560,6 @@ function DigitizeAccordion({
           req?.qc_change_type === QC_CHANGE_TYPE.UPDATED &&
           req?.link_level === '1',
       );
-
       updateSectionLock(true);
       setSaveEnabled(false);
       setShowLoader(true);
