@@ -1,7 +1,7 @@
 /* eslint-disable */
 import { runSaga } from 'redux-saga';
-import { takeEvery, takeLatest } from 'redux-saga/effects';
-import {
+import { all, takeEvery, takeLatest } from 'redux-saga/effects';
+import dashboardSaga, {
   recentSearchAsyn,
   addProtocolSponsor,
   postAddProtocol,
@@ -24,7 +24,8 @@ import {
   resetErrorAddProtocolNew,
 } from '../saga';
 
-import * as api from '../../../../utils/api';
+import BASE_URL, * as api from '../../../../utils/api';
+import { getProtocols } from '../dashboardSlice';
 
 const userDetail = {
   username: 'Sohan111',
@@ -1884,10 +1885,56 @@ describe('Dashboard Saga Unit Test', () => {
     expect(mockCallApi).toHaveBeenCalledTimes(1);
   });
 
+  it('should handle fetch more workflow failure', async () => {
+    const docId = '123';
+    const state = {
+      dashboard: {
+        protocols: [
+          {
+            id: '123',
+            showMoreCalling: false,
+            showMore: false,
+          },
+        ],
+      },
+    };
+
+    const mockCallApi = jest
+      .spyOn(api, 'httpCall')
+      .mockImplementation(() => Promise.resolve(state));
+
+    const dispatchedActions = [];
+    const mockStore = {
+      getState: () => state,
+      dispatch: (action) => dispatchedActions.push(action),
+    };
+
+    await runSaga(mockStore, fetchMoreWorkflow, { payload: docId }).toPromise();
+
+    expect(mockCallApi).toHaveBeenCalledWith({
+      url: `${BASE_URL}/pd/api/v1/documents/get_workflows_by_doc_id?doc_id=${docId}`,
+      method: 'GET',
+      checkAuth: true,
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    mockCallApi.mockRestore();
+  });
+
   // Test SEND_QC_REVIEW_SAGA function Ends
 
   // watch All Sagas
   test('should watch all Dashboard Sagas', () => {
     watchDashboard();
+  });
+});
+
+describe('protocolSaga', () => {
+  it('should call the correct saga watchers', () => {
+    const sagaGenerator = dashboardSaga();
+
+    expect(sagaGenerator.next().value).toEqual(all([watchDashboard()]));
+
+    expect(sagaGenerator.next().done).toBe(true);
   });
 });

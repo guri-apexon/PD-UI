@@ -14,6 +14,14 @@ describe('MedicalTerm component', () => {
   };
   const linkId = '46bac1b7-9197-11ed-b507-005056ab6469';
   const docId = '4c7ea27b-8a6b-4bf0-a8ed-2c1e49bbdc8c';
+  const preferredTerms = {
+    '2. STUDY OBJECTIVES': {
+      id: '17b93a74-f39d-11ed-8700-005056ab6469',
+      preferred_term: 'cpt_test',
+      parent_id: 'ab145e95-7a1f-42a0-8759-efb443b6155f',
+      text: '2. STUDY OBJECTIVES',
+    },
+  };
   it('renders without crashing', () => {
     const { container } = render(
       <Provider store={store}>
@@ -106,6 +114,7 @@ describe('MedicalTerm component', () => {
           clinicalTerms={clinicaltermsObject}
           linkId={linkId}
           docId={docId}
+          preferredTerms={preferredTerms}
         />
       </Provider>,
     );
@@ -134,6 +143,7 @@ describe('MedicalTerm component', () => {
           clinicalTerms={clinicaltermsObject}
           linkId={linkId}
           docId={docId}
+          preferredTerms={preferredTerms}
         />
       </Provider>,
     );
@@ -167,6 +177,7 @@ describe('MedicalTerm component', () => {
           clinicalTerms={clinicaltermsObject}
           linkId={linkId}
           docId={docId}
+          preferredTerms={preferredTerms}
         />
       </Provider>,
     );

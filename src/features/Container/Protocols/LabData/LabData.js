@@ -527,6 +527,7 @@ function LabData({ docId }) {
             <Button
               icon={<Plus />}
               className="addrow-button"
+              data-testid="add-row"
               onClick={createLabDataTable}
             >
               Add Row

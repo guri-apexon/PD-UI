@@ -32,9 +32,9 @@ function AddClinicalTerm({ docId, linkId }) {
   const preferredContent = useSelector(preferredData);
 
   useEffect(() => {
-    const selected = window.getSelection().toString();
+    const selected = window?.getSelection()?.toString();
     setSelectedText(selected);
-    setIsTextSelected(selected.trim() !== '');
+    setIsTextSelected(selected?.trim() !== '');
   }, [wordSelector]);
 
   const handleOpen = (selectedText) => {
