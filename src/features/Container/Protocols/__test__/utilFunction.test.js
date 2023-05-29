@@ -22,14 +22,14 @@ describe('flattenObject', () => {
         _meta_data: [
           {
             id: 1,
-            isCustom: true,
+            isCustom: false,
             name: 'field1',
             attr_value: undefined,
             display_name: undefined,
           },
           {
             id: 2,
-            isCustom: true,
+            isCustom: false,
             name: 'field2',
             attr_value: undefined,
             display_name: undefined,
@@ -52,7 +52,7 @@ describe('flattenObject', () => {
 describe('mergeSummary', () => {
   test('should merge summary_extended to summary correctly', () => {
     const data = {
-      summary: {
+      Summary: {
         _meta_data: [{ name: 'field1' }, { name: 'field2' }],
         _childs: [],
       },
@@ -63,7 +63,7 @@ describe('mergeSummary', () => {
     };
 
     const expectedResult = {
-      summary: {
+      Summary: {
         _childs: [],
         _meta_data: [
           {
@@ -89,9 +89,9 @@ describe('mergeSummary', () => {
     };
 
     // eslint-disable-next-line
-    expect(mergeSummary(data).summary._meta_data.length).toBeLessThanOrEqual(
+    expect(mergeSummary(data).Summary._meta_data.length).toBeLessThanOrEqual(
       // eslint-disable-next-line
-      expectedResult.summary._meta_data.length,
+      expectedResult.Summary._meta_data.length,
     );
   });
 });
