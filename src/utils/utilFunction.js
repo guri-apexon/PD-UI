@@ -306,8 +306,8 @@ export const tableJSONByRowAndColumnLength = (row, column) => {
   const json = [];
   for (let i = 0; i < row; i++) {
     const rowObj = {};
-    rowObj.roi_id = '';
     rowObj.row_indx = `${i}`.toString();
+    rowObj.roi_id = '';
     rowObj.op_type = QC_CHANGE_TYPE.ADDED;
 
     let columnObj = [];
