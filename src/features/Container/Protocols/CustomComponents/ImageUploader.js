@@ -96,63 +96,64 @@ function ImageUploader({ lineID, content, edit }) {
 
   const imgPreview = () => {
     return (
-      img && (
-        // eslint-disable-next-line
-        <div
-          className="img-container-read-mode"
-          data-testId="edit-readmode-img"
-          onMouseOver={() => setShowEditBtn(true)}
-          onMouseLeave={() => setShowEditBtn(false)}
-        >
-          <img src={img} alt="img" className="rich-text-img" />
-          {showEditBtn && !showDltCnfrm && (
-            <div className="img-edit-btn-container">
-              <IconButton
-                darkMode
-                destructiveAction
-                onClick={() => setShowDltCnfrm(true)}
-                data-testId="delete_img"
-              >
-                <TrashIcon />
-              </IconButton>
-
-              <IconButton
-                darkMode
-                destructiveAction
-                onClick={onImgEditBtnClick}
-                data-testId="edit_img"
-              >
-                <Pencil />
-              </IconButton>
-            </div>
-          )}
-          {showDltCnfrm && (
-            <div
-              className="delete-confirmation-box"
-              data-testId="deleteConfirmBox"
-            >
-              <p>Please confirm if you want to continue with deletion</p>
-
-              <div>
-                <Button
-                  variant="secondary"
-                  onClick={() => setShowDltCnfrm(false)}
+      <div>
+        {img && ( // eslint-disable-next-line
+          <div
+            className="img-container-read-mode"
+            data-testId="edit-readmode-img"
+            onMouseOver={() => setShowEditBtn(true)}
+            onMouseLeave={() => setShowEditBtn(false)}
+          >
+            <img src={img} alt="img" className="rich-text-img" />
+            {showEditBtn && !showDltCnfrm && (
+              <div className="img-edit-btn-container">
+                <IconButton
+                  darkMode
+                  destructiveAction
+                  onClick={() => setShowDltCnfrm(true)}
+                  data-testId="delete_img"
                 >
-                  Cancel
-                </Button>
+                  <TrashIcon />
+                </IconButton>
 
-                <Button
-                  variant="primary"
-                  onClick={handleDelete}
-                  data-testID="confirmDelete"
+                <IconButton
+                  darkMode
+                  destructiveAction
+                  onClick={onImgEditBtnClick}
+                  data-testId="edit_img"
                 >
-                  Delete
-                </Button>
+                  <Pencil />
+                </IconButton>
               </div>
-            </div>
-          )}
-        </div>
-      )
+            )}
+            {showDltCnfrm && (
+              <div
+                className="delete-confirmation-box"
+                data-testId="deleteConfirmBox"
+              >
+                <p>Please confirm if you want to continue with deletion</p>
+
+                <div>
+                  <Button
+                    variant="secondary"
+                    onClick={() => setShowDltCnfrm(false)}
+                  >
+                    Cancel
+                  </Button>
+
+                  <Button
+                    variant="primary"
+                    onClick={handleDelete}
+                    data-testID="confirmDelete"
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     );
   };
 
