@@ -507,7 +507,7 @@ function MetaData({ docId }) {
                 icon={<Plus size="small" />}
                 onChange={(e) => handleTextChange(e)}
                 iconProps={{
-                  onClick: (e) => handleTextClick(e),
+                  onClick: handleTextClick,
                 }}
                 size="small"
                 inputProps={{ 'data-testid': 'add-new-section' }}
