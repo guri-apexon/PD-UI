@@ -1,14 +1,20 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Table from 'apollo-react/components/Table';
 import PropTypes from 'prop-types';
 import Grid from 'apollo-react/components/Grid';
 import Modal from 'apollo-react/components/Modal';
 import Checkbox from 'apollo-react/components/Checkbox';
+import IconButton from 'apollo-react/components/IconButton';
 import Plus from 'apollo-react-icons/Plus';
-import Trash from 'apollo-react-icons/Trash';
+import Close from 'apollo-react-icons/Close';
 import moment from 'moment';
+import Select from 'apollo-react/components/Select';
+import MenuItem from 'apollo-react/components/MenuItem';
 import { ValueField, InputKeyField } from './CustomForm';
 import METADATA_CONSTANTS from './constants';
+import { loggedUser } from '../../../../store/userDetails';
+import { USERTYPE } from '../../../../AppConstant/AppConstant';
 
 function Cell({ row, column }) {
   return (
@@ -66,16 +72,15 @@ function EditableCell({ row, column: { accessor: key } }) {
 
   const renderValueField = () => {
     return ['attr_value'].includes(key) ||
-      (METADATA_CONSTANTS.COLUMN_KEYS.includes(key) &&
-        row.fieldName !== 'summary') ||
-      row.isCustom ? (
+      METADATA_CONSTANTS.COLUMN_KEYS.includes(key) ? (
       <ValueField
-        item={row}
         keyName={key}
         type={type}
         dateValue={dateValue}
         inputValue={val}
-        isDisabled={row?.attr_id}
+        isDisabled={
+          row?.attr_id && row?.attr_value && row?.attr_status !== 'add'
+        }
         setDateValue={setDateValue}
         setType={setType}
         handleDateChange={handleDateChange}
@@ -95,24 +100,22 @@ function DeleteCell({ row }) {
     row.handleDelete(row.id);
   };
   return (
-    row.isCustom && (
+    !row?.is_default && (
       <Grid className="delContainer">
-        <Trash onClick={deleteMetaData} />
+        <IconButton onClick={deleteMetaData} data-testid="metadata-row-delete">
+          <Close fontSize="small" className="crossButton" />
+        </IconButton>
       </Grid>
     )
   );
 }
 
-function MetaDataEditTable({
-  data,
-  rows,
-  setRows,
-  deletedAttributes,
-  setDeletedAttributes,
-}) {
+function MetaDataEditTable({ data, rows, setRows }) {
+  const userDetails = useSelector(loggedUser);
   const { formattedName } = data;
   const [selectedId, setSelectedId] = useState(null);
   const [isModal, setIsModal] = useState(false);
+  const [userFilterList, setUserFilterList] = useState([]);
 
   const columns = [
     {
@@ -182,6 +185,8 @@ function MetaDataEditTable({
           attr_value: '',
           attr_type: '',
           attr_status: 'add',
+          is_active: true,
+          is_default: false,
         },
       ],
     }));
@@ -198,12 +203,21 @@ function MetaDataEditTable({
     }
     return attrValue;
   };
+  useEffect(() => {
+    if (!userFilterList.length) {
+      setUserFilterList(
+        rows[formattedName].filter(
+          (x) => x.attr_value === '' || x.attr_value === null || !x.is_active,
+        ),
+      );
+    }
+  }, [rows[formattedName]]);
 
   const handleChange = (id, value, keyName) => {
     setRows((prevState) => ({
       ...prevState,
       [formattedName]: prevState[formattedName].map((list) =>
-        list?.id === id
+        list?.id === id && value !== '' && value !== null
           ? {
               ...list,
               attr_type: keyName === 'attr_type' ? value : list.attr_type,
@@ -214,7 +228,7 @@ function MetaDataEditTable({
                 keyName === 'display_name' ? value : list?.display_name,
               note: keyName === 'note' ? value : list?.note,
               confidence: keyName === 'confidence' ? value : list?.confidence,
-              attr_status: list?.attr_id ? 'edit' : list?.attr_status,
+              attr_status: list?.attr_id ? 'add' : list?.attr_status,
             }
           : list,
       ),
@@ -226,23 +240,60 @@ function MetaDataEditTable({
     setIsModal(true);
   };
 
-  const removeData = () => {
-    const filterRows = rows[formattedName].filter(
-      (list) => list.id === selectedId,
-    );
-    setDeletedAttributes([...deletedAttributes, filterRows[0].attr_name]);
-    rows[formattedName] = rows[formattedName].filter(
-      (list) => list?.id !== selectedId,
-    );
+  const onSelectChange = (e) => {
+    const newArray = rows[formattedName].map((element) => {
+      if (element.display_name === e.target.value) {
+        return { ...element, attr_status: 'add' };
+      }
+      return element;
+    });
+    const obj = newArray.find((x) => x.display_name === e.target.value);
+    const changedArr = [
+      ...newArray.filter((x) => x.display_name !== e.target.value),
+      obj,
+    ];
+
     setRows((prevState) => ({
       ...prevState,
-      [formattedName]: rows[formattedName]?.map((attr, index) => {
-        return {
-          ...attr,
-          id: index + 1,
-        };
-      }),
+      [formattedName]: changedArr,
     }));
+
+    setUserFilterList(
+      userFilterList.filter((x) => x.display_name !== e.target.value),
+    );
+  };
+  const removeData = () => {
+    const findRow = rows[formattedName].find((list) => list.id === selectedId);
+    if (findRow.isCustom) {
+      rows[formattedName] = rows[formattedName].filter(
+        (list) => list?.id !== selectedId,
+      );
+      setRows((prevState) => ({
+        ...prevState,
+        [formattedName]: rows[formattedName]?.map((attr, index) => {
+          return {
+            ...attr,
+            id: index + 1,
+          };
+        }),
+      }));
+    } else {
+      const newArray = rows[formattedName].map((element) => {
+        if (element.id === selectedId) {
+          return { ...element, attr_status: 'edit', attr_value: '' };
+        }
+        return element;
+      });
+      setUserFilterList([
+        ...userFilterList,
+        newArray.find((x) => x.id === selectedId),
+      ]);
+
+      setRows((prevState) => ({
+        ...prevState,
+        [formattedName]: newArray,
+      }));
+    }
   };
 
   const RenderTable = useMemo(() => {
@@ -251,12 +302,21 @@ function MetaDataEditTable({
         <Table
           className="table-panel"
           columns={column}
-          rows={rows[formattedName]?.map((row) => ({
-            ...row,
-            handleChange,
-            handleDelete,
-            fieldName: formattedName,
-          }))}
+          rows={rows[formattedName]
+            .filter(
+              (x) =>
+                (x.attr_value !== '' &&
+                  x.attr_value !== null &&
+                  x.attr_value !== 'undefined' &&
+                  x.is_active) ||
+                x?.attr_status === 'add',
+            )
+            .map((row) => ({
+              ...row,
+              handleChange,
+              handleDelete,
+              fieldName: formattedName,
+            }))}
           rowId="id"
           hidePagination
           hasScroll
@@ -266,7 +326,31 @@ function MetaDataEditTable({
       </span>
     );
     // eslint-disable-next-line
-  }, [column, rows[formattedName]?.length]);
+  }, [column, rows[formattedName]]);
+
+  const RenderEditableRow = useMemo(() => {
+    return (
+      <div className="keySelect">
+        <Select
+          placeholder="Select Key"
+          label=""
+          name="inputFilter"
+          data-testid="metadata-select-add"
+          fullWidth
+          onChange={(e) => onSelectChange(e)}
+          inputProps={{
+            'data-testid': 'inputFilterList',
+          }}
+        >
+          {userFilterList.map((e) => (
+            <MenuItem key={e.attr_name} value={e.display_name}>
+              {e.display_name}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
+    );
+  }, [userFilterList]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
@@ -289,17 +373,25 @@ function MetaDataEditTable({
         />
       </div>
       <div>{RenderTable}</div>
-      <div className="iconDiv">
-        <div
-          className="iconContainer"
-          data-testid="metadata-add"
-          onClick={() => addNewRow()}
-          onKeyDown
-          role="presentation"
-        >
-          <Plus />
+      <div className="parent-editable">
+        {RenderEditableRow}
+        <div className="child-editable">
+          <div className="iconDiv">
+            {userDetails.user_type === USERTYPE.ADMIN && (
+              <div
+                className="iconContainer"
+                data-testid="metadata-add"
+                onClick={() => addNewRow()}
+                onKeyDown
+                role="presentation"
+              >
+                <Plus />
+              </div>
+            )}
+          </div>
         </div>
       </div>
+
       <div className="modal">
         <Modal
           className="modal"
@@ -326,8 +418,6 @@ function MetaDataEditTable({
 MetaDataEditTable.propTypes = {
   data: PropTypes.isRequired,
   rows: PropTypes.isRequired,
-  deletedAttributes: PropTypes.isRequired,
-  setDeletedAttributes: PropTypes.isRequired,
   setRows: PropTypes.isRequired,
 };
 

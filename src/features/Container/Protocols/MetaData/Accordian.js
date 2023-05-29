@@ -21,7 +21,6 @@ import './MetaData.scss';
 import { METADATA_AUDIT_LIST } from '../Constant/Constants';
 
 function Accordian({
-  standardList,
   accData,
   rows,
   suggestedSubList,
@@ -138,7 +137,7 @@ function Accordian({
                   >
                     <Undo className="metadata-plus-size" />
                   </span>
-                  {!standardList?.includes(accData?.name) && (
+                  {!accData?.is_default && (
                     <span
                       data-testId="metadata-trash"
                       onClick={(e) => {
@@ -295,7 +294,6 @@ function Accordian({
 }
 
 Accordian.propTypes = {
-  standardList: PropTypes.isRequired,
   accData: PropTypes.isRequired,
   rows: PropTypes.isRequired,
   suggestedSubList: PropTypes.isRequired,

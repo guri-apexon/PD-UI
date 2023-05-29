@@ -16,6 +16,7 @@ import {
   swapRowElements,
   swapColumnElements,
 } from './utils';
+import { removeHtmlTags } from '../../../../../utils/utilFunction';
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
@@ -56,9 +57,12 @@ const confirmText = 'Please confirm if you want to continue with deletion';
 function PDTable({ data, segment, activeLineID, lineID }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
+
   const [tableSaved, setTableSaved] = useState(false);
   const [showconfirm, setShowConfirm] = useState(false);
   const [isModal, setIsModal] = useState(false);
+  const [showBlankRowModal, setShowBlankRowModal] = useState(false);
+
   const [selectedData, setSelectedData] = useState({});
   const tableRef = useRef(null);
   const { dispatchSectionEvent } = useProtContext();
@@ -158,7 +162,22 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     ]);
   };
 
+  const checkBlankRows = () => {
+    let bool = false;
+    updatedData.forEach((row) => {
+      const arr = row.columns.filter((col) => removeHtmlTags(col.value) !== '');
+      if (arr.length === 0) {
+        bool = true;
+      }
+    });
+    return bool;
+  };
+
   const handleSave = () => {
+    if (checkBlankRows()) {
+      setShowBlankRowModal(true);
+      return;
+    }
     const content = {
       ...segment.content,
       TableProperties: updatedData,
@@ -297,6 +316,23 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           },
         ]}
         id="neutral"
+      />
+
+      <Modal
+        className="modal delete-modal"
+        data-testId="modal-blankRow-warning"
+        open={showBlankRowModal}
+        variant="warning"
+        onClose={() => setShowBlankRowModal(false)}
+        title="Warning"
+        message="Please enter values in every rows to save the table."
+        buttonProps={[
+          {
+            label: 'Ok',
+            size: 'small',
+            onClick: () => setShowBlankRowModal(false),
+          },
+        ]}
       />
     </section>
   );

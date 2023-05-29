@@ -1,5 +1,4 @@
 .metadata-card {
-  // max-height: 450px !important;
   overflow-y: auto;
   overflow-y: scroll;
   height: calc(100vh - 160px) !important;
@@ -15,19 +14,16 @@
   }
   .view-wrapper .MuiCard-root {
     padding: 0;
-    // height: 100% !important;
   }
   .protocol-column {
     flex: 3 1;
     display: flex;
     flex-direction: column;
     height: 50%;
-    // width: 50%;
   }
 
   .metadata_item [class*='MuiAccordionSummary-root'] {
     background: #e9e9e9;
-    //padding-left: 26px;
   }
   .metadata_item {
     padding: 2px 8px 2px 5px;
@@ -51,7 +47,6 @@
   }
   .metadata-plus-icon {
     float: right;
-    padding-right: 25px;
     font-size: 19px;
   }
   .metadata-plus-size {
@@ -65,19 +60,28 @@
   .mL {
     margin-left: 10px;
   }
-  .nameField {
+  .selectField {
     width: 50%;
     z-index: 1;
     position: absolute;
     right: 4rem;
     top: 2.5rem;
   }
+  .nameField {
+    width: 50%;
+    z-index: 1;
+    position: absolute;
+    right: 4rem;
+    top: 1.5rem;
+  }
   .metadata-checkbox {
-    // padding-left: 53%;
     float: right;
   }
   .metadata_item [class*='MuiAccordionSummary-root'].Mui-expanded {
     background: transparent !important;
+  }
+  .add-section-field{
+    max-width: 400;
   }
   .protocol-column {
     flex: 3 1;
@@ -235,6 +239,19 @@
   svg {
     cursor: pointer;
   }
+}
+.crossButton{
+  color: red !important;
+}
+.keySelect{
+  width: 215px;
+  margin-top: -10px;
+}
+.parent-editable{
+  display: flex;
+}
+.child-editable{
+  width: 100%;
 }
 .iconDiv {
   display: flex;
