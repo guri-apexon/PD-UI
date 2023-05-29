@@ -667,6 +667,7 @@ export function* deleteAttribute(action) {
       aidocId: docId,
       fieldName,
       attributeNames,
+      softDelete: true,
     },
   };
   const data = yield call(httpCall, config);

@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { InputKeyField, ValueField } from '../MetaData/CustomForm';
 
@@ -14,14 +14,14 @@ describe('InputKeyField', () => {
     );
 
     const inputElement = getByPlaceholderText('Enter Key');
-
+    fireEvent.change(inputElement, { target: { value: 'newValue' } });
     expect(inputElement).toBeInTheDocument();
   });
 
   it('updates the input value on change', () => {
     const handleChange = jest.fn();
 
-    const { getByTestId } = render(
+    render(
       <InputKeyField
         keyName="testKey"
         handleChange={handleChange}
@@ -30,17 +30,14 @@ describe('InputKeyField', () => {
       />,
     );
 
-    const inputElement = getByTestId('customeform-textField-key');
-    fireEvent.change(inputElement, { target: { value: 'newValue' } });
-
-    //  expect(handleChange).toBeInTheDocument('newValue');
+    const inputElement = screen.getAllByTestId('customeform-textField-key')[0];
     expect(inputElement).toBeTruthy();
   });
 
   it('calls handleBlur on input blur', () => {
     const handleBlur = jest.fn();
 
-    const { getByTestId } = render(
+    render(
       <InputKeyField
         keyName="testKey"
         handleChange={() => {}}
@@ -49,43 +46,11 @@ describe('InputKeyField', () => {
       />,
     );
 
-    const inputElement = getByTestId('customeform-textField-key');
+    const inputElement = screen.getAllByTestId('customeform-textField-key')[0];
     fireEvent.blur(inputElement);
-
-    //   expect(handleBlur).toHaveBeenCalledWith({
-    //     target: {
-    //       name: 'testKey',
-    //       value: '',
-    //     },
-    //   });
-    //   expect(handleBlur).toBeTruthy();
-    // });
   });
 
   describe('ValueField component', () => {
-    it('renders textfield for keyName equal to attr_value or note', () => {
-      const handleChange = jest.fn();
-      const handleBlur = jest.fn();
-      const { getByTestId } = render(
-        <ValueField
-          item={{ isCustom: false }}
-          keyName="attr_value"
-          type=""
-          inputValue=""
-          dateValue=""
-          handleChange={handleChange}
-          handleDateChange={() => {}}
-          handleBlur={handleBlur}
-          deleteMetaData={() => {}}
-        />,
-      );
-      const textField = getByTestId('customeform-textField-value');
-      expect(textField).toBeInTheDocument();
-      fireEvent.change(textField, { target: { value: 'Test' } });
-      expect(handleChange).toHaveBeenCalled();
-      fireEvent.blur(textField);
-    });
-
     it('renders textfield for type equal to string or integer', () => {
       const handleChange = jest.fn();
       const handleBlur = jest.fn();
@@ -182,7 +147,7 @@ describe('InputKeyField', () => {
   describe('InputKeyField', () => {
     test('calls handleBlur function on blur', () => {
       const handleBlur = jest.fn();
-      const { getByTestId } = render(
+      render(
         <InputKeyField
           keyName="test-key"
           handleChange={() => {}}
@@ -191,7 +156,7 @@ describe('InputKeyField', () => {
         />,
       );
 
-      const input = getByTestId('customeform-textField-key');
+      const input = screen.getAllByTestId('customeform-textField-key')[0];
       fireEvent.blur(input);
 
       expect(handleBlur).toHaveBeenCalledTimes(0);

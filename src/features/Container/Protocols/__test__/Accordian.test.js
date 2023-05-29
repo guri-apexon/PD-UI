@@ -3,17 +3,77 @@ import Accordian from '../MetaData/Accordian';
 
 describe('Accordian component', () => {
   let wrapper;
-  const standardList = [];
   const accData = {
     isActive: true,
-    name: 'accordion',
+    name: 'adverseevents',
     isEdit: false,
     level: 1,
+    formattedName: 'adverseevents',
     audit_info: {
       user_id: null,
       last_updated: '2023-03-29 08:52:41.726047',
       num_updates: 1,
     },
+    _childs: [],
+    _meta_data: [
+      {
+        attr_id:
+          'fd2b7c5b4dd90b059b479b1efd1f2afd497b62a83ab6950022f05e39af369963',
+        attr_name: 'serious_adverse_events',
+        display_name: 'Serious Adverse Events',
+        attr_type: 'string',
+        attr_value: 'Adverse Event YES Disability',
+        confidence: '0.75',
+        note: null,
+        audit_info: {
+          user_id: null,
+          last_updated: '2023-04-18 14:49:32.495370',
+          num_updates: 1,
+        },
+        id: 1,
+        isCustom: false,
+      },
+      {
+        attr_id:
+          'd8ed58bd13469177b00d34aa8f2cae6d195b9c0448fd784fce608d7f3408535a',
+        attr_name: 'ddd',
+        display_name: 'ddd',
+        attr_type: 'string',
+        attr_value: 'hhhgg',
+        confidence: '',
+        note: '',
+        audit_info: {
+          user_id: 'u1138076',
+          last_updated: '2023-05-09 16:35:10.139741',
+          num_updates: 2,
+        },
+        id: 2,
+        isCustom: false,
+      },
+    ],
+  };
+  const rows = {
+    adverseevents: [
+      {
+        attr_id:
+          '0d91609674457312825d910c3645bfe41a4be49e968431137e1cca57a295c1a0',
+        attr_name: 'cpt_serious_adverse_event',
+        display_name: 'cpt_serious_adverse_event',
+        attr_type: 'array',
+        attr_value: [
+          'death,initial or prolonged inpatient hospitalization,persistent or significant disability/incapacity,congenital anomaly/birth defect',
+        ],
+        confidence: null,
+        note: null,
+        audit_info: {
+          user_id: null,
+          last_updated: '2023-04-18 14:49:16.263334',
+          num_updates: 1,
+        },
+        id: 1,
+        isCustom: false,
+      },
+    ],
   };
   const metaDataList = [];
   const suggestedSubList = [{ label: 'sub1' }, { label: 'sub2' }];
@@ -32,8 +92,8 @@ describe('Accordian component', () => {
   beforeEach(() => {
     wrapper = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
+        rows={rows}
         metaDataList={metaDataList}
         suggestedSubList={suggestedSubList}
         currentActiveLevels={currentActiveLevels}
@@ -75,19 +135,79 @@ describe('Accordian component', () => {
   });
 
   it('should display the accordian component', () => {
-    const standardList = [];
     const accData = {
       isActive: true,
-      name: 'testName',
+      name: 'adverseevents',
       level: 1,
       isEdit: true,
+      formattedName: 'adverseevents',
       audit_info: {
         user_id: null,
         last_updated: '2023-03-29 08:52:41.726047',
         num_updates: 1,
       },
+      _childs: [],
+      _meta_data: [
+        {
+          attr_id:
+            'fd2b7c5b4dd90b059b479b1efd1f2afd497b62a83ab6950022f05e39af369963',
+          attr_name: 'serious_adverse_events',
+          display_name: 'Serious Adverse Events',
+          attr_type: 'string',
+          attr_value: 'Adverse Event YES Disability',
+          confidence: '0.75',
+          note: null,
+          audit_info: {
+            user_id: null,
+            last_updated: '2023-04-18 14:49:32.495370',
+            num_updates: 1,
+          },
+          id: 1,
+          isCustom: false,
+        },
+        {
+          attr_id:
+            'd8ed58bd13469177b00d34aa8f2cae6d195b9c0448fd784fce608d7f3408535a',
+          attr_name: 'ddd',
+          display_name: 'ddd',
+          attr_type: 'string',
+          attr_value: 'hhhgg',
+          confidence: '',
+          note: '',
+          audit_info: {
+            user_id: 'u1138076',
+            last_updated: '2023-05-09 16:35:10.139741',
+            num_updates: 2,
+          },
+          id: 2,
+          isCustom: false,
+        },
+      ],
     };
-    const rows = [];
+    const rows = {
+      adverseevents: [
+        {
+          attr_id:
+            '0d91609674457312825d910c3645bfe41a4be49e968431137e1cca57a295c1a0',
+          attr_name: 'cpt_serious_adverse_event',
+          display_name: 'cpt_serious_adverse_event',
+          attr_type: 'array',
+          attr_value: [
+            'death,initial or prolonged inpatient hospitalization,persistent or significant disability/incapacity,congenital anomaly/birth defect',
+          ],
+          confidence: null,
+          note: null,
+          audit_info: {
+            user_id: null,
+            last_updated: '2023-04-18 14:49:16.263334',
+            num_updates: 1,
+          },
+          id: 1,
+          isCustom: false,
+        },
+      ],
+    };
+
     const suggestedSubList = [];
     const currentActiveLevels = [];
     const deletedAttributes = [];
@@ -104,7 +224,6 @@ describe('Accordian component', () => {
 
     const { getAllByTestId } = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -129,19 +248,42 @@ describe('Accordian component', () => {
 });
 
 describe('Accordian', () => {
-  const standardList = ['Sectionsub 1'];
   const accData = {
     name: 'Section 1',
     level: 1,
     isActive: false,
     isEdit: true,
+    formattedName: 'Section 1',
     audit_info: {
       user_id: null,
       last_updated: '2023-03-29 08:52:41.726047',
       num_updates: 1,
     },
   };
-  const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
+  // const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
+  const rows = {
+    'Section 1': [
+      {
+        attr_id:
+          '0d91609674457312825d910c3645bfe41a4be49e968431137e1cca57a295c1a0',
+        attr_name: 'cpt_serious_adverse_event',
+        display_name: 'cpt_serious_adverse_event',
+        attr_type: 'array',
+        attr_value: [
+          'death,initial or prolonged inpatient hospitalization,persistent or significant disability/incapacity,congenital anomaly/birth defect',
+        ],
+        confidence: null,
+        note: null,
+        audit_info: {
+          user_id: null,
+          last_updated: '2023-04-18 14:49:16.263334',
+          num_updates: 1,
+        },
+        id: 1,
+        isCustom: false,
+      },
+    ],
+  };
   const suggestedSubList = [{ label: 'Subsection 1' }];
   const deletedAttributes = [];
   const currentActiveLevels = [];
@@ -159,7 +301,6 @@ describe('Accordian', () => {
   it('renders the accordion with the given name', () => {
     const { getByText, getByTestId } = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -190,6 +331,7 @@ describe('Accordian', () => {
       level: 1,
       isActive: true,
       isEdit: true,
+      formattedName: 'Section 1',
       audit_info: {
         user_id: null,
         last_updated: '2023-03-29 08:52:41.726047',
@@ -199,7 +341,6 @@ describe('Accordian', () => {
 
     const screen = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -228,6 +369,7 @@ describe('Accordian', () => {
       level: 1,
       isActive: true,
       isEdit: true,
+      formattedName: 'Section 1',
       audit_info: {
         user_id: null,
         last_updated: '2023-03-29 08:52:41.726047',
@@ -237,7 +379,6 @@ describe('Accordian', () => {
 
     const { getByTestId } = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -266,6 +407,7 @@ describe('Accordian', () => {
   it('opens the subtext input when the plus icon is clicked edit', () => {
     const accData = {
       name: 'Section 1',
+      formattedName: 'Section 1',
       level: 5,
       isActive: false,
       isEdit: true,
@@ -278,7 +420,6 @@ describe('Accordian', () => {
 
     const { getByTestId } = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -302,6 +443,7 @@ describe('Accordian', () => {
   it('opens the subtext input when the plus icon is clicked edit', () => {
     const accData = {
       name: 'Section 1',
+      formattedName: 'Section 1',
       level: 1,
       isActive: true,
       isEdit: true,
@@ -314,7 +456,6 @@ describe('Accordian', () => {
 
     const { getByTestId } = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -338,9 +479,9 @@ describe('Accordian', () => {
 });
 
 describe('Accordian', () => {
-  const standardList = ['Sectionsub 1'];
   const accData = {
     name: 'Section 1',
+    formattedName: 'Section 1',
     level: 1,
     isActive: false,
     isEdit: true,
@@ -350,7 +491,30 @@ describe('Accordian', () => {
       num_updates: 1,
     },
   };
-  const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
+  const rows = {
+    'Section 1': [
+      {
+        attr_id:
+          '0d91609674457312825d910c3645bfe41a4be49e968431137e1cca57a295c1a0',
+        attr_name: 'cpt_serious_adverse_event',
+        display_name: 'cpt_serious_adverse_event',
+        attr_type: 'array',
+        attr_value: [
+          'death,initial or prolonged inpatient hospitalization,persistent or significant disability/incapacity,congenital anomaly/birth defect',
+        ],
+        confidence: null,
+        note: null,
+        audit_info: {
+          user_id: null,
+          last_updated: '2023-04-18 14:49:16.263334',
+          num_updates: 1,
+        },
+        id: 1,
+        isCustom: false,
+      },
+    ],
+  };
+
   const suggestedSubList = [{ label: 'Subsection 1' }];
   const deletedAttributes = [];
   const setSuggestedSubList = jest.fn();
@@ -367,7 +531,6 @@ describe('Accordian', () => {
   it('renders the accordion with the given name', () => {
     const { getByText } = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -393,7 +556,6 @@ describe('Accordian', () => {
 
     const { getByTestId } = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -421,7 +583,6 @@ describe('Accordian', () => {
     const currentActiveLevels = [];
     const { getByTestId } = render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -447,15 +608,36 @@ describe('Accordian', () => {
 
   it('should call handleUndo function on handleUndo click', () => {
     const mockedProps = {
-      standardList: [],
       accData: {
         name: 'Test',
         isActive: true,
-        formattedName: 'test',
+        formattedName: 'Test',
         isEdit: true,
         level: 0,
       },
-      rows: [],
+      rows: {
+        Test: [
+          {
+            attr_id:
+              '0d91609674457312825d910c3645bfe41a4be49e968431137e1cca57a295c1a0',
+            attr_name: 'cpt_serious_adverse_event',
+            display_name: 'cpt_serious_adverse_event',
+            attr_type: 'array',
+            attr_value: [
+              'death,initial or prolonged inpatient hospitalization,persistent or significant disability/incapacity,congenital anomaly/birth defect',
+            ],
+            confidence: null,
+            note: null,
+            audit_info: {
+              user_id: null,
+              last_updated: '2023-04-18 14:49:16.263334',
+              num_updates: 1,
+            },
+            id: 1,
+            isCustom: false,
+          },
+        ],
+      },
       suggestedSubList: [{ label: 'Test1' }, { label: 'Test2' }],
       deletedAttributes: [],
       currentActiveLevels: [],
@@ -498,7 +680,6 @@ describe('Accordian', () => {
     const currentActiveLevels = [];
     render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
@@ -531,7 +712,6 @@ describe('Accordian', () => {
     const currentActiveLevels = [];
     render(
       <Accordian
-        standardList={standardList}
         accData={accData}
         rows={rows}
         suggestedSubList={suggestedSubList}
