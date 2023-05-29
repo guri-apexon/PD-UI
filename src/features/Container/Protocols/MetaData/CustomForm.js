@@ -20,6 +20,7 @@ export function InputKeyField({
       name={keyName}
       value={inputValue}
       inputProps={{ 'data-testid': 'customeform-textField-key' }}
+      data-testid="customeform-textField-key"
       onChange={(e) => handleChange(e)}
       onBlur={(e) => handleBlur(e)}
     />
@@ -27,12 +28,10 @@ export function InputKeyField({
 }
 
 export function ValueField({
-  item,
   keyName,
   type,
   inputValue,
   dateValue,
-  isDisabled,
   handleChange,
   handleDateChange,
   handleBlur,
@@ -41,7 +40,7 @@ export function ValueField({
     handleChange(e);
   };
   const metaDataType = (type) => {
-    return type === 'string' ? 'text' : 'number';
+    return ['string', 'array'].includes(type) ? 'text' : 'number';
   };
   return (
     <Grid
@@ -50,76 +49,60 @@ export function ValueField({
       className="gridContainer"
       data-testid="customeform"
     >
-      {(!item.isCustom && ['attr_value'].includes(keyName)) ||
-      METADATA_CONSTANTS.COLUMN_KEYS.includes(keyName) ? (
-        <TextField
-          label=""
-          className="keyText"
-          placeholder="Enter Value"
-          type="text"
-          name={keyName}
-          fullWidth
-          value={inputValue}
-          inputProps={{ 'data-testid': 'customeform-textField-value' }}
-          onChange={(e) => handleChange(e)}
-          onBlur={handleBlur}
-        />
-      ) : (
-        <Grid item xs={11} className="fieldContainer">
-          <div className="valueText">
-            {METADATA_CONSTANTS.TYPES.includes(type) && (
-              <TextField
-                label=""
-                placeholder="Enter Value"
-                type={metaDataType(type)}
-                name={keyName}
-                fullWidth
-                value={inputValue}
-                inputProps={{ 'data-testid': 'customeform-textField-value' }}
-                onChange={(e) => handleChange(e)}
-                onBlur={handleBlur}
-              />
-            )}
+      <Grid item xs={11} className="fieldContainer">
+        <div className="valueText">
+          {METADATA_CONSTANTS.TYPES.includes(type) && (
+            <TextField
+              label=""
+              placeholder="Enter Value"
+              type={metaDataType(type)}
+              name={keyName}
+              fullWidth
+              value={inputValue}
+              title={inputValue}
+              inputProps={{ 'data-testid': 'customeform-textField-value' }}
+              onChange={(e) => handleChange(e)}
+              onBlur={handleBlur}
+            />
+          )}
 
-            {['date'].includes(type) && (
-              <DatePicker
-                className="date-field"
-                name={keyName}
-                dateFormat="DD-MMM-YYYY"
-                placeholder="dd-mmm-yyyy"
-                inputProps={{ 'data-testid': 'customeform-textField-date' }}
-                value={dateValue}
-                onChange={(dateValue) => handleDateChange(dateValue)}
-                // inputValue={inputValue}
-                onBlur={handleBlur}
-                onInputChange={(inputValue) => handleChange(inputValue)}
-              />
-            )}
-            {['boolean'].includes(type) && (
-              <Select
-                placeholder="Select Value"
-                label=""
-                name={keyName}
-                fullWidth
-                value={inputValue || ''}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                inputProps={{
-                  'data-testid': 'customeform-textField-checkbox1',
-                }}
-              >
-                {METADATA_CONSTANTS.BOOLEAN_VALUES.map((each) => (
-                  <MenuItem key={each} value={each}>
-                    {each}
-                  </MenuItem>
-                ))}
-              </Select>
-            )}
-
+          {['date'].includes(type) && (
+            <DatePicker
+              className="date-field"
+              name={keyName}
+              dateFormat="DD-MMM-YYYY"
+              placeholder="dd-mmm-yyyy"
+              inputProps={{ 'data-testid': 'customeform-textField-date' }}
+              value={dateValue}
+              onChange={(dateValue) => handleDateChange(dateValue)}
+              onBlur={handleBlur}
+              onInputChange={(inputValue) => handleChange(inputValue)}
+            />
+          )}
+          {['boolean'].includes(type) && (
+            <Select
+              placeholder="Select Value"
+              label=""
+              name={keyName}
+              fullWidth
+              value={inputValue || ''}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              inputProps={{
+                'data-testid': 'customeform-textField-checkbox1',
+              }}
+            >
+              {METADATA_CONSTANTS.BOOLEAN_VALUES.map((each) => (
+                <MenuItem key={each} value={each}>
+                  {each}
+                </MenuItem>
+              ))}
+            </Select>
+          )}
+          {keyName !== 'note' && keyName !== 'confidence' && (
             <Select
               label=""
               name="attr_type"
-              disabled={isDisabled}
               value={type}
               onChange={(e) => onTypeChange(e)}
               onBlur={handleBlur}
@@ -134,9 +117,9 @@ export function ValueField({
                 </MenuItem>
               ))}
             </Select>
-          </div>
-        </Grid>
-      )}
+          )}
+        </div>
+      </Grid>
     </Grid>
   );
 }
@@ -150,10 +133,8 @@ InputKeyField.propTypes = {
 ValueField.propTypes = {
   keyName: PropTypes.isRequired,
   handleChange: PropTypes.isRequired,
-  item: PropTypes.isRequired,
   type: PropTypes.isRequired,
   inputValue: PropTypes.isRequired,
-  isDisabled: PropTypes.isRequired,
   handleBlur: PropTypes.isRequired,
   handleDateChange: PropTypes.isRequired,
   dateValue: PropTypes.isRequired,

@@ -1,6 +1,5 @@
 import { cloneDeep } from 'lodash';
 import isObject from 'lodash/isObject';
-import isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 
 const formattedValue = (type, val) => {
@@ -8,7 +7,7 @@ const formattedValue = (type, val) => {
   if (type === 'boolean') {
     payloadData = payloadData?.toString();
   }
-  if (type === 'date') {
+  if (type === 'date' && payloadData) {
     payloadData = moment(payloadData).format('DD-MMM-YYYY');
   }
   return payloadData;
@@ -42,7 +41,7 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
               return {
                 ...attr,
                 id: index + 1,
-                isCustom: key !== 'summary',
+                isCustom: false,
                 attr_value: formattedValue(attr?.attr_type, attrValue),
                 display_name: attr?.display_name || attr?.attr_name,
               };
@@ -50,8 +49,10 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
             formattedName: identifier,
             name: key,
             level,
-            isActive: false,
+            is_active: keyValue?.is_active,
+            is_default: keyValue?.is_default,
             isEdit: false,
+            isActive: false,
             audit_info:
               // eslint-disable-next-line
               findLatestTimestamp(keyValue?._meta_data) || {},
@@ -82,52 +83,44 @@ export const mergeSummary = (data) => {
   const objectKeys = data ? Object?.keys(data) : [];
 
   objectKeys.forEach((key) => {
-    if (key === 'summary_extended' && !isEmpty(finalResult?.summary_extended)) {
+    if (key === 'summary_extended' && finalResult?.summary_extended) {
       // eslint-disable-next-line
       const updateMetaData = finalResult?.summary_extended?._meta_data?.map(
         (fields) => {
           return {
             ...fields,
-            isCustom: true,
+            isCustom: false,
           };
         },
       );
-
-      let mergedMetaData;
-      // eslint-disable-next-line
-      if (finalResult.summary?._meta_data) {
-        mergedMetaData = [
-          // eslint-disable-next-line
-          ...finalResult.summary?._meta_data,
-          ...updateMetaData,
-        ]?.map((attr, index) => {
-          return {
-            ...attr,
-            id: index + 1,
-          };
-        });
-
-        finalResult = {
-          ...finalResult,
-          summary: {
-            ...finalResult?.summary,
-            audit_info:
-              // eslint-disable-next-line
-              findLatestTimestamp(mergedMetaData) || {},
-            _meta_data: mergedMetaData.sort((a, b) => a.id - b.id),
-            // eslint-disable-next-line
-            _childs: finalResult.summary_extended._childs
-              ? [
-                  // eslint-disable-next-line
-                  ...finalResult.summary._childs,
-                  // eslint-disable-next-line
-                  ...finalResult.summary_extended._childs,
-                ]
-              : // eslint-disable-next-line
-                [...finalResult.summary._childs],
-          },
+      const mergedMetaData = [
+        // eslint-disable-next-line
+        ...finalResult.Summary?._meta_data,
+        ...updateMetaData,
+      ]?.map((attr, index) => {
+        return {
+          ...attr,
+          id: index + 1,
         };
-      }
+      });
+
+      finalResult = {
+        ...finalResult,
+        Summary: {
+          ...finalResult?.Summary,
+          audit_info: findLatestTimestamp(mergedMetaData) || {},
+          _meta_data: mergedMetaData.sort((a, b) => a.id - b.id),
+          /* eslint-disable */
+          _childs: finalResult.summary_extended._childs
+            ? [
+                ...finalResult.Summary._childs,
+
+                ...finalResult.summary_extended._childs,
+              ]
+            : [...finalResult.Summary._childs],
+          /* eslint-enable */
+        },
+      };
     }
   });
   delete finalResult.summary_extended;
