@@ -33,8 +33,8 @@ export const addRow = (rows, index) => {
     data[0].columns.filter((x) => x.op_type !== QC_CHANGE_TYPE.DELETED).length,
   );
   const newEmptyRow = {
+    row_indx: index.toString(),
     roi_id: '',
-    row_indx: index,
     op_type: QC_CHANGE_TYPE.ADDED,
     columns: emptyRow,
   };
@@ -60,11 +60,8 @@ export const addColumn = (tabledata, index) => {
       record.op_type = record.op_type || QC_CHANGE_TYPE.UPDATED;
       record.columns.splice(index, 0, getEmptyCell(index));
       if (record.op_type === QC_CHANGE_TYPE.ADDED) {
-        record.columns = record.columns.map((col, j) => {
-          return {
-            ...col,
-            col_indx: j.toString(),
-          };
+        record.columns.forEach((col, i) => {
+          col.col_indx = i.toString();
         });
       }
     }
@@ -75,13 +72,9 @@ export const addColumn = (tabledata, index) => {
 export const deleteColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   data.forEach((record) => {
-    if (record.columns[index].op_type === QC_CHANGE_TYPE.ADDED) {
-      record.columns.splice(index, 1);
-    } else {
-      record.op_type = record.op_type || QC_CHANGE_TYPE.UPDATED;
-      record.columns[index].value = `<s>${record.columns[index].value}</s>`;
-      record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
-    }
+    record.op_type = record.op_type || QC_CHANGE_TYPE.UPDATED;
+    record.columns[index].value = `<s>${record.columns[index].value}</s>`;
+    record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
   });
   return data;
 };
@@ -152,13 +145,26 @@ export const updateFootNotePayload = (data) => {
   return updateFootNoteData;
 };
 
+export const getColumns = (record) => {
+  if (record?.op_type === QC_CHANGE_TYPE.DELETED) {
+    return [];
+  }
+  if (record?.op_type === QC_CHANGE_TYPE.ADDED) {
+    return record.columns
+      .filter((op) => op?.op_type !== QC_CHANGE_TYPE.DELETED)
+      .map((x, i) => {
+        x.col_indx = i.toString();
+        return x;
+      });
+  }
+  return record.columns.filter((op) => op?.op_type);
+};
+
 export const updateRowIndex = (data) => {
   const updatedRows = cloneDeep(data);
   updatedRows.forEach((row, idx) => {
     row.row_indx = idx.toString();
-    row.columns.forEach((col, indx) => {
-      col.col_indx = indx.toString();
-    });
+    row.columns = getColumns(row);
   });
   return updatedRows;
 };
@@ -168,12 +174,32 @@ export const filterFootNotes = (data) => {
   return updatedFootNoteData.filter((notes) => notes?.qc_change_type_footnote);
 };
 
+export const buildRowColumnIndex = (data) => {
+  let i = 0;
+
+  data.forEach((row) => {
+    if (row.op_type !== QC_CHANGE_TYPE.DELETED) {
+      row.row_indx = i.toString();
+      i++;
+    }
+    let j = 0;
+    row.columns.forEach((col) => {
+      if (col.op_type !== QC_CHANGE_TYPE.DELETED) {
+        col.col_indx = j.toString();
+        j++;
+      }
+    });
+  });
+  return data;
+};
+
 export const filterTableProperties = (data) => {
   let filterUpdatedData =
     typeof data === 'string' ? cloneDeep(JSON.parse(data)) : cloneDeep(data);
+  filterUpdatedData = buildRowColumnIndex(filterUpdatedData);
   filterUpdatedData = filterUpdatedData.filter((list) => list?.op_type);
   filterUpdatedData.forEach((record) => {
-    record.columns = record.columns.filter((op) => op?.op_type);
+    record.columns = getColumns(record);
   });
   return filterUpdatedData;
 };
