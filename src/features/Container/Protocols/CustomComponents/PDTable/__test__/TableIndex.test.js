@@ -355,4 +355,155 @@ describe('PDTable component', () => {
     const plusIconButton = screen.getByTestId('section');
     fireEvent.click(plusIconButton);
   });
+
+  it('fires handlechange event when contnent in the cell changes', async () => {
+    const tableData = {
+      TableProperties: [
+        {
+          row_indx: 0,
+          roi_id: '1738b2db-d8cf-41e3-82be-006978f0373b',
+          op_type: null,
+          columns: [
+            {
+              col_indx: 0,
+              op_type: null,
+              cell_id: '0d63bbc2-8d6d-46b3-aadb-fcf6acbf7fbf',
+              value: 'ab',
+            },
+            {
+              col_indx: 1,
+              op_type: null,
+              cell_id: '01292603-df0e-4df0-99a6-7337d86ab6e4',
+              value: 'cd',
+            },
+          ],
+        },
+        {
+          row_indx: 1,
+          roi_id: '97d19d88-aba3-4130-84da-f48c65271c6c',
+          op_type: null,
+          columns: [
+            {
+              col_indx: 0,
+              op_type: null,
+              cell_id: 'c40d95bf-b047-44f5-9109-45866d81806d',
+              value: 'ef',
+            },
+            {
+              col_indx: 1,
+              op_type: null,
+              cell_id: '91a74b62-37ad-4e00-9287-f2a267ea1854',
+              value: 'gh',
+            },
+          ],
+        },
+      ],
+      TableName: '',
+      Header: [0],
+    };
+    render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <PDTable
+          data={tableData}
+          segment={segment}
+          activeLineID={activeLineID}
+          lineID={lineID}
+          setIsTableChanged={() => jest.fn()}
+          handleSwap={handleSwap}
+        />
+      </ProtocolContext.Provider>,
+    );
+
+    const abText = screen.getByText('ab');
+    expect(abText).toBeInTheDocument();
+    fireEvent.doubleClick(screen.getByText('ab'));
+    await fireEvent.input(abText, {
+      target: { innerHTML: 'abcd' },
+    });
+    const abcdText = screen.getByText('abcd');
+    expect(abcdText).toBeInTheDocument();
+    fireEvent.blur(abcdText);
+    fireEvent.click(screen.getByText('cd'));
+  });
+
+  it('displays the warning modal when user try to save table with blank rows', () => {
+    const tableData = {
+      TableProperties: [
+        {
+          row_indx: 0,
+          roi_id: '1738b2db-d8cf-41e3-82be-006978f0373b',
+          op_type: null,
+          columns: [
+            {
+              col_indx: 0,
+              op_type: null,
+              cell_id: '0d63bbc2-8d6d-46b3-aadb-fcf6acbf7fbf',
+              value: '',
+            },
+            {
+              col_indx: 1,
+              op_type: null,
+              cell_id: '01292603-df0e-4df0-99a6-7337d86ab6e4',
+              value: '',
+            },
+            {
+              col_indx: 2,
+              op_type: null,
+              cell_id: '9b14edf6-13e1-4b2a-8a16-91b70a8bce0b',
+              value: '',
+            },
+          ],
+        },
+        {
+          row_indx: 1,
+          roi_id: '97d19d88-aba3-4130-84da-f48c65271c6c',
+          op_type: null,
+          columns: [
+            {
+              col_indx: 0,
+              op_type: null,
+              cell_id: 'c40d95bf-b047-44f5-9109-45866d81806d',
+              value: '',
+            },
+            {
+              col_indx: 1,
+              op_type: null,
+              cell_id: '91a74b62-37ad-4e00-9287-f2a267ea1854',
+              value: '',
+            },
+            {
+              col_indx: 2,
+              op_type: null,
+              cell_id: '3a28309c-7a17-4379-b2ff-5777c9fb47eb',
+              value: '',
+            },
+          ],
+        },
+      ],
+      TableName: '',
+      Header: [0],
+    };
+    const { getByRole, getByText } = render(
+      <ProtocolContext.Provider value={{ dispatchSectionEvent: jest.fn() }}>
+        <PDTable
+          data={tableData}
+          segment={segment}
+          activeLineID={activeLineID}
+          lineID={lineID}
+          setIsTableChanged={() => jest.fn()}
+          handleSwap={handleSwap}
+        />
+      </ProtocolContext.Provider>,
+    );
+    const dropButton = getByRole('button', {
+      name: 'Save Table',
+    });
+    fireEvent.click(dropButton);
+    expect(
+      screen.getByText('Please enter values in every row to save the table.'),
+    ).toBeInTheDocument();
+
+    const OkButton = getByText('Ok');
+    fireEvent.click(OkButton);
+  });
 });
