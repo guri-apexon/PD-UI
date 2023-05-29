@@ -155,7 +155,6 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
 export default MultilineEdit;
 
 MultilineEdit.propTypes = {
-  // sectionDataArr: PropTypes.isRequired,
   edit: PropTypes.isRequired,
   setShowDiscardConfirm: PropTypes.isRequired,
   setRequestedRoute: PropTypes.isRequired,
