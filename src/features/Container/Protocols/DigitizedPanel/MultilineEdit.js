@@ -28,8 +28,6 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
   const [showconfirm, setShowConfirm] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
-  const [currentContent, setCurrentContent] = useState();
-  const [currentValue, setCurrentValue] = useState();
 
   useEffect(() => {
     const blockRedireting = history.block((requestUrl) => {
@@ -43,43 +41,19 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
     // eslint-disable-next-line
   }, [history]);
 
-  console.log('SHUBHAM1', sectionDataArr);
-
-  console.log('SHUBHAM12', activeLineID);
-
   const handleKeyDown = (event) => {
     if (event.ctrlKey && event.code === 'KeyZ') {
-      // if (
-      //   (currentContent && currentContent?.type !== 'text') ||
-      //   // !currentContent ||
-      //   currentContent?.content === currentValue
-      // ) {
       event.preventDefault();
       dispatchSectionEvent('CONTENT_UNDO');
-      // }
     }
   };
 
-  console.log('SHU123', currentContent);
   useEffect(() => {
-    console.log('SHUBHAM', currentContent);
-    console.log('SHUBHAM1', activeLineID);
-
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
 
     // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    if (activeLineID !== '') {
-      const currentContent1 = sectionDataArr.find(
-        (x) => x.line_id === activeLineID,
-      );
-      setCurrentContent(currentContent1);
-    }
-    // eslint-disable-next-line
-  }, [activeLineID]);
 
   useEffect(() => {
     if (sectionDataArr?.length > 0) {
@@ -103,11 +77,6 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
   const deleteSection = (lineId) => {
     const arr = markContentForDelete(sectionDataArr, lineId);
     dispatch(setSectionDetails(arr));
-  };
-
-  const handleCurrentContent = (content) => {
-    console.log('1233', content?.current.innerHTML);
-    setCurrentValue(content?.current.innerHTML);
   };
 
   const deleteSegment = () => {
@@ -157,7 +126,6 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
                     deleteSection={deleteSection}
                     setActiveLineID={setActiveLineID}
                     edit={edit}
-                    handleCurrentContent={handleCurrentContent}
                   />
                 </div>
               ))}

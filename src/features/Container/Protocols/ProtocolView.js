@@ -2,6 +2,7 @@ import { useState, createRef, useMemo, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import { isEqual } from 'lodash';
 import {
   viewResult,
   protocolTocData,
@@ -57,21 +58,32 @@ function ProtocolView({ refs, data }) {
     const index = sectionContent.findIndex(
       (x) => x.line_id === payload.currentLineId,
     );
-    const undoObj = {
-      lineId: payload?.currentLineId,
-      type: 'Modify',
-      content: sectionContent[index],
-      contentType: '',
-    };
-    undoStack.push(undoObj);
-    setUndoStack(undoStack);
+    let undosegmentContent;
     setSectionContent((prevState) => {
+      undosegmentContent = prevState[index];
       return prepareContent({
         ...payload,
         type: 'MODIFY',
         sectionContent: prevState,
       });
     });
+    const undoObj = {
+      lineId: payload?.currentLineId,
+      type: 'Modify',
+      content: undosegmentContent,
+      contentType: '',
+    };
+    const len = undoStack.length;
+    if (
+      undoObj?.content?.type === 'text' ||
+      !isEqual(
+        undoObj?.content?.content?.TableProperties,
+        undoStack[len - 1]?.content?.content?.TableProperties,
+      )
+    ) {
+      undoStack.push(undoObj);
+      setUndoStack(undoStack);
+    }
 
     if (payload.isSaved && !saveEnabled) setSaveEnabled(true);
   };
@@ -132,7 +144,6 @@ function ProtocolView({ refs, data }) {
     undoStack.push(undoObj);
     setUndoStack(undoStack);
     setSectionContent(content);
-
     let linkID;
     if (section) {
       linkID = section.link_id;
@@ -157,7 +168,6 @@ function ProtocolView({ refs, data }) {
     setSectionContent(content);
   };
 
-  console.log('MANU123', undoStack);
   const handleContentUndo = () => {
     if (undoStack.length > 0) {
       const lastobj = undoStack.pop();

@@ -3,14 +3,7 @@ import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
 import { useProtContext } from '../ProtocolContext';
 
-function ContentEdit({
-  type,
-  lineID,
-  content,
-  edit,
-  activeLineID,
-  handleCurrentContent,
-}) {
+function ContentEdit({ type, lineID, content, edit, activeLineID }) {
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
   const { dispatchSectionEvent, setSaveEnabled } = useProtContext();
@@ -25,7 +18,6 @@ function ContentEdit({
         currentLineId: lineID,
         content: contentEditableRef.current.innerHTML,
       };
-      handleCurrentContent(contentEditableRef);
       dispatchSectionEvent('CONTENT_UPDATE', obj);
     }
   };
@@ -60,5 +52,4 @@ ContentEdit.propTypes = {
   content: PropTypes.isRequired,
   edit: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
-  handleCurrentContent: PropTypes.isRequired,
 };
