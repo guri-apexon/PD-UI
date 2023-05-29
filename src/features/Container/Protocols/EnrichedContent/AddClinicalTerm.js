@@ -154,7 +154,9 @@ function AddClinicalTerm({ docId, linkId }) {
     } else {
       tagData = {
         standard_entity_name: selectedText.trim(),
-        iqv_standard_term: preferredTerm,
+        iqv_standard_term:
+          preferredTerm ||
+          preferredContent?.data[selectedText.trim()]?.preferred_term,
         ontology: ontologyTerm,
         clinical_terms: clinicalTerms,
         text_len: selectedText.length,
