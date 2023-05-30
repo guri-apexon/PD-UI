@@ -166,11 +166,11 @@ function ProtocolView({ refs, data }) {
     setActiveLineID(prevContent[prevIndex - 1]?.line_id);
   };
 
-  const handleSplice = (prevContent, lsObj, prevIndex) => {
+  const handleSplice = (prevContent, lastObj, prevIndex) => {
     let clonedSection = cloneDeep(prevContent);
     const firstArray = clonedSection.slice(0, prevIndex + 1);
     const secondArray = clonedSection.slice(prevIndex + 1);
-    clonedSection = [...firstArray, lsObj?.content, ...secondArray];
+    clonedSection = [...firstArray, lastObj?.content, ...secondArray];
     return clonedSection;
   };
 
