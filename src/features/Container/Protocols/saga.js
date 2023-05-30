@@ -760,10 +760,10 @@ export function* getSOAData(action) {
     payload: { docId, operationValue },
   } = action;
 
-  const params = `?operationValue=${operationValue}&id=${docId}`;
   const config = {
-    url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa${params}`,
+    url: `${BASE_URL}${Apis.METADATA}/protocol_normalized_soa`,
     method: 'GET',
+    params: { footnotes: 1, operationValue, id: docId },
     checkAuth: true,
     headers: { 'Content-Type': 'application/json' },
   };
