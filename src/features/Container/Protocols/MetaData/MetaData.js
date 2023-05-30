@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import AutocompleteV2 from 'apollo-react/components/AutocompleteV2';
 import Card from 'apollo-react/components/Card/Card';
 import Plus from 'apollo-react-icons/Plus';
+import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
+import IconMenuButton from 'apollo-react/components/IconMenuButton';
+import TextField from 'apollo-react/components/TextField';
 import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import difference from 'lodash/difference';
@@ -21,14 +24,16 @@ import {
   validationCheck,
   autoCompleteClose,
 } from './utilFunction';
-import { METADATA_LIST } from '../../../../AppConstant/AppConstant';
+import METADATA_CONSTANTS from './constants';
+import { loggedUser } from '../../../../store/userDetails';
+import { USERTYPE } from '../../../../AppConstant/AppConstant';
 
 function MetaData({ docId }) {
   const wrapperRef = useRef(null);
   const apiResponse = useSelector(metadataApiCallValue);
   const accordianResult = useSelector(accordionMetaData);
   const metaParamResult = useSelector(accordianMetaParam);
-  const standardList = ['summary'];
+  const userDetails = useSelector(loggedUser);
   const dispatch = useDispatch();
   const [rows, setRows] = useState({});
   const [accordianData, setAccordianData] = useState({});
@@ -39,9 +44,30 @@ function MetaData({ docId }) {
   const [suggestedList, setSuggestedList] = useState([]);
   const [suggestedSubList, setSuggestedSubList] = useState([]);
   const [currentActiveLevels, setCurrentActiveLevels] = useState([]);
-
+  const [accType, setAccType] = useState('');
+  const [secName, setSecName] = useState('');
+  const [accordionAdd, setAccordionAdd] = useState([]);
   const handleChange = (event, newValue) => {
     setSectionName(newValue);
+  };
+  const handleTextChange = (event) => {
+    setSecName(event.target.value);
+  };
+  const handleMenuClick = (label) => () => {
+    setAccType(label);
+    setIsOpen(!isOpen);
+    autoCompleteClose(() => {
+      setIsOpen(false);
+    });
+  };
+
+  const handleTextClick = () => {
+    if (secName !== '') {
+      setSectionName({ label: secName });
+      setSecName('');
+    } else {
+      toast.error('Please enter a section name');
+    }
   };
 
   const setSubSuggestions = (data) => {
@@ -61,7 +87,7 @@ function MetaData({ docId }) {
   };
 
   const addToAccordion = (name) => {
-    const checkName = name === 'summary' ? 'summary_extended' : name;
+    const checkName = name === 'Summary' ? 'summary_extended' : name;
     dispatch({
       type: 'ADD_METADATA_FIELD',
       payload: {
@@ -169,7 +195,7 @@ function MetaData({ docId }) {
         payload: {
           docId,
           fieldName:
-            data?.formattedName === 'summary' ? '' : data?.formattedName,
+            data?.formattedName === 'Summary' ? '' : data?.formattedName,
           attributes: updatedAttrList,
           reqData: {
             formattedName: data?.formattedName,
@@ -188,7 +214,7 @@ function MetaData({ docId }) {
       toast.error('Duplicate attribute');
     } else if (!validationCheck(rows?.[accData?.formattedName])) {
       toast.error('Please fill proper data');
-    } else if (accData.name === 'summary') {
+    } else if (accData.name === 'Summary') {
       const filterCustomData = rows[accData?.name]?.filter(
         (data) => data?.isCustom,
       );
@@ -249,6 +275,20 @@ function MetaData({ docId }) {
       currentActiveLevels.filter((curr) => curr !== accData?.formattedName),
     );
   };
+  useEffect(() => {
+    const accData = METADATA_CONSTANTS.METADATA_ADD_LIST.map((obj) => {
+      return { ...obj, onClick: handleMenuClick(obj.label) };
+    });
+    if (userDetails.user_type !== USERTYPE.ADMIN) {
+      setAccordionAdd(
+        accData.filter(
+          (x) => x.label === METADATA_CONSTANTS.METADATA_ADD_LIST[1].label,
+        ),
+      );
+    } else {
+      setAccordionAdd(accData);
+    }
+  }, [METADATA_CONSTANTS.METADATA_ADD_LIST]);
 
   useEffect(() => {
     if (!isEmpty(accordianResult)) {
@@ -265,23 +305,29 @@ function MetaData({ docId }) {
     if (!isEmpty(metaParamResult) && !isEmpty(accordianData)) {
       const updatedParam = {};
       const result = flattenMetaParam(updatedParam, metaParamResult, 1);
-      let metaList = METADATA_LIST.filter(
-        (ele) => !Object.keys(accordianData).includes(ele.label),
+      const accordianFilterData = Object.assign(
+        {},
+        ...Object.entries(accordianData)
+          .filter(([k, v]) => {
+            return v?.is_active;
+          })
+          .map(([k, v]) => ({ [k]: v })),
       );
+
+      let metaList = [];
       const filterItems = difference(
         Object.keys(metaParamResult),
-        Object.keys(accordianData),
+        Object.keys(accordianFilterData),
       );
 
       if (filterItems.length > 0) {
         filterItems.forEach((names) => {
-          if (names !== 'summary_extended' && !METADATA_LIST.includes(names)) {
+          if (names !== 'summary_extended') {
             metaList = [...metaList, { label: names }];
           }
         });
       }
       setSuggestedList(metaList);
-
       setMetaParams(result);
     }
     // eslint-disable-next-line
@@ -330,6 +376,7 @@ function MetaData({ docId }) {
             ...accordianData,
             [apiResponse.reqData.name]: obj,
           });
+          fetchMetaData();
         } else {
           const obj = {
             name: apiResponse?.reqData?.name,
@@ -379,7 +426,6 @@ function MetaData({ docId }) {
     return (
       <div key={key} className="metadata_item" data-testid="metadataaccordian">
         <Accordian
-          standardList={standardList}
           accData={acc}
           rows={rows}
           metaParams={metaParams}
@@ -417,13 +463,6 @@ function MetaData({ docId }) {
     // eslint-disable-next-line
   }, [sectionName]);
 
-  const handleAutoComplete = () => {
-    setIsOpen(!isOpen);
-    autoCompleteClose(() => {
-      setIsOpen(false);
-    });
-  };
-
   return (
     <Card
       className="protocol-column protocol-digitize-column metadata-card"
@@ -432,29 +471,49 @@ function MetaData({ docId }) {
       <div className="metadata-panel-heading" ref={wrapperRef}>
         <div className="metadat-flex-plus"> Metadata </div>
         <div className="metadata-flex metadata-plus-icon">
-          <Plus
+          <IconMenuButton
+            id="actions-2"
+            menuItems={accordionAdd}
             size="small"
-            data-testid="metadata-accordian-plus"
-            className="metadata-plus-size"
-            onClick={handleAutoComplete}
-          />
+            data-testid="three-dot-menu"
+          >
+            <EllipsisVertical />
+          </IconMenuButton>
         </div>
-        {isOpen && (
-          <div style={{ maxWidth: 400 }}>
-            <AutocompleteV2
-              label=""
-              className="nameField"
-              placeholder="Select or type section name"
-              source={suggestedList}
-              fullWidth
-              forcePopupIcon
-              showClearIndicator
-              value={sectionName}
-              onChange={handleChange}
-              size="small"
-            />
-          </div>
-        )}
+        {isOpen &&
+          accType === METADATA_CONSTANTS.METADATA_ADD_LIST[1].label && (
+            <div className="add-section-field">
+              <AutocompleteV2
+                label=""
+                className="selectField"
+                placeholder="Select or type section name"
+                source={suggestedList}
+                fullWidth
+                forcePopupIcon
+                showClearIndicator
+                value={sectionName}
+                onChange={handleChange}
+                size="small"
+                data-testId="add-exist-section"
+              />
+            </div>
+          )}
+        {isOpen &&
+          accType === METADATA_CONSTANTS.METADATA_ADD_LIST[0].label && (
+            <div className="add-section-field">
+              <TextField
+                className="nameField"
+                placeholder="Type section name"
+                icon={<Plus size="small" />}
+                onChange={(e) => handleTextChange(e)}
+                iconProps={{
+                  onClick: handleTextClick,
+                }}
+                size="small"
+                inputProps={{ 'data-testid': 'add-new-section' }}
+              />
+            </div>
+          )}
       </div>
       {isEmpty(accordianData) ? (
         <div className="loader sasasas">
@@ -463,7 +522,9 @@ function MetaData({ docId }) {
       ) : (
         <div className="_meta_data-boarder">
           {Object?.entries(accordianData || {}).map(([key, value]) => {
-            return value.level === 1 && accGenerator(key, value);
+            return (
+              value.level === 1 && value?.is_active && accGenerator(key, value)
+            );
           })}
         </div>
       )}

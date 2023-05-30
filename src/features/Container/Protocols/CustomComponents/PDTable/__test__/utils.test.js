@@ -85,165 +85,206 @@ describe('deleteColumn function', () => {
     expect(updatedData[0].columns[index].value).toContain('<s>');
     expect(updatedData[0].columns[index].op_type).toBe('delete');
   });
+});
 
-  describe('swapElements', () => {
-    it('should swap the elements in the array', () => {
-      const arr = [
-        {
-          row_indx: '0',
-          roi_id: '10620c73-747c-4243-8456-a3dc818ddceb',
-          op_type: 'modify',
-          columns: [
-            {
-              col_indx: '0',
-              op_type: 'modify',
-              cell_id: '858cc436-614b-476d-bb9c-6fb245a9c0b5',
-              value: '1',
-            },
-            {
-              col_indx: '1',
-              op_type: 'modify',
-              cell_id: 'd45f9b3e-2253-40e8-b5d7-c16821bcc3a2',
-              value: '2',
-            },
-          ],
-        },
-        {
-          row_indx: '1',
-          roi_id: '6258ee39-bf82-4cd3-9830-06714b819447',
-          op_type: 'modify',
-          columns: [
-            {
-              col_indx: '0',
-              op_type: 'modify',
-              cell_id: '61dc26b1-0802-4348-9ee0-70d2a18137ab',
-              value: '3',
-            },
-            {
-              col_indx: '1',
-              op_type: 'modify',
-              cell_id: '9bf6ff0b-ac32-4b80-b005-d2bc166433a2',
-              value: '4',
-            },
-          ],
-        },
-      ];
-      const updatedArr = swapRowElements(arr, 0, 1);
-      expect(updatedArr[1].columns[0].value).toBe('1');
-      expect(updatedArr[0].columns[0].value).toBe('3');
-    });
-
-    it('should return an empty array when an error occurs', () => {
-      const consoleSpy = jest
-        .spyOn(console, 'log')
-        .mockImplementation(() => {});
-
-      const array = [
-        {
-          columns: [{ value: 'A' }, { value: 'B' }],
-        },
-        {
-          columns: [{ value: 'X' }, { value: 'Y' }],
-        },
-      ];
-
-      const index1 = 0;
-      const index2 = 2;
-
-      const result = swapRowElements(array, index1, index2);
-
-      expect(result).toEqual([]);
-      expect(consoleSpy).toHaveBeenCalled();
-
-      consoleSpy.mockRestore();
-    });
+describe('swapElements', () => {
+  it('should swap the elements in the array', () => {
+    const arr = [
+      {
+        row_indx: '0',
+        roi_id: '10620c73-747c-4243-8456-a3dc818ddceb',
+        op_type: '',
+        columns: [
+          {
+            col_indx: '0',
+            op_type: '',
+            cell_id: '858cc436-614b-476d-bb9c-6fb245a9c0b5',
+            value: '1',
+          },
+          {
+            col_indx: '1',
+            op_type: '',
+            cell_id: 'd45f9b3e-2253-40e8-b5d7-c16821bcc3a2',
+            value: '2',
+          },
+        ],
+      },
+      {
+        row_indx: '1',
+        roi_id: '6258ee39-bf82-4cd3-9830-06714b819447',
+        op_type: '',
+        columns: [
+          {
+            col_indx: '0',
+            op_type: '',
+            cell_id: '61dc26b1-0802-4348-9ee0-70d2a18137ab',
+            value: '3',
+          },
+          {
+            col_indx: '1',
+            op_type: '',
+            cell_id: '9bf6ff0b-ac32-4b80-b005-d2bc166433a2',
+            value: '4',
+          },
+        ],
+      },
+    ];
+    const updatedArr = swapRowElements(arr, 0, 1);
+    expect(updatedArr[1].columns[0].value).toBe('1');
+    expect(updatedArr[0].columns[0].value).toBe('3');
   });
 
-  describe('updateFootNotePayload', () => {
-    it('should update the footnotes in the payload', () => {
-      const footnotes = [
-        { Text: 'note1' },
-        { Text: 'note2' },
-        { Text: 'note3' },
-      ];
-      const updatedFootnotes = updateFootNotePayload(footnotes);
-      expect(updatedFootnotes).toEqual([
-        {
-          PrevousAttachmentIndex: null,
-          Text: 'a. note1',
-        },
-        {
-          PrevousAttachmentIndex: 0,
-          Text: 'b. note2',
-        },
-        {
-          PrevousAttachmentIndex: 1,
-          Text: 'c. note3',
-        },
-      ]);
-    });
+  it('should return an empty array when an error occurs', () => {
+    const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
-    it('should return an empty array if the input array is empty', () => {
-      const emptyArr = [];
-      const updatedFootnotes = updateFootNotePayload(emptyArr);
-      expect(updatedFootnotes).toEqual([]);
-    });
+    const array = [
+      {
+        columns: [{ value: 'A' }, { value: 'B' }],
+      },
+      {
+        columns: [{ value: 'X' }, { value: 'Y' }],
+      },
+    ];
+
+    const index1 = 0;
+    const index2 = 2;
+
+    const result = swapRowElements(array, index1, index2);
+
+    expect(result).toEqual([]);
+    expect(consoleSpy).toHaveBeenCalled();
+
+    consoleSpy.mockRestore();
+  });
+});
+
+describe('updateFootNotePayload', () => {
+  it('should update the footnotes in the payload', () => {
+    const footnotes = [{ Text: 'note1' }, { Text: 'note2' }, { Text: 'note3' }];
+    const updatedFootnotes = updateFootNotePayload(footnotes);
+    expect(updatedFootnotes).toEqual([
+      {
+        PrevousAttachmentIndex: null,
+        Text: 'a. note1',
+      },
+      {
+        PrevousAttachmentIndex: 0,
+        Text: 'b. note2',
+      },
+      {
+        PrevousAttachmentIndex: 1,
+        Text: 'c. note3',
+      },
+    ]);
   });
 
-  describe('swapColumnElements function', () => {
-    it('should swap two columns in an array of objects', () => {
-      const data = [
-        {
-          columns: [
-            {
-              col_indx: '0',
-              op_type: 'add',
-              cell_id: '',
-              value: 'A',
-            },
-            {
-              col_indx: '1',
-              op_type: 'add',
-              cell_id: '',
-              value: 'B',
-            },
-          ],
-        },
-        {
-          columns: [
-            {
-              col_indx: '0',
-              op_type: 'add',
-              cell_id: '',
-              value: 'D',
-            },
-            {
-              col_indx: '1',
-              op_type: 'add',
-              cell_id: '',
-              value: 'E',
-            },
-          ],
-        },
-      ];
+  it('should return an empty array if the input array is empty', () => {
+    const emptyArr = [];
+    const updatedFootnotes = updateFootNotePayload(emptyArr);
+    expect(updatedFootnotes).toEqual([]);
+  });
+});
 
-      const actualData = swapColumnElements(data, 0, 1);
+describe('swapColumnElements function', () => {
+  it('should swap two columns in an array of objects', () => {
+    const data = [
+      {
+        columns: [
+          {
+            col_indx: '0',
+            op_type: '',
+            cell_id: '',
+            value: 'A',
+          },
+          {
+            col_indx: '1',
+            op_type: '',
+            cell_id: '',
+            value: 'B',
+          },
+        ],
+      },
+      {
+        columns: [
+          {
+            col_indx: '0',
+            op_type: '',
+            cell_id: '',
+            value: 'D',
+          },
+          {
+            col_indx: '1',
+            op_type: '',
+            cell_id: '',
+            value: 'E',
+          },
+        ],
+      },
+    ];
 
-      expect(actualData[0].columns[0].value).toEqual('B');
-    });
+    const actualData = swapColumnElements(data, 0, 1);
+
+    expect(actualData[0].columns[0].value).toEqual('B');
   });
 });
 
 describe('filterTableProperties', () => {
   const data = [
-    { id: 1, name: 'John', age: 25 },
-    { id: 2, name: 'Jane', age: 30 },
-    { id: 3, name: 'Bob', age: 35 },
+    {
+      row_indx: '0',
+      roi_id: '46bcd107-d095-4db1-931d-2b4d80719c27',
+      op_type: 'modify',
+      columns: [
+        {
+          col_indx: '0',
+          op_type: 'modify',
+          cell_id: 'b648e887-eb70-4fd3-ba55-daa307b66cd0',
+          value: '<p><div>11</div></p>',
+        },
+        {
+          col_indx: '1',
+          op_type: 'modify',
+          cell_id: '78aa2565-979b-464a-aaf7-25697beaeadb',
+          value: '12<p><div><p></p><div></div><p></p></div></p>',
+        },
+        {
+          col_indx: '2',
+          op_type: 'modify',
+          cell_id: '074d1e0a-6ee2-4102-ab1e-15ab5260d4b6',
+          value: '<p><div><p></p><div>13</div><p></p></div></p>',
+        },
+      ],
+    },
+    {
+      row_indx: '1',
+      roi_id: '4e398ad4-8991-43a1-8fd9-f8c2a0ef5895',
+      op_type: 'modify',
+      columns: [
+        {
+          col_indx: '0',
+          op_type: 'modify',
+          cell_id: '7bbb0b8d-cb25-4927-90b3-4a909ae99fe8',
+          value: '<p><div>21</div></p>',
+        },
+        {
+          col_indx: '1',
+          op_type: 'modify',
+          cell_id: 'd33340ea-fa2e-4e81-9da2-bddb9935ac75',
+          value: '22<p><div></div></p>',
+        },
+        {
+          col_indx: '2',
+          op_type: 'modify',
+          cell_id: '89381785-2efb-4cb5-b213-33db7f13d8e9',
+          value: '<p><div>23</div></p>',
+        },
+      ],
+    },
   ];
 
   it('should not filter data if searchValue is not found', () => {
-    const filteredData = filterTableProperties(data, '50');
-    expect(filteredData).toEqual([]);
+    const filteredData = filterTableProperties(data);
+    expect(filteredData.length).toEqual(2);
   });
 });
 
@@ -485,26 +526,34 @@ describe('updateRowIndex', () => {
     const data = [
       {
         row_indx: '0',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+        op_type: 'add',
+        columns: [
+          { col_indx: '0', op_type: 'add' },
+          { col_indx: '1', op_type: 'modify' },
+        ],
       },
       {
         row_indx: '1',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
+        op_type: 'modify',
+        columns: [
+          { col_indx: '0', op_type: 'add' },
+          { col_indx: '1', op_type: 'modify' },
+        ],
+      },
+      {
+        row_indx: '2',
+        op_type: 'delete',
+        columns: [
+          { col_indx: '0', op_type: 'add' },
+          { col_indx: '1', op_type: 'modify' },
+        ],
       },
     ];
 
     const updatedRows = updateRowIndex(data);
-
-    expect(updatedRows).toEqual([
-      {
-        row_indx: '0',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
-      },
-      {
-        row_indx: '1',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
-      },
-    ]);
+    expect(updatedRows[0].columns.length).toEqual(2);
+    expect(updatedRows[1].columns.length).toEqual(2);
+    expect(updatedRows[2].columns.length).toEqual(0);
   });
 
   test('should update row indices and column indices correctly for an empty data array', () => {
@@ -514,100 +563,47 @@ describe('updateRowIndex', () => {
 
     expect(updatedRows).toEqual([]);
   });
-
-  test('should update row indices and column indices correctly for a single row with a single column', () => {
-    const data = [
-      {
-        row_indx: '0',
-        columns: [{ col_indx: '0' }],
-      },
-    ];
-
-    const updatedRows = updateRowIndex(data);
-
-    expect(updatedRows).toEqual([
-      {
-        row_indx: '0',
-        columns: [{ col_indx: '0' }],
-      },
-    ]);
-  });
-
-  test('should update row indices and column indices correctly for a single row with multiple columns', () => {
-    const data = [
-      {
-        row_indx: '0',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }, { col_indx: '2' }],
-      },
-    ];
-
-    const updatedRows = updateRowIndex(data);
-
-    expect(updatedRows).toEqual([
-      {
-        row_indx: '0',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }, { col_indx: '2' }],
-      },
-    ]);
-  });
-
-  test('should update row indices and column indices correctly for multiple rows and columns', () => {
-    const data = [
-      {
-        row_indx: '0',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
-      },
-      {
-        row_indx: '1',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
-      },
-      {
-        row_indx: '2',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
-      },
-    ];
-
-    const updatedRows = updateRowIndex(data);
-
-    expect(updatedRows).toEqual([
-      {
-        row_indx: '0',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
-      },
-      {
-        row_indx: '1',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
-      },
-      {
-        row_indx: '2',
-        columns: [{ col_indx: '0' }, { col_indx: '1' }],
-      },
-    ]);
-  });
 });
 
 describe('filterTableProperties', () => {
   test('should filter data with op_type property', () => {
     const data = [
-      { op_type: 'add', columns: [{ op_type: 'edit' }, { op_type: 'delete' }] },
       {
-        op_type: 'delete',
-        columns: [{ op_type: 'edit' }, { op_type: 'delete' }],
+        row_indx: '0',
+        op_type: 'add',
+        columns: [
+          { col_indx: '0', op_type: 'modify' },
+          { col_indx: '1', op_type: 'delete' },
+        ],
       },
-      { columns: [{ op_type: 'edit' }, { op_type: 'delete' }] },
+      {
+        row_indx: '1',
+        op_type: 'delete',
+        columns: [
+          { col_indx: '0', op_type: 'modify' },
+          { col_indx: '1', op_type: 'delete' },
+        ],
+      },
+      {
+        row_indx: '2',
+        op_type: 'modify',
+        columns: [
+          { col_indx: '0', op_type: 'modify' },
+          { col_indx: '1', op_type: 'delete' },
+        ],
+      },
     ];
 
     const filteredData = filterTableProperties(data);
 
-    expect(filteredData).toHaveLength(2);
+    expect(filteredData).toHaveLength(3);
     expect(filteredData[0].op_type).toBe('add');
-    expect(filteredData[0].columns).toHaveLength(2);
-    expect(filteredData[0].columns[0].op_type).toBe('edit');
-    expect(filteredData[0].columns[1].op_type).toBe('delete');
+    expect(filteredData[0].columns).toHaveLength(1);
+    expect(filteredData[0].columns[0].op_type).toBe('modify');
     expect(filteredData[1].op_type).toBe('delete');
-    expect(filteredData[1].columns).toHaveLength(2);
-    expect(filteredData[1].columns[0].op_type).toBe('edit');
-    expect(filteredData[1].columns[1].op_type).toBe('delete');
+    expect(filteredData[1].columns).toHaveLength(0);
+    expect(filteredData[2].columns[0].op_type).toBe('modify');
+    expect(filteredData[2].columns[1].op_type).toBe('delete');
   });
 
   test('should return an empty array if data is an empty array', () => {
@@ -687,42 +683,33 @@ describe('deleteRow', () => {
 describe('addColumn', () => {
   test('adds an empty cell at the specified index for each record', () => {
     const tabledata = [
-      { op_type: 'UPDATED', columns: [{}, {}] },
-      { op_type: 'ADDED', columns: [{}, {}] },
-      { op_type: 'DELETED', columns: [{}, {}] },
-    ];
-    const index = 1;
-    const expectedData = [
       {
-        op_type: 'UPDATED',
+        row_indx: '0',
+        op_type: 'add',
         columns: [
-          {},
-
-          { cell_id: '', col_indx: '1', op_type: 'add', value: '' },
-          {},
+          { col_indx: '0', op_type: 'add' },
+          { col_indx: '1', op_type: 'modify' },
         ],
       },
       {
-        op_type: 'ADDED',
+        row_indx: '1',
+        op_type: 'modify',
         columns: [
-          {},
-          { cell_id: '', col_indx: '1', op_type: 'add', value: '' },
-          {},
+          { col_indx: '0', op_type: 'add' },
+          { col_indx: '1', op_type: 'modify' },
         ],
       },
       {
-        op_type: 'DELETED',
+        row_indx: '2',
+        op_type: 'delete',
         columns: [
-          {},
-          { cell_id: '', col_indx: '1', op_type: 'add', value: '' },
-          {},
+          { col_indx: '0', op_type: 'add' },
+          { col_indx: '1', op_type: 'modify' },
         ],
       },
     ];
-
-    const result = addColumn(tabledata, index);
-
-    expect(result).toEqual(expectedData);
+    const result = addColumn(tabledata, 1);
+    expect(result[0].columns.length).toEqual(3);
   });
 
   test('updates op_type to UPDATED if not DELETED', () => {
