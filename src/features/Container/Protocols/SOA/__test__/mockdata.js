@@ -763,6 +763,11 @@ const initialState = {
               indicator_text: 'X',
               id: '2aabd603-5452-4d95-9cce-98f029d01a82',
               uid: '59b9aaf3-8796-4412-aac6-c4352796e2fb',
+              footnotes: [
+                'f EOS Visit will be performed when the patient is discontinued from the study (disease progression is confirmed, or consent is withdrawn by the patient). If new',
+                'o A serum pregnancy test will be performed for women of child bearing potential at screening (within 3 days before the first dose), on Day 1 of each cycle starting',
+                'f EOS Visit will be performed when the patient is discontinued from the study (disease progression is confirmed, or consent is withdrawn by the patient). If new',
+              ],
             },
             {
               table_column_index: 27,
