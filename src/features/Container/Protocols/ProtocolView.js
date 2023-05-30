@@ -1,4 +1,5 @@
 import { useState, createRef, useMemo, useEffect, useCallback } from 'react';
+import cloneDeep from 'lodash/cloneDeep';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
@@ -161,8 +162,16 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleCurrentLineId = (prevContent, lineId) => {
-    const prevIndex = prevContent.findIndex((x) => x.line_id === lineId);
-    setActiveLineID(prevContent[prevIndex - 1].line_id);
+    const prevIndex = prevContent?.findIndex((x) => x.line_id === lineId);
+    setActiveLineID(prevContent[prevIndex - 1]?.line_id);
+  };
+
+  const handleSplice = (prevContent, lsObj, prevIndex) => {
+    let clonedSection = cloneDeep(prevContent);
+    const firstArray = clonedSection.slice(0, prevIndex + 1);
+    const secondArray = clonedSection.slice(prevIndex + 1);
+    clonedSection = [...firstArray, lsObj?.content, ...secondArray];
+    return clonedSection;
   };
 
   const handleContentUndo = () => {
@@ -194,14 +203,27 @@ function ProtocolView({ refs, data }) {
           });
         });
       } else if (lastobj.type === 'Delete') {
-        setSectionContent((prevState) => {
-          return prevState.map((x) => {
-            if (x.line_id === lastobj.lineId) {
-              x = lastobj.content;
-            }
-            return x;
-          });
+        const newAdded = undoStack?.filter((x) => {
+          return x?.lineId === lastobj?.lineId && x?.type === 'Add';
         });
+
+        if (newAdded.length > 0)
+          setSectionContent((prevState) => {
+            const prevIndex = prevState?.findIndex(
+              (x) => x.line_id === lastobj.prevLineId,
+            );
+            const updatedSection = handleSplice(prevState, lastobj, prevIndex);
+            return updatedSection;
+          });
+        else
+          setSectionContent((prevState) => {
+            return prevState.map((x) => {
+              if (x.line_id === lastobj.lineId) {
+                x = lastobj.content;
+              }
+              return x;
+            });
+          });
         dispatch(
           updateSectionData({
             data: lastobj,
