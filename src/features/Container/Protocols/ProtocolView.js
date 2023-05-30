@@ -2,7 +2,7 @@ import { useState, createRef, useMemo, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { isEqual } from 'lodash';
+
 import {
   viewResult,
   protocolTocData,
@@ -73,17 +73,9 @@ function ProtocolView({ refs, data }) {
       content: undosegmentContent,
       contentType: '',
     };
-    const len = undoStack.length;
-    if (
-      undoObj?.content?.type === 'text' ||
-      !isEqual(
-        undoObj?.content?.content?.TableProperties,
-        undoStack[len - 1]?.content?.content?.TableProperties,
-      )
-    ) {
-      undoStack.push(undoObj);
-      setUndoStack(undoStack);
-    }
+
+    undoStack.push(undoObj);
+    setUndoStack(undoStack);
 
     if (payload.isSaved && !saveEnabled) setSaveEnabled(true);
   };
@@ -168,12 +160,18 @@ function ProtocolView({ refs, data }) {
     setSectionContent(content);
   };
 
+  const handleCurrentLineId = (prevContent, lineId) => {
+    const prevIndex = prevContent.findIndex((x) => x.line_id === lineId);
+    setActiveLineID(prevContent[prevIndex - 1].line_id);
+  };
+
   const handleContentUndo = () => {
     if (undoStack.length > 0) {
       const lastobj = undoStack.pop();
 
       if (lastobj.type === 'Add') {
         setSectionContent((prevState) => {
+          handleCurrentLineId(prevState, lastobj.lineId);
           return prevState.filter((x) => {
             return x.line_id !== lastobj.lineId;
           });
