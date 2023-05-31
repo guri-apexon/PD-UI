@@ -460,18 +460,6 @@ const getColumns = ({ state, selectedTab, hideColumns }) => {
 };
 const isColumn = (cell) => Number(cell[TableConst.ROW_IDX]) === 0;
 const isValidColumn = (cell) => Number(cell[TableConst.COLUMN_IDX]) > 0;
-
-const getFootNotesFromObject = (record) => {
-  const regexp = new RegExp(`^${TableConst.FOOT_NOTE_KEY}`, 'i');
-  const footNoteKeys = Object.keys(record).filter(
-    (key) => regexp.test(key) && record[key],
-  );
-  const notes = footNoteKeys.map((item) => {
-    return { key: item, value: record[item] };
-  });
-
-  return notes;
-};
 const formatTables = (data) => {
   const footNotes = [];
   const actualColumns = [];
@@ -531,10 +519,11 @@ const formatTables = (data) => {
         }
       } else if (tableKey === TableConst.NORMALIZED_SOA) {
         tableItem[tableKey].forEach((tableKeyItem) => {
-          const notesResult = getFootNotesFromObject(tableKeyItem);
-
-          if (notesResult.length > 0) footes.push(...notesResult);
-
+          if (tableKeyItem.footnotes?.length > 0) {
+            tableKeyItem.footnotes.forEach((note) => {
+              if (!footes.includes(note)) footes.push(note);
+            });
+          }
           if (!rtObj[tableKey]) rtObj[tableKey] = [];
           const obj = {
             [TableConst.COLUMN_IDX]: tableKeyItem[TableConst.COLUMN_IDX],
@@ -619,12 +608,16 @@ const formatTables = (data) => {
   // end of time points
   const fNootes = [];
 
-  footNotes.forEach((notes) => {
+  footNotes.forEach((fnotes) => {
     const fNote = [];
     fNootes.push(fNote);
-    notes.forEach((note) => {
-      const isFound = fNote.find((item) => item.key === note.key);
-      if (!isFound) fNote.push(note);
+    fnotes.sort();
+    fnotes.forEach((notes) => {
+      const noteValue = String(notes).trim();
+      const key = noteValue.substring(0, noteValue.indexOf(' ')); // "72"
+      const value = noteValue.substring(noteValue.indexOf(' ') + 1);
+      const footObject = { key, value };
+      fNote.push(footObject);
     });
   });
   return { tables, footNotes: fNootes };
