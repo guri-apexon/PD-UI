@@ -29,7 +29,6 @@ export const protocolSlice = createSlice({
       data: [],
       sectionResponse: null,
       updated: false,
-      undoupdated: [],
     },
     protocolTocData: [],
     sectionLoader: false,
