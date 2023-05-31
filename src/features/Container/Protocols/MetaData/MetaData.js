@@ -302,7 +302,7 @@ function MetaData({ docId }) {
   }, [metaParamResult]);
 
   useEffect(() => {
-    if (!isEmpty(metaParamResult) && !isEmpty(accordianData)) {
+    if (!isEmpty(metaParams) && !isEmpty(accordianData)) {
       const updatedParam = {};
       const result = flattenMetaParam(updatedParam, metaParamResult, 1);
       const accordianFilterData = Object.assign(

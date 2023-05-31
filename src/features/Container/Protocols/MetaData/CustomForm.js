@@ -4,7 +4,10 @@ import Select from 'apollo-react/components/Select';
 import MenuItem from 'apollo-react/components/MenuItem';
 import DatePicker from 'apollo-react/components/DatePickerV2';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import METADATA_CONSTANTS from './constants';
+import { loggedUser } from '../../../../store/userDetails';
+import { USERTYPE } from '../../../../AppConstant/AppConstant';
 
 export function InputKeyField({
   keyName,
@@ -31,11 +34,13 @@ export function ValueField({
   keyName,
   type,
   inputValue,
+  attrStatus,
   dateValue,
   handleChange,
   handleDateChange,
   handleBlur,
 }) {
+  const userDetails = useSelector(loggedUser);
   const onTypeChange = (e) => {
     handleChange(e);
   };
@@ -104,6 +109,9 @@ export function ValueField({
               label=""
               name="attr_type"
               value={type}
+              disabled={
+                userDetails.user_type !== USERTYPE.ADMIN && attrStatus !== 'add'
+              }
               onChange={(e) => onTypeChange(e)}
               onBlur={handleBlur}
               placeholder="Select Type"
@@ -135,6 +143,7 @@ ValueField.propTypes = {
   handleChange: PropTypes.isRequired,
   type: PropTypes.isRequired,
   inputValue: PropTypes.isRequired,
+  attrStatus: PropTypes.isRequired,
   handleBlur: PropTypes.isRequired,
   handleDateChange: PropTypes.isRequired,
   dateValue: PropTypes.isRequired,
