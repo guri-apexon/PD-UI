@@ -12,6 +12,7 @@ import {
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
 import { prepareContent } from '../../../utils/utilFunction';
+import { QC_CHANGE_TYPE } from '../../../AppConstant/AppConstant';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
@@ -56,11 +57,11 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleContentUpdate = (payload) => {
-    const index = sectionContent.findIndex(
-      (x) => x.line_id === payload.currentLineId,
-    );
     let undosegmentContent;
     setSectionContent((prevState) => {
+      const index = prevState?.findIndex(
+        (x) => x.line_id === payload.currentLineId,
+      );
       undosegmentContent = prevState[index];
       return prepareContent({
         ...payload,
@@ -70,7 +71,7 @@ function ProtocolView({ refs, data }) {
     });
     const undoObj = {
       lineId: payload?.currentLineId,
-      type: 'Modify',
+      type: 'modify',
       content: undosegmentContent,
       contentType: '',
     };
@@ -92,7 +93,7 @@ function ProtocolView({ refs, data }) {
     const undoObj = {
       prevLineId: newActiveLineId,
       lineId: payload.currentLineId,
-      type: 'Delete',
+      type: 'delete',
       content: sectionContent[index],
       contentType: '',
     };
@@ -130,7 +131,7 @@ function ProtocolView({ refs, data }) {
     const newIndex = content.findIndex((x) => x.line_id === lineId);
     const undoObj = {
       lineId: content[newIndex + 1].line_id,
-      type: 'Add',
+      type: 'add',
       content: content[newIndex + 1].content,
       contentType: type,
     };
@@ -178,22 +179,14 @@ function ProtocolView({ refs, data }) {
     if (undoStack.length > 0) {
       const lastobj = undoStack.pop();
 
-      if (lastobj.type === 'Add') {
+      if (lastobj.type === QC_CHANGE_TYPE.ADDED) {
         setSectionContent((prevState) => {
           handleCurrentLineId(prevState, lastobj.lineId);
           return prevState.filter((x) => {
             return x.line_id !== lastobj.lineId;
           });
         });
-        dispatch(
-          updateSectionData({
-            data: lastobj,
-            actionType: 'UNDO',
-            linkId: selectedSection.link_id,
-            undo: true,
-          }),
-        );
-      } else if (lastobj.type === 'Modify') {
+      } else if (lastobj.type === QC_CHANGE_TYPE.UPDATED) {
         setSectionContent((prevState) => {
           return prevState.map((x) => {
             if (x.line_id === lastobj.lineId) {
@@ -202,9 +195,11 @@ function ProtocolView({ refs, data }) {
             return x;
           });
         });
-      } else if (lastobj.type === 'Delete') {
+      } else if (lastobj.type === QC_CHANGE_TYPE.DELETED) {
         const newAdded = undoStack?.filter((x) => {
-          return x?.lineId === lastobj?.lineId && x?.type === 'Add';
+          return (
+            x?.lineId === lastobj?.lineId && x?.type === QC_CHANGE_TYPE.ADDED
+          );
         });
 
         if (newAdded.length > 0)
@@ -224,14 +219,6 @@ function ProtocolView({ refs, data }) {
               return x;
             });
           });
-        dispatch(
-          updateSectionData({
-            data: lastobj,
-            actionType: 'UNDO',
-            linkId: selectedSection.link_id,
-            undo: true,
-          }),
-        );
       }
     }
   };

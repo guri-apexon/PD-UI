@@ -16,6 +16,10 @@ import {
 
 import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../AppConstant/AppConstant';
 
 function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
   const [sections, setSections] = useState([]);
@@ -107,8 +111,8 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
             {sections
               ?.filter(
                 (obj) =>
-                  !(obj.type === 'table' && !obj.content) &&
-                  obj.qc_change_type !== 'delete',
+                  !(obj.type === CONTENT_TYPE.TABLE && !obj.content) &&
+                  obj.qc_change_type !== QC_CHANGE_TYPE.DELETED,
               )
               .map((section) => (
                 // eslint-disable-next-line

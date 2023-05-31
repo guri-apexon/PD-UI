@@ -148,28 +148,6 @@ export const protocolSlice = createSlice({
         state.sectionDetails.data = state.sectionDetails.data.map((x) =>
           x.linkId === linkId ? { ...x, data } : x,
         );
-      } else if (actionType === 'UNDO' && data) {
-        const sectionData = state.sectionDetails?.data?.filter(
-          (x) => x.linkId === linkId,
-        );
-        const ind = state.sectionDetails?.data?.findIndex(
-          (x) => x.linkId === linkId,
-        );
-        const index = sectionData[0]?.data?.findIndex(
-          (x) => x.line_id === data.lineId,
-        );
-        if (data.type === 'Add') {
-          state.sectionDetails.data[ind].data?.splice(index, 1);
-        } else if (data.type === 'Delete') {
-          const prevIndex = state.sectionDetails.data[ind].data?.findIndex(
-            (x) => x.line_id === data.prevLineId,
-          );
-          state.sectionDetails.data[ind].data?.splice(
-            prevIndex + 1,
-            0,
-            data?.content,
-          );
-        }
       } else if (content && lineId) {
         state.sectionDetails.sections = state.sectionDetails.sections.map(
           (x) => {
