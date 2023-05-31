@@ -32,6 +32,7 @@ function EditableCell({ row, column: { accessor: key } }) {
   const [dateValue, setDateValue] = useState(
     row.attr_type === 'date' && row.attr_value ? moment(row.attr_value) : null,
   );
+
   const handleDataChange = (e) => {
     if (e?.target?.name === 'attr_type') {
       setType(e.target.value ? e.target.value : 'string');
@@ -78,9 +79,7 @@ function EditableCell({ row, column: { accessor: key } }) {
         type={type}
         dateValue={dateValue}
         inputValue={val}
-        isDisabled={
-          row?.attr_id && row?.attr_value && row?.attr_status !== 'add'
-        }
+        attrStatus={row?.attr_status}
         setDateValue={setDateValue}
         setType={setType}
         handleDateChange={handleDateChange}
