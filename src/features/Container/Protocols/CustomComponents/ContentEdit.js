@@ -3,20 +3,30 @@ import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
 import { useProtContext } from '../ProtocolContext';
 
-function ContentEdit({ type, lineID, content, edit, activeLineID }) {
+function ContentEdit({
+  type,
+  lineID,
+  content,
+  edit,
+  activeLineID,
+  handleCurrentLine,
+  forwardedRef,
+}) {
   const [text, setText] = useState(content);
-  const contentEditableRef = useRef();
+  // const contentEditableRef = useRef();
   const { dispatchSectionEvent, setSaveEnabled } = useProtContext();
 
   const handleChange = (e) => {
     setSaveEnabled(true);
     setText(e.target.value);
+    handleCurrentLine();
   };
   const handleBlur = () => {
-    if (content !== contentEditableRef.current.innerHTML) {
+    console.log('SHUBHAM Ref', forwardedRef.current);
+    if (content !== forwardedRef.current.innerHTML) {
       const obj = {
         currentLineId: lineID,
-        content: contentEditableRef.current.innerHTML,
+        content: forwardedRef.current.innerHTML,
       };
       dispatchSectionEvent('CONTENT_UPDATE', obj);
     }
@@ -29,7 +39,8 @@ function ContentEdit({ type, lineID, content, edit, activeLineID }) {
   return (
     <div className="format-container">
       <ContentEditable
-        innerRef={contentEditableRef}
+        // innerRef={contentEditableRef}
+        ref={forwardedRef}
         className={`contentEditable ${
           type === 'header' ? 'content_header' : 'editable'
         }`}
@@ -52,4 +63,6 @@ ContentEdit.propTypes = {
   content: PropTypes.isRequired,
   edit: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
+  handleCurrentLine: PropTypes.isRequired,
+  forwardedRef: PropTypes.isRequired,
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 
@@ -32,6 +32,7 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
   const [showconfirm, setShowConfirm] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
+  const contentEditableRef = useRef([]);
 
   useEffect(() => {
     const blockRedireting = history.block((requestUrl) => {
@@ -97,6 +98,10 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
     if (edit) setActiveLineID(id);
   };
 
+  const handleCurrentLine = (value) => {
+    console.log('SHUBHAM', value);
+  };
+
   return (
     <>
       <div className="Richtextcontainer" data-testId="richTextEditor">
@@ -114,7 +119,7 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
                   !(obj.type === CONTENT_TYPE.TABLE && !obj.content) &&
                   obj.qc_change_type !== QC_CHANGE_TYPE.DELETED,
               )
-              .map((section) => (
+              .map((section, index) => (
                 // eslint-disable-next-line
                 <div
                   className="content_container"
@@ -123,6 +128,10 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
                   onClick={() => onContentClick(section.line_id)}
                 >
                   <RenderContent
+                    // eslint-disable-next-line
+                    forwardedRef={(el) =>
+                      (contentEditableRef.current[index] = el)
+                    }
                     sectionData={section}
                     sectionName={sectionName}
                     handleContentEdit={handleContentEdit}
@@ -130,6 +139,7 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
                     deleteSection={deleteSection}
                     setActiveLineID={setActiveLineID}
                     edit={edit}
+                    handleCurrentLine={handleCurrentLine}
                   />
                 </div>
               ))}

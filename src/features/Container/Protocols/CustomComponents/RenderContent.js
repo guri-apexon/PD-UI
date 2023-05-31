@@ -13,8 +13,12 @@ function RenderContent({
   setActiveLineID,
   deleteSection,
   edit,
+  handleCurrentLine,
+  forwardedRef,
 }) {
   const { type, content = '', line_id: lineID } = sectionData;
+
+  console.log('forwardedRef', forwardedRef);
 
   if (type === CONTENT_TYPE.HEADER) {
     return (
@@ -27,6 +31,8 @@ function RenderContent({
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
         edit={edit}
+        handleCurrentLine={handleCurrentLine}
+        forwardedRef={forwardedRef}
       />
     );
   }
@@ -41,6 +47,8 @@ function RenderContent({
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
         edit={edit}
+        handleCurrentLine={handleCurrentLine}
+        forwardedRef={forwardedRef}
       />
     );
   }
@@ -83,4 +91,6 @@ RenderContent.propTypes = {
   setActiveLineID: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  handleCurrentLine: PropTypes.isRequired,
+  forwardedRef: PropTypes.isRequired,
 };
