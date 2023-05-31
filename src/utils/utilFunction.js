@@ -361,7 +361,6 @@ export const prepareContent = ({
 
   switch (type) {
     case 'ADDED':
-      console.log('SHUBHAM', section);
       if (currentLineId && contentType) {
         const prevIndex =
           clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
