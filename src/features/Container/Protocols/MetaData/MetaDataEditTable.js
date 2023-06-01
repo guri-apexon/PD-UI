@@ -28,7 +28,10 @@ function EditableCell({ row, column: { accessor: key } }) {
   const [val, setVal] = useState(
     row.attr_type === 'boolean' ? row[key]?.toString() : row[key],
   );
-  const [type, setType] = useState(row.attr_type || 'string');
+
+  const [type, setType] = useState(
+    row.attr_type && key === 'attr_value' ? row.attr_type : 'string',
+  );
   const [dateValue, setDateValue] = useState(
     row.attr_type === 'date' && row.attr_value ? moment(row.attr_value) : null,
   );
