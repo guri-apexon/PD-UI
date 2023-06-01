@@ -231,8 +231,13 @@ function PDTable({ data, segment, activeLineID, lineID }) {
     <section
       data-testId="section"
       className="content-table-wrapper"
-      onClick={() => onContainerClick()}
-      onMouseDown={() => setTableSaved(false)}
+      onClick={() => {
+        onContainerClick();
+      }}
+      onMouseEnter={(e) => {
+        e.stopPropagation();
+        setTableSaved(false);
+      }}
     >
       {showconfirm && (
         <div className="confirmation-popup" data-testId="confirmPopup">

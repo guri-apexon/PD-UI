@@ -366,7 +366,7 @@ export const prepareContent = ({
           clonedSection?.findIndex((val) => val.line_id === currentLineId) || 0;
         const prevObj = clonedSection[prevIndex] || null;
         if (!prevObj) {
-          currentLineId = section.line_id;
+          currentLineId = section?.line_id;
         }
 
         const {

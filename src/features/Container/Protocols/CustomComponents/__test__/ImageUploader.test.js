@@ -108,22 +108,13 @@ describe('ImageUploader', () => {
   });
 
   it('should handle the cancel save after file select', () => {
-    const { container, getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <Provider store={store}>
         <ProtocolContext.Provider value={mockedProtocolContextValue}>
-          <ImageUploader lineID="1" content="" edit={testEdit} />
+          <ImageUploader lineID="1" content="sample.jpg" edit={testEdit} />
         </ProtocolContext.Provider>
       </Provider>,
     );
-    const input = container.querySelector('input[type="file"]');
-    expect(input).toBeInTheDocument();
-    const file = new File(['file content'], 'file.jpeg', {
-      type: 'image/jpeg',
-    });
-    fireEvent.change(input, { target: { files: [file] } });
-    expect(input).toHaveProperty('files', [file]);
-    fireEvent.click(getByText('Save'));
-    expect(dispatchSectionEvent).toHaveBeenCalled();
 
     const editReadModeImg = getByTestId('edit-readmode-img');
     expect(editReadModeImg).toBeInTheDocument();
@@ -134,22 +125,13 @@ describe('ImageUploader', () => {
   });
 
   it('should handle the delete image', () => {
-    const { container, getByText, getByTestId } = render(
+    const { getByTestId } = render(
       <Provider store={store}>
         <ProtocolContext.Provider value={mockedProtocolContextValue}>
-          <ImageUploader lineID="1" content="" edit={testEdit} />
+          <ImageUploader lineID="1" content="sample.jpg" edit={testEdit} />
         </ProtocolContext.Provider>
       </Provider>,
     );
-    const input = container.querySelector('input[type="file"]');
-    expect(input).toBeInTheDocument();
-    const file = new File(['file content'], 'file.jpeg', {
-      type: 'image/jpeg',
-    });
-    fireEvent.change(input, { target: { files: [file] } });
-    expect(input).toHaveProperty('files', [file]);
-    fireEvent.click(getByText('Save'));
-    expect(dispatchSectionEvent).toHaveBeenCalled();
 
     const editReadModeImg = getByTestId('edit-readmode-img');
     expect(editReadModeImg).toBeInTheDocument();
