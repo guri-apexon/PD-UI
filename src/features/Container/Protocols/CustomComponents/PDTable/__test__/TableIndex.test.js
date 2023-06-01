@@ -500,7 +500,7 @@ describe('PDTable component', () => {
     });
     fireEvent.click(dropButton);
     expect(
-      screen.getByText('Please enter values in every row to save the table.'),
+      screen.getByText('Please enter values in every rows to save the table.'),
     ).toBeInTheDocument();
 
     const OkButton = getByText('Ok');
