@@ -1,7 +1,9 @@
 import { useState, createRef, useMemo, useEffect, useCallback } from 'react';
+import cloneDeep from 'lodash/cloneDeep';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+
 import {
   viewResult,
   protocolTocData,
@@ -10,6 +12,7 @@ import {
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
 import { prepareContent } from '../../../utils/utilFunction';
+import { QC_CHANGE_TYPE } from '../../../AppConstant/AppConstant';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
@@ -20,6 +23,7 @@ function ProtocolView({ refs, data }) {
   const [sectionContent, setSectionContent] = useState([]);
   const [globalPreferredTerm, setGlobalPreferredTerm] = useState(false);
   const [activeLineID, setActiveLineID] = useState('');
+  const [undoStack, setUndoStack] = useState([]);
 
   const [saveEnabled, setSaveEnabled] = useState(false);
 
@@ -53,28 +57,55 @@ function ProtocolView({ refs, data }) {
   };
 
   const handleContentUpdate = (payload) => {
+    let undosegmentContent;
     setSectionContent((prevState) => {
+      const index = prevState?.findIndex(
+        (x) => x.line_id === payload.currentLineId,
+      );
+      undosegmentContent = prevState[index];
       return prepareContent({
         ...payload,
         type: 'MODIFY',
         sectionContent: prevState,
       });
     });
+    const undoObj = {
+      lineId: payload?.currentLineId,
+      type: 'modify',
+      content: undosegmentContent,
+      contentType: '',
+    };
+
+    undoStack.push(undoObj);
+    setUndoStack(undoStack);
+
     if (payload.isSaved && !saveEnabled) setSaveEnabled(true);
   };
 
   const handleContentDelete = (payload) => {
-    const index = sectionContent.findIndex((x) => x.line_id === activeLineID);
+    const index = sectionContent.findIndex(
+      (x) => x.line_id === payload?.currentLineId,
+    );
     let newActiveLineId = sectionContent[0].line_id;
     if (index > 0) {
       newActiveLineId = sectionContent[index - 1].line_id;
     }
+    const undoObj = {
+      prevLineId: newActiveLineId,
+      lineId: payload.currentLineId,
+      type: 'delete',
+      content: sectionContent[index],
+      contentType: '',
+    };
+    undoStack.push(undoObj);
+    setUndoStack(undoStack);
     setActiveLineID(newActiveLineId);
     const content = prepareContent({
       ...payload,
       type: 'DELETE',
       sectionContent,
     });
+
     if (!saveEnabled) setSaveEnabled(true);
     setSectionContent(content);
     dispatch(
@@ -96,8 +127,17 @@ function ProtocolView({ refs, data }) {
       sectionContent,
       currentLineId: lineId,
     });
-    setSectionContent(content);
 
+    const newIndex = content.findIndex((x) => x.line_id === lineId);
+    const undoObj = {
+      lineId: content[newIndex + 1].line_id,
+      type: 'add',
+      content: content[newIndex + 1].content,
+      contentType: type,
+    };
+    undoStack.push(undoObj);
+    setUndoStack(undoStack);
+    setSectionContent(content);
     let linkID;
     if (section) {
       linkID = section.link_id;
@@ -122,6 +162,67 @@ function ProtocolView({ refs, data }) {
     setSectionContent(content);
   };
 
+  const handleCurrentLineId = (prevContent, lineId) => {
+    const prevIndex = prevContent?.findIndex((x) => x.line_id === lineId);
+    setActiveLineID(prevContent[prevIndex - 1]?.line_id);
+  };
+
+  const handleSplice = (prevContent, lastObj, prevIndex) => {
+    let clonedSection = cloneDeep(prevContent);
+    const firstArray = clonedSection.slice(0, prevIndex + 1);
+    const secondArray = clonedSection.slice(prevIndex + 1);
+    clonedSection = [...firstArray, lastObj?.content, ...secondArray];
+    return clonedSection;
+  };
+
+  const handleContentUndo = () => {
+    if (undoStack.length > 0) {
+      const lastobj = undoStack.pop();
+
+      if (lastobj.type === QC_CHANGE_TYPE.ADDED) {
+        setSectionContent((prevState) => {
+          handleCurrentLineId(prevState, lastobj.lineId);
+          return prevState.filter((x) => {
+            return x.line_id !== lastobj.lineId;
+          });
+        });
+      } else if (lastobj.type === QC_CHANGE_TYPE.UPDATED) {
+        setSectionContent((prevState) => {
+          return prevState.map((x) => {
+            if (x.line_id === lastobj.lineId) {
+              x = lastobj.content;
+            }
+            return x;
+          });
+        });
+      } else if (lastobj.type === QC_CHANGE_TYPE.DELETED) {
+        const newAdded = undoStack?.filter((x) => {
+          return (
+            x?.lineId === lastobj?.lineId && x?.type === QC_CHANGE_TYPE.ADDED
+          );
+        });
+
+        if (newAdded.length > 0)
+          setSectionContent((prevState) => {
+            const prevIndex = prevState?.findIndex(
+              (x) => x.line_id === lastobj.prevLineId,
+            );
+            const updatedSection = handleSplice(prevState, lastobj, prevIndex);
+            return updatedSection;
+          });
+        else
+          setSectionContent((prevState) => {
+            return prevState.map((x) => {
+              if (x.line_id === lastobj.lineId) {
+                x = lastobj.content;
+              }
+              return x;
+            });
+          });
+      }
+    }
+  };
+
   // eslint-disable-next-line
   const dispatchSectionEvent = useCallback(
     (actionType, payload) => {
@@ -140,6 +241,9 @@ function ProtocolView({ refs, data }) {
           break;
         case 'LINK_LEVEL_UPDATE':
           handleLinkLevelUpdate(payload);
+          break;
+        case 'CONTENT_UNDO':
+          handleContentUndo();
           break;
         default:
           break;

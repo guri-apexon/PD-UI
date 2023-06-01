@@ -244,7 +244,7 @@ describe('rendering the Digitize Accordion file', () => {
           qc_change_type: 'modify',
           content: 'test',
           isSaved: false,
-          type: 'table',
+          type: 'text',
           link_level: '1',
         },
       ],

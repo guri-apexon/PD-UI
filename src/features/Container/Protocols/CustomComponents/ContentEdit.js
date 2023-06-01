@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
 import { useProtContext } from '../ProtocolContext';
@@ -21,6 +21,10 @@ function ContentEdit({ type, lineID, content, edit, activeLineID }) {
       dispatchSectionEvent('CONTENT_UPDATE', obj);
     }
   };
+
+  useEffect(() => {
+    setText(content);
+  }, [content]);
 
   return (
     <div className="format-container">

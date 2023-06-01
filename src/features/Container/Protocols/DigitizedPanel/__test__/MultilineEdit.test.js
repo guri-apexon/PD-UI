@@ -70,6 +70,7 @@ describe('DigitizedEdit', () => {
       dispatchSectionEvent: jest.fn(),
       setActiveLineID: jest.fn(),
       activeLineID: 'DFGH134',
+      sectionContent: sectionData,
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -89,6 +90,7 @@ describe('DigitizedEdit', () => {
       dispatchSectionEvent: jest.fn(),
       setActiveLineID: jest.fn(),
       activeLineID: 'DFGH134',
+      sectionContent: sectionData,
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -110,6 +112,7 @@ describe('DigitizedEdit', () => {
       dispatchSectionEvent: jest.fn(),
       setActiveLineID: jest.fn(),
       activeLineID: 'DFGH134',
+      sectionContent: sectionData,
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -129,6 +132,7 @@ describe('DigitizedEdit', () => {
       dispatchSectionEvent: jest.fn(),
       setActiveLineID: jest.fn(),
       activeLineID: 'DFGH134',
+      sectionContent: sectionData,
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -148,6 +152,7 @@ describe('DigitizedEdit', () => {
       dispatchSectionEvent: jest.fn(),
       setActiveLineID: jest.fn(),
       activeLineID: 'DFGH134',
+      sectionContent: sectionData,
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -170,6 +175,7 @@ describe('DigitizedEdit', () => {
       dispatchSectionEvent: jest.fn(),
       setActiveLineID: jest.fn(),
       activeLineID: 'DFGH134',
+      sectionContent: sectionData,
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -192,6 +198,7 @@ describe('DigitizedEdit', () => {
       dispatchSectionEvent: jest.fn(),
       setActiveLineID: jest.fn(),
       activeLineID: 'DFGH134',
+      sectionContent: sectionData,
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
@@ -218,6 +225,7 @@ describe('DigitizedEdit', () => {
       dispatchSectionEvent: jest.fn(),
       setActiveLineID: jest.fn(),
       activeLineID: 'DFGH134',
+      sectionContent: sectionData,
     };
     jest
       .spyOn(ProtocolContext, 'useProtContext')

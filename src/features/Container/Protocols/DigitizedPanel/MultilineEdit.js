@@ -16,16 +16,19 @@ import {
 
 import { setSectionDetails } from '../protocolSlice';
 import FontProperties from '../CustomComponents/FontProperties/FontProperties';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../AppConstant/AppConstant';
 
-function MultilineEdit({
-  sectionDataArr,
-  edit,
-  setShowDiscardConfirm,
-  setRequestedRoute,
-}) {
+function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
   const [sections, setSections] = useState([]);
-  const { dispatchSectionEvent, activeLineID, setActiveLineID } =
-    useProtContext();
+  const {
+    dispatchSectionEvent,
+    activeLineID,
+    setActiveLineID,
+    sectionContent: sectionDataArr,
+  } = useProtContext();
   const [showconfirm, setShowConfirm] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
@@ -41,6 +44,20 @@ function MultilineEdit({
     };
     // eslint-disable-next-line
   }, [history]);
+
+  const handleKeyDown = (event) => {
+    if (event.ctrlKey && event.code === 'KeyZ') {
+      event.preventDefault();
+      dispatchSectionEvent('CONTENT_UNDO');
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+
+    // eslint-disable-next-line
+  }, []);
 
   useEffect(() => {
     if (sectionDataArr?.length > 0) {
@@ -92,7 +109,11 @@ function MultilineEdit({
         <div className="section-menu-container">
           <section className="section-edited-list">
             {sections
-              ?.filter((obj) => !(obj.type === 'table' && !obj.content))
+              ?.filter(
+                (obj) =>
+                  !(obj.type === CONTENT_TYPE.TABLE && !obj.content) &&
+                  obj.qc_change_type !== QC_CHANGE_TYPE.DELETED,
+              )
               .map((section) => (
                 // eslint-disable-next-line
                 <div
@@ -138,7 +159,6 @@ function MultilineEdit({
 export default MultilineEdit;
 
 MultilineEdit.propTypes = {
-  sectionDataArr: PropTypes.isRequired,
   edit: PropTypes.isRequired,
   setShowDiscardConfirm: PropTypes.isRequired,
   setRequestedRoute: PropTypes.isRequired,
