@@ -11,6 +11,8 @@ describe('ContentEdit', () => {
 
   const handleBlur = jest.fn();
   const handleChange = jest.fn();
+  const setRef = jest.fn();
+
   beforeEach(() => {
     mockDeleteSection.mockClear();
   });
@@ -32,6 +34,7 @@ describe('ContentEdit', () => {
         deleteSection={mockDeleteSection}
         handleBlur={handleBlur}
         edit="true"
+        setRef={setRef}
       />,
     );
 
@@ -51,6 +54,7 @@ describe('ContentEdit', () => {
         deleteSection={mockDeleteSection}
         handleBlur={handleBlur}
         edit="true"
+        setRef={setRef}
       />,
     );
 
@@ -74,6 +78,7 @@ describe('ContentEdit', () => {
         deleteSection={mockDeleteSection}
         handleBlur={handleBlur}
         edit="true"
+        setRef={setRef}
       />,
     );
 
@@ -99,6 +104,7 @@ describe('ContentEdit', () => {
         deleteSection={mockDeleteSection}
         handleBlur={handleBlur}
         edit="true"
+        setRef={setRef}
       />,
     );
 
@@ -121,6 +127,7 @@ describe('ContentEdit', () => {
         deleteSection={mockDeleteSection}
         handleBlur={handleBlur}
         edit="true"
+        setRef={setRef}
       />,
     );
     const contentEditable = screen.getByTestId('contentEdit');
@@ -145,6 +152,7 @@ describe('ContentEdit', () => {
         deleteSection={mockDeleteSection}
         handleBlur={handleBlur}
         edit="true"
+        setRef={setRef}
       />,
     );
     const contentEditable = screen.getByTestId('contentEdit');
@@ -172,6 +180,7 @@ describe('ContentEdit', () => {
         deleteSection={mockDeleteSection}
         edit="false"
         onChange={handleChange}
+        setRef={setRef}
       />,
     );
     const contentNode = getByTestId('contentEdit');
