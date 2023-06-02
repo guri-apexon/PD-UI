@@ -1,9 +1,9 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 import PropTypes from 'prop-types';
 import { useProtContext } from '../ProtocolContext';
 
-function ContentEdit({ type, lineID, content, edit, activeLineID }) {
+function ContentEdit({ type, lineID, content, edit, activeLineID, setRef }) {
   const [text, setText] = useState(content);
   const contentEditableRef = useRef();
   const { dispatchSectionEvent, setSaveEnabled } = useProtContext();
@@ -12,6 +12,7 @@ function ContentEdit({ type, lineID, content, edit, activeLineID }) {
     setSaveEnabled(true);
     setText(e.target.value);
   };
+
   const handleBlur = () => {
     if (content !== contentEditableRef.current.innerHTML) {
       const obj = {
@@ -22,10 +23,15 @@ function ContentEdit({ type, lineID, content, edit, activeLineID }) {
     }
   };
 
+  useEffect(() => {
+    setText(content);
+  }, [content]);
+
   return (
     <div className="format-container">
       <ContentEditable
         innerRef={contentEditableRef}
+        ref={setRef(lineID)}
         className={`contentEditable ${
           type === 'header' ? 'content_header' : 'editable'
         }`}
@@ -48,4 +54,5 @@ ContentEdit.propTypes = {
   content: PropTypes.isRequired,
   edit: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
+  setRef: PropTypes.isRequired,
 };

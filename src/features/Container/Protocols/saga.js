@@ -619,17 +619,19 @@ export function* addMetaDataField(action) {
   const {
     payload: { op, docId, fieldName, attributes, reqData },
   } = action;
+  const data = {
+    op,
+    aidocId: '',
+    fieldName,
+    attributes,
+  };
+  if (docId) data.aidocId = docId;
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/add_meta_data`,
     method: 'PUT',
     checkAuth: true,
     headers: jsonContentHeader,
-    data: {
-      op,
-      aidocId: docId,
-      fieldName,
-      attributes,
-    },
+    data,
   };
   const MetaData = yield call(httpCall, config);
   if (MetaData?.data?.isAdded) {
