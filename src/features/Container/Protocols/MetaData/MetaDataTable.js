@@ -46,6 +46,18 @@ function MetaDataTable({ metaData }) {
     }
   };
 
+  const handledata = () => {
+    let filterData = metaData.filter(
+      (x) => x.attr_value !== '' && x.attr_value !== null && x.is_active,
+    );
+    filterData = filterData.map((x) => {
+      if (x.attr_type === 'array' && Array.isArray(x?.attr_value))
+        return { ...x, attr_value: x?.attr_value?.join() };
+      return x;
+    });
+    return filterData;
+  };
+
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
       <div className="checkbox-right">
@@ -71,9 +83,7 @@ function MetaDataTable({ metaData }) {
         <Table
           className="table-panel"
           columns={column}
-          rows={metaData.filter(
-            (x) => x.attr_value !== '' && x.attr_value !== null && x.is_active,
-          )}
+          rows={handledata()}
           rowId="employeeId"
           hidePagination
           hasScroll
