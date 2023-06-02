@@ -184,7 +184,12 @@ function MetaData({ docId }) {
           attr_name: list?.attr_name,
           attr_type: list?.attr_type || 'string',
           attr_value:
-            list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
+            // eslint-disable-next-line
+            list?.attr_type === 'boolean'
+              ? convertToBoolean
+              : list?.attr_type === 'array'
+              ? [list?.attr_value]
+              : list?.attr_value,
           note: list?.note || '',
           confidence: list?.confidence || '',
           attr_id: list?.attr_id,
