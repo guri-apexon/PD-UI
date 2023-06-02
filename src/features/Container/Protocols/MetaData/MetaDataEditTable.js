@@ -230,7 +230,7 @@ function MetaDataEditTable({ data, rows, setRows }) {
                 keyName === 'display_name' ? value : list?.display_name,
               note: keyName === 'note' ? value : list?.note,
               confidence: keyName === 'confidence' ? value : list?.confidence,
-              attr_status: list?.attr_id ? 'add' : list?.attr_status,
+              attr_status: list?.attr_status,
             }
           : list,
       ),
@@ -245,7 +245,10 @@ function MetaDataEditTable({ data, rows, setRows }) {
   const onSelectChange = (e) => {
     const newArray = rows[formattedName].map((element) => {
       if (element.display_name === e.target.value) {
-        return { ...element, attr_status: 'add' };
+        return {
+          ...element,
+          attr_status: 'add',
+        };
       }
       return element;
     });
