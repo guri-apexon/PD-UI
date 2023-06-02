@@ -80,7 +80,7 @@
   .metadata_item [class*='MuiAccordionSummary-root'].Mui-expanded {
     background: transparent !important;
   }
-  .add-section-field{
+  .add-section-field {
     max-width: 400;
   }
   .protocol-column {
@@ -167,6 +167,9 @@
     font-size: 20px;
     color: black;
   }
+  [class*='MuiSvgIcon-fontSizeSmall-'] {
+    font-size: 16px !important;
+  }
   [class*='MuiAccordionSummary-expandIcon'] {
     left: 5px;
   }
@@ -240,17 +243,17 @@
     cursor: pointer;
   }
 }
-.crossButton{
+.crossButton {
   color: red !important;
 }
-.keySelect{
+.keySelect {
   width: 215px;
   margin-top: -10px;
 }
-.parent-editable{
+.parent-editable {
   display: flex;
 }
-.child-editable{
+.child-editable {
   width: 100%;
 }
 .iconDiv {

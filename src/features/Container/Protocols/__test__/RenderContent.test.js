@@ -8,10 +8,12 @@ jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
   useDispatch: () => mockDispatch,
 }));
+
 describe('RenderContent', () => {
   const handleContentEditMock = jest.fn();
   const setActiveLineIDMock = jest.fn();
   const deleteSectionMock = jest.fn();
+  const setRef = jest.fn();
 
   it('renders the correct content and edit button when type is text', () => {
     const sectionData = {
@@ -31,6 +33,7 @@ describe('RenderContent', () => {
         setActiveLineID={setActiveLineIDMock}
         deleteSection={deleteSectionMock}
         edit={false}
+        setRef={setRef}
       />,
     );
     expect(getByText('Test content')).toBeInTheDocument();
@@ -54,6 +57,7 @@ describe('RenderContent', () => {
         setActiveLineID={setActiveLineIDMock}
         deleteSection={deleteSectionMock}
         edit={false}
+        setRef={setRef}
       />,
     );
     expect(getByText('Test content')).toBeInTheDocument();
@@ -77,6 +81,7 @@ describe('RenderContent', () => {
         setActiveLineID={setActiveLineIDMock}
         deleteSection={deleteSectionMock}
         edit={false}
+        setRef={setRef}
       />,
     );
     expect(getByTestId('readmode-img')).toBeInTheDocument();
@@ -109,20 +114,18 @@ describe('RenderContent', () => {
         setActiveLineID={setActiveLineIDMock}
         deleteSection={deleteSectionMock}
         edit={false}
+        setRef={setRef}
       />,
     );
   });
-});
 
-const sectionData = {
-  type: CONTENT_TYPE.HEADER,
-  content: 'Example header content',
-  line_id: 1,
-};
-
-describe('RenderContent', () => {
   it('should render header content correctly', () => {
     const contextValues = { dispatchSectionEvent: jest.fn() };
+    const sectionData = {
+      type: CONTENT_TYPE.HEADER,
+      content: 'Example header content',
+      line_id: 1,
+    };
     jest
       .spyOn(ProtocolContext, 'useProtContext')
       .mockImplementation(() => contextValues);
@@ -134,6 +137,7 @@ describe('RenderContent', () => {
         setActiveLineID={() => {}}
         deleteSection={() => {}}
         edit={() => {}}
+        setRef={setRef}
       />,
     );
 
@@ -158,6 +162,7 @@ describe('RenderContent', () => {
         setActiveLineID={() => {}}
         deleteSection={() => {}}
         edit={() => {}}
+        setRef={setRef}
       />,
     );
 
@@ -182,6 +187,7 @@ describe('RenderContent', () => {
         setActiveLineID={() => {}}
         deleteSection={() => {}}
         edit={() => {}}
+        setRef={setRef}
       />,
     );
 

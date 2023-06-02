@@ -849,7 +849,6 @@ function DigitizeAccordion({
     () => (
       <MultilineEdit
         linkId={item.link_id}
-        sectionDataArr={sectionDataArr}
         edit={showedit}
         setShowDiscardConfirm={setShowDiscardConfirm}
         child={getActionMenu()}
