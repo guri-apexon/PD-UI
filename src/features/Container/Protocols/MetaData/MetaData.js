@@ -47,9 +47,6 @@ function MetaData({ docId }) {
   const [accType, setAccType] = useState('');
   const [secName, setSecName] = useState('');
   const [accordionAdd, setAccordionAdd] = useState([]);
-  const handleChange = (event, newValue) => {
-    setSectionName(newValue);
-  };
   const handleTextChange = (event) => {
     setSecName(event.target.value);
   };
@@ -61,10 +58,33 @@ function MetaData({ docId }) {
     });
   };
 
+  const addToAccordion = (name, existingAcc) => {
+    const checkName = name === 'Summary' ? 'summary_extended' : name;
+    dispatch({
+      type: 'ADD_METADATA_FIELD',
+      payload: {
+        op: 'addField',
+        docId: existingAcc ? docId : '',
+        fieldName: checkName,
+        attributes: [],
+        reqData: { name, level: 1 },
+      },
+    });
+    setIsOpen(false);
+    setSuggestedList(suggestedList.filter((list) => list.label !== name));
+    setSectionName({ label: '' });
+  };
+
+  const handleChange = (event, newValue) => {
+    setSectionName(newValue);
+    addToAccordion(newValue.label, true);
+  };
+
   const handleTextClick = () => {
     if (secName !== '') {
       setSectionName({ label: secName });
       setSecName('');
+      addToAccordion(secName);
     } else {
       toast.error('Please enter a section name');
     }
@@ -86,28 +106,13 @@ function MetaData({ docId }) {
     }
   };
 
-  const addToAccordion = (name) => {
-    const checkName = name === 'Summary' ? 'summary_extended' : name;
-    dispatch({
-      type: 'ADD_METADATA_FIELD',
-      payload: {
-        op: 'addField',
-        fieldName: checkName,
-        attributes: [],
-        reqData: { name, level: 1 },
-      },
-    });
-    setSectionName({ label: '' });
-    setIsOpen(false);
-  };
-
   const handleAccordian = (accData) => {
     const selectedData = accordianData[accData.formattedName];
     setAccordianData({
       ...accordianData,
       [accData.formattedName]: {
         ...selectedData,
-        isActive: !selectedData.isActive,
+        isActive: !selectedData?.isActive,
         isEdit: false,
       },
     });
@@ -349,7 +354,7 @@ function MetaData({ docId }) {
       type: 'GET_METADATA_VARIABLE',
       payload: {
         op: 'metaparam',
-        docId,
+        docId: '',
         fieldName: '',
       },
     });
@@ -455,16 +460,6 @@ function MetaData({ docId }) {
       </div>
     );
   };
-
-  useEffect(() => {
-    if (sectionName?.label) {
-      addToAccordion(sectionName.label);
-      setSuggestedList(
-        suggestedList.filter((list) => list.label !== sectionName.label),
-      );
-    }
-    // eslint-disable-next-line
-  }, [sectionName]);
 
   return (
     <Card

@@ -10,9 +10,9 @@ function RenderContent({
   sectionData,
   handleContentEdit,
   activeLineID,
-  setActiveLineID,
   deleteSection,
   edit,
+  setRef,
 }) {
   const { type, content = '', line_id: lineID } = sectionData;
 
@@ -22,11 +22,11 @@ function RenderContent({
         type="header"
         content={content}
         lineID={lineID}
-        setActiveLineID={setActiveLineID}
         activeLineID={activeLineID}
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
         edit={edit}
+        setRef={setRef}
       />
     );
   }
@@ -36,11 +36,11 @@ function RenderContent({
         type="text"
         content={content}
         lineID={lineID}
-        setActiveLineID={setActiveLineID}
         activeLineID={activeLineID}
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
         edit={edit}
+        setRef={setRef}
       />
     );
   }
@@ -64,7 +64,6 @@ function RenderContent({
       <ImageUploader
         content={content}
         lineID={lineID}
-        setActiveLineID={setActiveLineID}
         activeLineID={activeLineID}
         handleContentEdit={handleContentEdit}
         deleteSection={deleteSection}
@@ -80,7 +79,7 @@ RenderContent.propTypes = {
   sectionData: PropTypes.isRequired,
   handleContentEdit: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
-  setActiveLineID: PropTypes.isRequired,
   deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  setRef: PropTypes.isRequired,
 };
