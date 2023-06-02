@@ -92,7 +92,6 @@ function MetaData({ docId }) {
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
-        docId,
         fieldName: checkName,
         attributes: [],
         reqData: { name, level: 1 },
@@ -175,16 +174,20 @@ function MetaData({ docId }) {
     setDeletedAttributes([]);
   };
 
+  const filteredAttrVal = (attrType, attrVal) => {
+    if (attrType === 'boolean') attrVal = attrVal === 'true';
+    else if (attrType === 'array') attrVal = attrVal.split(',');
+    return attrVal;
+  };
+
   const postCall = (data, metaData) => {
     const filterMetaList = metaData.filter((list) => list?.attr_status);
     if (filterMetaList?.length) {
       const updatedAttrList = filterMetaList?.map((list) => {
-        const convertToBoolean = list?.attr_value === 'true';
         return {
           attr_name: list?.attr_name,
           attr_type: list?.attr_type || 'string',
-          attr_value:
-            list?.attr_type === 'boolean' ? convertToBoolean : list?.attr_value,
+          attr_value: filteredAttrVal(list?.attr_type, list?.attr_value),
           note: list?.note || '',
           confidence: list?.confidence || '',
           attr_id: list?.attr_id,
