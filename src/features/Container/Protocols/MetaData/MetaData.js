@@ -47,7 +47,9 @@ function MetaData({ docId }) {
   const [accType, setAccType] = useState('');
   const [secName, setSecName] = useState('');
   const [accordionAdd, setAccordionAdd] = useState([]);
+  const [existingAcc, setExistingAcc] = useState(false);
   const handleChange = (event, newValue) => {
+    setExistingAcc(true);
     setSectionName(newValue);
   };
   const handleTextChange = (event) => {
@@ -92,12 +94,14 @@ function MetaData({ docId }) {
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
+        docId: existingAcc && docId,
         fieldName: checkName,
         attributes: [],
         reqData: { name, level: 1 },
       },
     });
     setSectionName({ label: '' });
+    setExistingAcc(false);
     setIsOpen(false);
   };
 
@@ -107,7 +111,7 @@ function MetaData({ docId }) {
       ...accordianData,
       [accData.formattedName]: {
         ...selectedData,
-        isActive: !selectedData.isActive,
+        isActive: !selectedData?.isActive,
         isEdit: false,
       },
     });
@@ -349,7 +353,7 @@ function MetaData({ docId }) {
       type: 'GET_METADATA_VARIABLE',
       payload: {
         op: 'metaparam',
-        docId,
+        docId: '',
         fieldName: '',
       },
     });
