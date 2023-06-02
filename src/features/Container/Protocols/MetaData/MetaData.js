@@ -296,6 +296,7 @@ function MetaData({ docId }) {
     } else {
       setAccordionAdd(accData);
     }
+    // eslint-disable-next-line
   }, [METADATA_CONSTANTS.METADATA_ADD_LIST]);
 
   useEffect(() => {
@@ -316,6 +317,7 @@ function MetaData({ docId }) {
       const accordianFilterData = Object.assign(
         {},
         ...Object.entries(accordianData)
+          // eslint-disable-next-line
           .filter(([k, v]) => {
             return v?.is_active;
           })

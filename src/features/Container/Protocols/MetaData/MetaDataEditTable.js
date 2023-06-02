@@ -213,6 +213,7 @@ function MetaDataEditTable({ data, rows, setRows }) {
         ),
       );
     }
+    // eslint-disable-next-line
   }, [rows[formattedName]]);
 
   const handleChange = (id, value, keyName) => {
@@ -355,6 +356,7 @@ function MetaDataEditTable({ data, rows, setRows }) {
         </Select>
       </div>
     );
+    // eslint-disable-next-line
   }, [userFilterList]);
 
   return (
