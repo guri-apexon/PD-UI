@@ -92,7 +92,6 @@ function MetaData({ docId }) {
       type: 'ADD_METADATA_FIELD',
       payload: {
         op: 'addField',
-        docId,
         fieldName: checkName,
         attributes: [],
         reqData: { name, level: 1 },
