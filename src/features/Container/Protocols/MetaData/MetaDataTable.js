@@ -46,7 +46,7 @@ function MetaDataTable({ metaData }) {
     }
   };
 
-  const handledata = () => {
+  const handleData = () => {
     let filterData = metaData.filter(
       (x) => x.attr_value !== '' && x.attr_value !== null && x.is_active,
     );
@@ -83,7 +83,7 @@ function MetaDataTable({ metaData }) {
         <Table
           className="table-panel"
           columns={column}
-          rows={handledata()}
+          rows={handleData()}
           rowId="employeeId"
           hidePagination
           hasScroll
