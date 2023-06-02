@@ -47,7 +47,6 @@ function MetaData({ docId }) {
   const [accType, setAccType] = useState('');
   const [secName, setSecName] = useState('');
   const [accordionAdd, setAccordionAdd] = useState([]);
-
   const handleTextChange = (event) => {
     setSecName(event.target.value);
   };
