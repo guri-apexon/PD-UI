@@ -81,16 +81,6 @@ function MetaData({ docId }) {
     addToAccordion(newValue.label, true);
   };
 
-  // useEffect(() => {
-  //   if (sectionName?.label) {
-  //     addToAccordion(sectionName.label);
-  //     setSuggestedList(
-  //       suggestedList.filter((list) => list.label !== sectionName.label),
-  //     );
-  //   }
-  //   // eslint-disable-next-line
-  // }, [sectionName]);
-
   const handleTextClick = () => {
     if (secName !== '') {
       setSectionName({ label: secName });
