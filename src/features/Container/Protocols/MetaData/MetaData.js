@@ -47,12 +47,7 @@ function MetaData({ docId }) {
   const [accType, setAccType] = useState('');
   const [secName, setSecName] = useState('');
   const [accordionAdd, setAccordionAdd] = useState([]);
-  const [existingAcc, setExistingAcc] = useState(false);
 
-  const handleChange = (event, newValue) => {
-    setExistingAcc(true);
-    setSectionName(newValue);
-  };
   const handleTextChange = (event) => {
     setSecName(event.target.value);
   };
@@ -64,10 +59,43 @@ function MetaData({ docId }) {
     });
   };
 
+  const addToAccordion = (name, existingAcc) => {
+    const checkName = name === 'Summary' ? 'summary_extended' : name;
+    dispatch({
+      type: 'ADD_METADATA_FIELD',
+      payload: {
+        op: 'addField',
+        docId: existingAcc ? docId : '',
+        fieldName: checkName,
+        attributes: [],
+        reqData: { name, level: 1 },
+      },
+    });
+    setIsOpen(false);
+    setSuggestedList(suggestedList.filter((list) => list.label !== name));
+    setSectionName({ label: '' });
+  };
+
+  const handleChange = (event, newValue) => {
+    setSectionName(newValue);
+    addToAccordion(newValue.label, true);
+  };
+
+  // useEffect(() => {
+  //   if (sectionName?.label) {
+  //     addToAccordion(sectionName.label);
+  //     setSuggestedList(
+  //       suggestedList.filter((list) => list.label !== sectionName.label),
+  //     );
+  //   }
+  //   // eslint-disable-next-line
+  // }, [sectionName]);
+
   const handleTextClick = () => {
     if (secName !== '') {
       setSectionName({ label: secName });
       setSecName('');
+      addToAccordion(secName);
     } else {
       toast.error('Please enter a section name');
     }
@@ -87,23 +115,6 @@ function MetaData({ docId }) {
         }),
       );
     }
-  };
-
-  const addToAccordion = (name) => {
-    const checkName = name === 'Summary' ? 'summary_extended' : name;
-    dispatch({
-      type: 'ADD_METADATA_FIELD',
-      payload: {
-        op: 'addField',
-        docId: existingAcc && docId,
-        fieldName: checkName,
-        attributes: [],
-        reqData: { name, level: 1 },
-      },
-    });
-    setSectionName({ label: '' });
-    setExistingAcc(false);
-    setIsOpen(false);
   };
 
   const handleAccordian = (accData) => {
@@ -460,16 +471,6 @@ function MetaData({ docId }) {
       </div>
     );
   };
-
-  useEffect(() => {
-    if (sectionName?.label) {
-      addToAccordion(sectionName.label);
-      setSuggestedList(
-        suggestedList.filter((list) => list.label !== sectionName.label),
-      );
-    }
-    // eslint-disable-next-line
-  }, [sectionName]);
 
   return (
     <Card
