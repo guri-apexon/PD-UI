@@ -179,7 +179,6 @@ function MetaData({ docId }) {
     if (filterMetaList?.length) {
       const updatedAttrList = filterMetaList?.map((list) => {
         const convertToBoolean = list?.attr_value === 'true';
-        const convertToArray = list?.attr_value.split(',');
         return {
           attr_name: list?.attr_name,
           attr_type: list?.attr_type || 'string',
@@ -188,7 +187,7 @@ function MetaData({ docId }) {
             list?.attr_type === 'boolean'
               ? convertToBoolean
               : list?.attr_type === 'array'
-              ? convertToArray
+              ? list?.attr_value.split(',')
               : list?.attr_value,
           note: list?.note || '',
           confidence: list?.confidence || '',
