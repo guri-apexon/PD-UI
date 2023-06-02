@@ -48,6 +48,7 @@ function MetaData({ docId }) {
   const [secName, setSecName] = useState('');
   const [accordionAdd, setAccordionAdd] = useState([]);
   const [existingAcc, setExistingAcc] = useState(false);
+
   const handleChange = (event, newValue) => {
     setExistingAcc(true);
     setSectionName(newValue);
