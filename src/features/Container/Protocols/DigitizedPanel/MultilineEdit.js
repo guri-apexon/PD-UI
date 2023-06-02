@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
 
@@ -32,6 +32,9 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
   const [showconfirm, setShowConfirm] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
+  const contentEditableRef = useRef({});
+
+  const lineRef = useRef(activeLineID);
 
   useEffect(() => {
     const blockRedireting = history.block((requestUrl) => {
@@ -47,8 +50,18 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
 
   const handleKeyDown = (event) => {
     if (event.ctrlKey && event.code === 'KeyZ') {
-      event.preventDefault();
-      dispatchSectionEvent('CONTENT_UNDO');
+      const content = sectionDataArr.find((x) => x.line_id === lineRef.current);
+      if (
+        !(
+          content &&
+          ['text', 'header'].includes(content.type) &&
+          content.content !==
+            contentEditableRef?.current[lineRef.current]?.lastHtml
+        )
+      ) {
+        event.preventDefault();
+        dispatchSectionEvent('CONTENT_UNDO');
+      }
     }
   };
 
@@ -97,6 +110,14 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
     if (edit) setActiveLineID(id);
   };
 
+  const setRef = (key) => (val) => {
+    contentEditableRef.current[key] = val;
+  };
+
+  useEffect(() => {
+    lineRef.current = activeLineID;
+  }, [activeLineID]);
+
   return (
     <>
       <div className="Richtextcontainer" data-testId="richTextEditor">
@@ -123,6 +144,8 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
                   onClick={() => onContentClick(section.line_id)}
                 >
                   <RenderContent
+                    // eslint-disable-next-line
+                    setRef={setRef}
                     sectionData={section}
                     sectionName={sectionName}
                     handleContentEdit={handleContentEdit}
