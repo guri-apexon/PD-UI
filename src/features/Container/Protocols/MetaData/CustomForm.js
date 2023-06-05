@@ -105,6 +105,7 @@ export function ValueField({
               ))}
             </Select>
           )}
+
           {keyName !== 'note' && keyName !== 'confidence' && (
             <Select
               label=""
