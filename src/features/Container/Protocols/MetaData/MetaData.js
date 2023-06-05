@@ -8,6 +8,7 @@ import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import TextField from 'apollo-react/components/TextField';
 import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
+import { isArray } from 'lodash/isArray';
 import difference from 'lodash/difference';
 import './MetaData.scss';
 import { toast } from 'react-toastify';
@@ -181,7 +182,8 @@ function MetaData({ docId }) {
 
   const filteredAttrVal = (attrType, attrVal) => {
     if (attrType === 'boolean') attrVal = attrVal === 'true';
-    else if (attrType === 'array') attrVal = attrVal.split(',');
+    else if (attrType === 'array' && isArray(attrVal))
+      attrVal = attrVal.split(',');
     return attrVal;
   };
 
