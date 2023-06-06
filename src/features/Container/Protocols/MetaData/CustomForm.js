@@ -34,11 +34,11 @@ export function ValueField({
   keyName,
   type,
   inputValue,
-  attrStatus,
   dateValue,
   handleChange,
   handleDateChange,
   handleBlur,
+  attrDisabled,
 }) {
   const userDetails = useSelector(loggedUser);
   const onTypeChange = (e) => {
@@ -104,13 +104,14 @@ export function ValueField({
               ))}
             </Select>
           )}
+
           {keyName !== 'note' && keyName !== 'confidence' && (
             <Select
               label=""
               name="attr_type"
               value={type}
               disabled={
-                userDetails.user_type !== USERTYPE.ADMIN && attrStatus !== 'add'
+                userDetails.user_type !== USERTYPE.ADMIN && !attrDisabled
               }
               onChange={(e) => onTypeChange(e)}
               onBlur={handleBlur}
@@ -143,8 +144,8 @@ ValueField.propTypes = {
   handleChange: PropTypes.isRequired,
   type: PropTypes.isRequired,
   inputValue: PropTypes.isRequired,
-  attrStatus: PropTypes.isRequired,
   handleBlur: PropTypes.isRequired,
   handleDateChange: PropTypes.isRequired,
   dateValue: PropTypes.isRequired,
+  attrDisabled: PropTypes.isRequired,
 };
