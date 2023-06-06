@@ -83,6 +83,7 @@ function EditableCell({ row, column: { accessor: key } }) {
         dateValue={dateValue}
         inputValue={val}
         attrStatus={row?.attr_status}
+        attrDisabled={row?.is_attr_disabled}
         setDateValue={setDateValue}
         setType={setType}
         handleDateChange={handleDateChange}
@@ -189,6 +190,7 @@ function MetaDataEditTable({ data, rows, setRows }) {
           attr_status: 'add',
           is_active: true,
           is_default: false,
+          is_attr_disabled: true,
         },
       ],
     }));
@@ -231,7 +233,8 @@ function MetaDataEditTable({ data, rows, setRows }) {
                 keyName === 'display_name' ? value : list?.display_name,
               note: keyName === 'note' ? value : list?.note,
               confidence: keyName === 'confidence' ? value : list?.confidence,
-              attr_status: list?.attr_status,
+              attr_status: list?.attr_id ? 'add' : list?.attr_status,
+              is_attr_disabled: list?.is_attr_disabled,
             }
           : list,
       ),
@@ -249,6 +252,7 @@ function MetaDataEditTable({ data, rows, setRows }) {
         return {
           ...element,
           attr_status: 'add',
+          is_attr_disabled: true,
         };
       }
       return element;
