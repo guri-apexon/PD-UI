@@ -197,7 +197,6 @@ function MetaData({ docId }) {
           attr_value: filteredAttrVal(list?.attr_type, list?.attr_value),
           note: list?.note || '',
           confidence: list?.confidence || '',
-          attr_id: list?.attr_id,
         };
       });
       dispatch({
