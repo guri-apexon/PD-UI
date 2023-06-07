@@ -76,7 +76,7 @@
   font-size: 12px;
   padding: 5px;
   outline: none;
-  ul{
+  ul {
     padding-left: 17px;
   }
 }
@@ -225,4 +225,12 @@
 
 .invisible {
   display: none !important;
+}
+
+.p-editable {
+  margin: 0;
+}
+
+.pd-table-container.scrollable {
+  max-height: 350px;
 }
