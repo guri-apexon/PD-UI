@@ -54,7 +54,7 @@ const formatFootNote = (data) => {
 
 const confirmText = 'Please confirm if you want to continue with deletion';
 
-function PDTable({ data, segment, activeLineID, lineID }) {
+function PDTable({ data, segment, activeLineID, lineID, edit }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
 
@@ -78,7 +78,7 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       setFootnoteData(footnoteArr);
     }
     // eslint-disable-next-line
-  }, [data]);
+  }, []);
 
   const handleChange = (content, columnIndex, rowIndex) => {
     const cloneData = [...updatedData];
@@ -212,6 +212,9 @@ function PDTable({ data, segment, activeLineID, lineID }) {
   };
 
   const onContainerClick = () => {
+    if (tableSaved) {
+      setTableSaved(false);
+    }
     if (activeLineID !== lineID && !tableSaved) {
       const content = {
         ...segment.content,
@@ -233,10 +236,6 @@ function PDTable({ data, segment, activeLineID, lineID }) {
       className="content-table-wrapper"
       onClick={() => {
         onContainerClick();
-      }}
-      onMouseEnter={(e) => {
-        e.stopPropagation();
-        setTableSaved(false);
       }}
     >
       {showconfirm && (
@@ -289,7 +288,10 @@ function PDTable({ data, segment, activeLineID, lineID }) {
           />
         </div>
       )}
-      <div className="pd-table-container" ref={tableRef}>
+      <div
+        className={`pd-table-container ${edit && 'scrollable'}`}
+        ref={tableRef}
+      >
         <DisplayTable
           data={updatedData}
           onChange={handleChange}
@@ -350,4 +352,5 @@ PDTable.propTypes = {
   segment: PropTypes.isRequired,
   activeLineID: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
+  edit: PropTypes.isRequired,
 };

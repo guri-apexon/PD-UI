@@ -1,4 +1,3 @@
-import Tooltip from 'apollo-react/components/Tooltip';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import Plus from 'apollo-react-icons/Plus';
 import PropTypes from 'prop-types';
@@ -46,24 +45,17 @@ function HoverComponent({ lineId, activeLineID, disabled }) {
         lineId === activeLineID ? 'contentmenu show' : 'contentmenu hide'
       }
     >
-      <Tooltip
-        className="tooltip-add-element"
-        title="Actions"
-        disableFocusListener
-        placement="left"
+      <IconMenuButton
+        className="icon-buttons"
+        id="addContentMenu"
+        menuItems={menuItems}
+        anchorOrigin={anchorOrigin}
+        size="small"
+        data-testId="addIcon"
+        disabled={disabled}
       >
-        <IconMenuButton
-          className="icon-buttons"
-          id="addContentMenu"
-          menuItems={menuItems}
-          anchorOrigin={anchorOrigin}
-          size="small"
-          data-testId="addIcon"
-          disabled={disabled}
-        >
-          <Plus className="plus-icon" size="small" />
-        </IconMenuButton>
-      </Tooltip>
+        <Plus className="plus-icon" size="small" />
+      </IconMenuButton>
     </div>
   );
 }
