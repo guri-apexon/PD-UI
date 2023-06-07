@@ -72,9 +72,13 @@ export const addColumn = (tabledata, index) => {
 export const deleteColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   data.forEach((record) => {
-    record.op_type = record.op_type || QC_CHANGE_TYPE.UPDATED;
-    record.columns[index].value = `<s>${record.columns[index].value}</s>`;
-    record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
+    if (record.columns[index].op_type === QC_CHANGE_TYPE.ADDED) {
+      record.columns.splice(index, 1);
+    } else {
+      record.op_type = record.op_type || QC_CHANGE_TYPE.UPDATED;
+      record.columns[index].value = `<s>${record.columns[index].value}</s>`;
+      record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
+    }
   });
   return data;
 };
