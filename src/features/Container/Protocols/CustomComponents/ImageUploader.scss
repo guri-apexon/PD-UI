@@ -74,6 +74,8 @@
   margin: 2px;
   border: 1px solid #aaa;
   flex-direction: column;
+  min-height: 160px;
+  z-index: 2;
 
   p {
     text-align: center;
