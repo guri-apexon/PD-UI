@@ -218,7 +218,7 @@ function DigitizeAccordion({
     if (showedit && lockDetails?.section_lock) {
       updateSectionLock(true);
     }
-    if (handlePageRight) handlePageRight(item.page);
+    if (handlePageRight && !expanded) handlePageRight(item.page);
     setExpanded(!expanded);
     handleTocsection(true);
     handleLinkId(item.link_id);

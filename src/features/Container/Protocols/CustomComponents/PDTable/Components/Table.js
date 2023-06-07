@@ -137,7 +137,7 @@ function DisplayTable({
                     contentEditable={edit}
                     onBlur={(e) => handleChange(colIndex, rowIndex, e)}
                   >
-                    <p>
+                    {col.value && (
                       <SanitizeHTML
                         html={getPreferredTerms(
                           col.value,
@@ -147,7 +147,7 @@ function DisplayTable({
                           isClinicalTerms,
                         )}
                       />
-                    </p>
+                    )}
                   </div>
                 </div>
               ))}
