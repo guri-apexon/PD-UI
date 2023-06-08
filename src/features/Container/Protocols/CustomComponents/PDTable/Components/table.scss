@@ -233,4 +233,6 @@
 
 .pd-table-container.scrollable {
   max-height: 350px;
+  -ms-scroll-chaining: none;
+  -ms-scroll-limit: none;
 }
