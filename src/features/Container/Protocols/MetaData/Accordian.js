@@ -14,11 +14,14 @@ import Trash from 'apollo-react-icons/Trash';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Undo from 'apollo-react-icons/Undo';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 import MetaDataEditTable from './MetaDataEditTable';
 import { autoCompleteClose } from './utilFunction';
 import MetaDataTable from './MetaDataTable';
 import './MetaData.scss';
 import { METADATA_AUDIT_LIST } from '../Constant/Constants';
+import { USERTYPE } from '../../../../AppConstant/AppConstant';
+import { loggedUser } from '../../../../store/userDetails';
 
 function Accordian({
   accData,
@@ -37,12 +40,15 @@ function Accordian({
   subAccComponent,
   setDeletedAttributes,
   setCurrentActiveLevels,
+  handleHardDelete,
 }) {
   const [isModal, setIsModal] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState();
   const [subSectionName, setSubSectionName] = useState(false);
   const [isDiscarded, setIsDiscarded] = useState(false);
   const [openAudit, setOpenAudit] = useState(null);
+  const userDetails = useSelector(loggedUser);
 
   const handleChange = (event, newValue) => {
     setSubSectionName(newValue);
@@ -69,12 +75,14 @@ function Accordian({
   const handleSaveData = (e) => {
     e.stopPropagation();
     setIsDelete(false);
+    setShowDeleteConfirm(false);
     setIsModal(true);
   };
 
-  const handleTrash = (e) => {
+  const handleHardTrash = (e) => {
     e.stopPropagation();
-    setIsDelete(true);
+    setIsDelete(false);
+    setShowDeleteConfirm(true);
     setIsModal(true);
   };
 
@@ -86,6 +94,35 @@ function Accordian({
   const clickAuditLog = (e) => {
     e.stopPropagation();
     setOpenAudit(e.currentTarget);
+  };
+
+  const modalTitle = () => {
+    let msg = '';
+    if (isDelete) msg = 'Please confirm if you want to continue with deletion';
+    else if (showDeleteConfirm)
+      msg = ' Please confirm if you want to continue with hard deletion?';
+    else msg = 'Do you really want to save it now or continue editing?';
+    return msg;
+  };
+
+  const modalLabel = () => {
+    let label = '';
+    if (isDelete) label = 'Delete';
+    else if (showDeleteConfirm) label = 'Delete';
+    else label = 'Save';
+    return label;
+  };
+
+  const modalOnClick = (e) => {
+    if (isDelete) {
+      handleDelete(e);
+    } else if (showDeleteConfirm) {
+      handleHardDelete(e);
+      setShowDeleteConfirm(false);
+    } else {
+      handleSave(e);
+    }
+    setIsModal(false);
   };
 
   return (
@@ -137,11 +174,11 @@ function Accordian({
                   >
                     <Undo className="metadata-plus-size" />
                   </span>
-                  {!accData?.is_default && (
+                  {userDetails.user_type === USERTYPE.ADMIN && (
                     <span
-                      data-testId="metadata-trash"
+                      data-testId="metadata-hard-trash"
                       onClick={(e) => {
-                        handleTrash(e);
+                        handleHardTrash(e);
                       }}
                       onKeyDown
                       role="presentation"
@@ -207,26 +244,18 @@ function Accordian({
           data-testid="meta-modal"
           open={isModal}
           onClose={() => setIsModal(false)}
-          title={
-            isDelete
-              ? 'Please confirm if you want to continue with deletion'
-              : 'Do you really want to save it now or continue editing?'
-          }
+          title={modalTitle()}
           buttonProps={[
             {
-              label: isDelete ? 'Cancel' : 'Continue Editing',
+              label:
+                isDelete || showDeleteConfirm ? 'Cancel' : 'Continue Editing',
               'data-testid': 'update-term-field',
             },
             {
-              label: isDelete ? 'Delete' : 'Save',
+              label: modalLabel(),
               'data-testid': 'save-term-field',
               onClick: (e) => {
-                if (isDelete) {
-                  handleDelete(e);
-                } else {
-                  handleSave(e);
-                }
-                setIsModal(false);
+                modalOnClick(e);
               },
             },
           ]}
@@ -254,6 +283,7 @@ function Accordian({
           ]}
           id="neutral"
         />
+
         <Popover
           data-testId="metadata-popover"
           open={!!openAudit}
@@ -266,7 +296,8 @@ function Accordian({
                 return (
                   <Typography variant="body1" key={names?.title}>
                     {names?.title}&nbsp;:&nbsp;
-                    {(names?.keyName === 'last_updated'
+                    {(names?.keyName === 'last_updated' &&
+                    accData?.audit_info?.[names?.keyName]
                       ? moment(accData?.audit_info?.[names?.keyName]).format(
                           'DD-MMM-YYYY HH:mm:ss',
                         )
@@ -310,6 +341,7 @@ Accordian.propTypes = {
   subAccComponent: PropTypes.isRequired,
   setDeletedAttributes: PropTypes.isRequired,
   setCurrentActiveLevels: PropTypes.isRequired,
+  handleHardDelete: PropTypes.isRequired,
 };
 
 export default Accordian;

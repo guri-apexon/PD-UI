@@ -15,12 +15,9 @@ const formattedValue = (type, val) => {
 
 const findLatestTimestamp = (data) => {
   const sortedList = data?.sort((a, b) => {
-    return (
-      new Date(b.audit_info?.last_updated) -
-      new Date(a.audit_info?.last_updated)
-    );
+    return new Date(b.last_updated) - new Date(a.last_updated);
   });
-  return sortedList?.[0]?.audit_info || {};
+  return sortedList[0] || {};
 };
 
 export const flattenObject = (updatedData, data, level, parentKey) => {
@@ -53,9 +50,7 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
             is_default: keyValue?.is_default,
             isEdit: false,
             isActive: false,
-            audit_info:
-              // eslint-disable-next-line
-              findLatestTimestamp(keyValue?._meta_data) || {},
+            audit_info: keyValue?.field_audit_info,
             // eslint-disable-next-line
             _childs: keyValue?._childs
               ? // eslint-disable-next-line
@@ -81,6 +76,12 @@ export const flattenObject = (updatedData, data, level, parentKey) => {
 export const mergeSummary = (data) => {
   let finalResult = cloneDeep(data);
   const objectKeys = data ? Object?.keys(data) : [];
+
+  const mergeAuditInfo =
+    findLatestTimestamp([
+      finalResult?.summary_extended?.audit_info,
+      finalResult?.Summary?.audit_info,
+    ]) || {};
 
   objectKeys.forEach((key) => {
     if (key === 'summary_extended' && finalResult?.summary_extended) {
@@ -108,7 +109,7 @@ export const mergeSummary = (data) => {
         ...finalResult,
         Summary: {
           ...finalResult?.Summary,
-          audit_info: findLatestTimestamp(mergedMetaData) || {},
+          audit_info: mergeAuditInfo,
           _meta_data: mergedMetaData.sort((a, b) => a.id - b.id),
           /* eslint-disable */
           _childs: finalResult.summary_extended._childs
