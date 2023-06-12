@@ -699,3 +699,18 @@ export const removeDomElement = (className) => {
     element.remove();
   });
 };
+
+export const handleBoolean = (value) => {
+  if (typeof value === 'string') {
+    const lowerCaseValue = value.toLowerCase();
+    if (lowerCaseValue === 'true') {
+      return true;
+    }
+    if (lowerCaseValue === 'false') {
+      return false;
+    }
+  } else if (typeof value === 'boolean') {
+    return value;
+  }
+  return '';
+};

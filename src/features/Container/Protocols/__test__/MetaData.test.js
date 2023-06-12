@@ -398,10 +398,42 @@ describe('MetaData AccordianView', () => {
       name: /Save/i,
     });
     fireEvent.click(saveButton);
+  });
+  test('Metadata Edit mode', () => {
+    const component = render(<MetaData docId={docid} />, { initialState });
+
+    const metadataAccordian = component.getByTestId('metadata-accordian');
+    expect(metadataAccordian).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByTestId('handle-edit')[0]);
+    const eyeIcon = screen.getAllByTestId('eyeIcon')[0];
+    fireEvent.click(eyeIcon);
+    const txtVal = screen.getAllByTestId('customeform-textField-value')[0];
+    fireEvent.focusIn(txtVal);
+
+    userEvent.type(txtVal, 'abc');
+    fireEvent.focusOut(txtVal);
+    const metadatadiscard = component.getByTestId('metadatadiscard');
+    fireEvent.click(metadatadiscard);
+    const discardButton = screen.getByRole('button', {
+      name: /Discard/i,
+    });
+    fireEvent.click(discardButton);
+
+    fireEvent.click(screen.getAllByTestId('handle-edit')[0]);
+    fireEvent.focusIn(txtVal);
+    userEvent.type(txtVal, 'abc');
+    fireEvent.focusOut(txtVal);
+    const metadatasave = component.getByTestId('metadatasave');
+    fireEvent.click(metadatasave);
+    const saveButton = screen.getByRole('button', {
+      name: /Save/i,
+    });
+    fireEvent.click(saveButton);
 
     screen.debug(undefined, Infinity);
     fireEvent.click(screen.getAllByTestId('handle-edit')[0]);
-    const metadatadelete = component.getAllByTestId('metadata-trash')[0];
+    const metadatadelete = component.getAllByTestId('metadata-hard-trash')[0];
     fireEvent.click(metadatadelete);
     const deleteButton = screen.getByRole('button', {
       name: /Delete/i,

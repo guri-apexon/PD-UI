@@ -657,7 +657,7 @@ export function* addMetaDataField(action) {
 
 export function* deleteAttribute(action) {
   const {
-    payload: { op, docId, fieldName, attributeNames, reqData },
+    payload: { op, docId, fieldName, attributeNames, reqData, isSoftDelete },
   } = action;
   const config = {
     url: `${BASE_URL}${Apis.METADATA}/delete_meta_data`,
@@ -669,7 +669,7 @@ export function* deleteAttribute(action) {
       aidocId: docId,
       fieldName,
       attributeNames,
-      softDelete: true,
+      softDelete: isSoftDelete || false,
     },
   };
   const data = yield call(httpCall, config);
@@ -680,6 +680,7 @@ export function* deleteAttribute(action) {
         reqData,
         op,
         attributeNames,
+        isSoftDelete: isSoftDelete || false,
       }),
     );
     if (op === 'deleteField') {
