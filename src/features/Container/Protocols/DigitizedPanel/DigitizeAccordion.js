@@ -23,6 +23,7 @@ import {
   createPreferredText,
   getSaveSectionPayload,
   removeDomElement,
+  createLinkAndReferences,
 } from '../../../../utils/utilFunction';
 import Loader from '../../../Components/Loader/Loader';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
@@ -586,42 +587,32 @@ function DigitizeAccordion({
     }
   };
 
-  const handleLinkReferenceClick = (e, obj) => {
+  const handleLinkReferenceClick = (e, links) => {
     e.preventDefault();
     e.stopPropagation();
-    if (item.link_id === obj.link_id) {
-      scrollToTop(index);
-      scrollToLinkandReference(index, obj.destination_link_text);
-    } else {
-      handleOpenAccordion(obj);
-    }
-  };
-
-  const getLinkReference = (section) => {
-    if (section?.link_and_reference) {
-      const linkArr = Object.entries(section?.link_and_reference);
+    if (e.target.className.includes('ref-link')) {
+      const text = e.target.innerText.trim();
+      const linkArr = Object.entries(links);
       if (linkArr.length > 0) {
-        return (
-          <div>
-            {linkArr.map((term) => {
-              return showLink ? (
-                // eslint-disable-next-line
-                <a
-                  key={React.key}
-                  href="#"
-                  onClick={(e) => handleLinkReferenceClick(e, term[1])}
-                >
-                  <b> [{term[1]?.source_text?.toString()}]</b>
-                </a>
-              ) : (
-                <span>[{term[1]?.source_text?.toString()}]</span>
-              );
-            })}
-          </div>
-        );
+        const refs = linkArr.map((x) => x[1]);
+        refs.forEach((ref) => {
+          if (ref.source_text === text) {
+            if (item.link_id === ref.link_id) {
+              scrollToTop(index);
+              scrollToLinkandReference(index, ref.destination_link_text);
+            } else {
+              handleOpenAccordion(ref);
+            }
+          }
+        });
       }
+      setEnrichedTarget(null);
+      setSelectedEnrichedText(null);
+      setClinicalTerms(null);
+      setPreferredTarget(null);
+      setSelectedPreferredTerm(null);
+      setPreferredTerms(null);
     }
-    return '';
   };
 
   const getPreferredTerms = (header) => {
@@ -713,7 +704,7 @@ function DigitizeAccordion({
     // eslint-disable-next-line
   }, [updated]);
 
-  const getEnrichedText = (content, contentType) => {
+  const getEnrichedText = (content, contentType, links) => {
     let newContent = content;
 
     if (globalPreferredTerm || showPrefferedTerm) {
@@ -736,6 +727,17 @@ function DigitizeAccordion({
         newContent = createPreferredText(content, enrichedContent?.data, true);
       } else {
         newContent = createEnrichedText(newContent, enrichedContent?.data);
+      }
+    }
+    if (!isEmpty(links) && showLink) {
+      const linkArr = Object.entries(links);
+      if (linkArr.length > 0) {
+        const refs = linkArr.map((x) => x[1]);
+        newContent = createLinkAndReferences(
+          newContent,
+          refs,
+          handleLinkReferenceClick,
+        );
       }
     }
 
@@ -1067,14 +1069,21 @@ function DigitizeAccordion({
                                         null,
                                         section.content,
                                       );
+                                      handleLinkReferenceClick(
+                                        e,
+                                        section?.link_and_reference,
+                                      );
                                     }}
                                   >
-                                    <SanitizeHTML
-                                      html={getEnrichedText(
-                                        section?.content,
-                                        section?.type,
-                                      )}
-                                    />
+                                    <span className="sanitize-content-wrapper">
+                                      <SanitizeHTML
+                                        html={getEnrichedText(
+                                          section?.content,
+                                          section?.type,
+                                          section?.link_and_reference,
+                                        )}
+                                      />
+                                    </span>
                                   </p>
                                 </div>
                               )
@@ -1088,7 +1097,6 @@ function DigitizeAccordion({
                             className="content-linkref"
                           >
                             {content}
-                            {getLinkReference(section)}
                           </div>
                         );
                       })}

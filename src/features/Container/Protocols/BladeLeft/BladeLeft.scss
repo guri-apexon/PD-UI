@@ -13,9 +13,11 @@
     }
   }
   .MuiPaper-root div:nth-last-child(2) {
+    z-index: 1;
     padding-right: 0 !important;
+    position: relative;
   }
-  .MuiPaper-root div:nth-last-child(1) {
+  .MuiPaper-root div:nth-last-child(1) > div {
     z-index: 1;
   }
   hr {
