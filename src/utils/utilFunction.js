@@ -199,6 +199,25 @@ export const createEnrichedText = (content, terms) => {
   return text;
 };
 
+export const createLinkAndReferences = (content, terms) => {
+  let text = content;
+  if (terms.length > 0) {
+    terms.forEach((term) => {
+      text = text.replaceAll(
+        term.source_text,
+        `<span
+          key={React.key}
+          class="ref-link"
+        >
+        ${term.source_text}
+        </span>`,
+      );
+    });
+  }
+
+  return text;
+};
+
 export const htmlCheck = (content) => {
   const regexForHTML = /<([A-Za-z][A-Za-z0-9]*)\b[^>]*>(.*?)<\/\1>/;
   return regexForHTML.test(content);
