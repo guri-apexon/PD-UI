@@ -7,7 +7,7 @@ import Modal from 'apollo-react/components/Modal';
 import Checkbox from 'apollo-react/components/Checkbox';
 import IconButton from 'apollo-react/components/IconButton';
 import Plus from 'apollo-react-icons/Plus';
-import Close from 'apollo-react-icons/Close';
+import Trash from 'apollo-react-icons/Trash';
 import moment from 'moment';
 import Select from 'apollo-react/components/Select';
 import MenuItem from 'apollo-react/components/MenuItem';
@@ -99,25 +99,39 @@ function EditableCell({ row, column: { accessor: key } }) {
 }
 
 function DeleteCell({ row }) {
-  const deleteMetaData = () => {
-    row.handleDelete(row.id);
+  const deleteHardMetadata = () => {
+    row.handleHardDelete(row.id);
   };
+  const userDetails = useSelector(loggedUser);
+
   return (
     !row?.is_default && (
       <Grid className="delContainer">
-        <IconButton onClick={deleteMetaData} data-testid="metadata-row-delete">
-          <Close fontSize="small" className="crossButton" />
-        </IconButton>
+        {userDetails.user_type === USERTYPE.ADMIN && (
+          <IconButton
+            data-testid="metadata-row-delete-admin"
+            className="trashButtonsvg"
+            onClick={deleteHardMetadata}
+          >
+            <Trash fontSize="small" className="trashButton" />
+          </IconButton>
+        )}
       </Grid>
     )
   );
 }
 
-function MetaDataEditTable({ data, rows, setRows }) {
+function MetaDataEditTable({
+  data,
+  rows,
+  setRows,
+  setDeletedAttributes,
+  deletedAttributes,
+}) {
   const userDetails = useSelector(loggedUser);
   const { formattedName } = data;
-  const [selectedId, setSelectedId] = useState(null);
-  const [isModal, setIsModal] = useState(false);
+  const [selectedHardId, setSelectedHardId] = useState(null);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [userFilterList, setUserFilterList] = useState([]);
 
   const columns = [
@@ -131,11 +145,6 @@ function MetaDataEditTable({ data, rows, setRows }) {
       accessor: 'attr_value',
       customCell: EditableCell,
     },
-    {
-      header: '',
-      accessor: 'delete',
-      customCell: DeleteCell,
-    },
   ];
   const [column, setColumn] = useState(columns);
 
@@ -145,6 +154,22 @@ function MetaDataEditTable({ data, rows, setRows }) {
   const removeIndex = (key) => {
     setColumn(column.filter((col) => col.accessor !== key));
   };
+
+  useEffect(() => {
+    if (userDetails)
+      if (userDetails.user_type === USERTYPE.ADMIN) {
+        const copyColumn = [...column];
+        setColumn([
+          ...copyColumn,
+          {
+            header: '',
+            accessor: 'delete',
+            customCell: DeleteCell,
+          },
+        ]);
+      }
+    // eslint-disable-next-line
+  }, [userDetails]);
 
   const handleConfidence = (e, checked) => {
     setConfidence(checked);
@@ -195,6 +220,16 @@ function MetaDataEditTable({ data, rows, setRows }) {
       ],
     }));
   };
+  useEffect(() => {
+    if (!userFilterList.length) {
+      setUserFilterList(
+        rows[formattedName].filter(
+          (x) => x.attr_value === '' || x.attr_value === null || !x.is_active,
+        ),
+      );
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const getValue = (list, keyName, value) => {
     let attrValue = list?.attr_value;
@@ -241,9 +276,9 @@ function MetaDataEditTable({ data, rows, setRows }) {
     }));
   };
 
-  const handleDelete = (id) => {
-    setSelectedId(id);
-    setIsModal(true);
+  const handleHardDelete = (id) => {
+    setSelectedHardId(id);
+    setIsDeleteModal(true);
   };
 
   const onSelectChange = (e) => {
@@ -272,11 +307,15 @@ function MetaDataEditTable({ data, rows, setRows }) {
       userFilterList.filter((x) => x.display_name !== e.target.value),
     );
   };
-  const removeData = () => {
-    const findRow = rows[formattedName].find((list) => list.id === selectedId);
+
+  const hardDeleteMetaField = () => {
+    const findRow = rows[formattedName].find(
+      (list) => list.id === selectedHardId,
+    );
+    setDeletedAttributes([...deletedAttributes, findRow.attr_name]);
     if (findRow.isCustom) {
       rows[formattedName] = rows[formattedName].filter(
-        (list) => list?.id !== selectedId,
+        (list) => list?.id !== selectedHardId,
       );
       setRows((prevState) => ({
         ...prevState,
@@ -288,16 +327,9 @@ function MetaDataEditTable({ data, rows, setRows }) {
         }),
       }));
     } else {
-      const newArray = rows[formattedName].map((element) => {
-        if (element.id === selectedId) {
-          return { ...element, attr_status: 'edit', attr_value: '' };
-        }
-        return element;
-      });
-      setUserFilterList([
-        ...userFilterList,
-        newArray.find((x) => x.id === selectedId),
-      ]);
+      const newArray = rows[formattedName].filter(
+        (element) => element.id !== selectedHardId,
+      );
 
       setRows((prevState) => ({
         ...prevState,
@@ -316,6 +348,7 @@ function MetaDataEditTable({ data, rows, setRows }) {
             .filter(
               (x) =>
                 (x.attr_value !== '' &&
+                  x.attr_status !== 'delete' &&
                   x.attr_value !== null &&
                   x.attr_value !== 'undefined' &&
                   x.is_active) ||
@@ -324,7 +357,7 @@ function MetaDataEditTable({ data, rows, setRows }) {
             .map((row) => ({
               ...row,
               handleChange,
-              handleDelete,
+              handleHardDelete,
               fieldName: formattedName,
             }))}
           rowId="id"
@@ -353,15 +386,15 @@ function MetaDataEditTable({ data, rows, setRows }) {
           }}
         >
           {userFilterList.map((e) => (
-            <MenuItem key={e.attr_name} value={e.display_name}>
-              {e.display_name}
+            <MenuItem key={e?.attr_name} value={e?.display_name}>
+              {e?.display_name}
             </MenuItem>
           ))}
         </Select>
       </div>
     );
     // eslint-disable-next-line
-  }, [userFilterList]);
+  }, [userFilterList, rows]);
 
   return (
     <div className="digitize-panel-content" data-testid="metadata-table-view">
@@ -388,17 +421,15 @@ function MetaDataEditTable({ data, rows, setRows }) {
         {RenderEditableRow}
         <div className="child-editable">
           <div className="iconDiv">
-            {userDetails.user_type === USERTYPE.ADMIN && (
-              <div
-                className="iconContainer"
-                data-testid="metadata-add"
-                onClick={() => addNewRow()}
-                onKeyDown
-                role="presentation"
-              >
-                <Plus />
-              </div>
-            )}
+            <div
+              className="iconContainer"
+              data-testid="metadata-add"
+              onClick={() => addNewRow()}
+              onKeyDown
+              role="presentation"
+            >
+              <Plus />
+            </div>
           </div>
         </div>
       </div>
@@ -406,16 +437,16 @@ function MetaDataEditTable({ data, rows, setRows }) {
       <div className="modal">
         <Modal
           className="modal"
-          open={isModal}
-          onClose={() => setIsModal(false)}
-          title="Please confirm if you want to continue with deletion?"
+          open={isDeleteModal}
+          onClose={() => setIsDeleteModal(false)}
+          title="Please confirm if you want to continue with hard deletion?"
           buttonProps={[
             { label: 'Cancel' },
             {
               label: 'Delete',
               onClick: () => {
-                removeData();
-                setIsModal(false);
+                hardDeleteMetaField();
+                setIsDeleteModal(false);
               },
             },
           ]}
@@ -430,6 +461,8 @@ MetaDataEditTable.propTypes = {
   data: PropTypes.isRequired,
   rows: PropTypes.isRequired,
   setRows: PropTypes.isRequired,
+  setDeletedAttributes: PropTypes.isRequired,
+  deletedAttributes: PropTypes.isRequired,
 };
 
 Cell.propTypes = {

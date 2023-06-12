@@ -396,8 +396,8 @@ describe('MetaDataEditTable handleChange and handleDelete function', () => {
     expect(getByTestId('metadata-table')).toBeInTheDocument();
   });
 
-  it('should handle add + button in edit mode for admin', () => {
-    const { getByTestId } = render(
+  it('should handle add + button in edit mode for admin/normal', () => {
+    render(
       <MetaDataEditTable
         data={accData}
         rows={rows}
@@ -408,13 +408,11 @@ describe('MetaDataEditTable handleChange and handleDelete function', () => {
       { initialState },
     );
     screen.debug(undefined, Infinity);
-    const deleteRow = getByTestId('metadata-row-delete');
-    fireEvent.click(deleteRow);
+    fireEvent.click(screen.getByTestId('metadata-row-delete-admin'));
     const cancelButton = screen.getByRole('button', {
       name: /Cancel/i,
     });
     fireEvent.click(cancelButton);
-    fireEvent.click(deleteRow);
     const deleteButton = screen.getByRole('button', {
       name: /Delete/i,
     });

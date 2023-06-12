@@ -58,7 +58,6 @@ function MetaData({ docId }) {
       setIsOpen(false);
     });
   };
-
   const addToAccordion = (name, existingAcc) => {
     const checkName = name === 'Summary' ? 'summary_extended' : name;
     dispatch({
@@ -92,7 +91,7 @@ function MetaData({ docId }) {
   };
 
   const setSubSuggestions = (data) => {
-    if (metaParams?.[data.name]?.dropDownList.length > 0) {
+    if (metaParams?.[data?.name]?.dropDownList?.length > 0) {
       const filterItems = difference(
         metaParams?.[data.name]?.dropDownList,
         // eslint-disable-next-line
@@ -161,20 +160,22 @@ function MetaData({ docId }) {
       // eslint-disable-next-line
       [accData?.formattedName]: accData?._meta_data,
     });
+    setDeletedAttributes([]);
   };
 
-  const deleteCall = (data, opName) => {
+  const deleteCall = (data, opName, deletedAttributes, isSoftDelete) => {
     dispatch({
       type: 'DELETE_METADATA',
       payload: {
         op: opName,
         docId,
         fieldName: data.formattedName,
-        attributeNames: deletedAttributes,
+        attributeNames: deletedAttributes || [],
         reqData: {
           formattedName: data.formattedName,
           accData: data,
         },
+        isSoftDelete,
       },
     });
     setDeletedAttributes([]);
@@ -188,7 +189,13 @@ function MetaData({ docId }) {
   };
 
   const postCall = (data, metaData) => {
-    const filterMetaList = metaData.filter((list) => list?.attr_status);
+    const filterMetaList = metaData.filter(
+      (list) => list?.attr_status && list?.attr_status !== 'delete',
+    );
+
+    if (!filterMetaList?.length && !deletedAttributes.length) {
+      toast.error('Please do some changes to update');
+    }
     if (filterMetaList?.length) {
       const updatedAttrList = filterMetaList?.map((list) => {
         return {
@@ -212,7 +219,7 @@ function MetaData({ docId }) {
         },
       });
       setCurrentActiveLevels(
-        currentActiveLevels.filter((curr) => curr !== data?.formattedName),
+        currentActiveLevels?.filter((curr) => curr !== data?.formattedName),
       );
     }
   };
@@ -239,6 +246,7 @@ function MetaData({ docId }) {
           filterCustomData,
         );
       }
+
       if (deletedAttributes.filter((attr) => attr).length > 0) {
         deleteCall(
           {
@@ -246,6 +254,7 @@ function MetaData({ docId }) {
             name: 'summary_extended',
           },
           'deleteAttribute',
+          deletedAttributes,
         );
       }
       postCall(accordianData[accData?.formattedName], filterNonCustomData);
@@ -254,13 +263,23 @@ function MetaData({ docId }) {
         ? rows[accData?.formattedName]
         : [];
       if (deletedAttributes.length > 0) {
-        deleteCall(accordianData[accData?.formattedName], 'deleteAttribute');
+        deleteCall(
+          accordianData[accData?.formattedName],
+          'deleteAttribute',
+          deletedAttributes,
+        );
       }
+
       postCall(accordianData[accData?.formattedName], accMetaData);
     }
   };
 
   const handleDelete = (accData, e) => {
+    e.stopPropagation();
+    deleteCall(accordianData[accData?.formattedName], 'deleteField', true);
+  };
+
+  const handleHardDelete = (accData, e) => {
     e.stopPropagation();
     deleteCall(accordianData[accData?.formattedName], 'deleteField');
   };
@@ -368,6 +387,23 @@ function MetaData({ docId }) {
     // eslint-disable-next-line
   }, []);
 
+  const handleDeleteData = (metadata, isSoftDelete) => {
+    let data;
+    if (isSoftDelete) {
+      data = metadata.map((attr) => {
+        let attrValue = attr;
+        if (apiResponse.attributeNames.includes(attr.attr_name))
+          attrValue = { ...attr, is_active: false };
+        return attrValue;
+      });
+    } else {
+      data = metadata.filter(
+        (attr) => !apiResponse.attributeNames.includes(attr.attr_name),
+      );
+    }
+    return data;
+  };
+
   useEffect(() => {
     if (apiResponse?.status) {
       if (apiResponse.op === 'addAttributes') {
@@ -414,15 +450,21 @@ function MetaData({ docId }) {
           });
         }
       } else if (apiResponse?.op === 'deleteAttribute') {
-        const selectedData = accordianData[apiResponse?.reqData?.formattedName];
+        let accName = apiResponse?.reqData?.formattedName;
+        if (accName === 'summary_extended') {
+          accName = 'Summary';
+        }
+        const selectedData = accordianData[accName];
+
         setAccordianData({
           ...accordianData,
-          [apiResponse?.reqData?.formattedName]: {
+          [accName]: {
             ...selectedData,
             isEdit: false,
-            // eslint-disable-next-line
-            _meta_data: selectedData?._meta_data.filter(
-              (attr) => !apiResponse.attributeNames.includes(attr.attr_name),
+            _meta_data: handleDeleteData(
+              // eslint-disable-next-line
+              selectedData?._meta_data,
+              apiResponse?.isSoftDelete,
             ),
           },
         });
@@ -451,12 +493,14 @@ function MetaData({ docId }) {
           handleAccordian={() => handleAccordian(acc)}
           handleSave={(e) => handleSave(acc, e)}
           handleDelete={(e) => handleDelete(acc, e)}
+          handleHardDelete={(e) => handleHardDelete(acc, e)}
           handleEdit={(e) => handleEdit(acc, e)}
           handleDiscard={() => handleDiscard(acc)}
           addSubAccordion={(name) => addSubAccordion(acc, name)}
           setDeletedAttributes={setDeletedAttributes}
           // eslint-disable-next-line
           subAccComponent={acc?._childs?.map((subAcc) => {
+            // eslint-disable-next-line
             return accGenerator(subAcc, accordianData?.[subAcc]);
           })}
         />
@@ -523,9 +567,7 @@ function MetaData({ docId }) {
       ) : (
         <div className="_meta_data-boarder">
           {Object?.entries(accordianData || {}).map(([key, value]) => {
-            return (
-              value.level === 1 && value?.is_active && accGenerator(key, value)
-            );
+            return value.level === 1 && accGenerator(key, value);
           })}
         </div>
       )}

@@ -55,7 +55,7 @@ const AUDIT_LIST = [
 
 const METADATA_AUDIT_LIST = [
   { title: 'Last Updated Date', keyName: 'last_updated' },
-  { title: 'User ID', keyName: 'user_id' },
+  { title: 'Last Ediated By', keyName: 'last_edited_by' },
 ];
 
 export {

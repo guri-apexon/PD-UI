@@ -298,33 +298,6 @@ describe('Accordian', () => {
   const subAccComponent = [];
   const setDeletedAttributes = jest.fn();
 
-  it('renders the accordion with the given name', () => {
-    const { getByText, getByTestId } = render(
-      <Accordian
-        accData={accData}
-        rows={rows}
-        suggestedSubList={suggestedSubList}
-        currentActiveLevels={currentActiveLevels}
-        deletedAttributes={deletedAttributes}
-        setSuggestedSubList={setSuggestedSubList}
-        setCurrentActiveLevels={setCurrentActiveLevels}
-        setRows={setRows}
-        handleAccordian={handleAccordian}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-        handleEdit={handleEdit}
-        addSubAccordion={addSubAccordion}
-        subAccComponent={subAccComponent}
-        setDeletedAttributes={setDeletedAttributes}
-      />,
-    );
-    fireEvent.click(getByTestId('metadata-trash'));
-    expect(getByTestId('modal')).toBeInTheDocument();
-    expect(getByText('Section 1')).toBeInTheDocument();
-    expect(getByTestId('save-term-field')).toBeInTheDocument();
-    fireEvent.click(getByTestId('save-term-field'));
-  });
-
   it('opens the subtext input when the plus icon is clicked', () => {
     const accData = {
       name: 'Section 1',
@@ -579,33 +552,6 @@ describe('Accordian', () => {
     expect(modal).toBeVisible();
   });
 
-  it('should open the modal when the trash icon is clicked', () => {
-    const currentActiveLevels = [];
-    const { getByTestId } = render(
-      <Accordian
-        accData={accData}
-        rows={rows}
-        suggestedSubList={suggestedSubList}
-        currentActiveLevels={currentActiveLevels}
-        deletedAttributes={deletedAttributes}
-        setSuggestedSubList={setSuggestedSubList}
-        setCurrentActiveLevels={setCurrentActiveLevels}
-        setRows={setRows}
-        handleAccordian={handleAccordian}
-        handleSave={handleSave}
-        handleDelete={handleDelete}
-        handleEdit={handleEdit}
-        addSubAccordion={addSubAccordion}
-        subAccComponent={subAccComponent}
-        setDeletedAttributes={setDeletedAttributes}
-      />,
-    );
-    const trashIcon = getByTestId('metadata-trash');
-    fireEvent.click(trashIcon);
-    const modal = getByTestId('meta-modal');
-    expect(modal).toBeVisible();
-  });
-
   it('should call handleUndo function on handleUndo click', () => {
     const mockedProps = {
       accData: {
@@ -735,6 +681,83 @@ describe('Accordian', () => {
 
     const modalCloseButton = screen.getByLabelText('Close');
     fireEvent.click(modalCloseButton);
+
+    expect(mockHandleClose).toHaveBeenCalledTimes(0);
+  });
+
+  it('should close the modal when onClose is called', () => {
+    const accData = {
+      name: 'Test',
+      isActive: true,
+      formattedName: 'Test',
+      isEdit: true,
+      level: 0,
+    };
+    const rows = {
+      Test: [
+        {
+          attr_id:
+            '0d91609674457312825d910c3645bfe41a4be49e968431137e1cca57a295c1a0',
+          attr_name: 'cpt_serious_adverse_event',
+          display_name: 'cpt_serious_adverse_event',
+          attr_type: 'array',
+          attr_value: [
+            'death,initial or prolonged inpatient hospitalization,persistent or significant disability/incapacity,congenital anomaly/birth defect',
+          ],
+          confidence: null,
+          note: null,
+          audit_info: {
+            user_id: null,
+            last_updated: '2023-04-18 14:49:16.263334',
+            num_updates: 1,
+          },
+          id: 1,
+          isCustom: false,
+        },
+      ],
+    };
+    const mockHandleClose = jest.fn();
+    const handleHardDelete = jest.fn();
+    const currentActiveLevels = [];
+    const initialState = {
+      user: {
+        userDetail: {
+          userId: process.env.REACT_APP_USERID,
+          username: 'Test User',
+          email: 'test@iqvia.com',
+          user_type: 'admin',
+        },
+      },
+    };
+    render(
+      <Accordian
+        accData={accData}
+        rows={rows}
+        suggestedSubList={suggestedSubList}
+        currentActiveLevels={currentActiveLevels}
+        deletedAttributes={deletedAttributes}
+        setSuggestedSubList={setSuggestedSubList}
+        setCurrentActiveLevels={setCurrentActiveLevels}
+        setRows={setRows}
+        handleAccordian={handleAccordian}
+        handleSave={handleSave}
+        handleDelete={handleDelete}
+        handleEdit={handleEdit}
+        addSubAccordion={addSubAccordion}
+        subAccComponent={subAccComponent}
+        setDeletedAttributes={setDeletedAttributes}
+        handleHardDelete={handleHardDelete}
+      />,
+      { initialState },
+    );
+
+    const saveButton = screen.getByTestId('metadata-hard-trash');
+    fireEvent.click(saveButton);
+    const cancelButton = screen.getByRole('button', {
+      name: /Delete/i,
+    });
+
+    fireEvent.click(cancelButton);
 
     expect(mockHandleClose).toHaveBeenCalledTimes(0);
   });
