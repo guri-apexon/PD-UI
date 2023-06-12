@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import METADATA_CONSTANTS from './constants';
 import { loggedUser } from '../../../../store/userDetails';
 import { USERTYPE } from '../../../../AppConstant/AppConstant';
+import { handleBoolean } from '../../../../utils/utilFunction';
 
 export function InputKeyField({
   keyName,
@@ -47,6 +48,7 @@ export function ValueField({
   const metaDataType = (type) => {
     return ['string', 'array'].includes(type) ? 'text' : 'number';
   };
+
   return (
     <Grid
       container
@@ -90,7 +92,7 @@ export function ValueField({
               label=""
               name={keyName}
               fullWidth
-              value={inputValue || ''}
+              value={handleBoolean(inputValue)}
               onChange={handleChange}
               onBlur={handleBlur}
               inputProps={{

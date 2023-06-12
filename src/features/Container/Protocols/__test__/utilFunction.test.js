@@ -14,6 +14,12 @@ describe('flattenObject', () => {
       parent: {
         _meta_data: [{ name: 'field1' }, { name: 'field2' }],
         _childs: [],
+        field_audit_info: {
+          last_edited_by: 'abc',
+          last_updated: '2023-06-07 13:09:07.382547-04:00',
+        },
+        is_active: false,
+        is_default: false,
       },
     };
 
@@ -35,13 +41,18 @@ describe('flattenObject', () => {
             display_name: undefined,
           },
         ],
-        audit_info: {},
+        audit_info: {
+          last_edited_by: 'abc',
+          last_updated: '2023-06-07 13:09:07.382547-04:00',
+        },
         formattedName: 'parent',
         isActive: false,
         isEdit: false,
         level: 1,
         name: 'parent',
         _childs: [],
+        is_active: false,
+        is_default: false,
       },
     };
 
