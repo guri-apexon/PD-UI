@@ -12,7 +12,7 @@ import {
 import ProtocolViewWrapper from './ProtocolViewWrapper';
 import { ProtocolContext } from './ProtocolContext';
 import { prepareContent } from '../../../utils/utilFunction';
-import { QC_CHANGE_TYPE } from '../../../AppConstant/AppConstant';
+import { CONTENT_TYPE, QC_CHANGE_TYPE } from '../../../AppConstant/AppConstant';
 
 function ProtocolView({ refs, data }) {
   const viewData = useSelector(viewResult);
@@ -76,9 +76,13 @@ function ProtocolView({ refs, data }) {
       contentType: '',
     };
 
-    undoStack.push(undoObj);
-    setUndoStack(undoStack);
-
+    if (payload.type === CONTENT_TYPE.TABLE && payload.isSaved) {
+      undoStack.push(undoObj);
+      setUndoStack(undoStack);
+    } else if (payload.type !== CONTENT_TYPE.TABLE) {
+      undoStack.push(undoObj);
+      setUndoStack(undoStack);
+    }
     if (payload.isSaved && !saveEnabled) setSaveEnabled(true);
   };
 
@@ -177,8 +181,15 @@ function ProtocolView({ refs, data }) {
 
   const handleContentUndo = () => {
     if (undoStack.length > 0) {
-      const lastobj = undoStack.pop();
-
+      let lastobj = undoStack.pop();
+      if (lastobj?.type === QC_CHANGE_TYPE.DELETED) {
+        undoStack.pop();
+      }
+      if (
+        lastobj?.type === QC_CHANGE_TYPE.UPDATED &&
+        lastobj?.content?.type === CONTENT_TYPE.IMAGE
+      )
+        lastobj = undoStack.pop();
       if (lastobj.type === QC_CHANGE_TYPE.ADDED) {
         setSectionContent((prevState) => {
           handleCurrentLineId(prevState, lastobj.lineId);
