@@ -78,7 +78,7 @@ function PDTable({ data, segment, activeLineID, lineID, edit }) {
       setFootnoteData(footnoteArr);
     }
     // eslint-disable-next-line
-  }, []);
+  }, [data]);
 
   const handleChange = (content, columnIndex, rowIndex) => {
     const cloneData = [...updatedData];
