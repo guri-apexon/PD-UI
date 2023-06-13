@@ -8,7 +8,7 @@ import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import TextField from 'apollo-react/components/TextField';
 import { useDispatch, useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { isArray } from 'lodash/isArray';
+import isArray from 'lodash/isArray';
 import difference from 'lodash/difference';
 import './MetaData.scss';
 import { toast } from 'react-toastify';
@@ -331,7 +331,7 @@ function MetaData({ docId }) {
   }, [metaParamResult]);
 
   useEffect(() => {
-    if (!isEmpty(metaParams) && !isEmpty(accordianData)) {
+    if (!isEmpty(metaParamResult) && !isEmpty(accordianData)) {
       const updatedParam = {};
       const result = flattenMetaParam(updatedParam, metaParamResult, 1);
       const accordianFilterData = Object.assign(
