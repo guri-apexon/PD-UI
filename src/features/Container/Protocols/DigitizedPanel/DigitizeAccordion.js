@@ -45,6 +45,8 @@ import {
   setActiveTOC,
   enrichedData,
   preferredData,
+  linkReference,
+  setLinkreference,
 } from '../protocolSlice';
 import AddSection from './AddSection';
 import DeleteModal from './Modals/DeleteModal';
@@ -133,6 +135,8 @@ function DigitizeAccordion({
   const [isShown, setIsShown] = useState(false);
   const { setActiveLineID } = useProtContext();
 
+  const linkReferenceSelector = useSelector(linkReference);
+
   useEffect(() => {
     if (!globalPreferredTerm) {
       setPreferredTarget(null);
@@ -149,18 +153,6 @@ function DigitizeAccordion({
       setDiscardData(discardSelector);
     }
   }, [discardSelector]);
-
-  useEffect(() => {
-    if (item.linkandReference) {
-      setExpanded(true);
-      scrollToTop(index);
-      if (sectionDataArr?.length) {
-        scrollToLinkandReference(index, item.linkandReference);
-        handleOpenAccordion();
-      }
-    }
-    // eslint-disable-next-line
-  }, [item.linkandReference]);
 
   const {
     dispatchSectionEvent,
@@ -597,11 +589,12 @@ function DigitizeAccordion({
         const refs = linkArr.map((x) => x[1]);
         refs.forEach((ref) => {
           if (ref.source_text === text) {
-            if (item.link_id === ref.link_id) {
+            if (item.link_id === ref.dest_main_link_id) {
               scrollToTop(index);
               scrollToLinkandReference(index, ref.destination_link_text);
             } else {
               handleOpenAccordion(ref);
+              dispatch(setLinkreference(ref));
             }
           }
         });
@@ -669,10 +662,6 @@ function DigitizeAccordion({
           }
         }
         setSectionDataArr(updatedSectionsData);
-        if (item.linkandReference && updatedSectionsData.length) {
-          scrollToLinkandReference(index, item.linkandReference);
-          handleOpenAccordion();
-        }
         if (NewSectionIndex >= 0) {
           onEditClick();
           dispatch({
@@ -860,6 +849,24 @@ function DigitizeAccordion({
     // eslint-disable-next-line
     [showedit, sectionDataArr],
   );
+
+  useEffect(() => {
+    if (
+      linkReferenceSelector &&
+      expanded &&
+      sectionDataArr?.length > 0 &&
+      item.link_id === linkReferenceSelector.dest_main_link_id
+    ) {
+      scrollToTop(index);
+      scrollToLinkandReference(
+        index,
+        linkReferenceSelector.destination_link_text,
+      );
+      dispatch(setLinkreference(null));
+    }
+
+    // eslint-disable-next-line
+  }, [linkReferenceSelector, expanded, sectionDataArr]);
 
   return (
     // eslint-disable-next-line
