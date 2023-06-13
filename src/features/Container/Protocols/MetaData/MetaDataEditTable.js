@@ -105,19 +105,17 @@ function DeleteCell({ row }) {
   const userDetails = useSelector(loggedUser);
 
   return (
-    !row?.is_default && (
-      <Grid className="delContainer">
-        {userDetails.user_type === USERTYPE.ADMIN && (
-          <IconButton
-            data-testid="metadata-row-delete-admin"
-            className="trashButtonsvg"
-            onClick={deleteHardMetadata}
-          >
-            <Trash fontSize="small" className="trashButton" />
-          </IconButton>
-        )}
-      </Grid>
-    )
+    <Grid className="delContainer">
+      {userDetails.user_type === USERTYPE.ADMIN && (
+        <IconButton
+          data-testid="metadata-row-delete-admin"
+          className="trashButtonsvg"
+          onClick={deleteHardMetadata}
+        >
+          <Trash fontSize="small" className="trashButton" />
+        </IconButton>
+      )}
+    </Grid>
   );
 }
 
