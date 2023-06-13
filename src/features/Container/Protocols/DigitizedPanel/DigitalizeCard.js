@@ -186,17 +186,15 @@ function DigitalizeCard({
   };
 
   const handleOpenAccordion = (refObj) => {
-    setHeaderList(
-      headerList.map((x) => {
-        if (!refObj && x.linkandReference) {
-          return { ...x, linkandReference: null };
+    if (refObj) {
+      headerList.forEach((x, i) => {
+        if (refObj?.dest_main_link_id === x.link_id) {
+          setSectionSequence(i);
+          handleTocSection(i);
+          scrollToTop(i);
         }
-        if (refObj?.link_id === x.link_id) {
-          return { ...x, linkandReference: refObj.destination_link_text };
-        }
-        return x;
-      }),
-    );
+      });
+    }
   };
 
   if (loaderSelector) {
