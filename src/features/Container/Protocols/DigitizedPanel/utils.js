@@ -16,8 +16,10 @@ export const scrollToLinkandReference = (index, linkandReference) => {
 
       const match = elements.find((el) => {
         return el.textContent
+          .trim()
           .toLowerCase()
-          .includes(linkandReference.toLowerCase());
+          .replaceAll('  ', ' ')
+          .includes(linkandReference.trim().toLowerCase());
       });
       if (match) {
         match.scrollIntoView();

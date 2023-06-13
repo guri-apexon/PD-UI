@@ -74,6 +74,7 @@ export const protocolSlice = createSlice({
     isDiscarded: false,
     protocolTab: -1,
   },
+  linkReference: null,
   reducers: {
     getSummary: (state, action) => {
       state.summary = action.payload;
@@ -246,6 +247,9 @@ export const protocolSlice = createSlice({
       state.protocolTocData.data[index].source_file_section =
         action.payload.content[0].link_text;
     },
+    setLinkreference: (state, action) => {
+      state.linkReference = action.payload;
+    },
   },
 });
 
@@ -290,6 +294,7 @@ export const {
   updateSectionHeader,
   getEnrichedData,
   getPreferredTerm,
+  setLinkreference,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -324,4 +329,5 @@ export const activeTOC = (state) => state.protocol.activeTOC;
 export const getLoader = (state) => state.protocol.loader;
 export const enrichedData = (state) => state.protocol.enrichedData;
 export const preferredData = (state) => state.protocol.preferredTerms;
+export const linkReference = (state) => state.protocol.linkReference;
 export default protocolSlice.reducer;
