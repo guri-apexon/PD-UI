@@ -121,27 +121,32 @@ export const swapColumnElements = (array, index1, index2) => {
   return arr;
 };
 
-const nextChar = (c) => {
-  const i = (parseInt(c, 36) + 1) % 36;
-  return (!i * 10 + i).toString(36);
-};
-
 export const updateFootNotePayload = (data) => {
-  const updateFootNoteData = cloneDeep(data);
+  let updateFootNoteData = cloneDeep(data);
   if (updateFootNoteData.length > 0) {
+    let prefix = 'a';
+
+    updateFootNoteData = [...updateFootNoteData].filter(
+      (x) => !(x.qc_change_type_footnote === 'add' && !x.Text),
+    );
+
     updateFootNoteData.forEach((notes, index) => {
-      if (!notes?.Text?.includes('.')) {
-        const indicatorValue =
-          index > 0
-            ? nextChar(updateFootNoteData[index - 1]?.Text?.split('.')[0]) || ''
-            : 'a';
-        updateFootNoteData[
-          index
-        ].Text = `${indicatorValue}. ${updateFootNoteData[index].Text}`;
-        if (!updateFootNoteData?.[index]?.PrevousAttachmentIndex) {
-          updateFootNoteData[index].PrevousAttachmentIndex =
-            index > 0 ? index - 1 : null;
-        }
+      if (notes?.Text?.indexOf('.') === 1) {
+        notes.Text = notes.Text.substring(2).trim();
+      }
+      if (notes?.Text?.indexOf(`${prefix}.`) === -1) {
+        notes.Text = `${prefix}. ${notes?.Text}`;
+      }
+
+      if (!notes.Text) {
+        notes.qc_change_type_footnote = QC_CHANGE_TYPE.DELETED;
+      }
+
+      prefix = String.fromCharCode(prefix.charCodeAt(0) + 1);
+
+      if (!updateFootNoteData?.[index]?.PrevousAttachmentIndex) {
+        updateFootNoteData[index].PrevousAttachmentIndex =
+          index > 0 ? index - 1 : null;
       }
     });
   }

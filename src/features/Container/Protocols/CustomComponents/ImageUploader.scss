@@ -38,6 +38,9 @@
   margin-right: 20px;
   min-height: 40px;
   position: relative;
+  width: max-content;
+  min-width: 100px;
+  max-width: 100%;
 
   .rich-text-img {
     max-width: 100%;
@@ -77,6 +80,7 @@
   flex-direction: column;
   min-height: 160px;
   z-index: 2;
+  min-width: 250px;
 
   p {
     text-align: center;

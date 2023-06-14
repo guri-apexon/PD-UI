@@ -78,7 +78,7 @@ function PDTable({ data, segment, activeLineID, lineID, edit }) {
       setFootnoteData(footnoteArr);
     }
     // eslint-disable-next-line
-  }, [data]);
+  }, []);
 
   const handleChange = (content, columnIndex, rowIndex) => {
     const cloneData = [...updatedData];
@@ -158,6 +158,8 @@ function PDTable({ data, segment, activeLineID, lineID, edit }) {
       ...footNoteData,
       {
         ...PROTOCOL_CONSTANT.footNote,
+        PrevousAttachmentIndex:
+          footNoteData.length === 0 ? 0 : footNoteData.length - 1,
       },
     ]);
   };
@@ -214,6 +216,13 @@ function PDTable({ data, segment, activeLineID, lineID, edit }) {
   const onContainerClick = () => {
     if (tableSaved) {
       setTableSaved(false);
+      dispatchSectionEvent('CONTENT_UPDATE', {
+        type: CONTENT_TYPE.TABLE,
+        lineID,
+        currentLineId: lineID,
+        content: { ...segment.content },
+        isSaved: false,
+      });
     }
     if (activeLineID !== lineID && !tableSaved) {
       const content = {
