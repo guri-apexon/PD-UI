@@ -1101,7 +1101,9 @@ function DigitizeAccordion({
                           <div
                             key={React.key}
                             onMouseUp={(e) => handleSegmentMouseUp(e, section)}
-                            className="content-linkref"
+                            className={`content-linkref ${
+                              section.inline_element ? 'inline-segment' : ''
+                            }`}
                           >
                             {content}
                           </div>
