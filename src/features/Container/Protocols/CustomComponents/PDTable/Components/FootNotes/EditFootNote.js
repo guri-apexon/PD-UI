@@ -46,7 +46,7 @@ function EditFootNote({
 
   const sendFooterText = () => {
     const checkIfExist = footNoteData.find((notes, i) => i === index);
-    const textData = contentEditableRef.current.innerHTML || footerText;
+    const textData = contentEditableRef.current.innerHTML;
     if (checkIfExist && isEmpty(textData)) {
       if (item?.AttachmentId) {
         setFootnoteData(getFootNoteData(textData));
