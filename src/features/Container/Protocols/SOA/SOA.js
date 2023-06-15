@@ -37,7 +37,8 @@ function SOA({ docId }) {
     if (apiState?.soa_data) {
       const tabs = [];
       apiState.soa_data.forEach((item) => {
-        if (item[TableConst.NORMALIZED_SOA].length > 0) tabs.push(item);
+        if (item[TableConst.NORMALIZED_SOA].length > 0)
+          tabs.push({ ...item, foot_notes: apiState.foot_notes });
       });
       if (tabs.length > 0) {
         dispatch({
