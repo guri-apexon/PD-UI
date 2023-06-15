@@ -57,11 +57,20 @@ function AddClinicalTerm({ docId, linkId }) {
     }
   }, [clinicalTerms, ontologyTerm, preferredTerm, openModal, selectedText]);
 
+  const handleHeaderContent = () => {
+    let headerContent;
+    if (wordSelector?.word?.type === CONTENT_TYPE?.HEADER) {
+      headerContent = wordSelector?.word?.content?.replace(/(<([^>]+)>)/gi, '');
+    }
+    return headerContent?.trim();
+  };
+
   const handlePreferredTerm = (e) => {
     const preferedText = selectedText?.trim();
     const msg = preferredTermsValidation(
       e.target.value,
-      preferredContent?.data[preferedText]?.preferred_term,
+      preferredContent?.data[preferedText]?.preferred_term ||
+        preferredContent?.data[handleHeaderContent()]?.preferred_term,
     );
     setPtErrorMsg(msg);
     setPreferredTerm(e.target.value);
@@ -156,7 +165,8 @@ function AddClinicalTerm({ docId, linkId }) {
         standard_entity_name: selectedText.trim(),
         iqv_standard_term:
           preferredTerm ||
-          preferredContent?.data[selectedText.trim()]?.preferred_term,
+          preferredContent?.data[selectedText.trim()]?.preferred_term ||
+          preferredContent?.data[handleHeaderContent()]?.preferred_term,
         ontology: ontologyTerm,
         clinical_terms: clinicalTerms,
         text_len: selectedText.length,
