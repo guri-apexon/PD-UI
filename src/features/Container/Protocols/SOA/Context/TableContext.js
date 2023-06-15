@@ -461,12 +461,9 @@ const getColumns = ({ state, selectedTab, hideColumns }) => {
 const isColumn = (cell) => Number(cell[TableConst.ROW_IDX]) === 0;
 const isValidColumn = (cell) => Number(cell[TableConst.COLUMN_IDX]) > 0;
 const formatTables = (data) => {
-  const footNotes = [];
   const actualColumns = [];
   const cellColumns = [];
   const tables = data.map((tableItem) => {
-    const footes = [];
-    footNotes.push(footes);
     const actualColSet = new Set();
     const cellColumnsSet = new Set();
     actualColumns.push(actualColSet);
@@ -519,11 +516,6 @@ const formatTables = (data) => {
         }
       } else if (tableKey === TableConst.NORMALIZED_SOA) {
         tableItem[tableKey].forEach((tableKeyItem) => {
-          if (tableKeyItem.footnotes?.length > 0) {
-            tableKeyItem.footnotes.forEach((note) => {
-              if (!footes.includes(note)) footes.push(note);
-            });
-          }
           if (!rtObj[tableKey]) rtObj[tableKey] = [];
           const obj = {
             [TableConst.COLUMN_IDX]: tableKeyItem[TableConst.COLUMN_IDX],
@@ -605,22 +597,7 @@ const formatTables = (data) => {
     });
   });
 
-  // end of time points
-  const fNootes = [];
-
-  footNotes.forEach((fnotes) => {
-    const fNote = [];
-    fNootes.push(fNote);
-    fnotes.sort();
-    fnotes.forEach((notes) => {
-      const noteValue = String(notes).trim();
-      const key = noteValue.substring(0, noteValue.indexOf(' ')); // "72"
-      const value = noteValue.substring(noteValue.indexOf(' ') + 1);
-      const footObject = { key, value };
-      fNote.push(footObject);
-    });
-  });
-  return { tables, footNotes: fNootes };
+  return { tables };
 };
 const tableReducer = (state, actions) => {
   switch (actions.type) {
