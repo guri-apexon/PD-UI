@@ -1,5 +1,6 @@
 import { useContext, useRef, useMemo, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
+import flattenDeep from 'lodash/flattenDeep';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import TabelContext from './Context';
@@ -19,7 +20,6 @@ function SOATable() {
     tables,
     selectedTab,
     refreshValue,
-    footNotes,
   } = state;
 
   const defaultColDef = useMemo(() => {
@@ -106,16 +106,8 @@ function SOATable() {
   const footerColumnDefs = useMemo(() => {
     return [
       {
-        field: 'key',
-        headerName: 'Footer Name',
-        resizable: true,
-        suppressMovable: true,
-        minWidth: 100,
-        maxWidth: 150,
-      },
-      {
-        field: 'value',
-        headerName: 'Footer Value',
+        field: 'note',
+        headerName: 'Footnotes',
         resizable: true,
         suppressMovable: true,
         cellStyle: {
@@ -153,7 +145,11 @@ function SOATable() {
           <div className="soa-footergrid-container">
             <AgGridReact
               ref={footerGridRef}
-              rowData={footNotes[selectedTab]}
+              rowData={flattenDeep(tables[selectedTab]?.foot_notes).map(
+                (elem) => ({
+                  note: elem,
+                }),
+              )}
               columnDefs={footerColumnDefs}
               defaultColDef={defaultFooterColDef}
             />
