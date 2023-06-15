@@ -714,9 +714,8 @@ function DigitizeAccordion({
         !(globalPreferredTerm || showPrefferedTerm)
       ) {
         newContent = createPreferredText(content, enrichedContent?.data, true);
-      } else {
-        newContent = createEnrichedText(newContent, enrichedContent?.data);
       }
+      newContent = createEnrichedText(newContent, enrichedContent?.data);
     }
     if (!isEmpty(links) && showLink) {
       const linkArr = Object.entries(links);
