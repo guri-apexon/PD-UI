@@ -59,25 +59,26 @@ function MetaData({ docId }) {
     });
   };
   const addToAccordion = (name, existingAcc) => {
-    const checkName = name === 'Summary' ? 'summary_extended' : name;
-    dispatch({
-      type: 'ADD_METADATA_FIELD',
-      payload: {
-        op: 'addField',
-        docId: existingAcc ? docId : '',
-        fieldName: checkName,
-        attributes: [],
-        reqData: { name, level: 1 },
-      },
-    });
-    setIsOpen(false);
-    setSuggestedList(suggestedList.filter((list) => list.label !== name));
-    setSectionName({ label: '' });
+    if (name) {
+      const checkName = name === 'Summary' ? 'summary_extended' : name;
+      dispatch({
+        type: 'ADD_METADATA_FIELD',
+        payload: {
+          op: 'addField',
+          docId: existingAcc ? docId : '',
+          fieldName: checkName,
+          attributes: [],
+          reqData: { name, level: 1 },
+        },
+      });
+      setIsOpen(false);
+      setSectionName({ label: '' });
+    }
   };
 
   const handleChange = (event, newValue) => {
     setSectionName(newValue);
-    addToAccordion(newValue.label, true);
+    addToAccordion(newValue?.label, true);
   };
 
   const handleTextClick = () => {

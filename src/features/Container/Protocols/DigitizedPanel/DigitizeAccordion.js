@@ -209,6 +209,7 @@ function DigitizeAccordion({
       return;
     }
     if (showedit && lockDetails?.section_lock) {
+      dispatchSectionEvent('RESET_UNDO_STACK');
       updateSectionLock(true);
     }
     if (handlePageRight && !expanded) handlePageRight(item.page);
@@ -299,6 +300,7 @@ function DigitizeAccordion({
       handleTocsection(true);
       setTocClose(false);
     }
+    dispatchSectionEvent('RESET_UNDO_STACK');
   };
 
   const handleDiscardToc = () => {
@@ -575,6 +577,7 @@ function DigitizeAccordion({
           labEdited: false,
         },
       });
+      dispatchSectionEvent('RESET_UNDO_STACK');
       setRequestedRoute('');
     }
   };
@@ -714,9 +717,8 @@ function DigitizeAccordion({
         !(globalPreferredTerm || showPrefferedTerm)
       ) {
         newContent = createPreferredText(content, enrichedContent?.data, true);
-      } else {
-        newContent = createEnrichedText(newContent, enrichedContent?.data);
       }
+      newContent = createEnrichedText(newContent, enrichedContent?.data);
     }
     if (!isEmpty(links) && showLink) {
       const linkArr = Object.entries(links);
@@ -844,6 +846,8 @@ function DigitizeAccordion({
         setShowDiscardConfirm={setShowDiscardConfirm}
         child={getActionMenu()}
         setRequestedRoute={setRequestedRoute}
+        setShowAlert={setShowAlert}
+        setAlertMsg={setAlertMsg}
       />
     ),
     // eslint-disable-next-line
