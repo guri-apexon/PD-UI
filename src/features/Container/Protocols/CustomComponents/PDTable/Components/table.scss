@@ -103,6 +103,11 @@
   .pd-dropdown {
     top: 20px;
   }
+
+  .pd-dropdown.right-0 {
+    right: 0;
+    left: unset;
+  }
 }
 .pd-empty-cell-column {
   width: 100px;
@@ -127,6 +132,7 @@
   background-color: #fff;
   font-size: 14px;
 }
+
 .pd-empty-cell-column .pd-dropdown {
   top: 25px;
   left: 0;
