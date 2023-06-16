@@ -256,6 +256,10 @@ function ProtocolView({ refs, data }) {
         case 'CONTENT_UNDO':
           handleContentUndo();
           break;
+        case 'RESET_UNDO_STACK':
+          setUndoStack([]);
+          break;
+
         default:
           break;
       }

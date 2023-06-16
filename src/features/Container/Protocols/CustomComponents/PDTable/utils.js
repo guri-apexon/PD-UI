@@ -130,23 +130,24 @@ export const updateFootNotePayload = (data) => {
       (x) => !(x.qc_change_type_footnote === 'add' && !x.Text),
     );
 
-    updateFootNoteData.forEach((notes, index) => {
+    let i = 0;
+    updateFootNoteData.forEach((notes) => {
       if (notes?.Text?.indexOf('.') === 1) {
         notes.Text = notes.Text.substring(2).trim();
       }
       if (notes?.Text?.indexOf(`${prefix}.`) === -1) {
         notes.Text = `${prefix}. ${notes?.Text}`;
       }
-
       if (!notes.Text) {
         notes.qc_change_type_footnote = QC_CHANGE_TYPE.DELETED;
       }
-
-      prefix = String.fromCharCode(prefix.charCodeAt(0) + 1);
-
-      if (!updateFootNoteData?.[index]?.PrevousAttachmentIndex) {
-        updateFootNoteData[index].PrevousAttachmentIndex =
-          index > 0 ? index - 1 : null;
+      notes.PrevousAttachmentIndex = i > 0 ? i - 1 : null;
+      if (notes.qc_change_type_footnote !== QC_CHANGE_TYPE.DELETED) {
+        i += 1;
+        prefix = String.fromCharCode(prefix.charCodeAt(0) + 1);
+        if (notes.qc_change_type_footnote !== QC_CHANGE_TYPE.ADDED) {
+          notes.qc_change_type_footnote = QC_CHANGE_TYPE.UPDATED;
+        }
       }
     });
   }
