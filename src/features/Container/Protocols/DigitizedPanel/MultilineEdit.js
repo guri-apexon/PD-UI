@@ -21,7 +21,13 @@ import {
   QC_CHANGE_TYPE,
 } from '../../../../AppConstant/AppConstant';
 
-function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
+function MultilineEdit({
+  edit,
+  setShowDiscardConfirm,
+  setRequestedRoute,
+  setShowAlert,
+  setAlertMsg,
+}) {
   const [sections, setSections] = useState([]);
   const {
     dispatchSectionEvent,
@@ -33,6 +39,7 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const contentEditableRef = useRef({});
+  const containerRef = useRef(null);
 
   const lineRef = useRef(activeLineID);
 
@@ -127,7 +134,7 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
             onDeleteClick={() => setShowConfirm(true)}
           />
         )}
-        <div className="section-menu-container">
+        <div className="section-menu-container" ref={containerRef}>
           <section className="section-edited-list">
             {sections
               ?.filter(
@@ -153,6 +160,9 @@ function MultilineEdit({ edit, setShowDiscardConfirm, setRequestedRoute }) {
                     deleteSection={deleteSection}
                     setActiveLineID={setActiveLineID}
                     edit={edit}
+                    setShowAlert={setShowAlert}
+                    setAlertMsg={setAlertMsg}
+                    containerRef={containerRef}
                   />
                 </div>
               ))}
@@ -185,4 +195,6 @@ MultilineEdit.propTypes = {
   edit: PropTypes.isRequired,
   setShowDiscardConfirm: PropTypes.isRequired,
   setRequestedRoute: PropTypes.isRequired,
+  setShowAlert: PropTypes.isRequired,
+  setAlertMsg: PropTypes.isRequired,
 };

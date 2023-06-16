@@ -54,11 +54,21 @@ const formatFootNote = (data) => {
 
 const confirmText = 'Please confirm if you want to continue with deletion';
 
-function PDTable({ data, segment, activeLineID, lineID, edit }) {
+function PDTable({
+  data,
+  segment,
+  activeLineID,
+  lineID,
+  edit,
+  setShowAlert,
+  setAlertMsg,
+  containerRef,
+}) {
+  const wrapperRef = useRef(null);
   const [updatedData, setUpdatedData] = useState([]);
   const [footNoteData, setFootnoteData] = useState([]);
 
-  const [tableSaved, setTableSaved] = useState(false);
+  const [tableSaved, setTableSaved] = useState(true);
   const [showconfirm, setShowConfirm] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [showBlankRowModal, setShowBlankRowModal] = useState(false);
@@ -74,7 +84,11 @@ function PDTable({ data, segment, activeLineID, lineID, edit }) {
         : JSON.parse(data?.TableProperties);
       const formattedData = formattableData(parsedTable);
       setUpdatedData(formattedData);
-      const footnoteArr = formatFootNote(data?.AttachmentListProperties || []);
+      const footnoteArr = formatFootNote(
+        data?.AttachmentListProperties?.filter(
+          (x) => x.qc_change_type_footnote !== 'delete',
+        ) || [],
+      );
       setFootnoteData(footnoteArr);
     }
     // eslint-disable-next-line
@@ -175,7 +189,7 @@ function PDTable({ data, segment, activeLineID, lineID, edit }) {
     return bool;
   };
 
-  const handleSave = () => {
+  const handleSave = (e) => {
     if (checkBlankRows()) {
       setShowBlankRowModal(true);
       return;
@@ -238,11 +252,37 @@ function PDTable({ data, segment, activeLineID, lineID, edit }) {
     }
   };
 
-  return (
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target) &&
+        !tableSaved &&
+        containerRef.current &&
+        containerRef.current.contains(event.target)
+      ) {
+        event.preventDefault();
+        setShowAlert(true);
+        setAlertMsg('Please save the table.');
+      }
+    }
+    if (tableSaved) {
+      document.removeEventListener('mousedown', handleClickOutside);
+    } else {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
     // eslint-disable-next-line
+  }, [tableSaved]);
+
+  return (
+    //  eslint-disable-next-line
     <section
       data-testId="section"
       className="content-table-wrapper"
+      ref={wrapperRef}
       onClick={() => {
         onContainerClick();
       }}
@@ -291,7 +331,7 @@ function PDTable({ data, segment, activeLineID, lineID, edit }) {
               {
                 size: 'small',
                 label: 'Save Table',
-                onClick: () => handleSave(),
+                onClick: (e) => handleSave(e),
               },
             ]}
           />
@@ -362,4 +402,7 @@ PDTable.propTypes = {
   activeLineID: PropTypes.isRequired,
   lineID: PropTypes.isRequired,
   edit: PropTypes.isRequired,
+  setShowAlert: PropTypes.isRequired,
+  setAlertMsg: PropTypes.isRequired,
+  containerRef: PropTypes.isRequired,
 };

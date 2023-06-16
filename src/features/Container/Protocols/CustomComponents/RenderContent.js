@@ -13,6 +13,9 @@ function RenderContent({
   deleteSection,
   edit,
   setRef,
+  setShowAlert,
+  setAlertMsg,
+  containerRef,
 }) {
   const { type, content = '', line_id: lineID } = sectionData;
 
@@ -55,6 +58,9 @@ function RenderContent({
           segment={sectionData}
           activeLineID={activeLineID}
           lineID={lineID}
+          setShowAlert={setShowAlert}
+          setAlertMsg={setAlertMsg}
+          containerRef={containerRef}
         />
       </div>
     );
@@ -82,4 +88,7 @@ RenderContent.propTypes = {
   deleteSection: PropTypes.isRequired,
   edit: PropTypes.isRequired,
   setRef: PropTypes.isRequired,
+  setShowAlert: PropTypes.isRequired,
+  setAlertMsg: PropTypes.isRequired,
+  containerRef: PropTypes.isRequired,
 };
