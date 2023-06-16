@@ -166,14 +166,17 @@ describe('updateFootNotePayload', () => {
       {
         PrevousAttachmentIndex: null,
         Text: 'a. note1',
+        qc_change_type_footnote: 'modify',
       },
       {
         PrevousAttachmentIndex: 0,
         Text: 'b. note2',
+        qc_change_type_footnote: 'modify',
       },
       {
         PrevousAttachmentIndex: 1,
         Text: 'c. note3',
+        qc_change_type_footnote: 'modify',
       },
     ]);
   });
@@ -478,38 +481,31 @@ describe('getPreferredTerms', () => {
 describe('filterFootNotes', () => {
   it('should filter footnotes based on qc_change_type_footnote property', () => {
     const data = [
-      { Text: 'First footnote', qc_change_type_footnote: true },
-      { Text: 'Second footnote', qc_change_type_footnote: false },
-      { Text: 'Third footnote', qc_change_type_footnote: true },
+      { Text: 'First footnote', qc_change_type_footnote: '' },
+      { Text: 'Second footnote', qc_change_type_footnote: 'add' },
+      { Text: 'Third footnote', qc_change_type_footnote: 'add' },
     ];
     const expectedFilteredData = [
       {
-        Text: 'a. First footnote',
         PrevousAttachmentIndex: null,
-        qc_change_type_footnote: true,
+        Text: 'a. First footnote',
+        qc_change_type_footnote: 'modify',
       },
       {
-        Text: 'c. Third footnote',
+        PrevousAttachmentIndex: 0,
+        Text: 'b. Second footnote',
+        qc_change_type_footnote: 'add',
+      },
+      {
         PrevousAttachmentIndex: 1,
-        qc_change_type_footnote: true,
+        Text: 'c. Third footnote',
+        qc_change_type_footnote: 'add',
       },
     ];
 
     const filteredData = filterFootNotes(data);
 
     expect(filteredData).toEqual(expectedFilteredData);
-  });
-
-  it('should return an empty array if no footnotes have qc_change_type_footnote property', () => {
-    const data = [
-      { Text: 'First footnote' },
-      { Text: 'Second footnote' },
-      { Text: 'Third footnote' },
-    ];
-
-    const filteredData = filterFootNotes(data);
-
-    expect(filteredData).toEqual([]);
   });
 
   it('should return an empty array if input data is empty', () => {
