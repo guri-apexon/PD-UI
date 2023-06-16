@@ -189,7 +189,7 @@ function PDTable({
     return bool;
   };
 
-  const handleSave = (e) => {
+  const handleSave = () => {
     if (checkBlankRows()) {
       setShowBlankRowModal(true);
       return;
