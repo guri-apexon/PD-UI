@@ -131,6 +131,10 @@
     width: 0;
     z-index: 1;
   }
+
+  span.section-name > div {
+    display: inherit;
+  }
 }
 
 .header-unselect {
