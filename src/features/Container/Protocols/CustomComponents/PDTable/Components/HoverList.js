@@ -5,7 +5,7 @@ function HoverList({ data, handleOperation, index }) {
     handleOperation(operation, index);
   };
   return (
-    <div className="pd-dropdown">
+    <div className={`pd-dropdown ${index > 1 && 'right-0'}`}>
       <ul>
         {data.map((item) => (
           // eslint-disable-next-line
