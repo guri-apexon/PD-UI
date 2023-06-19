@@ -248,19 +248,6 @@ describe('Accordian component', () => {
 });
 
 describe('Accordian', () => {
-  const accData = {
-    name: 'Section 1',
-    level: 1,
-    isActive: false,
-    isEdit: true,
-    formattedName: 'Section 1',
-    audit_info: {
-      user_id: null,
-      last_updated: '2023-03-29 08:52:41.726047',
-      num_updates: 1,
-    },
-  };
-  // const rows = [{ id: 1, name: 'Attribute 1', type: 'string' }];
   const rows = {
     'Section 1': [
       {

@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import TreeItem from 'apollo-react/components/TreeItem';
 import ChevronRight from 'apollo-react-icons/ChevronRight';
 import ChevronDown from 'apollo-react-icons/ChevronDown';
-import Tooltip from 'apollo-react/components/Tooltip';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
 import {
   createFullMarkup,
@@ -26,13 +25,11 @@ function AccordionToc({
     <TreeItem
       key={level.link_id}
       label={
-        <Tooltip title={removeHtmlTags(level.source_file_section)}>
-          <div>
-            <SanitizeHTML
-              html={createFullMarkup(removeHtmlTags(level.source_file_section))}
-            />
-          </div>
-        </Tooltip>
+        <span className="section-name">
+          <SanitizeHTML
+            html={createFullMarkup(removeHtmlTags(level.source_file_section))}
+          />
+        </span>
       }
       onClick={handleClick}
       nodeId={level.link_id}
