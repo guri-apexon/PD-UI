@@ -7,12 +7,14 @@ import qcSlice, {
   qcProtocols,
   qcProtocolsError,
   loader,
+  setNotification,
 } from '../qcSlice';
 
 const initialState = {
   protocols: [],
   tableError: false,
   loader: false,
+  notificationData: { id: '', protocol: '' },
 };
 
 const state = {
@@ -20,6 +22,7 @@ const state = {
     protocols: [],
     tableError: false,
     loader: false,
+    notificationData: { id: '', protocol: '' },
   },
 };
 
@@ -79,5 +82,13 @@ describe(' QCSlice Test Suite', () => {
     qcProtocols(state);
     qcProtocolsError(state);
     loader(state);
+  });
+  test('Set Error For QC', () => {
+    expect(
+      qcSlice(initialState, {
+        type: setNotification.type,
+        payload: { id: '', protocol: '' },
+      }),
+    ).toEqual({ ...initialState, notificationData: { id: '', protocol: '' } });
   });
 });
