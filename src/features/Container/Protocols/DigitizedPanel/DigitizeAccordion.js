@@ -475,7 +475,7 @@ function DigitizeAccordion({
         setSelectedEnrichedText(null);
         setClinicalTerms(null);
         setPreferredTarget(e.target);
-        setSelectedPreferredTerm(content.replace(/(<([^>]+)>)/gi, ''));
+        setSelectedPreferredTerm(content?.replace(/(<([^>]+)>)/gi, ''));
         setPreferredTerms(preferredContent?.data);
       }
       const modalOpened = document.createElement('span');
