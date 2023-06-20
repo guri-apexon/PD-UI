@@ -111,13 +111,43 @@ const selectionHeaderList = {
                 preferred_term: '',
               },
           },
+          enrollment: {
+            preferred_term: 'test1',
+            ontology: 'test2',
+            synonyms: '',
+            medical_term: '',
+            classification: '',
+          },
         },
       ],
     },
   ],
   sectionResponse: null,
 };
-
+const enrichedContent = {
+  data: {
+    enrollment: {
+      preferred_term: '',
+      ontology: 'meddra',
+      synonyms: 'ss',
+      medical_term: 'dd',
+      classification: 'cdc',
+      clinical_terms: 'Pain',
+    },
+  },
+  word: {
+    type: 'header',
+    font_info: {
+      roi_id: {
+        para: '31fbea8a-1204-4105-ad33-f414d1816045',
+      },
+      content: 'enrollment',
+      level: '1',
+      link_id_level: '1',
+      file_section_level: '1',
+    },
+  },
+};
 const mockDispatch = jest.fn();
 jest.mock('react-redux', () => ({
   useSelector: jest.fn(),
@@ -155,12 +185,13 @@ describe('rendering the Add Clinical Term Component', () => {
           roi_id: {
             para: '31fbea8a-1204-4105-ad33-f414d1816045',
           },
-          content: 'ABC',
+          content: 'enrollment',
         },
       },
     };
     useSelector.mockImplementation(() => state);
     useSelector.mockImplementation(() => selectionHeaderList);
+
     render(<AddClinicalTerm docId={1} linkId={2} />, {
       wordSelector: state,
     });
@@ -187,7 +218,7 @@ describe('rendering the Add Clinical Term Component', () => {
           roi_id: {
             para: '31fbea8a-1204-4105-ad33-f414d1816045',
           },
-          content: 'ABC',
+          content: 'enrollment',
         },
       },
     };
@@ -195,6 +226,7 @@ describe('rendering the Add Clinical Term Component', () => {
     useSelector.mockImplementation(() => selectionHeaderList);
     render(<AddClinicalTerm docId={1} linkId={2} />, {
       selectionHeaderList,
+      wordSelector: state,
     });
     userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
 
@@ -219,14 +251,17 @@ describe('rendering the Add Clinical Term Component', () => {
           roi_id: {
             para: '31fbea8a-1204-4105-ad33-f414d1816045',
           },
-          content: 'ABC',
+          content: 'enrollment',
         },
       },
     };
     useSelector.mockImplementation(() => state);
     useSelector.mockImplementation(() => selectionHeaderList);
+    useSelector.mockImplementation(() => enrichedContent);
     render(<AddClinicalTerm docId={1} linkId={2} />, {
       selectionHeaderList,
+      wordSelector: state,
+      enrichedContent,
     });
     userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
     const addButtonclinical = screen.getByTestId('add-tag');
@@ -238,5 +273,110 @@ describe('rendering the Add Clinical Term Component', () => {
     expect(screen.getByRole('button', { name: 'Add tag' })).toBeEnabled();
     userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
     expect(ontologyInput.value).toBe('Ontology Value');
+  });
+
+  test('enter the clinicalTerms, Ontology and Preferred-Terms TextFields and click on AddTag button2', () => {
+    const state = {
+      modal: true,
+      word: {
+        type: 'header',
+        font_info: {
+          roi_id: {
+            para: '31fbea8a-1204-4105-ad33-f414d1816045',
+          },
+          content: 'enrollment',
+        },
+      },
+    };
+    useSelector.mockImplementation(() => state);
+    useSelector.mockImplementation(() => selectionHeaderList);
+    useSelector.mockImplementation(() => enrichedContent);
+    render(<AddClinicalTerm docId={1} linkId={2} />, {
+      selectionHeaderList,
+      wordSelector: state,
+      enrichedContent,
+    });
+    userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
+    const field1 = screen
+      .getByTestId('clinicalTerms-text')
+      .querySelector('input');
+    expect(field1).toBeInTheDocument();
+    fireEvent.change(field1, { target: { value: 'some text' } });
+    expect(field1.value).toBe('some text');
+    const field2 = screen.getByTestId('ontology-text').querySelector('input');
+    expect(field2).toBeInTheDocument();
+    fireEvent.change(field2, { target: { value: 'some text' } });
+    expect(field2.value).toBe('some text');
+    const field3 = screen
+      .getByTestId('Preferred-term-text')
+      .querySelector('input');
+    expect(field3).toBeInTheDocument();
+    fireEvent.change(field3, { target: { value: 'pt_some_text' } });
+    expect(field3.value).toBe('pt_some_text');
+    fireEvent.change(field3, { target: { value: '' } });
+    expect(field3.value).toBe('');
+    fireEvent.change(field3, { target: { value: 'cpt_some_text' } });
+    expect(field3.value).toBe('cpt_some_text');
+    expect(screen.getByRole('button', { name: 'Add tag' })).toBeEnabled();
+    userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
+  });
+  test('enter the clinicalTerms, Ontology and Preferred-Terms TextFields and click on AddTag button3', () => {
+    const state = {
+      modal: true,
+      word: {
+        type: 'header',
+        font_info: {
+          roi_id: {
+            para: '31fbea8a-1204-4105-ad33-f414d1816045',
+          },
+          content: 'enrollment',
+        },
+      },
+    };
+    const enrichedContent = {
+      data: {
+        enrollment: {
+          preferred_term: 'cpt_test',
+          ontology: '',
+          synonyms: '',
+          medical_term: '',
+          classification: '',
+          clinical_terms: '',
+        },
+      },
+      word: {
+        type: 'header',
+        font_info: {
+          roi_id: {
+            para: '31fbea8a-1204-4105-ad33-f414d1816045',
+          },
+          content: 'enrollment',
+          level: '1',
+          link_id_level: '1',
+          file_section_level: '1',
+        },
+      },
+    };
+    useSelector.mockImplementation(() => state);
+    useSelector.mockImplementation(() => selectionHeaderList);
+    useSelector.mockImplementation(() => enrichedContent);
+    render(<AddClinicalTerm docId={1} linkId={2} />, {
+      selectionHeaderList,
+      wordSelector: state,
+      enrichedContent,
+    });
+    userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
+    const field1 = screen
+      .getByTestId('clinicalTerms-text')
+      .querySelector('input');
+    expect(field1).toBeInTheDocument();
+    fireEvent.change(field1, { target: { value: 'some text' } });
+    expect(field1.value).toBe('some text');
+    const field2 = screen.getByTestId('ontology-text').querySelector('input');
+    expect(field2).toBeInTheDocument();
+    fireEvent.change(field2, { target: { value: 'some text' } });
+    expect(field2.value).toBe('some text');
+    expect(screen.getByRole('button', { name: 'Add tag' })).toBeEnabled();
+    userEvent.click(screen.getByRole('button', { name: 'Add tag' }));
   });
 });
