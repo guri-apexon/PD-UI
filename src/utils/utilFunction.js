@@ -714,3 +714,13 @@ export const handleBoolean = (value) => {
   }
   return '';
 };
+
+export const removeHeaderTags = (text) => {
+  const cleanedText = text.replace(
+    /<h[1-6][^>]*>(.*?)<\/h[1-6]>/gi,
+    (match, group) => {
+      return group;
+    },
+  );
+  return cleanedText;
+};

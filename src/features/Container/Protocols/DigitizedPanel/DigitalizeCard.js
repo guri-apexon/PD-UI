@@ -25,7 +25,7 @@ import AddSection from './AddSection';
 import AddClinicalTerm from '../EnrichedContent/AddClinicalTerm';
 import DigitizeAccordion from './DigitizeAccordion';
 import { primaryUserFinalSubmit } from '../../Dashboard/constant';
-import { replaceHtmlTags } from './utils';
+import { removeHeaderTags } from '../../../../utils/utilFunction';
 
 function DigitalizeCard({
   sectionNumber,
@@ -88,7 +88,7 @@ function DigitalizeCard({
           if (x.source_file_section !== 'blank_header') {
             return {
               ...x,
-              source_file_section: replaceHtmlTags(x.source_file_section),
+              source_file_section: removeHeaderTags(x.source_file_section),
             };
           }
           return x;
