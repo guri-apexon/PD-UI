@@ -18,7 +18,7 @@ export const scrollToLinkandReference = (index, linkandReference) => {
         return el.textContent
           .trim()
           .toLowerCase()
-          .replaceAll('  ', ' ')
+          .replace(/\s+/g, ' ')
           .includes(linkandReference.trim().toLowerCase());
       });
       if (match) {
