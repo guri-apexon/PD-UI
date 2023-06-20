@@ -189,7 +189,7 @@ function PDTable({
     return bool;
   };
 
-  const handleSave = () => {
+  const handleSave = (e) => {
     if (checkBlankRows()) {
       setShowBlankRowModal(true);
       return;
@@ -331,7 +331,7 @@ function PDTable({
               {
                 size: 'small',
                 label: 'Save Table',
-                onClick: () => handleSave(),
+                onClick: (e) => handleSave(e),
               },
             ]}
           />
