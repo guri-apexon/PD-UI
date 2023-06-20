@@ -253,7 +253,9 @@ function DigitizeAccordion({
       setEnrichedTarget(null);
       setShowAlert(false);
       setShowEdit(false);
-      setCurrentEditCard(null);
+      if (item?.link_id === currentEditCard) {
+        setCurrentEditCard(null);
+      }
       const arr = activeTree.filter((x) => x !== item.link_id);
       dispatch(setActiveTOC(arr));
     }
