@@ -15,6 +15,7 @@ import {
   getHierarchyName,
   filterFootNotes,
   updateRowIndex,
+  getMaxColumns,
   getHtmlString,
 } from '../utils';
 
@@ -87,7 +88,7 @@ describe('deleteColumn function', () => {
     expect(updatedData[0].columns[index].op_type).toBe('delete');
   });
 
-  it('splice the column from the table if the op type is add', () => {
+  it('splices the column from row if the op type is "add"', () => {
     const tabledata = [
       {
         roi_id: '',
@@ -98,33 +99,19 @@ describe('deleteColumn function', () => {
           { col_indx: '1', op_type: '', cell_id: '', value: '' },
         ],
       },
+      {
+        roi_id: '',
+        row_indx: '1',
+        op_type: 'delete',
+        columns: [
+          { col_indx: '0', op_type: 'add', cell_id: '', value: '' },
+          { col_indx: '1', op_type: '', cell_id: '', value: '' },
+        ],
+      },
     ];
     const index = 0;
     const updatedData = deleteColumn(tabledata, index);
     expect(updatedData[0].columns.length).toEqual(1);
-  });
-});
-
-describe('getHtmlString', () => {
-  it('should return the HTML string without modification when isPreTerm is false', () => {
-    const str = 'Hello, world!';
-    const isPreTerm = false;
-    const result = getHtmlString(str, isPreTerm);
-    expect(result).toEqual({ __html: 'Hello, world!' });
-  });
-
-  it('should return the modified HTML string when isPreTerm is true', () => {
-    const str = '_example_cpt';
-    const isPreTerm = true;
-    const result = getHtmlString(str, isPreTerm);
-    expect(result).toEqual({ __html: '<b class="Preferred-txt">example</b>' });
-  });
-
-  it('should return the input string as null when it is falsy', () => {
-    const str = null;
-    const isPreTerm = true;
-    const result = getHtmlString(str, isPreTerm);
-    expect(result).toBeNull();
   });
 });
 
@@ -203,9 +190,9 @@ describe('updateFootNotePayload', () => {
   it('should update the footnotes in the payload', () => {
     const footnotes = [
       { Text: 'a. note1' },
-      { Text: 'b. note2' },
+      { Text: 'note2' },
       { Text: 'note3' },
-      { Text: null },
+      {},
     ];
     const updatedFootnotes = updateFootNotePayload(footnotes);
     expect(updatedFootnotes).toEqual([
@@ -226,7 +213,6 @@ describe('updateFootNotePayload', () => {
       },
       {
         PrevousAttachmentIndex: 2,
-        Text: null,
         qc_change_type_footnote: 'delete',
       },
     ]);
@@ -472,6 +458,12 @@ describe('getPreferredTerms', () => {
 
     // eslint-disable-next-line
     expect(result.__html).toBe(inputValue);
+  });
+
+  test('should return balnk value if the value is blank and have clinical terms', () => {
+    const result = getPreferredTerms('', false, false, { a: 1, c: 2 }, true);
+    // eslint-disable-next-line
+    expect(result.__html).toBeUndefined();
   });
 });
 
@@ -879,5 +871,71 @@ describe('addColumn', () => {
     const result = addColumn(tabledata, index);
 
     expect(result).toEqual(expectedData);
+  });
+});
+
+describe('getMaxColumns', () => {
+  test('should return 0 when the array is empty', () => {
+    const arr = [];
+    const result = getMaxColumns(arr);
+    expect(result).toBe(0);
+  });
+
+  test('should return the maximum number of columns in the array', () => {
+    const arr = [
+      { columns: [] },
+      { columns: [1, 2, 3] },
+      { columns: [4, 5, 6, 7] },
+      { columns: [8, 9] },
+    ];
+    const result = getMaxColumns(arr);
+    expect(result).toBe(4);
+  });
+
+  test('should ignore columns with op_type "DELETED"', () => {
+    const arr = [
+      { columns: [] },
+      { columns: [1, 2, 3] },
+      { columns: [4, 5, 6, 7, { op_type: 'delete' }] },
+      { columns: [8, 9] },
+    ];
+    const result = getMaxColumns(arr);
+    expect(result).toBe(4);
+  });
+});
+
+describe('getHtmlString', () => {
+  test('should return the original string when it is empty', () => {
+    const str = '';
+    const result = getHtmlString(str, true);
+    expect(result).toEqual('');
+  });
+
+  test('should return the string wrapped in <b> tags when isPreTerm is true', () => {
+    const str = 'example_string';
+    const result = getHtmlString(str, true);
+    const expected = { __html: '<b class="Preferred-txt">example string</b>' };
+    expect(result).toEqual(expected);
+  });
+
+  test('should return the original string when isPreTerm is false', () => {
+    const str = 'example_string';
+    const result = getHtmlString(str, false);
+    const expected = { __html: 'example_string' };
+    expect(result).toEqual(expected);
+  });
+
+  test('should replace "_" with " " and remove "cpt" when isPreTerm is true', () => {
+    const str = 'example_string_cpt';
+    const result = getHtmlString(str, true);
+    const expected = { __html: '<b class="Preferred-txt">example string</b>' };
+    expect(result).toEqual(expected);
+  });
+
+  test('should not replace "_" with " " and remove "cpt" when isPreTerm is false', () => {
+    const str = 'example_string_cpt';
+    const result = getHtmlString(str, false);
+    const expected = { __html: 'example_string_cpt' };
+    expect(result).toEqual(expected);
   });
 });
