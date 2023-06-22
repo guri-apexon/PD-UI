@@ -116,6 +116,7 @@ function DipaViewStructure({
         <IconButton
           data-testid="pencil-tooltip"
           disabled={!isAccordianExpanded}
+          className="pencil-menubutton"
         >
           <Pencil data-testid="edit-button" onClick={onPencilIconClick} />
         </IconButton>
@@ -204,7 +205,10 @@ function DipaViewStructure({
                 disableTouchListener
                 open={tooltip}
               >
-                <IconButton data-testid="eyeshow-tooltip">
+                <IconButton
+                  data-testid="eyeshow-tooltip"
+                  className="iconbutton"
+                >
                   <EyeShow
                     data-testid="eyeshow-tooltip-icon"
                     onMouseEnter={() => setTooltip(true)}
@@ -220,14 +224,16 @@ function DipaViewStructure({
                     segments.map((seg) => seg.ID).includes(listItem),
                   )) ||
                 (editingIDList.length > 0 && editingIDList?.includes(ID)) ? (
-                  <Save
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleUpdate();
-                    }}
-                    data-testid="save"
-                    className="save-button"
-                  />
+                  <IconButton className="save-menubutton">
+                    <Save
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleUpdate();
+                      }}
+                      data-testid="save"
+                      className="save-button"
+                    />
+                  </IconButton>
                 ) : (
                   pencilTooltip()
                 )}
@@ -239,7 +245,11 @@ function DipaViewStructure({
         <AccordionDetails className="accordion-details">
           <Grid item xs={2} className="accordion-details-grid">
             <Grid className="trash-plus-grid">
-              <IconMenuButton id="actions" menuItems={menuItems}>
+              <IconMenuButton
+                id="actions"
+                menuItems={menuItems}
+                className="plus-menubutton"
+              >
                 <Plus data-testid="plus-icon" />
               </IconMenuButton>
               <IconButton
