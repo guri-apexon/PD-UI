@@ -125,6 +125,7 @@ function Navbar() {
         onClick: () => {
           handleSetting();
         },
+        'data-testid': 'handle-setting',
       },
     ],
   };

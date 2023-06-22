@@ -12,6 +12,7 @@ import {
   preloadedData,
   preloadedDataForLab,
   preloadedDataForDipaView,
+  mockStateDataForEmptyLockDetails,
 } from './data';
 import preloadedStateData from './tableData';
 // eslint-disable-next-line
@@ -162,5 +163,24 @@ describe('Digitalize Card Component', () => {
       />,
       preloadedStateDipaView,
     );
+  });
+
+  test('when right Blade value as Schedule of ACTIVITIES ', () => {
+    const screen = render(
+      <DigitalizeCard
+        // sectionNumber={0}
+        sectionRef={sectionRefValue}
+        data={dataValueTest}
+        paginationPage={0}
+        handlePageRight={jest.fn()}
+        globalPreferredTerm={false}
+        handleRightFullScreen={jest.fn()}
+        dataExist
+      />,
+      mockStateDataForEmptyLockDetails,
+    );
+
+    const addsection = screen.getByTestId('add-section');
+    fireEvent.click(addsection);
   });
 });

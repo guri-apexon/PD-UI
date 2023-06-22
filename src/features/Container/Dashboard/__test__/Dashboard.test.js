@@ -41,6 +41,23 @@ describe('Protocol Table container component with empty and default values', () 
     expect(screen.queryByTestId('API-Error')).not.toBeInTheDocument();
   });
 
+  test('should render Dashboard API Error', () => {
+    const preloadedState = {
+      initialState: {
+        dashboard: {
+          apiError: true,
+          workflowSubmit: {
+            loading: false,
+            error: null,
+            data: [],
+            success: false,
+          },
+        },
+      },
+    };
+    render(<Dashboard />, preloadedState);
+  });
+
   test('should the Send To QC Review button be disabled', () => {
     render(<Dashboard />, state);
     // screen.getByTestId(/Send To QC Review/);

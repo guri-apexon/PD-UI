@@ -50,3 +50,26 @@ describe('<Pipeline/>', () => {
     expect(status).toBeInTheDocument();
   });
 });
+const setup1 = (state) => {
+  const fetchMoreData = jest.fn();
+  const container = renderWithProviders(
+    <PipelineModal
+      wfData={[]}
+      fetchMoreData={fetchMoreData}
+      showMore={false}
+    />,
+    {
+      preloadedState: state,
+    },
+  );
+  return container;
+};
+
+describe('<Pipeline/>', () => {
+  test('Render pipeline screen', async () => {
+    setup1(initialStateSuccess);
+    const status = screen.queryByText(/See More/i);
+    fireEvent.click(status);
+    expect(status).toBeInTheDocument();
+  });
+});
