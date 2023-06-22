@@ -27,11 +27,20 @@ export const updateTable = (data, content, rowIndex, columnIndex) => {
   return cloneData;
 };
 
+export const getMaxColumns = (arr) => {
+  let maxColumns = 0;
+  arr.forEach((item) => {
+    const cols = item.columns.filter((x) => x.op_type !== 'delete');
+    if (cols.length > maxColumns) {
+      maxColumns = cols.length;
+    }
+  });
+  return maxColumns;
+};
+
 export const addRow = (rows, index) => {
   const data = cloneDeep(rows);
-  const emptyRow = createEmptyRow(
-    data[0].columns.filter((x) => x.op_type !== QC_CHANGE_TYPE.DELETED).length,
-  );
+  const emptyRow = createEmptyRow(getMaxColumns(data));
   const newEmptyRow = {
     row_indx: index.toString(),
     roi_id: '',
@@ -72,12 +81,14 @@ export const addColumn = (tabledata, index) => {
 export const deleteColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   data.forEach((record) => {
-    if (record.columns[index].op_type === QC_CHANGE_TYPE.ADDED) {
-      record.columns.splice(index, 1);
-    } else {
-      record.op_type = record.op_type || QC_CHANGE_TYPE.UPDATED;
-      record.columns[index].value = `<s>${record.columns[index].value}</s>`;
-      record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
+    if (record.op_type !== QC_CHANGE_TYPE.DELETED) {
+      if (record.columns[index].op_type === QC_CHANGE_TYPE.ADDED) {
+        record.columns.splice(index, 1);
+      } else {
+        record.op_type = record.op_type || QC_CHANGE_TYPE.UPDATED;
+        record.columns[index].value = `<s>${record.columns[index].value}</s>`;
+        record.columns[index].op_type = QC_CHANGE_TYPE.DELETED;
+      }
     }
   });
   return data;
