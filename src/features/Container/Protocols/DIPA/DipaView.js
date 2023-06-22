@@ -487,7 +487,10 @@ function DipaView({
               </Grid>
               <Grid item xs={1} className="section-delete-btn">
                 <Tooltip title="Add Section" disableFocusListener>
-                  <IconButton onClick={() => addGroup()}>
+                  <IconButton
+                    onClick={() => addGroup()}
+                    className="plus-menubutton"
+                  >
                     <Plus />
                   </IconButton>
                 </Tooltip>

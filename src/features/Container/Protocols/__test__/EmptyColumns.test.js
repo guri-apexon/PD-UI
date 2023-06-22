@@ -72,3 +72,22 @@ describe('handleClickOutside', () => {
     expect(hoverList).not.toHaveClass('open');
   });
 });
+describe('handleClickOutside', () => {
+  it('should close the dropdown when a click occurs outside the dropdown container', () => {
+    const handleOperationMock = jest.fn();
+    const { container } = render(
+      <EmptyColumnCells
+        columnIndexes={[0, 1]}
+        handleOperation={handleOperationMock}
+      />,
+    );
+    const moreIcon = container.querySelector('[data-testId="more-icon"]');
+    const hoverList = container.querySelector('[data-testId="hover-list"]');
+
+    fireEvent.click(moreIcon);
+
+    fireEvent.mouseUp(document);
+
+    expect(hoverList).not.toHaveClass('open');
+  });
+});

@@ -6,6 +6,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import TabelContext from './Context';
 import { TableConst, TableEvents } from './Constants';
 import GridContext from './Context/GridContext';
+import HTMLCellRenderer from './CellRenderers/HTMLCellRenderer';
 import './SOA.scss';
 
 function SOATable() {
@@ -114,6 +115,7 @@ function SOATable() {
           'line-height': '24px',
           wordBreak: 'normal',
         },
+        cellRenderer: HTMLCellRenderer,
       },
     ];
   }, []);

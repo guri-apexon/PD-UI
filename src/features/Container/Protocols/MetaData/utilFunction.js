@@ -2,7 +2,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import isObject from 'lodash/isObject';
 import moment from 'moment';
 
-const formattedValue = (type, val) => {
+export const formattedValue = (type, val) => {
   let payloadData = val;
   if (type === 'boolean') {
     payloadData = payloadData?.toString();
@@ -13,7 +13,7 @@ const formattedValue = (type, val) => {
   return payloadData;
 };
 
-const findLatestTimestamp = (data) => {
+export const findLatestTimestamp = (data) => {
   const sortedList = data?.sort((a, b) => {
     return new Date(b.last_updated) - new Date(a.last_updated);
   });

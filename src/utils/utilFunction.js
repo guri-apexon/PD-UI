@@ -350,7 +350,7 @@ const setContent = (type) => {
     case CONTENT_TYPE.TEXT:
       return '';
     case CONTENT_TYPE.HEADER:
-      return '<h2>Edit Your Text Here</h2>';
+      return '';
     case CONTENT_TYPE.TABLE:
       return {
         Table: '',
@@ -680,7 +680,7 @@ export const createReturnObj = (obj, linkId) => {
 
 export const getSaveSectionPayload = (sectionContent, linkId) => {
   let req = [...sectionContent]
-    .filter((x) => x.qc_change_type !== '')
+    .filter((x) => x.qc_change_type !== '' && x?.content !== '')
     .map((obj) => createReturnObj(obj, linkId));
   req = req.filter(
     (x) =>

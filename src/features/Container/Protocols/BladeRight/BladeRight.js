@@ -140,7 +140,7 @@ function BladeRight({
                 onChange={handleChangeGlobalPreferredTerm}
                 data-testId="preferred-term-switch"
                 disabled={
-                  !dataSummary?.userPrimaryRoleFlag || tocSelector.errorMsg
+                  !dataSummary?.userPrimaryRoleFlag || tocSelector?.errorMsg
                 }
               />
             </div>
