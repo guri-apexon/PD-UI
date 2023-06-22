@@ -15,6 +15,7 @@ import {
   getHierarchyName,
   filterFootNotes,
   updateRowIndex,
+  getHtmlString,
 } from '../utils';
 
 describe('addRow function', () => {
@@ -84,6 +85,46 @@ describe('deleteColumn function', () => {
     const updatedData = deleteColumn(tabledata, index);
     expect(updatedData[0].columns[index].value).toContain('<s>');
     expect(updatedData[0].columns[index].op_type).toBe('delete');
+  });
+
+  it('splice the column from the table if the op type is add', () => {
+    const tabledata = [
+      {
+        roi_id: '',
+        row_indx: '0',
+        op_type: '',
+        columns: [
+          { col_indx: '0', op_type: 'add', cell_id: '', value: '' },
+          { col_indx: '1', op_type: '', cell_id: '', value: '' },
+        ],
+      },
+    ];
+    const index = 0;
+    const updatedData = deleteColumn(tabledata, index);
+    expect(updatedData[0].columns.length).toEqual(1);
+  });
+});
+
+describe('getHtmlString', () => {
+  it('should return the HTML string without modification when isPreTerm is false', () => {
+    const str = 'Hello, world!';
+    const isPreTerm = false;
+    const result = getHtmlString(str, isPreTerm);
+    expect(result).toEqual({ __html: 'Hello, world!' });
+  });
+
+  it('should return the modified HTML string when isPreTerm is true', () => {
+    const str = '_example_cpt';
+    const isPreTerm = true;
+    const result = getHtmlString(str, isPreTerm);
+    expect(result).toEqual({ __html: '<b class="Preferred-txt">example</b>' });
+  });
+
+  it('should return the input string as null when it is falsy', () => {
+    const str = null;
+    const isPreTerm = true;
+    const result = getHtmlString(str, isPreTerm);
+    expect(result).toBeNull();
   });
 });
 
@@ -160,7 +201,12 @@ describe('swapElements', () => {
 
 describe('updateFootNotePayload', () => {
   it('should update the footnotes in the payload', () => {
-    const footnotes = [{ Text: 'note1' }, { Text: 'note2' }, { Text: 'note3' }];
+    const footnotes = [
+      { Text: 'a. note1' },
+      { Text: 'b. note2' },
+      { Text: 'note3' },
+      { Text: null },
+    ];
     const updatedFootnotes = updateFootNotePayload(footnotes);
     expect(updatedFootnotes).toEqual([
       {
@@ -177,6 +223,11 @@ describe('updateFootNotePayload', () => {
         PrevousAttachmentIndex: 1,
         Text: 'c. note3',
         qc_change_type_footnote: 'modify',
+      },
+      {
+        PrevousAttachmentIndex: 2,
+        Text: null,
+        qc_change_type_footnote: 'delete',
       },
     ]);
   });
@@ -228,66 +279,6 @@ describe('swapColumnElements function', () => {
     const actualData = swapColumnElements(data, 0, 1);
 
     expect(actualData[0].columns[0].value).toEqual('B');
-  });
-});
-
-describe('filterTableProperties', () => {
-  const data = [
-    {
-      row_indx: '0',
-      roi_id: '46bcd107-d095-4db1-931d-2b4d80719c27',
-      op_type: 'modify',
-      columns: [
-        {
-          col_indx: '0',
-          op_type: 'modify',
-          cell_id: 'b648e887-eb70-4fd3-ba55-daa307b66cd0',
-          value: '<p><div>11</div></p>',
-        },
-        {
-          col_indx: '1',
-          op_type: 'modify',
-          cell_id: '78aa2565-979b-464a-aaf7-25697beaeadb',
-          value: '12<p><div><p></p><div></div><p></p></div></p>',
-        },
-        {
-          col_indx: '2',
-          op_type: 'modify',
-          cell_id: '074d1e0a-6ee2-4102-ab1e-15ab5260d4b6',
-          value: '<p><div><p></p><div>13</div><p></p></div></p>',
-        },
-      ],
-    },
-    {
-      row_indx: '1',
-      roi_id: '4e398ad4-8991-43a1-8fd9-f8c2a0ef5895',
-      op_type: 'modify',
-      columns: [
-        {
-          col_indx: '0',
-          op_type: 'modify',
-          cell_id: '7bbb0b8d-cb25-4927-90b3-4a909ae99fe8',
-          value: '<p><div>21</div></p>',
-        },
-        {
-          col_indx: '1',
-          op_type: 'modify',
-          cell_id: 'd33340ea-fa2e-4e81-9da2-bddb9935ac75',
-          value: '22<p><div></div></p>',
-        },
-        {
-          col_indx: '2',
-          op_type: 'modify',
-          cell_id: '89381785-2efb-4cb5-b213-33db7f13d8e9',
-          value: '<p><div>23</div></p>',
-        },
-      ],
-    },
-  ];
-
-  it('should not filter data if searchValue is not found', () => {
-    const filteredData = filterTableProperties(data);
-    expect(filteredData.length).toEqual(2);
   });
 });
 
@@ -405,6 +396,12 @@ describe('getPreferredTerms', () => {
     );
     // eslint-disable-next-line
     expect(result.__html).toBe(expectedHtmlString);
+  });
+
+  it('should return the input string as null when the input string is falsy', () => {
+    const val = '';
+    const result = getPreferredTerms(val, false, null, clinicalTerms, true);
+    expect(result).toBe('');
   });
 
   test('should return input value without <b> tag if it does not exist in preferredTerms and isPreferredTerm is true', () => {
@@ -562,6 +559,63 @@ describe('updateRowIndex', () => {
 });
 
 describe('filterTableProperties', () => {
+  it('should not filter data if searchValue is not found', () => {
+    const data = [
+      {
+        row_indx: '0',
+        roi_id: '46bcd107-d095-4db1-931d-2b4d80719c27',
+        op_type: 'modify',
+        columns: [
+          {
+            col_indx: '0',
+            op_type: 'modify',
+            cell_id: 'b648e887-eb70-4fd3-ba55-daa307b66cd0',
+            value: '<p><div>11</div></p>',
+          },
+          {
+            col_indx: '1',
+            op_type: 'modify',
+            cell_id: '78aa2565-979b-464a-aaf7-25697beaeadb',
+            value: '12<p><div><p></p><div></div><p></p></div></p>',
+          },
+          {
+            col_indx: '2',
+            op_type: 'modify',
+            cell_id: '074d1e0a-6ee2-4102-ab1e-15ab5260d4b6',
+            value: '<p><div><p></p><div>13</div><p></p></div></p>',
+          },
+        ],
+      },
+      {
+        row_indx: '1',
+        roi_id: '4e398ad4-8991-43a1-8fd9-f8c2a0ef5895',
+        op_type: 'modify',
+        columns: [
+          {
+            col_indx: '0',
+            op_type: 'modify',
+            cell_id: '7bbb0b8d-cb25-4927-90b3-4a909ae99fe8',
+            value: '<p><div>21</div></p>',
+          },
+          {
+            col_indx: '1',
+            op_type: 'modify',
+            cell_id: 'd33340ea-fa2e-4e81-9da2-bddb9935ac75',
+            value: '22<p><div></div></p>',
+          },
+          {
+            col_indx: '2',
+            op_type: 'modify',
+            cell_id: '89381785-2efb-4cb5-b213-33db7f13d8e9',
+            value: '<p><div>23</div></p>',
+          },
+        ],
+      },
+    ];
+    const filteredData = filterTableProperties(data);
+    expect(filteredData.length).toEqual(2);
+  });
+
   test('should filter data with op_type property', () => {
     const data = [
       {
@@ -591,6 +645,46 @@ describe('filterTableProperties', () => {
     ];
 
     const filteredData = filterTableProperties(data);
+
+    expect(filteredData).toHaveLength(3);
+    expect(filteredData[0].op_type).toBe('add');
+    expect(filteredData[0].columns).toHaveLength(1);
+    expect(filteredData[0].columns[0].op_type).toBe('modify');
+    expect(filteredData[1].op_type).toBe('delete');
+    expect(filteredData[1].columns).toHaveLength(0);
+    expect(filteredData[2].columns[0].op_type).toBe('modify');
+    expect(filteredData[2].columns[1].op_type).toBe('delete');
+  });
+
+  test('should parse the table if the  data is stringified', () => {
+    const data = [
+      {
+        row_indx: '0',
+        op_type: 'add',
+        columns: [
+          { col_indx: '0', op_type: 'modify' },
+          { col_indx: '1', op_type: 'delete' },
+        ],
+      },
+      {
+        row_indx: '1',
+        op_type: 'delete',
+        columns: [
+          { col_indx: '0', op_type: 'modify' },
+          { col_indx: '1', op_type: 'delete' },
+        ],
+      },
+      {
+        row_indx: '2',
+        op_type: 'modify',
+        columns: [
+          { col_indx: '0', op_type: 'modify' },
+          { col_indx: '1', op_type: 'delete' },
+        ],
+      },
+    ];
+
+    const filteredData = filterTableProperties(JSON.stringify(data));
 
     expect(filteredData).toHaveLength(3);
     expect(filteredData[0].op_type).toBe('add');
