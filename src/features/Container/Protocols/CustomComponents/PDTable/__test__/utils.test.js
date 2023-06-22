@@ -189,7 +189,7 @@ describe('swapElements', () => {
 describe('updateFootNotePayload', () => {
   it('should update the footnotes in the payload', () => {
     const footnotes = [
-      { Text: 'a. note1' },
+      { Text: 'note1' },
       { Text: 'note2' },
       { Text: 'note3' },
       {},
@@ -198,18 +198,19 @@ describe('updateFootNotePayload', () => {
     expect(updatedFootnotes).toEqual([
       {
         PrevousAttachmentIndex: null,
-        Text: 'a. note1',
-        qc_change_type_footnote: 'modify',
+        Text: 'note1',
       },
       {
         PrevousAttachmentIndex: 0,
-        Text: 'b. note2',
-        qc_change_type_footnote: 'modify',
+        Text: 'note2',
       },
       {
         PrevousAttachmentIndex: 1,
-        Text: 'c. note3',
-        qc_change_type_footnote: 'modify',
+        Text: 'note3',
+      },
+      {
+        PrevousAttachmentIndex: 2,
+        qc_change_type_footnote: 'delete',
       },
       {
         PrevousAttachmentIndex: 2,
@@ -476,18 +477,13 @@ describe('filterFootNotes', () => {
     ];
     const expectedFilteredData = [
       {
-        PrevousAttachmentIndex: null,
-        Text: 'a. First footnote',
-        qc_change_type_footnote: 'modify',
-      },
-      {
         PrevousAttachmentIndex: 0,
-        Text: 'b. Second footnote',
+        Text: 'Second footnote',
         qc_change_type_footnote: 'add',
       },
       {
         PrevousAttachmentIndex: 1,
-        Text: 'c. Third footnote',
+        Text: 'Third footnote',
         qc_change_type_footnote: 'add',
       },
     ];
