@@ -54,6 +54,8 @@ import protocolPageSlice, {
   getPreferredTerm,
   updateSectionHeader,
   resetLabDataCreated,
+  setLinkreference,
+  setLabDataCreated,
 } from '../protocolSlice';
 
 import resetUpdateStatusinitialState from './initialState.json';
@@ -87,6 +89,7 @@ const initialState = {
     data: [1, 2],
     success: false,
     loading: false,
+    created: false,
   },
   discardValue: {
     isEdited: false,
@@ -97,6 +100,7 @@ const initialState = {
   sectionLockDetails: {},
   enrichedword: {},
   dipaViewData: { loading: true },
+  linkReference: null,
 };
 
 const initialStaTe = {
@@ -573,7 +577,7 @@ describe(' ProtocolSlice Test Suite', () => {
       }),
     ).toEqual({
       ...initialState,
-      labData: labDataTemp,
+      labData: { ...labDataTemp, created: false },
     });
   });
 
@@ -591,7 +595,7 @@ describe(' ProtocolSlice Test Suite', () => {
       }),
     ).toEqual({
       ...initialState,
-      labData: labDataTemp,
+      labData: { ...labDataTemp, created: false },
     });
   });
 
@@ -609,7 +613,7 @@ describe(' ProtocolSlice Test Suite', () => {
       }),
     ).toEqual({
       ...initialState,
-      labData: labDataTemp,
+      labData: { ...labDataTemp, created: false },
     });
   });
 
@@ -832,10 +836,8 @@ describe(' ProtocolSlice Test Suite', () => {
     metadataApiCallValue(state);
     EnrichedValue(state);
   });
-});
 
-describe('updateSectionHeader', () => {
-  test('updates section header correctly when link ID is found', () => {
+  test('updateSectionHeader', () => {
     const state = {
       protocolTocData: {
         data: [
@@ -847,39 +849,45 @@ describe('updateSectionHeader', () => {
     };
 
     const action = {
+      type: updateSectionHeader.type,
       payload: {
-        linkId: '2',
-        content: [{ link_text: 'New Section 2' }],
-      },
-    };
-
-    updateSectionHeader(state, action);
-
-    expect(state.protocolTocData.data[1].source_file_section).toBe('Section 2');
-  });
-
-  test('does not update section header when link ID is not found', () => {
-    const state = {
-      protocolTocData: {
-        data: [
-          { link_id: '1', source_file_section: 'Section 1' },
-          { link_id: '2', source_file_section: 'Section 2' },
-          { link_id: '3', source_file_section: 'Section 3' },
-        ],
-      },
-    };
-
-    const action = {
-      payload: {
-        linkId: '4', // Link ID not present in state
+        linkId: '3', // Link ID not present in state
         content: [{ link_text: 'New Section' }],
       },
     };
 
-    updateSectionHeader(state, action);
+    const newState = protocolPageSlice(state, action);
+    expect(newState.protocolTocData.data[2].source_file_section).toBe(
+      'New Section',
+    );
+  });
 
-    expect(state.protocolTocData.data[0].source_file_section).toBe('Section 1');
-    expect(state.protocolTocData.data[1].source_file_section).toBe('Section 2');
-    expect(state.protocolTocData.data[2].source_file_section).toBe('Section 3');
+  test('setLinkreference', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setLinkreference.type,
+        payload: 'https://example.com',
+      }),
+    ).toEqual({
+      ...initialState,
+      linkReference: 'https://example.com',
+    });
+  });
+
+  test('setLabDataCreated', () => {
+    expect(
+      protocolPageSlice(initialState, {
+        type: setLabDataCreated.type,
+        payload: { data: ['a', 'b'], status: true },
+      }),
+    ).toEqual({
+      ...initialState,
+      labData: {
+        data: ['a', 'b'],
+        success: false,
+        loading: false,
+        created: true,
+      },
+    });
   });
 });

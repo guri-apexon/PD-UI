@@ -7,11 +7,10 @@ describe('HoverList', () => {
     { id: 2, image: '<i class="fas fa-minus"></i>', text: 'Remove' },
   ];
   const handleOperation = jest.fn();
-  const index = 0;
 
   it('renders data', () => {
     const { getByText } = render(
-      <HoverList data={data} handleOperation={handleOperation} index={index} />,
+      <HoverList data={data} handleOperation={handleOperation} index={0} />,
     );
     data.forEach((item) => {
       expect(getByText(item.text)).toBeInTheDocument();
@@ -20,9 +19,9 @@ describe('HoverList', () => {
 
   it('calls handleOperation on click', () => {
     const { getByText } = render(
-      <HoverList data={data} handleOperation={handleOperation} index={index} />,
+      <HoverList data={data} handleOperation={handleOperation} index={1} />,
     );
     fireEvent.click(getByText(data[0].text));
-    expect(handleOperation).toHaveBeenCalledWith(data[0].id, index);
+    expect(handleOperation).toHaveBeenCalledWith(data[0].id, 1);
   });
 });

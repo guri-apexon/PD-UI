@@ -111,20 +111,23 @@ function Protocols({ location }) {
   }, [dispatch, location]);
   /* istanbul ignore next */
 
-  const handleChangeTab = (event, value) => {
+  const handleChangeTab = (event, val) => {
     if (discardData?.isEdited || discardData?.labEdited) {
       dispatch({
         type: 'DISCARD_DETAILS',
         payload: {
           isEdited: true,
           isDiscarded: true,
-          protocolTab: value,
+          protocolTab: val,
           bladeRight: {},
           labEdited: true,
         },
       });
     } else {
-      setValue(value);
+      if (val === value) {
+        return;
+      }
+      setValue(val);
       dispatch(resetProtocolTocData());
       dispatch(setActiveTOC([]));
       dispatch({

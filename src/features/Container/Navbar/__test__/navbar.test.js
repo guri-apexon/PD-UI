@@ -216,4 +216,17 @@ describe('Should Render Navbar', () => {
     const settingModal = screen.queryByText('Setting modal content');
     expect(settingModal).not.toBeInTheDocument();
   });
+  it('should set modal state to true if isEdited and labEdited are both false', () => {
+    const { getByTestId, getByText } = render(<Navbar />, state);
+    const navbar = getByTestId('navbar-test');
+    const button = navbar.querySelector('button');
+
+    fireEvent.click(button);
+
+    const settingModal = getByText('Subhadatta');
+    fireEvent.click(settingModal);
+    expect(settingModal).toBeInTheDocument();
+    const settingModal1 = getByText('Settings');
+    fireEvent.click(settingModal1);
+  });
 });

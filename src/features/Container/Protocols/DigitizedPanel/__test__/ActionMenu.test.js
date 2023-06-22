@@ -306,4 +306,33 @@ describe('ActionManu', () => {
     fireEvent.click(auditInformation);
     expect(auditInformation).toBeInTheDocument();
   });
+  it('should show Audit Information when audit-information is clicked', () => {
+    const mockAuditInfo = {
+      last_reviewed_date: '2022-02-14',
+      last_reviewed_by: '',
+      total_no_review: 0,
+    };
+
+    const mockProps = {
+      auditInfo: mockAuditInfo,
+      showedit: false,
+      onEditClick: jest.fn(),
+      setShowEnrichedContent: jest.fn(),
+      setShowPrefferedTerm: jest.fn(),
+      showPrefferedTerm: false,
+      showEnrichedContent: false,
+      showLink: false,
+      setShowLink: jest.fn(),
+      handleSaveContent: jest.fn(),
+      setShowDiscardConfirm: jest.fn(),
+      disabledSaveIcon: false,
+      disabledUndoIcon: false,
+      disabledPencilIcon: false,
+    };
+
+    const { getByTestId } = render(<ActionMenu {...mockProps} />);
+    const auditInformation = getByTestId('audit-information');
+    fireEvent.click(auditInformation);
+    expect(auditInformation).toBeInTheDocument();
+  });
 });

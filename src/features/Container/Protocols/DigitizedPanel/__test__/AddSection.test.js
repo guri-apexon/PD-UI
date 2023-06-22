@@ -195,4 +195,20 @@ describe('AddSection', () => {
 
     expect(toastInfo).toHaveBeenCalledWith('Enter Required Field');
   });
+  it('should render the component without errors', () => {
+    const { getByText } = render(
+      <Provider store={store}>
+        <AddSection
+          setIsModal={setIsModalMock}
+          hoverItem={hoverItemMock}
+          hoverIndex={hoverIndexMock}
+          isModal={isModal}
+        />
+      </Provider>,
+    );
+    const input = screen.getByTestId('update-term-field1');
+    fireEvent.change(input, { target: { value: 'newValue' } });
+    const addButton = getByText('Cancel');
+    fireEvent.click(addButton);
+  });
 });

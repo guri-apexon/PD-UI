@@ -180,12 +180,16 @@ function PDTable({
 
   const checkBlankRows = () => {
     let bool = false;
-    updatedData.forEach((row) => {
-      const arr = row.columns.filter((col) => removeHtmlTags(col.value) !== '');
-      if (arr.length === 0) {
-        bool = true;
-      }
-    });
+    updatedData
+      .filter((row) => row.op_type !== QC_CHANGE_TYPE.DELETED)
+      .forEach((row) => {
+        const arr = row.columns.filter(
+          (col) => removeHtmlTags(col.value) !== '',
+        );
+        if (arr.length === 0) {
+          bool = true;
+        }
+      });
     return bool;
   };
 

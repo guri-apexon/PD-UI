@@ -232,6 +232,7 @@ function DigitalizeCard({
                   variant="secondary"
                   size="small"
                   onClick={() => setIsModal(true)}
+                  data-testid="add-section"
                 >
                   <Plus /> Add Section
                 </Button>
