@@ -212,6 +212,10 @@ describe('updateFootNotePayload', () => {
         PrevousAttachmentIndex: 2,
         qc_change_type_footnote: 'delete',
       },
+      {
+        PrevousAttachmentIndex: 2,
+        qc_change_type_footnote: 'delete',
+      },
     ]);
   });
 
