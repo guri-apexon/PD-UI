@@ -12,23 +12,23 @@ const initialState = {
     labData: {
       data: [
         {
-          parameter_text: 'B-Haemoglobin',
-          id: '0ea3f9c3-a06b-11ed-8a01-005056ab26e5',
+          parameter_text: 'aa',
+          id: '0ea3f9c3-a06b-11ed-8a01-005056ab26e51',
           run_id: '',
-          procedure_panel_text: 'Haematology/Haemostasis (whole blood)',
+          procedure_panel_text: 'aa',
           dts: '20230130065337',
-          ProcessMachineName: '',
-          roi_id: '2c367d6a-6b89-4d83-b717-a26656634ce8',
+          ProcessMachineName: 'aa',
+          roi_id: '2c367d6a-6b89-4d83-b717-a26656634ce81',
           section: '',
           soft_delete: true,
           table_roi_id: '6390ad37-2904-45c5-a1b7-a6313f8cbb6c',
           parameter: '',
           doc_id: '3b44c1d5-f5f7-44ab-901a-3f53c2ba751d',
           procedure_panel: '',
-          assessment: 'Hematology',
+          assessment: 'aaaa',
           pname: '',
           ProcessVersion: '',
-          table_link_text: 'Table 7 Laboratory Safety Variables',
+          table_link_text: 'Pulmonology',
           table_sequence_index: -1,
           isUpdate: true,
         },
@@ -189,6 +189,60 @@ describe('LabData', () => {
     fireEvent.click(saveall);
   });
 
+  test('handleSave function error', () => {
+    const screen = render(<LabData docId={docId} />, { initialState });
+    fireEvent.click(screen.getByTestId('editall'));
+    expect(screen.getAllByTestId('ellipsis-icon')[0]).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId('ellipsis-icon')[0]);
+    expect(screen.getByText('Edit')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Edit'));
+    const inputElement = screen.getByDisplayValue('Pulmonology');
+    expect(inputElement).toBeInTheDocument();
+    fireEvent.change(inputElement, {
+      target: { value: 'Pulmonology edited' },
+    });
+    const saveall = screen.getByTestId('saveall');
+    expect(saveall).toBeInTheDocument();
+    fireEvent.click(saveall);
+  });
+
+  test('handleSave function success', () => {
+    const screen = render(<LabData docId={docId} />, { initialState });
+    fireEvent.click(screen.getByTestId('editall'));
+    expect(screen.getAllByTestId('ellipsis-icon')[0]).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId('ellipsis-icon')[0]);
+    expect(screen.getByText('Edit')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Edit'));
+    const inputElement = screen.getByDisplayValue('Pulmonology');
+    expect(inputElement).toBeInTheDocument();
+    fireEvent.change(inputElement, {
+      target: { value: 'Pulmonology edited' },
+    });
+    fireEvent.click(screen.getByText('Save'));
+    const saveall = screen.getByTestId('saveall');
+    expect(saveall).toBeInTheDocument();
+    fireEvent.click(saveall);
+  });
+
+  test('discard functionality', () => {
+    const newState = {
+      ...initialState,
+    };
+    newState.protocol.discardValue = {
+      isEdited: true,
+      isDiscarded: true,
+      protocolTab: -1,
+      bladeRight: {},
+      labEdited: true,
+    };
+    const screen = render(<LabData docId={docId} />, {
+      initialState: newState,
+    });
+    expect(screen.getByText('Confirm Action')).toBeInTheDocument();
+    expect(screen.getByText('Discard')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Discard'));
+  });
+
   test('handleAdd function', () => {
     const screen = render(<LabData docId={docId} />, {
       initialState,
@@ -214,7 +268,7 @@ describe('LabData', () => {
     expect(addRow).toBeInTheDocument();
   });
 
-  it('should call handleAdd when rowData is not empty', () => {
+  test('should call handleAdd when rowData is not empty', () => {
     const useDispatchMock = jest.spyOn(redux, 'useDispatch');
     const dispatchMock = jest.fn();
     useDispatchMock.mockReturnValue(dispatchMock);
@@ -239,7 +293,7 @@ describe('LabData', () => {
 });
 
 describe('handleClickOutside', () => {
-  it('should close the dropdown when a click occurs outside the dropdown container', () => {
+  test('should close the dropdown when a click occurs outside the dropdown container', () => {
     const showDiscardConfirm = true;
     const setShowDiscardConfirm = jest.fn();
     const onDiscardClick = jest.fn();

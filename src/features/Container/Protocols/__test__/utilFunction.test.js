@@ -6,7 +6,57 @@ import {
   autoCompleteClose,
   checkDuplicates,
   validationCheck,
+  formattedValue,
+  findLatestTimestamp,
 } from '../MetaData/utilFunction';
+
+describe('formattedValue function', () => {
+  it('should convert boolean values to string', () => {
+    const type = 'boolean';
+    const val = 2;
+    const result = formattedValue(type, val);
+    expect(result).toBe('2');
+  });
+
+  it('should format date values using moment.js', () => {
+    const type = 'date';
+    const val = '2023-06-01';
+    const result = formattedValue(type, val);
+    expect(result).toBe('01-Jun-2023');
+  });
+
+  it('should return the input value as is for unknown types', () => {
+    const type = 'unknown';
+    const val = 'Hello, world!';
+    const result = formattedValue(type, val);
+    expect(result).toBe('Hello, world!');
+  });
+
+  it('should return null for falsy input values', () => {
+    const type = 'date';
+    const val = null;
+    const result = formattedValue(type, val);
+    expect(result).toBeNull();
+  });
+});
+
+describe('findLatestTimestamp', () => {
+  it('should return the object with the latest timestamp', () => {
+    const data = [
+      { id: 1, last_updated: '2022-01-01T10:00:00Z' },
+      { id: 2, last_updated: '2023-06-01T15:30:00Z' },
+      { id: 3, last_updated: '2021-12-31T23:59:59Z' },
+    ];
+    const result = findLatestTimestamp(data);
+    expect(result).toEqual({ id: 2, last_updated: '2023-06-01T15:30:00Z' });
+  });
+
+  it('should return an empty object if the input data is empty', () => {
+    const data = [];
+    const result = findLatestTimestamp(data);
+    expect(result).toEqual({});
+  });
+});
 
 describe('flattenObject', () => {
   test('should flatten the object correctly', () => {
@@ -57,6 +107,101 @@ describe('flattenObject', () => {
     };
 
     expect(flattenObject({}, data, 1, '')).toEqual(expectedResult);
+  });
+
+  test('should flatten the object correctly', () => {
+    const data = {
+      key1: {
+        subkey1: {
+          subsubkey1: 'value1',
+        },
+        subkey2: 'value2',
+      },
+      key2: 'value3',
+    };
+
+    const result = flattenObject({}, data, 1, '');
+
+    expect(result).toEqual({
+      key1: {
+        formattedName: 'key1',
+        _meta_data: undefined,
+        name: 'key1',
+        level: 1,
+        is_active: undefined,
+        is_default: undefined,
+        isEdit: false,
+        isActive: false,
+        audit_info: undefined,
+        _childs: [],
+      },
+    });
+  });
+
+  test('should handle empty input data', () => {
+    const data = null;
+
+    const result = flattenObject({}, data, 1, '');
+
+    expect(result).toEqual({});
+  });
+
+  test('should handle nested objects with _meta_data and _childs properties', () => {
+    const data = {
+      key1: {
+        _meta_data: [{ attr_type: 'type1', attr_value: 'value1' }],
+        _childs: ['child1', 'child2'],
+        subkey1: {
+          _meta_data: [{ attr_type: 'type2', attr_value: 'value2' }],
+          subsubkey1: 'value3',
+        },
+      },
+    };
+
+    const result = flattenObject({}, data, 1, '');
+
+    expect(result).toEqual({
+      key1: {
+        _meta_data: [
+          {
+            attr_type: 'type1',
+            attr_value: 'value1',
+            display_name: undefined,
+            id: 1,
+            isCustom: false,
+          },
+        ],
+        formattedName: 'key1',
+        name: 'key1',
+        level: 1,
+        is_active: undefined,
+        is_default: undefined,
+        isEdit: false,
+        isActive: false,
+        audit_info: undefined,
+        _childs: ['key1.child1', 'key1.child2'],
+      },
+      'key1.subkey1': {
+        _meta_data: [
+          {
+            attr_type: 'type2',
+            attr_value: 'value2',
+            display_name: undefined,
+            id: 1,
+            isCustom: false,
+          },
+        ],
+        formattedName: 'key1.subkey1',
+        name: 'subkey1',
+        level: 2,
+        is_active: undefined,
+        is_default: undefined,
+        isEdit: false,
+        isActive: false,
+        audit_info: undefined,
+        _childs: [],
+      },
+    });
   });
 });
 
@@ -140,11 +285,8 @@ describe('Utils', () => {
       modalOpened.classList.add('modal-opened');
       const removeHook = jest.fn();
       document.body.appendChild(modalOpened);
-
       autoCompleteClose(removeHook);
-
       modalOpened.click();
-
       expect(document.body).not.toHaveClass('modal-opened');
       document.body.removeChild(modalOpened);
     });
