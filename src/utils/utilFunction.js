@@ -350,7 +350,7 @@ const setContent = (type) => {
     case CONTENT_TYPE.TEXT:
       return '';
     case CONTENT_TYPE.HEADER:
-      return '<h2>Edit Your Text Here</h2>';
+      return '';
     case CONTENT_TYPE.TABLE:
       return {
         Table: '',
