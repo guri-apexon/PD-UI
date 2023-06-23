@@ -61,9 +61,6 @@ describe('Metadata Accordian View', () => {
     fireEvent.click(svg);
     fireEvent.click(component.getAllByTestId('rightbladeclick')[0]);
     expect(component.getByTestId('rightblade')).toBeVisible(false);
-    const svg1 =
-      component.getByTestId('rightblade').children[0].children[0].children[0]
-        .children[0];
   });
   test('should render to hide right blade', () => {
     useSelector.mockImplementation(() => discardDetails);
