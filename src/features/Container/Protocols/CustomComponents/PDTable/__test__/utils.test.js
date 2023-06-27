@@ -196,26 +196,10 @@ describe('updateFootNotePayload', () => {
     ];
     const updatedFootnotes = updateFootNotePayload(footnotes);
     expect(updatedFootnotes).toEqual([
-      {
-        PrevousAttachmentIndex: null,
-        Text: 'note1',
-      },
-      {
-        PrevousAttachmentIndex: 0,
-        Text: 'note2',
-      },
-      {
-        PrevousAttachmentIndex: 1,
-        Text: 'note3',
-      },
-      {
-        PrevousAttachmentIndex: 2,
-        qc_change_type_footnote: 'delete',
-      },
-      {
-        PrevousAttachmentIndex: 2,
-        qc_change_type_footnote: 'delete',
-      },
+      { Text: 'note1', PrevousAttachmentIndex: null },
+      { Text: 'note2', PrevousAttachmentIndex: 0 },
+      { Text: 'note3', PrevousAttachmentIndex: 1 },
+      { qc_change_type_footnote: 'delete', PrevousAttachmentIndex: 2 },
     ]);
   });
 

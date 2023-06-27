@@ -49,9 +49,10 @@ function Dropdown({
         disabled={disabled}
         type="button"
         className="dropbtn"
-        onClick={showMenu}
+        onMouseOver={showMenu}
         style={headerStyle}
         data-testId="btn"
+        onFocus={showMenu}
       >
         {buttonName}
       </button>
