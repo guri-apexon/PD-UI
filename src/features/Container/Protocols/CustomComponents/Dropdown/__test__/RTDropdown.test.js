@@ -172,7 +172,7 @@ describe('handleClickOutside', () => {
         list={mockList}
       />,
     );
-    fireEvent.click(getByTestId('btn'));
+    fireEvent.mouseOver(getByTestId('btn'));
     expect(getByTestId('options')).toHaveClass('active-show-list');
     fireEvent.mouseDown(document.body);
     expect(getByTestId('options')).not.toHaveClass('active-show-list');
