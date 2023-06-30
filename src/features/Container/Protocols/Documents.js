@@ -13,13 +13,14 @@ import Tooltip from 'apollo-react/components/Tooltip';
 import InfoIcon from 'apollo-react-icons/Info';
 import IconButton from 'apollo-react/components/IconButton';
 import Download from 'apollo-react-icons/Download';
-import Modal from 'apollo-react/components/Modal';
+import Modal from 'apollo-react/components/Modal/Modal';
 import { messages } from '../../../AppConstant/AppConstant';
 import { userId } from '../../../store/userDetails';
 import { httpCall, BASE_URL_8000 } from '../../../utils/api';
 import { protocolSummary, associateDocs } from './protocolSlice';
 import AssociateDocumentsTable from '../../Components/DocumentsTable/AssociateDocumentsTable';
 import DocumentsTable from '../../Components/DocumentsTable/DocumentsTable';
+import CompareView from './CompareView/CompareView';
 
 const message1 = 'Please Select Base Document for Compare';
 const message2 = 'Please Select Comparator Document for Compare';
@@ -43,6 +44,8 @@ function Documents({ handleChangeTab }) {
   );
   const tooltip1Ref = useRef(null);
   const tooltip2Ref = useRef(null);
+  const [isModal, setIsModal] = useState(false);
+  const [identifier, setIdentifier] = useState();
 
   const getUserName = async (userID) => {
     const config = {
@@ -50,7 +53,7 @@ function Documents({ handleChangeTab }) {
       method: 'GET',
     };
     const userDetailResp = await httpCall(config);
-    if (userDetailResp.success) {
+    if (userDetailResp?.success) {
       const userName = `${userDetailResp.data.first_name} ${userDetailResp.data.last_name}`;
       setUserName(userName);
     } else {
@@ -213,11 +216,63 @@ function Documents({ handleChangeTab }) {
     setToolTip1(false);
   };
 
+  function blobToFormData(sourceBlob, targetBlob) {
+    const formData = new FormData();
+    formData.append('left.file', sourceBlob, 'filename.pdf');
+    formData.append('left.file_type', 'pdf');
+    formData.append('right.file', targetBlob, 'filename.pdf');
+    formData.append('right.file_type', 'pdf');
+    return formData;
+  }
+  const handleCompareView = async () => {
+    setLoader(true);
+    const sourceProtocol = associateDocuments.find(
+      (x) => x.id === protocolSelected.source,
+    );
+    const targetProtocol = associateDocuments.find(
+      (x) => x.id === protocolSelected.target,
+    );
+    const config = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
+        sourceProtocol?.documentFilePath,
+      )}&userId=${userId1.substring(1)}&protocol=${sourceProtocol?.protocol}`,
+      method: 'GET',
+      responseType: 'blob',
+    };
+    const respsource = await httpCall(config);
+    const configTar = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
+        targetProtocol?.documentFilePath,
+      )}&userId=${userId1.substring(1)}&protocol=${targetProtocol?.protocol}`,
+      method: 'GET',
+      responseType: 'blob',
+    };
+    const respTarget = await httpCall(configTar);
+    if (respsource?.success && respTarget?.success) {
+      const config = {
+        method: 'POST',
+        headers: {
+          Authorization: `Token ${process.env.REACT_APP_DRAFTABLE_TOKEN} `,
+        },
+        body: blobToFormData(respsource.data, respTarget.data),
+      };
+      fetch('https://api.draftable.com/v1/comparisons', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setLoader(false);
+          setIdentifier(data?.identifier);
+          setIsModal(true);
+        });
+    } else {
+      toast.info('Access Provisioned to Primary Users only');
+    }
+  };
+
   const menuItems = [
     {
       key: 'CSV',
       text: (
-        <div className="dropdown-text-style">
+        <div className="dropdown-text-style" data-testid="csv">
           <div>CSV</div>
           <div className="info-icon">
             <Tooltip
@@ -229,6 +284,7 @@ function Documents({ handleChangeTab }) {
                 color="primary"
                 onClick={(e) => openToolTip(e, 'csv')}
                 size="small"
+                data-testid="csv-toolip"
               >
                 <InfoIcon size="small" />
               </IconButton>
@@ -241,7 +297,11 @@ function Documents({ handleChangeTab }) {
     {
       key: 'EXCEL',
       text: (
-        <div className="dropdown-text-style" ref={tooltip2Ref}>
+        <div
+          className="dropdown-text-style"
+          ref={tooltip2Ref}
+          data-testid="excel"
+        >
           <div>Excel</div>
           <div className="info-icon">
             <Tooltip
@@ -253,6 +313,7 @@ function Documents({ handleChangeTab }) {
                 color="primary"
                 onClick={(e) => openToolTip(e, 'excel')}
                 size="small"
+                data-testid="excel-toolip"
               >
                 <InfoIcon size="small" />
               </IconButton>
@@ -261,6 +322,35 @@ function Documents({ handleChangeTab }) {
         </div>
       ),
       onClick: () => downloadCompare('.xlsx'),
+    },
+    {
+      key: 'BROWSER',
+      text: (
+        <div
+          className="dropdown-text-style"
+          ref={tooltip2Ref}
+          data-testid="browser-view"
+        >
+          <div>View In Browser</div>
+          <div className="info-icon">
+            <Tooltip
+              variant="light"
+              title="Please click here to see the detail."
+              placement="top"
+            >
+              <IconButton
+                color="primary"
+                onClick={(e) => openToolTip(e, 'BROWSER')}
+                size="small"
+                data-testid="browser-view-toolip"
+              >
+                <InfoIcon size="small" />
+              </IconButton>
+            </Tooltip>
+          </div>
+        </div>
+      ),
+      onClick: () => handleCompareView(),
     },
   ];
   const downloadButton = () => {
@@ -344,6 +434,13 @@ function Documents({ handleChangeTab }) {
           </div>
         </Grid>
       </Grid>
+      {isModal && (
+        <CompareView
+          isModal={isModal}
+          setIsModal={setIsModal}
+          identifier={identifier}
+        />
+      )}
     </div>
   );
 }
