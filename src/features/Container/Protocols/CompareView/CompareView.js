@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 function CompareView({ isModal, setIsModal, identifier }) {
   const accountId = process.env.REACT_APP_DRAFTABLE_ACCOUNT_ID; // 'dmBxrH-test';
   const authToken = process.env.REACT_APP_DRAFTABLE_TOKEN; // 'fc1031a4df237709e3508f8592356fd0';
-  const validUntilTimestamp = parseInt(
-    process.env.REACT_APP_DRAFTABLE_TIMESTAMP,
-    10,
-  ); // 2540181542;
+  const futureTime = new Date(new Date().getTime() + 15 * 60000);
+  const futureUTCTime = new Date(futureTime.toUTCString());
+  const validUntilTimestamp = new Date(futureUTCTime).getTime() / 1000;
+
   const handleClose = () => {
     setIsModal(false);
   };

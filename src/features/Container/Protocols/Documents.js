@@ -265,6 +265,7 @@ function Documents({ handleChangeTab }) {
         });
     } else {
       toast.info('Access Provisioned to Primary Users only');
+      setLoader(false);
     }
   };
 
