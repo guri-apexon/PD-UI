@@ -335,7 +335,7 @@ function PDTable({
               {
                 size: 'small',
                 label: 'Save Table',
-                onClick: (e) => handleSave(e),
+                onClick: handleSave,
               },
             ]}
           />
