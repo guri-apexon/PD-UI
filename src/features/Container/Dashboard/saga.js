@@ -35,7 +35,10 @@ import {
   setAddProtocolErrorState,
   setworkflowSubmit,
 } from './dashboardSlice';
-import { setWorkFlowSubmitButton } from '../Protocols/protocolSlice';
+import {
+  getFileStream,
+  setWorkFlowSubmitButton,
+} from '../Protocols/protocolSlice';
 import { errorMessage, dashboardErrorType } from './constant';
 
 function* getState() {
@@ -89,6 +92,14 @@ export function* protocolAsyn(action) {
           return item;
         });
 
+        yield put(
+          getFileStream({
+            loader: false,
+            success: false,
+            error: '',
+            data: null,
+          }),
+        );
         yield put(getProtocols(myPorotocolsData));
         yield put(getFollowedProtocols(followedProtocolData));
         yield put(setTableLoader(false));
