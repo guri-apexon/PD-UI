@@ -32,6 +32,15 @@
 [class*='MuiDialog-paperScrollPaper'] {
   max-height: 100%;
 }
+#compareMenu {
+  li {
+    padding-left: 10px;
+  }
+  .icon {
+    height: 15px;
+    color: #444444;
+  }
+}
 .compare-main-button {
   svg {
     height: 16px;

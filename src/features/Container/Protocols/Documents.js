@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import Loader from 'apollo-react/components/Loader';
 import FileDownload from 'js-file-download';
 import cloneDeep from 'lodash/cloneDeep';
+import Globe from 'apollo-react-icons/Globe';
 import MenuButton from 'apollo-react/components/MenuButton';
 import Tooltip from 'apollo-react/components/Tooltip';
 import InfoIcon from 'apollo-react-icons/Info';
@@ -21,6 +22,7 @@ import { protocolSummary, associateDocs } from './protocolSlice';
 import AssociateDocumentsTable from '../../Components/DocumentsTable/AssociateDocumentsTable';
 import DocumentsTable from '../../Components/DocumentsTable/DocumentsTable';
 import CompareView from './CompareView/CompareView';
+import { isPrimaryUser } from '../../../utils/utilFunction';
 
 const message1 = 'Please Select Base Document for Compare';
 const message2 = 'Please Select Comparator Document for Compare';
@@ -274,6 +276,7 @@ function Documents({ handleChangeTab }) {
       key: 'CSV',
       text: (
         <div className="dropdown-text-style" data-testid="csv">
+          <Download className="icon" />
           <div>CSV</div>
           <div className="info-icon">
             <Tooltip
@@ -303,6 +306,7 @@ function Documents({ handleChangeTab }) {
           ref={tooltip2Ref}
           data-testid="excel"
         >
+          <Download className="icon" />
           <div>Excel</div>
           <div className="info-icon">
             <Tooltip
@@ -326,12 +330,14 @@ function Documents({ handleChangeTab }) {
     },
     {
       key: 'BROWSER',
+      disabled: !isPrimaryUser(summary.data),
       text: (
         <div
           className="dropdown-text-style"
           ref={tooltip2Ref}
           data-testid="browser-view"
         >
+          <Globe className="icon" />
           <div>View In Browser</div>
           <div className="info-icon">
             <Tooltip
@@ -355,12 +361,7 @@ function Documents({ handleChangeTab }) {
     },
   ];
   const downloadButton = () => {
-    return (
-      <label className="compare-main-button">
-        Compare Result
-        <Download />
-      </label>
-    );
+    return <label className="compare-main-button">Compare Result</label>;
   };
 
   return (
@@ -416,6 +417,8 @@ function Documents({ handleChangeTab }) {
                 buttonText={downloadButton()}
                 menuItems={menuItems}
                 disabled={!(protocolSelected.source && protocolSelected.target)}
+                className="compare-menu"
+                id="compareMenu"
               />
             </div>
           </>

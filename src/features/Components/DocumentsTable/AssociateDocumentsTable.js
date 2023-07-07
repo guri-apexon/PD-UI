@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 import { httpCall, BASE_URL_8000 } from '../../../utils/api';
 import { userId } from '../../../store/userDetails';
 import {
+  checkBaseDoc,
   qcIconStatus,
   uploadDateValidation,
 } from '../../../utils/utilFunction';
@@ -25,7 +26,15 @@ function ActionCell({ row }) {
           <Checkbox
             label=""
             checked={row.protocolSelected.source === row.id}
-            onClick={() => row.setProtocolToDownload(row)}
+            onClick={() => {
+              if (checkBaseDoc(row.protocolSelected, row)) {
+                row.setProtocolToDownload(row);
+              } else {
+                toast.error(
+                  'Please follow the guidlines to compare the Documents',
+                );
+              }
+            }}
           />
         </div>
       </div>

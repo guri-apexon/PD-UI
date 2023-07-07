@@ -1,6 +1,7 @@
 import Tooltip from 'apollo-react/components/Tooltip';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import {
   CONTENT_TYPE,
@@ -727,4 +728,20 @@ export const removeHeaderTags = (text) => {
     },
   );
   return cleanedText;
+};
+
+export const checkBaseDoc = (protocolSelected, target) => {
+  if (protocolSelected.sourceData.documentStatus === 'draft' && target) {
+    const sourceDate = moment(protocolSelected.sourceData.uploadDate);
+    const tarDate = moment(target.uploadDate);
+    const dateDiff = sourceDate.diff(tarDate, 'days');
+    return dateDiff >= 0;
+  }
+  if (
+    protocolSelected.sourceData.documentStatus === 'draft' &&
+    target.documentStatus === 'final'
+  ) {
+    return false;
+  }
+  return true;
 };
