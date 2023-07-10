@@ -69,6 +69,7 @@ const messages = {
       {
         header: 'Description',
         body: [
+          'User to select appropriate "Base line" and "Comparator" Protocols.',
           'In the compare browser view, there is content compared from 2 unique documents, usually from the same clinical trial (for example, 2 different versions).',
           'The baseline document may also be known as document A or left-hand-side (LHS) document.',
           'The comparator document may also be known as document B or right-hand side (RHS) document.',

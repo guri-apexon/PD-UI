@@ -184,12 +184,22 @@ function Documents({ handleChangeTab }) {
     }
   };
   const fileContent = (arr) => {
+    const len = arr.body.length;
     return (
       <div>
-        <ol className="version-validation">
+        <ol className="version-validation ">
           {arr.body.map((item) => (
-            <li key={uuidv4()} className="compare-text-header">
-              {item.header}
+            <li
+              key={uuidv4()}
+              className={
+                len === 1
+                  ? 'compare-text-header view-browser'
+                  : 'compare-text-header'
+              }
+            >
+              <p className={len === 1 && 'view-browser-header'}>
+                {item.header}
+              </p>
               <ul>
                 {item.body.map((subHeader) => (
                   <li className="compare-text-sub-header" key={uuidv4()}>
