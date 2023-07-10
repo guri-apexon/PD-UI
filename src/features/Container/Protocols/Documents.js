@@ -238,6 +238,18 @@ function Documents({ handleChangeTab }) {
     formData.append('right.file_type', 'pdf');
     return formData;
   }
+
+  const fileDownload = async (protocolData) => {
+    const config = {
+      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
+        protocolData?.documentFilePath,
+      )}&userId=${userId1.substring(1)}&protocol=${protocolData?.protocol}`,
+      method: 'GET',
+      responseType: 'blob',
+    };
+    const response = await httpCall(config);
+    return response;
+  };
   const handleCompareView = async () => {
     setLoader(true);
     const sourceProtocol = associateDocuments.find(
@@ -246,22 +258,10 @@ function Documents({ handleChangeTab }) {
     const targetProtocol = associateDocuments.find(
       (x) => x.id === protocolSelected.target,
     );
-    const config = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
-        sourceProtocol?.documentFilePath,
-      )}&userId=${userId1.substring(1)}&protocol=${sourceProtocol?.protocol}`,
-      method: 'GET',
-      responseType: 'blob',
-    };
-    const respsource = await httpCall(config);
-    const configTar = {
-      url: `${BASE_URL_8000}/api/download_file/?filePath=${encodeURIComponent(
-        targetProtocol?.documentFilePath,
-      )}&userId=${userId1.substring(1)}&protocol=${targetProtocol?.protocol}`,
-      method: 'GET',
-      responseType: 'blob',
-    };
-    const respTarget = await httpCall(configTar);
+    const [respsource, respTarget] = await Promise.all([
+      fileDownload(sourceProtocol),
+      fileDownload(targetProtocol),
+    ]);
     if (respsource?.success && respTarget?.success) {
       const config = {
         method: 'POST',
