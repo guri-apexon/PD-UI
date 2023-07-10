@@ -208,6 +208,8 @@ function Documents({ handleChangeTab }) {
     e.stopPropagation();
     if (type === 'csv') {
       setToolTipSelected(messages.downloadFileContentCSV);
+    } else if (type === 'BROWSER') {
+      setToolTipSelected(messages.compareViaUIContent);
     } else {
       setToolTipSelected(messages.downloadFileContentExcel);
     }
@@ -338,7 +340,7 @@ function Documents({ handleChangeTab }) {
           data-testid="browser-view"
         >
           <Globe className="icon" />
-          <div>View In Browser</div>
+          <div>Compare via UI</div>
           <div className="info-icon">
             <Tooltip
               variant="light"

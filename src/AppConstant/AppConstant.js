@@ -63,6 +63,22 @@ const messages = {
       },
     ],
   },
+  compareViaUIContent: {
+    header: 'Compare via UI',
+    body: [
+      {
+        header: 'Description',
+        body: [
+          'In the compare browser view, there is content compared from 2 unique documents, usually from the same clinical trial (for example, 2 different versions).',
+          'The baseline document may also be known as document A or left-hand-side (LHS) document.',
+          'The comparator document may also be known as document B or right-hand side (RHS) document.',
+          "The user can view the document's change logs, including REPLACED, INSERTED, and DELETED, in the change list on the right side of the browser output.",
+          'By clicking on any item in the change list, the user can navigate to the specific change position in a PDF document.',
+          'So whatever user selects first will be base and second one becomes the comparator.',
+        ],
+      },
+    ],
+  },
   compareMessage:
     'Please Select One Baseline Document and One Comparator Document to Download Compare Result.',
   versionMessage: {
