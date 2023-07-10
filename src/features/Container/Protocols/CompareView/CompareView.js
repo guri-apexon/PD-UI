@@ -47,7 +47,7 @@ function CompareView({ isModal, setIsModal, identifier }) {
       open={isModal}
       variant="default"
       onClose={handleClose}
-      title="Compare via UI"
+      title="View in Browser"
       buttonProps={[
         { label: 'Cancel', onClick: handleClose, variant: 'primary' },
       ]}

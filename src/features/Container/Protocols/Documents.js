@@ -340,7 +340,7 @@ function Documents({ handleChangeTab }) {
           data-testid="browser-view"
         >
           <Globe className="icon" />
-          <div>Compare via UI</div>
+          <div>View in Browser</div>
           <div className="info-icon">
             <Tooltip
               variant="light"
