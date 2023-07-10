@@ -64,7 +64,7 @@ const messages = {
     ],
   },
   compareViaUIContent: {
-    header: 'Compare via UI',
+    header: 'View in Browser',
     body: [
       {
         header: 'Description',
