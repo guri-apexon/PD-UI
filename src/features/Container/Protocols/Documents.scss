@@ -18,20 +18,22 @@
   width: 100%;
   border: 1px solid rgb(208 207 207);
 }
-[class*='MuiDialogContent-root'] {
-  overflow-y: unset;
-}
-[class*='MuiDialog-paper'] {
-  margin: unset;
-  position: relative;
-  max-width: none;
-  overflow-y: auto;
-}
-[class*='MuiDialog-paperWidthSm'] {
-  max-width: 100%;
-}
-[class*='MuiDialog-paperScrollPaper'] {
-  max-height: 100%;
+#renameTermsModal {
+  [class*='MuiDialogContent-root'] {
+    overflow-y: unset;
+  }
+  [class*='MuiDialog-paper'] {
+    margin: unset;
+    position: relative;
+    max-width: none;
+    overflow-y: auto;
+  }
+  [class*='MuiDialog-paperWidthSm'] {
+    max-width: 100%;
+  }
+  [class*='MuiDialog-paperScrollPaper'] {
+    max-height: 100%;
+  }
 }
 #compareMenu {
   li {

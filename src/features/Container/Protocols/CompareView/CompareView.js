@@ -1,35 +1,17 @@
-import crypto from 'crypto';
 import Modal from 'apollo-react/components/Modal/Modal';
 import PropTypes from 'prop-types';
+import { Apis } from '../../../../utils/api';
+import { getViewerUrlSignature } from './utils';
 
 function CompareView({ isModal, setIsModal, identifier }) {
-  const accountId = process.env.REACT_APP_DRAFTABLE_ACCOUNT_ID; // 'dmBxrH-test';
-  const authToken = process.env.REACT_APP_DRAFTABLE_TOKEN; // 'fc1031a4df237709e3508f8592356fd0';
-  const futureTime = new Date(new Date().getTime() + 15 * 60000);
-  const futureUTCTime = new Date(futureTime.toUTCString());
+  const accountId = process.env.REACT_APP_DRAFTABLE_ACCOUNT_ID;
+  const authToken = process.env.REACT_APP_DRAFTABLE_TOKEN;
+  const sessionDuration = new Date(new Date().getTime() + 15 * 60000);
+  const futureUTCTime = new Date(sessionDuration.toUTCString());
   const validUntilTimestamp = new Date(futureUTCTime).getTime() / 1000;
 
   const handleClose = () => {
     setIsModal(false);
-  };
-  const getViewerUrlSignature = (
-    accountId,
-    authToken,
-    identifier,
-    validUntilTimestamp,
-  ) => {
-    const policy = {
-      account_id: accountId,
-      identifier,
-      valid_until: validUntilTimestamp,
-    };
-    const jsonPolicy = JSON.stringify(policy);
-    const hmacDigest = crypto
-      .createHmac('sha256', authToken)
-      .update(jsonPolicy)
-      .digest('hex');
-
-    return hmacDigest;
   };
 
   const signature = getViewerUrlSignature(
@@ -39,7 +21,7 @@ function CompareView({ isModal, setIsModal, identifier }) {
     validUntilTimestamp,
   );
 
-  const url = `https://api.draftable.com/v1/comparisons/viewer/${accountId}/${identifier}?valid_until=${validUntilTimestamp}&signature=${signature}`;
+  const url = `${Apis.DRAFTABLE_VIEWER}/${identifier}?valid_until=${validUntilTimestamp}&signature=${signature}`;
   return (
     <Modal
       disableBackdropClick

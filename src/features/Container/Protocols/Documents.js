@@ -23,6 +23,7 @@ import AssociateDocumentsTable from '../../Components/DocumentsTable/AssociateDo
 import DocumentsTable from '../../Components/DocumentsTable/DocumentsTable';
 import CompareView from './CompareView/CompareView';
 import { isPrimaryUser } from '../../../utils/utilFunction';
+import { blobToFormData } from './CompareView/utils';
 
 const message1 = 'Please Select Base Document for Compare';
 const message2 = 'Please Select Comparator Document for Compare';
@@ -229,15 +230,6 @@ function Documents({ handleChangeTab }) {
   const closeToolTip = () => {
     setToolTip1(false);
   };
-
-  function blobToFormData(sourceBlob, targetBlob) {
-    const formData = new FormData();
-    formData.append('left.file', sourceBlob, 'filename.pdf');
-    formData.append('left.file_type', 'pdf');
-    formData.append('right.file', targetBlob, 'filename.pdf');
-    formData.append('right.file_type', 'pdf');
-    return formData;
-  }
 
   const fileDownload = async (protocolData) => {
     const config = {
