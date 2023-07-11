@@ -794,6 +794,7 @@ function DigitizeAccordion({
   const handleDeleteSection = () => {
     setShowDeleteConfirm(false);
     updateSectionLock(true);
+    setCurrentEditCard(null);
     const obj = [
       {
         ...headerLevel1,
