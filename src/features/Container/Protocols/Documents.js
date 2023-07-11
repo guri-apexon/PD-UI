@@ -332,37 +332,37 @@ function Documents({ handleChangeTab }) {
       ),
       onClick: () => downloadCompare('.xlsx'),
     },
-    {
-      key: 'BROWSER',
-      disabled: !isPrimaryUser(summary.data),
-      text: (
-        <div
-          className="dropdown-text-style"
-          ref={tooltip2Ref}
-          data-testid="browser-view"
-        >
-          <Globe className="icon" />
-          <div>View in Browser</div>
-          <div className="info-icon">
-            <Tooltip
-              variant="light"
-              title="Please click here to see the detail."
-              placement="top"
-            >
-              <IconButton
-                color="primary"
-                onClick={(e) => openToolTip(e, 'BROWSER')}
-                size="small"
-                data-testid="browser-view-toolip"
-              >
-                <InfoIcon size="small" />
-              </IconButton>
-            </Tooltip>
-          </div>
-        </div>
-      ),
-      onClick: () => handleCompareView(),
-    },
+    // {
+    //   key: 'BROWSER',
+    //   disabled: !isPrimaryUser(summary.data),
+    //   text: (
+    //     <div
+    //       className="dropdown-text-style"
+    //       ref={tooltip2Ref}
+    //       data-testid="browser-view"
+    //     >
+    //       <Globe className="icon" />
+    //       <div>View in Browser</div>
+    //       <div className="info-icon">
+    //         <Tooltip
+    //           variant="light"
+    //           title="Please click here to see the detail."
+    //           placement="top"
+    //         >
+    //           <IconButton
+    //             color="primary"
+    //             onClick={(e) => openToolTip(e, 'BROWSER')}
+    //             size="small"
+    //             data-testid="browser-view-toolip"
+    //           >
+    //             <InfoIcon size="small" />
+    //           </IconButton>
+    //         </Tooltip>
+    //       </div>
+    //     </div>
+    //   ),
+    //   onClick: () => handleCompareView(),
+    // },
   ];
   const downloadButton = () => {
     return <label className="compare-main-button">Compare Result</label>;
