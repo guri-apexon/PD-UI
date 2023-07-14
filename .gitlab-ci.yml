@@ -35,8 +35,7 @@ lint-check:
   only:
     refs:
       - merge_requests
-      - develop
-      - development
+      - /^develop*/
     variables: 
       - $ENVIRONMENT== "dev"
       - $ENVIRONMENT== "test"
@@ -58,8 +57,7 @@ unit-test-coverage:
   only:
     refs:
       - merge_requests
-      - develop
-      - development
+      - /^develop*/
       
     variables: 
       - $ENVIRONMENT== "dev"
@@ -86,8 +84,7 @@ Perform Sonarqube Analysis and quality gate:
   only:
     refs:
       - merge_requests
-      - develop
-      - development
+      - /^develop*/
     variables: 
       - $ENVIRONMENT== "dev"
       - $ENVIRONMENT== "test"
