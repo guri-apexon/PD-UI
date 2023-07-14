@@ -244,7 +244,6 @@ BASE_URL_8000 = `${backendHost}`;
 UI_URL = `${UIhost}`;
 export default BASE_URL;
 export { BASE_URL_8000, baseUrlSSO, UI_URL };
-const draftableAccId = process.env.REACT_APP_DRAFTABLE_ACCOUNT_ID;
 
 export const Apis = {
   protocol: `${BASE_URL}/api/protocol`,
@@ -262,7 +261,6 @@ export const Apis = {
   SECTION_LOCK: '/api/section_lock',
   DOCUMENT_SECTION_LOCK: '/api/section_lock/document_lock_status',
   CREATE_LABDATA_TABLE: '/api/lab_data/lab_data_table_create',
-  DRAFTABLE_VIEWER: `https://api.draftable.com/v1/comparisons/viewer/${draftableAccId}`,
 };
 
 export const SSO_ENABLED = environment !== 'local';
