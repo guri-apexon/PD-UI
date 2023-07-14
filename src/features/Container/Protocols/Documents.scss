@@ -7,41 +7,9 @@
   width: 100%;
   .info-icon {
     margin-left: auto;
-    margin-bottom: 4px;
   }
   button {
     height: 20px;
-  }
-}
-.modal-browser {
-  height: 100%;
-  width: 100%;
-  border: 1px solid rgb(208 207 207);
-}
-#renameTermsModal {
-  [class*='MuiDialogContent-root'] {
-    overflow-y: unset;
-  }
-  [class*='MuiDialog-paper'] {
-    margin: unset;
-    position: relative;
-    max-width: none;
-    overflow-y: auto;
-  }
-  [class*='MuiDialog-paperWidthSm'] {
-    max-width: 100%;
-  }
-  [class*='MuiDialog-paperScrollPaper'] {
-    max-height: 100%;
-  }
-}
-#compareMenu {
-  li {
-    padding-left: 10px;
-  }
-  .icon {
-    height: 15px;
-    color: #444444;
   }
 }
 .compare-main-button {
@@ -87,9 +55,6 @@
       margin-right: 7px;
     }
   }
-  [class*='MuiDialog-paperWidthSm'] {
-    max-width: 100%;
-  }
 
   .source-document-tab {
     width: 100%;
@@ -98,7 +63,7 @@
     table {
       margin-bottom: 15px;
     }
-    [class^='Table-tableWrapper-'] {
+    [class^="Table-tableWrapper-"] {
       overflow: hidden;
     }
     tbody tr:last-child {
@@ -115,7 +80,7 @@
   }
   .associate-document-tab {
     width: 100%;
-    [class^='Table-tableWrapper-'] {
+    [class^="Table-tableWrapper-"] {
       overflow-x: hidden;
     }
     .hyperlink {
