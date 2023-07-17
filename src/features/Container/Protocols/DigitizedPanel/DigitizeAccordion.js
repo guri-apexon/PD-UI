@@ -153,6 +153,7 @@ function DigitizeAccordion({
           setTocReady(true);
         });
     }
+    // eslint-disable-next-line
   }, [tocActiveSelector]);
 
   useEffect(() => {
@@ -464,7 +465,6 @@ function DigitizeAccordion({
         setExpanded(true);
       }
       if (!tocActive[index]) {
-        console.log('tocActive se handleDiscardToc', tocActive);
         handleDiscardToc();
       }
     }
