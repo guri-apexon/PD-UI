@@ -160,7 +160,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   }, [fileStream, pdfString]);
 
   if (!pdfString) {
-    return <Loader />;
+    return <Loader isInner overlayClassName="pdf-loader" />;
   }
 
   function handleKeyDown(e) {
