@@ -449,7 +449,7 @@ function DigitizeAccordion({
   }, [lockDetails, currentEditCard]);
 
   useEffect(() => {
-    if (tocReady) {
+    if (tocReady || tocActive.some((x) => x)) {
       if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
         handleDiscardToc();
       }
