@@ -137,7 +137,7 @@ test-deploy:
       
   only:
     refs:
-      - develop
+      - /^develop*/
     variables: 
       - $ENVIRONMENT== "test"
 
