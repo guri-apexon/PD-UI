@@ -75,6 +75,8 @@ function DipaView({
           name: getFormattedCategoryName(section.category),
         })),
       );
+    } else {
+      setSections([]);
     }
   }, [dipaViewSelector]);
 
