@@ -226,18 +226,21 @@ function DigitalizeCard({
                   </Button>
                 </div>
               )}
-            {summary.success && headerList?.length === 0 && !isModal && (
-              <div className="add-section">
-                <Button
-                  variant="secondary"
-                  size="small"
-                  onClick={() => setIsModal(true)}
-                  data-testid="add-section"
-                >
-                  <Plus /> Add Section
-                </Button>
-              </div>
-            )}
+            {data.userPrimaryRoleFlag &&
+              summary.success &&
+              !headerList?.length &&
+              !isModal && (
+                <div className="add-section">
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    onClick={() => setIsModal(true)}
+                    data-testid="add-section"
+                  >
+                    <Plus /> Add Section
+                  </Button>
+                </div>
+              )}
           </div>
           <div
             className="digitize-panel-content"
