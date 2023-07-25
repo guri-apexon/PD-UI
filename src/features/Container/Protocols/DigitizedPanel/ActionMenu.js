@@ -98,19 +98,17 @@ function ActionMenu({
               onClick={handleSaveContent}
               data-testId="saveIcon"
               disabled={disabledSaveIcon}
-              className={`${
-                !disabledSaveIcon ? 'active_save_color' : 'btn-icons'
-              }`}
+              className={!disabledSaveIcon ? 'active_save_color' : 'btn-icons'}
             >
               <Save />
-              <span className={`${!disabledSaveIcon ? 'active_color' : ''}`}>
+              <span className={!disabledSaveIcon ? 'active_color' : ''}>
                 {expanded && 'Save Content'}
               </span>
             </Button>
           </span>
         )}
         <span
-          className={`${showPrefferedTerm ? 'active_color' : ''}`}
+          className={showPrefferedTerm ? 'active_color' : ''}
           role="presentation"
           onClick={handlePrefferedTerm}
           disabled={selectedTerm === 'Edit Content'}
@@ -119,7 +117,7 @@ function ActionMenu({
           <Button className="btn-icons">
             {pTIcon()}
             {expanded && (
-              <span className={`${showPrefferedTerm ? 'active_color' : ''}`}>
+              <span className={showPrefferedTerm ? 'active_color' : ''}>
                 Preferred Terms
               </span>
             )}
@@ -133,9 +131,9 @@ function ActionMenu({
           data-testId="links-button"
         >
           <Button className="btn-icons">
-            <LinkIcon className={`${showLink ? 'active' : ''}`} />
+            <LinkIcon className={showLink ? 'active' : ''} />
             {expanded && (
-              <span className={`${showLink ? 'active_color' : ''}`}>
+              <span className={showLink ? 'active_color' : ''}>
                 Links & References
               </span>
             )}
@@ -150,9 +148,9 @@ function ActionMenu({
         >
           {' '}
           <Button className="btn-icons">
-            <Stethoscope className={`${showEnrichedContent ? 'active' : ''}`} />{' '}
+            <Stethoscope className={showEnrichedContent ? 'active' : ''} />{' '}
             {expanded && (
-              <span className={`${showEnrichedContent ? 'active_color' : ''}`}>
+              <span className={showEnrichedContent ? 'active_color' : ''}>
                 Clinical Terms
               </span>
             )}
