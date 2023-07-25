@@ -47,9 +47,7 @@ function EmptyColumns({ columnIndexes, handleOperation }) {
           xs
           key={uuidv4()}
           data-testId="hover-list"
-          className={`${
-            val?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
-          }`}
+          className={val?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'}
         >
           {/* eslint-disable-next-line */}
           <span
