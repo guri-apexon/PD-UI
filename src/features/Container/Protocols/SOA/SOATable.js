@@ -102,6 +102,18 @@ function SOATable() {
     [dispatch, tableId, docId, apiDispatch, tables, selectedTab, refreshValue],
   );
 
+  /**
+   * using memo so that on pdf page change
+   * it shouldnt reload the footnotes if not changed.
+   */
+  const memoizedFootNotes = useMemo(
+    () =>
+      flattenDeep(tables[selectedTab]?.foot_notes).map((elem) => ({
+        note: elem,
+      })),
+    [tables, selectedTab],
+  );
+
   const footerGridRef = useRef();
 
   const footerColumnDefs = useMemo(() => {
@@ -146,12 +158,9 @@ function SOATable() {
         <div>
           <div className="soa-footergrid-container">
             <AgGridReact
+              suppressScrollOnNewData
               ref={footerGridRef}
-              rowData={flattenDeep(tables[selectedTab]?.foot_notes).map(
-                (elem) => ({
-                  note: elem,
-                }),
-              )}
+              rowData={memoizedFootNotes}
               columnDefs={footerColumnDefs}
               defaultColDef={defaultFooterColDef}
             />
