@@ -45,7 +45,7 @@ function AddSection({
         headerObj.next_detail.link_level = '';
         headerObj.next_detail.link_id = '';
       }
-
+      console.log('SHUBHAM7', index);
       dispatch({
         type: 'UPDATE_SECTION_DATA',
         payload: {

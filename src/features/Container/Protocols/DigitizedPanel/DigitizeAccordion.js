@@ -343,6 +343,7 @@ function DigitizeAccordion({
       handleDiscardToc();
     }
     if (currentActiveCard === item.link_id && expanded && tocActive[index]) {
+      console.log('SHUBHAM11 currentActiveCard');
       setExpanded(true);
     }
     // eslint-disable-next-line
@@ -447,21 +448,37 @@ function DigitizeAccordion({
     }
     // eslint-disable-next-line
   }, [lockDetails, currentEditCard]);
-
+  console.log('shubham10', NewSectionIndex);
   useEffect(() => {
     if (tocReady || tocActive.some((x) => x)) {
       if (currentActiveCard === item.link_id && expanded && !tocActive[index]) {
         handleDiscardToc();
       }
+      console.log(
+        'SHUBHAM980',
+        item.link_id,
+        currentActiveCard === item.link_id,
+        expanded,
+        tocActive[index],
+      );
       if (currentActiveCard === item.link_id && !expanded && tocActive[index]) {
+        console.log('SHUBHAM11 tocActive');
         setExpanded(true);
       }
+      console.log(
+        'SHUBHAM90',
+        currentActiveCard,
+        item.link_id,
+        expanded,
+        tocActive[index],
+      );
       if (
         currentActiveCard === item.link_id &&
         !expanded &&
         tocActive[index] &&
         NewSectionIndex >= 0
       ) {
+        console.log('SHUBHAM', NewSectionIndex);
         setExpanded(true);
       }
       if (!tocActive[index]) {
@@ -685,6 +702,7 @@ function DigitizeAccordion({
         }
         setSectionDataArr(updatedSectionsData);
         if (NewSectionIndex >= 0) {
+          console.log('SHUBHAM1', NewSectionIndex);
           onEditClick();
           dispatch({
             type: 'ADD_SECTION_INDEX',

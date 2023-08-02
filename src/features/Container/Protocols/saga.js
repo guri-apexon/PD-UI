@@ -272,6 +272,7 @@ export function* updateSectionData(action) {
 
     if (sectionSaveRes?.data?.success) {
       if (action?.payload?.refreshToc) {
+        console.log('SHUBHAM5', action.payload);
         yield put({
           type: 'GET_PROTOCOL_TOC_DATA',
           payload: {
@@ -466,6 +467,7 @@ export function* getProtocolTocDataResult(action) {
         success: true,
         data: preferredTerm,
       };
+      console.log('SHUBAHM3', action.payload.index);
       const tocIsactive = Array(header.data.length).fill(false);
       yield put(getTOCActive(tocIsactive));
       yield put(getProtocolTocData(header));
