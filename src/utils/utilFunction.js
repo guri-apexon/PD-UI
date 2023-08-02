@@ -571,7 +571,7 @@ export const createReturnObj = (obj, linkId) => {
           link_id_subsection1: '',
           link_id_subsection2: '',
           link_id_subsection3: '',
-          link_level: obj?.prev_line_detail?.file_section_level,
+          link_level: obj?.prev_line_detail?.file_section_level || 1,
         },
         section_locked: false,
       };
