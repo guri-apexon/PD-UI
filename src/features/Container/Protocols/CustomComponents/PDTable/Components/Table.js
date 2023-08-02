@@ -7,7 +7,6 @@ import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
 } from '../../../../../../AppConstant/AppConstant';
-import { getPreferredTerms } from '../utils';
 import EmptyColumns from './EmptyColumns';
 import EmptyRows from './EmptyRows';
 import FootNotes from './FootNotes/Footnotes';
@@ -24,11 +23,10 @@ function DisplayTable({
   setFootnoteData,
   handleColumnOperation,
   handleSwap,
-  preferredTerms,
-  isPreferredTerm,
-  clinicalTerms,
-  isClinicalTerms,
+  getEnrichedText,
+  readMode,
   handleEnrichedClick,
+  clinicalTerms,
 }) {
   const handleChange = (columnIndex, rowIndex, e) => {
     onChange(e.target.innerHTML, columnIndex, rowIndex);
@@ -105,52 +103,51 @@ function DisplayTable({
                   <EllipsisVertical />
                 </span>
               )}
-              {row?.columns?.map((col, colIndex) => (
-                <div
-                  // eslint-disable-next-line
-                  tabIndex={edit && '1'}
-                  key={uuidv4()}
-                  id={`columnID-${rowIndex}-${colIndex}`}
-                  draggable={edit}
-                  onDragStart={handleDrag}
-                  onDrop={handleDrop}
-                  onDragOver={allowDrop}
-                  className={` pd-table-cell ${
-                    col?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
-                  }`}
-                >
-                  {rowIndex === 0 && edit && (
-                    <span
-                      className="pd-drag-icon columnDrag"
-                      data-testId="draggable"
-                    >
-                      <EllipsisHorizontal />
-                    </span>
-                  )}
-                  {/* eslint-disable-next-line */}
+              {row?.columns?.map((col, colIndex) => {
+                const getCellValue = (value) => {
+                  if (!value) return '';
+
+                  return !readMode
+                    ? col?.value
+                    : getEnrichedText(col.value, CONTENT_TYPE.TABLE);
+                };
+                return (
                   <div
+                    // eslint-disable-next-line
+                    tabIndex={edit && '1'}
+                    key={uuidv4()}
                     id={`columnID-${rowIndex}-${colIndex}`}
-                    data-testid="span-edit"
-                    className="editable-span"
-                    onClick={handleClick}
-                    role="textbox"
-                    contentEditable={edit}
-                    onBlur={(e) => handleChange(colIndex, rowIndex, e)}
+                    draggable={edit}
+                    onDragStart={handleDrag}
+                    onDrop={handleDrop}
+                    onDragOver={allowDrop}
+                    className={` pd-table-cell ${
+                      col?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
+                    }`}
                   >
-                    {col.value && (
-                      <SanitizeHTML
-                        html={getPreferredTerms(
-                          col.value,
-                          isPreferredTerm,
-                          preferredTerms,
-                          clinicalTerms,
-                          isClinicalTerms,
-                        )}
-                      />
+                    {rowIndex === 0 && edit && (
+                      <span
+                        className="pd-drag-icon columnDrag"
+                        data-testId="draggable"
+                      >
+                        <EllipsisHorizontal />
+                      </span>
                     )}
+                    {/* eslint-disable-next-line */}
+                    <div
+                      id={`columnID-${rowIndex}-${colIndex}`}
+                      data-testid="span-edit"
+                      className="editable-span"
+                      onClick={handleClick}
+                      role="textbox"
+                      contentEditable={edit}
+                      onBlur={(e) => handleChange(colIndex, rowIndex, e)}
+                    >
+                      <SanitizeHTML html={getCellValue(col?.value)} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         ))}
@@ -174,9 +171,8 @@ DisplayTable.propTypes = {
   setFootnoteData: PropTypes.isRequired,
   handleColumnOperation: PropTypes.isRequired,
   handleSwap: PropTypes.isRequired,
-  preferredTerms: PropTypes.isRequired,
-  isPreferredTerm: PropTypes.isRequired,
-  clinicalTerms: PropTypes.isRequired,
-  isClinicalTerms: PropTypes.isRequired,
+  getEnrichedText: PropTypes.isRequired,
+  readMode: PropTypes.isRequired,
   handleEnrichedClick: PropTypes.isRequired,
+  clinicalTerms: PropTypes.isRequired,
 };
