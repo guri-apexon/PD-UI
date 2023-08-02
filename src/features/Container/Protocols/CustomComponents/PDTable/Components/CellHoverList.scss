@@ -1,0 +1,38 @@
+.cell-hoverList {
+  li {
+    display: flex;
+    cursor: pointer;
+    padding: 1px;
+    font-family: 'Proxima Nova';
+  }
+  ul.dropdown {
+    position: fixed;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 0.5rem;
+    z-index: 9999;
+  }
+
+  li:hover {
+    background-color: rgb(243, 241, 241);
+  }
+  .pd-arrow-icon {
+    box-shadow: 0 2px 12px 0px rgb(0 0 0 / 14%);
+    margin-right: 5px;
+    color: grey;
+    padding: 3px 5px;
+    border: 1px solid #eee;
+    display: flex;
+    width: 20px;
+    justify-content: center;
+    height: 20px;
+    align-items: center;
+  }
+  [class*='MuiSvgIcon-root-'] {
+    font-size: 1.1rem;
+  }
+}
+
+.icon-table {
+  font-size: 1rem !important;
+}

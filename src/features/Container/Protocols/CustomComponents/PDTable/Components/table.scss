@@ -22,7 +22,6 @@
   box-sizing: border-box;
 }
 .pd-table-row {
-  display: flex;
   min-height: 50px;
   justify-content: center;
   position: relative;
@@ -30,18 +29,14 @@
 }
 .pd-table-cell {
   text-align: left;
-  border: 1px solid #c1c1c1;
-  display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  min-width: 100px;
-  width: 100%;
+  min-width: 200px;
   position: relative;
 }
 .content-table-wrapper {
-  border: 1px solid #dadada;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -70,8 +65,14 @@
   outline: none;
   color: #000;
 }
+.editable-div {
+  font-size: 12px;
+  padding: 5px;
+  outline: none;
+  color: #000;
+}
 .editable-span {
-  width: 90%;
+  width: 50%;
   font-size: 12px;
   padding: 5px;
   outline: none;
@@ -84,7 +85,7 @@
 }
 .pd-table-empty-cell-row {
   width: 100%;
-  display: inline-block;
+  height: 45px;
 }
 .pd-empty-row-cells {
   position: absolute;
@@ -200,7 +201,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: calc(50% - 9px);
+  margin-left: calc(50% - 10px);
 }
 .button-container {
   display: flex;
@@ -240,4 +241,7 @@
   max-height: 350px;
   -ms-scroll-chaining: none;
   -ms-scroll-limit: none;
+}
+td {
+  border: 1px solid rgb(180, 177, 177);
 }
