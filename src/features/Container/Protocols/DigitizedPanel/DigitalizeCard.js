@@ -83,6 +83,7 @@ function DigitalizeCard({
 
   useEffect(() => {
     if (summary?.data?.length) {
+      setSectionSequence(-1);
       setHeaderList(
         summary.data.map((x) => {
           if (x.source_file_section !== 'blank_header') {
@@ -125,6 +126,7 @@ function DigitalizeCard({
 
   useEffect(() => {
     if (sectionRef[sectionSequence] && sectionRef[sectionSequence].current) {
+      console.log('SHUBHAM0900');
       scrollToTop(sectionSequence);
       setCurrentActiveCard(headerList[sectionSequence]?.link_id);
     } else if (sectionSequence === 0) {
@@ -138,6 +140,12 @@ function DigitalizeCard({
       setSectionSequence(sectionNumber);
     }
   }, [sectionNumber]);
+
+  // useEffect(() => {
+  //   if (NewSectionIndex >= 0) {
+  //     setSectionSequence(NewSectionIndex);
+  //   }
+  // }, [NewSectionIndex]);
 
   useEffect(() => {
     setCurrentActiveCard(0);
