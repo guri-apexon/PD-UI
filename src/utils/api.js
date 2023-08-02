@@ -202,8 +202,6 @@ if (environment === 'local') {
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
   UIhost = 'https://dev-protocoldigitalization-ui.work.iqvia.com';
   baseUrlSSO = 'https://dev-protocoldigitalization.work.iqvia.com/v1';
-  backendHost = 'https://test-protocoldigitalization-api.work.iqvia.com';
-  backendPostHost = 'https://test-protocoldigitalization-ai.work.iqvia.com';
 } else if (environment === 'dev') {
   backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
   backendPostHost = 'https://dev-protocoldigitalization-ai.work.iqvia.com';
