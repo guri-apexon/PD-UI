@@ -336,6 +336,9 @@ export const tableJSONByRowAndColumnLength = (row, column) => {
         op_type: QC_CHANGE_TYPE.ADDED,
         cell_id: '',
         value: '',
+        rowspan: 1,
+        colspan: 1,
+        col_render: true,
       };
       columnObj = [...columnObj, obj];
     }
@@ -571,7 +574,7 @@ export const createReturnObj = (obj, linkId) => {
           link_id_subsection1: '',
           link_id_subsection2: '',
           link_id_subsection3: '',
-          link_level: obj?.prev_line_detail?.file_section_level,
+          link_level: obj?.prev_line_detail?.file_section_level || 1,
         },
         section_locked: false,
       };

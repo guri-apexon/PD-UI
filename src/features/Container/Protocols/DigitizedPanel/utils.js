@@ -56,7 +56,7 @@ export const tablePopup = (e, callback) => {
   tableEnrichedPopup.className = 'table-enriched-place-holder';
   tableEnrichedPopup.style.position = 'absolute';
   tableEnrichedPopup.style.left = `${left}px`;
-  tableEnrichedPopup.style.top = `${top}px`;
+  tableEnrichedPopup.style.top = `${top + 40}px`;
 
   document.body.appendChild(tableEnrichedPopup);
 

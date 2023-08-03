@@ -1,3 +1,10 @@
+import ChevronDown from 'apollo-react-icons/ChevronDown';
+import ChevronLeft from 'apollo-react-icons/ChevronLeft';
+import ChevronRight from 'apollo-react-icons/ChevronRight';
+import ChevronUp from 'apollo-react-icons/ChevronUp';
+import Table from 'apollo-react-icons/Table';
+import './CellHoverList.scss';
+
 export const tableOperations = {
   addRowAbove: 'ADD_ROW_ABOVE',
   addRowBelow: 'ADD_ROW_BELOW',
@@ -41,5 +48,38 @@ export const rowHoverData = [
     text: 'Delete row',
     image: "<img src='./images/delete.svg' alt='' />",
     id: tableOperations.deleteRow,
+  },
+];
+
+export const cellMerge = [
+  {
+    text: 'Right Merge',
+    image: <ChevronRight />,
+    id: 'mergeRight',
+  },
+  {
+    text: 'Left Merge',
+    image: <ChevronLeft />,
+    id: 'mergeLeft',
+  },
+  {
+    text: 'Below Merge',
+    image: <ChevronDown />,
+    id: 'mergeBelow',
+  },
+  {
+    text: 'Above Merge',
+    image: <ChevronUp />,
+    id: 'mergeAbove',
+  },
+  {
+    text: 'Row Split',
+    image: <Table className="icon-table" />,
+    id: 'RowSplit',
+  },
+  {
+    text: 'Column Split',
+    image: <Table className="icon-table" />,
+    id: 'ColSplit',
   },
 ];

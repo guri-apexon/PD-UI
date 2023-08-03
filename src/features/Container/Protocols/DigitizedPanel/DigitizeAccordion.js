@@ -904,11 +904,13 @@ function DigitizeAccordion({
                           section?.content?.AttachmentListProperties
                         }
                         colWidth={100}
+                        readMode
+                        getEnrichedText={getEnrichedText}
                         preferredTerms={section?.preferred_terms}
                         isPreferredTerm={
                           globalPreferredTerm || showPrefferedTerm
                         }
-                        clinicalTerms={section?.clinical_terms}
+                        clinicalTerms={enrichedContent?.data}
                         isClinicalTerms={
                           showEnrichedContent ||
                           rightBladeValue === PROTOCOL_RIGHT_MENU.CLINICAL_TERM

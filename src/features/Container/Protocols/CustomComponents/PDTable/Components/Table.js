@@ -1,19 +1,21 @@
 import EllipsisHorizontal from 'apollo-react-icons/EllipsisHorizontal';
 import EllipsisVertical from 'apollo-react-icons/EllipsisVertical';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
   CONTENT_TYPE,
   QC_CHANGE_TYPE,
 } from '../../../../../../AppConstant/AppConstant';
-import { getPreferredTerms } from '../utils';
+import { formattableData, renderTableData } from '../utils';
 import EmptyColumns from './EmptyColumns';
 import EmptyRows from './EmptyRows';
 import FootNotes from './FootNotes/Footnotes';
 import { tableOperations } from './dropdownData';
 import './table.scss';
 import SanitizeHTML from '../../../../../Components/SanitizeHtml';
+import CellHoverList from './CellHoverList';
+import { removeHtmlTags } from '../../../../../../utils/utilFunction';
 
 function DisplayTable({
   data,
@@ -24,15 +26,33 @@ function DisplayTable({
   setFootnoteData,
   handleColumnOperation,
   handleSwap,
-  preferredTerms,
-  isPreferredTerm,
   clinicalTerms,
-  isClinicalTerms,
   handleEnrichedClick,
+  handleMergeOperation,
+  isDraggable,
+  lineID,
+  getEnrichedText,
+  readMode,
 }) {
+  const [tableData, setTableData] = useState();
+  const [isCellOperation, setIsCellOperation] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({
+    x: 0,
+    y: 0,
+  });
+  const [rowIdx, setRowIdx] = useState(0);
+  const [colIdx, setColIdx] = useState(0);
   const handleChange = (columnIndex, rowIndex, e) => {
     onChange(e.target.innerHTML, columnIndex, rowIndex);
   };
+
+  useEffect(() => {
+    if (data) {
+      const formattedData = formattableData(data);
+      const renderData = renderTableData(formattedData);
+      setTableData(renderData?.tableData);
+    }
+  }, [data]);
 
   const handleDrag = (e) => {
     e.dataTransfer?.setData('selectedId', e.target.id);
@@ -64,9 +84,43 @@ function DisplayTable({
     e.preventDefault();
   };
 
+  const handleContextMenu = (e, rowIndex, colIndex) => {
+    if (edit) {
+      const htmlContent = document.getElementById(
+        `columnID-${rowIndex}-${colIndex}-${lineID}`,
+      )?.firstElementChild?.innerHTML;
+      if (
+        removeHtmlTags(tableData[rowIndex].columns[colIndex].value) !==
+        removeHtmlTags(htmlContent)
+      )
+        handleChange(colIndex, rowIndex, {
+          target: { innerHTML: htmlContent },
+        }); // to handle onBlur on rightClick
+      setRowIdx(rowIndex);
+      setColIdx(colIndex);
+      let yValue = e.pageY;
+      if (e.pageY + 200 > window.innerHeight) {
+        yValue = e.pageY - 195;
+      }
+      setDropdownPosition({ x: e.pageX, y: yValue });
+      setIsCellOperation(true);
+    }
+  };
+
+  const handleDropdownOptionClick = (operation) => {
+    setIsCellOperation(false);
+    handleMergeOperation(rowIdx, colIdx, operation);
+  };
+
   const handleClick = (e) =>
     handleEnrichedClick &&
     handleEnrichedClick(e, clinicalTerms, CONTENT_TYPE.TABLE);
+
+  const getCellValue = (value) => {
+    if (!value) return '';
+
+    return !readMode ? value : getEnrichedText(value, CONTENT_TYPE.TABLE);
+  };
 
   return (
     <div className="pd-table-wrapper">
@@ -77,89 +131,99 @@ function DisplayTable({
             handleOperation={handleColumnOperation}
           />
         )}
-        {data?.map((row, rowIndex) => (
-          <div
-            key={uuidv4()}
-            className={`pd-table-empty-cell-row ${
-              row?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
-            }`}
-          >
-            {edit && (
-              <EmptyRows
-                rowIndex={rowIndex}
-                handleOperation={handleRowOperation}
-                index={rowIndex}
-              />
-            )}
-            <div
-              data-testid="table-row"
-              className="pd-table-row"
-              id={`rowID-${rowIndex}`}
-              draggable={edit}
-              onDragStart={handleDrag}
-              onDrop={handleDrop}
-              onDragOver={allowDrop}
-            >
-              {edit && (
-                <span className="pd-drag-icon rowDrag">
-                  <EllipsisVertical />
-                </span>
-              )}
-              {row?.columns?.map((col, colIndex) => (
-                <div
-                  // eslint-disable-next-line
-                  tabIndex={edit && '1'}
-                  key={uuidv4()}
-                  id={`columnID-${rowIndex}-${colIndex}`}
-                  draggable={edit}
-                  onDragStart={handleDrag}
-                  onDrop={handleDrop}
-                  onDragOver={allowDrop}
-                  className={` pd-table-cell ${
-                    col?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
-                  }`}
-                >
-                  {rowIndex === 0 && edit && (
-                    <span
-                      className="pd-drag-icon columnDrag"
-                      data-testId="draggable"
-                    >
-                      <EllipsisHorizontal />
-                    </span>
-                  )}
-                  {/* eslint-disable-next-line */}
-                  <div
-                    id={`columnID-${rowIndex}-${colIndex}`}
-                    data-testid="span-edit"
-                    className="editable-span"
-                    onClick={handleClick}
-                    role="textbox"
-                    contentEditable={edit}
-                    onBlur={(e) => handleChange(colIndex, rowIndex, e)}
-                  >
-                    {col.value && (
-                      <SanitizeHTML
-                        html={getPreferredTerms(
-                          col.value,
-                          isPreferredTerm,
-                          preferredTerms,
-                          clinicalTerms,
-                          isClinicalTerms,
+        <table>
+          {tableData?.map((row, rowIndex) => {
+            return (
+              <tr
+                key={uuidv4()}
+                className={` pd-table-row pd-table-empty-cell-row ${
+                  row?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
+                }`}
+                data-testid="table-row"
+                id={`rowID-${rowIndex}`}
+                draggable={edit && isDraggable}
+                onDragStart={handleDrag}
+                onDrop={handleDrop}
+                onDragOver={allowDrop}
+              >
+                {edit && (
+                  <EmptyRows
+                    rowIndex={rowIndex}
+                    handleOperation={handleRowOperation}
+                    index={rowIndex}
+                  />
+                )}
+                {edit && isDraggable && (
+                  <span className="pd-drag-icon rowDrag">
+                    <EllipsisVertical />
+                  </span>
+                )}
+                {row?.columns?.map((col, colIndex) => {
+                  return (
+                    col?.col_render && (
+                      // eslint-disable-next-line
+                      <td
+                        key={uuidv4()}
+                        rowSpan={col.rowspan > -1 ? col.rowspan : 1}
+                        colSpan={col.colspan > -1 ? col.colspan : 1}
+                        // eslint-disable-next-line
+                        tabIndex={edit && '1'}
+                        id={`columnID-${rowIndex}-${colIndex}-${lineID}`}
+                        data-testid="span-edit"
+                        onClick={handleClick}
+                        draggable={edit && isDraggable}
+                        onDragStart={handleDrag}
+                        onDrop={handleDrop}
+                        onDragOver={allowDrop}
+                        className={` pd-table-cell ${
+                          col?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
+                        }`}
+                        onContextMenu={(e) => {
+                          e.preventDefault();
+                        }}
+                        onMouseDown={(e) => {
+                          if (e.button === 2) {
+                            e.preventDefault();
+                            handleContextMenu(e, rowIndex, colIndex);
+                          }
+                        }}
+                      >
+                        <div
+                          contentEditable={edit}
+                          onBlur={(e) => handleChange(colIndex, rowIndex, e)}
+                          className="editable-div"
+                        >
+                          <SanitizeHTML html={getCellValue(col?.value)} />
+                        </div>
+                        {rowIndex === 0 && edit && isDraggable && (
+                          <span
+                            className="pd-drag-icon columnDrag"
+                            data-testId="draggable"
+                          >
+                            <EllipsisHorizontal />
+                          </span>
                         )}
-                      />
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+                      </td>
+                    )
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </table>
         <FootNotes
           edit={edit}
           footNoteData={footNoteData}
           setFootnoteData={setFootnoteData}
         />
       </div>
+      {isCellOperation && (
+        <CellHoverList
+          handleDropdownOptionClick={handleDropdownOptionClick}
+          dropdownPosition={dropdownPosition}
+          setIsCellOperation={setIsCellOperation}
+        />
+      )}
     </div>
   );
 }
@@ -174,9 +238,11 @@ DisplayTable.propTypes = {
   setFootnoteData: PropTypes.isRequired,
   handleColumnOperation: PropTypes.isRequired,
   handleSwap: PropTypes.isRequired,
-  preferredTerms: PropTypes.isRequired,
-  isPreferredTerm: PropTypes.isRequired,
   clinicalTerms: PropTypes.isRequired,
-  isClinicalTerms: PropTypes.isRequired,
   handleEnrichedClick: PropTypes.isRequired,
+  handleMergeOperation: PropTypes.isRequired,
+  isDraggable: PropTypes.isRequired,
+  lineID: PropTypes.isRequired,
+  getEnrichedText: PropTypes.isRequired,
+  readMode: PropTypes.isRequired,
 };
