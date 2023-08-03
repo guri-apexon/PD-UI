@@ -20,6 +20,9 @@
   padding: 35px 30px;
   position: relative;
   box-sizing: border-box;
+  td {
+    border: 1px solid rgb(180, 177, 177) !important;
+  }
 }
 .pd-table-row {
   min-height: 50px;

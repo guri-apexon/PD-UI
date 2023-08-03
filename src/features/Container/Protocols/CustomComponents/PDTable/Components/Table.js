@@ -118,7 +118,6 @@ function DisplayTable({
 
   const getCellValue = (value) => {
     if (!value) return '';
-
     return !readMode ? value : getEnrichedText(value, CONTENT_TYPE.TABLE);
   };
 
@@ -136,7 +135,7 @@ function DisplayTable({
             return (
               <tr
                 key={uuidv4()}
-                className={` pd-table-row pd-table-empty-cell-row ${
+                className={`pd-table-empty-cell-row ${
                   row?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
                 }`}
                 data-testid="table-row"

@@ -530,6 +530,8 @@ export const adjustRowSpan = (data, rowIndex, colIndex) => {
           data[rowIdx].columns[index].rowspan = prevRowSpan + 1;
           data[rowIdx].op_type = data[rowIdx].op_type || QC_CHANGE_TYPE.UPDATED;
           flag = false;
+          if (data[rowIdx]?.columns[index]?.colspan > 1)
+            colSpancount = data[rowIdx]?.columns[index]?.colspan;
         }
         rowIdx -= 1;
       }
@@ -542,20 +544,48 @@ export const adjustRowSpan = (data, rowIndex, colIndex) => {
 };
 
 export const adjustColSpan = (data, rowIndex, colIndex) => {
+  let rowSpanValue = 0;
   data?.forEach((item, index) => {
-    if (index !== rowIndex && data[index].columns[colIndex].col_render) {
-      const colSpan = Math.abs(data[index].columns[colIndex].colspan);
+    if (rowSpanValue > 0) {
+      rowSpanValue -= 1;
+    } else if (
+      index !== rowIndex &&
+      data[index]?.columns[colIndex]?.col_render
+    ) {
+      const colSpan = Math.abs(data[index]?.columns[colIndex]?.colspan);
       data[index].columns[colIndex].colspan = colSpan + 1;
       data[index].columns[colIndex].op_type =
-        data[index].columns[colIndex].op_type || QC_CHANGE_TYPE.UPDATED;
-    } else if (!data[index].columns[colIndex].col_render) {
+        data[index]?.columns[colIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
+      if (data[index]?.columns[colIndex]?.rowspan > 1) {
+        rowSpanValue = data[index]?.columns[colIndex]?.rowspan;
+      }
+      let rowTemp = rowSpanValue - 1;
+      while (rowTemp > 0) {
+        data[index + rowTemp].columns[colIndex].colspan =
+          Math.abs(data[index + rowTemp]?.columns[colIndex]?.colspan) + 1;
+        data[index + rowTemp].op_type =
+          data[index + rowTemp]?.op_type || QC_CHANGE_TYPE.UPDATED;
+        rowTemp -= 1;
+      }
+    } else if (!data[index]?.columns[colIndex]?.col_render) {
       let colIdx = colIndex - 1;
       let flag = true;
       while (colIdx >= 0 && flag) {
         if (data[index]?.columns[colIdx]?.col_render) {
           data[index].columns[colIdx].colspan += 1;
-          data[index].op_type = data[index].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[index].op_type = data[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
           flag = false;
+          if (data[index]?.columns[colIdx]?.rowspan > 1) {
+            rowSpanValue = data[index]?.columns[colIdx]?.rowspan;
+          }
+          let rowTemp = rowSpanValue - 1;
+          while (rowTemp > 0) {
+            data[index + rowTemp].columns[colIdx].colspan =
+              Math.abs(data[index + rowTemp]?.columns[colIdx]?.colspan) + 1;
+            data[index].op_type =
+              data[index + rowTemp]?.op_type || QC_CHANGE_TYPE.UPDATED;
+            rowTemp -= 1;
+          }
         }
         colIdx -= 1;
       }
@@ -565,20 +595,20 @@ export const adjustColSpan = (data, rowIndex, colIndex) => {
 };
 
 export const formatRowData = (data, rowIdx) => {
-  const newRowData = data[rowIdx].columns.map((item, index) => {
-    return { ...item, colspan: data[rowIdx - 1].columns[index].colspan };
+  const newRowData = data[rowIdx]?.columns.map((item, index) => {
+    return { ...item, colspan: data[rowIdx - 1]?.columns[index]?.colspan };
   });
 
   return newRowData;
 };
 
 export const addNewRow = (data, index, tableOps) => {
-  if (tableOps === tableOperations.addRowAbove && index === 0) {
-    const dataRow = data[index].columns.map((item) => {
+  if (tableOps === tableOperations?.addRowAbove && index === 0) {
+    const dataRow = data[index]?.columns?.map((item) => {
       return {
         ...item,
         col_render: true,
-        op_type: item.op_type || QC_CHANGE_TYPE.UPDATED,
+        op_type: item?.op_type || QC_CHANGE_TYPE.UPDATED,
       };
     });
     data[index].columns = dataRow;
@@ -586,43 +616,47 @@ export const addNewRow = (data, index, tableOps) => {
   }
   let colSpanValue = 0;
   const prevIndex = index - 1;
-  const rowData = data[index].columns.map((item, idx) => {
+  const rowData = data[index]?.columns?.map((item, idx) => {
     let itemObj = { ...item };
     if (
-      data[prevIndex].columns[idx].col_render &&
-      data[prevIndex].columns[idx].rowspan <= 1
+      data[prevIndex]?.columns[idx]?.col_render &&
+      data[prevIndex]?.columns[idx]?.rowspan <= 1
     ) {
       itemObj = {
         ...itemObj,
-        colspan: data[prevIndex].columns[idx].colspan,
+        colspan: data[prevIndex]?.columns[idx]?.colspan,
         col_render: true,
-        op_type: itemObj.op_type || QC_CHANGE_TYPE.UPDATED,
+        op_type: itemObj?.op_type || QC_CHANGE_TYPE.UPDATED,
       };
-      colSpanValue = Math.abs(data[prevIndex].columns[idx].colspan);
+      colSpanValue = Math.abs(data[prevIndex]?.columns[idx]?.colspan);
     } else if (
-      data[prevIndex].columns[idx].col_render &&
-      data[prevIndex].columns[idx].rowspan > 1
+      data[prevIndex]?.columns[idx]?.col_render &&
+      data[prevIndex]?.columns[idx]?.rowspan > 1
     ) {
       data[prevIndex].columns[idx].rowspan += 1;
-      colSpanValue = Math.abs(data[prevIndex].columns[idx].colspan);
+      colSpanValue = Math.abs(data[prevIndex]?.columns[idx]?.colspan);
       data[prevIndex].columns[idx].op_type =
-        data[prevIndex].columns[idx].op_type || QC_CHANGE_TYPE.UPDATED;
+        data[prevIndex]?.columns[idx]?.op_type || QC_CHANGE_TYPE.UPDATED;
       itemObj = { ...item, colspan: colSpanValue };
-    } else if (!data[prevIndex].columns[idx].col_render && colSpanValue === 0) {
+    } else if (
+      !data[prevIndex]?.columns[idx]?.col_render &&
+      colSpanValue === 0
+    ) {
       let rowIdx = index - 1;
       let flag = true;
       while (rowIdx >= 0 && flag) {
         if (data[rowIdx]?.columns[idx]?.col_render) {
-          const prevRowSpan = Math.abs(data[rowIdx].columns[idx].rowspan);
+          const prevRowSpan = Math.abs(data[rowIdx]?.columns[idx]?.rowspan);
           data[rowIdx].columns[idx].rowspan = prevRowSpan + 1;
-          data[rowIdx].op_type = data[rowIdx].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[rowIdx].op_type =
+            data[rowIdx]?.op_type || QC_CHANGE_TYPE.UPDATED;
           flag = false;
-          colSpanValue = Math.abs(data[rowIdx].columns[idx].colspan);
+          colSpanValue = Math.abs(data[rowIdx]?.columns[idx]?.colspan);
           itemObj = { ...item, colspan: colSpanValue };
         }
         rowIdx -= 1;
       }
-    } else if (!data[prevIndex].columns[idx]?.col_render && colSpanValue > 0) {
+    } else if (!data[prevIndex]?.columns[idx]?.col_render && colSpanValue > 0) {
       let rowIdx = index - 1;
       while (rowIdx >= 0) {
         if (data[rowIdx]?.columns[idx]?.col_render) {
@@ -632,12 +666,12 @@ export const addNewRow = (data, index, tableOps) => {
       }
       if (data[rowIdx]?.columns[idx]?.col_render) {
         data[rowIdx + 1].columns[idx].rowspan = Math.abs(
-          data[rowIdx + 1].columns[idx - 1].rowspan,
+          data[rowIdx + 1]?.columns[idx - 1]?.rowspan,
         );
         data[rowIdx + 1].columns[idx].op_type =
-          data[rowIdx + 1].columns[idx].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[rowIdx + 1]?.columns[idx]?.op_type || QC_CHANGE_TYPE.UPDATED;
         data[rowIdx + 1].op_type =
-          data[rowIdx + 1].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[rowIdx + 1]?.op_type || QC_CHANGE_TYPE.UPDATED;
       }
     }
 
