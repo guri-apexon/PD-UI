@@ -73,6 +73,9 @@
   padding: 5px;
   outline: none;
   color: #000;
+  min-height: 35px;
+  display: flex;
+  align-items: center;
 }
 .editable-span {
   width: 50%;
