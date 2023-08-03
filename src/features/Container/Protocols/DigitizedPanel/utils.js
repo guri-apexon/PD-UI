@@ -52,11 +52,15 @@ export const renderAuditInfo = (itemVal, keyName, reviewCount) => {
 
 export const tablePopup = (e, callback) => {
   const { left, top } = e.currentTarget.getBoundingClientRect();
+  let topValue = top;
+  if (top + 200 > window.innerHeight) {
+    topValue = top - 195;
+  }
   const tableEnrichedPopup = document.createElement('div');
   tableEnrichedPopup.className = 'table-enriched-place-holder';
   tableEnrichedPopup.style.position = 'absolute';
   tableEnrichedPopup.style.left = `${left}px`;
-  tableEnrichedPopup.style.top = `${top + 40}px`;
+  tableEnrichedPopup.style.top = `${topValue + 40}px`;
 
   document.body.appendChild(tableEnrichedPopup);
 

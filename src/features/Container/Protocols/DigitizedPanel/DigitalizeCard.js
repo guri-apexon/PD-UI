@@ -83,6 +83,7 @@ function DigitalizeCard({
 
   useEffect(() => {
     if (summary?.data?.length) {
+      setSectionSequence(-1);
       setHeaderList(
         summary.data.map((x) => {
           if (x.source_file_section !== 'blank_header') {
