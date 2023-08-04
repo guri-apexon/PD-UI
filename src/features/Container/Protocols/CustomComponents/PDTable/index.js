@@ -8,7 +8,7 @@ import Plus from 'apollo-react-icons/Plus';
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 import DisplayTable from './Components/Table';
-import { tableOperations } from './Components/dropdownData';
+import { cellOperation, tableOperations } from './Components/dropdownData';
 import {
   addColumn,
   addRow,
@@ -119,7 +119,7 @@ function PDTable({
     let operationData = [...updatedData];
     const rowlen = checkRowLength(operationData);
     const collen = checkColLength(operationData);
-    if (ops === 'mergeRight' || ops === 'mergeLeft') {
+    if (ops === cellOperation.mergeRight || ops === cellOperation.mergeLeft) {
       const cellIdx = getNextColIndex(operationData, rowIndex, colIndex, ops);
       const curColSpan = Math.abs(
         operationData[rowIndex]?.columns[colIndex]?.colspan,
@@ -140,7 +140,10 @@ function PDTable({
       );
 
       if (isSpanValue) {
-        if (ops === 'mergeRight' && curColSpan + colIndex === cellIdx) {
+        if (
+          ops === cellOperation.mergeRight &&
+          curColSpan + colIndex === cellIdx
+        ) {
           operationData = cellOperationData(
             operationData,
             rowIndex,
@@ -149,7 +152,7 @@ function PDTable({
             ops,
           );
         } else if (
-          ops === 'mergeLeft' &&
+          ops === cellOperation.mergeLeft &&
           cellIdx + cellColSpan === colIndex &&
           colIndex !== 0
         ) {
@@ -167,7 +170,10 @@ function PDTable({
       } else {
         toast.error('please do same Rowspan operation');
       }
-    } else if (ops === 'mergeBelow' || ops === 'mergeAbove') {
+    } else if (
+      ops === cellOperation.mergeBelow ||
+      ops === cellOperation.mergeAbove
+    ) {
       const cellIdx = getNextRowIndex(operationData, rowIndex, colIndex, ops);
       const curRowSpan = Math.abs(
         operationData[rowIndex]?.columns[colIndex]?.rowspan,
@@ -187,14 +193,20 @@ function PDTable({
         ops,
       );
       if (isSpanValue) {
-        if (ops === 'mergeBelow' && rowIndex + curRowSpan === cellIdx) {
+        if (
+          ops === cellOperation.mergeBelow &&
+          rowIndex + curRowSpan === cellIdx
+        ) {
           operationData = rowMergeOperation(
             operationData,
             rowIndex,
             colIndex,
             cellIdx,
           );
-        } else if (ops === 'mergeAbove' && cellIdx + cellRowSpan === rowIndex) {
+        } else if (
+          ops === cellOperation.mergeAbove &&
+          cellIdx + cellRowSpan === rowIndex
+        ) {
           operationData = rowMergeOperation(
             operationData,
             cellIdx,
@@ -207,15 +219,16 @@ function PDTable({
         toast.error('please do same Colspan operation');
       }
     }
-    if (ops === 'RowSplit') {
+    if (ops === cellOperation.rowSplit) {
       operationData = rowSplit(operationData, rowIndex, colIndex);
       setUpdatedData([...operationData]);
-    } else if (ops === 'ColSplit') {
+    } else if (ops === cellOperation.colSplit) {
       operationData = colSplit(operationData, rowIndex, colIndex);
       setUpdatedData([...operationData]);
     }
   };
 
+  console.log('shubham', updatedData);
   const handleChange = (content, columnIndex, rowIndex) => {
     const cloneData = [...updatedData];
     cloneData.forEach((record, i) => {

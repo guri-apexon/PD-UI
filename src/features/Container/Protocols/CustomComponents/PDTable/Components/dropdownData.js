@@ -51,35 +51,44 @@ export const rowHoverData = [
   },
 ];
 
+export const cellOperation = {
+  mergeRight: 'mergeRight',
+  mergeLeft: 'mergeLeft',
+  mergeBelow: 'mergeBelow',
+  mergeAbove: 'mergeAbove',
+  rowSplit: 'RowSplit',
+  colSplit: 'ColSplit',
+};
+
 export const cellMerge = [
   {
     text: 'Right Merge',
     image: <ChevronRight />,
-    id: 'mergeRight',
+    id: cellOperation.mergeRight,
   },
   {
     text: 'Left Merge',
     image: <ChevronLeft />,
-    id: 'mergeLeft',
+    id: cellOperation.mergeLeft,
   },
   {
     text: 'Below Merge',
     image: <ChevronDown />,
-    id: 'mergeBelow',
+    id: cellOperation.mergeBelow,
   },
   {
     text: 'Above Merge',
     image: <ChevronUp />,
-    id: 'mergeAbove',
+    id: cellOperation.mergeAbove,
   },
   {
     text: 'Row Split',
     image: <Table className="icon-table" />,
-    id: 'RowSplit',
+    id: cellOperation.rowSplit,
   },
   {
     text: 'Column Split',
     image: <Table className="icon-table" />,
-    id: 'ColSplit',
+    id: cellOperation.colSplit,
   },
 ];
