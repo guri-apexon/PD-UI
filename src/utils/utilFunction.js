@@ -336,6 +336,9 @@ export const tableJSONByRowAndColumnLength = (row, column) => {
         op_type: QC_CHANGE_TYPE.ADDED,
         cell_id: '',
         value: '',
+        rowspan: 1,
+        colspan: 1,
+        col_render: true,
       };
       columnObj = [...columnObj, obj];
     }
