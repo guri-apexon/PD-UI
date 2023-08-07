@@ -1,5 +1,5 @@
 import { cloneDeep, isEqual } from 'lodash';
-import { tableOperations } from './Components/dropdownData';
+import { cellOperation, tableOperations } from './Components/dropdownData';
 
 const QC_CHANGE_TYPE = {
   ADDED: 'add',
@@ -291,7 +291,7 @@ export const renderTableData = (data) => {
     let index = colidx + 1;
     while (value > 0) {
       cloneData[rowIdx].columns[index] = {
-        ...cloneData[rowIdx].columns[index],
+        ...cloneData[rowIdx]?.columns[index],
         col_render: false,
         rowspan: -1,
         colSpan: -1,
@@ -305,7 +305,7 @@ export const renderTableData = (data) => {
     let index = rowIdx + 1;
     while (value > 0) {
       cloneData[index].columns[colidx] = {
-        ...cloneData[index].columns[colidx],
+        ...cloneData[index]?.columns[colidx],
         col_render: false,
         rowspan: -1,
         colSpan: -1,
@@ -332,14 +332,14 @@ export const renderTableData = (data) => {
 
 export const formattableData = (data) => {
   const cloneData = [...data];
-  return cloneData.map((record) => {
+  return cloneData?.map((record) => {
     return {
       ...record,
-      row_indx: record.row_indx?.toString() || '',
-      columns: record.columns.map((col) => {
+      row_indx: record?.row_indx?.toString() || '',
+      columns: record?.columns.map((col) => {
         return {
           ...col,
-          col_indx: col.col_indx?.toString() || '',
+          col_indx: col?.col_indx?.toString() || '',
           col_render: true,
         };
       }),
@@ -357,7 +357,7 @@ export const checkSpanValue = (
   let isSpan = false;
   let currentRowSpan;
   let nextRowSpan;
-  if (ops === 'mergeRight' || ops === 'mergeLeft') {
+  if (ops === cellOperation.mergeRight || ops === cellOperation.mergeLeft) {
     currentRowSpan = Math.abs(
       operationData[rowIndex]?.columns[colIndex]?.rowspan,
     );
@@ -383,9 +383,9 @@ export const getNextColIndex = (operationData, rowIndex, colIndex, ops) => {
   let flag = true;
   let cellIdx = colIndex;
   while (flag) {
-    if (ops === 'mergeRight') {
+    if (ops === cellOperation.mergeRight) {
       cellIdx += 1;
-    } else if (ops === 'mergeLeft') {
+    } else if (ops === cellOperation.mergeLeft) {
       cellIdx -= 1;
     }
     const cellRender = operationData[rowIndex]?.columns[cellIdx]?.col_render;
@@ -415,31 +415,33 @@ export const cellOperationData = (
   if (isSpanValue) {
     operationData[rowIndex].columns[
       colIndex
-    ].value += ` ${operationData[rowIndex].columns[nextColIndex].value}`;
+    ].value += ` ${operationData[rowIndex]?.columns[nextColIndex]?.value}`;
     operationData[rowIndex].columns[colIndex].colspan =
-      Math.abs(operationData[rowIndex].columns[colIndex].colspan) +
-      Math.abs(operationData[rowIndex].columns[nextColIndex].colspan);
-    const rowSpan = Math.abs(operationData[rowIndex].columns[colIndex].rowspan);
+      Math.abs(operationData[rowIndex]?.columns[colIndex]?.colspan) +
+      Math.abs(operationData[rowIndex]?.columns[nextColIndex]?.colspan);
+    const rowSpan = Math.abs(
+      operationData[rowIndex]?.columns[colIndex]?.rowspan,
+    );
     if (rowSpan > 1) {
       let rowValue = rowSpan - 1;
       while (rowValue > 0) {
         operationData[rowIndex + rowValue].columns[colIndex].colspan =
-          operationData[rowIndex].columns[colIndex].colspan;
+          operationData[rowIndex]?.columns[colIndex]?.colspan;
         rowValue -= 1;
       }
     }
     // payload logic
     operationData[rowIndex].op_type =
-      operationData[rowIndex].op_type || QC_CHANGE_TYPE.UPDATED;
+      operationData[rowIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
     operationData[rowIndex].columns[colIndex].op_type =
-      operationData[rowIndex].columns[colIndex].op_type ||
+      operationData[rowIndex]?.columns[colIndex]?.op_type ||
       QC_CHANGE_TYPE.UPDATED;
     operationData[rowIndex].columns[nextColIndex] = {
-      ...operationData[rowIndex].columns[nextColIndex],
+      ...operationData[rowIndex]?.columns[nextColIndex],
       col_render: false,
       value: '',
       op_type:
-        operationData[rowIndex].columns[nextColIndex].op_type ||
+        operationData[rowIndex]?.columns[nextColIndex]?.op_type ||
         QC_CHANGE_TYPE.UPDATED,
     };
   } else {
@@ -452,9 +454,9 @@ export const getNextRowIndex = (operationData, rowIndex, colIndex, ops) => {
   let flag = true;
   let cellIdx = rowIndex;
   while (flag) {
-    if (ops === 'mergeBelow') {
+    if (ops === cellOperation.mergeBelow) {
       cellIdx += 1;
-    } else if (ops === 'mergeAbove') {
+    } else if (ops === cellOperation.mergeAbove) {
       cellIdx -= 1;
     }
     const cellRender = operationData[cellIdx]?.columns[colIndex]?.col_render;
@@ -475,27 +477,27 @@ export const rowMergeOperation = (
 ) => {
   operationData[rowIndex].columns[
     colIndex
-  ].value += ` ${operationData[nextRowIndex].columns[colIndex].value}`;
+  ].value += ` ${operationData[nextRowIndex]?.columns[colIndex]?.value}`;
   const curRowspan = Math.abs(
-    operationData[rowIndex].columns[colIndex].rowspan,
+    operationData[rowIndex]?.columns[colIndex]?.rowspan,
   );
   const nextRowSpan = Math.abs(
-    operationData[nextRowIndex].columns[colIndex].rowspan,
+    operationData[nextRowIndex]?.columns[colIndex]?.rowspan,
   );
   operationData[rowIndex].columns[colIndex].rowspan = curRowspan + nextRowSpan;
 
   // logic for payload
   operationData[rowIndex].op_type =
-    operationData[rowIndex].op_type || QC_CHANGE_TYPE.UPDATED;
+    operationData[rowIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
   operationData[nextRowIndex].op_type =
-    operationData[nextRowIndex].op_type || QC_CHANGE_TYPE.UPDATED;
+    operationData[nextRowIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
   operationData[rowIndex].columns[colIndex].op_type = QC_CHANGE_TYPE.UPDATED;
   operationData[nextRowIndex].columns[colIndex] = {
-    ...operationData[nextRowIndex].columns[colIndex],
+    ...operationData[nextRowIndex]?.columns[colIndex],
     col_render: false,
     value: '',
     op_type:
-      operationData[nextRowIndex].columns[colIndex].op_type ||
+      operationData[nextRowIndex]?.columns[colIndex]?.op_type ||
       QC_CHANGE_TYPE.UPDATED,
   };
   return operationData;
@@ -503,7 +505,7 @@ export const rowMergeOperation = (
 
 export const adjustRowSpan = (data, rowIndex, colIndex) => {
   let colSpancount = 0;
-  const rowSpan = data[rowIndex].columns.map((item, index) => {
+  const rowSpan = data[rowIndex]?.columns?.map((item, index) => {
     let itemObj = {
       ...item,
     };
@@ -526,10 +528,13 @@ export const adjustRowSpan = (data, rowIndex, colIndex) => {
       let flag = true;
       while (rowIdx >= 0 && flag) {
         if (data[rowIdx]?.columns[index]?.col_render) {
-          const prevRowSpan = Math.abs(data[rowIdx].columns[index].rowspan);
+          const prevRowSpan = Math.abs(data[rowIdx]?.columns[index]?.rowspan);
           data[rowIdx].columns[index].rowspan = prevRowSpan + 1;
-          data[rowIdx].op_type = data[rowIdx].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[rowIdx].op_type =
+            data[rowIdx]?.op_type || QC_CHANGE_TYPE.UPDATED;
           flag = false;
+          if (data[rowIdx]?.columns[index]?.colspan > 1)
+            colSpancount = data[rowIdx]?.columns[index]?.colspan;
         }
         rowIdx -= 1;
       }
@@ -542,20 +547,48 @@ export const adjustRowSpan = (data, rowIndex, colIndex) => {
 };
 
 export const adjustColSpan = (data, rowIndex, colIndex) => {
+  let rowSpanValue = 0;
   data?.forEach((item, index) => {
-    if (index !== rowIndex && data[index].columns[colIndex].col_render) {
-      const colSpan = Math.abs(data[index].columns[colIndex].colspan);
+    if (rowSpanValue > 0) {
+      rowSpanValue -= 1;
+    } else if (
+      index !== rowIndex &&
+      data[index]?.columns[colIndex]?.col_render
+    ) {
+      const colSpan = Math.abs(data[index]?.columns[colIndex]?.colspan);
       data[index].columns[colIndex].colspan = colSpan + 1;
       data[index].columns[colIndex].op_type =
-        data[index].columns[colIndex].op_type || QC_CHANGE_TYPE.UPDATED;
-    } else if (!data[index].columns[colIndex].col_render) {
+        data[index]?.columns[colIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
+      if (data[index]?.columns[colIndex]?.rowspan > 1) {
+        rowSpanValue = data[index]?.columns[colIndex]?.rowspan;
+      }
+      let rowTemp = rowSpanValue - 1;
+      while (rowTemp > 0) {
+        data[index + rowTemp].columns[colIndex].colspan =
+          Math.abs(data[index + rowTemp]?.columns[colIndex]?.colspan) + 1;
+        data[index + rowTemp].op_type =
+          data[index + rowTemp]?.op_type || QC_CHANGE_TYPE.UPDATED;
+        rowTemp -= 1;
+      }
+    } else if (!data[index]?.columns[colIndex]?.col_render) {
       let colIdx = colIndex - 1;
       let flag = true;
       while (colIdx >= 0 && flag) {
         if (data[index]?.columns[colIdx]?.col_render) {
           data[index].columns[colIdx].colspan += 1;
-          data[index].op_type = data[index].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[index].op_type = data[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
           flag = false;
+          if (data[index]?.columns[colIdx]?.rowspan > 1) {
+            rowSpanValue = data[index]?.columns[colIdx]?.rowspan;
+          }
+          let rowTemp = rowSpanValue - 1;
+          while (rowTemp > 0) {
+            data[index + rowTemp].columns[colIdx].colspan =
+              Math.abs(data[index + rowTemp]?.columns[colIdx]?.colspan) + 1;
+            data[index].op_type =
+              data[index + rowTemp]?.op_type || QC_CHANGE_TYPE.UPDATED;
+            rowTemp -= 1;
+          }
         }
         colIdx -= 1;
       }
@@ -565,20 +598,20 @@ export const adjustColSpan = (data, rowIndex, colIndex) => {
 };
 
 export const formatRowData = (data, rowIdx) => {
-  const newRowData = data[rowIdx].columns.map((item, index) => {
-    return { ...item, colspan: data[rowIdx - 1].columns[index].colspan };
+  const newRowData = data[rowIdx]?.columns.map((item, index) => {
+    return { ...item, colspan: data[rowIdx - 1]?.columns[index]?.colspan };
   });
 
   return newRowData;
 };
 
 export const addNewRow = (data, index, tableOps) => {
-  if (tableOps === tableOperations.addRowAbove && index === 0) {
-    const dataRow = data[index].columns.map((item) => {
+  if (tableOps === tableOperations?.addRowAbove && index === 0) {
+    const dataRow = data[index]?.columns?.map((item) => {
       return {
         ...item,
         col_render: true,
-        op_type: item.op_type || QC_CHANGE_TYPE.UPDATED,
+        op_type: item?.op_type || QC_CHANGE_TYPE.UPDATED,
       };
     });
     data[index].columns = dataRow;
@@ -586,43 +619,47 @@ export const addNewRow = (data, index, tableOps) => {
   }
   let colSpanValue = 0;
   const prevIndex = index - 1;
-  const rowData = data[index].columns.map((item, idx) => {
+  const rowData = data[index]?.columns?.map((item, idx) => {
     let itemObj = { ...item };
     if (
-      data[prevIndex].columns[idx].col_render &&
-      data[prevIndex].columns[idx].rowspan <= 1
+      data[prevIndex]?.columns[idx]?.col_render &&
+      data[prevIndex]?.columns[idx]?.rowspan <= 1
     ) {
       itemObj = {
         ...itemObj,
-        colspan: data[prevIndex].columns[idx].colspan,
+        colspan: data[prevIndex]?.columns[idx]?.colspan,
         col_render: true,
-        op_type: itemObj.op_type || QC_CHANGE_TYPE.UPDATED,
+        op_type: itemObj?.op_type || QC_CHANGE_TYPE.UPDATED,
       };
-      colSpanValue = Math.abs(data[prevIndex].columns[idx].colspan);
+      colSpanValue = Math.abs(data[prevIndex]?.columns[idx]?.colspan);
     } else if (
-      data[prevIndex].columns[idx].col_render &&
-      data[prevIndex].columns[idx].rowspan > 1
+      data[prevIndex]?.columns[idx]?.col_render &&
+      data[prevIndex]?.columns[idx]?.rowspan > 1
     ) {
       data[prevIndex].columns[idx].rowspan += 1;
-      colSpanValue = Math.abs(data[prevIndex].columns[idx].colspan);
+      colSpanValue = Math.abs(data[prevIndex]?.columns[idx]?.colspan);
       data[prevIndex].columns[idx].op_type =
-        data[prevIndex].columns[idx].op_type || QC_CHANGE_TYPE.UPDATED;
+        data[prevIndex]?.columns[idx]?.op_type || QC_CHANGE_TYPE.UPDATED;
       itemObj = { ...item, colspan: colSpanValue };
-    } else if (!data[prevIndex].columns[idx].col_render && colSpanValue === 0) {
+    } else if (
+      !data[prevIndex]?.columns[idx]?.col_render &&
+      colSpanValue === 0
+    ) {
       let rowIdx = index - 1;
       let flag = true;
       while (rowIdx >= 0 && flag) {
         if (data[rowIdx]?.columns[idx]?.col_render) {
-          const prevRowSpan = Math.abs(data[rowIdx].columns[idx].rowspan);
+          const prevRowSpan = Math.abs(data[rowIdx]?.columns[idx]?.rowspan);
           data[rowIdx].columns[idx].rowspan = prevRowSpan + 1;
-          data[rowIdx].op_type = data[rowIdx].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[rowIdx].op_type =
+            data[rowIdx]?.op_type || QC_CHANGE_TYPE.UPDATED;
           flag = false;
-          colSpanValue = Math.abs(data[rowIdx].columns[idx].colspan);
+          colSpanValue = Math.abs(data[rowIdx]?.columns[idx]?.colspan);
           itemObj = { ...item, colspan: colSpanValue };
         }
         rowIdx -= 1;
       }
-    } else if (!data[prevIndex].columns[idx]?.col_render && colSpanValue > 0) {
+    } else if (!data[prevIndex]?.columns[idx]?.col_render && colSpanValue > 0) {
       let rowIdx = index - 1;
       while (rowIdx >= 0) {
         if (data[rowIdx]?.columns[idx]?.col_render) {
@@ -632,12 +669,12 @@ export const addNewRow = (data, index, tableOps) => {
       }
       if (data[rowIdx]?.columns[idx]?.col_render) {
         data[rowIdx + 1].columns[idx].rowspan = Math.abs(
-          data[rowIdx + 1].columns[idx - 1].rowspan,
+          data[rowIdx + 1]?.columns[idx - 1]?.rowspan,
         );
         data[rowIdx + 1].columns[idx].op_type =
-          data[rowIdx + 1].columns[idx].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[rowIdx + 1]?.columns[idx]?.op_type || QC_CHANGE_TYPE.UPDATED;
         data[rowIdx + 1].op_type =
-          data[rowIdx + 1].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[rowIdx + 1]?.op_type || QC_CHANGE_TYPE.UPDATED;
       }
     }
 
@@ -653,43 +690,46 @@ export const addNewColumn = (data, index, tableOps) => {
     data.forEach((item, idx) => {
       data[idx].columns[index].col_render = true;
       data[idx].columns[index].op_type =
-        data[idx].columns[index].op_type || QC_CHANGE_TYPE.UPDATED;
-      data[idx].op_type = data[idx].op_type || QC_CHANGE_TYPE.UPDATED;
+        data[idx]?.columns[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
+      data[idx].op_type = data[idx]?.op_type || QC_CHANGE_TYPE.UPDATED;
     });
 
     return data;
   }
   let rowSpanValue = 0;
-  data.forEach((item, idx) => {
-    const colSpan = Math.abs(data[idx].columns[index - 1].colspan);
-    if (data[idx].columns[index - 1].col_render && colSpan <= 1) {
+  data?.forEach((item, idx) => {
+    const colSpan = Math.abs(data[idx]?.columns[index - 1]?.colspan);
+    if (data[idx]?.columns[index - 1]?.col_render && colSpan <= 1) {
       data[idx].columns[index].col_render = true;
       data[idx].columns[index].op_type =
-        data[idx].columns[index].op_type || QC_CHANGE_TYPE.UPDATED;
-      data[idx].op_type = data[idx].op_type || QC_CHANGE_TYPE.UPDATED;
-      rowSpanValue = Math.abs(data[idx].columns[index - 1].rowspan);
+        data[idx]?.columns[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
+      data[idx].op_type = data[idx]?.op_type || QC_CHANGE_TYPE.UPDATED;
+      rowSpanValue = Math.abs(data[idx]?.columns[index - 1]?.rowspan);
       data[idx].columns[index].rowspan = rowSpanValue;
-    } else if (data[idx].columns[index - 1].col_render && colSpan > 1) {
+    } else if (data[idx]?.columns[index - 1]?.col_render && colSpan > 1) {
       data[idx].columns[index - 1].colspan += 1;
       data[idx].columns[index - 1].op_type =
         data[idx].columns[index - 1].op_type || QC_CHANGE_TYPE.UPDATED;
-      rowSpanValue = Math.abs(data[idx].columns[index - 1].rowspan);
+      rowSpanValue = Math.abs(data[idx]?.columns[index - 1]?.rowspan);
       data[idx].columns[index].rowspan = rowSpanValue;
-    } else if (!data[idx].columns[index - 1].col_render && rowSpanValue === 0) {
+    } else if (
+      !data[idx]?.columns[index - 1]?.col_render &&
+      rowSpanValue === 0
+    ) {
       let colIdx = index - 1;
       let flag = true;
       while (colIdx >= 0 && flag) {
         if (data[idx]?.columns[colIdx]?.col_render) {
           data[idx].columns[colIdx].colspan += 1;
           data[idx].columns[colIdx].op_type =
-            data[idx].columns[colIdx].op_type || QC_CHANGE_TYPE.UPDATED;
+            data[idx]?.columns[colIdx]?.op_type || QC_CHANGE_TYPE.UPDATED;
           data[idx].op_type = data[idx].op_type || QC_CHANGE_TYPE.UPDATED;
           flag = false;
-          rowSpanValue = Math.abs(data[idx].columns[colIdx].rowspan);
+          rowSpanValue = Math.abs(data[idx]?.columns[colIdx]?.rowspan);
         }
         colIdx -= 1;
       }
-    } else if (!data[idx].columns[index - 1].col_render && rowSpanValue > 0) {
+    } else if (!data[idx]?.columns[index - 1]?.col_render && rowSpanValue > 0) {
       let colIdx = index - 1;
       while (colIdx >= 0) {
         if (data[idx]?.columns[colIdx]?.col_render) {
@@ -697,11 +737,11 @@ export const addNewColumn = (data, index, tableOps) => {
         }
         colIdx -= 1;
       }
-      if (data[idx].columns[colIdx + 1].colspan > 1) {
+      if (data[idx]?.columns[colIdx + 1]?.colspan > 1) {
         data[idx].columns[colIdx + 1].colspan =
-          Math.abs(data[idx].columns[colIdx + 1].colspan) + 1;
+          Math.abs(data[idx]?.columns[colIdx + 1]?.colspan) + 1;
         data[idx].columns[colIdx + 1].op_type =
-          data[idx].columns[colIdx + 1].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[idx]?.columns[colIdx + 1]?.op_type || QC_CHANGE_TYPE.UPDATED;
       }
     }
     if (rowSpanValue > 0) rowSpanValue -= 1;
@@ -715,11 +755,11 @@ export const deleteRowData = (data, rowIndex) => {
     if (item?.rowspan > 1) {
       data[nextIndex].columns[index].rowspan = item.rowspan - 1;
       data[nextIndex].columns[index].col_render = true;
-      data[nextIndex].columns[index].value = item.value;
+      data[nextIndex].columns[index].value = item?.value;
       data[nextIndex].columns[index].op_type =
-        data[nextIndex].columns[index].op_type || QC_CHANGE_TYPE.UPDATED;
+        data[nextIndex]?.columns[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
       data[nextIndex].op_type =
-        data[nextIndex].op_type || QC_CHANGE_TYPE.UPDATED;
+        data[nextIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
     }
     if (!item?.col_render) {
       let flagRender = true;
@@ -733,9 +773,9 @@ export const deleteRowData = (data, rowIndex) => {
       if (data[prevIndex]?.columns[index]?.rowspan > 1) {
         data[prevIndex].columns[index].rowspan -= 1;
         data[prevIndex].columns[index].op_type =
-          data[prevIndex].columns[index].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[prevIndex]?.columns[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
         data[prevIndex].op_type =
-          data[prevIndex].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[prevIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
       }
     }
     data[rowIndex].columns[index].col_render = false;
@@ -751,52 +791,52 @@ export const deleteColData = (data, colIndex) => {
   data.forEach((item, index) => {
     if (rowSpan > 1) {
       rowSpan -= 1;
-    } else if (data[index].columns[colIndex]?.colspan > 1) {
+    } else if (data[index]?.columns[colIndex]?.colspan > 1) {
       data[index].columns[colIndex + 1].colspan =
         data[index].columns[colIndex].colspan - 1;
       data[index].columns[colIndex + 1].col_render = true;
       data[index].columns[colIndex + 1].value =
-        data[index].columns[colIndex].value;
+        data[index]?.columns[colIndex]?.value;
       data[index].columns[colIndex + 1].op_type =
-        data[index].columns[colIndex + 1].op_type || QC_CHANGE_TYPE.UPDATED;
-      data[index].op_type = data[index].op_type || QC_CHANGE_TYPE.UPDATED;
-      rowSpan = Math.abs(data[index].columns[colIndex]?.rowspan);
+        data[index]?.columns[colIndex + 1]?.op_type || QC_CHANGE_TYPE.UPDATED;
+      data[index].op_type = data[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
+      rowSpan = Math.abs(data[index]?.columns[colIndex]?.rowspan);
       let rowTemp = rowSpan - 1;
       while (rowTemp > 0) {
         data[index + rowTemp].columns[colIndex + 1].colspan =
-          data[index + rowTemp].columns[colIndex + 1].colspan;
+          data[index + rowTemp]?.columns[colIndex + 1]?.colspan;
         data[index + rowTemp].columns[colIndex + 1].op_type =
-          data[index + rowTemp].columns[colIndex + 1].op_type ||
+          data[index + rowTemp]?.columns[colIndex + 1]?.op_type ||
           QC_CHANGE_TYPE.UPDATED;
         data[index + rowTemp].op_type =
-          data[index].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
         rowTemp -= 1;
       }
-    } else if (!data[index].columns[colIndex]?.col_render) {
+    } else if (!data[index]?.columns[colIndex]?.col_render) {
       let flagRender = true;
       let prevIndex = colIndex;
 
       while (flagRender && prevIndex >= 0) {
         prevIndex -= 1;
-        if (data[index].columns[prevIndex]?.col_render) {
+        if (data[index]?.columns[prevIndex]?.col_render) {
           flagRender = false;
-          rowSpan = Math.abs(data[index].columns[prevIndex]?.rowspan);
+          rowSpan = Math.abs(data[index]?.columns[prevIndex]?.rowspan);
         }
       }
       if (data[index]?.columns[prevIndex]?.colspan > 1) {
         data[index].columns[prevIndex].colspan -= 1;
         data[index].columns[prevIndex].op_type =
-          data[index].columns[prevIndex].op_type || QC_CHANGE_TYPE.UPDATED;
-        data[index].op_type = data[index].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[index]?.columns[prevIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
+        data[index].op_type = data[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
       }
       let rowTemp = rowSpan - 1;
       while (rowTemp > 0) {
         data[index + rowTemp].columns[prevIndex].colspan -= 1;
         data[index + rowTemp].columns[prevIndex].op_type =
-          data[index + rowTemp].columns[prevIndex].op_type ||
+          data[index + rowTemp]?.columns[prevIndex]?.op_type ||
           QC_CHANGE_TYPE.UPDATED;
         data[index + rowTemp].op_type =
-          data[index].op_type || QC_CHANGE_TYPE.UPDATED;
+          data[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
         rowTemp -= 1;
       }
     }
@@ -819,25 +859,25 @@ export const checkColLength = (data) => {
 };
 
 export const colSplit = (operationData, rowIndex, colIndex) => {
-  const colSpanValue = operationData[rowIndex].columns[colIndex].colspan;
+  const colSpanValue = operationData[rowIndex]?.columns[colIndex]?.colspan;
   if (colSpanValue > 1) {
     operationData[rowIndex].columns[colIndex].colspan -= 1;
     operationData[rowIndex].columns[colIndex].op_type =
-      operationData[rowIndex].columns[colIndex].op_type ||
+      operationData[rowIndex]?.columns[colIndex]?.op_type ||
       QC_CHANGE_TYPE.UPDATED;
     operationData[rowIndex].columns[
       colIndex + colSpanValue - 1
     ].col_render = true;
     operationData[rowIndex].columns[colIndex + colSpanValue - 1].rowspan =
-      Math.abs(operationData[rowIndex].columns[colIndex].rowspan);
+      Math.abs(operationData[rowIndex]?.columns[colIndex]?.rowspan);
     operationData[rowIndex].op_type =
-      operationData[rowIndex].op_type || QC_CHANGE_TYPE.UPDATED;
+      operationData[rowIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
   } else {
     operationData = addColumn(operationData, colIndex + 1);
     operationData[rowIndex].columns[colIndex + 1] = {
-      ...operationData[rowIndex].columns[colIndex + 1],
+      ...operationData[rowIndex]?.columns[colIndex + 1],
       col_render: true,
-      rowspan: operationData[rowIndex].columns[colIndex].rowspan,
+      rowspan: operationData[rowIndex]?.columns[colIndex]?.rowspan,
     };
     operationData = adjustColSpan(operationData, rowIndex, colIndex);
   }
@@ -846,19 +886,19 @@ export const colSplit = (operationData, rowIndex, colIndex) => {
 };
 
 export const rowSplit = (operationData, rowIndex, colIndex) => {
-  const rowSpanValue = operationData[rowIndex].columns[colIndex].rowspan;
+  const rowSpanValue = operationData[rowIndex]?.columns[colIndex]?.rowspan;
   if (rowSpanValue > 1) {
     operationData[rowIndex].columns[colIndex].rowspan -= 1;
     operationData[rowIndex].columns[colIndex].op_type =
-      operationData[rowIndex].columns[colIndex].op_type ||
+      operationData[rowIndex]?.columns[colIndex]?.op_type ||
       QC_CHANGE_TYPE.UPDATED;
     operationData[rowIndex].op_type =
-      operationData[rowIndex].op_type || QC_CHANGE_TYPE.UPDATED;
+      operationData[rowIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
     operationData[rowIndex + rowSpanValue - 1].columns[
       colIndex
     ].col_render = true;
     operationData[rowIndex + 1].columns[colIndex].colspan =
-      operationData[rowIndex].columns[colIndex].colspan;
+      operationData[rowIndex]?.columns[colIndex]?.colspan;
   } else {
     operationData = addRow(operationData, parseInt(rowIndex, 10) + 1);
     operationData[rowIndex + 1].columns = formatRowData(
@@ -866,9 +906,9 @@ export const rowSplit = (operationData, rowIndex, colIndex) => {
       rowIndex + 1,
     );
     operationData[rowIndex + 1].columns[colIndex] = {
-      ...operationData[rowIndex + 1].columns[colIndex],
+      ...operationData[rowIndex + 1]?.columns[colIndex],
       col_render: true,
-      colspan: operationData[rowIndex].columns[colIndex].colspan,
+      colspan: operationData[rowIndex]?.columns[colIndex]?.colspan,
     };
     operationData = adjustRowSpan(operationData, rowIndex, colIndex);
   }
@@ -882,10 +922,10 @@ export const checkEmptyColumn = (data) => {
     .filter((row) => row.op_type !== QC_CHANGE_TYPE.DELETED)
     .forEach((row) => {
       row.columns.forEach((item, colIdx) => {
-        if (item.col_render && !arr.includes(colIdx)) arr.push(colIdx);
+        if (item?.col_render && !arr.includes(colIdx)) arr.push(colIdx);
       });
     });
-  for (let n = 0; n < data[0]?.columns.length; n++) {
+  for (let n = 0; n < data[0]?.columns?.length; n++) {
     if (!arr.includes(n)) arrIndex.push(n);
   }
   return arrIndex;
@@ -894,9 +934,9 @@ export const checkEmptyColumn = (data) => {
 export const checkNewRow = (data) => {
   const arremty = [];
   data
-    .filter((row) => row.op_type !== QC_CHANGE_TYPE.DELETED)
+    .filter((row) => row?.op_type !== QC_CHANGE_TYPE.DELETED)
     .forEach((row, index) => {
-      const arr = row.columns.filter((col) => col.col_render);
+      const arr = row.columns.filter((col) => col?.col_render);
       if (arr.length === 0) {
         arremty.push(index);
       }

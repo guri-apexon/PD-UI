@@ -583,6 +583,25 @@ export const colspansnon = [
     ],
     op_type: null,
   },
+  {
+    columns: [
+      {
+        rowspan: 1,
+        colspan: 1,
+        col_render: true,
+        value: 'Cell 1',
+        op_type: QC_CHANGE_TYPE.UPDATED,
+      },
+      {
+        rowspan: 1,
+        colspan: 1,
+        col_render: false,
+        value: 'Cell 2',
+        op_type: null,
+      },
+    ],
+    op_type: null,
+  },
 ];
 
 export const colspansnonExp = [
@@ -604,6 +623,25 @@ export const colspansnonExp = [
       },
     ],
     op_type: 'modify',
+  },
+  {
+    columns: [
+      {
+        rowspan: 1,
+        colspan: 2,
+        col_render: true,
+        value: 'Cell 1',
+        op_type: QC_CHANGE_TYPE.UPDATED,
+      },
+      {
+        rowspan: 1,
+        colspan: 1,
+        col_render: false,
+        value: 'Cell 2',
+        op_type: null,
+      },
+    ],
+    op_type: null,
   },
 ];
 

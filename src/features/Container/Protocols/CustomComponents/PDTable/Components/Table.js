@@ -15,7 +15,6 @@ import { tableOperations } from './dropdownData';
 import './table.scss';
 import SanitizeHTML from '../../../../../Components/SanitizeHtml';
 import CellHoverList from './CellHoverList';
-import { removeHtmlTags } from '../../../../../../utils/utilFunction';
 
 function DisplayTable({
   data,
@@ -42,9 +41,6 @@ function DisplayTable({
   });
   const [rowIdx, setRowIdx] = useState(0);
   const [colIdx, setColIdx] = useState(0);
-  const handleChange = (columnIndex, rowIndex, e) => {
-    onChange(e.target.innerHTML, columnIndex, rowIndex);
-  };
 
   useEffect(() => {
     if (data) {
@@ -86,16 +82,6 @@ function DisplayTable({
 
   const handleContextMenu = (e, rowIndex, colIndex) => {
     if (edit) {
-      const htmlContent = document.getElementById(
-        `columnID-${rowIndex}-${colIndex}-${lineID}`,
-      )?.firstElementChild?.innerHTML;
-      if (
-        removeHtmlTags(tableData[rowIndex].columns[colIndex].value) !==
-        removeHtmlTags(htmlContent)
-      )
-        handleChange(colIndex, rowIndex, {
-          target: { innerHTML: htmlContent },
-        }); // to handle onBlur on rightClick
       setRowIdx(rowIndex);
       setColIdx(colIndex);
       let yValue = e.pageY;
@@ -105,6 +91,10 @@ function DisplayTable({
       setDropdownPosition({ x: e.pageX, y: yValue });
       setIsCellOperation(true);
     }
+  };
+
+  const handleChange = (columnIndex, rowIndex, e) => {
+    onChange(e.target.innerHTML, columnIndex, rowIndex);
   };
 
   const handleDropdownOptionClick = (operation) => {
@@ -118,7 +108,6 @@ function DisplayTable({
 
   const getCellValue = (value) => {
     if (!value) return '';
-
     return !readMode ? value : getEnrichedText(value, CONTENT_TYPE.TABLE);
   };
 
@@ -178,15 +167,6 @@ function DisplayTable({
                         className={` pd-table-cell ${
                           col?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
                         }`}
-                        onContextMenu={(e) => {
-                          e.preventDefault();
-                        }}
-                        onMouseDown={(e) => {
-                          if (e.button === 2) {
-                            e.preventDefault();
-                            handleContextMenu(e, rowIndex, colIndex);
-                          }
-                        }}
                       >
                         <div
                           contentEditable={edit}
@@ -195,6 +175,15 @@ function DisplayTable({
                         >
                           <SanitizeHTML html={getCellValue(col?.value)} />
                         </div>
+                        {edit && (
+                          <EllipsisHorizontal
+                            className="merge-option"
+                            data-testid="span-merge"
+                            onClick={(e) =>
+                              handleContextMenu(e, rowIndex, colIndex)
+                            }
+                          />
+                        )}
                         {rowIndex === 0 && edit && isDraggable && (
                           <span
                             className="pd-drag-icon columnDrag"

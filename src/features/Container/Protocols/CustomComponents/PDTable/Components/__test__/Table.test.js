@@ -469,7 +469,7 @@ describe('DisplayTable component', () => {
   });
 
   it('should not handle drag and drop if the dragged element and target element are the same', () => {
-    const { getByText, queryAllByTestId } = render(
+    const { getByText, getAllByTestId } = render(
       <DisplayTable
         data={data}
         onChange={onChangeMock}
@@ -486,8 +486,8 @@ describe('DisplayTable component', () => {
       />,
     );
 
-    const column1 = queryAllByTestId('span-edit')[0];
-    fireEvent.mouseDown(column1, { button: 2 });
+    const columnEdit1 = getAllByTestId('span-merge')[0];
+    fireEvent.click(columnEdit1);
     const text = getByText('Right Merge');
     fireEvent.click(text);
   });
