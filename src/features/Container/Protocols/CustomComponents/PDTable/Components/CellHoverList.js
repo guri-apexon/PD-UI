@@ -26,6 +26,7 @@ function CellHoverList({
     };
     // eslint-disable-next-line
   }, [rowHoverRef]);
+  console.log('SHUBHAM12345');
 
   useEffect(() => {
     function handleClickRight(event) {

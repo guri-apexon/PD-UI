@@ -42,9 +42,6 @@ function DisplayTable({
   });
   const [rowIdx, setRowIdx] = useState(0);
   const [colIdx, setColIdx] = useState(0);
-  const handleChange = (columnIndex, rowIndex, e) => {
-    onChange(e.target.innerHTML, columnIndex, rowIndex);
-  };
 
   useEffect(() => {
     if (data) {
@@ -85,17 +82,19 @@ function DisplayTable({
   };
 
   const handleContextMenu = (e, rowIndex, colIndex) => {
+    console.log('SHUBHAM1', e);
     if (edit) {
-      const htmlContent = document.getElementById(
-        `columnID-${rowIndex}-${colIndex}-${lineID}`,
-      )?.firstElementChild?.innerHTML;
-      if (
-        removeHtmlTags(tableData[rowIndex].columns[colIndex].value) !==
-        removeHtmlTags(htmlContent)
-      )
-        handleChange(colIndex, rowIndex, {
-          target: { innerHTML: htmlContent },
-        }); // to handle onBlur on rightClick
+      console.log('SHUBHAM909', e);
+      // const htmlContent = document.getElementById(
+      //   `columnID-${rowIndex}-${colIndex}-${lineID}`,
+      // )?.firstElementChild?.innerHTML;
+      // if (
+      //   removeHtmlTags(tableData[rowIndex].columns[colIndex].value) !==
+      //   removeHtmlTags(htmlContent)
+      // )
+      //   handleChange(colIndex, rowIndex, {
+      //     target: { innerHTML: htmlContent },
+      //   }); // to handle onBlur on rightClick
       setRowIdx(rowIndex);
       setColIdx(colIndex);
       let yValue = e.pageY;
@@ -105,6 +104,18 @@ function DisplayTable({
       setDropdownPosition({ x: e.pageX, y: yValue });
       setIsCellOperation(true);
     }
+  };
+
+  const handleChange = (columnIndex, rowIndex, e) => {
+    // console.log('SHUBHAM', e, document.activeElement);
+    // if (
+    //   e?.relatedTarget?.children[1] &&
+    //   e?.relatedTarget?.children[1]?.classList?.contains('merge-option')
+    // ) {
+    //   console.log('SHUBHAM123', e, document.activeElement);
+    //   handleContextMenu(e, rowIndex, columnIndex);
+    // }
+    onChange(e.target.innerHTML, columnIndex, rowIndex);
   };
 
   const handleDropdownOptionClick = (operation) => {
@@ -177,15 +188,15 @@ function DisplayTable({
                         className={` pd-table-cell ${
                           col?.op_type === QC_CHANGE_TYPE.DELETED && 'invisible'
                         }`}
-                        onContextMenu={(e) => {
-                          e.preventDefault();
-                        }}
-                        onMouseDown={(e) => {
-                          if (e.button === 2) {
-                            e.preventDefault();
-                            handleContextMenu(e, rowIndex, colIndex);
-                          }
-                        }}
+                        // onContextMenu={(e) => {
+                        //   e.preventDefault();
+                        // }}
+                        // onMouseDown={(e) => {
+                        //   if (e.button === 2) {
+                        //     e.preventDefault();
+                        //     handleContextMenu(e, rowIndex, colIndex);
+                        //   }
+                        // }}
                       >
                         <div
                           contentEditable={edit}
@@ -194,6 +205,14 @@ function DisplayTable({
                         >
                           <SanitizeHTML html={getCellValue(col?.value)} />
                         </div>
+                        {edit && (
+                          <EllipsisHorizontal
+                            className="merge-option"
+                            onClick={(e) =>
+                              handleContextMenu(e, rowIndex, colIndex)
+                            }
+                          />
+                        )}
                         {rowIndex === 0 && edit && isDraggable && (
                           <span
                             className="pd-drag-icon columnDrag"
