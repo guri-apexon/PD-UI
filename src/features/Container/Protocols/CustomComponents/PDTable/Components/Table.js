@@ -208,6 +208,7 @@ function DisplayTable({
                         {edit && (
                           <EllipsisHorizontal
                             className="merge-option"
+                            data-testid="span-merge"
                             onClick={(e) =>
                               handleContextMenu(e, rowIndex, colIndex)
                             }
