@@ -545,6 +545,7 @@ export const adjustRowSpan = (data, rowIndex, colIndex) => {
     return itemObj;
   });
   data[rowIndex].columns = rowSpan;
+  data[rowIndex].op_type = data[rowIndex]?.op_type || QC_CHANGE_TYPE.UPDATED;
   return data;
 };
 
@@ -563,7 +564,7 @@ export const adjustColSpan = (data, rowIndex, colIndex) => {
       let rowTemp = rowSpanValue - 1;
       while (rowTemp > 0) {
         data[index + rowTemp].columns[colIndex].colspan =
-          Math.abs(data[index + rowTemp]?.columns[colIndex]?.colspan) + 1;
+          data[index]?.columns[colIndex]?.colspan;
         data[index + rowTemp].op_type =
           data[index + rowTemp]?.op_type || QC_CHANGE_TYPE.UPDATED;
         rowTemp -= 1;
