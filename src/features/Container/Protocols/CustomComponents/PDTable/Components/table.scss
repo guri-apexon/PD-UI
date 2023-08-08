@@ -20,9 +20,11 @@
   padding: 35px 30px;
   position: relative;
   box-sizing: border-box;
+  td {
+    border: 1px solid rgb(180, 177, 177) !important;
+  }
 }
 .pd-table-row {
-  display: flex;
   min-height: 50px;
   justify-content: center;
   position: relative;
@@ -30,18 +32,30 @@
 }
 .pd-table-cell {
   text-align: left;
-  border: 1px solid #c1c1c1;
-  display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-wrap: nowrap;
   box-sizing: border-box;
-  min-width: 100px;
-  width: 100%;
+  min-width: 200px;
   position: relative;
+  max-width: 200px;
+  vertical-align: middle;
+  .merge-option {
+    position: absolute;
+    top: 0px;
+    left: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    display: none;
+    padding-bottom: 4px;
+  }
+  &:hover {
+    .merge-option {
+      display: block;
+    }
+  }
 }
 .content-table-wrapper {
-  border: 1px solid #dadada;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -70,8 +84,16 @@
   outline: none;
   color: #000;
 }
+.editable-div {
+  font-size: 12px;
+  padding: 5px;
+  outline: none;
+  color: #000;
+  min-height: 30px;
+  padding-top: 14px;
+}
 .editable-span {
-  width: 90%;
+  width: 50%;
   font-size: 12px;
   padding: 5px;
   outline: none;
@@ -84,7 +106,6 @@
 }
 .pd-table-empty-cell-row {
   width: 100%;
-  display: inline-block;
 }
 .pd-empty-row-cells {
   position: absolute;
@@ -191,7 +212,7 @@
   left: -10px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  padding-top: 14px;
   height: 100%;
 }
 .columnDrag {
@@ -200,7 +221,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: calc(50% - 9px);
+  margin-left: calc(50% - 10px);
 }
 .button-container {
   display: flex;
