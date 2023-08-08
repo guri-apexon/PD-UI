@@ -228,7 +228,6 @@ function PDTable({
     }
   };
 
-  console.log('shubham', updatedData);
   const handleChange = (content, columnIndex, rowIndex) => {
     const cloneData = [...updatedData];
     cloneData.forEach((record, i) => {
@@ -388,17 +387,18 @@ function PDTable({
         }
       });
     setUpdatedData(newData);
-    return bool;
+    return { rowBoolen: bool, data: newData };
   };
 
   const handleSave = () => {
-    if (checkBlankRows()) {
+    const { rowBoolen, data } = checkBlankRows();
+    if (rowBoolen) {
       setShowBlankRowModal(true);
       return;
     }
     const content = {
       ...segment.content,
-      TableProperties: updatedData,
+      TableProperties: data,
       AttachmentListProperties: footNoteData,
     };
 
