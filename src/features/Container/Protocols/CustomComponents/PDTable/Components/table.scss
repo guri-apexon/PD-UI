@@ -39,6 +39,7 @@
   min-width: 200px;
   position: relative;
   max-width: 200px;
+  vertical-align: middle;
   .merge-option {
     position: absolute;
     top: 0px;
@@ -88,10 +89,8 @@
   padding: 5px;
   outline: none;
   color: #000;
-  min-height: 35px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  min-height: 30px;
+  padding-top: 14px;
 }
 .editable-span {
   width: 50%;
@@ -107,7 +106,6 @@
 }
 .pd-table-empty-cell-row {
   width: 100%;
-  height: 40px;
 }
 .pd-empty-row-cells {
   position: absolute;
