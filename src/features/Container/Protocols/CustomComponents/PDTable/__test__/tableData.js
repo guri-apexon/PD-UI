@@ -710,7 +710,7 @@ export const colspansRenExp = [
     columns: [
       {
         rowspan: 1,
-        colspan: 2,
+        colspan: 1,
         col_render: true,
         value: 'Cell 1',
         op_type: QC_CHANGE_TYPE.UPDATED,
@@ -969,7 +969,7 @@ export const expectedOpsData = [
       { rowspan: 2, col_render: true, op_type: 'modify', colspan: 1 },
       { rowspan: 1, col_render: true, op_type: null, colspan: 1 },
     ],
-    op_type: null,
+    op_type: 'modify',
   },
   {
     columns: [
@@ -1367,6 +1367,7 @@ export const adjustRowDataExp = [
         col_render: false,
       },
     ],
+    op_type: 'modify',
   },
 ];
 
