@@ -33,7 +33,7 @@ function DisplayTable({
   getEnrichedText,
   readMode,
 }) {
-  const [tableData, setTableData] = useState();
+  const [tableData, setTableData] = useState([]);
   const [isCellOperation, setIsCellOperation] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({
     x: 0,
