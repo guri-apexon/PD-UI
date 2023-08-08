@@ -173,7 +173,14 @@ function DisplayTable({
                           onBlur={(e) => handleChange(colIndex, rowIndex, e)}
                           className="editable-div"
                         >
-                          <SanitizeHTML html={getCellValue(col?.value)} />
+                          {col?.value ? (
+                            <SanitizeHTML
+                              className="content-filter"
+                              html={getCellValue(col?.value)}
+                            />
+                          ) : (
+                            ''
+                          )}
                         </div>
                         {edit && (
                           <EllipsisHorizontal

@@ -532,6 +532,8 @@ export const adjustRowSpan = (data, rowIndex, colIndex) => {
           data[rowIdx].columns[index].rowspan = prevRowSpan + 1;
           data[rowIdx].op_type =
             data[rowIdx]?.op_type || QC_CHANGE_TYPE.UPDATED;
+          data[rowIdx].columns[index].op_type =
+            data[rowIdx]?.columns[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
           flag = false;
           if (data[rowIdx]?.columns[index]?.colspan > 1)
             colSpancount = data[rowIdx]?.columns[index]?.colspan;
@@ -551,6 +553,21 @@ export const adjustColSpan = (data, rowIndex, colIndex) => {
   data?.forEach((item, index) => {
     if (rowSpanValue > 0) {
       rowSpanValue -= 1;
+    } else if (
+      index === rowIndex &&
+      data[index]?.columns[colIndex]?.col_render
+    ) {
+      if (data[index]?.columns[colIndex]?.rowspan > 1) {
+        rowSpanValue = data[index]?.columns[colIndex]?.rowspan;
+      }
+      let rowTemp = rowSpanValue - 1;
+      while (rowTemp > 0) {
+        data[index + rowTemp].columns[colIndex].colspan =
+          Math.abs(data[index + rowTemp]?.columns[colIndex]?.colspan) + 1;
+        data[index + rowTemp].op_type =
+          data[index + rowTemp]?.op_type || QC_CHANGE_TYPE.UPDATED;
+        rowTemp -= 1;
+      }
     } else if (
       index !== rowIndex &&
       data[index]?.columns[colIndex]?.col_render
