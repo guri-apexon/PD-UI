@@ -11,6 +11,7 @@ import GridContext from '../Context/GridContext';
 import { TableConst, TableEvents } from '../Constants';
 
 import '../SOA.scss';
+import SanitizeHTML from '../../../../Components/SanitizeHtml';
 
 const style = {
   columnValue: {
@@ -201,7 +202,11 @@ function HeaderComponent(props) {
               }}
               style={style.columnValue}
             >
-              {displayName.trim() === '' ? <div>&nbsp;</div> : displayName}
+              <SanitizeHTML
+                html={
+                  displayName.trim() === '' ? '<div>&nbsp;</div>' : displayName
+                }
+              />
             </div>
           </div>
         </div>
