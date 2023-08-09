@@ -10,6 +10,7 @@ import Drag from 'apollo-react-icons/Drag';
 import GridContext from '../Context/GridContext';
 import { TableConst, TableEvents } from '../Constants';
 import '../SOA.scss';
+import SanitizeHTML from '../../../../Components/SanitizeHtml';
 
 const style = {
   columnValue: {
@@ -140,7 +141,7 @@ function FirstColumn({ data, colDef }) {
           data-testid="drag-button"
           onClick={(event) => onDragClick(event)}
         />
-        <span style={style.columnValue}>{fieldValue}</span>
+        <SanitizeHTML style={style.columnValue} html={fieldValue} />
       </div>
       <Popover
         ref={ref}

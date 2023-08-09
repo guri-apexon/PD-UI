@@ -641,7 +641,7 @@ export const colspansnonExp = [
         op_type: null,
       },
     ],
-    op_type: null,
+    op_type: 'modify',
   },
 ];
 

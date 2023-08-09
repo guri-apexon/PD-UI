@@ -87,7 +87,7 @@ export const addColumn = (tabledata, index) => {
 export const deleteColumn = (tabledata, index) => {
   const data = cloneDeep(tabledata);
   data.forEach((record) => {
-    if (record.op_type !== QC_CHANGE_TYPE.DELETED) {
+    if (record.op_type !== QC_CHANGE_TYPE.DELETED && record?.columns[index]) {
       if (record.columns[index].op_type === QC_CHANGE_TYPE.ADDED) {
         record.columns.splice(index, 1);
       } else {
@@ -552,7 +552,7 @@ export const adjustRowSpan = (data, rowIndex, colIndex) => {
 export const adjustColSpan = (data, rowIndex, colIndex) => {
   let rowSpanValue = 0;
   data?.forEach((item, index) => {
-    if (rowSpanValue > 0) {
+    if (rowSpanValue > 1) {
       rowSpanValue -= 1;
     } else if (
       index === rowIndex &&
@@ -586,6 +586,9 @@ export const adjustColSpan = (data, rowIndex, colIndex) => {
           Math.abs(data[index + rowTemp]?.columns[colIndex]?.colspan) + 1;
         data[index + rowTemp].op_type =
           data[index + rowTemp]?.op_type || QC_CHANGE_TYPE.UPDATED;
+        data[index + rowTemp].columns[colIndex].op_type =
+          data[index + rowTemp]?.columns[colIndex]?.op_type ||
+          QC_CHANGE_TYPE.UPDATED;
         rowTemp -= 1;
       }
     } else if (!data[index]?.columns[colIndex]?.col_render) {
@@ -603,7 +606,10 @@ export const adjustColSpan = (data, rowIndex, colIndex) => {
           while (rowTemp > 0) {
             data[index + rowTemp].columns[colIdx].colspan =
               Math.abs(data[index + rowTemp]?.columns[colIdx]?.colspan) + 1;
-            data[index].op_type =
+            data[index + rowTemp].columns[colIdx].op_type =
+              data[index + rowTemp].columns[colIdx].op_type ||
+              QC_CHANGE_TYPE.UPDATED;
+            data[index + rowTemp].op_type =
               data[index + rowTemp]?.op_type || QC_CHANGE_TYPE.UPDATED;
             rowTemp -= 1;
           }
@@ -858,10 +864,12 @@ export const deleteColData = (data, colIndex) => {
         rowTemp -= 1;
       }
     }
-    data[index].columns[colIndex].col_render = false;
-    data[index].columns[colIndex].rowspan = -1;
-    data[index].columns[colIndex].colspan = -1;
-    data[index].columns[colIndex].value = '';
+    if (data[index]?.columns[colIndex]) {
+      data[index].columns[colIndex].col_render = false;
+      data[index].columns[colIndex].rowspan = -1;
+      data[index].columns[colIndex].colspan = -1;
+      data[index].columns[colIndex].value = '';
+    }
   });
   return data;
 };
