@@ -53,8 +53,6 @@ import {
   colEmpty,
   colspansnon,
   colspansnonExp,
-  colspansRen,
-  colspansRenExp,
   dataIndices,
   deletecnt,
   deleteCol,
@@ -117,7 +115,6 @@ import {
   splitcolExp,
   swapDataCell,
   swaptwocol,
-  tabPropData,
 } from './tableData';
 
 describe('addRow function', () => {
@@ -466,7 +463,7 @@ describe('filterTableProperties', () => {
   });
 
   test('should parse the table if the  data is stringified', () => {
-    const data = tabPropData;
+    const data = filterTabProOps;
     const filteredData = filterTableProperties(JSON.stringify(data));
     expect(filteredData).toHaveLength(3);
     expect(filteredData[0].op_type).toBe('add');
@@ -1275,10 +1272,10 @@ describe('deleteColData', () => {
 
 describe('adjustColSpan', () => {
   test('should adjust colspans correctly for rendered columns', () => {
-    const data = colspansRen;
+    const data = colspansnon;
     const rowIndex = 0;
     const colIndex = 0;
-    const expectedData = colspansRenExp;
+    const expectedData = colspansnon;
     const result = adjustColSpan([...data], rowIndex, colIndex);
     expect(result).toEqual(expectedData);
   });
