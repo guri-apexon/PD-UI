@@ -1,3 +1,36 @@
+const adjustColspanindex2 = {
+  columns: [
+    {
+      rowspan: 2,
+      colspan: 2,
+      col_render: true,
+      value: 'Cell 7',
+      op_type: null,
+    },
+    {
+      rowspan: 2,
+      colspan: 1,
+      col_render: false,
+      value: 'Cell 8',
+      op_type: null,
+    },
+    {
+      rowspan: 2,
+      colspan: 1,
+      col_render: true,
+      value: 'Cell 9',
+      op_type: null,
+    },
+    {
+      rowspan: 1,
+      colspan: 1,
+      col_render: true,
+      value: 'Cell 14',
+      op_type: null,
+    },
+  ],
+  op_type: null,
+};
 export const adjustColspan = [
   {
     columns: [
@@ -65,39 +98,7 @@ export const adjustColspan = [
     ],
     op_type: null,
   },
-  {
-    columns: [
-      {
-        rowspan: 2,
-        colspan: 2,
-        col_render: true,
-        value: 'Cell 7',
-        op_type: null,
-      },
-      {
-        rowspan: 2,
-        colspan: 1,
-        col_render: false,
-        value: 'Cell 8',
-        op_type: null,
-      },
-      {
-        rowspan: 2,
-        colspan: 1,
-        col_render: true,
-        value: 'Cell 9',
-        op_type: null,
-      },
-      {
-        rowspan: 1,
-        colspan: 1,
-        col_render: true,
-        value: 'Cell 14',
-        op_type: null,
-      },
-    ],
-    op_type: null,
-  },
+  adjustColspanindex2,
   {
     columns: [
       {
@@ -200,39 +201,7 @@ export const adjustColspanExp = [
     ],
     op_type: null,
   },
-  {
-    columns: [
-      {
-        rowspan: 2,
-        colspan: 2,
-        col_render: true,
-        value: 'Cell 7',
-        op_type: null,
-      },
-      {
-        rowspan: 2,
-        colspan: 1,
-        col_render: false,
-        value: 'Cell 8',
-        op_type: null,
-      },
-      {
-        rowspan: 2,
-        colspan: 1,
-        col_render: true,
-        value: 'Cell 9',
-        op_type: null,
-      },
-      {
-        rowspan: 1,
-        colspan: 1,
-        col_render: true,
-        value: 'Cell 14',
-        op_type: null,
-      },
-    ],
-    op_type: null,
-  },
+  adjustColspanindex2,
   {
     columns: [
       {
@@ -629,88 +598,6 @@ export const colspansnonExp = [
       {
         rowspan: 1,
         colspan: 2,
-        col_render: true,
-        value: 'Cell 1',
-        op_type: QC_CHANGE_TYPE.UPDATED,
-      },
-      {
-        rowspan: 1,
-        colspan: 1,
-        col_render: false,
-        value: 'Cell 2',
-        op_type: null,
-      },
-    ],
-    op_type: 'modify',
-  },
-];
-
-export const colspansRen = [
-  {
-    columns: [
-      {
-        rowspan: 2,
-        colspan: 1,
-        col_render: true,
-        value: 'Cell 1',
-        op_type: QC_CHANGE_TYPE.UPDATED,
-      },
-      {
-        rowspan: 1,
-        colspan: 1,
-        col_render: false,
-        value: 'Cell 2',
-        op_type: null,
-      },
-    ],
-    op_type: null,
-  },
-  {
-    columns: [
-      {
-        rowspan: 1,
-        colspan: 1,
-        col_render: true,
-        value: 'Cell 1',
-        op_type: QC_CHANGE_TYPE.UPDATED,
-      },
-      {
-        rowspan: 1,
-        colspan: 1,
-        col_render: false,
-        value: 'Cell 2',
-        op_type: null,
-      },
-    ],
-    op_type: null,
-  },
-];
-
-export const colspansRenExp = [
-  {
-    columns: [
-      {
-        rowspan: 2,
-        colspan: 1,
-        col_render: true,
-        value: 'Cell 1',
-        op_type: QC_CHANGE_TYPE.UPDATED,
-      },
-      {
-        rowspan: 1,
-        colspan: 1,
-        col_render: false,
-        value: 'Cell 2',
-        op_type: null,
-      },
-    ],
-    op_type: null,
-  },
-  {
-    columns: [
-      {
-        rowspan: 1,
-        colspan: 1,
         col_render: true,
         value: 'Cell 1',
         op_type: QC_CHANGE_TYPE.UPDATED,
@@ -2012,33 +1899,6 @@ export const filterTablePro = [
 ];
 
 export const filterTabProOps = [
-  {
-    row_indx: '0',
-    op_type: 'add',
-    columns: [
-      { col_indx: '0', op_type: 'modify' },
-      { col_indx: '1', op_type: 'delete' },
-    ],
-  },
-  {
-    row_indx: '1',
-    op_type: 'delete',
-    columns: [
-      { col_indx: '0', op_type: 'modify' },
-      { col_indx: '1', op_type: 'delete' },
-    ],
-  },
-  {
-    row_indx: '2',
-    op_type: 'modify',
-    columns: [
-      { col_indx: '0', op_type: 'modify' },
-      { col_indx: '1', op_type: 'delete' },
-    ],
-  },
-];
-
-export const tabPropData = [
   {
     row_indx: '0',
     op_type: 'add',

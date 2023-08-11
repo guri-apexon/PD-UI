@@ -598,6 +598,8 @@ export const adjustColSpan = (data, rowIndex, colIndex) => {
         if (data[index]?.columns[colIdx]?.col_render) {
           data[index].columns[colIdx].colspan += 1;
           data[index].op_type = data[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
+          data[index].columns[colIdx].op_type =
+            data[index]?.columns[colIdx]?.op_type || QC_CHANGE_TYPE.UPDATED;
           flag = false;
           if (data[index]?.columns[colIdx]?.rowspan > 1) {
             rowSpanValue = data[index]?.columns[colIdx]?.rowspan;
@@ -821,6 +823,8 @@ export const deleteColData = (data, colIndex) => {
       data[index].columns[colIndex + 1].col_render = true;
       data[index].columns[colIndex + 1].value =
         data[index]?.columns[colIndex]?.value;
+      data[index].columns[colIndex + 1].rowspan =
+        data[index]?.columns[colIndex]?.rowspan;
       data[index].columns[colIndex + 1].op_type =
         data[index]?.columns[colIndex + 1]?.op_type || QC_CHANGE_TYPE.UPDATED;
       data[index].op_type = data[index]?.op_type || QC_CHANGE_TYPE.UPDATED;
@@ -828,7 +832,7 @@ export const deleteColData = (data, colIndex) => {
       let rowTemp = rowSpan - 1;
       while (rowTemp > 0) {
         data[index + rowTemp].columns[colIndex + 1].colspan =
-          data[index + rowTemp]?.columns[colIndex + 1]?.colspan;
+          data[index]?.columns[colIndex + 1]?.colspan;
         data[index + rowTemp].columns[colIndex + 1].op_type =
           data[index + rowTemp]?.columns[colIndex + 1]?.op_type ||
           QC_CHANGE_TYPE.UPDATED;
@@ -948,7 +952,11 @@ export const checkEmptyColumn = (data) => {
     .filter((row) => row.op_type !== QC_CHANGE_TYPE.DELETED)
     .forEach((row) => {
       row.columns.forEach((item, colIdx) => {
-        if (item?.col_render && !arr.includes(colIdx)) arr.push(colIdx);
+        if (
+          (item?.col_render && !arr.includes(colIdx)) ||
+          (item?.op_type === QC_CHANGE_TYPE.DELETED && !arr.includes(colIdx))
+        )
+          arr.push(colIdx);
       });
     });
   for (let n = 0; n < data[0]?.columns?.length; n++) {
