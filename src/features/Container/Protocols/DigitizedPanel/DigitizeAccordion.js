@@ -260,6 +260,7 @@ function DigitizeAccordion({
         docId: item.doc_id,
         protocol,
         configVariable: CONFIG_API_VARIABLES,
+        sectionName: item?.source_file_section,
       },
     });
   };
@@ -874,6 +875,7 @@ function DigitizeAccordion({
     [showedit, sectionDataArr],
   );
 
+  console.log('sectionDataArr', sectionDataArr);
   const getAccordionContent = () => {
     if (!expanded && !sectionDataArr.length) return null;
     return showLoader ? (
