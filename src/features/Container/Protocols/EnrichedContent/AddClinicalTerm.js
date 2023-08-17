@@ -40,7 +40,7 @@ function AddClinicalTerm({ docId, linkId }) {
     setSelectedText(selected);
     setIsTextSelected(selected?.trim() !== '');
     if (wordSelector?.word?.qc_change_type === QC_CHANGE_TYPE.ADDED) {
-      toast.error('Please edit and save the Section');
+      toast.error('Please update the section to proceed');
       setSelectedText('');
     }
   }, [wordSelector]);
