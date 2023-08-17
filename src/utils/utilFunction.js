@@ -412,6 +412,10 @@ export const prepareContent = ({
           },
         };
         newObj.line_id = newObj?.uuid;
+        if (!newObj.doc_id && aidocid) {
+          newObj.doc_id = aidocid;
+          newObj.aidocid = aidocid;
+        }
         if (fontInfo) {
           newObj = {
             ...newObj,

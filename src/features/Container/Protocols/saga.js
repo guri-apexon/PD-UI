@@ -389,6 +389,8 @@ export function* handleConfigurableAPI(action) {
           uuid: action.payload.linkId,
           line_id: action.payload.linkId,
           doc_id: docId,
+          aidocid: docId,
+          font_info: { link_id: action.payload.linkId },
           audit: {
             last_updated_user: userId,
           },
