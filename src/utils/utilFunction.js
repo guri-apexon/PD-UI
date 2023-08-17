@@ -554,6 +554,9 @@ export const createReturnObj = (obj, linkId) => {
   }
   if (obj.type === CONTENT_TYPE.HEADER) {
     if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
+      if (obj?.empty_section) {
+        return { ...obj, link_text: obj?.content };
+      }
       return {
         type: obj.type,
         qc_change_type: obj.qc_change_type,
