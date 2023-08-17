@@ -24,6 +24,7 @@ import {
   getSaveSectionPayload,
   removeDomElement,
   createLinkAndReferences,
+  removeHtmlTags,
 } from '../../../../utils/utilFunction';
 import Loader from '../../../Components/Loader/Loader';
 import SanitizeHTML from '../../../Components/SanitizeHtml';
@@ -569,12 +570,21 @@ function DigitizeAccordion({
       setSaveSection(null);
       toast.error('Please do some changes to update');
     } else {
-      const checkIfMainHeader = reqBody.filter(
-        (req) =>
-          req?.type === CONTENT_TYPE.HEADER &&
-          req?.qc_change_type === QC_CHANGE_TYPE.UPDATED &&
-          req?.link_level === '1',
-      );
+      let checkIfMainHeader = [];
+      if (reqBody[0]?.empty_section) {
+        if (
+          removeHtmlTags(reqBody[0]?.content).trim() !==
+          removeHtmlTags(item?.source_file_section).trim()
+        ) {
+          checkIfMainHeader.push(reqBody[0]);
+        }
+      } else
+        checkIfMainHeader = reqBody.filter(
+          (req) =>
+            req?.type === CONTENT_TYPE.HEADER &&
+            req?.qc_change_type === QC_CHANGE_TYPE.UPDATED &&
+            req?.link_level === '1',
+        );
       updateSectionLock(true);
       setSaveEnabled(false);
       setShowLoader(true);
@@ -875,7 +885,6 @@ function DigitizeAccordion({
     [showedit, sectionDataArr],
   );
 
-  console.log('sectionDataArr', sectionDataArr);
   const getAccordionContent = () => {
     if (!expanded && !sectionDataArr.length) return null;
     return showLoader ? (

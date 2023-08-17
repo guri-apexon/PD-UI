@@ -1,5 +1,6 @@
 import InfoIcon from 'apollo-react-icons/Info';
 import Button from 'apollo-react/components/Button';
+import { toast } from 'react-toastify';
 import FieldGroup from 'apollo-react/components/FieldGroup';
 import IconButton from 'apollo-react/components/IconButton';
 import Modal from 'apollo-react/components/Modal';
@@ -13,7 +14,10 @@ import './MedicalTerm.scss';
 import { getHierarchyName } from '../CustomComponents/PDTable/utils';
 import { preferredTermsValidation } from './utilFunction';
 import { userId } from '../../../../store/userDetails';
-import { CONTENT_TYPE } from '../../../../AppConstant/AppConstant';
+import {
+  CONTENT_TYPE,
+  QC_CHANGE_TYPE,
+} from '../../../../AppConstant/AppConstant';
 
 function AddClinicalTerm({ docId, linkId }) {
   const [openModal, setOpenModal] = useState(false);
@@ -35,6 +39,10 @@ function AddClinicalTerm({ docId, linkId }) {
     const selected = window?.getSelection()?.toString();
     setSelectedText(selected);
     setIsTextSelected(selected?.trim() !== '');
+    if (wordSelector?.word?.qc_change_type === QC_CHANGE_TYPE.ADDED) {
+      toast.error('Please edit and save the Section');
+      setSelectedText('');
+    }
   }, [wordSelector]);
 
   const handleOpen = (selectedText) => {
