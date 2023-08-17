@@ -10,6 +10,7 @@ import {
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 import FileDownload from 'js-file-download';
+import isEmpty from 'lodash/isEmpty';
 import {
   getSummary,
   getProcotoclToc,
@@ -51,6 +52,7 @@ import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
 import { flattenObject, mergeSummary } from './MetaData/utilFunction';
 import { createPlainText } from '../../../utils/utilFunction';
+import { emptySecSegment } from '../../../AppConstant/AppConstant';
 
 const jsonContentHeader = { 'Content-Type': 'application/json' };
 
@@ -326,8 +328,15 @@ export function* updateSectionData(action) {
 }
 
 export function* handleConfigurableAPI(action) {
-  const { docId, protocol, linkId, linkLevel, sectionText, configVariable } =
-    action.payload;
+  const {
+    docId,
+    protocol,
+    linkId,
+    linkLevel,
+    sectionText,
+    configVariable,
+    sectionName,
+  } = action.payload;
   let apiURL = `${BASE_URL}${Apis.API_CONFIGURABLE}?aidoc_id=${docId}`;
   if (protocol) {
     apiURL += `&protocol=${protocol}`;
@@ -369,6 +378,23 @@ export function* handleConfigurableAPI(action) {
     );
     const sectionDetails = yield call(httpCall, config);
     yield put(setSectionLoader(false));
+    if (isEmpty(sectionDetails.data[0])) {
+      const secText = `<h1>${sectionName} </h1>`;
+      sectionDetails.data[0] = [
+        {
+          ...emptySecSegment,
+          link_text: secText,
+          content: secText,
+          link_id: action.payload.linkId,
+          uuid: action.payload.linkId,
+          line_id: action.payload.linkId,
+          doc_id: docId,
+          audit: {
+            last_updated_user: userId,
+          },
+        },
+      ];
+    }
     yield put(
       setSectionDetails({
         protocol: action.payload.protocol,
