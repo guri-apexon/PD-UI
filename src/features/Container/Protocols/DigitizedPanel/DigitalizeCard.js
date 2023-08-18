@@ -181,7 +181,12 @@ function DigitalizeCard({
   const handleFinalSubmit = () => {
     dispatch({
       type: 'SUBMIT_WORKFLOW_DATA',
-      payload: { ...primaryUserFinalSubmit, docId: data.id },
+      payload: {
+        ...primaryUserFinalSubmit,
+        docId: data.id,
+        pageName: '',
+        userRole: userDetail.user_type,
+      },
     });
     setModalOpen(false);
   };
