@@ -184,7 +184,7 @@ const getTableData = (data, action) => {
     );
     const rowRecord = {};
     cols.forEach((col) => {
-      rowItems.forEach((rowItem) => {
+      [...rowItems].reverse().forEach((rowItem) => {
         if (Number(rowItem[TableConst.COLUMN_IDX]) === Number(col)) {
           rowItem[TableConst.DATA_VALUE] = getValueFormRecord(rowItem);
           rowRecord[col] = rowItem;
