@@ -86,6 +86,8 @@ function QCProtocolView({ protId, handleChangeTab }) {
         docId: docIdEntered,
         workFlowName,
         workFlowList: finalWorkflow,
+        pageName: 'qc_ingest',
+        userRole: 'QC1',
       };
       dispatch({
         type: 'SUBMIT_WORKFLOW_DATA',
