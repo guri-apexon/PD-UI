@@ -21,6 +21,13 @@
     flex-direction: column;
     height: 50%;
   }
+  .other-accordions {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .other-accordions [class*='MuiAccordionSummary-root'] {
+    background: #e9e9e9;
+  }
 
   .metadata_item [class*='MuiAccordionSummary-root'] {
     background: #e9e9e9;
@@ -304,4 +311,22 @@
   [class*='MuiDialogActions-root-'] {
     justify-content: center;
   }
+}
+.assessment-table-container > div > div {
+  overflow-y: auto !important;
+  td > div {
+    text-align: center;
+  }
+  tr > td:first-child > div {
+    text-align: left;
+  }
+  th {
+    text-align: center;
+  }
+  tr > th:first-child {
+    text-align: left;
+  }
+}
+.assessment-table-container {
+  padding: 12px;
 }
