@@ -59,6 +59,7 @@ describe('Digitalize Card Component', () => {
   const dataValueTest = {
     amendment: 'Y',
     id: 'f2571c30-a39f-4d58-a092-09edaac5b814',
+    userPrimaryRoleFlag: true,
   };
   test('when rightBlade value is home and click on submit button', () => {
     const { rerender } = render(

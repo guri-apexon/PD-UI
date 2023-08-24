@@ -33,6 +33,7 @@ export const httpCall = async (config) => {
 
   try {
     const response = await axios(headerConfig);
+
     if (response.status === 200) {
       return {
         success: true,
@@ -69,6 +70,14 @@ export const httpCall = async (config) => {
       };
     }
   } catch (err) {
+    if (err && err.response && err.response.status === 400) {
+      return {
+        success: false,
+        data: err.response.data,
+        err: err.response,
+        message: err.response.data.message,
+      };
+    }
     if (err && err.response && err.response.status === 403) {
       return {
         success: false,

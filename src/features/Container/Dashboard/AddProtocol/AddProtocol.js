@@ -608,6 +608,8 @@ function AddProtocol() {
           docId: docIdEntered,
           workFlowName,
           workFlowList: finalWorkflow,
+          pageName: 'workflow_orchestration',
+          userRole: userDetail.user_type,
         };
         dispatch({
           type: 'SUBMIT_WORKFLOW_DATA',

@@ -169,9 +169,10 @@ describe.only('DipaView Component testing', () => {
     fireEvent.change(select, {
       target: { value: 'cpt_secondary_endpoints_estimands_analysis' },
     });
+
     expect(
       screen.getByText(
-        'The percentage of subjects whexperience at least 1 treatment-emergent AE (TEAor SAE.',
+        'The percentages of subjects whexperience at least 1 treatment-emergent AE (TEAor SAE.',
       ),
     ).toBeInTheDocument();
   });

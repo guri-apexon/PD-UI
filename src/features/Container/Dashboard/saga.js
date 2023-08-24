@@ -35,7 +35,10 @@ import {
   setAddProtocolErrorState,
   setworkflowSubmit,
 } from './dashboardSlice';
-import { setWorkFlowSubmitButton } from '../Protocols/protocolSlice';
+import {
+  getFileStream,
+  setWorkFlowSubmitButton,
+} from '../Protocols/protocolSlice';
 import { errorMessage, dashboardErrorType } from './constant';
 
 function* getState() {
@@ -89,6 +92,14 @@ export function* protocolAsyn(action) {
           return item;
         });
 
+        yield put(
+          getFileStream({
+            loader: false,
+            success: false,
+            error: '',
+            data: null,
+          }),
+        );
         yield put(getProtocols(myPorotocolsData));
         yield put(getFollowedProtocols(followedProtocolData));
         yield put(setTableLoader(false));
@@ -456,6 +467,7 @@ export function* submitWorkflowData(action) {
       config.headers = { 'Content-Type': 'application/json' };
     }
     const resp = yield call(httpCall, config);
+    
     if (resp.data.success === false) {
       toast.error(
         resp.data.info ||
@@ -480,14 +492,15 @@ export function* submitWorkflowData(action) {
     } else {
       const errorData = {
         loading: false,
-        error: 'API ERROR',
+        error: resp?.message || 'API Error',
         data: [],
         success: false,
       };
       yield put(setworkflowSubmit(errorData));
       yield put(setAddProtocolModal(true));
       toast.error(
-        'Error occured during workflow submission for this protocol/docid',
+        resp?.message ||
+          'Error occured during workflow submission for this protocol/docid',
       );
     }
   } catch (e) {

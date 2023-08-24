@@ -365,7 +365,7 @@ describe('DisplayTable component', () => {
       />,
     );
 
-    const draggableElement = screen.getAllByTestId('draggable')[0];
+    const draggableElement = screen.getAllByTestId('table-row')[0];
     const droppableElement = screen.getByText('Procedure Assessment');
 
     fireEvent.dragStart(draggableElement);
@@ -384,6 +384,7 @@ describe('DisplayTable component', () => {
   const handleRowOperationMock = jest.fn();
   const handleColumnOperationMock = jest.fn();
   const handleSwapMock = jest.fn();
+  const handleMergeOperation = jest.fn();
   const preferredTermsMock = [];
   const isPreferredTermMock = false;
 
@@ -465,5 +466,29 @@ describe('DisplayTable component', () => {
     fireEvent.drop(column1);
 
     expect(handleSwapMock).not.toHaveBeenCalled();
+  });
+
+  it('should not handle drag and drop if the dragged element and target element are the same', () => {
+    const { getByText, getAllByTestId } = render(
+      <DisplayTable
+        data={data}
+        onChange={onChangeMock}
+        handleRowOperation={handleRowOperationMock}
+        edit
+        colWidth={33.33}
+        footNoteData={[]}
+        setFootnoteData={() => {}}
+        handleColumnOperation={handleColumnOperationMock}
+        handleSwap={handleSwapMock}
+        preferredTerms={preferredTermsMock}
+        isPreferredTerm={isPreferredTermMock}
+        handleMergeOperation={handleMergeOperation}
+      />,
+    );
+
+    const columnEdit1 = getAllByTestId('span-merge')[0];
+    fireEvent.click(columnEdit1);
+    const text = getByText('Right Merge');
+    fireEvent.click(text);
   });
 });

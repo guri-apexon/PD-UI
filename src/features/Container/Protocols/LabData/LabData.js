@@ -475,13 +475,13 @@ function LabData({ docId }) {
       data-testid="lab-data"
     >
       <div
-        className={`${
+        className={
           isEdit ? 'table-hover lab-table-container' : 'lab-table-container'
-        }`}
+        }
         data-testid="lab-table-container"
       >
         <div className="panel-heading">Lab Data</div>
-        <div className={`${isEdit && len === 0 ? 'no-data-table' : ''}`}>
+        <div className={isEdit && len === 0 ? 'no-data-table' : ''}>
           <Table
             isLoading={labData?.loading}
             ref={tableRef}

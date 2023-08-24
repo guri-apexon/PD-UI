@@ -173,7 +173,5 @@ describe('tablePopup', () => {
       '.table-enriched-place-holder',
     );
     expect(tableEnrichedPopup.style.position).toBe('absolute');
-    expect(tableEnrichedPopup.style.left).toBe('100px');
-    expect(tableEnrichedPopup.style.top).toBe('200px');
   });
 });

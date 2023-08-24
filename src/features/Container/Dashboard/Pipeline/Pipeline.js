@@ -62,9 +62,11 @@ function PipelineComponent({
   useEffect(() => {
     if (!isEmpty(workFlowStoreData.data.custom_workflows)) {
       const custom = formatData(workFlowStoreData.data.custom_workflows);
+      setCustomWorkflowData(custom);
+    }
+    if (!isEmpty(workFlowStoreData.data.default_workflows)) {
       const workflow = formatData(workFlowStoreData.data.default_workflows);
       setWorkflowData(workflow);
-      setCustomWorkflowData(custom);
     }
     // eslint-disable-next-line
   }, [workFlowStoreData]);
@@ -274,7 +276,7 @@ function PipelineComponent({
             {renderWorkflow(workflowData, 'default')}
           </div>
         </div>
-        {userType === 'admin' && (
+        {userType === 'admin' && customWorkflowData.length !== 0 && (
           <div className="custom-workflow">
             <label className="custom-label">Custom workflows:</label>
             <div className="workflow-render">

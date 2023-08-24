@@ -116,8 +116,10 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   useEffect(() => {
     if (fileName !== '') {
       const fileTypeArr = fileName.split('.');
-      const fileType = fileTypeArr.pop();
-      setFileType(fileType);
+      if (fileTypeArr.length > 1) {
+        const fileType = fileTypeArr.pop();
+        setFileType(fileType);
+      }
     }
   }, [fileName]);
 
@@ -160,7 +162,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
   }, [fileStream, pdfString]);
 
   if (!pdfString) {
-    return <Loader />;
+    return <Loader isInner overlayClassName="pdf-loader" />;
   }
 
   function handleKeyDown(e) {
@@ -194,7 +196,7 @@ function PDFViewer({ page, refs, pageRight, handlePaginationPage }) {
       onKeyDown={handleKeyDown}
     >
       <div className="panel-display">
-        {fileType !== 'pdf' && (
+        {fileType && fileType !== 'pdf' && (
           <div className="panel-download">
             <Tooltip title="Download Source document" placement="top">
               <IconButton

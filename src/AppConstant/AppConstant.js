@@ -242,6 +242,22 @@ const SETTING_OPTION = [
 
 const USERTYPE = { ADMIN: 'admin', NORMAL: 'normal', QC: 'QC1' };
 
+export const emptySecSegment = {
+  type: CONTENT_TYPE.HEADER,
+  qc_change_type: QC_CHANGE_TYPE.ADDED,
+  link_prefix: '',
+  link_text: '',
+  content: '',
+  link_id: '',
+  link_level: '1',
+  empty_section: true,
+  uuid: '',
+  line_id: '',
+  audit: {
+    last_updated_user: '',
+  },
+};
+
 export {
   SORT_DROPDOWN,
   USER_MENU,

@@ -336,6 +336,9 @@ export const tableJSONByRowAndColumnLength = (row, column) => {
         op_type: QC_CHANGE_TYPE.ADDED,
         cell_id: '',
         value: '',
+        rowspan: 1,
+        colspan: 1,
+        col_render: true,
       };
       columnObj = [...columnObj, obj];
     }
@@ -409,6 +412,10 @@ export const prepareContent = ({
           },
         };
         newObj.line_id = newObj?.uuid;
+        if (!newObj.doc_id && aidocid) {
+          newObj.doc_id = aidocid;
+          newObj.aidocid = aidocid;
+        }
         if (fontInfo) {
           newObj = {
             ...newObj,
@@ -551,12 +558,15 @@ export const createReturnObj = (obj, linkId) => {
   }
   if (obj.type === CONTENT_TYPE.HEADER) {
     if (obj.qc_change_type === QC_CHANGE_TYPE.ADDED) {
+      if (obj?.empty_section) {
+        return { ...obj, link_text: obj?.content };
+      }
       return {
         type: obj.type,
         qc_change_type: obj.qc_change_type,
         link_prefix: '',
         link_text: obj.content,
-        link_level: obj?.linkLevel?.toString() || '',
+        link_level: obj?.linkLevel?.toString() || '1',
         content: obj.content,
         uuid: obj?.uuid,
         line_id: obj?.line_id,
@@ -571,7 +581,7 @@ export const createReturnObj = (obj, linkId) => {
           link_id_subsection1: '',
           link_id_subsection2: '',
           link_id_subsection3: '',
-          link_level: obj?.prev_line_detail?.file_section_level,
+          link_level: obj?.prev_line_detail?.file_section_level || 1,
         },
         section_locked: false,
       };
@@ -584,7 +594,7 @@ export const createReturnObj = (obj, linkId) => {
         link_text: obj.content,
         content: obj.content,
         link_id: linkId,
-        link_level: obj?.file_section_level?.toString() || '',
+        link_level: obj?.file_section_level?.toString() || '1',
         line_id: obj.line_id?.slice(0, 36),
         link_id_level2: '',
         section_locked: false,
