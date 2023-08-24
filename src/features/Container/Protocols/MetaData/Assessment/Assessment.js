@@ -12,11 +12,19 @@ import Undo from 'apollo-react-icons/Undo';
 import AssessmentVisitTable from '../Table';
 import { assessmentData } from '../../protocolSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import OptionalAssessment from '../OptionalAssessments/OptionalAssessments';
+
+const labels = {
+  assessments: 'Assessments',
+  optionalAssessments: 'Optional Assessments',
+};
 
 const Assessment = ({ docId }) => {
   const dispatch = useDispatch();
   const assessments = useSelector(assessmentData);
   const [isEditEnabled, setEditEnabled] = useState(false);
+  const [showOptAssessment, setShowOptAssessment] = useState(false);
+  const [showAssessment, setShowAssessment] = useState(false);
 
   useEffect(() => {
     dispatch({ type: 'GET_ASSESSMENTS', payload: { docId } });
@@ -81,7 +89,32 @@ const Assessment = ({ docId }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails className="assessment-detail">
-          {assessments?.data && (
+          <div className="assessment-checkbox-container">
+            <div className="assessment-checkbox">
+              <input
+                id="optAssessment"
+                type="checkbox"
+                checked={showOptAssessment}
+                onChange={(e) => setShowOptAssessment(e.target.checked)}
+                name="optAssessment"
+              />
+              <label htmlFor={'optAssessment'}>
+                {labels.optionalAssessments}
+              </label>
+            </div>
+            <div className="assessment-checkbox">
+              <input
+                id="assessment"
+                type="checkbox"
+                checked={showAssessment}
+                onChange={(e) => setShowAssessment(e.target.checked)}
+                name="assessment"
+              />
+              <label htmlFor={'assessment'}>{labels.assessments}</label>
+            </div>
+          </div>
+          {showOptAssessment && <OptionalAssessment />}
+          {showAssessment && assessments?.data && (
             <AssessmentVisitTable
               data={assessments.data.assessments[0].data}
               columns={assessments.data.columns}

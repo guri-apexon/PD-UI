@@ -330,3 +330,15 @@
 .assessment-table-container {
   padding: 12px;
 }
+.assessment-checkbox-container {
+  display: flex;
+  padding-left: 10px;
+  padding-top: 10px;
+  .assessment-checkbox {
+    margin-right: 10px;
+    label {
+      margin-left: 5px;
+      vertical-align: text-bottom;
+    }
+  }
+}

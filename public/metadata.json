@@ -1,0 +1,1519 @@
+{
+    "data": {
+        "Study Treatment": {
+            "_meta_data": [
+                {
+                    "display_name": "Study drug mode of admin",
+                    "attr_name": "study_drug_mode_admin",
+                    "attr_type": "string",
+                    "attr_value": "topical",
+                    "confidence": "",
+                    "attr_id": "8bf10df2c33aec07d84fe68755c100cfbeba31a16cca57ea81b4f196d1f7a43a",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Comparator drug arm",
+                    "attr_name": "comparator_drug_arm",
+                    "attr_type": "string",
+                    "attr_value": "Y",
+                    "confidence": "",
+                    "attr_id": "ff2b5eecb28d2cef86a4eef06c33b57b9ec4da7b7ce0b2f7e940ee8052e873cd",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Comparator mode of admin",
+                    "attr_name": "comparator_drug_mode_admin",
+                    "attr_type": "string",
+                    "attr_value": "oral",
+                    "confidence": "",
+                    "attr_id": "f2f1c095cdab8d7a991a3673a1218306df3399abd9eeb09a14881e3ce60b4601",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": ">1 injection",
+                    "attr_name": "injection_gt1_visit",
+                    "attr_type": "string",
+                    "attr_value": "Y",
+                    "confidence": "",
+                    "attr_id": "d2f0a44676d61e08f5fef6a524271f81c8975779259c94a048c53f6bcbf07289",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Novel drug",
+                    "attr_name": "novel_drug",
+                    "attr_type": "string",
+                    "attr_value": "Y",
+                    "confidence": "",
+                    "attr_id": "f5cde76a2e9cb062962caedf5310dd21d00e2145803ddc20c43abcb8d3f193a7",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Study drug approved",
+                    "attr_name": "study_drug_approved",
+                    "attr_type": "string",
+                    "attr_value": "Y",
+                    "confidence": "",
+                    "attr_id": "e3a87e25ebbc30d5ff40b37d77fe1b91d89eeb545e16f11c13adf4116d9419fa",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Discontinue current treatment",
+                    "attr_name": "discontinue_treatment",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "",
+                    "attr_id": "c5524f3fd0dd4ad03a7f0a2df865474c01826cb6304ca2abb2e976146586d7ad",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "% Receive Placebo",
+                    "attr_name": "percent_placebo",
+                    "attr_type": "string",
+                    "attr_value": "Y",
+                    "confidence": "0.87",
+                    "attr_id": "6c215a99124a0ebf05ec73849913e41337ffa6952f97f37237001422ba25e19f",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.157137-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Placebo+SOC",
+                    "attr_name": "pure_placebo",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "d288cc6e927e1695e893c9850285483429bea61bd26ed6d75b2ed24a7c6ace0f",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                }
+            ],
+            "is_active": true,
+            "is_default": true,
+            "field_audit_info": {
+                "last_edited_by": null,
+                "last_updated": null
+            },
+            "_childs": []
+        },
+        "pb_variables": {
+            "_meta_data": [
+                {
+                    "attr_id": "e92ec452e7157c2186c2304076c17cb6c821390c875592fdb33948adf19f479e",
+                    "attr_name": "total_num_site_visit",
+                    "display_name": "total_num_site_visit",
+                    "attr_type": "string",
+                    "attr_value": "13",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                    "attr_name": "total_num_months",
+                    "display_name": "total_num_months",
+                    "attr_type": "string",
+                    "attr_value": "0",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "f69da1a26b2544d1b43de1cc17d77e5fb5ae1f5df6bd8df51aa880e967be8828",
+                    "attr_name": "num_visits_per_month",
+                    "display_name": "num_visits_per_month",
+                    "attr_type": "string",
+                    "attr_value": "Infinity",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "f09098f8b2144cdbd9c67530268055318de1f94fc1f55a9a6b4a72bf737f9cab",
+                    "attr_name": "median_visit_len",
+                    "display_name": "median_visit_len",
+                    "attr_type": "string",
+                    "attr_value": "0",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "7332e76130cc2610b5478ae1608d4b662288c9e96e47f4ee7577e2255bf2087b",
+                    "attr_name": "inpatient",
+                    "display_name": "inpatient",
+                    "attr_type": "string",
+                    "attr_value": null,
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "36c340fe13858e768f81b0e2662bd69b7cda4d8d16049951203ad62e50b6c687",
+                    "attr_name": "percent_placebo",
+                    "display_name": "Percent Placebo",
+                    "attr_type": "string",
+                    "attr_value": null,
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "c8a556d55466e2705633e1b9358395276b65dda478abf3b3ea2e9a0987cc31be",
+                    "attr_name": "injectable",
+                    "display_name": "injectable",
+                    "attr_type": "string",
+                    "attr_value": null,
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "02d6557eebf3d05c594a2620d55510f0ecb0488b9fa1492e7225012307008ab6",
+                    "attr_name": "injection_gt1_visit",
+                    "display_name": "injection_gt1_visit",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "6cbaf5674f95f2d121670c26d75f8cbcfd516ab429a9f250f84938ea0992f656",
+                    "attr_name": "discontinue_treatment",
+                    "display_name": "discontinue_treatment",
+                    "attr_type": "string",
+                    "attr_value": null,
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "707c6398a0aca06b044cf23d77051ee451b46fa2d3a33d804c099058387b25d0",
+                    "attr_name": "biopsy",
+                    "display_name": "biopsy",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "71caada55f3625fd75302bb84adc00c956a2e039f45a7cad29b3b679a93f3ffc",
+                    "attr_name": "colonoscopy",
+                    "display_name": "colonoscopy",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "4289b2ae63be3469974b92d38f2cda5d476c03e81762a6dd146e97cfec05b07b",
+                    "attr_name": "endoscopy",
+                    "display_name": "endoscopy",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "598862e0db80085eeef1c503d290f7fc800eb94145b964953ee07f29c66aca42",
+                    "attr_name": "lumbar_puncture",
+                    "display_name": "lumbar_puncture",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "59def9c05016ffb434d0b0810cb2d938c6fde7283056ff671a2870e61e509d01",
+                    "attr_name": "imaging_ct",
+                    "display_name": "imaging_ct",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "580b9330ffee16f408b115c6e06a75809cd2ddc1dbb2357a788b86600aeea9fb",
+                    "attr_name": "imaging_mri",
+                    "display_name": "imaging_mri",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "f0f8d88ef6480344ff7cf15e8827328f56c31d4135b85f91e5e386358753431a",
+                    "attr_name": "imaging_ultrasound",
+                    "display_name": "imaging_ultrasound",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "cd56666a4903878ec936676e8907debc0792964141a13b75e60077b167c9223b",
+                    "attr_name": "imaging_pet",
+                    "display_name": "imaging_pet",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "05a823aa81e75ac34895d8e7932615ff6587d6b3f881c22057a3be3509ac6855",
+                    "attr_name": "imaging_xray",
+                    "display_name": "imaging_xray",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "871b7b6d3527d742bf916c244b52041419d126f577b1ca5014dc7ded6ed126da",
+                    "attr_name": "imaging_dexa",
+                    "display_name": "imaging_dexa",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "6eac4657fd014887d5803b0183ffde2dcf9e07df6856bca912e512128df37667",
+                    "attr_name": "imaging_mammogram",
+                    "display_name": "imaging_mammogram",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "c52bac5ab97ff0ef07175ce9bba763b54077ab5564c44ceecf750f4c2d1e1744",
+                    "attr_name": "caregiver",
+                    "display_name": "Caregiver",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "f379ae0f3f6ef897823b26f60a32f74696e0772e7d5ae21a2db9707ff646c6cf",
+                    "attr_name": "diary",
+                    "display_name": "diary",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "3fa67620cc36ff0cdd97fc42f2bb02d36927300c750c414b73e9ff690033040a",
+                    "attr_name": "freq_pro",
+                    "display_name": "freq_pro",
+                    "attr_type": "string",
+                    "attr_value": "NA",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "1eea5d10fe5dbe620363a32d68e15d77a7d2c3afaea0dc8350f4e14405f39430",
+                    "attr_name": "total_num_pro",
+                    "display_name": "total_num_pro",
+                    "attr_type": "string",
+                    "attr_value": "0",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "e457a131e6fb51065486d6f2207f002cafd3d0bec1057fbf1496cb37cc960df0",
+                    "attr_name": "novel_drug",
+                    "display_name": "Novel Drug",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "1d19487ad95a443a8a64b5cc5199358924fe59831aad027a4983ac689c5b04d2",
+                    "attr_name": "percent_visit_blood_gte1",
+                    "display_name": "percent_visit_blood_gte1",
+                    "attr_type": "string",
+                    "attr_value": "0",
+                    "confidence": null,
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                        "num_updates": 1
+                    }
+                }
+            ],
+            "is_active": true,
+            "is_default": false,
+            "field_audit_info": {
+                "last_edited_by": null,
+                "last_updated": null
+            },
+            "_childs": []
+        },
+        "Adverse Events LM": {
+            "_meta_data": [
+                {
+                    "attr_id": "fed6b2dfcc78d35ee1de5dadc3f5913ed6b7ec802d7398eaf5419cc41bbf2565",
+                    "attr_name": "adverse_events",
+                    "display_name": "Adverse Events",
+                    "attr_type": "string",
+                    "attr_value": "FieldOID: AETOXGR FieldOID: AESEV Cytokine Release Syndrome, CTCAE Adverse Event, Adver.. assessment",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.637889-04:00",
+                        "num_updates": 1
+                    }
+                }
+            ],
+            "is_active": true,
+            "is_default": false,
+            "field_audit_info": {
+                "last_edited_by": null,
+                "last_updated": null
+            },
+            "_childs": []
+        },
+        "Serious Adverse Events LM": {
+            "_meta_data": [
+                {
+                    "attr_id": "54bb0498bbcd56240cc1a8968546643de6f300491eb9c03a09c707aab4129fd5",
+                    "attr_name": "serious_adverse_events",
+                    "display_name": "Serious Adverse Events",
+                    "attr_type": "string",
+                    "attr_value": "Disease Progression, CTCAE FieldOID: AESDTH",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.717325-04:00",
+                        "num_updates": 1
+                    }
+                }
+            ],
+            "is_active": true,
+            "is_default": false,
+            "field_audit_info": {
+                "last_edited_by": null,
+                "last_updated": null
+            },
+            "_childs": []
+        },
+        "Patient Complexity": {
+            "_meta_data": [
+                {
+                    "attr_id": "44938376c734923010cafead4e52968f648ee9be4ebed5d6748a34e8e2e8e2d6",
+                    "attr_name": "biopsy",
+                    "display_name": "Biopsy",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.767319-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "27747103b44386b7af824b83e3646bd5d3a68f76c30f97add252e9c0a9bf28a3",
+                    "attr_name": "blood_draw",
+                    "display_name": "Blood Draw",
+                    "attr_type": "string",
+                    "attr_value": "Y",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.792326-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "40372b72ea664218854e520c79ece50dbf9eb2173d4f5917562e6f0f5046c962",
+                    "attr_name": "blood_draw_list",
+                    "display_name": "Blood Draw List",
+                    "attr_type": "string",
+                    "attr_value": "hematology",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.792326-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "7eec61f29f0660fca575f2151924ea19014a711b66a53676b46d07d1b278fd99",
+                    "attr_name": "caregiver",
+                    "display_name": "Caregiver",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.797325-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "e610c89dd9254a2b17cf6bea5300a7b2982d093617072c553d5adedc5ddfcefd",
+                    "attr_name": "colonoscopy",
+                    "display_name": "Colonoscopy",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.797325-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "ea5a8f96d342f70cb9a934fc6b92629d1d108def790b144b8ed2eb1c56f8d3d9",
+                    "attr_name": "diary",
+                    "display_name": "Diary",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.802314-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "5708a31ed0fa44e8039957e3c5fa0483a3eaa5919e948067d081ddd830342e32",
+                    "attr_name": "discontinue_treatment",
+                    "display_name": "Discontinue Treatment",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.802314-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "e295b26553ff0d6b3601b347c63b7f10df0c2edb9f033cd8ff9a1b09857a9661",
+                    "attr_name": "discontinue_treatment_list",
+                    "display_name": "Discontinue Treatment List",
+                    "attr_type": "string",
+                    "attr_value": " [NOT discontinue_treatment: openlabel;];",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.802314-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "6784e27c8b78591fdedf703705418a7b5a837d7caaf313e80bedb2d784053328",
+                    "attr_name": "endoscopy",
+                    "display_name": "Endoscopy",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.807313-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "729b776d0719012ec1f40625629f97fe905a98e56cba2fce264e6450a1e71dac",
+                    "attr_name": "freq_pro",
+                    "display_name": "Freq Pro",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.807313-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "f03fbe1d780f0f9fed0f0fc499b33d19c44da8a68f6f565fe42f964f8049d3bf",
+                    "attr_name": "imaging_ct",
+                    "display_name": "Imaging CT",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.812312-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "398b04fd86d5e634aad9b3eb2a2fd727560cd0d14ee2459d2fc63222d827e5ae",
+                    "attr_name": "imaging_dexa",
+                    "display_name": "Imaging Dexa",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.812312-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "ddda4c78982fe2214a39a94f955a7b1b5fb34aaa42ff9cf960e625326ca59b46",
+                    "attr_name": "imaging_mammogram",
+                    "display_name": "Imaging Mammogram",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.812312-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "d69efc47bd82f9a3f5dd9f5bddd537f35404c4af4b108803c78e39285ff01a2c",
+                    "attr_name": "imaging_mri",
+                    "display_name": "Imaging MRI",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.817316-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "1ac051e34efa80d86698a2d1a2d3d3ea535bb580d15fde17d5d10e129c9b8d10",
+                    "attr_name": "imaging_pet",
+                    "display_name": "Imaging Pet",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.817316-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "a29f28b278b7089803c9ba006bbdf9d2c063fa83b422fb156ab8b3fab53d8822",
+                    "attr_name": "imaging_ultrasound",
+                    "display_name": "Imaging Ultrasound",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.817316-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "7ee7b1965e3ee85f03b3528a6f314ffb7f5e42edf9a8dc95dcf3d81d787a33c8",
+                    "attr_name": "imaging_xray",
+                    "display_name": "Imaging Xray",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.822337-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "03ff61fa1957db35d334d618f9cde2deb16b60129fea557b51b1ec69ce24839d",
+                    "attr_name": "injectable",
+                    "display_name": "Injectable",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.822337-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "f3f77926d7ea08537d83a169d3105d814e296e9530759a65d04932a6ed25146b",
+                    "attr_name": "inpatient",
+                    "display_name": "Inpatient",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.827359-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "856995e0731a3e8fc7433c77cd85396eb7041f0f6ae7ee9d7bfea357e2b2731f",
+                    "attr_name": "lumbar_puncture",
+                    "display_name": "Lumbar Puncture",
+                    "attr_type": "string",
+                    "attr_value": "N",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.827359-04:00",
+                        "num_updates": 1
+                    }
+                }
+            ],
+            "is_active": true,
+            "is_default": false,
+            "field_audit_info": {
+                "last_edited_by": null,
+                "last_updated": null
+            },
+            "_childs": []
+        },
+        "Study Assessments And Procedure": {
+            "_meta_data": [
+                {
+                    "attr_id": "4690bd20b59da9f534db2ae10b300349c705b12a7d354a5b37fa1feaa0d21a57",
+                    "attr_name": "colonoscopy_list",
+                    "display_name": "Colonoscopy List",
+                    "attr_type": "string",
+                    "attr_value": "Male,Female",
+                    "confidence": "62.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:01.987111-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "fc0b0dae5fd00d986ff28a8a8ae0961758414b835bab999ed9e536a1632782e1",
+                    "attr_name": "ecg",
+                    "display_name": "ECG",
+                    "attr_type": "string",
+                    "attr_value": "Heart rate [45, 100] bpm",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.012117-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "ddd272f196730b5ca74a337035f25a32c5dbc7ae72d4e48d255881763a8cba51",
+                    "attr_name": "vital_signs",
+                    "display_name": "Vital Signs",
+                    "attr_type": "string",
+                    "attr_value": "FieldOID: EGHRMN_EGORRES Heart rate [45, 100] bpm",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.017126-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "80fcc92a6fdb1560d208a2aa84771b1b5a7a802dc698359c482ea6f3e8c447e4",
+                    "attr_name": "total_num_pro",
+                    "display_name": "Total Num Pro",
+                    "attr_type": "string",
+                    "attr_value": "0",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.017126-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "48958404c9d194f9582f2a37939f91885b9276bd4eb1c1d3ab0fe27fac30ec52",
+                    "attr_name": "total_num_site_visit",
+                    "display_name": "Total Num Site Visit",
+                    "attr_type": "string",
+                    "attr_value": "18",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.017126-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "attr_id": "343bb78d8e76caf2208b8f6bb84036d97e9e99cd41f44b867b3d7669e831e9bb",
+                    "attr_name": "total_num_site_visit_list",
+                    "display_name": "Total Num Site Visit List",
+                    "attr_type": "string",
+                    "attr_value": "[2.3.2 Sampling and Procedures Schedules:[Day,Timepoints     window,Vital signs,ECG e,CHem.,CChem. Laboratory analysis,CCoag. Laboratory analysis,CUrin. Laboratory analysis,CPreg. test h Laboratory analysis,CTFT i Laboratory analysis,,Sched.,CsCD25 Laboratory analysis,CCyto  kines,CFACS,CctDNA k,CPK GI-102,CADA & Nab GI-102]],",
+                    "confidence": "1.0",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.022126-04:00",
+                        "num_updates": 1
+                    }
+                }
+            ],
+            "is_active": true,
+            "is_default": false,
+            "field_audit_info": {
+                "last_edited_by": null,
+                "last_updated": null
+            },
+            "_childs": []
+        },
+        "summary_extended": {
+            "_meta_data": [
+                {
+                    "display_name": "Exclusion Criteria",
+                    "attr_name": "exclusionCriteria",
+                    "attr_type": "string",
+                    "attr_value": "The patients must be excluded from participating in the trial if they meet any of the following criteria.",
+                    "confidence": "1.0",
+                    "attr_id": "4100b9e2f54412d6d1a59a0f9b9522cc14a8958c51b63a09b88061df9d52ec34",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.097128-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Inclusion Criteria",
+                    "attr_name": "inclusionCriteria",
+                    "attr_type": "string",
+                    "attr_value": "In order to be eligible for participation in this trial, patients must meet all of the following criteria.",
+                    "confidence": "1.0",
+                    "attr_id": "e450552926d473cc3f4084bdb22aed14c8dc4c947d3927ade9ce70fd08496b74",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.122122-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Primary Objectives",
+                    "attr_name": "primaryObjectives",
+                    "attr_type": "string",
+                    "attr_value": "(1) Objective (dose escalation phase): To evaluate the safety and tolerability of GI-102 to define the MTD and/or RP2D",
+                    "confidence": "1.0",
+                    "attr_id": "37df419229f8410aec9ce9471fff6d07c90a337ab0fd9bc07585ec4bcc96d72c",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": false,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.147219-04:00",
+                        "num_updates": 1
+                    }
+                }
+            ],
+            "is_active": true,
+            "is_default": false,
+            "field_audit_info": {
+                "last_edited_by": null,
+                "last_updated": null
+            },
+            "_childs": []
+        },
+        "Summary": {
+            "_meta_data": [
+                {
+                    "display_name": "Protocol Name",
+                    "attr_name": "fileName",
+                    "attr_type": "string",
+                    "attr_value": "GII-102-P101_Protocol_V2.0_07Feb2023_CL",
+                    "confidence": "",
+                    "attr_id": "8bf10df2c33aec07d84fe68755c100cfbeba31a16cca57ea81b4f196d1f7a43a",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Protocol Number",
+                    "attr_name": "protocol",
+                    "attr_type": "string",
+                    "attr_value": "GII-102-P101",
+                    "confidence": "",
+                    "attr_id": "ff2b5eecb28d2cef86a4eef06c33b57b9ec4da7b7ce0b2f7e940ee8052e873cd",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Protocol title",
+                    "attr_name": "protocolTitle",
+                    "attr_type": "string",
+                    "attr_value": null,
+                    "confidence": "",
+                    "attr_id": "f2f1c095cdab8d7a991a3673a1218306df3399abd9eeb09a14881e3ce60b4601",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Protocol Title Short",
+                    "attr_name": "shortTitle",
+                    "attr_type": "string",
+                    "attr_value": null,
+                    "confidence": "",
+                    "attr_id": "d2f0a44676d61e08f5fef6a524271f81c8975779259c94a048c53f6bcbf07289",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Is Amendment",
+                    "attr_name": "isAmendment",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "f5cde76a2e9cb062962caedf5310dd21d00e2145803ddc20c43abcb8d3f193a7",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Amendment Number",
+                    "attr_name": "amendment",
+                    "attr_type": "string",
+                    "attr_value": "Y",
+                    "confidence": "",
+                    "attr_id": "e3a87e25ebbc30d5ff40b37d77fe1b91d89eeb545e16f11c13adf4116d9419fa",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Trial Phase",
+                    "attr_name": "phase",
+                    "attr_type": "string",
+                    "attr_value": null,
+                    "confidence": "",
+                    "attr_id": "c5524f3fd0dd4ad03a7f0a2df865474c01826cb6304ca2abb2e976146586d7ad",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Sponsor",
+                    "attr_name": "sponsor",
+                    "attr_type": "string",
+                    "attr_value": "GI Innovation Gi Innovation Incorporated",
+                    "confidence": "0.87",
+                    "attr_id": "6c215a99124a0ebf05ec73849913e41337ffa6952f97f37237001422ba25e19f",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.157137-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Sponsor Address",
+                    "attr_name": "sponsorAddress",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "d288cc6e927e1695e893c9850285483429bea61bd26ed6d75b2ed24a7c6ace0f",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Drug",
+                    "attr_name": "drug",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "ec357366e61b253f03765c32575481ca2ecb3c9875e71bc9927703fbfe7ba262",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Approval Date",
+                    "attr_name": "approvalDate",
+                    "attr_type": "date",
+                    "attr_value": null,
+                    "confidence": "",
+                    "attr_id": "1f53991e90c46b0efd056b98640786626da1927e0230698deae2d0978fbeba2a",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Version Number",
+                    "attr_name": "versionNumber",
+                    "attr_type": "string",
+                    "attr_value": "1.0",
+                    "confidence": "",
+                    "attr_id": "95116c300c0ad086b471dbc439ec192e7d2b124ad942183f82de95f8073e80bf",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Version Date",
+                    "attr_name": "versionDate",
+                    "attr_type": "date",
+                    "attr_value": null,
+                    "confidence": "",
+                    "attr_id": "7abdd1fda9ba945e9f35f7968034a8d39fbc28e00b7eac4adf59a06ff8fe7b80",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Blinded",
+                    "attr_name": "blinded",
+                    "attr_type": "string",
+                    "attr_value": "OPEN-LABEL",
+                    "confidence": "1.0",
+                    "attr_id": "99ec3e296f463ea69d24ccbcc7560a986755bccb9e5fdc642fc53b9b05f91933",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.157137-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Compound Number",
+                    "attr_name": "compoundNumber",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "c6a8f4e5f7c6782fec72ac0ccd98dae918e0097ba556fab1f9ff9784e0242cae",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Control",
+                    "attr_name": "control",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "6a7b7ec210a4d2c3719aad7e1a5b78d9e7e080226a5988b999efb5efcfcc3837",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Investigator",
+                    "attr_name": "investigator",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "d6dd7310f4d6541c74ef8e2224cc2bfa5c6dbf51fd5de08a8c2f5c5f53d68ffd",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Study Id",
+                    "attr_name": "studyId",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "f4de2c5dc9882f813be34408993cbf26c085a831bd7fe3759c082f5e3acec005",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Number Of Subjects",
+                    "attr_name": "numOfSubjects",
+                    "attr_type": "string",
+                    "attr_value": "3",
+                    "confidence": "0.87",
+                    "attr_id": "38a6ce3a2047b8b14bb0e0d6e0ddfb8a69a61ded277be4aee92646b1907c4a4a",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.142150-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Participant Age",
+                    "attr_name": "participantAge",
+                    "attr_type": "string",
+                    "attr_value": "18y",
+                    "confidence": "0.87",
+                    "attr_id": "fed9d497f850ee317fd42ac5358a1d895abd3b12aaad27f5d5458825ecd30366",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.147219-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Participant Sex",
+                    "attr_name": "participantSex",
+                    "attr_type": "string",
+                    "attr_value": "FEMALE",
+                    "confidence": "1.0",
+                    "attr_id": "ddb880b0bca99645323df508719d17b869b21bd6e122df164bf701f61037b662",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.152137-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Trial Type randomized",
+                    "attr_name": "trialTypeRandomized",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "c8eb05571a5412469f82c53bed63c6057133e0b53c4750dd58e397dbab5a33f6",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Molecule Device",
+                    "attr_name": "moleculeDevice",
+                    "attr_type": "string",
+                    "attr_value": "GI-102",
+                    "confidence": "1.0",
+                    "attr_id": "fcbbc07ee7bf2ad3b08725a64d2c16df0f36a35fdb2a2d0a46db1f6bd84d38c1",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.157137-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Document Status",
+                    "attr_name": "documentStatus",
+                    "attr_type": "string",
+                    "attr_value": "final",
+                    "confidence": "",
+                    "attr_id": "f66c3ab6afb29c9ae25b62717d55b7cb45315a1fc81a87691330340a2c06ba3c",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                },
+                {
+                    "display_name": "Indication",
+                    "attr_name": "indication",
+                    "attr_type": "string",
+                    "attr_value": "Metastases to lung",
+                    "confidence": "0.75",
+                    "attr_id": "c4075edfc1a1bdc09c83869f92b888199f1651c9fcfe03a2ef9b495ead6b9666",
+                    "note": null,
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_edited_by": null,
+                        "last_updated": "2023-07-06 07:02:02.127127-04:00",
+                        "num_updates": 1
+                    }
+                },
+                {
+                    "display_name": "Study Population",
+                    "attr_name": "population",
+                    "attr_type": "string",
+                    "attr_value": "",
+                    "confidence": "",
+                    "attr_id": "4649ff2b840f4fa88d4925b6f8f1dd323fa41e445cd2f6403811be913312541d",
+                    "note": "",
+                    "is_active": true,
+                    "is_default": true,
+                    "audit_info": {
+                        "last_updated": "2023-08-18 03:35:19.754000-04:00"
+                    }
+                }
+            ],
+            "is_active": true,
+            "is_default": true,
+            "field_audit_info": {
+                "last_edited_by": null,
+                "last_updated": null
+            },
+            "_childs": []
+        },
+        "_childs": [
+            "pb_variables",
+            "Adverse Events LM",
+            "Serious Adverse Events LM",
+            "Patient Complexity",
+            "Study Assessments And Procedure",
+            "summary_extended",
+            "Summary"
+        ]
+    }
+}
