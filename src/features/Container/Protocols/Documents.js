@@ -17,7 +17,7 @@ import Download from 'apollo-react-icons/Download';
 import Modal from 'apollo-react/components/Modal/Modal';
 import { messages } from '../../../AppConstant/AppConstant';
 import { userId } from '../../../store/userDetails';
-import { httpCall, BASE_URL_8000 } from '../../../utils/api';
+import { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { protocolSummary, associateDocs } from './protocolSlice';
 import AssociateDocumentsTable from '../../Components/DocumentsTable/AssociateDocumentsTable';
 import DocumentsTable from '../../Components/DocumentsTable/DocumentsTable';
@@ -262,7 +262,7 @@ function Documents({ handleChangeTab }) {
         },
         body: blobToFormData(respsource.data, respTarget.data),
       };
-      fetch('https://api.draftable.com/v1/comparisons', config)
+      fetch(`${Apis.DRAFTABLE_VIEWER}`, config)
         .then((response) => response.json())
         .then((data) => {
           setLoader(false);

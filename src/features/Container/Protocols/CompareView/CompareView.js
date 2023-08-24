@@ -21,7 +21,7 @@ function CompareView({ isModal, setIsModal, identifier }) {
     validUntilTimestamp,
   );
 
-  const url = `${Apis.DRAFTABLE_VIEWER}/${identifier}?valid_until=${validUntilTimestamp}&signature=${signature}`;
+  const url = `${Apis.DRAFTABLE_VIEWER}/viewer/${accountId}/${identifier}?valid_until=${validUntilTimestamp}&signature=${signature}`;
   return (
     <Modal
       disableBackdropClick
