@@ -145,7 +145,7 @@ const getColumns = (columns) => {
 };
 
 export default function AssessmentVisitTable(props) {
-  const { data, columns, settings } = props;
+  const { data, columns, settings, fullView } = props;
   const [columnData, setColumndata] = useState([]);
   const [rows, setRows] = useState([]);
   const [editedRow, setEditedRow] = useState({});
@@ -201,8 +201,8 @@ export default function AssessmentVisitTable(props) {
           rowId="id"
           hidePagination
           hasScroll
-          maxHeight={'60vh'}
-          columnSettings={{ enabled: settings, frozenColumnsEnabled: false }}
+          maxHeight={fullView ? '78vh' : '60vh'}
+          columnSettings={{ enabled: settings, frozenColumnsEnabled: true }}
           className="abc"
         />
       )}
