@@ -2,6 +2,9 @@
     "data": [
         {
             "id": "5fcedf55-3f02-48d7-985d-fd76ee48065d",
+            "doc_id": "2b2f1678-127c-45b6-8da8-89d54cb424aa",
+            "visit_id": "04900246-72c9-43b0-a4dd-8e7055c3d8e1",
+            "table_roi_id": "30a69afe-e2f1-4607-a1ae-49167d109ece",
             "visit_label": "V1 C1-28 days Screening",
             "epoch_timepoint": "Screening",
             "cycle_timepoint": "1-28 days",
@@ -19,6 +22,9 @@
         },
         {
             "id": "5fcedf55-3f02-48d7-985d-fd76ee480612312",
+            "doc_id": "2b2f1678-127c-45b6-8da8-89d54cb424aa",
+            "visit_id": "04900246-72c9-43b0-a4dd-8e7055c3d8e1",
+            "table_roi_id": "30a69afe-e2f1-4607-a1ae-49167d109ece",
             "visit_label": "V2 D-23 to -1 9 C21 2 days Run-In",
             "epoch_timepoint": "Run-In",
             "cycle_timepoint": "21 2 days",
@@ -33,6 +39,26 @@
             "unscheduled_or_optional": "Y",
             "additional_visit_length": "",
             "overnight": "N"
+        },
+        {
+            "id": "5fcedf55-3f02-48d7-985d-fd76ee48061231231",
+            "doc_id": "2b2f1678-127c-45b6-8da8-89d54cb424aa",
+            "visit_id": "04900246-72c9-43b0-a4dd-8e7055c3d8e1",
+            "table_roi_id": "30a69afe-e2f1-4607-a1ae-49167d109ece",
+            "visit_label": "V3 D-49 to -1 9 C34 2 days Run-In",
+            "epoch_timepoint": "Run-In",
+            "cycle_timepoint": "21 2 days",
+            "visit_timepoint": "2",
+            "year_timepoint": "",
+            "month_timepoint": "",
+            "week_timepoint": "",
+            "day_timepoint": "-23 to -1 9",
+            "window_timepoint": "",
+            "visit_location": "",
+            "early_discontinuation": "",
+            "unscheduled_or_optional": "",
+            "additional_visit_length": "",
+            "overnight": ""
         }
     ],
     "columns": [
@@ -52,6 +78,11 @@
             "possible_values": []
         },
         {
+            "displayName": "Year Timepoint",
+            "key": "year_timepoint",
+            "possible_values": []
+        },
+        {
             "displayName": "Month Timepoint",
             "key": "month_timepoint",
             "possible_values": []
@@ -63,11 +94,6 @@
         },
         {
             "displayName": "Day Timepoint",
-            "key": "day_timepoint",
-            "possible_values": []
-        },
-        {
-            "displayName": "Visit Timepoint",
             "key": "day_timepoint",
             "possible_values": []
         },

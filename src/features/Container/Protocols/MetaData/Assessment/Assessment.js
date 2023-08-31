@@ -17,10 +17,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import OptionalAssessment from '../OptionalAssessments/OptionalAssessments';
 import AssessmentContent from './AssessmentContent';
 import cloneDeep from 'lodash/cloneDeep';
+import { toast } from 'react-toastify';
 
-const labels = {
-  assessments: 'Assessments',
-  optionalAssessments: 'Optional Assessments',
+const createRowData = (row) => {
+  let obj = { ...row };
+  Object.keys(obj).forEach(function (index) {
+    obj[index] = '';
+  });
+  obj.id = Math.random();
+  obj.doc_id = row.doc_id;
+  obj.assessment_id = row.assessment_id;
+  obj.table_link_text = row.table_link_text;
+  obj.table_roi_id = row.table_roi_id;
+  obj.assessment_text = 'Assessment Name';
+  obj.operation = 'create';
+
+  return obj;
 };
 
 const isEmptyObj = (obj) => {
@@ -57,6 +69,7 @@ const Assessment = ({ docId }) => {
   const [showModal, setShowModal] = useState(false);
   const [validData, setValidData] = useState([]);
   const [dropDownData, setDropDownData] = useState([]);
+  const [datafetch, setDataFetch] = useState(false);
 
   useEffect(() => {
     dispatch({ type: 'GET_ASSESSMENTS', payload: { docId } });
@@ -90,10 +103,15 @@ const Assessment = ({ docId }) => {
     }
   }, [assessments]);
 
+  const getFinalDataFromTable = (data) => {
+    console.log('final data', data);
+    setDataFetch(false);
+  };
 
   const handleSaveData = (e) => {
     e.stopPropagation();
     setEditEnabled(false);
+    setDataFetch(true);
   };
 
   const handleUndo = (e) => {
@@ -108,11 +126,26 @@ const Assessment = ({ docId }) => {
     setShowModal(true);
   };
   const handleSelection = (e) => {
-    console.log(e.target.value);
-    const objSelected = dropDownData.find((item) => item.id === e.target.value);
-    console.log('object', objSelected);
-    setValidData([...validData, objSelected]);
+    const index = validData.findIndex((item) => item.id === e.target.value);
+    if (index < 0) {
+      const objSelected = dropDownData.find(
+        (item) => item.id === e.target.value,
+      );
+
+      setValidData([...validData, objSelected]);
+    } else {
+      toast.error('Item already exist in the table');
+    }
     // setDropDownData(removeByAttr(dropDownData, 'id', e.target.value));
+  };
+  const handleAdd = () => {
+    console.log('add', validData[0]);
+    console.log('created row', createRowData(validData[0]));
+    setValidData([...validData, createRowData(validData[0])]);
+  };
+
+  const handleTableChange = (data) => {
+    setValidData(data);
   };
 
   return (
@@ -137,6 +170,13 @@ const Assessment = ({ docId }) => {
             columns={assessments.data.columns}
             dropDownData={dropDownData}
             handleSelection={handleSelection}
+            handleAdd={handleAdd}
+            getFinalDataFromTable={getFinalDataFromTable}
+            datafetch={datafetch}
+            handleEdit={handleEdit}
+            handleSaveData={handleSaveData}
+            handleUndo={handleUndo}
+            handleTableChange={handleTableChange}
           />
         )}
       </Modal>
@@ -145,6 +185,14 @@ const Assessment = ({ docId }) => {
           <div className="accordion_summary_container">
             <Typography>Assessments</Typography>
             <div className="metadata-flex">
+              <span data-testId="eyeIcon" role="presentation">
+                <Expand
+                  style={{ paddingRight: '10px' }}
+                  onClick={(e) => {
+                    handleExpand(e);
+                  }}
+                />
+              </span>
               <span data-testId="eyeIcon" role="presentation">
                 <EyeShow style={{ paddingRight: '10px' }} />
               </span>
@@ -180,14 +228,6 @@ const Assessment = ({ docId }) => {
                   </span>
                 </>
               )}
-              <span data-testId="eyeIcon" role="presentation">
-                <Expand
-                  style={{ paddingRight: '10px' }}
-                  onClick={(e) => {
-                    handleExpand(e);
-                  }}
-                />
-              </span>
             </div>
           </div>
         </AccordionSummary>
@@ -204,6 +244,10 @@ const Assessment = ({ docId }) => {
               columns={assessments.data.columns}
               dropDownData={dropDownData}
               handleSelection={handleSelection}
+              handleAdd={handleAdd}
+              getFinalDataFromTable={getFinalDataFromTable}
+              datafetch={datafetch}
+              handleTableChange={handleTableChange}
             />
           )}
         </AccordionDetails>

@@ -7,7 +7,6 @@ import React, { useState, useEffect } from 'react';
 import Button from 'apollo-react/components/Button';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Select from 'apollo-react/components/Select';
-import TextField from 'apollo-react/components/TextField';
 
 const ActionCell = ({ row }) => {
   const { id, onRowEdit, onRowSave, editMode, onCancel, editedRow, onDelete } =
@@ -32,11 +31,6 @@ const ActionCell = ({ row }) => {
         size="small"
         variant="primary"
         onClick={onRowSave}
-        disabled={
-          Object.values(editedRow).some((item) => !item) ||
-          (editMode &&
-            !Object.keys(editedRow).some((key) => editedRow[key] !== row[key]))
-        }
       >
         {'Save'}
       </Button>
@@ -49,13 +43,23 @@ const ActionCell = ({ row }) => {
     </Tooltip>
   );
 };
-const AllCell = ({ row, column: { accessor } }) => {
-  const width = accessor === 'assessment_text' || 'visit_label' ? 150 : 100;
+const AllCell = ({ row, column: { accessor: key } }) => {
+  const [value, setValue] = useState(row.editedRow[key]);
+  const width = key === 'assessment_text' || 'visit_label' ? 150 : 100;
+  if (row?.operation === 'create') {
+    return row.editMode ? (
+      <input
+        type="text"
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={() => row.editRow(key, value)}
+        value={value}
+      />
+    ) : (
+      <div style={{ width }} dangerouslySetInnerHTML={{ __html: row[key] }} />
+    );
+  }
   return (
-    <div
-      style={{ width }}
-      dangerouslySetInnerHTML={{ __html: row[accessor] }}
-    />
+    <div style={{ width }} dangerouslySetInnerHTML={{ __html: row[key] }} />
   );
 };
 const fieldStyles = {
@@ -68,40 +72,26 @@ const makeEditableAutocompleteCell = (options) =>
   function EditableAutocompleteCell({ row, column: { accessor: key } }) {
     return row.editMode ? (
       options.length ? (
-        <select>
+        <Select
+          size="small"
+          fullWidth
+          canDeselect={false}
+          value={row.editedRow[key]}
+          onChange={(e) => row.editRow(key, e.target.value)}
+          {...fieldStyles}
+        >
           {options.map((option) => (
-            <option key={option.label}>{option.label}</option>
+            <MenuItem key={option.label} value={option.label}>
+              {option.label}
+            </MenuItem>
           ))}
-        </select>
+        </Select>
       ) : (
         <input
           type="text"
           onChange={(e) => row.editRow(key, e.target.value)}
           value={row.editedRow[key]}
         />
-        // <Select
-        //   size="small"
-        //   fullWidth
-        //   canDeselect={false}
-        //   value={row.editedRow[key]}
-        //   onChange={(e) => row.editRow(key, e.target.value)}
-        //   {...fieldStyles}
-        // >
-        //   {options.map((option) => (
-        //     <MenuItem key={option.label} value={option.label}>
-        //       {option.label}
-        //     </MenuItem>
-        //   ))}
-        // </Select>
-        // <TextField
-        //   size="small"
-        //   fullWidth
-        //   value={row.editedRow[key]}
-        //   onChange={(e) => row.editRow(key, e.target.value)}
-        //   // error={!row.editedRow[key]}
-        //   // helperText={!row.editedRow[key] && 'Required'}
-        //   {...fieldStyles}
-        // />
       )
     ) : (
       <div
@@ -110,7 +100,7 @@ const makeEditableAutocompleteCell = (options) =>
       />
     );
   };
-const getColumns = (columns) => {
+const getColumns = (columns, editEnabled) => {
   const cols = [];
   const id = {
     header: 'id',
@@ -131,6 +121,7 @@ const getColumns = (columns) => {
       fixedWidth: true,
       frozen:
         element.key === 'assessment_text' || element.key === 'visit_label',
+      hidden: element?.hidden,
     };
     cols.push(obj);
   });
@@ -138,22 +129,47 @@ const getColumns = (columns) => {
     accessor: 'action',
     customCell: ActionCell,
     width: 68,
-    // hidden: true,
+    hidden: !editEnabled,
   };
   cols.push(actionCell);
   return cols;
 };
 
 export default function AssessmentVisitTable(props) {
-  const { data, columns, settings, fullView } = props;
+  const {
+    data,
+    columns,
+    settings,
+    fullView,
+    getFinalDataFromTable,
+    datafetch,
+    editEnabled,
+    handleTableChange,
+    page,
+  } = props;
   const [columnData, setColumndata] = useState([]);
   const [rows, setRows] = useState([]);
   const [editedRow, setEditedRow] = useState({});
+  const [deletedRows, setDeletedRows] = useState([]);
 
   useEffect(() => {
-    setColumndata(getColumns(columns));
+    if (datafetch) {
+      const updatedRows = rows.filter(
+        (item) =>
+          item?.operation === 'create' ||
+          item?.operation === 'update' ||
+          item?.operation === 'delete',
+      );
+      const allUpdatedRows = updatedRows.concat(deletedRows);
+      getFinalDataFromTable(allUpdatedRows);
+      setDeletedRows([]);
+    }
+  }, [datafetch]);
+
+  useEffect(() => {
+    setColumndata(getColumns(columns, editEnabled));
     setRows(data);
-  }, [data]);
+  }, [data, editEnabled, columns]);
 
   const onRowEdit = (id) => {
     console.log('OnRowEdit');
@@ -162,7 +178,29 @@ export default function AssessmentVisitTable(props) {
 
   const onRowSave = () => {
     console.log('onRowSave');
-    setRows(rows.map((row) => (row.id === editedRow.id ? editedRow : row)));
+    const updatedRows = rows.map((row) => {
+      if (row.id === editedRow.id) {
+        let obj = { ...editedRow };
+        if (obj?.operation !== 'create') {
+          obj.operation = 'update';
+        }
+        return obj;
+      }
+      return row;
+    });
+    setRows(updatedRows);
+    handleTableChange(updatedRows);
+
+    // const index = rowsUpdated.findIndex((item) => item.id === editedRow.id);
+
+    // if (index > -1) {
+    //   rowU;
+    // }
+    // let obj = { ...editedRow };
+    // if (obj?.operation !== 'create') {
+    //   obj.operation = 'update';
+    // }
+    // setRowsUpdated([...rowsUpdated, obj]);
     setEditedRow({});
   };
 
@@ -173,7 +211,22 @@ export default function AssessmentVisitTable(props) {
 
   const onDelete = (id) => {
     console.log('onDelete');
-    setRows(rows.filter((row) => row.id !== id));
+    const obj = rows.find((row) => {
+      if (row.id === id) {
+        if (row?.operation === 'create') return null;
+        else {
+          row.operation = 'delete';
+          return row;
+        }
+      }
+    });
+    const index = deletedRows.findIndex((item) => item.id === editedRow.id);
+    if (obj && index < 0) {
+      setDeletedRows([...deletedRows, obj]);
+    }
+    const updatedRows = rows.filter((row) => row.id !== id);
+    setRows(updatedRows);
+    handleTableChange(updatedRows);
   };
 
   const editRow = (key, value) => {
@@ -202,7 +255,7 @@ export default function AssessmentVisitTable(props) {
           hidePagination
           hasScroll
           maxHeight={fullView ? '78vh' : '60vh'}
-          columnSettings={{ enabled: settings, frozenColumnsEnabled: true }}
+          // columnSettings={{ enabled: settings, frozenColumnsEnabled: true }}
           className="abc"
         />
       )}
