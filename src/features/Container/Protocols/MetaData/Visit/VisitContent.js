@@ -1,30 +1,22 @@
 /* eslint-disable */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import AssessmentVisitTable from '../Table';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Select from 'apollo-react/components/Select';
 import Plus from 'apollo-react-icons/Plus';
 import Save from 'apollo-react-icons/Save';
 import Undo from 'apollo-react-icons/Undo';
 import Pencil from 'apollo-react-icons/Pencil';
-import OptionalAssessment from '../OptionalAssessments/OptionalAssessments';
-import AssessmentVisitTable from '../Table';
+import Cog from 'apollo-react-icons/Cog';
+import ColumnSettings from '../ColumnSettings';
 
-const labels = {
-  assessments: 'Assessments',
-  optionalAssessments: 'Optional Assessments',
-};
-
-const AssessmentContent = ({
-  showOptAssessment,
-  setShowOptAssessment,
-  showAssessment,
-  setShowAssessment,
-  assessments,
-  isEditEnabled,
-  showModal,
+const VisitContent = ({
+  data,
   columns,
+  isEditEnabled,
   dropDownData,
   handleSelection,
+  showModal,
   handleAdd,
   datafetch,
   getFinalDataFromTable,
@@ -32,8 +24,13 @@ const AssessmentContent = ({
   handleSaveData,
   handleUndo,
   handleTableChange,
+  showSettings,
+  setShowSetting,
+  handleColumnSelection,
+  visitColumns,
 }) => {
   const [selected, setSelected] = useState('');
+
   return (
     <div className="asssessment-content">
       {showModal && (
@@ -72,40 +69,35 @@ const AssessmentContent = ({
           )}
         </div>
       )}
-      <div className="assessment-checkbox-container">
-        <div className="assessment-checkbox">
-          <input
-            id="optAssessment"
-            type="checkbox"
-            checked={showOptAssessment}
-            onChange={(e) => setShowOptAssessment(e.target.checked)}
-            name="optAssessment"
-          />
-          <label htmlFor={'optAssessment'}>{labels.optionalAssessments}</label>
+      <>
+        {showSettings && (
+          <div className="column-settings">
+            <ColumnSettings
+              handleColumnSelection={handleColumnSelection}
+              data={visitColumns}
+            />
+          </div>
+        )}
+        <div className="column-settings-icon">
+          <span
+            data-testId="metadatapencil"
+            onClick={() => setShowSetting(!showSettings)}
+          >
+            <Cog className="metadata-plus-size" data-testid="handle-edit" />
+          </span>
         </div>
-        <div className="assessment-checkbox">
-          <input
-            id="assessment"
-            type="checkbox"
-            checked={showAssessment}
-            onChange={(e) => setShowAssessment(e.target.checked)}
-            name="assessment"
-          />
-          <label htmlFor={'assessment'}>{labels.assessments}</label>
-        </div>
-      </div>
-      {showOptAssessment && <OptionalAssessment />}
-      {showAssessment && assessments.length && (
+      </>
+      {data && (
         <AssessmentVisitTable
-          data={assessments}
+          data={data}
           columns={columns}
-          settings={false}
+          settings={true}
           editEnabled={isEditEnabled}
           fullView={showModal}
           getFinalDataFromTable={getFinalDataFromTable}
           datafetch={datafetch}
           handleTableChange={handleTableChange}
-          page="assessment"
+          page="visit"
         />
       )}
       {isEditEnabled && (
@@ -126,7 +118,7 @@ const AssessmentContent = ({
                 value={elem.id}
                 children={
                   <span
-                    dangerouslySetInnerHTML={{ __html: elem.assessment_text }}
+                    dangerouslySetInnerHTML={{ __html: elem.visit_label }}
                   ></span>
                 }
               />
@@ -142,4 +134,5 @@ const AssessmentContent = ({
     </div>
   );
 };
-export default AssessmentContent;
+
+export default VisitContent;
