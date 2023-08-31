@@ -75,6 +75,16 @@ export const protocolSlice = createSlice({
     protocolTab: -1,
   },
   linkReference: null,
+  assessments: {
+    loading: false,
+    data: null,
+    error: null,
+  },
+  visits: {
+    loading: false,
+    data: null,
+    error: null,
+  },
   reducers: {
     getSummary: (state, action) => {
       state.summary = action.payload;
@@ -250,6 +260,12 @@ export const protocolSlice = createSlice({
     setLinkreference: (state, action) => {
       state.linkReference = action.payload;
     },
+    getAssessments: (state, action) => {
+      state.assessments = action.payload;
+    },
+    getVisits: (state, action) => {
+      state.visits = action.payload;
+    },
   },
 });
 
@@ -295,6 +311,8 @@ export const {
   getEnrichedData,
   getPreferredTerm,
   setLinkreference,
+  getAssessments,
+  getVisits,
 } = protocolSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -330,4 +348,6 @@ export const getLoader = (state) => state.protocol.loader;
 export const enrichedData = (state) => state.protocol.enrichedData;
 export const preferredData = (state) => state.protocol.preferredTerms;
 export const linkReference = (state) => state.protocol.linkReference;
+export const assessmentData = (state) => state.protocol.assessments;
+export const visitData = (state) => state.protocol.visits;
 export default protocolSlice.reducer;

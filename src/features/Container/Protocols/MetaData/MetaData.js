@@ -27,6 +27,8 @@ import {
 import METADATA_CONSTANTS from './constants';
 import { loggedUser } from '../../../../store/userDetails';
 import { USERTYPE } from '../../../../AppConstant/AppConstant';
+import Assessment from './Assessment/Assessment';
+import Visits from './Visit/Visits';
 
 function MetaData({ docId }) {
   const wrapperRef = useRef(null);
@@ -566,6 +568,11 @@ function MetaData({ docId }) {
         </div>
       ) : (
         <div className="_meta_data-boarder">
+          <div className="other-accordions">
+            <Assessment docId={docId} />
+            <Visits docId={docId} />
+          </div>
+
           {Object?.entries(accordianData || {}).map(([key, value]) => {
             return value.level === 1 && accGenerator(key, value);
           })}
