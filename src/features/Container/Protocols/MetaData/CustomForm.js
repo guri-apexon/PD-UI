@@ -173,6 +173,5 @@ ValueField.propTypes = {
   handleDateChange: PropTypes.isRequired,
   dateValue: PropTypes.isRequired,
   attrDisabled: PropTypes.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
   possibleValues: PropTypes.isRequired,
 };
