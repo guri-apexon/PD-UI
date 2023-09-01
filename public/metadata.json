@@ -1506,6 +1506,194 @@
             },
             "_childs": []
         },
+        "Optional Assessments": {
+            "_meta_data": [
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "Unscheduled or Optional",
+                "display_name": "Unscheduled or Optional",
+                "attr_type": "string",
+                "attr_value": "N",
+                "possible_values":["Y","N"],
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "e92ec452e7157c2186c2304076c17cb6c821390c875592fdb33948adf19f479e",
+                "attr_name": "CT optional",
+                "display_name": "CT optional",
+                "attr_type": "string",
+                "attr_value": "Yes",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "Ultrasound optional",
+                "display_name": "Ultrasound optional",
+                "attr_type": "string",
+                "attr_value": "N",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "PET scan optional",
+                "display_name": "PET scan optional",
+                "attr_type": "string",
+                "attr_value": "N",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "X-ray optional",
+                "display_name": "X-ray optional",
+                "attr_type": "string",
+                "attr_value": "N",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "Bone scan optional",
+                "display_name": "Bone scan optional",
+                "attr_type": "string",
+                "attr_value": "N",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "Mammogram optional",
+                "display_name": "Mammogram optional",
+                "attr_type": "string",
+                "attr_value": "N",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "Lumbar puncture optional",
+                "display_name": "Lumbar puncture optional",
+                "attr_type": "string",
+                "attr_value": "N",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "Biopsy optional",
+                "display_name": "Biopsy optional",
+                "attr_type": "string",
+                "attr_value": "N",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "Colonoscopy optional",
+                "display_name": "Colonoscopy optional",
+                "attr_type": "string",
+                "attr_value": "N",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              },
+              {
+                "attr_id": "441d423dbc425e6451cf05ca03f8cce04d008bcea6f50607d6fe65a870d0697d",
+                "attr_name": "Endoscopy optional",
+                "display_name": "Endoscopy optional",
+                "attr_type": "string",
+                "attr_value": "",
+                "confidence": null,
+                "note": null,
+                "is_active": true,
+                "is_default": false,
+                "audit_info": {
+                  "last_edited_by": null,
+                  "last_updated": "2023-07-06 07:01:44.974776-04:00",
+                  "num_updates": 1
+                }
+              }
+            ],
+            "is_active": true,
+            "is_default": false,
+            "field_audit_info": {
+              "last_edited_by": null,
+              "last_updated": null
+            },
+            "_childs": []
+          },
         "_childs": [
             "pb_variables",
             "Adverse Events LM",
