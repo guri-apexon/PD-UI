@@ -89,6 +89,7 @@ function EditableCell({ row, column: { accessor: key } }) {
         handleDateChange={handleDateChange}
         handleChange={(e) => handleDataChange(e)}
         handleBlur={(e) => handleBlur(e)}
+        possibleValues={row?.possible_values}
       />
     ) : (
       row[key] || ''
