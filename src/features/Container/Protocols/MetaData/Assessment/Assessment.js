@@ -11,13 +11,18 @@ import Save from 'apollo-react-icons/Save';
 import Undo from 'apollo-react-icons/Undo';
 import Expand from 'apollo-react-icons/Expand';
 import Modal from 'apollo-react/components/Modal';
-import AssessmentVisitTable from '../Table';
 import { assessmentData } from '../../protocolSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import OptionalAssessment from '../OptionalAssessments/OptionalAssessments';
 import AssessmentContent from './AssessmentContent';
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
+import RestricModal from '../Modal';
+
+export const discardModal = {
+  title: 'Do you really want to discard the changes or continue editing?',
+  buttonOne: 'Continue Editing',
+  buttonTwo: 'Discard',
+};
 
 const createRowData = (row) => {
   let obj = { ...row };
@@ -31,6 +36,7 @@ const createRowData = (row) => {
   obj.table_roi_id = row.table_roi_id;
   obj.assessment_text = 'Assessment Name';
   obj.operation = 'create';
+  obj.status = 'added';
 
   return obj;
 };
@@ -64,48 +70,75 @@ const Assessment = ({ docId }) => {
   const dispatch = useDispatch();
   const assessments = useSelector(assessmentData);
   const [isEditEnabled, setEditEnabled] = useState(false);
-  const [showOptAssessment, setShowOptAssessment] = useState(false);
-  const [showAssessment, setShowAssessment] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [validData, setValidData] = useState([]);
   const [dropDownData, setDropDownData] = useState([]);
   const [datafetch, setDataFetch] = useState(false);
+  const [restricModal, setRestrictModal] = useState(false);
 
   useEffect(() => {
     dispatch({ type: 'GET_ASSESSMENTS', payload: { docId } });
   }, []);
 
+  const setAssesmentData = () => {
+    const data = cloneDeep(assessments.data.assessments[0].data);
+    const emptyObj = [];
+    const dataObj = [];
+
+    if (data.length) {
+      data.forEach((element) => {
+        let objClone = cloneDeep(element);
+        delete objClone.id;
+        delete objClone.doc_id;
+        delete objClone.assessment_id;
+        delete objClone.assessment_text;
+        delete objClone.table_link_text;
+        delete objClone.table_roi_id;
+
+        if (isEmptyObj(objClone)) {
+          emptyObj.push(element);
+        } else {
+          dataObj.push(element);
+        }
+      });
+    }
+    setValidData(dataObj);
+    setDropDownData(emptyObj);
+  };
+
   useEffect(() => {
-    if (assessments?.data) {
-      const data = cloneDeep(assessments.data.assessments[0].data);
-      const emptyObj = [];
-      const dataObj = [];
+    if (assessments?.data?.assessments.length) {
+      setAssesmentData();
+      // const data = cloneDeep(assessments.data.assessments[0].data);
+      // const emptyObj = [];
+      // const dataObj = [];
 
-      if (data.length) {
-        data.forEach((element) => {
-          let objClone = cloneDeep(element);
-          delete objClone.id;
-          delete objClone.doc_id;
-          delete objClone.assessment_id;
-          delete objClone.assessment_text;
-          delete objClone.table_link_text;
-          delete objClone.table_roi_id;
+      // if (data.length) {
+      //   data.forEach((element) => {
+      //     let objClone = cloneDeep(element);
+      //     delete objClone.id;
+      //     delete objClone.doc_id;
+      //     delete objClone.assessment_id;
+      //     delete objClone.assessment_text;
+      //     delete objClone.table_link_text;
+      //     delete objClone.table_roi_id;
 
-          if (isEmptyObj(objClone)) {
-            emptyObj.push(element);
-          } else {
-            dataObj.push(element);
-          }
-        });
-      }
-      setValidData(dataObj);
-      setDropDownData(emptyObj);
+      //     if (isEmptyObj(objClone)) {
+      //       emptyObj.push(element);
+      //     } else {
+      //       dataObj.push(element);
+      //     }
+      //   });
+      // }
+      // setValidData(dataObj);
+      // setDropDownData(emptyObj);
     }
   }, [assessments]);
 
   const getFinalDataFromTable = (data) => {
     console.log('final data', data);
     setDataFetch(false);
+    dispatch({ type: 'POST_ASSESSMENT', payload: { docId, body: data } });
   };
 
   const handleSaveData = (e) => {
@@ -116,6 +149,7 @@ const Assessment = ({ docId }) => {
 
   const handleUndo = (e) => {
     e.stopPropagation();
+    setRestrictModal(true);
   };
   const handleEdit = (e) => {
     e.stopPropagation();
@@ -139,17 +173,32 @@ const Assessment = ({ docId }) => {
     // setDropDownData(removeByAttr(dropDownData, 'id', e.target.value));
   };
   const handleAdd = () => {
-    console.log('add', validData[0]);
-    console.log('created row', createRowData(validData[0]));
     setValidData([...validData, createRowData(validData[0])]);
   };
 
   const handleTableChange = (data) => {
     setValidData(data);
   };
+  const handleDiscard = () => {
+    setAssesmentData();
+    setRestrictModal(false);
+    setEditEnabled(false);
+  };
+  const handleContinue = () => {
+    setRestrictModal(false);
+  };
 
   return (
     <div>
+      <RestricModal
+        open={restricModal}
+        setOpen={setRestrictModal}
+        buttonOne={discardModal.buttonOne}
+        buttonTwo={discardModal.buttonTwo}
+        title={discardModal.title}
+        buttonOneHandler={handleContinue}
+        buttonTwoHandler={handleDiscard}
+      />
       <Modal
         className="full-view-modal"
         open={showModal}
@@ -160,10 +209,6 @@ const Assessment = ({ docId }) => {
       >
         {assessments?.data && (
           <AssessmentContent
-            showOptAssessment={showOptAssessment}
-            setShowOptAssessment={setShowOptAssessment}
-            showAssessment={showAssessment}
-            setShowAssessment={setShowAssessment}
             assessments={validData}
             isEditEnabled={isEditEnabled}
             showModal={showModal}
@@ -234,10 +279,6 @@ const Assessment = ({ docId }) => {
         <AccordionDetails className="assessment-detail">
           {assessments?.data && (
             <AssessmentContent
-              showOptAssessment={showOptAssessment}
-              setShowOptAssessment={setShowOptAssessment}
-              showAssessment={showAssessment}
-              setShowAssessment={setShowAssessment}
               assessments={validData}
               isEditEnabled={isEditEnabled}
               showModal={showModal}

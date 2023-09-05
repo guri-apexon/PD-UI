@@ -27,11 +27,7 @@ const ActionCell = ({ row }) => {
       <Button size="small" style={{ marginRight: 8 }} onClick={onCancel}>
         {'Cancel'}
       </Button>
-      <Button
-        size="small"
-        variant="primary"
-        onClick={onRowSave}
-      >
+      <Button size="small" variant="primary" onClick={onRowSave}>
         {'Save'}
       </Button>
     </div>
@@ -44,16 +40,18 @@ const ActionCell = ({ row }) => {
   );
 };
 const AllCell = ({ row, column: { accessor: key } }) => {
-  const [value, setValue] = useState(row.editedRow[key]);
+  const [value, setValue] = useState(row?.editedRow[key]);
   const width = key === 'assessment_text' || 'visit_label' ? 150 : 100;
   if (row?.operation === 'create') {
     return row.editMode ? (
-      <input
-        type="text"
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={() => row.editRow(key, value)}
-        value={value}
-      />
+      <div className="input-container">
+        <input
+          type="text"
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={() => row.editRow(key, value)}
+          value={value}
+        />
+      </div>
     ) : (
       <div style={{ width }} dangerouslySetInnerHTML={{ __html: row[key] }} />
     );
@@ -70,37 +68,41 @@ const fieldStyles = {
 };
 const makeEditableAutocompleteCell = (options) =>
   function EditableAutocompleteCell({ row, column: { accessor: key } }) {
-    return row.editMode ? (
-      options.length ? (
-        <Select
-          size="small"
-          fullWidth
-          canDeselect={false}
-          value={row.editedRow[key]}
-          onChange={(e) => row.editRow(key, e.target.value)}
-          {...fieldStyles}
-        >
-          {options.map((option) => (
-            <MenuItem key={option.label} value={option.label}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Select>
-      ) : (
-        <input
-          type="text"
-          onChange={(e) => row.editRow(key, e.target.value)}
-          value={row.editedRow[key]}
-        />
-      )
-    ) : (
-      <div
-        style={{ width: 100 }}
-        dangerouslySetInnerHTML={{ __html: row[key] }}
-      />
+    return (
+      <div className="input-container">
+        {row.editMode ? (
+          options.length ? (
+            <Select
+              size="small"
+              fullWidth
+              canDeselect={false}
+              value={row.editedRow[key]}
+              onChange={(e) => row.editRow(key, e.target.value)}
+              {...fieldStyles}
+            >
+              {options.map((option) => (
+                <MenuItem key={option.label} value={option.label}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </Select>
+          ) : (
+            <input
+              type="text"
+              onChange={(e) => row.editRow(key, e.target.value)}
+              value={row.editedRow[key]}
+            />
+          )
+        ) : (
+          <div
+            style={{ width: 100 }}
+            dangerouslySetInnerHTML={{ __html: row[key] }}
+          />
+        )}
+      </div>
     );
   };
-const getColumns = (columns, editEnabled) => {
+const getColumns = (columns, editEnabled, page) => {
   const cols = [];
   const id = {
     header: 'id',
@@ -108,8 +110,8 @@ const getColumns = (columns, editEnabled) => {
     width: 68,
     hidden: true,
   };
-
   cols.push(id);
+
   columns.forEach((element) => {
     const obj = {
       header: element.displayName,
@@ -123,7 +125,11 @@ const getColumns = (columns, editEnabled) => {
         element.key === 'assessment_text' || element.key === 'visit_label',
       hidden: element?.hidden,
     };
-    cols.push(obj);
+    if (element.key === 'assessment_text' || element.key === 'visit_label') {
+      cols.unshift(obj);
+    } else {
+      cols.push(obj);
+    }
   });
   const actionCell = {
     accessor: 'action',
@@ -167,12 +173,15 @@ export default function AssessmentVisitTable(props) {
   }, [datafetch]);
 
   useEffect(() => {
-    setColumndata(getColumns(columns, editEnabled));
+    setColumndata(getColumns(columns, editEnabled, page));
+    const index = data.findIndex((item) => item?.status === 'added');
+    if (index > -1) {
+      setEditedRow(data[index]);
+    }
     setRows(data);
   }, [data, editEnabled, columns]);
 
   const onRowEdit = (id) => {
-    console.log('OnRowEdit');
     setEditedRow(rows.find((row) => row.id === id));
   };
 
@@ -181,6 +190,9 @@ export default function AssessmentVisitTable(props) {
     const updatedRows = rows.map((row) => {
       if (row.id === editedRow.id) {
         let obj = { ...editedRow };
+        if (obj?.status === 'added') {
+          delete obj.status;
+        }
         if (obj?.operation !== 'create') {
           obj.operation = 'update';
         }
@@ -240,6 +252,9 @@ export default function AssessmentVisitTable(props) {
         <Table
           columns={columnData}
           rows={rows.map((row) => {
+            // if (row?.status === 'added') {
+            //   onRowEdit(row.id);
+            // }
             return {
               ...row,
               onRowEdit,
