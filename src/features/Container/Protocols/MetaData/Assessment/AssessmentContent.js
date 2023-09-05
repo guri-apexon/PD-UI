@@ -6,19 +6,9 @@ import Plus from 'apollo-react-icons/Plus';
 import Save from 'apollo-react-icons/Save';
 import Undo from 'apollo-react-icons/Undo';
 import Pencil from 'apollo-react-icons/Pencil';
-import OptionalAssessment from '../OptionalAssessments/OptionalAssessments';
 import AssessmentVisitTable from '../Table';
 
-const labels = {
-  assessments: 'Assessments',
-  optionalAssessments: 'Optional Assessments',
-};
-
 const AssessmentContent = ({
-  showOptAssessment,
-  setShowOptAssessment,
-  showAssessment,
-  setShowAssessment,
   assessments,
   isEditEnabled,
   showModal,
@@ -72,30 +62,7 @@ const AssessmentContent = ({
           )}
         </div>
       )}
-      <div className="assessment-checkbox-container">
-        <div className="assessment-checkbox">
-          <input
-            id="optAssessment"
-            type="checkbox"
-            checked={showOptAssessment}
-            onChange={(e) => setShowOptAssessment(e.target.checked)}
-            name="optAssessment"
-          />
-          <label htmlFor={'optAssessment'}>{labels.optionalAssessments}</label>
-        </div>
-        <div className="assessment-checkbox">
-          <input
-            id="assessment"
-            type="checkbox"
-            checked={showAssessment}
-            onChange={(e) => setShowAssessment(e.target.checked)}
-            name="assessment"
-          />
-          <label htmlFor={'assessment'}>{labels.assessments}</label>
-        </div>
-      </div>
-      {showOptAssessment && <OptionalAssessment />}
-      {showAssessment && assessments.length && (
+      {assessments.length && (
         <AssessmentVisitTable
           data={assessments}
           columns={columns}
