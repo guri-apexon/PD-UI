@@ -580,7 +580,7 @@ export function* MetaDataVariable(action) {
     payload: { op, docId, fieldName },
   } = action;
   const config = {
-    url: '/metadata.json',
+    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}&fieldName=${fieldName}`,
     method: 'GET',
     checkAuth: true,
     headers: jsonContentHeader,
@@ -1102,14 +1102,17 @@ export function* fetchAssessments(action) {
     error: null,
   };
   yield put(getAssessments(respData));
-  // const {
-  //   payload: { docId },
-  // } = action;
+  const {
+    payload: { docId },
+  } = action;
   // const userId = yield getState();
   try {
     const config = {
+      url: `${BASE_URL}${Apis.METADATA}/assessments_operations?doc_id=${docId}`,
+      // url: '/assessment.json',
       method: 'GET',
-      url: '/assessment.json',
+      checkAuth: true,
+      headers: jsonContentHeader,
     };
     const response = yield call(httpCall, config);
     const respData = {
@@ -1127,6 +1130,32 @@ export function* fetchAssessments(action) {
     yield put(getAssessments(respData));
   }
 }
+export function* postAssessments(action) {
+  const {
+    payload: { body, docId },
+  } = action;
+  try {
+    const config = {
+      url: `${BASE_URL}${Apis.METADATA}/assessments_operations`,
+      // url: '/assessment.json',
+      method: 'POST',
+      data: { data: body },
+      checkAuth: true,
+      headers: jsonContentHeader,
+    };
+    const response = yield call(httpCall, config);
+
+    if (response.success) {
+      yield put({
+        type: 'GET_ASSESSMENTS',
+        payload: { docId },
+      });
+      toast.success(response.data.response);
+    }
+  } catch (error) {
+    toast.error('Data insertion failed');
+  }
+}
 export function* fetchVisits(action) {
   const respData = {
     loading: true,
@@ -1134,14 +1163,17 @@ export function* fetchVisits(action) {
     error: null,
   };
   yield put(getVisits(respData));
-  // const {
-  //   payload: { docId },
-  // } = action;
+  const {
+    payload: { docId },
+  } = action;
   // const userId = yield getState();
   try {
     const config = {
+      url: `${BASE_URL}${Apis.METADATA}/visits_schedule_operations?doc_id=${docId}`,
+      // url: '/visits.json',
       method: 'GET',
-      url: '/visits.json',
+      checkAuth: true,
+      headers: jsonContentHeader,
     };
     const response = yield call(httpCall, config);
     const respData = {
@@ -1157,6 +1189,33 @@ export function* fetchVisits(action) {
       error: 'ERROR',
     };
     yield put(getVisits(respData));
+  }
+}
+
+export function* postVisits(action) {
+  const {
+    payload: { body, docId },
+  } = action;
+  try {
+    const config = {
+      url: `${BASE_URL}${Apis.METADATA}/visits_schedule_operations`,
+      // url: '/assessment.json',
+      method: 'POST',
+      data: { data: body },
+      checkAuth: true,
+      headers: jsonContentHeader,
+    };
+    const response = yield call(httpCall, config);
+    console.log('response', response);
+    if (response.success) {
+      yield put({
+        type: 'GET_VISITS',
+        payload: { docId },
+      });
+      toast.success(response.data.response);
+    }
+  } catch (error) {
+    toast.error('Data insertion failed');
   }
 }
 
@@ -1205,6 +1264,8 @@ export function* watchProtocolViews() {
   yield takeEvery('CREATE_LABDATA_TABLE', handleCreateLabDataTable);
   yield takeEvery('GET_ASSESSMENTS', fetchAssessments);
   yield takeEvery('GET_VISITS', fetchVisits);
+  yield takeEvery('POST_ASSESSMENT', postAssessments);
+  yield takeEvery('POST_VISIT', postVisits);
 }
 
 // notice how we now only export the rootSaga

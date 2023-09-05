@@ -5,7 +5,7 @@ const ColumnSettings = ({ data, handleColumnSelection }) => {
   return (
     <div>
       {data.map((ele) => (
-        <div>
+        <div className="checkbox-items">
           <input
             type="checkbox"
             checked={ele.checked}

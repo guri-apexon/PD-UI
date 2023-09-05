@@ -16,6 +16,8 @@ import { visitData } from '../../protocolSlice';
 import VisitContent from './VisitContent';
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
+import RestricModal from '../Modal';
+import { discardModal } from '../Assessment/Assessment';
 
 const visitTimeColumns = [
   {
@@ -71,6 +73,7 @@ const createRowData = (row) => {
   obj.table_roi_id = row.table_roi_id;
   obj.visit_label = 'Visit Label';
   obj.operation = 'create';
+  obj.status = 'added';
 
   return obj;
 };
@@ -96,6 +99,7 @@ const Visits = ({ docId }) => {
   const [showSettings, setShowSetting] = useState(false);
   const [columnArray, setColumnArray] = useState([]);
   const [visitColumns, setVisitColumns] = useState(visitTimeColumns);
+  const [restricModal, setRestrictModal] = useState(false);
 
   useEffect(() => {
     visitsData?.data?.columns.length && handleColumns();
@@ -122,43 +126,48 @@ const Visits = ({ docId }) => {
     dispatch({ type: 'GET_VISITS', payload: { docId } });
   }, []);
 
-  const getFinalDataFromTable = (data, deletedRow) => {
-    console.log('final data', data, deletedRow);
+  const getFinalDataFromTable = (data) => {
+    console.log('final data', data);
     setDataFetch(false);
+    dispatch({ type: 'POST_VISIT', payload: { docId, body: data } });
+  };
+
+  const setVisitData = () => {
+    const data = cloneDeep(visitsData.data.visit_schedule[0].data);
+    const emptyObj = [];
+    const dataObj = [];
+
+    if (data.length) {
+      data.forEach((element) => {
+        let objClone = cloneDeep(element);
+        delete objClone.id;
+        delete objClone.doc_id;
+        delete objClone.visit_id;
+        delete objClone.table_roi_id;
+        delete objClone.visit_label;
+        delete objClone.epoch_timepoint;
+        delete objClone.cycle_timepoint;
+        delete objClone.visit_timepoint;
+        delete objClone.year_timepoint;
+        delete objClone.week_timepoint;
+        delete objClone.day_timepoint;
+        delete objClone.window_timepoint;
+        delete objClone.month_timepoint;
+
+        if (isEmptyObj(objClone)) {
+          emptyObj.push(element);
+        } else {
+          dataObj.push(element);
+        }
+      });
+    }
+    setValidData(dataObj);
+    setDropDownData(emptyObj);
   };
 
   useEffect(() => {
-    if (visitsData?.data) {
-      const data = cloneDeep(visitsData.data.data);
-      const emptyObj = [];
-      const dataObj = [];
-
-      if (data.length) {
-        data.forEach((element) => {
-          let objClone = cloneDeep(element);
-          delete objClone.id;
-          delete objClone.doc_id;
-          delete objClone.visit_id;
-          delete objClone.table_roi_id;
-          delete objClone.visit_label;
-          delete objClone.epoch_timepoint;
-          delete objClone.cycle_timepoint;
-          delete objClone.visit_timepoint;
-          delete objClone.year_timepoint;
-          delete objClone.week_timepoint;
-          delete objClone.day_timepoint;
-          delete objClone.window_timepoint;
-          delete objClone.month_timepoint;
-
-          if (isEmptyObj(objClone)) {
-            emptyObj.push(element);
-          } else {
-            dataObj.push(element);
-          }
-        });
-      }
-      setValidData(dataObj);
-      setDropDownData(emptyObj);
+    if (visitsData?.data?.visit_schedule[0].data.length) {
+      setVisitData();
     }
   }, [visitsData]);
 
@@ -193,7 +202,8 @@ const Visits = ({ docId }) => {
     // setDropDownData(removeByAttr(dropDownData, 'id', e.target.value));
   };
   const handleAdd = () => {
-    setValidData([...validData, createRowData(validData[0])]);
+    const newRow = createRowData(validData[0]);
+    setValidData([...validData, newRow]);
   };
   const handleTableChange = (data) => {
     setValidData(data);
@@ -217,9 +227,26 @@ const Visits = ({ docId }) => {
     );
     setColumnArray(finalColumns);
   };
+  const handleDiscard = () => {
+    setAssesmentData();
+    setRestrictModal(false);
+    setEditEnabled(false);
+  };
+  const handleContinue = () => {
+    setRestrictModal(false);
+  };
 
   return (
     <div>
+      <RestricModal
+        open={restricModal}
+        setOpen={setRestrictModal}
+        buttonOne={discardModal.buttonOne}
+        buttonTwo={discardModal.buttonTwo}
+        title={discardModal.title}
+        buttonOneHandler={handleContinue}
+        buttonTwoHandler={handleDiscard}
+      />
       <Modal
         className="full-view-modal"
         open={showModal}
