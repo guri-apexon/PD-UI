@@ -580,7 +580,7 @@ export function* MetaDataVariable(action) {
     payload: { op, docId, fieldName },
   } = action;
   const config = {
-    url: '/metadata.json',
+    url: `${BASE_URL}${Apis.METADATA}/meta_data_summary?op=${op}&aidocId=${docId}&fieldName=${fieldName}`,
     method: 'GET',
     checkAuth: true,
     headers: jsonContentHeader,

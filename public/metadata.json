@@ -1546,9 +1546,10 @@
                 "attr_name": "Ultrasound optional",
                 "display_name": "Ultrasound optional",
                 "attr_type": "string",
-                "attr_value": "N",
-                "confidence": null,
-                "note": null,
+                "attr_value": "One",
+                "possible_values":["One","Two"],
+                "confidence": 0.8,
+                "note": "note1",
                 "is_active": true,
                 "is_default": false,
                 "audit_info": {
