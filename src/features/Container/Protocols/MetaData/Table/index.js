@@ -119,7 +119,7 @@ const getColumns = (columns, editEnabled, page) => {
       customCell:
         element.key === 'assessment_text' || element.key === 'visit_label'
           ? AllCell
-          : makeEditableAutocompleteCell(element?.possible_values || []),
+          : makeEditableAutocompleteCell(element?.possible_values.values || []),
       fixedWidth: true,
       frozen:
         element.key === 'assessment_text' || element.key === 'visit_label',
