@@ -1,15 +1,17 @@
 /* eslint-disable */
+import React, { useState, useEffect } from 'react';
 import EllipsisVerticalIcon from 'apollo-react-icons/EllipsisVertical';
 import { v4 as uuidv4 } from 'uuid';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import Tooltip from 'apollo-react/components/Tooltip';
 import Table from 'apollo-react/components/Table';
-import React, { useState, useEffect } from 'react';
+import { userId } from '../../../../../store/userDetails';
 import Button from 'apollo-react/components/Button';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Select from 'apollo-react/components/Select';
 import { deleteModalLabels } from '../Assessment/Assessment';
 import RestricModal from '../Modal';
+import { useSelector } from 'react-redux';
 
 const ActionCell = ({ row }) => {
   const {
@@ -163,6 +165,7 @@ export default function AssessmentVisitTable(props) {
     handleTableChange,
     page,
   } = props;
+  const userId1 = useSelector(userId);
   const [columnData, setColumndata] = useState([]);
   const [rows, setRows] = useState([]);
   const [editedRow, setEditedRow] = useState({});
@@ -202,10 +205,12 @@ export default function AssessmentVisitTable(props) {
       if (row.id === editedRow.id) {
         let obj = { ...editedRow };
         if (obj?.status === 'added') {
+          // obj.user_id = userId1.substring(1);
           delete obj.status;
         }
         if (obj?.operation !== 'create') {
           obj.operation = 'update';
+          // obj.user_id = userId1.substring(1);
         }
         return obj;
       }
@@ -213,17 +218,6 @@ export default function AssessmentVisitTable(props) {
     });
     setRows(updatedRows);
     handleTableChange(updatedRows);
-
-    // const index = rowsUpdated.findIndex((item) => item.id === editedRow.id);
-
-    // if (index > -1) {
-    //   rowU;
-    // }
-    // let obj = { ...editedRow };
-    // if (obj?.operation !== 'create') {
-    //   obj.operation = 'update';
-    // }
-    // setRowsUpdated([...rowsUpdated, obj]);
     setEditedRow({});
   };
 
@@ -239,6 +233,7 @@ export default function AssessmentVisitTable(props) {
         if (row?.operation === 'create') return null;
         else {
           row.operation = 'delete';
+          // row.user_id = userId1.substring(1);
           return row;
         }
       }
