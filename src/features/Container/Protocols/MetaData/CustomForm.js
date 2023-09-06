@@ -74,8 +74,8 @@ export function ValueField({
               }}
             >
               {possibleValues.map((each) => (
-                <MenuItem key={each} value={each}>
-                  {each}
+                <MenuItem key={each?.label} value={each?.label}>
+                  {each?.label}
                 </MenuItem>
               ))}
             </Select>
