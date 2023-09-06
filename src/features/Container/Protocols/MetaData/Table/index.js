@@ -290,8 +290,7 @@ export default function AssessmentVisitTable(props) {
           rowId="id"
           hidePagination
           hasScroll
-          maxHeight={fullView ? '78vh' : '60vh'}
-          // columnSettings={{ enabled: settings, frozenColumnsEnabled: true }}
+          maxHeight={fullView ? '72vh' : '60vh'}
           className="abc"
         />
       )}
