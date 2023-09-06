@@ -1,5 +1,6 @@
 /* eslint-disable */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import AssessmentVisitTable from '../Table';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Select from 'apollo-react/components/Select';
@@ -30,6 +31,19 @@ const VisitContent = ({
   visitColumns,
 }) => {
   const [selected, setSelected] = useState('');
+  const wrapperRef = useRef();
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setShowSetting(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [wrapperRef]);
 
   return (
     <div className="asssessment-content">
@@ -71,7 +85,7 @@ const VisitContent = ({
       )}
       <>
         {showSettings && (
-          <div className="column-settings">
+          <div className="column-settings" ref={wrapperRef}>
             <ColumnSettings
               handleColumnSelection={handleColumnSelection}
               data={visitColumns}
@@ -115,6 +129,7 @@ const VisitContent = ({
           >
             {dropDownData.map((elem) => (
               <MenuItem
+                key={uuidv4()}
                 value={elem.id}
                 children={
                   <span

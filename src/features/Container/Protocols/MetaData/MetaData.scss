@@ -314,6 +314,12 @@
 }
 .assessment-table-container > div > div {
   overflow-y: auto !important;
+  .input-container {
+    margin: 6px auto;
+    input {
+      height: 28px;
+    }
+  }
   td > div {
     text-align: center;
   }
@@ -373,6 +379,12 @@
     padding: 10px;
     box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.08);
     right: 40px;
+    .checkbox-items {
+      margin-bottom: 5px;
+      label {
+        margin-left: 5px;
+      }
+    }
   }
   .dropdown-plus {
     display: flex;
@@ -413,4 +425,7 @@
       cursor: pointer;
     }
   }
+}
+.audit-info-line {
+  margin-bottom: 5px;
 }
