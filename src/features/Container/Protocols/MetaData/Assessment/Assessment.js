@@ -90,6 +90,7 @@ const Assessment = ({ docId }) => {
   const [discardModal, setDiscardModal] = useState(false);
   const [saveModal, setSaveModal] = useState(false);
   const [openAudit, setOpenAudit] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     dispatch({ type: 'GET_ASSESSMENTS', payload: { docId } });
@@ -124,29 +125,6 @@ const Assessment = ({ docId }) => {
   useEffect(() => {
     if (assessments?.data?.assessments.length) {
       setAssesmentData();
-      // const data = cloneDeep(assessments.data.assessments[0].data);
-      // const emptyObj = [];
-      // const dataObj = [];
-
-      // if (data.length) {
-      //   data.forEach((element) => {
-      //     let objClone = cloneDeep(element);
-      //     delete objClone.id;
-      //     delete objClone.doc_id;
-      //     delete objClone.assessment_id;
-      //     delete objClone.assessment_text;
-      //     delete objClone.table_link_text;
-      //     delete objClone.table_roi_id;
-
-      //     if (isEmptyObj(objClone)) {
-      //       emptyObj.push(element);
-      //     } else {
-      //       dataObj.push(element);
-      //     }
-      //   });
-      // }
-      // setValidData(dataObj);
-      // setDropDownData(emptyObj);
     }
   }, [assessments]);
 
@@ -167,6 +145,7 @@ const Assessment = ({ docId }) => {
   const handleEdit = (e) => {
     e.stopPropagation();
     setEditEnabled(true);
+    setExpanded(true);
   };
   const handleExpand = (e) => {
     e.stopPropagation();
@@ -237,7 +216,7 @@ const Assessment = ({ docId }) => {
         open={showModal}
         onClose={() => setShowModal(false)}
         buttonProps={[]}
-        title="Assessment"
+        title="Assessments"
         hideButtons={true}
       >
         {assessments?.data && (
@@ -258,12 +237,12 @@ const Assessment = ({ docId }) => {
           />
         )}
       </Modal>
-      <Accordion>
+      <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
         <AccordionSummary>
           <div className="accordion_summary_container">
             <Typography>Assessments</Typography>
             <div className="metadata-flex">
-              <span data-testId="eyeIcon" role="presentation">
+              <span data-testId="expand" role="presentation">
                 <Expand
                   style={{ paddingRight: '10px' }}
                   onClick={(e) => {

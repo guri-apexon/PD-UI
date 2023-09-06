@@ -103,6 +103,7 @@ const Visits = ({ docId }) => {
   const [discardModal, setDiscardModal] = useState(false);
   const [saveModal, setSaveModal] = useState(false);
   const [openAudit, setOpenAudit] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     visitsData?.data?.columns.length && handleColumns();
@@ -127,6 +128,8 @@ const Visits = ({ docId }) => {
 
   const getFinalDataFromTable = (data) => {
     setDataFetch(false);
+    setEditEnabled(false);
+    setShowModal(false);
     dispatch({ type: 'POST_VISIT', payload: { docId, body: data } });
   };
 
@@ -181,6 +184,7 @@ const Visits = ({ docId }) => {
   const handleEdit = (e) => {
     e.stopPropagation();
     setEditEnabled(true);
+    setExpanded(true);
   };
   const handleExpand = (e) => {
     e.stopPropagation();
@@ -270,7 +274,7 @@ const Visits = ({ docId }) => {
         open={showModal}
         onClose={() => setShowModal(false)}
         buttonProps={[]}
-        title="Assessment"
+        title="Visit Schedule"
         hideButtons={true}
       >
         {validData.length && columnArray.length && (
@@ -295,12 +299,12 @@ const Visits = ({ docId }) => {
           />
         )}
       </Modal>
-      <Accordion>
+      <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
         <AccordionSummary>
           <div className="accordion_summary_container">
             <Typography>Visit Schedule</Typography>
             <div className="metadata-flex">
-              <span data-testId="eyeIcon" role="presentation">
+              <span data-testId="expand" role="presentation">
                 <Expand
                   style={{ paddingRight: '10px' }}
                   onClick={(e) => {
