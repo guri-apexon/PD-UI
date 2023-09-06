@@ -312,6 +312,10 @@
     justify-content: center;
   }
 }
+.assessment-table-container > div {
+  border: 1px solid #eee;
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.08);
+}
 .assessment-table-container > div > div {
   overflow-y: auto !important;
   .input-container {
