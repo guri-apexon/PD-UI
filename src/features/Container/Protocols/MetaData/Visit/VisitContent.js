@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useState, useEffect, useRef } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import AssessmentVisitTable from '../Table';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Select from 'apollo-react/components/Select';
@@ -128,6 +129,7 @@ const VisitContent = ({
           >
             {dropDownData.map((elem) => (
               <MenuItem
+                key={uuidv4()}
                 value={elem.id}
                 children={
                   <span

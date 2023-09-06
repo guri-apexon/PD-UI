@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import Popover from 'apollo-react/components/Popover';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
@@ -18,10 +19,22 @@ import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 import RestricModal from '../Modal';
 
-export const discardModal = {
+export const discardModalLabels = {
   title: 'Do you really want to discard the changes or continue editing?',
   buttonOne: 'Continue Editing',
   buttonTwo: 'Discard',
+};
+
+export const deleteModalLabels = {
+  title: 'Please confirm if you want to continue with hard deletion?',
+  buttonOne: 'Cancel',
+  buttonTwo: 'Delete',
+};
+
+export const saveModalLabels = {
+  title: 'Do you really want to save it now or continue editing?',
+  buttonOne: 'Continue Editing',
+  buttonTwo: 'Save',
 };
 
 const createRowData = (row) => {
@@ -74,7 +87,9 @@ const Assessment = ({ docId }) => {
   const [validData, setValidData] = useState([]);
   const [dropDownData, setDropDownData] = useState([]);
   const [datafetch, setDataFetch] = useState(false);
-  const [restricModal, setRestrictModal] = useState(false);
+  const [discardModal, setDiscardModal] = useState(false);
+  const [saveModal, setSaveModal] = useState(false);
+  const [openAudit, setOpenAudit] = useState(false);
 
   useEffect(() => {
     dispatch({ type: 'GET_ASSESSMENTS', payload: { docId } });
@@ -136,20 +151,18 @@ const Assessment = ({ docId }) => {
   }, [assessments]);
 
   const getFinalDataFromTable = (data) => {
-    console.log('final data', data);
     setDataFetch(false);
     dispatch({ type: 'POST_ASSESSMENT', payload: { docId, body: data } });
   };
 
   const handleSaveData = (e) => {
     e.stopPropagation();
-    setEditEnabled(false);
-    setDataFetch(true);
+    setSaveModal(true);
   };
 
   const handleUndo = (e) => {
     e.stopPropagation();
-    setRestrictModal(true);
+    setDiscardModal(true);
   };
   const handleEdit = (e) => {
     e.stopPropagation();
@@ -181,23 +194,43 @@ const Assessment = ({ docId }) => {
   };
   const handleDiscard = () => {
     setAssesmentData();
-    setRestrictModal(false);
+    setDiscardModal(false);
     setEditEnabled(false);
   };
-  const handleContinue = () => {
-    setRestrictModal(false);
+  const handleCloseModal = () => {
+    setDiscardModal(false);
+    setSaveModal(false);
+  };
+
+  const handleModalSave = () => {
+    setDataFetch(true);
+    setEditEnabled(false);
+    setSaveModal(false);
+  };
+  const handleAudit = (e) => {
+    e.stopPropagation();
+    setOpenAudit(e.currentTarget);
   };
 
   return (
     <div>
       <RestricModal
-        open={restricModal}
-        setOpen={setRestrictModal}
-        buttonOne={discardModal.buttonOne}
-        buttonTwo={discardModal.buttonTwo}
-        title={discardModal.title}
-        buttonOneHandler={handleContinue}
+        open={discardModal}
+        setOpen={setDiscardModal}
+        buttonOne={discardModalLabels.buttonOne}
+        buttonTwo={discardModalLabels.buttonTwo}
+        title={discardModalLabels.title}
+        buttonOneHandler={handleCloseModal}
         buttonTwoHandler={handleDiscard}
+      />
+      <RestricModal
+        open={saveModal}
+        setOpen={setSaveModal}
+        buttonOne={saveModalLabels.buttonOne}
+        buttonTwo={saveModalLabels.buttonTwo}
+        title={saveModalLabels.title}
+        buttonOneHandler={handleCloseModal}
+        buttonTwoHandler={handleModalSave}
       />
       <Modal
         className="full-view-modal"
@@ -239,7 +272,12 @@ const Assessment = ({ docId }) => {
                 />
               </span>
               <span data-testId="eyeIcon" role="presentation">
-                <EyeShow style={{ paddingRight: '10px' }} />
+                <EyeShow
+                  style={{ paddingRight: '10px' }}
+                  onClick={(e) => {
+                    handleAudit(e);
+                  }}
+                />
               </span>
               {!isEditEnabled ? (
                 <span data-testId="metadatapencil">
@@ -293,6 +331,29 @@ const Assessment = ({ docId }) => {
           )}
         </AccordionDetails>
       </Accordion>
+      <Popover
+        data-testId="metadata-popover"
+        open={!!openAudit}
+        anchorEl={openAudit}
+        onClose={() => setOpenAudit(null)}
+      >
+        <div className="auditPopover">
+          <div className="textContainer">
+            <div className="audit-info-line">
+              <label>Last Updated Date : </label>
+              <span>
+                {assessments?.data?.field_audit_info?.last_updated || '...'}
+              </span>
+            </div>
+            <div>
+              <label>Last Edited By : </label>
+              <span>
+                {assessments?.data?.field_audit_info?.last_edited_by || '...'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </Popover>
     </div>
   );
 };
